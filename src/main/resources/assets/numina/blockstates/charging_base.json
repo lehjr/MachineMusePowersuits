@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "waterlogged=false,powered=false": {
+      "model": "numina:block/charging_base"
+    },
+    "waterlogged=true,powered=false": {
+      "model": "numina:block/charging_base"
+    },
+    "waterlogged=false,powered=true": {
+      "model": "numina:block/charging_base_powered"
+    },
+    "waterlogged=true,powered=true": {
+      "model": "numina:block/charging_base_powered"
+    }
+  }
+}

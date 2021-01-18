@@ -1,0 +1,25 @@
+modLoader="javafml"
+loaderVersion="[35,)"
+issueTrackerURL="https://github.com/lehjr/Numina/issues"
+license="All rights reserved"
+[[mods]]
+    modId="numina"
+    version="${file.jarVersion}"
+    displayName="Numina"
+    #updateJSONURL="http://myurl.me/"
+    displayURL="https://github.com/lehjr/Numina"
+    authors="MachineMuse, lehjr"
+    description="A common library of useful functions and utilities for dealing with Minecraft's source code."
+
+[[dependencies.numina]]
+    modId="forge"
+    mandatory=true
+    versionRange="[35,)"
+    ordering="NONE"
+    side="BOTH"
+[[dependencies.numina]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="[1.16.4]"
+    ordering="NONE"
+    side="BOTH"
