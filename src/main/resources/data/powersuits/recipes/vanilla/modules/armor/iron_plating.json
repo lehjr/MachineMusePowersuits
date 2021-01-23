@@ -1,0 +1,26 @@
+{
+  "result": {
+    "item": "powersuits:plating_iron"
+  },
+  "conditions": [
+    {
+      "type": "powersuits:flag",
+      "flag": "vanilla_recipes_enabled"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "mirrored": true,
+  "pattern": [
+    "FF ",
+    "OF ",
+    "FF "
+  ],
+  "key": {
+    "F": {
+      "tag": "forge:ingots/iron"
+    },
+    "O": {
+      "tag": "forge:wiring"
+    }
+  }
+}

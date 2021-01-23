@@ -1,0 +1,29 @@
+{
+  "result": {
+    "item": "powersuits:melee_assist"
+  },
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "centralizedmaterials"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "mirrored": true,
+  "pattern": [
+    " F ",
+    " C ",
+    "O O"
+  ],
+  "key": {
+    "C": {
+      "item": "numina:component_control_circuit"
+    },
+    "F": {
+      "tag": "forge:servo"
+    },
+    "O": {
+      "tag": "forge:ingots/steel"
+    }
+  }
+}

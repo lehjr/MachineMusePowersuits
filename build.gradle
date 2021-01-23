@@ -1,177 +1,136 @@
 buildscript {
     repositories {
+        maven { url = 'https://files.minecraftforge.net/maven' }
         jcenter()
         mavenCentral()
-
-        maven {
-            name = "forge"
-            url = 'https://files.minecraftforge.net/maven'
-        }
-        maven {
-            // see https://www.reddit.com/r/feedthebeast/comments/62amck/til_for_anyone_dont_know_this_yet_mods_that/
-            name = "CurseForge"
-            url = "https://minecraft.curseforge.com/api/maven/"
-        }
-        maven {
-            url 'https://plugins.gradle.org/m2/'
-        }
-        maven {
-            url 'https://mvnrepository.com/artifact/org.json/json'
-        }
-
-        maven {
-            url 'https://mvnrepository.com/artifact/com.codesnippets4all/quick-json'
-        }
-
-        maven {
-            url 'https://oss.sonatype.org/content/repositories/snapshots/'
-        }
     }
     dependencies {
         classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '3.+', changing: true
     }
 }
 
-plugins {
-    id "com.github.johnrengelman.shadow" version "4.0.4"
-    id 'idea'
-}
 apply plugin: 'net.minecraftforge.gradle'
+// Only edit below this line, the above code adds and enables the necessary things for Forge to be setup.
+apply plugin: 'eclipse'
+apply plugin: 'maven-publish'
 
 sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
 
 //Only edit below this line, the above code adds and enables the necessary things for Forge to be setup.
-
-
 def buildnumber = System.getenv("BUILD_NUMBER")
 def travisbuildnumber = (System.getenv("TRAVIS_BUILD_NUMBER") ?: -000).toInteger() + 00
 version = "${minecraft_version}-${mod_version}.${buildnumber ?: travisbuildnumber}"
 group = group_id // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-archivesBaseName = 'powersuits'
-
-
+archivesBaseName = 'ModularPowersuits'
 
 repositories {
-/*
-    //url                                                           //dependencies
-    maven { url "http://dvs1.progwml6.com/files/maven" }            //JEI
-    maven { url = "http://maven.covers1624.net/" }                  //CoFH
-    maven { url = "http://maven.ic2.player.to" }                    //IC2 Forestry
-    maven { url = "http://maven.tterrag.com" }                      //EnderIO
-    maven { url = "http://maven2.tterrag.com" }                     //EnderIO
-    maven { url = 'http://maven.mcmoddev.com' }                     //TESLA API
-    maven { url = 'https://mod-buildcraft.com/maven/' }             //BuildCraft
-    maven { url = 'http://maven.cil.li/' }                          //Scannable
-    maven { url = 'https://repo.raoulvdberge.com/' }                //RefinedStorage
-    maven { url = 'http://maven.thiakil.com/' }                     //Mekanism
-    maven { url = "http://maven.blamejared.com" }                   //CraftTweaker - required by Mekanism
-    maven { url = 'https://minecraft.curseforge.com/api/maven/' }   //Thaumcraft
-    */
+    maven {
+        // location of the maven that hosts JEI files
+        name = "Progwml6 maven"
+        url = "https://dvs1.progwml6.com/files/maven/"
+    }
+//    maven {
+//        // location of a maven mirror for JEI files, as a fallback
+//        name = "ModMaven"
+//        url = "https://modmaven.k-4u.nl"
+//    }
+    repositories {
+        flatDir {
+            dir 'libs/'
+        }
+    }
+}
+
+minecraft {
+    mappings channel: "snapshot", version: "${project.mcp_version}".toString()
+    // makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
+
+    accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
+
+    // Default run configurations.
+    // These can be tweaked, removed, or duplicated as needed.
+    runs {
+        client {
+            workingDirectory project.file('run')
+
+            // Recommended logging data for a userdev environment
+            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
+
+            // Recommended logging level for the console
+            property 'forge.logging.console.level', 'debug'
+
+            mods {
+                modularpowerarmor {
+                    source sourceSets.main
+                }
+            }
+        }
+
+        server {
+            workingDirectory project.file('run')
+
+            // Recommended logging data for a userdev environment
+            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
+
+            // Recommended logging level for the console
+            property 'forge.logging.console.level', 'debug'
+
+            mods {
+                modularpowerarmor {
+                    source sourceSets.main
+                }
+            }
+        }
+
+        data {
+            workingDirectory project.file('run')
+
+            // Recommended logging data for a userdev environment
+            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
+
+            // Recommended logging level for the console
+            property 'forge.logging.console.level', 'debug'
+
+            args '--mod', 'modularpowerarmor', '--all', '--output', file('src/generated/resources/')
+
+            mods {
+                modularpowerarmor {
+                    source sourceSets.main
+                }
+            }
+        }
+    }
 }
 
 dependencies {
-    // Specify the version of Minecraft to use, If this is any group other then 'net.minecraft' it is assumed
-    // that the dep is a ForgeGradle 'patcher' dependency. And it's patches will be applied.
-    // The userdev artifact is a special name and will get all sorts of transformations applied to it.
     minecraft([
-            group  : "${project.forgegroup}",
+            group  : "net.minecraftforge",
             name   : "forge",
             version: "${project.minecraft_version}-${project.forge_version}"
     ])
 
-    compile group: 'com.codesnippets4all', name: 'quick-json', version: '1.0.4'
+//    // compile against the JEI API but do not include it at runtime
+//    // currently not actually using any JEI code, just using it as a matter of convienience for testing.
+//    compileOnly fg.deobf("mezz.jei:jei-${minecraft_version}:${jei_version}:api")
+//
+//    // at runtime, use the full JEI jar
+//    runtimeOnly fg.deobf("mezz.jei:jei-${minecraft_version}:${jei_version}")
+
+    // compile against the JEI API but do not include it at runtime
+    // currently not actually using any JEI code, just using it as a matter of convienience for testing.
+    compileOnly fg.deobf("mezz.jei:jei-${project.minecraft_version}:${jei_version}:api")
+
+    // at runtime, use the full JEI jar
+    runtimeOnly fg.deobf("mezz.jei:jei-${project.minecraft_version}:${jei_version}")
+
 
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile group: 'org.apache.commons', name: 'commons-text', version: '1.6'
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    /*
-    deobfCompile "mezz.jei:jei_${minecraft_version}:${jei_version}:api"                             //JEI API
-    deobfCompile "cofh:CoFHCore:${minecraft_version}-${cofhcore_version}:universal"                 //CoFH Core
-    deobfCompile "appeng:appliedenergistics2:${ae2api_version}"                                     //Applied Energetics 2
-    deobfCompile "net.industrial-craft:industrialcraft-2:${ic2api_version}-ex112"                   //IC2 API
-    compileOnly "com.enderio.core:EnderCore:${minecraft_version}-${endercore_version}"              //Ender Core
-    deobfCompile "net.sengir.forestry:forestry_${minecraft_version}:${forestry_version}"            //Forestry
-    deobfCompile "thaumcraft:Thaumcraft:1.12.2:${thaumcraft_version}"                               //Thaumcraft
-    deobfCompile "refinedstorage:refinedstorage:${refinedstorage_version}"                          //Refined Storage
-    compile "net.darkhax.tesla:Tesla-${minecraft_version}:${tesla_version}"                         //Tesla
-    compile "com.mod-buildcraft:buildcraft:${buildcraft_version}"                                   //BuildCraft
-    compile "li.cil.scannable:Scannable:MC${minecraft_version}-${scannable_version}"                //Scannable
-    compile fileTree(dir: 'src/libs', include: 'RenderPlayerAPI-1.12.1-1.0.jar')                    //RenderPlayerAPI
-    compile fileTree(dir: 'src/libs', include: 'ExtraCells-1.12.2-2.6.1a.jar')                      //ExtraCells
-    compile("mekanism:Mekanism:${minecraft_version}-${mekanism_version}")                           //Mekanism
-            { exclude group: 'mezz.jei' }//Mek has implemented a duplicated and out date JEI
-    compileOnly ("com.enderio:EnderIO:${minecraft_version}-${enderio_version}:api")                 //EnderIO API
-            { exclude group: "deobf.com.enderio.core"}//Another duplicated and (dirty words) dependency
-    
-    //in fact,if you want run with EnderIO,you had to manually add EnderCore and EnderIO to your run/mods
-    //or you can help to add some lines below that can help the "runClient" works properly while also load EnderIO
-    
-    compile group: 'com.google.guava', name: 'guava', version: '22.0'
-
-    //we need baubles at runtime
-    runtime "com.azanor:Baubles:${baubles_runtime_version}"
-    
-    // https://mvnrepository.com/artifact/org.json/json
-    compile group: 'org.json', name: 'json', version: '20180813' // probably get rid of this
-
-    compile group: 'com.codesnippets4all', name: 'quick-json', version: '1.0.4'
-    */
-
-}
-
-minecraft {
-    // the mappings can be changed at any time, and must be in the following format.
-    // snapshot_YYYYMMDD   snapshot are built nightly.
-    // stable_#            stables are built at the discretion of the MCP team.
-    // Use non-default mappings at your own risk. they may not always work.
-    // simply re-run your setup task after changing the mappings to update your workspace.
-    mappings channel: "snapshot", version: "${project.mcp_version}".toString()
-
-    // makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
-
-    accessTransformer = file('src/main/resources/META-INF/numina_at.cfg')
-
-    // default run configurations.
-    // these can be tweaked, removed, or duplicated as needed.
-    runs {
-        client = {
-            // recommended logging data for a userdev environment
-            properties 'forge.logging.markers': 'SCAN,REGISTRIES,REGISTRYDUMP'
-            // recommended logging level for the console
-            properties 'forge.logging.console.level': 'debug'
-            workingDirectory project.file('run').canonicalPath
-            source sourceSets.main
-            ideaModule project.group + "." + project.name + ".main"
-        }
-        server = {
-            // recommended logging data for a userdev environment
-            properties 'forge.logging.markers': 'SCAN,REGISTRIES,REGISTRYDUMP'
-            // recommended logging level for the console
-            properties 'forge.logging.console.level': 'debug'
-            workingDirectory project.file('run').canonicalPath
-            source sourceSets.main
-            ideaModule project.group + "." + project.name + ".main"
-        }
-    }
 }
 
 // Example for how to get properties into the manifest for reading by the runtime..
 jar {
     manifest {
-        attributes(["Specification-Title": "numina",
+        attributes(["Specification-Title": "Modular Powersuits",
                     "Specification-Vendor": "MachineMuse",
                     "Specification-Version": "25.0", // We are version 1 of the modlauncher specification
                     "Implementation-Title": project.name,

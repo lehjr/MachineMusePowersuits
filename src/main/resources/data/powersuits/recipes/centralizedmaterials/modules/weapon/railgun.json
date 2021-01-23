@@ -1,0 +1,35 @@
+{
+  "result": {
+    "item": "powersuits:railgun"
+  },
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "centralizedmaterials"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "mirrored": true,
+  "pattern": [
+    "CFO",
+    "OMR",
+    "RFO"
+  ],
+  "key": {
+    "R": {
+      "tag": "forge:solenoid"
+    },
+    "C": {
+      "item": "numina:component_solenoid"
+    },
+    "F": {
+      "tag": "forge:ingots/copper"
+    },
+    "M": {
+      "item": "numina:component_control_circuit"
+    },
+    "O": {
+      "item": "numina:component_computer_chip"
+    }
+  }
+}

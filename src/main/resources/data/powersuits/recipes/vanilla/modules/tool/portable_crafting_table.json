@@ -1,0 +1,29 @@
+{
+  "result": {
+    "item": "powersuits:portable_crafting_table"
+  },
+  "conditions": [
+    {
+      "type": "powersuits:flag",
+      "flag": "vanilla_recipes_enabled"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "mirrored": true,
+  "pattern": [
+    " C ",
+    "OMO",
+    " O "
+  ],
+  "key": {
+    "C": {
+      "item": "minecraft:crafting_table"
+    },
+    "M": {
+      "item": "numina:component_control_circuit"
+    },
+    "O": {
+      "item": "numina:component_wiring"
+    }
+  }
+}

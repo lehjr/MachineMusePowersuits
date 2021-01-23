@@ -1,0 +1,31 @@
+{
+  "conditions": [
+    {
+      "type": "powersuits:flag",
+      "flag": "vanilla_recipes_enabled"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "DSD",
+    "WCW",
+    "DSD"
+  ],
+  "key": {
+    "D": {
+      "item": "numina:component_plating_diamond"
+    },
+    "W": {
+      "tag": "forge:wiring"
+    },
+    "C": {
+      "item":"numina:component_control_circuit"
+    },
+    "S": {
+      "tag":"forge:servo"
+    }
+  },
+  "result": {
+    "item": "powersuits:generator_thermal"
+  }
+}

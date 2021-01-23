@@ -1,0 +1,26 @@
+{
+  "result": {
+    "item": "powersuits:aoe_pick_upgrade"
+  },
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "centralizedmaterials"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "mirrored": true,
+  "pattern": [
+    "FFF",
+    "FCF",
+    "FFF"
+  ],
+  "key": {
+    "C": {
+      "item": "numina:component_control_circuit"
+    },
+    "F": {
+      "tag": "forge:solenoid"
+    }
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "result": {
+    "item": "powersuits:workbench"
+  },
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "centralizedmaterials"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "mirrored": true,
+  "pattern": [
+    "FOF",
+    "OCO",
+    "ROR"
+  ],
+  "key": {
+    "R": {
+      "tag": "forge:ingots/electrum"
+    },
+    "C": {
+      "item": "minecraft:crafting_table"
+    },
+    "F": {
+      "tag": "forge:ingots/copper"
+    },
+    "O": {
+      "tag": "forge:dyes/blue"
+    }
+  }
+}

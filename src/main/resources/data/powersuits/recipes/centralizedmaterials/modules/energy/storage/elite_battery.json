@@ -1,0 +1,42 @@
+{
+  "result": {
+    "item": "powersuits:battery_elite",
+    "nbt": {
+      "MMModModule": {
+        "energy": 25000000
+      }
+    }
+  },
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "centralizedmaterials"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "mirrored": true,
+  "pattern": [
+    "FBF",
+    "BCB",
+    "BOB"
+  ],
+  "key": {
+    "B": {
+      "item": "powersuits:battery_advanced",
+      "nbt": {
+        "MMModModule": {
+          "energy": 5000000
+        }
+      }
+    },
+    "C": {
+      "item": "numina:component_control_circuit"
+    },
+    "F": {
+      "tag": "forge:ingots/steel"
+    },
+    "O": {
+      "tag": "forge:wiring"
+    }
+  }
+}

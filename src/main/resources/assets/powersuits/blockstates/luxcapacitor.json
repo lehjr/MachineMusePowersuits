@@ -1,60 +1,18 @@
 {
-  "forge_marker": 1,
-  "defaults": {
-    "custom": { "flip-v": true },
-    "model": "powersuits:block/luxcapacitor.obj",
-    "textures": {
-      "all" : "powersuits:models/luxcapacitor"
-    }
-  },
   "variants": {
-    "facing": {
-
-      "down": {"x": 90},
-      "up": {"x": 270},
-      "north": {},
-      "south": {"y": 180},
-      "west": {"y": 90},
-      "east": {"y": 270},
+    "facing=west,waterlogged=false": { "model": "powersuits:block/luxcapacitor", "y": 90 },
+    "facing=east,waterlogged=false": { "model": "powersuits:block/luxcapacitor", "y": 270 },
+    "facing=north,waterlogged=false": { "model": "powersuits:block/luxcapacitor", "y": 180 },
+    "facing=south,waterlogged=false": { "model": "powersuits:block/luxcapacitor", "y": 0 },
+    "facing=up,waterlogged=false" : { "model": "powersuits:block/luxcapacitor", "x": 90 },
+    "facing=down,waterlogged=false" : { "model": "powersuits:block/luxcapacitor", "x": 270},
 
 
-
-
-      "north": {
-        "transform": {
-          "scale": 1
-        }
-      },
-      "south": {
-        "transform": {
-          "rotation": {"y": 180},
-          "scale": 1
-        }
-      },
-      "west": {
-        "transform": {
-          "rotation": {"y": 90},
-          "scale" : 1
-        }
-      },
-      "east": {
-        "transform": {
-          "rotation": {"y": 270},
-          "scale" : 1
-        }
-      },
-      "up": {
-        "transform": {
-          "rotation": {"y": 270},
-          "scale" : 1
-        }
-      },
-      "down": {
-        "transform": {
-          "rotation": {"y": 270},
-          "scale" : 1
-        }
-      }
-    }
+    "facing=west,waterlogged=true": { "model": "powersuits:block/luxcapacitor", "y": 90 },
+    "facing=east,waterlogged=true": { "model": "powersuits:block/luxcapacitor", "y": 270 },
+    "facing=north,waterlogged=true": { "model": "powersuits:block/luxcapacitor", "y": 180 },
+    "facing=south,waterlogged=true": { "model": "powersuits:block/luxcapacitor", "y": 0 },
+    "facing=up,waterlogged=true" : { "model": "powersuits:block/luxcapacitor", "x": 90 },
+    "facing=down,waterlogged=true" : { "model": "powersuits:block/luxcapacitor", "x": 270}
   }
 }

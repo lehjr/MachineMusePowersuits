@@ -1,0 +1,31 @@
+{
+  "conditions": [
+    {
+      "type": "powersuits:flag",
+      "flag": "vanilla_recipes_enabled"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "III",
+    "WCW",
+    " S "
+  ],
+  "key": {
+    "W": {
+      "tag": "forge:wiring"
+    },
+    "I": {
+      "tag": "forge:ingots/iron"
+    },
+    "C": {
+      "item":"numina:component_control_circuit"
+    },
+    "S": {
+      "tag":"forge:solenoid"
+    }
+  },
+  "result": {
+    "item": "powersuits:shovel"
+  }
+}

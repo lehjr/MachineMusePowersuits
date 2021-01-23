@@ -1,0 +1,37 @@
+{
+  "result": {
+    "item": "powersuits:battery_basic",
+    "nbt": {
+      "MMModModule": {
+        "energy": 800000
+      }
+    }
+  },
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "centralizedmaterials"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "mirrored": true,
+  "pattern": [
+    "FOF",
+    "RCR",
+    "FOF"
+  ],
+  "key": {
+    "R": {
+      "tag": "forge:dusts/redstone"
+    },
+    "C": {
+      "item": "numina:component_control_circuit"
+    },
+    "F": {
+      "tag": "forge:ingots/steel"
+    },
+    "O": {
+      "tag": "forge:wiring"
+    }
+  }
+}

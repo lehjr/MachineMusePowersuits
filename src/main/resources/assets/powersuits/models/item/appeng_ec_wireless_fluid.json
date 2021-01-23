@@ -1,6 +1,0 @@
-{
-  "parent": "item/generated",
-  "textures": {
-    "layer0": "powersuits:item/module/tool/appeng_ec_wireless_fluid"
-  }
-}

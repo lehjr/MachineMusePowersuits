@@ -1,0 +1,26 @@
+{
+  "result": {
+    "item": "powersuits:powerarmor_legs"
+  },
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "centralizedmaterials"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "mirrored": true,
+  "pattern": [
+    "FFF",
+    "O O",
+    "F F"
+  ],
+  "key": {
+    "F": {
+      "tag": "forge:ingots/steel"
+    },
+    "O": {
+      "tag": "forge:wiring"
+    }
+  }
+}

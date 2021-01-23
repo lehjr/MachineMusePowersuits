@@ -1,0 +1,31 @@
+{
+  "conditions": [
+    {
+      "type": "powersuits:flag",
+      "flag": "vanilla_recipes_enabled"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "WHW",
+    "WFW",
+    "WSW"
+  ],
+  "key": {
+    "W": {
+      "tag": "forge:wiring"
+    },
+    "H": {
+      "item": "numina:battery_ultimate"
+    },
+    "F": {
+      "item":"numina:component_field_emitter"
+    },
+    "S": {
+      "tag": "forge:solenoid"
+    }
+  },
+  "result": {
+    "item": "powersuits:lightning_summoner"
+  }
+}

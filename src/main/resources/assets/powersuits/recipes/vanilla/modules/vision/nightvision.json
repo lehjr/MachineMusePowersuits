@@ -1,0 +1,28 @@
+{
+  "conditions": [
+    {
+      "type": "powersuits:flag",
+      "flag": "vanilla_recipes_enabled"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "WLW",
+    "WCW",
+    "WLW"
+  ],
+  "key": {
+    "W": {
+      "tag": "forge:wiring"
+    },
+    "L": {
+      "item": "numina:component_laser_emitter"
+    },
+    "C": {
+      "item":"numina:component_control_circuit"
+    }
+  },
+  "result": {
+    "item": "powersuits:night_vision"
+  }
+}

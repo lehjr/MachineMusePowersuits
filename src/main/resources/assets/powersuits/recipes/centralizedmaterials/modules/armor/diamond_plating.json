@@ -1,0 +1,26 @@
+{
+  "result": {
+    "item": "powersuits:plating_diamond"
+  },
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "centralizedmaterials"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "mirrored": true,
+  "pattern": [
+    "FF ",
+    "OF ",
+    "FF "
+  ],
+  "key": {
+    "F": {
+      "tag": "forge:gems/diamond"
+    },
+    "O": {
+      "tag": "forge:wiring"
+    }
+  }
+}

@@ -2,6 +2,7 @@ modLoader="javafml"
 loaderVersion="[25,)"
 issueTrackerURL="https://github.com/MachineMuse/MachineMusePowersuits/issues/"
 displayURL="http://machinemuse.net/"
+license="All rights reserved"
 logoFile="assets/powersuits/textures/logo.png"
 credits="Icons by WaterCandle, Modeling by SebK"
 authors="Code by MachineMuse, Lehjr and others"
@@ -19,7 +20,7 @@ A mod which adds modular power armor, power tool, and a tinker table to configur
     # Does this dependency have to exist - if not, ordering below must be specified
     mandatory=true #mandatory
     # The version range of the dependency
-    versionRange="[25,)" #mandatory
+    versionRange="[35,)" #mandatory
     # An ordering relationship for the dependency - BEFORE or AFTER required if the relationship is not mandatory
     ordering="NONE"
     # Side this dependency is applied on - BOTH, CLIENT or SERVER
@@ -28,13 +29,13 @@ A mod which adds modular power armor, power tool, and a tinker table to configur
 [[dependencies.powersuits]]
     modId="minecraft"
     mandatory=true
-    versionRange="[1.13.2]"
+    versionRange="[1.16.4]"
     ordering="NONE"
     side="BOTH"
 
 [[dependencies.powersuits]]
     modId="numina"
     mandatory=true
-    versionRange="[1.0.0,]"
+    versionRange="[2.0.0,]"
     ordering="AFTER"
     side="BOTH"

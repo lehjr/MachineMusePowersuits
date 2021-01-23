@@ -1,0 +1,28 @@
+{
+  "conditions": [
+    {
+      "type": "powersuits:flag",
+      "flag": "vanilla_recipes_enabled"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "WW",
+    "LC",
+    "WW"
+  ],
+  "key": {
+    "W": {
+      "tag": "forge:wiring"
+    },
+    "C": {
+      "item":"numina:component_control_circuit"
+    },
+    "L": {
+      "item": "numina:component_laser_emitter"
+    }
+  },
+  "result": {
+    "item": "powersuits:transparent_armor"
+  }
+}
