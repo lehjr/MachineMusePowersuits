@@ -1,6 +1,6 @@
 package com.github.lehjr.numina.util.client.gui.gemoetry;
 
-import com.github.lehjr.numina.util.client.render.mpa.MPALibRenderState;
+import com.github.lehjr.numina.util.client.render.mpa.NuminaRenderState;
 import com.github.lehjr.numina.util.math.Colour;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.platform.GlStateManager;
@@ -80,11 +80,11 @@ public class DrawableMuseCircle<LIGHTMAP_ENABLED> {
                     .transparency(ADDITIVE_TRANSPARENCY)
 //                    .transparency(GLINT_TRANSPARENCY  )
 
-//                    .transparency(MPALibRenderState.TRANSLUCENT_TRANSPARENCY)
-                    .diffuseLighting(MPALibRenderState.DIFFUSE_LIGHTING_ENABLED)
-//                    .alpha(MPALibRenderState.DEFAULT_ALPHA)
-                    .lightmap(MPALibRenderState.LIGHTMAP_ENABLED)
-//                    .overlay(MPALibRenderState.OVERLAY_ENABLED)
+//                    .transparency(NuminaRenderState.TRANSLUCENT_TRANSPARENCY)
+                    .diffuseLighting(NuminaRenderState.DIFFUSE_LIGHTING_ENABLED)
+//                    .alpha(NuminaRenderState.DEFAULT_ALPHA)
+                    .lightmap(NuminaRenderState.LIGHTMAP_ENABLED)
+//                    .overlay(NuminaRenderState.OVERLAY_ENABLED)
                     .build(true));
 
     public static final float detail = 4;
@@ -166,18 +166,18 @@ public class DrawableMuseCircle<LIGHTMAP_ENABLED> {
         GL11.glPushMatrix();
         GL11.glTranslated(x, y, 0);
         GL11.glScaled(radius / detail, radius / detail, 1.0);
-        MPALibRenderState.on2D();
+        NuminaRenderState.on2D();
         GL11.glEnable(GL11.GL_DEPTH_TEST);
-        MPALibRenderState.arraysOnColor();
-        MPALibRenderState.texturelessOn();
-        MPALibRenderState.blendingOn();
+        NuminaRenderState.arraysOnColor();
+        NuminaRenderState.texturelessOn();
+        NuminaRenderState.blendingOn();
         GL11.glColorPointer(4, GL11.GL_FLOAT, 0, colour);
         GL11.glVertexPointer(3, GL11.GL_FLOAT,0, points);
         GL11.glDrawArrays(GL11.GL_TRIANGLE_FAN, 0, points.limit() / 3);
-        MPALibRenderState.blendingOff();
-        MPALibRenderState.texturelessOff();
-        MPALibRenderState.arraysOff();
-        MPALibRenderState.off2D();
+        NuminaRenderState.blendingOff();
+        NuminaRenderState.texturelessOff();
+        NuminaRenderState.arraysOff();
+        NuminaRenderState.off2D();
         GL11.glPopMatrix();
     }
 

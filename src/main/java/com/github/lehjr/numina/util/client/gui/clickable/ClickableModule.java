@@ -27,7 +27,7 @@
 package com.github.lehjr.numina.util.client.gui.clickable;
 
 import com.github.lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
-import com.github.lehjr.numina.util.client.render.mpa.MPALibRenderState;
+import com.github.lehjr.numina.util.client.render.mpa.NuminaRenderState;
 import com.github.lehjr.numina.util.math.Colour;
 import com.github.lehjr.numina.util.client.render.MuseIconUtils;
 import com.github.lehjr.numina.util.client.render.MuseRenderer;
@@ -125,18 +125,18 @@ public class ClickableModule extends Clickable {
             if (!allowed) {
                 matrixStack.push();
                 matrixStack.translate(0, 0, 250);
-                MPALibRenderState.glowOn();
+                NuminaRenderState.glowOn();
                 String string = MuseStringUtils.wrapMultipleFormatTags("X", MuseStringUtils.FormatCodes.Bold, MuseStringUtils.FormatCodes.DarkRed);
                 MuseRenderer.drawString(matrixStack, string, getPosition().getX() + 3, getPosition().getY() + 1);
-                MPALibRenderState.glowOff();
+                NuminaRenderState.glowOff();
 
                 matrixStack.pop();
             } else if (installed) {
                 matrixStack.push();
                 matrixStack.translate(0, 0,250);
-                MPALibRenderState.glowOn();
+                NuminaRenderState.glowOn();
                 MuseIconUtils.getIcon().checkmark.draw(matrixStack, getPosition().getX() - offsetx + 1, getPosition().getY() - offsety + 1, checkmarkcolour.withAlpha(0.6F));
-                MPALibRenderState.glowOff();
+                NuminaRenderState.glowOff();
                 matrixStack.pop();
             }
         }

@@ -29,7 +29,7 @@ package com.github.lehjr.numina.util.client.gui.frame;
 import com.github.lehjr.numina.util.client.gui.gemoetry.DrawableMuseRect;
 import com.github.lehjr.numina.util.client.gui.gemoetry.IRect;
 import com.github.lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
-import com.github.lehjr.numina.util.client.render.mpa.MPALibRenderState;
+import com.github.lehjr.numina.util.client.render.mpa.NuminaRenderState;
 import com.github.lehjr.numina.util.math.Colour;
 import com.github.lehjr.numina.util.math.MuseMathUtils;
 import com.mojang.blaze3d.matrix.MatrixStack;
@@ -108,7 +108,7 @@ public class ScrollableFrame implements IGuiFrame {
             RenderSystem.disableAlphaTest();
             RenderSystem.defaultBlendFunc();
             RenderSystem.shadeModel(GL11.GL_SMOOTH);
-            MPALibRenderState.glowOn();
+            NuminaRenderState.glowOn();
 
             Tessellator tessellator = Tessellator.getInstance();
             BufferBuilder buffer = tessellator.getBuffer();
@@ -155,14 +155,14 @@ public class ScrollableFrame implements IGuiFrame {
             RenderSystem.disableBlend();
             RenderSystem.enableAlphaTest();
             RenderSystem.enableTexture();
-            MPALibRenderState.scissorsOn(border.left(), border.top() + 4, border.width(), border.height() - 8); // get rid of margins
+            NuminaRenderState.scissorsOn(border.left(), border.top() + 4, border.width(), border.height() - 8); // get rid of margins
         }
     }
 
     public void postRender(int mouseX, int mouseY, float partialTicks) {
         if (isVisible()) {
-            MPALibRenderState.scissorsOff();
-            MPALibRenderState.glowOff();
+            NuminaRenderState.scissorsOff();
+            NuminaRenderState.glowOff();
         }
     }
 

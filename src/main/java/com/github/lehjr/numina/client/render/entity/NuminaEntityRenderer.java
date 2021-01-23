@@ -34,8 +34,8 @@ import net.minecraft.entity.Entity;
  * Author: MachineMuse (Claire Semple)
  * Created: 4:31 PM, 8/3/13
  */
-public abstract class MPALibEntityRenderer<T extends Entity> extends EntityRenderer<T> {
-    protected MPALibEntityRenderer(EntityRendererManager renderManager) {
+public abstract class NuminaEntityRenderer<T extends Entity> extends EntityRenderer<T> {
+    protected NuminaEntityRenderer(EntityRendererManager renderManager) {
         super(renderManager);
     }
 }

@@ -28,7 +28,7 @@ package com.github.lehjr.numina.util.client.render;
 
 import com.github.lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
 import com.github.lehjr.numina.util.client.gui.gemoetry.SwirlyMuseCircle;
-import com.github.lehjr.numina.util.client.render.mpa.MPALibRenderState;
+import com.github.lehjr.numina.util.client.render.mpa.NuminaRenderState;
 import com.github.lehjr.numina.util.math.Colour;
 import com.github.lehjr.numina.util.client.gui.clickable.IClickable;
 import com.mojang.blaze3d.matrix.MatrixStack;
@@ -287,7 +287,7 @@ public abstract class MuseRenderer {
 
     public static double getStringWidth(String s) {
         double stringWidth;
-        MPALibRenderState.glPushAttrib(GL11.GL_TEXTURE_BIT);
+        NuminaRenderState.glPushAttrib(GL11.GL_TEXTURE_BIT);
         stringWidth = getFontRenderer().getStringWidth(s);
         RenderSystem.popAttributes();
         return stringWidth;

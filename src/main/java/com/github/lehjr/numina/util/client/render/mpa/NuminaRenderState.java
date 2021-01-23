@@ -46,7 +46,7 @@ import org.lwjgl.opengl.GL13C;
  * Ported to Java by lehjr on 10/23/16.
  */
 @OnlyIn(Dist.CLIENT)
-public final class MPALibRenderState {
+public final class NuminaRenderState {
     public static final RenderState.TransparencyState TRANSLUCENT_TRANSPARENCY = new RenderState.TransparencyState("translucent_transparency_numina", () -> {
         RenderSystem.enableBlend();
         RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);

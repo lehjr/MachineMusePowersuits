@@ -8,9 +8,14 @@ buildscript {
         classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '3.+', changing: true
     }
 }
+
+plugins {
+    id "com.matthewprenger.cursegradle" version "1.4.0"
+}
+
 apply plugin: 'net.minecraftforge.gradle'
 // Only edit below this line, the above code adds and enables the necessary things for Forge to be setup.
-apply plugin: 'eclipse'
+apply plugin: 'idea'
 apply plugin: 'maven-publish'
 
 def buildnumber = System.getenv("BUILD_NUMBER")
@@ -27,6 +32,15 @@ repositories {
         name = "Progwml6 maven"
         url = "https://dvs1.progwml6.com/files/maven/"
     }
+
+    maven {
+        url 'https://repo1.maven.org/maven2'
+    }
+
+    maven {
+        url 'https://maven.latmod.com/'
+    }
+
 //    maven {
 //        // location of a maven mirror for JEI files, as a fallback
 //        name = "ModMaven"
@@ -119,6 +133,10 @@ dependencies {
 
     // at runtime, use the full JEI jar
     runtimeOnly fg.deobf("mezz.jei:jei-${project.minecraft_version}:${jei_version}")
+
+    compileOnly fg.deobf('com.feed_the_beast.mods:ftb-gui-library:1.0.0.18')
+    runtimeOnly fg.deobf('com.feed_the_beast.mods:ftb-gui-library:1.0.0.18')
+
 }
 
 //dependencies {

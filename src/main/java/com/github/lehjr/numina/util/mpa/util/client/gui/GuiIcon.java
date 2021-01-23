@@ -28,7 +28,7 @@ package com.github.lehjr.numina.util.mpa.util.client.gui;
 
 import com.github.lehjr.numina.constants.NuminaConstants;
 import com.github.lehjr.numina.util.client.NuminaSpriteUploader;
-import com.github.lehjr.numina.util.client.render.mpa.MPALibRenderState;
+import com.github.lehjr.numina.util.client.render.mpa.NuminaRenderState;
 import com.github.lehjr.numina.util.math.Colour;
 import com.github.lehjr.numina.util.client.render.BillboardHelper;
 import com.mojang.blaze3d.matrix.MatrixStack;
@@ -176,7 +176,7 @@ public class GuiIcon {
 //            bindTexture();
 //            System.out.println("toString: " + toString());
 
-            drawLightningTextured(bufferIn.getBuffer(MPALibRenderState.LIGHTNING_TEST()),
+            drawLightningTextured(bufferIn.getBuffer(NuminaRenderState.LIGHTNING_TEST()),
                     matrixStack.getLast().getMatrix(),
                     x1,
                     y1,

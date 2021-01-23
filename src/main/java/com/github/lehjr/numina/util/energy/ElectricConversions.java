@@ -39,20 +39,20 @@ public class ElectricConversions {
 //    public static final String IC2_TIER = "IC2 Tier";
 //
 //    public static double museEnergyToEU(final double museEnergy) {
-//        return museEnergy / MPALibConfig.IC2_EU_TO_RF_RATIO;
+//        return museEnergy / NuminaConfig.IC2_EU_TO_RF_RATIO;
 //    }
 //
 //    public static int museEnergyFromEU(final double eu) {
-//        return (int) Math.round(eu * MPALibConfig.IC2_EU_TO_RF_RATIO);
+//        return (int) Math.round(eu * NuminaConfig.IC2_EU_TO_RF_RATIO);
 //    }
 //    /**
 //     * Applied Energistics 2 ----------------------------------------------------------------------
 //     */
 //    public static double museEnergyFromAE(final double ae) {
-//        return ae * MPALibConfig.AE_TO_RF_RATIO;
+//        return ae * NuminaConfig.AE_TO_RF_RATIO;
 //    }
 //
 //    public static double museEnergyToAE(final double museEnergy) {
-//        return museEnergy / MPALibConfig.AE_TO_RF_RATIO;
+//        return museEnergy / NuminaConfig.AE_TO_RF_RATIO;
 //    }
 }
