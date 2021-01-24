@@ -11,12 +11,12 @@ import com.github.lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
 import com.github.lehjr.numina.util.client.gui.gemoetry.MuseRelativeRect;
 import com.github.lehjr.numina.util.client.render.MuseIconUtils;
 import com.github.lehjr.numina.util.math.Colour;
-import com.github.lehjr.numina.util.mpa.util.client.gui.GuiIcon;
+import com.github.lehjr.numina.util.client.gui.GuiIcon;
 import com.github.lehjr.powersuits.client.gui.common.ItemSelectionFrame;
 import com.github.lehjr.powersuits.client.gui.obsolete.ScrollableLabel;
 import com.github.lehjr.powersuits.client.gui.obsolete.ScrollableRectangle;
 import com.github.lehjr.powersuits.client.gui.obsolete.ScrollableSlider;
-import com.github.lehjr.powersuits.network.MPAPackets;
+import com.github.lehjr.powersuits.network.MPSPackets;
 import com.github.lehjr.powersuits.network.packets.ColourInfoPacket;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -133,7 +133,7 @@ public class ColourPickerFrame extends ScrollableFrame {
             renderSpec.put(NuminaConstants.TAG_COLOURS, new IntArrayNBT(intList));
             ClientPlayerEntity player = Minecraft.getInstance().player;
             if (player.world.isRemote) {
-                MPAPackets.CHANNEL_INSTANCE.sendToServer(new ColourInfoPacket(this.itemSelector.getSelectedItem().getSlotIndex(), this.colours()));
+                MPSPackets.CHANNEL_INSTANCE.sendToServer(new ColourInfoPacket(this.itemSelector.getSelectedItem().getSlotIndex(), this.colours()));
             }
             return (IntArrayNBT) renderSpec.get(NuminaConstants.TAG_COLOURS);
         }).orElse(new IntArrayNBT(new int[0]));
@@ -161,7 +161,7 @@ public class ColourPickerFrame extends ScrollableFrame {
 
                     ClientPlayerEntity player = Minecraft.getInstance().player;
                     if (player.world.isRemote)
-                        MPAPackets.CHANNEL_INSTANCE.sendToServer(new ColourInfoPacket(itemSelector.getSelectedItem().inventorySlot, colours()));
+                        MPSPackets.CHANNEL_INSTANCE.sendToServer(new ColourInfoPacket(itemSelector.getSelectedItem().inventorySlot, colours()));
                 }
                 // this just sets up the sliders on selecting an item
             } else if (itemSelector.getSelectedItem() != null && colours().length > 0) {
@@ -277,7 +277,7 @@ public class ColourPickerFrame extends ScrollableFrame {
 
                     ClientPlayerEntity player = Minecraft.getInstance().player;
                     if (player.world.isRemote)
-                        MPAPackets.CHANNEL_INSTANCE.sendToServer(new ColourInfoPacket(itemSelector.getSelectedItem().getSlotIndex(), IntArrayNBT.getIntArray()));
+                        MPSPackets.CHANNEL_INSTANCE.sendToServer(new ColourInfoPacket(itemSelector.getSelectedItem().getSlotIndex(), IntArrayNBT.getIntArray()));
                 }
                 return true;
             }

@@ -1,6 +1,6 @@
 package com.github.lehjr.powersuits.network.packets;
 
-import com.github.lehjr.powersuits.container.MPAWorkbenchContainer;
+import com.github.lehjr.powersuits.container.MPSWorkbenchContainer;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
@@ -33,8 +33,8 @@ public class MoveModuleFromSlotToSlotPacket {
     public static void handle(MoveModuleFromSlotToSlotPacket message, Supplier<NetworkEvent.Context> ctx) {
         ctx.get().enqueueWork(() -> {
             ServerPlayerEntity player = ctx.get().getSender();
-            if (player.openContainer != null && player.openContainer.windowId == message.windowId && player.openContainer instanceof MPAWorkbenchContainer) {
-                MPAWorkbenchContainer container = (MPAWorkbenchContainer) player.openContainer;
+            if (player.openContainer != null && player.openContainer.windowId == message.windowId && player.openContainer instanceof MPSWorkbenchContainer) {
+                MPSWorkbenchContainer container = (MPSWorkbenchContainer) player.openContainer;
 
                 Slot source = container.getSlot(message.sourceSlot);
                 Slot target = container.getSlot(message.targetSlot);

@@ -9,7 +9,7 @@ import com.github.lehjr.numina.util.client.sound.SoundDictionary;
 import com.github.lehjr.numina.util.math.Colour;
 import com.github.lehjr.powersuits.client.gui.keybind.TinkerKeybindGui;
 import com.github.lehjr.powersuits.client.gui.modding.cosmetic.CosmeticGui;
-import com.github.lehjr.powersuits.network.MPAPackets;
+import com.github.lehjr.powersuits.network.MPSPackets;
 import com.github.lehjr.powersuits.network.packets.ContainerGuiOpenPacket;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.Minecraft;
@@ -37,7 +37,7 @@ public class TabSelectFrame extends ScrollableFrame {
             button = new ClickableButton(new TranslationTextComponent("gui.powersuits.tab.tinker"), new MusePoint2D(0, 0), true);
             button.setOnPressed(onPressed->{
                 Musique.playClientSound(SoundDictionary.SOUND_EVENT_GUI_SELECT, 1);
-                MPAPackets.CHANNEL_INSTANCE.sendToServer(new ContainerGuiOpenPacket(0));
+                MPSPackets.CHANNEL_INSTANCE.sendToServer(new ContainerGuiOpenPacket(0));
             });
             buttons.add(button);
         }
@@ -64,7 +64,7 @@ public class TabSelectFrame extends ScrollableFrame {
             button = new ClickableButton(new TranslationTextComponent("container.crafting"), new MusePoint2D(0, 0), true);
             button.setOnPressed(onPressed->{
                 Musique.playClientSound(SoundDictionary.SOUND_EVENT_GUI_SELECT, 1);
-                MPAPackets.CHANNEL_INSTANCE.sendToServer(new ContainerGuiOpenPacket(1));
+                MPSPackets.CHANNEL_INSTANCE.sendToServer(new ContainerGuiOpenPacket(1));
             });
             buttons.add(button);
         }

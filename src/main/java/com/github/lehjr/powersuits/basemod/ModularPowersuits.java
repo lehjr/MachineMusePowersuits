@@ -23,7 +23,7 @@ import com.github.lehjr.powersuits.constants.MPSRegistryNames;
 import com.github.lehjr.powersuits.event.HarvestEventHandler;
 import com.github.lehjr.powersuits.event.MovementManager;
 import com.github.lehjr.powersuits.event.PlayerUpdateHandler;
-import com.github.lehjr.powersuits.network.MPAPackets;
+import com.github.lehjr.powersuits.network.MPSPackets;
 import com.github.lehjr.powersuits.recipe.MPSRecipeConditionFactory;
 import net.minecraft.client.gui.ScreenManager;
 import net.minecraft.entity.player.PlayerEntity;
@@ -107,7 +107,7 @@ public class ModularPowersuits {
      * Setup common (clien/server) stuff
      */
     private void setup(final FMLCommonSetupEvent event) {
-        MPAPackets.registerMPAPackets();
+        MPSPackets.registerMPAPackets();
         CraftingHelper.register(MPSRecipeConditionFactory.Serializer.INSTANCE);
     }
 

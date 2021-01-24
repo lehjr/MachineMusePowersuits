@@ -29,25 +29,4 @@ public class WorkBenchTileEntity extends MuseTileEntity {
     public void setFacing(Direction facing) {
         this.facing = facing;
     }
-
-
-
-
-
-//    @Override
-//    public CompoundNBT write(CompoundNBT nbt) {
-//        super.write(nbt);
-//        nbt.putInt("f", facing.ordinal());
-//        return nbt;
-//    }
-//
-//    @Override
-//    public void read(CompoundNBT nbt) {
-//        super.read(nbt);
-//        if (nbt.contains("f")) {
-//            facing = Direction.values()[nbt.getInt("f")];
-//        } else {
-//            MuseLogger.logger.debug("No NBT found! D:");
-//        }
-//    }
 }

@@ -1,7 +1,7 @@
 package com.github.lehjr.powersuits.block;
 
 import com.github.lehjr.numina.util.client.sound.SoundDictionary;
-import com.github.lehjr.powersuits.container.MPAWorkbenchContainerProvider;
+import com.github.lehjr.powersuits.container.MPSWorkbenchContainerProvider;
 import com.github.lehjr.powersuits.tile_entity.WorkBenchTileEntity;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
@@ -80,7 +80,7 @@ public class WorkBenchBlock extends HorizontalBlock implements IWaterLoggable {
     @Nullable
     @Override
     public INamedContainerProvider getContainer(BlockState state, World worldIn, BlockPos pos) {
-        return new MPAWorkbenchContainerProvider(0);
+        return new MPSWorkbenchContainerProvider(0);
 
 
 //        return new SimpleNamedContainerProvider((windowID, playerInventory, playerEntity) -> {

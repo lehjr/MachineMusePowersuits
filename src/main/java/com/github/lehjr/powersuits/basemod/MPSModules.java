@@ -1,9 +1,9 @@
 package com.github.lehjr.powersuits.basemod;
 
+import com.github.lehjr.numina.constants.NuminaConstants;
 import com.github.lehjr.powersuits.constants.MPSConstants;
 import com.github.lehjr.powersuits.constants.MPSRegistryNames;
 import net.minecraft.util.ResourceLocation;
-import com.github.lehjr.numina.constants.NuminaConstants;
 
 import java.util.ArrayList;
 import java.util.List;

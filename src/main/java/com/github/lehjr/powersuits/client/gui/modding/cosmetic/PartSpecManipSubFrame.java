@@ -15,7 +15,7 @@ import com.github.lehjr.numina.util.client.render.MuseIconUtils;
 import com.github.lehjr.numina.util.client.render.MuseRenderer;
 import com.github.lehjr.numina.util.math.Colour;
 import com.github.lehjr.numina.util.math.MuseMathUtils;
-import com.github.lehjr.numina.util.mpa.util.client.gui.GuiIcon;
+import com.github.lehjr.numina.util.client.gui.GuiIcon;
 import com.github.lehjr.powersuits.client.gui.common.ItemSelectionFrame;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;

@@ -12,8 +12,8 @@ import com.github.lehjr.powersuits.block.WorkBenchBlock;
 import com.github.lehjr.powersuits.config.MPSSettings;
 import com.github.lehjr.powersuits.constants.MPSConstants;
 import com.github.lehjr.powersuits.constants.MPSRegistryNames;
-import com.github.lehjr.powersuits.container.MPAWorkbenchContainer;
-import com.github.lehjr.powersuits.container.MPAWorkbenchContainerProvider;
+import com.github.lehjr.powersuits.container.MPSWorkbenchContainer;
+import com.github.lehjr.powersuits.container.MPSWorkbenchContainerProvider;
 import com.github.lehjr.powersuits.entity.LuxCapacitorEntity;
 import com.github.lehjr.powersuits.entity.PlasmaBallEntity;
 import com.github.lehjr.powersuits.entity.RailgunBoltEntity;
@@ -169,7 +169,7 @@ public class MPSObjects {
                         @Override
                         public ActionResult onItemRightClick(ItemStack itemStackIn, World worldIn, PlayerEntity playerIn, Hand hand) {
                             if (!worldIn.isRemote()) {
-                                NetworkHooks.openGui((ServerPlayerEntity) playerIn, new MPAWorkbenchContainerProvider(0), (buffer) -> buffer.writeInt(0));
+                                NetworkHooks.openGui((ServerPlayerEntity) playerIn, new MPSWorkbenchContainerProvider(0), (buffer) -> buffer.writeInt(0));
                             }
                             return super.onItemRightClick(itemStackIn, worldIn, playerIn, hand);
                         }
@@ -275,8 +275,8 @@ public class MPSObjects {
      */
     public static final DeferredRegister<ContainerType<?>> CONTAINER_TYPES = DeferredRegister.create(ForgeRegistries.CONTAINERS, MPSConstants.MOD_ID);
 
-    public static final RegistryObject<ContainerType<MPAWorkbenchContainer>> MPA_WORKBENCH_CONTAINER_TYPE = CONTAINER_TYPES.register(MPSRegistryNames.MPA_WORKBENCH_CONTAINER_TYPE,
-            () -> IForgeContainerType.create((windowId, inv, data) -> new MPAWorkbenchContainer(windowId, inv)));
+    public static final RegistryObject<ContainerType<MPSWorkbenchContainer>> MPA_WORKBENCH_CONTAINER_TYPE = CONTAINER_TYPES.register(MPSRegistryNames.MPA_WORKBENCH_CONTAINER_TYPE,
+            () -> IForgeContainerType.create((windowId, inv, data) -> new MPSWorkbenchContainer(windowId, inv)));
 
 
 //                    new ContainerType<>(MPAWorkbenchContainer::new)

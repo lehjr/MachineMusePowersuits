@@ -10,7 +10,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.network.NetworkRegistry;
 import net.minecraftforge.fml.network.simple.SimpleChannel;
 
-public class MPAPackets {
+public class MPSPackets {
     private static final String PROTOCOL_VERSION = "1";
 
     public static final SimpleChannel CHANNEL_INSTANCE = NetworkRegistry.newSimpleChannel(

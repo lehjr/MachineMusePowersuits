@@ -8,7 +8,7 @@ import com.github.lehjr.numina.util.client.render.MuseRenderer;
 import com.github.lehjr.numina.util.math.Colour;
 import com.github.lehjr.powersuits.client.control.KeybindManager;
 import com.github.lehjr.powersuits.client.gui.clickable.ClickableKeybinding;
-import com.github.lehjr.powersuits.client.model.helper.MPAModelHelper;
+import com.github.lehjr.powersuits.client.model.helper.MPSModelHelper;
 import com.github.lehjr.powersuits.config.MPSSettings;
 import com.github.lehjr.powersuits.constants.MPSConstants;
 import com.github.lehjr.powersuits.constants.MPSRegistryNames;
@@ -37,7 +37,7 @@ public enum RenderEventHandler {
     @SubscribeEvent
     public void preTextureStitch(TextureStitchEvent.Pre event) {
 //        MuseIcon.registerIcons(event);
-        MPAModelHelper.loadArmorModels(event, null);
+        MPSModelHelper.loadArmorModels(event, null);
     }
 
     @OnlyIn(Dist.CLIENT)

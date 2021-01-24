@@ -9,7 +9,7 @@ import com.github.lehjr.numina.util.client.sound.SoundDictionary;
 import com.github.lehjr.numina.util.energy.ElectricItemUtils;
 import com.github.lehjr.numina.util.math.MuseMathUtils;
 import com.github.lehjr.numina.util.player.PlayerUtils;
-import com.github.lehjr.powersuits.client.sound.MPASoundDictionary;
+import com.github.lehjr.powersuits.client.sound.MPSSoundDictionary;
 import com.github.lehjr.powersuits.config.MPSSettings;
 import com.github.lehjr.powersuits.constants.MPSConstants;
 import com.github.lehjr.powersuits.constants.MPSRegistryNames;
@@ -244,7 +244,7 @@ public enum MovementManager {
                     double drain = jumper.applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION);
                     int avail = ElectricItemUtils.getPlayerEnergy(player);
                     if ((player.world.isRemote()) && NuminaSettings.useSounds()) {
-                        Musique.playerSound(player, MPASoundDictionary.JUMP_ASSIST, SoundCategory.PLAYERS, (float) (jumpAssist / 8.0), (float) 1, false);
+                        Musique.playerSound(player, MPSSoundDictionary.JUMP_ASSIST, SoundCategory.PLAYERS, (float) (jumpAssist / 8.0), (float) 1, false);
                     }
 
                     if (drain < avail) {

@@ -4,6 +4,7 @@ import com.github.lehjr.powersuits.constants.MPSConstants;
 import net.minecraftforge.common.ForgeConfigSpec;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class ServerConfig {
@@ -94,7 +95,7 @@ public class ServerConfig {
                         "Use for blocks that don't have an ore tag or to fine tune which blocks to break")
                 .translation(MPSConstants.CONFIG_GENERAL_VEIN_MINER_BLOCK_LIST)
                 .worldRestart()
-                .defineList("veinMinerBlocks", Arrays.asList(), o -> o instanceof String && !((String) o).isEmpty());
+                .defineList("veinMinerBlocks", Collections.emptyList(), o -> o instanceof String && !((String) o).isEmpty());
         builder.pop();
 
 

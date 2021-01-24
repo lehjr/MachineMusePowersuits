@@ -1,7 +1,7 @@
-//package com.github.lehjr.powersuits.network.packets;
+package com.github.lehjr.powersuits.network.packets;//package com.github.lehjr.powersuits.network.packets;
 //
-//import com.github.lehjr.numina.capabilities.render.ModelSpecNBT;
-//import com.github.lehjr.numina.capabilities.render.ModelSpecNBTCapability;
+//import com.github.lehjr.mpalib.capabilities.render.ModelSpecNBT;
+//import com.github.lehjr.mpalib.capabilities.render.ModelSpecNBTCapability;
 //import net.minecraft.entity.player.ServerPlayerEntity;
 //import net.minecraft.network.PacketBuffer;
 //import net.minecraftforge.fml.network.NetworkEvent;
@@ -41,8 +41,8 @@
 //
 //                        // fixme preset stuff again
 ////                    CompoundNBT itemTag = NBTUtils.getMuseItemTag(stack);
-////                    itemTag.remove(NuminaConstants.TAG_RENDER);
-////                    itemTag.putString(NuminaConstants.TAG_COSMETIC_PRESET, presetName);
+////                    itemTag.remove(MPALibConstants.TAG_RENDER);
+////                    itemTag.putString(MPALibConstants.TAG_COSMETIC_PRESET, presetName);
 //            });
 //        });
 //    }

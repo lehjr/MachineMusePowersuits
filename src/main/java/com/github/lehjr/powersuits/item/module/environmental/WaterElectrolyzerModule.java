@@ -9,7 +9,7 @@ import com.github.lehjr.numina.util.capabilities.module.tickable.IPlayerTickModu
 import com.github.lehjr.numina.util.capabilities.module.tickable.PlayerTickModule;
 import com.github.lehjr.numina.util.capabilities.module.toggleable.IToggleableModule;
 import com.github.lehjr.numina.util.energy.ElectricItemUtils;
-import com.github.lehjr.powersuits.client.sound.MPASoundDictionary;
+import com.github.lehjr.powersuits.client.sound.MPSSoundDictionary;
 import com.github.lehjr.powersuits.config.MPSSettings;
 import com.github.lehjr.powersuits.constants.MPSConstants;
 import com.github.lehjr.powersuits.item.module.AbstractPowerModule;
@@ -65,7 +65,7 @@ public class WaterElectrolyzerModule extends AbstractPowerModule {
                 int energyConsumption = (int) Math.round(applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION));
                 if (energy > energyConsumption && player.getAir() < 10) {
                     if ((player.world.isRemote()) && NuminaSettings.useSounds()) {
-                        player.playSound(MPASoundDictionary.ELECTROLYZER, 1.0f, 1.0f);
+                        player.playSound(MPSSoundDictionary.ELECTROLYZER, 1.0f, 1.0f);
                     }
                     ElectricItemUtils.drainPlayerEnergy(player, energyConsumption);
                     player.setAir(300);

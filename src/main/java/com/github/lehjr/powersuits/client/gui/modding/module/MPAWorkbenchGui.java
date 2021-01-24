@@ -7,7 +7,7 @@ import com.github.lehjr.numina.util.client.render.MuseRenderer;
 import com.github.lehjr.numina.util.math.Colour;
 import com.github.lehjr.powersuits.client.gui.common.ItemSelectionFrame;
 import com.github.lehjr.powersuits.client.gui.common.TabSelectFrame;
-import com.github.lehjr.powersuits.container.MPAWorkbenchContainer;
+import com.github.lehjr.powersuits.container.MPSWorkbenchContainer;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerEntity;
@@ -20,10 +20,10 @@ import net.minecraft.util.text.TranslationTextComponent;
  *
  *
  */
-public class MPAWorkbenchGui extends ExtendedContainerScreen<MPAWorkbenchContainer> {
+public class MPAWorkbenchGui extends ExtendedContainerScreen<MPSWorkbenchContainer> {
     final int spacer = 7;
 
-    MPAWorkbenchContainer container;
+    MPSWorkbenchContainer container;
     protected DrawableMuseRect backgroundRect;
     protected ItemSelectionFrame itemSelectFrame;
     protected ModuleSelectionFrame moduleSelectFrame;
@@ -32,7 +32,7 @@ public class MPAWorkbenchGui extends ExtendedContainerScreen<MPAWorkbenchContain
     protected ModuleTweakFrame tweakFrame;
     protected TabSelectFrame tabSelectFrame;
 
-    public MPAWorkbenchGui(MPAWorkbenchContainer containerIn, PlayerInventory playerInventory, ITextComponent titleIn) {
+    public MPAWorkbenchGui(MPSWorkbenchContainer containerIn, PlayerInventory playerInventory, ITextComponent titleIn) {
         super(containerIn, playerInventory, titleIn);
         this.minecraft = Minecraft.getInstance();
         PlayerEntity player = getMinecraft().player;

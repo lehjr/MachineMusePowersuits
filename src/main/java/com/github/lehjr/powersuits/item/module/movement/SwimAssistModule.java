@@ -11,7 +11,7 @@ import com.github.lehjr.numina.util.capabilities.module.tickable.PlayerTickModul
 import com.github.lehjr.numina.util.capabilities.module.toggleable.IToggleableModule;
 import com.github.lehjr.numina.util.client.sound.Musique;
 import com.github.lehjr.numina.util.energy.ElectricItemUtils;
-import com.github.lehjr.powersuits.client.sound.MPASoundDictionary;
+import com.github.lehjr.powersuits.client.sound.MPSSoundDictionary;
 import com.github.lehjr.powersuits.config.MPSSettings;
 import com.github.lehjr.powersuits.constants.MPSConstants;
 import com.github.lehjr.powersuits.event.MovementManager;
@@ -84,22 +84,22 @@ public class SwimAssistModule extends AbstractPowerModule {
                         double swimEnergyConsumption = applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION);
                         if (swimEnergyConsumption < ElectricItemUtils.getPlayerEnergy(player)) {
                             if (player.world.isRemote && NuminaSettings.useSounds()) {
-                                Musique.playerSound(player, MPASoundDictionary.SWIM_ASSIST, SoundCategory.PLAYERS, 1.0f, 1.0f, true);
+                                Musique.playerSound(player, MPSSoundDictionary.SWIM_ASSIST, SoundCategory.PLAYERS, 1.0f, 1.0f, true);
                             }
                             MovementManager.INSTANCE.thrust(player, swimAssistRate, true);
                         } else {
                             if (player.world.isRemote && NuminaSettings.useSounds()) {
-                                Musique.stopPlayerSound(player, MPASoundDictionary.SWIM_ASSIST);
+                                Musique.stopPlayerSound(player, MPSSoundDictionary.SWIM_ASSIST);
                             }
                         }
                     } else {
                         if (player.world.isRemote && NuminaSettings.useSounds()) {
-                            Musique.stopPlayerSound(player, MPASoundDictionary.SWIM_ASSIST);
+                            Musique.stopPlayerSound(player, MPSSoundDictionary.SWIM_ASSIST);
                         }
                     }
                 } else {
                     if (player.world.isRemote && NuminaSettings.useSounds()) {
-                        Musique.stopPlayerSound(player, MPASoundDictionary.SWIM_ASSIST);
+                        Musique.stopPlayerSound(player, MPSSoundDictionary.SWIM_ASSIST);
                     }
                 }
             }
@@ -107,7 +107,7 @@ public class SwimAssistModule extends AbstractPowerModule {
             @Override
             public void onPlayerTickInactive(PlayerEntity player, ItemStack item) {
                 if (player.world.isRemote && NuminaSettings.useSounds()) {
-                    Musique.stopPlayerSound(player, MPASoundDictionary.SWIM_ASSIST);
+                    Musique.stopPlayerSound(player, MPSSoundDictionary.SWIM_ASSIST);
                 }
             }
         }

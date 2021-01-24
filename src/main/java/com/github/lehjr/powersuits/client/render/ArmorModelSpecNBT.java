@@ -126,7 +126,7 @@ public class ArmorModelSpecNBT extends ModelSpecNBT implements IArmorModelSpecNB
 
     @Override
     public String getArmorTexture() {
-        CompoundNBT itemTag = MuseNBTUtils.getMPAItemTag(getItemStack());
+        CompoundNBT itemTag = MuseNBTUtils.getMuseItemTag(getItemStack());
         CompoundNBT renderTag = itemTag.getCompound(NuminaConstants.TAG_RENDER);
         try {
             TexturePartSpec partSpec = (TexturePartSpec) ModelRegistry.getInstance().getPart(renderTag.getCompound(NuminaConstants.NBT_TEXTURESPEC_TAG));

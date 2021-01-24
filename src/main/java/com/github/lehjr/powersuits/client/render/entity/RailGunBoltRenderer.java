@@ -16,16 +16,11 @@ import net.minecraft.client.renderer.model.BakedQuad;
 import net.minecraft.client.renderer.model.ModelRotation;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.vector.Matrix3f;
-import net.minecraft.util.math.vector.Matrix4f;
 import net.minecraft.util.math.vector.Vector3f;
 import net.minecraftforge.client.model.data.EmptyModelData;
 import net.minecraftforge.common.util.NonNullLazy;
 
 import java.util.Random;
-
-import static net.minecraft.client.renderer.entity.SpectralArrowRenderer.RES_SPECTRAL_ARROW;
 
 public class RailGunBoltRenderer extends NuminaEntityRenderer<RailgunBoltEntity> {
 

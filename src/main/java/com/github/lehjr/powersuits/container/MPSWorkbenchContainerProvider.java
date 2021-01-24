@@ -9,9 +9,9 @@ import net.minecraft.util.text.TranslationTextComponent;
 
 import javax.annotation.Nullable;
 
-public class MPAWorkbenchContainerProvider implements INamedContainerProvider {
+public class MPSWorkbenchContainerProvider implements INamedContainerProvider {
     int typeIndex;
-    public MPAWorkbenchContainerProvider(int typeIndex) {
+    public MPSWorkbenchContainerProvider(int typeIndex) {
         this.typeIndex = typeIndex;
     }
 
@@ -30,7 +30,7 @@ public class MPAWorkbenchContainerProvider implements INamedContainerProvider {
     public Container createMenu(int windowId, PlayerInventory playerInventory, PlayerEntity player) {
         switch(typeIndex) {
             case 0:
-                return new MPAWorkbenchContainer(windowId, playerInventory);
+                return new MPSWorkbenchContainer(windowId, playerInventory);
             default:
                 return null;
 //                return new MPACraftingContainer(windowId, playerInventory);

@@ -9,7 +9,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 @Mod.EventBusSubscriber(modid = MPSConstants.MOD_ID, value = Dist.CLIENT)
-public class MPASoundDictionary {
+public class MPSSoundDictionary {
     public static SoundEvent GLIDER = initSound("glider");
     public static SoundEvent JETBOOTS = initSound("jet_boots");
     public static SoundEvent JETPACK = initSound("jetpack");
@@ -18,7 +18,7 @@ public class MPASoundDictionary {
     public static SoundEvent ELECTROLYZER = initSound("water_electrolyzer");
 
     static {
-        new MPASoundDictionary();
+        new MPSSoundDictionary();
     }
 
     @SubscribeEvent

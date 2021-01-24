@@ -1,7 +1,7 @@
-//package com.github.lehjr.powersuits.network.packets;
+package com.github.lehjr.powersuits.network.packets;//package com.github.lehjr.powersuits.network.packets;
 //
-//import com.github.lehjr.numina.basemod.MuseLogger;
-//import com.github.lehjr.numina.network.MuseByteBufferUtils;
+//import com.github.lehjr.mpalib.basemod.MPALibLogger;
+//import com.github.lehjr.mpalib.network.MuseByteBufferUtils;
 //import net.minecraft.nbt.CompoundNBT;
 //import net.minecraft.network.PacketBuffer;
 //import net.minecraftforge.fml.network.NetworkEvent;
@@ -37,7 +37,7 @@
 //    }
 //
 //    public static void handle(MusePacketCosmeticPresetUpdate message, Supplier<NetworkEvent.Context> ctx) {
-//        MuseLogger.logger.error("this has not been implemented yet");
+//        MPALibLogger.logger.error("this has not been implemented yet");
 //        // FIXME !!!
 //
 //
@@ -58,7 +58,7 @@
 ////                    ResourceLocation registryName = message.registryName;
 ////                    String name = message.name;
 ////                    CompoundNBT cosmeticSettings = message.cosmeticSettings;
-////                    MPSServerSettings settings = MPSSettings::getModuleConfig.getServerSettings();
+////                    MPSServerSettings settings = MPASettings::getModuleConfig.getServerSettings();
 ////                    if (settings != null) {
 ////                        settings.updateCosmeticInfo(registryName, name, cosmeticSettings);
 ////                        MPSPackets.sendToAll(new MusePacketCosmeticPresetUpdate(registryName, name, cosmeticSettings));
@@ -76,7 +76,7 @@
 ////                ResourceLocation registryName = message.registryName;
 ////                String name = message.name;
 ////                CompoundNBT cosmeticSettings = message.cosmeticSettings;
-////                MPSServerSettings settings = MPSSettings::getModuleConfig.getServerSettings();
+////                MPSServerSettings settings = MPASettings::getModuleConfig.getServerSettings();
 ////                settings.updateCosmeticInfo(registryName, name, cosmeticSettings);
 ////            });
 ////        }

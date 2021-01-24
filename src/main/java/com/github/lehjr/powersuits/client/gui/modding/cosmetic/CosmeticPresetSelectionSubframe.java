@@ -16,7 +16,6 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
-import org.w3c.dom.css.Rect;
 
 public class CosmeticPresetSelectionSubframe extends ScrollableLabel {
     public MuseRelativeRect border;
@@ -77,7 +76,7 @@ public class CosmeticPresetSelectionSubframe extends ScrollableLabel {
     }
 
     public CompoundNBT getItemTag() {
-        return MuseNBTUtils.getMPAItemTag(this.getSelectedItem().getStack());
+        return MuseNBTUtils.getMuseItemTag(this.getSelectedItem().getStack());
     }
 
 

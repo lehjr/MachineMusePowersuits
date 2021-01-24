@@ -2,7 +2,7 @@ package com.github.lehjr.powersuits.client.event;
 
 
 import com.github.lehjr.powersuits.client.model.block.LuxCapacitorModelWrapper;
-import com.github.lehjr.powersuits.client.model.helper.MPAModelHelper;
+import com.github.lehjr.powersuits.client.model.helper.MPSModelHelper;
 import com.github.lehjr.powersuits.client.model.item.PowerFistModel;
 import com.github.lehjr.powersuits.constants.MPSConstants;
 import com.github.lehjr.powersuits.constants.MPSRegistryNames;
@@ -55,6 +55,6 @@ public enum ModelBakeEventHandler {
             event.getModelRegistry().put(powerFistIconLocation, new PowerFistModel(powerFistIcon));
         }
 
-        MPAModelHelper.loadArmorModels(null, event.getModelLoader());
+        MPSModelHelper.loadArmorModels(null, event.getModelLoader());
     }
 }

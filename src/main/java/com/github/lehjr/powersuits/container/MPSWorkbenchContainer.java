@@ -7,7 +7,7 @@ import com.github.lehjr.numina.util.client.gui.slot.HideableSlot;
 import com.github.lehjr.numina.util.client.gui.slot.HideableSlotItemHandler;
 import com.github.lehjr.numina.util.client.gui.slot.IHideableSlot;
 import com.github.lehjr.powersuits.basemod.MPSObjects;
-import com.github.lehjr.powersuits.network.MPAPackets;
+import com.github.lehjr.powersuits.network.MPSPackets;
 import com.github.lehjr.powersuits.network.packets.MoveModuleFromSlotToSlotPacket;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -28,7 +28,7 @@ import java.util.Map;
  * This means that only equipped ... fixme: ...what?
  *
  */
-public class MPAWorkbenchContainer
+public class MPSWorkbenchContainer
 //        extends MPARecipeBookContainer<CraftingInventory> implements IModularItemToSlotMapProvider {
         extends Container implements IModularItemToSlotMapProvider {
     private final PlayerEntity player;
@@ -36,7 +36,7 @@ public class MPAWorkbenchContainer
     // A map of the slot that holds the modular item, and the set of slots in that modular item
     private Map<Integer, List<SlotItemHandler>> modularItemToSlotMap;
 
-    public MPAWorkbenchContainer(int windowId, PlayerInventory playerInventory) {
+    public MPSWorkbenchContainer(int windowId, PlayerInventory playerInventory) {
         super(MPSObjects.MPA_WORKBENCH_CONTAINER_TYPE.get(), windowId);
         this.player = playerInventory.player;
 
@@ -200,7 +200,7 @@ public class MPAWorkbenchContainer
         if(sourceSlot.canTakeStack(player) && canMergeSlot(contents, targetSlot)) {
             targetSlot.putStack(stackCopy);
             sourceSlot.putStack(ItemStack.EMPTY);
-            MPAPackets.CHANNEL_INSTANCE.sendToServer(new MoveModuleFromSlotToSlotPacket(this.windowId, source, target));
+            MPSPackets.CHANNEL_INSTANCE.sendToServer(new MoveModuleFromSlotToSlotPacket(this.windowId, source, target));
 //            detectAndSendChanges();
         }
     }

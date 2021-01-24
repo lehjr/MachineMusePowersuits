@@ -1,7 +1,7 @@
 package com.github.lehjr.powersuits.event;
 
 import com.github.lehjr.powersuits.client.control.KeybindManager;
-import com.github.lehjr.powersuits.network.MPAPackets;
+import com.github.lehjr.powersuits.network.MPSPackets;
 import com.github.lehjr.powersuits.network.packets.OnClientLoginPacket;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -20,7 +20,7 @@ public final class PlayerLoginHandler {
     public static void onPlayerLogin(PlayerEvent.PlayerLoggedInEvent event) {
         PlayerEntity player = event.getPlayer();
         if (player != null) {
-            MPAPackets.CHANNEL_INSTANCE.send(PacketDistributor.PLAYER.with(()-> (ServerPlayerEntity) player), new OnClientLoginPacket());
+            MPSPackets.CHANNEL_INSTANCE.send(PacketDistributor.PLAYER.with(()-> (ServerPlayerEntity) player), new OnClientLoginPacket());
         }
     }
 

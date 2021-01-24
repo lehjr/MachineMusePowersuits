@@ -11,7 +11,7 @@ import com.github.lehjr.numina.util.client.sound.Musique;
 import com.github.lehjr.numina.util.client.sound.SoundDictionary;
 import com.github.lehjr.numina.util.math.Colour;
 import com.github.lehjr.numina.util.math.MuseMathUtils;
-import com.github.lehjr.powersuits.container.MPAWorkbenchContainer;
+import com.github.lehjr.powersuits.container.MPSWorkbenchContainer;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.container.Slot;
@@ -30,10 +30,10 @@ public class ItemSelectionFrame extends ScrollableFrame {
     protected int lastItemSlot = -1;
     protected List<MusePoint2D> itemPoints;
     protected List<Integer> indices;
-    MPAWorkbenchContainer container;
+    MPSWorkbenchContainer container;
 
     public ItemSelectionFrame(
-            @Nullable MPAWorkbenchContainer container,
+            @Nullable MPSWorkbenchContainer container,
             MusePoint2D topleft,
             MusePoint2D bottomright,
             float zLevel,

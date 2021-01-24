@@ -10,7 +10,7 @@ import com.github.lehjr.numina.util.client.sound.SoundDictionary;
 import com.github.lehjr.numina.util.math.Colour;
 import com.github.lehjr.numina.util.string.MuseStringUtils;
 import com.github.lehjr.powersuits.client.gui.common.ItemSelectionFrame;
-import com.github.lehjr.powersuits.container.MPAWorkbenchContainer;
+import com.github.lehjr.powersuits.container.MPSWorkbenchContainer;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerEntity;
@@ -27,7 +27,7 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class InstallSalvageFrame extends ScrollableFrame {
-    MPAWorkbenchContainer container;
+    MPSWorkbenchContainer container;
     protected ItemSelectionFrame targetItem;
     protected ModuleSelectionFrame targetModule;
     protected ClickableButton installButton;
@@ -37,7 +37,7 @@ public class InstallSalvageFrame extends ScrollableFrame {
     float zLevel;
 
     public InstallSalvageFrame(
-            MPAWorkbenchContainer containerIn,
+            MPSWorkbenchContainer containerIn,
             PlayerEntity player,
             MusePoint2D topleft,
             MusePoint2D bottomright,
