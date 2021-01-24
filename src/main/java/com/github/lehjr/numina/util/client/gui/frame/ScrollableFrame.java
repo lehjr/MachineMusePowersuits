@@ -29,7 +29,7 @@ package com.github.lehjr.numina.util.client.gui.frame;
 import com.github.lehjr.numina.util.client.gui.gemoetry.DrawableMuseRect;
 import com.github.lehjr.numina.util.client.gui.gemoetry.IRect;
 import com.github.lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
-import com.github.lehjr.numina.util.client.render.mpa.NuminaRenderState;
+import com.github.lehjr.numina.util.client.render.NuminaRenderState;
 import com.github.lehjr.numina.util.math.Colour;
 import com.github.lehjr.numina.util.math.MuseMathUtils;
 import com.mojang.blaze3d.matrix.MatrixStack;
@@ -214,41 +214,5 @@ public class ScrollableFrame implements IGuiFrame {
     @Override
     public List<ITextComponent> getToolTip(int x, int y) {
         return null;
-    }
-
-    @Override
-    public IRect setLeft(double value) {
-        getBorder().setLeft(value);
-        return this;
-    }
-
-    @Override
-    public IRect setRight(double value) {
-        getBorder().setRight(value);
-        return this;
-    }
-
-    @Override
-    public IRect setTop(double value) {
-        getBorder().setTop(value);
-        return this;
-    }
-
-    @Override
-    public IRect setBottom(double value) {
-        getBorder().setBottom(value);
-        return this;
-    }
-
-    @Override
-    public IRect setWidth(double value) {
-        getBorder().setWidth(value);
-        return this;
-    }
-
-    @Override
-    public IRect setHeight(double value) {
-        getBorder().setHeight(value);
-        return this;
     }
 }

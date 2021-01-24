@@ -42,7 +42,7 @@ public class MuseNBTUtils {
      * @param stack
      * @return an CompoundNBT, may be newly created. If stack is empty, returns null.
      */
-    public static CompoundNBT getMPAItemTag(@Nonnull ItemStack stack) {
+    public static CompoundNBT getMuseItemTag(@Nonnull ItemStack stack) {
         if (stack.isEmpty()) {
             return new CompoundNBT();
         }
@@ -82,7 +82,7 @@ public class MuseNBTUtils {
     }
 
     public static float getModularItemFloatOrZero(@Nonnull ItemStack stack, String string) {
-        return getFloatOrZero(getMPAItemTag(stack), string);
+        return getFloatOrZero(getMuseItemTag(stack), string);
     }
 
     public static float getFloatOrZero(CompoundNBT nbt, String tagName) {
@@ -94,7 +94,7 @@ public class MuseNBTUtils {
      * would be zero.
      */
     public static void setModularItemFloatOrRemove(@Nonnull ItemStack stack, String string, float value) {
-        setFloatOrRemove(MuseNBTUtils.getMPAItemTag(stack), string, value);
+        setFloatOrRemove(MuseNBTUtils.getMuseItemTag(stack), string, value);
     }
 
     public static void setModuleFloatOrRemove(@Nonnull ItemStack stack, String string, float value) {
@@ -131,7 +131,7 @@ public class MuseNBTUtils {
     }
 
     public static double getModularItemDoubleOrZero(@Nonnull ItemStack stack, String string) {
-        return getDoubleOrZero(getMPAItemTag(stack), string);
+        return getDoubleOrZero(getMuseItemTag(stack), string);
     }
 
     public static double getDoubleOrZero(CompoundNBT nbt, String tagName) {
@@ -143,7 +143,7 @@ public class MuseNBTUtils {
      * would be zero.
      */
     public static void setModularItemDoubleOrRemove(@Nonnull ItemStack stack, String string, double value) {
-        setDoubleOrRemove(MuseNBTUtils.getMPAItemTag(stack), string, value);
+        setDoubleOrRemove(MuseNBTUtils.getMuseItemTag(stack), string, value);
     }
 
     public static void setModuleDoubleOrRemove(@Nonnull ItemStack stack, String string, double value) {
@@ -174,7 +174,7 @@ public class MuseNBTUtils {
     }
 
     public static int getModularItemIntOrZero(@Nonnull ItemStack module, String string) {
-        return getIntOrZero(getMPAItemTag(module), string);
+        return getIntOrZero(getMuseItemTag(module), string);
     }
 
     static int getIntOrZero(CompoundNBT nbt, String tagName) {
@@ -186,7 +186,7 @@ public class MuseNBTUtils {
     }
 
     public static void setModularItemIntOrRemove(@Nonnull ItemStack stack, String tagName, int value) {
-        setIntOrRemove(getMPAItemTag(stack), tagName, value);
+        setIntOrRemove(getMuseItemTag(stack), tagName, value);
     }
 
     public static void setIntOrRemove(@Nonnull CompoundNBT nbt, String tagName, int value) {
@@ -212,7 +212,7 @@ public class MuseNBTUtils {
     }
 
     public static boolean getItemBooleanOrFalse(@Nonnull ItemStack module, String string) {
-        return getBooleanOrFalse(getMPAItemTag(module), string);
+        return getBooleanOrFalse(getMuseItemTag(module), string);
     }
 
     static boolean getBooleanOrFalse(CompoundNBT nbt, String tagName) {
@@ -224,6 +224,6 @@ public class MuseNBTUtils {
     }
 
     public static void setModularItemBoolean(@Nonnull ItemStack module, String string, boolean value) {
-        getMPAItemTag(module).putBoolean(string, value);
+        getMuseItemTag(module).putBoolean(string, value);
     }
 }

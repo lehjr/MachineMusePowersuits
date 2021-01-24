@@ -1,6 +1,6 @@
 package com.github.lehjr.numina.util.client.gui.gemoetry;
 
-import com.github.lehjr.numina.util.client.render.mpa.NuminaRenderState;
+import com.github.lehjr.numina.util.client.render.NuminaRenderState;
 import com.github.lehjr.numina.util.math.Colour;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.platform.GlStateManager;
@@ -12,7 +12,6 @@ import net.minecraft.util.math.vector.Matrix4f;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 
-import java.nio.DoubleBuffer;
 import java.nio.FloatBuffer;
 
 import static net.minecraft.client.renderer.RenderType.makeType;

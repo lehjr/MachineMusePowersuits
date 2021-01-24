@@ -55,7 +55,7 @@ public class ModelSpecNBT implements IModelSpecNBT, INBTSerializable<CompoundNBT
 
     @Override
     public CompoundNBT setRenderTag(CompoundNBT renderDataIn, String tagName) {
-        CompoundNBT itemTag = MuseNBTUtils.getMPAItemTag(itemStack);
+        CompoundNBT itemTag = MuseNBTUtils.getMuseItemTag(itemStack);
         if (tagName != null) {
             if (Objects.equals(tagName, NuminaConstants.TAG_RENDER)) {
                 itemTag.remove(NuminaConstants.TAG_RENDER);
@@ -92,7 +92,7 @@ public class ModelSpecNBT implements IModelSpecNBT, INBTSerializable<CompoundNBT
     @Override
     @Nullable
     public CompoundNBT getRenderTag() {
-        CompoundNBT itemTag = MuseNBTUtils.getMPAItemTag(itemStack);
+        CompoundNBT itemTag = MuseNBTUtils.getMuseItemTag(itemStack);
         return itemTag.getCompound(TAG_RENDER);
     }
 

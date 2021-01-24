@@ -28,7 +28,7 @@ package com.github.lehjr.numina.util.client.render;
 
 import com.github.lehjr.numina.util.math.Colour;
 import com.github.lehjr.numina.util.math.MuseMathUtils;
-import com.github.lehjr.numina.util.mpa.util.client.gui.GuiIcon;
+import com.github.lehjr.numina.util.client.gui.GuiIcon;
 import com.google.common.base.Preconditions;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;

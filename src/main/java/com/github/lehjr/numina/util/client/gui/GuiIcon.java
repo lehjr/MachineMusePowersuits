@@ -24,11 +24,11 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.github.lehjr.numina.util.mpa.util.client.gui;
+package com.github.lehjr.numina.util.client.gui;
 
 import com.github.lehjr.numina.constants.NuminaConstants;
 import com.github.lehjr.numina.util.client.NuminaSpriteUploader;
-import com.github.lehjr.numina.util.client.render.mpa.NuminaRenderState;
+import com.github.lehjr.numina.util.client.render.NuminaRenderState;
 import com.github.lehjr.numina.util.math.Colour;
 import com.github.lehjr.numina.util.client.render.BillboardHelper;
 import com.mojang.blaze3d.matrix.MatrixStack;
