@@ -5,13 +5,13 @@
 //import net.minecraft.inventory.container.RecipeBookContainer;
 //import net.minecraft.item.crafting.IRecipe;
 //
-//public abstract class MPARecipeBookContainer<C> extends RecipeBookContainer {
-//    public MPARecipeBookContainer(ContainerType containerType, int windowId) {
+//public abstract class MPSRecipeBookContainer<C> extends RecipeBookContainer {
+//    public MPSRecipeBookContainer(ContainerType containerType, int windowId) {
 //        super(containerType, windowId);
 //    }
 //
 //    @Override
 //    public void func_217056_a(boolean placeAll, IRecipe recipe, ServerPlayerEntity player) {
-//        (new MPAServerRecipePlacer(this)).place(player, recipe, placeAll);
+//        (new MPSServerRecipePlacer(this)).place(player, recipe, placeAll);
 //    }
 //}

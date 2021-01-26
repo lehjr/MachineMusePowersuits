@@ -24,13 +24,13 @@
 //import java.util.List;
 //import java.util.Optional;
 //
-//public class MPACraftingContainer extends MPARecipeBookContainer<CraftingInventory> {
+//public class MPSCraftingContainer extends MPSRecipeBookContainer<CraftingInventory> {
 //    private final CraftingInventory craftingInventory;
 //    private final CraftResultInventory resultInventory;
 //    private final PlayerEntity player;
 //
-//    public MPACraftingContainer(int windowId, PlayerInventory playerInventory) {
-//        super(MPSObjects.MPA_CRAFTING_CONTAINER_TYPE, windowId);
+//    public MPSCraftingContainer(int windowId, PlayerInventory playerInventory) {
+//        super(MPSObjects.MPS_CRAFTING_CONTAINER_TYPE, windowId);
 //        this.craftingInventory = new CraftingInventory(this, 3, 3);
 //        this.resultInventory = new CraftResultInventory();
 //        this.player = playerInventory.player;
