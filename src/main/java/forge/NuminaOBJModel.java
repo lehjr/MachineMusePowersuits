@@ -19,6 +19,8 @@
 
 package forge;
 
+import com.github.lehjr.numina.util.client.model.obj.OBJBakedCompositeModel;
+import com.github.lehjr.numina.util.client.model.obj.OBJBakedPart;
 import com.google.common.collect.*;
 import joptsimple.internal.Strings;
 import net.minecraft.client.renderer.model.*;
@@ -49,6 +51,9 @@ import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+/**
+ * Copied from Forge's OBJ Model
+ */
 public class NuminaOBJModel implements IMultipartModelGeometry<NuminaOBJModel> {
     private static final Vector4f COLOR_WHITE = new Vector4f(1, 1, 1, 1);
     private static final Vector2f[] DEFAULT_COORDS = {
