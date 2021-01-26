@@ -10,7 +10,6 @@ import com.github.lehjr.numina.entity.MPAArmorStandEntity;
 import com.github.lehjr.numina.item.Battery;
 import com.github.lehjr.numina.item.ItemComponent;
 import com.github.lehjr.numina.item.MPAArmorStandItem;
-import com.github.lehjr.numina.item.PlasmaBallTest;
 import com.github.lehjr.numina.tileentity.ChargingBaseTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
@@ -95,9 +94,9 @@ public class NuminaObjects {
     public static final RegistryObject<Item> RUBBER_HOSE = ITEMS.register(NuminaConstants.COMPONENT__RUBBER_HOSE__REGNAME,
             () -> new ItemComponent());
 
-    // TEST ITEM TO BE REMOVED
-    public static final RegistryObject<Item> PLASMA_BALL = ITEMS.register("plasma_ball",
-            () -> new PlasmaBallTest());
+//    // TEST ITEM TO BE REMOVED
+//    public static final RegistryObject<Item> PLASMA_BALL = ITEMS.register("plasma_ball",
+//            () -> new PlasmaBallTest());
 
     // Modules ------------------------------------------------------------------------------------
     // Energy Storage
