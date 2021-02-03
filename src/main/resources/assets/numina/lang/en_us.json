@@ -5,6 +5,13 @@
   "screen.numina.charging_base": "Charging Base",
   "numina.energy": "Energy",
 
+  "_comment": "Charging Base",
+  "block.numina.charging_base": "Charging Base",
+  "message.charging_base":"Charges an entity's equipped items",
+
+  "_comment": "Armor Stand",
+  "item.numina.armor_stand": "Armor Stand",
+
   "_comment": "Energy Storage",
   "tooltip.numina.battery.energy" : "%d/%d FE",
 
