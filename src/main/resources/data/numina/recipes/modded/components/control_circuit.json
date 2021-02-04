@@ -1,0 +1,35 @@
+{
+  "result": {
+    "item": "numina:component_control_circuit"
+  },
+  "conditions": [
+    {
+      "type": "numina:flag",
+      "flag": "vanilla_recipes_disabled"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "mirrored": true,
+  "pattern": [
+    "FOF",
+    "RGO",
+    "ERF"
+  ],
+  "key": {
+    "R": {
+      "tag": "forge:dusts/redstone"
+    },
+    "E": {
+      "tag": "forge:ingots/electrum"
+    },
+    "F": {
+      "tag": "forge:wiring"
+    },
+    "G": {
+      "tag": "forge:dusts/glowstone"
+    },
+    "O": {
+      "tag": "forge:dyes/green"
+    }
+  }
+}

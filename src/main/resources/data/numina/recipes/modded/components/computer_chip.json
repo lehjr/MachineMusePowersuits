@@ -1,0 +1,38 @@
+{
+  "result": {
+    "item": "numina:component_computer_chip"
+  },
+  "conditions": [
+    {
+      "type": "numina:flag",
+      "flag": "vanilla_recipes_disabled"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "mirrored": true,
+  "pattern": [
+    "DRD",
+    "CFC",
+    "OMO"
+  ],
+  "key": {
+    "R": {
+      "item": "minecraft:repeater"
+    },
+    "C": {
+      "item": "minecraft:comparator"
+    },
+    "D": {
+      "item": "minecraft:daylight_detector"
+    },
+    "F": {
+       "tag":"forge:gems/diamond"
+    },
+    "M": {
+      "item": "numina:component_laser_emitter"
+    },
+    "O": {
+      "tag": "forge:dusts/redstone"
+    }
+  }
+}

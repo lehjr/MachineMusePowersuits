@@ -1,0 +1,29 @@
+{
+  "result": {
+    "item": "numina:component_field_emitter"
+  },
+  "conditions": [
+    {
+      "type": "numina:flag",
+      "flag": "vanilla_recipes_disabled"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "mirrored": true,
+  "pattern": [
+    "CFC",
+    "FOF",
+    "CFC"
+  ],
+  "key": {
+    "C": {
+      "item": "numina:component_solenoid"
+    },
+    "F": {
+      "tag": "forge:ender_pearls"
+    },
+    "O": {
+      "tag": "forge:solenoid"
+    }
+  }
+}

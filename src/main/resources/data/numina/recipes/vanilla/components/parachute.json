@@ -1,0 +1,28 @@
+{
+  "conditions": [
+    {
+      "type": "numina:flag",
+      "flag": "vanilla_recipes_enabled"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "WWW",
+    "S S",
+    "I I"
+  ],
+  "key": {
+    "W": {
+      "tag" : "minecraft:wool"
+    },
+    "S": {
+      "item":"minecraft:string"
+    },
+    "I": {
+      "tag": "forge:ingots/iron"
+    }
+  },
+  "result": {
+    "item": "numina:component_parachute"
+  }
+}

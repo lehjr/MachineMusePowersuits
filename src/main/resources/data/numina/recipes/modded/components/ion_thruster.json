@@ -1,0 +1,38 @@
+{
+  "result": {
+    "item": "numina:component_ion_thruster"
+  },
+  "conditions": [
+    {
+      "type": "numina:flag",
+      "flag": "vanilla_recipes_disabled"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "mirrored": true,
+  "pattern": [
+    " CO",
+    "SG ",
+    "MCF"
+  ],
+  "key": {
+    "C": {
+      "item": "numina:component_field_emitter"
+    },
+    "S": {
+      "item": "centralizedmaterials:steel_ingot"
+    },
+    "F": {
+      "tag": "forge:solenoid"
+    },
+    "G": {
+      "item": "minecraft:glowstone_dust"
+    },
+    "M": {
+      "item": "numina:component_wiring"
+    },
+    "O": {
+      "item": "numina:component_solenoid"
+    }
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "conditions": [
+    {
+      "type": "numina:flag",
+      "flag": "vanilla_recipes_enabled"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "CCC",
+    "CCC",
+    "CCC"
+  ],
+  "key": {
+    "C": {
+      "item":"minecraft:coal_block"
+    }
+  },
+  "result": {
+    "item":"numina:component_carbon_myofiber"
+  }
+}

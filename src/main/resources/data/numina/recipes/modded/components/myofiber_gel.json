@@ -1,0 +1,26 @@
+{
+  "result": {
+    "item": "numina:component_myofiber_gel"
+  },
+  "conditions": [
+    {
+      "type": "numina:flag",
+      "flag": "vanilla_recipes_disabled"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "mirrored": true,
+  "pattern": [
+    " M ",
+    "FMF",
+    "FMF"
+  ],
+  "key": {
+    "F": {
+      "tag": "forge:ingots/steel"
+    },
+    "M": {
+      "item": "minecraft:magma_cream"
+    }
+  }
+}

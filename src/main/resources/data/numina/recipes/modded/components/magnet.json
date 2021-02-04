@@ -1,0 +1,26 @@
+{
+  "result": {
+    "item": "numina:component_magnet"
+  },
+  "conditions": [
+    {
+      "type": "numina:flag",
+      "flag": "vanilla_recipes_disabled"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "mirrored": true,
+  "pattern": [
+    "FFF",
+    "OOO",
+    "FFF"
+  ],
+  "key": {
+    "F": {
+      "tag": "forge:ingots/steel"
+    },
+    "O": {
+      "tag": "forge:solenoid"
+    }
+  }
+}

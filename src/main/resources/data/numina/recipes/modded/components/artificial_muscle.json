@@ -1,0 +1,23 @@
+{
+  "result": {
+    "item": "numina:component_artificial_muscle"
+  },
+  "conditions": [
+    {
+      "type": "numina:flag",
+      "flag": "vanilla_recipes_disabled"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "mirrored": true,
+  "pattern": [
+    "CCC",
+    "CCC",
+    "CCC"
+  ],
+  "key": {
+    "C": {
+      "item": "numina:component_carbon_myofiber"
+    }
+  }
+}

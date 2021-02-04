@@ -1,0 +1,27 @@
+{
+  "result": {
+    "item": "numina:component_wiring",
+    "count": 8
+  },
+  "conditions": [
+    {
+      "type": "numina:flag",
+      "flag": "vanilla_recipes_disabled"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "mirrored": true,
+  "pattern": [
+    "   ",
+    "FOF",
+    "   "
+  ],
+  "key": {
+    "F": {
+      "tag": "forge:ingots/copper"
+    },
+    "O": {
+      "tag": "forge:dusts/redstone"
+    }
+  }
+}
