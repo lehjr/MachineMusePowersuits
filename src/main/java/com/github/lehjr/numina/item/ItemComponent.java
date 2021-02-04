@@ -31,10 +31,6 @@ import net.minecraft.item.Item;
 
 public class ItemComponent extends Item {
     public ItemComponent() {
-        super(new Item.Properties()
-                .maxStackSize(64)
-                .group(NuminaObjects.creativeTab)
-                .defaultMaxDamage(-1)
-                .setNoRepair());
+        super(new Item.Properties().group(NuminaObjects.creativeTab));
     }
 }
