@@ -26,6 +26,10 @@
   "item.numina.battery_ultimate": "Ultimate Battery",
   "item.numina.battery_ultimate.desc": "Experimental high end power storage device, now with almost no chance of exploding (we think). Despite nasty rumors, it is not based on stolen alien technology.",
 
+  "_comment": "Energy Storage related tags",
+  "module.tradeoff.maxEnergy": "Maximum Energy",
+  "module.tradeoff.maxTransfer": "Maximum Transfer per Tick",
+
   "_comment": "Toooltips",
   "tooltip.numina.pressShift": "Press SHIFT for more information.",
   "tooltip.numina.changeModes": "Change modes: Press and hold the number of the hotbar slot the PowerFist is in.",
