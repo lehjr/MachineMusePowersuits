@@ -246,24 +246,25 @@ public class InstallSalvageFrame extends ScrollableFrame {
 
     @Override
     public List<ITextComponent> getToolTip(int x, int y) {
-        ITextComponent ret = null;
-        if (salvageButton.isVisible() && salvageButton.hitBox(x, y)) {
-            ret = new TranslationTextComponent("gui.powersuits.salvage.desc");
-        }
-        if (installButton.isVisible() && installButton.hitBox(x, y)) {
-            if (installButton.isEnabled() && player.abilities.isCreativeMode) {
-                ret = new TranslationTextComponent("gui.powersuits.install.creative.desc");
-            } else if (installButton.isEnabled()) {
-                Collections.singletonList(new TranslationTextComponent("gui.powersuits.install.desc"));
-            } else {
-                // todo: tell user why disabled...
-                ret = new TranslationTextComponent("gui.powersuits.install.disabled.desc");
-            }
-        }
-
-        if (ret != null) {
-            return MuseStringUtils.wrapITextComponentToLength(ret, 30);
-        }
+        // TODO: Tooltips for install/salvage button
+//        ITextComponent ret = null;
+//        if (salvageButton.isVisible() && salvageButton.hitBox(x, y)) {
+//            ret = new TranslationTextComponent("gui.powersuits.salvage.desc");
+//        }
+//        if (installButton.isVisible() && installButton.hitBox(x, y)) {
+//            if (installButton.isEnabled() && player.abilities.isCreativeMode) {
+//                ret = new TranslationTextComponent("gui.powersuits.install.creative.desc");
+//            } else if (installButton.isEnabled()) {
+//                Collections.singletonList(new TranslationTextComponent("gui.powersuits.install.desc"));
+//            } else {
+//                // todo: tell user why disabled...
+//                ret = new TranslationTextComponent("gui.powersuits.install.disabled.desc");
+//            }
+//        }
+//
+//        if (ret != null) {
+//            return MuseStringUtils.wrapITextComponentToLength(ret, 30);
+//        }
         return null;
     }
 

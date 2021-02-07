@@ -6,7 +6,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "powersuits:mps_workbench"
+          "name": "powersuits:tinkertable"
         }
       ],
       "conditions": [

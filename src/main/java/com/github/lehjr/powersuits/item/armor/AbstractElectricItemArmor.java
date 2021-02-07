@@ -44,6 +44,8 @@ import com.github.lehjr.powersuits.basemod.MPSObjects;
 import com.github.lehjr.powersuits.capability.PowerArmorCap;
 import com.github.lehjr.powersuits.constants.MPSConstants;
 import com.github.lehjr.powersuits.constants.MPSRegistryNames;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import com.google.common.util.concurrent.AtomicDouble;
 import net.minecraft.client.Minecraft;
@@ -54,6 +56,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.attributes.Attribute;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ArmorItem;
@@ -71,7 +74,9 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.function.Consumer;
 
@@ -90,7 +95,7 @@ public abstract class AbstractElectricItemArmor extends ArmorItem {
         super(MPAArmorMaterial.EMPTY_ARMOR, slots, new Item.Properties()
                 .maxStackSize(1)
                 .group(MPSObjects.creativeTab)
-                .defaultMaxDamage(-1)
+                .maxDamage(0)
                 .setNoRepair());
     }
 
@@ -163,16 +168,25 @@ public abstract class AbstractElectricItemArmor extends ArmorItem {
             }
         });
 
-        // FIXME creates npe, but multimap is not null
-//        multimap.put(Attributes.ARMOR, new AttributeModifier(ARMOR_MODIFIERS[slot.getIndex()], "Armor modifier", armorVal.get(), AttributeModifier.Operation.ADDITION));
-//        multimap.put(Attributes.KNOCKBACK_RESISTANCE, new AttributeModifier(ARMOR_MODIFIERS[slot.getIndex()], "Knockback resistance", knockbackResistance.get(), AttributeModifier.Operation.ADDITION));
-//        multimap.put(Attributes.ARMOR_TOUGHNESS, new AttributeModifier(ARMOR_MODIFIERS[slot.getIndex()], "Armor toughness", toughnessVal.get(), AttributeModifier.Operation.ADDITION));
+        ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
 
-//        multimap.put(SharedMonsterAttributes.ARMOR.getName(), new AttributeModifier(ARMOR_MODIFIERS[equipmentSlot.getIndex()], "Armor modifier", 6, AttributeModifier.Operation.ADDITION));
-//        multimap.put(SharedMonsterAttributes.KNOCKBACK_RESISTANCE.getName(), new AttributeModifier(ARMOR_MODIFIERS[equipmentSlot.getIndex()], "Knockback resistance", 0.25, AttributeModifier.Operation.ADDITION));
-//        multimap.put(SharedMonsterAttributes.ARMOR_TOUGHNESS.getName(), new AttributeModifier(ARMOR_MODIFIERS[equipmentSlot.getIndex()], "Armor toughness", 2.5, AttributeModifier.Operation.ADDITION));
+        for (Map.Entry entry : multimap.entries()) {
+            builder.put((Attribute)entry.getKey(), (AttributeModifier)entry.getValue());
+        }
 
-        return multimap;
+        if (armorVal.get() > 0) {
+            builder.put(Attributes.ARMOR, new AttributeModifier(ARMOR_MODIFIERS[slot.getIndex()], "Armor modifier", armorVal.get(), AttributeModifier.Operation.ADDITION));
+        }
+
+        if (knockbackResistance.get() > 0) {
+            builder.put(Attributes.KNOCKBACK_RESISTANCE, new AttributeModifier(ARMOR_MODIFIERS[slot.getIndex()], "Knockback resistance", knockbackResistance.get(), AttributeModifier.Operation.ADDITION));
+        }
+
+        if (toughnessVal.get() > 0) {
+            builder.put(Attributes.ARMOR_TOUGHNESS, new AttributeModifier(ARMOR_MODIFIERS[slot.getIndex()], "Armor toughness", toughnessVal.get(), AttributeModifier.Operation.ADDITION));
+        }
+
+        return builder.build();
     }
 
     /**

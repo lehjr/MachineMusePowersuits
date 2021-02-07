@@ -26,6 +26,7 @@
 
 package com.github.lehjr.powersuits.basemod;
 
+import com.electronwill.nightconfig.core.file.CommentedFileConfig;
 import com.github.lehjr.numina.config.ConfigHelper;
 import com.github.lehjr.numina.util.capabilities.module.powermodule.EnumModuleCategory;
 import com.github.lehjr.numina.util.capabilities.module.powermodule.EnumModuleTarget;
@@ -123,8 +124,13 @@ public class ModularPowersuits {
             final ModConfig config = event.getConfig();
             if (config.getSpec() == MPSSettings.SERVER_SPEC) {
                 MPSSettings.getModuleConfig().setServerConfig(config);
-                CosmeticPresetSaveLoad.setConfigDirString(config.getFullPath().getParent().toString());
-                CosmeticPresetSaveLoad.copyPresetsFromJar(config.getFullPath().getParent().toString());
+
+                // This is actually for a feature that isn't even currently enabled :P
+                // getFullPath can't be used on client if it isn't also hosting the server
+                if (config instanceof CommentedFileConfig) {
+                    CosmeticPresetSaveLoad.setConfigDirString(config.getFullPath().getParent().toString());
+                    CosmeticPresetSaveLoad.copyPresetsFromJar(config.getFullPath().getParent().toString());
+                }
             }
         });
     }
@@ -158,13 +164,10 @@ public class ModularPowersuits {
 
 //        ScreenManager.registerFactory(MPSObjects.MODULE_CONFIG_CONTAINER_TYPE, TinkerModuleGui::new);
 //        ScreenManager.registerFactory(MPSObjects.MPA_CRAFTING_CONTAINER_TYPE.get(), TinkerCraftingGUI::new);
-        ScreenManager.registerFactory(MPSObjects.MPS_WORKBENCH_CONTAINER_TYPE.get(), MPAWorkbenchGui::new);
+        ScreenManager.registerFactory(MPSObjects.TINKERTABLE_CONTAINER_TYPE.get(), MPAWorkbenchGui::new);
 
-/*
- <T extends TileEntity> void bindTileEntityRenderer(TileEntityType<T> tileEntityType,
-            Function<? super TileEntityRendererDispatcher, ? extends TileEntityRenderer<? super T>> rendererFactory)
 
- */
+//        ClientRegistry.bindTileEntityRenderer(MPSObjects.TINKER_TABLE_TILE_TYPE.get(), TinkerTableRenderer::new);
     }
 
     /**

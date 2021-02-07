@@ -63,7 +63,7 @@ public class MPSWorkbenchContainer
     private Map<Integer, List<SlotItemHandler>> modularItemToSlotMap;
 
     public MPSWorkbenchContainer(int windowId, PlayerInventory playerInventory) {
-        super(MPSObjects.MPS_WORKBENCH_CONTAINER_TYPE.get(), windowId);
+        super(MPSObjects.TINKERTABLE_CONTAINER_TYPE.get(), windowId);
         this.player = playerInventory.player;
 
         modularItemToSlotMap = new HashMap<>();

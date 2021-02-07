@@ -137,7 +137,7 @@ public class MPSConstants {
     public static final String WALKING_ASSISTANCE = "walkingAssist";
     public static final String SPRINT_ASSIST = "sprintAssist";
     public static final String COMPENSATION = "compensation";
-    public static final String MULTIPLIER = "muultiplier";
+    public static final String MULTIPLIER = "multiplier";
     public static final String JETPACK_THRUST = "jetpackThrust";
     public static final String JETBOOTS_THRUST = "jetbootsThrust";
     public static final String VERTICALITY = "vertically";

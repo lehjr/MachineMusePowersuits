@@ -1,0 +1,26 @@
+{
+  "result": {
+    "item": "powersuits:powerarmor_legs"
+  },
+  "conditions": [
+    {
+      "type": "powersuits:flag",
+      "flag": "vanilla_recipes_disabled"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "mirrored": true,
+  "pattern": [
+    "FFF",
+    "O O",
+    "F F"
+  ],
+  "key": {
+    "F": {
+      "tag": "forge:ingots/steel"
+    },
+    "O": {
+      "tag": "forge:wiring"
+    }
+  }
+}

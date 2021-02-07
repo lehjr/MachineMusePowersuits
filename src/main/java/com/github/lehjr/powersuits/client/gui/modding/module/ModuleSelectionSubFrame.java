@@ -35,9 +35,11 @@ import com.github.lehjr.numina.util.client.gui.gemoetry.MuseRelativeRect;
 import com.github.lehjr.numina.util.client.render.MuseRenderer;
 import com.github.lehjr.numina.util.client.sound.Musique;
 import com.github.lehjr.numina.util.client.sound.SoundDictionary;
+import com.github.lehjr.numina.util.string.MuseStringUtils;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraftforge.items.CapabilityItemHandler;
 
 import javax.annotation.Nonnull;
@@ -169,7 +171,27 @@ public class ModuleSelectionSubFrame {
             if (moduleButtons != null) {
                 for (ClickableModule module : moduleButtons) {
                     if (module.hitBox(x, y)) {
-                        return module.getToolTip();
+                        System.out.println("description: " + module.getLocalizedDescription());
+
+
+                        List<ITextComponent> toolTipText = new ArrayList<>();
+                        toolTipText.add(module.getLocalizedName());
+                        toolTipText.addAll(MuseStringUtils.wrapITextComponentToLength(module.getLocalizedDescription(), 30));
+                        System.out.println("tooltip: " + toolTipText);
+
+
+                        return toolTipText;
+
+
+
+
+
+
+
+
+
+
+//                        return module.getToolTip();
                     }
                 }
             }

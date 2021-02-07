@@ -1,0 +1,26 @@
+{
+  "result": {
+    "item": "powersuits:plating_diamond"
+  },
+  "conditions": [
+    {
+      "type": "powersuits:flag",
+      "flag": "vanilla_recipes_disabled"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "mirrored": true,
+  "pattern": [
+    "FF ",
+    "OF ",
+    "FF "
+  ],
+  "key": {
+    "F": {
+      "tag": "forge:gems/diamond"
+    },
+    "O": {
+      "tag": "forge:wiring"
+    }
+  }
+}

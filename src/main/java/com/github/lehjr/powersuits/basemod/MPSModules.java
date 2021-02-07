@@ -46,7 +46,7 @@ public enum MPSModules {
         add(new ResourceLocation(NuminaConstants.MOD_ID, NuminaConstants.MODULE_BATTERY_ADVANCED__REGNAME));
         add(new ResourceLocation(NuminaConstants.MOD_ID, NuminaConstants.MODULE_BATTERY_ELITE__REGNAME));
         add(new ResourceLocation(NuminaConstants.MOD_ID, NuminaConstants.MODULE_BATTERY_ULTIMATE__REGNAME));
-        add(new ResourceLocation(MPSConstants.MOD_ID, MPSRegistryNames.WORKBENCH));
+        add(new ResourceLocation(MPSConstants.MOD_ID, MPSRegistryNames.TINKER_TABLE));
 
         add(new ResourceLocation("clock"));
         add(new ResourceLocation("compass"));

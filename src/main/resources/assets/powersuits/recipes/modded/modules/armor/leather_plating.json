@@ -1,0 +1,26 @@
+{
+  "result": {
+    "item": "powersuits:plating_leather"
+  },
+  "conditions": [
+    {
+      "type": "powersuits:flag",
+      "flag": "vanilla_recipes_disabled"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "mirrored": true,
+  "pattern": [
+    "FF ",
+    "OF ",
+    "FF "
+  ],
+  "key": {
+    "F": {
+      "tag": "forge:leather"
+    },
+    "O": {
+      "tag": "forge:wiring"
+    }
+  }
+}

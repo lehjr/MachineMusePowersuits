@@ -27,19 +27,11 @@
 package com.github.lehjr.powersuits.basemod;
 
 
-import com.github.lehjr.numina.util.capabilities.module.powermodule.EnumModuleCategory;
-import com.github.lehjr.numina.util.capabilities.module.powermodule.EnumModuleTarget;
-import com.github.lehjr.numina.util.capabilities.module.powermodule.IConfig;
-import com.github.lehjr.numina.util.capabilities.module.powermodule.PowerModuleCapability;
-import com.github.lehjr.numina.util.capabilities.module.rightclick.IRightClickModule;
-import com.github.lehjr.numina.util.capabilities.module.rightclick.RightClickModule;
 import com.github.lehjr.powersuits.block.LuxCapacitorBlock;
-import com.github.lehjr.powersuits.block.WorkBenchBlock;
-import com.github.lehjr.powersuits.config.MPSSettings;
+import com.github.lehjr.powersuits.block.TinkerTable;
 import com.github.lehjr.powersuits.constants.MPSConstants;
 import com.github.lehjr.powersuits.constants.MPSRegistryNames;
 import com.github.lehjr.powersuits.container.MPSWorkbenchContainer;
-import com.github.lehjr.powersuits.container.MPSWorkbenchContainerProvider;
 import com.github.lehjr.powersuits.entity.LuxCapacitorEntity;
 import com.github.lehjr.powersuits.entity.PlasmaBallEntity;
 import com.github.lehjr.powersuits.entity.RailgunBoltEntity;
@@ -48,6 +40,9 @@ import com.github.lehjr.powersuits.item.armor.PowerArmorBoots;
 import com.github.lehjr.powersuits.item.armor.PowerArmorChestplate;
 import com.github.lehjr.powersuits.item.armor.PowerArmorHelmet;
 import com.github.lehjr.powersuits.item.armor.PowerArmorLeggings;
+import com.github.lehjr.powersuits.item.block.TinkerTableItem;
+import com.github.lehjr.powersuits.item.module.armor.DiamondPlatingModule;
+import com.github.lehjr.powersuits.item.module.armor.EnergyShieldModule;
 import com.github.lehjr.powersuits.item.module.armor.IronPlatingModule;
 import com.github.lehjr.powersuits.item.module.armor.LeatherPlatingModule;
 import com.github.lehjr.powersuits.item.module.cosmetic.TransparentArmorModule;
@@ -66,35 +61,19 @@ import com.github.lehjr.powersuits.item.module.vision.NightVisionModule;
 import com.github.lehjr.powersuits.item.module.weapon.*;
 import com.github.lehjr.powersuits.item.tool.PowerFist;
 import com.github.lehjr.powersuits.tile_entity.LuxCapacitorTileEntity;
-import com.github.lehjr.powersuits.tile_entity.WorkBenchTileEntity;
+import com.github.lehjr.powersuits.tile_entity.TinkerTableTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntityType;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.World;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.extensions.IForgeContainerType;
-import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fml.RegistryObject;
-import net.minecraftforge.fml.network.NetworkHooks;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.concurrent.Callable;
 
 public class MPSObjects {
     public static final MPSCreativeTab creativeTab = new MPSCreativeTab();
@@ -106,6 +85,7 @@ public class MPSObjects {
 
     public static final Item.Properties fullStack = new Item.Properties()
             .group(MPSObjects.creativeTab)
+            .maxStackSize(64)
             .defaultMaxDamage(-1)
             .setNoRepair();
     /**
@@ -113,8 +93,8 @@ public class MPSObjects {
      */
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, MPSConstants.MOD_ID);
 
-    public static final RegistryObject<WorkBenchBlock> WORKBENCH_BLOCK = BLOCKS.register(MPSRegistryNames.WORKBENCH,
-            () -> new WorkBenchBlock());
+    public static final RegistryObject<TinkerTable> TINKER_TABLE_BLOCK = BLOCKS.register(MPSRegistryNames.TINKER_TABLE,
+            () -> new TinkerTable());
 
     public static final RegistryObject<LuxCapacitorBlock> LUX_CAPACITOR_BLOCK = BLOCKS.register(MPSRegistryNames.LUX_CAPACITOR,
             () -> new LuxCapacitorBlock());
@@ -125,8 +105,8 @@ public class MPSObjects {
      */
     public static final DeferredRegister<TileEntityType<?>> TILE_TYPES = DeferredRegister.create(ForgeRegistries.TILE_ENTITIES, MPSConstants.MOD_ID);
 
-    public static final RegistryObject<TileEntityType<WorkBenchTileEntity>> WORKBENCH_TILE_TYPE = TILE_TYPES.register(MPSRegistryNames.WORKBENCH,
-            () -> TileEntityType.Builder.create(WorkBenchTileEntity::new, WORKBENCH_BLOCK.get()).build(null));
+    public static final RegistryObject<TileEntityType<TinkerTableTileEntity>> TINKER_TABLE_TILE_TYPE = TILE_TYPES.register(MPSRegistryNames.TINKER_TABLE,
+            () -> TileEntityType.Builder.create(TinkerTableTileEntity::new, TINKER_TABLE_BLOCK.get()).build(null));
 
     public static final RegistryObject<TileEntityType<LuxCapacitorTileEntity>> LUX_CAP_TILE_TYPE = TILE_TYPES.register(MPSRegistryNames.LUX_CAPACITOR,
             () -> TileEntityType.Builder.create(LuxCapacitorTileEntity::new, LUX_CAPACITOR_BLOCK.get()).build(null));
@@ -163,45 +143,8 @@ public class MPSObjects {
 
     /* BlockItems --------------------------------------------------------------------------------- */
     // use directly as a module
-    public static final RegistryObject<Item> WORKBENCH_ITEM = ITEMS.register(MPSRegistryNames.WORKBENCH,
-            () -> new BlockItem(WORKBENCH_BLOCK.get(), fullStack) {
-
-                @Nullable
-                @Override
-                public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundNBT nbt) {
-                    return new CapProvider(stack);
-                }
-
-                class CapProvider implements ICapabilityProvider {
-                    ItemStack module;
-                    IRightClickModule rightClick;
-
-                    public CapProvider(@Nonnull ItemStack module) {
-                        this.module = module;
-                        this.rightClick = new RightClickie(module, EnumModuleCategory.TOOL, EnumModuleTarget.TOOLONLY, MPSSettings::getModuleConfig);
-                    }
-
-                    @Nonnull
-                    @Override
-                    public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
-                        return PowerModuleCapability.POWER_MODULE.orEmpty(cap, LazyOptional.of(() -> rightClick));
-                    }
-
-                    class RightClickie extends RightClickModule {
-                        public RightClickie(@Nonnull ItemStack module, EnumModuleCategory category, EnumModuleTarget target, Callable<IConfig> config) {
-                            super(module, category, target, config);
-                        }
-
-                        @Override
-                        public ActionResult onItemRightClick(ItemStack itemStackIn, World worldIn, PlayerEntity playerIn, Hand hand) {
-                            if (!worldIn.isRemote()) {
-                                NetworkHooks.openGui((ServerPlayerEntity) playerIn, new MPSWorkbenchContainerProvider(0), (buffer) -> buffer.writeInt(0));
-                            }
-                            return super.onItemRightClick(itemStackIn, worldIn, playerIn, hand);
-                        }
-                    }
-                }
-            } );
+    public static final RegistryObject<Item> TINKER_TABLE_ITEM = ITEMS.register(MPSRegistryNames.TINKER_TABLE,
+            () -> new TinkerTableItem(TINKER_TABLE_BLOCK.get(), fullStack));
 
     public static final RegistryObject<Item> LUX_CAPACITOR_ITEM = ITEMS.register(MPSRegistryNames.LUX_CAPACITOR,
             () -> new BlockItem(LUX_CAPACITOR_BLOCK.get(), fullStack));
@@ -227,8 +170,8 @@ public class MPSObjects {
     // Armor --------------------------------------------------------------------------------------
     public static final RegistryObject<Item> LEATHER_PLATING_MODULE = registerModule(MPSRegistryNames.LEATHER_PLATING_MODULE, new LeatherPlatingModule());
     public static final RegistryObject<Item> IRON_PLATING_MODULE = registerModule(MPSRegistryNames.IRON_PLATING_MODULE, new IronPlatingModule());
-    public static final RegistryObject<Item> DIAMOND_PLATING_MODULE = registerModule(MPSRegistryNames.DIAMOND_PLATING_MODULE, new IronPlatingModule());
-    public static final RegistryObject<Item> ENERGY_SHIELD_MODULE = registerModule(MPSRegistryNames.ENERGY_SHIELD_MODULE, new IronPlatingModule());
+    public static final RegistryObject<Item> DIAMOND_PLATING_MODULE = registerModule(MPSRegistryNames.DIAMOND_PLATING_MODULE, new DiamondPlatingModule());
+    public static final RegistryObject<Item> ENERGY_SHIELD_MODULE = registerModule(MPSRegistryNames.ENERGY_SHIELD_MODULE, new EnergyShieldModule());
 
     // Cosmetic -----------------------------------------------------------------------------------
     public static final RegistryObject<Item> TRANSPARENT_ARMOR_MODULE = registerModule(MPSRegistryNames.TRANSPARENT_ARMOR_MODULE, new TransparentArmorModule());
@@ -306,7 +249,7 @@ public class MPSObjects {
      */
     public static final DeferredRegister<ContainerType<?>> CONTAINER_TYPES = DeferredRegister.create(ForgeRegistries.CONTAINERS, MPSConstants.MOD_ID);
 
-    public static final RegistryObject<ContainerType<MPSWorkbenchContainer>> MPS_WORKBENCH_CONTAINER_TYPE = CONTAINER_TYPES.register(MPSRegistryNames.MPA_WORKBENCH_CONTAINER_TYPE,
+    public static final RegistryObject<ContainerType<MPSWorkbenchContainer>> TINKERTABLE_CONTAINER_TYPE = CONTAINER_TYPES.register(MPSRegistryNames.MPA_WORKBENCH_CONTAINER_TYPE,
             () -> IForgeContainerType.create((windowId, inv, data) -> new MPSWorkbenchContainer(windowId, inv)));
 
 

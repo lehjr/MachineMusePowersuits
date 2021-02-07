@@ -39,7 +39,7 @@ public class MPSRegistryNames {
     /**
      * Blocks -------------------------------------------------------------------------------------
      */
-    public static final String WORKBENCH = "mps_workbench";
+    public static final String TINKER_TABLE = "tinkertable";
     public static final String LUX_CAPACITOR = "luxcapacitor";
 
     /**
@@ -114,7 +114,7 @@ public class MPSRegistryNames {
     public static final String AQUA_AFFINITY_MODULE = "aqua_affinity";
     public static final String AXE_MODULE = "axe";
     public static final String DIAMOND_PICK_UPGRADE_MODULE = "diamond_pick_upgrade";
-    public static final String PORTABLE_WORKBENCH_MODULE = "portable_mps_workbench";
+    public static final String PORTABLE_WORKBENCH_MODULE = "portable_tinkertable";
     public static final String FLINT_AND_STEEL_MODULE = "flint_and_steel";
     public static final String HOE_MODULE = "hoe";
     public static final String LEAF_BLOWER_MODULE = "leaf_blower";
