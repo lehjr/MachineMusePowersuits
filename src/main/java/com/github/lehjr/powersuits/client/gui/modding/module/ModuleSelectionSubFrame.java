@@ -166,32 +166,16 @@ public class ModuleSelectionSubFrame {
         return false;
     }
 
+    // TODO: better tooltips? Fix clickable module tooltips at source instead of this workaround?
     public List<ITextComponent> getToolTip(int x, int y) {
         if (border.containsPoint(x, y)) {
             if (moduleButtons != null) {
                 for (ClickableModule module : moduleButtons) {
                     if (module.hitBox(x, y)) {
-                        System.out.println("description: " + module.getLocalizedDescription());
-
-
                         List<ITextComponent> toolTipText = new ArrayList<>();
                         toolTipText.add(module.getLocalizedName());
-                        toolTipText.addAll(MuseStringUtils.wrapITextComponentToLength(module.getLocalizedDescription(), 30));
-                        System.out.println("tooltip: " + toolTipText);
-
-
+                        toolTipText.add(module.getLocalizedDescription());
                         return toolTipText;
-
-
-
-
-
-
-
-
-
-
-//                        return module.getToolTip();
                     }
                 }
             }
