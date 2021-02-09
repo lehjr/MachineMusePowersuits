@@ -150,6 +150,9 @@ public class ModuleConfig implements IConfig {
 
         // if config is not null then look up value and add it if not present
         return getModConfig().map(config -> {
+
+        // config data is null when logging out and back in?
+        if (config.getConfigData() != null) {
             ArrayList<String> key = new ArrayList<String>() {{
                 add("Modules");
                 add(category.getName());
@@ -162,19 +165,20 @@ public class ModuleConfig implements IConfig {
             } else if (!isInDevMode()) {
                 config.getConfigData().set(key, baseVal);
             }
+        }
             return baseVal;
 
             // Add to map then return base val
-        }).orElseGet(()->{
-            addtoMap(category.getName(),
-                    moduleName,
-                    new StringBuilder("builder.defineInRange(\"")
-                            .append(entry).append("\", ")
-                            .append(baseVal).append("D, ")
-                            .append(0).append(", ")
-                            .append(Double.MAX_VALUE)
-                            .append(");\n").toString());
-            isModuleAllowed(category, module); // initialize the value
+        }).orElseGet(()-> {
+                addtoMap(category.getName(),
+                        moduleName,
+                        new StringBuilder("builder.defineInRange(\"")
+                                .append(entry).append("\", ")
+                                .append(baseVal).append("D, ")
+                                .append(0).append(", ")
+                                .append(Double.MAX_VALUE)
+                                .append(");\n").toString());
+                isModuleAllowed(category, module); // initialize the value
             return baseVal;
         });
     }
@@ -199,9 +203,11 @@ public class ModuleConfig implements IConfig {
             }};
 
             if (config.getConfigData().contains(key)) {
-                double val = config.getConfigData().get(key);
-                System.out.println("common config value: " + config.getConfigData().get(key));
-                return val;
+                Double val = config.getConfigData().get(key);
+//                System.out.println("common config value: " + config.getConfigData().get(key));
+
+                // FIXME: logging out and back in creates null values?
+                return val != null ? val : multiplier;
             } else if (!isInDevMode()) {
                 config.getConfigData().set(key, multiplier);
             }
