@@ -139,8 +139,8 @@ public class MPSRegistryNames {
     /**
      * Container ----------------------------------------------------------------------------------
      */
-    public static final String MPA_CRAFTING_CONTAINER_TYPE = "crafting_container";
-    public static final String MPA_WORKBENCH_CONTAINER_TYPE = "powerarmor_workbench_container_type";
+    public static final String MPS_CRAFTING_CONTAINER_TYPE = "crafting_container";
+    public static final String TINKERTABLE_CONTAINER_TYPE = "tinkertable_container_type";
 
     //-------------------------------------------
     // actual registry names

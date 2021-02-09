@@ -31,7 +31,7 @@ import com.github.lehjr.powersuits.block.LuxCapacitorBlock;
 import com.github.lehjr.powersuits.block.TinkerTable;
 import com.github.lehjr.powersuits.constants.MPSConstants;
 import com.github.lehjr.powersuits.constants.MPSRegistryNames;
-import com.github.lehjr.powersuits.container.MPSWorkbenchContainer;
+import com.github.lehjr.powersuits.container.TinkerTableContainer;
 import com.github.lehjr.powersuits.entity.LuxCapacitorEntity;
 import com.github.lehjr.powersuits.entity.PlasmaBallEntity;
 import com.github.lehjr.powersuits.entity.RailgunBoltEntity;
@@ -249,8 +249,8 @@ public class MPSObjects {
      */
     public static final DeferredRegister<ContainerType<?>> CONTAINER_TYPES = DeferredRegister.create(ForgeRegistries.CONTAINERS, MPSConstants.MOD_ID);
 
-    public static final RegistryObject<ContainerType<MPSWorkbenchContainer>> TINKERTABLE_CONTAINER_TYPE = CONTAINER_TYPES.register(MPSRegistryNames.MPA_WORKBENCH_CONTAINER_TYPE,
-            () -> IForgeContainerType.create((windowId, inv, data) -> new MPSWorkbenchContainer(windowId, inv)));
+    public static final RegistryObject<ContainerType<TinkerTableContainer>> TINKERTABLE_CONTAINER_TYPE = CONTAINER_TYPES.register(MPSRegistryNames.TINKERTABLE_CONTAINER_TYPE,
+            () -> IForgeContainerType.create((windowId, inv, data) -> new TinkerTableContainer(windowId, inv)));
 
 
 //                    new ContainerType<>(MPAWorkbenchContainer::new)

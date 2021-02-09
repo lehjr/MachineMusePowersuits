@@ -39,7 +39,7 @@ import com.github.lehjr.powersuits.client.control.KeybindKeyHandler;
 import com.github.lehjr.powersuits.client.event.ClientTickHandler;
 import com.github.lehjr.powersuits.client.event.ModelBakeEventHandler;
 import com.github.lehjr.powersuits.client.event.RenderEventHandler;
-import com.github.lehjr.powersuits.client.gui.modding.module.MPAWorkbenchGui;
+import com.github.lehjr.powersuits.client.gui.modding.module.TinkerTableGui;
 import com.github.lehjr.powersuits.client.render.entity.LuxCapacitorEntityRenderer;
 import com.github.lehjr.powersuits.client.render.entity.PlasmaBoltEntityRenderer;
 import com.github.lehjr.powersuits.client.render.entity.RailGunBoltRenderer;
@@ -164,7 +164,7 @@ public class ModularPowersuits {
 
 //        ScreenManager.registerFactory(MPSObjects.MODULE_CONFIG_CONTAINER_TYPE, TinkerModuleGui::new);
 //        ScreenManager.registerFactory(MPSObjects.MPA_CRAFTING_CONTAINER_TYPE.get(), TinkerCraftingGUI::new);
-        ScreenManager.registerFactory(MPSObjects.TINKERTABLE_CONTAINER_TYPE.get(), MPAWorkbenchGui::new);
+        ScreenManager.registerFactory(MPSObjects.TINKERTABLE_CONTAINER_TYPE.get(), TinkerTableGui::new);
 
 
 //        ClientRegistry.bindTileEntityRenderer(MPSObjects.TINKER_TABLE_TILE_TYPE.get(), TinkerTableRenderer::new);
@@ -217,7 +217,7 @@ public class ModularPowersuits {
                     if (!worldIn.isRemote()) {
                         NetworkHooks.openGui((ServerPlayerEntity) playerIn,
                                 new SimpleNamedContainerProvider((id, inventory, player) ->
-                                        new WorkbenchContainer(id, inventory)/*, IWorldPosCallable.of(worldIn, playerIn.getPosition()))*/, CONTAINER_NAME));
+                                        new WorkbenchContainer(id, inventory)/*, IWorldPosCallable.of(worldIn, playerIn.getPosition()))*/, MPSConstants.CRAFTING_TABLE_CONTAINER_NAME));
                         return ActionResult.resultSuccess(itemStackIn);
                     }
                     return ActionResult.resultConsume(itemStackIn);

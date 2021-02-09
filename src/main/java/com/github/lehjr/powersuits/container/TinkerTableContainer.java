@@ -54,7 +54,7 @@ import java.util.Map;
  * This means that only equipped ... fixme: ...what?
  *
  */
-public class MPSWorkbenchContainer
+public class TinkerTableContainer
 //        extends MPARecipeBookContainer<CraftingInventory> implements IModularItemToSlotMapProvider {
         extends Container implements IModularItemToSlotMapProvider {
     private final PlayerEntity player;
@@ -62,7 +62,7 @@ public class MPSWorkbenchContainer
     // A map of the slot that holds the modular item, and the set of slots in that modular item
     private Map<Integer, List<SlotItemHandler>> modularItemToSlotMap;
 
-    public MPSWorkbenchContainer(int windowId, PlayerInventory playerInventory) {
+    public TinkerTableContainer(int windowId, PlayerInventory playerInventory) {
         super(MPSObjects.TINKERTABLE_CONTAINER_TYPE.get(), windowId);
         this.player = playerInventory.player;
 

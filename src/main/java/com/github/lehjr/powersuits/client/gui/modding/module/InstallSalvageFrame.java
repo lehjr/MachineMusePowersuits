@@ -34,9 +34,8 @@ import com.github.lehjr.numina.util.client.gui.frame.ScrollableFrame;
 import com.github.lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
 import com.github.lehjr.numina.util.client.sound.SoundDictionary;
 import com.github.lehjr.numina.util.math.Colour;
-import com.github.lehjr.numina.util.string.MuseStringUtils;
 import com.github.lehjr.powersuits.client.gui.common.ItemSelectionFrame;
-import com.github.lehjr.powersuits.container.MPSWorkbenchContainer;
+import com.github.lehjr.powersuits.container.TinkerTableContainer;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerEntity;
@@ -48,12 +47,11 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 
 import javax.annotation.Nonnull;
-import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class InstallSalvageFrame extends ScrollableFrame {
-    MPSWorkbenchContainer container;
+    TinkerTableContainer container;
     protected ItemSelectionFrame targetItem;
     protected ModuleSelectionFrame targetModule;
     protected ClickableButton installButton;
@@ -63,7 +61,7 @@ public class InstallSalvageFrame extends ScrollableFrame {
     float zLevel;
 
     public InstallSalvageFrame(
-            MPSWorkbenchContainer containerIn,
+            TinkerTableContainer containerIn,
             PlayerEntity player,
             MusePoint2D topleft,
             MusePoint2D bottomright,

@@ -26,12 +26,24 @@
 
 package com.github.lehjr.powersuits.container;
 
+import com.github.lehjr.powersuits.constants.MPSConstants;
+import net.minecraft.block.AbstractBlock;
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.INamedContainerProvider;
+import net.minecraft.inventory.container.SimpleNamedContainerProvider;
+import net.minecraft.inventory.container.WorkbenchContainer;
+import net.minecraft.stats.Stats;
+import net.minecraft.util.ActionResultType;
+import net.minecraft.util.Hand;
+import net.minecraft.util.IWorldPosCallable;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 
@@ -47,7 +59,7 @@ public class MPSWorkbenchContainerProvider implements INamedContainerProvider {
             case 0:
                 return new TranslationTextComponent("gui.powersuits.tab.workbench");
             default:
-                return new TranslationTextComponent("container.crafting");
+                return MPSConstants.CRAFTING_TABLE_CONTAINER_NAME;
         }
     }
 
@@ -56,14 +68,35 @@ public class MPSWorkbenchContainerProvider implements INamedContainerProvider {
     public Container createMenu(int windowId, PlayerInventory playerInventory, PlayerEntity player) {
         switch(typeIndex) {
             case 0:
-                return new MPSWorkbenchContainer(windowId, playerInventory);
+                return new TinkerTableContainer(windowId, playerInventory);
             default:
-                // FIXME: crafting GUI, original or MPS?
+                // Fixme: in vanilla, this is done client side?
 
 
+//                player.addStat(Stats.INTERACT_WITH_CRAFTING_TABLE);
+//                player.openContainer(getContainer(player.world, player.getPosition()));
 
-                return null;
-//                return new MPSCraftingContainer(windowId, playerInventory);
+//                return player.openContainer;
+
+
+//                System.out.println("world is remote? " + player.world.isRemote);
+//
+//
+//
+//
+////
+////
+////                // FIXME: crafting GUI, original or MPS?
+////
+                return new WorkbenchContainer(windowId, playerInventory);
         }
     }
+
+    public INamedContainerProvider getContainer(World worldIn, BlockPos pos) {
+        return new SimpleNamedContainerProvider((id, inventory, player) -> {
+            return new WorkbenchContainer(id, inventory, IWorldPosCallable.of(worldIn, pos));
+        },  new TranslationTextComponent("container.crafting"));
+    }
+
+
 }
