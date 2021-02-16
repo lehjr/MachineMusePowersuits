@@ -151,34 +151,34 @@ public class ModuleConfig implements IConfig {
         // if config is not null then look up value and add it if not present
         return getModConfig().map(config -> {
 
-        // config data is null when logging out and back in?
-        if (config.getConfigData() != null) {
-            ArrayList<String> key = new ArrayList<String>() {{
-                add("Modules");
-                add(category.getName());
-                add(moduleName);
-                add(entry);
-            }};
+            // config data is null when logging out and back in?
+            if (config.getConfigData() != null) {
+                ArrayList<String> key = new ArrayList<String>() {{
+                    add("Modules");
+                    add(category.getName());
+                    add(moduleName);
+                    add(entry);
+                }};
 
-            if (config.getConfigData().contains(key)) {
-                return config.getConfigData().get(key);
-            } else if (!isInDevMode()) {
-                config.getConfigData().set(key, baseVal);
+                if (config.getConfigData().contains(key)) {
+                    return config.getConfigData().get(key);
+                } else if (!isInDevMode()) {
+                    config.getConfigData().set(key, baseVal);
+                }
             }
-        }
             return baseVal;
 
             // Add to map then return base val
         }).orElseGet(()-> {
-                addtoMap(category.getName(),
-                        moduleName,
-                        new StringBuilder("builder.defineInRange(\"")
-                                .append(entry).append("\", ")
-                                .append(baseVal).append("D, ")
-                                .append(0).append(", ")
-                                .append(Double.MAX_VALUE)
-                                .append(");\n").toString());
-                isModuleAllowed(category, module); // initialize the value
+            addtoMap(category.getName(),
+                    moduleName,
+                    new StringBuilder("builder.defineInRange(\"")
+                            .append(entry).append("\", ")
+                            .append(baseVal).append("D, ")
+                            .append(0).append(", ")
+                            .append(Double.MAX_VALUE)
+                            .append(");\n").toString());
+            isModuleAllowed(category, module); // initialize the value
             return baseVal;
         });
     }
@@ -195,21 +195,24 @@ public class ModuleConfig implements IConfig {
         String entry = propertyName + "_" + tradeoffName + "_multiplier";
 
         return getModConfig().map(config-> {
-            ArrayList<String> key = new ArrayList<String>() {{
-                add("Modules");
-                add(category.getName().replace(" ", "_"));
-                add(moduleName);
-                add(entry);
-            }};
+            if (config.getConfigData() != null) {
 
-            if (config.getConfigData().contains(key)) {
-                Double val = config.getConfigData().get(key);
+                ArrayList<String> key = new ArrayList<String>() {{
+                    add("Modules");
+                    add(category.getName().replace(" ", "_"));
+                    add(moduleName);
+                    add(entry);
+                }};
+
+                if (config.getConfigData().contains(key)) {
+                    Double val = config.getConfigData().get(key);
 //                System.out.println("common config value: " + config.getConfigData().get(key));
 
-                // FIXME: logging out and back in creates null values?
-                return val != null ? val : multiplier;
-            } else if (!isInDevMode()) {
-                config.getConfigData().set(key, multiplier);
+                    // FIXME: logging out and back in creates null values?
+                    return val != null ? val : multiplier;
+                } else if (!isInDevMode()) {
+                    config.getConfigData().set(key, multiplier);
+                }
             }
             return multiplier;
         }).orElseGet(()->{
@@ -222,6 +225,7 @@ public class ModuleConfig implements IConfig {
                             .append(Double.MAX_VALUE)
                             .append(");\n").toString());
             isModuleAllowed(category, module);
+
             return multiplier;
         });
     }
@@ -232,16 +236,18 @@ public class ModuleConfig implements IConfig {
         String entry = propertyName + "_" + tradeoffName + "_multiplier";
 
         return getModConfig().map(config->{
-            ArrayList<String> key = new ArrayList<String>() {{
-                add("Modules");
-                add(category.getName());
-                add(moduleName);
-                add(entry);
-            }};
-            if (config.getConfigData().contains(key)) {
-                return config.getConfigData().get(key);
-            } else if (!isInDevMode()) {
-                config.getConfigData().set(key, multiplier);
+            if (config.getConfigData() != null) {
+                ArrayList<String> key = new ArrayList<String>() {{
+                    add("Modules");
+                    add(category.getName());
+                    add(moduleName);
+                    add(entry);
+                }};
+                if (config.getConfigData().contains(key)) {
+                    return config.getConfigData().get(key);
+                } else if (!isInDevMode()) {
+                    config.getConfigData().set(key, multiplier);
+                }
             }
             return multiplier;
         }).orElseGet(()->{
@@ -265,17 +271,19 @@ public class ModuleConfig implements IConfig {
         String entry = "isAllowed";
 
         return getModConfig().map(config->{
-            ArrayList<String> key = new ArrayList<String>() {{
-                add("Modules");
-                add(category.getName());
-                add(moduleName);
-                add(entry);
-            }};
+            if (config.getConfigData() != null) {
+                ArrayList<String> key = new ArrayList<String>() {{
+                    add("Modules");
+                    add(category.getName());
+                    add(moduleName);
+                    add(entry);
+                }};
 
-            if (config.getConfigData().contains(key)) {
-                return config.getConfigData().get(key);
-            } else if (!isInDevMode()) {
-                config.getConfigData().set(key, true);
+                if (config.getConfigData().contains(key)) {
+                    return config.getConfigData().get(key);
+                } else if (!isInDevMode()) {
+                    config.getConfigData().set(key, true);
+                }
             }
             return true;
         }).orElseGet(()->{

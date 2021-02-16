@@ -62,10 +62,10 @@ public class ClientConfig {
                 .define("useSounds", true);
 
         DEBUGGING_INFO = builder
-                .comment("Debugging info")
+                .comment("Enable debugging info")
                 .translation(NuminaConstants.CONFIG_DEBUGGING_INFO)
-                .define("useSounds", true);
+                .define("enableDebugging", false);
 
-        builder.pop().comment("Tiers per RF/FE").push("Tiers");
+        builder.pop();
     }
 }
