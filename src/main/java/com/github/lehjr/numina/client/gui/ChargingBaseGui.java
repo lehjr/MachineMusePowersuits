@@ -27,6 +27,8 @@
 package com.github.lehjr.numina.client.gui;
 
 import com.github.lehjr.numina.container.ChargingBaseContainer;
+import com.github.lehjr.numina.util.client.gui.clickable.ClickableArrow;
+import com.github.lehjr.numina.util.client.gui.gemoetry.DrawableArrow;
 import com.github.lehjr.numina.util.client.gui.gemoetry.DrawableRelativeRect;
 import com.github.lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
 import com.github.lehjr.numina.util.math.Colour;
@@ -98,7 +100,6 @@ public class ChargingBaseGui extends ExtendedContainerScreen<ChargingBaseContain
             IntStream.range(28, 37).forEach(i-> add(i));
         }});
         addFrame(hotbar);
-
         // add energy meter
     }
 
@@ -125,7 +126,6 @@ public class ChargingBaseGui extends ExtendedContainerScreen<ChargingBaseContain
                 backgroundRect.finalLeft() + spacer + 9 * slotWidth,
                 backgroundRect.finalBottom() - spacer);
         hotbar.setzLevel(1);
-
 
         mainInventory.setUlShift(getUlOffset());
         mainInventory.init(

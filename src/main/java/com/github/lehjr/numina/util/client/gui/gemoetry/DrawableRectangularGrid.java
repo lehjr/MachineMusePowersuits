@@ -32,6 +32,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.util.math.vector.Matrix4f;
 import org.lwjgl.opengl.GL11;
 
 import java.nio.FloatBuffer;
@@ -171,19 +172,21 @@ public class DrawableRectangularGrid extends DrawableRelativeRect {
         BufferBuilder buffer = tessellator.getBuffer();
         buffer.begin(GL11.GL_LINES, DefaultVertexFormats.POSITION_COLOR);
 
+        Matrix4f matrix4f = matrixStack.getLast().getMatrix();
+
         // Horizontal lines
         if (gridHeight >1) {
             for (double y = (double) (verticleSegmentSize + top()); y < bottom(); y += verticleSegmentSize) {
-                buffer.pos(matrixStack.getLast().getMatrix(), (float)left(), (float) y, zLevel).color(gridColour.r, gridColour.g, gridColour.b, gridColour.a).endVertex();
-                buffer.pos(matrixStack.getLast().getMatrix(), (float)right(), (float) y, zLevel).color(gridColour.r, gridColour.g, gridColour.b, gridColour.a).endVertex();
+                buffer.pos(matrix4f, (float)left(), (float) y, zLevel).color(gridColour.r, gridColour.g, gridColour.b, gridColour.a).endVertex();
+                buffer.pos(matrix4f, (float)right(), (float) y, zLevel).color(gridColour.r, gridColour.g, gridColour.b, gridColour.a).endVertex();
             }
         }
 
         // Vertical lines
         if(gridWidth > 1) {
             for (double x = (double) (horizontalSegmentSize + left()); x < right(); x += horizontalSegmentSize) {
-                buffer.pos(matrixStack.getLast().getMatrix(), (float) x, (float) top(), zLevel).color(gridColour.r, gridColour.g, gridColour.b, gridColour.a).endVertex();
-                buffer.pos(matrixStack.getLast().getMatrix(), (float) x, (float) bottom(), zLevel).color(gridColour.r, gridColour.g, gridColour.b, gridColour.a).endVertex();
+                buffer.pos(matrix4f, (float) x, (float) top(), zLevel).color(gridColour.r, gridColour.g, gridColour.b, gridColour.a).endVertex();
+                buffer.pos(matrix4f, (float) x, (float) bottom(), zLevel).color(gridColour.r, gridColour.g, gridColour.b, gridColour.a).endVertex();
             }
         }
 

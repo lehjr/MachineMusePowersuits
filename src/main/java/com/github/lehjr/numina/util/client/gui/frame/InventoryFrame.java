@@ -158,7 +158,7 @@ public class InventoryFrame extends ScrollableFrame {
         FloatBuffer buffer = BufferUtils.createFloatBuffer(0);
 //        RenderSystem.disableDepthTest();
         if (drawBorder || drawBackground) {
-            buffer = border.preDraw(3);
+            buffer = border.getVertices(3);
             border.setzLevel(zLevel);
         }
         if (drawBackground) {

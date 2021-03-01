@@ -37,7 +37,7 @@ import org.lwjgl.opengl.GL11;
 
 import java.nio.FloatBuffer;
 
-public class DrawableMuseRect extends MuseRect {
+public class DrawableMuseRect extends MuseRect implements IDrawable {
     Colour backgroundColour;
     Colour borderColour;
     Colour backgroundColour2 = null;
@@ -82,6 +82,7 @@ public class DrawableMuseRect extends MuseRect {
 
     /**
      * determine if the border should be smaller than the background rectangle (like tooltips)
+     *
      * @param shrinkBorder
      */
     public void setShrinkBorder(boolean shrinkBorder) {
@@ -91,7 +92,7 @@ public class DrawableMuseRect extends MuseRect {
     @Override
     public DrawableMuseRect copyOf() {
         return new DrawableMuseRect(super.left(), super.top(), super.right(), super.bottom(),
-                (this.ul != this.ulFinal || this.wh != this.whFinal) , backgroundColour, borderColour).setBackgroundColour(backgroundColour2);
+                (this.ul != this.ulFinal || this.wh != this.whFinal), backgroundColour, borderColour).setBackgroundColour(backgroundColour2);
     }
 
     @Override
@@ -144,50 +145,50 @@ public class DrawableMuseRect extends MuseRect {
         return cornerradius;
     }
 
-    public FloatBuffer preDraw(double shrinkBy) {
-        return preDraw(left() + shrinkBy, top() + shrinkBy, right() - shrinkBy, bottom() - shrinkBy);
+    public FloatBuffer getVertices(double shrinkBy) {
+        return getVertices(left() + shrinkBy, top() + shrinkBy, right() - shrinkBy, bottom() - shrinkBy);
     }
 
-    public FloatBuffer preDraw(double left, double top, double right, double bottom) {
+    public FloatBuffer getVertices(double left, double top, double right, double bottom) {
         FloatBuffer vertices;
-            // top left corner
-            FloatBuffer corner = GradientAndArcCalculator.getArcPoints(
-                    (float)Math.PI,
-                    (float)(3.0 * Math.PI / 2.0),
-                    (float)getCornerradius(),
-                    (float)(left + getCornerradius()),
-                    (float)(top + getCornerradius()));
+        // top left corner
+        FloatBuffer corner = GradientAndArcCalculator.getArcPoints(
+                (float) Math.PI,
+                (float) (3.0 * Math.PI / 2.0),
+                (float) getCornerradius(),
+                (float) (left + getCornerradius()),
+                (float) (top + getCornerradius()));
 
-            vertices = BufferUtils.createFloatBuffer(corner.limit() * 4);
-            vertices.put(corner);
+        vertices = BufferUtils.createFloatBuffer(corner.limit() * 4);
+        vertices.put(corner);
 
-            // bottom left corner
-            corner = GradientAndArcCalculator.getArcPoints(
-                    (float)(3.0 * Math.PI / 2.0F),
-                    (float)(2.0 * Math.PI),
-                    (float)getCornerradius(),
-                    (float)(left + getCornerradius()),
-                    (float)(bottom - getCornerradius()));
-            vertices.put(corner);
+        // bottom left corner
+        corner = GradientAndArcCalculator.getArcPoints(
+                (float) (3.0 * Math.PI / 2.0F),
+                (float) (2.0 * Math.PI),
+                (float) getCornerradius(),
+                (float) (left + getCornerradius()),
+                (float) (bottom - getCornerradius()));
+        vertices.put(corner);
 
-            // bottom right corner
-            corner = GradientAndArcCalculator.getArcPoints(
-                    0,
-                    (float) (Math.PI / 2.0),
-                    (float)getCornerradius(),
-                    (float)(right - getCornerradius()),
-                    (float)(bottom - getCornerradius()));
-            vertices.put(corner);
+        // bottom right corner
+        corner = GradientAndArcCalculator.getArcPoints(
+                0,
+                (float) (Math.PI / 2.0),
+                (float) getCornerradius(),
+                (float) (right - getCornerradius()),
+                (float) (bottom - getCornerradius()));
+        vertices.put(corner);
 
-            // top right corner
-            corner = GradientAndArcCalculator.getArcPoints(
-                    (float) (Math.PI / 2.0),
-                    (float) Math.PI,
-                    (float)getCornerradius(),
-                    (float)(right - getCornerradius()),
-                    (float)(top + getCornerradius()));
-            vertices.put(corner);
-            vertices.flip();
+        // top right corner
+        corner = GradientAndArcCalculator.getArcPoints(
+                (float) (Math.PI / 2.0),
+                (float) Math.PI,
+                (float) getCornerradius(),
+                (float) (right - getCornerradius()),
+                (float) (top + getCornerradius()));
+        vertices.put(corner);
+        vertices.flip();
 
         return vertices;
     }
@@ -209,55 +210,24 @@ public class DrawableMuseRect extends MuseRect {
     }
 
     void drawBuffer(MatrixStack matrixStack, FloatBuffer vertices, Colour colour, int glMode) {
-        RenderSystem.disableTexture();
-        RenderSystem.enableBlend();
-        RenderSystem.disableAlphaTest();
-        RenderSystem.defaultBlendFunc();
-
-        Tessellator tessellator = Tessellator.getInstance();
-        BufferBuilder buffer = tessellator.getBuffer();
-        buffer.begin(glMode, DefaultVertexFormats.POSITION_COLOR);
-
-        while (vertices.hasRemaining()) {
-            buffer.pos(matrixStack.getLast().getMatrix(), vertices.get(), vertices.get(), zLevel).color(colour.r, colour.g, colour.b, colour.a).endVertex();
-        }
-
-        tessellator.draw();
-
-        RenderSystem.shadeModel(GL11.GL_FLAT);
-        RenderSystem.disableBlend();
-        RenderSystem.enableAlphaTest();
-        RenderSystem.enableTexture();
+        preDraw(glMode, DefaultVertexFormats.POSITION_COLOR);
+        addVerticesToBuffer(matrixStack.getLast().getMatrix(), vertices, colour);
+        drawTesselator();
+        postDraw();
     }
 
     void drawBuffer(MatrixStack matrixStack, FloatBuffer vertices, FloatBuffer colours, int glMode) {
-        RenderSystem.disableTexture();
-        RenderSystem.enableBlend();
-        RenderSystem.disableAlphaTest();
-        RenderSystem.defaultBlendFunc();
-
-        Tessellator tessellator = Tessellator.getInstance();
-        BufferBuilder buffer = tessellator.getBuffer();
-        buffer.begin(glMode, DefaultVertexFormats.POSITION_COLOR);
-
-        while (vertices.hasRemaining() && colours.hasRemaining()) {
-            buffer.pos(matrixStack.getLast().getMatrix(), vertices.get(), vertices.get(), zLevel).color(colours.get(), colours.get(), colours.get(), colours.get()).endVertex();
-        }
-        tessellator.draw();
-
-        RenderSystem.shadeModel(GL11.GL_FLAT);
-        RenderSystem.disableBlend();
-        RenderSystem.enableAlphaTest();
-        RenderSystem.enableTexture();
+        preDraw(glMode, DefaultVertexFormats.POSITION_COLOR);
+        addVerticesToBuffer(matrixStack.getLast().getMatrix(), vertices, colours);
+        drawTesselator();
+        postDraw();
     }
-
 
     // FIXME!!! still need to address gradient direction 
 
-
     public void draw(MatrixStack matrixStack, float zLevel) {
         this.zLevel = zLevel;
-        FloatBuffer vertices = preDraw(0);
+        FloatBuffer vertices = getVertices(0);
 
         if (backgroundColour2 != null) {
             FloatBuffer colours = GradientAndArcCalculator.getColourGradient(backgroundColour,
@@ -268,7 +238,7 @@ public class DrawableMuseRect extends MuseRect {
         }
 
         if (shrinkBorder) {
-            vertices = preDraw(1);
+            vertices = getVertices(1);
         } else {
             vertices.rewind();
         }
@@ -293,5 +263,16 @@ public class DrawableMuseRect extends MuseRect {
         stringbuilder.append("Height: ").append(height()).append("\n");
         stringbuilder.append("FinalHeight: ").append(finalHeight()).append("\n");
         return stringbuilder.toString();
+    }
+
+    @Override
+    public float getZLevel() {
+        return this.zLevel;
+    }
+
+    @Override
+    public IDrawable setZLevel(float zLevelIn) {
+        zLevel = zLevelIn;
+        return this;
     }
 }

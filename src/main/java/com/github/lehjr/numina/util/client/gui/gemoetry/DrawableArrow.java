@@ -28,9 +28,6 @@ package com.github.lehjr.numina.util.client.gui.gemoetry;
 
 import com.github.lehjr.numina.util.math.Colour;
 import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.systems.RenderSystem;
-import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.math.vector.Matrix4f;
 import org.lwjgl.BufferUtils;
@@ -38,7 +35,7 @@ import org.lwjgl.opengl.GL11;
 
 import java.nio.FloatBuffer;
 
-public class DrawableArrow extends MuseRelativeRect {
+public class DrawableArrow extends MuseRelativeRect implements IDrawable{
     Colour backgroundColour;
     Colour borderColour;
     boolean drawShaft = true;
@@ -97,246 +94,293 @@ public class DrawableArrow extends MuseRelativeRect {
         this.drawShaft = drawShaft;
     }
 
-    FloatBuffer arrowHeadVertices(float shrinkBy) {
-        /**
-         * ( 3 vertices X 2 axis ) because the zLevel is supplied elsewhere.
-         */
-        FloatBuffer buffer = BufferUtils.createFloatBuffer(3 /* points */ * 2 /* axis */);
+    /**
+     arrow vertices starting at tip and following a counter clockwise pattern :
+     ---------------------------------------------------------------------------
 
+     background with arrow shaft:
+     ABG - Draw
+     CDEF - Draw
+
+     background without arrow shaft
+     ABG - Draw
+
+     border with arrow shaft:
+     ABCDEFG - Draw
+
+     border without arrow shaft
+     ABG -Draw
+
+     */
+
+    /**
+     * Arrow tip
+     * @param shrinkBy
+     * @param buffer
+     * @return
+     */
+    FloatBuffer getVertexA(float shrinkBy, FloatBuffer buffer) {
+        switch (this.facing) {
+            case RIGHT:
+                buffer.put((float) (right() - shrinkBy));
+                buffer.put((float) centery());
+                break;
+            case LEFT:
+                buffer.put((float) (left() + shrinkBy));
+                buffer.put((float) centery());
+                break;
+            case UP:
+                buffer.put((float) centerx());
+                buffer.put((float) (top() + shrinkBy));
+                break;
+            case DOWN:
+                buffer.put((float) centerx());
+                buffer.put((float) (bottom() - shrinkBy));
+                break;
+        }
+        return buffer;
+    }
+
+    /**
+     * Arrow head part
+     * @param shrinkBy
+     * @param buffer
+     * @return
+     */
+    FloatBuffer getVertexB(float shrinkBy, FloatBuffer buffer) {
         switch (this.facing) {
             case RIGHT:
                 /** left top */
                 buffer.put((float) ((drawShaft ? (centerx() + (width() * 0.15F)) : left()) + shrinkBy));
-                buffer.put((float) ((centery() - (height() * 0.4F)) + shrinkBy));
-
-                /** tip */
-                buffer.put((float) (right() - shrinkBy));
-                buffer.put((float) centery());
-
-                /** left bottom */
-                buffer.put((float) ((drawShaft ? (centerx() + (width() * 0.15F)) : left()) + shrinkBy));
-                buffer.put((float) ((centery() + (height() * 0.4F)) - shrinkBy));
+                buffer.put((float) ((centery() - (height() * 0.4F)) + shrinkBy * 2.5));
                 break;
-
-            case DOWN:
-                /** top right */
-                buffer.put((float) (centerx() + (width() * 0.4F) - shrinkBy));
-                buffer.put((float) ((drawShaft ?  (centery() + (height() * 0.15F)) : top()) + shrinkBy));
-
-                /** tip */
-                buffer.put((float) centerx());
-                buffer.put((float) (bottom() - shrinkBy));
-
-                /** top left */
-                buffer.put((float) (centerx() - (width() * 0.4F) + shrinkBy));
-                buffer.put((float) ((drawShaft ? (centery() + (height() * 0.15F)) : top()) + shrinkBy));
-                break;
-
             case LEFT:
                 /** bottom right */
-                buffer.put((float) ((drawShaft ? (float) (centerx() - (width() * 0.15)) : right()) + shrinkBy));
-                buffer.put((float) (centery() + (height() * 0.4F) - shrinkBy));
-
-                /** tip */
-                buffer.put((float) (left() - shrinkBy));
-                buffer.put((float) centery());
-
-                /** top right */
-                buffer.put((float) ((drawShaft ? (float) (centerx() - (width() * 0.15)) : right()) + shrinkBy));
-                buffer.put((float) (centery() - (height() * 0.4F) + shrinkBy));
+                buffer.put((float) ((drawShaft ? (float) (centerx() - (width() * 0.15)) : right()) - shrinkBy));
+                buffer.put((float) (centery() + (height() * 0.4F) - shrinkBy * 2.5));
                 break;
             case UP:
                 /** bottom left */
-                buffer.put((float) (centerx() - (width() * 0.4F) + shrinkBy));
+                buffer.put((float) (centerx() - (width() * 0.4F) + shrinkBy * 2.5));
                 buffer.put((float) ((drawShaft ? (centery() - (height() * 0.15F)) : bottom()) - shrinkBy));
-
-                /** point */
-                buffer.put((float) centerx());
-                buffer.put((float) (top() + shrinkBy));
-
-                /** bottom right */
-                buffer.put((float) (centerx() + (width() * 0.4F) - shrinkBy));
-                buffer.put((float) ((drawShaft ? (centery() - (height() * 0.15F)): bottom()) - shrinkBy));
+                break;
+            case DOWN:
+                /** top right */
+                buffer.put((float) (centerx() + (width() * 0.4F) - shrinkBy * 2.5));
+                buffer.put((float) ((drawShaft ?  (centery() + (height() * 0.15F)) : top()) + shrinkBy));
                 break;
         }
-        buffer.flip();
         return buffer;
     }
 
-    FloatBuffer arrowShaftVerticesPt1(float shrinkBy) {
-        /**
-         * (2 vertices X 2 axis ) because the zLevel is supplied elsewhere.
-         */
-        FloatBuffer buffer = BufferUtils.createFloatBuffer(2 /* points */ * 2 /* axis */);
+    /**
+     * Arrow shaft part
+     * @param shrinkBy
+     * @param buffer
+     * @return
+     */
+    FloatBuffer getVertexC(float shrinkBy, FloatBuffer buffer) {
+        switch (this.facing) {
+            case RIGHT:
+                /** top right */
+                buffer.put((float) (centerx() + (width() * 0.15F) + shrinkBy));
+                buffer.put((float) (centery() - (height() * 0.15F) + shrinkBy));
+                break;
 
+            case LEFT:
+                /** bottom left */
+                buffer.put((float) (centerx() - (width() * 0.15F) - shrinkBy));
+                buffer.put((float) (centery() + (height()* 0.15F) - shrinkBy));
+                break;
+
+            case UP:
+                /** top left */
+                buffer.put((float) (centerx() - (width() * 0.15F) + shrinkBy));
+                buffer.put((float) (centery() - (height()* 0.15F) - shrinkBy));
+                break;
+
+            case DOWN:
+                /** bottom right */
+                buffer.put((float) (centerx() + (width() * 0.15F) - shrinkBy));
+                buffer.put((float) (centery() + (height()* 0.15F) + shrinkBy));
+                break;
+        }
+        return buffer;
+    }
+
+    /**
+     * Arrow shaft part
+     * @param shrinkBy
+     * @param buffer
+     * @return
+     */
+    FloatBuffer getVertexD(float shrinkBy, FloatBuffer buffer) {
         switch (this.facing) {
             case RIGHT:
                 /** top left */
                 buffer.put((float) (left() + shrinkBy));
                 buffer.put((float) (centery() - (height()* 0.15F) + shrinkBy));
-
-                /** top right */
-                buffer.put((float) (centerx() + (width() * 0.15F) + shrinkBy));
-                buffer.put((float) (centery() - (height() * 0.15F) + shrinkBy));
+                break;
+            case LEFT:
+                /** bottom right */
+                buffer.put((float) (right() - shrinkBy));
+                buffer.put((float) (centery() + (height()* 0.15F) - shrinkBy));
+                break;
+            case UP:
+                /** bottom left */
+                buffer.put((float) (centerx() - width() * 0.15F + shrinkBy));
+                buffer.put((float) (bottom() - shrinkBy));
                 break;
             case DOWN:
                 /** top right */
                 buffer.put((float) (centerx() + width()* 0.15F - shrinkBy));
                 buffer.put((float) (top() + shrinkBy));
-
-                /** bottom right */
-                buffer.put((float) (centerx() + (width() * 0.15F) - shrinkBy));
-                buffer.put((float) (centery() + (height()* 0.15F) + shrinkBy));
-                break;
-
-            case LEFT:
-                /** bottom right */
-                buffer.put((float) (right() - shrinkBy));
-                buffer.put((float) (centery() + (height()* 0.15F) - shrinkBy));
-
-                /** bottom left */
-                buffer.put((float) (centerx() - (width() * 0.15F) + shrinkBy));
-                buffer.put((float) (centery() + (height()* 0.15F) - shrinkBy));
-                break;
-
-            case UP:
-                /** bottom left */
-                buffer.put((float) (centerx() - width() * 0.15F + shrinkBy));
-                buffer.put((float) (bottom() - shrinkBy));
-
-                /** top left */
-                buffer.put((float) (centerx() - (width() * 0.15F) + shrinkBy));
-                buffer.put((float) (centery() - (height()* 0.15F) - shrinkBy));
                 break;
         }
-        buffer.flip();
         return buffer;
     }
 
-    FloatBuffer arrowShaftVerticesPt2(float shrinkBy) {
-        /**
-         * (2 vertices X 2 axis ) because the zLevel is supplied elsewhere.
-         */
-        FloatBuffer buffer = BufferUtils.createFloatBuffer(2 /* points */ * 2 /* axis */);
+    FloatBuffer getVertexE(float shrinkBy, FloatBuffer buffer) {
+        switch (this.facing) {
+            case RIGHT:
+                /** bottom left */
+                buffer.put((float) (left() + shrinkBy));
+                buffer.put((float) (centery() + (height()* 0.15F) - shrinkBy));
+                break;
+            case LEFT:
+                /** top right */
+                buffer.put((float) (right() - shrinkBy));
+                buffer.put((float) (centery() - (height() * 0.15F) + shrinkBy));
+                break;
+            case UP:
+                /** bottom right */
+                buffer.put((float) (centerx() + (width() * 0.15F) - shrinkBy));
+                buffer.put((float) (bottom() - shrinkBy));
+                break;
+            case DOWN:
+                /** top left */
+                buffer.put((float) (centerx() - width()* 0.15F + shrinkBy));
+                buffer.put((float) (top() + shrinkBy));
+                break;
+        }
+        return buffer;
+    }
 
+    /**
+     * Arrow shaft part
+     * @param shrinkBy
+     * @param buffer
+     * @return
+     */
+    FloatBuffer getVertexF(float shrinkBy, FloatBuffer buffer) {
         switch (this.facing) {
             case RIGHT:
                 /** bottom right */
                 buffer.put((float) (centerx() + (width() * 0.15F) + shrinkBy));
                 buffer.put((float) (centery() + (height() * 0.15F) - shrinkBy));
-
-                /** bottom left */
-                buffer.put((float) (left() + shrinkBy));
-                buffer.put((float) (centery() + (height()* 0.15F) - shrinkBy));
                 break;
-
+            case LEFT:
+                /** top left */
+                buffer.put((float) (centerx() - (width() * 0.15F) - shrinkBy));
+                buffer.put((float) (centery() - (height() * 0.15F) + shrinkBy));
+                break;
+            case UP:
+                /** top right */
+                buffer.put((float) (centerx() + width() * 0.15F - shrinkBy));
+                buffer.put((float) (centery() - (height() * 0.15F) - shrinkBy));
+                break;
             case DOWN:
                 /** bottom left */
                 buffer.put((float) (centerx() - width()* 0.15F + shrinkBy));
-                buffer.put((float) (centery() + (height()* 0.15F) + shrinkBy));
-
-                /** top left */
-                buffer.put((float) (centerx() - width()* 0.15F + shrinkBy));
-                buffer.put((float) (top() + shrinkBy));
-                break;
-
-            case LEFT:
-                /** top left */
-                buffer.put((float) (centerx() - (width() * 0.15F) + shrinkBy));
-                buffer.put((float) (centery() - (height()* 0.15F) + shrinkBy));
-
-                /** top right */
-                buffer.put((float) (right() - shrinkBy));
-                buffer.put((float) (centery() - (height()* 0.15F) + shrinkBy));
-                break;
-
-            case UP:
-                /** top right */
-                buffer.put((float) (centerx() + width()* 0.15F - shrinkBy));
-                buffer.put((float) (centery() - (height()* 0.15F) - shrinkBy));
-
-                /** bottom right */
-                buffer.put((float) (centerx() + (width() * 0.15F) - shrinkBy));
-                buffer.put((float) (bottom() - shrinkBy));
+                buffer.put((float) (centery() + (height() * 0.15F) + shrinkBy));
                 break;
         }
-        buffer.flip();
+        return buffer;
+    }
+
+    /**
+     * Arrow head part
+     * @param shrinkBy
+     * @param buffer
+     * @return
+     */
+    FloatBuffer getVertexG(float shrinkBy, FloatBuffer buffer) {
+        switch (this.facing) {
+            case RIGHT:
+                /** bottom left */
+                buffer.put((float) ((drawShaft ? (centerx() + (width() * 0.15F)) : left()) + shrinkBy));
+                buffer.put((float) ((centery() + (height() * 0.4F)) - shrinkBy * 2.5));
+                break;
+            case LEFT:
+                /** top right */
+                buffer.put((float) ((drawShaft ? (float) (centerx() - (width() * 0.15)) : right()) - shrinkBy));
+                buffer.put((float) (centery() - (height() * 0.4F) + shrinkBy * 2.5));
+                break;
+            case UP:
+                /** bottom right */
+                buffer.put((float) (centerx() + (width() * 0.4F) - shrinkBy * 2.5));
+                buffer.put((float) ((drawShaft ? (centery() - (height() * 0.15F)): bottom()) - shrinkBy));
+                break;
+
+            case DOWN:
+                /** top left */
+                buffer.put((float) (centerx() - (width() * 0.4F) + shrinkBy * 2.5));
+                buffer.put((float) ((drawShaft ? (centery() + (height() * 0.15F)) : top()) + shrinkBy));
+                break;
+        }
         return buffer;
     }
 
     void drawBackground(MatrixStack matrixStack) {
-        RenderSystem.disableTexture();
-        RenderSystem.enableBlend();
-        RenderSystem.disableAlphaTest();
-        RenderSystem.defaultBlendFunc();
-        RenderSystem.shadeModel(GL11.GL_SMOOTH);
+        preDraw(GL11.GL_POLYGON, DefaultVertexFormats.POSITION_COLOR);
+        Matrix4f matrix4f  = matrixStack.getLast().getMatrix();
 
-        Tessellator tessellator = Tessellator.getInstance();
-        BufferBuilder buffer = tessellator.getBuffer();
-        buffer.begin(GL11.GL_POLYGON, DefaultVertexFormats.POSITION_COLOR);
+        // Arrow head
+        FloatBuffer vertices = BufferUtils.createFloatBuffer(3 /* points */ * 2 /* axis */);
+        getVertexA(0, vertices);
+        getVertexB(0, vertices);
+        getVertexG(0, vertices);
+        vertices.flip();
+        vertices.rewind();
+        addVerticesToBuffer(matrix4f, vertices, backgroundColour);
+        drawTesselator();
 
-        FloatBuffer vertices = arrowHeadVertices(0);
-        while (vertices.hasRemaining()) {
-            buffer.pos(matrixStack.getLast().getMatrix(), vertices.get(), vertices.get(), zLevel).color(backgroundColour.r, backgroundColour.g, backgroundColour.b, backgroundColour.a).endVertex();
+        if (this.drawShaft) {
+            preDraw(GL11.GL_POLYGON, DefaultVertexFormats.POSITION_COLOR);
+            vertices = BufferUtils.createFloatBuffer(4 /* points */ * 2 /* axis */);
+            getVertexC(0, vertices);
+            getVertexD(0, vertices);
+            getVertexE(0, vertices);
+            getVertexF(0, vertices);
+            vertices.flip();
+            vertices.rewind();
+            addVerticesToBuffer(matrix4f, vertices, backgroundColour);
+            drawTesselator();
         }
-        tessellator.draw();
-
-        if (drawShaft) {
-            buffer.begin(GL11.GL_POLYGON, DefaultVertexFormats.POSITION_COLOR);
-
-            vertices = arrowShaftVerticesPt1(0);
-            while (vertices.hasRemaining()) {
-                buffer.pos(matrixStack.getLast().getMatrix(), vertices.get(), vertices.get(), zLevel).color(backgroundColour.r, backgroundColour.g, backgroundColour.b, backgroundColour.a).endVertex();
-            }
-
-            vertices = arrowShaftVerticesPt2( 0);
-            while (vertices.hasRemaining()) {
-                buffer.pos(matrixStack.getLast().getMatrix(), vertices.get(), vertices.get(), zLevel).color(backgroundColour.r, backgroundColour.g, backgroundColour.b, backgroundColour.a).endVertex();
-            }
-            tessellator.draw();
-        }
-
-        RenderSystem.shadeModel(GL11.GL_FLAT);
-        RenderSystem.disableBlend();
-        RenderSystem.enableAlphaTest();
-        RenderSystem.enableTexture();
+        postDraw();
     }
 
     void drawBorder(MatrixStack matrixStack) {
         FloatBuffer vertices = BufferUtils.createFloatBuffer(6 + (drawShaft ? 8 : 0));
-        if (drawShaft) {
-            vertices.put(arrowShaftVerticesPt1(shrinkBorder ? 1 : 0));
-        }
+        preDraw(GL11.GL_LINE_LOOP, DefaultVertexFormats.POSITION_COLOR);
+        Matrix4f matrix4f  = matrixStack.getLast().getMatrix();
 
-        vertices.put(arrowHeadVertices(shrinkBorder ? 1 : 0));
-
+        getVertexA(shrinkBorder ? 2 : 0, vertices);
+        getVertexB(shrinkBorder ? 2 : 0, vertices);
         if (drawShaft) {
-            vertices.put(arrowShaftVerticesPt2(shrinkBorder ? 1 : 0));
+            getVertexC(shrinkBorder ? 2 : 0, vertices);
+            getVertexD(shrinkBorder ? 2 : 0, vertices);
+            getVertexE(shrinkBorder ? 2 : 0, vertices);
+            getVertexF(shrinkBorder ? 2 : 0, vertices);
         }
+        getVertexG(shrinkBorder ? 2 : 0, vertices);
+
+        vertices.flip();
         vertices.rewind();
+        addVerticesToBuffer(matrix4f, vertices, borderColour);
+        drawTesselator();
 
-        FloatBuffer borderColours = GradientAndArcCalculator.getColourGradient(borderColour,
-                borderColour.withAlpha(1), vertices.limit());
-
-        RenderSystem.disableTexture();
-        RenderSystem.enableBlend();
-        RenderSystem.disableAlphaTest();
-        RenderSystem.defaultBlendFunc();
-        RenderSystem.shadeModel(GL11.GL_SMOOTH);
-        Tessellator tessellator = Tessellator.getInstance();
-        BufferBuilder buffer = tessellator.getBuffer();
-
-        buffer.begin(GL11.GL_LINE_LOOP, DefaultVertexFormats.POSITION_COLOR);
-
-        while (vertices.hasRemaining() && borderColours.hasRemaining()) {
-            buffer.pos(matrixStack.getLast().getMatrix(), vertices.get(), vertices.get(), zLevel).color(borderColours.get(), borderColours.get(), borderColours.get(), borderColours.get()).endVertex();
-        }
-
-        tessellator.draw();
-        RenderSystem.shadeModel(GL11.GL_FLAT);
-        RenderSystem.disableBlend();
-        RenderSystem.enableAlphaTest();
-        RenderSystem.enableTexture();
+        postDraw();
     }
 
     float zLevel;
@@ -346,8 +390,29 @@ public class DrawableArrow extends MuseRelativeRect {
         drawBorder(matrixStack);
     }
 
-    public ArrowDirection getFacing(Matrix4f matrix4f) {
+    public void drawBackground(MatrixStack matrixStack, float zLevel) {
+        this.zLevel = zLevel;
+        drawBackground(matrixStack);
+    }
+
+    public void drawBorder(MatrixStack matrixStack, float zLevel) {
+        this.zLevel = zLevel;
+        drawBorder(matrixStack);
+    }
+
+    public ArrowDirection getFacing() {
         return facing;
+    }
+
+    @Override
+    public float getZLevel() {
+        return zLevel;
+    }
+
+    @Override
+    public IDrawable setZLevel(float zLevelIn) {
+        this.zLevel = zLevelIn;
+        return this;
     }
 
     public enum ArrowDirection {

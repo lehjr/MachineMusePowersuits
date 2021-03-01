@@ -84,44 +84,6 @@ public class DrawableTile extends MuseRelativeRect {
                 .setBottomBorderColour(bottomBorderColour);
     }
 
-//    @Override
-//    public DrawableTile setLeft(double value) {
-//        super.setLeft(value);
-//        return this;
-//    }
-//
-//    @Override
-//    public DrawableTile setRight(double value) {
-//        super.setRight(value);
-//        return this;
-//    }
-//
-//    @Override
-//    public DrawableTile setTop(double value) {
-//        super.setTop(value);
-//        return this;
-//    }
-//
-//    @Override
-//    public DrawableTile setBottom(double value) {
-//        super.setBottom(value);
-//        return this;
-//    }
-//
-//    @Override
-//    public DrawableTile setWidth(double value) {
-//        super.setWidth(value);
-//        return this;
-//    }
-//
-//    @Override
-//    public DrawableTile setHeight(double value) {
-//        super.setHeight(value);
-//        return this;
-//    }
-
-
-
     void draw(MatrixStack matrix4f, Colour colour, int glMode, double shrinkBy) {
         RenderSystem.disableTexture();
         RenderSystem.enableBlend();

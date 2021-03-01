@@ -70,14 +70,14 @@ public class Meter extends DrawableMuseRect {
 
     FloatBuffer getMeterVertices() {
         float right = (float) (finalLeft() + (finalWidth() - 1) * value);
-        return preDraw(this.finalLeft() +1, this.finalTop() + 1, right, this.finalBottom() -1);
+        return getVertices(this.finalLeft() +1, this.finalTop() + 1, right, this.finalBottom() -1);
     }
 
     public void draw(MatrixStack matrixStack,float zLevel) {
         this.zLevel = zLevel;
 
         // background
-        FloatBuffer backgroundVertices = this.preDraw(0.0F);
+        FloatBuffer backgroundVertices = this.getVertices(0.0F);
         FloatBuffer backgroundColours = GradientAndArcCalculator.getColourGradient(this.backgroundColour, this.backgroundColour2, backgroundVertices.limit() * 4);
         this.drawBackground(matrixStack, backgroundVertices, backgroundColours);
 
@@ -87,7 +87,7 @@ public class Meter extends DrawableMuseRect {
 
         // frame
         if (this.shrinkBorder) {
-            backgroundVertices = this.preDraw(1.0F);
+            backgroundVertices = this.getVertices(1.0F);
         } else {
             backgroundVertices.rewind();
         }
