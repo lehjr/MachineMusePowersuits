@@ -52,6 +52,10 @@ import javax.annotation.Nullable;
 import java.util.List;
 
 public class Battery extends Item {
+    /**
+     * these values are only used during initialization to set up the config.
+     * They can be overridden in the config.
+     */
     protected int maxEnergy;
     protected int maxTransfer;
 
@@ -70,13 +74,6 @@ public class Battery extends Item {
         if (worldIn != null) {
             super.addInformation(itemStack, worldIn, tooltips, flagIn);
             AdditionalInfo.addInformation(itemStack, worldIn, tooltips, flagIn);
-
-//            itemStack.getCapability(CapabilityEnergy.ENERGY).ifPresent(iEnergyStorage -> {
-//                tooltips.add(new StringTextComponent(I18n.format(NuminaConstants.TOOLTIP_ENERGY,
-//                        MuseStringUtils.formatNumberShort(iEnergyStorage.getEnergyStored()),
-//                        MuseStringUtils.formatNumberShort(iEnergyStorage.getMaxEnergyStored()))));
-//            });
-//            tooltips.add(new TranslationTextComponent(getTranslationKey() +".desc"));
         }
     }
 
@@ -93,9 +90,11 @@ public class Battery extends Item {
 
         public CapProvider(@Nonnull ItemStack module) {
             this.module = module;
-            this.moduleCap = new PowerModule(module, EnumModuleCategory.ENERGY_STORAGE, EnumModuleTarget.ALLITEMS, NuminaSettings::getModuleConfig);
-            this.moduleCap.addBaseProperty(NuminaConstants.MAX_ENERGY, maxEnergy, "FE");
-            this.moduleCap.addBaseProperty(NuminaConstants.MAX_TRAMSFER, maxTransfer, "FE");
+            this.moduleCap = new PowerModule(module, EnumModuleCategory.ENERGY_STORAGE, EnumModuleTarget.ALLITEMS, NuminaSettings::getModuleConfig) {{
+                addBaseProperty(NuminaConstants.MAX_ENERGY, maxEnergy, "FE");
+                addBaseProperty(NuminaConstants.MAX_TRAMSFER, maxTransfer, "FE");
+            }};
+
             this.energyStorage = new ForgeEnergyModuleWrapper(
                     module,
                     (int)moduleCap.applyPropertyModifiers(NuminaConstants.MAX_ENERGY),

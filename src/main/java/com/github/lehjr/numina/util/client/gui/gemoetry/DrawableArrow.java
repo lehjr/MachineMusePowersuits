@@ -35,7 +35,7 @@ import org.lwjgl.opengl.GL11;
 
 import java.nio.FloatBuffer;
 
-public class DrawableArrow extends MuseRelativeRect implements IDrawable{
+public class DrawableArrow extends MuseRelativeRect implements IDrawable {
     Colour backgroundColour;
     Colour borderColour;
     boolean drawShaft = true;
@@ -151,23 +151,23 @@ public class DrawableArrow extends MuseRelativeRect implements IDrawable{
         switch (this.facing) {
             case RIGHT:
                 /** left top */
-                buffer.put((float) ((drawShaft ? (centerx() + (width() * 0.15F)) : left()) + shrinkBy));
-                buffer.put((float) ((centery() - (height() * 0.4F)) + shrinkBy * 2.5));
+                buffer.put((float) ((drawShaft ? (centerx() + (width() * 0.15F)) : left()) + shrinkBy * 0.5));
+                buffer.put((float) ((centery() - (height() * 0.4F)) + (drawShaft ? shrinkBy * 2.5 : shrinkBy)));
                 break;
             case LEFT:
                 /** bottom right */
-                buffer.put((float) ((drawShaft ? (float) (centerx() - (width() * 0.15)) : right()) - shrinkBy));
-                buffer.put((float) (centery() + (height() * 0.4F) - shrinkBy * 2.5));
+                buffer.put((float) ((drawShaft ? (float) (centerx() - (width() * 0.15)) : right()) - shrinkBy * 0.5));
+                buffer.put((float) (centery() + (height() * 0.4F) - (drawShaft ? shrinkBy * 2.5 : shrinkBy)));
                 break;
             case UP:
                 /** bottom left */
-                buffer.put((float) (centerx() - (width() * 0.4F) + shrinkBy * 2.5));
-                buffer.put((float) ((drawShaft ? (centery() - (height() * 0.15F)) : bottom()) - shrinkBy));
+                buffer.put((float) (centerx() - (width() * 0.4F) + (drawShaft ? shrinkBy * 2.5 : shrinkBy)));
+                buffer.put((float) ((drawShaft ? (centery() - (height() * 0.15F)) : bottom()) - shrinkBy * 0.5));
                 break;
             case DOWN:
                 /** top right */
-                buffer.put((float) (centerx() + (width() * 0.4F) - shrinkBy * 2.5));
-                buffer.put((float) ((drawShaft ?  (centery() + (height() * 0.15F)) : top()) + shrinkBy));
+                buffer.put((float) (centerx() + (width() * 0.4F) - (drawShaft ? shrinkBy * 2.5 : shrinkBy)));
+                buffer.put((float) ((drawShaft ?  (centery() + (height() * 0.15F)) : top()) + shrinkBy * 0.5));
                 break;
         }
         return buffer;
@@ -308,24 +308,24 @@ public class DrawableArrow extends MuseRelativeRect implements IDrawable{
         switch (this.facing) {
             case RIGHT:
                 /** bottom left */
-                buffer.put((float) ((drawShaft ? (centerx() + (width() * 0.15F)) : left()) + shrinkBy));
-                buffer.put((float) ((centery() + (height() * 0.4F)) - shrinkBy * 2.5));
+                buffer.put((float) ((drawShaft ? (centerx() + (width() * 0.15F)) : left()) + shrinkBy * 0.5));
+                buffer.put((float) ((centery() + (height() * 0.4F)) - (drawShaft ? shrinkBy * 2.5 : shrinkBy)));
                 break;
             case LEFT:
                 /** top right */
-                buffer.put((float) ((drawShaft ? (float) (centerx() - (width() * 0.15)) : right()) - shrinkBy));
-                buffer.put((float) (centery() - (height() * 0.4F) + shrinkBy * 2.5));
+                buffer.put((float) ((drawShaft ? (float) (centerx() - (width() * 0.15)) : right()) - shrinkBy * 0.5));
+                buffer.put((float) (centery() - (height() * 0.4F) + (drawShaft ? shrinkBy * 2.5 : shrinkBy)));
                 break;
             case UP:
                 /** bottom right */
-                buffer.put((float) (centerx() + (width() * 0.4F) - shrinkBy * 2.5));
-                buffer.put((float) ((drawShaft ? (centery() - (height() * 0.15F)): bottom()) - shrinkBy));
+                buffer.put((float) (centerx() + (width() * 0.4F) - (drawShaft ? shrinkBy * 2.5 : shrinkBy)));
+                buffer.put((float) ((drawShaft ? (centery() - (height() * 0.15F)): bottom()) - shrinkBy * 0.5));
                 break;
 
             case DOWN:
                 /** top left */
-                buffer.put((float) (centerx() - (width() * 0.4F) + shrinkBy * 2.5));
-                buffer.put((float) ((drawShaft ? (centery() + (height() * 0.15F)) : top()) + shrinkBy));
+                buffer.put((float) (centerx() - (width() * 0.4F) + (drawShaft ? shrinkBy * 2.5 : shrinkBy)));
+                buffer.put((float) ((drawShaft ? (centery() + (height() * 0.15F)) : top()) + shrinkBy * 0.5));
                 break;
         }
         return buffer;

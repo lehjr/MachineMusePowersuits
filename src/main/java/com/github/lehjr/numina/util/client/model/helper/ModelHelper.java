@@ -27,14 +27,17 @@
 package com.github.lehjr.numina.util.client.model.helper;
 
 import com.github.lehjr.numina.basemod.MuseLogger;
+import com.github.lehjr.numina.util.client.model.obj.OBJBakedCompositeModel;
+import com.github.lehjr.numina.util.client.model.obj.OBJModelConfiguration;
 import com.github.lehjr.numina.util.math.Colour;
 import com.google.common.collect.ImmutableList;
 import forge.NuminaOBJLoader;
 import forge.NuminaOBJModel;
-import com.github.lehjr.numina.util.client.model.obj.OBJBakedCompositeModel;
-import com.github.lehjr.numina.util.client.model.obj.OBJModelConfiguration;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.model.*;
+import net.minecraft.client.renderer.model.BakedQuad;
+import net.minecraft.client.renderer.model.IModelTransform;
+import net.minecraft.client.renderer.model.ItemOverrideList;
+import net.minecraft.client.renderer.model.RenderMaterial;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.VertexFormatElement;
 import net.minecraft.util.ResourceLocation;

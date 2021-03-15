@@ -27,14 +27,12 @@
 package com.github.lehjr.numina.client.gui;
 
 import com.github.lehjr.numina.container.ChargingBaseContainer;
-import com.github.lehjr.numina.util.client.gui.clickable.ClickableArrow;
-import com.github.lehjr.numina.util.client.gui.gemoetry.DrawableArrow;
-import com.github.lehjr.numina.util.client.gui.gemoetry.DrawableRelativeRect;
-import com.github.lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
-import com.github.lehjr.numina.util.math.Colour;
 import com.github.lehjr.numina.util.client.gui.ExtendedContainerScreen;
 import com.github.lehjr.numina.util.client.gui.frame.InventoryFrame;
+import com.github.lehjr.numina.util.client.gui.gemoetry.DrawableRelativeRect;
+import com.github.lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
 import com.github.lehjr.numina.util.client.gui.meters.EnergyMeter;
+import com.github.lehjr.numina.util.math.Colour;
 import com.github.lehjr.numina.util.string.MuseStringUtils;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.Minecraft;

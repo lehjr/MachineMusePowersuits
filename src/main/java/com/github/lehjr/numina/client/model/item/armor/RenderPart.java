@@ -27,11 +27,11 @@
 package com.github.lehjr.numina.client.model.item.armor;
 
 import com.github.lehjr.numina.constants.NuminaConstants;
-import com.github.lehjr.numina.util.math.Colour;
 import com.github.lehjr.numina.util.capabilities.render.modelspec.ModelPartSpec;
 import com.github.lehjr.numina.util.capabilities.render.modelspec.ModelRegistry;
 import com.github.lehjr.numina.util.capabilities.render.modelspec.ModelSpec;
 import com.github.lehjr.numina.util.capabilities.render.modelspec.PartSpecBase;
+import com.github.lehjr.numina.util.math.Colour;
 import com.github.lehjr.numina.util.nbt.NBTTagAccessor;
 import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.matrix.MatrixStack;

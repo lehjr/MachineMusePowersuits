@@ -29,12 +29,14 @@ package com.github.lehjr.numina.util.client.gui.gemoetry;
 import com.github.lehjr.numina.util.math.Colour;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
-import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.util.math.vector.Matrix4f;
+import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 
-public class DrawableTile extends MuseRelativeRect {
+import java.nio.FloatBuffer;
+
+public class DrawableTile extends MuseRelativeRect implements IDrawable {
     Colour topBorderColour = new Colour(0.216F, 0.216F, 0.216F, 1F);
     Colour bottomBorderColour = Colour.WHITE;
     Colour backgroundColour = new Colour(0.545F, 0.545F, 0.545F, 1F);
@@ -84,27 +86,33 @@ public class DrawableTile extends MuseRelativeRect {
                 .setBottomBorderColour(bottomBorderColour);
     }
 
-    void draw(MatrixStack matrix4f, Colour colour, int glMode, double shrinkBy) {
-        RenderSystem.disableTexture();
-        RenderSystem.enableBlend();
-        RenderSystem.disableAlphaTest();
-        RenderSystem.defaultBlendFunc();
-        RenderSystem.shadeModel(GL11.GL_SMOOTH);
+    void draw(MatrixStack matrixStack, Colour colour, int glMode, double shrinkBy) {
+        preDraw(glMode, DefaultVertexFormats.POSITION_COLOR);
+        FloatBuffer vertices = BufferUtils.createFloatBuffer(8);
+        Matrix4f matrix4f = matrixStack.getLast().getMatrix();
 
-        Tessellator tessellator = Tessellator.getInstance();
-        BufferBuilder buffer = tessellator.getBuffer();
-        buffer.begin(glMode, DefaultVertexFormats.POSITION_COLOR);
+        // top right
+        vertices.put((float)(right() - shrinkBy));
+        vertices.put((float)(top() + shrinkBy));
 
-        buffer.pos(matrix4f.getLast().getMatrix(), (float)(right() - shrinkBy), (float) (top() + shrinkBy), zLevel).color(colour.r, colour.g, colour.b, colour.a).endVertex();
-        buffer.pos(matrix4f.getLast().getMatrix(),(float)(left() + shrinkBy), (float) (top() + shrinkBy), zLevel).color(colour.r, colour.g, colour.b, colour.a).endVertex();
-        buffer.pos(matrix4f.getLast().getMatrix(),(float)(left() + shrinkBy), (float) (bottom() - shrinkBy), zLevel).color(colour.r, colour.g, colour.b, colour.a).endVertex();
-        buffer.pos(matrix4f.getLast().getMatrix(),(float)(right() - shrinkBy), (float) (bottom() - shrinkBy), zLevel).color(colour.r, colour.g, colour.b, colour.a).endVertex();
-        tessellator.draw();
+        // top left
+        vertices.put((float)(left() + shrinkBy));
+        vertices.put((float)(top() + shrinkBy));
 
-        RenderSystem.shadeModel(GL11.GL_FLAT);
-        RenderSystem.disableBlend();
-        RenderSystem.enableAlphaTest();
-        RenderSystem.enableTexture();
+        // bottom left
+        vertices.put((float)(left() + shrinkBy));
+        vertices.put((float)(bottom() - shrinkBy));
+
+        // bottom right
+        vertices.put((float)(right() - shrinkBy));
+        vertices.put((float)(bottom() - shrinkBy));
+
+        vertices.flip();
+        vertices.rewind();
+        addVerticesToBuffer(matrix4f, vertices, colour);
+
+        drawTesselator();
+        postDraw();
     }
 
     public void drawBackground(MatrixStack matrixStack) {
@@ -116,41 +124,49 @@ public class DrawableTile extends MuseRelativeRect {
     }
 
     public void drawDualColourBorder(MatrixStack matrixStack, float shrinkBy) {
-        RenderSystem.disableTexture();
-        RenderSystem.enableBlend();
-        RenderSystem.disableAlphaTest();
-        RenderSystem.defaultBlendFunc();
-        RenderSystem.shadeModel(GL11.GL_SMOOTH);
-
-        Tessellator tessellator = Tessellator.getInstance();
-        BufferBuilder buffer = tessellator.getBuffer();
-        buffer.begin(GL11.GL_LINES, DefaultVertexFormats.POSITION_COLOR);
-
+        preDraw(GL11.GL_LINES, DefaultVertexFormats.POSITION_COLOR);
         RenderSystem.lineWidth(2.0F);
 
+        Matrix4f matrix4f = matrixStack.getLast().getMatrix();
+        FloatBuffer vertices = BufferUtils.createFloatBuffer(8);
+
         // top right -> top left
-        buffer.pos(matrixStack.getLast().getMatrix(), (float)(right() - shrinkBy), (float) (top() + shrinkBy), zLevel).color(topBorderColour.r, topBorderColour.g, topBorderColour.b, topBorderColour.a).endVertex();
-        buffer.pos(matrixStack.getLast().getMatrix(),(float)(left() + shrinkBy), (float) (top() + shrinkBy), zLevel).color(topBorderColour.r, topBorderColour.g, topBorderColour.b, topBorderColour.a).endVertex();
+        vertices.put((float)(right() - shrinkBy));
+        vertices.put((float) (top() + shrinkBy));
+        vertices.put((float)(left() + shrinkBy));
+        vertices.put((float) (top() + shrinkBy));
 
         // top left -> bottom left
-        buffer.pos(matrixStack.getLast().getMatrix(),(float)(left() + shrinkBy), (float) (top() + shrinkBy), zLevel).color(topBorderColour.r, topBorderColour.g, topBorderColour.b, topBorderColour.a).endVertex();
-        buffer.pos(matrixStack.getLast().getMatrix(),(float)(left() + shrinkBy), (float) (bottom() - shrinkBy), zLevel).color(topBorderColour.r, topBorderColour.g, topBorderColour.b, topBorderColour.a).endVertex();
+        vertices.put((float)(left() + shrinkBy));
+        vertices.put((float) (top() + shrinkBy));
+        vertices.put((float)(left() + shrinkBy));
+        vertices.put((float) (bottom() - shrinkBy));
 
+        vertices.flip();
+        vertices.rewind();
+        addVerticesToBuffer(matrix4f, vertices, topBorderColour);
+
+
+        vertices.clear();
         // bottom left -> bottom right
-        buffer.pos(matrixStack.getLast().getMatrix(),(float)(left() + shrinkBy), (float) (bottom() - shrinkBy), zLevel).color(bottomBorderColour.r, bottomBorderColour.g, bottomBorderColour.b, bottomBorderColour.a).endVertex();
-        buffer.pos(matrixStack.getLast().getMatrix(),(float)(right() - shrinkBy), (float) (bottom() - shrinkBy), zLevel).color(bottomBorderColour.r, bottomBorderColour.g, bottomBorderColour.b, bottomBorderColour.a).endVertex();
+        vertices.put((float)(left() + shrinkBy));
+        vertices.put((float) (bottom() - shrinkBy));
+        vertices.put((float)(right() - shrinkBy));
+        vertices.put((float) (bottom() - shrinkBy));
 
         // bottom right -> top right
-        buffer.pos(matrixStack.getLast().getMatrix(),(float)(right() - shrinkBy), (float) (bottom() - shrinkBy), zLevel).color(bottomBorderColour.r, bottomBorderColour.g, bottomBorderColour.b, bottomBorderColour.a).endVertex();
-        buffer.pos(matrixStack.getLast().getMatrix(), (float)(right() - shrinkBy), (float) (top() + shrinkBy), zLevel).color(bottomBorderColour.r, bottomBorderColour.g, bottomBorderColour.b, bottomBorderColour.a).endVertex();
+        vertices.put((float)(right() - shrinkBy));
+        vertices.put((float) (bottom() - shrinkBy));
+        vertices.put((float)(right() - shrinkBy));
+        vertices.put((float) (top() + shrinkBy));
 
-        tessellator.draw();
+        vertices.flip();
+        vertices.rewind();
+        addVerticesToBuffer(matrix4f, vertices, bottomBorderColour);
 
+        drawTesselator();
         RenderSystem.lineWidth(1);
-        RenderSystem.shadeModel(GL11.GL_FLAT);
-        RenderSystem.disableBlend();
-        RenderSystem.enableAlphaTest();
-        RenderSystem.enableTexture();
+        postDraw();
     }
 
     public void draw(MatrixStack matrixStack, float zLevel) {
@@ -161,6 +177,17 @@ public class DrawableTile extends MuseRelativeRect {
         } else {
             drawDualColourBorder(matrixStack, shrinkBoarderBy);
         }
+    }
+
+    @Override
+    public float getZLevel() {
+        return zLevel;
+    }
+
+    @Override
+    public IDrawable setZLevel(float zLevelIn) {
+        this.zLevel = zLevelIn;
+        return this;
     }
 
     @Override

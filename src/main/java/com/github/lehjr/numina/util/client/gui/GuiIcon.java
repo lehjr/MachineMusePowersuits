@@ -28,9 +28,9 @@ package com.github.lehjr.numina.util.client.gui;
 
 import com.github.lehjr.numina.constants.NuminaConstants;
 import com.github.lehjr.numina.util.client.NuminaSpriteUploader;
+import com.github.lehjr.numina.util.client.render.BillboardHelper;
 import com.github.lehjr.numina.util.client.render.NuminaRenderState;
 import com.github.lehjr.numina.util.math.Colour;
-import com.github.lehjr.numina.util.client.render.BillboardHelper;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
@@ -317,40 +317,6 @@ public class GuiIcon {
      * Basically like vanilla's version but with floats and a colour parameter
      * Only does the inner texture rendering
      *
-     * @param left the left most position of the drawing rectangle
-     * @param right the right most position of the drawing rectangle
-     * @param top the top most position of the drawing rectangle
-     * @param bottom the bottom most position of the drawing rectangle
-     * @param zLevel the depth position of the drawing rectangle
-     * Note: UV positions are scaled (0.0 - 1.0)
-     * @param minU the left most UV mapped position
-     * @param maxU the right most UV mapped position
-     * @param minV the top most UV mapped position
-     * @param maxV the bottom most UV mapped position
-     * @param colour the Colour to apply to the texture
-     */
-//    public static void innerBlit(float left, float right, float top, float bottom, float zLevel, float minU, float maxU, float minV, float maxV, Colour colour) {
-//        Tessellator tessellator = Tessellator.getInstance();
-//        BufferBuilder bufferBuilder = tessellator.getBuffer();
-//
-//        colour.doGL();
-//        bufferBuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
-//        // bottom left
-//        bufferBuilder.pos(left, bottom, zLevel).tex(minU, maxV).endVertex();
-//        // bottom right
-//        bufferBuilder.pos(right, bottom, zLevel).tex(maxU, maxV).endVertex();
-//        // top right
-//        bufferBuilder.pos(right, top, zLevel).tex(maxU, minV).endVertex();
-//        // top left
-//        bufferBuilder.pos(left, top, zLevel).tex(minU, minV).endVertex();
-//
-//        tessellator.draw();
-//    }
-
-    /**
-     * Basically like vanilla's version but with floats and a colour parameter
-     * Only does the inner texture rendering
-     *
      * @param matrix4f
      * @param left the left most position of the drawing rectangle
      * @param right the right most position of the drawing rectangle
@@ -416,34 +382,18 @@ public class GuiIcon {
         }
     }
 
-    void drawLightningBetweenPointsFast(IVertexBuilder bufferIn, Matrix4f matrix4f,
-                                               float x1, float y1, float z1, float x2, float y2, float z2,
-                                               Colour colour,
+    void drawLightningBetweenPointsFast(IVertexBuilder bufferIn,
+                                        Matrix4f matrix4f,
+                                        float x1,
+                                        float y1,
+                                        float z1,
+                                        float x2,
+                                        float y2,
+                                        float z2,
+                                        Colour colour,
                                         float minU, float maxU, float minV, float maxV) {
         float px = (y1 - y2) * 0.125F;
         float py = (x2 - x1) * 0.125F;
-
-//        // bottom left
-//        bufferIn.pos(matrix4f, x2 - px, y2 - py, z2) //  top left back?
-//                .color(colour.r, colour.g, colour.b, colour.a)
-//                .tex(minU, maxV) // left bottom
-//                .lightmap(0x00F000F0).endVertex();
-//
-//        bufferIn.pos(matrix4f, x2 + px, y2 + py, z2) // bottom right back
-//                .color(colour.r, colour.g, colour.b, colour.a)
-//                .tex(maxU, maxV) // right bottom
-//                .lightmap(0x00F000F0).endVertex();
-//
-//        bufferIn.pos(matrix4f, x1 + px, y1 + py, z1) // bottom right front
-//                .color(colour.r, colour.g, colour.b, colour.a)
-//                .tex(maxU, minV) // right top
-//                .lightmap(0x00F000F0).endVertex();
-//
-//        bufferIn.pos(matrix4f, x1 - px, y1 - py, z1) // top left front
-//                .color(colour.r, colour.g, colour.b, colour.a)
-//                .tex(minU, minV)
-//                .lightmap(0x00F000F0).endVertex();
-
 
         bufferIn.pos(matrix4f, x1 - px, y1 - py, z1) // top left front
                 .color(colour.r, colour.g, colour.b, colour.a)

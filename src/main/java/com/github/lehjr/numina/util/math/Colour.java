@@ -26,8 +26,8 @@
 
 package com.github.lehjr.numina.util.math;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.github.lehjr.numina.basemod.MuseLogger;
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.util.math.vector.Vector4f;
 import org.lwjgl.opengl.GL11;
 

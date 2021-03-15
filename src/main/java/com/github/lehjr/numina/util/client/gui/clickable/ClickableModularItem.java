@@ -26,9 +26,9 @@
 
 package com.github.lehjr.numina.util.client.gui.clickable;
 
-import com.github.lehjr.numina.util.math.Colour;
 import com.github.lehjr.numina.util.client.gui.slot.ClickableItemSlot;
 import com.github.lehjr.numina.util.client.render.MuseRenderer;
+import com.github.lehjr.numina.util.math.Colour;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerInventory;

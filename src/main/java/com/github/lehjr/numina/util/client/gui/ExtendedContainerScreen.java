@@ -26,9 +26,9 @@
 
 package com.github.lehjr.numina.util.client.gui;
 
+import com.github.lehjr.numina.util.client.gui.frame.IGuiFrame;
 import com.github.lehjr.numina.util.client.gui.gemoetry.DrawableMuseRect;
 import com.github.lehjr.numina.util.math.Colour;
-import com.github.lehjr.numina.util.client.gui.frame.IGuiFrame;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
@@ -127,7 +127,9 @@ public class ExtendedContainerScreen<T extends Container> extends ContainerScree
     @Override
     public boolean mouseReleased(double x, double y, int which) {
         for (IGuiFrame frame : frames) {
-            frame.mouseReleased(x, y, which);
+            if (frame.mouseReleased(x, y, which)) {
+                return true;
+            }
         }
         if (super.mouseReleased(x, y, which)) {
             return true;

@@ -40,14 +40,14 @@ import com.github.lehjr.numina.event.EventBusHelper;
 import com.github.lehjr.numina.event.PlayerUpdateHandler;
 import com.github.lehjr.numina.network.NuminaPackets;
 import com.github.lehjr.numina.recipe.NuminaRecipeConditionFactory;
-import com.github.lehjr.numina.util.client.render.RenderGameOverlayEventHandler;
 import com.github.lehjr.numina.util.capabilities.heat.HeatCapability;
 import com.github.lehjr.numina.util.capabilities.module.powermodule.PowerModuleCapability;
 import com.github.lehjr.numina.util.capabilities.player.CapabilityPlayerKeyStates;
 import com.github.lehjr.numina.util.capabilities.render.ModelSpecNBTCapability;
+import com.github.lehjr.numina.util.client.NuminaSpriteUploader;
 import com.github.lehjr.numina.util.client.gui.GuiIcon;
 import com.github.lehjr.numina.util.client.render.MuseIconUtils;
-import com.github.lehjr.numina.util.client.NuminaSpriteUploader;
+import com.github.lehjr.numina.util.client.render.RenderGameOverlayEventHandler;
 import forge.NuminaOBJLoader;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScreenManager;
@@ -97,7 +97,6 @@ public class Numina {
 
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
-
 
         NuminaObjects.ITEMS.register(modEventBus);
         NuminaObjects.BLOCKS.register(modEventBus);

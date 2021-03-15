@@ -26,6 +26,7 @@
 
 package com.github.lehjr.numina.config;
 
+import com.github.lehjr.numina.basemod.MuseLogger;
 import com.github.lehjr.numina.constants.NuminaConstants;
 import com.github.lehjr.numina.util.capabilities.module.powermodule.EnumModuleCategory;
 import com.github.lehjr.numina.util.capabilities.module.powermodule.IConfig;
@@ -74,7 +75,7 @@ public class ModuleConfig implements IConfig {
      */
     Map<String, Map<String, ArrayList<String>>> outputMap;
     void addtoMap(String category, String moduleName, String entry) {
-        System.out.println("adding to map: " + category + ", " + moduleName + ", " + entry );
+        MuseLogger.logDebug("adding to map: " + category + ", " + moduleName + ", " + entry );
 
         Map<String, ArrayList<String>> modulesForCategory;
         ArrayList<String> moduleSettings;
@@ -109,7 +110,7 @@ public class ModuleConfig implements IConfig {
 
         getModConfig().ifPresent(config->System.out.println("configData for " + MOD_ID + ": " + config.getConfigData()));
 
-        System.out.println("MODULE MAP SET SIZE: " + outputMap.size());
+        MuseLogger.logDebug("MODULE MAP SET SIZE: " + outputMap.size());
 
         StringBuilder outString = new StringBuilder("builder.push(\"Modules\");\n");
 

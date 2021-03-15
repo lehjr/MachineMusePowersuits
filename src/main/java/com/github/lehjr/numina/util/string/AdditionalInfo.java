@@ -27,9 +27,9 @@
 package com.github.lehjr.numina.util.string;
 
 import com.github.lehjr.numina.constants.NuminaConstants;
-import com.github.lehjr.numina.util.capabilities.module.powermodule.PowerModuleCapability;
 import com.github.lehjr.numina.util.capabilities.inventory.modechanging.IModeChangingItem;
 import com.github.lehjr.numina.util.capabilities.inventory.modularitem.IModularItem;
+import com.github.lehjr.numina.util.capabilities.module.powermodule.PowerModuleCapability;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;

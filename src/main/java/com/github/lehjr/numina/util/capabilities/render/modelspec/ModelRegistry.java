@@ -27,9 +27,9 @@
 package com.github.lehjr.numina.util.capabilities.render.modelspec;
 
 import com.github.lehjr.numina.constants.NuminaConstants;
+import com.github.lehjr.numina.util.client.model.obj.OBJBakedCompositeModel;
 import com.github.lehjr.numina.util.map.MuseRegistry;
 import com.github.lehjr.numina.util.string.MuseStringUtils;
-import com.github.lehjr.numina.util.client.model.obj.OBJBakedCompositeModel;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ResourceLocation;
 

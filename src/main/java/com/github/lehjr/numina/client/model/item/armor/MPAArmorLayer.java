@@ -26,10 +26,10 @@
 
 package com.github.lehjr.numina.client.model.item.armor;
 
-import com.github.lehjr.numina.util.math.Colour;
 import com.github.lehjr.numina.util.capabilities.render.IArmorModelSpecNBT;
 import com.github.lehjr.numina.util.capabilities.render.ModelSpecNBTCapability;
 import com.github.lehjr.numina.util.capabilities.render.modelspec.EnumSpecType;
+import com.github.lehjr.numina.util.math.Colour;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.renderer.Atlases;

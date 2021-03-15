@@ -27,12 +27,12 @@
 package com.github.lehjr.numina.client.gui;
 
 import com.github.lehjr.numina.container.ArmorStandContainer;
+import com.github.lehjr.numina.util.client.gui.ExtendedContainerScreen;
+import com.github.lehjr.numina.util.client.gui.frame.InventoryFrame;
 import com.github.lehjr.numina.util.client.gui.gemoetry.DrawableRelativeRect;
 import com.github.lehjr.numina.util.client.gui.gemoetry.DrawableTile;
 import com.github.lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
 import com.github.lehjr.numina.util.math.Colour;
-import com.github.lehjr.numina.util.client.gui.ExtendedContainerScreen;
-import com.github.lehjr.numina.util.client.gui.frame.InventoryFrame;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;

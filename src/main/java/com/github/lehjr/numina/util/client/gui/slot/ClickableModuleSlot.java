@@ -26,13 +26,13 @@
 
 package com.github.lehjr.numina.util.client.gui.slot;
 
-import com.github.lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
-import com.github.lehjr.numina.util.math.Colour;
-import com.github.lehjr.numina.util.client.render.MuseIconUtils;
-import com.github.lehjr.numina.util.client.render.MuseRenderer;
 import com.github.lehjr.numina.util.capabilities.module.powermodule.EnumModuleCategory;
 import com.github.lehjr.numina.util.capabilities.module.powermodule.PowerModuleCapability;
 import com.github.lehjr.numina.util.client.gui.clickable.IClickable;
+import com.github.lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
+import com.github.lehjr.numina.util.client.render.MuseIconUtils;
+import com.github.lehjr.numina.util.client.render.MuseRenderer;
+import com.github.lehjr.numina.util.math.Colour;
 import com.github.lehjr.numina.util.string.MuseStringUtils;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.inventory.IInventory;

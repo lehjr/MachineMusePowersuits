@@ -28,10 +28,10 @@ package com.github.lehjr.numina.util.capabilities.render;
 
 import com.github.lehjr.numina.basemod.MuseLogger;
 import com.github.lehjr.numina.constants.NuminaConstants;
-import com.github.lehjr.numina.util.math.Colour;
 import com.github.lehjr.numina.util.capabilities.render.modelspec.EnumSpecType;
 import com.github.lehjr.numina.util.capabilities.render.modelspec.ModelRegistry;
 import com.github.lehjr.numina.util.capabilities.render.modelspec.TexturePartSpec;
+import com.github.lehjr.numina.util.math.Colour;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 
