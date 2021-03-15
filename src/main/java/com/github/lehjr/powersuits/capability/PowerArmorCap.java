@@ -103,6 +103,7 @@ public class PowerArmorCap extends AbstractModularPowerCap {
                     this.setRangedWrapperMap(rangedWrapperMap);
                 }};
                 this.maxHeat = MPSSettings.getMaxHeatBoots();
+                break;
             }
         }
     }

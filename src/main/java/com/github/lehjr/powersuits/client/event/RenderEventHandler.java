@@ -147,14 +147,15 @@ public enum RenderEventHandler {
             frame.setLeft(MPSSettings.getHudKeybindX());
             frame.setTop(MPSSettings.getHudKeybindY());
             frame.setBottom(frame.top() + 16);
+
             for (ClickableKeybinding kb : KeybindManager.INSTANCE.getKeybindings()) {
                 if (kb.displayOnHUD) {
                     float stringwidth = (float) MuseRenderer.getFontRenderer().getStringPropertyWidth(kb.getLabel());
-                    frame.setWidth(stringwidth + kb.getBoundModules().size() * 16);
+                    frame.setWidth(stringwidth + 8 + kb.getBoundModules().size() * 18);
                     frame.draw(matrixStack, zLevel);
-                    MuseRenderer.drawCenteredText(matrixStack, kb.getLabel(), (float) frame.left() + 1, (float) frame.top() + 3, (kb.toggleval) ? Colour.RED : Colour.GREEN);
+                    MuseRenderer.drawText(matrixStack, kb.getLabel(), (float) frame.left() + 4, (float) frame.top() + 4, (kb.toggleval) ? Colour.RED : Colour.GREEN);
 
-                    double x = frame.left() + stringwidth;
+                    double x = frame.left() + stringwidth + 8;
                     for (ClickableModule module : kb.getBoundModules()) {
 //                        TextureUtils.pushTexture(TextureUtils.TEXTURE_QUILT);
                         boolean active = false;

@@ -30,6 +30,8 @@ import com.github.lehjr.numina.client.control.KeyBindingHelper;
 import com.github.lehjr.numina.util.capabilities.inventory.modechanging.IModeChangingItem;
 import com.github.lehjr.numina.util.capabilities.inventory.modularitem.IModularItem;
 import com.github.lehjr.numina.util.capabilities.module.powermodule.EnumModuleCategory;
+import com.github.lehjr.numina.util.capabilities.module.powermodule.PowerModuleCapability;
+import com.github.lehjr.numina.util.capabilities.module.rightclick.IRightClickModule;
 import com.github.lehjr.numina.util.capabilities.module.toggleable.IToggleableModule;
 import com.github.lehjr.numina.util.client.gui.clickable.ClickableButton;
 import com.github.lehjr.numina.util.client.gui.clickable.ClickableModule;
@@ -147,8 +149,17 @@ public class KeybindConfigFrame implements IGuiFrame {
                 case HAND:
                     player.getItemStackFromSlot(slot).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(
                             iModeChanging -> {
-                                if (iModeChanging instanceof IModeChangingItem)
-                                    installedModules.addAll(((IModularItem) iModeChanging).getInstalledModulesOfType(IToggleableModule.class));
+                                if (iModeChanging instanceof IModeChangingItem) {
+                                    for (int i = 0; i < iModeChanging.getSlots(); i++) {
+                                        ItemStack module = iModeChanging.getStackInSlot(i);
+                                        if (module.getCapability(PowerModuleCapability.POWER_MODULE).map(c ->
+                                                IToggleableModule.class.isAssignableFrom(c.getClass())).orElse(false) && !
+                                                (module.getCapability(PowerModuleCapability.POWER_MODULE).map(c ->
+                                                        IRightClickModule.class.isAssignableFrom(c.getClass())).orElse(false))) {
+                                            installedModules.add(module);
+                                        }
+                                    }
+                                }
                             });
                     break;
 
@@ -284,8 +295,8 @@ public class KeybindConfigFrame implements IGuiFrame {
                 if (midpointTangent.distanceTo(module.getPosition()) > 2) {
                     otherModule.setPosition(midpointTangent.copy());
                 }
-                 MusePoint2D away = directionVector.times(0).plus(modulePosition);
-                 module.setPosition(away.copy());
+                MusePoint2D away = directionVector.times(0).plus(modulePosition);
+                module.setPosition(away.copy());
             }
         }
     }
