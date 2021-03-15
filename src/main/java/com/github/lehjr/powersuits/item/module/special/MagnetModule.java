@@ -73,11 +73,12 @@ public class MagnetModule extends AbstractPowerModule {
 
         public CapProvider(@Nonnull ItemStack module) {
             this.module = module;
-            this.ticker = new Ticker(module, EnumModuleCategory.SPECIAL, EnumModuleTarget.TORSOONLY, MPSSettings::getModuleConfig);
-            this.ticker.addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, 0, "FE");
-            this.ticker.addTradeoffProperty(MPSConstants.POWER, MPSConstants.ENERGY_CONSUMPTION, 2000);
-            this.ticker.addBaseProperty(MPSConstants.RADIUS, 5);
-            this.ticker.addTradeoffProperty(MPSConstants.POWER, MPSConstants.RADIUS, 10);
+            this.ticker = new Ticker(module, EnumModuleCategory.SPECIAL, EnumModuleTarget.TORSOONLY, MPSSettings::getModuleConfig) {{
+                addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, 0, "FE");
+                addTradeoffProperty(MPSConstants.POWER, MPSConstants.ENERGY_CONSUMPTION, 2000);
+                addBaseProperty(MPSConstants.RADIUS, 5);
+                addTradeoffProperty(MPSConstants.POWER, MPSConstants.RADIUS, 10);
+            }};
         }
 
         @Nonnull

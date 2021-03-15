@@ -1,26 +1,26 @@
 {
   "result": {
-    "item": "powersuits:vein_miner"
+    "item": "powersuits:shovel"
   },
   "conditions": [
     {
-      "type": "forge:mod_loaded",
-      "modid": "centralizedmaterials"
+      "type": "powersuits:flag",
+      "flag": "vanilla_recipes_disabled"
     }
   ],
   "type": "minecraft:crafting_shaped",
   "mirrored": true,
   "pattern": [
-    " F ",
+    "FFF",
     "OCO",
-    "FRF"
+    " R "
   ],
   "key": {
     "R": {
-      "tag": "forge:servo"
+      "tag": "forge:solenoid"
     },
     "C": {
-      "item": "numina:component_computer_chip"
+      "item": "numina:component_control_circuit"
     },
     "F": {
       "tag": "forge:ingots/steel"

@@ -70,9 +70,10 @@ public class CoolingSystemModule extends AbstractPowerModule {
 
         public CapProvider(@Nonnull ItemStack module) {
             this.module = module;
-            this.ticker = new Ticker(module, EnumModuleCategory.ENVIRONMENTAL, EnumModuleTarget.TORSOONLY, MPSSettings::getModuleConfig, true);
-            this.ticker.addTradeoffProperty(MPSConstants.POWER, MPSConstants.COOLING_BONUS, 1, "%");
-            this.ticker.addTradeoffProperty(MPSConstants.POWER, MPSConstants.ENERGY_CONSUMPTION, 40, "RF/t");
+            this.ticker = new Ticker(module, EnumModuleCategory.ENVIRONMENTAL, EnumModuleTarget.TORSOONLY, MPSSettings::getModuleConfig, true) {{
+                addTradeoffProperty(MPSConstants.POWER, MPSConstants.COOLING_BONUS, 1, "%");
+                addTradeoffProperty(MPSConstants.POWER, MPSConstants.ENERGY_CONSUMPTION, 40, "RF/t");
+            }};
         }
 
         @Nonnull

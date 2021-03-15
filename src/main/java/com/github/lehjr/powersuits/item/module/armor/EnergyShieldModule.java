@@ -67,11 +67,12 @@ public class EnergyShieldModule extends AbstractPowerModule {
 
         public CapProvider(@Nonnull ItemStack module) {
             this.module = module;
-                ticker = new Ticker(module, EnumModuleCategory.ARMOR, EnumModuleTarget.ARMORONLY, MPSSettings::getModuleConfig, true);
-                ticker.addTradeoffProperty(MPSConstants.MODULE_FIELD_STRENGTH, MPSConstants.ARMOR_VALUE_ENERGY, 6, NuminaConstants.MODULE_TRADEOFF_PREFIX + MPSConstants.ARMOR_POINTS);
-                ticker.addTradeoffProperty(MPSConstants.MODULE_FIELD_STRENGTH, MPSConstants.ARMOR_ENERGY_CONSUMPTION, 5000, "FE");
-                ticker.addTradeoffProperty(MPSConstants.MODULE_FIELD_STRENGTH, HeatCapability.MAXIMUM_HEAT, 500);
-                ticker.addBaseProperty(MPSConstants.KNOCKBACK_RESISTANCE, 0.25F);
+                ticker = new Ticker(module, EnumModuleCategory.ARMOR, EnumModuleTarget.ARMORONLY, MPSSettings::getModuleConfig, true) {{
+                addTradeoffProperty(MPSConstants.MODULE_FIELD_STRENGTH, MPSConstants.ARMOR_VALUE_ENERGY, 6, NuminaConstants.MODULE_TRADEOFF_PREFIX + MPSConstants.ARMOR_POINTS);
+                addTradeoffProperty(MPSConstants.MODULE_FIELD_STRENGTH, MPSConstants.ARMOR_ENERGY_CONSUMPTION, 5000, "FE");
+                addTradeoffProperty(MPSConstants.MODULE_FIELD_STRENGTH, HeatCapability.MAXIMUM_HEAT, 500);
+                addBaseProperty(MPSConstants.KNOCKBACK_RESISTANCE, 0.25F);
+            }};
         }
 
         @Nonnull

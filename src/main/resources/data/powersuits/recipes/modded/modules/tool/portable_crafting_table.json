@@ -1,11 +1,11 @@
 {
   "result": {
-    "item": "powersuits:compass"
+    "item": "powersuits:portable_crafting_table"
   },
   "conditions": [
     {
       "type": "powersuits:flag",
-      "flag": "vanilla_recipes_enabled"
+      "flag": "vanilla_recipes_disabled"
     }
   ],
   "type": "minecraft:crafting_shaped",
@@ -17,7 +17,7 @@
   ],
   "key": {
     "C": {
-      "item": "minecraft:compass"
+      "item": "minecraft:crafting_table"
     },
     "F": {
       "tag": "forge:wiring"

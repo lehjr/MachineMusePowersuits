@@ -31,6 +31,8 @@ import com.github.lehjr.numina.util.capabilities.module.powermodule.IConfig;
 import com.github.lehjr.powersuits.constants.MPSConstants;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.ForgeConfigSpec;
+import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.common.util.NonNullLazy;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.ArrayList;
@@ -150,16 +152,9 @@ public class MPSSettings {
     }
 
     /** Modules ----------------------------------------------------------------------------------- */
-    private static volatile ModuleConfig moduleConfig;
+    static NonNullLazy<IConfig> moduleConfig = NonNullLazy.of(() ->new ModuleConfig(MPSConstants.MOD_ID));
     public static IConfig getModuleConfig() {
-        if (moduleConfig == null) {
-            synchronized (ModuleConfig.class) {
-                if (moduleConfig == null) {
-                    moduleConfig = new ModuleConfig(MPSConstants.MOD_ID);
-                }
-            }
-        }
-        return moduleConfig;
+        return moduleConfig.get();
     }
 
     static float toFloat(double val) {

@@ -1,29 +1,26 @@
 {
   "result": {
-    "item": "powersuits:melee_assist"
+    "item": "powersuits:aoe_pick_upgrade"
   },
   "conditions": [
     {
-      "type": "forge:mod_loaded",
-      "modid": "centralizedmaterials"
+      "type": "powersuits:flag",
+      "flag": "vanilla_recipes_disabled"
     }
   ],
   "type": "minecraft:crafting_shaped",
   "mirrored": true,
   "pattern": [
-    " F ",
-    " C ",
-    "O O"
+    "FFF",
+    "FCF",
+    "FFF"
   ],
   "key": {
     "C": {
       "item": "numina:component_control_circuit"
     },
     "F": {
-      "tag": "forge:servo"
-    },
-    "O": {
-      "tag": "forge:ingots/steel"
+      "tag": "forge:solenoid"
     }
   }
 }

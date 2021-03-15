@@ -1,23 +1,23 @@
 {
   "result": {
-    "item": "powersuits:powerarmor_head"
+    "item": "powersuits:plating_leather"
   },
   "conditions": [
     {
-      "type": "forge:mod_loaded",
-      "modid": "centralizedmaterials"
+      "type": "powersuits:flag",
+      "flag": "vanilla_recipes_disabled"
     }
   ],
   "type": "minecraft:crafting_shaped",
   "mirrored": true,
   "pattern": [
-    "   ",
-    "FFF",
-    "O O"
+    "FF ",
+    "OF ",
+    "FF "
   ],
   "key": {
     "F": {
-      "tag": "forge:ingots/steel"
+      "tag": "forge:leather"
     },
     "O": {
       "tag": "forge:wiring"

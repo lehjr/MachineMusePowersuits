@@ -66,9 +66,10 @@ public class JumpAssistModule extends AbstractPowerModule {
 
         public CapProvider(@Nonnull ItemStack module) {
             this.module = module;
-            this.ticker = new Ticker(module, EnumModuleCategory.MOVEMENT, EnumModuleTarget.LEGSONLY, MPSSettings::getModuleConfig);
-            this.ticker.addSimpleTradeoff(MPSConstants.POWER, MPSConstants.ENERGY_CONSUMPTION, "FE", 0, 250, MPSConstants.MULTIPLIER, "%", 1, 4);
-            this.ticker.addSimpleTradeoff(MPSConstants.COMPENSATION, MPSConstants.ENERGY_CONSUMPTION, "FE", 0, 50, MPSConstants.FOOD_COMPENSATION, "%", 0, 1);
+            this.ticker = new Ticker(module, EnumModuleCategory.MOVEMENT, EnumModuleTarget.LEGSONLY, MPSSettings::getModuleConfig) {{
+                addSimpleTradeoff(MPSConstants.POWER, MPSConstants.ENERGY_CONSUMPTION, "FE", 0, 250, MPSConstants.MULTIPLIER, "%", 1, 4);
+                addSimpleTradeoff(MPSConstants.COMPENSATION, MPSConstants.ENERGY_CONSUMPTION, "FE", 0, 50, MPSConstants.FOOD_COMPENSATION, "%", 0, 1);
+            }};
         }
 
         @Nonnull

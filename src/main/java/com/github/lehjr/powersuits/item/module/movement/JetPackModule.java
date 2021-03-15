@@ -76,12 +76,12 @@ public class JetPackModule extends AbstractPowerModule {
 
         public CapProvider(@Nonnull ItemStack module) {
             this.module = module;
-            this.ticker = new Ticker(module, EnumModuleCategory.MOVEMENT, EnumModuleTarget.TORSOONLY, MPSSettings::getModuleConfig);
-
-            this.ticker.addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, 0, "RF/t");
-            this.ticker.addBaseProperty(MPSConstants.JETPACK_THRUST, 0, "N");
-            this.ticker.addTradeoffProperty(MPSConstants.THRUST, MPSConstants.ENERGY_CONSUMPTION, 1500);
-            this.ticker.addTradeoffProperty(MPSConstants.THRUST, MPSConstants.JETPACK_THRUST, 0.16F);
+            this.ticker = new Ticker(module, EnumModuleCategory.MOVEMENT, EnumModuleTarget.TORSOONLY, MPSSettings::getModuleConfig) {{
+                addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, 0, "RF/t");
+                addBaseProperty(MPSConstants.JETPACK_THRUST, 0, "N");
+                addTradeoffProperty(MPSConstants.THRUST, MPSConstants.ENERGY_CONSUMPTION, 1500);
+                addTradeoffProperty(MPSConstants.THRUST, MPSConstants.JETPACK_THRUST, 0.16F);
+            }};
         }
 
         @Nonnull

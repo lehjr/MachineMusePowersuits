@@ -1,23 +1,26 @@
 {
   "result": {
-    "item": "powersuits:powerfist"
+    "item": "powersuits:melee_assist"
   },
   "conditions": [
     {
-      "type": "forge:mod_loaded",
-      "modid": "centralizedmaterials"
+      "type": "powersuits:flag",
+      "flag": "vanilla_recipes_disabled"
     }
   ],
   "type": "minecraft:crafting_shaped",
   "mirrored": true,
   "pattern": [
     " F ",
-    "FO ",
-    " OF"
+    " C ",
+    "O O"
   ],
   "key": {
+    "C": {
+      "item": "numina:component_control_circuit"
+    },
     "F": {
-      "tag": "forge:wiring"
+      "tag": "forge:servo"
     },
     "O": {
       "tag": "forge:ingots/steel"

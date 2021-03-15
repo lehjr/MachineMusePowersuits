@@ -1,23 +1,23 @@
 {
   "result": {
-    "item": "powersuits:plating_diamond"
+    "item": "powersuits:powerarmor_head"
   },
   "conditions": [
     {
-      "type": "forge:mod_loaded",
-      "modid": "centralizedmaterials"
+      "type": "powersuits:flag",
+      "flag": "vanilla_recipes_disabled"
     }
   ],
   "type": "minecraft:crafting_shaped",
   "mirrored": true,
   "pattern": [
-    "FF ",
-    "OF ",
-    "FF "
+    "   ",
+    "FFF",
+    "O O"
   ],
   "key": {
     "F": {
-      "tag": "forge:gems/diamond"
+      "tag": "forge:ingots/steel"
     },
     "O": {
       "tag": "forge:wiring"

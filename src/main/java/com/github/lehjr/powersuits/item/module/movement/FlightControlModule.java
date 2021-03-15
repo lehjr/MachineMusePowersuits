@@ -61,8 +61,9 @@ public class FlightControlModule extends AbstractPowerModule {
 
         public CapProvider(@Nonnull ItemStack module) {
             this.module = module;
-            this.moduleToggle = new ToggleableModule(module, EnumModuleCategory.MOVEMENT, EnumModuleTarget.HEADONLY, MPSSettings::getModuleConfig, false);
-            this.moduleToggle.addTradeoffProperty(MPSConstants.VERTICALITY, MPSConstants.FLIGHT_VERTICALITY, 1.0F, "%");
+            this.moduleToggle = new ToggleableModule(module, EnumModuleCategory.MOVEMENT, EnumModuleTarget.HEADONLY, MPSSettings::getModuleConfig, false) {{
+                addTradeoffProperty(MPSConstants.VERTICALITY, MPSConstants.FLIGHT_VERTICALITY, 1.0F, "%");
+            }};
         }
 
         @Nonnull

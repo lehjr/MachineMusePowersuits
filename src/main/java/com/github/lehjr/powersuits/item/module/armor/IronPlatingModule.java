@@ -58,10 +58,11 @@ public class IronPlatingModule extends AbstractPowerModule {
 
         public CapProvider(@Nonnull ItemStack module) {
             this.module = module;
-                moduleCap = new PowerModule(module, EnumModuleCategory.ARMOR, EnumModuleTarget.ARMORONLY, MPSSettings::getModuleConfig);
-                moduleCap.addBaseProperty(MPSConstants.ARMOR_VALUE_PHYSICAL, 4, NuminaConstants.MODULE_TRADEOFF_PREFIX + MPSConstants.ARMOR_POINTS);
-                moduleCap.addBaseProperty(HeatCapability.MAXIMUM_HEAT, 300);
-                moduleCap.addBaseProperty(MPSConstants.KNOCKBACK_RESISTANCE, 0.25F);
+            moduleCap = new PowerModule(module, EnumModuleCategory.ARMOR, EnumModuleTarget.ARMORONLY, MPSSettings::getModuleConfig) {{
+                addBaseProperty(MPSConstants.ARMOR_VALUE_PHYSICAL, 4, NuminaConstants.MODULE_TRADEOFF_PREFIX + MPSConstants.ARMOR_POINTS);
+                addBaseProperty(HeatCapability.MAXIMUM_HEAT, 300);
+                addBaseProperty(MPSConstants.KNOCKBACK_RESISTANCE, 0.25F);
+            }};
         }
 
         @Nonnull

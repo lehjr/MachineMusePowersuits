@@ -101,9 +101,10 @@ public class ShearsModule extends AbstractPowerModule {
 
         public CapProvider(@Nonnull ItemStack module) {
             this.module = module;
-            this.rightClick = new BlockBreaker(module, EnumModuleCategory.TOOL, EnumModuleTarget.TOOLONLY, MPSSettings::getModuleConfig);
-            this.rightClick.addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, 1000, "FE");
-            this.rightClick.addBaseProperty(MPSConstants.HARVEST_SPEED, 8, "x");
+            this.rightClick = new BlockBreaker(module, EnumModuleCategory.TOOL, EnumModuleTarget.TOOLONLY, MPSSettings::getModuleConfig) {{
+                addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, 1000, "FE");
+                addBaseProperty(MPSConstants.HARVEST_SPEED, 8, "x");
+            }};
         }
 
         @Nonnull

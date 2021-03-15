@@ -71,11 +71,12 @@ public class AquaAffinityModule extends AbstractPowerModule {
 
         public CapProvider(@Nonnull ItemStack module) {
             this.module = module;
-            this.miningEnhancement = new BlockBreaker(module, EnumModuleCategory.MINING_ENHANCEMENT, EnumModuleTarget.TOOLONLY, MPSSettings::getModuleConfig);
-            this.miningEnhancement.addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, 0, "FE");
-            this.miningEnhancement.addBaseProperty(MPSConstants.HARVEST_SPEED, 0.2F, "%");
-            this.miningEnhancement.addTradeoffProperty(MPSConstants.POWER, MPSConstants.ENERGY_CONSUMPTION, 1000);
-            this.miningEnhancement.addTradeoffProperty(MPSConstants.POWER, MPSConstants.HARVEST_SPEED, 0.8F);
+            this.miningEnhancement = new BlockBreaker(module, EnumModuleCategory.MINING_ENHANCEMENT, EnumModuleTarget.TOOLONLY, MPSSettings::getModuleConfig) {{
+                addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, 0, "FE");
+                addBaseProperty(MPSConstants.HARVEST_SPEED, 0.2F, "%");
+                addTradeoffProperty(MPSConstants.POWER, MPSConstants.ENERGY_CONSUMPTION, 1000);
+                addTradeoffProperty(MPSConstants.POWER, MPSConstants.HARVEST_SPEED, 0.8F);
+            }};
         }
 
         @Nonnull

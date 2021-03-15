@@ -1,23 +1,23 @@
 {
   "result": {
-    "item": "powersuits:shovel"
+    "item": "powersuits:luxcapacitor_module"
   },
   "conditions": [
     {
-      "type": "forge:mod_loaded",
-      "modid": "centralizedmaterials"
+      "type": "powersuits:flag",
+      "flag": "vanilla_recipes_disabled"
     }
   ],
   "type": "minecraft:crafting_shaped",
   "mirrored": true,
   "pattern": [
-    "FFF",
-    "OCO",
-    " R "
+    "FOF",
+    "RCR",
+    "GFG"
   ],
   "key": {
     "R": {
-      "tag": "forge:solenoid"
+      "tag": "forge:wiring"
     },
     "C": {
       "item": "numina:component_control_circuit"
@@ -25,8 +25,11 @@
     "F": {
       "tag": "forge:ingots/steel"
     },
+    "G": {
+      "tag": "forge:dusts/glowstone"
+    },
     "O": {
-      "tag": "forge:wiring"
+      "tag": "forge:dusts/redstone"
     }
   }
 }

@@ -70,8 +70,9 @@ public class SilkTouchModule extends AbstractPowerModule {
 
         public CapProvider(@Nonnull ItemStack module) {
             this.module = module;
-            this.miningEnhancement = new Enhancement(module, EnumModuleCategory.MINING_ENHANCEMENT, EnumModuleTarget.TOOLONLY, MPSSettings::getModuleConfig);
-            this.miningEnhancement.addBaseProperty(MPSConstants.SILK_TOUCH_ENERGY_CONSUMPTION, 2500, "FE");
+            this.miningEnhancement = new Enhancement(module, EnumModuleCategory.MINING_ENHANCEMENT, EnumModuleTarget.TOOLONLY, MPSSettings::getModuleConfig) {{
+                addBaseProperty(MPSConstants.SILK_TOUCH_ENERGY_CONSUMPTION, 2500, "FE");
+            }};
         }
 
         @Nonnull

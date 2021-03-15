@@ -1,19 +1,19 @@
 {
   "result": {
-    "item": "powersuits:powerarmor_torso"
+    "item": "powersuits:powerarmor_legs"
   },
   "conditions": [
     {
-      "type": "forge:mod_loaded",
-      "modid": "centralizedmaterials"
+      "type": "powersuits:flag",
+      "flag": "vanilla_recipes_disabled"
     }
   ],
   "type": "minecraft:crafting_shaped",
   "mirrored": true,
   "pattern": [
-    "F F",
-    "OFO",
-    "FFF"
+    "FFF",
+    "O O",
+    "F F"
   ],
   "key": {
     "F": {

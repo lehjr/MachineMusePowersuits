@@ -1,29 +1,32 @@
 {
   "result": {
-    "item": "powersuits:clock"
+    "item": "powersuits:plasma_cannon"
   },
   "conditions": [
     {
       "type": "powersuits:flag",
-      "flag": "vanilla_recipes_enabled"
+      "flag": "vanilla_recipes_disabled"
     }
   ],
   "type": "minecraft:crafting_shaped",
   "mirrored": true,
   "pattern": [
-    " C ",
-    "FOF",
-    " F "
+    "FCO",
+    "FMO",
+    "FCO"
   ],
   "key": {
     "C": {
-      "item": "minecraft:clock"
+      "tag": "forge:ingots/copper"
     },
     "F": {
-      "tag": "forge:wiring"
+      "tag": "forge:solenoid"
+    },
+    "M": {
+      "item": "numina:component_control_circuit"
     },
     "O": {
-      "item": "numina:component_control_circuit"
+      "item": "numina:component_computer_chip"
     }
   }
 }

@@ -88,10 +88,11 @@ public class FluidTankModule extends AbstractPowerModule {
 
         public CapProvider(@Nonnull ItemStack module) {
             this.module = module;
-            this.ticker = new Ticker(module, EnumModuleCategory.ENVIRONMENTAL, EnumModuleTarget.TORSOONLY, MPSSettings::getModuleConfig, true);
-            this.ticker.addBaseProperty(MPSConstants.FLUID_TANK_SIZE, 20000);
-            this.ticker.addBaseProperty(MPSConstants.HEAT_ACTIVATION_PERCENT, 0.5);
-            this.ticker.addTradeoffProperty(MPSConstants.ACTIVATION_PERCENT, MPSConstants.HEAT_ACTIVATION_PERCENT, 0.5, "%");
+            this.ticker = new Ticker(module, EnumModuleCategory.ENVIRONMENTAL, EnumModuleTarget.TORSOONLY, MPSSettings::getModuleConfig, true) {{
+                addBaseProperty(MPSConstants.FLUID_TANK_SIZE, 20000);
+                addBaseProperty(MPSConstants.HEAT_ACTIVATION_PERCENT, 0.5);
+                addTradeoffProperty(MPSConstants.ACTIVATION_PERCENT, MPSConstants.HEAT_ACTIVATION_PERCENT, 0.5, "%");
+            }};
             this.fluidHandler = new ModuleTank((int)ticker.applyPropertyModifiers(MPSConstants.FLUID_TANK_SIZE));
         }
 

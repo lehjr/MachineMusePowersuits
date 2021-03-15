@@ -54,7 +54,7 @@ import javax.annotation.Nullable;
 import java.util.concurrent.Callable;
 
 public class KineticGeneratorModule extends AbstractPowerModule {
- public KineticGeneratorModule() {
+    public KineticGeneratorModule() {
     }
 
     @Nullable
@@ -69,11 +69,12 @@ public class KineticGeneratorModule extends AbstractPowerModule {
 
         public CapProvider(@Nonnull ItemStack module) {
             this.module = module;
-            this.ticker = new Ticker(module, EnumModuleCategory.ENERGY_GENERATION, EnumModuleTarget.TORSOONLY, MPSSettings::getModuleConfig);
-            this.ticker.addBaseProperty(MPSConstants.ENERGY_GENERATION, 2000);
-            this.ticker.addTradeoffProperty(MPSConstants.ENERGY_GENERATED, MPSConstants.ENERGY_GENERATION, 6000, "FE");
-            this.ticker.addBaseProperty(MPSConstants.MOVEMENT_RESISTANCE, 0.01F);
-            this.ticker.addTradeoffProperty(MPSConstants.ENERGY_GENERATED, MPSConstants.MOVEMENT_RESISTANCE, 0.49F, "%");
+            this.ticker = new Ticker(module, EnumModuleCategory.ENERGY_GENERATION, EnumModuleTarget.TORSOONLY, MPSSettings::getModuleConfig) {{
+                addBaseProperty(MPSConstants.ENERGY_GENERATION, 2000);
+                addTradeoffProperty(MPSConstants.ENERGY_GENERATED, MPSConstants.ENERGY_GENERATION, 6000, "FE");
+                addBaseProperty(MPSConstants.MOVEMENT_RESISTANCE, 0.01F);
+                addTradeoffProperty(MPSConstants.ENERGY_GENERATED, MPSConstants.MOVEMENT_RESISTANCE, 0.49F, "%");
+            }};
         }
 
         @Nonnull

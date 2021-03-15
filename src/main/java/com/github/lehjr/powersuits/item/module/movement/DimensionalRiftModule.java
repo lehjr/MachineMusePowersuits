@@ -77,9 +77,10 @@ public class DimensionalRiftModule extends AbstractPowerModule {
 
         public CapProvider(@Nonnull ItemStack module) {
             this.module = module;
-            this.rightClick = new RightClickie(module, EnumModuleCategory.MOVEMENT, EnumModuleTarget.TOOLONLY, MPSSettings::getModuleConfig);
-            rightClick.addBaseProperty(MPSConstants.HEAT_GENERATION, 55);
-            rightClick.addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, 200000);
+            this.rightClick = new RightClickie(module, EnumModuleCategory.MOVEMENT, EnumModuleTarget.TOOLONLY, MPSSettings::getModuleConfig) {{
+                addBaseProperty(MPSConstants.HEAT_GENERATION, 55);
+                addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, 200000);
+            }};
         }
 
         @Nonnull

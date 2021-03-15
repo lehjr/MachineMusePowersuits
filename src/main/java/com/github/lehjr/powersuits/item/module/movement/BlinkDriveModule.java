@@ -68,11 +68,12 @@ public class BlinkDriveModule extends AbstractPowerModule {
 
         public CapProvider(@Nonnull ItemStack module) {
             this.module = module;
-            this.rightClickie = new RightClickie(module, EnumModuleCategory.MOVEMENT, EnumModuleTarget.TOOLONLY, MPSSettings::getModuleConfig);
-            this.rightClickie.addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, 10000, "FE");
-            this.rightClickie.addBaseProperty(MPSConstants.BLINK_DRIVE_RANGE, 5, "m");
-            this.rightClickie.addTradeoffProperty(MPSConstants.RANGE, MPSConstants.ENERGY_CONSUMPTION, 30000);
-            this.rightClickie.addTradeoffProperty(MPSConstants.RANGE, MPSConstants.BLINK_DRIVE_RANGE, 59);
+            this.rightClickie = new RightClickie(module, EnumModuleCategory.MOVEMENT, EnumModuleTarget.TOOLONLY, MPSSettings::getModuleConfig) {{
+                addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, 10000, "FE");
+                addBaseProperty(MPSConstants.BLINK_DRIVE_RANGE, 5, "m");
+                addTradeoffProperty(MPSConstants.RANGE, MPSConstants.ENERGY_CONSUMPTION, 30000);
+                addTradeoffProperty(MPSConstants.RANGE, MPSConstants.BLINK_DRIVE_RANGE, 59);
+            }};
         }
 
         @Nonnull

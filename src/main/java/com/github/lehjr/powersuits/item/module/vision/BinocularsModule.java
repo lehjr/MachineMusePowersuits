@@ -66,9 +66,10 @@ public class BinocularsModule extends AbstractPowerModule {
 
         public CapProvider(@Nonnull ItemStack module) {
             this.module = module;
-            this.moduleToggle = new ToggleableModule(module, EnumModuleCategory.VISION, EnumModuleTarget.HEADONLY, MPSSettings::getModuleConfig, false);
-            this.moduleToggle.addBaseProperty(MPSConstants.FOV, 0.5F);
-            this.moduleToggle.addTradeoffProperty(MPSConstants.FIELD_OF_VIEW, MPSConstants.FOV, 9.5F, "%");
+            this.moduleToggle = new ToggleableModule(module, EnumModuleCategory.VISION, EnumModuleTarget.HEADONLY, MPSSettings::getModuleConfig, false) {{
+                addBaseProperty(MPSConstants.FOV, 0.5F);
+                addTradeoffProperty(MPSConstants.FIELD_OF_VIEW, MPSConstants.FOV, 9.5F, "%");
+            }};
         }
 
         @Nonnull

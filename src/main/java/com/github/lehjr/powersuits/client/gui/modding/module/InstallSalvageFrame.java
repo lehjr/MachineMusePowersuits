@@ -38,6 +38,7 @@ import com.github.lehjr.powersuits.client.gui.common.ItemSelectionFrame;
 import com.github.lehjr.powersuits.container.TinkerTableContainer;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.util.InputMappings;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
@@ -95,7 +96,7 @@ public class InstallSalvageFrame extends ScrollableFrame {
             // target container slot index
             int moduleTarget = -1;
             if (containerIndex != null) {
-                moduleTarget = getModuleTargetIndexInModularItem(containerIndex, targetModule.getSelectedModule().getModule());
+                moduleTarget = getModuleTargetIndexInModularItem(containerIndex, module);
             }
 
             if (moduleTarget != -1) {
@@ -122,20 +123,22 @@ public class InstallSalvageFrame extends ScrollableFrame {
                     List<SlotItemHandler> slots = container.getModularItemToSlotMap().get(targetItem.getSelectedItem().containerIndex);
 
                     Integer moduleContainerIndex = null;
-                    for (SlotItemHandler slot : slots) {
-                        if (ItemStack.areItemStacksEqual(slot.getStack(), targetModule.getSelectedModule().getModule())) {
-                            moduleContainerIndex = slot.slotNumber;
+                    for (SlotItemHandler slotItemHandler : slots) {
+                        if (ItemStack.areItemStacksEqual(slotItemHandler.getStack(), targetModule.getSelectedModule().getModule())) {
+                            moduleContainerIndex = slotItemHandler.slotNumber;
                             break;
                         }
                     }
 
                     if(moduleContainerIndex != null) {
                         int targetIndex = getModuleTargetIndexInPlayerInventory(targetModule.getSelectedModule().getModule());
-                        if (targetIndex > 0) {
-                            player.playSound(SoundDictionary.SOUND_EVENT_GUI_SELECT, 1, 0);
-                            this.container.move(moduleContainerIndex, targetIndex);
-                        }
+                        player.playSound(SoundDictionary.SOUND_EVENT_GUI_SELECT, 1, 0);
+                        this.container.move(moduleContainerIndex, targetIndex);
+                    } else {
+                        System.out.println("moduleContainerIndex index is null");
                     }
+                } else {
+                    System.out.println("container index is null");
                 }
             }
         });

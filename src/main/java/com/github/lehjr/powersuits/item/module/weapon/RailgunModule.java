@@ -72,13 +72,14 @@ public class RailgunModule extends AbstractPowerModule {
 
         public CapProvider(@Nonnull ItemStack module) {
             this.module = module;
-            this.ticker = new Ticker(module, EnumModuleCategory.WEAPON, EnumModuleTarget.TOOLONLY, MPSSettings::getModuleConfig);
-            this.ticker.addBaseProperty(MPSConstants.RAILGUN_TOTAL_IMPULSE, 500, "Ns");
-            this.ticker.addBaseProperty(MPSConstants.RAILGUN_ENERGY_COST, 5000, "FE");
-            this.ticker.addBaseProperty(MPSConstants.RAILGUN_HEAT_EMISSION, 2, "");
-            this.ticker.addTradeoffProperty(MPSConstants.VOLTAGE, MPSConstants.RAILGUN_TOTAL_IMPULSE, 2500);
-            this.ticker.addTradeoffProperty(MPSConstants.VOLTAGE, MPSConstants.RAILGUN_ENERGY_COST, 25000);
-            this.ticker.addTradeoffProperty(MPSConstants.VOLTAGE, MPSConstants.RAILGUN_HEAT_EMISSION, 10);
+            this.ticker = new Ticker(module, EnumModuleCategory.WEAPON, EnumModuleTarget.TOOLONLY, MPSSettings::getModuleConfig) {{
+                addBaseProperty(MPSConstants.RAILGUN_TOTAL_IMPULSE, 500, "Ns");
+                addBaseProperty(MPSConstants.RAILGUN_ENERGY_COST, 5000, "FE");
+                addBaseProperty(MPSConstants.RAILGUN_HEAT_EMISSION, 2, "");
+                addTradeoffProperty(MPSConstants.VOLTAGE, MPSConstants.RAILGUN_TOTAL_IMPULSE, 2500);
+                addTradeoffProperty(MPSConstants.VOLTAGE, MPSConstants.RAILGUN_ENERGY_COST, 25000);
+                addTradeoffProperty(MPSConstants.VOLTAGE, MPSConstants.RAILGUN_HEAT_EMISSION, 10);
+            }};
         }
 
         @Nonnull

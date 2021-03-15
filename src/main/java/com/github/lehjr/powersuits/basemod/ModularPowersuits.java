@@ -37,6 +37,7 @@ import com.github.lehjr.numina.util.capabilities.module.toggleable.IToggleableMo
 import com.github.lehjr.numina.util.capabilities.module.toggleable.ToggleableModule;
 import com.github.lehjr.powersuits.client.control.KeybindKeyHandler;
 import com.github.lehjr.powersuits.client.event.ClientTickHandler;
+import com.github.lehjr.powersuits.client.event.LogoutEventHandler;
 import com.github.lehjr.powersuits.client.event.ModelBakeEventHandler;
 import com.github.lehjr.powersuits.client.event.RenderEventHandler;
 import com.github.lehjr.powersuits.client.gui.modding.module.TinkerTableGui;
@@ -89,7 +90,7 @@ import javax.annotation.Nullable;
 public class ModularPowersuits {
     public ModularPowersuits() {
         // Config
-        ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, MPSSettings.CLIENT_SPEC, ConfigHelper.setupConfigFile("mpa-client-only.toml", MPSConstants.MOD_ID).getAbsolutePath());
+        ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, MPSSettings.CLIENT_SPEC, ConfigHelper.setupConfigFile("mps-client-only.toml", MPSConstants.MOD_ID).getAbsolutePath());
         ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, MPSSettings.SERVER_SPEC); // note config file location for dedicated server is stored in the world config
 
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
@@ -99,6 +100,7 @@ public class ModularPowersuits {
 
         // Register the doClientStuff method for modloading
         modEventBus.addListener(this::setupClient);
+
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
 
@@ -155,6 +157,7 @@ public class ModularPowersuits {
         MinecraftForge.EVENT_BUS.register(RenderEventHandler.INSTANCE);
         MinecraftForge.EVENT_BUS.register(new ClientTickHandler());
         MinecraftForge.EVENT_BUS.register(new KeybindKeyHandler());
+        MinecraftForge.EVENT_BUS.register(new LogoutEventHandler());
 
 
         RenderingRegistry.registerEntityRenderingHandler(MPSObjects.RAILGUN_BOLT_ENTITY_TYPE.get(), RailGunBoltRenderer::new);

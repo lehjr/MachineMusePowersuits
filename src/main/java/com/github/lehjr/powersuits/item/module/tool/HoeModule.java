@@ -79,16 +79,17 @@ public class HoeModule extends AbstractPowerModule {
 
         public CapProvider(@Nonnull ItemStack module) {
             this.module = module;
-            this.rightClick = new RightClickie(module, EnumModuleCategory.TOOL, EnumModuleTarget.TOOLONLY, MPSSettings::getModuleConfig);
-            this.rightClick.addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, 500, "FE");
-            this.rightClick.addTradeoffProperty(MPSConstants.RADIUS, MPSConstants.ENERGY_CONSUMPTION, 9500);
-            this.rightClick.addTradeoffProperty(MPSConstants.RADIUS, MPSConstants.RADIUS, 8, "m");
+            this.rightClick = new RightClickie(module, EnumModuleCategory.TOOL, EnumModuleTarget.TOOLONLY, MPSSettings::getModuleConfig) {{
+                addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, 500, "FE");
+                addTradeoffProperty(MPSConstants.RADIUS, MPSConstants.ENERGY_CONSUMPTION, 9500);
+                addTradeoffProperty(MPSConstants.RADIUS, MPSConstants.RADIUS, 8, "m");
+            }};
         }
 
         @Nonnull
         @Override
         public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
-              return PowerModuleCapability.POWER_MODULE.orEmpty(cap, LazyOptional.of(() -> rightClick));
+            return PowerModuleCapability.POWER_MODULE.orEmpty(cap, LazyOptional.of(() -> rightClick));
         }
 
         class RightClickie extends RightClickModule {

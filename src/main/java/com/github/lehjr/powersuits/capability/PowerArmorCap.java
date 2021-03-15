@@ -68,6 +68,7 @@ public class PowerArmorCap extends AbstractModularPowerCap {
                 }};
 
                 this.maxHeat = MPSSettings.getMaxHeatHelmet();
+                break;
             }
 
             case CHEST: {
@@ -79,6 +80,7 @@ public class PowerArmorCap extends AbstractModularPowerCap {
                     this.setRangedWrapperMap(rangedWrapperMap);
                 }};
                 this.maxHeat = MPSSettings.getMaxHeatChestplate();
+                break;
             }
 
             case LEGS: {
@@ -90,6 +92,7 @@ public class PowerArmorCap extends AbstractModularPowerCap {
                     this.setRangedWrapperMap(rangedWrapperMap);
                 }};
                 this.maxHeat = MPSSettings.getMaxHeatLegs();
+                break;
             }
 
             case FEET: {

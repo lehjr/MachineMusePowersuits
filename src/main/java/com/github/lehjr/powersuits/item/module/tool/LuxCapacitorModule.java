@@ -70,12 +70,13 @@ public class LuxCapacitorModule extends AbstractPowerModule {
 
         public CapProvider(@Nonnull ItemStack module) {
             this.module = module;
-            this.rightClick = new RightClickie(module, EnumModuleCategory.TOOL, EnumModuleTarget.TOOLONLY, MPSSettings::getModuleConfig);
-            this.rightClick.addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, 1000, "FE");
-            this.rightClick.addTradeoffProperty(MPSConstants.RED, MPSConstants.RED_HUE, 1, "%");
-            this.rightClick.addTradeoffProperty(MPSConstants.GREEN, MPSConstants.GREEN_HUE, 1, "%");
-            this.rightClick.addTradeoffProperty(MPSConstants.BLUE, MPSConstants.BLUE_HUE, 1, "%");
-            this.rightClick.addTradeoffProperty(MPSConstants.ALPHA, MPSConstants.OPACITY, 1, "%");
+            this.rightClick = new RightClickie(module, EnumModuleCategory.TOOL, EnumModuleTarget.TOOLONLY, MPSSettings::getModuleConfig) {{
+                addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, 1000, "FE");
+                addTradeoffProperty(MPSConstants.RED, MPSConstants.RED_HUE, 1, "%");
+                addTradeoffProperty(MPSConstants.GREEN, MPSConstants.GREEN_HUE, 1, "%");
+                addTradeoffProperty(MPSConstants.BLUE, MPSConstants.BLUE_HUE, 1, "%");
+                addTradeoffProperty(MPSConstants.ALPHA, MPSConstants.OPACITY, 1, "%");
+            }};
         }
 
         @Nonnull

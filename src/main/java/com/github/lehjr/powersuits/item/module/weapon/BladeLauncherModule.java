@@ -71,9 +71,10 @@ public class BladeLauncherModule extends AbstractPowerModule {
 
         public CapProvider(@Nonnull ItemStack module) {
             this.module = module;
-            this.rightClickie = new RightClickie(module, EnumModuleCategory.WEAPON, EnumModuleTarget.TOOLONLY, MPSSettings::getModuleConfig);
-            this.rightClickie.addBaseProperty(MPSConstants.BLADE_ENERGY, 5000, "FE");
-            this.rightClickie.addBaseProperty(MPSConstants.BLADE_DAMAGE, 6, "pt");
+            this.rightClickie = new RightClickie(module, EnumModuleCategory.WEAPON, EnumModuleTarget.TOOLONLY, MPSSettings::getModuleConfig) {{
+                addBaseProperty(MPSConstants.BLADE_ENERGY, 5000, "FE");
+                addBaseProperty(MPSConstants.BLADE_DAMAGE, 6, "pt");
+            }};
         }
 
         @Nonnull

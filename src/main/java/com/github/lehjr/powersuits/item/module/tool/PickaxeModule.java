@@ -67,11 +67,12 @@ public class PickaxeModule extends AbstractPowerModule {
 
         public CapProvider(@Nonnull ItemStack module) {
             this.module = module;
-            this.blockBreaking = new BlockBreaker(module, EnumModuleCategory.TOOL, EnumModuleTarget.TOOLONLY, MPSSettings::getModuleConfig);
-            this.blockBreaking.addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, 500, "FE");
-            this.blockBreaking.addBaseProperty(MPSConstants.HARVEST_SPEED, 8, "x");
-            this.blockBreaking.addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.ENERGY_CONSUMPTION, 9500);
-            this.blockBreaking.addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.HARVEST_SPEED, 52);
+            this.blockBreaking = new BlockBreaker(module, EnumModuleCategory.TOOL, EnumModuleTarget.TOOLONLY, MPSSettings::getModuleConfig)  {{
+                addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, 500, "FE");
+                addBaseProperty(MPSConstants.HARVEST_SPEED, 8, "x");
+                addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.ENERGY_CONSUMPTION, 9500);
+                addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.HARVEST_SPEED, 52);
+            }};
         }
 
         @Nonnull

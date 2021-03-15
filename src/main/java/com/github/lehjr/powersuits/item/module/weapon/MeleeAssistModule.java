@@ -56,13 +56,14 @@ public class MeleeAssistModule extends AbstractPowerModule {
 
         public CapProvider(@Nonnull ItemStack module) {
             this.module = module;
-            this.moduleCap = new PowerModule(module, EnumModuleCategory.WEAPON, EnumModuleTarget.TOOLONLY, MPSSettings::getModuleConfig);
-            this.moduleCap.addBaseProperty(MPSConstants.PUNCH_ENERGY, 10, "FE");
-            this.moduleCap.addBaseProperty(MPSConstants.PUNCH_DAMAGE, 2, "pt");
-            this.moduleCap.addTradeoffProperty(MPSConstants.IMPACT, MPSConstants.PUNCH_ENERGY, 1000, "FE");
-            this.moduleCap.addTradeoffProperty(MPSConstants.IMPACT, MPSConstants.PUNCH_DAMAGE, 8, "pt");
-            this.moduleCap.addTradeoffProperty(MPSConstants.CARRY_THROUGH, MPSConstants.PUNCH_ENERGY, 200, "FE");
-            this.moduleCap.addTradeoffProperty(MPSConstants.CARRY_THROUGH, MPSConstants.PUNCH_KNOCKBACK, 1, "P");
+            this.moduleCap = new PowerModule(module, EnumModuleCategory.WEAPON, EnumModuleTarget.TOOLONLY, MPSSettings::getModuleConfig) {{
+                addBaseProperty(MPSConstants.PUNCH_ENERGY, 10, "FE");
+                addBaseProperty(MPSConstants.PUNCH_DAMAGE, 2, "pt");
+                addTradeoffProperty(MPSConstants.IMPACT, MPSConstants.PUNCH_ENERGY, 1000, "FE");
+                addTradeoffProperty(MPSConstants.IMPACT, MPSConstants.PUNCH_DAMAGE, 8, "pt");
+                addTradeoffProperty(MPSConstants.CARRY_THROUGH, MPSConstants.PUNCH_ENERGY, 200, "FE");
+                addTradeoffProperty(MPSConstants.CARRY_THROUGH, MPSConstants.PUNCH_KNOCKBACK, 1, "P");
+            }};
         }
 
         @Nonnull

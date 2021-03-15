@@ -1,23 +1,23 @@
 {
   "result": {
-    "item": "powersuits:clock"
+    "item": "powersuits:energy_shield"
   },
   "conditions": [
     {
-      "type": "forge:mod_loaded",
-      "modid": "centralizedmaterials"
+      "type": "powersuits:flag",
+      "flag": "vanilla_recipes_disabled"
     }
   ],
   "type": "minecraft:crafting_shaped",
   "mirrored": true,
   "pattern": [
-    " C ",
+    "FCF",
     "FOF",
-    " F "
+    "FCF"
   ],
   "key": {
     "C": {
-      "item": "minecraft:clock"
+      "item": "numina:component_field_emitter"
     },
     "F": {
       "tag": "forge:wiring"

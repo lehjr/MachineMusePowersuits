@@ -60,11 +60,12 @@ public class ShockAbsorberModule extends AbstractPowerModule {
 
         public CapProvider(@Nonnull ItemStack module) {
             this.module = module;
-            this.moduleToggle = new ToggleableModule(module, EnumModuleCategory.MOVEMENT, EnumModuleTarget.FEETONLY, MPSSettings::getModuleConfig, true);
-            this.moduleToggle.addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, 0, "FE/m");
-            this.moduleToggle.addTradeoffProperty(MPSConstants.POWER, MPSConstants.ENERGY_CONSUMPTION, 100);
-            this.moduleToggle.addBaseProperty(MPSConstants.MULTIPLIER, 0, "%");
-            this.moduleToggle.addTradeoffProperty(MPSConstants.POWER, MPSConstants.MULTIPLIER, 10);
+            this.moduleToggle = new ToggleableModule(module, EnumModuleCategory.MOVEMENT, EnumModuleTarget.FEETONLY, MPSSettings::getModuleConfig, true) {{
+                addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, 0, "FE/m");
+                addTradeoffProperty(MPSConstants.POWER, MPSConstants.ENERGY_CONSUMPTION, 100);
+                addBaseProperty(MPSConstants.MULTIPLIER, 0, "%");
+                addTradeoffProperty(MPSConstants.POWER, MPSConstants.MULTIPLIER, 10);
+            }};
         }
 
         @Nonnull

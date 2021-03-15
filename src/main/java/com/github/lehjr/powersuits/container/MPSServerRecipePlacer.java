@@ -26,7 +26,7 @@
 //    public void place(ServerPlayerEntity player, @Nullable IRecipe recipeIn, boolean placeAll) {
 //        if (recipeIn != null && (player.getRecipeBook().isUnlocked(recipeIn) ||
 //                // we don't need no stinking locked recipes
-//                player.openContainer instanceof MPSWorkbenchContainer)) {
+//                player.openContainer instanceof TinkerTableContainer)) {
 //            this.playerInventory = player.inventory;
 //            if (this.placeIntoInventory() || player.isCreative()) {
 //                this.recipeItemHelper.clear();
@@ -36,7 +36,7 @@
 //                    this.tryPlaceRecipe(recipeIn, placeAll);
 //                } else {
 //                    this.clear();
-//                    if (this.recipeBookContainer instanceof MPSWorkbenchContainer) {
+//                    if (this.recipeBookContainer instanceof TinkerTableContainer) {
 //                        MPSPackets.CHANNEL_INSTANCE.send(PacketDistributor.PLAYER.with(()-> player),
 //                                new com.github.lehjr.powersuits.network.packets.reworked_crafting_packets.SPlaceGhostRecipePacket(player.openContainer.windowId, recipeIn));
 //                    } else {
@@ -103,8 +103,8 @@
 //    protected void clear() {
 //        for(int index = 0; index < this.recipeBookContainer.getWidth() * this.recipeBookContainer.getHeight() + 1; ++index) {
 //            if (index != this.recipeBookContainer.getOutputSlot() ||
-//                    !(this.recipeBookContainer instanceof MPSWorkbenchContainer) &&
-//                            !(this.recipeBookContainer instanceof MPSWorkbenchContainer) &&
+//                    !(this.recipeBookContainer instanceof TinkerTableContainer) &&
+//                            !(this.recipeBookContainer instanceof TinkerTableContainer) &&
 //                            !(this.recipeBookContainer instanceof PlayerContainer)) {
 //                this.giveToPlayer(index);
 //            }
