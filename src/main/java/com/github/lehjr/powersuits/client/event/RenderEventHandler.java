@@ -141,7 +141,6 @@ public enum RenderEventHandler {
         float zLevel = Minecraft.getInstance().currentScreen != null ? Minecraft.getInstance().currentScreen.getBlitOffset() : 0;
 
         if (MPSSettings.displayHud()) {
-
             Minecraft minecraft = Minecraft.getInstance();
             ClientPlayerEntity player = minecraft.player;
             frame.setLeft(MPSSettings.getHudKeybindX());

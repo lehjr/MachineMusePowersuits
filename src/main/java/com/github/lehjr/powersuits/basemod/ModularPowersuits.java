@@ -50,6 +50,7 @@ import com.github.lehjr.powersuits.constants.MPSConstants;
 import com.github.lehjr.powersuits.constants.MPSRegistryNames;
 import com.github.lehjr.powersuits.event.HarvestEventHandler;
 import com.github.lehjr.powersuits.event.MovementManager;
+import com.github.lehjr.powersuits.event.PlayerLoginHandler;
 import com.github.lehjr.powersuits.event.PlayerUpdateHandler;
 import com.github.lehjr.powersuits.network.MPSPackets;
 import com.github.lehjr.powersuits.recipe.MPSRecipeConditionFactory;
@@ -104,7 +105,7 @@ public class ModularPowersuits {
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
 
-//        MinecraftForge.EVENT_BUS.addListener(PlayerLoginHandler::onPlayerLogin);
+        MinecraftForge.EVENT_BUS.addListener(PlayerLoginHandler::onPlayerLogin); // just to populated keybinds -_-
 //        MinecraftForge.EVENT_BUS.addListener(EntityDamageEvent::handleEntityDamageEvent);
 //        MinecraftForge.EVENT_BUS.addListener(EntityDamageEvent::entityAttackEventHandler);
         MinecraftForge.EVENT_BUS.register(new PlayerUpdateHandler());
