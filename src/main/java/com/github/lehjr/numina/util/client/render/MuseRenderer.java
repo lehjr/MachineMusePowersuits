@@ -33,12 +33,19 @@ import com.github.lehjr.numina.util.math.Colour;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.IVertexBuilder;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.BreakableBlock;
+import net.minecraft.block.StainedGlassPaneBlock;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.*;
+import net.minecraft.client.renderer.model.BakedQuad;
 import net.minecraft.client.renderer.model.IBakedModel;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
+import net.minecraft.client.renderer.model.ModelResourceLocation;
 import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.texture.TextureManager;
@@ -48,7 +55,10 @@ import net.minecraft.crash.CrashReportCategory;
 import net.minecraft.crash.ReportedException;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Matrix4f;
 import net.minecraft.util.text.ITextComponent;
@@ -58,9 +68,12 @@ import org.lwjgl.opengl.GL11;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Contains a bunch of random OpenGL-related functions, accessed statically.
+ *
+ *
  *
  * @author MachineMuse
  */
@@ -128,36 +141,36 @@ public abstract class MuseRenderer {
     }
 
 
-    private void renderItemIntoGUI(@Nullable LivingEntity livingEntity, MatrixStack matrixStack, ItemStack stack, float x, float y, Colour colour) {
-        if (!stack.isEmpty()) {
-            getItemRenderer().zLevel += 50.0F;
+//    private void renderItemIntoGUI(@Nullable LivingEntity livingEntity, MatrixStack matrixStack, ItemStack stack, float x, float y, Colour colour) {
+//        if (!stack.isEmpty()) {
+//            getItemRenderer().zLevel += 50.0F;
+//
+//            try {
+//                renderItemModelIntoGUI(stack, matrixStack, x, y, getItemRenderer().getItemModelWithOverrides(stack, (World)null, livingEntity), colour);
+//            } catch (Throwable throwable) {
+//                CrashReport crashreport = CrashReport.makeCrashReport(throwable, "Rendering item");
+//                CrashReportCategory crashreportcategory = crashreport.makeCategory("Item being rendered");
+//                crashreportcategory.addDetail("Item Type", () -> {
+//                    return String.valueOf((Object)stack.getItem());
+//                });
+//                crashreportcategory.addDetail("Registry Name", () -> String.valueOf(stack.getItem().getRegistryName()));
+//                crashreportcategory.addDetail("Item Damage", () -> {
+//                    return String.valueOf(stack.getDamage());
+//                });
+//                crashreportcategory.addDetail("Item NBT", () -> {
+//                    return String.valueOf((Object)stack.getTag());
+//                });
+//                crashreportcategory.addDetail("Item Foil", () -> {
+//                    return String.valueOf(stack.hasEffect());
+//                });
+//                throw new ReportedException(crashreport);
+//            }
+//
+//            getItemRenderer().zLevel -= 50.0F;
+//        }
+//    }
 
-            try {
-                renderItemModelIntoGUI(stack, matrixStack, x, y, getItemRenderer().getItemModelWithOverrides(stack, (World)null, livingEntity), colour);
-            } catch (Throwable throwable) {
-                CrashReport crashreport = CrashReport.makeCrashReport(throwable, "Rendering item");
-                CrashReportCategory crashreportcategory = crashreport.makeCategory("Item being rendered");
-                crashreportcategory.addDetail("Item Type", () -> {
-                    return String.valueOf((Object)stack.getItem());
-                });
-                crashreportcategory.addDetail("Registry Name", () -> String.valueOf(stack.getItem().getRegistryName()));
-                crashreportcategory.addDetail("Item Damage", () -> {
-                    return String.valueOf(stack.getDamage());
-                });
-                crashreportcategory.addDetail("Item NBT", () -> {
-                    return String.valueOf((Object)stack.getTag());
-                });
-                crashreportcategory.addDetail("Item Foil", () -> {
-                    return String.valueOf(stack.hasEffect());
-                });
-                throw new ReportedException(crashreport);
-            }
-
-            getItemRenderer().zLevel -= 50.0F;
-        }
-    }
-
-
+    // Ripped from Minecraft's Item Renderer
     protected static void renderItemModelIntoGUI(ItemStack stack, MatrixStack matrixStack, float x, float y, IBakedModel bakedmodel, Colour colour) {
         RenderSystem.pushMatrix();
         Minecraft.getInstance().getTextureManager().bindTexture(AtlasTexture.LOCATION_BLOCKS_TEXTURE);
@@ -167,7 +180,6 @@ public abstract class MuseRenderer {
         RenderSystem.defaultAlphaFunc();
         RenderSystem.enableBlend();
         RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
-        RenderSystem.color4f(colour.r, colour.g, colour.b, colour.a);
         RenderSystem.translatef((float)x, (float)y, 100.0F + Minecraft.getInstance().getItemRenderer().zLevel);
         RenderSystem.translatef(8.0F, 8.0F, 0.0F);
         RenderSystem.scalef(1.0F, -1.0F, 1.0F);
@@ -177,7 +189,7 @@ public abstract class MuseRenderer {
         if (flag) {
             RenderHelper.setupGuiFlatDiffuseLighting();
         }
-        Minecraft.getInstance().getItemRenderer().renderItem(stack, ItemCameraTransforms.TransformType.GUI, false, matrixStack, bufferSource, 15728880, OverlayTexture.NO_OVERLAY, bakedmodel);
+        renderItem(stack, ItemCameraTransforms.TransformType.GUI, false, matrixStack, bufferSource, 15728880, OverlayTexture.NO_OVERLAY, bakedmodel, colour);
         bufferSource.finish();
         RenderSystem.enableDepthTest();
         if (flag) {
@@ -189,6 +201,84 @@ public abstract class MuseRenderer {
         RenderSystem.popMatrix();
     }
 
+    public static void renderItem(ItemStack itemStackIn, ItemCameraTransforms.TransformType transformTypeIn, boolean leftHand, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int combinedLightIn, int combinedOverlayIn, IBakedModel modelIn, Colour colour) {
+        if (!itemStackIn.isEmpty()) {
+            matrixStackIn.push();
+            boolean flag = transformTypeIn == ItemCameraTransforms.TransformType.GUI || transformTypeIn == ItemCameraTransforms.TransformType.GROUND || transformTypeIn == ItemCameraTransforms.TransformType.FIXED;
+            if (itemStackIn.getItem() == Items.TRIDENT && flag) {
+                modelIn = Minecraft.getInstance().getItemRenderer().getItemModelMesher().getModelManager().getModel(new ModelResourceLocation("minecraft:trident#inventory"));
+            }
+
+            modelIn = net.minecraftforge.client.ForgeHooksClient.handleCameraTransforms(matrixStackIn, modelIn, transformTypeIn, leftHand);
+            matrixStackIn.translate(-0.5D, -0.5D, -0.5D);
+            if (!modelIn.isBuiltInRenderer() && (itemStackIn.getItem() != Items.TRIDENT || flag)) {
+                boolean flag1;
+                if (transformTypeIn != ItemCameraTransforms.TransformType.GUI && !transformTypeIn.isFirstPerson() && itemStackIn.getItem() instanceof BlockItem) {
+                    Block block = ((BlockItem)itemStackIn.getItem()).getBlock();
+                    flag1 = !(block instanceof BreakableBlock) && !(block instanceof StainedGlassPaneBlock);
+                } else {
+                    flag1 = true;
+                }
+                if (modelIn.isLayered()) { net.minecraftforge.client.ForgeHooksClient.drawItemLayered(Minecraft.getInstance().getItemRenderer(), modelIn, itemStackIn, matrixStackIn, bufferIn, combinedLightIn, combinedOverlayIn, flag1); }
+                else {
+                    RenderType rendertype = RenderTypeLookup.func_239219_a_(itemStackIn, flag1);
+                    IVertexBuilder ivertexbuilder;
+                    if (itemStackIn.getItem() == Items.COMPASS && itemStackIn.hasEffect()) {
+                        matrixStackIn.push();
+                        MatrixStack.Entry matrixstack$entry = matrixStackIn.getLast();
+                        if (transformTypeIn == ItemCameraTransforms.TransformType.GUI) {
+                            matrixstack$entry.getMatrix().mul(0.5F);
+                        } else if (transformTypeIn.isFirstPerson()) {
+                            matrixstack$entry.getMatrix().mul(0.75F);
+                        }
+
+                        if (flag1) {
+                            ivertexbuilder = Minecraft.getInstance().getItemRenderer().getDirectGlintVertexBuilder(bufferIn, rendertype, matrixstack$entry);
+                        } else {
+                            ivertexbuilder = Minecraft.getInstance().getItemRenderer().getGlintVertexBuilder(bufferIn, rendertype, matrixstack$entry);
+                        }
+
+                        matrixStackIn.pop();
+                    } else if (flag1) {
+                        ivertexbuilder = Minecraft.getInstance().getItemRenderer().getEntityGlintVertexBuilder(bufferIn, rendertype, true, itemStackIn.hasEffect());
+                    } else {
+                        ivertexbuilder = Minecraft.getInstance().getItemRenderer().getBuffer(bufferIn, rendertype, true, itemStackIn.hasEffect());
+                    }
+
+                    renderModel(modelIn, itemStackIn, combinedLightIn, combinedOverlayIn, matrixStackIn, ivertexbuilder, colour);
+                }
+            } else {
+                itemStackIn.getItem().getItemStackTileEntityRenderer().func_239207_a_(itemStackIn, transformTypeIn, matrixStackIn, bufferIn, combinedLightIn, combinedOverlayIn);
+            }
+
+            matrixStackIn.pop();
+        }
+    }
+
+    public static void renderModel(IBakedModel modelIn, ItemStack stack, int combinedLightIn, int combinedOverlayIn, MatrixStack matrixStackIn, IVertexBuilder bufferIn, Colour colour) {
+        Random random = new Random();
+        long i = 42L;
+
+        for(Direction direction : Direction.values()) {
+            random.setSeed(42L);
+            renderQuads(matrixStackIn, bufferIn, modelIn.getQuads((BlockState)null, direction, random), stack, combinedLightIn, combinedOverlayIn, colour);
+        }
+
+        random.setSeed(42L);
+        renderQuads(matrixStackIn, bufferIn, modelIn.getQuads((BlockState)null, (Direction)null, random), stack, combinedLightIn, combinedOverlayIn, colour);
+    }
+
+    public static void renderQuads(MatrixStack matrixStackIn, IVertexBuilder bufferIn, List<BakedQuad> quadsIn, ItemStack itemStackIn, int combinedLightIn, int combinedOverlayIn, Colour colour) {
+        if (colour == null) {
+            Minecraft.getInstance().getItemRenderer().renderQuads(matrixStackIn, bufferIn, quadsIn, itemStackIn, combinedLightIn, combinedOverlayIn);
+        } else {
+            MatrixStack.Entry matrixstack$entry = matrixStackIn.getLast();
+
+            for (BakedQuad bakedquad : quadsIn) {
+                bufferIn.addVertexData(matrixstack$entry, bakedquad, colour.r, colour.g, colour.b, colour.a, combinedLightIn, combinedOverlayIn, true);
+            }
+        }
+    }
 
     /**
      * Renders the stack size and/or damage bar for the given ItemStack.
@@ -391,7 +481,7 @@ public abstract class MuseRenderer {
 
 
 
-//    public static void drawLightning(IRenderTypeBuffer bufferIn, MatrixStack matrixStack, float x1, float y1, float z1, float x2, float y2, float z2, Colour colour) {
+    //    public static void drawLightning(IRenderTypeBuffer bufferIn, MatrixStack matrixStack, float x1, float y1, float z1, float x2, float y2, float z2, Colour colour) {
 //        drawLightningTextured(bufferIn.getBuffer(NuminaRenderState.LIGHTNING_TEX), matrixStack.getLast().getMatrix(), x1, y1, z1, x2, y2, z2, colour);
 //    }
 //

@@ -48,7 +48,6 @@ public class PowerModuleCapability {
                     public void readNBT(Capability<IPowerModule> capability, IPowerModule instance, Direction side, INBT nbt) {
                         if (!(instance instanceof PowerModule))
                             throw new IllegalArgumentException("Can not deserialize to an instance that isn't the default implementation");
-
                     }
                 },
                 () -> new PowerModule(ItemStack.EMPTY, EnumModuleCategory.NONE, EnumModuleTarget.NONE, null));

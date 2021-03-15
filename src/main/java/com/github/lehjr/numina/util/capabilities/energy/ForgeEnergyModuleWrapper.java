@@ -31,6 +31,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.IntNBT;
 import net.minecraftforge.common.util.INBTSerializable;
+import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.EnergyStorage;
 
 import javax.annotation.Nonnull;
@@ -78,11 +79,11 @@ public class ForgeEnergyModuleWrapper extends EnergyStorage implements IEnergyWr
     /** INBTSerializable -------------------------------------------------------------------------- */
     @Override
     public IntNBT serializeNBT() {
-        return IntNBT.valueOf(energy);
+        return (IntNBT) CapabilityEnergy.ENERGY.writeNBT(this, null);
     }
 
     @Override
     public void deserializeNBT(final IntNBT nbt) {
-        energy = nbt.getInt();
+        CapabilityEnergy.ENERGY.readNBT(this, null, nbt);
     }
 }

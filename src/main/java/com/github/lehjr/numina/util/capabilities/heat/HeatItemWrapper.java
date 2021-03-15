@@ -30,11 +30,13 @@ import com.github.lehjr.numina.util.capabilities.module.powermodule.IPowerModule
 import com.github.lehjr.numina.util.nbt.MuseNBTUtils;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.DoubleNBT;
+import net.minecraft.nbt.IntNBT;
 import net.minecraft.util.Direction;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.energy.CapabilityEnergy;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -86,12 +88,12 @@ public class HeatItemWrapper extends HeatStorage implements ICapabilityProvider,
     /** INBTSerializable -------------------------------------------------------------------------- */
     @Override
     public DoubleNBT serializeNBT() {
-        return DoubleNBT.valueOf(heat);
+        return (DoubleNBT) HeatCapability.HEAT.writeNBT(this, null);
     }
 
     @Override
     public void deserializeNBT(final DoubleNBT nbt) {
-        heat = nbt.getDouble();
+        HeatCapability.HEAT.readNBT(this, null, nbt);
     }
 
     /** INBTSerializable<NBTTagDouble> ------------------------------------------------------------ */
