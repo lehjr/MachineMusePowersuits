@@ -26,6 +26,7 @@
 
 package com.github.lehjr.numina.util.client.gui.gemoetry;
 
+import com.github.lehjr.numina.basemod.MuseLogger;
 import com.github.lehjr.numina.util.client.render.NuminaRenderState;
 import com.github.lehjr.numina.util.math.Colour;
 import com.mojang.blaze3d.matrix.MatrixStack;
@@ -286,11 +287,11 @@ public class DrawableMuseCircle<LIGHTMAP_ENABLED> {
 
                 vertices +=6;
 
-                System.out.println("j: " + j);
+                MuseLogger.logDebug("j: " + j);
             }
         }
         matrixStackIn.pop();
-        System.out.println("vertices: " + vertices);
-        System.out.println("numVertices: " + numVertices);
+        MuseLogger.logDebug("vertices: " + vertices);
+        MuseLogger.logDebug("numVertices: " + numVertices);
     }
 }

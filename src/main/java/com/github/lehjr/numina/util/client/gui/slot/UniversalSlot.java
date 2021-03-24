@@ -26,6 +26,7 @@
 
 package com.github.lehjr.numina.util.client.gui.slot;
 
+import com.github.lehjr.numina.basemod.MuseLogger;
 import com.github.lehjr.numina.util.client.gui.clickable.IClickable;
 import com.github.lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
 import com.mojang.blaze3d.matrix.MatrixStack;
@@ -204,11 +205,7 @@ public class UniversalSlot extends Slot implements IClickable {
 
     @Override
     public void move(double x, double y) {
-        // FIXME: move should set how much to move by rather than absolute value of position
-
-        System.out.println("FIXME... behaviour change coming!!");
-        this.position.setX(x);
-        this.position.setY(y);
+        this.position.plus(new MusePoint2D(x, y));
     }
 
     @Override

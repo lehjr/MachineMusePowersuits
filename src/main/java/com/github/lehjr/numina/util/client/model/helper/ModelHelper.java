@@ -102,7 +102,7 @@ public class ModelHelper {
                 MuseLogger.logError("Failed to load model. " + e);
             }
         }
-        System.out.println("got model");
+        MuseLogger.logDebug("got model");
         return model;
     }
 

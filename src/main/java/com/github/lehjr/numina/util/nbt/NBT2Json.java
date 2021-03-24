@@ -26,6 +26,7 @@
 
 package com.github.lehjr.numina.util.nbt;
 
+import com.github.lehjr.numina.basemod.MuseLogger;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import net.minecraft.nbt.CompoundNBT;
@@ -77,7 +78,7 @@ public class NBT2Json {
                     break;
 
                 case Constants.NBT.TAG_LIST: // 9
-                    System.out.println("nbt List is broken: " + key + "<>" + nbt.get(key));
+                    MuseLogger.logDebug("nbt List is broken: " + key + "<>" + nbt.get(key));
 //                    jsonObjectIn.addProperty(key, nbt.getList(key, 0)); // kind of list?
                     break;
 

@@ -104,6 +104,8 @@ public class Numina {
         NuminaObjects.ENTITY_TYPES.register(modEventBus);
         NuminaObjects.CONTAINER_TYPES.register(modEventBus);
 
+        MinecraftForge.EVENT_BUS.register(new LogoutEventHandler());
+
         DistExecutor.runWhenOn(Dist.CLIENT, ()->()-> clientStart(modEventBus));
 
         // handles loading and reloading event
@@ -169,7 +171,9 @@ public class Numina {
     private void doClientStuff(final FMLClientSetupEvent event) {
         MinecraftForge.EVENT_BUS.register(new FOVUpdateEventHandler());
         MinecraftForge.EVENT_BUS.register(new RenderGameOverlayEventHandler());
-        MinecraftForge.EVENT_BUS.register(new LogoutEventHandler());
+
+//        MinecraftForge.EVENT_BUS.register(new LogoutEventHandler());
+
         MinecraftForge.EVENT_BUS.register(new ToolTipEvent());
 
         ScreenManager.registerFactory(NuminaObjects.CHARGING_BASE_CONTAINER_TYPE.get(), ChargingBaseGui::new);

@@ -174,7 +174,7 @@ public class GuiIcon {
         public void drawLightning(IRenderTypeBuffer bufferIn, MatrixStack matrixStack, float x1, float y1, float z1, float x2, float y2, float z2, Colour colour) {
             TextureAtlasSprite icon = getSprite();
 //            bindTexture();
-//            System.out.println("toString: " + toString());
+//            MuseLogger.logDebug("toString: " + toString());
 
             drawLightningTextured(bufferIn.getBuffer(NuminaRenderState.LIGHTNING_TEST()),
                     matrixStack.getLast().getMatrix(),

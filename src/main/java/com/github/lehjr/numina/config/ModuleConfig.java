@@ -75,31 +75,34 @@ public class ModuleConfig implements IConfig {
      */
     Map<String, Map<String, ArrayList<String>>> outputMap;
     void addtoMap(String category, String moduleName, String entry) {
-        MuseLogger.logDebug("adding to map: " + category + ", " + moduleName + ", " + entry );
+        // values may not be missing if config is not yet present (such as during startup)
+        if (serverConfig.isPresent()) {
+            MuseLogger.logDebug("adding to map: " + category + ", " + moduleName + ", " + entry);
 
-        Map<String, ArrayList<String>> modulesForCategory;
-        ArrayList<String> moduleSettings;
+            Map<String, ArrayList<String>> modulesForCategory;
+            ArrayList<String> moduleSettings;
 
-        // check if the category is already in the map
-        if (outputMap.containsKey(category)) {
-            modulesForCategory = outputMap.get(category);
-            if(modulesForCategory.containsKey(moduleName)) {
-                moduleSettings = modulesForCategory.get(moduleName);
-                if (moduleSettings.contains(entry)) {
-                    return;
+            // check if the category is already in the map
+            if (outputMap.containsKey(category)) {
+                modulesForCategory = outputMap.get(category);
+                if (modulesForCategory.containsKey(moduleName)) {
+                    moduleSettings = modulesForCategory.get(moduleName);
+                    if (moduleSettings.contains(entry)) {
+                        return;
+                    }
+                } else {
+                    moduleSettings = new ArrayList<>();
                 }
             } else {
+                modulesForCategory = new HashMap<>();
                 moduleSettings = new ArrayList<>();
             }
-        } else {
-            modulesForCategory = new HashMap<>();
-            moduleSettings = new ArrayList<>();
+
+            moduleSettings.add(entry);
+            modulesForCategory.put(moduleName, moduleSettings);
+
+            outputMap.put(category, modulesForCategory);
         }
-
-        moduleSettings.add(entry);
-        modulesForCategory.put(moduleName, moduleSettings);
-
-        outputMap.put(category, modulesForCategory);
     }
 
     // once the builder has been built, it cannot be changed.
@@ -108,7 +111,7 @@ public class ModuleConfig implements IConfig {
             return;
         }
 
-        getModConfig().ifPresent(config->System.out.println("configData for " + MOD_ID + ": " + config.getConfigData()));
+        getModConfig().ifPresent(config->MuseLogger.logDebug("configData for " + MOD_ID + ": " + config.getConfigData()));
 
         MuseLogger.logDebug("MODULE MAP SET SIZE: " + outputMap.size());
 
@@ -207,7 +210,7 @@ public class ModuleConfig implements IConfig {
 
                 if (config.getConfigData().contains(key)) {
                     Double val = config.getConfigData().get(key);
-//                System.out.println("common config value: " + config.getConfigData().get(key));
+//                MuseLogger.logDebug("common config value: " + config.getConfigData().get(key));
 
                     // FIXME: logging out and back in creates null values?
                     return val != null ? val : multiplier;

@@ -70,8 +70,8 @@ public class NuminaRecipeConditionFactory implements ICondition {
         @Override
         public void write(JsonObject json, NuminaRecipeConditionFactory value) {
             // Don't think anything else needs to be added here, as this is now working
-//            System.out.println("json: " + json.toString());
-//            System.out.println("value: " + value.conditionName);
+//            MuseLogger.logDebug("json: " + json.toString());
+//            MuseLogger.logDebug("value: " + value.conditionName);
 //            json.addProperty("condition", value.conditionName);
         }
 

@@ -29,15 +29,50 @@ package com.github.lehjr.numina.client.event;
 import com.github.lehjr.numina.config.ModuleConfig;
 import com.github.lehjr.numina.config.NuminaSettings;
 import com.github.lehjr.numina.util.capabilities.module.powermodule.IConfig;
+import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 public class LogoutEventHandler {
+
+    // server side since server is null from client side
     @SubscribeEvent
-    public void onPlayerLogout(ClientPlayerNetworkEvent.LoggedInEvent event) {
+    public void OnPlayerLogoutCommon(PlayerEvent.PlayerLoggedOutEvent event) {
         IConfig moduleConfig = NuminaSettings.getModuleConfig();
-        if (moduleConfig instanceof ModuleConfig) {
-            ((ModuleConfig) moduleConfig).writeMissingConfigValues();
+        if (event.getPlayer() != null) {
+            MinecraftServer server = event.getPlayer().getServer();
+            if (server != null && server.isSinglePlayer() || server.isServerOwner(event.getPlayer().getGameProfile())) {
+                if (moduleConfig instanceof ModuleConfig) {
+                    ((ModuleConfig) moduleConfig).writeMissingConfigValues();
+                }
+            }
         }
     }
+
+//    @SubscribeEvent
+//    public void onPlayerLogout(ClientPlayerNetworkEvent.LoggedInEvent event) {
+//        IConfig moduleConfig = NuminaSettings.getModuleConfig();
+//
+//        System.out.println("abcdefg");
+//
+//        if (event.getPlayer() != null) {
+//            if (event.getPlayer().getServer() != null) {
+//                System.out.println("is single player: " + event.getPlayer().getServer().isSinglePlayer());
+//            } else {
+//                System.out.println("server is null");
+//            }
+//        } else {
+//            System.out.println("player is null");
+//        }
+//
+//
+//
+//        if (moduleConfig instanceof ModuleConfig) {
+//            System.out.println("fixme!!");
+//
+//
+////            ((ModuleConfig) moduleConfig).writeMissingConfigValues();
+//        }
+//    }
 }

@@ -26,6 +26,7 @@
 
 package com.github.lehjr.numina.util.client.model.helper;
 
+import com.github.lehjr.numina.basemod.MuseLogger;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.math.vector.TransformationMatrix;
 import net.minecraftforge.api.distmarker.Dist;
@@ -177,13 +178,13 @@ public class ModelTransformCalibration {
 
             if (isKeyPressed(GLFW.GLFW_KEY_KP_0)) {
 
-                System.out.println("FIXME: check consistency between using every coinstructor");
+                MuseLogger.logDebug("FIXME: check consistency between using every constructor");
 
-                System.out.println("xOffest: " + xOffest + ", yOffest: " + yOffest + ", zOffest: " + zOffest);
-                System.out.println("xrot: " + angleX + ", yrot: " + angleY + ", zrot: " + angleZ);
-                System.out.println("scaleModifier: " + scalemodifier);
+                MuseLogger.logDebug("xOffest: " + xOffest + ", yOffest: " + yOffest + ", zOffest: " + zOffest);
+                MuseLogger.logDebug("xrot: " + angleX + ", yrot: " + angleY + ", zrot: " + angleZ);
+                MuseLogger.logDebug("scaleModifier: " + scalemodifier);
 
-                System.out.println("MuseModelHelper.get(" + xOffest +", " + yOffest + ", " + zOffest + ", " + angleX + ", " + angleY+ ", " + angleZ + ", " + scalemodifier + ")" );
+                MuseLogger.logDebug("MuseModelHelper.get(" + xOffest +", " + yOffest + ", " + zOffest + ", " + angleX + ", " + angleY+ ", " + angleZ + ", " + scalemodifier + ")" );
 
 
                 tap = true;

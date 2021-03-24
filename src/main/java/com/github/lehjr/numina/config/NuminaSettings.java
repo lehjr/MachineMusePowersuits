@@ -29,6 +29,7 @@ package com.github.lehjr.numina.config;
 import com.github.lehjr.numina.constants.NuminaConstants;
 import com.github.lehjr.numina.util.capabilities.module.powermodule.IConfig;
 import net.minecraftforge.common.ForgeConfigSpec;
+import net.minecraftforge.common.util.NonNullLazy;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.Optional;
@@ -89,15 +90,18 @@ public class NuminaSettings {
     }
 
     /** Modules ----------------------------------------------------------------------------------- */
-    private static volatile ModuleConfig moduleConfig;
+//    private static volatile ModuleConfig moduleConfig;
+    static NonNullLazy<IConfig> moduleConfig = NonNullLazy.of(() ->new ModuleConfig(NuminaConstants.MOD_ID));
+
     public static IConfig getModuleConfig() {
-        if (moduleConfig == null) {
-            synchronized (ModuleConfig.class) {
-                if (moduleConfig == null) {
-                    moduleConfig = new ModuleConfig(NuminaConstants.MOD_ID);
-                }
-            }
-        }
-        return moduleConfig;
+//        if (moduleConfig == null) {
+//            synchronized (ModuleConfig.class) {
+//                if (moduleConfig == null) {
+//                    moduleConfig = new ModuleConfig(NuminaConstants.MOD_ID);
+//                }
+//            }
+//        }
+//        return moduleConfig;
+        return moduleConfig.get();
     }
 }
