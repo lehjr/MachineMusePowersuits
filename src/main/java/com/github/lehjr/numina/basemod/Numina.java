@@ -28,7 +28,7 @@ package com.github.lehjr.numina.basemod;
 
 import com.github.lehjr.numina.client.event.ArmorLayerSetup;
 import com.github.lehjr.numina.client.event.FOVUpdateEventHandler;
-import com.github.lehjr.numina.client.event.LogoutEventHandler;
+import com.github.lehjr.numina.event.LogoutEventHandler;
 import com.github.lehjr.numina.client.event.ToolTipEvent;
 import com.github.lehjr.numina.client.gui.ArmorStandGui;
 import com.github.lehjr.numina.client.gui.ChargingBaseGui;
