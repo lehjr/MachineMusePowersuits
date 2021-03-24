@@ -38,7 +38,6 @@ import com.github.lehjr.powersuits.client.gui.common.ItemSelectionFrame;
 import com.github.lehjr.powersuits.container.TinkerTableContainer;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.util.InputMappings;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;

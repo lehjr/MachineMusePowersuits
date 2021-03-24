@@ -44,7 +44,6 @@ import com.github.lehjr.powersuits.basemod.MPSObjects;
 import com.github.lehjr.powersuits.capability.PowerArmorCap;
 import com.github.lehjr.powersuits.constants.MPSConstants;
 import com.github.lehjr.powersuits.constants.MPSRegistryNames;
-import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import com.google.common.util.concurrent.AtomicDouble;
@@ -74,7 +73,6 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;

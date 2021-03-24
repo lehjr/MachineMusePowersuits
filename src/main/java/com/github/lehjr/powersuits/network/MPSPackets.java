@@ -31,7 +31,6 @@ import com.github.lehjr.powersuits.constants.MPSConstants;
 import com.github.lehjr.powersuits.network.packets.ColourInfoPacket;
 import com.github.lehjr.powersuits.network.packets.ContainerGuiOpenPacket;
 import com.github.lehjr.powersuits.network.packets.MoveModuleFromSlotToSlotPacket;
-import com.github.lehjr.powersuits.network.packets.OnClientLoginPacket;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.network.NetworkRegistry;
 import net.minecraftforge.fml.network.simple.SimpleChannel;
@@ -96,13 +95,6 @@ public class MPSPackets {
 //                SPlaceGhostRecipePacket::encode,
 //                SPlaceGhostRecipePacket::decode,
 //                SPlaceGhostRecipePacket::handle);
-
-        CHANNEL_INSTANCE.registerMessage(
-                i++,
-                OnClientLoginPacket.class,
-                OnClientLoginPacket::encode,
-                OnClientLoginPacket::decode,
-                OnClientLoginPacket::handle);
 
         CHANNEL_INSTANCE.registerMessage(
                 i++,

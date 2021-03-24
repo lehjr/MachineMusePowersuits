@@ -37,7 +37,6 @@ import com.github.lehjr.numina.util.capabilities.module.toggleable.IToggleableMo
 import com.github.lehjr.numina.util.capabilities.module.toggleable.ToggleableModule;
 import com.github.lehjr.powersuits.client.control.KeybindKeyHandler;
 import com.github.lehjr.powersuits.client.event.ClientTickHandler;
-import com.github.lehjr.powersuits.client.event.LogoutEventHandler;
 import com.github.lehjr.powersuits.client.event.ModelBakeEventHandler;
 import com.github.lehjr.powersuits.client.event.RenderEventHandler;
 import com.github.lehjr.powersuits.client.gui.modding.module.TinkerTableGui;
@@ -48,10 +47,7 @@ import com.github.lehjr.powersuits.client.render.entity.SpinningBladeEntityRende
 import com.github.lehjr.powersuits.config.MPSSettings;
 import com.github.lehjr.powersuits.constants.MPSConstants;
 import com.github.lehjr.powersuits.constants.MPSRegistryNames;
-import com.github.lehjr.powersuits.event.HarvestEventHandler;
-import com.github.lehjr.powersuits.event.MovementManager;
-import com.github.lehjr.powersuits.event.PlayerLoginHandler;
-import com.github.lehjr.powersuits.event.PlayerUpdateHandler;
+import com.github.lehjr.powersuits.event.*;
 import com.github.lehjr.powersuits.network.MPSPackets;
 import com.github.lehjr.powersuits.recipe.MPSRecipeConditionFactory;
 import net.minecraft.client.gui.ScreenManager;
@@ -105,7 +101,8 @@ public class ModularPowersuits {
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
 
-        MinecraftForge.EVENT_BUS.addListener(PlayerLoginHandler::onPlayerLogin); // just to populated keybinds -_-
+
+
 //        MinecraftForge.EVENT_BUS.addListener(EntityDamageEvent::handleEntityDamageEvent);
 //        MinecraftForge.EVENT_BUS.addListener(EntityDamageEvent::entityAttackEventHandler);
         MinecraftForge.EVENT_BUS.register(new PlayerUpdateHandler());
@@ -160,6 +157,7 @@ public class ModularPowersuits {
         MinecraftForge.EVENT_BUS.register(new KeybindKeyHandler());
         MinecraftForge.EVENT_BUS.register(new LogoutEventHandler());
 
+        MinecraftForge.EVENT_BUS.addListener(PlayerLoginHandler::onPlayerLoginClient);// just to populated keybinds -_-
 
         RenderingRegistry.registerEntityRenderingHandler(MPSObjects.RAILGUN_BOLT_ENTITY_TYPE.get(), RailGunBoltRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(MPSObjects.LUX_CAPACITOR_ENTITY_TYPE.get(), LuxCapacitorEntityRenderer::new);

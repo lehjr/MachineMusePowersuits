@@ -27,13 +27,9 @@
 package com.github.lehjr.powersuits.event;
 
 import com.github.lehjr.powersuits.client.control.KeybindManager;
-import com.github.lehjr.powersuits.network.MPSPackets;
-import com.github.lehjr.powersuits.network.packets.OnClientLoginPacket;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.network.PacketDistributor;
 
 /**
  * Author: MachineMuse (Claire Semple)
@@ -43,28 +39,10 @@ import net.minecraftforge.fml.network.PacketDistributor;
  */
 public final class PlayerLoginHandler {
     @SubscribeEvent
-    public static void onPlayerLogin(PlayerEvent.PlayerLoggedInEvent event) {
+    public static void onPlayerLoginClient(ClientPlayerNetworkEvent.LoggedInEvent event) {
         PlayerEntity player = event.getPlayer();
         if (player != null) {
-            MPSPackets.CHANNEL_INSTANCE.send(PacketDistributor.PLAYER.with(()-> (ServerPlayerEntity) player), new OnClientLoginPacket());
+            KeybindManager.INSTANCE.readInKeybinds();
         }
-    }
-
-
-
-//        boolean isUsingBuiltInServer = FMLCommonHandler.instance().getMinecraftServerInstance().isSinglePlayer();
-//
-//        // dedidated server or multiplayer game
-//        if (!isUsingBuiltInServer || (isUsingBuiltInServer && FMLCommonHandler.instance().getMinecraftServerInstance().getCurrentPlayerCount() > 1)) {
-//            // sync config settings between client and server
-//            MPSPackets.sendTo(new MPSPacketConfig(), (EntityPlayerMP) player);
-//        } else {
-//            MPSSettings.loadCustomInstallCosts();
-//        }
-
-
-
-    public static void clientPlayerLogin(PlayerEntity player) {
-        KeybindManager.INSTANCE.readInKeybinds();
     }
 }

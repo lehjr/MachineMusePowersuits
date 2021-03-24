@@ -24,34 +24,27 @@
  *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.github.lehjr.powersuits.network.packets;
+package com.github.lehjr.powersuits.event;
 
-import com.github.lehjr.powersuits.event.PlayerLoginHandler;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.network.PacketBuffer;
-import net.minecraftforge.fml.network.NetworkEvent;
+import com.github.lehjr.numina.config.ModuleConfig;
+import com.github.lehjr.numina.util.capabilities.module.powermodule.IConfig;
+import com.github.lehjr.powersuits.config.MPSSettings;
+import net.minecraft.server.MinecraftServer;
+import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 
-import java.util.function.Supplier;
-
-/**
- * Workaround for login event being fired server side only now
- */
-public class OnClientLoginPacket {
-    public OnClientLoginPacket() {
-    }
-
-    public static void encode(OnClientLoginPacket msg, PacketBuffer packetBuffer) {
-    }
-
-    public static OnClientLoginPacket decode(PacketBuffer packetBuffer) {
-        return new OnClientLoginPacket();
-    }
-
-    public static void handle(OnClientLoginPacket message, Supplier<NetworkEvent.Context> ctx) {
-        ctx.get().enqueueWork(() -> {
-            final ServerPlayerEntity player = ctx.get().getSender();
-            PlayerLoginHandler.clientPlayerLogin(player);
-        });
-        ctx.get().setPacketHandled(true);
+public class LogoutEventHandler {
+    // server side since server is null from client side
+    @SubscribeEvent
+    public void OnPlayerLogoutCommon(PlayerEvent.PlayerLoggedOutEvent event) {
+        IConfig moduleConfig = MPSSettings.getModuleConfig();
+        if (event.getPlayer() != null) {
+            MinecraftServer server = event.getPlayer().getServer();
+            if (server != null && server.isSinglePlayer() || server.isServerOwner(event.getPlayer().getGameProfile())) {
+                if (moduleConfig instanceof ModuleConfig) {
+                    ((ModuleConfig) moduleConfig).writeMissingConfigValues();
+                }
+            }
+        }
     }
 }

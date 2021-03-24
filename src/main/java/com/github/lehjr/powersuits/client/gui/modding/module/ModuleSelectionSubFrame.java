@@ -35,11 +35,9 @@ import com.github.lehjr.numina.util.client.gui.gemoetry.MuseRelativeRect;
 import com.github.lehjr.numina.util.client.render.MuseRenderer;
 import com.github.lehjr.numina.util.client.sound.Musique;
 import com.github.lehjr.numina.util.client.sound.SoundDictionary;
-import com.github.lehjr.numina.util.string.MuseStringUtils;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
 import net.minecraftforge.items.CapabilityItemHandler;
 
 import javax.annotation.Nonnull;

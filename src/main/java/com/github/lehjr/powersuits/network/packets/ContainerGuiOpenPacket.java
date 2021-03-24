@@ -26,11 +26,7 @@
 
 package com.github.lehjr.powersuits.network.packets;
 
-import com.github.lehjr.powersuits.constants.MPSConstants;
 import com.github.lehjr.powersuits.container.MPSWorkbenchContainerProvider;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.inventory.container.SimpleNamedContainerProvider;
-import net.minecraft.inventory.container.WorkbenchContainer;
 import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.fml.network.NetworkEvent;
 import net.minecraftforge.fml.network.NetworkHooks;

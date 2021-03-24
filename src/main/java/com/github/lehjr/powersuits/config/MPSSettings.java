@@ -31,7 +31,6 @@ import com.github.lehjr.numina.util.capabilities.module.powermodule.IConfig;
 import com.github.lehjr.powersuits.constants.MPSConstants;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.ForgeConfigSpec;
-import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.common.util.NonNullLazy;
 import org.apache.commons.lang3.tuple.Pair;
 
