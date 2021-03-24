@@ -30,13 +30,14 @@ import com.github.lehjr.numina.config.ModuleConfig;
 import com.github.lehjr.numina.config.NuminaSettings;
 import com.github.lehjr.numina.util.capabilities.module.powermodule.IConfig;
 import net.minecraft.server.MinecraftServer;
-import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 public class LogoutEventHandler {
 
     // server side since server is null from client side
+
+    // TODO: better way to do this since every mod using the lib has to do the same thing
     @SubscribeEvent
     public void OnPlayerLogoutCommon(PlayerEvent.PlayerLoggedOutEvent event) {
         IConfig moduleConfig = NuminaSettings.getModuleConfig();

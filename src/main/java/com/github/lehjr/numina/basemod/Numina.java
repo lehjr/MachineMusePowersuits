@@ -28,7 +28,6 @@ package com.github.lehjr.numina.basemod;
 
 import com.github.lehjr.numina.client.event.ArmorLayerSetup;
 import com.github.lehjr.numina.client.event.FOVUpdateEventHandler;
-import com.github.lehjr.numina.event.LogoutEventHandler;
 import com.github.lehjr.numina.client.event.ToolTipEvent;
 import com.github.lehjr.numina.client.gui.ArmorStandGui;
 import com.github.lehjr.numina.client.gui.ChargingBaseGui;
@@ -37,6 +36,7 @@ import com.github.lehjr.numina.config.NuminaSettings;
 import com.github.lehjr.numina.constants.NuminaConstants;
 import com.github.lehjr.numina.entity.MPAArmorStandEntity;
 import com.github.lehjr.numina.event.EventBusHelper;
+import com.github.lehjr.numina.event.LogoutEventHandler;
 import com.github.lehjr.numina.event.PlayerUpdateHandler;
 import com.github.lehjr.numina.network.NuminaPackets;
 import com.github.lehjr.numina.recipe.NuminaRecipeConditionFactory;
