@@ -45,6 +45,7 @@ import java.util.Optional;
 
 public class ModuleConfig implements IConfig {
     Optional<ModConfig> serverConfig = Optional.empty();
+    Map<String, Map<String, ArrayList<String>>> outputMap;
     final String MOD_ID;
 
     public ModuleConfig(String mod_ID) {
@@ -73,7 +74,7 @@ public class ModuleConfig implements IConfig {
      * FIXME: might be better with categories as keys with a value as a map of module name and ArrayList<String> of entries
      *  this way these don't get duplicate catagory entries in the output file
      */
-    Map<String, Map<String, ArrayList<String>>> outputMap;
+
     void addtoMap(String category, String moduleName, String entry) {
         // values may not be missing if config is not yet present (such as during startup)
         if (serverConfig.isPresent()) {
