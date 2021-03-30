@@ -108,23 +108,25 @@ public class HarvestEventHandler {
         PlayerEntity player = event.getPlayer();
         ItemStack stack = player.inventory.getCurrentItem();
         stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(iItemHandler -> {
-            BlockState state = event.getState();
+            if (iItemHandler instanceof IModeChangingItem) {
+                BlockState state = event.getState();
 
-            // wait... what is this again? Looks like resetting speed
-            if (event.getNewSpeed() < event.getOriginalSpeed()) {
-                event.setNewSpeed(event.getOriginalSpeed());
-            }
-            int playerEnergy = ElectricItemUtils.getPlayerEnergy(player);
+                // wait... what is this again? Looks like resetting speed
+                if (event.getNewSpeed() < event.getOriginalSpeed()) {
+                    event.setNewSpeed(event.getOriginalSpeed());
+                }
+                int playerEnergy = ElectricItemUtils.getPlayerEnergy(player);
 
-            for (ItemStack module : ((IModeChangingItem) iItemHandler).getInstalledModulesOfType(IBlockBreakingModule.class)) {
-                module.getCapability(PowerModuleCapability.POWER_MODULE).ifPresent(pm -> {
-                    if(pm instanceof IBlockBreakingModule && ((IBlockBreakingModule) pm).canHarvestBlock(stack, state, player, event.getPos(), playerEnergy)) {
-                        if (event.getNewSpeed() == 0) {
-                            event.setNewSpeed(1);
+                for (ItemStack module : ((IModeChangingItem) iItemHandler).getInstalledModulesOfType(IBlockBreakingModule.class)) {
+                    module.getCapability(PowerModuleCapability.POWER_MODULE).ifPresent(pm -> {
+                        if (pm instanceof IBlockBreakingModule && ((IBlockBreakingModule) pm).canHarvestBlock(stack, state, player, event.getPos(), playerEnergy)) {
+                            if (event.getNewSpeed() == 0) {
+                                event.setNewSpeed(1);
+                            }
+                            ((IBlockBreakingModule) pm).handleBreakSpeed(event);
                         }
-                        ((IBlockBreakingModule) pm).handleBreakSpeed(event);
-                    }
-                });
+                    });
+                }
             }
         });
     }
