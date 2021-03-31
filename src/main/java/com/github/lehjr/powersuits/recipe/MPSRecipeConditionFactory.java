@@ -55,6 +55,10 @@ public class MPSRecipeConditionFactory implements ICondition {
             case "vanilla_recipes_enabled": {
                 return (MPSSettings.useVanillaRecipes());
             }
+
+            case "vanilla_recipes_disabled": {
+                return (!MPSSettings.useVanillaRecipes());
+            }
         }
         return false;
     }
