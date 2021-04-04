@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "mirrored": true,
+  "pattern": [
+    "WWW",
+    "G G",
+    "WWW"
+  ],
+  "key": {
+    "W": {
+      "tag" : "minecraft:wool"
+    },
+    "G": {
+      "item": "glass"
+    }
+  },
+  "result": {
+    "item": "numina:component_rubber_hose"
+  }
+}

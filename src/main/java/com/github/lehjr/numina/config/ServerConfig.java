@@ -30,8 +30,8 @@ import com.github.lehjr.numina.constants.NuminaConstants;
 import net.minecraftforge.common.ForgeConfigSpec;
 
 public class ServerConfig {
-        public ForgeConfigSpec.IntValue ARMOR_STAND_MAX_POWER;
-        protected ForgeConfigSpec.BooleanValue RECIPES_USE_VANILLA;
+        public static ForgeConfigSpec.IntValue ARMOR_STAND_MAX_POWER;
+        public static ForgeConfigSpec.BooleanValue RECIPES_USE_VANILLA;
 
 
         public ServerConfig(ForgeConfigSpec.Builder builder) {
@@ -47,8 +47,8 @@ public class ServerConfig {
                         RECIPES_USE_VANILLA = builder
                                 .comment("Use recipes for Vanilla")
                                 .translation(NuminaConstants.CONFIG_RECIPES_USE_VANILLA)
-                                .worldRestart()
-                                .define("useVanillaRecipes", true);
+//                                .worldRestart()
+                                .define("useVanillaRecipes", false);
                         builder.pop();
                 }
                 builder.pop();

@@ -1,0 +1,17 @@
+{
+  "result": {
+    "item": "numina:component_carbon_myofiber"
+  },
+  "type": "minecraft:crafting_shaped",
+  "mirrored": true,
+  "pattern": [
+    "CCC",
+    "CCC",
+    "CCC"
+  ],
+  "key": {
+    "C": {
+      "item": "minecraft:coal_block"
+    }
+  }
+}

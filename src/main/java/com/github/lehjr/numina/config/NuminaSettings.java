@@ -84,11 +84,6 @@ public class NuminaSettings {
         return Optional.ofNullable(SERVER_SPEC.isLoaded() ? SERVER_CONFIG : null);
     }
 
-    // Recipes ------------------------------------------------------------------------------------
-    public static boolean useVanillaRecipes() {
-        return SERVER_CONFIG != null ? SERVER_CONFIG.RECIPES_USE_VANILLA.get() : false;
-    }
-
     /** Modules ----------------------------------------------------------------------------------- */
 //    private static volatile ModuleConfig moduleConfig;
     static NonNullLazy<IConfig> moduleConfig = NonNullLazy.of(() ->new ModuleConfig(NuminaConstants.MOD_ID));

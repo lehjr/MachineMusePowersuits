@@ -39,7 +39,6 @@ import com.github.lehjr.numina.event.EventBusHelper;
 import com.github.lehjr.numina.event.LogoutEventHandler;
 import com.github.lehjr.numina.event.PlayerUpdateHandler;
 import com.github.lehjr.numina.network.NuminaPackets;
-import com.github.lehjr.numina.recipe.NuminaRecipeConditionFactory;
 import com.github.lehjr.numina.util.capabilities.heat.HeatCapability;
 import com.github.lehjr.numina.util.capabilities.module.powermodule.PowerModuleCapability;
 import com.github.lehjr.numina.util.capabilities.player.CapabilityPlayerKeyStates;
@@ -61,7 +60,6 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -88,7 +86,6 @@ public class Numina {
 
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
-
         // Register the setup method for modloading
         modEventBus.addListener(this::setup);
 
@@ -108,12 +105,14 @@ public class Numina {
 
         DistExecutor.runWhenOn(Dist.CLIENT, ()->()-> clientStart(modEventBus));
 
+        // TODO? reload recipes on config change?
+        // [14:33:10] [Thread-1/DEBUG] [ne.mi.fm.co.ConfigFileTypeHandler/CONFIG]: Config file numina-server.toml changed, sending notifies
         // handles loading and reloading event
         modEventBus.addListener((ModConfig.ModConfigEvent event) -> {
             new RuntimeException("Got config " + event.getConfig() + " name " + event.getConfig().getModId() + ":" + event.getConfig().getFileName());
 
             final ModConfig config = event.getConfig();
-            if (config.getSpec() == NuminaSettings.SERVER_SPEC) {
+             if (config.getSpec() == NuminaSettings.SERVER_SPEC) {
                 NuminaSettings.getModuleConfig().setServerConfig(config);
             }
         });
@@ -159,9 +158,6 @@ public class Numina {
         CapabilityPlayerKeyStates.register();
 
         MinecraftForge.EVENT_BUS.register(new PlayerUpdateHandler());
-
-        // Recipe condition factory
-        CraftingHelper.register(NuminaRecipeConditionFactory.Serializer.INSTANCE);
 
         DeferredWorkQueue.runLater(() -> {
             GlobalEntityTypeAttributes.put(NuminaObjects.ARMOR_WORKSTATION__ENTITY_TYPE.get(), MPAArmorStandEntity.setCustomAttributes().create());

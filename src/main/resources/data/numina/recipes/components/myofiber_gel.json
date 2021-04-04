@@ -1,0 +1,64 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:not",
+          "value": {
+            "type": "forge:tag_empty",
+            "tag": "forge:ingots/steel"
+          }
+        }
+      ],
+      "recipe": {
+        "type": "minecraft:crafting_shaped",
+        "mirrored": true,
+        "pattern": [
+          " M ",
+          "FMF",
+          "FMF"
+        ],
+        "key": {
+          "F": {
+            "tag": "forge:ingots/steel"
+          },
+          "M": {
+            "item": "minecraft:magma_cream"
+          }
+        },
+        "result": {
+          "item": "numina:component_myofiber_gel"
+        }
+      }
+    },
+    {
+      "conditions": [
+        {
+          "type": "forge:tag_empty",
+          "tag": "forge:ingots/steel"
+        }
+      ],
+      "recipe": {
+        "type": "minecraft:crafting_shaped",
+        "mirrored": true,
+        "pattern": [
+          " M ",
+          "IMI",
+          "IMI"
+        ],
+        "key": {
+          "M": {
+            "item": "minecraft:magma_cream"
+          },
+          "I": {
+            "tag": "forge:ingots/iron"
+          }
+        },
+        "result": {
+          "item": "numina:component_myofiber_gel"
+        }
+      }
+    }
+  ]
+}

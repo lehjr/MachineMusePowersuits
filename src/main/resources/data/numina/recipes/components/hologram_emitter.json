@@ -1,0 +1,32 @@
+{
+  "result": {
+    "item": "numina:component_laser_emitter"
+  },
+  "type": "minecraft:crafting_shaped",
+  "mirrored": true,
+  "pattern": [
+    "#B!",
+    "BWB",
+    "@B&"
+  ],
+  "key": {
+    "B": {
+      "item": "minecraft:glass"
+    },
+    "W": {
+      "item":"numina:component_wiring"
+    },
+    "#": {
+      "tag": "forge:dusts/glowstone"
+    },
+    "!": {
+      "tag":"forge:dyes/green"
+    },
+    "@": {
+      "tag":"forge:dyes/blue"
+    },
+    "&": {
+      "tag":"forge:dyes/red"
+    }
+  }
+}

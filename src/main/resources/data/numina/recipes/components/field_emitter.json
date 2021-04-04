@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "SES",
+    "ESE",
+    "SES"
+  ],
+  "key": {
+    "E": {
+      "item":"minecraft:ender_pearl"
+    },
+    "S": {
+      "tag":"forge:solenoid"
+    }
+  },
+  "result": {
+    "item": "numina:component_field_emitter"
+  }
+}
