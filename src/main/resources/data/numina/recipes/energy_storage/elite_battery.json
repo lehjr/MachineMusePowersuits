@@ -37,6 +37,14 @@
           "O": {
             "tag": "forge:wiring"
           }
+        },
+        "result": {
+          "item": "numina:battery_elite",
+          "nbt": {
+            "MMModModule": {
+              "energy": 25000000
+            }
+          }
         }
       }
     },

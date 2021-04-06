@@ -7,7 +7,7 @@
           "type": "forge:not",
           "value": {
             "type": "forge:tag_empty",
-            "tag": "forge:ingots/copper"
+            "tag": "forge:ingots/aluminium"
           }
         }
       ],
@@ -39,7 +39,7 @@
       "conditions": [
         {
           "type": "forge:tag_empty",
-          "tag": "forge:ingots/copper"
+          "tag": "forge:ingots/aluminium"
         }
       ],
       "recipe": {
