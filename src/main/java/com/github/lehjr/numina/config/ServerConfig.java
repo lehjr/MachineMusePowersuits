@@ -31,8 +31,6 @@ import net.minecraftforge.common.ForgeConfigSpec;
 
 public class ServerConfig {
         public static ForgeConfigSpec.IntValue ARMOR_STAND_MAX_POWER;
-        public static ForgeConfigSpec.BooleanValue RECIPES_USE_VANILLA;
-
 
         public ServerConfig(ForgeConfigSpec.Builder builder) {
                 builder.comment("General settings").push("General");
@@ -41,15 +39,6 @@ public class ServerConfig {
                                 .comment("Ignore speed boosts for field of view")
                                 .translation(NuminaConstants.CONFIG_USE_FOV_FIX)
                                 .defineInRange("armorStandMaxPower", 1000000, 100, 10000000);
-
-                        /** Recipes ----------------------------------------------------------------------------------------------- */
-                        builder.comment("Recipe settings").push("Recipes");
-                        RECIPES_USE_VANILLA = builder
-                                .comment("Use recipes for Vanilla")
-                                .translation(NuminaConstants.CONFIG_RECIPES_USE_VANILLA)
-//                                .worldRestart()
-                                .define("useVanillaRecipes", false);
-                        builder.pop();
                 }
                 builder.pop();
 
