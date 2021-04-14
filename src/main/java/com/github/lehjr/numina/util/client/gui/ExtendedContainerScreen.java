@@ -113,10 +113,7 @@ public class ExtendedContainerScreen<T extends Container> extends ContainerScree
                 return true;
             }
         }
-        if (super.mouseClicked(x, y, button)) {
-            return true;
-        }
-        return false;
+        return super.mouseClicked(x, y, button);
     }
 
     /**
@@ -131,10 +128,7 @@ public class ExtendedContainerScreen<T extends Container> extends ContainerScree
                 return true;
             }
         }
-        if (super.mouseReleased(x, y, which)) {
-            return true;
-        }
-        return false;
+        return super.mouseReleased(x, y, which);
     }
 
     public void drawToolTip(MatrixStack matrixStack, int mouseX, int mouseY) {

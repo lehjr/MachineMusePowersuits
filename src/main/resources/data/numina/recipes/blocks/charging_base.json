@@ -1,0 +1,26 @@
+{
+  "result": {
+    "item": "numina:charging_base"
+  },
+  "type": "minecraft:crafting_shaped",
+  "mirrored": true,
+  "pattern": [
+    "FBF",
+    "FCF",
+    "PPP"
+  ],
+  "key": {
+    "P": {
+      "item": "minecraft:polished_blackstone_pressure_plate"
+    },
+    "B": {
+      "item": "numina:battery_basic"
+    },
+    "C": {
+      "item": "numina:component_control_circuit"
+    },
+    "F": {
+      "tag": "forge:wiring"
+    }
+  }
+}
