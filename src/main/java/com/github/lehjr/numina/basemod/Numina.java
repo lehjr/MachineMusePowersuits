@@ -39,6 +39,7 @@ import com.github.lehjr.numina.event.EventBusHelper;
 import com.github.lehjr.numina.event.LogoutEventHandler;
 import com.github.lehjr.numina.event.PlayerUpdateHandler;
 import com.github.lehjr.numina.network.NuminaPackets;
+import com.github.lehjr.numina.recipe.RecipeSerializersRegistry;
 import com.github.lehjr.numina.util.capabilities.heat.HeatCapability;
 import com.github.lehjr.numina.util.capabilities.module.powermodule.PowerModuleCapability;
 import com.github.lehjr.numina.util.capabilities.player.CapabilityPlayerKeyStates;
@@ -100,6 +101,7 @@ public class Numina {
         NuminaObjects.TILE_TYPES.register(modEventBus);
         NuminaObjects.ENTITY_TYPES.register(modEventBus);
         NuminaObjects.CONTAINER_TYPES.register(modEventBus);
+        RecipeSerializersRegistry.RECIPE_SERIALIZERS.register(modEventBus);
 
         MinecraftForge.EVENT_BUS.register(new LogoutEventHandler());
 

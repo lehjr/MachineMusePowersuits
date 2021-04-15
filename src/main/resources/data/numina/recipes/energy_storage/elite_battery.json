@@ -12,7 +12,7 @@
         }
       ],
       "recipe": {
-        "type": "minecraft:crafting_shaped",
+        "type": "numina:crafting_energy_item",
         "mirrored": true,
         "pattern": [
           "FBF",
@@ -21,12 +21,7 @@
         ],
         "key": {
           "B": {
-            "item": "numina:battery_advanced",
-            "nbt": {
-              "MMModModule": {
-                "energy": 5000000
-              }
-            }
+            "item": "numina:battery_advanced"
           },
           "C": {
             "item": "numina:component_control_circuit"
@@ -56,7 +51,7 @@
         }
       ],
       "recipe": {
-        "type": "minecraft:crafting_shaped",
+        "type": "numina:crafting_energy_item",
         "mirrored": true,
         "pattern": [
           "FBF",
@@ -65,12 +60,7 @@
         ],
         "key": {
           "B": {
-            "item": "numina:battery_advanced",
-            "nbt": {
-              "MMModModule": {
-                "energy": 5000000
-              }
-            }
+            "item": "numina:battery_advanced"
           },
           "C": {
             "item": "numina:component_control_circuit"

@@ -1,8 +1,5 @@
 {
-  "result": {
-    "item": "numina:charging_base"
-  },
-  "type": "minecraft:crafting_shaped",
+  "type": "numina:crafting_energy_item",
   "mirrored": true,
   "pattern": [
     "FBF",
@@ -21,6 +18,14 @@
     },
     "F": {
       "tag": "forge:wiring"
+    }
+  },
+  "result": {
+    "item": "numina:charging_base",
+    "nbt": {
+      "MMModModule": {
+        "energy": 0
+      }
     }
   }
 }
