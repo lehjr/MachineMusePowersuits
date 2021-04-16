@@ -1,0 +1,82 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:not",
+          "value": {
+            "type": "forge:tag_empty",
+            "tag": "forge:ingots/steel"
+          }
+        }
+      ],
+      "recipe": {
+        "type": "minecraft:crafting_shaped",
+        "mirrored": true,
+        "pattern": [
+          "FOF",
+          "RCR",
+          "GFG"
+        ],
+        "key": {
+          "R": {
+            "tag": "forge:wiring"
+          },
+          "C": {
+            "item": "numina:component_control_circuit"
+          },
+          "F": {
+            "tag": "forge:ingots/steel"
+          },
+          "G": {
+            "tag": "forge:dusts/glowstone"
+          },
+          "O": {
+            "tag": "forge:dusts/redstone"
+          }
+        },
+        "result": {
+          "item": "powersuits:luxcapacitor_module"
+        }
+      }
+    },
+    {
+      "conditions": [
+        {
+          "type": "forge:tag_empty",
+          "tag": "forge:ingots/steel"
+        }
+      ],
+      "recipe": {
+        "type": "minecraft:crafting_shaped",
+        "mirrored": true,
+        "pattern": [
+          "IRI",
+          "COC",
+          "GIG"
+        ],
+        "key": {
+          "R": {
+            "item": "minecraft:redstone"
+          },
+          "C": {
+            "item": "numina:component_wiring"
+          },
+          "G": {
+            "item": "minecraft:glowstone_dust"
+          },
+          "I": {
+            "item": "minecraft:iron_ingot"
+          },
+          "O": {
+            "item": "numina:component_control_circuit"
+          }
+        },
+        "result": {
+          "item": "powersuits:luxcapacitor_module"
+        }
+      }
+    }
+  ]
+}

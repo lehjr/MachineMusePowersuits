@@ -1,0 +1,96 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:and",
+          "values": [
+            {
+              "type": "forge:not",
+              "value": {
+                "type": "forge:tag_empty",
+                "tag": "forge:ingots/copper"
+              }
+            },
+            {
+              "type": "forge:not",
+              "value": {
+                "type": "forge:tag_empty",
+                "tag": "forge:ingots/electrum"
+              }
+            }
+          ]
+        }
+      ],
+      "recipe": {
+        "type": "minecraft:crafting_shaped",
+        "mirrored": true,
+        "pattern": [
+          "FOF",
+          "OCO",
+          "ROR"
+        ],
+        "key": {
+          "R": {
+            "tag": "forge:ingots/electrum"
+          },
+          "C": {
+            "item": "minecraft:crafting_table"
+          },
+          "F": {
+            "tag": "forge:ingots/copper"
+          },
+          "O": {
+            "tag": "forge:dyes/blue"
+          }
+        },
+        "result": {
+          "item": "powersuits:tinkertable"
+        }
+      }
+    },
+    {
+      "conditions": [
+        {
+          "type": "forge:and",
+          "values": [
+            {
+              "type": "forge:tag_empty",
+              "tag": "forge:ingots/copper"
+            },
+            {
+              "type": "forge:tag_empty",
+              "tag": "forge:ingots/electrum"
+            }
+          ]
+        }
+      ],
+      "recipe": {
+        "type": "minecraft:crafting_shaped",
+        "pattern": [
+          "IBI",
+          "BCB",
+          "GBG"
+        ],
+        "key": {
+          "I": {
+            "tag": "forge:ingots/iron"
+          },
+          "C" : {
+            "item": "minecraft:crafting_table"
+          },
+          "B": {
+            "tag": "forge:dyes/blue"
+          },
+          "G": {
+            "tag": "forge:ingots/gold"
+          }
+        },
+        "result": {
+          "item": "powersuits:tinkertable"
+        }
+      }
+    }
+  ]
+}

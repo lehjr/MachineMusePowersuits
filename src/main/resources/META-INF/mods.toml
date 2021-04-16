@@ -3,7 +3,7 @@ loaderVersion="[25,)"
 issueTrackerURL="https://github.com/MachineMuse/MachineMusePowersuits/issues/"
 displayURL="http://machinemuse.net/"
 license="All rights reserved"
-logoFile="assets/powersuits/textures/logo.png"
+logoFile="logo.png"
 credits="Icons by WaterCandle, Modeling by SebK"
 authors="Code by MachineMuse, Lehjr and others"
 [[mods]]

@@ -87,11 +87,6 @@ public class MPSSettings {
     /**
      * Server -------------------------------------------------------------------------------------
      */
-    // Recipes ------------------------------------------------------------------------------------
-    public static boolean useVanillaRecipes() {
-        return SERVER_CONFIG != null ? SERVER_CONFIG.RECIPES_USE_VANILLA.get() : false;
-    }
-
     // General ------------------------------------------------------------------------------------
     public static double getMaxFlyingSpeed() {
         return SERVER_CONFIG != null ? SERVER_CONFIG.GENERAL_MAX_FLYING_SPEED.get() : 25.0;

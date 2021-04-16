@@ -54,11 +54,6 @@ public class ServerConfig {
             COSMETIC_ALLOW_HIGH_POLLY_ARMOR_MODELS,
             COSMETIC_ALLOW_POWER_FIST_CUSTOMIZATOIN;
 
-    /** Recipes ------------------------------------------------------------------------------------------------------- */
-    protected ForgeConfigSpec.BooleanValue RECIPES_USE_VANILLA;
-
-
-
     protected ServerConfig(ForgeConfigSpec.Builder builder) {
         /** General --------------------------------------------------------------------------------------------------- */
         builder.comment("General settings").push("General");
@@ -113,7 +108,8 @@ public class ServerConfig {
                         "minecraft:glowstone",
                         "forge:ores/diamond",
                         "forge:ores/lapis",
-                        "forge:ores/quartz"
+                        "forge:ores/quartz",
+                        "forge:ores/fluorite"
                 ), o -> o instanceof String && !((String) o).isEmpty());
 
         GENERAL_VEIN_MINER_BLOCK_LIST = builder
@@ -143,15 +139,6 @@ public class ServerConfig {
                 .comment("Allow PowerFistModel2 model to be customized")
                 .translation(MPSConstants.CONFIG_COSMETIC_ALLOW_POWER_FIST_CUSTOMIZATOIN)
                 .define("allowPowerFistCustomization", true);
-        builder.pop();
-
-        /** Recipes --------------------------------------------------------------------------------------------------- */
-        builder.comment("Recipe settings").push("Recipes");
-        RECIPES_USE_VANILLA = builder
-                .comment("Use recipes for Vanilla")
-                .translation(MPSConstants.CONFIG_RECIPES_USE_VANILLA)
-                .worldRestart()
-                .define("useVanillaRecipes", true);
         builder.pop();
 
         /** Modules --------------------------------------------------------------------------------------------------- */

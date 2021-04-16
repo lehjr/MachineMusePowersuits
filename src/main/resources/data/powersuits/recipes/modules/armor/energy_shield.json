@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "WEW",
+    "WCW",
+    "WEW"
+  ],
+  "key": {
+    "W": {
+      "tag": "forge:wiring"
+    },
+    "C": {
+      "item":"numina:component_control_circuit"
+    },
+    "E": {
+      "item": "numina:component_field_emitter"
+    }
+  },
+  "result": {
+    "item": "powersuits:energy_shield"
+  }
+}

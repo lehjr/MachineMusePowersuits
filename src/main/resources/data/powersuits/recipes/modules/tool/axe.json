@@ -1,0 +1,76 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:not",
+          "value": {
+            "type": "forge:tag_empty",
+            "tag": "forge:ingots/steel"
+          }
+        }
+      ],
+      "recipe": {
+        "type": "minecraft:crafting_shaped",
+        "mirrored": true,
+        "pattern": [
+          "   ",
+          "COC",
+          "IMI"
+        ],
+        "key": {
+          "C": {
+            "item": "numina:component_wiring"
+          },
+          "I": {
+            "tag": "forge:ingots/steel"
+          },
+          "M": {
+            "item": "numina:component_solenoid"
+          },
+          "O": {
+            "item": "numina:component_control_circuit"
+          }
+        },
+        "result": {
+          "item": "powersuits:axe"
+        }
+      }
+    },
+    {
+      "conditions": [
+        {
+          "type": "forge:tag_empty",
+          "tag": "forge:ingots/steel"
+        }
+      ],
+      "recipe": {
+        "type": "minecraft:crafting_shaped",
+        "mirrored": true,
+        "pattern": [
+          "   ",
+          "COC",
+          "IMI"
+        ],
+        "key": {
+          "C": {
+            "item": "numina:component_wiring"
+          },
+          "I": {
+            "item": "minecraft:iron_ingot"
+          },
+          "M": {
+            "item": "numina:component_solenoid"
+          },
+          "O": {
+            "item": "numina:component_control_circuit"
+          }
+        },
+        "result": {
+          "item": "powersuits:axe"
+        }
+      }
+    }
+  ]
+}

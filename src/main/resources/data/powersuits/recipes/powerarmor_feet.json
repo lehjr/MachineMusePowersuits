@@ -1,0 +1,62 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:not",
+          "value": {
+            "type": "forge:tag_empty",
+            "tag": "forge:ingots/steel"
+          }
+        }
+      ],
+      "recipe": {
+        "type": "minecraft:crafting_shaped",
+        "mirrored": true,
+        "pattern": [
+          "   ",
+          "F F",
+          "O O"
+        ],
+        "key": {
+          "F": {
+            "tag": "forge:ingots/steel"
+          },
+          "O": {
+            "tag": "forge:wiring"
+          }
+        },
+        "result": {
+          "item": "powersuits:powerarmor_feet"
+        }
+      }
+    },
+    {
+      "conditions": [
+        {
+          "type": "forge:tag_empty",
+          "tag": "forge:ingots/steel"
+        }
+      ],
+      "recipe": {
+        "type": "minecraft:crafting_shaped",
+        "pattern": [
+          "W W",
+          "I I"
+        ],
+        "key": {
+          "I": {
+            "tag": "forge:ingots/iron"
+          },
+          "W": {
+            "item":"numina:component_wiring"
+          }
+        },
+        "result": {
+          "item": "powersuits:powerarmor_feet"
+        }
+      }
+    }
+  ]
+}

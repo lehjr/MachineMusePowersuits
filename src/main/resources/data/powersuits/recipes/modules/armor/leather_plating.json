@@ -1,0 +1,20 @@
+{
+  "result": {
+    "item": "powersuits:plating_leather"
+  },
+  "type": "minecraft:crafting_shaped",
+  "mirrored": true,
+  "pattern": [
+    "FF ",
+    "OF ",
+    "FF "
+  ],
+  "key": {
+    "F": {
+      "tag": "forge:leather"
+    },
+    "O": {
+      "tag": "forge:wiring"
+    }
+  }
+}

@@ -49,7 +49,6 @@ import com.github.lehjr.powersuits.constants.MPSConstants;
 import com.github.lehjr.powersuits.constants.MPSRegistryNames;
 import com.github.lehjr.powersuits.event.*;
 import com.github.lehjr.powersuits.network.MPSPackets;
-import com.github.lehjr.powersuits.recipe.MPSRecipeConditionFactory;
 import net.minecraft.client.gui.ScreenManager;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -66,7 +65,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
-import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -140,7 +138,6 @@ public class ModularPowersuits {
      */
     private void setup(final FMLCommonSetupEvent event) {
         MPSPackets.registerMPAPackets();
-        CraftingHelper.register(MPSRecipeConditionFactory.Serializer.INSTANCE);
     }
 
     /**

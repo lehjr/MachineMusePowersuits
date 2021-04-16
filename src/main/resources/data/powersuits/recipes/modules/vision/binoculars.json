@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "WWW",
+    "WCW",
+    "WLW"
+  ],
+  "key": {
+    "W": {
+      "tag": "forge:wiring"
+    },
+    "L": {
+      "item": "numina:component_laser_emitter"
+    },
+    "C": {
+      "item":"numina:component_control_circuit"
+    }
+  },
+  "result": {
+    "item": "powersuits:binoculars"
+  }
+}
