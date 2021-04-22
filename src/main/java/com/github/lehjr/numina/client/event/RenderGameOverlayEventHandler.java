@@ -27,6 +27,11 @@
 package com.github.lehjr.numina.client.event;
 
 import com.github.lehjr.numina.util.capabilities.inventory.modechanging.IModeChangingItem;
+import com.github.lehjr.numina.util.capabilities.module.powermodule.PowerModuleCapability;
+import com.github.lehjr.numina.util.capabilities.module.toggleable.IToggleableModule;
+import com.github.lehjr.numina.util.capabilities.module.toggleable.ToggleableModule;
+import com.github.lehjr.numina.util.client.render.MuseRenderer;
+import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.MainWindow;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
@@ -80,7 +85,13 @@ public class RenderGameOverlayEventHandler {
                     baroffset = screen.getScaledHeight() - baroffset;
                     currX = sw / 2.0 - 89.0 + 20.0 * i;
                     currY = baroffset - 18;
-                    mc.getItemRenderer().renderItemIntoGUI(module, (int)currX, (int)currY);
+                    boolean isActive = module.getCapability(PowerModuleCapability.POWER_MODULE).map(pm->pm instanceof IToggleableModule && ((IToggleableModule) pm).isModuleOnline()).orElse(true);
+
+                    if (isActive) {
+                        mc.getItemRenderer().renderItemIntoGUI(module, (int)currX, (int)currY);
+                    } else {
+                        MuseRenderer.drawModuleAt(new MatrixStack(), currX, currY, module, false);
+                    }
                 }
             }
         });

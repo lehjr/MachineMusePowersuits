@@ -120,8 +120,10 @@ public class ClickableModule extends Clickable {
 
     @Override
     public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks, float zLevel) {
+        // TODO: extra text and options to disable if player doesn't have the module available
+
         if (!getModule().isEmpty()) {
-            MuseRenderer.drawModuleAt(matrixStack,getPosition().getX() - offsetx, getPosition().getY() - offsety, getModule(), true);
+            MuseRenderer.drawModuleAt(matrixStack, getPosition().getX() - offsetx, getPosition().getY() - offsety, getModule(), true);
             if (!allowed) {
                 matrixStack.push();
                 matrixStack.translate(0, 0, 250);
