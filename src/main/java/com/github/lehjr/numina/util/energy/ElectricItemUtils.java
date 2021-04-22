@@ -80,13 +80,7 @@ public class ElectricItemUtils {
             }
 
             ItemStack stack = entity.getItemStackFromSlot(slot);
-            Item item = stack.getItem();
-
-            // check if the tool is a modular item. If not, skip it.
-            if (!stack.isEmpty() && item instanceof ToolItem &&
-                    !BlackList.blacklistModIds.contains(item.getRegistryName().getNamespace())) {
-                drainleft = drainleft - drainItem(stack, drainleft);
-            }
+            drainleft = drainleft - drainItem(stack, drainleft);
         }
         return drainAmount - drainleft;
     }
@@ -108,12 +102,25 @@ public class ElectricItemUtils {
         return rfToGive - rfLeft;
     }
 
-
     /**
      * returns the energy an itemStack has
      */
     public static int drainItem(@Nonnull ItemStack itemStack, int drainAmount) {
-        return itemStack.getCapability(CapabilityEnergy.ENERGY).map(energyHandler -> energyHandler.extractEnergy(drainAmount, false)).orElse(0);
+        return itemStack.getCapability(CapabilityEnergy.ENERGY).map(energyHandler -> {
+                    Item item = itemStack.getItem();
+                    int drained = energyHandler.extractEnergy(drainAmount, true);
+
+                    if (drained > 0) {
+                        // check if item blacklisted for draining
+                        if (item instanceof ToolItem && !BlackList.blacklistModIds.contains(item.getRegistryName().getNamespace())) {
+                            drained = energyHandler.extractEnergy(drainAmount, false);
+
+                        } else if (!(item instanceof ToolItem)) {
+                            drained = energyHandler.extractEnergy(drainAmount, false);
+                        }
+                    }
+                    return drained;
+        }).orElse(0);
     }
 
     /**

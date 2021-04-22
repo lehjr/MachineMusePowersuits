@@ -44,6 +44,8 @@ import com.github.lehjr.numina.util.capabilities.heat.HeatCapability;
 import com.github.lehjr.numina.util.capabilities.module.powermodule.PowerModuleCapability;
 import com.github.lehjr.numina.util.capabilities.player.CapabilityPlayerKeyStates;
 import com.github.lehjr.numina.util.capabilities.render.ModelSpecNBTCapability;
+import com.github.lehjr.numina.util.capabilities.render.colour.ColourCapability;
+import com.github.lehjr.numina.util.capabilities.render.colour.ColourNBT;
 import com.github.lehjr.numina.util.client.NuminaSpriteUploader;
 import com.github.lehjr.numina.util.client.gui.GuiIcon;
 import com.github.lehjr.numina.util.client.render.MuseIconUtils;
@@ -151,6 +153,8 @@ public class Numina {
         NuminaPackets.registerNuminaPackets();
 
         HeatCapability.register();
+
+        ColourCapability.register();
 
         // Modules
         PowerModuleCapability.register();

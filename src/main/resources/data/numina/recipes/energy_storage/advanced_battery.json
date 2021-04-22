@@ -68,12 +68,7 @@
           }
         },
         "result": {
-          "item": "numina:battery_advanced",
-          "nbt": {
-            "MMModModule": {
-              "energy": 0
-            }
-          }
+          "item": "numina:battery_advanced"
         }
       }
     }

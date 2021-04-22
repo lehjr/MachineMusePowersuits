@@ -139,6 +139,7 @@ public class ChargingBaseTileEntity extends MuseTileEntity implements ITickableT
         return new SUpdateTileEntityPacket(this.pos, -1, this.getUpdateTag());
     }
 
+    @Override
     public CompoundNBT getUpdateTag() {
         return this.write(new CompoundNBT());
     }

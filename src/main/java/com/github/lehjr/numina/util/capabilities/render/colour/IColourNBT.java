@@ -24,42 +24,13 @@
  *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.github.lehjr.numina.util.tileentity;
+package com.github.lehjr.numina.util.capabilities.render.colour;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.play.server.SUpdateTileEntityPacket;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityType;
+import com.github.lehjr.numina.util.math.Colour;
 
-import javax.annotation.Nullable;
+public interface IColourNBT {
 
-public class MuseTileEntity extends TileEntity {
-    public MuseTileEntity(TileEntityType<?> type) {
-        super(type);
-    }
+    Colour getColour();
 
-    @Override
-    public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
-        BlockState state = getWorld().getBlockState(getPos());
-        read(state, pkt.getNbtCompound());
-        getWorld().notifyBlockUpdate(getPos(), state, state, 3);
-    }
-
-    @Nullable
-    @Override
-    public SUpdateTileEntityPacket getUpdatePacket() {
-        return new SUpdateTileEntityPacket(this.getPos(), 0, getUpdateTag());
-    }
-
-    @Override
-    public void read(BlockState state, CompoundNBT nbt) {
-        super.read(state, nbt);
-    }
-
-    @Override
-    public CompoundNBT write(CompoundNBT compound) {
-        return super.write(compound);
-    }
+    void setColour(Colour colour);
 }

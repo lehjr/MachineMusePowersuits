@@ -34,12 +34,7 @@
           }
         },
         "result": {
-          "item": "numina:battery_ultimate",
-          "nbt": {
-            "MMModModule": {
-              "energy": 125000000
-            }
-          }
+          "item": "numina:battery_ultimate"
         }
       }
     },
@@ -73,12 +68,7 @@
           }
         },
         "result": {
-          "item": "numina:battery_ultimate",
-          "nbt": {
-            "MMModModule": {
-              "energy": 125000000
-            }
-          }
+          "item": "numina:battery_ultimate"
         }
       }
     }

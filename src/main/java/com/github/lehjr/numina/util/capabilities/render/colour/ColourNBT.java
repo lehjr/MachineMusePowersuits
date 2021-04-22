@@ -24,42 +24,40 @@
  *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.github.lehjr.numina.util.tileentity;
+package com.github.lehjr.numina.util.capabilities.render.colour;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.play.server.SUpdateTileEntityPacket;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityType;
+import com.github.lehjr.numina.util.math.Colour;
+import net.minecraft.nbt.IntNBT;
+import net.minecraftforge.common.util.INBTSerializable;
 
-import javax.annotation.Nullable;
+public class ColourNBT implements IColourNBT, INBTSerializable<IntNBT> {
+    Colour colour;
 
-public class MuseTileEntity extends TileEntity {
-    public MuseTileEntity(TileEntityType<?> type) {
-        super(type);
+    public ColourNBT() {
+        colour = Colour.WHITE;
+    }
+
+    public ColourNBT(Colour colourIn) {
+        colour = colourIn;
     }
 
     @Override
-    public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
-        BlockState state = getWorld().getBlockState(getPos());
-        read(state, pkt.getNbtCompound());
-        getWorld().notifyBlockUpdate(getPos(), state, state, 3);
-    }
-
-    @Nullable
-    @Override
-    public SUpdateTileEntityPacket getUpdatePacket() {
-        return new SUpdateTileEntityPacket(this.getPos(), 0, getUpdateTag());
+    public Colour getColour() {
+        return colour;
     }
 
     @Override
-    public void read(BlockState state, CompoundNBT nbt) {
-        super.read(state, nbt);
+    public void setColour(Colour colour) {
+        this.colour = colour;
     }
 
     @Override
-    public CompoundNBT write(CompoundNBT compound) {
-        return super.write(compound);
+    public IntNBT serializeNBT() {
+        return IntNBT.valueOf(colour.getInt());
+    }
+
+    @Override
+    public void deserializeNBT(IntNBT nbt) {
+        this.colour = new Colour(nbt.getInt());
     }
 }
