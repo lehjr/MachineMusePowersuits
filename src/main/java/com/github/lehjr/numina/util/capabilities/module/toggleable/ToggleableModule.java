@@ -42,7 +42,7 @@ import java.util.concurrent.Callable;
 
 public class ToggleableModule extends PowerModule implements IToggleableModule, INBTSerializable<ByteNBT> {
     Boolean online;
-    static final String TAG_ONLINE = "Active";
+    public static final String TAG_ONLINE = "Active";
     static boolean defBool;
     public ToggleableModule(@Nonnull ItemStack module, EnumModuleCategory category, EnumModuleTarget target, Callable<IConfig> moduleConfigGetterIn, boolean defToggleVal) {
         super(module, category, target, moduleConfigGetterIn);

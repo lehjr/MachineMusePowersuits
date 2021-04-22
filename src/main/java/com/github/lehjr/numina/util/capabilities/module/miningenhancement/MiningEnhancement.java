@@ -29,17 +29,22 @@ package com.github.lehjr.numina.util.capabilities.module.miningenhancement;
 import com.github.lehjr.numina.util.capabilities.module.powermodule.EnumModuleCategory;
 import com.github.lehjr.numina.util.capabilities.module.powermodule.EnumModuleTarget;
 import com.github.lehjr.numina.util.capabilities.module.powermodule.IConfig;
+import com.github.lehjr.numina.util.capabilities.module.rightclick.IRightClickModule;
 import com.github.lehjr.numina.util.capabilities.module.rightclick.RightClickModule;
+import com.github.lehjr.numina.util.capabilities.module.toggleable.IToggleableModule;
+import com.github.lehjr.numina.util.capabilities.module.toggleable.ToggleableModule;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.ByteNBT;
 import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.common.util.INBTSerializable;
 
 import javax.annotation.Nonnull;
 import java.util.concurrent.Callable;
 
-public class MiningEnhancement extends RightClickModule implements IMiningEnhancementModule {
+public class MiningEnhancement extends ToggleableModule implements IRightClickModule, IMiningEnhancementModule {
     public MiningEnhancement(@Nonnull ItemStack module, EnumModuleCategory category, EnumModuleTarget target, Callable<IConfig> moduleConfigGetterIn) {
-        super(module, category, target, moduleConfigGetterIn);
+        super(module, category, target, moduleConfigGetterIn, true);
     }
 
     @Override
