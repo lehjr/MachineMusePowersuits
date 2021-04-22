@@ -27,53 +27,94 @@
 package com.github.lehjr.powersuits.tile_entity;
 
 
+import com.github.lehjr.numina.util.capabilities.render.colour.ColourCapability;
+import com.github.lehjr.numina.util.capabilities.render.colour.ColourNBT;
 import com.github.lehjr.numina.util.math.Colour;
 import com.github.lehjr.numina.util.tileentity.MuseTileEntity;
+import com.github.lehjr.numina.basemod.MuseLogger;
 import com.github.lehjr.powersuits.basemod.MPSObjects;
+import com.github.lehjr.powersuits.block.LuxCapacitorBlock;
+import com.github.lehjr.powersuits.client.model.helper.LuxCapHelper;
+import net.minecraft.block.BlockState;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.IntNBT;
+import net.minecraft.network.play.server.SUpdateTileEntityPacket;
+import net.minecraft.util.Direction;
+import net.minecraftforge.client.model.data.IModelData;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.common.util.LazyOptional;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 public class LuxCapacitorTileEntity extends MuseTileEntity {
-    private Colour color = Colour.CYAN;
+    LazyOptional<ColourNBT> colourNBT = LazyOptional.of(()-> new ColourNBT());
 
     public LuxCapacitorTileEntity() {
         super(MPSObjects.LUX_CAP_TILE_TYPE.get());
-        this.color = /*LuxCapacitorBlock.defaultColor*/ Colour.CYAN;
     }
 
     public LuxCapacitorTileEntity(Colour colour) {
         super(MPSObjects.LUX_CAP_TILE_TYPE.get());
-        this.color = colour;
+        colourNBT.ifPresent(colourNBT1 -> colourNBT1.setColour(colour));
+    }
+
+    /**
+     * Retrieves packet to send to the client whenever this Tile Entity is resynced via World.notifyBlockUpdate. For
+     * modded TE's, this packet comes back to you clientside in {@link #onDataPacket}
+     */
+    @Nullable
+    @Override
+    public SUpdateTileEntityPacket getUpdatePacket() {
+        return new SUpdateTileEntityPacket(this.pos, -1, this.getUpdateTag());
+    }
+
+    @Override
+    public CompoundNBT getUpdateTag() {
+        return this.write(new CompoundNBT());
     }
 
     public void setColor(Colour colour) {
-        this.color = colour;
+//        MuseLogger.logDebug("setting colour: " + colour);
+        this.colourNBT.ifPresent(colourNBT1 -> colourNBT1.setColour(colour));
     }
 
-//    @Override
-//    public CompoundNBT write(CompoundNBT nbt) {
-//        super.write(nbt);
-//        if (color == null)
-//            color = LuxCapacitorBlock.defaultColor;
-//        nbt.putInt("c", color.getInt());
-//        return nbt;
-//    }
-//
-//    @Nonnull
-//    @Override
-//    public IModelData getModelData() {
-//        return LuxCapHelper.getModelData(getColor().getInt());
-//    }
-//
-//    @Override
-//    public void read(CompoundNBT nbt) {
-//        super.read(nbt);
-//        if (nbt.contains("c")) {
-//            color = new Colour(nbt.getInt("c"));
-//        } else {
-//            MuseLogger.logger.debug("No NBT found! D:");
-//        }
-//    }
-//
-//    public Colour getColor() {
-//        return color != null ? color : LuxCapacitorBlock.defaultColor;
-//    }
+    @Override
+    public CompoundNBT write(CompoundNBT nbt) {
+//        MuseLogger.logDebug("writing: " + nbt);
+        colourNBT.ifPresent(colourNBT1 -> nbt.put("colour", colourNBT1.serializeNBT()));
+        return super.write(nbt);
+    }
+
+    @Nonnull
+    @Override
+    public IModelData getModelData() {
+        return LuxCapHelper.getModelData(getColor().getInt());
+    }
+
+    @Nonnull
+    @Override
+    public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
+        if (cap == ColourCapability.COLOUR) {
+            return colourNBT.cast();
+        }
+        return super.getCapability(cap, side);
+    }
+
+    @Override
+    public void read(BlockState state, CompoundNBT nbt) {
+        MuseLogger.logDebug("reading");
+
+        if (nbt.contains("colour", Constants.NBT.TAG_INT)) {
+            colourNBT.ifPresent(colourNBT1 -> colourNBT1.deserializeNBT((IntNBT) nbt.get("colour")));
+        } else {
+            MuseLogger.logger.debug("No NBT found! D:");
+        }
+        super.read(state, nbt);
+    }
+
+    public Colour getColor() {
+        return colourNBT.map(colourNBT1 -> colourNBT1.getColour()).orElse(LuxCapacitorBlock.defaultColor);
+    }
 }

@@ -36,6 +36,6 @@ A mod which adds modular power armor, power tool, and a tinker table to configur
 [[dependencies.powersuits]]
     modId="numina"
     mandatory=true
-    versionRange="[2.0.5,]"
+    versionRange="[2.0.10,]"
     ordering="AFTER"
     side="BOTH"
