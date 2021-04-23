@@ -147,7 +147,7 @@ public class ChargingBaseGui extends ExtendedContainerScreen<ChargingBaseContain
     @Override
     protected void drawGuiContainerForegroundLayer(MatrixStack matrixStack, int mouseX, int mouseY) {
         super.drawGuiContainerForegroundLayer(matrixStack, mouseX, mouseY);
-        this.font.func_243248_b(matrixStack,  new TranslationTextComponent("numina.energy").appendString(": "), 32F, 50F, 4210752);
+        this.font.drawText(matrixStack,  new TranslationTextComponent("numina.energy").appendString(": "), 32F, 50F, 4210752);
 
         String energyString = new StringBuilder()
                 .append(MuseStringUtils.formatNumberShort(container.getEnergy()))
@@ -155,7 +155,7 @@ public class ChargingBaseGui extends ExtendedContainerScreen<ChargingBaseContain
                 .append(MuseStringUtils.formatNumberShort(container.getMaxEnergy()))
                 .append(" FE").toString();
 
-        this.font.func_243248_b(matrixStack,
+        this.font.drawText(matrixStack,
                 new StringTextComponent(energyString),
                 (float)((batterySlot.centerx() - font.getStringWidth(energyString) / 2) - guiLeft), // guiLeft here is important
                 60F, 4210752);

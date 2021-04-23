@@ -90,8 +90,8 @@ public class AdditionalInfo {
                         currentTipList.add(
                                 new TranslationTextComponent("tooltip.numina.mode")
 //                                        .appendString(" ")
-                                        .append(new StringTextComponent(" "))
-                                        .append(localizedName.setStyle(Style.EMPTY.setFormatting(TextFormatting.RED))));
+                                        .appendSibling(new StringTextComponent(" "))
+                                        .appendSibling(localizedName.setStyle(Style.EMPTY.setFormatting(TextFormatting.RED))));
                     } else {
                         currentTipList.add(new TranslationTextComponent("tooltip.numina.changeModes"));
                     }
@@ -191,7 +191,7 @@ public class AdditionalInfo {
         }
 
         public ITextComponent getOutput() {
-            return displayName.append(new StringTextComponent(": ")).append(new StringTextComponent(new StringBuilder(currentAmount).append("/").append(maxAmount).toString()))
+            return displayName.appendSibling(new StringTextComponent(": ")).appendSibling(new StringTextComponent(new StringBuilder(currentAmount).append("/").append(maxAmount).toString()))
                     .setStyle(Style.EMPTY.setFormatting(TextFormatting.DARK_AQUA).setItalic(true));
         }
     }

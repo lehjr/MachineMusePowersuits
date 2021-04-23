@@ -35,7 +35,8 @@ public class ToolTipEvent {
     public void onToolTipEvent(RenderTooltipEvent.Pre event) {
         // TODO: better handling based on config
 
-        event.setMaxWidth(240);
+
+        event.setMaxWidth((int) (event.getScreenWidth() * 0.25));
         // event.setMaxWidth(Math.max(event.getMaxWidth(), settings.getMaxWidth()));
     }
 }

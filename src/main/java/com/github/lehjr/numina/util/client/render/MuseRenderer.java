@@ -400,7 +400,7 @@ public abstract class MuseRenderer {
     }
 
     public static void drawText(MatrixStack matrixStack, ITextComponent component, double x, double y, Colour colour) {
-        getFontRenderer().func_243248_b(matrixStack, component,  (float) x, (float) y, colour.getInt());
+        getFontRenderer().drawText(matrixStack, component,  (float) x, (float) y, colour.getInt());
     }
 
     public static void drawCenteredText(MatrixStack matrixStack, ITextComponent component, double x, double y, Colour colour) {
@@ -408,7 +408,7 @@ public abstract class MuseRenderer {
     }
 
     public static void drawCenteredText(MatrixStack matrixStack, ITextComponent component, float x, float y, Colour colour) {
-        getFontRenderer().func_243248_b(matrixStack,
+        getFontRenderer().drawText(matrixStack,
                 component,
                 ((x - getFontRenderer().getStringPropertyWidth(component) / 2)),
                 y, colour.getInt());

@@ -5,7 +5,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '3.+', changing: true
+        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '4.1.+', changing: true
     }
 }
 
@@ -42,10 +42,18 @@ repositories {
     }
 
 //    maven {
-//        // location of a maven mirror for JEI files, as a fallback
-//        name = "ModMaven"
-//        url = "https://modmaven.k-4u.nl"
+//        name = "CurseForge"
+//        url = "https://minecraft.curseforge.com/api/maven/"
 //    }
+//
+//    maven {
+//        url "https://www.cursemaven.com"
+//        content {
+//            includeGroup "curse.maven"
+//        }
+//    }
+
+
     flatDir {
         dirs 'libs'
     }
@@ -129,41 +137,22 @@ dependencies {
 
     // compile against the JEI API but do not include it at runtime
     // currently not actually using any JEI code, just using it as a matter of convienience for testing.
-    compileOnly fg.deobf("mezz.jei:jei-${project.minecraft_version}:${jei_version}:api")
+//    compileOnly fg.deobf("mezz.jei:jei-${project.minecraft_version}:${jei_version}:api")
 
     // at runtime, use the full JEI jar
     runtimeOnly fg.deobf("mezz.jei:jei-${project.minecraft_version}:${jei_version}")
 
-    compileOnly fg.deobf('com.feed_the_beast.mods:ftb-gui-library:1.0.0.18')
-    runtimeOnly fg.deobf('com.feed_the_beast.mods:ftb-gui-library:1.0.0.18')
+//    compileOnly fg.deobf('com.feed_the_beast.mods:ftb-gui-library:1605.2.1.41-forge')
+//    runtimeOnly fg.deobf('com.feed_the_beast.mods:ftb-gui-library:1604.1.1.26')
+    // com.feed_the_beast.mods:ftbguilibrary
 
+    // https://www.curseforge.com/api/maven/com.feed_the_beast.mods/ftb-gui-library/1.0.0.18/ftb-gui-library-1.0.0.18-release.jar
+
+//    implementation fg.deobf("curse.maven:ftb-gui-library:3237039")
+
+
+//    runtimeOnly fg.deobf('com.feed_the_beast.mods:ftb-gui-library:1604.1.1.26')
 }
-
-//dependencies {
-//    // Specify the version of Minecraft to use, If this is any group other then 'net.minecraft' it is assumed
-//    // that the dep is a ForgeGradle 'patcher' dependency. And it's patches will be applied.
-//    // The userdev artifact is a special name and will get all sorts of transformations applied to it.
-//    minecraft 'net.minecraftforge:forge:1.16.1-32.0.61'
-//
-//    // You may put jars on which you depend on in ./libs or you may define them like so..
-//    // compile "some.group:artifact:version:classifier"
-//    // compile "some.group:artifact:version"
-//
-//    // Real examples
-//    // compile 'com.mod-buildcraft:buildcraft:6.0.8:dev'  // adds buildcraft to the dev env
-//    // compile 'com.googlecode.efficient-java-matrix-library:ejml:0.24' // adds ejml to the dev env
-//
-//    // The 'provided' configuration is for optional dependencies that exist at compile-time but might not at runtime.
-//    // provided 'com.mod-buildcraft:buildcraft:6.0.8:dev'
-//
-//    // These dependencies get remapped to your current MCP mappings
-//    // deobf 'com.mod-buildcraft:buildcraft:6.0.8:dev'
-//
-//    // For more info...
-//    // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
-//    // http://www.gradle.org/docs/current/userguide/dependency_management.html
-//
-//}
 
 // Example for how to get properties into the manifest for reading by the runtime..
 jar {
