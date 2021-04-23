@@ -29,7 +29,6 @@ package com.github.lehjr.numina.client.event;
 import com.github.lehjr.numina.util.capabilities.inventory.modechanging.IModeChangingItem;
 import com.github.lehjr.numina.util.capabilities.module.powermodule.PowerModuleCapability;
 import com.github.lehjr.numina.util.capabilities.module.toggleable.IToggleableModule;
-import com.github.lehjr.numina.util.capabilities.module.toggleable.ToggleableModule;
 import com.github.lehjr.numina.util.client.render.MuseRenderer;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.MainWindow;
@@ -50,11 +49,6 @@ import net.minecraftforge.items.CapabilityItemHandler;
  */
 @OnlyIn(Dist.CLIENT)
 public class RenderGameOverlayEventHandler {
-
-    static {
-        new RenderGameOverlayEventHandler();
-    }
-
     @SubscribeEvent
     public void onPostRenderGameOverlayEvent(final RenderGameOverlayEvent.Post e) {
         if (e.getType().equals(RenderGameOverlayEvent.ElementType.HOTBAR)) {
