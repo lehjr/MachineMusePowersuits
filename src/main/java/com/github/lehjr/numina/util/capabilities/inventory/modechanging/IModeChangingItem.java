@@ -67,4 +67,6 @@ public interface IModeChangingItem extends IModularItem {
     int nextMode();
 
     int prevMode();
+
+    boolean isModuleActiveAndOnline(ResourceLocation moduleName);
 }

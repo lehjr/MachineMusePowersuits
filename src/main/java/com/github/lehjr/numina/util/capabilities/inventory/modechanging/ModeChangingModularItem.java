@@ -31,6 +31,7 @@ import com.github.lehjr.numina.network.packets.ModeChangeRequestPacket;
 import com.github.lehjr.numina.util.capabilities.inventory.modularitem.ModularItem;
 import com.github.lehjr.numina.util.capabilities.module.powermodule.PowerModuleCapability;
 import com.github.lehjr.numina.util.capabilities.module.rightclick.IRightClickModule;
+import com.github.lehjr.numina.util.capabilities.module.toggleable.IToggleableModule;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.model.IBakedModel;
 import net.minecraft.entity.player.PlayerEntity;
@@ -177,6 +178,19 @@ public class ModeChangingModularItem extends ModularItem implements IModeChangin
 
     private static int clampMode(int selection, int modesSize) {
         return (selection > 0) ? (selection % modesSize) : ((selection + modesSize * -selection) % modesSize);
+    }
+
+    @Override
+    public boolean isModuleActiveAndOnline(ResourceLocation moduleName) {
+        if (hasActiveModule(moduleName)) {
+            return getActiveModule().getCapability(PowerModuleCapability.POWER_MODULE).map(pm-> {
+                if (pm instanceof IToggleableModule) {
+                    return ((IToggleableModule) pm).isModuleOnline();
+                }
+                return true;
+            }).orElse(false);
+        }
+        return false;
     }
 
     @Override
