@@ -26,6 +26,7 @@
 
 package com.github.lehjr.powersuits.client.gui.keybind;
 
+import com.github.lehjr.numina.basemod.MuseLogger;
 import com.github.lehjr.numina.util.client.gui.ContainerlessGui;
 import com.github.lehjr.numina.util.client.gui.gemoetry.DrawableMuseRect;
 import com.github.lehjr.numina.util.math.Colour;
@@ -81,6 +82,7 @@ public class TinkerKeybindGui extends ContainerlessGui {
         kbFrame.init(absX(-0.95), absY(-0.95), absX(0.95), absY(0.95));
         tabSelectFrame.init(getGuiLeft(), getGuiTop(), getGuiLeft() + getXSize(), getGuiTop() + getYSize());
     }
+
 
     @Override
     public boolean keyPressed(int keyCode, int scanCode, int p_keyPressed_3_) {

@@ -26,6 +26,7 @@
 
 package com.github.lehjr.powersuits.client.event;
 
+import com.github.lehjr.numina.util.capabilities.inventory.modechanging.IModeChangingItem;
 import com.github.lehjr.numina.util.capabilities.inventory.modularitem.IModularItem;
 import com.github.lehjr.numina.util.capabilities.module.powermodule.PowerModuleCapability;
 import com.github.lehjr.numina.util.client.gui.clickable.ClickableModule;
@@ -162,12 +163,18 @@ public enum RenderEventHandler {
                             ItemStack stack = player.getItemStackFromSlot(slot);
                             active = stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).map(iItemHandler -> {
                                 if (iItemHandler instanceof IModularItem) {
+                                    if (iItemHandler instanceof IModeChangingItem) {
+                                        return ((IModeChangingItem) iItemHandler).isModuleActiveAndOnline(module.getModule().getItem().getRegistryName());
+                                    }
                                     return ((IModularItem) iItemHandler).isModuleOnline(module.getModule().getItem().getRegistryName());
                                 }
                                 return false;
                             }).orElse(false);
+                            // stop at the first active instance
+                            if(active) {
+                                break;
+                            }
                         }
-
                         MuseRenderer.drawModuleAt(matrixStack, x, frame.top(), module.getModule(), active);
 //                        TextureUtils.popTexture();
                         x += 16;

@@ -26,6 +26,7 @@
 
 package com.github.lehjr.powersuits.client.gui.keybind;
 
+import com.github.lehjr.numina.basemod.MuseLogger;
 import com.github.lehjr.numina.client.control.KeyBindingHelper;
 import com.github.lehjr.numina.util.capabilities.inventory.modechanging.IModeChangingItem;
 import com.github.lehjr.numina.util.capabilities.inventory.modularitem.IModularItem;
@@ -143,7 +144,6 @@ public class KeybindConfigFrame implements IGuiFrame {
 
     public void refreshModules() {
         NonNullList<ItemStack> installedModules = NonNullList.create();
-
         for (EquipmentSlotType slot: EquipmentSlotType.values()) {
             switch (slot.getSlotType()) {
                 case HAND:
@@ -152,10 +152,14 @@ public class KeybindConfigFrame implements IGuiFrame {
                                 if (iModeChanging instanceof IModeChangingItem) {
                                     for (int i = 0; i < iModeChanging.getSlots(); i++) {
                                         ItemStack module = iModeChanging.getStackInSlot(i);
-                                        if (module.getCapability(PowerModuleCapability.POWER_MODULE).map(c ->
-                                                IToggleableModule.class.isAssignableFrom(c.getClass())).orElse(false) && !
-                                                (module.getCapability(PowerModuleCapability.POWER_MODULE).map(c ->
-                                                        IRightClickModule.class.isAssignableFrom(c.getClass())).orElse(false))) {
+                                                        if (module.getCapability(PowerModuleCapability.POWER_MODULE).map(c ->
+                                                IToggleableModule.class.isAssignableFrom(c.getClass())).orElse(false) &&
+                                                module.getCapability(PowerModuleCapability.POWER_MODULE).map(pm-> {
+                                                    if (pm.getCategory() == EnumModuleCategory.MINING_ENHANCEMENT) {
+                                                        return true;
+                                                    }
+                                                    return !IRightClickModule.class.isAssignableFrom(pm.getClass());
+                                                }).orElse(false)) {
                                             installedModules.add(module);
                                         }
                                     }
@@ -223,6 +227,8 @@ public class KeybindConfigFrame implements IGuiFrame {
 
     @Override
     public void update(double mousex, double mousey) {
+        MuseLogger.logDebug("upding here");
+
         if (selecting) {
             return;
         }
@@ -413,35 +419,5 @@ public class KeybindConfigFrame implements IGuiFrame {
     @Override
     public boolean isVisible() {
         return visible;
-    }
-
-    @Override
-    public IRect setLeft(double v) {
-        return rect.setLeft(v);
-    }
-
-    @Override
-    public IRect setRight(double v) {
-        return rect.setRight(v);
-    }
-
-    @Override
-    public IRect setTop(double v) {
-        return rect.setTop(v);
-    }
-
-    @Override
-    public IRect setBottom(double v) {
-        return rect.setBottom(v);
-    }
-
-    @Override
-    public IRect setWidth(double v) {
-        return rect.setWidth(v);
-    }
-
-    @Override
-    public IRect setHeight(double v) {
-        return rect.setHeight(v);
     }
 }

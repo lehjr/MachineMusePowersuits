@@ -104,7 +104,7 @@ public class LuxCapacitorTileEntity extends MuseTileEntity {
 
     @Override
     public void read(BlockState state, CompoundNBT nbt) {
-        MuseLogger.logDebug("reading");
+//        MuseLogger.logDebug("reading");
 
         if (nbt.contains("colour", Constants.NBT.TAG_INT)) {
             colourNBT.ifPresent(colourNBT1 -> colourNBT1.deserializeNBT((IntNBT) nbt.get("colour")));
