@@ -99,20 +99,21 @@ public enum RenderEventHandler {
 
     private boolean playerHasFlightOn(PlayerEntity player) {
         return
-
                 player.getItemStackFromSlot(EquipmentSlotType.HEAD).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-                        .map(iModularItem ->
-                                (iModularItem instanceof IModularItem) && ((IModularItem) iModularItem).isModuleOnline(MPSRegistryNames.FLIGHT_CONTROL_MODULE_REGNAME)).orElse(false) ||
+                        .filter(IModularItem.class::isInstance)
+                        .map(IModularItem.class::cast)
+                        .map(iModularItem -> iModularItem.isModuleOnline(MPSRegistryNames.FLIGHT_CONTROL_MODULE_REGNAME)).orElse(false) ||
 
                         player.getItemStackFromSlot(EquipmentSlotType.CHEST).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-                                .map(iModularItem ->
-                                        (iModularItem instanceof IModularItem) &&
-                                                ((IModularItem) iModularItem).isModuleOnline(MPSRegistryNames.JETPACK_MODULE_REGNAME) ||
-                                                ((IModularItem) iModularItem).isModuleOnline(MPSRegistryNames.GLIDER_MODULE_REGNAME)).orElse(false) ||
+                                .filter(IModularItem.class::isInstance)
+                                .map(IModularItem.class::cast)
+                                .map(iModularItem -> iModularItem.isModuleOnline(MPSRegistryNames.JETPACK_MODULE_REGNAME) ||
+                                        iModularItem.isModuleOnline(MPSRegistryNames.GLIDER_MODULE_REGNAME)).orElse(false) ||
 
                         player.getItemStackFromSlot(EquipmentSlotType.FEET).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-                                .map(iModularItem ->
-                                        (iModularItem instanceof IModularItem) && ((IModularItem) iModularItem).isModuleOnline(MPSRegistryNames.JETBOOTS_MODULE_REGNAME)).orElse(false);
+                                .filter(IModularItem.class::isInstance)
+                                .map(IModularItem.class::cast)
+                                .map(iModularItem -> iModularItem.isModuleOnline(MPSRegistryNames.JETBOOTS_MODULE_REGNAME)).orElse(false);
     }
 
     @SubscribeEvent
