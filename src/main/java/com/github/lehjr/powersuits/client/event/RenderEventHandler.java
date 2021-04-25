@@ -99,6 +99,7 @@ public enum RenderEventHandler {
 
     private boolean playerHasFlightOn(PlayerEntity player) {
         return
+
                 player.getItemStackFromSlot(EquipmentSlotType.HEAD).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
                         .filter(IModularItem.class::isInstance)
                         .map(IModularItem.class::cast)
