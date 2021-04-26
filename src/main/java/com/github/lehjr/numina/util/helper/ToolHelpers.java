@@ -47,7 +47,7 @@ public class ToolHelpers {
     public static boolean isToolEffective(IBlockReader world, BlockPos pos, @Nonnull ItemStack emulatedTool) {
         BlockState state = world.getBlockState(pos);
 
-        if (Float.compare(state.getBlockHardness(world, pos), -1.0F) < 0 ) {// unbreakable
+        if (Float.compare(state.getBlockHardness(world, pos), -1.0F) <= 0 ) {// unbreakable
             return false;
         }
 
