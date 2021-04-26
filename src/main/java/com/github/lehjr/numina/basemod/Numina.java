@@ -26,9 +26,9 @@
 
 package com.github.lehjr.numina.basemod;
 
-import com.github.lehjr.numina.client.event.ArmorLayerSetup;
-import com.github.lehjr.numina.client.event.FOVUpdateEventHandler;
-import com.github.lehjr.numina.client.event.ToolTipEvent;
+import com.github.lehjr.numina.util.client.event.ArmorLayerSetup;
+import com.github.lehjr.numina.util.client.event.FOVUpdateEventHandler;
+import com.github.lehjr.numina.util.client.event.ToolTipEvent;
 import com.github.lehjr.numina.client.gui.ArmorStandGui;
 import com.github.lehjr.numina.client.gui.ChargingBaseGui;
 import com.github.lehjr.numina.config.ConfigHelper;
@@ -45,7 +45,6 @@ import com.github.lehjr.numina.util.capabilities.module.powermodule.PowerModuleC
 import com.github.lehjr.numina.util.capabilities.player.CapabilityPlayerKeyStates;
 import com.github.lehjr.numina.util.capabilities.render.ModelSpecNBTCapability;
 import com.github.lehjr.numina.util.capabilities.render.colour.ColourCapability;
-import com.github.lehjr.numina.util.capabilities.render.colour.ColourNBT;
 import com.github.lehjr.numina.util.client.NuminaSpriteUploader;
 import com.github.lehjr.numina.util.client.gui.GuiIcon;
 import com.github.lehjr.numina.util.client.render.MuseIconUtils;

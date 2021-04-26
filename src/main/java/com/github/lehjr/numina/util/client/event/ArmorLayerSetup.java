@@ -24,7 +24,7 @@
  *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.github.lehjr.numina.client.event;
+package com.github.lehjr.numina.util.client.event;
 
 import com.github.lehjr.numina.client.model.item.armor.MPAArmorLayer;
 import net.minecraft.client.Minecraft;
