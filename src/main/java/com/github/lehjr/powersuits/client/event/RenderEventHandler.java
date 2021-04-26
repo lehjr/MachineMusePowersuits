@@ -63,7 +63,6 @@ public enum RenderEventHandler {
     @OnlyIn(Dist.CLIENT)
     @SubscribeEvent
     public void preTextureStitch(TextureStitchEvent.Pre event) {
-//        MuseIcon.registerIcons(event);
         MPSModelHelper.loadArmorModels(event, null);
     }
 

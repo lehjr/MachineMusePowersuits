@@ -166,7 +166,7 @@ public class PowerFist extends AbstractElectricTool {
             if(iItemHandler instanceof IModeChangingItem) {
                 return ((IModeChangingItem) iItemHandler).getActiveModule()
                         .getCapability(PowerModuleCapability.POWER_MODULE).map(pm->{
-                            if(pm instanceof IMiningEnhancementModule) {
+                            if(pm instanceof IMiningEnhancementModule && ((IMiningEnhancementModule) pm).isModuleOnline()) {
                                 return ((IMiningEnhancementModule) pm).onBlockStartBreak(itemstack, pos, player);
                             }
                             return false;

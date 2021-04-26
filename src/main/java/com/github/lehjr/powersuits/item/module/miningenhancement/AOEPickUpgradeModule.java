@@ -102,16 +102,19 @@ public class AOEPickUpgradeModule extends AbstractPowerModule {
 
             @Override
             public boolean onBlockStartBreak(ItemStack itemStack, BlockPos posIn, PlayerEntity player) {
-                if (player.world.isRemote)
+                if (player.world.isRemote) {
                     return false; // fixme : check?
+                }
+
                 AtomicBoolean harvested = new AtomicBoolean(false);
                 RayTraceResult rayTraceResult = rayTrace(player.world, player, RayTraceContext.FluidMode.SOURCE_ONLY);
                 if (rayTraceResult == null || rayTraceResult.getType() != RayTraceResult.Type.BLOCK) {
                     return false;
                 }
                 int radius = (int) (applyPropertyModifiers(MPSConstants.AOE_MINING_RADIUS) - 1) / 2;
-                if (radius == 0)
+                if (radius == 0) {
                     return false;
+                }
 
                 Direction side = ((BlockRayTraceResult) rayTraceResult).getFace();
                 Stream<BlockPos> posList;
@@ -134,16 +137,19 @@ public class AOEPickUpgradeModule extends AbstractPowerModule {
                     default:
                         posList = new ArrayList<BlockPos>().stream();
                 }
-                int energyUsage = this.getEnergyUsage();
-                AtomicInteger blocksBroken = new AtomicInteger(0);
-                posList.forEach(blockPos-> {
-                    BlockState state = player.world.getBlockState(blockPos);
-                    int playerEnergy = ElectricItemUtils.getPlayerEnergy(player);
-                    itemStack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(modeChanging -> {
-                        if (modeChanging instanceof IModeChangingItem) {
-                            for (ItemStack blockBreakingModule : ((IModeChangingItem) modeChanging).getInstalledModulesOfType(IBlockBreakingModule.class)) {
 
+                int energyUsage = this.getEnergyUsage();
+
+                AtomicInteger blocksBroken = new AtomicInteger(0);
+                itemStack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(modeChanging -> {
+                    if (modeChanging instanceof IModeChangingItem) {
+                        posList.forEach(blockPos-> {
+                            BlockState state = player.world.getBlockState(blockPos);
+                            // find an installed module to break current block
+                            for (ItemStack blockBreakingModule : ((IModeChangingItem) modeChanging).getInstalledModulesOfType(IBlockBreakingModule.class)) {
+                                int playerEnergy = ElectricItemUtils.getPlayerEnergy(player);
                                 if (blockBreakingModule.getCapability(PowerModuleCapability.POWER_MODULE).map(b -> {
+                                    // check if module can break block
                                     if(b instanceof IBlockBreakingModule) {
                                         if (((IBlockBreakingModule) b).canHarvestBlock(itemStack, state, player, blockPos, playerEnergy - energyUsage)) {
                                             return true;
@@ -166,8 +172,8 @@ public class AOEPickUpgradeModule extends AbstractPowerModule {
                                     break;
                                 }
                             }
-                        }
-                    });
+                        });
+                    }
                 });
                 return harvested.get();
             }

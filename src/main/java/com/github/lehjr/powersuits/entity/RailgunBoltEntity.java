@@ -161,7 +161,7 @@ public class RailgunBoltEntity extends ThrowableEntity implements IEntityAdditio
             this.piercedEntities ++;
         }
 
-        Entity entity1 = this.func_234616_v_();
+        Entity entity1 = this.getShooter();
         DamageSource damagesource;
         if (entity1 == null) {
             damagesource = causeBoltDamage(this, this);
@@ -195,7 +195,7 @@ public class RailgunBoltEntity extends ThrowableEntity implements IEntityAdditio
                 }
 
                 if (entity1 != null && livingentity != entity1 && livingentity instanceof PlayerEntity && entity1 instanceof ServerPlayerEntity && !this.isSilent()) {
-                    ((ServerPlayerEntity)entity1).connection.sendPacket(new SChangeGameStatePacket(SChangeGameStatePacket.field_241770_g_, 0.0F));
+                    ((ServerPlayerEntity)entity1).connection.sendPacket(new SChangeGameStatePacket(SChangeGameStatePacket.HIT_PLAYER_ARROW, 0.0F));
                 }
             }
 
@@ -301,7 +301,7 @@ public class RailgunBoltEntity extends ThrowableEntity implements IEntityAdditio
      * Originally this was only drawn only on impact.
      */
     public void drawParticleStreamTo(Vector3d hitVec) {
-        Entity source = this.func_234616_v_();
+        Entity source = this.getShooter();
         if (source != null && source instanceof PlayerEntity) {
             double x = hitVec.x;
             double y = hitVec.y;

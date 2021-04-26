@@ -96,7 +96,7 @@ public class DimensionalRiftModule extends AbstractPowerModule {
 
             @Override
             public ActionResult onItemRightClick(ItemStack itemStackIn, World worldIn, PlayerEntity playerIn, Hand hand) {
-                if (!playerIn.isPassenger() && !playerIn.isBeingRidden() && playerIn.isNonBoss() && !playerIn.world.isRemote()) {
+                if (!playerIn.isPassenger() && !playerIn.isBeingRidden() && playerIn.canChangeDimension() && !playerIn.world.isRemote()) {
                     BlockPos coords = playerIn.getBedPosition().isPresent() ? playerIn.getBedPosition().get() : ((ServerWorld)(playerIn.world)).getSpawnPoint();
 
                     while (!worldIn.isAirBlock(coords) && !worldIn.isAirBlock(coords.up())) {

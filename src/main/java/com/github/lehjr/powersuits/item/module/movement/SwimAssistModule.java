@@ -26,7 +26,7 @@
 
 package com.github.lehjr.powersuits.item.module.movement;
 
-import com.github.lehjr.numina.client.control.PlayerMovementInputWrapper;
+import com.github.lehjr.numina.util.client.control.PlayerMovementInputWrapper;
 import com.github.lehjr.numina.config.NuminaSettings;
 import com.github.lehjr.numina.util.capabilities.module.powermodule.EnumModuleCategory;
 import com.github.lehjr.numina.util.capabilities.module.powermodule.EnumModuleTarget;

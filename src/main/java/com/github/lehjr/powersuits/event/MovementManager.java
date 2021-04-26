@@ -26,7 +26,7 @@
 
 package com.github.lehjr.powersuits.event;
 
-import com.github.lehjr.numina.client.control.PlayerMovementInputWrapper;
+import com.github.lehjr.numina.util.client.control.PlayerMovementInputWrapper;
 import com.github.lehjr.numina.config.NuminaSettings;
 import com.github.lehjr.numina.util.capabilities.inventory.modularitem.IModularItem;
 import com.github.lehjr.numina.util.capabilities.module.powermodule.PowerModuleCapability;

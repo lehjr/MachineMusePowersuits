@@ -145,8 +145,8 @@ public class PlasmaBallEntity extends ThrowableEntity implements IEntityAddition
         switch (result.getType()) {
             case ENTITY:
                 EntityRayTraceResult rayTraceResult = (EntityRayTraceResult) result;
-                if (rayTraceResult.getEntity() != null && rayTraceResult.getEntity() != func_234616_v_()) {
-                    rayTraceResult.getEntity().attackEntityFrom(DamageSource.causeThrownDamage(this, func_234616_v_()), this.dataManager.get(DAMAGINESS));
+                if (rayTraceResult.getEntity() != null && rayTraceResult.getEntity() != getShooter()) {
+                    rayTraceResult.getEntity().attackEntityFrom(DamageSource.causeThrownDamage(this, getShooter()), this.dataManager.get(DAMAGINESS));
                 }
                 break;
             case BLOCK:

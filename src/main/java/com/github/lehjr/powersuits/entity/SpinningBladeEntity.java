@@ -125,12 +125,12 @@ public class SpinningBladeEntity extends ThrowableEntity {
 
             BlockRayTraceResult result = (BlockRayTraceResult) hitResult;
             Block block = world.getBlockState(result.getPos()).getBlock();
-            if (block instanceof IForgeShearable && this.func_234616_v_() instanceof PlayerEntity) {
+            if (block instanceof IForgeShearable && this.getShooter() instanceof PlayerEntity) {
                 IForgeShearable target = (IForgeShearable) block;
                 if (target.isShearable(this.shootingItem, world, result.getPos()) && !world.isRemote) {
                     // onSheared(@Nullable PlayerEntity player, @Nonnull ItemStack item, World world, BlockPos pos, int fortune)
 
-                    List<ItemStack> drops = target.onSheared((PlayerEntity) this.func_234616_v_(), this.shootingItem, world, result.getPos(),
+                    List<ItemStack> drops = target.onSheared((PlayerEntity) this.getShooter(), this.shootingItem, world, result.getPos(),
                             EnchantmentHelper.getEnchantmentLevel(ForgeRegistries.ENCHANTMENTS.getValue(new ResourceLocation("fortune")), this.shootingItem));
                     Random rand = new Random();
 
@@ -151,13 +151,13 @@ public class SpinningBladeEntity extends ThrowableEntity {
             } else { // Block hit was not IForgeShearable
                 this.remove();
             }
-        } else if (hitResult.getType() == RayTraceResult.Type.ENTITY && ((EntityRayTraceResult)hitResult).getEntity() != func_234616_v_()) {
+        } else if (hitResult.getType() == RayTraceResult.Type.ENTITY && ((EntityRayTraceResult)hitResult).getEntity() != getShooter()) {
             EntityRayTraceResult result = (EntityRayTraceResult) hitResult;
             if (result.getEntity() instanceof IForgeShearable) {
                 IForgeShearable target = (IForgeShearable) result.getEntity();
                 Entity entity = result.getEntity();
-                if (target.isShearable(this.shootingItem, entity.world, entity.getPosition()) && this.func_234616_v_() instanceof PlayerEntity) {
-                    List<ItemStack> drops = target.onSheared((PlayerEntity) func_234616_v_(), this.shootingItem, entity.world,
+                if (target.isShearable(this.shootingItem, entity.world, entity.getPosition()) && this.getShooter() instanceof PlayerEntity) {
+                    List<ItemStack> drops = target.onSheared((PlayerEntity) getShooter(), this.shootingItem, entity.world,
                             entity.getPosition(),
                             EnchantmentHelper.getEnchantmentLevel(ForgeRegistries.ENCHANTMENTS.getValue(new ResourceLocation("fortune")), this.shootingItem));
 
@@ -173,7 +173,7 @@ public class SpinningBladeEntity extends ThrowableEntity {
                     }
                 }
             } else {
-                result.getEntity().attackEntityFrom(DamageSource.causeThrownDamage(this, func_234616_v_()), (int) damage);
+                result.getEntity().attackEntityFrom(DamageSource.causeThrownDamage(this, getShooter()), (int) damage);
             }
         }
     }

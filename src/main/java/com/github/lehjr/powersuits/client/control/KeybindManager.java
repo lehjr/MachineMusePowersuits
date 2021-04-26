@@ -27,7 +27,7 @@
 package com.github.lehjr.powersuits.client.control;
 
 import com.github.lehjr.numina.basemod.MuseLogger;
-import com.github.lehjr.numina.client.control.KeyBindingHelper;
+import com.github.lehjr.numina.util.client.control.KeyBindingHelper;
 import com.github.lehjr.numina.config.ConfigHelper;
 import com.github.lehjr.numina.util.capabilities.inventory.modularitem.IModularItem;
 import com.github.lehjr.numina.util.capabilities.module.powermodule.EnumModuleCategory;
