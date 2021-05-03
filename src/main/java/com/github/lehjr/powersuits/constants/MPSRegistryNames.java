@@ -109,6 +109,7 @@ public class MPSRegistryNames {
     public static final String COMPASS_MODULE = "compass";
     public static final String ACTIVE_CAMOUFLAGE_MODULE = "invisibility";
     public static final String MAGNET_MODULE = "magnet";
+    public static final String PIGLIN_PACIFICATION_MODULE = "piglin_pacification_module";
 
     // Tools --------------------------------------------------------------------------------------
     public static final String AQUA_AFFINITY_MODULE = "aqua_affinity";
@@ -165,6 +166,7 @@ public class MPSRegistryNames {
     public static final ResourceLocation CLOCK_MODULE_REG = getRegName(CLOCK_MODULE);
     public static final ResourceLocation COMPASS_MODULE_REG = getRegName(COMPASS_MODULE);
     public static final ResourceLocation PORTABLE_WORKBENCH_MODULE_REG = getRegName(PORTABLE_WORKBENCH_MODULE);
+    public static final ResourceLocation PIGLIN_PACIFICATION_MODULE_REGNAME = getRegName(PIGLIN_PACIFICATION_MODULE);
 
     public static ResourceLocation getRegName(String regNameString) {
         return new ResourceLocation(MPSConstants.MOD_ID, regNameString);

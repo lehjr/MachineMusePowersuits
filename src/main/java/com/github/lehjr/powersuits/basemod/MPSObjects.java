@@ -55,6 +55,7 @@ import com.github.lehjr.powersuits.item.module.miningenhancement.*;
 import com.github.lehjr.powersuits.item.module.movement.*;
 import com.github.lehjr.powersuits.item.module.special.InvisibilityModule;
 import com.github.lehjr.powersuits.item.module.special.MagnetModule;
+import com.github.lehjr.powersuits.item.module.special.PiglinPacificationModule;
 import com.github.lehjr.powersuits.item.module.tool.*;
 import com.github.lehjr.powersuits.item.module.vision.BinocularsModule;
 import com.github.lehjr.powersuits.item.module.vision.NightVisionModule;
@@ -213,6 +214,7 @@ public class MPSObjects {
     // Special ------------------------------------------------------------------------------------
     public static final RegistryObject<Item> ACTIVE_CAMOUFLAGE_MODULE = registerModule(MPSRegistryNames.ACTIVE_CAMOUFLAGE_MODULE, new InvisibilityModule());
     public static final RegistryObject<Item> MAGNET_MODULE = registerModule(MPSRegistryNames.MAGNET_MODULE, new MagnetModule());
+    public static final RegistryObject<Item> PIGLIN_PACIFICATION_MODULE = registerModule(MPSRegistryNames.PIGLIN_PACIFICATION_MODULE, new PiglinPacificationModule());
 
     // Vision -------------------------------------------------------------------------------------
     public static final RegistryObject<Item> BINOCULARS_MODULE = registerModule(MPSRegistryNames.BINOCULARS_MODULE, new BinocularsModule());

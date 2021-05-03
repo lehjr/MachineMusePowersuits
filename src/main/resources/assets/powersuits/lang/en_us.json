@@ -102,6 +102,9 @@
   "item.powersuits.invisibility.desc": "Emit a hologram of your surroundings to make yourself almost imperceptible.",
   "item.powersuits.magnet": "Magnet",
   "item.powersuits.magnet.desc": "Generates a magnetic field strong enough to attract items towards the player.         WARNING:                   This module drains power continuously. Turn it off when not needed. (Keybind menu: k)",
+  "item.powersuits.piglin_pacification": "Piglin Pacification Module",
+  "item.powersuits.piglin_pacification.desc": "Simple module to make Piglins neutral as if wearing gold armor",
+
 
   "_comment": "Tools",
   "item.powersuits.axe": "Axe",

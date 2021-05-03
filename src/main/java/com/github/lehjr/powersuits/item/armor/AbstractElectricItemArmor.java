@@ -32,6 +32,7 @@ import com.github.lehjr.numina.constants.NuminaConstants;
 import com.github.lehjr.numina.network.NuminaPackets;
 import com.github.lehjr.numina.network.packets.CosmeticInfoPacket;
 import com.github.lehjr.numina.util.capabilities.inventory.modularitem.IModularItem;
+import com.github.lehjr.numina.util.capabilities.inventory.modularitem.ModularItem;
 import com.github.lehjr.numina.util.capabilities.module.powermodule.EnumModuleCategory;
 import com.github.lehjr.numina.util.capabilities.module.powermodule.PowerModuleCapability;
 import com.github.lehjr.numina.util.capabilities.module.toggleable.IToggleableModule;
@@ -69,6 +70,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.ItemStackHandler;
 import org.apache.commons.lang3.tuple.Pair;
 
 import javax.annotation.Nonnull;
@@ -95,6 +97,14 @@ public abstract class AbstractElectricItemArmor extends ArmorItem {
                 .group(MPSObjects.creativeTab)
                 .maxDamage(0)
                 .setNoRepair());
+    }
+
+    @Override
+    public boolean makesPiglinsNeutral(ItemStack stack, LivingEntity wearer) {
+        return stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+                .filter(IModularItem.class::isInstance)
+                .map(IModularItem.class::cast)
+                .map(iModularItem -> iModularItem.isModuleOnline(MPSRegistryNames.PIGLIN_PACIFICATION_MODULE_REGNAME)).orElse(false);
     }
 
     //    /*
