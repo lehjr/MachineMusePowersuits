@@ -162,9 +162,9 @@
   "module.tradeoff.efficiency": "Efficiency",
   "module.tradeoff.power": "Power",
 
-
   "_comment": "Armor related tags",
   "module.tradeoff.armorPhysical": "Armor (Physical)",
+  "module.tradeoff.armorPoints": "Pts",
   "module.tradeoff.armorEnergy": "Armor (Energy)",
   "module.tradeoff.armorEnergyPerDamage": "Energy Per Damage",
   "module.tradeoff.fieldStrength": "Field Strength",
