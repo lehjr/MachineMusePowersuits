@@ -26,10 +26,8 @@
 
 package com.github.lehjr.powersuits.item.module.tool;
 
-import com.github.lehjr.numina.util.capabilities.module.powermodule.EnumModuleCategory;
-import com.github.lehjr.numina.util.capabilities.module.powermodule.EnumModuleTarget;
-import com.github.lehjr.numina.util.capabilities.module.powermodule.IConfig;
-import com.github.lehjr.numina.util.capabilities.module.powermodule.PowerModuleCapability;
+import com.github.lehjr.numina.util.capabilities.module.blockbreaking.IBlockBreakingModule;
+import com.github.lehjr.numina.util.capabilities.module.powermodule.*;
 import com.github.lehjr.numina.util.capabilities.module.rightclick.IRightClickModule;
 import com.github.lehjr.numina.util.capabilities.module.rightclick.RightClickModule;
 import com.github.lehjr.numina.util.energy.ElectricItemUtils;
@@ -42,9 +40,11 @@ import com.google.common.collect.Maps;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUseContext;
+import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
@@ -55,6 +55,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -83,6 +84,10 @@ public class HoeModule extends AbstractPowerModule {
                 addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, 500, "FE");
                 addTradeoffProperty(MPSConstants.RADIUS, MPSConstants.ENERGY_CONSUMPTION, 9500);
                 addTradeoffProperty(MPSConstants.RADIUS, MPSConstants.RADIUS, 8, "m");
+
+                addBaseProperty(MPSConstants.HARVEST_SPEED, 8, "x");
+                addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.ENERGY_CONSUMPTION, 9500);
+                addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.HARVEST_SPEED, 22);
             }};
         }
 
@@ -92,7 +97,7 @@ public class HoeModule extends AbstractPowerModule {
             return PowerModuleCapability.POWER_MODULE.orEmpty(cap, LazyOptional.of(() -> rightClick));
         }
 
-        class RightClickie extends RightClickModule {
+        class RightClickie extends RightClickModule implements IBlockBreakingModule {
             public RightClickie(@Nonnull ItemStack module, EnumModuleCategory category, EnumModuleTarget target, Callable<IConfig> config) {
                 super(module, category, target, config);
             }
@@ -137,8 +142,28 @@ public class HoeModule extends AbstractPowerModule {
             }
 
             @Override
+            public boolean onBlockDestroyed(ItemStack itemStack, World worldIn, BlockState state, BlockPos pos, LivingEntity entityLiving, int playerEnergy) {
+                if (this.canHarvestBlock(itemStack, state, (PlayerEntity) entityLiving, pos, playerEnergy)) {
+                    ElectricItemUtils.drainPlayerEnergy(entityLiving, getEnergyUsage());
+                    return true;
+                }
+                return false;
+            }
+
+            @Override
+            public void handleBreakSpeed(PlayerEvent.BreakSpeed event) {
+                event.setNewSpeed((float) (event.getNewSpeed() * applyPropertyModifiers(MPSConstants.HARVEST_SPEED)));
+            }
+
+            @Override
             public int getEnergyUsage() {
                 return (int) applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION);
+            }
+
+            @Nonnull
+            @Override
+            public ItemStack getEmulatedTool() {
+                return new ItemStack(Items.IRON_HOE);
             }
         }
     }

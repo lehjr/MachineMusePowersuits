@@ -164,7 +164,7 @@
 
   "_comment": "Armor related tags",
   "module.tradeoff.armorPhysical": "Armor (Physical)",
-  "module.tradeoff.armorPoints": "Pts",
+  "module.tradeoff.armorPoints": "pts",
   "module.tradeoff.armorEnergy": "Armor (Energy)",
   "module.tradeoff.armorEnergyPerDamage": "Energy Per Damage",
   "module.tradeoff.fieldStrength": "Field Strength",
