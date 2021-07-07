@@ -39,7 +39,7 @@ import java.util.function.Supplier;
  * <p>
  * Ported to Java by lehjr on 11/14/16.
  */
-public class ColourInfoPacket {
+public class ColourInfoPacket /* implements IMusePacket<ColourInfoPacket> */{
     protected int itemSlot;
     protected int[] tagData;
 

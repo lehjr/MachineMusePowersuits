@@ -1,0 +1,29 @@
+-GUI redesign
+---------------------
+* Module installation/removal gui:
+    possibilities:
+    1a) separate from tweak gui, use drag and drop interface
+    1b) use icons do designate special slots (similar to player inventory gui)
+    --OR--
+    2a) redesign module list frame to look more like vanilla Minecraft inventory...
+    2b) redesign modular item selection frame to look more like vanilla inventory and use stock inventory background icons
+    2c) add "craft and install" ability back into the install/remove frame
+    --OR--
+    3) something else
+
+* Keybinding frame:
+    - module icons and binding icons can end up outside the clickable area ... fix this
+
+* Module selection frame:
+    - add selecting of already chosen module...
+    - fix selecting module not always working
+
+* Better flight
+    - add elytra style flight (gliding, powered flight) with hovering when stationary
+
+* Finish recipes
+    - self explanatory
+
+* External mod integration (big one):
+    _ How to use items from other mods as tool type modules when some methods don't have an itemstack parameter but use a hand and a playerEntity parameter instead
+    > This means that the ItemStack checked is the one in that player's hand, not the one being used as a module
