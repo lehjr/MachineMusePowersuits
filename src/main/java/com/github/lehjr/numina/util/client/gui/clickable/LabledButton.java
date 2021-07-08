@@ -27,7 +27,7 @@
 package com.github.lehjr.numina.util.client.gui.clickable;
 
 import com.github.lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
-import com.github.lehjr.numina.util.client.gui.gemoetry.MuseRect;
+import com.github.lehjr.numina.util.client.gui.gemoetry.MuseRelativeRect;
 import com.github.lehjr.numina.util.client.render.MuseRenderer;
 import com.github.lehjr.numina.util.math.Colour;
 import com.mojang.blaze3d.matrix.MatrixStack;
@@ -65,7 +65,7 @@ public class LabledButton extends Button {
         this.label = label;
     }
 
-    public LabledButton(MuseRect ref,
+    public LabledButton(MuseRelativeRect ref,
                         Colour insideColourEnabled,
                         Colour insideColourDisabled,
                         Colour outsideColourEnabled,

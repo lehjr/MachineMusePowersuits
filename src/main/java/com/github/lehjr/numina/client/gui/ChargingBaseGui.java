@@ -64,7 +64,7 @@ public class ChargingBaseGui extends ExtendedContainerScreen<ChargingBaseContain
     public ChargingBaseGui(ChargingBaseContainer container, PlayerInventory inv, ITextComponent titleIn) {
         super(container, inv, titleIn);
         backgroundRect = new DrawableRelativeRect(0, 0, 0, 0, true,
-                new Colour(0.776F, 0.776F, 0.776F, 1F),
+                Colour.GREY_GUI_BACKGROUND,
 //                Colour.LIGHT_GREY,
                 Colour.BLACK);
         energyMeter = new EnergyMeter();

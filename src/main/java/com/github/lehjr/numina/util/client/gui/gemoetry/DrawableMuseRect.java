@@ -34,7 +34,7 @@ import org.lwjgl.opengl.GL11;
 
 import java.nio.FloatBuffer;
 
-public class DrawableMuseRect extends MuseRect implements IDrawable {
+public class DrawableMuseRect extends MuseRelativeRect implements IDrawable {
     Colour backgroundColour;
     Colour borderColour;
     Colour backgroundColour2 = null;
@@ -66,7 +66,7 @@ public class DrawableMuseRect extends MuseRect implements IDrawable {
         this.borderColour = borderColour;
     }
 
-    public DrawableMuseRect(MuseRect ref, Colour backgroundColour, Colour borderColour) {
+    public DrawableMuseRect(MuseRelativeRect ref, Colour backgroundColour, Colour borderColour) {
         super(ref.left(), ref.top(), ref.right(), ref.bottom(), ref.growFromMiddle());
         this.backgroundColour = backgroundColour;
         this.borderColour = borderColour;

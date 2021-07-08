@@ -26,26 +26,80 @@
 
 package com.github.lehjr.numina.util.client.gui.gemoetry;
 
-public class MuseRelativeRect extends MuseRect {
-    protected MuseRect rectBelowMe;
-    protected MuseRect rectAboveMe;
-    protected MuseRect rectLeftOfMe;
-    protected MuseRect rectRightOfMe;
+public class MuseRelativeRect implements IRect {
+    protected MuseRelativeRect rectBelowMe;
+    protected MuseRelativeRect rectAboveMe;
+    protected MuseRelativeRect rectLeftOfMe;
+    protected MuseRelativeRect rectRightOfMe;
     protected double leftPadding = 0;
     protected double topPadding = 0;
     protected double rightPadding = 0;
     protected double bottomPadding = 0;
 
-    public MuseRelativeRect(double left, double top, double right, double bottom) {
-        super(left, top, right, bottom);
-    }
+
+    /** Note: separate "target values" are because window based sizes don't initialize properly in the constructor */
+    /** target upper, left point */
+    MusePoint2D ulFinal;//
+    /** target width and height */
+    MusePoint2D whFinal;
+    /** top left origin */
+    MusePoint2D ul;
+    /** width, height */
+    MusePoint2D wh;
+
+    final boolean growFromMiddle;
 
     public MuseRelativeRect(double left, double top, double right, double bottom, boolean growFromMiddle) {
-        super(left, top, right, bottom, growFromMiddle);
+        ulFinal = new MusePoint2D(left, top);
+        whFinal = new MusePoint2D(right - left, bottom - top);
+        ul = ulFinal.copy();
+        wh = whFinal.copy();
+        this.growFromMiddle = growFromMiddle;
+    }
+
+    /**
+     *  Alternative to spawning a completely new object. Especially handy for GUI's with large constructors
+     */
+    public void setTargetDimensions(double left, double top, double right, double bottom) {
+        ulFinal = new MusePoint2D(left, top);
+        whFinal = new MusePoint2D(right - left, bottom - top);
+        grow();
+    }
+
+    public void setTargetDimensions(MusePoint2D ul, MusePoint2D wh) {
+        ulFinal = ul;
+        whFinal = wh;
+        grow();
+    }
+
+    public MuseRelativeRect(double left, double top, double right, double bottom) {
+        this(left, top, right, bottom, false);
+    }
+
+    public MuseRelativeRect(MusePoint2D ul, MusePoint2D br, boolean growFromMiddle) {
+        this.ulFinal = this.ul = ul;
+        this.whFinal = this.wh = br.minus(ul);
+        this.growFromMiddle = growFromMiddle;
     }
 
     public MuseRelativeRect(MusePoint2D ul, MusePoint2D br) {
-        super(ul, br);
+        this.ulFinal = this.ul = ul;
+        this.whFinal = this.wh = br.minus(ul);
+        this.growFromMiddle = false;
+    }
+
+    /**
+     * call after setTargetDimensions
+     */
+    void grow() {
+        if (growFromMiddle) {
+            MusePoint2D center = ulFinal.plus(whFinal.times(0.5F));
+            this.ul = new FlyFromPointToPoint2D(center, ulFinal, 200);
+            this.wh = new FlyFromPointToPoint2D(new MusePoint2D(0, 0), whFinal, 200);
+        } else {
+            this.ul = this.ulFinal.copy();
+            this.wh = this.whFinal.copy();
+        }
     }
 
     /**
@@ -57,7 +111,7 @@ public class MuseRelativeRect extends MuseRect {
         if(rectLeftOfMe != null) {
             return rectLeftOfMe.right() + leftPadding;
         }
-       return ul.getX();
+        return ul.getX();
     }
 
     /**
@@ -93,6 +147,132 @@ public class MuseRelativeRect extends MuseRect {
     }
 
     @Override
+    public MusePoint2D getUL() {
+        return ul;
+    }
+
+    @Override
+    public MusePoint2D getULFinal() {
+        return ulFinal;
+    }
+
+    @Override
+    public MusePoint2D getWH() {
+        return wh;
+    }
+
+    @Override
+    public MusePoint2D getWHFinal() {
+        return whFinal;
+    }
+
+    @Override
+    public double finalLeft() {
+        return ulFinal.getX();
+    }
+
+    @Override
+    public double finalTop() {
+        return ulFinal.getY();
+    }
+
+    @Override
+    public double finalRight() {
+        return ulFinal.getX() + whFinal.getX();
+    }
+
+    @Override
+    public double finalBottom() {
+        return ulFinal.getY() + whFinal.getY();
+    }
+
+    @Override
+    public double width() {
+        return wh.getX();
+    }
+
+    @Override
+    public double finalWidth() {
+        return whFinal.getX();
+    }
+
+    @Override
+    public double height() {
+        return wh.getY();
+    }
+
+    @Override
+    public double finalHeight() {
+        return whFinal.getY();
+    }
+
+    @Override
+    public IRect setLeft(double value) {
+        ul.setX(value);
+        ulFinal.setX(value);
+        return this;
+    }
+
+    @Override
+    public IRect setRight(double value) {
+        wh.setX(value - ul.getX());
+        whFinal.setX(value - ulFinal.getX());
+        return this;
+    }
+
+    @Override
+    public IRect setTop(double value) {
+        ul.setY(value);
+        ulFinal.setY(value);
+        return this;
+    }
+
+    @Override
+    public IRect setBottom(double value) {
+        wh.setY(value - ul.getY());
+        whFinal.setY(value - ulFinal.getY());
+        return this;
+    }
+
+    @Override
+    public IRect setWidth(double value) {
+        wh.setX(value);
+        whFinal.setX(value);
+        return this;
+    }
+
+    @Override
+    public IRect setHeight(double value) {
+        wh.setY(value);
+        whFinal.setY(value);
+        return this;
+    }
+
+    @Override
+    public void move(MusePoint2D moveAmount) {
+        ulFinal = whFinal.plus(moveAmount);
+        whFinal = whFinal.plus(moveAmount);
+        grow();
+    }
+
+    @Override
+    public void move(double x, double y) {
+        ulFinal = whFinal.plus(x, y);
+        whFinal = whFinal.plus(x, y);
+        grow();
+    }
+
+    @Override
+    public void setPosition(MusePoint2D position) {
+        ulFinal = position.minus(whFinal.times(0.5F));
+        grow();
+    }
+
+    @Override
+    public boolean growFromMiddle() {
+        return growFromMiddle;
+    }
+
     public MuseRelativeRect copyOf() {
         return new MuseRelativeRect(this.left(), this.top(), this.right(), this.bottom(), (this.ul != this.ulFinal || this.wh != this.whFinal));
 //                                .setBelow(this.belowme)
@@ -106,7 +286,7 @@ public class MuseRelativeRect extends MuseRect {
      * @param otherRightOfMe
      * @return this
      */
-    public MuseRelativeRect setMeLeftof(MuseRect otherRightOfMe) {
+    public MuseRelativeRect setMeLeftof(MuseRelativeRect otherRightOfMe) {
         this.rectRightOfMe = otherRightOfMe;
         return this;
     }
@@ -116,7 +296,7 @@ public class MuseRelativeRect extends MuseRect {
      * @param otherLeftOfMe
      * @return this
      */
-    public MuseRelativeRect setMeRightOf(MuseRect otherLeftOfMe) {
+    public MuseRelativeRect setMeRightOf(MuseRelativeRect otherLeftOfMe) {
         this.rectLeftOfMe = otherLeftOfMe;
         return this;
     }
@@ -126,7 +306,7 @@ public class MuseRelativeRect extends MuseRect {
      * @param otherBelowMe
      * @return this
      */
-    public MuseRelativeRect setMeAbove(MuseRect otherBelowMe) {
+    public MuseRelativeRect setMeAbove(MuseRelativeRect otherBelowMe) {
         this.rectBelowMe = otherBelowMe;
         return this;
     }
@@ -136,7 +316,7 @@ public class MuseRelativeRect extends MuseRect {
      * @param otherAboveMe
      * @return this
      */
-    public MuseRelativeRect setMeBelow(MuseRect otherAboveMe) {
+    public MuseRelativeRect setMeBelow(MuseRelativeRect otherAboveMe) {
         this.rectAboveMe = otherAboveMe;
         return this;
     }

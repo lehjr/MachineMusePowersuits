@@ -79,9 +79,6 @@ import org.apache.logging.log4j.Logger;
 
 @Mod(NuminaConstants.MOD_ID)
 public class Numina {
-    // Directly reference a log4j logger.
-    private static final Logger LOGGER = LogManager.getLogger();
-
     public Numina() {
         ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, NuminaSettings.CLIENT_SPEC, ConfigHelper.setupConfigFile("numina-client-only.toml", NuminaConstants.MOD_ID).getAbsolutePath());
         ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, NuminaSettings.SERVER_SPEC); // note config file location for dedicated server is stored in the world config

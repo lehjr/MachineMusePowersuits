@@ -47,6 +47,7 @@ public class Colour {
     public static final Colour LIGHT_GREY =new Colour(0.753F, 0.753F, 0.753F,1F); // Java awt color
     public static final Colour GREY =new Colour(0.502F, 0.502F, 0.502F,1F); // Java awt color
     public static final Colour DARK_GREY = new Colour(0.251F, 0.251F, 0.251F, 1F);
+    public static final Colour GREY_GUI_BACKGROUND = new Colour(0.776F, 0.776F, 0.776F, 1F);
     public static final Colour BLACK = new Colour(0F, 0F, 0F, 1F);
     public static final Colour RED = new Colour(1F, 0F, 0F, 1F);
     public static final Colour PINK = new Colour(1F, 0.686F, 0.686F, 1F);
@@ -61,6 +62,7 @@ public class Colour {
     public static final Colour LIGHT_BLUE = new Colour(0.5F, 0.5F, 1F, 1F);
     public static final Colour DARKBLUE = new Colour(0.0F, 0.0F, 0.5F, 1F);
     public static final Colour PURPLE = new Colour(0.6F, 0.1F, 0.9F, 1F);
+
 
     /**
      * The RGBA values are stored as floats from 0.0F (nothing) to 1.0F (full

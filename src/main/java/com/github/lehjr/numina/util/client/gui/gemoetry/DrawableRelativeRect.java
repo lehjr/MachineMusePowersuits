@@ -255,6 +255,4 @@ public class DrawableRelativeRect extends MuseRelativeRect {
         }
         drawBorder(matrixStack, vertices);
     }
-
-
 }

@@ -66,7 +66,7 @@ public class ArmorStandGui extends ExtendedContainerScreen<ArmorStandContainer> 
         super(containerIn, inv, titleIn);
 
         backgroundRect = new DrawableRelativeRect(0, 0, 0, 0, true,
-                new Colour(0.776F, 0.776F, 0.776F, 1F),
+                Colour.GREY_GUI_BACKGROUND,
                 Colour.BLACK);
 
         this.armorStandEntity = containerIn.getArmorStandEntity();
