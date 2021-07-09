@@ -26,7 +26,6 @@
 
 package com.github.lehjr.powersuits.item.module.movement;
 
-import com.github.lehjr.numina.util.client.control.PlayerMovementInputWrapper;
 import com.github.lehjr.numina.config.NuminaSettings;
 import com.github.lehjr.numina.util.capabilities.module.powermodule.EnumModuleCategory;
 import com.github.lehjr.numina.util.capabilities.module.powermodule.EnumModuleTarget;
@@ -35,6 +34,7 @@ import com.github.lehjr.numina.util.capabilities.module.powermodule.PowerModuleC
 import com.github.lehjr.numina.util.capabilities.module.tickable.IPlayerTickModule;
 import com.github.lehjr.numina.util.capabilities.module.tickable.PlayerTickModule;
 import com.github.lehjr.numina.util.capabilities.module.toggleable.IToggleableModule;
+import com.github.lehjr.numina.util.client.control.PlayerMovementInputWrapper;
 import com.github.lehjr.numina.util.client.sound.Musique;
 import com.github.lehjr.numina.util.energy.ElectricItemUtils;
 import com.github.lehjr.powersuits.client.sound.MPSSoundDictionary;

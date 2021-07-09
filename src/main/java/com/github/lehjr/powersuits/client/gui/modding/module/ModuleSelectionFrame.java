@@ -33,7 +33,6 @@ import com.github.lehjr.numina.util.client.gui.clickable.ClickableItem;
 import com.github.lehjr.numina.util.client.gui.clickable.ClickableModule;
 import com.github.lehjr.numina.util.client.gui.frame.ScrollableFrame;
 import com.github.lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
-import com.github.lehjr.numina.util.client.gui.gemoetry.MuseRect;
 import com.github.lehjr.numina.util.client.gui.gemoetry.MuseRelativeRect;
 import com.github.lehjr.numina.util.client.render.MuseRenderer;
 import com.github.lehjr.numina.util.math.Colour;
@@ -55,7 +54,7 @@ import java.util.Map;
 public class ModuleSelectionFrame extends ScrollableFrame {
     protected ItemSelectionFrame target;
     protected Map<EnumModuleCategory, ModuleSelectionSubFrame> categories = new LinkedHashMap<>();
-    protected MuseRect lastPosition;
+    protected MuseRelativeRect lastPosition;
 
     public ModuleSelectionFrame(ItemSelectionFrame itemSelectFrameIn, MusePoint2D topleft, MusePoint2D bottomright, float zLevel, Colour backgroundColour, Colour borderColour) {
         super(topleft, bottomright, zLevel, backgroundColour, borderColour);

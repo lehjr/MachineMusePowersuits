@@ -27,7 +27,10 @@
 package com.github.lehjr.powersuits.item.module.tool;
 
 import com.github.lehjr.numina.util.capabilities.module.blockbreaking.IBlockBreakingModule;
-import com.github.lehjr.numina.util.capabilities.module.powermodule.*;
+import com.github.lehjr.numina.util.capabilities.module.powermodule.EnumModuleCategory;
+import com.github.lehjr.numina.util.capabilities.module.powermodule.EnumModuleTarget;
+import com.github.lehjr.numina.util.capabilities.module.powermodule.IConfig;
+import com.github.lehjr.numina.util.capabilities.module.powermodule.PowerModuleCapability;
 import com.github.lehjr.numina.util.capabilities.module.rightclick.IRightClickModule;
 import com.github.lehjr.numina.util.capabilities.module.rightclick.RightClickModule;
 import com.github.lehjr.numina.util.energy.ElectricItemUtils;

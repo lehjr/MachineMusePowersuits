@@ -52,6 +52,9 @@ public class ContainerGuiOpenPacket {
 
     public static void handle(ContainerGuiOpenPacket msg, Supplier<NetworkEvent.Context> ctx) {
         ctx.get().enqueueWork(() -> {
+            System.out.println("guiID: " + msg.guiID);
+
+
                 NetworkHooks.openGui(ctx.get().getSender(),
                         new MPSWorkbenchContainerProvider(msg.guiID),
                         (buffer) -> buffer.writeInt(msg.guiID));

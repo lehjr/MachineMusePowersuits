@@ -26,7 +26,6 @@
 
 package com.github.lehjr.powersuits.client.gui.keybind;
 
-import com.github.lehjr.numina.basemod.MuseLogger;
 import com.github.lehjr.numina.util.client.gui.ContainerlessGui;
 import com.github.lehjr.numina.util.client.gui.gemoetry.DrawableMuseRect;
 import com.github.lehjr.numina.util.math.Colour;

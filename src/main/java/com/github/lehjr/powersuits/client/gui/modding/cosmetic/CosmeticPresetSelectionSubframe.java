@@ -31,7 +31,7 @@ import com.github.lehjr.numina.util.capabilities.render.modelspec.EnumSpecType;
 import com.github.lehjr.numina.util.client.gui.clickable.ClickableItem;
 import com.github.lehjr.numina.util.client.gui.clickable.ClickableLabel;
 import com.github.lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
-import com.github.lehjr.numina.util.client.gui.gemoetry.MuseRect;
+import com.github.lehjr.numina.util.client.gui.gemoetry.MuseRelativeRect;
 import com.github.lehjr.numina.util.client.gui.gemoetry.MuseRelativeRect;
 import com.github.lehjr.numina.util.client.gui.scrollable.ScrollableLabel;
 import com.github.lehjr.numina.util.nbt.MuseNBTUtils;
@@ -105,8 +105,7 @@ public class CosmeticPresetSelectionSubframe extends ScrollableLabel {
         return MuseNBTUtils.getMuseItemTag(this.getSelectedItem().getStack());
     }
 
-
-    public MuseRect getBorder() {
+    public MuseRelativeRect getBorder() {
         return this.border;
     }
 

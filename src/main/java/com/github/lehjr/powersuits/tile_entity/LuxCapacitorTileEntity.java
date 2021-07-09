@@ -27,11 +27,11 @@
 package com.github.lehjr.powersuits.tile_entity;
 
 
+import com.github.lehjr.numina.basemod.MuseLogger;
 import com.github.lehjr.numina.util.capabilities.render.colour.ColourCapability;
 import com.github.lehjr.numina.util.capabilities.render.colour.ColourNBT;
 import com.github.lehjr.numina.util.math.Colour;
 import com.github.lehjr.numina.util.tileentity.MuseTileEntity;
-import com.github.lehjr.numina.basemod.MuseLogger;
 import com.github.lehjr.powersuits.basemod.MPSObjects;
 import com.github.lehjr.powersuits.block.LuxCapacitorBlock;
 import com.github.lehjr.powersuits.client.model.helper.LuxCapHelper;

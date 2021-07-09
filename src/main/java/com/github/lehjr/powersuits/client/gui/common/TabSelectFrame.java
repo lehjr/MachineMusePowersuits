@@ -29,7 +29,7 @@ package com.github.lehjr.powersuits.client.gui.common;
 import com.github.lehjr.numina.util.client.gui.clickable.ClickableButton;
 import com.github.lehjr.numina.util.client.gui.frame.ScrollableFrame;
 import com.github.lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
-import com.github.lehjr.numina.util.client.gui.gemoetry.MuseRect;
+import com.github.lehjr.numina.util.client.gui.gemoetry.MuseRelativeRect;
 import com.github.lehjr.numina.util.client.sound.Musique;
 import com.github.lehjr.numina.util.client.sound.SoundDictionary;
 import com.github.lehjr.numina.util.math.Colour;
@@ -118,7 +118,7 @@ public class TabSelectFrame extends ScrollableFrame {
     }
 
     @Override
-    public MuseRect setLeft(double value) {
+    public MuseRelativeRect setLeft(double value) {
         super.setLeft(value);
         init();
         return this.border;

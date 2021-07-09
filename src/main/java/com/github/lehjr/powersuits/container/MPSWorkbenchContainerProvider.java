@@ -27,12 +27,13 @@
 package com.github.lehjr.powersuits.container;
 
 import com.github.lehjr.powersuits.constants.MPSConstants;
+import com.github.lehjr.powersuits.container.dev.MPSCraftingContainer;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.inventory.container.SimpleNamedContainerProvider;
-import net.minecraft.inventory.container.WorkbenchContainer;
+import net.minecraft.stats.Stats;
 import net.minecraft.util.IWorldPosCallable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
@@ -67,13 +68,16 @@ public class MPSWorkbenchContainerProvider implements INamedContainerProvider {
                 // Fixme: in vanilla, this is done client side?
 
 
-//                player.addStat(Stats.INTERACT_WITH_CRAFTING_TABLE);
-//                player.openContainer(getContainer(player.world, player.getPosition()));
-
-//                return player.openContainer;
+                player.addStat(Stats.INTERACT_WITH_CRAFTING_TABLE);
 
 
-//                System.out.println("world is remote? " + player.world.isRemote);
+//
+
+
+                System.out.println("world is remote? " + player.world.isRemote);
+                player.openContainer(getContainer(player.world, player.getPosition()));
+                return player.openContainer;
+
 //
 //
 //
@@ -82,15 +86,21 @@ public class MPSWorkbenchContainerProvider implements INamedContainerProvider {
 ////
 ////                // FIXME: crafting GUI, original or MPS?
 ////
-                return new WorkbenchContainer(windowId, playerInventory);
+//                return new WorkbenchContainer(windowId, playerInventory);
+
+//            return new MPSCraftingContainer(windowId, playerInventory);
         }
     }
 
+//    public INamedContainerProvider getContainer(World worldIn, BlockPos pos) {
+//        return new SimpleNamedContainerProvider((id, inventory, player) -> {
+//            return new WorkbenchContainer(id, inventory, IWorldPosCallable.of(worldIn, pos));
+//        },  new TranslationTextComponent("container.crafting"));
+//    }
+
     public INamedContainerProvider getContainer(World worldIn, BlockPos pos) {
         return new SimpleNamedContainerProvider((id, inventory, player) -> {
-            return new WorkbenchContainer(id, inventory, IWorldPosCallable.of(worldIn, pos));
+            return new MPSCraftingContainer(id, inventory, IWorldPosCallable.of(worldIn, pos));
         },  new TranslationTextComponent("container.crafting"));
     }
-
-
 }

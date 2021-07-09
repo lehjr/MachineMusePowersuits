@@ -39,6 +39,7 @@ import com.github.lehjr.powersuits.client.control.KeybindKeyHandler;
 import com.github.lehjr.powersuits.client.event.ClientTickHandler;
 import com.github.lehjr.powersuits.client.event.ModelBakeEventHandler;
 import com.github.lehjr.powersuits.client.event.RenderEventHandler;
+import com.github.lehjr.powersuits.client.gui.dev.common.TinkerCraftingGUI;
 import com.github.lehjr.powersuits.client.gui.modding.module.TinkerTableGui;
 import com.github.lehjr.powersuits.client.render.entity.LuxCapacitorEntityRenderer;
 import com.github.lehjr.powersuits.client.render.entity.PlasmaBoltEntityRenderer;
@@ -159,7 +160,7 @@ public class ModularPowersuits {
         RenderingRegistry.registerEntityRenderingHandler(MPSObjects.SPINNING_BLADE_ENTITY_TYPE.get(), SpinningBladeEntityRenderer::new);
 
 //        ScreenManager.registerFactory(MPSObjects.MODULE_CONFIG_CONTAINER_TYPE, TinkerModuleGui::new);
-//        ScreenManager.registerFactory(MPSObjects.MPA_CRAFTING_CONTAINER_TYPE.get(), TinkerCraftingGUI::new);
+        ScreenManager.registerFactory(MPSObjects.MPS_CRAFTING_CONTAINER_TYPE.get(), TinkerCraftingGUI::new);
         ScreenManager.registerFactory(MPSObjects.TINKERTABLE_CONTAINER_TYPE.get(), TinkerTableGui::new);
 
 

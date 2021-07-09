@@ -27,7 +27,6 @@
 package com.github.lehjr.powersuits.client.gui.obsolete;
 
 import com.github.lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
-import com.github.lehjr.numina.util.client.gui.gemoetry.MuseRect;
 import com.github.lehjr.numina.util.client.gui.gemoetry.MuseRelativeRect;
 import com.mojang.blaze3d.matrix.MatrixStack;
 
@@ -52,7 +51,7 @@ public class ScrollableRectangle extends MuseRelativeRect {
     public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks, float zLevel) {
     }
 
-    public MuseRect getBorder() {
+    public MuseRelativeRect getBorder() {
         return this;
     }
 }

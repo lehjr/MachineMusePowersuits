@@ -27,13 +27,13 @@
 package com.github.lehjr.powersuits.client.gui.keybind;
 
 import com.github.lehjr.numina.basemod.MuseLogger;
-import com.github.lehjr.numina.util.client.control.KeyBindingHelper;
 import com.github.lehjr.numina.util.capabilities.inventory.modechanging.IModeChangingItem;
 import com.github.lehjr.numina.util.capabilities.inventory.modularitem.IModularItem;
 import com.github.lehjr.numina.util.capabilities.module.powermodule.EnumModuleCategory;
 import com.github.lehjr.numina.util.capabilities.module.powermodule.PowerModuleCapability;
 import com.github.lehjr.numina.util.capabilities.module.rightclick.IRightClickModule;
 import com.github.lehjr.numina.util.capabilities.module.toggleable.IToggleableModule;
+import com.github.lehjr.numina.util.client.control.KeyBindingHelper;
 import com.github.lehjr.numina.util.client.gui.clickable.ClickableButton;
 import com.github.lehjr.numina.util.client.gui.clickable.ClickableModule;
 import com.github.lehjr.numina.util.client.gui.clickable.IClickable;
@@ -41,7 +41,7 @@ import com.github.lehjr.numina.util.client.gui.frame.IGuiFrame;
 import com.github.lehjr.numina.util.client.gui.gemoetry.GradientAndArcCalculator;
 import com.github.lehjr.numina.util.client.gui.gemoetry.IRect;
 import com.github.lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
-import com.github.lehjr.numina.util.client.gui.gemoetry.MuseRect;
+import com.github.lehjr.numina.util.client.gui.gemoetry.MuseRelativeRect;
 import com.github.lehjr.numina.util.client.render.MuseRenderer;
 import com.github.lehjr.numina.util.math.Colour;
 import com.github.lehjr.powersuits.client.control.KeybindKeyHandler;
@@ -76,9 +76,9 @@ public class KeybindConfigFrame implements IGuiFrame {
     protected long takenTime;
     KeybindManager keybindManager = KeybindManager.INSTANCE;
 
-    MuseRect rect;
+    MuseRelativeRect rect;
 
-    public KeybindConfigFrame(MuseRect backgroundRect, PlayerEntity player) {
+    public KeybindConfigFrame(MuseRelativeRect backgroundRect, PlayerEntity player) {
         modules = new HashSet();
         for (ClickableKeybinding kb : keybindManager.getKeybindings()) {
             modules.addAll(kb.getBoundModules());

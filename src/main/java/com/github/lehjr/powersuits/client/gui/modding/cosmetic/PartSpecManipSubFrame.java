@@ -36,7 +36,6 @@ import com.github.lehjr.numina.util.capabilities.render.ModelSpecNBTCapability;
 import com.github.lehjr.numina.util.capabilities.render.modelspec.*;
 import com.github.lehjr.numina.util.client.gui.GuiIcon;
 import com.github.lehjr.numina.util.client.gui.clickable.ClickableItem;
-import com.github.lehjr.numina.util.client.gui.gemoetry.MuseRect;
 import com.github.lehjr.numina.util.client.gui.gemoetry.MuseRelativeRect;
 import com.github.lehjr.numina.util.client.render.MuseIconUtils;
 import com.github.lehjr.numina.util.client.render.MuseRenderer;
@@ -338,7 +337,7 @@ public class PartSpecManipSubFrame {
         RenderSystem.enableTexture();
     }
 
-    public MuseRect getBorder() {
+    public MuseRelativeRect getBorder() {
         if (this.open) {
             border.setHeight(9 + 9 * partSpecs.size());
         } else {

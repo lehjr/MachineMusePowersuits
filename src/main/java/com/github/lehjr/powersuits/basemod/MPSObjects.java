@@ -32,6 +32,8 @@ import com.github.lehjr.powersuits.block.TinkerTable;
 import com.github.lehjr.powersuits.constants.MPSConstants;
 import com.github.lehjr.powersuits.constants.MPSRegistryNames;
 import com.github.lehjr.powersuits.container.TinkerTableContainer;
+import com.github.lehjr.powersuits.container.dev.InstallSalvageCraftContainer;
+import com.github.lehjr.powersuits.container.dev.MPSCraftingContainer;
 import com.github.lehjr.powersuits.entity.LuxCapacitorEntity;
 import com.github.lehjr.powersuits.entity.PlasmaBallEntity;
 import com.github.lehjr.powersuits.entity.RailgunBoltEntity;
@@ -254,30 +256,22 @@ public class MPSObjects {
     public static final RegistryObject<ContainerType<TinkerTableContainer>> TINKERTABLE_CONTAINER_TYPE = CONTAINER_TYPES.register(MPSRegistryNames.TINKERTABLE_CONTAINER_TYPE,
             () -> IForgeContainerType.create((windowId, inv, data) -> new TinkerTableContainer(windowId, inv)));
 
+    public static final RegistryObject<ContainerType<InstallSalvageCraftContainer>> SALVAGE_CRAFT_CONTAINER_TYPE =
+            CONTAINER_TYPES.register(MPSRegistryNames.INSTALL_SALVAGE_CRAFT_CONTAINER_TYPE,
+                    () -> IForgeContainerType.create((windowId, inv, data) -> new InstallSalvageCraftContainer(windowId, inv)));
 
-//                    new ContainerType<>(MPAWorkbenchContainer::new)
+
+    //                    new ContainerType<>(MPAWorkbenchContainer::new)
 //            .setRegistryName(MPA_WORKBENCH_CONTAINER_TYPE),
 //
 //
-//    // Crafting Gui
-//                new ContainerType<>(MPACraftingContainer::new)
-//            .setRegistryName(MPA_CRAFTING_CONTAINER_TYPE__REG_NAME)
-
-
-////    @ObjectHolder(MOD_ID + ":bolt")
-////    public static EntityType<BoltEntity> BOLT_ENTITY_TYPE;
-//
-//
-//
-
-//        @ObjectHolder(MPA_CRAFTING_CONTAINER_TYPE__REG_NAME)
-//        public static final ContainerType<MPACraftingContainer> MPA_CRAFTING_CONTAINER_TYPE = null;
-//
-//        @ObjectHolder(MPA_TINKER_TABLE_CONTAINER_TYPE__REG_NAME)
-//        public static final ContainerType<MPAWorkbenchContainer> TINKER_TABLE_CONTAINER_TYPE = null;
-//    }
-
-
+    // Crafting Gui
+    public static final RegistryObject<ContainerType<MPSCraftingContainer>> MPS_CRAFTING_CONTAINER_TYPE = CONTAINER_TYPES.register(MPSRegistryNames.MPS_CRAFTING_CONTAINER_TYPE,
+            () -> IForgeContainerType.create((windowId, inv, data) -> {
+//                BlockPos pos = data.readBlockPos();
+//                return new MPSCraftingContainer(windowId, inv, IWorldPosCallable.of(inv.player.world, pos));
+                return new MPSCraftingContainer(windowId, inv);
+            }));
 
 
     static RegistryObject<Item> registerModule(String regName, Item item) {

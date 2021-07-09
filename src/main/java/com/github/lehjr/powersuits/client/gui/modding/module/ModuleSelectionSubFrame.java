@@ -30,7 +30,6 @@ import com.github.lehjr.numina.util.capabilities.inventory.modularitem.IModularI
 import com.github.lehjr.numina.util.capabilities.module.powermodule.EnumModuleCategory;
 import com.github.lehjr.numina.util.client.gui.clickable.ClickableModule;
 import com.github.lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
-import com.github.lehjr.numina.util.client.gui.gemoetry.MuseRect;
 import com.github.lehjr.numina.util.client.gui.gemoetry.MuseRelativeRect;
 import com.github.lehjr.numina.util.client.render.MuseRenderer;
 import com.github.lehjr.numina.util.client.sound.Musique;
@@ -181,7 +180,7 @@ public class ModuleSelectionSubFrame {
         return null;
     }
 
-    public MuseRect getBorder() {
+    public MuseRelativeRect getBorder() {
         return border;
     }
 }

@@ -26,10 +26,10 @@
 
 package com.github.lehjr.powersuits.event;
 
-import com.github.lehjr.numina.util.client.control.PlayerMovementInputWrapper;
 import com.github.lehjr.numina.config.NuminaSettings;
 import com.github.lehjr.numina.util.capabilities.inventory.modularitem.IModularItem;
 import com.github.lehjr.numina.util.capabilities.module.powermodule.PowerModuleCapability;
+import com.github.lehjr.numina.util.client.control.PlayerMovementInputWrapper;
 import com.github.lehjr.numina.util.client.sound.Musique;
 import com.github.lehjr.numina.util.client.sound.SoundDictionary;
 import com.github.lehjr.numina.util.energy.ElectricItemUtils;

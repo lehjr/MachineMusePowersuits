@@ -34,7 +34,7 @@ import com.github.lehjr.numina.util.client.gui.clickable.ClickableModule;
 import com.github.lehjr.numina.util.client.gui.frame.IGuiFrame;
 import com.github.lehjr.numina.util.client.gui.gemoetry.IRect;
 import com.github.lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
-import com.github.lehjr.numina.util.client.gui.gemoetry.MuseRect;
+import com.github.lehjr.numina.util.client.gui.gemoetry.MuseRelativeRect;
 import com.github.lehjr.numina.util.client.gui.gemoetry.SpiralPointToPoint2D;
 import com.github.lehjr.numina.util.client.render.MuseRenderer;
 import com.mojang.blaze3d.matrix.MatrixStack;
@@ -58,13 +58,13 @@ public class RadialModeSelectionFrame implements IGuiFrame {
     protected MusePoint2D center;
     protected double radius;
     protected ItemStack stack;
-    MuseRect rect;
+    MuseRelativeRect rect;
     float zLevel;
 
     public RadialModeSelectionFrame(MusePoint2D topleft, MusePoint2D bottomright, PlayerEntity player, float zLevel) {
         spawnTime = System.currentTimeMillis();
         this.player = player;
-        rect = new MuseRect(topleft, bottomright);
+        rect = new MuseRelativeRect(topleft, bottomright);
         center = rect.center();
         this.radius = Math.min(rect.height(), rect.width());
         this.stack = player.inventory.getCurrentItem();
