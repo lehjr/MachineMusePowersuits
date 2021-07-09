@@ -32,9 +32,12 @@ import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.VertexFormat;
 import net.minecraft.util.math.vector.Matrix4f;
+import net.minecraft.util.math.vector.Vector4f;
 import org.lwjgl.opengl.GL11;
 
+import java.nio.DoubleBuffer;
 import java.nio.FloatBuffer;
+import java.util.Vector;
 
 public interface IDrawable {
 
@@ -54,6 +57,26 @@ public interface IDrawable {
             getBufferBuilder().pos(matrix4f, vertices.get(), vertices.get(), getZLevel()).color(colour.r, colour.g, colour.b, colour.a).endVertex();
         }
     }
+
+
+    /**
+     * Common code for adding vertices to the BufferBuilder
+     * @param matrix4f
+     * @param vertices
+     * @param colour a Colour to draw in
+     */
+    default void addVerticesToBuffer(Matrix4f matrix4f, DoubleBuffer vertices, Colour colour) {
+        vertices.rewind();
+
+
+        Vector4f vector4f = new Vector4f((float)vertices.get(), (float)vertices.get(), getZLevel(), 1.0F);
+        vector4f.transform(matrix4f);
+        while(vertices.hasRemaining()) {
+            getBufferBuilder().pos((double)vector4f.getX(), (double)vector4f.getY(), (double)vector4f.getZ()).color(colour.r, colour.g, colour.b, colour.a).endVertex();
+        }
+    }
+
+
 
     /**
      * Common code for adding vertices to the BufferBuilder

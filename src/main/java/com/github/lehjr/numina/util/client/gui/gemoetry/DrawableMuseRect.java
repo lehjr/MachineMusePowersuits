@@ -142,6 +142,11 @@ public class DrawableMuseRect extends MuseRelativeRect implements IDrawable {
         return cornerradius;
     }
 
+    public DrawableMuseRect setCornerradius(double cornerradiusIn) {
+        this.cornerradius = cornerradiusIn;
+        return this;
+    }
+
     public FloatBuffer getVertices(double shrinkBy) {
         return getVertices(left() + shrinkBy, top() + shrinkBy, right() - shrinkBy, bottom() - shrinkBy);
     }

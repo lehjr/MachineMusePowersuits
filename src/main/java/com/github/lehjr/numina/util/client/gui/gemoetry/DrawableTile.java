@@ -37,8 +37,9 @@ import org.lwjgl.opengl.GL11;
 import java.nio.FloatBuffer;
 
 public class DrawableTile extends MuseRelativeRect implements IDrawable {
+    final float lineWidth = 1F;
     Colour topBorderColour = new Colour(0.216F, 0.216F, 0.216F, 1F);
-    Colour bottomBorderColour = Colour.WHITE;
+    Colour bottomBorderColour = Colour.WHITE.withAlpha(0.8F);
     Colour backgroundColour = new Colour(0.545F, 0.545F, 0.545F, 1F);
     float zLevel = 0;
     float shrinkBoarderBy = 0;
@@ -87,29 +88,39 @@ public class DrawableTile extends MuseRelativeRect implements IDrawable {
     }
 
     void draw(MatrixStack matrixStack, Colour colour, int glMode, double shrinkBy) {
+        drawRect(matrixStack,
+                left() + shrinkBy,
+                top() + shrinkBy,
+                right() - shrinkBy,
+                bottom() - shrinkBy,
+                colour,
+                glMode);
+    }
+
+    void drawRect(MatrixStack matrixStack, double left, double top, double right, double bottom, Colour colourIn, int glMode) {
         preDraw(glMode, DefaultVertexFormats.POSITION_COLOR);
         FloatBuffer vertices = BufferUtils.createFloatBuffer(8);
         Matrix4f matrix4f = matrixStack.getLast().getMatrix();
 
         // top right
-        vertices.put((float)(right() - shrinkBy));
-        vertices.put((float)(top() + shrinkBy));
+        vertices.put((float)right);
+        vertices.put((float)top);
 
         // top left
-        vertices.put((float)(left() + shrinkBy));
-        vertices.put((float)(top() + shrinkBy));
+        vertices.put((float)left);
+        vertices.put((float)top);
 
         // bottom left
-        vertices.put((float)(left() + shrinkBy));
-        vertices.put((float)(bottom() - shrinkBy));
+        vertices.put((float)left);
+        vertices.put((float)bottom);
 
         // bottom right
-        vertices.put((float)(right() - shrinkBy));
-        vertices.put((float)(bottom() - shrinkBy));
+        vertices.put((float)right);
+        vertices.put((float)bottom);
 
         vertices.flip();
         vertices.rewind();
-        addVerticesToBuffer(matrix4f, vertices, colour);
+        addVerticesToBuffer(matrix4f, vertices, colourIn);
 
         drawTesselator();
         postDraw();
@@ -123,56 +134,63 @@ public class DrawableTile extends MuseRelativeRect implements IDrawable {
         draw(matrixStack, topBorderColour, GL11.GL_LINE_LOOP, shrinkBy);
     }
 
+    /**
+     * Unfortunately, the line drawing rounds to nearest whole number
+     * @param matrixStack
+     * @param shrinkBy
+     */
     public void drawDualColourBorder(MatrixStack matrixStack, float shrinkBy) {
-        preDraw(GL11.GL_LINES, DefaultVertexFormats.POSITION_COLOR);
-        RenderSystem.lineWidth(2.0F);
+        float halfWidth = lineWidth * 0.5F;
 
-        Matrix4f matrix4f = matrixStack.getLast().getMatrix();
-        FloatBuffer vertices = BufferUtils.createFloatBuffer(8);
+        //----------------------------------------
+        // Top line
+        //----------------------------------------
+        drawRect(matrixStack,
+                left() + shrinkBy - halfWidth,
+                top() + shrinkBy - halfWidth,
+                right() - shrinkBy + halfWidth,
+                top() + shrinkBy + halfWidth,
+                topBorderColour,
+                GL11.GL_QUADS);
 
-        // top right -> top left
-        vertices.put((float)(right() - shrinkBy));
-        vertices.put((float) (top() + shrinkBy));
-        vertices.put((float)(left() + shrinkBy));
-        vertices.put((float) (top() + shrinkBy));
+        //----------------------------------------
+        // Left line
+        //----------------------------------------
+        drawRect(matrixStack,
+                left() + shrinkBy - halfWidth,
+                top() + shrinkBy - halfWidth,
+                left() + shrinkBy + halfWidth,
+                bottom() - shrinkBy + halfWidth,
+                topBorderColour,
+                GL11.GL_QUADS);
 
-        // top left -> bottom left
-        vertices.put((float)(left() + shrinkBy));
-        vertices.put((float) (top() + shrinkBy));
-        vertices.put((float)(left() + shrinkBy));
-        vertices.put((float) (bottom() - shrinkBy));
+        //----------------------------------------
+        // Bottom line
+        //----------------------------------------
+        drawRect(matrixStack,
+                left() + shrinkBy - halfWidth,
+                bottom() - shrinkBy - halfWidth,
+                right() - shrinkBy + halfWidth,
+                bottom() - shrinkBy + halfWidth,
+                bottomBorderColour,
+                GL11.GL_QUADS);
 
-        vertices.flip();
-        vertices.rewind();
-        addVerticesToBuffer(matrix4f, vertices, topBorderColour);
-
-
-        vertices.clear();
-        // bottom left -> bottom right
-        vertices.put((float)(left() + shrinkBy));
-        vertices.put((float) (bottom() - shrinkBy));
-        vertices.put((float)(right() - shrinkBy));
-        vertices.put((float) (bottom() - shrinkBy));
-
-        // bottom right -> top right
-        vertices.put((float)(right() - shrinkBy));
-        vertices.put((float) (bottom() - shrinkBy));
-        vertices.put((float)(right() - shrinkBy));
-        vertices.put((float) (top() + shrinkBy));
-
-        vertices.flip();
-        vertices.rewind();
-        addVerticesToBuffer(matrix4f, vertices, bottomBorderColour);
-
-        drawTesselator();
-        RenderSystem.lineWidth(1);
-        postDraw();
+        //----------------------------------------
+        // Right line
+        //----------------------------------------
+        drawRect(matrixStack,
+                right() - shrinkBy - halfWidth,
+                top() + shrinkBy - halfWidth,
+                right() - shrinkBy + halfWidth,
+                bottom() - shrinkBy + halfWidth,
+                bottomBorderColour,
+                GL11.GL_QUADS);
     }
 
     public void draw(MatrixStack matrixStack, float zLevel) {
         this.zLevel = zLevel;
         drawBackground(matrixStack);
-        if (topBorderColour == bottomBorderColour) {
+        if (topBorderColour.equals(bottomBorderColour)) {
             drawBorder(matrixStack, shrinkBoarderBy);
         } else {
             drawDualColourBorder(matrixStack, shrinkBoarderBy);
