@@ -186,7 +186,7 @@ public class DrawableTile extends MuseRelativeRect implements IDrawable {
                 GL11.GL_QUADS);
     }
 
-    public void internalDraw(MatrixStack matrixStack, float zLevel) {
+    public void draw(MatrixStack matrixStack, float zLevel) {
         this.zLevel = zLevel;
         drawBackground(matrixStack);
         if (topBorderColour.equals(bottomBorderColour)) {

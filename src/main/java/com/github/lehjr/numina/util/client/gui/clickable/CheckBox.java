@@ -56,7 +56,7 @@ public class CheckBox extends Clickable {
     @Override
     public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks, float zLevel) {
         if(this.isVisible) {
-            tile.internalDraw(matrixStack, zLevel);
+            tile.draw(matrixStack, zLevel);
             if (isChecked) {
                 MuseRenderer.drawString(matrixStack, "x", tile.centerx() - 2, tile.centery() - 5, Colour.WHITE);
             }
