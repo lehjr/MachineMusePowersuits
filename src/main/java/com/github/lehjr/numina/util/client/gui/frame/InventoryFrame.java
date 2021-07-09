@@ -167,7 +167,7 @@ public class InventoryFrame extends ScrollableFrame {
         if (this.tiles != null && !this.tiles.isEmpty()) {
             for (DrawableTile tile : tiles) {
                 // add slight offset so the lines show up (this is why the param was added)
-                tile.draw(matrixStack,zLevel);
+                tile.internalDraw(matrixStack,zLevel);
             }
         }
         if (drawBorder) {

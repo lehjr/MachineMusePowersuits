@@ -28,7 +28,6 @@ package com.github.lehjr.numina.util.client.gui.gemoetry;
 
 import com.github.lehjr.numina.util.math.Colour;
 import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.math.vector.Matrix4f;
 import org.lwjgl.BufferUtils;
@@ -87,8 +86,8 @@ public class DrawableTile extends MuseRelativeRect implements IDrawable {
                 .setBottomBorderColour(bottomBorderColour);
     }
 
-    void draw(MatrixStack matrixStack, Colour colour, int glMode, double shrinkBy) {
-        drawRect(matrixStack,
+    public void internalDraw(MatrixStack matrixStack, Colour colour, int glMode, double shrinkBy) {
+        internalDrawRect(matrixStack,
                 left() + shrinkBy,
                 top() + shrinkBy,
                 right() - shrinkBy,
@@ -97,7 +96,7 @@ public class DrawableTile extends MuseRelativeRect implements IDrawable {
                 glMode);
     }
 
-    void drawRect(MatrixStack matrixStack, double left, double top, double right, double bottom, Colour colourIn, int glMode) {
+    public void internalDrawRect(MatrixStack matrixStack, double left, double top, double right, double bottom, Colour colourIn, int glMode) {
         preDraw(glMode, DefaultVertexFormats.POSITION_COLOR);
         FloatBuffer vertices = BufferUtils.createFloatBuffer(8);
         Matrix4f matrix4f = matrixStack.getLast().getMatrix();
@@ -127,11 +126,11 @@ public class DrawableTile extends MuseRelativeRect implements IDrawable {
     }
 
     public void drawBackground(MatrixStack matrixStack) {
-        draw(matrixStack, backgroundColour, GL11.GL_QUADS, 0);
+        internalDraw(matrixStack, backgroundColour, GL11.GL_QUADS, 0);
     }
 
     public void drawBorder(MatrixStack matrixStack, double shrinkBy) {
-        draw(matrixStack, topBorderColour, GL11.GL_LINE_LOOP, shrinkBy);
+        internalDraw(matrixStack, topBorderColour, GL11.GL_LINE_LOOP, shrinkBy);
     }
 
     /**
@@ -145,7 +144,7 @@ public class DrawableTile extends MuseRelativeRect implements IDrawable {
         //----------------------------------------
         // Top line
         //----------------------------------------
-        drawRect(matrixStack,
+        internalDrawRect(matrixStack,
                 left() + shrinkBy - halfWidth,
                 top() + shrinkBy - halfWidth,
                 right() - shrinkBy + halfWidth,
@@ -156,7 +155,7 @@ public class DrawableTile extends MuseRelativeRect implements IDrawable {
         //----------------------------------------
         // Left line
         //----------------------------------------
-        drawRect(matrixStack,
+        internalDrawRect(matrixStack,
                 left() + shrinkBy - halfWidth,
                 top() + shrinkBy - halfWidth,
                 left() + shrinkBy + halfWidth,
@@ -167,7 +166,7 @@ public class DrawableTile extends MuseRelativeRect implements IDrawable {
         //----------------------------------------
         // Bottom line
         //----------------------------------------
-        drawRect(matrixStack,
+        internalDrawRect(matrixStack,
                 left() + shrinkBy - halfWidth,
                 bottom() - shrinkBy - halfWidth,
                 right() - shrinkBy + halfWidth,
@@ -178,7 +177,7 @@ public class DrawableTile extends MuseRelativeRect implements IDrawable {
         //----------------------------------------
         // Right line
         //----------------------------------------
-        drawRect(matrixStack,
+        internalDrawRect(matrixStack,
                 right() - shrinkBy - halfWidth,
                 top() + shrinkBy - halfWidth,
                 right() - shrinkBy + halfWidth,
@@ -187,7 +186,7 @@ public class DrawableTile extends MuseRelativeRect implements IDrawable {
                 GL11.GL_QUADS);
     }
 
-    public void draw(MatrixStack matrixStack, float zLevel) {
+    public void internalDraw(MatrixStack matrixStack, float zLevel) {
         this.zLevel = zLevel;
         drawBackground(matrixStack);
         if (topBorderColour.equals(bottomBorderColour)) {

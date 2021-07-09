@@ -216,8 +216,8 @@ public class ArmorStandGui extends ExtendedContainerScreen<ArmorStandContainer> 
         renderBackground(matrixStack);
         if (backgroundRect.height() == backgroundRect.finalHeight() && backgroundRect.width() == backgroundRect.finalWidth()) {
             super.render(matrixStack, mouseX, mouseY, partialTicks);
-            playerBackground.draw(matrixStack, 1);
-            armorStandBackground.draw(matrixStack, 1);
+            playerBackground.internalDraw(matrixStack, 1);
+            armorStandBackground.internalDraw(matrixStack, 1);
 
             this.renderHoveredTooltip(matrixStack, mouseX, mouseY);
             this.oldMouseX = (float) mouseX;
