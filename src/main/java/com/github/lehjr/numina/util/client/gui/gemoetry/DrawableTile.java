@@ -60,9 +60,17 @@ public class DrawableTile extends MuseRelativeRect implements IDrawable {
         return this;
     }
 
+    public Colour getTopBorderColour() {
+        return this.topBorderColour;
+    }
+
     public DrawableTile setBottomBorderColour(Colour bottomBorderColour) {
         this.bottomBorderColour = bottomBorderColour;
         return this;
+    }
+
+    public Colour getBottomBorderColour() {
+        return this.bottomBorderColour;
     }
 
     public DrawableTile setBackgroundColour(Colour insideColour) {
@@ -70,12 +78,14 @@ public class DrawableTile extends MuseRelativeRect implements IDrawable {
         return this;
     }
 
+    public Colour getBackgroundColour() {
+        return this.backgroundColour;
+    }
 
     public DrawableTile setBorderShrinkValue(float shrinkBy) {
         this.shrinkBoarderBy = shrinkBy;
         return this;
     }
-
 
     @Override
     public DrawableTile copyOf() {
