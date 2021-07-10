@@ -26,8 +26,9 @@
 
 package com.github.lehjr.numina.network.packets.reworked_crafting_packets;
 
-import com.github.lehjr.numina.basemod.MuseLogger;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.recipebook.IRecipeShownListener;
+import net.minecraft.client.gui.recipebook.RecipeBookGui;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.network.PacketBuffer;
@@ -74,11 +75,10 @@ public class SPlaceGhostRecipePacket {
         Container container = client.player.openContainer;
         if (container.windowId == message.windowId && container.getCanCraft(client.player)) {
             client.world.getRecipeManager().getRecipe(message.recipeId).ifPresent((iRecipe) -> {
-                MuseLogger.logDebug("FIXME!!");
-
-//                if (client.currentScreen instanceof TinkerTableGui) {
-//                    ((TinkerTableGui) client.currentScreen).setupGhostRecipe(iRecipe, container.inventorySlots);
-//                }
+                if (client.currentScreen instanceof IRecipeShownListener) {
+                    RecipeBookGui recipebookgui = ((IRecipeShownListener)client.currentScreen).getRecipeGui();
+                    recipebookgui.setupGhostRecipe(iRecipe, container.inventorySlots);
+                }
             });
         }
     }
