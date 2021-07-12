@@ -101,8 +101,6 @@ public class ArmorStandContainer extends Container {
                     return !itemstack.isEmpty() && !playerIn.isCreative() && EnchantmentHelper.hasBindingCurse(itemstack) ? false : super.mayPickup(playerIn);
                 }
 
-
-
                 @Override
                 public ItemStack onTake(PlayerEntity thePlayer, ItemStack stack) {
                     armorStand.getItemBySlot(equipmentslottype);
@@ -116,7 +114,8 @@ public class ArmorStandContainer extends Container {
                 }
 
                 @OnlyIn(Dist.CLIENT)
-                public Pair<ResourceLocation, ResourceLocation> getBackground() {
+                @Override
+                public Pair<ResourceLocation, ResourceLocation> getNoItemIcon() {
                     return Pair.of(PlayerContainer.BLOCK_ATLAS, ARMOR_SLOT_TEXTURES[equipmentslottype.getIndex()]);
                 }
             });
@@ -125,7 +124,8 @@ public class ArmorStandContainer extends Container {
         // ArmorStand OffHand (container slot 4)
         this.addSlot(new Slot(armorStandInventory, 1, 80, 8) {
             @OnlyIn(Dist.CLIENT)
-            public Pair<ResourceLocation, ResourceLocation> getBackground() {
+            @Override
+            public Pair<ResourceLocation, ResourceLocation> getNoItemIcon() {
                 return Pair.of(PlayerContainer.BLOCK_ATLAS, PlayerContainer.EMPTY_ARMOR_SLOT_SHIELD);
             }
 
@@ -165,27 +165,31 @@ public class ArmorStandContainer extends Container {
                  * Returns the maximum stack size for a given slot (usually the same as getInventoryStackLimit(), but 1 in
                  * the case of armor slots)
                  */
-                public int getSlotStackLimit() {
+                @Override
+                public int getMaxStackSize() {
                     return 1;
                 }
 
                 /**
                  * Check if the stack is allowed to be placed in this slot, used for armor slots as well as furnace fuel.
                  */
-                public boolean isItemValid(ItemStack stack) {
+                @Override
+                public boolean mayPlace(ItemStack stack) {
                     return stack.canEquip(equipmentslottype, player);
                 }
 
                 /**
                  * Return whether this slot's stack can be taken from this slot.
                  */
+                @Override
                 public boolean mayPickup(PlayerEntity playerIn) {
                     ItemStack itemstack = this.getItem();
                     return !itemstack.isEmpty() && !playerIn.isCreative() && EnchantmentHelper.hasBindingCurse(itemstack) ? false : super.mayPickup(playerIn);
                 }
 
                 @OnlyIn(Dist.CLIENT)
-                public Pair<ResourceLocation, ResourceLocation> getBackground() {
+                @Override
+                public Pair<ResourceLocation, ResourceLocation> getNoItemIcon() {
                     return Pair.of(PlayerContainer.BLOCK_ATLAS, ARMOR_SLOT_TEXTURES[equipmentslottype.getIndex()]);
                 }
             });
@@ -206,7 +210,8 @@ public class ArmorStandContainer extends Container {
         // Player Shield (container slot 46)
         this.addSlot(new Slot(playerInventory, 40, 80, 62) {
             @OnlyIn(Dist.CLIENT)
-            public Pair<ResourceLocation, ResourceLocation> getBackground() {
+            @Override
+            public Pair<ResourceLocation, ResourceLocation> getNoItemIcon() {
                 return Pair.of(PlayerContainer.BLOCK_ATLAS, PlayerContainer.EMPTY_ARMOR_SLOT_SHIELD);
             }
         });

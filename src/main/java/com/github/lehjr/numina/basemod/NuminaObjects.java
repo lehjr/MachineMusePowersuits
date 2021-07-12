@@ -27,7 +27,7 @@
 package com.github.lehjr.numina.basemod;
 
 import com.github.lehjr.numina.block.ChargingBaseBlock;
-import com.github.lehjr.numina.client.render.item.NuminaArmorStationItemRenderer;
+import com.github.lehjr.numina.client.render.item.NuminaArmorStandItemRenderer;
 import com.github.lehjr.numina.constants.NuminaConstants;
 import com.github.lehjr.numina.container.ArmorStandContainer;
 import com.github.lehjr.numina.container.ChargingBaseContainer;
@@ -146,7 +146,7 @@ public class NuminaObjects {
 
     // Armor stand
     public static final RegistryObject<Item> ARMOR_STAND_ITEM = ITEMS.register(NuminaConstants.ARMORSTAND_REGNAME,
-            () -> new NuminaArmorStandItem(new Item.Properties().tab(ItemGroup.TAB_DECORATIONS).setISTER(() -> NuminaArmorStationItemRenderer::new)));
+            () -> new NuminaArmorStandItem(new Item.Properties().tab(ItemGroup.TAB_DECORATIONS).setISTER(() -> NuminaArmorStandItemRenderer::new)));
 
 
     /**

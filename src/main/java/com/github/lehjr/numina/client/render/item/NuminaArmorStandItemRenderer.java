@@ -36,10 +36,10 @@ import net.minecraft.client.renderer.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.tileentity.ItemStackTileEntityRenderer;
 import net.minecraft.item.ItemStack;
 
-public class NuminaArmorStationItemRenderer extends ItemStackTileEntityRenderer {
+public class NuminaArmorStandItemRenderer extends ItemStackTileEntityRenderer {
     ArmorStandModel model = new ArmorStandModel(0.5F);
 
-    public NuminaArmorStationItemRenderer() {
+    public NuminaArmorStandItemRenderer() {
         model.hat.visible = false;
     }
 
