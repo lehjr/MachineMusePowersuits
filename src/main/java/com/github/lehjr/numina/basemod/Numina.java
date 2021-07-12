@@ -130,7 +130,7 @@ public class Numina {
             IResourceManager resourceManager = Minecraft.getInstance().getResourceManager();
             if (resourceManager instanceof IReloadableResourceManager) {
                 IReloadableResourceManager reloadableResourceManager = (IReloadableResourceManager) resourceManager;
-                reloadableResourceManager.addReloadListener(iconUploader);
+                reloadableResourceManager.registerReloadListener(iconUploader);
             }
             EventBusHelper.addLifecycleListener(modEventBus, FMLLoadCompleteEvent.class, loadCompleteEvent ->
                     MuseIconUtils.setIconInstance(icons));
@@ -162,7 +162,7 @@ public class Numina {
         MinecraftForge.EVENT_BUS.register(new PlayerUpdateHandler());
 
         DeferredWorkQueue.runLater(() -> {
-            GlobalEntityTypeAttributes.put(NuminaObjects.ARMOR_WORKSTATION__ENTITY_TYPE.get(), MPAArmorStandEntity.setCustomAttributes().create());
+            GlobalEntityTypeAttributes.put(NuminaObjects.ARMOR_WORKSTATION__ENTITY_TYPE.get(), MPAArmorStandEntity.setCustomAttributes().build());
         });
     }
 
@@ -174,8 +174,8 @@ public class Numina {
 
         MinecraftForge.EVENT_BUS.register(new ToolTipEvent());
 
-        ScreenManager.registerFactory(NuminaObjects.CHARGING_BASE_CONTAINER_TYPE.get(), ChargingBaseGui::new);
-        ScreenManager.registerFactory(NuminaObjects.ARMOR_STAND_CONTAINER_TYPE.get(), ArmorStandGui::new);
+        ScreenManager.register(NuminaObjects.CHARGING_BASE_CONTAINER_TYPE.get(), ChargingBaseGui::new);
+        ScreenManager.register(NuminaObjects.ARMOR_STAND_CONTAINER_TYPE.get(), ArmorStandGui::new);
     }
 
     @SubscribeEvent

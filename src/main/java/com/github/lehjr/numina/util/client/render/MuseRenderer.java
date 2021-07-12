@@ -84,9 +84,9 @@ public abstract class MuseRenderer {
         return Minecraft.getInstance().getTextureManager();
     }
 
-    static IBakedModel getItemModelWithOverrides(@Nonnull ItemStack itemStack) {
+    static IBakedModel getModel(@Nonnull ItemStack itemStack) {
         PlayerEntity player = Minecraft.getInstance().player;
-        return getItemRenderer().getItemModelWithOverrides(itemStack, player.world, player);
+        return getItemRenderer().getModel(itemStack, player.level, player);
     }
 
     /**
@@ -112,7 +112,7 @@ public abstract class MuseRenderer {
 
     public static void drawModuleAt(MatrixStack matrixStackIn, double x, double y, @Nonnull ItemStack itemStack, boolean active) {
         if (!itemStack.isEmpty()) {
-            IBakedModel model = getItemModelWithOverrides(itemStack);
+            IBakedModel model = getModel(itemStack);
             renderItemModelIntoGUI(itemStack, matrixStackIn, (float)x, (float) y, model, active? Colour.WHITE : Colour.DARK_GREY.withAlpha(0.5F));
         }
     }
@@ -122,16 +122,16 @@ public abstract class MuseRenderer {
      */
     public static void drawItemAt(double x, double y, @Nonnull ItemStack itemStack) {
         if (!itemStack.isEmpty()) {
-            getItemRenderer().renderItemAndEffectIntoGUI(itemStack, (int) x, (int) y);
-            getItemRenderer().renderItemOverlayIntoGUI(getFontRenderer(), itemStack, (int) x, (int) y, (String) null);
+            getItemRenderer().renderAndDecorateItem(itemStack, (int) x, (int) y);
+            getItemRenderer().renderGuiItemDecorations(getFontRenderer(), itemStack, (int) x, (int) y, (String) null);
         }
     }
 
     public static void drawItemAt(MatrixStack matrixStack, double x, double y, @Nonnull ItemStack itemStack, Colour colour) {
         if (!itemStack.isEmpty()) {
 
-            Minecraft.getInstance().getItemRenderer().renderItemAndEffectIntoGUI(itemStack, (int) x, (int) y);
-            Minecraft.getInstance().getItemRenderer().renderItemOverlayIntoGUI(getFontRenderer(), itemStack, (int) x, (int) y, (String) null);
+            Minecraft.getInstance().getItemRenderer().renderAndDecorateItem(itemStack, (int) x, (int) y);
+            Minecraft.getInstance().getItemRenderer().renderGuiItemDecorations(getFontRenderer(), itemStack, (int) x, (int) y, (String) null);
         }
     }
 
@@ -141,7 +141,7 @@ public abstract class MuseRenderer {
 //            getItemRenderer().zLevel += 50.0F;
 //
 //            try {
-//                renderItemModelIntoGUI(stack, matrixStack, x, y, getItemRenderer().getItemModelWithOverrides(stack, (World)null, livingEntity), colour);
+//                renderItemModelIntoGUI(stack, matrixStack, x, y, getItemRenderer().getModel(stack, (World)null, livingEntity), colour);
 //            } catch (Throwable throwable) {
 //                CrashReport crashreport = CrashReport.makeCrashReport(throwable, "Rendering item");
 //                CrashReportCategory crashreportcategory = crashreport.makeCategory("Item being rendered");
@@ -156,7 +156,7 @@ public abstract class MuseRenderer {
 //                    return String.valueOf((Object)stack.getTag());
 //                });
 //                crashreportcategory.addDetail("Item Foil", () -> {
-//                    return String.valueOf(stack.hasEffect());
+//                    return String.valueOf(stack.hasFoil());
 //                });
 //                throw new ReportedException(crashreport);
 //            }
@@ -168,27 +168,27 @@ public abstract class MuseRenderer {
     // Ripped from Minecraft's Item Renderer
     protected static void renderItemModelIntoGUI(ItemStack stack, MatrixStack matrixStack, float x, float y, IBakedModel bakedmodel, Colour colour) {
         RenderSystem.pushMatrix();
-        Minecraft.getInstance().getTextureManager().bindTexture(AtlasTexture.LOCATION_BLOCKS_TEXTURE);
-        Minecraft.getInstance().getTextureManager().getTexture(AtlasTexture.LOCATION_BLOCKS_TEXTURE).setBlurMipmapDirect(false, false);
+        Minecraft.getInstance().getTextureManager().bind(AtlasTexture.LOCATION_BLOCKS);
+        Minecraft.getInstance().getTextureManager().getTexture(AtlasTexture.LOCATION_BLOCKS).setFilter(false, false);
         RenderSystem.enableRescaleNormal();
         RenderSystem.enableAlphaTest();
         RenderSystem.defaultAlphaFunc();
         RenderSystem.enableBlend();
         RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
-        RenderSystem.translatef((float)x, (float)y, 100.0F + Minecraft.getInstance().getItemRenderer().zLevel);
+        RenderSystem.translatef((float)x, (float)y, 100.0F + Minecraft.getInstance().getItemRenderer().blitOffset);
         RenderSystem.translatef(8.0F, 8.0F, 0.0F);
         RenderSystem.scalef(1.0F, -1.0F, 1.0F);
         RenderSystem.scalef(16.0F, 16.0F, 16.0F);
-        IRenderTypeBuffer.Impl bufferSource = Minecraft.getInstance().getRenderTypeBuffers().getBufferSource();
-        boolean flag = !bakedmodel.isSideLit();
+        IRenderTypeBuffer.Impl bufferSource = Minecraft.getInstance().renderBuffers().bufferSource();
+        boolean flag = !bakedmodel.usesBlockLight();
         if (flag) {
-            RenderHelper.setupGuiFlatDiffuseLighting();
+            RenderHelper.setupForFlatItems();
         }
         renderItem(stack, ItemCameraTransforms.TransformType.GUI, false, matrixStack, bufferSource, 15728880, OverlayTexture.NO_OVERLAY, bakedmodel, colour);
-        bufferSource.finish();
+        bufferSource.endBatch();
         RenderSystem.enableDepthTest();
         if (flag) {
-            RenderHelper.setupGui3DDiffuseLighting();
+            RenderHelper.setupFor3DItems();
         }
 
         RenderSystem.disableAlphaTest();
@@ -198,17 +198,17 @@ public abstract class MuseRenderer {
 
     public static void renderItem(ItemStack itemStackIn, ItemCameraTransforms.TransformType transformTypeIn, boolean leftHand, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int combinedLightIn, int combinedOverlayIn, IBakedModel modelIn, Colour colour) {
         if (!itemStackIn.isEmpty()) {
-            matrixStackIn.push();
+            matrixStackIn.pushPose();
             boolean flag = transformTypeIn == ItemCameraTransforms.TransformType.GUI || transformTypeIn == ItemCameraTransforms.TransformType.GROUND || transformTypeIn == ItemCameraTransforms.TransformType.FIXED;
             if (itemStackIn.getItem() == Items.TRIDENT && flag) {
-                modelIn = Minecraft.getInstance().getItemRenderer().getItemModelMesher().getModelManager().getModel(new ModelResourceLocation("minecraft:trident#inventory"));
+                modelIn = Minecraft.getInstance().getItemRenderer().getItemModelShaper().getModelManager().getModel(new ModelResourceLocation("minecraft:trident#inventory"));
             }
 
             modelIn = net.minecraftforge.client.ForgeHooksClient.handleCameraTransforms(matrixStackIn, modelIn, transformTypeIn, leftHand);
             matrixStackIn.translate(-0.5D, -0.5D, -0.5D);
-            if (!modelIn.isBuiltInRenderer() && (itemStackIn.getItem() != Items.TRIDENT || flag)) {
+            if (!modelIn.isCustomRenderer() && (itemStackIn.getItem() != Items.TRIDENT || flag)) {
                 boolean flag1;
-                if (transformTypeIn != ItemCameraTransforms.TransformType.GUI && !transformTypeIn.isFirstPerson() && itemStackIn.getItem() instanceof BlockItem) {
+                if (transformTypeIn != ItemCameraTransforms.TransformType.GUI && !transformTypeIn.firstPerson() && itemStackIn.getItem() instanceof BlockItem) {
                     Block block = ((BlockItem)itemStackIn.getItem()).getBlock();
                     flag1 = !(block instanceof BreakableBlock) && !(block instanceof StainedGlassPaneBlock);
                 } else {
@@ -216,37 +216,37 @@ public abstract class MuseRenderer {
                 }
                 if (modelIn.isLayered()) { net.minecraftforge.client.ForgeHooksClient.drawItemLayered(Minecraft.getInstance().getItemRenderer(), modelIn, itemStackIn, matrixStackIn, bufferIn, combinedLightIn, combinedOverlayIn, flag1); }
                 else {
-                    RenderType rendertype = RenderTypeLookup.func_239219_a_(itemStackIn, flag1);
+                    RenderType rendertype = RenderTypeLookup.getRenderType(itemStackIn, flag1);
                     IVertexBuilder ivertexbuilder;
-                    if (itemStackIn.getItem() == Items.COMPASS && itemStackIn.hasEffect()) {
-                        matrixStackIn.push();
-                        MatrixStack.Entry matrixstack$entry = matrixStackIn.getLast();
+                    if (itemStackIn.getItem() == Items.COMPASS && itemStackIn.hasFoil()) {
+                        matrixStackIn.pushPose();
+                        MatrixStack.Entry matrixstack$entry = matrixStackIn.last();
                         if (transformTypeIn == ItemCameraTransforms.TransformType.GUI) {
-                            matrixstack$entry.getMatrix().mul(0.5F);
-                        } else if (transformTypeIn.isFirstPerson()) {
-                            matrixstack$entry.getMatrix().mul(0.75F);
+                            matrixstack$entry.pose().multiply(0.5F);
+                        } else if (transformTypeIn.firstPerson()) {
+                            matrixstack$entry.pose().multiply(0.75F);
                         }
 
                         if (flag1) {
-                            ivertexbuilder = Minecraft.getInstance().getItemRenderer().getDirectGlintVertexBuilder(bufferIn, rendertype, matrixstack$entry);
+                            ivertexbuilder = Minecraft.getInstance().getItemRenderer().getCompassFoilBufferDirect(bufferIn, rendertype, matrixstack$entry);
                         } else {
-                            ivertexbuilder = Minecraft.getInstance().getItemRenderer().getGlintVertexBuilder(bufferIn, rendertype, matrixstack$entry);
+                            ivertexbuilder = Minecraft.getInstance().getItemRenderer().getCompassFoilBuffer(bufferIn, rendertype, matrixstack$entry);
                         }
 
-                        matrixStackIn.pop();
+                        matrixStackIn.popPose();
                     } else if (flag1) {
-                        ivertexbuilder = Minecraft.getInstance().getItemRenderer().getEntityGlintVertexBuilder(bufferIn, rendertype, true, itemStackIn.hasEffect());
+                        ivertexbuilder = Minecraft.getInstance().getItemRenderer().getFoilBufferDirect(bufferIn, rendertype, true, itemStackIn.hasFoil());
                     } else {
-                        ivertexbuilder = Minecraft.getInstance().getItemRenderer().getBuffer(bufferIn, rendertype, true, itemStackIn.hasEffect());
+                        ivertexbuilder = Minecraft.getInstance().getItemRenderer().getFoilBuffer(bufferIn, rendertype, true, itemStackIn.hasFoil());
                     }
 
                     renderModel(modelIn, itemStackIn, combinedLightIn, combinedOverlayIn, matrixStackIn, ivertexbuilder, colour);
                 }
             } else {
-                itemStackIn.getItem().getItemStackTileEntityRenderer().func_239207_a_(itemStackIn, transformTypeIn, matrixStackIn, bufferIn, combinedLightIn, combinedOverlayIn);
+                itemStackIn.getItem().getItemStackTileEntityRenderer().renderByItem(itemStackIn, transformTypeIn, matrixStackIn, bufferIn, combinedLightIn, combinedOverlayIn);
             }
 
-            matrixStackIn.pop();
+            matrixStackIn.popPose();
         }
     }
 
@@ -265,9 +265,9 @@ public abstract class MuseRenderer {
 
     public static void renderQuads(MatrixStack matrixStackIn, IVertexBuilder bufferIn, List<BakedQuad> quadsIn, ItemStack itemStackIn, int combinedLightIn, int combinedOverlayIn, Colour colour) {
         if (colour == null) {
-            Minecraft.getInstance().getItemRenderer().renderQuads(matrixStackIn, bufferIn, quadsIn, itemStackIn, combinedLightIn, combinedOverlayIn);
+            Minecraft.getInstance().getItemRenderer().renderQuadList(matrixStackIn, bufferIn, quadsIn, itemStackIn, combinedLightIn, combinedOverlayIn);
         } else {
-            MatrixStack.Entry matrixstack$entry = matrixStackIn.getLast();
+            MatrixStack.Entry matrixstack$entry = matrixStackIn.last();
 
             for (BakedQuad bakedquad : quadsIn) {
                 bufferIn.addVertexData(matrixstack$entry, bakedquad, colour.r, colour.g, colour.b, colour.a, combinedLightIn, combinedOverlayIn, true);
@@ -278,16 +278,16 @@ public abstract class MuseRenderer {
     /**
      * Renders the stack size and/or damage bar for the given ItemStack.
      */
-    public void renderItemOverlayIntoGUI(MatrixStack matrixStack, FontRenderer fr, ItemStack stack, int xPosition, int yPosition, @Nullable String text) {
+    public void renderGuiItemDecorations(MatrixStack matrixStack, FontRenderer fr, ItemStack stack, int xPosition, int yPosition, @Nullable String text) {
         if (!stack.isEmpty()) {
             if (stack.getCount() != 1 || text != null) {
                 String s = text == null ? String.valueOf(stack.getCount()) : text;
-                matrixStack.push();
-                matrixStack.translate(0.0D, 0.0D, (double)(Minecraft.getInstance().getItemRenderer().zLevel + 200.0F));
-                IRenderTypeBuffer.Impl typeBuffer = IRenderTypeBuffer.getImpl(Tessellator.getInstance().getBuffer());
-                fr.renderString(s, (float)(xPosition + 19 - 2 - fr.getStringWidth(s)), (float)(yPosition + 6 + 3), 16777215, true, matrixStack.getLast().getMatrix(), typeBuffer, false, 0, 15728880);
-                typeBuffer.finish();
-                matrixStack.pop();
+                matrixStack.pushPose();
+                matrixStack.translate(0.0D, 0.0D, (double)(Minecraft.getInstance().getItemRenderer().blitOffset + 200.0F));
+                IRenderTypeBuffer.Impl typeBuffer = IRenderTypeBuffer.immediate(Tessellator.getInstance().getBuilder());
+                fr.drawInBatch(s, (float)(xPosition + 19 - 2 - fr.width(s)), (float)(yPosition + 6 + 3), 16777215, true, matrixStack.last().pose(), typeBuffer, false, 0, 15728880);
+                typeBuffer.endBatch();
+                matrixStack.popPose();
             }
 
             if (stack.getItem().showDurabilityBar(stack)) {
@@ -296,12 +296,12 @@ public abstract class MuseRenderer {
                 RenderSystem.disableAlphaTest();
                 RenderSystem.disableBlend();
                 Tessellator tessellator = Tessellator.getInstance();
-                BufferBuilder bufferbuilder = tessellator.getBuffer();
+                BufferBuilder bufferbuilder = tessellator.getBuilder();
                 double health = stack.getItem().getDurabilityForDisplay(stack);
                 int i = Math.round(13.0F - (float)health * 13.0F);
                 int j = stack.getItem().getRGBDurabilityForDisplay(stack);
-                draw(bufferbuilder,matrixStack.getLast().getMatrix(), xPosition + 2, yPosition + 13, 13, 2, 0, 0, 0, 255);
-                draw(bufferbuilder, matrixStack.getLast().getMatrix(),xPosition + 2, yPosition + 13, i, 1, j >> 16 & 255, j >> 8 & 255, j & 255, 255);
+                draw(bufferbuilder,matrixStack.last().pose(), xPosition + 2, yPosition + 13, 13, 2, 0, 0, 0, 255);
+                draw(bufferbuilder, matrixStack.last().pose(),xPosition + 2, yPosition + 13, i, 1, j >> 16 & 255, j >> 8 & 255, j & 255, 255);
                 RenderSystem.enableBlend();
                 RenderSystem.enableAlphaTest();
                 RenderSystem.enableTexture();
@@ -309,15 +309,15 @@ public abstract class MuseRenderer {
             }
 
             ClientPlayerEntity clientplayerentity = Minecraft.getInstance().player;
-            float f3 = clientplayerentity == null ? 0.0F : clientplayerentity.getCooldownTracker().getCooldown(stack.getItem(), Minecraft.getInstance().getRenderPartialTicks());
+            float f3 = clientplayerentity == null ? 0.0F : clientplayerentity.getCooldowns().getCooldownPercent(stack.getItem(), Minecraft.getInstance().getFrameTime());
             if (f3 > 0.0F) {
                 RenderSystem.disableDepthTest();
                 RenderSystem.disableTexture();
                 RenderSystem.enableBlend();
                 RenderSystem.defaultBlendFunc();
                 Tessellator tessellator1 = Tessellator.getInstance();
-                BufferBuilder bufferbuilder1 = tessellator1.getBuffer();
-                draw(bufferbuilder1, matrixStack.getLast().getMatrix(), xPosition, yPosition + MathHelper.floor(16.0F * (1.0F - f3)), 16, MathHelper.ceil(16.0F * f3), 255, 255, 255, 127);
+                BufferBuilder bufferbuilder1 = tessellator1.getBuilder();
+                draw(bufferbuilder1, matrixStack.last().pose(), xPosition, yPosition + MathHelper.floor(16.0F * (1.0F - f3)), 16, MathHelper.ceil(16.0F * f3), 255, 255, 255, 127);
                 RenderSystem.enableTexture();
                 RenderSystem.enableDepthTest();
             }
@@ -330,11 +330,11 @@ public abstract class MuseRenderer {
      */
     private void draw(BufferBuilder renderer, Matrix4f matrix4f, float x, float y, float width, int height, int red, int green, int blue, int alpha) {
         renderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
-        renderer.pos(matrix4f, (x + 0), (y + 0), 0.0F).color(red, green, blue, alpha).endVertex();
-        renderer.pos(matrix4f, (x + 0), (y + height), 0.F).color(red, green, blue, alpha).endVertex();
-        renderer.pos(matrix4f, (x + width), (y + height), 0.0F).color(red, green, blue, alpha).endVertex();
-        renderer.pos(matrix4f, (x + width), (y + 0), 0.0F).color(red, green, blue, alpha).endVertex();
-        Tessellator.getInstance().draw();
+        renderer.vertex(matrix4f, (x + 0), (y + 0), 0.0F).color(red, green, blue, alpha).endVertex();
+        renderer.vertex(matrix4f, (x + 0), (y + height), 0.F).color(red, green, blue, alpha).endVertex();
+        renderer.vertex(matrix4f, (x + width), (y + height), 0.0F).color(red, green, blue, alpha).endVertex();
+        renderer.vertex(matrix4f, (x + width), (y + 0), 0.0F).color(red, green, blue, alpha).endVertex();
+        Tessellator.getInstance().end();
     }
 
 
@@ -347,7 +347,7 @@ public abstract class MuseRenderer {
      * Does the necessary openGL calls and calls the Minecraft font renderer to draw a string at the specified coords
      */
     public static void drawString(MatrixStack matrixStack, String s, double x, double y, Colour c) {
-        getFontRenderer().drawStringWithShadow(matrixStack, s, (int) x, (int) y, c.getInt());
+        getFontRenderer().drawShadow(matrixStack, s, (int) x, (int) y, c.getInt());
     }
 
     /**
@@ -372,7 +372,7 @@ public abstract class MuseRenderer {
     public static double getStringWidth(String s) {
         double stringWidth;
         NuminaRenderState.glPushAttrib(GL11.GL_TEXTURE_BIT);
-        stringWidth = getFontRenderer().getStringWidth(s);
+        stringWidth = getFontRenderer().width(s);
         RenderSystem.popAttributes();
         return stringWidth;
     }
@@ -396,11 +396,11 @@ public abstract class MuseRenderer {
      * Singleton pattern for FontRenderer
      */
     public static FontRenderer getFontRenderer() {
-        return Minecraft.getInstance().fontRenderer;
+        return Minecraft.getInstance().font;
     }
 
     public static void drawText(MatrixStack matrixStack, ITextComponent component, double x, double y, Colour colour) {
-        getFontRenderer().drawText(matrixStack, component,  (float) x, (float) y, colour.getInt());
+        getFontRenderer().draw(matrixStack, component,  (float) x, (float) y, colour.getInt());
     }
 
     public static void drawCenteredText(MatrixStack matrixStack, ITextComponent component, double x, double y, Colour colour) {
@@ -408,9 +408,9 @@ public abstract class MuseRenderer {
     }
 
     public static void drawCenteredText(MatrixStack matrixStack, ITextComponent component, float x, float y, Colour colour) {
-        getFontRenderer().drawText(matrixStack,
+        getFontRenderer().draw(matrixStack,
                 component,
-                ((x - getFontRenderer().getStringPropertyWidth(component) / 2)),
+                ((x - getFontRenderer().width(component) / 2)),
                 y, colour.getInt());
     }
 
@@ -441,27 +441,27 @@ public abstract class MuseRenderer {
         RenderSystem.shadeModel(GL11.GL_SMOOTH);
 
         Tessellator tessellator = Tessellator.getInstance();
-        BufferBuilder buffer = tessellator.getBuffer();
+        BufferBuilder buffer = tessellator.getBuilder();
         buffer.begin(GL11.GL_LINES, DefaultVertexFormats.POSITION_COLOR);
 
 //        RenderSystem.lineWidth(3.0F);
 
-        buffer.pos(midpoint.getX(), midpoint.getY(), zLevel + 10)
+        buffer.vertex(midpoint.getX(), midpoint.getY(), zLevel + 10)
                 .color(gradientColour.r, gradientColour.g, gradientColour.b, gradientRatio)
                 .endVertex();
 
-        buffer.pos(firstpoint.getX(), firstpoint.getY(), zLevel + 10)
+        buffer.vertex(firstpoint.getX(), firstpoint.getY(), zLevel + 10)
                 .color(gradientColour.r, gradientColour.g, gradientColour.b, 0.0F)
                 .endVertex();
 
-        buffer.pos(secondpoint.getX(), secondpoint.getY(), zLevel + 10)
+        buffer.vertex(secondpoint.getX(), secondpoint.getY(), zLevel + 10)
                 .color(gradientColour.r, gradientColour.g, gradientColour.b, gradientRatio)
                 .endVertex();
 
-        buffer.pos(midpoint.getX(), midpoint.getY(), zLevel + 10)
+        buffer.vertex(midpoint.getX(), midpoint.getY(), zLevel + 10)
                 .color(1.0F, 1.0F, 1.0F, 1.0F)
                 .endVertex();
-        tessellator.draw();
+        tessellator.end();
 
         RenderSystem.shadeModel(GL11.GL_FLAT);
         RenderSystem.disableBlend();
@@ -477,7 +477,7 @@ public abstract class MuseRenderer {
 
 
     //    public static void drawLightning(IRenderTypeBuffer bufferIn, MatrixStack matrixStack, float x1, float y1, float z1, float x2, float y2, float z2, Colour colour) {
-//        drawLightningTextured(bufferIn.getBuffer(NuminaRenderState.LIGHTNING_TEX), matrixStack.getLast().getMatrix(), x1, y1, z1, x2, y2, z2, colour);
+//        drawLightningTextured(bufferIn.getBuffer(NuminaRenderState.LIGHTNING_TEX), matrixStack.last().pose(), x1, y1, z1, x2, y2, z2, colour);
 //    }
 //
 //    public static void drawLightningTextured(IVertexBuilder bufferIn, Matrix4f matrix4f, float x1, float y1, float z1, float x2, float y2, float z2, Colour colour) {
@@ -517,23 +517,23 @@ public abstract class MuseRenderer {
 //
 //        bufferIn.pos(matrix4f, x1 - px, y1 - py, z1)
 //                .color(colour.r, colour.g, colour.b, colour.a)
-//                .tex(u1, 0) // left top
-//                .lightmap(0x00F000F0).endVertex();
+//                .uv(u1, 0) // left top
+//                .uv2(0x00F000F0).endVertex();
 //
 //        bufferIn.pos(matrix4f, x1 + px, y1 + py, z1)
 //                .color(colour.r, colour.g, colour.b, colour.a)
-//                .tex(u2, 0) // right top
-//                .lightmap(0x00F000F0).endVertex();
+//                .uv(u2, 0) // right top
+//                .uv2(0x00F000F0).endVertex();
 //
 //        bufferIn.pos(matrix4f, x2 - px, y2 - py, z2)
 //                .color(colour.r, colour.g, colour.b, colour.a)
-//                .tex(u1, 1) // left bottom
-//                .lightmap(0x00F000F0).endVertex();
+//                .uv(u1, 1) // left bottom
+//                .uv2(0x00F000F0).endVertex();
 //
 //        bufferIn.pos(matrix4f, x2 + px, y2 + py, z2)
 //                .color(colour.r, colour.g, colour.b, colour.a)
-//                .tex(u2, 1) // right bottom
-//                .lightmap(0x00F000F0).endVertex();
+//                .uv(u2, 1) // right bottom
+//                .uv2(0x00F000F0).endVertex();
 //    }
 //
 //    static int getRandomNumber(int min, int max) {

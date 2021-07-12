@@ -61,19 +61,19 @@ public class Battery extends Item {
 
     public Battery(int maxEnergy, int maxTransfer) {
         super(new Item.Properties()
-                .maxStackSize(1)
-                .group(NuminaObjects.creativeTab)
-                .defaultMaxDamage(-1)
+                .stacksTo(1)
+                .tab(NuminaObjects.creativeTab)
+                .defaultDurability(-1)
                 .setNoRepair());
         this.maxEnergy = maxEnergy;
         this.maxTransfer = maxTransfer;
     }
 
     @Override
-    public void addInformation(ItemStack itemStack, @Nullable World worldIn, List<ITextComponent> tooltips, ITooltipFlag flagIn) {
+    public void appendHoverText(ItemStack itemStack, @Nullable World worldIn, List<ITextComponent> tooltips, ITooltipFlag flagIn) {
         if (worldIn != null) {
-            super.addInformation(itemStack, worldIn, tooltips, flagIn);
-            AdditionalInfo.addInformation(itemStack, worldIn, tooltips, flagIn);
+            super.appendHoverText(itemStack, worldIn, tooltips, flagIn);
+            AdditionalInfo.appendHoverText(itemStack, worldIn, tooltips, flagIn);
         }
     }
 
@@ -117,9 +117,9 @@ public class Battery extends Item {
     }
 
     @Override
-    public void fillItemGroup(@Nonnull ItemGroup group, @Nonnull NonNullList<ItemStack> items) {
-        super.fillItemGroup(group, items);
-        if (isInGroup(group)) {
+    public void fillItemCategory(@Nonnull ItemGroup group, @Nonnull NonNullList<ItemStack> items) {
+        super.fillItemCategory(group, items);
+        if (allowdedIn(group)) {
             ItemStack out = new ItemStack(this);
             CapProvider provider = new CapProvider(out);
             int maxEnergy = (int) provider.moduleCap.applyPropertyModifiers(NuminaConstants.MAX_ENERGY);

@@ -84,12 +84,12 @@ public class OBJBakedCompositeModel implements IDynamicBakedModel {
         return builder.build();
     }
 
-    public IModelTransform getTransforms() {
+    public IModelTransform getModelTransforms() {
         return transforms;
     }
 
     @Override
-    public boolean isAmbientOcclusion() {
+    public boolean useAmbientOcclusion() {
         return isAmbientOcclusion;
     }
 
@@ -99,17 +99,17 @@ public class OBJBakedCompositeModel implements IDynamicBakedModel {
     }
 
     @Override
-    public boolean isSideLit() {
+    public boolean usesBlockLight() {
         return false;//diffuseLighting; ?
     }
 
     @Override
-    public boolean isBuiltInRenderer() {
+    public boolean isCustomRenderer() {
         return false;
     }
 
     @Override
-    public TextureAtlasSprite getParticleTexture() {
+    public TextureAtlasSprite getParticleIcon() {
         return particle;
     }
 

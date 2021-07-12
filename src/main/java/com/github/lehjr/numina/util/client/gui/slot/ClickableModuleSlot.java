@@ -80,8 +80,8 @@ public class ClickableModuleSlot extends UniversalSlot implements IClickable {
 
     @Override
     public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks, float zLevel) {
-        if (!getStack().isEmpty()) {
-            MuseRenderer.drawItemAt(getPosition().getX() - offsetx, getPosition().getY() - offsety, getStack());
+        if (!getItem().isEmpty()) {
+            MuseRenderer.drawItemAt(getPosition().getX() - offsetx, getPosition().getY() - offsety, getItem());
             if (!allowed) {
                 String string = MuseStringUtils.wrapFormatTags("x", MuseStringUtils.FormatCodes.DarkRed);
                 MuseRenderer.drawString(matrixStack, string, getPosition().getX() + 3, getPosition().getY() + 1);
@@ -157,23 +157,23 @@ public class ClickableModuleSlot extends UniversalSlot implements IClickable {
     }
 
     public ITextComponent getLocalizedName() {
-        if (this.getStack().isEmpty())
+        if (this.getItem().isEmpty())
             return null;
-        return this.getStack().getDisplayName();
+        return this.getItem().getDisplayName();
     }
 
     public ITextComponent getLocalizedDescription() {
-        if (this.getStack().isEmpty())
+        if (this.getItem().isEmpty())
             return null;
-        return new TranslationTextComponent(this.getStack().getTranslationKey().concat(".desc"));
+        return new TranslationTextComponent(this.getItem().getItem().getDescriptionId().concat(".desc"));
     }
 
     public EnumModuleCategory getCategory() {
-        return getStack().getCapability(PowerModuleCapability.POWER_MODULE).map(m->m.getCategory()).orElse(EnumModuleCategory.NONE);
+        return getItem().getCapability(PowerModuleCapability.POWER_MODULE).map(m->m.getCategory()).orElse(EnumModuleCategory.NONE);
     }
 
     public boolean equals(ClickableModuleSlot other) {
-        return this.getStack().isItemEqual(other.getStack());
+        return this.getItem().sameItem(other.getItem());
     }
 
     public void setAllowed(boolean allowed) {

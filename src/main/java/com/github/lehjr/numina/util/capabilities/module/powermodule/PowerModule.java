@@ -82,7 +82,7 @@ public class PowerModule implements IPowerModule {
     public String getUnit(String propertyName) {
         String unit = units.get(propertyName);
         if (unit != null && unit.startsWith(NuminaConstants.MODULE_TRADEOFF_PREFIX))
-            unit = I18n.format(unit);
+            unit = I18n.get(unit);
 
         return unit == null ? "" : unit;
     }

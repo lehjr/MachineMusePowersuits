@@ -73,7 +73,7 @@ public class ChargingBaseBlock extends Block implements IWaterLoggable {
 
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
-    protected static final VoxelShape BASE_SHAPE = Block.makeCuboidShape(
+    protected static final VoxelShape BASE_SHAPE = Block.box(
             0.0D, // West
             0.0D, // down?
             0.0D, // north
@@ -82,30 +82,30 @@ public class ChargingBaseBlock extends Block implements IWaterLoggable {
             16.0D); // South
 
     public ChargingBaseBlock() {
-        super(Block.Properties.create(Material.IRON)
-                .hardnessAndResistance(0.5F, 4.0F)
+        super(Block.Properties.of(Material.METAL)
+                .strength(0.5F, 4.0F)
                 .sound(SoundType.ANVIL)
                 .harvestLevel(0)
 //                .harvestTool(ToolType.PICKAXE)
-                .setRequiresTool());
-        setDefaultState(this.stateContainer.getBaseState().with(BlockStateProperties.WATERLOGGED, false).with(BlockStateProperties.POWERED, false));
+                .requiresCorrectToolForDrops());
+        registerDefaultState(this.stateDefinition.any().setValue(BlockStateProperties.WATERLOGGED, false).setValue(BlockStateProperties.POWERED, false));
     }
 
     @Override
-    public void addInformation(ItemStack stack, @Nullable IBlockReader reader, List<ITextComponent> list, ITooltipFlag flags) {
+    public void appendHoverText(ItemStack stack, @Nullable IBlockReader reader, List<ITextComponent> list, ITooltipFlag flags) {
         list.add(new TranslationTextComponent("message.charging_base", Integer.toString(/*Config.FIRSTBLOCK_GENERATE.get()*/ 1000)));
     }
 
     @Override
     public int getLightValue(BlockState state, IBlockReader world, BlockPos pos) {
-        return state.get(BlockStateProperties.POWERED) ? super.getLightValue(state, world, pos) : 0;
+        return state.getValue(BlockStateProperties.POWERED) ? super.getLightValue(state, world, pos) : 0;
     }
 
     @SuppressWarnings("deprecation")
     @Override
-    public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult trace) {
-        if (!world.isRemote) {
-            TileEntity tileEntity = world.getTileEntity(pos);
+    public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult trace) {
+        if (!world.isClientSide) {
+            TileEntity tileEntity = world.getBlockEntity(pos);
             if (tileEntity instanceof ChargingBaseTileEntity) {
                 player.playSound(SoundDictionary.SOUND_EVENT_GUI_SELECT, 1.0F, 1.0F);
                 INamedContainerProvider containerProvider = new INamedContainerProvider() {
@@ -119,7 +119,7 @@ public class ChargingBaseBlock extends Block implements IWaterLoggable {
                         return new ChargingBaseContainer(i, world, pos, playerInventory, playerEntity);
                     }
                 };
-                NetworkHooks.openGui((ServerPlayerEntity) player, containerProvider, tileEntity.getPos());
+                NetworkHooks.openGui((ServerPlayerEntity) player, containerProvider, tileEntity.getBlockPos());
             } else {
                 throw new IllegalStateException("container provider is missing!");
             }
@@ -129,11 +129,11 @@ public class ChargingBaseBlock extends Block implements IWaterLoggable {
 
     // temporary fix for armor stand spawned below the block
     @Override
-    public void onEntityCollision(BlockState state, World worldIn, BlockPos pos, Entity entityIn) {
-        if (!worldIn.isRemote && entityIn instanceof MPAArmorStandEntity && pos.getY() > (int)entityIn.getPositionVec().y) {
-            entityIn.setPositionAndUpdate(pos.getX() + 0.5, entityIn.getPositionVec().y + 1, pos.getZ() + 0.5);
+    public void entityInside(BlockState state, World worldIn, BlockPos pos, Entity entityIn) {
+        if (!worldIn.isClientSide && entityIn instanceof MPAArmorStandEntity && pos.getY() > (int)entityIn.position().y) {
+            entityIn.teleportTo(pos.getX() + 0.5, entityIn.position().y + 1, pos.getZ() + 0.5);
         }
-        super.onEntityCollision(state, worldIn, pos, entityIn);
+        super.entityInside(state, worldIn, pos, entityIn);
     }
 
     @Override
@@ -142,7 +142,7 @@ public class ChargingBaseBlock extends Block implements IWaterLoggable {
     }
 
     @Override
-    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
         builder.add(WATERLOGGED, BlockStateProperties.POWERED);
     }
 
@@ -163,36 +163,36 @@ public class ChargingBaseBlock extends Block implements IWaterLoggable {
     }
 
     @Override
-    public BlockRenderType getRenderType(BlockState state) {
+    public BlockRenderType getRenderShape(BlockState state) {
         return BlockRenderType.MODEL;
     }
 
     @Nullable
     @Override
     public BlockState getStateForPlacement(BlockItemUseContext context) {
-        FluidState ifluidstate = context.getWorld().getFluidState(context.getPos());
-        return this.getDefaultState()
-                .with(BlockStateProperties.POWERED, false) // fixme: should indicate if item placed has stored power
-                .with(WATERLOGGED, Boolean.valueOf(ifluidstate.isTagged(FluidTags.WATER) && ifluidstate.getLevel() == 8));
+        FluidState ifluidstate = context.getLevel().getFluidState(context.getClickedPos());
+        return this.defaultBlockState()
+                .setValue(BlockStateProperties.POWERED, false) // fixme: should indicate if item placed has stored power
+                .setValue(WATERLOGGED, Boolean.valueOf(ifluidstate.is(FluidTags.WATER) && ifluidstate.getAmount() == 8));
     }
 
     @Override
-    public Fluid pickupFluid(IWorld worldIn, BlockPos pos, BlockState state) {
+    public Fluid takeLiquid(IWorld worldIn, BlockPos pos, BlockState state) {
         return Fluids.EMPTY;
     }
 
     @Override
-    public boolean canContainFluid(IBlockReader worldIn, BlockPos pos, BlockState state, Fluid fluidIn) {
+    public boolean canPlaceLiquid(IBlockReader worldIn, BlockPos pos, BlockState state, Fluid fluidIn) {
         return true;
     }
 
     @Override
-    public boolean receiveFluid(IWorld worldIn, BlockPos pos, BlockState state, FluidState fluidStateIn) {
-        return IWaterLoggable.super.receiveFluid(worldIn, pos, state, fluidStateIn);
+    public boolean placeLiquid(IWorld worldIn, BlockPos pos, BlockState state, FluidState fluidStateIn) {
+        return IWaterLoggable.super.placeLiquid(worldIn, pos, state, fluidStateIn);
     }
 
     @Override
     public FluidState getFluidState(BlockState state) {
-        return state.get(WATERLOGGED) ? Fluids.WATER.getStillFluidState(false) : super.getFluidState(state);
+        return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
     }
 }

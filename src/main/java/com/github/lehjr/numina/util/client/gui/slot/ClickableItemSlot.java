@@ -58,7 +58,7 @@ public class ClickableItemSlot extends UniversalSlot implements IClickable {
     public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks, float zLevel) {
         MuseRenderer.drawItemAt(
                 getPosition().getX() - offsetx,
-                getPosition().getY() - offsety, getStack());
+                getPosition().getY() - offsety, getItem());
     }
 
     @Override
@@ -86,7 +86,7 @@ public class ClickableItemSlot extends UniversalSlot implements IClickable {
 
     @Override
     public List<ITextComponent> getToolTip() {
-        return !getStack().isEmpty() ? getStack().getTooltip(Minecraft.getInstance().player, ITooltipFlag.TooltipFlags.NORMAL) : null;
+        return !getItem().isEmpty() ? getItem().getTooltipLines(Minecraft.getInstance().player, ITooltipFlag.TooltipFlags.NORMAL) : null;
     }
 
     @Override

@@ -64,7 +64,7 @@ public class ModeChangeRequestPacket {
             int slot = message.slot;
             int mode = message.mode;
             if (slot > -1 && slot < 9) {
-                player.inventory.mainInventory.get(slot).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+                player.inventory.items.get(slot).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
                         .ifPresent(handler -> {
                             if (handler instanceof IModeChangingItem)
                                 ((IModeChangingItem) handler).setActiveMode(mode);

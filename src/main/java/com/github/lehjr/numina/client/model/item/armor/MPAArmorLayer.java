@@ -65,8 +65,8 @@ public class MPAArmorLayer<T extends LivingEntity, M extends BipedModel<T>, A ex
         this.renderPart(matrixStackIn, bufferIn, entityIn, EquipmentSlotType.HEAD, packedLightIn, this.getModelFromSlot(EquipmentSlotType.HEAD));
     }
 
-    private A getModelFromSlot(EquipmentSlotType p_241736_1_) {
-        return this.isLegSlot(p_241736_1_) ? this.modelLeggings : this.modelArmor;
+    private A getModelFromSlot(EquipmentSlotType slot) {
+        return this.isLegSlot(slot) ? this.innerModel : this.outerModel;
     }
 
     private boolean isLegSlot(EquipmentSlotType slotIn) {
@@ -74,19 +74,19 @@ public class MPAArmorLayer<T extends LivingEntity, M extends BipedModel<T>, A ex
     }
 
     private void renderPart(MatrixStack matrixIn, IRenderTypeBuffer bufferIn, T entityIn, EquipmentSlotType  slotIn, int packedLightIn, A model) {
-        ItemStack itemstack = entityIn.getItemStackFromSlot( slotIn);
-        boolean hasEffect = itemstack.hasEffect();
+        ItemStack itemstack = entityIn.getItemBySlot( slotIn);
+        boolean hasEffect = itemstack.hasFoil();
 
         if (itemstack.getItem() instanceof ArmorItem) {
             ArmorItem armoritem = (ArmorItem)itemstack.getItem();
-            if (armoritem.getEquipmentSlot() ==  slotIn) {
+            if (armoritem.getSlot() ==  slotIn) {
                 // ideally, this would replace the getArmorModel
                 if (itemstack.getCapability(ModelSpecNBTCapability.RENDER).isPresent()) {
                     itemstack.getCapability(ModelSpecNBTCapability.RENDER).ifPresent(spec->{
                         // gets the actual model from the
                         A actualModel = this.getArmorModelHook(entityIn, itemstack, slotIn, model);
-                        this.getEntityModel().setModelAttributes(actualModel);
-                        this.setModelSlotVisible(actualModel, slotIn);
+                        this.getParentModel().copyPropertiesTo(actualModel);
+                        this.setPartVisibility(actualModel, slotIn);
                         if (spec.getSpecType() == EnumSpecType.ARMOR_SKIN) {
                             Colour colour = spec.getColorFromItemStack();
                             renderArmor(matrixIn, bufferIn, packedLightIn, hasEffect, actualModel, colour.r, colour.g, colour.b, this.getArmorResource(entityIn, itemstack, slotIn, null));
@@ -96,8 +96,8 @@ public class MPAArmorLayer<T extends LivingEntity, M extends BipedModel<T>, A ex
                         }
                     });
                 } else {
-                    this.getEntityModel().setModelAttributes(model);
-                    this.setModelSlotVisible(model,  slotIn);
+                    this.getParentModel().copyPropertiesTo(model);
+                    this.setPartVisibility(model,  slotIn);
 
                     if (armoritem instanceof IDyeableArmorItem) {
                         int colorInt = ((IDyeableArmorItem)armoritem).getColor(itemstack);
@@ -115,8 +115,8 @@ public class MPAArmorLayer<T extends LivingEntity, M extends BipedModel<T>, A ex
     }
 
     private void func_241738_a_(MatrixStack matrixIn, IRenderTypeBuffer bufferIn, int packedLightIn, boolean hasEffect, A model, float red, float green, float blue, ResourceLocation armorResource) {
-        IVertexBuilder ivertexbuilder = ItemRenderer.getArmorVertexBuilder(bufferIn, RenderType.getArmorCutoutNoCull(armorResource), false, hasEffect);
-        model.render(matrixIn, ivertexbuilder, packedLightIn, OverlayTexture.NO_OVERLAY, red, green, blue, 1.0F);
+        IVertexBuilder ivertexbuilder = ItemRenderer.getArmorFoilBuffer(bufferIn, RenderType.armorCutoutNoCull(armorResource), false, hasEffect);
+        model.renderToBuffer(matrixIn, ivertexbuilder, packedLightIn, OverlayTexture.NO_OVERLAY, red, green, blue, 1.0F);
     }
 
     /**
@@ -134,13 +134,13 @@ public class MPAArmorLayer<T extends LivingEntity, M extends BipedModel<T>, A ex
      */
     private void renderArmor(MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn, boolean glintIn, A modelIn, float red, float green, float blue, ResourceLocation armorResource) {
         RenderType renderType;
-        if (armorResource == AtlasTexture.LOCATION_BLOCKS_TEXTURE) {
-            renderType = Atlases.getTranslucentCullBlockType();
+        if (armorResource == AtlasTexture.LOCATION_BLOCKS) {
+            renderType = Atlases.translucentCullBlockSheet();
         } else {
-            renderType = RenderType.getEntityCutoutNoCull(armorResource);
+            renderType = RenderType.entityCutoutNoCull(armorResource);
         }
-        IVertexBuilder ivertexbuilder = ItemRenderer.getBuffer(bufferIn, renderType, false, glintIn);
-        modelIn.render(matrixStackIn, ivertexbuilder, packedLightIn, OverlayTexture.NO_OVERLAY, red, green, blue, 1.0F);
+        IVertexBuilder ivertexbuilder = ItemRenderer.getFoilBuffer(bufferIn, renderType, false, glintIn);
+        modelIn.renderToBuffer(matrixStackIn, ivertexbuilder, packedLightIn, OverlayTexture.NO_OVERLAY, red, green, blue, 1.0F);
     }
 
     /**
@@ -158,7 +158,7 @@ public class MPAArmorLayer<T extends LivingEntity, M extends BipedModel<T>, A ex
             if (spec.getSpecType() == EnumSpecType.ARMOR_SKIN && spec instanceof IArmorModelSpecNBT) {
                 return new ResourceLocation(((IArmorModelSpecNBT) spec).getArmorTexture());
             }
-            return AtlasTexture.LOCATION_BLOCKS_TEXTURE;
+            return AtlasTexture.LOCATION_BLOCKS;
         }).orElse(super.getArmorResource(entity, stack, slot, type));
     }
 

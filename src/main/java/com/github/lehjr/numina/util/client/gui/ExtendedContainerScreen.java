@@ -62,7 +62,7 @@ public class ExtendedContainerScreen<T extends Container> extends ContainerScree
     @Override
     public void init() {
         super.init();
-        minecraft.keyboardListener.enableRepeatEvents(true);
+        minecraft.keyboardHandler.setSendRepeatsToGui(true);
         creationTime = System.currentTimeMillis();
     }
 
@@ -76,7 +76,7 @@ public class ExtendedContainerScreen<T extends Container> extends ContainerScree
     }
 
     @Override
-    public void drawGuiContainerBackgroundLayer(MatrixStack matrixStack, float partialTicks, int x, int y) {
+    public void renderBg(MatrixStack matrixStack, float partialTicks, int x, int y) {
         update(x, y);
         renderFrames(matrixStack, x, y, partialTicks);
     }
@@ -134,8 +134,7 @@ public class ExtendedContainerScreen<T extends Container> extends ContainerScree
     public void drawToolTip(MatrixStack matrixStack, int mouseX, int mouseY) {
         List<ITextComponent> tooltip = getToolTip(mouseX, mouseY);
         if (tooltip != null) {
-            /*renderTooltip*/
-            func_243308_b(matrixStack,tooltip, mouseX,mouseY);
+            renderComponentTooltip(matrixStack,tooltip, mouseX,mouseY);
         }
     }
 
@@ -151,13 +150,13 @@ public class ExtendedContainerScreen<T extends Container> extends ContainerScree
     }
 
     public void setXSize(int xSize) {
-        this.xSize = xSize;
-        this.guiLeft = (this.width - getXSize()) / 2;
+        this.imageWidth = xSize;
+        this.leftPos = (this.width - getXSize()) / 2;
     }
 
     public void setYSize(int ySize) {
-        this.ySize = ySize;
-        this.guiTop = (this.height - getYSize()) / 2;
+        this.imageHeight = ySize;
+        this.topPos = (this.height - getYSize()) / 2;
     }
 
     /**

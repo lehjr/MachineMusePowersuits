@@ -65,22 +65,22 @@ public class MPAArmorStandEntity extends ArmorStandEntity {
 
     //func_233666_p_ ---> registerAttributes()
     public static AttributeModifierMap.MutableAttribute setCustomAttributes() {
-        return MobEntity.func_233666_p_().createMutableAttribute(Attributes.MAX_HEALTH, 10.0D);
+        return MobEntity.createMobAttributes().add(Attributes.MAX_HEALTH, 10.0D);
     }
 
     @Override
-    protected void breakArmorStand(DamageSource source) {
-        Block.spawnAsEntity(this.world, this.getPosition(), new ItemStack(NuminaObjects.ARMOR_STAND_ITEM.get()));
-        this.func_213816_g(source);
+    protected void brokenByPlayer(DamageSource source) {
+        Block.popResource(this.level, this.blockPosition(), new ItemStack(NuminaObjects.ARMOR_STAND_ITEM.get()));
+        this.brokenByAnything(source);
     }
 
     @Override
-    public ActionResultType applyPlayerInteraction(PlayerEntity player, Vector3d vec, Hand hand) {
-        ItemStack itemstack = player.getHeldItem(hand);
-        if (!this.hasMarker() && itemstack.getItem() != Items.NAME_TAG) {
+    public ActionResultType interactAt(PlayerEntity player, Vector3d vec, Hand hand) {
+        ItemStack itemstack = player.getItemInHand(hand);
+        if (!this.isMarker() && itemstack.getItem() != Items.NAME_TAG) {
             if (player.isSpectator()) {
                 return ActionResultType.SUCCESS;
-            } else if (player.world.isRemote) {
+            } else if (player.level.isClientSide) {
                 return ActionResultType.SUCCESS;
             } else {
                     player.playSound(SoundDictionary.SOUND_EVENT_GUI_SELECT, 1.0F, 1.0F);
@@ -88,7 +88,7 @@ public class MPAArmorStandEntity extends ArmorStandEntity {
                             new SimpleNamedContainerProvider((windowID, playerInventory, playerEntity) ->
                                     new ArmorStandContainer(windowID, playerInventory, (ArmorStandEntity) getEntity()),
                                     new TranslationTextComponent("screen.numina.armor_stand")),
-                            buf -> buf.writeInt(getEntityId()));
+                            buf -> buf.writeInt(getId()));
                 return ActionResultType.SUCCESS;
             }
         } else {

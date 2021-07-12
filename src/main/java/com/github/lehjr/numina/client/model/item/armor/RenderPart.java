@@ -74,39 +74,39 @@ public class RenderPart extends ModelRenderer {
 
     @Override
     public void render(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
-        if (this.showModel) {
-            matrixStackIn.push();
-            this.translateRotate(matrixStackIn);
+        if (this.visible) {
+            matrixStackIn.pushPose();
+            this.translateAndRotate(matrixStackIn);
             this.doRendering(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
-            matrixStackIn.pop();
+            matrixStackIn.popPose();
         }
     }
 
     @Override
-    public void translateRotate(MatrixStack matrixStackIn) {
+    public void translateAndRotate(MatrixStack matrixStackIn) {
         matrixStackIn.translate(
-                this.rotationPointX * 0.0625F, // left/right??
-                this.rotationPointY * 0.0625F, // up/down
-                this.rotationPointZ * 0.0625F); // forward/backwards
-        if (this.rotateAngleZ != 0.0F) {
-            matrixStackIn.rotate(Vector3f.ZP.rotation(this.rotateAngleZ));
+                this.x * 0.0625F, // left/right??
+                this.y * 0.0625F, // up/down
+                this.z * 0.0625F); // forward/backwards
+        if (this.zRot != 0.0F) {
+            matrixStackIn.mulPose(Vector3f.ZP.rotation(this.zRot));
         }
 
-        if (this.rotateAngleY != 0.0F) {
-            matrixStackIn.rotate(Vector3f.YP.rotation(this.rotateAngleY));
+        if (this.yRot != 0.0F) {
+            matrixStackIn.mulPose(Vector3f.YP.rotation(this.yRot));
         }
 
-        if (this.rotateAngleX != 0.0F) {
-            matrixStackIn.rotate(Vector3f.XP.rotation(this.rotateAngleX));
+        if (this.xRot != 0.0F) {
+            matrixStackIn.mulPose(Vector3f.XP.rotation(this.xRot));
         }
 
-        matrixStackIn.rotate(TransformationHelper.quatFromXYZ(new Vector3f(180, 0, 0), true));
+        matrixStackIn.mulPose(TransformationHelper.quatFromXYZ(new Vector3f(180, 0, 0), true));
     }
 
     private void doRendering(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
         CompoundNBT renderSpec = ArmorModelInstance.getInstance().getRenderSpec();
         if (renderSpec != null) {
-            MatrixStack.Entry entry = matrixStackIn.getLast();
+            MatrixStack.Entry entry = matrixStackIn.last();
 
             int[] colours = renderSpec.getIntArray(NuminaConstants.TAG_COLOURS);
 
@@ -133,10 +133,10 @@ public class RenderPart extends ModelRenderer {
                             MatrixStack stack = new MatrixStack();
                             transform.push(stack);
                             // Apply the transformation to the real matrix stack
-                            Matrix4f tMat = stack.getLast().getMatrix();
-                            Matrix3f nMat = stack.getLast().getNormal();
-                            matrixStackIn.getLast().getMatrix().mul(tMat);
-                            matrixStackIn.getLast().getNormal().mul(nMat);
+                            Matrix4f tMat = stack.last().pose();
+                            Matrix3f nMat = stack.last().normal();
+                            matrixStackIn.last().pose().multiply(tMat);
+                            matrixStackIn.last().normal().mul(nMat);
                         }
 
                         ImmutableList.Builder<BakedQuad> builder = ImmutableList.builder();
@@ -174,17 +174,17 @@ public class RenderPart extends ModelRenderer {
                        BakedQuad bakedQuad,
                        int lightmapCoordIn,
                        int overlayCoords, float red, float green, float blue, float alpha) {
-        int[] aint = bakedQuad.getVertexData();
-        Vector3i faceNormal = bakedQuad.getFace().getDirectionVec();
+        int[] aint = bakedQuad.getVertices();
+        Vector3i faceNormal = bakedQuad.getDirection().getNormal();
         Vector3f normal = new Vector3f((float) faceNormal.getX(), (float) faceNormal.getY(), (float) faceNormal.getZ());
-        Matrix4f matrix4f = matrixEntry.getMatrix();// same as TexturedQuad renderer
-        normal.transform(matrixEntry.getNormal()); // normals different here
+        Matrix4f matrix4f = matrixEntry.pose();// same as TexturedQuad renderer
+        normal.transform(matrixEntry.normal()); // normals different here
 
         int intSize = DefaultVertexFormats.BLOCK.getIntegerSize();
         int vertexCount = aint.length / intSize;
 
         try (MemoryStack memorystack = MemoryStack.stackPush()) {
-            ByteBuffer bytebuffer = memorystack.malloc(DefaultVertexFormats.BLOCK.getSize());
+            ByteBuffer bytebuffer = memorystack.malloc(DefaultVertexFormats.BLOCK.getVertexSize());
             IntBuffer intbuffer = bytebuffer.asIntBuffer();
 
             for (int v = 0; v < vertexCount; ++v) {
@@ -200,8 +200,8 @@ public class RenderPart extends ModelRenderer {
                 /** scaled like TexturedQuads, but using multiplication instead of division due to speed advantage.  */
                 Vector4f pos = new Vector4f(f * 0.0625F, f1 * 0.0625F, f2 * 0.0625F, 1.0F); // scales to 1/16 like the TexturedQuads but with multiplication (faster than division)
                 pos.transform(matrix4f);
-                bufferIn.applyBakedNormals(normal, bytebuffer, matrixEntry.getNormal());
-                bufferIn.addVertex(pos.getX(), pos.getY(), pos.getZ(), red, green, blue, alpha, f9, f10, overlayCoords, lightmapCoord, normal.getX(), normal.getY(), normal.getZ());
+                bufferIn.applyBakedNormals(normal, bytebuffer, matrixEntry.normal());
+                bufferIn.vertex(pos.x(), pos.y(), pos.z(), red, green, blue, alpha, f9, f10, overlayCoords, lightmapCoord, normal.x(), normal.y(), normal.z());
             }
         }
     }

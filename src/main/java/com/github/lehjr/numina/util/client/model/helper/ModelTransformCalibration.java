@@ -91,7 +91,7 @@ public class ModelTransformCalibration {
     }
 
     static boolean isKeyPressed(int key) {
-        return GLFW.glfwGetKey(Minecraft.getInstance().getMainWindow().getHandle(), key) == GLFW.GLFW_PRESS;
+        return GLFW.glfwGetKey(Minecraft.getInstance().getWindow().getWindow(), key) == GLFW.GLFW_PRESS;
     }
 
     //----------------------------------

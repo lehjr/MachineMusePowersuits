@@ -47,7 +47,7 @@ import java.util.stream.IntStream;
 public class ChargingBaseGui extends ExtendedContainerScreen<ChargingBaseContainer> {
     /** The outer green rectangle */
     protected DrawableRelativeRect backgroundRect;
-    protected InventoryFrame batterySlot, mainInventory, hotbar;
+    protected InventoryFrame batterySlot, items, hotbar;
     final int slotWidth = 18;
     final int slotHeight = 18;
     int spacer = 7;
@@ -80,14 +80,14 @@ public class ChargingBaseGui extends ExtendedContainerScreen<ChargingBaseContain
         addFrame(batterySlot);
 
         // slot 1-9
-        mainInventory = new InventoryFrame(container,
+        items = new InventoryFrame(container,
                 new MusePoint2D(0,0), new MusePoint2D(0, 0),
                 getBlitOffset(),
                 Colour.LIGHT_GREY, Colour.DARK_GREY, Colour.DARK_GREY,
                 9, 3, new ArrayList<Integer>(){{
             IntStream.range(1, 28).forEach(i-> add(i));
         }});
-        addFrame(mainInventory);
+        addFrame(items);
 
         // slot 28-37
         hotbar = new InventoryFrame(container,
@@ -102,7 +102,7 @@ public class ChargingBaseGui extends ExtendedContainerScreen<ChargingBaseContain
     }
 
     MusePoint2D getUlOffset () {
-        return new MusePoint2D(guiLeft + 8, guiTop + 8);
+        return new MusePoint2D(leftPos + 8, topPos + 8);
     }
     @Override
     public void init(Minecraft minecraft, int width, int height) {
@@ -125,13 +125,13 @@ public class ChargingBaseGui extends ExtendedContainerScreen<ChargingBaseContain
                 backgroundRect.finalBottom() - spacer);
         hotbar.setzLevel(1);
 
-        mainInventory.setUlShift(getUlOffset());
-        mainInventory.init(
+        items.setUlShift(getUlOffset());
+        items.init(
                 backgroundRect.finalLeft() + spacer,
                 backgroundRect.finalBottom() - spacer - slotHeight - 3.25F - 3 * slotHeight,
                 backgroundRect.finalLeft() + spacer + 9 * slotWidth,
                 backgroundRect.finalBottom() - spacer - slotHeight - 3.25F);
-        mainInventory.setzLevel(1);
+        items.setzLevel(1);
     }
 
     @Override
@@ -145,30 +145,30 @@ public class ChargingBaseGui extends ExtendedContainerScreen<ChargingBaseContain
     }
 
     @Override
-    protected void drawGuiContainerForegroundLayer(MatrixStack matrixStack, int mouseX, int mouseY) {
-        super.drawGuiContainerForegroundLayer(matrixStack, mouseX, mouseY);
-        this.font.drawText(matrixStack,  new TranslationTextComponent("numina.energy").appendString(": "), 32F, 50F, 4210752);
+    protected void renderLabels(MatrixStack matrixStack, int mouseX, int mouseY) {
+        super.renderLabels(matrixStack, mouseX, mouseY);
+        this.font.draw(matrixStack,  new TranslationTextComponent("numina.energy").append(": "), 32F, 50F, 4210752);
 
         String energyString = new StringBuilder()
-                .append(MuseStringUtils.formatNumberShort(container.getEnergy()))
+                .append(MuseStringUtils.formatNumberShort(menu.getEnergy()))
                 .append("/")
-                .append(MuseStringUtils.formatNumberShort(container.getMaxEnergy()))
+                .append(MuseStringUtils.formatNumberShort(menu.getMaxEnergy()))
                 .append(" FE").toString();
 
-        this.font.drawText(matrixStack,
+        this.font.draw(matrixStack,
                 new StringTextComponent(energyString),
-                (float)((batterySlot.centerx() - font.getStringWidth(energyString) / 2) - guiLeft), // guiLeft here is important
+                (float)((batterySlot.centerx() - font.width(energyString) / 2) - leftPos), // guiLeft here is important
                 60F, 4210752);
     }
 
     @Override
-    public void drawGuiContainerBackgroundLayer(MatrixStack matrixStack, float partialTicks, int x, int y) {
+    public void renderBg(MatrixStack matrixStack, float partialTicks, int x, int y) {
         backgroundRect.draw(matrixStack, 0);
-        super.drawGuiContainerBackgroundLayer(matrixStack, partialTicks, x, y);
+        super.renderBg(matrixStack, partialTicks, x, y);
         energyMeter.draw(matrixStack, (float) batterySlot.centerx() - 16,
                 (float) (batterySlot.finalBottom() + spacer * 0.25),
-                container.getEnergyForMeter(),
+                menu.getEnergyForMeter(),
                 getBlitOffset() + 2);
-        this.renderHoveredTooltip(matrixStack, x, y);
+        this.drawToolTip(matrixStack, x, y);
     }
 }

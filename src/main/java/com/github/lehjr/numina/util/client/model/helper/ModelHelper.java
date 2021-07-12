@@ -80,7 +80,7 @@ public class ModelHelper {
      * Get the default texture getter the models will be baked with.
      */
     public static Function<ResourceLocation, TextureAtlasSprite> defaultTextureGetter(ResourceLocation location) {
-        return Minecraft.getInstance().getAtlasSpriteGetter(location);
+        return Minecraft.getInstance().getTextureAtlas(location);
     }
 
     public static Function<RenderMaterial, TextureAtlasSprite> whiteTextureGetter() {
@@ -151,7 +151,7 @@ public class ModelHelper {
     public static List<BakedQuad> getColoredQuads(List<BakedQuad> quadList, Colour color) {
         ImmutableList.Builder<BakedQuad> builder = ImmutableList.builder();
         for (BakedQuad quad : quadList) {
-            builder.add(colorQuad(color, quad, quad.applyDiffuseLighting()));
+            builder.add(colorQuad(color, quad, quad.isShade()));
         }
         return builder.build();
     }
@@ -195,10 +195,10 @@ public class ModelHelper {
             } else if (transform != null && usage == VertexFormatElement.Usage.POSITION && data.length >= 4) {
                 Vector4f pos = new Vector4f(data[0], data[1], data[2], data[3]);
                 transform.transformPosition(pos);
-                data[0] = pos.getX();
-                data[1] = pos.getY();
-                data[2] = pos.getZ();
-                data[3] = pos.getW();
+                data[0] = pos.x();
+                data[1] = pos.y();
+                data[2] = pos.z();
+                data[3] = pos.w();
                 parent.put(element, data);
             } else {
                 super.put(element, data);

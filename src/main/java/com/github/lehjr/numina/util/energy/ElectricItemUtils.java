@@ -46,7 +46,7 @@ public class ElectricItemUtils {
         int avail = 0;
 
         for (EquipmentSlotType slot : EquipmentSlotType.values()) {
-            avail += getItemEnergy(entity.getItemStackFromSlot(slot));
+            avail += getItemEnergy(entity.getItemBySlot(slot));
         }
         return avail;
     }
@@ -59,7 +59,7 @@ public class ElectricItemUtils {
     public static int getMaxPlayerEnergy(LivingEntity entity) {
         int avail = 0;
         for (EquipmentSlotType slot : EquipmentSlotType.values()) {
-            avail += getMaxItemEnergy(entity.getItemStackFromSlot(slot));
+            avail += getMaxItemEnergy(entity.getItemBySlot(slot));
         }
         return avail;
     }
@@ -70,7 +70,7 @@ public class ElectricItemUtils {
      * Note that charging held items while in use causes issues so they are skipped
      */
     public static int drainPlayerEnergy(LivingEntity entity, int drainAmount) {
-        if (entity.world.isRemote || (entity instanceof PlayerEntity && ((PlayerEntity) entity).abilities.isCreativeMode)) {
+        if (entity.level.isClientSide || (entity instanceof PlayerEntity && ((PlayerEntity) entity).abilities.instabuild)) {
             return 0;
         }
         int drainleft = drainAmount;
@@ -79,7 +79,7 @@ public class ElectricItemUtils {
                 break;
             }
 
-            ItemStack stack = entity.getItemStackFromSlot(slot);
+            ItemStack stack = entity.getItemBySlot(slot);
             drainleft = drainleft - drainItem(stack, drainleft);
         }
         return drainAmount - drainleft;
@@ -94,7 +94,7 @@ public class ElectricItemUtils {
         int rfLeft = rfToGive;
         for (EquipmentSlotType slot : EquipmentSlotType.values()) {
             if (rfLeft > 0) {
-                rfLeft = rfLeft - chargeItem(entity.getItemStackFromSlot(slot), rfLeft);
+                rfLeft = rfLeft - chargeItem(entity.getItemBySlot(slot), rfLeft);
             } else {
                 break;
             }

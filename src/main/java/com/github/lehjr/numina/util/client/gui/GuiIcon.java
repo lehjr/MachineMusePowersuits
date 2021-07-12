@@ -127,7 +127,7 @@ public class GuiIcon {
 
             bindTexture();
             TextureAtlasSprite icon = spriteUploader.getSprite(location);
-            float zLevel = getMinecraft().currentScreen.getBlitOffset();
+            float zLevel = getMinecraft().screen.getBlitOffset();
 
             double posLeft = xOffset + maskLeft;
             double posTop = yOffset + maskTop;
@@ -137,17 +137,17 @@ public class GuiIcon {
             double posRight = posLeft + width;
             double posBottom = posTop + height;
 
-            double uSize = icon.getMaxU() - icon.getMinU();
-            double vSize = icon.getMaxV() - icon.getMinV();
-            float minU = (float) (icon.getMinU() + uSize * (maskLeft / textureWidth));
-            float minV = (float) (icon.getMinV() + vSize * (maskTop / textureHeight));
-            float maxU = (float) (icon.getMaxU() - uSize * (maskRight / textureWidth));
-            float maxV = (float) (icon.getMaxV() - vSize * (maskBottom / textureHeight));
+            double uSize = icon.getU1() - icon.getU0();
+            double vSize = icon.getV1() - icon.getV0();
+            float minU = (float) (icon.getU0() + uSize * (maskLeft / textureWidth));
+            float minV = (float) (icon.getV0() + vSize * (maskTop / textureHeight));
+            float maxU = (float) (icon.getU1() - uSize * (maskRight / textureWidth));
+            float maxV = (float) (icon.getV1() - vSize * (maskBottom / textureHeight));
 
             RenderSystem.enableBlend();
             RenderSystem.disableAlphaTest();
             RenderSystem.defaultBlendFunc();
-            innerBlit(matrixStack.getLast().getMatrix(), posLeft, posRight, posTop, posBottom, zLevel, minU, maxU, minV, maxV, colour);
+            innerBlit(matrixStack.last().pose(), posLeft, posRight, posTop, posBottom, zLevel, minU, maxU, minV, maxV, colour);
             RenderSystem.disableBlend();
 //            RenderSystem.enableAlphaTest();
             RenderSystem.enableDepthTest();
@@ -161,7 +161,7 @@ public class GuiIcon {
         public String toString() {
             Minecraft minecraft = Minecraft.getInstance();
             TextureManager textureManager = minecraft.getTextureManager();
-            textureManager.bindTexture(NuminaConstants.LOCATION_NUMINA_GUI_TEXTURE_ATLAS);
+            textureManager.bind(NuminaConstants.LOCATION_NUMINA_GUI_TEXTURE_ATLAS);
             TextureAtlasSprite icon = getSprite();
 
             if (icon != null) {
@@ -177,7 +177,7 @@ public class GuiIcon {
 //            MuseLogger.logDebug("toString: " + toString());
 
             drawLightningTextured(bufferIn.getBuffer(NuminaRenderState.LIGHTNING_TEST()),
-                    matrixStack.getLast().getMatrix(),
+                    matrixStack.last().pose(),
                     x1,
                     y1,
                     z1,
@@ -279,7 +279,7 @@ public class GuiIcon {
     public static void renderTextureWithColour(ResourceLocation location, MatrixStack matrixStack,
                                                double left, double right, double top, double bottom, float zLevel, double iconWidth, double iconHeight, double texStartX, double texStartY, double textureWidth, double textureHeight, Colour colour) {
         Minecraft minecraft = Minecraft.getInstance();
-        minecraft.getTextureManager().bindTexture(location);
+        minecraft.getTextureManager().bind(location);
         RenderSystem.enableBlend();
         RenderSystem.disableAlphaTest();
         RenderSystem.defaultBlendFunc();
@@ -305,7 +305,7 @@ public class GuiIcon {
      * @param colour colour to apply to the texture
      */
     private static void innerBlit(MatrixStack matrixStack, double left, double right, double top, double bottom, float zLevel, double iconWidth, double iconHeight, double texStartX, double texStartY, double textureWidth, double textureHeight, Colour colour) {
-        innerBlit(matrixStack.getLast().getMatrix(), left, right, top, bottom, zLevel,
+        innerBlit(matrixStack.last().pose(), left, right, top, bottom, zLevel,
                 (float)((texStartX + 0.0F) / textureWidth),
                 (float)((texStartX + iconWidth) / textureWidth),
                 (float)((texStartY + 0.0F) / textureHeight),
@@ -331,32 +331,32 @@ public class GuiIcon {
      * @param colour the Colour to apply to the texture
      */
     private static void innerBlit(Matrix4f matrix4f, double left, double right, double top, double bottom, float zLevel, float minU, float maxU, float minV, float maxV, Colour colour) {
-        BufferBuilder bufferbuilder = Tessellator.getInstance().getBuffer();
+        BufferBuilder bufferbuilder = Tessellator.getInstance().getBuilder();
 
         colour.doGL();
         bufferbuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
 
         // bottom left
-        bufferbuilder.pos(matrix4f, (float)left, (float)bottom, zLevel).tex(minU, maxV).endVertex();
+        bufferbuilder.vertex(matrix4f, (float)left, (float)bottom, zLevel).uv(minU, maxV).endVertex();
 
         // bottom right
-        bufferbuilder.pos(matrix4f, (float)right, (float)bottom, zLevel).tex(maxU, maxV).endVertex();
+        bufferbuilder.vertex(matrix4f, (float)right, (float)bottom, zLevel).uv(maxU, maxV).endVertex();
 
         // top right
-        bufferbuilder.pos(matrix4f, (float)right, (float)top, zLevel).tex(maxU, minV).endVertex();
+        bufferbuilder.vertex(matrix4f, (float)right, (float)top, zLevel).uv(maxU, minV).endVertex();
 
         // top left
-        bufferbuilder.pos(matrix4f, (float)left, (float)top, zLevel).tex(minU, minV).endVertex();
+        bufferbuilder.vertex(matrix4f, (float)left, (float)top, zLevel).uv(minU, minV).endVertex();
 
-        bufferbuilder.finishDrawing();
+        bufferbuilder.end();
         RenderSystem.enableAlphaTest();
-        WorldVertexBufferUploader.draw(bufferbuilder);
+        WorldVertexBufferUploader.end(bufferbuilder);
     }
 
     public void drawLightningTextured(IVertexBuilder bufferIn, Matrix4f matrix4f, float x1, float y1, float z1, float x2, float y2, float z2, Colour colour, TextureAtlasSprite icon, float textureWidth, float textureHeight) {
-        float minV = icon.getMinV();
-        float maxV = icon.getMaxV();
-        float uSize = icon.getMaxU() - icon.getMinU();
+        float minV = icon.getV0();
+        float maxV = icon.getV1();
+        float uSize = icon.getU1() - icon.getU0();
 
         float tx = x2 - x1, ty = y2 - y1, tz = z2 - z1;
         float ax, ay, az;
@@ -375,7 +375,7 @@ public class GuiIcon {
             bz = z1 + cz;
 
             int index = getRandomNumber(0, 50);
-            float minU = icon.getMinU() + uSize * (index * 0.2F); // 1/50, there are 50 different lightning elements in the texture
+            float minU = icon.getU0() + uSize * (index * 0.2F); // 1/50, there are 50 different lightning elements in the texture
             float maxU = minU + uSize * 0.2F;
 
             drawLightningBetweenPointsFast(bufferIn, matrix4f, ax, ay, az, bx, by, bz, colour, minU, maxU, minV, maxV);
@@ -395,25 +395,25 @@ public class GuiIcon {
         float px = (y1 - y2) * 0.125F;
         float py = (x2 - x1) * 0.125F;
 
-        bufferIn.pos(matrix4f, x1 - px, y1 - py, z1) // top left front
+        bufferIn.vertex(matrix4f, x1 - px, y1 - py, z1) // top left front
                 .color(colour.r, colour.g, colour.b, colour.a)
-                .tex(minU, minV)
-                .lightmap(0x00F000F0).endVertex();
+                .uv(minU, minV)
+                .uv2(0x00F000F0).endVertex();
 
-        bufferIn.pos(matrix4f, x1 + px, y1 + py, z1) // bottom right front
+        bufferIn.vertex(matrix4f, x1 + px, y1 + py, z1) // bottom right front
                 .color(colour.r, colour.g, colour.b, colour.a)
-                .tex(maxU, minV) // right top
-                .lightmap(0x00F000F0).endVertex();
+                .uv(maxU, minV) // right top
+                .uv2(0x00F000F0).endVertex();
 
-        bufferIn.pos(matrix4f, x2 - px, y2 - py, z2) //  top left back
+        bufferIn.vertex(matrix4f, x2 - px, y2 - py, z2) //  top left back
                 .color(colour.r, colour.g, colour.b, colour.a)
-                .tex(minU, maxV) // left bottom
-                .lightmap(0x00F000F0).endVertex();
+                .uv(minU, maxV) // left bottom
+                .uv2(0x00F000F0).endVertex();
 
-        bufferIn.pos(matrix4f, x2 + px, y2 + py, z2) // bottom right back
+        bufferIn.vertex(matrix4f, x2 + px, y2 + py, z2) // bottom right back
                 .color(colour.r, colour.g, colour.b, colour.a)
-                .tex(maxU, maxV) // right bottom
-                .lightmap(0x00F000F0).endVertex();
+                .uv(maxU, maxV) // right bottom
+                .uv2(0x00F000F0).endVertex();
     }
 
     Minecraft getMinecraft() {
@@ -422,7 +422,7 @@ public class GuiIcon {
 
     void bindTexture() {
         TextureManager textureManager = getMinecraft().getTextureManager();
-        textureManager.bindTexture(NuminaConstants.LOCATION_NUMINA_GUI_TEXTURE_ATLAS);
+        textureManager.bind(NuminaConstants.LOCATION_NUMINA_GUI_TEXTURE_ATLAS);
     }
 
     int getRandomNumber(int min, int max) {

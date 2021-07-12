@@ -50,13 +50,13 @@ public class PlayerUpdateHandler {
 
             NonNullList<ItemStack> modularItems = NonNullList.create();
             for (EquipmentSlotType slot : EquipmentSlotType.values()) {
-                if(player.getItemStackFromSlot(slot).isEmpty()) {
+                if(player.getItemBySlot(slot).isEmpty()) {
                     continue;
                 }
 
-                switch (slot.getSlotType()) {
+                switch (slot.getType()) {
                     case HAND:
-                        player.getItemStackFromSlot(slot).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(i-> {
+                        player.getItemBySlot(slot).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(i-> {
                             if (i instanceof IModeChangingItem) {
                                 ((IModeChangingItem) i).tick(player);
                                 modularItems.add(((IModeChangingItem) i).getModularItemStack());
@@ -67,14 +67,14 @@ public class PlayerUpdateHandler {
                     case ARMOR:
 
                         try {
-                            player.getItemStackFromSlot(slot).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(i-> {
+                            player.getItemBySlot(slot).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(i-> {
                                 if (i instanceof IModularItem) {
                                     ((IModularItem) i).tick(player);
                                     modularItems.add(((IModularItem) i).getModularItemStack());
                                 }
                             });
                         } catch (Exception exception) {
-                            MuseLogger.logException(player.getItemStackFromSlot(slot).toString(), exception);
+                            MuseLogger.logException(player.getItemBySlot(slot).toString(), exception);
                         }
                         break;
                 }
@@ -86,7 +86,7 @@ public class PlayerUpdateHandler {
                 // Heat update
                 double currHeat = MuseHeatUtils.getPlayerHeat(player);
 
-                if (currHeat >= 0 && !player.world.isRemote) { // only apply serverside so change is not applied twice
+                if (currHeat >= 0 && !player.level.isClientSide) { // only apply serverside so change is not applied twice
 
                     // cooling value adjustment. Too much or too little cooling makes the heat system useless.
                     double coolPlayerAmount = (PlayerUtils.getPlayerCoolingBasedOnMaterial(player) * 0.55);  // cooling value adjustment. Too much or too little cooling makes the heat system useless.
@@ -98,7 +98,7 @@ public class PlayerUpdateHandler {
                     double maxHeat = MuseHeatUtils.getPlayerMaxHeat(player);
 
                     if (currHeat < maxHeat * 0.95) {
-                        player.extinguish();
+                        player.clearFire();
                     }
                 }
             }
@@ -117,7 +117,7 @@ public class PlayerUpdateHandler {
             return;
         }
 
-        if (event.getSource().isFireDamage()) {
+        if (event.getSource().isFire()) {
             MuseHeatUtils.heatEntity(event);
         }
     }

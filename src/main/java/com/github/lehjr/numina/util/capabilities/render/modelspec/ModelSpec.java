@@ -57,7 +57,7 @@ public class ModelSpec extends SpecBase {
 
     @Override
     public String getDisaplayName() {
-        return I18n.format(new StringBuilder("model.")
+        return I18n.get(new StringBuilder("model.")
                 .append(this.getOwnName())
                 .append(".modelName")
                 .toString());

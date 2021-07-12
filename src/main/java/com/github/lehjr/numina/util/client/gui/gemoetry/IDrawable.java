@@ -54,7 +54,7 @@ public interface IDrawable {
     default void addVerticesToBuffer(Matrix4f matrix4f, FloatBuffer vertices, Colour colour) {
         vertices.rewind();
         while(vertices.hasRemaining()) {
-            getBufferBuilder().pos(matrix4f, vertices.get(), vertices.get(), getZLevel()).color(colour.r, colour.g, colour.b, colour.a).endVertex();
+            getBufferBuilder().vertex(matrix4f, vertices.get(), vertices.get(), getZLevel()).color(colour.r, colour.g, colour.b, colour.a).endVertex();
         }
     }
 
@@ -72,7 +72,7 @@ public interface IDrawable {
         Vector4f vector4f = new Vector4f((float)vertices.get(), (float)vertices.get(), getZLevel(), 1.0F);
         vector4f.transform(matrix4f);
         while(vertices.hasRemaining()) {
-            getBufferBuilder().pos((double)vector4f.getX(), (double)vector4f.getY(), (double)vector4f.getZ()).color(colour.r, colour.g, colour.b, colour.a).endVertex();
+            getBufferBuilder().vertex((double)vector4f.x(), (double)vector4f.y(), (double)vector4f.z()).color(colour.r, colour.g, colour.b, colour.a).endVertex();
         }
     }
 
@@ -88,7 +88,7 @@ public interface IDrawable {
         vertices.rewind();
         colourBuffer.rewind();
         while(vertices.hasRemaining() && colourBuffer.hasRemaining()) {
-            getBufferBuilder().pos(matrix4f, vertices.get(), vertices.get(), getZLevel()).color(colourBuffer.get(), colourBuffer.get(), colourBuffer.get(), colourBuffer.get()).endVertex();
+            getBufferBuilder().vertex(matrix4f, vertices.get(), vertices.get(), getZLevel()).color(colourBuffer.get(), colourBuffer.get(), colourBuffer.get(), colourBuffer.get()).endVertex();
         }
     }
 
@@ -97,7 +97,7 @@ public interface IDrawable {
     }
 
     default BufferBuilder getBufferBuilder() {
-        return getTessellator().getBuffer();
+        return getTessellator().getBuilder();
     }
 
     default void preDraw(int glMode, VertexFormat format) {
@@ -117,6 +117,6 @@ public interface IDrawable {
     }
 
     default void drawTesselator() {
-        getTessellator().draw();
+        getTessellator().end();
     }
 }

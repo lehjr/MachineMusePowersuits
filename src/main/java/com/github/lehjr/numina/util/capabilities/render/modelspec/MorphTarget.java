@@ -70,26 +70,26 @@ public enum MorphTarget {
     public ModelRenderer apply(BipedModel m) {
         switch (this) {
             case Head:
-                return m.bipedHead;
+                return m.head;
 
             case Body:
-                return m.bipedBody;
+                return m.body;
 
             case RightHand:
             case RightArm:
-                return m.bipedRightArm;
+                return m.rightArm;
 
             case Lefthand:
             case LeftArm:
-                return m.bipedLeftArm;
+                return m.leftArm;
 
             case RightFoot:
             case RightLeg:
-                return m.bipedRightLeg;
+                return m.rightLeg;
 
             case LeftFoot:
             case LeftLeg:
-                return m.bipedLeftLeg;
+                return m.leftLeg;
 
             default:
                 return null;

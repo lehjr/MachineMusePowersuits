@@ -181,16 +181,16 @@ public class ModularItem extends ItemStackHandler implements IModularItem {
                         return modularItem.getItem() instanceof ArmorItem;
                     case HEADONLY:
                         return modularItem.getItem() instanceof ArmorItem
-                                && MobEntity.getSlotForItemStack(modularItem) == EquipmentSlotType.HEAD;
+                                && MobEntity.getEquipmentSlotForItem(modularItem) == EquipmentSlotType.HEAD;
                     case TORSOONLY:
                         return modularItem.getItem() instanceof ArmorItem
-                                && MobEntity.getSlotForItemStack(modularItem) == EquipmentSlotType.CHEST;
+                                && MobEntity.getEquipmentSlotForItem(modularItem) == EquipmentSlotType.CHEST;
                     case LEGSONLY:
                         return modularItem.getItem() instanceof ArmorItem
-                                && MobEntity.getSlotForItemStack(modularItem) == EquipmentSlotType.LEGS;
+                                && MobEntity.getEquipmentSlotForItem(modularItem) == EquipmentSlotType.LEGS;
                     case FEETONLY:
                         return modularItem.getItem() instanceof ArmorItem
-                                && MobEntity.getSlotForItemStack(modularItem) == EquipmentSlotType.FEET;
+                                && MobEntity.getEquipmentSlotForItem(modularItem) == EquipmentSlotType.FEET;
                     default:
                         return false;
                 }
@@ -339,6 +339,6 @@ public class ModularItem extends ItemStackHandler implements IModularItem {
     @Override
     protected void onContentsChanged(final int slot) {
         super.onContentsChanged(slot);
-        modularItem.setTagInfo(TAG_MODULE_SETTINGS, serializeNBT());
+        modularItem.addTagElement(TAG_MODULE_SETTINGS, serializeNBT());
     }
 }

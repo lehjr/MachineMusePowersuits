@@ -86,7 +86,7 @@ public class NBTTagAccessor extends CompoundNBT {
     }
 
     public static List<CompoundNBT> getValues(CompoundNBT nbt) {
-        Set<String> keyset = (Set<String>) nbt.keySet();
+        Set<String> keyset = nbt.getAllKeys();
         ArrayList<CompoundNBT> a = new ArrayList<>(keyset.size());
         for (String key : keyset) {
             INBT c = nbt.get(key);

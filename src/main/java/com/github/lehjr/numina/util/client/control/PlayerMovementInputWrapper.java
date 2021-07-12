@@ -56,7 +56,7 @@ public class PlayerMovementInputWrapper {
     }
 
     public static PlayerMovementInput get(PlayerEntity player) {
-        if (player.world.isRemote) {
+        if (player.level.isClientSide) {
             if (player instanceof RemoteClientPlayerEntity) // multiplayer not dedicated server
                 return fromServer(player);
             return fromClient(player);
@@ -79,8 +79,8 @@ public class PlayerMovementInputWrapper {
         }
 
         return new PlayerMovementInput(
-                player.moveStrafing,
-                player.moveForward,
+                player.xxa,
+                player.zza,
                 jumpKey,
                 downKey,
                 player.isCrouching());
@@ -99,8 +99,8 @@ public class PlayerMovementInputWrapper {
         }
 
         return new PlayerMovementInput(
-                clientPlayer.movementInput.moveStrafe,
-                clientPlayer.movementInput.moveForward,
+                clientPlayer.input.leftImpulse,
+                clientPlayer.input.forwardImpulse,
                 jumpKey,
                 downKey,
         clientPlayer.isCrouching());

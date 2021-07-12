@@ -53,7 +53,7 @@ public class NuminaSpriteUploader extends SpriteUploader {
     }
 
     @Override
-    protected Stream<ResourceLocation> getResourceLocations() {
+    protected Stream<ResourceLocation> getResourcesToLoad() {
         return Collections.unmodifiableSet(registeredSprites).stream();
     }
 

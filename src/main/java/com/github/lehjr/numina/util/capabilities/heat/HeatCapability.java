@@ -54,7 +54,7 @@ public class HeatCapability {
                     public void readNBT(Capability<IHeatStorage> capability, IHeatStorage instance, Direction side, INBT nbt) {
                         if (!(instance instanceof HeatStorage))
                             throw new IllegalArgumentException("Can not deserialize to an instance that isn't the default implementation");
-                        ((HeatStorage) instance).heat = ((DoubleNBT) nbt).getDouble();
+                        ((HeatStorage) instance).heat = ((DoubleNBT) nbt).getAsDouble();
                     }
                 },
                 () -> new HeatStorage(1000));

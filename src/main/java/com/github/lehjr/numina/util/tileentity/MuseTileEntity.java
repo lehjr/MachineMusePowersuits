@@ -42,24 +42,24 @@ public class MuseTileEntity extends TileEntity {
 
     @Override
     public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
-        BlockState state = getWorld().getBlockState(getPos());
-        read(state, pkt.getNbtCompound());
-        getWorld().notifyBlockUpdate(getPos(), state, state, 3);
+        BlockState state = getLevel().getBlockState(getBlockPos());
+        load(state, pkt.getTag());
+        getLevel().sendBlockUpdated(getBlockPos(), state, state, 3);
     }
 
     @Nullable
     @Override
     public SUpdateTileEntityPacket getUpdatePacket() {
-        return new SUpdateTileEntityPacket(this.getPos(), 0, getUpdateTag());
+        return new SUpdateTileEntityPacket(this.getBlockPos(), 0, getUpdateTag());
     }
 
     @Override
-    public void read(BlockState state, CompoundNBT nbt) {
-        super.read(state, nbt);
+    public void load(BlockState state, CompoundNBT nbt) {
+        super.load(state, nbt);
     }
 
     @Override
-    public CompoundNBT write(CompoundNBT compound) {
-        return super.write(compound);
+    public CompoundNBT save(CompoundNBT compound) {
+        return super.save(compound);
     }
 }

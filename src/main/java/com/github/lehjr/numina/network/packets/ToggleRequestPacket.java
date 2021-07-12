@@ -45,13 +45,13 @@ public class ToggleRequestPacket {
     }
 
     public static void encode(ToggleRequestPacket msg, PacketBuffer packetBuffer) {
-        packetBuffer.writeString(msg.registryName.toString());
+        packetBuffer.writeUtf(msg.registryName.toString());
         packetBuffer.writeBoolean(msg.toggleval);
     }
 
     public static ToggleRequestPacket decode(PacketBuffer packetBuffer) {
         return new ToggleRequestPacket(
-                new ResourceLocation(packetBuffer.readString(500)),
+                new ResourceLocation(packetBuffer.readUtf(500)),
                 packetBuffer.readBoolean()
         );
     }
@@ -69,14 +69,14 @@ public class ToggleRequestPacket {
             if (player == null)
                 return;
 
-            for (int i = 0; i < player.inventory.getSizeInventory(); i++) {
-                player.inventory.getStackInSlot(i).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(handler ->{
+            for (int i = 0; i < player.inventory.getContainerSize(); i++) {
+                player.inventory.getItem(i).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(handler ->{
                     if (handler instanceof IModularItem) {
                         ((IModularItem) handler).toggleModule(registryName, toggleval);
                     }
                 });
             }
-            player.inventory.markDirty();
+            player.inventory.setChanged();
 
         });
         ctx.get().setPacketHandled(true);

@@ -53,8 +53,6 @@ public class UniversalSlot extends Slot implements IClickable {
     public static final int offsety = 8;
     protected IPressable onPressed;
     protected IReleasable onReleased;
-    protected final int xPos=0, yPos=0;
-    private final int index;
     protected final boolean isIItemHandler;
     protected MusePoint2D position;
     boolean isVisible;
@@ -80,32 +78,31 @@ public class UniversalSlot extends Slot implements IClickable {
         super(emptyInventory, index, (int)position.getX(), (int)position.getX());
         this.position = position;
         this.itemHandler = itemHandler;
-        this.index = index;
         isIItemHandler = true;
         this.isVisible = true;
         this.isEnabled = true;
     }
 
     @Override
-    public boolean isItemValid(@Nonnull ItemStack stack) {
+    public boolean mayPlace(@Nonnull ItemStack stack) {
         if (stack.isEmpty())
             return false;
         if (!isIItemHandler)
-            return super.isItemValid(stack);
+            return super.mayPlace(stack);
         return itemHandler.isItemValid(index, stack);
     }
 
     @Override
-    public int getSlotStackLimit() {
+    public int getMaxStackSize() {
         if (!isIItemHandler)
-            return super.getSlotStackLimit();
+            return super.getMaxStackSize();
         return this.itemHandler.getSlotLimit(this.index);
     }
 
     @Override
-    public int getItemStackLimit(@Nonnull ItemStack stack) {
+    public int getMaxStackSize(@Nonnull ItemStack stack) {
         if (!isIItemHandler)
-            return super.getItemStackLimit(stack);
+            return super.getMaxStackSize(stack);
 
         ItemStack maxAdd = stack.copy();
         int maxInput = stack.getMaxStackSize();
@@ -132,7 +129,7 @@ public class UniversalSlot extends Slot implements IClickable {
     }
 
     @Override
-    public boolean canTakeStack(PlayerEntity playerIn) {
+    public boolean mayPickup(PlayerEntity playerIn) {
         if (!isIItemHandler)
             return true;
         return !this.getItemHandler().extractItem(index, 1, true).isEmpty();
@@ -140,9 +137,9 @@ public class UniversalSlot extends Slot implements IClickable {
 
     @Override
     @Nonnull
-    public ItemStack decrStackSize(int amount) {
+    public ItemStack remove(int amount) {
         if (!isIItemHandler)
-            return super.decrStackSize(amount);
+            return super.remove(amount);
         return this.getItemHandler().extractItem(index, amount, false);
     }
 
@@ -151,7 +148,7 @@ public class UniversalSlot extends Slot implements IClickable {
     }
 
     public IInventory getInventoryHandler() {
-        return this.inventory;
+        return this.container;
     }
 
     public void setPosition(MusePoint2D position) {
@@ -160,25 +157,25 @@ public class UniversalSlot extends Slot implements IClickable {
 
     @Override
     @Nonnull
-    public ItemStack getStack() {
+    public ItemStack getItem() {
         if (!isIItemHandler)
-            return super.getStack();
+            return super.getItem();
         return this.getItemHandler().getStackInSlot(index);
     }
 
     // Override if your IItemHandler does not implement IItemHandlerModifiable
     @Override
-    public void putStack(@Nonnull ItemStack stack) {
+    public void set(@Nonnull ItemStack stack) {
         if (!isIItemHandler)
-            super.putStack(stack);
+            super.set(stack);
         else {
             ((IItemHandlerModifiable) this.getItemHandler()).setStackInSlot(index, stack);
         }
-        this.onSlotChanged();
+        this.setChanged();
     }
 
     @Override
-    public void onSlotChange(@Nonnull ItemStack p_75220_1_, @Nonnull ItemStack p_75220_2_) {
+    public void onQuickCraft(@Nonnull ItemStack p_75220_1_, @Nonnull ItemStack p_75220_2_) {
 
     }
 

@@ -43,14 +43,14 @@
 //                ItemStack itemStack = source.getStack();
 //                ItemStack stackCopy = itemStack.copy();
 //                // fixme: no idea if this will work with target set as range
-//                if (source instanceof CraftingResultSlot && source.getHasStack()) {
+//                if (source instanceof CraftingResultSlot && source.hasItem()) {
 //                    container.consume(player);
-//                    if (container.mergeItemStack(itemStack, message.targetSlot, message.targetSlot + 1, false)) {
-////                        source.onSlotChange(itemStack, stackCopy);
+//                    if (container.moveItemStackTo(itemStack, message.targetSlot, message.targetSlot + 1, false)) {
+////                        source.onQuickCraft(itemStack, stackCopy);
 //                        source.onTake(player, itemStack);
 //                    }
 //                } else {
-//                    target.putStack(stackCopy);
+//                    target.set(stackCopy);
 //                    source.decrStackSize(1);
 //                }
 //                player.openContainer.detectAndSendChanges();

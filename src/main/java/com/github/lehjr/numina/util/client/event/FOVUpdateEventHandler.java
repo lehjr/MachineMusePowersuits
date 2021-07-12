@@ -61,18 +61,18 @@ public class FOVUpdateEventHandler {
     public void onFOVUpdate(FOVUpdateEvent e) {
         if (NuminaSettings.useFovFix()) {
             ClientPlayerEntity player = Minecraft.getInstance().player;
-            if (fovToggleKey.isPressed()) {
+            if (fovToggleKey.consumeClick()) {
                 fovIsActive = !fovIsActive;
                 if (fovIsActive) {
-                    player.sendMessage(new StringTextComponent(I18n.format("fovfixtoggle.enabled")), player.getUniqueID());
+                    player.sendMessage(new StringTextComponent(I18n.get("fovfixtoggle.enabled")), player.getUUID());
                 } else {
-                    player.sendMessage(new StringTextComponent(I18n.format("fovfixtoggle.disabled")), player.getUniqueID());
+                    player.sendMessage(new StringTextComponent(I18n.get("fovfixtoggle.disabled")), player.getUUID());
                 }
             }
 
             if (fovIsActive) {
                 ModifiableAttributeInstance attributeinstance = e.getEntity().getAttribute(Attributes.MOVEMENT_SPEED);
-                e.setNewfov((float) (e.getNewfov() / ((attributeinstance.getValue() / e.getEntity().abilities.getWalkSpeed() + 1.0) / 2.0)));
+                e.setNewfov((float) (e.getNewfov() / ((attributeinstance.getValue() / e.getEntity().abilities.getWalkingSpeed() + 1.0) / 2.0)));
             }
         }
     }

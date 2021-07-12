@@ -38,7 +38,7 @@ public final class NuminaPlayerUtils {
     public static void resetFloatKickTicks(PlayerEntity player) {
         if (player instanceof ServerPlayerEntity) {
             ServerPlayerEntity entityPlayerMP = (ServerPlayerEntity) player;
-            entityPlayerMP.connection.floatingTickCount = 0;
+            entityPlayerMP.connection.aboveGroundTickCount = 0;
         }
     }
 }

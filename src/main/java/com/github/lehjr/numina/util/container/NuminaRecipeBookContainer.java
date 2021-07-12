@@ -40,13 +40,13 @@ public abstract class NuminaRecipeBookContainer<C> extends RecipeBookContainer {
     }
 
     @Override
-    public void func_217056_a(boolean placeAll, IRecipe recipe, ServerPlayerEntity player) {
+    public void handlePlacement(boolean placeAll, IRecipe recipe, ServerPlayerEntity player) {
         (new NuminaServerRecipePlacer(this)).place(player, recipe, placeAll);
     }
 
     @OnlyIn(Dist.CLIENT)
     @Override
-    public RecipeBookCategory func_241850_m() {
+    public RecipeBookCategory getRecipeBookType() {
         return RecipeBookCategory.CRAFTING;
     }
 }

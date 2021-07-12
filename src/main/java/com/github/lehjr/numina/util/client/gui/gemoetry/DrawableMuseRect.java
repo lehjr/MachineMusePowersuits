@@ -213,14 +213,14 @@ public class DrawableMuseRect extends MuseRelativeRect implements IDrawable {
 
     void drawBuffer(MatrixStack matrixStack, FloatBuffer vertices, Colour colour, int glMode) {
         preDraw(glMode, DefaultVertexFormats.POSITION_COLOR);
-        addVerticesToBuffer(matrixStack.getLast().getMatrix(), vertices, colour);
+        addVerticesToBuffer(matrixStack.last().pose(), vertices, colour);
         drawTesselator();
         postDraw();
     }
 
     void drawBuffer(MatrixStack matrixStack, FloatBuffer vertices, FloatBuffer colours, int glMode) {
         preDraw(glMode, DefaultVertexFormats.POSITION_COLOR);
-        addVerticesToBuffer(matrixStack.getLast().getMatrix(), vertices, colours);
+        addVerticesToBuffer(matrixStack.last().pose(), vertices, colours);
         drawTesselator();
         postDraw();
     }

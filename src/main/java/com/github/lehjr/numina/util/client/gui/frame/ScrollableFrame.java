@@ -111,45 +111,45 @@ public class ScrollableFrame implements IGuiFrame {
             NuminaRenderState.glowOn();
 
             Tessellator tessellator = Tessellator.getInstance();
-            BufferBuilder buffer = tessellator.getBuffer();
+            BufferBuilder buffer = tessellator.getBuilder();
             buffer.begin(GL11.GL_TRIANGLES, DefaultVertexFormats.POSITION_COLOR_LIGHTMAP);
 
-            Matrix4f matrix4f = matrixStack.getLast().getMatrix();
+            Matrix4f matrix4f = matrixStack.last().pose();
 
             // Can scroll down
             if (currentscrollpixels + border.height() < totalsize) {
-                buffer.pos(matrix4f, (float)(border.left() + border.width() / 2F), (float)border.bottom(), zLevel)
+                buffer.vertex(matrix4f, (float)(border.left() + border.width() / 2F), (float)border.bottom(), zLevel)
                         .color(Colour.LIGHT_BLUE.r, Colour.LIGHT_BLUE.b, Colour.LIGHT_BLUE.b, Colour.LIGHT_BLUE.a)
-                        .lightmap(0x00F000F0)
+                        .uv2(0x00F000F0)
                         .endVertex();
 
-                buffer.pos(matrix4f, (float) (border.left() + border.width() / 2 + 2), (float)border.bottom() - 4, zLevel)
+                buffer.vertex(matrix4f, (float) (border.left() + border.width() / 2 + 2), (float)border.bottom() - 4, zLevel)
                         .color(Colour.LIGHT_BLUE.r, Colour.LIGHT_BLUE.b, Colour.LIGHT_BLUE.b, Colour.LIGHT_BLUE.a)
-                        .lightmap(0x00F000F0)
+                        .uv2(0x00F000F0)
                         .endVertex();
 
-                buffer.pos(matrix4f, (float) (border.left() + border.width() / 2 - 2), (float)border.bottom() - 4, zLevel)
+                buffer.vertex(matrix4f, (float) (border.left() + border.width() / 2 - 2), (float)border.bottom() - 4, zLevel)
                         .color(Colour.LIGHT_BLUE.r, Colour.LIGHT_BLUE.b, Colour.LIGHT_BLUE.b, Colour.LIGHT_BLUE.a)
-                        .lightmap(0x00F000F0)
+                        .uv2(0x00F000F0)
                         .endVertex();
             }
 
             // Can scroll up
             if (currentscrollpixels > 0) {
-                buffer.pos(matrix4f, (float) (border.left() + border.width() / 2), (float)border.top(), zLevel)
+                buffer.vertex(matrix4f, (float) (border.left() + border.width() / 2), (float)border.top(), zLevel)
                         .color(Colour.LIGHT_BLUE.r, Colour.LIGHT_BLUE.b, Colour.LIGHT_BLUE.b, Colour.LIGHT_BLUE.a)
-                        .lightmap(0x00F000F0)
+                        .uv2(0x00F000F0)
                         .endVertex();
-                buffer.pos(matrix4f, (float) (border.left() + border.width() / 2 - 2), (float)border.top() + 4, zLevel)
+                buffer.vertex(matrix4f, (float) (border.left() + border.width() / 2 - 2), (float)border.top() + 4, zLevel)
                         .color(Colour.LIGHT_BLUE.r, Colour.LIGHT_BLUE.b, Colour.LIGHT_BLUE.b, Colour.LIGHT_BLUE.a)
-                        .lightmap(0x00F000F0)
+                        .uv2(0x00F000F0)
                         .endVertex();
-                buffer.pos(matrix4f, (float) (border.left() + border.width() / 2 + 2), (float)border.top() + 4, zLevel)
+                buffer.vertex(matrix4f, (float) (border.left() + border.width() / 2 + 2), (float)border.top() + 4, zLevel)
                         .color(Colour.LIGHT_BLUE.r, Colour.LIGHT_BLUE.b, Colour.LIGHT_BLUE.b, Colour.LIGHT_BLUE.a)
-                        .lightmap(0x00F000F0)
+                        .uv2(0x00F000F0)
                         .endVertex();
             }
-            tessellator.draw();
+            tessellator.end();
 
             RenderSystem.shadeModel(GL11.GL_FLAT);
             RenderSystem.disableBlend();

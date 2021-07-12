@@ -61,15 +61,15 @@ public final class NuminaRenderState {
     public static final RenderState.OverlayState OVERLAY_ENABLED = new RenderState.OverlayState(true);
 
     public static RenderType LIGHTNING_TEST() {
-        RenderType.State state = RenderType.State.getBuilder()
-                .texture(new RenderState.TextureState(NuminaConstants.LOCATION_NUMINA_GUI_TEXTURE_ATLAS, false, false))
-                .transparency(TRANSLUCENT_TRANSPARENCY)
-                .diffuseLighting(DIFFUSE_LIGHTING_ENABLED)
-                .alpha(DEFAULT_ALPHA)
-                .lightmap(LIGHTMAP_ENABLED)
-                .overlay(OVERLAY_ENABLED)
-                .build(true);
-        return RenderType.makeType(
+        RenderType.State state = RenderType.State.builder()
+                .setTextureState(new RenderState.TextureState(NuminaConstants.LOCATION_NUMINA_GUI_TEXTURE_ATLAS, false, false))
+                .setTransparencyState(TRANSLUCENT_TRANSPARENCY)
+                .setDiffuseLightingState(DIFFUSE_LIGHTING_ENABLED)
+                .setAlphaState(DEFAULT_ALPHA)
+                .setLightmapState(LIGHTMAP_ENABLED)
+                .setOverlayState(OVERLAY_ENABLED)
+                .createCompositeState(true);
+        return RenderType.create(
                 "lighting_test",
                 DefaultVertexFormats.POSITION_COLOR_TEX_LIGHTMAP,
                 GL11.GL_QUADS, 256, true, true, state);
@@ -102,29 +102,29 @@ public final class NuminaRenderState {
      */
     public static void arraysOnColor() {
         // GL11.glEnableClientState(GL11.GL_VERTEX_ARRAY);
-        GlStateManager.enableClientState(GL11.GL_VERTEX_ARRAY);
+        GlStateManager._enableClientState(GL11.GL_VERTEX_ARRAY);
 
         // GL11.glEnableClientState(GL11.GL_COLOR_ARRAY);
-        GlStateManager.enableClientState(GL11.GL_COLOR_ARRAY);
+        GlStateManager._enableClientState(GL11.GL_COLOR_ARRAY);
     }
 
     public static void arraysOnTexture() {
         // GL11.glEnableClientState(GL11.GL_VERTEX_ARRAY);
-        GlStateManager.enableClientState(GL11.GL_VERTEX_ARRAY);
+        GlStateManager._enableClientState(GL11.GL_VERTEX_ARRAY);
 
         // GL11.glEnableClientState(GL11.GL_TEXTURE_COORD_ARRAY);
-        GlStateManager.enableClientState(GL11.GL_TEXTURE_COORD_ARRAY);
+        GlStateManager._enableClientState(GL11.GL_TEXTURE_COORD_ARRAY);
     }
 
     public static void arraysOff() {
         // GL11.glDisableClientState(GL11.GL_VERTEX_ARRAY);
-        GlStateManager.disableClientState(GL11.GL_VERTEX_ARRAY);
+        GlStateManager._disableClientState(GL11.GL_VERTEX_ARRAY);
 
         // GL11.glDisableClientState(GL11.GL_COLOR_ARRAY);
-        GlStateManager.disableClientState(GL11.GL_COLOR_ARRAY);
+        GlStateManager._disableClientState(GL11.GL_COLOR_ARRAY);
 
         // GL11.glDisableClientState(GL11.GL_TEXTURE_COORD_ARRAY);
-        GlStateManager.disableClientState(GL11.GL_TEXTURE_COORD_ARRAY);
+        GlStateManager._disableClientState(GL11.GL_TEXTURE_COORD_ARRAY);
     }
 
     /**
@@ -195,8 +195,8 @@ public final class NuminaRenderState {
         glPushAttrib(GL11.GL_ENABLE_BIT | GL11.GL_SCISSOR_BIT);
         RenderSystem.pushMatrix();
         Minecraft mc = Minecraft.getInstance();
-        int dh = mc.getMainWindow().getHeight();
-        double scaleFactor = mc.getMainWindow().getGuiScaleFactor();
+        int dh = mc.getWindow().getHeight();
+        double scaleFactor = mc.getWindow().getGuiScale();
         double newx = x * scaleFactor;
         double newy = dh - h * scaleFactor - y * scaleFactor;
         double neww = w * scaleFactor;
@@ -222,14 +222,14 @@ public final class NuminaRenderState {
         glPushAttrib(GL11.GL_LIGHTING_BIT);
         lightmapLastX = GlStateManager.lastBrightnessX;
         lightmapLastY = GlStateManager.lastBrightnessY;
-        RenderHelper.disableStandardItemLighting();
-        GlStateManager.multiTexCoord2f(GL13C.GL_TEXTURE1, 240.0F, 240.0F);
+        RenderHelper.turnOff();
+        GlStateManager._glMultiTexCoord2f(GL13C.GL_TEXTURE1, 240.0F, 240.0F);
     }
 
     @Deprecated
     public static void glowOff() {
-        GlStateManager.multiTexCoord2f(GL13C.GL_TEXTURE1, lightmapLastX, lightmapLastY);
-        RenderHelper.enableStandardItemLighting();
+        GlStateManager._glMultiTexCoord2f(GL13C.GL_TEXTURE1, lightmapLastX, lightmapLastY);
+        RenderHelper.turnBackOn();
         RenderSystem.popAttributes();
     }
 }

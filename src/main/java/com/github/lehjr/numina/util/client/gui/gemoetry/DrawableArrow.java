@@ -333,7 +333,7 @@ public class DrawableArrow extends MuseRelativeRect implements IDrawable {
 
     void drawBackground(MatrixStack matrixStack) {
         preDraw(GL11.GL_POLYGON, DefaultVertexFormats.POSITION_COLOR);
-        Matrix4f matrix4f  = matrixStack.getLast().getMatrix();
+        Matrix4f matrix4f  = matrixStack.last().pose();
 
         // Arrow head
         FloatBuffer vertices = BufferUtils.createFloatBuffer(3 /* points */ * 2 /* axis */);
@@ -363,7 +363,7 @@ public class DrawableArrow extends MuseRelativeRect implements IDrawable {
     void drawBorder(MatrixStack matrixStack) {
         FloatBuffer vertices = BufferUtils.createFloatBuffer(6 + (drawShaft ? 8 : 0));
         preDraw(GL11.GL_LINE_LOOP, DefaultVertexFormats.POSITION_COLOR);
-        Matrix4f matrix4f  = matrixStack.getLast().getMatrix();
+        Matrix4f matrix4f  = matrixStack.last().pose();
 
         getVertexA(shrinkBorder ? 2 : 0, vertices);
         getVertexB(shrinkBorder ? 2 : 0, vertices);

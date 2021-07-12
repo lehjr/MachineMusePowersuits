@@ -198,14 +198,14 @@ public class DrawableRelativeRect extends MuseRelativeRect {
         RenderSystem.shadeModel(GL11.GL_SMOOTH);
 
         Tessellator tessellator = Tessellator.getInstance();
-        BufferBuilder buffer = tessellator.getBuffer();
+        BufferBuilder buffer = tessellator.getBuilder();
         buffer.begin(glMode, DefaultVertexFormats.POSITION_COLOR);
 
         while (vertices.hasRemaining()) {
-            buffer.pos(matrixStack.getLast().getMatrix(), vertices.get(), vertices.get(), zLevel).color(colour.r, colour.g, colour.b, colour.a).endVertex();
+            buffer.vertex(matrixStack.last().pose(), vertices.get(), vertices.get(), zLevel).color(colour.r, colour.g, colour.b, colour.a).endVertex();
         }
 
-        tessellator.draw();
+        tessellator.end();
 
         RenderSystem.shadeModel(GL11.GL_FLAT);
         RenderSystem.disableBlend();
@@ -221,13 +221,13 @@ public class DrawableRelativeRect extends MuseRelativeRect {
         RenderSystem.shadeModel(GL11.GL_SMOOTH);
 
         Tessellator tessellator = Tessellator.getInstance();
-        BufferBuilder buffer = tessellator.getBuffer();
+        BufferBuilder buffer = tessellator.getBuilder();
         buffer.begin(glMode, DefaultVertexFormats.POSITION_COLOR);
 
         while (vertices.hasRemaining() && colours.hasRemaining()) {
-            buffer.pos(matrix4f.getLast().getMatrix(), vertices.get(), vertices.get(), zLevel).color(colours.get(), colours.get(), colours.get(), colours.get()).endVertex();
+            buffer.vertex(matrix4f.last().pose(), vertices.get(), vertices.get(), zLevel).color(colours.get(), colours.get(), colours.get(), colours.get()).endVertex();
         }
-        tessellator.draw();
+        tessellator.end();
 
         RenderSystem.shadeModel(GL11.GL_FLAT);
         RenderSystem.disableBlend();

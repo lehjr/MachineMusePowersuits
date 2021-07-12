@@ -31,6 +31,6 @@ import net.minecraft.item.Item;
 
 public class ItemComponent extends Item {
     public ItemComponent() {
-        super(new Item.Properties().group(NuminaObjects.creativeTab));
+        super(new Item.Properties().tab(NuminaObjects.creativeTab));
     }
 }

@@ -67,48 +67,48 @@ public class HighPolyArmor extends BipedModel {
 
     public void setVisibleSection(EquipmentSlotType equipmentSlot) {
         this.visibleSection = equipmentSlot;
-        this.bipedHeadwear.showModel = false;
+        this.hat.visible = false;
 
         // This may not actually be needed
-        this.bipedHead.showModel = equipmentSlot == EquipmentSlotType.HEAD;
-        this.bipedBody.showModel = equipmentSlot == EquipmentSlotType.CHEST;
-        this.bipedRightArm.showModel = equipmentSlot == EquipmentSlotType.CHEST;
-        this.bipedLeftArm.showModel = equipmentSlot == EquipmentSlotType.CHEST;
-        this.bipedRightLeg.showModel = equipmentSlot == EquipmentSlotType.LEGS;
-        this.bipedLeftLeg.showModel = equipmentSlot == EquipmentSlotType.LEGS;
+        this.head.visible = equipmentSlot == EquipmentSlotType.HEAD;
+        this.body.visible = equipmentSlot == EquipmentSlotType.CHEST;
+        this.rightArm.visible = equipmentSlot == EquipmentSlotType.CHEST;
+        this.leftArm.visible = equipmentSlot == EquipmentSlotType.CHEST;
+        this.rightLeg.visible = equipmentSlot == EquipmentSlotType.LEGS;
+        this.leftLeg.visible = equipmentSlot == EquipmentSlotType.LEGS;
     }
 
     @Override
-    protected Iterable<ModelRenderer> getHeadParts() {
-        return super.getHeadParts();
+    protected Iterable<ModelRenderer> headParts() {
+        return super.headParts();
     }
 
     @Override
-    protected Iterable<ModelRenderer> getBodyParts() {
-        return super.getBodyParts();
+    protected Iterable<ModelRenderer> bodyParts() {
+        return super.bodyParts();
     }
 
     // packed overlay is for texture UV's ... see OverlayTexture.getPackedUV
     @Override
-    public void render(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
-        this.getHeadParts().forEach((part) -> part.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha));
-        this.getBodyParts().forEach((part) -> part.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha));
+    public void renderToBuffer(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
+        this.headParts().forEach((part) -> part.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha));
+        this.bodyParts().forEach((part) -> part.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha));
     }
 
     public void init() {
-        clearAndAddChild(bipedHead, 0.0F, 24.0F, 0.0F);
-        clearAndAddChild(bipedBody,0.0F, 24.0F, 0.0F);
-        clearAndAddChild(bipedRightArm,5.0F, 24.0F, 0.0F);
-        clearAndAddChild(bipedLeftArm,-5.0F, 24.0F, 0.0F);
-        clearAndAddChild(bipedRightLeg,1.9F, 12.0F, 0.0F);
-        clearAndAddChild(bipedLeftLeg,-1.9F, 12.0F, 0.0F);
-        bipedHeadwear.cubeList.clear();
+        clearAndAddChild(head, 0.0F, 24.0F, 0.0F);
+        clearAndAddChild(body,0.0F, 24.0F, 0.0F);
+        clearAndAddChild(rightArm,5.0F, 24.0F, 0.0F);
+        clearAndAddChild(leftArm,-5.0F, 24.0F, 0.0F);
+        clearAndAddChild(rightLeg,1.9F, 12.0F, 0.0F);
+        clearAndAddChild(leftLeg,-1.9F, 12.0F, 0.0F);
+        hat.cubes.clear();
     }
 
     public void clearAndAddChild(ModelRenderer mr, float x, float y, float z) {
-        mr.cubeList.clear();
+        mr.cubes.clear();
         RenderPart rp = new RenderPart(this, mr);
         mr.addChild(rp);
-        rp.setRotationPoint(x, y, z);
+        rp.setPos(x, y, z);
     }
 }

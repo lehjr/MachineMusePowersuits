@@ -58,6 +58,6 @@ public class ColourNBT implements IColourNBT, INBTSerializable<IntNBT> {
 
     @Override
     public void deserializeNBT(IntNBT nbt) {
-        this.colour = new Colour(nbt.getInt());
+        this.colour = new Colour(nbt.getAsInt());
     }
 }

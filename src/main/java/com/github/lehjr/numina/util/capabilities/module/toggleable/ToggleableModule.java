@@ -67,7 +67,7 @@ public class ToggleableModule extends PowerModule implements IToggleableModule, 
 
     @Override
     public void deserializeNBT(ByteNBT nbt) {
-        online = nbt.getByte() == 1;
+        online = nbt.getAsByte() == 1;
     }
 
     @Override

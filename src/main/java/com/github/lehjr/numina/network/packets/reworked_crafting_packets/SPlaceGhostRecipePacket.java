@@ -72,12 +72,12 @@ public class SPlaceGhostRecipePacket {
     @OnlyIn(Dist.CLIENT)
     static void handleClient(SPlaceGhostRecipePacket message) {
         Minecraft client = Minecraft.getInstance();
-        Container container = client.player.openContainer;
-        if (container.windowId == message.windowId && container.getCanCraft(client.player)) {
-            client.world.getRecipeManager().getRecipe(message.recipeId).ifPresent((iRecipe) -> {
-                if (client.currentScreen instanceof IRecipeShownListener) {
-                    RecipeBookGui recipebookgui = ((IRecipeShownListener)client.currentScreen).getRecipeGui();
-                    recipebookgui.setupGhostRecipe(iRecipe, container.inventorySlots);
+        Container container = client.player.containerMenu;
+        if (container.containerId == message.windowId && container.isSynched(client.player)) {
+            client.level.getRecipeManager().byKey(message.recipeId).ifPresent((iRecipe) -> {
+                if (client.screen instanceof IRecipeShownListener) {
+                    RecipeBookGui recipebookgui = ((IRecipeShownListener)client.screen).getRecipeBookComponent();
+                    recipebookgui.setupGhostRecipe(iRecipe, container.slots);
                 }
             });
         }

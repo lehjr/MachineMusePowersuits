@@ -95,7 +95,7 @@ public class CheckBox extends Clickable {
     @Override
     public void onPressed() {
         if (this.isVisible() && this.isEnabled()) {
-            Minecraft.getInstance().getSoundHandler().play(SimpleSound.master(SoundEvents.UI_BUTTON_CLICK, 1.0F));
+            Minecraft.getInstance().getSoundManager().play(SimpleSound.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0F));
             this.isChecked = !this.isChecked;
         }
         super.onPressed();

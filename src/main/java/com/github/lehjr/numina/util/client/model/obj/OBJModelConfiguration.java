@@ -70,7 +70,7 @@ public class OBJModelConfiguration implements IModelConfiguration {
     //FIXME!! replace with this to simplify code?
     @Override
     public RenderMaterial resolveTexture(String name) {
-        return new RenderMaterial(AtlasTexture.LOCATION_BLOCKS_TEXTURE, NuminaConstants.TEXTURE_WHITE_SHORT);
+        return new RenderMaterial(AtlasTexture.LOCATION_BLOCKS, NuminaConstants.TEXTURE_WHITE_SHORT);
     }
 
 //    /**
@@ -148,7 +148,7 @@ public class OBJModelConfiguration implements IModelConfiguration {
      */
     @Override
     public ItemCameraTransforms getCameraTransforms() {
-        return ItemCameraTransforms.DEFAULT;
+        return ItemCameraTransforms.NO_TRANSFORMS;
     }
 
     public OBJModelConfiguration setCombinedTransform(IModelTransform combinedTransform) {

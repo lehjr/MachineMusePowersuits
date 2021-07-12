@@ -56,7 +56,7 @@ public class TweakRequestDoublePacket {
     public static void encode(TweakRequestDoublePacket msg, PacketBuffer packetBuffer) {
         packetBuffer.writeInt(msg.itemSlot);
         packetBuffer.writeResourceLocation(msg.moduleName);
-        packetBuffer.writeString(msg.tweakName);
+        packetBuffer.writeUtf(msg.tweakName);
         packetBuffer.writeDouble(msg.tweakValue);
     }
 
@@ -64,7 +64,7 @@ public class TweakRequestDoublePacket {
         return new TweakRequestDoublePacket(
                 packetBuffer.readInt(),
                 packetBuffer.readResourceLocation(),
-                packetBuffer.readString(500),
+                packetBuffer.readUtf(500),
                 packetBuffer.readDouble());
     }
 
@@ -78,7 +78,7 @@ public class TweakRequestDoublePacket {
             double tweakValue = message.tweakValue;
 
             if (moduleName != null && tweakName != null) {
-                ItemStack stack = player.inventory.getStackInSlot(itemSlot);
+                ItemStack stack = player.inventory.getItem(itemSlot);
                 stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(iItemHandler -> {
                     if (iItemHandler instanceof IModularItem) {
                         ((IModularItem) iItemHandler).setModuleTweakDouble(moduleName, tweakName, tweakValue);

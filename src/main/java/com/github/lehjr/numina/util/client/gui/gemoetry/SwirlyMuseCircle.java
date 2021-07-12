@@ -66,14 +66,14 @@ public class SwirlyMuseCircle {
         RenderSystem.defaultBlendFunc();
 
         Tessellator tessellator = Tessellator.getInstance();
-        BufferBuilder buffer = tessellator.getBuffer();
+        BufferBuilder buffer = tessellator.getBuilder();
         buffer.begin(GL11.GL_LINE_LOOP, DefaultVertexFormats.POSITION_COLOR);
-        Matrix4f matrix4f = matrixStack.getLast().getMatrix();
+        Matrix4f matrix4f = matrixStack.last().pose();
 
         while (points.hasRemaining() && colour.hasRemaining()) {
-            buffer.pos(matrix4f, points.get(), points.get(), zLevel).color(colour.get(), colour.get(), colour.get(), colour.get()).endVertex();
+            buffer.vertex(matrix4f, points.get(), points.get(), zLevel).color(colour.get(), colour.get(), colour.get(), colour.get()).endVertex();
         }
-        tessellator.draw();
+        tessellator.end();
 
         RenderSystem.shadeModel(GL11.GL_FLAT);
         RenderSystem.disableBlend();

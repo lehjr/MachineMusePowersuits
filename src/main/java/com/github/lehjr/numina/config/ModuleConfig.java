@@ -150,7 +150,7 @@ public class ModuleConfig implements IConfig {
             EnumModuleCategory category,
             @Nonnull ItemStack module,
             String propertyName, double baseVal) {
-        String moduleName = itemTranslationKeyToConfigKey(module.getTranslationKey());
+        String moduleName = itemTranslationKeyToConfigKey(module.getItem().getDescriptionId());
         String entry = "base_" + propertyName;
 
         // if config is not null then look up value and add it if not present
@@ -196,7 +196,7 @@ public class ModuleConfig implements IConfig {
             String propertyName,
             double multiplier) {
 
-        String moduleName = itemTranslationKeyToConfigKey(module.getTranslationKey());
+        String moduleName = itemTranslationKeyToConfigKey(module.getItem().getDescriptionId());
         String entry = propertyName + "_" + tradeoffName + "_multiplier";
 
         return getModConfig().map(config-> {
@@ -237,7 +237,7 @@ public class ModuleConfig implements IConfig {
 
     @Override
     public int getTradeoffPropertyIntegerOrDefault(EnumModuleCategory category, @Nonnull ItemStack module, String tradeoffName, String propertyName, int multiplier) {
-        String moduleName = itemTranslationKeyToConfigKey(module.getTranslationKey());
+        String moduleName = itemTranslationKeyToConfigKey(module.getItem().getDescriptionId());
         String entry = propertyName + "_" + tradeoffName + "_multiplier";
 
         return getModConfig().map(config->{
@@ -272,7 +272,7 @@ public class ModuleConfig implements IConfig {
 
     @Override
     public boolean isModuleAllowed(EnumModuleCategory category, @Nonnull ItemStack module) {
-        String moduleName = itemTranslationKeyToConfigKey(module.getTranslationKey());
+        String moduleName = itemTranslationKeyToConfigKey(module.getItem().getDescriptionId());
         String entry = "isAllowed";
 
         return getModConfig().map(config->{

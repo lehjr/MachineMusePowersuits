@@ -109,7 +109,7 @@ public class DrawableTile extends MuseRelativeRect implements IDrawable {
     public void internalDrawRect(MatrixStack matrixStack, double left, double top, double right, double bottom, Colour colourIn, int glMode) {
         preDraw(glMode, DefaultVertexFormats.POSITION_COLOR);
         FloatBuffer vertices = BufferUtils.createFloatBuffer(8);
-        Matrix4f matrix4f = matrixStack.getLast().getMatrix();
+        Matrix4f matrix4f = matrixStack.last().pose();
 
         // top right
         vertices.put((float)right);

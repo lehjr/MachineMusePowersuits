@@ -63,7 +63,7 @@ public class ChargingBaseTileEntity extends MuseTileEntity implements ITickableT
      */
     @Nullable
     public List<LivingEntity> getEntities() {
-        List<LivingEntity> list = world.getEntitiesWithinAABB(LivingEntity.class, new AxisAlignedBB(pos), entity -> entity instanceof LivingEntity);
+        List<LivingEntity> list = level.getEntitiesOfClass(LivingEntity.class, new AxisAlignedBB(this.worldPosition), entity -> entity instanceof LivingEntity);
         return list;
     }
 
@@ -79,42 +79,42 @@ public class ChargingBaseTileEntity extends MuseTileEntity implements ITickableT
     private LazyOptional<IEnergyStorage> energyWrapper = LazyOptional.of(() -> energyWrapperStorage);
 
     @Override
-    public void remove() {
-        super.remove();
+    public void setRemoved() {
+        super.setRemoved();
         handler.invalidate();
         tileEnergy.invalidate();
     }
 
     @Override
     public void tick() {
-        if (world.isRemote) {
+        if (level.isClientSide) {
             return;
         }
 
-        List<LivingEntity> entityList = world.getEntitiesWithinAABB(LivingEntity.class, new AxisAlignedBB(pos), entity -> entity instanceof LivingEntity);
+        List<LivingEntity> entityList = level.getEntitiesOfClass(LivingEntity.class, new AxisAlignedBB(getBlockPos()), entity -> entity instanceof LivingEntity);
 
         for (LivingEntity entity : entityList) {
             sendOutPower(entity);
         }
 
-        BlockState state = this.world.getBlockState(pos);
-        BlockState newState = state.with(BlockStateProperties.POWERED, energyWrapper.map(IEnergyStorage::getEnergyStored).orElse(0) > 0);
+        BlockState state = this.level.getBlockState(getBlockPos());
+        BlockState newState = state.setValue(BlockStateProperties.POWERED, energyWrapper.map(IEnergyStorage::getEnergyStored).orElse(0) > 0);
 
         if (state != newState) {
-            this.world.setBlockState(this.pos, newState, 3);
+            this.level.setBlock(this.getBlockPos(), newState, 3);
         }
     }
 
     private void sendOutPower(LivingEntity entity) {
         energyWrapper.ifPresent(wrapper->{
-            entity.getEquipmentAndArmor().forEach(itemStack -> {
+            entity.getArmorSlots().forEach(itemStack -> {
                 if (wrapper.getEnergyStored() > 0) {
                     boolean doContinue = itemStack.getCapability(CapabilityEnergy.ENERGY).map(iItemEnergyHandler -> {
                                 if (iItemEnergyHandler.canReceive()) {
                                     int received = iItemEnergyHandler.receiveEnergy(wrapper.getEnergyStored(), false);
                                     energyWrapperStorage.extractEnergy(received, false);
                                     wrapper.extractEnergy(received, false);
-                                    markDirty();
+                                    setChanged();
                                     return wrapper.getEnergyStored() > 0;
                                 } else {
                                     return true;
@@ -130,32 +130,32 @@ public class ChargingBaseTileEntity extends MuseTileEntity implements ITickableT
     }
 
     /**
-     * Retrieves packet to send to the client whenever this Tile Entity is resynced via World.notifyBlockUpdate. For
+     * Retrieves packet to send to the client whenever this Tile Entity is resynced via World.sendBlockUpdated. For
      * modded TE's, this packet comes back to you clientside in {@link #onDataPacket}
      */
     @Nullable
     @Override
     public SUpdateTileEntityPacket getUpdatePacket() {
-        return new SUpdateTileEntityPacket(this.pos, -1, this.getUpdateTag());
+        return new SUpdateTileEntityPacket(this.worldPosition, -1, this.getUpdateTag());
     }
 
     @Override
     public CompoundNBT getUpdateTag() {
-        return this.write(new CompoundNBT());
+        return this.save(new CompoundNBT());
     }
 
     @Override
-    public void read(BlockState stateIn, CompoundNBT nbt) {
+    public void load(BlockState stateIn, CompoundNBT nbt) {
         itemHandler.deserializeNBT(nbt.getCompound("inv"));
         energyStorage.deserializeNBT(nbt.getCompound("energy"));
-        super.read(stateIn, nbt);
+        super.load(stateIn, nbt);
     }
 
     @Override
-    public CompoundNBT write(CompoundNBT nbt) {
+    public CompoundNBT save(CompoundNBT nbt) {
         nbt.put("inv", itemHandler.serializeNBT());
         nbt.put("energy", energyStorage.serializeNBT());
-        return super.write(nbt);
+        return super.save(nbt);
     }
 
     private ItemStackHandler createHandler() {
@@ -165,7 +165,7 @@ public class ChargingBaseTileEntity extends MuseTileEntity implements ITickableT
             protected void onContentsChanged(int slot) {
                 // To make sure the TE persists when the chunk is saved later we need to
                 // mark it dirty every time the item handler changes
-                markDirty();
+                setChanged();
             }
 
             @Override
@@ -188,7 +188,7 @@ public class ChargingBaseTileEntity extends MuseTileEntity implements ITickableT
         return new TileEnergyStorage(NuminaSettings.chargingBaseMaxPower(), NuminaSettings.chargingBaseMaxPower()) {
             @Override
             public void onEnergyChanged() {
-                markDirty();
+                setChanged();
             }
         };
     }

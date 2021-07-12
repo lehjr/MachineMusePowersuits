@@ -38,7 +38,7 @@ public class TextureSpec extends SpecBase {
 
     @Override
     public String getDisaplayName() {
-        return I18n.format(new StringBuilder("textureSpec.")
+        return I18n.get(new StringBuilder("textureSpec.")
                 .append(this.getName())
                 .append(".specName")
                 .toString());

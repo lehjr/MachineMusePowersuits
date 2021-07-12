@@ -115,7 +115,7 @@ public class ClickableModule extends Clickable {
         if (this.getModule().isEmpty()) {
             return null;
         }
-        return new TranslationTextComponent(this.getModule().getTranslationKey().concat(".desc"));
+        return new TranslationTextComponent(this.getModule().getItem().getDescriptionId().concat(".desc"));
     }
 
     @Override
@@ -125,21 +125,21 @@ public class ClickableModule extends Clickable {
         if (!getModule().isEmpty()) {
             MuseRenderer.drawModuleAt(matrixStack, getPosition().getX() - offsetx, getPosition().getY() - offsety, getModule(), true);
             if (!allowed) {
-                matrixStack.push();
+                matrixStack.pushPose();
                 matrixStack.translate(0, 0, 250);
                 NuminaRenderState.glowOn();
                 String string = MuseStringUtils.wrapMultipleFormatTags("X", MuseStringUtils.FormatCodes.Bold, MuseStringUtils.FormatCodes.DarkRed);
                 MuseRenderer.drawString(matrixStack, string, getPosition().getX() + 3, getPosition().getY() + 1);
                 NuminaRenderState.glowOff();
 
-                matrixStack.pop();
+                matrixStack.popPose();
             } else if (installed) {
-                matrixStack.push();
+                matrixStack.pushPose();
                 matrixStack.translate(0, 0,250);
                 NuminaRenderState.glowOn();
                 MuseIconUtils.getIcon().checkmark.draw(matrixStack, getPosition().getX() - offsetx + 1, getPosition().getY() - offsety + 1, checkmarkcolour.withAlpha(0.6F));
                 NuminaRenderState.glowOff();
-                matrixStack.pop();
+                matrixStack.popPose();
             }
         }
     }

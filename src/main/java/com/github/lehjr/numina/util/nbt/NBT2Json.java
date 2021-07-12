@@ -34,8 +34,8 @@ import net.minecraftforge.common.util.Constants;
 
 public class NBT2Json {
     public static JsonObject CompoundNBT2Json(CompoundNBT nbt, JsonObject jsonObjectIn) {
-        for (String key : nbt.keySet()) {
-            switch(nbt.getTagId(key)) {
+        for (String key : nbt.getAllKeys()) {
+            switch(nbt.getTagType(key)) {
                 // Note this is also how a bool is stored
                 case Constants.NBT.TAG_BYTE: // 1
                     jsonObjectIn.addProperty(key, nbt.getByte(key));

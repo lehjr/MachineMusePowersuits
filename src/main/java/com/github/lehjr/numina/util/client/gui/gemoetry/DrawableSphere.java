@@ -49,18 +49,18 @@ public class DrawableSphere {
         points.rewind();
         float scale = radiusIn/this.radius;
 
-        matrixStackIn.push();
+        matrixStackIn.pushPose();
         matrixStackIn.translate(x, y, z);
         matrixStackIn.scale(scale, scale, scale);
         IVertexBuilder vertBuffer = bufferIn.getBuffer(DrawableCircle.PLASMA_BALL);
-        Matrix4f matrix4f = matrixStackIn.getLast().getMatrix();
+        Matrix4f matrix4f = matrixStackIn.last().pose();
 
         while (points.hasRemaining()) {
-            vertBuffer.pos(matrix4f, points.get(), points.get(), points.get())
+            vertBuffer.vertex(matrix4f, points.get(), points.get(), points.get())
                     .color(colour.r, colour.g, colour.b, colour.a)
-                    .lightmap(0x00F000F0)
+                    .uv2(0x00F000F0)
                     .endVertex();
         }
-        matrixStackIn.pop();
+        matrixStackIn.popPose();
     }
 }

@@ -49,21 +49,21 @@ public class Musique {
     private static HashMap<String, MovingSoundPlayer> soundMap = new HashMap<>();
 
     public static SoundHandler mcsound() {
-        return Minecraft.getInstance().getSoundHandler();
+        return Minecraft.getInstance().getSoundManager();
     }
 
     public static void playClientSound(SoundEvent soundEvt, float volumeIn) {
         if (NuminaSettings.useSounds()) {
-            mcsound().play(SimpleSound.master(soundEvt, volumeIn));
+            mcsound().play(SimpleSound.forUI(soundEvt, volumeIn));
         }
     }
 
     public static String makeSoundString(PlayerEntity player, SoundEvent soundEvt) {
-        return makeSoundString(player, soundEvt.getName());
+        return makeSoundString(player, soundEvt.getRegistryName());
     }
 
     public static String makeSoundString(PlayerEntity player, ResourceLocation soundname) {
-        return player.getUniqueID().toString() + soundname;
+        return player.getUUID().toString() + soundname;
     }
 
     public static void playerSound(PlayerEntity player, SoundEvent soundEvt, SoundCategory categoryIn, float volume, Float pitch, Boolean continuous) {
@@ -73,7 +73,7 @@ public class Musique {
             String soundID = makeSoundString(player, soundEvt);
             MovingSoundPlayer sound = soundMap.get(soundID);
 
-            if (sound != null && (sound.isDonePlaying() || !sound.canRepeat())) {
+            if (sound != null && (sound.isStopped() || !sound.isLooping())) {
                 stopPlayerSound(player, soundEvt);
                 sound = null;
             }

@@ -53,7 +53,7 @@ public class KeyBindingHelper {
     }
 
     public static InputMappings.Input getInputByCode(int keyCode) {
-        return InputMappings.Type.KEYSYM.getOrMakeInput(keyCode);
+        return InputMappings.Type.KEYSYM.getOrCreate(keyCode);
     }
 
     public boolean keyBindingHasKey(int keyCode) {

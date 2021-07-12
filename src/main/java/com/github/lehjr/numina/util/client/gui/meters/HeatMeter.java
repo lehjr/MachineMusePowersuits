@@ -43,7 +43,7 @@ public class HeatMeter {
     }
 
     public void draw(MatrixStack matrixStack, float xpos, float ypos, float value) {
-        meter.draw(matrixStack, xpos, ypos, Minecraft.getInstance().currentScreen.getBlitOffset(), value);
+        meter.draw(matrixStack, xpos, ypos, Minecraft.getInstance().screen.getBlitOffset(), value);
     }
 
     public void draw(MatrixStack matrixStack, float xpos, float ypos, float value, float zLevel) {

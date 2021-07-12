@@ -65,7 +65,7 @@ public class PlasmaBallTestRenderer  extends ItemStackTileEntityRenderer {
     float size = 50;
 
     @Override
-    public void func_239207_a_(ItemStack stack,
+    public void renderByItem(ItemStack stack,
                                ItemCameraTransforms.TransformType transformType,
                                MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int combinedLight, int combinedOverlay) {
         renderAsItem(matrixStackIn, bufferIn, size, transformType);
@@ -73,30 +73,30 @@ public class PlasmaBallTestRenderer  extends ItemStackTileEntityRenderer {
 
     public void renderAsItem(MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, float boltSizeIn, ItemCameraTransforms.TransformType cameraTransformTypeIn) {
         if (boltSizeIn != 0) {
-            matrixStackIn.push();
+            matrixStackIn.pushPose();
             if (cameraTransformTypeIn == ItemCameraTransforms.TransformType.FIRST_PERSON_RIGHT_HAND || cameraTransformTypeIn == ItemCameraTransforms.TransformType.FIRST_PERSON_LEFT_HAND) {
                 matrixStackIn.scale(0.0625f, 0.0625f, 0.0625f); // negative scale mirrors the model
-                matrixStackIn.rotate(Vector3f.XP.rotationDegrees(-182));
+                matrixStackIn.mulPose(Vector3f.XP.rotationDegrees(-182));
             } else {
                 matrixStackIn.scale(0.0625f, 0.0625f, 0.0625f);
                 matrixStackIn.translate(0, 0, 20.3f);
 //                GL11.glTranslatef(0, 0, 1.3f);
-                matrixStackIn.rotate(Vector3f.XP.rotationDegrees(-196F));
+                matrixStackIn.mulPose(Vector3f.XP.rotationDegrees(-196F));
             }
             //---
             matrixStackIn.translate(-1, 1, 16);
-            matrixStackIn.push();
+            matrixStackIn.pushPose();
 
             renderPlasma(matrixStackIn, bufferIn, boltSizeIn);
 
-            matrixStackIn.pop();
+            matrixStackIn.popPose();
             // ---
-            matrixStackIn.pop();
+            matrixStackIn.popPose();
         }
     }
 
     public void renderPlasma(MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, float size) {
-        matrixStackIn.push();
+        matrixStackIn.pushPose();
         float scalFactor = 3;
 
 //        MuseRenderer.unRotate();
@@ -123,20 +123,20 @@ public class PlasmaBallTestRenderer  extends ItemStackTileEntityRenderer {
             renderPlasmaBall(matrixStackIn, bufferIn, (float) (2+timeScale)*scalFactor,colour3.withAlpha(0.4F));
             renderPlasmaBall(matrixStackIn, bufferIn, (float) (1+timeScale)*scalFactor,colour4.withAlpha(0.75F));
         }
-        matrixStackIn.pop();
+        matrixStackIn.popPose();
     }
 
     private RenderType getSphereRenderType() {
-        return RenderType.getEntityTranslucentCull(NuminaConstants.TEXTURE_WHITE);
+        return RenderType.entityTranslucentCull(NuminaConstants.TEXTURE_WHITE);
     }
 
     void renderPlasmaBall(MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, float scale, Colour colour) {
-        matrixStackIn.push();
+        matrixStackIn.pushPose();
         matrixStackIn.translate(0.5, 0.5, 0.5);
         matrixStackIn.scale(scale, scale, scale);
         renderSphere(bufferIn, getSphereRenderType(), // fixme get a better render type
                 matrixStackIn, /*combinedLight*/0x00F000F0, colour);
-        matrixStackIn.pop();
+        matrixStackIn.popPose();
     }
 
     public void renderSphere(IRenderTypeBuffer bufferIn, RenderType rt, MatrixStack matrixStackIn, int packedLightIn, Colour colour) {
@@ -146,7 +146,7 @@ public class PlasmaBallTestRenderer  extends ItemStackTileEntityRenderer {
     public void renderSphere(IRenderTypeBuffer bufferIn, RenderType rt, MatrixStack matrixStackIn, int packedLightIn, int overlay, Colour colour) {
         IVertexBuilder bb = bufferIn.getBuffer(rt);
         for (BakedQuad quad : modelSphere.get().getQuads(null, null, rand, EmptyModelData.INSTANCE)) {
-            bb.addVertexData(matrixStackIn.getLast(), quad, colour.r, colour.g, colour.b, colour.a, packedLightIn, overlay, true);
+            bb.addVertexData(matrixStackIn.last(), quad, colour.r, colour.g, colour.b, colour.a, packedLightIn, overlay, true);
         }
     }
 }

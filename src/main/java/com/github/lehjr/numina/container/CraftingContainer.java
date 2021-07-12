@@ -42,6 +42,7 @@ import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.IRecipeType;
 import net.minecraft.item.crafting.RecipeItemHelper;
 import net.minecraft.network.play.server.SSetSlotPacket;
+import net.minecraft.util.IWorldPosCallable;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -49,25 +50,28 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import java.util.Optional;
 
 public class CraftingContainer extends NuminaRecipeBookContainer<CraftingInventory> {
-    private final CraftingInventory craftingInventory;
-    private final CraftResultInventory resultInventory;
+    private final CraftingInventory craftSlots = new CraftingInventory(this, 3, 3);
+    private final CraftResultInventory resultSlots = new CraftResultInventory();
+    private final IWorldPosCallable access;
     private final PlayerEntity player;
 
-    public CraftingContainer(int windowId, PlayerInventory playerInventory) {
-        super(NuminaObjects.CRAFTING_CONTAINER_TYPE.get(), windowId);
-        this.craftingInventory = new CraftingInventory(this, 3, 3);
-        this.resultInventory = new CraftResultInventory();
-        this.player = playerInventory.player;
+    public CraftingContainer(int windowID, PlayerInventory playerInventory) {
+        this(windowID, playerInventory, IWorldPosCallable.NULL);
+    }
 
+    public CraftingContainer(int windowID, PlayerInventory playerInventory, IWorldPosCallable posCallable) {
+        super(NuminaObjects.CRAFTING_CONTAINER_TYPE.get(), windowID);
+        this.player = playerInventory.player;
+        this.access = posCallable;
         // crafting result: slot 0
-        this.addSlot(new CraftingResultSlot(playerInventory.player, this.craftingInventory, this.resultInventory, 0, 124, 35));
+        this.addSlot(new CraftingResultSlot(playerInventory.player, this.craftSlots, this.resultSlots, 0, 124, 35));
 
         int row;
         int col;
         // crafting inventory: slot 1-9
         for(row = 0; row < 3; ++row) {
             for(col = 0; col < 3; ++col) {
-                this.addSlot(new Slot(this.craftingInventory, col + row * 3, 30 + col * 18, 17 + row * 18));
+                this.addSlot(new Slot(this.craftSlots, col + row * 3, 30 + col * 18, 17 + row * 18));
             }
         }
 
@@ -84,69 +88,55 @@ public class CraftingContainer extends NuminaRecipeBookContainer<CraftingInvento
         }
     }
 
-    protected static void setCraftingResultSlot(int windowId, World world, PlayerEntity playerIn, CraftingInventory craftingInventory, CraftResultInventory resultInventory) {
-        if (!world.isRemote) {
+    protected static void setCraftingResultSlot(int windowId, World level, PlayerEntity playerIn, CraftingInventory craftingSlots, CraftResultInventory resultInventory) {
+        if (!level.isClientSide()) {
             ServerPlayerEntity serverPlayer = (ServerPlayerEntity)playerIn;
             ItemStack itemStack = ItemStack.EMPTY;
-            Optional<ICraftingRecipe> optionalRecipe = world.getServer().getRecipeManager().getRecipe(IRecipeType.CRAFTING, craftingInventory, world);
+            Optional<ICraftingRecipe> optionalRecipe = level.getServer().getRecipeManager().getRecipeFor(IRecipeType.CRAFTING, craftingSlots, level);
             if (optionalRecipe.isPresent()) {
                 ICraftingRecipe recipe = (ICraftingRecipe)optionalRecipe.get();
-                if (resultInventory.canUseRecipe(world, serverPlayer, recipe)) {
-                    itemStack = recipe.getCraftingResult(craftingInventory);
+                if (resultInventory.setRecipeUsed(level, serverPlayer, recipe)) {
+                    itemStack = recipe.assemble(craftingSlots);
                 }
             }
             // set result slot on server side then send packet to set same on client
-            resultInventory.setInventorySlotContents(0, itemStack);
-            serverPlayer.connection.sendPacket(new SSetSlotPacket(windowId, 0, itemStack));
+            resultInventory.setItem(0, itemStack);
+            serverPlayer.connection.send(new SSetSlotPacket(windowId, 0, itemStack));
         }
     }
 
     @Override
-    public void onCraftMatrixChanged(IInventory iInventory) {
-        if (!player.world.isRemote) {
-            setCraftingResultSlot(this.windowId, player.world, this.player, this.craftingInventory, this.resultInventory);
+    public void slotsChanged(IInventory iInventory) {
+        if (!player.level.isClientSide) {
+            setCraftingResultSlot(this.containerId, player.level, this.player, this.craftSlots, this.resultSlots);
         }
     }
 
     @Override
-    public void fillStackedContents(RecipeItemHelper itemHelperIn) {
-        this.craftingInventory.fillStackedContents(itemHelperIn);
+    public void fillCraftSlotsStackedContents(RecipeItemHelper itemHelperIn) {
+        this.craftSlots.fillStackedContents(itemHelperIn);
     }
 
-    @Override
-    public void clear() {
-        this.craftingInventory.clear();
-        this.resultInventory.clear();
-    }
-
-    @Override
-    public boolean matches(IRecipe recipeIn) {
-        return recipeIn.matches(this.craftingInventory, this.player.world);
-    }
 
     /**
      * replace IWorldPosCallable.consume with something not position specific
      * since this will be used by a portable setup
      */
     public void consume(PlayerEntity playerIn) {
-        this.resultInventory.clear();
-        if (!playerIn.world.isRemote) {
-            this.clearContainer(playerIn, playerIn.world, this.craftingInventory);
+        this.resultSlots.clearContent();
+        if (!playerIn.level.isClientSide) {
+            this.clearContainer(playerIn, playerIn.level, this.craftSlots);
         }
     }
 
     /**
      * Called when the container is closed.
      */
-    public void onContainerClosed(PlayerEntity playerIn) {
-        super.onContainerClosed(playerIn);
+    public void removed(PlayerEntity playerIn) {
+        super.removed(playerIn);
         consume(playerIn);
     }
 
-    @Override
-    public boolean canInteractWith(PlayerEntity playerIn) {
-        return true;
-    }
 
     /**
      * @param playerEntity
@@ -154,43 +144,43 @@ public class CraftingContainer extends NuminaRecipeBookContainer<CraftingInvento
      * @return copy of the itemstack moved. ItemStack.Empty means no change
      */
     @Override
-    public ItemStack transferStackInSlot(PlayerEntity playerEntity, int index) {
+    public ItemStack quickMoveStack(PlayerEntity playerEntity, int index) {
         ItemStack stackCopy = ItemStack.EMPTY;
-        Slot slot = this.inventorySlots.get(index);
-        if (slot != null && slot.getHasStack()) {
-            ItemStack itemStack = slot.getStack();
+        Slot slot = this.slots.get(index);
+        if (slot != null && slot.hasItem()) {
+            ItemStack itemStack = slot.getItem();
             stackCopy = itemStack.copy();
 
             // crafting result
-            if (index == getOutputSlot()) {
+            if (index == getResultSlotIndex()) {
                 this.consume(playerEntity);
 
-                if (!this.mergeItemStack(itemStack, 10, 46, true)) {
+                if (!this.moveItemStackTo(itemStack, 10, 46, true)) {
                     return ItemStack.EMPTY;
                 }
-                slot.onSlotChange(itemStack, stackCopy);
+                slot.onQuickCraft(itemStack, stackCopy);
 
                 // player inventory
             } else if (index >= 10 && index < 37) {
-                if (!this.mergeItemStack(itemStack, 37, 46, false)) {
+                if (!this.moveItemStackTo(itemStack, 37, 46, false)) {
                     return ItemStack.EMPTY;
                 }
 
                 // hotbar
             } else if (index >= 37 && index < 46) {
-                if (!this.mergeItemStack(itemStack, 10, 37, false)) {
+                if (!this.moveItemStackTo(itemStack, 10, 37, false)) {
                     return ItemStack.EMPTY;
                 }
 
 
-            } else if (!this.mergeItemStack(itemStack, 10, 46, false)) {
+            } else if (!this.moveItemStackTo(itemStack, 10, 46, false)) {
                 return ItemStack.EMPTY;
             }
 
             if (itemStack.isEmpty()) {
-                slot.putStack(ItemStack.EMPTY);
+                slot.set(ItemStack.EMPTY);
             } else {
-                slot.onSlotChanged();
+                slot.setChanged();
             }
 
             if (itemStack.getCount() == stackCopy.getCount()) {
@@ -198,37 +188,54 @@ public class CraftingContainer extends NuminaRecipeBookContainer<CraftingInvento
             }
 
             ItemStack takenStack = slot.onTake(playerEntity, itemStack);
-            if (index == getOutputSlot()) {
-                playerEntity.dropItem(takenStack, false);
+            if (index == getResultSlotIndex()) {
+                playerEntity.drop(takenStack, false);
             }
         }
         return stackCopy;
     }
 
     @Override
-    public boolean canMergeSlot(ItemStack itemStack, Slot slot) {
-        return slot.inventory != this.resultInventory && super.canMergeSlot(itemStack, slot);
+    public boolean canTakeItemForPickAll(ItemStack itemStack, Slot slot) {
+        return slot.container != this.resultSlots && super.canTakeItemForPickAll(itemStack, slot);
+    }
+
+
+    @Override
+    public boolean stillValid(PlayerEntity playerIn) {
+        return true;
     }
 
     @Override
-    public int getOutputSlot() {
+    public void clearCraftingContent() {
+        this.craftSlots.clearContent();
+        this.resultSlots.clearContent();
+    }
+
+    @Override
+    public boolean recipeMatches(IRecipe recipeIn) {
+        return recipeIn.matches(this.craftSlots, this.player.level);
+    }
+
+    @Override
+    public int getResultSlotIndex() {
         return 0;
     }
 
     @Override
-    public int getWidth() {
-        return this.craftingInventory.getWidth();
+    public int getGridWidth() {
+        return this.craftSlots.getWidth();
     }
 
     @Override
-    public int getHeight() {
-        return this.craftingInventory.getHeight();
+    public int getGridHeight() {
+        return this.craftSlots.getHeight();
     }
 
     @Override
     @OnlyIn(Dist.CLIENT)
     public int getSize() {
         // 3x3 crafting grid plus output slot
-        return getHeight() * getWidth() + 1;
+        return getGridHeight() * getGridWidth() + 1;
     }
 }

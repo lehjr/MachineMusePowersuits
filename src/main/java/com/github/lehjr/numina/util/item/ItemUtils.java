@@ -49,10 +49,10 @@ public class ItemUtils {
     public static NonNullList<ItemStack> getModularItemsEquipped(PlayerEntity player) {
         NonNullList<ItemStack> modulars = NonNullList.create();
         for (EquipmentSlotType slot : EquipmentSlotType.values()) {
-            ItemStack itemStack = player.getItemStackFromSlot(slot);
+            ItemStack itemStack = player.getItemBySlot(slot);
 
             itemStack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(handler-> {
-                switch(slot.getSlotType()) {
+                switch(slot.getType()) {
                     case HAND:
                         if (handler instanceof IModeChangingItem)
                             modulars.add(itemStack);
@@ -87,8 +87,8 @@ public class ItemUtils {
     public static NonNullList<ItemStack> getModularItemsInInventory(IInventory inv) {
         NonNullList<ItemStack> stacks = NonNullList.create();
 
-        for (int i = 0; i < inv.getSizeInventory(); i++) {
-            ItemStack itemStack = inv.getStackInSlot(i);
+        for (int i = 0; i < inv.getContainerSize(); i++) {
+            ItemStack itemStack = inv.getItem(i);
             itemStack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(handler -> {
                 if (handler instanceof IModularItem)
                     stacks.add(itemStack);
@@ -112,15 +112,15 @@ public class ItemUtils {
         // feet ....... 36
 
         ArrayList<Integer> slots = new ArrayList<>();
-        player.getHeldItemMainhand().getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(handler ->{
+        player.getMainHandItem().getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(handler ->{
             if (handler instanceof IModeChangingItem)
-                slots.add(player.inventory.currentItem);
+                slots.add(player.inventory.selected);
         });
 
-        for (int i = 36; i < player.inventory.getSizeInventory(); i++) {
-            player.inventory.getStackInSlot(i).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(handler ->{
+        for (int i = 36; i < player.inventory.getContainerSize(); i++) {
+            player.inventory.getItem(i).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(handler ->{
                 if (handler instanceof IModularItem)
-                    slots.add(player.inventory.currentItem);
+                    slots.add(player.inventory.selected);
             });
         }
         return slots;
@@ -134,9 +134,9 @@ public class ItemUtils {
      */
     public static List<Integer> getModularItemSlotsInInventory(PlayerEntity player) {
         ArrayList<Integer> slots = new ArrayList<>();
-        for (int i = 0; i < player.inventory.getSizeInventory(); i++) {
+        for (int i = 0; i < player.inventory.getContainerSize(); i++) {
             int finalI = i;
-            player.inventory.getStackInSlot(i).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+            player.inventory.getItem(i).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
                     .ifPresent(handler -> {
                         if (handler instanceof IModularItem)
                             slots.add(finalI);

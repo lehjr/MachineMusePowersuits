@@ -67,7 +67,7 @@ public class ModeChangingModularItem extends ModularItem implements IModeChangin
     @Nullable
     @Override
     public IBakedModel getInventoryModel() {
-        return Minecraft.getInstance().getItemRenderer().getItemModelMesher().getItemModel(getActiveModule());
+        return Minecraft.getInstance().getItemRenderer().getItemModelShaper().getItemModel(getActiveModule());
     }
 
     @Override
@@ -152,7 +152,7 @@ public class ModeChangingModularItem extends ModularItem implements IModeChangin
             int newindex = clampMode(modes.indexOf(this.getActiveMode()) + dMode, modes.size());
             int newmode = modes.get(newindex);
             this.setActiveMode(newmode);
-            NuminaPackets.CHANNEL_INSTANCE.sendToServer(new ModeChangeRequestPacket(newmode, player.inventory.currentItem));
+            NuminaPackets.CHANNEL_INSTANCE.sendToServer(new ModeChangeRequestPacket(newmode, player.inventory.selected));
         }
     }
 

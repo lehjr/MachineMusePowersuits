@@ -65,11 +65,11 @@ public class ClickableItem extends Clickable {
         MuseRenderer.drawItemAt(
                 getPosition().getX() - offsetx,
                 getPosition().getY() - offsety, getStack());
-        if (inventorySlot > 35 || itemHandler.getCurrentItem() == getStack()) {
-            matrixStack.push();
+        if (inventorySlot > 35 || itemHandler.getSelected() == getStack()) {
+            matrixStack.pushPose();
             matrixStack.translate(0,0,310);
             MuseRenderer.drawString(matrixStack, "e", getPosition().getX() + 3, getPosition().getY() + 1, Colour.DARK_GREEN);
-            matrixStack.pop();
+            matrixStack.popPose();
         }
     }
 
@@ -107,7 +107,7 @@ public class ClickableItem extends Clickable {
 
     @Nonnull
     public ItemStack getStack() {
-        return itemHandler.getStackInSlot(inventorySlot);
+        return itemHandler.getItem(inventorySlot);
     }
 
     public int getSlotIndex() {
@@ -116,6 +116,6 @@ public class ClickableItem extends Clickable {
 
     @Override
     public List<ITextComponent> getToolTip() {
-        return getStack().getTooltip(Minecraft.getInstance().player, ITooltipFlag.TooltipFlags.NORMAL);
+        return getStack().getTooltipLines(Minecraft.getInstance().player, ITooltipFlag.TooltipFlags.NORMAL);
     }
 }

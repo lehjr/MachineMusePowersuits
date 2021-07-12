@@ -47,11 +47,11 @@ public class ToolHelpers {
     public static boolean isToolEffective(IBlockReader world, BlockPos pos, @Nonnull ItemStack emulatedTool) {
         BlockState state = world.getBlockState(pos);
 
-        if (Float.compare(state.getBlockHardness(world, pos), -1.0F) <= 0 ) {// unbreakable
+        if (Float.compare(state.getDestroySpeed(world, pos), -1.0F) <= 0 ) {// unbreakable
             return false;
         }
 
-        if (emulatedTool.getItem().canHarvestBlock(state)) {
+        if (emulatedTool.getItem().isCorrectToolForDrops(state)) {
             return true;
         }
 
@@ -76,11 +76,11 @@ public class ToolHelpers {
         BlockState state = world.getBlockState(pos);
         Block block = state.getBlock();
 
-        if (block == null || world.isAirBlock(pos) || block == Blocks.BEDROCK)
+        if (block == null || world.isEmptyBlock(pos) || block == Blocks.BEDROCK)
             return false;
         if ((block instanceof IForgeShearable || block instanceof FlowerBlock || block instanceof BushBlock || block instanceof LeavesBlock)
                 && block.canHarvestBlock(state, world, pos, player) || block == Blocks.SNOW || block == Blocks.SNOW_BLOCK) {
-            block.harvestBlock(world, player, pos, state, world.getTileEntity(pos), new ItemStack(Items.IRON_SHOVEL));
+            block.playerDestroy(world, player, pos, state, world.getBlockEntity(pos), new ItemStack(Items.IRON_SHOVEL));
             world.removeBlock(pos, false);
             return true;
         }

@@ -64,12 +64,12 @@ public class ArmorStandContainer extends Container {
         this.armorStandEntity = armorStand;
         armorStandInventory = new Inventory(
                 // These have high "inventory slot" numbers:
-                armorStand.getItemStackFromSlot(EquipmentSlotType.MAINHAND), // 98
-                armorStand.getItemStackFromSlot(EquipmentSlotType.OFFHAND), // 99
-                armorStand.getItemStackFromSlot(EquipmentSlotType.FEET), // 100
-                armorStand.getItemStackFromSlot(EquipmentSlotType.LEGS), // 101
-                armorStand.getItemStackFromSlot(EquipmentSlotType.CHEST), // 102
-                armorStand.getItemStackFromSlot(EquipmentSlotType.HEAD));  // 103
+                armorStand.getItemBySlot(EquipmentSlotType.MAINHAND), // 98
+                armorStand.getItemBySlot(EquipmentSlotType.OFFHAND), // 99
+                armorStand.getItemBySlot(EquipmentSlotType.FEET), // 100
+                armorStand.getItemBySlot(EquipmentSlotType.LEGS), // 101
+                armorStand.getItemBySlot(EquipmentSlotType.CHEST), // 102
+                armorStand.getItemBySlot(EquipmentSlotType.HEAD));  // 103
 
         // ArmorStand Equipment (container slots 0-3)
         for(int k = 0; k < 4; ++k) {
@@ -93,26 +93,29 @@ public class ArmorStandContainer extends Container {
                 /**
                  * Return whether this slot's stack can be taken from this slot.
                  */
-                public boolean canTakeStack(PlayerEntity playerIn) {
-                    ItemStack itemstack = this.getStack();
-                    return !itemstack.isEmpty() && !playerIn.isCreative() && EnchantmentHelper.hasBindingCurse(itemstack) ? false : super.canTakeStack(playerIn);
+                @Override
+                public boolean mayPickup(PlayerEntity playerIn) {
+                    ItemStack itemstack = this.getItem();
+                    return !itemstack.isEmpty() && !playerIn.isCreative() && EnchantmentHelper.hasBindingCurse(itemstack) ? false : super.mayPickup(playerIn);
                 }
+
+
 
                 @Override
                 public ItemStack onTake(PlayerEntity thePlayer, ItemStack stack) {
-                    armorStand.getItemStackFromSlot(equipmentslottype);
+                    armorStand.getItemBySlot(equipmentslottype);
                     return super.onTake(thePlayer, stack);
                 }
 
                 @Override
-                public void putStack(ItemStack stack) {
-                    armorStand.setItemStackToSlot(equipmentslottype, stack.copy());
-                    super.putStack(stack);
+                public void set(ItemStack stack) {
+                    armorStand.setItemSlot(equipmentslottype, stack.copy());
+                    super.set(stack);
                 }
 
                 @OnlyIn(Dist.CLIENT)
                 public Pair<ResourceLocation, ResourceLocation> getBackground() {
-                    return Pair.of(PlayerContainer.LOCATION_BLOCKS_TEXTURE, ARMOR_SLOT_TEXTURES[equipmentslottype.getIndex()]);
+                    return Pair.of(PlayerContainer.BLOCK_ATLAS, ARMOR_SLOT_TEXTURES[equipmentslottype.getIndex()]);
                 }
             });
         }
@@ -121,19 +124,19 @@ public class ArmorStandContainer extends Container {
         this.addSlot(new Slot(armorStandInventory, 1, 80, 8) {
             @OnlyIn(Dist.CLIENT)
             public Pair<ResourceLocation, ResourceLocation> getBackground() {
-                return Pair.of(PlayerContainer.LOCATION_BLOCKS_TEXTURE, PlayerContainer.EMPTY_ARMOR_SLOT_SHIELD);
+                return Pair.of(PlayerContainer.BLOCK_ATLAS, PlayerContainer.EMPTY_ARMOR_SLOT_SHIELD);
             }
 
             @Override
             public ItemStack onTake(PlayerEntity thePlayer, ItemStack stack) {
-                armorStand.getItemStackFromSlot(EquipmentSlotType.OFFHAND);
+                armorStand.getItemBySlot(EquipmentSlotType.OFFHAND);
                 return super.onTake(thePlayer, stack);
             }
 
             @Override
-            public void putStack(ItemStack stack) {
-                armorStand.setItemStackToSlot(EquipmentSlotType.OFFHAND, stack.copy());
-                super.putStack(stack);
+            public void set(ItemStack stack) {
+                armorStand.setItemSlot(EquipmentSlotType.OFFHAND, stack.copy());
+                super.set(stack);
             }
         });
 
@@ -141,14 +144,14 @@ public class ArmorStandContainer extends Container {
         this.addSlot(new Slot(armorStandInventory, 0, 80, 26) {
             @Override
             public ItemStack onTake(PlayerEntity thePlayer, ItemStack stack) {
-                armorStand.getItemStackFromSlot(EquipmentSlotType.MAINHAND);
+                armorStand.getItemBySlot(EquipmentSlotType.MAINHAND);
                 return super.onTake(thePlayer, stack);
             }
 
             @Override
-            public void putStack(ItemStack stack) {
-                armorStand.setItemStackToSlot(EquipmentSlotType.MAINHAND, stack.copy());
-                super.putStack(stack);
+            public void set(ItemStack stack) {
+                armorStand.setItemSlot(EquipmentSlotType.MAINHAND, stack.copy());
+                super.set(stack);
             }
         });
 
@@ -174,14 +177,14 @@ public class ArmorStandContainer extends Container {
                 /**
                  * Return whether this slot's stack can be taken from this slot.
                  */
-                public boolean canTakeStack(PlayerEntity playerIn) {
-                    ItemStack itemstack = this.getStack();
-                    return !itemstack.isEmpty() && !playerIn.isCreative() && EnchantmentHelper.hasBindingCurse(itemstack) ? false : super.canTakeStack(playerIn);
+                public boolean mayPickup(PlayerEntity playerIn) {
+                    ItemStack itemstack = this.getItem();
+                    return !itemstack.isEmpty() && !playerIn.isCreative() && EnchantmentHelper.hasBindingCurse(itemstack) ? false : super.mayPickup(playerIn);
                 }
 
                 @OnlyIn(Dist.CLIENT)
                 public Pair<ResourceLocation, ResourceLocation> getBackground() {
-                    return Pair.of(PlayerContainer.LOCATION_BLOCKS_TEXTURE, ARMOR_SLOT_TEXTURES[equipmentslottype.getIndex()]);
+                    return Pair.of(PlayerContainer.BLOCK_ATLAS, ARMOR_SLOT_TEXTURES[equipmentslottype.getIndex()]);
                 }
             });
         }
@@ -202,7 +205,7 @@ public class ArmorStandContainer extends Container {
         this.addSlot(new Slot(playerInventory, 40, 80, 62) {
             @OnlyIn(Dist.CLIENT)
             public Pair<ResourceLocation, ResourceLocation> getBackground() {
-                return Pair.of(PlayerContainer.LOCATION_BLOCKS_TEXTURE, PlayerContainer.EMPTY_ARMOR_SLOT_SHIELD);
+                return Pair.of(PlayerContainer.BLOCK_ATLAS, PlayerContainer.EMPTY_ARMOR_SLOT_SHIELD);
             }
         });
     }
@@ -215,7 +218,7 @@ public class ArmorStandContainer extends Container {
      * Determines whether supplied player can use this container
      */
     @Override
-    public boolean canInteractWith(PlayerEntity playerIn) {
+    public boolean stillValid(PlayerEntity playerIn) {
         return true;
     }
 
@@ -226,76 +229,76 @@ public class ArmorStandContainer extends Container {
      * Based loosely on the vanilla player container
      */
     @Override
-    public ItemStack transferStackInSlot(PlayerEntity playerIn, int index) {
+    public ItemStack quickMoveStack(PlayerEntity playerIn, int index) {
         ItemStack itemstack = ItemStack.EMPTY;
-        Slot slot = this.inventorySlots.get(index);
+        Slot slot = this.slots.get(index);
 
-        if (slot != null && slot.getHasStack()) {
-            ItemStack itemstack1 = slot.getStack();
+        if (slot != null && slot.hasItem()) {
+            ItemStack itemstack1 = slot.getItem();
             itemstack = itemstack1.copy();
-            EquipmentSlotType equipmentslottype = MobEntity.getSlotForItemStack(itemstack);
+            EquipmentSlotType equipmentslottype = MobEntity.getEquipmentSlotForItem(itemstack);
 
             // from Armor Stand to Player Inventory
             if (index < 6) {
-                if (!this.mergeItemStack(itemstack1, 9, 45, true)) {
+                if (!this.moveItemStackTo(itemstack1, 9, 45, true)) {
                     return ItemStack.EMPTY;
                 }
 
             // from Player Armor Slots to Player Inventory
             } else if (index >= 6 && index < 10) {
-                if (!this.mergeItemStack(itemstack1, 9, 45, false)) {
+                if (!this.moveItemStackTo(itemstack1, 9, 45, false)) {
                     return ItemStack.EMPTY;
                 }
 
             // to Armor Stand from Player Inventory
-            } else if (equipmentslottype.getSlotType() == EquipmentSlotType.Group.ARMOR && !this.inventorySlots.get(3 - equipmentslottype.getIndex()).getHasStack()) {
+            } else if (equipmentslottype.getType() == EquipmentSlotType.Group.ARMOR && !this.slots.get(3 - equipmentslottype.getIndex()).hasItem()) {
                 // Armor Stand first 4 slots is armor inventory
                 int i = 3 - equipmentslottype.getIndex();
-                if (!this.mergeItemStack(itemstack1, i, i + 1, false)) {
+                if (!this.moveItemStackTo(itemstack1, i, i + 1, false)) {
                     return ItemStack.EMPTY;
                 }
 
             // to Player Armor from Player Inventory
-            } else if (equipmentslottype.getSlotType() == EquipmentSlotType.Group.ARMOR && !this.inventorySlots.get(9 - equipmentslottype.getIndex()).getHasStack()) {
+            } else if (equipmentslottype.getType() == EquipmentSlotType.Group.ARMOR && !this.slots.get(9 - equipmentslottype.getIndex()).hasItem()) {
                 // player armor inventory
                 int i = 9 - equipmentslottype.getIndex();
-                if (!this.mergeItemStack(itemstack1, i, i + 1, false)) {
+                if (!this.moveItemStackTo(itemstack1, i, i + 1, false)) {
                     return ItemStack.EMPTY;
                 }
 
             // Armor Stand offhand
-            } else if (equipmentslottype == EquipmentSlotType.OFFHAND && !this.inventorySlots.get(4).getHasStack()) {
-                if (!this.mergeItemStack(itemstack1, 4, 5, false)) {
+            } else if (equipmentslottype == EquipmentSlotType.OFFHAND && !this.slots.get(4).hasItem()) {
+                if (!this.moveItemStackTo(itemstack1, 4, 5, false)) {
                     return ItemStack.EMPTY;
                 }
 
             // player offhand
-            } else if (equipmentslottype == EquipmentSlotType.OFFHAND && !this.inventorySlots.get(46).getHasStack()) {
-                if (!this.mergeItemStack(itemstack1, 45, 46, false)) {
+            } else if (equipmentslottype == EquipmentSlotType.OFFHAND && !this.slots.get(46).hasItem()) {
+                if (!this.moveItemStackTo(itemstack1, 45, 46, false)) {
                     return ItemStack.EMPTY;
                 }
 
             // player main inventory
             } else if (index >= 10 && index < 37) {
-                if (!this.mergeItemStack(itemstack1, 36, 45, false)) {
+                if (!this.moveItemStackTo(itemstack1, 36, 45, false)) {
                     return ItemStack.EMPTY;
                 }
 
             // player hotbar
             } else if (index >= 36 && index < 45) {
-                if (!this.mergeItemStack(itemstack1, 9, 36, false)) {
+                if (!this.moveItemStackTo(itemstack1, 9, 36, false)) {
                     return ItemStack.EMPTY;
                 }
 
             // player inventory
-            } else if (!this.mergeItemStack(itemstack1, 10, 46, false)) {
+            } else if (!this.moveItemStackTo(itemstack1, 10, 46, false)) {
                 return ItemStack.EMPTY;
             }
 
             if (itemstack1.isEmpty()) {
-                slot.putStack(ItemStack.EMPTY);
+                slot.set(ItemStack.EMPTY);
             } else {
-                slot.onSlotChanged();
+                slot.setChanged();
             }
 
             if (itemstack1.getCount() == itemstack.getCount()) {
@@ -304,7 +307,7 @@ public class ArmorStandContainer extends Container {
 
             ItemStack itemstack2 = slot.onTake(playerIn, itemstack1);
             if (index == 0) {
-                playerIn.dropItem(itemstack2, false);
+                playerIn.drop(itemstack2, false);
             }
         }
 
@@ -314,8 +317,8 @@ public class ArmorStandContainer extends Container {
     /**
      * Called when the container is closed.
      */
-    public void onContainerClosed(PlayerEntity playerIn) {
-        super.onContainerClosed(playerIn);
-        this.armorStandInventory.closeInventory(playerIn);
+    public void removed(PlayerEntity playerIn) {
+        super.removed(playerIn);
+        this.armorStandInventory.stopOpen(playerIn);
     }
 }

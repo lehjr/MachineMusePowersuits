@@ -169,28 +169,28 @@ public class DrawableRectangularGrid extends DrawableRelativeRect {
         RenderSystem.shadeModel(GL11.GL_SMOOTH);
 
         Tessellator tessellator = Tessellator.getInstance();
-        BufferBuilder buffer = tessellator.getBuffer();
+        BufferBuilder buffer = tessellator.getBuilder();
         buffer.begin(GL11.GL_LINES, DefaultVertexFormats.POSITION_COLOR);
 
-        Matrix4f matrix4f = matrixStack.getLast().getMatrix();
+        Matrix4f matrix4f = matrixStack.last().pose();
 
         // Horizontal lines
         if (gridHeight >1) {
             for (double y = (double) (verticleSegmentSize + top()); y < bottom(); y += verticleSegmentSize) {
-                buffer.pos(matrix4f, (float)left(), (float) y, zLevel).color(gridColour.r, gridColour.g, gridColour.b, gridColour.a).endVertex();
-                buffer.pos(matrix4f, (float)right(), (float) y, zLevel).color(gridColour.r, gridColour.g, gridColour.b, gridColour.a).endVertex();
+                buffer.vertex(matrix4f, (float)left(), (float) y, zLevel).color(gridColour.r, gridColour.g, gridColour.b, gridColour.a).endVertex();
+                buffer.vertex(matrix4f, (float)right(), (float) y, zLevel).color(gridColour.r, gridColour.g, gridColour.b, gridColour.a).endVertex();
             }
         }
 
         // Vertical lines
         if(gridWidth > 1) {
             for (double x = (double) (horizontalSegmentSize + left()); x < right(); x += horizontalSegmentSize) {
-                buffer.pos(matrix4f, (float) x, (float) top(), zLevel).color(gridColour.r, gridColour.g, gridColour.b, gridColour.a).endVertex();
-                buffer.pos(matrix4f, (float) x, (float) bottom(), zLevel).color(gridColour.r, gridColour.g, gridColour.b, gridColour.a).endVertex();
+                buffer.vertex(matrix4f, (float) x, (float) top(), zLevel).color(gridColour.r, gridColour.g, gridColour.b, gridColour.a).endVertex();
+                buffer.vertex(matrix4f, (float) x, (float) bottom(), zLevel).color(gridColour.r, gridColour.g, gridColour.b, gridColour.a).endVertex();
             }
         }
 
-        tessellator.draw();
+        tessellator.end();
 
         RenderSystem.shadeModel(GL11.GL_FLAT);
         RenderSystem.disableBlend();

@@ -26,6 +26,7 @@
 
 package com.github.lehjr.numina.network.packets.reworked_crafting_packets;
 
+import com.github.lehjr.numina.basemod.MuseLogger;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.container.RecipeBookContainer;
 import net.minecraft.item.crafting.IRecipe;
@@ -75,14 +76,26 @@ public class CPlaceRecipePacket {
     public static void handle(CPlaceRecipePacket message, Supplier<NetworkEvent.Context> ctx) {
         ctx.get().enqueueWork(() -> {
             final ServerPlayerEntity player = ctx.get().getSender();
-            player.markPlayerActive();
+            player.resetLastActionTime();
 
             if (!player.isSpectator() &&
-                    player.openContainer.windowId == message.windowId &&
-                    player.openContainer.getCanCraft(player) &&
-                    player.openContainer instanceof RecipeBookContainer) {
-                player.world.getRecipeManager().getRecipe(message.recipeId).ifPresent((iRecipe) ->
-                        ((RecipeBookContainer)player.openContainer).func_217056_a(message.placeAll, iRecipe, player));
+                    player.containerMenu.containerId == message.windowId &&
+                    player.containerMenu.isSynched(player) &&
+                    player.containerMenu instanceof RecipeBookContainer) {
+                MuseLogger.logDebug("handling recipe placing packet");
+                player.level.getRecipeManager().byKey(message.recipeId).ifPresent((iRecipe) ->
+                        ((RecipeBookContainer)player.containerMenu).handlePlacement(message.placeAll, iRecipe, player));
+            } else{
+                MuseLogger.logDebug("failed to handle recipe placing packet");
+                MuseLogger.logDebug("player.containerMenu.windowId == message.windowId?: " + (player.containerMenu.containerId == message.windowId));
+                MuseLogger.logDebug("player.containerMenu.windowId: " + player.containerMenu.containerId);
+                MuseLogger.logDebug("message.windowId?: " + message.windowId);
+                MuseLogger.logDebug("player.containerMenu.getClass(): " + player.containerMenu.getClass());
+
+
+
+                MuseLogger.logDebug("player.containerMenu.getCanCraft(player)?: " + (player.containerMenu.isSynched(player)));
+                MuseLogger.logDebug("player.containerMenu instanceof RecipeBookContainer?: " + (player.containerMenu instanceof RecipeBookContainer));
             }
         });
         ctx.get().setPacketHandled(true);

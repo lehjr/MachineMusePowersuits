@@ -56,15 +56,15 @@ public class CosmeticInfoPacket {
 
     public static void encode(CosmeticInfoPacket msg, PacketBuffer packetBuffer) {
         packetBuffer.writeInt(msg.itemSlot);
-        packetBuffer.writeString(msg.tagName);
-        packetBuffer.writeCompoundTag(msg.tagData);
+        packetBuffer.writeUtf(msg.tagName);
+        packetBuffer.writeNbt(msg.tagData);
     }
 
     public static CosmeticInfoPacket decode(PacketBuffer packetBuffer) {
         return new CosmeticInfoPacket(
                 packetBuffer.readInt(),
-                packetBuffer.readString(500),
-                packetBuffer.readCompoundTag());
+                packetBuffer.readUtf(500),
+                packetBuffer.readNbt());
     }
 
     public static void handle(CosmeticInfoPacket message, Supplier<NetworkEvent.Context> ctx) {
@@ -73,7 +73,7 @@ public class CosmeticInfoPacket {
             int itemSlot = message.itemSlot;
             String tagName = message.tagName;
             CompoundNBT tagData = message.tagData;
-            player.inventory.getStackInSlot(itemSlot).getCapability(ModelSpecNBTCapability.RENDER).ifPresent(render->{
+            player.inventory.getItem(itemSlot).getCapability(ModelSpecNBTCapability.RENDER).ifPresent(render->{
                 render.setRenderTag(tagData, tagName);
             });
         });

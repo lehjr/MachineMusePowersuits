@@ -50,7 +50,7 @@ public class ClientEventBusSubscriber {
     public static void onTextureStitchPre(TextureStitchEvent.Pre event) {
         AtlasTexture map = event.getMap();
         // only adds if it doesn't already exist
-        if (map.getTextureLocation() == AtlasTexture.LOCATION_BLOCKS_TEXTURE) {
+        if (map.location() == AtlasTexture.LOCATION_BLOCKS) {
             event.addSprite(NuminaConstants.TEXTURE_WHITE_SHORT);
         }
     }

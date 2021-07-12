@@ -49,7 +49,7 @@ public class MuseHeatUtils {
     public static double getPlayerHeat(LivingEntity entity) {
         double heat = 0;
         for (EquipmentSlotType slot : EquipmentSlotType.values()) {
-            heat += getItemHeat(entity.getItemStackFromSlot(slot));
+            heat += getItemHeat(entity.getItemBySlot(slot));
         }
         return heat;
     }
@@ -61,10 +61,10 @@ public class MuseHeatUtils {
         AtomicDouble maxHeat = new AtomicDouble(0);
 
         for (EquipmentSlotType slot : EquipmentSlotType.values()) {
-            ItemStack itemStack = entity.getItemStackFromSlot(slot);
+            ItemStack itemStack = entity.getItemBySlot(slot);
 
-                if ((slot.getSlotType().equals(EquipmentSlotType.Group.ARMOR)) ||
-                        (slot.getSlotType().equals(EquipmentSlotType.Group.HAND) && !(itemStack.getItem() instanceof ArmorItem))) {
+                if ((slot.getType().equals(EquipmentSlotType.Group.ARMOR)) ||
+                        (slot.getType().equals(EquipmentSlotType.Group.HAND) && !(itemStack.getItem() instanceof ArmorItem))) {
                     itemStack.getCapability(HeatCapability.HEAT).ifPresent(heat->maxHeat.getAndAdd(heat.getMaxHeatStored()));
                 }
         }
@@ -72,16 +72,16 @@ public class MuseHeatUtils {
     }
 
     public static double coolPlayer(LivingEntity entity, double coolJoules) {
-        if (entity.world.isRemote /*|| entity.abilities.isCreativeMode */) {
+        if (entity.level.isClientSide /*|| entity.abilities.instabuild */) {
             return 0;
         }
 
         double coolingLeft = coolJoules;
         if (entity instanceof PlayerEntity) {
             PlayerEntity player = (PlayerEntity) entity;
-            for (int i = 0; i < player.inventory.getSizeInventory(); i++) {
-                ItemStack stack = player.inventory.getStackInSlot(i);
-                if (entity.isHandActive() && player.inventory.getCurrentItem() == stack) {
+            for (int i = 0; i < player.inventory.getContainerSize(); i++) {
+                ItemStack stack = player.inventory.getItem(i);
+                if (entity.isUsingItem() && player.inventory.getSelected() == stack) {
                     continue;
                 }
                 if (coolingLeft > 0) {
@@ -93,7 +93,7 @@ public class MuseHeatUtils {
         } else {
             for (EquipmentSlotType slot : EquipmentSlotType.values()) {
                 if (coolingLeft > 0) {
-                    coolingLeft -= coolItem(entity.getItemStackFromSlot(slot), coolingLeft);
+                    coolingLeft -= coolItem(entity.getItemBySlot(slot), coolingLeft);
                 } else {
                     break;
                 }
@@ -106,7 +106,7 @@ public class MuseHeatUtils {
      * Should only be called server side
      */
     public static double heatPlayer(LivingEntity entity, double heatJoules) {
-        if (entity.world.isRemote /*|| entity.abilities.isCreativeMode */) {
+        if (entity.level.isClientSide /*|| entity.abilities.instabuild */) {
             return 0;
         }
 
@@ -115,13 +115,13 @@ public class MuseHeatUtils {
             if (heatLeftToGive == 0) {
                 break;
             }
-            heatLeftToGive = heatLeftToGive - heatItem(entity.getItemStackFromSlot(slot), heatLeftToGive);
+            heatLeftToGive = heatLeftToGive - heatItem(entity.getItemBySlot(slot), heatLeftToGive);
         }
         return heatLeftToGive;
     }
 
     public static void heatEntity(LivingAttackEvent event) {
-        if (event.getSource().isFireDamage()) {
+        if (event.getSource().isFire()) {
             // round amount due do float values being weird
             double heatLeftToGive = Math.round(event.getAmount());
             final double originalHeatToGive = heatLeftToGive;
@@ -129,7 +129,7 @@ public class MuseHeatUtils {
             LivingEntity entity = event.getEntityLiving();
             boolean allPresent = true;
 
-            for (ItemStack stack : entity.getArmorInventoryList()) {
+            for (ItemStack stack : entity.getArmorSlots()) {
                 if (!stack.getCapability(HeatCapability.HEAT).isPresent()) {
                     allPresent = false;
                     break;
@@ -141,7 +141,7 @@ public class MuseHeatUtils {
                     break;
                 }
                 double finalHeatLeftToGive = heatLeftToGive;
-                heatLeftToGive -= entity.getItemStackFromSlot(slot)
+                heatLeftToGive -= entity.getItemBySlot(slot)
                         .getCapability(HeatCapability.HEAT).map(heat->heat.receiveHeat(finalHeatLeftToGive, false)).orElse(0D);
             }
 
@@ -151,7 +151,7 @@ public class MuseHeatUtils {
                     event.setCanceled(true);
                 }
                 if (heatLeftToGive > 0) {
-                    entity.attackEntityFrom(new OverheatDamage(), (float) heatLeftToGive);
+                    entity.hurt(new OverheatDamage(), (float) heatLeftToGive);
                 }
             }
         }
@@ -176,12 +176,12 @@ public class MuseHeatUtils {
     protected static final class OverheatDamage extends DamageSource {
         public OverheatDamage() {
             super(NuminaConstants.OVERHEAT_DAMAGE);
-            this.setFireDamage();
-            this.setDamageBypassesArmor();
+            this.setIsFire();
+            this.bypassArmor();
         }
 
         public boolean equals(DamageSource other) {
-            return other.damageType.equals(this.damageType);
+            return other.msgId.equals(this.msgId);
         }
     }
 }

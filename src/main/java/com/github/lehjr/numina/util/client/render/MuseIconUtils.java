@@ -63,7 +63,7 @@ public enum MuseIconUtils {
     }
 
     static TextureAtlasSprite getMissingIcon() {
-        return Minecraft.getInstance().getAtlasSpriteGetter(AtlasTexture.LOCATION_BLOCKS_TEXTURE).apply(MissingTextureSprite.getLocation());
+        return Minecraft.getInstance().getTextureAtlas(AtlasTexture.LOCATION_BLOCKS).apply(MissingTextureSprite.getLocation());
     }
 
     /**
@@ -105,48 +105,48 @@ public enum MuseIconUtils {
 //        RenderSystem.defaultBlendFunc();
         Minecraft minecraft = Minecraft.getInstance();
         TextureManager textureManager = minecraft.getTextureManager();
-        textureManager.bindTexture(icon.getAtlasTexture().getTextureLocation());
+        textureManager.bind(icon.atlas().location());
 
 
         RenderSystem.shadeModel(GL11.GL_SMOOTH);
 
         Tessellator tess = Tessellator.getInstance();
-        BufferBuilder bufferBuilder = tess.getBuffer();
+        BufferBuilder bufferBuilder = tess.getBuilder();
         if (colour != null) {
             colour.doGL();
         }
         bufferBuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
-        float u1 = icon.getMinU();
-        float v1 = icon.getMinV();
-        float u2 = icon.getMaxU();
-        float v2 = icon.getMaxV();
+        float u0 = icon.getU0();
+        float v0 = icon.getV0();
+        float u1 = icon.getU1();
+        float v1 = icon.getV1();
 
-        float xoffset1 = left * (u2 - u1) / 16.0f;
-        float yoffset1 = top * (v2 - v1) / 16.0f;
-        float xoffset2 = right * (u2 - u1) / 16.0f;
-        float yoffset2 = bottom * (v2 - v1) / 16.0f;
+        float xoffset1 = left * (u1 - u0) / 16.0f;
+        float yoffset1 = top * (v1 - v0) / 16.0f;
+        float xoffset2 = right * (u1 - u0) / 16.0f;
+        float yoffset2 = bottom * (v1 - v0) / 16.0f;
 
         // top left
-        bufferBuilder.pos(x + left, y + top, 0);
-        bufferBuilder.tex(u1 + xoffset1, v1 + yoffset1);
+        bufferBuilder.vertex(x + left, y + top, 0);
+        bufferBuilder.uv(u0 + xoffset1, v0 + yoffset1);
         bufferBuilder.endVertex();
 
         // bottom left
-        bufferBuilder.pos(x + left, y + bottom, 0);
-        bufferBuilder.tex(u1 + xoffset1, v1 + yoffset2);
+        bufferBuilder.vertex(x + left, y + bottom, 0);
+        bufferBuilder.uv(u0 + xoffset1, v0 + yoffset2);
         bufferBuilder.endVertex();
 
         // bottom right
-        bufferBuilder.pos(x + right, y + bottom, 0);
-        bufferBuilder.tex(u1 + xoffset2, v1 + yoffset2);
+        bufferBuilder.vertex(x + right, y + bottom, 0);
+        bufferBuilder.uv(u0 + xoffset2, v0 + yoffset2);
         bufferBuilder.endVertex();
 
         // top right
-        bufferBuilder.pos(x + right, y + top, 0);
-        bufferBuilder.tex(u1 + xoffset2, v1 + yoffset1);
+        bufferBuilder.vertex(x + right, y + top, 0);
+        bufferBuilder.uv(u0 + xoffset2, v0 + yoffset1);
         bufferBuilder.endVertex();
 
-        tess.draw();
+        tess.end();
 
         RenderSystem.shadeModel(GL11.GL_FLAT);
 //        RenderSystem.disableBlend();

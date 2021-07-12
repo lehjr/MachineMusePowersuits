@@ -90,7 +90,7 @@ public class RangedSlider extends Clickable {
     public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks, float zLevel) {
         if (this.isVisible) {
             if (label != null) {
-                MuseRenderer.drawCenteredString(matrixStack, I18n.format(label), position.getX(), position.getY());
+                MuseRenderer.drawCenteredString(matrixStack, I18n.get(label), position.getX(), position.getY());
             }
 
             this.outsideRect.draw(matrixStack, zLevel);

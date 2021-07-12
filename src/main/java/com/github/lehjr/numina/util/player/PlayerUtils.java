@@ -43,23 +43,23 @@ import javax.annotation.Nonnull;
 public final class PlayerUtils {
     public static void resetFloatKickTicks(PlayerEntity player) {
         if (player instanceof ServerPlayerEntity) {
-            ((ServerPlayerEntity) player).connection.floatingTickCount = 0;
+            ((ServerPlayerEntity) player).connection.aboveGroundTickCount = 0;
         }
     }
 
     public static void teleportEntity(PlayerEntity PlayerEntity, RayTraceResult rayTraceResult) {
         if (rayTraceResult != null && PlayerEntity instanceof ServerPlayerEntity) {
             ServerPlayerEntity player = (ServerPlayerEntity) PlayerEntity;
-            if (player.connection.netManager.isChannelOpen()) {
+            if (player.connection.connection.isConnected()) {
                 switch (rayTraceResult.getType()) {
                     case ENTITY:
-                        player.setPositionAndUpdate(rayTraceResult.getHitVec().x, rayTraceResult.getHitVec().y, rayTraceResult.getHitVec().z);
+                        player.teleportTo(rayTraceResult.getLocation().x, rayTraceResult.getLocation().y, rayTraceResult.getLocation().z);
                         break;
                     case BLOCK:
-                        double hitx = rayTraceResult.getHitVec().x;
-                        double hity = rayTraceResult.getHitVec().y;
-                        double hitz = rayTraceResult.getHitVec().z;
-                        switch (((BlockRayTraceResult)rayTraceResult).getFace()) {
+                        double hitx = rayTraceResult.getLocation().x;
+                        double hity = rayTraceResult.getLocation().y;
+                        double hitz = rayTraceResult.getLocation().z;
+                        switch (((BlockRayTraceResult)rayTraceResult).getDirection()) {
                             case DOWN: // Bottom
                                 hity -= 2;
                                 break;
@@ -80,7 +80,7 @@ public final class PlayerUtils {
                                 break;
                         }
 
-                        player.setPositionAndUpdate(hitx, hity, hitz);
+                        player.teleportTo(hitx, hity, hitz);
                         break;
                     default:
                         break;
@@ -95,27 +95,27 @@ public final class PlayerUtils {
             return 0;
         }
 
-        float cool = ((2.0F - getBiome(player).getTemperature(new BlockPos((int) player.getPosX(), (int) player.getPosY(), (int) player.getPosZ())) / 2)); // Algorithm that returns a getValue from 0.0 -> 1.0. Biome temperature is from 0.0 -> 2.0
+        float cool = ((2.0F - getBiome(player).getTemperature(new BlockPos((int) player.getX(), (int) player.getY(), (int) player.getZ())) / 2)); // Algorithm that returns a getValue from 0.0 -> 1.0. Biome temperature is from 0.0 -> 2.0
 
         if (player.isInWater())
             cool += 0.5;
 
         // If high in the air, increase cooling
-        if ((int) player.getPosY() > 128)
+        if ((int) player.getY() > 128)
             cool += 0.5;
 
         // If nighttime and in the desert, increase cooling
-        if (!player.world.isDaytime() && getBiome(player).getCategory() == Biome.Category.DESERT) {
+        if (!player.level.isDay() && getBiome(player).getBiomeCategory() == Biome.Category.DESERT) {
             cool += 0.8;
         }
 
         // check for rain and if player is in the rain
         // check if rain can happen in the biome the player is in
-        if (player.world.getBiome(player.getPosition()).getPrecipitation() != Biome.RainType.NONE
+        if (player.level.getBiome(player.blockPosition()).getPrecipitation() != Biome.RainType.NONE
                 // check if raining in the world
-                && player.world.isRaining()
+                && player.level.isRaining()
                 // check if the player can see the sky
-                && player.world.canBlockSeeSky(player.getPosition().add(0, 1, 0))) {
+                && player.level.canSeeSky(player.blockPosition().offset(0, 1, 0))) {
             cool += 0.2;
         }
 
@@ -123,6 +123,6 @@ public final class PlayerUtils {
     }
 
     public static Biome getBiome(PlayerEntity player) {
-        return player.world.getBiome(player.getPosition());
+        return player.level.getBiome(player.blockPosition());
     }
 }

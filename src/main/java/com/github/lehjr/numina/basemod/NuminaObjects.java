@@ -142,11 +142,11 @@ public class NuminaObjects {
     // Charging base
     public static final RegistryObject<Item> CHARGING_BASE_ITEM = ITEMS.register(NuminaConstants.CHARGING_BASE_REGNAME,
             () -> new BlockItem(CHARGING_BASE_BLOCK.get(),
-                    new Item.Properties().group(ItemGroup.DECORATIONS)));
+                    new Item.Properties().tab(ItemGroup.TAB_DECORATIONS)));
 
     // Armor stand
     public static final RegistryObject<Item> ARMOR_STAND_ITEM = ITEMS.register(NuminaConstants.ARMORSTAND_REGNAME,
-            () -> new MPAArmorStandItem(new Item.Properties().group(ItemGroup.DECORATIONS).setISTER(() -> MPAArmorStationItemRenderer::new)));
+            () -> new MPAArmorStandItem(new Item.Properties().tab(ItemGroup.TAB_DECORATIONS).setISTER(() -> MPAArmorStationItemRenderer::new)));
 
 
     /**
@@ -155,7 +155,7 @@ public class NuminaObjects {
     public static final DeferredRegister<TileEntityType<?>> TILE_TYPES = DeferredRegister.create(ForgeRegistries.TILE_ENTITIES, NuminaConstants.MOD_ID);
 
     public static final RegistryObject<TileEntityType<ChargingBaseTileEntity>> CHARGING_BASE_TILE = TILE_TYPES.register(NuminaConstants.CHARGING_BASE_REGNAME,
-            () -> TileEntityType.Builder.create(ChargingBaseTileEntity::new, CHARGING_BASE_BLOCK.get()).build(null));
+            () -> TileEntityType.Builder.of(ChargingBaseTileEntity::new, CHARGING_BASE_BLOCK.get()).build(null));
 
 
     /**
@@ -164,8 +164,8 @@ public class NuminaObjects {
     public static final DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(ForgeRegistries.ENTITIES, NuminaConstants.MOD_ID);
 
     public static final RegistryObject<EntityType<MPAArmorStandEntity>> ARMOR_WORKSTATION__ENTITY_TYPE = ENTITY_TYPES.register(NuminaConstants.ARMOR_STAND__ENTITY_TYPE_REGNAME,
-            () -> EntityType.Builder.<MPAArmorStandEntity>create(MPAArmorStandEntity::new, EntityClassification.CREATURE)
-                    .size(0.5F, 1.975F) // Hitbox Size
+            () -> EntityType.Builder.<MPAArmorStandEntity>of(MPAArmorStandEntity::new, EntityClassification.CREATURE)
+                    .sized(0.5F, 1.975F) // Hitbox Size
                     .build(new ResourceLocation(NuminaConstants.MOD_ID, NuminaConstants.ARMOR_STAND__ENTITY_TYPE_REGNAME).toString()));
 
     /**
@@ -176,7 +176,7 @@ public class NuminaObjects {
     public static final RegistryObject<ContainerType<ArmorStandContainer>> ARMOR_STAND_CONTAINER_TYPE = CONTAINER_TYPES.register("armorstand_modding_container",
             () -> IForgeContainerType.create((windowId, inv, data) -> {
                 int entityID = data.readInt();
-                Entity armorStand = inv.player.world.getEntityByID(entityID);
+                Entity armorStand = inv.player.level.getEntity(entityID);
 
                 if (armorStand instanceof ArmorStandEntity) {
                     return new ArmorStandContainer(windowId, inv, (ArmorStandEntity) armorStand);
@@ -186,7 +186,7 @@ public class NuminaObjects {
 
     public static final RegistryObject<ContainerType<ChargingBaseContainer>> CHARGING_BASE_CONTAINER_TYPE = CONTAINER_TYPES.register("charging_base", () -> IForgeContainerType.create((windowId, inv, data) -> {
         BlockPos pos = data.readBlockPos();
-        World world = inv.player.getEntityWorld();
+        World world = inv.player.level;
         return new ChargingBaseContainer(windowId, world, pos, inv, inv.player);
     }));
 

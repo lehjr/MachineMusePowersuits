@@ -331,7 +331,7 @@ public class MuseStringUtils {
         if (component == null) {
             component = new StringTextComponent("");
         }
-        return wrapStringToLength(component.getUnformattedComponentText(), length);
+        return wrapStringToLength(component.getContents(), length);
     }
 
     /**
@@ -363,7 +363,7 @@ public class MuseStringUtils {
         String currLine = words[0];
         for (int i = 1; i < words.length; i++) {
             String approxLine = currLine + " " + words[i];
-            if (Minecraft.getInstance().fontRenderer.getStringWidth(approxLine) > length) {
+            if (Minecraft.getInstance().font.width(approxLine) > length) {
                 strlist.add(currLine);
                 currLine = " " + words[i];
             } else {

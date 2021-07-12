@@ -52,7 +52,7 @@ public class ArmorStandGui extends ExtendedContainerScreen<ArmorStandContainer> 
     protected DrawableRelativeRect backgroundRect;
     // player render frame = 72H x 32W
     DrawableTile playerBackground, armorStandBackground;
-    protected InventoryFrame playerArmor, playerShield, armorStandArmor, armorStandHands, mainInventory, hotbar;
+    protected InventoryFrame playerArmor, playerShield, armorStandArmor, armorStandHands, items, hotbar;
     final int slotWidth = 18;
     final int slotHeight = 18;
     int spacer = 7;
@@ -72,7 +72,7 @@ public class ArmorStandGui extends ExtendedContainerScreen<ArmorStandContainer> 
         this.armorStandEntity = containerIn.getArmorStandEntity();
 
         // slot 0-3
-        armorStandArmor = new InventoryFrame(this.container,
+        armorStandArmor = new InventoryFrame(this.menu,
                 new MusePoint2D(0,0), new MusePoint2D(0, 0),
                 getBlitOffset() -1,
                 Colour.LIGHT_GREY, Colour.DARK_GREY, Colour.DARK_GREY,
@@ -82,7 +82,7 @@ public class ArmorStandGui extends ExtendedContainerScreen<ArmorStandContainer> 
         addFrame(armorStandArmor);
 
         // slot 3-5
-        armorStandHands = new InventoryFrame(this.container,
+        armorStandHands = new InventoryFrame(this.menu,
                 new MusePoint2D(0,0), new MusePoint2D(0, 0),
                 getBlitOffset() -1,
                 Colour.LIGHT_GREY, Colour.DARK_GREY, Colour.DARK_GREY,
@@ -92,7 +92,7 @@ public class ArmorStandGui extends ExtendedContainerScreen<ArmorStandContainer> 
         addFrame(armorStandHands);
 
         // slot 6-9
-        playerArmor = new InventoryFrame(this.container,
+        playerArmor = new InventoryFrame(this.menu,
                 new MusePoint2D(0,0), new MusePoint2D(0, 0),
                 getBlitOffset() -1,
                 Colour.LIGHT_GREY, Colour.DARK_GREY, Colour.DARK_GREY,
@@ -102,17 +102,17 @@ public class ArmorStandGui extends ExtendedContainerScreen<ArmorStandContainer> 
         addFrame(playerArmor);
 
         // slot 10-36
-        mainInventory = new InventoryFrame(this.container,
+        items = new InventoryFrame(this.menu,
                 new MusePoint2D(0,0), new MusePoint2D(0, 0),
                 getBlitOffset() -1,
                 Colour.LIGHT_GREY, Colour.DARK_GREY, Colour.DARK_GREY,
                 9, 3, new ArrayList<Integer>(){{
             IntStream.range(10, 37).forEach(i-> add(i));
         }});
-        addFrame(mainInventory);
+        addFrame(items);
 
         // slot 37 -46
-        hotbar = new InventoryFrame(this.container,
+        hotbar = new InventoryFrame(this.menu,
                 new MusePoint2D(0,0), new MusePoint2D(0, 0),
                 getBlitOffset() -1,
                 Colour.LIGHT_GREY, Colour.DARK_GREY, Colour.DARK_GREY,
@@ -122,7 +122,7 @@ public class ArmorStandGui extends ExtendedContainerScreen<ArmorStandContainer> 
         addFrame(hotbar);
 
         // slot 46
-        playerShield = new InventoryFrame(this.container,
+        playerShield = new InventoryFrame(this.menu,
                 new MusePoint2D(0,0), new MusePoint2D(0, 0),
                 getBlitOffset() -1,
                 Colour.LIGHT_GREY, Colour.DARK_GREY, Colour.DARK_GREY,
@@ -136,7 +136,7 @@ public class ArmorStandGui extends ExtendedContainerScreen<ArmorStandContainer> 
     }
 
     MusePoint2D getUlOffset () {
-        return new MusePoint2D(guiLeft + 8, guiTop + 8);
+        return new MusePoint2D(leftPos + 8, topPos + 8);
     }
     @Override
     public void init(Minecraft minecraft, int width, int height) {
@@ -185,13 +185,13 @@ public class ArmorStandGui extends ExtendedContainerScreen<ArmorStandContainer> 
                 backgroundRect.finalBottom() - spacer);
         hotbar.setzLevel(1);
 
-        mainInventory.setUlShift(getUlOffset());
-        mainInventory.init(
+        items.setUlShift(getUlOffset());
+        items.init(
                 backgroundRect.finalLeft() + spacer,
                 backgroundRect.finalBottom() - spacer - slotHeight - 3.25F - 3 * slotHeight,
                 backgroundRect.finalLeft() + spacer + 9 * slotWidth,
                 backgroundRect.finalBottom() - spacer - slotHeight - 3.25F);
-        mainInventory.setzLevel(1);
+        items.setzLevel(1);
 
         playerShield.setUlShift(getUlOffset());
         playerShield.setWidth(slotWidth);
@@ -202,12 +202,12 @@ public class ArmorStandGui extends ExtendedContainerScreen<ArmorStandContainer> 
     }
 
     @Override
-    public void drawGuiContainerBackgroundLayer(MatrixStack matrixStack, float partialTicks, int x, int y) {
+    public void renderBg(MatrixStack matrixStack, float partialTicks, int x, int y) {
         backgroundRect.draw(matrixStack, 0);
-        super.drawGuiContainerBackgroundLayer(matrixStack, partialTicks, x, y);
+        super.renderBg(matrixStack, partialTicks, x, y);
         RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-        drawEntityOnScreen(this.guiLeft + 51, this.guiTop + 75, 30, (float)(this.guiLeft + 51) - this.oldMouseX, (float)(this.guiTop + 75 - 50) - this.oldMouseY, this.minecraft.player);
-        drawEntityOnScreen((float) (armorStandBackground.centerx()), this.guiTop + 75, 30, (float)(this.guiLeft + 51) - this.oldMouseX, (float)(this.guiTop + 75 - 50) - this.oldMouseY, this.armorStandEntity);
+        ArmorStandGui.renderEntityInInventory(this.leftPos + 51, this.topPos + 75, 30, (float)(this.leftPos + 51) - this.oldMouseX, (float)(this.topPos + 75 - 50) - this.oldMouseY, this.minecraft.player);
+        renderEntityInInventory((float) (armorStandBackground.centerx()), this.topPos + 75, 30, (float)(this.leftPos + 51) - this.oldMouseX, (float)(this.topPos + 75 - 50) - this.oldMouseY, this.armorStandEntity);
     }
 
 
@@ -219,7 +219,7 @@ public class ArmorStandGui extends ExtendedContainerScreen<ArmorStandContainer> 
             playerBackground.draw(matrixStack, 1);
             armorStandBackground.draw(matrixStack, 1);
 
-            this.renderHoveredTooltip(matrixStack, mouseX, mouseY);
+            this.drawToolTip(matrixStack, mouseX, mouseY);
             this.oldMouseX = (float) mouseX;
             this.oldMouseY = (float) mouseY;
         } else {
@@ -228,11 +228,11 @@ public class ArmorStandGui extends ExtendedContainerScreen<ArmorStandContainer> 
     }
 
     @Override
-    public void drawGuiContainerForegroundLayer(MatrixStack matrixStack, int x, int y) {
+    public void renderLabels(MatrixStack matrixStack, int x, int y) {
     }
 
     // coppied from player inventory
-    public static void drawEntityOnScreen(float posX, float posY, float scale, float mouseX, float mouseY, LivingEntity livingEntity) {
+    public static void renderEntityInInventory(float posX, float posY, float scale, float mouseX, float mouseY, LivingEntity livingEntity) {
         float f = (float)Math.atan(mouseX / 40.0F);
         float f1 = (float)Math.atan(mouseY / 40.0F);
         RenderSystem.pushMatrix();
@@ -243,33 +243,33 @@ public class ArmorStandGui extends ExtendedContainerScreen<ArmorStandContainer> 
         matrixstack.scale(scale, scale, scale);
         Quaternion quaternion = Vector3f.ZP.rotationDegrees(180.0F);
         Quaternion quaternion1 = Vector3f.XP.rotationDegrees(f1 * 20.0F);
-        quaternion.multiply(quaternion1);
-        matrixstack.rotate(quaternion);
-        float f2 = livingEntity.renderYawOffset;
-        float f3 = livingEntity.rotationYaw;
-        float f4 = livingEntity.rotationPitch;
-        float f5 = livingEntity.prevRotationYawHead;
-        float f6 = livingEntity.rotationYawHead;
-        livingEntity.renderYawOffset = 180.0F + f * 20.0F;
-        livingEntity.rotationYaw = 180.0F + f * 40.0F;
-        livingEntity.rotationPitch = -f1 * 20.0F;
-        livingEntity.rotationYawHead = livingEntity.rotationYaw;
-        livingEntity.prevRotationYawHead = livingEntity.rotationYaw;
-        EntityRendererManager entityrenderermanager = Minecraft.getInstance().getRenderManager();
-        quaternion1.conjugate();
-        entityrenderermanager.setCameraOrientation(quaternion1);
+        quaternion.mul(quaternion1);
+        matrixstack.mulPose(quaternion);
+        float f2 = livingEntity.yBodyRot;
+        float f3 = livingEntity.yRot;
+        float f4 = livingEntity.xRot;
+        float f5 = livingEntity.yHeadRotO;
+        float f6 = livingEntity.yHeadRot;
+        livingEntity.yBodyRot = 180.0F + f * 20.0F;
+        livingEntity.yRot = 180.0F + f * 40.0F;
+        livingEntity.xRot = -f1 * 20.0F;
+        livingEntity.yHeadRot = livingEntity.yRot;
+        livingEntity.yHeadRotO = livingEntity.yRot;
+        EntityRendererManager entityrenderermanager = Minecraft.getInstance().getEntityRenderDispatcher();
+        quaternion1.conj();
+        entityrenderermanager.overrideCameraOrientation(quaternion1);
         entityrenderermanager.setRenderShadow(false);
-        IRenderTypeBuffer.Impl irendertypebuffer$impl = Minecraft.getInstance().getRenderTypeBuffers().getBufferSource();
+        IRenderTypeBuffer.Impl irendertypebuffer$impl = Minecraft.getInstance().renderBuffers().bufferSource();
         RenderSystem.runAsFancy(() -> {
-            entityrenderermanager.renderEntityStatic(livingEntity, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F, matrixstack, irendertypebuffer$impl, 15728880);
+            entityrenderermanager.render(livingEntity, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F, matrixstack, irendertypebuffer$impl, 15728880);
         });
-        irendertypebuffer$impl.finish();
+        irendertypebuffer$impl.endBatch();
         entityrenderermanager.setRenderShadow(true);
-        livingEntity.renderYawOffset = f2;
-        livingEntity.rotationYaw = f3;
-        livingEntity.rotationPitch = f4;
-        livingEntity.prevRotationYawHead = f5;
-        livingEntity.rotationYawHead = f6;
+        livingEntity.yBodyRot = f2;
+        livingEntity.yRot = f3;
+        livingEntity.xRot = f4;
+        livingEntity.yHeadRotO = f5;
+        livingEntity.yHeadRot = f6;
         RenderSystem.popMatrix();
     }
 }

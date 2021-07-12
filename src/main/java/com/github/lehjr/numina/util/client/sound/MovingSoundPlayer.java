@@ -50,24 +50,24 @@ public class MovingSoundPlayer extends TickableSound {
                              PlayerEntity playerIn,
                              float newvolume,
                              float pitchIn,
-                             boolean repeatIn) {
+                             boolean loopingIn) {
 
         super(soundIn, categoryIn);
         this.player = playerIn;
         this.pitch = pitchIn;
         this.volume = newvolume;
-        this.repeat = repeatIn;
+        this.looping = loopingIn;
     }
 
     @Override
     public void tick() {
-        this.x = (float) this.player().getPosX();
-        this.y = (float) this.player().getPosY();
-        this.z = (float) this.player().getPosZ();
+        this.x = (float) this.player().getX();
+        this.y = (float) this.player().getY();
+        this.z = (float) this.player().getZ();
     }
 
     @Override
-    public boolean canBeSilent() {
+    public boolean canStartSilent() {
         return false;
     }
 
@@ -75,27 +75,27 @@ public class MovingSoundPlayer extends TickableSound {
         return this.player;
     }
 
-    public MovingSoundPlayer updatePitch(float newpitch) {
-        this.pitch = newpitch;
+    public MovingSoundPlayer updatePitch(float newPitch) {
+        this.pitch = newPitch;
         return this;
     }
 
-    public MovingSoundPlayer updateVolume(float newvolume) {
-        this.volume = (4.0f * this.volume + newvolume) / 5.0f;
+    public MovingSoundPlayer updateVolume(float newVolume) {
+        this.volume = (4.0f * this.volume + newVolume) / 5.0f;
         return this;
     }
 
-    public MovingSoundPlayer updateRepeat(boolean newrepeat) {
-        this.repeat = newrepeat;
+    public MovingSoundPlayer updateRepeat(boolean newLooping) {
+        this.looping = newLooping;
         return this;
     }
 
     @Override
-    public ISound.AttenuationType getAttenuationType() {
+    public ISound.AttenuationType getAttenuation() {
         return ISound.AttenuationType.LINEAR;
     }
 
     public void stopPlaying() {
-        this.finishPlaying();
+        this.stop();
     }
 }

@@ -63,30 +63,30 @@ public class RenderGameOverlayEventHandler {
     public void drawModeChangeIcons() {
         Minecraft mc = Minecraft.getInstance();
         ClientPlayerEntity player = mc.player;
-        int i = player.inventory.currentItem;
-        ItemStack stack = player.inventory.getCurrentItem();
+        int i = player.inventory.selected;
+        ItemStack stack = player.inventory.getSelected();
         stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(handler->{
             if (handler instanceof IModeChangingItem) {
                 ItemStack module = ((IModeChangingItem) handler).getActiveModule();
                 if (!module.isEmpty()) {
-                    MainWindow screen = mc.getMainWindow();
+                    MainWindow screen = mc.getWindow();
                     double currX;
                     double currY;
-                    int sw = screen.getScaledWidth();
+                    int sw = screen.getGuiScaledWidth();
                     int baroffset = 22;
-                    if (!player.abilities.isCreativeMode) {
+                    if (!player.abilities.instabuild) {
                         baroffset += 16;
 
-                        int totalArmorValue = player.getTotalArmorValue();
+                        int totalArmorValue = player.getArmorValue();
                         baroffset += 8 * (int) Math.ceil((double)totalArmorValue / 20); // 20 points per row @ 2 armor points per icon
                     }
-                    baroffset = screen.getScaledHeight() - baroffset;
+                    baroffset = screen.getGuiScaledHeight() - baroffset;
                     currX = sw / 2.0 - 89.0 + 20.0 * i;
                     currY = baroffset - 18;
                     boolean isActive = module.getCapability(PowerModuleCapability.POWER_MODULE).map(pm->pm instanceof IToggleableModule && ((IToggleableModule) pm).isModuleOnline()).orElse(true);
 
                     if (isActive) {
-                        mc.getItemRenderer().renderItemIntoGUI(module, (int)currX, (int)currY);
+                        mc.getItemRenderer().renderGuiItem(module, (int)currX, (int)currY);
                     } else {
                         MuseRenderer.drawModuleAt(new MatrixStack(), currX, currY, module, false);
                     }

@@ -41,7 +41,7 @@ import org.lwjgl.opengl.GL11;
 
 import java.nio.FloatBuffer;
 
-import static net.minecraft.client.renderer.RenderType.makeType;
+import static net.minecraft.client.renderer.RenderType.create;
 
 public class DrawableMuseCircle<LIGHTMAP_ENABLED> {
     protected static final RenderState.WriteMaskState COLOR_WRITE = new RenderState.WriteMaskState(true, false);
@@ -92,7 +92,7 @@ public class DrawableMuseCircle<LIGHTMAP_ENABLED> {
     });
 
     protected static final RenderState.ShadeModelState SHADE_DISABLED = new RenderState.ShadeModelState(false);
-    public static final RenderType PLASMA_BALL = makeType(
+    public static final RenderType PLASMA_BALL = create(
             "plasma_ball",
             DefaultVertexFormats.POSITION_COLOR_LIGHTMAP,
             GL11.GL_TRIANGLE_STRIP, // works
@@ -100,18 +100,18 @@ public class DrawableMuseCircle<LIGHTMAP_ENABLED> {
             256,
             false,
             false,
-            RenderType.State.getBuilder()
-                    .writeMask(COLOR_WRITE)
-                    .shadeModel(SHADE_DISABLED)
-                    .transparency(ADDITIVE_TRANSPARENCY)
+            RenderType.State.builder()
+                    .setWriteMaskState(COLOR_WRITE)
+                    .setShadeModelState(SHADE_DISABLED)
+                    .setTransparencyState(ADDITIVE_TRANSPARENCY)
 //                    .transparency(GLINT_TRANSPARENCY  )
 
 //                    .transparency(NuminaRenderState.TRANSLUCENT_TRANSPARENCY)
-                    .diffuseLighting(NuminaRenderState.DIFFUSE_LIGHTING_ENABLED)
+                    .setDiffuseLightingState(NuminaRenderState.DIFFUSE_LIGHTING_ENABLED)
 //                    .alpha(NuminaRenderState.DEFAULT_ALPHA)
-                    .lightmap(NuminaRenderState.LIGHTMAP_ENABLED)
+                    .setLightmapState(NuminaRenderState.LIGHTMAP_ENABLED)
 //                    .overlay(NuminaRenderState.OVERLAY_ENABLED)
-                    .build(true));
+                    .createCompositeState(true));
 
     public static final float detail = 4;
     protected static FloatBuffer points;
@@ -152,17 +152,17 @@ public class DrawableMuseCircle<LIGHTMAP_ENABLED> {
         RenderSystem.defaultBlendFunc();
 
         Tessellator tessellator = Tessellator.getInstance();
-        BufferBuilder buffer = tessellator.getBuffer();
+        BufferBuilder buffer = tessellator.getBuilder();
         buffer.begin(GL11.GL_TRIANGLE_FAN, DefaultVertexFormats.POSITION_COLOR_LIGHTMAP);
-        Matrix4f matrix4f = matrixStack.getLast().getMatrix();
+        Matrix4f matrix4f = matrixStack.last().pose();
 
         while (points.hasRemaining() && colour.hasRemaining()) {
-            buffer.pos(matrix4f, points.get(), points.get(), points.get())
+            buffer.vertex(matrix4f, points.get(), points.get(), points.get())
                     .color(colour.get(), colour.get(), colour.get(), colour.get())
-                    .lightmap(0x00F000F0)
+                    .uv2(0x00F000F0)
                     .endVertex();
         }
-        tessellator.draw();
+        tessellator.end();
 
         RenderSystem.shadeModel(GL11.GL_FLAT);
         RenderSystem.disableBlend();
@@ -222,12 +222,12 @@ public class DrawableMuseCircle<LIGHTMAP_ENABLED> {
 //        matrixStackIn.rotate(Vector3f.YP.rotationDegrees(-ratio * 360.0f));
 //
 //        IVertexBuilder vertBuffer = bufferIn.getBuffer(PLASMA_BALL);
-//        Matrix4f matrix4f = matrixStackIn.getLast().getMatrix();
+//        Matrix4f matrix4f = matrixStackIn.last().pose();
 //
 //        while (points.hasRemaining() && colour.hasRemaining()) {
 //            vertBuffer.pos(matrix4f, points.get(), points.get(), points.get())
 //                    .color(colour.get(), colour.get(), colour.get(), colour.get())
-//                    .lightmap(0x00F000F0)
+//                    .uv2(0x00F000F0)
 //                    .endVertex();
 //        }
 //        matrixStackIn.pop();
@@ -249,10 +249,10 @@ public class DrawableMuseCircle<LIGHTMAP_ENABLED> {
         float stackStep = (float) (Math.PI / stacks);
         float sliceStep = (float) (Math.PI / slices);
 
-        matrixStackIn.push();
+        matrixStackIn.pushPose();
         matrixStackIn.translate(x, y, z);
         IVertexBuilder vertBuffer = bufferIn.getBuffer(PLASMA_BALL);
-        Matrix4f matrix4f = matrixStackIn.getLast().getMatrix();
+        Matrix4f matrix4f = matrixStackIn.last().pose();
 
         int vertices = 0;
 
@@ -275,14 +275,14 @@ public class DrawableMuseCircle<LIGHTMAP_ENABLED> {
                 z0 = (float) (-r0 * Math.sin(beta));
                 z1 = (float) (-r1 * Math.sin(beta));
 
-                vertBuffer.pos(matrix4f, x0, y0, z0)
+                vertBuffer.vertex(matrix4f, x0, y0, z0)
                         .color(colourTest.r, colourTest.g, colourTest.b, colourTest.a)
-                        .lightmap(0x00F000F0)
+                        .uv2(0x00F000F0)
                         .endVertex();
 
-                vertBuffer.pos(matrix4f, x1, y1, z1)
+                vertBuffer.vertex(matrix4f, x1, y1, z1)
                         .color(colourTest.r, colourTest.g, colourTest.b, colourTest.a)
-                        .lightmap(0x00F000F0)
+                        .uv2(0x00F000F0)
                         .endVertex();
 
                 vertices +=6;
@@ -290,7 +290,7 @@ public class DrawableMuseCircle<LIGHTMAP_ENABLED> {
                 MuseLogger.logDebug("j: " + j);
             }
         }
-        matrixStackIn.pop();
+        matrixStackIn.popPose();
         MuseLogger.logDebug("vertices: " + vertices);
         MuseLogger.logDebug("numVertices: " + numVertices);
     }

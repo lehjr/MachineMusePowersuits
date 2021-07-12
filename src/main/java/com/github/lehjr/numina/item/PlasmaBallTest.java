@@ -7,7 +7,7 @@
 //public class PlasmaBallTest extends Item {
 //    public PlasmaBallTest() {
 //        super(new Item.Properties()
-//                .maxStackSize(1)
+//                .stacksTo(1)
 //                .group(NuminaObjects.creativeTab)
 //                .defaultMaxDamage(-1)
 //                .setNoRepair()

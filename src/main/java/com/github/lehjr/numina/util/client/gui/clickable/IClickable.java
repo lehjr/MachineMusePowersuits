@@ -91,8 +91,8 @@ public interface IClickable {
 
     default boolean mouseClicked(double mouseX, double mouseY, int button) {
         if(hitBox((double) mouseX, (double)mouseY) && this.isEnabled() && this.isVisible()) {
-            InputMappings.Input mouseKey = InputMappings.Type.MOUSE.getOrMakeInput(button);
-            boolean flag = Minecraft.getInstance().gameSettings.keyBindPickBlock.isActiveAndMatches(mouseKey);
+            InputMappings.Input mouseKey = InputMappings.Type.MOUSE.getOrCreate(button);
+            boolean flag = Minecraft.getInstance().options.keyPickItem.isActiveAndMatches(mouseKey);
 
             if (button == 0 || button == 1 || flag) {
                 this.onPressed();

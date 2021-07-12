@@ -43,7 +43,7 @@ public class LogoutEventHandler {
         IConfig moduleConfig = NuminaSettings.getModuleConfig();
         if (event.getPlayer() != null) {
             MinecraftServer server = event.getPlayer().getServer();
-            if (server != null && server.isSinglePlayer() || server.isServerOwner(event.getPlayer().getGameProfile())) {
+            if (server != null && server.isSingleplayer() || server.isSingleplayerOwner(event.getPlayer().getGameProfile())) {
                 if (moduleConfig instanceof ModuleConfig) {
                     ((ModuleConfig) moduleConfig).writeMissingConfigValues();
                 }

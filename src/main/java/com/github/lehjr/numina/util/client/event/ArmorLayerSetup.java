@@ -49,7 +49,7 @@ import java.util.Map;
 public class ArmorLayerSetup {
     @SubscribeEvent
     public static void loadComplete(FMLLoadCompleteEvent evt) {
-        EntityRendererManager entityRenderManager = Minecraft.getInstance().getRenderManager();
+        EntityRendererManager entityRenderManager = Minecraft.getInstance().getEntityRenderDispatcher();
         //Add our own custom armor layer to the various player renderers
         for (Map.Entry<String, PlayerRenderer> entry : entityRenderManager.getSkinMap().entrySet()) {
             addCustomArmorLayer(entry.getValue());
@@ -65,11 +65,11 @@ public class ArmorLayerSetup {
     }
 
     private static <T extends LivingEntity, M extends BipedModel<T>, A extends BipedModel<T>> void addCustomArmorLayer(LivingRenderer<T, M> renderer) {
-                for (LayerRenderer<T, M> layerRenderer : new ArrayList<>(renderer.layerRenderers)) {
+                for (LayerRenderer<T, M> layerRenderer : new ArrayList<>(renderer.layers)) {
             //Only allow an exact match, so we don't add to modded entities that only have a modded extended armor layer
             if (layerRenderer.getClass() == BipedArmorLayer.class) {
                 BipedArmorLayer<T, M, A> bipedArmorLayer = (BipedArmorLayer<T, M, A>) layerRenderer;
-                renderer.addLayer(new MPAArmorLayer<>(renderer, bipedArmorLayer.modelLeggings, bipedArmorLayer.modelArmor));
+                renderer.addLayer(new MPAArmorLayer<>(renderer, bipedArmorLayer.innerModel, bipedArmorLayer.outerModel));
                 break;
             }
         }

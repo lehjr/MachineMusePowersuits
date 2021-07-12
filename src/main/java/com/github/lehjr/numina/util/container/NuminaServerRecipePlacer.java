@@ -46,70 +46,70 @@ public class NuminaServerRecipePlacer extends ServerRecipePlacer {
     }
 
     public void place(ServerPlayerEntity player, @Nullable IRecipe recipeIn, boolean placeAll) {
-        if (recipeIn != null && (player.getRecipeBook().isUnlocked(recipeIn)/* || // FIXME: not used here
+        if (recipeIn != null && (player.getRecipeBook().contains(recipeIn)/* || // FIXME: not used here
                 // we don't need no stinking locked recipes
                 player.openContainer instanceof ArmorStandModdingContainer */)) {
-            this.playerInventory = player.inventory;
-            if (this.placeIntoInventory() || player.isCreative()) {
-                this.recipeItemHelper.clear();
-                player.inventory.accountStacks(this.recipeItemHelper);
-                this.recipeBookContainer.fillStackedContents(this.recipeItemHelper);
-                if (this.recipeItemHelper.canCraft(recipeIn, null)) {
-                    this.tryPlaceRecipe(recipeIn, placeAll);
+            this.inventory = player.inventory;
+            if (this.testClearGrid() || player.isCreative()) {
+                this.stackedContents.clear();
+                player.inventory.fillStackedContents(this.stackedContents);
+                this.menu.fillCraftSlotsStackedContents(this.stackedContents);
+                if (this.stackedContents.canCraft(recipeIn, null)) {
+                    this.handleRecipeClicked(recipeIn, placeAll);
                 } else {
-                    this.clear();
-                    /*if (this.recipeBookContainer instanceof ArmorStandModdingContainer) { // FIXME
+                    this.clearGrid();
+                    /*if (this.menu instanceof ArmorStandModdingContainer) { // FIXME
                         NuminaPackets.CHANNEL_INSTANCE.send(PacketDistributor.PLAYER.with(()-> player),
                                 new SPlaceGhostRecipePacket(player.openContainer.windowId, recipeIn));
                     } else */{
-                        player.connection.sendPacket(new SPlaceGhostRecipePacket(player.openContainer.windowId, recipeIn));
+                        player.connection.send(new SPlaceGhostRecipePacket(player.containerMenu.containerId, recipeIn));
                     }
                 }
-                player.inventory.markDirty();
+                player.inventory.setChanged();
             }
         }
     }
 
-    private boolean placeIntoInventory() {
-        List<ItemStack> itemStacks = Lists.newArrayList();
-        int emptyPlayerSlots = this.getEmptyPlayerSlots();
+    // FIXME: make method in super class protected to avoid this
+    private boolean testClearGrid() {
+        List<ItemStack> list = Lists.newArrayList();
+        int i = this.getAmountOfFreeSlotsInInventory();
 
-        for(int index = 0; index < this.recipeBookContainer.getWidth() * this.recipeBookContainer.getHeight() + 1; ++index) {
-            if (index != this.recipeBookContainer.getOutputSlot()) {
-                ItemStack stack = this.recipeBookContainer.getSlot(index).getStack().copy();
-                if (!stack.isEmpty()) {
-                    int storeIndex = this.playerInventory.storeItemStack(stack);
-                    if (storeIndex == -1 && itemStacks.size() <= emptyPlayerSlots) {
-                        Iterator stackIterator = itemStacks.iterator();
-
-                        while(stackIterator.hasNext()) {
-                            ItemStack nextStack = (ItemStack)stackIterator.next();
-                            if (nextStack.isItemEqual(stack) && nextStack.getCount() != nextStack.getMaxStackSize() && nextStack.getCount() + stack.getCount() <= nextStack.getMaxStackSize()) {
-                                nextStack.grow(stack.getCount());
-                                stack.setCount(0);
+        for(int j = 0; j < this.menu.getGridWidth() * this.menu.getGridHeight() + 1; ++j) {
+            if (j != this.menu.getResultSlotIndex()) {
+                ItemStack itemstack = this.menu.getSlot(j).getItem().copy();
+                if (!itemstack.isEmpty()) {
+                    int k = this.inventory.getSlotWithRemainingSpace(itemstack);
+                    if (k == -1 && list.size() <= i) {
+                        for(ItemStack itemstack1 : list) {
+                            if (itemstack1.sameItem(itemstack) && itemstack1.getCount() != itemstack1.getMaxStackSize() && itemstack1.getCount() + itemstack.getCount() <= itemstack1.getMaxStackSize()) {
+                                itemstack1.grow(itemstack.getCount());
+                                itemstack.setCount(0);
                                 break;
                             }
                         }
 
-                        if (!stack.isEmpty()) {
-                            if (itemStacks.size() >= emptyPlayerSlots) {
+                        if (!itemstack.isEmpty()) {
+                            if (list.size() >= i) {
                                 return false;
                             }
 
-                            itemStacks.add(stack);
+                            list.add(itemstack);
                         }
-                    } else if (storeIndex == -1) {
+                    } else if (k == -1) {
                         return false;
                     }
                 }
             }
         }
+
         return true;
     }
 
-    private int getEmptyPlayerSlots() {
+    // FIXME: make method in super class protected to avoid this
+    private int getAmountOfFreeSlotsInInventory() {
         int slots = 0;
-        Iterator iterator = this.playerInventory.mainInventory.iterator();
+        Iterator iterator = this.inventory.items.iterator();
 
         while(iterator.hasNext()) {
             ItemStack stack = (ItemStack)iterator.next();
@@ -122,15 +122,15 @@ public class NuminaServerRecipePlacer extends ServerRecipePlacer {
     }
 
     @Override
-    protected void clear() {
-        for(int index = 0; index < this.recipeBookContainer.getWidth() * this.recipeBookContainer.getHeight() + 1; ++index) {
-            if (index != this.recipeBookContainer.getOutputSlot() ||
-                    !(this.recipeBookContainer instanceof CraftingContainer) &&
-                           /* !(this.recipeBookContainer instanceof ArmorStandModdingContainer) && */
-                            !(this.recipeBookContainer instanceof PlayerContainer)) {
-                this.giveToPlayer(index);
+    protected void clearGrid() {
+        for(int index = 0; index < this.menu.getGridWidth() * this.menu.getGridHeight()+ 1; ++index) {
+            if (index != this.menu.getResultSlotIndex() ||
+                    !(this.menu instanceof CraftingContainer) &&
+                           /* !(this.menu instanceof ArmorStandModdingContainer) && */
+                            !(this.menu instanceof PlayerContainer)) {
+                this.moveItemToInventory(index);
             }
         }
-        this.recipeBookContainer.clear();
+        this.menu.clearCraftingContent();
     }
 }

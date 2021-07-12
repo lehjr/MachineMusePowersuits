@@ -40,17 +40,17 @@ public class MPAArmorStationItemRenderer extends ItemStackTileEntityRenderer {
     ArmorStandModel model = new ArmorStandModel(0.5F);
 
     public MPAArmorStationItemRenderer() {
-        model.bipedHeadwear.showModel = false;
+        model.hat.visible = false;
     }
 
     @Override
-    public void func_239207_a_(ItemStack itemStack,
+    public void renderByItem(ItemStack itemStack,
                                ItemCameraTransforms.TransformType transformType, MatrixStack matrixStack, IRenderTypeBuffer renderTypeBuffer, int packedLightIn, int packedOverlayIn) {
         // push and pop needed here?  does this scale setting need to be here?
-        matrixStack.push();
+        matrixStack.pushPose();
         matrixStack.scale(1.0F, -1.0F, -1.0F);
-        IVertexBuilder ivertexbuilder1 = ItemRenderer.getEntityGlintVertexBuilder(renderTypeBuffer,  this.model.getRenderType(NuminaConstants.TEXTURE_ARMOR_STAND), false, itemStack.hasEffect());
-        this.model.render(matrixStack, ivertexbuilder1, packedLightIn, packedOverlayIn, 1.0F, 1.0F, 1.0F, 1.0F);
-        matrixStack.pop();
+        IVertexBuilder ivertexbuilder1 = ItemRenderer.getFoilBufferDirect(renderTypeBuffer,  this.model.renderType(NuminaConstants.TEXTURE_ARMOR_STAND), false, itemStack.hasFoil());
+        this.model.renderToBuffer(matrixStack, ivertexbuilder1, packedLightIn, packedOverlayIn, 1.0F, 1.0F, 1.0F, 1.0F);
+        matrixStack.popPose();
     }
 }

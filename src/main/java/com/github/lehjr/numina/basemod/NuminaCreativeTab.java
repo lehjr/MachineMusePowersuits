@@ -36,7 +36,7 @@ public class NuminaCreativeTab extends ItemGroup {
     }
 
     @Override
-    public ItemStack createIcon() {
+    public ItemStack makeIcon() {
         return new ItemStack(NuminaObjects.ARMOR_STAND_ITEM.get());
     }
 }

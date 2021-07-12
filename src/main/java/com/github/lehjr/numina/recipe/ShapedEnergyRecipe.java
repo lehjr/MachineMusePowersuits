@@ -20,7 +20,7 @@ import static com.github.lehjr.numina.recipe.RecipeSerializersRegistry.TEST_RECI
  */
 public class ShapedEnergyRecipe extends ShapedRecipe {
 	public ShapedEnergyRecipe(ShapedRecipe shaped) {
-		this(shaped.getId(), shaped.getGroup(), shaped.getWidth(), shaped.getHeight(), shaped.getIngredients(), shaped.getRecipeOutput());
+		this(shaped.getId(), shaped.getGroup(), shaped.getWidth(), shaped.getHeight(), shaped.getIngredients(), shaped.getResultItem());
 	}
 
 	public ShapedEnergyRecipe(final ResourceLocation id, final String group, final int recipeWidth, final int recipeHeight, final NonNullList<Ingredient> ingredients, final ItemStack recipeOutput) {
@@ -32,11 +32,11 @@ public class ShapedEnergyRecipe extends ShapedRecipe {
 	 * @return result with energy from ingredients up to max value
 	 */
 	@Override
-	public ItemStack getCraftingResult(final CraftingInventory inv) {
-		final ItemStack output = super.getCraftingResult(inv).copy(); // Get the default output
+	public ItemStack assemble(final CraftingInventory inv) {
+		final ItemStack output = super.assemble(inv).copy(); // Get the default output
 		AtomicInteger energy = new AtomicInteger(0);
-		for(int i = 0; i < inv.getSizeInventory(); ++i) {
-			ItemStack itemstack = inv.getStackInSlot(i);
+		for(int i = 0; i < inv.getContainerSize(); ++i) {
+			ItemStack itemstack = inv.getItem(i);
 			energy.addAndGet(itemstack.getCapability(CapabilityEnergy.ENERGY).map(iEnergyStorage -> iEnergyStorage.getEnergyStored()).orElse(0));
 		}
 
@@ -57,13 +57,13 @@ public class ShapedEnergyRecipe extends ShapedRecipe {
 
 	public static class EnergySerializer extends Serializer {
 		@Override
-		public ShapedEnergyRecipe read(final ResourceLocation recipeID, final JsonObject json) {
-			return new ShapedEnergyRecipe(super.read(recipeID, json));
+		public ShapedEnergyRecipe fromJson(final ResourceLocation recipeID, final JsonObject json) {
+			return new ShapedEnergyRecipe(super.fromJson(recipeID, json));
 		}
 
 		@Override
-		public ShapedEnergyRecipe read(final ResourceLocation recipeID, final PacketBuffer buffer) {
-			return new ShapedEnergyRecipe(super.read(recipeID, buffer));
+		public ShapedEnergyRecipe fromNetwork(final ResourceLocation recipeID, final PacketBuffer buffer) {
+			return new ShapedEnergyRecipe(super.fromNetwork(recipeID, buffer));
 		}
 	}
 }

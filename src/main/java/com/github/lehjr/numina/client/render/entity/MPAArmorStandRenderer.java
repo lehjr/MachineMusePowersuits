@@ -44,7 +44,7 @@ public class MPAArmorStandRenderer extends ArmorStandRenderer {
      * Returns the location of an entity's texture.
      */
     @Override
-    public ResourceLocation getEntityTexture(ArmorStandEntity entity) {
+    public ResourceLocation getTextureLocation(ArmorStandEntity entity) {
         return NuminaConstants.TEXTURE_ARMOR_STAND;
     }
 }
