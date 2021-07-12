@@ -52,8 +52,8 @@ import net.minecraft.util.ResourceLocation;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class MPAArmorLayer<T extends LivingEntity, M extends BipedModel<T>, A extends BipedModel<T>> extends BipedArmorLayer<T, M, A> {
-    public MPAArmorLayer(IEntityRenderer<T, M> entityRenderer, A modelLeggings, A modelArmor) {
+public class NuminaArmorLayer<T extends LivingEntity, M extends BipedModel<T>, A extends BipedModel<T>> extends BipedArmorLayer<T, M, A> {
+    public NuminaArmorLayer(IEntityRenderer<T, M> entityRenderer, A modelLeggings, A modelArmor) {
         super(entityRenderer, modelLeggings, modelArmor);
     }
 

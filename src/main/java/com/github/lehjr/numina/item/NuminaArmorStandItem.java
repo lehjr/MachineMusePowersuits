@@ -27,7 +27,7 @@
 package com.github.lehjr.numina.item;
 
 import com.github.lehjr.numina.basemod.NuminaObjects;
-import com.github.lehjr.numina.entity.MPAArmorStandEntity;
+import com.github.lehjr.numina.entity.NuminaArmorStandEntity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.item.*;
@@ -45,8 +45,8 @@ import net.minecraft.world.server.ServerWorld;
 
 import java.util.Random;
 
-public class MPAArmorStandItem extends ArmorStandItem {
-    public MPAArmorStandItem(Item.Properties builder) {
+public class NuminaArmorStandItem extends ArmorStandItem {
+    public NuminaArmorStandItem(Item.Properties builder) {
         super(builder);
     }
 
@@ -67,7 +67,7 @@ public class MPAArmorStandItem extends ArmorStandItem {
             if (world.noCollision(null, axisalignedbb, (p_242390_0_) -> true) && world.getEntities(null, axisalignedbb).isEmpty()) {
                 if (world instanceof ServerWorld) {
                     ServerWorld serverworld = (ServerWorld)world;
-                    MPAArmorStandEntity armorstandentity = NuminaObjects.ARMOR_WORKSTATION__ENTITY_TYPE.get().create(serverworld, itemstack.getTag(), null, context.getPlayer(), blockpos, SpawnReason.SPAWN_EGG, true, true);
+                    NuminaArmorStandEntity armorstandentity = NuminaObjects.ARMOR_WORKSTATION__ENTITY_TYPE.get().create(serverworld, itemstack.getTag(), null, context.getPlayer(), blockpos, SpawnReason.SPAWN_EGG, true, true);
                     if (armorstandentity == null) {
                         return ActionResultType.FAIL;
                     }
@@ -88,7 +88,7 @@ public class MPAArmorStandItem extends ArmorStandItem {
         }
     }
 
-    private void applyRandomRotations(MPAArmorStandEntity armorStand, Random rand) {
+    private void applyRandomRotations(NuminaArmorStandEntity armorStand, Random rand) {
         Rotations rotations = armorStand.getHeadPose();
         float f = rand.nextFloat() * 5.0F;
         float f1 = rand.nextFloat() * 20.0F - 10.0F;

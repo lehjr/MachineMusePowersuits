@@ -34,7 +34,7 @@ import com.github.lehjr.numina.client.gui.ChargingBaseGui;
 import com.github.lehjr.numina.config.ConfigHelper;
 import com.github.lehjr.numina.config.NuminaSettings;
 import com.github.lehjr.numina.constants.NuminaConstants;
-import com.github.lehjr.numina.entity.MPAArmorStandEntity;
+import com.github.lehjr.numina.entity.NuminaArmorStandEntity;
 import com.github.lehjr.numina.event.EventBusHelper;
 import com.github.lehjr.numina.event.LogoutEventHandler;
 import com.github.lehjr.numina.event.PlayerUpdateHandler;
@@ -74,8 +74,6 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 @Mod(NuminaConstants.MOD_ID)
 public class Numina {
@@ -162,7 +160,7 @@ public class Numina {
         MinecraftForge.EVENT_BUS.register(new PlayerUpdateHandler());
 
         DeferredWorkQueue.runLater(() -> {
-            GlobalEntityTypeAttributes.put(NuminaObjects.ARMOR_WORKSTATION__ENTITY_TYPE.get(), MPAArmorStandEntity.setCustomAttributes().build());
+            GlobalEntityTypeAttributes.put(NuminaObjects.ARMOR_WORKSTATION__ENTITY_TYPE.get(), NuminaArmorStandEntity.setCustomAttributes().build());
         });
     }
 

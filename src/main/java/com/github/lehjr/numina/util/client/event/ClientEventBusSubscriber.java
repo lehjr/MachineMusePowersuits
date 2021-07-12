@@ -28,7 +28,7 @@ package com.github.lehjr.numina.util.client.event;
 
 
 import com.github.lehjr.numina.basemod.NuminaObjects;
-import com.github.lehjr.numina.client.render.entity.MPAArmorStandRenderer;
+import com.github.lehjr.numina.client.render.entity.NuminaArmorStandRenderer;
 import com.github.lehjr.numina.constants.NuminaConstants;
 import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraftforge.api.distmarker.Dist;
@@ -43,7 +43,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 public class ClientEventBusSubscriber {
     @SubscribeEvent
     public static void onClientSetup(FMLClientSetupEvent event) {
-        RenderingRegistry.registerEntityRenderingHandler(NuminaObjects.ARMOR_WORKSTATION__ENTITY_TYPE.get(), MPAArmorStandRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(NuminaObjects.ARMOR_WORKSTATION__ENTITY_TYPE.get(), NuminaArmorStandRenderer::new);
     }
 
     @SubscribeEvent

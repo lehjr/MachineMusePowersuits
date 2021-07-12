@@ -53,13 +53,13 @@ import net.minecraftforge.fml.network.NetworkHooks;
  */
 
 
-public class MPAArmorStandEntity extends ArmorStandEntity {
-    public MPAArmorStandEntity(EntityType<? extends MPAArmorStandEntity> entityType, World world) {
+public class NuminaArmorStandEntity extends ArmorStandEntity {
+    public NuminaArmorStandEntity(EntityType<? extends NuminaArmorStandEntity> entityType, World world) {
         super(entityType, world);
         setShowArms(true);
     }
 
-    public MPAArmorStandEntity(World worldIn, double posX, double posY, double posZ) {
+    public NuminaArmorStandEntity(World worldIn, double posX, double posY, double posZ) {
         super(worldIn, posX, posY, posZ);
     }
 

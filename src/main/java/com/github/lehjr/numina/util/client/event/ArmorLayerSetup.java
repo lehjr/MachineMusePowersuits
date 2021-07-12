@@ -26,7 +26,7 @@
 
 package com.github.lehjr.numina.util.client.event;
 
-import com.github.lehjr.numina.client.model.item.armor.MPAArmorLayer;
+import com.github.lehjr.numina.client.model.item.armor.NuminaArmorLayer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
@@ -69,7 +69,7 @@ public class ArmorLayerSetup {
             //Only allow an exact match, so we don't add to modded entities that only have a modded extended armor layer
             if (layerRenderer.getClass() == BipedArmorLayer.class) {
                 BipedArmorLayer<T, M, A> bipedArmorLayer = (BipedArmorLayer<T, M, A>) layerRenderer;
-                renderer.addLayer(new MPAArmorLayer<>(renderer, bipedArmorLayer.innerModel, bipedArmorLayer.outerModel));
+                renderer.addLayer(new NuminaArmorLayer<>(renderer, bipedArmorLayer.innerModel, bipedArmorLayer.outerModel));
                 break;
             }
         }

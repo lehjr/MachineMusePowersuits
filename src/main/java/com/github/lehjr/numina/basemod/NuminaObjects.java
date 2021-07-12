@@ -27,15 +27,15 @@
 package com.github.lehjr.numina.basemod;
 
 import com.github.lehjr.numina.block.ChargingBaseBlock;
-import com.github.lehjr.numina.client.render.item.MPAArmorStationItemRenderer;
+import com.github.lehjr.numina.client.render.item.NuminaArmorStationItemRenderer;
 import com.github.lehjr.numina.constants.NuminaConstants;
 import com.github.lehjr.numina.container.ArmorStandContainer;
 import com.github.lehjr.numina.container.ChargingBaseContainer;
 import com.github.lehjr.numina.container.CraftingContainer;
-import com.github.lehjr.numina.entity.MPAArmorStandEntity;
+import com.github.lehjr.numina.entity.NuminaArmorStandEntity;
 import com.github.lehjr.numina.item.Battery;
 import com.github.lehjr.numina.item.ItemComponent;
-import com.github.lehjr.numina.item.MPAArmorStandItem;
+import com.github.lehjr.numina.item.NuminaArmorStandItem;
 import com.github.lehjr.numina.tileentity.ChargingBaseTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
@@ -146,7 +146,7 @@ public class NuminaObjects {
 
     // Armor stand
     public static final RegistryObject<Item> ARMOR_STAND_ITEM = ITEMS.register(NuminaConstants.ARMORSTAND_REGNAME,
-            () -> new MPAArmorStandItem(new Item.Properties().tab(ItemGroup.TAB_DECORATIONS).setISTER(() -> MPAArmorStationItemRenderer::new)));
+            () -> new NuminaArmorStandItem(new Item.Properties().tab(ItemGroup.TAB_DECORATIONS).setISTER(() -> NuminaArmorStationItemRenderer::new)));
 
 
     /**
@@ -163,8 +163,8 @@ public class NuminaObjects {
      */
     public static final DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(ForgeRegistries.ENTITIES, NuminaConstants.MOD_ID);
 
-    public static final RegistryObject<EntityType<MPAArmorStandEntity>> ARMOR_WORKSTATION__ENTITY_TYPE = ENTITY_TYPES.register(NuminaConstants.ARMOR_STAND__ENTITY_TYPE_REGNAME,
-            () -> EntityType.Builder.<MPAArmorStandEntity>of(MPAArmorStandEntity::new, EntityClassification.CREATURE)
+    public static final RegistryObject<EntityType<NuminaArmorStandEntity>> ARMOR_WORKSTATION__ENTITY_TYPE = ENTITY_TYPES.register(NuminaConstants.ARMOR_STAND__ENTITY_TYPE_REGNAME,
+            () -> EntityType.Builder.<NuminaArmorStandEntity>of(NuminaArmorStandEntity::new, EntityClassification.CREATURE)
                     .sized(0.5F, 1.975F) // Hitbox Size
                     .build(new ResourceLocation(NuminaConstants.MOD_ID, NuminaConstants.ARMOR_STAND__ENTITY_TYPE_REGNAME).toString()));
 

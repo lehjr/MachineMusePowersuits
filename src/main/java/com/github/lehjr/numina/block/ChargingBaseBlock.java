@@ -27,7 +27,7 @@
 package com.github.lehjr.numina.block;
 
 import com.github.lehjr.numina.container.ChargingBaseContainer;
-import com.github.lehjr.numina.entity.MPAArmorStandEntity;
+import com.github.lehjr.numina.entity.NuminaArmorStandEntity;
 import com.github.lehjr.numina.tileentity.ChargingBaseTileEntity;
 import com.github.lehjr.numina.util.client.sound.SoundDictionary;
 import net.minecraft.block.*;
@@ -130,7 +130,7 @@ public class ChargingBaseBlock extends Block implements IWaterLoggable {
     // temporary fix for armor stand spawned below the block
     @Override
     public void entityInside(BlockState state, World worldIn, BlockPos pos, Entity entityIn) {
-        if (!worldIn.isClientSide && entityIn instanceof MPAArmorStandEntity && pos.getY() > (int)entityIn.position().y) {
+        if (!worldIn.isClientSide && entityIn instanceof NuminaArmorStandEntity && pos.getY() > (int)entityIn.position().y) {
             entityIn.teleportTo(pos.getX() + 0.5, entityIn.position().y + 1, pos.getZ() + 0.5);
         }
         super.entityInside(state, worldIn, pos, entityIn);
