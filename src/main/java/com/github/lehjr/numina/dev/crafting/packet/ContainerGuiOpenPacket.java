@@ -24,29 +24,41 @@
  *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.github.lehjr.numina.util.container;
+package com.github.lehjr.numina.dev.crafting.packet;
 
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.inventory.container.ContainerType;
-import net.minecraft.inventory.container.RecipeBookContainer;
-import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.item.crafting.RecipeBookCategory;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import com.github.lehjr.numina.dev.crafting.container.NUminaContainerProvider;
+import net.minecraft.network.PacketBuffer;
+import net.minecraftforge.fml.network.NetworkEvent;
+import net.minecraftforge.fml.network.NetworkHooks;
 
-public abstract class NuminaRecipeBookContainer<C> extends RecipeBookContainer {
-    public NuminaRecipeBookContainer(ContainerType containerType, int windowId) {
-        super(containerType, windowId);
+import java.util.function.Supplier;
+
+/**
+ * A packet for sending a containerGui open request from the client side.
+ */
+public class ContainerGuiOpenPacket {
+    int guiID;
+    public ContainerGuiOpenPacket(int guiIDIn) {
+        this.guiID = guiIDIn;
     }
 
-    @Override
-    public void handlePlacement(boolean placeAll, IRecipe recipe, ServerPlayerEntity player) {
-        (new NuminaServerRecipePlacer(this)).place(player, recipe, placeAll);
+    public static void encode(ContainerGuiOpenPacket msg, PacketBuffer packetBuffer) {
+        packetBuffer.writeInt(msg.guiID);
     }
 
-    @OnlyIn(Dist.CLIENT)
-    @Override
-    public RecipeBookCategory getRecipeBookType() {
-        return RecipeBookCategory.CRAFTING;
+    public static ContainerGuiOpenPacket decode(PacketBuffer packetBuffer) {
+        return new ContainerGuiOpenPacket(packetBuffer.readInt());
+    }
+
+    public static void handle(ContainerGuiOpenPacket msg, Supplier<NetworkEvent.Context> ctx) {
+        ctx.get().enqueueWork(() -> {
+            System.out.println("guiID: " + msg.guiID);
+
+
+                NetworkHooks.openGui(ctx.get().getSender(),
+                        new NUminaContainerProvider(msg.guiID),
+                        (buffer) -> buffer.writeInt(msg.guiID));
+        });
+        ctx.get().setPacketHandled(true);
     }
 }

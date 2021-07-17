@@ -26,7 +26,7 @@
 
 package com.github.lehjr.numina.util.client.gui.clickable;
 
-import com.github.lehjr.numina.util.client.gui.gemoetry.DrawableMuseRect;
+import com.github.lehjr.numina.util.client.gui.gemoetry.DrawableRelativeRect;
 import com.github.lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
 import com.github.lehjr.numina.util.client.render.MuseRenderer;
 import com.github.lehjr.numina.util.math.Colour;
@@ -41,7 +41,7 @@ import java.util.List;
 public class ClickableButton extends Clickable {
     protected ITextComponent label;
     protected MusePoint2D radius;
-    protected DrawableMuseRect rect;
+    protected DrawableRelativeRect rect;
     private final Colour enabledBorder  = new Colour(0.3F, 0.3F, 0.3F, 1);
     private final Colour enabledBackground = new Colour(0.5F, 0.6F, 0.8F, 1);
     private final Colour disabledBorder = new Colour(0.8F, 0.6F, 0.6F, 1);
@@ -64,7 +64,7 @@ public class ClickableButton extends Clickable {
             this.radius = new MusePoint2D((float) (MuseRenderer.getStringWidth(label.getString()) / 2F + 2F), 6);
         }
 
-        this.rect = new DrawableMuseRect(
+        this.rect = new DrawableRelativeRect(
                 position.getX() - radius.getX(),
                 position.getY() - radius.getY(),
                 position.getX() + radius.getX(),

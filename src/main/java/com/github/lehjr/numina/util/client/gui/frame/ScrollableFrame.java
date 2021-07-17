@@ -26,8 +26,7 @@
 
 package com.github.lehjr.numina.util.client.gui.frame;
 
-import com.github.lehjr.numina.util.client.gui.gemoetry.DrawableMuseRect;
-import com.github.lehjr.numina.util.client.gui.gemoetry.IRect;
+import com.github.lehjr.numina.util.client.gui.gemoetry.DrawableRelativeRect;
 import com.github.lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
 import com.github.lehjr.numina.util.client.render.NuminaRenderState;
 import com.github.lehjr.numina.util.math.Colour;
@@ -43,7 +42,7 @@ import org.lwjgl.opengl.GL11;
 
 import java.util.List;
 
-public class ScrollableFrame implements IGuiFrame {
+public class ScrollableFrame extends DrawableRelativeRect implements IGuiFrame {
     protected final int buttonsize = 5;
     protected int totalsize;
     protected int currentscrollpixels;
@@ -51,24 +50,72 @@ public class ScrollableFrame implements IGuiFrame {
     protected boolean enabled = true;
     protected float zLevel;
 
-    protected DrawableMuseRect border;
-
     public ScrollableFrame(MusePoint2D topleft, MusePoint2D bottomright, float zlevel, Colour backgroundColour, Colour borderColour) {
-        border = new DrawableMuseRect(topleft, bottomright, backgroundColour, borderColour);
-        this.zLevel = zlevel;
+        super(topleft, bottomright, backgroundColour, borderColour);
+        super.setZLevel(zlevel);
     }
 
-    public float getzLevel() {
-        return zLevel;
+    public int getMaxScrollPixels() {
+        return (int) Math.max(totalsize - height(), 0);
     }
 
-    public void setzLevel(float zLevelIn) {
-        this.zLevel = zLevelIn;
+    protected double getScrollAmount() {
+        return 8;
     }
 
     @Override
-    public IRect getBorder() {
-        return border;
+    public boolean mouseClicked(double x, double y, int button) {
+        if (isVisible() && containsPoint(x, y) && button == 0) {
+            int dscroll = 0;
+            if (y - top() < buttonsize && this.currentscrollpixels > 0) {
+                dscroll = (int)((double)dscroll - this.getScrollAmount());
+            } else if (bottom() - y < buttonsize) {
+                dscroll = (int)((double)dscroll + this.getScrollAmount());
+            }
+            if (dscroll != 0) {
+                this.currentscrollpixels = (int) MuseMathUtils.clampDouble(this.currentscrollpixels + dscroll, 0.0D, this.getMaxScrollPixels());
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public boolean mouseReleased(double mouseX, double mouseY, int button) {
+        return false;
+    }
+
+    @Override
+    public boolean mouseScrolled(double mouseX, double mouseY, double dWheel) {
+        if (this.containsPoint(mouseX, mouseY)) {
+            // prevent negative total scroll values
+            currentscrollpixels  = (int) MuseMathUtils.clampDouble(currentscrollpixels-= dWheel * getScrollAmount(), 0, getMaxScrollPixels());
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public void init(double left, double top, double right, double bottom) {
+        IGuiFrame.super.init(left, top, right, bottom);
+    }
+
+    @Override
+    public void update(double mouseX, double mouseY) {
+
+    }
+
+    @Override
+    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
+        if (isVisible()) {
+            preRender(matrixStack, mouseX, mouseY, partialTicks);
+            postRender(mouseX, mouseY, partialTicks);
+        }
+    }
+
+    @Override
+    public List<ITextComponent> getToolTip(int x, int y) {
+        return null;
     }
 
     @Override
@@ -91,17 +138,9 @@ public class ScrollableFrame implements IGuiFrame {
         return visible;
     }
 
-    @Override
-    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
-        if (isVisible()) {
-            preRender(matrixStack, mouseX, mouseY, partialTicks);
-            postRender(mouseX, mouseY, partialTicks);
-        }
-    }
-
     public void preRender(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks)  {
         if (isVisible()) {
-            border.draw(matrixStack, zLevel);
+            super.draw(matrixStack, zLevel);
 
             RenderSystem.disableTexture();
             RenderSystem.enableBlend();
@@ -117,18 +156,18 @@ public class ScrollableFrame implements IGuiFrame {
             Matrix4f matrix4f = matrixStack.last().pose();
 
             // Can scroll down
-            if (currentscrollpixels + border.height() < totalsize) {
-                buffer.vertex(matrix4f, (float)(border.left() + border.width() / 2F), (float)border.bottom(), zLevel)
+            if (currentscrollpixels + height() < totalsize) {
+                buffer.vertex(matrix4f, (float)(left() + width() / 2F), (float)bottom(), zLevel)
                         .color(Colour.LIGHT_BLUE.r, Colour.LIGHT_BLUE.b, Colour.LIGHT_BLUE.b, Colour.LIGHT_BLUE.a)
                         .uv2(0x00F000F0)
                         .endVertex();
 
-                buffer.vertex(matrix4f, (float) (border.left() + border.width() / 2 + 2), (float)border.bottom() - 4, zLevel)
+                buffer.vertex(matrix4f, (float) (left() + width() / 2 + 2), (float)bottom() - 4, zLevel)
                         .color(Colour.LIGHT_BLUE.r, Colour.LIGHT_BLUE.b, Colour.LIGHT_BLUE.b, Colour.LIGHT_BLUE.a)
                         .uv2(0x00F000F0)
                         .endVertex();
 
-                buffer.vertex(matrix4f, (float) (border.left() + border.width() / 2 - 2), (float)border.bottom() - 4, zLevel)
+                buffer.vertex(matrix4f, (float) (left() + width() / 2 - 2), (float)bottom() - 4, zLevel)
                         .color(Colour.LIGHT_BLUE.r, Colour.LIGHT_BLUE.b, Colour.LIGHT_BLUE.b, Colour.LIGHT_BLUE.a)
                         .uv2(0x00F000F0)
                         .endVertex();
@@ -136,15 +175,15 @@ public class ScrollableFrame implements IGuiFrame {
 
             // Can scroll up
             if (currentscrollpixels > 0) {
-                buffer.vertex(matrix4f, (float) (border.left() + border.width() / 2), (float)border.top(), zLevel)
+                buffer.vertex(matrix4f, (float) (left() + width() / 2), (float)top(), zLevel)
                         .color(Colour.LIGHT_BLUE.r, Colour.LIGHT_BLUE.b, Colour.LIGHT_BLUE.b, Colour.LIGHT_BLUE.a)
                         .uv2(0x00F000F0)
                         .endVertex();
-                buffer.vertex(matrix4f, (float) (border.left() + border.width() / 2 - 2), (float)border.top() + 4, zLevel)
+                buffer.vertex(matrix4f, (float) (left() + width() / 2 - 2), (float)top() + 4, zLevel)
                         .color(Colour.LIGHT_BLUE.r, Colour.LIGHT_BLUE.b, Colour.LIGHT_BLUE.b, Colour.LIGHT_BLUE.a)
                         .uv2(0x00F000F0)
                         .endVertex();
-                buffer.vertex(matrix4f, (float) (border.left() + border.width() / 2 + 2), (float)border.top() + 4, zLevel)
+                buffer.vertex(matrix4f, (float) (left() + width() / 2 + 2), (float)top() + 4, zLevel)
                         .color(Colour.LIGHT_BLUE.r, Colour.LIGHT_BLUE.b, Colour.LIGHT_BLUE.b, Colour.LIGHT_BLUE.a)
                         .uv2(0x00F000F0)
                         .endVertex();
@@ -155,7 +194,7 @@ public class ScrollableFrame implements IGuiFrame {
             RenderSystem.disableBlend();
             RenderSystem.enableAlphaTest();
             RenderSystem.enableTexture();
-            NuminaRenderState.scissorsOn(border.left(), border.top() + 4, border.width(), border.height() - 8); // get rid of margins
+            NuminaRenderState.scissorsOn(left(), top() + 4, width(), height() - 8); // get rid of margins
         }
     }
 
@@ -166,53 +205,11 @@ public class ScrollableFrame implements IGuiFrame {
         }
     }
 
-    public int getMaxScrollPixels() {
-        return (int) Math.max(totalsize - border.height(), 0);
+    public float getzLevel() {
+        return zLevel;
     }
 
-    protected double getScrollAmount() {
-        return 8;
-    }
-
-    @Override
-    public boolean mouseScrolled(double mouseX, double mouseY, double dWheel) {
-        if (border.containsPoint(mouseX, mouseY)) {
-            // prevent negative total scroll values
-            currentscrollpixels  = (int) MuseMathUtils.clampDouble(currentscrollpixels-= dWheel * getScrollAmount(), 0, getMaxScrollPixels());
-            return true;
-        }
-        return false;
-    }
-
-    @Override
-    public boolean mouseClicked(double x, double y, int button) {
-        if (isVisible() && getBorder().containsPoint(x, y) && button == 0) {
-            int dscroll = 0;
-            if (y - this.border.top() < buttonsize && this.currentscrollpixels > 0) {
-                dscroll = (int)((double)dscroll - this.getScrollAmount());
-            } else if (this.border.bottom() - y < buttonsize) {
-                dscroll = (int)((double)dscroll + this.getScrollAmount());
-            }
-            if (dscroll != 0) {
-                this.currentscrollpixels = (int) MuseMathUtils.clampDouble(this.currentscrollpixels + dscroll, 0.0D, this.getMaxScrollPixels());
-                return true;
-            }
-        }
-        return false;
-    }
-
-    @Override
-    public boolean mouseReleased(double x, double y, int button) {
-        return false;
-    }
-
-    @Override
-    public void update(double mouseX, double mouseY) {
-
-    }
-
-    @Override
-    public List<ITextComponent> getToolTip(int x, int y) {
-        return null;
+    public void setzLevel(float zLevelIn) {
+        this.zLevel = zLevelIn;
     }
 }

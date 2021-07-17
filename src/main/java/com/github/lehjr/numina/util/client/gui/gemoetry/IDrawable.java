@@ -37,7 +37,6 @@ import org.lwjgl.opengl.GL11;
 
 import java.nio.DoubleBuffer;
 import java.nio.FloatBuffer;
-import java.util.Vector;
 
 public interface IDrawable {
 

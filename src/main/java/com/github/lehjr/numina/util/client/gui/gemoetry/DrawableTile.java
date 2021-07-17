@@ -35,7 +35,7 @@ import org.lwjgl.opengl.GL11;
 
 import java.nio.FloatBuffer;
 
-public class DrawableTile extends MuseRelativeRect implements IDrawable {
+public class DrawableTile extends RelativeRect implements IDrawable {
     final float lineWidth = 1F;
     Colour topBorderColour = new Colour(0.216F, 0.216F, 0.216F, 1F);
     Colour bottomBorderColour = Colour.WHITE.withAlpha(0.8F);

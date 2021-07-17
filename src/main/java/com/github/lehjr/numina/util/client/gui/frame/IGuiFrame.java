@@ -27,7 +27,6 @@
 package com.github.lehjr.numina.util.client.gui.frame;
 
 import com.github.lehjr.numina.util.client.gui.gemoetry.IRect;
-import com.github.lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.util.text.ITextComponent;
 
@@ -68,7 +67,7 @@ public interface IGuiFrame extends IRect {
      * @param bottom
      */
     default void init(double left, double top, double right, double bottom) {
-        getBorder().setTargetDimensions(left, top, right, bottom);
+        setTargetDimensions(left, top, right, bottom);
     }
 
     /**
@@ -95,8 +94,6 @@ public interface IGuiFrame extends IRect {
      * @return tooltip or null if not returning tooltip;
      */
     List<ITextComponent> getToolTip(int x, int y);
-
-    IRect getBorder();
 
     void setEnabled(boolean enabled);
 
@@ -130,174 +127,5 @@ public interface IGuiFrame extends IRect {
     default void disableAndHide() {
         disable();
         hide();
-    }
-
-    /**
-     * IRect for easier placement data and manipulation -----------------------------------------------------------
-     */
-    @Override
-    default void setTargetDimensions(double left, double top, double right, double bottom) {
-        getBorder().setTargetDimensions(left, top, right, bottom);
-    }
-
-    @Override
-    default void setTargetDimensions(MusePoint2D ul, MusePoint2D wh) {
-        getBorder().setTargetDimensions(ul.copy(), wh.copy());
-    }
-
-    @Override
-    default void move(MusePoint2D moveAmount) {
-        getBorder().move(moveAmount.copy());
-    }
-
-    @Override
-    default void move(double x, double y) {
-        getBorder().move(x, y);
-    }
-
-    @Override
-    default void setPosition(MusePoint2D position) {
-        getBorder().setPosition(position.copy());
-    }
-
-    @Override
-    default boolean containsPoint(double x, double y) {
-        return getBorder().containsPoint(x, y);
-    }
-
-    @Override
-    default MusePoint2D center() {
-        return getBorder().center();
-    }
-
-    @Override
-    default MusePoint2D getUL() {
-        return getBorder().getUL();
-    }
-
-    @Override
-    default MusePoint2D getULFinal() {
-        return getBorder().getULFinal();
-    }
-
-    @Override
-    default MusePoint2D getWH() {
-        return getBorder().getWH();
-    }
-
-    @Override
-    default MusePoint2D getWHFinal() {
-        return getBorder().getWHFinal();
-    }
-
-    @Override
-    default double left() {
-        return getBorder().left();
-    }
-
-    @Override
-    default double finalLeft() {
-        return getBorder().finalLeft();
-    }
-
-    @Override
-    default double top() {
-        return getBorder().top();
-    }
-
-    @Override
-    default double finalTop() {
-        return getBorder().finalTop();
-    }
-
-    @Override
-    default double right() {
-        return getBorder().right();
-    }
-
-    @Override
-    default double finalRight() {
-        return getBorder().finalRight();
-    }
-
-    @Override
-    default double bottom() {
-        return getBorder().bottom();
-    }
-
-    @Override
-    default double finalBottom() {
-        return getBorder().finalBottom();
-    }
-
-    @Override
-    default double width() {
-        return getBorder().width();
-    }
-
-    @Override
-    default double finalWidth() {
-        return getBorder().finalWidth();
-    }
-
-    @Override
-    default double height() {
-        return getBorder().height();
-    }
-
-    @Override
-    default double finalHeight() {
-        return getBorder().finalHeight();
-    }
-
-    @Override
-    default boolean growFromMiddle() {
-        return getBorder().growFromMiddle();
-    }
-
-    @Override
-    default double centerx() {
-        return getBorder().centerx();
-    }
-
-    @Override
-    default double centery() {
-        return getBorder().centery();
-    }
-
-    @Override
-    default IRect setLeft(double value) {
-        getBorder().setLeft(value);
-        return this;
-    }
-
-    @Override
-    default IRect setRight(double value) {
-        getBorder().setRight(value);
-        return this;
-    }
-
-    @Override
-    default IRect setTop(double value) {
-        getBorder().setTop(value);
-        return this;
-    }
-
-    @Override
-    default IRect setBottom(double value) {
-        getBorder().setBottom(value);
-        return this;
-    }
-
-    @Override
-    default IRect setWidth(double value) {
-        getBorder().setWidth(value);
-        return this;
-    }
-
-    @Override
-    default IRect setHeight(double value) {
-        getBorder().setHeight(value);
-        return this;
     }
 }

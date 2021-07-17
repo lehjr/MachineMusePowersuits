@@ -24,39 +24,31 @@
  *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.github.lehjr.numina.util.client.gui.scrollable;
+package com.github.lehjr.numina.dev.crafting.helper;
 
-import com.github.lehjr.numina.util.client.gui.clickable.ClickableSlider;
-import com.github.lehjr.numina.util.client.gui.gemoetry.RelativeRect;
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.github.lehjr.numina.dev.crafting.container.NuminaCraftingContainer;
+import net.minecraft.inventory.container.PlayerContainer;
+import net.minecraft.inventory.container.RecipeBookContainer;
+import net.minecraft.item.crafting.ServerRecipePlacer;
 
-@Deprecated
-public class ScrollableSlider extends ScrollableRectangle {
-    ClickableSlider slider;
-
-    public ScrollableSlider(ClickableSlider slider, RelativeRect relativeRect) {
-        super(relativeRect);
-        this.slider = slider;
-    }
-
-    public double getValue() {
-        return slider.getValue();
-    }
-
-    public void setValue(double value) {
-        slider.setValue(value);
-    }
-
-    public ClickableSlider getSlider() {
-        return slider;
-    }
-
-    public boolean hitBox(float x, float y) {
-        return slider.hitBox(x, y);
+/**
+ * Seems to only the placement of recipes from the recipe book
+ */
+public class NuminaServerRecipePlacer extends ServerRecipePlacer {
+    public NuminaServerRecipePlacer(RecipeBookContainer recipeBookContainer) {
+        super(recipeBookContainer);
     }
 
     @Override
-    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks, float zLevel) {
-        slider.render(matrixStack, mouseX, mouseY, partialTicks, zLevel);
+    protected void clearGrid() {
+        for(int index = 0; index < this.menu.getGridWidth() * this.menu.getGridHeight() + 1; ++index) {
+            if (index != this.menu.getResultSlotIndex() ||
+                    !(this.menu instanceof NuminaCraftingContainer) && // FIXME: temporary reference until gui finished
+                            !(this.menu instanceof PlayerContainer)) {
+                this.moveItemToInventory(index);
+            }
+        }
+
+        this.menu.clearCraftingContent();
     }
 }

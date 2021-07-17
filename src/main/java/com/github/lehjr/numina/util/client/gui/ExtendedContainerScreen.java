@@ -27,7 +27,7 @@
 package com.github.lehjr.numina.util.client.gui;
 
 import com.github.lehjr.numina.util.client.gui.frame.IGuiFrame;
-import com.github.lehjr.numina.util.client.gui.gemoetry.DrawableMuseRect;
+import com.github.lehjr.numina.util.client.gui.gemoetry.DrawableRelativeRect;
 import com.github.lehjr.numina.util.math.Colour;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.Minecraft;
@@ -41,17 +41,18 @@ import java.util.List;
 
 public class ExtendedContainerScreen<T extends Container> extends ContainerScreen<T> {
     protected long creationTime;
-    protected DrawableMuseRect tooltipRect;
+    protected DrawableRelativeRect tooltipRect;
     private List<IGuiFrame> frames;
 
     public ExtendedContainerScreen(T screenContainer, PlayerInventory inv, ITextComponent titleIn) {
         super(screenContainer, inv, titleIn);
         frames = new ArrayList();
-        tooltipRect = new DrawableMuseRect(
+        tooltipRect = new DrawableRelativeRect(
                 0, 0, 0, 0,
                 false,
                 Colour.BLACK.withAlpha(0.9F),
                 Colour.PURPLE);
+        this.minecraft = Minecraft.getInstance();
     }
 
     @Override
@@ -75,6 +76,13 @@ public class ExtendedContainerScreen<T extends Container> extends ContainerScree
         frames.add(frame);
     }
 
+    /**
+     * inherited from ContainerScreen..
+     * @param matrixStack
+     * @param partialTicks
+     * @param x
+     * @param y
+     */
     @Override
     public void renderBg(MatrixStack matrixStack, float partialTicks, int x, int y) {
         update(x, y);
@@ -201,5 +209,11 @@ public class ExtendedContainerScreen<T extends Container> extends ContainerScree
     public int relY(float absy) {
         int padding = (height - getYSize()) / 2;
         return (int) ((absy - padding) * 2 / getYSize() - 1);
+    }
+
+    @Override
+    public Minecraft getMinecraft() {
+        this.minecraft = Minecraft.getInstance();
+        return this.minecraft;
     }
 }

@@ -26,11 +26,11 @@
 
 package com.github.lehjr.numina.util.client.gui.gemoetry;
 
-public class MuseRelativeRect implements IRect {
-    protected MuseRelativeRect rectBelowMe;
-    protected MuseRelativeRect rectAboveMe;
-    protected MuseRelativeRect rectLeftOfMe;
-    protected MuseRelativeRect rectRightOfMe;
+public class RelativeRect implements IRect {
+    protected RelativeRect rectBelowMe;
+    protected RelativeRect rectAboveMe;
+    protected RelativeRect rectLeftOfMe;
+    protected RelativeRect rectRightOfMe;
     protected double leftPadding = 0;
     protected double topPadding = 0;
     protected double rightPadding = 0;
@@ -49,7 +49,7 @@ public class MuseRelativeRect implements IRect {
 
     final boolean growFromMiddle;
 
-    public MuseRelativeRect(double left, double top, double right, double bottom, boolean growFromMiddle) {
+    public RelativeRect(double left, double top, double right, double bottom, boolean growFromMiddle) {
         ulFinal = new MusePoint2D(left, top);
         whFinal = new MusePoint2D(right - left, bottom - top);
         ul = ulFinal.copy();
@@ -72,17 +72,17 @@ public class MuseRelativeRect implements IRect {
         grow();
     }
 
-    public MuseRelativeRect(double left, double top, double right, double bottom) {
+    public RelativeRect(double left, double top, double right, double bottom) {
         this(left, top, right, bottom, false);
     }
 
-    public MuseRelativeRect(MusePoint2D ul, MusePoint2D br, boolean growFromMiddle) {
+    public RelativeRect(MusePoint2D ul, MusePoint2D br, boolean growFromMiddle) {
         this.ulFinal = this.ul = ul;
         this.whFinal = this.wh = br.minus(ul);
         this.growFromMiddle = growFromMiddle;
     }
 
-    public MuseRelativeRect(MusePoint2D ul, MusePoint2D br) {
+    public RelativeRect(MusePoint2D ul, MusePoint2D br) {
         this.ulFinal = this.ul = ul;
         this.whFinal = this.wh = br.minus(ul);
         this.growFromMiddle = false;
@@ -207,42 +207,42 @@ public class MuseRelativeRect implements IRect {
     }
 
     @Override
-    public IRect setLeft(double value) {
+    public RelativeRect setLeft(double value) {
         ul.setX(value);
         ulFinal.setX(value);
         return this;
     }
 
     @Override
-    public IRect setRight(double value) {
+    public RelativeRect setRight(double value) {
         wh.setX(value - ul.getX());
         whFinal.setX(value - ulFinal.getX());
         return this;
     }
 
     @Override
-    public IRect setTop(double value) {
+    public RelativeRect setTop(double value) {
         ul.setY(value);
         ulFinal.setY(value);
         return this;
     }
 
     @Override
-    public IRect setBottom(double value) {
+    public RelativeRect setBottom(double value) {
         wh.setY(value - ul.getY());
         whFinal.setY(value - ulFinal.getY());
         return this;
     }
 
     @Override
-    public IRect setWidth(double value) {
+    public RelativeRect setWidth(double value) {
         wh.setX(value);
         whFinal.setX(value);
         return this;
     }
 
     @Override
-    public IRect setHeight(double value) {
+    public RelativeRect setHeight(double value) {
         wh.setY(value);
         whFinal.setY(value);
         return this;
@@ -273,8 +273,8 @@ public class MuseRelativeRect implements IRect {
         return growFromMiddle;
     }
 
-    public MuseRelativeRect copyOf() {
-        return new MuseRelativeRect(this.left(), this.top(), this.right(), this.bottom(), (this.ul != this.ulFinal || this.wh != this.whFinal));
+    public RelativeRect copyOf() {
+        return new RelativeRect(this.left(), this.top(), this.right(), this.bottom(), (this.ul != this.ulFinal || this.wh != this.whFinal));
 //                                .setBelow(this.belowme)
 //                                .setAbove(this.aboveme)
 //                                .setLeftOf(this.leftofme)
@@ -286,7 +286,8 @@ public class MuseRelativeRect implements IRect {
      * @param otherRightOfMe
      * @return this
      */
-    public MuseRelativeRect setMeLeftof(MuseRelativeRect otherRightOfMe) {
+    @Override
+    public RelativeRect setMeLeftof(RelativeRect otherRightOfMe) {
         this.rectRightOfMe = otherRightOfMe;
         return this;
     }
@@ -296,7 +297,8 @@ public class MuseRelativeRect implements IRect {
      * @param otherLeftOfMe
      * @return this
      */
-    public MuseRelativeRect setMeRightOf(MuseRelativeRect otherLeftOfMe) {
+    @Override
+    public RelativeRect setMeRightOf(RelativeRect otherLeftOfMe) {
         this.rectLeftOfMe = otherLeftOfMe;
         return this;
     }
@@ -306,7 +308,8 @@ public class MuseRelativeRect implements IRect {
      * @param otherBelowMe
      * @return this
      */
-    public MuseRelativeRect setMeAbove(MuseRelativeRect otherBelowMe) {
+    @Override
+    public RelativeRect setMeAbove(RelativeRect otherBelowMe) {
         this.rectBelowMe = otherBelowMe;
         return this;
     }
@@ -316,7 +319,8 @@ public class MuseRelativeRect implements IRect {
      * @param otherAboveMe
      * @return this
      */
-    public MuseRelativeRect setMeBelow(MuseRelativeRect otherAboveMe) {
+    @Override
+    public RelativeRect setMeBelow(RelativeRect otherAboveMe) {
         this.rectAboveMe = otherAboveMe;
         return this;
     }

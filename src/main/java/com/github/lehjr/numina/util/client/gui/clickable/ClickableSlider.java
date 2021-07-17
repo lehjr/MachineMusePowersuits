@@ -26,7 +26,7 @@
 
 package com.github.lehjr.numina.util.client.gui.clickable;
 
-import com.github.lehjr.numina.util.client.gui.gemoetry.DrawableMuseRect;
+import com.github.lehjr.numina.util.client.gui.gemoetry.DrawableRelativeRect;
 import com.github.lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
 import com.github.lehjr.numina.util.client.render.MuseRenderer;
 import com.github.lehjr.numina.util.math.Colour;
@@ -50,8 +50,8 @@ public class ClickableSlider extends Clickable {
     double width;
     private String id;
     private ITextComponent label;
-    DrawableMuseRect insideRect;
-    DrawableMuseRect outsideRect;
+    DrawableRelativeRect insideRect;
+    DrawableRelativeRect outsideRect;
     boolean isEnabled = true;
     boolean isVisible = true;
 
@@ -60,8 +60,8 @@ public class ClickableSlider extends Clickable {
         this.width = width;
         this.id = id;
         this.position = pos;
-        this.insideRect = new DrawableMuseRect(position.getX() - width / 2.0 - cornersize, position.getY() + 8, 0, position.getY() + 16, Colour.ORANGE, Colour.LIGHT_BLUE);
-        this.outsideRect = new DrawableMuseRect(position.getX() - width / 2.0 - cornersize, position.getY() + 8, position.getX() + width / 2.0F + cornersize, position.getY() + 16, Colour.DARKBLUE, Colour.LIGHT_BLUE);
+        this.insideRect = new DrawableRelativeRect(position.getX() - width / 2.0 - cornersize, position.getY() + 8, 0, position.getY() + 16, Colour.ORANGE, Colour.LIGHT_BLUE);
+        this.outsideRect = new DrawableRelativeRect(position.getX() - width / 2.0 - cornersize, position.getY() + 8, position.getX() + width / 2.0F + cornersize, position.getY() + 16, Colour.DARKBLUE, Colour.LIGHT_BLUE);
         this.label = label;
     }
 

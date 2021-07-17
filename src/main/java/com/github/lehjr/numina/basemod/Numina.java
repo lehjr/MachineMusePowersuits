@@ -26,14 +26,12 @@
 
 package com.github.lehjr.numina.basemod;
 
-import com.github.lehjr.numina.util.client.event.ArmorLayerSetup;
-import com.github.lehjr.numina.util.client.event.FOVUpdateEventHandler;
-import com.github.lehjr.numina.util.client.event.ToolTipEvent;
 import com.github.lehjr.numina.client.gui.ArmorStandGui;
 import com.github.lehjr.numina.client.gui.ChargingBaseGui;
 import com.github.lehjr.numina.config.ConfigHelper;
 import com.github.lehjr.numina.config.NuminaSettings;
 import com.github.lehjr.numina.constants.NuminaConstants;
+import com.github.lehjr.numina.dev.crafting.client.gui.NuminaCraftingGUI;
 import com.github.lehjr.numina.entity.NuminaArmorStandEntity;
 import com.github.lehjr.numina.event.EventBusHelper;
 import com.github.lehjr.numina.event.LogoutEventHandler;
@@ -46,6 +44,9 @@ import com.github.lehjr.numina.util.capabilities.player.CapabilityPlayerKeyState
 import com.github.lehjr.numina.util.capabilities.render.ModelSpecNBTCapability;
 import com.github.lehjr.numina.util.capabilities.render.colour.ColourCapability;
 import com.github.lehjr.numina.util.client.NuminaSpriteUploader;
+import com.github.lehjr.numina.util.client.event.ArmorLayerSetup;
+import com.github.lehjr.numina.util.client.event.FOVUpdateEventHandler;
+import com.github.lehjr.numina.util.client.event.ToolTipEvent;
 import com.github.lehjr.numina.util.client.gui.GuiIcon;
 import com.github.lehjr.numina.util.client.render.MuseIconUtils;
 import com.github.lehjr.numina.util.client.render.RenderGameOverlayEventHandler;
@@ -174,6 +175,7 @@ public class Numina {
 
         ScreenManager.register(NuminaObjects.CHARGING_BASE_CONTAINER_TYPE.get(), ChargingBaseGui::new);
         ScreenManager.register(NuminaObjects.ARMOR_STAND_CONTAINER_TYPE.get(), ArmorStandGui::new);
+        ScreenManager.register(NuminaObjects.NUMINA_CRAFTING_CONTAINER_TYPE.get(), NuminaCraftingGUI::new);
     }
 
     @SubscribeEvent

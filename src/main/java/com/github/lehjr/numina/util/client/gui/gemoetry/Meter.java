@@ -33,7 +33,7 @@ import org.lwjgl.opengl.GL11;
 
 import java.nio.FloatBuffer;
 
-public class Meter extends DrawableMuseRect {
+public class Meter extends DrawableRelativeRect {
     Colour meterColour;
 
     public Meter(Colour meterColourIn) {
@@ -56,7 +56,7 @@ public class Meter extends DrawableMuseRect {
     }
 
     @Override
-    public double getCornerradius() {
+    public float getCornerradius() {
         return 0;
     }
 

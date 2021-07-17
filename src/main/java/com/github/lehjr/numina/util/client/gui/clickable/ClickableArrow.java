@@ -28,7 +28,7 @@ package com.github.lehjr.numina.util.client.gui.clickable;
 
 import com.github.lehjr.numina.util.client.gui.gemoetry.DrawableArrow;
 import com.github.lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
-import com.github.lehjr.numina.util.client.gui.gemoetry.MuseRelativeRect;
+import com.github.lehjr.numina.util.client.gui.gemoetry.RelativeRect;
 import com.github.lehjr.numina.util.math.Colour;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.util.text.ITextComponent;
@@ -63,7 +63,7 @@ public class ClickableArrow extends DrawableArrow implements IClickable {
         this.backgroundColourHighlighted = backgroundColourHighlighted;
     }
 
-    public ClickableArrow(MuseRelativeRect ref, Colour backgroundColour, Colour backgroundColourHighlighted, Colour borderColour) {
+    public ClickableArrow(RelativeRect ref, Colour backgroundColour, Colour backgroundColourHighlighted, Colour borderColour) {
         super(ref, backgroundColour, borderColour);
         this.backgroundColourNotHighlighted = backgroundColour;
         this.backgroundColourHighlighted = backgroundColourHighlighted;

@@ -31,7 +31,7 @@ import com.github.lehjr.numina.client.render.item.NuminaArmorStandItemRenderer;
 import com.github.lehjr.numina.constants.NuminaConstants;
 import com.github.lehjr.numina.container.ArmorStandContainer;
 import com.github.lehjr.numina.container.ChargingBaseContainer;
-import com.github.lehjr.numina.container.CraftingContainer;
+import com.github.lehjr.numina.dev.crafting.container.NuminaCraftingContainer;
 import com.github.lehjr.numina.entity.NuminaArmorStandEntity;
 import com.github.lehjr.numina.item.Battery;
 import com.github.lehjr.numina.item.ItemComponent;
@@ -42,7 +42,9 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.item.ArmorStandEntity;
+import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.inventory.container.ContainerType;
+import net.minecraft.inventory.container.PlayerContainer;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
@@ -54,6 +56,9 @@ import net.minecraftforge.common.extensions.IForgeContainerType;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class NuminaObjects {
     public static final NuminaCreativeTab creativeTab = new NuminaCreativeTab();
@@ -190,9 +195,17 @@ public class NuminaObjects {
         return new ChargingBaseContainer(windowId, world, pos, inv, inv.player);
     }));
 
-    public static final RegistryObject<ContainerType<CraftingContainer>> CRAFTING_CONTAINER_TYPE = CONTAINER_TYPES.register("crafting_container",
+    public static final RegistryObject<ContainerType<NuminaCraftingContainer>> NUMINA_CRAFTING_CONTAINER_TYPE = CONTAINER_TYPES.register("crafting_container",
             () -> IForgeContainerType.create((windowId, inv, data) -> {
 //        BlockPos pos = data.readBlockPos();
-                return new CraftingContainer(windowId, inv);
+                return new NuminaCraftingContainer(windowId, inv);
             }));
+
+    /** Container background icons */
+    public static final Map<EquipmentSlotType, ResourceLocation> ARMOR_SLOT_TEXTURES = new HashMap<EquipmentSlotType, ResourceLocation>(){{
+        put(EquipmentSlotType.HEAD, PlayerContainer.EMPTY_ARMOR_SLOT_HELMET);
+        put(EquipmentSlotType.CHEST, PlayerContainer.EMPTY_ARMOR_SLOT_CHESTPLATE);
+        put(EquipmentSlotType.LEGS, PlayerContainer.EMPTY_ARMOR_SLOT_LEGGINGS);
+        put(EquipmentSlotType.FEET, PlayerContainer.EMPTY_ARMOR_SLOT_BOOTS);
+    }};
 }

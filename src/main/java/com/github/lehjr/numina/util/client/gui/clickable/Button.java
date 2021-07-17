@@ -26,16 +26,16 @@
 
 package com.github.lehjr.numina.util.client.gui.clickable;
 
-import com.github.lehjr.numina.util.client.gui.gemoetry.DrawableMuseRect;
+import com.github.lehjr.numina.util.client.gui.gemoetry.DrawableRelativeRect;
 import com.github.lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
-import com.github.lehjr.numina.util.client.gui.gemoetry.MuseRelativeRect;
+import com.github.lehjr.numina.util.client.gui.gemoetry.RelativeRect;
 import com.github.lehjr.numina.util.math.Colour;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.util.text.ITextComponent;
 
 import java.util.List;
 
-public class Button extends DrawableMuseRect implements IClickable {
+public class Button extends DrawableRelativeRect implements IClickable {
     protected IPressable onPressed;
     protected IReleasable onReleased;
 
@@ -84,7 +84,7 @@ public class Button extends DrawableMuseRect implements IClickable {
         this.borderColourDisabled = borderColourDisabled;
     }
 
-    public Button(MuseRelativeRect ref,
+    public Button(RelativeRect ref,
                   Colour backgroundColourEnabled,
                   Colour backgroundColourDisabled,
                   Colour borderColourEnabled,
@@ -93,6 +93,7 @@ public class Button extends DrawableMuseRect implements IClickable {
         this.backgroundColourEnabled = backgroundColourEnabled;
         this.backgroundColourDisabled = backgroundColourDisabled;
         this.borderColourEnabled = borderColourEnabled;
+
         this.borderColourDisabled = borderColourDisabled;
     }
 

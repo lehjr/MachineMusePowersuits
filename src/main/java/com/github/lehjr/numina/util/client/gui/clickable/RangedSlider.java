@@ -26,7 +26,7 @@
 
 package com.github.lehjr.numina.util.client.gui.clickable;
 
-import com.github.lehjr.numina.util.client.gui.gemoetry.DrawableMuseRect;
+import com.github.lehjr.numina.util.client.gui.gemoetry.DrawableRelativeRect;
 import com.github.lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
 import com.github.lehjr.numina.util.client.render.MuseRenderer;
 import com.github.lehjr.numina.util.math.Colour;
@@ -43,8 +43,8 @@ public class RangedSlider extends Clickable {
     protected double width;
     private String label;
 
-    DrawableMuseRect insideRect;
-    DrawableMuseRect outsideRect;
+    DrawableRelativeRect insideRect;
+    DrawableRelativeRect outsideRect;
 
     /**
      * Is this slider control being dragged.
@@ -81,8 +81,8 @@ public class RangedSlider extends Clickable {
     }
 
     void createNewRects() {
-        this.insideRect = new DrawableMuseRect(position.getX() - width / 2.0F - cornersize, position.getY() + height * 0.5F, 0, position.getY() + height, Colour.ORANGE, Colour.LIGHT_BLUE);
-        this.outsideRect = new DrawableMuseRect(position.getX() - width / 2.0F - cornersize, position.getY() + height * 0.5F, position.getX() + width / 2.0F + cornersize, position.getY() + height, Colour.DARKBLUE, Colour.LIGHT_BLUE);
+        this.insideRect = new DrawableRelativeRect(position.getX() - width / 2.0F - cornersize, position.getY() + height * 0.5F, 0, position.getY() + height, Colour.ORANGE, Colour.LIGHT_BLUE);
+        this.outsideRect = new DrawableRelativeRect(position.getX() - width / 2.0F - cornersize, position.getY() + height * 0.5F, position.getX() + width / 2.0F + cornersize, position.getY() + height, Colour.DARKBLUE, Colour.LIGHT_BLUE);
         this.insideRect.setWidth(6);
     }
 

@@ -47,13 +47,6 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class ArmorStandContainer extends Container {
     private final IInventory armorStandInventory;
-
-    private static final ResourceLocation[] ARMOR_SLOT_TEXTURES =
-            new ResourceLocation[]{
-                    PlayerContainer.EMPTY_ARMOR_SLOT_BOOTS,
-                    PlayerContainer.EMPTY_ARMOR_SLOT_LEGGINGS,
-                    PlayerContainer.EMPTY_ARMOR_SLOT_CHESTPLATE,
-                    PlayerContainer.EMPTY_ARMOR_SLOT_HELMET};
     private static final EquipmentSlotType[] VALID_EQUIPMENT_SLOTS = new EquipmentSlotType[]{EquipmentSlotType.HEAD, EquipmentSlotType.CHEST, EquipmentSlotType.LEGS, EquipmentSlotType.FEET};
     private final PlayerEntity player;
     private final ArmorStandEntity armorStandEntity;
@@ -116,7 +109,7 @@ public class ArmorStandContainer extends Container {
                 @OnlyIn(Dist.CLIENT)
                 @Override
                 public Pair<ResourceLocation, ResourceLocation> getNoItemIcon() {
-                    return Pair.of(PlayerContainer.BLOCK_ATLAS, ARMOR_SLOT_TEXTURES[equipmentslottype.getIndex()]);
+                    return Pair.of(PlayerContainer.BLOCK_ATLAS, NuminaObjects.ARMOR_SLOT_TEXTURES.get(equipmentslottype));
                 }
             });
         }
@@ -190,7 +183,7 @@ public class ArmorStandContainer extends Container {
                 @OnlyIn(Dist.CLIENT)
                 @Override
                 public Pair<ResourceLocation, ResourceLocation> getNoItemIcon() {
-                    return Pair.of(PlayerContainer.BLOCK_ATLAS, ARMOR_SLOT_TEXTURES[equipmentslottype.getIndex()]);
+                    return Pair.of(PlayerContainer.BLOCK_ATLAS, NuminaObjects.ARMOR_SLOT_TEXTURES.get(equipmentslottype));
                 }
             });
         }

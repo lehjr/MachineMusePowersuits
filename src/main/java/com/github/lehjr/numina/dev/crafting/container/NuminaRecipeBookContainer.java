@@ -24,39 +24,30 @@
  *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.github.lehjr.numina.util.client.gui.scrollable;
+package com.github.lehjr.numina.dev.crafting.container;
 
-import com.github.lehjr.numina.util.client.gui.clickable.ClickableSlider;
-import com.github.lehjr.numina.util.client.gui.gemoetry.RelativeRect;
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.github.lehjr.numina.dev.crafting.helper.NuminaServerRecipePlacer;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.inventory.container.ContainerType;
+import net.minecraft.inventory.container.RecipeBookContainer;
+import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.item.crafting.RecipeBookCategory;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
-@Deprecated
-public class ScrollableSlider extends ScrollableRectangle {
-    ClickableSlider slider;
-
-    public ScrollableSlider(ClickableSlider slider, RelativeRect relativeRect) {
-        super(relativeRect);
-        this.slider = slider;
-    }
-
-    public double getValue() {
-        return slider.getValue();
-    }
-
-    public void setValue(double value) {
-        slider.setValue(value);
-    }
-
-    public ClickableSlider getSlider() {
-        return slider;
-    }
-
-    public boolean hitBox(float x, float y) {
-        return slider.hitBox(x, y);
+public abstract class NuminaRecipeBookContainer<C> extends RecipeBookContainer {
+    public NuminaRecipeBookContainer(ContainerType containerType, int windowId) {
+        super(containerType, windowId);
     }
 
     @Override
-    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks, float zLevel) {
-        slider.render(matrixStack, mouseX, mouseY, partialTicks, zLevel);
+    public void handlePlacement(boolean placeAll, IRecipe recipe, ServerPlayerEntity player) {
+        (new NuminaServerRecipePlacer(this)).recipeClicked(player, recipe, placeAll);
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    @Override
+    public RecipeBookCategory getRecipeBookType() {
+        return RecipeBookCategory.CRAFTING;
     }
 }

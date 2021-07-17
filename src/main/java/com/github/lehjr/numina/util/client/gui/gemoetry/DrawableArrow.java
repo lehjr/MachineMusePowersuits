@@ -35,7 +35,7 @@ import org.lwjgl.opengl.GL11;
 
 import java.nio.FloatBuffer;
 
-public class DrawableArrow extends MuseRelativeRect implements IDrawable {
+public class DrawableArrow extends RelativeRect implements IDrawable {
     Colour backgroundColour;
     Colour borderColour;
     boolean drawShaft = true;
@@ -66,7 +66,7 @@ public class DrawableArrow extends MuseRelativeRect implements IDrawable {
         this.borderColour = borderColour;
     }
 
-    public DrawableArrow(MuseRelativeRect ref,
+    public DrawableArrow(RelativeRect ref,
                          Colour backgroundColour,
                          Colour borderColour) {
         super(ref.left(), ref.top(), ref.right(), ref.bottom(), ref.growFromMiddle());

@@ -27,9 +27,10 @@
 package com.github.lehjr.numina.network;
 
 import com.github.lehjr.numina.constants.NuminaConstants;
+import com.github.lehjr.numina.dev.crafting.packet.CPlaceRecipePacket;
+import com.github.lehjr.numina.dev.crafting.packet.ContainerGuiOpenPacket;
+import com.github.lehjr.numina.dev.crafting.packet.SPlaceGhostRecipePacket;
 import com.github.lehjr.numina.network.packets.*;
-import com.github.lehjr.numina.network.packets.reworked_crafting_packets.CPlaceRecipePacket;
-import com.github.lehjr.numina.network.packets.reworked_crafting_packets.SPlaceGhostRecipePacket;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.network.NetworkRegistry;
 import net.minecraftforge.fml.network.simple.SimpleChannel;
@@ -108,6 +109,14 @@ public class NuminaPackets {
                 SPlaceGhostRecipePacket::encode,
                 SPlaceGhostRecipePacket::decode,
                 SPlaceGhostRecipePacket::handle);
+
+
+        CHANNEL_INSTANCE.registerMessage(
+                i++,
+                ContainerGuiOpenPacket.class,
+                ContainerGuiOpenPacket::encode,
+                ContainerGuiOpenPacket::decode,
+                ContainerGuiOpenPacket::handle);
     }
 
     public SimpleChannel getWrapper() {

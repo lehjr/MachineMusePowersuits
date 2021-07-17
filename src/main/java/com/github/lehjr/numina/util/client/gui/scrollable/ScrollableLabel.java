@@ -27,7 +27,7 @@
 package com.github.lehjr.numina.util.client.gui.scrollable;
 
 import com.github.lehjr.numina.util.client.gui.clickable.ClickableLabel;
-import com.github.lehjr.numina.util.client.gui.gemoetry.MuseRelativeRect;
+import com.github.lehjr.numina.util.client.gui.gemoetry.RelativeRect;
 import com.mojang.blaze3d.matrix.MatrixStack;
 
 @Deprecated
@@ -35,7 +35,7 @@ public class ScrollableLabel extends ScrollableRectangle {
     ClickableLabel label;
     boolean enabled = true;
 
-    public ScrollableLabel(ClickableLabel label, MuseRelativeRect relativeRect) {
+    public ScrollableLabel(ClickableLabel label, RelativeRect relativeRect) {
         super(relativeRect);
         this.label = label;
     }

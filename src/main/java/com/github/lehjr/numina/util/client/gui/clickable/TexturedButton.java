@@ -28,7 +28,7 @@ package com.github.lehjr.numina.util.client.gui.clickable;
 
 import com.github.lehjr.numina.util.client.gui.GuiIcon;
 import com.github.lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
-import com.github.lehjr.numina.util.client.gui.gemoetry.MuseRelativeRect;
+import com.github.lehjr.numina.util.client.gui.gemoetry.RelativeRect;
 import com.github.lehjr.numina.util.math.Colour;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.util.ResourceLocation;
@@ -90,7 +90,7 @@ public class TexturedButton extends Button {
         this.texStartY = 0;
     }
 
-    public TexturedButton(MuseRelativeRect ref,
+    public TexturedButton(RelativeRect ref,
                           Colour backgroundColourEnabled,
                           Colour backgroundColourDisabled,
                           Colour borderColourEnabled,

@@ -50,8 +50,10 @@ public class InventoryFrame extends ScrollableFrame {
     List<Integer> slotIndexes;
     List<DrawableTile> tiles;
     MusePoint2D slot_ulShift = new MusePoint2D(0, 0);
-   boolean drawBackground = false;
+    boolean drawBackground = false;
     boolean drawBorder = false;
+    int slotWidth = 18;
+    int slotHeight = 18;
 
     public InventoryFrame(Container containerIn,
                           MusePoint2D topleft,
@@ -82,8 +84,8 @@ public class InventoryFrame extends ScrollableFrame {
     }
 
     public void loadSlots() {
-        MusePoint2D wh = new MusePoint2D(18, 18);
-        MusePoint2D ul = new MusePoint2D(border.left(), border.top());
+        MusePoint2D wh = new MusePoint2D(slotWidth, slotHeight);
+        MusePoint2D ul = new MusePoint2D(left(), top());
         tiles = new ArrayList<>();
         int i = 0;
         outerLoop:
@@ -117,6 +119,16 @@ public class InventoryFrame extends ScrollableFrame {
                 i++;
             }
         }
+    }
+
+    public InventoryFrame setSlotWidth(int slotWidthIn) {
+        this.slotWidth = slotWidthIn;
+        return this;
+    }
+
+    public InventoryFrame setSlotHeight(int slotHeightIn) {
+        this.slotHeight = slotHeightIn;
+        return this;
     }
 
     @Override
@@ -158,11 +170,11 @@ public class InventoryFrame extends ScrollableFrame {
         FloatBuffer buffer = BufferUtils.createFloatBuffer(0);
 //        RenderSystem.disableDepthTest();
         if (drawBorder || drawBackground) {
-            buffer = border.getVertices(3);
-            border.setzLevel(zLevel);
+            buffer = getVertices(3);
+            setzLevel(zLevel);
         }
         if (drawBackground) {
-            border.drawBackground(matrixStack, buffer);
+            drawBackground(matrixStack, buffer);
         }
         if (this.tiles != null && !this.tiles.isEmpty()) {
             for (DrawableTile tile : tiles) {
@@ -171,7 +183,7 @@ public class InventoryFrame extends ScrollableFrame {
             }
         }
         if (drawBorder) {
-            border.drawBorder(matrixStack, buffer); // fixme
+            drawBorder(matrixStack, buffer); // fixme
         }
 //        RenderSystem.enableDepthTest();
     }

@@ -104,4 +104,16 @@ public interface IRect {
     default double centery() {
         return (top() + bottom()) / 2.0F;
     }
+
+    default boolean doneGrowing() {
+        return getWHFinal().equals(getWH());
+    }
+
+    IRect setMeLeftof(RelativeRect otherRightOfMe);
+
+    IRect setMeRightOf(RelativeRect otherLeftOfMe);
+
+    IRect setMeAbove(RelativeRect otherBelowMe);
+
+    IRect setMeBelow(RelativeRect otherAboveMe);
 }

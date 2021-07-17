@@ -27,7 +27,6 @@
 package com.github.lehjr.numina.util.capabilities.render.colour;
 
 import com.github.lehjr.numina.util.math.Colour;
-import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.INBT;
 import net.minecraft.nbt.IntNBT;
 import net.minecraft.util.Direction;

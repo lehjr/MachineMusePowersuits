@@ -26,31 +26,30 @@
 
 package com.github.lehjr.numina.block;
 
-import com.github.lehjr.numina.container.ChargingBaseContainer;
+import com.github.lehjr.numina.dev.crafting.container.NuminaCraftingContainer;
 import com.github.lehjr.numina.entity.NuminaArmorStandEntity;
 import com.github.lehjr.numina.tileentity.ChargingBaseTileEntity;
-import com.github.lehjr.numina.util.client.sound.SoundDictionary;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
-import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.INamedContainerProvider;
+import net.minecraft.inventory.container.SimpleNamedContainerProvider;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.state.properties.BlockStateProperties;
+import net.minecraft.stats.Stats;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
+import net.minecraft.util.IWorldPosCallable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.shapes.ISelectionContext;
@@ -60,7 +59,6 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.network.NetworkHooks;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -100,32 +98,105 @@ public class ChargingBaseBlock extends Block implements IWaterLoggable {
     public int getLightValue(BlockState state, IBlockReader world, BlockPos pos) {
         return state.getValue(BlockStateProperties.POWERED) ? super.getLightValue(state, world, pos) : 0;
     }
-
     @SuppressWarnings("deprecation")
     @Override
-    public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult trace) {
-        if (!world.isClientSide) {
-            TileEntity tileEntity = world.getBlockEntity(pos);
-            if (tileEntity instanceof ChargingBaseTileEntity) {
-                player.playSound(SoundDictionary.SOUND_EVENT_GUI_SELECT, 1.0F, 1.0F);
-                INamedContainerProvider containerProvider = new INamedContainerProvider() {
-                    @Override
-                    public ITextComponent getDisplayName() {
-                        return new TranslationTextComponent("screen.numina.charging_base");
-                    }
-
-                    @Override
-                    public Container createMenu(int i, PlayerInventory playerInventory, PlayerEntity playerEntity) {
-                        return new ChargingBaseContainer(i, world, pos, playerInventory, playerEntity);
-                    }
-                };
-                NetworkHooks.openGui((ServerPlayerEntity) player, containerProvider, tileEntity.getBlockPos());
-            } else {
-                throw new IllegalStateException("container provider is missing!");
-            }
+    public ActionResultType use(BlockState p_225533_1_, World p_225533_2_, BlockPos p_225533_3_, PlayerEntity p_225533_4_, Hand p_225533_5_, BlockRayTraceResult p_225533_6_) {
+        if (p_225533_2_.isClientSide) {
+            return ActionResultType.SUCCESS;
+        } else {
+            p_225533_4_.openMenu(p_225533_1_.getMenuProvider(p_225533_2_, p_225533_3_));
+            p_225533_4_.awardStat(Stats.INTERACT_WITH_CRAFTING_TABLE);
+            return ActionResultType.CONSUME;
         }
-        return ActionResultType.SUCCESS;
     }
+
+    @Override
+    public INamedContainerProvider getMenuProvider(BlockState p_220052_1_, World p_220052_2_, BlockPos p_220052_3_) {
+        return new SimpleNamedContainerProvider((p_220270_2_, p_220270_3_, p_220270_4_) -> {
+            return new NuminaCraftingContainer(p_220270_2_, p_220270_3_, IWorldPosCallable.create(p_220052_2_, p_220052_3_));
+        }, new TranslationTextComponent("numina"));
+    }
+//
+//
+//
+//
+//    @SuppressWarnings("deprecation")
+//    @Override
+//    public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
+////        if (!world.isClientSide) {
+////            TileEntity tileEntity = world.getBlockEntity(pos);
+////            if (tileEntity instanceof ChargingBaseTileEntity) {
+////                player.playSound(SoundDictionary.SOUND_EVENT_GUI_SELECT, 1.0F, 1.0F);
+////                INamedContainerProvider containerProvider = new INamedContainerProvider() {
+////                    @Override
+////                    public ITextComponent getDisplayName() {
+////                        return new TranslationTextComponent("screen.numina.charging_base");
+////                    }
+////
+////                    @Override
+////                    public Container createMenu(int i, PlayerInventory playerInventory, PlayerEntity playerEntity) {
+////                        return new ChargingBaseContainer(i, world, pos, playerInventory, playerEntity);
+////                    }
+////                };
+////                NetworkHooks.openGui((ServerPlayerEntity) player, containerProvider, tileEntity.getBlockPos());
+////            } else {
+////                throw new IllegalStateException("container provider is missing!");
+////            }
+////        }
+////        return ActionResultType.SUCCESS;
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//        player.playSound(SoundDictionary.SOUND_EVENT_GUI_SELECT, 1.0F, 1.0F);
+//
+////        if(!worldIn.isRemote) {
+////            NetworkHooks.openGui((ServerPlayerEntity) player,
+////                    new TinkerContainerProvider(0), (buffer) -> buffer.writeInt(0));
+////        }
+//
+//        if (worldIn.isClientSide) {
+//            return ActionResultType.SUCCESS;
+//        } else {
+//            player.openMenu(state.getMenuProvider(worldIn, pos));
+////            player.addStat(Stats.INTERACT_WITH_CRAFTING_TABLE);
+//            return ActionResultType.SUCCESS;
+//        }
+//
+////        if (worldIn.isRemote()) {
+//////        Musique.playClientSound(, 1);
+////            Minecraft.getInstance().enqueue(() -> Minecraft.getInstance().displayGuiScreen(new TestGui(new TranslationTextComponent("gui.tinkertable"))));
+//////}
+////        }
+////        return super.onBlockActivated(state, worldIn, pos, player, handIn, hit);
+//    }
+
+
+//    @Nullable
+//    @Override
+//    public INamedContainerProvider getMenuProvider(BlockState state, World worldIn, BlockPos pos) {
+//        return new NUminaContainerProvider(0);
+//
+
+//        return new SimpleNamedContainerProvider((windowID, playerInventory, playerEntity) -> {
+//            return new WorkbenchContainer(windowID, playerInventory, IWorldPosCallable.of(worldIn, pos));
+//        }, title);
+//    }
+
+
+
+
+
+
+
+
+
 
     // temporary fix for armor stand spawned below the block
     @Override
