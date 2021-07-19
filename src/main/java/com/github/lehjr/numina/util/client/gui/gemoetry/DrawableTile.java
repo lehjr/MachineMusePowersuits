@@ -35,7 +35,7 @@ import org.lwjgl.opengl.GL11;
 
 import java.nio.FloatBuffer;
 
-public class DrawableTile extends RelativeRect implements IDrawable {
+public class DrawableTile extends RelativeRect implements IDrawableRect {
     final float lineWidth = 1F;
     Colour topBorderColour = new Colour(0.216F, 0.216F, 0.216F, 1F);
     Colour bottomBorderColour = Colour.WHITE.withAlpha(0.8F);
@@ -90,7 +90,7 @@ public class DrawableTile extends RelativeRect implements IDrawable {
     @Override
     public DrawableTile copyOf() {
         return new DrawableTile(super.left(), super.top(), super.right(), super.bottom(),
-                (this.ul != this.ulFinal || this.wh != this.whFinal))
+               this.growFromMiddle)
                 .setBackgroundColour(backgroundColour)
                 .setTopBorderColour(topBorderColour)
                 .setBottomBorderColour(bottomBorderColour);
@@ -196,8 +196,8 @@ public class DrawableTile extends RelativeRect implements IDrawable {
                 GL11.GL_QUADS);
     }
 
-    public void draw(MatrixStack matrixStack, float zLevel) {
-        this.zLevel = zLevel;
+    @Override
+    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float frameTime) {
         drawBackground(matrixStack);
         if (topBorderColour.equals(bottomBorderColour)) {
             drawBorder(matrixStack, shrinkBoarderBy);
@@ -207,12 +207,12 @@ public class DrawableTile extends RelativeRect implements IDrawable {
     }
 
     @Override
-    public float getZLevel() {
+    public float getBlitOffset() {
         return zLevel;
     }
 
     @Override
-    public IDrawable setZLevel(float zLevelIn) {
+    public IDrawable setBlitOffset(float zLevelIn) {
         this.zLevel = zLevelIn;
         return this;
     }
@@ -223,17 +223,12 @@ public class DrawableTile extends RelativeRect implements IDrawable {
         stringbuilder.append(this.getClass()).append(":\n");
         stringbuilder.append("Center: ").append(center()).append("\n");
         stringbuilder.append("Left: ").append(left()).append("\n");
-        stringbuilder.append("FinalLeft: ").append(finalLeft()).append("\n");
         stringbuilder.append("Right: ").append(right()).append("\n");
-        stringbuilder.append("FinalRight: ").append(finalRight()).append("\n");
         stringbuilder.append("Bottom: ").append(bottom()).append("\n");
-        stringbuilder.append("FinalBottom: ").append(finalBottom()).append("\n");
         stringbuilder.append("Top: ").append(top()).append("\n");
-        stringbuilder.append("FinalTop: ").append(finalTop()).append("\n");
         stringbuilder.append("Width: ").append(left()).append("\n");
         stringbuilder.append("FinalWidthLeft: ").append(left()).append("\n");
         stringbuilder.append("Height: ").append(height()).append("\n");
-        stringbuilder.append("FinalHeight: ").append(finalHeight()).append("\n");
         return stringbuilder.toString();
     }
 }

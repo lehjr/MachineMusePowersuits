@@ -26,7 +26,10 @@
 
 package com.github.lehjr.numina.util.client.gui.clickable;
 
+import com.github.lehjr.numina.util.client.gui.gemoetry.IDrawable;
+import com.github.lehjr.numina.util.client.gui.gemoetry.IRect;
 import com.github.lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
+import com.github.lehjr.numina.util.client.gui.gemoetry.RelativeRect;
 import com.github.lehjr.numina.util.client.render.MuseRenderer;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.util.text.ITextComponent;
@@ -35,16 +38,13 @@ import java.util.List;
 
 
 // fixme: revisit and rewrite
-public class ClickableLabel implements IClickable {
+public class ClickableLabel extends Clickable {
     protected IPressable onPressed;
     protected IReleasable onReleased;
 
     protected String label;
     protected MusePoint2D position;
     protected JustifyMode mode;
-
-    boolean isEnabled = true;
-    boolean isVisible = true;
 
     public ClickableLabel(String label, MusePoint2D position) {
         this.label = label;
@@ -67,9 +67,9 @@ public class ClickableLabel implements IClickable {
         this.label = label;
     }
 
-    // fixme: don't think this is actually working as intended
+    // fixme: this isn't actually working as intended
     @Override
-    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks, float zLevel) {
+    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
         switch (mode) {
             case LEFT:
                 MuseRenderer.drawLeftAlignedStringString(matrixStack, this.label, position.getX(), position.getY() - 4);
@@ -83,6 +83,16 @@ public class ClickableLabel implements IClickable {
                 MuseRenderer.drawRightAlignedString(matrixStack, this.label, position.getX(), position.getY() - 4);
                 break;
         }
+    }
+
+    @Override
+    public float getBlitOffset() {
+        return 0;
+    }
+
+    @Override
+    public IDrawable setBlitOffset(float zLevel) {
+        return null;
     }
 
     @Override
@@ -105,7 +115,6 @@ public class ClickableLabel implements IClickable {
         JustifyMode() {
         }
     }
-
 
     @Override
     public List<ITextComponent> getToolTip() {
@@ -154,20 +163,5 @@ public class ClickableLabel implements IClickable {
         if (this.isVisible && this.isEnabled && this.onPressed != null) {
             this.onPressed.onPressed(this);
         }
-    }
-
-    @Override
-    public MusePoint2D getPosition() {
-        return position;
-    }
-
-    /**
-     * Done this way so that moving positions (like FlyFromPointToPoint) don't (shouldn't) get messed up ...
-     * @param position
-     */
-    @Override
-    public void setPosition(MusePoint2D position) {
-        this.position.setX(position.getX());
-        this.position.setY(position.getY());
     }
 }

@@ -4,7 +4,6 @@ import com.github.lehjr.numina.client.gui.dev.TabSelectFrame;
 import com.github.lehjr.numina.constants.NuminaConstants;
 import com.github.lehjr.numina.dev.crafting.container.NuminaCraftingContainer;
 import com.github.lehjr.numina.util.client.gui.ExtendedContainerScreen;
-import com.github.lehjr.numina.util.client.gui.clickable.ClickableArrow;
 import com.github.lehjr.numina.util.client.gui.clickable.TexturedButton;
 import com.github.lehjr.numina.util.client.gui.frame.InventoryFrame;
 import com.github.lehjr.numina.util.client.gui.gemoetry.DrawableRelativeRect;
@@ -42,11 +41,12 @@ public class NuminaCraftingGUI extends ExtendedContainerScreen<NuminaCraftingCon
     private boolean widthTooNarrow;
     /** The outer gui rectangle */
     protected DrawableRelativeRect backgroundRect;
+
     protected final Colour gridColour = new Colour(0.1F, 0.3F, 0.4F, 0.7F);
     protected final Colour gridBorderColour = Colour.LIGHT_BLUE.withAlpha(0.8F);
     protected final Colour gridBackGound = new Colour(0.545F, 0.545F, 0.545F, 1);
-    protected InventoryFrame craftingGrid, mainInventory, hotbar, resultFrame;
-    protected ClickableArrow arrow;
+    protected InventoryFrame mainInventory, hotbar;
+    protected CraftingFrame craftingFrame;
     protected TexturedButton recipeBookButton;
     protected TabSelectFrame tabSelectFrame;
     final int slotWidth = 18;
@@ -63,37 +63,9 @@ public class NuminaCraftingGUI extends ExtendedContainerScreen<NuminaCraftingCon
                 Colour.GREY_GUI_BACKGROUND,
                 Colour.BLACK);
 
-        // slot 0
-        resultFrame = new InventoryFrame(
-                container,
-                new MusePoint2D(0,0),
-                new MusePoint2D(0, 0),
-                0,
-                gridBackGound,
-                gridBorderColour,
-                gridColour,
-                1,
-                1,
-                new ArrayList<Integer>(){{
-                    IntStream.range(0, 1).forEach(i-> add(i));
-                }}).setSlotWidth(24).setSlotHeight(24);
-        addFrame(resultFrame);
+        craftingFrame = new CraftingFrame(container, 0, 1);
+        addFrame(craftingFrame);
 
-        // slot 1-9
-        craftingGrid = new InventoryFrame(
-                container,
-                new MusePoint2D(0,0),
-                new MusePoint2D(0, 0),
-                0,
-                gridBackGound,
-                gridBorderColour,
-                gridColour,
-                3,
-                3,
-                new ArrayList<Integer>(){{
-                    IntStream.range(1, 10).forEach(i-> add(i));
-                }});
-        addFrame(craftingGrid);
 
         // slot 10-36
         mainInventory = new InventoryFrame(container,
@@ -115,9 +87,6 @@ public class NuminaCraftingGUI extends ExtendedContainerScreen<NuminaCraftingCon
             IntStream.range(37, 46).forEach(i-> add(i));
         }});
         addFrame(hotbar);
-
-        arrow = new ClickableArrow(0, 0, 0, 0, true, gridBackGound, Colour.WHITE, Colour.BLACK);
-        arrow.show();
 
         recipeBookButton = new TexturedButton(
                 0, 0, 0, 0,
@@ -151,34 +120,26 @@ public class NuminaCraftingGUI extends ExtendedContainerScreen<NuminaCraftingCon
     private void guiElementsMoveLeft(double moveAmmount) {
         backgroundRect.setLeft(backgroundRect.left() + moveAmmount);
 
-        hotbar.setUlShift(getUlOffset());
-        hotbar.init(
-                backgroundRect.finalLeft() + spacer,
-                backgroundRect.finalBottom() - spacer - slotHeight,
-                backgroundRect.finalLeft() + spacer + 9 * slotWidth,
-                backgroundRect.finalBottom() - spacer);
-
-        mainInventory.setUlShift(getUlOffset());
-        mainInventory.init(
-                backgroundRect.finalLeft() + spacer,
-                backgroundRect.finalBottom() - spacer - slotHeight - spacer - 3 * slotHeight,
-                backgroundRect.finalLeft() + spacer + 9 * slotWidth,
-                backgroundRect.finalBottom() - spacer - slotHeight - spacer);
-
-        craftingGrid.setUlShift(getUlOffset());
-        craftingGrid.init(
-                backgroundRect.finalLeft() + 29,
-                backgroundRect.finalTop() + 16,
-                backgroundRect.finalLeft() + 29  + 3 * slotWidth,
-                backgroundRect.finalTop() + 16 + 3 * slotHeight);
-
-        resultFrame.setUlShift(getUlOffset());
-        resultFrame.setWidth(24).setHeight(24).setPosition(arrow.getPosition().plus(20, -5)); // fixme  Y value
-
-        arrow.setLeft(arrow.left() + moveAmmount);
-        recipeBookButton.setLeft(recipeBookButton.left() + moveAmmount);
-        tabSelectFrame.init((recipeBookComponent.isVisible() ? recipeBookComponent.getGuiLeft() : leftPos),
-                getGuiTop(), getGuiLeft() + getXSize(), getGuiTop() + getYSize());
+        System.out.println("fixme");
+//        hotbar.init(
+//                backgroundRect.finalLeft() + spacer,
+//                backgroundRect.finalBottom() - spacer - slotHeight,
+//                backgroundRect.finalLeft() + spacer + 9 * slotWidth,
+//                backgroundRect.finalBottom() - spacer);
+//
+//        mainInventory.setUlShift(getUlOffset());
+//        mainInventory.init(
+//                backgroundRect.finalLeft() + spacer,
+//                backgroundRect.finalBottom() - spacer - slotHeight - spacer - 3 * slotHeight,
+//                backgroundRect.finalLeft() + spacer + 9 * slotWidth,
+//                backgroundRect.finalBottom() - spacer - slotHeight - spacer);
+//
+//        craftingFrame.setUlShift(getUlOffset());
+//        craftingFrame.setUL(new MusePoint2D(backgroundRect.finalLeft() + 29, backgroundRect.finalTop() + 16));
+//
+//        recipeBookButton.setLeft(recipeBookButton.left() + moveAmmount);
+//        tabSelectFrame.init((recipeBookComponent.isVisible() ? recipeBookComponent.getGuiLeft() : leftPos),
+//                getGuiTop(), getGuiLeft() + getXSize(), getGuiTop() + getYSize());
     }
 
     @Override
@@ -191,51 +152,47 @@ public class NuminaCraftingGUI extends ExtendedContainerScreen<NuminaCraftingCon
         this.children.add(this.recipeBookComponent);
         this.setInitialFocus(this.recipeBookComponent);
 
-        backgroundRect.setTargetDimensions(new MusePoint2D(getGuiLeft(), getGuiTop()), new MusePoint2D(getXSize(), getYSize()));
-
-        hotbar.setUlShift(getUlOffset());
-        hotbar.init(
-                backgroundRect.finalLeft() + spacer,
-                backgroundRect.finalBottom() - spacer - slotHeight,
-                backgroundRect.finalLeft() + spacer + 9 * slotWidth,
-                backgroundRect.finalBottom() - spacer);
-
-        mainInventory.setUlShift(getUlOffset());
-        mainInventory.init(
-                backgroundRect.finalLeft() + spacer,
-                backgroundRect.finalBottom() - spacer - slotHeight - spacer - 3 * slotHeight,
-                backgroundRect.finalLeft() + spacer + 9 * slotWidth,
-                backgroundRect.finalBottom() - spacer - slotHeight - spacer);
-
-        craftingGrid.setUlShift(getUlOffset());
-        craftingGrid.init(
-                backgroundRect.finalLeft() + 29,
-                backgroundRect.finalTop() + 16,
-                backgroundRect.finalLeft() + 29  + 3 * slotWidth,
-                backgroundRect.finalTop() + 16 + 3 * slotHeight);
-
-        arrow.setTargetDimensions(new MusePoint2D(getGuiLeft() + 90, getGuiTop() + 31), new MusePoint2D(24, 24));
-        arrow.setOnPressed(press-> {
-            Musique.playClientSound(SoundDictionary.SOUND_EVENT_GUI_SELECT, 1);
-            menu.quickMoveStack(this.getMinecraft().player, menu.getResultSlotIndex());
-        });
-
-        resultFrame.setUlShift(getUlOffset());
-        resultFrame.setPosition(arrow.getPosition().plus(20, -8));
-
-        tabSelectFrame.init((recipeBookComponent.isVisible() ?recipeBookComponent.getGuiLeft() : leftPos),
-                getGuiTop(), getGuiLeft() + getXSize(), getGuiTop() + getYSize());
-
-        recipeBookButton.setTargetDimensions(new MusePoint2D(getGuiLeft() + 5, this.height / 2 - 49), new MusePoint2D(18, 20));
-        recipeBookButton.setOnPressed((button)-> {
-            /** this is everything the button does when pressed */
-            this.recipeBookComponent.initVisuals(this.widthTooNarrow);
-            this.recipeBookComponent.toggleVisibility();
-            double oldLeft = leftPos;
-            this.leftPos = this.recipeBookComponent.updateScreenPosition(this.widthTooNarrow, this.width, this.imageWidth);
-            guiElementsMoveLeft(leftPos - oldLeft);
-            Musique.playClientSound(SoundDictionary.SOUND_EVENT_GUI_SELECT, 1);
-        });
+        backgroundRect.setLeft(getGuiLeft());
+        backgroundRect.setTop(getGuiTop());
+        backgroundRect.setWidth(getXSize());
+        backgroundRect.setHeight(getYSize());
+        backgroundRect.initGrowth();
+        System.out.println("fixme");
+//        hotbar.init(
+//                backgroundRect.finalLeft() + spacer,
+//                backgroundRect.finalBottom() - spacer - slotHeight,
+//                backgroundRect.finalLeft() + spacer + 9 * slotWidth,
+//                backgroundRect.finalBottom() - spacer);
+//
+//        mainInventory.init(
+//                backgroundRect.finalLeft() + spacer,
+//                backgroundRect.finalBottom() - spacer - slotHeight - spacer - 3 * slotHeight,
+//                backgroundRect.finalLeft() + spacer + 9 * slotWidth,
+//                backgroundRect.finalBottom() - spacer - slotHeight - spacer);
+//
+//        craftingFrame.setUL(new MusePoint2D(backgroundRect.finalLeft() + 29, backgroundRect.finalTop() + 16));
+//        craftingFrame.setArrowOnPressed(press-> {
+//            Musique.playClientSound(SoundDictionary.SOUND_EVENT_GUI_SELECT, 1);
+//            menu.quickMoveStack(this.getMinecraft().player, menu.getResultSlotIndex());
+//        });
+//
+//        tabSelectFrame.init((recipeBookComponent.isVisible() ?recipeBookComponent.getGuiLeft() : leftPos),
+//                getGuiTop(), getGuiLeft() + getXSize(), getGuiTop() + getYSize());
+//
+//        recipeBookButton.setLeft(getGuiLeft() + 5);
+//        recipeBookButton.setTop(this.height / 2 - 49);
+//        recipeBookButton.setWidth(18);
+//        recipeBookButton.setHeight(20);
+//
+//        recipeBookButton.setOnPressed((button)-> {
+//            /** this is everything the button does when pressed */
+//            this.recipeBookComponent.initVisuals(this.widthTooNarrow);
+//            this.recipeBookComponent.toggleVisibility();
+//            double oldLeft = leftPos;
+//            this.leftPos = this.recipeBookComponent.updateScreenPosition(this.widthTooNarrow, this.width, this.imageWidth);
+//            guiElementsMoveLeft(leftPos - oldLeft);
+//            Musique.playClientSound(SoundDictionary.SOUND_EVENT_GUI_SELECT, 1);
+//        });
         this.titleLabelX = 29;
     }
 
@@ -246,39 +203,30 @@ public class NuminaCraftingGUI extends ExtendedContainerScreen<NuminaCraftingCon
     }
 
     @Override
-    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
-//        System.out.println("backgroundRect final WH: " + backgroundRect.getWHFinal());
-//        System.out.println("backgroundRect final UL: " + backgroundRect.getULFinal());
-//
-//        System.out.println("crafting grid final WH: " + craftingGrid.getWHFinal());
-//        System.out.println("crafting grid final UL: " + craftingGrid.getULFinal());
-//
-//        System.out.println("arrow final WH: " + arrow.getWHFinal());
-//        System.out.println("arrow final UL: " + arrow.getULFinal());
-//
-//        System.out.println("result Frame final WH: " + resultFrame.getWHFinal());
-//        System.out.println("result Frame final UL: " + resultFrame.getULFinal());
-//
-//        System.out.println("recipeBookButton final WH: " + recipeBookButton.getWHFinal());
-//        System.out.println("recipeBookButton final UL: " + recipeBookButton.getULFinal());
+    public void update(double x, double y) {
+        super.update(x, y);
+    }
 
-
+    @Override
+    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float frameTime) {
+        update(mouseX, mouseY);
         this.renderBackground(matrixStack);
+//        backgroundRect.render(matrixStack, mouseX, mouseY, frameTime); // FIXME!!
         if (backgroundRect.doneGrowing()) {
-            arrow.render(matrixStack, mouseX, mouseY, partialTicks, getBlitOffset());
-            recipeBookButton.render(matrixStack, mouseX, mouseY, partialTicks, getBlitOffset());
+//            arrow.render(matrixStack, mouseX, mouseY, frameTime, getBlitOffset());
+            recipeBookButton.render(matrixStack, mouseX, mouseY, frameTime);
             if (this.recipeBookComponent.isVisible() && this.widthTooNarrow) {
-                this.renderBg(matrixStack, partialTicks, mouseX, mouseY);
-                this.recipeBookComponent.render(matrixStack, mouseX, mouseY, partialTicks);
+                this.renderBg(matrixStack, frameTime, mouseX, mouseY);
+                this.recipeBookComponent.render(matrixStack, mouseX, mouseY, frameTime);
             } else {
-                this.recipeBookComponent.render(matrixStack, mouseX, mouseY, partialTicks);
-                super.render(matrixStack, mouseX, mouseY, partialTicks);
-                this.recipeBookComponent.renderGhostRecipe(matrixStack, this.leftPos, this.topPos, true, partialTicks);
+                this.recipeBookComponent.render(matrixStack, mouseX, mouseY, frameTime);
+                super.render(matrixStack, mouseX, mouseY, frameTime);
+                this.recipeBookComponent.renderGhostRecipe(matrixStack, this.leftPos, this.topPos, true, frameTime);
             }
             this.renderTooltip(matrixStack, mouseX, mouseY);
             this.recipeBookComponent.renderTooltip(matrixStack, this.leftPos, this.topPos, mouseX, mouseY);
 //            this.setListenerDefault(this.recipeBookComponent); // what did this do?
-            tabSelectFrame.render(matrixStack, mouseX, mouseY, partialTicks);
+            tabSelectFrame.render(matrixStack, mouseX, mouseY, frameTime);
             drawToolTip(matrixStack, mouseX, mouseY);
         }
     }
@@ -294,12 +242,11 @@ public class NuminaCraftingGUI extends ExtendedContainerScreen<NuminaCraftingCon
         super.renderBg(matrixStack, frameTime, mouseX, mouseY);
     }
 
-
-    @Override
-    public void renderBackground(MatrixStack matrixStack) {
-        super.renderBackground(matrixStack);
-        backgroundRect.draw(matrixStack, 0);
-    }
+//
+//    @Override
+//    public void renderBackground(MatrixStack matrixStack) {
+//        super.renderBackground(matrixStack);
+//    }
 
     @Override
     protected boolean isHovering(int p_195359_1_, int p_195359_2_, int p_195359_3_, int p_195359_4_, double p_195359_5_, double p_195359_7_) {
@@ -308,16 +255,16 @@ public class NuminaCraftingGUI extends ExtendedContainerScreen<NuminaCraftingCon
 
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int mouseButton) {
-        if (this.tabSelectFrame.mouseClicked(mouseX, mouseY, mouseButton)) {
-            return true;
-        }
+//        if (this.tabSelectFrame.mouseClicked(mouseX, mouseY, mouseButton)) {
+//            return true;
+//        }
         if (this.recipeBookButton.mouseClicked(mouseX, mouseY, mouseButton)) {
             return true;
         }
 
-        if (this.arrow.mouseClicked(mouseX, mouseY, mouseButton)) {
-            return true;
-        }
+//        if (this.arrow.mouseClicked(mouseX, mouseY, mouseButton)) {
+//            return true;
+//        }
 
         if (this.recipeBookComponent.mouseClicked(mouseX, mouseY, mouseButton)) {
             this.setFocused(this.recipeBookComponent);

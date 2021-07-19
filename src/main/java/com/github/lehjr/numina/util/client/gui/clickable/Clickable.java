@@ -26,7 +26,9 @@
 
 package com.github.lehjr.numina.util.client.gui.clickable;
 
+import com.github.lehjr.numina.util.client.gui.gemoetry.IDrawable;
 import com.github.lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
+import com.github.lehjr.numina.util.client.gui.gemoetry.RelativeRect;
 import net.minecraft.util.text.ITextComponent;
 
 import java.util.List;
@@ -36,19 +38,31 @@ import java.util.List;
  *
  * @author MachineMuse
  */
-public abstract class Clickable implements IClickable {
-    protected MusePoint2D position;
+public abstract class Clickable extends RelativeRect implements IClickable {
     IPressable onPressed;
     IReleasable onReleased;
     boolean isEnabled = true;
     boolean isVisible = true;
+    float blitOffset = 0;
 
     public Clickable() {
-        position = new MusePoint2D(0, 0);
+        this(new MusePoint2D(0, 0));
     }
 
     public Clickable(MusePoint2D point) {
-        position = point;
+        super(0, 0, 0, 0);
+        setPosition(point);
+    }
+
+    @Override
+    public float getBlitOffset() {
+        return blitOffset;
+    }
+
+    @Override
+    public IDrawable setBlitOffset(float zLevel) {
+        this.blitOffset = zLevel;
+        return this;
     }
 
     @Override
@@ -101,25 +115,6 @@ public abstract class Clickable implements IClickable {
     public void disableAndHide() {
         this.disable();
         this.hide();
-    }
-
-    @Override
-    public MusePoint2D getPosition() {
-        return position;
-    }
-
-    public void setPosition(MusePoint2D position) {
-        this.position = position;
-    }
-
-    @Override
-    public void move(double x, double y) {
-        move(new MusePoint2D(x, y));
-    }
-
-    @Override
-    public void move(MusePoint2D positionIn) {
-        this.setPosition(this.position.plus(positionIn));
     }
 
     @Override

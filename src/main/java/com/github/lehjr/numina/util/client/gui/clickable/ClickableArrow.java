@@ -70,16 +70,16 @@ public class ClickableArrow extends DrawableArrow implements IClickable {
     }
 
     @Override
-    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks, float zLevel) {
+    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float frameTime) {
         if (isVisible) {
             super.setBackgroundColour(hitBox(mouseX, mouseY) ? this.backgroundColourHighlighted : this.backgroundColourNotHighlighted);
-            this.draw(matrixStack, zLevel);
+            super.render(matrixStack, mouseX, mouseY, frameTime);
         }
     }
 
     @Override
     public MusePoint2D getPosition() {
-        return new MusePoint2D(centerx(), centery());
+        return center();
     }
 
     @Override

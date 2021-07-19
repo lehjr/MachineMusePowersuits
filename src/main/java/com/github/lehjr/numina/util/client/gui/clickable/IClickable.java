@@ -26,8 +26,8 @@
 
 package com.github.lehjr.numina.util.client.gui.clickable;
 
+import com.github.lehjr.numina.util.client.gui.gemoetry.IDrawableRect;
 import com.github.lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
-import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.util.InputMappings;
 import net.minecraft.util.text.ITextComponent;
@@ -36,9 +36,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 import java.util.List;
 
-public interface IClickable {
-    void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks, float zLevel);
-
+public interface IClickable extends IDrawableRect {
     default void move(double x, double y) {
         this.move(new MusePoint2D(x, y));
     }
@@ -47,11 +45,9 @@ public interface IClickable {
         setPosition(getPosition().plus(position));
     }
 
-    MusePoint2D getPosition();
-
-    void setPosition(MusePoint2D position);
-
-    boolean hitBox(double x, double y);
+    default boolean hitBox(double x, double y) {
+        return containsPoint(x, y);
+    }
 
     List<ITextComponent> getToolTip();
 

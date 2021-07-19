@@ -27,6 +27,7 @@
 package com.github.lehjr.numina.util.client.gui.clickable;
 
 import com.github.lehjr.numina.util.client.gui.gemoetry.DrawableRelativeRect;
+import com.github.lehjr.numina.util.client.gui.gemoetry.IDrawable;
 import com.github.lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
 import com.github.lehjr.numina.util.client.render.MuseRenderer;
 import com.github.lehjr.numina.util.math.Colour;
@@ -38,18 +39,23 @@ import java.util.List;
 /**
  * @author MachineMuse
  */
-public class ClickableButton extends Clickable {
+public class ClickableButton extends DrawableRelativeRect implements IClickable {
+    boolean isVisible = true;
+    boolean isEnabled = true;
+    float zLevel = 0;
     protected ITextComponent label;
     protected MusePoint2D radius;
-    protected DrawableRelativeRect rect;
     private final Colour enabledBorder  = new Colour(0.3F, 0.3F, 0.3F, 1);
     private final Colour enabledBackground = new Colour(0.5F, 0.6F, 0.8F, 1);
     private final Colour disabledBorder = new Colour(0.8F, 0.6F, 0.6F, 1);
     private final Colour disabledBackground = new Colour(0.8F, 0.3F, 0.3F, 1);
+    private IPressable onPressed;
+    private IReleasable onReleased;
 
     public ClickableButton(ITextComponent label, MusePoint2D position, boolean enabled) {
+        super(0,0,0, 0, Colour.BLACK, Colour.BLACK);
         this.label = label;
-        this.position = position;
+        this.setPosition(position);
 
         if (label.getString().contains("\n")) {
             String[] x = label.getString().split("\n");
@@ -64,14 +70,12 @@ public class ClickableButton extends Clickable {
             this.radius = new MusePoint2D((float) (MuseRenderer.getStringWidth(label.getString()) / 2F + 2F), 6);
         }
 
-        this.rect = new DrawableRelativeRect(
-                position.getX() - radius.getX(),
-                position.getY() - radius.getY(),
-                position.getX() + radius.getX(),
-                position.getY() + radius.getY(),
-                enabledBorder,
-                enabledBackground
-        );
+        setLeft(position.getX() - radius.getX());
+        setTop(position.getY() - radius.getY());
+        setWidth(radius.getX() * 2);
+        setHeight(radius.getY() * 2);
+        setBorderColour(enabledBorder);
+        setBackgroundColour(enabledBackground);
         this.setEnabled(enabled);
     }
 
@@ -83,9 +87,19 @@ public class ClickableButton extends Clickable {
      * @param partialTicks
      */
     @Override
-    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks, float zLevel) {
-        renderButton(matrixStack, mouseX, mouseY, partialTicks, zLevel);
+    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
+        renderButton(matrixStack, mouseX, mouseY, partialTicks);
         renderText(matrixStack, mouseX, mouseY, partialTicks);
+    }
+
+    @Override
+    public float getBlitOffset() {
+        return 0;
+    }
+
+    @Override
+    public IDrawable setBlitOffset(float zLevel) {
+        return null;
     }
 
     /**
@@ -94,17 +108,12 @@ public class ClickableButton extends Clickable {
      *
      * @param mouseX
      * @param mouseY
-     * @param partialTicks
+     * @param frameTIme
      */
-    public void renderButton(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks, float zLevel) {
+    public void renderButton(MatrixStack matrixStack, int mouseX, int mouseY, float frameTIme) {
         if (isVisible) {
-            this.rect.setLeft(position.getX() - radius.getX());
-            this.rect.setTop(position.getY() - radius.getY());
-            this.rect.setRight(position.getX() + radius.getX());
-            this.rect.setBottom(position.getY() + radius.getY());
-            this.rect.setBorderColour(isEnabled() ? enabledBorder : disabledBorder);
-            this.rect.setBackgroundColour(isEnabled() ? enabledBackground : disabledBackground);
-            this.rect.draw(matrixStack, zLevel);
+            this.setBackgroundColour(isEnabled() ? enabledBackground : disabledBackground);
+            super.render(matrixStack, mouseX, mouseY, frameTIme);
         }
     }
 
@@ -116,14 +125,14 @@ public class ClickableButton extends Clickable {
      * @param partialTicks
      */
     public void renderText(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
-        if (isVisible) {
+        if (isVisible()) {
             if (label.getString().contains("\n")) {
                 String[] s = label.getString().split("\n");
                 for (int i = 0; i < s.length; i++) {
-                    MuseRenderer.drawCenteredString(matrixStack, s[i], position.getX(), position.getY() - (4 * s.length) + (i * 8));
+                    MuseRenderer.drawCenteredString(matrixStack, s[i], getPosition().getX(), getPosition().getY() - (4 * s.length) + (i * 8));
                 }
             } else {
-                MuseRenderer.drawCenteredString(matrixStack, this.label.getString(), position.getX(), position.getY() - 4);
+                MuseRenderer.drawCenteredString(matrixStack, this.label.getString(), getPosition().getX(), getPosition().getY() - 4);
             }
         }
     }
@@ -134,8 +143,8 @@ public class ClickableButton extends Clickable {
 
     @Override
     public boolean hitBox(double x, double y) {
-        boolean hitx = Math.abs(position.getX() - x) < radius.getX();
-        boolean hity = Math.abs(position.getY() - y) < radius.getY();
+        boolean hitx = Math.abs(getPosition().getX() - x) < radius.getX();
+        boolean hity = Math.abs(getPosition().getY() - y) < radius.getY();
         return hitx && hity;
     }
 
@@ -144,14 +153,48 @@ public class ClickableButton extends Clickable {
         return null;
     }
 
-    public void buttonOn() {
-        this.setEnabled(true);
-        this.setVisible(true);
+    @Override
+    public void setEnabled(boolean enabled) {
+        this.isEnabled = enabled;
     }
 
-    public void buttonOff() {
-        this.setEnabled(false);
-        this.setVisible(false);
+    @Override
+    public boolean isEnabled() {
+        return isEnabled;
+    }
+
+    @Override
+    public void setVisible(boolean visible) {
+        this.isVisible = visible;
+    }
+
+    @Override
+    public boolean isVisible() {
+        return isVisible;
+    }
+
+    @Override
+    public void setOnPressed(IPressable onPressed) {
+        this.onPressed = onPressed;
+    }
+
+    @Override
+    public void setOnReleased(IReleasable onReleased) {
+        this.onReleased = onReleased;
+    }
+
+    @Override
+    public void onPressed() {
+        if (this.isVisible() && this.isEnabled() && this.onPressed != null) {
+            this.onPressed.onPressed(this);
+        }
+    }
+
+    @Override
+    public void onReleased() {
+        if (this.isVisible() && this.isEnabled() && this.onReleased != null) {
+            this.onReleased.onReleased(this);
+        }
     }
 
     public ClickableButton setLable(ITextComponent label) {

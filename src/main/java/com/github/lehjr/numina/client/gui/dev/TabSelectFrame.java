@@ -120,14 +120,12 @@ public class TabSelectFrame extends ScrollableFrame {
     @Override
     public RelativeRect setLeft(double value) {
         super.setLeft(value);
-        init();
         return this;
     }
 
     @Override
     public void init(double left, double top, double right, double bottom) {
-        this.setTargetDimensions(left, top, right, bottom);
-        this.init();
+        super.init(left, top, right, bottom);
     }
 
     @Override
@@ -162,7 +160,7 @@ public class TabSelectFrame extends ScrollableFrame {
     @Override
     public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
         for (ClickableButton b : buttons) {
-            b.render(matrixStack, mouseX, mouseY, partialTicks, getzLevel());
+            b.render(matrixStack, mouseX, mouseY, partialTicks);
         }
     }
 

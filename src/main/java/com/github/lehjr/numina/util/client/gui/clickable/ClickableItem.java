@@ -61,7 +61,7 @@ public class ClickableItem extends Clickable {
     }
 
     @Override
-    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks, float zLevel) {
+    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
         MuseRenderer.drawItemAt(
                 getPosition().getX() - offsetx,
                 getPosition().getY() - offsety, getStack());
@@ -71,11 +71,6 @@ public class ClickableItem extends Clickable {
             MuseRenderer.drawString(matrixStack, "e", getPosition().getX() + 3, getPosition().getY() + 1, Colour.DARK_GREEN);
             matrixStack.popPose();
         }
-    }
-
-    @Override
-    public void move(MusePoint2D position) {
-        this.position = position;
     }
 
     @Override

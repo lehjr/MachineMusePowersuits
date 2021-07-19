@@ -31,17 +31,7 @@ public class RelativeRect implements IRect {
     protected RelativeRect rectAboveMe;
     protected RelativeRect rectLeftOfMe;
     protected RelativeRect rectRightOfMe;
-    protected double leftPadding = 0;
-    protected double topPadding = 0;
-    protected double rightPadding = 0;
-    protected double bottomPadding = 0;
 
-
-    /** Note: separate "target values" are because window based sizes don't initialize properly in the constructor */
-    /** target upper, left point */
-    MusePoint2D ulFinal;//
-    /** target width and height */
-    MusePoint2D whFinal;
     /** top left origin */
     MusePoint2D ul;
     /** width, height */
@@ -49,57 +39,46 @@ public class RelativeRect implements IRect {
 
     final boolean growFromMiddle;
 
-    public RelativeRect(double left, double top, double right, double bottom, boolean growFromMiddle) {
-        ulFinal = new MusePoint2D(left, top);
-        whFinal = new MusePoint2D(right - left, bottom - top);
-        ul = ulFinal.copy();
-        wh = whFinal.copy();
+    public RelativeRect() {
+        this(false);
+    }
+
+    public RelativeRect(boolean growFromMiddle) {
+        this(0,0,0,0, growFromMiddle);
+    }
+
+    public RelativeRect(MusePoint2D ul, MusePoint2D br) {
+        this(ul, br, false);
+    }
+
+    public RelativeRect(MusePoint2D ul, MusePoint2D br, boolean growFromMiddle) {
+        this.ul = ul;
+        this.wh = br.minus(ul);
         this.growFromMiddle = growFromMiddle;
-    }
-
-    /**
-     *  Alternative to spawning a completely new object. Especially handy for GUI's with large constructors
-     */
-    public void setTargetDimensions(double left, double top, double right, double bottom) {
-        ulFinal = new MusePoint2D(left, top);
-        whFinal = new MusePoint2D(right - left, bottom - top);
-        grow();
-    }
-
-    public void setTargetDimensions(MusePoint2D ul, MusePoint2D wh) {
-        ulFinal = ul;
-        whFinal = wh;
-        grow();
     }
 
     public RelativeRect(double left, double top, double right, double bottom) {
         this(left, top, right, bottom, false);
     }
 
-    public RelativeRect(MusePoint2D ul, MusePoint2D br, boolean growFromMiddle) {
-        this.ulFinal = this.ul = ul;
-        this.whFinal = this.wh = br.minus(ul);
+    public RelativeRect(double left, double top, double right, double bottom, boolean growFromMiddle) {
+        this.ul = new MusePoint2D(left, top);
+        this.wh =  new MusePoint2D(right - left, bottom - top);
         this.growFromMiddle = growFromMiddle;
     }
 
-    public RelativeRect(MusePoint2D ul, MusePoint2D br) {
-        this.ulFinal = this.ul = ul;
-        this.whFinal = this.wh = br.minus(ul);
-        this.growFromMiddle = false;
+    @Override
+    public RelativeRect setUL(MusePoint2D ul) {
+        this.ul.setX(ul.getX());
+        this.ul.setY(ul.getY());
+        return this;
     }
 
-    /**
-     * call after setTargetDimensions
-     */
-    void grow() {
-        if (growFromMiddle) {
-            MusePoint2D center = ulFinal.plus(whFinal.times(0.5F));
-            this.ul = new FlyFromPointToPoint2D(center, ulFinal, 200);
-            this.wh = new FlyFromPointToPoint2D(new MusePoint2D(0, 0), whFinal, 200);
-        } else {
-            this.ul = this.ulFinal.copy();
-            this.wh = this.whFinal.copy();
-        }
+    @Override
+    public RelativeRect setWH(MusePoint2D wh) {
+        this.wh.setX(wh.getX());
+        this.wh.setY(wh.getY());
+        return this;
     }
 
     /**
@@ -109,7 +88,7 @@ public class RelativeRect implements IRect {
     @Override
     public double left() {
         if(rectLeftOfMe != null) {
-            return rectLeftOfMe.right() + leftPadding;
+            return rectLeftOfMe.right();
         }
         return ul.getX();
     }
@@ -121,7 +100,7 @@ public class RelativeRect implements IRect {
     @Override
     public double top() {
         if (rectAboveMe != null) {
-            return rectAboveMe.bottom() + topPadding;
+            return rectAboveMe.bottom();
         }
         return ul.getY();
     }
@@ -133,7 +112,7 @@ public class RelativeRect implements IRect {
     @Override
     public double right() {
         if (rectRightOfMe != null) {
-            return rectRightOfMe.left() + rightPadding;
+            return rectRightOfMe.left();
         }
         return left() + wh.getX();
     }
@@ -141,7 +120,7 @@ public class RelativeRect implements IRect {
     @Override
     public double bottom() {
         if (rectBelowMe != null) {
-            return rectBelowMe.top() + bottomPadding;
+            return rectBelowMe.top();
         }
         return top() + wh.getY();
     }
@@ -152,38 +131,8 @@ public class RelativeRect implements IRect {
     }
 
     @Override
-    public MusePoint2D getULFinal() {
-        return ulFinal;
-    }
-
-    @Override
     public MusePoint2D getWH() {
         return wh;
-    }
-
-    @Override
-    public MusePoint2D getWHFinal() {
-        return whFinal;
-    }
-
-    @Override
-    public double finalLeft() {
-        return ulFinal.getX();
-    }
-
-    @Override
-    public double finalTop() {
-        return ulFinal.getY();
-    }
-
-    @Override
-    public double finalRight() {
-        return ulFinal.getX() + whFinal.getX();
-    }
-
-    @Override
-    public double finalBottom() {
-        return ulFinal.getY() + whFinal.getY();
     }
 
     @Override
@@ -192,80 +141,71 @@ public class RelativeRect implements IRect {
     }
 
     @Override
-    public double finalWidth() {
-        return whFinal.getX();
-    }
-
-    @Override
     public double height() {
         return wh.getY();
     }
 
     @Override
-    public double finalHeight() {
-        return whFinal.getY();
-    }
-
-    @Override
     public RelativeRect setLeft(double value) {
         ul.setX(value);
-        ulFinal.setX(value);
         return this;
     }
 
     @Override
     public RelativeRect setRight(double value) {
         wh.setX(value - ul.getX());
-        whFinal.setX(value - ulFinal.getX());
         return this;
     }
 
     @Override
     public RelativeRect setTop(double value) {
         ul.setY(value);
-        ulFinal.setY(value);
         return this;
     }
 
     @Override
     public RelativeRect setBottom(double value) {
         wh.setY(value - ul.getY());
-        whFinal.setY(value - ulFinal.getY());
         return this;
     }
 
     @Override
     public RelativeRect setWidth(double value) {
         wh.setX(value);
-        whFinal.setX(value);
         return this;
     }
 
     @Override
     public RelativeRect setHeight(double value) {
         wh.setY(value);
-        whFinal.setY(value);
         return this;
     }
 
     @Override
     public void move(MusePoint2D moveAmount) {
-        ulFinal = whFinal.plus(moveAmount);
-        whFinal = whFinal.plus(moveAmount);
-        grow();
+        setPosition(getPosition().plus(moveAmount));
     }
 
     @Override
     public void move(double x, double y) {
-        ulFinal = whFinal.plus(x, y);
-        whFinal = whFinal.plus(x, y);
-        grow();
+        move(new MusePoint2D(x, y));
     }
 
     @Override
     public void setPosition(MusePoint2D position) {
+        MusePoint2D ulFinal;
+        MusePoint2D whFinal;
+
+        // this should be the case unless not initialized yet
+        if (wh instanceof FlyFromPointToPoint2D) {
+            whFinal = ((FlyFromPointToPoint2D) wh).getFinalPoint();
+        } else {
+            whFinal = wh.copy();
+        }
         ulFinal = position.minus(whFinal.times(0.5F));
-        grow();
+
+        ul.setX(ulFinal.getX());
+        ul.setY(ulFinal.getY());
     }
 
     @Override
@@ -274,7 +214,7 @@ public class RelativeRect implements IRect {
     }
 
     public RelativeRect copyOf() {
-        return new RelativeRect(this.left(), this.top(), this.right(), this.bottom(), (this.ul != this.ulFinal || this.wh != this.whFinal));
+        return new RelativeRect(this.left(), this.top(), this.right(), this.bottom());
 //                                .setBelow(this.belowme)
 //                                .setAbove(this.aboveme)
 //                                .setLeftOf(this.leftofme)
@@ -325,23 +265,44 @@ public class RelativeRect implements IRect {
         return this;
     }
 
+    public RelativeRect getRect() {
+        return this;
+    }
+
+    IRect.IInit onInit;
+
+    @Override
+    public void setOnInit(IInit onInit) {
+        this.onInit = onInit;
+    }
+
+    @Override
+    public void onInit() {
+        if (this.onInit != null) {
+            this.onInit.onInit(this);
+        }
+    }
+
+    @Override
+    public void initGrowth() {
+        if (growFromMiddle()) {
+            MusePoint2D center = ul.plus(wh.times(0.5F));
+            ul = new FlyFromPointToPoint2D(center, getUL(), 200);
+            wh = new FlyFromPointToPoint2D(new MusePoint2D(0, 0), getWH(), 200);
+        }
+    }
+
     @Override
     public String toString() {
         StringBuilder stringbuilder = new StringBuilder();
         stringbuilder.append(this.getClass()).append(":\n");
         stringbuilder.append("Center: ").append(center()).append("\n");
         stringbuilder.append("Left: ").append(left()).append("\n");
-        stringbuilder.append("FinalLeft: ").append(finalLeft()).append("\n");
         stringbuilder.append("Right: ").append(right()).append("\n");
-        stringbuilder.append("FinalRight: ").append(finalRight()).append("\n");
         stringbuilder.append("Bottom: ").append(bottom()).append("\n");
-        stringbuilder.append("FinalBottom: ").append(finalBottom()).append("\n");
         stringbuilder.append("Top: ").append(top()).append("\n");
-        stringbuilder.append("FinalTop: ").append(finalTop()).append("\n");
-        stringbuilder.append("Width: ").append(left()).append("\n");
-        stringbuilder.append("FinalWidthLeft: ").append(left()).append("\n");
+        stringbuilder.append("Width: ").append(width()).append("\n");
         stringbuilder.append("Height: ").append(height()).append("\n");
-        stringbuilder.append("FinalHeight: ").append(finalHeight()).append("\n");
         return stringbuilder.toString();
     }
 }

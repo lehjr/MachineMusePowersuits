@@ -127,8 +127,8 @@ public class TexturedButton extends Button {
     }
 
     @Override
-    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks, float zLevel) {
-        super.render(matrixStack, mouseX, mouseY, partialTicks, zLevel);
+    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
+        super.render(matrixStack, mouseX, mouseY, partialTicks);
         Colour color;
         if(this.isVisible && this.isEnabled) {
             color = this.hitBox(mouseX, mouseY) ? Colour.LIGHT_BLUE.withAlpha(0.6F) : Colour.WHITE;
@@ -136,7 +136,7 @@ public class TexturedButton extends Button {
             color = Colour.RED.withAlpha(0.6F);
         }
 
-        GuiIcon.renderTextureWithColour(this.textureLocation, matrixStack, left(), right(), top(), bottom(), zLevel,
+        GuiIcon.renderTextureWithColour(this.textureLocation, matrixStack, left(), right(), top(), bottom(), getBlitOffset(),
         iconWidth, iconHeight, texStartX, texStartY, textureWidth, textureHeight, color);
 
     }

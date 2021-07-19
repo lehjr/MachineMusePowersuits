@@ -27,6 +27,7 @@
 package com.github.lehjr.numina.util.client.gui.gemoetry;
 
 import com.github.lehjr.numina.util.math.Colour;
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.Tessellator;
@@ -39,10 +40,11 @@ import java.nio.DoubleBuffer;
 import java.nio.FloatBuffer;
 
 public interface IDrawable {
+    void render(MatrixStack matrixStack, int mouseX, int mouseY, float frameTime);
 
-    float getZLevel();
+    float getBlitOffset();
 
-    IDrawable setZLevel(float zLevel);
+    IDrawable setBlitOffset(float zLevel);
 
     /**
      * Common code for adding vertices to the BufferBuilder
@@ -53,10 +55,9 @@ public interface IDrawable {
     default void addVerticesToBuffer(Matrix4f matrix4f, FloatBuffer vertices, Colour colour) {
         vertices.rewind();
         while(vertices.hasRemaining()) {
-            getBufferBuilder().vertex(matrix4f, vertices.get(), vertices.get(), getZLevel()).color(colour.r, colour.g, colour.b, colour.a).endVertex();
+            getBufferBuilder().vertex(matrix4f, vertices.get(), vertices.get(), getBlitOffset()).color(colour.r, colour.g, colour.b, colour.a).endVertex();
         }
     }
-
 
     /**
      * Common code for adding vertices to the BufferBuilder
@@ -66,16 +67,12 @@ public interface IDrawable {
      */
     default void addVerticesToBuffer(Matrix4f matrix4f, DoubleBuffer vertices, Colour colour) {
         vertices.rewind();
-
-
-        Vector4f vector4f = new Vector4f((float)vertices.get(), (float)vertices.get(), getZLevel(), 1.0F);
+        Vector4f vector4f = new Vector4f((float)vertices.get(), (float)vertices.get(), getBlitOffset(), 1.0F);
         vector4f.transform(matrix4f);
         while(vertices.hasRemaining()) {
             getBufferBuilder().vertex((double)vector4f.x(), (double)vector4f.y(), (double)vector4f.z()).color(colour.r, colour.g, colour.b, colour.a).endVertex();
         }
     }
-
-
 
     /**
      * Common code for adding vertices to the BufferBuilder
@@ -87,7 +84,7 @@ public interface IDrawable {
         vertices.rewind();
         colourBuffer.rewind();
         while(vertices.hasRemaining() && colourBuffer.hasRemaining()) {
-            getBufferBuilder().vertex(matrix4f, vertices.get(), vertices.get(), getZLevel()).color(colourBuffer.get(), colourBuffer.get(), colourBuffer.get(), colourBuffer.get()).endVertex();
+            getBufferBuilder().vertex(matrix4f, vertices.get(), vertices.get(), getBlitOffset()).color(colourBuffer.get(), colourBuffer.get(), colourBuffer.get(), colourBuffer.get()).endVertex();
         }
     }
 

@@ -46,8 +46,15 @@ public class NuminaRecipeBookPage extends RecipeBookPage {
             this.buttons.get(i).setPosition(x + 11 + 25 * (i % 5), y + 31 + 25 * (i / 5));
         }
 
-        this.forwardArrow.setTargetDimensions(new MusePoint2D(x + 93, y + 137), new MusePoint2D(12, 17));
-        this.backArrow.setTargetDimensions(new MusePoint2D(x + 38, y + 137), new MusePoint2D(12, 17));
+        this.forwardArrow.setLeft(x + 93);
+        this.forwardArrow.setTop(y + 137);
+        this.forwardArrow.setWidth(12);
+        this.forwardArrow.setHeight(17);
+
+        this.backArrow.setLeft(x + 38);
+        this.backArrow.setTop(y + 137);
+        this.backArrow.setWidth(12);
+        this.backArrow.setHeight(17);
     }
 
     @Override
@@ -114,8 +121,8 @@ public class NuminaRecipeBookPage extends RecipeBookPage {
             }
         }
 
-        forwardArrow.render(matrixStack, mouseX, mouseY, partialTicks, 0);
-        backArrow.render(matrixStack, mouseX, mouseY, partialTicks, 0);
+        forwardArrow.render(matrixStack, mouseX, mouseY, partialTicks);
+        backArrow.render(matrixStack, mouseX, mouseY, partialTicks);
         this.overlay.render(matrixStack, mouseX, mouseY, partialTicks);
     }
 

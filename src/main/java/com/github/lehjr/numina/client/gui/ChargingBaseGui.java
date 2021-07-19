@@ -54,11 +54,11 @@ public class ChargingBaseGui extends ExtendedContainerScreen<ChargingBaseContain
     EnergyMeter energyMeter;
 
     /**
-        FIXME:
-        battery disapears when putting into battery slot if only battery has energy
-        ^ different behaviour when holding another battery in hand to swap
-        meter location needs dynamic value
-        basic battery energy bar disappears... needs z level adjustment..   
+     FIXME:
+     battery disapears when putting into battery slot if only battery has energy
+     ^ different behaviour when holding another battery in hand to swap
+     meter location needs dynamic value
+     basic battery energy bar disappears... needs z level adjustment..
 
      */
     public ChargingBaseGui(ChargingBaseContainer container, PlayerInventory inv, ITextComponent titleIn) {
@@ -107,40 +107,45 @@ public class ChargingBaseGui extends ExtendedContainerScreen<ChargingBaseContain
     @Override
     public void init(Minecraft minecraft, int width, int height) {
         super.init(minecraft, width, height);
-        backgroundRect.setTargetDimensions(new MusePoint2D(getGuiLeft(), getGuiTop()), new MusePoint2D(getXSize(), getYSize()));
+        backgroundRect.setLeft(getGuiLeft());
+        backgroundRect.setTop(getGuiTop());
+        backgroundRect.setWidth(getXSize());
+        backgroundRect.setHeight(getYSize());
+        backgroundRect.initGrowth();
 
-        batterySlot.setUlShift(getUlOffset());
-        batterySlot.init(
-                backgroundRect.centerx() - (slotWidth * 0.5),
-                backgroundRect.finalTop() + 30,
-                backgroundRect.centerx() + (slotWidth * 0.5),
-                backgroundRect.finalTop() + 30 + slotHeight);
-        batterySlot.setzLevel(1);
+        System.out.println("fixme!!!");
 
-        hotbar.setUlShift(getUlOffset());
-        hotbar.init(
-                backgroundRect.finalLeft() + spacer,
-                backgroundRect.finalBottom() - spacer - slotHeight,
-                backgroundRect.finalLeft() + spacer + 9 * slotWidth,
-                backgroundRect.finalBottom() - spacer);
-        hotbar.setzLevel(1);
-
-        items.setUlShift(getUlOffset());
-        items.init(
-                backgroundRect.finalLeft() + spacer,
-                backgroundRect.finalBottom() - spacer - slotHeight - 3.25F - 3 * slotHeight,
-                backgroundRect.finalLeft() + spacer + 9 * slotWidth,
-                backgroundRect.finalBottom() - spacer - slotHeight - 3.25F);
-        items.setzLevel(1);
+//        batterySlot.init(
+//                backgroundRect.centerx() - (slotWidth * 0.5),
+//                backgroundRect.finalTop() + 30,
+//                backgroundRect.centerx() + (slotWidth * 0.5),
+//                backgroundRect.finalTop() + 30 + slotHeight);
+//        batterySlot.setzLevel(1);
+//
+//        hotbar.setUlShift(getUlOffset());
+//        hotbar.init(
+//                backgroundRect.finalLeft() + spacer,
+//                backgroundRect.finalBottom() - spacer - slotHeight,
+//                backgroundRect.finalLeft() + spacer + 9 * slotWidth,
+//                backgroundRect.finalBottom() - spacer);
+//        hotbar.setzLevel(1);
+//
+//        items.setUlShift(getUlOffset());
+//        items.init(
+//                backgroundRect.finalLeft() + spacer,
+//                backgroundRect.finalBottom() - spacer - slotHeight - 3.25F - 3 * slotHeight,
+//                backgroundRect.finalLeft() + spacer + 9 * slotWidth,
+//                backgroundRect.finalBottom() - spacer - slotHeight - 3.25F);
+//        items.setzLevel(1);
     }
 
     @Override
-    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
+    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float frameTime) {
         renderBackground(matrixStack);
-        if (backgroundRect.width() == backgroundRect.finalWidth() && backgroundRect.height() == backgroundRect.finalHeight()) {
-            super.render(matrixStack, mouseX, mouseY, partialTicks);
+        if (backgroundRect.doneGrowing()) {
+            super.render(matrixStack, mouseX, mouseY, frameTime);
         } else {
-            backgroundRect.draw(matrixStack, getBlitOffset());
+            backgroundRect.render(matrixStack, mouseX, mouseY, frameTime);
         }
     }
 
@@ -162,13 +167,15 @@ public class ChargingBaseGui extends ExtendedContainerScreen<ChargingBaseContain
     }
 
     @Override
-    public void renderBg(MatrixStack matrixStack, float partialTicks, int x, int y) {
-        backgroundRect.draw(matrixStack, 0);
-        super.renderBg(matrixStack, partialTicks, x, y);
-        energyMeter.draw(matrixStack, (float) batterySlot.centerx() - 16,
-                (float) (batterySlot.finalBottom() + spacer * 0.25),
-                menu.getEnergyForMeter(),
-                getBlitOffset() + 2);
-        this.drawToolTip(matrixStack, x, y);
+    public void renderBg(MatrixStack matrixStack, float frameTime, int x, int y) {
+        backgroundRect.render(matrixStack, x, y, frameTime);
+        super.renderBg(matrixStack, frameTime, x, y);
+        System.out.println("fixme!!!");
+
+//        energyMeter.draw(matrixStack, (float) batterySlot.centerx() - 16,
+//                (float) (batterySlot.finalBottom() + spacer * 0.25),
+//                menu.getEnergyForMeter(),
+//                getBlitOffset() + 2);
+//        this.drawToolTip(matrixStack, x, y);
     }
 }

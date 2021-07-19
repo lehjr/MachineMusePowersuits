@@ -49,7 +49,6 @@ public class InventoryFrame extends ScrollableFrame {
     public final int gridHeight;
     List<Integer> slotIndexes;
     List<DrawableTile> tiles;
-    MusePoint2D slot_ulShift = new MusePoint2D(0, 0);
     boolean drawBackground = false;
     boolean drawBorder = false;
     int slotWidth = 18;
@@ -106,7 +105,7 @@ public class InventoryFrame extends ScrollableFrame {
                     }
                 }
 
-                MusePoint2D position = this.tiles.get(i).center().copy().minus(slot_ulShift);
+                MusePoint2D position = this.tiles.get(i).getUL();
                 Slot slot = container.getSlot(slotIndexes.get(i));
                 if (slot instanceof UniversalSlot) {
                     ((UniversalSlot) slot).setPosition(position);
@@ -146,14 +145,6 @@ public class InventoryFrame extends ScrollableFrame {
         return false;
     }
 
-    public MusePoint2D getUlShift() {
-        return slot_ulShift;
-    }
-
-    public void setUlShift(MusePoint2D ulShift) {
-        this.slot_ulShift = ulShift;
-    }
-
     @Override
     public void init(double left, double top, double right, double bottom) {
         super.init(left, top, right, bottom);
@@ -162,11 +153,12 @@ public class InventoryFrame extends ScrollableFrame {
 
     @Override
     public void update(double mouseX, double mouseY) {
+        super.update(mouseX, mouseY);
         loadSlots();
     }
 
     @Override
-    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
+    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float frameTime) {
         FloatBuffer buffer = BufferUtils.createFloatBuffer(0);
 //        RenderSystem.disableDepthTest();
         if (drawBorder || drawBackground) {
@@ -179,7 +171,7 @@ public class InventoryFrame extends ScrollableFrame {
         if (this.tiles != null && !this.tiles.isEmpty()) {
             for (DrawableTile tile : tiles) {
                 // add slight offset so the lines show up (this is why the param was added)
-                tile.draw(matrixStack,zLevel);
+                tile.render(matrixStack, mouseX, mouseY, frameTime);
             }
         }
         if (drawBorder) {

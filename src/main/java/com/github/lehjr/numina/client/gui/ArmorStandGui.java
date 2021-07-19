@@ -71,140 +71,147 @@ public class ArmorStandGui extends ExtendedContainerScreen<ArmorStandContainer> 
 
         this.armorStandEntity = containerIn.getArmorStandEntity();
 
-        // slot 0-3
-        armorStandArmor = new InventoryFrame(this.menu,
-                new MusePoint2D(0,0), new MusePoint2D(0, 0),
-                getBlitOffset() -1,
-                Colour.LIGHT_GREY, Colour.DARK_GREY, Colour.DARK_GREY,
-                1, 4, new ArrayList<Integer>(){{
-            IntStream.range(0, 4).forEach(i-> add(i));
-        }});
-        addFrame(armorStandArmor);
-
-        // slot 3-5
-        armorStandHands = new InventoryFrame(this.menu,
-                new MusePoint2D(0,0), new MusePoint2D(0, 0),
-                getBlitOffset() -1,
-                Colour.LIGHT_GREY, Colour.DARK_GREY, Colour.DARK_GREY,
-                1, 2, new ArrayList<Integer>(){{
-            IntStream.range(4, 6).forEach(i-> add(i));
-        }});
-        addFrame(armorStandHands);
-
-        // slot 6-9
-        playerArmor = new InventoryFrame(this.menu,
-                new MusePoint2D(0,0), new MusePoint2D(0, 0),
-                getBlitOffset() -1,
-                Colour.LIGHT_GREY, Colour.DARK_GREY, Colour.DARK_GREY,
-                1, 4, new ArrayList<Integer>(){{
-            IntStream.range(6, 10).forEach(i-> add(i));
-        }});
-        addFrame(playerArmor);
-
-        // slot 10-36
-        items = new InventoryFrame(this.menu,
-                new MusePoint2D(0,0), new MusePoint2D(0, 0),
-                getBlitOffset() -1,
-                Colour.LIGHT_GREY, Colour.DARK_GREY, Colour.DARK_GREY,
-                9, 3, new ArrayList<Integer>(){{
-            IntStream.range(10, 37).forEach(i-> add(i));
-        }});
-        addFrame(items);
-
-        // slot 37 -46
-        hotbar = new InventoryFrame(this.menu,
-                new MusePoint2D(0,0), new MusePoint2D(0, 0),
-                getBlitOffset() -1,
-                Colour.LIGHT_GREY, Colour.DARK_GREY, Colour.DARK_GREY,
-                9, 1, new ArrayList<Integer>(){{
-            IntStream.range(37, 46).forEach(i-> add(i));
-        }});
-        addFrame(hotbar);
-
-        // slot 46
-        playerShield = new InventoryFrame(this.menu,
-                new MusePoint2D(0,0), new MusePoint2D(0, 0),
-                getBlitOffset() -1,
-                Colour.LIGHT_GREY, Colour.DARK_GREY, Colour.DARK_GREY,
-                1, 1, new ArrayList<Integer>(){{
-            IntStream.range(46, 47).forEach(i-> add(i));
-        }});
-        addFrame(playerShield);
+//        // slot 0-3
+//        armorStandArmor = new InventoryFrame(this.menu,
+//                new MusePoint2D(0,0), new MusePoint2D(0, 0),
+//                getBlitOffset() -1,
+//                Colour.LIGHT_GREY, Colour.DARK_GREY, Colour.DARK_GREY,
+//                1, 4, new ArrayList<Integer>(){{
+//            IntStream.range(0, 4).forEach(i-> add(i));
+//        }});
+//        addFrame(armorStandArmor);
+//
+//        // slot 3-5
+//        armorStandHands = new InventoryFrame(this.menu,
+//                new MusePoint2D(0,0), new MusePoint2D(0, 0),
+//                getBlitOffset() -1,
+//                Colour.LIGHT_GREY, Colour.DARK_GREY, Colour.DARK_GREY,
+//                1, 2, new ArrayList<Integer>(){{
+//            IntStream.range(4, 6).forEach(i-> add(i));
+//        }});
+//        addFrame(armorStandHands);
+//
+//        // slot 6-9
+//        playerArmor = new InventoryFrame(this.menu,
+//                new MusePoint2D(0,0), new MusePoint2D(0, 0),
+//                getBlitOffset() -1,
+//                Colour.LIGHT_GREY, Colour.DARK_GREY, Colour.DARK_GREY,
+//                1, 4, new ArrayList<Integer>(){{
+//            IntStream.range(6, 10).forEach(i-> add(i));
+//        }});
+//        addFrame(playerArmor);
+//
+//        // slot 10-36
+//        items = new InventoryFrame(this.menu,
+//                new MusePoint2D(0,0), new MusePoint2D(0, 0),
+//                getBlitOffset() -1,
+//                Colour.LIGHT_GREY, Colour.DARK_GREY, Colour.DARK_GREY,
+//                9, 3, new ArrayList<Integer>(){{
+//            IntStream.range(10, 37).forEach(i-> add(i));
+//        }});
+//        addFrame(items);
+//
+//        // slot 37 -46
+//        hotbar = new InventoryFrame(this.menu,
+//                new MusePoint2D(0,0), new MusePoint2D(0, 0),
+//                getBlitOffset() -1,
+//                Colour.LIGHT_GREY, Colour.DARK_GREY, Colour.DARK_GREY,
+//                9, 1, new ArrayList<Integer>(){{
+//            IntStream.range(37, 46).forEach(i-> add(i));
+//        }});
+//        addFrame(hotbar);
+//
+//        // slot 46
+//        playerShield = new InventoryFrame(this.menu,
+//                new MusePoint2D(0,0), new MusePoint2D(0, 0),
+//                getBlitOffset() -1,
+//                Colour.LIGHT_GREY, Colour.DARK_GREY, Colour.DARK_GREY,
+//                1, 1, new ArrayList<Integer>(){{
+//            IntStream.range(46, 47).forEach(i-> add(i));
+//        }});
+//        addFrame(playerShield);
 
         playerBackground = new DrawableTile(new MusePoint2D(0,0), new MusePoint2D(0, 0)).setBackgroundColour(Colour.BLACK);
         armorStandBackground= new DrawableTile(new MusePoint2D(0,0), new MusePoint2D(0, 0)).setBackgroundColour(Colour.BLACK);
     }
 
-    MusePoint2D getUlOffset () {
-        return new MusePoint2D(leftPos + 8, topPos + 8);
-    }
     @Override
     public void init(Minecraft minecraft, int width, int height) {
         super.init(minecraft, width, height);
-        backgroundRect.setTargetDimensions(new MusePoint2D(getGuiLeft(), getGuiTop()), new MusePoint2D(getXSize(), getYSize()));
+        backgroundRect
+                .setWidth(getXSize())
+                .setHeight(getYSize())
+                .setLeft(getGuiLeft())
+                .setTop(getGuiTop());
 
-        armorStandArmor.setUlShift(getUlOffset());
-        armorStandArmor.init(
-                backgroundRect.finalRight() - spacer - slotWidth,
-                backgroundRect.finalTop() + spacer,
-                backgroundRect.finalRight() - spacer,
-                backgroundRect.finalTop() + spacer + slotHeight * 4);
-        armorStandArmor.setzLevel(1);
+        backgroundRect.initGrowth();
 
-        armorStandBackground.setTargetDimensions(
-                armorStandArmor.finalLeft() - 2 -48,
-                armorStandArmor.finalTop(),
-                armorStandArmor.finalLeft() - 2,
-                armorStandArmor.finalBottom());
 
-        armorStandHands.setUlShift(getUlOffset());
-        armorStandHands.setWidth(slotWidth);
-        armorStandHands.setHeight(slotHeight * 2);
-        armorStandHands.setPosition(new MusePoint2D(backgroundRect.centerx(), armorStandBackground.finalTop() + slotHeight));
-        armorStandHands.setzLevel(1);
 
-        playerArmor.setUlShift(getUlOffset());
-        playerArmor.init(
-                backgroundRect.finalLeft() + spacer,
-                backgroundRect.finalTop() + spacer,
-                backgroundRect.finalLeft() + spacer + slotWidth,
-                backgroundRect.finalTop() + spacer + slotHeight * 4);
-        playerArmor.setzLevel(1);
 
-        playerBackground.setTargetDimensions(
-                playerArmor.finalRight() + 2,
-                playerArmor.finalTop(),
-                playerArmor.finalRight() + 2 + 48,
-                playerArmor.finalBottom());
 
-        hotbar.setUlShift(getUlOffset());
-        hotbar.init(
-                backgroundRect.finalLeft() + spacer,
-                backgroundRect.finalBottom() - spacer - slotHeight,
-                backgroundRect.finalLeft() + spacer + 9 * slotWidth,
-                backgroundRect.finalBottom() - spacer);
-        hotbar.setzLevel(1);
-
-        items.setUlShift(getUlOffset());
-        items.init(
-                backgroundRect.finalLeft() + spacer,
-                backgroundRect.finalBottom() - spacer - slotHeight - 3.25F - 3 * slotHeight,
-                backgroundRect.finalLeft() + spacer + 9 * slotWidth,
-                backgroundRect.finalBottom() - spacer - slotHeight - 3.25F);
-        items.setzLevel(1);
-
-        playerShield.setUlShift(getUlOffset());
-        playerShield.setWidth(slotWidth);
-        playerShield.setHeight(slotHeight);
-        playerShield.setPosition(new MusePoint2D(backgroundRect.centerx(),
-                playerBackground.finalBottom() - (slotHeight * 0.5)));
-        playerShield.setzLevel(1);
+//        armorStandArmor
+//                .setHeight(spacer + slotHeight * 4)
+//                .setWidth(getXSize() - spacer * 2)
+//                .setPosition(new MusePoint2D(backgroundRect.centerx(), ()* 0.5);
+//
+//
+//                backgroundRect.finalRight() - spacer - slotWidth,
+//                backgroundRect.finalTop() + spacer,
+//                backgroundRect.finalRight() - spacer,
+//                backgroundRect.finalTop() + spacer + slotHeight * 4);
+//        armorStandArmor.setzLevel(1);
+//
+//        armorStandBackground.setLeft(armorStandArmor.finalLeft() - 2 -48);
+//        armorStandBackground.setTop(armorStandArmor.finalTop());
+//        armorStandBackground.setWidth(48);
+//        armorStandBackground.setHeight(armorStandArmor.finalHeight());
+//
+//        armorStandHands.setWidth(slotWidth);
+//        armorStandHands.setHeight(slotHeight * 2);
+//        armorStandHands.setPosition(new MusePoint2D(backgroundRect.centerx(), armorStandBackground.finalTop() + slotHeight));
+//        armorStandHands.setzLevel(1);
+//
+//        playerArmor.init(
+//                backgroundRect.finalLeft() + spacer,
+//                backgroundRect.finalTop() + spacer,
+//                backgroundRect.finalLeft() + spacer + slotWidth,
+//                backgroundRect.finalTop() + spacer + slotHeight * 4);
+//        playerArmor.setzLevel(1);
+//
+//        playerBackground.setLeft(playerArmor.finalRight() + 2);
+//        playerBackground.setTop(playerArmor.finalTop());
+//        playerBackground.setWidth(48);
+//        playerBackground.setHeight(playerArmor.finalHeight());
+//
+//        hotbar.setUlShift(getUlOffset());
+//        hotbar.init(
+//                backgroundRect.finalLeft() + spacer,
+//                backgroundRect.finalBottom() - spacer - slotHeight,
+//                backgroundRect.finalLeft() + spacer + 9 * slotWidth,
+//                backgroundRect.finalBottom() - spacer);
+//        hotbar.setzLevel(1);
+//
+//        items.setUlShift(getUlOffset());
+//        items.init(
+//                backgroundRect.finalLeft() + spacer,
+//                backgroundRect.finalBottom() - spacer - slotHeight - 3.25F - 3 * slotHeight,
+//                backgroundRect.finalLeft() + spacer + 9 * slotWidth,
+//                backgroundRect.finalBottom() - spacer - slotHeight - 3.25F);
+//        items.setzLevel(1);
+//
+//        playerShield.setUlShift(getUlOffset());
+//        playerShield.setWidth(slotWidth);
+//        playerShield.setHeight(slotHeight);
+//        playerShield.setPosition(new MusePoint2D(backgroundRect.centerx(),
+//                playerBackground.finalBottom() - (slotHeight * 0.5)));
+//        playerShield.setzLevel(1);
     }
 
     @Override
-    public void renderBg(MatrixStack matrixStack, float partialTicks, int x, int y) {
-        backgroundRect.draw(matrixStack, 0);
-        super.renderBg(matrixStack, partialTicks, x, y);
+    public void renderBg(MatrixStack matrixStack, float frameTime, int x, int y) {
+        backgroundRect.render(matrixStack, x, y, frameTime);
+        super.renderBg(matrixStack, frameTime, x, y);
         RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
         ArmorStandGui.renderEntityInInventory(this.leftPos + 51, this.topPos + 75, 30, (float)(this.leftPos + 51) - this.oldMouseX, (float)(this.topPos + 75 - 50) - this.oldMouseY, this.minecraft.player);
         renderEntityInInventory((float) (armorStandBackground.centerx()), this.topPos + 75, 30, (float)(this.leftPos + 51) - this.oldMouseX, (float)(this.topPos + 75 - 50) - this.oldMouseY, this.armorStandEntity);
@@ -212,19 +219,22 @@ public class ArmorStandGui extends ExtendedContainerScreen<ArmorStandContainer> 
 
 
     @Override
-    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
+    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float frameTIme) {
+        System.out.println("backgroundRect " + backgroundRect.toString());
+
         renderBackground(matrixStack);
-        if (backgroundRect.height() == backgroundRect.finalHeight() && backgroundRect.width() == backgroundRect.finalWidth()) {
-            super.render(matrixStack, mouseX, mouseY, partialTicks);
-            playerBackground.draw(matrixStack, 1);
-            armorStandBackground.draw(matrixStack, 1);
+        if (backgroundRect.doneGrowing()) {
+            super.render(matrixStack, mouseX, mouseY, frameTIme);
+            playerBackground.render(matrixStack, mouseX, mouseY, frameTIme);
+            armorStandBackground.render(matrixStack, mouseX, mouseY, frameTIme);
 
             this.drawToolTip(matrixStack, mouseX, mouseY);
             this.oldMouseX = (float) mouseX;
             this.oldMouseY = (float) mouseY;
-        } else {
-            backgroundRect.draw(matrixStack, 0);
         }
+//        else {
+//            backgroundRect.render(matrixStack, mouseX, mouseY, frameTIme);
+//        }
     }
 
     @Override

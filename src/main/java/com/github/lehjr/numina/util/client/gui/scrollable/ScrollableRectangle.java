@@ -48,7 +48,7 @@ public class ScrollableRectangle extends RelativeRect {
         super(ul, br);
     }
 
-    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks, float zLevel) {
+    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
     }
 
     public RelativeRect getBorder() {

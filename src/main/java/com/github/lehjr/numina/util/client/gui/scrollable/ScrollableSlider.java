@@ -56,7 +56,7 @@ public class ScrollableSlider extends ScrollableRectangle {
     }
 
     @Override
-    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks, float zLevel) {
-        slider.render(matrixStack, mouseX, mouseY, partialTicks, zLevel);
+    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
+        slider.render(matrixStack, mouseX, mouseY, partialTicks);
     }
 }

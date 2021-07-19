@@ -52,16 +52,14 @@ public class ClickableSlider extends Clickable {
     private ITextComponent label;
     DrawableRelativeRect insideRect;
     DrawableRelativeRect outsideRect;
-    boolean isEnabled = true;
-    boolean isVisible = true;
 
     public ClickableSlider(MusePoint2D pos, double width, String id, ITextComponent label) {
         this.pos = pos;
         this.width = width;
         this.id = id;
-        this.position = pos;
-        this.insideRect = new DrawableRelativeRect(position.getX() - width / 2.0 - cornersize, position.getY() + 8, 0, position.getY() + 16, Colour.ORANGE, Colour.LIGHT_BLUE);
-        this.outsideRect = new DrawableRelativeRect(position.getX() - width / 2.0 - cornersize, position.getY() + 8, position.getX() + width / 2.0F + cornersize, position.getY() + 16, Colour.DARKBLUE, Colour.LIGHT_BLUE);
+        this.setPosition(pos);
+        this.insideRect = new DrawableRelativeRect(getPosition().getX() - width / 2.0 - cornersize, getPosition().getY() + 8, 0, getPosition().getY() + 16, Colour.ORANGE, Colour.LIGHT_BLUE);
+        this.outsideRect = new DrawableRelativeRect(getPosition().getX() - width / 2.0 - cornersize, getPosition().getY() + 8, getPosition().getX() + width / 2.0F + cornersize, getPosition().getY() + 16, Colour.DARKBLUE, Colour.LIGHT_BLUE);
         this.label = label;
     }
 
@@ -74,37 +72,17 @@ public class ClickableSlider extends Clickable {
     }
 
     @Override
-    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks, float zLevel) {
-        MuseRenderer.drawCenteredText(matrixStack, label, (float)position.getX(), (float)position.getY(), Colour.WHITE);
-        this.insideRect.setRight(position.getX() + width * ((float)getValue() - 0.5F) + cornersize);
-        this.outsideRect.draw(matrixStack, zLevel);
-        this.insideRect.draw(matrixStack, zLevel);
+    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float frameTime) {
+        MuseRenderer.drawCenteredText(matrixStack, label, (float)getPosition().getX(), (float)getPosition().getY(), Colour.WHITE);
+        this.insideRect.setRight(getPosition().getX() + width * ((float)getValue() - 0.5F) + cornersize);
+        this.outsideRect.render(matrixStack, mouseX, mouseY, frameTime);
+        this.insideRect.render(matrixStack, mouseX, mouseY, frameTime);
     }
 
     @Override
     public boolean hitBox(double x, double y) {
-        return Math.abs(position.getX() - x) < width / 2 &&
-                Math.abs(position.getY() + 12 - y) < 4;
-    }
-
-    @Override
-    public void setEnabled(boolean enabled) {
-        this.isEnabled = enabled;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return isEnabled;
-    }
-
-    @Override
-    public void setVisible(boolean visible) {
-        this.isVisible = visible;
-    }
-
-    @Override
-    public boolean isVisible() {
-        return isVisible;
+        return Math.abs(getPosition().getX() - x) < width / 2 &&
+                Math.abs(getPosition().getY() + 12 - y) < 4;
     }
 
     @Override

@@ -27,6 +27,7 @@
 package com.github.lehjr.numina.util.client.gui.clickable;
 
 import com.github.lehjr.numina.util.client.gui.gemoetry.DrawableRelativeRect;
+import com.github.lehjr.numina.util.client.gui.gemoetry.IDrawable;
 import com.github.lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
 import com.github.lehjr.numina.util.client.render.MuseRenderer;
 import com.github.lehjr.numina.util.math.Colour;
@@ -37,6 +38,7 @@ import net.minecraft.client.resources.I18n;
 import javax.annotation.Nullable;
 
 public class RangedSlider extends Clickable {
+    float blitOffset = 0;
     final int cornersize = 3;
 
     private final double height = 16;
@@ -71,7 +73,7 @@ public class RangedSlider extends Clickable {
 
     public RangedSlider(MusePoint2D position, double width, String label, double minVal, double maxVal, double currentVal, @Nullable ISlider iSlider) {
         this.width = width;
-        this.position = position;
+        this.setPosition(position);
         this.label = label;
         createNewRects();
         minValue = minVal;
@@ -81,28 +83,38 @@ public class RangedSlider extends Clickable {
     }
 
     void createNewRects() {
-        this.insideRect = new DrawableRelativeRect(position.getX() - width / 2.0F - cornersize, position.getY() + height * 0.5F, 0, position.getY() + height, Colour.ORANGE, Colour.LIGHT_BLUE);
-        this.outsideRect = new DrawableRelativeRect(position.getX() - width / 2.0F - cornersize, position.getY() + height * 0.5F, position.getX() + width / 2.0F + cornersize, position.getY() + height, Colour.DARKBLUE, Colour.LIGHT_BLUE);
+        this.insideRect = new DrawableRelativeRect(getPosition().getX() - width / 2.0F - cornersize, getPosition().getY() + height * 0.5F, 0, getPosition().getY() + height, Colour.ORANGE, Colour.LIGHT_BLUE);
+        this.outsideRect = new DrawableRelativeRect(getPosition().getX() - width / 2.0F - cornersize, getPosition().getY() + height * 0.5F, getPosition().getX() + width / 2.0F + cornersize, getPosition().getY() + height, Colour.DARKBLUE, Colour.LIGHT_BLUE);
         this.insideRect.setWidth(6);
     }
 
     @Override
-    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks, float zLevel) {
+    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float frameTime) {
         if (this.isVisible) {
             if (label != null) {
-                MuseRenderer.drawCenteredString(matrixStack, I18n.get(label), position.getX(), position.getY());
+                MuseRenderer.drawCenteredString(matrixStack, I18n.get(label), getPosition().getX(), getPosition().getY());
             }
 
-            this.outsideRect.draw(matrixStack, zLevel);
-            this.insideRect.setPosition(new MusePoint2D(this.position.getX() + this.width * (this.sliderValue - 0.5F), this.outsideRect.centery()));
-            this.insideRect.draw(matrixStack, zLevel);
+            this.outsideRect.render(matrixStack, mouseX, mouseY, frameTime);
+            this.insideRect.setPosition(new MusePoint2D(this.getPosition().getX() + this.width * (this.sliderValue - 0.5F), this.outsideRect.centery()));
+            this.insideRect.render(matrixStack, mouseX, mouseY, frameTime);
         }
+    }
+
+    @Override
+    public float getBlitOffset() {
+        return blitOffset;
+    }
+
+    @Override
+    public IDrawable setBlitOffset(float zLevel) {
+        return this;
     }
 
     public void update(double mouseX, double mouseY) {
         double siderStart = this.sliderValue;
         if (dragging && this.isEnabled() && this.isVisible() && this.hitBox(mouseX, mouseY)) {
-            this.sliderValue = MuseMathUtils.clampDouble((mouseX - this.position.getX()) / (this.width -3) + 0.5, 0.0, 1.0);
+            this.sliderValue = MuseMathUtils.clampDouble((mouseX - this.getPosition().getX()) / (this.width -3) + 0.5, 0.0, 1.0);
         } else {
             this.sliderValue = MuseMathUtils.clampDouble(sliderValue, 0.0, 1.0);
         }
@@ -119,11 +131,6 @@ public class RangedSlider extends Clickable {
     @Override
     public void setPosition(MusePoint2D position) {
         super.setPosition(position);
-        createNewRects();
-    }
-
-    public void setWidth(double widthIn) {
-        this.width = widthIn;
         createNewRects();
     }
 
@@ -163,8 +170,8 @@ public class RangedSlider extends Clickable {
 
     @Override
     public boolean hitBox(double x, double y) {
-        return Math.abs(position.getX() - x) < width / 2 &&
-                Math.abs(position.getY() + 12 - y) < 4;
+        return Math.abs(getPosition().getX() - x) < width / 2 &&
+                Math.abs(getPosition().getY() + 12 - y) < 4;
     }
 
     public interface ISlider {

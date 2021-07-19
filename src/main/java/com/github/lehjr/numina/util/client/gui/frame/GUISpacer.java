@@ -1,5 +1,6 @@
 package com.github.lehjr.numina.util.client.gui.frame;
 
+import com.github.lehjr.numina.util.client.gui.gemoetry.IDrawable;
 import com.github.lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
 import com.github.lehjr.numina.util.client.gui.gemoetry.RelativeRect;
 import com.mojang.blaze3d.matrix.MatrixStack;
@@ -32,7 +33,6 @@ public class GUISpacer extends RelativeRect implements IGuiFrame {
 
     @Override
     public void update(double mouseX, double mouseY) {
-
     }
 
     @Override
@@ -66,12 +66,17 @@ public class GUISpacer extends RelativeRect implements IGuiFrame {
     }
 
     @Override
-    public void setTargetDimensions(double left, double top, double right, double bottom) {
-        super.setTargetDimensions(left, top, left + getWHFinal().getX(), top + getWHFinal().getY());
+    public float getBlitOffset() {
+        return 0;
     }
 
     @Override
-    public void setTargetDimensions(MusePoint2D ul, MusePoint2D wh) {
-        super.setTargetDimensions(ul, getWHFinal());
+    public IDrawable setBlitOffset(float zLevel) {
+        return this;
+    }
+
+    @Override
+    public RelativeRect getRect() {
+        return super.getRect();
     }
 }

@@ -54,9 +54,9 @@ public class ScrollableLabel extends ScrollableRectangle {
     }
 
     @Override
-    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks, float zLevel) {
+    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float frameTime) {
         if (enabled) {
-            label.render(matrixStack, mouseX, mouseY, partialTicks, zLevel);
+            label.render(matrixStack, mouseX, mouseY, frameTime);
         }
     }
 }

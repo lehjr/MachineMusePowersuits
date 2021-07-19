@@ -5,6 +5,8 @@ import com.github.lehjr.numina.util.client.gui.clickable.IClickable;
 import com.github.lehjr.numina.util.client.gui.frame.GUISpacer;
 import com.github.lehjr.numina.util.client.gui.frame.IGuiFrame;
 import com.github.lehjr.numina.util.client.gui.frame.InventoryFrame;
+import com.github.lehjr.numina.util.client.gui.frame.RectHolderFrame;
+import com.github.lehjr.numina.util.client.gui.gemoetry.IDrawable;
 import com.github.lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
 import com.github.lehjr.numina.util.client.gui.gemoetry.RelativeRect;
 import com.github.lehjr.numina.util.math.Colour;
@@ -19,17 +21,26 @@ import java.util.stream.IntStream;
 public class CraftingFrame extends RelativeRect implements IGuiFrame {
     float blitOffset = 0;
     protected InventoryFrame craftingGrid, resultFrame;
-    protected final Colour gridColour = new Colour(0.1F, 0.3F, 0.4F, 0.7F);
-    protected final Colour gridBorderColour = Colour.LIGHT_BLUE.withAlpha(0.8F);
-    protected final Colour gridBackGound = new Colour(0.545F, 0.545F, 0.545F, 1);
+    protected final Colour gridColour;
+    protected final Colour gridBorderColour;
+    protected final Colour gridBackGound;
     protected ClickableArrow arrow;
-
     List<IGuiFrame> frames = new ArrayList<>();
 
     public CraftingFrame(Container container, int resultIndex, int craftStartIndex) {
-        super(new MusePoint2D(0,0), new MusePoint2D(0, 54));
+        this(container, resultIndex, craftStartIndex,
+                new Colour(0.1F, 0.3F, 0.4F, 0.7F),
+                Colour.LIGHT_BLUE.withAlpha(0.8F),
+                new Colour(0.545F, 0.545F, 0.545F, 1));
+    }
 
-        GUISpacer spacer;
+    public CraftingFrame(Container container, int resultIndex, int craftStartIndex, Colour gridColourIn, Colour gridBorderColourIn, Colour gridBackGoundIn) {
+        super(new MusePoint2D(0,0), new MusePoint2D(0, 0));
+        super.setHeight(54);
+        this.gridColour = gridColourIn;
+        this.gridBorderColour = gridBorderColourIn;
+        this.gridBackGound = gridBackGoundIn;
+
 
 /*
 |<-(54)grid->|<-(?) spacer ->|<-(24) arrow ->|<- spacer ->|<-(24) result ->|<- spacer ->|
@@ -46,21 +57,31 @@ spacers 5? wide
 
 
 backgroundRect final WH: x: 176.0, y: 166.0
-backgroundRect final UL: x: 229.0, y: 41.0
+backgroundRect final UL: x: 229.0, y: 41.0 (right 405)
 
-crafting grid final WH: x: 54.0, y: 54.0
-crafting grid final UL: x: 258.0, y: 57.0
-
-arrow final WH: x: 24.0, y: 24.0
-arrow final UL: x: 319.0, y: 72.0
-
-result Frame final WH: x: 0.0, y: 0.0
-result Frame final UL: x: 351.0, y: 76.0
+spacer(5)
 
 recipeBookButton final WH: x: 18.0, y: 20.0
-recipeBookButton final UL: x: 234.0, y: 75.0
- */
+recipeBookButton final UL: x: 234.0, y: 75.0 (right 252)
 
+spacer(6)
+
+crafting grid final WH: x: 54.0, y: 54.0
+crafting grid final UL: x: 258.0, y: 57.0 (right 312)
+
+spacer(7)
+
+arrow final WH: x: 24.0, y: 24.0
+arrow final UL: x: 319.0, y: 72.0 (right 343)
+
+spacer(8)
+
+result Frame final WH: x: 24.0, y: 24.0
+result Frame final UL: x: 351.0, y: 76.0 (right 375)
+
+spacer(30)
+
+ */
         // slot 1-9
         craftingGrid = new InventoryFrame(
                 container,
@@ -77,18 +98,55 @@ recipeBookButton final UL: x: 234.0, y: 75.0
                 }});
         craftingGrid.setWidth(54).setHeight(54);
         frames.add(craftingGrid);
+        // total width 54
 
-        spacer = new GUISpacer(5, 54);
+        GUISpacer spacer = new GUISpacer(5, 54);
         spacer.setMeRightOf(craftingGrid);
         frames.add(spacer);
 
-        arrow = new ClickableArrow(0, 0, 0, 0, true, gridBackGound, Colour.WHITE, Colour.BLACK);
+        arrow = new ClickableArrow(0, 0, 0, 0, false, gridBackGound, Colour.WHITE, Colour.BLACK);
         arrow.show();
         arrow.setWidth(24).setHeight(24);
-        arrow.setMeRightOf(spacer);
 
-        spacer = new GUISpacer(5, 54);
-        spacer.setMeRightOf(arrow);
+        RectHolderFrame spacer1 = new RectHolderFrame(arrow, 24, 54) {
+            @Override
+            public boolean mouseClicked(double mouseX, double mouseY, int button) {
+                return arrow.mouseClicked(mouseX, mouseY, button);
+            }
+
+            @Override
+            public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
+                arrow.render(matrixStack, mouseX, mouseY, partialTicks);
+            }
+
+            @Override
+            public boolean mouseReleased(double mouseX, double mouseY, int button) {
+                return arrow.mouseReleased(mouseX, mouseY, button);
+            }
+
+            @Override
+            public void update(double mouseX, double mouseY) {
+                MusePoint2D position = getPosition();
+                if (!position.equals(arrow.getPosition())) {
+                    arrow.setPosition(position);
+                    arrow.initGrowth();
+                }
+            }
+
+            @Override
+            public List<ITextComponent> getToolTip(int x, int y) {
+                if (arrow.containsPoint(x, y)) {
+                    return arrow.getToolTip();
+                }
+                return null;
+            }
+        };
+        spacer1.setMeRightOf(spacer);
+        frames.add(spacer1);
+
+        GUISpacer spacer2 = new GUISpacer(5, 54);
+        spacer2.setMeRightOf(spacer1);
+        frames.add(spacer2);
 
         // slot 0
         resultFrame = new InventoryFrame(
@@ -105,13 +163,52 @@ recipeBookButton final UL: x: 234.0, y: 75.0
                     IntStream.range(resultIndex, resultIndex+1).forEach(i-> add(i));
                 }}).setSlotWidth(24).setSlotHeight(24);
         resultFrame.setWidth(24).setHeight(24);
-        resultFrame.setMeRightOf(spacer);
-        frames.add(resultFrame);
+
+        RectHolderFrame spacer3 = new RectHolderFrame(resultFrame,24, 54) {
+            @Override
+            public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
+                resultFrame.render(matrixStack, mouseX, mouseY, partialTicks);
+
+                System.out.println("result frame: " + resultFrame.toString());
+            }
+
+            @Override
+            public boolean mouseClicked(double mouseX, double mouseY, int button) {
+                return resultFrame.mouseClicked(mouseX, mouseY, button);
+            }
+
+            @Override
+            public boolean mouseReleased(double mouseX, double mouseY, int button) {
+                return resultFrame.mouseReleased(mouseX, mouseY, button);
+            }
+
+            @Override
+            public void update(double mouseX, double mouseY) {
+                MusePoint2D position = getPosition();
+                if (!position.equals(resultFrame.getPosition())) {
+                    resultFrame.setPosition(position);
+                    resultFrame.initGrowth();
+                }
+            }
+
+            @Override
+            public List<ITextComponent> getToolTip(int x, int y) {
+                return resultFrame.getToolTip(x, y);
+            }
+        };
+        resultFrame.setBackgroundColour(Colour.LIGHT_BLUE);
+        resultFrame.setSecondBackgroundColour(Colour.ORANGE);
+
+        frames.add(spacer3);
+        spacer3.setMeRightOf(spacer2);
+        updateWidth();
     }
 
-    public void setUL(MusePoint2D ulPosition) {
-        super.setLeft(ulPosition.getX());
-        super.setTop(ulPosition.getY());
+    @Override
+    public RelativeRect setUL(MusePoint2D ul) {
+        super.setUL(ul);
+        updatePositions();
+        return this;
     }
 
     public CraftingFrame setArrowOnPressed(IClickable.IPressable onArrowClicked) {
@@ -125,8 +222,8 @@ recipeBookButton final UL: x: 234.0, y: 75.0
             if (frame.mouseClicked(mouseX, mouseY, button)) {
                 return true;
             }
-         }
-        return arrow.mouseClicked(mouseX, mouseY, button);
+        }
+        return false;
     }
 
     @Override
@@ -136,7 +233,7 @@ recipeBookButton final UL: x: 234.0, y: 75.0
                 return true;
             }
         }
-        return arrow.mouseReleased(mouseX, mouseY, button);
+        return false;
     }
 
     @Override
@@ -144,21 +241,48 @@ recipeBookButton final UL: x: 234.0, y: 75.0
         return false;
     }
 
+    void updateWidth() {
+        double totalWidth = 0;
+        for (IGuiFrame frame : frames) {
+            totalWidth += frame.width();
+        }
+        super.setWidth(totalWidth);
+    }
+
+    void updatePositions() {
+        frames.get(0).setLeft(left());
+        frames.get(0).setTop(top());
+        for (int i = 1; i < frames.size(); i++) {
+            frames.get(i).setMeRightOf((RelativeRect) frames.get(i-1));
+            frames.get(i).setTop(top());
+        }
+    }
+
     @Override
     public void update(double mouseX, double mouseY) {
         for (IGuiFrame frame : frames) {
             frame.update(mouseX, mouseY);
         }
+        updatePositions();
     }
 
     @Override
-    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
+    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float frameTime) {
         if (isVisible()) {
             for (IGuiFrame frame : frames) {
-                frame.render(matrixStack, mouseX, mouseY, partialTicks);
+                frame.render(matrixStack, mouseX, mouseY, frameTime);
             }
-            arrow.render(matrixStack, mouseX, mouseY, partialTicks, blitOffset);
         }
+    }
+
+    @Override
+    public float getBlitOffset() {
+        return blitOffset;
+    }
+
+    @Override
+    public IDrawable setBlitOffset(float zLevel) {
+        return this;
     }
 
     @Override
@@ -170,7 +294,6 @@ recipeBookButton final UL: x: 234.0, y: 75.0
                     return toolTip;
                 }
             }
-            return arrow.getToolTip();
         }
         return null;
     }
@@ -193,5 +316,15 @@ recipeBookButton final UL: x: 234.0, y: 75.0
     @Override
     public boolean isVisible() {
         return true;
+    }
+
+    @Override
+    public RelativeRect setWidth(double value) {
+        return this;
+    }
+
+    @Override
+    public RelativeRect setHeight(double value) {
+        return this;
     }
 }

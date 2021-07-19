@@ -69,7 +69,7 @@ public class NuminaRecipeWidget extends RecipeWidget {
         } else {
             tile.setEnabled();
         }
-        tile.draw(matrixStack, 1);
+        tile.render(matrixStack, mouseX, mouseY, partialTicks);
 
 
         Minecraft minecraft = Minecraft.getInstance();
@@ -181,7 +181,10 @@ public class NuminaRecipeWidget extends RecipeWidget {
     @Override
     public void setPosition(int posX, int posY) {
         super.setPosition(posX, posY);
-        tile.setTargetDimensions(new MusePoint2D(x, y), new MusePoint2D(getWidth(), getHeight()));
+        tile.setLeft(x);
+        tile.setTop(y);
+        tile.setWidth(getWidth());
+        tile.setHeight(getHeight());
     }
 
     @Override

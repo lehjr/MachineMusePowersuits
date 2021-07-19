@@ -35,7 +35,7 @@ import org.lwjgl.opengl.GL11;
 
 import java.nio.FloatBuffer;
 
-public class DrawableArrow extends RelativeRect implements IDrawable {
+public class DrawableArrow extends RelativeRect implements IDrawableRect {
     Colour backgroundColour;
     Colour borderColour;
     boolean drawShaft = true;
@@ -384,8 +384,7 @@ public class DrawableArrow extends RelativeRect implements IDrawable {
     }
 
     float zLevel;
-    public void draw(MatrixStack matrixStack, float zLevel) {
-        this.zLevel = zLevel;
+    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
         drawBackground(matrixStack);
         drawBorder(matrixStack);
     }
@@ -405,12 +404,12 @@ public class DrawableArrow extends RelativeRect implements IDrawable {
     }
 
     @Override
-    public float getZLevel() {
+    public float getBlitOffset() {
         return zLevel;
     }
 
     @Override
-    public IDrawable setZLevel(float zLevelIn) {
+    public IDrawable setBlitOffset(float zLevelIn) {
         this.zLevel = zLevelIn;
         return this;
     }

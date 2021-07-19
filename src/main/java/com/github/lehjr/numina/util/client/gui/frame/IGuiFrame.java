@@ -26,13 +26,13 @@
 
 package com.github.lehjr.numina.util.client.gui.frame;
 
-import com.github.lehjr.numina.util.client.gui.gemoetry.IRect;
+import com.github.lehjr.numina.util.client.gui.gemoetry.IDrawableRect;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.util.text.ITextComponent;
 
 import java.util.List;
 
-public interface IGuiFrame extends IRect {
+public interface IGuiFrame extends IDrawableRect {
     /**
      * @param mouseX
      * @param mouseY
@@ -67,12 +67,14 @@ public interface IGuiFrame extends IRect {
      * @param bottom
      */
     default void init(double left, double top, double right, double bottom) {
-        setTargetDimensions(left, top, right, bottom);
+        setLeft(left);
+        setTop(top);
+        setWidth(right - left);
+        setHeight(bottom - top);
     }
 
     /**
-     * Called in the render loop before rendering. Use to update this frame
-     *
+     * Miscellaneous functions required before rendering
      * @param mouseX
      * @param mouseY
      */

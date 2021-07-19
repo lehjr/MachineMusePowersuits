@@ -115,21 +115,15 @@ public class DrawableRectangularGrid extends DrawableRelativeRect {
     void setupGrid() {
         horizontalSegmentSize = (double) (width() / gridWidth);
         verticleSegmentSize = (double) (height() / gridHeight);
-
-        // uper left coner
-        MusePoint2D box_ul;
-        // bottom right
-        MusePoint2D box_br;
-        // width and height of each box
-
-        MusePoint2D box_offset = new MusePoint2D(horizontalSegmentSize, verticleSegmentSize);
         int i = 0;
 
         // These boxes provide centers for the slots
         for (int y = 0; y < gridHeight; y++) {
             for (int x = 0; x < gridWidth; x++) {
-                box_ul = new MusePoint2D(horizontalSegmentSize * x, verticleSegmentSize * y);
-                boxes[i].setTargetDimensions(box_ul, box_offset);
+                boxes[i].setLeft(horizontalSegmentSize * x);
+                boxes[i].setTop(verticleSegmentSize * y);
+                boxes[i].setWidth(horizontalSegmentSize);
+                boxes[i].setHeight(verticleSegmentSize);
 
                 if (i >0) {
                     if (x > 0)
@@ -158,7 +152,7 @@ public class DrawableRectangularGrid extends DrawableRelativeRect {
             setBoxes();
         }
 
-        if (horizontalSegmentSize == null || verticleSegmentSize == null || (this.ul != this.ulFinal || this.wh != this.whFinal)) {
+        if (horizontalSegmentSize == null || verticleSegmentSize == null || (!doneGrowing())) {
             setupGrid();
         }
 
@@ -211,7 +205,7 @@ public class DrawableRectangularGrid extends DrawableRelativeRect {
     }
 
     @Override
-    public void draw(MatrixStack matrixStack, float zLevel) {
+    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float frameTime) {
         FloatBuffer vertices = preDraw(0);
         drawBackground(matrixStack, vertices);
         drawGrid(matrixStack);

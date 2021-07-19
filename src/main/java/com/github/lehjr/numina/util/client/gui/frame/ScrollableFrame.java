@@ -52,7 +52,7 @@ public class ScrollableFrame extends DrawableRelativeRect implements IGuiFrame {
 
     public ScrollableFrame(MusePoint2D topleft, MusePoint2D bottomright, float zlevel, Colour backgroundColour, Colour borderColour) {
         super(topleft, bottomright, backgroundColour, borderColour);
-        super.setZLevel(zlevel);
+        super.setBlitOffset(zlevel);
     }
 
     public int getMaxScrollPixels() {
@@ -138,9 +138,9 @@ public class ScrollableFrame extends DrawableRelativeRect implements IGuiFrame {
         return visible;
     }
 
-    public void preRender(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks)  {
+    public void preRender(MatrixStack matrixStack, int mouseX, int mouseY, float frameTIme)  {
         if (isVisible()) {
-            super.draw(matrixStack, zLevel);
+            super.render(matrixStack, mouseX, mouseY, frameTIme);
 
             RenderSystem.disableTexture();
             RenderSystem.enableBlend();

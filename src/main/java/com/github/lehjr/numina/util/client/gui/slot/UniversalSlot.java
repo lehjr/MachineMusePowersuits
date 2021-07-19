@@ -27,7 +27,10 @@
 package com.github.lehjr.numina.util.client.gui.slot;
 
 import com.github.lehjr.numina.util.client.gui.clickable.IClickable;
+import com.github.lehjr.numina.util.client.gui.gemoetry.IDrawable;
+import com.github.lehjr.numina.util.client.gui.gemoetry.IRect;
 import com.github.lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
+import com.github.lehjr.numina.util.client.gui.gemoetry.RelativeRect;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.IInventory;
@@ -46,6 +49,7 @@ import java.util.List;
  * A universal base for both IInventory and IItemHandler based slots
  *
  */
+@Deprecated
 public class UniversalSlot extends Slot implements IClickable {
     private static IInventory emptyInventory = new Inventory(0);
     private final IItemHandler itemHandler;
@@ -187,16 +191,135 @@ public class UniversalSlot extends Slot implements IClickable {
      * @param mouseX
      * @param mouseY
      * @param partialTicks
-     * @param zLevel
      */
     @Override
-    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks, float zLevel) {
+    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
 
+    }
+
+    @Override
+    public float getBlitOffset() {
+        return 0;
+    }
+
+    @Override
+    public IDrawable setBlitOffset(float zLevel) {
+        return null;
     }
 
     @Override
     public MusePoint2D getPosition() {
         return position;
+    }
+
+    @Override
+    public boolean growFromMiddle() {
+        return false;
+    }
+
+    @Override
+    public void initGrowth() {
+
+    }
+
+    @Override
+    public IRect setMeLeftof(RelativeRect otherRightOfMe) {
+        return null;
+    }
+
+    @Override
+    public IRect setMeRightOf(RelativeRect otherLeftOfMe) {
+        return null;
+    }
+
+    @Override
+    public IRect setMeAbove(RelativeRect otherBelowMe) {
+        return null;
+    }
+
+    @Override
+    public IRect setMeBelow(RelativeRect otherAboveMe) {
+        return null;
+    }
+
+    @Override
+    public MusePoint2D getUL() {
+        return null;
+    }
+
+    @Override
+    public MusePoint2D getWH() {
+        return null;
+    }
+
+    @Override
+    public double left() {
+        return 0;
+    }
+
+    @Override
+    public double top() {
+        return 0;
+    }
+
+    @Override
+    public double right() {
+        return 0;
+    }
+
+    @Override
+    public double bottom() {
+        return 0;
+    }
+
+    @Override
+    public double width() {
+        return 0;
+    }
+
+    @Override
+    public double height() {
+        return 0;
+    }
+
+    @Override
+    public IRect setUL(MusePoint2D ul) {
+        return null;
+    }
+
+    @Override
+    public IRect setWH(MusePoint2D wh) {
+        return null;
+    }
+
+    @Override
+    public IRect setLeft(double value) {
+        return null;
+    }
+
+    @Override
+    public IRect setRight(double value) {
+        return null;
+    }
+
+    @Override
+    public IRect setTop(double value) {
+        return null;
+    }
+
+    @Override
+    public IRect setBottom(double value) {
+        return null;
+    }
+
+    @Override
+    public IRect setWidth(double value) {
+        return null;
+    }
+
+    @Override
+    public IRect setHeight(double value) {
+        return null;
     }
 
     @Override
@@ -258,5 +381,15 @@ public class UniversalSlot extends Slot implements IClickable {
     @Override
     public void setEnabled(boolean enabled) {
         this.isEnabled = enabled;
+    }
+
+    @Override
+    public void setOnInit(IInit onInit) {
+
+    }
+
+    @Override
+    public void onInit() {
+
     }
 }

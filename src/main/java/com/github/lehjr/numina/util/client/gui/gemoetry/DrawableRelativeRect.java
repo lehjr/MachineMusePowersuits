@@ -34,7 +34,7 @@ import org.lwjgl.opengl.GL11;
 
 import java.nio.FloatBuffer;
 
-public class DrawableRelativeRect extends RelativeRect implements IDrawable {
+public class DrawableRelativeRect extends RelativeRect implements IDrawableRect {
     Colour backgroundColour;
     Colour borderColour;
     Colour backgroundColour2 = null;
@@ -72,10 +72,33 @@ public class DrawableRelativeRect extends RelativeRect implements IDrawable {
         this.borderColour = borderColour;
     }
 
+    public DrawableRelativeRect(Colour backgroundColour, Colour borderColour) {
+        super();
+        this.backgroundColour = backgroundColour;
+        this.borderColour = borderColour;
+    }
+
+    public DrawableRelativeRect(Colour backgroundColour, Colour borderColour, boolean growFromMiddle) {
+        super(growFromMiddle);
+        this.backgroundColour = backgroundColour;
+        this.borderColour = borderColour;
+    }
+
     @Override
     public DrawableRelativeRect copyOf() {
         return new DrawableRelativeRect(super.left(), super.top(), super.right(), super.bottom(),
-                (this.ul != this.ulFinal || this.wh != this.whFinal) , backgroundColour, borderColour);
+                this.growFromMiddle , backgroundColour, borderColour);
+    }
+
+    @Override
+    public float getBlitOffset() {
+        return this.zLevel;
+    }
+
+    @Override
+    public IDrawable setBlitOffset(float zLevelIn) {
+        zLevel = zLevelIn;
+        return this;
     }
 
     /**
@@ -87,62 +110,6 @@ public class DrawableRelativeRect extends RelativeRect implements IDrawable {
         this.shrinkBorder = shrinkBorder;
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//    @Override
-//    public DrawableRelativeRect<T> setLeft(double value) {
-//        super.setLeft(value);
-//        return this;
-//    }
-//
-//    @Override
-//    public DrawableRelativeRect setRight(double value) {
-//        super.setRight(value);
-//        return this;
-//    }
-//
-//    @Override
-//    public DrawableRelativeRect setTop(double value) {
-//        super.setTop(value);
-//        return this;
-//    }
-//
-//    @Override
-//    public DrawableRelativeRect setBottom(double value) {
-//        super.setBottom(value);
-//        return this;
-//    }
-//
-//    @Override
-//    public DrawableRelativeRect setWidth(double value) {
-//        super.setWidth(value);
-//        return this;
-//    }
-//
-//    @Override
-//    public DrawableRelativeRect setHeight(double value) {
-//        super.setHeight(value);
-//        return this;
-//    }
-//
     public DrawableRelativeRect setBackgroundColour(Colour backgroundColour) {
         this.backgroundColour = backgroundColour;
         return this;
@@ -224,29 +191,6 @@ public class DrawableRelativeRect extends RelativeRect implements IDrawable {
         drawTesselator();
         postDraw();
     }
-//    void drawBuffer(MatrixStack matrixStack, FloatBuffer vertices, Colour colour, int glMode) {
-//        RenderSystem.disableTexture();
-//        RenderSystem.enableBlend();
-//        RenderSystem.disableAlphaTest();
-//        RenderSystem.defaultBlendFunc();
-//        RenderSystem.shadeModel(GL11.GL_SMOOTH);
-//
-//        Tessellator tessellator = Tessellator.getInstance();
-//        BufferBuilder buffer = tessellator.getBuilder();
-//        buffer.begin(glMode, DefaultVertexFormats.POSITION_COLOR);
-//
-//        while (vertices.hasRemaining()) {
-//            buffer.vertex(matrixStack.last().pose(), vertices.get(), vertices.get(), zLevel).color(colour.r, colour.g, colour.b, colour.a).endVertex();
-//        }
-//
-//        tessellator.end();
-//
-//        RenderSystem.shadeModel(GL11.GL_FLAT);
-//        RenderSystem.disableBlend();
-//        RenderSystem.enableAlphaTest();
-//        RenderSystem.enableTexture();
-//    }
-
 
     void drawBuffer(MatrixStack matrixStack, FloatBuffer vertices, FloatBuffer colours, int glMode) {
         preDraw(glMode, DefaultVertexFormats.POSITION_COLOR);
@@ -254,95 +198,6 @@ public class DrawableRelativeRect extends RelativeRect implements IDrawable {
         drawTesselator();
         postDraw();
     }
-
-//    void drawBuffer(MatrixStack matrixStack, FloatBuffer vertices, FloatBuffer colours, int glMode) {
-//        RenderSystem.disableTexture();
-//        RenderSystem.enableBlend();
-//        RenderSystem.disableAlphaTest();
-//        RenderSystem.defaultBlendFunc();
-//        RenderSystem.shadeModel(GL11.GL_SMOOTH);
-//
-//        Tessellator tessellator = Tessellator.getInstance();
-//        BufferBuilder buffer = tessellator.getBuilder();
-//        buffer.begin(glMode, DefaultVertexFormats.POSITION_COLOR);
-//
-//        while (vertices.hasRemaining() && colours.hasRemaining()) {
-//            buffer.vertex(matrixStack.last().pose(), vertices.get(), vertices.get(), zLevel).color(colours.get(), colours.get(), colours.get(), colours.get()).endVertex();
-//        }
-//        tessellator.end();
-//
-//        RenderSystem.shadeModel(GL11.GL_FLAT);
-//        RenderSystem.disableBlend();
-//        RenderSystem.enableAlphaTest();
-//        RenderSystem.enableTexture();
-//    }
-
-    // FIXME!!! still need to address gradient direction
-    public void draw(MatrixStack matrixStack, float zLevel) {
-        this.zLevel = zLevel;
-        FloatBuffer vertices = preDraw(0);
-
-        if (backgroundColour2 != null) {
-            FloatBuffer colours = GradientAndArcCalculator.getColourGradient(backgroundColour,
-                    backgroundColour2, vertices.limit() * 4);
-            drawBackground(matrixStack, vertices, colours);
-        } else {
-            drawBackground(matrixStack, vertices);
-        }
-
-        if (shrinkBorder) {
-            vertices = preDraw(1);
-        } else {
-            vertices.rewind();
-        }
-        drawBorder(matrixStack, vertices);
-    }
-
-
-//-----------------------------------------------------------------
-//    @Override
-//    public DrawableRelativeRect copyOf() {
-//        return new DrawableRelativeRect(super.left(), super.top(), super.right(), super.bottom(),
-//                (this.ul != this.ulFinal || this.wh != this.whFinal), backgroundColour, borderColour).setBackgroundColour(backgroundColour2);
-//    }
-//
-//    @Override
-//    public DrawableRelativeRect setLeft(double value) {
-//        super.setLeft(value);
-//        return this;
-//    }
-//
-//    @Override
-//    public DrawableRelativeRect setRight(double value) {
-//        super.setRight(value);
-//        return this;
-//    }
-//
-//    @Override
-//    public DrawableRelativeRect setTop(double value) {
-//        super.setTop(value);
-//        return this;
-//    }
-//
-//    @Override
-//    public DrawableRelativeRect setBottom(double value) {
-//        super.setBottom(value);
-//        return this;
-//    }
-//
-//    @Override
-//    public DrawableRelativeRect setWidth(double value) {
-//        super.setWidth(value);
-//        return this;
-//    }
-//
-//    @Override
-//    public DrawableRelativeRect setHeight(double value) {
-//        super.setHeight(value);
-//        return this;
-//    }
-
-
 
     public float getCornerradius() {
         return cornerradius;
@@ -401,8 +256,25 @@ public class DrawableRelativeRect extends RelativeRect implements IDrawable {
         return vertices;
     }
 
-    public void setzLevel(float zLevel) {
-        this.zLevel = zLevel;
+    @Override
+    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float frameTime) {
+
+        FloatBuffer vertices = preDraw(0);
+
+        if (backgroundColour2 != null) {
+            FloatBuffer colours = GradientAndArcCalculator.getColourGradient(backgroundColour,
+                    backgroundColour2, vertices.limit() * 4);
+            drawBackground(matrixStack, vertices, colours);
+        } else {
+            drawBackground(matrixStack, vertices);
+        }
+
+        if (shrinkBorder) {
+            vertices = preDraw(1);
+        } else {
+            vertices.rewind();
+        }
+        drawBorder(matrixStack, vertices);
     }
 
     @Override
@@ -411,28 +283,14 @@ public class DrawableRelativeRect extends RelativeRect implements IDrawable {
         stringbuilder.append(this.getClass()).append(":\n");
         stringbuilder.append("Center: ").append(center()).append("\n");
         stringbuilder.append("Left: ").append(left()).append("\n");
-        stringbuilder.append("FinalLeft: ").append(finalLeft()).append("\n");
         stringbuilder.append("Right: ").append(right()).append("\n");
-        stringbuilder.append("FinalRight: ").append(finalRight()).append("\n");
         stringbuilder.append("Bottom: ").append(bottom()).append("\n");
-        stringbuilder.append("FinalBottom: ").append(finalBottom()).append("\n");
         stringbuilder.append("Top: ").append(top()).append("\n");
-        stringbuilder.append("FinalTop: ").append(finalTop()).append("\n");
-        stringbuilder.append("Width: ").append(left()).append("\n");
-        stringbuilder.append("FinalWidthLeft: ").append(left()).append("\n");
+        stringbuilder.append("Width: ").append(width()).append("\n");
         stringbuilder.append("Height: ").append(height()).append("\n");
-        stringbuilder.append("FinalHeight: ").append(finalHeight()).append("\n");
+        stringbuilder.append("Background Colour: ").append(backgroundColour.toString()).append("\n");
+        stringbuilder.append("Background Colour 2: ").append(backgroundColour2 == null? "null" : backgroundColour2.toString()).append("\n");
+        stringbuilder.append("Border Colour: ").append(borderColour.toString()).append("\n");
         return stringbuilder.toString();
-    }
-
-    @Override
-    public float getZLevel() {
-        return this.zLevel;
-    }
-
-    @Override
-    public IDrawable setZLevel(float zLevelIn) {
-        zLevel = zLevelIn;
-        return this;
     }
 }

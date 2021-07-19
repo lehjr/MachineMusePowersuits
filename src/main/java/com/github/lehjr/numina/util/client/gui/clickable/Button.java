@@ -108,7 +108,7 @@ public class Button extends DrawableRelativeRect implements IClickable {
     }
 
     @Override
-    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks, float zLevel) {
+    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float frameTIme) {
         if (isVisible) {
             if (isEnabled()) {
                 if (hitBox(mouseX, mouseY)) {
@@ -125,7 +125,7 @@ public class Button extends DrawableRelativeRect implements IClickable {
                 super.setBackgroundColour(backgroundColourDisabled);
                 super.setBorderColour(this.borderColourDisabled);
             }
-            super.draw(matrixStack, zLevel);
+            super.render(matrixStack, mouseX, mouseY, frameTIme);
         }
     }
 

@@ -79,7 +79,7 @@ public class ClickableModuleSlot extends UniversalSlot implements IClickable {
     }
 
     @Override
-    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks, float zLevel) {
+    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
         if (!getItem().isEmpty()) {
             MuseRenderer.drawItemAt(getPosition().getX() - offsetx, getPosition().getY() - offsety, getItem());
             if (!allowed) {

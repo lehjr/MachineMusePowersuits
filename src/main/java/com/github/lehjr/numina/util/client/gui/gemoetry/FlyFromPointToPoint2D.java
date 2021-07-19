@@ -50,9 +50,29 @@ public class FlyFromPointToPoint2D extends MusePoint2D {
         return this.doRatio(this.prev.y, this.y);
     }
 
-    public double doRatio(double val1, double val2) {
+    public double getFinalX() {
+        return super.getX();
+    }
+
+    public double getFinalY() {
+        return super.getY();
+    }
+
+    public MusePoint2D getFinalPoint() {
+        return new MusePoint2D(getFinalX(), getFinalY());
+    }
+
+    public boolean doneFlying() {
+        return getRatio() > 1;
+    }
+
+    double getRatio() {
         long elapsed = System.currentTimeMillis() - this.spawnTime;
-        double ratio = (double)elapsed / this.timeTo;
+        return (double)elapsed / this.timeTo;
+    }
+
+    public double doRatio(double val1, double val2) {
+        double ratio = getRatio();
         return ratio > 1.0D ? val2 : val2 * ratio + val1 * (1.0D - ratio);
     }
 }

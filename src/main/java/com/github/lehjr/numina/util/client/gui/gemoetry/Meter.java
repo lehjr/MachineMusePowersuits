@@ -69,8 +69,8 @@ public class Meter extends DrawableRelativeRect {
     }
 
     FloatBuffer getMeterVertices() {
-        float right = (float) (finalLeft() + (finalWidth() - 1) * value);
-        return getVertices(this.finalLeft() +1, this.finalTop() + 1, right, this.finalBottom() -1);
+        float right = (float) (left() + (width() - 1) * value);
+        return getVertices(this.left() +1, this.top() + 1, right, this.bottom() -1);
     }
 
     public void draw(MatrixStack matrixStack,float zLevel) {

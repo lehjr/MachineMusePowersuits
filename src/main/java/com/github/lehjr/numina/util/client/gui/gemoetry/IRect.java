@@ -26,52 +26,37 @@
 
 package com.github.lehjr.numina.util.client.gui.gemoetry;
 
+import com.github.lehjr.numina.util.client.gui.clickable.IClickable;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+
 /**
  * @author lehjr
  */
 public interface IRect {
-    /**
-     *  Alternative to spawning a completely new object. Especially handy for GUI's with large constructors
-     */
-    void setTargetDimensions(double left, double top, double right, double bottom);
-
-    void setTargetDimensions(MusePoint2D ul, MusePoint2D wh);
-
     default MusePoint2D center() {
         return new MusePoint2D(centerx(), centery());
     }
 
     MusePoint2D getUL();
 
-    MusePoint2D getULFinal();
-
     MusePoint2D getWH();
-
-    MusePoint2D getWHFinal();
 
     double left();
 
-    double finalLeft();
-
     double top();
-
-    double finalTop();
 
     double right();
 
-    double finalRight();
-
     double bottom();
-
-    double finalBottom();
 
     double width();
 
-    double finalWidth();
-
     double height();
 
-    double finalHeight();
+    IRect setUL(MusePoint2D ul);
+
+    IRect setWH(MusePoint2D wh);
 
     IRect setLeft(double value);
 
@@ -91,6 +76,10 @@ public interface IRect {
 
     void setPosition(MusePoint2D position);
 
+    default MusePoint2D getPosition() {
+        return center();
+    }
+
     boolean growFromMiddle();
 
     default boolean containsPoint(double x, double y) {
@@ -106,8 +95,25 @@ public interface IRect {
     }
 
     default boolean doneGrowing() {
-        return getWHFinal().equals(getWH());
+        if (growFromMiddle()) {
+            if (getUL() instanceof FlyFromPointToPoint2D) {
+                if (((FlyFromPointToPoint2D) getUL()).doneFlying()) {
+                    return true;
+                }
+            }
+            if (getWH() instanceof FlyFromPointToPoint2D) {
+                if (((FlyFromPointToPoint2D) getWH()).doneFlying()) {
+                    return true;
+                }
+            }
+        }
+        return true;
     }
+
+    /**
+     * Call ONCE to initialize growth of IRect
+     */
+   void initGrowth();
 
     IRect setMeLeftof(RelativeRect otherRightOfMe);
 
@@ -116,4 +122,13 @@ public interface IRect {
     IRect setMeAbove(RelativeRect otherBelowMe);
 
     IRect setMeBelow(RelativeRect otherAboveMe);
+
+    void setOnInit(IRect.IInit onInit);
+
+    void onInit();
+
+    @OnlyIn(Dist.CLIENT)
+    interface IInit {
+        void onInit(IRect doThis);
+    }
 }
