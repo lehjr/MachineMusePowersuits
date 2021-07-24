@@ -29,6 +29,7 @@ package com.github.lehjr.numina.client.gui;
 import com.github.lehjr.numina.container.ChargingBaseContainer;
 import com.github.lehjr.numina.util.client.gui.ExtendedContainerScreen;
 import com.github.lehjr.numina.util.client.gui.frame.InventoryFrame;
+import com.github.lehjr.numina.util.client.gui.frame.PlayerInventoryFrame;
 import com.github.lehjr.numina.util.client.gui.gemoetry.DrawableRelativeRect;
 import com.github.lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
 import com.github.lehjr.numina.util.client.gui.meters.EnergyMeter;
@@ -47,9 +48,9 @@ import java.util.stream.IntStream;
 public class ChargingBaseGui extends ExtendedContainerScreen<ChargingBaseContainer> {
     /** The outer green rectangle */
     protected DrawableRelativeRect backgroundRect;
-    protected InventoryFrame batterySlot, items, hotbar;
-    final int slotWidth = 18;
-    final int slotHeight = 18;
+    protected InventoryFrame batterySlot;
+    PlayerInventoryFrame playerInventoryFrame;
+
     int spacer = 7;
     EnergyMeter energyMeter;
 
@@ -71,34 +72,14 @@ public class ChargingBaseGui extends ExtendedContainerScreen<ChargingBaseContain
 
         // slot 0
         batterySlot = new InventoryFrame(container,
-                new MusePoint2D(0,0), new MusePoint2D(0, 0),
-                getBlitOffset(),
                 Colour.LIGHT_GREY, Colour.DARK_GREY, Colour.BLACK,
                 1, 1, new ArrayList<Integer>(){{
             IntStream.range(0, 1).forEach(i-> add(i));
         }});
         addFrame(batterySlot);
 
-        // slot 1-9
-        items = new InventoryFrame(container,
-                new MusePoint2D(0,0), new MusePoint2D(0, 0),
-                getBlitOffset(),
-                Colour.LIGHT_GREY, Colour.DARK_GREY, Colour.DARK_GREY,
-                9, 3, new ArrayList<Integer>(){{
-            IntStream.range(1, 28).forEach(i-> add(i));
-        }});
-        addFrame(items);
-
-        // slot 28-37
-        hotbar = new InventoryFrame(container,
-                new MusePoint2D(0,0), new MusePoint2D(0, 0),
-                getBlitOffset(),
-                Colour.LIGHT_GREY, Colour.DARK_GREY, Colour.DARK_GREY,
-                9, 1, new ArrayList<Integer>(){{
-            IntStream.range(28, 37).forEach(i-> add(i));
-        }});
-        addFrame(hotbar);
-        // add energy meter
+        playerInventoryFrame = new PlayerInventoryFrame(container, 1, 28);
+        addFrame(playerInventoryFrame);
     }
 
     MusePoint2D getUlOffset () {
@@ -112,6 +93,9 @@ public class ChargingBaseGui extends ExtendedContainerScreen<ChargingBaseContain
         backgroundRect.setWidth(getXSize());
         backgroundRect.setHeight(getYSize());
         backgroundRect.initGrowth();
+
+        playerInventoryFrame.setLeft(getGuiLeft());
+        playerInventoryFrame.setBottom(getGuiTop() + getYSize());
 
         System.out.println("fixme!!!");
 

@@ -85,9 +85,6 @@ spacer(30)
         // slot 1-9
         craftingGrid = new InventoryFrame(
                 container,
-                new MusePoint2D(0,0),
-                new MusePoint2D(0, 0),
-                0,
                 gridBackGound,
                 gridBorderColour,
                 gridColour,
@@ -115,8 +112,8 @@ spacer(30)
             }
 
             @Override
-            public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
-                arrow.render(matrixStack, mouseX, mouseY, partialTicks);
+            public void render(MatrixStack matrixStack, int mouseX, int mouseY, float frameTime) {
+                arrow.render(matrixStack, mouseX, mouseY, frameTime);
             }
 
             @Override
@@ -135,10 +132,7 @@ spacer(30)
 
             @Override
             public List<ITextComponent> getToolTip(int x, int y) {
-                if (arrow.containsPoint(x, y)) {
-                    return arrow.getToolTip();
-                }
-                return null;
+                return arrow.getToolTip(x, y);
             }
         };
         spacer1.setMeRightOf(spacer);
@@ -151,9 +145,6 @@ spacer(30)
         // slot 0
         resultFrame = new InventoryFrame(
                 container,
-                new MusePoint2D(0,0),
-                new MusePoint2D(0, 0),
-                0,
                 gridBackGound,
                 gridBorderColour,
                 gridColour,
@@ -166,8 +157,8 @@ spacer(30)
 
         RectHolderFrame spacer3 = new RectHolderFrame(resultFrame,24, 54) {
             @Override
-            public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
-                resultFrame.render(matrixStack, mouseX, mouseY, partialTicks);
+            public void render(MatrixStack matrixStack, int mouseX, int mouseY, float frameTime) {
+                resultFrame.render(matrixStack, mouseX, mouseY, frameTime);
 
                 System.out.println("result frame: " + resultFrame.toString());
             }

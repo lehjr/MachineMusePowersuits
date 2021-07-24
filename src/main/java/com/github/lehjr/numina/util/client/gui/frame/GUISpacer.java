@@ -1,8 +1,10 @@
 package com.github.lehjr.numina.util.client.gui.frame;
 
+import com.github.lehjr.numina.util.client.gui.gemoetry.DrawableRelativeRect;
 import com.github.lehjr.numina.util.client.gui.gemoetry.IDrawable;
 import com.github.lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
 import com.github.lehjr.numina.util.client.gui.gemoetry.RelativeRect;
+import com.github.lehjr.numina.util.math.Colour;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.util.text.ITextComponent;
 
@@ -11,9 +13,10 @@ import java.util.List;
 /**
  * Just a spacer for a GUI. Height and width are setup to be locked into permanent values
  */
-public class GUISpacer extends RelativeRect implements IGuiFrame {
+public class GUISpacer extends DrawableRelativeRect implements IGuiFrame {
     public GUISpacer(double widthIn, double heightIn) {
-        super(new MusePoint2D(0,0 ), new MusePoint2D(widthIn, heightIn));
+        super(new MusePoint2D(0,0 ), new MusePoint2D(widthIn, heightIn),
+                Colour.LIGHT_GREEN, Colour.PURPLE);
     }
 
     @Override
@@ -36,8 +39,8 @@ public class GUISpacer extends RelativeRect implements IGuiFrame {
     }
 
     @Override
-    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
-
+    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float frameTime) {
+        super.render(matrixStack, mouseX, mouseY, frameTime);
     }
 
     @Override

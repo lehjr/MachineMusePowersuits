@@ -117,11 +117,6 @@ public class ClickableLabel extends Clickable {
     }
 
     @Override
-    public List<ITextComponent> getToolTip() {
-        return null;
-    }
-
-    @Override
     public void setEnabled(boolean enabled) {
         isEnabled = enabled;
     }

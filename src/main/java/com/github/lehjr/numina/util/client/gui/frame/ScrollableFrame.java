@@ -43,12 +43,16 @@ import org.lwjgl.opengl.GL11;
 import java.util.List;
 
 public class ScrollableFrame extends DrawableRelativeRect implements IGuiFrame {
-    protected final int buttonsize = 5;
-    protected int totalsize;
-    protected int currentscrollpixels;
+    protected final int buttonSize = 5;
+    protected int totalSize;
+    protected int currentScrollPixels;
     protected boolean visible = true;
     protected boolean enabled = true;
     protected float zLevel;
+
+    public ScrollableFrame(Colour backgroundColour, Colour borderColour) {
+        super(backgroundColour, borderColour);
+    }
 
     public ScrollableFrame(MusePoint2D topleft, MusePoint2D bottomright, float zlevel, Colour backgroundColour, Colour borderColour) {
         super(topleft, bottomright, backgroundColour, borderColour);
@@ -56,7 +60,7 @@ public class ScrollableFrame extends DrawableRelativeRect implements IGuiFrame {
     }
 
     public int getMaxScrollPixels() {
-        return (int) Math.max(totalsize - height(), 0);
+        return (int) Math.max(totalSize - height(), 0);
     }
 
     protected double getScrollAmount() {
@@ -67,13 +71,13 @@ public class ScrollableFrame extends DrawableRelativeRect implements IGuiFrame {
     public boolean mouseClicked(double x, double y, int button) {
         if (isVisible() && containsPoint(x, y) && button == 0) {
             int dscroll = 0;
-            if (y - top() < buttonsize && this.currentscrollpixels > 0) {
-                dscroll = (int)((double)dscroll - this.getScrollAmount());
-            } else if (bottom() - y < buttonsize) {
-                dscroll = (int)((double)dscroll + this.getScrollAmount());
+            if (y - top() < buttonSize && this.currentScrollPixels > 0) {
+                dscroll = (int) ((double) dscroll - this.getScrollAmount());
+            } else if (bottom() - y < buttonSize) {
+                dscroll = (int) ((double) dscroll + this.getScrollAmount());
             }
             if (dscroll != 0) {
-                this.currentscrollpixels = (int) MuseMathUtils.clampDouble(this.currentscrollpixels + dscroll, 0.0D, this.getMaxScrollPixels());
+                this.currentScrollPixels = (int) MuseMathUtils.clampDouble(this.currentScrollPixels + dscroll, 0.0D, this.getMaxScrollPixels());
                 return true;
             }
         }
@@ -89,15 +93,10 @@ public class ScrollableFrame extends DrawableRelativeRect implements IGuiFrame {
     public boolean mouseScrolled(double mouseX, double mouseY, double dWheel) {
         if (this.containsPoint(mouseX, mouseY)) {
             // prevent negative total scroll values
-            currentscrollpixels  = (int) MuseMathUtils.clampDouble(currentscrollpixels-= dWheel * getScrollAmount(), 0, getMaxScrollPixels());
+            currentScrollPixels = (int) MuseMathUtils.clampDouble(currentScrollPixels -= dWheel * getScrollAmount(), 0, getMaxScrollPixels());
             return true;
         }
         return false;
-    }
-
-    @Override
-    public void init(double left, double top, double right, double bottom) {
-        IGuiFrame.super.init(left, top, right, bottom);
     }
 
     @Override
@@ -130,7 +129,7 @@ public class ScrollableFrame extends DrawableRelativeRect implements IGuiFrame {
 
     @Override
     public void setVisible(boolean visible) {
-        this.visible = visible ;
+        this.visible = visible;
     }
 
     @Override
@@ -138,7 +137,7 @@ public class ScrollableFrame extends DrawableRelativeRect implements IGuiFrame {
         return visible;
     }
 
-    public void preRender(MatrixStack matrixStack, int mouseX, int mouseY, float frameTIme)  {
+    public void preRender(MatrixStack matrixStack, int mouseX, int mouseY, float frameTIme) {
         if (isVisible()) {
             super.render(matrixStack, mouseX, mouseY, frameTIme);
 
@@ -156,34 +155,34 @@ public class ScrollableFrame extends DrawableRelativeRect implements IGuiFrame {
             Matrix4f matrix4f = matrixStack.last().pose();
 
             // Can scroll down
-            if (currentscrollpixels + height() < totalsize) {
-                buffer.vertex(matrix4f, (float)(left() + width() / 2F), (float)bottom(), zLevel)
+            if (currentScrollPixels + height() < totalSize) {
+                buffer.vertex(matrix4f, (float) (left() + width() / 2F), (float) bottom(), zLevel)
                         .color(Colour.LIGHT_BLUE.r, Colour.LIGHT_BLUE.b, Colour.LIGHT_BLUE.b, Colour.LIGHT_BLUE.a)
                         .uv2(0x00F000F0)
                         .endVertex();
 
-                buffer.vertex(matrix4f, (float) (left() + width() / 2 + 2), (float)bottom() - 4, zLevel)
+                buffer.vertex(matrix4f, (float) (left() + width() / 2 + 2), (float) bottom() - 4, zLevel)
                         .color(Colour.LIGHT_BLUE.r, Colour.LIGHT_BLUE.b, Colour.LIGHT_BLUE.b, Colour.LIGHT_BLUE.a)
                         .uv2(0x00F000F0)
                         .endVertex();
 
-                buffer.vertex(matrix4f, (float) (left() + width() / 2 - 2), (float)bottom() - 4, zLevel)
+                buffer.vertex(matrix4f, (float) (left() + width() / 2 - 2), (float) bottom() - 4, zLevel)
                         .color(Colour.LIGHT_BLUE.r, Colour.LIGHT_BLUE.b, Colour.LIGHT_BLUE.b, Colour.LIGHT_BLUE.a)
                         .uv2(0x00F000F0)
                         .endVertex();
             }
 
             // Can scroll up
-            if (currentscrollpixels > 0) {
-                buffer.vertex(matrix4f, (float) (left() + width() / 2), (float)top(), zLevel)
+            if (currentScrollPixels > 0) {
+                buffer.vertex(matrix4f, (float) (left() + width() / 2), (float) top(), zLevel)
                         .color(Colour.LIGHT_BLUE.r, Colour.LIGHT_BLUE.b, Colour.LIGHT_BLUE.b, Colour.LIGHT_BLUE.a)
                         .uv2(0x00F000F0)
                         .endVertex();
-                buffer.vertex(matrix4f, (float) (left() + width() / 2 - 2), (float)top() + 4, zLevel)
+                buffer.vertex(matrix4f, (float) (left() + width() / 2 - 2), (float) top() + 4, zLevel)
                         .color(Colour.LIGHT_BLUE.r, Colour.LIGHT_BLUE.b, Colour.LIGHT_BLUE.b, Colour.LIGHT_BLUE.a)
                         .uv2(0x00F000F0)
                         .endVertex();
-                buffer.vertex(matrix4f, (float) (left() + width() / 2 + 2), (float)top() + 4, zLevel)
+                buffer.vertex(matrix4f, (float) (left() + width() / 2 + 2), (float) top() + 4, zLevel)
                         .color(Colour.LIGHT_BLUE.r, Colour.LIGHT_BLUE.b, Colour.LIGHT_BLUE.b, Colour.LIGHT_BLUE.a)
                         .uv2(0x00F000F0)
                         .endVertex();
@@ -203,13 +202,5 @@ public class ScrollableFrame extends DrawableRelativeRect implements IGuiFrame {
             NuminaRenderState.scissorsOff();
             NuminaRenderState.glowOff();
         }
-    }
-
-    public float getzLevel() {
-        return zLevel;
-    }
-
-    public void setzLevel(float zLevelIn) {
-        this.zLevel = zLevelIn;
     }
 }

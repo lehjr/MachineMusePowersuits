@@ -90,11 +90,6 @@ public class ClickableArrow extends DrawableArrow implements IClickable {
         return false;
     }
 
-    @Override
-    public List<ITextComponent> getToolTip() {
-        return null;
-    }
-
     public void setOnPressed(IPressable onPressed) {
         this.onPressed = onPressed;
     }

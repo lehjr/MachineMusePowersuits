@@ -140,9 +140,4 @@ public abstract class Clickable extends RelativeRect implements IClickable {
             this.onReleased.onReleased(this);
         }
     }
-
-    @Override
-    public List<ITextComponent> getToolTip() {
-        return null;
-    }
 }

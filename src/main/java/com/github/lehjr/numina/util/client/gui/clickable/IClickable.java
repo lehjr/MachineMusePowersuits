@@ -49,8 +49,6 @@ public interface IClickable extends IDrawableRect {
         return containsPoint(x, y);
     }
 
-    List<ITextComponent> getToolTip();
-
     void setEnabled(boolean enabled);
 
     boolean isEnabled();

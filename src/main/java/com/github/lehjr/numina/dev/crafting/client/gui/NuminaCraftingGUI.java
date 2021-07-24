@@ -6,6 +6,7 @@ import com.github.lehjr.numina.dev.crafting.container.NuminaCraftingContainer;
 import com.github.lehjr.numina.util.client.gui.ExtendedContainerScreen;
 import com.github.lehjr.numina.util.client.gui.clickable.TexturedButton;
 import com.github.lehjr.numina.util.client.gui.frame.InventoryFrame;
+import com.github.lehjr.numina.util.client.gui.frame.PlayerInventoryFrame;
 import com.github.lehjr.numina.util.client.gui.gemoetry.DrawableRelativeRect;
 import com.github.lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
 import com.github.lehjr.numina.util.client.sound.Musique;
@@ -45,7 +46,7 @@ public class NuminaCraftingGUI extends ExtendedContainerScreen<NuminaCraftingCon
     protected final Colour gridColour = new Colour(0.1F, 0.3F, 0.4F, 0.7F);
     protected final Colour gridBorderColour = Colour.LIGHT_BLUE.withAlpha(0.8F);
     protected final Colour gridBackGound = new Colour(0.545F, 0.545F, 0.545F, 1);
-    protected InventoryFrame mainInventory, hotbar;
+    protected PlayerInventoryFrame playerInventoryFrame;
     protected CraftingFrame craftingFrame;
     protected TexturedButton recipeBookButton;
     protected TabSelectFrame tabSelectFrame;
@@ -67,26 +68,26 @@ public class NuminaCraftingGUI extends ExtendedContainerScreen<NuminaCraftingCon
         addFrame(craftingFrame);
 
 
-        // slot 10-36
-        mainInventory = new InventoryFrame(container,
-                new MusePoint2D(0,0), new MusePoint2D(0, 0),
-                0,
-                gridBackGound, gridBorderColour, gridColour,
-
-                9, 3, new ArrayList<Integer>(){{
-            IntStream.range(10, 37).forEach(i-> add(i));
-        }});
-        addFrame(mainInventory);
-
-
-        hotbar = new InventoryFrame(container,
-                new MusePoint2D(0,0), new MusePoint2D(0, 0),
-                0,
-                gridBackGound, gridBorderColour, gridColour,
-                9, 1, new ArrayList<Integer>(){{
-            IntStream.range(37, 46).forEach(i-> add(i));
-        }});
-        addFrame(hotbar);
+//        // slot 10-36
+//        mainInventory = new InventoryFrame(container,
+//                new MusePoint2D(0,0), new MusePoint2D(0, 0),
+//                0,
+//                gridBackGound, gridBorderColour, gridColour,
+//
+//                9, 3, new ArrayList<Integer>(){{
+//            IntStream.range(10, 37).forEach(i-> add(i));
+//        }});
+//        addFrame(mainInventory);
+//
+//
+//        hotbar = new InventoryFrame(container,
+//                new MusePoint2D(0,0), new MusePoint2D(0, 0),
+//                0,
+//                gridBackGound, gridBorderColour, gridColour,
+//                9, 1, new ArrayList<Integer>(){{
+//            IntStream.range(37, 46).forEach(i-> add(i));
+//        }});
+//        addFrame(hotbar);
 
         recipeBookButton = new TexturedButton(
                 0, 0, 0, 0,

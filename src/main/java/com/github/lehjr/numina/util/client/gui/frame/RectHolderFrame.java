@@ -18,6 +18,12 @@ public abstract class RectHolderFrame<T extends IRect> extends GUISpacer {
     }
 
     @Override
+    public void initGrowth() {
+        super.initGrowth();
+        rect.initGrowth();
+    }
+
+    @Override
     public RelativeRect setTop(double value) {
         super.setTop(value);
         rect.setPosition(this.center());
@@ -30,8 +36,8 @@ public abstract class RectHolderFrame<T extends IRect> extends GUISpacer {
         rect.setPosition(this.center());
         return this;
     }
-
-    @Override
+    //rect with outer spacers width 196, height93, left 125, bottom 312, right 301, top 219, center (213, 265.5)
+    @Override // should be 176 wide, height is correct
     public RelativeRect setBottom(double value) {
         super.setBottom(value);
         rect.setPosition(this.center());
@@ -56,7 +62,7 @@ public abstract class RectHolderFrame<T extends IRect> extends GUISpacer {
     public abstract boolean mouseClicked(double mouseX, double mouseY, int button);
 
     @Override
-    public abstract void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks);
+    public abstract void render(MatrixStack matrixStack, int mouseX, int mouseY, float frameTime);
 
     @Override
     public abstract boolean mouseReleased(double mouseX, double mouseY, int button);

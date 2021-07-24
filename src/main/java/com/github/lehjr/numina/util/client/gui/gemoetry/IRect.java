@@ -44,15 +44,27 @@ public interface IRect {
 
     double left();
 
+    double finalLeft();
+
     double top();
+
+    double finalTop();
 
     double right();
 
+    double finalRight();
+
     double bottom();
+
+    double finalBottom();
 
     double width();
 
+    double finalWidth();
+
     double height();
+
+    double finalHeight();
 
     IRect setUL(MusePoint2D ul);
 

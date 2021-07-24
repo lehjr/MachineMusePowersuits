@@ -26,8 +26,10 @@
 
 package com.github.lehjr.numina.util.client.gui.frame;
 
+import com.github.lehjr.numina.util.client.gui.gemoetry.DrawableRelativeRect;
 import com.github.lehjr.numina.util.client.gui.gemoetry.DrawableTile;
 import com.github.lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
+import com.github.lehjr.numina.util.client.gui.gemoetry.RelativeRect;
 import com.github.lehjr.numina.util.client.gui.slot.IHideableSlot;
 import com.github.lehjr.numina.util.client.gui.slot.UniversalSlot;
 import com.github.lehjr.numina.util.math.Colour;
@@ -43,35 +45,49 @@ import java.util.List;
 
 public class InventoryFrame extends ScrollableFrame {
     Container container;
-    Colour backgroundColour;
     Colour gridColour;
     public final int gridWidth;
     public final int gridHeight;
     List<Integer> slotIndexes;
     List<DrawableTile> tiles;
+    MusePoint2D slot_ulShift = new MusePoint2D(0, 0);
     boolean drawBackground = false;
     boolean drawBorder = false;
     int slotWidth = 18;
     int slotHeight = 18;
 
+
     public InventoryFrame(Container containerIn,
-                          MusePoint2D topleft,
-                          MusePoint2D bottomright,
-                          float zLevel,
                           Colour backgroundColour,
                           Colour borderColour,
                           Colour gridColourIn,
                           int gridWidth,
                           int gridHeight,
                           List<Integer> slotIndexesIn) {
-        super(topleft, bottomright, zLevel, backgroundColour, borderColour);
+        super(backgroundColour, borderColour);
         this.container = containerIn;
-        this.backgroundColour = backgroundColour;
         this.gridColour = gridColourIn;
         this.gridWidth = gridWidth;
         this.gridHeight = gridHeight;
         this.slotIndexes = slotIndexesIn;
         this.tiles = new ArrayList<>();
+        super.setWidth(slotWidth * gridWidth).setHeight(slotHeight * gridHeight);
+        setUL(new MusePoint2D(0,0));
+    }
+
+    public DrawableRelativeRect setBackgroundColour(Colour backgroundColour) {
+        super.setBackgroundColour(backgroundColour);
+        return this;
+    }
+
+    public DrawableRelativeRect setBorderColour(Colour borderColour) {
+        super.setBorderColour(borderColour);
+        return null;
+    }
+
+    public DrawableRelativeRect setGridColour(Colour gridColour) {
+        this.gridColour = gridColour;
+        return this;
     }
 
     public void setDrawBackground(boolean drawBackground) {
@@ -83,8 +99,7 @@ public class InventoryFrame extends ScrollableFrame {
     }
 
     public void loadSlots() {
-        MusePoint2D wh = new MusePoint2D(slotWidth, slotHeight);
-        MusePoint2D ul = new MusePoint2D(left(), top());
+        MusePoint2D ul = new MusePoint2D(finalLeft(), finalTop());
         tiles = new ArrayList<>();
         int i = 0;
         outerLoop:
@@ -93,7 +108,7 @@ public class InventoryFrame extends ScrollableFrame {
                 if (i == slotIndexes.size()){
                     break outerLoop;
                 }
-                tiles.add(new DrawableTile(ul, ul.plus(wh)).setBorderShrinkValue(0.5F));
+                tiles.add(new DrawableTile(ul, ul.plus(new MusePoint2D(slotWidth, slotHeight))).setBorderShrinkValue(0.5F));
 
                 if (i > 0) {
                     if (col > 0) {
@@ -105,7 +120,7 @@ public class InventoryFrame extends ScrollableFrame {
                     }
                 }
 
-                MusePoint2D position = this.tiles.get(i).getUL();
+                MusePoint2D position = new MusePoint2D(this.tiles.get(i).finalLeft(), this.tiles.get(i).finalTop()).minus(slot_ulShift);
                 Slot slot = container.getSlot(slotIndexes.get(i));
                 if (slot instanceof UniversalSlot) {
                     ((UniversalSlot) slot).setPosition(position);
@@ -122,12 +137,22 @@ public class InventoryFrame extends ScrollableFrame {
 
     public InventoryFrame setSlotWidth(int slotWidthIn) {
         this.slotWidth = slotWidthIn;
+        setWH(new MusePoint2D(slotWidth, slotHeight));
         return this;
     }
 
     public InventoryFrame setSlotHeight(int slotHeightIn) {
         this.slotHeight = slotHeightIn;
+        setWH(new MusePoint2D(slotWidth, slotHeight));
         return this;
+    }
+
+    public int getSlotWidth() {
+        return this.slotWidth;
+    }
+
+    public int getSlotHeight() {
+        return this.gridHeight;
     }
 
     @Override
@@ -145,9 +170,17 @@ public class InventoryFrame extends ScrollableFrame {
         return false;
     }
 
+    public MusePoint2D getUlShift() {
+        return slot_ulShift;
+    }
+
+    public void setUlShift(MusePoint2D ulShift) {
+        this.slot_ulShift = ulShift;
+    }
+
     @Override
-    public void init(double left, double top, double right, double bottom) {
-        super.init(left, top, right, bottom);
+    public void initGrowth() {
+        super.initGrowth();
         loadSlots();
     }
 
@@ -160,10 +193,8 @@ public class InventoryFrame extends ScrollableFrame {
     @Override
     public void render(MatrixStack matrixStack, int mouseX, int mouseY, float frameTime) {
         FloatBuffer buffer = BufferUtils.createFloatBuffer(0);
-//        RenderSystem.disableDepthTest();
         if (drawBorder || drawBackground) {
             buffer = getVertices(3);
-            setzLevel(zLevel);
         }
         if (drawBackground) {
             drawBackground(matrixStack, buffer);
@@ -177,7 +208,6 @@ public class InventoryFrame extends ScrollableFrame {
         if (drawBorder) {
             drawBorder(matrixStack, buffer); // fixme
         }
-//        RenderSystem.enableDepthTest();
     }
 
     @Override

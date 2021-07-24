@@ -110,7 +110,10 @@ public class ClickableItem extends Clickable {
     }
 
     @Override
-    public List<ITextComponent> getToolTip() {
-        return getStack().getTooltipLines(Minecraft.getInstance().player, ITooltipFlag.TooltipFlags.NORMAL);
+    public List<ITextComponent> getToolTip(int x, int y) {
+        if (hitBox(x, y)) {
+            return getStack().getTooltipLines(Minecraft.getInstance().player, ITooltipFlag.TooltipFlags.NORMAL);
+        }
+        return null;
     }
 }

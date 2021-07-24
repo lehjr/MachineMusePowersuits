@@ -79,11 +79,6 @@ public class CheckBox extends Clickable {
         tile.setPosition(position);
     }
 
-    @Override
-    public List<ITextComponent> getToolTip() {
-        return null;
-    }
-
     public boolean isChecked() {
         return isChecked;
     }

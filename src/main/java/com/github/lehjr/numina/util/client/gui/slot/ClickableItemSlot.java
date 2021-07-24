@@ -85,8 +85,11 @@ public class ClickableItemSlot extends UniversalSlot implements IClickable {
     }
 
     @Override
-    public List<ITextComponent> getToolTip() {
-        return !getItem().isEmpty() ? getItem().getTooltipLines(Minecraft.getInstance().player, ITooltipFlag.TooltipFlags.NORMAL) : null;
+    public List<ITextComponent> getToolTip(int x, int y) {
+        if (hitBox(x, y)) {
+            return !getItem().isEmpty() ? getItem().getTooltipLines(Minecraft.getInstance().player, ITooltipFlag.TooltipFlags.NORMAL) : null;
+        }
+        return null;
     }
 
     @Override

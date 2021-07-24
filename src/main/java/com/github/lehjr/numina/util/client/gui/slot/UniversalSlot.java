@@ -258,7 +258,17 @@ public class UniversalSlot extends Slot implements IClickable {
     }
 
     @Override
+    public double finalLeft() {
+        return 0;
+    }
+
+    @Override
     public double top() {
+        return 0;
+    }
+
+    @Override
+    public double finalTop() {
         return 0;
     }
 
@@ -268,7 +278,17 @@ public class UniversalSlot extends Slot implements IClickable {
     }
 
     @Override
+    public double finalRight() {
+        return 0;
+    }
+
+    @Override
     public double bottom() {
+        return 0;
+    }
+
+    @Override
+    public double finalBottom() {
         return 0;
     }
 
@@ -278,7 +298,17 @@ public class UniversalSlot extends Slot implements IClickable {
     }
 
     @Override
+    public double finalWidth() {
+        return 0;
+    }
+
+    @Override
     public double height() {
+        return 0;
+    }
+
+    @Override
+    public double finalHeight() {
         return 0;
     }
 
@@ -332,11 +362,6 @@ public class UniversalSlot extends Slot implements IClickable {
         boolean hitx = Math.abs(x - position.getX()) < offsetx;
         boolean hity = Math.abs(y - position.getY()) < offsety;
         return hitx && hity;
-    }
-
-    @Override
-    public List<ITextComponent> getToolTip() {
-        return null;
     }
 
     @Override

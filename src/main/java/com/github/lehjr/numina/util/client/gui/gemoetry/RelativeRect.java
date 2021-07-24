@@ -82,6 +82,32 @@ public class RelativeRect implements IRect {
     }
 
     /**
+     * @return if there is a rectangle set above this one,
+     * returns the full grown bottom side of that
+     */
+    @Override
+    public double top() {
+        if (rectAboveMe != null) {
+            return rectAboveMe.bottom();
+        }
+        return ul.getY();
+    }
+
+    @Override
+    public double finalTop() {
+        if (rectAboveMe != null) {
+            return rectAboveMe.finalBottom();
+        }
+
+        // this should be the case unless not initialized yet
+        if (ul instanceof FlyFromPointToPoint2D) {
+            return ((FlyFromPointToPoint2D) ul).getFinalY();
+        }
+
+        return ul.getY();
+    }
+
+    /**
      * @return if there is a rectangle set left of this one,
      * returns the full grown right side of that plus padding
      */
@@ -93,16 +119,18 @@ public class RelativeRect implements IRect {
         return ul.getX();
     }
 
-    /**
-     * @return if there is a rectangle set above this one,
-     * returns the full grown bottom side of that plus padding
-     */
+
     @Override
-    public double top() {
-        if (rectAboveMe != null) {
-            return rectAboveMe.bottom();
+    public double finalLeft() {
+        if(rectLeftOfMe != null) {
+            return rectLeftOfMe.finalRight();
         }
-        return ul.getY();
+
+        // this should be the case unless not initialized yet
+        if (ul instanceof FlyFromPointToPoint2D) {
+            return ((FlyFromPointToPoint2D) ul).getFinalX();
+        }
+        return ul.getX();
     }
 
     /**
@@ -118,11 +146,27 @@ public class RelativeRect implements IRect {
     }
 
     @Override
+    public double finalRight() {
+        if (rectRightOfMe != null) {
+            return rectRightOfMe.finalLeft();
+        }
+        return finalLeft() + finalWidth();
+    }
+
+    @Override
     public double bottom() {
         if (rectBelowMe != null) {
             return rectBelowMe.top();
         }
-        return top() + wh.getY();
+        return top() + height();
+    }
+
+    @Override
+    public double finalBottom() {
+        if (rectBelowMe != null) {
+            return rectBelowMe.top();
+        }
+        return finalTop() + finalHeight();
     }
 
     @Override
@@ -141,8 +185,28 @@ public class RelativeRect implements IRect {
     }
 
     @Override
+    public double finalWidth() {
+        // this should be the case unless not initialized yet
+        if (wh instanceof FlyFromPointToPoint2D) {
+            return ((FlyFromPointToPoint2D) wh).getFinalX();
+        } else {
+            return wh.getX();
+        }
+    }
+
+    @Override
     public double height() {
         return wh.getY();
+    }
+
+    @Override
+    public double finalHeight() {
+        // this should be the case unless not initialized yet
+        if (wh instanceof FlyFromPointToPoint2D) {
+            return ((FlyFromPointToPoint2D) wh).getFinalY();
+        } else {
+            return wh.getY();
+        }
     }
 
     @Override
@@ -153,8 +217,7 @@ public class RelativeRect implements IRect {
 
     @Override
     public RelativeRect setRight(double value) {
-        wh.setX(value - ul.getX());
-        return this;
+        return setLeft(value - finalWidth());
     }
 
     @Override
@@ -165,8 +228,7 @@ public class RelativeRect implements IRect {
 
     @Override
     public RelativeRect setBottom(double value) {
-        wh.setY(value - ul.getY());
-        return this;
+        return setTop(value - finalHeight());
     }
 
     @Override
@@ -183,29 +245,19 @@ public class RelativeRect implements IRect {
 
     @Override
     public void move(MusePoint2D moveAmount) {
-        setPosition(getPosition().plus(moveAmount));
+        move(moveAmount.getX(), moveAmount.getY());
     }
 
     @Override
     public void move(double x, double y) {
-        move(new MusePoint2D(x, y));
+        ul.setX(finalLeft() + x);
+        ul.setY(finalTop() + y);
     }
 
     @Override
-    public void setPosition(MusePoint2D position) {
-        MusePoint2D ulFinal;
-        MusePoint2D whFinal;
-
-        // this should be the case unless not initialized yet
-        if (wh instanceof FlyFromPointToPoint2D) {
-            whFinal = ((FlyFromPointToPoint2D) wh).getFinalPoint();
-        } else {
-            whFinal = wh.copy();
-        }
-        ulFinal = position.minus(whFinal.times(0.5F));
-
-        ul.setX(ulFinal.getX());
-        ul.setY(ulFinal.getY());
+    public void setPosition(MusePoint2D positionIn) {
+        ul.setX(positionIn.getX() - finalWidth() * 0.5);
+        ul.setY(positionIn.getY() - finalHeight() * 0.5);
     }
 
     @Override

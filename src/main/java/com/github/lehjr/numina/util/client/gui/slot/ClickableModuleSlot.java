@@ -115,11 +115,14 @@ public class ClickableModuleSlot extends UniversalSlot implements IClickable {
     }
 
     @Override
-    public List<ITextComponent> getToolTip() {
-        List<ITextComponent> toolTipText = new ArrayList<>();
-        toolTipText.add(getLocalizedName());
-        toolTipText.addAll(MuseStringUtils.wrapITextComponentToLength(getLocalizedDescription(), 30));
-        return toolTipText;
+    public List<ITextComponent> getToolTip(int x, int y) {
+        if (hitBox(x, y)) {
+            List<ITextComponent> toolTipText = new ArrayList<>();
+            toolTipText.add(getLocalizedName());
+            toolTipText.addAll(MuseStringUtils.wrapITextComponentToLength(getLocalizedDescription(), 30));
+            return toolTipText;
+        }
+        return null;
     }
 
     @Override

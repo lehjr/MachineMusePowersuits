@@ -148,11 +148,6 @@ public class Button extends DrawableRelativeRect implements IClickable {
     }
 
     @Override
-    public List<ITextComponent> getToolTip() {
-        return null;
-    }
-
-    @Override
     public void setEnabled(boolean enabled) {
         this.isEnabled = enabled;
     }
