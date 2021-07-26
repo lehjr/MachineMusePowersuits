@@ -1,5 +1,7 @@
 package com.github.lehjr.numina.util.client.gui.frame;
 
+import com.github.lehjr.numina.config.ClientConfig;
+import com.github.lehjr.numina.config.NuminaSettings;
 import com.github.lehjr.numina.util.client.gui.gemoetry.DrawableRelativeRect;
 import com.github.lehjr.numina.util.client.gui.gemoetry.IDrawable;
 import com.github.lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
@@ -40,7 +42,9 @@ public class GUISpacer extends DrawableRelativeRect implements IGuiFrame {
 
     @Override
     public void render(MatrixStack matrixStack, int mouseX, int mouseY, float frameTime) {
-        super.render(matrixStack, mouseX, mouseY, frameTime);
+        if (NuminaSettings.CLIENT_CONFIG.DRAW_GUI_SPACERS.get()) {
+            super.render(matrixStack, mouseX, mouseY, frameTime);
+        }
     }
 
     @Override

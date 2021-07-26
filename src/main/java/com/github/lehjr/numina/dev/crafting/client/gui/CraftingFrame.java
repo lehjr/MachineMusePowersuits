@@ -1,5 +1,6 @@
 package com.github.lehjr.numina.dev.crafting.client.gui;
 
+import com.github.lehjr.numina.util.client.gui.IContainerULOffSet;
 import com.github.lehjr.numina.util.client.gui.clickable.ClickableArrow;
 import com.github.lehjr.numina.util.client.gui.clickable.IClickable;
 import com.github.lehjr.numina.util.client.gui.frame.GUISpacer;
@@ -27,14 +28,14 @@ public class CraftingFrame extends RelativeRect implements IGuiFrame {
     protected ClickableArrow arrow;
     List<IGuiFrame> frames = new ArrayList<>();
 
-    public CraftingFrame(Container container, int resultIndex, int craftStartIndex) {
+    public CraftingFrame(Container container, int resultIndex, int craftStartIndex, IContainerULOffSet.ulGetter ulGetter) {
         this(container, resultIndex, craftStartIndex,
                 new Colour(0.1F, 0.3F, 0.4F, 0.7F),
                 Colour.LIGHT_BLUE.withAlpha(0.8F),
-                new Colour(0.545F, 0.545F, 0.545F, 1));
+                new Colour(0.545F, 0.545F, 0.545F, 1), ulGetter);
     }
 
-    public CraftingFrame(Container container, int resultIndex, int craftStartIndex, Colour gridColourIn, Colour gridBorderColourIn, Colour gridBackGoundIn) {
+    public CraftingFrame(Container container, int resultIndex, int craftStartIndex, Colour gridColourIn, Colour gridBorderColourIn, Colour gridBackGoundIn, IContainerULOffSet.ulGetter ulGetter) {
         super(new MusePoint2D(0,0), new MusePoint2D(0, 0));
         super.setHeight(54);
         this.gridColour = gridColourIn;
@@ -92,7 +93,7 @@ spacer(30)
                 3,
                 new ArrayList<Integer>(){{
                     IntStream.range(craftStartIndex, craftStartIndex+9).forEach(i-> add(i));
-                }});
+                }}, ulGetter);
         craftingGrid.setWidth(54).setHeight(54);
         frames.add(craftingGrid);
         // total width 54
@@ -152,7 +153,7 @@ spacer(30)
                 1,
                 new ArrayList<Integer>(){{
                     IntStream.range(resultIndex, resultIndex+1).forEach(i-> add(i));
-                }}).setSlotWidth(24).setSlotHeight(24);
+                }}, ulGetter).setSlotWidth(24).setSlotHeight(24);
         resultFrame.setWidth(24).setHeight(24);
 
         RectHolderFrame spacer3 = new RectHolderFrame(resultFrame,24, 54) {

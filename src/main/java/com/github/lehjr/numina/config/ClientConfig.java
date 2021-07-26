@@ -35,10 +35,11 @@ public class ClientConfig {
             USE_FOV_NORMALIZE,
             FOV_FIX_DEAULT_STATE,
             USE_SOUNDS,
-            DEBUGGING_INFO;
+            DEBUGGING_INFO,
+            DRAW_GUI_SPACERS;
 
     ClientConfig(ForgeConfigSpec.Builder builder) {
-        builder.comment("General settings").push("General");
+        builder.comment("General Settings").push("General");
 
         USE_FOV_FIX = builder
                 .comment("Ignore speed boosts for field of view")
@@ -61,11 +62,17 @@ public class ClientConfig {
                 .translation(NuminaConstants.CONFIG_USE_SOUNDS)
                 .define("useSounds", true);
 
+        builder.pop();
+        builder.push("Development Settings");
         DEBUGGING_INFO = builder
                 .comment("Enable debugging info")
                 .translation(NuminaConstants.CONFIG_DEBUGGING_INFO)
                 .define("enableDebugging", false);
 
+        DRAW_GUI_SPACERS = builder
+                .comment("Draw spacers used in GUIs")
+                .translation(NuminaConstants.CONFIG_DEBUGGING_INFO)
+                .define("drawSpacers", false);
         builder.pop();
     }
 }

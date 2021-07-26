@@ -56,22 +56,23 @@ public interface IGuiFrame extends IDrawableRect {
      * @return true if mouse pointer is inside this frame and scroll is handled here, else false
      */
     boolean mouseScrolled(double mouseX, double mouseY, double dWheel);
-
-    /**
-     * Fired when gui init is fired, during the creation phase and on resize. Can be used to setup the frame
-     * including setting target dimensions.
-     *
-     * @param left
-     * @param top
-     * @param right
-     * @param bottom
-     */
-    default void init(double left, double top, double right, double bottom) {
-        setLeft(left);
-        setTop(top);
-        setWidth(right - left);
-        setHeight(bottom - top);
-    }
+//
+//    /**
+//     * Fired when gui init is fired, during the creation phase and on resize. Can be used to setup the frame
+//     * including setting target dimensions.
+//     *
+//     * @param left
+//     * @param top
+//     * @param right
+//     * @param bottom
+//     */
+//    default IGuiFrame init(double left, double top, double right, double bottom) {
+//        setLeft(left);
+//        setTop(top);
+//        setWidth(right - left);
+//        setHeight(bottom - top);
+//        return this;
+//    }
 
     /**
      * Miscellaneous functions required before rendering

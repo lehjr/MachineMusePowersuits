@@ -28,13 +28,12 @@ package com.github.lehjr.numina.client.gui;
 
 import com.github.lehjr.numina.container.ArmorStandContainer;
 import com.github.lehjr.numina.util.client.gui.ExtendedContainerScreen;
+import com.github.lehjr.numina.util.client.gui.IContainerULOffSet;
 import com.github.lehjr.numina.util.client.gui.frame.*;
-import com.github.lehjr.numina.util.client.gui.gemoetry.DrawableRelativeRect;
 import com.github.lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
 import com.github.lehjr.numina.util.math.Colour;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.item.ArmorStandEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -46,39 +45,22 @@ import java.util.List;
 import java.util.stream.IntStream;
 
 public class ArmorStandGui extends ExtendedContainerScreen<ArmorStandContainer> {
-    protected DrawableRelativeRect backgroundRect;
     InnerFrame innerFrame;
     int spacer = 7;
     ArmorStandEntity armorStandEntity;
 
     public ArmorStandGui(ArmorStandContainer containerIn, PlayerInventory inv, ITextComponent titleIn) {
-        super(containerIn, inv, titleIn);
-        innerFrame = new InnerFrame(containerIn);
+        super(containerIn, inv, titleIn, 176,  172);
+        innerFrame = new InnerFrame(containerIn, ulGetter());
         addFrame(innerFrame);
-
-        backgroundRect = new DrawableRelativeRect(0, 0, 0, 0, true,
-                Colour.GREY_GUI_BACKGROUND,
-                Colour.BLACK);
-
         this.armorStandEntity = containerIn.getArmorStandEntity();
     }
 
-    MusePoint2D getUlOffset () {
-        return new MusePoint2D(getGuiLeft() - 1, getGuiTop() - 1);
-    }
-
     @Override
-    public void init(Minecraft minecraft, int width, int height) { // fullscreen 480x272
-        super.init(minecraft, width, height);
-        backgroundRect
-                .setWidth(innerFrame.finalWidth())
-                .setHeight(innerFrame.finalHeight())
-                .setLeft(getGuiLeft())
-                .setTop(getGuiTop());
+    public void init() {
+        super.init();
         innerFrame.setPosition(backgroundRect.getPosition());
-        backgroundRect.initGrowth();
         innerFrame.initGrowth();
-        innerFrame.setULShift(getUlOffset());
         innerFrame.setPlayerEntity(getMinecraft().player);
         innerFrame.setArmorStandEntity(armorStandEntity);
         innerFrame.setGuiLeft(getGuiLeft());
@@ -86,9 +68,8 @@ public class ArmorStandGui extends ExtendedContainerScreen<ArmorStandContainer> 
     }
 
     @Override
-    public void renderBg(MatrixStack matrixStack, float frameTime, int x, int y) {
-        backgroundRect.render(matrixStack, x, y, frameTime);
-        super.renderBg(matrixStack, frameTime, x, y);
+    public void renderBg(MatrixStack matrixStack, float frameTime, int mouseX, int mouseY) {
+        super.renderBg(matrixStack, frameTime, mouseX, mouseY);
         RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
     }
 
@@ -103,11 +84,12 @@ public class ArmorStandGui extends ExtendedContainerScreen<ArmorStandContainer> 
 
     @Override
     public void renderLabels(MatrixStack matrixStack, int x, int y) {
+        this.font.draw(matrixStack, this.inventory.getDisplayName(), (float)this.inventoryLabelX, (float)this.inventoryLabelY + 8, 4210752);
     }
 
     class ArmorInventoryFrame extends InventoryFrame {
-        public ArmorInventoryFrame(Container containerIn, List<Integer> slotIndexesIn) {
-            super(containerIn, Colour.LIGHT_GREY, Colour.DARK_GREY, Colour.DARK_GREY, 1, 4, slotIndexesIn);
+        public ArmorInventoryFrame(Container containerIn, List<Integer> slotIndexesIn, IContainerULOffSet.ulGetter ulGetter) {
+            super(containerIn, Colour.LIGHT_GREY, Colour.DARK_GREY, Colour.DARK_GREY, 1, 4, slotIndexesIn, ulGetter);
         }
     }
 
@@ -117,7 +99,7 @@ public class ArmorStandGui extends ExtendedContainerScreen<ArmorStandContainer> 
         InventoryFrame playerShield, armorStandHands;
         protected PlayerInventoryFrame playerInventoryFrame;
 
-        public InnerFrame(Container containerIn) {
+        public InnerFrame(Container containerIn, IContainerULOffSet.ulGetter ulGetter) {
             super(false, true, 0, 0);
 
             /** Center box with player armor and both armor stand hand slots */
@@ -127,7 +109,7 @@ public class ArmorStandGui extends ExtendedContainerScreen<ArmorStandContainer> 
                     Colour.LIGHT_GREY, Colour.DARK_GREY, Colour.DARK_GREY,
                     1, 2, new ArrayList<Integer>(){{
                 IntStream.range(4, 6).forEach(i-> add(i));
-            }});
+            }}, ulGetter);
             centerFrame.addRect(armorStandHands);
             GUISpacer middleSpacer = new GUISpacer(18, 18);
             middleSpacer.setMeBelow(armorStandHands);
@@ -138,7 +120,7 @@ public class ArmorStandGui extends ExtendedContainerScreen<ArmorStandContainer> 
                     Colour.LIGHT_GREY, Colour.DARK_GREY, Colour.DARK_GREY,
                     1, 1, new ArrayList<Integer>(){{
                 IntStream.range(46, 47).forEach(i-> add(i));
-            }});
+            }}, ulGetter);
             playerShield.setMeBelow(middleSpacer);
             centerFrame.addRect(playerShield);
             centerFrame.doneAdding();
@@ -150,7 +132,7 @@ public class ArmorStandGui extends ExtendedContainerScreen<ArmorStandContainer> 
             playerArmor = new ArmorInventoryFrame(containerIn,
                     new ArrayList<Integer>(){{
                         IntStream.range(6, 10).forEach(i-> add(i));
-                    }});
+                    }}, ulGetter);
 
             GUISpacer leftSpacer = new GUISpacer(spacer, playerArmor.finalHeight());
             topHorizontalLayout.addRect(leftSpacer);
@@ -194,7 +176,7 @@ public class ArmorStandGui extends ExtendedContainerScreen<ArmorStandContainer> 
                     containerIn,
                     new ArrayList<Integer>(){{
                         IntStream.range(0, 4).forEach(i-> add(i));
-                    }}
+                    }}, ulGetter
             );
             armorStandArmor.setMeRightOf(rightSpacer2);
             topHorizontalLayout.addRect(armorStandArmor);
@@ -211,18 +193,10 @@ public class ArmorStandGui extends ExtendedContainerScreen<ArmorStandContainer> 
             topHorizontalLayout.setMeBelow(topSpacer);
             addRect(topHorizontalLayout);
 
-            playerInventoryFrame = new PlayerInventoryFrame(containerIn, 10, 37);
+            playerInventoryFrame = new PlayerInventoryFrame(containerIn, 10, 37, ulGetter);
             playerInventoryFrame.setMeBelow(topHorizontalLayout);
             addRect(playerInventoryFrame);
             doneAdding();
-        }
-
-        public void setULShift(MusePoint2D ulShift) {
-            playerArmor.setUlShift(ulShift);
-            armorStandArmor.setUlShift(ulShift);
-            playerShield.setUlShift(ulShift);
-            armorStandHands.setUlShift(ulShift);
-            playerInventoryFrame.setUlShift(ulShift);
         }
 
         public void setGuiLeft(double guiLeft) {

@@ -41,6 +41,7 @@ public class DrawableArrow extends RelativeRect implements IDrawableRect {
     boolean drawShaft = true;
     ArrowDirection facing = ArrowDirection.RIGHT;
     boolean shrinkBorder = true;
+    boolean drawBorer = true;
 
     public DrawableArrow(float left, float top, float right, float bottom, boolean growFromMiddle,
                          Colour backgroundColour,
@@ -92,6 +93,10 @@ public class DrawableArrow extends RelativeRect implements IDrawableRect {
 
     public void setDrawShaft(boolean drawShaft) {
         this.drawShaft = drawShaft;
+    }
+
+    public void setDrawBorer(boolean drawBorer) {
+        this.drawBorer = drawBorer;
     }
 
     /**
@@ -361,26 +366,28 @@ public class DrawableArrow extends RelativeRect implements IDrawableRect {
     }
 
     void drawBorder(MatrixStack matrixStack) {
-        FloatBuffer vertices = BufferUtils.createFloatBuffer(6 + (drawShaft ? 8 : 0));
-        preDraw(GL11.GL_LINE_LOOP, DefaultVertexFormats.POSITION_COLOR);
-        Matrix4f matrix4f  = matrixStack.last().pose();
+        if (drawBorer) {
+            FloatBuffer vertices = BufferUtils.createFloatBuffer(6 + (drawShaft ? 8 : 0));
+            preDraw(GL11.GL_LINE_LOOP, DefaultVertexFormats.POSITION_COLOR);
+            Matrix4f matrix4f = matrixStack.last().pose();
 
-        getVertexA(shrinkBorder ? 2 : 0, vertices);
-        getVertexB(shrinkBorder ? 2 : 0, vertices);
-        if (drawShaft) {
-            getVertexC(shrinkBorder ? 2 : 0, vertices);
-            getVertexD(shrinkBorder ? 2 : 0, vertices);
-            getVertexE(shrinkBorder ? 2 : 0, vertices);
-            getVertexF(shrinkBorder ? 2 : 0, vertices);
+            getVertexA(shrinkBorder ? 2 : 0, vertices);
+            getVertexB(shrinkBorder ? 2 : 0, vertices);
+            if (drawShaft) {
+                getVertexC(shrinkBorder ? 2 : 0, vertices);
+                getVertexD(shrinkBorder ? 2 : 0, vertices);
+                getVertexE(shrinkBorder ? 2 : 0, vertices);
+                getVertexF(shrinkBorder ? 2 : 0, vertices);
+            }
+            getVertexG(shrinkBorder ? 2 : 0, vertices);
+
+            vertices.flip();
+            vertices.rewind();
+            addVerticesToBuffer(matrix4f, vertices, borderColour);
+            drawTesselator();
+
+            postDraw();
         }
-        getVertexG(shrinkBorder ? 2 : 0, vertices);
-
-        vertices.flip();
-        vertices.rewind();
-        addVerticesToBuffer(matrix4f, vertices, borderColour);
-        drawTesselator();
-
-        postDraw();
     }
 
     float zLevel;

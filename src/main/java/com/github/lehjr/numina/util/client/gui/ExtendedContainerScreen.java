@@ -26,23 +26,33 @@
 
 package com.github.lehjr.numina.util.client.gui;
 
+import com.github.lehjr.numina.util.capabilities.module.powermodule.IConfig;
 import com.github.lehjr.numina.util.client.gui.frame.IGuiFrame;
 import com.github.lehjr.numina.util.client.gui.gemoetry.DrawableRelativeRect;
+import com.github.lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
+import com.github.lehjr.numina.util.client.gui.gemoetry.RelativeRect;
 import com.github.lehjr.numina.util.math.Colour;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.function.Function;
 
 public class ExtendedContainerScreen<T extends Container> extends ContainerScreen<T> {
     protected long creationTime;
     protected DrawableRelativeRect tooltipRect;
+    /** The outer gui rectangle */
+    protected DrawableRelativeRect backgroundRect;
     private List<IGuiFrame> frames;
+
 
     public ExtendedContainerScreen(T screenContainer, PlayerInventory inv, ITextComponent titleIn) {
         super(screenContainer, inv, titleIn);
@@ -52,7 +62,39 @@ public class ExtendedContainerScreen<T extends Container> extends ContainerScree
                 false,
                 Colour.BLACK.withAlpha(0.9F),
                 Colour.PURPLE);
+        backgroundRect = new DrawableRelativeRect(0, 0, 0, 0, true, Colour.GREY_GUI_BACKGROUND, Colour.BLACK);
         this.minecraft = Minecraft.getInstance();
+    }
+
+    public IContainerULOffSet.ulGetter ulGetter() {
+        return new IContainerULOffSet.ulGetter() {
+            @Override
+            public MusePoint2D getULShift(IContainerULOffSet frame) {
+                return getUlOffset();
+            }
+        };
+    }
+
+    MusePoint2D getUlOffset () {
+        return new MusePoint2D(getGuiLeft(), getGuiTop());
+    }
+
+    /**
+     *
+     * @param screenContainer
+     * @param inv
+     * @param titleIn
+     * @param guiWidth sets the "imageWidth" parameter to determine the
+     * @param guiHeight
+     */
+    public ExtendedContainerScreen(T screenContainer, PlayerInventory inv, ITextComponent titleIn, int guiWidth, int guiHeight) {
+        this(screenContainer, inv, titleIn);
+        this.imageWidth = guiWidth;
+        this.imageHeight = guiHeight;
+    }
+
+    public void renderBackgroundRect(MatrixStack matrixStack, int mouseX, int mouseY, float frameTime) {
+        backgroundRect.render(matrixStack, mouseX, mouseY, frameTime);
     }
 
     @Override
@@ -65,6 +107,12 @@ public class ExtendedContainerScreen<T extends Container> extends ContainerScree
         super.init();
         minecraft.keyboardHandler.setSendRepeatsToGui(true);
         creationTime = System.currentTimeMillis();
+        backgroundRect.init(absX(-1), absY(-1), absX(1), absY(1));
+
+        System.out.println("containerBG: \n" + backgroundRect.toString());
+
+        System.out.println(new RelativeRect(absX(-1), absY(-1), absX(1), absY(1)));
+
     }
 
     /**
@@ -79,14 +127,15 @@ public class ExtendedContainerScreen<T extends Container> extends ContainerScree
     /**
      * inherited from ContainerScreen..
      * @param matrixStack
-     * @param partialTicks
-     * @param x
-     * @param y
+     * @param frameTime
+     * @param mouseX
+     * @param mouseY
      */
     @Override
-    public void renderBg(MatrixStack matrixStack, float partialTicks, int x, int y) {
-        update(x, y);
-        renderFrames(matrixStack, x, y, partialTicks);
+    public void renderBg(MatrixStack matrixStack, float frameTime, int mouseX, int mouseY) {
+        renderBackgroundRect(matrixStack, mouseX, mouseY , frameTime);
+        update(mouseX, mouseY);
+        renderFrames(matrixStack, mouseX, mouseY, frameTime);
     }
 
     public void update(double x, double y) {
@@ -165,6 +214,10 @@ public class ExtendedContainerScreen<T extends Container> extends ContainerScree
     public void setYSize(int ySize) {
         this.imageHeight = ySize;
         this.topPos = (this.height - getYSize()) / 2;
+    }
+
+    public MusePoint2D center() {
+        return new MusePoint2D(getGuiLeft(), getGuiTop()).plus(getXSize() * 0.5, getYSize() * 0.5);
     }
 
     /**

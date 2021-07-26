@@ -123,10 +123,10 @@ public class TabSelectFrame extends ScrollableFrame {
         return this;
     }
 
-    @Override
-    public void init(double left, double top, double right, double bottom) {
-        super.init(left, top, right, bottom);
-    }
+//    @Override
+//    public void init(double left, double top, double right, double bottom) {
+//        super.init(left, top, right, bottom);
+//    }
 
     @Override
     public boolean mouseClicked(double x, double y, int button) {

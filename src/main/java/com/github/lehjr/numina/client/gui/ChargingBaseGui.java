@@ -75,16 +75,13 @@ public class ChargingBaseGui extends ExtendedContainerScreen<ChargingBaseContain
                 Colour.LIGHT_GREY, Colour.DARK_GREY, Colour.BLACK,
                 1, 1, new ArrayList<Integer>(){{
             IntStream.range(0, 1).forEach(i-> add(i));
-        }});
+        }}, ulGetter());
         addFrame(batterySlot);
 
-        playerInventoryFrame = new PlayerInventoryFrame(container, 1, 28);
+        playerInventoryFrame = new PlayerInventoryFrame(container, 1, 28, ulGetter());
         addFrame(playerInventoryFrame);
     }
 
-    MusePoint2D getUlOffset () {
-        return new MusePoint2D(leftPos + 8, topPos + 8);
-    }
     @Override
     public void init(Minecraft minecraft, int width, int height) {
         super.init(minecraft, width, height);
@@ -151,9 +148,9 @@ public class ChargingBaseGui extends ExtendedContainerScreen<ChargingBaseContain
     }
 
     @Override
-    public void renderBg(MatrixStack matrixStack, float frameTime, int x, int y) {
-        backgroundRect.render(matrixStack, x, y, frameTime);
-        super.renderBg(matrixStack, frameTime, x, y);
+    public void renderBg(MatrixStack matrixStack, float frameTime, int mouseX, int mouseY) {
+        backgroundRect.render(matrixStack, mouseX, mouseY, frameTime);
+        super.renderBg(matrixStack, frameTime, mouseX, mouseY);
         System.out.println("fixme!!!");
 
 //        energyMeter.draw(matrixStack, (float) batterySlot.centerx() - 16,

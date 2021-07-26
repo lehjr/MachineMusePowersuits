@@ -68,6 +68,17 @@ public class RelativeRect implements IRect {
     }
 
     @Override
+    public RelativeRect init(double left, double top, double right, double bottom) {
+        this.ul.setX(left);
+        this.ul.setY(top);
+        this.wh.setX(right - left);
+        this.wh.setY(bottom - top);
+        initGrowth();
+        return this;
+    }
+
+
+    @Override
     public RelativeRect setUL(MusePoint2D ul) {
         this.ul.setX(ul.getX());
         this.ul.setY(ul.getY());
@@ -349,12 +360,24 @@ public class RelativeRect implements IRect {
         StringBuilder stringbuilder = new StringBuilder();
         stringbuilder.append(this.getClass()).append(":\n");
         stringbuilder.append("Center: ").append(center()).append("\n");
+
         stringbuilder.append("Left: ").append(left()).append("\n");
+        stringbuilder.append("Final Left: ").append(finalLeft()).append("\n");
+
         stringbuilder.append("Right: ").append(right()).append("\n");
+        stringbuilder.append("Final Right: ").append(finalRight()).append("\n");
+
         stringbuilder.append("Bottom: ").append(bottom()).append("\n");
+        stringbuilder.append("Final Bottom: ").append(finalBottom()).append("\n");
+
         stringbuilder.append("Top: ").append(top()).append("\n");
+        stringbuilder.append("Final Top: ").append(finalTop()).append("\n");
+
         stringbuilder.append("Width: ").append(width()).append("\n");
+        stringbuilder.append("Final Width: ").append(finalWidth()).append("\n");
+
         stringbuilder.append("Height: ").append(height()).append("\n");
+        stringbuilder.append("Final Height: ").append(finalHeight()).append("\n");
         return stringbuilder.toString();
     }
 }

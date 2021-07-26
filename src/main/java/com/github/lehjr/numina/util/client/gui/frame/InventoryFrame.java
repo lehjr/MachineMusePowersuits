@@ -26,10 +26,13 @@
 
 package com.github.lehjr.numina.util.client.gui.frame;
 
+import com.github.lehjr.numina.config.ModuleConfig;
+import com.github.lehjr.numina.constants.NuminaConstants;
+import com.github.lehjr.numina.util.client.gui.IContainerULOffSet;
+import com.github.lehjr.numina.util.client.gui.clickable.IClickable;
 import com.github.lehjr.numina.util.client.gui.gemoetry.DrawableRelativeRect;
 import com.github.lehjr.numina.util.client.gui.gemoetry.DrawableTile;
 import com.github.lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
-import com.github.lehjr.numina.util.client.gui.gemoetry.RelativeRect;
 import com.github.lehjr.numina.util.client.gui.slot.IHideableSlot;
 import com.github.lehjr.numina.util.client.gui.slot.UniversalSlot;
 import com.github.lehjr.numina.util.math.Colour;
@@ -37,13 +40,20 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.common.util.NonNullLazy;
 import org.lwjgl.BufferUtils;
 
+import javax.annotation.Nonnull;
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.concurrent.Callable;
 
-public class InventoryFrame extends ScrollableFrame {
+public class InventoryFrame extends ScrollableFrame implements IContainerULOffSet {
+    IContainerULOffSet.ulGetter ulGetter;
     Container container;
     Colour gridColour;
     public final int gridWidth;
@@ -56,15 +66,16 @@ public class InventoryFrame extends ScrollableFrame {
     int slotWidth = 18;
     int slotHeight = 18;
 
-
     public InventoryFrame(Container containerIn,
                           Colour backgroundColour,
                           Colour borderColour,
                           Colour gridColourIn,
                           int gridWidth,
                           int gridHeight,
-                          List<Integer> slotIndexesIn) {
+                          List<Integer> slotIndexesIn,
+                          IContainerULOffSet.ulGetter ulGetter) {
         super(backgroundColour, borderColour);
+        this.ulGetter = ulGetter;
         this.container = containerIn;
         this.gridColour = gridColourIn;
         this.gridWidth = gridWidth;
@@ -99,6 +110,8 @@ public class InventoryFrame extends ScrollableFrame {
     }
 
     public void loadSlots() {
+        this.slot_ulShift = getULShift(this);
+
         MusePoint2D ul = new MusePoint2D(finalLeft(), finalTop());
         tiles = new ArrayList<>();
         int i = 0;
@@ -170,14 +183,6 @@ public class InventoryFrame extends ScrollableFrame {
         return false;
     }
 
-    public MusePoint2D getUlShift() {
-        return slot_ulShift;
-    }
-
-    public void setUlShift(MusePoint2D ulShift) {
-        this.slot_ulShift = ulShift;
-    }
-
     @Override
     public void initGrowth() {
         super.initGrowth();
@@ -213,5 +218,26 @@ public class InventoryFrame extends ScrollableFrame {
     @Override
     public List<ITextComponent> getToolTip(int i, int i1) {
         return null;
+    }
+
+    @Override
+    public void setULGetter(IContainerULOffSet.ulGetter ulGetter) {
+        this.ulGetter = ulGetter;
+    }
+
+    /**
+     * returns the offset needed to compensate for the container GUI in the super class rendering the slots with an offset.
+     * Also compensates for slot render sizes larger than vanilla
+     * @param frame
+     * @return
+     */
+    @Override
+    public MusePoint2D getULShift(IContainerULOffSet frame) {
+        int offset = 16; // default vanilla slot size
+
+        if (ulGetter == null) {
+            return new MusePoint2D(0, 0).plus((offset - slotWidth) * 0.5, (offset - slotHeight) * 0.5);
+        }
+        return ulGetter.getULShift(frame).plus((offset - slotWidth) * 0.5, (offset - slotHeight) * 0.5);
     }
 }

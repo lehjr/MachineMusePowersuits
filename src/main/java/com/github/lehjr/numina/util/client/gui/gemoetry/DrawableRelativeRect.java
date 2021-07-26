@@ -280,14 +280,7 @@ public class DrawableRelativeRect extends RelativeRect implements IDrawableRect 
     @Override
     public String toString() {
         StringBuilder stringbuilder = new StringBuilder();
-        stringbuilder.append(this.getClass()).append(":\n");
-        stringbuilder.append("Center: ").append(center()).append("\n");
-        stringbuilder.append("Left: ").append(left()).append("\n");
-        stringbuilder.append("Right: ").append(right()).append("\n");
-        stringbuilder.append("Bottom: ").append(bottom()).append("\n");
-        stringbuilder.append("Top: ").append(top()).append("\n");
-        stringbuilder.append("Width: ").append(width()).append("\n");
-        stringbuilder.append("Height: ").append(height()).append("\n");
+        stringbuilder.append(super.toString());
         stringbuilder.append("Background Colour: ").append(backgroundColour.toString()).append("\n");
         stringbuilder.append("Background Colour 2: ").append(backgroundColour2 == null? "null" : backgroundColour2.toString()).append("\n");
         stringbuilder.append("Border Colour: ").append(borderColour.toString()).append("\n");

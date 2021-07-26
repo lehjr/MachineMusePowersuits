@@ -2,6 +2,7 @@ package com.github.lehjr.numina.util.client.gui.frame;
 
 import com.github.lehjr.numina.util.client.gui.gemoetry.IRect;
 import com.github.lehjr.numina.util.client.gui.gemoetry.RelativeRect;
+import com.github.lehjr.numina.util.math.Colour;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.util.text.ITextComponent;
 
@@ -15,6 +16,8 @@ public abstract class RectHolderFrame<T extends IRect> extends GUISpacer {
     public RectHolderFrame(T rect, double widthIn, double heightIn) {
         super(widthIn, heightIn);
         this.rect = rect;
+        this.setBackgroundColour(Colour.YELLOW);
+        this.setBorderColour(Colour.RED);
     }
 
     @Override
@@ -60,9 +63,6 @@ public abstract class RectHolderFrame<T extends IRect> extends GUISpacer {
 
     @Override
     public abstract boolean mouseClicked(double mouseX, double mouseY, int button);
-
-    @Override
-    public abstract void render(MatrixStack matrixStack, int mouseX, int mouseY, float frameTime);
 
     @Override
     public abstract boolean mouseReleased(double mouseX, double mouseY, int button);

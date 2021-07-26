@@ -26,7 +26,6 @@
 
 package com.github.lehjr.numina.util.client.gui.gemoetry;
 
-import com.github.lehjr.numina.util.client.gui.clickable.IClickable;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -36,6 +35,14 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public interface IRect {
     default MusePoint2D center() {
         return new MusePoint2D(centerx(), centery());
+    }
+
+    default IRect init(double left, double top, double right, double bottom) {
+        setLeft(left);
+        setTop(top);
+        setWidth(right -left);
+        setHeight(bottom - top);
+        return this;
     }
 
     MusePoint2D getUL();
@@ -108,16 +115,13 @@ public interface IRect {
 
     default boolean doneGrowing() {
         if (growFromMiddle()) {
-            if (getUL() instanceof FlyFromPointToPoint2D) {
-                if (((FlyFromPointToPoint2D) getUL()).doneFlying()) {
-                    return true;
-                }
+            if (getUL() instanceof FlyFromPointToPoint2D && ((FlyFromPointToPoint2D) getUL()).doneFlying()) {
+                return true;
             }
-            if (getWH() instanceof FlyFromPointToPoint2D) {
-                if (((FlyFromPointToPoint2D) getWH()).doneFlying()) {
-                    return true;
-                }
+            if (getWH() instanceof FlyFromPointToPoint2D && ((FlyFromPointToPoint2D) getWH()).doneFlying()) {
+                return true;
             }
+            return false;
         }
         return true;
     }
@@ -125,7 +129,7 @@ public interface IRect {
     /**
      * Call ONCE to initialize growth of IRect
      */
-   void initGrowth();
+    void initGrowth();
 
     IRect setMeLeftof(RelativeRect otherRightOfMe);
 
