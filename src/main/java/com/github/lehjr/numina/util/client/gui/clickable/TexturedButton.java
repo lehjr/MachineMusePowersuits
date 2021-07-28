@@ -136,7 +136,7 @@ public class TexturedButton extends Button {
             color = Colour.RED.withAlpha(0.6F);
         }
 
-        GuiIcon.renderTextureWithColour(this.textureLocation, matrixStack, left(), right(), top(), bottom(), getBlitOffset(),
+        GuiIcon.renderTextureWithColour(this.textureLocation, matrixStack, left(), right(), top(), bottom(), getZLevel(),
         iconWidth, iconHeight, texStartX, texStartY, textureWidth, textureHeight, color);
 
     }

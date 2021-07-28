@@ -26,7 +26,6 @@
 
 package com.github.lehjr.numina.util.client.gui;
 
-import com.github.lehjr.numina.util.capabilities.module.powermodule.IConfig;
 import com.github.lehjr.numina.util.client.gui.frame.IGuiFrame;
 import com.github.lehjr.numina.util.client.gui.gemoetry.DrawableRelativeRect;
 import com.github.lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
@@ -35,16 +34,12 @@ import com.github.lehjr.numina.util.math.Colour;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Callable;
-import java.util.function.Function;
 
 public class ExtendedContainerScreen<T extends Container> extends ContainerScreen<T> {
     protected long creationTime;
@@ -108,11 +103,6 @@ public class ExtendedContainerScreen<T extends Container> extends ContainerScree
         minecraft.keyboardHandler.setSendRepeatsToGui(true);
         creationTime = System.currentTimeMillis();
         backgroundRect.init(absX(-1), absY(-1), absX(1), absY(1));
-
-        System.out.println("containerBG: \n" + backgroundRect.toString());
-
-        System.out.println(new RelativeRect(absX(-1), absY(-1), absX(1), absY(1)));
-
     }
 
     /**

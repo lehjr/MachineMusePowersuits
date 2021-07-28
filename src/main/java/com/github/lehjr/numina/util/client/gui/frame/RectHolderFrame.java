@@ -1,5 +1,6 @@
 package com.github.lehjr.numina.util.client.gui.frame;
 
+import com.github.lehjr.numina.util.client.gui.gemoetry.IDrawable;
 import com.github.lehjr.numina.util.client.gui.gemoetry.IRect;
 import com.github.lehjr.numina.util.client.gui.gemoetry.RelativeRect;
 import com.github.lehjr.numina.util.math.Colour;
@@ -39,8 +40,8 @@ public abstract class RectHolderFrame<T extends IRect> extends GUISpacer {
         rect.setPosition(this.center());
         return this;
     }
-    //rect with outer spacers width 196, height93, left 125, bottom 312, right 301, top 219, center (213, 265.5)
-    @Override // should be 176 wide, height is correct
+
+    @Override
     public RelativeRect setBottom(double value) {
         super.setBottom(value);
         rect.setPosition(this.center());
@@ -58,6 +59,14 @@ public abstract class RectHolderFrame<T extends IRect> extends GUISpacer {
     public void update(double mouseX, double mouseY) {
         if (rect instanceof IGuiFrame) {
             ((IGuiFrame) rect).update(mouseX, mouseY);
+        }
+    }
+
+    @Override
+    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float frameTime) {
+        super.render(matrixStack, mouseX, mouseY, frameTime);
+        if (rect instanceof IDrawable) {
+            ((IDrawable) rect).render(matrixStack, mouseX, mouseY, frameTime);
         }
     }
 

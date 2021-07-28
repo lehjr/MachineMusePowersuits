@@ -91,12 +91,12 @@ public class DrawableRelativeRect extends RelativeRect implements IDrawableRect 
     }
 
     @Override
-    public float getBlitOffset() {
+    public float getZLevel() {
         return this.zLevel;
     }
 
     @Override
-    public IDrawable setBlitOffset(float zLevelIn) {
+    public IDrawable setZLevel(float zLevelIn) {
         zLevel = zLevelIn;
         return this;
     }

@@ -29,9 +29,6 @@ package com.github.lehjr.numina.util.client.gui.clickable;
 import com.github.lehjr.numina.util.client.gui.gemoetry.IDrawable;
 import com.github.lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
 import com.github.lehjr.numina.util.client.gui.gemoetry.RelativeRect;
-import net.minecraft.util.text.ITextComponent;
-
-import java.util.List;
 
 /**
  * Defines a generic clickable itemStack for a MuseGui.
@@ -55,12 +52,12 @@ public abstract class Clickable extends RelativeRect implements IClickable {
     }
 
     @Override
-    public float getBlitOffset() {
+    public float getZLevel() {
         return blitOffset;
     }
 
     @Override
-    public IDrawable setBlitOffset(float zLevel) {
+    public IDrawable setZLevel(float zLevel) {
         this.blitOffset = zLevel;
         return this;
     }

@@ -1,6 +1,5 @@
 package com.github.lehjr.numina.util.client.gui.frame;
 
-import com.github.lehjr.numina.config.ClientConfig;
 import com.github.lehjr.numina.config.NuminaSettings;
 import com.github.lehjr.numina.util.client.gui.gemoetry.DrawableRelativeRect;
 import com.github.lehjr.numina.util.client.gui.gemoetry.IDrawable;
@@ -73,12 +72,12 @@ public class GUISpacer extends DrawableRelativeRect implements IGuiFrame {
     }
 
     @Override
-    public float getBlitOffset() {
+    public float getZLevel() {
         return 0;
     }
 
     @Override
-    public IDrawable setBlitOffset(float zLevel) {
+    public IDrawable setZLevel(float zLevel) {
         return this;
     }
 

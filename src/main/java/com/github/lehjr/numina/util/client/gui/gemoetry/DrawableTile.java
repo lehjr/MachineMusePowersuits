@@ -207,12 +207,12 @@ public class DrawableTile extends RelativeRect implements IDrawableRect {
     }
 
     @Override
-    public float getBlitOffset() {
+    public float getZLevel() {
         return zLevel;
     }
 
     @Override
-    public IDrawable setBlitOffset(float zLevelIn) {
+    public IDrawable setZLevel(float zLevelIn) {
         this.zLevel = zLevelIn;
         return this;
     }

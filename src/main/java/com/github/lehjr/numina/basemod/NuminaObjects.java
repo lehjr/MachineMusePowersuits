@@ -31,7 +31,6 @@ import com.github.lehjr.numina.client.render.item.NuminaArmorStandItemRenderer;
 import com.github.lehjr.numina.constants.NuminaConstants;
 import com.github.lehjr.numina.container.ArmorStandContainer;
 import com.github.lehjr.numina.container.ChargingBaseContainer;
-import com.github.lehjr.numina.dev.crafting.container.NuminaCraftingContainer;
 import com.github.lehjr.numina.entity.NuminaArmorStandEntity;
 import com.github.lehjr.numina.item.Battery;
 import com.github.lehjr.numina.item.ItemComponent;
@@ -194,12 +193,6 @@ public class NuminaObjects {
         World world = inv.player.level;
         return new ChargingBaseContainer(windowId, world, pos, inv, inv.player);
     }));
-
-    public static final RegistryObject<ContainerType<NuminaCraftingContainer>> NUMINA_CRAFTING_CONTAINER_TYPE = CONTAINER_TYPES.register("crafting_container",
-            () -> IForgeContainerType.create((windowId, inv, data) -> {
-//        BlockPos pos = data.readBlockPos();
-                return new NuminaCraftingContainer(windowId, inv);
-            }));
 
     /** Container background icons */
     public static final Map<EquipmentSlotType, ResourceLocation> ARMOR_SLOT_TEXTURES = new HashMap<EquipmentSlotType, ResourceLocation>(){{

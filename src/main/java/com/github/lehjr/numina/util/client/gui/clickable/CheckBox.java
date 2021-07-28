@@ -34,9 +34,6 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.SimpleSound;
 import net.minecraft.util.SoundEvents;
-import net.minecraft.util.text.ITextComponent;
-
-import java.util.List;
 
 public class CheckBox extends Clickable {
     protected boolean isChecked;

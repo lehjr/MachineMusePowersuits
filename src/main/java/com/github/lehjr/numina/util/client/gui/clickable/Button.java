@@ -31,9 +31,6 @@ import com.github.lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
 import com.github.lehjr.numina.util.client.gui.gemoetry.RelativeRect;
 import com.github.lehjr.numina.util.math.Colour;
 import com.mojang.blaze3d.matrix.MatrixStack;
-import net.minecraft.util.text.ITextComponent;
-
-import java.util.List;
 
 public class Button extends DrawableRelativeRect implements IClickable {
     protected IPressable onPressed;

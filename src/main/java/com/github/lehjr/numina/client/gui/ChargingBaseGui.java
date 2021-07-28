@@ -46,8 +46,6 @@ import java.util.ArrayList;
 import java.util.stream.IntStream;
 
 public class ChargingBaseGui extends ExtendedContainerScreen<ChargingBaseContainer> {
-    /** The outer green rectangle */
-    protected DrawableRelativeRect backgroundRect;
     protected InventoryFrame batterySlot;
     PlayerInventoryFrame playerInventoryFrame;
 
@@ -64,15 +62,10 @@ public class ChargingBaseGui extends ExtendedContainerScreen<ChargingBaseContain
      */
     public ChargingBaseGui(ChargingBaseContainer container, PlayerInventory inv, ITextComponent titleIn) {
         super(container, inv, titleIn);
-        backgroundRect = new DrawableRelativeRect(0, 0, 0, 0, true,
-                Colour.GREY_GUI_BACKGROUND,
-//                Colour.LIGHT_GREY,
-                Colour.BLACK);
         energyMeter = new EnergyMeter();
 
         // slot 0
         batterySlot = new InventoryFrame(container,
-                Colour.LIGHT_GREY, Colour.DARK_GREY, Colour.BLACK,
                 1, 1, new ArrayList<Integer>(){{
             IntStream.range(0, 1).forEach(i-> add(i));
         }}, ulGetter());
@@ -85,39 +78,10 @@ public class ChargingBaseGui extends ExtendedContainerScreen<ChargingBaseContain
     @Override
     public void init(Minecraft minecraft, int width, int height) {
         super.init(minecraft, width, height);
-        backgroundRect.setLeft(getGuiLeft());
-        backgroundRect.setTop(getGuiTop());
-        backgroundRect.setWidth(getXSize());
-        backgroundRect.setHeight(getYSize());
-        backgroundRect.initGrowth();
-
         playerInventoryFrame.setLeft(getGuiLeft());
         playerInventoryFrame.setBottom(getGuiTop() + getYSize());
-
-        System.out.println("fixme!!!");
-
-//        batterySlot.init(
-//                backgroundRect.centerx() - (slotWidth * 0.5),
-//                backgroundRect.finalTop() + 30,
-//                backgroundRect.centerx() + (slotWidth * 0.5),
-//                backgroundRect.finalTop() + 30 + slotHeight);
-//        batterySlot.setzLevel(1);
-//
-//        hotbar.setUlShift(getUlOffset());
-//        hotbar.init(
-//                backgroundRect.finalLeft() + spacer,
-//                backgroundRect.finalBottom() - spacer - slotHeight,
-//                backgroundRect.finalLeft() + spacer + 9 * slotWidth,
-//                backgroundRect.finalBottom() - spacer);
-//        hotbar.setzLevel(1);
-//
-//        items.setUlShift(getUlOffset());
-//        items.init(
-//                backgroundRect.finalLeft() + spacer,
-//                backgroundRect.finalBottom() - spacer - slotHeight - 3.25F - 3 * slotHeight,
-//                backgroundRect.finalLeft() + spacer + 9 * slotWidth,
-//                backgroundRect.finalBottom() - spacer - slotHeight - 3.25F);
-//        items.setzLevel(1);
+        batterySlot.setPosition(new MusePoint2D(backgroundRect.centerx(), backgroundRect.finalTop() + 30));
+        batterySlot.initGrowth();
     }
 
     @Override
@@ -149,14 +113,12 @@ public class ChargingBaseGui extends ExtendedContainerScreen<ChargingBaseContain
 
     @Override
     public void renderBg(MatrixStack matrixStack, float frameTime, int mouseX, int mouseY) {
-        backgroundRect.render(matrixStack, mouseX, mouseY, frameTime);
+//        backgroundRect.render(matrixStack, mouseX, mouseY, frameTime);
         super.renderBg(matrixStack, frameTime, mouseX, mouseY);
-        System.out.println("fixme!!!");
-
-//        energyMeter.draw(matrixStack, (float) batterySlot.centerx() - 16,
-//                (float) (batterySlot.finalBottom() + spacer * 0.25),
-//                menu.getEnergyForMeter(),
-//                getBlitOffset() + 2);
-//        this.drawToolTip(matrixStack, x, y);
+        energyMeter.draw(matrixStack, (float) batterySlot.centerx() - 16,
+                (float) (batterySlot.finalBottom() + spacer * 0.25),
+                menu.getEnergyForMeter(),
+                getBlitOffset() + 2);
+        this.drawToolTip(matrixStack, mouseX, mouseY);
     }
 }

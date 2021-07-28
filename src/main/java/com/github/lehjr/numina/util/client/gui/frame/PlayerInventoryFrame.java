@@ -30,7 +30,6 @@ public class PlayerInventoryFrame extends MultiRectHolderFrame {
 
         // slot 10-36
         mainInventory = new InventoryFrame(container,
-                Colour.LIGHT_GREY, Colour.DARK_GREY, Colour.DARK_GREY,
                 9, 3, new ArrayList<Integer>() {{
             IntStream.range(mainInventoryStart, mainInventoryStart + 27).forEach(i -> add(i));
         }}, ulGetter);
@@ -43,7 +42,6 @@ public class PlayerInventoryFrame extends MultiRectHolderFrame {
 
         // slot 37 -46
         hotbar = new InventoryFrame(container,
-                Colour.LIGHT_GREY, Colour.DARK_GREY, Colour.DARK_GREY,
                 9, 1, new ArrayList<Integer>() {{
             IntStream.range(hotbarStart, hotbarStart + 9).forEach(i -> add(i));
         }}, ulGetter);

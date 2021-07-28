@@ -290,7 +290,7 @@ public class RelativeRect implements IRect {
      * @return this
      */
     @Override
-    public RelativeRect setMeLeftof(RelativeRect otherRightOfMe) {
+    public RelativeRect setMeLeftOf(RelativeRect otherRightOfMe) {
         this.rectRightOfMe = otherRightOfMe;
         return this;
     }

@@ -26,10 +26,7 @@
 
 package com.github.lehjr.numina.util.client.gui.frame;
 
-import com.github.lehjr.numina.config.ModuleConfig;
-import com.github.lehjr.numina.constants.NuminaConstants;
 import com.github.lehjr.numina.util.client.gui.IContainerULOffSet;
-import com.github.lehjr.numina.util.client.gui.clickable.IClickable;
 import com.github.lehjr.numina.util.client.gui.gemoetry.DrawableRelativeRect;
 import com.github.lehjr.numina.util.client.gui.gemoetry.DrawableTile;
 import com.github.lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
@@ -40,17 +37,11 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.common.util.NonNullLazy;
 import org.lwjgl.BufferUtils;
 
-import javax.annotation.Nonnull;
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.concurrent.Callable;
 
 public class InventoryFrame extends ScrollableFrame implements IContainerULOffSet {
     IContainerULOffSet.ulGetter ulGetter;
@@ -65,6 +56,14 @@ public class InventoryFrame extends ScrollableFrame implements IContainerULOffSe
     boolean drawBorder = false;
     int slotWidth = 18;
     int slotHeight = 18;
+
+    public InventoryFrame(Container containerIn,
+                          int gridWidth,
+                          int gridHeight,
+                          List<Integer> slotIndexesIn,
+                          IContainerULOffSet.ulGetter ulGetter) {
+        this(containerIn, Colour.LIGHT_GREY, Colour.DARK_GREY, Colour.DARK_GREY, gridWidth, gridHeight, slotIndexesIn, ulGetter);
+    }
 
     public InventoryFrame(Container containerIn,
                           Colour backgroundColour,
@@ -85,6 +84,9 @@ public class InventoryFrame extends ScrollableFrame implements IContainerULOffSe
         super.setWidth(slotWidth * gridWidth).setHeight(slotHeight * gridHeight);
         setUL(new MusePoint2D(0,0));
     }
+
+
+
 
     public DrawableRelativeRect setBackgroundColour(Colour backgroundColour) {
         super.setBackgroundColour(backgroundColour);
@@ -169,17 +171,17 @@ public class InventoryFrame extends ScrollableFrame implements IContainerULOffSe
     }
 
     @Override
-    public boolean mouseClicked(double v, double v1, int i) {
+    public boolean mouseClicked(double mouseX, double mouseY, int button) {
         return false;
     }
 
     @Override
-    public boolean mouseReleased(double v, double v1, int i) {
+    public boolean mouseReleased(double mouseX, double mouseY, int buton) {
         return false;
     }
 
     @Override
-    public boolean mouseScrolled(double v, double v1, double v2) {
+    public boolean mouseScrolled(double mouseX, double mouseY, double dWheel) {
         return false;
     }
 

@@ -131,7 +131,7 @@ public interface IRect {
      */
     void initGrowth();
 
-    IRect setMeLeftof(RelativeRect otherRightOfMe);
+    IRect setMeLeftOf(RelativeRect otherRightOfMe);
 
     IRect setMeRightOf(RelativeRect otherLeftOfMe);
 

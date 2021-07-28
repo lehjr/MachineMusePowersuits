@@ -27,14 +27,9 @@
 package com.github.lehjr.numina.util.client.gui.clickable;
 
 import com.github.lehjr.numina.util.client.gui.gemoetry.IDrawable;
-import com.github.lehjr.numina.util.client.gui.gemoetry.IRect;
 import com.github.lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
-import com.github.lehjr.numina.util.client.gui.gemoetry.RelativeRect;
 import com.github.lehjr.numina.util.client.render.MuseRenderer;
 import com.mojang.blaze3d.matrix.MatrixStack;
-import net.minecraft.util.text.ITextComponent;
-
-import java.util.List;
 
 
 // fixme: revisit and rewrite
@@ -86,12 +81,12 @@ public class ClickableLabel extends Clickable {
     }
 
     @Override
-    public float getBlitOffset() {
+    public float getZLevel() {
         return 0;
     }
 
     @Override
-    public IDrawable setBlitOffset(float zLevel) {
+    public IDrawable setZLevel(float zLevel) {
         return null;
     }
 

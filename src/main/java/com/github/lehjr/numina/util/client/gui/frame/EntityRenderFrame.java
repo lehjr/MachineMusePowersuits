@@ -172,12 +172,12 @@ public class EntityRenderFrame extends DrawableTile implements IGuiFrame {
     }
 
     @Override
-    public float getBlitOffset() {
+    public float getZLevel() {
         return 0;
     }
 
     @Override
-    public IDrawable setBlitOffset(float zLevel) {
+    public IDrawable setZLevel(float zLevel) {
         return this;
     }
 

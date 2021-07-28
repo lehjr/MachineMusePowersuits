@@ -37,13 +37,11 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nonnull;
-import java.util.List;
 
 /**
  * A universal base for both IInventory and IItemHandler based slots
@@ -198,13 +196,13 @@ public class UniversalSlot extends Slot implements IClickable {
     }
 
     @Override
-    public float getBlitOffset() {
+    public float getZLevel() {
         return 0;
     }
 
     @Override
-    public IDrawable setBlitOffset(float zLevel) {
-        return null;
+    public IDrawable setZLevel(float zLevel) {
+        return this;
     }
 
     @Override
@@ -223,7 +221,7 @@ public class UniversalSlot extends Slot implements IClickable {
     }
 
     @Override
-    public IRect setMeLeftof(RelativeRect otherRightOfMe) {
+    public IRect setMeLeftOf(RelativeRect otherRightOfMe) {
         return null;
     }
 

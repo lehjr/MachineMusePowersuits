@@ -27,7 +27,9 @@
 package com.github.lehjr.numina.util.client.gui.frame;
 
 import com.github.lehjr.numina.util.client.gui.gemoetry.DrawableRelativeRect;
+import com.github.lehjr.numina.util.client.gui.gemoetry.IRect;
 import com.github.lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
+import com.github.lehjr.numina.util.client.gui.gemoetry.RelativeRect;
 import com.github.lehjr.numina.util.client.render.NuminaRenderState;
 import com.github.lehjr.numina.util.math.Colour;
 import com.github.lehjr.numina.util.math.MuseMathUtils;
@@ -56,7 +58,12 @@ public class ScrollableFrame extends DrawableRelativeRect implements IGuiFrame {
 
     public ScrollableFrame(MusePoint2D topleft, MusePoint2D bottomright, float zlevel, Colour backgroundColour, Colour borderColour) {
         super(topleft, bottomright, backgroundColour, borderColour);
-        super.setBlitOffset(zlevel);
+        super.setZLevel(zlevel);
+    }
+
+    @Override
+    public RelativeRect getRect() {
+        return this;
     }
 
     public int getMaxScrollPixels() {

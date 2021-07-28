@@ -165,16 +165,16 @@ public class MultiRectHolderFrame<T extends Map<Integer, IRect>> extends GUISpac
     }
 
     @Override
-    public float getBlitOffset() {
+    public float getZLevel() {
         return zLevel;
     }
 
     @Override
-    public IDrawable setBlitOffset(float zLevel) {
+    public IDrawable setZLevel(float zLevel) {
         this.zLevel = zLevel;
         for (IRect rect : rects.values()) {
             if (rect instanceof IDrawable) {
-                ((IDrawable) rect).setBlitOffset(zLevel);
+                ((IDrawable) rect).setZLevel(zLevel);
             }
         }
 

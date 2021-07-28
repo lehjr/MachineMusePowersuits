@@ -34,8 +34,6 @@ import com.github.lehjr.numina.util.math.Colour;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.util.text.ITextComponent;
 
-import java.util.List;
-
 /**
  * @author MachineMuse
  */
@@ -93,12 +91,12 @@ public class ClickableButton extends DrawableRelativeRect implements IClickable 
     }
 
     @Override
-    public float getBlitOffset() {
+    public float getZLevel() {
         return 0;
     }
 
     @Override
-    public IDrawable setBlitOffset(float zLevel) {
+    public IDrawable setZLevel(float zLevel) {
         return null;
     }
 

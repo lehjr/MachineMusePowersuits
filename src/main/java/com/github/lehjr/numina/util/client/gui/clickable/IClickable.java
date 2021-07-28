@@ -30,11 +30,8 @@ import com.github.lehjr.numina.util.client.gui.gemoetry.IDrawableRect;
 import com.github.lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.util.InputMappings;
-import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-
-import java.util.List;
 
 public interface IClickable extends IDrawableRect {
     default void move(double x, double y) {

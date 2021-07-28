@@ -27,6 +27,7 @@
 package com.github.lehjr.numina.util.client.gui.frame;
 
 import com.github.lehjr.numina.util.client.gui.gemoetry.IDrawableRect;
+import com.github.lehjr.numina.util.client.gui.gemoetry.IRect;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.util.text.ITextComponent;
 
@@ -56,6 +57,9 @@ public interface IGuiFrame extends IDrawableRect {
      * @return true if mouse pointer is inside this frame and scroll is handled here, else false
      */
     boolean mouseScrolled(double mouseX, double mouseY, double dWheel);
+
+    IRect getRect();
+
 //
 //    /**
 //     * Fired when gui init is fired, during the creation phase and on resize. Can be used to setup the frame
