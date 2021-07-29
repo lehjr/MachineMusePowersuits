@@ -30,7 +30,6 @@ import com.github.lehjr.numina.container.ArmorStandContainer;
 import com.github.lehjr.numina.util.client.gui.ExtendedContainerScreen;
 import com.github.lehjr.numina.util.client.gui.IContainerULOffSet;
 import com.github.lehjr.numina.util.client.gui.frame.*;
-import com.github.lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
 import com.github.lehjr.numina.util.math.Colour;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -83,7 +82,7 @@ public class ArmorStandGui extends ExtendedContainerScreen<ArmorStandContainer> 
     }
 
     @Override
-    public void renderLabels(MatrixStack matrixStack, int x, int y) {
+    public void renderLabels(MatrixStack matrixStack, int mouseX, int mouseY) {
         this.font.draw(matrixStack, this.inventory.getDisplayName(), (float)this.inventoryLabelX, (float)this.inventoryLabelY + 8, 4210752);
     }
 
