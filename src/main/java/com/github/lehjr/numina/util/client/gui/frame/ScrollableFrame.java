@@ -27,7 +27,6 @@
 package com.github.lehjr.numina.util.client.gui.frame;
 
 import com.github.lehjr.numina.util.client.gui.gemoetry.DrawableRelativeRect;
-import com.github.lehjr.numina.util.client.gui.gemoetry.IRect;
 import com.github.lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
 import com.github.lehjr.numina.util.client.gui.gemoetry.RelativeRect;
 import com.github.lehjr.numina.util.client.render.NuminaRenderState;

@@ -2,7 +2,6 @@ package com.github.lehjr.numina.util.client.gui.frame;
 
 import com.github.lehjr.numina.util.client.gui.IContainerULOffSet;
 import com.github.lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
-import com.github.lehjr.numina.util.math.Colour;
 import net.minecraft.inventory.container.Container;
 
 import java.util.ArrayList;

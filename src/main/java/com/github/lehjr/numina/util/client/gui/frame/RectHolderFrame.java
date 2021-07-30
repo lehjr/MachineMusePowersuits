@@ -66,26 +66,28 @@ public abstract class RectHolderFrame<T extends IRect> extends GUISpacer {
 
     @Override
     public RelativeRect setWidth(double value) {
+        super.setWidth(value);
         setRect();
-        return super.setWidth(value);
+        return super.getRect();
     }
 
     @Override
     public RelativeRect setHeight(double value) {
+        super.setHeight(value);
         setRect();
-        return super.setHeight(value);
+        return this;
     }
 
     @Override
     public void move(MusePoint2D moveAmount) {
-        setRect();
         super.move(moveAmount);
+        setRect();
     }
 
     @Override
     public void move(double x, double y) {
-        setRect();
         super.move(x, y);
+        setRect();
     }
 
     @Override
@@ -96,26 +98,30 @@ public abstract class RectHolderFrame<T extends IRect> extends GUISpacer {
 
     @Override
     public RelativeRect setMeLeftOf(RelativeRect otherRightOfMe) {
+        super.setMeLeftOf(otherRightOfMe);
         setRect();
-        return super.setMeLeftOf(otherRightOfMe);
+        return this;
     }
 
     @Override
     public RelativeRect setMeRightOf(RelativeRect otherLeftOfMe) {
+        super.setMeRightOf(otherLeftOfMe);
         setRect();
-        return super.setMeRightOf(otherLeftOfMe);
+        return this;
     }
 
     @Override
     public RelativeRect setMeAbove(RelativeRect otherBelowMe) {
+        super.setMeAbove(otherBelowMe);
         setRect();
-        return super.setMeAbove(otherBelowMe);
+        return this;
     }
 
     @Override
     public RelativeRect setMeBelow(RelativeRect otherAboveMe) {
+        super.setMeBelow(otherAboveMe);
         setRect();
-        return super.setMeBelow(otherAboveMe);
+        return this;
     }
 
     @Override

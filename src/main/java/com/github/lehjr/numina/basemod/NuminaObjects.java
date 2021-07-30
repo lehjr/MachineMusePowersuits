@@ -36,6 +36,7 @@ import com.github.lehjr.numina.item.Battery;
 import com.github.lehjr.numina.item.ItemComponent;
 import com.github.lehjr.numina.item.NuminaArmorStandItem;
 import com.github.lehjr.numina.tileentity.ChargingBaseTileEntity;
+import com.mojang.datafixers.util.Pair;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityClassification;
@@ -200,5 +201,18 @@ public class NuminaObjects {
         put(EquipmentSlotType.CHEST, PlayerContainer.EMPTY_ARMOR_SLOT_CHESTPLATE);
         put(EquipmentSlotType.LEGS, PlayerContainer.EMPTY_ARMOR_SLOT_LEGGINGS);
         put(EquipmentSlotType.FEET, PlayerContainer.EMPTY_ARMOR_SLOT_BOOTS);
+        put(EquipmentSlotType.OFFHAND, PlayerContainer.EMPTY_ARMOR_SLOT_SHIELD);
+        put(EquipmentSlotType.MAINHAND, NuminaConstants.WEAPON_SLOT_BACKGROUND); //FIXME: broken for slot rendering, actually crashes
     }};
+
+    public static final Pair<ResourceLocation, ResourceLocation> getSlotBackground(EquipmentSlotType slotType) {
+        switch (slotType) {
+            case MAINHAND:
+//                return Pair.of(NuminaConstants.LOCATION_NUMINA_GUI_TEXTURE_ATLAS, ARMOR_SLOT_TEXTURES.get(slotType)); // FIXME: broken for slot rendering, actually crashes
+                 return Pair.of(PlayerContainer.BLOCK_ATLAS, PlayerContainer.EMPTY_ARMOR_SLOT_SHIELD);
+            default:
+                return Pair.of(PlayerContainer.BLOCK_ATLAS, ARMOR_SLOT_TEXTURES.get(slotType));
+        }
+    }
+
 }

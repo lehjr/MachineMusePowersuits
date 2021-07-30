@@ -109,7 +109,7 @@ public class ArmorStandContainer extends Container {
                 @OnlyIn(Dist.CLIENT)
                 @Override
                 public Pair<ResourceLocation, ResourceLocation> getNoItemIcon() {
-                    return Pair.of(PlayerContainer.BLOCK_ATLAS, NuminaObjects.ARMOR_SLOT_TEXTURES.get(equipmentslottype));
+                    return NuminaObjects.getSlotBackground(equipmentslottype);
                 }
             });
         }
@@ -119,7 +119,7 @@ public class ArmorStandContainer extends Container {
             @OnlyIn(Dist.CLIENT)
             @Override
             public Pair<ResourceLocation, ResourceLocation> getNoItemIcon() {
-                return Pair.of(PlayerContainer.BLOCK_ATLAS, PlayerContainer.EMPTY_ARMOR_SLOT_SHIELD);
+                return NuminaObjects.getSlotBackground(EquipmentSlotType.OFFHAND);
             }
 
             @Override
@@ -147,6 +147,12 @@ public class ArmorStandContainer extends Container {
             public void set(ItemStack stack) {
                 armorStand.setItemSlot(EquipmentSlotType.MAINHAND, stack.copy());
                 super.set(stack);
+            }
+
+            @OnlyIn(Dist.CLIENT)
+            @Override
+            public Pair<ResourceLocation, ResourceLocation> getNoItemIcon() {
+                return NuminaObjects.getSlotBackground(EquipmentSlotType.MAINHAND);
             }
         });
 
