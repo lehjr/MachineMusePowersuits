@@ -38,31 +38,28 @@ public class MultiRectHolderFrame<T extends Map<Integer, IRect>> extends GUISpac
         this.startTopLeft = startTopLeft;
     }
 
+    /**
+     * Automatically sets orientation of next IRect based on Layout and direction settings
+     * @param rect
+     * @return
+     */
     public MultiRectHolderFrame addRect(IRect rect) {
         if (rects.size() >0) {
             if (horizontalLayout) {
                 if (startTopLeft) {
                     rect.setMeRightOf(rects.get(rects.size() -1));
-
-
                 } else {
-
+                    rect.setMeLeftOf(rects.get(rects.size() -1));
                 }
             } else {
                 if (startTopLeft) {
-
+                    rect.setMeBelow(rects.get(rects.size() -1));
                 } else {
-
+                    rect.setMeAbove(rects.get(rects.size() -1));
                 }
             }
         }
-
         rects.put(rects.size(), rect);
-
-
-
-
-
         return this;
     }
 
