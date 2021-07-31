@@ -131,13 +131,13 @@ public interface IRect {
      */
     void initGrowth();
 
-    IRect setMeLeftOf(RelativeRect otherRightOfMe);
+    IRect setMeLeftOf(IRect otherRightOfMe);
 
-    IRect setMeRightOf(RelativeRect otherLeftOfMe);
+    IRect setMeRightOf(IRect otherLeftOfMe);
 
-    IRect setMeAbove(RelativeRect otherBelowMe);
+    IRect setMeAbove(IRect otherBelowMe);
 
-    IRect setMeBelow(RelativeRect otherAboveMe);
+    IRect setMeBelow(IRect otherAboveMe);
 
     void setOnInit(IRect.IInit onInit);
 

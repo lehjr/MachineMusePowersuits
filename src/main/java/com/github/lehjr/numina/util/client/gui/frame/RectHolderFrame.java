@@ -37,42 +37,42 @@ public abstract class RectHolderFrame<T extends IRect> extends GUISpacer {
     }
 
     @Override
-    public RelativeRect setTop(double value) {
+    public IRect setTop(double value) {
         super.setTop(value);
         setRect();
         return this;
     }
 
     @Override
-    public RelativeRect setLeft(double value) {
+    public IRect setLeft(double value) {
         super.setLeft(value);
         setRect();
         return this;
     }
 
     @Override
-    public RelativeRect setBottom(double value) {
+    public IRect setBottom(double value) {
         super.setBottom(value);
         setRect();
         return this;
     }
 
     @Override
-    public RelativeRect setRight(double value) {
+    public IRect setRight(double value) {
         super.setRight(value);
         setRect();
         return this;
     }
 
     @Override
-    public RelativeRect setWidth(double value) {
+    public IRect setWidth(double value) {
         super.setWidth(value);
         setRect();
         return super.getRect();
     }
 
     @Override
-    public RelativeRect setHeight(double value) {
+    public IRect setHeight(double value) {
         super.setHeight(value);
         setRect();
         return this;
@@ -97,28 +97,28 @@ public abstract class RectHolderFrame<T extends IRect> extends GUISpacer {
     }
 
     @Override
-    public RelativeRect setMeLeftOf(RelativeRect otherRightOfMe) {
+    public IRect setMeLeftOf(IRect otherRightOfMe) {
         super.setMeLeftOf(otherRightOfMe);
         setRect();
         return this;
     }
 
     @Override
-    public RelativeRect setMeRightOf(RelativeRect otherLeftOfMe) {
+    public IRect setMeRightOf(IRect otherLeftOfMe) {
         super.setMeRightOf(otherLeftOfMe);
         setRect();
         return this;
     }
 
     @Override
-    public RelativeRect setMeAbove(RelativeRect otherBelowMe) {
+    public IRect setMeAbove(IRect otherBelowMe) {
         super.setMeAbove(otherBelowMe);
         setRect();
         return this;
     }
 
     @Override
-    public RelativeRect setMeBelow(RelativeRect otherAboveMe) {
+    public IRect setMeBelow(IRect otherAboveMe) {
         super.setMeBelow(otherAboveMe);
         setRect();
         return this;

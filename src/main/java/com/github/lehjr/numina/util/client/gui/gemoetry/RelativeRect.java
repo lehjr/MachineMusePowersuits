@@ -26,11 +26,11 @@
 
 package com.github.lehjr.numina.util.client.gui.gemoetry;
 
-public class RelativeRect implements IRect {
-    protected RelativeRect rectBelowMe;
-    protected RelativeRect rectAboveMe;
-    protected RelativeRect rectLeftOfMe;
-    protected RelativeRect rectRightOfMe;
+public class RelativeRect implements IRect{
+    protected IRect rectBelowMe;
+    protected IRect rectAboveMe;
+    protected IRect rectLeftOfMe;
+    protected IRect rectRightOfMe;
 
     /** top left origin */
     MusePoint2D ul;
@@ -77,16 +77,15 @@ public class RelativeRect implements IRect {
         return this;
     }
 
-
     @Override
-    public RelativeRect setUL(MusePoint2D ul) {
+    public IRect setUL(MusePoint2D ul) {
         this.ul.setX(ul.getX());
         this.ul.setY(ul.getY());
         return this;
     }
 
     @Override
-    public RelativeRect setWH(MusePoint2D wh) {
+    public IRect setWH(MusePoint2D wh) {
         this.wh.setX(wh.getX());
         this.wh.setY(wh.getY());
         return this;
@@ -129,8 +128,6 @@ public class RelativeRect implements IRect {
         }
         return ul.getX();
     }
-
-
     @Override
     public double finalLeft() {
         if(rectLeftOfMe != null) {
@@ -221,35 +218,35 @@ public class RelativeRect implements IRect {
     }
 
     @Override
-    public RelativeRect setLeft(double value) {
+    public IRect setLeft(double value) {
         ul.setX(value);
         return this;
     }
 
     @Override
-    public RelativeRect setRight(double value) {
+    public IRect setRight(double value) {
         return setLeft(value - finalWidth());
     }
 
     @Override
-    public RelativeRect setTop(double value) {
+    public IRect setTop(double value) {
         ul.setY(value);
         return this;
     }
 
     @Override
-    public RelativeRect setBottom(double value) {
+    public IRect setBottom(double value) {
         return setTop(value - finalHeight());
     }
 
     @Override
-    public RelativeRect setWidth(double value) {
+    public IRect setWidth(double value) {
         wh.setX(value);
         return this;
     }
 
     @Override
-    public RelativeRect setHeight(double value) {
+    public IRect setHeight(double value) {
         wh.setY(value);
         return this;
     }
@@ -290,7 +287,7 @@ public class RelativeRect implements IRect {
      * @return this
      */
     @Override
-    public RelativeRect setMeLeftOf(RelativeRect otherRightOfMe) {
+    public IRect setMeLeftOf(IRect otherRightOfMe) {
         this.rectRightOfMe = otherRightOfMe;
         return this;
     }
@@ -301,7 +298,7 @@ public class RelativeRect implements IRect {
      * @return this
      */
     @Override
-    public RelativeRect setMeRightOf(RelativeRect otherLeftOfMe) {
+    public IRect setMeRightOf(IRect otherLeftOfMe) {
         this.rectLeftOfMe = otherLeftOfMe;
         return this;
     }
@@ -312,7 +309,7 @@ public class RelativeRect implements IRect {
      * @return this
      */
     @Override
-    public RelativeRect setMeAbove(RelativeRect otherBelowMe) {
+    public IRect setMeAbove(IRect otherBelowMe) {
         this.rectBelowMe = otherBelowMe;
         return this;
     }
@@ -323,7 +320,7 @@ public class RelativeRect implements IRect {
      * @return this
      */
     @Override
-    public RelativeRect setMeBelow(RelativeRect otherAboveMe) {
+    public IRect setMeBelow(IRect otherAboveMe) {
         this.rectAboveMe = otherAboveMe;
         return this;
     }

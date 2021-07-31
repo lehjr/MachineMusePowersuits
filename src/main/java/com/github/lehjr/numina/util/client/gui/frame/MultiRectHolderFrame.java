@@ -5,9 +5,11 @@ import com.github.lehjr.numina.util.client.gui.gemoetry.*;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.util.text.ITextComponent;
 
+import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * A bunch of rectangles laid out either vertically or horizontally
@@ -37,8 +39,35 @@ public class MultiRectHolderFrame<T extends Map<Integer, IRect>> extends GUISpac
     }
 
     public MultiRectHolderFrame addRect(IRect rect) {
+        if (rects.size() >0) {
+            if (horizontalLayout) {
+                if (startTopLeft) {
+                    rect.setMeRightOf(rects.get(rects.size() -1));
+
+
+                } else {
+
+                }
+            } else {
+                if (startTopLeft) {
+
+                } else {
+
+                }
+            }
+        }
+
         rects.put(rects.size(), rect);
+
+
+
+
+
         return this;
+    }
+
+    public Optional<IRect> getLast() {
+        return Optional.of(rects.get(rects.size() -1));
     }
 
     public void setRects(T rects){

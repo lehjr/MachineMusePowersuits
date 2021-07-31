@@ -221,22 +221,22 @@ public class UniversalSlot extends Slot implements IClickable {
     }
 
     @Override
-    public IRect setMeLeftOf(RelativeRect otherRightOfMe) {
+    public IRect setMeLeftOf(IRect otherRightOfMe) {
         return null;
     }
 
     @Override
-    public IRect setMeRightOf(RelativeRect otherLeftOfMe) {
+    public IRect setMeRightOf(IRect otherLeftOfMe) {
         return null;
     }
 
     @Override
-    public IRect setMeAbove(RelativeRect otherBelowMe) {
+    public IRect setMeAbove(IRect otherBelowMe) {
         return null;
     }
 
     @Override
-    public IRect setMeBelow(RelativeRect otherAboveMe) {
+    public IRect setMeBelow(IRect otherAboveMe) {
         return null;
     }
 
