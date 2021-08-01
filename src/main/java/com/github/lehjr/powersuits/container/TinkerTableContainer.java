@@ -33,6 +33,7 @@ import com.github.lehjr.numina.util.client.gui.slot.HideableSlot;
 import com.github.lehjr.numina.util.client.gui.slot.HideableSlotItemHandler;
 import com.github.lehjr.numina.util.client.gui.slot.IHideableSlot;
 import com.github.lehjr.powersuits.basemod.MPSObjects;
+import com.github.lehjr.powersuits.dev.crafting.container.IModularItemToSlotMapProvider;
 import com.github.lehjr.powersuits.network.MPSPackets;
 import com.github.lehjr.powersuits.network.packets.MoveModuleFromSlotToSlotPacket;
 import net.minecraft.entity.player.PlayerEntity;
@@ -69,30 +70,30 @@ public class TinkerTableContainer
         modularItemToSlotMap = new HashMap<>();
 
         // add all player inventory slots
-        for (int index = 0; index < playerInventory.getSizeInventory(); index ++) {
+        for (int index = 0; index < playerInventory.getContainerSize(); index ++) {
             this.addSlot(new HideableSlot(playerInventory, index, 0, 0));
         }
 
         // add all modular item slots
-        for (Slot slot :  new ArrayList<Slot>(this.inventorySlots)) {
+        for (Slot slot :  new ArrayList<Slot>(this.slots)) {
             List<SlotItemHandler> slots = new ArrayList<>();
 
-            slot.getStack().getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(iItemHandler -> {
+            slot.getItem().getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(iItemHandler -> {
                 if (iItemHandler instanceof IModularItem) {
                     for (int modularItemInvIndex = 0; modularItemInvIndex < iItemHandler.getSlots(); modularItemInvIndex ++) {
                         HideableSlotItemHandler slot1 =
-                                (HideableSlotItemHandler) addSlot(new HideableSlotItemHandler(iItemHandler, inventorySlots.indexOf(slot), modularItemInvIndex, -1000, -1000));
+                                (HideableSlotItemHandler) addSlot(new HideableSlotItemHandler(iItemHandler, slots.indexOf(slot), modularItemInvIndex, -1000, -1000));
                         slots.add(slot1);
                     }
                 }
             });
 
             if (!slots.isEmpty()) {
-                modularItemToSlotMap.put(slot.slotNumber, slots);
+                modularItemToSlotMap.put(slot.index, slots);
             }
         }
 
-        for (Slot slot : this.inventorySlots) {
+        for (Slot slot : this.slots) {
             if(slot instanceof IHideableSlot) {
                 ((IHideableSlot) slot).disable();
             }
@@ -100,15 +101,15 @@ public class TinkerTableContainer
     }
 
     @Override
-    public boolean canMergeSlot(ItemStack itemStack, Slot slot) {
+    public boolean canTakeItemForPickAll(ItemStack itemStack, Slot slot) {
         if (slot instanceof SlotItemHandler) {
             return ((SlotItemHandler) slot).getItemHandler().isItemValid(slot.getSlotIndex(), itemStack);
         }
-        return super.canMergeSlot(itemStack, slot);
+        return super.canTakeItemForPickAll(itemStack, slot);
     }
 
     @Override
-    public boolean canDragIntoSlot(Slot slotIn) {
+    public boolean canDragTo(Slot slotIn) {
         return false;
     }
 
@@ -118,7 +119,7 @@ public class TinkerTableContainer
      * implementation do not check if the item is valid for the slot
      */
     @Override
-    public boolean mergeItemStack(ItemStack stack, int startIndex, int endIndex, boolean reverseDirection) {
+    public boolean moveItemStackTo(ItemStack stack, int startIndex, int endIndex, boolean reverseDirection) {
         boolean flag = false;
         int i = startIndex;
         if (reverseDirection) {
@@ -135,20 +136,20 @@ public class TinkerTableContainer
                     break;
                 }
 
-                Slot slot = this.inventorySlots.get(i);
-                ItemStack itemstack = slot.getStack();
-                if (!itemstack.isEmpty() && areItemsAndTagsEqual(stack, itemstack)) {
+                Slot slot = this.slots.get(i);
+                ItemStack itemstack = slot.getItem();
+                if (!itemstack.isEmpty() && consideredTheSameItem(stack, itemstack)) {
                     int j = itemstack.getCount() + stack.getCount();
-                    int maxSize = Math.min(slot.getItemStackLimit(stack)/*.getSlotStackLimit()*/, stack.getMaxStackSize());
+                    int maxSize = Math.min(slot.getMaxStackSize(stack)/*.getSlotStackLimit()*/, stack.getMaxStackSize());
                     if (j <= maxSize) {
                         stack.setCount(0);
                         itemstack.setCount(j);
-                        slot.onSlotChanged();
+                        slot.setChanged();
                         flag = true;
                     } else if (itemstack.getCount() < maxSize) {
                         stack.shrink(maxSize - itemstack.getCount());
                         itemstack.setCount(maxSize);
-                        slot.onSlotChanged();
+                        slot.setChanged();
                         flag = true;
                     }
                 }
@@ -177,16 +178,16 @@ public class TinkerTableContainer
                     break;
                 }
 
-                Slot slot1 = this.inventorySlots.get(i);
-                ItemStack itemstack1 = slot1.getStack();
-                if (itemstack1.isEmpty() && slot1.isItemValid(stack)) {
-                    if (stack.getCount() > slot1.getItemStackLimit(stack)/*.getSlotStackLimit()*/) {
-                        slot1.putStack(stack.split(slot1.getSlotStackLimit()));
+                Slot slot1 = this.slots.get(i);
+                ItemStack itemstack1 = slot1.getItem();
+                if (itemstack1.isEmpty() && slot1.mayPlace(stack)) {
+                    if (stack.getCount() > slot1.getMaxStackSize(stack)/*.getSlotStackLimit()*/) {
+                        slot1.set(stack.split(slot1.getMaxStackSize()));
                     } else {
-                        slot1.putStack(stack.split(stack.getCount()));
+                        slot1.set(stack.split(stack.getCount()));
                     }
 
-                    slot1.onSlotChanged();
+                    slot1.setChanged();
                     flag = true;
                     break;
                 }
@@ -203,10 +204,10 @@ public class TinkerTableContainer
     }
 
     public void creativeInstall(int slot, @Nonnull ItemStack itemStack) {
-        if(this.getSlot(slot).getItemStackLimit(itemStack) > 0) {
-            putStackInSlot(slot, itemStack);
+        if(this.getSlot(slot).getMaxStackSize(itemStack) > 0) {
+            setItem(slot, itemStack);
 //            this.detectAndSendChanges();
-            NuminaPackets.CHANNEL_INSTANCE.sendToServer(new CreativeInstallModuleRequestPacket(this.windowId, slot, itemStack));
+            NuminaPackets.CHANNEL_INSTANCE.sendToServer(new CreativeInstallModuleRequestPacket(this.containerId, slot, itemStack));
         }
     }
 
@@ -217,22 +218,22 @@ public class TinkerTableContainer
         if (target == -1)
             return;
 
-        Slot sourceSlot = inventorySlots.get(source);
-        Slot targetSlot = inventorySlots.get(target);
+        Slot sourceSlot = slots.get(source);
+        Slot targetSlot = slots.get(target);
 
-        ItemStack contents = sourceSlot.getStack();
+        ItemStack contents = sourceSlot.getItem();
         ItemStack stackCopy = contents.copy();
 
-        if(sourceSlot.canTakeStack(player) && canMergeSlot(contents, targetSlot)) {
-            targetSlot.putStack(stackCopy);
-            sourceSlot.putStack(ItemStack.EMPTY);
-            MPSPackets.CHANNEL_INSTANCE.sendToServer(new MoveModuleFromSlotToSlotPacket(this.windowId, source, target));
+        if(sourceSlot.mayPickup(player) && canTakeItemForPickAll(contents, targetSlot)) {
+            targetSlot.set(stackCopy);
+            sourceSlot.set(ItemStack.EMPTY);
+            MPSPackets.CHANNEL_INSTANCE.sendToServer(new MoveModuleFromSlotToSlotPacket(this.containerId, source, target));
 //            detectAndSendChanges();
         }
     }
 
     @Override
-    public boolean canInteractWith(PlayerEntity playerIn) {
+    public boolean stillValid(PlayerEntity playerIn) {
         return true;
     }
 

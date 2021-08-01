@@ -27,14 +27,14 @@
 package com.github.lehjr.powersuits.client.gui.obsolete;
 
 import com.github.lehjr.numina.util.client.gui.clickable.ClickableSlider;
-import com.github.lehjr.numina.util.client.gui.gemoetry.MuseRelativeRect;
+import com.github.lehjr.numina.util.client.gui.gemoetry.RelativeRect;
 import com.mojang.blaze3d.matrix.MatrixStack;
 
 @Deprecated
 public class ScrollableSlider extends ScrollableRectangle {
     ClickableSlider slider;
 
-    public ScrollableSlider(ClickableSlider slider, MuseRelativeRect relativeRect) {
+    public ScrollableSlider(ClickableSlider slider, RelativeRect relativeRect) {
         super(relativeRect);
         this.slider = slider;
     }
@@ -56,7 +56,7 @@ public class ScrollableSlider extends ScrollableRectangle {
     }
 
     @Override
-    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks, float zLevel) {
-        slider.render(matrixStack, mouseX, mouseY, partialTicks, zLevel);
+    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
+        slider.render(matrixStack, mouseX, mouseY, partialTicks);
     }
 }

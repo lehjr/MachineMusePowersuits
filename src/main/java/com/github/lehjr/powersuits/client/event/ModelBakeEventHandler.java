@@ -55,7 +55,7 @@ public enum ModelBakeEventHandler {
         from itemModelProvider
               for(int j = 0; j < 32; ++j) {
          if (j != 16) {
-            this.func_240077_a_(Items.COMPASS, String.format("_%02d", j), StockModelShapes.GENERATED);
+            this.generateFlatItem(Items.COMPASS, String.format("_%02d", j), StockModelShapes.GENERATED);
          }
       }
          */

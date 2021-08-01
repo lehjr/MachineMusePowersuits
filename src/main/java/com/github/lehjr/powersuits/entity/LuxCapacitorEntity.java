@@ -64,9 +64,9 @@ public class LuxCapacitorEntity extends ThrowableEntity implements IEntityAdditi
         super(MPSObjects.LUX_CAPACITOR_ENTITY_TYPE.get(), shootingEntity, world);
         this.setNoGravity(true);
         this.color = color != null ? color : LuxCapacitorBlock.defaultColor;
-        Vector3d direction = shootingEntity.getLookVec().normalize();
+        Vector3d direction = shootingEntity.getLookAngle().normalize();
         double speed = 1.0;
-        this.setMotion(
+        this.setDeltaMovement(
                 direction.x * speed,
                 direction.y * speed,
                 direction.z * speed
@@ -79,43 +79,43 @@ public class LuxCapacitorEntity extends ThrowableEntity implements IEntityAdditi
         double horzScale = Math.sqrt(direction.x * direction.x + direction.z * direction.z);
         double horzx = direction.x / horzScale;
         double horzz = direction.z / horzScale;
-        this.setPosition(
-                (shootingEntity.getPosX() + direction.x * xoffset - direction.y * horzx * yoffset - horzz * zoffset),
-                (shootingEntity.getPosY() + shootingEntity.getEyeHeight() + direction.y * xoffset + (1 - Math.abs(direction.y)) * yoffset),
-                (shootingEntity.getPosZ() + direction.z * xoffset - direction.y * horzz * yoffset + horzx * zoffset));
-        this.setBoundingBox(new AxisAlignedBB(getPosX() - r, getPosY() - 0.0625, getPosZ() - r, getPosX() + r, getPosY() + 0.0625, getPosZ() + r));
+        this.setPos(
+                (shootingEntity.getX() + direction.x * xoffset - direction.y * horzx * yoffset - horzz * zoffset),
+                (shootingEntity.getY() + shootingEntity.getEyeHeight() + direction.y * xoffset + (1 - Math.abs(direction.y)) * yoffset),
+                (shootingEntity.getZ() + direction.z * xoffset - direction.y * horzz * yoffset + horzx * zoffset));
+        this.setBoundingBox(new AxisAlignedBB(getX() - r, getY() - 0.0625, getZ() - r, getX() + r, getY() + 0.0625, getZ() + r));
     }
 
     BlockState getBlockState(BlockPos pos, Direction facing) {
-        FluidState ifluidstate = world.getFluidState(pos);
-        return MPSObjects.LUX_CAPACITOR_BLOCK.get().getDefaultState().with(DirectionalBlock.FACING, facing)
-                .with(LuxCapacitorBlock.WATERLOGGED, Boolean.valueOf(ifluidstate.isTagged(FluidTags.WATER) && ifluidstate.getLevel() == 8));
+        FluidState ifluidstate = level.getFluidState(pos);
+        return MPSObjects.LUX_CAPACITOR_BLOCK.get().defaultBlockState().setValue(DirectionalBlock.FACING, facing)
+                .setValue(LuxCapacitorBlock.WATERLOGGED, Boolean.valueOf(ifluidstate.is(FluidTags.WATER) && ifluidstate.getAmount() == 8));
     }
 
     @Override
-    protected void onImpact(RayTraceResult hitResult) {
+    protected void onHit(RayTraceResult hitResult) {
         if (color == null) {
             color = LuxCapacitorBlock.defaultColor;
         }
 
         if (this.isAlive() && hitResult.getType() == RayTraceResult.Type.BLOCK) {
             BlockRayTraceResult blockRayTrace = (BlockRayTraceResult)hitResult;
-            Direction dir = blockRayTrace.getFace().getOpposite();
-            int x = blockRayTrace.getPos().getX() - dir.getXOffset();
-            int y = blockRayTrace.getPos().getY() - dir.getYOffset();
-            int z = blockRayTrace.getPos().getZ() - dir.getZOffset();
+            Direction dir = blockRayTrace.getDirection().getOpposite();
+            int x = blockRayTrace.getBlockPos().getX() - dir.getStepX();
+            int y = blockRayTrace.getBlockPos().getY() - dir.getStepY();
+            int z = blockRayTrace.getBlockPos().getZ() - dir.getStepZ();
             if (y > 0) {
                 BlockPos blockPos = new BlockPos(x, y, z);
-                if (MPSObjects.LUX_CAPACITOR_BLOCK.get().getDefaultState().isValidPosition(world, blockPos)) {
-                    BlockState blockState = getBlockState(blockPos, blockRayTrace.getFace());
-                    world.setBlockState(blockPos, blockState);
-                    world.setTileEntity(blockPos, new LuxCapacitorTileEntity(color));
+                if (MPSObjects.LUX_CAPACITOR_BLOCK.get().defaultBlockState().canSurvive(level, blockPos)) {
+                    BlockState blockState = getBlockState(blockPos, blockRayTrace.getDirection());
+                    level.setBlockAndUpdate(blockPos, blockState);
+                    level.setBlockEntity(blockPos, new LuxCapacitorTileEntity(color));
                 } else {
                     for (Direction facing : Direction.values()) {
-                        if (MPSObjects.LUX_CAPACITOR_BLOCK.get().getDefaultState().with(LuxCapacitorBlock.FACING, facing).isValidPosition(world, blockPos)) {
+                        if (MPSObjects.LUX_CAPACITOR_BLOCK.get().defaultBlockState().setValue(LuxCapacitorBlock.FACING, facing).canSurvive(level, blockPos)) {
                             BlockState blockState = getBlockState(blockPos, facing);
-                            world.setBlockState(blockPos, blockState);
-                            world.setTileEntity(blockPos, new LuxCapacitorTileEntity(color));
+                            level.setBlockAndUpdate(blockPos, blockState);
+                            level.setBlockEntity(blockPos, new LuxCapacitorTileEntity(color));
                             break;
                         }
                     }
@@ -129,24 +129,24 @@ public class LuxCapacitorEntity extends ThrowableEntity implements IEntityAdditi
      * Gets the amount of gravity to apply to the thrown entity with each tick.
      */
     @Override
-    protected float getGravityVelocity() {
+    protected float getGravity() {
         return 0;
     }
 
     @Override
-    protected void registerData() {
+    protected void defineSynchedData() {
 
     }
 
     @Override
-    public IPacket<?> createSpawnPacket() {
+    public IPacket<?> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
 
     @Override
     public void tick() {
         super.tick();
-        if (this.ticksExisted > 400) {
+        if (this.tickCount > 400) {
             this.remove();
         }
     }

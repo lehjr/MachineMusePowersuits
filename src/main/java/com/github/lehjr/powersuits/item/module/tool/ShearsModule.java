@@ -75,10 +75,10 @@ import java.util.concurrent.Callable;
 public class ShearsModule extends AbstractPowerModule {
     static final ArrayList<Material> materials =
             new ArrayList<Material>() {{
-                add(Material.PLANTS);
-                add(Material.OCEAN_PLANT);
-                add(Material.TALL_PLANTS);
-                add(Material.SEA_GRASS);
+                add(Material.PLANT);
+                add(Material.WATER_PLANT);
+                add(Material.REPLACEABLE_PLANT);
+                add(Material.REPLACEABLE_WATER_PLANT);
                 add(Material.WEB);
                 add(Material.WOOL);
                 add(Material.LEAVES);
@@ -120,16 +120,16 @@ public class ShearsModule extends AbstractPowerModule {
 
             @Override
             public boolean onBlockDestroyed(ItemStack itemStack, World worldIn, BlockState state, BlockPos pos, LivingEntity entityLiving, int playerEnergy) {
-                if (entityLiving.world.isRemote()) {
+                if (entityLiving.level.isClientSide()) {
                     return false;
                 }
                 Block block = state.getBlock();
 
                 if (block instanceof IForgeShearable && ElectricItemUtils.getPlayerEnergy(((PlayerEntity) entityLiving)) > getEnergyUsage()) {
                     IForgeShearable target = (IForgeShearable) block;
-                    if (target.isShearable(itemStack, entityLiving.world, pos)) {
+                    if (target.isShearable(itemStack, entityLiving.level, pos)) {
                         // default List<ItemStack> onSheared(@Nullable PlayerEntity player, @Nonnull ItemStack item, World world, BlockPos pos, int fortune)
-                        List<ItemStack> drops = target.onSheared((PlayerEntity)entityLiving, itemStack, entityLiving.world, pos, EnchantmentHelper.getEnchantmentLevel(Enchantments.FORTUNE, itemStack));
+                        List<ItemStack> drops = target.onSheared((PlayerEntity)entityLiving, itemStack, entityLiving.level, pos, EnchantmentHelper.getItemEnchantmentLevel(Enchantments.BLOCK_FORTUNE, itemStack));
                         Random rand = new Random();
 
                         for (ItemStack stack : drops) {
@@ -137,12 +137,12 @@ public class ShearsModule extends AbstractPowerModule {
                             double d = (double) (rand.nextFloat() * f) + (double) (1.0F - f) * 0.5D;
                             double d1 = (double) (rand.nextFloat() * f) + (double) (1.0F - f) * 0.5D;
                             double d2 = (double) (rand.nextFloat() * f) + (double) (1.0F - f) * 0.5D;
-                            ItemEntity entityitem = new ItemEntity(entityLiving.world, (double) pos.getX() + d, (double) pos.getY() + d1, (double) pos.getZ() + d2, stack);
-                            entityitem.setDefaultPickupDelay(); // this is 10
-                            entityitem.world.addEntity(entityitem);
+                            ItemEntity entityitem = new ItemEntity(entityLiving.level, (double) pos.getX() + d, (double) pos.getY() + d1, (double) pos.getZ() + d2, stack);
+                            entityitem.setDefaultPickUpDelay(); // this is 10
+                            entityitem.level.addFreshEntity(entityitem);
                         }
                         ElectricItemUtils.drainPlayerEnergy((PlayerEntity) entityLiving, getEnergyUsage());
-                        ((PlayerEntity) (entityLiving)).addStat(block.getRegistryName());
+                        ((PlayerEntity) (entityLiving)).awardStat(block.getRegistryName());
                         return true;
                     }
                 }
@@ -166,31 +166,31 @@ public class ShearsModule extends AbstractPowerModule {
 
             @Override
             public ActionResult onItemRightClick(ItemStack itemStackIn, World worldIn, PlayerEntity playerIn, Hand hand) {
-                if (playerIn.world.isRemote) {
-                    return ActionResult.resultPass(itemStackIn);
+                if (playerIn.level.isClientSide) {
+                    return ActionResult.pass(itemStackIn);
                 }
 
-                RayTraceResult rayTraceResult = rayTrace(playerIn.world, playerIn, RayTraceContext.FluidMode.SOURCE_ONLY);
+                RayTraceResult rayTraceResult = getPlayerPOVHitResult(playerIn.level, playerIn, RayTraceContext.FluidMode.SOURCE_ONLY);
                 if (rayTraceResult != null && rayTraceResult instanceof EntityRayTraceResult
                         && ((EntityRayTraceResult) rayTraceResult).getEntity() instanceof IForgeShearable) {
                     IForgeShearable target = (IForgeShearable) ((EntityRayTraceResult) rayTraceResult).getEntity();
                     Entity entity = ((EntityRayTraceResult) rayTraceResult).getEntity();
-                    if (target.isShearable(itemStackIn, entity.world, entity.getPosition())) {
-                        List<ItemStack> drops = target.onSheared(playerIn, itemStackIn, entity.world, entity.getPosition(), 0);
+                    if (target.isShearable(itemStackIn, entity.level, entity.blockPosition())) {
+                        List<ItemStack> drops = target.onSheared(playerIn, itemStackIn, entity.level, entity.blockPosition(), 0);
                         Random rand = new Random();
                         for (ItemStack drop : drops) {
-                            ItemEntity ent = entity.entityDropItem(drop, 1.0F);
-                            Vector3d motion = ent.getMotion();
-                            ent.setMotion(
+                            ItemEntity ent = entity.spawnAtLocation(drop, 1.0F);
+                            Vector3d motion = ent.getDeltaMovement();
+                            ent.setDeltaMovement(
                                     motion.x + (rand.nextFloat() - rand.nextFloat()) * 0.1F,
                                     motion.y + rand.nextFloat() * 0.05F,
                                     motion.z + (rand.nextFloat() - rand.nextFloat()) * 0.1F);
                         }
                         ElectricItemUtils.drainPlayerEnergy(playerIn, getEnergyUsage());
-                        return ActionResult.resultSuccess(itemStackIn);
+                        return ActionResult.success(itemStackIn);
                     }
                 }
-                return ActionResult.resultPass(itemStackIn);
+                return ActionResult.pass(itemStackIn);
             }
         }
     }

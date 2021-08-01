@@ -109,7 +109,7 @@ public class DiamondPickUpgradeModule extends AbstractPowerModule {
                             canHarvest.set(pickaxeModule.getCapability(PowerModuleCapability.POWER_MODULE).map(m -> {
                                 if (m instanceof IBlockBreakingModule) {
                                     return !((IBlockBreakingModule) m).canHarvestBlock(powerFist, state, player, pos, playerEnergy) &&
-                                            playerEnergy >= energyUsage && ToolHelpers.isToolEffective(player.getEntityWorld(), pos, getEmulatedTool());
+                                            playerEnergy >= energyUsage && ToolHelpers.isToolEffective(player.getCommandSenderWorld(), pos, getEmulatedTool());
                                 }
                                 return false;
                             }).orElse(false));
@@ -150,7 +150,7 @@ public class DiamondPickUpgradeModule extends AbstractPowerModule {
             @Override
             public void handleBreakSpeed(PlayerEvent.BreakSpeed event) {
                 PlayerEntity player = event.getPlayer();
-                ItemStack powerFist = player.getHeldItemMainhand();
+                ItemStack powerFist = player.getMainHandItem();
                 AtomicDouble newSpeed = new AtomicDouble(event.getNewSpeed());
                 powerFist.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(modeChanging -> {
                     if (modeChanging instanceof IModeChangingItem) {

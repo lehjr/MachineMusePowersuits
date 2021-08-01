@@ -94,7 +94,7 @@ public class LuxCapacitorModule extends AbstractPowerModule {
             public ActionResult onItemRightClick(ItemStack itemStackIn, World worldIn, PlayerEntity playerIn, Hand hand) {
                 float energyConsumption = getEnergyUsage();
                 if (ElectricItemUtils.getPlayerEnergy(playerIn) > energyConsumption) {
-                    if (!worldIn.isRemote) {
+                    if (!worldIn.isClientSide) {
                         MuseHeatUtils.heatPlayer(playerIn, energyConsumption / 500);
 
                         ElectricItemUtils.drainPlayerEnergy(playerIn, (int) energyConsumption);
@@ -105,11 +105,11 @@ public class LuxCapacitorModule extends AbstractPowerModule {
                         float alpha = (float) applyPropertyModifiers(MPSConstants.OPACITY);
 
                         LuxCapacitorEntity luxCapacitor = new LuxCapacitorEntity(worldIn, playerIn, new Colour(red, green, blue, alpha));
-                        worldIn.addEntity(luxCapacitor);
+                        worldIn.addFreshEntity(luxCapacitor);
                     }
-                    return ActionResult.resultSuccess(itemStackIn);
+                    return ActionResult.success(itemStackIn);
                 }
-                return ActionResult.resultPass(itemStackIn);
+                return ActionResult.pass(itemStackIn);
             }
 
             @Override

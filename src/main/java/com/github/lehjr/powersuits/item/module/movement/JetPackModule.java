@@ -106,7 +106,7 @@ public class JetPackModule extends AbstractPowerModule {
 
                 PlayerMovementInputWrapper.PlayerMovementInput playerInput = PlayerMovementInputWrapper.get(player);
 
-                ItemStack helmet = player.getItemStackFromSlot(EquipmentSlotType.HEAD);
+                ItemStack helmet = player.getItemBySlot(EquipmentSlotType.HEAD);
                 boolean hasFlightControl = helmet.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).map(m->
                         m instanceof IModularItem && ((IModularItem) m).isModuleOnline(MPSRegistryNames.FLIGHT_CONTROL_MODULE_REGNAME)).orElse(false);
                 double jetEnergy = 0;
@@ -117,23 +117,23 @@ public class JetPackModule extends AbstractPowerModule {
                 if (jetEnergy < ElectricItemUtils.getPlayerEnergy(player)) {
                     if (hasFlightControl && thrust > 0) {
                         thrust = MovementManager.INSTANCE.thrust(player, thrust, true);
-                        if (player.world.isRemote && NuminaSettings.useSounds()) {
+                        if (player.level.isClientSide && NuminaSettings.useSounds()) {
                             Musique.playerSound(player, MPSSoundDictionary.JETPACK, SoundCategory.PLAYERS, (float) (thrust * 6.25), 1.0f, true);
                         }
                         ElectricItemUtils.drainPlayerEnergy(player, (int) (thrust * jetEnergy));
                     } else if (playerInput.jumpKey) {//&& player.motionY < 0.5) {
                         thrust = MovementManager.INSTANCE.thrust(player, thrust, false);
-                        if (player.world.isRemote && NuminaSettings.useSounds()) {
+                        if (player.level.isClientSide && NuminaSettings.useSounds()) {
                             Musique.playerSound(player, MPSSoundDictionary.JETPACK, SoundCategory.PLAYERS, (float) (thrust * 6.25), 1.0f, true);
                         }
                         ElectricItemUtils.drainPlayerEnergy(player, (int) (thrust * jetEnergy));
                     } else {
-                        if (player.world.isRemote && NuminaSettings.useSounds()) {
+                        if (player.level.isClientSide && NuminaSettings.useSounds()) {
                             Musique.stopPlayerSound(player, MPSSoundDictionary.JETPACK);
                         }
                     }
                 } else {
-                    if (player.world.isRemote && NuminaSettings.useSounds()) {
+                    if (player.level.isClientSide && NuminaSettings.useSounds()) {
                         Musique.stopPlayerSound(player, MPSSoundDictionary.JETPACK);
                     }
                 }
@@ -141,7 +141,7 @@ public class JetPackModule extends AbstractPowerModule {
 
             @Override
             public void onPlayerTickInactive(PlayerEntity player, ItemStack item) {
-                if (player.world.isRemote && NuminaSettings.useSounds()) {
+                if (player.level.isClientSide && NuminaSettings.useSounds()) {
                     Musique.stopPlayerSound(player, MPSSoundDictionary.JETPACK);
                 }
             }

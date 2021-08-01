@@ -91,9 +91,9 @@ public abstract class AbstractElectricItemArmor extends ArmorItem {
 
     public AbstractElectricItemArmor(EquipmentSlotType slots) {
         super(MPAArmorMaterial.EMPTY_ARMOR, slots, new Item.Properties()
-                .maxStackSize(1)
-                .group(MPSObjects.creativeTab)
-                .maxDamage(0)
+                .stacksTo(1)
+                .tab(MPSObjects.creativeTab)
+                .durability(0)
                 .setNoRepair());
     }
 
@@ -213,8 +213,8 @@ public abstract class AbstractElectricItemArmor extends ArmorItem {
         return armor.getCapability(ModelSpecNBTCapability.RENDER).map(spec->
                 spec instanceof IArmorModelSpecNBT ?
                         ((IArmorModelSpecNBT) spec).getArmorTexture() :
-                        AtlasTexture.LOCATION_BLOCKS_TEXTURE.toString())
-                .orElse(AtlasTexture.LOCATION_BLOCKS_TEXTURE.toString());
+                        AtlasTexture.LOCATION_BLOCKS.toString())
+                .orElse(AtlasTexture.LOCATION_BLOCKS.toString());
     }
 
     /**
@@ -240,8 +240,8 @@ public abstract class AbstractElectricItemArmor extends ArmorItem {
             PlayerEntity player = (PlayerEntity) entityLiving;
 //            // only triggered by this client's player looking at their own equipped armor
             if (renderTag == null || renderTag.isEmpty() && player == Minecraft.getInstance().player) {
-                for (int i = 0; i < player.inventory.getSizeInventory(); i++) {
-                    if (player.inventory.getStackInSlot(i).equals(itemStack)) {
+                for (int i = 0; i < player.inventory.getContainerSize(); i++) {
+                    if (player.inventory.getItem(i).equals(itemStack)) {
                         renderTag = spec.getDefaultRenderTag();
                         if (renderTag != null && !renderTag.isEmpty()) {
                             spec.setRenderTag(renderTag, NuminaConstants.TAG_RENDER);
@@ -258,7 +258,7 @@ public abstract class AbstractElectricItemArmor extends ArmorItem {
             }
 
             BipedModel model = ArmorModelInstance.getInstance();
-            ItemStack chestplate = entityLiving.getItemStackFromSlot(EquipmentSlotType.CHEST);
+            ItemStack chestplate = entityLiving.getItemBySlot(EquipmentSlotType.CHEST);
             if (chestplate.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).map(iItemHandler ->
                     iItemHandler instanceof IModularItem && ((IModularItem) iItemHandler)
                             .isModuleOnline(MPSRegistryNames.ACTIVE_CAMOUFLAGE_MODULE_REGNAME)).orElse(false)) {
@@ -275,9 +275,9 @@ public abstract class AbstractElectricItemArmor extends ArmorItem {
 
     @OnlyIn(Dist.CLIENT)
     @Override
-    public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+    public void appendHoverText(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
         if (worldIn != null) {
-            AdditionalInfo.addInformation(stack, worldIn, tooltip, flagIn);
+            AdditionalInfo.appendHoverText(stack, worldIn, tooltip, flagIn);
         }
     }
 
@@ -300,7 +300,7 @@ public abstract class AbstractElectricItemArmor extends ArmorItem {
     }
 
     @Override
-    public boolean isDamageable() {
+    public boolean canBeDepleted() {
         return false;
     }
 

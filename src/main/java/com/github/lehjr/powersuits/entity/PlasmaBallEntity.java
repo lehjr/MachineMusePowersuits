@@ -48,9 +48,9 @@ import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 import net.minecraftforge.fml.network.NetworkHooks;
 
 public class PlasmaBallEntity extends ThrowableEntity implements IEntityAdditionalSpawnData {
-    private static final DataParameter<Float> CHARGE_PERCENT = EntityDataManager.createKey(PlasmaBallEntity.class, DataSerializers.FLOAT);
-    private static final DataParameter<Float> EXPLOSIVENESS = EntityDataManager.createKey(PlasmaBallEntity.class, DataSerializers.FLOAT);
-    private static final DataParameter<Float> DAMAGINESS = EntityDataManager.createKey(PlasmaBallEntity.class, DataSerializers.FLOAT);
+    private static final DataParameter<Float> CHARGE_PERCENT = EntityDataManager.defineId(PlasmaBallEntity.class, DataSerializers.FLOAT);
+    private static final DataParameter<Float> EXPLOSIVENESS = EntityDataManager.defineId(PlasmaBallEntity.class, DataSerializers.FLOAT);
+    private static final DataParameter<Float> DAMAGINESS = EntityDataManager.defineId(PlasmaBallEntity.class, DataSerializers.FLOAT);
 
     public PlasmaBallEntity(EntityType<? extends PlasmaBallEntity> entityType, World world) {
         super(entityType, world);
@@ -65,13 +65,13 @@ public class PlasmaBallEntity extends ThrowableEntity implements IEntityAddition
      */
     public PlasmaBallEntity(World world, LivingEntity shootingEntity, float finalExplosiveness, float finalDamaginess, float chargePercent) {
         super(MPSObjects.PLASMA_BALL_ENTITY_TYPE.get(), world);
-        this.setShooter(shootingEntity);
+        this.setOwner(shootingEntity);
 
-        this.dataManager.set(CHARGE_PERCENT, chargePercent);
-        this.dataManager.set(EXPLOSIVENESS, finalExplosiveness);
-        this.dataManager.set(DAMAGINESS, finalDamaginess);
+        this.entityData.set(CHARGE_PERCENT, chargePercent);
+        this.entityData.set(EXPLOSIVENESS, finalExplosiveness);
+        this.entityData.set(DAMAGINESS, finalDamaginess);
 
-        Vector3d direction = shootingEntity.getLookVec().normalize();
+        Vector3d direction = shootingEntity.getLookAngle().normalize();
         double radius = chargePercent;
         double xoffset = 1.3f + radius - direction.y * shootingEntity.getEyeHeight();
         double yoffset = -.2;
@@ -79,40 +79,40 @@ public class PlasmaBallEntity extends ThrowableEntity implements IEntityAddition
         double horzScale = Math.sqrt(direction.x * direction.x + direction.z * direction.z);
         double horzx = direction.x / horzScale;
         double horzz = direction.z / horzScale;
-        this.setPosition(
+        this.setPos(
                 // x
-                (shootingEntity.getPosX() + direction.x * xoffset - direction.y * horzx * yoffset - horzz * zoffset),
+                (shootingEntity.getX() + direction.x * xoffset - direction.y * horzx * yoffset - horzz * zoffset),
                 // y
-                (shootingEntity.getPosY() + shootingEntity.getEyeHeight() + direction.y * xoffset + (1 - Math.abs(direction.y)) * yoffset),
+                (shootingEntity.getY() + shootingEntity.getEyeHeight() + direction.y * xoffset + (1 - Math.abs(direction.y)) * yoffset),
                 //z
-                (shootingEntity.getPosZ() + direction.z * xoffset - direction.y * horzz * yoffset + horzx * zoffset)
+                (shootingEntity.getZ() + direction.z * xoffset - direction.y * horzz * yoffset + horzx * zoffset)
         );
 
-        this.setMotion(direction);
-        this.setBoundingBox(new AxisAlignedBB(getPosX() - radius, getPosY() - radius, getPosZ()- radius, getPosX() + radius, getPosY() + radius, getPosZ() + radius));
+        this.setDeltaMovement(direction);
+        this.setBoundingBox(new AxisAlignedBB(getX() - radius, getY() - radius, getZ()- radius, getX() + radius, getY() + radius, getZ() + radius));
     }
 
     @Override
-    protected void registerData() {
-        dataManager.register(CHARGE_PERCENT, 0F);
-        dataManager.register(EXPLOSIVENESS, 0F);
-        dataManager.register(DAMAGINESS, 0F);
+    protected void defineSynchedData() {
+        entityData.define(CHARGE_PERCENT, 0F);
+        entityData.define(EXPLOSIVENESS, 0F);
+        entityData.define(DAMAGINESS, 0F);
     }
 
     @Override
     public void baseTick() {
         super.baseTick();
-        if (this.ticksExisted > this.getMaxLifetime()) {
+        if (this.tickCount > this.getMaxLifetime()) {
             this.remove();
         }
 
         if (this.isInWater()) {
             this.remove();
             for (int i = 0; i <  getChargePercent() * 50F; ++i) {
-                this.world.addParticle(ParticleTypes.FLAME,
-                        this.getPosX() + Math.random() * 1,
-                        this.getPosY() + Math.random() * 1,
-                        this.getPosZ() + Math.random() * 0.1,
+                this.level.addParticle(ParticleTypes.FLAME,
+                        this.getX() + Math.random() * 1,
+                        this.getY() + Math.random() * 1,
+                        this.getZ() + Math.random() * 0.1,
                         0.0D, 0.0D, 0.0D);
             }
         }
@@ -127,7 +127,7 @@ public class PlasmaBallEntity extends ThrowableEntity implements IEntityAddition
      * walk on. used for spiders and wolves to prevent them from trampling crops
      */
     @Override
-    protected boolean canTriggerWalking() {
+    protected boolean isMovementNoisy() {
         return false;
     }
 
@@ -136,17 +136,17 @@ public class PlasmaBallEntity extends ThrowableEntity implements IEntityAddition
      * Gets the amount of gravity to apply to the thrown entity with each tick.
      */
     @Override
-    protected float getGravityVelocity() {
+    protected float getGravity() {
         return 0;
     }
 
     @Override
-    protected void onImpact(RayTraceResult result) {
+    protected void onHit(RayTraceResult result) {
         switch (result.getType()) {
             case ENTITY:
                 EntityRayTraceResult rayTraceResult = (EntityRayTraceResult) result;
-                if (rayTraceResult.getEntity() != null && rayTraceResult.getEntity() != getShooter()) {
-                    rayTraceResult.getEntity().attackEntityFrom(DamageSource.causeThrownDamage(this, getShooter()), this.dataManager.get(DAMAGINESS));
+                if (rayTraceResult.getEntity() != null && rayTraceResult.getEntity() != getOwner()) {
+                    rayTraceResult.getEntity().hurt(DamageSource.thrown(this, getOwner()), this.entityData.get(DAMAGINESS));
                 }
                 break;
             case BLOCK:
@@ -154,25 +154,25 @@ public class PlasmaBallEntity extends ThrowableEntity implements IEntityAddition
             default:
                 break;
         }
-        if (!this.world.isRemote) { // Dist.SERVER
-            boolean flag = this.world.getGameRules().getBoolean(GameRules.MOB_GRIEFING);
+        if (!this.level.isClientSide) { // Dist.SERVER
+            boolean flag = this.level.getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING);
             // FIXME: this is probably all wrong
-            this.world.createExplosion(this, this.getPosX(), this.getPosY(), this.getPosZ(), 3 * this.dataManager.get(EXPLOSIVENESS), flag ? Explosion.Mode.DESTROY : Explosion.Mode.BREAK);
+            this.level.explode(this, this.getX(), this.getY(), this.getZ(), 3 * this.entityData.get(EXPLOSIVENESS), flag ? Explosion.Mode.DESTROY : Explosion.Mode.BREAK);
         }
         for (int var3 = 0; var3 < 8; ++var3) {
-            this.world.addParticle(ParticleTypes.FLAME,
-                    this.getPosX() + Math.random() * 0.1,
-                    this.getPosY() + Math.random() * 0.1,
-                    this.getPosZ() + Math.random() * 0.1,
+            this.level.addParticle(ParticleTypes.FLAME,
+                    this.getX() + Math.random() * 0.1,
+                    this.getY() + Math.random() * 0.1,
+                    this.getZ() + Math.random() * 0.1,
                     0.0D, 0.0D, 0.0D);
         }
-        if (!this.world.isRemote) {
+        if (!this.level.isClientSide) {
             this.remove();
         }
     }
 
     public float getChargePercent() {
-        return this.dataManager.get(CHARGE_PERCENT);
+        return this.entityData.get(CHARGE_PERCENT);
     }
 
     // FIXME!!! using data manager AND spawnData?
@@ -186,9 +186,9 @@ public class PlasmaBallEntity extends ThrowableEntity implements IEntityAddition
      */
     @Override
     public void writeSpawnData(PacketBuffer buffer) {
-        buffer.writeFloat(this.dataManager.get(CHARGE_PERCENT));
-        buffer.writeFloat(this.dataManager.get(EXPLOSIVENESS));
-        buffer.writeFloat(this.dataManager.get(DAMAGINESS));
+        buffer.writeFloat(this.entityData.get(CHARGE_PERCENT));
+        buffer.writeFloat(this.entityData.get(EXPLOSIVENESS));
+        buffer.writeFloat(this.entityData.get(DAMAGINESS));
     }
 
     /**
@@ -199,13 +199,13 @@ public class PlasmaBallEntity extends ThrowableEntity implements IEntityAddition
      */
     @Override
     public void readSpawnData(PacketBuffer additionalData) {
-        this.dataManager.set(CHARGE_PERCENT, additionalData.readFloat());
-        this.dataManager.set(EXPLOSIVENESS, additionalData.readFloat());
-        this.dataManager.set(DAMAGINESS, additionalData.readFloat());
+        this.entityData.set(CHARGE_PERCENT, additionalData.readFloat());
+        this.entityData.set(EXPLOSIVENESS, additionalData.readFloat());
+        this.entityData.set(DAMAGINESS, additionalData.readFloat());
     }
 
     @Override
-    public IPacket<?> createSpawnPacket() {
+    public IPacket<?> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
 }

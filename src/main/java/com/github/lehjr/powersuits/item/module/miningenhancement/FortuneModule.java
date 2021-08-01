@@ -100,7 +100,7 @@ public class FortuneModule extends AbstractPowerModule {
              */
             @Override
             public boolean onBlockStartBreak(ItemStack itemstack, BlockPos pos, PlayerEntity player) {
-                if (!player.world.isRemote) {
+                if (!player.level.isClientSide) {
                     if (getEnergyUsage() > ElectricItemUtils.getPlayerEnergy(player))
                         enchantmentModule.removeEnchantment(itemstack);
                     else
@@ -116,7 +116,7 @@ public class FortuneModule extends AbstractPowerModule {
 
             @Override
             public Enchantment getEnchantment() {
-                return Enchantments.FORTUNE;
+                return Enchantments.BLOCK_FORTUNE;
             }
 
             @Override

@@ -57,7 +57,7 @@ public class LuxCapacitorEntityRenderer extends NuminaEntityRenderer<LuxCapacito
 
     @Nullable
     @Override
-    public ResourceLocation getEntityTexture(LuxCapacitorEntity luxCapacitorEntity) {
+    public ResourceLocation getTextureLocation(LuxCapacitorEntity luxCapacitorEntity) {
         return null;
     }
 
@@ -72,23 +72,23 @@ public class LuxCapacitorEntityRenderer extends NuminaEntityRenderer<LuxCapacito
 
     @Override
     public void render(LuxCapacitorEntity entityIn, float entityYaw, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn) {
-        matrixStackIn.push();
+        matrixStackIn.pushPose();
         ItemStack itemstack = getStack(entityIn.color);
-        int i = itemstack.isEmpty() ? 187 : Item.getIdFromItem(itemstack.getItem()) + itemstack.getDamage();
+        int i = itemstack.isEmpty() ? 187 : Item.getId(itemstack.getItem()) + itemstack.getDamageValue();
         this.random.setSeed((long) i);
-        IBakedModel ibakedmodel = Minecraft.getInstance().getItemRenderer().getItemModelWithOverrides(itemstack, entityIn.world, (LivingEntity) null);
+        IBakedModel ibakedmodel = Minecraft.getInstance().getItemRenderer().getModel(itemstack, entityIn.level, (LivingEntity) null);
         int time = (int) System.currentTimeMillis() % 360;
-        matrixStackIn.rotate(TransformationHelper.quatFromXYZ(new Vector3f(0, time / 2, 0), true));
+        matrixStackIn.mulPose(TransformationHelper.quatFromXYZ(new Vector3f(0, time / 2, 0), true));
         matrixStackIn.scale(1.8F, 1.8F, 1.8F);
 
         boolean flag = ibakedmodel.isGui3d();
-        matrixStackIn.push();
-        Minecraft.getInstance().getItemRenderer().renderItem(itemstack, ItemCameraTransforms.TransformType.GROUND, false, matrixStackIn, bufferIn, packedLightIn, OverlayTexture.NO_OVERLAY, ibakedmodel);
-        matrixStackIn.pop();
+        matrixStackIn.pushPose();
+        Minecraft.getInstance().getItemRenderer().render(itemstack, ItemCameraTransforms.TransformType.GROUND, false, matrixStackIn, bufferIn, packedLightIn, OverlayTexture.NO_OVERLAY, ibakedmodel);
+        matrixStackIn.popPose();
         if (!flag) {
             matrixStackIn.translate(0.0, 0.0, 0.09375F);
         }
-        matrixStackIn.pop();
+        matrixStackIn.popPose();
         super.render(entityIn, entityYaw, partialTicks, matrixStackIn, bufferIn, packedLightIn);
     }
 }

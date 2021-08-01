@@ -98,11 +98,11 @@ public class SilkTouchModule extends AbstractPowerModule {
              */
             @Override
             public boolean onBlockStartBreak(ItemStack itemstack, BlockPos pos, PlayerEntity player) {
-                if (!player.world.isRemote) {
+                if (!player.level.isClientSide) {
                     if (getEnergyUsage() > ElectricItemUtils.getPlayerEnergy(player))
                         removeEnchantment(itemstack);
                     else {
-                        Block block = player.world.getBlockState(pos).getBlock();
+                        Block block = player.level.getBlockState(pos).getBlock();
                         // fixme!!
 
 //                        if (block.canSilkHarvest(player.world, pos, player.world.getBlockState(pos), player)) {

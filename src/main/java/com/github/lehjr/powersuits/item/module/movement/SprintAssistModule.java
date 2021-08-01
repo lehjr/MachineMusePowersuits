@@ -102,10 +102,10 @@ public class SprintAssistModule extends AbstractPowerModule {
 
             @Override
             public void onPlayerTickActive(PlayerEntity player, @Nonnull ItemStack itemStack) {
-                if (player.abilities.isFlying || player.isPassenger() || player.isElytraFlying())
+                if (player.abilities.flying || player.isPassenger() || player.isFallFlying())
                     onPlayerTickInactive(player, itemStack);
 
-                double horzMovement = player.distanceWalkedModified - player.prevDistanceWalkedModified;
+                double horzMovement = player.walkDist - player.walkDistO;
                 double totalEnergy = ElectricItemUtils.getPlayerEnergy(player);
                 if (horzMovement > 0) { // stop doing drain calculations when player hasn't moved
                     if (player.isSprinting()) {
@@ -116,8 +116,8 @@ public class SprintAssistModule extends AbstractPowerModule {
                             double exhaustionComp = applyPropertyModifiers(MPSConstants.FOOD_COMPENSATION);
                             ElectricItemUtils.drainPlayerEnergy(player, (int) (sprintCost * horzMovement * 5));
                             MovementManager.INSTANCE.setMovementModifier(itemStack, sprintMultiplier, player);
-                            player.getFoodStats().addExhaustion((float) (-0.01 * exhaustion * exhaustionComp));
-                            player.jumpMovementFactor = player.getAIMoveSpeed() * .2f;
+                            player.getFoodData().addExhaustion((float) (-0.01 * exhaustion * exhaustionComp));
+                            player.flyingSpeed = player.getSpeed() * .2f;
                         }
                     } else {
                         double cost = applyPropertyModifiers(MPSConstants.WALKING_ENERGY_CONSUMPTION);
@@ -125,7 +125,7 @@ public class SprintAssistModule extends AbstractPowerModule {
                             double walkMultiplier = applyPropertyModifiers(MPSConstants.WALKING_SPEED_MULTIPLIER);
                             ElectricItemUtils.drainPlayerEnergy(player, (int) (cost * horzMovement * 5));
                             MovementManager.INSTANCE.setMovementModifier(itemStack, walkMultiplier, player);
-                            player.jumpMovementFactor = player.getAIMoveSpeed() * .2f;
+                            player.flyingSpeed = player.getSpeed() * .2f;
                         }
                     }
                 }

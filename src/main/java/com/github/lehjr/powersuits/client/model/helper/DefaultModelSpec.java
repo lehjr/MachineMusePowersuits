@@ -59,7 +59,7 @@ public class DefaultModelSpec {
     public static CompoundNBT makeModelPrefs(@Nonnull ItemStack stack) {
         if (!stack.isEmpty()) {
             if (stack.getItem() instanceof AbstractElectricItemArmor)
-                return makeModelPrefs(stack, ((AbstractElectricItemArmor) stack.getItem()).getEquipmentSlot());
+                return makeModelPrefs(stack, ((AbstractElectricItemArmor) stack.getItem()).getSlot());
             if (stack.getItem() instanceof PowerFist)
                 return makeModelPrefs(stack, EquipmentSlotType.MAINHAND);
         }

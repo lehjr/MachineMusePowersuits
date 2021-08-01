@@ -109,15 +109,15 @@ public class ClientTickHandler {
 
         if (event.phase == TickEvent.Phase.END) {
             PlayerEntity player = minecraft.player;
-            if (player != null && minecraft.isGuiEnabled() && minecraft.currentScreen == null) {
+            if (player != null && minecraft.renderNames() && minecraft.screen == null) {
                 Minecraft mc = minecraft;
-                MainWindow screen = mc.getMainWindow();
+                MainWindow screen = mc.getWindow();
 
                 // Misc Overlay Items ---------------------------------------------------------------------------------
                 AtomicInteger index = new AtomicInteger(0);
 
                 // Helmet modules with overlay
-                player.getItemStackFromSlot(EquipmentSlotType.HEAD).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
+                player.getItemBySlot(EquipmentSlotType.HEAD).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
                     if (!(h instanceof IModularItem)) {
                         return;
                     }
@@ -137,7 +137,7 @@ public class ClientTickHandler {
                     ItemStack clock = ((IModularItem) h).getOnlineModuleOrEmpty(Items.CLOCK.getRegistryName());
                     if (!clock.isEmpty()) {
                         String ampm;
-                        long time = player.world.getDayTime();
+                        long time = player.level.getDayTime();
                         long hour = ((time % 24000) / 1000);
                         if (MPSSettings.use24HourClock()) {
                             if (hour < 19) {
@@ -180,8 +180,8 @@ public class ClientTickHandler {
                 });
 
                 // Meters ---------------------------------------------------------------------------------------------
-                float top = (float) screen.getScaledHeight() / 2.0F - 16F;
-                float left = screen.getScaledWidth() - 34;
+                float top = (float) screen.getGuiScaledHeight() / 2.0F - 16F;
+                float left = screen.getGuiScaledWidth() - 34;
 
                 // energy
                 float maxEnergy = ElectricItemUtils.getMaxPlayerEnergy(player);
@@ -202,7 +202,7 @@ public class ClientTickHandler {
                 AtomicReference<String> currWaterStr = new AtomicReference<>("");
                 AtomicReference<String> maxWaterStr = new AtomicReference<>("");
 
-                player.getItemStackFromSlot(EquipmentSlotType.CHEST).getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).ifPresent(fh -> {
+                player.getItemBySlot(EquipmentSlotType.CHEST).getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).ifPresent(fh -> {
                     for (int i = 0; i < fh.getTanks(); i++) {
                         maxWater.set(maxWater.get() + fh.getTankCapacity(i));
                         if (maxWater.get() > 0) {
@@ -218,8 +218,8 @@ public class ClientTickHandler {
                 // Plasma
                 AtomicReference<Float> currentPlasma = new AtomicReference<Float>(0F);
                 AtomicReference<Float> maxPlasma = new AtomicReference<Float>(0F);
-                if (player.isHandActive()) {
-                    player.getHeldItem(player.getActiveHand()).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(modechanging -> {
+                if (player.isUsingItem()) {
+                    player.getItemInHand(player.getUsedItemHand()).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(modechanging -> {
                         if (!(modechanging instanceof IModeChangingItem)) {
                             return;
                         }
@@ -231,14 +231,14 @@ public class ClientTickHandler {
                         if (!module.isEmpty()) {
                             // Plasma Cannon
                             if (module.getItem().getRegistryName().equals(MPSRegistryNames.PLASMA_CANNON_MODULE_REGNAME)) {
-                                actualCount = (maxDuration - player.getItemInUseCount());
+                                actualCount = (maxDuration - player.getUseItemRemainingTicks());
                                 currentPlasma.set(
                                         currentPlasma.get() + (actualCount > 50 ? 50 : actualCount) * 2);
                                 maxPlasma.set(maxPlasma.get() + 100F);
 
                                 // Ore Scanner or whatever
                             } else {
-                                actualCount = (maxDuration - player.getItemInUseCount());
+                                actualCount = (maxDuration - player.getUseItemRemainingTicks());
                                 currentPlasma.set(
                                         currentPlasma.get() + (actualCount > 40 ? 40 : actualCount) * 2.5F);
                                 maxPlasma.set(maxPlasma.get() + 100F);

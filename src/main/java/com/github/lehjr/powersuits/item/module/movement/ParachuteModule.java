@@ -92,11 +92,11 @@ public class ParachuteModule extends AbstractPowerModule {
                 PlayerMovementInputWrapper.PlayerMovementInput playerInput = PlayerMovementInputWrapper.get(player);
                 boolean hasGlider = false;
                 PlayerUtils.resetFloatKickTicks(player);
-                if (playerInput.sneakKey && player.getMotion().y < -0.1 && (!hasGlider || playerInput.moveForward <= 0)) {
-                    double totalVelocity = Math.sqrt(player.getMotion().x * player.getMotion().x + player.getMotion().z * player.getMotion().z + player.getMotion().y * player.getMotion().y);
+                if (playerInput.sneakKey && player.getDeltaMovement().y < -0.1 && (!hasGlider || playerInput.moveForward <= 0)) {
+                    double totalVelocity = Math.sqrt(player.getDeltaMovement().x * player.getDeltaMovement().x + player.getDeltaMovement().z * player.getDeltaMovement().z + player.getDeltaMovement().y * player.getDeltaMovement().y);
                     if (totalVelocity > 0) {
-                        Vector3d motion = player.getMotion();
-                        player.setMotion(
+                        Vector3d motion = player.getDeltaMovement();
+                        player.setDeltaMovement(
                                 motion.x * 0.1 / totalVelocity,
                                 motion.y * 0.1 / totalVelocity,
                                 motion.z * 0.1 / totalVelocity);

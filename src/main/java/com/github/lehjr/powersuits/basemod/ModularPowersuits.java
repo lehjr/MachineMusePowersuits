@@ -39,8 +39,6 @@ import com.github.lehjr.powersuits.client.control.KeybindKeyHandler;
 import com.github.lehjr.powersuits.client.event.ClientTickHandler;
 import com.github.lehjr.powersuits.client.event.ModelBakeEventHandler;
 import com.github.lehjr.powersuits.client.event.RenderEventHandler;
-import com.github.lehjr.powersuits.client.gui.dev.common.TinkerCraftingGUI;
-import com.github.lehjr.powersuits.client.gui.modding.module.TinkerTableGui;
 import com.github.lehjr.powersuits.client.render.entity.LuxCapacitorEntityRenderer;
 import com.github.lehjr.powersuits.client.render.entity.PlasmaBoltEntityRenderer;
 import com.github.lehjr.powersuits.client.render.entity.RailGunBoltRenderer;
@@ -48,6 +46,7 @@ import com.github.lehjr.powersuits.client.render.entity.SpinningBladeEntityRende
 import com.github.lehjr.powersuits.config.MPSSettings;
 import com.github.lehjr.powersuits.constants.MPSConstants;
 import com.github.lehjr.powersuits.constants.MPSRegistryNames;
+import com.github.lehjr.powersuits.dev.crafting.client.gui.craftinstallsalvage.CraftInstallSalvageGui;
 import com.github.lehjr.powersuits.event.*;
 import com.github.lehjr.powersuits.network.MPSPackets;
 import net.minecraft.client.gui.ScreenManager;
@@ -160,11 +159,15 @@ public class ModularPowersuits {
         RenderingRegistry.registerEntityRenderingHandler(MPSObjects.SPINNING_BLADE_ENTITY_TYPE.get(), SpinningBladeEntityRenderer::new);
 
 //        ScreenManager.registerFactory(MPSObjects.MODULE_CONFIG_CONTAINER_TYPE, TinkerModuleGui::new);
-        ScreenManager.registerFactory(MPSObjects.MPS_CRAFTING_CONTAINER_TYPE.get(), TinkerCraftingGUI::new);
-        ScreenManager.registerFactory(MPSObjects.TINKERTABLE_CONTAINER_TYPE.get(), TinkerTableGui::new);
+        ScreenManager.register(MPSObjects.MPS_CRAFTING_CONTAINER_TYPE.get(), CraftInstallSalvageGui::new);
 
 
-//        ClientRegistry.bindTileEntityRenderer(MPSObjects.TINKER_TABLE_TILE_TYPE.get(), TinkerTableRenderer::new);
+//        ScreenManager.register(MPSObjects.TINKERTABLE_CONTAINER_TYPE.get(), TinkerTableGui::new); // FIXME: replace with module craft/install/salvage GUI + module tweak GUI
+
+//        ScreenManager.register(NuminaObjects.NUMINA_CRAFTING_CONTAINER_TYPE.get(), TinkerCraftingGUI::new);
+
+
+//        ClientRegistry.bindTileEntityRenderer(MPSObjects.TINKER_TABLE_TILE_TYPE.get(), TinkerTableRenderer::new); //?
     }
 
     /**
@@ -211,13 +214,13 @@ public class ModularPowersuits {
             IRightClickModule rightClick = new RightClickModule(stack, EnumModuleCategory.TOOL, EnumModuleTarget.TOOLONLY, MPSSettings::getModuleConfig) {
                 @Override
                 public ActionResult onItemRightClick(ItemStack itemStackIn, World worldIn, PlayerEntity playerIn, Hand hand) {
-                    if (!worldIn.isRemote()) {
+                    if (!worldIn.isClientSide()) {
                         NetworkHooks.openGui((ServerPlayerEntity) playerIn,
                                 new SimpleNamedContainerProvider((id, inventory, player) ->
                                         new WorkbenchContainer(id, inventory)/*, IWorldPosCallable.of(worldIn, playerIn.getPosition()))*/, MPSConstants.CRAFTING_TABLE_CONTAINER_NAME));
-                        return ActionResult.resultSuccess(itemStackIn);
+                        return ActionResult.success(itemStackIn);
                     }
-                    return ActionResult.resultConsume(itemStackIn);
+                    return ActionResult.consume(itemStackIn);
                 }
             };
 

@@ -95,16 +95,16 @@ public class PlasmaCannonModule extends AbstractPowerModule {
             @Override
             public ActionResult onItemRightClick(ItemStack itemStackIn, World worldIn, PlayerEntity playerIn, Hand hand) {
                 if (hand == Hand.MAIN_HAND && ElectricItemUtils.getPlayerEnergy(playerIn) > getEnergyUsage()) {
-                    playerIn.setActiveHand(hand);
-                    return ActionResult.resultSuccess(itemStackIn);
+                    playerIn.startUsingItem(hand);
+                    return ActionResult.success(itemStackIn);
                 }
-                return ActionResult.resultPass(itemStackIn);
+                return ActionResult.pass(itemStackIn);
             }
 
             @Override
             public void onPlayerStoppedUsing(ItemStack itemStack, World worldIn, LivingEntity entityLiving, int timeLeft) {
                 int chargeTicks = (int) MuseMathUtils.clampDouble(itemStack.getUseDuration() - timeLeft, 10, 50);
-                if (!worldIn.isRemote && entityLiving instanceof PlayerEntity) {
+                if (!worldIn.isClientSide && entityLiving instanceof PlayerEntity) {
                     double chargePercent = chargeTicks * 0.02; // chargeticks/50
                     double energyConsumption = getEnergyUsage() * chargePercent;
                     PlayerEntity player = (PlayerEntity) entityLiving;
@@ -112,7 +112,7 @@ public class PlasmaCannonModule extends AbstractPowerModule {
                         float explosiveness = (float) (applyPropertyModifiers(MPSConstants.PLASMA_CANNON_EXPLOSIVENESS) * chargePercent);
                         float damagingness = (float) (applyPropertyModifiers(MPSConstants.PLASMA_CANNON_DAMAGE_AT_FULL_CHARGE) * chargePercent);
                         PlasmaBallEntity plasmaBolt = new PlasmaBallEntity(worldIn, player, explosiveness, damagingness, (float) chargePercent);
-                        if (worldIn.addEntity(plasmaBolt)) {
+                        if (worldIn.addFreshEntity(plasmaBolt)) {
                             MuseHeatUtils.heatPlayer(player, energyConsumption / 5000F * chargePercent);
                             ElectricItemUtils.drainPlayerEnergy(player, (int) energyConsumption);
                         }

@@ -37,7 +37,7 @@ public class EntityDamageEvent {
 
     @Subscribe
     public static void handleEntityDamageEvent(LivingDamageEvent event) {
-        System.out.println("entity type: "  + event.getEntity().getClass());
+//        System.out.println("entity type: "  + event.getEntity().getClass());
 
         // todo: control damage based on heat/max heat && whether or not player has full armor and is in lava
         // Note: can cancel here but damage animation/sound still happens. Only way to not have it is potion effects.

@@ -96,17 +96,17 @@ public class AdvancedSolarGeneratorModule extends AbstractPowerModule {
 
             @Override
             public void onPlayerTickActive(PlayerEntity player, ItemStack itemStack) {
-                World world = player.world;
+                World world = player.level;
                 boolean isRaining, canRain = true;
                 if (world.getGameTime() % 20 == 0) {
-                    canRain = world.getBiome(player.getPosition()).getPrecipitation() != Biome.RainType.NONE;
+                    canRain = world.getBiome(player.blockPosition()).getPrecipitation() != Biome.RainType.NONE;
                 }
                 isRaining = canRain && (world.isRaining() || world.isThundering());
-                boolean sunVisible = world.isDaytime() && !isRaining && world.canBlockSeeSky(player.getPosition().up());
-                boolean moonVisible = !world.isDaytime() && !isRaining && world.canBlockSeeSky(player.getPosition().up());
+                boolean sunVisible = world.isDay() && !isRaining && world.canSeeSkyFromBelowWater(player.blockPosition().above());
+                boolean moonVisible = !world.isDay() && !isRaining && world.canSeeSkyFromBelowWater(player.blockPosition().above());
 
-                if (!world.isRemote && world.getDimensionType().hasSkyLight() && (world.getGameTime() % 80) == 0) {
-                    float lightLevelScaled = (world.getLightFor(LightType.SKY, player.getPosition().up()) - world.getSkylightSubtracted())/15F;
+                if (!world.isClientSide && world.dimensionType().hasSkyLight() && (world.getGameTime() % 80) == 0) {
+                    float lightLevelScaled = (world.getBrightness(LightType.SKY, player.blockPosition().above()) - world.getSkyDarken())/15F;
 
                     if (sunVisible) {
                         ElectricItemUtils.givePlayerEnergy(player, (int) (applyPropertyModifiers(MPSConstants.ENERGY_GENERATION_DAY) * lightLevelScaled));

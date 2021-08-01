@@ -290,7 +290,7 @@ public enum ModelSpecXMLReader {
         // Register textures
         if (event != null) {
             // this is the atlas used
-            if (event.getMap().getTextureLocation() == AtlasTexture.LOCATION_BLOCKS_TEXTURE) {
+            if (event.getMap().location() == AtlasTexture.LOCATION_BLOCKS) {
                 for (String texture : textures) {
                     event.addSprite(new ResourceLocation(texture));
                 }
@@ -307,7 +307,7 @@ public enum ModelSpecXMLReader {
         if (colour.a == 0)
             colour = colour.withAlpha(1.0F);
 
-        if (!Objects.equals(slot, null) && Objects.equals(slot.getSlotType(), EquipmentSlotType.Group.ARMOR)) {
+        if (!Objects.equals(slot, null) && Objects.equals(slot.getType(), EquipmentSlotType.Group.ARMOR)) {
             textureSpec.put(slot.getName(),
                     new TexturePartSpec(textureSpec,
                             new SpecBinding(null, slot, "all"),
@@ -387,7 +387,7 @@ public enum ModelSpecXMLReader {
                 (((Element) bindingNode).hasAttribute("target")) ?
                         MorphTarget.getMorph(((Element) bindingNode).getAttribute("target")) : null,
                 (((Element) bindingNode).hasAttribute("itemSlot")) ?
-                        EquipmentSlotType.fromString(((Element) bindingNode).getAttribute("itemSlot").toLowerCase()) : null,
+                        EquipmentSlotType.byName(((Element) bindingNode).getAttribute("itemSlot").toLowerCase()) : null,
                 (((Element) bindingNode).hasAttribute("itemState")) ?
                         ((Element) bindingNode).getAttribute("itemState") : "all"
         );
@@ -409,7 +409,7 @@ public enum ModelSpecXMLReader {
 
         return new TransformationMatrix(
                 // Transform
-                new Vector3f(translation.getX() / 16, translation.getY() / 16, translation.getZ() / 16),
+                new Vector3f(translation.x() / 16, translation.y() / 16, translation.z() / 16),
                 // Angles
                 TransformationHelper.quatFromXYZ(rotation, true),
                 // Scale

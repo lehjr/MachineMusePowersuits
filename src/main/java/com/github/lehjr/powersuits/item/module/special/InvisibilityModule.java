@@ -87,12 +87,12 @@ public class InvisibilityModule extends AbstractPowerModule {
             public void onPlayerTickActive(PlayerEntity player, ItemStack item) {
                 double totalEnergy = ElectricItemUtils.getPlayerEnergy(player);
                 EffectInstance invis = null;
-                if (player.isPotionActive(invisibility)) {
-                    invis = player.getActivePotionEffect(invisibility);
+                if (player.hasEffect(invisibility)) {
+                    invis = player.getEffect(invisibility);
                 }
                 if (50 < totalEnergy) {
                     if (invis == null || invis.getDuration() < 210) {
-                        player.addPotionEffect(new EffectInstance(invisibility, 500, -3, false, false));
+                        player.addEffect(new EffectInstance(invisibility, 500, -3, false, false));
                         ElectricItemUtils.drainPlayerEnergy(player, 50);
                     }
                 } else {
@@ -103,14 +103,14 @@ public class InvisibilityModule extends AbstractPowerModule {
             @Override
             public void onPlayerTickInactive(PlayerEntity player, ItemStack item) {
                 EffectInstance invis = null;
-                if (player.isPotionActive(invisibility)) {
-                    invis = player.getActivePotionEffect(invisibility);
+                if (player.hasEffect(invisibility)) {
+                    invis = player.getEffect(invisibility);
                 }
                 if (invis != null && invis.getAmplifier() == -3) {
-                    if (player.world.isRemote) {
-                        player.removeActivePotionEffect(invisibility);
+                    if (player.level.isClientSide) {
+                        player.removeEffectNoUpdate(invisibility);
                     } else {
-                        player.removePotionEffect(invisibility);
+                        player.removeEffect(invisibility);
                     }
                 }
             }

@@ -68,22 +68,22 @@ public class RailGunBoltRenderer extends NuminaEntityRenderer<RailgunBoltEntity>
 
         float size = 10;
         float scale = (float) (size / 16.0F);
-        matrixStackIn.push();
+        matrixStackIn.pushPose();
 //        matrixStackIn.translate(0.5, 0.5, 0.5);
         matrixStackIn.scale(scale, scale, scale);
 
 //        matrixStackIn.rotate(Vector3f.YP.rotationDegrees(MathHelper.lerp(partialTicks, entityIn.prevRotationYaw, entityIn.rotationYaw) - 90.0F));
 //        matrixStackIn.rotate(Vector3f.ZP.rotationDegrees(MathHelper.lerp(partialTicks, entityIn.prevRotationPitch, entityIn.rotationPitch)));
 
-        matrixStackIn.rotate(Vector3f.YP.rotationDegrees(entityYaw  - 90.0F));
+        matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(entityYaw  - 90.0F));
 
-        matrixStackIn.rotate(Vector3f.ZP.rotationDegrees(entityIn.rotationPitch));
+        matrixStackIn.mulPose(Vector3f.ZP.rotationDegrees(entityIn.xRot));
 
         if(size > 0)  {
             renderBolt(matrixStackIn, bufferIn);
         }
 
-        matrixStackIn.pop();
+        matrixStackIn.popPose();
     }
 
     public static void renderBolt(MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn) {
@@ -98,16 +98,16 @@ public class RailGunBoltRenderer extends NuminaEntityRenderer<RailgunBoltEntity>
     public static void renderBolt(IRenderTypeBuffer bufferIn, RenderType rt, MatrixStack matrixStackIn, int packedLightIn, int overlay, Colour colour) {
         IVertexBuilder bb = bufferIn.getBuffer(rt);
         for (BakedQuad quad : modelBolt.get().getQuads(null, null, rand, EmptyModelData.INSTANCE)) {
-            bb.addVertexData(matrixStackIn.getLast(), quad, colour.r, colour.g, colour.b, colour.a, packedLightIn, overlay, true);
+            bb.addVertexData(matrixStackIn.last(), quad, colour.r, colour.g, colour.b, colour.a, packedLightIn, overlay, true);
         }
     }
 
     private static RenderType getBoltRenderType() {
-        return RenderType.getEntityTranslucentCull(NuminaConstants.TEXTURE_WHITE);
+        return RenderType.entityTranslucentCull(NuminaConstants.TEXTURE_WHITE);
     }
 
     @Override
-    public ResourceLocation getEntityTexture(RailgunBoltEntity entity) {
+    public ResourceLocation getTextureLocation(RailgunBoltEntity entity) {
         return NuminaConstants.TEXTURE_WHITE;
     }
 }

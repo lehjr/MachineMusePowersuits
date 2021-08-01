@@ -99,10 +99,10 @@ public class VeinMinerModule extends AbstractPowerModule {
                 for (Direction direction : Direction.values()) {
                     int i = 0;
                     while(i < 1000) { // prevent race condition
-                        BlockPos pos2 = startPos.offset(direction, i);
+                        BlockPos pos2 = startPos.relative(direction, i);
 
                         // no point looking beyond world limits
-                        if (pos2.getY() >= world.getHeight() || pos2.getY() <= 0) {
+                        if (pos2.getY() >= world.getMaxBuildHeight() || pos2.getY() <= 0) {
                             break;
                         }
 
@@ -121,13 +121,13 @@ public class VeinMinerModule extends AbstractPowerModule {
 
             void harvestBlocks(List<BlockPos> posList, World world) {
                 for (BlockPos pos: posList) {
-                    Block.replaceBlock(world.getBlockState(pos), Blocks.AIR.getDefaultState(), world, pos, Constants.BlockFlags.DEFAULT);
+                    Block.updateOrDestroy(world.getBlockState(pos), Blocks.AIR.defaultBlockState(), world, pos, Constants.BlockFlags.DEFAULT);
                 }
             }
 
             @Override
             public boolean onBlockStartBreak(ItemStack itemStack, BlockPos posIn, PlayerEntity player) {
-                BlockState state = player.world.getBlockState(posIn);
+                BlockState state = player.level.getBlockState(posIn);
                 Block block = state.getBlock();
 
                 // filter out stone
@@ -160,7 +160,7 @@ public class VeinMinerModule extends AbstractPowerModule {
 
                 // check if block is an ore
                 List<ResourceLocation> defaultOreTags = MPSSettings.getOreList();
-                Set<ResourceLocation> oretags = player.world.getBlockState(posIn).getBlock().getTags();
+                Set<ResourceLocation> oretags = player.level.getBlockState(posIn).getBlock().getTags();
                 boolean isOre = false;
                 for ( ResourceLocation location : oretags ) {
                     if (defaultOreTags.contains(location)) {
@@ -177,7 +177,7 @@ public class VeinMinerModule extends AbstractPowerModule {
                         return false;
                     }
 
-                    List<BlockPos> posList = getPosList(block, posIn, player.world);
+                    List<BlockPos> posList = getPosList(block, posIn, player.level);
                     List<BlockPos> posListCopy = new ArrayList<>(posList);
 
                     int size = 0;
@@ -208,7 +208,7 @@ public class VeinMinerModule extends AbstractPowerModule {
                             size = posListCopy.size();
 
                             outerLoop: for (BlockPos pos : posListCopy) {
-                                List<BlockPos> posList2 = getPosList(block, pos, player.world);
+                                List<BlockPos> posList2 = getPosList(block, pos, player.level);
                                 for (BlockPos pos2 : posList2) {
                                     if(!posList.contains(pos2)) {
                                         // does player have enough energy to break initial list?
@@ -227,10 +227,10 @@ public class VeinMinerModule extends AbstractPowerModule {
                         }
                     }
 
-                    if (!player.world.isRemote()) {
+                    if (!player.level.isClientSide()) {
                         ElectricItemUtils.drainPlayerEnergy(player, energyRequired * posList.size());
                     }
-                    harvestBlocks(posList, player.world);
+                    harvestBlocks(posList, player.level);
                 }
                 return false;
             }

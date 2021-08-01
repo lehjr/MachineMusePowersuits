@@ -92,7 +92,7 @@ public class LuxCapacitorModelWrapper extends BakedModelWrapper<OBJBakedComposit
      */
     @Override
     public IBakedModel handlePerspective(ItemCameraTransforms.TransformType cameraTransformType, MatrixStack mat) {
-        return PerspectiveMapWrapper.handlePerspective(this, originalModel.getTransforms(), cameraTransformType, mat);
+        return PerspectiveMapWrapper.handlePerspective(this, ((OBJBakedCompositeModel)this.originalModel).getModelTransforms(), cameraTransformType, mat);
     }
 
     /**
@@ -111,7 +111,7 @@ public class LuxCapacitorModelWrapper extends BakedModelWrapper<OBJBakedComposit
 
         @Nullable
         @Override
-        public IBakedModel getOverrideModel(IBakedModel model, ItemStack stack, @Nullable ClientWorld worldIn, @Nullable LivingEntity entityIn) {
+        public IBakedModel resolve(IBakedModel model, ItemStack stack, @Nullable ClientWorld worldIn, @Nullable LivingEntity entityIn) {
             Colour colour;
             // this one is just for the launched item
             if (stack.hasTag() && stack.getTag().contains("colour", Constants.NBT.TAG_INT)) {

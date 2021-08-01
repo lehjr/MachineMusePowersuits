@@ -66,7 +66,7 @@ import java.util.Map;
 import java.util.concurrent.Callable;
 
 public class HoeModule extends AbstractPowerModule {
-    protected static final Map<Block, BlockState> HOE_LOOKUP = Maps.newHashMap(ImmutableMap.of(Blocks.GRASS_BLOCK, Blocks.FARMLAND.getDefaultState(), Blocks.GRASS_PATH, Blocks.FARMLAND.getDefaultState(), Blocks.DIRT, Blocks.FARMLAND.getDefaultState(), Blocks.COARSE_DIRT, Blocks.DIRT.getDefaultState()));
+    protected static final Map<Block, BlockState> HOE_LOOKUP = Maps.newHashMap(ImmutableMap.of(Blocks.GRASS_BLOCK, Blocks.FARMLAND.defaultBlockState(), Blocks.GRASS_PATH, Blocks.FARMLAND.defaultBlockState(), Blocks.DIRT, Blocks.FARMLAND.defaultBlockState(), Blocks.COARSE_DIRT, Blocks.DIRT.defaultBlockState()));
 
     public HoeModule() {
     }
@@ -109,12 +109,12 @@ public class HoeModule extends AbstractPowerModule {
             public ActionResultType onItemUse(ItemUseContext context) {
                 int energyConsumed = this.getEnergyUsage();
                 PlayerEntity player = context.getPlayer();
-                World world = context.getWorld();
-                BlockPos pos = context.getPos();
-                Direction facing = context.getFace();
-                ItemStack itemStack = context.getItem();
+                World world = context.getLevel();
+                BlockPos pos = context.getClickedPos();
+                Direction facing = context.getClickedFace();
+                ItemStack itemStack = context.getItemInHand();
 
-                if (!player.canPlayerEdit(pos, facing, itemStack) || ElectricItemUtils.getPlayerEnergy(player) < energyConsumed) {
+                if (!player.mayUseItemAt(pos, facing, itemStack) || ElectricItemUtils.getPlayerEnergy(player) < energyConsumed) {
                     return ActionResultType.PASS;
                 } else {
                     int hook = net.minecraftforge.event.ForgeEventFactory.onHoeUse(context);
@@ -123,15 +123,15 @@ public class HoeModule extends AbstractPowerModule {
                     for (int i = (int) Math.floor(-radius); i < radius; i++) {
                         for (int j = (int) Math.floor(-radius); j < radius; j++) {
                             if (i * i + j * j < radius * radius) {
-                                BlockPos newPos = pos.add(i, 0, j);
-                                if (facing != Direction.DOWN && (world.isAirBlock(newPos.up()) || ToolHelpers.blockCheckAndHarvest(player, world, newPos.up()))) {
-                                    if (facing != Direction.DOWN && world.isAirBlock(newPos.up())) {
+                                BlockPos newPos = pos.offset(i, 0, j);
+                                if (facing != Direction.DOWN && (world.isEmptyBlock(newPos.above()) || ToolHelpers.blockCheckAndHarvest(player, world, newPos.above()))) {
+                                    if (facing != Direction.DOWN && world.isEmptyBlock(newPos.above())) {
                                         BlockState blockstate = HOE_LOOKUP.get(world.getBlockState(newPos).getBlock());
                                         if (blockstate != null) {
-                                            world.playSound(player, newPos, SoundEvents.ITEM_HOE_TILL, SoundCategory.BLOCKS, 1.0F, 1.0F);
+                                            world.playSound(player, newPos, SoundEvents.HOE_TILL, SoundCategory.BLOCKS, 1.0F, 1.0F);
 
-                                            if (!world.isRemote) {
-                                                world.setBlockState(newPos, blockstate, 11);
+                                            if (!world.isClientSide) {
+                                                world.setBlock(newPos, blockstate, 11);
                                                 ElectricItemUtils.drainPlayerEnergy(player, energyConsumed);
                                             }
                                         }

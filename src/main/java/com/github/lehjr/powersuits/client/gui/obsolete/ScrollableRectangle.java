@@ -27,12 +27,12 @@
 package com.github.lehjr.powersuits.client.gui.obsolete;
 
 import com.github.lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
-import com.github.lehjr.numina.util.client.gui.gemoetry.MuseRelativeRect;
+import com.github.lehjr.numina.util.client.gui.gemoetry.RelativeRect;
 import com.mojang.blaze3d.matrix.MatrixStack;
 
 @Deprecated
-public class ScrollableRectangle extends MuseRelativeRect {
-    public ScrollableRectangle(MuseRelativeRect relativeRect) {
+public class ScrollableRectangle extends RelativeRect {
+    public ScrollableRectangle(RelativeRect relativeRect) {
         super(relativeRect.left(), relativeRect.top(), relativeRect.right(), relativeRect.bottom());
     }
 
@@ -48,10 +48,10 @@ public class ScrollableRectangle extends MuseRelativeRect {
         super(ul, br);
     }
 
-    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks, float zLevel) {
+    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
     }
 
-    public MuseRelativeRect getBorder() {
+    public RelativeRect getBorder() {
         return this;
     }
 }

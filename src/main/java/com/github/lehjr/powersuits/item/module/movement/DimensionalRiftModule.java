@@ -96,11 +96,11 @@ public class DimensionalRiftModule extends AbstractPowerModule {
 
             @Override
             public ActionResult onItemRightClick(ItemStack itemStackIn, World worldIn, PlayerEntity playerIn, Hand hand) {
-                if (!playerIn.isPassenger() && !playerIn.isBeingRidden() && playerIn.canChangeDimension() && !playerIn.world.isRemote()) {
-                    BlockPos coords = playerIn.getBedPosition().isPresent() ? playerIn.getBedPosition().get() : ((ServerWorld)(playerIn.world)).getSpawnPoint();
+                if (!playerIn.isPassenger() && !playerIn.isVehicle() && playerIn.canChangeDimensions() && !playerIn.level.isClientSide()) {
+                    BlockPos coords = playerIn.getSleepingPos().isPresent() ? playerIn.getSleepingPos().get() : ((ServerWorld)(playerIn.level)).getSharedSpawnPos();
 
-                    while (!worldIn.isAirBlock(coords) && !worldIn.isAirBlock(coords.up())) {
-                        coords = coords.up();
+                    while (!worldIn.isEmptyBlock(coords) && !worldIn.isEmptyBlock(coords.above())) {
+                        coords = coords.above();
                     }
 
                     int energyConsumption = (int) applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION);
@@ -109,10 +109,10 @@ public class DimensionalRiftModule extends AbstractPowerModule {
                         playerIn.changeDimension((ServerWorld) worldIn, new CommandTeleporter(coords));
                         ElectricItemUtils.drainPlayerEnergy(playerIn, getEnergyUsage());
                         MuseHeatUtils.heatPlayer(playerIn, applyPropertyModifiers(MPSConstants.HEAT_GENERATION));
-                        return ActionResult.resultSuccess(itemStackIn);
+                        return ActionResult.success(itemStackIn);
                     }
                 }
-                return ActionResult.resultPass(itemStackIn);
+                return ActionResult.pass(itemStackIn);
             }
 
             @Override
@@ -131,7 +131,7 @@ public class DimensionalRiftModule extends AbstractPowerModule {
 
         @Override
         public Entity placeEntity(Entity entity, ServerWorld currentWorld, ServerWorld destWorld, float yaw, Function<Boolean, Entity> repositionEntity) {
-            entity.moveToBlockPosAndAngles(targetPos, yaw, entity.rotationPitch);
+            entity.moveTo(targetPos, yaw, entity.xRot);
             return repositionEntity.apply(false);
         }
     }

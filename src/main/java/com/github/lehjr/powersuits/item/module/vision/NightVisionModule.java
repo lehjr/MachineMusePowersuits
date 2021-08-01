@@ -89,15 +89,15 @@ public class NightVisionModule extends AbstractPowerModule {
 
             @Override
             public void onPlayerTickActive(PlayerEntity player, ItemStack item) {
-                if (player.world.isRemote)
+                if (player.level.isClientSide)
                     return;
 
                 double totalEnergy = ElectricItemUtils.getPlayerEnergy(player);
-                EffectInstance nightVisionEffect = player.isPotionActive(nightvision) ? player.getActivePotionEffect(nightvision) : null;
+                EffectInstance nightVisionEffect = player.hasEffect(nightvision) ? player.getEffect(nightvision) : null;
 
                 if (totalEnergy > powerDrain) {
                     if (nightVisionEffect == null || nightVisionEffect.getDuration() < 250 && nightVisionEffect.getAmplifier() == -3) {
-                        player.addPotionEffect(new EffectInstance(nightvision, 500, -3, false, false));
+                        player.addEffect(new EffectInstance(nightvision, 500, -3, false, false));
                         ElectricItemUtils.drainPlayerEnergy(player, powerDrain);
                     }
                 } else
@@ -107,10 +107,10 @@ public class NightVisionModule extends AbstractPowerModule {
             @Override
             public void onPlayerTickInactive(PlayerEntity player, ItemStack item) {
                 EffectInstance nightVisionEffect = null;
-                if (player.isPotionActive(nightvision)) {
-                    nightVisionEffect = player.getActivePotionEffect(nightvision);
+                if (player.hasEffect(nightvision)) {
+                    nightVisionEffect = player.getEffect(nightvision);
                     if (nightVisionEffect.getAmplifier() == -3) {
-                        player.removePotionEffect(nightvision);
+                        player.removeEffect(nightvision);
                     }
                 }
             }

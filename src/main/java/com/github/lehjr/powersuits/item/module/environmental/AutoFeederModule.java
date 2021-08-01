@@ -117,7 +117,7 @@ public class AutoFeederModule extends AbstractPowerModule {
                 double eatingEnergyConsumption = applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION);
                 double efficiency = applyPropertyModifiers(MPSConstants.EATING_EFFICIENCY);
 
-                FoodStats foodStats = player.getFoodStats();
+                FoodStats foodStats = player.getFoodData();
                 int foodNeeded = 20 - foodStats.getFoodLevel();
                 float saturationNeeded = 20 - foodStats.getSaturationLevel();
 
@@ -125,36 +125,36 @@ public class AutoFeederModule extends AbstractPowerModule {
 //        if (MPSSettings::getModuleConfig.useOldAutoFeeder()) { // FIXME!!!!!
                 if (true) {
 
-                    for (int i = 0; i < inv.getSizeInventory(); i++) {
-                        ItemStack stack = inv.getStackInSlot(i);
-                        if (stack.isFood()) {
+                    for (int i = 0; i < inv.getContainerSize(); i++) {
+                        ItemStack stack = inv.getItem(i);
+                        if (stack.isEdible()) {
                             for (int a = 0; a < stack.getCount(); a++) {
-                                foodLevel += stack.getItem().getFood().getHealing() * efficiency / 100.0F;
+                                foodLevel += stack.getItem().getFoodProperties().getNutrition() * efficiency / 100.0F;
                                 //  copied this from FoodStats.addStats()
-                                saturationLevel += Math.min(stack.getItem().getFood().getHealing() * stack.getItem().getFood().getSaturation() * 2.0F, 20F) * efficiency / 100.0;
+                                saturationLevel += Math.min(stack.getItem().getFoodProperties().getNutrition() * stack.getItem().getFoodProperties().getSaturationModifier() * 2.0F, 20F) * efficiency / 100.0;
                             }
-                            player.inventory.setInventorySlotContents(i, ItemStack.EMPTY);
+                            player.inventory.setItem(i, ItemStack.EMPTY);
                         }
                     }
                     setFoodLevel(module, foodLevel);
                     setSaturationLevel(module, saturationLevel);
                 } else {
-                    for (int i = 0; i < inv.getSizeInventory(); i++) {
+                    for (int i = 0; i < inv.getContainerSize(); i++) {
                         if (foodNeeded < foodLevel)
                             break;
-                        ItemStack stack = inv.getStackInSlot(i);
-                        if (stack.isFood()) {
+                        ItemStack stack = inv.getItem(i);
+                        if (stack.isEdible()) {
                             while (true) {
                                 if (foodNeeded > foodLevel) {
-                                    foodLevel += stack.getItem().getFood().getHealing() * efficiency / 100.0;
+                                    foodLevel += stack.getItem().getFoodProperties().getNutrition() * efficiency / 100.0;
                                     //  copied this from FoodStats.addStats()
-                                    saturationLevel += Math.min(stack.getItem().getFood().getHealing() * stack.getItem().getFood().getSaturation() * 2.0D, 20D) * efficiency / 100.0;
+                                    saturationLevel += Math.min(stack.getItem().getFoodProperties().getNutrition() * stack.getItem().getFoodProperties().getSaturationModifier() * 2.0D, 20D) * efficiency / 100.0;
                                     stack.setCount(stack.getCount() - 1);
                                     if (stack.getCount() == 0) {
-                                        player.inventory.setInventorySlotContents(i, ItemStack.EMPTY);
+                                        player.inventory.setItem(i, ItemStack.EMPTY);
                                         break;
                                     } else
-                                        player.inventory.setInventorySlotContents(i, stack);
+                                        player.inventory.setItem(i, stack);
                                 } else
                                     break;
                             }
@@ -182,10 +182,10 @@ public class AutoFeederModule extends AbstractPowerModule {
                     }
                     if (foodUsed > 0) {
                         // populate the tag with the nbt data
-                        foodStats.write(foodStatNBT);
+                        foodStats.addAdditionalSaveData(foodStatNBT);
                         foodStatNBT.putInt("foodLevel", foodStatNBT.getInt("foodLevel") + foodUsed);
                         // put the values back into foodstats
-                        foodStats.read(foodStatNBT);
+                        foodStats.readAdditionalSaveData(foodStatNBT);
                         // update getValue stored in buffer
                         setFoodLevel(module, getFoodLevel(module) - foodUsed);
                         // split the cost between using food and using saturation
@@ -207,10 +207,10 @@ public class AutoFeederModule extends AbstractPowerModule {
 
                             if (saturationUsed > 0) {
                                 // populate the tag with the nbt data
-                                foodStats.write(foodStatNBT);
+                                foodStats.addAdditionalSaveData(foodStatNBT);
                                 foodStatNBT.putFloat("foodSaturationLevel", foodStatNBT.getFloat("foodSaturationLevel") + saturationUsed);
                                 // put the values back into foodstats
-                                foodStats.read(foodStatNBT);
+                                foodStats.readAdditionalSaveData(foodStatNBT);
                                 // update getValue stored in buffer
                                 setSaturationLevel(module, getSaturationLevel(module) - saturationUsed);
                                 // split the cost between using food and using saturation

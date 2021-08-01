@@ -100,51 +100,51 @@ public class MagnetModule extends AbstractPowerModule {
                 int energyUSage = (int) applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION);
 
                 if (ElectricItemUtils.getPlayerEnergy(player) > energyUSage) {
-                    boolean isServerSide = !player.world.isRemote;
+                    boolean isServerSide = !player.level.isClientSide;
 
-                    if ((player.world.getGameTime() % 20) == 0 && isServerSide) {
+                    if ((player.level.getGameTime() % 20) == 0 && isServerSide) {
                         ElectricItemUtils.drainPlayerEnergy(player, energyUSage);
                     }
                     int range = (int) applyPropertyModifiers(MPSConstants.RADIUS);
-                    World world = player.world;
-                    AxisAlignedBB bounds = player.getBoundingBox().grow(range);
+                    World world = player.level;
+                    AxisAlignedBB bounds = player.getBoundingBox().inflate(range);
 
                     if (isServerSide) {
-                        bounds.expand(0.2000000029802322D, 0.2000000029802322D, 0.2000000029802322D);
-                        if (stack.getDamage() >> 1 >= 7) {
-                            List<ArrowEntity> arrows = world.getEntitiesWithinAABB(ArrowEntity.class, bounds);
+                        bounds.expandTowards(0.2000000029802322D, 0.2000000029802322D, 0.2000000029802322D);
+                        if (stack.getDamageValue() >> 1 >= 7) {
+                            List<ArrowEntity> arrows = world.getEntitiesOfClass(ArrowEntity.class, bounds);
                             for (ArrowEntity arrow : arrows) {
-                                if ((arrow.pickupStatus == ArrowEntity.PickupStatus.ALLOWED) && (world.rand.nextInt(6) == 0)) {
-                                    ItemEntity replacement = new ItemEntity(world, arrow.getPosX(), arrow.getPosY(), arrow.getPosZ(), new ItemStack(Items.ARROW));
-                                    world.addEntity(replacement);
+                                if ((arrow.pickup == ArrowEntity.PickupStatus.ALLOWED) && (world.random.nextInt(6) == 0)) {
+                                    ItemEntity replacement = new ItemEntity(world, arrow.getX(), arrow.getY(), arrow.getZ(), new ItemStack(Items.ARROW));
+                                    world.addFreshEntity(replacement);
                                 }
                                 arrow.remove();
                             }
                         }
                     }
 
-                    for (ItemEntity e : world.getEntitiesWithinAABB(ItemEntity.class, bounds)) {
-                        if (e.isAlive() && !e.getItem().isEmpty() && !e.cannotPickup()) {
+                    for (ItemEntity e : world.getEntitiesOfClass(ItemEntity.class, bounds)) {
+                        if (e.isAlive() && !e.getItem().isEmpty() && !e.hasPickUpDelay()) {
                             if (isServerSide) {
-                                double x = player.getPosX() - e.getPosX();
-                                double y = player.getPosY() - e.getPosY();
-                                double z = player.getPosZ() - e.getPosZ();
+                                double x = player.getX() - e.getX();
+                                double y = player.getY() - e.getY();
+                                double z = player.getZ() - e.getZ();
 
                                 double length = Math.sqrt(x * x + y * y + z * z) * 0.75D;
 
-                                x = x / length + player.getMotion().x * 22.0D;
-                                y = y / length + player.getMotion().y / 22.0D;
-                                z = z / length + player.getMotion().z * 22.0D;
+                                x = x / length + player.getDeltaMovement().x * 22.0D;
+                                y = y / length + player.getDeltaMovement().y / 22.0D;
+                                z = z / length + player.getDeltaMovement().z * 22.0D;
 
-                                e.setMotion(x, y, z);
+                                e.setDeltaMovement(x, y, z);
 
-                                e.isAirBorne = true;
-                                if (e.collidedHorizontally) {
-                                    e.setMotion(e.getMotion().add(0, 1, 0));
+                                e.hasImpulse = true;
+                                if (e.horizontalCollision) {
+                                    e.setDeltaMovement(e.getDeltaMovement().add(0, 1, 0));
                                 }
-                            } else if (world.rand.nextInt(20) == 0) {
-                                float pitch = 0.85F - world.rand.nextFloat() * 3.0F / 10.0F;
-                                world.playSound(e.getPosX(), e.getPosY(), e.getPosZ(), SoundEvents.ENTITY_ENDERMAN_TELEPORT, SoundCategory.PLAYERS, 0.6F, pitch, true);
+                            } else if (world.random.nextInt(20) == 0) {
+                                float pitch = 0.85F - world.random.nextFloat() * 3.0F / 10.0F;
+                                world.playLocalSound(e.getX(), e.getY(), e.getZ(), SoundEvents.ENDERMAN_TELEPORT, SoundCategory.PLAYERS, 0.6F, pitch, true);
                             }
                         }
                     }

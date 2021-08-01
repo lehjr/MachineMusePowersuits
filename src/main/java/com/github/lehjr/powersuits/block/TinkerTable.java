@@ -26,8 +26,7 @@
 
 package com.github.lehjr.powersuits.block;
 
-import com.github.lehjr.numina.util.client.sound.SoundDictionary;
-import com.github.lehjr.powersuits.container.MPSWorkbenchContainerProvider;
+import com.github.lehjr.powersuits.dev.crafting.container.MPSWorkbenchContainerProvider;
 import com.github.lehjr.powersuits.tile_entity.TinkerTableTileEntity;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
@@ -35,7 +34,6 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
-import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.StateContainer;
@@ -61,7 +59,7 @@ import javax.annotation.Nullable;
 public class TinkerTable extends HorizontalBlock implements IWaterLoggable {
     private static final ITextComponent title = new TranslationTextComponent("container.crafting", new Object[0]);
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
-    protected static final VoxelShape TOP_SHAPE = Block.makeCuboidShape(
+    protected static final VoxelShape TOP_SHAPE = Block.box(
             0.0D, // West
             14.0D, // down?
             0.0D, // north
@@ -70,71 +68,23 @@ public class TinkerTable extends HorizontalBlock implements IWaterLoggable {
             16.0D); // South
 
     public TinkerTable() {
-        super(Block.Properties.create(Material.WOOD)
-                .hardnessAndResistance(1.5F, 1000.0F)
+        super(Block.Properties.of(Material.WOOD)
+                .strength(1.5F, 1000.0F)
                 .sound(SoundType.WOOD)
-                .variableOpacity()
-                .setLightLevel((state) -> 15));
-        setDefaultState(this.stateContainer.getBaseState().with(HORIZONTAL_FACING, Direction.NORTH).with(BlockStateProperties.WATERLOGGED, false));
+                .dynamicShape()
+                .lightLevel((state) -> 15));
+        registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(BlockStateProperties.WATERLOGGED, false));
     }
 
+    @SuppressWarnings("deprecation")
     @Override
-    public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
-        player.playSound(SoundDictionary.SOUND_EVENT_GUI_SELECT, 1.0F, 1.0F);
-
-//        if(!worldIn.isRemote) {
-//            NetworkHooks.openGui((ServerPlayerEntity) player,
-//                    new TinkerContainerProvider(0), (buffer) -> buffer.writeInt(0));
-//        }
-
-        if (worldIn.isRemote) {
-            return ActionResultType.SUCCESS;
-        } else {
-            player.openContainer(state.getContainer(worldIn, pos));
-//            player.addStat(Stats.INTERACT_WITH_CRAFTING_TABLE);
-            return ActionResultType.SUCCESS;
+    public ActionResultType use(BlockState blockState, World world, BlockPos blockPos, PlayerEntity player, Hand hand, BlockRayTraceResult result) {
+        if(!world.isClientSide) {
+            player.openMenu(new MPSWorkbenchContainerProvider(0));
+            return ActionResultType.CONSUME;
         }
-
-//        if (worldIn.isRemote()) {
-////        Musique.playClientSound(, 1);
-//            Minecraft.getInstance().enqueue(() -> Minecraft.getInstance().displayGuiScreen(new TestGui(new TranslationTextComponent("gui.tinkertable"))));
-////}
-//        }
-//        return super.onBlockActivated(state, worldIn, pos, player, handIn, hit);
+        return ActionResultType.SUCCESS;
     }
-
-    @Nullable
-    @Override
-    public INamedContainerProvider getContainer(BlockState state, World worldIn, BlockPos pos) {
-        return new MPSWorkbenchContainerProvider(0);
-
-
-//        return new SimpleNamedContainerProvider((windowID, playerInventory, playerEntity) -> {
-//            return new WorkbenchContainer(windowID, playerInventory, IWorldPosCallable.of(worldIn, pos));
-//        }, title);
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     @SuppressWarnings( "deprecation" )
     @Deprecated
@@ -143,39 +93,39 @@ public class TinkerTable extends HorizontalBlock implements IWaterLoggable {
     }
 
     @Override
-    public boolean canContainFluid(IBlockReader worldIn, BlockPos pos, BlockState state, Fluid fluidIn) {
+    public boolean canPlaceLiquid(IBlockReader worldIn, BlockPos pos, BlockState state, Fluid fluidIn) {
         return true;
     }
 
     @Override
     public FluidState getFluidState(BlockState state) {
-        return state.get(WATERLOGGED) ? Fluids.WATER.getStillFluidState(false) : super.getFluidState(state);
+        return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
     }
 
     @Override
-    public VoxelShape getRenderShape(BlockState state, IBlockReader worldIn, BlockPos pos) {
-        return super.getRenderShape(state, worldIn, pos);
+    public VoxelShape getOcclusionShape(BlockState state, IBlockReader worldIn, BlockPos pos) {
+        return super.getOcclusionShape(state, worldIn, pos);
     }
 
     @Override
-    public boolean receiveFluid(IWorld worldIn, BlockPos pos, BlockState state, FluidState fluidStateIn) {
-        return IWaterLoggable.super.receiveFluid(worldIn, pos, state, fluidStateIn);
+    public boolean placeLiquid(IWorld worldIn, BlockPos pos, BlockState state, FluidState fluidStateIn) {
+        return IWaterLoggable.super.placeLiquid(worldIn, pos, state, fluidStateIn);
     }
 
-    public Fluid pickupFluid(IWorld worldIn, BlockPos pos, BlockState state) {
+    public Fluid takeLiquid(IWorld worldIn, BlockPos pos, BlockState state) {
         return Fluids.EMPTY;
     }
 
     @Nullable
     @Override
     public BlockState getStateForPlacement(BlockItemUseContext context) {
-        FluidState ifluidstate = context.getWorld().getFluidState(context.getPos());
-        return this.getDefaultState().with(HORIZONTAL_FACING, context.getPlacementHorizontalFacing().getOpposite())
-                .with(WATERLOGGED, Boolean.valueOf(ifluidstate.isTagged(FluidTags.WATER) && ifluidstate.getLevel() == 8));
+        FluidState ifluidstate = context.getLevel().getFluidState(context.getClickedPos());
+        return this.defaultBlockState().setValue(FACING, context.getHorizontalDirection().getOpposite())
+                .setValue(WATERLOGGED, Boolean.valueOf(ifluidstate.is(FluidTags.WATER) && ifluidstate.getAmount() == 8));
     }
 
     @Override
-    public BlockRenderType getRenderType(BlockState state) {
+    public BlockRenderType getRenderShape(BlockState state) {
         return BlockRenderType.MODEL;
     }
 
@@ -191,8 +141,8 @@ public class TinkerTable extends HorizontalBlock implements IWaterLoggable {
     }
 
     @Override
-    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
-        builder.add(HORIZONTAL_FACING).add(WATERLOGGED);
+    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
+        builder.add(FACING).add(WATERLOGGED);
     }
 
     @Override

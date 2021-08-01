@@ -68,7 +68,7 @@
 ////        double sizey = border.bottom() - border.top();
 ////        this.itemSelector = itemSelector;
 ////        this.colourpicker = colourpicker;
-////        this.saveAsLabel = new ScrollableLabel(I18n.format("gui.powersuits.saveAs"),  new MuseRelativeRect(border.left(), colourpicker.getBorder().top() + 20, border.right(), colourpicker.getBorder().top() + 30)).setEnabled(false);
+////        this.saveAsLabel = new ScrollableLabel(I18n.format("gui.powersuits.saveAs"),  new RelativeRect(border.left(), colourpicker.getBorder().top() + 20, border.right(), colourpicker.getBorder().top() + 30)).setEnabled(false);
 ////        presetNameInputBox = new TextFieldWidget(0, Renderer.getFontRenderer(), (int) (border.left()) + 2, (int) (saveAsLabel.bottom() + 10), (int) border.width() - 4, 20);
 ////
 ////        this.loadButton = new ClickableButton(

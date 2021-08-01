@@ -40,7 +40,7 @@ public class MPSCreativeTab extends ItemGroup {
 
     @OnlyIn(Dist.CLIENT)
     @Override
-    public ItemStack createIcon() {
+    public ItemStack makeIcon() {
         Item item = MPSObjects.POWER_ARMOR_HELMET.get();
         return new ItemStack(item);
     }

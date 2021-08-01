@@ -105,23 +105,23 @@ public class RailgunModule extends AbstractPowerModule {
             @Override
             public ActionResult onItemRightClick(ItemStack itemStackIn, World worldIn, PlayerEntity playerIn, Hand hand) {
                 if (hand == Hand.MAIN_HAND && ElectricItemUtils.getPlayerEnergy(playerIn) > getEnergyUsage()) {
-                    playerIn.setActiveHand(hand);
-                    return ActionResult.resultSuccess(itemStackIn);
+                    playerIn.startUsingItem(hand);
+                    return ActionResult.success(itemStackIn);
                 }
-                return ActionResult.resultPass(itemStackIn);
+                return ActionResult.pass(itemStackIn);
             }
 
             @Override
             // from bow, since bow launches correctly each time
             public void onPlayerStoppedUsing(ItemStack itemStack, World worldIn, LivingEntity entityLiving, int timeLeft) {
                 int chargeTicks = (int) MuseMathUtils.clampDouble(itemStack.getUseDuration() - timeLeft, 10, 50);
-                if (!worldIn.isRemote && entityLiving instanceof PlayerEntity) {
+                if (!worldIn.isClientSide && entityLiving instanceof PlayerEntity) {
                     double chargePercent = chargeTicks * 0.02; // chargeticks/50
                     double energyConsumption = getEnergyUsage() * chargePercent;
                     double timer = MuseNBTUtils.getModularItemDoubleOrZero(itemStack, MPSConstants.TIMER);
 
                     // TODO: replace with code similar to plasma_ball ... spawn... direction... velocity...
-                    if (!worldIn.isRemote && ElectricItemUtils.getPlayerEnergy(entityLiving) > energyConsumption && timer == 0) {
+                    if (!worldIn.isClientSide && ElectricItemUtils.getPlayerEnergy(entityLiving) > energyConsumption && timer == 0) {
                         MuseNBTUtils.setModularItemDoubleOrRemove(itemStack, MPSConstants.TIMER, 10);
                         PlayerEntity playerentity = (PlayerEntity)entityLiving;
 
@@ -132,12 +132,12 @@ public class RailgunModule extends AbstractPowerModule {
                         RailgunBoltEntity bolt = new RailgunBoltEntity(worldIn, entityLiving, velocity, chargePercent, damage, knockback);
 
                         // Only run if enntity is added
-                        if (worldIn.addEntity(bolt)) {
-                            Vector3d lookVec = playerentity.getLookVec();
-                            worldIn.playSound(null, entityLiving.getPosX(), entityLiving.getPosY(), entityLiving.getPosZ(), SoundEvents.ITEM_CROSSBOW_SHOOT, SoundCategory.PLAYERS, 1.0F, 1.0F);
+                        if (worldIn.addFreshEntity(bolt)) {
+                            Vector3d lookVec = playerentity.getLookAngle();
+                            worldIn.playSound(null, entityLiving.getX(), entityLiving.getY(), entityLiving.getZ(), SoundEvents.CROSSBOW_SHOOT, SoundCategory.PLAYERS, 1.0F, 1.0F);
                             ElectricItemUtils.drainPlayerEnergy(entityLiving, (int) energyConsumption);
                             MuseHeatUtils.heatPlayer(entityLiving, applyPropertyModifiers(MPSConstants.RAILGUN_HEAT_EMISSION) * chargePercent);
-                            entityLiving.addVelocity(-lookVec.x * knockback, Math.abs(-lookVec.y + 0.2f) * knockback, -lookVec.z * knockback);
+                            entityLiving.push(-lookVec.x * knockback, Math.abs(-lookVec.y + 0.2f) * knockback, -lookVec.z * knockback);
                         } else {
                             System.out.println("bolt not added");
                         }

@@ -67,12 +67,12 @@ public class LuxCapacitorTileEntity extends MuseTileEntity {
     @Nullable
     @Override
     public SUpdateTileEntityPacket getUpdatePacket() {
-        return new SUpdateTileEntityPacket(this.pos, -1, this.getUpdateTag());
+        return new SUpdateTileEntityPacket(this.worldPosition, -1, this.getUpdateTag());
     }
 
     @Override
     public CompoundNBT getUpdateTag() {
-        return this.write(new CompoundNBT());
+        return this.save(new CompoundNBT());
     }
 
     public void setColor(Colour colour) {
@@ -81,10 +81,10 @@ public class LuxCapacitorTileEntity extends MuseTileEntity {
     }
 
     @Override
-    public CompoundNBT write(CompoundNBT nbt) {
+    public CompoundNBT save(CompoundNBT nbt) {
 //        MuseLogger.logDebug("writing: " + nbt);
         colourNBT.ifPresent(colourNBT1 -> nbt.put("colour", colourNBT1.serializeNBT()));
-        return super.write(nbt);
+        return super.save(nbt);
     }
 
     @Nonnull
@@ -103,7 +103,7 @@ public class LuxCapacitorTileEntity extends MuseTileEntity {
     }
 
     @Override
-    public void read(BlockState state, CompoundNBT nbt) {
+    public void load(BlockState state, CompoundNBT nbt) {
 //        MuseLogger.logDebug("reading");
 
         if (nbt.contains("colour", Constants.NBT.TAG_INT)) {
@@ -111,7 +111,7 @@ public class LuxCapacitorTileEntity extends MuseTileEntity {
         } else {
             MuseLogger.logger.debug("No NBT found! D:");
         }
-        super.read(state, nbt);
+        super.load(state, nbt);
     }
 
     public Colour getColor() {

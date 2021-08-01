@@ -75,12 +75,12 @@ public class PlasmaBoltEntityRenderer extends NuminaEntityRenderer<PlasmaBallEnt
     }
 
     @Override
-    public ResourceLocation getEntityTexture(PlasmaBallEntity entity) {
+    public ResourceLocation getTextureLocation(PlasmaBallEntity entity) {
         return NuminaConstants.TEXTURE_WHITE;
     }
 
     public static void renderPlasma(MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, double size) {
-        matrixStackIn.push();
+        matrixStackIn.pushPose();
         float scalFactor = 3;
 
         float scale = (float) (size * 0.0625);
@@ -130,20 +130,20 @@ public class PlasmaBoltEntityRenderer extends NuminaEntityRenderer<PlasmaBallEnt
             renderPlasmaBall(matrixStackIn, bufferIn, (float) (2+timeScale)*scalFactor,colour3.withAlpha(0.4F));
             renderPlasmaBall(matrixStackIn, bufferIn, (float) (1+timeScale)*scalFactor,colour4.withAlpha(0.75F));
         }
-        matrixStackIn.pop();
+        matrixStackIn.popPose();
     }
 
     static void renderPlasmaBall(MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, float scale, Colour colour) {
-        matrixStackIn.push();
+        matrixStackIn.pushPose();
         matrixStackIn.translate(0.5, 0.5, 0.5);
         matrixStackIn.scale(scale, scale, scale);
         renderSphere(bufferIn, getSphereRenderType(), // fixme get a better render type
                 matrixStackIn, /*combinedLight*/0x00F000F0, colour);
-        matrixStackIn.pop();
+        matrixStackIn.popPose();
     }
 
     private static RenderType getSphereRenderType() {
-        return RenderType.getEntityTranslucentCull(NuminaConstants.TEXTURE_WHITE);
+        return RenderType.entityTranslucentCull(NuminaConstants.TEXTURE_WHITE);
     }
 
     public static void renderSphere(IRenderTypeBuffer bufferIn, RenderType rt, MatrixStack matrixStackIn, int packedLightIn, Colour colour) {
@@ -153,7 +153,7 @@ public class PlasmaBoltEntityRenderer extends NuminaEntityRenderer<PlasmaBallEnt
     public static void renderSphere(IRenderTypeBuffer bufferIn, RenderType rt, MatrixStack matrixStackIn, int packedLightIn, int overlay, Colour colour) {
         IVertexBuilder bb = bufferIn.getBuffer(rt);
         for (BakedQuad quad : modelSphere.get().getQuads(null, null, rand, EmptyModelData.INSTANCE)) {
-            bb.addVertexData(matrixStackIn.getLast(), quad, colour.r, colour.g, colour.b, colour.a, packedLightIn, overlay, true);
+            bb.addVertexData(matrixStackIn.last(), quad, colour.r, colour.g, colour.b, colour.a, packedLightIn, overlay, true);
         }
     }
 }

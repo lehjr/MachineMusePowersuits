@@ -33,7 +33,7 @@ import com.github.lehjr.numina.util.capabilities.module.powermodule.PowerModuleC
 import com.github.lehjr.numina.util.capabilities.module.rightclick.IRightClickModule;
 import com.github.lehjr.numina.util.capabilities.module.rightclick.RightClickModule;
 import com.github.lehjr.powersuits.config.MPSSettings;
-import com.github.lehjr.powersuits.container.MPSWorkbenchContainerProvider;
+import com.github.lehjr.powersuits.dev.crafting.container.MPSWorkbenchContainerProvider;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -86,7 +86,7 @@ public class TinkerTableItem extends BlockItem {
 
             @Override
             public ActionResult onItemRightClick(ItemStack itemStackIn, World worldIn, PlayerEntity playerIn, Hand hand) {
-                if (!worldIn.isRemote()) {
+                if (!worldIn.isClientSide()) {
                     NetworkHooks.openGui((ServerPlayerEntity) playerIn, new MPSWorkbenchContainerProvider(0), (buffer) -> buffer.writeInt(0));
                 }
                 return super.onItemRightClick(itemStackIn, worldIn, playerIn, hand);

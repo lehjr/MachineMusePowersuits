@@ -122,11 +122,11 @@ public class PowerFistModel extends BakedModelWrapper {
                                     (modelcameraTransformType == ItemCameraTransforms.TransformType.FIRST_PERSON_RIGHT_HAND))) {
                         PlayerEntity player = Minecraft.getInstance().player;
                         int slot = -1;
-                        if (player.getHeldItemMainhand().equals(itemStack)) {
-                            slot = player.inventory.currentItem;
+                        if (player.getMainHandItem().equals(itemStack)) {
+                            slot = player.inventory.selected;
                         } else {
-                            for (int i = 0; i < player.inventory.getSizeInventory(); i++) {
-                                if (player.inventory.getStackInSlot(i).equals(itemStack)) {
+                            for (int i = 0; i < player.inventory.getContainerSize(); i++) {
+                                if (player.inventory.getItem(i).equals(itemStack)) {
                                     slot = i;
                                     break;
                                 }
@@ -199,12 +199,12 @@ public class PowerFistModel extends BakedModelWrapper {
     }
 
     @Override
-    public boolean isAmbientOcclusion() {
+    public boolean useAmbientOcclusion() {
         return true;
     }
 
     @Override
-    public boolean isBuiltInRenderer() {
+    public boolean isCustomRenderer() {
         return false;
     }
 
@@ -220,12 +220,12 @@ public class PowerFistModel extends BakedModelWrapper {
     public class PowerFistItemOverrideList extends ItemOverrideList {
         @Nullable
         @Override
-        public IBakedModel getOverrideModel(IBakedModel originalModel, ItemStack itemStackIn, @Nullable ClientWorld world, @Nullable LivingEntity entityIn) {
+        public IBakedModel resolve(IBakedModel originalModel, ItemStack itemStackIn, @Nullable ClientWorld world, @Nullable LivingEntity entityIn) {
             itemStack = itemStackIn;
             if (entityIn instanceof PlayerEntity) {
                 PlayerEntity player = (PlayerEntity) entityIn;
-                if (player.isHandActive()) {
-                    player.getHeldItem(player.getActiveHand()).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(modechanging -> {
+                if (player.isUsingItem()) {
+                    player.getItemInHand(player.getUsedItemHand()).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(modechanging -> {
                         if (!(modechanging instanceof IModeChangingItem)) {
                             return;
                         }
@@ -234,7 +234,7 @@ public class PowerFistModel extends BakedModelWrapper {
 
                         int maxDuration = ((IModeChangingItem) modechanging).getModularItemStack().getUseDuration();
                         if (!module.isEmpty()) {
-                            actualCount = (maxDuration - player.getItemInUseCount());
+                            actualCount = (maxDuration - player.getUseItemRemainingTicks());
                         }
                         isFiring = actualCount > 0;
                     });

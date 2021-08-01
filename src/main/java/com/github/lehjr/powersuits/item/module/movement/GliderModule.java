@@ -88,7 +88,7 @@ public class GliderModule extends AbstractPowerModule {
 
             @Override
             public void onPlayerTickActive(PlayerEntity player, ItemStack chestPlate) {
-                Vector3d playerHorzFacing = player.getLookVec();
+                Vector3d playerHorzFacing = player.getLookAngle();
                 playerHorzFacing = new Vector3d(playerHorzFacing.x, 0, playerHorzFacing.z);
                 playerHorzFacing.normalize();
                 PlayerMovementInputWrapper.PlayerMovementInput playerInput = PlayerMovementInputWrapper.get(player);
@@ -97,19 +97,19 @@ public class GliderModule extends AbstractPowerModule {
                 boolean hasParachute = chestPlate.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
                         .map(m-> m instanceof IModularItem && ((IModularItem) m).isModuleOnline(MPSRegistryNames.PARACHUTE_MODULE_REGNAME)).orElse(false);
 
-                if (playerInput.sneakKey && player.getMotion().y < 0 && (!hasParachute || playerInput.moveForward > 0)) {
-                    Vector3d motion = player.getMotion();
+                if (playerInput.sneakKey && player.getDeltaMovement().y < 0 && (!hasParachute || playerInput.moveForward > 0)) {
+                    Vector3d motion = player.getDeltaMovement();
                     if (motion.y < -0.1) {
                         double motionYchange = Math.min(0.08, -0.1 - motion.y);
 
-                        player.setMotion(motion.add(
+                        player.setDeltaMovement(motion.add(
                                 playerHorzFacing.x * motionYchange,
                                 motionYchange,
                                 playerHorzFacing.z * motionYchange
                         ));
 
                         // sprinting speed
-                        player.jumpMovementFactor += 0.03f;
+                        player.flyingSpeed += 0.03f;
                     }
                 }
             }

@@ -68,15 +68,15 @@ public class ClickableKeybinding extends ClickableButton {
     }
 
     static ITextComponent parseName(KeyBinding keybind) {
-        if (keybind.getKey().getKeyCode() < 0) {
-            return new TranslationTextComponent("Mouse" + (keybind.getKey().getKeyCode() + 100));
+        if (keybind.getKey().getValue() < 0) {
+            return new TranslationTextComponent("Mouse" + (keybind.getKey().getValue() + 100));
         } else {
-            return new TranslationTextComponent(keybind.getKey().getTranslationKey());
+            return new TranslationTextComponent(keybind.getKey().getName());
         }
     }
 
     public void doToggleTick() {
-        doToggleIf(keybind.isPressed());
+        doToggleIf(keybind.consumeClick());
     }
 
     public void doToggleIf(boolean value) {
@@ -95,8 +95,8 @@ public class ClickableKeybinding extends ClickableButton {
 
         for (ClickableModule module : boundModules) {
             ResourceLocation registryName = module.getModule().getItem().getRegistryName();
-            for (int i = 0; i < player.inventory.getSizeInventory(); i++) {
-                player.inventory.getStackInSlot(i).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(handler ->{
+            for (int i = 0; i < player.inventory.getContainerSize(); i++) {
+                player.inventory.getItem(i).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(handler ->{
                     if (handler instanceof IModularItem) {
                         ((IModularItem) handler).toggleModule(registryName, toggleval);
                     }
@@ -108,16 +108,16 @@ public class ClickableKeybinding extends ClickableButton {
     }
 
     @Override
-    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks, float zLevel) {
-        super.render(matrixStack, mouseX, mouseY, partialTicks, zLevel);
+    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
+        super.render(matrixStack, mouseX, mouseY, partialTicks);
         for (ClickableModule module : boundModules) {
-            MuseRenderer.drawLineBetween(this, module, Colour.LIGHT_BLUE, zLevel);
+            MuseRenderer.drawLineBetween(this, module, Colour.LIGHT_BLUE, 0); // FIXME
             RenderSystem.pushMatrix();
             RenderSystem.scaled(0.5, 0.5, 0.5);
             if (displayOnHUD) {
-                MuseRenderer.drawString(matrixStack, MuseStringUtils.wrapFormatTags("HUD", MuseStringUtils.FormatCodes.BrightGreen), this.position.getX() * 2 + 6, this.position.getY() * 2 + 6);
+                MuseRenderer.drawString(matrixStack, MuseStringUtils.wrapFormatTags("HUD", MuseStringUtils.FormatCodes.BrightGreen), this.getPosition().getX() * 2 + 6, this.getPosition().getY() * 2 + 6);
             } else {
-                MuseRenderer.drawString(matrixStack, MuseStringUtils.wrapFormatTags("x", MuseStringUtils.FormatCodes.Red), this.position.getX() * 2 + 6, this.position.getY() * 2 + 6);
+                MuseRenderer.drawString(matrixStack, MuseStringUtils.wrapFormatTags("x", MuseStringUtils.FormatCodes.Red), this.getPosition().getX() * 2 + 6, this.getPosition().getY() * 2 + 6);
             }
             RenderSystem.popMatrix();
         }
@@ -171,7 +171,7 @@ public class ClickableKeybinding extends ClickableButton {
     }
 
     public boolean equals(ClickableKeybinding other) {
-        return other.keybind.getKey().getKeyCode() == this.keybind.getKey().getKeyCode();
+        return other.keybind.getKey().getValue() == this.keybind.getKey().getValue();
     }
 
     public void toggleHUDState() {

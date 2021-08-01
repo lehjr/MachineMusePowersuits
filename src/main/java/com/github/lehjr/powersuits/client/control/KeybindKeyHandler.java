@@ -68,8 +68,8 @@ public class KeybindKeyHandler {
         }
         clientPlayer.getCapability(CapabilityPlayerKeyStates.PLAYER_KEYSTATES).ifPresent(playerCap -> {
             boolean markForSync = false;
-            boolean downKeyState = goDownKey.isKeyDown();
-            boolean jumpKeyState = minecraft.gameSettings.keyBindJump.isKeyDown();
+            boolean downKeyState = goDownKey.isDown();
+            boolean jumpKeyState = minecraft.options.keyJump.isDown();
 
             if (playerCap.getDownKeyState() != downKeyState) {
                 playerCap.setDownKeyState(downKeyState);
@@ -94,33 +94,33 @@ public class KeybindKeyHandler {
             return;
         }
 
-        KeyBinding[] hotbarKeys = minecraft.gameSettings.keyBindsHotbar;
+        KeyBinding[] hotbarKeys = minecraft.options.keyHotbarSlots;
         updatePlayerValues(player);
 
         // Mode changinging GUI
-        if (hotbarKeys[player.inventory.currentItem].isKeyDown() && minecraft.isGameFocused()) {
-            player.inventory.getCurrentItem().getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(iModeChanging->{
-                if(player.world.isRemote) {
-                    if (!(Minecraft.getInstance().currentScreen instanceof GuiModeSelector)) {
-                        Minecraft.getInstance().enqueue(() -> Minecraft.getInstance().displayGuiScreen(new GuiModeSelector(player, new StringTextComponent("modeChanging"))));
+        if (hotbarKeys[player.inventory.selected].isDown() && minecraft.isWindowActive()) {
+            player.inventory.getSelected().getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(iModeChanging->{
+                if(player.level.isClientSide) {
+                    if (!(Minecraft.getInstance().screen instanceof GuiModeSelector)) {
+                        Minecraft.getInstance().tell(() -> Minecraft.getInstance().setScreen(new GuiModeSelector(player, new StringTextComponent("modeChanging"))));
                     }
                 }
             });
         }
 
         /* cycleToolBackward/cycleToolForward */
-        if (cycleToolBackward.isKeyDown()) {
-            minecraft.playerController.tick();
-            player.inventory.getStackInSlot(player.inventory.currentItem).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+        if (cycleToolBackward.isDown()) {
+            minecraft.gameMode.tick();
+            player.inventory.getItem(player.inventory.selected).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
                     .ifPresent(handler-> {
                         if (handler instanceof IModeChangingItem)
                             ((IModeChangingItem) handler).cycleMode(player, 1);
                     });
         }
 
-        if (cycleToolForward.isKeyDown()) {
-            minecraft.playerController.tick();
-            player.inventory.getStackInSlot(player.inventory.currentItem).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+        if (cycleToolForward.isDown()) {
+            minecraft.gameMode.tick();
+            player.inventory.getItem(player.inventory.selected).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
                     .ifPresent(handler-> {
                         if (handler instanceof IModeChangingItem)
                             ((IModeChangingItem) handler).cycleMode(player, -1);

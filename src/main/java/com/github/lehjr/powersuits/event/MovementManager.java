@@ -69,15 +69,15 @@ public enum MovementManager {
     public static final double DEFAULT_GRAVITY = -0.0784000015258789;
 
     public double getPlayerJumpMultiplier(PlayerEntity player) {
-        if (playerJumpMultipliers.containsKey(player.getUniqueID())) {
-            return playerJumpMultipliers.get(player.getUniqueID());
+        if (playerJumpMultipliers.containsKey(player.getUUID())) {
+            return playerJumpMultipliers.get(player.getUUID());
         } else {
             return 0;
         }
     }
 
     public void setPlayerJumpTicks(PlayerEntity player, double number) {
-        playerJumpMultipliers.put(player.getUniqueID(), number);
+        playerJumpMultipliers.put(player.getUUID(), number);
     }
 
     public double computeFallHeightFromVelocity(double velocity) {
@@ -110,8 +110,8 @@ public enum MovementManager {
 
             for (int i = 0; i < listnbt.size(); ++i) {
                 CompoundNBT attributeTag = listnbt.getCompound(i);
-                AttributeModifier attributemodifier = AttributeModifier.read(attributeTag);
-                if (attributemodifier != null && attributemodifier.getName().equals(Attributes.MOVEMENT_SPEED.getAttributeName())) {
+                AttributeModifier attributemodifier = AttributeModifier.load(attributeTag);
+                if (attributemodifier != null && attributemodifier.getName().equals(Attributes.MOVEMENT_SPEED.getDescriptionId())) {
                     // adjust the tag
                     if (additive != 0) {
                         attributeTag.putDouble("Amount", additive);
@@ -129,7 +129,7 @@ public enum MovementManager {
             }
         }
         if (!hasAttribute && additive != 0) {
-            itemStack.addAttributeModifier(Attributes.MOVEMENT_SPEED, new AttributeModifier(Attributes.MOVEMENT_SPEED.getAttributeName(), additive, AttributeModifier.Operation.ADDITION), EquipmentSlotType.LEGS);
+            itemStack.addAttributeModifier(Attributes.MOVEMENT_SPEED, new AttributeModifier(Attributes.MOVEMENT_SPEED.getDescriptionId(), additive, AttributeModifier.Operation.ADDITION), EquipmentSlotType.LEGS);
         }
     }
 
@@ -137,10 +137,10 @@ public enum MovementManager {
         PlayerMovementInputWrapper.PlayerMovementInput playerInput = PlayerMovementInputWrapper.get(player);
         double thrustUsed = 0;
         if (flightControl) {
-            Vector3d desiredDirection = player.getLookVec().normalize();
+            Vector3d desiredDirection = player.getLookAngle().normalize();
             double strafeX = desiredDirection.z;
             double strafeZ = -desiredDirection.x;
-            ItemStack helm = player.getItemStackFromSlot(EquipmentSlotType.HEAD);
+            ItemStack helm = player.getItemBySlot(EquipmentSlotType.HEAD);
             double flightVerticality = helm.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).map(iModularItem -> {
                 if (iModularItem instanceof IModularItem) {
                     return ((IModularItem) iModularItem)
@@ -160,53 +160,53 @@ public enum MovementManager {
             desiredDirection = desiredDirection.normalize();
 
             // Brakes
-            if (player.getMotion().y < 0 && desiredDirection.y >= 0) {
-                if (-player.getMotion().y > thrust) {
-                    player.setMotion(player.getMotion().add(0, thrust,0));
+            if (player.getDeltaMovement().y < 0 && desiredDirection.y >= 0) {
+                if (-player.getDeltaMovement().y > thrust) {
+                    player.setDeltaMovement(player.getDeltaMovement().add(0, thrust,0));
                     thrustUsed += thrust;
                     thrust = 0;
                 } else {
-                    thrust -= player.getMotion().y;
-                    thrustUsed += player.getMotion().y;
-                    player.setMotion(player.getMotion().x, 0, player.getMotion().z);
+                    thrust -= player.getDeltaMovement().y;
+                    thrustUsed += player.getDeltaMovement().y;
+                    player.setDeltaMovement(player.getDeltaMovement().x, 0, player.getDeltaMovement().z);
                 }
             }
-            if (player.getMotion().y < -1) {
-                thrust += 1 + player.getMotion().y;
-                thrustUsed -= 1 + player.getMotion().y;
-                player.setMotion(player.getMotion().x, -1, player.getMotion().z);
+            if (player.getDeltaMovement().y < -1) {
+                thrust += 1 + player.getDeltaMovement().y;
+                thrustUsed -= 1 + player.getDeltaMovement().y;
+                player.setDeltaMovement(player.getDeltaMovement().x, -1, player.getDeltaMovement().z);
             }
-            if (Math.abs(player.getMotion().x) > 0 && desiredDirection.length() == 0) {
-                if (Math.abs(player.getMotion().x) > thrust) {
-                    player.setMotion(player.getMotion().add(
-                            - Math.signum(player.getMotion().x) * thrust, 0, 0));
+            if (Math.abs(player.getDeltaMovement().x) > 0 && desiredDirection.length() == 0) {
+                if (Math.abs(player.getDeltaMovement().x) > thrust) {
+                    player.setDeltaMovement(player.getDeltaMovement().add(
+                            - Math.signum(player.getDeltaMovement().x) * thrust, 0, 0));
                     thrustUsed += thrust;
                     thrust = 0;
                 } else {
-                    thrust -= Math.abs(player.getMotion().x);
-                    thrustUsed += Math.abs(player.getMotion().x);
-                    player.setMotion(0, player.getMotion().y, player.getMotion().z);
+                    thrust -= Math.abs(player.getDeltaMovement().x);
+                    thrustUsed += Math.abs(player.getDeltaMovement().x);
+                    player.setDeltaMovement(0, player.getDeltaMovement().y, player.getDeltaMovement().z);
                 }
             }
-            if (Math.abs(player.getMotion().z) > 0 && desiredDirection.length() == 0) {
-                if (Math.abs(player.getMotion().z) > thrust) {
-                    player.setMotion(
-                            player.getMotion().add(
-                                    0, 0, Math.signum(player.getMotion().z) * thrust
+            if (Math.abs(player.getDeltaMovement().z) > 0 && desiredDirection.length() == 0) {
+                if (Math.abs(player.getDeltaMovement().z) > thrust) {
+                    player.setDeltaMovement(
+                            player.getDeltaMovement().add(
+                                    0, 0, Math.signum(player.getDeltaMovement().z) * thrust
                             )
 
                     );
                     thrustUsed += thrust;
                     thrust = 0;
                 } else {
-                    thrustUsed += Math.abs(player.getMotion().z);
-                    thrust -= Math.abs(player.getMotion().z);
-                    player.setMotion(player.getMotion().x, player.getMotion().y, 0);
+                    thrustUsed += Math.abs(player.getDeltaMovement().z);
+                    thrust -= Math.abs(player.getDeltaMovement().z);
+                    player.setDeltaMovement(player.getDeltaMovement().x, player.getDeltaMovement().y, 0);
                 }
             }
 
             // Thrusting, finally :V
-            player.setMotion(player.getMotion().add(
+            player.setDeltaMovement(player.getDeltaMovement().add(
                     thrust * desiredDirection.x,
                     thrust * desiredDirection.y,
                     thrust * desiredDirection.z
@@ -214,13 +214,13 @@ public enum MovementManager {
             thrustUsed += thrust;
 
         } else {
-            Vector3d playerHorzFacing = player.getLookVec();
+            Vector3d playerHorzFacing = player.getLookAngle();
             playerHorzFacing = new Vector3d(playerHorzFacing.x, 0, playerHorzFacing.z);
             playerHorzFacing.normalize();
             if (playerInput.moveForward == 0) {
-                player.setMotion(player.getMotion().add(0, thrust, 0));
+                player.setDeltaMovement(player.getDeltaMovement().add(0, thrust, 0));
             } else {
-                player.setMotion(player.getMotion().add(
+                player.setDeltaMovement(player.getDeltaMovement().add(
                         playerHorzFacing.x * thrust / root2 * Math.signum(playerInput.moveForward),
                         thrust / root2,
                         playerHorzFacing.z * thrust / root2 * Math.signum(playerInput.moveForward)
@@ -230,7 +230,7 @@ public enum MovementManager {
         }
 
         // Slow the player if they are going too fast
-        double horzm2 = player.getMotion().x * player.getMotion().x + player.getMotion().z * player.getMotion().z;
+        double horzm2 = player.getDeltaMovement().x * player.getDeltaMovement().x + player.getDeltaMovement().z * player.getDeltaMovement().z;
 
         // currently comes out to 0.0625
         double horizontalLimit = MPSSettings.getMaxFlyingSpeed() * MPSSettings.getMaxFlyingSpeed() / 400;
@@ -243,24 +243,24 @@ public enum MovementManager {
 
         if (horzm2 > horizontalLimit) {
             double ratio = Math.sqrt(horizontalLimit / horzm2);
-            player.setMotion(
-                    player.getMotion().x * ratio,
-                    player.getMotion().y,
-                    player.getMotion().z * ratio);
+            player.setDeltaMovement(
+                    player.getDeltaMovement().x * ratio,
+                    player.getDeltaMovement().y,
+                    player.getDeltaMovement().z * ratio);
         }
         PlayerUtils.resetFloatKickTicks(player);
         return thrustUsed;
     }
 
     public static double computePlayerVelocity(PlayerEntity player) {
-        return MuseMathUtils.pythag(player.getMotion().x, player.getMotion().y, player.getMotion().z);
+        return MuseMathUtils.pythag(player.getDeltaMovement().x, player.getDeltaMovement().y, player.getDeltaMovement().z);
     }
 
    @SubscribeEvent
     public void handleLivingJumpEvent(LivingJumpEvent event) {
         if (event.getEntityLiving() instanceof PlayerEntity) {
             PlayerEntity player = (PlayerEntity) event.getEntityLiving();
-            player.getItemStackFromSlot(EquipmentSlotType.LEGS).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(iModularItem -> {
+            player.getItemBySlot(EquipmentSlotType.LEGS).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(iModularItem -> {
                 if (!(iModularItem instanceof IModularItem)) {
                     return;
                 }
@@ -269,7 +269,7 @@ public enum MovementManager {
                     double jumpAssist = jumper.applyPropertyModifiers(MPSConstants.MULTIPLIER) * 2;
                     double drain = jumper.applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION);
                     int avail = ElectricItemUtils.getPlayerEnergy(player);
-                    if ((player.world.isRemote()) && NuminaSettings.useSounds()) {
+                    if ((player.level.isClientSide()) && NuminaSettings.useSounds()) {
                         Musique.playerSound(player, MPSSoundDictionary.JUMP_ASSIST, SoundCategory.PLAYERS, (float) (jumpAssist / 8.0), (float) 1, false);
                     }
 
@@ -278,9 +278,9 @@ public enum MovementManager {
                         setPlayerJumpTicks(player, jumpAssist);
                         double jumpCompensationRatio = jumper.applyPropertyModifiers(MPSConstants.FOOD_COMPENSATION);
                         if (player.isSprinting()) {
-                            player.getFoodStats().addExhaustion((float) (-0.2F * jumpCompensationRatio));
+                            player.getFoodData().addExhaustion((float) (-0.2F * jumpCompensationRatio));
                         } else {
-                            player.getFoodStats().addExhaustion((float) (-0.05F * jumpCompensationRatio));
+                            player.getFoodData().addExhaustion((float) (-0.05F * jumpCompensationRatio));
                         }
                     }
                 });
@@ -292,7 +292,7 @@ public enum MovementManager {
     public void handleFallEvent(LivingFallEvent event) {
         if (event.getEntityLiving() instanceof PlayerEntity && event.getDistance() > 3.0) {
             PlayerEntity player = (PlayerEntity) event.getEntityLiving();
-            ItemStack boots = player.getItemStackFromSlot(EquipmentSlotType.FEET);
+            ItemStack boots = player.getItemBySlot(EquipmentSlotType.FEET);
             boots.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(iModularItem -> {
                 if (!(iModularItem instanceof IModularItem)) {
                     return;
@@ -301,7 +301,7 @@ public enum MovementManager {
                 ItemStack shockAbsorbers = ((IModularItem) iModularItem).getOnlineModuleOrEmpty(MPSRegistryNames.SHOCK_ABSORBER_MODULE_REGNAME);
                 shockAbsorbers.getCapability(PowerModuleCapability.POWER_MODULE).ifPresent(sa -> {
                     double distanceAbsorb = event.getDistance() * sa.applyPropertyModifiers(MPSConstants.MULTIPLIER);
-                    if (player.world.isRemote && NuminaSettings.useSounds()) {
+                    if (player.level.isClientSide && NuminaSettings.useSounds()) {
                         Musique.playerSound(player, SoundDictionary.SOUND_EVENT_GUI_INSTALL, SoundCategory.PLAYERS, (float) (distanceAbsorb), (float) 1, false);
                     }
                     double drain = distanceAbsorb * sa.applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION);

@@ -71,17 +71,17 @@ public enum KeybindManager {
     }
 
     public KeyBinding addKeybinding(String keybindDescription, InputMappings.Input keyCode, MusePoint2D position) {
-        KeyBinding kb = new KeyBinding(keybindDescription, keyCode.getKeyCode(), KeybindKeyHandler.mpa);
+        KeyBinding kb = new KeyBinding(keybindDescription, keyCode.getValue(), KeybindKeyHandler.mpa);
         boolean free = !keyBindingHelper.keyBindingHasKey(keyCode);
         keybindings.add(new ClickableKeybinding(kb, position, free, false));
         return kb;
     }
 
     public String parseName(KeyBinding keybind) {
-        if (keybind.getKey().getKeyCode() < 0) {
-            return "Mouse" + (keybind.getKey().getKeyCode() + 100);
+        if (keybind.getKey().getValue() < 0) {
+            return "Mouse" + (keybind.getKey().getValue() + 100);
         } else {
-            return keybind.getKey().getTranslationKey();
+            return keybind.getKey().getName();
         }
     }
 
@@ -99,8 +99,8 @@ public enum KeybindManager {
             NonNullList modulesToWrite = NonNullList.create();
 
             for (EquipmentSlotType slot: EquipmentSlotType.values()) {
-                if (slot.getSlotType() == EquipmentSlotType.Group.ARMOR) {
-                    player.getItemStackFromSlot(slot).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(
+                if (slot.getType() == EquipmentSlotType.Group.ARMOR) {
+                    player.getItemBySlot(slot).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(
                             iItemHandler -> {
                                 if (iItemHandler instanceof IModularItem) {
                                     modulesToWrite.addAll(((IModularItem) iItemHandler).getInstalledModules());
@@ -111,7 +111,7 @@ public enum KeybindManager {
 
             StringBuilder stringBuilder = new StringBuilder();
             for (ClickableKeybinding keybinding : keybindings) {
-                stringBuilder.append(keybinding.getKeyBinding().getKey().getKeyCode())
+                stringBuilder.append(keybinding.getKeyBinding().getKey().getValue())
                         .append(":")
                         .append(keybinding.getPosition().getX())
                         .append(':')
@@ -171,7 +171,7 @@ public enum KeybindManager {
                         }
 
                         workingKeybinding = new ClickableKeybinding(
-                                new KeyBinding(KeyBindingHelper.getInputByCode(id).getTranslationKey(), id, KeybindKeyHandler.mpa), position, free, displayOnHUD);
+                                new KeyBinding(KeyBindingHelper.getInputByCode(id).getName(), id, KeybindKeyHandler.mpa), position, free, displayOnHUD);
                         workingKeybinding.toggleval = toggleval;
                         keybindings.add(workingKeybinding);
                     } else {

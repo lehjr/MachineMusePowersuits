@@ -51,22 +51,22 @@ public class CreativeInstallModuleRequestPacket {
     public static void encode(CreativeInstallModuleRequestPacket msg, PacketBuffer packetBuffer) {
         packetBuffer.writeInt(msg.windowId);
         packetBuffer.writeInt(msg.slotId);
-        packetBuffer.writeItemStack(msg.itemStack);
+        packetBuffer.writeItem(msg.itemStack);
     }
 
     public static CreativeInstallModuleRequestPacket decode(PacketBuffer packetBuffer) {
         return new CreativeInstallModuleRequestPacket(
                 packetBuffer.readInt(),
                 packetBuffer.readInt(),
-                packetBuffer.readItemStack());
+                packetBuffer.readItem());
     }
 
 
     public static void handle(CreativeInstallModuleRequestPacket message, Supplier<NetworkEvent.Context> ctx) {
         ctx.get().enqueueWork(() -> {
             ServerPlayerEntity player = ctx.get().getSender();
-            if (player.openContainer != null && player.openContainer.windowId == message.windowId) {
-                player.openContainer.putStackInSlot(message.slotId, message.itemStack);
+            if (player.containerMenu != null && player.containerMenu.containerId == message.windowId) {
+                player.containerMenu.setItem(message.slotId, message.itemStack);
 //                player.openContainer.detectAndSendChanges();
             }
         });

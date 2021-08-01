@@ -56,19 +56,19 @@ public class HarvestEventHandler {
             return;
         }
 
-        ItemStack stack = player.inventory.getCurrentItem();
+        ItemStack stack = player.inventory.getSelected();
         stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(iItemHandler -> {
             if(iItemHandler instanceof IModeChangingItem) {
-                if (!state.getRequiresTool()) {
+                if (!state.requiresCorrectToolForDrops()) {
                     event.setCanHarvest(true);
                     return;
                 }
 
-                RayTraceResult rayTraceResult = rayTrace(player.world, player, RayTraceContext.FluidMode.SOURCE_ONLY);
+                RayTraceResult rayTraceResult = rayTrace(player.level, player, RayTraceContext.FluidMode.SOURCE_ONLY);
                 if (rayTraceResult == null || rayTraceResult.getType() != RayTraceResult.Type.BLOCK)
                     return;
 
-                BlockPos pos = new BlockPos(rayTraceResult.getHitVec());
+                BlockPos pos = new BlockPos(rayTraceResult.getLocation());
                 if (pos == null) {
                     return;
                 }
@@ -88,8 +88,8 @@ public class HarvestEventHandler {
 
     // copied from vanilla item
     protected static RayTraceResult rayTrace(World worldIn, PlayerEntity player, RayTraceContext.FluidMode fluidMode) {
-        float pitch = player.rotationPitch;
-        float yaw = player.rotationYaw;
+        float pitch = player.xRot;
+        float yaw = player.yRot;
         Vector3d vec3d = player.getEyePosition(1.0F);
         float f2 = MathHelper.cos(-yaw * ((float)Math.PI / 180F) - (float)Math.PI);
         float f3 = MathHelper.sin(-yaw * ((float)Math.PI / 180F) - (float)Math.PI);
@@ -99,14 +99,14 @@ public class HarvestEventHandler {
         float f7 = f2 * f4;
         double d0 = player.getAttribute(net.minecraftforge.common.ForgeMod.REACH_DISTANCE.get()).getValue();;
         Vector3d vec3d1 = vec3d.add((double)f6 * d0, (double)f5 * d0, (double)f7 * d0);
-        return worldIn.rayTraceBlocks(new RayTraceContext(vec3d, vec3d1, RayTraceContext.BlockMode.OUTLINE, fluidMode, player));
+        return worldIn.clip(new RayTraceContext(vec3d, vec3d1, RayTraceContext.BlockMode.OUTLINE, fluidMode, player));
     }
 
     @SubscribeEvent
     public static void handleBreakSpeed(PlayerEvent.BreakSpeed event) {
         // Note: here we can actually get the position if needed. we can't easily om the harvest check.
         PlayerEntity player = event.getPlayer();
-        ItemStack stack = player.inventory.getCurrentItem();
+        ItemStack stack = player.inventory.getSelected();
         stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(iItemHandler -> {
             if (iItemHandler instanceof IModeChangingItem) {
                 BlockState state = event.getState();

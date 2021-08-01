@@ -92,10 +92,10 @@ public class JumpAssistModule extends AbstractPowerModule {
                 if (playerInput.jumpKey) {
                     double multiplier = MovementManager.INSTANCE.getPlayerJumpMultiplier(player);
                     if (multiplier > 0) {
-                        player.setMotion(player.getMotion().add(0, 0.15 * Math.min(multiplier, 1), 0));
+                        player.setDeltaMovement(player.getDeltaMovement().add(0, 0.15 * Math.min(multiplier, 1), 0));
                         MovementManager.INSTANCE.setPlayerJumpTicks(player, multiplier - 1);
                     }
-                    player.jumpMovementFactor = player.getAIMoveSpeed() * .2f;
+                    player.flyingSpeed = player.getSpeed() * .2f;
                 } else {
                     MovementManager.INSTANCE.setPlayerJumpTicks(player, 0);
                 }

@@ -48,15 +48,15 @@ public abstract class AbstractPowerModule extends Item {
 
     public AbstractPowerModule() {
         super(new Item.Properties()
-                .maxStackSize(1)
-                .group(MPSObjects.creativeTab)
-                .defaultMaxDamage(-1)
+                .stacksTo(1)
+                .tab(MPSObjects.creativeTab)
+                .defaultDurability(-1)
                 .setNoRepair());
     }
 
     public static RayTraceResult rayTrace(World worldIn, PlayerEntity player, RayTraceContext.FluidMode fluidMode, double range) {
-        float pitch = player.rotationPitch;
-        float yaw = player.rotationYaw;
+        float pitch = player.xRot;
+        float yaw = player.yRot;
         Vector3d vec3d = player.getEyePosition(1.0F);
         float f2 = MathHelper.cos(-yaw * ((float)Math.PI / 180F) - (float)Math.PI);
         float f3 = MathHelper.sin(-yaw * ((float)Math.PI / 180F) - (float)Math.PI);
@@ -65,7 +65,7 @@ public abstract class AbstractPowerModule extends Item {
         float f6 = f3 * f4;
         float f7 = f2 * f4;
         Vector3d vec3d1 = vec3d.add((double)f6 * range, (double)f5 * range, (double)f7 * range);
-        return worldIn.rayTraceBlocks(new RayTraceContext(vec3d, vec3d1, RayTraceContext.BlockMode.OUTLINE, fluidMode, player));
+        return worldIn.clip(new RayTraceContext(vec3d, vec3d1, RayTraceContext.BlockMode.OUTLINE, fluidMode, player));
     }
 
     @Nullable
@@ -73,9 +73,9 @@ public abstract class AbstractPowerModule extends Item {
     public abstract ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundNBT nbt);
 
     @Override
-    public void addInformation(ItemStack itemStack, @Nullable World worldIn, List<ITextComponent> tooltips, ITooltipFlag flagIn) {
+    public void appendHoverText(ItemStack itemStack, @Nullable World worldIn, List<ITextComponent> tooltips, ITooltipFlag flagIn) {
         if (worldIn != null) {
-            AdditionalInfo.addInformation(itemStack, worldIn, tooltips, flagIn);
+            AdditionalInfo.appendHoverText(itemStack, worldIn, tooltips, flagIn);
         }
     }
 }

@@ -26,8 +26,9 @@
 
 package com.github.lehjr.powersuits.network;
 
-import com.github.lehjr.numina.network.packets.reworked_crafting_packets.CPlaceRecipePacket;
 import com.github.lehjr.powersuits.constants.MPSConstants;
+import com.github.lehjr.powersuits.dev.crafting.packet.CPlaceRecipePacket;
+import com.github.lehjr.powersuits.dev.crafting.packet.SPlaceGhostRecipePacket;
 import com.github.lehjr.powersuits.network.packets.ColourInfoPacket;
 import com.github.lehjr.powersuits.network.packets.ContainerGuiOpenPacket;
 import com.github.lehjr.powersuits.network.packets.MoveModuleFromSlotToSlotPacket;
@@ -50,9 +51,32 @@ public class MPSPackets {
         CHANNEL_INSTANCE.registerMessage(
                 i++,
                 ColourInfoPacket.class,
-                ColourInfoPacket::encode,
-                ColourInfoPacket::decode,
+                ColourInfoPacket::write,
+                ColourInfoPacket::read,
                 ColourInfoPacket::handle);
+
+        CHANNEL_INSTANCE.registerMessage(
+                i++,
+                CPlaceRecipePacket.class,
+                CPlaceRecipePacket::encode,
+                CPlaceRecipePacket::decode,
+                CPlaceRecipePacket::handle);
+
+        CHANNEL_INSTANCE.registerMessage(
+                i++,
+                SPlaceGhostRecipePacket.class,
+                SPlaceGhostRecipePacket::encode,
+                SPlaceGhostRecipePacket::decode,
+                SPlaceGhostRecipePacket::handle);
+
+
+        CHANNEL_INSTANCE.registerMessage(
+                i++,
+                ContainerGuiOpenPacket.class,
+                ContainerGuiOpenPacket::write,
+                ContainerGuiOpenPacket::read,
+                ContainerGuiOpenPacket::handle);
+
 
 //        CHANNEL_INSTANCE.registerMessage(
 //                i++,
@@ -78,29 +102,15 @@ public class MPSPackets {
         CHANNEL_INSTANCE.registerMessage(
                 i++,
                 MoveModuleFromSlotToSlotPacket.class,
-                MoveModuleFromSlotToSlotPacket::encode,
-                MoveModuleFromSlotToSlotPacket::decode,
+                MoveModuleFromSlotToSlotPacket::write,
+                MoveModuleFromSlotToSlotPacket::read,
                 MoveModuleFromSlotToSlotPacket::handle);
 
         CHANNEL_INSTANCE.registerMessage(
                 i++,
-                CPlaceRecipePacket.class,
-                CPlaceRecipePacket::encode,
-                CPlaceRecipePacket::decode,
-                CPlaceRecipePacket::handle);
-
-//        CHANNEL_INSTANCE.registerMessage(
-//                i++,
-//                SPlaceGhostRecipePacket.class,
-//                SPlaceGhostRecipePacket::encode,
-//                SPlaceGhostRecipePacket::decode,
-//                SPlaceGhostRecipePacket::handle);
-
-        CHANNEL_INSTANCE.registerMessage(
-                i++,
                 ContainerGuiOpenPacket.class,
-                ContainerGuiOpenPacket::encode,
-                ContainerGuiOpenPacket::decode,
+                ContainerGuiOpenPacket::write,
+                ContainerGuiOpenPacket::read,
                 ContainerGuiOpenPacket::handle);
 
     }

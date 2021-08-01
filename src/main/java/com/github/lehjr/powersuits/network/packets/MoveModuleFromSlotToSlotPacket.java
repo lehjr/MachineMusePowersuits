@@ -46,26 +46,26 @@ public class MoveModuleFromSlotToSlotPacket {
         this.targetSlot = targetSlotIn;
     }
 
-    public static void encode(MoveModuleFromSlotToSlotPacket msg, PacketBuffer packetBuffer) {
+    public static void write(MoveModuleFromSlotToSlotPacket msg, PacketBuffer packetBuffer) {
         packetBuffer.writeInt(msg.windowId);
         packetBuffer.writeInt(msg.sourceSlot);
         packetBuffer.writeInt(msg.targetSlot);
     }
 
-    public static MoveModuleFromSlotToSlotPacket decode(PacketBuffer packetBuffer) {
+    public static MoveModuleFromSlotToSlotPacket read(PacketBuffer packetBuffer) {
         return new MoveModuleFromSlotToSlotPacket(packetBuffer.readInt(), packetBuffer.readInt(), packetBuffer.readInt());
     }
 
     public static void handle(MoveModuleFromSlotToSlotPacket message, Supplier<NetworkEvent.Context> ctx) {
         ctx.get().enqueueWork(() -> {
             ServerPlayerEntity player = ctx.get().getSender();
-            if (player.openContainer != null && player.openContainer.windowId == message.windowId && player.openContainer instanceof TinkerTableContainer) {
-                TinkerTableContainer container = (TinkerTableContainer) player.openContainer;
+            if (player.containerMenu != null && player.containerMenu.containerId == message.windowId && player.containerMenu instanceof TinkerTableContainer) {
+                TinkerTableContainer container = (TinkerTableContainer) player.containerMenu;
 
                 Slot source = container.getSlot(message.sourceSlot);
                 Slot target = container.getSlot(message.targetSlot);
 
-                ItemStack itemStack = source.getStack();
+                ItemStack itemStack = source.getItem();
                 ItemStack stackCopy = itemStack.copy();
                 // fixme: no idea if this will work with target set as range
 //                if (source instanceof CraftingResultSlot && source.getHasStack()) {
@@ -77,10 +77,10 @@ public class MoveModuleFromSlotToSlotPacket {
 //                } else
 
                 {
-                    target.putStack(stackCopy);
-                    source.decrStackSize(1);
+                    target.set(stackCopy);
+                    source.remove(1);
                 }
-                player.openContainer.detectAndSendChanges();
+                player.containerMenu.broadcastChanges();
             }
         });
         ctx.get().setPacketHandled(true);

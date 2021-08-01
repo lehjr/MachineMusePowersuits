@@ -110,22 +110,22 @@ public class SwimAssistModule extends AbstractPowerModule {
                         double swimAssistRate = applyPropertyModifiers(MPSConstants.SWIM_BOOST_AMOUNT) * 0.05 * moveRatio;
                         double swimEnergyConsumption = applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION);
                         if (swimEnergyConsumption < ElectricItemUtils.getPlayerEnergy(player)) {
-                            if (player.world.isRemote && NuminaSettings.useSounds()) {
+                            if (player.level.isClientSide && NuminaSettings.useSounds()) {
                                 Musique.playerSound(player, MPSSoundDictionary.SWIM_ASSIST, SoundCategory.PLAYERS, 1.0f, 1.0f, true);
                             }
                             MovementManager.INSTANCE.thrust(player, swimAssistRate, true);
                         } else {
-                            if (player.world.isRemote && NuminaSettings.useSounds()) {
+                            if (player.level.isClientSide && NuminaSettings.useSounds()) {
                                 Musique.stopPlayerSound(player, MPSSoundDictionary.SWIM_ASSIST);
                             }
                         }
                     } else {
-                        if (player.world.isRemote && NuminaSettings.useSounds()) {
+                        if (player.level.isClientSide && NuminaSettings.useSounds()) {
                             Musique.stopPlayerSound(player, MPSSoundDictionary.SWIM_ASSIST);
                         }
                     }
                 } else {
-                    if (player.world.isRemote && NuminaSettings.useSounds()) {
+                    if (player.level.isClientSide && NuminaSettings.useSounds()) {
                         Musique.stopPlayerSound(player, MPSSoundDictionary.SWIM_ASSIST);
                     }
                 }
@@ -133,7 +133,7 @@ public class SwimAssistModule extends AbstractPowerModule {
 
             @Override
             public void onPlayerTickInactive(PlayerEntity player, ItemStack item) {
-                if (player.world.isRemote && NuminaSettings.useSounds()) {
+                if (player.level.isClientSide && NuminaSettings.useSounds()) {
                     Musique.stopPlayerSound(player, MPSSoundDictionary.SWIM_ASSIST);
                 }
             }

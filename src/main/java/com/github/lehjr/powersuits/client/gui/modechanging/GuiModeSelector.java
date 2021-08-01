@@ -40,11 +40,11 @@ public class GuiModeSelector extends ContainerlessGui {
 
     public GuiModeSelector(PlayerEntity player, ITextComponent titleIn) {
         super(titleIn);
-        Minecraft.getInstance().keyboardListener.enableRepeatEvents(true);
+        Minecraft.getInstance().keyboardHandler.setSendRepeatsToGui(true);
         this.player = player;
-        MainWindow screen = Minecraft.getInstance().getMainWindow();
-        this.xSize = Math.min(screen.getScaledWidth() - 50, 500);
-        this.ySize = Math.min(screen.getScaledHeight() - 50, 300);
+        MainWindow screen = Minecraft.getInstance().getWindow();
+        this./*xSize*/imageWidth = Math.min(screen.getGuiScaledWidth() - 50, 500);
+        this./*ySize*/imageHeight = Math.min(screen.getGuiScaledHeight() - 50, 300);
 
         radialSelect = new RadialModeSelectionFrame(
                 new MusePoint2D(absX(-0.5), absY(-0.5)),
@@ -70,8 +70,8 @@ public class GuiModeSelector extends ContainerlessGui {
 
     @Override
     public boolean keyReleased(int keyCode, int scanCode, int modifiers) {
-        if (minecraft.gameSettings.keyBindsHotbar[player.inventory.currentItem].matchesKey(keyCode, scanCode)) {
-            this.player.closeScreen();
+        if (minecraft.options.keyHotbarSlots[player.inventory.selected].matches(keyCode, scanCode)) {
+            this.player.closeContainer();
             return true;
         }
         return false;
@@ -80,8 +80,8 @@ public class GuiModeSelector extends ContainerlessGui {
     @Override
     public void tick() {
         super.tick();
-        if (!minecraft.isGameFocused()) {
-            this.player.closeScreen();
+        if (!minecraft.isWindowActive()) {
+            this.player.closeContainer();
 //            super.onClose();
 //            container.onContainerClosed(player);
         }

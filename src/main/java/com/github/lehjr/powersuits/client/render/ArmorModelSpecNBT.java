@@ -64,7 +64,7 @@ public class ArmorModelSpecNBT extends ModelSpecNBT implements IArmorModelSpecNB
         } catch (Exception ignored) {
         }
 
-        for (String key : renderTag.keySet()) {
+        for (String key : renderTag.getAllKeys()) {
             if (key.equals("colours")) {
                 continue;
             }
@@ -99,7 +99,7 @@ public class ArmorModelSpecNBT extends ModelSpecNBT implements IArmorModelSpecNB
 
         EquipmentSlotType slot = getItemStack().getEquipmentSlot();
         if (slot == null) {
-            slot = MobEntity.getSlotForItemStack(getItemStack());
+            slot = MobEntity.getEquipmentSlotForItem(getItemStack());
         }
 
         for (SpecBase spec : ModelRegistry.getInstance().getSpecs()) {

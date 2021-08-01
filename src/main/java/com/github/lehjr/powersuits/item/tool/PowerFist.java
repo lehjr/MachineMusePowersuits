@@ -59,7 +59,7 @@ import java.util.Set;
 
 public class PowerFist extends AbstractElectricTool {
     public PowerFist() {
-        super(new Item.Properties().group(MPSObjects.creativeTab).maxStackSize(1).defaultMaxDamage(0));
+        super(new Item.Properties().tab(MPSObjects.creativeTab).stacksTo(1).defaultDurability(0));
     }
 
     @Override
@@ -68,7 +68,7 @@ public class PowerFist extends AbstractElectricTool {
     }
 
     @Override
-    public boolean onBlockDestroyed(ItemStack powerFist, World worldIn, BlockState state, BlockPos pos, LivingEntity entityLiving) {
+    public boolean mineBlock(ItemStack powerFist, World worldIn, BlockState state, BlockPos pos, LivingEntity entityLiving) {
         int playerEnergy = ElectricItemUtils.getPlayerEnergy(entityLiving);
         return powerFist.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).map(iItemHandler -> {
             if (iItemHandler instanceof IModeChangingItem) {
@@ -124,7 +124,7 @@ public class PowerFist extends AbstractElectricTool {
      * entry argument beside stack. They just raise the damage on the stack.
      */
     @Override
-    public boolean hitEntity(ItemStack itemStack, LivingEntity target, LivingEntity attacker) {
+    public boolean hurtEnemy(ItemStack itemStack, LivingEntity target, LivingEntity attacker) {
         if (attacker instanceof PlayerEntity) {
             itemStack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(iItemHandler -> {
                 if (iItemHandler instanceof IModeChangingItem) {
@@ -136,10 +136,10 @@ public class PowerFist extends AbstractElectricTool {
                             ElectricItemUtils.drainPlayerEnergy(player, (int) drain);
                             double damage = pm.applyPropertyModifiers(MPSConstants.PUNCH_DAMAGE);
                             double knockback = pm.applyPropertyModifiers(MPSConstants.PUNCH_KNOCKBACK);
-                            DamageSource damageSource = DamageSource.causePlayerDamage(player);
-                            if (target.attackEntityFrom(damageSource, (float) (int) damage)) {
-                                Vector3d lookVec = player.getLookVec();
-                                target.addVelocity(lookVec.x * knockback, Math.abs(lookVec.y + 0.2f) * knockback, lookVec.z * knockback);
+                            DamageSource damageSource = DamageSource.playerAttack(player);
+                            if (target.hurt(damageSource, (float) (int) damage)) {
+                                Vector3d lookVec = player.getLookAngle();
+                                target.push(lookVec.x * knockback, Math.abs(lookVec.y + 0.2f) * knockback, lookVec.z * knockback);
                             }
                         }
                     });
@@ -183,7 +183,7 @@ public class PowerFist extends AbstractElectricTool {
 
     @Override
     public boolean canContinueUsing(ItemStack oldStack, ItemStack newStack) {
-        return oldStack.isItemEqual(newStack);
+        return oldStack.sameItem(newStack);
     }
 
     // Only fires on blocks that need a tool
@@ -222,7 +222,7 @@ public class PowerFist extends AbstractElectricTool {
                 for (ItemStack module :  ((IModeChangingItem) iItemHandler).getInstalledModulesOfType(IBlockBreakingModule.class)) {
                     if(module.getCapability(PowerModuleCapability.POWER_MODULE).map(pm->{
                         if (pm instanceof IBlockBreakingModule) {
-                            if (((IBlockBreakingModule) pm).getEmulatedTool().canHarvestBlock(state)) {
+                            if (((IBlockBreakingModule) pm).getEmulatedTool().isCorrectToolForDrops(state)) {
                                 return true;
                             }
                         }
@@ -239,14 +239,14 @@ public class PowerFist extends AbstractElectricTool {
     }
 
     @Override
-    public ActionResultType onItemUse(ItemUseContext context) {
+    public ActionResultType useOn(ItemUseContext context) {
         final ActionResultType fallback = ActionResultType.PASS;
 
         final Hand hand = context.getHand();
         if (hand != Hand.MAIN_HAND)
             return fallback;
 
-        final ItemStack fist = context.getItem();
+        final ItemStack fist = context.getItemInHand();
         return fist.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).map(handler->{
             if(handler instanceof IModeChangingItem) {
                 ItemStack module = ((IModeChangingItem) handler).getActiveModule();
@@ -269,7 +269,7 @@ public class PowerFist extends AbstractElectricTool {
         if (hand != Hand.MAIN_HAND)
             return fallback;
 
-        final ItemStack fist = context.getItem();
+        final ItemStack fist = context.getItemInHand();
         return fist.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).map(handler->{
             if(handler instanceof IModeChangingItem) {
                 ItemStack module = ((IModeChangingItem) handler).getActiveModule();
@@ -285,7 +285,7 @@ public class PowerFist extends AbstractElectricTool {
     }
 
     @Override
-    public void onPlayerStoppedUsing(ItemStack stack, World worldIn, LivingEntity entityLiving, int timeLeft) {
+    public void releaseUsing(ItemStack stack, World worldIn, LivingEntity entityLiving, int timeLeft) {
         stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(handler->{
             if(handler instanceof IModeChangingItem) {
                 ItemStack module = ((IModeChangingItem) handler).getActiveModule();
@@ -299,8 +299,8 @@ public class PowerFist extends AbstractElectricTool {
     }
 
     @Override
-    public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity playerIn, Hand handIn) {
-        ItemStack fist = playerIn.getHeldItem(handIn);
+    public ActionResult<ItemStack> use(World world, PlayerEntity playerIn, Hand handIn) {
+        ItemStack fist = playerIn.getItemInHand(handIn);
         final ActionResult<ItemStack> fallback = new ActionResult<>(ActionResultType.PASS, fist);
         if (handIn != Hand.MAIN_HAND)
             return fallback;
@@ -316,7 +316,7 @@ public class PowerFist extends AbstractElectricTool {
     }
 
     @Override
-    public UseAction getUseAction(ItemStack stack) {
+    public UseAction getUseAnimation(ItemStack stack) {
         return UseAction.BOW;
     }
 }

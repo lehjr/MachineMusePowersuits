@@ -60,7 +60,7 @@ public class RailgunBoltEntity extends ThrowableEntity implements IEntityAdditio
     private double chargePercent;
     int piercedEntities = 0;
 
-    private final SoundEvent hitSound = SoundEvents.ENTITY_GENERIC_EXPLODE;
+    private final SoundEvent hitSound = SoundEvents.GENERIC_EXPLODE;
 
     public RailgunBoltEntity(EntityType<? extends RailgunBoltEntity> type, World worldIn) {
         super(type, worldIn);
@@ -78,15 +78,15 @@ public class RailgunBoltEntity extends ThrowableEntity implements IEntityAdditio
         this.knockbackStrength = (int) knockback;
 
 
-        this.setShooter(shooter);
-        this.setWorld(world);
+        this.setOwner(shooter);
+        this.setLevel(world);
 
         // todo: replace with something resembling original code
         if (shooter instanceof PlayerEntity) {
-            Vector3d direction = shooter.getLookVec();//.normalize();
+            Vector3d direction = shooter.getLookAngle();//.normalize();
 
-            System.out.println("lookvec: " + shooter.getLookVec());
-            System.out.println("lookVec oldCalc: " + getVectorForRotationTest(shooter.rotationPitch, shooter.rotationYaw));
+            System.out.println("lookvec: " + shooter.getLookAngle());
+            System.out.println("lookVec oldCalc: " + getVectorForRotationTest(shooter.xRot, shooter.yRot));
 
 
 
@@ -97,20 +97,20 @@ public class RailgunBoltEntity extends ThrowableEntity implements IEntityAdditio
             double horzx = direction.x / horzScale;
             double horzz = direction.z / horzScale;
 
-            this.setPositionAndRotation(
+            this.absMoveTo(
                     // x
-                    (shooter.getPosX() + direction.x * xoffset - direction.y * horzx * yoffset - horzz * zoffset),
+                    (shooter.getX() + direction.x * xoffset - direction.y * horzx * yoffset - horzz * zoffset),
                     // y
-                    (shooter.getPosY() + shooter.getEyeHeight() + direction.y * xoffset + (1 - Math.abs(direction.y)) * yoffset),
+                    (shooter.getY() + shooter.getEyeHeight() + direction.y * xoffset + (1 - Math.abs(direction.y)) * yoffset),
                     //z
-                    (shooter.getPosZ() + direction.z * xoffset - direction.y * horzz * yoffset + horzx * zoffset),
-                    shooter.rotationYaw * -1,
-                    shooter.rotationPitch * -1
+                    (shooter.getZ() + direction.z * xoffset - direction.y * horzz * yoffset + horzx * zoffset),
+                    shooter.yRot * -1,
+                    shooter.xRot * -1
             );
 
             if (chargePercent >= 0.75) {
                 // fire
-                setFire((int) (chargePercent * 100));
+                setSecondsOnFire((int) (chargePercent * 100));
             }
 
 //            double inaccuracy = (chargePercent * 0.25F);
@@ -122,7 +122,7 @@ public class RailgunBoltEntity extends ThrowableEntity implements IEntityAdditio
 //                                this.rand.nextGaussian() * 0.0075 * inaccuracy);
 //            }
 
-            this.setMotion(direction.scale(velocity));
+            this.setDeltaMovement(direction.scale(velocity));
         }
         setNoGravity(true);
     }
@@ -138,9 +138,9 @@ public class RailgunBoltEntity extends ThrowableEntity implements IEntityAdditio
 
 
     @Override
-    protected void onImpact(RayTraceResult result) {
-        super.onImpact(result);
-        Vector3d hitVec = result.getHitVec();
+    protected void onHit(RayTraceResult result) {
+        super.onHit(result);
+        Vector3d hitVec = result.getLocation();
         drawParticleStreamTo(hitVec);
     }
 
@@ -148,8 +148,8 @@ public class RailgunBoltEntity extends ThrowableEntity implements IEntityAdditio
      * Called when the arrow hits an entity
      */
     @Override
-    protected void onEntityHit(EntityRayTraceResult traceResult) {
-        super.onEntityHit(traceResult);
+    protected void onHitEntity(EntityRayTraceResult traceResult) {
+        super.onHitEntity(traceResult);
         Entity entity = traceResult.getEntity();
 
         int pierceLimit = (int) (5 * chargePercent); // pierceLevel of 5 or less
@@ -161,54 +161,54 @@ public class RailgunBoltEntity extends ThrowableEntity implements IEntityAdditio
             this.piercedEntities ++;
         }
 
-        Entity entity1 = this.getShooter();
+        Entity entity1 = this.getOwner();
         DamageSource damagesource;
         if (entity1 == null) {
             damagesource = causeBoltDamage(this, this);
         } else {
             damagesource = causeBoltDamage(this, entity1);
             if (entity1 instanceof LivingEntity) {
-                ((LivingEntity)entity1).setLastAttackedEntity(entity);
+                ((LivingEntity)entity1).setLastHurtMob(entity);
             }
         }
 
-        int fireTimer = entity.getFireTimer();
-        if (this.isBurning() /* burn the enderman too && !flag */) {
-            entity.setFire(5);
+        int fireTimer = entity.getRemainingFireTicks();
+        if (this.isOnFire() /* burn the enderman too && !flag */) {
+            entity.setSecondsOnFire(5);
         }
 
-        if (entity.attackEntityFrom(damagesource, (float)damage)) {
+        if (entity.hurt(damagesource, (float)damage)) {
             if (entity instanceof LivingEntity) {
                 LivingEntity livingentity = (LivingEntity)entity;
 
                 // apply knockback
                 if (this.knockbackStrength > 0) {
-                    Vector3d vector3d = this.getMotion().mul(1.0D, 0.0D, 1.0D).normalize().scale((double)this.knockbackStrength * 0.6D);
-                    if (vector3d.lengthSquared() > 0.0D) {
-                        livingentity.addVelocity(vector3d.x, 0.1D, vector3d.z);
+                    Vector3d vector3d = this.getDeltaMovement().multiply(1.0D, 0.0D, 1.0D).normalize().scale((double)this.knockbackStrength * 0.6D);
+                    if (vector3d.lengthSqr() > 0.0D) {
+                        livingentity.push(vector3d.x, 0.1D, vector3d.z);
                     }
                 }
 
-                if (!this.world.isRemote && entity1 instanceof LivingEntity) {
-                    EnchantmentHelper.applyThornEnchantments(livingentity, entity1);
-                    EnchantmentHelper.applyArthropodEnchantments((LivingEntity)entity1, livingentity);
+                if (!this.level.isClientSide && entity1 instanceof LivingEntity) {
+                    EnchantmentHelper.doPostHurtEffects(livingentity, entity1);
+                    EnchantmentHelper.doPostDamageEffects((LivingEntity)entity1, livingentity);
                 }
 
                 if (entity1 != null && livingentity != entity1 && livingentity instanceof PlayerEntity && entity1 instanceof ServerPlayerEntity && !this.isSilent()) {
-                    ((ServerPlayerEntity)entity1).connection.sendPacket(new SChangeGameStatePacket(SChangeGameStatePacket.HIT_PLAYER_ARROW, 0.0F));
+                    ((ServerPlayerEntity)entity1).connection.send(new SChangeGameStatePacket(SChangeGameStatePacket.ARROW_HIT_PLAYER, 0.0F));
                 }
             }
 
-            this.playSound(this.hitSound, 1.0F, 1.2F / (this.rand.nextFloat() * 0.2F + 0.9F));
+            this.playSound(this.hitSound, 1.0F, 1.2F / (this.random.nextFloat() * 0.2F + 0.9F));
             if (pierceLimit <= 0) {
                 this.remove();
             }
         } else {
-            entity.forceFireTicks(fireTimer);
-            this.setMotion(this.getMotion().scale(-0.1D));
-            this.rotationYaw += 180.0F;
-            this.prevRotationYaw += 180.0F;
-            if (!this.world.isRemote && this.getMotion().lengthSquared() < 1.0E-7D) {
+            entity.setRemainingFireTicks(fireTimer);
+            this.setDeltaMovement(this.getDeltaMovement().scale(-0.1D));
+            this.yRot += 180.0F;
+            this.yRotO += 180.0F;
+            if (!this.level.isClientSide && this.getDeltaMovement().lengthSqr() < 1.0E-7D) {
                 this.remove();
             }
         }
@@ -228,21 +228,21 @@ public class RailgunBoltEntity extends ThrowableEntity implements IEntityAdditio
 
             float f2;
             // motion vector with scale applied because the bolt moves too fast to draw bubbles
-            Vector3d vector3d = this.getMotion();//.scale(0.05);
+            Vector3d vector3d = this.getDeltaMovement();//.scale(0.05);
             double d3 = vector3d.x;
             double d4 = vector3d.y;
             double d0 = vector3d.z;
 
-            double d5 = this.getPosX() + d3;
-            double d1 = this.getPosY() + d4;
-            double d2 = this.getPosZ() + d0;
+            double d5 = this.getX() + d3;
+            double d1 = this.getY() + d4;
+            double d2 = this.getZ() + d0;
 
             for(int j = 0; j < 4; ++j) {
-                this.world.addParticle(ParticleTypes.BUBBLE, d5 - d3 * 0.25D, d1 - d4 * 0.25D, d2 - d0 * 0.25D, d3, d4, d0);
+                this.level.addParticle(ParticleTypes.BUBBLE, d5 - d3 * 0.25D, d1 - d4 * 0.25D, d2 - d0 * 0.25D, d3, d4, d0);
             }
 
             f2 = this.getWaterDrag();
-            this.setMotion(vector3d.scale(f2));
+            this.setDeltaMovement(vector3d.scale(f2));
         }
     }
 
@@ -253,12 +253,12 @@ public class RailgunBoltEntity extends ThrowableEntity implements IEntityAdditio
     @Override
     public void baseTick() {
         super.baseTick();
-        if (this.ticksExisted > this.getMaxLifetime()) {
+        if (this.tickCount > this.getMaxLifetime()) {
             this.remove();
         }
 
         // remove "ghosts"
-        Vector3d motion = getMotion();
+        Vector3d motion = getDeltaMovement();
         if (motion.x == 0 && motion.y ==0 && motion.z ==0) {
             this.remove();
         }
@@ -269,19 +269,19 @@ public class RailgunBoltEntity extends ThrowableEntity implements IEntityAdditio
      * @param rayTraceResult
      */
     @Override
-    protected void func_230299_a_(BlockRayTraceResult rayTraceResult) {
-        super.func_230299_a_(rayTraceResult);
-        this.playSound(this.hitSound, 1.0F, 1.2F / (this.rand.nextFloat() * 0.2F + 0.9F));
+    protected void onHitBlock(BlockRayTraceResult rayTraceResult) {
+        super.onHitBlock(rayTraceResult);
+        this.playSound(this.hitSound, 1.0F, 1.2F / (this.random.nextFloat() * 0.2F + 0.9F));
     }
 
     @Override
-    protected float getGravityVelocity() {
+    protected float getGravity() {
         return 0.0F;
     }
 
 
     @Override
-    protected void registerData() {
+    protected void defineSynchedData() {
     }
 
     public int getMaxLifetime() {
@@ -293,7 +293,7 @@ public class RailgunBoltEntity extends ThrowableEntity implements IEntityAdditio
      * walk on. used for spiders and wolves to prevent them from trampling crops
      */
     @Override
-    protected boolean canTriggerWalking() {
+    protected boolean isMovementNoisy() {
         return false;
     }
 
@@ -301,30 +301,30 @@ public class RailgunBoltEntity extends ThrowableEntity implements IEntityAdditio
      * Originally this was only drawn only on impact.
      */
     public void drawParticleStreamTo(Vector3d hitVec) {
-        Entity source = this.getShooter();
+        Entity source = this.getOwner();
         if (source != null && source instanceof PlayerEntity) {
             double x = hitVec.x;
             double y = hitVec.y;
             double z = hitVec.z;
 
             PlayerEntity shooter = (PlayerEntity) source;
-            Vector3d direction = shooter.getLookVec().normalize();
+            Vector3d direction = shooter.getLookAngle().normalize();
             double xoffset = 1.3f;
             double yoffset = -.2;
             double zoffset = 0.3f;
             Vector3d horzdir = direction.normalize();
             horzdir = new Vector3d(horzdir.x, 0, horzdir.z);
             horzdir = horzdir.normalize();
-            double cx = shooter.getPosX() + direction.x * xoffset - direction.y * horzdir.x * yoffset - horzdir.z * zoffset;
-            double cy = shooter.getPosY() + shooter.getEyeHeight() + direction.y * xoffset + (1 - Math.abs(direction.y)) * yoffset;
-            double cz = shooter.getPosZ() + direction.z * xoffset - direction.y * horzdir.z * yoffset + horzdir.x * zoffset;
+            double cx = shooter.getX() + direction.x * xoffset - direction.y * horzdir.x * yoffset - horzdir.z * zoffset;
+            double cy = shooter.getY() + shooter.getEyeHeight() + direction.y * xoffset + (1 - Math.abs(direction.y)) * yoffset;
+            double cz = shooter.getZ() + direction.z * xoffset - direction.y * horzdir.z * yoffset + horzdir.x * zoffset;
             double dx = x - cx;
             double dy = y - cy;
             double dz = z - cz;
             double ratio = Math.sqrt(dx * dx + dy * dy + dz * dz);
 
             while (Math.abs(cx - x) > Math.abs(dx / ratio)) {
-                world.addParticle(ParticleTypes.CRIT /*.MYCELIUM*/, cx, cy, cz, 0.0D, 0.0D, 0.0D);
+                level.addParticle(ParticleTypes.CRIT /*.MYCELIUM*/, cx, cy, cz, 0.0D, 0.0D, 0.0D);
                 cx += dx * 0.1 / ratio;
                 cy += dy * 0.1 / ratio;
                 cz += dz * 0.1 / ratio;
@@ -349,7 +349,7 @@ public class RailgunBoltEntity extends ThrowableEntity implements IEntityAdditio
     }
 
     @Override
-    public IPacket<?> createSpawnPacket() {
+    public IPacket<?> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
 }

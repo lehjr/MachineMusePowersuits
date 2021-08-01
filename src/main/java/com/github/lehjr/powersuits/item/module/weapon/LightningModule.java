@@ -102,7 +102,7 @@ public class LightningModule extends AbstractPowerModule {
                 if (hand == Hand.MAIN_HAND) {
                     int energyConsumption = getEnergyUsage();
                     if (energyConsumption < ElectricItemUtils.getPlayerEnergy(playerIn)) {
-                        if (!worldIn.isRemote()) {
+                        if (!worldIn.isClientSide()) {
                             double range = 64;
 
                             RayTraceResult raytraceResult = rayTrace(worldIn, playerIn, RayTraceContext.FluidMode.SOURCE_ONLY, range);
@@ -111,16 +111,16 @@ public class LightningModule extends AbstractPowerModule {
                                     ElectricItemUtils.drainPlayerEnergy(playerIn, energyConsumption);
                                     MuseHeatUtils.heatPlayer(playerIn, applyPropertyModifiers(MPSConstants.HEAT_EMISSION));
                                     LightningBoltEntity sparkie = new LightningBoltEntity(EntityType.LIGHTNING_BOLT, worldIn);
-                                    sparkie.setPosition(raytraceResult.getHitVec().x, raytraceResult.getHitVec().y, raytraceResult.getHitVec().z);
-                                    sparkie.setCaster((ServerPlayerEntity) playerIn);
-                                    ((ServerWorld) worldIn).addEntityIfNotDuplicate(sparkie);
+                                    sparkie.setPos(raytraceResult.getLocation().x, raytraceResult.getLocation().y, raytraceResult.getLocation().z);
+                                    sparkie.setCause((ServerPlayerEntity) playerIn);
+                                    ((ServerWorld) worldIn).loadFromChunk(sparkie);
                                 }
                             }
                         }
-                        return ActionResult.resultSuccess(itemStackIn);
+                        return ActionResult.success(itemStackIn);
                     }
                 }
-                return ActionResult.resultPass(itemStackIn);
+                return ActionResult.pass(itemStackIn);
             }
 
             @Override

@@ -94,7 +94,7 @@ public class BlinkDriveModule extends AbstractPowerModule {
 
                 RayTraceResult hitRayTrace = rayTrace(worldIn, playerIn, RayTraceContext.FluidMode.SOURCE_ONLY, range);
                 if (hitRayTrace != null && hitRayTrace.getType() == RayTraceResult.Type.BLOCK) {
-                    double distance = hitRayTrace.getHitVec().distanceTo(playerIn.getPositionVec());
+                    double distance = hitRayTrace.getLocation().distanceTo(playerIn.position());
 
                     // adjust energy consumption for actual distance.
                     energyConsumption = (int) (energyConsumption * (distance/range));
@@ -102,13 +102,13 @@ public class BlinkDriveModule extends AbstractPowerModule {
                     if (ElectricItemUtils.getPlayerEnergy(playerIn) > energyConsumption) {
                         PlayerUtils.resetFloatKickTicks(playerIn);
                         int amountDrained = ElectricItemUtils.drainPlayerEnergy(playerIn, energyConsumption);
-                        worldIn.playSound(playerIn, playerIn.getPosition(), SoundEvents.ENTITY_ENDERMAN_TELEPORT, SoundCategory.PLAYERS, 0.5F, 0.4F / ((float) Math.random() * 0.4F + 0.8F));
+                        worldIn.playSound(playerIn, playerIn.blockPosition(), SoundEvents.ENDERMAN_TELEPORT, SoundCategory.PLAYERS, 0.5F, 0.4F / ((float) Math.random() * 0.4F + 0.8F));
                         PlayerUtils.teleportEntity(playerIn, hitRayTrace);
-                        worldIn.playSound(playerIn, playerIn.getPosition(), SoundEvents.ENTITY_ENDERMAN_TELEPORT, SoundCategory.PLAYERS, 0.5F, 0.4F / ((float) Math.random() * 0.4F + 0.8F));
-                        return ActionResult.resultSuccess(itemStackIn);
+                        worldIn.playSound(playerIn, playerIn.blockPosition(), SoundEvents.ENDERMAN_TELEPORT, SoundCategory.PLAYERS, 0.5F, 0.4F / ((float) Math.random() * 0.4F + 0.8F));
+                        return ActionResult.success(itemStackIn);
                     }
                 }
-                return ActionResult.resultPass(itemStackIn);
+                return ActionResult.pass(itemStackIn);
             }
 
             @Override

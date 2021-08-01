@@ -50,15 +50,15 @@ import java.util.Random;
 public class SpinningBladeEntityRenderer extends NuminaEntityRenderer<SpinningBladeEntity> {
     public SpinningBladeEntityRenderer(EntityRendererManager renderManager) {
         super(renderManager);
-        this.shadowSize = 0.15F;
-        this.shadowOpaque = 0.75F;
+        this.shadowRadius = 0.15F;
+        this.shadowStrength = 0.75F;
     }
 
     public static final ResourceLocation textureLocation = new ResourceLocation(MPSConstants.TEXTURE_PREFIX + "item/module/weapon/spinningblade.png");
 
     @Nullable
     @Override
-    public ResourceLocation getEntityTexture(SpinningBladeEntity entity) {
+    public ResourceLocation getTextureLocation(SpinningBladeEntity entity) {
         return textureLocation;
     }
 
@@ -66,27 +66,27 @@ public class SpinningBladeEntityRenderer extends NuminaEntityRenderer<SpinningBl
 
     @Override
     public void render(SpinningBladeEntity entityIn, float entityYaw, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn) {
-        matrixStackIn.push();
+        matrixStackIn.pushPose();
         ItemStack itemstack = new ItemStack(MPSObjects.BLADE_LAUNCHER_MODULE.get());
-        int i = itemstack.isEmpty() ? 187 : Item.getIdFromItem(itemstack.getItem()) + itemstack.getDamage();
+        int i = itemstack.isEmpty() ? 187 : Item.getId(itemstack.getItem()) + itemstack.getDamageValue();
         this.random.setSeed((long) i);
-        IBakedModel ibakedmodel = Minecraft.getInstance().getItemRenderer().getItemModelWithOverrides(itemstack, entityIn.world, (LivingEntity) null);
+        IBakedModel ibakedmodel = Minecraft.getInstance().getItemRenderer().getModel(itemstack, entityIn.level, (LivingEntity) null);
 
-        matrixStackIn.rotate(TransformationHelper.quatFromXYZ(new Vector3f(90, 0, 0), true));
+        matrixStackIn.mulPose(TransformationHelper.quatFromXYZ(new Vector3f(90, 0, 0), true));
 //        double motionscale = Math.sqrt(entityIn.getMotion().z * entityIn.getMotion().z +entityIn.getMotion().x * entityIn.getMotion().x);
 //        GL11.glRotatef(-entity.rotationPitch, (float) (entity.getMotion().z /
 //                motionscale), 0.0f, (float) (- entity.getMotion().x / motionscale));
         int time = (int) System.currentTimeMillis() % 360;
-        matrixStackIn.rotate(TransformationHelper.quatFromXYZ(new Vector3f(0, 0, time / 2), true));
+        matrixStackIn.mulPose(TransformationHelper.quatFromXYZ(new Vector3f(0, 0, time / 2), true));
 
         boolean flag = ibakedmodel.isGui3d();
-        matrixStackIn.push();
-        Minecraft.getInstance().getItemRenderer().renderItem(itemstack, ItemCameraTransforms.TransformType.GROUND, false, matrixStackIn, bufferIn, packedLightIn, OverlayTexture.NO_OVERLAY, ibakedmodel);
-        matrixStackIn.pop();
+        matrixStackIn.pushPose();
+        Minecraft.getInstance().getItemRenderer().render(itemstack, ItemCameraTransforms.TransformType.GROUND, false, matrixStackIn, bufferIn, packedLightIn, OverlayTexture.NO_OVERLAY, ibakedmodel);
+        matrixStackIn.popPose();
         if (!flag) {
             matrixStackIn.translate(0.0, 0.0, 0.09375F);
         }
-        matrixStackIn.pop();
+        matrixStackIn.popPose();
         super.render(entityIn, entityYaw, partialTicks, matrixStackIn, bufferIn, packedLightIn);
     }
 }

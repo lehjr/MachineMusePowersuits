@@ -102,12 +102,12 @@ public class AOEPickUpgradeModule extends AbstractPowerModule {
 
             @Override
             public boolean onBlockStartBreak(ItemStack itemStack, BlockPos posIn, PlayerEntity player) {
-                if (player.world.isRemote) {
+                if (player.level.isClientSide) {
                     return false; // fixme : check?
                 }
 
                 AtomicBoolean harvested = new AtomicBoolean(false);
-                RayTraceResult rayTraceResult = rayTrace(player.world, player, RayTraceContext.FluidMode.SOURCE_ONLY);
+                RayTraceResult rayTraceResult = getPlayerPOVHitResult(player.level, player, RayTraceContext.FluidMode.SOURCE_ONLY);
                 if (rayTraceResult == null || rayTraceResult.getType() != RayTraceResult.Type.BLOCK) {
                     return false;
                 }
@@ -116,22 +116,22 @@ public class AOEPickUpgradeModule extends AbstractPowerModule {
                     return false;
                 }
 
-                Direction side = ((BlockRayTraceResult) rayTraceResult).getFace();
+                Direction side = ((BlockRayTraceResult) rayTraceResult).getDirection();
                 Stream<BlockPos> posList;
                 switch (side) {
                     case UP:
                     case DOWN:
-                        posList = BlockPos.getAllInBox(posIn.north(radius).west(radius), posIn.south(radius).east(radius));
+                        posList = BlockPos.betweenClosedStream(posIn.north(radius).west(radius), posIn.south(radius).east(radius));
                         break;
 
                     case EAST:
                     case WEST:
-                        posList = BlockPos.getAllInBox(posIn.up(radius).north(radius), posIn.down(radius).south(radius));
+                        posList = BlockPos.betweenClosedStream(posIn.above(radius).north(radius), posIn.below(radius).south(radius));
                         break;
 
                     case NORTH:
                     case SOUTH:
-                        posList = BlockPos.getAllInBox(posIn.up(radius).west(radius), posIn.down(radius).east(radius));
+                        posList = BlockPos.betweenClosedStream(posIn.above(radius).west(radius), posIn.below(radius).east(radius));
                         break;
 
                     default:
@@ -144,7 +144,7 @@ public class AOEPickUpgradeModule extends AbstractPowerModule {
                 itemStack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(modeChanging -> {
                     if (modeChanging instanceof IModeChangingItem) {
                         posList.forEach(blockPos-> {
-                            BlockState state = player.world.getBlockState(blockPos);
+                            BlockState state = player.level.getBlockState(blockPos);
                             // find an installed module to break current block
                             for (ItemStack blockBreakingModule : ((IModeChangingItem) modeChanging).getInstalledModulesOfType(IBlockBreakingModule.class)) {
                                 int playerEnergy = ElectricItemUtils.getPlayerEnergy(player);
@@ -161,7 +161,7 @@ public class AOEPickUpgradeModule extends AbstractPowerModule {
                                         harvested.set(true);
                                     }
                                     blocksBroken.getAndAdd(1);
-                                    Block.replaceBlock(state, Blocks.AIR.getDefaultState(), player.world, blockPos, Constants.BlockFlags.DEFAULT);
+                                    Block.updateOrDestroy(state, Blocks.AIR.defaultBlockState(), player.level, blockPos, Constants.BlockFlags.DEFAULT);
                                     ElectricItemUtils.drainPlayerEnergy(player,
                                             blockBreakingModule.getCapability(PowerModuleCapability.POWER_MODULE).map(m -> {
                                                 if (m instanceof IBlockBreakingModule) {

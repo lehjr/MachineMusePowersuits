@@ -72,7 +72,7 @@ public abstract class AbstractModularPowerCap implements ICapabilityProvider {
         if (cap == CapabilityEnergy.ENERGY) {
             modularItemCap.updateFromNBT();
             // armor first slot is armor plating, second slot is energy
-            return modularItemCap.getStackInSlot(targetSlot.getSlotType() == EquipmentSlotType.Group.ARMOR ? 1 : 0).getCapability(cap, side);
+            return modularItemCap.getStackInSlot(targetSlot.getType() == EquipmentSlotType.Group.ARMOR ? 1 : 0).getCapability(cap, side);
         }
 
         return LazyOptional.empty();

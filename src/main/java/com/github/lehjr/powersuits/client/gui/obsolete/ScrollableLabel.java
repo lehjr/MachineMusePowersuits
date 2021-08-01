@@ -27,7 +27,7 @@
 package com.github.lehjr.powersuits.client.gui.obsolete;
 
 import com.github.lehjr.numina.util.client.gui.clickable.ClickableLabel;
-import com.github.lehjr.numina.util.client.gui.gemoetry.MuseRelativeRect;
+import com.github.lehjr.numina.util.client.gui.gemoetry.RelativeRect;
 import com.mojang.blaze3d.matrix.MatrixStack;
 
 @Deprecated
@@ -35,7 +35,7 @@ public class ScrollableLabel extends ScrollableRectangle {
     ClickableLabel label;
     boolean enabled = true;
 
-    public ScrollableLabel(ClickableLabel label, MuseRelativeRect relativeRect) {
+    public ScrollableLabel(ClickableLabel label, RelativeRect relativeRect) {
         super(relativeRect);
         this.label = label;
     }
@@ -54,9 +54,9 @@ public class ScrollableLabel extends ScrollableRectangle {
     }
 
     @Override
-    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks, float zLevel) {
+    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
         if (enabled) {
-            label.render(matrixStack, mouseX, mouseY, partialTicks, zLevel);
+            label.render(matrixStack, mouseX, mouseY, partialTicks);
         }
     }
 }

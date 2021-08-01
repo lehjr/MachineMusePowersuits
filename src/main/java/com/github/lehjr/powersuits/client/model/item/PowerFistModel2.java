@@ -88,255 +88,255 @@ public class PowerFistModel2 extends Model {
     ModelRenderer supportleft5;
 
     public PowerFistModel2() {
-        super(RenderType::getEntitySolid);
-        textureWidth = 64;
-        textureHeight = 32;
+        super(RenderType::entitySolid);
+        texWidth = 64;
+        texHeight = 32;
 
         mainarm = new ModelRenderer(this, 0, 16);
         mainarm.addBox(-3F, 0F, -8F, 6, 6, 10);
-        mainarm.setRotationPoint(0F, 0F, 0F);
-        mainarm.setTextureSize(64, 32);
+        mainarm.setPos(0F, 0F, 0F);
+        mainarm.setTexSize(64, 32);
         mainarm.mirror = true;
         setRotation(mainarm, 0.2617994F, 0F, 0F);
 
         armorright = new ModelRenderer(this, 42, 0);
         armorright.mirror = true;
         armorright.addBox(1F, -1F, -9F, 3, 5, 8);
-        armorright.setRotationPoint(0F, 0F, 0F);
-        armorright.setTextureSize(64, 32);
+        armorright.setPos(0F, 0F, 0F);
+        armorright.setTexSize(64, 32);
         armorright.mirror = true;
         setRotation(armorright, 0.2617994F, 0F, 0F);
 
         armorright.mirror = false;
         armorleft = new ModelRenderer(this, 42, 0);
         armorleft.addBox(-4F, -1F, -9F, 3, 5, 8);
-        armorleft.setRotationPoint(0F, 0F, 0F);
-        armorleft.setTextureSize(64, 32);
+        armorleft.setPos(0F, 0F, 0F);
+        armorleft.setTexSize(64, 32);
         armorleft.mirror = true;
         setRotation(armorleft, 0.2617994F, 0F, 0F);
 
         wristtopright = new ModelRenderer(this, 0, 11);
         wristtopright.addBox(1F, 1F, 2F, 1, 1, 4);
-        wristtopright.setRotationPoint(0F, 0F, 0F);
-        wristtopright.setTextureSize(64, 32);
+        wristtopright.setPos(0F, 0F, 0F);
+        wristtopright.setTexSize(64, 32);
         wristtopright.mirror = true;
         setRotation(wristtopright, 0.2617994F, 0F, 0F);
 
         wristtopleft = new ModelRenderer(this, 0, 11);
         wristtopleft.addBox(-2F, 1F, 2F, 1, 1, 4);
-        wristtopleft.setRotationPoint(0F, 0F, 0F);
-        wristtopleft.setTextureSize(64, 32);
+        wristtopleft.setPos(0F, 0F, 0F);
+        wristtopleft.setTexSize(64, 32);
         wristtopleft.mirror = true;
         setRotation(wristtopleft, 0.2617994F, 0F, 0F);
 
         wristbottomright = new ModelRenderer(this, 0, 11);
         wristbottomright.addBox(1F, 3F, 2F, 1, 1, 4);
-        wristbottomright.setRotationPoint(0F, 0F, 0F);
-        wristbottomright.setTextureSize(64, 32);
+        wristbottomright.setPos(0F, 0F, 0F);
+        wristbottomright.setTexSize(64, 32);
         wristbottomright.mirror = true;
         setRotation(wristbottomright, 0.2617994F, 0F, 0F);
 
         wristbottomleft = new ModelRenderer(this, 0, 11);
         wristbottomleft.addBox(-2F, 3F, 2F, 1, 1, 4);
-        wristbottomleft.setRotationPoint(0F, 0F, 0F);
-        wristbottomleft.setTextureSize(64, 32);
+        wristbottomleft.setPos(0F, 0F, 0F);
+        wristbottomleft.setTexSize(64, 32);
         wristbottomleft.mirror = true;
         setRotation(wristbottomleft, 0.2617994F, 0F, 0F);
 
         index1 = new ModelRenderer(this, 34, 13);
         index1.addBox(-.5F, -.5F, 0F, 1, 1, 5);
-        index1.setRotationPoint(-3.5F, -1.5F, 10F);
-        index1.setTextureSize(64, 32);
+        index1.setPos(-3.5F, -1.5F, 10F);
+        index1.setTexSize(64, 32);
         index1.mirror = true;
         setRotation(index1, 0.2617994F, 0F, 0F);
 
         index2 = new ModelRenderer(this, 34, 13);
         index2.addBox(-.5F, -.5F, 0F, 1, 1, 4);
-        index2.setRotationPoint(0, 0, 5F);
-        index2.setTextureSize(64, 32);
+        index2.setPos(0, 0, 5F);
+        index2.setTexSize(64, 32);
         index2.mirror = true;
         index1.addChild(index2);
         setRotation(index2, -0.2617994F * 2, 0F, 0F);
 
         middlefinger1 = new ModelRenderer(this, 34, 13);
         middlefinger1.addBox(-.5F, -.5F, 0F, 1, 1, 6);
-        middlefinger1.setRotationPoint(-1.5F, -1.5F, 10F);
-        middlefinger1.setTextureSize(64, 32);
+        middlefinger1.setPos(-1.5F, -1.5F, 10F);
+        middlefinger1.setTexSize(64, 32);
         middlefinger1.mirror = true;
         setRotation(middlefinger1, 0.2617994F, 0F, 0F);
 
         middlefinger2 = new ModelRenderer(this, 34, 13);
         middlefinger2.addBox(-.5F, -.5F, 0F, 1, 1, 4);
-        middlefinger2.setRotationPoint(0, 0, 6F);
-        middlefinger2.setTextureSize(64, 32);
+        middlefinger2.setPos(0, 0, 6F);
+        middlefinger2.setTexSize(64, 32);
         middlefinger2.mirror = true;
         setRotation(middlefinger2, -0.3444116F, 0F, 0F);
 
         ringfinger1 = new ModelRenderer(this, 34, 13);
         ringfinger1.addBox(-.5F, -.5F, 0F, 1, 1, 5);
-        ringfinger1.setRotationPoint(0.5F, -1.5F, 10F);
-        ringfinger1.setTextureSize(64, 32);
+        ringfinger1.setPos(0.5F, -1.5F, 10F);
+        ringfinger1.setTexSize(64, 32);
         ringfinger1.mirror = true;
         setRotation(ringfinger1, 0.2617994F, 0F, 0F);
 
         ringfinger2 = new ModelRenderer(this, 34, 13);
         ringfinger2.addBox(-.5F, -.5F, 0F, 1, 1, 4);
-        ringfinger2.setRotationPoint(0, 0, 5F);
-        ringfinger2.setTextureSize(64, 32);
+        ringfinger2.setPos(0, 0, 5F);
+        ringfinger2.setTexSize(64, 32);
         ringfinger2.mirror = true;
         setRotation(ringfinger2, -0.2617994F, 0F, 0F);
 
         pinky1 = new ModelRenderer(this, 34, 13);
         pinky1.addBox(-.5F, -.5F, 0F, 1, 1, 4);
-        pinky1.setRotationPoint(2.5F, -1.5F, 10F);
-        pinky1.setTextureSize(64, 32);
+        pinky1.setPos(2.5F, -1.5F, 10F);
+        pinky1.setTexSize(64, 32);
         pinky1.mirror = true;
         setRotation(pinky1, 0.2617994F, 0F, 0F);
 
         pinky2 = new ModelRenderer(this, 34, 13);
         pinky2.addBox(-.5F, -.5F, 0F, 1, 1, 4);
-        pinky2.setRotationPoint(0, 0, 4F);
-        pinky2.setTextureSize(64, 32);
+        pinky2.setPos(0, 0, 4F);
+        pinky2.setTexSize(64, 32);
         pinky2.mirror = true;
 
         setRotation(pinky2, -0.4537856F, 0F, 0F);
         thumb1 = new ModelRenderer(this, 16, 9);
         thumb1.addBox(-.5F, -1F, 0F, 1, 2, 4);
-        thumb1.setRotationPoint(-4F, 1.5F, 8F);
-        thumb1.setTextureSize(64, 32);
+        thumb1.setPos(-4F, 1.5F, 8F);
+        thumb1.setTexSize(64, 32);
         thumb1.mirror = true;
         setRotation(thumb1, 0F, -0.4014257F, 0F);
 
         thumb2 = new ModelRenderer(this, 10, 0);
         thumb2.addBox(-.5F, -.5F, 0F, 1, 1, 3);
-        thumb2.setRotationPoint(0, 0, 4F);
-        thumb2.setTextureSize(64, 32);
+        thumb2.setPos(0, 0, 4F);
+        thumb2.setTexSize(64, 32);
         thumb2.mirror = true;
         setRotation(thumb2, 0F, 0F, 0F);
 
         fingerguard = new ModelRenderer(this, 28, 9);
         fingerguard.addBox(-3F, -2F, 8F, 5, 2, 2);
-        fingerguard.setRotationPoint(0F, 0F, 0F);
-        fingerguard.setTextureSize(64, 32);
+        fingerguard.setPos(0F, 0F, 0F);
+        fingerguard.setTexSize(64, 32);
         fingerguard.mirror = true;
         setRotation(fingerguard, 0F, 0F, 0F);
 
         crystalholder = new ModelRenderer(this, 48, 13);
         crystalholder.addBox(-2F, -1F, -3F, 4, 4, 4);
-        crystalholder.setRotationPoint(0F, 0F, 0F);
-        crystalholder.setTextureSize(64, 32);
+        crystalholder.setPos(0F, 0F, 0F);
+        crystalholder.setTexSize(64, 32);
         crystalholder.mirror = true;
         setRotation(crystalholder, 0F, 0F, 0F);
 
         crystal = new ModelRenderer(this, 32, 27);
         crystal.addBox(-1F, -2F, -2F, 2, 2, 2);
-        crystal.setRotationPoint(0F, 0F, 0F);
-        crystal.setTextureSize(64, 32);
+        crystal.setPos(0F, 0F, 0F);
+        crystal.setTexSize(64, 32);
         crystal.mirror = true;
         setRotation(crystal, 0F, 0F, 0F);
 
         supportright1 = new ModelRenderer(this, 54, 27);
         supportright1.addBox(-1.8F, -0.8F, -6.066667F, 4, 1, 1);
-        supportright1.setRotationPoint(0F, 0F, 0F);
-        supportright1.setTextureSize(64, 32);
+        supportright1.setPos(0F, 0F, 0F);
+        supportright1.setTexSize(64, 32);
         supportright1.mirror = true;
         setRotation(supportright1, 0.2722714F, -1.066972F, 0F);
 
         supportright2 = new ModelRenderer(this, 52, 21);
         supportright2.addBox(4F, 0.4666667F, 2.5F, 2, 2, 1);
-        supportright2.setRotationPoint(0F, 0F, 0F);
-        supportright2.setTextureSize(64, 32);
+        supportright2.setPos(0F, 0F, 0F);
+        supportright2.setTexSize(64, 32);
         supportright2.mirror = true;
         setRotation(supportright2, 0F, 0.6329786F, 0F);
 
         supportright3 = new ModelRenderer(this, 52, 21);
         supportright3.addBox(5.1F, 1F, -0.8333333F, 1, 1, 5);
-        supportright3.setRotationPoint(0F, 0F, 0F);
-        supportright3.setTextureSize(64, 32);
+        supportright3.setPos(0F, 0F, 0F);
+        supportright3.setTexSize(64, 32);
         supportright3.mirror = true;
         setRotation(supportright3, 0F, 0F, 0F);
 
         supportright4 = new ModelRenderer(this, 52, 21);
         supportright4.addBox(5.633333F, 0.4666667F, 1.7F, 2, 2, 1);
-        supportright4.setRotationPoint(0F, 0F, 0F);
-        supportright4.setTextureSize(64, 32);
+        supportright4.setPos(0F, 0F, 0F);
+        supportright4.setTexSize(64, 32);
         supportright4.mirror = true;
         setRotation(supportright4, 0F, -0.3688404F, 0F);
 
         supportright5 = new ModelRenderer(this, 54, 27);
         supportright5.addBox(-2.866667F, 1F, 6.333333F, 4, 1, 1);
-        supportright5.setRotationPoint(0F, 0F, 0F);
-        supportright5.setTextureSize(64, 32);
+        supportright5.setPos(0F, 0F, 0F);
+        supportright5.setTexSize(64, 32);
         supportright5.mirror = true;
         setRotation(supportright5, 0F, 0.7714355F, 0F);
 
         supportbaseright = new ModelRenderer(this, 47, 21);
         supportbaseright.addBox(1.433333F, -0.6666667F, -5.4F, 3, 3, 5);
-        supportbaseright.setRotationPoint(0F, 0F, 0F);
-        supportbaseright.setTextureSize(64, 32);
+        supportbaseright.setPos(0F, 0F, 0F);
+        supportbaseright.setTexSize(64, 32);
         supportbaseright.mirror = true;
         setRotation(supportbaseright, 0.2617994F, 0F, 0F);
 
         palm = new ModelRenderer(this, 18, 0);
         palm.addBox(-4F, -1F, 5F, 7, 4, 5);
-        palm.setRotationPoint(0F, 0F, 0F);
-        palm.setTextureSize(64, 32);
+        palm.setPos(0F, 0F, 0F);
+        palm.setTexSize(64, 32);
         palm.mirror = true;
         setRotation(palm, 0F, 0F, 0F);
 
         supportbaseleft = new ModelRenderer(this, 47, 21);
         supportbaseleft.addBox(-4.4F, -0.6666667F, -5.4F, 3, 3, 5);
-        supportbaseleft.setRotationPoint(0F, 0F, 0F);
-        supportbaseleft.setTextureSize(64, 32);
+        supportbaseleft.setPos(0F, 0F, 0F);
+        supportbaseleft.setTexSize(64, 32);
         supportbaseleft.mirror = true;
         setRotation(supportbaseleft, 0.2617994F, 0F, 0F);
 
         supportleftfront = new ModelRenderer(this, 49, 23);
         supportleftfront.addBox(-4.333333F, 0.3333333F, 4.666667F, 1, 2, 3);
-        supportleftfront.setRotationPoint(0F, 0F, 0F);
-        supportleftfront.setTextureSize(64, 32);
+        supportleftfront.setPos(0F, 0F, 0F);
+        supportleftfront.setTexSize(64, 32);
         supportleftfront.mirror = true;
         setRotation(supportleftfront, 0F, 0F, 0F);
 
         supportrightfront = new ModelRenderer(this, 49, 23);
         supportrightfront.addBox(2.3F, 0.3333333F, 4.666667F, 1, 2, 3);
-        supportrightfront.setRotationPoint(0F, 0F, 0F);
-        supportrightfront.setTextureSize(64, 32);
+        supportrightfront.setPos(0F, 0F, 0F);
+        supportrightfront.setTexSize(64, 32);
         supportrightfront.mirror = true;
         setRotation(supportrightfront, 0F, 0F, 0F);
 
         supportleft1 = new ModelRenderer(this, 54, 27);
         supportleft1.addBox(-2.2F, -0.4F, -6.066667F, 4, 1, 1);
-        supportleft1.setRotationPoint(0F, 0F, 0F);
-        supportleft1.setTextureSize(64, 32);
+        supportleft1.setPos(0F, 0F, 0F);
+        supportleft1.setTexSize(64, 32);
         supportleft1.mirror = true;
         setRotation(supportleft1, 0.2722714F, 1.066978F, 0F);
 
         supportleft2 = new ModelRenderer(this, 52, 21);
         supportleft2.addBox(-6F, 0.4666667F, 2.5F, 2, 2, 1);
-        supportleft2.setRotationPoint(0F, 0F, 0F);
-        supportleft2.setTextureSize(64, 32);
+        supportleft2.setPos(0F, 0F, 0F);
+        supportleft2.setTexSize(64, 32);
         supportleft2.mirror = true;
         setRotation(supportleft2, 0F, -0.6329727F, 0F);
 
         supportleft3 = new ModelRenderer(this, 52, 21);
         supportleft3.addBox(-6.5F, 1F, -0.5F, 1, 1, 5);
-        supportleft3.setRotationPoint(0F, 0F, 0F);
-        supportleft3.setTextureSize(64, 32);
+        supportleft3.setPos(0F, 0F, 0F);
+        supportleft3.setTexSize(64, 32);
         supportleft3.mirror = true;
         setRotation(supportleft3, 0F, 0F, 0F);
 
         supportleft4 = new ModelRenderer(this, 52, 21);
         supportleft4.addBox(-7.9F, 0.4666667F, 1.7F, 2, 2, 1);
-        supportleft4.setRotationPoint(0F, 0F, 0F);
-        supportleft4.setTextureSize(64, 32);
+        supportleft4.setPos(0F, 0F, 0F);
+        supportleft4.setTexSize(64, 32);
         supportleft4.mirror = true;
         setRotation(supportleft4, 0F, 0.3688462F, 0F);
 
         supportleft5 = new ModelRenderer(this, 54, 27);
         supportleft5.addBox(-0.8666667F, 1F, 7F, 4, 1, 1);
-        supportleft5.setRotationPoint(0F, 0F, 0F);
-        supportleft5.setTextureSize(64, 32);
+        supportleft5.setPos(0F, 0F, 0F);
+        supportleft5.setTexSize(64, 32);
         supportleft5.mirror = true;
         setRotation(supportleft5, 0F, -0.7714355F, 0F);
 
@@ -394,23 +394,23 @@ public class PowerFistModel2 extends Model {
     }
 
     @Override
-    public void render(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
+    public void renderToBuffer(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
 
     }
     public void makeChild(ModelRenderer child, ModelRenderer parent) {
         parent.addChild(child);
-        child.rotationPointX -= parent.rotationPointX;
-        child.rotationPointY -= parent.rotationPointY;
-        child.rotationPointZ -= parent.rotationPointZ;
-        child.rotateAngleX -= parent.rotateAngleX;
-        child.rotateAngleY -= parent.rotateAngleY;
-        child.rotateAngleZ -= parent.rotateAngleZ;
+        child.x -= parent.x;
+        child.y -= parent.y;
+        child.z -= parent.z;
+        child.xRot -= parent.xRot;
+        child.yRot -= parent.yRot;
+        child.zRot -= parent.zRot;
     }
 
     private void setRotation(ModelRenderer model, float x, float y, float z) {
-        model.rotateAngleX = x;
-        model.rotateAngleY = y;
-        model.rotateAngleZ = z;
+        model.xRot = x;
+        model.yRot = y;
+        model.zRot = z;
     }
 
     /**
@@ -420,25 +420,25 @@ public class PowerFistModel2 extends Model {
      * how "far" arms and legs can swing at most.
      */
     public void setPose(float indexOpen, float indexFlex, float thumbOpen, float thumbFlex, float otherFingersOpen, float otherFingersFlex) {
-        index1.rotateAngleX = indexOpen;
-        index2.rotateAngleX = indexFlex;
-        middlefinger1.rotateAngleX = otherFingersOpen;
-        middlefinger2.rotateAngleX = otherFingersFlex;
-        ringfinger1.rotateAngleX = otherFingersOpen;
-        ringfinger2.rotateAngleX = otherFingersFlex;
-        pinky1.rotateAngleX = otherFingersOpen - 0.1f;
-        pinky2.rotateAngleX = otherFingersFlex;
-        thumb1.rotateAngleY = -thumbOpen;
-        thumb2.rotateAngleY = -thumbFlex;
+        index1.xRot = indexOpen;
+        index2.xRot = indexFlex;
+        middlefinger1.xRot = otherFingersOpen;
+        middlefinger2.xRot = otherFingersFlex;
+        ringfinger1.xRot = otherFingersOpen;
+        ringfinger2.xRot = otherFingersFlex;
+        pinky1.xRot = otherFingersOpen - 0.1f;
+        pinky2.xRot = otherFingersFlex;
+        thumb1.yRot = -thumbOpen;
+        thumb2.yRot = -thumbFlex;
     }
 
     // FIXME
     public void setPoseForPlayer(PlayerEntity player) {
-        if (player.isHandActive() && player.getActiveItemStack() != ItemStack.EMPTY) {
-            player.getActiveItemStack().getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(iItemHandler -> {
+        if (player.isUsingItem() && player.getUseItem() != ItemStack.EMPTY) {
+            player.getUseItem().getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(iItemHandler -> {
                 if (iItemHandler instanceof IModeChangingItem && ((IModeChangingItem) iItemHandler).hasActiveModule(MPSRegistryNames.PLASMA_CANNON_MODULE_REGNAME)) {
                     setPose(1.5f, -1, 1.5f, -1, 1.5f, -1);
-                    this.boltSize = player.getItemInUseCount() > 50 ? 50 : player.getItemInUseCount();
+                    this.boltSize = player.getUseItemRemainingTicks() > 50 ? 50 : player.getUseItemRemainingTicks();
                 }
             });
         } else {

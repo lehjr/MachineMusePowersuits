@@ -51,12 +51,12 @@ public class ColourInfoPacket /* implements IMusePacket<ColourInfoPacket> */{
         this.tagData = tagData;
     }
 
-    public static void encode(ColourInfoPacket msg, PacketBuffer packetBuffer) {
+    public static void write(ColourInfoPacket msg, PacketBuffer packetBuffer) {
         packetBuffer.writeInt(msg.itemSlot);
         packetBuffer.writeVarIntArray(msg.tagData);
     }
 
-    public static ColourInfoPacket decode(PacketBuffer packetBuffer) {
+    public static ColourInfoPacket read(PacketBuffer packetBuffer) {
         return new ColourInfoPacket(packetBuffer.readInt(), packetBuffer.readVarIntArray());
     }
 
@@ -66,7 +66,7 @@ public class ColourInfoPacket /* implements IMusePacket<ColourInfoPacket> */{
             int itemSlot = message.itemSlot;
             int[] tagData = message.tagData;
 
-            player.inventory.getStackInSlot(itemSlot).getCapability(ModelSpecNBTCapability.RENDER).ifPresent(
+            player.inventory.getItem(itemSlot).getCapability(ModelSpecNBTCapability.RENDER).ifPresent(
                     render -> {
                         render.setColorArray(tagData);
                     });

@@ -42,7 +42,8 @@ repositories {
 }
 
 minecraft {
-    mappings channel: "snapshot", version: "${project.mcp_version}".toString()
+//    mappings channel: "snapshot", version: "${project.mcp_version}".toString()
+    mappings channel: 'official', version: '1.16.5'
     // makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
 
     accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')

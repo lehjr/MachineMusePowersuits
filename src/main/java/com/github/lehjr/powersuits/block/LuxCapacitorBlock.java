@@ -54,39 +54,39 @@ public class LuxCapacitorBlock extends DirectionalBlock implements IWaterLoggabl
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
     public static final Colour defaultColor = new Colour(0.4F, 0.2F, 0.9F);
 
-    protected static final VoxelShape LUXCAPACITOR_EAST_AABB = Block.makeCuboidShape(0, 1, 1, 4, 15, 15);
-    protected static final VoxelShape LUXCAPACITOR_WEST_AABB = Block.makeCuboidShape(12, 1, 1, 16, 15, 15);
-    protected static final VoxelShape LUXCAPACITOR_SOUTH_AABB = Block.makeCuboidShape(1, 1, 0.0, 15, 15, 4);
-    protected static final VoxelShape LUXCAPACITOR_NORTH_AABB = Block.makeCuboidShape(1, 1, 12, 15, 15, 16);
-    protected static final VoxelShape LUXCAPACITOR_UP_AABB = Block.makeCuboidShape(1, 0.0, 1, 15, 4, 15);
-    protected static final VoxelShape LUXCAPACITOR_DOWN_AABB = Block.makeCuboidShape(1, 12, 1, 15, 16.0, 15);
+    protected static final VoxelShape LUXCAPACITOR_EAST_AABB = Block.box(0, 1, 1, 4, 15, 15);
+    protected static final VoxelShape LUXCAPACITOR_WEST_AABB = Block.box(12, 1, 1, 16, 15, 15);
+    protected static final VoxelShape LUXCAPACITOR_SOUTH_AABB = Block.box(1, 1, 0.0, 15, 15, 4);
+    protected static final VoxelShape LUXCAPACITOR_NORTH_AABB = Block.box(1, 1, 12, 15, 15, 16);
+    protected static final VoxelShape LUXCAPACITOR_UP_AABB = Block.box(1, 0.0, 1, 15, 4, 15);
+    protected static final VoxelShape LUXCAPACITOR_DOWN_AABB = Block.box(1, 12, 1, 15, 16.0, 15);
 
     public LuxCapacitorBlock() {
-        super(Block.Properties.create(Material.IRON)
-                .hardnessAndResistance(0.05F, 10.0F)
+        super(Block.Properties.of(Material.METAL)
+                .strength(0.05F, 10.0F)
                 .sound(SoundType.METAL)
-                .variableOpacity()
-                .setLightLevel((state) -> 15));
-        setDefaultState(this.stateContainer.getBaseState().with(FACING, Direction.UP));
+                .dynamicShape()
+                .lightLevel((state) -> 15));
+        registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.UP));
     }
 
     @Override
-    public boolean canContainFluid(IBlockReader worldIn, BlockPos pos, BlockState state, Fluid fluidIn) {
+    public boolean canPlaceLiquid(IBlockReader worldIn, BlockPos pos, BlockState state, Fluid fluidIn) {
         return true;
     }
 
     @Override
     public FluidState getFluidState(BlockState state) {
-        return state.get(WATERLOGGED) ? Fluids.WATER.getStillFluidState(false) : super.getFluidState(state);
+        return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
     }
 
     @Override
-    public boolean receiveFluid(IWorld worldIn, BlockPos pos, BlockState state, FluidState fluidStateIn) {
-        return IWaterLoggable.super.receiveFluid(worldIn, pos, state, fluidStateIn);
+    public boolean placeLiquid(IWorld worldIn, BlockPos pos, BlockState state, FluidState fluidStateIn) {
+        return IWaterLoggable.super.placeLiquid(worldIn, pos, state, fluidStateIn);
     }
 
     @Override
-    public Fluid pickupFluid(IWorld worldIn, BlockPos pos, BlockState state) {
+    public Fluid takeLiquid(IWorld worldIn, BlockPos pos, BlockState state) {
         return Fluids.EMPTY;
     }
 
@@ -104,22 +104,22 @@ public class LuxCapacitorBlock extends DirectionalBlock implements IWaterLoggabl
     @Nullable
     @Override
     public BlockState getStateForPlacement(BlockItemUseContext context) {
-        FluidState ifluidstate = context.getWorld().getFluidState(context.getPos());
-        return this.getDefaultState().with(FACING, context.getNearestLookingDirection().getOpposite())
-                .with(WATERLOGGED, Boolean.valueOf(ifluidstate.isTagged(FluidTags.WATER) && ifluidstate.getLevel() == 8));
+        FluidState ifluidstate = context.getLevel().getFluidState(context.getClickedPos());
+        return this.defaultBlockState().setValue(FACING, context.getNearestLookingDirection().getOpposite())
+                .setValue(WATERLOGGED, Boolean.valueOf(ifluidstate.is(FluidTags.WATER) && ifluidstate.getAmount() == 8));
     }
 
     @SuppressWarnings( "deprecation" )
     @Override
-    public boolean isValidPosition(BlockState state, IWorldReader worldIn, BlockPos pos) {
-        Direction facing = state.hasProperty(FACING) ? state.get(FACING) : Direction.UP;
-        return hasEnoughSolidSide(worldIn, pos.offset(facing.getOpposite()), facing);
+    public boolean canSurvive(BlockState state, IWorldReader worldIn, BlockPos pos) {
+        Direction facing = state.hasProperty(FACING) ? state.getValue(FACING) : Direction.UP;
+        return canSupportCenter(worldIn, pos.relative(facing.getOpposite()), facing);
     }
 
     @SuppressWarnings( "deprecation" )
     @Deprecated
     public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-        switch (state.get(FACING)) {
+        switch (state.getValue(FACING)) {
             default:
             case DOWN:
                 return LUXCAPACITOR_DOWN_AABB;
@@ -137,7 +137,7 @@ public class LuxCapacitorBlock extends DirectionalBlock implements IWaterLoggabl
     }
 
     @Override
-    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
         builder.add(FACING).add(WATERLOGGED);
     }
 

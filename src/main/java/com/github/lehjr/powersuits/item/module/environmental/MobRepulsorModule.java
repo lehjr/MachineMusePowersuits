@@ -102,39 +102,39 @@ public class MobRepulsorModule extends AbstractPowerModule {
             public void onPlayerTickActive(PlayerEntity player, @Nonnull ItemStack item) {
                 int energyConsumption = (int) applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION);
                 if (ElectricItemUtils.getPlayerEnergy(player) > energyConsumption) {
-                    if (player.world.getGameTime() % 20 == 0) {
+                    if (player.level.getGameTime() % 20 == 0) {
                         ElectricItemUtils.drainPlayerEnergy(player, energyConsumption);
                     }
-                    repulse(player.world, player.getPosition());
+                    repulse(player.level, player.blockPosition());
                 }
             }
 
             public void repulse(World world, BlockPos playerPos) {
                 float distance = 5.0F;
                 AxisAlignedBB area = new AxisAlignedBB(
-                        playerPos.add(-distance, -distance, -distance),
-                        playerPos.add(distance, distance, distance));
+                        playerPos.offset(-distance, -distance, -distance),
+                        playerPos.offset(distance, distance, distance));
 
-                for (Entity entity : world.getEntitiesWithinAABB(MobEntity.class, area)) {
+                for (Entity entity : world.getEntitiesOfClass(MobEntity.class, area)) {
                     push(entity, playerPos);
                 }
 
-                for (ArrowEntity entity : world.getEntitiesWithinAABB(ArrowEntity.class, area)) {
+                for (ArrowEntity entity : world.getEntitiesOfClass(ArrowEntity.class, area)) {
                     push(entity, playerPos);
                 }
 
-                for (FireballEntity entity : world.getEntitiesWithinAABB(FireballEntity.class, area)) {
+                for (FireballEntity entity : world.getEntitiesOfClass(FireballEntity.class, area)) {
                     push(entity, playerPos);
                 }
 
-                for (PotionEntity entity : world.getEntitiesWithinAABB(PotionEntity.class, area)) {
+                for (PotionEntity entity : world.getEntitiesOfClass(PotionEntity.class, area)) {
                     push(entity, playerPos);
                 }
             }
 
             private void push(Entity entity, BlockPos playerPos) {
                 if (!(entity instanceof PlayerEntity) && !(entity instanceof EnderDragonEntity)) {
-                    BlockPos distance = playerPos.subtract(entity.getPosition());
+                    BlockPos distance = playerPos.subtract(entity.blockPosition());
 
                     double dX = distance.getX();
                     double dY = distance.getY();
@@ -160,8 +160,8 @@ public class MobRepulsorModule extends AbstractPowerModule {
                         } else if (d7 < 0.0D) {
                             d7 = -0.22D;
                         }
-                        Vector3d motion = entity.getMotion();
-                        entity.setMotion(motion.x + d5, motion.y + d6, motion.z + d7);
+                        Vector3d motion = entity.getDeltaMovement();
+                        entity.setDeltaMovement(motion.x + d5, motion.y + d6, motion.z + d7);
                     }
                 }
             }

@@ -26,7 +26,7 @@
 
 package com.github.lehjr.powersuits.network.packets;
 
-import com.github.lehjr.powersuits.container.MPSWorkbenchContainerProvider;
+import com.github.lehjr.powersuits.dev.crafting.container.MPSWorkbenchContainerProvider;
 import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.fml.network.NetworkEvent;
 import net.minecraftforge.fml.network.NetworkHooks;
@@ -42,11 +42,11 @@ public class ContainerGuiOpenPacket {
         this.guiID = guiIDIn;
     }
 
-    public static void encode(ContainerGuiOpenPacket msg, PacketBuffer packetBuffer) {
+    public static void write(ContainerGuiOpenPacket msg, PacketBuffer packetBuffer) {
         packetBuffer.writeInt(msg.guiID);
     }
 
-    public static ContainerGuiOpenPacket decode(PacketBuffer packetBuffer) {
+    public static ContainerGuiOpenPacket read(PacketBuffer packetBuffer) {
         return new ContainerGuiOpenPacket(packetBuffer.readInt());
     }
 

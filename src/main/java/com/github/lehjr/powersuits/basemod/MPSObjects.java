@@ -32,8 +32,8 @@ import com.github.lehjr.powersuits.block.TinkerTable;
 import com.github.lehjr.powersuits.constants.MPSConstants;
 import com.github.lehjr.powersuits.constants.MPSRegistryNames;
 import com.github.lehjr.powersuits.container.TinkerTableContainer;
-import com.github.lehjr.powersuits.container.dev.InstallSalvageCraftContainer;
-import com.github.lehjr.powersuits.container.dev.MPSCraftingContainer;
+import com.github.lehjr.powersuits.dev.crafting.container.InstallSalvageCraftContainer;
+import com.github.lehjr.powersuits.dev.crafting.container.NuminaCraftingContainer;
 import com.github.lehjr.powersuits.entity.LuxCapacitorEntity;
 import com.github.lehjr.powersuits.entity.PlasmaBallEntity;
 import com.github.lehjr.powersuits.entity.RailgunBoltEntity;
@@ -81,15 +81,15 @@ import net.minecraftforge.registries.ForgeRegistries;
 public class MPSObjects {
     public static final MPSCreativeTab creativeTab = new MPSCreativeTab();
     public static final Item.Properties singleStack = new Item.Properties()
-            .maxStackSize(1)
-            .group(MPSObjects.creativeTab)
-            .defaultMaxDamage(-1)
+            .stacksTo(1)
+            .tab(MPSObjects.creativeTab)
+            .defaultDurability(-1)
             .setNoRepair();
 
     public static final Item.Properties fullStack = new Item.Properties()
-            .group(MPSObjects.creativeTab)
-            .maxStackSize(64)
-            .defaultMaxDamage(-1)
+            .tab(MPSObjects.creativeTab)
+            .stacksTo(64)
+            .defaultDurability(-1)
             .setNoRepair();
     /**
      * Blocks ------------------------------------------------------------------------------------
@@ -109,10 +109,10 @@ public class MPSObjects {
     public static final DeferredRegister<TileEntityType<?>> TILE_TYPES = DeferredRegister.create(ForgeRegistries.TILE_ENTITIES, MPSConstants.MOD_ID);
 
     public static final RegistryObject<TileEntityType<TinkerTableTileEntity>> TINKER_TABLE_TILE_TYPE = TILE_TYPES.register(MPSRegistryNames.TINKER_TABLE,
-            () -> TileEntityType.Builder.create(TinkerTableTileEntity::new, TINKER_TABLE_BLOCK.get()).build(null));
+            () -> TileEntityType.Builder.of(TinkerTableTileEntity::new, TINKER_TABLE_BLOCK.get()).build(null));
 
     public static final RegistryObject<TileEntityType<LuxCapacitorTileEntity>> LUX_CAP_TILE_TYPE = TILE_TYPES.register(MPSRegistryNames.LUX_CAPACITOR,
-            () -> TileEntityType.Builder.create(LuxCapacitorTileEntity::new, LUX_CAPACITOR_BLOCK.get()).build(null));
+            () -> TileEntityType.Builder.of(LuxCapacitorTileEntity::new, LUX_CAPACITOR_BLOCK.get()).build(null));
 
     /**
      * Entity Types ------------------------------------------------------------------------------
@@ -120,23 +120,23 @@ public class MPSObjects {
     public static final DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(ForgeRegistries.ENTITIES, MPSConstants.MOD_ID);
 
     public static final RegistryObject<EntityType<LuxCapacitorEntity>> LUX_CAPACITOR_ENTITY_TYPE = ENTITY_TYPES.register(MPSRegistryNames.LUX_CAPACITOR,
-            ()-> EntityType.Builder.<LuxCapacitorEntity>create(LuxCapacitorEntity::new, EntityClassification.MISC)
-                    .size(0.25F, 0.25F)
+            ()-> EntityType.Builder.<LuxCapacitorEntity>of(LuxCapacitorEntity::new, EntityClassification.MISC)
+                    .sized(0.25F, 0.25F)
                     .build(new ResourceLocation(MPSConstants.MOD_ID, MPSRegistryNames.LUX_CAPACITOR).toString()));
 
     public static final RegistryObject<EntityType<SpinningBladeEntity>> SPINNING_BLADE_ENTITY_TYPE = ENTITY_TYPES.register(MPSRegistryNames.SPINNING_BLADE,
-            ()-> EntityType.Builder.<SpinningBladeEntity>create(SpinningBladeEntity::new, EntityClassification.MISC)
-                    .size(0.25F, 0.25F) // FIXME! check size
+            ()-> EntityType.Builder.<SpinningBladeEntity>of(SpinningBladeEntity::new, EntityClassification.MISC)
+                    .sized(0.25F, 0.25F) // FIXME! check size
                     .build(new ResourceLocation(MPSConstants.MOD_ID, MPSRegistryNames.SPINNING_BLADE).toString()));
 
     public static final RegistryObject<EntityType<PlasmaBallEntity>> PLASMA_BALL_ENTITY_TYPE = ENTITY_TYPES.register(MPSRegistryNames.PLASMA_BALL,
-            ()-> EntityType.Builder.<PlasmaBallEntity>create(PlasmaBallEntity::new, EntityClassification.MISC)
+            ()-> EntityType.Builder.<PlasmaBallEntity>of(PlasmaBallEntity::new, EntityClassification.MISC)
 //                    .size(0.25F, 0.25F)
                     .build(new ResourceLocation(MPSConstants.MOD_ID, MPSRegistryNames.PLASMA_BALL).toString()));
 
     public static final RegistryObject<EntityType<RailgunBoltEntity>> RAILGUN_BOLT_ENTITY_TYPE = ENTITY_TYPES.register(MPSRegistryNames.RAILGUN_BOLT,
-            ()-> EntityType.Builder.<RailgunBoltEntity>create(RailgunBoltEntity::new, EntityClassification.MISC)
-                    .size(0.25F, 0.25F)
+            ()-> EntityType.Builder.<RailgunBoltEntity>of(RailgunBoltEntity::new, EntityClassification.MISC)
+                    .sized(0.25F, 0.25F)
                     .build(new ResourceLocation(MPSConstants.MOD_ID, MPSRegistryNames.RAILGUN_BOLT).toString()));
 
     /**
@@ -261,18 +261,21 @@ public class MPSObjects {
                     () -> IForgeContainerType.create((windowId, inv, data) -> new InstallSalvageCraftContainer(windowId, inv)));
 
 
-    //                    new ContainerType<>(MPAWorkbenchContainer::new)
+//    public static final RegistryObject<ContainerType<NuminaCraftingContainer>> NUMINA_CRAFTING_CONTAINER_TYPE = CONTAINER_TYPES.register("crafting_container",
+//            () -> IForgeContainerType.create((windowId, inv, data) -> {
+////        BlockPos pos = data.readBlockPos();
+//                return new NuminaCraftingContainer(windowId, inv);
+//            }));
+//
+//                        new ContainerType<>(MPAWorkbenchContainer::new)
 //            .setRegistryName(MPA_WORKBENCH_CONTAINER_TYPE),
-//
-//
-    // Crafting Gui
-    public static final RegistryObject<ContainerType<MPSCraftingContainer>> MPS_CRAFTING_CONTAINER_TYPE = CONTAINER_TYPES.register(MPSRegistryNames.MPS_CRAFTING_CONTAINER_TYPE,
-            () -> IForgeContainerType.create((windowId, inv, data) -> {
-//                BlockPos pos = data.readBlockPos();
-//                return new MPSCraftingContainer(windowId, inv, IWorldPosCallable.of(inv.player.world, pos));
-                return new MPSCraftingContainer(windowId, inv);
-            }));
 
+
+    // Module crafting/install/salvage GUI
+    public static final RegistryObject<ContainerType<NuminaCraftingContainer>> MPS_CRAFTING_CONTAINER_TYPE = CONTAINER_TYPES.register("crafting_container",
+            () -> IForgeContainerType.create((windowId, inv, data) -> {
+                return new NuminaCraftingContainer(windowId, inv);
+            }));
 
     static RegistryObject<Item> registerModule(String regName, Item item) {
         MPSModules.INSTANCE.addModule(MPSRegistryNames.getRegName(regName));

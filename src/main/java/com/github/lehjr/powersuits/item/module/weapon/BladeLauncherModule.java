@@ -92,7 +92,7 @@ public class BladeLauncherModule extends AbstractPowerModule {
             public ActionResult onItemRightClick(ItemStack itemStackIn, World worldIn, PlayerEntity playerIn, Hand hand) {
                 if (hand == Hand.MAIN_HAND) {
                     if (ElectricItemUtils.getPlayerEnergy(playerIn) > applyPropertyModifiers(MPSConstants.BLADE_ENERGY)) {
-                        playerIn.setActiveHand(hand);
+                        playerIn.startUsingItem(hand);
                         return new ActionResult(ActionResultType.SUCCESS, itemStackIn);
                     }
                 }
@@ -101,13 +101,13 @@ public class BladeLauncherModule extends AbstractPowerModule {
 
             @Override
             public void onPlayerStoppedUsing(ItemStack stack, World worldIn, LivingEntity entityLiving, int timeLeft) {
-                if (!worldIn.isRemote) {
+                if (!worldIn.isClientSide) {
                    int energyConsumption = getEnergyUsage();
 
                     if (ElectricItemUtils.getPlayerEnergy(entityLiving) > energyConsumption) {
                         ElectricItemUtils.drainPlayerEnergy(entityLiving, energyConsumption);
                         SpinningBladeEntity blade = new SpinningBladeEntity(worldIn, entityLiving);
-                        worldIn.addEntity(blade);
+                        worldIn.addFreshEntity(blade);
                     }
                 }
             }

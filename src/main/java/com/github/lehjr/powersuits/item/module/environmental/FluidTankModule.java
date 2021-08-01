@@ -148,31 +148,31 @@ public class FluidTankModule extends AbstractPowerModule {
 
             @Override
             public void onPlayerTickActive(PlayerEntity player, @Nonnull ItemStack item) {
-                if (/*player.world.isRemote() &&*/ player.getEntityWorld().getGameTime() % 10 == 0 ) {
+                if (/*player.world.isRemote() &&*/ player.getCommandSenderWorld().getGameTime() % 10 == 0 ) {
                     // we only have one tank, so index 0;
                     int maxFluid = fluidHandler.getTankCapacity(0);
                     int currentFluid = fluidHandler.getFluidInTank(0).getAmount();
 
                     // fill the tank
                     if (currentFluid < maxFluid) {
-                        BlockPos pos = player.getPosition();
-                        BlockState blockstate = player.world.getBlockState(pos);
+                        BlockPos pos = player.blockPosition();
+                        BlockState blockstate = player.level.getBlockState(pos);
 
                         // fill by being in water
-                        if (player.isInWater() && player.world.getBlockState(pos).getBlock() != Blocks.BUBBLE_COLUMN) {
-                            if (blockstate.getBlock() instanceof IBucketPickupHandler && blockstate.getFluidState().getFluid() == Fluids.WATER) {
-                                Fluid fluid = ((IBucketPickupHandler) blockstate.getBlock()).pickupFluid(player.world, pos, blockstate);
+                        if (player.isInWater() && player.level.getBlockState(pos).getBlock() != Blocks.BUBBLE_COLUMN) {
+                            if (blockstate.getBlock() instanceof IBucketPickupHandler && blockstate.getFluidState().getType() == Fluids.WATER) {
+                                Fluid fluid = ((IBucketPickupHandler) blockstate.getBlock()).takeLiquid(player.level, pos, blockstate);
                                 FluidStack water = new FluidStack(fluid, 1000);
                                 // only play sound if actually filling
                                 if (fluidHandler.fill(water, IFluidHandler.FluidAction.EXECUTE) > 0) {
-                                    player.playSound(SoundEvents.ITEM_BUCKET_FILL, 1.0F, 1.0F);
+                                    player.playSound(SoundEvents.BUCKET_FILL, 1.0F, 1.0F);
                                 }
                             }
                             // fill by being in the rain or bubble column
-                        } else if (player.isInWaterRainOrBubbleColumn()) {
+                        } else if (player.isInWaterRainOrBubble()) {
                             FluidStack water = new FluidStack(Fluids.WATER, 100);
                             if (fluidHandler.fill(water, IFluidHandler.FluidAction.EXECUTE) > 0) {
-                                player.playSound(SoundEvents.ITEM_BUCKET_FILL, 1.0F, 1.0F);
+                                player.playSound(SoundEvents.BUCKET_FILL, 1.0F, 1.0F);
                             }
                         }
                     }
@@ -188,14 +188,14 @@ public class FluidTankModule extends AbstractPowerModule {
                             // adjust so cooling does not exceed cooling needed
                             (int) Math.min(1000, currentHeat/coolingFactor),
                             // only execute on server, simulate on client
-                            player.world.isRemote ? IFluidHandler.FluidAction.SIMULATE : IFluidHandler.FluidAction.EXECUTE)
+                            player.level.isClientSide ? IFluidHandler.FluidAction.SIMULATE : IFluidHandler.FluidAction.EXECUTE)
                             .getAmount() * coolingFactor;
 
                     MuseHeatUtils.coolPlayer(player, coolAmount);
                     if (coolAmount > 0) {
-                        player.world.playSound(player, player.getPosition(), SoundEvents.ENTITY_GENERIC_EXTINGUISH_FIRE, SoundCategory.MASTER, 1.0F, 1.0F);
+                        player.level.playSound(player, player.blockPosition(), SoundEvents.GENERIC_EXTINGUISH_FIRE, SoundCategory.MASTER, 1.0F, 1.0F);
                         for (int i = 0; i < 4; i++) {
-                            player.world.addOptionalParticle(ParticleTypes.SMOKE, player.getPosX(), player.getPosY() + 0.5, player.getPosZ(), 0.0D, 0.0D, 0.0D);
+                            player.level.addAlwaysVisibleParticle(ParticleTypes.SMOKE, player.getX(), player.getY() + 0.5, player.getZ(), 0.0D, 0.0D, 0.0D);
                         }
                     }
                 }

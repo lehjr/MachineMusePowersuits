@@ -30,7 +30,7 @@ import com.github.lehjr.numina.util.capabilities.inventory.modechanging.IModeCha
 import com.github.lehjr.numina.util.capabilities.inventory.modularitem.IModularItem;
 import com.github.lehjr.numina.util.capabilities.module.powermodule.PowerModuleCapability;
 import com.github.lehjr.numina.util.client.gui.clickable.ClickableModule;
-import com.github.lehjr.numina.util.client.gui.gemoetry.DrawableMuseRect;
+import com.github.lehjr.numina.util.client.gui.gemoetry.DrawableRelativeRect;
 import com.github.lehjr.numina.util.client.render.MuseRenderer;
 import com.github.lehjr.numina.util.math.Colour;
 import com.github.lehjr.powersuits.client.control.KeybindManager;
@@ -57,7 +57,7 @@ import net.minecraftforge.items.CapabilityItemHandler;
 public enum RenderEventHandler {
     INSTANCE;
     private static boolean ownFly = false;
-    private final DrawableMuseRect frame = new DrawableMuseRect(MPSSettings.getHudKeybindX(), MPSSettings.getHudKeybindY(), MPSSettings.getHudKeybindX() + (float) 16, MPSSettings.getHudKeybindY() +  16, true, Colour.DARK_GREEN.withAlpha(0.2F), Colour.GREEN.withAlpha(0.2F));
+    private final DrawableRelativeRect frame = new DrawableRelativeRect(MPSSettings.getHudKeybindX(), MPSSettings.getHudKeybindY(), MPSSettings.getHudKeybindX() + (float) 16, MPSSettings.getHudKeybindY() +  16, true, Colour.DARK_GREEN.withAlpha(0.2F), Colour.GREEN.withAlpha(0.2F));
 
 
     @OnlyIn(Dist.CLIENT)
@@ -90,8 +90,8 @@ public enum RenderEventHandler {
 
     @SubscribeEvent
     public void onPreRenderPlayer(RenderPlayerEvent.Pre event) {
-        if (!event.getPlayer().abilities.isFlying && !event.getPlayer().isOnGround() && this.playerHasFlightOn(event.getPlayer())) {
-            event.getPlayer().abilities.isFlying = true;
+        if (!event.getPlayer().abilities.flying && !event.getPlayer().isOnGround() && this.playerHasFlightOn(event.getPlayer())) {
+            event.getPlayer().abilities.flying = true;
             RenderEventHandler.ownFly = true;
         }
     }
@@ -99,17 +99,17 @@ public enum RenderEventHandler {
     private boolean playerHasFlightOn(PlayerEntity player) {
         return
 
-                player.getItemStackFromSlot(EquipmentSlotType.HEAD).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+                player.getItemBySlot(EquipmentSlotType.HEAD).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
                         .map(iModularItem ->
                                 (iModularItem instanceof IModularItem) && ((IModularItem) iModularItem).isModuleOnline(MPSRegistryNames.FLIGHT_CONTROL_MODULE_REGNAME)).orElse(false) ||
 
-                        player.getItemStackFromSlot(EquipmentSlotType.CHEST).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+                        player.getItemBySlot(EquipmentSlotType.CHEST).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
                                 .map(iModularItem ->
                                         (iModularItem instanceof IModularItem) &&
                                                 ((IModularItem) iModularItem).isModuleOnline(MPSRegistryNames.JETPACK_MODULE_REGNAME) ||
                                                 ((IModularItem) iModularItem).isModuleOnline(MPSRegistryNames.GLIDER_MODULE_REGNAME)).orElse(false) ||
 
-                        player.getItemStackFromSlot(EquipmentSlotType.FEET).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+                        player.getItemBySlot(EquipmentSlotType.FEET).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
                                 .map(iModularItem ->
                                         (iModularItem instanceof IModularItem) && ((IModularItem) iModularItem).isModuleOnline(MPSRegistryNames.JETBOOTS_MODULE_REGNAME)).orElse(false);
     }
@@ -118,13 +118,13 @@ public enum RenderEventHandler {
     public void onPostRenderPlayer(RenderPlayerEvent.Post event) {
         if (RenderEventHandler.ownFly) {
             RenderEventHandler.ownFly = false;
-            event.getPlayer().abilities.isFlying = false;
+            event.getPlayer().abilities.flying = false;
         }
     }
 
     @SubscribeEvent
     public void onFOVUpdate(FOVUpdateEvent e) {
-        ItemStack helmet = e.getEntity().getItemStackFromSlot(EquipmentSlotType.HEAD);
+        ItemStack helmet = e.getEntity().getItemBySlot(EquipmentSlotType.HEAD);
         helmet.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h-> {
                     if (h instanceof IModularItem) {
                         ItemStack binnoculars = ((IModularItem) h).getOnlineModuleOrEmpty(MPSRegistryNames.BINOCULARS_MODULE_REGNAME);
@@ -138,7 +138,7 @@ public enum RenderEventHandler {
 
     @OnlyIn(Dist.CLIENT)
     public void drawKeybindToggles(MatrixStack matrixStack) {
-        float zLevel = Minecraft.getInstance().currentScreen != null ? Minecraft.getInstance().currentScreen.getBlitOffset() : 0;
+        float zLevel = Minecraft.getInstance().screen != null ? Minecraft.getInstance().screen.getBlitOffset() : 0;
 
         if (MPSSettings.displayHud()) {
             Minecraft minecraft = Minecraft.getInstance();
@@ -149,9 +149,9 @@ public enum RenderEventHandler {
 
             for (ClickableKeybinding kb : KeybindManager.INSTANCE.getKeybindings()) {
                 if (kb.displayOnHUD) {
-                    float stringwidth = (float) MuseRenderer.getFontRenderer().getStringPropertyWidth(kb.getLabel());
+                    float stringwidth = (float) MuseRenderer.getFontRenderer().width(kb.getLabel());
                     frame.setWidth(stringwidth + 8 + kb.getBoundModules().size() * 18);
-                    frame.draw(matrixStack, zLevel);
+                    frame.render(matrixStack, 0, 0, 0); // FIXME
                     MuseRenderer.drawText(matrixStack, kb.getLabel(), (float) frame.left() + 4, (float) frame.top() + 4, (kb.toggleval) ? Colour.RED : Colour.GREEN);
 
                     double x = frame.left() + stringwidth + 8;
@@ -159,7 +159,7 @@ public enum RenderEventHandler {
 //                        TextureUtils.pushTexture(TextureUtils.TEXTURE_QUILT);
                         boolean active = false;
                         for (EquipmentSlotType slot : EquipmentSlotType.values()) {
-                            ItemStack stack = player.getItemStackFromSlot(slot);
+                            ItemStack stack = player.getItemBySlot(slot);
                             active = stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).map(iItemHandler -> {
                                 if (iItemHandler instanceof IModularItem) {
                                     if (iItemHandler instanceof IModeChangingItem) {

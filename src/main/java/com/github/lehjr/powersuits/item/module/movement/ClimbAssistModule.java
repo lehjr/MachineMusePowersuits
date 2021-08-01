@@ -82,13 +82,13 @@ public class ClimbAssistModule extends AbstractPowerModule {
 
             @Override
             public void onPlayerTickActive(PlayerEntity player, ItemStack item) {
-                player.stepHeight = 1.001F;
+                player.maxUpStep = 1.001F;
             }
 
             @Override
             public void onPlayerTickInactive(PlayerEntity player, ItemStack item) {
-                if (player.stepHeight == 1.001F) {
-                    player.stepHeight = 0.5001F;
+                if (player.maxUpStep == 1.001F) {
+                    player.maxUpStep = 0.5001F;
                 }
             }
         }

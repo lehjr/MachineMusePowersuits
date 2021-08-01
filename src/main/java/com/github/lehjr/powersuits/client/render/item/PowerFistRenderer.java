@@ -29,7 +29,7 @@
 //    boolean isFiring = false;
 //
 //    @Override
-//    public void func_239207_a_/*render*/(ItemStack stack, ItemCameraTransforms.TransformType transformType, MatrixStack matrixStack, IRenderTypeBuffer buffer, int combinedLight, int combinedOverlay) {
+//    public void renderByItem/*render*/(ItemStack stack, ItemCameraTransforms.TransformType transformType, MatrixStack matrixStack, IRenderTypeBuffer buffer, int combinedLight, int combinedOverlay) {
 //
 //
 //        IVertexBuilder builder = buffer.getBuffer(powerFist.getRenderType(MPSConstants.POWER_FIST_TEXTURE));

@@ -68,11 +68,11 @@ public class SpinningBladeEntity extends ThrowableEntity {
 
     public SpinningBladeEntity(World worldIn, LivingEntity shootingEntity) {
         super(MPSObjects.SPINNING_BLADE_ENTITY_TYPE.get(), shootingEntity, worldIn);
-        this.setShooter(shootingEntity);
+        this.setOwner(shootingEntity);
         if (shootingEntity instanceof PlayerEntity) {
             AtomicDouble atomicDamage = new AtomicDouble(0);
 
-            this.shootingItem = ((PlayerEntity) shootingEntity).inventory.getCurrentItem();
+            this.shootingItem = ((PlayerEntity) shootingEntity).inventory.getSelected();
             this.shootingItem.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(iModeChangingItem -> {
                 if (iModeChangingItem instanceof IModeChangingItem) {
                     ((IModeChangingItem) iModeChangingItem).getActiveModule().getCapability(PowerModuleCapability.POWER_MODULE)
@@ -81,10 +81,10 @@ public class SpinningBladeEntity extends ThrowableEntity {
             });
             damage = atomicDamage.get();
         }
-        Vector3d direction = shootingEntity.getLookVec().normalize();
+        Vector3d direction = shootingEntity.getLookAngle().normalize();
         double speed = 1.0;
         double scale = 1;
-        this.setMotion(
+        this.setDeltaMovement(
                 direction.x * speed,
                 direction.y * speed,
                 direction.z * speed
@@ -96,42 +96,42 @@ public class SpinningBladeEntity extends ThrowableEntity {
         double horzScale = Math.sqrt(direction.x * direction.x + direction.z * direction.z);
         double horzx = direction.x / horzScale;
         double horzz = direction.z / horzScale;
-        this.setPosition(
+        this.setPos(
                 // x
-                (shootingEntity.getPosX() + direction.x * xoffset - direction.y * horzx * yoffset - horzz * zoffset),
+                (shootingEntity.getX() + direction.x * xoffset - direction.y * horzx * yoffset - horzz * zoffset),
                 // y
-                (shootingEntity.getPosY() + shootingEntity.getEyeHeight() + direction.y * xoffset + (1 - Math.abs(direction.y)) * yoffset),
+                (shootingEntity.getY() + shootingEntity.getEyeHeight() + direction.y * xoffset + (1 - Math.abs(direction.y)) * yoffset),
                 // z
-                (shootingEntity.getPosZ() + direction.z * xoffset - direction.y * horzz * yoffset + horzx * zoffset)
+                (shootingEntity.getZ() + direction.z * xoffset - direction.y * horzz * yoffset + horzx * zoffset)
         );
-        this.setBoundingBox(new AxisAlignedBB(getPosX() - r, getPosY() - r, getPosZ() - r, getPosX() + r, getPosY() + r, getPosZ() + r));
+        this.setBoundingBox(new AxisAlignedBB(getX() - r, getY() - r, getZ() - r, getX() + r, getY() + r, getZ() + r));
     }
 
     @Override
     public void tick() {
         super.tick();
-        if (this.ticksExisted > this.getMaxLifetime()) {
+        if (this.tickCount > this.getMaxLifetime()) {
             this.remove();
         }
     }
 
     @Override
-    protected void onImpact(RayTraceResult hitResult) {
+    protected void onHit(RayTraceResult hitResult) {
         if (hitResult.getType() == RayTraceResult.Type.BLOCK) {
-            World world = this.world;
+            World world = this.level;
             if (world == null) {
                 return;
             }
 
             BlockRayTraceResult result = (BlockRayTraceResult) hitResult;
-            Block block = world.getBlockState(result.getPos()).getBlock();
-            if (block instanceof IForgeShearable && this.getShooter() instanceof PlayerEntity) {
+            Block block = world.getBlockState(result.getBlockPos()).getBlock();
+            if (block instanceof IForgeShearable && this.getOwner() instanceof PlayerEntity) {
                 IForgeShearable target = (IForgeShearable) block;
-                if (target.isShearable(this.shootingItem, world, result.getPos()) && !world.isRemote) {
+                if (target.isShearable(this.shootingItem, world, result.getBlockPos()) && !world.isClientSide) {
                     // onSheared(@Nullable PlayerEntity player, @Nonnull ItemStack item, World world, BlockPos pos, int fortune)
 
-                    List<ItemStack> drops = target.onSheared((PlayerEntity) this.getShooter(), this.shootingItem, world, result.getPos(),
-                            EnchantmentHelper.getEnchantmentLevel(ForgeRegistries.ENCHANTMENTS.getValue(new ResourceLocation("fortune")), this.shootingItem));
+                    List<ItemStack> drops = target.onSheared((PlayerEntity) this.getOwner(), this.shootingItem, world, result.getBlockPos(),
+                            EnchantmentHelper.getItemEnchantmentLevel(ForgeRegistries.ENCHANTMENTS.getValue(new ResourceLocation("fortune")), this.shootingItem));
                     Random rand = new Random();
 
                     for (ItemStack stack : drops) {
@@ -139,33 +139,33 @@ public class SpinningBladeEntity extends ThrowableEntity {
                         double d = rand.nextFloat() * f + (1.0F - f) * 0.5D;
                         double d1 = rand.nextFloat() * f + (1.0F - f) * 0.5D;
                         double d2 = rand.nextFloat() * f + (1.0F - f) * 0.5D;
-                        ItemEntity entityitem = new ItemEntity(world, result.getPos().getX() + d, result.getPos().getY() + d1, result.getPos().getZ() + d2, stack);
-                        entityitem.setPickupDelay(10);
-                        world.addEntity(entityitem);
+                        ItemEntity entityitem = new ItemEntity(world, result.getBlockPos().getX() + d, result.getBlockPos().getY() + d1, result.getBlockPos().getZ() + d2, stack);
+                        entityitem.setPickUpDelay(10);
+                        world.addFreshEntity(entityitem);
                     }
 //                    if (this.shootingEntity instanceof PlayerEntity) {
 //                        ((PlayerEntity) shootingEntity).addStat(StatList.getBlockStats(block), 1);
 //                    }
                 }
-                world.destroyBlock(result.getPos(), true);// Destroy block and drop item
+                world.destroyBlock(result.getBlockPos(), true);// Destroy block and drop item
             } else { // Block hit was not IForgeShearable
                 this.remove();
             }
-        } else if (hitResult.getType() == RayTraceResult.Type.ENTITY && ((EntityRayTraceResult)hitResult).getEntity() != getShooter()) {
+        } else if (hitResult.getType() == RayTraceResult.Type.ENTITY && ((EntityRayTraceResult)hitResult).getEntity() != getOwner()) {
             EntityRayTraceResult result = (EntityRayTraceResult) hitResult;
             if (result.getEntity() instanceof IForgeShearable) {
                 IForgeShearable target = (IForgeShearable) result.getEntity();
                 Entity entity = result.getEntity();
-                if (target.isShearable(this.shootingItem, entity.world, entity.getPosition()) && this.getShooter() instanceof PlayerEntity) {
-                    List<ItemStack> drops = target.onSheared((PlayerEntity) getShooter(), this.shootingItem, entity.world,
-                            entity.getPosition(),
-                            EnchantmentHelper.getEnchantmentLevel(ForgeRegistries.ENCHANTMENTS.getValue(new ResourceLocation("fortune")), this.shootingItem));
+                if (target.isShearable(this.shootingItem, entity.level, entity.blockPosition()) && this.getOwner() instanceof PlayerEntity) {
+                    List<ItemStack> drops = target.onSheared((PlayerEntity) getOwner(), this.shootingItem, entity.level,
+                            entity.blockPosition(),
+                            EnchantmentHelper.getItemEnchantmentLevel(ForgeRegistries.ENCHANTMENTS.getValue(new ResourceLocation("fortune")), this.shootingItem));
 
                     Random rand = new Random();
                     for (ItemStack drop : drops) {
-                        ItemEntity ent = entity.entityDropItem(drop, 1.0F);
+                        ItemEntity ent = entity.spawnAtLocation(drop, 1.0F);
 
-                        ent.setMotion(ent.getMotion().add(
+                        ent.setDeltaMovement(ent.getDeltaMovement().add(
                                 (rand.nextFloat() - rand.nextFloat()) * 0.1F,
                                 rand.nextFloat() * 0.05,
                                 (rand.nextFloat() - rand.nextFloat()) * 0.1F
@@ -173,7 +173,7 @@ public class SpinningBladeEntity extends ThrowableEntity {
                     }
                 }
             } else {
-                result.getEntity().attackEntityFrom(DamageSource.causeThrownDamage(this, getShooter()), (int) damage);
+                result.getEntity().hurt(DamageSource.thrown(this, getOwner()), (int) damage);
             }
         }
     }
@@ -182,7 +182,7 @@ public class SpinningBladeEntity extends ThrowableEntity {
      * Gets the amount of gravity to apply to the thrown entity with each tick.
      */
     @Override
-    protected float getGravityVelocity() {
+    protected float getGravity() {
         return 0;
     }
 
@@ -191,12 +191,12 @@ public class SpinningBladeEntity extends ThrowableEntity {
     }
 
     @Override
-    protected void registerData() {
+    protected void defineSynchedData() {
 
     }
 
     @Override
-    public IPacket<?> createSpawnPacket() {
+    public IPacket<?> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
 }

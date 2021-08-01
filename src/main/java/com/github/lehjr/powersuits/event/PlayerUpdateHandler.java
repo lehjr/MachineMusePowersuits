@@ -53,16 +53,16 @@ public class PlayerUpdateHandler {
             PlayerEntity player = (PlayerEntity) event.getEntity();
 
             // pretty sure the whole point of this was to reduce fall distance, not increase it.
-            float fallDistance = (float) MovementManager.INSTANCE.computeFallHeightFromVelocity(MuseMathUtils.clampDouble(player.getMotion().y, -1000.0, 0.0));
+            float fallDistance = (float) MovementManager.INSTANCE.computeFallHeightFromVelocity(MuseMathUtils.clampDouble(player.getDeltaMovement().y, -1000.0, 0.0));
             if (fallDistance < player.fallDistance) {
                 player.fallDistance = fallDistance;
             }
 
             // Sound update
-            if (player.world.isRemote && NuminaSettings.useSounds()) {
-                if ((player.getItemStackFromSlot(EquipmentSlotType.CHEST).getItem() instanceof PowerArmorChestplate)) {
-                    double velsq2 = MuseMathUtils.sumsq(player.getMotion().x, player.getMotion().y, player.getMotion().z) - 0.5;
-                    if (player.isAirBorne && velsq2 > 0) {
+            if (player.level.isClientSide && NuminaSettings.useSounds()) {
+                if ((player.getItemBySlot(EquipmentSlotType.CHEST).getItem() instanceof PowerArmorChestplate)) {
+                    double velsq2 = MuseMathUtils.sumsq(player.getDeltaMovement().x, player.getDeltaMovement().y, player.getDeltaMovement().z) - 0.5;
+                    if (player.hasImpulse && velsq2 > 0) {
                         Musique.playerSound(player, MPSSoundDictionary.GLIDER, SoundCategory.PLAYERS, (float) (velsq2 / 3), 1.0f, true);
                     } else {
                         Musique.stopPlayerSound(player, MPSSoundDictionary.GLIDER);
@@ -71,15 +71,15 @@ public class PlayerUpdateHandler {
                     Musique.stopPlayerSound(player, MPSSoundDictionary.GLIDER);
                 }
 
-                if (!(player.getItemStackFromSlot(EquipmentSlotType.FEET).getItem() instanceof PowerArmorBoots)) {
+                if (!(player.getItemBySlot(EquipmentSlotType.FEET).getItem() instanceof PowerArmorBoots)) {
                     Musique.stopPlayerSound(player, MPSSoundDictionary.JETBOOTS);
                 }
 
-                if (!(player.getItemStackFromSlot(EquipmentSlotType.CHEST).getItem() instanceof PowerArmorChestplate)) {
+                if (!(player.getItemBySlot(EquipmentSlotType.CHEST).getItem() instanceof PowerArmorChestplate)) {
                     Musique.stopPlayerSound(player, MPSSoundDictionary.JETPACK);
                 }
 
-                if (!(player.getItemStackFromSlot(EquipmentSlotType.LEGS).getItem() instanceof PowerArmorLeggings)) {
+                if (!(player.getItemBySlot(EquipmentSlotType.LEGS).getItem() instanceof PowerArmorLeggings)) {
                     Musique.stopPlayerSound(player, MPSSoundDictionary.SWIM_ASSIST);
                 }
             }
