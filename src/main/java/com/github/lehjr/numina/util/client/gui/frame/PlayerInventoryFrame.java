@@ -21,35 +21,6 @@ public class PlayerInventoryFrame extends MultiRectHolderFrame {
         super(true, true, 0, 0);
 
         /** main stack of boxes --------------------------------------------------------------------------------------- */
-        List<IGuiFrame> frames1 = new ArrayList<>();
-
-        // FIXME: add an inventory label
-        GUISpacer topSpacer = new GUISpacer(finalWidth, 13);
-        frames1.add(topSpacer);
-
-        // slot 10-36
-        mainInventory = new InventoryFrame(container,
-                9, 3, new ArrayList<Integer>() {{
-            IntStream.range(mainInventoryStart, mainInventoryStart + 27).forEach(i -> add(i));
-        }}, ulGetter);
-        mainInventory.setMeBelow(topSpacer);
-        frames1.add(mainInventory);
-
-        GUISpacer middleSpacer = new GUISpacer(finalWidth, 4);
-        middleSpacer.setMeBelow(mainInventory);
-        frames1.add(middleSpacer);
-
-        // slot 37 -46
-        hotbar = new InventoryFrame(container,
-                9, 1, new ArrayList<Integer>() {{
-            IntStream.range(hotbarStart, hotbarStart + 9).forEach(i -> add(i));
-        }}, ulGetter);
-        hotbar.setMeBelow(middleSpacer);
-        frames1.add(hotbar);
-
-        GUISpacer bottomSpacer = new GUISpacer(finalWidth, spacerSize);
-        bottomSpacer.setMeBelow(hotbar);
-        frames1.add(bottomSpacer);
 
         MultiRectHolderFrame inventoryFrame = new MultiRectHolderFrame(
                 false,
@@ -58,19 +29,40 @@ public class PlayerInventoryFrame extends MultiRectHolderFrame {
                 0) {
         };
 
-        frames1.stream().forEach(rect-> inventoryFrame.addRect(rect));
+        // FIXME: add an inventory label
+        inventoryFrame.addRect(new GUISpacer(finalWidth, 13));
+
+        // slot 10-36
+        mainInventory = new InventoryFrame(container,
+                9, 3, new ArrayList<Integer>() {{
+            IntStream.range(mainInventoryStart, mainInventoryStart + 27).forEach(i -> add(i));
+        }}, ulGetter);
+        inventoryFrame.addRect(mainInventory);
+
+        // middle spacer
+        inventoryFrame.addRect(new GUISpacer(finalWidth, 4));
+
+        // slot 37 -46
+        hotbar = new InventoryFrame(container,
+                9, 1, new ArrayList<Integer>() {{
+            IntStream.range(hotbarStart, hotbarStart + 9).forEach(i -> add(i));
+        }}, ulGetter);
+        inventoryFrame.addRect(hotbar);
+
+        // bottom spacer
+        inventoryFrame.addRect(new GUISpacer(finalWidth, spacerSize));
+
         inventoryFrame.doneAdding();
 
         /** add spacers to the side ----------------------------------------------------------------------------------- */
-        GUISpacer leftSpacer = new GUISpacer(spacerSize, inventoryFrame.finalHeight());
-        addRect(leftSpacer);
+        // left spacer
+        addRect(new GUISpacer(spacerSize, inventoryFrame.finalHeight()));
 
-        inventoryFrame.setMeRightOf(leftSpacer);
+        // the main set of frames
         addRect(inventoryFrame);
 
-        GUISpacer rightSpacer = new GUISpacer(spacerSize, inventoryFrame.finalHeight());
-        rightSpacer.setMeRightOf(inventoryFrame);
-        addRect(rightSpacer);
+        // right spacer
+        addRect(new GUISpacer(spacerSize, inventoryFrame.finalHeight()));
         doneAdding();
     }
 }

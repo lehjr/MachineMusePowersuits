@@ -39,7 +39,7 @@ public class CraftingFrame extends MultiRectHolderFrame {
         arrow.setWidth(24).setHeight(24);
 
 
-        RectHolderFrame spacer1 = new RectHolderFrame(arrow, 36, 54) {
+        addRect(new RectHolderFrame(arrow, 36, 54) {
             @Override
             public boolean mouseClicked(double mouseX, double mouseY, int button) {
                 return arrow.mouseClicked(mouseX, mouseY, button);
@@ -69,9 +69,7 @@ public class CraftingFrame extends MultiRectHolderFrame {
             public List<ITextComponent> getToolTip(int x, int y) {
                 return arrow.getToolTip(x, y);
             }
-        };
-        spacer1.setMeRightOf(craftingGrid);
-        addRect(spacer1);
+        });
 
         /** Result slot and its spacer ----------------------------------------------------------- */
         // slot 0
@@ -83,7 +81,7 @@ public class CraftingFrame extends MultiRectHolderFrame {
                     IntStream.range(resultIndex, resultIndex+1).forEach(i-> add(i));
                 }}, ulGetter).setSlotWidth(24).setSlotHeight(24);
 
-        RectHolderFrame spacer2 = new RectHolderFrame(resultFrame,24, 54) {
+        addRect(new RectHolderFrame(resultFrame,24, 54) {
             @Override
             public void render(MatrixStack matrixStack, int mouseX, int mouseY, float frameTime) {
                 super.render(matrixStack, mouseX, mouseY, frameTime);
@@ -113,10 +111,7 @@ public class CraftingFrame extends MultiRectHolderFrame {
             public List<ITextComponent> getToolTip(int x, int y) {
                 return resultFrame.getToolTip(x, y);
             }
-        };
-        spacer2.setMeRightOf(spacer1);
-        addRect(spacer2);
-
+        });
         doneAdding();
     }
 
