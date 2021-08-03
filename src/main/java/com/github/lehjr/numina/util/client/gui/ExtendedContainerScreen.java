@@ -29,12 +29,14 @@ package com.github.lehjr.numina.util.client.gui;
 import com.github.lehjr.numina.util.client.gui.frame.IGuiFrame;
 import com.github.lehjr.numina.util.client.gui.gemoetry.DrawableRelativeRect;
 import com.github.lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
+import com.github.lehjr.numina.util.client.gui.slot.IHideableSlot;
 import com.github.lehjr.numina.util.math.Colour;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.Slot;
 import net.minecraft.util.text.ITextComponent;
 
 import java.util.ArrayList;
@@ -60,19 +62,6 @@ public class ExtendedContainerScreen<T extends Container> extends ContainerScree
         this.minecraft = Minecraft.getInstance();
     }
 
-    public IContainerULOffSet.ulGetter ulGetter() {
-        return new IContainerULOffSet.ulGetter() {
-            @Override
-            public MusePoint2D getULShift(IContainerULOffSet frame) {
-                return getUlOffset();
-            }
-        };
-    }
-
-    MusePoint2D getUlOffset () {
-        return new MusePoint2D(getGuiLeft(), getGuiTop());
-    }
-
     /**
      *
      * @param screenContainer
@@ -87,6 +76,25 @@ public class ExtendedContainerScreen<T extends Container> extends ContainerScree
         this.imageHeight = guiHeight;
     }
 
+    MusePoint2D getUlOffset () {
+        return new MusePoint2D(getGuiLeft(), getGuiTop());
+    }
+
+    public IContainerULOffSet.ulGetter ulGetter() {
+        return new IContainerULOffSet.ulGetter() {
+            @Override
+            public MusePoint2D getULShift(IContainerULOffSet frame) {
+                return getUlOffset();
+            }
+        };
+    }
+
+    protected void renderSlot(MatrixStack matrixStack, Slot slot) {
+        if (slot!= null && slot instanceof IHideableSlot && ((IHideableSlot) slot).isEnabled()) {
+            super.renderSlot(matrixStack, slot);
+        }
+    }
+
     public void renderBackgroundRect(MatrixStack matrixStack, int mouseX, int mouseY, float frameTime) {
         backgroundRect.render(matrixStack, mouseX, mouseY, frameTime);
     }
@@ -95,6 +103,7 @@ public class ExtendedContainerScreen<T extends Container> extends ContainerScree
     public void init(Minecraft minecraft, int width, int height) {
         super.init(minecraft, width, height);
     }
+
 
     @Override
     public void init() {
