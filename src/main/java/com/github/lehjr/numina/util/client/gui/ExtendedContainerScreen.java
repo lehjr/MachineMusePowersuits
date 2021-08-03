@@ -42,6 +42,10 @@ import net.minecraft.util.text.ITextComponent;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * TODO: inventory label
+ * @param <T>
+ */
 public class ExtendedContainerScreen<T extends Container> extends ContainerScreen<T> {
     protected long creationTime;
     protected DrawableRelativeRect tooltipRect;
@@ -89,6 +93,7 @@ public class ExtendedContainerScreen<T extends Container> extends ContainerScree
         };
     }
 
+    @Override
     protected void renderSlot(MatrixStack matrixStack, Slot slot) {
         if (slot!= null && slot instanceof IHideableSlot && ((IHideableSlot) slot).isEnabled()) {
             super.renderSlot(matrixStack, slot);

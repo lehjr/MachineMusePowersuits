@@ -29,6 +29,7 @@ package com.github.lehjr.numina.util.capabilities.inventory.modularitem;
 import com.github.lehjr.numina.util.capabilities.IItemStackUpdate;
 import com.github.lehjr.numina.util.capabilities.module.powermodule.EnumModuleCategory;
 import com.github.lehjr.numina.util.capabilities.module.powermodule.IPowerModule;
+import com.github.lehjr.numina.util.capabilities.module.powermodule.PowerModuleCapability;
 import com.github.lehjr.numina.util.string.MuseStringUtils;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -55,6 +56,10 @@ public interface IModularItem extends IItemHandler, IItemHandlerModifiable, IIte
     boolean isModuleValid(@Nonnull ItemStack module);
 
     boolean isModuleInstalled(ResourceLocation regName);
+
+    default boolean isModuleInstalled(@Nonnull ItemStack module) {
+        return module.getCapability(PowerModuleCapability.POWER_MODULE).isPresent() && isModuleInstalled(module.getItem().getRegistryName());
+    }
 
     boolean isModuleOnline(ResourceLocation moduleName);
 
