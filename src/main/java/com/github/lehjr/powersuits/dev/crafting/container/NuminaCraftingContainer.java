@@ -26,12 +26,18 @@
 
 package com.github.lehjr.powersuits.dev.crafting.container;
 
+import com.github.lehjr.numina.util.capabilities.inventory.modularitem.IModularItem;
+import com.github.lehjr.numina.util.client.gui.slot.HideableSlot;
+import com.github.lehjr.numina.util.client.gui.slot.HideableSlotItemHandler;
+import com.github.lehjr.numina.util.client.gui.slot.IHideableSlot;
 import com.github.lehjr.powersuits.basemod.MPSObjects;
+import com.google.common.collect.HashBiMap;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.CraftResultInventory;
 import net.minecraft.inventory.CraftingInventory;
+import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.container.CraftingResultSlot;
 import net.minecraft.inventory.container.Slot;
@@ -41,43 +47,118 @@ import net.minecraft.network.play.server.SSetSlotPacket;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.SlotItemHandler;
+import org.apache.commons.lang3.tuple.Pair;
 
-import java.util.Optional;
+import java.util.*;
 
-public class NuminaCraftingContainer extends NuminaRecipeBookContainer<CraftingInventory> {
+public class NuminaCraftingContainer extends NuminaRecipeBookContainer<CraftingInventory> implements IModularItemContainerSlotProvider {
     private final CraftingInventory craftSlots = new CraftingInventory(this, 3, 3);
     private final CraftResultInventory resultSlots = new CraftResultInventory();
     private static final int resultIndex = 0;
-//    private final IWorldPosCallable access; // TODO: look at player container to see how to get around this thing
+    //    private final IWorldPosCallable access; // TODO: look at player container to see how to get around this thing
     private final PlayerEntity player;
+
+    /** values used later */
+    final Map<EquipmentSlotType, Integer> equipmentTypeToPlayerInventoryIndex = new HashMap<EquipmentSlotType, Integer>() {{
+        put(EquipmentSlotType.OFFHAND, 40);
+        put(EquipmentSlotType.HEAD, 39);
+        put(EquipmentSlotType.CHEST, 38);
+        put(EquipmentSlotType.LEGS, 37);
+        put(EquipmentSlotType.FEET, 36);
+    }};
+
+    Map<EquipmentSlotType, Pair<Integer, Integer>> equipmentSlotRangeMap = new HashMap();
+    HashBiMap<EquipmentSlotType, Integer> equipmentSlotTypeMap = HashBiMap.create();
+
 
     public NuminaCraftingContainer(int containerID, PlayerInventory playerInventory) {
         super(MPSObjects.MPS_CRAFTING_CONTAINER_TYPE.get(), containerID);
-
-//        this.access = posCallable;
+        /** add equipped item slot index */
+        equipmentTypeToPlayerInventoryIndex.put(EquipmentSlotType.MAINHAND, playerInventory.selected);
         this.player = playerInventory.player;
 
+        /** Crafting result */
         this.addSlot(new CraftingResultSlot(playerInventory.player, this.craftSlots, this.resultSlots, resultIndex, 124, 35));
 
         int row, col;
 
-        // Crafting grid
+        /** Crafting grid */
         for(row = 0; row < 3; ++row) {
             for(col = 0; col < 3; ++col) {
                 this.addSlot(new Slot(this.craftSlots, col + row * 3, 30 + col * 18, 17 + row * 18));
             }
         }
 
-        // Main inventory
-        for(int k = 0; k < 3; ++k) {
-            for(int i1 = 0; i1 < 9; ++i1) {
-                this.addSlot(new Slot(playerInventory, i1 + k * 9 + 9, 8 + i1 * 18, 84 + k * 18));
+        /** Main inventory */
+        for(row = 0; row < 3; ++row) {
+            for(col = 0; col < 9; ++col) {
+                this.addSlot(new Slot(playerInventory, col + row * 9 + 9, 8 + col * 18, 84 + row * 18));
             }
         }
 
-        // hotbar
-        for(int l = 0; l < 9; ++l) {
-            this.addSlot(new Slot(playerInventory, l, 8 + l * 18, 142));
+        /** Hotbar */
+        for(col = 0; col < 9; ++col) {
+            // disable picking equipped modular item
+            if (col == playerInventory.selected &&
+                    playerInventory.getItem(playerInventory.selected).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).map(iItemHandler -> iItemHandler instanceof IModularItem).orElse(false)) {
+                addSlotForEquipment(EquipmentSlotType.MAINHAND, this.slots.size());
+                this.addSlot(new Slot(playerInventory, col, 8 + col * 18, 142) {
+                    @Override
+                    public boolean mayPickup(PlayerEntity player) {
+                        return false;
+                    }
+                });
+            } else {
+                this.addSlot(new Slot(playerInventory, col, 8 + col * 18, 142));
+            }
+        }
+
+        /** Hidden equipment slots and their modular item inventory if any -------------------------------------------- */
+        /** Mainhand (not hidden, but disable pickup above) */
+        playerInventory.getItem(playerInventory.selected).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(iItemHandler -> {
+            if (iItemHandler instanceof IModularItem) {
+                int startIndex = this.slots.size();
+                for (int modularItemInvIndex = 0; modularItemInvIndex < iItemHandler.getSlots(); modularItemInvIndex ++) {
+                    addSlot(new HideableSlotItemHandler(iItemHandler, getSlotForEquipmentType(EquipmentSlotType.MAINHAND), modularItemInvIndex, -1000, -1000));
+                }
+                int endIndex = this.slots.size();
+                addRangeForEquipmentSlot(EquipmentSlotType.MAINHAND, startIndex, endIndex);
+            }
+        });
+
+        /** Offhand and Armor (hidden and pickup disabled) */
+        for (Map.Entry<EquipmentSlotType, Integer> entry: equipmentTypeToPlayerInventoryIndex.entrySet()) {
+            playerInventory.getItem(entry.getValue()).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(iItemHandler -> {
+                if (iItemHandler instanceof IModularItem) {
+                    // add map entry
+                    addSlotForEquipment(entry.getKey(), this.slots.size());
+                    // add slot
+                    Slot slot = this.addSlot(new HideableSlot(playerInventory, getSlotForEquipmentType(entry.getKey()), 0, 0) {
+                        @Override
+                        public boolean mayPickup(PlayerEntity player) {
+                            return false;
+                        }
+                    });
+
+                    // then create slots for its inventory
+                    int startIndex = this.slots.size();
+                    for (int modularItemInvIndex = 0; modularItemInvIndex < iItemHandler.getSlots(); modularItemInvIndex ++) {
+                        addSlot(new HideableSlotItemHandler(iItemHandler, slots.indexOf(slot), modularItemInvIndex, -1000, -1000));
+                    }
+                    // map entry for the modular item inventory
+                    int endIndex = this.slots.size();
+                    addRangeForEquipmentSlot(entry.getKey(), startIndex, endIndex);
+                }
+            });
+        }
+
+        for (Slot slot : this.slots) {
+            if(slot instanceof IHideableSlot) {
+                ((IHideableSlot) slot).disable();
+
+            }
         }
     }
 
@@ -100,7 +181,7 @@ public class NuminaCraftingContainer extends NuminaRecipeBookContainer<CraftingI
 
     @Override
     public void slotsChanged(IInventory iInventory) {
-       slotChangedCraftingGrid(this.containerId, this.player.level, this.player, this.craftSlots, this.resultSlots);
+        slotChangedCraftingGrid(this.containerId, this.player.level, this.player, this.craftSlots, this.resultSlots);
     }
 
     @Override
@@ -119,7 +200,7 @@ public class NuminaCraftingContainer extends NuminaRecipeBookContainer<CraftingI
         return iRecipe.matches(this.craftSlots, this.player.level);
     }
 
-     // PlayerContainer version
+    // PlayerContainer version
     public void removed(PlayerEntity playerEntity) {
         super.removed(playerEntity);
         this.resultSlots.clearContent();
@@ -128,7 +209,7 @@ public class NuminaCraftingContainer extends NuminaRecipeBookContainer<CraftingI
         }
     }
 
-     // player container version
+    // player container version
     public boolean stillValid(PlayerEntity playerEntity) {
         return true;
     }
@@ -210,5 +291,15 @@ public class NuminaCraftingContainer extends NuminaRecipeBookContainer<CraftingI
     @Override
     public RecipeBookCategory getRecipeBookType() {
         return RecipeBookCategory.CRAFTING;
+    }
+
+    @Override
+    public Map<EquipmentSlotType, Pair<Integer, Integer>> getEquipmentSlotRangeMap() {
+        return this.equipmentSlotRangeMap;
+    }
+
+    @Override
+    public HashBiMap<EquipmentSlotType, Integer> getEquipmentSlotTypeMap() {
+        return this.equipmentSlotTypeMap;
     }
 }

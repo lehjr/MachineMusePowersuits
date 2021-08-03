@@ -186,7 +186,9 @@ public class RangedSlider extends Clickable {
                         drawSingleLine(matrixStack, val, trackRect.finalTop(), val, trackRect.finalBottom(), Colour.WHITE);
                     }
                 } else {
-
+                    for (double val : calculateTickCoordinates()) {
+                        drawSingleLine(matrixStack, trackRect.finalLeft(), val, trackRect.finalRight(), val, Colour.WHITE);
+                    }
                 }
             }
             this.knobRect.render(matrixStack, mouseX, mouseY, frameTime);
