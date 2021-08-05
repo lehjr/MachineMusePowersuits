@@ -145,7 +145,7 @@ public class MultiRectHolderFrame<T extends Map<Integer, IRect>> extends GUISpac
         List<ITextComponent> toolTip = null;
         for (IRect rect : rects.values()) {
             if (rect instanceof IDrawableRect) {
-                toolTip = ((IGuiFrame) rect).getToolTip(x, y);
+                toolTip = ((IDrawableRect) rect).getToolTip(x, y);
             }
             if (toolTip != null) {
                 return toolTip;
