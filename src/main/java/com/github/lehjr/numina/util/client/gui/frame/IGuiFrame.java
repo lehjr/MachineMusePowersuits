@@ -60,28 +60,13 @@ public interface IGuiFrame extends IDrawableRect {
 
     IRect getRect();
 
-//
-//    /**
-//     * Fired when gui init is fired, during the creation phase and on resize. Can be used to setup the frame
-//     * including setting target dimensions.
-//     *
-//     * @param left
-//     * @param top
-//     * @param right
-//     * @param bottom
-//     */
-//    default IGuiFrame init(double left, double top, double right, double bottom) {
-//        setLeft(left);
-//        setTop(top);
-//        setWidth(right - left);
-//        setHeight(bottom - top);
-//        return this;
-//    }
-
     /**
      * Miscellaneous functions required before rendering
      * @param mouseX
      * @param mouseY
+     *
+     * TODO: replace with tick()? mouseX and mouseY might be used for highlighting some hovered objects...
+     *      not sure if worth it
      */
     void update(double mouseX, double mouseY);
 

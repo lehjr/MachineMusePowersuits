@@ -134,12 +134,22 @@ public class InventoryFrame extends ScrollableFrame implements IContainerULOffSe
     }
 
     public InventoryFrame setNewValues(List<Integer> slotIndexesIn) {
+        // update current slots
+        for (int index : slotIndexes) {
+            Slot slot = container.getSlot(index);
+            if (slot instanceof IHideableSlot) {
+                ((IHideableSlot) slot).disable();
+                ((IHideableSlot) slot).setPosition(new MusePoint2D(0,0));
+            }
+        }
+
         this.slotIndexes = slotIndexesIn;
         int totalRows = (int) Math.ceil((double)slotIndexesIn.size() / gridWidth);
         if (totalRows > gridHeight) {
             this.visibleRows = gridHeight;
             scrollLimit = totalRows - gridHeight;
         }
+        loadSlots();
         return this;
     }
 
@@ -186,10 +196,15 @@ public class InventoryFrame extends ScrollableFrame implements IContainerULOffSe
     }
 
     public void loadSlots() {
+        tiles = new ArrayList<>();
+        if (slotIndexes.isEmpty()) {
+            return;
+        }
+
         this.slot_ulShift = getULShift();
         Pair<Integer, Integer> gridRange = getVisibleRows();
         MusePoint2D ul = new MusePoint2D(finalLeft(), finalTop());
-        tiles = new ArrayList<>();
+
         int i = gridRange.getLeft() * gridWidth;
         outerLoop:
         for(int row = gridRange.getLeft(); row < gridRange.getRight(); row ++) {
@@ -216,6 +231,7 @@ public class InventoryFrame extends ScrollableFrame implements IContainerULOffSe
                     ((UniversalSlot) slot).setPosition(position);
                 } else if (slot instanceof IHideableSlot) {
                     ((IHideableSlot) slot).setPosition(position);
+                    ((IHideableSlot) slot).enable();
                 } else {
                     slot.x = (int) position.getX();
                     slot.y = (int) position.getY();
