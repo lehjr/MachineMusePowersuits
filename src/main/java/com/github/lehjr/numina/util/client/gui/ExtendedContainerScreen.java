@@ -87,7 +87,7 @@ public class ExtendedContainerScreen<T extends Container> extends ContainerScree
     public IContainerULOffSet.ulGetter ulGetter() {
         return new IContainerULOffSet.ulGetter() {
             @Override
-            public MusePoint2D getULShift(IContainerULOffSet frame) {
+            public MusePoint2D getULShift() {
                 return getUlOffset();
             }
         };

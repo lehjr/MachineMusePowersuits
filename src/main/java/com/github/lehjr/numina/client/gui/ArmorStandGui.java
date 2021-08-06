@@ -83,7 +83,8 @@ public class ArmorStandGui extends ExtendedContainerScreen<ArmorStandContainer> 
 
     @Override
     public void renderLabels(MatrixStack matrixStack, int mouseX, int mouseY) {
-        this.font.draw(matrixStack, this.inventory.getDisplayName(), (float)this.inventoryLabelX, (float)this.inventoryLabelY + 8, 4210752);
+//        this.font.draw(matrixStack, this.inventory.getDisplayName(), (float)this.inventoryLabelX, (float)this.inventoryLabelY + 8, 4210752);
+        this.innerFrame.renderLabels(matrixStack, mouseX, mouseY);
     }
 
     class ArmorInventoryFrame extends InventoryFrame {
@@ -105,7 +106,6 @@ public class ArmorStandGui extends ExtendedContainerScreen<ArmorStandContainer> 
             MultiRectHolderFrame centerFrame = new MultiRectHolderFrame(false, true, 0, 0);
             // slot 4-5
             armorStandHands = new InventoryFrame(containerIn,
-                    Colour.LIGHT_GREY, Colour.DARK_GREY, Colour.DARK_GREY,
                     1, 2, new ArrayList<Integer>(){{
                 IntStream.range(4, 6).forEach(i-> add(i));
             }}, ulGetter);
@@ -116,7 +116,6 @@ public class ArmorStandGui extends ExtendedContainerScreen<ArmorStandContainer> 
 
             // slot 46
             playerShield = new InventoryFrame(containerIn,
-                    Colour.LIGHT_GREY, Colour.DARK_GREY, Colour.DARK_GREY,
                     1, 1, new ArrayList<Integer>(){{
                 IntStream.range(46, 47).forEach(i-> add(i));
             }}, ulGetter);
@@ -196,6 +195,10 @@ public class ArmorStandGui extends ExtendedContainerScreen<ArmorStandContainer> 
             playerInventoryFrame.setMeBelow(topHorizontalLayout);
             addRect(playerInventoryFrame);
             doneAdding();
+        }
+
+        public void renderLabels(MatrixStack matrixStack, int mouseX, int mouseY) {
+            playerInventoryFrame.renderLabels(matrixStack, mouseX, mouseY);
         }
 
         public void setGuiLeft(double guiLeft) {

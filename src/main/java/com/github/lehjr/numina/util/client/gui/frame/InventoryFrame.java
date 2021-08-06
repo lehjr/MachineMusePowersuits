@@ -27,79 +27,120 @@
 package com.github.lehjr.numina.util.client.gui.frame;
 
 import com.github.lehjr.numina.util.client.gui.IContainerULOffSet;
-import com.github.lehjr.numina.util.client.gui.gemoetry.DrawableRelativeRect;
 import com.github.lehjr.numina.util.client.gui.gemoetry.DrawableTile;
 import com.github.lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
 import com.github.lehjr.numina.util.client.gui.slot.IHideableSlot;
 import com.github.lehjr.numina.util.client.gui.slot.UniversalSlot;
 import com.github.lehjr.numina.util.math.Colour;
+import com.github.lehjr.numina.util.math.MuseMathUtils;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.util.text.ITextComponent;
-import org.lwjgl.BufferUtils;
+import org.apache.commons.lang3.tuple.Pair;
 
-import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
 public class InventoryFrame extends ScrollableFrame implements IContainerULOffSet {
     IContainerULOffSet.ulGetter ulGetter;
     Container container;
-    Colour gridColour;
+//    Colour gridColour;
     public final int gridWidth;
     public final int gridHeight;
     List<Integer> slotIndexes;
     List<DrawableTile> tiles;
     MusePoint2D slot_ulShift = new MusePoint2D(0, 0);
-    boolean drawBackground = false;
-    boolean drawBorder = false;
     int slotWidth = 18;
     int slotHeight = 18;
+    int visibleRows = -1;
+    int scrollLimit = -1;
+    int currentScroll=0;
 
     public InventoryFrame(Container containerIn,
                           int gridWidth,
                           int gridHeight,
                           List<Integer> slotIndexesIn,
                           IContainerULOffSet.ulGetter ulGetter) {
-        this(containerIn, Colour.LIGHT_GREY, Colour.DARK_GREY, Colour.DARK_GREY, gridWidth, gridHeight, slotIndexesIn, ulGetter);
+        this(containerIn,
+                Colour.BLACK,
+                new Colour(0.216F, 0.216F, 0.216F, 1F),
+                Colour.WHITE.withAlpha(0.8F),
+                gridWidth, gridHeight, slotIndexesIn, ulGetter);
     }
 
     public InventoryFrame(Container containerIn,
                           Colour backgroundColour,
-                          Colour borderColour,
-                          Colour gridColourIn,
+                          Colour topBorderColour,
+                          Colour bottomBorderColour,
                           int gridWidth,
                           int gridHeight,
                           List<Integer> slotIndexesIn,
                           IContainerULOffSet.ulGetter ulGetter) {
-        super(backgroundColour, borderColour);
+        this(
+                containerIn,
+                backgroundColour,
+                topBorderColour,
+                bottomBorderColour,
+                gridWidth,
+                gridHeight,
+                -1,
+                slotIndexesIn,
+                ulGetter);
+    }
+
+    public InventoryFrame(Container containerIn,
+                          Colour background,
+                          Colour topBorder,
+                          Colour bottomBorder,
+                          int gridWidth,
+                          int gridHeight,
+                          int visibleRows,
+                          List<Integer> slotIndexesIn,
+                          IContainerULOffSet.ulGetter ulGetter) {
+        super();
+        super.setBackgroundColour(background);
+        super.setTopBorderColour(topBorder);
+        super.setBottomBorderColour(bottomBorder);
         this.ulGetter = ulGetter;
         this.container = containerIn;
-        this.gridColour = gridColourIn;
         this.gridWidth = gridWidth;
         this.gridHeight = gridHeight;
         this.slotIndexes = slotIndexesIn;
         this.tiles = new ArrayList<>();
-        super.setWidth(slotWidth * gridWidth).setHeight(slotHeight * gridHeight);
+        this.visibleRows = visibleRows;
+        int totalRows = (int) Math.ceil((double)slotIndexesIn.size() / gridWidth);
+        if (totalRows > gridHeight) {
+            this.visibleRows = gridHeight;
+            scrollLimit = totalRows - gridHeight;
+        }
+
+        // set the height based on the grid height regardless if the number of rows fills it. Useful for swapping inventories without resizing.
+        super.setWidth(slotWidth * gridWidth).setHeight( slotHeight * gridHeight );
         setUL(new MusePoint2D(0,0));
     }
 
+    public InventoryFrame setNewValues() {
+        // FIXME: setup to handle new set of slots... such as in Tinkertable with multiple inventories
+        return this;
+    }
 
 
-
-    public DrawableRelativeRect setBackgroundColour(Colour backgroundColour) {
+    @Override
+    public DrawableTile setBackgroundColour(Colour backgroundColour) {
         super.setBackgroundColour(backgroundColour);
         return this;
     }
 
-    public DrawableRelativeRect setBorderColour(Colour borderColour) {
-        super.setBorderColour(borderColour);
-        return null;
+    @Override
+    public DrawableTile setTopBorderColour(Colour borderColour) {
+        super.setTopBorderColour(borderColour);
+        return this;
     }
 
-    public DrawableRelativeRect setGridColour(Colour gridColour) {
-        this.gridColour = gridColour;
+    @Override
+    public DrawableTile setBottomBorderColour(Colour borderColour) {
+        super.setBottomBorderColour(borderColour);
         return this;
     }
 
@@ -111,14 +152,30 @@ public class InventoryFrame extends ScrollableFrame implements IContainerULOffSe
         this.drawBorder = drawBorder;
     }
 
-    public void loadSlots() {
-        this.slot_ulShift = getULShift(this);
+    Pair<Integer, Integer> getVisibleRows() {
+        int totalRows = getTotalRows();
+        if (visibleRows < totalRows) {
+            return Pair.of(currentScroll, gridHeight + currentScroll);
+        }
+        return Pair.of(0, gridHeight);
+    }
 
+    int getVisibileGridHeight() {
+        return (visibleRows > 0 ? visibleRows : gridHeight) * slotHeight;
+    }
+
+    int getTotalRows() {
+        return (int) Math.ceil((double)slotIndexes.size() / gridWidth);
+    }
+
+    public void loadSlots() {
+        this.slot_ulShift = getULShift();
+        Pair<Integer, Integer> gridRange = getVisibleRows();
         MusePoint2D ul = new MusePoint2D(finalLeft(), finalTop());
         tiles = new ArrayList<>();
-        int i = 0;
+        int i = gridRange.getLeft() * gridWidth;
         outerLoop:
-        for(int row = 0; row < gridHeight; row ++) {
+        for(int row = gridRange.getLeft(); row < gridRange.getRight(); row ++) {
             for (int col = 0; col < gridWidth; col ++) {
                 if (i == slotIndexes.size()){
                     break outerLoop;
@@ -137,6 +194,7 @@ public class InventoryFrame extends ScrollableFrame implements IContainerULOffSe
 
                 MusePoint2D position = new MusePoint2D(this.tiles.get(i).finalLeft(), this.tiles.get(i).finalTop()).minus(slot_ulShift);
                 Slot slot = container.getSlot(slotIndexes.get(i));
+
                 if (slot instanceof UniversalSlot) {
                     ((UniversalSlot) slot).setPosition(position);
                 } else if (slot instanceof IHideableSlot) {
@@ -162,14 +220,6 @@ public class InventoryFrame extends ScrollableFrame implements IContainerULOffSe
         return this;
     }
 
-    public int getSlotWidth() {
-        return this.slotWidth;
-    }
-
-    public int getSlotHeight() {
-        return this.gridHeight;
-    }
-
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
         return false;
@@ -182,6 +232,7 @@ public class InventoryFrame extends ScrollableFrame implements IContainerULOffSe
 
     @Override
     public boolean mouseScrolled(double mouseX, double mouseY, double dWheel) {
+        this.currentScroll = (int) MuseMathUtils.clampDouble(currentScroll + dWheel, 0, (scrollLimit > 0 ? scrollLimit: 0));
         return false;
     }
 
@@ -199,12 +250,8 @@ public class InventoryFrame extends ScrollableFrame implements IContainerULOffSe
 
     @Override
     public void render(MatrixStack matrixStack, int mouseX, int mouseY, float frameTime) {
-        FloatBuffer buffer = BufferUtils.createFloatBuffer(0);
-        if (drawBorder || drawBackground) {
-            buffer = getVertices(3);
-        }
         if (drawBackground) {
-            drawBackground(matrixStack, buffer);
+            drawBackground(matrixStack);
         }
         if (this.tiles != null && !this.tiles.isEmpty()) {
             for (DrawableTile tile : tiles) {
@@ -213,7 +260,7 @@ public class InventoryFrame extends ScrollableFrame implements IContainerULOffSe
             }
         }
         if (drawBorder) {
-            drawBorder(matrixStack, buffer); // fixme
+            drawBorder(matrixStack, 0); // fixme
         }
     }
 
@@ -230,16 +277,15 @@ public class InventoryFrame extends ScrollableFrame implements IContainerULOffSe
     /**
      * returns the offset needed to compensate for the container GUI in the super class rendering the slots with an offset.
      * Also compensates for slot render sizes larger than vanilla
-     * @param frame
      * @return
      */
     @Override
-    public MusePoint2D getULShift(IContainerULOffSet frame) {
+    public MusePoint2D getULShift() {
         int offset = 16; // default vanilla slot size
 
         if (ulGetter == null) {
             return new MusePoint2D(0, 0).plus((offset - slotWidth) * 0.5, (offset - slotHeight) * 0.5);
         }
-        return ulGetter.getULShift(frame).plus((offset - slotWidth) * 0.5, (offset - slotHeight) * 0.5);
+        return ulGetter.getULShift().plus((offset - slotWidth) * 0.5, (offset - slotHeight) * 0.5);
     }
 }

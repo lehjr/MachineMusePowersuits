@@ -2,23 +2,30 @@ package com.github.lehjr.numina.util.client.gui.frame;
 
 import com.github.lehjr.numina.util.client.gui.IContainerULOffSet;
 import com.github.lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
+import com.mojang.blaze3d.matrix.MatrixStack;
+import net.minecraft.client.Minecraft;
 import net.minecraft.inventory.container.Container;
+import net.minecraft.util.text.TranslationTextComponent;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.IntStream;
 
 public class PlayerInventoryFrame extends MultiRectHolderFrame {
+    final TranslationTextComponent title = new TranslationTextComponent("container.inventory");
     final double spacerSize = 7.0D;
     final double finalWidth = 9 * 18;
-    MusePoint2D slot_ulShift = new MusePoint2D(0, 0);
     InventoryFrame mainInventory, hotbar;
+    IContainerULOffSet.ulGetter ulgetter;
+    GUISpacer topSpacer;
+    public boolean labelUsesULShift = true;
 
     /*
         leftSpacer inventory rightSpacer
      */
-    public PlayerInventoryFrame(Container container, int mainInventoryStart, int hotbarStart, IContainerULOffSet.ulGetter ulGetter) {
+    public PlayerInventoryFrame(Container container, int mainInventoryStart, int hotbarStart, IContainerULOffSet.ulGetter ulgetter) {
         super(true, true, 0, 0);
+        this.ulgetter = ulgetter;
 
         /** main stack of boxes --------------------------------------------------------------------------------------- */
 
@@ -26,17 +33,18 @@ public class PlayerInventoryFrame extends MultiRectHolderFrame {
                 false,
                 true,
                 0,
-                0) {
-        };
+                0);
+
+        topSpacer = new GUISpacer(finalWidth, 13);
 
         // FIXME: add an inventory label
-        inventoryFrame.addRect(new GUISpacer(finalWidth, 13));
+        inventoryFrame.addRect(topSpacer);
 
         // slot 10-36
         mainInventory = new InventoryFrame(container,
                 9, 3, new ArrayList<Integer>() {{
             IntStream.range(mainInventoryStart, mainInventoryStart + 27).forEach(i -> add(i));
-        }}, ulGetter);
+        }}, ulgetter);
         inventoryFrame.addRect(mainInventory);
 
         // middle spacer
@@ -46,7 +54,7 @@ public class PlayerInventoryFrame extends MultiRectHolderFrame {
         hotbar = new InventoryFrame(container,
                 9, 1, new ArrayList<Integer>() {{
             IntStream.range(hotbarStart, hotbarStart + 9).forEach(i -> add(i));
-        }}, ulGetter);
+        }}, ulgetter);
         inventoryFrame.addRect(hotbar);
 
         // bottom spacer
@@ -64,5 +72,13 @@ public class PlayerInventoryFrame extends MultiRectHolderFrame {
         // right spacer
         addRect(new GUISpacer(spacerSize, inventoryFrame.finalHeight()));
         doneAdding();
+    }
+
+    public void renderLabels(MatrixStack matrixStack, int mouseX, int mouseY) {
+        MusePoint2D position = new MusePoint2D(topSpacer.finalLeft() + 1, topSpacer.centery() - 3);
+        if (labelUsesULShift) {
+            position = position.minus(ulgetter.getULShift());
+        }
+        Minecraft.getInstance().font.draw(matrixStack, title, (float)position.getX(), (float)position.getY(), 4210752);
     }
 }

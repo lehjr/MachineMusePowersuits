@@ -26,7 +26,7 @@
 
 package com.github.lehjr.numina.util.client.gui.frame;
 
-import com.github.lehjr.numina.util.client.gui.gemoetry.DrawableRelativeRect;
+import com.github.lehjr.numina.util.client.gui.gemoetry.DrawableTile;
 import com.github.lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
 import com.github.lehjr.numina.util.client.gui.gemoetry.RelativeRect;
 import com.github.lehjr.numina.util.client.render.NuminaRenderState;
@@ -43,21 +43,36 @@ import org.lwjgl.opengl.GL11;
 
 import java.util.List;
 
-public class ScrollableFrame extends DrawableRelativeRect implements IGuiFrame {
+public class ScrollableFrame extends DrawableTile implements IGuiFrame {
     protected final int buttonSize = 5;
     protected int totalSize;
     protected int currentScrollPixels;
     protected boolean visible = true;
     protected boolean enabled = true;
     protected float zLevel;
+    boolean drawBackground = false;
+    boolean drawBorder = false;
 
-    public ScrollableFrame(Colour backgroundColour, Colour borderColour) {
-        super(backgroundColour, borderColour);
+    public ScrollableFrame() {
+        super(0,0,0,0);
     }
 
-    public ScrollableFrame(MusePoint2D topleft, MusePoint2D bottomright, float zlevel, Colour backgroundColour, Colour borderColour) {
-        super(topleft, bottomright, backgroundColour, borderColour);
-        super.setZLevel(zlevel);
+    public ScrollableFrame(Colour background, Colour topBorder, Colour bottomBorder) {
+        super(0,0,0,0);
+        setBackgroundColour(background);
+        setBottomBorderColour(bottomBorder);
+        setTopBorderColour(topBorder);
+    }
+
+    public ScrollableFrame(MusePoint2D topleft, MusePoint2D bottomright, Colour background, Colour topBorder, Colour bottomBorder) {
+        super(topleft, bottomright);
+        setBackgroundColour(background);
+        setBottomBorderColour(bottomBorder);
+        setTopBorderColour(topBorder);
+    }
+
+    void setDrawBorder(boolean drawBorder) {
+        this.drawBackground = drawBorder;
     }
 
     @Override
@@ -113,6 +128,13 @@ public class ScrollableFrame extends DrawableRelativeRect implements IGuiFrame {
     @Override
     public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
         if (isVisible()) {
+            if (drawBackground) {
+                this.drawBackground(matrixStack);
+            }
+            if (drawBorder) {
+                this.drawBorder(matrixStack, 0);
+            }
+
             preRender(matrixStack, mouseX, mouseY, partialTicks);
             postRender(mouseX, mouseY, partialTicks);
         }
