@@ -71,8 +71,12 @@ public class ScrollableFrame extends DrawableTile implements IGuiFrame {
         setTopBorderColour(topBorder);
     }
 
+    void setDrawBackground(boolean drawBackground) {
+        this.drawBackground = drawBackground;
+    }
+
     void setDrawBorder(boolean drawBorder) {
-        this.drawBackground = drawBorder;
+         this.drawBorder = drawBorder;
     }
 
     @Override
@@ -84,8 +88,12 @@ public class ScrollableFrame extends DrawableTile implements IGuiFrame {
         return (int) Math.max(totalSize - height(), 0);
     }
 
-    protected double getScrollAmount() {
+    public double getScrollAmount() {
         return 8;
+    }
+
+    public void setScrollAmount(double scrollAmount) {
+        this.currentScrollPixels = (int) MuseMathUtils.clampDouble(scrollAmount, 0, getMaxScrollPixels());
     }
 
     @Override
