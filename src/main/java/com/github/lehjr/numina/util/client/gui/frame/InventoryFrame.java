@@ -120,11 +120,15 @@ public class InventoryFrame extends ScrollableFrame implements IContainerULOffSe
         setUL(new MusePoint2D(0,0));
     }
 
-    public InventoryFrame setNewValues() {
-        // FIXME: setup to handle new set of slots... such as in Tinkertable with multiple inventories
+    public InventoryFrame setNewValues(List<Integer> slotIndexesIn) {
+        this.slotIndexes = slotIndexesIn;
+        int totalRows = (int) Math.ceil((double)slotIndexesIn.size() / gridWidth);
+        if (totalRows > gridHeight) {
+            this.visibleRows = gridHeight;
+            scrollLimit = totalRows - gridHeight;
+        }
         return this;
     }
-
 
     @Override
     public DrawableTile setBackgroundColour(Colour backgroundColour) {
