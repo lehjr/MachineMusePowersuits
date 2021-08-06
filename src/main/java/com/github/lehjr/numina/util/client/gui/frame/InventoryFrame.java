@@ -70,6 +70,19 @@ public class InventoryFrame extends ScrollableFrame implements IContainerULOffSe
     }
 
     public InventoryFrame(Container containerIn,
+                          int gridWidth,
+                          int gridHeight,
+                          int visibleRows,
+                          List<Integer> slotIndexesIn,
+                          IContainerULOffSet.ulGetter ulGetter) {
+        this(containerIn,
+                Colour.BLACK,
+                new Colour(0.216F, 0.216F, 0.216F, 1F),
+                Colour.WHITE.withAlpha(0.8F),
+                gridWidth, gridHeight, visibleRows, slotIndexesIn, ulGetter);
+    }
+
+    public InventoryFrame(Container containerIn,
                           Colour backgroundColour,
                           Colour topBorderColour,
                           Colour bottomBorderColour,
