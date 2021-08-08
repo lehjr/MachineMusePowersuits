@@ -47,6 +47,14 @@ public interface IPowerModule {
 
     EnumModuleCategory getCategory();
 
+    default int getTier() {
+        return -1;
+    }
+
+    default String getModuleGroup() {
+        return "";
+    }
+
     @OnlyIn(Dist.CLIENT)
     String getUnit(String propertyName);
 

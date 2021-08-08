@@ -132,16 +132,16 @@ public class NuminaObjects {
     // Modules ------------------------------------------------------------------------------------
     // Energy Storage
     public static final RegistryObject<Item> BASIC_BATTERY = ITEMS.register(NuminaConstants.MODULE_BATTERY_BASIC__REGNAME,
-            () -> new Battery(1000000, 1000000));
+            () -> new Battery(1000000, 1000000, 1));
 
     public static final RegistryObject<Item> ADVANCED_BATTERY = ITEMS.register(NuminaConstants.MODULE_BATTERY_ADVANCED__REGNAME,
-            () -> new Battery(5000000,5000000));
+            () -> new Battery(5000000,5000000, 2));
 
     public static final RegistryObject<Item> ELITE_BATTERY = ITEMS.register(NuminaConstants.MODULE_BATTERY_ELITE__REGNAME,
-            () -> new Battery(50000000,50000000));
+            () -> new Battery(50000000,50000000, 3));
 
     public static final RegistryObject<Item> ULTIMATE_BATTERY = ITEMS.register(NuminaConstants.MODULE_BATTERY_ULTIMATE__REGNAME,
-            () -> new Battery(100000000,100000000));
+            () -> new Battery(100000000,100000000, 4));
 
     // Block Items --------------------------------------------------------------------------------
     // Charging base

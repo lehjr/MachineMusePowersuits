@@ -155,34 +155,34 @@ public abstract class RectHolderFrame<T extends IRect> extends GUISpacer {
                 break;
 
             case CENTER_LEFT:
-                rect.setPosition(new MusePoint2D(this.finalLeft(), this.centery()));
+                rect.setPosition(new MusePoint2D(this.finalLeft()  + 0.5 * rect.finalWidth(), this.centery()));
                 break;
 
             case CENTER_RIGHT:
-                rect.setPosition(new MusePoint2D(this.finalRight(), this.centery()));
+                rect.setPosition(new MusePoint2D(this.finalRight() - 0.5 * rect.finalWidth(), this.centery()));
                 break;
 
             case CENTER_TOP:
-                rect.setPosition(new MusePoint2D(this.centerx(), this.finalTop()));
+                rect.setPosition(new MusePoint2D(this.centerx(), this.finalTop() + 0.5 * rect.finalHeight()));
                 break;
 
             case CENTER_BOTTOM:
-                rect.setPosition(new MusePoint2D(this.centerx(), this.finalBottom()));
+                rect.setPosition(new MusePoint2D(this.centerx(), this.finalBottom() - 0.5 * rect.finalHeight()));
                 break;
 
             case UPPER_LEFT:
-                rect.setPosition(new MusePoint2D(this.finalLeft(), this.finalTop()));
+                rect.setPosition(new MusePoint2D(this.finalLeft() + 0.5 * rect.finalWidth(), this.finalTop() + 0.5 * rect.finalHeight()));
                 break;
 
             case LOWER_LEFT:
-                rect.setPosition(new MusePoint2D(this.finalLeft(), this.finalBottom()));
+                rect.setPosition(new MusePoint2D(this.finalLeft() + + 0.5 * rect.finalWidth(), this.finalBottom() - 0.5 * rect.finalHeight()));
                 break;
 
             case UPPER_RIGHT:
-                rect.setPosition(new MusePoint2D(this.finalRight(), this.finalTop()));
+                rect.setPosition(new MusePoint2D(this.finalRight() - 0.5 * rect.finalWidth(), this.finalTop() + + 0.5 * rect.finalHeight()));
                 break;
             case LOWER_RIGHT:
-                rect.setPosition(new MusePoint2D(this.finalRight(), this.finalBottom()));
+                rect.setPosition(new MusePoint2D(this.finalRight() - 0.5 * rect.finalWidth(), this.finalBottom() - 0.5 * rect.finalHeight()));
                 break;
         }
     }

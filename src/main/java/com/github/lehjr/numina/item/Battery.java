@@ -58,8 +58,9 @@ public class Battery extends Item {
      */
     protected int maxEnergy;
     protected int maxTransfer;
+    protected final int tier;
 
-    public Battery(int maxEnergy, int maxTransfer) {
+    public Battery(int maxEnergy, int maxTransfer, int tier) {
         super(new Item.Properties()
                 .stacksTo(1)
                 .tab(NuminaObjects.creativeTab)
@@ -67,6 +68,7 @@ public class Battery extends Item {
                 .setNoRepair());
         this.maxEnergy = maxEnergy;
         this.maxTransfer = maxTransfer;
+        this.tier = tier;
     }
 
     @Override
@@ -90,15 +92,26 @@ public class Battery extends Item {
 
         public CapProvider(@Nonnull ItemStack module) {
             this.module = module;
-            this.moduleCap = new PowerModule(module, EnumModuleCategory.ENERGY_STORAGE, EnumModuleTarget.ALLITEMS, NuminaSettings::getModuleConfig) {{
-                addBaseProperty(NuminaConstants.MAX_ENERGY, maxEnergy, "FE");
-                addBaseProperty(NuminaConstants.MAX_TRAMSFER, maxTransfer, "FE");
-            }};
+            this.moduleCap = new PowerModule(module, EnumModuleCategory.ENERGY_STORAGE, EnumModuleTarget.ALLITEMS, NuminaSettings::getModuleConfig) {
+                @Override
+                public int getTier() {
+                    return tier;
+                }
+
+                @Override
+                public String getModuleGroup() {
+                    return "Battery";
+                }
+
+                {
+                    addBaseProperty(NuminaConstants.MAX_ENERGY, maxEnergy, "FE");
+                    addBaseProperty(NuminaConstants.MAX_TRAMSFER, maxTransfer, "FE");
+                }};
 
             this.energyStorage = new ForgeEnergyModuleWrapper(
                     module,
-                    (int)moduleCap.applyPropertyModifiers(NuminaConstants.MAX_ENERGY),
-                    (int)moduleCap.applyPropertyModifiers(NuminaConstants.MAX_TRAMSFER)
+                    (int) moduleCap.applyPropertyModifiers(NuminaConstants.MAX_ENERGY),
+                    (int) moduleCap.applyPropertyModifiers(NuminaConstants.MAX_TRAMSFER)
             );
         }
 
@@ -131,12 +144,12 @@ public class Battery extends Item {
     @Override
     public boolean showDurabilityBar(final ItemStack stack) {
         return stack.getCapability(CapabilityEnergy.ENERGY)
-                .map( energyCap-> energyCap.getMaxEnergyStored() > 0).orElse(false);
+                .map(energyCap -> energyCap.getMaxEnergyStored() > 0).orElse(false);
     }
 
     @Override
     public double getDurabilityForDisplay(final ItemStack stack) {
         return stack.getCapability(CapabilityEnergy.ENERGY)
-                .map( energyCap-> 1 - energyCap.getEnergyStored() / (double) energyCap.getMaxEnergyStored()).orElse(1D);
+                .map(energyCap -> 1 - energyCap.getEnergyStored() / (double) energyCap.getMaxEnergyStored()).orElse(1D);
     }
 }
