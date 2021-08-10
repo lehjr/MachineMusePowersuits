@@ -29,8 +29,13 @@ package com.github.lehjr.numina.container;
 import com.github.lehjr.numina.basemod.NuminaObjects;
 import com.github.lehjr.numina.capabilities.TileEnergyStorage;
 import com.github.lehjr.numina.tileentity.ChargingBaseTileEntity;
+import com.github.lehjr.numina.util.client.gui.slot.IIConProvider;
+import com.github.lehjr.numina.util.client.render.MuseIconUtils;
+import com.github.lehjr.numina.util.math.Colour;
+import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
@@ -61,7 +66,12 @@ public class ChargingBaseContainer extends Container {
         // slot 0
         if (tileEntity != null) {
             tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
-                addSlot(new SlotItemHandler(h, 0, 64, 24));
+                addSlot(new IconSlot(h, 0, 64, 24) {
+                    @Override
+                    public void drawIconAt(MatrixStack matrixStack, double posX, double posY, Colour colour) {
+                        MuseIconUtils.getIcon().energyStorageBackground.renderIconScaledWithColour(matrixStack, posX, posY, 16, 16, Colour.WHITE);
+                    }
+                });
             });
         }
 
@@ -188,5 +198,11 @@ public class ChargingBaseContainer extends Container {
         }
 
         return itemstack;
+    }
+
+    abstract class IconSlot extends SlotItemHandler implements IIConProvider {
+        public IconSlot(IItemHandler itemHandler, int index, int xPosition, int yPosition) {
+            super(itemHandler, index, xPosition, yPosition);
+        }
     }
 }

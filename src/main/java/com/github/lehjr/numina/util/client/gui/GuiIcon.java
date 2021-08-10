@@ -120,6 +120,22 @@ public class GuiIcon {
             draw(matrixStack, x, y, 0, 0, 0, 0, colour);
         }
 
+        public void renderIconScaledWithColour(MatrixStack matrixStack,
+                                               double posLeft, double posTop, double width, double height, Colour colour) {
+            renderIconScaledWithColour(matrixStack, posLeft, posTop, width, height, getMinecraft().screen.getBlitOffset(), colour);
+        }
+
+        public void renderIconScaledWithColour(MatrixStack matrixStack,
+                                               double posLeft, double posTop, double width, double height, float zLevel, Colour colour) {            bindTexture();
+            TextureAtlasSprite icon = spriteUploader.getSprite(location);
+            RenderSystem.enableBlend();
+            RenderSystem.disableAlphaTest();
+            RenderSystem.defaultBlendFunc();
+            innerBlit(matrixStack.last().pose(), posLeft, posLeft + width, posTop, posTop + height, zLevel, icon.getU0(), icon.getU1(), icon.getV0(), icon.getV1(), colour);
+            RenderSystem.disableBlend();
+//            RenderSystem.enableAlphaTest();
+            RenderSystem.enableDepthTest();
+        }
 
 
         public void draw(MatrixStack matrixStack, double xOffset, double yOffset, double maskTop, double maskBottom, double maskLeft, double maskRight, Colour colour) {
@@ -166,7 +182,7 @@ public class GuiIcon {
             TextureAtlasSprite icon = getSprite();
 
             if (icon != null) {
-                return "icon: " + icon.toString();
+                return "icon: " + icon;
             } else {
                 return "icon is null for location: " + location.toString();
             }

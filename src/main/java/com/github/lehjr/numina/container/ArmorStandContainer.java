@@ -334,7 +334,7 @@ public class ArmorStandContainer extends Container {
         this.armorStandInventory.stopOpen(playerIn);
     }
 
-    abstract class IconSlot extends Slot implements IIConProvider{
+    abstract class IconSlot extends Slot implements IIConProvider {
         public IconSlot(IInventory iInventory, int inventoryIndex, int posX, int posY) {
             super(iInventory, inventoryIndex, posX, posY);
         }
