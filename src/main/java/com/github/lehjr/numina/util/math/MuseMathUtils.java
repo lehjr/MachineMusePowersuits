@@ -26,6 +26,8 @@
 
 package com.github.lehjr.numina.util.math;
 
+import org.apache.commons.lang3.tuple.Pair;
+
 import java.util.Random;
 
 /**
@@ -63,5 +65,12 @@ public final class MuseMathUtils {
 
     public static double pythag(double x, double y, double z) {
         return Math.sqrt(x * x + y * y + z * z);
+    }
+
+    public static boolean isIntInRange(Pair<Integer, Integer> range, int val) {
+        if (range != null) {
+            return val >= range.getLeft() && val < range.getRight();
+        }
+        return false;
     }
 }
