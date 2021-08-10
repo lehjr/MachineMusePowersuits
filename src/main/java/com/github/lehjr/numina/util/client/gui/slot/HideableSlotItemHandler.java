@@ -60,7 +60,7 @@ public class HideableSlotItemHandler extends SlotItemHandler implements IHideabl
     }
 
     @Override
-    public boolean isEnabled() {
+    public boolean isActive() {
         return isEnabled;
     }
 

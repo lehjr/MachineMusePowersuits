@@ -208,8 +208,8 @@ public class NuminaObjects {
     public static final Pair<ResourceLocation, ResourceLocation> getSlotBackground(EquipmentSlotType slotType) {
         switch (slotType) {
             case MAINHAND:
-//                return Pair.of(NuminaConstants.LOCATION_NUMINA_GUI_TEXTURE_ATLAS, ARMOR_SLOT_TEXTURES.get(slotType)); // FIXME: broken for slot rendering, actually crashes
-                 return Pair.of(PlayerContainer.BLOCK_ATLAS, PlayerContainer.EMPTY_ARMOR_SLOT_SHIELD);
+                return Pair.of(NuminaConstants.LOCATION_NUMINA_GUI_TEXTURE_ATLAS, ARMOR_SLOT_TEXTURES.get(slotType)); // FIXME: broken for slot rendering, actually crashes
+//                 return Pair.of(PlayerContainer.BLOCK_ATLAS, PlayerContainer.EMPTY_ARMOR_SLOT_SHIELD);
             default:
                 return Pair.of(PlayerContainer.BLOCK_ATLAS, ARMOR_SLOT_TEXTURES.get(slotType));
         }

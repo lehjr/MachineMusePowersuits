@@ -30,13 +30,18 @@ import com.github.lehjr.numina.util.client.gui.frame.IGuiFrame;
 import com.github.lehjr.numina.util.client.gui.gemoetry.DrawableRelativeRect;
 import com.github.lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
 import com.github.lehjr.numina.util.client.gui.slot.IHideableSlot;
+import com.github.lehjr.numina.util.client.gui.slot.IIConProvider;
 import com.github.lehjr.numina.util.math.Colour;
 import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.datafixers.util.Pair;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.Slot;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 
 import java.util.ArrayList;
@@ -95,10 +100,20 @@ public class ExtendedContainerScreen<T extends Container> extends ContainerScree
 
     @Override
     protected void renderSlot(MatrixStack matrixStack, Slot slot) {
-        if (slot!= null && slot instanceof IHideableSlot && ((IHideableSlot) slot).isEnabled()) {
-            super.renderSlot(matrixStack, slot);
+        if (slot!= null && slot instanceof IHideableSlot) {
+            if (((IHideableSlot) slot).isActive()) {
+                super.renderSlot(matrixStack, slot);
+            }
         } else {
             super.renderSlot(matrixStack, slot);
+        }
+
+        if (slot instanceof IIConProvider && slot.getItem().isEmpty() && slot.isActive() ) {
+            this.setBlitOffset(100);
+            this.itemRenderer.blitOffset = 100.0F;
+            ((IIConProvider) slot).drawIconAt(matrixStack, slot.x, slot.y, Colour.WHITE);
+            this.itemRenderer.blitOffset = 0.0F;
+            this.setBlitOffset(0);
         }
     }
 

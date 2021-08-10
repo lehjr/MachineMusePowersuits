@@ -33,7 +33,7 @@ public interface IHideableSlot {
 
     void disable();
 
-    boolean isEnabled();
+    boolean isActive();
 
     void setPosition(MusePoint2D position);
 }

@@ -55,7 +55,7 @@ public class HideableResultSlot extends CraftingResultSlot implements IHideableS
     }
 
     @Override
-    public boolean isEnabled() {
+    public boolean isActive() {
         return isEnabled;
     }
 

@@ -101,7 +101,7 @@ public class Numina {
 
         MinecraftForge.EVENT_BUS.register(new LogoutEventHandler());
 
-        DistExecutor.runWhenOn(Dist.CLIENT, ()->()-> clientStart(modEventBus));
+        DistExecutor.runWhenOn(Dist.CLIENT, ()-> ()-> clientStart(modEventBus));
 
         // TODO? reload recipes on config change?
         // [14:33:10] [Thread-1/DEBUG] [ne.mi.fm.co.ConfigFileTypeHandler/CONFIG]: Config file numina-server.toml changed, sending notifies
@@ -122,15 +122,15 @@ public class Numina {
             ModelLoaderRegistry.registerLoader(new ResourceLocation(NuminaConstants.MOD_ID, "obj"), NuminaOBJLoader.INSTANCE); // crashes if called in mod constructor
         }
 
-        EventBusHelper.addListener(modEventBus, ColorHandlerEvent.Block.class, setupEvent -> {
-            NuminaSpriteUploader iconUploader = new NuminaSpriteUploader(Minecraft.getInstance().textureManager, "gui");
+        EventBusHelper.addListener(Numina.class, modEventBus, ColorHandlerEvent.Block.class, setupEvent -> {
+            NuminaSpriteUploader iconUploader = new NuminaSpriteUploader();
             GuiIcon icons = new GuiIcon(iconUploader);
             IResourceManager resourceManager = Minecraft.getInstance().getResourceManager();
             if (resourceManager instanceof IReloadableResourceManager) {
                 IReloadableResourceManager reloadableResourceManager = (IReloadableResourceManager) resourceManager;
                 reloadableResourceManager.registerReloadListener(iconUploader);
             }
-            EventBusHelper.addLifecycleListener(modEventBus, FMLLoadCompleteEvent.class, loadCompleteEvent ->
+            EventBusHelper.addLifecycleListener(Numina.class, modEventBus, FMLLoadCompleteEvent.class, loadCompleteEvent ->
                     MuseIconUtils.setIconInstance(icons));
         });
     }

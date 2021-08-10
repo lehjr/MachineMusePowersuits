@@ -139,7 +139,7 @@ public class InventoryFrame extends ScrollableFrame implements IContainerULOffSe
             Slot slot = container.getSlot(index);
             if (slot instanceof IHideableSlot) {
                 ((IHideableSlot) slot).disable();
-                ((IHideableSlot) slot).setPosition(new MusePoint2D(0,0));
+                ((IHideableSlot) slot).setPosition(new MusePoint2D(-1000,-1000));
             }
         }
 

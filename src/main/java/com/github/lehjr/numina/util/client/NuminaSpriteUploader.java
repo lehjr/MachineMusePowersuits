@@ -27,6 +27,7 @@
 package com.github.lehjr.numina.util.client;
 
 import com.github.lehjr.numina.constants.NuminaConstants;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.SpriteUploader;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureManager;
@@ -40,8 +41,8 @@ import java.util.stream.Stream;
 public class NuminaSpriteUploader extends SpriteUploader {
     private final Set<ResourceLocation> registeredSprites = new HashSet<>();
 
-    public NuminaSpriteUploader(TextureManager textureManager, String prefix) {
-        super(textureManager, NuminaConstants.LOCATION_NUMINA_GUI_TEXTURE_ATLAS, prefix);
+    public NuminaSpriteUploader() {
+        super(Minecraft.getInstance().getTextureManager(), NuminaConstants.LOCATION_NUMINA_GUI_TEXTURE_ATLAS, "gui");
     }
 
     public void registerIcon(ResourceLocation location) {

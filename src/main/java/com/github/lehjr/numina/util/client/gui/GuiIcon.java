@@ -67,7 +67,7 @@ public class GuiIcon {
     public final DrawableGuiIcon glassTexture;
     public final DrawableGuiIcon lightning;
     public final DrawableGuiIcon weaponSlotBackground;
-
+    public final DrawableGuiIcon energyStorageBackground;
     public GuiIcon(NuminaSpriteUploader spriteUploader) {
         this.spriteUploader = spriteUploader;
         checkmark = registerIcon("checkmark", 16, 16);
@@ -81,12 +81,13 @@ public class GuiIcon {
         glassTexture = registerIcon("glass", 1, 8);
         lightning = registerIcon("lightning", 800, 62);
         weaponSlotBackground = registerIcon("weapon", 16, 16);
+        energyStorageBackground = registerIcon("energystorage",32, 32);
     }
 
     private DrawableGuiIcon registerIcon(String name, int width, int height) {
         ResourceLocation location = new ResourceLocation(NuminaConstants.MOD_ID, name);
         spriteUploader.registerIcon(location);
-        return new DrawableGuiIcon(location, width, height, iconPrefix);
+        return new DrawableGuiIcon(location, width, height);
     }
 
     // Todo?
@@ -100,13 +101,11 @@ public class GuiIcon {
         final ResourceLocation location;
         private final int width;
         private final int height;
-        String prefix;
 
-        protected DrawableGuiIcon(ResourceLocation locationIn, int width, int height, String prefix) {
+        protected DrawableGuiIcon(ResourceLocation locationIn, int width, int height) {
             this.location = locationIn;
             this.width = width;
             this.height = height;
-            this.prefix = prefix;
         }
 
         public int getWidth() {

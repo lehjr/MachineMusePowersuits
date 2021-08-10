@@ -27,7 +27,14 @@
 package com.github.lehjr.numina.container;
 
 import com.github.lehjr.numina.basemod.NuminaObjects;
+import com.github.lehjr.numina.constants.NuminaConstants;
+import com.github.lehjr.numina.util.client.gui.slot.IIConProvider;
+import com.github.lehjr.numina.util.client.render.MuseIconUtils;
+import com.github.lehjr.numina.util.math.Colour;
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.datafixers.util.Pair;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.item.ArmorStandEntity;
@@ -136,7 +143,12 @@ public class ArmorStandContainer extends Container {
         });
 
         // ArmorStand MainHand (container slot 5)
-        this.addSlot(new Slot(armorStandInventory, 0, 80, 26) {
+        this.addSlot(new IconSlot(armorStandInventory, 0, 80, 26) {
+            @Override
+            public void drawIconAt(MatrixStack matrixStack, double posX, double posY, Colour colour) {
+                MuseIconUtils.getIcon().weaponSlotBackground.draw(matrixStack, posX, posY, colour);
+            }
+
             @Override
             public ItemStack onTake(PlayerEntity thePlayer, ItemStack stack) {
                 armorStand.getItemBySlot(EquipmentSlotType.MAINHAND);
@@ -147,12 +159,6 @@ public class ArmorStandContainer extends Container {
             public void set(ItemStack stack) {
                 armorStand.setItemSlot(EquipmentSlotType.MAINHAND, stack.copy());
                 super.set(stack);
-            }
-
-            @OnlyIn(Dist.CLIENT)
-            @Override
-            public Pair<ResourceLocation, ResourceLocation> getNoItemIcon() {
-                return NuminaObjects.getSlotBackground(EquipmentSlotType.MAINHAND);
             }
         });
 
@@ -326,5 +332,11 @@ public class ArmorStandContainer extends Container {
     public void removed(PlayerEntity playerIn) {
         super.removed(playerIn);
         this.armorStandInventory.stopOpen(playerIn);
+    }
+
+    abstract class IconSlot extends Slot implements IIConProvider{
+        public IconSlot(IInventory iInventory, int inventoryIndex, int posX, int posY) {
+            super(iInventory, inventoryIndex, posX, posY);
+        }
     }
 }

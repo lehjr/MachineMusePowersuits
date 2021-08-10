@@ -29,6 +29,7 @@ package com.github.lehjr.numina.util.client.gui.slot;
 import com.github.lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.container.Slot;
+import net.minecraft.item.ItemStack;
 
 public class HideableSlot extends Slot implements IHideableSlot {
     boolean isEnabled = false;
@@ -42,6 +43,11 @@ public class HideableSlot extends Slot implements IHideableSlot {
         this.isEnabled = enabled;
     }
 
+//    @Override
+//    public boolean mayPlace(ItemStack itemStack) {
+//        return this.isEnabled ? super.mayPlace(itemStack) : false;
+//    }
+
     @Override
     public void enable() {
         this.isEnabled = true;
@@ -53,7 +59,7 @@ public class HideableSlot extends Slot implements IHideableSlot {
     }
 
     @Override
-    public boolean isEnabled() {
+    public boolean isActive() {
         return isEnabled;
     }
 

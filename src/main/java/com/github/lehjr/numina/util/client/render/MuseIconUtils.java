@@ -59,6 +59,7 @@ public enum MuseIconUtils {
 
     protected static GuiIcon icon;
     public static void setIconInstance(GuiIcon iconIn) {
+        System.out.println("icon Instance set");
         INSTANCE.icon = iconIn;
     }
 
