@@ -234,7 +234,7 @@ public class MultiRectHolderFrame<T extends Map<Integer, IRect>> extends GUISpac
     }
 
     @Override
-    public RelativeRect setTop(double value) {
+    public IRect setTop(double value) {
         super.setTop(value);
         // stacked like pancakes
         if (!horizontalLayout) {
@@ -255,7 +255,7 @@ public class MultiRectHolderFrame<T extends Map<Integer, IRect>> extends GUISpac
     }
 
     @Override
-    public RelativeRect setLeft(double value) {
+    public IRect setLeft(double value) {
         super.setLeft(value);
 
         // like books on a shelf
@@ -277,7 +277,7 @@ public class MultiRectHolderFrame<T extends Map<Integer, IRect>> extends GUISpac
     }
 
     @Override
-    public RelativeRect setBottom(double value) {
+    public IRect setBottom(double value) {
         super.setBottom(value);
         // stacked like pancakes
         if (!horizontalLayout) {
@@ -297,7 +297,7 @@ public class MultiRectHolderFrame<T extends Map<Integer, IRect>> extends GUISpac
     }
 
     @Override
-    public RelativeRect setRight(double value) {
+    public IRect setRight(double value) {
         super.setRight(value);
 
         // like books on a shelf
@@ -327,7 +327,7 @@ public class MultiRectHolderFrame<T extends Map<Integer, IRect>> extends GUISpac
     }
 
     @Override
-    public RelativeRect setWH(MusePoint2D wh) {
+    public IRect setWH(MusePoint2D wh) {
         return this;
     }
 
@@ -338,7 +338,7 @@ public class MultiRectHolderFrame<T extends Map<Integer, IRect>> extends GUISpac
     }
 
     @Override
-    public RelativeRect setUL(MusePoint2D ul) {
+    public IRect setUL(MusePoint2D ul) {
         setLeft(ul.getX());
         setTop(ul.getY());
         return this;
