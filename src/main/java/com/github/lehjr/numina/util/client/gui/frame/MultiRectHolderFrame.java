@@ -19,6 +19,7 @@ public class MultiRectHolderFrame<T extends Map<Integer, IRect>> extends GUISpac
     float zLevel;
     boolean isEnabled = true;
     boolean isVisible = true;
+    @Nullable IDrawableRect background = null;
     Map<Integer, IRect> rects = new HashMap<>();
     boolean horizontalLayout = false;
     boolean startTopLeft = true;
@@ -64,7 +65,7 @@ public class MultiRectHolderFrame<T extends Map<Integer, IRect>> extends GUISpac
     }
 
     public Optional<IRect> getLast() {
-        return Optional.of(rects.get(rects.size() -1));
+        return Optional.ofNullable(rects.size() > 0 ? (rects.get(rects.size() -1)) : null);
     }
 
     public void setRects(T rects){
@@ -101,6 +102,15 @@ public class MultiRectHolderFrame<T extends Map<Integer, IRect>> extends GUISpac
         }
     }
 
+    public MultiRectHolderFrame setBackground(IDrawableRect background) {
+        this.background = background;
+        return this;
+    }
+
+    Optional<IDrawableRect> getBackground() {
+        return Optional.ofNullable(this.background);
+    }
+
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
         for (IRect rect : rects.values()) {
@@ -133,6 +143,7 @@ public class MultiRectHolderFrame<T extends Map<Integer, IRect>> extends GUISpac
 
     @Override
     public void render(MatrixStack matrixStack, int mouseX, int mouseY, float frameTime) {
+        getBackground().ifPresent(rect->render(matrixStack, mouseX, mouseY, frameTime));
         for (IRect rect : rects.values()) {
             if (rect instanceof IDrawable) {
                 ((IDrawable) rect).render(matrixStack, mouseX, mouseY, frameTime);
@@ -231,6 +242,11 @@ public class MultiRectHolderFrame<T extends Map<Integer, IRect>> extends GUISpac
                 rects.get(i).setLeft(this.centerx() - rects.get(i).finalWidth() * 0.5);
             }
         }
+        getBackground().ifPresent(rect-> {
+            rect.setPosition(this.getPosition());
+            rect.setWidth(this.finalWidth());
+            rect.setHeight(this.finalHeight());
+        });
     }
 
     @Override
@@ -257,7 +273,6 @@ public class MultiRectHolderFrame<T extends Map<Integer, IRect>> extends GUISpac
     @Override
     public IRect setLeft(double value) {
         super.setLeft(value);
-
         // like books on a shelf
         if (horizontalLayout) {
             // find leftmost box and set the left value
@@ -270,7 +285,6 @@ public class MultiRectHolderFrame<T extends Map<Integer, IRect>> extends GUISpac
                     rects.get(rects.size() - 1).setRight(finalRight());
                 }
             }
-            // or stacked like pancakes
         }
         refreshRects();
         return this;
@@ -333,8 +347,25 @@ public class MultiRectHolderFrame<T extends Map<Integer, IRect>> extends GUISpac
 
     @Override
     public void setPosition(MusePoint2D positionIn) {
-        setLeft(positionIn.getX() - finalWidth() * 0.5);
-        setTop(positionIn.getY() - finalHeight() * 0.5);
+        super.setLeft(positionIn.getX() - finalWidth() * 0.5);
+        super.setTop(positionIn.getY() - finalHeight() * 0.5);
+
+        // like books on a shelf
+        if (horizontalLayout) {
+            // find leftmost box and set the left value
+            if (startTopLeft) {
+                if (rects.size() > 0) {
+                    rects.get(0).setLeft(finalLeft());
+                    rects.get(0).setTop(finalTop());
+                }
+            } else {
+                if (rects.size() > 0) {
+                    rects.get(rects.size() - 1).setRight(finalRight());
+                    rects.get(rects.size() - 1).setBottom(this.finalBottom());
+                }
+            }
+        }
+        refreshRects();
     }
 
     @Override
