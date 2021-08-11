@@ -33,6 +33,10 @@ public class TexturedToggleButton extends AbstractTexturedButton {
         return this;
     }
 
+    public boolean getState() {
+        return isStateOn;
+    }
+
     public TexturedToggleButton setTexDiffX(double diff) {
         this.texDiffX = diff;
         return this;
