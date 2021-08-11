@@ -33,111 +33,35 @@ import com.github.lehjr.numina.util.math.Colour;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.util.ResourceLocation;
 
-public class TexturedButton extends Button {
-    ResourceLocation textureLocation;
-    double texStartX;
-    double texStartY;
-    double textureWidth;
-    double textureHeight;
-    double iconWidth;
-    double iconHeight;
-
-    public TexturedButton(double left, double top, double right, double bottom, boolean growFromMiddle,
-                          Colour backgroundColourEnabled,
-                          Colour backgroundColourDisabled,
-                          Colour borderColourEnabled,
-                          Colour borderColourDisabled,
-                          double textureWidth,
-                          double textureHeight,
-                          ResourceLocation textureLocation) {
-        super(left, top, right, bottom, growFromMiddle, backgroundColourEnabled, backgroundColourDisabled, borderColourEnabled, borderColourDisabled);
-        this.textureWidth = this.iconWidth = textureWidth;
-        this.textureHeight = this.iconHeight = textureHeight;
-        this.textureLocation = textureLocation;
-        this.texStartX = 0;
-        this.texStartY = 0;
+public class TexturedButton extends AbstractTexturedButton {
+    public TexturedButton(double left, double top, double right, double bottom, boolean growFromMiddle, Colour backgroundColourEnabled, Colour backgroundColourDisabled, Colour borderColourEnabled, Colour borderColourDisabled, double textureWidth, double textureHeight, ResourceLocation textureLocation) {
+        super(left, top, right, bottom, growFromMiddle, backgroundColourEnabled, backgroundColourDisabled, borderColourEnabled, borderColourDisabled, textureWidth, textureHeight, textureLocation);
     }
 
-    public TexturedButton(double left, double top, double right, double bottom,
-                          Colour backgroundColourEnabled,
-                          Colour backgroundColourDisabled,
-                          Colour borderColourEnabled,
-                          Colour borderColourDisabled,
-                          double textureWidth,
-                          double textureHeight,
-                          ResourceLocation textureLocation) {
-        super(left, top, right, bottom, backgroundColourEnabled, backgroundColourDisabled, borderColourEnabled, borderColourDisabled);
-        this.textureWidth = textureWidth;
-        this.textureHeight = textureHeight;
-        this.textureLocation = textureLocation;
-        this.texStartX = 0;
-        this.texStartY = 0;
+    public TexturedButton(double left, double top, double right, double bottom, Colour backgroundColourEnabled, Colour backgroundColourDisabled, Colour borderColourEnabled, Colour borderColourDisabled, double textureWidth, double textureHeight, ResourceLocation textureLocation) {
+        super(left, top, right, bottom, backgroundColourEnabled, backgroundColourDisabled, borderColourEnabled, borderColourDisabled, textureWidth, textureHeight, textureLocation);
     }
 
-    public TexturedButton(MusePoint2D ul, MusePoint2D br,
-                          Colour backgroundColourEnabled,
-                          Colour backgroundColourDisabled,
-                          Colour borderColourEnabled,
-                          Colour borderColourDisabled,
-                          double textureWidth,
-                          double textureHeight,
-                          ResourceLocation textureLocation) {
-        super(ul, br, backgroundColourEnabled, backgroundColourDisabled, borderColourEnabled, borderColourDisabled);
-        this.textureWidth = textureWidth;
-        this.textureHeight = textureHeight;
-        this.textureLocation = textureLocation;
-        this.texStartX = 0;
-        this.texStartY = 0;
+    public TexturedButton(MusePoint2D ul, MusePoint2D br, Colour backgroundColourEnabled, Colour backgroundColourDisabled, Colour borderColourEnabled, Colour borderColourDisabled, double textureWidth, double textureHeight, ResourceLocation textureLocation) {
+        super(ul, br, backgroundColourEnabled, backgroundColourDisabled, borderColourEnabled, borderColourDisabled, textureWidth, textureHeight, textureLocation);
     }
 
-    public TexturedButton(RelativeRect ref,
-                          Colour backgroundColourEnabled,
-                          Colour backgroundColourDisabled,
-                          Colour borderColourEnabled,
-                          Colour borderColourDisabled,
-                          double textureWidth,
-                          double textureHeight,
-                          ResourceLocation textureLocation) {
-        super(ref, backgroundColourEnabled, backgroundColourDisabled, borderColourEnabled, borderColourDisabled);
-        this.textureWidth = textureWidth;
-        this.textureHeight = textureHeight;
-        this.textureLocation = textureLocation;
-        this.texStartX = 0;
-        this.texStartY = 0;
-    }
-
-    public TexturedButton setTextureStartX(double xOffset) {
-        this.texStartX = xOffset;
-        return this;
-    }
-
-    public TexturedButton setTextureStartY(double yOffset) {
-        this.texStartY = yOffset;
-        return this;
-    }
-
-    public TexturedButton setIconWidth(double iconWidth) {
-        this.iconWidth = iconWidth;
-        return this;
-    }
-
-    public TexturedButton setIconHeight(double iconHeight) {
-        this.iconHeight = iconHeight;
-        return this;
+    public TexturedButton(RelativeRect ref, Colour backgroundColourEnabled, Colour backgroundColourDisabled, Colour borderColourEnabled, Colour borderColourDisabled, double textureWidth, double textureHeight, ResourceLocation textureLocation) {
+        super(ref, backgroundColourEnabled, backgroundColourDisabled, borderColourEnabled, borderColourDisabled, textureWidth, textureHeight, textureLocation);
     }
 
     @Override
     public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
-        super.render(matrixStack, mouseX, mouseY, partialTicks);
-        Colour color;
-        if(this.isVisible && this.isEnabled) {
-            color = this.hitBox(mouseX, mouseY) ? Colour.LIGHT_BLUE.withAlpha(0.6F) : Colour.WHITE;
-        } else {
-            color = Colour.RED.withAlpha(0.6F);
+        if (this.isVisible) {
+            super.render(matrixStack, mouseX, mouseY, partialTicks);
+            Colour color;
+            if (this.isEnabled) {
+                color = this.hitBox(mouseX, mouseY) ? Colour.LIGHT_BLUE.withAlpha(0.6F) : Colour.WHITE;
+            } else {
+                color = Colour.RED.withAlpha(0.6F);
+            }
+            GuiIcon.renderTextureWithColour(this.textureLocation, matrixStack, left(), right(), top(), bottom(), getZLevel(),
+                    iconWidth, iconHeight, texStartX, texStartY, textureWidth, textureHeight, color);
         }
-
-        GuiIcon.renderTextureWithColour(this.textureLocation, matrixStack, left(), right(), top(), bottom(), getZLevel(),
-        iconWidth, iconHeight, texStartX, texStartY, textureWidth, textureHeight, color);
-
     }
 }
