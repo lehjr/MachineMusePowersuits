@@ -274,7 +274,7 @@ public interface IGuiFrame extends IDrawableRect {
 
     @Override
     default double centerx() {
-        return getRect().centerx();
+        return IDrawableRect.super.centerx();
     }
 
     @Override
