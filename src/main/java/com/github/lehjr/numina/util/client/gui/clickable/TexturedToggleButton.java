@@ -49,8 +49,8 @@ public class TexturedToggleButton extends AbstractTexturedButton {
 
     @Override
     public void onPressed() {
-        super.onPressed();
         this.isStateOn =! this.isStateOn;
+        super.onPressed();
     }
 
     @Override
