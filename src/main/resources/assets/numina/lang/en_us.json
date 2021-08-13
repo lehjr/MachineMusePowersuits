@@ -70,6 +70,21 @@
   "item.numina.component_computer_chip": "Computer Chip",
   "item.numina.component_computer_chip.desc": "An upgraded control circuit that contains a CPU which is capable of more advanced calculations.",
   "item.numina.component_rubber_hose": "Insulated Rubber Hose",
-  "item.numina.component_rubber_hose.desc": "A heavily insulated rubber hose capable of withstanding extreme heat or cold"
+  "item.numina.component_rubber_hose.desc": "A heavily insulated rubber hose capable of withstanding extreme heat or cold",
+
+  "_comment": "Module Categories",
+  "numina.module.category.none": "None",
+  "numina.module.category.debug": "Debug Modules",
+  "numina.module.category.armor": "Armor Modules",
+  "numina.module.category.energystorage": "Energy Storage Modules",
+  "numina.module.category.energygeneration": "Energy Generation Modules",
+  "numina.module.category.tool": "Tool Modules",
+  "numina.module.category.weapon": "Weapon Modules",
+  "numina.module.category.movement": "Movement Modules",
+  "numina.module.category.cosmetic": "Cosmetic Modules",
+  "numina.module.category.vision": "Vision Modules",
+  "numina.module.category.environment": "Environment Modules",
+  "numina.module.category.special": "Special Modules",
+  "numina.module.category.miningenhancement": "Mining Enhancement Modules"
 }
 

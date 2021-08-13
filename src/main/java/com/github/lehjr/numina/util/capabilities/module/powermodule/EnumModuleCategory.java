@@ -32,25 +32,23 @@ import net.minecraft.util.text.TranslationTextComponent;
  * The module categories
  */
 public enum EnumModuleCategory {
-    NONE("module.category.none", "None"),
-    DEBUG("module.category.debug", "Debug_Modules"),
-    ARMOR("module.category.armor", "Armor_Modules"),
-    ENERGY_STORAGE("module.category.energystorage", "Energy_Storage_Modules"),
-    ENERGY_GENERATION("module.category.energygeneration", "Energy_Generation_Modules"),
-    TOOL("module.category.tool", "Tool_Modules"),
-    WEAPON("module.category.weapon", "Weapon_Modules"),
-    MOVEMENT("module.category.movement", "Movement_Modules"),
-    COSMETIC("module.category.cosmetic", "Cosmetic_Modules"),
-    VISION("module.category.vision", "Vision_Modules"),
-    ENVIRONMENTAL("module.category.environment", "Environment_Modules"),
-    SPECIAL("module.category.special", "Special_Modules"),
-    MINING_ENHANCEMENT("module.category.miningenhancement", "Mining_Enhancement_Modules");
+    NONE("numina.module.category.none", "None"),
+    DEBUG("numina.module.category.debug", "Debug_Modules"),
+    ARMOR("numina.module.category.armor", "Armor_Modules"),
+    ENERGY_STORAGE("numina.module.category.energystorage", "Energy_Storage_Modules"),
+    ENERGY_GENERATION("numina.module.category.energygeneration", "Energy_Generation_Modules"),
+    TOOL("numina.module.category.tool", "Tool_Modules"),
+    WEAPON("numina.module.category.weapon", "Weapon_Modules"),
+    MOVEMENT("numina.module.category.movement", "Movement_Modules"),
+    COSMETIC("numina.module.category.cosmetic", "Cosmetic_Modules"),
+    VISION("numina.module.category.vision", "Vision_Modules"),
+    ENVIRONMENTAL("numina.module.category.environment", "Environment_Modules"),
+    SPECIAL("numina.module.category.special", "Special_Modules"),
+    MINING_ENHANCEMENT("numina.module.category.miningenhancement", "Mining_Enhancement_Modules");
 
     private final String configTitle;
     private final TranslationTextComponent translation;
 
-
-    //TODO: add translation stuff
     EnumModuleCategory(String translationString, String configTitle) {
         this.translation = new TranslationTextComponent(translationString);
         this.configTitle = configTitle;
