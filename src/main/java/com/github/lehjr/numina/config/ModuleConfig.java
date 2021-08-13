@@ -160,7 +160,7 @@ public class ModuleConfig implements IConfig {
             if (config.getConfigData() != null) {
                 ArrayList<String> key = new ArrayList<String>() {{
                     add("Modules");
-                    add(category.getName());
+                    add(category.getConfigTitle());
                     add(moduleName);
                     add(entry);
                 }};
@@ -175,7 +175,7 @@ public class ModuleConfig implements IConfig {
 
             // Add to map then return base val
         }).orElseGet(()-> {
-            addtoMap(category.getName(),
+            addtoMap(category.getConfigTitle(),
                     moduleName,
                     new StringBuilder("builder.defineInRange(\"")
                             .append(entry).append("\", ")
@@ -204,7 +204,7 @@ public class ModuleConfig implements IConfig {
 
                 ArrayList<String> key = new ArrayList<String>() {{
                     add("Modules");
-                    add(category.getName().replace(" ", "_"));
+                    add(category.getConfigTitle().replace(" ", "_"));
                     add(moduleName);
                     add(entry);
                 }};
@@ -221,7 +221,7 @@ public class ModuleConfig implements IConfig {
             }
             return multiplier;
         }).orElseGet(()->{
-            addtoMap(category.getName(),
+            addtoMap(category.getConfigTitle(),
                     moduleName,
                     new StringBuilder("builder.defineInRange(\"")
                             .append(entry).append("\", ")
@@ -244,7 +244,7 @@ public class ModuleConfig implements IConfig {
             if (config.getConfigData() != null) {
                 ArrayList<String> key = new ArrayList<String>() {{
                     add("Modules");
-                    add(category.getName());
+                    add(category.getConfigTitle());
                     add(moduleName);
                     add(entry);
                 }};
@@ -256,7 +256,7 @@ public class ModuleConfig implements IConfig {
             }
             return multiplier;
         }).orElseGet(()->{
-            addtoMap(category.getName(),
+            addtoMap(category.getConfigTitle(),
                     moduleName,
                     new StringBuilder("builder.defineInRange(\"")
                             .append(entry).append("\", ")
@@ -279,7 +279,7 @@ public class ModuleConfig implements IConfig {
             if (config.getConfigData() != null) {
                 ArrayList<String> key = new ArrayList<String>() {{
                     add("Modules");
-                    add(category.getName());
+                    add(category.getConfigTitle());
                     add(moduleName);
                     add(entry);
                 }};
@@ -292,7 +292,7 @@ public class ModuleConfig implements IConfig {
             }
             return true;
         }).orElseGet(()->{
-            addtoMap(category.getName(), moduleName, new StringBuilder("builder.define(\"").append(entry).append("\", true);\n").toString());
+            addtoMap(category.getConfigTitle(), moduleName, new StringBuilder("builder.define(\"").append(entry).append("\", true);\n").toString());
             return true;
         });
     }
