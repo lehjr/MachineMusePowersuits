@@ -143,7 +143,7 @@ public class MultiRectHolderFrame<T extends Map<Integer, IRect>> extends GUISpac
 
     @Override
     public void render(MatrixStack matrixStack, int mouseX, int mouseY, float frameTime) {
-        getBackground().ifPresent(rect->render(matrixStack, mouseX, mouseY, frameTime));
+        getBackground().ifPresent(background-> background.render(matrixStack, mouseX, mouseY, frameTime));
         for (IRect rect : rects.values()) {
             if (rect instanceof IDrawable) {
                 ((IDrawable) rect).render(matrixStack, mouseX, mouseY, frameTime);

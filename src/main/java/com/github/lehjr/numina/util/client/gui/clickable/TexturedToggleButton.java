@@ -63,8 +63,24 @@ public class TexturedToggleButton extends AbstractTexturedButton {
             } else {
                 color = Colour.RED.withAlpha(0.6F);
             }
-            GuiIcon.renderTextureWithColour(this.textureLocation, matrixStack, left(), right(), top(), bottom(), getZLevel(),
-                    iconWidth, iconHeight, texStartX + (isStateOn ? texDiffX : 0), texStartY + (isStateOn ? texDiffY : 0), textureWidth, textureHeight, color);
+            matrixStack.pushPose();
+            matrixStack.translate(0,0,100);
+            GuiIcon.renderTextureWithColour(this.textureLocation, matrixStack,
+                    // the actual coordinates of the target rendering area
+                    left(),
+                    right(),
+                    top(),
+                    bottom(),
+                    getZLevel(), // depth of the rendering area
+                    iconWidth, // width of icon to be rendered
+                    iconHeight, // width of icon to be rendered
+                    texStartX + (isStateOn ? texDiffX : 0),
+                    texStartY + (isStateOn ? texDiffY : 0),
+                    textureWidth, // width of entire texture icon is in
+                    textureHeight, // height of entire texture icon is in
+                    // color mask
+                    color);
+            matrixStack.popPose();
         }
     }
 }

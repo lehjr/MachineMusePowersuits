@@ -26,36 +26,38 @@
 
 package com.github.lehjr.numina.util.capabilities.module.powermodule;
 
+import net.minecraft.util.text.TranslationTextComponent;
+
 /**
  * The module categories
  */
 public enum EnumModuleCategory {
-    NONE("None", "None"),
-    DEBUG("Debug", "Debug_Modules"),
-    ARMOR("Armor", "Armor_Modules"),
-    ENERGY_STORAGE("Energy Storage", "Energy_Storage_Modules"),
-    ENERGY_GENERATION("Energy Generation", "Energy_Generation_Modules"),
-    TOOL("Tool", "Tool_Modules"),
-    WEAPON("Weapon", "Weapon_Modules"),
-    MOVEMENT("Movement", "Movement_Modules"),
-    COSMETIC("Cosmetic", "Cosmetic_Modules"),
-    VISION("Vision", "Vision_Modules"),
-    ENVIRONMENTAL("Environment", "Environment_Modules"),
-    SPECIAL("Special", "Special_Modules"),
-    MINING_ENHANCEMENT("Mining Enhancement", "Mining_Enhancement_Modules");
+    NONE("module.category.none", "None"),
+    DEBUG("module.category.debug", "Debug_Modules"),
+    ARMOR("module.category.armor", "Armor_Modules"),
+    ENERGY_STORAGE("module.category.energystorage", "Energy_Storage_Modules"),
+    ENERGY_GENERATION("module.category.energygeneration", "Energy_Generation_Modules"),
+    TOOL("module.category.tool", "Tool_Modules"),
+    WEAPON("module.category.weapon", "Weapon_Modules"),
+    MOVEMENT("module.category.movement", "Movement_Modules"),
+    COSMETIC("module.category.cosmetic", "Cosmetic_Modules"),
+    VISION("module.category.vision", "Vision_Modules"),
+    ENVIRONMENTAL("module.category.environment", "Environment_Modules"),
+    SPECIAL("module.category.special", "Special_Modules"),
+    MINING_ENHANCEMENT("module.category.miningenhancement", "Mining_Enhancement_Modules");
 
-
-    private final String name;
     private final String configTitle;
+    private final TranslationTextComponent translation;
+
 
     //TODO: add translation stuff
-    EnumModuleCategory(String name, String configTitle) {
-        this.name = name;
+    EnumModuleCategory(String translationString, String configTitle) {
+        this.translation = new TranslationTextComponent(translationString);
         this.configTitle = configTitle;
     }
 
-    public String getName() {
-        return name;
+    public TranslationTextComponent getTranslation() {
+        return translation;
     }
 
     public String getConfigTitle() {

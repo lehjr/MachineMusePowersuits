@@ -32,6 +32,7 @@ import com.github.lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.util.text.ITextComponent;
 
+import javax.annotation.Nullable;
 import java.util.List;
 
 public interface IGuiFrame extends IDrawableRect {
@@ -41,7 +42,9 @@ public interface IGuiFrame extends IDrawableRect {
      * @param button
      * @return true if mouse click is inside this frame and is handled here, else false
      */
-    boolean mouseClicked(double mouseX, double mouseY, int button);
+    default boolean mouseClicked(double mouseX, double mouseY, int button) {
+        return false;
+    }
 
     /**
      * @param mouseX
@@ -49,7 +52,9 @@ public interface IGuiFrame extends IDrawableRect {
      * @param button
      * @return true if mouse release is inside this frame and is handled here, else false
      */
-    boolean mouseReleased(double mouseX, double mouseY, int button);
+    default boolean mouseReleased(double mouseX, double mouseY, int button) {
+        return false;
+    }
 
     /**
      * @param mouseX
@@ -57,7 +62,9 @@ public interface IGuiFrame extends IDrawableRect {
      * @param dWheel
      * @return true if mouse pointer is inside this frame and scroll is handled here, else false
      */
-    boolean mouseScrolled(double mouseX, double mouseY, double dWheel);
+    default boolean mouseScrolled(double mouseX, double mouseY, double dWheel) {
+        return false;
+    }
 
     IRect getRect();
 
@@ -65,11 +72,10 @@ public interface IGuiFrame extends IDrawableRect {
      * Miscellaneous functions required before rendering
      * @param mouseX
      * @param mouseY
-     *
-     * TODO: replace with tick()? mouseX and mouseY might be used for highlighting some hovered objects...
-     *      not sure if worth it
      */
-    void update(double mouseX, double mouseY);
+    default void update(double mouseX, double mouseY) {
+
+    }
 
     /**
      * Render elements of this frame. Ordering is important.
@@ -79,14 +85,19 @@ public interface IGuiFrame extends IDrawableRect {
      * @param mouseY
      * @param partialTicks
      */
-    void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks);
+    default void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
+
+    }
 
     /**
      * @param x mouseX
      * @param y mouseY
      * @return tooltip or null if not returning tooltip;
      */
-    List<ITextComponent> getToolTip(int x, int y);
+    @Nullable
+    default List<ITextComponent> getToolTip(int x, int y) {
+        return null;
+    }
 
     void setEnabled(boolean enabled);
 
@@ -259,7 +270,7 @@ public interface IGuiFrame extends IDrawableRect {
 
     @Override
     default MusePoint2D getPosition() {
-        return getRect().getPosition();
+        return IDrawableRect.super.getPosition();
     }
 
     @Override
@@ -309,7 +320,7 @@ public interface IGuiFrame extends IDrawableRect {
 
     @Override
     default IRect setMeBelow(IRect otherAboveMe) {
-        return setMeBelow(otherAboveMe);
+        return getRect().setMeBelow(otherAboveMe);
     }
 
     @Override
