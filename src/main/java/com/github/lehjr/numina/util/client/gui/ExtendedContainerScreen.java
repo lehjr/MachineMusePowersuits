@@ -40,6 +40,7 @@ import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.util.text.ITextComponent;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -180,13 +181,18 @@ public class ExtendedContainerScreen<T extends Container> extends ContainerScree
      * Called when the mouse is clicked.
      */
     @Override
-    public boolean mouseClicked(double x, double y, int button) {
+    public boolean mouseClicked(double mouseX, double mouseY, int button) {
         for (IGuiFrame frame : frames) {
-            if(frame.mouseClicked(x, y, button)) {
+            if(frame.mouseClicked(mouseX, mouseY, button)) {
                 return true;
             }
         }
-        return super.mouseClicked(x, y, button);
+        return super.mouseClicked(mouseX, mouseY, button);
+    }
+
+    @Override
+    public boolean isHovering(Slot slot, double mouseX, double mouseY) {
+        return slot.isActive() && this.isHovering(slot.x, slot.y, 16, 16, mouseX, mouseY);
     }
 
     /**

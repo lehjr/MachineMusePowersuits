@@ -134,13 +134,13 @@ public interface IGuiFrame extends IDrawableRect {
     }
 
     @Override
-    default MusePoint2D center() {
-        return IDrawableRect.super.center();
+    default IRect init(double left, double top, double right, double bottom) {
+        return IDrawableRect.super.init(left, top, right, bottom);
     }
 
     @Override
-    default IRect init(double left, double top, double right, double bottom) {
-        return IDrawableRect.super.init(left, top, right, bottom);
+    default MusePoint2D center() {
+        return IDrawableRect.super.center();
     }
 
     @Override
@@ -280,7 +280,7 @@ public interface IGuiFrame extends IDrawableRect {
 
     @Override
     default boolean containsPoint(double x, double y) {
-        return getRect().containsPoint(x, y);
+        return IDrawableRect.super.containsPoint(x, y);
     }
 
     @Override

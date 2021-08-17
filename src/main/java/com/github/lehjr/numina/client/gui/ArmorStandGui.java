@@ -53,13 +53,13 @@ public class ArmorStandGui extends ExtendedContainerScreen<ArmorStandContainer> 
         innerFrame = new InnerFrame(containerIn, ulGetter());
         addFrame(innerFrame);
         this.armorStandEntity = containerIn.getArmorStandEntity();
+        innerFrame.initGrowth();
     }
 
     @Override
     public void init() {
         super.init();
         innerFrame.setPosition(backgroundRect.getPosition());
-        innerFrame.initGrowth();
         innerFrame.setPlayerEntity(getMinecraft().player);
         innerFrame.setArmorStandEntity(armorStandEntity);
         innerFrame.setGuiLeft(getGuiLeft());
@@ -110,16 +110,13 @@ public class ArmorStandGui extends ExtendedContainerScreen<ArmorStandContainer> 
                 IntStream.range(4, 6).forEach(i-> add(i));
             }}, ulGetter);
             centerFrame.addRect(armorStandHands);
-            GUISpacer middleSpacer = new GUISpacer(18, 18);
-            middleSpacer.setMeBelow(armorStandHands);
-            centerFrame.addRect(middleSpacer);
+            centerFrame.addRect(new GUISpacer(18, 18));
 
             // slot 46
             playerShield = new InventoryFrame(containerIn,
                     1, 1, new ArrayList<Integer>(){{
                 IntStream.range(46, 47).forEach(i-> add(i));
             }}, ulGetter);
-            playerShield.setMeBelow(middleSpacer);
             centerFrame.addRect(playerShield);
             centerFrame.doneAdding();
 
@@ -131,43 +128,24 @@ public class ArmorStandGui extends ExtendedContainerScreen<ArmorStandContainer> 
                     new ArrayList<Integer>(){{
                         IntStream.range(6, 10).forEach(i-> add(i));
                     }}, ulGetter);
-
-            GUISpacer leftSpacer = new GUISpacer(spacer, playerArmor.finalHeight());
-            topHorizontalLayout.addRect(leftSpacer);
-
-            playerArmor.setMeRightOf(leftSpacer);
+            topHorizontalLayout.addRect(new GUISpacer(spacer, playerArmor.finalHeight()));
             topHorizontalLayout.addRect(playerArmor);
-
-            GUISpacer leftSpacer2 = new GUISpacer(3, playerArmor.finalHeight());
-            leftSpacer2.setMeRightOf(playerArmor);
-            topHorizontalLayout.addRect(leftSpacer2);
+            topHorizontalLayout.addRect(new GUISpacer(3, playerArmor.finalHeight()));
 
             playerFrame = new EntityRenderFrame(false);
             playerFrame.setWidth(48);
             playerFrame.setHeight(playerArmor.finalHeight());
-            playerFrame.setMeRightOf(leftSpacer2);
             topHorizontalLayout.addRect(playerFrame);
 
-            GUISpacer leftSpacer3 = new GUISpacer(3, playerArmor.finalHeight());
-            leftSpacer3.setMeRightOf(playerFrame);
-            topHorizontalLayout.addRect(leftSpacer3);
-
-            centerFrame.setMeRightOf(leftSpacer3);
+            topHorizontalLayout.addRect(new GUISpacer(3, playerArmor.finalHeight()));
             topHorizontalLayout.addRect(centerFrame);
-
-            GUISpacer rightSpacer3 = new GUISpacer(3, playerArmor.finalHeight());
-            rightSpacer3.setMeRightOf(centerFrame);
-            topHorizontalLayout.addRect(rightSpacer3);
+            topHorizontalLayout.addRect(new GUISpacer(3, playerArmor.finalHeight()));
 
             armorStandFrame = new EntityRenderFrame(false);
             armorStandFrame.setWidth(48);
             armorStandFrame.setHeight(playerArmor.finalHeight());
-            armorStandFrame.setMeRightOf(rightSpacer3);
             topHorizontalLayout.addRect(armorStandFrame);
-
-            GUISpacer rightSpacer2 = new GUISpacer(3, playerArmor.finalHeight());
-            rightSpacer2.setMeRightOf(armorStandFrame);
-            topHorizontalLayout.addRect(rightSpacer2);
+            topHorizontalLayout.addRect(new GUISpacer(3, playerArmor.finalHeight()));
 
             // slot 0-3
             armorStandArmor = new ArmorInventoryFrame(
@@ -176,23 +154,17 @@ public class ArmorStandGui extends ExtendedContainerScreen<ArmorStandContainer> 
                         IntStream.range(0, 4).forEach(i-> add(i));
                     }}, ulGetter
             );
-            armorStandArmor.setMeRightOf(rightSpacer2);
             topHorizontalLayout.addRect(armorStandArmor);
-
-            GUISpacer rightSpacer = new GUISpacer(spacer, playerArmor.finalHeight());
-            rightSpacer.setMeRightOf(armorStandArmor);
-            topHorizontalLayout.addRect(rightSpacer);
+            topHorizontalLayout.addRect(new GUISpacer(spacer, playerArmor.finalHeight()));
             topHorizontalLayout.doneAdding();
 
             /** final complete layout with all boxes in place */
             GUISpacer topSpacer = new GUISpacer(topHorizontalLayout.finalWidth(), spacer -3);
             addRect(topSpacer);
 
-            topHorizontalLayout.setMeBelow(topSpacer);
             addRect(topHorizontalLayout);
 
             playerInventoryFrame = new PlayerInventoryFrame(containerIn, 10, 37, ulGetter);
-            playerInventoryFrame.setMeBelow(topHorizontalLayout);
             addRect(playerInventoryFrame);
             doneAdding();
         }

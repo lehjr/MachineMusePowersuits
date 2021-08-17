@@ -21,8 +21,8 @@ public class MultiRectHolderFrame<T extends Map<Integer, IRect>> extends GUISpac
     boolean isVisible = true;
     @Nullable IDrawableRect background = null;
     Map<Integer, IRect> rects = new HashMap<>();
-    boolean horizontalLayout = false;
-    boolean startTopLeft = true;
+    boolean horizontalLayout;
+    boolean startTopLeft;
     /**
      *  Note, all rectangles should have the same width for vertical layout, or same height for horizontal layout.
      *
@@ -349,18 +349,28 @@ public class MultiRectHolderFrame<T extends Map<Integer, IRect>> extends GUISpac
     public void setPosition(MusePoint2D positionIn) {
         super.setLeft(positionIn.getX() - finalWidth() * 0.5);
         super.setTop(positionIn.getY() - finalHeight() * 0.5);
-
         // like books on a shelf
         if (horizontalLayout) {
             // find leftmost box and set the left value
             if (startTopLeft) {
                 if (rects.size() > 0) {
                     rects.get(0).setLeft(finalLeft());
-                    rects.get(0).setTop(finalTop());
                 }
             } else {
                 if (rects.size() > 0) {
                     rects.get(rects.size() - 1).setRight(finalRight());
+                }
+            }
+        // stacked like pancakes
+        } else {
+            // all boxes linked from top to bottom
+            if (startTopLeft) {
+                if (rects.size() > 0) {
+                    rects.get(0).setTop(finalTop());
+                }
+                // all boxes lined from bottom to top
+            } else {
+                if (rects.size() > 0) {
                     rects.get(rects.size() - 1).setBottom(this.finalBottom());
                 }
             }
