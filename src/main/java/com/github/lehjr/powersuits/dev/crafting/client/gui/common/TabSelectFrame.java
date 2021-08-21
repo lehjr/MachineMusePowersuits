@@ -52,8 +52,8 @@ public class TabSelectFrame extends ScrollableFrame {
     PlayerEntity player;
     List<ClickableButton> buttons = new ArrayList<>();
 
-    public TabSelectFrame(PlayerEntity player, int active, float zLevel) {
-        super(new MusePoint2D(0, 0), new MusePoint2D(0, 0), zLevel, Colour.WHITE.withAlpha(0), Colour.WHITE.withAlpha(0));
+    public TabSelectFrame(PlayerEntity player, int active) {
+        super();//, Colour.WHITE.withAlpha(0), Colour.WHITE.withAlpha(0));
         this.player = player;
 
         ClickableButton button;

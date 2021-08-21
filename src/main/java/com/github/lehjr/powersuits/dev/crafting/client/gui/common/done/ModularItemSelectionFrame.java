@@ -4,17 +4,23 @@ import com.github.lehjr.numina.util.capabilities.inventory.modularitem.IModularI
 import com.github.lehjr.numina.util.client.gui.frame.GUISpacer;
 import com.github.lehjr.numina.util.client.gui.frame.MultiRectHolderFrame;
 import com.github.lehjr.numina.util.client.gui.frame.RectHolderFrame;
+import com.github.lehjr.numina.util.client.gui.slot.IHideableSlot;
+import com.github.lehjr.powersuits.dev.crafting.container.IModularItemContainerSlotProvider;
 import com.google.common.collect.Lists;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.items.CapabilityItemHandler;
 
 import java.util.List;
+import java.util.Optional;
 
-public class ModularItemSelectionFrame extends MultiRectHolderFrame {
+public class ModularItemSelectionFrame<C extends IModularItemContainerSlotProvider>  extends MultiRectHolderFrame {
+    C container;
     final EquipmentSlotType[] equipmentSlotTypes = new EquipmentSlotType[]{
             EquipmentSlotType.HEAD,
             EquipmentSlotType.CHEST,
@@ -26,9 +32,10 @@ public class ModularItemSelectionFrame extends MultiRectHolderFrame {
 
     public final List<MPSRecipeTabToggleWidget> tabButtons = Lists.newArrayList();
     public MPSRecipeTabToggleWidget selectedTab = null;
-    public ModularItemSelectionFrame() {
+    public ModularItemSelectionFrame(C container ) {
         super(false, true, 30, 0);
         /** 6 widgets * 27 high each = 162 + 5 spacers at 3 each = 177 gui height is 200 so 23 to split */
+        this.container = container;
 
         // top spacer
         addRect(new GUISpacer(30, 11));
@@ -49,11 +56,12 @@ public class ModularItemSelectionFrame extends MultiRectHolderFrame {
             addRect(new RectHolderFrame(widget, 30, 27, RectHolderFrame.RectPlacement.CENTER_RIGHT) {
                 @Override
                 public boolean mouseClicked(double mouseX, double mouseY, int button) {
-                    if (widget.mouseClicked(mouseX, mouseY, button)) {
-                        selectedTab = widget;
-                        widget.setStateTriggered(true);
-                        return true;
-                    }
+                    widget.onPressed();
+//                    if (widget.mouseClicked(mouseX, mouseY, button)) {
+//                        selectedTab = widget;
+//                        widget.setStateTriggered(true);
+//                        return true;
+//                    }
                     return false;
                 }
 
@@ -70,8 +78,6 @@ public class ModularItemSelectionFrame extends MultiRectHolderFrame {
                 @Override
                 public void render(MatrixStack matrixStack, int mouseX, int mouseY, float frameTime) {
                     super.render(matrixStack, mouseX, mouseY, frameTime);
-//                    System.out.println("widget position: " + widget.getPosition());
-
                     widget.render(matrixStack, mouseX, mouseY, frameTime);
                 }
             });
@@ -80,7 +86,7 @@ public class ModularItemSelectionFrame extends MultiRectHolderFrame {
             if (i < 5) {
                 addRect(new GUISpacer(30, 3));
 
-            // bottom spacer
+                // bottom spacer
             } else {
                 addRect(new GUISpacer(30, 12));
                 doneAdding();
@@ -89,9 +95,44 @@ public class ModularItemSelectionFrame extends MultiRectHolderFrame {
         }
     }
 
-    @Override
-    public void update(double mouseX, double mouseY) {
-        super.update(mouseX, mouseY);
+    void disableContainerSlots() {
+        for (Slot slot : ((Container)container).slots) {
+            if (slot instanceof IHideableSlot) {
+                ((IHideableSlot) slot).disable();
+                slot.x = -1000;
+                slot.y = -1000;
+            }
+        }
+    }
+
+
+    public boolean mouseCLicked(int button, double mouseX, double mouseY) {
+        boolean clicked = false;
+        for(MPSRecipeTabToggleWidget recipetabtogglewidget : this.tabButtons) {
+            if (recipetabtogglewidget.mouseClicked(mouseX, mouseY, button)) {
+                if (this.selectedTab != recipetabtogglewidget) {
+                    this.selectedTab.setStateTriggered(false);
+//
+
+                    this.selectedTab = recipetabtogglewidget;
+                    this.selectedTab.setStateTriggered(true);
+                    disableContainerSlots();
+                }
+                return true;
+            }
+        }
+        return clicked;
+    }
+
+    public Optional<EquipmentSlotType> selectedType() {
+        return getSelectedTab().map(tab ->tab.getSlotType());
+    }
+
+    public boolean selectedIsSlotHovered() {
+        return getSelectedTab().map(tab->tab.isHovered()).orElse(false);
+    }
+
+    public Optional<MPSRecipeTabToggleWidget> getSelectedTab() {
         if (this.selectedTab == null) {
             this.selectedTab = this.tabButtons.get(0);
             this.selectedTab.setStateTriggered(true);
@@ -101,5 +142,12 @@ public class ModularItemSelectionFrame extends MultiRectHolderFrame {
                 widget.setStateTriggered(false);
             }
         }
+        return Optional.ofNullable(selectedTab);
+    }
+
+    @Override
+    public void update(double mouseX, double mouseY) {
+        super.update(mouseX, mouseY);
+        getSelectedTab();
     }
 }

@@ -251,6 +251,7 @@
 
   "_comment": "GUI --------------------------------------------------------------------------------",
   "_comment": "GUI selection tab",
+  "powersuits.modularitem.inventory": "Modular Item Inventory",
   "gui.powersuits.tab.tinker": "Tinker",
   "gui.powersuits.tab.keybinds": "Keybinds",
   "gui.powersuits.tab.visual": "Visual",

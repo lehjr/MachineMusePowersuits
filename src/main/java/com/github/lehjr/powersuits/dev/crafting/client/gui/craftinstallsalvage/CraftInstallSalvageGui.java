@@ -1,22 +1,23 @@
 package com.github.lehjr.powersuits.dev.crafting.client.gui.craftinstallsalvage;
 
 import com.github.lehjr.numina.util.client.gui.ExtendedContainerScreen;
-import com.github.lehjr.numina.util.client.gui.frame.CraftingFrame;
-import com.github.lehjr.numina.util.client.gui.frame.PlayerInventoryFrame;
-import com.github.lehjr.numina.util.client.gui.frame.RectHolderFrame;
+import com.github.lehjr.numina.util.client.gui.frame.*;
 import com.github.lehjr.numina.util.client.sound.Musique;
 import com.github.lehjr.numina.util.client.sound.SoundDictionary;
 import com.github.lehjr.powersuits.dev.crafting.client.gui.common.TabSelectFrame;
 import com.github.lehjr.powersuits.dev.crafting.client.gui.common.done.ModularItemSelectionFrame;
-import com.github.lehjr.powersuits.dev.crafting.client.gui.recipebooktest.RangedSlider;
+import com.github.lehjr.powersuits.dev.crafting.client.gui.recipebooktest.ScrollableInventoryFrame2;
 import com.github.lehjr.powersuits.dev.crafting.container.NuminaCraftingContainer;
 import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.recipebook.IRecipeShownListener;
 import net.minecraft.client.gui.recipebook.RecipeBookGui;
+import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.client.gui.widget.button.ImageButton;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.ClickType;
 import net.minecraft.inventory.container.Slot;
+import net.minecraft.inventory.container.WorkbenchContainer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.api.distmarker.Dist;
@@ -35,10 +36,8 @@ import java.util.List;
  */
 @OnlyIn(Dist.CLIENT)
 public class CraftInstallSalvageGui extends ExtendedContainerScreen<NuminaCraftingContainer> implements IRecipeShownListener {
-    private static final ResourceLocation RECIPE_BUTTON_LOCATION = new ResourceLocation("textures/gui/recipe_button.png");
-
     /** the recipe book. IRecipeShownListener means it HAS to be an instance of the vanilla recipe book -_- */
-    private final MPSRecipeBookGui recipeBookComponent = new MPSRecipeBookGui();
+    private final MPSRecipeBookGui recipeBookComponent;
     /** determins if the recipe book gui will be over the crafting gui */
     private boolean widthTooNarrow;
 
@@ -46,28 +45,31 @@ public class CraftInstallSalvageGui extends ExtendedContainerScreen<NuminaCrafti
     RectHolderFrame craftingHolder;
     protected TabSelectFrame tabSelectFrame;
     int spacer = 7;
-    ModularItemSelectionFrame testFrame;
+    ModularItemSelectionFrame modularItemSelectionFrame;
 
-    RangedSlider testSlider;
+    ScrollableInventoryFrame2 modularItemInventory;
 
-
+    MultiRectHolderFrame mainHolder;
 
     public CraftInstallSalvageGui(NuminaCraftingContainer container, PlayerInventory playerInventory, ITextComponent title) {
-        super(container, playerInventory, title, 340, 200);
+        super(container, playerInventory, title, 340, 217);
 
-        tabSelectFrame = new TabSelectFrame(playerInventory.player, 1, 0);
+        /** clickable buttons on the top of the GUI */
+        tabSelectFrame = new TabSelectFrame(playerInventory.player, 1);
         addFrame(tabSelectFrame);
 
+        /** player inventory */
         playerInventoryFrame = new PlayerInventoryFrame(container, 10, 37, ulGetter());
-        addFrame(playerInventoryFrame);
 
+        /** crafting grid, arrow, and result slot */
         CraftingFrame craftingFrame = new CraftingFrame(container, 0, 1, ulGetter());
         craftingFrame.setArrowOnPressed(press-> {
             Musique.playClientSound(SoundDictionary.SOUND_EVENT_GUI_SELECT, 1);
             menu.quickMoveStack(this.getMinecraft().player, menu.getResultSlotIndex());
         });
 
-        craftingHolder = new RectHolderFrame(craftingFrame, 24.0, craftingFrame.finalHeight() + 14) {
+        /** holder for the crafting grid, acts as a spacer for the sides */
+        craftingHolder = new RectHolderFrame(craftingFrame, 164.0, craftingFrame.finalHeight() + 14) {
             @Override
             public boolean mouseClicked(double mouseX, double mouseY, int button) {
                 return craftingFrame.mouseClicked(mouseX, mouseY, button);
@@ -89,340 +91,178 @@ public class CraftInstallSalvageGui extends ExtendedContainerScreen<NuminaCrafti
                 craftingFrame.render(matrixStack, mouseX, mouseY, frameTime);
             }
         };
-        addFrame(craftingHolder);
-//
-//        testFrame = new ModularItemSelectionFrame();
-//        addFrame(testFrame);
-//
-//        testSlider = new RangedSlider(new MusePoint2D(250, 100),
-//        true,
-//        100D,
-//        "test",
-//        0D,
-//        100D,
-//        50D);
-//
-//
-//        /*
-//
-//        --------------------------------------------------------------------
-//            modular item inventory frame limited to 104 height with spacer
-//            limited to 8 rows due to scroll bar
-//
-//            slot = 18x18
-//            seems to be possible up to 5 slots high.... 40 slots visible
-//--------------------------------------------------------------------------------
-//            recipe frame to top of background
-//
-//
-//--------------------------------------------------------------------------------
-//        height left for recipe book    132.0
-//        width left for recipebook 164
-//
-//
-//         */
-//
-//
+
+        /** the buttons that select the equipped modular item if any */
+        modularItemSelectionFrame = new ModularItemSelectionFrame(container);
+        addFrame(modularItemSelectionFrame);
+
+        /** the recipeBook GUI */
+        recipeBookComponent = new MPSRecipeBookGui(modularItemSelectionFrame, container);
+
+        RectHolderFrame recipeHolder = new RectHolderFrame(recipeBookComponent, 157, 136) {
+            @Override
+            public boolean mouseClicked(double mouseX, double mouseY, int button) {
+                if (recipeBookComponent.mouseClicked(mouseX, mouseY, button)) {
+                    setFocused(recipeBookComponent);
+                    return true;
+                }
+                return false;
+            }
+
+            @Override
+            public boolean mouseReleased(double mouseX, double mouseY, int button) {
+                return recipeBookComponent.mouseReleased(mouseX, mouseY, button);
+            }
+
+            @Override
+            public List<ITextComponent> getToolTip(int x, int y) {
+                return null;
+            }
+        };
+
+        /** holder for recipebook and a left side spacer */
+        MultiRectHolderFrame recipeBookHolder = new MultiRectHolderFrame(true, true, 0, 0);
+        recipeBookHolder.addRect(new GUISpacer(7, 119));
+        recipeBookHolder.addRect(recipeHolder);
+        recipeBookHolder.doneAdding();
+
+        /** inventory frame for the modular item inventory. Changes with different selected modular items */
+        modularItemInventory = new ScrollableInventoryFrame2(container, modularItemSelectionFrame, this.ulGetter());
+
+
+        /** a box to group these 2 inventory frames together */
+        MultiRectHolderFrame rightHolder = new MultiRectHolderFrame(false, true, 0,0);
+        rightHolder.addRect(modularItemInventory);
+        rightHolder.addRect(playerInventoryFrame);
+        rightHolder.doneAdding();
+
+        /** a box to group these crafting related 2 frames together */
+        MultiRectHolderFrame leftHolder = new MultiRectHolderFrame(false, true, 0, 0);
+        leftHolder.addRect(new GUISpacer(craftingHolder.finalWidth(), 13));
+        leftHolder.addRect(recipeBookHolder);
+        leftHolder.addRect(craftingHolder);
+        leftHolder.doneAdding();
+
+        mainHolder = new MultiRectHolderFrame(true, true, 0, 0);
+        mainHolder.addRect(leftHolder);
+        mainHolder.addRect(rightHolder);
+        mainHolder.doneAdding();
+        addFrame(mainHolder);
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     @Override
     public void init() {
         super.init();
         this.widthTooNarrow = this.width < 379;
         /** do not call anything recipe book related before this */
-        this.recipeBookComponent.init(this.width, this.height, this.getMinecraft(), this.widthTooNarrow, this.menu);
-        this.leftPos = this.recipeBookComponent.updateScreenPosition(this.widthTooNarrow, this.width, this.imageWidth);
+        this.recipeBookComponent.init();
         this.children.add(this.recipeBookComponent);
         this.setInitialFocus(this.recipeBookComponent);
 
+        modularItemSelectionFrame.setMeLeftOf(mainHolder);
+        modularItemSelectionFrame.setTop(mainHolder.finalTop());
+        modularItemSelectionFrame.initGrowth();
 
-
-
-
-
-
-        this.addButton(new ImageButton(this.leftPos + 5, this.height / 2 - 49, 20, 18, 0, 0, 19, RECIPE_BUTTON_LOCATION, (p_214076_1_) -> {
-            this.recipeBookComponent.initVisuals(this.widthTooNarrow);
-            this.recipeBookComponent.toggleVisibility();
-            this.leftPos = this.recipeBookComponent.updateScreenPosition(this.widthTooNarrow, this.width, this.imageWidth);
-            ((ImageButton)p_214076_1_).setPosition(this.leftPos + 5, this.height / 2 - 49);
-        }));
         this.titleLabelX = 29;
 
+        mainHolder.setPosition(backgroundRect.getPosition());
+        mainHolder.initGrowth();
 
-        playerInventoryFrame.setRight(backgroundRect.finalRight());
-        playerInventoryFrame.setBottom(backgroundRect.finalBottom());
-        playerInventoryFrame.initGrowth();
-
-
-
-
-
-
-
-//        testFrame.setBottom(backgroundRect.finalBottom());
-//        testFrame.setMeLeftOf(backgroundRect);
-//        testFrame.setPosition(testFrame.getPosition());
-//        testFrame.initGrowth();
-//
-//        testSlider.setRight(backgroundRect.finalRight() - 7);
-//        testSlider.setTop( backgroundRect.finalTop() + 7);
-//        testSlider.initGrowth();
-//        testSlider.enableAndShow();
-//        testSlider.setTickVal(10);
-//        testSlider.setShowTickLines(true);
-//
-
-//        craftingFrame.setLeft( backgroundRect.finalLeft() + spacer);
-//        craftingFrame.setBottom( backgroundRect.finalBottom() - spacer);
-//        craftingFrame.initGrowth();
-//
-//        // FIXME: location?
-//        this.inventoryLabelX = (int)playerInventoryFrame.finalLeft();
-//        this.inventoryLabelY = (int)playerInventoryFrame.finalTop();
-//
-////         System.out.println("width needs to be: " + (backgroundRect.finalWidth() - playerInventoryFrame.finalWidth()));
-////        System.out.println("crafting holder: " + craftingHolder.toString());
-////
-        craftingHolder.setMeLeftOf(playerInventoryFrame); // FIXME: THIS CHANGES ACTUAL WIDTH
-        craftingHolder.setBottom(backgroundRect.finalBottom());
-        craftingHolder.setLeft(backgroundRect.finalLeft());
-        craftingHolder.initGrowth();
-//
-//////        craftingHolder.setWidth(backgroundRect.finalWidth() - playerInventoryFrame.finalWidth());
-//        craftingHolder.initGrowth();
-////
-////        System.out.println("final width = " + (playerInventoryFrame.finalLeft() - backgroundRect.finalLeft()));
-//
-//
-//        /*
-//
-//            try 738 x 442 and center
-//
-//            space between arrow and left and right = 7 each
-//            space between right side of outer frame and result is 31
-//
-//            vanilla total inventory height = 96
-//
-//            inventory spacing:
-//            top = 13
-//            middle = 4
-//            bottom = 7
-//
-//
-//space between crafting grid and result = 108/3 = 36
-//
-//
-//
-//
-//
-//
-//
-//
-//            vanilla scaled rect 528 x 428
-//            mine 528 x 498
-//
-//            scale 3 pixes on screenshot = 1
-//
-//Center: x: 240.0, y: 136.0
-//Left: 152.0
-//Right: 328.0
-//Bottom: 219.0
-//Top: 53.0
-//Width: 176.0
-//Height: 166.0
-//Background Colour: Colour{r=0.776, g=0.776, b=0.776, a=1.0}
-//Background Colour 2: null
-//Border Colour: Colour{r=0.0, g=0.0, b=0.0, a=1.0}
-//
-//
-//
-//
-//         */
-//
-//
-//        System.out.println("fixme");
-//
-//
-//
         tabSelectFrame.init(leftPos, getGuiTop(), getGuiLeft() + getXSize(), getGuiTop() + getYSize());
-//
-////
-////        recipeBookButton.setOnPressed((button)-> {
-////            /** this is everything the button does when pressed */
-////            this.recipeBookComponent.initVisuals(this.widthTooNarrow);
-////            if(!this.recipeBookComponent.isVisible()) {
-////                this.recipeBookComponent.toggleVisibility();
-////            }
-////            double oldLeft = leftPos;
-////            this.leftPos = this.recipeBookComponent.updateScreenPosition(this.widthTooNarrow, this.width, this.imageWidth);
-////            guiElementsMoveLeft(leftPos - oldLeft);
-////            Musique.playClientSound(SoundDictionary.SOUND_EVENT_GUI_SELECT, 1);
-////        });
-//        this.titleLabelX = 29;
-//
-//
-//        if(!this.recipeBookComponent.isVisible()) {
-//            this.recipeBookComponent.toggleVisibility();
-//        }
-//
-//        recipeBookComponent.setUL(new MusePoint2D(backgroundRect.finalLeft(), backgroundRect.finalTop()).plus(7, 7));
     }
-
-
-
-
-
-
-
-
-
 
     public void tick() {
         super.tick();
         this.recipeBookComponent.tick();
     }
 
+    public boolean mouseClicked(double mouseX, double mouseY, int button) {
+        if (this.recipeBookComponent.mouseClicked(mouseX, mouseY, button)) {
+            this.setFocused(this.recipeBookComponent);
+            return true;
+        } else {
+            return this.widthTooNarrow && this.recipeBookComponent.isVisible() ? true : super.mouseClicked(mouseX, mouseY, button);
+        }
+    }
+
+    @Override
+    public boolean mouseScrolled(double mouseX, double mouseY, double dWheel) {
+        if (super.mouseScrolled(mouseX, mouseY, dWheel)) {
+            return true;
+        }
+
+        return this.recipeBookComponent.mouseScrolled(mouseX, mouseY, dWheel);
+    }
 
 
 
-    //    @Override
-//    public void update(double x, double y) {
-//        super.update(x, y);
-//
-//        testSlider.update(x, y);
-//    }
 
 
+    /**
+     * Overridden to fix inventory frames rendering behind background
+     * @param matrixStack
+     * @param mouseX
+     * @param mouseY
+     * @param frameTime
+     */
+    @Override
+    public void renderBackgroundRect(MatrixStack matrixStack, int mouseX, int mouseY, float frameTime) {
+        matrixStack.pushPose();
+        matrixStack.translate(0,0, -1);
+        super.renderBackgroundRect(matrixStack, mouseX, mouseY, frameTime);
+        matrixStack.popPose();
+    }
 
 
     @Override
     public void render(MatrixStack matrixStack, int mouseX, int mouseY, float frameTime) {
-//        System.out.println("width left: " + (playerInventoryFrame.finalLeft() - backgroundRect.finalLeft()));
-        super.update(mouseX, mouseY);
+        modularItemSelectionFrame.setTop(mainHolder.finalTop());
+        modularItemSelectionFrame.setRight(mainHolder.finalLeft());
+
         this.renderBackground(matrixStack);
-//        backgroundRect.render(matrixStack, mouseX, mouseY, frameTime); // FIXME!!
         if (backgroundRect.doneGrowing()) {
-//            arrow.render(matrixStack, mouseX, mouseY, frameTime, getBlitOffset());
-            if (this.recipeBookComponent.isVisible() && this.widthTooNarrow) {
-                this.renderBg(matrixStack, frameTime, mouseX, mouseY);
-                this.recipeBookComponent.render(matrixStack, mouseX, mouseY, frameTime);
-            } else {
-                this.recipeBookComponent.render(matrixStack, mouseX, mouseY, frameTime);
-                super.render(matrixStack, mouseX, mouseY, frameTime);
-                this.recipeBookComponent.renderGhostRecipe(matrixStack, this.leftPos, this.topPos, true, frameTime);
-            }
+            super.render(matrixStack, mouseX, mouseY, frameTime);
+            this.recipeBookComponent.renderGhostRecipe(matrixStack, this.leftPos, this.topPos, true, frameTime);
             this.renderTooltip(matrixStack, mouseX, mouseY);
             this.recipeBookComponent.renderTooltip(matrixStack, this.leftPos, this.topPos, mouseX, mouseY);
 //            this.setListenerDefault(this.recipeBookComponent); // what did this do?
             tabSelectFrame.render(matrixStack, mouseX, mouseY, frameTime);
             drawToolTip(matrixStack, mouseX, mouseY);
-
-//            renderLabels(matrixStack, mouseX, mouseY);
         } else {
             renderBackgroundRect(matrixStack, mouseX, mouseY, frameTime);
         }
-
-//        testSlider.render(matrixStack, mouseX, mouseY, frameTime);
-
-//        System.out.println("sliderval: " + testSlider.getValue());
     }
 
-
-
-
-
-
-
-
     @Override
-    protected void renderLabels(MatrixStack matrixStack, int mouseX, int mouseY) {
+    public void renderLabels(MatrixStack matrixStack, int mouseX, int mouseY) {
         matrixStack.pushPose();
         matrixStack.translate(0,0, 10);
-        this.font.draw(matrixStack, this.title, (float)this.titleLabelX, (float)this.titleLabelY, 4210752);
-        this.font.draw(matrixStack, this.inventory.getDisplayName(), (float)this.inventoryLabelX, (float)this.inventoryLabelY, 4210752);
+        this.modularItemInventory.renderLabels(matrixStack, mouseX, mouseY);
+        this.playerInventoryFrame.renderLabels(matrixStack, mouseX, mouseY);
         matrixStack.popPose();
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-    @Override
-    protected boolean isHovering(int p_195359_1_, int p_195359_2_, int p_195359_3_, int p_195359_4_, double p_195359_5_, double p_195359_7_) {
-        return (!this.widthTooNarrow || !this.recipeBookComponent.isVisible()) && super.isHovering(p_195359_1_, p_195359_2_, p_195359_3_, p_195359_4_, p_195359_5_, p_195359_7_);
-    }
-
-//    public boolean mouseClicked(double p_231044_1_, double p_231044_3_, int p_231044_5_) {
-//        if (this.recipeBookComponent.mouseClicked(p_231044_1_, p_231044_3_, p_231044_5_)) {
-//            this.setFocused(this.recipeBookComponent);
-//            return true;
-//        } else {
-//            return this.widthTooNarrow && this.recipeBookComponent.isVisible() ? true : super.mouseClicked(p_231044_1_, p_231044_3_, p_231044_5_);
-//        }
-//    }
-
-
-
-    @Override
-    public boolean mouseClicked(double mouseX, double mouseY, int mouseButton) {
-//        if (testSlider.mouseClicked(mouseX, mouseY, mouseButton)) {
-//            System.out.println("slidervalue: " + testSlider.getValue());
-////            System.out.println("slider testvalue: " + testSlider.testValue());
-//
-//          return true;
-//        }
-
-        if (this.recipeBookComponent.mouseClicked(mouseX, mouseY, mouseButton)) {
-            this.setFocused(this.recipeBookComponent);
-            return true;
-        } else {
-            return this.widthTooNarrow && this.recipeBookComponent.isVisible() ? true : super.mouseClicked(mouseX, mouseY, mouseButton);
-        }
-    }
-
-    @Override
-    public boolean mouseReleased(double x, double y, int which) {
-//        if (testSlider.mouseReleased(x, y, which)) {
-//            return true;
-//        }
-        return super.mouseReleased(x, y, which);
-    }
-
+    /**
+     * Vanilla behaviour does not include the tabs, but does include everything contained within the 2 backgrounds
+     * @param mouseX
+     * @param mouseY
+     * @param scaledWidth
+     * @param scaledHeight
+     * @param mouseButton
+     * @return
+     */
     @Override
     protected boolean hasClickedOutside(double mouseX, double mouseY, int scaledWidth, int scaledHeight, int mouseButton) {
         boolean flag = mouseX < (double)scaledWidth || mouseY < (double)scaledHeight || mouseX >= (double)(scaledWidth + this.imageWidth) || mouseY >= (double)(scaledHeight + this.imageHeight);
-        return this.recipeBookComponent.hasClickedOutside(mouseX, mouseY, this.leftPos, this.topPos, this.imageWidth, this.imageHeight, mouseButton) && flag;
+        boolean clickedOutside = this.recipeBookComponent.hasClickedOutside(mouseX, mouseY, this.leftPos, this.topPos, this.imageWidth, this.imageHeight, mouseButton) && flag;
+        return clickedOutside;
     }
 
     /**
      * Called when the mouse is clicked over a slot or outside the gui.
      */
     @Override
-    protected void slotClicked(Slot slotIn, int slotId, int mouseButton, ClickType type) {
+    public void slotClicked(Slot slotIn, int slotId, int mouseButton, ClickType type) {
         super.slotClicked(slotIn, slotId, mouseButton, type);
         this.recipeBookComponent.slotClicked(slotIn);
     }

@@ -1,6 +1,7 @@
 package com.github.lehjr.powersuits.dev.crafting.client.gui.common.done;
 
 import com.github.lehjr.numina.basemod.NuminaObjects;
+import com.github.lehjr.numina.util.client.gui.clickable.IClickable;
 import com.github.lehjr.numina.util.client.gui.gemoetry.*;
 import com.github.lehjr.numina.util.client.render.MuseIconUtils;
 import com.github.lehjr.numina.util.math.Colour;
@@ -20,9 +21,14 @@ import javax.annotation.Nonnull;
 /**
  *
  */
-public class MPSRecipeTabToggleWidget extends RecipeTabToggleWidget implements IDrawableRect {
+public class MPSRecipeTabToggleWidget extends RecipeTabToggleWidget implements IDrawableRect, IClickable {
     private final Colour activeColor = Colour.GREY_GUI_BACKGROUND;
     private final Colour inactiveColor = Colour.DARK_GREY.withAlpha(0.8F);
+    IPressable onPressed;
+    IReleasable onReleased;
+    boolean isEnabled = true;
+    boolean isVisible = true;
+
     DrawableRelativeRect tabRectangle = new DrawableRelativeRect(0, 0, 0, 27, inactiveColor, Colour.BLACK);
     Minecraft minecraft;
     @Nonnull
@@ -75,6 +81,16 @@ public class MPSRecipeTabToggleWidget extends RecipeTabToggleWidget implements I
         } else {
             minecraft.getItemRenderer().renderAndDecorateItem(icon, this.x + 9 + offset, this.y + 6);
         }
+    }
+
+    @Override
+    public boolean mouseReleased(double mouseX, double mouseY, int which) {
+        return tabRectangle.containsPoint(mouseX, mouseY) && super.mouseReleased(mouseX, mouseY, which);
+    }
+
+    @Override
+    public boolean mouseClicked(double mouseX, double mouseY, int which) {
+        return tabRectangle.containsPoint(mouseX, mouseY) && super.mouseClicked(mouseX, mouseY, which);
     }
 
     @Override
@@ -200,6 +216,50 @@ public class MPSRecipeTabToggleWidget extends RecipeTabToggleWidget implements I
     public void move(MusePoint2D musePoint2D) {
         tabRectangle.move(musePoint2D);
         super.setPosition((int)tabRectangle.finalLeft(), (int)tabRectangle.finalTop());
+    }
+
+    @Override
+    public void setEnabled(boolean isEnabled) {
+        this.isEnabled = isEnabled;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return isEnabled;
+    }
+
+    @Override
+    public void setVisible(boolean isVisible) {
+        this.isVisible = isVisible;
+    }
+
+    @Override
+    public boolean isVisible() {
+        return isVisible;
+    }
+
+    @Override
+    public void setOnPressed(IPressable onPressed) {
+        this.onPressed = onPressed;
+    }
+
+    @Override
+    public void setOnReleased(IReleasable onReleased) {
+        this.onReleased = onReleased;
+    }
+
+    @Override
+    public void onPressed() {
+        if (this.isVisible() && this.isEnabled() && this.onPressed != null) {
+            this.onPressed.onPressed(this);
+        }
+    }
+
+    @Override
+    public void onReleased() {
+        if (this.isVisible() && this.isEnabled() && this.onReleased != null) {
+            this.onReleased.onReleased(this);
+        }
     }
 
     @Override
