@@ -109,6 +109,36 @@ public class SpiralPointToPoint2D extends MusePoint2D {
     }
 
     @Override
+    public SpiralPointToPoint2D plus(MusePoint2D b) {
+        super.plus(b);
+        return this;
+    }
+
+    @Override
+    public SpiralPointToPoint2D plus(double x, double y) {
+        super.plus(x, y);
+        return this;
+    }
+
+    @Override
+    public SpiralPointToPoint2D minus(MusePoint2D b) {
+        super.minus(b);
+        return this;
+    }
+
+    @Override
+    public SpiralPointToPoint2D minus(double x, double y) {
+        super.minus(x, y);
+        return this;
+    }
+
+    @Override
+    public SpiralPointToPoint2D times(double scalefactor) {
+        super.times(scalefactor);
+        return this;
+    }
+
+    @Override
     public String toString() {
         return "\ntarget.X: " + x + ", target.Y: " + y +
                 "\nactualX: " + getX() + "actualX: " + getY() +

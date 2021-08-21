@@ -52,6 +52,11 @@ public abstract class Clickable extends RelativeRect implements IClickable {
     }
 
     @Override
+    public void setPosition(MusePoint2D positionIn) {
+        setUL(positionIn.minus(finalWidth() * 0.5, finalHeight() * 0.5));
+    }
+
+    @Override
     public float getZLevel() {
         return blitOffset;
     }

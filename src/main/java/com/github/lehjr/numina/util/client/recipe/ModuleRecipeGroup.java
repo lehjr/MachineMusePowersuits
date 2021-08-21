@@ -21,4 +21,17 @@ public class ModuleRecipeGroup extends RecipeList {
         this.tier = tier;
         this.group = group;
     }
+
+    @Override
+    public boolean hasKnownRecipes() {
+        return super.hasKnownRecipes();
+    }
+
+    public int getTier() {
+        return tier;
+    }
+
+    public String getGroup() {
+        return group;
+    }
 }

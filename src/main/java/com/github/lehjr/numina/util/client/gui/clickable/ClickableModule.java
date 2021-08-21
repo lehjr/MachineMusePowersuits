@@ -65,7 +65,9 @@ public class ClickableModule extends Clickable {
     public static final int offsety = 8;
 
     public ClickableModule(@Nonnull ItemStack module, MusePoint2D position, int inventorySlot, EnumModuleCategory category) {
-        super(position);
+        super();
+        setWH(new MusePoint2D(16, 16));
+        super.setPosition(position);
         this.module = module;
         this.inventorySlot = inventorySlot;
         this.category = category;
@@ -126,7 +128,7 @@ public class ClickableModule extends Clickable {
         // TODO: extra text and options to disable if player doesn't have the module available
 
         if (!getModule().isEmpty()) {
-            MuseRenderer.drawModuleAt(matrixStack, getPosition().getX() - offsetx, getPosition().getY() - offsety, getModule(), true);
+            MuseRenderer.drawModuleAt(matrixStack, left(), top(), getModule(), true);
             if (!allowed) {
                 matrixStack.pushPose();
                 matrixStack.translate(0, 0, 250);
@@ -140,7 +142,7 @@ public class ClickableModule extends Clickable {
                 matrixStack.pushPose();
                 matrixStack.translate(0, 0,250);
                 NuminaRenderState.glowOn();
-                MuseIconUtils.getIcon().checkmark.draw(matrixStack, getPosition().getX() - offsetx + 1, getPosition().getY() - offsety + 1, checkmarkcolour.withAlpha(0.6F));
+                MuseIconUtils.getIcon().checkmark.draw(matrixStack, left() + 1, top() + 1, checkmarkcolour.withAlpha(0.6F));
                 NuminaRenderState.glowOff();
                 matrixStack.popPose();
             }
@@ -149,9 +151,7 @@ public class ClickableModule extends Clickable {
 
     @Override
     public boolean hitBox(double x, double y) {
-        boolean hitx = Math.abs(x - getPosition().getX()) < 8;
-        boolean hity = Math.abs(y - getPosition().getY()) < 8;
-        return hitx && hity;
+        return containsPoint(x, y);
     }
 
     @Nonnull

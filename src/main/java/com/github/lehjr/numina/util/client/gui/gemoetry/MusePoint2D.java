@@ -35,6 +35,8 @@ package com.github.lehjr.numina.util.client.gui.gemoetry;
  * @author MachineMuse
  */
 public class MusePoint2D {
+    public static final MusePoint2D ZERO = new MusePoint2D(0,0);
+
     protected double x;
     protected double y;
 
