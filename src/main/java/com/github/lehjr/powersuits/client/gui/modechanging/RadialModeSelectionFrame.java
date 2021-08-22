@@ -32,7 +32,10 @@ import com.github.lehjr.numina.util.capabilities.inventory.modechanging.IModeCha
 import com.github.lehjr.numina.util.capabilities.module.powermodule.EnumModuleCategory;
 import com.github.lehjr.numina.util.client.gui.clickable.ClickableModule;
 import com.github.lehjr.numina.util.client.gui.frame.IGuiFrame;
-import com.github.lehjr.numina.util.client.gui.gemoetry.*;
+import com.github.lehjr.numina.util.client.gui.gemoetry.IDrawable;
+import com.github.lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
+import com.github.lehjr.numina.util.client.gui.gemoetry.RelativeRect;
+import com.github.lehjr.numina.util.client.gui.gemoetry.SpiralPointToPoint2D;
 import com.github.lehjr.numina.util.client.render.MuseRenderer;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.entity.player.PlayerEntity;
@@ -43,7 +46,7 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RadialModeSelectionFrame implements IGuiFrame {
+public class RadialModeSelectionFrame extends RelativeRect implements IGuiFrame {
     boolean visible = true;
     boolean enabled = true;
     protected final long spawnTime;
@@ -52,110 +55,27 @@ public class RadialModeSelectionFrame implements IGuiFrame {
     protected int selectedModuleNew = -1;
 
     protected PlayerEntity player;
-    protected MusePoint2D center;
     protected double radius;
     protected ItemStack stack;
-    RelativeRect rect;
     float zLevel;
 
     public RadialModeSelectionFrame(MusePoint2D topleft, MusePoint2D bottomright, PlayerEntity player, float zLevel) {
-        spawnTime = System.currentTimeMillis();
+        super(topleft, bottomright);
+                spawnTime = System.currentTimeMillis();
         this.player = player;
-        rect = new RelativeRect(topleft, bottomright);
-        center = rect.center();
-        this.radius = Math.min(rect.height(), rect.width());
+        this.radius = Math.min(finalWidth(), finalHeight());
         this.stack = player.inventory.getSelected();
         this.zLevel = zLevel;
         loadItems();
     }
 
     @Override
-    public IRect init(double left, double top, double right, double bottom) {
-        rect.init(left, top, right, bottom);
-        center = rect.center();
-        this.radius = Math.min(rect.height(), rect.width());
+    public RelativeRect init(double left, double top, double right, double bottom) {
+        super.init(left, top, right, bottom);
+        super.initGrowth();
+        this.radius = Math.min(finalWidth(), finalHeight());
         modeButtons.clear();
         return this;
-    }
-
-    @Override
-    public MusePoint2D getUL() {
-        return rect.getUL();
-    }
-
-    @Override
-    public MusePoint2D getWH() {
-        return rect.getWH();
-    }
-
-    @Override
-    public double left() {
-        return rect.left();
-    }
-
-    @Override
-    public double finalLeft() {
-        return rect.finalLeft();
-    }
-
-    @Override
-    public double top() {
-        return rect.top();
-    }
-
-    @Override
-    public double finalTop() {
-        return rect.finalTop();
-    }
-
-    @Override
-    public double right() {
-        return rect.right();
-    }
-
-    @Override
-    public double finalRight() {
-        return rect.finalRight();
-    }
-
-    @Override
-    public double bottom() {
-        return rect.bottom();
-    }
-
-    @Override
-    public double finalBottom() {
-        return rect.finalBottom();
-    }
-
-    @Override
-    public double width() {
-        return rect.width();
-    }
-
-    @Override
-    public double finalWidth() {
-        return rect.finalWidth();
-    }
-
-    @Override
-    public double height() {
-        return rect.height();
-    }
-
-    @Override
-    public double finalHeight() {
-        return rect.finalHeight();
-    }
-
-    @Override
-    public IRect setUL(MusePoint2D musePoint2D) {
-        return rect.setUL(musePoint2D);
-    }
-
-    @Override
-    public IRect setWH(MusePoint2D musePoint2D) {
-        return rect.setWH(musePoint2D);
     }
 
     @Override
@@ -189,6 +109,8 @@ public class RadialModeSelectionFrame implements IGuiFrame {
                 if (handler instanceof IModeChangingItem) {
                     ((IModeChangingItem) handler).setActiveMode(getSelectedModule().getInventorySlot());
                     NuminaPackets.CHANNEL_INSTANCE.sendToServer(new ModeChangeRequestPacket(getSelectedModule().getInventorySlot(), player.inventory.selected));
+
+
                 }
             });
         }
@@ -211,7 +133,7 @@ public class RadialModeSelectionFrame implements IGuiFrame {
 
     @Override
     public IDrawable setZLevel(float v) {
-        return null;
+        return this;
     }
 
     private void loadItems() {
@@ -224,7 +146,7 @@ public class RadialModeSelectionFrame implements IGuiFrame {
                         selectedModuleOriginal = activeMode;
                     int modeNum = 0;
                     for (int mode : modes) {
-                        ClickableModule clickie = new ClickableModule(handler.getStackInSlot(mode), new SpiralPointToPoint2D(center, radius, ((3D * Math.PI / 2) - ((2D * Math.PI * modeNum) / modes.size())), 250D), mode, EnumModuleCategory.NONE);
+                        ClickableModule clickie = new ClickableModule(handler.getStackInSlot(mode), new SpiralPointToPoint2D(getPosition(), radius, ((3D * Math.PI / 2) - ((2D * Math.PI * modeNum) / modes.size())), 250D), mode, EnumModuleCategory.NONE);
                         modeButtons.add(clickie);
                         modeNum ++;
                     }
@@ -272,8 +194,8 @@ public class RadialModeSelectionFrame implements IGuiFrame {
     }
 
     @Override
-    public IRect getRect() {
-        return rect;
+    public RelativeRect getRect() {
+        return this;
     }
 
     @Override
@@ -294,81 +216,6 @@ public class RadialModeSelectionFrame implements IGuiFrame {
     @Override
     public boolean isVisible() {
         return visible;
-    }
-
-    @Override
-    public IRect setLeft(double v) {
-        return rect.setLeft(v);
-    }
-
-    @Override
-    public IRect setRight(double v) {
-        return rect.setRight(v);
-    }
-
-    @Override
-    public IRect setTop(double v) {
-        return rect.setTop(v);
-    }
-
-    @Override
-    public IRect setBottom(double v) {
-        return rect.setBottom(v);
-    }
-
-    @Override
-    public IRect setWidth(double v) {
-        return rect.setWidth(v);
-    }
-
-    @Override
-    public IRect setHeight(double v) {
-        return rect.setHeight(v);
-    }
-
-    @Override
-    public void move(MusePoint2D musePoint2D) {
-        rect.move(musePoint2D);
-    }
-
-    @Override
-    public void move(double v, double v1) {
-        rect.move(v, v1);
-    }
-
-    @Override
-    public void setPosition(MusePoint2D musePoint2D) {
-        rect.setPosition(musePoint2D);
-    }
-
-    @Override
-    public boolean growFromMiddle() {
-        return rect.growFromMiddle();
-    }
-
-    @Override
-    public void initGrowth() {
-        rect.initGrowth();
-    }
-
-    @Override
-    public IRect setMeLeftOf(IRect relativeRect) {
-        return rect.setMeLeftOf(relativeRect);
-    }
-
-    @Override
-    public IRect setMeRightOf(IRect relativeRect) {
-        return rect.setMeRightOf(relativeRect);
-    }
-
-    @Override
-    public IRect setMeAbove(IRect relativeRect) {
-        return rect.setMeAbove(relativeRect);
-    }
-
-    @Override
-    public IRect setMeBelow(IRect relativeRect) {
-        return null;
     }
 
     @Override

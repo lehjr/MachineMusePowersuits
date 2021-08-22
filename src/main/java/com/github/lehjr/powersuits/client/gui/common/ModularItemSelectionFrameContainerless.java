@@ -1,26 +1,22 @@
-package com.github.lehjr.powersuits.dev.crafting.client.gui.common.done;
+package com.github.lehjr.powersuits.client.gui.common;
 
-import com.github.lehjr.numina.util.capabilities.inventory.modularitem.IModularItem;
 import com.github.lehjr.numina.util.client.gui.frame.GUISpacer;
 import com.github.lehjr.numina.util.client.gui.frame.MultiRectHolderFrame;
 import com.github.lehjr.numina.util.client.gui.frame.RectHolderFrame;
-import com.github.lehjr.numina.util.client.gui.slot.IHideableSlot;
-import com.github.lehjr.powersuits.dev.crafting.container.IModularItemContainerSlotProvider;
 import com.google.common.collect.Lists;
 import com.mojang.blaze3d.matrix.MatrixStack;
-import net.minecraft.client.Minecraft;
 import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.inventory.container.Container;
-import net.minecraft.inventory.container.Slot;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraftforge.items.CapabilityItemHandler;
 
 import java.util.List;
 import java.util.Optional;
 
-public class ModularItemSelectionFrame<C extends IModularItemContainerSlotProvider>  extends MultiRectHolderFrame {
-    C container;
+/**
+ * A containerless GUI version of the tab toggle widget holder
+ *
+ * TODO: replace Modular Item Selection frame with this?
+ */
+public class ModularItemSelectionFrameContainerless  extends MultiRectHolderFrame {
     final EquipmentSlotType[] equipmentSlotTypes = new EquipmentSlotType[]{
             EquipmentSlotType.HEAD,
             EquipmentSlotType.CHEST,
@@ -30,38 +26,23 @@ public class ModularItemSelectionFrame<C extends IModularItemContainerSlotProvid
             EquipmentSlotType.OFFHAND
     };
 
-    public final List<MPSRecipeTabToggleWidget> tabButtons = Lists.newArrayList();
-    public MPSRecipeTabToggleWidget selectedTab = null;
-    public ModularItemSelectionFrame(C container ) {
+    public final List<ModularItemTabToggleWidget> tabButtons = Lists.newArrayList();
+    public ModularItemTabToggleWidget selectedTab = null;
+
+    public ModularItemSelectionFrameContainerless() {
         super(false, true, 30, 0);
         /** 6 widgets * 27 high each = 162 + 5 spacers at 3 each = 177 gui height is 200 so 23 to split */
-        this.container = container;
-
         // top spacer
         addRect(new GUISpacer(30, 11));
-
-        Minecraft minecraft = Minecraft.getInstance();
         int i=0;
         // look for modular items
         for (EquipmentSlotType slotType : equipmentSlotTypes) {
-            ItemStack itemStack = minecraft.player.getItemBySlot(slotType);
-            MPSRecipeTabToggleWidget widget = new MPSRecipeTabToggleWidget(itemStack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).map(iItemHandler -> {
-                if (iItemHandler instanceof IModularItem) {
-                    return itemStack;
-                }
-                return ItemStack.EMPTY;
-            }).orElse(ItemStack.EMPTY), slotType);
+            ModularItemTabToggleWidget widget = new ModularItemTabToggleWidget(slotType);
             tabButtons.add(widget);
-
             addRect(new RectHolderFrame(widget, 30, 27, RectHolderFrame.RectPlacement.CENTER_RIGHT) {
                 @Override
                 public boolean mouseClicked(double mouseX, double mouseY, int button) {
                     widget.onPressed();
-//                    if (widget.mouseClicked(mouseX, mouseY, button)) {
-//                        selectedTab = widget;
-//                        widget.setStateTriggered(true);
-//                        return true;
-//                    }
                     return false;
                 }
 
@@ -96,26 +77,16 @@ public class ModularItemSelectionFrame<C extends IModularItemContainerSlotProvid
     }
 
     void disableContainerSlots() {
-        for (Slot slot : ((Container)container).slots) {
-            if (slot instanceof IHideableSlot) {
-                ((IHideableSlot) slot).disable();
-                slot.x = -1000;
-                slot.y = -1000;
-            }
-        }
     }
-
 
     public boolean mouseCLicked(int button, double mouseX, double mouseY) {
         boolean clicked = false;
-        for(MPSRecipeTabToggleWidget recipetabtogglewidget : this.tabButtons) {
+        for(ModularItemTabToggleWidget recipetabtogglewidget : this.tabButtons) {
             if (recipetabtogglewidget.mouseClicked(mouseX, mouseY, button)) {
                 if (this.selectedTab != recipetabtogglewidget) {
-                    this.selectedTab.setStateTriggered(false);
-//
-
+                    this.selectedTab.setStateActive(false);
                     this.selectedTab = recipetabtogglewidget;
-                    this.selectedTab.setStateTriggered(true);
+                    this.selectedTab.setStateActive(true);
                     disableContainerSlots();
                 }
                 return true;
@@ -132,14 +103,14 @@ public class ModularItemSelectionFrame<C extends IModularItemContainerSlotProvid
         return getSelectedTab().map(tab->tab.isHovered()).orElse(false);
     }
 
-    public Optional<MPSRecipeTabToggleWidget> getSelectedTab() {
+    public Optional<ModularItemTabToggleWidget> getSelectedTab() {
         if (this.selectedTab == null) {
             this.selectedTab = this.tabButtons.get(0);
-            this.selectedTab.setStateTriggered(true);
+            this.selectedTab.setStateActive(true);
         }
-        for (MPSRecipeTabToggleWidget widget : tabButtons) {
+        for (ModularItemTabToggleWidget widget : tabButtons) {
             if (widget != selectedTab) {
-                widget.setStateTriggered(false);
+                widget.setStateActive(false);
             }
         }
         return Optional.ofNullable(selectedTab);

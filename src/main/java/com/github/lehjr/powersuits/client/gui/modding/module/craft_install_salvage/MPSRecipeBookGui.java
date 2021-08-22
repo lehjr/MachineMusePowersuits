@@ -1,4 +1,4 @@
-package com.github.lehjr.powersuits.dev.crafting.client.gui.craftinstallsalvage;
+package com.github.lehjr.powersuits.client.gui.modding.module.craft_install_salvage;
 
 import com.github.lehjr.numina.util.capabilities.inventory.modularitem.IModularItem;
 import com.github.lehjr.numina.util.capabilities.module.powermodule.EnumModuleCategory;
@@ -11,8 +11,8 @@ import com.github.lehjr.numina.util.client.gui.gemoetry.IRect;
 import com.github.lehjr.numina.util.client.gui.gemoetry.RelativeRect;
 import com.github.lehjr.numina.util.client.recipe.ModuleRecipeGroup;
 import com.github.lehjr.numina.util.math.Colour;
-import com.github.lehjr.powersuits.dev.crafting.client.gui.common.done.MPSRecipeTabToggleWidget;
-import com.github.lehjr.powersuits.dev.crafting.client.gui.common.done.ModularItemSelectionFrame;
+import com.github.lehjr.powersuits.client.gui.common.ModularItemSelectionFrame;
+import com.github.lehjr.powersuits.client.gui.common.ModularItemTabToggleWidget;
 import com.github.lehjr.powersuits.dev.crafting.client.gui.recipebooktest.RectTextFieldWidget;
 import com.google.common.collect.Lists;
 import com.mojang.blaze3d.matrix.MatrixStack;
@@ -241,11 +241,11 @@ public class MPSRecipeBookGui extends RecipeBookGui implements IGuiFrame {
 
         /** Fetch a list of modules valid for the selected ModularItem. Note recipes need to be unlocked to show */
         modularItemSelectionFrame.getSelectedTab().ifPresent(tab -> {
-            if (tab instanceof MPSRecipeTabToggleWidget) {
-                ItemStack modularItem = minecraft.player.getItemBySlot(((MPSRecipeTabToggleWidget) tab).getSlotType());
+            if (tab instanceof ModularItemTabToggleWidget) {
+                ItemStack modularItem = minecraft.player.getItemBySlot(tab.getSlotType());
                 modularItem.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(iItemHandler -> {
                     if (iItemHandler instanceof IModularItem) {
-                        List<RecipeList> list1 = this.book.getCollection(((MPSRecipeTabToggleWidget) tab).getCategory());
+                        List<RecipeList> list1 = this.book.getCollection(tab.getCategory());
                         for (RecipeList recipeList : list1) {
                             if (recipeList.hasSingleResultItem()) {
                                 isValidModuleAndList(recipeList.getRecipes().get(0)
@@ -774,10 +774,7 @@ public class MPSRecipeBookGui extends RecipeBookGui implements IGuiFrame {
 
                 // fixme: move to frame holder ?
             } else if (this.filterButton.mouseClicked(mouseX, mouseY, button)) {
-//                boolean flag = this.toggleFiltering1();
-//                this.filterButton2.setStateTriggered(flag);
-//                this.sendUpdateSettings();
-//                this.updateCollections(false);
+
                 return true;
             } else {
                 if (modularItemSelectionFrame.mouseCLicked(button, mouseX, mouseY)) {

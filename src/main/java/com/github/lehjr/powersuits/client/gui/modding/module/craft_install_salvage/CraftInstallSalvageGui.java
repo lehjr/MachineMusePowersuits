@@ -1,24 +1,19 @@
-package com.github.lehjr.powersuits.dev.crafting.client.gui.craftinstallsalvage;
+package com.github.lehjr.powersuits.client.gui.modding.module.craft_install_salvage;
 
 import com.github.lehjr.numina.util.client.gui.ExtendedContainerScreen;
 import com.github.lehjr.numina.util.client.gui.frame.*;
 import com.github.lehjr.numina.util.client.sound.Musique;
 import com.github.lehjr.numina.util.client.sound.SoundDictionary;
-import com.github.lehjr.powersuits.dev.crafting.client.gui.common.TabSelectFrame;
-import com.github.lehjr.powersuits.dev.crafting.client.gui.common.done.ModularItemSelectionFrame;
+import com.github.lehjr.powersuits.client.gui.common.ModularItemSelectionFrame;
+import com.github.lehjr.powersuits.client.gui.common.TabSelectFrame;
 import com.github.lehjr.powersuits.dev.crafting.client.gui.recipebooktest.ScrollableInventoryFrame2;
 import com.github.lehjr.powersuits.dev.crafting.container.NuminaCraftingContainer;
 import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.recipebook.IRecipeShownListener;
 import net.minecraft.client.gui.recipebook.RecipeBookGui;
-import net.minecraft.client.gui.screen.inventory.ContainerScreen;
-import net.minecraft.client.gui.widget.button.ImageButton;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.ClickType;
 import net.minecraft.inventory.container.Slot;
-import net.minecraft.inventory.container.WorkbenchContainer;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -194,10 +189,6 @@ public class CraftInstallSalvageGui extends ExtendedContainerScreen<NuminaCrafti
         return this.recipeBookComponent.mouseScrolled(mouseX, mouseY, dWheel);
     }
 
-
-
-
-
     /**
      * Overridden to fix inventory frames rendering behind background
      * @param matrixStack
@@ -213,7 +204,6 @@ public class CraftInstallSalvageGui extends ExtendedContainerScreen<NuminaCrafti
         matrixStack.popPose();
     }
 
-
     @Override
     public void render(MatrixStack matrixStack, int mouseX, int mouseY, float frameTime) {
         modularItemSelectionFrame.setTop(mainHolder.finalTop());
@@ -225,7 +215,6 @@ public class CraftInstallSalvageGui extends ExtendedContainerScreen<NuminaCrafti
             this.recipeBookComponent.renderGhostRecipe(matrixStack, this.leftPos, this.topPos, true, frameTime);
             this.renderTooltip(matrixStack, mouseX, mouseY);
             this.recipeBookComponent.renderTooltip(matrixStack, this.leftPos, this.topPos, mouseX, mouseY);
-//            this.setListenerDefault(this.recipeBookComponent); // what did this do?
             tabSelectFrame.render(matrixStack, mouseX, mouseY, frameTime);
             drawToolTip(matrixStack, mouseX, mouseY);
         } else {

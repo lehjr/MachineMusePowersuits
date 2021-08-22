@@ -1,4 +1,4 @@
-package com.github.lehjr.powersuits.dev.crafting.client.gui.craftinstallsalvage;
+package com.github.lehjr.powersuits.client.gui.modding.module.craft_install_salvage;
 
 import com.github.lehjr.numina.util.capabilities.inventory.modularitem.IModularItem;
 import com.github.lehjr.numina.util.client.gui.frame.IGuiFrame;
@@ -43,7 +43,6 @@ public class MPSRecipeWidget extends RecipeWidget implements IGuiFrame {
         this.containerStack = containerStack;
         this.collection = recipeList;
         this.menu = (RecipeBookContainer<?>) minecraft.player.containerMenu;
-//        this.book = recipeBookPage.getRecipeBook();
         this.book = this.minecraft.player.getRecipeBook();
 
         List<IRecipe<?>> list = recipeList.getRecipes(this.book.isFiltering(this.menu));
@@ -51,7 +50,6 @@ public class MPSRecipeWidget extends RecipeWidget implements IGuiFrame {
         for(IRecipe<?> irecipe : list) {
             if (this.book.willHighlight(irecipe)) {
                 recipeBookPage.recipesShown(list);
-//                this.animationTime = 15.0F;
                 break;
             }
         }
@@ -134,29 +132,6 @@ public class MPSRecipeWidget extends RecipeWidget implements IGuiFrame {
         return mouseButton == 0 || mouseButton == 1;
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     /**
      * Position is not the actual center position but UL (upper left)
      * @param posX
@@ -173,14 +148,10 @@ public class MPSRecipeWidget extends RecipeWidget implements IGuiFrame {
 
     @Override
     public void setWidth(int width) {
-//        super.setWidth(width);
-//        tile.setWidth(width);
     }
 
     @Override
     public void setHeight(int value) {
-//        super.setHeight(value);
-//        tile.setHeight(value);
     }
 
     class RecipeWidgetTile extends DrawableTile {
@@ -267,19 +238,6 @@ public class MPSRecipeWidget extends RecipeWidget implements IGuiFrame {
             );
         }
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     @Override
     public boolean mouseScrolled(double mouseX, double mouseY, double dWheel) {

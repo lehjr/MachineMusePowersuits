@@ -58,11 +58,11 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.SlotItemHandler;
 import org.apache.commons.lang3.tuple.Pair;
 
-import javax.swing.*;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 
 public class NuminaCraftingContainer extends NuminaRecipeBookContainer<CraftingInventory> implements IModularItemContainerSlotProvider {
     private final CraftingInventory craftSlots = new CraftingInventory(this, 3, 3);

@@ -39,6 +39,7 @@ import com.github.lehjr.powersuits.client.control.KeybindKeyHandler;
 import com.github.lehjr.powersuits.client.event.ClientTickHandler;
 import com.github.lehjr.powersuits.client.event.ModelBakeEventHandler;
 import com.github.lehjr.powersuits.client.event.RenderEventHandler;
+import com.github.lehjr.powersuits.client.gui.modding.module.craft_install_salvage.CraftInstallSalvageGui;
 import com.github.lehjr.powersuits.client.render.entity.LuxCapacitorEntityRenderer;
 import com.github.lehjr.powersuits.client.render.entity.PlasmaBoltEntityRenderer;
 import com.github.lehjr.powersuits.client.render.entity.RailGunBoltRenderer;
@@ -46,7 +47,6 @@ import com.github.lehjr.powersuits.client.render.entity.SpinningBladeEntityRende
 import com.github.lehjr.powersuits.config.MPSSettings;
 import com.github.lehjr.powersuits.constants.MPSConstants;
 import com.github.lehjr.powersuits.constants.MPSRegistryNames;
-import com.github.lehjr.powersuits.dev.crafting.client.gui.craftinstallsalvage.CraftInstallSalvageGui;
 import com.github.lehjr.powersuits.event.*;
 import com.github.lehjr.powersuits.network.MPSPackets;
 import net.minecraft.client.gui.ScreenManager;

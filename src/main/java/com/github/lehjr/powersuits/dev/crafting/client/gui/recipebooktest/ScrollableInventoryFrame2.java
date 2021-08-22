@@ -5,9 +5,9 @@ import com.github.lehjr.numina.util.client.gui.frame.GUISpacer;
 import com.github.lehjr.numina.util.client.gui.frame.InventoryFrame;
 import com.github.lehjr.numina.util.client.gui.frame.MultiRectHolderFrame;
 import com.github.lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
+import com.github.lehjr.powersuits.client.gui.common.ModularItemSelectionFrame;
+import com.github.lehjr.powersuits.client.gui.common.ModularItemTabToggleWidget;
 import com.github.lehjr.powersuits.constants.MPSConstants;
-import com.github.lehjr.powersuits.dev.crafting.client.gui.common.done.MPSRecipeTabToggleWidget;
-import com.github.lehjr.powersuits.dev.crafting.client.gui.common.done.ModularItemSelectionFrame;
 import com.github.lehjr.powersuits.dev.crafting.container.IModularItemContainerSlotProvider;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.Minecraft;
@@ -31,7 +31,8 @@ public class ScrollableInventoryFrame2 <C extends IModularItemContainerSlotProvi
      */
     IContainerULOffSet.ulGetter ulgetter;
 
-    MPSRecipeTabToggleWidget selected;
+//    MPSRecipeTabToggleWidget selected;
+    ModularItemTabToggleWidget selected;
     public boolean labelUsesULShift = true;
 
     TranslationTextComponent title = new TranslationTextComponent(MPSConstants.MOD_ID + ".modularitem.inventory");
@@ -98,12 +99,30 @@ public class ScrollableInventoryFrame2 <C extends IModularItemContainerSlotProvi
         Minecraft.getInstance().font.draw(matrixStack, title, (float)position.getX(), (float)position.getY(), 4210752);
     }
 
+    //    @Override
+//    public void update(double mouseX, double mouseY) {
+//        modularItemSelectionFrame.getSelectedTab().ifPresent(tab->{
+//            if (selected != tab) {
+//                selected = (MPSRecipeTabToggleWidget) tab;
+//                EquipmentSlotType type =((MPSRecipeTabToggleWidget) tab).getSlotType();
+//                Pair<Integer, Integer> range = container.getRangeForEquipmentSlot(type);
+//                if (range != null) {
+//                    this.inventoryFrame.setNewValues(new ArrayList<Integer>(){{
+//                        IntStream.range(range.getLeft(), range.getRight()).forEach(i-> add(i));
+//                    }});
+//                }
+//            }
+//        });
+//        super.update(mouseX, mouseY);
+//    }
+
+
     @Override
     public void update(double mouseX, double mouseY) {
         modularItemSelectionFrame.getSelectedTab().ifPresent(tab->{
             if (selected != tab) {
-                selected = (MPSRecipeTabToggleWidget) tab;
-                EquipmentSlotType type =((MPSRecipeTabToggleWidget) tab).getSlotType();
+                selected = (ModularItemTabToggleWidget) tab;
+                EquipmentSlotType type =((ModularItemTabToggleWidget) tab).getSlotType();
                 Pair<Integer, Integer> range = container.getRangeForEquipmentSlot(type);
                 if (range != null) {
                     this.inventoryFrame.setNewValues(new ArrayList<Integer>(){{
