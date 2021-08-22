@@ -29,7 +29,10 @@ package com.github.lehjr.numina.util.client.gui.clickable;
 import com.github.lehjr.numina.util.client.gui.gemoetry.IDrawableRect;
 import com.github.lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.audio.SimpleSound;
+import net.minecraft.client.audio.SoundHandler;
 import net.minecraft.client.util.InputMappings;
+import net.minecraft.util.SoundEvents;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -81,16 +84,21 @@ public interface IClickable extends IDrawableRect {
     }
 
     default boolean mouseClicked(double mouseX, double mouseY, int button) {
-        if(hitBox((double) mouseX, (double)mouseY) && this.isEnabled() && this.isVisible()) {
+        if(hitBox(mouseX, mouseY) && this.isEnabled() && this.isVisible()) {
             InputMappings.Input mouseKey = InputMappings.Type.MOUSE.getOrCreate(button);
             boolean flag = Minecraft.getInstance().options.keyPickItem.isActiveAndMatches(mouseKey);
 
             if (button == 0 || button == 1 || flag) {
                 this.onPressed();
             }
+            this.playDownSound(Minecraft.getInstance().getSoundManager());
             return true;
         }
         return false;
+    }
+
+    default void playDownSound(SoundHandler soundHandler) {
+        soundHandler.play(SimpleSound.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0F));
     }
 
     default boolean mouseReleased(double mouseX, double mouseY, int button) {

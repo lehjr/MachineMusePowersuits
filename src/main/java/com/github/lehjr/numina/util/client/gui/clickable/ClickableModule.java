@@ -61,9 +61,6 @@ public class ClickableModule extends Clickable {
     int inventorySlot;
     public final EnumModuleCategory category;
 
-    public static final int offsetx = 8;
-    public static final int offsety = 8;
-
     public ClickableModule(@Nonnull ItemStack module, MusePoint2D position, int inventorySlot, EnumModuleCategory category) {
         super();
         setWH(new MusePoint2D(16, 16));
