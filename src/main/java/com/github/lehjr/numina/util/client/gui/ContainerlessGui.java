@@ -31,6 +31,7 @@ import com.github.lehjr.numina.util.client.gui.gemoetry.DrawableRelativeRect;
 import com.github.lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
 import com.github.lehjr.numina.util.math.Colour;
 import com.mojang.blaze3d.matrix.MatrixStack;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.util.text.ITextComponent;
 
@@ -285,5 +286,11 @@ public class ContainerlessGui extends Screen {
             }
         }
         return null;
+    }
+
+    @Override
+    public Minecraft getMinecraft() {
+        this.minecraft = Minecraft.getInstance();
+        return this.minecraft;
     }
 }
