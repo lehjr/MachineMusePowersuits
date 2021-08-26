@@ -135,7 +135,7 @@ public class DrawableRelativeRect extends RelativeRect implements IDrawableRect 
         FloatBuffer corner = GradientAndArcCalculator.getArcPoints(
                 (float)Math.PI,
                 (float)(3.0 * Math.PI / 2.0),
-                (float)getCornerradius(),
+                getCornerradius(),
                 (float)(left + getCornerradius()),
                 (float)(top + getCornerradius()));
 
@@ -146,7 +146,7 @@ public class DrawableRelativeRect extends RelativeRect implements IDrawableRect 
         corner = GradientAndArcCalculator.getArcPoints(
                 (float)(3.0 * Math.PI / 2.0F),
                 (float)(2.0 * Math.PI),
-                (float)getCornerradius(),
+                getCornerradius(),
                 (float)(left + getCornerradius()),
                 (float)(bottom - getCornerradius()));
         vertices.put(corner);
@@ -155,7 +155,7 @@ public class DrawableRelativeRect extends RelativeRect implements IDrawableRect 
         corner = GradientAndArcCalculator.getArcPoints(
                 0,
                 (float) (Math.PI / 2.0),
-                (float)getCornerradius(),
+                getCornerradius(),
                 (float)(right - getCornerradius()),
                 (float)(bottom - getCornerradius()));
         vertices.put(corner);
@@ -164,7 +164,7 @@ public class DrawableRelativeRect extends RelativeRect implements IDrawableRect 
         corner = GradientAndArcCalculator.getArcPoints(
                 (float) (Math.PI / 2.0),
                 (float) Math.PI,
-                (float)getCornerradius(),
+                getCornerradius(),
                 (float)(right - getCornerradius()),
                 (float)(top + getCornerradius()));
         vertices.put(corner);
@@ -218,7 +218,7 @@ public class DrawableRelativeRect extends RelativeRect implements IDrawableRect 
         FloatBuffer corner = GradientAndArcCalculator.getArcPoints(
                 (float) Math.PI,
                 (float) (3.0 * Math.PI / 2.0),
-                (float) getCornerradius(),
+                getCornerradius(),
                 (float) (left + getCornerradius()),
                 (float) (top + getCornerradius()));
 
@@ -229,7 +229,7 @@ public class DrawableRelativeRect extends RelativeRect implements IDrawableRect 
         corner = GradientAndArcCalculator.getArcPoints(
                 (float) (3.0 * Math.PI / 2.0F),
                 (float) (2.0 * Math.PI),
-                (float) getCornerradius(),
+                getCornerradius(),
                 (float) (left + getCornerradius()),
                 (float) (bottom - getCornerradius()));
         vertices.put(corner);
@@ -238,7 +238,7 @@ public class DrawableRelativeRect extends RelativeRect implements IDrawableRect 
         corner = GradientAndArcCalculator.getArcPoints(
                 0,
                 (float) (Math.PI / 2.0),
-                (float) getCornerradius(),
+                getCornerradius(),
                 (float) (right - getCornerradius()),
                 (float) (bottom - getCornerradius()));
         vertices.put(corner);
@@ -247,7 +247,7 @@ public class DrawableRelativeRect extends RelativeRect implements IDrawableRect 
         corner = GradientAndArcCalculator.getArcPoints(
                 (float) (Math.PI / 2.0),
                 (float) Math.PI,
-                (float) getCornerradius(),
+                getCornerradius(),
                 (float) (right - getCornerradius()),
                 (float) (top + getCornerradius()));
         vertices.put(corner);
@@ -275,6 +275,11 @@ public class DrawableRelativeRect extends RelativeRect implements IDrawableRect 
             vertices.rewind();
         }
         drawBorder(matrixStack, vertices);
+    }
+
+    @Override
+    public RelativeRect getRect() {
+        return this;
     }
 
     @Override

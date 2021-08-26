@@ -127,17 +127,6 @@ public class Button extends DrawableRelativeRect implements IClickable {
     }
 
     @Override
-    public void move(double x, double y) {
-        setLeft(x - width()/2);
-        setRight(y - height()/2);
-    }
-
-    @Override
-    public MusePoint2D getPosition() {
-        return new MusePoint2D(centerx(), centery());
-    }
-
-    @Override
     public boolean hitBox(double x, double y) {
         if (isVisible() && isEnabled())
             return x >= left() && x <= right() && y >= top() && y <= bottom();

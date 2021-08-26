@@ -83,6 +83,6 @@ public class GUISpacer extends DrawableRelativeRect implements IGuiFrame {
 
     @Override
     public RelativeRect getRect() {
-        return super.getRect();
+        return this;
     }
 }

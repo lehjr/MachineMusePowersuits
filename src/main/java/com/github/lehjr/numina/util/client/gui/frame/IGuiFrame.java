@@ -32,6 +32,7 @@ import com.github.lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.util.text.ITextComponent;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
 
@@ -66,6 +67,7 @@ public interface IGuiFrame extends IDrawableRect {
         return false;
     }
 
+    @Nonnull
     IRect getRect();
 
     /**
@@ -135,12 +137,7 @@ public interface IGuiFrame extends IDrawableRect {
 
     @Override
     default IRect init(double left, double top, double right, double bottom) {
-        return IDrawableRect.super.init(left, top, right, bottom);
-    }
-
-    @Override
-    default MusePoint2D center() {
-        return IDrawableRect.super.center();
+        return getRect().init(left, top, right, bottom);
     }
 
     @Override
@@ -269,28 +266,8 @@ public interface IGuiFrame extends IDrawableRect {
     }
 
     @Override
-    default MusePoint2D getPosition() {
-        return IDrawableRect.super.getPosition();
-    }
-
-    @Override
     default boolean growFromMiddle() {
         return getRect().growFromMiddle();
-    }
-
-    @Override
-    default boolean containsPoint(double x, double y) {
-        return IDrawableRect.super.containsPoint(x, y);
-    }
-
-    @Override
-    default double centerx() {
-        return IDrawableRect.super.centerx();
-    }
-
-    @Override
-    default double centery() {
-        return IDrawableRect.super.centery();
     }
 
     @Override
@@ -324,7 +301,9 @@ public interface IGuiFrame extends IDrawableRect {
     }
 
     @Override
-    void setOnInit(IInit onInit);
+    default void setOnInit(IInit onInit) {
+        getRect().setOnInit(onInit);
+    }
 
     @Override
     default void onInit() {

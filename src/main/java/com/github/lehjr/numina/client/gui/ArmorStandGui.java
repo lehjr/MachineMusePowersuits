@@ -53,7 +53,6 @@ public class ArmorStandGui extends ExtendedContainerScreen<ArmorStandContainer> 
         innerFrame = new InnerFrame(containerIn, ulGetter());
         addFrame(innerFrame);
         this.armorStandEntity = containerIn.getArmorStandEntity();
-        innerFrame.initGrowth();
     }
 
     @Override

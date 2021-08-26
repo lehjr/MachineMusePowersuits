@@ -26,6 +26,7 @@
 
 package com.github.lehjr.numina.util.client.gui.gemoetry;
 
+import net.minecraft.client.Minecraft;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -106,11 +107,11 @@ public interface IRect {
     }
 
     default double centerx() {
-        return (left() + right()) / 2.0F;
+        return finalLeft() + finalWidth() * 0.5;
     }
 
     default double centery() {
-        return (top() + bottom()) / 2.0F;
+        return finalTop() + finalHeight() * 0.5;
     }
 
     default boolean doneGrowing() {
@@ -146,5 +147,10 @@ public interface IRect {
     @OnlyIn(Dist.CLIENT)
     interface IInit {
         void onInit(IRect doThis);
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    default Minecraft getMinecraft() {
+        return Minecraft.getInstance();
     }
 }

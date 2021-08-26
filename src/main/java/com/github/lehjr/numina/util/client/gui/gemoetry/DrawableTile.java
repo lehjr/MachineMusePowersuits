@@ -219,16 +219,10 @@ public class DrawableTile extends RelativeRect implements IDrawableRect {
 
     @Override
     public String toString() {
-        StringBuilder stringbuilder = new StringBuilder();
-        stringbuilder.append(this.getClass()).append(":\n");
-        stringbuilder.append("Center: ").append(center()).append("\n");
-        stringbuilder.append("Left: ").append(left()).append("\n");
-        stringbuilder.append("Right: ").append(right()).append("\n");
-        stringbuilder.append("Bottom: ").append(bottom()).append("\n");
-        stringbuilder.append("Top: ").append(top()).append("\n");
-        stringbuilder.append("Width: ").append(left()).append("\n");
-        stringbuilder.append("FinalWidthLeft: ").append(left()).append("\n");
-        stringbuilder.append("Height: ").append(height()).append("\n");
+        StringBuilder stringbuilder = new StringBuilder(super.toString());
+        stringbuilder.append("Background Colour: ").append(backgroundColour).append("\n");
+        stringbuilder.append("Top Border Colour: ").append(topBorderColour).append("\n");
+        stringbuilder.append("Bottom Border Colour: ").append(bottomBorderColour).append("\n");
         return stringbuilder.toString();
     }
 }

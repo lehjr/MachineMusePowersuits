@@ -68,7 +68,7 @@ public abstract class RectHolderFrame<T extends IRect> extends GUISpacer {
     public IRect setWidth(double value) {
         super.setWidth(value);
         setRect();
-        return super.getRect();
+        return this;
     }
 
     @Override
@@ -92,8 +92,8 @@ public abstract class RectHolderFrame<T extends IRect> extends GUISpacer {
 
     @Override
     public void setPosition(MusePoint2D positionIn) {
-        setRect();
         super.setPosition(positionIn);
+        setRect();
     }
 
     @Override
@@ -129,6 +129,21 @@ public abstract class RectHolderFrame<T extends IRect> extends GUISpacer {
         if (rect instanceof IGuiFrame) {
             ((IGuiFrame) rect).update(mouseX, mouseY);
         }
+        setRect(); // FIXME (eventually) workaround to reposition rects that don't land where they should. not ideal, but not a complex operation either
+    }
+
+    @Override
+    public IRect setUL(MusePoint2D ul) {
+        super.setUL(ul);
+        setRect();
+        return this;
+    }
+
+    @Override
+    public IRect setWH(MusePoint2D wh) {
+        super.setWH(wh);
+        setRect();
+        return this;
     }
 
     @Override
@@ -148,41 +163,41 @@ public abstract class RectHolderFrame<T extends IRect> extends GUISpacer {
     @Override
     public abstract List<ITextComponent> getToolTip(int x, int y);
 
-    void setRect() {
+    public void setRect() {
         switch (placement) {
             case CENTER:
-                rect.setPosition(this.center());
+                rect.setPosition(super.center());
                 break;
 
             case CENTER_LEFT:
-                rect.setPosition(new MusePoint2D(this.finalLeft()  + 0.5 * rect.finalWidth(), this.centery()));
+                rect.setPosition(new MusePoint2D(super.finalLeft()  + 0.5 * rect.finalWidth(), super.centery()));
                 break;
 
             case CENTER_RIGHT:
-                rect.setPosition(new MusePoint2D(this.finalRight() - 0.5 * rect.finalWidth(), this.centery()));
+                rect.setPosition(new MusePoint2D(super.finalRight() - 0.5 * rect.finalWidth(), super.centery()));
                 break;
 
             case CENTER_TOP:
-                rect.setPosition(new MusePoint2D(this.centerx(), this.finalTop() + 0.5 * rect.finalHeight()));
+                rect.setPosition(new MusePoint2D(super.centerx(), super.finalTop() + 0.5 * rect.finalHeight()));
                 break;
 
             case CENTER_BOTTOM:
-                rect.setPosition(new MusePoint2D(this.centerx(), this.finalBottom() - 0.5 * rect.finalHeight()));
+                rect.setPosition(new MusePoint2D(super.centerx(), super.finalBottom() - 0.5 * rect.finalHeight()));
                 break;
 
             case UPPER_LEFT:
-                rect.setPosition(new MusePoint2D(this.finalLeft() + 0.5 * rect.finalWidth(), this.finalTop() + 0.5 * rect.finalHeight()));
+                rect.setPosition(new MusePoint2D(super.finalLeft() + 0.5 * rect.finalWidth(), super.finalTop() + 0.5 * rect.finalHeight()));
                 break;
 
             case LOWER_LEFT:
-                rect.setPosition(new MusePoint2D(this.finalLeft() + + 0.5 * rect.finalWidth(), this.finalBottom() - 0.5 * rect.finalHeight()));
+                rect.setPosition(new MusePoint2D(super.finalLeft() + + 0.5 * rect.finalWidth(), super.finalBottom() - 0.5 * rect.finalHeight()));
                 break;
 
             case UPPER_RIGHT:
-                rect.setPosition(new MusePoint2D(this.finalRight() - 0.5 * rect.finalWidth(), this.finalTop() + + 0.5 * rect.finalHeight()));
+                rect.setPosition(new MusePoint2D(super.finalRight() - 0.5 * rect.finalWidth(), super.finalTop() + 0.5 * rect.finalHeight()));
                 break;
             case LOWER_RIGHT:
-                rect.setPosition(new MusePoint2D(this.finalRight() - 0.5 * rect.finalWidth(), this.finalBottom() - 0.5 * rect.finalHeight()));
+                rect.setPosition(new MusePoint2D(super.finalRight() - 0.5 * rect.finalWidth(), super.finalBottom() - 0.5 * rect.finalHeight()));
                 break;
         }
     }

@@ -74,12 +74,7 @@ public class ContainerlessGui extends Screen {
         super.init();
         minecraft.keyboardHandler.setSendRepeatsToGui(true);
         creationTime = System.currentTimeMillis();
-
-//        int xpadding = (width - getxSize()) / 2;
-//        int ypadding = (height - ySize) / 2;
-
         backgroundRect.init(absX(-1), absY(-1), absX(1), absY(1));
-        backgroundRect.initGrowth();
     }
 
     /**
@@ -108,8 +103,18 @@ public class ContainerlessGui extends Screen {
         this.renderBackground(matrixStack);
         this.renderBackgroundRect(matrixStack, mouseX, mouseY, frameTime);
         update(mouseX, mouseY);
+        matrixStack.pushPose();
+        matrixStack.translate(0,0,10);
         renderFrames(matrixStack, mouseX, mouseY, frameTime);
-       super.render(matrixStack, mouseX, mouseY, frameTime);
+        matrixStack.translate(0,0,10);
+        super.render(matrixStack, mouseX, mouseY, frameTime);
+        matrixStack.translate(0,0,100);
+        renderLabels(matrixStack, mouseX, mouseY);
+        matrixStack.popPose();
+    }
+
+    public void renderLabels(MatrixStack matrixStack, int mouseX, int mouseY) {
+
     }
 
     public void update(double x, double y) {

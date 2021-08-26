@@ -74,6 +74,7 @@ public class RelativeRect implements IRect{
         this.wh.setX(right - left);
         this.wh.setY(bottom - top);
         initGrowth();
+        this.onInit();
         return this;
     }
 
@@ -266,8 +267,6 @@ public class RelativeRect implements IRect{
 
     @Override
     public void setPosition(MusePoint2D positionIn) {
-//        ul.setX(positionIn.getX() - finalWidth() * 0.5);
-//        ul.setY(positionIn.getY() - finalHeight() * 0.5);
         if (!wh.equals(MusePoint2D.ZERO)) {
             setUL(positionIn.minus(finalWidth() * 0.5, finalHeight() * 0.5));
         } else {

@@ -85,7 +85,7 @@ public class MultiRectHolderFrame<T extends Map<Integer, IRect>> extends GUISpac
                 if (rect.finalHeight() > highestVal) {
                     highestVal = rect.finalHeight();
                 }
-            // single max width, multiple heights
+                // single max width, multiple heights
             } else {
                 finalVal += rect.finalHeight();
                 if (rect.finalWidth() > highestVal) {
@@ -231,14 +231,15 @@ public class MultiRectHolderFrame<T extends Map<Integer, IRect>> extends GUISpac
         // centered height
         if (horizontalLayout) {
             for (int i = 0; i< rects.size(); i++) {
+                /** sets the rects centered vertically */
                 rects.get(i).setTop(this.centery() - rects.get(i).finalHeight() * 0.5);
-                rects.get(i).setLeft(rects.get(i).finalLeft());
+//                rects.get(i).setLeft(rects.get(i).finalLeft());
             }
-        // centered width
+            // centered width
         } else {
             for (int i = 0; i< rects.size(); i++) {
                 // centered height
-                rects.get(i).setTop(rects.get(i).finalTop());
+//                rects.get(i).setTop(rects.get(i).finalTop());
                 rects.get(i).setLeft(this.centerx() - rects.get(i).finalWidth() * 0.5);
             }
         }
@@ -254,15 +255,31 @@ public class MultiRectHolderFrame<T extends Map<Integer, IRect>> extends GUISpac
         super.setTop(value);
         // stacked like pancakes
         if (!horizontalLayout) {
-            // all boxes linked from top to bottom
-            if (startTopLeft) {
-                if (rects.size() > 0) {
+            if (rects.size() > 0) {
+                // all boxes linked from top to bottom
+                if (startTopLeft) {
                     rects.get(0).setTop(finalTop());
-                }
                 // all boxes lined from bottom to top
-            } else {
-                if (rects.size() > 0) {
+                } else {
                     rects.get(rects.size() - 1).setBottom(this.finalBottom());
+                }
+            }
+        }
+        refreshRects();
+        return this;
+    }
+
+    @Override
+    public IRect setBottom(double value) {
+        super.setBottom(value);
+        // stacked like pancakes
+        if (!horizontalLayout) {
+            if (rects.size() > 0) {
+                if (startTopLeft) {
+                    rects.get(0).setTop(finalTop());
+                    // all boxes lined from bottom to top
+                } else {
+                    rects.get(rects.size() - 1).setBottom(finalBottom());
                 }
             }
         }
@@ -276,33 +293,11 @@ public class MultiRectHolderFrame<T extends Map<Integer, IRect>> extends GUISpac
         // like books on a shelf
         if (horizontalLayout) {
             // find leftmost box and set the left value
-            if (startTopLeft) {
-                if (rects.size() > 0) {
+            if (rects.size() > 0) {
+                if (startTopLeft) {
                     rects.get(0).setLeft(finalLeft());
-                }
-            } else {
-                if (rects.size() > 0) {
+                } else {
                     rects.get(rects.size() - 1).setRight(finalRight());
-                }
-            }
-        }
-        refreshRects();
-        return this;
-    }
-
-    @Override
-    public IRect setBottom(double value) {
-        super.setBottom(value);
-        // stacked like pancakes
-        if (!horizontalLayout) {
-            if (startTopLeft) {
-                if (rects.size() > 0) {
-                    rects.get(0).setTop(finalTop());
-                }
-                // all boxes lined from bottom to top
-            } else {
-                if (rects.size() > 0) {
-                    rects.get(rects.size() - 1).setBottom(finalBottom());
                 }
             }
         }
@@ -313,16 +308,13 @@ public class MultiRectHolderFrame<T extends Map<Integer, IRect>> extends GUISpac
     @Override
     public IRect setRight(double value) {
         super.setRight(value);
-
         // like books on a shelf
         if (horizontalLayout) {
             // find leftmost box and set the left value
-            if (startTopLeft) {
-                if (rects.size() > 0) {
+            if (rects.size() > 0) {
+                if (startTopLeft) {
                     rects.get(0).setLeft(finalLeft());
-                }
-            } else {
-                if (rects.size() > 0) {
+                } else {
                     rects.get(rects.size() -1).setRight(finalRight());
                 }
             }
@@ -347,30 +339,25 @@ public class MultiRectHolderFrame<T extends Map<Integer, IRect>> extends GUISpac
 
     @Override
     public void setPosition(MusePoint2D positionIn) {
-        super.setLeft(positionIn.getX() - finalWidth() * 0.5);
-        super.setTop(positionIn.getY() - finalHeight() * 0.5);
+        super.setPosition(positionIn);
         // like books on a shelf
         if (horizontalLayout) {
             // find leftmost box and set the left value
-            if (startTopLeft) {
-                if (rects.size() > 0) {
+            if (rects.size() > 0) {
+                if (startTopLeft) {
                     rects.get(0).setLeft(finalLeft());
-                }
-            } else {
-                if (rects.size() > 0) {
+                }else {
                     rects.get(rects.size() - 1).setRight(finalRight());
                 }
             }
-        // stacked like pancakes
+            // stacked like pancakes
         } else {
-            // all boxes linked from top to bottom
-            if (startTopLeft) {
-                if (rects.size() > 0) {
+            if (rects.size() > 0) {
+                // all boxes linked from top to bottom
+                if (startTopLeft) {
                     rects.get(0).setTop(finalTop());
-                }
-                // all boxes lined from bottom to top
-            } else {
-                if (rects.size() > 0) {
+                    // all boxes lined from bottom to top
+                } else {
                     rects.get(rects.size() - 1).setBottom(this.finalBottom());
                 }
             }
