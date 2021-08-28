@@ -18,14 +18,26 @@ public abstract class RectHolderFrame<T extends IRect> extends GUISpacer {
     RectPlacement placement;
     public RectHolderFrame(T rect, double widthIn, double heightIn) {
         this(rect, widthIn, heightIn, RectPlacement.CENTER);
+        this.setDoThisOnChange(iChange ->setRect());
+        setRect();
     }
 
     public RectHolderFrame(T rect, double widthIn, double heightIn, RectPlacement placement) {
+        this(rect, widthIn, heightIn, placement, null);
+    }
+
+    public RectHolderFrame(T rect, double widthIn, double heightIn, RectPlacement placement, IDoThis onChange) {
         super(widthIn, heightIn);
         this.rect = rect;
         this.setBackgroundColour(Colour.YELLOW);
         this.setBorderColour(Colour.RED);
         this.placement = placement;
+        this.setDoThisOnChange(iChange -> {
+            if (onChange != null) {
+                onChange.doThisOnChange(this);
+            }
+            setRect();
+        });
         setRect();
     }
 
@@ -33,95 +45,6 @@ public abstract class RectHolderFrame<T extends IRect> extends GUISpacer {
     public void initGrowth() {
         super.initGrowth();
         rect.initGrowth();
-        setRect();
-    }
-
-    @Override
-    public IRect setTop(double value) {
-        super.setTop(value);
-        setRect();
-        return this;
-    }
-
-    @Override
-    public IRect setLeft(double value) {
-        super.setLeft(value);
-        setRect();
-        return this;
-    }
-
-    @Override
-    public IRect setBottom(double value) {
-        super.setBottom(value);
-        setRect();
-        return this;
-    }
-
-    @Override
-    public IRect setRight(double value) {
-        super.setRight(value);
-        setRect();
-        return this;
-    }
-
-    @Override
-    public IRect setWidth(double value) {
-        super.setWidth(value);
-        setRect();
-        return this;
-    }
-
-    @Override
-    public IRect setHeight(double value) {
-        super.setHeight(value);
-        setRect();
-        return this;
-    }
-
-    @Override
-    public void move(MusePoint2D moveAmount) {
-        super.move(moveAmount);
-        setRect();
-    }
-
-    @Override
-    public void move(double x, double y) {
-        super.move(x, y);
-        setRect();
-    }
-
-    @Override
-    public void setPosition(MusePoint2D positionIn) {
-        super.setPosition(positionIn);
-        setRect();
-    }
-
-    @Override
-    public IRect setMeLeftOf(IRect otherRightOfMe) {
-        super.setMeLeftOf(otherRightOfMe);
-        setRect();
-        return this;
-    }
-
-    @Override
-    public IRect setMeRightOf(IRect otherLeftOfMe) {
-        super.setMeRightOf(otherLeftOfMe);
-        setRect();
-        return this;
-    }
-
-    @Override
-    public IRect setMeAbove(IRect otherBelowMe) {
-        super.setMeAbove(otherBelowMe);
-        setRect();
-        return this;
-    }
-
-    @Override
-    public IRect setMeBelow(IRect otherAboveMe) {
-        super.setMeBelow(otherAboveMe);
-        setRect();
-        return this;
     }
 
     @Override
@@ -129,21 +52,7 @@ public abstract class RectHolderFrame<T extends IRect> extends GUISpacer {
         if (rect instanceof IGuiFrame) {
             ((IGuiFrame) rect).update(mouseX, mouseY);
         }
-        setRect(); // FIXME (eventually) workaround to reposition rects that don't land where they should. not ideal, but not a complex operation either
-    }
-
-    @Override
-    public IRect setUL(MusePoint2D ul) {
-        super.setUL(ul);
-        setRect();
-        return this;
-    }
-
-    @Override
-    public IRect setWH(MusePoint2D wh) {
-        super.setWH(wh);
-        setRect();
-        return this;
+//        setRect(); // FIXME (eventually) workaround to reposition rects that don't land where they should. not ideal, but not a complex operation either
     }
 
     @Override

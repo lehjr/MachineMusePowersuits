@@ -81,16 +81,14 @@ public class RelativeRect implements IRect{
     @Override
     public IRect setUL(MusePoint2D ul) {
         this.ul = ul;
-//        this.ul.setX(ul.getX());
-//        this.ul.setY(ul.getY());
+        doThisOnChange();
         return this;
     }
 
     @Override
     public IRect setWH(MusePoint2D wh) {
-//        this.wh.setX(wh.getX());
-//        this.wh.setY(wh.getY());
         this.wh = wh;
+        doThisOnChange();
         return this;
     }
 
@@ -223,46 +221,57 @@ public class RelativeRect implements IRect{
     @Override
     public IRect setLeft(double value) {
         ul.setX(value);
+        doThisOnChange();
         return this;
     }
 
     @Override
     public IRect setRight(double value) {
-        return setLeft(value - finalWidth());
+        setLeft(value - finalWidth());
+        doThisOnChange();
+        return this;
     }
 
     @Override
     public IRect setTop(double value) {
         ul.setY(value);
+        doThisOnChange();
         return this;
     }
 
     @Override
     public IRect setBottom(double value) {
-        return setTop(value - finalHeight());
+        setTop(value - finalHeight());
+        doThisOnChange();
+        return this;
+
     }
 
     @Override
     public IRect setWidth(double value) {
         wh.setX(value);
+        doThisOnChange();
         return this;
     }
 
     @Override
     public IRect setHeight(double value) {
         wh.setY(value);
+        doThisOnChange();
         return this;
     }
 
     @Override
     public void move(MusePoint2D moveAmount) {
         move(moveAmount.getX(), moveAmount.getY());
+        doThisOnChange();
     }
 
     @Override
     public void move(double x, double y) {
         ul.setX(finalLeft() + x);
         ul.setY(finalTop() + y);
+        doThisOnChange();
     }
 
     @Override
@@ -272,6 +281,7 @@ public class RelativeRect implements IRect{
         } else {
             ul = positionIn;
         }
+        doThisOnChange();
     }
 
     @Override
@@ -295,6 +305,7 @@ public class RelativeRect implements IRect{
     @Override
     public IRect setMeLeftOf(IRect otherRightOfMe) {
         this.rectRightOfMe = otherRightOfMe;
+        doThisOnChange();
         return this;
     }
 
@@ -306,6 +317,7 @@ public class RelativeRect implements IRect{
     @Override
     public IRect setMeRightOf(IRect otherLeftOfMe) {
         this.rectLeftOfMe = otherLeftOfMe;
+        doThisOnChange();
         return this;
     }
 
@@ -317,6 +329,7 @@ public class RelativeRect implements IRect{
     @Override
     public IRect setMeAbove(IRect otherBelowMe) {
         this.rectBelowMe = otherBelowMe;
+        doThisOnChange();
         return this;
     }
 
@@ -328,6 +341,7 @@ public class RelativeRect implements IRect{
     @Override
     public IRect setMeBelow(IRect otherAboveMe) {
         this.rectAboveMe = otherAboveMe;
+        doThisOnChange();
         return this;
     }
 
@@ -350,12 +364,26 @@ public class RelativeRect implements IRect{
     }
 
     @Override
+    public void setDoThisOnChange(IDoThis iDoThis) {
+        this.iDoThis = iDoThis;
+    }
+
+    IRect.IDoThis iDoThis;
+    @Override
+    public void doThisOnChange() {
+        if (this.iDoThis != null) {
+            this.iDoThis.doThisOnChange(this);
+        }
+    }
+
+    @Override
     public void initGrowth() {
         if (growFromMiddle()) {
             MusePoint2D center = ul.plus(wh.times(0.5F));
             ul = new FlyFromPointToPoint2D(center, getUL(), 200);
             wh = new FlyFromPointToPoint2D(new MusePoint2D(0, 0), getWH(), 200);
         }
+        doThisOnChange();
     }
 
     @Override

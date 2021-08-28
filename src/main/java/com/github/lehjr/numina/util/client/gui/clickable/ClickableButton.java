@@ -32,6 +32,7 @@ import com.github.lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
 import com.github.lehjr.numina.util.client.render.MuseRenderer;
 import com.github.lehjr.numina.util.math.Colour;
 import com.mojang.blaze3d.matrix.MatrixStack;
+import net.minecraft.client.Minecraft;
 import net.minecraft.util.text.ITextComponent;
 
 /**
@@ -87,7 +88,7 @@ public class ClickableButton extends DrawableRelativeRect implements IClickable 
     @Override
     public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
         renderButton(matrixStack, mouseX, mouseY, partialTicks);
-        renderText(matrixStack, mouseX, mouseY, partialTicks);
+        renderText(matrixStack, mouseX, mouseY);
     }
 
     @Override
@@ -122,7 +123,7 @@ public class ClickableButton extends DrawableRelativeRect implements IClickable 
      * @param mouseY
      * @param partialTicks
      */
-    public void renderText(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
+    public void renderText(MatrixStack matrixStack, int mouseX, int mouseY) {
         if (isVisible()) {
             if (label.getString().contains("\n")) {
                 String[] s = label.getString().split("\n");
@@ -141,9 +142,7 @@ public class ClickableButton extends DrawableRelativeRect implements IClickable 
 
     @Override
     public boolean hitBox(double x, double y) {
-        boolean hitx = Math.abs(getPosition().getX() - x) < radius.getX();
-        boolean hity = Math.abs(getPosition().getY() - y) < radius.getY();
-        return hitx && hity;
+        return containsPoint(x, y);
     }
 
     @Override

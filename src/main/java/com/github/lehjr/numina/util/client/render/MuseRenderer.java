@@ -55,9 +55,11 @@ import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.util.Direction;
+import net.minecraft.util.IReorderingProcessor;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Matrix4f;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.ITextProperties;
 import org.lwjgl.opengl.GL11;
 
 import javax.annotation.Nonnull;
@@ -337,45 +339,65 @@ public abstract class MuseRenderer {
         Tessellator.getInstance().end();
     }
 
+    public static void drawShadowedString(MatrixStack matrixStack, ITextComponent s, double x, double y) {
+        drawShadowedString(matrixStack, s, x, y, Colour.WHITE);
+    }
 
-
-    public static void drawString(MatrixStack matrixStack, String s, double x, double y) {
-        drawString(matrixStack, s, x, y, Colour.WHITE);
+    public static void drawShadowedString(MatrixStack matrixStack, String s, double x, double y) {
+        drawShadowedString(matrixStack, s, x, y, Colour.WHITE);
     }
 
     /**
      * Does the necessary openGL calls and calls the Minecraft font renderer to draw a string at the specified coords
      */
-    public static void drawString(MatrixStack matrixStack, String s, double x, double y, Colour c) {
+    public static void drawShadowedString(MatrixStack matrixStack, ITextComponent s, double x, double y, Colour c) {
+        getFontRenderer().drawShadow(matrixStack, s, (int) x, (int) y, c.getInt());
+    }
+
+    /**
+     * Does the necessary openGL calls and calls the Minecraft font renderer to draw a string at the specified coords
+     */
+    public static void drawShadowedString(MatrixStack matrixStack, String s, double x, double y, Colour c) {
         getFontRenderer().drawShadow(matrixStack, s, (int) x, (int) y, c.getInt());
     }
 
     /**
      * Does the necessary openGL calls and calls the Minecraft font renderer to draw a string such that the xcoord is halfway through the string
      */
+    public static void drawCenteredString(MatrixStack matrixStack, ITextComponent s, double x, double y) {
+        drawShadowedString(matrixStack, s, x - getStringWidth(s) / 2, y);
+    }
+
+    /**
+     * Does the necessary openGL calls and calls the Minecraft font renderer to draw a string such that the xcoord is halfway through the string
+     */
     public static void drawCenteredString(MatrixStack matrixStack, String s, double x, double y) {
-        drawString(matrixStack, s, x - getStringWidth(s) / 2, y);
+        drawShadowedString(matrixStack, s, x - getStringWidth(s) / 2, y);
     }
 
     /**
      * Does the necessary openGL calls and calls the Minecraft font renderer to draw a string such that the xcoord is halfway through the string
      */
     public static void drawRightAlignedString(MatrixStack matrixStack, String s, double x, double y) {
-        drawString(matrixStack, s, x - getStringWidth(s), y);
+        drawShadowedString(matrixStack, s, x - getStringWidth(s), y);
     }
 
     public static void drawLeftAlignedStringString(MatrixStack matrixStack, String s, double x, double y) {
-        drawString(matrixStack, s, x, y);
+        drawShadowedString(matrixStack, s, x, y);
     }
-
 
     public static double getStringWidth(String s) {
-        double stringWidth;
-        NuminaRenderState.glPushAttrib(GL11.GL_TEXTURE_BIT);
-        stringWidth = getFontRenderer().width(s);
-        RenderSystem.popAttributes();
-        return stringWidth;
+        return getFontRenderer().width(s);
     }
+
+    public static double getStringWidth(ITextProperties s) {
+        return getFontRenderer().width(s);
+    }
+
+    public static double getStringWidth(IReorderingProcessor s) {
+        return getFontRenderer().width(s);
+    }
+
 
     public static void drawStringsJustified(MatrixStack matrixStack, List<String> words, double x1, double x2, double y) {
         int totalwidth = 0;
@@ -387,7 +409,7 @@ public abstract class MuseRenderer {
 
         double currentwidth = 0;
         for (String word : words) {
-            MuseRenderer.drawString(matrixStack, word, x1 + currentwidth, y);
+            MuseRenderer.drawShadowedString(matrixStack, word, x1 + currentwidth, y);
             currentwidth += getStringWidth(word) + spacing;
         }
     }

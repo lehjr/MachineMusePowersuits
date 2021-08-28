@@ -56,9 +56,6 @@ public class ClickableModuleSlot extends UniversalSlot implements IClickable {
     boolean isEnabled = true;
 
     final Colour checkmarkcolour = new Colour(0.0F, 0.667F, 0.0F, 1.0F);
-    public static final int offsetx = 8;
-    public static final int offsety = 8;
-
     boolean allowed = true;
     boolean installed = false;
 
@@ -81,37 +78,24 @@ public class ClickableModuleSlot extends UniversalSlot implements IClickable {
     @Override
     public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
         if (!getItem().isEmpty()) {
-            MuseRenderer.drawItemAt(getPosition().getX() - offsetx, getPosition().getY() - offsety, getItem());
+            MuseRenderer.drawItemAt(getUL().getX(), getUL().getY(), getItem());
             if (!allowed) {
                 String string = MuseStringUtils.wrapFormatTags("x", MuseStringUtils.FormatCodes.DarkRed);
-                MuseRenderer.drawString(matrixStack, string, getPosition().getX() + 3, getPosition().getY() + 1);
+                MuseRenderer.drawShadowedString(matrixStack, string, getPosition().getX() + 3, getPosition().getY() + 1);
             } else if (installed) {
-                MuseIconUtils.getIcon().checkmark.draw(matrixStack, getPosition().getX() - offsetx + 1, getPosition().getY() - offsety + 1, checkmarkcolour);
+                MuseIconUtils.getIcon().checkmark.draw(matrixStack, getUL().getX() + 1, getUL().getY() + 1, checkmarkcolour);
             }
         }
     }
 
     @Override
-    public void move(MusePoint2D position) {
-        this.position = position;
+    public void doThisOnChange() {
+
     }
 
     @Override
-    public void move(double x, double y) {
-        this.position.setX(x);
-        this.position.setY(y);
-    }
+    public void setDoThisOnChange(IDoThis iDoThis) {
 
-    @Override
-    public MusePoint2D getPosition() {
-        return this.position;
-    }
-
-    @Override
-    public boolean hitBox(double x, double y) {
-        boolean hitx = Math.abs(x - position.getX()) < offsetx;
-        boolean hity = Math.abs(y - position.getY()) < offsety;
-        return hitx && hity;
     }
 
     @Override
@@ -204,4 +188,6 @@ public class ClickableModuleSlot extends UniversalSlot implements IClickable {
     public void setOnReleased(IReleasable onReleased) {
         this.onReleased = onReleased;
     }
+
+
 }

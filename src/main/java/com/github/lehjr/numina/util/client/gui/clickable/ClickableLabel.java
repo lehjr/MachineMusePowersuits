@@ -65,6 +65,8 @@ public class ClickableLabel extends Clickable {
     // fixme: this isn't actually working as intended
     @Override
     public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
+        matrixStack.pushPose();
+        matrixStack.translate(0,0,100);
         switch (mode) {
             case LEFT:
                 MuseRenderer.drawLeftAlignedStringString(matrixStack, this.label, position.getX(), position.getY() - 4);
@@ -78,6 +80,7 @@ public class ClickableLabel extends Clickable {
                 MuseRenderer.drawRightAlignedString(matrixStack, this.label, position.getX(), position.getY() - 4);
                 break;
         }
+        matrixStack.popPose();
     }
 
     @Override

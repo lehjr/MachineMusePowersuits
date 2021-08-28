@@ -51,25 +51,32 @@ import javax.annotation.Nonnull;
 public class UniversalSlot extends Slot implements IClickable {
     private static IInventory emptyInventory = new Inventory(0);
     private final IItemHandler itemHandler;
-    public static final int offsetx = 8;
-    public static final int offsety = 8;
     protected IPressable onPressed;
     protected IReleasable onReleased;
     protected final boolean isIItemHandler;
-    protected MusePoint2D position;
     boolean isVisible;
     boolean isEnabled;
+    RelativeRect rect = new RelativeRect(false);
 
     public UniversalSlot(IInventory inventory, int index, int xPosition, int yPosition) {
         this(inventory, index, new MusePoint2D(xPosition, yPosition));
+        this.rect.init(x, y, x + 16, y + 16);
+        this.rect.setDoThisOnChange(doThis -> {
+            x = (int)rect.finalLeft();
+            y = (int)rect.finalTop();
+        });
     }
 
     public UniversalSlot(IInventory inventory, int index, MusePoint2D position) {
         super(inventory, index, (int)position.getX(), (int)position.getX());
         this.index = index;
-        this.position = position;
         this.itemHandler = new ItemStackHandler();
         isIItemHandler = false;
+        this.rect.init(position.getX() -8, position.getY() -8, position.getX() + 8, position.getY() + 8);
+        this.rect.setDoThisOnChange(doThis -> {
+            x = (int)rect.finalLeft();
+            y = (int)rect.finalTop();
+        });
     }
 
     public UniversalSlot(IItemHandler itemHandler, int index, int xPosition, int yPosition) {
@@ -78,11 +85,15 @@ public class UniversalSlot extends Slot implements IClickable {
 
     public UniversalSlot(IItemHandler itemHandler, int index, MusePoint2D position) {
         super(emptyInventory, index, (int)position.getX(), (int)position.getX());
-        this.position = position;
         this.itemHandler = itemHandler;
         isIItemHandler = true;
         this.isVisible = true;
         this.isEnabled = true;
+        this.rect.init(position.getX() -8, position.getY() -8, position.getX() + 8, position.getY() + 8);
+        this.rect.setDoThisOnChange(doThis -> {
+            x = (int)rect.finalLeft();
+            y = (int)rect.finalTop();
+        });
     }
 
     @Override
@@ -154,7 +165,7 @@ public class UniversalSlot extends Slot implements IClickable {
     }
 
     public void setPosition(MusePoint2D position) {
-        this.position = position;
+        this.rect.setPosition(position);
     }
 
     @Override
@@ -207,7 +218,7 @@ public class UniversalSlot extends Slot implements IClickable {
 
     @Override
     public MusePoint2D getPosition() {
-        return position;
+        return rect.getPosition();
     }
 
     @Override
@@ -217,149 +228,147 @@ public class UniversalSlot extends Slot implements IClickable {
 
     @Override
     public void initGrowth() {
-
+        rect.initGrowth();
     }
 
     @Override
     public IRect setMeLeftOf(IRect otherRightOfMe) {
-        return null;
+        return rect.setMeLeftOf(otherRightOfMe);
     }
 
     @Override
     public IRect setMeRightOf(IRect otherLeftOfMe) {
-        return null;
+        return rect.setMeRightOf(otherLeftOfMe);
     }
 
     @Override
     public IRect setMeAbove(IRect otherBelowMe) {
-        return null;
+        return rect.setMeAbove(otherBelowMe);
     }
 
     @Override
     public IRect setMeBelow(IRect otherAboveMe) {
-        return null;
+        return rect.setMeBelow(otherAboveMe);
     }
 
     @Override
     public MusePoint2D getUL() {
-        return null;
+        return rect.getUL();
     }
 
     @Override
     public MusePoint2D getWH() {
-        return null;
+        return rect.getWH();
     }
 
     @Override
     public double left() {
-        return 0;
+        return rect.left();
     }
 
     @Override
     public double finalLeft() {
-        return 0;
+        return rect.finalLeft();
     }
 
     @Override
     public double top() {
-        return 0;
+        return rect.top();
     }
 
     @Override
     public double finalTop() {
-        return 0;
+        return rect.finalTop();
     }
 
     @Override
     public double right() {
-        return 0;
+        return rect.right();
     }
 
     @Override
     public double finalRight() {
-        return 0;
+        return rect.finalRight();
     }
 
     @Override
     public double bottom() {
-        return 0;
+        return rect.bottom();
     }
 
     @Override
     public double finalBottom() {
-        return 0;
+        return rect.finalBottom();
     }
 
     @Override
     public double width() {
-        return 0;
+        return rect.width();
     }
 
     @Override
     public double finalWidth() {
-        return 0;
+        return rect.finalWidth();
     }
 
     @Override
     public double height() {
-        return 0;
+        return rect.height();
     }
 
     @Override
     public double finalHeight() {
-        return 0;
+        return rect.finalHeight();
     }
 
     @Override
     public IRect setUL(MusePoint2D ul) {
-        return null;
+        return rect.setUL(ul);
     }
 
     @Override
     public IRect setWH(MusePoint2D wh) {
-        return null;
+        return rect.setWH(wh);
     }
 
     @Override
     public IRect setLeft(double value) {
-        return null;
+        return rect.setLeft(value);
     }
 
     @Override
     public IRect setRight(double value) {
-        return null;
+        return rect.setRight(value);
     }
 
     @Override
     public IRect setTop(double value) {
-        return null;
+        return rect.setTop(value);
     }
 
     @Override
     public IRect setBottom(double value) {
-        return null;
+        return rect.setBottom(value);
     }
 
     @Override
     public IRect setWidth(double value) {
-        return null;
+        return rect.setWidth(value);
     }
 
     @Override
     public IRect setHeight(double value) {
-        return null;
+        return rect.setHeight(value);
     }
 
     @Override
     public void move(double x, double y) {
-        this.position.plus(new MusePoint2D(x, y));
+        this.rect.move(x, y);
     }
 
     @Override
     public boolean hitBox(double x, double y) {
-        boolean hitx = Math.abs(x - position.getX()) < offsetx;
-        boolean hity = Math.abs(y - position.getY()) < offsety;
-        return hitx && hity;
+        return rect.containsPoint(x, y);
     }
 
     @Override
@@ -414,5 +423,18 @@ public class UniversalSlot extends Slot implements IClickable {
     @Override
     public void onInit() {
 
+    }
+
+    @Override
+    public void setDoThisOnChange(IDoThis iDoThis) {
+        this.iDoThis = iDoThis;
+    }
+
+    IRect.IDoThis iDoThis;
+    @Override
+    public void doThisOnChange() {
+        if (this.iDoThis != null) {
+            this.iDoThis.doThisOnChange(this);
+        }
     }
 }

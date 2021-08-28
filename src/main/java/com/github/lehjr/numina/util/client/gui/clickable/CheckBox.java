@@ -55,9 +55,9 @@ public class CheckBox extends Clickable {
         if(this.isVisible) {
             tile.render(matrixStack, mouseX, mouseY, frameTime);
             if (isChecked) {
-                MuseRenderer.drawString(matrixStack, "x", tile.centerx() - 2, tile.centery() - 5, Colour.WHITE);
+                MuseRenderer.drawShadowedString(matrixStack, "x", tile.centerx() - 2, tile.centery() - 5, Colour.WHITE);
             }
-            MuseRenderer.drawString(matrixStack, label, tile.centerx() + 8, tile.centery() - 4, Colour.WHITE);
+            MuseRenderer.drawShadowedString(matrixStack, label, tile.centerx() + 8, tile.centery() - 4, Colour.WHITE);
         }
     }
 

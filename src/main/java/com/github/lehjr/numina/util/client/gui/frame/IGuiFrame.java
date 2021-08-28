@@ -309,4 +309,8 @@ public interface IGuiFrame extends IDrawableRect {
     default void onInit() {
         getRect().onInit();
     }
+
+    default void renderLabels(MatrixStack matrixStack, int mouseX, int mouseY) {
+
+    }
 }

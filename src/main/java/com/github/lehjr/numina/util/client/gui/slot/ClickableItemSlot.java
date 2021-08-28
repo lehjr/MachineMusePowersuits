@@ -41,9 +41,6 @@ import java.util.List;
  * A container slot in an IInventory
  */
 public class ClickableItemSlot extends UniversalSlot implements IClickable {
-    public static final int offsetx = 8;
-    public static final int offsety = 8;
-
     protected IPressable onPressed;
     protected IReleasable onReleased;
 
@@ -56,32 +53,7 @@ public class ClickableItemSlot extends UniversalSlot implements IClickable {
 
     @Override
     public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
-        MuseRenderer.drawItemAt(
-                getPosition().getX() - offsetx,
-                getPosition().getY() - offsety, getItem());
-    }
-
-    @Override
-    public void move(double x, double y) {
-        this.position.setX(x);
-        this.position.setY(y);
-    }
-
-    @Override
-    public void move(MusePoint2D position) {
-        this.position = position;
-    }
-
-    @Override
-    public MusePoint2D getPosition() {
-        return position;
-    }
-
-    @Override
-    public boolean hitBox(double x, double y) {
-        boolean hitx = Math.abs(x - position.getX()) < offsetx;
-        boolean hity = Math.abs(y - position.getY()) < offsety;
-        return hitx && hity;
+        MuseRenderer.drawItemAt(getUL().getX(), getUL().getY(), getItem());
     }
 
     @Override

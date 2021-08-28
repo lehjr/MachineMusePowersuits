@@ -156,23 +156,27 @@ public class ExtendedContainerScreen<T extends Container> extends ContainerScree
     }
 
     public void update(double x, double y) {
-        for (IGuiFrame frame : frames) {
-            frame.update(x, y);
-        }
+        frames.forEach(frame->frame.update(x, y));
     }
 
     public void renderFrames(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
-        for (IGuiFrame frame : frames) {
-            frame.render(matrixStack, mouseX, mouseY, partialTicks);
-        }
+        frames.forEach(frame->frame.render(matrixStack, mouseX, mouseY, partialTicks));
+    }
+
+    @Override
+    public void renderLabels(MatrixStack matrixStack, int mouseX, int mouseY) {
+        super.renderLabels(matrixStack, mouseX, mouseY);
+        renderFrameLabels(matrixStack, mouseX, mouseY);
+    }
+
+    public void renderFrameLabels(MatrixStack matrixStack, int mouseX, int mouseY) {
+        frames.forEach(frame -> frame.renderLabels(matrixStack, mouseX, mouseY));
     }
 
     @Override
     public boolean mouseScrolled(double mouseX, double mouseY, double dWheel) {
-        for (IGuiFrame frame : frames) {
-            if (frame.mouseScrolled(mouseX, mouseY, dWheel)) {
-                return true;
-            }
+        if (frames.stream().anyMatch(frame->frame.mouseScrolled(mouseX, mouseY, dWheel))) {
+            return true;
         }
         return super.mouseScrolled(mouseX, mouseY, dWheel);
     }
@@ -182,10 +186,8 @@ public class ExtendedContainerScreen<T extends Container> extends ContainerScree
      */
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
-        for (IGuiFrame frame : frames) {
-            if(frame.mouseClicked(mouseX, mouseY, button)) {
-                return true;
-            }
+        if (frames.stream().anyMatch(frame->frame.mouseClicked(mouseX, mouseY, button))) {
+            return true;
         }
         return super.mouseClicked(mouseX, mouseY, button);
     }
@@ -201,13 +203,11 @@ public class ExtendedContainerScreen<T extends Container> extends ContainerScree
      * mouseUp
      */
     @Override
-    public boolean mouseReleased(double x, double y, int which) {
-        for (IGuiFrame frame : frames) {
-            if (frame.mouseReleased(x, y, which)) {
-                return true;
-            }
+    public boolean mouseReleased(double mouseX, double mouseY, int which) {
+        if (frames.stream().anyMatch(frame->frame.mouseReleased(mouseX, mouseY, which))) {
+            return true;
         }
-        return super.mouseReleased(x, y, which);
+        return super.mouseReleased(mouseX, mouseY, which);
     }
 
     public void drawToolTip(MatrixStack matrixStack, int mouseX, int mouseY) {

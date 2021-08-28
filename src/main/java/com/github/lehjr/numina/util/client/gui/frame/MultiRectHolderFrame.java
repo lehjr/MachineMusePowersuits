@@ -37,6 +37,7 @@ public class MultiRectHolderFrame<T extends Map<Integer, IRect>> extends GUISpac
         super(widthIn, heightIn);
         this.horizontalLayout = horizontalLayout;
         this.startTopLeft = startTopLeft;
+        setDoThisOnChange(change->refreshRects());
     }
 
     /**
@@ -224,103 +225,48 @@ public class MultiRectHolderFrame<T extends Map<Integer, IRect>> extends GUISpac
         for(IRect rect : rects.values()) {
             rect.initGrowth();
         }
+        refreshRects();
     }
 
     // FIXME: this is just a workaround... maybe figure out why this is needed in the first place and fix
-    private void refreshRects() {
-        // centered height
-        if (horizontalLayout) {
-            for (int i = 0; i< rects.size(); i++) {
-                /** sets the rects centered vertically */
-                rects.get(i).setTop(this.centery() - rects.get(i).finalHeight() * 0.5);
-//                rects.get(i).setLeft(rects.get(i).finalLeft());
-            }
-            // centered width
-        } else {
-            for (int i = 0; i< rects.size(); i++) {
-                // centered height
-//                rects.get(i).setTop(rects.get(i).finalTop());
-                rects.get(i).setLeft(this.centerx() - rects.get(i).finalWidth() * 0.5);
-            }
-        }
-        getBackground().ifPresent(rect-> {
-            rect.setPosition(this.getPosition());
-            rect.setWidth(this.finalWidth());
-            rect.setHeight(this.finalHeight());
-        });
-    }
-
-    @Override
-    public IRect setTop(double value) {
-        super.setTop(value);
-        // stacked like pancakes
-        if (!horizontalLayout) {
-            if (rects.size() > 0) {
-                // all boxes linked from top to bottom
-                if (startTopLeft) {
-                    rects.get(0).setTop(finalTop());
-                // all boxes lined from bottom to top
-                } else {
-                    rects.get(rects.size() - 1).setBottom(this.finalBottom());
-                }
-            }
-        }
-        refreshRects();
-        return this;
-    }
-
-    @Override
-    public IRect setBottom(double value) {
-        super.setBottom(value);
-        // stacked like pancakes
-        if (!horizontalLayout) {
-            if (rects.size() > 0) {
-                if (startTopLeft) {
-                    rects.get(0).setTop(finalTop());
-                    // all boxes lined from bottom to top
-                } else {
-                    rects.get(rects.size() - 1).setBottom(finalBottom());
-                }
-            }
-        }
-        refreshRects();
-        return this;
-    }
-
-    @Override
-    public IRect setLeft(double value) {
-        super.setLeft(value);
-        // like books on a shelf
-        if (horizontalLayout) {
-            // find leftmost box and set the left value
-            if (rects.size() > 0) {
+    public void refreshRects() {
+        if (rects.size() > 0) {
+            if (horizontalLayout) {
+                // find leftmost box and set the left value
                 if (startTopLeft) {
                     rects.get(0).setLeft(finalLeft());
                 } else {
                     rects.get(rects.size() - 1).setRight(finalRight());
                 }
-            }
-        }
-        refreshRects();
-        return this;
-    }
 
-    @Override
-    public IRect setRight(double value) {
-        super.setRight(value);
-        // like books on a shelf
-        if (horizontalLayout) {
-            // find leftmost box and set the left value
-            if (rects.size() > 0) {
+                for (int i = 0; i< rects.size(); i++) {
+                    /** sets the rects centered vertically */
+                    rects.get(i).setTop(this.centery() - rects.get(i).finalHeight() * 0.5);
+                    rects.get(i).setLeft(rects.get(i).finalLeft());
+                }
+
+            } else {
+                // all boxes linked from top to bottom
                 if (startTopLeft) {
-                    rects.get(0).setLeft(finalLeft());
+                    rects.get(0).setTop(finalTop());
+                    // all boxes lined from bottom to top
                 } else {
-                    rects.get(rects.size() -1).setRight(finalRight());
+                    rects.get(rects.size() - 1).setBottom(this.finalBottom());
+                }
+
+                for (int i = 0; i< rects.size(); i++) {
+                    // centered height
+                    rects.get(i).setTop(rects.get(i).finalTop());
+                    rects.get(i).setLeft(this.centerx() - rects.get(i).finalWidth() * 0.5);
                 }
             }
         }
-        refreshRects();
-        return this;
+
+        getBackground().ifPresent(rect-> {
+            rect.setPosition(this.getPosition());
+            rect.setWidth(this.finalWidth());
+            rect.setHeight(this.finalHeight());
+        });
     }
 
     @Override
@@ -334,41 +280,6 @@ public class MultiRectHolderFrame<T extends Map<Integer, IRect>> extends GUISpac
 
     @Override
     public IRect setWH(MusePoint2D wh) {
-        return this;
-    }
-
-    @Override
-    public void setPosition(MusePoint2D positionIn) {
-        super.setPosition(positionIn);
-        // like books on a shelf
-        if (horizontalLayout) {
-            // find leftmost box and set the left value
-            if (rects.size() > 0) {
-                if (startTopLeft) {
-                    rects.get(0).setLeft(finalLeft());
-                }else {
-                    rects.get(rects.size() - 1).setRight(finalRight());
-                }
-            }
-            // stacked like pancakes
-        } else {
-            if (rects.size() > 0) {
-                // all boxes linked from top to bottom
-                if (startTopLeft) {
-                    rects.get(0).setTop(finalTop());
-                    // all boxes lined from bottom to top
-                } else {
-                    rects.get(rects.size() - 1).setBottom(this.finalBottom());
-                }
-            }
-        }
-        refreshRects();
-    }
-
-    @Override
-    public IRect setUL(MusePoint2D ul) {
-        setLeft(ul.getX());
-        setTop(ul.getY());
         return this;
     }
 }

@@ -93,7 +93,7 @@ public class ChargingBaseGui extends ExtendedContainerScreen<ChargingBaseContain
     }
 
     @Override
-    protected void renderLabels(MatrixStack matrixStack, int mouseX, int mouseY) {
+    public void renderLabels(MatrixStack matrixStack, int mouseX, int mouseY) {
         playerInventoryFrame.renderLabels(matrixStack, mouseX, mouseY);
         this.font.draw(matrixStack,  new TranslationTextComponent("numina.energy").append(": "), 32F, 50F, 4210752);
 

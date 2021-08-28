@@ -140,9 +140,17 @@ public interface IRect {
 
     IRect setMeBelow(IRect otherAboveMe);
 
-    void setOnInit(IRect.IInit onInit);
+    void setOnInit(IInit onInit);
 
     void onInit();
+
+    void doThisOnChange();
+
+    void setDoThisOnChange(IDoThis iDoThis);
+
+    interface IDoThis {
+        void doThisOnChange(IRect doThis);
+    }
 
     @OnlyIn(Dist.CLIENT)
     interface IInit {

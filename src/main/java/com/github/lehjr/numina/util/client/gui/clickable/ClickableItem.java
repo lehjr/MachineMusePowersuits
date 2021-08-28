@@ -68,7 +68,7 @@ public class ClickableItem extends Clickable {
         if (inventorySlot > 35 || itemHandler.getSelected() == getStack()) {
             matrixStack.pushPose();
             matrixStack.translate(0,0,310);
-            MuseRenderer.drawString(matrixStack, "e", getPosition().getX() + 3, getPosition().getY() + 1, Colour.DARK_GREEN);
+            MuseRenderer.drawShadowedString(matrixStack, "e", getPosition().getX() + 3, getPosition().getY() + 1, Colour.DARK_GREEN);
             matrixStack.popPose();
         }
     }

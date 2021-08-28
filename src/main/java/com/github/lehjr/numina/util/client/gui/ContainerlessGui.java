@@ -31,6 +31,7 @@ import com.github.lehjr.numina.util.client.gui.gemoetry.DrawableRelativeRect;
 import com.github.lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
 import com.github.lehjr.numina.util.math.Colour;
 import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.util.text.ITextComponent;
@@ -113,10 +114,6 @@ public class ContainerlessGui extends Screen {
         matrixStack.popPose();
     }
 
-    public void renderLabels(MatrixStack matrixStack, int mouseX, int mouseY) {
-
-    }
-
     public void update(double x, double y) {
         for (IGuiFrame frame : frames) {
             frame.update(x, y);
@@ -127,6 +124,14 @@ public class ContainerlessGui extends Screen {
         for (IGuiFrame frame : frames) {
             frame.render(matrixStack, mouseX, mouseY, partialTicks);
         }
+    }
+
+    public void renderLabels(MatrixStack matrixStack, int mouseX, int mouseY) {
+        renderFrameLabels(matrixStack, mouseX, mouseY);
+    }
+
+    public void renderFrameLabels(MatrixStack matrixStack, int mouseX, int mouseY) {
+        frames.forEach(frame -> frame.renderLabels(matrixStack, mouseX, mouseY));
     }
 
     /**

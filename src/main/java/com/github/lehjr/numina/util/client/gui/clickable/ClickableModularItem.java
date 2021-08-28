@@ -48,7 +48,7 @@ public class ClickableModularItem extends ClickableItemSlot {
     public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
         super.render(matrixStack, mouseX, mouseY, partialTicks);
         if (this.index > 35 || this.index == Minecraft.getInstance().player.inventory.selected) {
-            MuseRenderer.drawString(matrixStack, "e", getPosition().getX() + 3, getPosition().getY() + 1, Colour.DARK_GREEN);
+            MuseRenderer.drawShadowedString(matrixStack, "e", getPosition().getX() + 3, getPosition().getY() + 1, Colour.DARK_GREEN);
         }
     }
 }

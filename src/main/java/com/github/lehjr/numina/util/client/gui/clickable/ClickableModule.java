@@ -129,18 +129,17 @@ public class ClickableModule extends Clickable {
             if (!allowed) {
                 matrixStack.pushPose();
                 matrixStack.translate(0, 0, 250);
-                NuminaRenderState.glowOn();
+//                NuminaRenderState.glowOn();
                 String string = MuseStringUtils.wrapMultipleFormatTags("X", MuseStringUtils.FormatCodes.Bold, MuseStringUtils.FormatCodes.DarkRed);
-                MuseRenderer.drawString(matrixStack, string, getPosition().getX() + 3, getPosition().getY() + 1);
-                NuminaRenderState.glowOff();
-
+                MuseRenderer.drawShadowedString(matrixStack, string, getPosition().getX() + 3, getPosition().getY() + 1);
+//                NuminaRenderState.glowOff();
                 matrixStack.popPose();
             } else if (installed) {
                 matrixStack.pushPose();
                 matrixStack.translate(0, 0,250);
-                NuminaRenderState.glowOn();
+//                NuminaRenderState.glowOn();
                 MuseIconUtils.getIcon().checkmark.draw(matrixStack, left() + 1, top() + 1, checkmarkcolour.withAlpha(0.6F));
-                NuminaRenderState.glowOff();
+//                NuminaRenderState.glowOff();
                 matrixStack.popPose();
             }
         }
