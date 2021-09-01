@@ -55,14 +55,14 @@ public class ContainerlessGui extends Screen {
 
     private List<IGuiFrame> frames;
 
-    public ContainerlessGui(ITextComponent titleIn) {
+    public ContainerlessGui(ITextComponent titleIn, boolean growFromMiddle) {
         super(titleIn);
         frames = new ArrayList();
-        backgroundRect = new DrawableRelativeRect(0, 0, 0, 0, true, Colour.GREY_GUI_BACKGROUND, Colour.BLACK);
+        backgroundRect = new DrawableRelativeRect(0, 0, 0, 0, growFromMiddle, Colour.GREY_GUI_BACKGROUND, Colour.BLACK);
     }
 
-    public ContainerlessGui(ITextComponent titleIn, int guiWidth, int guiHeight) {
-        this(titleIn);
+    public ContainerlessGui(ITextComponent titleIn, int guiWidth, int guiHeight, boolean growFromMiddle) {
+        this(titleIn, growFromMiddle);
         this.imageWidth = guiWidth;
         this.imageHeight = guiHeight;
     }

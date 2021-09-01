@@ -67,7 +67,7 @@ public class CreativeInstallModuleRequestPacket {
             ServerPlayerEntity player = ctx.get().getSender();
             if (player.containerMenu != null && player.containerMenu.containerId == message.windowId) {
                 player.containerMenu.setItem(message.slotId, message.itemStack);
-//                player.openContainer.detectAndSendChanges();
+                player.containerMenu.broadcastChanges();
             }
         });
         ctx.get().setPacketHandled(true);

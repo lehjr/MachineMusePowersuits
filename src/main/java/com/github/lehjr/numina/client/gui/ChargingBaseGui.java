@@ -59,7 +59,7 @@ public class ChargingBaseGui extends ExtendedContainerScreen<ChargingBaseContain
 
      */
     public ChargingBaseGui(ChargingBaseContainer container, PlayerInventory inv, ITextComponent titleIn) {
-        super(container, inv, titleIn);
+        super(container, inv, titleIn, true);
         energyMeter = new EnergyMeter();
 
         // slot 0

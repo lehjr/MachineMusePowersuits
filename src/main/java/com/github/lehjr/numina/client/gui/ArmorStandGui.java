@@ -49,7 +49,7 @@ public class ArmorStandGui extends ExtendedContainerScreen<ArmorStandContainer> 
     ArmorStandEntity armorStandEntity;
 
     public ArmorStandGui(ArmorStandContainer containerIn, PlayerInventory inv, ITextComponent titleIn) {
-        super(containerIn, inv, titleIn, 176,  172);
+        super(containerIn, inv, titleIn, 176,  172, true);
         innerFrame = new InnerFrame(containerIn, ulGetter());
         addFrame(innerFrame);
         this.armorStandEntity = containerIn.getArmorStandEntity();

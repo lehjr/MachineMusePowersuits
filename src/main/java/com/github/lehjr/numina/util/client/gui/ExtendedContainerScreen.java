@@ -56,8 +56,7 @@ public class ExtendedContainerScreen<T extends Container> extends ContainerScree
     protected DrawableRelativeRect backgroundRect;
     private List<IGuiFrame> frames;
 
-
-    public ExtendedContainerScreen(T screenContainer, PlayerInventory inv, ITextComponent titleIn) {
+    public ExtendedContainerScreen(T screenContainer, PlayerInventory inv, ITextComponent titleIn, boolean growFromMiddle) {
         super(screenContainer, inv, titleIn);
         frames = new ArrayList();
         tooltipRect = new DrawableRelativeRect(
@@ -65,7 +64,7 @@ public class ExtendedContainerScreen<T extends Container> extends ContainerScree
                 false,
                 Colour.BLACK.withAlpha(0.9F),
                 Colour.PURPLE);
-        backgroundRect = new DrawableRelativeRect(0, 0, 0, 0, true, Colour.GREY_GUI_BACKGROUND, Colour.BLACK);
+        backgroundRect = new DrawableRelativeRect(0, 0, 0, 0, growFromMiddle, Colour.GREY_GUI_BACKGROUND, Colour.BLACK);
         this.minecraft = Minecraft.getInstance();
     }
 
@@ -77,8 +76,8 @@ public class ExtendedContainerScreen<T extends Container> extends ContainerScree
      * @param guiWidth sets the "imageWidth" parameter to determine the
      * @param guiHeight
      */
-    public ExtendedContainerScreen(T screenContainer, PlayerInventory inv, ITextComponent titleIn, int guiWidth, int guiHeight) {
-        this(screenContainer, inv, titleIn);
+    public ExtendedContainerScreen(T screenContainer, PlayerInventory inv, ITextComponent titleIn, int guiWidth, int guiHeight, boolean growFromMiddle) {
+        this(screenContainer, inv, titleIn, growFromMiddle);
         this.imageWidth = guiWidth;
         this.imageHeight = guiHeight;
     }
