@@ -27,22 +27,32 @@
 package com.github.lehjr.numina.util.client.gui.slot;
 
 import com.github.lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
+
+import javax.annotation.Nonnull;
 
 public class HideableSlotItemHandler extends SlotItemHandler implements IHideableSlot {
     boolean isEnabled = false;
     protected int parentSlot = -1;
+    protected int index;
 
     public HideableSlotItemHandler(IItemHandler itemHandler, int parent, int index, int xPosition, int yPosition) {
         super(itemHandler, index, xPosition, yPosition);
         this.parentSlot = parent;
+        this.index = index;
     }
 
     public HideableSlotItemHandler(IItemHandler itemHandler, int parent, int index, int xPosition, int yPosition, boolean isEnabled) {
         super(itemHandler, index, xPosition, yPosition);
         this.parentSlot = parent;
         this.isEnabled = isEnabled;
+        this.index = index;
+    }
+
+    public int getIndex() {
+        return index;
     }
 
     public int getParentSlot(){

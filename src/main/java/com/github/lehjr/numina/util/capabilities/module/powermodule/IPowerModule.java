@@ -26,6 +26,7 @@
 
 package com.github.lehjr.numina.util.capabilities.module.powermodule;
 
+import com.github.lehjr.numina.util.nbt.MuseNBTUtils;
 import com.github.lehjr.numina.util.nbt.propertymodifier.IPropertyModifier;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
@@ -77,4 +78,8 @@ public interface IPowerModule {
     void addIntTradeoffProperty(String tradeoffName, String propertyName, int multiplier, String unit, int roundTo, int offset);
 
     boolean isAllowed();
+
+    default CompoundNBT getModuleTag() {
+        return MuseNBTUtils.getModuleTag(getModuleStack());
+    }
 }

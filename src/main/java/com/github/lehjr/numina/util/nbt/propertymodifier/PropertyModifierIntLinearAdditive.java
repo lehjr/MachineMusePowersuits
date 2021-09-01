@@ -45,7 +45,22 @@ public class PropertyModifierIntLinearAdditive extends PropertyModifierLinearAdd
         return Double.valueOf(roundWithOffset(result, roundTo, offset));
     }
 
+    public double getScaledDouble(CompoundNBT moduleTag, double value) {
+        double scaledVal = applyModifier(moduleTag, value);
+        double ret = (scaledVal - value)/multiplier;
+        MuseNBTUtils.setDoubleOrRemove(moduleTag, tradeoffName, ret);
+        return ret;
+    }
+
     public long roundWithOffset(double input, int roundTo, int offset) {
         return Math.round((input + offset) / roundTo) * roundTo - offset;
+    }
+
+    public int getRoundTo() {
+        return roundTo;
+    }
+
+    public int getOffset() {
+        return offset;
     }
 }

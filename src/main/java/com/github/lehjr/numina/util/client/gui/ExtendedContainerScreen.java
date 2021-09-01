@@ -29,6 +29,7 @@ package com.github.lehjr.numina.util.client.gui;
 import com.github.lehjr.numina.util.client.gui.frame.IGuiFrame;
 import com.github.lehjr.numina.util.client.gui.gemoetry.DrawableRelativeRect;
 import com.github.lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
+import com.github.lehjr.numina.util.client.gui.slot.HideableSlotItemHandler;
 import com.github.lehjr.numina.util.client.gui.slot.IHideableSlot;
 import com.github.lehjr.numina.util.client.gui.slot.IIConProvider;
 import com.github.lehjr.numina.util.math.Colour;
@@ -36,11 +37,11 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.container.ClickType;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.util.text.ITextComponent;
 
-import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 

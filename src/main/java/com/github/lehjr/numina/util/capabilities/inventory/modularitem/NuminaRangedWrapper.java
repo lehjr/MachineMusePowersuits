@@ -26,10 +26,17 @@
 
 package com.github.lehjr.numina.util.capabilities.inventory.modularitem;
 
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.wrapper.RangedWrapper;
 import org.apache.commons.lang3.tuple.Pair;
 
+import javax.annotation.Nonnull;
+
+/**
+ * Note the minSlot not used because we are using absolute values rather than offset.
+ * For instance, slot 11 is the itemHandler's slot 11, not the wrapper's
+ */
 public class NuminaRangedWrapper extends RangedWrapper {
     private final int minSlot;
     private final int maxSlot;
@@ -45,5 +52,43 @@ public class NuminaRangedWrapper extends RangedWrapper {
 
     public Pair<Integer, Integer> getRange() {
         return Pair.of(minSlot, maxSlot);
+    }
+
+    @Override
+    public int getSlots() {
+        return super.getSlots();
+    }
+
+    @Nonnull
+    @Override
+    public ItemStack getStackInSlot(int slot) {
+        return super.getStackInSlot(slot - minSlot);
+    }
+
+    @Nonnull
+    @Override
+    public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
+        return super.insertItem(slot - minSlot, stack, simulate);
+    }
+
+    @Nonnull
+    @Override
+    public ItemStack extractItem(int slot, int amount, boolean simulate) {
+        return super.extractItem(slot - minSlot, amount, simulate);
+    }
+
+    @Override
+    public void setStackInSlot(int slot, @Nonnull ItemStack stack) {
+        super.setStackInSlot(slot - minSlot, stack);
+    }
+
+    @Override
+    public int getSlotLimit(int slot) {
+        return super.getSlotLimit(slot - minSlot);
+    }
+
+    @Override
+    public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
+        return super.isItemValid(slot - minSlot, stack);
     }
 }
