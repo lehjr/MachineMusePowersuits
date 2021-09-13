@@ -43,8 +43,8 @@ import org.lwjgl.opengl.GL11;
 
 import java.util.List;
 
-public class ScrollableFrame extends DrawableTile implements IGuiFrame {
-    protected final int buttonSize = 5;
+public class ScrollableFrame extends DrawableTile implements IScrollable {
+    protected int buttonSize = 5;
     protected int totalSize;
     protected int currentScrollPixels;
     protected boolean visible = true;
@@ -71,6 +71,16 @@ public class ScrollableFrame extends DrawableTile implements IGuiFrame {
         setTopBorderColour(topBorder);
     }
 
+    @Override
+    public int getButtonSize() {
+        return buttonSize;
+    }
+
+    @Override
+    public void setButtonSize(int buttonSize) {
+        this.buttonSize = buttonSize;
+    }
+
     void setDrawBackground(boolean drawBackground) {
         this.drawBackground = drawBackground;
     }
@@ -82,6 +92,26 @@ public class ScrollableFrame extends DrawableTile implements IGuiFrame {
     @Override
     public RelativeRect getRect() {
         return this;
+    }
+
+    @Override
+    public int getTotalSize() {
+        return this.totalSize;
+    }
+
+    @Override
+    public void setTotalSize(int totalSize) {
+        this.totalSize = totalSize;
+    }
+
+    @Override
+    public int getCurrentScrollPixels() {
+        return this.currentScrollPixels;
+    }
+
+    @Override
+    public void setCurrentScrollPixels(int scrollPixels) {
+        this.currentScrollPixels = scrollPixels;
     }
 
     public int getMaxScrollPixels() {
@@ -97,34 +127,7 @@ public class ScrollableFrame extends DrawableTile implements IGuiFrame {
     }
 
     @Override
-    public boolean mouseClicked(double x, double y, int button) {
-        if (isVisible() && containsPoint(x, y) && button == 0) {
-            int dscroll = 0;
-            if (y - top() < buttonSize && this.currentScrollPixels > 0) {
-                dscroll = (int) ((double) dscroll - this.getScrollAmount());
-            } else if (bottom() - y < buttonSize) {
-                dscroll = (int) ((double) dscroll + this.getScrollAmount());
-            }
-            if (dscroll != 0) {
-                this.currentScrollPixels = (int) MuseMathUtils.clampDouble(this.currentScrollPixels + dscroll, 0.0D, this.getMaxScrollPixels());
-                return true;
-            }
-        }
-        return false;
-    }
-
-    @Override
     public boolean mouseReleased(double mouseX, double mouseY, int button) {
-        return false;
-    }
-
-    @Override
-    public boolean mouseScrolled(double mouseX, double mouseY, double dWheel) {
-        if (this.containsPoint(mouseX, mouseY)) {
-            // prevent negative total scroll values
-            currentScrollPixels = (int) MuseMathUtils.clampDouble(currentScrollPixels -= dWheel * getScrollAmount(), 0, getMaxScrollPixels());
-            return true;
-        }
         return false;
     }
 
@@ -134,7 +137,7 @@ public class ScrollableFrame extends DrawableTile implements IGuiFrame {
     }
 
     @Override
-    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
+    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float frameTime) {
         if (isVisible()) {
             if (drawBackground) {
                 this.drawBackground(matrixStack);
@@ -142,9 +145,9 @@ public class ScrollableFrame extends DrawableTile implements IGuiFrame {
             if (drawBorder) {
                 this.drawBorder(matrixStack, 0);
             }
-
-            preRender(matrixStack, mouseX, mouseY, partialTicks);
-            postRender(mouseX, mouseY, partialTicks);
+            super.render(matrixStack, mouseX, mouseY, frameTime);
+            preRender(matrixStack, mouseX, mouseY, frameTime);
+            postRender(mouseX, mouseY, frameTime);
         }
     }
 
@@ -171,72 +174,5 @@ public class ScrollableFrame extends DrawableTile implements IGuiFrame {
     @Override
     public boolean isVisible() {
         return visible;
-    }
-
-    public void preRender(MatrixStack matrixStack, int mouseX, int mouseY, float frameTIme) {
-        if (isVisible()) {
-            super.render(matrixStack, mouseX, mouseY, frameTIme);
-
-            RenderSystem.disableTexture();
-            RenderSystem.enableBlend();
-            RenderSystem.disableAlphaTest();
-            RenderSystem.defaultBlendFunc();
-            RenderSystem.shadeModel(GL11.GL_SMOOTH);
-            NuminaRenderState.glowOn();
-
-            Tessellator tessellator = Tessellator.getInstance();
-            BufferBuilder buffer = tessellator.getBuilder();
-            buffer.begin(GL11.GL_TRIANGLES, DefaultVertexFormats.POSITION_COLOR_LIGHTMAP);
-
-            Matrix4f matrix4f = matrixStack.last().pose();
-
-            // Can scroll down
-            if (currentScrollPixels + height() < totalSize) {
-                buffer.vertex(matrix4f, (float) (left() + width() / 2F), (float) bottom(), zLevel)
-                        .color(Colour.LIGHT_BLUE.r, Colour.LIGHT_BLUE.b, Colour.LIGHT_BLUE.b, Colour.LIGHT_BLUE.a)
-                        .uv2(0x00F000F0)
-                        .endVertex();
-
-                buffer.vertex(matrix4f, (float) (left() + width() / 2 + 2), (float) bottom() - 4, zLevel)
-                        .color(Colour.LIGHT_BLUE.r, Colour.LIGHT_BLUE.b, Colour.LIGHT_BLUE.b, Colour.LIGHT_BLUE.a)
-                        .uv2(0x00F000F0)
-                        .endVertex();
-
-                buffer.vertex(matrix4f, (float) (left() + width() / 2 - 2), (float) bottom() - 4, zLevel)
-                        .color(Colour.LIGHT_BLUE.r, Colour.LIGHT_BLUE.b, Colour.LIGHT_BLUE.b, Colour.LIGHT_BLUE.a)
-                        .uv2(0x00F000F0)
-                        .endVertex();
-            }
-
-            // Can scroll up
-            if (currentScrollPixels > 0) {
-                buffer.vertex(matrix4f, (float) (left() + width() / 2), (float) top(), zLevel)
-                        .color(Colour.LIGHT_BLUE.r, Colour.LIGHT_BLUE.b, Colour.LIGHT_BLUE.b, Colour.LIGHT_BLUE.a)
-                        .uv2(0x00F000F0)
-                        .endVertex();
-                buffer.vertex(matrix4f, (float) (left() + width() / 2 - 2), (float) top() + 4, zLevel)
-                        .color(Colour.LIGHT_BLUE.r, Colour.LIGHT_BLUE.b, Colour.LIGHT_BLUE.b, Colour.LIGHT_BLUE.a)
-                        .uv2(0x00F000F0)
-                        .endVertex();
-                buffer.vertex(matrix4f, (float) (left() + width() / 2 + 2), (float) top() + 4, zLevel)
-                        .color(Colour.LIGHT_BLUE.r, Colour.LIGHT_BLUE.b, Colour.LIGHT_BLUE.b, Colour.LIGHT_BLUE.a)
-                        .uv2(0x00F000F0)
-                        .endVertex();
-            }
-            tessellator.end();
-
-            RenderSystem.shadeModel(GL11.GL_FLAT);
-            RenderSystem.disableBlend();
-            RenderSystem.enableAlphaTest();
-            RenderSystem.enableTexture();
-            NuminaRenderState.scissorsOn(left(), top() + 4, width(), height() - 8); // get rid of margins
-        }
-    }
-
-    public void postRender(int mouseX, int mouseY, float partialTicks) {
-        if (isVisible()) {
-            NuminaRenderState.scissorsOff();
-            NuminaRenderState.glowOff();
-        }
     }
 }

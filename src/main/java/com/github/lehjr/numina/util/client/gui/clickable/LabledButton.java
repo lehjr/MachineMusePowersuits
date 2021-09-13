@@ -86,6 +86,6 @@ public class LabledButton extends Button {
     @Override
     public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
         super.render(matrixStack, mouseX, mouseY, partialTicks);
-        MuseRenderer.drawCenteredString(matrixStack, this.label, centerx(), centery() - 4);
+        MuseRenderer.drawShadowedStringCentered(matrixStack, this.label, centerx(), centery() - 4);
     }
 }

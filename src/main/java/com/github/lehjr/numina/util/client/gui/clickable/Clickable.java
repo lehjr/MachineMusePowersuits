@@ -26,21 +26,24 @@
 
 package com.github.lehjr.numina.util.client.gui.clickable;
 
+import com.github.lehjr.numina.util.client.gui.gemoetry.DrawableTile;
 import com.github.lehjr.numina.util.client.gui.gemoetry.IDrawable;
 import com.github.lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
 import com.github.lehjr.numina.util.client.gui.gemoetry.RelativeRect;
+import com.mojang.blaze3d.matrix.MatrixStack;
 
 /**
  * Defines a generic clickable itemStack for a MuseGui.
  *
  * @author MachineMuse
  */
-public abstract class Clickable extends RelativeRect implements IClickable {
+public abstract class Clickable extends DrawableTile implements IClickable {
     IPressable onPressed;
     IReleasable onReleased;
     boolean isEnabled = true;
     boolean isVisible = true;
     float blitOffset = 0;
+    boolean drawBackground = false;
 
     public Clickable() {
         this(new MusePoint2D(0, 0));
@@ -49,6 +52,21 @@ public abstract class Clickable extends RelativeRect implements IClickable {
     public Clickable(MusePoint2D point) {
         super(0, 0, 0, 0);
         setPosition(point);
+    }
+
+    public void setDrawBackground(boolean drawBackground) {
+        this.drawBackground = drawBackground;
+    }
+
+    public void superRender(MatrixStack matrixStack, int mouseX, int mouseY, float frameTime) {
+        super.render(matrixStack, mouseX, mouseY, frameTime);
+    }
+
+    @Override
+    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float frameTime) {
+        if (drawBackground) {
+            super.render(matrixStack, mouseX, mouseY, frameTime);
+        }
     }
 
     @Override

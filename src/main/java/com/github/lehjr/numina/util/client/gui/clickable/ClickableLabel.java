@@ -29,6 +29,7 @@ package com.github.lehjr.numina.util.client.gui.clickable;
 import com.github.lehjr.numina.util.client.gui.gemoetry.IDrawable;
 import com.github.lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
 import com.github.lehjr.numina.util.client.render.MuseRenderer;
+import com.github.lehjr.numina.util.math.Colour;
 import com.mojang.blaze3d.matrix.MatrixStack;
 
 
@@ -36,26 +37,39 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 public class ClickableLabel extends Clickable {
     protected IPressable onPressed;
     protected IReleasable onReleased;
+    Colour colour = Colour.WHITE;
+    boolean shadowed = true;
 
     protected String label;
-    protected MusePoint2D position;
     protected JustifyMode mode;
 
     public ClickableLabel(String label, MusePoint2D position) {
         this.label = label;
-        this.position = position;
         this.mode = JustifyMode.CENTERED;
+        super.setWidth(MuseRenderer.getStringWidth(label));
+        super.setHeight(MuseRenderer.getStringHeight());
+        super.setPosition(position);
     }
 
     public ClickableLabel(String label, MusePoint2D position, JustifyMode mode) {
         this.label = label;
-        this.position = position;
+        super.setWidth(MuseRenderer.getStringWidth(label));
+        super.setHeight(MuseRenderer.getStringHeight());
+        super.setPosition(position);
         this.mode = mode;
     }
 
     public ClickableLabel setMode(JustifyMode mode) {
         this.mode = mode;
         return this;
+    }
+
+    public void setColour(Colour colour) {
+        this.colour = colour;
+    }
+
+    public void setShadowed(boolean shadowed) {
+        this.shadowed = shadowed;
     }
 
     public void setLabel(String label) {
@@ -67,18 +81,34 @@ public class ClickableLabel extends Clickable {
     public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
         matrixStack.pushPose();
         matrixStack.translate(0,0,100);
-        switch (mode) {
-            case LEFT:
-                MuseRenderer.drawLeftAlignedStringString(matrixStack, this.label, position.getX(), position.getY() - 4);
-                break;
+        if (shadowed) {
+            switch (mode) {
+                case LEFT:
+                    MuseRenderer.drawLeftAlignedShadowedString(matrixStack, this.label, centerx(), centery(), colour);
+                    break;
 
-            case CENTERED:
-                MuseRenderer.drawCenteredString(matrixStack, this.label, position.getX(), position.getY() - 4);
-                break;
+                case CENTERED:
+                    MuseRenderer.drawShadowedStringCentered(matrixStack, this.label, centerx(), centery(), colour);
+                    break;
 
-            case RIGHT:
-                MuseRenderer.drawRightAlignedString(matrixStack, this.label, position.getX(), position.getY() - 4);
-                break;
+                case RIGHT:
+                    MuseRenderer.drawRightAlignedShadowedString(matrixStack, this.label, centerx(), centery(), colour);
+                    break;
+            }
+        } else {
+            switch (mode) {
+                case LEFT:
+                    MuseRenderer.drawLeftAlignedText(matrixStack, this.label, centerx(), centery(), colour);
+                    break;
+
+                case CENTERED:
+                    MuseRenderer.drawCenteredText(matrixStack, this.label, centerx(), centery(), colour);
+                    break;
+
+                case RIGHT:
+                    MuseRenderer.drawRightAlignedText(matrixStack, this.label, centerx(), centery(), colour);
+                    break;
+            }
         }
         matrixStack.popPose();
     }
@@ -98,11 +128,8 @@ public class ClickableLabel extends Clickable {
         if (label == null || label.isEmpty()) {
             return false;
         }
-
-        MusePoint2D radius = new MusePoint2D((double) (MuseRenderer.getStringWidth(label) / 2F + 2F), 6);
-        boolean hitx = Math.abs(position.getX() - x) < radius.getX();
-        boolean hity = Math.abs(position.getY() - y) < radius.getY();
-        return hitx && hity;
+        MusePoint2D radius = new MusePoint2D((double) (MuseRenderer.getStringWidth(label) / 2F + 2F), MuseRenderer.getStringHeight());
+        return Math.abs(centerx() - x) < radius.getX() && Math.abs(centery() - y) < radius.getY();
     }
 
     public enum JustifyMode {

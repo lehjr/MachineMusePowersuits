@@ -1,7 +1,11 @@
 package com.github.lehjr.numina.util.client.gui.frame;
 
+import com.github.lehjr.numina.util.capabilities.inventory.modularitem.IModularItem;
 import com.github.lehjr.numina.util.client.gui.clickable.IClickable;
-import com.github.lehjr.numina.util.client.gui.gemoetry.*;
+import com.github.lehjr.numina.util.client.gui.gemoetry.IDrawable;
+import com.github.lehjr.numina.util.client.gui.gemoetry.IDrawableRect;
+import com.github.lehjr.numina.util.client.gui.gemoetry.IRect;
+import com.github.lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.util.text.ITextComponent;
 
@@ -11,11 +15,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-/**
- * A bunch of rectangles laid out either vertically or horizontally
- */
 
-public class MultiRectHolderFrame<T extends Map<Integer, IRect>> extends GUISpacer {
+/**
+ * A scrollable bunch of rectangles laid out vertically
+ */
+public class ScrollableMultiRectFrame<T extends Map<Integer, IRect>> extends GUISpacer implements IScrollable {
+    protected int buttonSize = 5;
+    protected int totalSize;
+    protected int currentScrollPixels;
+    protected double scrollAmount = 8;
     protected double margin;
     protected double maxHeight = -1;
     protected double maxWidth = -1;
@@ -23,30 +31,27 @@ public class MultiRectHolderFrame<T extends Map<Integer, IRect>> extends GUISpac
     float zLevel;
     boolean isEnabled = true;
     boolean isVisible = true;
-    @Nullable IDrawableRect background = null;
+    @Nullable
+    IDrawableRect background = null;
     Map<Integer, IRect> rects = new HashMap<>();
-    boolean horizontalLayout;
-    boolean startTopLeft;
+    boolean startTop;
     /**
      *  Note, all rectangles should have the same width for vertical layout, or same height for horizontal layout.
      *
-     * @param horizontalLayout if true, layout will be like books on a shelf, or vertical (layered from top to bottom)
-     * @param startTopLeft determines where the first link in the chain is, since that is the one that will determine which points to set
+     * @param startTop determines where the first link in the chain is, since that is the one that will determine which points to set
      *                     when the outer rectangle is moved. For instance, false will start on the bottom for vertical layout, or right for
      *                     horizontal layout. The rest in the chain should be using setMe-LOCATION-Of.
      * @param minWidth
      * @param minHeight
      */
-    public MultiRectHolderFrame(boolean horizontalLayout, boolean startTopLeft, double minWidth, double minHeight) {
+    public ScrollableMultiRectFrame(boolean startTop, double minWidth, double minHeight) {
         super(minWidth, minHeight);
-        this.horizontalLayout = horizontalLayout;
-        this.startTopLeft = startTopLeft;
+        this.startTop = startTop;
     }
 
-    public MultiRectHolderFrame(boolean horizontalLayout, boolean startTopLeft, double minWidth, double minHeight, double maxWidth, double maxHeight) {
+    public ScrollableMultiRectFrame(boolean startTop, double minWidth, double minHeight, double maxWidth, double maxHeight) {
         super(minWidth, minHeight);
-        this.horizontalLayout = horizontalLayout;
-        this.startTopLeft = startTopLeft;
+        this.startTop = startTop;
         this.maxHeight = maxHeight;
         this.maxWidth = maxWidth;
     }
@@ -60,42 +65,34 @@ public class MultiRectHolderFrame<T extends Map<Integer, IRect>> extends GUISpac
      * @param rect
      * @return
      */
-    public MultiRectHolderFrame addRect(IRect rect) {
+    public ScrollableMultiRectFrame addRect(IRect rect) {
         if (rects.size() >0) {
-            if (horizontalLayout) {
-                if (startTopLeft) {
-                    rect.setMeRightOf(rects.get(rects.size() -1));
-                } else {
-                    rect.setMeLeftOf(rects.get(rects.size() -1));
-                }
+            if (startTop) {
+                rect.setMeBelow(rects.get(rects.size() -1));
             } else {
-                if (startTopLeft) {
-                    rect.setMeBelow(rects.get(rects.size() -1));
-                } else {
-                    rect.setMeAbove(rects.get(rects.size() -1));
-                }
+                rect.setMeAbove(rects.get(rects.size() -1));
             }
         }
         rects.put(rects.size(), rect);
         return this;
     }
 
-    public MultiRectHolderFrame setMaxHeight(double maxHeight) {
+    public ScrollableMultiRectFrame setMaxHeight(double maxHeight) {
         this.maxHeight = maxHeight;
         return this;
     }
 
-    public MultiRectHolderFrame setMaxWidth(double maxWidth) {
+    public ScrollableMultiRectFrame setMaxWidth(double maxWidth) {
         this.maxWidth = maxWidth;
         return this;
     }
 
-    public MultiRectHolderFrame setMinHeight(double minHeight) {
+    public ScrollableMultiRectFrame setMinHeight(double minHeight) {
         super.setHeight(minHeight);
         return this;
     }
 
-    public MultiRectHolderFrame setMinWidth(double minWidth) {
+    public ScrollableMultiRectFrame setMinWidth(double minWidth) {
         super.setWidth(minWidth);
         return this;
     }
@@ -119,33 +116,14 @@ public class MultiRectHolderFrame<T extends Map<Integer, IRect>> extends GUISpac
         double finalVal = 0;
         double highestVal = 0;
         for (IRect rect : rects.values()) {
-            // single max height, multiple widths
-            if (horizontalLayout) {
-                finalVal += rect.finalWidth();
-                if (rect.finalHeight() > highestVal) {
-                    highestVal = rect.finalHeight();
-                }
-                // single max width, multiple heights
-            } else {
-                finalVal += rect.finalHeight();
-                if (rect.finalWidth() > highestVal) {
-                    highestVal = rect.finalWidth();
-                }
+            // single max width, multiple heights
+            finalVal += rect.finalHeight();
+            if (rect.finalWidth() > highestVal) {
+                highestVal = rect.finalWidth();
             }
         }
         highestVal += margin * 2;
-        if (horizontalLayout) {
-            if (maxWidth > 0) {
-                super.setWidth(Math.min(Math.max(finalVal, super.finalWidth()), maxWidth));
-            } else {
-                super.setWidth(Math.max(finalVal, super.finalWidth()));
-            }
-            if (maxHeight > 0) {
-                super.setHeight(Math.min(Math.max(highestVal, super.finalHeight()), maxHeight));
-            } else {
-                super.setHeight(Math.max(highestVal, super.finalHeight()));
-            }
-        } else {
+        {
             if (maxWidth > 0) {
                 super.setWidth(Math.min(Math.max(highestVal, super.finalWidth()), maxWidth));
             } else {
@@ -153,13 +131,14 @@ public class MultiRectHolderFrame<T extends Map<Integer, IRect>> extends GUISpac
             }
             if (maxHeight > 0) {
                 super.setHeight(Math.min(Math.max(finalVal, super.finalHeight()), maxHeight));
+                this.totalSize = (int) (finalVal + 10);
             } else {
                 super.setHeight(Math.max(finalVal, super.finalHeight()));
             }
         }
     }
 
-    public MultiRectHolderFrame setBackground(IDrawableRect background) {
+    public ScrollableMultiRectFrame setBackground(IDrawableRect background) {
         this.background = background;
         return this;
     }
@@ -170,30 +149,25 @@ public class MultiRectHolderFrame<T extends Map<Integer, IRect>> extends GUISpac
 
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
-        for (IRect rect : rects.values()) {
-            if (rect instanceof IGuiFrame && ((IGuiFrame) rect).mouseClicked(mouseX, mouseY, button)) {
-                return true;
-            }
+        if (IScrollable.super.mouseClicked(mouseX, mouseY, button)) {
+            double scrollY = mouseY + currentScrollPixels;
+            return rects.values().stream().filter(IGuiFrame.class::isInstance).map(IGuiFrame.class::cast).anyMatch(rect->rect.mouseClicked(mouseX, scrollY, button)) ||
+                    rects.values().stream().filter(IClickable.class::isInstance).map(IClickable.class::cast).anyMatch(rect->rect.mouseClicked(mouseX, scrollY, button));
         }
         return false;
     }
 
     @Override
     public boolean mouseReleased(double mouseX, double mouseY, int button) {
-        for (IRect rect : rects.values()) {
-            if (rect instanceof IGuiFrame && ((IGuiFrame) rect).mouseReleased(mouseX, mouseY, button)) {
-                return true;
-            }
-        }
-        return super.mouseReleased(mouseX, mouseY, button);
+        double scrollY = mouseY + currentScrollPixels;
+        return rects.values().stream().filter(IGuiFrame.class::isInstance).map(IGuiFrame.class::cast).anyMatch(rect->rect.mouseReleased(mouseX, scrollY, button)) ||
+                rects.values().stream().filter(IClickable.class::isInstance).map(IClickable.class::cast).anyMatch(rect->rect.mouseReleased(mouseX, scrollY, button));
     }
 
     @Override
     public boolean mouseScrolled(double mouseX, double mouseY, double dWheel) {
-        for (IRect rect : rects.values()) {
-            if (rect instanceof IGuiFrame && ((IGuiFrame) rect).mouseScrolled(mouseX, mouseY, dWheel)) {
-                return true;
-            }
+        if (IScrollable.super.mouseScrolled(mouseX, mouseY, dWheel)) {
+            return rects.values().stream().filter(IGuiFrame.class::isInstance).map(IGuiFrame.class::cast).anyMatch(rect->rect.mouseScrolled(mouseX, mouseY, dWheel));
         }
         return false;
     }
@@ -208,8 +182,18 @@ public class MultiRectHolderFrame<T extends Map<Integer, IRect>> extends GUISpac
         }
     }
 
+    @Override
+    public void preRender(MatrixStack matrixStack, int mouseX, int mouseY, float frameTime) {
+        IScrollable.super.preRender(matrixStack, mouseX, mouseY, frameTime);
+    }
+
     public void renderBackground(MatrixStack matrixStack, int mouseX, int mouseY, float frameTime) {
         getBackground().ifPresent(background -> background.render(matrixStack, mouseX, mouseY, frameTime));
+    }
+
+    @Override
+    public void postRender(int mouseX, int mouseY, float frameTime) {
+        IScrollable.super.postRender(mouseX, mouseY, frameTime);
     }
 
     public void superRender(MatrixStack matrixStack, int mouseX, int mouseY, float frameTime) {
@@ -306,23 +290,9 @@ public class MultiRectHolderFrame<T extends Map<Integer, IRect>> extends GUISpac
     // FIXME: this is just a workaround... maybe figure out why this is needed in the first place and fix
     public void refreshRects() {
         if (rects.size() > 0) {
-            if (horizontalLayout) {
-                // find leftmost box and set the left value
-                if (startTopLeft) {
-                    rects.get(0).setLeft(finalLeft());
-                } else {
-                    rects.get(rects.size() - 1).setRight(finalRight());
-                }
-
-                for (int i = 0; i< rects.size(); i++) {
-                    /** sets the rects centered vertically */
-                    rects.get(i).setTop(this.centery() - rects.get(i).finalHeight() * 0.5);
-                    rects.get(i).setLeft(rects.get(i).finalLeft());
-                }
-
-            } else {
+            {
                 // all boxes linked from top to bottom
-                if (startTopLeft) {
+                if (startTop) {
                     rects.get(0).setTop(finalTop());
                     // all boxes lined from bottom to top
                 } else {
@@ -343,6 +313,46 @@ public class MultiRectHolderFrame<T extends Map<Integer, IRect>> extends GUISpac
             rect.setWidth(this.finalWidth());
             rect.setHeight(this.finalHeight());
         });
+    }
+
+    @Override
+    public void setTotalSize(int totalSize) {
+        this.totalSize = totalSize;
+    }
+
+    @Override
+    public int getButtonSize() {
+        return this.buttonSize;
+    }
+
+    @Override
+    public void setButtonSize(int buttonSize) {
+        this.buttonSize = buttonSize;
+    }
+
+    @Override
+    public int getTotalSize() {
+        return this.totalSize;
+    }
+
+    @Override
+    public int getCurrentScrollPixels() {
+        return this.currentScrollPixels;
+    }
+
+    @Override
+    public void setCurrentScrollPixels(int scrollPixels) {
+        this.currentScrollPixels = scrollPixels;
+    }
+
+    @Override
+    public double getScrollAmount() {
+        return scrollAmount;
+    }
+
+    @Override
+    public void setScrollAmount(double scrollAmount) {
+        this.scrollAmount = scrollAmount;
     }
 
     @Override

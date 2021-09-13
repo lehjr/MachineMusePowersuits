@@ -32,7 +32,6 @@ import com.github.lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
 import com.github.lehjr.numina.util.client.render.MuseRenderer;
 import com.github.lehjr.numina.util.math.Colour;
 import com.mojang.blaze3d.matrix.MatrixStack;
-import net.minecraft.client.Minecraft;
 import net.minecraft.util.text.ITextComponent;
 
 /**
@@ -121,17 +120,16 @@ public class ClickableButton extends DrawableRelativeRect implements IClickable 
      * Call this from the container GUI's drawGuiContainerForegroundLayer
      * @param mouseX
      * @param mouseY
-     * @param partialTicks
      */
     public void renderText(MatrixStack matrixStack, int mouseX, int mouseY) {
         if (isVisible()) {
             if (label.getString().contains("\n")) {
                 String[] s = label.getString().split("\n");
                 for (int i = 0; i < s.length; i++) {
-                    MuseRenderer.drawCenteredString(matrixStack, s[i], getPosition().getX(), getPosition().getY() - (4 * s.length) + (i * 8));
+                    MuseRenderer.drawShadowedStringCentered(matrixStack, s[i], getPosition().getX(), getPosition().getY() + (i * MuseRenderer.getStringHeight() + 1));
                 }
             } else {
-                MuseRenderer.drawCenteredString(matrixStack, this.label.getString(), getPosition().getX(), getPosition().getY() - 4);
+                MuseRenderer.drawShadowedStringCentered(matrixStack, this.label.getString(), getPosition().getX(), getPosition().getY());
             }
         }
     }
