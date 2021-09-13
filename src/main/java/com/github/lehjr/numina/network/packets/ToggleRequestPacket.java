@@ -70,11 +70,12 @@ public class ToggleRequestPacket {
                 return;
 
             for (int i = 0; i < player.inventory.getContainerSize(); i++) {
-                player.inventory.getItem(i).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(handler ->{
-                    if (handler instanceof IModularItem) {
-                        ((IModularItem) handler).toggleModule(registryName, toggleval);
-                    }
-                });
+                player.inventory.getItem(i).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+                        .filter(IModularItem.class::isInstance)
+                        .map(IModularItem.class::cast)
+                        .ifPresent(handler ->{
+                        handler.toggleModule(registryName, toggleval);
+                        });
             }
             player.inventory.setChanged();
 

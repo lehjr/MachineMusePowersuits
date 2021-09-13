@@ -77,11 +77,10 @@ public class TweakRequestDoublePacket {
             double tweakValue = message.tweakValue;
             if (moduleName != null && tweakName != null) {
                 EquipmentSlotType type = message.type;
-                player.getItemBySlot(type).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(iItemHandler -> {
-                    if (iItemHandler instanceof IModularItem) {
-                        ((IModularItem) iItemHandler).setModuleTweakDouble(moduleName, tweakName, tweakValue);
-                    }
-                });
+                player.getItemBySlot(type).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+                        .filter(IModularItem.class::isInstance)
+                        .map(IModularItem.class::cast)
+                        .ifPresent(iItemHandler -> iItemHandler.setModuleTweakDouble(moduleName, tweakName, tweakValue));
             }
         });
         ctx.get().setPacketHandled(true);

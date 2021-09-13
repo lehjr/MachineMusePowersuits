@@ -27,6 +27,7 @@
 package com.github.lehjr.numina.network.packets;
 
 import com.github.lehjr.numina.util.capabilities.inventory.modechanging.IModeChangingItem;
+import com.github.lehjr.numina.util.capabilities.inventory.modularitem.IModularItem;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.fml.network.NetworkEvent;
@@ -42,13 +43,13 @@ public class ModeChangeRequestPacket {
     }
 
     public ModeChangeRequestPacket(int mode, int slot) {
-        this.mode = mode;
-        this.slot = slot;
+        ModeChangeRequestPacket.mode = mode;
+        ModeChangeRequestPacket.slot = slot;
     }
 
     public static void encode(ModeChangeRequestPacket msg, PacketBuffer packetBuffer) {
-        packetBuffer.writeInt(msg.mode);
-        packetBuffer.writeInt(msg.slot);
+        packetBuffer.writeInt(mode);
+        packetBuffer.writeInt(slot);
     }
 
     public static ModeChangeRequestPacket decode(PacketBuffer packetBuffer) {
@@ -61,14 +62,13 @@ public class ModeChangeRequestPacket {
     public static void handle(ModeChangeRequestPacket message, Supplier<NetworkEvent.Context> ctx) {
         final ServerPlayerEntity player = ctx.get().getSender();
         ctx.get().enqueueWork(() -> {
-            int slot = message.slot;
-            int mode = message.mode;
+            int slot = ModeChangeRequestPacket.slot;
+            int mode = ModeChangeRequestPacket.mode;
             if (slot > -1 && slot < 9) {
                 player.inventory.items.get(slot).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-                        .ifPresent(handler -> {
-                            if (handler instanceof IModeChangingItem)
-                                ((IModeChangingItem) handler).setActiveMode(mode);
-                        });
+                        .filter(IModeChangingItem.class::isInstance)
+                        .map(IModeChangingItem.class::cast)
+                        .ifPresent(handler -> handler.setActiveMode(mode));
             }
         });
         ctx.get().setPacketHandled(true);

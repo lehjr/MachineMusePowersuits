@@ -76,33 +76,34 @@ public class AdditionalInfo {
 //        }
 
         // Modular Item Check
-        stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(iItemHandler -> {
-            // base class
-            if(iItemHandler instanceof IModularItem) {
-                // Mode changing item such as power fist
-                if (iItemHandler instanceof IModeChangingItem) {
-                    ItemStack activeModule = ((IModeChangingItem) iItemHandler).getActiveModule();
-                    if (!activeModule.isEmpty()) {
+        stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+                // base class
+                .filter(IModularItem.class::isInstance)
+                .map(IModularItem.class::cast)
+                .ifPresent(iItemHandler -> {
+                    // Mode changing item such as power fist
+                    if (iItemHandler instanceof IModeChangingItem) {
+                        ItemStack activeModule = ((IModeChangingItem) iItemHandler).getActiveModule();
+                        if (!activeModule.isEmpty()) {
 
-                        // IFormattableTextComponent
-                        // TranslationTextComponent
-                        IFormattableTextComponent localizedName = (IFormattableTextComponent) activeModule.getDisplayName();
-                        currentTipList.add(
-                                new TranslationTextComponent("tooltip.numina.mode")
+                            // IFormattableTextComponent
+                            // TranslationTextComponent
+                            IFormattableTextComponent localizedName = (IFormattableTextComponent) activeModule.getDisplayName();
+                            currentTipList.add(
+                                    new TranslationTextComponent("tooltip.numina.mode")
 //                                        .appendString(" ")
-                                        .append(new StringTextComponent(" "))
-                                        .append(localizedName.setStyle(Style.EMPTY.applyFormat(TextFormatting.RED))));
-                    } else {
-                        currentTipList.add(new TranslationTextComponent("tooltip.numina.changeModes"));
+                                            .append(new StringTextComponent(" "))
+                                            .append(localizedName.setStyle(Style.EMPTY.applyFormat(TextFormatting.RED))));
+                        } else {
+                            currentTipList.add(new TranslationTextComponent("tooltip.numina.changeModes"));
+                        }
                     }
-                }
 
-                if (doAdditionalInfo()) {
-                    List<ITextComponent> installed = new ArrayList<>();
-                    Map<ITextComponent, FluidInfo> fluids = new HashMap<>();
+                    if (doAdditionalInfo()) {
+                        List<ITextComponent> installed = new ArrayList<>();
+                        Map<ITextComponent, FluidInfo> fluids = new HashMap<>();
 
-                    if(iItemHandler instanceof IModularItem) {
-                        for (ItemStack module : ((IModularItem) iItemHandler).getInstalledModules()) {
+                        for (ItemStack module : iItemHandler.getInstalledModules()) {
                             installed.add(((IFormattableTextComponent)module.getDisplayName()).setStyle(Style.EMPTY.applyFormat((TextFormatting.LIGHT_PURPLE))));
 
                             // check mpodule for fluid
@@ -122,26 +123,24 @@ public class AdditionalInfo {
                                 }
                             });
                         }
-                    }
 
-                    if (fluids.size() > 0) {
-                        for(FluidInfo info : fluids.values()) {
-                            currentTipList.add(info.getOutput());
+                        if (fluids.size() > 0) {
+                            for(FluidInfo info : fluids.values()) {
+                                currentTipList.add(info.getOutput());
+                            }
                         }
-                    }
 
-                    if (installed.size() == 0) {
-                        String message = I18n.get("tooltip.numina.noModules");
-                        currentTipList.addAll(MuseStringUtils.wrapStringToLength(message, 30));
+                        if (installed.size() == 0) {
+                            String message = I18n.get("tooltip.numina.noModules");
+                            currentTipList.addAll(MuseStringUtils.wrapStringToLength(message, 30));
+                        } else {
+                            currentTipList.add(new TranslationTextComponent("tooltip.numina.installedModules"));
+                            currentTipList.addAll(installed);
+                        }
                     } else {
-                        currentTipList.add(new TranslationTextComponent("tooltip.numina.installedModules"));
-                        currentTipList.addAll(installed);
+                        currentTipList.add(additionalInfoInstructions());
                     }
-                } else {
-                    currentTipList.add(additionalInfoInstructions());
-                }
-            }
-        });
+                });
 
         stack.getCapability(PowerModuleCapability.POWER_MODULE).ifPresent(iPowerModule -> {
             if (doAdditionalInfo()) {
@@ -154,9 +153,9 @@ public class AdditionalInfo {
 
         stack.getCapability(CapabilityEnergy.ENERGY).ifPresent(energyCap->
                 currentTipList.add(new StringTextComponent(I18n.get(NuminaConstants.TOOLTIP_ENERGY,
-                MuseStringUtils.formatNumberShort(energyCap.getEnergyStored()),
-                MuseStringUtils.formatNumberShort(energyCap.getMaxEnergyStored())))
-                .setStyle(Style.EMPTY.applyFormat(TextFormatting.AQUA).withItalic(true))));
+                        MuseStringUtils.formatNumberShort(energyCap.getEnergyStored()),
+                        MuseStringUtils.formatNumberShort(energyCap.getMaxEnergyStored())))
+                        .setStyle(Style.EMPTY.applyFormat(TextFormatting.AQUA).withItalic(true))));
     }
 
     static class FluidInfo {
@@ -202,14 +201,15 @@ public class AdditionalInfo {
     }
 
     public static List<ITextComponent> getItemInstalledModules(@Nonnull ItemStack stack) {
-        return stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).map(iItemHandler -> {
+        return stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+                .filter(IModularItem.class::isInstance)
+                .map(IModularItem.class::cast)
+                .map(iItemHandler -> {
             List<ITextComponent> moduleNames = new ArrayList<>();
-
-            if(iItemHandler instanceof IModularItem) {
-                for (ItemStack module : ((IModularItem) iItemHandler).getInstalledModules()) {
+                for (ItemStack module : iItemHandler.getInstalledModules()) {
                     moduleNames.add(((IFormattableTextComponent) module.getDisplayName()).setStyle(Style.EMPTY.applyFormat(TextFormatting.LIGHT_PURPLE)));
                 }
-            }
+
             return moduleNames;
         }).orElse(new ArrayList<>());
     }

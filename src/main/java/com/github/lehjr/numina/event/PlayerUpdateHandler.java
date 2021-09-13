@@ -56,23 +56,25 @@ public class PlayerUpdateHandler {
 
                 switch (slot.getType()) {
                     case HAND:
-                        player.getItemBySlot(slot).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(i-> {
-                            if (i instanceof IModeChangingItem) {
-                                ((IModeChangingItem) i).tick(player);
-                                modularItems.add(((IModeChangingItem) i).getModularItemStack());
-                            }
-                        });
+                        player.getItemBySlot(slot).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+                                .filter(IModeChangingItem.class::isInstance)
+                                .map(IModeChangingItem.class::cast)
+                                .ifPresent(i-> {
+                                    i.tick(player);
+                                    modularItems.add(i.getModularItemStack());
+                                });
                         break;
 
                     case ARMOR:
 
                         try {
-                            player.getItemBySlot(slot).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(i-> {
-                                if (i instanceof IModularItem) {
-                                    ((IModularItem) i).tick(player);
-                                    modularItems.add(((IModularItem) i).getModularItemStack());
-                                }
-                            });
+                            player.getItemBySlot(slot).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+                                    .filter(IModularItem.class::isInstance)
+                                    .map(IModularItem.class::cast)
+                                    .ifPresent(i-> {
+                                    i.tick(player);
+                                    modularItems.add(i.getModularItemStack());
+                                    });
                         } catch (Exception exception) {
                             MuseLogger.logException(player.getItemBySlot(slot).toString(), exception);
                         }

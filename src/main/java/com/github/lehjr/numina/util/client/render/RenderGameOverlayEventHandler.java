@@ -27,6 +27,7 @@
 package com.github.lehjr.numina.util.client.render;
 
 import com.github.lehjr.numina.util.capabilities.inventory.modechanging.IModeChangingItem;
+import com.github.lehjr.numina.util.capabilities.inventory.modularitem.IModularItem;
 import com.github.lehjr.numina.util.capabilities.module.powermodule.PowerModuleCapability;
 import com.github.lehjr.numina.util.capabilities.module.toggleable.IToggleableModule;
 import com.mojang.blaze3d.matrix.MatrixStack;
@@ -65,33 +66,34 @@ public class RenderGameOverlayEventHandler {
         ClientPlayerEntity player = mc.player;
         int i = player.inventory.selected;
         ItemStack stack = player.inventory.getSelected();
-        stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(handler->{
-            if (handler instanceof IModeChangingItem) {
-                ItemStack module = ((IModeChangingItem) handler).getActiveModule();
-                if (!module.isEmpty()) {
-                    MainWindow screen = mc.getWindow();
-                    double currX;
-                    double currY;
-                    int sw = screen.getGuiScaledWidth();
-                    int baroffset = 22;
-                    if (!player.abilities.instabuild) {
-                        baroffset += 16;
+        stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+                .filter(IModeChangingItem.class::isInstance)
+                .map(IModeChangingItem.class::cast)
+                .ifPresent(handler->{
+                    ItemStack module = handler.getActiveModule();
+                    if (!module.isEmpty()) {
+                        MainWindow screen = mc.getWindow();
+                        double currX;
+                        double currY;
+                        int sw = screen.getGuiScaledWidth();
+                        int baroffset = 22;
+                        if (!player.abilities.instabuild) {
+                            baroffset += 16;
 
-                        int totalArmorValue = player.getArmorValue();
-                        baroffset += 8 * (int) Math.ceil((double)totalArmorValue / 20); // 20 points per row @ 2 armor points per icon
-                    }
-                    baroffset = screen.getGuiScaledHeight() - baroffset;
-                    currX = sw / 2.0 - 89.0 + 20.0 * i;
-                    currY = baroffset - 18;
-                    boolean isActive = module.getCapability(PowerModuleCapability.POWER_MODULE).map(pm->pm instanceof IToggleableModule && ((IToggleableModule) pm).isModuleOnline()).orElse(true);
+                            int totalArmorValue = player.getArmorValue();
+                            baroffset += 8 * (int) Math.ceil((double)totalArmorValue / 20); // 20 points per row @ 2 armor points per icon
+                        }
+                        baroffset = screen.getGuiScaledHeight() - baroffset;
+                        currX = sw / 2.0 - 89.0 + 20.0 * i;
+                        currY = baroffset - 18;
+                        boolean isActive = module.getCapability(PowerModuleCapability.POWER_MODULE).map(pm->pm instanceof IToggleableModule && ((IToggleableModule) pm).isModuleOnline()).orElse(true);
 
-                    if (isActive) {
-                        mc.getItemRenderer().renderGuiItem(module, (int)currX, (int)currY);
-                    } else {
-                        MuseRenderer.drawModuleAt(new MatrixStack(), currX, currY, module, false);
+                        if (isActive) {
+                            mc.getItemRenderer().renderGuiItem(module, (int)currX, (int)currY);
+                        } else {
+                            MuseRenderer.drawModuleAt(new MatrixStack(), currX, currY, module, false);
+                        }
                     }
-                }
-            }
-        });
+                });
     }
 }
