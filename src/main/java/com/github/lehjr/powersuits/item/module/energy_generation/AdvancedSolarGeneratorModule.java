@@ -95,6 +95,16 @@ public class AdvancedSolarGeneratorModule extends AbstractPowerModule {
             }
 
             @Override
+            public int getTier() {
+                return 2;
+            }
+
+            @Override
+            public String getModuleGroup() {
+                return "Energy Generation";
+            }
+
+            @Override
             public void onPlayerTickActive(PlayerEntity player, ItemStack itemStack) {
                 World world = player.level;
                 boolean isRaining, canRain = true;

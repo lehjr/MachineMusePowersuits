@@ -30,6 +30,7 @@ import com.github.lehjr.numina.constants.NuminaConstants;
 import com.github.lehjr.numina.network.NuminaPackets;
 import com.github.lehjr.numina.network.packets.CosmeticInfoPacket;
 import com.github.lehjr.numina.util.capabilities.inventory.modechanging.IModeChangingItem;
+import com.github.lehjr.numina.util.capabilities.inventory.modularitem.IModularItem;
 import com.github.lehjr.numina.util.capabilities.render.IHandHeldModelSpecNBT;
 import com.github.lehjr.numina.util.capabilities.render.ModelSpecNBTCapability;
 import com.github.lehjr.numina.util.capabilities.render.modelspec.ModelPartSpec;
@@ -50,9 +51,11 @@ import net.minecraft.client.renderer.model.ItemOverrideList;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
+import net.minecraft.util.Hand;
 import net.minecraft.util.math.vector.TransformationMatrix;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -74,6 +77,7 @@ public class PowerFistModel extends BakedModelWrapper {
     static ItemCameraTransforms.TransformType modelcameraTransformType;
     static ItemStack itemStack;
     static boolean isFiring = false;
+    PlayerEntity player;
 
     public PowerFistModel(IBakedModel bakedModelIn) {
         super(bakedModelIn);
@@ -120,23 +124,12 @@ public class PowerFistModel extends BakedModelWrapper {
                     if (renderSpec != null && !renderSpec.isEmpty() &&
                             (modelcameraTransformType == ItemCameraTransforms.TransformType.FIRST_PERSON_LEFT_HAND ||
                                     (modelcameraTransformType == ItemCameraTransforms.TransformType.FIRST_PERSON_RIGHT_HAND))) {
-                        PlayerEntity player = Minecraft.getInstance().player;
-                        int slot = -1;
+                        EquipmentSlotType slotType = EquipmentSlotType.OFFHAND;
                         if (player.getMainHandItem().equals(itemStack)) {
-                            slot = player.inventory.selected;
-                        } else {
-                            for (int i = 0; i < player.inventory.getContainerSize(); i++) {
-                                if (player.inventory.getItem(i).equals(itemStack)) {
-                                    slot = i;
-                                    break;
-                                }
-                            }
+                            slotType = EquipmentSlotType.MAINHAND;
                         }
-
-                        if (slot != -1) {
-                            specNBTCap.setRenderTag(renderSpec, NuminaConstants.TAG_RENDER);
-                            NuminaPackets.CHANNEL_INSTANCE.sendToServer(new CosmeticInfoPacket(slot, NuminaConstants.TAG_RENDER, renderSpec));
-                        }
+                        specNBTCap.setRenderTag(renderSpec, NuminaConstants.TAG_RENDER);
+                        NuminaPackets.CHANNEL_INSTANCE.sendToServer(new CosmeticInfoPacket(slotType, NuminaConstants.TAG_RENDER, renderSpec));
                     }
                 }
 
@@ -198,6 +191,10 @@ public class PowerFistModel extends BakedModelWrapper {
         }
     }
 
+    public void setPlayer(PlayerEntity player) {
+        this.player = player;
+    }
+
     @Override
     public boolean useAmbientOcclusion() {
         return true;
@@ -224,20 +221,21 @@ public class PowerFistModel extends BakedModelWrapper {
             itemStack = itemStackIn;
             if (entityIn instanceof PlayerEntity) {
                 PlayerEntity player = (PlayerEntity) entityIn;
+                setPlayer(player);
                 if (player.isUsingItem()) {
-                    player.getItemInHand(player.getUsedItemHand()).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(modechanging -> {
-                        if (!(modechanging instanceof IModeChangingItem)) {
-                            return;
-                        }
-                        ItemStack module = ((IModeChangingItem) modechanging).getActiveModule();
-                        int actualCount = 0;
+                    player.getItemInHand(player.getUsedItemHand()).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+                            .filter(IModeChangingItem.class::isInstance)
+                            .map(IModeChangingItem.class::cast)
+                            .ifPresent(modechanging -> {
+                                ItemStack module = modechanging.getActiveModule();
+                                int actualCount = 0;
 
-                        int maxDuration = ((IModeChangingItem) modechanging).getModularItemStack().getUseDuration();
-                        if (!module.isEmpty()) {
-                            actualCount = (maxDuration - player.getUseItemRemainingTicks());
-                        }
-                        isFiring = actualCount > 0;
-                    });
+                                int maxDuration = modechanging.getModularItemStack().getUseDuration();
+                                if (!module.isEmpty()) {
+                                    actualCount = (maxDuration - player.getUseItemRemainingTicks());
+                                }
+                                isFiring = actualCount > 0;
+                            });
                 } else {
                     isFiring = false;
                 }

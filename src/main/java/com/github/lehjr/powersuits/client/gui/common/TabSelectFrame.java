@@ -28,11 +28,13 @@ package com.github.lehjr.powersuits.client.gui.common;
 
 import com.github.lehjr.numina.util.client.gui.clickable.ClickableButton;
 import com.github.lehjr.numina.util.client.gui.frame.GuiFrameWithoutBackground;
+import com.github.lehjr.numina.util.client.gui.gemoetry.IRect;
 import com.github.lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
-import com.github.lehjr.numina.util.client.gui.gemoetry.RelativeRect;
 import com.github.lehjr.numina.util.client.sound.Musique;
 import com.github.lehjr.numina.util.client.sound.SoundDictionary;
 import com.github.lehjr.powersuits.client.gui.keybind.TinkerKeybindGui;
+import com.github.lehjr.powersuits.client.gui.modding.cosmetic.CosmeticGui;
+import com.github.lehjr.powersuits.client.gui.modding.module.tweak.ModuleTweakGui;
 import com.github.lehjr.powersuits.network.MPSPackets;
 import com.github.lehjr.powersuits.network.packets.ContainerGuiOpenPacket;
 import com.mojang.blaze3d.matrix.MatrixStack;
@@ -70,8 +72,7 @@ public class TabSelectFrame extends GuiFrameWithoutBackground {
         button = new ClickableButton(new TranslationTextComponent("gui.powersuits.tab.module.tweak"), new MusePoint2D(0, 0), active != 1);
         button.setOnPressed(onPressed->{
             Musique.playClientSound(SoundDictionary.SOUND_EVENT_GUI_SELECT, 1);
-
-//            MPSPackets.CHANNEL_INSTANCE.sendToServer(new ContainerGuiOpenPacket(0));
+            Minecraft.getInstance().tell(() -> Minecraft.getInstance().setScreen(new ModuleTweakGui(new TranslationTextComponent("gui.tinkertable"), false)));
         });
         buttons.add(button);
 
@@ -87,21 +88,18 @@ public class TabSelectFrame extends GuiFrameWithoutBackground {
         button = new ClickableButton(new TranslationTextComponent("gui.powersuits.tab.visual"), new MusePoint2D(0, 0), active !=3);
         button.setOnPressed(onPressed->{
             Musique.playClientSound(SoundDictionary.SOUND_EVENT_GUI_SELECT, 1);
-//            Minecraft.getInstance().tell(() -> Minecraft.getInstance().setScreen(new CosmeticGui(player.inventory, new TranslationTextComponent("gui.tinkertable"))));
+            Minecraft.getInstance().tell(() -> Minecraft.getInstance().setScreen(new CosmeticGui(player.inventory, new TranslationTextComponent("gui.tinkertable"))));
         });
         buttons.add(button);
-
-//        button = new ClickableButton(new TranslationTextComponent("container.crafting"), new MusePoint2D(0, 0), active != 3);
-//        button.setOnPressed(onPressed->{
-//            Musique.playClientSound(SoundDictionary.SOUND_EVENT_GUI_SELECT, 1);
-//            player.awardStat(Stats.INTERACT_WITH_CRAFTING_TABLE);
-//            MPSPackets.CHANNEL_INSTANCE.sendToServer(new ContainerGuiOpenPacket(3));
-//        });
-//        buttons.add(button);
 
         for(ClickableButton b : buttons) {
             b.setVisible(true);
         }
+        setDoThisOnChange(change->init());
+    }
+
+    public void initFromBackgroundRect(IRect background) {
+        super.init(background.finalLeft(), background.finalTop(), background.finalRight(), background.finalBottom());
     }
 
     private void init() {
@@ -114,37 +112,17 @@ public class TabSelectFrame extends GuiFrameWithoutBackground {
 
         double x = spacing; // first entry may be negative and will allow an oversized tab frame to be centered
         for (ClickableButton button : buttons) {
-            button.setPosition(new MusePoint2D(this.left() + x + button.getRadius().getX(), this.top() -6));
+            button.setPosition(new MusePoint2D(this.finalLeft() + x + button.getRadius().getX(), this.finalTop() -6));
             x += Math.abs(spacing) + button.getRadius().getX() * 2;
         }
     }
 
     @Override
-    public RelativeRect setLeft(double value) {
-        super.setLeft(value);
-        init();
-        return this.getRect();
-    }
-
-    @Override
-    public RelativeRect init(double left, double top, double right, double bottom) {
-        super.init(left, top, right, bottom);
-        this.init();
-        return this;
-    }
-
-    @Override
     public boolean mouseClicked(double x, double y, int button) {
-        if (button != 0)
+        if (button != 0) {
             return false;
-
-        for (ClickableButton b : buttons) {
-            if (b.isEnabled() && b.hitBox(x, y)) {
-                b.onPressed();
-                return true;
-            }
         }
-        return false;
+        return buttons.stream().anyMatch(b ->b.mouseClicked(x, y, button));
     }
 
     @Override
@@ -164,10 +142,14 @@ public class TabSelectFrame extends GuiFrameWithoutBackground {
 
     @Override
     public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
-        for (ClickableButton b : buttons) {
-            b.render(matrixStack, mouseX, mouseY, partialTicks);
-        }
+        super.render(matrixStack, mouseX, mouseY, partialTicks);
+        buttons.stream().forEach(b->b.render(matrixStack, mouseX, mouseY, partialTicks));
     }
+
+//    @Override
+//    public void renderLabels(MatrixStack matrixStack, int mouseX, int mouseY) {
+//        buttons.stream().forEach(b->b.renderText(matrixStack, mouseX, mouseY));
+//    }
 
     @Override
     public List<ITextComponent> getToolTip(int i, int i1) {

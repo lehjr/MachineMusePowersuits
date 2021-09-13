@@ -32,8 +32,8 @@ import com.github.lehjr.powersuits.block.TinkerTable;
 import com.github.lehjr.powersuits.constants.MPSConstants;
 import com.github.lehjr.powersuits.constants.MPSRegistryNames;
 import com.github.lehjr.powersuits.container.TinkerTableContainer;
-import com.github.lehjr.powersuits.dev.crafting.container.InstallSalvageCraftContainer;
-import com.github.lehjr.powersuits.dev.crafting.container.NuminaCraftingContainer;
+import com.github.lehjr.powersuits.container.InstallSalvageCraftContainer;
+import com.github.lehjr.powersuits.container.MPSCraftingContainer;
 import com.github.lehjr.powersuits.entity.LuxCapacitorEntity;
 import com.github.lehjr.powersuits.entity.PlasmaBallEntity;
 import com.github.lehjr.powersuits.entity.RailgunBoltEntity;
@@ -272,9 +272,9 @@ public class MPSObjects {
 
 
     // Module crafting/install/salvage GUI
-    public static final RegistryObject<ContainerType<NuminaCraftingContainer>> MPS_CRAFTING_CONTAINER_TYPE = CONTAINER_TYPES.register("crafting_container",
+    public static final RegistryObject<ContainerType<MPSCraftingContainer>> MPS_CRAFTING_CONTAINER_TYPE = CONTAINER_TYPES.register("crafting_container",
             () -> IForgeContainerType.create((windowId, inv, data) -> {
-                return new NuminaCraftingContainer(windowId, inv);
+                return new MPSCraftingContainer(windowId, inv);
             }));
 
     static RegistryObject<Item> registerModule(String regName, Item item) {

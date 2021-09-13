@@ -252,6 +252,7 @@
   "_comment": "GUI --------------------------------------------------------------------------------",
   "_comment": "GUI selection tab",
   "powersuits.modularitem.inventory": "Modular Item Inventory",
+  "gui.powersuits.installed.modules": "Installed Modules",
   "gui.powersuits.tab.craft.install.salvage": "Craft Install Salvage",
   "gui.powersuits.tab.module.tweak": "Module Tweak",
   "gui.powersuits.tab.keybinds": "Keybinds",

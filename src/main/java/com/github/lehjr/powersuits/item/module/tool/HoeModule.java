@@ -86,7 +86,7 @@ public class HoeModule extends AbstractPowerModule {
             this.rightClick = new RightClickie(module, EnumModuleCategory.TOOL, EnumModuleTarget.TOOLONLY, MPSSettings::getModuleConfig) {{
                 addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, 500, "FE");
                 addTradeoffProperty(MPSConstants.RADIUS, MPSConstants.ENERGY_CONSUMPTION, 9500);
-                addTradeoffProperty(MPSConstants.RADIUS, MPSConstants.RADIUS, 8, "m");
+                addIntTradeoffProperty(MPSConstants.RADIUS, MPSConstants.RADIUS, 8, "m", 1, 0);
 
                 addBaseProperty(MPSConstants.HARVEST_SPEED, 8, "x");
                 addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.ENERGY_CONSUMPTION, 9500);

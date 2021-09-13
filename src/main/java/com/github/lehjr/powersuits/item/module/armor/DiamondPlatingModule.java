@@ -61,7 +61,7 @@ public class DiamondPlatingModule extends AbstractPowerModule {
             moduleCap = new PowerModule(module, EnumModuleCategory.ARMOR, EnumModuleTarget.ARMORONLY, MPSSettings::getModuleConfig) {
                 @Override
                 public int getTier() {
-                    return 4;
+                    return 3;
                 }
 
                 @Override

@@ -39,7 +39,7 @@ public class GuiModeSelector extends ContainerlessGui {
     RadialModeSelectionFrame radialSelect;
 
     public GuiModeSelector(PlayerEntity player, ITextComponent titleIn) {
-        super(titleIn);
+        super(titleIn, true);
         Minecraft.getInstance().keyboardHandler.setSendRepeatsToGui(true);
         this.player = player;
         MainWindow screen = Minecraft.getInstance().getWindow();
@@ -54,8 +54,16 @@ public class GuiModeSelector extends ContainerlessGui {
     }
 
     @Override
-    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
-        super.render(matrixStack, mouseX, mouseY, partialTicks);
+    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float frameTime) {
+        this.renderBackground(matrixStack);
+        this.update((double)mouseX, (double)mouseY);
+        matrixStack.pushPose();
+        matrixStack.translate(0.0D, 0.0D, 10.0D);
+        this.renderFrames(matrixStack, mouseX, mouseY, frameTime);
+        matrixStack.translate(0.0D, 0.0D, 10.0D);
+        matrixStack.translate(0.0D, 0.0D, 100.0D);
+        this.renderLabels(matrixStack, mouseX, mouseY);
+        matrixStack.popPose();
         drawToolTip(matrixStack, mouseX, mouseY);
     }
 

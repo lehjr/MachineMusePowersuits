@@ -4,23 +4,24 @@ import com.github.lehjr.numina.util.client.gui.ExtendedContainerScreen;
 import com.github.lehjr.numina.util.client.gui.frame.*;
 import com.github.lehjr.numina.util.client.sound.Musique;
 import com.github.lehjr.numina.util.client.sound.SoundDictionary;
-import com.github.lehjr.powersuits.client.gui.common.ModularItemSelectionFrame;
+import com.github.lehjr.powersuits.client.gui.common.ModularItemSelectionFrameContainered;
 import com.github.lehjr.powersuits.client.gui.common.TabSelectFrame;
 import com.github.lehjr.powersuits.dev.crafting.client.gui.recipebooktest.ScrollableInventoryFrame2;
-import com.github.lehjr.powersuits.dev.crafting.container.NuminaCraftingContainer;
+import com.github.lehjr.powersuits.container.MPSCraftingContainer;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.gui.recipebook.IRecipeShownListener;
 import net.minecraft.client.gui.recipebook.RecipeBookGui;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.ClickType;
 import net.minecraft.inventory.container.Slot;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 import java.util.List;
 
-
+/** TODO: add creative install ability to crafting arrow */
 /**
  * Notes....
  * The basic unchanged GUI works almost as it should
@@ -30,7 +31,7 @@ import java.util.List;
  *
  */
 @OnlyIn(Dist.CLIENT)
-public class CraftInstallSalvageGui extends ExtendedContainerScreen<NuminaCraftingContainer> implements IRecipeShownListener {
+public class CraftInstallSalvageGui extends ExtendedContainerScreen<MPSCraftingContainer> implements IRecipeShownListener {
     /** the recipe book. IRecipeShownListener means it HAS to be an instance of the vanilla recipe book -_- */
     private final MPSRecipeBookGui recipeBookComponent;
     /** determins if the recipe book gui will be over the crafting gui */
@@ -40,17 +41,17 @@ public class CraftInstallSalvageGui extends ExtendedContainerScreen<NuminaCrafti
     RectHolderFrame craftingHolder;
     protected TabSelectFrame tabSelectFrame;
     int spacer = 7;
-    ModularItemSelectionFrame modularItemSelectionFrame;
+    ModularItemSelectionFrameContainered modularItemSelectionFrame;
 
     ScrollableInventoryFrame2 modularItemInventory;
 
     MultiRectHolderFrame mainHolder;
 
-    public CraftInstallSalvageGui(NuminaCraftingContainer container, PlayerInventory playerInventory, ITextComponent title) {
-        super(container, playerInventory, title, 340, 217);
+    public CraftInstallSalvageGui(MPSCraftingContainer container, PlayerInventory playerInventory, ITextComponent title) {
+        super(container, playerInventory, title, 340, 217, false);
 
         /** clickable buttons on the top of the GUI */
-        tabSelectFrame = new TabSelectFrame(playerInventory.player, 1);
+        tabSelectFrame = new TabSelectFrame(playerInventory.player, 0);
         addFrame(tabSelectFrame);
 
         /** player inventory */
@@ -60,7 +61,19 @@ public class CraftInstallSalvageGui extends ExtendedContainerScreen<NuminaCrafti
         CraftingFrame craftingFrame = new CraftingFrame(container, 0, 1, ulGetter());
         craftingFrame.setArrowOnPressed(press-> {
             Musique.playClientSound(SoundDictionary.SOUND_EVENT_GUI_SELECT, 1);
-            menu.quickMoveStack(this.getMinecraft().player, menu.getResultSlotIndex());
+            if (getMinecraft().player.isCreative()) {
+                ItemStack module = ItemStack.EMPTY;
+                if (getRecipeBookComponent() != null) {
+                    module = ((MPSRecipeBookGui)getRecipeBookComponent()).getRecipeOutput();
+                }
+                System.out.println("result: " + module);
+
+                if (modularItemInventory != null && !module.isEmpty()) {
+                    modularItemInventory.creativeInstall(module);
+                }
+            } else {
+                menu.quickMoveStack(this.getMinecraft().player, menu.getResultSlotIndex());
+            }
         });
 
         /** holder for the crafting grid, acts as a spacer for the sides */
@@ -88,7 +101,7 @@ public class CraftInstallSalvageGui extends ExtendedContainerScreen<NuminaCrafti
         };
 
         /** the buttons that select the equipped modular item if any */
-        modularItemSelectionFrame = new ModularItemSelectionFrame(container);
+        modularItemSelectionFrame = new ModularItemSelectionFrameContainered(container);
         addFrame(modularItemSelectionFrame);
 
         /** the recipeBook GUI */

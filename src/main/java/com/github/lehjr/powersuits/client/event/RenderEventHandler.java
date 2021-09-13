@@ -128,10 +128,12 @@ public enum RenderEventHandler {
 
     @SubscribeEvent
     public void onFOVUpdate(FOVUpdateEvent e) {
-        ItemStack helmet = e.getEntity().getItemBySlot(EquipmentSlotType.HEAD);
-        helmet.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h-> {
+        e.getEntity().getItemBySlot(EquipmentSlotType.HEAD).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+                .filter(IModularItem.class::isInstance)
+                .map(IModularItem.class::cast)
+                .ifPresent(h-> {
                     if (h instanceof IModularItem) {
-                        ItemStack binnoculars = ((IModularItem) h).getOnlineModuleOrEmpty(MPSRegistryNames.BINOCULARS_MODULE_REGNAME);
+                        ItemStack binnoculars = h.getOnlineModuleOrEmpty(MPSRegistryNames.BINOCULARS_MODULE_REGNAME);
                         if (!binnoculars.isEmpty())
                             e.setNewfov((float) (e.getNewfov() / binnoculars.getCapability(PowerModuleCapability.POWER_MODULE)
                                     .map(m->m.applyPropertyModifiers(MPSConstants.FOV)).orElse(1D)));

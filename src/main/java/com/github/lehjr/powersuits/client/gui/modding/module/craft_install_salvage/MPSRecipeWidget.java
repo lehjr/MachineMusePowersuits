@@ -56,12 +56,12 @@ public class MPSRecipeWidget extends RecipeWidget implements IGuiFrame {
     }
 
     boolean hasInstalled(@Nonnull ItemStack module) {
-       return this.containerStack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).map(iItemHandler -> {
-           if (iItemHandler instanceof IModularItem) {
+        return this.containerStack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).map(iItemHandler -> {
+            if (iItemHandler instanceof IModularItem) {
                 return ((IModularItem) iItemHandler).isModuleInstalled(module);
-           }
-           return false;
-       }).orElse(false);
+            }
+            return false;
+        }).orElse(false);
     }
 
 
@@ -181,6 +181,7 @@ public class MPSRecipeWidget extends RecipeWidget implements IGuiFrame {
         public RecipeWidgetTile() {
             super(new MusePoint2D(0, 0), new MusePoint2D(0, 0));
             setBorderShrinkValue(2.5F);
+            setDoThisOnChange(change->updateWidgetPos());
         }
 
         Colour getFrameColour() {
@@ -245,10 +246,78 @@ public class MPSRecipeWidget extends RecipeWidget implements IGuiFrame {
     }
 
     @Override
+    public MusePoint2D getUL() {
+        return tile.getUL();
+    }
+
+    @Override
+    public MusePoint2D getWH() {
+        return tile.getWH();
+    }
+
+    @Override
+    public double left() {
+        return tile.left();
+    }
+
+    @Override
+    public double finalLeft() {
+        return tile.finalLeft();
+    }
+
+    @Override
+    public double top() {
+        return tile.top();
+    }
+
+    @Override
+    public double finalTop() {
+        return tile.finalTop();
+    }
+
+    @Override
+    public double right() {
+        return tile.right();
+    }
+
+    @Override
+    public double finalRight() {
+        return tile.finalRight();
+    }
+
+    @Override
+    public double bottom() {
+        return tile.bottom();
+    }
+
+    @Override
+    public double finalBottom() {
+        return tile.finalBottom();
+    }
+
+    @Override
+    public double width() {
+        return tile.width();
+    }
+
+    @Override
+    public double finalWidth() {
+        return tile.finalWidth();
+    }
+
+    @Override
+    public double height() {
+        return tile.height();
+    }
+
+    @Override
+    public double finalHeight() {
+        return tile.finalWidth();
+    }
+
+    @Override
     public IRect setUL(MusePoint2D ul) {
-        tile.setUL(ul);
-        updateWidgetPos();
-        return tile;
+        return tile.setUL(ul);
     }
 
     @Override
@@ -258,30 +327,22 @@ public class MPSRecipeWidget extends RecipeWidget implements IGuiFrame {
 
     @Override
     public IRect setLeft(double value) {
-        tile.setLeft(value);
-        updateWidgetPos();
-        return tile;
+        return tile.setLeft(value);
     }
 
     @Override
     public IRect setRight(double value) {
-        tile.setRight(value);
-        updateWidgetPos();
-        return tile;
+        return tile.setRight(value);
     }
 
     @Override
     public IRect setTop(double value) {
-        tile.setTop(value);
-        updateWidgetPos();
-        return tile;
+        return tile.setTop(value);
     }
 
     @Override
     public IRect setBottom(double value) {
-        tile.setBottom(value);
-        updateWidgetPos();
-        return tile;
+        return tile.setBottom(value);
     }
 
     @Override
@@ -297,19 +358,16 @@ public class MPSRecipeWidget extends RecipeWidget implements IGuiFrame {
     @Override
     public void move(MusePoint2D moveAmount) {
         tile.move(moveAmount);
-        updateWidgetPos();
     }
 
     @Override
     public void move(double x, double y) {
         tile.move(x, y);
-        updateWidgetPos();
     }
 
     @Override
     public void setPosition(MusePoint2D position) {
         tile.setPosition(position);
-        updateWidgetPos();
     }
 
     @Override
@@ -345,35 +403,26 @@ public class MPSRecipeWidget extends RecipeWidget implements IGuiFrame {
     @Override
     public void initGrowth() {
         tile.initGrowth();
-        updateWidgetPos();
     }
 
     @Override
     public IRect setMeLeftOf(IRect otherRightOfMe) {
-        tile.setMeLeftOf(otherRightOfMe);
-        updateWidgetPos();
-        return tile;
+        return tile.setMeLeftOf(otherRightOfMe);
     }
 
     @Override
     public IRect setMeRightOf(IRect otherLeftOfMe) {
-        tile.setMeRightOf(otherLeftOfMe);
-        updateWidgetPos();
-        return tile;
+        return tile.setMeRightOf(otherLeftOfMe);
     }
 
     @Override
     public IRect setMeAbove(IRect otherBelowMe) {
-        tile.setMeAbove(otherBelowMe);
-        updateWidgetPos();
-        return tile;
+        return tile.setMeAbove(otherBelowMe);
     }
 
     @Override
     public IRect setMeBelow(IRect otherAboveMe) {
-        tile.setMeBelow(otherAboveMe);
-        updateWidgetPos();
-        return tile;
+        return tile.setMeBelow(otherAboveMe);
     }
 
     void updateWidgetPos() {
@@ -408,6 +457,21 @@ public class MPSRecipeWidget extends RecipeWidget implements IGuiFrame {
 
     @Override
     public void setOnInit(IInit iInit) {
+
+    }
+
+    @Override
+    public void onInit() {
+
+    }
+
+    @Override
+    public void doThisOnChange() {
+
+    }
+
+    @Override
+    public void setDoThisOnChange(IDoThis iDoThis) {
 
     }
 

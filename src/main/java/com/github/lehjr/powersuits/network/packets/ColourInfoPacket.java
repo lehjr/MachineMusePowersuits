@@ -28,6 +28,7 @@ package com.github.lehjr.powersuits.network.packets;
 
 import com.github.lehjr.numina.util.capabilities.render.ModelSpecNBTCapability;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.fml.network.NetworkEvent;
 
@@ -40,36 +41,33 @@ import java.util.function.Supplier;
  * Ported to Java by lehjr on 11/14/16.
  */
 public class ColourInfoPacket /* implements IMusePacket<ColourInfoPacket> */{
-    protected int itemSlot;
+    protected EquipmentSlotType slotType;
     protected int[] tagData;
 
     public ColourInfoPacket() {
     }
 
-    public ColourInfoPacket(int itemSlot, int[] tagData) {
-        this.itemSlot = itemSlot;
+    public ColourInfoPacket(EquipmentSlotType slotType, int[] tagData) {
+        this.slotType = slotType;
         this.tagData = tagData;
     }
 
     public static void write(ColourInfoPacket msg, PacketBuffer packetBuffer) {
-        packetBuffer.writeInt(msg.itemSlot);
+        packetBuffer.writeEnum(msg.slotType);
         packetBuffer.writeVarIntArray(msg.tagData);
     }
 
     public static ColourInfoPacket read(PacketBuffer packetBuffer) {
-        return new ColourInfoPacket(packetBuffer.readInt(), packetBuffer.readVarIntArray());
+        return new ColourInfoPacket(packetBuffer.readEnum(EquipmentSlotType.class), packetBuffer.readVarIntArray());
     }
 
     public static void handle(ColourInfoPacket message, Supplier<NetworkEvent.Context> ctx) {
         ctx.get().enqueueWork(() -> {
             final ServerPlayerEntity player = ctx.get().getSender();
-            int itemSlot = message.itemSlot;
+            EquipmentSlotType slotType = message.slotType;
             int[] tagData = message.tagData;
-
-            player.inventory.getItem(itemSlot).getCapability(ModelSpecNBTCapability.RENDER).ifPresent(
-                    render -> {
-                        render.setColorArray(tagData);
-                    });
+            player.getItemBySlot(slotType).getCapability(ModelSpecNBTCapability.RENDER)
+                    .ifPresent(render -> render.setColorArray(tagData));
         });
         ctx.get().setPacketHandled(true);
     }

@@ -26,10 +26,11 @@
 
 package com.github.lehjr.powersuits.block;
 
-import com.github.lehjr.powersuits.dev.crafting.container.MPSWorkbenchContainerProvider;
+import com.github.lehjr.powersuits.client.gui.modding.module.tweak.ModuleTweakGui;
 import com.github.lehjr.powersuits.tile_entity.TinkerTableTileEntity;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.FluidState;
@@ -79,9 +80,12 @@ public class TinkerTable extends HorizontalBlock implements IWaterLoggable {
     @SuppressWarnings("deprecation")
     @Override
     public ActionResultType use(BlockState blockState, World world, BlockPos blockPos, PlayerEntity player, Hand hand, BlockRayTraceResult result) {
-        if(!world.isClientSide) {
-            player.openMenu(new MPSWorkbenchContainerProvider(0));
-            return ActionResultType.CONSUME;
+//        if(!world.isClientSide) {
+//            player.openMenu(new MPSWorkbenchContainerProvider(0));
+//            return ActionResultType.CONSUME;
+//        }
+        if (world.isClientSide) {
+            Minecraft.getInstance().tell(() -> Minecraft.getInstance().setScreen(new ModuleTweakGui(new TranslationTextComponent("gui.tinkertable"), true)));
         }
         return ActionResultType.SUCCESS;
     }

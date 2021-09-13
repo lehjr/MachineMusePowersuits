@@ -27,8 +27,6 @@
 package com.github.lehjr.powersuits.network;
 
 import com.github.lehjr.powersuits.constants.MPSConstants;
-import com.github.lehjr.powersuits.dev.crafting.packet.CPlaceRecipePacket;
-import com.github.lehjr.powersuits.dev.crafting.packet.SPlaceGhostRecipePacket;
 import com.github.lehjr.powersuits.network.packets.ColourInfoPacket;
 import com.github.lehjr.powersuits.network.packets.ContainerGuiOpenPacket;
 import com.github.lehjr.powersuits.network.packets.MoveModuleFromSlotToSlotPacket;
@@ -55,19 +53,19 @@ public class MPSPackets {
                 ColourInfoPacket::read,
                 ColourInfoPacket::handle);
 
-        CHANNEL_INSTANCE.registerMessage(
-                i++,
-                CPlaceRecipePacket.class,
-                CPlaceRecipePacket::encode,
-                CPlaceRecipePacket::decode,
-                CPlaceRecipePacket::handle);
-
-        CHANNEL_INSTANCE.registerMessage(
-                i++,
-                SPlaceGhostRecipePacket.class,
-                SPlaceGhostRecipePacket::encode,
-                SPlaceGhostRecipePacket::decode,
-                SPlaceGhostRecipePacket::handle);
+//        CHANNEL_INSTANCE.registerMessage(
+//                i++,
+//                CPlaceRecipePacket.class,
+//                CPlaceRecipePacket::encode,
+//                CPlaceRecipePacket::decode,
+//                CPlaceRecipePacket::handle);
+//
+//        CHANNEL_INSTANCE.registerMessage(
+//                i++,
+//                SPlaceGhostRecipePacket.class,
+//                SPlaceGhostRecipePacket::encode,
+//                SPlaceGhostRecipePacket::decode,
+//                SPlaceGhostRecipePacket::handle);
 
 
         CHANNEL_INSTANCE.registerMessage(

@@ -240,15 +240,10 @@ public abstract class AbstractElectricItemArmor extends ArmorItem {
             PlayerEntity player = (PlayerEntity) entityLiving;
 //            // only triggered by this client's player looking at their own equipped armor
             if (renderTag == null || renderTag.isEmpty() && player == Minecraft.getInstance().player) {
-                for (int i = 0; i < player.inventory.getContainerSize(); i++) {
-                    if (player.inventory.getItem(i).equals(itemStack)) {
-                        renderTag = spec.getDefaultRenderTag();
-                        if (renderTag != null && !renderTag.isEmpty()) {
-                            spec.setRenderTag(renderTag, NuminaConstants.TAG_RENDER);
-                            NuminaPackets.CHANNEL_INSTANCE.sendToServer(new CosmeticInfoPacket(i, NuminaConstants.TAG_RENDER, renderTag));
-                        }
-                        break;
-                    }
+                renderTag = spec.getDefaultRenderTag();
+                if (renderTag != null && !renderTag.isEmpty()) {
+                    spec.setRenderTag(renderTag, NuminaConstants.TAG_RENDER);
+                    NuminaPackets.CHANNEL_INSTANCE.sendToServer(new CosmeticInfoPacket(armorSlot, NuminaConstants.TAG_RENDER, renderTag));
                 }
             }
 

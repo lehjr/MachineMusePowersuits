@@ -36,18 +36,18 @@ public class ModularItemTabToggleWidget extends DrawableRelativeRect implements 
         super(0,0, 0, 27, Colour.DARK_GREY.withAlpha(0.8F), Colour.BLACK);
         this.type = type;
         ItemStack test = getMinecraft().player.getItemBySlot(type);
-        this.icon = test.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).map(iItemHandler -> {
-            if (iItemHandler instanceof IModularItem) {
-                return test;
-            }
-            return ItemStack.EMPTY;
-        }).orElse(ItemStack.EMPTY);
+        this.icon = test.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+                .filter(IModularItem.class::isInstance)
+                .map(IModularItem.class::cast)
+                .map(iItemHandler -> test).orElse(ItemStack.EMPTY);
     }
 
     @Override
     public void render(MatrixStack matrixStack, int mouseX, int mouseY, float frameTime) {
         int xChange = this.isStateActive ? 2 : 0;
-        this.setWidth(28+ xChange);
+        double right = finalRight();
+        this.setWidth(28+ xChange).setRight(right);
+
         this.isHovered = isVisible && isEnabled && this.containsPoint(mouseX, mouseY);
         this.setBackgroundColour(this.isStateActive ? activeColor : inactiveColor);
         super.render(matrixStack, mouseX, mouseY, frameTime);
@@ -58,7 +58,7 @@ public class ModularItemTabToggleWidget extends DrawableRelativeRect implements 
      * Renders the item icons for the tabs. Some tabs have 2 icons, some just one.
      */
     private void renderIcon(MatrixStack matrixStack) {
-        int offset = this.isStateActive? -5 : -3;
+        int offset = this.isStateActive? -2 : -3;
         RenderSystem.disableDepthTest();
         if (this.icon.isEmpty()) {
             if (EquipmentSlotType.MAINHAND.equals(type)) {
@@ -80,10 +80,6 @@ public class ModularItemTabToggleWidget extends DrawableRelativeRect implements 
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
         return IClickable.super.mouseClicked(mouseX, mouseY, button);
-    }
-
-    Minecraft getMinecraft() {
-        return Minecraft.getInstance();
     }
 
     public boolean isHovered() {

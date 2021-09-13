@@ -33,7 +33,7 @@ import com.github.lehjr.numina.util.capabilities.module.powermodule.PowerModuleC
 import com.github.lehjr.numina.util.capabilities.module.rightclick.IRightClickModule;
 import com.github.lehjr.numina.util.capabilities.module.rightclick.RightClickModule;
 import com.github.lehjr.powersuits.config.MPSSettings;
-import com.github.lehjr.powersuits.dev.crafting.container.MPSWorkbenchContainerProvider;
+import com.github.lehjr.powersuits.container.MPSWorkbenchContainerProvider;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;

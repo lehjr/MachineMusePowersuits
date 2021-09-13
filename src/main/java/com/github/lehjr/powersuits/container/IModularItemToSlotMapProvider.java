@@ -24,41 +24,16 @@
  *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.github.lehjr.powersuits.network.packets;
+package com.github.lehjr.powersuits.container;
 
-import com.github.lehjr.powersuits.container.MPSWorkbenchContainerProvider;
-import net.minecraft.network.PacketBuffer;
-import net.minecraftforge.fml.network.NetworkEvent;
-import net.minecraftforge.fml.network.NetworkHooks;
+import net.minecraft.inventory.container.Container;
+import net.minecraftforge.items.SlotItemHandler;
 
-import java.util.function.Supplier;
+import java.util.List;
+import java.util.Map;
 
-/**
- * A packet for sending a containerGui open request from the client side.
- */
-public class ContainerGuiOpenPacket {
-    int guiID;
-    public ContainerGuiOpenPacket(int guiIDIn) {
-        this.guiID = guiIDIn;
-    }
+public interface IModularItemToSlotMapProvider<T extends Container> {
+    Map<Integer, List<SlotItemHandler>> getModularItemToSlotMap();
 
-    public static void write(ContainerGuiOpenPacket msg, PacketBuffer packetBuffer) {
-        packetBuffer.writeInt(msg.guiID);
-    }
-
-    public static ContainerGuiOpenPacket read(PacketBuffer packetBuffer) {
-        return new ContainerGuiOpenPacket(packetBuffer.readInt());
-    }
-
-    public static void handle(ContainerGuiOpenPacket msg, Supplier<NetworkEvent.Context> ctx) {
-        ctx.get().enqueueWork(() -> {
-            System.out.println("guiID: " + msg.guiID);
-
-
-                NetworkHooks.openGui(ctx.get().getSender(),
-                        new MPSWorkbenchContainerProvider(msg.guiID),
-                        (buffer) -> buffer.writeInt(msg.guiID));
-        });
-        ctx.get().setPacketHandled(true);
-    }
+    T getContainer();
 }

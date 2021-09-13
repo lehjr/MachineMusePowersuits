@@ -75,7 +75,7 @@ public class AOEPickUpgradeModule extends AbstractPowerModule {
     public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundNBT nbt) {
         return new CapProvider(stack);
     }
-
+    /** TODO: Add charge system like plasma cannon */
     public class CapProvider implements ICapabilityProvider {
         ItemStack module;
         IMiningEnhancementModule miningEnhancement;

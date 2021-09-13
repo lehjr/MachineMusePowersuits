@@ -24,41 +24,30 @@
  *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.github.lehjr.powersuits.network.packets;
+package com.github.lehjr.powersuits.container;
 
-import com.github.lehjr.powersuits.container.MPSWorkbenchContainerProvider;
-import net.minecraft.network.PacketBuffer;
-import net.minecraftforge.fml.network.NetworkEvent;
-import net.minecraftforge.fml.network.NetworkHooks;
+import com.github.lehjr.powersuits.container.helper.MPSServerRecipePlacer;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.inventory.container.ContainerType;
+import net.minecraft.inventory.container.RecipeBookContainer;
+import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.item.crafting.RecipeBookCategory;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
-import java.util.function.Supplier;
-
-/**
- * A packet for sending a containerGui open request from the client side.
- */
-public class ContainerGuiOpenPacket {
-    int guiID;
-    public ContainerGuiOpenPacket(int guiIDIn) {
-        this.guiID = guiIDIn;
+public abstract class MPSRecipeBookContainer<C> extends RecipeBookContainer {
+    public MPSRecipeBookContainer(ContainerType containerType, int windowId) {
+        super(containerType, windowId);
     }
 
-    public static void write(ContainerGuiOpenPacket msg, PacketBuffer packetBuffer) {
-        packetBuffer.writeInt(msg.guiID);
+    @Override
+    public void handlePlacement(boolean placeAll, IRecipe recipe, ServerPlayerEntity player) {
+        (new MPSServerRecipePlacer(this)).recipeClicked(player, recipe, placeAll);
     }
 
-    public static ContainerGuiOpenPacket read(PacketBuffer packetBuffer) {
-        return new ContainerGuiOpenPacket(packetBuffer.readInt());
-    }
-
-    public static void handle(ContainerGuiOpenPacket msg, Supplier<NetworkEvent.Context> ctx) {
-        ctx.get().enqueueWork(() -> {
-            System.out.println("guiID: " + msg.guiID);
-
-
-                NetworkHooks.openGui(ctx.get().getSender(),
-                        new MPSWorkbenchContainerProvider(msg.guiID),
-                        (buffer) -> buffer.writeInt(msg.guiID));
-        });
-        ctx.get().setPacketHandled(true);
+    @OnlyIn(Dist.CLIENT)
+    @Override
+    public RecipeBookCategory getRecipeBookType() {
+        return RecipeBookCategory.CRAFTING;
     }
 }

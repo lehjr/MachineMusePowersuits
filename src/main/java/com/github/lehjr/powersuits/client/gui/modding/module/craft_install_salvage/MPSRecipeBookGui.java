@@ -5,15 +5,11 @@ import com.github.lehjr.numina.util.capabilities.module.powermodule.EnumModuleCa
 import com.github.lehjr.numina.util.capabilities.module.powermodule.PowerModuleCapability;
 import com.github.lehjr.numina.util.client.gui.clickable.TexturedToggleButton;
 import com.github.lehjr.numina.util.client.gui.frame.*;
-import com.github.lehjr.numina.util.client.gui.gemoetry.DrawableTile;
-import com.github.lehjr.numina.util.client.gui.gemoetry.IDrawable;
-import com.github.lehjr.numina.util.client.gui.gemoetry.IRect;
-import com.github.lehjr.numina.util.client.gui.gemoetry.RelativeRect;
+import com.github.lehjr.numina.util.client.gui.gemoetry.*;
 import com.github.lehjr.numina.util.client.recipe.ModuleRecipeGroup;
 import com.github.lehjr.numina.util.math.Colour;
-import com.github.lehjr.powersuits.client.gui.common.ModularItemSelectionFrame;
+import com.github.lehjr.powersuits.client.gui.common.ModularItemSelectionFrameContainered;
 import com.github.lehjr.powersuits.client.gui.common.ModularItemTabToggleWidget;
-import com.github.lehjr.powersuits.dev.crafting.client.gui.recipebooktest.RectTextFieldWidget;
 import com.google.common.collect.Lists;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -55,7 +51,7 @@ import java.util.stream.Collectors;
 
 @OnlyIn(Dist.CLIENT)
 public class MPSRecipeBookGui extends RecipeBookGui implements IGuiFrame {
-    ModularItemSelectionFrame modularItemSelectionFrame;
+    ModularItemSelectionFrameContainered modularItemSelectionFrame;
     /**
      * needed for showing the recipe
      */
@@ -84,7 +80,7 @@ public class MPSRecipeBookGui extends RecipeBookGui implements IGuiFrame {
     protected TexturedToggleButton filterButton;
     MultiRectHolderFrame mainFrame;
 
-    public MPSRecipeBookGui(ModularItemSelectionFrame modularItemSelectionFrame, RecipeBookContainer<?> container) {
+    public MPSRecipeBookGui(ModularItemSelectionFrameContainered modularItemSelectionFrame, RecipeBookContainer<?> container) {
         this.minecraft = Minecraft.getInstance();
 
         int frameWidth = 157;
@@ -557,7 +553,6 @@ public class MPSRecipeBookGui extends RecipeBookGui implements IGuiFrame {
             int i = maxRecipesPerPage * this.currentPage;
             List<ModuleRecipeGroup> recipeCollections;
             if (recipeCollection.size() > 0) {
-//                    EnumModuleCategory category = recipeCollection.get(currentPage).getLeft();
                 recipeCollections = recipeCollection.get(currentPage).getRight();
             } else {
                 recipeCollections = new ArrayList<>();
@@ -751,6 +746,13 @@ public class MPSRecipeBookGui extends RecipeBookGui implements IGuiFrame {
         this.ghostRecipe.render(matrixStack, this.minecraft, p_230477_2_, p_230477_3_, p_230477_4_, p_230477_5_);
     }
 
+    public ItemStack getRecipeOutput() {
+        if (this.ghostRecipe != null && this.ghostRecipe.size() > 0) {
+            return this.ghostRecipe.getRecipe().getResultItem();
+        }
+        return ItemStack.EMPTY;
+    }
+
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
         if (this.isVisible() && !this.minecraft.player.isSpectator()) {
@@ -777,7 +779,7 @@ public class MPSRecipeBookGui extends RecipeBookGui implements IGuiFrame {
 
                 return true;
             } else {
-                if (modularItemSelectionFrame.mouseCLicked(button, mouseX, mouseY)) {
+                if (modularItemSelectionFrame.mouseClicked(mouseX, mouseY, button)) {
                     this.updateCollections(true);
                     return true;
                 }
@@ -1006,10 +1008,177 @@ public class MPSRecipeBookGui extends RecipeBookGui implements IGuiFrame {
     }
 
     @Override
+    public MusePoint2D getUL() {
+        return mainFrame.getUL();
+    }
+
+    @Override
+    public MusePoint2D getWH() {
+        return mainFrame.getWH();
+    }
+
+    @Override
+    public double left() {
+        return mainFrame.left();
+    }
+
+    @Override
+    public double finalLeft() {
+        return mainFrame.finalLeft();
+    }
+
+    @Override
+    public double top() {
+        return mainFrame.top();
+    }
+
+    @Override
+    public double finalTop() {
+        return mainFrame.finalTop();
+    }
+
+    @Override
+    public double right() {
+        return mainFrame.right();
+    }
+
+    @Override
+    public double finalRight() {
+        return mainFrame.finalRight();
+    }
+
+    @Override
+    public double bottom() {
+        return mainFrame.bottom();
+    }
+
+    @Override
+    public double finalBottom() {
+        return mainFrame.finalBottom();
+    }
+
+    @Override
+    public double width() {
+        return mainFrame.width();
+    }
+
+    @Override
+    public double finalWidth() {
+        return mainFrame.finalWidth();
+    }
+
+    @Override
+    public double height() {
+        return mainFrame.height();
+    }
+
+    @Override
+    public double finalHeight() {
+        return mainFrame.finalHeight();
+    }
+
+    @Override
+    public IRect setUL(MusePoint2D musePoint2D) {
+        return mainFrame.setUL(musePoint2D);
+    }
+
+    @Override
+    public IRect setWH(MusePoint2D musePoint2D) {
+        return mainFrame.setWH(musePoint2D);
+    }
+
+    @Override
+    public IRect setLeft(double v) {
+        return mainFrame.setLeft(v);
+    }
+
+    @Override
+    public IRect setRight(double v) {
+        return mainFrame.setRight(v);
+    }
+
+    @Override
+    public IRect setTop(double v) {
+        return mainFrame.setTop(v);
+    }
+
+    @Override
+    public IRect setBottom(double v) {
+        return mainFrame.setBottom(v);
+    }
+
+    @Override
+    public IRect setWidth(double v) {
+        return mainFrame.setWidth(v);
+    }
+
+    @Override
+    public IRect setHeight(double v) {
+        return mainFrame.setHeight(v);
+    }
+
+    @Override
+    public void move(MusePoint2D musePoint2D) {
+        mainFrame.move(musePoint2D);
+    }
+
+    @Override
+    public void move(double v, double v1) {
+        mainFrame.move(v, v1);
+    }
+
+    @Override
+    public void setPosition(MusePoint2D musePoint2D) {
+        mainFrame.setPosition(musePoint2D);
+    }
+
+    @Override
+    public boolean growFromMiddle() {
+        return mainFrame.growFromMiddle();
+    }
+
+    @Override
+    public void initGrowth() {
+        mainFrame.initGrowth();
+    }
+
+    @Override
+    public IRect setMeLeftOf(IRect iRect) {
+        return mainFrame.setMeLeftOf(iRect);
+    }
+
+    @Override
+    public IRect setMeRightOf(IRect iRect) {
+        return mainFrame.setMeRightOf(iRect);
+    }
+
+    @Override
+    public IRect setMeAbove(IRect iRect) {
+        return mainFrame.setMeAbove(iRect);
+    }
+
+    @Override
+    public IRect setMeBelow(IRect iRect) {
+        return mainFrame.setMeBelow(iRect);
+    }
+
+    @Override
     public void setOnInit(IInit iInit) {
+        mainFrame.setOnInit(iInit);
     }
 
     @Override
     public void onInit() {
+        mainFrame.onInit();
+    }
+
+    @Override
+    public void doThisOnChange() {
+
+    }
+
+    @Override
+    public void setDoThisOnChange(IDoThis iDoThis) {
+
     }
 }

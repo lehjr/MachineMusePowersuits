@@ -24,41 +24,31 @@
  *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.github.lehjr.powersuits.network.packets;
+package com.github.lehjr.powersuits.container.helper;
 
-import com.github.lehjr.powersuits.container.MPSWorkbenchContainerProvider;
-import net.minecraft.network.PacketBuffer;
-import net.minecraftforge.fml.network.NetworkEvent;
-import net.minecraftforge.fml.network.NetworkHooks;
-
-import java.util.function.Supplier;
+import com.github.lehjr.powersuits.container.MPSCraftingContainer;
+import net.minecraft.inventory.container.PlayerContainer;
+import net.minecraft.inventory.container.RecipeBookContainer;
+import net.minecraft.item.crafting.ServerRecipePlacer;
 
 /**
- * A packet for sending a containerGui open request from the client side.
+ * Seems to only the placement of recipes from the recipe book
  */
-public class ContainerGuiOpenPacket {
-    int guiID;
-    public ContainerGuiOpenPacket(int guiIDIn) {
-        this.guiID = guiIDIn;
+public class MPSServerRecipePlacer extends ServerRecipePlacer {
+    public MPSServerRecipePlacer(RecipeBookContainer recipeBookContainer) {
+        super(recipeBookContainer);
     }
 
-    public static void write(ContainerGuiOpenPacket msg, PacketBuffer packetBuffer) {
-        packetBuffer.writeInt(msg.guiID);
-    }
+    @Override
+    protected void clearGrid() {
+        for(int index = 0; index < this.menu.getGridWidth() * this.menu.getGridHeight() + 1; ++index) {
+            if (index != this.menu.getResultSlotIndex() ||
+                    !(this.menu instanceof MPSCraftingContainer) && // FIXME: temporary reference until gui finished
+                            !(this.menu instanceof PlayerContainer)) {
+                this.moveItemToInventory(index);
+            }
+        }
 
-    public static ContainerGuiOpenPacket read(PacketBuffer packetBuffer) {
-        return new ContainerGuiOpenPacket(packetBuffer.readInt());
-    }
-
-    public static void handle(ContainerGuiOpenPacket msg, Supplier<NetworkEvent.Context> ctx) {
-        ctx.get().enqueueWork(() -> {
-            System.out.println("guiID: " + msg.guiID);
-
-
-                NetworkHooks.openGui(ctx.get().getSender(),
-                        new MPSWorkbenchContainerProvider(msg.guiID),
-                        (buffer) -> buffer.writeInt(msg.guiID));
-        });
-        ctx.get().setPacketHandled(true);
+        this.menu.clearCraftingContent();
     }
 }

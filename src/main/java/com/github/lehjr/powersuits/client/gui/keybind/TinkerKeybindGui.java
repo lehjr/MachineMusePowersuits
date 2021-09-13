@@ -26,7 +26,6 @@
 
 package com.github.lehjr.powersuits.client.gui.keybind;
 
-import com.github.lehjr.numina.basemod.MuseLogger;
 import com.github.lehjr.numina.util.capabilities.inventory.modechanging.IModeChangingItem;
 import com.github.lehjr.numina.util.capabilities.inventory.modularitem.IModularItem;
 import com.github.lehjr.numina.util.capabilities.module.powermodule.EnumModuleCategory;
@@ -49,7 +48,6 @@ import com.github.lehjr.powersuits.client.gui.clickable.ClickableKeybinding;
 import com.github.lehjr.powersuits.client.gui.common.TabSelectFrame;
 import com.github.lehjr.powersuits.config.MPSSettings;
 import com.mojang.blaze3d.matrix.MatrixStack;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.client.util.InputMappings;
@@ -66,11 +64,15 @@ import org.lwjgl.glfw.GLFW;
 import javax.annotation.Nonnull;
 import java.util.*;
 
+
+/**
+ * Fixme: buttons rendering on top of module icons and their label/text
+ */
 public class TinkerKeybindGui extends ContainerlessGui {
     private PlayerEntity player;
     TabSelectFrame tabSelectFrame;
     private static KeyBindingHelper keyBindingHelper = new KeyBindingHelper();
-    protected Set<ClickableModule> modules;
+    protected Set<ClickableModule> modules = new HashSet<>();
     protected IClickable selectedClickie;
     protected ClickableKeybinding closestKeybind;
     protected boolean selecting;
@@ -81,25 +83,17 @@ public class TinkerKeybindGui extends ContainerlessGui {
 
 
     public TinkerKeybindGui(PlayerInventory playerInventory, ITextComponent title) {
-        super(title);
+        super(title, 340, 217, false); // growing disabled due to icons potentially ending up outside of rect
+        super.backgroundRect.setBackgroundColour(Colour.DARK_GREY);
         KeybindManager.INSTANCE.readInKeybinds();
         this.player = playerInventory.player;
-        this.minecraft = Minecraft.getInstance();
-        rescale();
-        tabSelectFrame = new TabSelectFrame(player, 0);
+        tabSelectFrame = new TabSelectFrame(player, 2);
         addFrame(tabSelectFrame);
-
-        modules = new HashSet();
         for (ClickableKeybinding kb : keybindManager.getKeybindings()) {
             modules.addAll(kb.getBoundModules());
         }
         newKeybindButton = new ClickableButton(new TranslationTextComponent("gui.powersuits.newKeybind"), center().plus(new MusePoint2D(0, -8)), true);
         trashKeybindButton = new ClickableButton(new TranslationTextComponent("gui.powersuits.trashKeybind"), center().plus(new MusePoint2D(0, 8)), true);
-    }
-
-    public void rescale() {
-        this.setXSize((Math.min(minecraft.getWindow().getGuiScaledWidth() - 50, 500)));
-        this.setYSize((Math.min(minecraft.getWindow().getGuiScaledHeight() - 50, 300)));
     }
 
     /**
@@ -108,8 +102,7 @@ public class TinkerKeybindGui extends ContainerlessGui {
     @Override
     public void init() {
         super.init();
-        rescale();
-        tabSelectFrame.init(getGuiLeft(), getGuiTop(), getGuiLeft() + getXSize(), getGuiTop() + getYSize());
+        tabSelectFrame.initFromBackgroundRect(this.backgroundRect);
         newKeybindButton.setPosition(backgroundRect.center().plus(new MusePoint2D(0, -8)));
         trashKeybindButton.setPosition(backgroundRect.center().plus(new MusePoint2D(0, 8)));
     }
@@ -130,16 +123,17 @@ public class TinkerKeybindGui extends ContainerlessGui {
 
         if (selecting) {
             if (keyBindingHelper.keyBindingHasKey(key)) {
+                System.out.println("conflicting");
+
                 takenTime = System.currentTimeMillis();
-            }
-            if (!keyBindingHelper.keyBindingHasKey(key)) {
+                if (MPSSettings.allowConfictingKeyBinds()) {
+                    addKeybind(key, false);
+                }
+            } else {
                 addKeybind(key, true);
-            } else if (MPSSettings.allowConfictingKeyBinds()) {
-                addKeybind(key, false);
             }
             selecting = false;
         }
-
         return (super.keyPressed(keyCode, scanCode, p_keyPressed_3_));
     }
 
@@ -187,7 +181,7 @@ public class TinkerKeybindGui extends ContainerlessGui {
             }
             return true;
         }
-        return false;
+        return super.mouseClicked(x, y, button);
     }
 
     public void refreshModules() {
@@ -195,33 +189,33 @@ public class TinkerKeybindGui extends ContainerlessGui {
         for (EquipmentSlotType slot: EquipmentSlotType.values()) {
             switch (slot.getType()) {
                 case HAND:
-                    player.getItemBySlot(slot).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(
-                            iModeChanging -> {
-                                if (iModeChanging instanceof IModeChangingItem) {
-                                    for (int i = 0; i < iModeChanging.getSlots(); i++) {
-                                        ItemStack module = iModeChanging.getStackInSlot(i);
-                                        if (module.getCapability(PowerModuleCapability.POWER_MODULE).map(c ->
-                                                IToggleableModule.class.isAssignableFrom(c.getClass())).orElse(false) &&
-                                                module.getCapability(PowerModuleCapability.POWER_MODULE).map(pm-> {
-                                                    if (pm.getCategory() == EnumModuleCategory.MINING_ENHANCEMENT) {
-                                                        return true;
-                                                    }
-                                                    return !IRightClickModule.class.isAssignableFrom(pm.getClass());
-                                                }).orElse(false)) {
-                                            installedModules.add(module);
+                    player.getItemBySlot(slot).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+                            .filter(IModeChangingItem.class::isInstance)
+                            .map(IModeChangingItem.class::cast)
+                            .ifPresent(
+                                    iModeChanging -> {
+                                        for (int i = 0; i < iModeChanging.getSlots(); i++) {
+                                            ItemStack module = iModeChanging.getStackInSlot(i);
+                                            if (module.getCapability(PowerModuleCapability.POWER_MODULE).map(c ->
+                                                    IToggleableModule.class.isAssignableFrom(c.getClass())).orElse(false) &&
+                                                    module.getCapability(PowerModuleCapability.POWER_MODULE).map(pm-> {
+                                                        if (pm.getCategory() == EnumModuleCategory.MINING_ENHANCEMENT) {
+                                                            return true;
+                                                        }
+                                                        return !IRightClickModule.class.isAssignableFrom(pm.getClass());
+                                                    }).orElse(false)) {
+                                                installedModules.add(module);
+                                            }
                                         }
-                                    }
-                                }
-                            });
+                                    });
                     break;
 
                 case ARMOR:
                     if (slot.getType() == EquipmentSlotType.Group.ARMOR) {
-                        player.getItemBySlot(slot).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(
-                                iModularItem -> {
-                                    if (iModularItem instanceof IModularItem)
-                                        installedModules.addAll(((IModularItem) iModularItem).getInstalledModulesOfType(IToggleableModule.class));
-                                });
+                        player.getItemBySlot(slot).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+                                .filter(IModularItem.class::isInstance)
+                                .map(IModularItem.class::cast)
+                                .ifPresent(iModularItem -> installedModules.addAll(iModularItem.getInstalledModulesOfType(IToggleableModule.class)));
                     }
             }
         }
@@ -265,21 +259,22 @@ public class TinkerKeybindGui extends ContainerlessGui {
             }
             selectedClickie = null;
         }
-        return false;
+        return super.mouseReleased(x, y, button);
     }
 
     @Override
-    public void update(double mousex, double mousey) {
-        MuseLogger.logDebug("upding here");
+    public void update(double mouseX, double mouseY) {
+        super.update(mouseX, mouseY);
 
         if (selecting) {
             return;
         }
+
         refreshModules();
         this.closestKeybind = null;
         double closestDistance = Double.MAX_VALUE;
         if (this.selectedClickie != null) {
-            this.selectedClickie.setPosition(new MusePoint2D(mousex, mousey));
+            this.selectedClickie.setPosition(new MusePoint2D(mouseX, mouseY));
             if (this.selectedClickie instanceof ClickableModule) {
                 ClickableModule selectedModule = ((ClickableModule) this.selectedClickie);
                 for (ClickableKeybinding keybind : keybindManager.getKeybindings()) {
@@ -318,19 +313,9 @@ public class TinkerKeybindGui extends ContainerlessGui {
     }
 
     private void clampClickiePosition(IClickable clickie) {
-        MusePoint2D position = clickie.getPosition();
-        position.setX(MuseMathUtils.clampDouble(position.getX(), backgroundRect.finalLeft(), backgroundRect.finalRight()));
-        position.setY(MuseMathUtils.clampDouble(position.getY(), backgroundRect.finalTop(), backgroundRect.finalBottom()));
-    }
-
-    private double clampDouble(double x, double lower, double upper) {
-        if (x < lower) {
-            return lower;
-        } else if (x > upper) {
-            return upper;
-        } else {
-            return x;
-        }
+        clickie.setPosition(new MusePoint2D(
+        (MuseMathUtils.clampDouble(clickie.getPosition().getX(), backgroundRect.finalLeft(), backgroundRect.finalRight())),
+        (MuseMathUtils.clampDouble(clickie.getPosition().getY(), backgroundRect.finalTop(), backgroundRect.finalBottom()))));
     }
 
     private void repelOtherModules(IClickable module) {
@@ -352,35 +337,53 @@ public class TinkerKeybindGui extends ContainerlessGui {
 
     @Override
     public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
-        // FIXME!!
-        float zLevel = Minecraft.getInstance().screen.getBlitOffset();
+        super.render(matrixStack, mouseX, mouseY, partialTicks);
+        if (!selecting) {
+            matrixStack.pushPose();
+            matrixStack.translate(0, 0, 10);
 
+            if (!(takenTime + 1000 > System.currentTimeMillis())) {
+                for (ClickableModule module : modules) {
+                    module.render(matrixStack, mouseX, mouseY, partialTicks);
+                }
+
+                for (ClickableKeybinding keybind : keybindManager.getKeybindings()) {
+                    keybind.render(matrixStack, mouseX, mouseY, partialTicks);
+                }
+
+                if (selectedClickie != null && closestKeybind != null) {
+                    MuseRenderer.drawLineBetween(selectedClickie, closestKeybind, Colour.YELLOW, getBlitOffset());
+                }
+
+                newKeybindButton.render(matrixStack, mouseX, mouseY, partialTicks);
+                trashKeybindButton.render(matrixStack, mouseX, mouseY, partialTicks);
+            }
+
+            matrixStack.popPose();
+        }
+    }
+
+    @Override
+    public void renderLabels(MatrixStack matrixStack, int mouseX, int mouseY) {
+        matrixStack.pushPose();
+        matrixStack.translate(0,0,100);
         MusePoint2D center = backgroundRect.center();
-
         if (selecting) {
-            MuseRenderer.drawCenteredString(matrixStack, I18n.get("gui.powersuits.pressKey"), center.getX(), center.getY());
-            return;
+            MuseRenderer.drawShadowedStringCentered(matrixStack, new TranslationTextComponent("gui.powersuits.pressKey"), center.getX(), center.getY());
+        } else {
+            super.renderLabels(matrixStack, mouseX, mouseY);
+            if (takenTime + 1000 > System.currentTimeMillis()) {
+                MusePoint2D pos = newKeybindButton.getPosition().plus(new MusePoint2D(0, -20));
+                MuseRenderer.drawShadowedStringCentered(matrixStack, new TranslationTextComponent("gui.powersuits.keybindTaken"), pos.getX(), pos.getY());
+                matrixStack.popPose();
+                return;
+            }
+            MuseRenderer.drawShadowedStringCentered(matrixStack, new TranslationTextComponent("gui.powersuits.keybindInstructions1"), center.getX(), center.getY() + 40);
+            MuseRenderer.drawShadowedStringCentered(matrixStack, new TranslationTextComponent("gui.powersuits.keybindInstructions2"), center.getX(), center.getY() + 50);
+            MuseRenderer.drawShadowedStringCentered(matrixStack, new TranslationTextComponent("gui.powersuits.keybindInstructions3"), center.getX(), center.getY() + 60);
+            MuseRenderer.drawShadowedStringCentered(matrixStack, new TranslationTextComponent("gui.powersuits.keybindInstructions4"), center.getX(), center.getY() + 70);
         }
-        newKeybindButton.render(matrixStack, mouseX, mouseY, partialTicks);
-        trashKeybindButton.render(matrixStack, mouseX, mouseY, partialTicks);
-
-        MuseRenderer.drawCenteredString(matrixStack, I18n.get("gui.powersuits.keybindInstructions1"), center.getX(), center.getY() + 40);
-        MuseRenderer.drawCenteredString(matrixStack, I18n.get("gui.powersuits.keybindInstructions2"), center.getX(), center.getY() + 50);
-        MuseRenderer.drawCenteredString(matrixStack, I18n.get("gui.powersuits.keybindInstructions3"), center.getX(), center.getY() + 60);
-        MuseRenderer.drawCenteredString(matrixStack, I18n.get("gui.powersuits.keybindInstructions4"), center.getX(), center.getY() + 70);
-        if (takenTime + 1000 > System.currentTimeMillis()) {
-            MusePoint2D pos = newKeybindButton.getPosition().plus(new MusePoint2D(0, -20));
-            MuseRenderer.drawCenteredString(matrixStack, I18n.get("gui.powersuits.keybindTaken"), pos.getX(), pos.getY());
-        }
-        for (ClickableModule module : modules) {
-            module.render(matrixStack, mouseX, mouseY, partialTicks);
-        }
-        for (ClickableKeybinding keybind : keybindManager.getKeybindings()) {
-            keybind.render(matrixStack, mouseX, mouseY, partialTicks);
-        }
-        if (selectedClickie != null && closestKeybind != null) {
-            MuseRenderer.drawLineBetween(selectedClickie, closestKeybind, Colour.YELLOW, zLevel);
-        }
+        matrixStack.popPose();
     }
 
     @Override
@@ -411,8 +414,15 @@ public class TinkerKeybindGui extends ContainerlessGui {
         } catch (Exception e) {
             name = "???";
         }
+
+        // prevent creating multiple buttons for same keybinding
         KeyBinding keybind = new KeyBinding(name, key.getValue(), KeybindKeyHandler.mpa);
-        ClickableKeybinding clickie = new ClickableKeybinding(keybind, newKeybindButton.getPosition().plus(new MusePoint2D(0, -20)), free, false);
-        keybindManager.getKeybindings().add(clickie);
+        if (!keybindManager.getKeybindings().stream().filter(clickableKeybinding -> {
+            System.out.println(clickableKeybinding.getKeyBinding().getKey());
+            return clickableKeybinding.getKeyBinding().getKey().equals(key);
+        }).findFirst().isPresent()) {
+            ClickableKeybinding clickie = new ClickableKeybinding(keybind, newKeybindButton.getPosition().plus(new MusePoint2D(0, -20)), free, false);
+            keybindManager.getKeybindings().add(clickie);
+        }
     }
 }

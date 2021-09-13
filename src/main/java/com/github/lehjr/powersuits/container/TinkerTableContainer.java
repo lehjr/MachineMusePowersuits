@@ -33,7 +33,6 @@ import com.github.lehjr.numina.util.client.gui.slot.HideableSlot;
 import com.github.lehjr.numina.util.client.gui.slot.HideableSlotItemHandler;
 import com.github.lehjr.numina.util.client.gui.slot.IHideableSlot;
 import com.github.lehjr.powersuits.basemod.MPSObjects;
-import com.github.lehjr.powersuits.dev.crafting.container.IModularItemToSlotMapProvider;
 import com.github.lehjr.powersuits.network.MPSPackets;
 import com.github.lehjr.powersuits.network.packets.MoveModuleFromSlotToSlotPacket;
 import net.minecraft.entity.player.PlayerEntity;
