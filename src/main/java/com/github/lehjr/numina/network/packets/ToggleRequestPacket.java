@@ -73,12 +73,9 @@ public class ToggleRequestPacket {
                 player.inventory.getItem(i).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
                         .filter(IModularItem.class::isInstance)
                         .map(IModularItem.class::cast)
-                        .ifPresent(handler ->{
-                        handler.toggleModule(registryName, toggleval);
-                        });
+                        .ifPresent(handler -> handler.toggleModule(registryName, toggleval));
             }
             player.inventory.setChanged();
-
         });
         ctx.get().setPacketHandled(true);
     }
