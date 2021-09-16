@@ -33,8 +33,11 @@ import com.github.lehjr.numina.util.client.render.MuseIconUtils;
 import com.github.lehjr.numina.util.client.render.MuseRenderer;
 import com.github.lehjr.numina.util.client.render.NuminaRenderState;
 import com.github.lehjr.numina.util.math.Colour;
+import com.github.lehjr.numina.util.string.AdditionalInfo;
 import com.github.lehjr.numina.util.string.MuseStringUtils;
 import com.mojang.blaze3d.matrix.MatrixStack;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -78,10 +81,10 @@ public class ClickableModule extends Clickable {
     @Override
     public List<ITextComponent> getToolTip(int x, int y) {
         if (hitBox(x, y)) {
-            List<ITextComponent> toolTipText = new ArrayList<>();
-            toolTipText.add(getLocalizedName());
-            toolTipText.addAll(MuseStringUtils.wrapITextComponentToLength(getLocalizedDescription(), 30));
-            return toolTipText;
+            return module.getTooltipLines(Minecraft.getInstance().player,
+                    AdditionalInfo.doAdditionalInfo() ?
+                            ITooltipFlag.TooltipFlags.ADVANCED :
+                    ITooltipFlag.TooltipFlags.NORMAL);
         }
         return null;
     }

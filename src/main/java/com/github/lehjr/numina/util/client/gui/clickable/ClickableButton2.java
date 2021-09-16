@@ -1,32 +1,7 @@
-/*
- * Copyright (c) 2021. MachineMuse, Lehjr
- *  All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *
- *      Redistributions of source code must retain the above copyright notice, this
- *      list of conditions and the following disclaimer.
- *
- *     Redistributions in binary form must reproduce the above copyright notice,
- *     this list of conditions and the following disclaimer in the documentation
- *     and/or other materials provided with the distribution.
- *
- *  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
- *  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
- *  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- *  DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
- *  ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- *  (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
- *  LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
- *  ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
-
 package com.github.lehjr.numina.util.client.gui.clickable;
 
-import com.github.lehjr.numina.util.client.gui.gemoetry.DrawableRelativeRect;
+
+import com.github.lehjr.numina.util.client.gui.gemoetry.DrawableTile;
 import com.github.lehjr.numina.util.client.gui.gemoetry.IDrawable;
 import com.github.lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
 import com.github.lehjr.numina.util.client.render.MuseRenderer;
@@ -37,21 +12,23 @@ import net.minecraft.util.text.ITextComponent;
 /**
  * @author MachineMuse
  */
-public class ClickableButton extends DrawableRelativeRect implements IClickable {
+public class ClickableButton2 extends DrawableTile implements IClickable {
     boolean isVisible = true;
     boolean isEnabled = true;
     protected ITextComponent label;
     protected MusePoint2D radius;
+    private Colour enabledTopBorder  = Colour.WHITE.withAlpha(0.8F);
+    private Colour enabledBottomBorder  = Colour.getGreyscale(0.216F, 1.0F);
+    private Colour enabledBackground = Colour.GREY_GUI_BACKGROUND;
+    private Colour disabledTopBorder = Colour.WHITE.withAlpha(0.8F);
 
-    private Colour enabledBorder  = new Colour(0.3F, 0.3F, 0.3F, 1);
-    private Colour enabledBackground = new Colour(0.5F, 0.6F, 0.8F, 1);
-    private Colour disabledBorder = new Colour(0.8F, 0.6F, 0.6F, 1);
-    private Colour disabledBackground = new Colour(0.8F, 0.3F, 0.3F, 1);
+    private Colour disabledBottomBorder = Colour.getGreyscale(0.216F, 1.0F);
+    private Colour disabledBackground = Colour.DARK_GREY.interpolate(Colour.WHITE, 0.2F);
     private IPressable onPressed;
     private IReleasable onReleased;
 
-    public ClickableButton(ITextComponent label, MusePoint2D position, boolean enabled) {
-        super(0,0,0, 0, Colour.BLACK, Colour.BLACK);
+    public ClickableButton2(ITextComponent label, MusePoint2D position, boolean enabled) {
+        super(1,1,1, 1);
         this.label = label;
         this.setPosition(position);
 
@@ -72,27 +49,35 @@ public class ClickableButton extends DrawableRelativeRect implements IClickable 
         setTop(position.getY() - radius.getY());
         setWidth(radius.getX() * 2);
         setHeight(radius.getY() * 2);
-        setBorderColour(enabledBorder);
-        setBackgroundColour(enabledBackground);
         this.setEnabled(enabled);
     }
 
-    public ClickableButton setEnabledBorder(Colour enabledBorder) {
-        this.enabledBorder = enabledBorder;
+    public ClickableButton2 setEnabledTopBorder(Colour enabledTopBorder) {
+        this.enabledTopBorder = enabledTopBorder;
         return this;
     }
 
-    public ClickableButton setEnabledBackground(Colour enabledBackground) {
+    public ClickableButton2 setEnabledBottomBorder(Colour enabledBottomBorder) {
+        this.enabledBottomBorder = enabledBottomBorder;
+        return this;
+    }
+
+    public ClickableButton2 setEnabledBackground(Colour enabledBackground) {
         this.enabledBackground = enabledBackground;
         return this;
     }
 
-    public ClickableButton setDisabledBorder(Colour disabledBorder) {
-        this.disabledBorder = disabledBorder;
+    public ClickableButton2 setDisabledTopBorder(Colour disabledTopBorder) {
+        this.disabledTopBorder = disabledTopBorder;
         return this;
     }
 
-    public ClickableButton setDisabledBackground(Colour disabledBackground) {
+    public ClickableButton2 setDisabledBottomBorder(Colour disabledBottomBorder) {
+        this.disabledBottomBorder = disabledBottomBorder;
+        return this;
+    }
+
+    public ClickableButton2 setDisabledBackground(Colour disabledBackground) {
         this.disabledBackground = disabledBackground;
         return this;
     }
@@ -131,7 +116,8 @@ public class ClickableButton extends DrawableRelativeRect implements IClickable 
     public void renderButton(MatrixStack matrixStack, int mouseX, int mouseY, float frameTIme) {
         if (isVisible) {
             this.setBackgroundColour(isEnabled() ? enabledBackground : disabledBackground);
-            this.setBorderColour(isEnabled() ? enabledBorder : disabledBorder);
+            this.setTopBorderColour(isEnabled() ? enabledTopBorder : disabledTopBorder);
+            this.setBottomBorderColour(isEnabled() ? enabledBottomBorder : disabledBottomBorder);
             super.render(matrixStack, mouseX, mouseY, frameTIme);
         }
     }
@@ -147,10 +133,10 @@ public class ClickableButton extends DrawableRelativeRect implements IClickable 
             if (label.getString().contains("\n")) {
                 String[] s = label.getString().split("\n");
                 for (int i = 0; i < s.length; i++) {
-                    MuseRenderer.drawShadowedStringCentered(matrixStack, s[i], getPosition().getX(), getPosition().getY() + (i * MuseRenderer.getStringHeight() + 2));
+                    MuseRenderer.drawShadowedStringCentered(matrixStack, s[i], getPosition().getX(), getPosition().getY() + (i * MuseRenderer.getStringHeight() + 1));
                 }
             } else {
-                MuseRenderer.drawShadowedStringCentered(matrixStack, this.label.getString(), getPosition().getX(), getPosition().getY());
+                MuseRenderer.drawShadowedStringCentered(matrixStack, this.label.getString(), getPosition().getX(), getPosition().getY() + 1);
             }
         }
     }
@@ -208,7 +194,7 @@ public class ClickableButton extends DrawableRelativeRect implements IClickable 
         }
     }
 
-    public ClickableButton setLable(ITextComponent label) {
+    public ClickableButton2 setLable(ITextComponent label) {
         this.label = label;
         return this;
     }
