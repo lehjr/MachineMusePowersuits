@@ -89,9 +89,11 @@ public enum MovementManager {
     public void setMovementModifier(ItemStack itemStack, double multiplier, PlayerEntity player) {
         // reduce player speed according to Kinetic Energy Generator setting
         AtomicDouble movementResistance = new AtomicDouble(0);
-        itemStack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(iModularItem -> {
-            if (iModularItem instanceof IModularItem)
-                ((IModularItem) iModularItem).getOnlineModuleOrEmpty(MPSRegistryNames.KINETIC_GENERATOR_MODULE_REGNAME).getCapability(PowerModuleCapability.POWER_MODULE)
+        itemStack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+                .filter(IModularItem.class::isInstance)
+                .map(IModularItem.class::cast)
+                .ifPresent(iModularItem -> {
+                iModularItem.getOnlineModuleOrEmpty(MPSRegistryNames.KINETIC_GENERATOR_MODULE_REGNAME).getCapability(PowerModuleCapability.POWER_MODULE)
                         .ifPresent(kin->{
                             movementResistance.set(kin.applyPropertyModifiers(MPSConstants.MOVEMENT_RESISTANCE));
                         });
@@ -141,16 +143,13 @@ public enum MovementManager {
             double strafeX = desiredDirection.z;
             double strafeZ = -desiredDirection.x;
             ItemStack helm = player.getItemBySlot(EquipmentSlotType.HEAD);
-            double flightVerticality = helm.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).map(iModularItem -> {
-                if (iModularItem instanceof IModularItem) {
-                    return ((IModularItem) iModularItem)
+            double flightVerticality = helm.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+                    .filter(IModularItem.class::isInstance)
+                    .map(IModularItem.class::cast)
+                    .map(iModularItem -> iModularItem
                             .getOnlineModuleOrEmpty(MPSRegistryNames.FLIGHT_CONTROL_MODULE_REGNAME)
                             .getCapability(PowerModuleCapability.POWER_MODULE)
-                            .map(pm -> pm.applyPropertyModifiers(MPSConstants.FLIGHT_VERTICALITY)).orElse(0D);
-                } else {
-                    return 0D;
-                }
-            }).orElse(0D);
+                            .map(pm -> pm.applyPropertyModifiers(MPSConstants.FLIGHT_VERTICALITY)).orElse(0D)).orElse(0D);
 
             desiredDirection = new Vector3d(
                     (desiredDirection.x * Math.signum(playerInput.moveForward) + strafeX * Math.signum(playerInput.moveStrafe)),
@@ -260,31 +259,28 @@ public enum MovementManager {
     public void handleLivingJumpEvent(LivingJumpEvent event) {
         if (event.getEntityLiving() instanceof PlayerEntity) {
             PlayerEntity player = (PlayerEntity) event.getEntityLiving();
-            player.getItemBySlot(EquipmentSlotType.LEGS).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(iModularItem -> {
-                if (!(iModularItem instanceof IModularItem)) {
-                    return;
-                }
-
-                ((IModularItem) iModularItem).getOnlineModuleOrEmpty(MPSRegistryNames.JUMP_ASSIST_MODULE_REGNAME).getCapability(PowerModuleCapability.POWER_MODULE).ifPresent(jumper -> {
-                    double jumpAssist = jumper.applyPropertyModifiers(MPSConstants.MULTIPLIER) * 2;
-                    double drain = jumper.applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION);
-                    int avail = ElectricItemUtils.getPlayerEnergy(player);
-                    if ((player.level.isClientSide()) && NuminaSettings.useSounds()) {
-                        Musique.playerSound(player, MPSSoundDictionary.JUMP_ASSIST, SoundCategory.PLAYERS, (float) (jumpAssist / 8.0), (float) 1, false);
-                    }
-
-                    if (drain < avail) {
-                        ElectricItemUtils.drainPlayerEnergy(player, (int) drain);
-                        setPlayerJumpTicks(player, jumpAssist);
-                        double jumpCompensationRatio = jumper.applyPropertyModifiers(MPSConstants.FOOD_COMPENSATION);
-                        if (player.isSprinting()) {
-                            player.getFoodData().addExhaustion((float) (-0.2F * jumpCompensationRatio));
-                        } else {
-                            player.getFoodData().addExhaustion((float) (-0.05F * jumpCompensationRatio));
+            player.getItemBySlot(EquipmentSlotType.LEGS).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+                    .filter(IModularItem.class::isInstance)
+                    .map(IModularItem.class::cast)
+                    .ifPresent(iModularItem -> iModularItem.getOnlineModuleOrEmpty(MPSRegistryNames.JUMP_ASSIST_MODULE_REGNAME).getCapability(PowerModuleCapability.POWER_MODULE).ifPresent(jumper -> {
+                        double jumpAssist = jumper.applyPropertyModifiers(MPSConstants.MULTIPLIER) * 2;
+                        double drain = jumper.applyPropertyModifiers(MPSConstants.JUMP_ENERGY);
+                        int avail = ElectricItemUtils.getPlayerEnergy(player);
+                        if ((player.level.isClientSide()) && NuminaSettings.useSounds()) {
+                            Musique.playerSound(player, MPSSoundDictionary.JUMP_ASSIST, SoundCategory.PLAYERS, (float) (jumpAssist / 8.0), (float) 1, false);
                         }
-                    }
-                });
-            });
+
+                        if (drain < avail) {
+                            ElectricItemUtils.drainPlayerEnergy(player, (int) drain);
+                            setPlayerJumpTicks(player, jumpAssist);
+                            double jumpCompensationRatio = jumper.applyPropertyModifiers(MPSConstants.FOOD_COMPENSATION);
+                            if (player.isSprinting()) {
+                                player.getFoodData().addExhaustion((float) (-0.2F * jumpCompensationRatio));
+                            } else {
+                                player.getFoodData().addExhaustion((float) (-0.05F * jumpCompensationRatio));
+                            }
+                        }
+                    }));
         }
     }
 
@@ -292,27 +288,22 @@ public enum MovementManager {
     public void handleFallEvent(LivingFallEvent event) {
         if (event.getEntityLiving() instanceof PlayerEntity && event.getDistance() > 3.0) {
             PlayerEntity player = (PlayerEntity) event.getEntityLiving();
-            ItemStack boots = player.getItemBySlot(EquipmentSlotType.FEET);
-            boots.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(iModularItem -> {
-                if (!(iModularItem instanceof IModularItem)) {
-                    return;
-                }
-
-                ItemStack shockAbsorbers = ((IModularItem) iModularItem).getOnlineModuleOrEmpty(MPSRegistryNames.SHOCK_ABSORBER_MODULE_REGNAME);
-                shockAbsorbers.getCapability(PowerModuleCapability.POWER_MODULE).ifPresent(sa -> {
-                    double distanceAbsorb = event.getDistance() * sa.applyPropertyModifiers(MPSConstants.MULTIPLIER);
-                    if (player.level.isClientSide && NuminaSettings.useSounds()) {
-                        Musique.playerSound(player, SoundDictionary.SOUND_EVENT_GUI_INSTALL, SoundCategory.PLAYERS, (float) (distanceAbsorb), (float) 1, false);
-                    }
-                    double drain = distanceAbsorb * sa.applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION);
-                    int avail = ElectricItemUtils.getPlayerEnergy(player);
-                    if (drain < avail) {
-                        ElectricItemUtils.drainPlayerEnergy(player, (int) drain);
-                        event.setDistance((float) (event.getDistance() - distanceAbsorb));
-//                        event.getEntityLiving().sendMessage(new TextComponentString("modified fall settings: [ damage : " + event.getDamageMultiplier() + " ], [ distance : " + event.getDistance() + " ]"));
-                    }
-                });
-            });
+            player.getItemBySlot(EquipmentSlotType.FEET).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+                    .filter(IModularItem.class::isInstance)
+                    .map(IModularItem.class::cast)
+                    .ifPresent(iModularItem -> iModularItem.getOnlineModuleOrEmpty(MPSRegistryNames.SHOCK_ABSORBER_MODULE_REGNAME).getCapability(PowerModuleCapability.POWER_MODULE).ifPresent(sa -> {
+                        double distanceAbsorb = event.getDistance() * sa.applyPropertyModifiers(MPSConstants.MULTIPLIER);
+                        if (player.level.isClientSide && NuminaSettings.useSounds()) {
+                            Musique.playerSound(player, SoundDictionary.SOUND_EVENT_GUI_INSTALL, SoundCategory.PLAYERS, (float) (distanceAbsorb), (float) 1, false);
+                        }
+                        double drain = distanceAbsorb * sa.applyPropertyModifiers(MPSConstants.SHOCK_ENERGY);
+                        int avail = ElectricItemUtils.getPlayerEnergy(player);
+                        if (drain < avail) {
+                            ElectricItemUtils.drainPlayerEnergy(player, (int) drain);
+                            event.setDistance((float) (event.getDistance() - distanceAbsorb));
+    //                        event.getEntityLiving().sendMessage(new TextComponentString("modified fall settings: [ damage : " + event.getDamageMultiplier() + " ], [ distance : " + event.getDistance() + " ]"));
+                        }
+                    }));
         }
     }
 }

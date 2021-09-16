@@ -71,8 +71,8 @@ public class CoolingSystemModule extends AbstractPowerModule {
         public CapProvider(@Nonnull ItemStack module) {
             this.module = module;
             this.ticker = new Ticker(module, EnumModuleCategory.ENVIRONMENTAL, EnumModuleTarget.TORSOONLY, MPSSettings::getModuleConfig, true) {{
-                addTradeoffProperty(MPSConstants.POWER, MPSConstants.COOLING_BONUS, 1, "%");
-                addTradeoffProperty(MPSConstants.POWER, MPSConstants.ENERGY_CONSUMPTION, 40, "RF/t");
+                addTradeoffProperty(MPSConstants.COOLING_POWER, MPSConstants.COOLING_BONUS, 1, "%");
+                addTradeoffProperty(MPSConstants.COOLING_POWER, MPSConstants.COOLING_ENERGY, 40, "RF/t");
             }};
         }
 
@@ -96,7 +96,7 @@ public class CoolingSystemModule extends AbstractPowerModule {
 
                 MuseHeatUtils.coolPlayer(player, /*0.1 * */ applyPropertyModifiers(MPSConstants.COOLING_BONUS));
                 double cooling = heatBefore - MuseHeatUtils.getPlayerHeat(player);
-                ElectricItemUtils.drainPlayerEnergy(player, (int) (cooling * applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION)));
+                ElectricItemUtils.drainPlayerEnergy(player, (int) (cooling * applyPropertyModifiers(MPSConstants.COOLING_ENERGY)));
             }
         }
     }

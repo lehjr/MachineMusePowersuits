@@ -89,8 +89,9 @@ public class NightVisionModule extends AbstractPowerModule {
 
             @Override
             public void onPlayerTickActive(PlayerEntity player, ItemStack item) {
-                if (player.level.isClientSide)
+                if (player.level.isClientSide) {
                     return;
+                }
 
                 double totalEnergy = ElectricItemUtils.getPlayerEnergy(player);
                 EffectInstance nightVisionEffect = player.hasEffect(nightvision) ? player.getEffect(nightvision) : null;
@@ -100,8 +101,9 @@ public class NightVisionModule extends AbstractPowerModule {
                         player.addEffect(new EffectInstance(nightvision, 500, -3, false, false));
                         ElectricItemUtils.drainPlayerEnergy(player, powerDrain);
                     }
-                } else
+                } else {
                     onPlayerTickInactive(player, item);
+                }
             }
 
             @Override

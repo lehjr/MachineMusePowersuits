@@ -77,9 +77,9 @@ public class JetPackModule extends AbstractPowerModule {
         public CapProvider(@Nonnull ItemStack module) {
             this.module = module;
             this.ticker = new Ticker(module, EnumModuleCategory.MOVEMENT, EnumModuleTarget.TORSOONLY, MPSSettings::getModuleConfig) {{
-                addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, 0, "RF/t");
+                addBaseProperty(MPSConstants.JETPACK_ENERGY, 0, "RF/t");
                 addBaseProperty(MPSConstants.JETPACK_THRUST, 0, "N");
-                addTradeoffProperty(MPSConstants.THRUST, MPSConstants.ENERGY_CONSUMPTION, 1500);
+                addTradeoffProperty(MPSConstants.THRUST, MPSConstants.JETPACK_ENERGY, 1500);
                 addTradeoffProperty(MPSConstants.THRUST, MPSConstants.JETPACK_THRUST, 0.16F);
             }};
         }
@@ -107,11 +107,14 @@ public class JetPackModule extends AbstractPowerModule {
                 PlayerMovementInputWrapper.PlayerMovementInput playerInput = PlayerMovementInputWrapper.get(player);
 
                 ItemStack helmet = player.getItemBySlot(EquipmentSlotType.HEAD);
-                boolean hasFlightControl = helmet.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).map(m->
-                        m instanceof IModularItem && ((IModularItem) m).isModuleOnline(MPSRegistryNames.FLIGHT_CONTROL_MODULE_REGNAME)).orElse(false);
+                boolean hasFlightControl = helmet.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+                        .filter(IModularItem.class::isInstance)
+                        .map(IModularItem.class::cast)
+                        .map(m->
+                        m.isModuleOnline(MPSRegistryNames.FLIGHT_CONTROL_MODULE_REGNAME)).orElse(false);
                 double jetEnergy = 0;
                 double thrust = 0;
-                jetEnergy += applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION);
+                jetEnergy += applyPropertyModifiers(MPSConstants.JETPACK_ENERGY);
                 thrust += applyPropertyModifiers(MPSConstants.JETPACK_THRUST);
 
                 if (jetEnergy < ElectricItemUtils.getPlayerEnergy(player)) {

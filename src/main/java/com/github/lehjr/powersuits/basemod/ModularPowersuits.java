@@ -159,7 +159,7 @@ public class ModularPowersuits {
         RenderingRegistry.registerEntityRenderingHandler(MPSObjects.SPINNING_BLADE_ENTITY_TYPE.get(), SpinningBladeEntityRenderer::new);
 
 //        ScreenManager.registerFactory(MPSObjects.MODULE_CONFIG_CONTAINER_TYPE, TinkerModuleGui::new);
-        ScreenManager.register(MPSObjects.MPS_CRAFTING_CONTAINER_TYPE.get(), CraftInstallSalvageGui::new);
+        ScreenManager.register(MPSObjects.SALVAGE_CRAFT_CONTAINER_TYPE.get(), CraftInstallSalvageGui::new);
 
 
 //        ScreenManager.register(MPSObjects.TINKERTABLE_CONTAINER_TYPE.get(), TinkerTableGui::new); // FIXME: replace with module craft/install/salvage GUI + module tweak GUI

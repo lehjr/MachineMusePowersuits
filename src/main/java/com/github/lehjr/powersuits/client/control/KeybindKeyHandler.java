@@ -99,7 +99,10 @@ public class KeybindKeyHandler {
 
         // Mode changinging GUI
         if (hotbarKeys[player.inventory.selected].isDown() && minecraft.isWindowActive()) {
-            player.inventory.getSelected().getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(iModeChanging->{
+            player.inventory.getSelected().getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+                    .filter(IModeChangingItem.class::isInstance)
+                    .map(IModeChangingItem.class::cast)
+                    .ifPresent(iModeChanging->{
                 if(player.level.isClientSide) {
                     if (!(Minecraft.getInstance().screen instanceof GuiModeSelector)) {
                         Minecraft.getInstance().tell(() -> Minecraft.getInstance().setScreen(new GuiModeSelector(player, new StringTextComponent("modeChanging"))));
@@ -112,19 +115,17 @@ public class KeybindKeyHandler {
         if (cycleToolBackward.isDown()) {
             minecraft.gameMode.tick();
             player.inventory.getItem(player.inventory.selected).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-                    .ifPresent(handler-> {
-                        if (handler instanceof IModeChangingItem)
-                            ((IModeChangingItem) handler).cycleMode(player, 1);
-                    });
+                    .filter(IModeChangingItem.class::isInstance)
+                    .map(IModeChangingItem.class::cast)
+                    .ifPresent(handler-> handler.cycleMode(player, 1));
         }
 
         if (cycleToolForward.isDown()) {
             minecraft.gameMode.tick();
             player.inventory.getItem(player.inventory.selected).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-                    .ifPresent(handler-> {
-                        if (handler instanceof IModeChangingItem)
-                            ((IModeChangingItem) handler).cycleMode(player, -1);
-                    });
+                    .filter(IModeChangingItem.class::isInstance)
+                    .map(IModeChangingItem.class::cast)
+                    .ifPresent(handler-> handler.cycleMode(player, -1));
         }
     }
 }

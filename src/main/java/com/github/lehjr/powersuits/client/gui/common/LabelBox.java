@@ -23,18 +23,6 @@ public class LabelBox extends GUISpacer {
         this.colour = colour;
     }
 
-    FontRenderer getFontRenderer() {
-        return Minecraft.getInstance().font;
-    }
-
-    float getLeftForCentered() {
-        return (float) (this.centerx() - (getFontRenderer().width(this.translationTextComponent) * 0.5));
-    }
-
-    float getTopForCentered() {
-        return (float) (this.centery() - (getFontRenderer().lineHeight * 0.5F));
-    }
-
     public void renderLabel(MatrixStack matrixStack, float offsetX, float offsetY) {
         MuseRenderer.drawCenteredText(matrixStack, translationTextComponent, centerx() + offsetX, centery() +  offsetY, colour);
     }

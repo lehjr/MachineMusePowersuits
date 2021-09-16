@@ -56,34 +56,37 @@ public class HarvestEventHandler {
             return;
         }
 
-        ItemStack stack = player.inventory.getSelected();
-        stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(iItemHandler -> {
-            if(iItemHandler instanceof IModeChangingItem) {
-                if (!state.requiresCorrectToolForDrops()) {
-                    event.setCanHarvest(true);
-                    return;
-                }
-
-                RayTraceResult rayTraceResult = rayTrace(player.level, player, RayTraceContext.FluidMode.SOURCE_ONLY);
-                if (rayTraceResult == null || rayTraceResult.getType() != RayTraceResult.Type.BLOCK)
-                    return;
-
-                BlockPos pos = new BlockPos(rayTraceResult.getLocation());
-                if (pos == null) {
-                    return;
-                }
-
-                int playerEnergy = ElectricItemUtils.getPlayerEnergy(player);
-
-                for (ItemStack module : ((IModeChangingItem) iItemHandler).getInstalledModulesOfType(IBlockBreakingModule.class)) {
-                    if (module.getCapability(PowerModuleCapability.POWER_MODULE)
-                            .map(pm->pm instanceof IBlockBreakingModule && ((IBlockBreakingModule) pm).canHarvestBlock(stack, state, player, pos, playerEnergy)).orElse(false)) {
+        player.inventory.getSelected().getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+                .filter(IModeChangingItem.class::isInstance)
+                .map(IModeChangingItem.class::cast)
+                .ifPresent(iItemHandler -> {
+                    if (!state.requiresCorrectToolForDrops()) {
                         event.setCanHarvest(true);
                         return;
                     }
-                }
-            }
-        });
+
+                    RayTraceResult rayTraceResult = rayTrace(player.level, player, RayTraceContext.FluidMode.SOURCE_ONLY);
+                    if (rayTraceResult == null || rayTraceResult.getType() != RayTraceResult.Type.BLOCK)
+                        return;
+
+                    BlockPos pos = new BlockPos(rayTraceResult.getLocation());
+                    if (pos == null) {
+                        return;
+                    }
+
+                    int playerEnergy = ElectricItemUtils.getPlayerEnergy(player);
+
+                    for (ItemStack module : iItemHandler.getInstalledModulesOfType(IBlockBreakingModule.class)) {
+                        if (module.getCapability(PowerModuleCapability.POWER_MODULE)
+                                .filter(IBlockBreakingModule.class::isInstance)
+                                .map(IBlockBreakingModule.class::cast)
+                                .map(pm-> pm.canHarvestBlock(iItemHandler.getModularItemStack(), state, player, pos, playerEnergy)).orElse(false)) {
+                            event.setCanHarvest(true);
+                            return;
+                        }
+                    }
+
+                });
     }
 
     // copied from vanilla item
@@ -97,7 +100,7 @@ public class HarvestEventHandler {
         float f5 = MathHelper.sin(-pitch * ((float)Math.PI / 180F));
         float f6 = f3 * f4;
         float f7 = f2 * f4;
-        double d0 = player.getAttribute(net.minecraftforge.common.ForgeMod.REACH_DISTANCE.get()).getValue();;
+        double d0 = player.getAttribute(net.minecraftforge.common.ForgeMod.REACH_DISTANCE.get()).getValue();
         Vector3d vec3d1 = vec3d.add((double)f6 * d0, (double)f5 * d0, (double)f7 * d0);
         return worldIn.clip(new RayTraceContext(vec3d, vec3d1, RayTraceContext.BlockMode.OUTLINE, fluidMode, player));
     }
@@ -107,27 +110,31 @@ public class HarvestEventHandler {
         // Note: here we can actually get the position if needed. we can't easily om the harvest check.
         PlayerEntity player = event.getPlayer();
         ItemStack stack = player.inventory.getSelected();
-        stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(iItemHandler -> {
-            if (iItemHandler instanceof IModeChangingItem) {
-                BlockState state = event.getState();
+        stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+                .filter(IModeChangingItem.class::isInstance)
+                .map(IModeChangingItem.class::cast)
+                .ifPresent(iItemHandler -> {
+                    BlockState state = event.getState();
 
-                // wait... what is this again? Looks like resetting speed
-                if (event.getNewSpeed() < event.getOriginalSpeed()) {
-                    event.setNewSpeed(event.getOriginalSpeed());
-                }
-                int playerEnergy = ElectricItemUtils.getPlayerEnergy(player);
+                    // wait... what is this again? Looks like resetting speed
+                    if (event.getNewSpeed() < event.getOriginalSpeed()) {
+                        event.setNewSpeed(event.getOriginalSpeed());
+                    }
+                    int playerEnergy = ElectricItemUtils.getPlayerEnergy(player);
 
-                for (ItemStack module : ((IModeChangingItem) iItemHandler).getInstalledModulesOfType(IBlockBreakingModule.class)) {
-                    module.getCapability(PowerModuleCapability.POWER_MODULE).ifPresent(pm -> {
-                        if (pm instanceof IBlockBreakingModule && ((IBlockBreakingModule) pm).canHarvestBlock(stack, state, player, event.getPos(), playerEnergy)) {
-                            if (event.getNewSpeed() == 0) {
-                                event.setNewSpeed(1);
-                            }
-                            ((IBlockBreakingModule) pm).handleBreakSpeed(event);
-                        }
-                    });
-                }
-            }
-        });
+                    for (ItemStack module : iItemHandler.getInstalledModulesOfType(IBlockBreakingModule.class)) {
+                        module.getCapability(PowerModuleCapability.POWER_MODULE)
+                                .filter(IBlockBreakingModule.class::isInstance)
+                                .map(IBlockBreakingModule.class::cast)
+                                .ifPresent(pm -> {
+                                    if (pm.canHarvestBlock(stack, state, player, event.getPos(), playerEnergy)) {
+                                        if (event.getNewSpeed() == 0) {
+                                            event.setNewSpeed(1);
+                                        }
+                                        pm.handleBreakSpeed(event);
+                                    }
+                                });
+                    }
+                });
     }
 }

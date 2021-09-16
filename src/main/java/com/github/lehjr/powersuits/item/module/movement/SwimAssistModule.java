@@ -73,7 +73,7 @@ public class SwimAssistModule extends AbstractPowerModule {
         public CapProvider(@Nonnull ItemStack module) {
             this.module = module;
             this.ticker = new Ticker(module, EnumModuleCategory.MOVEMENT, EnumModuleTarget.LEGSONLY, MPSSettings::getModuleConfig) {{
-                addTradeoffProperty(MPSConstants.THRUST, MPSConstants.ENERGY_CONSUMPTION, 1000, "FE");
+                addTradeoffProperty(MPSConstants.THRUST, MPSConstants.SWIM_ENERGY, 1000, "FE");
                 addTradeoffProperty(MPSConstants.THRUST, MPSConstants.SWIM_BOOST_AMOUNT, 1, "m/s");
             }};
         }
@@ -108,7 +108,7 @@ public class SwimAssistModule extends AbstractPowerModule {
                             moveRatio += 0.2 * 0.2;
                         }
                         double swimAssistRate = applyPropertyModifiers(MPSConstants.SWIM_BOOST_AMOUNT) * 0.05 * moveRatio;
-                        double swimEnergyConsumption = applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION);
+                        double swimEnergyConsumption = applyPropertyModifiers(MPSConstants.SWIM_ENERGY);
                         if (swimEnergyConsumption < ElectricItemUtils.getPlayerEnergy(player)) {
                             if (player.level.isClientSide && NuminaSettings.useSounds()) {
                                 Musique.playerSound(player, MPSSoundDictionary.SWIM_ASSIST, SoundCategory.PLAYERS, 1.0f, 1.0f, true);

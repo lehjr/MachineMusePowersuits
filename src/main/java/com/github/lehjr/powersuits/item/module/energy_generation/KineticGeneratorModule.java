@@ -98,8 +98,11 @@ public class KineticGeneratorModule extends AbstractPowerModule {
 
                 // really hate running this check on every tick but needed for player speed adjustments
                 if (ElectricItemUtils.getPlayerEnergy(player) < ElectricItemUtils.getMaxPlayerEnergy(player)) {
-                    itemStackIn.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h->{
-                        if(h instanceof IModularItem && !((IModularItem) h).isModuleOnline(MPSRegistryNames.SPRINT_ASSIST_MODULE_REGNAME));
+                    itemStackIn.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+                            .filter(IModularItem.class::isInstance)
+                            .map(IModularItem.class::cast)
+                            .ifPresent(h->{
+                        if(!h.isModuleOnline(MPSRegistryNames.SPRINT_ASSIST_MODULE_REGNAME));
                         // only fires if the sprint assist module isn't installed and active
                         MovementManager.INSTANCE.setMovementModifier(itemStackIn, 0, player);
                     });
@@ -118,8 +121,11 @@ public class KineticGeneratorModule extends AbstractPowerModule {
 
             @Override
             public void onPlayerTickInactive(PlayerEntity player, ItemStack itemStackIn) {
-                itemStackIn.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h->{
-                    if (h instanceof IModularItem && !((IModularItem) h).isModuleOnline(MPSRegistryNames.SPRINT_ASSIST_MODULE_REGNAME)) {
+                itemStackIn.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+                        .filter(IModularItem.class::isInstance)
+                        .map(IModularItem.class::cast)
+                        .ifPresent(h->{
+                    if (!h.isModuleOnline(MPSRegistryNames.SPRINT_ASSIST_MODULE_REGNAME)) {
                         // only fire if sprint assist module not installed.
                         MovementManager.INSTANCE.setMovementModifier(itemStackIn, 0, player);
                     }

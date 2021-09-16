@@ -29,7 +29,7 @@ package com.github.lehjr.powersuits.client.gui.clickable;
 import com.github.lehjr.numina.network.NuminaPackets;
 import com.github.lehjr.numina.network.packets.ToggleRequestPacket;
 import com.github.lehjr.numina.util.capabilities.inventory.modularitem.IModularItem;
-import com.github.lehjr.numina.util.client.gui.clickable.ClickableButton;
+import com.github.lehjr.numina.util.client.gui.clickable.ClickableButton2;
 import com.github.lehjr.numina.util.client.gui.clickable.ClickableModule;
 import com.github.lehjr.numina.util.client.gui.clickable.IClickable;
 import com.github.lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
@@ -38,7 +38,6 @@ import com.github.lehjr.numina.util.math.Colour;
 import com.github.lehjr.numina.util.string.MuseStringUtils;
 import com.github.lehjr.powersuits.client.control.KeybindManager;
 import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.client.settings.KeyBinding;
@@ -54,7 +53,7 @@ import java.util.List;
 /**
  * Ported to Java by lehjr on 10/19/16.
  */
-public class ClickableKeybinding extends ClickableButton {
+public class ClickableKeybinding extends ClickableButton2 {
     public boolean toggleval = false;
     public boolean displayOnHUD;
     protected List<ClickableModule> boundModules = new ArrayList<>();
@@ -96,11 +95,10 @@ public class ClickableKeybinding extends ClickableButton {
         for (ClickableModule module : boundModules) {
             ResourceLocation registryName = module.getModule().getItem().getRegistryName();
             for (int i = 0; i < player.inventory.getContainerSize(); i++) {
-                player.inventory.getItem(i).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(handler ->{
-                    if (handler instanceof IModularItem) {
-                        ((IModularItem) handler).toggleModule(registryName, toggleval);
-                    }
-                });
+                player.inventory.getItem(i).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+                        .filter(IModularItem.class::isInstance)
+                        .map(IModularItem.class::cast)
+                        .ifPresent(handler -> handler.toggleModule(registryName, toggleval));
             }
             NuminaPackets.CHANNEL_INSTANCE.sendToServer(new ToggleRequestPacket(registryName, toggleval));
         }
@@ -112,14 +110,15 @@ public class ClickableKeybinding extends ClickableButton {
         super.render(matrixStack, mouseX, mouseY, partialTicks);
         for (ClickableModule module : boundModules) {
             MuseRenderer.drawLineBetween(this, module, Colour.LIGHT_BLUE, 0); // FIXME
-            RenderSystem.pushMatrix();
-            RenderSystem.scaled(0.5, 0.5, 0.5);
+            matrixStack.pushPose();
+            matrixStack.scale(0.5F, 0.5F, 0.5F);
+            matrixStack.translate(0, 0, 100);
             if (displayOnHUD) {
                 MuseRenderer.drawShadowedString(matrixStack, MuseStringUtils.wrapFormatTags("HUD", MuseStringUtils.FormatCodes.BrightGreen), this.getPosition().getX() * 2 + 6, this.getPosition().getY() * 2 + 6);
             } else {
                 MuseRenderer.drawShadowedString(matrixStack, MuseStringUtils.wrapFormatTags("x", MuseStringUtils.FormatCodes.Red), this.getPosition().getX() * 2 + 6, this.getPosition().getY() * 2 + 6);
             }
-            RenderSystem.popMatrix();
+            matrixStack.popPose();
         }
     }
 

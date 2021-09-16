@@ -55,14 +55,12 @@ public class ModuleTweakGui extends ContainerlessGui {
     Colour topBorderColour = new Colour(0.216F, 0.216F, 0.216F, 1F);
     Colour bottomBorderColour = Colour.WHITE.withAlpha(0.8F);
 
-
     protected ModularItemSelectionFrame itemSelectFrame;
     protected ModuleSelectionFrame moduleSelectFrame;
     protected DetailedSummaryFrame summaryFrame;
     protected ModuleTweakFrame tweakFrame;
     protected TabSelectFrame tabSelectFrame;
     protected LabelBox modularSelectionLabel;
-    protected RangedSlider scrollbar;
     MultiRectHolderFrame mainHolder;
 
     public ModuleTweakGui(ITextComponent titleIn, boolean growFromMiddle) {
@@ -97,7 +95,10 @@ public class ModuleTweakGui extends ContainerlessGui {
         leftFrame.doneAdding();
 
         /** setup call to make the modules reload when new button pressed */
-        itemSelectFrame.setOnChanged(()-> moduleSelectFrame.loadModules(false));
+        itemSelectFrame.setOnChanged(()-> {
+            moduleSelectFrame.loadModules(false);
+            tweakFrame.resetScroll();
+        });
         addFrame(itemSelectFrame);
 
         double rightFrameWidth = 162;
@@ -105,8 +106,6 @@ public class ModuleTweakGui extends ContainerlessGui {
         MultiRectHolderFrame rightFrame = new MultiRectHolderFrame(false, true, 0,0);
         rightFrame.addRect(new GUISpacer(rightFrameWidth, spacer));
 
-
-        /** fixme: move left and shrink */
         summaryFrame = new DetailedSummaryFrame(
                 new MusePoint2D(0, 0),
                 new MusePoint2D(rightFrameWidth, 40),
@@ -117,7 +116,6 @@ public class ModuleTweakGui extends ContainerlessGui {
         rightFrame.addRect(summaryFrame);
         rightFrame.addRect(new GUISpacer(rightFrameWidth, 7));
 
-        /** fixme: grow by 87? */
         tweakFrame = new ModuleTweakFrame(
                 new MusePoint2D(0,  0),
                 new MusePoint2D(rightFrameWidth, 156),
@@ -186,6 +184,6 @@ public class ModuleTweakGui extends ContainerlessGui {
     @Override
     public void renderLabels(MatrixStack matrixStack, int mouseX, int mouseY) {
         super.renderLabels(matrixStack, mouseX, mouseY);
-        modularSelectionLabel.renderLabel(matrixStack, 0, 0);
+        modularSelectionLabel.renderLabel(matrixStack, 0, 1);
     }
 }

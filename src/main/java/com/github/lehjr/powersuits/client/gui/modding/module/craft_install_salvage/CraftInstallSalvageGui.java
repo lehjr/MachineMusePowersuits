@@ -6,8 +6,8 @@ import com.github.lehjr.numina.util.client.sound.Musique;
 import com.github.lehjr.numina.util.client.sound.SoundDictionary;
 import com.github.lehjr.powersuits.client.gui.common.ModularItemSelectionFrameContainered;
 import com.github.lehjr.powersuits.client.gui.common.TabSelectFrame;
-import com.github.lehjr.powersuits.dev.crafting.client.gui.recipebooktest.ScrollableInventoryFrame2;
-import com.github.lehjr.powersuits.container.MPSCraftingContainer;
+import com.github.lehjr.powersuits.client.ScrollableInventoryFrame2;
+import com.github.lehjr.powersuits.container.InstallSalvageCraftContainer;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.gui.recipebook.IRecipeShownListener;
 import net.minecraft.client.gui.recipebook.RecipeBookGui;
@@ -31,7 +31,7 @@ import java.util.List;
  *
  */
 @OnlyIn(Dist.CLIENT)
-public class CraftInstallSalvageGui extends ExtendedContainerScreen<MPSCraftingContainer> implements IRecipeShownListener {
+public class CraftInstallSalvageGui extends ExtendedContainerScreen<InstallSalvageCraftContainer> implements IRecipeShownListener {
     /** the recipe book. IRecipeShownListener means it HAS to be an instance of the vanilla recipe book -_- */
     private final MPSRecipeBookGui recipeBookComponent;
     /** determins if the recipe book gui will be over the crafting gui */
@@ -47,7 +47,7 @@ public class CraftInstallSalvageGui extends ExtendedContainerScreen<MPSCraftingC
 
     MultiRectHolderFrame mainHolder;
 
-    public CraftInstallSalvageGui(MPSCraftingContainer container, PlayerInventory playerInventory, ITextComponent title) {
+    public CraftInstallSalvageGui(InstallSalvageCraftContainer container, PlayerInventory playerInventory, ITextComponent title) {
         super(container, playerInventory, title, 340, 217, false);
 
         /** clickable buttons on the top of the GUI */
@@ -66,7 +66,6 @@ public class CraftInstallSalvageGui extends ExtendedContainerScreen<MPSCraftingC
                 if (getRecipeBookComponent() != null) {
                     module = ((MPSRecipeBookGui)getRecipeBookComponent()).getRecipeOutput();
                 }
-                System.out.println("result: " + module);
 
                 if (modularItemInventory != null && !module.isEmpty()) {
                     modularItemInventory.creativeInstall(module);

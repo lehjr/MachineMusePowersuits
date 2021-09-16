@@ -81,7 +81,7 @@ public class FlintAndSteelModule extends AbstractPowerModule {
         public CapProvider(@Nonnull ItemStack module) {
             this.module = module;
             this.rightClick = new RightClickie(module, EnumModuleCategory.TOOL, EnumModuleTarget.TOOLONLY, MPSSettings::getModuleConfig) {{
-                addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, 10000, "FE");
+                addBaseProperty(MPSConstants.FLINT_AND_STEELE_ENERGY, 10000, "FE");
             }};
         }
 
@@ -137,7 +137,7 @@ public class FlintAndSteelModule extends AbstractPowerModule {
 
             @Override
             public int getEnergyUsage() {
-                return (int) applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION);
+                return (int) applyPropertyModifiers(MPSConstants.FLINT_AND_STEELE_ENERGY);
             }
         }
     }

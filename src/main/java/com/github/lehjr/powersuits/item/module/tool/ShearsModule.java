@@ -102,8 +102,8 @@ public class ShearsModule extends AbstractPowerModule {
         public CapProvider(@Nonnull ItemStack module) {
             this.module = module;
             this.rightClick = new BlockBreaker(module, EnumModuleCategory.TOOL, EnumModuleTarget.TOOLONLY, MPSSettings::getModuleConfig) {{
-                addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, 1000, "FE");
-                addBaseProperty(MPSConstants.HARVEST_SPEED, 8, "x");
+                addBaseProperty(MPSConstants.SHEARS_ENERGY, 1000, "FE");
+                addBaseProperty(MPSConstants.SHEARS_HARVEST_SPEED , 8, "x");
             }};
         }
 
@@ -125,7 +125,7 @@ public class ShearsModule extends AbstractPowerModule {
                 }
                 Block block = state.getBlock();
 
-                if (block instanceof IForgeShearable && ElectricItemUtils.getPlayerEnergy(((PlayerEntity) entityLiving)) > getEnergyUsage()) {
+                if (block instanceof IForgeShearable && ElectricItemUtils.getPlayerEnergy(entityLiving) > getEnergyUsage()) {
                     IForgeShearable target = (IForgeShearable) block;
                     if (target.isShearable(itemStack, entityLiving.level, pos)) {
                         // default List<ItemStack> onSheared(@Nullable PlayerEntity player, @Nonnull ItemStack item, World world, BlockPos pos, int fortune)
@@ -141,7 +141,7 @@ public class ShearsModule extends AbstractPowerModule {
                             entityitem.setDefaultPickUpDelay(); // this is 10
                             entityitem.level.addFreshEntity(entityitem);
                         }
-                        ElectricItemUtils.drainPlayerEnergy((PlayerEntity) entityLiving, getEnergyUsage());
+                        ElectricItemUtils.drainPlayerEnergy(entityLiving, getEnergyUsage());
                         ((PlayerEntity) (entityLiving)).awardStat(block.getRegistryName());
                         return true;
                     }
@@ -156,12 +156,12 @@ public class ShearsModule extends AbstractPowerModule {
 
             @Override
             public int getEnergyUsage() {
-                return (int) applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION);
+                return (int) applyPropertyModifiers(MPSConstants.SHEARS_ENERGY);
             }
 
             @Override
             public void handleBreakSpeed(PlayerEvent.BreakSpeed event) {
-                event.setNewSpeed((float) (event.getNewSpeed() * applyPropertyModifiers(MPSConstants.HARVEST_SPEED)));
+                event.setNewSpeed((float) (event.getNewSpeed() * applyPropertyModifiers(MPSConstants.SHEARS_HARVEST_SPEED )));
             }
 
             @Override

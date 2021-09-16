@@ -57,7 +57,7 @@ import java.util.Set;
 public enum KeybindManager {
     INSTANCE;
 
-    private static KeyBindingHelper keyBindingHelper = new KeyBindingHelper();
+    private static final KeyBindingHelper keyBindingHelper = new KeyBindingHelper();
     // only stores keybindings relevant to us!!
     protected final Set<ClickableKeybinding> keybindings = new HashSet();
 
@@ -100,12 +100,11 @@ public enum KeybindManager {
 
             for (EquipmentSlotType slot: EquipmentSlotType.values()) {
                 if (slot.getType() == EquipmentSlotType.Group.ARMOR) {
-                    player.getItemBySlot(slot).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(
-                            iItemHandler -> {
-                                if (iItemHandler instanceof IModularItem) {
-                                    modulesToWrite.addAll(((IModularItem) iItemHandler).getInstalledModules());
-                                }
-                            });
+                    player.getItemBySlot(slot).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+                            .filter(IModularItem.class::isInstance)
+                            .map(IModularItem.class::cast)
+                            .ifPresent(
+                            iItemHandler -> modulesToWrite.addAll(iItemHandler.getInstalledModules()));
                 }
             }
 

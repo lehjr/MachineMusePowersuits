@@ -63,17 +63,6 @@ public class DetailedSummaryFrame extends ScrollableFrame {
         this.itemSelectionFrame = itemSelectionFrame;
     }
 
-    /*
-    Todo: break down by item:
-    Energy current/max
-    Armor Points
-    Occupied slots/total (break down by specialty slots)
-*/
-
-
-
-
-
     @Override
     public void update(double mousex, double mousey) {
         energy.set(0);
@@ -109,7 +98,7 @@ public class DetailedSummaryFrame extends ScrollableFrame {
         if (getMinecraft().player != null) {
             super.render(matrixStack, mouseX, mouseY, partialTicks);
             int margin = 4;
-            int nexty = (int) getRect().top() + margin;
+            int nexty = (int) getRect().top() + margin + 4;
             MuseRenderer.drawShadowedStringCentered(matrixStack, I18n.get("gui.powersuits.equippedTotals"), (getRect().left() + getRect().right()) / 2, nexty);
             nexty += 10;
 

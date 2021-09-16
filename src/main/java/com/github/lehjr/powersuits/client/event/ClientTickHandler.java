@@ -74,6 +74,7 @@ public class ClientTickHandler {
     protected PlasmaChargeMeter plasmaMeter = null;
     static final ItemStack food = new ItemStack(Items.COOKED_BEEF);
     MatrixStack matrixStack = new MatrixStack();
+    final double meterTextOffsetY = 6;
 
     @SubscribeEvent
     public void onPreClientTick(TickEvent.ClientTickEvent event) {
@@ -121,62 +122,61 @@ public class ClientTickHandler {
                         .filter(IModularItem.class::isInstance)
                         .map(IModularItem.class::cast)
                         .ifPresent(h -> {
-                    // AutoFeeder
-                    ItemStack autoFeeder = h.getOnlineModuleOrEmpty(MPSRegistryNames.AUTO_FEEDER_MODULE_REG);
-                    if (!autoFeeder.isEmpty()) {
-                        int foodLevel = (int) ((AutoFeederModule) autoFeeder.getItem()).getFoodLevel(autoFeeder);
-                        String num = MuseStringUtils.formatNumberShort(foodLevel);
-                        MuseRenderer.drawShadowedString(matrixStack, num, 17, yBaseString + (yOffsetString * index.get()));
-                        MuseRenderer.drawItemAt(-1.0, yBaseIcon + (yOffsetIcon * index.get()), food);
-                        index.addAndGet(1);
-                    }
-
-
-                    // Clock
-                    ItemStack clock = h.getOnlineModuleOrEmpty(Items.CLOCK.getRegistryName());
-                    if (!clock.isEmpty()) {
-                        String ampm;
-                        long time = player.level.getDayTime();
-                        long hour = ((time % 24000) / 1000);
-                        if (MPSSettings.use24HourClock()) {
-                            if (hour < 19) {
-                                hour += 6;
-                            } else {
-                                hour -= 18;
-                            }
-                            ampm = "h";
-                        } else {
-                            if (hour < 6) {
-                                hour += 6;
-                                ampm = " AM";
-                            } else if (hour == 6) {
-                                hour = 12;
-                                ampm = " PM";
-                            } else if (hour > 6 && hour < 18) {
-                                hour -= 6;
-                                ampm = " PM";
-                            } else if (hour == 18) {
-                                hour = 12;
-                                ampm = " AM";
-                            } else {
-                                hour -= 18;
-                                ampm = " AM";
+                            // AutoFeeder
+                            ItemStack autoFeeder = h.getOnlineModuleOrEmpty(MPSRegistryNames.AUTO_FEEDER_MODULE_REG);
+                            if (!autoFeeder.isEmpty()) {
+                                int foodLevel = (int) ((AutoFeederModule) autoFeeder.getItem()).getFoodLevel(autoFeeder);
+                                String num = MuseStringUtils.formatNumberShort(foodLevel);
+                                MuseRenderer.drawShadowedString(matrixStack, num, 17, yBaseString + (yOffsetString * index.get()));
+                                MuseRenderer.drawItemAt(-1.0, yBaseIcon + (yOffsetIcon * index.get()), food);
+                                index.addAndGet(1);
                             }
 
-                            MuseRenderer.drawShadowedString(matrixStack, hour + ampm, 17, yBaseString + (yOffsetString * index.get()));
-                            MuseRenderer.drawItemAt(-1.0, yBaseIcon + (yOffsetIcon * index.get()), clock);
+                            // Clock
+                            ItemStack clock = h.getOnlineModuleOrEmpty(Items.CLOCK.getRegistryName());
+                            if (!clock.isEmpty()) {
+                                String ampm;
+                                long time = player.level.getDayTime();
+                                long hour = ((time % 24000) / 1000);
+                                if (MPSSettings.use24HourClock()) {
+                                    if (hour < 19) {
+                                        hour += 6;
+                                    } else {
+                                        hour -= 18;
+                                    }
+                                    ampm = "h";
+                                } else {
+                                    if (hour < 6) {
+                                        hour += 6;
+                                        ampm = " AM";
+                                    } else if (hour == 6) {
+                                        hour = 12;
+                                        ampm = " PM";
+                                    } else if (hour > 6 && hour < 18) {
+                                        hour -= 6;
+                                        ampm = " PM";
+                                    } else if (hour == 18) {
+                                        hour = 12;
+                                        ampm = " AM";
+                                    } else {
+                                        hour -= 18;
+                                        ampm = " AM";
+                                    }
 
-                            index.addAndGet(1);
-                        }
-                    }
+                                    MuseRenderer.drawShadowedString(matrixStack, hour + ampm, 17, yBaseString + (yOffsetString * index.get()));
+                                    MuseRenderer.drawItemAt(-1.0, yBaseIcon + (yOffsetIcon * index.get()), clock);
 
-                    // Compass
-                    ItemStack compass = h.getOnlineModuleOrEmpty(Items.COMPASS.getRegistryName());
-                    if (!compass.isEmpty()) {
-                        MuseRenderer.drawItemAt(-1.0, yBaseIcon + (yOffsetIcon * index.get()), compass);
-                        index.addAndGet(1);
-                    }
-                });
+                                    index.addAndGet(1);
+                                }
+                            }
+
+                            // Compass
+                            ItemStack compass = h.getOnlineModuleOrEmpty(Items.COMPASS.getRegistryName());
+                            if (!compass.isEmpty()) {
+                                MuseRenderer.drawItemAt(-1.0, yBaseIcon + (yOffsetIcon * index.get()), compass);
+                                index.addAndGet(1);
+                            }
+                        });
 
                 // Meters ---------------------------------------------------------------------------------------------
                 float top = (float) screen.getGuiScaledHeight() / 2.0F - 16F;
@@ -218,32 +218,31 @@ public class ClientTickHandler {
                 AtomicReference<Float> currentPlasma = new AtomicReference<Float>(0F);
                 AtomicReference<Float> maxPlasma = new AtomicReference<Float>(0F);
                 if (player.isUsingItem()) {
-                    player.getItemInHand(player.getUsedItemHand()).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(modechanging -> {
-                        if (!(modechanging instanceof IModeChangingItem)) {
-                            return;
-                        }
+                    player.getItemInHand(player.getUsedItemHand()).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+                            .filter(IModeChangingItem.class::isInstance)
+                            .map(IModeChangingItem.class::cast)
+                            .ifPresent(modechanging -> {
+                                ItemStack module = modechanging.getActiveModule();
+                                int actualCount = 0;
 
-                        ItemStack module = ((IModeChangingItem) modechanging).getActiveModule();
-                        int actualCount = 0;
+                                int maxDuration = modechanging.getModularItemStack().getUseDuration();
+                                if (!module.isEmpty()) {
+                                    // Plasma Cannon
+                                    if (module.getItem().getRegistryName().equals(MPSRegistryNames.PLASMA_CANNON_MODULE_REGNAME)) {
+                                        actualCount = (maxDuration - player.getUseItemRemainingTicks());
+                                        currentPlasma.set(
+                                                currentPlasma.get() + (actualCount > 50 ? 50 : actualCount) * 2);
+                                        maxPlasma.set(maxPlasma.get() + 100F);
 
-                        int maxDuration = ((IModeChangingItem) modechanging).getModularItemStack().getUseDuration();
-                        if (!module.isEmpty()) {
-                            // Plasma Cannon
-                            if (module.getItem().getRegistryName().equals(MPSRegistryNames.PLASMA_CANNON_MODULE_REGNAME)) {
-                                actualCount = (maxDuration - player.getUseItemRemainingTicks());
-                                currentPlasma.set(
-                                        currentPlasma.get() + (actualCount > 50 ? 50 : actualCount) * 2);
-                                maxPlasma.set(maxPlasma.get() + 100F);
-
-                                // Ore Scanner or whatever
-                            } else {
-                                actualCount = (maxDuration - player.getUseItemRemainingTicks());
-                                currentPlasma.set(
-                                        currentPlasma.get() + (actualCount > 40 ? 40 : actualCount) * 2.5F);
-                                maxPlasma.set(maxPlasma.get() + 100F);
-                            }
-                        }
-                    });
+                                        // Ore Scanner or whatever
+                                    } else {
+                                        actualCount = (maxDuration - player.getUseItemRemainingTicks());
+                                        currentPlasma.set(
+                                                currentPlasma.get() + (actualCount > 40 ? 40 : actualCount) * 2.5F);
+                                        maxPlasma.set(maxPlasma.get() + 100F);
+                                    }
+                                }
+                            });
                 }
 
                 float val = currentPlasma.get();
@@ -284,26 +283,26 @@ public class ClientTickHandler {
                     //but including it won't hurt and this makes it easier to swap them around.
 
                     if (energyMeter != null) {
-                        energyMeter.draw(matrixStack, left, top + (totalMeters - numMeters) * 8, currEnergy / maxEnergy, 0);
-                        MuseRenderer.drawRightAlignedShadowedString(matrixStack, currEnergyStr, stringX, top);
+                        energyMeter.draw(matrixStack, left, top + (totalMeters - numMeters) * 9, currEnergy / maxEnergy, 0);
+                        MuseRenderer.drawRightAlignedShadowedString(matrixStack, currEnergyStr, stringX, meterTextOffsetY + top);
                         numMeters--;
                     }
 
                     if (heatMeter != null) {
-                        heatMeter.draw(matrixStack, left, top + (totalMeters - numMeters) * 8, MuseMathUtils.clampFloat(currHeat, 0, maxHeat) / maxHeat, 0);
-                        MuseRenderer.drawRightAlignedShadowedString(matrixStack, currHeatStr, stringX, top + (totalMeters - numMeters) * 8);
+                        heatMeter.draw(matrixStack, left, top + (totalMeters - numMeters) * 9, MuseMathUtils.clampFloat(currHeat, 0, maxHeat) / maxHeat, 0);
+                        MuseRenderer.drawRightAlignedShadowedString(matrixStack, currHeatStr, stringX, meterTextOffsetY + top + (totalMeters - numMeters) * 9);
                         numMeters--;
                     }
 
                     if (waterMeter != null) {
-                        waterMeter.draw(matrixStack, left, top + (totalMeters - numMeters) * 8, MuseMathUtils.clampFloat(currWater.get(), 0, maxWater.get()) / maxWater.get(), 0);
-                        MuseRenderer.drawRightAlignedShadowedString(matrixStack, currWaterStr.get(), stringX, top + (totalMeters - numMeters) * 8);
+                        waterMeter.draw(matrixStack, left, top + (totalMeters - numMeters) * 9, MuseMathUtils.clampFloat(currWater.get(), 0, maxWater.get()) / maxWater.get(), 0);
+                        MuseRenderer.drawRightAlignedShadowedString(matrixStack, currWaterStr.get(), stringX, meterTextOffsetY + top + (totalMeters - numMeters) * 9);
                         numMeters--;
                     }
 
                     if (plasmaMeter != null) {
-                        plasmaMeter.draw(matrixStack, left, top + (totalMeters - numMeters) * 8, currentPlasma.get() / maxPlasma.get(), 0);
-                        MuseRenderer.drawRightAlignedShadowedString(matrixStack, currPlasmaStr, stringX, top + (totalMeters - numMeters) * 8);
+                        plasmaMeter.draw(matrixStack, left, top + (totalMeters - numMeters) * 9, currentPlasma.get() / maxPlasma.get(), 0);
+                        MuseRenderer.drawRightAlignedShadowedString(matrixStack, currPlasmaStr, stringX, meterTextOffsetY + top + (totalMeters - numMeters) * 9);
                     }
 
                 } else {

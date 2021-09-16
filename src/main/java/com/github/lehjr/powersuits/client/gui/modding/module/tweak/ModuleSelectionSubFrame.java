@@ -118,18 +118,11 @@ public class ModuleSelectionSubFrame {
             if (moduleButtons != null) {
                 for (ClickableModule module : moduleButtons) {
                     if (module.hitBox(x, y)) {
-                        List<ITextComponent> toolTipText = new ArrayList<>();
-                        toolTipText.add(module.getLocalizedName());
-                        toolTipText.add(module.getLocalizedDescription());
-                        return toolTipText;
+                        return module.getToolTip(x, y);
                     }
                 }
             }
         }
         return null;
-    }
-
-    public RelativeRect getBorder() {
-        return border;
     }
 }

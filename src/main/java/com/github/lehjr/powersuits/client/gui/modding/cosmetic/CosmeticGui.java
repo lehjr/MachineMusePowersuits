@@ -105,11 +105,6 @@ public class CosmeticGui extends ContainerlessGui {
 
         /** for selecting modular item to adjust settings for ---------------------------------- */
         itemSelectFrame.setDoThisOnChange(doThis -> partframe.refreshModelframes());
-
-
-
-
-
     }
 
     /**
@@ -129,19 +124,8 @@ public class CosmeticGui extends ContainerlessGui {
         renderframe.setRight(backgroundRect.finalRight() - spacer);
         renderframe.setTop(backgroundRect.finalTop() + spacer);
 
-        System.out.println();
-
-//        renderframe.init(
-//                backgroundRect.finalRight() - spacer - 100,
-//                backgroundRect.finalTop() + spacer,
-//                backgroundRect.finalRight() - spacer,
-//                backgroundRect.centery() - spacer
-//        );
-
         colourpicker.setTop(renderframe.finalBottom() + spacer);
         colourpicker.setRight(backgroundRect.finalRight() - spacer);
-
-        System.out.println("colourPicker: " + colourpicker);
 
         partframe.init(
                 backgroundRect.finalLeft()  + spacer,
@@ -151,14 +135,6 @@ public class CosmeticGui extends ContainerlessGui {
         );
 
 
-//        CosmeticPresetContainer cosmeticFrame = new CosmeticPresetContainer(
-//                itemSelect, colourpicker,
-//                new Point2F(absX(-0.95F), absY(0.025f)),
-//                new Point2F(absX(+0.95F), absY(0.95f)),
-//                Colour.LIGHTBLUE.withAlpha(0.8F),
-//                Colour.DARKBLUE.withAlpha(0.8F));
-//        frames.add(cosmeticFrame);
-//
 //        // if not using presets then only the reset button is displayed
 //        loadSaveResetSubFrame = new LoadSaveResetSubFrame(
 //                colourpicker,
@@ -176,10 +152,7 @@ public class CosmeticGui extends ContainerlessGui {
 //                partframe,
 //                cosmeticFrame);
 //        frames.add(loadSaveResetSubFrame);
-//
-
     }
-
 
     @Override
     public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {

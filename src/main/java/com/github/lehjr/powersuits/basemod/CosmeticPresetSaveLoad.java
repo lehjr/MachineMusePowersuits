@@ -50,7 +50,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.zip.GZIPOutputStream;
 
-
+// TODO: move to external mod, something like the recipe creator
 /**
  * Saves and loads cosmetic presets to/from NBT files.
  */

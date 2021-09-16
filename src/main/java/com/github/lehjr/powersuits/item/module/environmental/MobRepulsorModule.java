@@ -80,7 +80,7 @@ public class MobRepulsorModule extends AbstractPowerModule {
         public CapProvider(@Nonnull ItemStack module) {
             this.module = module;
             this.ticker = new Ticker(module, EnumModuleCategory.ENVIRONMENTAL, EnumModuleTarget.TORSOONLY, MPSSettings::getModuleConfig) {{
-                addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, 2500, "FE");
+                addBaseProperty(MPSConstants.MOB_REPULSOR_ENERGY, 2500, "FE");
             }};
         }
 
@@ -100,7 +100,7 @@ public class MobRepulsorModule extends AbstractPowerModule {
 
             @Override
             public void onPlayerTickActive(PlayerEntity player, @Nonnull ItemStack item) {
-                int energyConsumption = (int) applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION);
+                int energyConsumption = (int) applyPropertyModifiers(MPSConstants.MOB_REPULSOR_ENERGY);
                 if (ElectricItemUtils.getPlayerEnergy(player) > energyConsumption) {
                     if (player.level.getGameTime() % 20 == 0) {
                         ElectricItemUtils.drainPlayerEnergy(player, energyConsumption);

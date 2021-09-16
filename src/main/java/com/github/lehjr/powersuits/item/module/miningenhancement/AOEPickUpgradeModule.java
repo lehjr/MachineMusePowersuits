@@ -27,6 +27,7 @@
 package com.github.lehjr.powersuits.item.module.miningenhancement;
 
 import com.github.lehjr.numina.util.capabilities.inventory.modechanging.IModeChangingItem;
+import com.github.lehjr.numina.util.capabilities.inventory.modularitem.IModularItem;
 import com.github.lehjr.numina.util.capabilities.module.blockbreaking.IBlockBreakingModule;
 import com.github.lehjr.numina.util.capabilities.module.miningenhancement.IMiningEnhancementModule;
 import com.github.lehjr.numina.util.capabilities.module.miningenhancement.MiningEnhancement;
@@ -83,8 +84,8 @@ public class AOEPickUpgradeModule extends AbstractPowerModule {
         public CapProvider(@Nonnull ItemStack module) {
             this.module = module;
             this.miningEnhancement = new Enhancement(module, EnumModuleCategory.MINING_ENHANCEMENT, EnumModuleTarget.TOOLONLY, MPSSettings::getModuleConfig) {{
-                addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, 500, "FE");
-                addTradeoffProperty(MPSConstants.DIAMETER, MPSConstants.ENERGY_CONSUMPTION, 9500);
+                addBaseProperty(MPSConstants.AOE_ENERGY, 500, "FE");
+                addTradeoffProperty(MPSConstants.DIAMETER, MPSConstants.AOE_ENERGY, 9500);
                 addIntTradeoffProperty(MPSConstants.DIAMETER, MPSConstants.AOE_MINING_RADIUS, 5, "m", 2, 1);
             }};
         }
@@ -141,19 +142,19 @@ public class AOEPickUpgradeModule extends AbstractPowerModule {
                 int energyUsage = this.getEnergyUsage();
 
                 AtomicInteger blocksBroken = new AtomicInteger(0);
-                itemStack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(modeChanging -> {
-                    if (modeChanging instanceof IModeChangingItem) {
+                itemStack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+                        .filter(IModeChangingItem.class::isInstance)
+                        .map(IModeChangingItem.class::cast)
+                        .ifPresent(modeChanging -> {
                         posList.forEach(blockPos-> {
                             BlockState state = player.level.getBlockState(blockPos);
                             // find an installed module to break current block
-                            for (ItemStack blockBreakingModule : ((IModeChangingItem) modeChanging).getInstalledModulesOfType(IBlockBreakingModule.class)) {
+                            for (ItemStack blockBreakingModule : modeChanging.getInstalledModulesOfType(IBlockBreakingModule.class)) {
                                 int playerEnergy = ElectricItemUtils.getPlayerEnergy(player);
                                 if (blockBreakingModule.getCapability(PowerModuleCapability.POWER_MODULE).map(b -> {
                                     // check if module can break block
                                     if(b instanceof IBlockBreakingModule) {
-                                        if (((IBlockBreakingModule) b).canHarvestBlock(itemStack, state, player, blockPos, playerEnergy - energyUsage)) {
-                                            return true;
-                                        }
+                                        return ((IBlockBreakingModule) b).canHarvestBlock(itemStack, state, player, blockPos, playerEnergy - energyUsage);
                                     }
                                     return false;
                                 }).orElse(false)) {
@@ -173,14 +174,13 @@ public class AOEPickUpgradeModule extends AbstractPowerModule {
                                 }
                             }
                         });
-                    }
                 });
                 return harvested.get();
             }
 
             @Override
             public int getEnergyUsage() {
-                return (int) applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION);
+                return (int) applyPropertyModifiers(MPSConstants.AOE_ENERGY);
             }
         }
     }

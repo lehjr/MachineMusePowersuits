@@ -81,7 +81,7 @@ public class LightningModule extends AbstractPowerModule {
         public CapProvider(@Nonnull ItemStack module) {
             this.module = module;
             this.rightClickie = new RightClickie(module, EnumModuleCategory.WEAPON, EnumModuleTarget.TOOLONLY, MPSSettings::getModuleConfig) {{
-                addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, 4900000, "FE");
+                addBaseProperty(MPSConstants.LIGHTNING_ENERGY, 4900000, "FE");
                 addBaseProperty(MPSConstants.HEAT_EMISSION, 100, "");
             }};
         }
@@ -125,7 +125,7 @@ public class LightningModule extends AbstractPowerModule {
 
             @Override
             public int getEnergyUsage() {
-                return (int) Math.round(applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION));
+                return (int) Math.round(applyPropertyModifiers(MPSConstants.LIGHTNING_ENERGY));
             }
         }
     }

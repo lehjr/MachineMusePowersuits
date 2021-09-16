@@ -26,7 +26,7 @@
 
 package com.github.lehjr.powersuits.client.gui.common;
 
-import com.github.lehjr.numina.util.client.gui.clickable.ClickableButton;
+import com.github.lehjr.numina.util.client.gui.clickable.ClickableButton2;
 import com.github.lehjr.numina.util.client.gui.frame.GuiFrameWithoutBackground;
 import com.github.lehjr.numina.util.client.gui.gemoetry.IRect;
 import com.github.lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
@@ -53,15 +53,15 @@ import java.util.List;
  */
 public class TabSelectFrame extends GuiFrameWithoutBackground {
     PlayerEntity player;
-    List<ClickableButton> buttons = new ArrayList<>();
+    List<ClickableButton2> buttons = new ArrayList<>();
 
     public TabSelectFrame(PlayerEntity player, int active) {
         super();
         this.player = player;
-        ClickableButton button;
+        ClickableButton2 button;
 
         /** Craft Install Salvage GUI (the only Containered GUI)*/
-        button = new ClickableButton(new TranslationTextComponent("gui.powersuits.tab.craft.install.salvage"), new MusePoint2D(0, 0), active != 0);
+        button = new ClickableButton2(new TranslationTextComponent("gui.powersuits.tab.craft.install.salvage"), new MusePoint2D(0, 0), active != 0);
         button.setOnPressed(onPressed->{
             Musique.playClientSound(SoundDictionary.SOUND_EVENT_GUI_SELECT, 1);
             MPSPackets.CHANNEL_INSTANCE.sendToServer(new ContainerGuiOpenPacket(0));
@@ -69,7 +69,7 @@ public class TabSelectFrame extends GuiFrameWithoutBackground {
         buttons.add(button);
 
         /** Module Tweak Gui */
-        button = new ClickableButton(new TranslationTextComponent("gui.powersuits.tab.module.tweak"), new MusePoint2D(0, 0), active != 1);
+        button = new ClickableButton2(new TranslationTextComponent("gui.powersuits.tab.module.tweak"), new MusePoint2D(0, 0), active != 1);
         button.setOnPressed(onPressed->{
             Musique.playClientSound(SoundDictionary.SOUND_EVENT_GUI_SELECT, 1);
             Minecraft.getInstance().tell(() -> Minecraft.getInstance().setScreen(new ModuleTweakGui(new TranslationTextComponent("gui.tinkertable"), false)));
@@ -77,7 +77,7 @@ public class TabSelectFrame extends GuiFrameWithoutBackground {
         buttons.add(button);
 
         /** Keybind Gui */
-        button = new ClickableButton(new TranslationTextComponent("gui.powersuits.tab.keybinds"), new MusePoint2D(0, 0), active !=2);
+        button = new ClickableButton2(new TranslationTextComponent("gui.powersuits.tab.keybinds"), new MusePoint2D(0, 0), active !=2);
         button.setOnPressed(onPressed->{
             Musique.playClientSound(SoundDictionary.SOUND_EVENT_GUI_SELECT, 1);
             Minecraft.getInstance().tell(() -> Minecraft.getInstance().setScreen(new TinkerKeybindGui(player.inventory, new TranslationTextComponent("gui.tinkertable"))));
@@ -85,14 +85,14 @@ public class TabSelectFrame extends GuiFrameWithoutBackground {
         buttons.add(button);
 
         /** Cosmetic Tweak Frame */
-        button = new ClickableButton(new TranslationTextComponent("gui.powersuits.tab.visual"), new MusePoint2D(0, 0), active !=3);
+        button = new ClickableButton2(new TranslationTextComponent("gui.powersuits.tab.visual"), new MusePoint2D(0, 0), active !=3);
         button.setOnPressed(onPressed->{
             Musique.playClientSound(SoundDictionary.SOUND_EVENT_GUI_SELECT, 1);
             Minecraft.getInstance().tell(() -> Minecraft.getInstance().setScreen(new CosmeticGui(player.inventory, new TranslationTextComponent("gui.tinkertable"))));
         });
         buttons.add(button);
 
-        for(ClickableButton b : buttons) {
+        for(ClickableButton2 b : buttons) {
             b.setVisible(true);
         }
         setDoThisOnChange(change->init());
@@ -104,14 +104,14 @@ public class TabSelectFrame extends GuiFrameWithoutBackground {
 
     private void init() {
         double totalButtonWidth = 0;
-        for (ClickableButton button : buttons) {
+        for (ClickableButton2 button : buttons) {
             totalButtonWidth += (button.getRadius().getX() * 2);
         }
         // totalButtonWidth greater than width will produce a negative spacing value
         double spacing = (this.width() - totalButtonWidth) / (buttons.size() +1);
 
         double x = spacing; // first entry may be negative and will allow an oversized tab frame to be centered
-        for (ClickableButton button : buttons) {
+        for (ClickableButton2 button : buttons) {
             button.setPosition(new MusePoint2D(this.finalLeft() + x + button.getRadius().getX(), this.finalTop() -6));
             x += Math.abs(spacing) + button.getRadius().getX() * 2;
         }

@@ -75,10 +75,10 @@ public class DiamondPickUpgradeModule extends AbstractPowerModule {
         public CapProvider(@Nonnull ItemStack module) {
             this.module = module;
             this.blockBreaking = new BlockBreaker(module, EnumModuleCategory.TOOL, EnumModuleTarget.TOOLONLY, MPSSettings::getModuleConfig) {{
-                    addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, 500, "FE");
-                }};
+                addBaseProperty(MPSConstants.DIAMOND_PICK_ENERGY, 500, "FE");
+            }};
 //            this.blockBreaking.addBaseProperty(MPSConstants.HARVEST_SPEED, 10, "x");
-//            this.blockBreaking.addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.ENERGY_CONSUMPTION, 9500);
+//            this.blockBreaking.addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.DIAMOND_PICK_ENERGY, 9500);
 //            this.blockBreaking.addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.HARVEST_SPEED, 52);
         }
 
@@ -96,9 +96,11 @@ public class DiamondPickUpgradeModule extends AbstractPowerModule {
             @Override
             public boolean canHarvestBlock(@Nonnull ItemStack powerFist, BlockState state, PlayerEntity player, BlockPos pos, int playerEnergy) {
                 AtomicBoolean canHarvest = new AtomicBoolean(false);
-                powerFist.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(modeChanging -> {
-                    if (modeChanging instanceof IModeChangingItem) {
-                        ItemStack pickaxeModule = ((IModeChangingItem) modeChanging).getOnlineModuleOrEmpty(MPSRegistryNames.PICKAXE_MODULE_REGNAME);
+                powerFist.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+                        .filter(IModeChangingItem.class::isInstance)
+                        .map(IModeChangingItem.class::cast)
+                        .ifPresent(modeChanging -> {
+                        ItemStack pickaxeModule = modeChanging.getOnlineModuleOrEmpty(MPSRegistryNames.PICKAXE_MODULE_REGNAME);
                         if (!pickaxeModule.isEmpty()) {
                             int energyUsage = pickaxeModule.getCapability(PowerModuleCapability.POWER_MODULE).map(m -> {
                                 if (m instanceof IBlockBreakingModule) {
@@ -114,7 +116,6 @@ public class DiamondPickUpgradeModule extends AbstractPowerModule {
                                 return false;
                             }).orElse(false));
                         }
-                    }
                 });
                 return canHarvest.get();
             }
@@ -123,20 +124,19 @@ public class DiamondPickUpgradeModule extends AbstractPowerModule {
             public boolean onBlockDestroyed(ItemStack powerFist, World worldIn, BlockState state, BlockPos pos, LivingEntity entityLiving, int playerEnergy) {
                 if (this.canHarvestBlock(powerFist, state, (PlayerEntity) entityLiving, pos, playerEnergy)) {
                     AtomicInteger energyUsage = new AtomicInteger(0);
-                    powerFist.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(modeChanging -> {
-                        if (modeChanging instanceof IModeChangingItem) {
-                            ItemStack pickaxeModule = ((IModeChangingItem) modeChanging).getOnlineModuleOrEmpty(MPSRegistryNames.PICKAXE_MODULE_REGNAME);
+                    powerFist.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+                            .filter(IModeChangingItem.class::isInstance)
+                            .map(IModeChangingItem.class::cast)
+                            .ifPresent(modeChanging -> {
+                            ItemStack pickaxeModule = modeChanging.getOnlineModuleOrEmpty(MPSRegistryNames.PICKAXE_MODULE_REGNAME);
                             if (!pickaxeModule.isEmpty()) {
-                                energyUsage.set(pickaxeModule.getCapability(PowerModuleCapability.POWER_MODULE).map(m -> {
-                                    if (m instanceof IBlockBreakingModule) {
-                                        return ((IBlockBreakingModule) m).getEnergyUsage();
-                                    }
-                                    return 0;
-                                }).orElse(0));
+                                energyUsage.set(pickaxeModule.getCapability(PowerModuleCapability.POWER_MODULE)
+                                        .filter(IBlockBreakingModule.class::isInstance)
+                                        .map(IBlockBreakingModule.class::cast)
+                                        .map(m -> m.getEnergyUsage()).orElse(0));
                             }
-                        }
                     });
-                    ElectricItemUtils.drainPlayerEnergy((PlayerEntity) entityLiving, energyUsage.get());
+                    ElectricItemUtils.drainPlayerEnergy(entityLiving, energyUsage.get());
                     return true;
                 }
                 return false;
@@ -152,22 +152,23 @@ public class DiamondPickUpgradeModule extends AbstractPowerModule {
                 PlayerEntity player = event.getPlayer();
                 ItemStack powerFist = player.getMainHandItem();
                 AtomicDouble newSpeed = new AtomicDouble(event.getNewSpeed());
-                powerFist.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(modeChanging -> {
-                    if (modeChanging instanceof IModeChangingItem) {
-                        ItemStack pickaxeModule = ((IModeChangingItem) modeChanging).getOnlineModuleOrEmpty(MPSRegistryNames.PICKAXE_MODULE_REGNAME);
-                        if (!pickaxeModule.isEmpty()) {
-                            newSpeed.set(newSpeed.get() *
-                                    pickaxeModule.getCapability(PowerModuleCapability.POWER_MODULE).map(m ->
-                                            m.applyPropertyModifiers(MPSConstants.HARVEST_SPEED)).orElse(1D));
-                        }
-                    }
-                });
+                powerFist.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+                        .filter(IModeChangingItem.class::isInstance)
+                        .map(IModeChangingItem.class::cast)
+                        .ifPresent(modeChanging -> {
+                            ItemStack pickaxeModule = modeChanging.getOnlineModuleOrEmpty(MPSRegistryNames.PICKAXE_MODULE_REGNAME);
+                            if (!pickaxeModule.isEmpty()) {
+                                newSpeed.set(newSpeed.get() *
+                                        pickaxeModule.getCapability(PowerModuleCapability.POWER_MODULE).map(m ->
+                                                m.applyPropertyModifiers(MPSConstants.PICKAXE_HARVEST_SPEED)).orElse(1D));
+                            }
+                        });
                 event.setNewSpeed((float) newSpeed.get());
             }
 
             @Override
             public int getEnergyUsage() {
-                return (int) applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION);
+                return (int) applyPropertyModifiers(MPSConstants.DIAMOND_PICK_ENERGY);
             }
         }
     }

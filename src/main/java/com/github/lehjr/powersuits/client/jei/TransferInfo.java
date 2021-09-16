@@ -1,6 +1,6 @@
 package com.github.lehjr.powersuits.client.jei;
 
-import com.github.lehjr.powersuits.container.MPSCraftingContainer;
+import com.github.lehjr.powersuits.container.InstallSalvageCraftContainer;
 import mezz.jei.api.recipe.transfer.IRecipeTransferInfo;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.util.ResourceLocation;
@@ -9,10 +9,10 @@ import java.util.List;
 
 import static mezz.jei.api.constants.VanillaRecipeCategoryUid.CRAFTING;
 
-public class TransferInfo implements IRecipeTransferInfo<MPSCraftingContainer> {
+public class TransferInfo implements IRecipeTransferInfo<InstallSalvageCraftContainer> {
     @Override
-    public Class<MPSCraftingContainer> getContainerClass() {
-        return MPSCraftingContainer.class;
+    public Class<InstallSalvageCraftContainer> getContainerClass() {
+        return InstallSalvageCraftContainer.class;
     }
 
     @Override
@@ -21,17 +21,17 @@ public class TransferInfo implements IRecipeTransferInfo<MPSCraftingContainer> {
     }
 
     @Override
-    public boolean canHandle(MPSCraftingContainer container) {
+    public boolean canHandle(InstallSalvageCraftContainer container) {
         return true; // FIXME???
     }
 
     @Override
-    public List<Slot> getRecipeSlots(MPSCraftingContainer container) {
+    public List<Slot> getRecipeSlots(InstallSalvageCraftContainer container) {
         return container.slots.subList(1, 10);
     }
 
     @Override
-    public List<Slot> getInventorySlots(MPSCraftingContainer container) {
+    public List<Slot> getInventorySlots(InstallSalvageCraftContainer container) {
         return container.slots.subList(10, container.slots.size() -1);
     }
 }

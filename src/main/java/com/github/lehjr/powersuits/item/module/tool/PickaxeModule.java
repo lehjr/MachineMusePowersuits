@@ -68,10 +68,10 @@ public class PickaxeModule extends AbstractPowerModule {
         public CapProvider(@Nonnull ItemStack module) {
             this.module = module;
             this.blockBreaking = new BlockBreaker(module, EnumModuleCategory.TOOL, EnumModuleTarget.TOOLONLY, MPSSettings::getModuleConfig)  {{
-                addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, 500, "FE");
-                addBaseProperty(MPSConstants.HARVEST_SPEED, 8, "x");
-                addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.ENERGY_CONSUMPTION, 9500);
-                addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.HARVEST_SPEED, 52);
+                addBaseProperty(MPSConstants.PICKAXE_ENERGY, 500, "FE");
+                addBaseProperty(MPSConstants.PICKAXE_HARVEST_SPEED, 8, "x");
+                addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.PICKAXE_ENERGY, 9500);
+                addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.PICKAXE_HARVEST_SPEED, 52);
             }};
         }
 
@@ -102,12 +102,12 @@ public class PickaxeModule extends AbstractPowerModule {
 
             @Override
             public int getEnergyUsage() {
-                return (int) applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION);
+                return (int) applyPropertyModifiers(MPSConstants.PICKAXE_ENERGY);
             }
 
             @Override
             public void handleBreakSpeed(PlayerEvent.BreakSpeed event) {
-                event.setNewSpeed((float) (event.getNewSpeed() * applyPropertyModifiers(MPSConstants.HARVEST_SPEED)));
+                event.setNewSpeed((float) (event.getNewSpeed() * applyPropertyModifiers(MPSConstants.PICKAXE_HARVEST_SPEED)));
             }
         }
     }

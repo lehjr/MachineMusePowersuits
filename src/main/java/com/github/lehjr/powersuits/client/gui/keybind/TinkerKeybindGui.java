@@ -34,7 +34,7 @@ import com.github.lehjr.numina.util.capabilities.module.rightclick.IRightClickMo
 import com.github.lehjr.numina.util.capabilities.module.toggleable.IToggleableModule;
 import com.github.lehjr.numina.util.client.control.KeyBindingHelper;
 import com.github.lehjr.numina.util.client.gui.ContainerlessGui;
-import com.github.lehjr.numina.util.client.gui.clickable.ClickableButton;
+import com.github.lehjr.numina.util.client.gui.clickable.ClickableButton2;
 import com.github.lehjr.numina.util.client.gui.clickable.ClickableModule;
 import com.github.lehjr.numina.util.client.gui.clickable.IClickable;
 import com.github.lehjr.numina.util.client.gui.gemoetry.GradientAndArcCalculator;
@@ -48,7 +48,6 @@ import com.github.lehjr.powersuits.client.gui.clickable.ClickableKeybinding;
 import com.github.lehjr.powersuits.client.gui.common.TabSelectFrame;
 import com.github.lehjr.powersuits.config.MPSSettings;
 import com.mojang.blaze3d.matrix.MatrixStack;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.client.util.InputMappings;
 import net.minecraft.entity.player.PlayerEntity;
@@ -76,8 +75,8 @@ public class TinkerKeybindGui extends ContainerlessGui {
     protected IClickable selectedClickie;
     protected ClickableKeybinding closestKeybind;
     protected boolean selecting;
-    protected ClickableButton newKeybindButton;
-    protected ClickableButton trashKeybindButton;
+    protected ClickableButton2 newKeybindButton;
+    protected ClickableButton2 trashKeybindButton;
     protected long takenTime;
     KeybindManager keybindManager = KeybindManager.INSTANCE;
 
@@ -92,8 +91,8 @@ public class TinkerKeybindGui extends ContainerlessGui {
         for (ClickableKeybinding kb : keybindManager.getKeybindings()) {
             modules.addAll(kb.getBoundModules());
         }
-        newKeybindButton = new ClickableButton(new TranslationTextComponent("gui.powersuits.newKeybind"), center().plus(new MusePoint2D(0, -8)), true);
-        trashKeybindButton = new ClickableButton(new TranslationTextComponent("gui.powersuits.trashKeybind"), center().plus(new MusePoint2D(0, 8)), true);
+        newKeybindButton = new ClickableButton2(new TranslationTextComponent("gui.powersuits.newKeybind"), center().plus(new MusePoint2D(0, -8)), true);
+        trashKeybindButton = new ClickableButton2(new TranslationTextComponent("gui.powersuits.trashKeybind"), center().plus(new MusePoint2D(0, 8)), true);
     }
 
     /**

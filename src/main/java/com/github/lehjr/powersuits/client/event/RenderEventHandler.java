@@ -144,8 +144,6 @@ public enum RenderEventHandler {
 
     @OnlyIn(Dist.CLIENT)
     public void drawKeybindToggles(MatrixStack matrixStack) {
-        float zLevel = Minecraft.getInstance().screen != null ? Minecraft.getInstance().screen.getBlitOffset() : 0;
-
         if (MPSSettings.displayHud()) {
             Minecraft minecraft = Minecraft.getInstance();
             ClientPlayerEntity player = minecraft.player;
@@ -158,7 +156,11 @@ public enum RenderEventHandler {
                     float stringwidth = (float) MuseRenderer.getFontRenderer().width(kb.getLabel());
                     frame.setWidth(stringwidth + 8 + kb.getBoundModules().size() * 18);
                     frame.render(matrixStack, 0, 0, 0); // FIXME
-                    MuseRenderer.drawText(matrixStack, kb.getLabel(), (float) frame.left() + 4, (float) frame.top() + 4, (kb.toggleval) ? Colour.RED : Colour.GREEN);
+
+                    matrixStack.pushPose();
+                    matrixStack.translate(0,0,100);
+                    MuseRenderer.drawLeftAlignedText(matrixStack, kb.getLabel(), (float) frame.left() + 4, (float) frame.top() + 9, (kb.toggleval) ? Colour.RED : Colour.GREEN);
+                    matrixStack.popPose();
 
                     double x = frame.left() + stringwidth + 8;
                     for (ClickableModule module : kb.getBoundModules()) {
@@ -166,14 +168,14 @@ public enum RenderEventHandler {
                         boolean active = false;
                         for (EquipmentSlotType slot : EquipmentSlotType.values()) {
                             ItemStack stack = player.getItemBySlot(slot);
-                            active = stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).map(iItemHandler -> {
-                                if (iItemHandler instanceof IModularItem) {
+                            active = stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+                                    .filter(IModularItem.class::isInstance)
+                                    .map(IModularItem.class::cast)
+                                    .map(iItemHandler -> {
                                     if (iItemHandler instanceof IModeChangingItem) {
                                         return ((IModeChangingItem) iItemHandler).isModuleActiveAndOnline(module.getModule().getItem().getRegistryName());
                                     }
-                                    return ((IModularItem) iItemHandler).isModuleOnline(module.getModule().getItem().getRegistryName());
-                                }
-                                return false;
+                                    return iItemHandler.isModuleOnline(module.getModule().getItem().getRegistryName());
                             }).orElse(false);
                             // stop at the first active instance
                             if(active) {

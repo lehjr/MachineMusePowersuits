@@ -95,7 +95,9 @@ public class GliderModule extends AbstractPowerModule {
 
                 PlayerUtils.resetFloatKickTicks(player);
                 boolean hasParachute = chestPlate.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-                        .map(m-> m instanceof IModularItem && ((IModularItem) m).isModuleOnline(MPSRegistryNames.PARACHUTE_MODULE_REGNAME)).orElse(false);
+                        .filter(IModularItem.class::isInstance)
+                        .map(IModularItem.class::cast)
+                        .map(m-> m.isModuleOnline(MPSRegistryNames.PARACHUTE_MODULE_REGNAME)).orElse(false);
 
                 if (playerInput.sneakKey && player.getDeltaMovement().y < 0 && (!hasParachute || playerInput.moveForward > 0)) {
                     Vector3d motion = player.getDeltaMovement();

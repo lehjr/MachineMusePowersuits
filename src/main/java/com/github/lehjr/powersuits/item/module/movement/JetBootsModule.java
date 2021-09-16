@@ -76,9 +76,9 @@ public class JetBootsModule extends AbstractPowerModule {
         public CapProvider(@Nonnull ItemStack module) {
             this.module = module;
             this.ticker = new Ticker(module, EnumModuleCategory.MOVEMENT, EnumModuleTarget.FEETONLY, MPSSettings::getModuleConfig) {{
-                addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, 0);
+                addBaseProperty(MPSConstants.JETBOOTS_ENERGY, 0);
                 addBaseProperty(MPSConstants.JETBOOTS_THRUST, 0);
-                addTradeoffProperty(MPSConstants.THRUST, MPSConstants.ENERGY_CONSUMPTION, 750, "FE");
+                addTradeoffProperty(MPSConstants.THRUST, MPSConstants.JETBOOTS_ENERGY, 750, "FE");
                 addTradeoffProperty(MPSConstants.THRUST, MPSConstants.JETBOOTS_THRUST, 0.08F);
             }};
         }
@@ -102,11 +102,12 @@ public class JetBootsModule extends AbstractPowerModule {
                 if (player.isInWater())
                     return;
 
-                ItemStack helmet = player.getItemBySlot(EquipmentSlotType.HEAD);
-                boolean hasFlightControl = helmet.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).map(m->
-                        m instanceof IModularItem && ((IModularItem) m).isModuleOnline(MPSRegistryNames.FLIGHT_CONTROL_MODULE_REGNAME)).orElse(false);
+                boolean hasFlightControl = player.getItemBySlot(EquipmentSlotType.HEAD).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+                        .filter(IModularItem.class::isInstance)
+                        .map(IModularItem.class::cast)
+                        .map(m-> m.isModuleOnline(MPSRegistryNames.FLIGHT_CONTROL_MODULE_REGNAME)).orElse(false);
 
-                double jetEnergy = applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION);
+                double jetEnergy = applyPropertyModifiers(MPSConstants.JETBOOTS_ENERGY);
                 double thrust = applyPropertyModifiers(MPSConstants.JETBOOTS_THRUST);
 
                 PlayerMovementInputWrapper.PlayerMovementInput playerInput = PlayerMovementInputWrapper.get(player);

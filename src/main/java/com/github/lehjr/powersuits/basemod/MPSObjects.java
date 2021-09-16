@@ -31,9 +31,7 @@ import com.github.lehjr.powersuits.block.LuxCapacitorBlock;
 import com.github.lehjr.powersuits.block.TinkerTable;
 import com.github.lehjr.powersuits.constants.MPSConstants;
 import com.github.lehjr.powersuits.constants.MPSRegistryNames;
-import com.github.lehjr.powersuits.container.TinkerTableContainer;
 import com.github.lehjr.powersuits.container.InstallSalvageCraftContainer;
-import com.github.lehjr.powersuits.container.MPSCraftingContainer;
 import com.github.lehjr.powersuits.entity.LuxCapacitorEntity;
 import com.github.lehjr.powersuits.entity.PlasmaBallEntity;
 import com.github.lehjr.powersuits.entity.RailgunBoltEntity;
@@ -253,29 +251,10 @@ public class MPSObjects {
      */
     public static final DeferredRegister<ContainerType<?>> CONTAINER_TYPES = DeferredRegister.create(ForgeRegistries.CONTAINERS, MPSConstants.MOD_ID);
 
-    public static final RegistryObject<ContainerType<TinkerTableContainer>> TINKERTABLE_CONTAINER_TYPE = CONTAINER_TYPES.register(MPSRegistryNames.TINKERTABLE_CONTAINER_TYPE,
-            () -> IForgeContainerType.create((windowId, inv, data) -> new TinkerTableContainer(windowId, inv)));
-
+    // Module crafting/install/salvage GUI
     public static final RegistryObject<ContainerType<InstallSalvageCraftContainer>> SALVAGE_CRAFT_CONTAINER_TYPE =
             CONTAINER_TYPES.register(MPSRegistryNames.INSTALL_SALVAGE_CRAFT_CONTAINER_TYPE,
                     () -> IForgeContainerType.create((windowId, inv, data) -> new InstallSalvageCraftContainer(windowId, inv)));
-
-
-//    public static final RegistryObject<ContainerType<NuminaCraftingContainer>> NUMINA_CRAFTING_CONTAINER_TYPE = CONTAINER_TYPES.register("crafting_container",
-//            () -> IForgeContainerType.create((windowId, inv, data) -> {
-////        BlockPos pos = data.readBlockPos();
-//                return new NuminaCraftingContainer(windowId, inv);
-//            }));
-//
-//                        new ContainerType<>(MPAWorkbenchContainer::new)
-//            .setRegistryName(MPA_WORKBENCH_CONTAINER_TYPE),
-
-
-    // Module crafting/install/salvage GUI
-    public static final RegistryObject<ContainerType<MPSCraftingContainer>> MPS_CRAFTING_CONTAINER_TYPE = CONTAINER_TYPES.register("crafting_container",
-            () -> IForgeContainerType.create((windowId, inv, data) -> {
-                return new MPSCraftingContainer(windowId, inv);
-            }));
 
     static RegistryObject<Item> registerModule(String regName, Item item) {
         MPSModules.INSTANCE.addModule(MPSRegistryNames.getRegName(regName));

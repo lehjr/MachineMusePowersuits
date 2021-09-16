@@ -29,6 +29,7 @@ package com.github.lehjr.powersuits.client.gui.modechanging;
 import com.github.lehjr.numina.network.NuminaPackets;
 import com.github.lehjr.numina.network.packets.ModeChangeRequestPacket;
 import com.github.lehjr.numina.util.capabilities.inventory.modechanging.IModeChangingItem;
+import com.github.lehjr.numina.util.capabilities.inventory.modularitem.IModularItem;
 import com.github.lehjr.numina.util.capabilities.module.powermodule.EnumModuleCategory;
 import com.github.lehjr.numina.util.client.gui.clickable.ClickableModule;
 import com.github.lehjr.numina.util.client.gui.frame.IGuiFrame;
@@ -61,7 +62,7 @@ public class RadialModeSelectionFrame extends RelativeRect implements IGuiFrame 
 
     public RadialModeSelectionFrame(MusePoint2D topleft, MusePoint2D bottomright, PlayerEntity player, float zLevel) {
         super(topleft, bottomright);
-                spawnTime = System.currentTimeMillis();
+        spawnTime = System.currentTimeMillis();
         this.player = player;
         this.radius = Math.min(finalWidth(), finalHeight());
         this.stack = player.inventory.getSelected();
@@ -105,14 +106,13 @@ public class RadialModeSelectionFrame extends RelativeRect implements IGuiFrame 
         if (getSelectedModule() != null && selectedModuleOriginal != selectedModuleNew) {
             // update to detect mode changes
             selectedModuleOriginal = selectedModuleNew;
-            stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(handler->{
-                if (handler instanceof IModeChangingItem) {
-                    ((IModeChangingItem) handler).setActiveMode(getSelectedModule().getInventorySlot());
-                    NuminaPackets.CHANNEL_INSTANCE.sendToServer(new ModeChangeRequestPacket(getSelectedModule().getInventorySlot(), player.inventory.selected));
-
-
-                }
-            });
+            stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+                    .filter(IModeChangingItem.class::isInstance)
+                    .map(IModeChangingItem.class::cast)
+                    .ifPresent(handler->{
+                        handler.setActiveMode(getSelectedModule().getInventorySlot());
+                        NuminaPackets.CHANNEL_INSTANCE.sendToServer(new ModeChangeRequestPacket(getSelectedModule().getInventorySlot(), player.inventory.selected));
+                    });
         }
     }
 
@@ -138,20 +138,21 @@ public class RadialModeSelectionFrame extends RelativeRect implements IGuiFrame 
 
     private void loadItems() {
         if (player != null && modeButtons.isEmpty()) {
-            stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(handler->{
-                if (handler instanceof IModeChangingItem) {
-                    List<Integer> modes = ((IModeChangingItem) handler).getValidModes();
-                    int activeMode = ((IModeChangingItem) handler).getActiveMode();
-                    if (activeMode > 0)
-                        selectedModuleOriginal = activeMode;
-                    int modeNum = 0;
-                    for (int mode : modes) {
-                        ClickableModule clickie = new ClickableModule(handler.getStackInSlot(mode), new SpiralPointToPoint2D(getPosition(), radius, ((3D * Math.PI / 2) - ((2D * Math.PI * modeNum) / modes.size())), 250D), mode, EnumModuleCategory.NONE);
-                        modeButtons.add(clickie);
-                        modeNum ++;
-                    }
-                }
-            });
+            stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+                    .filter(IModeChangingItem.class::isInstance)
+                    .map(IModeChangingItem.class::cast)
+                    .ifPresent(handler->{
+                        List<Integer> modes = handler.getValidModes();
+                        int activeMode = handler.getActiveMode();
+                        if (activeMode > 0)
+                            selectedModuleOriginal = activeMode;
+                        int modeNum = 0;
+                        for (int mode : modes) {
+                            ClickableModule clickie = new ClickableModule(handler.getStackInSlot(mode), new SpiralPointToPoint2D(getPosition(), radius, ((3D * Math.PI / 2) - ((2D * Math.PI * modeNum) / modes.size())), 250D), mode, EnumModuleCategory.NONE);
+                            modeButtons.add(clickie);
+                            modeNum ++;
+                        }
+                    });
         }
     }
 

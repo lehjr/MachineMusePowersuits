@@ -1,4 +1,4 @@
-package com.github.lehjr.powersuits.dev.crafting.client.gui.recipebooktest;
+package com.github.lehjr.powersuits.client;
 
 import com.github.lehjr.numina.network.NuminaPackets;
 import com.github.lehjr.numina.network.packets.CreativeInstallModuleRequestPacket;

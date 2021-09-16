@@ -26,7 +26,7 @@
 
 package com.github.lehjr.powersuits.container.helper;
 
-import com.github.lehjr.powersuits.container.MPSCraftingContainer;
+import com.github.lehjr.powersuits.container.InstallSalvageCraftContainer;
 import net.minecraft.inventory.container.PlayerContainer;
 import net.minecraft.inventory.container.RecipeBookContainer;
 import net.minecraft.item.crafting.ServerRecipePlacer;
@@ -43,7 +43,7 @@ public class MPSServerRecipePlacer extends ServerRecipePlacer {
     protected void clearGrid() {
         for(int index = 0; index < this.menu.getGridWidth() * this.menu.getGridHeight() + 1; ++index) {
             if (index != this.menu.getResultSlotIndex() ||
-                    !(this.menu instanceof MPSCraftingContainer) && // FIXME: temporary reference until gui finished
+                    !(this.menu instanceof InstallSalvageCraftContainer) && // FIXME: temporary reference until gui finished
                             !(this.menu instanceof PlayerContainer)) {
                 this.moveItemToInventory(index);
             }

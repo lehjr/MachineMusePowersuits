@@ -27,7 +27,6 @@
 package com.github.lehjr.powersuits.container;
 
 import com.github.lehjr.powersuits.constants.MPSConstants;
-import com.github.lehjr.powersuits.container.MPSCraftingContainer;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
@@ -57,15 +56,11 @@ public class MPSWorkbenchContainerProvider implements INamedContainerProvider {
     @Nullable
     @Override
     public Container createMenu(int windowId, PlayerInventory playerInventory, PlayerEntity player) {
-        System.out.println("windowId here: " + windowId);
-
         switch(typeIndex) {
 //            case 0:
 //                return new TinkerTableContainer(windowId, playerInventory);
             default:
                 // Fixme: in vanilla, this is done client side?
-
-                System.out.println("typeIndex: " + typeIndex);
                 player.awardStat(Stats.INTERACT_WITH_CRAFTING_TABLE);
 
 
@@ -86,7 +81,7 @@ public class MPSWorkbenchContainerProvider implements INamedContainerProvider {
 ////
 //                return new WorkbenchContainer(windowId, playerInventory);
 
-                return new MPSCraftingContainer(windowId, playerInventory);
+                return new InstallSalvageCraftContainer(windowId, playerInventory);
 
         }
     }

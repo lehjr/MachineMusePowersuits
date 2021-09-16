@@ -79,7 +79,7 @@ public class DimensionalRiftModule extends AbstractPowerModule {
             this.module = module;
             this.rightClick = new RightClickie(module, EnumModuleCategory.MOVEMENT, EnumModuleTarget.TOOLONLY, MPSSettings::getModuleConfig) {{
                 addBaseProperty(MPSConstants.HEAT_GENERATION, 55);
-                addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, 200000);
+                addBaseProperty(MPSConstants.DIM_RIFT_ENERGY, 200000);
             }};
         }
 
@@ -103,7 +103,7 @@ public class DimensionalRiftModule extends AbstractPowerModule {
                         coords = coords.above();
                     }
 
-                    int energyConsumption = (int) applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION);
+                    int energyConsumption = (int) applyPropertyModifiers(MPSConstants.DIM_RIFT_ENERGY);
                     int playerEnergy = ElectricItemUtils.getPlayerEnergy(playerIn);
                     if (playerEnergy >= energyConsumption) {
                         playerIn.changeDimension((ServerWorld) worldIn, new CommandTeleporter(coords));
@@ -117,7 +117,7 @@ public class DimensionalRiftModule extends AbstractPowerModule {
 
             @Override
             public int getEnergyUsage() {
-                return (int) applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION);
+                return (int) applyPropertyModifiers(MPSConstants.DIM_RIFT_ENERGY);
             }
         }
     }

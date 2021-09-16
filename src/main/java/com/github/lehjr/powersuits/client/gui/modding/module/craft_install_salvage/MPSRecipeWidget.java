@@ -56,12 +56,10 @@ public class MPSRecipeWidget extends RecipeWidget implements IGuiFrame {
     }
 
     boolean hasInstalled(@Nonnull ItemStack module) {
-        return this.containerStack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).map(iItemHandler -> {
-            if (iItemHandler instanceof IModularItem) {
-                return ((IModularItem) iItemHandler).isModuleInstalled(module);
-            }
-            return false;
-        }).orElse(false);
+        return this.containerStack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+                .filter(IModularItem.class::isInstance)
+                .map(IModularItem.class::cast)
+                .map(iItemHandler -> iItemHandler.isModuleInstalled(module)).orElse(false);
     }
 
 

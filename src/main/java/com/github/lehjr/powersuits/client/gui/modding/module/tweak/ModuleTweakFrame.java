@@ -41,6 +41,7 @@ import com.github.lehjr.numina.util.string.MuseStringUtils;
 import com.github.lehjr.powersuits.client.gui.clickable.ClickableTinkerSlider;
 import com.github.lehjr.powersuits.client.gui.common.ModularItemSelectionFrame;
 import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.common.util.LazyOptional;
@@ -55,7 +56,7 @@ public class ModuleTweakFrame extends ScrollableFrame {
     protected ModularItemSelectionFrame itemTarget;
     protected ModuleSelectionFrame moduleTarget;
     protected List<ClickableTinkerSlider> sliders = new LinkedList<>();
-    protected Map<String, Double> propertyDoubleStrings = new HashMap<>();
+    protected Map<String, Double> propertyStrings = new HashMap<>();
     protected ClickableTinkerSlider selectedSlider;
 
     public ModuleTweakFrame(
@@ -78,7 +79,7 @@ public class ModuleTweakFrame extends ScrollableFrame {
             loadTweaks(cap);
         } else {
             sliders.clear();
-            propertyDoubleStrings.clear();
+            propertyStrings.clear();
             selectedSlider = null;
         }
 
@@ -91,6 +92,10 @@ public class ModuleTweakFrame extends ScrollableFrame {
         }
     }
 
+    public void resetScroll() {
+        currentScrollPixels=0;
+    }
+
     String getUnit(String key) {
         return moduleTarget.getSelectedModule().map(target->target.getModule().getCapability(PowerModuleCapability.POWER_MODULE)
                 .map(pm-> pm.getUnit(key)).orElse("")).orElse("");
@@ -99,29 +104,38 @@ public class ModuleTweakFrame extends ScrollableFrame {
     @Override
     public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
         super.render(matrixStack, mouseX, mouseY, partialTicks);
+
+        super.preRender(matrixStack, mouseX, mouseY, partialTicks);
+        RenderSystem.pushMatrix();
+        RenderSystem.translatef(0, -currentScrollPixels, 0);
         MuseRenderer.drawShadowedStringCentered(matrixStack, "Tinker", centerx(), top() + 7);
 
-        if (!sliders.isEmpty()) {
-            for (ClickableTinkerSlider slider : sliders) {
-                slider.render(matrixStack, mouseX, mouseY, partialTicks);
-            }
-            int nexty = (int) (sliders.size() * 24 + getRect().top() + 18);
-
-            for (Map.Entry<String, Double> property : propertyDoubleStrings.entrySet()) {
-                String formattedValue = MuseStringUtils.formatNumberFromUnits(property.getValue(), getUnit(property.getKey()));
-                String name = property.getKey();
-                double valueWidth = MuseRenderer.getStringWidth(formattedValue);
-                double allowedNameWidth = getRect().width() - valueWidth - margin * 2;
-
-                List<String> namesList = MuseStringUtils.wrapStringToVisualLength(
-                       new TranslationTextComponent(NuminaConstants.MODULE_TRADEOFF_PREFIX + name).getString(), allowedNameWidth);
-                for (int i = 0; i < namesList.size(); i++) {
-                    MuseRenderer.drawLeftAlignedShadowedString(matrixStack, namesList.get(i), getRect().left() + margin, nexty + 9 * i);
-                }
-                MuseRenderer.drawRightAlignedShadowedString(matrixStack, formattedValue, getRect().right() - margin, nexty + 9 * (namesList.size() - 1) / 2);
-                nexty += 9 * namesList.size() + 1;
-            }
+        for (ClickableTinkerSlider slider : sliders) {
+            slider.render(matrixStack, mouseX, mouseY, partialTicks);
         }
+        int nexty = (int) (sliders.size() * 24 + getRect().top() + 18);
+
+        for (Map.Entry<String, Double> property : propertyStrings.entrySet()) {
+            String formattedValue = MuseStringUtils.formatNumberFromUnits(property.getValue(), getUnit(property.getKey()));
+//            System.out.println("formated value: " + formattedValue);
+
+
+            String name = property.getKey();
+            double valueWidth = MuseRenderer.getStringWidth(formattedValue);
+            double allowedNameWidth = getRect().width() - valueWidth - margin * 2;
+
+            List<String> namesList = MuseStringUtils.wrapStringToVisualLength(
+                    new TranslationTextComponent(NuminaConstants.MODULE_TRADEOFF_PREFIX + name).getString(), allowedNameWidth);
+
+            for (int i = 0; i < namesList.size(); i++) {
+                MuseRenderer.drawLeftAlignedShadowedString(matrixStack, namesList.get(i), getRect().left() + margin, nexty + 9 * i);
+            }
+            MuseRenderer.drawRightAlignedShadowedString(matrixStack, formattedValue, getRect().right() - margin, nexty + 9 * (namesList.size() - 1) / 2);
+            nexty += 9 * namesList.size() + 1;
+        }
+
+        RenderSystem.popMatrix();
+        super.postRender(mouseX, mouseY, partialTicks);
     }
 
     /**
@@ -131,13 +145,11 @@ public class ModuleTweakFrame extends ScrollableFrame {
      * @param cap
      */
     private void loadTweaks(LazyOptional<IPowerModule> cap) {
-        /** TODO: NOT create and destroy sliders and hashmaps unless needed (SHOULD fix flicker issue) */
-
-
-        propertyDoubleStrings = new HashMap();
+        propertyStrings = new HashMap();
         Map<String, PropertyModifierLinearAdditive> tweaks = new HashMap<>();
         sliders.clear();
-        cap.ifPresent(pm -> {
+        this.totalSize = cap.map(pm -> {
+            int totalSize = 0;
             CompoundNBT moduleTag = pm.getModuleTag();
             Map<String, List<IPropertyModifier>> propertyModifiers = pm.getPropertyModifiers();
             for (Map.Entry<String, List<IPropertyModifier>> property : propertyModifiers.entrySet()) {
@@ -146,11 +158,13 @@ public class ModuleTweakFrame extends ScrollableFrame {
                     currValue = modifier.applyModifier(moduleTag, currValue);
                     if (modifier instanceof PropertyModifierLinearAdditive) {
                         tweaks.put(((PropertyModifierLinearAdditive) modifier).getTradeoffName(), (PropertyModifierLinearAdditive) modifier);
+                        totalSize += 9;
                     }
                 }
-                propertyDoubleStrings.put(property.getKey(), currValue);
+//                System.out.println("key: " + property.getKey() + ", value: " + currValue);
+                propertyStrings.put(property.getKey(), currValue);
+                totalSize += 9;
             }
-
             int y = 0;
             for (String tweak : tweaks.keySet()) {
                 y += 23;
@@ -163,13 +177,16 @@ public class ModuleTweakFrame extends ScrollableFrame {
                         new TranslationTextComponent(NuminaConstants.MODULE_TRADEOFF_PREFIX + tweak),
                         tweaks.get(tweak));
                 sliders.add(slider);
+                totalSize += slider.finalHeight();
             }
-        });
+            return totalSize + 20;
+        }).orElse(0);
     }
 
     @Override
     public boolean mouseClicked(double x, double y, int button) {
         if (button == 0) {
+            y += currentScrollPixels;
             for (ClickableTinkerSlider slider : sliders) {
                 if (slider.mouseClicked(x, y, button)) {
                     selectedSlider = slider;
@@ -182,7 +199,7 @@ public class ModuleTweakFrame extends ScrollableFrame {
 
     @Override
     public boolean mouseReleased(double x, double y, int button) {
-        if (selectedSlider != null /*&& selectedSlider.mouseReleased(x, y, button)*/ && button == 0) {
+        if (selectedSlider != null && button == 0) {
             selectedSlider.mouseReleased(x, y, button);
             itemTarget.selectedType().ifPresent(type-> moduleTarget.getModuleCap().ifPresent(pm->
                     NuminaPackets.CHANNEL_INSTANCE.sendToServer(
@@ -191,7 +208,6 @@ public class ModuleTweakFrame extends ScrollableFrame {
                                     pm.getModuleStack().getItem().getRegistryName(),
                                     selectedSlider.id(),
                                     selectedSlider.getValue()))));
-
             selectedSlider = null;
             return true;
         }

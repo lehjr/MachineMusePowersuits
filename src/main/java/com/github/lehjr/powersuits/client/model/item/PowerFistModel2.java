@@ -27,6 +27,7 @@
 package com.github.lehjr.powersuits.client.model.item;
 
 import com.github.lehjr.numina.util.capabilities.inventory.modechanging.IModeChangingItem;
+import com.github.lehjr.numina.util.capabilities.inventory.modularitem.IModularItem;
 import com.github.lehjr.powersuits.constants.MPSRegistryNames;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
@@ -435,8 +436,11 @@ public class PowerFistModel2 extends Model {
     // FIXME
     public void setPoseForPlayer(PlayerEntity player) {
         if (player.isUsingItem() && player.getUseItem() != ItemStack.EMPTY) {
-            player.getUseItem().getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(iItemHandler -> {
-                if (iItemHandler instanceof IModeChangingItem && ((IModeChangingItem) iItemHandler).hasActiveModule(MPSRegistryNames.PLASMA_CANNON_MODULE_REGNAME)) {
+            player.getUseItem().getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+                    .filter(IModeChangingItem.class::isInstance)
+                    .map(IModeChangingItem.class::cast)
+                    .ifPresent(iItemHandler -> {
+                if (iItemHandler.hasActiveModule(MPSRegistryNames.PLASMA_CANNON_MODULE_REGNAME)) {
                     setPose(1.5f, -1, 1.5f, -1, 1.5f, -1);
                     this.boltSize = player.getUseItemRemainingTicks() > 50 ? 50 : player.getUseItemRemainingTicks();
                 }

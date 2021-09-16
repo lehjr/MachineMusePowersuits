@@ -29,7 +29,6 @@ package com.github.lehjr.powersuits.network;
 import com.github.lehjr.powersuits.constants.MPSConstants;
 import com.github.lehjr.powersuits.network.packets.ColourInfoPacket;
 import com.github.lehjr.powersuits.network.packets.ContainerGuiOpenPacket;
-import com.github.lehjr.powersuits.network.packets.MoveModuleFromSlotToSlotPacket;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.network.NetworkRegistry;
 import net.minecraftforge.fml.network.simple.SimpleChannel;
@@ -90,19 +89,6 @@ public class MPSPackets {
 //                MusePacketCosmeticPresetUpdate::decode,
 //                MusePacketCosmeticPresetUpdate::handle);
 
-//        CHANNEL_INSTANCE.registerMessage(
-//                i++,
-//                CreativeInstallModuleRequestPacket.class,
-//                CreativeInstallModuleRequestPacket::encode,
-//                CreativeInstallModuleRequestPacket::decode,
-//                CreativeInstallModuleRequestPacket::handle);
-
-        CHANNEL_INSTANCE.registerMessage(
-                i++,
-                MoveModuleFromSlotToSlotPacket.class,
-                MoveModuleFromSlotToSlotPacket::write,
-                MoveModuleFromSlotToSlotPacket::read,
-                MoveModuleFromSlotToSlotPacket::handle);
 
         CHANNEL_INSTANCE.registerMessage(
                 i++,

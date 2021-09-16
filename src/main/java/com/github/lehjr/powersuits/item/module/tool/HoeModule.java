@@ -84,13 +84,13 @@ public class HoeModule extends AbstractPowerModule {
         public CapProvider(@Nonnull ItemStack module) {
             this.module = module;
             this.rightClick = new RightClickie(module, EnumModuleCategory.TOOL, EnumModuleTarget.TOOLONLY, MPSSettings::getModuleConfig) {{
-                addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, 500, "FE");
-                addTradeoffProperty(MPSConstants.RADIUS, MPSConstants.ENERGY_CONSUMPTION, 9500);
+                addBaseProperty(MPSConstants.HOE_ENERGY, 500, "FE");
+                addTradeoffProperty(MPSConstants.RADIUS, MPSConstants.HOE_ENERGY, 9500);
                 addIntTradeoffProperty(MPSConstants.RADIUS, MPSConstants.RADIUS, 8, "m", 1, 0);
 
-                addBaseProperty(MPSConstants.HARVEST_SPEED, 8, "x");
-                addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.ENERGY_CONSUMPTION, 9500);
-                addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.HARVEST_SPEED, 22);
+                addBaseProperty(MPSConstants.HOE_HARVEST_SPEED, 8, "x");
+                addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.HOE_ENERGY, 9500);
+                addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.HOE_HARVEST_SPEED, 22);
             }};
         }
 
@@ -155,12 +155,12 @@ public class HoeModule extends AbstractPowerModule {
 
             @Override
             public void handleBreakSpeed(PlayerEvent.BreakSpeed event) {
-                event.setNewSpeed((float) (event.getNewSpeed() * applyPropertyModifiers(MPSConstants.HARVEST_SPEED)));
+                event.setNewSpeed((float) (event.getNewSpeed() * applyPropertyModifiers(MPSConstants.HOE_HARVEST_SPEED)));
             }
 
             @Override
             public int getEnergyUsage() {
-                return (int) applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION);
+                return (int) applyPropertyModifiers(MPSConstants.HOE_ENERGY);
             }
 
             @Nonnull

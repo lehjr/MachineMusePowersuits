@@ -313,8 +313,6 @@ public class PartSpecManipSubFrame extends DrawableTile {
         RenderSystem.enableTexture();
     }
 
-
-
     public boolean tryMouseClick(double x, double y) {
         CompoundNBT tagdata;
         String tagname;

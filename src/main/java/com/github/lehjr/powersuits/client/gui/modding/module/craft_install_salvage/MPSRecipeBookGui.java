@@ -239,42 +239,44 @@ public class MPSRecipeBookGui extends RecipeBookGui implements IGuiFrame {
         modularItemSelectionFrame.getSelectedTab().ifPresent(tab -> {
             if (tab instanceof ModularItemTabToggleWidget) {
                 ItemStack modularItem = minecraft.player.getItemBySlot(tab.getSlotType());
-                modularItem.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(iItemHandler -> {
-                    if (iItemHandler instanceof IModularItem) {
-                        List<RecipeList> list1 = this.book.getCollection(tab.getCategory());
-                        for (RecipeList recipeList : list1) {
-                            if (recipeList.hasSingleResultItem()) {
-                                isValidModuleAndList(recipeList.getRecipes().get(0)
-                                        .getResultItem(), (IModularItem) iItemHandler, recipeList).ifPresent(moduleRecipeMap -> {
-                                    // yes, a Pair may have been better
-                                    for (Map.Entry<EnumModuleCategory, ModuleRecipeGroup> entry : moduleRecipeMap.entrySet()) {
-                                        List<ModuleRecipeGroup> anotherList = unsortedRecipes.getOrDefault(entry.getKey(), new ArrayList<>());
-                                        ModuleRecipeGroup newList = entry.getValue();
+                modularItem.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+                        .filter(IModularItem.class::isInstance)
+                        .map(IModularItem.class::cast)
+                        .ifPresent(iItemHandler -> {
+                            List<RecipeList> list1 = this.book.getCollection(tab.getCategory());
+                            for (RecipeList recipeList : list1) {
+                                if (recipeList.hasSingleResultItem()) {
+                                    isValidModuleAndList(recipeList.getRecipes().get(0)
+                                            .getResultItem(), iItemHandler, recipeList).ifPresent(moduleRecipeMap -> {
+                                        // yes, a Pair may have been better
+                                        for (Map.Entry<EnumModuleCategory, ModuleRecipeGroup> entry : moduleRecipeMap.entrySet()) {
+                                            List<ModuleRecipeGroup> anotherList = unsortedRecipes.getOrDefault(entry.getKey(), new ArrayList<>());
+                                            ModuleRecipeGroup newList = entry.getValue();
 
-                                        if (!anotherList.contains(newList)) {
-                                            /** filter out unknown recipes */
-                                            if (newList.hasKnownRecipes() &&
-                                                    /** filter out recipes that won't fit in the grid */
-                                                    newList.hasFitting() &&
-                                                    /** filter out uncraftable recipes if the filter is enabled */
-                                                    (!this.book.isFiltering(this.menu) ||
-                                                            (this.book.isFiltering(this.menu) && newList.hasCraftable()))) {
-                                                anotherList.add(newList);
-                                                unsortedRecipes.put(entry.getKey(), anotherList);
+                                            if (!anotherList.contains(newList)) {
+                                                /** filter out unknown recipes */
+                                                if (newList.hasKnownRecipes() &&
+                                                        /** filter out recipes that won't fit in the grid */
+                                                        newList.hasFitting() &&
+                                                        /** filter out uncraftable recipes if the filter is enabled */
+                                                        (!this.book.isFiltering(this.menu) ||
+                                                                (this.book.isFiltering(this.menu) && newList.hasCraftable()))) {
+                                                    anotherList.add(newList);
+                                                    unsortedRecipes.put(entry.getKey(), anotherList);
+                                                }
                                             }
                                         }
-                                    }
-                                });
-                            } else {
-                                // TODO: finish this when a recipe finally passes this test
-                                List<IRecipe> fixedList = new ArrayList<>();
-
-                                for (IRecipe<?> recipe : recipeList.getRecipes()) {
-                                    isValidModuleAndRecipe((IModularItem) iItemHandler, recipe).ifPresent(map -> {
-                                        fixedList.add(recipe);
                                     });
+                                } else {
+                                    // TODO: finish this when a recipe finally passes this test
+                                    List<IRecipe> fixedList = new ArrayList<>();
+
+                                    for (IRecipe<?> recipe : recipeList.getRecipes()) {
+                                        isValidModuleAndRecipe(iItemHandler, recipe).ifPresent(map -> {
+                                            fixedList.add(recipe);
+                                        });
+                                    }
                                 }
-                            }
 
 //                            for (IRecipe<?> recipe : recipeList.getRecipes()) {
 //                                recipe.getResultItem().getCapability(PowerModuleCapability.POWER_MODULE).ifPresent(iPowerModule -> {
@@ -296,9 +298,8 @@ public class MPSRecipeBookGui extends RecipeBookGui implements IGuiFrame {
 //                                    }
 //                                });
 //                            }
-                        }
-                    }
-                });
+                            }
+                        });
             }
         });
 

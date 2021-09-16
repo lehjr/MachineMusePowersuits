@@ -27,6 +27,7 @@
 package com.github.lehjr.powersuits.item.module.miningenhancement;
 
 import com.github.lehjr.numina.util.capabilities.inventory.modechanging.IModeChangingItem;
+import com.github.lehjr.numina.util.capabilities.inventory.modularitem.IModularItem;
 import com.github.lehjr.numina.util.capabilities.module.blockbreaking.IBlockBreakingModule;
 import com.github.lehjr.numina.util.capabilities.module.miningenhancement.IMiningEnhancementModule;
 import com.github.lehjr.numina.util.capabilities.module.miningenhancement.MiningEnhancement;
@@ -79,7 +80,7 @@ public class VeinMinerModule extends AbstractPowerModule {
         public CapProvider(@Nonnull ItemStack module) {
             this.module = module;
             this.miningEnhancement = new Enhancement(module, EnumModuleCategory.MINING_ENHANCEMENT, EnumModuleTarget.TOOLONLY, MPSSettings::getModuleConfig) {{
-                addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, 500, "FE");
+                addBaseProperty(MPSConstants.VEIN_MINER_ENERGY, 500, "FE");
             }};
         }
 
@@ -140,9 +141,11 @@ public class VeinMinerModule extends AbstractPowerModule {
 
                 AtomicInteger bbModuleEnergyUsage = new AtomicInteger(0);
 
-                itemStack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(modeChanging -> {
-                    if (modeChanging instanceof IModeChangingItem) {
-                        for (ItemStack blockBreakingModule : ((IModeChangingItem) modeChanging).getInstalledModulesOfType(IBlockBreakingModule.class)) {
+                itemStack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+                        .filter(IModeChangingItem.class::isInstance)
+                        .map(IModeChangingItem.class::cast)
+                        .ifPresent(modeChanging -> {
+                        for (ItemStack blockBreakingModule : modeChanging.getInstalledModulesOfType(IBlockBreakingModule.class)) {
                             if (blockBreakingModule.getCapability(PowerModuleCapability.POWER_MODULE).map(b -> {
                                 if(b instanceof IBlockBreakingModule) {
                                     if (((IBlockBreakingModule) b).canHarvestBlock(itemStack, state, player, posIn, playerEnergy - energyUsage)) {
@@ -155,8 +158,7 @@ public class VeinMinerModule extends AbstractPowerModule {
                                 break;
                             }
                         }
-                    }
-                });
+                    });
 
                 // check if block is an ore
                 List<ResourceLocation> defaultOreTags = MPSSettings.getOreList();
@@ -237,7 +239,7 @@ public class VeinMinerModule extends AbstractPowerModule {
 
             @Override
             public int getEnergyUsage() {
-                return (int) applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION);
+                return (int) applyPropertyModifiers(MPSConstants.VEIN_MINER_ENERGY);
             }
         }
     }

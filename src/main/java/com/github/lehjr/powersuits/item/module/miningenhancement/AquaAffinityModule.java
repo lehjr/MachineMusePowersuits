@@ -72,10 +72,10 @@ public class AquaAffinityModule extends AbstractPowerModule {
         public CapProvider(@Nonnull ItemStack module) {
             this.module = module;
             this.miningEnhancement = new BlockBreaker(module, EnumModuleCategory.MINING_ENHANCEMENT, EnumModuleTarget.TOOLONLY, MPSSettings::getModuleConfig) {{
-                addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, 0, "FE");
-                addBaseProperty(MPSConstants.HARVEST_SPEED, 0.2F, "%");
-                addTradeoffProperty(MPSConstants.POWER, MPSConstants.ENERGY_CONSUMPTION, 1000);
-                addTradeoffProperty(MPSConstants.POWER, MPSConstants.HARVEST_SPEED, 0.8F);
+                addBaseProperty(MPSConstants.AQUA_ENERGY , 0, "FE");
+                addBaseProperty(MPSConstants.AQUA_HARVEST_SPEED, 0.2F, "%");
+                addTradeoffProperty(MPSConstants.AQUA_POWER, MPSConstants.AQUA_ENERGY , 1000);
+                addTradeoffProperty(MPSConstants.AQUA_POWER, MPSConstants.AQUA_HARVEST_SPEED, 0.8F);
             }};
         }
 
@@ -98,7 +98,7 @@ public class AquaAffinityModule extends AbstractPowerModule {
             @Override
             public boolean onBlockDestroyed(ItemStack itemStack, World worldIn, BlockState state, BlockPos pos, LivingEntity entityLiving, int playerEnergy) {
                 if (this.canHarvestBlock(itemStack, state, (PlayerEntity) entityLiving, pos, playerEnergy)) {
-                    ElectricItemUtils.drainPlayerEnergy((PlayerEntity) entityLiving, getEnergyUsage());
+                    ElectricItemUtils.drainPlayerEnergy(entityLiving, getEnergyUsage());
                     return true;
                 }
                 return false;
@@ -109,13 +109,13 @@ public class AquaAffinityModule extends AbstractPowerModule {
                 PlayerEntity player = event.getPlayer();
                 if (event.getNewSpeed() > 1 && (player.isUnderWater() || !player.isOnGround())
                         && ElectricItemUtils.getPlayerEnergy(player) > getEnergyUsage()) {
-                    event.setNewSpeed((float) (event.getNewSpeed() * 5 * applyPropertyModifiers(MPSConstants.HARVEST_SPEED)));
+                    event.setNewSpeed((float) (event.getNewSpeed() * 5 * applyPropertyModifiers(MPSConstants.AQUA_HARVEST_SPEED)));
                 }
             }
 
             @Override
             public int getEnergyUsage() {
-                return (int) applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION);
+                return (int) applyPropertyModifiers(MPSConstants.AQUA_ENERGY );
             }
 
             @Nonnull

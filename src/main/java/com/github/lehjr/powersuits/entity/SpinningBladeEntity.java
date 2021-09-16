@@ -27,6 +27,7 @@
 package com.github.lehjr.powersuits.entity;
 
 import com.github.lehjr.numina.util.capabilities.inventory.modechanging.IModeChangingItem;
+import com.github.lehjr.numina.util.capabilities.inventory.modularitem.IModularItem;
 import com.github.lehjr.numina.util.capabilities.module.powermodule.PowerModuleCapability;
 import com.github.lehjr.powersuits.basemod.MPSObjects;
 import com.github.lehjr.powersuits.constants.MPSConstants;
@@ -73,11 +74,12 @@ public class SpinningBladeEntity extends ThrowableEntity {
             AtomicDouble atomicDamage = new AtomicDouble(0);
 
             this.shootingItem = ((PlayerEntity) shootingEntity).inventory.getSelected();
-            this.shootingItem.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(iModeChangingItem -> {
-                if (iModeChangingItem instanceof IModeChangingItem) {
-                    ((IModeChangingItem) iModeChangingItem).getActiveModule().getCapability(PowerModuleCapability.POWER_MODULE)
+            this.shootingItem.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+                    .filter(IModeChangingItem.class::isInstance)
+                    .map(IModeChangingItem.class::cast)
+                    .ifPresent(iModeChangingItem -> {
+                    iModeChangingItem.getActiveModule().getCapability(PowerModuleCapability.POWER_MODULE)
                             .ifPresent(m-> atomicDamage.getAndAdd(m.applyPropertyModifiers(MPSConstants.BLADE_DAMAGE)));
-                }
             });
             damage = atomicDamage.get();
         }
