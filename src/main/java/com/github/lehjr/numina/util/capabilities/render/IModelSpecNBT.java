@@ -61,13 +61,17 @@ public interface IModelSpecNBT {
     default Colour getColorFromItemStack() {
         try {
             CompoundNBT renderTag = getRenderTag();
+            if (renderTag == null || renderTag.isEmpty()) {
+                return Colour.WHITE;
+            }
             if (renderTag.contains(NuminaConstants.NBT_TEXTURESPEC_TAG)) {
                 TexturePartSpec partSpec = (TexturePartSpec) ModelRegistry.getInstance().getPart(renderTag.getCompound(NuminaConstants.NBT_TEXTURESPEC_TAG));
                 CompoundNBT specTag = renderTag.getCompound(NuminaConstants.NBT_TEXTURESPEC_TAG);
                 int index = partSpec.getColourIndex(specTag);
                 int[] colours = getColorArray();
-                if (colours.length > index)
+                if (colours.length > index) {
                     return new Colour(colours[index]);
+                }
             }
         } catch (Exception e) {
             MuseLogger.logException("something failed here: ", e);

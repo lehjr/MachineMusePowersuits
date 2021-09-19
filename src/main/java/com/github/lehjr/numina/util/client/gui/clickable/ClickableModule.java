@@ -109,20 +109,6 @@ public class ClickableModule extends Clickable {
         return isVisible;
     }
 
-    public ITextComponent getLocalizedName() {
-        if (this.getModule().isEmpty()) {
-            return null;
-        }
-        return this.getModule().getDisplayName();
-    }
-
-    public ITextComponent getLocalizedDescription() {
-        if (this.getModule().isEmpty()) {
-            return null;
-        }
-        return new TranslationTextComponent(this.getModule().getItem().getDescriptionId().concat(".desc"));
-    }
-
     @Override
     public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
         // TODO: extra text and options to disable if player doesn't have the module available
@@ -132,17 +118,13 @@ public class ClickableModule extends Clickable {
             if (!allowed) {
                 matrixStack.pushPose();
                 matrixStack.translate(0, 0, 250);
-//                NuminaRenderState.glowOn();
                 String string = MuseStringUtils.wrapMultipleFormatTags("X", MuseStringUtils.FormatCodes.Bold, MuseStringUtils.FormatCodes.DarkRed);
                 MuseRenderer.drawShadowedString(matrixStack, string, getPosition().getX() + 3, getPosition().getY() + 1);
-//                NuminaRenderState.glowOff();
                 matrixStack.popPose();
             } else if (installed) {
                 matrixStack.pushPose();
                 matrixStack.translate(0, 0,250);
-//                NuminaRenderState.glowOn();
                 MuseIconUtils.getIcon().checkmark.draw(matrixStack, left() + 1, top() + 1, checkmarkcolour.withAlpha(0.6F));
-//                NuminaRenderState.glowOff();
                 matrixStack.popPose();
             }
         }

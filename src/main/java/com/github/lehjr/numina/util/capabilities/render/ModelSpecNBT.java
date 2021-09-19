@@ -59,8 +59,12 @@ public class ModelSpecNBT implements IModelSpecNBT, INBTSerializable<CompoundNBT
         if (tagName != null) {
             if (Objects.equals(tagName, NuminaConstants.TAG_RENDER)) {
                 itemTag.remove(NuminaConstants.TAG_RENDER);
-                if (!renderDataIn.isEmpty())
+                if (!renderDataIn.isEmpty()) {
                     itemTag.put(NuminaConstants.TAG_RENDER, renderDataIn);
+                } else {
+                    itemTag.put(NuminaConstants.TAG_RENDER, new CompoundNBT());
+                    setColorArray(new int[]{-1});
+                }
             } else {
                 CompoundNBT renderTag;
                 if (!itemTag.contains(NuminaConstants.TAG_RENDER)) {
@@ -72,6 +76,7 @@ public class ModelSpecNBT implements IModelSpecNBT, INBTSerializable<CompoundNBT
                 if (renderDataIn.isEmpty()) {
                     MuseLogger.logger.debug("Removing tag " + tagName);
                     renderTag.remove(tagName);
+                    renderTag.remove(tagName.replace(".", ""));
                 } else {
                     MuseLogger.logger.debug("Adding tag " + tagName + " : " + renderDataIn);
                     renderTag.put(tagName, renderDataIn);

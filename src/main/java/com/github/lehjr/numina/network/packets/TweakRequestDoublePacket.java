@@ -81,6 +81,7 @@ public class TweakRequestDoublePacket {
                         .filter(IModularItem.class::isInstance)
                         .map(IModularItem.class::cast)
                         .ifPresent(iItemHandler -> iItemHandler.setModuleTweakDouble(moduleName, tweakName, tweakValue));
+                player.inventory.setChanged();
             }
         });
         ctx.get().setPacketHandled(true);

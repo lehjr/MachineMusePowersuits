@@ -74,7 +74,10 @@ public class CosmeticInfoPacket {
             EquipmentSlotType slotType = message.slotType;
             String tagName = message.tagName;
             CompoundNBT tagData = message.tagData;
-            player.getItemBySlot(slotType).getCapability(ModelSpecNBTCapability.RENDER).ifPresent(render-> render.setRenderTag(tagData, tagName));
+            player.getItemBySlot(slotType).getCapability(ModelSpecNBTCapability.RENDER).ifPresent(render-> {
+                render.setRenderTag(tagData, tagName);
+            });
+            player.inventory.setChanged();
         });
         ctx.get().setPacketHandled(true);
     }

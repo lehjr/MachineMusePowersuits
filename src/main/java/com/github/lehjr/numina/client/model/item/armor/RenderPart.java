@@ -145,8 +145,11 @@ public class RenderPart extends ModelRenderer {
                         random.setSeed(i);
                         builder.addAll(((ModelPartSpec) part).getPart().getQuads(null, null, random));
 
-                        renderQuads(entry, bufferIn, builder.build(), ((ModelPartSpec) part).getGlow() ?
-                                0x00F000F0 : packedLightIn, OverlayTexture.NO_OVERLAY, partColor);
+                        renderQuads(entry,
+                                bufferIn,
+                                builder.build(),
+                                ((ModelPartSpec) part).getGlow() ? 0x00F000F0 : packedLightIn, OverlayTexture.NO_OVERLAY,
+                                partColor);
                     }
                 }
             }
@@ -157,7 +160,8 @@ public class RenderPart extends ModelRenderer {
                             IVertexBuilder bufferIn,
                             List<BakedQuad> quadsIn,
                             int combinedLightIn,
-                            int combinedOverlayIn, int colour) {
+                            int combinedOverlayIn,
+                            int colour) {
         float a = (float) (colour >> 24 & 255) * div255;
         float r = (float) (colour >> 16 & 255) * div255;
         float g = (float) (colour >> 8 & 255) * div255;
@@ -181,10 +185,13 @@ public class RenderPart extends ModelRenderer {
         normal.transform(matrixEntry.normal()); // normals different here
 
         int intSize = DefaultVertexFormats.BLOCK.getIntegerSize();
+//        int intSize = DefaultVertexFormats.POSITION_COLOR_TEX_LIGHTMAP.getIntegerSize();
+
         int vertexCount = aint.length / intSize;
 
         try (MemoryStack memorystack = MemoryStack.stackPush()) {
             ByteBuffer bytebuffer = memorystack.malloc(DefaultVertexFormats.BLOCK.getVertexSize());
+//            ByteBuffer bytebuffer = memorystack.malloc(DefaultVertexFormats.POSITION_COLOR_TEX_LIGHTMAP.getVertexSize());
             IntBuffer intbuffer = bytebuffer.asIntBuffer();
 
             for (int v = 0; v < vertexCount; ++v) {

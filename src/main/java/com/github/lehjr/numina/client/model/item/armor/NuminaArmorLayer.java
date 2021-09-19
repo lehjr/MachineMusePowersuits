@@ -90,7 +90,7 @@ public class NuminaArmorLayer<T extends LivingEntity, M extends BipedModel<T>, A
                         if (spec.getSpecType() == EnumSpecType.ARMOR_SKIN) {
                             Colour colour = spec.getColorFromItemStack();
                             renderArmor(matrixIn, bufferIn, packedLightIn, hasEffect, actualModel, colour.r, colour.g, colour.b, this.getArmorResource(entityIn, itemstack, slotIn, null));
-                            renderArmor(matrixIn, bufferIn, packedLightIn, hasEffect, actualModel, 1.0F, 1.0F, 1.0F, this.getArmorResource(entityIn, itemstack, slotIn, "overlay"));
+                            renderArmor(matrixIn, bufferIn, packedLightIn, hasEffect, actualModel, colour.r, colour.g, colour.b, this.getArmorResource(entityIn, itemstack, slotIn, "overlay"));
                         } else {
                             renderArmor(matrixIn, bufferIn, packedLightIn, hasEffect, actualModel, 1.0F, 1.0F, 1.0F, this.getArmorResource(entityIn, itemstack, slotIn, null));
                         }

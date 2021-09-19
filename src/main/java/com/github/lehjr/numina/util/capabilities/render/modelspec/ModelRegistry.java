@@ -97,6 +97,6 @@ public class ModelRegistry extends MuseRegistry<SpecBase> {
     }
 
     public String makeName(PartSpecBase spec) {
-        return spec.spec.getOwnName() + "" + spec.partName;
+        return spec.spec.getOwnName() + "." + spec.partName;
     }
 }

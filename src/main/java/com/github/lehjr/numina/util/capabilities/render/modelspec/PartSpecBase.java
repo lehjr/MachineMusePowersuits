@@ -69,8 +69,11 @@ public abstract class PartSpecBase {
     }
 
     public void setColourIndex(CompoundNBT nbt, int c) {
-        if (c == this.defaultcolourindex) nbt.remove(NuminaConstants.TAG_COLOUR_INDEX);
-        else nbt.putInt(NuminaConstants.TAG_COLOUR_INDEX, c);
+        if (c == this.defaultcolourindex) {
+            nbt.remove(NuminaConstants.TAG_COLOUR_INDEX);
+        } else {
+            nbt.putInt(NuminaConstants.TAG_COLOUR_INDEX, c);
+        }
     }
 
     public void setModel(CompoundNBT nbt, SpecBase model) {
