@@ -124,6 +124,7 @@ public class PowerFistModel extends BakedModelWrapper {
                     if (renderSpec != null && !renderSpec.isEmpty() &&
                             (modelcameraTransformType == ItemCameraTransforms.TransformType.FIRST_PERSON_LEFT_HAND ||
                                     (modelcameraTransformType == ItemCameraTransforms.TransformType.FIRST_PERSON_RIGHT_HAND))) {
+                        PlayerEntity player = Minecraft.getInstance().player;
                         EquipmentSlotType slotType = EquipmentSlotType.OFFHAND;
                         if (player.getMainHandItem().equals(itemStack)) {
                             slotType = EquipmentSlotType.MAINHAND;
@@ -171,7 +172,7 @@ public class PowerFistModel extends BakedModelWrapper {
         });
         return builder.build();
     }
-
+    
     /**
      * this is great for single models or those that share the exact same transforms for the different camera transform
      * type. However, when dealing with quads from different models, it's useless.
@@ -221,21 +222,20 @@ public class PowerFistModel extends BakedModelWrapper {
             itemStack = itemStackIn;
             if (entityIn instanceof PlayerEntity) {
                 PlayerEntity player = (PlayerEntity) entityIn;
-                setPlayer(player);
                 if (player.isUsingItem()) {
-                    player.getItemInHand(player.getUsedItemHand()).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-                            .filter(IModeChangingItem.class::isInstance)
-                            .map(IModeChangingItem.class::cast)
-                            .ifPresent(modechanging -> {
-                                ItemStack module = modechanging.getActiveModule();
-                                int actualCount = 0;
+                    player.getItemInHand(player.getUsedItemHand()).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(modechanging -> {
+                        if (!(modechanging instanceof IModeChangingItem)) {
+                            return;
+                        }
+                        ItemStack module = ((IModeChangingItem) modechanging).getActiveModule();
+                        int actualCount = 0;
 
-                                int maxDuration = modechanging.getModularItemStack().getUseDuration();
-                                if (!module.isEmpty()) {
-                                    actualCount = (maxDuration - player.getUseItemRemainingTicks());
-                                }
-                                isFiring = actualCount > 0;
-                            });
+                        int maxDuration = ((IModeChangingItem) modechanging).getModularItemStack().getUseDuration();
+                        if (!module.isEmpty()) {
+                            actualCount = (maxDuration - player.getUseItemRemainingTicks());
+                        }
+                        isFiring = actualCount > 0;
+                    });
                 } else {
                     isFiring = false;
                 }

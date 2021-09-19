@@ -80,8 +80,9 @@ public class ArmorModelSpecNBT extends ModelSpecNBT implements IArmorModelSpecNB
 
     @Override
     public CompoundNBT getDefaultRenderTag() {
-        if (getItemStack().isEmpty())
+        if (getItemStack().isEmpty()) {
             return new CompoundNBT();
+        }
 
         List<CompoundNBT> prefArray = new ArrayList<>();
 
@@ -97,10 +98,7 @@ public class ArmorModelSpecNBT extends ModelSpecNBT implements IArmorModelSpecNB
         // temp data holder
         CompoundNBT tempNBT;
 
-        EquipmentSlotType slot = getItemStack().getEquipmentSlot();
-        if (slot == null) {
-            slot = MobEntity.getEquipmentSlotForItem(getItemStack());
-        }
+        EquipmentSlotType slot = MobEntity.getEquipmentSlotForItem(getItemStack());
 
         for (SpecBase spec : ModelRegistry.getInstance().getSpecs()) {
             // Only generate NBT data from Specs marked as "default"
@@ -140,11 +138,13 @@ public class ArmorModelSpecNBT extends ModelSpecNBT implements IArmorModelSpecNB
             nbt.put(elem.getString(NuminaConstants.TAG_MODEL) + "." + elem.getString(NuminaConstants.TAG_PART), elem);
         }
 
-        if (!specList.isEmpty())
+        if (!specList.isEmpty()) {
             nbt.put(NuminaConstants.NBT_SPECLIST_TAG, specList);
+        }
 
-        if (!texSpecTag.isEmpty())
+        if (!texSpecTag.isEmpty()) {
             nbt.put(NuminaConstants.NBT_TEXTURESPEC_TAG, texSpecTag);
+        }
 
         nbt.put(NuminaConstants.TAG_COLOURS, new IntArrayNBT(colours));
         return nbt;

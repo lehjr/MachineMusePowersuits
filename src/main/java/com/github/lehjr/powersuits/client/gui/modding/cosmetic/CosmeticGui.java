@@ -26,6 +26,8 @@
 
 package com.github.lehjr.powersuits.client.gui.modding.cosmetic;
 
+import com.github.lehjr.numina.util.capabilities.render.IModelSpecNBT;
+import com.github.lehjr.numina.util.capabilities.render.ModelSpecNBTCapability;
 import com.github.lehjr.numina.util.client.gui.ContainerlessGui;
 import com.github.lehjr.numina.util.client.gui.frame.EntityRenderFrame;
 import com.github.lehjr.powersuits.client.gui.common.ModularItemSelectionFrame;
@@ -162,6 +164,14 @@ public class CosmeticGui extends ContainerlessGui {
         } else {
             this.renderBackground(matrixStack);
         }
+    }
+
+    @Override
+    public boolean mouseClicked(double x, double y, int button) {
+        itemSelectFrame.getModularItemOrEmpty().getCapability(ModelSpecNBTCapability.RENDER)
+                .filter(IModelSpecNBT.class::isInstance)
+                .map(IModelSpecNBT.class::cast).ifPresent(spec -> System.out.println(spec.getRenderTag()));
+        return super.mouseClicked(x, y, button);
     }
 
     @Override

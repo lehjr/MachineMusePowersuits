@@ -62,13 +62,13 @@ public class ModularItemTabToggleWidget extends DrawableRelativeRect implements 
         RenderSystem.disableDepthTest();
         if (this.icon.isEmpty()) {
             if (EquipmentSlotType.MAINHAND.equals(type)) {
-                MuseIconUtils.drawIconAt((float)left() + (this.isStateActive ? 4 : 5), (float)top() + 7, MuseIconUtils.getIcon().weaponSlotBackground.getSprite(), Colour.WHITE);
+                MuseIconUtils.drawIconAt((int)left() + 9 + offset, (float)top() + 7, MuseIconUtils.getIcon().weaponSlotBackground.getSprite(), Colour.WHITE);
             } else {
                 Pair<ResourceLocation, ResourceLocation> pair = NuminaObjects.getSlotBackground(type);
                 if (pair != null) {
                     TextureAtlasSprite textureatlassprite = getMinecraft().getTextureAtlas(pair.getFirst()).apply(pair.getSecond());
                     Minecraft.getInstance().getTextureManager().bind(textureatlassprite.atlas().location());
-                    getMinecraft().screen.blit(matrixStack, (int)left() + (this.isStateActive ? 5 : 6), (int)top() + 7, getMinecraft().screen.getBlitOffset(), 16, 16, textureatlassprite);
+                    getMinecraft().screen.blit(matrixStack, (int)left() + 9 + offset, (int)top() + 7, getMinecraft().screen.getBlitOffset(), 16, 16, textureatlassprite);
                 }
             }
             RenderSystem.enableDepthTest();

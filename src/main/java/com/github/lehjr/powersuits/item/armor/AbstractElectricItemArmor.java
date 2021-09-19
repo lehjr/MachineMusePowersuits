@@ -40,9 +40,11 @@ import com.github.lehjr.numina.util.capabilities.render.IModelSpecNBT;
 import com.github.lehjr.numina.util.capabilities.render.ModelSpecNBTCapability;
 import com.github.lehjr.numina.util.capabilities.render.modelspec.EnumSpecType;
 import com.github.lehjr.numina.util.energy.ElectricItemUtils;
+import com.github.lehjr.numina.util.math.Colour;
 import com.github.lehjr.numina.util.string.AdditionalInfo;
 import com.github.lehjr.powersuits.basemod.MPSObjects;
 import com.github.lehjr.powersuits.capability.PowerArmorCap;
+import com.github.lehjr.powersuits.client.render.ArmorModelSpecNBT;
 import com.github.lehjr.powersuits.constants.MPSConstants;
 import com.github.lehjr.powersuits.constants.MPSRegistryNames;
 import com.google.common.collect.ImmutableMultimap;
@@ -54,12 +56,14 @@ import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.ai.attributes.Attribute;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ArmorItem;
+import net.minecraft.item.IDyeableArmorItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
@@ -74,6 +78,7 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.awt.*;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -212,15 +217,28 @@ public abstract class AbstractElectricItemArmor extends ArmorItem {
             return NuminaConstants.BLANK_ARMOR_MODEL_PATH;
         }
 
+        if (!equipmentSlotType.equals(armor.getEquipmentSlot())) {
+            return NuminaConstants.BLANK_ARMOR_MODEL_PATH;
+        }
+
         return armor.getCapability(ModelSpecNBTCapability.RENDER)
                 .filter(IArmorModelSpecNBT.class::isInstance)
                 .map(IArmorModelSpecNBT.class::cast)
-                .map(spec-> spec.getArmorTexture())
+                .map(spec-> {
+                    if (spec.getSpecType() == EnumSpecType.NONE) {
+                        return NuminaConstants.BLANK_ARMOR_MODEL_PATH;
+                    }
+
+                    if (spec.getRenderTag() != null && spec.getRenderTag().isEmpty()) {
+                        return NuminaConstants.BLANK_ARMOR_MODEL_PATH;
+                    }
+                    return spec.getArmorTexture();
+                })
                 .orElse(AtlasTexture.LOCATION_BLOCKS.toString());
     }
 
     /**
-     * This is probably not going to work for the high polly models. Instead this will need to be done with an armor layer for more control
+     * Null return gets replaced with the _default elsewhere
      * @param entityLiving
      * @param itemStack
      * @param armorSlot
@@ -235,45 +253,41 @@ public abstract class AbstractElectricItemArmor extends ArmorItem {
             return _default;
         }
 
-        return itemStack.getCapability(ModelSpecNBTCapability.RENDER)
-                .filter(IModelSpecNBT.class::isInstance)
-                .map(IModelSpecNBT.class::cast)
-                .map(spec-> {
-                    CompoundNBT renderTag = spec.getRenderTag();
+        return itemStack.getCapability(ModelSpecNBTCapability.RENDER).map(spec-> {
+            CompoundNBT renderTag = spec.getRenderTag();
 
-                    // This sets up a default spec... not sure yet if this is will be enabled
-                    PlayerEntity player = (PlayerEntity) entityLiving;
-//            // only triggered by this client's player looking at their own equipped armor
-                    if (renderTag == null /*|| renderTag.isEmpty() */ && player == Minecraft.getInstance().player) {
-                        renderTag = spec.getDefaultRenderTag();
-                        if (renderTag != null /*&& !renderTag.isEmpty()*/) {
-                            spec.setRenderTag(renderTag, NuminaConstants.TAG_RENDER);
-                            NuminaPackets.CHANNEL_INSTANCE.sendToServer(new CosmeticInfoPacket(armorSlot, NuminaConstants.TAG_RENDER, renderTag));
-                        }
-                    }
+            EquipmentSlotType slot = MobEntity.getEquipmentSlotForItem(itemStack);
 
-                    if (spec.getRenderTag() != null &&
-                            (spec.getSpecType() == EnumSpecType.ARMOR_SKIN || spec.getSpecType() == EnumSpecType.NONE)) {
-                        return _default;
-                    }
+            /** sets up default spec tags. A tag with all parts disabled should still have a color tag rather than being empty or null */
+            PlayerEntity player = (PlayerEntity) entityLiving;
+            if ((renderTag == null ||  renderTag.isEmpty()) && player == Minecraft.getInstance().player && armorSlot == slot) {
+                renderTag = spec.getDefaultRenderTag();
+                if (renderTag != null && !renderTag.isEmpty()) {
+                    spec.setRenderTag(renderTag, NuminaConstants.TAG_RENDER);
+                    NuminaPackets.CHANNEL_INSTANCE.sendToServer(new CosmeticInfoPacket(armorSlot, NuminaConstants.TAG_RENDER, renderTag));
+                }
+            }
 
-                    BipedModel model = ArmorModelInstance.getInstance();
-                    ItemStack chestplate = entityLiving.getItemBySlot(EquipmentSlotType.CHEST);
-                    if (chestplate.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-                            .filter(IModularItem.class::isInstance)
-                            .map(IModularItem.class::cast)
-                            .map(iItemHandler ->
-                                    iItemHandler instanceof IModularItem && iItemHandler
-                                            .isModuleOnline(MPSRegistryNames.ACTIVE_CAMOUFLAGE_MODULE_REGNAME)).orElse(false)) {
-                        ((HighPolyArmor) model).setVisibleSection(null);
-                    } else {
-                        if (renderTag != null) {
-                            ((HighPolyArmor) model).setVisibleSection(slot);
-                            ((HighPolyArmor) model).setRenderSpec(renderTag);
-                        }
-                    }
-                    return model;
-                }).orElse(_default);
+            /** Armor skin uses vanilla model, but returning _default for EnumSpecType.NONE renders a garbage model */
+            if (spec.getRenderTag() != null && (spec.getSpecType() == EnumSpecType.ARMOR_SKIN)) {
+                return _default;
+            }
+
+            BipedModel model = ArmorModelInstance.getInstance();
+            ItemStack chestplate = entityLiving.getItemBySlot(EquipmentSlotType.CHEST);
+            if (chestplate.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+                    .filter(IModularItem.class::isInstance)
+                    .map(IModularItem.class::cast)
+                    .map(iItemHandler -> iItemHandler.isModuleOnline(MPSRegistryNames.ACTIVE_CAMOUFLAGE_MODULE_REGNAME)).orElse(false)) {
+                ((HighPolyArmor) model).setVisibleSection(null);
+            } else {
+                if (renderTag != null) {
+                    ((HighPolyArmor) model).setVisibleSection(slot);
+                    ((HighPolyArmor) model).setRenderSpec(renderTag);
+                }
+            }
+            return model;
+        }).orElse(_default);
     }
 
     @OnlyIn(Dist.CLIENT)

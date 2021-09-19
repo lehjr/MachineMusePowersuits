@@ -151,7 +151,7 @@ public class PartSpecManipSubFrame extends DrawableTile {
         return getRenderCapability().map(iModelSpecNBT -> {
             CompoundNBT specTag = new CompoundNBT();
             CompoundNBT renderTag = iModelSpecNBT.getRenderTag();
-            if (renderTag != null && !renderTag.isEmpty()) {
+            if (renderTag != null /*&& !renderTag.isEmpty()*/) {
                 // there can be many ModelPartSpecs
                 if (partSpec instanceof ModelPartSpec) {
                     String name = ModelRegistry.getInstance().makeName(partSpec);
@@ -166,7 +166,7 @@ public class PartSpecManipSubFrame extends DrawableTile {
                 }
             }
             return specTag;
-        }).orElse(null);
+        }).orElse(new CompoundNBT());
     }
 
     public CompoundNBT getSpecTag(PartSpecBase partSpec) {
