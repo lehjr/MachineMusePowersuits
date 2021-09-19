@@ -116,6 +116,7 @@ public class PowerFistModel extends BakedModelWrapper {
                 CompoundNBT renderSpec = specNBTCap.getRenderTag();
 
                 // Set the tag on the item so this lookup isn't happening on every loop.
+                // Like the armor, empty or null tag signifies the models haven't been set up yet.
                 if (renderSpec == null || renderSpec.isEmpty()) {
                     renderSpec = specNBTCap.getDefaultRenderTag();
 
@@ -160,8 +161,7 @@ public class PowerFistModel extends BakedModelWrapper {
                                 }
                                 boolean glow = ((ModelPartSpec) partSpec).getGlow(nbt);
 
-                                if ((!isFiring && (itemState.equals("all") || itemState.equals("normal"))) ||
-                                        (isFiring && (itemState.equals("all") || itemState.equals("firing")))) {
+                                if ((!isFiring && (itemState.equals("all") || itemState.equals("normal"))) || (isFiring && (itemState.equals("all") || itemState.equals("firing")))) {
                                     builder.addAll(ModelHelper.getColouredQuadsWithGlowAndTransform(((ModelPartSpec) partSpec).getPart().getQuads(state, side, rand, extraData), partColor, transform, glow));
                                 }
                             }
