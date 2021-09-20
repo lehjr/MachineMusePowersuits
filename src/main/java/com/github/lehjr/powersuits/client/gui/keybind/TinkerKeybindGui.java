@@ -42,7 +42,6 @@ import com.github.lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
 import com.github.lehjr.numina.util.client.render.MuseRenderer;
 import com.github.lehjr.numina.util.math.Colour;
 import com.github.lehjr.numina.util.math.MuseMathUtils;
-import com.github.lehjr.numina.util.string.AdditionalInfo;
 import com.github.lehjr.powersuits.client.control.KeybindKeyHandler;
 import com.github.lehjr.powersuits.client.control.KeybindManager;
 import com.github.lehjr.powersuits.client.gui.clickable.ClickableKeybinding;
@@ -62,7 +61,10 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import org.lwjgl.glfw.GLFW;
 
 import javax.annotation.Nonnull;
-import java.util.*;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 
 
 /**

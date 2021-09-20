@@ -34,7 +34,6 @@ import com.github.lehjr.numina.util.client.render.MuseRenderer;
 import com.github.lehjr.numina.util.math.Colour;
 import com.github.lehjr.powersuits.client.gui.common.LabelBox;
 import com.github.lehjr.powersuits.client.gui.common.ModularItemSelectionFrame;
-import com.github.lehjr.powersuits.client.gui.clickable.RangedSlider;
 import com.github.lehjr.powersuits.client.gui.common.TabSelectFrame;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.Minecraft;

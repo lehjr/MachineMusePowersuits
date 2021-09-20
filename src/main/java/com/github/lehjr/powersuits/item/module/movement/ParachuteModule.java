@@ -36,7 +36,6 @@ import com.github.lehjr.numina.util.capabilities.module.toggleable.IToggleableMo
 import com.github.lehjr.numina.util.client.control.PlayerMovementInputWrapper;
 import com.github.lehjr.numina.util.player.PlayerUtils;
 import com.github.lehjr.powersuits.config.MPSSettings;
-import com.github.lehjr.powersuits.constants.MPSConstants;
 import com.github.lehjr.powersuits.item.module.AbstractPowerModule;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;

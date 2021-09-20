@@ -29,7 +29,6 @@ package com.github.lehjr.powersuits.client.gui.modechanging;
 import com.github.lehjr.numina.network.NuminaPackets;
 import com.github.lehjr.numina.network.packets.ModeChangeRequestPacket;
 import com.github.lehjr.numina.util.capabilities.inventory.modechanging.IModeChangingItem;
-import com.github.lehjr.numina.util.capabilities.inventory.modularitem.IModularItem;
 import com.github.lehjr.numina.util.capabilities.module.powermodule.EnumModuleCategory;
 import com.github.lehjr.numina.util.client.gui.clickable.ClickableModule;
 import com.github.lehjr.numina.util.client.gui.frame.IGuiFrame;

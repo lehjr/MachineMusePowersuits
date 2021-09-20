@@ -27,7 +27,6 @@
 package com.github.lehjr.powersuits.entity;
 
 import com.github.lehjr.numina.util.capabilities.inventory.modechanging.IModeChangingItem;
-import com.github.lehjr.numina.util.capabilities.inventory.modularitem.IModularItem;
 import com.github.lehjr.numina.util.capabilities.module.powermodule.PowerModuleCapability;
 import com.github.lehjr.powersuits.basemod.MPSObjects;
 import com.github.lehjr.powersuits.constants.MPSConstants;

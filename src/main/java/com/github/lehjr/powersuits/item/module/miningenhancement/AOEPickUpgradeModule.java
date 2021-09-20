@@ -27,7 +27,6 @@
 package com.github.lehjr.powersuits.item.module.miningenhancement;
 
 import com.github.lehjr.numina.util.capabilities.inventory.modechanging.IModeChangingItem;
-import com.github.lehjr.numina.util.capabilities.inventory.modularitem.IModularItem;
 import com.github.lehjr.numina.util.capabilities.module.blockbreaking.IBlockBreakingModule;
 import com.github.lehjr.numina.util.capabilities.module.miningenhancement.IMiningEnhancementModule;
 import com.github.lehjr.numina.util.capabilities.module.miningenhancement.MiningEnhancement;

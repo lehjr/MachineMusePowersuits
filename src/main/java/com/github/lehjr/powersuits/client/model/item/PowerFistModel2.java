@@ -27,7 +27,6 @@
 package com.github.lehjr.powersuits.client.model.item;
 
 import com.github.lehjr.numina.util.capabilities.inventory.modechanging.IModeChangingItem;
-import com.github.lehjr.numina.util.capabilities.inventory.modularitem.IModularItem;
 import com.github.lehjr.powersuits.constants.MPSRegistryNames;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;

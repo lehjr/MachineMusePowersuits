@@ -4,8 +4,6 @@ import com.github.lehjr.numina.util.client.gui.frame.GUISpacer;
 import com.github.lehjr.numina.util.client.render.MuseRenderer;
 import com.github.lehjr.numina.util.math.Colour;
 import com.mojang.blaze3d.matrix.MatrixStack;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.util.text.TranslationTextComponent;
 
 /**

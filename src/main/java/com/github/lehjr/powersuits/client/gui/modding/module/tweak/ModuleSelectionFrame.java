@@ -32,7 +32,6 @@ import com.github.lehjr.numina.util.capabilities.module.powermodule.IPowerModule
 import com.github.lehjr.numina.util.capabilities.module.powermodule.PowerModuleCapability;
 import com.github.lehjr.numina.util.client.gui.clickable.ClickableModule;
 import com.github.lehjr.numina.util.client.gui.frame.ScrollableFrame;
-import com.github.lehjr.numina.util.client.gui.gemoetry.DrawableTile;
 import com.github.lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
 import com.github.lehjr.numina.util.client.gui.gemoetry.RelativeRect;
 import com.github.lehjr.numina.util.client.render.MuseRenderer;

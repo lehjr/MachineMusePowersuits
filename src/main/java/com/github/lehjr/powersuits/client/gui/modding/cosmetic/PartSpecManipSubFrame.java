@@ -237,7 +237,7 @@ public class PartSpecManipSubFrame extends DrawableTile {
     }
 
     public void drawSpecPartial(MatrixStack matrixStack, double x, double y, PartSpecBase partSpec) {
-        super.render(matrixStack, (int)x, (int)y, Minecraft.getInstance().getFrameTime());
+//        super.render(matrixStack, (int)x, (int)y, Minecraft.getInstance().getFrameTime()); // draws the border, mainly a debugging thing
 
         GuiIcon icon = MuseIconUtils.getIcon();
         CompoundNBT tag = this.getSpecTag(partSpec);
