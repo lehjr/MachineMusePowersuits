@@ -27,7 +27,6 @@
 package com.github.lehjr.numina.util.client.gui.slot;
 
 import com.github.lehjr.numina.util.client.gui.clickable.IClickable;
-import com.github.lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
 import com.github.lehjr.numina.util.client.render.MuseRenderer;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.Minecraft;

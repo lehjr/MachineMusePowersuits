@@ -27,7 +27,6 @@
 package com.github.lehjr.numina.util.client.render;
 
 import com.github.lehjr.numina.util.capabilities.inventory.modechanging.IModeChangingItem;
-import com.github.lehjr.numina.util.capabilities.inventory.modularitem.IModularItem;
 import com.github.lehjr.numina.util.capabilities.module.powermodule.PowerModuleCapability;
 import com.github.lehjr.numina.util.capabilities.module.toggleable.IToggleableModule;
 import com.mojang.blaze3d.matrix.MatrixStack;

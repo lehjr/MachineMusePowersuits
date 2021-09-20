@@ -1,6 +1,5 @@
 package com.github.lehjr.numina.util.client.gui.gemoetry;
 
-import com.github.lehjr.numina.util.client.render.NuminaRenderState;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.util.text.ITextComponent;
 

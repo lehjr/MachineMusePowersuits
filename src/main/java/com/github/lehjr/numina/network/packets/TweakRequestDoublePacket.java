@@ -29,7 +29,6 @@ package com.github.lehjr.numina.network.packets;
 import com.github.lehjr.numina.util.capabilities.inventory.modularitem.IModularItem;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.network.NetworkEvent;

@@ -30,7 +30,6 @@ import com.github.lehjr.numina.constants.NuminaConstants;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.SpriteUploader;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.util.ResourceLocation;
 
 import java.util.Collections;

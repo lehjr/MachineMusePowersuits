@@ -29,7 +29,6 @@ package com.github.lehjr.numina.util.client.gui.clickable;
 import com.github.lehjr.numina.util.client.gui.gemoetry.DrawableTile;
 import com.github.lehjr.numina.util.client.gui.gemoetry.IDrawable;
 import com.github.lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
-import com.github.lehjr.numina.util.client.gui.gemoetry.RelativeRect;
 import com.mojang.blaze3d.matrix.MatrixStack;
 
 /**

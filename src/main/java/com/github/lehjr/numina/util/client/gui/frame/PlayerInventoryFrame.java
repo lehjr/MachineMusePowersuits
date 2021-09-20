@@ -8,7 +8,6 @@ import net.minecraft.inventory.container.Container;
 import net.minecraft.util.text.TranslationTextComponent;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.stream.IntStream;
 
 public class PlayerInventoryFrame extends MultiRectHolderFrame {

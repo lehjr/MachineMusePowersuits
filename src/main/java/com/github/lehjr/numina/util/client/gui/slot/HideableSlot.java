@@ -29,7 +29,6 @@ package com.github.lehjr.numina.util.client.gui.slot;
 import com.github.lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.container.Slot;
-import net.minecraft.item.ItemStack;
 
 public class HideableSlot extends Slot implements IHideableSlot {
     boolean isEnabled = false;

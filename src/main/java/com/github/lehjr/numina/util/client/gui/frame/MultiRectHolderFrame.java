@@ -1,7 +1,10 @@
 package com.github.lehjr.numina.util.client.gui.frame;
 
 import com.github.lehjr.numina.util.client.gui.clickable.IClickable;
-import com.github.lehjr.numina.util.client.gui.gemoetry.*;
+import com.github.lehjr.numina.util.client.gui.gemoetry.IDrawable;
+import com.github.lehjr.numina.util.client.gui.gemoetry.IDrawableRect;
+import com.github.lehjr.numina.util.client.gui.gemoetry.IRect;
+import com.github.lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.util.text.ITextComponent;
 

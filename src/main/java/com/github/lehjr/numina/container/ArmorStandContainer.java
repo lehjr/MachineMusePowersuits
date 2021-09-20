@@ -27,14 +27,11 @@
 package com.github.lehjr.numina.container;
 
 import com.github.lehjr.numina.basemod.NuminaObjects;
-import com.github.lehjr.numina.constants.NuminaConstants;
 import com.github.lehjr.numina.util.client.gui.slot.IIConProvider;
 import com.github.lehjr.numina.util.client.render.MuseIconUtils;
 import com.github.lehjr.numina.util.math.Colour;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.datafixers.util.Pair;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.item.ArmorStandEntity;

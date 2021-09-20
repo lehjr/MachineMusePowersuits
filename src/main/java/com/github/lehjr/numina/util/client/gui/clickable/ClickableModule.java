@@ -31,7 +31,6 @@ import com.github.lehjr.numina.util.capabilities.module.powermodule.PowerModuleC
 import com.github.lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
 import com.github.lehjr.numina.util.client.render.MuseIconUtils;
 import com.github.lehjr.numina.util.client.render.MuseRenderer;
-import com.github.lehjr.numina.util.client.render.NuminaRenderState;
 import com.github.lehjr.numina.util.math.Colour;
 import com.github.lehjr.numina.util.string.AdditionalInfo;
 import com.github.lehjr.numina.util.string.MuseStringUtils;
@@ -40,10 +39,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
 
 import javax.annotation.Nonnull;
-import java.util.ArrayList;
 import java.util.List;
 
 /**

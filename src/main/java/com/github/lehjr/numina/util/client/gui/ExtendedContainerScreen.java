@@ -96,7 +96,7 @@ public class ExtendedContainerScreen<T extends Container> extends ContainerScree
     @Override
     protected void renderSlot(MatrixStack matrixStack, Slot slot) {
         if (slot!= null && slot instanceof IHideableSlot) {
-            if (((IHideableSlot) slot).isActive()) {
+            if (slot.isActive()) {
                 super.renderSlot(matrixStack, slot);
             }
         } else {

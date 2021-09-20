@@ -1,6 +1,5 @@
 package com.github.lehjr.numina.util.client.gui.frame;
 
-import com.github.lehjr.numina.util.capabilities.inventory.modularitem.IModularItem;
 import com.github.lehjr.numina.util.client.gui.clickable.IClickable;
 import com.github.lehjr.numina.util.client.gui.gemoetry.IDrawable;
 import com.github.lehjr.numina.util.client.gui.gemoetry.IDrawableRect;
