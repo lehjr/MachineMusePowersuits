@@ -26,13 +26,15 @@
 
 package com.github.lehjr.numina.util.client.gui.clickable;
 
-import com.github.lehjr.numina.util.client.gui.gemoetry.DrawableRelativeRect;
+import com.github.lehjr.numina.util.client.gui.gemoetry.DrawableTile;
+import com.github.lehjr.numina.util.client.gui.gemoetry.IRect;
 import com.github.lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
-import com.github.lehjr.numina.util.client.render.MuseRenderer;
 import com.github.lehjr.numina.util.math.Colour;
-import com.github.lehjr.numina.util.math.MuseMathUtils;
+import com.github.lehjr.powersuits.client.gui.common.LabelBox;
 import com.mojang.blaze3d.matrix.MatrixStack;
-import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
+
+import javax.annotation.Nullable;
 
 /**
  * Author: MachineMuse (Claire Semple)
@@ -43,62 +45,172 @@ import net.minecraft.util.text.ITextComponent;
  * TODO: revisit and rewrite
  *
  */
-public class ClickableSlider extends Clickable {
-    final int cornersize = 3;
-    private double valueInternal = 0;
-    MusePoint2D pos;
-    double width;
-    private String id;
-    private ITextComponent label;
-    DrawableRelativeRect insideRect;
-    DrawableRelativeRect outsideRect;
+public class ClickableSlider extends DrawableTile implements IClickable {
+    boolean isVisible = true;
+    boolean isEnabled = true;
+    LabelBox labelBox;
+    Slider slider;
 
-    public ClickableSlider(MusePoint2D pos, double width, String id, ITextComponent label) {
-        this.pos = pos;
-        this.width = width;
-        this.id = id;
-        this.setPosition(pos);
-        this.insideRect = new DrawableRelativeRect(getPosition().getX() - width / 2.0 - cornersize, getPosition().getY() + 8, 0, getPosition().getY() + 16, Colour.ORANGE, Colour.LIGHT_BLUE);
-        this.outsideRect = new DrawableRelativeRect(getPosition().getX() - width / 2.0 - cornersize, getPosition().getY() + 8, getPosition().getX() + width / 2.0F + cornersize, getPosition().getY() + 16, Colour.DARKBLUE, Colour.LIGHT_BLUE);
-        this.label = label;
+    public ClickableSlider(MusePoint2D position, double size, String id, TranslationTextComponent label) {
+        this(position, true, size, id, 0, label);
     }
 
+    public ClickableSlider(MusePoint2D position,
+                           boolean isHorizontal,
+                           double size,
+                           String id,
+                           double currentVal, TranslationTextComponent label) {
+        this(position, isHorizontal, size, id, currentVal, null, label);
+    }
+
+    public ClickableSlider(MusePoint2D position,
+                           boolean isHorizontal,
+                           double size,
+                           String id,
+                           double currentVal,
+                           @Nullable Slider.ISlider iSlider, TranslationTextComponent label) {
+        super(1,1,1,1);//position);
+        if (isHorizontal) {
+            super.setWidth(size);
+            super.setHeight(16 + 8);
+
+        } else {
+            super.setHeight(size);
+            super.setWidth(16 + 8);
+        }
+        this.labelBox = new LabelBox(size, 16, label);
+        this.labelBox.setColor(Colour.WHITE);
+        this.slider = new Slider(position, isHorizontal, size, id, currentVal, iSlider);
+        this.slider.setMeBelow(this.labelBox);
+        super.setHeight(labelBox.finalHeight() + slider.finalHeight());
+        super.setWidth(labelBox.finalWidth());
+        super.setPosition(position);
+    }
     public String id() {
-        return this.id;
+        return this.slider.id();
     }
 
-    public void setLabel(ITextComponent label) {
-        this.label = label;
+    public void setLabel(TranslationTextComponent label) {
+        this.labelBox.setLabel(label);
+    }
+
+    public void setLabelColour(Colour colour) {
+        this.labelBox.setColor(colour);
     }
 
     @Override
     public void render(MatrixStack matrixStack, int mouseX, int mouseY, float frameTime) {
-        MuseRenderer.drawCenteredText(matrixStack, label, (float)getPosition().getX(), (float)getPosition().getY(), Colour.WHITE);
-        this.insideRect.setRight(getPosition().getX() + width * ((float)getValue() - 0.5F) + cornersize);
-        this.outsideRect.render(matrixStack, mouseX, mouseY, frameTime);
-        this.insideRect.render(matrixStack, mouseX, mouseY, frameTime);
+        labelBox.setPosition(new MusePoint2D(centerx(), top() + (labelBox.finalHeight() * 0.5)));
+        slider.setPosition(new MusePoint2D(centerx(), bottom() - (slider.finalHeight() * 0.5)));
+
+        if (this.isVisible()) {
+            this.slider.render(matrixStack, mouseX, mouseY, frameTime);
+            this.labelBox.renderLabel(matrixStack, 0, 2);
+        }
+    }
+
+    public void update(double mouseX, double mouseY) {
+        this.slider.update(mouseX, mouseY);
     }
 
     @Override
-    public boolean hitBox(double x, double y) {
-        return Math.abs(getPosition().getX() - x) < width / 2 &&
-                Math.abs(getPosition().getY() + 12 - y) < 4;
+    public void setEnabled(boolean b) {
+        this.isEnabled = b;
+        this.slider.setEnabled(b);
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return isEnabled;
+    }
+
+    @Override
+    public void setVisible(boolean b) {
+        this.isVisible = b;
+        this.slider.setVisible(b);
+    }
+
+    @Override
+    public boolean isVisible() {
+        return isVisible;
+    }
+
+    @Override
+    public boolean mouseClicked(double mouseX, double mouseY, int button) {
+        return slider.mouseClicked(mouseX, mouseY, button);
+    }
+
+    /**
+     * Fired when the mouse button is released. Equivalent of MouseListener.mouseReleased(MouseEvent e).
+     */
+    @Override
+    public boolean mouseReleased(double mouseX, double mouseY, int button) {
+        return slider.mouseReleased(mouseX, mouseY, button);
+    }
+
+    @Override
+    public void setOnPressed(IPressable iPressable) {
+        slider.setOnPressed(iPressable);
+    }
+
+    @Override
+    public void setOnReleased(IReleasable iReleasable) {
+        slider.setOnReleased(iReleasable);
     }
 
     @Override
     public void onPressed() {
-        // TODO: this
+        slider.onPressed();
+    }
+
+    @Override
+    public void onReleased() {
+        slider.onReleased();
     }
 
     public double getValue() {
-        return valueInternal;
+        return slider.getValue();
     }
 
-    public void setValue(double v) {
-        valueInternal = v;
+    public double getInternalVal() {
+        return slider.getInternalVal();
     }
 
-    public void setValueByX(double x) {
-        valueInternal = MuseMathUtils.clampDouble((x - pos.getX()) / width + 0.5F, 0, 1);
+    public void setValue(double value) {
+        slider.setValue(value);
+    }
+
+    public void setValueByX(double value) {
+        slider.setValueByX(value);
+    }
+
+    // FIXME: seems to set trac rect UL to parent center
+    @Override
+    public void setPosition(MusePoint2D position) {
+        super.setPosition(position);
+        // Still null during initializing
+        if (labelBox != null) {
+            labelBox.setTop(this.finalTop());
+        }
+    }
+
+    @Override
+    public IRect setWH(MusePoint2D wh) {
+        return this;
+    }
+
+    @Override
+    public IRect setWidth(double value) {
+        return this;
+    }
+
+    @Override
+    public IRect setHeight(double value) {
+        return this;
+    }
+
+    @Override
+    public boolean containsPoint(double x, double y) {
+        return x > left() - 2 && x < right() + 2 && y > top() - 2 && y < bottom() + 2;
     }
 }

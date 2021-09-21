@@ -28,22 +28,41 @@ package com.github.lehjr.numina.util.client.gui.clickable;
 
 import com.github.lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 
 /**
  * Ported to Java by lehjr on 10/19/16.
  */
-public class ClickableTinkerSlider extends ClickableSlider {
+public class ClickableTinkerSlider extends com.github.lehjr.powersuits.client.gui.clickable.ClickableSlider {
     public CompoundNBT moduleTag;
 
-    public ClickableTinkerSlider(MusePoint2D topmiddle, double width, CompoundNBT moduleTag, String id, ITextComponent label) {
+    public ClickableTinkerSlider(MusePoint2D topmiddle,
+                                 double width,
+                                 CompoundNBT moduleTag,
+                                 String id,
+                                 TranslationTextComponent label) {
         super(topmiddle, width, id, label);
         this.moduleTag = moduleTag;
+        setValue(getValue());
+    }
+
+    /**
+     * Overridden for now because sliders are created and destroyed taking their values with them ::eyeroll::
+     * @return
+     */
+    @Override
+    public double getInternalVal() {
+        return (moduleTag.contains(this.id())) ? moduleTag.getDouble(id()) : 0;
     }
 
     @Override
     public double getValue() {
         return (moduleTag.contains(this.id())) ? moduleTag.getDouble(id()) : 0;
+    }
+
+    @Override
+    public void setValue(double value) {
+        super.setValue(value);
     }
 
     @Override
