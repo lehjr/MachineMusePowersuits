@@ -26,11 +26,11 @@
 
 package com.github.lehjr.numina.util.client.gui.clickable;
 
+import com.github.lehjr.numina.util.client.gui.frame.LabelBox;
 import com.github.lehjr.numina.util.client.gui.gemoetry.DrawableTile;
 import com.github.lehjr.numina.util.client.gui.gemoetry.IRect;
 import com.github.lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
 import com.github.lehjr.numina.util.math.Colour;
-import com.github.lehjr.powersuits.client.gui.common.LabelBox;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.util.text.TranslationTextComponent;
 
