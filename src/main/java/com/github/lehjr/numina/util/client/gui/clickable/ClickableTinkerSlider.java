@@ -33,7 +33,7 @@ import net.minecraft.util.text.TranslationTextComponent;
 /**
  * Ported to Java by lehjr on 10/19/16.
  */
-public class ClickableTinkerSlider extends com.github.lehjr.powersuits.client.gui.clickable.ClickableSlider {
+public class ClickableTinkerSlider extends ClickableSlider {
     public CompoundNBT moduleTag;
 
     public ClickableTinkerSlider(MusePoint2D topmiddle,

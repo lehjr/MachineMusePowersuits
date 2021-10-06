@@ -38,53 +38,53 @@ import net.minecraft.util.SoundEvents;
 public class CheckBox extends Clickable {
     protected boolean isChecked;
     protected DrawableTile tile;
-
     String label;
 
-    public CheckBox(MusePoint2D position, String displayString, boolean isChecked){
-        MusePoint2D ul = position.plus(4, 4);
-        this.tile = new DrawableTile(ul, ul.plus(8, 8)).setBackgroundColour(Colour.BLACK)
-                .setTopBorderColour(Colour.DARK_GREY).setBottomBorderColour(Colour.DARK_GREY);
+    public CheckBox(MusePoint2D position, String displayString, boolean isChecked) {
+        super();
+        makeNewTile();
         this.label = displayString;
         this.isChecked = isChecked;
         this.enableAndShow();
     }
 
-    @Override
     public void render(MatrixStack matrixStack, int mouseX, int mouseY, float frameTime) {
-        if(this.isVisible) {
-            tile.render(matrixStack, mouseX, mouseY, frameTime);
-            if (isChecked) {
-                MuseRenderer.drawShadowedString(matrixStack, "x", tile.centerx() - 2, tile.centery() - 5, Colour.WHITE);
+        if (this.isVisible()) {
+            this.tile.render(matrixStack, mouseX, mouseY, frameTime);
+            if (this.isChecked) {
+                MuseRenderer.drawShadowedString(matrixStack, "x", this.tile.centerx() - 2.0D, this.tile.centery() - 5.0D, Colour.WHITE);
             }
-            MuseRenderer.drawShadowedString(matrixStack, label, tile.centerx() + 8, tile.centery() - 4, Colour.WHITE);
+            MuseRenderer.drawShadowedString(matrixStack, this.label, this.tile.centerx() + 8.0D, this.tile.centery() - 4.0D, Colour.WHITE);
         }
     }
 
-    @Override
+    void makeNewTile() {
+        if (tile == null) {
+            MusePoint2D ul = getPosition().plus(4.0D, 4.0D);
+            this.tile = (new DrawableTile(ul, ul.plus(8.0D, 8.0D))).setBackgroundColour(Colour.BLACK).setTopBorderColour(Colour.DARK_GREY).setBottomBorderColour(Colour.DARK_GREY);
+        }
+    }
+
     public boolean hitBox(double x, double y) {
-        if (this.isVisible() && this.isEnabled()) {
-            return tile.containsPoint(x, y);
-        } else {
-            return false;
-        }
+        return this.isVisible() && this.isEnabled() ? this.tile.containsPoint(x, y) : false;
     }
 
-    @Override
     public void setPosition(MusePoint2D position) {
         super.setPosition(position);
-        tile.setPosition(position);
+        if(tile == null) {
+            makeNewTile();
+        }
+        this.tile.setPosition(position);
     }
 
     public boolean isChecked() {
-        return isChecked;
+        return this.isChecked;
     }
 
     public void setChecked(boolean checked) {
         this.isChecked = checked;
     }
 
-    @Override
     public void onPressed() {
         if (this.isVisible() && this.isEnabled()) {
             Minecraft.getInstance().getSoundManager().play(SimpleSound.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0F));
