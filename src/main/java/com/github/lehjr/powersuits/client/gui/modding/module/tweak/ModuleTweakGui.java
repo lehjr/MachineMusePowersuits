@@ -28,11 +28,11 @@ package com.github.lehjr.powersuits.client.gui.modding.module.tweak;
 
 import com.github.lehjr.numina.util.client.gui.ContainerlessGui;
 import com.github.lehjr.numina.util.client.gui.frame.GUISpacer;
+import com.github.lehjr.numina.util.client.gui.frame.LabelBox;
 import com.github.lehjr.numina.util.client.gui.frame.MultiRectHolderFrame;
 import com.github.lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
 import com.github.lehjr.numina.util.client.render.MuseRenderer;
 import com.github.lehjr.numina.util.math.Colour;
-import com.github.lehjr.powersuits.client.gui.common.LabelBox;
 import com.github.lehjr.powersuits.client.gui.common.ModularItemSelectionFrame;
 import com.github.lehjr.powersuits.client.gui.common.TabSelectFrame;
 import com.mojang.blaze3d.matrix.MatrixStack;

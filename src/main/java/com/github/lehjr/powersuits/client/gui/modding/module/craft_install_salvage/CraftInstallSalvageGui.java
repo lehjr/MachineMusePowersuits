@@ -69,9 +69,11 @@ public class CraftInstallSalvageGui extends ExtendedContainerScreen<InstallSalva
 
                 if (modularItemInventory != null && !module.isEmpty()) {
                     modularItemInventory.creativeInstall(module);
+                    menu.broadcastChanges();
                 }
             } else {
                 menu.quickMoveStack(this.getMinecraft().player, menu.getResultSlotIndex());
+                menu.broadcastChanges();
             }
         });
 

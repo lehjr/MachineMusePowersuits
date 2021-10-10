@@ -84,7 +84,9 @@ public class AOEPickUpgradeModule extends AbstractPowerModule {
             this.module = module;
             this.miningEnhancement = new Enhancement(module, EnumModuleCategory.MINING_ENHANCEMENT, EnumModuleTarget.TOOLONLY, MPSSettings::getModuleConfig) {{
                 addBaseProperty(MPSConstants.AOE_ENERGY, 500, "FE");
+
                 addTradeoffProperty(MPSConstants.DIAMETER, MPSConstants.AOE_ENERGY, 9500);
+
                 addIntTradeoffProperty(MPSConstants.DIAMETER, MPSConstants.AOE_MINING_RADIUS, 5, "m", 2, 1);
             }};
         }

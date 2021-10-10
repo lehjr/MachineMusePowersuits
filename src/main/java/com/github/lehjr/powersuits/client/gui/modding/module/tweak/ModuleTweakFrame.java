@@ -31,14 +31,16 @@ import com.github.lehjr.numina.network.NuminaPackets;
 import com.github.lehjr.numina.network.packets.TweakRequestDoublePacket;
 import com.github.lehjr.numina.util.capabilities.module.powermodule.IPowerModule;
 import com.github.lehjr.numina.util.capabilities.module.powermodule.PowerModuleCapability;
+import com.github.lehjr.numina.util.client.gui.clickable.ClickableTinkerIntSlider;
+import com.github.lehjr.numina.util.client.gui.clickable.ClickableTinkerSlider;
 import com.github.lehjr.numina.util.client.gui.frame.ScrollableFrame;
 import com.github.lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
 import com.github.lehjr.numina.util.client.render.MuseRenderer;
 import com.github.lehjr.numina.util.math.Colour;
 import com.github.lehjr.numina.util.nbt.propertymodifier.IPropertyModifier;
+import com.github.lehjr.numina.util.nbt.propertymodifier.PropertyModifierIntLinearAdditive;
 import com.github.lehjr.numina.util.nbt.propertymodifier.PropertyModifierLinearAdditive;
 import com.github.lehjr.numina.util.string.MuseStringUtils;
-import com.github.lehjr.powersuits.client.gui.clickable.ClickableTinkerSlider;
 import com.github.lehjr.powersuits.client.gui.common.ModularItemSelectionFrame;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -157,7 +159,11 @@ public class ModuleTweakFrame extends ScrollableFrame {
                 for (IPropertyModifier modifier : property.getValue()) {
                     currValue = modifier.applyModifier(moduleTag, currValue);
                     if (modifier instanceof PropertyModifierLinearAdditive) {
-                        tweaks.put(((PropertyModifierLinearAdditive) modifier).getTradeoffName(), (PropertyModifierLinearAdditive) modifier);
+                        String modifierName = ((PropertyModifierLinearAdditive) modifier).getTradeoffName();
+                        // overwriting PropertyModifierIntLinearAdditive messes up rounding to int
+                        if (!(tweaks.get(modifierName) instanceof PropertyModifierIntLinearAdditive)) {
+                            tweaks.put(modifierName, (PropertyModifierLinearAdditive) modifier);
+                        }
                         totalSize += 9;
                     }
                 }
@@ -165,19 +171,39 @@ public class ModuleTweakFrame extends ScrollableFrame {
                 propertyStrings.put(property.getKey(), currValue);
                 totalSize += 9;
             }
+
+            System.out.println("tweaks size: " + tweaks.size());
+
             int y = 0;
             for (String tweak : tweaks.keySet()) {
+                System.out.println(tweak + ":  " + tweaks.get(tweak));
+
                 y += 23;
                 MusePoint2D center = new MusePoint2D(getRect().centerx(), getRect().top() + y);
-                ClickableTinkerSlider slider = new ClickableTinkerSlider(
-                        center,
-                        getRect().finalRight() - getRect().finalLeft() - 16,
-                        moduleTag,
-                        tweak,
-                        new TranslationTextComponent(NuminaConstants.MODULE_TRADEOFF_PREFIX + tweak),
-                        tweaks.get(tweak));
-                sliders.add(slider);
-                totalSize += slider.finalHeight();
+                PropertyModifierLinearAdditive tweakObj = tweaks.get(tweak);
+
+//                System.out.println("tweakObj: " + tweakObj);
+
+                if (tweakObj instanceof PropertyModifierIntLinearAdditive) {
+                    ClickableTinkerIntSlider slider = new ClickableTinkerIntSlider(
+                            center,
+                            getRect().finalRight() - getRect().finalLeft() - 16,
+                            moduleTag,
+                            tweak,
+                            new TranslationTextComponent(NuminaConstants.MODULE_TRADEOFF_PREFIX + tweak),
+                            (PropertyModifierIntLinearAdditive) tweaks.get(tweak));
+                    sliders.add(slider);
+                    totalSize += slider.finalHeight();
+                } else {
+                    ClickableTinkerSlider slider = new ClickableTinkerSlider(
+                            center,
+                            getRect().finalRight() - getRect().finalLeft() - 16,
+                            moduleTag,
+                            tweak,
+                            new TranslationTextComponent(NuminaConstants.MODULE_TRADEOFF_PREFIX + tweak));
+                    sliders.add(slider);
+                    totalSize += slider.finalHeight();
+                }
             }
             return totalSize + 20;
         }).orElse(0);

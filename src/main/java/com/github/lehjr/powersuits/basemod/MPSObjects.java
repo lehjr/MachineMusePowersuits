@@ -78,27 +78,15 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 public class MPSObjects {
     public static final MPSCreativeTab creativeTab = new MPSCreativeTab();
-    public static final Item.Properties singleStack = new Item.Properties()
-            .stacksTo(1)
-            .tab(MPSObjects.creativeTab)
-            .defaultDurability(-1)
-            .setNoRepair();
 
-    public static final Item.Properties fullStack = new Item.Properties()
-            .tab(MPSObjects.creativeTab)
-            .stacksTo(64)
-            .defaultDurability(-1)
-            .setNoRepair();
     /**
      * Blocks ------------------------------------------------------------------------------------
      */
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, MPSConstants.MOD_ID);
 
-    public static final RegistryObject<TinkerTable> TINKER_TABLE_BLOCK = BLOCKS.register(MPSRegistryNames.TINKER_TABLE,
-            () -> new TinkerTable());
+    public static final RegistryObject<TinkerTable> TINKER_TABLE_BLOCK = BLOCKS.register(MPSRegistryNames.TINKER_TABLE, TinkerTable::new);
 
-    public static final RegistryObject<LuxCapacitorBlock> LUX_CAPACITOR_BLOCK = BLOCKS.register(MPSRegistryNames.LUX_CAPACITOR,
-            () -> new LuxCapacitorBlock());
+    public static final RegistryObject<LuxCapacitorBlock> LUX_CAPACITOR_BLOCK = BLOCKS.register(MPSRegistryNames.LUX_CAPACITOR, LuxCapacitorBlock::new);
 
 
     /**
@@ -145,10 +133,14 @@ public class MPSObjects {
     /* BlockItems --------------------------------------------------------------------------------- */
     // use directly as a module
     public static final RegistryObject<Item> TINKER_TABLE_ITEM = ITEMS.register(MPSRegistryNames.TINKER_TABLE,
-            () -> new TinkerTableItem(TINKER_TABLE_BLOCK.get(), fullStack));
+            () -> new TinkerTableItem(TINKER_TABLE_BLOCK.get()));
 
     public static final RegistryObject<Item> LUX_CAPACITOR_ITEM = ITEMS.register(MPSRegistryNames.LUX_CAPACITOR,
-            () -> new BlockItem(LUX_CAPACITOR_BLOCK.get(), fullStack));
+            () -> new BlockItem(LUX_CAPACITOR_BLOCK.get(), new Item.Properties()
+            .tab(MPSObjects.creativeTab)
+            .stacksTo(64)
+            .defaultDurability(-1)
+            .setNoRepair()));
 
     /* Armor -------------------------------------------------------------------------------------- */
     public static final RegistryObject<Item> POWER_ARMOR_HELMET = ITEMS.register(MPSRegistryNames.POWER_ARMOR_HELMET,

@@ -53,6 +53,8 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.ToolType;
 
 import javax.annotation.Nullable;
@@ -80,15 +82,21 @@ public class TinkerTable extends HorizontalBlock implements IWaterLoggable {
     @SuppressWarnings("deprecation")
     @Override
     public ActionResultType use(BlockState blockState, World world, BlockPos blockPos, PlayerEntity player, Hand hand, BlockRayTraceResult result) {
-//        if(!world.isClientSide) {
-//            player.openMenu(new MPSWorkbenchContainerProvider(0));
-//            return ActionResultType.CONSUME;
-//        }
+        if (world.isClientSide) {
+            openGui(world);
+        }
+
+        return ActionResultType.SUCCESS;
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    public void openGui(World world) {
         if (world.isClientSide) {
             Minecraft.getInstance().tell(() -> Minecraft.getInstance().setScreen(new ModuleTweakGui(new TranslationTextComponent("gui.tinkertable"), true)));
         }
-        return ActionResultType.SUCCESS;
     }
+
+
 
     @SuppressWarnings( "deprecation" )
     @Deprecated

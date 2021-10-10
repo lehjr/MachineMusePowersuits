@@ -32,12 +32,14 @@ import com.github.lehjr.numina.util.capabilities.module.powermodule.IConfig;
 import com.github.lehjr.numina.util.capabilities.module.powermodule.PowerModuleCapability;
 import com.github.lehjr.numina.util.capabilities.module.rightclick.IRightClickModule;
 import com.github.lehjr.numina.util.capabilities.module.rightclick.RightClickModule;
+import com.github.lehjr.powersuits.basemod.MPSObjects;
 import com.github.lehjr.powersuits.config.MPSSettings;
 import com.github.lehjr.powersuits.container.MPSWorkbenchContainerProvider;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.BlockItem;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ActionResult;
@@ -54,8 +56,12 @@ import javax.annotation.Nullable;
 import java.util.concurrent.Callable;
 
 public class TinkerTableItem extends BlockItem {
-    public TinkerTableItem(Block blockIn, Properties builder) {
-        super(blockIn, builder);
+    public TinkerTableItem(Block blockIn) {
+        super(blockIn, new Item.Properties()
+            .stacksTo(1)
+            .tab(MPSObjects.creativeTab)
+            .defaultDurability(-1)
+            .setNoRepair());
     }
 
     @Nullable
