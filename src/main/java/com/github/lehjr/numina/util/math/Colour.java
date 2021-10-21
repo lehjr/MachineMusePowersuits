@@ -68,10 +68,10 @@ public class Colour {
      * The RGBA values are stored as floats from 0.0F (nothing) to 1.0F (full
      * saturation/opacity)
      */
-    public final float r;
-    public final float g;
-    public final float b;
-    public final float a;
+    public float r;
+    public float g;
+    public float b;
+    public float a;
 
     /**
      * Constructor. Just sets the RGBA values to the parameters.
@@ -117,6 +117,20 @@ public class Colour {
         this.r = (c >> 16 & 0xFF) * div255;
         this.g = (c >> 8 & 0xFF) * div255;
         this.b = (c & 0xFF) * div255;
+    }
+
+    public Colour lighten(float amount) {
+        this.r = Math.min(this.r + amount, 1F);
+        this.g = Math.min(this.g + amount, 1F);
+        this.b = Math.min(this.b + amount, 1F);
+        return this;
+    }
+
+    public Colour darken(float amount) {
+        this.r = Math.max(this.r - amount, 0);
+        this.g = Math.max(this.g - amount, 0);
+        this.b = Math.max(this.b - amount, 0);
+        return this;
     }
 
     public static int getInt(float r, float g, float b, float a) {
@@ -241,5 +255,9 @@ public class Colour {
     @Override
     public int hashCode() {
         return Objects.hash(r, g, b, a);
+    }
+
+    public Colour copy() {
+        return new Colour(this.r, this.g, this.b, this.a);
     }
 }

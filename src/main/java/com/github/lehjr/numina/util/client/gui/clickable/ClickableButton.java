@@ -97,6 +97,10 @@ public class ClickableButton extends DrawableRelativeRect implements IClickable 
         return this;
     }
 
+    void setBackgroundColour(Colour backgroundColour, boolean hovered) {
+        super.setBackgroundColour(hovered? backgroundColour.copy().lighten(0.10F) : backgroundColour);
+    }
+
     /**
      * Container based GUI's should use the separate button and text renderer
      *
@@ -130,11 +134,18 @@ public class ClickableButton extends DrawableRelativeRect implements IClickable 
      */
     public void renderButton(MatrixStack matrixStack, int mouseX, int mouseY, float frameTIme) {
         if (isVisible) {
-            this.setBackgroundColour(isEnabled() ? enabledBackground : disabledBackground);
+
+            setBackgroundColour(isEnabled() ? enabledBackground : disabledBackground, containsPoint(mouseX, mouseY));
+
+
+
             this.setBorderColour(isEnabled() ? enabledBorder : disabledBorder);
+
+
             super.render(matrixStack, mouseX, mouseY, frameTIme);
         }
     }
+
 
     /**
      * Container based GUI's should use the separate button and text renderer

@@ -39,7 +39,20 @@ import net.minecraft.world.World;
 import javax.annotation.Nonnull;
 
 public interface IRightClickModule extends IPowerModule {
+    @Deprecated
     default ActionResult<ItemStack> onItemRightClick(@Nonnull ItemStack itemStackIn, World worldIn, PlayerEntity playerIn, Hand hand) {
+        return new ActionResult<>(ActionResultType.PASS, itemStackIn);
+    }
+
+    /**
+     * replaces previously used onRightClick method, adds a parameter
+     * @param itemStackIn
+     * @param playerIn
+     * @param entity
+     * @param hand
+     * @return
+     */
+    default ActionResult<ItemStack> interactLivingEntity(ItemStack itemStackIn, PlayerEntity playerIn, LivingEntity entity, Hand hand) {
         return new ActionResult<>(ActionResultType.PASS, itemStackIn);
     }
 

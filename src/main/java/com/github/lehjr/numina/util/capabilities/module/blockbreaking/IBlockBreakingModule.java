@@ -45,6 +45,11 @@ public interface IBlockBreakingModule extends IPowerModule {
         return false;
     }
 
+    default boolean mineBlock(@Nonnull ItemStack powerFist, World worldIn, BlockState state, BlockPos pos, LivingEntity entityLiving, int playerEnergy) {
+        return onBlockDestroyed(powerFist, worldIn, state, pos, entityLiving, playerEnergy);
+    }
+
+    @Deprecated
     boolean onBlockDestroyed(@Nonnull ItemStack itemStack, World worldIn, BlockState state, BlockPos pos, LivingEntity entityLiving, int playerEnergy);
 
     void handleBreakSpeed(PlayerEvent.BreakSpeed event);
