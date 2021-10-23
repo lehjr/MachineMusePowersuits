@@ -302,6 +302,13 @@ public class PowerFist extends AbstractElectricTool {
     }
 
     @Override
+    public ActionResultType interactLivingEntity(ItemStack itemStackIn, PlayerEntity player, LivingEntity entity, Hand hand) {
+        System.out.println("doing something here");
+
+        return super.interactLivingEntity(itemStackIn, player, entity, hand);
+    }
+
+    @Override
     public ActionResult<ItemStack> use(World world, PlayerEntity playerIn, Hand handIn) {
         ItemStack fist = playerIn.getItemInHand(handIn);
         final ActionResult<ItemStack> fallback = new ActionResult<>(ActionResultType.PASS, fist);

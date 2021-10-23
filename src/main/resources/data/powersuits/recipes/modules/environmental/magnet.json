@@ -1,0 +1,26 @@
+{
+  "result": {
+    "item": "powersuits:magnet"
+  },
+  "type": "minecraft:crafting_shaped",
+  "mirrored": true,
+  "pattern": [
+    "FCF",
+    "OMO",
+    "FCF"
+  ],
+  "key": {
+    "C": {
+      "item": "numina:component_magnet"
+    },
+    "F": {
+      "tag": "forge:ingots/iron"
+    },
+    "M": {
+      "item": "numina:component_control_circuit"
+    },
+    "O": {
+      "tag": "forge:wiring"
+    }
+  }
+}

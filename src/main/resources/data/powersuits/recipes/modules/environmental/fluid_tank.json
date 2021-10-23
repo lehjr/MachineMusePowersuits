@@ -1,0 +1,23 @@
+{
+  "result": {
+    "item": "powersuits:fluid_tank"
+  },
+  "type": "minecraft:crafting_shaped",
+  "mirrored": true,
+  "pattern": [
+    "GGG",
+    "GCG",
+    "OGO"
+  ],
+  "key": {
+    "C": {
+      "item": "numina:component_control_circuit"
+    },
+    "G": {
+      "item": "minecraft:glass_pane"
+    },
+    "O": {
+      "item": "numina:component_rubber_hose"
+    }
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "result": {
+    "item": "powersuits:auto_feeder"
+  },
+  "type": "minecraft:crafting_shaped",
+  "mirrored": true,
+  "pattern": [
+    "FOF",
+    "RCR",
+    "GMG"
+  ],
+  "key": {
+    "R": {
+      "tag": "forge:wiring"
+    },
+    "C": {
+      "item": "numina:component_control_circuit"
+    },
+    "F": {
+      "tag": "forge:solenoid"
+    },
+    "G": {
+      "tag": "forge:servo"
+    },
+    "M": {
+      "item": "numina:component_rubber_hose"
+    },
+    "O": {
+      "tag": "forge:chests"
+    }
+  }
+}
