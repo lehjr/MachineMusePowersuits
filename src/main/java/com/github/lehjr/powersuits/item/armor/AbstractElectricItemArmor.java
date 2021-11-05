@@ -244,9 +244,9 @@ public abstract class AbstractElectricItemArmor extends ArmorItem {
     @Override
     @OnlyIn(Dist.CLIENT)
     public BipedModel getArmorModel(LivingEntity entityLiving, ItemStack itemStack, EquipmentSlotType armorSlot, BipedModel _default) {
-        if (!(entityLiving instanceof PlayerEntity)) {
-            return _default;
-        }
+//        if (!(entityLiving instanceof PlayerEntity)) {
+//            return _default;
+//        }
 
         return itemStack.getCapability(ModelSpecNBTCapability.RENDER).map(spec-> {
             CompoundNBT renderTag = spec.getRenderTag();
@@ -254,8 +254,9 @@ public abstract class AbstractElectricItemArmor extends ArmorItem {
             EquipmentSlotType slot = MobEntity.getEquipmentSlotForItem(itemStack);
 
             /** sets up default spec tags. A tag with all parts disabled should still have a color tag rather than being empty or null */
-            PlayerEntity player = (PlayerEntity) entityLiving;
-            if ((renderTag == null ||  renderTag.isEmpty()) && player == Minecraft.getInstance().player && armorSlot == slot) {
+//            PlayerEntity player = (PlayerEntity) entityLiving;
+//            if ((renderTag == null ||  renderTag.isEmpty()) && player == Minecraft.getInstance().player && armorSlot == slot) {
+            if ((renderTag == null ||  renderTag.isEmpty()) && entityLiving == Minecraft.getInstance().player && armorSlot == slot) {
                 renderTag = spec.getDefaultRenderTag();
                 if (renderTag != null && !renderTag.isEmpty()) {
                     spec.setRenderTag(renderTag, NuminaConstants.TAG_RENDER);

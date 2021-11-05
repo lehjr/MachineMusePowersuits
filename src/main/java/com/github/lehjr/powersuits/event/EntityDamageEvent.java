@@ -58,6 +58,6 @@ public class EntityDamageEvent {
      */
     @SubscribeEvent
     public static void entityAttackEventHandler(LivingAttackEvent event) {
-        System.out.println("entity type: "  + event.getEntity().getClass());
+//        System.out.println("entity type: "  + event.getEntity().getClass());
     }
 }

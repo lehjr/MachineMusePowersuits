@@ -1,0 +1,29 @@
+{
+  "result": {
+    "item": "powersuits:water_electrolyzer"
+  },
+  "type": "minecraft:crafting_shaped",
+  "mirrored": true,
+  "pattern": [
+    "FBF",
+    "OCO",
+    "FMF"
+  ],
+  "key": {
+    "B": {
+      "item": "numina:battery_basic"
+    },
+    "C": {
+      "item": "numina:component_control_circuit"
+    },
+    "F": {
+      "tag": "forge:wiring"
+    },
+    "M": {
+      "item": "numina:component_rubber_hose"
+    },
+    "O": {
+      "tag": "forge:solenoid"
+    }
+  }
+}

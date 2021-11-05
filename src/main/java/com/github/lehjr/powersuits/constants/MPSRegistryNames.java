@@ -155,6 +155,7 @@ public class MPSRegistryNames {
     public static final ResourceLocation PICKAXE_MODULE_REGNAME = getRegName(PICKAXE_MODULE);
     public static final ResourceLocation AXE_MODULE_REGNAME = getRegName(AXE_MODULE);
     public static final ResourceLocation SHOVEL_MODULE_REGNAME = getRegName(SHOVEL_MODULE);
+    public static final ResourceLocation HOE_MODULE_REGNAME = getRegName(HOE_MODULE);
     public static final ResourceLocation PARACHUTE_MODULE_REGNAME = getRegName(PARACHUTE_MODULE);
     public static final ResourceLocation SPRINT_ASSIST_MODULE_REGNAME =  getRegName(SPRINT_ASSIST_MODULE);
     public static final ResourceLocation BINOCULARS_MODULE_REGNAME = getRegName(BINOCULARS_MODULE);
