@@ -22,6 +22,7 @@ import net.minecraft.client.gui.recipebook.IRecipeUpdateListener;
 import net.minecraft.client.gui.recipebook.RecipeBookGui;
 import net.minecraft.client.gui.recipebook.RecipeList;
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.gui.widget.ToggleWidget;
 import net.minecraft.client.resources.Language;
 import net.minecraft.client.resources.LanguageManager;
@@ -75,7 +76,7 @@ public class MPSRecipeBookGui extends RecipeBookGui implements IGuiFrame {
      * maybe needed ??? ------------------------------------------------------------
      */
     float zLevel = 0;
-    protected RectTextFieldWidget searchBox;
+    protected RectTextFieldWidget searchBoxLocal;
     protected String lastSearch = "";
     protected TexturedToggleButton filterButton;
     MultiRectHolderFrame mainFrame;
@@ -87,34 +88,35 @@ public class MPSRecipeBookGui extends RecipeBookGui implements IGuiFrame {
         int topFrameHeight = 16; // button is taller than the text box
         /** TOP SECTION [TEXT INPUT BOX | FILTER TOGGLE BUTTON] */
         /** search box wrapped in a holder --------------------------------------------- */
-        this.searchBox = new RectTextFieldWidget(this.minecraft.font, 0, 0, 80, 9 + 5, new TranslationTextComponent("itemGroup.search"));
-        this.searchBox.setMaxLength(50);
-        this.searchBox.setBordered(false);
-        this.searchBox.setVisible(true);
-        this.searchBox.setTextColor(16777215);
+        this.searchBoxLocal = new RectTextFieldWidget(this.minecraft.font, 0, 0, 130, 9 + 5, new TranslationTextComponent("itemGroup.search"));
+        getTextWidget().setMaxLength(120);
+        getTextWidget().setBordered(true);
+        getTextWidget().setVisible(true);
+        getTextWidget().setTextColor(16777215);
 
-        RectHolderFrame topLeft = new RectHolderFrame(searchBox, 80, topFrameHeight, RectHolderFrame.RectPlacement.CENTER_LEFT) {
+        RectHolderFrame topLeft = new WidgetHolderFrame(searchBoxLocal, 80, topFrameHeight, RectHolderFrame.RectPlacement.CENTER_LEFT) {
             @Override
             public boolean mouseClicked(double mouseX, double mouseY, int button) {
-                return searchBox.mouseClicked(mouseX, mouseY, button);
+                return searchBoxLocal.getWidget().mouseClicked(mouseX, mouseY, button);
             }
 
             @Override
             public boolean mouseReleased(double mouseX, double mouseY, int button) {
-                return searchBox.mouseReleased(mouseX, mouseY, button);
+                return searchBoxLocal.getWidget().mouseReleased(mouseX, mouseY, button);
             }
 
             @Override
             public List<ITextComponent> getToolTip(int mouseX, int mouseY) {
-                return searchBox.getToolTip(mouseX, mouseY);
+                return null;
             }
 
             @Override
             public void render(MatrixStack matrixStack, int mouseX, int mouseY, float frameTime) {
-                if (!searchBox.isFocused() && searchBox.getValue().isEmpty()) {
-                    drawString(matrixStack, Minecraft.getInstance().font, SEARCH_HINT, searchBox.x + 4, searchBox.y + 4, -1);
+                if (!searchBoxLocal.getWidget().isFocused() && ((TextFieldWidget)searchBoxLocal.getWidget()).getValue().isEmpty()) {
+                    drawString(matrixStack, Minecraft.getInstance().font, SEARCH_HINT, searchBoxLocal.getWidget().x + 4, searchBoxLocal.getWidget().y + 4, -1);
                 } else {
                     super.render(matrixStack, mouseX, mouseY, frameTime);
+                    searchBoxLocal.getWidget().render(matrixStack, mouseX, mouseY, frameTime);
                 }
             }
         };
@@ -182,8 +184,9 @@ public class MPSRecipeBookGui extends RecipeBookGui implements IGuiFrame {
         this.minecraft.player.inventory.fillStackedContents(this.stackedContents);
         this.menu.fillCraftSlotsStackedContents(this.stackedContents);
 
-        String s = this.searchBox != null ? this.searchBox.getValue() : "";
-        this.searchBox.setValue(s);
+        String s = this.searchBoxLocal != null ? getTextWidget().getValue() : "";
+        getTextWidget().setValue(s);
+
         this.recipeBookPage.init();
         this.recipeBookPage.addListener(this);
         this.updateCollections(false);
@@ -303,7 +306,7 @@ public class MPSRecipeBookGui extends RecipeBookGui implements IGuiFrame {
             }
         });
 
-        String s = this.searchBox.getValue();
+        String s = getTextWidget().getValue();
         if (!s.isEmpty()) {
             ObjectSet<RecipeList> objectset = new ObjectLinkedOpenHashSet<>(this.minecraft.getSearchTree(SearchTreeManager.RECIPE_COLLECTIONS).search(s.toLowerCase(Locale.ROOT)));
 
@@ -626,7 +629,6 @@ public class MPSRecipeBookGui extends RecipeBookGui implements IGuiFrame {
         public boolean mouseClicked(double mouseX, double mouseY, int button) {
             this.lastClickedRecipe = null;
             this.lastClickedRecipeCollection = null;
-
             if (this.forwardButton.mouseClicked(mouseX, mouseY, button)) {
                 ++this.currentPage;
                 this.updateMapButtonsForPage();
@@ -674,7 +676,7 @@ public class MPSRecipeBookGui extends RecipeBookGui implements IGuiFrame {
                 this.timesInventoryChanged = this.minecraft.player.inventory.getTimesChanged();
             }
 
-            this.searchBox.tick();
+            getTextWidget().tick();
         }
     }
 
@@ -772,7 +774,7 @@ public class MPSRecipeBookGui extends RecipeBookGui implements IGuiFrame {
                     }
                 }
                 return true;
-            } else if (this.searchBox.mouseClicked(mouseX, mouseY, button)) {
+            } else if (getTextWidget().mouseClicked(mouseX, mouseY, button)) {
                 return true;
 
                 // fixme: move to frame holder ?
@@ -834,20 +836,28 @@ public class MPSRecipeBookGui extends RecipeBookGui implements IGuiFrame {
     @Override
     public boolean keyPressed(int p_231046_1_, int p_231046_2_, int p_231046_3_) {
         this.ignoreTextInput = false;
-        if (this.isVisible() && !this.minecraft.player.isSpectator()) {
-            if (this.searchBox.keyPressed(p_231046_1_, p_231046_2_, p_231046_3_)) {
+        if (p_231046_1_ == 256 && !this.isOffsetNextToMainGUI()) {
+            this.setVisible(false);
+            return true;
+        } else if (this.isVisible() && !this.minecraft.player.isSpectator()) {
+            if (getTextWidget().keyPressed(p_231046_1_, p_231046_2_, p_231046_3_)) {
                 this.checkSearchStringUpdate();
                 return true;
-            } else if (this.searchBox.isFocused() && this.searchBox.isVisible() && p_231046_1_ != 256) {
+            } else if (getTextWidget().isFocused() && getTextWidget().isVisible() && p_231046_1_ != 256) {
                 return true;
-            } else if (this.minecraft.options.keyChat.matches(p_231046_1_, p_231046_2_) && !this.searchBox.isFocused()) {
+            } else if (this.minecraft.options.keyChat.matches(p_231046_1_, p_231046_2_) && !getTextWidget().isFocused()) {
                 this.ignoreTextInput = true;
-                this.searchBox.setFocus(true);
+                getTextWidget().setFocus(true);
                 return true;
             }
         }
         return false;
     }
+
+    TextFieldWidget getTextWidget() {
+        return ((TextFieldWidget)this.searchBoxLocal.getWidget());
+    }
+
 
     @Override
     public boolean keyReleased(int p_223281_1_, int p_223281_2_, int p_223281_3_) {
@@ -860,7 +870,7 @@ public class MPSRecipeBookGui extends RecipeBookGui implements IGuiFrame {
         if (this.ignoreTextInput) {
             return false;
         } else if (this.isVisible() && !this.minecraft.player.isSpectator()) {
-            if (this.searchBox.charTyped(p_231042_1_, p_231042_2_)) {
+            if (getTextWidget().charTyped(p_231042_1_, p_231042_2_)) {
                 this.checkSearchStringUpdate();
                 return true;
             }
@@ -899,7 +909,7 @@ public class MPSRecipeBookGui extends RecipeBookGui implements IGuiFrame {
     }
 
     private void checkSearchStringUpdate() {
-        String s = this.searchBox.getValue().toLowerCase(Locale.ROOT);
+        String s = getTextWidget().getValue().toLowerCase(Locale.ROOT);
         this.pirateSpeechForThePeople(s);
         if (!s.equals(this.lastSearch)) {
             this.updateCollections(false);
@@ -970,7 +980,6 @@ public class MPSRecipeBookGui extends RecipeBookGui implements IGuiFrame {
 
     @Override
     public void removed() {
-        this.searchBox = null;
         this.minecraft.keyboardHandler.setSendRepeatsToGui(false);
     }
 
