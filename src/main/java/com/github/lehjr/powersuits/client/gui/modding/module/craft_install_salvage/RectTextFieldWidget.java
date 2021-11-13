@@ -9,7 +9,7 @@ import javax.annotation.Nullable;
 
 public class RectTextFieldWidget extends WidgetWrapper {
     public RectTextFieldWidget(FontRenderer fontRenderer, int left, int top, int width, int height, ITextComponent message) {
-        this(fontRenderer, left, top, width, height, (TextFieldWidget)null, message);
+        this(fontRenderer, left, top, width, height, null, message);
     }
 
     public RectTextFieldWidget(FontRenderer fontRenderer, int left, int top, int width, int height, @Nullable TextFieldWidget p_i232259_6_, ITextComponent message) {

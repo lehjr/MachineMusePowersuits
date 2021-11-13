@@ -236,6 +236,7 @@ public class MPSRecipeBookGui extends RecipeBookGui implements IGuiFrame {
      *
      */
     protected void updateCollections(boolean p_193003_1_) {
+        String s = getTextWidget().getValue();
         Map<EnumModuleCategory, List<ModuleRecipeGroup>> unsortedRecipes = new HashMap<>();
 
         /** Fetch a list of modules valid for the selected ModularItem. Note recipes need to be unlocked to show */
@@ -246,7 +247,15 @@ public class MPSRecipeBookGui extends RecipeBookGui implements IGuiFrame {
                         .filter(IModularItem.class::isInstance)
                         .map(IModularItem.class::cast)
                         .ifPresent(iItemHandler -> {
-                            List<RecipeList> list1 = this.book.getCollection(tab.getCategory());
+
+                            // easier to do this here than filtering an incompatible list at the end
+                            List<RecipeList> list1;
+                            if (!s.isEmpty()) {
+                                list1 = new ObjectLinkedOpenHashSet<>(this.minecraft.getSearchTree(SearchTreeManager.RECIPE_COLLECTIONS).search(s.toLowerCase(Locale.ROOT))).stream().collect(Collectors.toList());
+                            } else {
+                                list1 = this.book.getCollection(tab.getCategory());
+                            }
+
                             for (RecipeList recipeList : list1) {
                                 if (recipeList.hasSingleResultItem()) {
                                     isValidModuleAndList(recipeList.getRecipes().get(0)
@@ -280,51 +289,19 @@ public class MPSRecipeBookGui extends RecipeBookGui implements IGuiFrame {
                                         });
                                     }
                                 }
-
-//                            for (IRecipe<?> recipe : recipeList.getRecipes()) {
-//                                recipe.getResultItem().getCapability(PowerModuleCapability.POWER_MODULE).ifPresent(iPowerModule -> {
-//                                    if (iPowerModule.isAllowed() && ((IModularItem) iItemHandler).isModuleValid(recipe.getResultItem())) {
-//                                        EnumModuleCategory moduleCategory = iPowerModule.getCategory();
-//                                        String group = iPowerModule.getModuleGroup();
-//                                        int tier = iPowerModule.getTier();
-//
-//                                        List<ModuleRecipeGroup> list2 = unsortedRecipes.getOrDefault(moduleCategory, new ArrayList<>());
-//                                        ModuleRecipeGroup outGroup =
-//                                                new ModuleRecipeGroup(recipeList, tier, group);
-//
-//                                        if (!list2.contains(outGroup)) {
-//                                            list2.add(outGroup);
-//                                            if (!list2.isEmpty()) {
-//                                                unsortedRecipes.put(moduleCategory, list2);
-//                                            }
-//                                        }
-//                                    }
-//                                });
-//                            }
                             }
                         });
             }
         });
 
-        String s = getTextWidget().getValue();
-        if (!s.isEmpty()) {
-            ObjectSet<RecipeList> objectset = new ObjectLinkedOpenHashSet<>(this.minecraft.getSearchTree(SearchTreeManager.RECIPE_COLLECTIONS).search(s.toLowerCase(Locale.ROOT)));
-
-            // fixme... allow searching by catagory???
-            unsortedRecipes.entrySet().stream().forEach(e -> e.getValue().removeIf((recipeList) -> !objectset.contains(recipeList)));
-        }
 
         Map<EnumModuleCategory, List<ModuleRecipeGroup>> sortedRecipes = new HashMap<>();
         Map<EnumModuleCategory, List<ModuleRecipeGroup>> unGroupedRecipes = new HashMap<>();
 
-        // like a map but with duplicate keys
-        List<Pair<EnumModuleCategory, List<ModuleRecipeGroup>>> recipes = new ArrayList<>();
-
-
         for (Map.Entry<EnumModuleCategory, List<ModuleRecipeGroup>> entry : unsortedRecipes.entrySet()) {
-            EnumModuleCategory category = entry.getKey();
-            List<ModuleRecipeGroup> moduleRecipeGroupList = entry.getValue();
 
+            EnumModuleCategory category = s.isEmpty() ? entry.getKey() : EnumModuleCategory.NONE;
+            List<ModuleRecipeGroup> moduleRecipeGroupList = entry.getValue();
             if (moduleRecipeGroupList.isEmpty()) {
                 continue;
             }
@@ -352,12 +329,13 @@ public class MPSRecipeBookGui extends RecipeBookGui implements IGuiFrame {
             if (!unGroupedRecipes.getOrDefault(category, new ArrayList<>()).isEmpty()) {
                 tempList.addAll(unGroupedRecipes.getOrDefault(category, new ArrayList<>()));
             }
-
             if (!tempList.isEmpty()) {
-                sortedRecipes.put(category, tempList);
+                // a bit of extra code added for when the category is "NONE" such as during search
+                List<ModuleRecipeGroup> list = sortedRecipes.getOrDefault(category, new ArrayList<>());
+                list.addAll(tempList);
+                sortedRecipes.put(category, list);
             }
         }
-
         this.recipeBookPage.updateCollectionsMap(sortedRecipes, p_193003_1_);
     }
 
@@ -609,7 +587,7 @@ public class MPSRecipeBookGui extends RecipeBookGui implements IGuiFrame {
         void renderLabel(MatrixStack matrixStack) {
             if (currentPage < recipeCollection.size()) {
                 EnumModuleCategory label = recipeCollection.get(currentPage).getLeft();
-                if (label != null) {
+                if (label != null && label != EnumModuleCategory.NONE) {
                     drawString(matrixStack, Minecraft.getInstance().font, label.getTranslation(), (int) labelBox.finalLeft() + 4, (int) labelBox.finalTop() + 4, -1);
                 }
             }
