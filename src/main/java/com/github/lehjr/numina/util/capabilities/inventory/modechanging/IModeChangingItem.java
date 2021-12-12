@@ -27,6 +27,7 @@
 package com.github.lehjr.numina.util.capabilities.inventory.modechanging;
 
 import com.github.lehjr.numina.util.capabilities.inventory.modularitem.IModularItem;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.model.IBakedModel;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -47,6 +48,9 @@ public interface IModeChangingItem extends IModularItem {
     @OnlyIn(Dist.CLIENT)
     @Nullable
     IBakedModel getInventoryModel();
+
+    @OnlyIn(Dist.CLIENT)
+    void drawModeChangeIcon(PlayerEntity player, int hotbarIndex, Minecraft mc);
 
     List<Integer> getValidModes();
 

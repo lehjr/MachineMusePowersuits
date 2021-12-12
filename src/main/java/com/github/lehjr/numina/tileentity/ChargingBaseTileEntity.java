@@ -33,6 +33,7 @@ import com.github.lehjr.numina.config.NuminaSettings;
 import com.github.lehjr.numina.util.tileentity.MuseTileEntity;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.play.server.SUpdateTileEntityPacket;
@@ -50,6 +51,7 @@ import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.Arrays;
 import java.util.List;
 
 public class ChargingBaseTileEntity extends MuseTileEntity implements ITickableTileEntity {
@@ -106,27 +108,28 @@ public class ChargingBaseTileEntity extends MuseTileEntity implements ITickableT
     }
 
     private void sendOutPower(LivingEntity entity) {
-        energyWrapper.ifPresent(wrapper->{
-            entity.getArmorSlots().forEach(itemStack -> {
-                if (wrapper.getEnergyStored() > 0) {
-                    boolean doContinue = itemStack.getCapability(CapabilityEnergy.ENERGY).map(iItemEnergyHandler -> {
-                                if (iItemEnergyHandler.canReceive()) {
-                                    int received = iItemEnergyHandler.receiveEnergy(wrapper.getEnergyStored(), false);
-                                    energyWrapperStorage.extractEnergy(received, false);
-                                    wrapper.extractEnergy(received, false);
-                                    setChanged();
-                                    return wrapper.getEnergyStored() > 0;
-                                } else {
-                                    return true;
-                                }
+        energyWrapper.ifPresent(wrapper-> {
+                    Arrays.stream(EquipmentSlotType.values()).forEach(slotType -> {
+                        if (wrapper.getEnergyStored() > 0) {
+                            boolean doContinue = entity.getItemBySlot(slotType).getCapability(CapabilityEnergy.ENERGY).map(iItemEnergyHandler -> {
+                                        if (iItemEnergyHandler.canReceive()) {
+                                            int received = iItemEnergyHandler.receiveEnergy(wrapper.getEnergyStored(), false);
+                                            energyWrapperStorage.extractEnergy(received, false);
+                                            wrapper.extractEnergy(received, false);
+                                            setChanged();
+                                            return wrapper.getEnergyStored() > 0;
+                                        } else {
+                                            return true;
+                                        }
+                                    }
+                            ).orElse(true);
+                            if (!doContinue) {
+                                return;
                             }
-                    ).orElse(true);
-                    if (!doContinue) {
-                        return;
-                    }
+                        }
+                    });
                 }
-            });
-        });
+        );
     }
 
     /**

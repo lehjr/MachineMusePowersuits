@@ -32,6 +32,9 @@ import com.github.lehjr.numina.util.capabilities.inventory.modularitem.ModularIt
 import com.github.lehjr.numina.util.capabilities.module.powermodule.PowerModuleCapability;
 import com.github.lehjr.numina.util.capabilities.module.rightclick.IRightClickModule;
 import com.github.lehjr.numina.util.capabilities.module.toggleable.IToggleableModule;
+import com.github.lehjr.numina.util.client.render.MuseRenderer;
+import com.mojang.blaze3d.matrix.MatrixStack;
+import net.minecraft.client.MainWindow;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.model.IBakedModel;
 import net.minecraft.entity.player.PlayerEntity;
@@ -68,6 +71,38 @@ public class ModeChangingModularItem extends ModularItem implements IModeChangin
     @Override
     public IBakedModel getInventoryModel() {
         return Minecraft.getInstance().getItemRenderer().getItemModelShaper().getItemModel(getActiveModule());
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    @Override
+    public void drawModeChangeIcon(PlayerEntity player, int hotbarIndex, Minecraft mc) {
+        ItemStack module = getActiveModule();
+        if (!module.isEmpty()) {
+            MainWindow screen = mc.getWindow();
+            double currX;
+            double currY;
+            int sw = screen.getGuiScaledWidth();
+            int baroffset = 22;
+            if (!player.abilities.instabuild) {
+                baroffset += 16;
+
+                int totalArmorValue = player.getArmorValue();
+                baroffset += 8 * (int) Math.ceil((double)totalArmorValue / 20); // 20 points per row @ 2 armor points per icon
+            }
+            baroffset = screen.getGuiScaledHeight() - baroffset;
+            currX = sw / 2.0 - 89.0 + 20.0 * hotbarIndex;
+            currY = baroffset - 18;
+            if (module.getCapability(PowerModuleCapability.POWER_MODULE).map(pm-> {
+                if (pm instanceof IToggleableModule) {
+                    return ((IToggleableModule) pm).isModuleOnline();
+                }
+                return true;
+            }).orElse(false)) {
+                mc.getItemRenderer().renderGuiItem(module, (int)currX, (int)currY);
+            } else {
+                MuseRenderer.drawModuleAt(new MatrixStack(), currX, currY, module, false);
+            }
+        }
     }
 
     @Override
