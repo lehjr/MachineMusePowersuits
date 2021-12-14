@@ -1,0 +1,23 @@
+{
+  "result": {
+    "item": "powersuits:shock_absorber"
+  },
+  "type": "minecraft:crafting_shaped",
+  "mirrored": true,
+  "pattern": [
+    "F F",
+    "FCF",
+    "M M"
+  ],
+  "key": {
+    "C": {
+      "item": "numina:component_control_circuit"
+    },
+    "F": {
+      "tag": "forge:solenoid"
+    },
+    "M": {
+      "tag": "minecraft:wool"
+    }
+  }
+}

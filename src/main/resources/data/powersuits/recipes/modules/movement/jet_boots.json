@@ -1,0 +1,29 @@
+{
+  "result": {
+    "item": "powersuits:jet_boots"
+  },
+  "type": "minecraft:crafting_shaped",
+  "mirrored": true,
+  "pattern": [
+    "C C",
+    "OMO",
+    "PNP"
+  ],
+  "key": {
+    "P": {
+      "item": "numina:component_ion_thruster"
+    },
+    "C": {
+      "item": "numina:component_solenoid"
+    },
+    "M": {
+      "item": "numina:component_control_circuit"
+    },
+    "N": {
+      "item": "numina:component_wiring"
+    },
+    "O": {
+      "item": "numina:component_computer_chip"
+    }
+  }
+}

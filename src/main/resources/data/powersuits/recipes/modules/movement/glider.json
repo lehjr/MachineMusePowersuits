@@ -1,0 +1,26 @@
+{
+  "result": {
+    "item": "powersuits:glider"
+  },
+  "type": "minecraft:crafting_shaped",
+  "mirrored": true,
+  "pattern": [
+    "FOF",
+    "CMC",
+    "FOF"
+  ],
+  "key": {
+    "C": {
+      "item": "numina:component_glider_wing"
+    },
+    "F": {
+      "tag": "forge:servo"
+    },
+    "M": {
+      "item": "numina:component_control_circuit"
+    },
+    "O": {
+      "tag": "forge:wiring"
+    }
+  }
+}

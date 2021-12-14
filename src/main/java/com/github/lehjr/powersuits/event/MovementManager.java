@@ -39,7 +39,9 @@ import com.github.lehjr.powersuits.client.sound.MPSSoundDictionary;
 import com.github.lehjr.powersuits.config.MPSSettings;
 import com.github.lehjr.powersuits.constants.MPSConstants;
 import com.github.lehjr.powersuits.constants.MPSRegistryNames;
+import com.github.lehjr.powersuits.item.module.movement.FlightControlModule;
 import com.google.common.util.concurrent.AtomicDouble;
+import net.minecraft.client.util.InputMappings;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.player.PlayerEntity;
@@ -135,15 +137,16 @@ public enum MovementManager {
         }
     }
 
-    public double thrust(PlayerEntity player, double thrust, boolean flightControl) {
+    public static double thrust(PlayerEntity player, double thrust, boolean flightControl) {
         PlayerMovementInputWrapper.PlayerMovementInput playerInput = PlayerMovementInputWrapper.get(player);
+
         double thrustUsed = 0;
         if (flightControl) {
             Vector3d desiredDirection = player.getLookAngle().normalize();
             double strafeX = desiredDirection.z;
             double strafeZ = -desiredDirection.x;
-            ItemStack helm = player.getItemBySlot(EquipmentSlotType.HEAD);
-            double flightVerticality = helm.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+
+            double flightVerticality = player.getItemBySlot(EquipmentSlotType.HEAD).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
                     .filter(IModularItem.class::isInstance)
                     .map(IModularItem.class::cast)
                     .map(iModularItem -> iModularItem
@@ -170,15 +173,17 @@ public enum MovementManager {
                     player.setDeltaMovement(player.getDeltaMovement().x, 0, player.getDeltaMovement().z);
                 }
             }
+
             if (player.getDeltaMovement().y < -1) {
                 thrust += 1 + player.getDeltaMovement().y;
                 thrustUsed -= 1 + player.getDeltaMovement().y;
                 player.setDeltaMovement(player.getDeltaMovement().x, -1, player.getDeltaMovement().z);
             }
+
             if (Math.abs(player.getDeltaMovement().x) > 0 && desiredDirection.length() == 0) {
                 if (Math.abs(player.getDeltaMovement().x) > thrust) {
                     player.setDeltaMovement(player.getDeltaMovement().add(
-                            - Math.signum(player.getDeltaMovement().x) * thrust, 0, 0));
+                            -(Math.signum(player.getDeltaMovement().x) * thrust), 0, 0));
                     thrustUsed += thrust;
                     thrust = 0;
                 } else {
@@ -187,14 +192,12 @@ public enum MovementManager {
                     player.setDeltaMovement(0, player.getDeltaMovement().y, player.getDeltaMovement().z);
                 }
             }
+
             if (Math.abs(player.getDeltaMovement().z) > 0 && desiredDirection.length() == 0) {
                 if (Math.abs(player.getDeltaMovement().z) > thrust) {
                     player.setDeltaMovement(
-                            player.getDeltaMovement().add(
-                                    0, 0, Math.signum(player.getDeltaMovement().z) * thrust
-                            )
-
-                    );
+                            player.getDeltaMovement().subtract(
+                                    0, 0, Math.signum(player.getDeltaMovement().z) * thrust));
                     thrustUsed += thrust;
                     thrust = 0;
                 } else {
@@ -212,6 +215,7 @@ public enum MovementManager {
             ));
             thrustUsed += thrust;
 
+
         } else {
             Vector3d playerHorzFacing = player.getLookAngle();
             playerHorzFacing = new Vector3d(playerHorzFacing.x, 0, playerHorzFacing.z);
@@ -227,14 +231,11 @@ public enum MovementManager {
             }
             thrustUsed += thrust;
         }
-
         // Slow the player if they are going too fast
         double horzm2 = player.getDeltaMovement().x * player.getDeltaMovement().x + player.getDeltaMovement().z * player.getDeltaMovement().z;
 
         // currently comes out to 0.0625
         double horizontalLimit = MPSSettings.getMaxFlyingSpeed() * MPSSettings.getMaxFlyingSpeed() / 400;
-
-//        double playerVelocity = Math.abs(player.getMotion().x) + Math.abs(player.getMotion().y) + Math.abs(player.getMotion().z);
 
         if (playerInput.sneakKey && horizontalLimit > 0.05) {
             horizontalLimit = 0.05;
@@ -247,9 +248,12 @@ public enum MovementManager {
                     player.getDeltaMovement().y,
                     player.getDeltaMovement().z * ratio);
         }
+
         PlayerUtils.resetFloatKickTicks(player);
         return thrustUsed;
     }
+
+
 
     public static double computePlayerVelocity(PlayerEntity player) {
         return MuseMathUtils.pythag(player.getDeltaMovement().x, player.getDeltaMovement().y, player.getDeltaMovement().z);

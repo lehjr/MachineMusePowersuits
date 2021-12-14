@@ -1,0 +1,23 @@
+{
+  "result": {
+    "item": "powersuits:mob_repulsor"
+  },
+  "type": "minecraft:crafting_shaped",
+  "mirrored": true,
+  "pattern": [
+    "COC",
+    "OMO",
+    "COC"
+  ],
+  "key": {
+    "C": {
+      "item": "numina:component_field_emitter"
+    },
+    "M": {
+      "item": "numina:component_control_circuit"
+    },
+    "O": {
+      "item": "numina:component_wiring"
+    }
+  }
+}

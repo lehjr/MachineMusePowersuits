@@ -1,0 +1,26 @@
+{
+  "result": {
+    "item": "powersuits:swim_assist"
+  },
+  "type": "minecraft:crafting_shaped",
+  "mirrored": true,
+  "pattern": [
+    "COC",
+    "MPM",
+    "OCO"
+  ],
+  "key": {
+    "P": {
+      "item": "numina:component_control_circuit"
+    },
+    "C": {
+      "item": "numina:component_servo"
+    },
+    "M": {
+      "item": "numina:component_wiring"
+    },
+    "O": {
+      "item": "numina:component_rubber_hose"
+    }
+  }
+}

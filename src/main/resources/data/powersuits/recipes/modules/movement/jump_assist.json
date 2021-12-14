@@ -1,0 +1,23 @@
+{
+  "result": {
+    "item": "powersuits:jump_assist"
+  },
+  "type": "minecraft:crafting_shaped",
+  "mirrored": true,
+  "pattern": [
+    "FMF",
+    "MCM",
+    "FMF"
+  ],
+  "key": {
+    "C": {
+      "item": "numina:component_control_circuit"
+    },
+    "F": {
+      "tag": "forge:solenoid"
+    },
+    "M": {
+      "tag": "minecraft:wool"
+    }
+  }
+}
