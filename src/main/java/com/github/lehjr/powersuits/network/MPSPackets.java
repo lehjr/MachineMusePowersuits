@@ -29,6 +29,7 @@ package com.github.lehjr.powersuits.network;
 import com.github.lehjr.powersuits.constants.MPSConstants;
 import com.github.lehjr.powersuits.network.packets.ColourInfoPacket;
 import com.github.lehjr.powersuits.network.packets.ContainerGuiOpenPacket;
+import com.github.lehjr.powersuits.network.packets.CreativeInstallPacket;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.network.NetworkRegistry;
 import net.minecraftforge.fml.network.simple.SimpleChannel;
@@ -51,6 +52,13 @@ public class MPSPackets {
                 ColourInfoPacket::write,
                 ColourInfoPacket::read,
                 ColourInfoPacket::handle);
+
+        CHANNEL_INSTANCE.registerMessage(
+                i++,
+                CreativeInstallPacket.class,
+                CreativeInstallPacket::write,
+                CreativeInstallPacket::read,
+                CreativeInstallPacket::handle);
 
 //        CHANNEL_INSTANCE.registerMessage(
 //                i++,

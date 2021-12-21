@@ -64,7 +64,7 @@ public class ModuleSelectionFrame extends ScrollableFrame {
         this.target = itemSelectFrameIn;
     }
 
-    private ModuleSelectionSubFrame getOrCreateCategory(EnumModuleCategory category) {
+    protected ModuleSelectionSubFrame getOrCreateCategory(EnumModuleCategory category) {
         if (categories.containsKey(category)) {
             return categories.get(category);
         } else {

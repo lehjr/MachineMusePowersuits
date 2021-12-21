@@ -40,12 +40,14 @@ import net.minecraft.util.text.ITextComponent;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class ModuleSelectionSubFrame {
-    protected List<ClickableModule> moduleButtons;
+    public List<ClickableModule> moduleButtons;
     protected RelativeRect border;
-    protected EnumModuleCategory category;
+    public EnumModuleCategory category;
 
     public ModuleSelectionSubFrame(EnumModuleCategory category, RelativeRect border) {
         this.category = category;
@@ -56,6 +58,7 @@ public class ModuleSelectionSubFrame {
     public ClickableModule addModule(@Nonnull ItemStack module, int index) {
         ClickableModule clickie = new ClickableModule(module, new MusePoint2D(0, 0), index, category);
         this.moduleButtons.add(clickie);
+        Collections.sort(moduleButtons, Comparator.comparing(ClickableModule::getTier));
         refreshButtonPositions();
         return clickie;
     }
@@ -87,7 +90,7 @@ public class ModuleSelectionSubFrame {
         border.setHeight(topMargin * 2 + 20 * row);
     }
 
-    int selectedModule = -1;
+    public int selectedModule = -1;
 
     public ClickableModule getSelectedModule() {
         if (selectedModule >=0)

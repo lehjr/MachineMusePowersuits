@@ -63,7 +63,7 @@ public class PowerArmorCap extends AbstractModularPowerCap {
                     rangedWrapperMap.put(EnumModuleCategory.ARMOR,new NuminaRangedWrapper(this, 0, 1));
                     rangedWrapperMap.put(EnumModuleCategory.ENERGY_STORAGE,new NuminaRangedWrapper(this, 1, 2));
                     rangedWrapperMap.put(EnumModuleCategory.ENERGY_GENERATION,new NuminaRangedWrapper(this, 2, 3));
-                    rangedWrapperMap.put(EnumModuleCategory.NONE,new NuminaRangedWrapper(this, 3, this.getSlots() - 1));
+                    rangedWrapperMap.put(EnumModuleCategory.NONE,new NuminaRangedWrapper(this, 3, this.getSlots()));
                     setRangedWrapperMap(rangedWrapperMap);
                 }};
 
@@ -76,7 +76,7 @@ public class PowerArmorCap extends AbstractModularPowerCap {
                     rangedWrapperMap.put(EnumModuleCategory.ARMOR,new NuminaRangedWrapper(this, 0, 1));
                     rangedWrapperMap.put(EnumModuleCategory.ENERGY_STORAGE,new NuminaRangedWrapper(this, 1, 2));
                     rangedWrapperMap.put(EnumModuleCategory.ENERGY_GENERATION,new NuminaRangedWrapper(this, 2, 3));
-                    rangedWrapperMap.put(EnumModuleCategory.NONE,new NuminaRangedWrapper(this, 3, this.getSlots()-1));
+                    rangedWrapperMap.put(EnumModuleCategory.NONE,new NuminaRangedWrapper(this, 3, this.getSlots()));
                     this.setRangedWrapperMap(rangedWrapperMap);
                 }};
                 this.maxHeat = MPSSettings.getMaxHeatChestplate();
@@ -88,7 +88,7 @@ public class PowerArmorCap extends AbstractModularPowerCap {
                     rangedWrapperMap.put(EnumModuleCategory.ARMOR,new NuminaRangedWrapper(this, 0, 1));
                     rangedWrapperMap.put(EnumModuleCategory.ENERGY_STORAGE,new NuminaRangedWrapper(this, 1, 2));
                     rangedWrapperMap.put(EnumModuleCategory.ENERGY_GENERATION,new NuminaRangedWrapper(this, 2, 3));
-                    rangedWrapperMap.put(EnumModuleCategory.NONE,new NuminaRangedWrapper(this, 3, this.getSlots()-1));
+                    rangedWrapperMap.put(EnumModuleCategory.NONE,new NuminaRangedWrapper(this, 3, this.getSlots()));
                     this.setRangedWrapperMap(rangedWrapperMap);
                 }};
                 this.maxHeat = MPSSettings.getMaxHeatLegs();
@@ -99,7 +99,7 @@ public class PowerArmorCap extends AbstractModularPowerCap {
                 this.modularItemCap = new ModularItem(itemStack, 8) {{
                     rangedWrapperMap.put(EnumModuleCategory.ARMOR,new NuminaRangedWrapper(this, 0, 1));
                     rangedWrapperMap.put(EnumModuleCategory.ENERGY_STORAGE,new NuminaRangedWrapper(this, 1, 2));
-                    rangedWrapperMap.put(EnumModuleCategory.NONE,new NuminaRangedWrapper(this, 2, this.getSlots()-1));
+                    rangedWrapperMap.put(EnumModuleCategory.NONE,new NuminaRangedWrapper(this, 2, this.getSlots()));
                     this.setRangedWrapperMap(rangedWrapperMap);
                 }};
                 this.maxHeat = MPSSettings.getMaxHeatBoots();

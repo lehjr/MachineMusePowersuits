@@ -31,7 +31,7 @@ import com.github.lehjr.powersuits.block.LuxCapacitorBlock;
 import com.github.lehjr.powersuits.block.TinkerTable;
 import com.github.lehjr.powersuits.constants.MPSConstants;
 import com.github.lehjr.powersuits.constants.MPSRegistryNames;
-import com.github.lehjr.powersuits.container.InstallSalvageCraftContainer;
+import com.github.lehjr.powersuits.container.InstallSalvageContainer;
 import com.github.lehjr.powersuits.entity.LuxCapacitorEntity;
 import com.github.lehjr.powersuits.entity.PlasmaBallEntity;
 import com.github.lehjr.powersuits.entity.RailgunBoltEntity;
@@ -66,6 +66,7 @@ import com.github.lehjr.powersuits.tile_entity.TinkerTableTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
+import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
@@ -243,10 +244,14 @@ public class MPSObjects {
      */
     public static final DeferredRegister<ContainerType<?>> CONTAINER_TYPES = DeferredRegister.create(ForgeRegistries.CONTAINERS, MPSConstants.MOD_ID);
 
-    // Module crafting/install/salvage GUI
-    public static final RegistryObject<ContainerType<InstallSalvageCraftContainer>> SALVAGE_CRAFT_CONTAINER_TYPE =
-            CONTAINER_TYPES.register(MPSRegistryNames.INSTALL_SALVAGE_CRAFT_CONTAINER_TYPE,
-                    () -> IForgeContainerType.create((windowId, inv, data) -> new InstallSalvageCraftContainer(windowId, inv)));
+//    // Module crafting/install/salvage GUI
+//    public static final RegistryObject<ContainerType<InstallSalvageCraftContainer>> SALVAGE_CRAFT_CONTAINER_TYPE =
+//            CONTAINER_TYPES.register(MPSRegistryNames.INSTALL_SALVAGE_CRAFT_CONTAINER_TYPE,
+//                    () -> IForgeContainerType.create((windowId, inv, data) -> new InstallSalvageCraftContainer(windowId, inv)));
+
+    public static final RegistryObject<ContainerType<InstallSalvageContainer>> INSTALL_SALVAGE_CONTAINER_TYPE =
+            CONTAINER_TYPES.register(MPSRegistryNames.INSTALL_SALVAGE_CONTAINER_TYPE,
+                    () -> IForgeContainerType.create((windowId, inv, data) -> new InstallSalvageContainer(windowId, inv, data.readEnum(EquipmentSlotType.class))));
 
     static RegistryObject<Item> registerModule(String regName, Item item) {
         MPSModules.INSTANCE.addModule(MPSRegistryNames.getRegName(regName));

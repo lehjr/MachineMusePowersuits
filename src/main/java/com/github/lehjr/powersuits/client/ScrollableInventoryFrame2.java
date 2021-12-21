@@ -1,30 +1,27 @@
 package com.github.lehjr.powersuits.client;
 
-import com.github.lehjr.numina.network.NuminaPackets;
-import com.github.lehjr.numina.network.packets.CreativeInstallModuleRequestPacket;
+import com.github.lehjr.numina.util.capabilities.inventory.modularitem.IModularItem;
 import com.github.lehjr.numina.util.client.gui.IContainerULOffSet;
 import com.github.lehjr.numina.util.client.gui.frame.GUISpacer;
 import com.github.lehjr.numina.util.client.gui.frame.InventoryFrame;
 import com.github.lehjr.numina.util.client.gui.frame.MultiRectHolderFrame;
 import com.github.lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
-import com.github.lehjr.numina.util.client.gui.slot.HideableSlotItemHandler;
 import com.github.lehjr.powersuits.client.gui.common.ModularItemSelectionFrameContainered;
 import com.github.lehjr.powersuits.client.gui.common.ModularItemTabToggleWidget;
 import com.github.lehjr.powersuits.constants.MPSConstants;
-import com.github.lehjr.powersuits.container.IModularItemContainerSlotProvider;
+import com.github.lehjr.powersuits.network.MPSPackets;
+import com.github.lehjr.powersuits.network.packets.ContainerGuiOpenPacket;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.inventory.container.Container;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.TranslationTextComponent;
-import org.apache.commons.lang3.tuple.Pair;
+import net.minecraftforge.items.CapabilityItemHandler;
 
-import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.stream.IntStream;
 
-public class ScrollableInventoryFrame2 <C extends IModularItemContainerSlotProvider> extends MultiRectHolderFrame implements IContainerULOffSet {
+public class ScrollableInventoryFrame2 <C extends Container> extends MultiRectHolderFrame implements IContainerULOffSet {
     C container;
     GUISpacer topSpacer;
     ModularItemSelectionFrameContainered modularItemSelectionFrame;
@@ -39,7 +36,6 @@ public class ScrollableInventoryFrame2 <C extends IModularItemContainerSlotProvi
 
     TranslationTextComponent title = new TranslationTextComponent(MPSConstants.MOD_ID + ".modularitem.inventory");
 
-
     public ScrollableInventoryFrame2(C containerIn, ModularItemSelectionFrameContainered modularItemSelectionFrame, IContainerULOffSet.ulGetter ulgetter) {
         super(false, true, 0, 0);
         this.container = containerIn;
@@ -53,8 +49,23 @@ public class ScrollableInventoryFrame2 <C extends IModularItemContainerSlotProvi
 
         innerFrame.addRect(new GUISpacer(7, 108));
 
+        ArrayList<Integer> range = new ArrayList<>();
+
+        modularItemSelectionFrame.getSelectedTab().ifPresent(tab->{
+            if (selected != tab) {
+                selected = tab;
+                EquipmentSlotType type = tab.getSlotType();
+                getMinecraft().player.getItemBySlot(type).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+                        .filter(IModularItem.class::isInstance)
+                        .map(IModularItem.class::cast)
+                        .ifPresent(iItemHandler -> {
+                                IntStream.range(0, iItemHandler.getSlots()).forEach(i-> range.add(i));
+                        });
+            }
+        });
+
         // main frame
-        inventoryFrame = new InventoryFrame((Container) container, 9, 6, 6, new ArrayList<Integer>(), ulgetter);
+        inventoryFrame = new InventoryFrame(container, 9, 6, 6, range, ulgetter);
         inventoryFrame.setDrawBackground(true);
         inventoryFrame.setDrawBorder(true);
 
@@ -77,33 +88,51 @@ public class ScrollableInventoryFrame2 <C extends IModularItemContainerSlotProvi
     public void update(double mouseX, double mouseY) {
         modularItemSelectionFrame.getSelectedTab().ifPresent(tab->{
             if (selected != tab) {
+                System.out.println();
+
                 selected = tab;
                 EquipmentSlotType type = tab.getSlotType();
-                Pair<Integer, Integer> range = container.getRangeForEquipmentSlot(type);
-                if (range != null) {
-                    this.inventoryFrame.setNewValues(new ArrayList<Integer>(){{
-                        IntStream.range(range.getLeft(), range.getRight()).forEach(i-> add(i));
-                    }});
-                } else {
-                    this.inventoryFrame.setNewValues(new ArrayList<>());
-                }
+                MPSPackets.CHANNEL_INSTANCE.sendToServer(new ContainerGuiOpenPacket(type));
+
+//                getMinecraft().player.getItemBySlot(type).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+//                        .filter(IModularItem.class::isInstance)
+//                        .map(IModularItem.class::cast)
+//                        .ifPresent(iItemHandler -> {
+//                            this.inventoryFrame.setNewValues(new ArrayList<Integer>(){{
+//                                IntStream.range(0, iItemHandler.getSlots()).forEach(i-> add(i));
+//                            }});
+//                        });
+
+
+//                Pair<Integer, Integer> range = container.getRangeForEquipmentSlot(type);
+//                if (range != null) {
+
+//                } else {
+//                    this.inventoryFrame.setNewValues(new ArrayList<>());
+//                }
+
+                System.out.println("update me");
+
+//                getMinecraft().player.getItemBySlot(type).getCapability()
+
+
             }
         });
         super.update(mouseX, mouseY);
     }
-
-
-    public void creativeInstall(@Nonnull ItemStack module) {
-        if (!module.isEmpty()) {
-            ((Container)container).slots.stream().filter(HideableSlotItemHandler.class::isInstance).filter(slot -> slot.isActive() && slot.mayPlace(module)).findFirst().ifPresent(slot -> {
-                NuminaPackets.CHANNEL_INSTANCE.sendToServer(new CreativeInstallModuleRequestPacket(
-                        ((Container) container).containerId,
-                        ((Container)container).slots.indexOf(slot),
-                         module
-                ));
-            });
-        }
-    }
+//
+//
+//    public void creativeInstall(@Nonnull ItemStack module) {
+//        if (!module.isEmpty()) {
+//            ((Container)container).slots.stream().filter(HideableSlotItemHandler.class::isInstance).filter(slot -> slot.isActive() && slot.mayPlace(module)).findFirst().ifPresent(slot -> {
+//                NuminaPackets.CHANNEL_INSTANCE.sendToServer(new CreativeInstallModuleRequestPacket(
+//                        ((Container) container).containerId,
+//                        ((Container)container).slots.indexOf(slot),
+//                         module
+//                ));
+//            });
+//        }
+//    }
 
     @Override
     public void setULGetter(ulGetter ulgetter) {

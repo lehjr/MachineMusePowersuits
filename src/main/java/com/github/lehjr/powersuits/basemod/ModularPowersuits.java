@@ -39,7 +39,7 @@ import com.github.lehjr.powersuits.client.control.KeybindKeyHandler;
 import com.github.lehjr.powersuits.client.event.ClientTickHandler;
 import com.github.lehjr.powersuits.client.event.ModelBakeEventHandler;
 import com.github.lehjr.powersuits.client.event.RenderEventHandler;
-import com.github.lehjr.powersuits.client.gui.modding.module.craft_install_salvage.CraftInstallSalvageGui;
+import com.github.lehjr.powersuits.client.gui.modding.module.install_salvage.InstallSalvageGui;
 import com.github.lehjr.powersuits.client.render.entity.LuxCapacitorEntityRenderer;
 import com.github.lehjr.powersuits.client.render.entity.PlasmaBoltEntityRenderer;
 import com.github.lehjr.powersuits.client.render.entity.RailGunBoltRenderer;
@@ -159,7 +159,10 @@ public class ModularPowersuits {
         RenderingRegistry.registerEntityRenderingHandler(MPSObjects.SPINNING_BLADE_ENTITY_TYPE.get(), SpinningBladeEntityRenderer::new);
 
 //        ScreenManager.registerFactory(MPSObjects.MODULE_CONFIG_CONTAINER_TYPE, TinkerModuleGui::new);
-        ScreenManager.register(MPSObjects.SALVAGE_CRAFT_CONTAINER_TYPE.get(), CraftInstallSalvageGui::new);
+//        ScreenManager.register(MPSObjects.SALVAGE_CRAFT_CONTAINER_TYPE.get(), CraftInstallSalvageGui::new);
+
+        ScreenManager.register(MPSObjects.INSTALL_SALVAGE_CONTAINER_TYPE.get(), InstallSalvageGui::new);
+
 
 
 //        ScreenManager.register(MPSObjects.TINKERTABLE_CONTAINER_TYPE.get(), TinkerTableGui::new); // FIXME: replace with module craft/install/salvage GUI + module tweak GUI

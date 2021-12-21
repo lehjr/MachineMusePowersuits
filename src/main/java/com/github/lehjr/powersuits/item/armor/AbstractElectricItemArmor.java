@@ -57,7 +57,6 @@ import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.ai.attributes.Attribute;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.Item;
@@ -113,6 +112,8 @@ public abstract class AbstractElectricItemArmor extends ArmorItem {
 //      */
     @Override
     public <T extends LivingEntity> int damageItem(ItemStack stack, int amount, T entity, Consumer<T> onBroken) {
+        // FIXME: this should probably factor in the damage value
+
         int enerConsum = (int) Math.round(stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
                 .filter(IModularItem.class::isInstance)
                 .map(IModularItem.class::cast)

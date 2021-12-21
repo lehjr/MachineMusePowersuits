@@ -52,6 +52,8 @@
   "item.powersuits.fluid_tank.desc": "Stores fluid to enhance the performance of the cooling system.",
   "item.powersuits.mob_repulsor": "Mob Repulsor",
   "item.powersuits.mob_repulsor.desc": "Pushes mobs away from you when activated, but constantly drains power. It is highly recommended that you set this module to a keybind because of the high energy draw.",
+  "item.powersuits.piglin_pacification_module": "Piglin Pacification Module",
+  "item.powersuits.mob_repulsor.desc": "Emulates gold armor for Piglin pacification.",
   "item.powersuits.water_electrolyzer": "Water Electrolyzer",
   "item.powersuits.water_electrolyzer.desc": "When you run out of air, this module will jolt the water around you, electrolyzing a small bubble to breathe from.",
 
@@ -291,7 +293,8 @@
   "_comment": "GUI selection tab",
   "powersuits.modularitem.inventory": "Modular Item Inventory",
   "gui.powersuits.installed.modules": "Installed Modules",
-  "gui.powersuits.tab.craft.install.salvage": "Craft Install Salvage",
+  "gui.powersuits.compatible.modules": "Compatible Modules",
+  "gui.powersuits.tab.install.salvage": "Install/Salvage",
   "gui.powersuits.tab.module.tweak": "Module Tweak",
   "gui.powersuits.tab.keybinds": "Keybinds",
   "gui.powersuits.tab.visual": "Visual",
@@ -306,6 +309,8 @@
   "gui.powersuits.install.desc": "Installs the mopdule in the selected item",
   "gui.powersuits.salvage": "Salvage",
   "gui.powersuits.salvage.desc": "Remove module from selected item and return to player",
+  "gui.powersuits.creative.install": "Install",
+  "gui.powersuits.creative.install.desc": "Installs module into selected modular item while player is in creative mode",
 
   "_comment": "GUI color picker frame (also used for Lux Capacitor)",
   "module.tradeoff.red": "Red",

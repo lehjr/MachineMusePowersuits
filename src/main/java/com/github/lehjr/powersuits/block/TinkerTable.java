@@ -60,7 +60,6 @@ import net.minecraftforge.common.ToolType;
 import javax.annotation.Nullable;
 
 public class TinkerTable extends HorizontalBlock implements IWaterLoggable {
-    private static final ITextComponent title = new TranslationTextComponent("container.crafting", new Object[0]);
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
     protected static final VoxelShape TOP_SHAPE = Block.box(
             0.0D, // West
@@ -95,8 +94,6 @@ public class TinkerTable extends HorizontalBlock implements IWaterLoggable {
             Minecraft.getInstance().tell(() -> Minecraft.getInstance().setScreen(new ModuleTweakGui(new TranslationTextComponent("gui.tinkertable"), true)));
         }
     }
-
-
 
     @SuppressWarnings( "deprecation" )
     @Deprecated

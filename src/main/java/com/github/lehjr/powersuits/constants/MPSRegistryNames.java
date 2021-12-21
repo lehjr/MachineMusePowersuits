@@ -144,6 +144,7 @@ public class MPSRegistryNames {
     public static final String TINKERTABLE_CONTAINER_TYPE = "tinkertable_container_type";
 
     public static final String INSTALL_SALVAGE_CRAFT_CONTAINER_TYPE = "install_salvage_craft_container_type";
+    public static final String INSTALL_SALVAGE_CONTAINER_TYPE = "install_salvage_container_type";
     public static final String MODULE_TWEAK_CONTAINER_TYPE = "module_tweak_container_type";
 
     //-------------------------------------------

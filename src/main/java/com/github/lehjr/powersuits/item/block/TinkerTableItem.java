@@ -34,10 +34,13 @@ import com.github.lehjr.numina.util.capabilities.module.rightclick.IRightClickMo
 import com.github.lehjr.numina.util.capabilities.module.rightclick.RightClickModule;
 import com.github.lehjr.powersuits.basemod.MPSObjects;
 import com.github.lehjr.powersuits.config.MPSSettings;
-import com.github.lehjr.powersuits.container.MPSWorkbenchContainerProvider;
+import com.github.lehjr.powersuits.container.InstallSalvageContainer;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.inventory.container.INamedContainerProvider;
+import net.minecraft.inventory.container.SimpleNamedContainerProvider;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -45,6 +48,7 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
@@ -93,7 +97,8 @@ public class TinkerTableItem extends BlockItem {
             @Override
             public ActionResult onItemRightClick(ItemStack itemStackIn, World worldIn, PlayerEntity playerIn, Hand hand) {
                 if (!worldIn.isClientSide()) {
-                    NetworkHooks.openGui((ServerPlayerEntity) playerIn, new MPSWorkbenchContainerProvider(0), (buffer) -> buffer.writeInt(0));
+                    INamedContainerProvider container = new SimpleNamedContainerProvider((id, inventory, player) -> new InstallSalvageContainer(id, inventory, EquipmentSlotType.MAINHAND), new TranslationTextComponent("gui.powersuits.tab.install.salvage"));
+                    NetworkHooks.openGui((ServerPlayerEntity) playerIn, container, buffer -> buffer.writeEnum(EquipmentSlotType.MAINHAND));
                 }
                 return super.onItemRightClick(itemStackIn, worldIn, playerIn, hand);
             }

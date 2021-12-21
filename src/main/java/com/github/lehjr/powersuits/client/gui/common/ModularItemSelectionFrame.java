@@ -1,17 +1,22 @@
 package com.github.lehjr.powersuits.client.gui.common;
 
 import com.github.lehjr.numina.util.capabilities.inventory.modularitem.IModularItem;
+import com.github.lehjr.numina.util.client.gui.clickable.ClickableButton;
 import com.github.lehjr.numina.util.client.gui.frame.GUISpacer;
 import com.github.lehjr.numina.util.client.gui.frame.MultiRectHolderFrame;
 import com.github.lehjr.numina.util.client.gui.frame.RectHolderFrame;
+import com.github.lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
+import com.github.lehjr.numina.util.math.Colour;
 import com.google.common.collect.Lists;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.items.CapabilityItemHandler;
 
 import javax.annotation.Nonnull;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -33,10 +38,16 @@ public class ModularItemSelectionFrame extends MultiRectHolderFrame {
             EquipmentSlotType.OFFHAND
     };
 
+    public ClickableButton creativeInstallButton;
+
     public final List<ModularItemTabToggleWidget> tabButtons = Lists.newArrayList();
     public ModularItemTabToggleWidget selectedTab = null;
 
     public ModularItemSelectionFrame() {
+        this(EquipmentSlotType.HEAD);
+    }
+
+    public ModularItemSelectionFrame(EquipmentSlotType type) {
         super(false, true, 30, 0);
         /** 6 widgets * 27 high each = 162 + 5 spacers at 3 each = 177 gui height is 200 so 23 to split */
         // top spacer
@@ -54,6 +65,11 @@ public class ModularItemSelectionFrame extends MultiRectHolderFrame {
                     this.onChanged();
                     disableContainerSlots();
                 }});
+
+            if (slotType == type) {
+                this.selectedTab = widget;
+                this.selectedTab.setStateActive(true);
+            }
 
             addRect(new RectHolderFrame(widget, 30, 27, RectHolderFrame.RectPlacement.CENTER_RIGHT) {
                 @Override
@@ -84,11 +100,52 @@ public class ModularItemSelectionFrame extends MultiRectHolderFrame {
 
                 // bottom spacer
             } else {
-                addRect(new GUISpacer(30, 12));
+//                addRect(new GUISpacer(30, 12));
+                addRect(new GUISpacer(30, 3));
+                creativeInstallButton = new ClickableButton(new TranslationTextComponent("gui.powersuits.creative.install"), MusePoint2D.ZERO, false);
+                creativeInstallButton.setHeight(18);
+                creativeInstallButton.setWidth(30);
+                creativeInstallButton.disableAndHide();
+                creativeInstallButton.setEnabledBackground(Colour.LIGHT_GREY);
+                creativeInstallButton.setDisabledBackground(Colour.RED);
+
+                addRect(new RectHolderFrame(creativeInstallButton, 30, 27, RectHolderFrame.RectPlacement.CENTER_RIGHT) {
+                    List<ITextComponent> toolTip =  new ArrayList<ITextComponent>() {{
+                        add(new TranslationTextComponent("gui.powersuits.creative.install.desc"));
+                    }};
+
+                    @Override
+                    public boolean mouseClicked(double mouseX, double mouseY, int button) {
+                        return creativeInstallButton.mouseClicked(mouseX, mouseY, button);
+                    }
+
+                    @Override
+                    public boolean mouseReleased(double mouseX, double mouseY, int button) {
+                        return creativeInstallButton.mouseReleased(mouseX, mouseY, button);
+                    }
+
+                    @Override
+                    public List<ITextComponent> getToolTip(int x, int y) {
+                        if (creativeInstallButton.containsPoint(x, y)) {
+                            return toolTip;
+                        }
+                        return null;
+                    }
+
+                    @Override
+                    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float frameTime) {
+                        super.render(matrixStack, mouseX, mouseY, frameTime);
+                        creativeInstallButton.render(matrixStack, mouseX, mouseY, frameTime);
+                    }
+                });
                 doneAdding();
             }
             i++;
         }
+    }
+
+    public ClickableButton getCreativeInstallButton() {
+        return creativeInstallButton;
     }
 
     void disableContainerSlots() {
