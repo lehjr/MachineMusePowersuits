@@ -41,6 +41,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.ITextComponent;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.List;
 
 /**
@@ -60,6 +61,7 @@ public class ClickableModule extends Clickable {
     ItemStack module;
     int inventorySlot;
     public final EnumModuleCategory category;
+    Integer tier;
 
     public ClickableModule(@Nonnull ItemStack module, MusePoint2D position, int inventorySlot, EnumModuleCategory category) {
         super();
@@ -69,6 +71,12 @@ public class ClickableModule extends Clickable {
         this.inventorySlot = inventorySlot;
         this.category = category;
         allowed = module.getCapability(PowerModuleCapability.POWER_MODULE).map(pm->pm.isAllowed()).orElse(false);
+        tier = module.getCapability(PowerModuleCapability.POWER_MODULE).map(pm-> pm.getTier()).orElse(null);
+    }
+
+    @Nullable
+    public Integer getTier() {
+        return tier;
     }
 
     public int getInventorySlot() {

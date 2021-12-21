@@ -68,6 +68,7 @@ public class GuiIcon {
     public final DrawableGuiIcon lightning;
     public final DrawableGuiIcon weaponSlotBackground;
     public final DrawableGuiIcon energyStorageBackground;
+    public final DrawableGuiIcon energyGenerationBackground;
     public GuiIcon(NuminaSpriteUploader spriteUploader) {
         this.spriteUploader = spriteUploader;
         checkmark = registerIcon("checkmark", 16, 16);
@@ -82,6 +83,7 @@ public class GuiIcon {
         lightning = registerIcon("lightning", 800, 62);
         weaponSlotBackground = registerIcon("weapon", 16, 16);
         energyStorageBackground = registerIcon("energystorage",32, 32);
+        energyGenerationBackground = registerIcon("energygeneration",32, 32);
     }
 
     private DrawableGuiIcon registerIcon(String name, int width, int height) {

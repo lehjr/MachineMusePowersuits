@@ -27,6 +27,7 @@
 package com.github.lehjr.numina.util.client.gui.slot;
 
 import com.github.lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
+import net.minecraft.inventory.container.Slot;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 
@@ -75,5 +76,11 @@ public class HideableSlotItemHandler extends SlotItemHandler implements IHideabl
     public void setPosition(MusePoint2D position) {
         this.x = (int) position.getX();
         this.y = (int) position.getY();
+    }
+
+    @Override
+    public boolean isSameInventory(Slot other)
+    {
+        return other instanceof SlotItemHandler && ((SlotItemHandler) other).getItemHandler() == getItemHandler();
     }
 }
