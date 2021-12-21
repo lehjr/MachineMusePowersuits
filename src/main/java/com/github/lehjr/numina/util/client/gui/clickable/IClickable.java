@@ -102,6 +102,14 @@ public interface IClickable extends IDrawableRect {
     }
 
     default boolean mouseReleased(double mouseX, double mouseY, int button) {
+        if(this.isEnabled() && this.isVisible()) {
+            InputMappings.Input mouseKey = InputMappings.Type.MOUSE.getOrCreate(button);
+            boolean flag = Minecraft.getInstance().options.keyPickItem.isActiveAndMatches(mouseKey);
+
+            if (button == 0 || button == 1 || flag) {
+                this.onReleased();
+            }
+        }
         return false;
     }
 
