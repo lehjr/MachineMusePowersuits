@@ -26,7 +26,6 @@
 
 package com.github.lehjr.powersuits.client.model.helper;
 
-import com.github.lehjr.numina.util.capabilities.render.modelspec.ModelRegistry;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.client.model.ModelLoader;
 
@@ -61,7 +60,7 @@ public class MPSModelHelper {
 
 //        ModelPowerFistHelper.INSTANCE.loadPowerFistModels(event);
 
-        ModelRegistry.getInstance().getNames().forEach(name->System.out.println("modelregistry name: " + name));
+//        ModelRegistry.getInstance().getNames().forEach(name->System.out.println("modelregistry name: " + name));
     }
 
     public static void parseSpecFile(String resourceString, @Nullable TextureStitchEvent.Pre event, ModelLoader bakery) {

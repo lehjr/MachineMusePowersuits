@@ -47,18 +47,23 @@ import com.github.lehjr.powersuits.client.render.entity.SpinningBladeEntityRende
 import com.github.lehjr.powersuits.config.MPSSettings;
 import com.github.lehjr.powersuits.constants.MPSConstants;
 import com.github.lehjr.powersuits.constants.MPSRegistryNames;
+import com.github.lehjr.powersuits.container.InstallSalvageContainer;
 import com.github.lehjr.powersuits.event.*;
 import com.github.lehjr.powersuits.network.MPSPackets;
+import net.minecraft.block.BlockState;
 import net.minecraft.client.gui.ScreenManager;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.inventory.container.SimpleNamedContainerProvider;
+import net.minecraft.inventory.container.Slot;
 import net.minecraft.inventory.container.WorkbenchContainer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Hand;
+import net.minecraft.stats.Stats;
+import net.minecraft.util.*;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
@@ -217,13 +222,100 @@ public class ModularPowersuits {
             IRightClickModule rightClick = new RightClickModule(stack, EnumModuleCategory.TOOL, EnumModuleTarget.TOOLONLY, MPSSettings::getModuleConfig) {
                 @Override
                 public ActionResult onItemRightClick(ItemStack itemStackIn, World worldIn, PlayerEntity playerIn, Hand hand) {
-                    if (!worldIn.isClientSide()) {
-                        NetworkHooks.openGui((ServerPlayerEntity) playerIn,
-                                new SimpleNamedContainerProvider((id, inventory, player) ->
-                                        new WorkbenchContainer(id, inventory)/*, IWorldPosCallable.of(worldIn, playerIn.getPosition()))*/, MPSConstants.CRAFTING_TABLE_CONTAINER_NAME));
+                    if (worldIn.isClientSide) {
                         return ActionResult.success(itemStackIn);
+                    } else {
+//                        playerIn.openMenu(                            new SimpleNamedContainerProvider((id, inven, player) -> new WorkbenchContainer(id, inven, IWorldPosCallable.create(player.level, player.blockPosition())), MPSConstants.CRAFTING_TABLE_CONTAINER_NAME));
+                        INamedContainerProvider container = new SimpleNamedContainerProvider((id, inven, player) -> new WorkbenchContainer(id, inven, /* IWorldPosCallable.create(player.level, player.blockPosition()) */ IWorldPosCallable.NULL) {
+                            @Override
+                            public void slotsChanged(IInventory p_75130_1_) {
+                                WorkbenchContainer.slotChangedCraftingGrid(this.containerId, this.player.level, this.player, this.craftSlots, this.resultSlots);
+                            }
+
+                            @Override
+                            public void removed(PlayerEntity p_75134_1_) {
+                                super.removed(p_75134_1_);
+                                this.resultSlots.clearContent();
+                                if (!p_75134_1_.level.isClientSide) {
+                                    this.clearContainer(p_75134_1_, p_75134_1_.level, this.craftSlots);
+                                }
+                            }
+
+                            @Override
+                            public boolean stillValid(PlayerEntity p_75145_1_) {
+                                return true;
+                            }
+
+                            public ItemStack quickMoveStack(PlayerEntity p_82846_1_, int p_82846_2_) {
+                                ItemStack itemstack = ItemStack.EMPTY;
+                                Slot slot = this.slots.get(p_82846_2_);
+                                if (slot != null && slot.hasItem()) {
+                                    ItemStack itemstack1 = slot.getItem();
+                                    itemstack = itemstack1.copy();
+                                    if (p_82846_2_ == 0) {
+//                                        this.access.execute((p_217067_2_, p_217067_3_) -> {
+//                                            itemstack1.getItem().onCraftedBy(itemstack1, p_217067_2_, p_82846_1_);
+//                                        });
+                                        if (!this.moveItemStackTo(itemstack1, 10, 46, true)) {
+                                            return ItemStack.EMPTY;
+                                        }
+
+                                        slot.onQuickCraft(itemstack1, itemstack);
+                                    } else if (p_82846_2_ >= 10 && p_82846_2_ < 46) {
+                                        if (!this.moveItemStackTo(itemstack1, 1, 10, false)) {
+                                            if (p_82846_2_ < 37) {
+                                                if (!this.moveItemStackTo(itemstack1, 37, 46, false)) {
+                                                    return ItemStack.EMPTY;
+                                                }
+                                            } else if (!this.moveItemStackTo(itemstack1, 10, 37, false)) {
+                                                return ItemStack.EMPTY;
+                                            }
+                                        }
+                                    } else if (!this.moveItemStackTo(itemstack1, 10, 46, false)) {
+                                        return ItemStack.EMPTY;
+                                    }
+
+                                    if (itemstack1.isEmpty()) {
+                                        slot.set(ItemStack.EMPTY);
+                                    } else {
+                                        slot.setChanged();
+                                    }
+
+                                    if (itemstack1.getCount() == itemstack.getCount()) {
+                                        return ItemStack.EMPTY;
+                                    }
+
+                                    ItemStack itemstack2 = slot.onTake(p_82846_1_, itemstack1);
+                                    if (p_82846_2_ == 0) {
+                                        p_82846_1_.drop(itemstack2, false);
+                                    }
+                                }
+
+                                return itemstack;
+                            }
+
+
+                        }, MPSConstants.CRAFTING_TABLE_CONTAINER_NAME);
+                        NetworkHooks.openGui((ServerPlayerEntity) playerIn, container, buffer -> buffer.writeBlockPos(playerIn.blockPosition()));
+                        NetworkHooks.openGui((ServerPlayerEntity) playerIn, container);//, buffer -> buffer.writeBlockPos(playerIn.blockPosition()));
+
+//                        NetworkHooks.openGui((ServerPlayerEntity) playerIn, new SimpleNamedContainerProvider((id, inven, player) -> new WorkbenchContainer(id, inven, IWorldPosCallable.create(player.level, player.blockPosition())), MPSConstants.CRAFTING_TABLE_CONTAINER_NAME));
+                        playerIn.awardStat(Stats.INTERACT_WITH_CRAFTING_TABLE);
+                        return ActionResult.consume(itemStackIn);
                     }
-                    return ActionResult.consume(itemStackIn);
+
+
+
+//                    if (!worldIn.isClientSide()) {
+//                        NetworkHooks.openGui((ServerPlayerEntity) playerIn,
+//                            new SimpleNamedContainerProvider((id, inven, player) -> new WorkbenchContainer(id, inven, IWorldPosCallable.create(player.level, player.blockPosition())), MPSConstants.CRAFTING_TABLE_CONTAINER_NAME));
+//                        //                                new SimpleNamedContainerProvider((id, inventory, player) ->
+////                                        new WorkbenchContainer(id, inventory)/*, IWorldPosCallable.of(worldIn, playerIn.getPosition()))*/, MPSConstants.CRAFTING_TABLE_CONTAINER_NAME));
+//                        return ActionResult.consume(itemStackIn);
+//                    }
+//                    return ActionResult.success(itemStackIn);
+
+
                 }
             };
 

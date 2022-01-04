@@ -166,13 +166,13 @@ public class CosmeticGui extends ContainerlessGui {
         }
     }
 
-    @Override
-    public boolean mouseClicked(double x, double y, int button) {
-        itemSelectFrame.getModularItemOrEmpty().getCapability(ModelSpecNBTCapability.RENDER)
-                .filter(IModelSpecNBT.class::isInstance)
-                .map(IModelSpecNBT.class::cast).ifPresent(spec -> System.out.println(spec.getRenderTag()));
-        return super.mouseClicked(x, y, button);
-    }
+//    @Override
+//    public boolean mouseClicked(double x, double y, int button) {
+//        itemSelectFrame.getModularItemOrEmpty().getCapability(ModelSpecNBTCapability.RENDER)
+//                .filter(IModelSpecNBT.class::isInstance)
+//                .map(IModelSpecNBT.class::cast).ifPresent(spec -> System.out.println(spec.getRenderTag()));
+//        return super.mouseClicked(x, y, button);
+//    }
 
     @Override
     public void renderBackground(MatrixStack matrixStack) {

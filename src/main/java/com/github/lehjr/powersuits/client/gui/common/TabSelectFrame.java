@@ -69,7 +69,7 @@ public class TabSelectFrame extends GuiFrameWithoutBackground {
 //        });
 //        buttons.add(button);
 
-        /** Craft Install Salvage GUI (the only Containered GUI)*/
+        /** Install Salvage GUI (the only Containered GUI)*/
         button = new ClickableButton2(new TranslationTextComponent("gui.powersuits.tab.install.salvage"), new MusePoint2D(0, 0), active != 0);
         button.setOnPressed(onPressed->{
             Musique.playClientSound(SoundDictionary.SOUND_EVENT_GUI_SELECT, 1);

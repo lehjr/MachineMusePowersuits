@@ -51,6 +51,7 @@ import net.minecraftforge.client.event.FOVUpdateEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
+import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.items.CapabilityItemHandler;
 
@@ -63,13 +64,13 @@ public enum RenderEventHandler {
     @OnlyIn(Dist.CLIENT)
     @SubscribeEvent
     public void preTextureStitch(TextureStitchEvent.Pre event) {
+        System.out.println("stitching called here: " + event);
         MPSModelHelper.loadArmorModels(event, null);
     }
 
     @OnlyIn(Dist.CLIENT)
     @SubscribeEvent
     public void onTextureStitch(TextureStitchEvent.Post event) {
-
     }
 
     @OnlyIn(Dist.CLIENT)
