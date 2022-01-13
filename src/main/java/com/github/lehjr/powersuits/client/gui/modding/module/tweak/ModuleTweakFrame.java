@@ -172,11 +172,11 @@ public class ModuleTweakFrame extends ScrollableFrame {
                 totalSize += 9;
             }
 
-            System.out.println("tweaks size: " + tweaks.size());
+//            System.out.println("tweaks size: " + tweaks.size());
 
             int y = 0;
             for (String tweak : tweaks.keySet()) {
-                System.out.println(tweak + ":  " + tweaks.get(tweak));
+//                System.out.println(tweak + ":  " + tweaks.get(tweak));
 
                 y += 23;
                 MusePoint2D center = new MusePoint2D(getRect().centerx(), getRect().top() + y);

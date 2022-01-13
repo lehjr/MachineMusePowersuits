@@ -1,7 +1,6 @@
 package com.github.lehjr.powersuits.network.packets;
 
 import com.github.lehjr.numina.util.capabilities.inventory.modularitem.IModularItem;
-import com.github.lehjr.numina.util.capabilities.render.ModelSpecNBTCapability;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.Item;

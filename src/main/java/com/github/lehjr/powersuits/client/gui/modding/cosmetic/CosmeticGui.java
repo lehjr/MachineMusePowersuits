@@ -26,8 +26,6 @@
 
 package com.github.lehjr.powersuits.client.gui.modding.cosmetic;
 
-import com.github.lehjr.numina.util.capabilities.render.IModelSpecNBT;
-import com.github.lehjr.numina.util.capabilities.render.ModelSpecNBTCapability;
 import com.github.lehjr.numina.util.client.gui.ContainerlessGui;
 import com.github.lehjr.numina.util.client.gui.frame.EntityRenderFrame;
 import com.github.lehjr.powersuits.client.gui.common.ModularItemSelectionFrame;

@@ -103,6 +103,10 @@ public class LuxCapacitorBlock extends DirectionalBlock implements IWaterLoggabl
         return ToolType.PICKAXE;
     }
 
+    BlockPos relative(BlockPos pos, Direction direction) {
+        return pos.relative(direction);
+    }
+
     @Nullable
     @Override
     public BlockState getStateForPlacement(BlockItemUseContext context) {
@@ -115,22 +119,13 @@ public class LuxCapacitorBlock extends DirectionalBlock implements IWaterLoggabl
     @Override
     public boolean canSurvive(BlockState state, IWorldReader worldIn, BlockPos pos) {
         Direction facing = state.hasProperty(FACING) ? state.getValue(FACING) : Direction.UP;
-
-        System.out.println("direction: " + facing);
-
-        System.out.println("blockstate.is(BlockTags.UNSTABLE_BOTTOM_CENTER) ? false: " + (state.is(BlockTags.UNSTABLE_BOTTOM_CENTER)));
-        System.out.println("blockstate.isFaceSturdy(world, pos, direction, BlockVoxelShape.CENTER): " + (state.isFaceSturdy(worldIn, pos, facing.getOpposite(), BlockVoxelShape.CENTER)));
-
         return canSupportCenter(worldIn, pos.relative(facing.getOpposite()), facing);
     }
 
     public static boolean canSupportCenter(IWorldReader world, BlockPos pos, Direction direction) {
-        System.out.println("doing something here");
-
         BlockState blockstate = world.getBlockState(pos);
         return direction == Direction.DOWN && blockstate.is(BlockTags.UNSTABLE_BOTTOM_CENTER) ? false : blockstate.isFaceSturdy(world, pos, direction, BlockVoxelShape.CENTER);
     }
-
 
     @SuppressWarnings( "deprecation" )
     @Deprecated

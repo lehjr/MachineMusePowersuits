@@ -27,7 +27,6 @@
 package com.github.lehjr.powersuits.network.packets;
 
 import com.github.lehjr.powersuits.container.InstallSalvageContainer;
-import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.inventory.container.SimpleNamedContainerProvider;
