@@ -34,8 +34,11 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.DirectionalBlock;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ThrowableEntity;
 import net.minecraft.fluid.FluidState;
+import net.minecraft.item.BlockItemUseContext;
+import net.minecraft.item.ItemUseContext;
 import net.minecraft.network.IPacket;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.tags.FluidTags;
@@ -92,11 +95,33 @@ public class LuxCapacitorEntity extends ThrowableEntity implements IEntityAdditi
                 .setValue(LuxCapacitorBlock.WATERLOGGED, Boolean.valueOf(ifluidstate.is(FluidTags.WATER) && ifluidstate.getAmount() == 8));
     }
 
+
+    BlockItemUseContext getUseContext(BlockPos pos, Direction facing, BlockRayTraceResult hitResult) {
+        System.out.println("level.isClientSide: " + level.isClientSide());
+
+
+        System.out.println("getUsedHand: " + ((PlayerEntity) this.getOwner()).getUsedItemHand());
+
+
+        return new BlockItemUseContext(
+                new ItemUseContext(
+                        (PlayerEntity)this.getOwner(),
+                        ((PlayerEntity) this.getOwner()).getUsedItemHand(),
+                        hitResult));
+    }
+
+
     @Override
     protected void onHit(RayTraceResult hitResult) {
-        if (color == null) {
-            color = LuxCapacitorBlock.defaultColor;
+        if (level.isClientSide()) {
+            return;
         }
+
+        if (color == null) {
+            color = Colour.WHITE;
+        }
+
+        LuxCapacitorBlock luxBlock = MPSObjects.LUX_CAPACITOR_BLOCK.get();
 
         if (this.isAlive() && hitResult.getType() == RayTraceResult.Type.BLOCK) {
             BlockRayTraceResult blockRayTrace = (BlockRayTraceResult)hitResult;
@@ -104,16 +129,17 @@ public class LuxCapacitorEntity extends ThrowableEntity implements IEntityAdditi
             int x = blockRayTrace.getBlockPos().getX() - dir.getStepX();
             int y = blockRayTrace.getBlockPos().getY() - dir.getStepY();
             int z = blockRayTrace.getBlockPos().getZ() - dir.getStepZ();
-            if (y > 0) {
-                BlockPos blockPos = new BlockPos(x, y, z);
-                if (MPSObjects.LUX_CAPACITOR_BLOCK.get().defaultBlockState().canSurvive(level, blockPos)) {
-                    BlockState blockState = getBlockState(blockPos, blockRayTrace.getDirection());
+            BlockPos blockPos = new BlockPos(x, y, z);
+
+            if (y > 0 && level.getBlockState(blockPos).canBeReplaced(getUseContext(blockPos, blockRayTrace.getDirection(), blockRayTrace))) {
+                if (luxBlock.defaultBlockState().canSurvive(level, blockPos)) {
+                    BlockState blockState = MPSObjects.LUX_CAPACITOR_BLOCK.get().getStateForPlacement(getUseContext(blockPos, blockRayTrace.getDirection(), blockRayTrace));
                     level.setBlockAndUpdate(blockPos, blockState);
                     level.setBlockEntity(blockPos, new LuxCapacitorTileEntity(color));
                 } else {
                     for (Direction facing : Direction.values()) {
                         if (MPSObjects.LUX_CAPACITOR_BLOCK.get().defaultBlockState().setValue(LuxCapacitorBlock.FACING, facing).canSurvive(level, blockPos)) {
-                            BlockState blockState = getBlockState(blockPos, facing);
+                            BlockState blockState = MPSObjects.LUX_CAPACITOR_BLOCK.get().getStateForPlacement(getUseContext(blockPos, facing, blockRayTrace));
                             level.setBlockAndUpdate(blockPos, blockState);
                             level.setBlockEntity(blockPos, new LuxCapacitorTileEntity(color));
                             break;
