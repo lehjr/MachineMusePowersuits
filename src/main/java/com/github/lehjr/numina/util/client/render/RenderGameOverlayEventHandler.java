@@ -27,13 +27,8 @@
 package com.github.lehjr.numina.util.client.render;
 
 import com.github.lehjr.numina.util.capabilities.inventory.modechanging.IModeChangingItem;
-import com.github.lehjr.numina.util.capabilities.module.powermodule.PowerModuleCapability;
-import com.github.lehjr.numina.util.capabilities.module.toggleable.IToggleableModule;
-import com.mojang.blaze3d.matrix.MatrixStack;
-import net.minecraft.client.MainWindow;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
-import net.minecraft.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;

@@ -94,7 +94,7 @@ public class ModeChangingModularItem extends ModularItem implements IModeChangin
             currY = baroffset - 18;
             if (module.getCapability(PowerModuleCapability.POWER_MODULE).map(pm-> {
                 if (pm instanceof IToggleableModule) {
-                    return ((IToggleableModule) pm).isModuleOnline();
+                    return pm.isModuleOnline();
                 }
                 return true;
             }).orElse(false)) {
@@ -218,12 +218,7 @@ public class ModeChangingModularItem extends ModularItem implements IModeChangin
     @Override
     public boolean isModuleActiveAndOnline(ResourceLocation moduleName) {
         if (hasActiveModule(moduleName)) {
-            return getActiveModule().getCapability(PowerModuleCapability.POWER_MODULE).map(pm-> {
-                if (pm instanceof IToggleableModule) {
-                    return ((IToggleableModule) pm).isModuleOnline();
-                }
-                return true;
-            }).orElse(false);
+            return getActiveModule().getCapability(PowerModuleCapability.POWER_MODULE).map(pm-> pm.isModuleOnline()).orElse(false);
         }
         return false;
     }
@@ -231,16 +226,16 @@ public class ModeChangingModularItem extends ModularItem implements IModeChangin
     @Override
     public CompoundNBT serializeNBT() {
         CompoundNBT nbt = super.serializeNBT();
-        nbt.putInt(TAG_MODE, this.activeMode);
+        nbt.putInt(TAG_MODE, activeMode);
         return nbt;
     }
 
     @Override
     public void deserializeNBT(CompoundNBT nbt) {
         if (nbt.contains(TAG_MODE))
-            this.activeMode = nbt.getInt(TAG_MODE);
+            activeMode = nbt.getInt(TAG_MODE);
         else
-            this.activeMode = -1;
+            activeMode = -1;
         super.deserializeNBT(nbt);
     }
 }

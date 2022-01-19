@@ -82,4 +82,8 @@ public interface IPowerModule {
     default CompoundNBT getModuleTag() {
         return MuseNBTUtils.getModuleTag(getModuleStack());
     }
+
+    default boolean isModuleOnline() {
+        return true;
+    }
 }

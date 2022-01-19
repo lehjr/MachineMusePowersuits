@@ -32,5 +32,6 @@ import com.github.lehjr.numina.util.capabilities.module.powermodule.IPowerModule
 public interface IToggleableModule extends IPowerModule, IItemStackUpdate {
     void toggleModule(boolean online);
 
+    @Override
     boolean isModuleOnline();
 }

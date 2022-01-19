@@ -220,15 +220,8 @@ public class ModularItem extends ItemStackHandler implements IModularItem {
      * return true for a module is allowed and either can't be turned off or is on, otherwise return false
      */
     public boolean isModuleOnline(ItemStack module) {
-        return module.getCapability(PowerModuleCapability.POWER_MODULE).map(m -> {
-            if (m.isAllowed()) {
-                if (m instanceof IToggleableModule) {
-                    return ((IToggleableModule) m).isModuleOnline();
-                }
-                return true;
-            }
-            return false;
-        }).orElse(false);
+        return module.getCapability(PowerModuleCapability.POWER_MODULE)
+                .map(m -> m.isAllowed() && m.isModuleOnline()).orElse(false);
     }
 
     @Nonnull
@@ -237,15 +230,7 @@ public class ModularItem extends ItemStackHandler implements IModularItem {
         for (int i = 0; i < getSlots(); i++) {
             ItemStack module = getStackInSlot(i);
             if (!module.isEmpty() && module.getItem().getRegistryName().equals(moduleName)) {
-                if (module.getCapability(PowerModuleCapability.POWER_MODULE).map(m -> {
-                    if (m.isAllowed()) {
-                       if(m instanceof IToggleableModule){
-                            return ((IToggleableModule) m).isModuleOnline();
-                        }
-                       return true;
-                    }
-                    return false;
-                }).orElse(false)) {
+                if (module.getCapability(PowerModuleCapability.POWER_MODULE).map(m -> m.isAllowed() && m.isModuleOnline()).orElse(false)) {
                     return module;
                 }
             }
@@ -258,7 +243,7 @@ public class ModularItem extends ItemStackHandler implements IModularItem {
         for (int i = 0; i < getSlots(); i++) {
             getStackInSlot(i).getCapability(PowerModuleCapability.POWER_MODULE).ifPresent(m ->{
                 if (m.isAllowed() && m instanceof IPlayerTickModule) {
-                    if (((IPlayerTickModule) m).isModuleOnline()) {
+                    if (m.isModuleOnline()) {
                         ((IPlayerTickModule) m).onPlayerTickActive(player, this.getModularItemStack());
                     } else {
                         ((IPlayerTickModule) m).onPlayerTickInactive(player, this.getModularItemStack());
