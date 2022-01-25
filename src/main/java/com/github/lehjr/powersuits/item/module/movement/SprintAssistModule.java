@@ -37,16 +37,25 @@ import com.github.lehjr.powersuits.config.MPSSettings;
 import com.github.lehjr.powersuits.constants.MPSConstants;
 import com.github.lehjr.powersuits.event.MovementManager;
 import com.github.lehjr.powersuits.item.module.AbstractPowerModule;
+import net.minecraft.entity.ai.attributes.AttributeModifier;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.ListNBT;
 import net.minecraft.util.Direction;
+import net.minecraft.util.RegistryKey;
+import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
+import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.LazyOptional;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.concurrent.Callable;
 
 /**
@@ -69,20 +78,12 @@ public class SprintAssistModule extends AbstractPowerModule {
         public CapProvider(@Nonnull ItemStack module) {
             this.module = module;
             this.ticker = new Ticker(module, EnumModuleCategory.MOVEMENT, EnumModuleTarget.LEGSONLY, MPSSettings::getModuleConfig) {{
-                addBaseProperty(MPSConstants.SPRINT_ENERGY_CONSUMPTION, 0, "FE");
-                addTradeoffProperty(MPSConstants.SPRINT_ASSIST, MPSConstants.SPRINT_ENERGY_CONSUMPTION, 100);
-                addBaseProperty(MPSConstants.SPRINT_SPEED_MULTIPLIER, .01F, "%");
-                addTradeoffProperty(MPSConstants.SPRINT_ASSIST, MPSConstants.SPRINT_SPEED_MULTIPLIER, 2.49F);
-
-                addBaseProperty(MPSConstants.SPRINT_ENERGY_CONSUMPTION, 0, "FE");
-                addTradeoffProperty(MPSConstants.COMPENSATION, MPSConstants.SPRINT_ENERGY_CONSUMPTION, 20);
-                addBaseProperty(MPSConstants.FOOD_COMPENSATION, 0, "%");
-                addTradeoffProperty(MPSConstants.COMPENSATION, MPSConstants.FOOD_COMPENSATION, 1);
-
-                addBaseProperty(MPSConstants.WALKING_ENERGY_CONSUMPTION, 0, "FE");
-                addTradeoffProperty(MPSConstants.WALKING_ASSISTANCE, MPSConstants.WALKING_ENERGY_CONSUMPTION, 100);
-                addBaseProperty(MPSConstants.WALKING_SPEED_MULTIPLIER, 0.01F, "%");
-                addTradeoffProperty(MPSConstants.WALKING_ASSISTANCE, MPSConstants.WALKING_SPEED_MULTIPLIER, 1.99F);
+                // Sprinting
+                addSimpleTradeoff(MPSConstants.SPRINT_ASSIST, MPSConstants.SPRINT_ENERGY_CONSUMPTION, "RF", 0, 5000, MPSConstants.SPRINT_SPEED_MULTIPLIER, "%", 0.1, 2.49);
+                // Sprinting Food Compensation
+                addSimpleTradeoff(MPSConstants.COMPENSATION, MPSConstants.SPRINT_ENERGY_CONSUMPTION, "RF", 0, 2000, MPSConstants.FOOD_COMPENSATION, "%", 0, 1);
+                // Walking
+                addSimpleTradeoff(MPSConstants.WALKING_ASSISTANCE, MPSConstants.WALKING_ENERGY_CONSUMPTION, "RF", 0, 5000, MPSConstants.WALKING_SPEED_MULTIPLIER, "%", 0.01, 1.99);
             }};
         }
 
@@ -102,11 +103,14 @@ public class SprintAssistModule extends AbstractPowerModule {
 
             @Override
             public void onPlayerTickActive(PlayerEntity player, @Nonnull ItemStack itemStack) {
-                if (player.abilities.flying || player.isPassenger() || player.isFallFlying())
+                if (player.abilities.flying || player.isPassenger() || player.isFallFlying()) {
                     onPlayerTickInactive(player, itemStack);
+                    return;
+                }
 
                 double horzMovement = player.walkDist - player.walkDistO;
                 double totalEnergy = ElectricItemUtils.getPlayerEnergy(player);
+
                 if (horzMovement > 0) { // stop doing drain calculations when player hasn't moved
                     if (player.isSprinting()) {
                         double exhaustion = Math.round(horzMovement * 100.0F) * 0.01;
@@ -114,18 +118,30 @@ public class SprintAssistModule extends AbstractPowerModule {
                         if (sprintCost < totalEnergy) {
                             double sprintMultiplier = applyPropertyModifiers(MPSConstants.SPRINT_SPEED_MULTIPLIER);
                             double exhaustionComp = applyPropertyModifiers(MPSConstants.FOOD_COMPENSATION);
-                            ElectricItemUtils.drainPlayerEnergy(player, (int) (sprintCost * horzMovement * 5));
-                            MovementManager.INSTANCE.setMovementModifier(itemStack, sprintMultiplier, player);
+                            if (!player.level.isClientSide &&
+                                    // every 20 ticks
+                                    (player.level.getGameTime() % 20) == 0) {
+                                ElectricItemUtils.drainPlayerEnergy(player, (int) (sprintCost * horzMovement) * 20);
+                            }
+                            setMovementModifier(getModuleStack(), sprintMultiplier * 0.13 * 0.5);
                             player.getFoodData().addExhaustion((float) (-0.01 * exhaustion * exhaustionComp));
-                            player.flyingSpeed = player.getSpeed() * .2f;
+                            player.flyingSpeed = player.getSpeed() * 0.2f;
                         }
                     } else {
-                        double cost = applyPropertyModifiers(MPSConstants.WALKING_ENERGY_CONSUMPTION);
-                        if (cost < totalEnergy) {
+                        double walkCost = applyPropertyModifiers(MPSConstants.WALKING_ENERGY_CONSUMPTION);
+                        if (walkCost < totalEnergy) {
                             double walkMultiplier = applyPropertyModifiers(MPSConstants.WALKING_SPEED_MULTIPLIER);
-                            ElectricItemUtils.drainPlayerEnergy(player, (int) (cost * horzMovement * 5));
-                            MovementManager.INSTANCE.setMovementModifier(itemStack, walkMultiplier, player);
-                            player.flyingSpeed = player.getSpeed() * .2f;
+                            if (!player.level.isClientSide &&
+                                    // every 20 ticks
+                                    (player.level.getGameTime() % 20) == 0) {
+                                ElectricItemUtils.drainPlayerEnergy(player, (int) (walkCost * horzMovement));
+
+
+
+
+                            }
+                            setMovementModifier(getModuleStack(), walkMultiplier * 0.1);
+                            player.flyingSpeed = player.getSpeed() * 0.2f;
                         }
                     }
                 }
@@ -133,7 +149,44 @@ public class SprintAssistModule extends AbstractPowerModule {
 
             @Override
             public void onPlayerTickInactive(PlayerEntity player, @Nonnull ItemStack itemStack) {
-                MovementManager.INSTANCE.setMovementModifier(itemStack, 0, player);
+//                itemStack.removeTagKey("AttributeModifiers");
+                setMovementModifier(getModuleStack(), 0);
+            }
+
+            // moved here so it is still accessible if sprint assist module isn't installed.
+            public void setMovementModifier(ItemStack itemStack, double multiplier) {
+                CompoundNBT itemNBT = itemStack.getOrCreateTag();
+                boolean hasAttribute = false;
+                if (itemNBT.contains("AttributeModifiers", Constants.NBT.TAG_LIST)) {
+                    ListNBT listnbt = itemNBT.getList("AttributeModifiers", Constants.NBT.TAG_COMPOUND);
+                    ArrayList<Integer> remove = new ArrayList();
+
+                    for (int i = 0; i < listnbt.size(); ++i) {
+                        CompoundNBT attributeTag = listnbt.getCompound(i);
+                        AttributeModifier attributemodifier = AttributeModifier.load(attributeTag);
+                        if (attributemodifier != null && attributemodifier.getName().equals(Attributes.MOVEMENT_SPEED.getDescriptionId())) {
+                            // adjust the tag
+                            if (multiplier != 0) {
+                                attributeTag.putDouble("Amount", multiplier);
+                                hasAttribute = true;
+                                break;
+                            } else {
+                                // discard the tag
+                                remove.add(i);
+//                        break; // leave commented for redundant tag cleanup
+                            }
+                        }
+                    }
+                    if (hasAttribute && !remove.isEmpty()) {
+                        // remove from last to first so indices are valid
+                        Collections.reverse(remove);
+                        remove.forEach(index -> listnbt.remove(index));
+                    }
+                }
+
+                if (!hasAttribute && multiplier != 0) {
+                    itemStack.addAttributeModifier(Attributes.MOVEMENT_SPEED, new AttributeModifier(Attributes.MOVEMENT_SPEED.getDescriptionId(), multiplier, AttributeModifier.Operation.ADDITION), EquipmentSlotType.LEGS);
+                }
             }
         }
     }

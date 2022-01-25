@@ -40,10 +40,13 @@ import com.github.lehjr.powersuits.config.MPSSettings;
 import com.github.lehjr.powersuits.constants.MPSConstants;
 import com.github.lehjr.powersuits.constants.MPSRegistryNames;
 import com.google.common.util.concurrent.AtomicDouble;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.item.ArmorItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
@@ -55,9 +58,8 @@ import net.minecraftforge.event.entity.living.LivingFallEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.items.CapabilityItemHandler;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import javax.annotation.Nonnull;
+import java.util.*;
 
 public enum MovementManager {
     INSTANCE;
@@ -85,54 +87,8 @@ public enum MovementManager {
         return -0.5 * DEFAULT_GRAVITY * ticks * ticks;
     }
 
-    // moved here so it is still accessible if sprint assist module isn't installed.
-    public void setMovementModifier(ItemStack itemStack, double multiplier, PlayerEntity player) {
-        // reduce player speed according to Kinetic Energy Generator setting
-        AtomicDouble movementResistance = new AtomicDouble(0);
-        itemStack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-                .filter(IModularItem.class::isInstance)
-                .map(IModularItem.class::cast)
-                .ifPresent(iModularItem -> {
-                iModularItem.getOnlineModuleOrEmpty(MPSRegistryNames.KINETIC_GENERATOR_MODULE_REGNAME).getCapability(PowerModuleCapability.POWER_MODULE)
-                        .ifPresent(kin->{
-                            movementResistance.set(kin.applyPropertyModifiers(MPSConstants.MOVEMENT_RESISTANCE));
-                        });
-        });
-
-        multiplier -= movementResistance.get();
-        // player walking speed: 0.10000000149011612
-        // player sprintint speed: 0.13000001
-        double additive = multiplier * (player.isSprinting() ? 0.13 : 0.1)/2;
-        CompoundNBT itemNBT = itemStack.getOrCreateTag();
-        boolean hasAttribute = false;
-
-        if (itemNBT.contains("AttributeModifiers", Constants.NBT.TAG_LIST)) {
-            ListNBT listnbt = itemNBT.getList("AttributeModifiers", Constants.NBT.TAG_COMPOUND);
-            int remove = -1;
-
-            for (int i = 0; i < listnbt.size(); ++i) {
-                CompoundNBT attributeTag = listnbt.getCompound(i);
-                AttributeModifier attributemodifier = AttributeModifier.load(attributeTag);
-                if (attributemodifier != null && attributemodifier.getName().equals(Attributes.MOVEMENT_SPEED.getDescriptionId())) {
-                    // adjust the tag
-                    if (additive != 0) {
-                        attributeTag.putDouble("Amount", additive);
-                        hasAttribute = true;
-                        break;
-                    } else {
-                        // discard the tag
-                        remove = i;
-                        break;
-                    }
-                }
-            }
-            if (hasAttribute && remove != -1) {
-                listnbt.remove(remove);
-            }
-        }
-        if (!hasAttribute && additive != 0) {
-            itemStack.addAttributeModifier(Attributes.MOVEMENT_SPEED, new AttributeModifier(Attributes.MOVEMENT_SPEED.getDescriptionId(), additive, AttributeModifier.Operation.ADDITION), EquipmentSlotType.LEGS);
-        }
+    public static void removeModifiers(@Nonnull ItemStack itemStack) {
+        itemStack.removeTagKey("AttributeModifiers");
     }
 
     public static double thrust(PlayerEntity player, double thrust, boolean flightControl) {

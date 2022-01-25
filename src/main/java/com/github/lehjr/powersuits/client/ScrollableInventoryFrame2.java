@@ -88,7 +88,7 @@ public class ScrollableInventoryFrame2 <C extends Container> extends MultiRectHo
     public void update(double mouseX, double mouseY) {
         modularItemSelectionFrame.getSelectedTab().ifPresent(tab->{
             if (selected != tab) {
-                System.out.println();
+//                System.out.println();
 
                 selected = tab;
                 EquipmentSlotType type = tab.getSlotType();
@@ -111,7 +111,7 @@ public class ScrollableInventoryFrame2 <C extends Container> extends MultiRectHo
 //                    this.inventoryFrame.setNewValues(new ArrayList<>());
 //                }
 
-                System.out.println("update me");
+//                System.out.println("update me");
 
 //                getMinecraft().player.getItemBySlot(type).getCapability()
 

@@ -33,6 +33,7 @@ import com.github.lehjr.numina.network.NuminaPackets;
 import com.github.lehjr.numina.network.packets.CosmeticInfoPacket;
 import com.github.lehjr.numina.util.capabilities.inventory.modularitem.IModularItem;
 import com.github.lehjr.numina.util.capabilities.module.powermodule.EnumModuleCategory;
+import com.github.lehjr.numina.util.capabilities.module.powermodule.IPowerModule;
 import com.github.lehjr.numina.util.capabilities.module.powermodule.PowerModuleCapability;
 import com.github.lehjr.numina.util.capabilities.module.toggleable.IToggleableModule;
 import com.github.lehjr.numina.util.capabilities.render.IArmorModelSpecNBT;
@@ -66,6 +67,7 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -136,19 +138,29 @@ public abstract class AbstractElectricItemArmor extends ArmorItem {
 
     @Override
     public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlotType slot, ItemStack stack) {
+        // PropertyModifier tags applied directly to armor will disable the ItemStack sensitive version
+        stack.removeTagKey("AttributeModifiers");
+
         Multimap<Attribute, AttributeModifier> multimap = super.getAttributeModifiers(slot, stack);
-        if (slot != this.slot) {
+        EquipmentSlotType slotType = MobEntity.getEquipmentSlotForItem(stack);
+        if (slot != slotType) {
             return multimap;
         }
 
         AtomicDouble armorVal = new AtomicDouble(0);
         AtomicDouble toughnessVal = new AtomicDouble(0);
         AtomicDouble knockbackResistance = new AtomicDouble(0);
+        AtomicDouble speed = new AtomicDouble(0);
+        AtomicDouble movementResistance = new AtomicDouble(0);
+        AtomicDouble swimBoost = new AtomicDouble(0);
+
+
 
         stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
                 .filter(IModularItem.class::isInstance)
                 .map(IModularItem.class::cast)
                 .ifPresent(iItemHandler -> {
+
                     // Armor **should** only occupy one slot
                     Pair<Integer, Integer> range = iItemHandler.getRangeForCategory(EnumModuleCategory.ARMOR);
                     if (range != null) {
@@ -175,6 +187,21 @@ public abstract class AbstractElectricItemArmor extends ArmorItem {
                             });
                         }
                     }
+
+                    if (slotType == EquipmentSlotType.LEGS) {
+                        for(int i= 0; i < iItemHandler.getSlots(); i++) {
+                            /** Note: attribute should already be removed when module is offline */
+                            iItemHandler.getStackInSlot(i).getCapability(PowerModuleCapability.POWER_MODULE)
+                                    .filter(IPowerModule.class::isInstance)
+                                    .map(IPowerModule.class::cast)
+                                    .filter(IPowerModule::isModuleOnline)
+                                    .ifPresent(iPowerModule -> {
+                                        movementResistance.getAndAdd( iPowerModule.applyPropertyModifiers(MPSConstants.MOVEMENT_RESISTANCE));
+                                        iPowerModule.getModuleStack().getAttributeModifiers(slotType).get(Attributes.MOVEMENT_SPEED).forEach(attributeModifier -> speed.getAndAdd(attributeModifier.getAmount()));
+                                        iPowerModule.getModuleStack().getAttributeModifiers(slotType).get(ForgeMod.SWIM_SPEED.get()).forEach(attributeModifier -> swimBoost.getAndAdd(attributeModifier.getAmount()));
+                                    });
+                        }
+                    }
                 });
 
         ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
@@ -194,6 +221,66 @@ public abstract class AbstractElectricItemArmor extends ArmorItem {
         if (toughnessVal.get() > 0) {
             builder.put(Attributes.ARMOR_TOUGHNESS, new AttributeModifier(ARMOR_MODIFIERS[slot.getIndex()], "Armor toughness", toughnessVal.get(), AttributeModifier.Operation.ADDITION));
         }
+
+        if (speed.get() != 0 || movementResistance.get() != 0) {
+            /*
+                --------------------------
+                kinetic gen max speed hit: 0.025 (total walking speed: 0.075) ( total running speed: 0.08775)
+                --------------------------
+
+                -----------------------
+                sprint max speed boost: 0.1625 ( total: 0.34125 )
+                ----------------------
+
+                walking max speed boost: 0.1 ( total: 0.2 )
+                -----------------------
+
+                vanilla walk speed:
+                -------------------
+                0.13
+
+                vanilla sprint speed:
+                ---------------------
+                0.1
+
+
+                resistance should be up to about 80% of walking speed or 0.08
+
+
+
+
+
+
+
+             */
+
+
+            System.out.println("resistance: " + movementResistance.get());
+
+            System.out.println("adding speed: " + (speed.get() - (movementResistance.get() * speed.get())));
+
+            System.out.println("adding speed calc2: " + (speed.get() - movementResistance.get()));
+
+
+            builder.put(Attributes.MOVEMENT_SPEED,
+                    new AttributeModifier(ARMOR_MODIFIERS[slot.getIndex()],
+//                            "Armor toughness",
+                            Attributes.MOVEMENT_SPEED.getDescriptionId(),
+                            (speed.get() - movementResistance.get() * 0.16), // up to 80% walking speed restriction
+//                            speed.get() - (movementResistance.get() * speed.get()),
+                            AttributeModifier.Operation.ADDITION));
+        }
+
+        if (swimBoost.get() > 0) {
+            builder.put(ForgeMod.SWIM_SPEED.get(),
+                    new AttributeModifier(ARMOR_MODIFIERS[slot.getIndex()],
+//                            "Armor toughness",
+                            ForgeMod.SWIM_SPEED.get().getDescriptionId(),
+                            swimBoost.get(),
+                            AttributeModifier.Operation.ADDITION));
+        }
+
+
 
         return builder.build();
     }

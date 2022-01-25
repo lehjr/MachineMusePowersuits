@@ -26,7 +26,6 @@
 
 package com.github.lehjr.powersuits.item.module.energy_generation;
 
-import com.github.lehjr.numina.util.capabilities.inventory.modularitem.IModularItem;
 import com.github.lehjr.numina.util.capabilities.module.powermodule.EnumModuleCategory;
 import com.github.lehjr.numina.util.capabilities.module.powermodule.EnumModuleTarget;
 import com.github.lehjr.numina.util.capabilities.module.powermodule.IConfig;
@@ -37,8 +36,6 @@ import com.github.lehjr.numina.util.capabilities.module.toggleable.IToggleableMo
 import com.github.lehjr.numina.util.energy.ElectricItemUtils;
 import com.github.lehjr.powersuits.config.MPSSettings;
 import com.github.lehjr.powersuits.constants.MPSConstants;
-import com.github.lehjr.powersuits.constants.MPSRegistryNames;
-import com.github.lehjr.powersuits.event.MovementManager;
 import com.github.lehjr.powersuits.item.module.AbstractPowerModule;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -47,7 +44,6 @@ import net.minecraft.util.Direction;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.items.CapabilityItemHandler;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -69,7 +65,7 @@ public class KineticGeneratorModule extends AbstractPowerModule {
 
         public CapProvider(@Nonnull ItemStack module) {
             this.module = module;
-            this.ticker = new Ticker(module, EnumModuleCategory.ENERGY_GENERATION, EnumModuleTarget.TORSOONLY, MPSSettings::getModuleConfig) {{
+            this.ticker = new Ticker(module, EnumModuleCategory.ENERGY_GENERATION, EnumModuleTarget.LEGSONLY, MPSSettings::getModuleConfig) {{
                 addBaseProperty(MPSConstants.ENERGY_GENERATION, 2000);
                 addTradeoffProperty(MPSConstants.ENERGY_GENERATED, MPSConstants.ENERGY_GENERATION, 6000, "FE");
                 addBaseProperty(MPSConstants.MOVEMENT_RESISTANCE, 0.01F);
@@ -98,15 +94,6 @@ public class KineticGeneratorModule extends AbstractPowerModule {
 
                 // really hate running this check on every tick but needed for player speed adjustments
                 if (ElectricItemUtils.getPlayerEnergy(player) < ElectricItemUtils.getMaxPlayerEnergy(player)) {
-                    itemStackIn.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-                            .filter(IModularItem.class::isInstance)
-                            .map(IModularItem.class::cast)
-                            .ifPresent(h->{
-                        if(!h.isModuleOnline(MPSRegistryNames.SPRINT_ASSIST_MODULE_REGNAME));
-                        // only fires if the sprint assist module isn't installed and active
-                        MovementManager.INSTANCE.setMovementModifier(itemStackIn, 0, player);
-                    });
-
                     // server side
                     if (!player.level.isClientSide &&
                             // every 20 ticks
@@ -114,22 +101,15 @@ public class KineticGeneratorModule extends AbstractPowerModule {
                             // player not jumping, flying, or riding
                             player.isOnGround()) {
                         double distance = player.walkDist - player.walkDistO;
-                        ElectricItemUtils.givePlayerEnergy(player, (int) (distance * 10 * applyPropertyModifiers(MPSConstants.ENERGY_GENERATION)));
+                        ElectricItemUtils.givePlayerEnergy(player, (int) (distance * 20 * applyPropertyModifiers(MPSConstants.ENERGY_GENERATION)));
                     }
                 }
             }
 
             @Override
             public void onPlayerTickInactive(PlayerEntity player, ItemStack itemStackIn) {
-                itemStackIn.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-                        .filter(IModularItem.class::isInstance)
-                        .map(IModularItem.class::cast)
-                        .ifPresent(h->{
-                    if (!h.isModuleOnline(MPSRegistryNames.SPRINT_ASSIST_MODULE_REGNAME)) {
-                        // only fire if sprint assist module not installed.
-                        MovementManager.INSTANCE.setMovementModifier(itemStackIn, 0, player);
-                    }
-                });
+                // remove attribute modifier when not active
+                getModuleStack().removeTagKey("AttributeModifiers");
             }
         }
     }

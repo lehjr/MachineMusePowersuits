@@ -95,6 +95,11 @@ public class SwimAssistModule extends AbstractPowerModule {
             @Override
             public void onPlayerTickActive(PlayerEntity player, ItemStack item) {
                 if (player.isInWater() && !(player.isPassenger())) {
+                    System.out.println("player is swimming: " + player.isSwimming());
+
+
+
+
                     PlayerMovementInputWrapper.PlayerMovementInput playerInput = PlayerMovementInputWrapper.get(player);
                     if (playerInput.moveForward != 0 || playerInput.moveStrafe != 0 || playerInput.jumpKey || playerInput.sneakKey) {
                         double moveRatio = 0;
