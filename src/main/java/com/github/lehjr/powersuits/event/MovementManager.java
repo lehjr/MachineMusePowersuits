@@ -39,31 +39,24 @@ import com.github.lehjr.powersuits.client.sound.MPSSoundDictionary;
 import com.github.lehjr.powersuits.config.MPSSettings;
 import com.github.lehjr.powersuits.constants.MPSConstants;
 import com.github.lehjr.powersuits.constants.MPSRegistryNames;
-import com.google.common.util.concurrent.AtomicDouble;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.MobEntity;
-import net.minecraft.entity.ai.attributes.AttributeModifier;
-import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.ArmorItem;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.ListNBT;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.vector.Vector3d;
-import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingJumpEvent;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.items.CapabilityItemHandler;
 
 import javax.annotation.Nonnull;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 public enum MovementManager {
     INSTANCE;
-    static final double root2 = Math.sqrt(2);
+    static final double root2 = 1/Math.sqrt(2);
     public static final Map<UUID, Double> playerJumpMultipliers = new HashMap();
     /**
      * Gravity, in meters per tick per tick.
@@ -91,11 +84,16 @@ public enum MovementManager {
         itemStack.removeTagKey("AttributeModifiers");
     }
 
+    static double boolToVal(boolean boolIn) {
+        return boolIn ? 1.0D : 0.0D;
+    }
+
     public static double thrust(PlayerEntity player, double thrust, boolean flightControl) {
         PlayerMovementInputWrapper.PlayerMovementInput playerInput = PlayerMovementInputWrapper.get(player);
-
         double thrustUsed = 0;
         if (flightControl) {
+            System.out.println("doing something here");
+
             Vector3d desiredDirection = player.getLookAngle().normalize();
             double strafeX = desiredDirection.z;
             double strafeZ = -desiredDirection.x;
@@ -107,11 +105,10 @@ public enum MovementManager {
                             .getOnlineModuleOrEmpty(MPSRegistryNames.FLIGHT_CONTROL_MODULE_REGNAME)
                             .getCapability(PowerModuleCapability.POWER_MODULE)
                             .map(pm -> pm.applyPropertyModifiers(MPSConstants.FLIGHT_VERTICALITY)).orElse(0D)).orElse(0D);
-
             desiredDirection = new Vector3d(
-                    (desiredDirection.x * Math.signum(playerInput.moveForward) + strafeX * Math.signum(playerInput.moveStrafe)),
-                    (flightVerticality * desiredDirection.y * Math.signum(playerInput.moveForward) + (playerInput.jumpKey ? 1 : 0) - (playerInput.downKey ? 1 : 0)),
-                    (desiredDirection.z * Math.signum(playerInput.moveForward) + strafeZ * Math.signum(playerInput.moveStrafe)));
+                    (desiredDirection.x * boolToVal(playerInput.forwardKey) + strafeX * boolToVal(playerInput.strafeKey)),
+                    (flightVerticality * desiredDirection.y * boolToVal(playerInput.forwardKey) + boolToVal(playerInput.jumpKey) - boolToVal(playerInput.downKey)),
+                    (desiredDirection.z * boolToVal(playerInput.forwardKey) + strafeZ * boolToVal(playerInput.strafeKey)));
 
             desiredDirection = desiredDirection.normalize();
 
@@ -160,7 +157,6 @@ public enum MovementManager {
                     player.setDeltaMovement(player.getDeltaMovement().x, player.getDeltaMovement().y, 0);
                 }
             }
-
             // Thrusting, finally :V
             player.setDeltaMovement(player.getDeltaMovement().add(
                     thrust * desiredDirection.x,
@@ -171,16 +167,19 @@ public enum MovementManager {
 
 
         } else {
-            Vector3d playerHorzFacing = player.getLookAngle();
-            playerHorzFacing = new Vector3d(playerHorzFacing.x, 0, playerHorzFacing.z);
-            playerHorzFacing.normalize();
-            if (playerInput.moveForward == 0) {
+            Vector3d desiredDirection = player.getLookAngle().normalize();
+            desiredDirection = new Vector3d(desiredDirection.x, 0, desiredDirection.z);
+            desiredDirection.normalize();
+            if (!playerInput.forwardKey) {
                 player.setDeltaMovement(player.getDeltaMovement().add(0, thrust, 0));
             } else {
+
+                System.out.println("thrust: " + thrust +", thrust * root2: " + (thrust * root2) );
+
                 player.setDeltaMovement(player.getDeltaMovement().add(
-                        playerHorzFacing.x * thrust / root2 * Math.signum(playerInput.moveForward),
-                        thrust / root2,
-                        playerHorzFacing.z * thrust / root2 * Math.signum(playerInput.moveForward)
+                        desiredDirection.x * thrust * root2 * boolToVal(playerInput.forwardKey),
+                        thrust * root2,
+                        desiredDirection.z * thrust * root2// * Math.signum(playerInput.forwardKey)
                 ));
             }
             thrustUsed += thrust;

@@ -1,0 +1,23 @@
+{
+  "result": {
+    "item": "powersuits:climb_assist"
+  },
+  "type": "minecraft:crafting_shaped",
+  "mirrored": true,
+  "pattern": [
+    "F F",
+    "OCO",
+    "F F"
+  ],
+  "key": {
+    "C": {
+      "item": "numina:component_control_circuit"
+    },
+    "F": {
+      "tag": "forge:wiring"
+    },
+    "O": {
+      "tag": "forge:servo"
+    }
+  }
+}

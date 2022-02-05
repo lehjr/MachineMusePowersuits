@@ -154,8 +154,6 @@ public abstract class AbstractElectricItemArmor extends ArmorItem {
         AtomicDouble movementResistance = new AtomicDouble(0);
         AtomicDouble swimBoost = new AtomicDouble(0);
 
-
-
         stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
                 .filter(IModularItem.class::isInstance)
                 .map(IModularItem.class::cast)
@@ -198,7 +196,9 @@ public abstract class AbstractElectricItemArmor extends ArmorItem {
                                     .ifPresent(iPowerModule -> {
                                         movementResistance.getAndAdd( iPowerModule.applyPropertyModifiers(MPSConstants.MOVEMENT_RESISTANCE));
                                         iPowerModule.getModuleStack().getAttributeModifiers(slotType).get(Attributes.MOVEMENT_SPEED).forEach(attributeModifier -> speed.getAndAdd(attributeModifier.getAmount()));
-                                        iPowerModule.getModuleStack().getAttributeModifiers(slotType).get(ForgeMod.SWIM_SPEED.get()).forEach(attributeModifier -> swimBoost.getAndAdd(attributeModifier.getAmount()));
+                                        iPowerModule.getModuleStack().getAttributeModifiers(slotType).get(ForgeMod.SWIM_SPEED.get()).forEach(attributeModifier -> {
+                                            swimBoost.getAndAdd(attributeModifier.getAmount());
+                                        });
                                     });
                         }
                     }
@@ -243,44 +243,23 @@ public abstract class AbstractElectricItemArmor extends ArmorItem {
                 ---------------------
                 0.1
 
-
                 resistance should be up to about 80% of walking speed or 0.08
-
-
-
-
-
-
-
              */
-
-
-            System.out.println("resistance: " + movementResistance.get());
-
-            System.out.println("adding speed: " + (speed.get() - (movementResistance.get() * speed.get())));
-
-            System.out.println("adding speed calc2: " + (speed.get() - movementResistance.get()));
-
 
             builder.put(Attributes.MOVEMENT_SPEED,
                     new AttributeModifier(ARMOR_MODIFIERS[slot.getIndex()],
-//                            "Armor toughness",
                             Attributes.MOVEMENT_SPEED.getDescriptionId(),
                             (speed.get() - movementResistance.get() * 0.16), // up to 80% walking speed restriction
-//                            speed.get() - (movementResistance.get() * speed.get()),
                             AttributeModifier.Operation.ADDITION));
         }
 
         if (swimBoost.get() > 0) {
             builder.put(ForgeMod.SWIM_SPEED.get(),
                     new AttributeModifier(ARMOR_MODIFIERS[slot.getIndex()],
-//                            "Armor toughness",
                             ForgeMod.SWIM_SPEED.get().getDescriptionId(),
                             swimBoost.get(),
                             AttributeModifier.Operation.ADDITION));
         }
-
-
 
         return builder.build();
     }

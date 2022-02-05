@@ -1,0 +1,35 @@
+{
+  "result": {
+    "item": "powersuits:silk_touch"
+  },
+  "type": "minecraft:crafting_shaped",
+  "mirrored": true,
+  "pattern": [
+    "ENE",
+    "COC",
+    "E E"
+  ],
+  "key": {
+    "C": {
+      "item": "numina:component_wiring"
+    },
+    "E": {
+      "item": "minecraft:experience_bottle"
+    },
+    "N": {
+      "type": "forge:nbt",
+      "item": "minecraft:enchanted_book",
+      "nbt": {
+        "StoredEnchantments": [
+          {
+            "id": "minecraft:silk_touch",
+            "lvl": 1
+          }
+        ]
+      }
+    },
+    "O": {
+      "item": "numina:component_control_circuit"
+    }
+  }
+}

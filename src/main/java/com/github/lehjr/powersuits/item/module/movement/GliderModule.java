@@ -99,7 +99,7 @@ public class GliderModule extends AbstractPowerModule {
                         .map(IModularItem.class::cast)
                         .map(m-> m.isModuleOnline(MPSRegistryNames.PARACHUTE_MODULE_REGNAME)).orElse(false);
 
-                if (playerInput.sneakKey && player.getDeltaMovement().y < 0 && (!hasParachute || playerInput.moveForward > 0)) {
+                if (playerInput.sneakKey && player.getDeltaMovement().y < 0 && (!hasParachute || playerInput.forwardKey)) {
                     Vector3d motion = player.getDeltaMovement();
                     if (motion.y < -0.1) {
                         double motionYchange = Math.min(0.08, -0.1 - motion.y);

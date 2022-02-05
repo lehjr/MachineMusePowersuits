@@ -79,7 +79,7 @@ public class JetPackModule extends AbstractPowerModule {
             this.ticker = new Ticker(module, EnumModuleCategory.MOVEMENT, EnumModuleTarget.TORSOONLY, MPSSettings::getModuleConfig) {{
                 addBaseProperty(MPSConstants.JETPACK_ENERGY, 0, "RF/t");
                 addBaseProperty(MPSConstants.JETPACK_THRUST, 0, "N");
-                addTradeoffProperty(MPSConstants.THRUST, MPSConstants.JETPACK_ENERGY, 1500);
+                addTradeoffProperty(MPSConstants.THRUST, MPSConstants.JETPACK_ENERGY, 15000);
                 addTradeoffProperty(MPSConstants.THRUST, MPSConstants.JETPACK_THRUST, 0.16F);
             }};
         }
@@ -117,29 +117,20 @@ public class JetPackModule extends AbstractPowerModule {
                 jetEnergy += applyPropertyModifiers(MPSConstants.JETPACK_ENERGY);
                 thrust += applyPropertyModifiers(MPSConstants.JETPACK_THRUST);
 
-                if (jetEnergy < ElectricItemUtils.getPlayerEnergy(player)) {
-                    if (hasFlightControl && thrust > 0) {
-                        thrust = MovementManager.INSTANCE.thrust(player, thrust, true);
-                        if (player.level.isClientSide && NuminaSettings.useSounds()) {
+                if ((jetEnergy < ElectricItemUtils.getPlayerEnergy(player)) &&
+                        ((hasFlightControl && thrust > 0) || (playerInput.jumpKey))) {
+                        thrust = MovementManager.INSTANCE.thrust(player, thrust, hasFlightControl);
+
+                        if(!player.level.isClientSide()) {
+                            if ((player.level.getGameTime() % 5) == 0) {
+                                ElectricItemUtils.drainPlayerEnergy(player, (int) (thrust * jetEnergy * 5));
+                            }
+                        } else if (NuminaSettings.useSounds()) {
                             Musique.playerSound(player, MPSSoundDictionary.JETPACK, SoundCategory.PLAYERS, (float) (thrust * 6.25), 1.0f, true);
                         }
-                        ElectricItemUtils.drainPlayerEnergy(player, (int) (thrust * jetEnergy));
-                    } else if (playerInput.jumpKey) {//&& player.motionY < 0.5) {
-                        thrust = MovementManager.INSTANCE.thrust(player, thrust, false);
-                        if (player.level.isClientSide && NuminaSettings.useSounds()) {
-                            Musique.playerSound(player, MPSSoundDictionary.JETPACK, SoundCategory.PLAYERS, (float) (thrust * 6.25), 1.0f, true);
-                        }
-                        ElectricItemUtils.drainPlayerEnergy(player, (int) (thrust * jetEnergy));
                     } else {
-                        if (player.level.isClientSide && NuminaSettings.useSounds()) {
-                            Musique.stopPlayerSound(player, MPSSoundDictionary.JETPACK);
-                        }
+                        onPlayerTickInactive(player, torso);
                     }
-                } else {
-                    if (player.level.isClientSide && NuminaSettings.useSounds()) {
-                        Musique.stopPlayerSound(player, MPSSoundDictionary.JETPACK);
-                    }
-                }
             }
 
             @Override

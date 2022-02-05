@@ -68,8 +68,22 @@ public class KeybindKeyHandler {
         }
         clientPlayer.getCapability(CapabilityPlayerKeyStates.PLAYER_KEYSTATES).ifPresent(playerCap -> {
             boolean markForSync = false;
+            boolean forwardKeyState = minecraft.options.keyUp.isDown();
+            boolean strafeKeyState = minecraft.options.keyLeft.isDown() || minecraft.options.keyRight.isDown();
+
             boolean downKeyState = goDownKey.isDown();
             boolean jumpKeyState = minecraft.options.keyJump.isDown();
+
+            if (playerCap.getForwardKeyState() != forwardKeyState) {
+                playerCap.setForwardKeyState(forwardKeyState);
+                markForSync = true;
+            }
+
+            if (playerCap.getStrafeKeyState() != strafeKeyState) {
+                playerCap.setStrafeKeyState(strafeKeyState);
+                markForSync = true;
+            }
+
 
             if (playerCap.getDownKeyState() != downKeyState) {
                 playerCap.setDownKeyState(downKeyState);
@@ -82,7 +96,11 @@ public class KeybindKeyHandler {
             }
 
             if (markForSync) {
-                NuminaPackets.CHANNEL_INSTANCE.sendToServer(new PlayerUpdatePacket(downKeyState, jumpKeyState));
+                NuminaPackets.CHANNEL_INSTANCE.sendToServer(new PlayerUpdatePacket(
+                        forwardKeyState,
+                        strafeKeyState,
+                        downKeyState,
+                        jumpKeyState));
             }
         });
     }

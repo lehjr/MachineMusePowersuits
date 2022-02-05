@@ -37,6 +37,7 @@ import com.github.lehjr.powersuits.config.MPSSettings;
 import com.github.lehjr.powersuits.constants.MPSConstants;
 import com.github.lehjr.powersuits.event.MovementManager;
 import com.github.lehjr.powersuits.item.module.AbstractPowerModule;
+import net.minecraft.entity.ai.attributes.Attribute;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.player.PlayerEntity;
@@ -123,7 +124,7 @@ public class SprintAssistModule extends AbstractPowerModule {
                                     (player.level.getGameTime() % 20) == 0) {
                                 ElectricItemUtils.drainPlayerEnergy(player, (int) (sprintCost * horzMovement) * 20);
                             }
-                            setMovementModifier(getModuleStack(), sprintMultiplier * 0.13 * 0.5);
+                            setMovementModifier(getModuleStack(), sprintMultiplier * 0.13 * 0.5, Attributes.MOVEMENT_SPEED, Attributes.MOVEMENT_SPEED.getDescriptionId());
                             player.getFoodData().addExhaustion((float) (-0.01 * exhaustion * exhaustionComp));
                             player.flyingSpeed = player.getSpeed() * 0.2f;
                         }
@@ -140,54 +141,55 @@ public class SprintAssistModule extends AbstractPowerModule {
 
 
                             }
-                            setMovementModifier(getModuleStack(), walkMultiplier * 0.1);
+                            setMovementModifier(getModuleStack(), walkMultiplier * 0.1, Attributes.MOVEMENT_SPEED, Attributes.MOVEMENT_SPEED.getDescriptionId());
                             player.flyingSpeed = player.getSpeed() * 0.2f;
                         }
                     }
                 }
+                onPlayerTickInactive(player, itemStack);
             }
 
             @Override
             public void onPlayerTickInactive(PlayerEntity player, @Nonnull ItemStack itemStack) {
 //                itemStack.removeTagKey("AttributeModifiers");
-                setMovementModifier(getModuleStack(), 0);
+                setMovementModifier(getModuleStack(), 0, Attributes.MOVEMENT_SPEED, Attributes.MOVEMENT_SPEED.getDescriptionId());
             }
+        }
+    }
 
-            // moved here so it is still accessible if sprint assist module isn't installed.
-            public void setMovementModifier(ItemStack itemStack, double multiplier) {
-                CompoundNBT itemNBT = itemStack.getOrCreateTag();
-                boolean hasAttribute = false;
-                if (itemNBT.contains("AttributeModifiers", Constants.NBT.TAG_LIST)) {
-                    ListNBT listnbt = itemNBT.getList("AttributeModifiers", Constants.NBT.TAG_COMPOUND);
-                    ArrayList<Integer> remove = new ArrayList();
+    // moved here so it is still accessible if sprint assist module isn't installed.
+    public static void setMovementModifier(ItemStack itemStack, double multiplier, Attribute attributeModifier, String key) {
+        CompoundNBT itemNBT = itemStack.getOrCreateTag();
+        boolean hasAttribute = false;
+        if (itemNBT.contains("AttributeModifiers", Constants.NBT.TAG_LIST)) {
+            ListNBT listnbt = itemNBT.getList("AttributeModifiers", Constants.NBT.TAG_COMPOUND);
+            ArrayList<Integer> remove = new ArrayList();
 
-                    for (int i = 0; i < listnbt.size(); ++i) {
-                        CompoundNBT attributeTag = listnbt.getCompound(i);
-                        AttributeModifier attributemodifier = AttributeModifier.load(attributeTag);
-                        if (attributemodifier != null && attributemodifier.getName().equals(Attributes.MOVEMENT_SPEED.getDescriptionId())) {
-                            // adjust the tag
-                            if (multiplier != 0) {
-                                attributeTag.putDouble("Amount", multiplier);
-                                hasAttribute = true;
-                                break;
-                            } else {
-                                // discard the tag
-                                remove.add(i);
+            for (int i = 0; i < listnbt.size(); ++i) {
+                CompoundNBT attributeTag = listnbt.getCompound(i);
+                AttributeModifier attributemodifier = AttributeModifier.load(attributeTag);
+                if (attributemodifier != null && attributemodifier.getName().equals(key)) {
+                    // adjust the tag
+                    if (multiplier != 0) {
+                        attributeTag.putDouble("Amount", multiplier);
+                        hasAttribute = true;
+                        break;
+                    } else {
+                        // discard the tag
+                        remove.add(i);
 //                        break; // leave commented for redundant tag cleanup
-                            }
-                        }
                     }
-                    if (hasAttribute && !remove.isEmpty()) {
-                        // remove from last to first so indices are valid
-                        Collections.reverse(remove);
-                        remove.forEach(index -> listnbt.remove(index));
-                    }
-                }
-
-                if (!hasAttribute && multiplier != 0) {
-                    itemStack.addAttributeModifier(Attributes.MOVEMENT_SPEED, new AttributeModifier(Attributes.MOVEMENT_SPEED.getDescriptionId(), multiplier, AttributeModifier.Operation.ADDITION), EquipmentSlotType.LEGS);
                 }
             }
+            if (hasAttribute && !remove.isEmpty()) {
+                // remove from last to first so indices are valid
+                Collections.reverse(remove);
+                remove.forEach(index -> listnbt.remove(index));
+            }
+        }
+
+        if (!hasAttribute && multiplier != 0) {
+            itemStack.addAttributeModifier(attributeModifier, new AttributeModifier(key, multiplier, AttributeModifier.Operation.ADDITION), EquipmentSlotType.LEGS);
         }
     }
 }

@@ -1,6 +1,6 @@
 {
   "result": {
-    "item": "powersuits:fortune"
+    "item": "powersuits:aqua_affinity"
   },
   "type": "minecraft:crafting_shaped",
   "mirrored": true,
@@ -22,8 +22,8 @@
       "nbt": {
         "StoredEnchantments": [
           {
-            "id": "minecraft:fortune",
-            "lvl": 3
+            "id": "minecraft:aqua_affinity",
+            "lvl": 1
           }
         ]
       }

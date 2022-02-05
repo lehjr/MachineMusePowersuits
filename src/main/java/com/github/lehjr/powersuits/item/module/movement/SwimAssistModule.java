@@ -42,11 +42,14 @@ import com.github.lehjr.powersuits.config.MPSSettings;
 import com.github.lehjr.powersuits.constants.MPSConstants;
 import com.github.lehjr.powersuits.event.MovementManager;
 import com.github.lehjr.powersuits.item.module.AbstractPowerModule;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
 import net.minecraft.util.SoundCategory;
+import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
@@ -54,6 +57,8 @@ import net.minecraftforge.common.util.LazyOptional;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.concurrent.Callable;
+
+import static com.github.lehjr.powersuits.item.module.movement.SprintAssistModule.setMovementModifier;
 
 public class SwimAssistModule extends AbstractPowerModule {
     public SwimAssistModule() {
@@ -93,54 +98,49 @@ public class SwimAssistModule extends AbstractPowerModule {
             }
 
             @Override
-            public void onPlayerTickActive(PlayerEntity player, ItemStack item) {
-                if (player.isInWater() && !(player.isPassenger())) {
-                    System.out.println("player is swimming: " + player.isSwimming());
+            public void onPlayerTickActive(PlayerEntity player, ItemStack itemStack) {
+//                if (player.isSwimming()) { // doesn't work when strafing without "swimming"
+                PlayerMovementInputWrapper.PlayerMovementInput playerInput = PlayerMovementInputWrapper.get(player);
+                if((player.isInWater() && !player.isPassenger()) && (playerInput.strafeKey || playerInput.forwardKey || playerInput.jumpKey || playerInput.sneakKey)) {
+                    double moveRatio = 0;
+                    if (playerInput.forwardKey) {
+                        moveRatio += 1.0;
+                    }
+                    if (playerInput.strafeKey) {
+                        moveRatio += 1.0;
+                    }
+                    if (playerInput.jumpKey || playerInput.sneakKey) {
+                        moveRatio += 0.2 * 0.2;
+                    }
+                    double swimAssistRate = applyPropertyModifiers(MPSConstants.SWIM_BOOST_AMOUNT) * 0.05 * moveRatio;
+                    double swimEnergyConsumption = applyPropertyModifiers(MPSConstants.SWIM_ENERGY);
 
+                    int playerEnergy = ElectricItemUtils.getPlayerEnergy(player);
 
-
-
-                    PlayerMovementInputWrapper.PlayerMovementInput playerInput = PlayerMovementInputWrapper.get(player);
-                    if (playerInput.moveForward != 0 || playerInput.moveStrafe != 0 || playerInput.jumpKey || playerInput.sneakKey) {
-                        double moveRatio = 0;
-                        if (playerInput.moveForward != 0) {
-                            moveRatio += playerInput.moveForward * playerInput.moveForward;
-                        }
-                        if (playerInput.moveStrafe != 0) {
-                            moveRatio += playerInput.moveStrafe * playerInput.moveStrafe;
-                        }
-                        if (playerInput.jumpKey || playerInput.sneakKey) {
-                            moveRatio += 0.2 * 0.2;
-                        }
-                        double swimAssistRate = applyPropertyModifiers(MPSConstants.SWIM_BOOST_AMOUNT) * 0.05 * moveRatio;
-                        double swimEnergyConsumption = applyPropertyModifiers(MPSConstants.SWIM_ENERGY);
-                        if (swimEnergyConsumption < ElectricItemUtils.getPlayerEnergy(player)) {
-                            if (player.level.isClientSide && NuminaSettings.useSounds()) {
-                                Musique.playerSound(player, MPSSoundDictionary.SWIM_ASSIST, SoundCategory.PLAYERS, 1.0f, 1.0f, true);
-                            }
-                            MovementManager.INSTANCE.thrust(player, swimAssistRate, true);
-                        } else {
-                            if (player.level.isClientSide && NuminaSettings.useSounds()) {
-                                Musique.stopPlayerSound(player, MPSSoundDictionary.SWIM_ASSIST);
-                            }
-                        }
-                    } else {
+                    if (swimEnergyConsumption < playerEnergy) {
                         if (player.level.isClientSide && NuminaSettings.useSounds()) {
-                            Musique.stopPlayerSound(player, MPSSoundDictionary.SWIM_ASSIST);
+                            Musique.playerSound(player, MPSSoundDictionary.SWIM_ASSIST, SoundCategory.PLAYERS, 1.0f, 1.0f, true);
+                        } else if (
+                            // every 20 ticks
+                                (player.level.getGameTime() % 5) == 0) {
+                            ElectricItemUtils.drainPlayerEnergy(player, (int) (swimEnergyConsumption) * 5);
                         }
+                        MovementManager.INSTANCE.thrust(player, swimAssistRate, true);
+//                            setMovementModifier(getModuleStack(), swimAssistRate * 100000, ForgeMod.SWIM_SPEED.get(), ForgeMod.SWIM_SPEED.get().getDescriptionId());
+                    } else {
+                        onPlayerTickInactive(player, itemStack);
                     }
                 } else {
-                    if (player.level.isClientSide && NuminaSettings.useSounds()) {
-                        Musique.stopPlayerSound(player, MPSSoundDictionary.SWIM_ASSIST);
-                    }
+                    onPlayerTickInactive(player, itemStack);
                 }
             }
 
             @Override
-            public void onPlayerTickInactive(PlayerEntity player, ItemStack item) {
+            public void onPlayerTickInactive(PlayerEntity player, @Nonnull ItemStack itemStack) {
                 if (player.level.isClientSide && NuminaSettings.useSounds()) {
                     Musique.stopPlayerSound(player, MPSSoundDictionary.SWIM_ASSIST);
                 }
+                setMovementModifier(getModuleStack(), 0, ForgeMod.SWIM_SPEED.get(), ForgeMod.SWIM_SPEED.get().getDescriptionId());
             }
         }
     }
