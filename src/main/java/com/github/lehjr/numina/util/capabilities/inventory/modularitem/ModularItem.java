@@ -147,8 +147,9 @@ public class ModularItem extends ItemStackHandler implements IModularItem {
         for (int i = 0; i < getSlots(); i++) {
             ItemStack module = getStackInSlot(i);
             if (!module.isEmpty()) {
-                if (module.getItem().getRegistryName().equals(regName))
+                if (module.getItem().getRegistryName().equals(regName)) {
                     return true;
+                }
             }
         }
         return false;
@@ -241,15 +242,16 @@ public class ModularItem extends ItemStackHandler implements IModularItem {
     @Override
     public void tick(PlayerEntity player) {
         for (int i = 0; i < getSlots(); i++) {
-            getStackInSlot(i).getCapability(PowerModuleCapability.POWER_MODULE).ifPresent(m ->{
-                if (m.isAllowed() && m instanceof IPlayerTickModule) {
-                    if (m.isModuleOnline()) {
-                        ((IPlayerTickModule) m).onPlayerTickActive(player, this.getModularItemStack());
-                    } else {
-                        ((IPlayerTickModule) m).onPlayerTickInactive(player, this.getModularItemStack());
-                    }
-                }
-            });
+            getStackInSlot(i).getCapability(PowerModuleCapability.POWER_MODULE)
+                    .filter(IPlayerTickModule.class::isInstance)
+                    .map(IPlayerTickModule.class::cast)
+                    .filter(IPlayerTickModule::isAllowed).ifPresent(m -> {
+                        if (m.isModuleOnline()) {
+                            m.onPlayerTickActive(player, this.getModularItemStack());
+                        } else {
+                            m.onPlayerTickInactive(player, this.getModularItemStack());
+                        }
+                    });
         }
     }
 
@@ -277,8 +279,9 @@ public class ModularItem extends ItemStackHandler implements IModularItem {
     protected int getStackLimit(final int slot, @Nonnull final ItemStack module) {
         if (isModuleValid(module)) {
             // is module already installed?
-            if (isModuleInstalled(module.getItem().getRegistryName()))
+            if (isModuleInstalled(module.getItem().getRegistryName())) {
                 return 0;
+            }
 
             // get the module category... CATEGORY_NONE) is actually just a fallback
             EnumModuleCategory category = module.getCapability(PowerModuleCapability.POWER_MODULE).map(m -> m.getCategory())

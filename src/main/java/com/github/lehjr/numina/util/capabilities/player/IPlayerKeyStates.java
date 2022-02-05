@@ -27,10 +27,18 @@
 package com.github.lehjr.numina.util.capabilities.player;
 
 public interface IPlayerKeyStates {
+    void setStrafeKeyState(boolean state);
+    boolean getStrafeKeyState();
+
+    void setForwardKeyState(boolean state);
+    boolean getForwardKeyState();
+
+    void setJumpKeyState(boolean state);
+    boolean getJumpKeyState();
 
     void setDownKeyState(boolean state);
     boolean getDownKeyState();
 
-    void setJumpKeyState(boolean state);
-    boolean getJumpKeyState();
+    void setSneakKeyState(boolean state);
+    boolean getSneakKeyState();
 }

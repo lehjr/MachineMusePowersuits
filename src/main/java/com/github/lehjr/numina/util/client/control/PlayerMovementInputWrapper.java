@@ -28,6 +28,7 @@ package com.github.lehjr.numina.util.client.control;
 
 import com.github.lehjr.numina.util.capabilities.player.CapabilityPlayerKeyStates;
 import com.github.lehjr.numina.util.capabilities.player.IPlayerKeyStates;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.client.entity.player.RemoteClientPlayerEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -35,20 +36,21 @@ import net.minecraftforge.common.util.LazyOptional;
 
 public class PlayerMovementInputWrapper {
     public static class PlayerMovementInput {
-        public float moveStrafe;
-        public float moveForward;
+        public boolean forwardKey;
+        public boolean strafeKey;
         public boolean jumpKey;
         public boolean downKey;
         public boolean sneakKey;
 
         public PlayerMovementInput(
-                float moveStrafe,
-                float moveForward,
+                boolean forwardKey,
+                boolean strafeKey,
                 boolean jumpKey,
                 boolean downKey,
-                boolean sneakKey) {
-            this.moveStrafe = Math.signum(moveStrafe);
-            this.moveForward = Math.signum(moveForward);
+                boolean sneakKey
+        ) {
+            this.forwardKey = forwardKey;
+            this.strafeKey = strafeKey;
             this.jumpKey = jumpKey;
             this.downKey = downKey;
             this.sneakKey = sneakKey;
@@ -57,8 +59,9 @@ public class PlayerMovementInputWrapper {
 
     public static PlayerMovementInput get(PlayerEntity player) {
         if (player.level.isClientSide) {
-            if (player instanceof RemoteClientPlayerEntity) // multiplayer not dedicated server
+            if (player instanceof RemoteClientPlayerEntity) { // multiplayer not dedicated server
                 return fromServer(player);
+            }
             return fromClient(player);
         }
         return fromServer(player);
@@ -69,40 +72,56 @@ public class PlayerMovementInputWrapper {
     }
 
     static PlayerMovementInput fromServer(PlayerEntity player) {
+        boolean forwardKey = false;
+        boolean strafeKey = false;
         boolean jumpKey = false;
         boolean downKey = false;
+        boolean sneakKey = false;
 
         LazyOptional<IPlayerKeyStates> playerCap = getCapability(player);
         if (playerCap.isPresent()) {
+            forwardKey = playerCap.map(m -> m.getForwardKeyState()).orElse(false);
+            strafeKey = playerCap.map(m -> m.getStrafeKeyState()).orElse(false);
             jumpKey = playerCap.map(m -> m.getJumpKeyState()).orElse(false);
             downKey = playerCap.map(m -> m.getDownKeyState()).orElse(false);
+            sneakKey = playerCap.map(m -> m.getSneakKeyState()).orElse(false);
         }
 
         return new PlayerMovementInput(
-                player.xxa,
-                player.zza,
+                forwardKey,
+                strafeKey,
                 jumpKey,
                 downKey,
                 player.isCrouching());
     }
 
     static PlayerMovementInput fromClient(PlayerEntity player) {
+        boolean forwardKey = false;
+        boolean strafeKey = false;
         boolean jumpKey = false;
         boolean downKey = false;
+        boolean sneakKey = player.isCrouching();
 
         ClientPlayerEntity clientPlayer = (ClientPlayerEntity) player;
 
-        LazyOptional<IPlayerKeyStates> playerCap = getCapability(player);
-        if (playerCap.isPresent()) {
-            jumpKey = playerCap.map(m -> m.getJumpKeyState()).orElse(false);
-            downKey = playerCap.map(m -> m.getDownKeyState()).orElse(false);
-        }
+//        if (clientPlayer.getUUID().equals(Minecraft.getInstance().player.getUUID())) {
+//            forwardKey = Mine
+//
+//        } else {
+            LazyOptional<IPlayerKeyStates> playerCap = getCapability(player);
+            if (playerCap.isPresent()) {
+                forwardKey = playerCap.map(m -> m.getForwardKeyState()).orElse(false);
+                strafeKey = playerCap.map(m -> m.getStrafeKeyState()).orElse(false);
+                jumpKey = playerCap.map(m -> m.getJumpKeyState()).orElse(false);
+                downKey = playerCap.map(m -> m.getDownKeyState()).orElse(false);
+            }
+//        }
 
         return new PlayerMovementInput(
-                clientPlayer.input.leftImpulse,
-                clientPlayer.input.forwardImpulse,
+                forwardKey,
+                strafeKey,
                 jumpKey,
                 downKey,
-        clientPlayer.isCrouching());
+                sneakKey);
     }
 }
