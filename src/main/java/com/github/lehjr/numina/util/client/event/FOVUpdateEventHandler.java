@@ -72,7 +72,11 @@ public class FOVUpdateEventHandler {
 
             if (fovIsActive) {
                 ModifiableAttributeInstance attributeinstance = e.getEntity().getAttribute(Attributes.MOVEMENT_SPEED);
-                e.setNewfov((float) (e.getNewfov() / ((attributeinstance.getValue() / e.getEntity().abilities.getWalkingSpeed() + 1.0) / 2.0)));
+                e.setNewfov((float) (e.getNewfov() / ((attributeinstance.getValue() / e.getEntity().abilities.getWalkingSpeed() + 1.0) / 2.0)));if (NuminaSettings.useFovNormalize()) {
+                    if (e.getEntity().isSprinting()) {
+                        e.setNewfov(e.getNewfov() + 0.15F);
+                    }
+                }
             }
         }
     }

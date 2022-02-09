@@ -26,6 +26,7 @@
 
 package com.github.lehjr.numina.util.client.event;
 
+import net.minecraft.client.Minecraft;
 import net.minecraftforge.client.event.RenderTooltipEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
@@ -34,9 +35,8 @@ public class ToolTipEvent {
     @SubscribeEvent
     public void onToolTipEvent(RenderTooltipEvent.Pre event) {
         // TODO: better handling based on config
-
-
-        event.setMaxWidth((int) (event.getScreenWidth() * 0.25));
+//        System.out.println("screen class: " + Minecraft.getInstance().screen.getClass());
+//        event.setMaxWidth((int) (event.getScreenWidth() * 0.25));
         // event.setMaxWidth(Math.max(event.getMaxWidth(), settings.getMaxWidth()));
     }
 }

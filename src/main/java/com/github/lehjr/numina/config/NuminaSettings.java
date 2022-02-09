@@ -59,8 +59,12 @@ public class NuminaSettings {
         return CLIENT_CONFIG != null ? CLIENT_CONFIG.USE_FOV_FIX.get() : true;
     }
 
+    public static boolean useFovFixInPrincessMode() {
+        return CLIENT_CONFIG != null ? CLIENT_CONFIG.USE_FOV_FIX.get() : true;
+    }
+
     public static boolean useFovNormalize() {
-        return CLIENT_CONFIG != null ? CLIENT_CONFIG.USE_FOV_NORMALIZE.get() : true;
+        return CLIENT_CONFIG != null ? CLIENT_CONFIG.USE_FOV_NORMALIZE.get() : false;
     }
 
     public static boolean fovFixDefaultState() {
