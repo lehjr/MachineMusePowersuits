@@ -28,7 +28,7 @@ package com.github.lehjr.numina.util.capabilities.player;
 
 public class PlayerKeyStateStorage implements IPlayerKeyStates {
     private boolean forwardKeyState = false;
-    private boolean strafeKeyState = false;
+    private byte strafeKeyState = 0; // left=-1, none=0, right = 1
     private boolean downKeyState = false;
     private boolean jumpKeyState = false;
     private boolean sneakKeyState = false;
@@ -44,12 +44,12 @@ public class PlayerKeyStateStorage implements IPlayerKeyStates {
     }
 
     @Override
-    public void setStrafeKeyState(boolean state) {
+    public void setStrafeKeyState(byte state) {
         this.strafeKeyState = state;
     }
 
     @Override
-    public boolean getStrafeKeyState() {
+    public byte getStrafeKeyState() {
         return this.strafeKeyState;
     }
 
@@ -71,15 +71,5 @@ public class PlayerKeyStateStorage implements IPlayerKeyStates {
     @Override
     public boolean getJumpKeyState() {
         return this.jumpKeyState;
-    }
-
-    @Override
-    public void setSneakKeyState(boolean state) {
-        this.sneakKeyState = state;
-    }
-
-    @Override
-    public boolean getSneakKeyState() {
-        return this.sneakKeyState;
     }
 }

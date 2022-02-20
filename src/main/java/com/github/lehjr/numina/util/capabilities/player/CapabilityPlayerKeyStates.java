@@ -49,10 +49,9 @@ public class CapabilityPlayerKeyStates implements ICapabilitySerializable<Compou
                     public INBT writeNBT(Capability<IPlayerKeyStates> capability, IPlayerKeyStates instance, Direction side) {
                         CompoundNBT nbt = new CompoundNBT();
                         nbt.putBoolean("forward", instance.getForwardKeyState());
-                        nbt.putBoolean("strafe", instance.getStrafeKeyState());
+                        nbt.putByte("strafe", instance.getStrafeKeyState());
                         nbt.putBoolean("jumpKey", instance.getJumpKeyState());
                         nbt.putBoolean("downKey", instance.getDownKeyState());
-                        nbt.putBoolean("sneakKey", instance.getSneakKeyState());
                         return nbt;
                     }
 
@@ -60,10 +59,9 @@ public class CapabilityPlayerKeyStates implements ICapabilitySerializable<Compou
                     public void readNBT(Capability<IPlayerKeyStates> capability, IPlayerKeyStates instance, Direction side, INBT nbt) {
                         if (nbt instanceof CompoundNBT) {
                             instance.setForwardKeyState(((CompoundNBT) nbt).getBoolean("forward"));
-                            instance.setStrafeKeyState(((CompoundNBT) nbt).getBoolean("strafe"));
+                            instance.setStrafeKeyState(((CompoundNBT) nbt).getByte("strafe"));
                             instance.setJumpKeyState(((CompoundNBT) nbt).getBoolean("jumpKey"));
                             instance.setDownKeyState(((CompoundNBT) nbt).getBoolean("downKey"));
-                            instance.setSneakKeyState(((CompoundNBT) nbt).getBoolean("sneakKey"));
                         }
                     }
                 },

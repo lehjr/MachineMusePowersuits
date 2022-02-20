@@ -32,6 +32,7 @@ import com.github.lehjr.numina.util.capabilities.inventory.modularitem.ModularIt
 import com.github.lehjr.numina.util.capabilities.module.powermodule.PowerModuleCapability;
 import com.github.lehjr.numina.util.capabilities.module.rightclick.IRightClickModule;
 import com.github.lehjr.numina.util.capabilities.module.toggleable.IToggleableModule;
+import com.github.lehjr.numina.util.capabilities.render.chameleon.ChameleonCapability;
 import com.github.lehjr.numina.util.client.render.MuseRenderer;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.MainWindow;
@@ -85,22 +86,16 @@ public class ModeChangingModularItem extends ModularItem implements IModeChangin
             int baroffset = 22;
             if (!player.abilities.instabuild) {
                 baroffset += 16;
-
                 int totalArmorValue = player.getArmorValue();
                 baroffset += 8 * (int) Math.ceil((double)totalArmorValue / 20); // 20 points per row @ 2 armor points per icon
             }
             baroffset = screen.getGuiScaledHeight() - baroffset;
             currX = sw / 2.0 - 89.0 + 20.0 * hotbarIndex;
             currY = baroffset - 18;
-            if (module.getCapability(PowerModuleCapability.POWER_MODULE).map(pm-> {
-                if (pm instanceof IToggleableModule) {
-                    return pm.isModuleOnline();
-                }
-                return true;
-            }).orElse(false)) {
-                mc.getItemRenderer().renderGuiItem(module, (int)currX, (int)currY);
+            if (module.getCapability(PowerModuleCapability.POWER_MODULE).map(pm-> pm.isModuleOnline()).orElse(false)) {
+                mc.getItemRenderer().renderGuiItem(module.getCapability(ChameleonCapability.CHAMELEON).map(iChameleon -> iChameleon.getStackToRender()).orElse(module), (int)currX, (int)currY);
             } else {
-                MuseRenderer.drawModuleAt(new MatrixStack(), currX, currY, module, false);
+                MuseRenderer.drawModuleAt(new MatrixStack(), currX, currY, module.getCapability(ChameleonCapability.CHAMELEON).map(iChameleon -> iChameleon.getStackToRender()).orElse(module), false);
             }
         }
     }

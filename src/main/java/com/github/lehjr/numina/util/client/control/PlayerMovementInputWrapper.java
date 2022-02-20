@@ -37,23 +37,20 @@ import net.minecraftforge.common.util.LazyOptional;
 public class PlayerMovementInputWrapper {
     public static class PlayerMovementInput {
         public boolean forwardKey;
-        public boolean strafeKey;
+        public byte strafeKey;
         public boolean jumpKey;
         public boolean downKey;
-        public boolean sneakKey;
 
         public PlayerMovementInput(
                 boolean forwardKey,
-                boolean strafeKey,
+                byte strafeKey,
                 boolean jumpKey,
-                boolean downKey,
-                boolean sneakKey
+                boolean downKey
         ) {
             this.forwardKey = forwardKey;
             this.strafeKey = strafeKey;
             this.jumpKey = jumpKey;
             this.downKey = downKey;
-            this.sneakKey = sneakKey;
         }
     }
 
@@ -73,55 +70,42 @@ public class PlayerMovementInputWrapper {
 
     static PlayerMovementInput fromServer(PlayerEntity player) {
         boolean forwardKey = false;
-        boolean strafeKey = false;
+        byte strafeKey = 0;
         boolean jumpKey = false;
         boolean downKey = false;
-        boolean sneakKey = false;
 
         LazyOptional<IPlayerKeyStates> playerCap = getCapability(player);
         if (playerCap.isPresent()) {
             forwardKey = playerCap.map(m -> m.getForwardKeyState()).orElse(false);
-            strafeKey = playerCap.map(m -> m.getStrafeKeyState()).orElse(false);
+            strafeKey = playerCap.map(m -> m.getStrafeKeyState()).orElse((byte)0);
             jumpKey = playerCap.map(m -> m.getJumpKeyState()).orElse(false);
             downKey = playerCap.map(m -> m.getDownKeyState()).orElse(false);
-            sneakKey = playerCap.map(m -> m.getSneakKeyState()).orElse(false);
         }
 
         return new PlayerMovementInput(
                 forwardKey,
                 strafeKey,
                 jumpKey,
-                downKey,
-                player.isCrouching());
+                downKey);
     }
 
     static PlayerMovementInput fromClient(PlayerEntity player) {
         boolean forwardKey = false;
-        boolean strafeKey = false;
+        byte strafeKey = 0;
         boolean jumpKey = false;
         boolean downKey = false;
-        boolean sneakKey = player.isCrouching();
-
-        ClientPlayerEntity clientPlayer = (ClientPlayerEntity) player;
-
-//        if (clientPlayer.getUUID().equals(Minecraft.getInstance().player.getUUID())) {
-//            forwardKey = Mine
-//
-//        } else {
-            LazyOptional<IPlayerKeyStates> playerCap = getCapability(player);
-            if (playerCap.isPresent()) {
-                forwardKey = playerCap.map(m -> m.getForwardKeyState()).orElse(false);
-                strafeKey = playerCap.map(m -> m.getStrafeKeyState()).orElse(false);
-                jumpKey = playerCap.map(m -> m.getJumpKeyState()).orElse(false);
-                downKey = playerCap.map(m -> m.getDownKeyState()).orElse(false);
-            }
-//        }
+        LazyOptional<IPlayerKeyStates> playerCap = getCapability(player);
+        if (playerCap.isPresent()) {
+            forwardKey = playerCap.map(m -> m.getForwardKeyState()).orElse(false);
+            strafeKey = playerCap.map(m -> m.getStrafeKeyState()).orElse((byte)0);
+            jumpKey = playerCap.map(m -> m.getJumpKeyState()).orElse(false);
+            downKey = playerCap.map(m -> m.getDownKeyState()).orElse(false);
+        }
 
         return new PlayerMovementInput(
                 forwardKey,
                 strafeKey,
                 jumpKey,
-                downKey,
-                sneakKey);
+                downKey);
     }
 }

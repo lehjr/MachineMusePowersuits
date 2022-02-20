@@ -28,9 +28,12 @@ package com.github.lehjr.numina.util.nbt;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.NBTTypes;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.Constants;
 
 import javax.annotation.Nonnull;
+import java.util.Optional;
 
 public class MuseNBTUtils {
     public static final String TAG_ITEM_PREFIX = "MMModItem";// Machine Muse Mod
@@ -225,5 +228,22 @@ public class MuseNBTUtils {
 
     public static void setModularItemBoolean(@Nonnull ItemStack module, String string, boolean value) {
         getMuseItemTag(module).putBoolean(string, value);
+    }
+
+    // Misc -----------------------------------------------------------------------------------------------------------
+    public static void setModuleResourceLocation(@Nonnull ItemStack module, String string, ResourceLocation value) {
+        getModuleTag(module).putString(string, value.toString());
+    }
+
+    public static void removeModuleResourceLocation(@Nonnull ItemStack module, String string) {
+        getModuleTag(module).remove(string);
+    }
+
+    public static Optional<ResourceLocation> getModuleResourceLocation(@Nonnull ItemStack module, String string) {
+        CompoundNBT moduleTag = getModuleTag(module);
+        if (moduleTag.contains(string, Constants.NBT.TAG_STRING)) {
+            return Optional.of(new ResourceLocation(getModuleTag(module).getString(string)));
+        }
+        return Optional.empty();
     }
 }

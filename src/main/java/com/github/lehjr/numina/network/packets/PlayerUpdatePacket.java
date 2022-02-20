@@ -35,13 +35,13 @@ import java.util.function.Supplier;
 
 public class PlayerUpdatePacket {
     boolean forwardKeyState;
-    boolean strafeKeyState;
+    byte strafeKeyState;
     boolean downKeyState;
     boolean jumpKeyState;
 
     public PlayerUpdatePacket(
             boolean forwardKeyState,
-            boolean strafeKeyState,
+            byte strafeKeyState,
             boolean downKeyState,
             boolean jumpKeyState) {
 
@@ -53,7 +53,7 @@ public class PlayerUpdatePacket {
 
     public static void encode(PlayerUpdatePacket msg, PacketBuffer packetBuffer) {
         packetBuffer.writeBoolean(msg.forwardKeyState);
-        packetBuffer.writeBoolean(msg.strafeKeyState);
+        packetBuffer.writeByte(msg.strafeKeyState);
         packetBuffer.writeBoolean(msg.downKeyState);
         packetBuffer.writeBoolean(msg.jumpKeyState);
     }
@@ -61,7 +61,7 @@ public class PlayerUpdatePacket {
     public static PlayerUpdatePacket decode(PacketBuffer packetBuffer) {
         return new PlayerUpdatePacket(
                 packetBuffer.readBoolean(),
-                packetBuffer.readBoolean(),
+                packetBuffer.readByte(),
                 packetBuffer.readBoolean(),
                 packetBuffer.readBoolean()
         );

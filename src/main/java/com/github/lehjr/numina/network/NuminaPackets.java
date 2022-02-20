@@ -92,6 +92,13 @@ public class NuminaPackets {
                 TweakRequestDoublePacket::encode,
                 TweakRequestDoublePacket::decode,
                 TweakRequestDoublePacket::handle);
+
+        CHANNEL_INSTANCE.registerMessage(
+                i++,
+                BlockNamePacket.class,
+                BlockNamePacket::write,
+                BlockNamePacket::read,
+                BlockNamePacket::handle);
     }
 
     public SimpleChannel getWrapper() {

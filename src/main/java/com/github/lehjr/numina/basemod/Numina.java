@@ -41,7 +41,9 @@ import com.github.lehjr.numina.util.capabilities.heat.HeatCapability;
 import com.github.lehjr.numina.util.capabilities.module.powermodule.PowerModuleCapability;
 import com.github.lehjr.numina.util.capabilities.player.CapabilityPlayerKeyStates;
 import com.github.lehjr.numina.util.capabilities.render.ModelSpecNBTCapability;
+import com.github.lehjr.numina.util.capabilities.render.chameleon.ChameleonCapability;
 import com.github.lehjr.numina.util.capabilities.render.colour.ColourCapability;
+import com.github.lehjr.numina.util.capabilities.render.highlight.HighLightCapability;
 import com.github.lehjr.numina.util.client.NuminaSpriteUploader;
 import com.github.lehjr.numina.util.client.event.ArmorLayerSetup;
 import com.github.lehjr.numina.util.client.event.FOVUpdateEventHandler;
@@ -153,6 +155,8 @@ public class Numina {
         // Modules
         PowerModuleCapability.register();
         ModelSpecNBTCapability.register();
+        HighLightCapability.register();
+        ChameleonCapability.register();
 
         // Player
         CapabilityPlayerKeyStates.register();

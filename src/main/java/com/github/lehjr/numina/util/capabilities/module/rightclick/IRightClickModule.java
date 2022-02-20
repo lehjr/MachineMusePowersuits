@@ -39,8 +39,21 @@ import net.minecraft.world.World;
 import javax.annotation.Nonnull;
 
 public interface IRightClickModule extends IPowerModule {
+
+    /**
+     * Use the use method instead to better coincide with vanilla naming
+     * @param itemStackIn
+     * @param worldIn
+     * @param playerIn
+     * @param hand
+     * @return
+     */
     @Deprecated
     default ActionResult<ItemStack> onItemRightClick(@Nonnull ItemStack itemStackIn, World worldIn, PlayerEntity playerIn, Hand hand) {
+        return use(itemStackIn, worldIn, playerIn, hand);
+    }
+
+    default ActionResult<ItemStack> use(@Nonnull ItemStack itemStackIn, World worldIn, PlayerEntity playerIn, Hand hand) {
         return new ActionResult<>(ActionResultType.PASS, itemStackIn);
     }
 
