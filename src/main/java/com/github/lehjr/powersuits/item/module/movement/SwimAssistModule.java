@@ -101,15 +101,15 @@ public class SwimAssistModule extends AbstractPowerModule {
             public void onPlayerTickActive(PlayerEntity player, ItemStack itemStack) {
 //                if (player.isSwimming()) { // doesn't work when strafing without "swimming"
                 PlayerMovementInputWrapper.PlayerMovementInput playerInput = PlayerMovementInputWrapper.get(player);
-                if((player.isInWater() && !player.isPassenger()) && (playerInput.strafeKey || playerInput.forwardKey || playerInput.jumpKey || playerInput.sneakKey)) {
+                if((player.isInWater() && !player.isPassenger()) && (playerInput.strafeKey!=0 || playerInput.forwardKey || playerInput.jumpKey || player.isCrouching())) {
                     double moveRatio = 0;
                     if (playerInput.forwardKey) {
                         moveRatio += 1.0;
                     }
-                    if (playerInput.strafeKey) {
+                    if (playerInput.strafeKey != 0) {
                         moveRatio += 1.0;
                     }
-                    if (playerInput.jumpKey || playerInput.sneakKey) {
+                    if (playerInput.jumpKey || player.isCrouching()) {
                         moveRatio += 0.2 * 0.2;
                     }
                     double swimAssistRate = applyPropertyModifiers(MPSConstants.SWIM_BOOST_AMOUNT) * 0.05 * moveRatio;

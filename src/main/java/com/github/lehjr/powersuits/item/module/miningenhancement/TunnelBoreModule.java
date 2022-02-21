@@ -1,29 +1,3 @@
-/*
- * Copyright (c) 2021. MachineMuse, Lehjr
- *  All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *
- *      Redistributions of source code must retain the above copyright notice, this
- *      list of conditions and the following disclaimer.
- *
- *     Redistributions in binary form must reproduce the above copyright notice,
- *     this list of conditions and the following disclaimer in the documentation
- *     and/or other materials provided with the distribution.
- *
- *  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
- *  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
- *  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- *  DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
- *  ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- *  (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
- *  LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
- *  ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
-
 package com.github.lehjr.powersuits.item.module.miningenhancement;
 
 import com.github.lehjr.numina.util.capabilities.inventory.modechanging.IModeChangingItem;
@@ -34,6 +8,9 @@ import com.github.lehjr.numina.util.capabilities.module.powermodule.EnumModuleCa
 import com.github.lehjr.numina.util.capabilities.module.powermodule.EnumModuleTarget;
 import com.github.lehjr.numina.util.capabilities.module.powermodule.IConfig;
 import com.github.lehjr.numina.util.capabilities.module.powermodule.PowerModuleCapability;
+import com.github.lehjr.numina.util.capabilities.render.highlight.HighLightCapability;
+import com.github.lehjr.numina.util.capabilities.render.highlight.Highlight;
+import com.github.lehjr.numina.util.capabilities.render.highlight.IHighlight;
 import com.github.lehjr.numina.util.energy.ElectricItemUtils;
 import com.github.lehjr.powersuits.config.MPSSettings;
 import com.github.lehjr.powersuits.constants.MPSConstants;
@@ -45,6 +22,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.RayTraceContext;
@@ -63,36 +41,37 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
 
-/**
- * Created by Eximius88 on 1/29/14.
- */
-public class AOEPickUpgradeModule extends AbstractPowerModule {
-    public AOEPickUpgradeModule() {
-    }
+public class TunnelBoreModule extends AbstractPowerModule {
 
     @Nullable
     @Override
     public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundNBT nbt) {
         return new CapProvider(stack);
     }
-    /** TODO: Add charge system like plasma cannon */
+    /** TODO: Add cooldown timer */
     public class CapProvider implements ICapabilityProvider {
         ItemStack module;
         IMiningEnhancementModule miningEnhancement;
+        IHighlight highlight;
 
         public CapProvider(@Nonnull ItemStack module) {
             this.module = module;
             this.miningEnhancement = new Enhancement(module, EnumModuleCategory.MINING_ENHANCEMENT, EnumModuleTarget.TOOLONLY, MPSSettings::getModuleConfig) {{
-                addBaseProperty(MPSConstants.AOE_ENERGY, 500, "FE");
 
+                // FIXME!!
+                addBaseProperty(MPSConstants.AOE_ENERGY, 500, "FE");
                 addTradeoffProperty(MPSConstants.DIAMETER, MPSConstants.AOE_ENERGY, 9500);
                 addIntTradeoffProperty(MPSConstants.DIAMETER, MPSConstants.AOE_MINING_RADIUS, 5, "m", 2, 1);
             }};
+            this.highlight = new Highlighter();
         }
 
         @Nonnull
         @Override
         public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
+            if (cap == HighLightCapability.HIGHLIGHT) {
+                return HighLightCapability.HIGHLIGHT.orEmpty(cap, LazyOptional.of(() -> highlight));
+            }
             return PowerModuleCapability.POWER_MODULE.orEmpty(cap, LazyOptional.of(() -> miningEnhancement));
         }
 
@@ -117,28 +96,7 @@ public class AOEPickUpgradeModule extends AbstractPowerModule {
                     return false;
                 }
 
-                Direction side = ((BlockRayTraceResult) rayTraceResult).getDirection();
-                Stream<BlockPos> posList;
-                switch (side) {
-                    case UP:
-                    case DOWN:
-                        posList = BlockPos.betweenClosedStream(posIn.north(radius).west(radius), posIn.south(radius).east(radius));
-                        break;
-
-                    case EAST:
-                    case WEST:
-                        posList = BlockPos.betweenClosedStream(posIn.above(radius).north(radius), posIn.below(radius).south(radius));
-                        break;
-
-                    case NORTH:
-                    case SOUTH:
-                        posList = BlockPos.betweenClosedStream(posIn.above(radius).west(radius), posIn.below(radius).east(radius));
-                        break;
-
-                    default:
-                        posList = new ArrayList<BlockPos>().stream();
-                }
-
+                NonNullList<BlockPos> posList = highlight.getBlockPositions((BlockRayTraceResult) rayTraceResult);
                 int energyUsage = this.getEnergyUsage();
 
                 AtomicInteger blocksBroken = new AtomicInteger(0);
@@ -146,35 +104,32 @@ public class AOEPickUpgradeModule extends AbstractPowerModule {
                         .filter(IModeChangingItem.class::isInstance)
                         .map(IModeChangingItem.class::cast)
                         .ifPresent(modeChanging -> {
-                        posList.forEach(blockPos-> {
-                            BlockState state = player.level.getBlockState(blockPos);
-                            // find an installed module to break current block
-                            for (ItemStack blockBreakingModule : modeChanging.getInstalledModulesOfType(IBlockBreakingModule.class)) {
-                                int playerEnergy = ElectricItemUtils.getPlayerEnergy(player);
-                                if (blockBreakingModule.getCapability(PowerModuleCapability.POWER_MODULE).map(b -> {
-                                    // check if module can break block
-                                    if(b instanceof IBlockBreakingModule) {
-                                        return ((IBlockBreakingModule) b).canHarvestBlock(itemStack, state, player, blockPos, playerEnergy - energyUsage);
-                                    }
-                                    return false;
-                                }).orElse(false)) {
-                                    if (posIn == blockPos) { // center block
-                                        harvested.set(true);
-                                    }
-                                    blocksBroken.getAndAdd(1);
-                                    Block.updateOrDestroy(state, Blocks.AIR.defaultBlockState(), player.level, blockPos, Constants.BlockFlags.DEFAULT);
-                                    ElectricItemUtils.drainPlayerEnergy(player,
-                                            blockBreakingModule.getCapability(PowerModuleCapability.POWER_MODULE).map(m -> {
-                                                if (m instanceof IBlockBreakingModule) {
-                                                    return ((IBlockBreakingModule) m).getEnergyUsage();
+                            posList.forEach(blockPos-> {
+                                BlockState state = player.level.getBlockState(blockPos);
+                                // find an installed module to break current block
+                                for (ItemStack blockBreakingModule : modeChanging.getInstalledModulesOfType(IBlockBreakingModule.class)) {
+                                    int playerEnergy = ElectricItemUtils.getPlayerEnergy(player);
+                                    if (blockBreakingModule.getCapability(PowerModuleCapability.POWER_MODULE)
+                                            .filter(IBlockBreakingModule.class::isInstance)
+                                            .map(IBlockBreakingModule.class::cast)
+                                            .map(b -> {
+                                                // check if module can break block
+                                                if (b.canHarvestBlock(itemStack, state, player, blockPos, playerEnergy - energyUsage)) {
+                                                    Block.updateOrDestroy(state, Blocks.AIR.defaultBlockState(), player.level, blockPos, Constants.BlockFlags.DEFAULT);
+                                                    ElectricItemUtils.drainPlayerEnergy(player, b.getEnergyUsage() + energyUsage);
+                                                    return true;
                                                 }
-                                                return 0;
-                                            }).orElse(0) + energyUsage);
-                                    break;
+                                                return false;
+                                            }).orElse(false)) {
+                                        if (posIn == blockPos) { // center block
+                                            harvested.set(true);
+                                        }
+                                        blocksBroken.getAndAdd(1);
+                                        break;
+                                    }
                                 }
-                            }
+                            });
                         });
-                });
                 return harvested.get();
             }
 
@@ -183,5 +138,48 @@ public class AOEPickUpgradeModule extends AbstractPowerModule {
                 return (int) applyPropertyModifiers(MPSConstants.AOE_ENERGY);
             }
         }
+
+        // TODO?? : check if can break these blocks before adding to list? (not very efficient)
+        class Highlighter extends Highlight {
+
+            @Override
+            public NonNullList<BlockPos> getBlockPositions(BlockRayTraceResult rayTraceResult) {
+                NonNullList retList = NonNullList.create();
+
+                if(miningEnhancement.isModuleOnline()) {
+                    BlockPos pos = rayTraceResult.getBlockPos();
+                    Direction side = rayTraceResult.getDirection();
+                    Stream<BlockPos> posList;
+
+                    int radius = (int) (miningEnhancement.applyPropertyModifiers(MPSConstants.AOE_MINING_RADIUS) - 1) / 2;
+
+                    switch (side) {
+                        case UP:
+                        case DOWN:
+                            posList = BlockPos.betweenClosedStream(pos.north(radius).west(radius), pos.south(radius).east(radius));
+                            break;
+
+                        case EAST:
+                        case WEST:
+                            posList = BlockPos.betweenClosedStream(pos.above(radius).north(radius), pos.below(radius).south(radius));
+                            break;
+
+                        case NORTH:
+                        case SOUTH:
+                            posList = BlockPos.betweenClosedStream(pos.above(radius).west(radius), pos.below(radius).east(radius));
+                            break;
+
+                        default:
+                            posList = new ArrayList<BlockPos>().stream();
+                    }
+
+                    posList.forEach(blockPos -> {
+                        retList.add(blockPos.immutable());
+                    });
+                }
+                return retList;
+            }
+        }
     }
 }
+

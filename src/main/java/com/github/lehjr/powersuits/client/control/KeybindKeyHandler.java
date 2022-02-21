@@ -43,17 +43,45 @@ import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.items.CapabilityItemHandler;
 import org.lwjgl.glfw.GLFW;
 
+import java.util.Map;
+
 @OnlyIn(Dist.CLIENT)
 public class KeybindKeyHandler {
     Minecraft minecraft;
 
-    public static final String mpa = "Modular Powersuits";
-    public static final KeyBinding openKeybindGUI = new KeyBinding("Open MPS Keybind GUI", GLFW.GLFW_KEY_UNKNOWN, mpa);
-    public static final KeyBinding goDownKey = new KeyBinding("Go Down (MPS Flight Control)", GLFW.GLFW_KEY_Z, mpa);
-    public static final KeyBinding cycleToolBackward = new KeyBinding("Cycle Tool Backward (MPS)", GLFW.GLFW_KEY_UNKNOWN, mpa);
-    public static final KeyBinding cycleToolForward = new KeyBinding("Cycle Tool Forward (MPS)", GLFW.GLFW_KEY_UNKNOWN, mpa);
-    public static final KeyBinding openCosmeticGUI = new KeyBinding("Cosmetic (MPS)", GLFW.GLFW_KEY_UNKNOWN, mpa);
+    // FIXME: Translations
+    public static final String mps = "Modular Powersuits";
+
+    public static final KeyBinding goDownKey = new KeyBinding("Go Down (MPS Flight Control)", GLFW.GLFW_KEY_Z, mps);
+    public static final KeyBinding cycleToolBackward = new KeyBinding("Cycle Tool Backward (MPS)", GLFW.GLFW_KEY_UNKNOWN, mps);
+    public static final KeyBinding cycleToolForward = new KeyBinding("Cycle Tool Forward (MPS)", GLFW.GLFW_KEY_UNKNOWN, mps);
+
+    // TODO: replace
+    public static final KeyBinding openKeybindGUI = new KeyBinding("Open MPS Keybind GUI", GLFW.GLFW_KEY_UNKNOWN, mps);
+
+
+
+    /** Todo: use vanilla keybinding handler. Apparently keybindings can be added at any time, but they are reset on loading so they still need to be saved
+
+
+    Map<ResourceLocation, KeyBinding> keybindingMap = new Hashmap;
+
+     public Optional<Keybinding> getKeyBinding(ResourceLocation regName) {
+        return Optional.ofNullable(keyBindingMap.get(regName);
+     }
+
+     public void addKeyBinding(ResourceLocation regName, KeyBinding keyBinding) {
+        keybindingMap.put(regName, keyBinding);
+     }
+
+     */
+
+    public static final KeyBinding openCosmeticGUI = new KeyBinding("Cosmetic (MPS)", GLFW.GLFW_KEY_UNKNOWN, mps);
     public static final KeyBinding[] keybindArray = new KeyBinding[]{openKeybindGUI, goDownKey, cycleToolBackward, cycleToolForward, openCosmeticGUI};
+
+    public static boolean isKeyPressed(int key) {
+        return GLFW.glfwGetKey(Minecraft.getInstance().getWindow().getWindow(), key) == GLFW.GLFW_PRESS;
+    }
 
     public KeybindKeyHandler() {
         minecraft = Minecraft.getInstance();
@@ -69,7 +97,8 @@ public class KeybindKeyHandler {
         clientPlayer.getCapability(CapabilityPlayerKeyStates.PLAYER_KEYSTATES).ifPresent(playerCap -> {
             boolean markForSync = false;
             boolean forwardKeyState = minecraft.options.keyUp.isDown();
-            boolean strafeKeyState = minecraft.options.keyLeft.isDown() || minecraft.options.keyRight.isDown();
+            // looks weird, but if both keys are pressed it just balances
+            byte strafeKeyState = (byte) ((minecraft.options.keyRight.isDown() ? -1 : 0) + (minecraft.options.keyLeft.isDown() ? 1 : 0));
 
             boolean downKeyState = goDownKey.isDown();
             boolean jumpKeyState = minecraft.options.keyJump.isDown();
@@ -83,7 +112,6 @@ public class KeybindKeyHandler {
                 playerCap.setStrafeKeyState(strafeKeyState);
                 markForSync = true;
             }
-
 
             if (playerCap.getDownKeyState() != downKeyState) {
                 playerCap.setDownKeyState(downKeyState);

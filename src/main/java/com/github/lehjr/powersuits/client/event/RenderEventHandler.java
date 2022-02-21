@@ -29,6 +29,7 @@ package com.github.lehjr.powersuits.client.event;
 import com.github.lehjr.numina.util.capabilities.inventory.modechanging.IModeChangingItem;
 import com.github.lehjr.numina.util.capabilities.inventory.modularitem.IModularItem;
 import com.github.lehjr.numina.util.capabilities.module.powermodule.PowerModuleCapability;
+import com.github.lehjr.numina.util.capabilities.render.highlight.HighLightCapability;
 import com.github.lehjr.numina.util.client.gui.clickable.ClickableModule;
 import com.github.lehjr.numina.util.client.gui.gemoetry.DrawableRelativeRect;
 import com.github.lehjr.numina.util.client.render.MuseRenderer;
@@ -40,25 +41,76 @@ import com.github.lehjr.powersuits.config.MPSSettings;
 import com.github.lehjr.powersuits.constants.MPSConstants;
 import com.github.lehjr.powersuits.constants.MPSRegistryNames;
 import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.util.InputMappings;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.event.FOVUpdateEvent;
-import net.minecraftforge.client.event.RenderGameOverlayEvent;
-import net.minecraftforge.client.event.RenderPlayerEvent;
-import net.minecraftforge.client.event.TextureStitchEvent;
+import net.minecraftforge.client.event.*;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.items.CapabilityItemHandler;
+
+import java.util.Set;
+import java.util.stream.Stream;
 
 public enum RenderEventHandler {
     INSTANCE;
     private static boolean ownFly = false;
     private final DrawableRelativeRect frame = new DrawableRelativeRect(MPSSettings.getHudKeybindX(), MPSSettings.getHudKeybindY(), MPSSettings.getHudKeybindX() + (float) 16, MPSSettings.getHudKeybindY() +  16, true, Colour.DARK_GREEN.withAlpha(0.2F), Colour.GREEN.withAlpha(0.2F));
 
+    @OnlyIn(Dist.CLIENT)
+    @SubscribeEvent
+    public void renderBlockHighlight(DrawHighlightEvent event) {
+        if (event.getTarget().getType() != RayTraceResult.Type.BLOCK || !(event.getInfo().getEntity() instanceof PlayerEntity)) {
+            return;
+        }
+
+        PlayerEntity player = ((PlayerEntity) event.getInfo().getEntity());
+
+        player.getMainHandItem().getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+                .filter(IModeChangingItem.class::isInstance)
+                .map(IModeChangingItem.class::cast).ifPresent(iModeChangingItem -> {
+                    iModeChangingItem.getActiveModule().getCapability(HighLightCapability.HIGHLIGHT).ifPresent(iHighlight -> {
+                        BlockRayTraceResult result = (BlockRayTraceResult) event.getTarget();
+                        NonNullList<BlockPos> blocks = iHighlight.getBlockPositions(result);
+
+                        if(blocks.isEmpty()) {
+                            return;
+                        }
+
+                        MatrixStack matrixStack = event.getMatrix();
+                        IRenderTypeBuffer buffer = event.getBuffers();
+                        IVertexBuilder lineBuilder = buffer.getBuffer(RenderType.LINES);
+
+                        double partialTicks = event.getPartialTicks();
+                        double x = player.xOld + (player.getX() - player.xOld) * partialTicks;
+                        double y = player.yOld + player.getEyeHeight() + (player.getY() - player.yOld) * partialTicks;
+                        double z = player.zOld + (player.getZ() - player.zOld) * partialTicks;
+
+                        matrixStack.pushPose();
+                        blocks.forEach(blockPos -> {
+                            AxisAlignedBB aabb = new AxisAlignedBB(blockPos).move(-x, -y, -z);
+
+                            WorldRenderer.renderLineBox(matrixStack, lineBuilder, aabb, blockPos.equals(result.getBlockPos()) ? 1 : 0 , 0, 0, 0.4F);
+                        });
+                        matrixStack.popPose();
+                        event.setCanceled(true);
+                    });
+                });
+    }
 
     @OnlyIn(Dist.CLIENT)
     @SubscribeEvent
@@ -102,13 +154,13 @@ public enum RenderEventHandler {
                         .filter(IModularItem.class::isInstance)
                         .map(IModularItem.class::cast)
                         .map(iModularItem ->
-                               iModularItem.isModuleOnline(MPSRegistryNames.FLIGHT_CONTROL_MODULE_REGNAME)).orElse(false) ||
+                                iModularItem.isModuleOnline(MPSRegistryNames.FLIGHT_CONTROL_MODULE_REGNAME)).orElse(false) ||
 
                         player.getItemBySlot(EquipmentSlotType.CHEST).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
                                 .filter(IModularItem.class::isInstance)
                                 .map(IModularItem.class::cast)
                                 .map(iModularItem ->
-                                                iModularItem.isModuleOnline(MPSRegistryNames.JETPACK_MODULE_REGNAME) ||
+                                        iModularItem.isModuleOnline(MPSRegistryNames.JETPACK_MODULE_REGNAME) ||
                                                 iModularItem.isModuleOnline(MPSRegistryNames.GLIDER_MODULE_REGNAME)).orElse(false) ||
 
                         player.getItemBySlot(EquipmentSlotType.FEET).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
@@ -132,14 +184,14 @@ public enum RenderEventHandler {
                 .filter(IModularItem.class::isInstance)
                 .map(IModularItem.class::cast)
                 .ifPresent(h-> {
-                    if (h instanceof IModularItem) {
-                        ItemStack binnoculars = h.getOnlineModuleOrEmpty(MPSRegistryNames.BINOCULARS_MODULE_REGNAME);
-                        if (!binnoculars.isEmpty())
-                            e.setNewfov((float) (e.getNewfov() / binnoculars.getCapability(PowerModuleCapability.POWER_MODULE)
-                                    .map(m->m.applyPropertyModifiers(MPSConstants.FOV)).orElse(1D)));
-                    }
-                }
-        );
+                            if (h instanceof IModularItem) {
+                                ItemStack binnoculars = h.getOnlineModuleOrEmpty(MPSRegistryNames.BINOCULARS_MODULE_REGNAME);
+                                if (!binnoculars.isEmpty())
+                                    e.setNewfov((float) (e.getNewfov() / binnoculars.getCapability(PowerModuleCapability.POWER_MODULE)
+                                            .map(m->m.applyPropertyModifiers(MPSConstants.FOV)).orElse(1D)));
+                            }
+                        }
+                );
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -172,11 +224,11 @@ public enum RenderEventHandler {
                                     .filter(IModularItem.class::isInstance)
                                     .map(IModularItem.class::cast)
                                     .map(iItemHandler -> {
-                                    if (iItemHandler instanceof IModeChangingItem) {
-                                        return ((IModeChangingItem) iItemHandler).isModuleActiveAndOnline(module.getModule().getItem().getRegistryName());
-                                    }
-                                    return iItemHandler.isModuleOnline(module.getModule().getItem().getRegistryName());
-                            }).orElse(false);
+                                        if (iItemHandler instanceof IModeChangingItem) {
+                                            return ((IModeChangingItem) iItemHandler).isModuleActiveAndOnline(module.getModule().getItem().getRegistryName());
+                                        }
+                                        return iItemHandler.isModuleOnline(module.getModule().getItem().getRegistryName());
+                                    }).orElse(false);
                             // stop at the first active instance
                             if(active) {
                                 break;

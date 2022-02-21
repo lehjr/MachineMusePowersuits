@@ -90,6 +90,10 @@ public class MPSRegistryNames {
     public static final String FORTUNE_MODULE = "fortune";
     public static final String VEIN_MINER_MODULE = "vein_miner";
 
+    // WIP
+    public static final String TUNNEL_BORE_MODULE = "tunnel_bore"; // no icon
+    public static final String AOE_PICK_UPGRADE_MODULE2 = "aoe_pick_upgrade2"; // no icon
+
     // Movement -----------------------------------------------------------------------------------
     public static final String BLINK_DRIVE_MODULE = "blink_drive";
     public static final String CLIMB_ASSIST_MODULE = "climb_assist";

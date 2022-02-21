@@ -141,6 +141,13 @@ public class MPSConstants {
     // Vein Miner
     public static final String VEIN_MINER_ENERGY = "veinMinerEnergy";
 
+    // WIP Modules
+    public static final String AOE2_ENERGY = "aoe2Energy";
+    public static final String AOE2_LIMIT = "aoe2Limit";
+
+
+
+
     /** Movement ------------------------------------------------------------------------------- */
     // Generic
     public static final String THRUST = "thrust";

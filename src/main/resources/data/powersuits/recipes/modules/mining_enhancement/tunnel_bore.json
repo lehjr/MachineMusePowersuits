@@ -1,0 +1,35 @@
+{
+  "recipes": [
+    {
+      "result": {
+        "item": "powersuits:tunnel_bore"
+      },
+      "type": "minecraft:crafting_shaped",
+      "mirrored": true,
+      "pattern": [
+        "FFF",
+        "FCF",
+        "FFF"
+      ],
+      "key": {
+        "C": {
+          "item": "numina:component_control_circuit"
+        },
+        "F": {
+          "tag": "forge:solenoid"
+        }
+      }
+    },
+    {
+      "result": {
+        "item": "powersuits:tunnel_bore"
+      },
+      "type": "minecraft:crafting_shapeless",
+      "ingredients": [
+        {
+          "item": "powersuits:aoe_pick_upgrade"
+        }
+      ]
+    }
+  ]
+}

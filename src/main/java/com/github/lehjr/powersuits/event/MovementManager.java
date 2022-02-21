@@ -92,8 +92,6 @@ public enum MovementManager {
         PlayerMovementInputWrapper.PlayerMovementInput playerInput = PlayerMovementInputWrapper.get(player);
         double thrustUsed = 0;
         if (flightControl) {
-            System.out.println("doing something here");
-
             Vector3d desiredDirection = player.getLookAngle().normalize();
             double strafeX = desiredDirection.z;
             double strafeZ = -desiredDirection.x;
@@ -106,9 +104,9 @@ public enum MovementManager {
                             .getCapability(PowerModuleCapability.POWER_MODULE)
                             .map(pm -> pm.applyPropertyModifiers(MPSConstants.FLIGHT_VERTICALITY)).orElse(0D)).orElse(0D);
             desiredDirection = new Vector3d(
-                    (desiredDirection.x * boolToVal(playerInput.forwardKey) + strafeX * boolToVal(playerInput.strafeKey)),
+                    (desiredDirection.x * boolToVal(playerInput.forwardKey) + strafeX * playerInput.strafeKey),
                     (flightVerticality * desiredDirection.y * boolToVal(playerInput.forwardKey) + boolToVal(playerInput.jumpKey) - boolToVal(playerInput.downKey)),
-                    (desiredDirection.z * boolToVal(playerInput.forwardKey) + strafeZ * boolToVal(playerInput.strafeKey)));
+                    (desiredDirection.z * boolToVal(playerInput.forwardKey) + strafeZ * playerInput.strafeKey));
 
             desiredDirection = desiredDirection.normalize();
 
@@ -174,7 +172,7 @@ public enum MovementManager {
                 player.setDeltaMovement(player.getDeltaMovement().add(0, thrust, 0));
             } else {
 
-                System.out.println("thrust: " + thrust +", thrust * root2: " + (thrust * root2) );
+//                System.out.println("thrust: " + thrust +", thrust * root2: " + (thrust * root2) );
 
                 player.setDeltaMovement(player.getDeltaMovement().add(
                         desiredDirection.x * thrust * root2 * boolToVal(playerInput.forwardKey),
@@ -190,7 +188,7 @@ public enum MovementManager {
         // currently comes out to 0.0625
         double horizontalLimit = MPSSettings.getMaxFlyingSpeed() * MPSSettings.getMaxFlyingSpeed() / 400;
 
-        if (playerInput.sneakKey && horizontalLimit > 0.05) {
+        if (player.isCrouching() && horizontalLimit > 0.05) {
             horizontalLimit = 0.05;
         }
 

@@ -190,6 +190,12 @@ public class MPSObjects {
     public static final RegistryObject<Item> FORTUNE_MODULE = registerModule(MPSRegistryNames.FORTUNE_MODULE, new FortuneModule());
     public static final RegistryObject<Item> VEIN_MINER_MODULE = registerModule(MPSRegistryNames.VEIN_MINER_MODULE, new VeinMinerModule());
 
+    // WIP
+    public static final RegistryObject<Item> TUNNEL_BORE_MODULE = registerModule(MPSRegistryNames.TUNNEL_BORE_MODULE, new TunnelBoreModule());
+    public static final RegistryObject<Item> AOE_PICK_UPGRADE_MODULE2 = registerModule(MPSRegistryNames.AOE_PICK_UPGRADE_MODULE2, new AoEpickUpgradeModule2());
+
+
+
     // Movement -----------------------------------------------------------------------------------
     public static final RegistryObject<Item> BLINK_DRIVE_MODULE = registerModule(MPSRegistryNames.BLINK_DRIVE_MODULE, new BlinkDriveModule());
     public static final RegistryObject<Item> CLIMB_ASSIST_MODULE = registerModule(MPSRegistryNames.CLIMB_ASSIST_MODULE, new ClimbAssistModule());

@@ -71,7 +71,7 @@ public enum KeybindManager {
     }
 
     public KeyBinding addKeybinding(String keybindDescription, InputMappings.Input keyCode, MusePoint2D position) {
-        KeyBinding kb = new KeyBinding(keybindDescription, keyCode.getValue(), KeybindKeyHandler.mpa);
+        KeyBinding kb = new KeyBinding(keybindDescription, keyCode.getValue(), KeybindKeyHandler.mps);
         boolean free = !keyBindingHelper.keyBindingHasKey(keyCode);
         keybindings.add(new ClickableKeybinding(kb, position, free, false));
         return kb;
@@ -170,7 +170,7 @@ public enum KeybindManager {
                         }
 
                         workingKeybinding = new ClickableKeybinding(
-                                new KeyBinding(KeyBindingHelper.getInputByCode(id).getName(), id, KeybindKeyHandler.mpa), position, free, displayOnHUD);
+                                new KeyBinding(KeyBindingHelper.getInputByCode(id).getName(), id, KeybindKeyHandler.mps), position, free, displayOnHUD);
                         workingKeybinding.toggleval = toggleval;
                         keybindings.add(workingKeybinding);
                     } else {

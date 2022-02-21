@@ -104,7 +104,6 @@ public class MPSPackets {
                 ContainerGuiOpenPacket::write,
                 ContainerGuiOpenPacket::read,
                 ContainerGuiOpenPacket::handle);
-
     }
 
     public SimpleChannel getWrapper() {

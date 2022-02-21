@@ -411,7 +411,7 @@ public class TinkerKeybindGui extends ContainerlessGui {
         }
 
         // prevent creating multiple buttons for same keybinding
-        KeyBinding keybind = new KeyBinding(name, key.getValue(), KeybindKeyHandler.mpa);
+        KeyBinding keybind = new KeyBinding(name, key.getValue(), KeybindKeyHandler.mps);
         if (!keybindManager.getKeybindings().stream().filter(clickableKeybinding -> {
             System.out.println(clickableKeybinding.getKeyBinding().getKey());
             return clickableKeybinding.getKeyBinding().getKey().equals(key);
