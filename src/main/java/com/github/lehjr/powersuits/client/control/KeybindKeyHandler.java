@@ -29,32 +29,42 @@ package com.github.lehjr.powersuits.client.control;
 import com.github.lehjr.numina.network.NuminaPackets;
 import com.github.lehjr.numina.network.packets.PlayerUpdatePacket;
 import com.github.lehjr.numina.util.capabilities.inventory.modechanging.IModeChangingItem;
+import com.github.lehjr.numina.util.capabilities.module.powermodule.EnumModuleCategory;
+import com.github.lehjr.numina.util.capabilities.module.powermodule.EnumModuleTarget;
+import com.github.lehjr.numina.util.capabilities.module.powermodule.PowerModuleCapability;
+import com.github.lehjr.numina.util.capabilities.module.rightclick.IRightClickModule;
+import com.github.lehjr.numina.util.capabilities.module.toggleable.IToggleableModule;
 import com.github.lehjr.numina.util.capabilities.player.CapabilityPlayerKeyStates;
 import com.github.lehjr.powersuits.client.gui.modechanging.GuiModeSelector;
+import com.github.lehjr.powersuits.constants.MPSConstants;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.client.settings.KeyBinding;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.registries.ForgeRegistries;
 import org.lwjgl.glfw.GLFW;
-
-import java.util.Map;
 
 @OnlyIn(Dist.CLIENT)
 public class KeybindKeyHandler {
     Minecraft minecraft;
-
     // FIXME: Translations
-    public static final String mps = "Modular Powersuits";
+    public static final String mps =  "itemGroup.powersuits";
 
-    public static final KeyBinding goDownKey = new KeyBinding("Go Down (MPS Flight Control)", GLFW.GLFW_KEY_Z, mps);
-    public static final KeyBinding cycleToolBackward = new KeyBinding("Cycle Tool Backward (MPS)", GLFW.GLFW_KEY_UNKNOWN, mps);
-    public static final KeyBinding cycleToolForward = new KeyBinding("Cycle Tool Forward (MPS)", GLFW.GLFW_KEY_UNKNOWN, mps);
+    public static final KeyBinding goDownKey = new KeyBinding(new TranslationTextComponent("keybinding.powersuits.goDownKey").getKey(), GLFW.GLFW_KEY_Z, mps);
+    public static final KeyBinding cycleToolBackward = new KeyBinding(new TranslationTextComponent("keybinding.powersuits.cycleToolBackward").getKey(), GLFW.GLFW_KEY_UNKNOWN, mps);
+    public static final KeyBinding cycleToolForward = new KeyBinding(new TranslationTextComponent("keybinding.powersuits.cycleToolForward").getKey(), GLFW.GLFW_KEY_UNKNOWN, mps);
+
 
     // TODO: replace
     public static final KeyBinding openKeybindGUI = new KeyBinding("Open MPS Keybind GUI", GLFW.GLFW_KEY_UNKNOWN, mps);
@@ -64,14 +74,14 @@ public class KeybindKeyHandler {
     /** Todo: use vanilla keybinding handler. Apparently keybindings can be added at any time, but they are reset on loading so they still need to be saved
 
 
-    Map<ResourceLocation, KeyBinding> keybindingMap = new Hashmap;
+     Map<ResourceLocation, KeyBinding> keybindingMap = new Hashmap;
 
      public Optional<Keybinding> getKeyBinding(ResourceLocation regName) {
-        return Optional.ofNullable(keyBindingMap.get(regName);
+     return Optional.ofNullable(keyBindingMap.get(regName);
      }
 
      public void addKeyBinding(ResourceLocation regName, KeyBinding keyBinding) {
-        keybindingMap.put(regName, keyBinding);
+     keybindingMap.put(regName, keyBinding);
      }
 
      */
@@ -83,10 +93,41 @@ public class KeybindKeyHandler {
         return GLFW.glfwGetKey(Minecraft.getInstance().getWindow().getWindow(), key) == GLFW.GLFW_PRESS;
     }
 
+    void RegisterKeybinding(ResourceLocation registryName) {
+        MPSKeyBinding kb = new MPSKeyBinding(registryName, "keybinding.powersuits." + registryName.getPath(), GLFW.GLFW_KEY_UNKNOWN, mps);
+        ClientRegistry.registerKeyBinding(kb);
+    }
+
     public KeybindKeyHandler() {
         minecraft = Minecraft.getInstance();
         for (KeyBinding key : keybindArray) {
             ClientRegistry.registerKeyBinding(key);
+        }
+        int i = 0;
+        NonNullList<ItemStack> modules = NonNullList.create();
+
+        for (Item item : ForgeRegistries.ITEMS.getValues()) {
+            if (item.getRegistryName().getNamespace().contains(MPSConstants.MOD_ID)) {
+                new ItemStack(item).getCapability(PowerModuleCapability.POWER_MODULE)
+                        .filter(IToggleableModule.class::isInstance)
+                        .map(IToggleableModule.class::cast)
+                        .ifPresent(pm -> {
+                            // Tool settings are a bit odd
+                            if (pm.getTarget() == EnumModuleTarget.TOOLONLY) {
+                                if (pm.getCategory() == EnumModuleCategory.MINING_ENHANCEMENT) {
+                                    modules.add(pm.getModuleStack());
+                                    RegisterKeybinding(item.getRegistryName());
+                                } else if (!IRightClickModule.class.isAssignableFrom(pm.getClass())) {
+                                    modules.add(pm.getModuleStack());
+                                    RegisterKeybinding(item.getRegistryName());
+                                }
+                            } else {
+                                modules.add(pm.getModuleStack());
+                                RegisterKeybinding(item.getRegistryName());
+                            }
+                        });
+                i++;
+            }
         }
     }
 
@@ -94,6 +135,7 @@ public class KeybindKeyHandler {
         if (clientPlayer == null) {
             return;
         }
+
         clientPlayer.getCapability(CapabilityPlayerKeyStates.PLAYER_KEYSTATES).ifPresent(playerCap -> {
             boolean markForSync = false;
             boolean forwardKeyState = minecraft.options.keyUp.isDown();
@@ -140,6 +182,10 @@ public class KeybindKeyHandler {
             return;
         }
 
+        KeybindManager.INSTANCE.getMPSKeyBinds().stream().filter(kb->kb.isDown()).forEach(kb->{
+            kb.toggleModules();
+        });
+
         KeyBinding[] hotbarKeys = minecraft.options.keyHotbarSlots;
         updatePlayerValues(player);
 
@@ -149,12 +195,12 @@ public class KeybindKeyHandler {
                     .filter(IModeChangingItem.class::isInstance)
                     .map(IModeChangingItem.class::cast)
                     .ifPresent(iModeChanging->{
-                if(player.level.isClientSide) {
-                    if (!(Minecraft.getInstance().screen instanceof GuiModeSelector)) {
-                        Minecraft.getInstance().tell(() -> Minecraft.getInstance().setScreen(new GuiModeSelector(player, new StringTextComponent("modeChanging"))));
-                    }
-                }
-            });
+                        if(player.level.isClientSide) {
+                            if (!(Minecraft.getInstance().screen instanceof GuiModeSelector)) {
+                                Minecraft.getInstance().tell(() -> Minecraft.getInstance().setScreen(new GuiModeSelector(player, new StringTextComponent("modeChanging"))));
+                            }
+                        }
+                    });
         }
 
         /* cycleToolBackward/cycleToolForward */

@@ -89,7 +89,7 @@ public class BladeLauncherModule extends AbstractPowerModule {
             }
 
             @Override
-            public ActionResult onItemRightClick(ItemStack itemStackIn, World worldIn, PlayerEntity playerIn, Hand hand) {
+            public ActionResult use(ItemStack itemStackIn, World worldIn, PlayerEntity playerIn, Hand hand) {
                 if (hand == Hand.MAIN_HAND) {
                     if (ElectricItemUtils.getPlayerEnergy(playerIn) > applyPropertyModifiers(MPSConstants.BLADE_ENERGY)) {
                         playerIn.startUsingItem(hand);

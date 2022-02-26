@@ -94,7 +94,7 @@ public class LeafBlowerModule extends AbstractPowerModule {
             }
 
             @Override
-            public ActionResult onItemRightClick(ItemStack itemStackIn, World worldIn, PlayerEntity playerIn, Hand hand) {
+            public ActionResult use(ItemStack itemStackIn, World worldIn, PlayerEntity playerIn, Hand hand) {
                 int radius = (int) applyPropertyModifiers(MPSConstants.RADIUS);
                 if (useBlower(radius, itemStackIn, playerIn, worldIn, playerIn.blockPosition()))
                     return ActionResult.success(itemStackIn);

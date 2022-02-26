@@ -88,7 +88,7 @@ public class BlinkDriveModule extends AbstractPowerModule {
             }
 
             @Override
-            public ActionResult onItemRightClick(ItemStack itemStackIn, World worldIn, PlayerEntity playerIn, Hand hand) {
+            public ActionResult use(ItemStack itemStackIn, World worldIn, PlayerEntity playerIn, Hand hand) {
                 int range = (int) applyPropertyModifiers(MPSConstants.BLINK_DRIVE_RANGE);
                 int energyConsumption = getEnergyUsage();
 

@@ -81,7 +81,7 @@ public class ClickableKeybinding extends ClickableButton2 {
     public void doToggleIf(boolean value) {
         if (value && !toggled) {
             toggleModules();
-            KeybindManager.INSTANCE.writeOutKeybinds();
+            KeybindManager.INSTANCE.writeOutKeybindSetings();
         }
         toggled = value;
     }

@@ -33,6 +33,7 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.RayTraceContext;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -98,19 +99,18 @@ public class AoEpickUpgradeModule2 extends AbstractPowerModule {
             }
 
             @Override
-            public ActionResult<ItemStack> onItemRightClick(@Nonnull ItemStack itemStackIn, World worldIn, PlayerEntity playerIn, Hand hand) {
-                if (hand.equals(Hand.MAIN_HAND)) {
-                    if (worldIn.isClientSide()) {
-                        if (KeybindKeyHandler.isKeyPressed(GLFW.GLFW_KEY_LEFT_SHIFT) || KeybindKeyHandler.isKeyPressed(GLFW.GLFW_KEY_RIGHT_SHIFT)) {
-                            BlockRayTraceResult rayTraceResult = getPlayerPOVHitResult(playerIn.level, playerIn, RayTraceContext.FluidMode.NONE);
-                            if (!(rayTraceResult == null)) {
-                                chameleon.setTargetBlock(worldIn.getBlockState(rayTraceResult.getBlockPos()).getBlock());
-                            }
+            public ActionResult<ItemStack> use(@Nonnull ItemStack itemStackIn, World worldIn, PlayerEntity playerIn, Hand hand) {
+                if (hand.equals(Hand.MAIN_HAND) && worldIn.isClientSide()) {
+                    if (KeybindKeyHandler.isKeyPressed(GLFW.GLFW_KEY_LEFT_SHIFT) || KeybindKeyHandler.isKeyPressed(GLFW.GLFW_KEY_RIGHT_SHIFT)) {
+                        BlockRayTraceResult rayTraceResult = getPlayerPOVHitResult(playerIn.level, playerIn, RayTraceContext.FluidMode.NONE);
+                        if (!(rayTraceResult == null)) {
+                            chameleon.setTargetBlock(worldIn.getBlockState(rayTraceResult.getBlockPos()).getBlock());
+                            playerIn.sendMessage(new StringTextComponent("changed block"), playerIn.getUUID());
                         }
                     }
                 }
 
-                return super.onItemRightClick(itemStackIn, worldIn, playerIn, hand);
+                return super.use(itemStackIn, worldIn, playerIn, hand);
             }
 
             void harvestBlocks(List<BlockPos> posList, World world) {

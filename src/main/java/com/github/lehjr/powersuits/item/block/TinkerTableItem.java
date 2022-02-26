@@ -95,12 +95,12 @@ public class TinkerTableItem extends BlockItem {
             }
 
             @Override
-            public ActionResult onItemRightClick(ItemStack itemStackIn, World worldIn, PlayerEntity playerIn, Hand hand) {
+            public ActionResult use(ItemStack itemStackIn, World worldIn, PlayerEntity playerIn, Hand hand) {
                 if (!worldIn.isClientSide()) {
                     INamedContainerProvider container = new SimpleNamedContainerProvider((id, inventory, player) -> new InstallSalvageContainer(id, inventory, EquipmentSlotType.MAINHAND), new TranslationTextComponent("gui.powersuits.tab.install.salvage"));
                     NetworkHooks.openGui((ServerPlayerEntity) playerIn, container, buffer -> buffer.writeEnum(EquipmentSlotType.MAINHAND));
                 }
-                return super.onItemRightClick(itemStackIn, worldIn, playerIn, hand);
+                return super.use(itemStackIn, worldIn, playerIn, hand);
             }
         }
     }

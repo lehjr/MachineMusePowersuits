@@ -28,163 +28,210 @@ package com.github.lehjr.powersuits.client.control;
 
 import com.github.lehjr.numina.basemod.MuseLogger;
 import com.github.lehjr.numina.config.ConfigHelper;
-import com.github.lehjr.numina.util.capabilities.inventory.modularitem.IModularItem;
 import com.github.lehjr.numina.util.capabilities.module.powermodule.EnumModuleCategory;
-import com.github.lehjr.numina.util.client.control.KeyBindingHelper;
-import com.github.lehjr.numina.util.client.gui.clickable.ClickableModule;
-import com.github.lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
+import com.github.lehjr.numina.util.capabilities.module.powermodule.EnumModuleTarget;
+import com.github.lehjr.numina.util.capabilities.module.powermodule.PowerModuleCapability;
+import com.github.lehjr.numina.util.capabilities.module.rightclick.IRightClickModule;
+import com.github.lehjr.numina.util.capabilities.module.toggleable.IToggleableModule;
 import com.github.lehjr.powersuits.client.gui.clickable.ClickableKeybinding;
 import com.github.lehjr.powersuits.constants.MPSConstants;
+import com.google.gson.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.client.util.InputMappings;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.registries.ForgeRegistries;
+import org.lwjgl.glfw.GLFW;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
+import java.io.*;
 import java.nio.file.Files;
-import java.util.HashSet;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
+/**
+ * For setting up the keybindings used in the onscreen display
+ */
 public enum KeybindManager {
     INSTANCE;
 
-    private static final KeyBindingHelper keyBindingHelper = new KeyBindingHelper();
-    // only stores keybindings relevant to us!!
-    protected final Set<ClickableKeybinding> keybindings = new HashSet();
+    public static final String mps = "itemGroup.powersuits";
+    public static final KeyBinding goDownKey = new KeyBinding(new TranslationTextComponent("keybinding.powersuits.goDownKey").getKey(), GLFW.GLFW_KEY_Z, mps);
+    public static final KeyBinding cycleToolBackward = new KeyBinding(new TranslationTextComponent("keybinding.powersuits.cycleToolBackward").getKey(), GLFW.GLFW_KEY_UNKNOWN, mps);
+    public static final KeyBinding cycleToolForward = new KeyBinding(new TranslationTextComponent("keybinding.powersuits.cycleToolForward").getKey(), GLFW.GLFW_KEY_UNKNOWN, mps);
 
-    public Set<ClickableKeybinding> getKeybindings() {
-        return keybindings;
+    /**
+     * For loading older keybinding configurations
+     */
+    File getLegacyKeyBindConfig() {
+        return new File(ConfigHelper.setupConfigFile("powersuits-keybinds.cfg", MPSConstants.MOD_ID).getAbsolutePath());
     }
 
-    public void remove(ClickableKeybinding keybinding) {
-        keybindings.remove(keybinding);
-        writeOutKeybinds();
+    /**
+     * For saving/loading keybind configurations
+     */
+    File getKeyBindConfig() {
+        return new File(ConfigHelper.setupConfigFile("powersuits-keybinds.json", MPSConstants.MOD_ID).getAbsolutePath());
     }
 
-    public KeyBinding addKeybinding(String keybindDescription, InputMappings.Input keyCode, MusePoint2D position) {
-        KeyBinding kb = new KeyBinding(keybindDescription, keyCode.getValue(), KeybindKeyHandler.mps);
-        boolean free = !keyBindingHelper.keyBindingHasKey(keyCode);
-        keybindings.add(new ClickableKeybinding(kb, position, free, false));
-        return kb;
+    void RegisterKeybinding(ResourceLocation registryName) {
+        MPSKeyBinding kb = new MPSKeyBinding(registryName, "keybinding.powersuits." + registryName.getPath(), GLFW.GLFW_KEY_UNKNOWN, mps);
+        ClientRegistry.registerKeyBinding(kb);
     }
 
-    public String parseName(KeyBinding keybind) {
-        if (keybind.getKey().getValue() < 0) {
-            return "Mouse" + (keybind.getKey().getValue() + 100);
-        } else {
-            return keybind.getKey().getName();
+    /**
+     * Populates the KB map
+     */
+    public void RegKeyBindings() {
+        for (Item item : ForgeRegistries.ITEMS.getValues()) {
+            if (item.getRegistryName().getNamespace().contains(MPSConstants.MOD_ID)) {
+                new ItemStack(item).getCapability(PowerModuleCapability.POWER_MODULE)
+                        .filter(IToggleableModule.class::isInstance)
+                        .map(IToggleableModule.class::cast)
+                        .ifPresent(pm -> {
+                            // Tool settings are a bit odd
+                            if (pm.getTarget() == EnumModuleTarget.TOOLONLY) {
+                                if (pm.getCategory() == EnumModuleCategory.MINING_ENHANCEMENT) {
+                                    RegisterKeybinding(item.getRegistryName());
+                                } else if (!IRightClickModule.class.isAssignableFrom(pm.getClass())) {
+                                    RegisterKeybinding(item.getRegistryName());
+                                }
+                            } else {
+                                RegisterKeybinding(item.getRegistryName());
+                            }
+                        });
+            }
         }
     }
 
-    public void writeOutKeybinds() {
+
+    public void writeOutKeybindSetings() {
         try {
-            File file = new File(ConfigHelper.setupConfigFile("powersuits-keybinds.cfg", MPSConstants.MOD_ID).getAbsolutePath());
+            File file = getKeyBindConfig();
             if (!file.exists()) {
                 Files.createDirectories(file.toPath().getParent());
                 file.createNewFile();
             }
+            JsonObject kbSettings = new JsonObject();
+            Arrays.stream(Minecraft.getInstance().options.keyMappings)
+                    .filter(MPSKeyBinding.class::isInstance)
+                    .map(MPSKeyBinding.class::cast)
+                    .forEach(keyBinding -> {
+                        System.out.println("keyBinding.getName(): " + keyBinding.getName());
 
-            FileWriter fileWriter = new FileWriter(file, false);
-
-            PlayerEntity player = Minecraft.getInstance().player;
-            NonNullList modulesToWrite = NonNullList.create();
-
-            for (EquipmentSlotType slot: EquipmentSlotType.values()) {
-                if (slot.getType() == EquipmentSlotType.Group.ARMOR) {
-                    player.getItemBySlot(slot).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-                            .filter(IModularItem.class::isInstance)
-                            .map(IModularItem.class::cast)
-                            .ifPresent(
-                            iItemHandler -> modulesToWrite.addAll(iItemHandler.getInstalledModules()));
-                }
-            }
-
-            StringBuilder stringBuilder = new StringBuilder();
-            for (ClickableKeybinding keybinding : keybindings) {
-                stringBuilder.append(keybinding.getKeyBinding().getKey().getValue())
-                        .append(":")
-                        .append(keybinding.getPosition().getX())
-                        .append(':')
-                        .append(keybinding.getPosition().getY())
-                        .append(':')
-                        .append(keybinding.displayOnHUD)
-                        .append(':')
-                        .append(keybinding.toggleval)
-                        .append('\n');
-
-                for (ClickableModule module : keybinding.getBoundModules()) {
-                    stringBuilder.append(module.getModule().getItem().getRegistryName().getPath())
-                            .append('~')
-                            .append(module.getPosition().getX())
-                            .append('~')
-                            .append(module.getPosition().getY())
-                            .append('\n');
-                }
-            }
-
-            String out = stringBuilder.toString();
-
-            fileWriter.write(out);
-            fileWriter.flush();
-            fileWriter.close();
-
+                        kbSettings.addProperty(keyBinding.getName(), keyBinding.showOnHud);
+                    });
+            Gson gson = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
+            JsonParser jp = new JsonParser();
+            JsonElement je = jp.parse(kbSettings.toString());
+            String prettyJsonString = gson.toJson(je);
+            fileWriter(file, prettyJsonString, true);
         } catch (Exception e) {
             MuseLogger.logger.error("Problem writing out keyconfig :(");
             e.printStackTrace();
         }
     }
 
-    public void readInKeybinds() {
+    public void fileWriter(File file, String string, boolean overwrite) {
         try {
-            File file = new File(ConfigHelper.setupConfigFile("powersuits-keybinds.cfg", MPSConstants.MOD_ID).getAbsolutePath());
+            Files.createDirectories(file.toPath().getParent());
+            if (overwrite || !file.exists()) {
+                FileWriter fileWriter = new FileWriter(file);
+                fileWriter.write(string);
+                fileWriter.flush();
+                fileWriter.close();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public List<MPSKeyBinding> getMPSKeyBinds() {
+        return Arrays.stream(Minecraft.getInstance().options.keyMappings).filter(MPSKeyBinding.class::isInstance).map(MPSKeyBinding.class::cast).collect(Collectors.toList());
+    }
+
+    public void readInKeybinds() {
+        File file = getKeyBindConfig();
+        if (!file.exists()) {
+            readLegacyKeybinds();
+            return;
+        }
+
+        JsonParser jsonParser = new JsonParser();
+        try (FileReader reader = new FileReader(getKeyBindConfig())) {
+            Object object = jsonParser.parse(reader);
+            if (object instanceof JsonObject) {
+                JsonObject jsonObject = (JsonObject) object;
+                Set<Map.Entry<String, JsonElement>> elements = jsonObject.entrySet();
+                for (Map.Entry entry : elements) {
+                    String name = (String) entry.getKey();
+                    boolean value = jsonObject.get(name).getAsBoolean();
+                    getMPSKeyBinds().stream().filter(kb->kb.getName().equals(name)).findFirst().ifPresent(kb->kb.showOnHud = value);
+                }
+            }
+        } catch (Exception e) {
+            MuseLogger.logger.error("Problem reading in keyconfig :(");
+            e.printStackTrace();
+        }
+    }
+
+    public void readLegacyKeybinds() {
+        System.out.println("loading legacy keybinds");
+
+        try {
+            File file = getLegacyKeyBindConfig();
             if (!file.exists()) {
                 MuseLogger.logger.error("No modular power armor keybind file found.");
                 return;
             }
             BufferedReader reader = new BufferedReader(new FileReader(file));
-            ClickableKeybinding workingKeybinding = null;
+            boolean displayOnHUD = false;
+            boolean toggleval = false;
+            InputMappings.Input id = null;
+
             while (reader.ready()) {
                 String line = reader.readLine();
+                /** get keybinding settings */
+                // This is supposed to have the keybinding in one line followed by one or more lines of bound modules
+
                 if (line.contains(":")) {
                     String[] exploded = line.split(":");
-                    int id = Integer.parseInt(exploded[0]);
-                    if (!keyBindingHelper.keyBindingHasKey(id)) {
-                        MusePoint2D position = new MusePoint2D(Float.parseFloat(exploded[1]), Float.parseFloat(exploded[2]));
-                        boolean free = !keyBindingHelper.keyBindingHasKey(id);
-                        boolean displayOnHUD = false;
-                        boolean toggleval = false;
+                    if (id == null) {
+                        id = getInputByCode(Integer.parseInt(exploded[0]));
+
+                        displayOnHUD = false;
                         if (exploded.length > 3) {
                             displayOnHUD = Boolean.parseBoolean(exploded[3]);
                         }
+
+                        toggleval = false;
                         if (exploded.length > 4) {
                             toggleval = Boolean.parseBoolean(exploded[4]);
                         }
-
-                        workingKeybinding = new ClickableKeybinding(
-                                new KeyBinding(KeyBindingHelper.getInputByCode(id).getName(), id, KeybindKeyHandler.mps), position, free, displayOnHUD);
-                        workingKeybinding.toggleval = toggleval;
-                        keybindings.add(workingKeybinding);
                     } else {
-                        workingKeybinding = null;
+                        id = null;
                     }
 
-                } else if (line.contains("~") && workingKeybinding != null) {
+                /** bind modules to it */
+                } else if (line.contains("~") && id != null) {
                     String[] exploded = line.split("~");
-                    MusePoint2D position = new MusePoint2D(Float.parseFloat(exploded[1]), Float.parseFloat(exploded[2]));
-                    ItemStack module = new ItemStack(ForgeRegistries.ITEMS.getValue(new ResourceLocation(MPSConstants.MOD_ID, exploded[0])));
-                    if (!module.isEmpty()) {
-                        ClickableModule cmodule = new ClickableModule(module, position, -1, EnumModuleCategory.NONE);
-                        workingKeybinding.bindModule(cmodule);
-                    }
+                    ResourceLocation regName = new ResourceLocation(MPSConstants.MOD_ID, exploded[0]);
+                    boolean finalDisplayOnHUD = displayOnHUD;
+                    InputMappings.Input finalId = id;
+                    boolean finalToggleval = toggleval;
+                    getMPSKeyBinds().stream().filter(kb ->kb.registryName.equals(regName)).findFirst().ifPresent(kb -> {
+                                kb.showOnHud = finalDisplayOnHUD;
+                                if (finalId != null) {
+                                    kb.setKey(finalId);
+                                }
+                                kb.toggleval = finalToggleval; // Not saved or loaded in new system
+                            });
                 }
             }
             reader.close();
@@ -192,5 +239,9 @@ public enum KeybindManager {
             MuseLogger.logger.error("Problem reading in keyconfig :(");
             e.printStackTrace();
         }
+    }
+
+    public InputMappings.Input getInputByCode(int keyCode) {
+        return InputMappings.Type.KEYSYM.getOrCreate(keyCode);
     }
 }

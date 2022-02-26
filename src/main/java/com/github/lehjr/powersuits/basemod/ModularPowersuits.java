@@ -221,7 +221,7 @@ public class ModularPowersuits {
             final ITextComponent CONTAINER_NAME = new TranslationTextComponent("container.crafting");
             IRightClickModule rightClick = new RightClickModule(stack, EnumModuleCategory.TOOL, EnumModuleTarget.TOOLONLY, MPSSettings::getModuleConfig) {
                 @Override
-                public ActionResult onItemRightClick(ItemStack itemStackIn, World worldIn, PlayerEntity playerIn, Hand hand) {
+                public ActionResult use(ItemStack itemStackIn, World worldIn, PlayerEntity playerIn, Hand hand) {
                     if (worldIn.isClientSide) {
                         return ActionResult.success(itemStackIn);
                     } else {

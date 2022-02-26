@@ -91,7 +91,7 @@ public class LuxCapacitorModule extends AbstractPowerModule {
             }
 
             @Override
-            public ActionResult onItemRightClick(ItemStack itemStackIn, World worldIn, PlayerEntity playerIn, Hand hand) {
+            public ActionResult use(ItemStack itemStackIn, World worldIn, PlayerEntity playerIn, Hand hand) {
                 float energyConsumption = getEnergyUsage();
                 if (ElectricItemUtils.getPlayerEnergy(playerIn) > energyConsumption) {
                     if (!worldIn.isClientSide) {

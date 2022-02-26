@@ -98,7 +98,7 @@ public class LightningModule extends AbstractPowerModule {
             }
 
             @Override
-            public ActionResult onItemRightClick(ItemStack itemStackIn, World worldIn, PlayerEntity playerIn, Hand hand) {
+            public ActionResult use(ItemStack itemStackIn, World worldIn, PlayerEntity playerIn, Hand hand) {
                 if (hand == Hand.MAIN_HAND) {
                     int energyConsumption = getEnergyUsage();
                     if (energyConsumption < ElectricItemUtils.getPlayerEnergy(playerIn)) {

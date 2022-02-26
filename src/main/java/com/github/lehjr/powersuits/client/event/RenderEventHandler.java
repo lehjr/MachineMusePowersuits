@@ -35,6 +35,7 @@ import com.github.lehjr.numina.util.client.gui.gemoetry.DrawableRelativeRect;
 import com.github.lehjr.numina.util.client.render.MuseRenderer;
 import com.github.lehjr.numina.util.math.Colour;
 import com.github.lehjr.powersuits.client.control.KeybindManager;
+import com.github.lehjr.powersuits.client.control.MPSKeyBinding;
 import com.github.lehjr.powersuits.client.gui.clickable.ClickableKeybinding;
 import com.github.lehjr.powersuits.client.model.helper.MPSModelHelper;
 import com.github.lehjr.powersuits.config.MPSSettings;
@@ -57,13 +58,19 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.*;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.items.CapabilityItemHandler;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public enum RenderEventHandler {
@@ -71,6 +78,11 @@ public enum RenderEventHandler {
     private static boolean ownFly = false;
     private final DrawableRelativeRect frame = new DrawableRelativeRect(MPSSettings.getHudKeybindX(), MPSSettings.getHudKeybindY(), MPSSettings.getHudKeybindX() + (float) 16, MPSSettings.getHudKeybindY() +  16, true, Colour.DARK_GREEN.withAlpha(0.2F), Colour.GREEN.withAlpha(0.2F));
 
+
+    /**
+     * Just for a couple modules that can break multiple blocks at once
+     * @param event
+     */
     @OnlyIn(Dist.CLIENT)
     @SubscribeEvent
     public void renderBlockHighlight(DrawHighlightEvent event) {
@@ -194,6 +206,19 @@ public enum RenderEventHandler {
                 );
     }
 
+    final List<KBDisplay> kbDisplayList = new ArrayList<>();
+    public void makeKBDisplayList() {
+        kbDisplayList.clear();
+        KeybindManager.INSTANCE.getMPSKeyBinds().stream().filter(kb->!kb.isUnbound()).map(kb-> kb.getKey()).distinct().collect(Collectors.toList());
+
+
+
+
+    }
+
+
+
+
     @OnlyIn(Dist.CLIENT)
     public void drawKeybindToggles(MatrixStack matrixStack) {
         if (MPSSettings.displayHud()) {
@@ -202,46 +227,126 @@ public enum RenderEventHandler {
             frame.setLeft(MPSSettings.getHudKeybindX());
             frame.setTop(MPSSettings.getHudKeybindY());
             frame.setBottom(frame.top() + 16);
+            InputMappings.Input id = null;
 
-            for (ClickableKeybinding kb : KeybindManager.INSTANCE.getKeybindings()) {
-                if (kb.displayOnHUD) {
-                    float stringwidth = (float) MuseRenderer.getFontRenderer().width(kb.getLabel());
-                    frame.setWidth(stringwidth + 8 + kb.getBoundModules().size() * 18);
-                    frame.render(matrixStack, 0, 0, 0); // FIXME
+            List<InputMappings.Input> test =
+            KeybindManager.INSTANCE.getMPSKeyBinds().stream().filter(kb->!kb.isUnbound()).map(kb-> kb.getKey()).distinct().collect(Collectors.toList());
 
-                    matrixStack.pushPose();
-                    matrixStack.translate(0,0,100);
-                    MuseRenderer.drawLeftAlignedText(matrixStack, kb.getLabel(), (float) frame.left() + 4, (float) frame.top() + 9, (kb.toggleval) ? Colour.RED : Colour.GREEN);
-                    matrixStack.popPose();
+            System.out.println("found kb to display: " + test.size());
 
-                    double x = frame.left() + stringwidth + 8;
-                    for (ClickableModule module : kb.getBoundModules()) {
-//                        TextureUtils.pushTexture(TextureUtils.TEXTURE_QUILT);
-                        boolean active = false;
-                        for (EquipmentSlotType slot : EquipmentSlotType.values()) {
-                            ItemStack stack = player.getItemBySlot(slot);
-                            active = stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-                                    .filter(IModularItem.class::isInstance)
-                                    .map(IModularItem.class::cast)
-                                    .map(iItemHandler -> {
-                                        if (iItemHandler instanceof IModeChangingItem) {
-                                            return ((IModeChangingItem) iItemHandler).isModuleActiveAndOnline(module.getModule().getItem().getRegistryName());
-                                        }
-                                        return iItemHandler.isModuleOnline(module.getModule().getItem().getRegistryName());
-                                    }).orElse(false);
-                            // stop at the first active instance
-                            if(active) {
-                                break;
-                            }
-                        }
-                        MuseRenderer.drawModuleAt(matrixStack, x, frame.top(), module.getModule(), active);
-//                        TextureUtils.popTexture();
-                        x += 16;
-                    }
-                    frame.setTop(frame.top() + 16);
-                    frame.setBottom(frame.top() + 16);
-                }
-            }
+
+            /**
+             * TODO: create a holder class to put the keybinds in
+             *
+             */
+
+
+//System.out.println("fixme");
+//            for (ClickableKeybinding kb : KeybindManager.INSTANCE.getKeybindings()) {
+//                if (kb.displayOnHUD) {
+//                    float stringwidth = (float) MuseRenderer.getFontRenderer().width(kb.getLabel());
+//                    frame.setWidth(stringwidth + 8 + kb.getBoundModules().size() * 18);
+//                    frame.render(matrixStack, 0, 0, 0); // FIXME
+//
+//                    matrixStack.pushPose();
+//                    matrixStack.translate(0,0,100);
+//                    MuseRenderer.drawLeftAlignedText(matrixStack, kb.getLabel(), (float) frame.left() + 4, (float) frame.top() + 9, (kb.toggleval) ? Colour.RED : Colour.GREEN);
+//                    matrixStack.popPose();
+//
+//                    double x = frame.left() + stringwidth + 8;
+//                    for (ClickableModule module : kb.getBoundModules()) {
+////                        TextureUtils.pushTexture(TextureUtils.TEXTURE_QUILT);
+//                        boolean active = false;
+//                        for (EquipmentSlotType slot : EquipmentSlotType.values()) {
+//                            ItemStack stack = player.getItemBySlot(slot);
+//                            active = stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+//                                    .filter(IModularItem.class::isInstance)
+//                                    .map(IModularItem.class::cast)
+//                                    .map(iItemHandler -> {
+//                                        if (iItemHandler instanceof IModeChangingItem) {
+//                                            return ((IModeChangingItem) iItemHandler).isModuleActiveAndOnline(module.getRegName());
+//                                        }
+//                                        return iItemHandler.isModuleOnline(module.getRegName());
+//                                    }).orElse(false);
+//                            // stop at the first active instance
+//                            if(active) {
+//                                break;
+//                            }
+//                        }
+//                        MuseRenderer.drawModuleAt(matrixStack, x, frame.top(), module.getModule(), active);
+////                        TextureUtils.popTexture();
+//                        x += 16;
+//                    }
+//                    frame.setTop(frame.top() + 16);
+//                    frame.setBottom(frame.top() + 16);
+//                }
+//            }
         }
     }
+
+    class KBDisplay extends DrawableRelativeRect {
+        public List<MPSKeyBinding> boundKeybinds = new ArrayList<>();
+        public KBDisplay(double left, double top, double right, double bottom) {
+            super(left, top, right, bottom, true, Colour.DARK_GREEN.withAlpha(0.2F), Colour.GREEN.withAlpha(0.2F));
+        }
+
+        public ITextComponent getLabel() {
+            return boundKeybinds.stream().findFirst().map(kb->kb.getKey().getDisplayName()).orElse(new StringTextComponent("NONE"));
+        }
+
+        List<MPSKeyBinding> getKeyBindingsToDisplay () {
+            return boundKeybinds.stream().filter(kb->kb.showOnHud).collect(Collectors.toList());
+        }
+
+
+
+
+        @Override
+        public void render(MatrixStack matrixStack, int mouseX, int mouseY, float frameTime) {
+
+//            for (ClickableKeybinding kb : KeybindManager.INSTANCE.getKeybindings()) {
+//                if (kb.displayOnHUD) {
+//                    float stringwidth = (float) MuseRenderer.getFontRenderer().width(kb.getLabel());
+//                    frame.setWidth(stringwidth + 8 + kb.getBoundModules().size() * 18);
+//                    frame.render(matrixStack, 0, 0, 0); // FIXME
+//
+//                    matrixStack.pushPose();
+//                    matrixStack.translate(0,0,100);
+//                    MuseRenderer.drawLeftAlignedText(matrixStack, kb.getLabel(), (float) frame.left() + 4, (float) frame.top() + 9, (kb.toggleval) ? Colour.RED : Colour.GREEN);
+//                    matrixStack.popPose();
+//
+//                    double x = frame.left() + stringwidth + 8;
+//                    for (ClickableModule module : kb.getBoundModules()) {
+////                        TextureUtils.pushTexture(TextureUtils.TEXTURE_QUILT);
+//                        boolean active = false;
+//                        for (EquipmentSlotType slot : EquipmentSlotType.values()) {
+//                            ItemStack stack = player.getItemBySlot(slot);.map(kb->kb.getKey().getDisplayName()).orElse(new StringTextComponent
+//                            active = stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+//                                    .filter(IModularItem.class::isInstance)
+//                                    .map(IModularItem.class::cast)
+//                                    .map(iItemHandler -> {
+//                                        if (iItemHandler instanceof IModeChangingItem) {
+//                                            return ((IModeChangingItem) iItemHandler).isModuleActiveAndOnline(module.getRegName());
+//                                        }
+//                                        return iItemHandler.isModuleOnline(module.getRegName());
+//                                    }).orElse(false);
+//                            // stop at the first active instance
+//                            if(active) {
+//                                break;
+//                            }
+//                        }
+//                        MuseRenderer.drawModuleAt(matrixStack, x, frame.top(), module.getModule(), active);
+////                        TextureUtils.popTexture();
+//                        x += 16;
+//                    }
+//                    frame.setTop(frame.top() + 16);
+//                    frame.setBottom(frame.top() + 16);
+//                }
+//            }
+
+            super.render(matrixStack, mouseX, mouseY, frameTime);
+        }
+    }
+
+
 }

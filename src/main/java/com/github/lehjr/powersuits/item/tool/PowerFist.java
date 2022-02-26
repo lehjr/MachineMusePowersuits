@@ -304,8 +304,10 @@ public class PowerFist extends AbstractElectricTool {
                 .filter(IModeChangingItem.class::isInstance)
                 .map(IModeChangingItem.class::cast)
                 .map(handler-> handler.getActiveModule().
-                        getCapability(PowerModuleCapability.POWER_MODULE).map(rc->
-                                rc instanceof IRightClickModule ? ((IRightClickModule) rc).onItemRightClick(fist, world, playerIn, handIn) : fallback).orElse(fallback)).orElse(fallback);
+                        getCapability(PowerModuleCapability.POWER_MODULE)
+                        .filter(IRightClickModule.class::isInstance)
+                        .map(IRightClickModule.class::cast)
+                        .map(rc-> rc.use(fist, world, playerIn, handIn)).orElse(fallback)).orElse(fallback);
     }
 
     @Override

@@ -32,7 +32,6 @@ import com.github.lehjr.numina.util.capabilities.module.powermodule.EnumModuleCa
 import com.github.lehjr.numina.util.capabilities.module.powermodule.PowerModuleCapability;
 import com.github.lehjr.numina.util.capabilities.module.rightclick.IRightClickModule;
 import com.github.lehjr.numina.util.capabilities.module.toggleable.IToggleableModule;
-import com.github.lehjr.numina.util.client.control.KeyBindingHelper;
 import com.github.lehjr.numina.util.client.gui.ContainerlessGui;
 import com.github.lehjr.numina.util.client.gui.clickable.ClickableButton2;
 import com.github.lehjr.numina.util.client.gui.clickable.ClickableModule;
@@ -65,6 +64,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 
 /**
@@ -73,7 +73,6 @@ import java.util.Set;
 public class TinkerKeybindGui extends ContainerlessGui {
     private PlayerEntity player;
     TabSelectFrame tabSelectFrame;
-    private static KeyBindingHelper keyBindingHelper = new KeyBindingHelper();
     protected Set<ClickableModule> modules = new HashSet<>();
     protected IClickable selectedClickie;
     protected ClickableKeybinding closestKeybind;
@@ -91,9 +90,11 @@ public class TinkerKeybindGui extends ContainerlessGui {
         this.player = playerInventory.player;
         tabSelectFrame = new TabSelectFrame(player, 2);
         addFrame(tabSelectFrame);
-        for (ClickableKeybinding kb : keybindManager.getKeybindings()) {
-            modules.addAll(kb.getBoundModules());
-        }
+        System.out.println("fixme");
+
+//        for (ClickableKeybinding kb : keybindManager.getKeybindings()) {
+//            modules.addAll(kb.getBoundModules());
+//        }
         newKeybindButton = new ClickableButton2(new TranslationTextComponent("gui.powersuits.newKeybind"), center().plus(new MusePoint2D(0, -8)), true);
         trashKeybindButton = new ClickableButton2(new TranslationTextComponent("gui.powersuits.trashKeybind"), center().plus(new MusePoint2D(0, 8)), true);
     }
@@ -116,73 +117,73 @@ public class TinkerKeybindGui extends ContainerlessGui {
 //        System.out.println("p_keyPressed_3_: "+ p_keyPressed_3_);
         InputMappings.Input mouseKey = InputMappings.getKey(keyCode, scanCode);
         if (keyCode == GLFW.GLFW_KEY_ESCAPE || this.minecraft.options.keyInventory.isActiveAndMatches(mouseKey)) {
-            KeybindManager.INSTANCE.writeOutKeybinds();
+            KeybindManager.INSTANCE.writeOutKeybindSetings();
             this.minecraft.player.closeContainer();
             return true; // Forge MC-146650: Needs to return true when the key is handled.
         }
 
         int key = keyCode; // no idea which one to use here!!
 
-        if (selecting) {
-            if (keyBindingHelper.keyBindingHasKey(key)) {
-                System.out.println("conflicting");
-
-                takenTime = System.currentTimeMillis();
-                if (MPSSettings.allowConfictingKeyBinds()) {
-                    addKeybind(key, false);
-                }
-            } else {
-                addKeybind(key, true);
-            }
-            selecting = false;
-        }
+//        if (selecting) {
+//            if (keyBindingHelper.keyBindingHasKey(key)) {
+//                System.out.println("conflicting");
+//
+//                takenTime = System.currentTimeMillis();
+//                if (MPSSettings.allowConfictingKeyBinds()) {
+//                    addKeybind(key, false);
+//                }
+//            } else {
+//                addKeybind(key, true);
+//            }
+//            selecting = false;
+//        }
         return (super.keyPressed(keyCode, scanCode, p_keyPressed_3_));
     }
 
 
     @Override
     public boolean mouseClicked(double x, double y, int button) {
-        if (backgroundRect.containsPoint(x, y)) {
-            if (button == 0) {
-                if (selectedClickie == null) {
-                    for (ClickableModule module : modules) {
-                        if (module.hitBox(x, y)) {
-                            selectedClickie = module;
-                            return true;
-                        }
-                    }
-                    for (ClickableKeybinding keybind : keybindManager.getKeybindings()) {
-                        if (keybind.hitBox(x, y)) {
-                            selectedClickie = keybind;
-                            return true;
-                        }
-                    }
-                }
-                if (newKeybindButton.hitBox(x, y)) {
-                    selecting = true;
-                }
-            } else if (button == 1) {
-                for (ClickableKeybinding keybind : keybindManager.getKeybindings()) {
-                    if (keybind.hitBox(x, y)) {
-                        keybind.toggleHUDState();
-                        return true;
-                    }
-                }
-            } else if (button > 2) {
-                int key = button - 100;
-
-                if (keyBindingHelper.keyBindingHasKey(key)) {
-                    takenTime = System.currentTimeMillis();
-                }
-                if (!keyBindingHelper.keyBindingHasKey(key)) {
-                    addKeybind(key, true);
-                } else if (MPSSettings.allowConfictingKeyBinds()) {
-                    addKeybind(key, false);
-                }
-                selecting = false;
-            }
-            return true;
-        }
+//        if (backgroundRect.containsPoint(x, y)) {
+//            if (button == 0) {
+//                if (selectedClickie == null) {
+//                    for (ClickableModule module : modules) {
+//                        if (module.hitBox(x, y)) {
+//                            selectedClickie = module;
+//                            return true;
+//                        }
+//                    }
+//                    for (ClickableKeybinding keybind : keybindManager.getKeybindings()) {
+//                        if (keybind.hitBox(x, y)) {
+//                            selectedClickie = keybind;
+//                            return true;
+//                        }
+//                    }
+//                }
+//                if (newKeybindButton.hitBox(x, y)) {
+//                    selecting = true;
+//                }
+//            } else if (button == 1) {
+//                for (ClickableKeybinding keybind : keybindManager.getKeybindings()) {
+//                    if (keybind.hitBox(x, y)) {
+//                        keybind.toggleHUDState();
+//                        return true;
+//                    }
+//                }
+//            } else if (button > 2) {
+//                int key = button - 100;
+//
+////                if (keyBindingHelper.keyBindingHasKey(key)) {
+////                    takenTime = System.currentTimeMillis();
+////                }
+////                if (!keyBindingHelper.keyBindingHasKey(key)) {
+////                    addKeybind(key, true);
+////                } else if (MPSSettings.allowConfictingKeyBinds()) {
+////                    addKeybind(key, false);
+////                }
+//                selecting = false;
+//            }
+//            return true;
+//        }
         return super.mouseClicked(x, y, button);
     }
 
@@ -198,18 +199,19 @@ public class TinkerKeybindGui extends ContainerlessGui {
                                     iModeChanging -> {
                                         for (int i = 0; i < iModeChanging.getSlots(); i++) {
                                             ItemStack module = iModeChanging.getStackInSlot(i);
-                                            if (module.getCapability(PowerModuleCapability.POWER_MODULE).map(c ->
-                                                    IToggleableModule.class.isAssignableFrom(c.getClass())).orElse(false) &&
-                                                    module.getCapability(PowerModuleCapability.POWER_MODULE).map(pm-> {
+                                            module.getCapability(PowerModuleCapability.POWER_MODULE)
+                                                    .filter(IToggleableModule.class::isInstance)
+                                                    .map(IToggleableModule.class::cast)
+                                                    .ifPresent(pm->{
                                                         if (pm.getCategory() == EnumModuleCategory.MINING_ENHANCEMENT) {
-                                                            return true;
+                                                            installedModules.add(module);
+                                                        } else if (!IRightClickModule.class.isAssignableFrom(pm.getClass())) {
+                                                            installedModules.add(module);
                                                         }
-                                                        return !IRightClickModule.class.isAssignableFrom(pm.getClass());
-                                                    }).orElse(false)) {
-                                                installedModules.add(module);
+                                                    });
                                             }
                                         }
-                                    });
+                                    );
                     break;
 
                 case ARMOR:
@@ -217,7 +219,7 @@ public class TinkerKeybindGui extends ContainerlessGui {
                         player.getItemBySlot(slot).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
                                 .filter(IModularItem.class::isInstance)
                                 .map(IModularItem.class::cast)
-                                .ifPresent(iModularItem -> installedModules.addAll(iModularItem.getInstalledModulesOfType(IToggleableModule.class)));
+                                .ifPresent(iModularItem -> installedModules.addAll(iModularItem.getInstalledModules().stream().filter(IToggleableModule.class::isInstance).collect(Collectors.toList())));
                     }
             }
         }
@@ -254,10 +256,10 @@ public class TinkerKeybindGui extends ContainerlessGui {
                 closestKeybind.bindModule((ClickableModule) selectedClickie);
             } else if (selectedClickie != null && selectedClickie instanceof ClickableKeybinding && trashKeybindButton.hitBox((float) x, (float) y)) {
                 KeyBinding binding = ((ClickableKeybinding) selectedClickie).getKeyBinding();
-                keyBindingHelper.removeKey(binding);
-//                KeyBinding.HASH.removeObject(binding.getKeyCode());
-                keyBindingHelper.removeKey(binding);
-                keybindManager.remove((ClickableKeybinding) selectedClickie);
+//                keyBindingHelper.removeKey(binding);
+////                KeyBinding.HASH.removeObject(binding.getKeyCode());
+//                keyBindingHelper.removeKey(binding);
+//                keybindManager.remove((ClickableKeybinding) selectedClickie);
             }
             selectedClickie = null;
         }
@@ -279,39 +281,39 @@ public class TinkerKeybindGui extends ContainerlessGui {
             this.selectedClickie.setPosition(new MusePoint2D(mouseX, mouseY));
             if (this.selectedClickie instanceof ClickableModule) {
                 ClickableModule selectedModule = ((ClickableModule) this.selectedClickie);
-                for (ClickableKeybinding keybind : keybindManager.getKeybindings()) {
-                    double distance = keybind.getPosition().minus(selectedModule.getPosition()).distance();
-                    if (distance < closestDistance) {
-                        closestDistance = distance;
-                        if (closestDistance < 32) {
-                            this.closestKeybind = keybind;
-                        }
-                    }
-                }
+//                for (ClickableKeybinding keybind : keybindManager.getKeybindings()) {
+//                    double distance = keybind.getPosition().minus(selectedModule.getPosition()).distance();
+//                    if (distance < closestDistance) {
+//                        closestDistance = distance;
+//                        if (closestDistance < 32) {
+//                            this.closestKeybind = keybind;
+//                        }
+//                    }
+//                }
             }
         }
-        for (ClickableKeybinding keybind : keybindManager.getKeybindings()) {
-            if (keybind != selectedClickie) {
-                keybind.unbindFarModules();
-            }
-            keybind.attractBoundModules(selectedClickie);
-        }
-        for (IClickable module : modules) {
-            if (module != selectedClickie) {
-                repelOtherModules(module);
-            }
-        }
-        for (IClickable keybind : keybindManager.getKeybindings()) {
-            if (keybind != selectedClickie) {
-                repelOtherModules(keybind);
-            }
-        }
-        for (IClickable module : modules) {
-            clampClickiePosition(module);
-        }
-        for (IClickable keybind : keybindManager.getKeybindings()) {
-            clampClickiePosition(keybind);
-        }
+//        for (ClickableKeybinding keybind : keybindManager.getKeybindings()) {
+//            if (keybind != selectedClickie) {
+//                keybind.unbindFarModules();
+//            }
+//            keybind.attractBoundModules(selectedClickie);
+//        }
+//        for (IClickable module : modules) {
+//            if (module != selectedClickie) {
+//                repelOtherModules(module);
+//            }
+//        }
+//        for (IClickable keybind : keybindManager.getKeybindings()) {
+//            if (keybind != selectedClickie) {
+//                repelOtherModules(keybind);
+//            }
+//        }
+//        for (IClickable module : modules) {
+//            clampClickiePosition(module);
+//        }
+//        for (IClickable keybind : keybindManager.getKeybindings()) {
+//            clampClickiePosition(keybind);
+//        }
     }
 
     private void clampClickiePosition(IClickable clickie) {
@@ -349,9 +351,9 @@ public class TinkerKeybindGui extends ContainerlessGui {
                     module.render(matrixStack, mouseX, mouseY, partialTicks);
                 }
 
-                for (ClickableKeybinding keybind : keybindManager.getKeybindings()) {
-                    keybind.render(matrixStack, mouseX, mouseY, partialTicks);
-                }
+//                for (ClickableKeybinding keybind : keybindManager.getKeybindings()) {
+//                    keybind.render(matrixStack, mouseX, mouseY, partialTicks);
+//                }
 
                 if (selectedClickie != null && closestKeybind != null) {
                     MuseRenderer.drawLineBetween(selectedClickie, closestKeybind, Colour.YELLOW, getBlitOffset());
@@ -399,7 +401,7 @@ public class TinkerKeybindGui extends ContainerlessGui {
     }
 
     private void addKeybind(int key, boolean free) {
-        addKeybind(KeyBindingHelper.getInputByCode(key), free);
+//        addKeybind(KeyBindingHelper.getInputByCode(key), free);
     }
 
     private void addKeybind(InputMappings.Input key, boolean free) {
@@ -410,14 +412,14 @@ public class TinkerKeybindGui extends ContainerlessGui {
             name = "???";
         }
 
-        // prevent creating multiple buttons for same keybinding
-        KeyBinding keybind = new KeyBinding(name, key.getValue(), KeybindKeyHandler.mps);
-        if (!keybindManager.getKeybindings().stream().filter(clickableKeybinding -> {
-            System.out.println(clickableKeybinding.getKeyBinding().getKey());
-            return clickableKeybinding.getKeyBinding().getKey().equals(key);
-        }).findFirst().isPresent()) {
-            ClickableKeybinding clickie = new ClickableKeybinding(keybind, newKeybindButton.getPosition().plus(new MusePoint2D(0, -20)), free, false);
-            keybindManager.getKeybindings().add(clickie);
-        }
+//        // prevent creating multiple buttons for same keybinding
+//        KeyBinding keybind = new KeyBinding(name, key.getValue(), KeybindKeyHandler.mps);
+//        if (!keybindManager.getKeybindings().stream().filter(clickableKeybinding -> {
+//            System.out.println(clickableKeybinding.getKeyBinding().getKey());
+//            return clickableKeybinding.getKeyBinding().getKey().equals(key);
+//        }).findFirst().isPresent()) {
+//            ClickableKeybinding clickie = new ClickableKeybinding(keybind, newKeybindButton.getPosition().plus(new MusePoint2D(0, -20)), free, false);
+//            keybindManager.getKeybindings().add(clickie);
+//        }
     }
 }

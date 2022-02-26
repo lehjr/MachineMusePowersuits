@@ -1,0 +1,114 @@
+package com.github.lehjr.powersuits.client.gui.clickable;
+
+import com.github.lehjr.numina.network.NuminaPackets;
+import com.github.lehjr.numina.network.packets.ToggleRequestPacket;
+import com.github.lehjr.numina.util.capabilities.inventory.modularitem.IModularItem;
+import com.github.lehjr.numina.util.client.gui.clickable.ClickableButton2;
+import com.github.lehjr.numina.util.client.gui.clickable.ClickableModule;
+import com.github.lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
+import com.github.lehjr.numina.util.client.render.MuseRenderer;
+import com.github.lehjr.numina.util.math.Colour;
+import com.github.lehjr.numina.util.string.MuseStringUtils;
+import com.github.lehjr.powersuits.client.control.KeybindManager;
+import com.github.lehjr.powersuits.client.control.MPSKeyBinding;
+import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
+import com.mojang.blaze3d.matrix.MatrixStack;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.player.ClientPlayerEntity;
+import net.minecraft.client.util.InputMappings;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.items.CapabilityItemHandler;
+
+import java.util.Set;
+import java.util.stream.Collectors;
+
+public class HudKbDisplayBox extends ClickableButton2 {
+    BiMap<MPSKeyBinding,ClickableModule> boundModules = HashBiMap.create();
+    public boolean toggleval = false;
+    public boolean displayOnHUD = false;
+    boolean toggled = false;
+
+    InputMappings.Input key;
+
+    public HudKbDisplayBox(InputMappings.Input keyIn) {
+        super(keyIn.getDisplayName(), MusePoint2D.ZERO, true);
+        this.key = keyIn;
+    }
+
+    public void doToggleTick() {
+        doToggleIf(boundModules.keySet().stream().filter(mpsKeyBinding -> mpsKeyBinding.consumeClick()).collect(Collectors.toList()).size() > 0 );
+    }
+
+    public void doToggleIf(boolean value) {
+        if (value && !toggled) {
+            toggleModules();
+            KeybindManager.INSTANCE.writeOutKeybindSetings();
+        }
+        toggled = value;
+    }
+
+    public void toggleModules() {
+        ClientPlayerEntity player = Minecraft.getInstance().player;
+        if (player == null) {
+            return;
+        }
+
+        for (ClickableModule module : boundModules.values()) {
+            ResourceLocation registryName = module.getRegName();
+
+            for (int i = 0; i < player.inventory.getContainerSize(); i++) {
+                player.inventory.getItem(i).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+                        .filter(IModularItem.class::isInstance)
+                        .map(IModularItem.class::cast)
+                        .ifPresent(handler -> handler.toggleModule(registryName, toggleval));
+            }
+            NuminaPackets.CHANNEL_INSTANCE.sendToServer(new ToggleRequestPacket(registryName, toggleval));
+        }
+        toggleval = !toggleval;
+    }
+
+    @Override
+    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
+        super.render(matrixStack, mouseX, mouseY, partialTicks);
+        for (ClickableModule module : boundModules.values()) {
+            MuseRenderer.drawLineBetween(this, module, Colour.LIGHT_BLUE, 0); // FIXME
+            matrixStack.pushPose();
+            matrixStack.scale(0.5F, 0.5F, 0.5F);
+            matrixStack.translate(0, 0, 100);
+            if (displayOnHUD) {
+                MuseRenderer.drawShadowedString(matrixStack, MuseStringUtils.wrapFormatTags("HUD", MuseStringUtils.FormatCodes.BrightGreen), this.getPosition().getX() * 2 + 6, this.getPosition().getY() * 2 + 6);
+            } else {
+                MuseRenderer.drawShadowedString(matrixStack, MuseStringUtils.wrapFormatTags("x", MuseStringUtils.FormatCodes.Red), this.getPosition().getX() * 2 + 6, this.getPosition().getY() * 2 + 6);
+            }
+            matrixStack.popPose();
+        }
+    }
+
+    public InputMappings.Input getKeyBinding() {
+        return key;
+    }
+
+    public Set<ClickableModule> getBoundModules() {
+        return boundModules.values();
+    }
+
+    public void bindModule(ClickableModule module, MPSKeyBinding keyBinding) {
+        if (!boundModules.containsValue(module) && !boundModules.containsKey(keyBinding)) {
+            boundModules.put(keyBinding, module);
+        }
+    }
+
+    public void unbindModule(ClickableModule module) {
+        boundModules.remove(module);
+    }
+
+
+    public void toggleHUDState() {
+        displayOnHUD = !displayOnHUD;
+    }
+
+    public boolean equals(HudKbDisplayBox other) {
+        return other.key.getValue() == this.key.getValue();
+    }
+}

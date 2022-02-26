@@ -76,18 +76,20 @@ public class ClientTickHandler {
     MatrixStack matrixStack = new MatrixStack();
     final double meterTextOffsetY = 6;
 
-    @SubscribeEvent
-    public void onPreClientTick(TickEvent.ClientTickEvent event) {
-        if (Minecraft.getInstance().player == null) {
-            return;
-        }
-
-        if (event.phase == TickEvent.Phase.START) {
-            for (ClickableKeybinding kb : KeybindManager.INSTANCE.getKeybindings()) {
-                kb.doToggleTick();
-            }
-        }
-    }
+//    @SubscribeEvent
+//    public void onPreClientTick(TickEvent.ClientTickEvent event) {
+//        if (Minecraft.getInstance().player == null) {
+//            return;
+//        }
+//
+////        if (event.phase == TickEvent.Phase.START) {
+////            System.out.println("fixme");
+////
+//////            for (ClickableKeybinding kb : KeybindManager.INSTANCE.getKeybindings()) {
+//////                kb.doToggleTick();
+//////            }
+////        }
+//    }
 
     @OnlyIn(Dist.CLIENT)
     @SubscribeEvent
