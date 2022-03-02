@@ -89,7 +89,7 @@ public class TabSelectFrame extends GuiFrameWithoutBackground {
         button = new ClickableButton2(new TranslationTextComponent("gui.powersuits.tab.keybinds"), new MusePoint2D(0, 0), active !=2);
         button.setOnPressed(onPressed->{
             Musique.playClientSound(SoundDictionary.SOUND_EVENT_GUI_SELECT, 1);
-            Minecraft.getInstance().tell(() -> Minecraft.getInstance().setScreen(new TinkerKeybindGui(player.inventory, new TranslationTextComponent("gui.tinkertable"))));
+            Minecraft.getInstance().tell(() -> Minecraft.getInstance().setScreen(new TinkerKeybindGui(player, new TranslationTextComponent("gui.powersuits.tab.keybinds.toggle"))));
         });
         buttons.add(button);
 

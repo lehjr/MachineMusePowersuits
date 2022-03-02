@@ -172,7 +172,7 @@ public class ModuleTweakGui extends ContainerlessGui {
                 tabSelectFrame.render(matrixStack, mouseX, mouseY, partialTicks);
             } else {
                 super.render(matrixStack, mouseX, mouseY, partialTicks);
-                drawToolTip(matrixStack, mouseX, mouseY);
+                super.renderTooltip(matrixStack, mouseX, mouseY);
             }
         } else {
             this.renderBackground(matrixStack);

@@ -158,7 +158,7 @@ public class CosmeticGui extends ContainerlessGui {
     public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
         if (backgroundRect.width() == backgroundRect.finalWidth() && backgroundRect.height() == backgroundRect.finalHeight()) {
             super.render(matrixStack, mouseX, mouseY, partialTicks);
-            drawToolTip(matrixStack, mouseX, mouseY);
+            renderTooltip(matrixStack, mouseX, mouseY);
         } else {
             this.renderBackground(matrixStack);
         }

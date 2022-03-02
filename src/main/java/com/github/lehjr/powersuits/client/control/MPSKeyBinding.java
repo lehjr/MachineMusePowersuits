@@ -2,6 +2,7 @@ package com.github.lehjr.powersuits.client.control;
 
 import com.github.lehjr.numina.network.NuminaPackets;
 import com.github.lehjr.numina.network.packets.ToggleRequestPacket;
+import com.github.lehjr.powersuits.client.event.RenderEventHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.client.settings.KeyBinding;
@@ -10,7 +11,7 @@ import net.minecraft.util.ResourceLocation;
 
 public class MPSKeyBinding extends KeyBinding {
     public final ResourceLocation registryName;
-    public boolean showOnHud = false;
+    public boolean showOnHud = true;
     public boolean toggleval = false;
 
     public MPSKeyBinding(ResourceLocation registryName, String name, int key, String category) {
@@ -18,8 +19,21 @@ public class MPSKeyBinding extends KeyBinding {
         this.registryName = registryName;
     }
 
+    /**
+     * Do not use this
+     */
     @Override
     public void setKey(InputMappings.Input key) {
+        super.setKey(key);
+        KeybindManager.INSTANCE.writeOutKeybindSetings();
+        RenderEventHandler.INSTANCE.makeKBDisplayList();
+    }
+
+    /**
+     * Use this one to set the key from inside MPS
+     * @param key
+     */
+    public void setKeyInternal(InputMappings.Input key) {
         super.setKey(key);
     }
 
@@ -29,7 +43,7 @@ public class MPSKeyBinding extends KeyBinding {
         if (player == null) {
             return;
         }
-
+    // FIXME: needed client side?
 //        for (int i = 0; i < player.inventory.getContainerSize(); i++) {
 //            player.inventory.getItem(i).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
 //                    .filter(IModularItem.class::isInstance)

@@ -66,8 +66,7 @@ public class PlasmaBoltEntityRenderer extends NuminaEntityRenderer<PlasmaBallEnt
     public void render(PlasmaBallEntity entityIn, float entityYaw, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn) {
         super.render(entityIn, entityYaw, partialTicks, matrixStackIn, bufferIn, packedLightIn);
         float size = entityIn.getChargePercent();//.getActualSize();
-        System.out.println("size: " + size);
-
+//        System.out.println("size: " + size);
 
         if(size > 0) {
             renderPlasma(matrixStackIn, bufferIn, size);//12.5F);
@@ -85,7 +84,7 @@ public class PlasmaBoltEntityRenderer extends NuminaEntityRenderer<PlasmaBallEnt
 
         float scale = (float) (size * 0.0625);
 
-        System.out.println("scale: " + scale);
+//        System.out.println("scale: " + scale);
 
 
 

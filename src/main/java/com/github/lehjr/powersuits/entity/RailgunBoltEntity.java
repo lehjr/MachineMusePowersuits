@@ -85,8 +85,8 @@ public class RailgunBoltEntity extends ThrowableEntity implements IEntityAdditio
         if (shooter instanceof PlayerEntity) {
             Vector3d direction = shooter.getLookAngle();//.normalize();
 
-            System.out.println("lookvec: " + shooter.getLookAngle());
-            System.out.println("lookVec oldCalc: " + getVectorForRotationTest(shooter.xRot, shooter.yRot));
+//            System.out.println("lookvec: " + shooter.getLookAngle());
+//            System.out.println("lookVec oldCalc: " + getVectorForRotationTest(shooter.xRot, shooter.yRot));
 
 
 

@@ -162,7 +162,7 @@ public class InstallSalvageGui extends ExtendedContainerScreen<InstallSalvageCon
             super.render(matrixStack, mouseX, mouseY, frameTime);
             this.renderTooltip(matrixStack, mouseX, mouseY);
             tabSelectFrame.render(matrixStack, mouseX, mouseY, frameTime);
-            drawToolTip(matrixStack, mouseX, mouseY);
+            renderTooltip(matrixStack, mouseX, mouseY);
         } else {
             renderBackgroundRect(matrixStack, mouseX, mouseY, frameTime);
         }

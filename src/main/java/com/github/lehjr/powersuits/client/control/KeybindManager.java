@@ -28,24 +28,12 @@ package com.github.lehjr.powersuits.client.control;
 
 import com.github.lehjr.numina.basemod.MuseLogger;
 import com.github.lehjr.numina.config.ConfigHelper;
-import com.github.lehjr.numina.util.capabilities.module.powermodule.EnumModuleCategory;
-import com.github.lehjr.numina.util.capabilities.module.powermodule.EnumModuleTarget;
-import com.github.lehjr.numina.util.capabilities.module.powermodule.PowerModuleCapability;
-import com.github.lehjr.numina.util.capabilities.module.rightclick.IRightClickModule;
-import com.github.lehjr.numina.util.capabilities.module.toggleable.IToggleableModule;
-import com.github.lehjr.powersuits.client.gui.clickable.ClickableKeybinding;
+import com.github.lehjr.powersuits.client.event.RenderEventHandler;
 import com.github.lehjr.powersuits.constants.MPSConstants;
 import com.google.gson.*;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.client.util.InputMappings;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraftforge.fml.client.registry.ClientRegistry;
-import net.minecraftforge.registries.ForgeRegistries;
-import org.lwjgl.glfw.GLFW;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -61,11 +49,6 @@ import java.util.stream.Collectors;
 public enum KeybindManager {
     INSTANCE;
 
-    public static final String mps = "itemGroup.powersuits";
-    public static final KeyBinding goDownKey = new KeyBinding(new TranslationTextComponent("keybinding.powersuits.goDownKey").getKey(), GLFW.GLFW_KEY_Z, mps);
-    public static final KeyBinding cycleToolBackward = new KeyBinding(new TranslationTextComponent("keybinding.powersuits.cycleToolBackward").getKey(), GLFW.GLFW_KEY_UNKNOWN, mps);
-    public static final KeyBinding cycleToolForward = new KeyBinding(new TranslationTextComponent("keybinding.powersuits.cycleToolForward").getKey(), GLFW.GLFW_KEY_UNKNOWN, mps);
-
     /**
      * For loading older keybinding configurations
      */
@@ -80,37 +63,6 @@ public enum KeybindManager {
         return new File(ConfigHelper.setupConfigFile("powersuits-keybinds.json", MPSConstants.MOD_ID).getAbsolutePath());
     }
 
-    void RegisterKeybinding(ResourceLocation registryName) {
-        MPSKeyBinding kb = new MPSKeyBinding(registryName, "keybinding.powersuits." + registryName.getPath(), GLFW.GLFW_KEY_UNKNOWN, mps);
-        ClientRegistry.registerKeyBinding(kb);
-    }
-
-    /**
-     * Populates the KB map
-     */
-    public void RegKeyBindings() {
-        for (Item item : ForgeRegistries.ITEMS.getValues()) {
-            if (item.getRegistryName().getNamespace().contains(MPSConstants.MOD_ID)) {
-                new ItemStack(item).getCapability(PowerModuleCapability.POWER_MODULE)
-                        .filter(IToggleableModule.class::isInstance)
-                        .map(IToggleableModule.class::cast)
-                        .ifPresent(pm -> {
-                            // Tool settings are a bit odd
-                            if (pm.getTarget() == EnumModuleTarget.TOOLONLY) {
-                                if (pm.getCategory() == EnumModuleCategory.MINING_ENHANCEMENT) {
-                                    RegisterKeybinding(item.getRegistryName());
-                                } else if (!IRightClickModule.class.isAssignableFrom(pm.getClass())) {
-                                    RegisterKeybinding(item.getRegistryName());
-                                }
-                            } else {
-                                RegisterKeybinding(item.getRegistryName());
-                            }
-                        });
-            }
-        }
-    }
-
-
     public void writeOutKeybindSetings() {
         try {
             File file = getKeyBindConfig();
@@ -123,8 +75,6 @@ public enum KeybindManager {
                     .filter(MPSKeyBinding.class::isInstance)
                     .map(MPSKeyBinding.class::cast)
                     .forEach(keyBinding -> {
-                        System.out.println("keyBinding.getName(): " + keyBinding.getName());
-
                         kbSettings.addProperty(keyBinding.getName(), keyBinding.showOnHud);
                     });
             Gson gson = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
@@ -179,17 +129,19 @@ public enum KeybindManager {
             MuseLogger.logger.error("Problem reading in keyconfig :(");
             e.printStackTrace();
         }
+        RenderEventHandler.INSTANCE.makeKBDisplayList();
     }
 
     public void readLegacyKeybinds() {
-        System.out.println("loading legacy keybinds");
-
         try {
             File file = getLegacyKeyBindConfig();
             if (!file.exists()) {
                 MuseLogger.logger.error("No modular power armor keybind file found.");
+                writeOutKeybindSetings();
                 return;
             }
+            writeOutKeybindSetings();
+
             BufferedReader reader = new BufferedReader(new FileReader(file));
             boolean displayOnHUD = false;
             boolean toggleval = false;
@@ -228,7 +180,7 @@ public enum KeybindManager {
                     getMPSKeyBinds().stream().filter(kb ->kb.registryName.equals(regName)).findFirst().ifPresent(kb -> {
                                 kb.showOnHud = finalDisplayOnHUD;
                                 if (finalId != null) {
-                                    kb.setKey(finalId);
+                                    kb.setKeyInternal(finalId);
                                 }
                                 kb.toggleval = finalToggleval; // Not saved or loaded in new system
                             });

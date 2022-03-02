@@ -30,17 +30,16 @@ import com.github.lehjr.numina.util.capabilities.inventory.modechanging.IModeCha
 import com.github.lehjr.numina.util.capabilities.inventory.modularitem.IModularItem;
 import com.github.lehjr.numina.util.capabilities.module.powermodule.PowerModuleCapability;
 import com.github.lehjr.numina.util.capabilities.render.highlight.HighLightCapability;
-import com.github.lehjr.numina.util.client.gui.clickable.ClickableModule;
 import com.github.lehjr.numina.util.client.gui.gemoetry.DrawableRelativeRect;
 import com.github.lehjr.numina.util.client.render.MuseRenderer;
 import com.github.lehjr.numina.util.math.Colour;
 import com.github.lehjr.powersuits.client.control.KeybindManager;
 import com.github.lehjr.powersuits.client.control.MPSKeyBinding;
-import com.github.lehjr.powersuits.client.gui.clickable.ClickableKeybinding;
 import com.github.lehjr.powersuits.client.model.helper.MPSModelHelper;
 import com.github.lehjr.powersuits.config.MPSSettings;
 import com.github.lehjr.powersuits.constants.MPSConstants;
 import com.github.lehjr.powersuits.constants.MPSRegistryNames;
+import com.google.common.util.concurrent.AtomicDouble;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.Minecraft;
@@ -49,7 +48,6 @@ import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.util.InputMappings;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
@@ -59,19 +57,17 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.*;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
+import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public enum RenderEventHandler {
     INSTANCE;
@@ -127,7 +123,6 @@ public enum RenderEventHandler {
     @OnlyIn(Dist.CLIENT)
     @SubscribeEvent
     public void preTextureStitch(TextureStitchEvent.Pre event) {
-        System.out.println("stitching called here: " + event);
         MPSModelHelper.loadArmorModels(event, null);
     }
 
@@ -144,13 +139,6 @@ public enum RenderEventHandler {
             this.drawKeybindToggles(e.getMatrixStack());
         }
     }
-
-//    @OnlyIn(Dist.CLIENT) // was this supposed to do something?!
-//    @SubscribeEvent
-//    public void renderLast(RenderWorldLastEvent event) {
-//        Minecraft minecraft = Minecraft.getInstance();
-//        MainWindow screen = minecraft.getMainWindow();
-//    }
 
     @SubscribeEvent
     public void onPreRenderPlayer(RenderPlayerEvent.Pre event) {
@@ -209,144 +197,96 @@ public enum RenderEventHandler {
     final List<KBDisplay> kbDisplayList = new ArrayList<>();
     public void makeKBDisplayList() {
         kbDisplayList.clear();
-        KeybindManager.INSTANCE.getMPSKeyBinds().stream().filter(kb->!kb.isUnbound()).map(kb-> kb.getKey()).distinct().collect(Collectors.toList());
-
-
-
-
+        KeybindManager.INSTANCE.getMPSKeyBinds().stream().filter(kb->!kb.isUnbound()).filter(kb->kb.showOnHud).forEach(kb->{
+            Optional<KBDisplay> kbDisplay = kbDisplayList.stream().filter(kbd->kbd.finalId.equals(kb.getKey())).findFirst();
+            if (kbDisplay.isPresent()) {
+                kbDisplay.map(kbd->kbd.boundKeybinds.add(kb));
+            } else {
+                kbDisplayList.add(new KBDisplay(kb, MPSSettings.getHudKeybindX(), MPSSettings.getHudKeybindY(), MPSSettings.getHudKeybindX() + (float) 16));
+            }
+        });
     }
-
-
-
 
     @OnlyIn(Dist.CLIENT)
     public void drawKeybindToggles(MatrixStack matrixStack) {
         if (MPSSettings.displayHud()) {
             Minecraft minecraft = Minecraft.getInstance();
-            ClientPlayerEntity player = minecraft.player;
-            frame.setLeft(MPSSettings.getHudKeybindX());
-            frame.setTop(MPSSettings.getHudKeybindY());
-            frame.setBottom(frame.top() + 16);
-            InputMappings.Input id = null;
+            AtomicDouble top = new AtomicDouble(MPSSettings.getHudKeybindY());
+            kbDisplayList.forEach(kbDisplay -> {
+//                System.out.println("\nkbDisplay.boundKeybinds: " + kbDisplay.boundKeybinds);
 
-            List<InputMappings.Input> test =
-            KeybindManager.INSTANCE.getMPSKeyBinds().stream().filter(kb->!kb.isUnbound()).map(kb-> kb.getKey()).distinct().collect(Collectors.toList());
-
-            System.out.println("found kb to display: " + test.size());
-
-
-            /**
-             * TODO: create a holder class to put the keybinds in
-             *
-             */
-
-
-//System.out.println("fixme");
-//            for (ClickableKeybinding kb : KeybindManager.INSTANCE.getKeybindings()) {
-//                if (kb.displayOnHUD) {
-//                    float stringwidth = (float) MuseRenderer.getFontRenderer().width(kb.getLabel());
-//                    frame.setWidth(stringwidth + 8 + kb.getBoundModules().size() * 18);
-//                    frame.render(matrixStack, 0, 0, 0); // FIXME
-//
-//                    matrixStack.pushPose();
-//                    matrixStack.translate(0,0,100);
-//                    MuseRenderer.drawLeftAlignedText(matrixStack, kb.getLabel(), (float) frame.left() + 4, (float) frame.top() + 9, (kb.toggleval) ? Colour.RED : Colour.GREEN);
-//                    matrixStack.popPose();
-//
-//                    double x = frame.left() + stringwidth + 8;
-//                    for (ClickableModule module : kb.getBoundModules()) {
-////                        TextureUtils.pushTexture(TextureUtils.TEXTURE_QUILT);
-//                        boolean active = false;
-//                        for (EquipmentSlotType slot : EquipmentSlotType.values()) {
-//                            ItemStack stack = player.getItemBySlot(slot);
-//                            active = stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-//                                    .filter(IModularItem.class::isInstance)
-//                                    .map(IModularItem.class::cast)
-//                                    .map(iItemHandler -> {
-//                                        if (iItemHandler instanceof IModeChangingItem) {
-//                                            return ((IModeChangingItem) iItemHandler).isModuleActiveAndOnline(module.getRegName());
-//                                        }
-//                                        return iItemHandler.isModuleOnline(module.getRegName());
-//                                    }).orElse(false);
-//                            // stop at the first active instance
-//                            if(active) {
-//                                break;
-//                            }
-//                        }
-//                        MuseRenderer.drawModuleAt(matrixStack, x, frame.top(), module.getModule(), active);
-////                        TextureUtils.popTexture();
-//                        x += 16;
-//                    }
-//                    frame.setTop(frame.top() + 16);
-//                    frame.setBottom(frame.top() + 16);
-//                }
-//            }
+                if (!kbDisplay.boundKeybinds.isEmpty()) {
+                    kbDisplay.setLeft(MPSSettings.getHudKeybindX());
+                    kbDisplay.setTop(top.get());
+                    kbDisplay.setBottom(top.get() + 16);
+                    kbDisplay.render(matrixStack, 0, 0, minecraft.getFrameTime());
+                    top.getAndAdd(16);
+                }
+            });
         }
     }
 
     class KBDisplay extends DrawableRelativeRect {
-        public List<MPSKeyBinding> boundKeybinds = new ArrayList<>();
-        public KBDisplay(double left, double top, double right, double bottom) {
-            super(left, top, right, bottom, true, Colour.DARK_GREEN.withAlpha(0.2F), Colour.GREEN.withAlpha(0.2F));
+        List<MPSKeyBinding> boundKeybinds = new ArrayList<>();
+        final InputMappings.Input finalId;
+        public KBDisplay(MPSKeyBinding kb, double left, double top, double right) {
+            super(left, top, right, top + 16, true, Colour.DARK_GREEN.withAlpha(0.2F), Colour.GREEN.withAlpha(0.2F));
+            this.finalId = kb.getKey();
+            boundKeybinds.add(kb);
         }
 
         public ITextComponent getLabel() {
-            return boundKeybinds.stream().findFirst().map(kb->kb.getKey().getDisplayName()).orElse(new StringTextComponent("NONE"));
+            return finalId.getDisplayName();
         }
 
-        List<MPSKeyBinding> getKeyBindingsToDisplay () {
-            return boundKeybinds.stream().filter(kb->kb.showOnHud).collect(Collectors.toList());
+        public void addKeyBind(MPSKeyBinding kb) {
+            if (!boundKeybinds.contains(kb)){
+                boundKeybinds.add(kb);
+            }
         }
 
-
-
+        ClientPlayerEntity getPlayer() {
+            return Minecraft.getInstance().player;
+        }
 
         @Override
         public void render(MatrixStack matrixStack, int mouseX, int mouseY, float frameTime) {
+            float stringwidth = (float) MuseRenderer.getFontRenderer().width(getLabel());
+            setWidth(stringwidth + 8 + boundKeybinds.stream().filter(kb->kb.showOnHud).collect(Collectors.toList()).size() * 18);
+            super.render(matrixStack, 0, 0, frameTime);
+            matrixStack.pushPose();
+            matrixStack.translate(0,0,100);
+            boolean kbToggleVal = boundKeybinds.stream().filter(kb->kb.toggleval).findFirst().isPresent();
 
-//            for (ClickableKeybinding kb : KeybindManager.INSTANCE.getKeybindings()) {
-//                if (kb.displayOnHUD) {
-//                    float stringwidth = (float) MuseRenderer.getFontRenderer().width(kb.getLabel());
-//                    frame.setWidth(stringwidth + 8 + kb.getBoundModules().size() * 18);
-//                    frame.render(matrixStack, 0, 0, 0); // FIXME
-//
-//                    matrixStack.pushPose();
-//                    matrixStack.translate(0,0,100);
-//                    MuseRenderer.drawLeftAlignedText(matrixStack, kb.getLabel(), (float) frame.left() + 4, (float) frame.top() + 9, (kb.toggleval) ? Colour.RED : Colour.GREEN);
-//                    matrixStack.popPose();
-//
-//                    double x = frame.left() + stringwidth + 8;
-//                    for (ClickableModule module : kb.getBoundModules()) {
-////                        TextureUtils.pushTexture(TextureUtils.TEXTURE_QUILT);
-//                        boolean active = false;
-//                        for (EquipmentSlotType slot : EquipmentSlotType.values()) {
-//                            ItemStack stack = player.getItemBySlot(slot);.map(kb->kb.getKey().getDisplayName()).orElse(new StringTextComponent
-//                            active = stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-//                                    .filter(IModularItem.class::isInstance)
-//                                    .map(IModularItem.class::cast)
-//                                    .map(iItemHandler -> {
-//                                        if (iItemHandler instanceof IModeChangingItem) {
-//                                            return ((IModeChangingItem) iItemHandler).isModuleActiveAndOnline(module.getRegName());
-//                                        }
-//                                        return iItemHandler.isModuleOnline(module.getRegName());
-//                                    }).orElse(false);
-//                            // stop at the first active instance
-//                            if(active) {
-//                                break;
-//                            }
-//                        }
-//                        MuseRenderer.drawModuleAt(matrixStack, x, frame.top(), module.getModule(), active);
-////                        TextureUtils.popTexture();
-//                        x += 16;
-//                    }
-//                    frame.setTop(frame.top() + 16);
-//                    frame.setBottom(frame.top() + 16);
-//                }
-//            }
+            MuseRenderer.drawLeftAlignedText(matrixStack, getLabel(), (float) left() + 4, (float) top() + 9, (kbToggleVal) ? Colour.RED : Colour.GREEN);
+            matrixStack.popPose();
+            AtomicDouble x = new AtomicDouble(left() + stringwidth + 8);
 
-            super.render(matrixStack, mouseX, mouseY, frameTime);
+            boundKeybinds.stream().filter(kb ->kb.showOnHud).forEach(kb ->{
+                boolean active = false;
+                // just using the icon
+                ItemStack module = new ItemStack(ForgeRegistries.ITEMS.getValue(kb.registryName));
+                for (EquipmentSlotType slot : EquipmentSlotType.values()) {
+                    ItemStack stack = getPlayer().getItemBySlot(slot);
+                    active = stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+                            .filter(IModularItem.class::isInstance)
+                            .map(IModularItem.class::cast)
+                            .map(iItemHandler -> {
+                                if (iItemHandler instanceof IModeChangingItem) {
+                                    return ((IModeChangingItem) iItemHandler).isModuleActiveAndOnline(kb.registryName);
+                                }
+                                return iItemHandler.isModuleOnline(kb.registryName);
+                            }).orElse(false);
+//                    System.out.println(kb.getKey().getName() +", " + kb.registryName + ", active: " + active);
+
+                    // stop at the first active instance
+                    if(active) {
+                        break;
+                    }
+                }
+                MuseRenderer.drawModuleAt(matrixStack, x.get(), top(), module, active);
+                x.getAndAdd(16);
+            });
         }
     }
-
-
 }

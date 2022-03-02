@@ -64,29 +64,9 @@ public class KeybindKeyHandler {
     public static final KeyBinding goDownKey = new KeyBinding(new TranslationTextComponent("keybinding.powersuits.goDownKey").getKey(), GLFW.GLFW_KEY_Z, mps);
     public static final KeyBinding cycleToolBackward = new KeyBinding(new TranslationTextComponent("keybinding.powersuits.cycleToolBackward").getKey(), GLFW.GLFW_KEY_UNKNOWN, mps);
     public static final KeyBinding cycleToolForward = new KeyBinding(new TranslationTextComponent("keybinding.powersuits.cycleToolForward").getKey(), GLFW.GLFW_KEY_UNKNOWN, mps);
-
-
-    // TODO: replace
     public static final KeyBinding openKeybindGUI = new KeyBinding("Open MPS Keybind GUI", GLFW.GLFW_KEY_UNKNOWN, mps);
-
-
-
-    /** Todo: use vanilla keybinding handler. Apparently keybindings can be added at any time, but they are reset on loading so they still need to be saved
-
-
-     Map<ResourceLocation, KeyBinding> keybindingMap = new Hashmap;
-
-     public Optional<Keybinding> getKeyBinding(ResourceLocation regName) {
-     return Optional.ofNullable(keyBindingMap.get(regName);
-     }
-
-     public void addKeyBinding(ResourceLocation regName, KeyBinding keyBinding) {
-     keybindingMap.put(regName, keyBinding);
-     }
-
-     */
-
     public static final KeyBinding openCosmeticGUI = new KeyBinding("Cosmetic (MPS)", GLFW.GLFW_KEY_UNKNOWN, mps);
+
     public static final KeyBinding[] keybindArray = new KeyBinding[]{openKeybindGUI, goDownKey, cycleToolBackward, cycleToolForward, openCosmeticGUI};
 
     public static boolean isKeyPressed(int key) {
@@ -94,8 +74,7 @@ public class KeybindKeyHandler {
     }
 
     void RegisterKeybinding(ResourceLocation registryName) {
-        MPSKeyBinding kb = new MPSKeyBinding(registryName, "keybinding.powersuits." + registryName.getPath(), GLFW.GLFW_KEY_UNKNOWN, mps);
-        ClientRegistry.registerKeyBinding(kb);
+        ClientRegistry.registerKeyBinding(new MPSKeyBinding(registryName, "keybinding.powersuits." + registryName.getPath(), GLFW.GLFW_KEY_UNKNOWN, mps));
     }
 
     public KeybindKeyHandler() {

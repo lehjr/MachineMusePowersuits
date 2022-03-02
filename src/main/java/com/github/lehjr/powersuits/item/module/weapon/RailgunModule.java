@@ -138,9 +138,10 @@ public class RailgunModule extends AbstractPowerModule {
                             ElectricItemUtils.drainPlayerEnergy(entityLiving, (int) energyConsumption);
                             MuseHeatUtils.heatPlayer(entityLiving, applyPropertyModifiers(MPSConstants.RAILGUN_HEAT_EMISSION) * chargePercent);
                             entityLiving.push(-lookVec.x * knockback, Math.abs(-lookVec.y + 0.2f) * knockback, -lookVec.z * knockback);
-                        } else {
-                            System.out.println("bolt not added");
                         }
+//                        else {
+//                            System.out.println("bolt not added");
+//                        }
                     }
                 }
             }

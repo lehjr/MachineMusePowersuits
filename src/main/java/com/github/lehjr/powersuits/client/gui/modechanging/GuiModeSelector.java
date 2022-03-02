@@ -64,7 +64,7 @@ public class GuiModeSelector extends ContainerlessGui {
         matrixStack.translate(0.0D, 0.0D, 100.0D);
         this.renderLabels(matrixStack, mouseX, mouseY);
         matrixStack.popPose();
-        drawToolTip(matrixStack, mouseX, mouseY);
+        renderTooltip(matrixStack, mouseX, mouseY);
     }
 
     /**
