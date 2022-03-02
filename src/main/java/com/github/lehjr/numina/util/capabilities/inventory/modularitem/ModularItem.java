@@ -122,9 +122,7 @@ public class ModularItem extends ItemStackHandler implements IModularItem {
 
         for (int i = 0; i < getSlots(); i++) {
             ItemStack module = getStackInSlot(i);
-            if (module.getCapability(PowerModuleCapability.POWER_MODULE).map(c ->
-                    type.isAssignableFrom(c.getClass())).orElse(false))
-                modules.add(module);
+            module.getCapability(PowerModuleCapability.POWER_MODULE).filter(type::isInstance).ifPresent(pm -> modules.add(module));
         }
         return modules;
     }

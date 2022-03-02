@@ -208,7 +208,8 @@ public class ExtendedContainerScreen<T extends Container> extends ContainerScree
         return super.mouseReleased(mouseX, mouseY, which);
     }
 
-    public void drawToolTip(MatrixStack matrixStack, int mouseX, int mouseY) {
+    @Override
+    public void renderTooltip(MatrixStack matrixStack, int mouseX, int mouseY) {
         List<ITextComponent> tooltip = getToolTip(mouseX, mouseY);
         if (tooltip != null) {
             renderComponentTooltip(matrixStack,tooltip, mouseX,mouseY);

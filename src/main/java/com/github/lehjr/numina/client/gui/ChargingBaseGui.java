@@ -117,6 +117,6 @@ public class ChargingBaseGui extends ExtendedContainerScreen<ChargingBaseContain
                 (float) (batterySlot.finalBottom() + spacer * 0.25),
                 menu.getEnergyForMeter(),
                 getBlitOffset() + 2);
-        this.drawToolTip(matrixStack, mouseX, mouseY);
+        this.renderTooltip(matrixStack, mouseX, mouseY);
     }
 }

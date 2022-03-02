@@ -38,6 +38,7 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 
 import javax.annotation.Nonnull;
@@ -62,6 +63,7 @@ public class ClickableModule extends Clickable {
     int inventorySlot;
     public final EnumModuleCategory category;
     Integer tier;
+    ResourceLocation regName;
 
     public ClickableModule(@Nonnull ItemStack module, MusePoint2D position, int inventorySlot, EnumModuleCategory category) {
         super();
@@ -72,6 +74,7 @@ public class ClickableModule extends Clickable {
         this.category = category;
         allowed = module.getCapability(PowerModuleCapability.POWER_MODULE).map(pm->pm.isAllowed()).orElse(false);
         tier = module.getCapability(PowerModuleCapability.POWER_MODULE).map(pm-> pm.getTier()).orElse(null);
+        this.regName = module.getItem().getRegistryName();
     }
 
     @Nullable
@@ -92,6 +95,10 @@ public class ClickableModule extends Clickable {
                     ITooltipFlag.TooltipFlags.NORMAL);
         }
         return null;
+    }
+
+    public ResourceLocation getRegName() {
+        return this.regName;
     }
 
     @Override

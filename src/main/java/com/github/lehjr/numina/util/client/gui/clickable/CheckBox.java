@@ -34,19 +34,31 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.SimpleSound;
 import net.minecraft.util.SoundEvents;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 
 public class CheckBox extends Clickable {
     protected boolean isChecked;
     protected DrawableTile tile;
-    String label;
+    ITextComponent label;
 
     public CheckBox(MusePoint2D position, String displayString, boolean isChecked) {
-        super();
+        super(position);
+        makeNewTile();
+        this.label = new StringTextComponent(displayString);
+        this.isChecked = isChecked;
+        this.enableAndShow();
+    }
+
+    public CheckBox(MusePoint2D position, ITextComponent displayString, boolean isChecked) {
+        super(position);
         makeNewTile();
         this.label = displayString;
         this.isChecked = isChecked;
         this.enableAndShow();
     }
+
 
     public void render(MatrixStack matrixStack, int mouseX, int mouseY, float frameTime) {
         if (this.isVisible()) {

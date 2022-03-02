@@ -76,7 +76,7 @@ public class ArmorStandGui extends ExtendedContainerScreen<ArmorStandContainer> 
         renderBackground(matrixStack);
         if (backgroundRect.doneGrowing()) {
             super.render(matrixStack, mouseX, mouseY, frameTIme);
-            this.drawToolTip(matrixStack, mouseX, mouseY);
+            this.renderTooltip(matrixStack, mouseX, mouseY);
         }
     }
 

@@ -7,6 +7,7 @@ import com.github.lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
 import com.github.lehjr.numina.util.client.render.MuseRenderer;
 import com.github.lehjr.numina.util.math.Colour;
 import com.mojang.blaze3d.matrix.MatrixStack;
+import net.minecraft.client.gui.widget.list.KeyBindingList;
 import net.minecraft.util.text.ITextComponent;
 
 /**
@@ -136,7 +137,7 @@ public class ClickableButton2 extends DrawableTile implements IClickable {
                     MuseRenderer.drawShadowedStringCentered(matrixStack, s[i], getPosition().getX(), getPosition().getY() + (i * MuseRenderer.getStringHeight() + 1));
                 }
             } else {
-                MuseRenderer.drawShadowedStringCentered(matrixStack, this.label.getString(), getPosition().getX(), getPosition().getY() + 1);
+                MuseRenderer.drawCenteredText(matrixStack, this.label, getPosition().getX(), getPosition().getY() + 1, new Colour(16777215));
             }
         }
     }

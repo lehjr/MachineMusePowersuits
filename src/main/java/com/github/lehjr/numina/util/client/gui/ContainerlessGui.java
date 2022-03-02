@@ -104,13 +104,16 @@ public class ContainerlessGui extends Screen {
         this.renderBackgroundRect(matrixStack, mouseX, mouseY, frameTime);
         update(mouseX, mouseY);
         matrixStack.pushPose();
-        matrixStack.translate(0,0,10);
-        renderFrames(matrixStack, mouseX, mouseY, frameTime);
-        matrixStack.translate(0,0,10);
-        super.render(matrixStack, mouseX, mouseY, frameTime);
-        matrixStack.translate(0,0,100);
-        renderLabels(matrixStack, mouseX, mouseY);
-        matrixStack.popPose();
+        matrixStack.translate(0, 0, 10);
+        if (this.backgroundRect.doneGrowing()) {
+            renderFrames(matrixStack, mouseX, mouseY, frameTime);
+            matrixStack.translate(0, 0, 10);
+            super.render(matrixStack, mouseX, mouseY, frameTime);
+            matrixStack.translate(0, 0, 100);
+            renderLabels(matrixStack, mouseX, mouseY);
+            matrixStack.popPose();
+            this.renderTooltip(matrixStack, mouseX, mouseY);
+        }
     }
 
     public void update(double x, double y) {
@@ -279,7 +282,7 @@ public class ContainerlessGui extends Screen {
         return false;
     }
 
-    public void drawToolTip(MatrixStack matrixStack, int mouseX, int mouseY) {
+    public void renderTooltip(MatrixStack matrixStack, int mouseX, int mouseY) {
         List<ITextComponent> tooltip = getToolTip(mouseX, mouseY);
         if (tooltip != null) {
             renderComponentTooltip(matrixStack,tooltip, mouseX,mouseY);
