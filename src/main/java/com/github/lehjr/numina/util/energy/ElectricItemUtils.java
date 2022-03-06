@@ -119,7 +119,7 @@ public class ElectricItemUtils {
     public static int drainItem(@Nonnull ItemStack itemStack, int drainAmount) {
         return itemStack.getCapability(CapabilityEnergy.ENERGY).map(energyHandler -> {
             // filter out devices not intended to be used as energy storage devices
-            if (energyHandler.getEnergyStored() < getMaxEnergyForComparison()) {
+            if (energyHandler.getEnergyStored() <= getMaxEnergyForComparison()) {
                 return 0;
             }
 
@@ -159,6 +159,6 @@ public class ElectricItemUtils {
     }
 
     static int getMaxEnergyForComparison() {
-        return new ItemStack(NuminaObjects.BASIC_BATTERY.get()).getCapability(CapabilityEnergy.ENERGY).map(energyHandler -> energyHandler.getMaxEnergyStored()).orElse(0);
+        return (int) (0.8 * new ItemStack(NuminaObjects.BASIC_BATTERY.get()).getCapability(CapabilityEnergy.ENERGY).map(energyHandler -> energyHandler.getMaxEnergyStored()).orElse(0));
     }
 }
