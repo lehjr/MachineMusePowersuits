@@ -65,6 +65,7 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -207,9 +208,14 @@ public enum RenderEventHandler {
         });
     }
 
+    boolean isModularItemEquuiiped() {
+        PlayerEntity player = Minecraft.getInstance().player;
+        return Arrays.stream(EquipmentSlotType.values()).filter(type ->player.getItemBySlot(type).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).filter(IModularItem.class::isInstance).isPresent()).findFirst().isPresent();
+    }
+
     @OnlyIn(Dist.CLIENT)
     public void drawKeybindToggles(MatrixStack matrixStack) {
-        if (MPSSettings.displayHud()) {
+        if (MPSSettings.displayHud() && isModularItemEquuiiped()) {
             Minecraft minecraft = Minecraft.getInstance();
             AtomicDouble top = new AtomicDouble(MPSSettings.getHudKeybindY());
             kbDisplayList.forEach(kbDisplay -> {
