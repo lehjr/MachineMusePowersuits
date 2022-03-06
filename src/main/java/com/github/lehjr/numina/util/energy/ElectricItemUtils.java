@@ -26,6 +26,7 @@
 
 package com.github.lehjr.numina.util.energy;
 
+import com.github.lehjr.numina.basemod.NuminaObjects;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
@@ -99,6 +100,16 @@ public class ElectricItemUtils {
                 break;
             }
         }
+        // charge other compatible items in inventory
+        if (rfLeft > 0 && entity instanceof PlayerEntity) {
+            for(int i = 0; i < ((PlayerEntity) entity).inventory.getContainerSize(); i++ ) {
+                if (rfLeft > 0) {
+                    rfLeft = rfLeft - chargeItem(((PlayerEntity) entity).inventory.getItem(i), rfLeft);
+                } else {
+                    break;
+                }
+            }
+        }
         return rfToGive - rfLeft;
     }
 
@@ -107,19 +118,25 @@ public class ElectricItemUtils {
      */
     public static int drainItem(@Nonnull ItemStack itemStack, int drainAmount) {
         return itemStack.getCapability(CapabilityEnergy.ENERGY).map(energyHandler -> {
-                    Item item = itemStack.getItem();
-                    int drained = energyHandler.extractEnergy(drainAmount, true);
+            // filter out devices not intended to be used as energy storage devices
+            if (energyHandler.getEnergyStored() < getMaxEnergyForComparison()) {
+                return 0;
+            }
 
-                    if (drained > 0) {
-                        // check if item blacklisted for draining
-                        if (item instanceof ToolItem && !BlackList.blacklistModIds.contains(item.getRegistryName().getNamespace())) {
-                            drained = energyHandler.extractEnergy(drainAmount, false);
+            Item item = itemStack.getItem();
+            int drained = energyHandler.extractEnergy(drainAmount, true);
 
-                        } else if (!(item instanceof ToolItem)) {
-                            drained = energyHandler.extractEnergy(drainAmount, false);
-                        }
-                    }
-                    return drained;
+            if (drained > 0) {
+
+                // check if item blacklisted for draining
+                if (item instanceof ToolItem && !BlackList.blacklistModIds.contains(item.getRegistryName().getNamespace())) {
+                    drained = energyHandler.extractEnergy(drainAmount, false);
+
+                } else if (!(item instanceof ToolItem)) {
+                    drained = energyHandler.extractEnergy(drainAmount, false);
+                }
+            }
+            return drained;
         }).orElse(0);
     }
 
@@ -134,10 +151,14 @@ public class ElectricItemUtils {
      * returns total possible energy an itemStack can hold
      */
     public static int getMaxItemEnergy(@Nonnull ItemStack itemStack) {
-        return itemStack.getCapability(CapabilityEnergy.ENERGY).map(energyHandler -> energyHandler.getMaxEnergyStored()).orElse(0);
+        return itemStack.getCapability(CapabilityEnergy.ENERGY).filter(iEnergyStorage -> iEnergyStorage.getEnergyStored() >= getMaxEnergyForComparison()).map(energyHandler -> energyHandler.getMaxEnergyStored()).orElse(0);
     }
 
     public static int chargeItem(@Nonnull ItemStack itemStack, int chargeAmount) {
         return itemStack.getCapability(CapabilityEnergy.ENERGY).map(energyHandler -> energyHandler.receiveEnergy(chargeAmount, false)).orElse(0);
+    }
+
+    static int getMaxEnergyForComparison() {
+        return new ItemStack(NuminaObjects.BASIC_BATTERY.get()).getCapability(CapabilityEnergy.ENERGY).map(energyHandler -> energyHandler.getMaxEnergyStored()).orElse(0);
     }
 }
