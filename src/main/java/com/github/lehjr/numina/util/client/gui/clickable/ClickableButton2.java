@@ -7,7 +7,6 @@ import com.github.lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
 import com.github.lehjr.numina.util.client.render.MuseRenderer;
 import com.github.lehjr.numina.util.math.Colour;
 import com.mojang.blaze3d.matrix.MatrixStack;
-import net.minecraft.client.gui.widget.list.KeyBindingList;
 import net.minecraft.util.text.ITextComponent;
 
 /**

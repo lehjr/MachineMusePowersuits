@@ -4,14 +4,10 @@ import com.github.lehjr.numina.util.capabilities.inventory.modechanging.IModeCha
 import com.github.lehjr.numina.util.nbt.MuseNBTUtils;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.Item;
-import net.minecraft.item.Items;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.network.NetworkEvent;
 import net.minecraftforge.items.CapabilityItemHandler;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.GameData;
 
 import java.util.function.Supplier;
 

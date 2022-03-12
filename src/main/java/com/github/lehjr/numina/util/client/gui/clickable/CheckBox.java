@@ -36,7 +36,6 @@ import net.minecraft.client.audio.SimpleSound;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
 
 public class CheckBox extends Clickable {
     protected boolean isChecked;

@@ -26,7 +26,6 @@
 
 package com.github.lehjr.numina.util.client.event;
 
-import net.minecraft.client.Minecraft;
 import net.minecraftforge.client.event.RenderTooltipEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 

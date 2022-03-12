@@ -31,7 +31,6 @@ import com.github.lehjr.numina.network.packets.ModeChangeRequestPacket;
 import com.github.lehjr.numina.util.capabilities.inventory.modularitem.ModularItem;
 import com.github.lehjr.numina.util.capabilities.module.powermodule.PowerModuleCapability;
 import com.github.lehjr.numina.util.capabilities.module.rightclick.IRightClickModule;
-import com.github.lehjr.numina.util.capabilities.module.toggleable.IToggleableModule;
 import com.github.lehjr.numina.util.capabilities.render.chameleon.ChameleonCapability;
 import com.github.lehjr.numina.util.client.render.MuseRenderer;
 import com.mojang.blaze3d.matrix.MatrixStack;

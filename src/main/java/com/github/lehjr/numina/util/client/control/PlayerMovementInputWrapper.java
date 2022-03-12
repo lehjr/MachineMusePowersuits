@@ -28,8 +28,6 @@ package com.github.lehjr.numina.util.client.control;
 
 import com.github.lehjr.numina.util.capabilities.player.CapabilityPlayerKeyStates;
 import com.github.lehjr.numina.util.capabilities.player.IPlayerKeyStates;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.client.entity.player.RemoteClientPlayerEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraftforge.common.util.LazyOptional;

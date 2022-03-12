@@ -119,7 +119,7 @@ public class ElectricItemUtils {
     public static int drainItem(@Nonnull ItemStack itemStack, int drainAmount) {
         return itemStack.getCapability(CapabilityEnergy.ENERGY).map(energyHandler -> {
             // filter out devices not intended to be used as energy storage devices
-            if (energyHandler.getEnergyStored() <= getMaxEnergyForComparison()) {
+            if (energyHandler.getMaxEnergyStored() <= getMaxEnergyForComparison()) {
                 return 0;
             }
 
@@ -144,14 +144,14 @@ public class ElectricItemUtils {
      * returns the energy an itemStack has
      */
     public static int getItemEnergy(@Nonnull ItemStack itemStack) {
-        return itemStack.getCapability(CapabilityEnergy.ENERGY).map(energyHandler -> energyHandler.getEnergyStored()).orElse(0);
+        return itemStack.getCapability(CapabilityEnergy.ENERGY).filter(iEnergyStorage -> iEnergyStorage.getMaxEnergyStored() >= getMaxEnergyForComparison()).map(energyHandler -> energyHandler.getEnergyStored()).orElse(0);
     }
 
     /**
      * returns total possible energy an itemStack can hold
      */
     public static int getMaxItemEnergy(@Nonnull ItemStack itemStack) {
-        return itemStack.getCapability(CapabilityEnergy.ENERGY).filter(iEnergyStorage -> iEnergyStorage.getEnergyStored() >= getMaxEnergyForComparison()).map(energyHandler -> energyHandler.getMaxEnergyStored()).orElse(0);
+        return itemStack.getCapability(CapabilityEnergy.ENERGY).filter(iEnergyStorage -> iEnergyStorage.getMaxEnergyStored() >= getMaxEnergyForComparison()).map(energyHandler -> energyHandler.getMaxEnergyStored()).orElse(0);
     }
 
     public static int chargeItem(@Nonnull ItemStack itemStack, int chargeAmount) {
@@ -159,6 +159,7 @@ public class ElectricItemUtils {
     }
 
     static int getMaxEnergyForComparison() {
-        return (int) (0.8 * new ItemStack(NuminaObjects.BASIC_BATTERY.get()).getCapability(CapabilityEnergy.ENERGY).map(energyHandler -> energyHandler.getMaxEnergyStored()).orElse(0));
+//        return 0;
+         return (int) (0.8 * new ItemStack(NuminaObjects.BASIC_BATTERY.get()).getCapability(CapabilityEnergy.ENERGY).map(energyHandler -> energyHandler.getMaxEnergyStored()).orElse(0));
     }
 }

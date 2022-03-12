@@ -28,7 +28,6 @@ package com.github.lehjr.numina.util.nbt;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.NBTTypes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.Constants;
 
@@ -242,8 +241,14 @@ public class MuseNBTUtils {
     public static Optional<ResourceLocation> getModuleResourceLocation(@Nonnull ItemStack module, String string) {
         CompoundNBT moduleTag = getModuleTag(module);
         if (moduleTag.contains(string, Constants.NBT.TAG_STRING)) {
-            return Optional.of(new ResourceLocation(getModuleTag(module).getString(string)));
+            return Optional.of(new ResourceLocation(moduleTag.getString(string)));
         }
         return Optional.empty();
     }
+
+
+
+
+
+
 }

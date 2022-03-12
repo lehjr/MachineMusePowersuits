@@ -1,8 +1,8 @@
 package com.github.lehjr.numina.util.capabilities.render.chameleon;
 
-import com.github.lehjr.numina.util.capabilities.render.highlight.Highlight;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.INBT;
+import net.minecraft.nbt.StringNBT;
 import net.minecraft.util.Direction;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
@@ -16,13 +16,15 @@ public class ChameleonCapability {
         CapabilityManager.INSTANCE.register(IChameleon.class, new Capability.IStorage<IChameleon>() {
                     @Override
                     public INBT writeNBT(Capability<IChameleon> capability, IChameleon instance, Direction side) {
-                        return null;
+                        return instance instanceof Chameleon ? ((Chameleon) instance).serializeNBT() : null;
                     }
 
                     @Override
                     public void readNBT(Capability<IChameleon> capability, IChameleon instance, Direction side, INBT nbt) {
-                        if (!(instance instanceof Highlight)) {
+                        if (!(instance instanceof Chameleon)) {
                             throw new IllegalArgumentException("Can not deserialize to an instance that isn't the default implementation");
+                        } else {
+                            ((Chameleon) instance).deserializeNBT((StringNBT) nbt);
                         }
                     }
                 },
