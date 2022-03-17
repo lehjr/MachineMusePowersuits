@@ -105,7 +105,6 @@ public class AoEpickUpgradeModule2 extends AbstractPowerModule {
                         BlockRayTraceResult rayTraceResult = getPlayerPOVHitResult(playerIn.level, playerIn, RayTraceContext.FluidMode.NONE);
                         if (!(rayTraceResult == null)) {
                             chameleon.setTargetBlock(worldIn.getBlockState(rayTraceResult.getBlockPos()).getBlock());
-                            playerIn.sendMessage(new StringTextComponent("changed block"), playerIn.getUUID());
                         }
                     }
                 }
