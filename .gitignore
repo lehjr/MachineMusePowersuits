@@ -27,3 +27,6 @@
 # Mac Stuff
 .DS_Store
 *.command
+
+#Linux
+.directory
