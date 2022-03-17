@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "CCC",
+    "CCC",
+    "CCC"
+  ],
+  "key": {
+    "C": {
+      "item": "numina:component_carbon_myofiber"
+    }
+  },
+  "result": {
+    "item": "numina:component_artificial_muscle"
+  }
+}

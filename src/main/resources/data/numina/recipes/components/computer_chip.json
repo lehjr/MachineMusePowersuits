@@ -1,0 +1,28 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "RSR",
+    "CDC",
+    "RLR"
+  ],
+  "key": {
+    "R": {
+      "tag": "forge:dusts/redstone"
+    },
+    "L": {
+      "item": "numina:component_laser_emitter"
+    },
+    "S": {
+      "item": "minecraft:daylight_detector"
+    },
+    "C": {
+      "item": "minecraft:comparator"
+    },
+    "D": {
+      "tag":"forge:gems/diamond"
+    }
+  },
+  "result": {
+    "item": "numina:component_computer_chip"
+  }
+}

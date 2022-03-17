@@ -1,0 +1,22 @@
+{
+  "parent": "minecraft:block/block",
+  "ambientocclusion": false,
+  "textures": {
+    "particle": "numina:models/base-unpowered"
+  },
+  "elements": [
+    {
+      "name": "baseplate",
+      "from": [ 0, 0, 0 ],
+      "to": [ 16, 1, 16 ],
+      "faces": {
+        "north": { "texture": "#particle", "uv": [ 0, 0, 16, 1 ] },
+        "east": { "texture": "#particle", "uv": [ 0, 0, 16, 1 ] },
+        "south": { "texture": "#particle", "uv": [ 0, 0, 16, 1 ] },
+        "west": { "texture": "#particle", "uv": [ 0, 0, 16, 1 ] },
+        "up": { "texture": "#particle", "uv": [ 0, 0, 16, 16 ] },
+        "down": { "texture": "#particle", "uv": [ 0, 0, 16, 16 ] }
+      }
+    }
+  ]
+}

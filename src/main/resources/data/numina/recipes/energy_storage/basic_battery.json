@@ -1,0 +1,86 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:not",
+          "value": {
+            "type": "forge:tag_empty",
+            "tag": "forge:ingots/steel"
+          }
+        }
+      ],
+      "recipe": {
+        "type": "minecraft:crafting_shaped",
+        "mirrored": true,
+        "pattern": [
+          "FOF",
+          "RCR",
+          "FOF"
+        ],
+        "key": {
+          "R": {
+            "tag": "forge:dusts/redstone"
+          },
+          "C": {
+            "item": "numina:component_control_circuit"
+          },
+          "F": {
+            "tag": "forge:ingots/steel"
+          },
+          "O": {
+            "tag": "forge:wiring"
+          }
+        },
+        "result": {
+          "item": "numina:battery_basic",
+          "nbt": {
+            "MMModModule": {
+              "energy": 800000
+            }
+          }
+        }
+      }
+    },
+    {
+      "conditions": [
+        {
+          "type": "forge:tag_empty",
+          "tag": "forge:ingots/steel"
+        }
+      ],
+      "recipe": {
+        "type": "minecraft:crafting_shaped",
+        "mirrored": true,
+        "pattern": [
+          "FOF",
+          "RCR",
+          "FOF"
+        ],
+        "key": {
+          "R": {
+            "tag": "forge:dusts/redstone"
+          },
+          "C": {
+            "item": "numina:component_control_circuit"
+          },
+          "F": {
+            "tag": "forge:ingots/iron"
+          },
+          "O": {
+            "tag": "forge:wiring"
+          }
+        },
+        "result": {
+          "item": "numina:battery_basic",
+          "nbt": {
+            "MMModModule": {
+              "energy": 800000
+            }
+          }
+        }
+      }
+    }
+  ]
+}

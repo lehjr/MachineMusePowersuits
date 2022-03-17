@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ![](/src/main/resources/assets/powersuits/textures/logo.png?raw=true)
 
 [![Donate to this project using Patreon](https://img.shields.io/badge/patreon-donate-yellow.svg)](https://www.patreon.com/lehjr)
@@ -43,3 +44,9 @@ Minecraft Forums: https://www.minecraftforum.net/forums/mapping-and-modding/mine
 IndustrialCraft Forums: http://forum.industrial-craft.net/index.php?page=Thread&threadID=8767
 
 E-Mail: muse@machinemuse.net
+=======
+Numina
+======
+
+Library of common functionality and widely-useful tweaks for Minecraft modding
+>>>>>>> 1.16.5-holder

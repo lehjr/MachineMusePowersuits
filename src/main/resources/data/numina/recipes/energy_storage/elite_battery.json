@@ -1,0 +1,76 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:not",
+          "value": {
+            "type": "forge:tag_empty",
+            "tag": "forge:ingots/steel"
+          }
+        }
+      ],
+      "recipe": {
+        "type": "numina:crafting_energy_item",
+        "mirrored": true,
+        "pattern": [
+          "FBF",
+          "BCB",
+          "BOB"
+        ],
+        "key": {
+          "B": {
+            "item": "numina:battery_advanced"
+          },
+          "C": {
+            "item": "numina:component_control_circuit"
+          },
+          "F": {
+            "tag": "forge:ingots/steel"
+          },
+          "O": {
+            "tag": "forge:wiring"
+          }
+        },
+        "result": {
+          "item": "numina:battery_elite"
+        }
+      }
+    },
+    {
+      "conditions": [
+        {
+          "type": "forge:tag_empty",
+          "tag": "forge:ingots/steel"
+        }
+      ],
+      "recipe": {
+        "type": "numina:crafting_energy_item",
+        "mirrored": true,
+        "pattern": [
+          "FBF",
+          "BCB",
+          "BOB"
+        ],
+        "key": {
+          "B": {
+            "item": "numina:battery_advanced"
+          },
+          "C": {
+            "item": "numina:component_control_circuit"
+          },
+          "F": {
+            "tag": "forge:ingots/iron"
+          },
+          "O": {
+            "tag": "forge:wiring"
+          }
+        },
+        "result": {
+          "item": "numina:battery_elite"
+        }
+      }
+    }
+  ]
+}

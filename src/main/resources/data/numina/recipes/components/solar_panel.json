@@ -1,0 +1,75 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:not",
+          "value": {
+            "type": "forge:tag_empty",
+            "tag": "forge:ingots/aluminium"
+          }
+        }
+      ],
+      "recipe": {
+        "type": "minecraft:crafting_shaped",
+        "mirrored": true,
+        "pattern": [
+          "BGB",
+          "GLG",
+          "III"
+        ],
+        "key": {
+          "B": {
+            "tag": "forge:dyes/blue"
+          },
+          "G": {
+            "tag": "forge:glass_panes"
+          },
+          "L": {
+            "tag": "forge:storage_blocks/lapis"
+          },
+          "I": {
+            "tag": "forge:ingots/aluminium"
+          }
+        },
+        "result": {
+          "item": "numina:component_solar_panel"
+        }
+      }
+    },
+    {
+      "conditions": [
+        {
+          "type": "forge:tag_empty",
+          "tag": "forge:ingots/aluminium"
+        }
+      ],
+      "recipe": {
+        "type": "minecraft:crafting_shaped",
+        "pattern": [
+          "BGB",
+          "GLG",
+          "III"
+        ],
+        "key": {
+          "B": {
+            "tag": "forge:dyes/blue"
+          },
+          "G": {
+            "tag": "forge:glass_panes"
+          },
+          "L": {
+            "tag": "forge:storage_blocks/lapis"
+          },
+          "I": {
+            "tag": "forge:ingots/iron"
+          }
+        },
+        "result": {
+          "item": "numina:component_solar_panel"
+        }
+      }
+    }
+  ]
+}

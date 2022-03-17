@@ -1,0 +1,64 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:not",
+          "value": {
+            "type": "forge:tag_empty",
+            "tag": "forge:ingots/aluminium"
+          }
+        }
+      ],
+      "recipe": {
+        "type": "minecraft:crafting_shaped",
+        "mirrored": true,
+        "pattern": [
+          " FF",
+          "FFO",
+          "F  "
+        ],
+        "key": {
+          "F": {
+            "tag": "forge:ingots/aluminium"
+          },
+          "O": {
+            "tag": "forge:wiring"
+          }
+        },
+        "result": {
+          "item": "numina:component_wiring",
+          "count": 8
+        }
+      }
+    },
+    {
+      "conditions": [
+        {
+          "type": "forge:tag_empty",
+          "tag": "forge:ingots/aluminium"
+        }
+      ],
+      "recipe": {
+        "type": "minecraft:crafting_shaped",
+        "pattern": [
+          " II",
+          "IIS",
+          "I  "
+        ],
+        "key": {
+          "S": {
+            "item": "numina:component_solenoid"
+          },
+          "I": {
+            "tag": "forge:ingots/iron"
+          }
+        },
+        "result": {
+          "item": "numina:component_glider_wing"
+        }
+      }
+    }
+  ]
+}

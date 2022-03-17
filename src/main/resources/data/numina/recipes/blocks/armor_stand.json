@@ -1,0 +1,29 @@
+{
+  "result": {
+    "item": "numina:armor_stand"
+  },
+  "type": "minecraft:crafting_shaped",
+  "mirrored": true,
+  "pattern": [
+    "FCF",
+    "MAM",
+    "OMO"
+  ],
+  "key": {
+    "A": {
+      "item": "minecraft:armor_stand"
+    },
+    "C": {
+      "item": "numina:component_control_circuit"
+    },
+    "F": {
+      "tag": "forge:wiring"
+    },
+    "M": {
+      "tag": "minecraft:coals"
+    },
+    "O": {
+      "tag": "forge:glass_panes"
+    }
+  }
+}

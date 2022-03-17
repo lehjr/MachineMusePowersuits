@@ -1,0 +1,84 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:not",
+          "value": {
+            "type": "forge:tag_empty",
+            "tag": "forge:ingots/copper"
+          }
+        }
+      ],
+      "recipe": {
+        "type": "minecraft:crafting_shaped",
+        "mirrored": true,
+        "pattern": [
+          " CO",
+          "SG ",
+          "MCF"
+        ],
+        "key": {
+          "C": {
+            "item": "numina:component_field_emitter"
+          },
+          "S": {
+            "tag": "forge:ingots/steel"
+          },
+          "F": {
+            "tag": "forge:solenoid"
+          },
+          "G": {
+            "item": "minecraft:glowstone_dust"
+          },
+          "M": {
+            "item": "numina:component_wiring"
+          },
+          "O": {
+            "item": "numina:component_solenoid"
+          }
+        },
+        "result": {
+          "item": "numina:component_ion_thruster"
+        }
+      }
+    },
+    {
+      "conditions": [
+        {
+          "type": "forge:tag_empty",
+          "tag": "forge:ingots/steel"
+        }
+      ],
+      "recipe": {
+        "type": "minecraft:crafting_shaped",
+        "pattern": [
+          " FS",
+          "IG ",
+          "WFS"
+        ],
+        "key": {
+          "F": {
+            "item":"numina:component_field_emitter"
+          },
+          "S": {
+            "tag": "forge:solenoid"
+          },
+          "G": {
+            "tag":"forge:dusts/glowstone"
+          },
+          "W": {
+            "item":"numina:component_wiring"
+          },
+          "I": {
+            "tag": "forge:ingots/iron"
+          }
+        },
+        "result": {
+          "item": "numina:component_ion_thruster"
+        }
+      }
+    }
+  ]
+}

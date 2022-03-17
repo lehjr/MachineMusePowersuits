@@ -1,0 +1,29 @@
+{
+  "gui_install":{
+    "category":"master",
+    "sounds":[
+      {
+        "name":"numina:gui_install",
+        "stream":false
+      }
+    ]
+  },
+  "gui_select":{
+    "category":"master",
+    "sounds":[
+      {
+        "name":"numina:gui_select",
+        "stream":false
+      }
+    ]
+  },
+  "boop":{
+    "category":"master",
+    "sounds":[
+      {
+        "name":"numina:boop",
+        "stream":false
+      }
+    ]
+  }
+}

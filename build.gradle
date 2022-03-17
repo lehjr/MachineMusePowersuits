@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 buildscript {
     repositories {
         maven { url = 'https://files.minecraftforge.net/maven' }
@@ -140,3 +141,205 @@ jar {
                     "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")],)
     }
 }
+=======
+ buildscript {
+    repositories {
+        maven { url = 'https://files.minecraftforge.net/maven' }
+        jcenter()
+        mavenCentral()
+    }
+    dependencies {
+        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
+    }
+}
+
+plugins {
+    id "com.matthewprenger.cursegradle" version "1.4.0"
+}
+
+apply plugin: 'net.minecraftforge.gradle'
+// Only edit below this line, the above code adds and enables the necessary things for Forge to be setup.
+apply plugin: 'idea'
+apply plugin: 'maven-publish'
+
+def buildnumber = System.getenv("BUILD_NUMBER")
+def travisbuildnumber = (System.getenv("TRAVIS_BUILD_NUMBER") ?: -000).toInteger() + 00
+version = "${mod_version}.${buildnumber ?: travisbuildnumber}"
+group = group_id // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+archivesBaseName = "Numina-${minecraft_version}"
+
+sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
+
+repositories {
+    maven {
+        // location of the maven that hosts JEI files
+        name = "Progwml6 maven"
+        url = "https://dvs1.progwml6.com/files/maven/"
+    }
+
+    maven {
+        url 'https://repo1.maven.org/maven2'
+    }
+
+    maven {
+        url 'https://maven.latmod.com/'
+    }
+
+//    maven {
+//        name = "CurseForge"
+//        url = "https://minecraft.curseforge.com/api/maven/"
+//    }
+//
+//    maven {
+//        url "https://www.cursemaven.com"
+//        content {
+//            includeGroup "curse.maven"
+//        }
+//    }
+
+
+    flatDir {
+        dirs 'libs'
+    }
+}
+
+//println('Java: ' + System.getProperty('java.version') + ' JVM: ' + System.getProperty('java.vm.version') + '(' + System.getProperty('java.vendor') + ') Arch: ' + System.getProperty('os.arch'))
+minecraft {
+//    mappings channel: "snapshot", version: "${project.mcp_version}".toString()
+    mappings channel: 'official', version: '1.16.5'
+
+    // makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
+
+    accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
+
+    // Default run configurations.
+    // These can be tweaked, removed, or duplicated as needed.
+    runs {
+        client {
+            workingDirectory project.file('run')
+
+            // Recommended logging data for a userdev environment
+            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
+
+            // Recommended logging level for the console
+            property 'forge.logging.console.level', 'debug'
+
+            mods {
+                numia {
+                    source sourceSets.main
+                }
+            }
+        }
+
+        server {
+            workingDirectory project.file('run')
+
+            // Recommended logging data for a userdev environment
+            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
+
+            // Recommended logging level for the console
+            property 'forge.logging.console.level', 'debug'
+
+            mods {
+                numia {
+                    source sourceSets.main
+                }
+            }
+        }
+
+        data {
+            workingDirectory project.file('run')
+
+            // Recommended logging data for a userdev environment
+            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
+
+            // Recommended logging level for the console
+            property 'forge.logging.console.level', 'debug'
+
+            args '--mod', 'numia', '--all', '--output', file('src/generated/resources/')
+
+            mods {
+                numia {
+                    source sourceSets.main
+                }
+            }
+        }
+    }
+}
+
+dependencies {
+    minecraft([
+            group  : "net.minecraftforge",
+            name   : "forge",
+            version: "${project.minecraft_version}-${project.forge_version}"
+    ])
+
+//    // compile against the JEI API but do not include it at runtime
+//    // currently not actually using any JEI code, just using it as a matter of convienience for testing.
+//    compileOnly fg.deobf("mezz.jei:jei-${minecraft_version}:${jei_version}:api")
+//
+//    // at runtime, use the full JEI jar
+//    runtimeOnly fg.deobf("mezz.jei:jei-${minecraft_version}:${jei_version}")
+
+    // compile against the JEI API but do not include it at runtime
+    // currently not actually using any JEI code, just using it as a matter of convienience for testing.
+//    compileOnly fg.deobf("mezz.jei:jei-${project.minecraft_version}:${jei_version}:api")
+
+    // at runtime, use the full JEI jar
+    runtimeOnly fg.deobf("mezz.jei:jei-${project.minecraft_version}:${jei_version}")
+
+//    compileOnly fg.deobf('com.feed_the_beast.mods:ftb-gui-library:1605.2.1.41-forge')
+//    runtimeOnly fg.deobf('com.feed_the_beast.mods:ftb-gui-library:1604.1.1.26')
+    // com.feed_the_beast.mods:ftbguilibrary
+
+    // https://www.curseforge.com/api/maven/com.feed_the_beast.mods/ftb-gui-library/1.0.0.18/ftb-gui-library-1.0.0.18-release.jar
+
+//    implementation fg.deobf("curse.maven:ftb-gui-library:3237039")
+
+
+//    runtimeOnly fg.deobf('com.feed_the_beast.mods:ftb-gui-library:1604.1.1.26')
+}
+
+// Example for how to get properties into the manifest for reading by the runtime..
+jar {
+    manifest {
+        attributes([
+                "Specification-Title": "numia",
+                "Specification-Vendor": "lehjr",
+                "Specification-Version": "1", // We are version 1 of ourselves
+                "Implementation-Title": project.name,
+                "Implementation-Version": "${version}",
+                "Implementation-Vendor" :"lehjr",
+                "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
+        ])
+    }
+}
+
+task devJar(type: Jar) {
+    from sourceSets.main.output
+    classifier = 'dev'
+}
+
+artifacts {
+    archives devJar
+}
+
+// Example configuration to allow publishing using the maven-publish task
+// This is the preferred method to reobfuscate your jar file
+jar.finalizedBy('reobfJar')
+// However if you are in a multi-project build, dev time needs unobfed jar files, so you can delay the obfuscation until publishing by doing
+//publish.dependsOn('reobfJar')
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            artifact jar
+        }
+    }
+    repositories {
+        maven {
+            url "file:///${project.projectDir}/mcmodsrepo"
+        }
+    }
+}
+>>>>>>> 1.16.5-holder

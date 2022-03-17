@@ -1,0 +1,42 @@
+# ForgeGradle
+/.gradle
+/build
+/run
+<<<<<<< HEAD
+/libs
+
+#Backup files
+/BU
+=======
+>>>>>>> 1.16.5-holder
+
+# Eclipse
+.classpath
+.project
+/.settings
+/bin
+
+<<<<<<< HEAD
+# Numina while porting
+#/src/main/java/net/machinemuse/numina
+#/src/main/scala/net/machinemuse/numina
+
+=======
+>>>>>>> 1.16.5-holder
+# IntelliJ
+/.idea
+*.iml
+*.ipr
+*.iws
+/out
+
+# Mac Stuff
+.DS_Store
+*.command
+
+#Linux
+<<<<<<< HEAD
+.directory
+=======
+.directory
+>>>>>>> 1.16.5-holder
