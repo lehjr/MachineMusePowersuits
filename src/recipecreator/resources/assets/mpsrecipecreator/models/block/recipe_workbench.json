@@ -1,0 +1,12 @@
+{
+  "parent": "block/cube_all",
+  "textures": {
+    "particle": "mpsrecipecreator:block/recipe_workbench",
+    "down": "minecraft:blocks/coal_block",
+    "up": "mpsrecipecreator:block/recipe_workbench",
+    "north": "mpsrecipecreator:block/recipe_workbench",
+    "east": "mpsrecipecreator:block/recipe_workbench",
+    "south": "mpsrecipecreator:block/recipe_workbench",
+    "west": "mpsrecipecreator:block/recipe_workbench"
+  }
+}

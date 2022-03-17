@@ -1,0 +1,33 @@
+modLoader="javafml"
+loaderVersion="[35,)"
+issueTrackerURL="https://github.com/lehjr/MPA-RecipeCreator/issues"
+license="All rights reserved"
+[[mods]]
+    modId="@@mod_id@@"
+    version="${version}"
+    displayName="@@title@@" #mandatory
+# A URL to query for updates for this mod. See the JSON update specification <here>
+#updateJSONURL="http://myurl.me/" #optional TODO
+# A URL for the "homepage" for this mod, displayed in the mod UI
+    displayURL="https://github.com/lehjr/MPA-RecipeCreator"
+    authors="lehjr"
+    description="A small mod for creating recipes for Modular Powersuits"
+[[dependencies.mpsrecipecreator]]
+    modId="forge" #mandatory
+    mandatory=true #mandatory
+    versionRange="[35,)" #mandatory
+    # An ordering relationship for the dependency - BEFORE or AFTER required if the relationship is not mandatory
+    ordering="NONE"
+    side="BOTH"
+[[dependencies.mpsrecipecreator]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="[1.16.4,)"
+    ordering="NONE"
+    side="BOTH"
+[[dependencies.mpsrecipecreator]]
+    modId="numina"
+    mandatory=true
+    versionRange="[2.0.5,)"
+    ordering="NONE"
+    side="BOTH"

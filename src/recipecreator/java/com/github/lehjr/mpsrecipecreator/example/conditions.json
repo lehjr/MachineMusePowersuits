@@ -1,0 +1,19 @@
+{
+  "conditions": [
+    {
+      "display_name":"Silent Mechanisms Loaded",
+      "type": "forge:mod_loaded",
+      "modid": "silent_mechanisms"
+    },
+    {
+      "display_name":"Centralized Materials Loaded",
+      "type": "forge:mod_loaded",
+      "modid": "centralizedmaterials"
+    },
+    {
+      "display_name":"Vanilla Recipes Enabled",
+      "type": "modularpowerarmor:flag",
+      "flag": "vanilla_recipes_enabled"
+    }
+  ]
+}
