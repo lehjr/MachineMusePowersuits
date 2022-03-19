@@ -1,33 +1,31 @@
 modLoader="javafml"
-loaderVersion="[35,)"
-issueTrackerURL="https://github.com/lehjr/MPA-RecipeCreator/issues"
+loaderVersion="${loader_version}"
+issueTrackerURL="https://github.com/lehjr/MachineMusePowersuits/issues"
 license="All rights reserved"
 [[mods]]
-    modId="@@mod_id@@"
+    modId="mpsrecipecreator"
     version="${version}"
-    displayName="@@title@@" #mandatory
-# A URL to query for updates for this mod. See the JSON update specification <here>
-#updateJSONURL="http://myurl.me/" #optional TODO
-# A URL for the "homepage" for this mod, displayed in the mod UI
-    displayURL="https://github.com/lehjr/MPA-RecipeCreator"
+    displayName="MPS-RecipeCreator"
+    updateJSONURL="https://github.com/lehjr/MPS-Updates/blob/main/updates.json"
+    displayURL="https://github.com/lehjr/MachineMusePowersuits"
     authors="lehjr"
-    description="A small mod for creating recipes for Modular Powersuits"
+    description="A really bad mod for creating recipes for Modular Powersuits"
+
 [[dependencies.mpsrecipecreator]]
-    modId="forge" #mandatory
-    mandatory=true #mandatory
-    versionRange="[35,)" #mandatory
-    # An ordering relationship for the dependency - BEFORE or AFTER required if the relationship is not mandatory
-    ordering="NONE"
+    modId="forge"
+    mandatory=true
+    versionRange="${forge_version}"
     side="BOTH"
+
 [[dependencies.mpsrecipecreator]]
     modId="minecraft"
     mandatory=true
-    versionRange="[1.16.4,)"
-    ordering="NONE"
+    versionRange="${minecraft_version}"
     side="BOTH"
+
 [[dependencies.mpsrecipecreator]]
     modId="numina"
     mandatory=true
-    versionRange="[2.0.5,)"
-    ordering="NONE"
+    versionRange="[${version}]"
+    ordering="AFTER"
     side="BOTH"

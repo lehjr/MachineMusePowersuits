@@ -1,0 +1,29 @@
+# ForgeGradle
+/.gradle
+/build
+/run
+/libs
+
+#Backup files
+/BU
+
+# Eclipse
+.classpath
+.project
+/.settings
+/bin
+
+# Numina while porting
+#/src/main/java/net/machinemuse/numina
+#/src/main/scala/net/machinemuse/numina
+
+# IntelliJ
+/.idea
+*.iml
+*.ipr
+*.iws
+/out
+
+# Mac Stuff
+.DS_Store
+*.command

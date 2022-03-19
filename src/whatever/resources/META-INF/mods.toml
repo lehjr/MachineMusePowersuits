@@ -1,0 +1,36 @@
+modLoader="javafml"
+loaderVersion="${loader_version}"
+issueTrackerURL="https://github.com/lehjr/MachineMusePowersuits/issues"
+license="All rights reserved"
+[[mods]]
+    modId="mpswhatever"
+    version="${version}"
+    displayName="MPS-Whatever"
+    #updateJSONURL="http://myurl.me/"
+    displayURL="https://github.com/lehjr/Numina"
+    authors="MachineMuse, lehjr"
+    description="A random assortment of... uh... stuff."
+
+[[dependencies.mpswhatever]]
+    modId="forge"
+    mandatory=true
+    versionRange="${forge_version}"
+    side="BOTH"
+
+[[dependencies.mpswhatever]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="${minecraft_version}"
+    side="BOTH"
+
+[[dependencies.mpswhatever]]
+    modId="powersuits"
+    mandatory=true
+    versionRange="[${version}]"
+    side="BOTH"
+
+[[dependencies.mpswhatever]]
+    modId="numina"
+    mandatory=true
+    versionRange="[${version}]"
+    side="BOTH"

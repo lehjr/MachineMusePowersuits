@@ -1,41 +1,43 @@
 modLoader="javafml"
-loaderVersion="[25,)"
-issueTrackerURL="https://github.com/lehjr/MachineMusePowersuits/issues/"
-displayURL="http://machinemuse.net/"
+loaderVersion="${loader_version}"
+issueTrackerURL="https://github.com/lehjr/MachineMusePowersuits/issues"
 license="All rights reserved"
-logoFile="logo.png"
-credits="Icons by WaterCandle, Modeling by SebK"
-authors="Code by MachineMuse, Lehjr and others"
+
 [[mods]]
     modId="powersuits"
-    version="1.0.0" #mandatory
+    version="${version}"
     displayName="MachineMuse's Modular Powersuits"
+    updateJSONURL="https://mc-curse-update-checker.herokuapp.com/235442"
+    displayURL="https://www.curseforge.com/minecraft/mc-mods/modular-powersuits"
+    authors="MachineMuse, lehjr"
+    credits="Icons by WaterCandle, Modeling by SebK"
+    logoFile="logo.png"
     description='''
 A mod which adds modular power armor, power tool, and a tinker table to configure them. Uses FE (Foreg Energy), EU (IndustrialCraft 2) or RF (Thermal Expansion 4).
 '''
-# A dependency - use the . to indicate dependency for a specific modid. Dependencies are optional.
-[[dependencies.powersuits]] #optional
-    # the modid of the dependency
-    modId="forge" #mandatory
-    # Does this dependency have to exist - if not, ordering below must be specified
-    mandatory=true #mandatory
-    # The version range of the dependency
-    versionRange="[35,)" #mandatory
-    # An ordering relationship for the dependency - BEFORE or AFTER required if the relationship is not mandatory
-    ordering="NONE"
-    # Side this dependency is applied on - BOTH, CLIENT or SERVER
+
+[[dependencies.powersuits]]
+    modId="forge"
+    mandatory=true
+    versionRange="${forge_version}"
     side="BOTH"
-# Here's another dependency
+
 [[dependencies.powersuits]]
     modId="minecraft"
     mandatory=true
-    versionRange="[1.16.4,)"
-    ordering="NONE"
+    versionRange="${minecraft_version}"
     side="BOTH"
 
 [[dependencies.powersuits]]
     modId="numina"
     mandatory=true
-    versionRange="[2.0.11,]"
+    versionRange="[${version}]"
+    ordering="AFTER"
+    side="BOTH"
+
+[[dependencies.powersuits]]
+    modId="appliedenergistics2"
+    mandatory=false
+    versionRange="[${ae2_version},)"
     ordering="AFTER"
     side="BOTH"
