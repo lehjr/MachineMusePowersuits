@@ -30,6 +30,7 @@ import lehjr.numina.basemod.NuminaObjects;
 import lehjr.numina.capabilities.TileEnergyStorage;
 import lehjr.numina.capabilities.TileEnergyWrapper;
 import lehjr.numina.config.NuminaSettings;
+import lehjr.numina.util.energy.ElectricItemUtils;
 import lehjr.numina.util.tileentity.MuseTileEntity;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.LivingEntity;
@@ -109,27 +110,38 @@ public class ChargingBaseTileEntity extends MuseTileEntity implements ITickableT
 
     private void sendOutPower(LivingEntity entity) {
         energyWrapper.ifPresent(wrapper-> {
-                    Arrays.stream(EquipmentSlotType.values()).forEach(slotType -> {
-                        if (wrapper.getEnergyStored() > 0) {
-                            boolean doContinue = entity.getItemBySlot(slotType).getCapability(CapabilityEnergy.ENERGY).map(iItemEnergyHandler -> {
-                                        if (iItemEnergyHandler.canReceive()) {
-                                            int received = iItemEnergyHandler.receiveEnergy(wrapper.getEnergyStored(), false);
-                                            energyWrapperStorage.extractEnergy(received, false);
-                                            wrapper.extractEnergy(received, false);
-                                            setChanged();
-                                            return wrapper.getEnergyStored() > 0;
-                                        } else {
-                                            return true;
-                                        }
-                                    }
-                            ).orElse(true);
-                            if (!doContinue) {
-                                return;
-                            }
-                        }
-                    });
-                }
-        );
+                    int received = ElectricItemUtils.givePlayerEnergy(entity, wrapper.getEnergyStored(), false);
+                    if (received > 0) {
+                        wrapper.extractEnergy(received, false);
+                        setChanged();
+                    }
+                });
+//
+//                    Arrays.stream(EquipmentSlotType.values()).forEach(slotType -> {
+//                        if (wrapper.getEnergyStored() > 0) {
+//
+//
+//
+////
+////                            boolean doContinue = entity.getItemBySlot(slotType).getCapability(CapabilityEnergy.ENERGY).map(iItemEnergyHandler -> {
+////                                        if (iItemEnergyHandler.canReceive()) {
+////                                            int received = iItemEnergyHandler.receiveEnergy(wrapper.getEnergyStored(), false);
+////                                            energyWrapperStorage.extractEnergy(received, false);
+////                                            wrapper.extractEnergy(received, false);
+////                                            setChanged();
+////                                            return wrapper.getEnergyStored() > 0;
+////                                        } else {
+////                                            return true;
+////                                        }
+////                                    }
+////                            ).orElse(true);
+////                            if (!doContinue) {
+////                                return;
+////                            }
+////                        }
+////                    });
+//                }
+//        );
     }
 
     /**

@@ -36,5 +36,6 @@ public class BlackList {
     public static List<String> blacklistModIds = new ArrayList<String>() {{
         add("appliedenergistics2");
         add("extracells");
+        add("scannable");
     }};
 }

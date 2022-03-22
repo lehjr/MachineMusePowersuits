@@ -26,6 +26,7 @@
 
 package lehjr.numina.util.client.render;
 
+import lehjr.numina.integration.scannable.MPSOverlayRenderer;
 import lehjr.numina.util.capabilities.inventory.modechanging.IModeChangingItem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
@@ -33,6 +34,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.items.CapabilityItemHandler;
 
 /**
@@ -52,6 +54,9 @@ public class RenderGameOverlayEventHandler {
     public void onPostRenderGameOverlayEvent(final RenderGameOverlayEvent.Post e) {
         if (e.getType().equals(RenderGameOverlayEvent.ElementType.HOTBAR)) {
             drawModeChangeIcons();
+        }
+        if (ModList.get().isLoaded("scannable")) {
+            MPSOverlayRenderer.INSTANCE.onOverlayRender(e);
         }
     }
 

@@ -1,4 +1,4 @@
-package lehjr.numina.integration;
+package lehjr.numina.integration.appeneng2;
 
 import appeng.api.config.*;
 import appeng.api.features.IWirelessTermHandler;
@@ -37,7 +37,7 @@ public class TerminalHandler implements IWirelessTermHandler {//}, IWirelessFlui
     public boolean usePower(PlayerEntity player, double amount, ItemStack is) {
         int drainVal = (int) PowerUnits.AE.convertTo(PowerUnits.RF, amount);
         if (ElectricItemUtils.getPlayerEnergy(player) > drainVal) {
-            ElectricItemUtils.drainPlayerEnergy(player, drainVal);
+            ElectricItemUtils.drainPlayerEnergy(player, drainVal, false);
             return true;
         }
         return false;
@@ -45,9 +45,6 @@ public class TerminalHandler implements IWirelessTermHandler {//}, IWirelessFlui
 
     @Override
     public boolean hasPower(PlayerEntity player, double amount, ItemStack is) {
-        System.out.println("amount: " + amount + ", amount in FE: " + PowerUnits.AE.convertTo(PowerUnits.RF, amount) + ", player energy: " + ElectricItemUtils.getPlayerEnergy(player));
-
-
         return ElectricItemUtils.getPlayerEnergy(player) > PowerUnits.AE.convertTo(PowerUnits.RF, amount);
     }
 

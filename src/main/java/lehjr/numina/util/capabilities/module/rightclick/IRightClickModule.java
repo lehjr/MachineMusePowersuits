@@ -71,7 +71,15 @@ public interface IRightClickModule extends IPowerModule {
         return ActionResultType.PASS;
     }
 
-    default void onPlayerStoppedUsing(@Nonnull ItemStack stack, World worldIn, LivingEntity entityLiving, int timeLeft) {
+    default void releaseUsing(@Nonnull ItemStack stack, World worldIn, LivingEntity entityLiving, int timeLeft) {
+    }
+
+    /**
+     * Called when the player finishes using this Item (E.g. finishes eating.). Not called when the player stops using
+     * the Item before the action is complete.
+     */
+    default ItemStack finishUsingItem(ItemStack itemStack, World world, LivingEntity entity) {
+        return itemStack.isEdible() ? entity.eat(world, itemStack) : itemStack;
     }
 
     default int getEnergyUsage() {

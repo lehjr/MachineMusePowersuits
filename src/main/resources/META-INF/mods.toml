@@ -29,3 +29,17 @@ license="All rights reserved"
     versionRange="${jei_version}"
     ordering="AFTER"
     side="BOTH"
+
+[[dependencies.numina]]
+    modId="appliedenergistics2"
+    mandatory=false
+    versionRange="[${ae2_version},)"
+    ordering="AFTER"
+    side="BOTH"
+
+[[dependencies.numina]]
+    modId="scannable"
+    mandatory=false
+    versionRange="[${scannable_version},)"
+    ordering="AFTER"
+    side="BOTH"

@@ -67,13 +67,12 @@ sourceSets {
         resources {
             include '**/**'
             //Add the generated main module resources
-            srcDirs += 'src/datagen/generated/numina' //TODO
+            srcDirs += 'src/datagen/generated/main' //TODO
             //But exclude the cache of the generated data from what gets built
             exclude '.cache'
         }
     }
 
-//    numinasrc { setupSourceSet(numinasrc, 'numina') } // maybe
     powersuits { setupSourceSet(powersuits, 'powersuits') }
     // TODO?
     whatever { setupSourceSet(whatever, 'whatever') }
@@ -150,7 +149,8 @@ ext {
                          "forge_version": forge_version_range,
                          "loader_version": loader_version_range,
                          "jei_version": jei_version_range,
-                         "ae2_version": ae2_version]
+                         "ae2_version": ae2_version,
+                         "scannable_version": scannable_version]
     jsonPatterns = ["**/*.json", "**/*.mcmeta"]
 }
 
@@ -383,17 +383,10 @@ dependencies {
     runtimeOnly fg.deobf("mcjty.theoneprobe:TheOneProbe-1.16:${top_version}")
 
     // The API isn't enough for compiling or testing
-    compileOnly fg.deobf("appeng:appliedenergistics2:${ae2_version}") {
+    implementation fg.deobf("appeng:appliedenergistics2:${ae2_version}") {
         transitive = false
     }
-
-    runtimeOnly fg.deobf("appeng:appliedenergistics2:${ae2_version}") {
-        transitive = false
-    }
-
-//    fg.deobf("appeng:appliedenergistics2:${ae2_version}") {
-//        transitive = false
-//    }
+    implementation fg.deobf("curse.maven:scannable-266784:3565727")
 }
 
 if (project.hasProperty('UPDATE_MAPPINGS')) {

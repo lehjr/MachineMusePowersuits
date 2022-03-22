@@ -102,7 +102,7 @@ public class PlasmaCannonModule extends AbstractPowerModule {
             }
 
             @Override
-            public void onPlayerStoppedUsing(ItemStack itemStack, World worldIn, LivingEntity entityLiving, int timeLeft) {
+            public void releaseUsing(ItemStack itemStack, World worldIn, LivingEntity entityLiving, int timeLeft) {
                 int chargeTicks = (int) MuseMathUtils.clampDouble(itemStack.getUseDuration() - timeLeft, 10, 50);
                 if (!worldIn.isClientSide && entityLiving instanceof PlayerEntity) {
                     double chargePercent = chargeTicks * 0.02; // chargeticks/50

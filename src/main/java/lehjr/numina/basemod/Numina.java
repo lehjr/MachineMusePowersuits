@@ -36,6 +36,7 @@ import lehjr.numina.entity.NuminaArmorStandEntity;
 import lehjr.numina.event.EventBusHelper;
 import lehjr.numina.event.LogoutEventHandler;
 import lehjr.numina.event.PlayerUpdateHandler;
+import lehjr.numina.integration.scannable.MPSGuiScanner;
 import lehjr.numina.network.NuminaPackets;
 import lehjr.numina.recipe.RecipeSerializersRegistry;
 import lehjr.numina.util.capabilities.heat.HeatCapability;
@@ -52,6 +53,7 @@ import lehjr.numina.util.client.event.ToolTipEvent;
 import lehjr.numina.util.client.gui.GuiIcon;
 import lehjr.numina.util.client.render.MuseIconUtils;
 import lehjr.numina.util.client.render.RenderGameOverlayEventHandler;
+import li.cil.scannable.client.gui.GuiScanner;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScreenManager;
 import net.minecraft.entity.Entity;
@@ -178,6 +180,8 @@ public class Numina {
 
         ScreenManager.register(NuminaObjects.CHARGING_BASE_CONTAINER_TYPE.get(), ChargingBaseGui::new);
         ScreenManager.register(NuminaObjects.ARMOR_STAND_CONTAINER_TYPE.get(), ArmorStandGui::new);
+
+        ScreenManager.register(NuminaObjects.SCANNER_CONTAINER.get(), MPSGuiScanner::new);
     }
 
     @SubscribeEvent

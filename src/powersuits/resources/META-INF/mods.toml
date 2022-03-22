@@ -41,3 +41,10 @@ A mod which adds modular power armor, power tool, and a tinker table to configur
     versionRange="[${ae2_version},)"
     ordering="AFTER"
     side="BOTH"
+
+[[dependencies.powersuits]]
+    modId="scannable"
+    mandatory=false
+    versionRange="[${scannable_version},)"
+    ordering="AFTER"
+    side="BOTH"

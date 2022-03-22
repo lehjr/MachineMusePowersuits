@@ -33,10 +33,12 @@ import lehjr.numina.constants.NuminaConstants;
 import lehjr.numina.container.ArmorStandContainer;
 import lehjr.numina.container.ChargingBaseContainer;
 import lehjr.numina.entity.NuminaArmorStandEntity;
+import lehjr.numina.integration.scannable.MPSContainerScanner;
 import lehjr.numina.item.Battery;
 import lehjr.numina.item.ItemComponent;
 import lehjr.numina.item.NuminaArmorStandItem;
 import lehjr.numina.tileentity.ChargingBaseTileEntity;
+import li.cil.scannable.common.config.Constants;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityClassification;
@@ -194,6 +196,13 @@ public class NuminaObjects {
         World world = inv.player.level;
         return new ChargingBaseContainer(windowId, world, pos, inv, inv.player);
     }));
+
+    public static final RegistryObject<ContainerType<MPSContainerScanner>> SCANNER_CONTAINER = CONTAINER_TYPES.register(Constants.NAME_SCANNER, () -> IForgeContainerType.create(MPSContainerScanner::createForClient));
+
+
+
+
+
 
     /** Container background icons */
     public static final Map<EquipmentSlotType, ResourceLocation> ARMOR_SLOT_TEXTURES = new HashMap<EquipmentSlotType, ResourceLocation>(){{

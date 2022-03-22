@@ -1,0 +1,11 @@
+{
+  "result": {
+    "item": "powersuits:tunnel_bore"
+  },
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "powersuits:aoe_pick_upgrade"
+    }
+  ]
+}

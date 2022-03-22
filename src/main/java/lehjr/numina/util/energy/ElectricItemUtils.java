@@ -65,14 +65,19 @@ public class ElectricItemUtils {
         return avail;
     }
 
+    @Deprecated
+    public static int drainPlayerEnergy(LivingEntity entity, int drainAmount) {
+        return drainPlayerEnergy(entity, drainAmount, false);
+    }
+
     /**
      * returns the total amount of energy drained from the entity's equipped items
      *
      * Note that charging held items while in use causes issues so they are skipped
      */
-    public static int drainPlayerEnergy(LivingEntity entity, int drainAmount) {
+    public static int drainPlayerEnergy(LivingEntity entity, int drainAmount, boolean simulate){
         if (entity.level.isClientSide || (entity instanceof PlayerEntity && ((PlayerEntity) entity).abilities.instabuild)) {
-            return 0;
+            return drainAmount;
         }
         int drainleft = drainAmount;
         for (EquipmentSlotType slot : EquipmentSlotType.values()) {
@@ -81,9 +86,14 @@ public class ElectricItemUtils {
             }
 
             ItemStack stack = entity.getItemBySlot(slot);
-            drainleft = drainleft - drainItem(stack, drainleft);
+            drainleft = drainleft - drainItem(stack, drainleft, simulate);
         }
         return drainAmount - drainleft;
+    }
+
+    @Deprecated
+    public static int givePlayerEnergy(LivingEntity entity, int rfToGive) {
+        return givePlayerEnergy(entity, rfToGive, false);
     }
 
     /**
@@ -91,11 +101,11 @@ public class ElectricItemUtils {
      *
      * Note that charging held items while in use causes issues so they are skipped
      */
-    public static int givePlayerEnergy(LivingEntity entity, int rfToGive) {
+    public static int givePlayerEnergy(LivingEntity entity, int rfToGive, boolean simulate) {
         int rfLeft = rfToGive;
         for (EquipmentSlotType slot : EquipmentSlotType.values()) {
             if (rfLeft > 0) {
-                rfLeft = rfLeft - chargeItem(entity.getItemBySlot(slot), rfLeft);
+                rfLeft = rfLeft - chargeItem(entity.getItemBySlot(slot), rfLeft, simulate);
             } else {
                 break;
             }
@@ -104,7 +114,7 @@ public class ElectricItemUtils {
         if (rfLeft > 0 && entity instanceof PlayerEntity) {
             for(int i = 0; i < ((PlayerEntity) entity).inventory.getContainerSize(); i++ ) {
                 if (rfLeft > 0) {
-                    rfLeft = rfLeft - chargeItem(((PlayerEntity) entity).inventory.getItem(i), rfLeft);
+                    rfLeft = rfLeft - chargeItem(((PlayerEntity) entity).inventory.getItem(i), rfLeft, simulate);
                 } else {
                     break;
                 }
@@ -116,28 +126,11 @@ public class ElectricItemUtils {
     /**
      * returns the energy an itemStack has
      */
-    public static int drainItem(@Nonnull ItemStack itemStack, int drainAmount) {
-        return itemStack.getCapability(CapabilityEnergy.ENERGY).map(energyHandler -> {
-            // filter out devices not intended to be used as energy storage devices
-            if (energyHandler.getMaxEnergyStored() <= getMaxEnergyForComparison()) {
-                return 0;
-            }
-
-            Item item = itemStack.getItem();
-            int drained = energyHandler.extractEnergy(drainAmount, true);
-
-            if (drained > 0) {
-
-                // check if item blacklisted for draining
-                if (item instanceof ToolItem && !BlackList.blacklistModIds.contains(item.getRegistryName().getNamespace())) {
-                    drained = energyHandler.extractEnergy(drainAmount, false);
-
-                } else if (!(item instanceof ToolItem)) {
-                    drained = energyHandler.extractEnergy(drainAmount, false);
-                }
-            }
-            return drained;
-        }).orElse(0);
+    public static int drainItem(@Nonnull ItemStack itemStack, int drainAmount, boolean simulate) {
+        if (BlackList.blacklistModIds.contains(itemStack.getItem().getRegistryName().getNamespace())) {
+            return 0;
+        }
+        return itemStack.getCapability(CapabilityEnergy.ENERGY).map(energyHandler -> energyHandler.extractEnergy(drainAmount, simulate)).orElse(0);
     }
 
     /**
@@ -154,8 +147,8 @@ public class ElectricItemUtils {
         return itemStack.getCapability(CapabilityEnergy.ENERGY).filter(iEnergyStorage -> iEnergyStorage.getMaxEnergyStored() >= getMaxEnergyForComparison()).map(energyHandler -> energyHandler.getMaxEnergyStored()).orElse(0);
     }
 
-    public static int chargeItem(@Nonnull ItemStack itemStack, int chargeAmount) {
-        return itemStack.getCapability(CapabilityEnergy.ENERGY).map(energyHandler -> energyHandler.receiveEnergy(chargeAmount, false)).orElse(0);
+    public static int chargeItem(@Nonnull ItemStack itemStack, int chargeAmount, boolean simulate) {
+        return itemStack.getCapability(CapabilityEnergy.ENERGY).map(energyHandler -> energyHandler.receiveEnergy(chargeAmount, simulate)).orElse(0);
     }
 
     static int getMaxEnergyForComparison() {

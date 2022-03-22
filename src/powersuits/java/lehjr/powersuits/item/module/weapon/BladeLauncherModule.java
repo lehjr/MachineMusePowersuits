@@ -100,7 +100,7 @@ public class BladeLauncherModule extends AbstractPowerModule {
             }
 
             @Override
-            public void onPlayerStoppedUsing(ItemStack stack, World worldIn, LivingEntity entityLiving, int timeLeft) {
+            public void releaseUsing(ItemStack stack, World worldIn, LivingEntity entityLiving, int timeLeft) {
                 if (!worldIn.isClientSide) {
                    int energyConsumption = getEnergyUsage();
 

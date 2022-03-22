@@ -226,7 +226,7 @@ public enum MovementManager {
                         }
 
                         if (drain < avail) {
-                            ElectricItemUtils.drainPlayerEnergy(player, (int) drain);
+                            ElectricItemUtils.drainPlayerEnergy(player, (int) drain, false);
                             setPlayerJumpTicks(player, jumpAssist);
                             double jumpCompensationRatio = jumper.applyPropertyModifiers(MPSConstants.FOOD_COMPENSATION);
                             if (player.isSprinting()) {
@@ -254,7 +254,7 @@ public enum MovementManager {
                         double drain = distanceAbsorb * sa.applyPropertyModifiers(MPSConstants.SHOCK_ENERGY);
                         int avail = ElectricItemUtils.getPlayerEnergy(player);
                         if (drain < avail) {
-                            ElectricItemUtils.drainPlayerEnergy(player, (int) drain);
+                            ElectricItemUtils.drainPlayerEnergy(player, (int) drain, false);
                             event.setDistance((float) (event.getDistance() - distanceAbsorb));
     //                        event.getEntityLiving().sendMessage(new TextComponentString("modified fall settings: [ damage : " + event.getDamageMultiplier() + " ], [ distance : " + event.getDistance() + " ]"));
                         }

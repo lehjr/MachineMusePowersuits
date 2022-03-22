@@ -187,13 +187,6 @@
   "item.powersuits.railgun": "Railgun",
   "item.powersuits.railgun.desc": "An assembly which accelerates a projectile to supersonic speeds using magnetic force. Heavy recoil.",
 
-
-
-
-
-
-
-
   "_comment": "NBTTags used as labels -------------------------------------------------------------",
   "_comment": "Generic tags (not specific to one module or type)",
   "module.tradeoff.energyConsumption": "Energy Consumption",
@@ -262,7 +255,6 @@
   "module.tradeoff.walkingSpeedMult": "Walking Speed Multiplier",
   "module.tradeoff.yLookRatio": "Y-look ratio",
   "module.tradeoff.blinkDriveEnergyCon": "Blink Drive Energy Consumption",
-  "module.tradeoff.blinkDriveRange": "Blink Drive Range",
   "module.tradeoff.range": "Range",
   "module.tradeoff.jetbootsThrust": "Jetboots Thrust",
   "module.tradeoff.jetbootsEnergy": "Energy Consumption",
@@ -359,16 +351,6 @@
   "_comment": "GUI main module tinker frame",
   "gui.powersuits.noModulesFound.line1": "No Modular Powersuit items",
   "gui.powersuits.noModulesFound.line2": "found in inventory. Make some!",
-
-  "_comment": "GUI - Keybinding",
-  "gui.powersuits.newKeybind": "New",
-  "gui.powersuits.trashKeybind": "Trash",
-  "gui.powersuits.pressKey": "Press Key",
-  "gui.powersuits.keybindTaken": "Taken!",
-  "gui.powersuits.keybindInstructions1": "Use 'new' to bind new keys.",
-  "gui.powersuits.keybindInstructions2": "Drag and drop modules to bind them to keys.",
-  "gui.powersuits.keybindInstructions3": "Drop keys on 'trash' to unbind them.",
-  "gui.powersuits.keybindInstructions4": "Right-click keybinds to add them to the HUD.",
 
   "_comment": "GUI - cosmetic preset save/loading",
   "gui.powersuits.load": "Load",

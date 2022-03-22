@@ -55,6 +55,7 @@ import net.minecraftforge.items.CapabilityItemHandler;
 
 import javax.annotation.Nullable;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 public class PowerFist extends AbstractElectricTool {
@@ -64,7 +65,17 @@ public class PowerFist extends AbstractElectricTool {
 
     @Override
     public int getUseDuration(ItemStack stack) {
-        return 72000;
+
+        return stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+                .filter(IModeChangingItem.class::isInstance)
+                .map(IModeChangingItem.class::cast)
+                .map(handler->
+                        handler.getActiveModule().getCapability(PowerModuleCapability.POWER_MODULE)
+                                .filter(IRightClickModule.class::isInstance)
+                                .map(IRightClickModule.class::cast)
+                                .map(m-> m.getModuleStack().getUseDuration())
+                                .orElse(72000))
+                .orElse(72000);
     }
 
     @Override
@@ -271,8 +282,24 @@ public class PowerFist extends AbstractElectricTool {
                     module.getCapability(PowerModuleCapability.POWER_MODULE)
                             .filter(IRightClickModule.class::isInstance)
                             .map(IRightClickModule.class::cast)
-                            .ifPresent(m-> m.onPlayerStoppedUsing(stack, worldIn, entityLiving, timeLeft));
+                            .ifPresent(m-> m.releaseUsing(stack, worldIn, entityLiving, timeLeft));
                 });
+    }
+
+    @Override
+    public ItemStack finishUsingItem(ItemStack stack, World worldIn, LivingEntity entity) {
+        System.out.println("finished using item");
+
+        return stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+                .filter(IModeChangingItem.class::isInstance)
+                .map(IModeChangingItem.class::cast)
+                .map(handler->
+                    handler.getActiveModule().getCapability(PowerModuleCapability.POWER_MODULE)
+                            .filter(IRightClickModule.class::isInstance)
+                            .map(IRightClickModule.class::cast)
+                            .map(m-> m.finishUsingItem(stack, worldIn, entity))
+                            .orElse((super.finishUsingItem(stack, worldIn, entity))))
+                .orElse(stack);
     }
 
     @Override

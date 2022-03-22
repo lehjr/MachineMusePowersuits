@@ -29,6 +29,7 @@ package lehjr.powersuits.basemod;
 import appeng.core.Api;
 import com.electronwill.nightconfig.core.file.CommentedFileConfig;
 import lehjr.numina.config.ConfigHelper;
+import lehjr.numina.integration.scannable.ScannableHandler;
 import lehjr.numina.util.capabilities.module.powermodule.EnumModuleCategory;
 import lehjr.numina.util.capabilities.module.powermodule.EnumModuleTarget;
 import lehjr.numina.util.capabilities.module.powermodule.PowerModuleCapability;
@@ -50,6 +51,7 @@ import lehjr.powersuits.constants.MPSConstants;
 import lehjr.powersuits.constants.MPSRegistryNames;
 import lehjr.powersuits.event.*;
 import lehjr.powersuits.network.MPSPackets;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScreenManager;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -83,6 +85,8 @@ import net.minecraftforge.fml.network.NetworkHooks;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.List;
 
 @Mod(MPSConstants.MOD_ID)
 public class ModularPowersuits {
@@ -191,6 +195,10 @@ public class ModularPowersuits {
                     return LazyOptional.empty();
                 }
             });
+        }
+
+        if (itemStack.getItem().getRegistryName().equals(new ResourceLocation("scannable:scanner"))) {
+            ScannableHandler.attach(event, MPSSettings::getModuleConfig);
         }
 
         // Clock
