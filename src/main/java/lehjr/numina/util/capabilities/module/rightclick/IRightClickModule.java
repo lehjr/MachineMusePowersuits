@@ -63,7 +63,7 @@ public interface IRightClickModule extends IPowerModule {
         return new ActionResult<>(ActionResultType.PASS, itemStackIn);
     }
 
-    default ActionResultType onItemUse(ItemUseContext context) {
+    default ActionResultType useOn(ItemUseContext context) {
         return ActionResultType.PASS;
     }
 

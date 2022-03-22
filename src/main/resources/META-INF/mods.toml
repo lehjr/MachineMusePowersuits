@@ -43,3 +43,10 @@ license="All rights reserved"
     versionRange="[${scannable_version},)"
     ordering="AFTER"
     side="BOTH"
+
+[[dependencies.numina]]
+    modId="refinedstorage"
+    mandatory=false
+    versionRange="${refinedstorage_version}"
+    ordering="AFTER"
+    side="BOTH"

@@ -5,6 +5,7 @@ import lehjr.numina.util.capabilities.module.powermodule.EnumModuleCategory;
 import lehjr.numina.util.capabilities.module.powermodule.EnumModuleTarget;
 import lehjr.numina.util.capabilities.module.powermodule.IConfig;
 import lehjr.numina.util.capabilities.module.powermodule.PowerModuleCapability;
+import lehjr.numina.util.item.ItemUtils;
 import li.cil.scannable.common.item.ItemScanner;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Direction;
@@ -42,13 +43,6 @@ public class ScannableHandler {
     }
 
     public static boolean isScanner(@Nonnull ItemStack itemStack) {
-        return ItemScanner.isScanner(getScannerModule(itemStack));
-    }
-
-    public static ItemStack getScannerModule(@Nonnull ItemStack itemStack) {
-        return itemStack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-                .filter(IModeChangingItem.class::isInstance)
-                .map(IModeChangingItem.class::cast)
-                .map(iModeChangingItem -> iModeChangingItem.getActiveModule()).orElse(ItemStack.EMPTY);
+        return ItemScanner.isScanner(ItemUtils.getActiveModuleOrEmpty(itemStack));
     }
 }

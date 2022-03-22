@@ -55,7 +55,6 @@ import net.minecraftforge.items.CapabilityItemHandler;
 
 import javax.annotation.Nullable;
 import java.util.HashSet;
-import java.util.Optional;
 import java.util.Set;
 
 public class PowerFist extends AbstractElectricTool {
@@ -246,7 +245,7 @@ public class PowerFist extends AbstractElectricTool {
                     return module.getCapability(PowerModuleCapability.POWER_MODULE)
                             .filter(IRightClickModule.class::isInstance)
                             .map(IRightClickModule.class::cast)
-                            .map(m-> m.onItemUse(context)).orElse(fallback);
+                            .map(m-> m.useOn(context)).orElse(fallback);
                 }).orElse(fallback);
     }
 
@@ -288,8 +287,6 @@ public class PowerFist extends AbstractElectricTool {
 
     @Override
     public ItemStack finishUsingItem(ItemStack stack, World worldIn, LivingEntity entity) {
-        System.out.println("finished using item");
-
         return stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
                 .filter(IModeChangingItem.class::isInstance)
                 .map(IModeChangingItem.class::cast)

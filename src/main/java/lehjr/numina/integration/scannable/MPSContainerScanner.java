@@ -1,5 +1,6 @@
 package lehjr.numina.integration.scannable;
 
+import lehjr.numina.util.item.ItemUtils;
 import li.cil.scannable.common.Scannable;
 import li.cil.scannable.common.inventory.ItemHandlerScanner;
 import net.minecraft.entity.player.PlayerEntity;
@@ -35,7 +36,7 @@ public class MPSContainerScanner extends Container {
         this.player = inventory.player;
         this.hand = hand;
         this.tool = this.player.getItemInHand(hand);
-        this.module = ScannableHandler.getScannerModule(tool);
+        this.module = ItemUtils.getActiveModuleOrEmpty(tool);
 
         IItemHandler activeModules = itemHandler.getActiveModules();
 

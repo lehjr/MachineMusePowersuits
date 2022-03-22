@@ -106,7 +106,7 @@ public class HoeModule extends AbstractPowerModule {
             }
 
             @Override
-            public ActionResultType onItemUse(ItemUseContext context) {
+            public ActionResultType useOn(ItemUseContext context) {
                 int energyConsumed = this.getEnergyUsage();
                 PlayerEntity player = context.getPlayer();
                 World world = context.getLevel();

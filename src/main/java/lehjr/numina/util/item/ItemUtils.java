@@ -35,6 +35,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.items.CapabilityItemHandler;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -145,5 +146,16 @@ public class ItemUtils {
                     .ifPresent(handler -> slots.add(finalI));
         }
         return slots;
+    }
+
+
+
+
+
+    public static ItemStack getActiveModuleOrEmpty(@Nonnull ItemStack itemStack) {
+        return itemStack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+                .filter(IModeChangingItem.class::isInstance)
+                .map(IModeChangingItem.class::cast)
+                .map(iModeChangingItem -> iModeChangingItem.getActiveModule()).orElse(ItemStack.EMPTY);
     }
 }

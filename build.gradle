@@ -150,7 +150,8 @@ ext {
                          "loader_version": loader_version_range,
                          "jei_version": jei_version_range,
                          "ae2_version": ae2_version,
-                         "scannable_version": scannable_version]
+                         "scannable_version": scannable_version,
+                         "refinedstorage_version": refinedstorage_version_range]
     jsonPatterns = ["**/*.json", "**/*.mcmeta"]
 }
 
@@ -315,21 +316,13 @@ repositories {
             includeGroup 'mezz.jei'
         }
     }
-//    maven {
-//        name 'CraftTweaker'
-//        url "https://maven.blamejared.com"
-//        content {
-//            includeGroup 'com.blamejared.crafttweaker'
-//            includeGroup 'com.blamejared.jeitweaker'
-//        }
-//    }
-//    maven {
-//        name 'curios'
-//        url "https://maven.theillusivec4.top/"
-//        content {
-//            includeGroup 'top.theillusivec4.curios'
-//        }
-//    }
+
+    maven {
+        // invalid for 1.18.1 and beyond
+        name 'RefinedStorage'
+        url "https://repo.refinedmods.com"
+    }
+
     maven {
         name 'tterrag'
         url 'https://maven.tterrag.com/'
@@ -387,6 +380,14 @@ dependencies {
         transitive = false
     }
     implementation fg.deobf("curse.maven:scannable-266784:3565727")
+
+//    implementation fg.deobf("com.refinedmods:refinedstorage:${refinedstorage_version}")
+//    runtimeOnly fg.deobf("com.refinedmods:refinedstorage:${refinedstorage_version}")
+
+
+    implementation fg.deobf("curse.maven:refined-storage-243076:${refinedstorage_version}");
+
+
 }
 
 if (project.hasProperty('UPDATE_MAPPINGS')) {
@@ -631,21 +632,21 @@ if (System.getenv("CURSEFORGE_KEY") != null || project.hasProperty('curseforgeKe
             return generatedChangelog
         }
 
-//        // Numina
-//        project {
-//            id = '235440'
-//            changelogType = "html"
-//            changelog = changeLogResolver
-//            // A file can also be set using: changelog = file('changelog.txt')
-//            releaseType = "${curse_release_type}"
-//            mainArtifact(jar) {
-//                relations {
-//                        optionalDependency "applied-energistics-2"
-//                }
-//            }
-//            addArtifact apiJar
-//            addGameVersion "${minecraft_version}"
-//        }
+        // Numina
+        project {
+            id = '235440'
+            changelogType = "html"
+            changelog = changeLogResolver
+            // A file can also be set using: changelog = file('changelog.txt')
+            releaseType = "${curse_release_type}"
+            mainArtifact(jar) {
+                relations {
+                        optionalDependency "applied-energistics-2"
+                }
+            }
+            addArtifact apiJar
+            addGameVersion "${minecraft_version}"
+        }
 //
 //        // MPS Recipe Creator
 //        project {
@@ -675,20 +676,20 @@ if (System.getenv("CURSEFORGE_KEY") != null || project.hasProperty('curseforgeKe
 //            }
 //            addGameVersion "${minecraft_version}"
 //        }
-//
-//        // Modular Powersuits
-//        project {
-//            id = '235442'
-//            changelogType = "html"
-//            changelog = changeLogResolver
-//            releaseType = "${curse_release_type}"
-//            mainArtifact(toolsJar) {
-//                relations {
-//                    requiredDependency "numina"
-//                    optionalDependency "applied-energistics-2"
-//                }
-//            }
-//            addGameVersion "${minecraft_version}"
-//        }
+
+        // Modular Powersuits
+        project {
+            id = '235442'
+            changelogType = "html"
+            changelog = changeLogResolver
+            releaseType = "${curse_release_type}"
+            mainArtifact(toolsJar) {
+                relations {
+                    requiredDependency "numina"
+                    optionalDependency "applied-energistics-2"
+                }
+            }
+            addGameVersion "${minecraft_version}"
+        }
     }
 }

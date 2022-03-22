@@ -100,7 +100,7 @@ public class FlintAndSteelModule extends AbstractPowerModule {
              * Called when this item is used when targetting a Block
              */
             @Override
-            public ActionResultType onItemUse(ItemUseContext context) {
+            public ActionResultType useOn(ItemUseContext context) {
                 int energyConsumption = getEnergyUsage();
                 PlayerEntity player = context.getPlayer();
                 if (ElectricItemUtils.getPlayerEnergy(player) < energyConsumption ) {

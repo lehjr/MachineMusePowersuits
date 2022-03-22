@@ -26,9 +26,13 @@
 
 package lehjr.powersuits.item.tool;
 
+import lehjr.numina.util.capabilities.inventory.modechanging.IModeChangingItem;
+import lehjr.numina.util.energy.ElectricItemUtils;
 import lehjr.numina.util.string.AdditionalInfo;
 import lehjr.powersuits.capability.PowerFistCap;
 import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolItem;
@@ -39,6 +43,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.energy.CapabilityEnergy;
+import net.minecraftforge.items.CapabilityItemHandler;
 
 import javax.annotation.Nullable;
 import java.util.HashSet;

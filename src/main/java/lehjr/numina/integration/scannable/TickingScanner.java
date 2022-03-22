@@ -6,6 +6,7 @@ import lehjr.numina.util.capabilities.module.powermodule.IConfig;
 import lehjr.numina.util.capabilities.module.rightclick.IRightClickModule;
 import lehjr.numina.util.capabilities.module.tickable.PlayerTickModule;
 import lehjr.numina.util.energy.ElectricItemUtils;
+import lehjr.numina.util.item.ItemUtils;
 import li.cil.scannable.api.scanning.ScannerModule;
 import li.cil.scannable.client.ScanManager;
 import li.cil.scannable.client.audio.SoundManager;
@@ -47,7 +48,16 @@ public class TickingScanner extends PlayerTickModule implements IRightClickModul
 
     @Override
     public ActionResult use(ItemStack itemStackIn, World worldIn, PlayerEntity playerIn, Hand hand) {
-        final ItemStack module = ScannableHandler.getScannerModule(itemStackIn);
+        final ItemStack module = ItemUtils.getActiveModuleOrEmpty(itemStackIn);
+
+        if (!worldIn.isClientSide()) {
+            int totalEnergy = ElectricItemUtils.getPlayerEnergy(playerIn);
+            int energyNeeded = ElectricItemUtils.chargeItem(module, totalEnergy, true);
+            if (energyNeeded > 0) {
+                energyNeeded = ElectricItemUtils.drainPlayerEnergy(playerIn, energyNeeded, false);
+                ElectricItemUtils.chargeItem(module, energyNeeded, false);
+            }
+        }
 
         if (playerIn.isShiftKeyDown()) {
             if (!worldIn.isClientSide) {
@@ -91,7 +101,7 @@ public class TickingScanner extends PlayerTickModule implements IRightClickModul
             SoundCanceler.cancelEquipSound();
         }
 
-        final ItemStack module = ScannableHandler.getScannerModule(stack);
+        final ItemStack module = ItemUtils.getActiveModuleOrEmpty(stack);
 
         final NonNullList<ItemStack> modules = collectModules(module);
         if (modules.isEmpty()) {

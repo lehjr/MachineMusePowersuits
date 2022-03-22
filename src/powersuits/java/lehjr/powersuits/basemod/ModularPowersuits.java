@@ -29,6 +29,7 @@ package lehjr.powersuits.basemod;
 import appeng.core.Api;
 import com.electronwill.nightconfig.core.file.CommentedFileConfig;
 import lehjr.numina.config.ConfigHelper;
+import lehjr.numina.integration.refinedstorage.RSWirelessHandler;
 import lehjr.numina.integration.scannable.ScannableHandler;
 import lehjr.numina.util.capabilities.module.powermodule.EnumModuleCategory;
 import lehjr.numina.util.capabilities.module.powermodule.EnumModuleTarget;
@@ -174,9 +175,10 @@ public class ModularPowersuits {
     @SubscribeEvent
     public void attachCapability(AttachCapabilitiesEvent<ItemStack> event) {
         final ItemStack itemStack = event.getObject();
+        final ResourceLocation regName = itemStack.getItem().getRegistryName();
 
         // AE2 Wireless terminal
-        if (itemStack.getItem().getRegistryName().equals(new ResourceLocation("appliedenergistics2:wireless_terminal"))) {
+        if (regName.equals(new ResourceLocation("appliedenergistics2:wireless_terminal"))) {
             IRightClickModule ae2wirelessterminal = new RightClickModule(itemStack, EnumModuleCategory.TOOL, EnumModuleTarget.TOOLONLY, MPSSettings::getModuleConfig) {
                 @Override
                 public ActionResult use(ItemStack itemStackIn, World worldIn, PlayerEntity playerIn, Hand hand) {
@@ -185,7 +187,7 @@ public class ModularPowersuits {
                 }
             };
 
-            event.addCapability(new ResourceLocation("appliedenergistics2:wireless_terminal"), new ICapabilityProvider() {
+            event.addCapability(regName, new ICapabilityProvider() {
                 @Nonnull
                 @Override
                 public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
@@ -197,9 +199,27 @@ public class ModularPowersuits {
             });
         }
 
-        if (itemStack.getItem().getRegistryName().equals(new ResourceLocation("scannable:scanner"))) {
+        // Scannable scanner
+        if (regName.equals(new ResourceLocation("scannable:scanner"))) {
             ScannableHandler.attach(event, MPSSettings::getModuleConfig);
         }
+
+        if(regName.getNamespace().contains("refinedstorage") && regName.getPath().contains("wireless")) {
+            RSWirelessHandler.attach(event, MPSSettings::getModuleConfig);
+//            System.out.println("regname" + regName);
+//            /*
+//            refinedstorage:wireless_grid
+//            refinedstorage:wireless_fluid_grid
+//            refinedstorage:wireless_grid
+//            refinedstorage:wireless_fluid_grid
+//            refinedstorage:wireless_grid
+//            refinedstorage:wireless_fluid_grid
+//            refinedstorage:wireless_grid
+//             */
+//
+        }
+
+
 
         // Clock
         if (!event.getCapabilities().containsKey(MPSRegistryNames.CLOCK_MODULE_REG) && event.getObject().getItem().equals(Items.CLOCK)) {
@@ -215,7 +235,7 @@ public class ModularPowersuits {
                 }
             });
 
-        // Compass
+            // Compass
         } else if (!event.getCapabilities().containsKey(MPSRegistryNames.COMPASS_MODULE_REG) && event.getObject().getItem().equals(Items.COMPASS)) {
             IToggleableModule compass = new ToggleableModule(itemStack, EnumModuleCategory.SPECIAL, EnumModuleTarget.HEADONLY, MPSSettings::getModuleConfig, true);
 
@@ -230,7 +250,7 @@ public class ModularPowersuits {
                 }
             });
 
-        // Crafting workbench
+            // Crafting workbench
         } else if (!event.getCapabilities().containsKey(MPSRegistryNames.PORTABLE_WORKBENCH_MODULE_REG) && event.getObject().getItem().equals(Items.CRAFTING_TABLE)) {
             final ITextComponent CONTAINER_NAME = new TranslationTextComponent("container.crafting");
             IRightClickModule rightClick = new RightClickModule(itemStack, EnumModuleCategory.TOOL, EnumModuleTarget.TOOLONLY, MPSSettings::getModuleConfig) {

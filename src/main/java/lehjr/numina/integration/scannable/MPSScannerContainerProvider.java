@@ -1,6 +1,7 @@
 package lehjr.numina.integration.scannable;
 
 import lehjr.numina.util.capabilities.inventory.modechanging.IModeChangingItem;
+import lehjr.numina.util.item.ItemUtils;
 import li.cil.scannable.common.container.AbstractHeldItemStackContainerProvider;
 import li.cil.scannable.common.inventory.ItemHandlerScanner;
 import li.cil.scannable.util.LazyOptionalUtil;
@@ -25,7 +26,7 @@ public final class MPSScannerContainerProvider extends AbstractHeldItemStackCont
 
     @Nullable
     public Container createMenu(int windowId, PlayerInventory inventory, PlayerEntity player) {
-        ItemStack module = ScannableHandler.getScannerModule(player.getItemInHand(this.hand));
+        ItemStack module = ItemUtils.getActiveModuleOrEmpty(player.getItemInHand(this.hand));
         LazyOptional<IItemHandler> capability = module.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY);
         IItemHandler itemHandler = LazyOptionalUtil.orNull(capability);
         return this.createContainer(windowId, inventory, this.hand, itemHandler);
