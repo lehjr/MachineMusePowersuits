@@ -93,25 +93,7 @@ public class RSWirelessHandler {
 
                     return ActionResultType.PASS;
                 }
-
-//                @Override
-//                public ItemStack finishUsingItem(ItemStack itemStack, World world, LivingEntity entity) {
-//                    if (!world.isClientSide()) {
-//                        int totalEnergy = ElectricItemUtils.getPlayerEnergy(entity);
-//                        int energyNeeded = ElectricItemUtils.chargeItem(module, totalEnergy, true);
-//                        System.out.println("energyNeeded: " + energyNeeded);
-//
-//                        if (energyNeeded > 0) {
-//                            energyNeeded = ElectricItemUtils.drainPlayerEnergy(entity, energyNeeded, false);
-//                            ElectricItemUtils.chargeItem(module, energyNeeded, false);
-//                        }
-//                    }
-//                    return super.finishUsingItem(itemStack, world, entity);
-//                }
             };
-
-
-
 
             event.addCapability(regName, new ICapabilityProvider() {
                 @Nonnull

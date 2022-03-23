@@ -63,7 +63,6 @@ public class NuminaArmorStandEntity extends ArmorStandEntity {
         super(worldIn, posX, posY, posZ);
     }
 
-    //func_233666_p_ ---> registerAttributes()
     public static AttributeModifierMap.MutableAttribute setCustomAttributes() {
         return MobEntity.createMobAttributes().add(Attributes.MAX_HEALTH, 10.0D);
     }

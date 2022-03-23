@@ -234,10 +234,6 @@ public class MuseNBTUtils {
         getModuleTag(module).putString(string, value.toString());
     }
 
-    public static void removeModuleResourceLocation(@Nonnull ItemStack module, String string) {
-        getModuleTag(module).remove(string);
-    }
-
     public static Optional<ResourceLocation> getModuleResourceLocation(@Nonnull ItemStack module, String string) {
         CompoundNBT moduleTag = getModuleTag(module);
         if (moduleTag.contains(string, Constants.NBT.TAG_STRING)) {
@@ -245,10 +241,4 @@ public class MuseNBTUtils {
         }
         return Optional.empty();
     }
-
-
-
-
-
-
 }

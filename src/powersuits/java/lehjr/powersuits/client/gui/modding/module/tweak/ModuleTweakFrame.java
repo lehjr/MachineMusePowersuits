@@ -76,6 +76,7 @@ public class ModuleTweakFrame extends ScrollableFrame {
 
     @Override
     public void update(double mousex, double mousey) {
+        // FIXME... stop reseting the capabiltiy
         LazyOptional<IPowerModule> cap = moduleTarget.getModuleCap();
         if (cap.isPresent()) {
             loadTweaks(cap);
@@ -119,9 +120,6 @@ public class ModuleTweakFrame extends ScrollableFrame {
 
         for (Map.Entry<String, Double> property : propertyStrings.entrySet()) {
             String formattedValue = MuseStringUtils.formatNumberFromUnits(property.getValue(), getUnit(property.getKey()));
-//            System.out.println("formated value: " + formattedValue);
-
-
             String name = property.getKey();
             double valueWidth = MuseRenderer.getStringWidth(formattedValue);
             double allowedNameWidth = getRect().width() - valueWidth - margin * 2;

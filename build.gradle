@@ -644,7 +644,6 @@ if (System.getenv("CURSEFORGE_KEY") != null || project.hasProperty('curseforgeKe
                         optionalDependency "applied-energistics-2"
                 }
             }
-            addArtifact apiJar
             addGameVersion "${minecraft_version}"
         }
 //
@@ -654,7 +653,7 @@ if (System.getenv("CURSEFORGE_KEY") != null || project.hasProperty('curseforgeKe
 //            changelogType = "html"
 //            changelog = changeLogResolver
 //            releaseType = "${curse_release_type}"
-//            mainArtifact(defenseJar) {
+//            mainArtifact(recipecreatorJar) {
 //                relations {
 //                    requiredDependency "numina"
 //                    optionalDependency "jei"
@@ -683,7 +682,7 @@ if (System.getenv("CURSEFORGE_KEY") != null || project.hasProperty('curseforgeKe
             changelogType = "html"
             changelog = changeLogResolver
             releaseType = "${curse_release_type}"
-            mainArtifact(toolsJar) {
+            mainArtifact(powersuitsJar) {
                 relations {
                     requiredDependency "numina"
                     optionalDependency "applied-energistics-2"

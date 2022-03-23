@@ -116,32 +116,6 @@ public class ChargingBaseTileEntity extends MuseTileEntity implements ITickableT
                         setChanged();
                     }
                 });
-//
-//                    Arrays.stream(EquipmentSlotType.values()).forEach(slotType -> {
-//                        if (wrapper.getEnergyStored() > 0) {
-//
-//
-//
-////
-////                            boolean doContinue = entity.getItemBySlot(slotType).getCapability(CapabilityEnergy.ENERGY).map(iItemEnergyHandler -> {
-////                                        if (iItemEnergyHandler.canReceive()) {
-////                                            int received = iItemEnergyHandler.receiveEnergy(wrapper.getEnergyStored(), false);
-////                                            energyWrapperStorage.extractEnergy(received, false);
-////                                            wrapper.extractEnergy(received, false);
-////                                            setChanged();
-////                                            return wrapper.getEnergyStored() > 0;
-////                                        } else {
-////                                            return true;
-////                                        }
-////                                    }
-////                            ).orElse(true);
-////                            if (!doContinue) {
-////                                return;
-////                            }
-////                        }
-////                    });
-//                }
-//        );
     }
 
     /**

@@ -220,9 +220,7 @@ public class Colour {
 
     // format is 0xRRGGBBAA
     public String hexColour() {
-//        return hexDigits(r) + hexDigits(g) + hexDigits(b) + (a < 1 ? hexDigits(a) : "");
         return hexDigits(r) + hexDigits(g) + hexDigits(b) + (a > 0 ? hexDigits(a) : "");
-//        return Integer.toHexString(getInt()).toUpperCase();
     }
 
     public static String hexDigits(float x) {
