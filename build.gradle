@@ -67,7 +67,7 @@ sourceSets {
         resources {
             include '**/**'
             //Add the generated main module resources
-            srcDirs += 'src/datagen/generated/main' //TODO
+            srcDirs += 'src/datagen/generated/numina' //TODO
             //But exclude the cache of the generated data from what gets built
             exclude '.cache'
         }
@@ -292,7 +292,7 @@ minecraft {
 
             mods {
                 numina.sources((SourceSet[]) [sourceSets.main, sourceSets.datagenmain])
-                mpsdefense.sources((SourceSet[]) [sourceSets.recipecreator, sourceSets.datagenrecipecreator])
+                mpsrecipecreator.sources((SourceSet[]) [sourceSets.recipecreator, sourceSets.datagenrecipecreator])
                 mpswhatever.sources((SourceSet[]) [sourceSets.whatever, sourceSets.datagenwhatever])
                 modularpowersuits.sources((SourceSet[]) [sourceSets.powersuits, sourceSets.datagenpowersuits])
             }
@@ -668,7 +668,7 @@ if (System.getenv("CURSEFORGE_KEY") != null || project.hasProperty('curseforgeKe
 //            changelogType = "html"
 //            changelog = changeLogResolver
 //            releaseType = "${curse_release_type}"
-//            mainArtifact(generatorsJar) {
+//            mainArtifact(whateverJar) {
 //                relations {
 //                    requiredDependency "numina"
 //                }
