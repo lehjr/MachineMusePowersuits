@@ -46,6 +46,7 @@ public class NuminaLangProvider implements IDataProvider {
     public void run(DirectoryCache cache) throws IOException {
         Path src = gen.getOutputFolder().getParent().getParent().getParent();
         File langFolder = new File(src.toFile(), root + "/resources/assets/" + modid + "/lang");
+        System.out.println("source folder: " +langFolder);
 
         if (langFolder.exists() && langFolder.isDirectory()) {
             ArrayList<File> files = ResourceList.getResourcesFromDirectory(langFolder, Pattern.compile(".json", Pattern.CASE_INSENSITIVE));

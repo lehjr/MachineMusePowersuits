@@ -75,16 +75,20 @@ sourceSets {
 
     powersuits { setupSourceSet(powersuits, 'powersuits') }
     // TODO?
-    whatever { setupSourceSet(whatever, 'whatever') }
-    recipecreator { setupSourceSet(recipecreator, 'recipecreator') }
+    whatever { setupSourceSet(whatever, 'mpswhatever') }
+    recipecreator { setupSourceSet(recipecreator, 'mpsrecipecreator') }
 
 
     // TODO? Not using datagen yet...
     //Data gen modules for the different modules
     datagenmain { setupDataGenSourceSet(datagenmain, null, 'main') }
-    datagenwhatever { setupDataGenSourceSet(datagenwhatever, whatever, 'whatever') }
-    datagenrecipecreator { setupDataGenSourceSet(datagenrecipecreator, recipecreator, 'recipecreator') }
+    datagenwhatever { setupDataGenSourceSet(datagenwhatever, whatever, 'mpswhatever') }
+    datagenrecipecreator { setupDataGenSourceSet(datagenrecipecreator, recipecreator, 'mpsrecipecreator') }
     datagenpowersuits { setupDataGenSourceSet(datagenpowersuits, powersuits, 'powersuits') }
+
+
+
+
 }
 
 //This method sets up an additional sourceSet in src/$name and adds a reference to the corresponding
@@ -94,6 +98,9 @@ def setupSourceSet(SourceSet sourceSet, String name) {
     sourceSet.resources {
         //Add the generated module resources
         srcDirs += 'src/datagen/generated/' + name // TODO
+
+        println('src/datagen/generated/' + name)
+
         //But exclude the cache of the generated data from what gets built
         exclude '.cache'
     }
