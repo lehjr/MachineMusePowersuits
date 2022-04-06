@@ -46,6 +46,8 @@ import java.util.List;
 
 public class ModuleSelectionSubFrame {
     public List<ClickableModule> moduleButtons;
+    public int selectedModule = -1;
+    int oldSelected = -1;
     protected RelativeRect border;
     public EnumModuleCategory category;
 
@@ -90,16 +92,16 @@ public class ModuleSelectionSubFrame {
         border.setHeight(topMargin * 2 + 20 * row);
     }
 
-    public int selectedModule = -1;
-
     public ClickableModule getSelectedModule() {
-        if (selectedModule >=0)
+        if (selectedModule >=0) {
             return moduleButtons.get(selectedModule);
+        }
         return null;
     }
 
     public void resetSelection(){
         this.selectedModule = -1;
+        this.oldSelected = -1;
     }
 
     public boolean mouseClicked(double x, double y, int button) {
@@ -108,6 +110,10 @@ public class ModuleSelectionSubFrame {
                 if (module.hitBox((float) x, (float)y)) {
                     Musique.playClientSound(SoundDictionary.SOUND_EVENT_GUI_SELECT, 1);
                     selectedModule = moduleButtons.indexOf(module);
+                    if (selectedModule != oldSelected) {
+                        oldSelected = selectedModule;
+                        onSelected();
+                    }
                     return true;
                 }
             }
@@ -127,5 +133,27 @@ public class ModuleSelectionSubFrame {
             }
         }
         return null;
+    }
+
+    /**
+     * Sets code to be executed when a new item is selected
+     * @param doThisIn
+     */
+    OnSelectNewModule doThis;
+    public void setDoOnNewSelect(OnSelectNewModule doThisIn) {
+        doThis = doThisIn;
+    }
+
+    /**
+     * runs preset code when new module is selected
+     */
+    void onSelected() {
+        if(this.doThis != null) {
+            this.doThis.onSelected(this);
+        }
+    }
+
+    public interface OnSelectNewModule {
+        void onSelected(ModuleSelectionSubFrame doThis);
     }
 }

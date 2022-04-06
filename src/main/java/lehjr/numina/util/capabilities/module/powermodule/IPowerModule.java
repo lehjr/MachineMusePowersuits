@@ -33,6 +33,7 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
+import javax.annotation.Nonnull;
 import java.util.List;
 import java.util.Map;
 
@@ -55,9 +56,6 @@ public interface IPowerModule {
     default String getModuleGroup() {
         return "";
     }
-
-    @OnlyIn(Dist.CLIENT)
-    String getUnit(String propertyName);
 
     void addTradeoffProperty(String tradeoffName, String propertyName, double multiplier);
 
@@ -85,5 +83,15 @@ public interface IPowerModule {
 
     default boolean isModuleOnline() {
         return true;
+    }
+
+    // TODO: move to somewhere else??
+    @OnlyIn(Dist.CLIENT) // only used by the client for display purposes
+    default String getUnit(@Nonnull String propertyName) {
+        return UnitMap.MAP.getUnit(propertyName);
+    }
+
+    default void addUnitLabel(@Nonnull String propertyName, String unit) {
+        UnitMap.MAP.addUnitLabel(propertyName, unit);
     }
 }

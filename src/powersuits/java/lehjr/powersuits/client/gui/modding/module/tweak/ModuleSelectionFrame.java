@@ -55,6 +55,8 @@ public class ModuleSelectionFrame extends ScrollableFrame {
     protected ModularItemSelectionFrame target;
     protected Map<EnumModuleCategory, ModuleSelectionSubFrame> categories = new LinkedHashMap<>();
     protected RelativeRect lastPosition;
+    Optional<ClickableModule> selectedModule = Optional.ofNullable(null);
+    LazyOptional<IPowerModule> moduleCap = LazyOptional.empty();
 
     public ModuleSelectionFrame(ModularItemSelectionFrame itemSelectFrameIn, MusePoint2D topleft, MusePoint2D bottomright,
                                 Colour background,
@@ -80,6 +82,10 @@ public class ModuleSelectionFrame extends ScrollableFrame {
                     position);
 
             categories.put(category, frame);
+            frame.setDoOnNewSelect(thing-> {
+                selectedModule = Optional.of(thing.getSelectedModule());
+                moduleCap = selectedModule.map(clickableModule -> clickableModule.getModule()).orElse(ItemStack.EMPTY).getCapability(PowerModuleCapability.POWER_MODULE);
+            });
             return frame;
         }
     }
@@ -182,15 +188,17 @@ public class ModuleSelectionFrame extends ScrollableFrame {
     }
 
     public Optional<ClickableModule> getSelectedModule() {
-        if (!categories.isEmpty()) {
-            return categories.values().stream().filter(frame -> frame !=null && frame.getSelectedModule() != null).findFirst().map(frame->frame.getSelectedModule());
-        }
-        return Optional.empty();
+//        if (!categories.isEmpty()) {
+//            return categories.values().stream().filter(frame -> frame !=null && frame.getSelectedModule() != null).findFirst().map(frame->frame.getSelectedModule());
+//        }
+//        return Optional.empty();
+        return selectedModule;
     }
 
     public LazyOptional<IPowerModule> getModuleCap() {
-        return getSelectedModule()
-                .map(clickableModule -> clickableModule.getModule()).orElse(ItemStack.EMPTY).getCapability(PowerModuleCapability.POWER_MODULE);
+//        return getSelectedModule()
+//                .map(clickableModule -> clickableModule.getModule()).orElse(ItemStack.EMPTY).getCapability(PowerModuleCapability.POWER_MODULE);
+        return moduleCap;
     }
 
     @Override
@@ -211,6 +219,13 @@ public class ModuleSelectionFrame extends ScrollableFrame {
                         if (frame != sel) {
                             frame.resetSelection();
                         }
+//                        else {
+//                            final ClickableModule selectedOther = sel.getSelectedModule();
+//
+//                            if (selectedModule.map(module-> module.equals(selectedOther)).orElse(false)) {
+//                                System.out.println("do something here???");
+//                            }
+//                        }
                     }
                 }
             }

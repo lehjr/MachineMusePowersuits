@@ -147,6 +147,10 @@ public class ModuleTweakGui extends ContainerlessGui {
         backgroundRect.setOnInit(rect -> {
             mainHolder.setPosition(rect.getPosition());
         });
+
+
+
+//        moduleSelectFrame.setDoOnNewSelect();
     }
 
     @Override

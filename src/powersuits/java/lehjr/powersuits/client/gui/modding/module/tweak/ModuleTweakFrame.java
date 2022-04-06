@@ -76,7 +76,6 @@ public class ModuleTweakFrame extends ScrollableFrame {
 
     @Override
     public void update(double mousex, double mousey) {
-        // FIXME... stop reseting the capabiltiy
         LazyOptional<IPowerModule> cap = moduleTarget.getModuleCap();
         if (cap.isPresent()) {
             loadTweaks(cap);
@@ -111,7 +110,8 @@ public class ModuleTweakFrame extends ScrollableFrame {
         super.preRender(matrixStack, mouseX, mouseY, partialTicks);
         RenderSystem.pushMatrix();
         RenderSystem.translatef(0, -currentScrollPixels, 0);
-        MuseRenderer.drawShadowedStringCentered(matrixStack, "Tinker", centerx(), top() + 7);
+        // FIXME: translation
+        MuseRenderer.drawShadowedStringCentered(matrixStack, new TranslationTextComponent("gui.powersuits.tinker"), centerx(), top() + 7);
 
         for (ClickableTinkerSlider slider : sliders) {
             slider.render(matrixStack, mouseX, mouseY, partialTicks);
@@ -119,11 +119,10 @@ public class ModuleTweakFrame extends ScrollableFrame {
         int nexty = (int) (sliders.size() * 24 + getRect().top() + 18);
 
         for (Map.Entry<String, Double> property : propertyStrings.entrySet()) {
-            String formattedValue = MuseStringUtils.formatNumberFromUnits(property.getValue(), getUnit(property.getKey()));
             String name = property.getKey();
+            String formattedValue = MuseStringUtils.formatNumberFromUnits(property.getValue(), getUnit(name));
             double valueWidth = MuseRenderer.getStringWidth(formattedValue);
             double allowedNameWidth = getRect().width() - valueWidth - margin * 2;
-
             List<String> namesList = MuseStringUtils.wrapStringToVisualLength(
                     new TranslationTextComponent(NuminaConstants.MODULE_TRADEOFF_PREFIX + name).getString(), allowedNameWidth);
 
@@ -165,23 +164,15 @@ public class ModuleTweakFrame extends ScrollableFrame {
                         totalSize += 9;
                     }
                 }
-//                System.out.println("key: " + property.getKey() + ", value: " + currValue);
                 propertyStrings.put(property.getKey(), currValue);
                 totalSize += 9;
             }
 
-//            System.out.println("tweaks size: " + tweaks.size());
-
             int y = 0;
             for (String tweak : tweaks.keySet()) {
-//                System.out.println(tweak + ":  " + tweaks.get(tweak));
-
                 y += 23;
                 MusePoint2D center = new MusePoint2D(getRect().centerx(), getRect().top() + y);
                 PropertyModifierLinearAdditive tweakObj = tweaks.get(tweak);
-
-//                System.out.println("tweakObj: " + tweakObj);
-
                 if (tweakObj instanceof PropertyModifierIntLinearAdditive) {
                     ClickableTinkerIntSlider slider = new ClickableTinkerIntSlider(
                             center,
