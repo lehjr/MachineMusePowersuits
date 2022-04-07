@@ -14,16 +14,13 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
-import java.util.TreeMap;
+import java.util.*;
 
 public class NuminaLangMapWrapper {
     private static final Gson GSON = (new GsonBuilder()).setPrettyPrinting().disableHtmlEscaping().create();
     String locale;
-    Map<String, String> data = new TreeMap<>();
-    Map<String, String> extraData = new TreeMap<>();
+    Map<String, String> data = new HashMap<>();
+    Map<String, String> extraData = new HashMap<>();
     NuminaLangMapWrapper defaultLangWrapper;
 
     public NuminaLangMapWrapper(File jsonFile) {
@@ -89,11 +86,6 @@ public class NuminaLangMapWrapper {
 
     public void savetoOutputFolder(DirectoryCache cache, Path outputFolder) {
         try {
-            if (!data.isEmpty()) {
-                File outFile = new File(outputFolder.toFile(), locale + ".json");
-                save(cache, maptoJsonObject(data), outFile.toPath(), true);
-            }
-
             if (!thisIsDefault()) {
                 if (!extraData.isEmpty()) {
                     File extraFile = new File(outputFolder.toFile(), locale + "_extra.json");
@@ -108,9 +100,15 @@ public class NuminaLangMapWrapper {
                 });
 
                 if (!missingMap.isEmpty()) {
+                    missingMap.forEach((k, v) -> data.putIfAbsent(k, v));
                     File missingFile = new File(outputFolder.toFile(), locale + "_missing.json");
                     save(cache, maptoJsonObject(missingMap), missingFile.toPath(), true);
                 }
+            }
+
+            if (!data.isEmpty()) {
+                File outFile = new File(outputFolder.toFile(), locale + ".json");
+                save(cache, maptoJsonObject(data), outFile.toPath(), true);
             }
         } catch (Exception e) {
             e.printStackTrace();
