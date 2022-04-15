@@ -5,7 +5,7 @@
 /libs
 
 #Backup files
-/BU
+#/BU
 
 # Eclipse
 .classpath
