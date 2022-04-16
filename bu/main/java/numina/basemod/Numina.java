@@ -39,7 +39,7 @@ import lehjr.numina.event.PlayerUpdateHandler;
 import lehjr.numina.integration.scannable.MPSGuiScanner;
 import lehjr.numina.network.NuminaPackets;
 import lehjr.numina.recipe.RecipeSerializersRegistry;
-import lehjr.numina.util.capabilities.heat.HeatCapability;
+import lehjr.numina.util.capabilities.heat.CapabilityHeat;
 import lehjr.numina.util.capabilities.module.powermodule.PowerModuleCapability;
 import lehjr.numina.util.capabilities.player.CapabilityPlayerKeyStates;
 import lehjr.numina.util.capabilities.render.ModelSpecNBTCapability;
@@ -58,7 +58,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScreenManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ai.attributes.GlobalEntityTypeAttributes;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.Player;
 import net.minecraft.resources.IReloadableResourceManager;
 import net.minecraft.resources.IResourceManager;
 import net.minecraft.util.ResourceLocation;
@@ -150,7 +150,7 @@ public class Numina {
     private void setup(final FMLCommonSetupEvent event) {
         NuminaPackets.registerNuminaPackets();
 
-        HeatCapability.register();
+        CapabilityHeat.register();
 
         ColourCapability.register();
 
@@ -186,7 +186,7 @@ public class Numina {
 
     @SubscribeEvent
     public void attachCapability(AttachCapabilitiesEvent<Entity> event) {
-        if (!(event.getObject() instanceof PlayerEntity)) {
+        if (!(event.getObject() instanceof Player)) {
             return;
         }
         event.addCapability(new ResourceLocation(NuminaConstants.MOD_ID, "player_keystates"), new CapabilityPlayerKeyStates());

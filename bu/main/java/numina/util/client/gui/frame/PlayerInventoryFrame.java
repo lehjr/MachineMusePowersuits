@@ -5,13 +5,13 @@ import lehjr.numina.util.client.gui.IContainerULOffSet;
 import lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
 import net.minecraft.client.Minecraft;
 import net.minecraft.inventory.container.Container;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.util.text.TranslatableComponent;
 
 import java.util.ArrayList;
 import java.util.stream.IntStream;
 
 public class PlayerInventoryFrame extends MultiRectHolderFrame {
-    final TranslationTextComponent title = new TranslationTextComponent("container.inventory");
+    final TranslatableComponent title = new TranslatableComponent("container.inventory");
     final double spacerSize = 7.0D;
     final double finalWidth = 9 * 18;
     InventoryFrame mainInventory, hotbar;

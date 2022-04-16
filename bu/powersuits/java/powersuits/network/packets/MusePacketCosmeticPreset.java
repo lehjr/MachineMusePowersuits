@@ -28,7 +28,7 @@ package lehjr.powersuits.network.packets;//package lehjr.powersuits.network.pack
 //
 //import lehjr.mpalib.capabilities.render.ModelSpecNBT;
 //import lehjr.mpalib.capabilities.render.ModelSpecNBTCapability;
-//import net.minecraft.entity.player.ServerPlayerEntity;
+//import net.minecraft.entity.player.ServerPlayer;
 //import net.minecraft.network.PacketBuffer;
 //import net.minecraftforge.fml.network.NetworkEvent;
 //
@@ -57,7 +57,7 @@ package lehjr.powersuits.network.packets;//package lehjr.powersuits.network.pack
 //
 //    public static void handle(MusePacketCosmeticPreset message, Supplier<NetworkEvent.Context> ctx) {
 //        ctx.get().enqueueWork(() -> {
-//            final ServerPlayerEntity player = ctx.get().getSender();
+//            final ServerPlayer player = ctx.get().getSender();
 //            int itemSlot = message.itemSlot;
 //            String presetName = message.presetName;
 //
@@ -66,7 +66,7 @@ package lehjr.powersuits.network.packets;//package lehjr.powersuits.network.pack
 //
 //
 //                        // fixme preset stuff again
-////                    CompoundNBT itemTag = NBTUtils.getMuseItemTag(stack);
+////                    CompoundTag itemTag = NBTUtils.getMuseItemTag(stack);
 ////                    itemTag.remove(MPALibConstants.TAG_RENDER);
 ////                    itemTag.putString(MPALibConstants.TAG_COSMETIC_PRESET, presetName);
 //            });

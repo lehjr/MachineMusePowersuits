@@ -5,7 +5,7 @@
 //import lehjr.numina.module.IPlayerTickModule;
 //import lehjr.numina.module.IToggleableModule;
 //import lehjr.powersuits.item.module.AbstractPowerModule;
-//import net.minecraft.entity.player.PlayerEntity;
+//import net.minecraft.entity.player.Player;
 //import net.minecraft.item.ItemStack;
 //
 ///**
@@ -37,7 +37,7 @@
 //    }
 //
 //    @Override
-//    public void onPlayerTickActive(PlayerEntity player, ItemStack item) {
+//    public void onPlayerTickActive(Player player, ItemStack item) {
 //
 //        // TODO: add charging code, change to more generic combustion types... maybe add GUI
 //
@@ -66,7 +66,7 @@
 //    }
 //
 //    @Override
-//    public void onPlayerTickInactive(PlayerEntity player, ItemStack item) {
+//    public void onPlayerTickInactive(Player player, ItemStack item) {
 //    }
 //
 //    @Override

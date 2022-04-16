@@ -30,7 +30,7 @@ import lehjr.numina.util.capabilities.heat.IHeatWrapper;
 import lehjr.numina.util.capabilities.inventory.modularitem.IModularItem;
 import lehjr.numina.util.capabilities.render.IModelSpecNBT;
 import lehjr.numina.util.capabilities.render.ModelSpecNBTCapability;
-import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.inventory.EquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Direction;
 import net.minecraftforge.common.capabilities.Capability;
@@ -47,7 +47,7 @@ public abstract class AbstractModularPowerCap implements ICapabilityProvider {
     IModularItem modularItemCap;
     IHeatWrapper heatStorage;
     IModelSpecNBT modelSpec;
-    EquipmentSlotType targetSlot;
+    EquipmentSlot targetSlot;
 
     @Nonnull
     @Override
@@ -72,7 +72,7 @@ public abstract class AbstractModularPowerCap implements ICapabilityProvider {
         if (cap == CapabilityEnergy.ENERGY) {
             modularItemCap.updateFromNBT();
             // armor first slot is armor plating, second slot is energy
-            return modularItemCap.getStackInSlot(targetSlot.getType() == EquipmentSlotType.Group.ARMOR ? 1 : 0).getCapability(cap, side);
+            return modularItemCap.getStackInSlot(targetSlot.getType() == EquipmentSlot.Type.ARMOR ? 1 : 0).getCapability(cap, side);
         }
 
         return LazyOptional.empty();

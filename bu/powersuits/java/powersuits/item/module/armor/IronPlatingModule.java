@@ -27,13 +27,13 @@
 package lehjr.powersuits.item.module.armor;
 
 import lehjr.numina.constants.NuminaConstants;
-import lehjr.numina.util.capabilities.heat.HeatCapability;
+import lehjr.numina.util.capabilities.heat.CapabilityHeat;
 import lehjr.numina.util.capabilities.module.powermodule.*;
 import lehjr.powersuits.config.MPSSettings;
 import lehjr.powersuits.constants.MPSConstants;
 import lehjr.powersuits.item.module.AbstractPowerModule;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Direction;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
@@ -48,7 +48,7 @@ public class IronPlatingModule extends AbstractPowerModule {
 
     @Nullable
     @Override
-    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundNBT nbt) {
+    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt) {
         return new CapProvider(stack);
     }
 
@@ -71,7 +71,7 @@ public class IronPlatingModule extends AbstractPowerModule {
 
                 {
                     addBaseProperty(MPSConstants.ARMOR_VALUE_PHYSICAL, 4, NuminaConstants.MODULE_TRADEOFF_PREFIX + MPSConstants.ARMOR_POINTS);
-                    addBaseProperty(HeatCapability.MAXIMUM_HEAT, 300);
+                    addBaseProperty(CapabilityHeat.MAXIMUM_HEAT, 300);
                     addBaseProperty(MPSConstants.KNOCKBACK_RESISTANCE, 0.25F);
                 }};
         }

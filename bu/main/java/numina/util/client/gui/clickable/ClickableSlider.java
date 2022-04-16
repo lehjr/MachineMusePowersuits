@@ -32,7 +32,7 @@ import lehjr.numina.util.client.gui.gemoetry.DrawableTile;
 import lehjr.numina.util.client.gui.gemoetry.IRect;
 import lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
 import lehjr.numina.util.math.Colour;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.util.text.TranslatableComponent;
 
 import javax.annotation.Nullable;
 
@@ -51,7 +51,7 @@ public class ClickableSlider extends DrawableTile implements IClickable {
     LabelBox labelBox;
     Slider slider;
 
-    public ClickableSlider(MusePoint2D position, double size, String id, TranslationTextComponent label) {
+    public ClickableSlider(MusePoint2D position, double size, String id, TranslatableComponent label) {
         this(position, true, size, id, 0, label);
     }
 
@@ -59,7 +59,7 @@ public class ClickableSlider extends DrawableTile implements IClickable {
                            boolean isHorizontal,
                            double size,
                            String id,
-                           double currentVal, TranslationTextComponent label) {
+                           double currentVal, TranslatableComponent label) {
         this(position, isHorizontal, size, id, currentVal, null, label);
     }
 
@@ -68,7 +68,7 @@ public class ClickableSlider extends DrawableTile implements IClickable {
                            double size,
                            String id,
                            double currentVal,
-                           @Nullable Slider.ISlider iSlider, TranslationTextComponent label) {
+                           @Nullable Slider.ISlider iSlider, TranslatableComponent label) {
         super(1,1,1,1);//position);
         if (isHorizontal) {
             super.setWidth(size);
@@ -90,7 +90,7 @@ public class ClickableSlider extends DrawableTile implements IClickable {
         return this.slider.id();
     }
 
-    public void setLabel(TranslationTextComponent label) {
+    public void setLabel(TranslatableComponent label) {
         this.labelBox.setLabel(label);
     }
 

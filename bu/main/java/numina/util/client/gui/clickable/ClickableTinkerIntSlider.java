@@ -2,8 +2,8 @@ package lehjr.numina.util.client.gui.clickable;
 
 import lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
 import lehjr.numina.util.nbt.propertymodifier.PropertyModifierIntLinearAdditive;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.text.TranslatableComponent;
 
 import javax.annotation.Nullable;
 
@@ -12,9 +12,9 @@ public class ClickableTinkerIntSlider extends ClickableTinkerSlider {
 
     public ClickableTinkerIntSlider(MusePoint2D topmiddle,
                                  double width,
-                                 CompoundNBT moduleTag,
+                                 CompoundTag moduleTag,
                                  String id,
-                                 TranslationTextComponent label,
+                                 TranslatableComponent label,
                                  @Nullable PropertyModifierIntLinearAdditive modifier) {
         super(topmiddle,
         width,

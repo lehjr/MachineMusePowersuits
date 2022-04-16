@@ -39,7 +39,7 @@ import lehjr.numina.util.string.MuseStringUtils;
 import lehjr.powersuits.client.gui.common.ModularItemSelectionFrame;
 import lehjr.powersuits.constants.MPSConstants;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.inventory.EquipmentSlot;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.items.CapabilityItemHandler;
 import org.apache.commons.lang3.tuple.Pair;
@@ -68,7 +68,7 @@ public class DetailedSummaryFrame extends ScrollableFrame {
         energy.set(0);
         armor.set(0);
 
-        for (EquipmentSlotType type : EquipmentSlotType.values()) {
+        for (EquipmentSlot type : EquipmentSlot.values()) {
             getMinecraft().player.getItemBySlot(type).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
                     .filter(IModularItem.class::isInstance)
                     .map(IModularItem.class::cast)

@@ -29,11 +29,11 @@ package lehjr.numina.util.nbt;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import lehjr.numina.basemod.MuseLogger;
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraftforge.common.util.Constants;
 
 public class NBT2Json {
-    public static JsonObject CompoundNBT2Json(CompoundNBT nbt, JsonObject jsonObjectIn) {
+    public static JsonObject CompoundTag2Json(CompoundTag nbt, JsonObject jsonObjectIn) {
         for (String key : nbt.getAllKeys()) {
             switch(nbt.getTagType(key)) {
                 // Note this is also how a bool is stored
@@ -85,7 +85,7 @@ public class NBT2Json {
                 case Constants.NBT.TAG_COMPOUND: // 10
                     // filter out empty compound tags
                     if (!nbt.getCompound(key).isEmpty()) {
-                        jsonObjectIn.add(key, CompoundNBT2Json(nbt.getCompound(key), new JsonObject()));
+                        jsonObjectIn.add(key, CompoundTag2Json(nbt.getCompound(key), new JsonObject()));
                     }
                     break;
 

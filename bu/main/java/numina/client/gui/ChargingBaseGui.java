@@ -38,7 +38,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.util.text.TranslatableComponent;
 
 import java.util.ArrayList;
 import java.util.stream.IntStream;
@@ -95,7 +95,7 @@ public class ChargingBaseGui extends ExtendedContainerScreen<ChargingBaseContain
     @Override
     public void renderLabels(MatrixStack matrixStack, int mouseX, int mouseY) {
         playerInventoryFrame.renderLabels(matrixStack, mouseX, mouseY);
-        this.font.draw(matrixStack,  new TranslationTextComponent("numina.energy").append(": "), 32F, 50F, 4210752);
+        this.font.draw(matrixStack,  new TranslatableComponent("numina.energy").append(": "), 32F, 50F, 4210752);
 
         String energyString = new StringBuilder()
                 .append(MuseStringUtils.formatNumberShort(menu.getEnergy()))

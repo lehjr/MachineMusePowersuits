@@ -40,9 +40,9 @@ import lehjr.powersuits.constants.MPSConstants;
 import lehjr.powersuits.entity.PlasmaBallEntity;
 import lehjr.powersuits.item.module.AbstractPowerModule;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.Player;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
@@ -61,7 +61,7 @@ public class PlasmaCannonModule extends AbstractPowerModule {
 
     @Nullable
     @Override
-    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundNBT nbt) {
+    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt) {
         return new CapProvider(stack);
     }
 
@@ -93,7 +93,7 @@ public class PlasmaCannonModule extends AbstractPowerModule {
             }
 
             @Override
-            public ActionResult use(ItemStack itemStackIn, World worldIn, PlayerEntity playerIn, Hand hand) {
+            public ActionResult use(ItemStack itemStackIn, World worldIn, Player playerIn, Hand hand) {
                 if (hand == Hand.MAIN_HAND && ElectricItemUtils.getPlayerEnergy(playerIn) > getEnergyUsage()) {
                     playerIn.startUsingItem(hand);
                     return ActionResult.success(itemStackIn);
@@ -104,10 +104,10 @@ public class PlasmaCannonModule extends AbstractPowerModule {
             @Override
             public void releaseUsing(ItemStack itemStack, World worldIn, LivingEntity entityLiving, int timeLeft) {
                 int chargeTicks = (int) MuseMathUtils.clampDouble(itemStack.getUseDuration() - timeLeft, 10, 50);
-                if (!worldIn.isClientSide && entityLiving instanceof PlayerEntity) {
+                if (!worldIn.isClientSide && entityLiving instanceof Player) {
                     double chargePercent = chargeTicks * 0.02; // chargeticks/50
                     double energyConsumption = getEnergyUsage() * chargePercent;
-                    PlayerEntity player = (PlayerEntity) entityLiving;
+                    Player player = (Player) entityLiving;
                     if (ElectricItemUtils.getPlayerEnergy(player) > energyConsumption) {
                         float explosiveness = (float) (applyPropertyModifiers(MPSConstants.PLASMA_CANNON_EXPLOSIVENESS) * chargePercent);
                         float damagingness = (float) (applyPropertyModifiers(MPSConstants.PLASMA_CANNON_DAMAGE_AT_FULL_CHARGE) * chargePercent);

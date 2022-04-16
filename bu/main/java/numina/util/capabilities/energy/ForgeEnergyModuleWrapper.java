@@ -28,7 +28,7 @@ package lehjr.numina.util.capabilities.energy;
 
 import lehjr.numina.util.nbt.MuseNBTUtils;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.IntNBT;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.energy.CapabilityEnergy;
@@ -51,7 +51,7 @@ public class ForgeEnergyModuleWrapper extends EnergyStorage implements IEnergyWr
     /** IItemStackContainerUpdate ----------------------------------------------------------------- */
     @Override
     public void updateFromNBT() {
-        final CompoundNBT nbt = MuseNBTUtils.getModuleTag(stack);
+        final CompoundTag nbt = MuseNBTUtils.getModuleTag(stack);
         if (nbt != null && nbt.contains(TAG_ENERGY, net.minecraftforge.common.util.Constants.NBT.TAG_INT)) {
             deserializeNBT((IntNBT) nbt.get(TAG_ENERGY));
         }

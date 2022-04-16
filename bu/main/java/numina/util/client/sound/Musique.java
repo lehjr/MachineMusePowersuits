@@ -30,7 +30,7 @@ import lehjr.numina.config.NuminaSettings;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.SimpleSound;
 import net.minecraft.client.audio.SoundHandler;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.Player;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
@@ -58,15 +58,15 @@ public class Musique {
         }
     }
 
-    public static String makeSoundString(PlayerEntity player, SoundEvent soundEvt) {
+    public static String makeSoundString(Player player, SoundEvent soundEvt) {
         return makeSoundString(player, soundEvt.getRegistryName());
     }
 
-    public static String makeSoundString(PlayerEntity player, ResourceLocation soundname) {
+    public static String makeSoundString(Player player, ResourceLocation soundname) {
         return player.getUUID().toString() + soundname;
     }
 
-    public static void playerSound(PlayerEntity player, SoundEvent soundEvt, SoundCategory categoryIn, float volume, Float pitch, Boolean continuous) {
+    public static void playerSound(Player player, SoundEvent soundEvt, SoundCategory categoryIn, float volume, Float pitch, Boolean continuous) {
         pitch = (pitch != null) ? pitch : 1.0F;
         continuous = (continuous != null) ? continuous : true;
         if (NuminaSettings.useSounds() && soundEvt != null) {
@@ -88,7 +88,7 @@ public class Musique {
         }
     }
 
-    public static void stopPlayerSound(PlayerEntity player, SoundEvent soundEvt) {
+    public static void stopPlayerSound(Player player, SoundEvent soundEvt) {
         if (NuminaSettings.useSounds()) {
             String soundID = makeSoundString(player, soundEvt);
             MovingSoundPlayer sound = soundMap.get(soundID);

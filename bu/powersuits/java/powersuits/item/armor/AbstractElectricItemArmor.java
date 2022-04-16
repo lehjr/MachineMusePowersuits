@@ -54,15 +54,15 @@ import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.MobEntity;
+import net.minecraft.entity.Mob;
 import net.minecraft.entity.ai.attributes.Attribute;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.inventory.EquipmentSlot;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
@@ -87,11 +87,11 @@ public abstract class AbstractElectricItemArmor extends ArmorItem {
             UUID.randomUUID(),
             UUID.randomUUID()};
 
-    public AbstractElectricItemArmor(EquipmentSlotType slots, Properties builder) {
+    public AbstractElectricItemArmor(EquipmentSlot slots, Properties builder) {
         super(MPAArmorMaterial.EMPTY_ARMOR, slots, builder);
     }
 
-    public AbstractElectricItemArmor(EquipmentSlotType slots) {
+    public AbstractElectricItemArmor(EquipmentSlot slots) {
         super(MPAArmorMaterial.EMPTY_ARMOR, slots, new Item.Properties()
                 .stacksTo(1)
                 .tab(MPSObjects.creativeTab)
@@ -137,12 +137,12 @@ public abstract class AbstractElectricItemArmor extends ArmorItem {
     }
 
     @Override
-    public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlotType slot, ItemStack stack) {
+    public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlot slot, ItemStack stack) {
         // PropertyModifier tags applied directly to armor will disable the ItemStack sensitive version
         stack.removeTagKey("AttributeModifiers");
 
         Multimap<Attribute, AttributeModifier> multimap = super.getAttributeModifiers(slot, stack);
-        EquipmentSlotType slotType = MobEntity.getEquipmentSlotForItem(stack);
+        EquipmentSlot slotType = Mob.getEquipmentSlotForItem(stack);
         if (slot != slotType) {
             return multimap;
         }
@@ -186,7 +186,7 @@ public abstract class AbstractElectricItemArmor extends ArmorItem {
                         }
                     }
 
-                    if (slotType == EquipmentSlotType.LEGS) {
+                    if (slotType == EquipmentSlot.LEGS) {
                         for(int i= 0; i < iItemHandler.getSlots(); i++) {
                             /** Note: attribute should already be removed when module is offline */
                             iItemHandler.getStackInSlot(i).getCapability(PowerModuleCapability.POWER_MODULE)
@@ -268,18 +268,18 @@ public abstract class AbstractElectricItemArmor extends ArmorItem {
      * This will work for the vanilla type models. This will not work for high polly models due to how the rendering works
      * @param armor
      * @param entity
-     * @param equipmentSlotType
+     * @param EquipmentSlot
      * @param type
      * @return
      */
     @Nullable
     @Override
-    public String getArmorTexture(ItemStack armor, Entity entity, EquipmentSlotType equipmentSlotType, String type) {
+    public String getArmorTexture(ItemStack armor, Entity entity, EquipmentSlot EquipmentSlot, String type) {
         if (type == "overlay") { // this is to allow a tint to be applied tot the armor
             return NuminaConstants.BLANK_ARMOR_MODEL_PATH;
         }
 
-        if (!equipmentSlotType.equals(armor.getEquipmentSlot())) {
+        if (!EquipmentSlot.equals(armor.getEquipmentSlot())) {
             return NuminaConstants.BLANK_ARMOR_MODEL_PATH;
         }
 
@@ -310,18 +310,18 @@ public abstract class AbstractElectricItemArmor extends ArmorItem {
     @Nullable
     @Override
     @OnlyIn(Dist.CLIENT)
-    public BipedModel getArmorModel(LivingEntity entityLiving, ItemStack itemStack, EquipmentSlotType armorSlot, BipedModel _default) {
-//        if (!(entityLiving instanceof PlayerEntity)) {
+    public BipedModel getArmorModel(LivingEntity entityLiving, ItemStack itemStack, EquipmentSlot armorSlot, BipedModel _default) {
+//        if (!(entityLiving instanceof Player)) {
 //            return _default;
 //        }
 
         return itemStack.getCapability(ModelSpecNBTCapability.RENDER).map(spec-> {
-            CompoundNBT renderTag = spec.getRenderTag();
+            CompoundTag renderTag = spec.getRenderTag();
 
-            EquipmentSlotType slot = MobEntity.getEquipmentSlotForItem(itemStack);
+            EquipmentSlot slot = Mob.getEquipmentSlotForItem(itemStack);
 
             /** sets up default spec tags. A tag with all parts disabled should still have a color tag rather than being empty or null */
-//            PlayerEntity player = (PlayerEntity) entityLiving;
+//            Player player = (Player) entityLiving;
 //            if ((renderTag == null ||  renderTag.isEmpty()) && player == Minecraft.getInstance().player && armorSlot == slot) {
             if ((renderTag == null ||  renderTag.isEmpty()) && entityLiving == Minecraft.getInstance().player && armorSlot == slot) {
                 renderTag = spec.getDefaultRenderTag();
@@ -337,7 +337,7 @@ public abstract class AbstractElectricItemArmor extends ArmorItem {
             }
 
             BipedModel model = ArmorModelInstance.getInstance();
-            ItemStack chestplate = entityLiving.getItemBySlot(EquipmentSlotType.CHEST);
+            ItemStack chestplate = entityLiving.getItemBySlot(EquipmentSlot.CHEST);
             if (chestplate.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
                     .filter(IModularItem.class::isInstance)
                     .map(IModularItem.class::cast)
@@ -363,7 +363,7 @@ public abstract class AbstractElectricItemArmor extends ArmorItem {
 
     @Nullable
     @Override
-    public ICapabilityProvider initCapabilities(@Nonnull ItemStack stack, @Nullable CompoundNBT nbt) {
+    public ICapabilityProvider initCapabilities(@Nonnull ItemStack stack, @Nullable CompoundTag nbt) {
         return new PowerArmorCap(stack, this.slot);
     }
 

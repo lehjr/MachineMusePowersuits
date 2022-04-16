@@ -40,9 +40,9 @@ import lehjr.powersuits.constants.MPSConstants;
 import lehjr.powersuits.item.module.AbstractPowerModule;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.Enchantments;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.Player;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.capabilities.Capability;
@@ -59,7 +59,7 @@ public class FortuneModule extends AbstractPowerModule {
 
     @Nullable
     @Override
-    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundNBT nbt) {
+    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt) {
         return new CapProvider(stack);
     }
 
@@ -99,7 +99,7 @@ public class FortuneModule extends AbstractPowerModule {
              * @return True to prevent harvesting, false to continue as normal
              */
             @Override
-            public boolean onBlockStartBreak(ItemStack itemstack, BlockPos pos, PlayerEntity player) {
+            public boolean onBlockStartBreak(ItemStack itemstack, BlockPos pos, Player player) {
                 if (!player.level.isClientSide) {
                     if (getEnergyUsage() > ElectricItemUtils.getPlayerEnergy(player))
                         enchantmentModule.removeEnchantment(itemstack);

@@ -38,7 +38,7 @@ import lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
 import lehjr.numina.util.client.gui.gemoetry.RelativeRect;
 import lehjr.numina.util.client.gui.gemoetry.SpiralPointToPoint2D;
 import lehjr.numina.util.client.render.MuseRenderer;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.Player;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -54,12 +54,12 @@ public class RadialModeSelectionFrame extends RelativeRect implements IGuiFrame 
     protected int selectedModuleOriginal = -1;
     protected int selectedModuleNew = -1;
 
-    protected PlayerEntity player;
+    protected Player player;
     protected double radius;
     protected ItemStack stack;
     float zLevel;
 
-    public RadialModeSelectionFrame(MusePoint2D topleft, MusePoint2D bottomright, PlayerEntity player, float zLevel) {
+    public RadialModeSelectionFrame(MusePoint2D topleft, MusePoint2D bottomright, Player player, float zLevel) {
         super(topleft, bottomright);
         spawnTime = System.currentTimeMillis();
         this.player = player;

@@ -31,8 +31,8 @@ import lehjr.numina.util.capabilities.inventory.modechanging.IModeChangingItem;
 import lehjr.numina.util.capabilities.inventory.modularitem.IModularItem;
 import lehjr.numina.util.heat.MuseHeatUtils;
 import lehjr.numina.util.player.PlayerUtils;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.entity.player.Player;
+import net.minecraft.inventory.EquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
@@ -45,11 +45,11 @@ public class PlayerUpdateHandler {
     @SuppressWarnings("unchecked")
     @SubscribeEvent(priority = EventPriority.NORMAL)
     public void onPlayerUpdate(LivingEvent.LivingUpdateEvent event) {
-        if (event.getEntity() instanceof PlayerEntity) {
-            PlayerEntity player = (PlayerEntity) event.getEntity();
+        if (event.getEntity() instanceof Player) {
+            Player player = (Player) event.getEntity();
 
             NonNullList<ItemStack> modularItems = NonNullList.create();
-            for (EquipmentSlotType slot : EquipmentSlotType.values()) {
+            for (EquipmentSlot slot : EquipmentSlot.values()) {
                 if(player.getItemBySlot(slot).isEmpty()) {
                     continue;
                 }

@@ -38,9 +38,9 @@ import lehjr.numina.util.heat.MuseHeatUtils;
 import lehjr.powersuits.config.MPSSettings;
 import lehjr.powersuits.constants.MPSConstants;
 import lehjr.powersuits.item.module.AbstractPowerModule;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.Player;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Direction;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
@@ -61,7 +61,7 @@ public class ThermalGeneratorModule extends AbstractPowerModule {
 
     @Nullable
     @Override
-    public ICapabilityProvider initCapabilities (ItemStack stack, @Nullable CompoundNBT nbt){
+    public ICapabilityProvider initCapabilities (ItemStack stack, @Nullable CompoundTag nbt){
         return new CapProvider(stack);
     }
 
@@ -92,7 +92,7 @@ public class ThermalGeneratorModule extends AbstractPowerModule {
             }
 
             @Override
-            public void onPlayerTickActive(PlayerEntity player, ItemStack item) {
+            public void onPlayerTickActive(Player player, ItemStack item) {
                 double currentHeat = MuseHeatUtils.getPlayerHeat(player);
                 double maxHeat = MuseHeatUtils.getPlayerMaxHeat(player);
                 if (player.level.getGameTime() % 20 == 0) {

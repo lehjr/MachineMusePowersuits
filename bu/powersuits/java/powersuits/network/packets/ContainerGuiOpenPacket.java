@@ -27,11 +27,11 @@
 package lehjr.powersuits.network.packets;
 
 import lehjr.powersuits.container.InstallSalvageContainer;
-import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.inventory.EquipmentSlot;
 import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.inventory.container.SimpleNamedContainerProvider;
 import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.util.text.TranslatableComponent;
 import net.minecraftforge.fml.network.NetworkEvent;
 import net.minecraftforge.fml.network.NetworkHooks;
 
@@ -41,8 +41,8 @@ import java.util.function.Supplier;
  * A packet for sending a containerGui open request from the client side.
  */
 public class ContainerGuiOpenPacket {
-    EquipmentSlotType type;
-    public ContainerGuiOpenPacket(EquipmentSlotType typeIn) {
+    EquipmentSlot type;
+    public ContainerGuiOpenPacket(EquipmentSlot typeIn) {
         this.type = typeIn;
     }
 
@@ -51,12 +51,12 @@ public class ContainerGuiOpenPacket {
     }
 
     public static ContainerGuiOpenPacket read(PacketBuffer packetBuffer) {
-        return new ContainerGuiOpenPacket(packetBuffer.readEnum(EquipmentSlotType.class));
+        return new ContainerGuiOpenPacket(packetBuffer.readEnum(EquipmentSlot.class));
     }
 
     public static void handle(ContainerGuiOpenPacket msg, Supplier<NetworkEvent.Context> ctx) {
         ctx.get().enqueueWork(() -> {
-            INamedContainerProvider container = new SimpleNamedContainerProvider((id, inventory, player) -> new InstallSalvageContainer(id, inventory, msg.type), new TranslationTextComponent("gui.powersuits.tab.install.salvage"));
+            INamedContainerProvider container = new SimpleNamedContainerProvider((id, inventory, player) -> new InstallSalvageContainer(id, inventory, msg.type), new TranslatableComponent("gui.powersuits.tab.install.salvage"));
             NetworkHooks.openGui(ctx.get().getSender(), container, buffer -> buffer.writeEnum(msg.type));
         });
         ctx.get().setPacketHandled(true);

@@ -39,10 +39,10 @@ import lehjr.powersuits.client.gui.modding.module.tweak.ModuleTweakGui;
 import lehjr.powersuits.network.MPSPackets;
 import lehjr.powersuits.network.packets.ContainerGuiOpenPacket;
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.entity.player.Player;
+import net.minecraft.inventory.EquipmentSlot;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.util.text.TranslatableComponent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,16 +53,16 @@ import java.util.List;
  * Ported to Java by lehjr on 10/19/16.
  */
 public class TabSelectFrame extends GuiFrameWithoutBackground {
-    PlayerEntity player;
+    Player player;
     List<ClickableButton2> buttons = new ArrayList<>();
 
-    public TabSelectFrame(PlayerEntity player, int active) {
+    public TabSelectFrame(Player player, int active) {
         super();
         this.player = player;
         ClickableButton2 button;
 
 //        /** Craft Install Salvage GUI (the only Containered GUI)*/
-//        button = new ClickableButton2(new TranslationTextComponent("gui.powersuits.tab.craft.install.salvage"), new MusePoint2D(0, 0), active != 0);
+//        button = new ClickableButton2(new TranslatableComponent("gui.powersuits.tab.craft.install.salvage"), new MusePoint2D(0, 0), active != 0);
 //        button.setOnPressed(onPressed->{
 //            Musique.playClientSound(SoundDictionary.SOUND_EVENT_GUI_SELECT, 1);
 //            MPSPackets.CHANNEL_INSTANCE.sendToServer(new ContainerGuiOpenPacket(0));
@@ -70,34 +70,34 @@ public class TabSelectFrame extends GuiFrameWithoutBackground {
 //        buttons.add(button);
 
         /** Install Salvage GUI (the only Containered GUI)*/
-        button = new ClickableButton2(new TranslationTextComponent("gui.powersuits.tab.install.salvage"), new MusePoint2D(0, 0), active != 0);
+        button = new ClickableButton2(new TranslatableComponent("gui.powersuits.tab.install.salvage"), new MusePoint2D(0, 0), active != 0);
         button.setOnPressed(onPressed->{
             Musique.playClientSound(SoundDictionary.SOUND_EVENT_GUI_SELECT, 1);
-            MPSPackets.CHANNEL_INSTANCE.sendToServer(new ContainerGuiOpenPacket(EquipmentSlotType.MAINHAND));
+            MPSPackets.CHANNEL_INSTANCE.sendToServer(new ContainerGuiOpenPacket(EquipmentSlot.MAINHAND));
         });
         buttons.add(button);
 
         /** Module Tweak Gui */
-        button = new ClickableButton2(new TranslationTextComponent("gui.powersuits.tab.module.tweak"), new MusePoint2D(0, 0), active != 1);
+        button = new ClickableButton2(new TranslatableComponent("gui.powersuits.tab.module.tweak"), new MusePoint2D(0, 0), active != 1);
         button.setOnPressed(onPressed->{
             Musique.playClientSound(SoundDictionary.SOUND_EVENT_GUI_SELECT, 1);
-            Minecraft.getInstance().tell(() -> Minecraft.getInstance().setScreen(new ModuleTweakGui(new TranslationTextComponent("gui.tinkertable"), false)));
+            Minecraft.getInstance().tell(() -> Minecraft.getInstance().setScreen(new ModuleTweakGui(new TranslatableComponent("gui.tinkertable"), false)));
         });
         buttons.add(button);
 
         /** Keybind Gui */
-        button = new ClickableButton2(new TranslationTextComponent("gui.powersuits.tab.keybinds"), new MusePoint2D(0, 0), active !=2);
+        button = new ClickableButton2(new TranslatableComponent("gui.powersuits.tab.keybinds"), new MusePoint2D(0, 0), active !=2);
         button.setOnPressed(onPressed->{
             Musique.playClientSound(SoundDictionary.SOUND_EVENT_GUI_SELECT, 1);
-            Minecraft.getInstance().tell(() -> Minecraft.getInstance().setScreen(new TinkerKeybindGui(player, new TranslationTextComponent("gui.powersuits.tab.keybinds.toggle"))));
+            Minecraft.getInstance().tell(() -> Minecraft.getInstance().setScreen(new TinkerKeybindGui(player, new TranslatableComponent("gui.powersuits.tab.keybinds.toggle"))));
         });
         buttons.add(button);
 
         /** Cosmetic Tweak Frame */
-        button = new ClickableButton2(new TranslationTextComponent("gui.powersuits.tab.visual"), new MusePoint2D(0, 0), active !=3);
+        button = new ClickableButton2(new TranslatableComponent("gui.powersuits.tab.visual"), new MusePoint2D(0, 0), active !=3);
         button.setOnPressed(onPressed->{
             Musique.playClientSound(SoundDictionary.SOUND_EVENT_GUI_SELECT, 1);
-            Minecraft.getInstance().tell(() -> Minecraft.getInstance().setScreen(new CosmeticGui(player.inventory, new TranslationTextComponent("gui.tinkertable"))));
+            Minecraft.getInstance().tell(() -> Minecraft.getInstance().setScreen(new CosmeticGui(player.inventory, new TranslatableComponent("gui.tinkertable"))));
         });
         buttons.add(button);
 

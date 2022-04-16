@@ -13,11 +13,11 @@ import lehjr.numina.util.capabilities.module.rightclick.RightClickModule;
 import lehjr.numina.util.energy.ElectricItemUtils;
 import lehjr.numina.util.item.ItemUtils;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.entity.player.Player;
+import net.minecraft.inventory.EquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUseContext;
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.*;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
@@ -52,7 +52,7 @@ public class RSWirelessHandler {
         if (regName.equals(wireless_grid) || regName.equals(wireless_fluid_grid)) {
             IRightClickModule rsTerminal = new RightClickModule(itemStack, EnumModuleCategory.TOOL, EnumModuleTarget.TOOLONLY, moduleConfigGetterIn) {
                 @Override
-                public ActionResult use(ItemStack itemStackIn, World worldIn, PlayerEntity playerIn, Hand hand) {
+                public ActionResult use(ItemStack itemStackIn, World worldIn, Player playerIn, Hand hand) {
                     ItemStack module = ItemUtils.getActiveModuleOrEmpty(itemStackIn);
 
                     if (!worldIn.isClientSide()) {
@@ -75,10 +75,10 @@ public class RSWirelessHandler {
                     ItemStack module = ItemUtils.getActiveModuleOrEmpty(itemStackIn);
                     INetwork network = NetworkUtils.getNetworkFromNode(NetworkUtils.getNodeFromTile(context.getLevel().getBlockEntity(context.getClickedPos())));
                     if (network != null) {
-                        CompoundNBT tag = module.getTag();
+                        CompoundTag tag = module.getTag();
 
                         if (tag == null) {
-                            tag = new CompoundNBT();
+                            tag = new CompoundTag();
                         }
 
                         tag.putInt(NBT_NODE_X, network.getPosition().getX());

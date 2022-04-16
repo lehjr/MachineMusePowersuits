@@ -27,7 +27,7 @@
 package lehjr.numina.util.nbt;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.Constants;
 
@@ -42,15 +42,15 @@ public class MuseNBTUtils {
      * Gets or creates stack.getTag.getTag(TAG_ITEM_PREFIX)
      *
      * @param stack
-     * @return an CompoundNBT, may be newly created. If stack is empty, returns null.
+     * @return an CompoundTag, may be newly created. If stack is empty, returns null.
      */
-    public static CompoundNBT getMuseItemTag(@Nonnull ItemStack stack) {
+    public static CompoundTag getMuseItemTag(@Nonnull ItemStack stack) {
         if (stack.isEmpty()) {
-            return new CompoundNBT();
+            return new CompoundTag();
         }
 
-        CompoundNBT stackTag = stack.getOrCreateTag();
-        CompoundNBT properties = (stackTag.contains(TAG_ITEM_PREFIX)) ? stackTag.getCompound(TAG_ITEM_PREFIX) : new CompoundNBT();
+        CompoundTag stackTag = stack.getOrCreateTag();
+        CompoundTag properties = (stackTag.contains(TAG_ITEM_PREFIX)) ? stackTag.getCompound(TAG_ITEM_PREFIX) : new CompoundTag();
         stackTag.put(TAG_ITEM_PREFIX, properties);
         stack.setTag(stackTag);
         return properties;
@@ -60,15 +60,15 @@ public class MuseNBTUtils {
      * Gets or creates stack.getTag.getTag(TAG_MODULE_PREFIX)
      *
      * @param module
-     * @return an CompoundNBT, may be newly created. If stack is empty, returns null.
+     * @return an CompoundTag, may be newly created. If stack is empty, returns null.
      */
-    public static CompoundNBT getModuleTag(@Nonnull ItemStack module) {
+    public static CompoundTag getModuleTag(@Nonnull ItemStack module) {
         if (module.isEmpty()) {
-            return new CompoundNBT();
+            return new CompoundTag();
         }
 
-        CompoundNBT stackTag = module.getOrCreateTag();
-        CompoundNBT properties = (stackTag.contains(TAG_MODULE_PREFIX)) ? stackTag.getCompound(TAG_MODULE_PREFIX) : new CompoundNBT();
+        CompoundTag stackTag = module.getOrCreateTag();
+        CompoundTag properties = (stackTag.contains(TAG_MODULE_PREFIX)) ? stackTag.getCompound(TAG_MODULE_PREFIX) : new CompoundTag();
         stackTag.put(TAG_MODULE_PREFIX, properties);
         module.setTag(stackTag);
         return properties;
@@ -87,7 +87,7 @@ public class MuseNBTUtils {
         return getFloatOrZero(getMuseItemTag(stack), string);
     }
 
-    public static float getFloatOrZero(CompoundNBT nbt, String tagName) {
+    public static float getFloatOrZero(CompoundTag nbt, String tagName) {
         return (nbt.contains(tagName, Constants.NBT.TAG_FLOAT) ? nbt.getFloat(tagName) : 0);
     }
 
@@ -107,7 +107,7 @@ public class MuseNBTUtils {
      * Sets the getValue of the given nbt tag, or removes it if the getValue would be
      * zero.
      */
-    public static void setFloatOrRemove(CompoundNBT itemProperties, String string, float value) {
+    public static void setFloatOrRemove(CompoundTag itemProperties, String string, float value) {
         if (itemProperties != null) {
             /**
              * Float#compare(f1, f2);
@@ -136,7 +136,7 @@ public class MuseNBTUtils {
         return getDoubleOrZero(getMuseItemTag(stack), string);
     }
 
-    public static double getDoubleOrZero(CompoundNBT nbt, String tagName) {
+    public static double getDoubleOrZero(CompoundTag nbt, String tagName) {
         return (nbt.contains(tagName, Constants.NBT.TAG_DOUBLE) ? nbt.getDouble(tagName) : 0);
     }
 
@@ -156,7 +156,7 @@ public class MuseNBTUtils {
      * Sets the getValue of the given nbt tag, or removes it if the getValue would be
      * zero.
      */
-    public static void setDoubleOrRemove(CompoundNBT itemProperties, String string, double value) {
+    public static void setDoubleOrRemove(CompoundTag itemProperties, String string, double value) {
         if (itemProperties != null) {
             if (value == 0) {
                 itemProperties.remove(string);
@@ -179,7 +179,7 @@ public class MuseNBTUtils {
         return getIntOrZero(getMuseItemTag(module), string);
     }
 
-    static int getIntOrZero(CompoundNBT nbt, String tagName) {
+    static int getIntOrZero(CompoundTag nbt, String tagName) {
         return (nbt.contains(tagName, Constants.NBT.TAG_INT) ? nbt.getInt(tagName) : 0);
     }
 
@@ -191,7 +191,7 @@ public class MuseNBTUtils {
         setIntOrRemove(getMuseItemTag(stack), tagName, value);
     }
 
-    public static void setIntOrRemove(@Nonnull CompoundNBT nbt, String tagName, int value) {
+    public static void setIntOrRemove(@Nonnull CompoundTag nbt, String tagName, int value) {
         if (value == 0)
             nbt.remove(tagName);
         else
@@ -200,7 +200,7 @@ public class MuseNBTUtils {
 
     // Boolean --------------------------------------------------------------------------------------------------------
     public static boolean getModuleBooleanOrSetDefault(@Nonnull ItemStack module, String tagName, boolean defBool) {
-        CompoundNBT moduleTag = getModuleTag(module);
+        CompoundTag moduleTag = getModuleTag(module);
         if (moduleTag.contains(tagName, Constants.NBT.TAG_BYTE)) {
             return getBooleanOrFalse(moduleTag, tagName);
         } else {
@@ -217,7 +217,7 @@ public class MuseNBTUtils {
         return getBooleanOrFalse(getMuseItemTag(module), string);
     }
 
-    static boolean getBooleanOrFalse(CompoundNBT nbt, String tagName) {
+    static boolean getBooleanOrFalse(CompoundTag nbt, String tagName) {
         return (nbt.contains(tagName, Constants.NBT.TAG_BYTE) ? nbt.getBoolean(tagName) : false);
     }
 
@@ -235,7 +235,7 @@ public class MuseNBTUtils {
     }
 
     public static Optional<ResourceLocation> getModuleResourceLocation(@Nonnull ItemStack module, String string) {
-        CompoundNBT moduleTag = getModuleTag(module);
+        CompoundTag moduleTag = getModuleTag(module);
         if (moduleTag.contains(string, Constants.NBT.TAG_STRING)) {
             return Optional.of(new ResourceLocation(moduleTag.getString(string)));
         }

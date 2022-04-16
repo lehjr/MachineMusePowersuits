@@ -30,7 +30,7 @@ import lehjr.numina.constants.NuminaConstants;
 import lehjr.numina.util.client.model.obj.OBJBakedCompositeModel;
 import lehjr.numina.util.map.MuseRegistry;
 import lehjr.numina.util.string.MuseStringUtils;
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.ResourceLocation;
 
 /**
@@ -79,19 +79,19 @@ public class ModelRegistry extends MuseRegistry<SpecBase> {
     /**
      * FIXME: texture spec needs a model tag for this to work. Model tag does not have to be a real model, just a unique string for the spec k-v pair
      */
-    public SpecBase getModel(CompoundNBT nbt) {
+    public SpecBase getModel(CompoundTag nbt) {
         return get(nbt.getString(NuminaConstants.TAG_MODEL));
     }
 
-    public PartSpecBase getPart(CompoundNBT nbt, SpecBase model) {
+    public PartSpecBase getPart(CompoundTag nbt, SpecBase model) {
         return model.get(nbt.getString(NuminaConstants.TAG_PART));
     }
 
-    public PartSpecBase getPart(CompoundNBT nbt) {
+    public PartSpecBase getPart(CompoundTag nbt) {
         return getPart(nbt, getModel(nbt));
     }
 
-    public CompoundNBT getSpecTag(CompoundNBT museRenderTag, PartSpecBase spec) {
+    public CompoundTag getSpecTag(CompoundTag museRenderTag, PartSpecBase spec) {
         String name = makeName(spec);
         return (museRenderTag.contains(name)) ? (museRenderTag.getCompound(name)) : null;
     }

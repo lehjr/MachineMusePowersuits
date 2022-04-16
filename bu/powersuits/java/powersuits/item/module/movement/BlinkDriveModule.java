@@ -37,9 +37,9 @@ import lehjr.numina.util.player.PlayerUtils;
 import lehjr.powersuits.config.MPSSettings;
 import lehjr.powersuits.constants.MPSConstants;
 import lehjr.powersuits.item.module.AbstractPowerModule;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.Player;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.*;
 import net.minecraft.util.math.RayTraceContext;
 import net.minecraft.util.math.RayTraceResult;
@@ -58,7 +58,7 @@ public class BlinkDriveModule extends AbstractPowerModule {
 
     @Nullable
     @Override
-    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundNBT nbt) {
+    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt) {
         return new CapProvider(stack);
     }
 
@@ -88,7 +88,7 @@ public class BlinkDriveModule extends AbstractPowerModule {
             }
 
             @Override
-            public ActionResult use(ItemStack itemStackIn, World worldIn, PlayerEntity playerIn, Hand hand) {
+            public ActionResult use(ItemStack itemStackIn, World worldIn, Player playerIn, Hand hand) {
                 int range = (int) applyPropertyModifiers(MPSConstants.BLINK_DRIVE_RANGE);
                 int energyConsumption = getEnergyUsage();
 

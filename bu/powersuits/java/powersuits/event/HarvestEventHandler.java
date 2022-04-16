@@ -31,7 +31,7 @@ import lehjr.numina.util.capabilities.module.blockbreaking.IBlockBreakingModule;
 import lehjr.numina.util.capabilities.module.powermodule.PowerModuleCapability;
 import lehjr.numina.util.energy.ElectricItemUtils;
 import net.minecraft.block.BlockState;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.Player;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -46,7 +46,7 @@ import net.minecraftforge.items.CapabilityItemHandler;
 public class HarvestEventHandler {
     @SubscribeEvent
     public static void handleHarvestCheck(PlayerEvent.HarvestCheck event) {
-        PlayerEntity player = event.getPlayer();
+        Player player = event.getPlayer();
         if (player == null) {
             return;
         }
@@ -90,7 +90,7 @@ public class HarvestEventHandler {
     }
 
     // copied from vanilla item
-    protected static RayTraceResult rayTrace(World worldIn, PlayerEntity player, RayTraceContext.FluidMode fluidMode) {
+    protected static RayTraceResult rayTrace(World worldIn, Player player, RayTraceContext.FluidMode fluidMode) {
         float pitch = player.xRot;
         float yaw = player.yRot;
         Vector3d vec3d = player.getEyePosition(1.0F);
@@ -108,7 +108,7 @@ public class HarvestEventHandler {
     @SubscribeEvent
     public static void handleBreakSpeed(PlayerEvent.BreakSpeed event) {
         // Note: here we can actually get the position if needed. we can't easily om the harvest check.
-        PlayerEntity player = event.getPlayer();
+        Player player = event.getPlayer();
         ItemStack stack = player.inventory.getSelected();
         stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
                 .filter(IModeChangingItem.class::isInstance)

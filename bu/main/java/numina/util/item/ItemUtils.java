@@ -28,8 +28,8 @@ package lehjr.numina.util.item;
 
 import lehjr.numina.util.capabilities.inventory.modechanging.IModeChangingItem;
 import lehjr.numina.util.capabilities.inventory.modularitem.IModularItem;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.entity.player.Player;
+import net.minecraft.inventory.EquipmentSlot;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
@@ -47,9 +47,9 @@ public class ItemUtils {
      * @return A List of ItemStacks in the equipment slots which implement
      * IModularItem
      */
-    public static NonNullList<ItemStack> getModularItemsEquipped(PlayerEntity player) {
+    public static NonNullList<ItemStack> getModularItemsEquipped(Player player) {
         NonNullList<ItemStack> modulars = NonNullList.create();
-        for (EquipmentSlotType slot : EquipmentSlotType.values()) {
+        for (EquipmentSlot slot : EquipmentSlot.values()) {
             ItemStack itemStack = player.getItemBySlot(slot);
 
             itemStack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
@@ -76,7 +76,7 @@ public class ItemUtils {
      * @return A List of ItemStacks in the playuer's inventory which implement
      * IModularItem
      */
-    public static NonNullList<ItemStack> getModularItemsInInventory(PlayerEntity player) {
+    public static NonNullList<ItemStack> getModularItemsInInventory(Player player) {
         return getModularItemsInInventory(player.inventory);
     }
 
@@ -106,7 +106,7 @@ public class ItemUtils {
      * @param player's whose inventory to scan.
      * @return A List of inventory slots containing an IModularItem
      */
-    public static List<Integer> getModularItemSlotsEquiped(PlayerEntity player) {
+    public static List<Integer> getModularItemSlotsEquiped(Player player) {
         // mainhand ... a hotbar number
         // offhand .... 40
         // head ....... 39
@@ -136,7 +136,7 @@ public class ItemUtils {
      * @param player's whose inventory to scan.
      * @return A List of inventory slots containing an IModularItem
      */
-    public static List<Integer> getModularItemSlotsInInventory(PlayerEntity player) {
+    public static List<Integer> getModularItemSlotsInInventory(Player player) {
         ArrayList<Integer> slots = new ArrayList<>();
         for (int i = 0; i < player.inventory.getContainerSize(); i++) {
             int finalI = i;

@@ -27,7 +27,7 @@
 package lehjr.numina.util.nbt.propertymodifier;
 
 import lehjr.numina.util.nbt.MuseNBTUtils;
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.CompoundTag;
 
 public class PropertyModifierLinearAdditive implements IPropertyModifier {
     public final String tradeoffName;
@@ -39,7 +39,7 @@ public class PropertyModifierLinearAdditive implements IPropertyModifier {
     }
 
     @Override
-    public double applyModifier(CompoundNBT moduleTag, double value) {
+    public double applyModifier(CompoundTag moduleTag, double value) {
         return value + multiplier * MuseNBTUtils.getDoubleOrZero(moduleTag, tradeoffName);
     }
 

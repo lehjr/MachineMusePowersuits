@@ -33,7 +33,7 @@ import lehjr.powersuits.tile_entity.LuxCapacitorTileEntity;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.Player;
 import net.minecraft.entity.projectile.ThrowableEntity;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemUseContext;
@@ -89,8 +89,8 @@ public class LuxCapacitorEntity extends ThrowableEntity implements IEntityAdditi
     BlockItemUseContext getUseContext(BlockPos pos, Direction facing, BlockRayTraceResult hitResult) {
         return new BlockItemUseContext(
                 new ItemUseContext(
-                        (PlayerEntity)this.getOwner(),
-                        ((PlayerEntity) this.getOwner()).getUsedItemHand(),
+                        (Player)this.getOwner(),
+                        ((Player) this.getOwner()).getUsedItemHand(),
                         hitResult));
     }
 

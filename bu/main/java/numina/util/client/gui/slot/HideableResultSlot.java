@@ -27,7 +27,7 @@
 package lehjr.numina.util.client.gui.slot;
 
 import lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.Player;
 import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.container.CraftingResultSlot;
@@ -35,11 +35,11 @@ import net.minecraft.inventory.container.CraftingResultSlot;
 public class HideableResultSlot extends CraftingResultSlot implements IHideableSlot {
     boolean isEnabled = false;
 
-    public HideableResultSlot(PlayerEntity playerEntity, CraftingInventory craftingInventory, IInventory inventory, int slotIndex, int xPosition, int yPosition) {
+    public HideableResultSlot(Player playerEntity, CraftingInventory craftingInventory, IInventory inventory, int slotIndex, int xPosition, int yPosition) {
         super(playerEntity, craftingInventory, inventory, slotIndex, xPosition, yPosition);
     }
 
-    public HideableResultSlot(PlayerEntity playerEntity, CraftingInventory craftingInventory, IInventory inventory, int slotIndex, int xPosition, int yPosition, boolean isEnabled) {
+    public HideableResultSlot(Player playerEntity, CraftingInventory craftingInventory, IInventory inventory, int slotIndex, int xPosition, int yPosition, boolean isEnabled) {
         super(playerEntity, craftingInventory, inventory, slotIndex, xPosition, yPosition);
         this.isEnabled = isEnabled;
     }

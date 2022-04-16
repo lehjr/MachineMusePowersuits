@@ -16,7 +16,7 @@
 //import net.minecraft.client.renderer.model.Model;
 //import net.minecraft.client.renderer.model.ModelRenderer;
 //import net.minecraft.entity.Entity;
-//import net.minecraft.entity.player.PlayerEntity;
+//import net.minecraft.entity.player.Player;
 //import net.minecraft.item.ItemStack;
 //import net.minecraftforge.items.CapabilityItemHandler;
 //import org.lwjgl.opengl.GL11;
@@ -595,7 +595,7 @@
 //        thumb2.rotateAngleY = (isRightHand) ? -thumbFlex : thumbFlex;
 //    }
 //
-//    public void setPoseForPlayer(PlayerEntity player, ItemStack itemStack) {
+//    public void setPoseForPlayer(Player player, ItemStack itemStack) {
 //        if (player.isHandActive() && player.inventory.getStackInSlot(player.inventory.currentItem) == itemStack
 //                && itemStack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).map(iItemHandler -> {
 //            if (iItemHandler instanceof IModeChangingItem) {

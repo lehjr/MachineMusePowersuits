@@ -46,10 +46,10 @@ import lehjr.powersuits.network.MPSPackets;
 import lehjr.powersuits.network.packets.ColourInfoPacket;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.IntArrayNBT;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.util.text.TranslatableComponent;
 
 import java.util.Arrays;
 import java.util.List;
@@ -123,7 +123,7 @@ public class ColourPickerFrame extends ScrollableMultiRectFrame {
     }
 
     public ClickableSlider getSlider(String id, int index, double width) {
-        ClickableSlider slider = new ClickableSlider(center(), width, id, new TranslationTextComponent(NuminaConstants.MODULE_TRADEOFF_PREFIX + id));
+        ClickableSlider slider = new ClickableSlider(center(), width, id, new TranslatableComponent(NuminaConstants.MODULE_TRADEOFF_PREFIX + id));
         addRect(slider);
         slider.setLabelColour(Colour.WHITE);
         slider.setOnPressed(pressed -> selectedSlider = Optional.of(slider));
@@ -139,7 +139,7 @@ public class ColourPickerFrame extends ScrollableMultiRectFrame {
                 .filter(IModelSpecNBT.class::isInstance)
                 .map(IModelSpecNBT.class::cast)
                 .map(spec -> {
-                    CompoundNBT renderSpec = spec.getRenderTag();
+                    CompoundTag renderSpec = spec.getRenderTag();
                     if (renderSpec != null && !renderSpec.isEmpty()) {
                         return new IntArrayNBT(spec.getColorArray());
                     }
@@ -152,7 +152,7 @@ public class ColourPickerFrame extends ScrollableMultiRectFrame {
                 .filter(IModelSpecNBT.class::isInstance)
                 .map(IModelSpecNBT.class::cast)
                 .map(spec -> {
-                    CompoundNBT renderSpec = spec.getRenderTag();
+                    CompoundTag renderSpec = spec.getRenderTag();
                     renderSpec.put(NuminaConstants.TAG_COLOURS, new IntArrayNBT(intList));
                     this.itemSelector.selectedType().ifPresent(slotType -> MPSPackets.CHANNEL_INSTANCE.sendToServer(new ColourInfoPacket(slotType, this.colours())));
                     return (IntArrayNBT) renderSpec.get(NuminaConstants.TAG_COLOURS);

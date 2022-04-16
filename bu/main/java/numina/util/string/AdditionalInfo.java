@@ -87,15 +87,15 @@ public class AdditionalInfo {
                         if (!activeModule.isEmpty()) {
 
                             // IFormattableTextComponent
-                            // TranslationTextComponent
+                            // TranslatableComponent
                             IFormattableTextComponent localizedName = (IFormattableTextComponent) activeModule.getDisplayName();
                             currentTipList.add(
-                                    new TranslationTextComponent("tooltip.numina.mode")
+                                    new TranslatableComponent("tooltip.numina.mode")
 //                                        .appendString(" ")
                                             .append(new StringTextComponent(" "))
                                             .append(localizedName.setStyle(Style.EMPTY.applyFormat(TextFormatting.RED))));
                         } else {
-                            currentTipList.add(new TranslationTextComponent("tooltip.numina.changeModes"));
+                            currentTipList.add(new TranslatableComponent("tooltip.numina.changeModes"));
                         }
                     }
 
@@ -134,7 +134,7 @@ public class AdditionalInfo {
                             String message = I18n.get("tooltip.numina.noModules");
                             currentTipList.addAll(MuseStringUtils.wrapStringToLength(message, 30));
                         } else {
-                            currentTipList.add(new TranslationTextComponent("tooltip.numina.installedModules"));
+                            currentTipList.add(new TranslatableComponent("tooltip.numina.installedModules"));
                             currentTipList.addAll(installed);
                         }
                     } else {
@@ -159,12 +159,12 @@ public class AdditionalInfo {
     }
 
     static class FluidInfo {
-        TranslationTextComponent displayName;
+        TranslatableComponent displayName;
         int currentAmount=0;
         int maxAmount=0;
 
         FluidInfo(ITextComponent displayName) {
-            this.displayName = (TranslationTextComponent)displayName;
+            this.displayName = (TranslatableComponent)displayName;
         }
 
         public ITextComponent getDisplayName() {
@@ -196,7 +196,7 @@ public class AdditionalInfo {
     }
 
     public static ITextComponent additionalInfoInstructions() {
-        return new TranslationTextComponent("tooltip.numina.pressShift")
+        return new TranslatableComponent("tooltip.numina.pressShift")
                 .setStyle(Style.EMPTY.applyFormat(TextFormatting.GRAY).withItalic(true));
     }
 

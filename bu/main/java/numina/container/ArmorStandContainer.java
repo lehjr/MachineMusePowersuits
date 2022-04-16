@@ -33,11 +33,11 @@ import lehjr.numina.util.client.gui.slot.IIConProvider;
 import lehjr.numina.util.client.render.MuseIconUtils;
 import lehjr.numina.util.math.Colour;
 import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.MobEntity;
+import net.minecraft.entity.Mob;
 import net.minecraft.entity.item.ArmorStandEntity;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.Player;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.inventory.EquipmentSlot;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.container.Container;
@@ -51,8 +51,8 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class ArmorStandContainer extends Container {
     private final IInventory armorStandInventory;
-    private static final EquipmentSlotType[] VALID_EQUIPMENT_SLOTS = new EquipmentSlotType[]{EquipmentSlotType.HEAD, EquipmentSlotType.CHEST, EquipmentSlotType.LEGS, EquipmentSlotType.FEET};
-    private final PlayerEntity player;
+    private static final EquipmentSlot[] VALID_EQUIPMENT_SLOTS = new EquipmentSlot[]{EquipmentSlot.HEAD, EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.FEET};
+    private final Player player;
     private final ArmorStandEntity armorStandEntity;
 
     public ArmorStandContainer(int id, PlayerInventory playerInventory, final ArmorStandEntity armorStand) { // base class for MPAArmorStandEntity
@@ -61,16 +61,16 @@ public class ArmorStandContainer extends Container {
         this.armorStandEntity = armorStand;
         armorStandInventory = new Inventory(
                 // These have high "inventory slot" numbers:
-                armorStand.getItemBySlot(EquipmentSlotType.MAINHAND), // 98
-                armorStand.getItemBySlot(EquipmentSlotType.OFFHAND), // 99
-                armorStand.getItemBySlot(EquipmentSlotType.FEET), // 100
-                armorStand.getItemBySlot(EquipmentSlotType.LEGS), // 101
-                armorStand.getItemBySlot(EquipmentSlotType.CHEST), // 102
-                armorStand.getItemBySlot(EquipmentSlotType.HEAD));  // 103
+                armorStand.getItemBySlot(EquipmentSlot.MAINHAND), // 98
+                armorStand.getItemBySlot(EquipmentSlot.OFFHAND), // 99
+                armorStand.getItemBySlot(EquipmentSlot.FEET), // 100
+                armorStand.getItemBySlot(EquipmentSlot.LEGS), // 101
+                armorStand.getItemBySlot(EquipmentSlot.CHEST), // 102
+                armorStand.getItemBySlot(EquipmentSlot.HEAD));  // 103
 
         // ArmorStand Equipment (container slots 0-3)
         for(int k = 0; k < 4; ++k) {
-            final EquipmentSlotType equipmentslottype = VALID_EQUIPMENT_SLOTS[k];
+            final EquipmentSlot EquipmentSlot = VALID_EQUIPMENT_SLOTS[k];
             this.addSlot(new Slot(armorStandInventory, 5 - k, 153, 8 + k * 18) {
                 /**
                  * Returns the maximum stack size for a given slot (usually the same as getInventoryStackLimit(), but 1 in
@@ -86,34 +86,34 @@ public class ArmorStandContainer extends Container {
                  */
                 @Override
                 public boolean mayPlace(ItemStack stack) {
-                    return stack.canEquip(equipmentslottype, player);
+                    return stack.canEquip(EquipmentSlot, player);
                 }
 
                 /**
                  * Return whether this slot's stack can be taken from this slot.
                  */
                 @Override
-                public boolean mayPickup(PlayerEntity playerIn) {
+                public boolean mayPickup(Player playerIn) {
                     ItemStack itemstack = this.getItem();
                     return !itemstack.isEmpty() && !playerIn.isCreative() && EnchantmentHelper.hasBindingCurse(itemstack) ? false : super.mayPickup(playerIn);
                 }
 
                 @Override
-                public ItemStack onTake(PlayerEntity thePlayer, ItemStack stack) {
-                    armorStand.getItemBySlot(equipmentslottype);
+                public ItemStack onTake(Player thePlayer, ItemStack stack) {
+                    armorStand.getItemBySlot(EquipmentSlot);
                     return super.onTake(thePlayer, stack);
                 }
 
                 @Override
                 public void set(ItemStack stack) {
-                    armorStand.setItemSlot(equipmentslottype, stack.copy());
+                    armorStand.setItemSlot(EquipmentSlot, stack.copy());
                     super.set(stack);
                 }
 
                 @OnlyIn(Dist.CLIENT)
                 @Override
                 public Pair<ResourceLocation, ResourceLocation> getNoItemIcon() {
-                    return NuminaObjects.getSlotBackground(equipmentslottype);
+                    return NuminaObjects.getSlotBackground(EquipmentSlot);
                 }
             });
         }
@@ -123,18 +123,18 @@ public class ArmorStandContainer extends Container {
             @OnlyIn(Dist.CLIENT)
             @Override
             public Pair<ResourceLocation, ResourceLocation> getNoItemIcon() {
-                return NuminaObjects.getSlotBackground(EquipmentSlotType.OFFHAND);
+                return NuminaObjects.getSlotBackground(EquipmentSlot.OFFHAND);
             }
 
             @Override
-            public ItemStack onTake(PlayerEntity thePlayer, ItemStack stack) {
-                armorStand.getItemBySlot(EquipmentSlotType.OFFHAND);
+            public ItemStack onTake(Player thePlayer, ItemStack stack) {
+                armorStand.getItemBySlot(EquipmentSlot.OFFHAND);
                 return super.onTake(thePlayer, stack);
             }
 
             @Override
             public void set(ItemStack stack) {
-                armorStand.setItemSlot(EquipmentSlotType.OFFHAND, stack.copy());
+                armorStand.setItemSlot(EquipmentSlot.OFFHAND, stack.copy());
                 super.set(stack);
             }
         });
@@ -147,21 +147,21 @@ public class ArmorStandContainer extends Container {
             }
 
             @Override
-            public ItemStack onTake(PlayerEntity thePlayer, ItemStack stack) {
-                armorStand.getItemBySlot(EquipmentSlotType.MAINHAND);
+            public ItemStack onTake(Player thePlayer, ItemStack stack) {
+                armorStand.getItemBySlot(EquipmentSlot.MAINHAND);
                 return super.onTake(thePlayer, stack);
             }
 
             @Override
             public void set(ItemStack stack) {
-                armorStand.setItemSlot(EquipmentSlotType.MAINHAND, stack.copy());
+                armorStand.setItemSlot(EquipmentSlot.MAINHAND, stack.copy());
                 super.set(stack);
             }
         });
 
         // Player Equipment (container slots 6-9)
         for(int k = 0; k < 4; ++k) {
-            final EquipmentSlotType equipmentslottype = VALID_EQUIPMENT_SLOTS[k];
+            final EquipmentSlot EquipmentSlot = VALID_EQUIPMENT_SLOTS[k];
             this.addSlot(new Slot(playerInventory, 39 - k, 8, 8 + k * 18) {
                 /**
                  * Returns the maximum stack size for a given slot (usually the same as getInventoryStackLimit(), but 1 in
@@ -177,14 +177,14 @@ public class ArmorStandContainer extends Container {
                  */
                 @Override
                 public boolean mayPlace(ItemStack stack) {
-                    return stack.canEquip(equipmentslottype, player);
+                    return stack.canEquip(EquipmentSlot, player);
                 }
 
                 /**
                  * Return whether this slot's stack can be taken from this slot.
                  */
                 @Override
-                public boolean mayPickup(PlayerEntity playerIn) {
+                public boolean mayPickup(Player playerIn) {
                     ItemStack itemstack = this.getItem();
                     return !itemstack.isEmpty() && !playerIn.isCreative() && EnchantmentHelper.hasBindingCurse(itemstack) ? false : super.mayPickup(playerIn);
                 }
@@ -192,7 +192,7 @@ public class ArmorStandContainer extends Container {
                 @OnlyIn(Dist.CLIENT)
                 @Override
                 public Pair<ResourceLocation, ResourceLocation> getNoItemIcon() {
-                    return Pair.of(PlayerContainer.BLOCK_ATLAS, NuminaObjects.ARMOR_SLOT_TEXTURES.get(equipmentslottype));
+                    return Pair.of(PlayerContainer.BLOCK_ATLAS, NuminaObjects.ARMOR_SLOT_TEXTURES.get(EquipmentSlot));
                 }
             });
         }
@@ -227,7 +227,7 @@ public class ArmorStandContainer extends Container {
      * Determines whether supplied player can use this container
      */
     @Override
-    public boolean stillValid(PlayerEntity playerIn) {
+    public boolean stillValid(Player playerIn) {
         return true;
     }
 
@@ -238,14 +238,14 @@ public class ArmorStandContainer extends Container {
      * Based loosely on the vanilla player container
      */
     @Override
-    public ItemStack quickMoveStack(PlayerEntity playerIn, int index) {
+    public ItemStack quickMoveStack(Player playerIn, int index) {
         ItemStack itemstack = ItemStack.EMPTY;
         Slot slot = this.slots.get(index);
 
         if (slot != null && slot.hasItem()) {
             ItemStack itemstack1 = slot.getItem();
             itemstack = itemstack1.copy();
-            EquipmentSlotType equipmentslottype = MobEntity.getEquipmentSlotForItem(itemstack);
+            EquipmentSlot EquipmentSlot = Mob.getEquipmentSlotForItem(itemstack);
 
             // from Armor Stand to Player Inventory
             if (index < 6) {
@@ -260,29 +260,29 @@ public class ArmorStandContainer extends Container {
                 }
 
             // to Armor Stand from Player Inventory
-            } else if (equipmentslottype.getType() == EquipmentSlotType.Group.ARMOR && !this.slots.get(3 - equipmentslottype.getIndex()).hasItem()) {
+            } else if (EquipmentSlot.getType() == EquipmentSlot.Type.ARMOR && !this.slots.get(3 - EquipmentSlot.getIndex()).hasItem()) {
                 // Armor Stand first 4 slots is armor inventory
-                int i = 3 - equipmentslottype.getIndex();
+                int i = 3 - EquipmentSlot.getIndex();
                 if (!this.moveItemStackTo(itemstack1, i, i + 1, false)) {
                     return ItemStack.EMPTY;
                 }
 
             // to Player Armor from Player Inventory
-            } else if (equipmentslottype.getType() == EquipmentSlotType.Group.ARMOR && !this.slots.get(9 - equipmentslottype.getIndex()).hasItem()) {
+            } else if (EquipmentSlot.getType() == EquipmentSlot.Type.ARMOR && !this.slots.get(9 - EquipmentSlot.getIndex()).hasItem()) {
                 // player armor inventory
-                int i = 9 - equipmentslottype.getIndex();
+                int i = 9 - EquipmentSlot.getIndex();
                 if (!this.moveItemStackTo(itemstack1, i, i + 1, false)) {
                     return ItemStack.EMPTY;
                 }
 
             // Armor Stand offhand
-            } else if (equipmentslottype == EquipmentSlotType.OFFHAND && !this.slots.get(4).hasItem()) {
+            } else if (EquipmentSlot == EquipmentSlot.OFFHAND && !this.slots.get(4).hasItem()) {
                 if (!this.moveItemStackTo(itemstack1, 4, 5, false)) {
                     return ItemStack.EMPTY;
                 }
 
             // player offhand
-            } else if (equipmentslottype == EquipmentSlotType.OFFHAND && !this.slots.get(46).hasItem()) {
+            } else if (EquipmentSlot == EquipmentSlot.OFFHAND && !this.slots.get(46).hasItem()) {
                 if (!this.moveItemStackTo(itemstack1, 45, 46, false)) {
                     return ItemStack.EMPTY;
                 }
@@ -326,7 +326,7 @@ public class ArmorStandContainer extends Container {
     /**
      * Called when the container is closed.
      */
-    public void removed(PlayerEntity playerIn) {
+    public void removed(Player playerIn) {
         super.removed(playerIn);
         this.armorStandInventory.stopOpen(playerIn);
     }

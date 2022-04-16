@@ -44,10 +44,10 @@ import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.item.ItemEntity;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.Player;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Direction;
@@ -87,7 +87,7 @@ public class ShearsModule extends AbstractPowerModule {
 
     @Nullable
     @Override
-    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundNBT nbt) {
+    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt) {
         return new CapProvider(stack);
     }
 
@@ -124,7 +124,7 @@ public class ShearsModule extends AbstractPowerModule {
                 if (block instanceof IForgeShearable && ElectricItemUtils.getPlayerEnergy(entityLiving) > getEnergyUsage()) {
                     IForgeShearable target = (IForgeShearable) block;
                     if (target.isShearable(itemStack, entityLiving.level, pos)) {
-                        List<ItemStack> drops = target.onSheared((PlayerEntity)entityLiving, itemStack, entityLiving.level, pos, EnchantmentHelper.getItemEnchantmentLevel(Enchantments.BLOCK_FORTUNE, itemStack));
+                        List<ItemStack> drops = target.onSheared((Player)entityLiving, itemStack, entityLiving.level, pos, EnchantmentHelper.getItemEnchantmentLevel(Enchantments.BLOCK_FORTUNE, itemStack));
                         Random rand = new java.util.Random();
                         drops.forEach(d -> {
                             ItemEntity ent = entityLiving.spawnAtLocation(d, 1.0F);
@@ -153,7 +153,7 @@ public class ShearsModule extends AbstractPowerModule {
             }
 
             @Override
-            public ActionResult interactLivingEntity(ItemStack itemStackIn, PlayerEntity playerIn, LivingEntity entity, Hand hand) {
+            public ActionResult interactLivingEntity(ItemStack itemStackIn, Player playerIn, LivingEntity entity, Hand hand) {
                 if (playerIn.level.isClientSide) {
                     return ActionResult.pass(itemStackIn);
                 }

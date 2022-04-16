@@ -2,7 +2,7 @@ package com.lehjr.mpsrecipecreator.network.packets;
 
 import com.lehjr.mpsrecipecreator.basemod.DataPackWriter;
 import com.lehjr.mpsrecipecreator.basemod.config.Config;
-import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.entity.player.ServerPlayer;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.text.StringTextComponent;
@@ -41,7 +41,7 @@ public class RecipeWriterPacket {
     }
 
     public static void handle(RecipeWriterPacket message, Supplier<NetworkEvent.Context> ctx) {
-        final ServerPlayerEntity player = ctx.get().getSender();
+        final ServerPlayer player = ctx.get().getSender();
         ctx.get().enqueueWork(() -> {
             MinecraftServer server = player.getServer();
 

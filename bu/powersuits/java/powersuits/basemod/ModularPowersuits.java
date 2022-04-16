@@ -54,8 +54,8 @@ import lehjr.powersuits.event.*;
 import lehjr.powersuits.network.MPSPackets;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScreenManager;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.entity.player.Player;
+import net.minecraft.entity.player.ServerPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.inventory.container.SimpleNamedContainerProvider;
@@ -66,7 +66,7 @@ import net.minecraft.item.Items;
 import net.minecraft.stats.Stats;
 import net.minecraft.util.*;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.util.text.TranslatableComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.Capability;
@@ -181,7 +181,7 @@ public class ModularPowersuits {
         if (regName.equals(new ResourceLocation("appliedenergistics2:wireless_terminal"))) {
             IRightClickModule ae2wirelessterminal = new RightClickModule(itemStack, EnumModuleCategory.TOOL, EnumModuleTarget.TOOLONLY, MPSSettings::getModuleConfig) {
                 @Override
-                public ActionResult use(ItemStack itemStackIn, World worldIn, PlayerEntity playerIn, Hand hand) {
+                public ActionResult use(ItemStack itemStackIn, World worldIn, Player playerIn, Hand hand) {
                     Api.instance().registries().wireless().openWirelessTerminalGui(itemStackIn, worldIn, playerIn, hand);
                     return new ActionResult<>(ActionResultType.sidedSuccess(worldIn.isClientSide()), itemStackIn);
                 }
@@ -252,10 +252,10 @@ public class ModularPowersuits {
 
             // Crafting workbench
         } else if (!event.getCapabilities().containsKey(MPSRegistryNames.PORTABLE_WORKBENCH_MODULE_REG) && event.getObject().getItem().equals(Items.CRAFTING_TABLE)) {
-            final ITextComponent CONTAINER_NAME = new TranslationTextComponent("container.crafting");
+            final ITextComponent CONTAINER_NAME = new TranslatableComponent("container.crafting");
             IRightClickModule rightClick = new RightClickModule(itemStack, EnumModuleCategory.TOOL, EnumModuleTarget.TOOLONLY, MPSSettings::getModuleConfig) {
                 @Override
-                public ActionResult use(ItemStack itemStackIn, World worldIn, PlayerEntity playerIn, Hand hand) {
+                public ActionResult use(ItemStack itemStackIn, World worldIn, Player playerIn, Hand hand) {
                     if (worldIn.isClientSide) {
                         return ActionResult.success(itemStackIn);
                     } else {
@@ -266,7 +266,7 @@ public class ModularPowersuits {
                             }
 
                             @Override
-                            public void removed(PlayerEntity player) {
+                            public void removed(Player player) {
                                 super.removed(player);
                                 this.resultSlots.clearContent();
                                 if (!player.level.isClientSide) {
@@ -275,11 +275,11 @@ public class ModularPowersuits {
                             }
 
                             @Override
-                            public boolean stillValid(PlayerEntity player) {
+                            public boolean stillValid(Player player) {
                                 return true;
                             }
 
-                            public ItemStack quickMoveStack(PlayerEntity pPlayer, int p_82846_2_) {
+                            public ItemStack quickMoveStack(Player pPlayer, int p_82846_2_) {
                                 ItemStack itemstack = ItemStack.EMPTY;
                                 Slot slot = this.slots.get(p_82846_2_);
                                 if (slot != null && slot.hasItem()) {
@@ -326,8 +326,8 @@ public class ModularPowersuits {
 
 
                         }, MPSConstants.CRAFTING_TABLE_CONTAINER_NAME);
-                        NetworkHooks.openGui((ServerPlayerEntity) playerIn, container, buffer -> buffer.writeBlockPos(playerIn.blockPosition()));
-                        NetworkHooks.openGui((ServerPlayerEntity) playerIn, container);
+                        NetworkHooks.openGui((ServerPlayer) playerIn, container, buffer -> buffer.writeBlockPos(playerIn.blockPosition()));
+                        NetworkHooks.openGui((ServerPlayer) playerIn, container);
                         playerIn.awardStat(Stats.INTERACT_WITH_CRAFTING_TABLE);
                         return ActionResult.consume(itemStackIn);
                     }

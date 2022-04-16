@@ -26,10 +26,10 @@
 
 package lehjr.powersuits.item.armor;
 
-import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.inventory.EquipmentSlot;
 
 public class PowerArmorHelmet extends AbstractElectricItemArmor {
     public PowerArmorHelmet() {
-        super(EquipmentSlotType.HEAD);
+        super(EquipmentSlot.HEAD);
     }
 }

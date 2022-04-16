@@ -33,7 +33,7 @@ import lehjr.powersuits.client.gui.common.ModularItemSelectionFrame;
 import lehjr.powersuits.client.gui.common.TabSelectFrame;
 import lehjr.powersuits.config.MPSSettings;
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.Player;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.server.management.OpEntry;
 import net.minecraft.util.text.ITextComponent;
@@ -45,7 +45,7 @@ import net.minecraft.util.text.ITextComponent;
  * Ported to Java by lehjr on 10/19/16.
  */
 public class CosmeticGui extends ContainerlessGui {
-    PlayerEntity player;
+    Player player;
     final int spacer = 7;
 
     ModularItemSelectionFrame itemSelectFrame;

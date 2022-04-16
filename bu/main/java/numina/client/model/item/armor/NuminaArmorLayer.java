@@ -43,7 +43,7 @@ import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.inventory.EquipmentSlot;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.IDyeableArmorItem;
 import net.minecraft.item.ItemStack;
@@ -59,21 +59,21 @@ public class NuminaArmorLayer<T extends LivingEntity, M extends BipedModel<T>, A
 
     @Override
     public void render(MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn, T entityIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-        this.renderPart(matrixStackIn, bufferIn, entityIn, EquipmentSlotType.CHEST, packedLightIn, this.getModelFromSlot(EquipmentSlotType.CHEST));
-        this.renderPart(matrixStackIn, bufferIn, entityIn, EquipmentSlotType.LEGS, packedLightIn, this.getModelFromSlot(EquipmentSlotType.LEGS));
-        this.renderPart(matrixStackIn, bufferIn, entityIn, EquipmentSlotType.FEET, packedLightIn, this.getModelFromSlot(EquipmentSlotType.FEET));
-        this.renderPart(matrixStackIn, bufferIn, entityIn, EquipmentSlotType.HEAD, packedLightIn, this.getModelFromSlot(EquipmentSlotType.HEAD));
+        this.renderPart(matrixStackIn, bufferIn, entityIn, EquipmentSlot.CHEST, packedLightIn, this.getModelFromSlot(EquipmentSlot.CHEST));
+        this.renderPart(matrixStackIn, bufferIn, entityIn, EquipmentSlot.LEGS, packedLightIn, this.getModelFromSlot(EquipmentSlot.LEGS));
+        this.renderPart(matrixStackIn, bufferIn, entityIn, EquipmentSlot.FEET, packedLightIn, this.getModelFromSlot(EquipmentSlot.FEET));
+        this.renderPart(matrixStackIn, bufferIn, entityIn, EquipmentSlot.HEAD, packedLightIn, this.getModelFromSlot(EquipmentSlot.HEAD));
     }
 
-    private A getModelFromSlot(EquipmentSlotType slot) {
+    private A getModelFromSlot(EquipmentSlot slot) {
         return this.isLegSlot(slot) ? this.innerModel : this.outerModel;
     }
 
-    private boolean isLegSlot(EquipmentSlotType slotIn) {
-        return slotIn == EquipmentSlotType.LEGS;
+    private boolean isLegSlot(EquipmentSlot slotIn) {
+        return slotIn == EquipmentSlot.LEGS;
     }
 
-    private void renderPart(MatrixStack matrixIn, IRenderTypeBuffer bufferIn, T entityIn, EquipmentSlotType  slotIn, int packedLightIn, A model) {
+    private void renderPart(MatrixStack matrixIn, IRenderTypeBuffer bufferIn, T entityIn, EquipmentSlot  slotIn, int packedLightIn, A model) {
         ItemStack itemstack = entityIn.getItemBySlot( slotIn);
         boolean hasEffect = itemstack.hasFoil();
 
@@ -153,7 +153,7 @@ public class NuminaArmorLayer<T extends LivingEntity, M extends BipedModel<T>, A
      * @return ResourceLocation pointing at the armor's texture
      */
     @Override
-    public ResourceLocation getArmorResource(Entity entity, @Nonnull ItemStack stack, EquipmentSlotType slot, @Nullable String type) {
+    public ResourceLocation getArmorResource(Entity entity, @Nonnull ItemStack stack, EquipmentSlot slot, @Nullable String type) {
         return stack.getCapability(ModelSpecNBTCapability.RENDER).map(spec->{
             if (spec.getSpecType() == EnumSpecType.ARMOR_SKIN && spec instanceof IArmorModelSpecNBT) {
                 return new ResourceLocation(((IArmorModelSpecNBT) spec).getArmorTexture());
@@ -163,7 +163,7 @@ public class NuminaArmorLayer<T extends LivingEntity, M extends BipedModel<T>, A
     }
 
     @Override
-    protected A getArmorModelHook(T entity, ItemStack itemStack, EquipmentSlotType slot, A model) {
+    protected A getArmorModelHook(T entity, ItemStack itemStack, EquipmentSlot slot, A model) {
         return super.getArmorModelHook(entity, itemStack, slot, model);
     }
 }

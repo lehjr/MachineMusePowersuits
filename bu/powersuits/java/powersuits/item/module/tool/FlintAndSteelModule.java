@@ -40,11 +40,11 @@ import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.block.AbstractFireBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.CampfireBlock;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.entity.player.Player;
+import net.minecraft.entity.player.ServerPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUseContext;
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
@@ -70,7 +70,7 @@ public class FlintAndSteelModule extends AbstractPowerModule {
 
     @Nullable
     @Override
-    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundNBT nbt) {
+    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt) {
         return new CapProvider(stack);
     }
 
@@ -102,7 +102,7 @@ public class FlintAndSteelModule extends AbstractPowerModule {
             @Override
             public ActionResultType useOn(ItemUseContext context) {
                 int energyConsumption = getEnergyUsage();
-                PlayerEntity player = context.getPlayer();
+                Player player = context.getPlayer();
                 if (ElectricItemUtils.getPlayerEnergy(player) < energyConsumption ) {
                     return ActionResultType.FAIL;
                 }
@@ -124,8 +124,8 @@ public class FlintAndSteelModule extends AbstractPowerModule {
                         BlockState blockstate1 = AbstractFireBlock.getState(world, blockpos1);
                         world.setBlock(blockpos1, blockstate1, 11);
                         ItemStack itemstack = context.getItemInHand();
-                        if (player instanceof ServerPlayerEntity) {
-                            CriteriaTriggers.PLACED_BLOCK.trigger((ServerPlayerEntity)player, blockpos1, itemstack);
+                        if (player instanceof ServerPlayer) {
+                            CriteriaTriggers.PLACED_BLOCK.trigger((ServerPlayer)player, blockpos1, itemstack);
                             ElectricItemUtils.drainPlayerEnergy(player, energyConsumption);
                         }
                         return ActionResultType.sidedSuccess(world.isClientSide());

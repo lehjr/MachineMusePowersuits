@@ -99,7 +99,7 @@ public class RecipeGen {
 
             stackJson.addProperty("item", stack.getItem().getRegistryName().toString());
             if (stack.hasTag()) {
-                JsonObject tagJson = NBT2Json.CompoundNBT2Json(stack.getTag(), new JsonObject());
+                JsonObject tagJson = NBT2Json.CompoundTag2Json(stack.getTag(), new JsonObject());
                 if (tagJson.size() > 0) {
                     stackJson.add("nbt", tagJson);
                 }

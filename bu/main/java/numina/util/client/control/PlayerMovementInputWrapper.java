@@ -28,8 +28,8 @@ package lehjr.numina.util.client.control;
 
 import lehjr.numina.util.capabilities.player.CapabilityPlayerKeyStates;
 import lehjr.numina.util.capabilities.player.IPlayerKeyStates;
-import net.minecraft.client.entity.player.RemoteClientPlayerEntity;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.client.entity.player.RemoteClientPlayer;
+import net.minecraft.entity.player.Player;
 import net.minecraftforge.common.util.LazyOptional;
 
 public class PlayerMovementInputWrapper {
@@ -52,9 +52,9 @@ public class PlayerMovementInputWrapper {
         }
     }
 
-    public static PlayerMovementInput get(PlayerEntity player) {
+    public static PlayerMovementInput get(Player player) {
         if (player.level.isClientSide) {
-            if (player instanceof RemoteClientPlayerEntity) { // multiplayer not dedicated server
+            if (player instanceof RemoteClientPlayer) { // multiplayer not dedicated server
                 return fromServer(player);
             }
             return fromClient(player);
@@ -62,11 +62,11 @@ public class PlayerMovementInputWrapper {
         return fromServer(player);
     }
 
-    static LazyOptional<IPlayerKeyStates> getCapability(PlayerEntity player) {
+    static LazyOptional<IPlayerKeyStates> getCapability(Player player) {
         return player.getCapability(CapabilityPlayerKeyStates.PLAYER_KEYSTATES, null);
     }
 
-    static PlayerMovementInput fromServer(PlayerEntity player) {
+    static PlayerMovementInput fromServer(Player player) {
         boolean forwardKey = false;
         byte strafeKey = 0;
         boolean jumpKey = false;
@@ -87,7 +87,7 @@ public class PlayerMovementInputWrapper {
                 downKey);
     }
 
-    static PlayerMovementInput fromClient(PlayerEntity player) {
+    static PlayerMovementInput fromClient(Player player) {
         boolean forwardKey = false;
         byte strafeKey = 0;
         boolean jumpKey = false;

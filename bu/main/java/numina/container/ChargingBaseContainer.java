@@ -33,7 +33,7 @@ import lehjr.numina.tileentity.ChargingBaseTileEntity;
 import lehjr.numina.util.client.gui.slot.IIConProvider;
 import lehjr.numina.util.client.render.MuseIconUtils;
 import lehjr.numina.util.math.Colour;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.Player;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.Slot;
@@ -53,10 +53,10 @@ import net.minecraftforge.items.wrapper.InvWrapper;
 public class ChargingBaseContainer extends Container {
 
     private TileEntity tileEntity;
-    private PlayerEntity playerEntity;
+    private Player playerEntity;
     private IItemHandler playerInventory;
 
-    public ChargingBaseContainer(int windowId, World world, BlockPos pos, PlayerInventory playerInventory, PlayerEntity player) {
+    public ChargingBaseContainer(int windowId, World world, BlockPos pos, PlayerInventory playerInventory, Player player) {
         super(NuminaObjects.CHARGING_BASE_CONTAINER_TYPE.get(), windowId);
         tileEntity = world.getBlockEntity(pos);
         this.playerEntity = player;
@@ -147,12 +147,12 @@ public class ChargingBaseContainer extends Container {
     }
 
     @Override
-    public boolean stillValid(PlayerEntity playerIn) {
+    public boolean stillValid(Player playerIn) {
         return stillValid(IWorldPosCallable.create(tileEntity.getLevel(), tileEntity.getBlockPos()), playerEntity, NuminaObjects.CHARGING_BASE_BLOCK.get());
     }
 
     @Override
-    public ItemStack quickMoveStack(PlayerEntity playerIn, int index) {
+    public ItemStack quickMoveStack(Player playerIn, int index) {
         ItemStack itemstack = ItemStack.EMPTY;
         Slot slot = this.slots.get(index);
         if (slot != null && slot.hasItem()) {

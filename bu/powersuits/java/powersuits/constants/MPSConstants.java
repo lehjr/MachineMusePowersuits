@@ -27,7 +27,7 @@
 package lehjr.powersuits.constants;
 
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.util.text.TranslatableComponent;
 
 public class MPSConstants {
     public static final String MOD_ID = "powersuits";
@@ -43,7 +43,7 @@ public class MPSConstants {
 
     public static final ResourceLocation POWER_FIST_TEXTURE = new ResourceLocation(TEXTURE_PREFIX + "models/powerfist.png");
 
-    public static final TranslationTextComponent CRAFTING_TABLE_CONTAINER_NAME  = new TranslationTextComponent("container.crafting");
+    public static final TranslatableComponent CRAFTING_TABLE_CONTAINER_NAME  = new TranslatableComponent("container.crafting");
 
 
 

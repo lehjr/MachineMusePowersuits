@@ -35,9 +35,9 @@ import lehjr.numina.util.capabilities.module.tickable.PlayerTickModule;
 import lehjr.numina.util.capabilities.module.toggleable.IToggleableModule;
 import lehjr.powersuits.config.MPSSettings;
 import lehjr.powersuits.item.module.AbstractPowerModule;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.Player;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Direction;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
@@ -53,7 +53,7 @@ public class ClimbAssistModule extends AbstractPowerModule {
 
     @Nullable
     @Override
-    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundNBT nbt) {
+    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt) {
         return new CapProvider(stack);
     }
 
@@ -81,12 +81,12 @@ public class ClimbAssistModule extends AbstractPowerModule {
             }
 
             @Override
-            public void onPlayerTickActive(PlayerEntity player, ItemStack item) {
+            public void onPlayerTickActive(Player player, ItemStack item) {
                 player.maxUpStep = 1.001F;
             }
 
             @Override
-            public void onPlayerTickInactive(PlayerEntity player, ItemStack item) {
+            public void onPlayerTickInactive(Player player, ItemStack item) {
                 if (player.maxUpStep == 1.001F) {
                     player.maxUpStep = 0.5001F;
                 }

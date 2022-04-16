@@ -13,9 +13,9 @@ import lehjr.powersuits.constants.MPSConstants;
 import lehjr.powersuits.network.MPSPackets;
 import lehjr.powersuits.network.packets.ContainerGuiOpenPacket;
 import net.minecraft.client.Minecraft;
-import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.inventory.EquipmentSlot;
 import net.minecraft.inventory.container.Container;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.util.text.TranslatableComponent;
 import net.minecraftforge.items.CapabilityItemHandler;
 
 import java.util.ArrayList;
@@ -34,7 +34,7 @@ public class ScrollableInventoryFrame2 <C extends Container> extends MultiRectHo
     ModularItemTabToggleWidget selected;
     public boolean labelUsesULShift = true;
 
-    TranslationTextComponent title = new TranslationTextComponent(MPSConstants.MOD_ID + ".modularitem.inventory");
+    TranslatableComponent title = new TranslatableComponent(MPSConstants.MOD_ID + ".modularitem.inventory");
 
     public ScrollableInventoryFrame2(C containerIn, ModularItemSelectionFrameContainered modularItemSelectionFrame, IContainerULOffSet.ulGetter ulgetter) {
         super(false, true, 0, 0);
@@ -54,7 +54,7 @@ public class ScrollableInventoryFrame2 <C extends Container> extends MultiRectHo
         modularItemSelectionFrame.getSelectedTab().ifPresent(tab->{
             if (selected != tab) {
                 selected = tab;
-                EquipmentSlotType type = tab.getSlotType();
+                EquipmentSlot type = tab.getSlotType();
                 getMinecraft().player.getItemBySlot(type).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
                         .filter(IModularItem.class::isInstance)
                         .map(IModularItem.class::cast)
@@ -91,7 +91,7 @@ public class ScrollableInventoryFrame2 <C extends Container> extends MultiRectHo
 //                System.out.println();
 
                 selected = tab;
-                EquipmentSlotType type = tab.getSlotType();
+                EquipmentSlot type = tab.getSlotType();
                 MPSPackets.CHANNEL_INSTANCE.sendToServer(new ContainerGuiOpenPacket(type));
 
 //                getMinecraft().player.getItemBySlot(type).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)

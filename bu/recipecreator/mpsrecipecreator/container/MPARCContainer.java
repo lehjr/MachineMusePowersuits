@@ -1,7 +1,7 @@
 package com.lehjr.mpsrecipecreator.container;
 
 import com.lehjr.mpsrecipecreator.basemod.ModObjects;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.Player;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.CraftResultInventory;
 import net.minecraft.inventory.CraftingInventory;
@@ -19,7 +19,7 @@ public class MPARCContainer extends Container {
     public CraftingInventory craftMatrix = new CraftingInventory(this, 3, 3);
     public CraftResultInventory craftResult = new CraftResultInventory();
     /** Position of the workbench */
-    private final PlayerEntity player;
+    private final Player player;
     private final IWorldPosCallable posCallable;
 
     public MPARCContainer(int windowID, PlayerInventory playerInventory) {
@@ -99,7 +99,7 @@ public class MPARCContainer extends Container {
 //     * @return
 //     */
 //    @Override
-//    public ItemStack doClick(int slotIndex, int mouseButton, ClickType clickType, PlayerEntity player) {
+//    public ItemStack doClick(int slotIndex, int mouseButton, ClickType clickType, Player player) {
 //        System.out.println("slot: " + slotIndex + " clicktype: " + clickType);
 //
 //        ItemStack returnStack = ItemStack.EMPTY;
@@ -407,7 +407,7 @@ public class MPARCContainer extends Container {
 //    }
 
     @Override
-    public ItemStack clicked(int slotIndex, int mousebtn, ClickType clickTypeIn, PlayerEntity player) {
+    public ItemStack clicked(int slotIndex, int mousebtn, ClickType clickTypeIn, Player player) {
 //        System.out.println("slot: " + slotIndex + " clicktype: " + clickTypeIn + ",  mouseButton: " + mousebtn);
         ItemStack stack = ItemStack.EMPTY;
 
@@ -465,7 +465,7 @@ public class MPARCContainer extends Container {
     }
 
     @Override
-    public boolean stillValid(PlayerEntity playerEntity) {
+    public boolean stillValid(Player playerEntity) {
         return true;
     }
 
@@ -473,7 +473,7 @@ public class MPARCContainer extends Container {
      * Called when a player shift-clicks on a slot. You must override this or you will crash when someone does that.
      */
     @Override
-    public ItemStack quickMoveStack(PlayerEntity playerIn, int index) {
+    public ItemStack quickMoveStack(Player playerIn, int index) {
         if (index < 10) {
             slots.get(index).set(ItemStack.EMPTY);
         }
@@ -482,7 +482,7 @@ public class MPARCContainer extends Container {
 
 
     @Override
-    public void removed(PlayerEntity p_75134_1_) {
+    public void removed(Player p_75134_1_) {
         super.removed(p_75134_1_);
 
         this.craftMatrix.clearContent();
@@ -490,7 +490,7 @@ public class MPARCContainer extends Container {
     }
 
 //    @Override
-//    protected void clearContainer(PlayerEntity p_193327_1_, World p_193327_2_, IInventory p_193327_3_) {
+//    protected void clearContainer(Player p_193327_1_, World p_193327_2_, IInventory p_193327_3_) {
 //        super.clearContainer(p_193327_1_, p_193327_2_, p_193327_3_);
 //    }
 }

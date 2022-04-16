@@ -40,9 +40,9 @@ import lehjr.powersuits.constants.MPSConstants;
 import lehjr.powersuits.item.module.AbstractPowerModule;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.Player;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
@@ -72,7 +72,7 @@ public class DimensionalRiftModule extends AbstractPowerModule {
 
     @Nullable
     @Override
-    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundNBT nbt) {
+    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt) {
         return new CapProvider(stack);
     }
 
@@ -100,7 +100,7 @@ public class DimensionalRiftModule extends AbstractPowerModule {
             }
 
             @Override
-            public ActionResult use(ItemStack itemStackIn, World worldIn, PlayerEntity playerIn, Hand hand) {
+            public ActionResult use(ItemStack itemStackIn, World worldIn, Player playerIn, Hand hand) {
                 if (!playerIn.isPassenger() && !playerIn.isVehicle() && playerIn.canChangeDimensions() && !playerIn.level.isClientSide()) {
                     World level ;
                     if (playerIn.level.dimension().location().equals(World.NETHER.location())) {
@@ -159,7 +159,7 @@ public class DimensionalRiftModule extends AbstractPowerModule {
         return pos.getY() <= 0 || pos.getY() >= world.getHeight();
     }
 
-    public Optional<BlockPos> findSafeLocation(BlockPos targetPos, Direction.Axis axis, World world, PlayerEntity entity) {
+    public Optional<BlockPos> findSafeLocation(BlockPos targetPos, Direction.Axis axis, World world, Player entity) {
         Direction direction = Direction.get(Direction.AxisDirection.POSITIVE, axis);
         double d0 = -1.0D;
         BlockPos destination = null;
@@ -211,7 +211,7 @@ public class DimensionalRiftModule extends AbstractPowerModule {
         return Optional.of(destination);
     }
 
-    private static boolean canTeleportTo(World world, BlockPos pos, PlayerEntity playerEntity) {
+    private static boolean canTeleportTo(World world, BlockPos pos, Player playerEntity) {
         if (!isOutsideWorldBounds(world, pos)) {
             BlockState state = world.getBlockState(pos.below());
             BlockPos blockpos = pos.subtract(playerEntity.blockPosition());

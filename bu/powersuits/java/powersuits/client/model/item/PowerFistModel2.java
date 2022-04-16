@@ -33,7 +33,7 @@ import lehjr.powersuits.constants.MPSRegistryNames;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.model.Model;
 import net.minecraft.client.renderer.model.ModelRenderer;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.Player;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.CapabilityItemHandler;
 
@@ -433,7 +433,7 @@ public class PowerFistModel2 extends Model {
     }
 
     // FIXME
-    public void setPoseForPlayer(PlayerEntity player) {
+    public void setPoseForPlayer(Player player) {
         if (player.isUsingItem() && player.getUseItem() != ItemStack.EMPTY) {
             player.getUseItem().getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
                     .filter(IModeChangingItem.class::isInstance)

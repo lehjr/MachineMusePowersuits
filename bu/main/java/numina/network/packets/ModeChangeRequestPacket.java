@@ -27,7 +27,7 @@
 package lehjr.numina.network.packets;
 
 import lehjr.numina.util.capabilities.inventory.modechanging.IModeChangingItem;
-import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.entity.player.ServerPlayer;
 import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.fml.network.NetworkEvent;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -59,7 +59,7 @@ public class ModeChangeRequestPacket {
     }
 
     public static void handle(ModeChangeRequestPacket message, Supplier<NetworkEvent.Context> ctx) {
-        final ServerPlayerEntity player = ctx.get().getSender();
+        final ServerPlayer player = ctx.get().getSender();
         ctx.get().enqueueWork(() -> {
             int slot = ModeChangeRequestPacket.slot;
             int mode = ModeChangeRequestPacket.mode;

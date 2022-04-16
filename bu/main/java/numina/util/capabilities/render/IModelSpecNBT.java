@@ -33,7 +33,7 @@ import lehjr.numina.util.capabilities.render.modelspec.ModelRegistry;
 import lehjr.numina.util.capabilities.render.modelspec.TexturePartSpec;
 import lehjr.numina.util.math.Colour;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.CompoundTag;
 
 import javax.annotation.Nonnull;
 import java.util.List;
@@ -44,11 +44,11 @@ public interface IModelSpecNBT {
 
     EnumSpecType getSpecType();
 
-    CompoundNBT getRenderTag();
+    CompoundTag getRenderTag();
 
-    CompoundNBT setRenderTag(CompoundNBT renderDataIn, String tagName);
+    CompoundTag setRenderTag(CompoundTag renderDataIn, String tagName);
 
-    CompoundNBT getDefaultRenderTag();
+    CompoundTag getDefaultRenderTag();
 
     List<Integer> addNewColourstoList(List<Integer> colours, List<Integer> coloursToAdd);
 
@@ -56,17 +56,17 @@ public interface IModelSpecNBT {
 
     int getNewColourIndex(List<Integer> colours, List<Integer> oldColours, Integer index);
 
-    CompoundNBT setColorArray(int[] colors);
+    CompoundTag setColorArray(int[] colors);
 
     default Colour getColorFromItemStack() {
         try {
-            CompoundNBT renderTag = getRenderTag();
+            CompoundTag renderTag = getRenderTag();
             if (renderTag == null || renderTag.isEmpty()) {
                 return Colour.WHITE;
             }
             if (renderTag.contains(NuminaConstants.NBT_TEXTURESPEC_TAG)) {
                 TexturePartSpec partSpec = (TexturePartSpec) ModelRegistry.getInstance().getPart(renderTag.getCompound(NuminaConstants.NBT_TEXTURESPEC_TAG));
-                CompoundNBT specTag = renderTag.getCompound(NuminaConstants.NBT_TEXTURESPEC_TAG);
+                CompoundTag specTag = renderTag.getCompound(NuminaConstants.NBT_TEXTURESPEC_TAG);
                 int index = partSpec.getColourIndex(specTag);
                 int[] colours = getColorArray();
                 if (colours.length > index) {

@@ -34,9 +34,9 @@ import lehjr.numina.util.energy.ElectricItemUtils;
 import lehjr.numina.util.tileentity.MuseTileEntity;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.inventory.EquipmentSlot;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.play.server.SUpdateTileEntityPacket;
 import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.tileentity.ITickableTileEntity;
@@ -129,19 +129,19 @@ public class ChargingBaseTileEntity extends MuseTileEntity implements ITickableT
     }
 
     @Override
-    public CompoundNBT getUpdateTag() {
-        return this.save(new CompoundNBT());
+    public CompoundTag getUpdateTag() {
+        return this.save(new CompoundTag());
     }
 
     @Override
-    public void load(BlockState stateIn, CompoundNBT nbt) {
+    public void load(BlockState stateIn, CompoundTag nbt) {
         itemHandler.deserializeNBT(nbt.getCompound("inv"));
         energyStorage.deserializeNBT(nbt.getCompound("energy"));
         super.load(stateIn, nbt);
     }
 
     @Override
-    public CompoundNBT save(CompoundNBT nbt) {
+    public CompoundTag save(CompoundTag nbt) {
         nbt.put("inv", itemHandler.serializeNBT());
         nbt.put("energy", energyStorage.serializeNBT());
         return super.save(nbt);

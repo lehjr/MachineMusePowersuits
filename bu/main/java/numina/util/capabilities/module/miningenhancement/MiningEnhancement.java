@@ -31,7 +31,7 @@ import lehjr.numina.util.capabilities.module.powermodule.EnumModuleTarget;
 import lehjr.numina.util.capabilities.module.powermodule.IConfig;
 import lehjr.numina.util.capabilities.module.rightclick.IRightClickModule;
 import lehjr.numina.util.capabilities.module.toggleable.ToggleableModule;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.Player;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 
@@ -44,7 +44,7 @@ public class MiningEnhancement extends ToggleableModule implements IRightClickMo
     }
 
     @Override
-    public boolean onBlockStartBreak(ItemStack itemstack, BlockPos pos, PlayerEntity player) {
+    public boolean onBlockStartBreak(ItemStack itemstack, BlockPos pos, Player player) {
         return false;
     }
 

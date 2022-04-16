@@ -26,14 +26,14 @@
 
 package lehjr.numina.capabilities;
 
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.energy.EnergyStorage;
 
 /**
  * Energy handler for tile entity itself
  */
-public class TileEnergyStorage extends EnergyStorage implements INBTSerializable<CompoundNBT> {
+public class TileEnergyStorage extends EnergyStorage implements INBTSerializable<CompoundTag> {
 
     public TileEnergyStorage(int capacity, int maxTransfer) {
         super(capacity, maxTransfer);
@@ -67,14 +67,14 @@ public class TileEnergyStorage extends EnergyStorage implements INBTSerializable
     }
 
     @Override
-    public CompoundNBT serializeNBT() {
-        CompoundNBT tag = new CompoundNBT();
+    public CompoundTag serializeNBT() {
+        CompoundTag tag = new CompoundTag();
         tag.putInt("energy", getEnergyStored());
         return tag;
     }
 
     @Override
-    public void deserializeNBT(CompoundNBT nbt) {
+    public void deserializeNBT(CompoundTag nbt) {
         setEnergy(nbt.getInt("energy"));
     }
 }

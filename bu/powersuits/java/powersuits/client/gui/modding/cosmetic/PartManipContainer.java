@@ -36,7 +36,7 @@ import lehjr.numina.util.client.gui.gemoetry.RelativeRect;
 import lehjr.numina.util.math.Colour;
 import lehjr.powersuits.client.gui.common.ModularItemSelectionFrame;
 import lehjr.powersuits.client.gui.common.ModularItemTabToggleWidget;
-import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.inventory.EquipmentSlot;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -126,7 +126,7 @@ public class PartManipContainer extends ScrollableFrame {
         if (!getItem().isEmpty()) {
             Item item = getItem().getItem();
 
-            EquipmentSlotType slotType;
+            EquipmentSlot slotType;
             if (item instanceof ArmorItem) {
                 slotType = ((ArmorItem) item).getSlot();
                 return specBase.getSpecType().equals(EnumSpecType.ARMOR_MODEL) ||
@@ -134,13 +134,13 @@ public class PartManipContainer extends ScrollableFrame {
                                 doesSpecHaveSlotType(specBase, slotType);
             } else {
                 return specBase.getSpecType().equals(EnumSpecType.HANDHELD) &&
-                        (doesSpecHaveSlotType(specBase, EquipmentSlotType.OFFHAND) || doesSpecHaveSlotType(specBase, EquipmentSlotType.MAINHAND));
+                        (doesSpecHaveSlotType(specBase, EquipmentSlot.OFFHAND) || doesSpecHaveSlotType(specBase, EquipmentSlot.MAINHAND));
             }
         }
         return false;
     }
 
-    boolean doesSpecHaveSlotType(SpecBase specBase, EquipmentSlotType slot) {
+    boolean doesSpecHaveSlotType(SpecBase specBase, EquipmentSlot slot) {
         AtomicBoolean hasType = new AtomicBoolean(false);
         specBase.getPartSpecs().forEach(spec->{
             if (spec.getBinding().getSlot().equals(slot)) {

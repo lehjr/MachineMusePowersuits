@@ -42,9 +42,9 @@ import lehjr.powersuits.config.MPSSettings;
 import lehjr.powersuits.constants.MPSConstants;
 import lehjr.powersuits.event.MovementManager;
 import lehjr.powersuits.item.module.AbstractPowerModule;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.Player;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Direction;
 import net.minecraft.util.SoundCategory;
 import net.minecraftforge.common.ForgeMod;
@@ -63,7 +63,7 @@ public class SwimAssistModule extends AbstractPowerModule {
 
     @Nullable
     @Override
-    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundNBT nbt) {
+    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt) {
         return new CapProvider(stack);
     }
 
@@ -94,7 +94,7 @@ public class SwimAssistModule extends AbstractPowerModule {
             }
 
             @Override
-            public void onPlayerTickActive(PlayerEntity player, ItemStack itemStack) {
+            public void onPlayerTickActive(Player player, ItemStack itemStack) {
 //                if (player.isSwimming()) { // doesn't work when strafing without "swimming"
                 PlayerMovementInputWrapper.PlayerMovementInput playerInput = PlayerMovementInputWrapper.get(player);
                 if((player.isInWater() && !player.isPassenger()) && (playerInput.strafeKey!=0 || playerInput.forwardKey || playerInput.jumpKey || player.isCrouching())) {
@@ -132,7 +132,7 @@ public class SwimAssistModule extends AbstractPowerModule {
             }
 
             @Override
-            public void onPlayerTickInactive(PlayerEntity player, @Nonnull ItemStack itemStack) {
+            public void onPlayerTickInactive(Player player, @Nonnull ItemStack itemStack) {
                 if (player.level.isClientSide && NuminaSettings.useSounds()) {
                     Musique.stopPlayerSound(player, MPSSoundDictionary.SWIM_ASSIST);
                 }

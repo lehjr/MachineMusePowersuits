@@ -44,7 +44,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.item.ArmorStandEntity;
-import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.inventory.EquipmentSlot;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.inventory.container.PlayerContainer;
 import net.minecraft.item.BlockItem;
@@ -205,16 +205,16 @@ public class NuminaObjects {
 
 
     /** Container background icons */
-    public static final Map<EquipmentSlotType, ResourceLocation> ARMOR_SLOT_TEXTURES = new HashMap<EquipmentSlotType, ResourceLocation>(){{
-        put(EquipmentSlotType.HEAD, PlayerContainer.EMPTY_ARMOR_SLOT_HELMET);
-        put(EquipmentSlotType.CHEST, PlayerContainer.EMPTY_ARMOR_SLOT_CHESTPLATE);
-        put(EquipmentSlotType.LEGS, PlayerContainer.EMPTY_ARMOR_SLOT_LEGGINGS);
-        put(EquipmentSlotType.FEET, PlayerContainer.EMPTY_ARMOR_SLOT_BOOTS);
-        put(EquipmentSlotType.OFFHAND, PlayerContainer.EMPTY_ARMOR_SLOT_SHIELD);
-        put(EquipmentSlotType.MAINHAND, NuminaConstants.WEAPON_SLOT_BACKGROUND); //FIXME: broken for slot rendering, actually crashes
+    public static final Map<EquipmentSlot, ResourceLocation> ARMOR_SLOT_TEXTURES = new HashMap<EquipmentSlot, ResourceLocation>(){{
+        put(EquipmentSlot.HEAD, PlayerContainer.EMPTY_ARMOR_SLOT_HELMET);
+        put(EquipmentSlot.CHEST, PlayerContainer.EMPTY_ARMOR_SLOT_CHESTPLATE);
+        put(EquipmentSlot.LEGS, PlayerContainer.EMPTY_ARMOR_SLOT_LEGGINGS);
+        put(EquipmentSlot.FEET, PlayerContainer.EMPTY_ARMOR_SLOT_BOOTS);
+        put(EquipmentSlot.OFFHAND, PlayerContainer.EMPTY_ARMOR_SLOT_SHIELD);
+        put(EquipmentSlot.MAINHAND, NuminaConstants.WEAPON_SLOT_BACKGROUND); //FIXME: broken for slot rendering, actually crashes
     }};
 
-    public static final Pair<ResourceLocation, ResourceLocation> getSlotBackground(EquipmentSlotType slotType) {
+    public static final Pair<ResourceLocation, ResourceLocation> getSlotBackground(EquipmentSlot slotType) {
         switch (slotType) {
             case MAINHAND:
                 return Pair.of(NuminaConstants.LOCATION_NUMINA_GUI_TEXTURE_ATLAS, ARMOR_SLOT_TEXTURES.get(slotType)); // FIXME: broken for slot rendering, actually crashes

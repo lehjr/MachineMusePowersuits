@@ -36,19 +36,19 @@ import lehjr.powersuits.basemod.MPSObjects;
 import lehjr.powersuits.config.MPSSettings;
 import lehjr.powersuits.container.InstallSalvageContainer;
 import net.minecraft.block.Block;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.entity.player.Player;
+import net.minecraft.entity.player.ServerPlayer;
+import net.minecraft.inventory.EquipmentSlot;
 import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.inventory.container.SimpleNamedContainerProvider;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.util.text.TranslatableComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
@@ -70,7 +70,7 @@ public class TinkerTableItem extends BlockItem {
 
     @Nullable
     @Override
-    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundNBT nbt) {
+    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt) {
         return new CapProvider(stack);
     }
 
@@ -95,10 +95,10 @@ public class TinkerTableItem extends BlockItem {
             }
 
             @Override
-            public ActionResult use(ItemStack itemStackIn, World worldIn, PlayerEntity playerIn, Hand hand) {
+            public ActionResult use(ItemStack itemStackIn, World worldIn, Player playerIn, Hand hand) {
                 if (!worldIn.isClientSide()) {
-                    INamedContainerProvider container = new SimpleNamedContainerProvider((id, inventory, player) -> new InstallSalvageContainer(id, inventory, EquipmentSlotType.MAINHAND), new TranslationTextComponent("gui.powersuits.tab.install.salvage"));
-                    NetworkHooks.openGui((ServerPlayerEntity) playerIn, container, buffer -> buffer.writeEnum(EquipmentSlotType.MAINHAND));
+                    INamedContainerProvider container = new SimpleNamedContainerProvider((id, inventory, player) -> new InstallSalvageContainer(id, inventory, EquipmentSlot.MAINHAND), new TranslatableComponent("gui.powersuits.tab.install.salvage"));
+                    NetworkHooks.openGui((ServerPlayer) playerIn, container, buffer -> buffer.writeEnum(EquipmentSlot.MAINHAND));
                 }
                 return super.use(itemStackIn, worldIn, playerIn, hand);
             }

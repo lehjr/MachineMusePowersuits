@@ -44,11 +44,11 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.Player;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUseContext;
 import net.minecraft.item.Items;
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.SoundCategory;
@@ -73,7 +73,7 @@ public class HoeModule extends AbstractPowerModule {
 
     @Nullable
     @Override
-    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundNBT nbt) {
+    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt) {
         return new CapProvider(stack);
     }
 
@@ -108,7 +108,7 @@ public class HoeModule extends AbstractPowerModule {
             @Override
             public ActionResultType useOn(ItemUseContext context) {
                 int energyConsumed = this.getEnergyUsage();
-                PlayerEntity player = context.getPlayer();
+                Player player = context.getPlayer();
                 World world = context.getLevel();
                 BlockPos pos = context.getClickedPos();
                 Direction facing = context.getClickedFace();
@@ -146,7 +146,7 @@ public class HoeModule extends AbstractPowerModule {
 
             @Override
             public boolean onBlockDestroyed(ItemStack itemStack, World worldIn, BlockState state, BlockPos pos, LivingEntity entityLiving, int playerEnergy) {
-                if (this.canHarvestBlock(itemStack, state, (PlayerEntity) entityLiving, pos, playerEnergy)) {
+                if (this.canHarvestBlock(itemStack, state, (Player) entityLiving, pos, playerEnergy)) {
                     ElectricItemUtils.drainPlayerEnergy(entityLiving, getEnergyUsage());
                     return true;
                 }

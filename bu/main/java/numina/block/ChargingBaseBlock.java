@@ -34,9 +34,9 @@ import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.Player;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.entity.player.ServerPlayer;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
@@ -56,7 +56,7 @@ import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.util.text.TranslatableComponent;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
@@ -69,7 +69,7 @@ import java.util.List;
  * Base of the armor workstation.
  */
 public class ChargingBaseBlock extends Block implements IWaterLoggable {
-    private static final ITextComponent title = new TranslationTextComponent("container.crafting", new Object[0]);
+    private static final ITextComponent title = new TranslatableComponent("container.crafting", new Object[0]);
 
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
@@ -93,7 +93,7 @@ public class ChargingBaseBlock extends Block implements IWaterLoggable {
 
     @Override
     public void appendHoverText(ItemStack stack, @Nullable IBlockReader reader, List<ITextComponent> list, ITooltipFlag flags) {
-        list.add(new TranslationTextComponent("message.charging_base", Integer.toString(/*Config.FIRSTBLOCK_GENERATE.get()*/ 1000)));
+        list.add(new TranslatableComponent("message.charging_base", Integer.toString(/*Config.FIRSTBLOCK_GENERATE.get()*/ 1000)));
     }
 
     @Override
@@ -103,7 +103,7 @@ public class ChargingBaseBlock extends Block implements IWaterLoggable {
 
     @SuppressWarnings("deprecation")
     @Override
-    public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
+    public ActionResultType use(BlockState state, World worldIn, BlockPos pos, Player player, Hand handIn, BlockRayTraceResult hit) {
         if (!worldIn.isClientSide) {
             TileEntity tileEntity = worldIn.getBlockEntity(pos);
             if (tileEntity instanceof ChargingBaseTileEntity) {
@@ -111,15 +111,15 @@ public class ChargingBaseBlock extends Block implements IWaterLoggable {
                 INamedContainerProvider containerProvider = new INamedContainerProvider() {
                     @Override
                     public ITextComponent getDisplayName() {
-                        return new TranslationTextComponent("screen.numina.charging_base");
+                        return new TranslatableComponent("screen.numina.charging_base");
                     }
 
                     @Override
-                    public Container createMenu(int i, PlayerInventory playerInventory, PlayerEntity playerEntity) {
+                    public Container createMenu(int i, PlayerInventory playerInventory, Player playerEntity) {
                         return new ChargingBaseContainer(i, worldIn, pos, playerInventory, playerEntity);
                     }
                 };
-                NetworkHooks.openGui((ServerPlayerEntity) player, containerProvider, tileEntity.getBlockPos());
+                NetworkHooks.openGui((ServerPlayer) player, containerProvider, tileEntity.getBlockPos());
             } else {
                 throw new IllegalStateException("container provider is missing!");
             }

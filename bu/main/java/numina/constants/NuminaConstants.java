@@ -35,9 +35,7 @@ public class NuminaConstants {
   // Tooltips
   public static final String TOOLTIP_ENERGY = "tooltip.numina.battery.energy";
 
-  // Energy Storage -----------------------------------------------------------------------------
-  public static final String MAX_ENERGY = "maxEnergy";
-  public static final String MAX_TRAMSFER = "maxTransfer";
+
 
   // Misc
   public static final String RESOURCE_PREFIX = MOD_ID + ":";

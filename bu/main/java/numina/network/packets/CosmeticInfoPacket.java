@@ -27,9 +27,9 @@
 package lehjr.numina.network.packets;
 
 import lehjr.numina.util.capabilities.render.ModelSpecNBTCapability;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.entity.player.ServerPlayer;
+import net.minecraft.inventory.EquipmentSlot;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.fml.network.NetworkEvent;
 
@@ -42,14 +42,14 @@ import java.util.function.Supplier;
  * Ported to Java by lehjr on 11/14/16.
  */
 public class CosmeticInfoPacket {
-    protected EquipmentSlotType slotType;
+    protected EquipmentSlot slotType;
     protected String tagName;
-    protected CompoundNBT tagData;
+    protected CompoundTag tagData;
 
     public CosmeticInfoPacket() {
     }
 
-    public CosmeticInfoPacket(EquipmentSlotType slotType, String tagName, CompoundNBT tagData) {
+    public CosmeticInfoPacket(EquipmentSlot slotType, String tagName, CompoundTag tagData) {
         this.slotType = slotType;
         this.tagName = tagName;
         this.tagData = tagData;
@@ -63,17 +63,17 @@ public class CosmeticInfoPacket {
 
     public static CosmeticInfoPacket decode(PacketBuffer packetBuffer) {
         return new CosmeticInfoPacket(
-                packetBuffer.readEnum(EquipmentSlotType.class),
+                packetBuffer.readEnum(EquipmentSlot.class),
                 packetBuffer.readUtf(500),
                 packetBuffer.readNbt());
     }
 
     public static void handle(CosmeticInfoPacket message, Supplier<NetworkEvent.Context> ctx) {
         ctx.get().enqueueWork(() -> {
-            final ServerPlayerEntity player = ctx.get().getSender();
-            EquipmentSlotType slotType = message.slotType;
+            final ServerPlayer player = ctx.get().getSender();
+            EquipmentSlot slotType = message.slotType;
             String tagName = message.tagName;
-            CompoundNBT tagData = message.tagData;
+            CompoundTag tagData = message.tagData;
             player.getItemBySlot(slotType).getCapability(ModelSpecNBTCapability.RENDER).ifPresent(render-> {
                 render.setRenderTag(tagData, tagName);
             });

@@ -27,7 +27,7 @@
 package lehjr.numina.util.helper;
 
 import net.minecraft.block.*;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.Player;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.util.math.BlockPos;
@@ -72,7 +72,7 @@ public class ToolHelpers {
         return false;
     }
 
-    public static boolean blockCheckAndHarvest(PlayerEntity player, World world, BlockPos pos) {
+    public static boolean blockCheckAndHarvest(Player player, World world, BlockPos pos) {
         BlockState state = world.getBlockState(pos);
         Block block = state.getBlock();
 

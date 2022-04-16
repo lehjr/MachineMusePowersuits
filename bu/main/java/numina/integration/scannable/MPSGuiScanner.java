@@ -13,7 +13,7 @@ import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.util.text.TranslatableComponent;
 import net.minecraftforge.items.CapabilityItemHandler;
 
 import javax.annotation.Nullable;
@@ -23,10 +23,10 @@ import javax.annotation.Nullable;
  */
 public class MPSGuiScanner extends ContainerScreen<MPSContainerScanner> {
     private static final ResourceLocation BACKGROUND = new ResourceLocation(API.MOD_ID, "textures/gui/container/scanner.png");
-    private static final TranslationTextComponent SCANNER_MODULES_TEXT = new TranslationTextComponent(Constants.GUI_SCANNER_MODULES);
-    private static final TranslationTextComponent SCANNER_MODULES_TOOLTIP = new TranslationTextComponent(Constants.GUI_SCANNER_MODULES_TOOLTIP);
-    private static final TranslationTextComponent SCANNER_MODULES_INACTIVE_TEXT = new TranslationTextComponent(Constants.GUI_SCANNER_MODULES_INACTIVE);
-    private static final TranslationTextComponent SCANNER_MODULES_INACTIVE_TOOLTIP = new TranslationTextComponent(Constants.GUI_SCANNER_MODULES_INACTIVE_TOOLTIP);
+    private static final TranslatableComponent SCANNER_MODULES_TEXT = new TranslatableComponent(Constants.GUI_SCANNER_MODULES);
+    private static final TranslatableComponent SCANNER_MODULES_TOOLTIP = new TranslatableComponent(Constants.GUI_SCANNER_MODULES_TOOLTIP);
+    private static final TranslatableComponent SCANNER_MODULES_INACTIVE_TEXT = new TranslatableComponent(Constants.GUI_SCANNER_MODULES_INACTIVE);
+    private static final TranslatableComponent SCANNER_MODULES_INACTIVE_TOOLTIP = new TranslatableComponent(Constants.GUI_SCANNER_MODULES_INACTIVE_TOOLTIP);
 
     // --------------------------------------------------------------------- //
 

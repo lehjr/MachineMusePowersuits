@@ -27,7 +27,7 @@
 package lehjr.powersuits.capability;
 
 
-import lehjr.numina.util.capabilities.heat.HeatCapability;
+import lehjr.numina.util.capabilities.heat.CapabilityHeat;
 import lehjr.numina.util.capabilities.heat.HeatItemWrapper;
 import lehjr.numina.util.capabilities.inventory.modularitem.ModularItem;
 import lehjr.numina.util.capabilities.inventory.modularitem.NuminaRangedWrapper;
@@ -36,7 +36,7 @@ import lehjr.numina.util.capabilities.module.powermodule.PowerModuleCapability;
 import lehjr.powersuits.client.render.ArmorModelSpecNBT;
 import lehjr.powersuits.config.MPSSettings;
 import lehjr.powersuits.constants.MPSRegistryNames;
-import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.inventory.EquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Direction;
 import net.minecraftforge.common.capabilities.Capability;
@@ -52,7 +52,7 @@ import java.util.Map;
 public class PowerArmorCap extends AbstractModularPowerCap {
     double maxHeat;
 
-    public PowerArmorCap(@Nonnull ItemStack itemStackIn, EquipmentSlotType slot) {
+    public PowerArmorCap(@Nonnull ItemStack itemStackIn, EquipmentSlot slot) {
         this.itemStack = itemStackIn;
         this.targetSlot = slot;
         this.modelSpec = new ArmorModelSpecNBT(itemStackIn);
@@ -116,18 +116,18 @@ public class PowerArmorCap extends AbstractModularPowerCap {
         }
 
         // update item handler to gain access to the armor module if installed
-        if (cap == HeatCapability.HEAT) {
+        if (cap == CapabilityHeat.HEAT) {
             modularItemCap.updateFromNBT();
             // initialize heat storage with whatever value is retrieved
             heatStorage = new HeatItemWrapper(
                     itemStack, maxHeat, modularItemCap.getStackInSlot(0).getCapability(PowerModuleCapability.POWER_MODULE));
             // update heat storage to set current heat amount
             heatStorage.updateFromNBT();
-            return HeatCapability.HEAT.orEmpty(cap, LazyOptional.of(()-> heatStorage));
+            return CapabilityHeat.HEAT.orEmpty(cap, LazyOptional.of(()-> heatStorage));
         }
 
         // Chest only
-        if (targetSlot == EquipmentSlotType.CHEST && cap == CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY) {
+        if (targetSlot == EquipmentSlot.CHEST && cap == CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY) {
             modularItemCap.updateFromNBT();
             return CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY.orEmpty(cap,
                     LazyOptional.of(()->modularItemCap.getOnlineModuleOrEmpty(MPSRegistryNames.FLUID_TANK_MODULE_REGNAME).getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).orElse(new EmptyFluidHandler())));

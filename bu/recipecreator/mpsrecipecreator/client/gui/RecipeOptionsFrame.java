@@ -10,7 +10,7 @@ import lehjr.numina.util.client.sound.Musique;
 import lehjr.numina.util.math.Colour;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.util.text.TranslatableComponent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -85,13 +85,13 @@ public class RecipeOptionsFrame extends ScrollableFrame {
         conditionsFrame.disable();
         conditionsFrame.hide();
 
-        save = addButton(new TranslationTextComponent("mpsrc.gui.save"));
+        save = addButton(new TranslatableComponent("mpsrc.gui.save"));
         save.setOnPressed(pressed->{
             Musique.playClientSound(SoundEvents.UI_BUTTON_CLICK,1);
             mparcGui.save();
         });
 
-        reset = addButton(new TranslationTextComponent("mpsrc.gui.resetrecipe"));
+        reset = addButton(new TranslatableComponent("mpsrc.gui.resetrecipe"));
         reset.setOnPressed(pressed-> {
             Musique.playClientSound(SoundEvents.UI_BUTTON_CLICK, 1);
             mparcGui.resetRecipes();

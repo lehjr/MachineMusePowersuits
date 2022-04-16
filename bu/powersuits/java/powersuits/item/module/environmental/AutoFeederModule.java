@@ -38,10 +38,10 @@ import lehjr.numina.util.nbt.MuseNBTUtils;
 import lehjr.powersuits.config.MPSSettings;
 import lehjr.powersuits.constants.MPSConstants;
 import lehjr.powersuits.item.module.AbstractPowerModule;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.Player;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Direction;
 import net.minecraft.util.FoodStats;
 import net.minecraftforge.common.capabilities.Capability;
@@ -61,7 +61,7 @@ public class AutoFeederModule extends AbstractPowerModule {
 
     @Nullable
     @Override
-    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundNBT nbt) {
+    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt) {
         return new CapProvider(stack);
     }
 
@@ -110,7 +110,7 @@ public class AutoFeederModule extends AbstractPowerModule {
             }
 
             @Override
-            public void onPlayerTickActive(PlayerEntity player, ItemStack itemX) {
+            public void onPlayerTickActive(Player player, ItemStack itemX) {
                 float foodLevel = getFoodLevel(module);
                 float saturationLevel = getSaturationLevel(module);
                 IInventory inv = player.inventory;
@@ -164,7 +164,7 @@ public class AutoFeederModule extends AbstractPowerModule {
                     setSaturationLevel(module, saturationLevel);
                 }
 
-                CompoundNBT foodStatNBT = new CompoundNBT();
+                CompoundTag foodStatNBT = new CompoundTag();
 
                 // only consume saturation if food is consumed. This keeps the food buffer from overloading with food while the
                 //   saturation buffer drains completely.

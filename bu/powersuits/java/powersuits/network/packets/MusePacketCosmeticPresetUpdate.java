@@ -28,7 +28,7 @@ package lehjr.powersuits.network.packets;//package lehjr.powersuits.network.pack
 //
 //import lehjr.mpalib.basemod.MPALibLogger;
 //import lehjr.mpalib.network.MuseByteBufferUtils;
-//import net.minecraft.nbt.CompoundNBT;
+//import net.minecraft.nbt.CompoundTag;
 //import net.minecraft.network.PacketBuffer;
 //import net.minecraftforge.fml.network.NetworkEvent;
 //
@@ -37,13 +37,13 @@ package lehjr.powersuits.network.packets;//package lehjr.powersuits.network.pack
 //public class MusePacketCosmeticPresetUpdate {
 //    String registryName;
 //    String name;
-//    CompoundNBT cosmeticSettings;
+//    CompoundTag cosmeticSettings;
 //
 //    public MusePacketCosmeticPresetUpdate() {
 //
 //    }
 //
-//    public MusePacketCosmeticPresetUpdate(String registryNameIn, String nameIn, CompoundNBT cosmeticSettingsIn) {
+//    public MusePacketCosmeticPresetUpdate(String registryNameIn, String nameIn, CompoundTag cosmeticSettingsIn) {
 //        this.registryName = registryNameIn;
 //        this.name = nameIn;
 //        this.cosmeticSettings = cosmeticSettingsIn;
@@ -69,7 +69,7 @@ package lehjr.powersuits.network.packets;//package lehjr.powersuits.network.pack
 //
 ////        if (ctx.side == Side.SERVER) {
 ////            boolean allowCosmeticPresetCreation;
-////            final ServerPlayerEntity player = ctx.getServerHandler().player;
+////            final ServerPlayer player = ctx.getServerHandler().player;
 ////            // check if player is the server owner
 ////            if (FMLCommonHandler.instance().getMinecraftServerInstance().isSinglePlayer()) {
 ////                allowCosmeticPresetCreation = player.getName().equals(FMLCommonHandler.instance().getMinecraftServerInstance().getServerOwner());
@@ -83,7 +83,7 @@ package lehjr.powersuits.network.packets;//package lehjr.powersuits.network.pack
 ////                ctx.get().enqueueWork(() -> {
 ////                    ResourceLocation registryName = message.registryName;
 ////                    String name = message.name;
-////                    CompoundNBT cosmeticSettings = message.cosmeticSettings;
+////                    CompoundTag cosmeticSettings = message.cosmeticSettings;
 ////                    MPSServerSettings settings = MPASettings::getModuleConfig.getServerSettings();
 ////                    if (settings != null) {
 ////                        settings.updateCosmeticInfo(registryName, name, cosmeticSettings);
@@ -101,7 +101,7 @@ package lehjr.powersuits.network.packets;//package lehjr.powersuits.network.pack
 ////            Minecraft.getInstance().addScheduledTask(() -> {
 ////                ResourceLocation registryName = message.registryName;
 ////                String name = message.name;
-////                CompoundNBT cosmeticSettings = message.cosmeticSettings;
+////                CompoundTag cosmeticSettings = message.cosmeticSettings;
 ////                MPSServerSettings settings = MPASettings::getModuleConfig.getServerSettings();
 ////                settings.updateCosmeticInfo(registryName, name, cosmeticSettings);
 ////            });

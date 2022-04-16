@@ -28,7 +28,7 @@ package lehjr.numina.util.client.event;
 
 import lehjr.numina.config.NuminaSettings;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.player.ClientPlayerEntity;
+import net.minecraft.client.entity.player.ClientPlayer;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.ai.attributes.Attributes;
@@ -60,7 +60,7 @@ public class FOVUpdateEventHandler {
     @SubscribeEvent
     public void onFOVUpdate(FOVUpdateEvent e) {
         if (NuminaSettings.useFovFix()) {
-            ClientPlayerEntity player = Minecraft.getInstance().player;
+            ClientPlayer player = Minecraft.getInstance().player;
             if (fovToggleKey.consumeClick()) {
                 fovIsActive = !fovIsActive;
                 if (fovIsActive) {

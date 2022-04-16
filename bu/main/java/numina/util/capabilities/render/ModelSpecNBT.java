@@ -31,7 +31,7 @@ import lehjr.numina.constants.NuminaConstants;
 import lehjr.numina.util.capabilities.render.modelspec.EnumSpecType;
 import lehjr.numina.util.nbt.MuseNBTUtils;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraftforge.common.util.INBTSerializable;
 
 import javax.annotation.Nonnull;
@@ -39,7 +39,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Objects;
 
-public class ModelSpecNBT implements IModelSpecNBT, INBTSerializable<CompoundNBT> {
+public class ModelSpecNBT implements IModelSpecNBT, INBTSerializable<CompoundTag> {
     ItemStack itemStack;
     static final String TAG_RENDER = "render";
 
@@ -54,21 +54,21 @@ public class ModelSpecNBT implements IModelSpecNBT, INBTSerializable<CompoundNBT
     }
 
     @Override
-    public CompoundNBT setRenderTag(CompoundNBT renderDataIn, String tagName) {
-        CompoundNBT itemTag = MuseNBTUtils.getMuseItemTag(itemStack);
+    public CompoundTag setRenderTag(CompoundTag renderDataIn, String tagName) {
+        CompoundTag itemTag = MuseNBTUtils.getMuseItemTag(itemStack);
         if (tagName != null) {
             if (Objects.equals(tagName, NuminaConstants.TAG_RENDER)) {
                 itemTag.remove(NuminaConstants.TAG_RENDER);
                 if (!renderDataIn.isEmpty()) {
                     itemTag.put(NuminaConstants.TAG_RENDER, renderDataIn);
                 } else {
-                    itemTag.put(NuminaConstants.TAG_RENDER, new CompoundNBT());
+                    itemTag.put(NuminaConstants.TAG_RENDER, new CompoundTag());
                     setColorArray(new int[]{-1});
                 }
             } else {
-                CompoundNBT renderTag;
+                CompoundTag renderTag;
                 if (!itemTag.contains(NuminaConstants.TAG_RENDER)) {
-                    renderTag = new CompoundNBT();
+                    renderTag = new CompoundTag();
                     itemTag.put(NuminaConstants.TAG_RENDER, renderTag);
                 } else {
                     renderTag = itemTag.getCompound(NuminaConstants.TAG_RENDER);
@@ -96,14 +96,14 @@ public class ModelSpecNBT implements IModelSpecNBT, INBTSerializable<CompoundNBT
 
     @Override
     @Nullable
-    public CompoundNBT getRenderTag() {
-        CompoundNBT itemTag = MuseNBTUtils.getMuseItemTag(itemStack);
+    public CompoundTag getRenderTag() {
+        CompoundTag itemTag = MuseNBTUtils.getMuseItemTag(itemStack);
         return itemTag.getCompound(TAG_RENDER);
     }
 
     @Override
-    public CompoundNBT getDefaultRenderTag() {
-        return new CompoundNBT();
+    public CompoundTag getDefaultRenderTag() {
+        return new CompoundTag();
     }
 
     /**
@@ -133,19 +133,19 @@ public class ModelSpecNBT implements IModelSpecNBT, INBTSerializable<CompoundNBT
     }
 
     @Override
-    public CompoundNBT setColorArray(int[] colors) {
+    public CompoundTag setColorArray(int[] colors) {
         getRenderTag().putIntArray(NuminaConstants.TAG_COLOURS, colors);
         return getRenderTag();
     }
 
-    // INBTSerializable<CompoundNBT> ----------------------------------------------------------------------------------
+    // INBTSerializable<CompoundTag> ----------------------------------------------------------------------------------
     @Override
-    public CompoundNBT serializeNBT() {
+    public CompoundTag serializeNBT() {
         return getRenderTag();
     }
 
     @Override
-    public void deserializeNBT(CompoundNBT nbt) {
+    public void deserializeNBT(CompoundTag nbt) {
         setRenderTag(nbt, NuminaConstants.TAG_RENDER);
     }
 }

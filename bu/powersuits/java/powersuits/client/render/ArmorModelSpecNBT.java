@@ -32,11 +32,11 @@ import lehjr.numina.util.capabilities.render.ModelSpecNBT;
 import lehjr.numina.util.capabilities.render.modelspec.*;
 import lehjr.numina.util.nbt.MuseNBTUtils;
 import lehjr.powersuits.config.MPSSettings;
-import net.minecraft.entity.MobEntity;
-import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.entity.Mob;
+import net.minecraft.inventory.EquipmentSlot;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.IntArrayNBT;
 import net.minecraft.nbt.ListNBT;
 
@@ -51,7 +51,7 @@ public class ArmorModelSpecNBT extends ModelSpecNBT implements IArmorModelSpecNB
 
     @Override
     public EnumSpecType getSpecType() {
-        CompoundNBT renderTag = getRenderTag();
+        CompoundTag renderTag = getRenderTag();
         if (renderTag == null || renderTag.isEmpty()) {
               renderTag = getDefaultRenderTag();
         }
@@ -68,7 +68,7 @@ public class ArmorModelSpecNBT extends ModelSpecNBT implements IArmorModelSpecNB
             if (key.equals("colours")) {
                 continue;
             }
-            if (renderTag.get(key) instanceof CompoundNBT) {
+            if (renderTag.get(key) instanceof CompoundTag) {
                 SpecBase testSpec = ModelRegistry.getInstance().getModel(renderTag.getCompound(key));
                 if (testSpec instanceof ModelSpec) {
                     return EnumSpecType.ARMOR_MODEL;
@@ -79,26 +79,26 @@ public class ArmorModelSpecNBT extends ModelSpecNBT implements IArmorModelSpecNB
     }
 
     @Override
-    public CompoundNBT getDefaultRenderTag() {
+    public CompoundTag getDefaultRenderTag() {
         if (getItemStack().isEmpty()) {
-            return new CompoundNBT();
+            return new CompoundTag();
         }
 
-        List<CompoundNBT> prefArray = new ArrayList<>();
+        List<CompoundTag> prefArray = new ArrayList<>();
 
         // ModelPartSpecs
         ListNBT specList = new ListNBT();
 
         // TextureSpecBase (only one texture visible at a time)
-        CompoundNBT texSpecTag = new CompoundNBT();
+        CompoundTag texSpecTag = new CompoundTag();
 
         // List of EnumColour indexes
         List<Integer> colours = new ArrayList<>();
 
         // temp data holder
-        CompoundNBT tempNBT;
+        CompoundTag tempNBT;
 
-        EquipmentSlotType slot = MobEntity.getEquipmentSlotForItem(getItemStack());
+        EquipmentSlot slot = Mob.getEquipmentSlotForItem(getItemStack());
 
         for (SpecBase spec : ModelRegistry.getInstance().getSpecs()) {
             // Only generate NBT data from Specs marked as "default"
@@ -109,7 +109,7 @@ public class ArmorModelSpecNBT extends ModelSpecNBT implements IArmorModelSpecNB
                     // Armor Skin
                     if (spec.getSpecType().equals(EnumSpecType.ARMOR_SKIN) && spec.get(slot.getName()) != null) {
                         // only a single texture per equipment slot can be used at a time
-                        texSpecTag = spec.get(slot.getName()).multiSet(new CompoundNBT(),
+                        texSpecTag = spec.get(slot.getName()).multiSet(new CompoundTag(),
                                 getNewColourIndex(colours, spec.getColours(), spec.get(slot.getName()).getDefaultColourIndex()));
                     }
 
@@ -122,7 +122,7 @@ public class ArmorModelSpecNBT extends ModelSpecNBT implements IArmorModelSpecNB
                                 if (partSpec.binding.getItemState().equals("all") ||
                                         (partSpec.binding.getItemState().equals("jetpack") &&
                                                 ModuleManager.INSTANCE.itemHasModule(stack, MPSModuleConstants.MODULE_JETPACK__DATANAME))) { */
-                                prefArray.add(((ModelPartSpec) partSpec).multiSet(new CompoundNBT(),
+                                prefArray.add(((ModelPartSpec) partSpec).multiSet(new CompoundTag(),
                                         getNewColourIndex(colours, spec.getColours(), partSpec.getDefaultColourIndex()),
                                         ((ModelPartSpec) partSpec).getGlow()));
                                 /*} */
@@ -133,8 +133,8 @@ public class ArmorModelSpecNBT extends ModelSpecNBT implements IArmorModelSpecNB
             }
         }
 
-        CompoundNBT nbt = new CompoundNBT();
-        for (CompoundNBT elem : prefArray) {
+        CompoundTag nbt = new CompoundTag();
+        for (CompoundTag elem : prefArray) {
             nbt.put(elem.getString(NuminaConstants.TAG_MODEL) + "." + elem.getString(NuminaConstants.TAG_PART), elem);
         }
 
@@ -152,8 +152,8 @@ public class ArmorModelSpecNBT extends ModelSpecNBT implements IArmorModelSpecNB
 
     @Override
     public String getArmorTexture() {
-        CompoundNBT itemTag = MuseNBTUtils.getMuseItemTag(getItemStack());
-        CompoundNBT renderTag = itemTag.getCompound(NuminaConstants.TAG_RENDER);
+        CompoundTag itemTag = MuseNBTUtils.getMuseItemTag(getItemStack());
+        CompoundTag renderTag = itemTag.getCompound(NuminaConstants.TAG_RENDER);
         try {
             TexturePartSpec partSpec = (TexturePartSpec) ModelRegistry.getInstance().getPart(renderTag.getCompound(NuminaConstants.NBT_TEXTURESPEC_TAG));
             return partSpec.getTextureLocation();

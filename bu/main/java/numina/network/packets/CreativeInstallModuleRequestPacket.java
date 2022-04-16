@@ -26,7 +26,7 @@
 
 package lehjr.numina.network.packets;
 
-import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.entity.player.ServerPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.fml.network.NetworkEvent;
@@ -64,7 +64,7 @@ public class CreativeInstallModuleRequestPacket {
 
     public static void handle(CreativeInstallModuleRequestPacket message, Supplier<NetworkEvent.Context> ctx) {
         ctx.get().enqueueWork(() -> {
-            ServerPlayerEntity player = ctx.get().getSender();
+            ServerPlayer player = ctx.get().getSender();
             if (player.containerMenu != null && player.containerMenu.containerId == message.windowId) {
                 player.containerMenu.setItem(message.slotId, message.itemStack);
                 player.containerMenu.broadcastChanges();

@@ -35,7 +35,7 @@
 //    public List<ITextComponent> getToolTip(int i, int i1) {
 //        return null;
 //    }
-////    PlayerEntity player;
+////    Player player;
 ////    public ItemSelectionFrame itemSelector;
 ////    public DrawableRect border;
 ////    protected ClickableButton loadButton;
@@ -57,7 +57,7 @@
 ////
 ////    TextFieldWidget presetNameInputBox;
 ////
-////    public LoadSaveResetSubFrame(ColourPickerFrame colourpicker, PlayerEntity player, Rect borderRef, Colour insideColour, Colour borderColour, ItemSelectionFrame itemSelector, boolean usingCosmeticPresetsIn, boolean allowCosmeticPresetCreationIn, PartManipContainer partframe, CosmeticPresetContainer cosmeticFrame) {
+////    public LoadSaveResetSubFrame(ColourPickerFrame colourpicker, Player player, Rect borderRef, Colour insideColour, Colour borderColour, ItemSelectionFrame itemSelector, boolean usingCosmeticPresetsIn, boolean allowCosmeticPresetCreationIn, PartManipContainer partframe, CosmeticPresetContainer cosmeticFrame) {
 ////        this.player = player;
 ////        this.border = new DrawableRect(borderRef, insideColour, borderColour);
 ////        this.originalTop = border.top();
@@ -187,26 +187,26 @@
 ////    /**
 ////     * Get's the equipment itemSlot the item is for.
 ////     */
-////    public EquipmentSlotType getEquipmentSlot() {
+////    public EquipmentSlot getEquipmentSlot() {
 ////        ItemStack selectedItem = getSelectedItem().getItem();
 ////        if (!selectedItem.isEmpty() && selectedItem.getItem() instanceof ItemPowerArmor)
 ////            return ((ItemPowerArmor) selectedItem.getItem()).getEquipmentSlot();
 ////
 ////        Minecraft minecraft = Minecraft.getInstance();
-////        PlayerEntity player = minecraft.player;
+////        Player player = minecraft.player;
 ////        ItemStack heldItem = player.getHeldItemOffhand();
 ////
 ////        if (!heldItem.isEmpty() && ItemStack.areItemStacksEqual(selectedItem, heldItem))
-////            return EquipmentSlotType.OFFHAND;
-////        return EquipmentSlotType.MAINHAND;
+////            return EquipmentSlot.OFFHAND;
+////        return EquipmentSlot.MAINHAND;
 ////    }
 ////
 ////    void checkAndFixItem(ClickableItem clickie) {
 ////        if (clickie != null) {
 ////            ItemStack itemStack = clickie.getItem();
-////            CompoundNBT itemNBT = NBTUtils.getMuseItemTag(itemStack);
+////            CompoundTag itemNBT = NBTUtils.getMuseItemTag(itemStack);
 ////            if (itemNBT.contains(NuminaConstants.TAG_RENDER,Constants.NBT.TAG_COMPOUND)) {
-////                BiMap<String, CompoundNBT> presetMap = MPSSettings::getModuleConfig.getCosmeticPresets(itemStack);
+////                BiMap<String, CompoundTag> presetMap = MPSSettings::getModuleConfig.getCosmeticPresets(itemStack);
 ////                if (presetMap.containsValue(itemNBT.getCompound(NuminaConstants.TAG_RENDER))) {
 ////                    String name = presetMap.inverse().get(itemNBT.getCompound(NuminaConstants.TAG_RENDER));
 ////                    MPSPackets.sendToServer(new MusePacketCosmeticPreset(Minecraft.getInstance().player.getEntityId(), clickie.inventorySlot, name));
@@ -243,15 +243,15 @@
 ////            setLegacyMode();
 ////    }
 ////
-////    CompoundNBT getDefaultPreset(@Nonnull ItemStack itemStack) {
+////    CompoundTag getDefaultPreset(@Nonnull ItemStack itemStack) {
 ////        return MPSSettings::getModuleConfig.getPresetNBTFor(itemStack, "Default");
 ////    }
 ////
-////    public boolean isValidItem(ClickableItem clickie, EquipmentSlotType slot) {
+////    public boolean isValidItem(ClickableItem clickie, EquipmentSlot slot) {
 ////        if (clickie != null) {
 ////            if (clickie.getItem().getItem() instanceof ItemPowerArmor)
 ////                return clickie.getItem().getItem().canEquip(clickie.getItem(), slot, Minecraft.getInstance().player);
-////            else if (clickie.getItem().getItem() instanceof ItemPowerFist && slot.getSlotType().equals(EquipmentSlotType.Group.HAND))
+////            else if (clickie.getItem().getItem() instanceof ItemPowerFist && slot.getSlotType().equals(EquipmentSlot.Type.HAND))
 ////                return true;
 ////        }
 ////        return false;
@@ -291,7 +291,7 @@
 ////                            if (save) {
 ////                                if (isValidItem(getSelectedItem(), getEquipmentSlot())) {
 ////                                    // get the render tag for the item
-////                                    CompoundNBT nbt = MPSModelHelper.getRenderTag(itemStack).copy();
+////                                    CompoundTag nbt = MPSModelHelper.getRenderTag(itemStack).copy();
 ////                                    MPSPackets.sendToServer(new MusePacketCosmeticPresetUpdate(itemStack.getItem().getRegistryName(), name, nbt));
 ////                                }
 ////                            }
@@ -303,7 +303,7 @@
 ////                        // reset tag to cosmetic copy of cosmetic preset default as legacy tag for editing.
 ////                    } else if (resetButton.hitBox(x, y)) {
 ////                        if (isValidItem(getSelectedItem(), getEquipmentSlot())) {
-////                            CompoundNBT nbt = getDefaultPreset(itemSelector.getSelectedItem().getItem());
+////                            CompoundTag nbt = getDefaultPreset(itemSelector.getSelectedItem().getItem());
 ////                            MPSPackets.sendToServer(new MusePacketCosmeticInfo(player.getEntityId(), itemSelector.getSelectedItem().inventorySlot, NuminaConstants.TAG_RENDER, nbt));
 ////                        }
 ////                        // cancel creation
@@ -317,7 +317,7 @@
 ////                    if (saveButton.hitBox(x, y)) {
 ////                        if (isValidItem(getSelectedItem(), getEquipmentSlot())) {
 ////                            isEditing = true;
-////                            CompoundNBT nbt = MPSModelHelper.getRenderTag(getSelectedItem().getItem(), getEquipmentSlot());
+////                            CompoundTag nbt = MPSModelHelper.getRenderTag(getSelectedItem().getItem(), getEquipmentSlot());
 ////                            MPSPackets.sendToServer(new MusePacketCosmeticInfo(Minecraft.getInstance().player.getEntityId(), this.getSelectedItem().inventorySlot, NuminaConstants.TAG_RENDER, nbt));
 ////                        }
 ////                    } else if (resetButton.hitBox(x, y)) {
@@ -337,7 +337,7 @@
 ////        } else {
 ////            if (resetButton.hitBox(x, y)) {
 ////                if (isValidItem(getSelectedItem(), getEquipmentSlot())) {
-////                    CompoundNBT nbt = DefaultModelSpec.makeModelPrefs(itemSelector.getSelectedItem().getItem());
+////                    CompoundTag nbt = DefaultModelSpec.makeModelPrefs(itemSelector.getSelectedItem().getItem());
 ////                    MPSPackets.sendToServer(new MusePacketCosmeticInfo(player.getEntityId(), itemSelector.getSelectedItem().inventorySlot, NuminaConstants.TAG_RENDER, nbt));
 ////                }
 ////            }

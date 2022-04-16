@@ -3,17 +3,17 @@ package lehjr.numina.util.client.gui.frame;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import lehjr.numina.util.client.render.MuseRenderer;
 import lehjr.numina.util.math.Colour;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.util.text.TranslatableComponent;
 
 /**
  * Make this 12.5x frame width (157?) and add label render method
  */
 public class LabelBox extends GUISpacer {
     Colour colour = new Colour(4210752);
-    TranslationTextComponent translationTextComponent;
-    public LabelBox(double width, double height, TranslationTextComponent translationTextComponent) {
+    TranslatableComponent TranslatableComponent;
+    public LabelBox(double width, double height, TranslatableComponent TranslatableComponent) {
         super(width, height);
-        this.translationTextComponent = translationTextComponent;
+        this.TranslatableComponent = TranslatableComponent;
     }
 
     public void setColor(Colour colour) {
@@ -21,10 +21,10 @@ public class LabelBox extends GUISpacer {
     }
 
     public void renderLabel(MatrixStack matrixStack, float offsetX, float offsetY) {
-        MuseRenderer.drawCenteredText(matrixStack, translationTextComponent, centerx() + offsetX, centery() +  offsetY, colour);
+        MuseRenderer.drawCenteredText(matrixStack, TranslatableComponent, centerx() + offsetX, centery() +  offsetY, colour);
     }
 
-    public void setLabel(TranslationTextComponent translationTextComponent) {
-        this.translationTextComponent = translationTextComponent;
+    public void setLabel(TranslatableComponent TranslatableComponent) {
+        this.TranslatableComponent = TranslatableComponent;
     }
 }

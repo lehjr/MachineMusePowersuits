@@ -28,7 +28,7 @@ package lehjr.numina.util.capabilities.module.miningenhancement;
 
 import lehjr.numina.util.capabilities.module.rightclick.IRightClickModule;
 import lehjr.numina.util.capabilities.module.toggleable.IToggleableModule;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.Player;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 
@@ -37,7 +37,7 @@ import net.minecraft.util.math.BlockPos;
  * No right click functionality is actually being used.
  */
 public interface IMiningEnhancementModule extends IRightClickModule, IToggleableModule {
-    boolean onBlockStartBreak(ItemStack itemstack, BlockPos pos, PlayerEntity player);
+    boolean onBlockStartBreak(ItemStack itemstack, BlockPos pos, Player player);
 
     int getEnergyUsage();
 }

@@ -31,7 +31,7 @@ import lehjr.powersuits.tile_entity.TinkerTableTileEntity;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.Player;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
@@ -48,7 +48,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.util.text.TranslatableComponent;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
@@ -79,7 +79,7 @@ public class TinkerTable extends HorizontalBlock implements IWaterLoggable {
 
     @SuppressWarnings("deprecation")
     @Override
-    public ActionResultType use(BlockState blockState, World world, BlockPos blockPos, PlayerEntity player, Hand hand, BlockRayTraceResult result) {
+    public ActionResultType use(BlockState blockState, World world, BlockPos blockPos, Player player, Hand hand, BlockRayTraceResult result) {
         if (world.isClientSide) {
             openGui(world);
         }
@@ -90,7 +90,7 @@ public class TinkerTable extends HorizontalBlock implements IWaterLoggable {
     @OnlyIn(Dist.CLIENT)
     public void openGui(World world) {
         if (world.isClientSide) {
-            Minecraft.getInstance().tell(() -> Minecraft.getInstance().setScreen(new ModuleTweakGui(new TranslationTextComponent("gui.tinkertable"), true)));
+            Minecraft.getInstance().tell(() -> Minecraft.getInstance().setScreen(new ModuleTweakGui(new TranslatableComponent("gui.tinkertable"), true)));
         }
     }
 

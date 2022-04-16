@@ -18,9 +18,9 @@ import lehjr.powersuits.item.module.AbstractPowerModule;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.Player;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
@@ -45,7 +45,7 @@ public class TunnelBoreModule extends AbstractPowerModule {
 
     @Nullable
     @Override
-    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundNBT nbt) {
+    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt) {
         return new CapProvider(stack);
     }
     /** TODO: Add cooldown timer */
@@ -81,7 +81,7 @@ public class TunnelBoreModule extends AbstractPowerModule {
             }
 
             @Override
-            public boolean onBlockStartBreak(ItemStack itemStack, BlockPos posIn, PlayerEntity player) {
+            public boolean onBlockStartBreak(ItemStack itemStack, BlockPos posIn, Player player) {
                 if (player.level.isClientSide) {
                     return false; // fixme : check?
                 }

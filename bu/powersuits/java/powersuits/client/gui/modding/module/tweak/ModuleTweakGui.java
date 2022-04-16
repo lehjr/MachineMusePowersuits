@@ -37,9 +37,9 @@ import lehjr.numina.util.math.Colour;
 import lehjr.powersuits.client.gui.common.ModularItemSelectionFrame;
 import lehjr.powersuits.client.gui.common.TabSelectFrame;
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.Player;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.util.text.TranslatableComponent;
 
 /**
  * Requires all module and inventory slots be accounted for before constructing
@@ -65,7 +65,7 @@ public class ModuleTweakGui extends ContainerlessGui {
     public ModuleTweakGui(ITextComponent titleIn, boolean growFromMiddle) {
         super(titleIn, 340, 217, growFromMiddle);
         this.minecraft = Minecraft.getInstance();
-        PlayerEntity player = getMinecraft().player;
+        Player player = getMinecraft().player;
         tabSelectFrame = new TabSelectFrame(player, 1);
         addFrame(tabSelectFrame);
 
@@ -78,7 +78,7 @@ public class ModuleTweakGui extends ContainerlessGui {
         MultiRectHolderFrame leftFrame = new MultiRectHolderFrame(false, true, 0,0);
 
         /** left label (takes place of spacer) */
-        modularSelectionLabel = new LabelBox(leftFrameWidth, 15, new TranslationTextComponent("gui.powersuits.installed.modules"));
+        modularSelectionLabel = new LabelBox(leftFrameWidth, 15, new TranslatableComponent("gui.powersuits.installed.modules"));
         leftFrame.addRect(modularSelectionLabel);
 
         /** frame to display and allow selecting of installed modules */
@@ -171,8 +171,8 @@ public class ModuleTweakGui extends ContainerlessGui {
                 renderBackgroundRect(matrixStack, mouseX, mouseY, partialTicks);
                 float centerx = absX(0);
                 float centery = absY(0);
-                MuseRenderer.drawCenteredText(matrixStack, new TranslationTextComponent("gui.powersuits.noModulesFound.line1"), centerx, centery - 5, Colour.WHITE);
-                MuseRenderer.drawCenteredText(matrixStack, new TranslationTextComponent("gui.powersuits.noModulesFound.line2"), centerx, centery + 5, Colour.WHITE);
+                MuseRenderer.drawCenteredText(matrixStack, new TranslatableComponent("gui.powersuits.noModulesFound.line1"), centerx, centery - 5, Colour.WHITE);
+                MuseRenderer.drawCenteredText(matrixStack, new TranslatableComponent("gui.powersuits.noModulesFound.line2"), centerx, centery + 5, Colour.WHITE);
                 tabSelectFrame.render(matrixStack, mouseX, mouseY, partialTicks);
             } else {
                 super.render(matrixStack, mouseX, mouseY, partialTicks);

@@ -49,10 +49,10 @@ import net.minecraft.client.renderer.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.model.ItemOverrideList;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.entity.player.Player;
+import net.minecraft.inventory.EquipmentSlot;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.vector.TransformationMatrix;
 import net.minecraftforge.api.distmarker.Dist;
@@ -75,7 +75,7 @@ public class PowerFistModel extends BakedModelWrapper {
     static ItemCameraTransforms.TransformType modelcameraTransformType;
     static ItemStack itemStack;
     static boolean isFiring = false;
-    PlayerEntity player;
+    Player player;
 
     public PowerFistModel(IBakedModel bakedModelIn) {
         super(bakedModelIn);
@@ -111,7 +111,7 @@ public class PowerFistModel extends BakedModelWrapper {
         ImmutableList.Builder<BakedQuad> builder = ImmutableList.builder();
         itemStack.getCapability(ModelSpecNBTCapability.RENDER).ifPresent(specNBTCap -> {
             if (specNBTCap instanceof IHandHeldModelSpecNBT) {
-                CompoundNBT renderSpec = specNBTCap.getRenderTag();
+                CompoundTag renderSpec = specNBTCap.getRenderTag();
 
                 // Set the tag on the item so this lookup isn't happening on every loop.
                 // Like the armor, empty or null tag signifies the models haven't been set up yet.
@@ -123,10 +123,10 @@ public class PowerFistModel extends BakedModelWrapper {
                     if (renderSpec != null && !renderSpec.isEmpty() &&
                             (modelcameraTransformType == ItemCameraTransforms.TransformType.FIRST_PERSON_LEFT_HAND ||
                                     (modelcameraTransformType == ItemCameraTransforms.TransformType.FIRST_PERSON_RIGHT_HAND))) {
-                        PlayerEntity player = Minecraft.getInstance().player;
-                        EquipmentSlotType slotType = EquipmentSlotType.OFFHAND;
+                        Player player = Minecraft.getInstance().player;
+                        EquipmentSlot slotType = EquipmentSlot.OFFHAND;
                         if (player.getMainHandItem().equals(itemStack)) {
-                            slotType = EquipmentSlotType.MAINHAND;
+                            slotType = EquipmentSlot.MAINHAND;
                         }
                         specNBTCap.setRenderTag(renderSpec, NuminaConstants.TAG_RENDER);
                         NuminaPackets.CHANNEL_INSTANCE.sendToServer(new CosmeticInfoPacket(slotType, NuminaConstants.TAG_RENDER, renderSpec));
@@ -138,7 +138,7 @@ public class PowerFistModel extends BakedModelWrapper {
                     Colour partColor;
                     TransformationMatrix transform;
 
-                    for (CompoundNBT nbt : NBTTagAccessor.getValues(renderSpec)) {
+                    for (CompoundTag nbt : NBTTagAccessor.getValues(renderSpec)) {
                         PartSpecBase partSpec = ModelRegistry.getInstance().getPart(nbt);
                         if (partSpec instanceof ModelPartSpec) {
 
@@ -190,7 +190,7 @@ public class PowerFistModel extends BakedModelWrapper {
         }
     }
 
-    public void setPlayer(PlayerEntity player) {
+    public void setPlayer(Player player) {
         this.player = player;
     }
 
@@ -218,8 +218,8 @@ public class PowerFistModel extends BakedModelWrapper {
         @Override
         public IBakedModel resolve(IBakedModel originalModel, ItemStack itemStackIn, @Nullable ClientWorld world, @Nullable LivingEntity entityIn) {
             itemStack = itemStackIn;
-            if (entityIn instanceof PlayerEntity) {
-                PlayerEntity player = (PlayerEntity) entityIn;
+            if (entityIn instanceof Player) {
+                Player player = (Player) entityIn;
                 if (player.isUsingItem()) {
                     player.getItemInHand(player.getUsedItemHand()).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(modechanging -> {
                         if (!(modechanging instanceof IModeChangingItem)) {

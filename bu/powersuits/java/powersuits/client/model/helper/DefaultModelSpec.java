@@ -31,9 +31,9 @@ import lehjr.numina.util.capabilities.render.modelspec.*;
 import lehjr.powersuits.config.MPSSettings;
 import lehjr.powersuits.item.armor.AbstractElectricItemArmor;
 import lehjr.powersuits.item.tool.PowerFist;
-import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.inventory.EquipmentSlot;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.IntArrayNBT;
 import net.minecraft.nbt.ListNBT;
 
@@ -56,33 +56,33 @@ import java.util.List;
 
 //@OnlyIn(Dist.CLIENT)
 public class DefaultModelSpec {
-    public static CompoundNBT makeModelPrefs(@Nonnull ItemStack stack) {
+    public static CompoundTag makeModelPrefs(@Nonnull ItemStack stack) {
         if (!stack.isEmpty()) {
             if (stack.getItem() instanceof AbstractElectricItemArmor)
                 return makeModelPrefs(stack, ((AbstractElectricItemArmor) stack.getItem()).getSlot());
             if (stack.getItem() instanceof PowerFist)
-                return makeModelPrefs(stack, EquipmentSlotType.MAINHAND);
+                return makeModelPrefs(stack, EquipmentSlot.MAINHAND);
         }
-        return new CompoundNBT();
+        return new CompoundTag();
     }
 
-    public static CompoundNBT makeModelPrefs(@Nonnull ItemStack stack, EquipmentSlotType slot) {
+    public static CompoundTag makeModelPrefs(@Nonnull ItemStack stack, EquipmentSlot slot) {
         if (stack.isEmpty())
-            return new CompoundNBT();
+            return new CompoundTag();
 
-        List<CompoundNBT> prefArray = new ArrayList<>();
+        List<CompoundTag> prefArray = new ArrayList<>();
 
         // ModelPartSpecs
         ListNBT specList = new ListNBT();
 
         // TextureSpecBase (only one texture visible at a time)
-        CompoundNBT texSpecTag = new CompoundNBT();
+        CompoundTag texSpecTag = new CompoundTag();
 
         // List of EnumColour indexes
         List<Integer> colours = new ArrayList<>();
 
         // temp data holder
-        CompoundNBT tempNBT;
+        CompoundTag tempNBT;
 
         // here we loop through the registry looking for the default that applies to the ItemStack
         for (SpecBase spec : ModelRegistry.getInstance().getSpecs()) {
@@ -95,7 +95,7 @@ public class DefaultModelSpec {
 
                     for (PartSpecBase partSpec : spec.getPartSpecs()) {
                         if (partSpec instanceof ModelPartSpec) {
-                            prefArray.add(((ModelPartSpec) partSpec).multiSet(new CompoundNBT(),
+                            prefArray.add(((ModelPartSpec) partSpec).multiSet(new CompoundTag(),
                                     getNewColourIndex(colours, spec.getColours(), partSpec.getDefaultColourIndex()),
                                     ((ModelPartSpec) partSpec).getGlow()));
                         }
@@ -108,7 +108,7 @@ public class DefaultModelSpec {
                     // Armor Skin
                     if (spec.getSpecType().equals(EnumSpecType.ARMOR_SKIN) && spec.get(slot.getName()) != null) {
                         // only a single texture per equipment itemSlot can be used at a time
-                        texSpecTag = spec.get(slot.getName()).multiSet(new CompoundNBT(),
+                        texSpecTag = spec.get(slot.getName()).multiSet(new CompoundTag(),
                                 getNewColourIndex(colours, spec.getColours(), spec.get(slot.getName()).getDefaultColourIndex()));
                     }
 
@@ -122,7 +122,7 @@ public class DefaultModelSpec {
                                 if (partSpec.binding.getItemState().equals("all") ||
                                         (partSpec.binding.getItemState().equals("jetpack") &&
                                                 ModuleManager.INSTANCE.itemHasModule(stack, MPSModuleConstants.MODULE_JETPACK__DATANAME))) { */
-                                    prefArray.add(((ModelPartSpec) partSpec).multiSet(new CompoundNBT(),
+                                    prefArray.add(((ModelPartSpec) partSpec).multiSet(new CompoundTag(),
                                             getNewColourIndex(colours, spec.getColours(), partSpec.getDefaultColourIndex()),
                                             ((ModelPartSpec) partSpec).getGlow()));
                                 /*} */
@@ -133,8 +133,8 @@ public class DefaultModelSpec {
             }
         }
 
-        CompoundNBT nbt = new CompoundNBT();
-        for (CompoundNBT elem : prefArray) {
+        CompoundTag nbt = new CompoundTag();
+        for (CompoundTag elem : prefArray) {
             nbt.put(elem.getString(NuminaConstants.TAG_MODEL) + "." + elem.getString(NuminaConstants.TAG_PART), elem);
         }
 

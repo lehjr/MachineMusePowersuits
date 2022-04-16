@@ -37,9 +37,9 @@ import lehjr.numina.util.energy.ElectricItemUtils;
 import lehjr.powersuits.config.MPSSettings;
 import lehjr.powersuits.constants.MPSConstants;
 import lehjr.powersuits.item.module.AbstractPowerModule;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.Player;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Direction;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
@@ -55,7 +55,7 @@ public class KineticGeneratorModule extends AbstractPowerModule {
 
     @Nullable
     @Override
-    public ICapabilityProvider initCapabilities (ItemStack stack, @Nullable CompoundNBT nbt){
+    public ICapabilityProvider initCapabilities (ItemStack stack, @Nullable CompoundTag nbt){
         return new CapProvider(stack);
     }
 
@@ -88,7 +88,7 @@ public class KineticGeneratorModule extends AbstractPowerModule {
             }
 
             @Override
-            public void onPlayerTickActive(PlayerEntity player, @Nonnull ItemStack itemStackIn) {
+            public void onPlayerTickActive(Player player, @Nonnull ItemStack itemStackIn) {
                 if (player.abilities.flying || player.isPassenger() || player.isFallFlying() || !player.isOnGround())
                     onPlayerTickInactive(player, itemStackIn);
 
@@ -107,7 +107,7 @@ public class KineticGeneratorModule extends AbstractPowerModule {
             }
 
             @Override
-            public void onPlayerTickInactive(PlayerEntity player, ItemStack itemStackIn) {
+            public void onPlayerTickInactive(Player player, ItemStack itemStackIn) {
                 // remove attribute modifier when not active
                 getModuleStack().removeTagKey("AttributeModifiers");
             }

@@ -26,10 +26,12 @@
 
 package numina.api.capabilities.heat;
 
+import numina.api.capabilities.CapabilityUpdate;
+
 /**
  * Same as ForgeEnergy/RF, except for heat
  */
-public interface IHeatStorage {
+public interface IHeatStorage extends CapabilityUpdate {
     /**
      * Adds heat to the storage. Returns quantity of heat that was accepted.
      *

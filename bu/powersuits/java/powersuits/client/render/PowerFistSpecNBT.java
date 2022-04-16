@@ -31,9 +31,9 @@ import lehjr.numina.util.capabilities.render.IHandHeldModelSpecNBT;
 import lehjr.numina.util.capabilities.render.ModelSpecNBT;
 import lehjr.numina.util.capabilities.render.modelspec.*;
 import lehjr.powersuits.item.tool.PowerFist;
-import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.inventory.EquipmentSlot;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.IntArrayNBT;
 import net.minecraft.nbt.ListNBT;
 
@@ -47,25 +47,25 @@ public class PowerFistSpecNBT extends ModelSpecNBT implements IHandHeldModelSpec
     }
 
     @Override
-    public CompoundNBT getDefaultRenderTag() {
+    public CompoundTag getDefaultRenderTag() {
         if (getItemStack().isEmpty())
-            return new CompoundNBT();
+            return new CompoundTag();
 
-        List<CompoundNBT> prefArray = new ArrayList<>();
+        List<CompoundTag> prefArray = new ArrayList<>();
 
         // ModelPartSpecs
         ListNBT specList = new ListNBT();
 
         // TextureSpecBase (only one texture visible at a time)
-        CompoundNBT texSpecTag = new CompoundNBT();
+        CompoundTag texSpecTag = new CompoundTag();
 
         // List of EnumColour indexes
         List<Integer> colours = new ArrayList<>();
 
         // temp data holder
-        CompoundNBT tempNBT;
+        CompoundTag tempNBT;
 
-        EquipmentSlotType slot = getItemStack().getEquipmentSlot();
+        EquipmentSlot slot = getItemStack().getEquipmentSlot();
 
         for (SpecBase spec : ModelRegistry.getInstance().getSpecs()) {
             // Only generate NBT data from Specs marked as "default"
@@ -75,7 +75,7 @@ public class PowerFistSpecNBT extends ModelSpecNBT implements IHandHeldModelSpec
 
                     for (PartSpecBase partSpec : spec.getPartSpecs()) {
                         if (partSpec instanceof ModelPartSpec) {
-                            prefArray.add(((ModelPartSpec) partSpec).multiSet(new CompoundNBT(),
+                            prefArray.add(((ModelPartSpec) partSpec).multiSet(new CompoundTag(),
                                     getNewColourIndex(colours, spec.getColours(), partSpec.getDefaultColourIndex()),
                                     ((ModelPartSpec) partSpec).getGlow()));
                         }
@@ -84,8 +84,8 @@ public class PowerFistSpecNBT extends ModelSpecNBT implements IHandHeldModelSpec
             }
         }
 
-        CompoundNBT nbt = new CompoundNBT();
-        for (CompoundNBT elem : prefArray) {
+        CompoundTag nbt = new CompoundTag();
+        for (CompoundTag elem : prefArray) {
             nbt.put(elem.getString(NuminaConstants.TAG_MODEL) + "." + elem.getString(NuminaConstants.TAG_PART), elem);
         }
 

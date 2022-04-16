@@ -43,8 +43,8 @@ import lehjr.powersuits.constants.MPSRegistryNames;
 import lehjr.powersuits.item.module.environmental.AutoFeederModule;
 import net.minecraft.client.MainWindow;
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.entity.player.Player;
+import net.minecraft.inventory.EquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraftforge.api.distmarker.Dist;
@@ -109,7 +109,7 @@ public class ClientTickHandler {
         }
 
         if (event.phase == TickEvent.Phase.END) {
-            PlayerEntity player = minecraft.player;
+            Player player = minecraft.player;
             if (player != null && Minecraft.renderNames() && minecraft.screen == null) {
                 Minecraft mc = minecraft;
                 MainWindow screen = mc.getWindow();
@@ -118,7 +118,7 @@ public class ClientTickHandler {
                 AtomicInteger index = new AtomicInteger(0);
 
                 // Helmet modules with overlay
-                player.getItemBySlot(EquipmentSlotType.HEAD).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+                player.getItemBySlot(EquipmentSlot.HEAD).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
                         .filter(IModularItem.class::isInstance)
                         .map(IModularItem.class::cast)
                         .ifPresent(h -> {
@@ -201,7 +201,7 @@ public class ClientTickHandler {
                 AtomicReference<String> currWaterStr = new AtomicReference<>("");
                 AtomicReference<String> maxWaterStr = new AtomicReference<>("");
 
-                player.getItemBySlot(EquipmentSlotType.CHEST).getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).ifPresent(fh -> {
+                player.getItemBySlot(EquipmentSlot.CHEST).getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).ifPresent(fh -> {
                     for (int i = 0; i < fh.getTanks(); i++) {
                         maxWater.set(maxWater.get() + fh.getTankCapacity(i));
                         if (maxWater.get() > 0) {

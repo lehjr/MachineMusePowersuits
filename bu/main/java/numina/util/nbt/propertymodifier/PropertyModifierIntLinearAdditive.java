@@ -27,7 +27,7 @@
 package lehjr.numina.util.nbt.propertymodifier;
 
 import lehjr.numina.util.nbt.MuseNBTUtils;
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.CompoundTag;
 
 public class PropertyModifierIntLinearAdditive extends PropertyModifierLinearAdditive {
     protected int roundTo = 1;
@@ -40,12 +40,12 @@ public class PropertyModifierIntLinearAdditive extends PropertyModifierLinearAdd
     }
 
     @Override
-    public double applyModifier(CompoundNBT moduleTag, double value) {
+    public double applyModifier(CompoundTag moduleTag, double value) {
         long result = (long) (value + multiplier * MuseNBTUtils.getDoubleOrZero(moduleTag, tradeoffName));
         return Double.valueOf(roundWithOffset(result, roundTo, offset));
     }
 
-    public double getScaledDouble(CompoundNBT moduleTag, double value) {
+    public double getScaledDouble(CompoundTag moduleTag, double value) {
         double scaledVal = applyModifier(moduleTag, value);
         double ret = (scaledVal - value)/multiplier;
         MuseNBTUtils.setDoubleOrRemove(moduleTag, tradeoffName, ret);

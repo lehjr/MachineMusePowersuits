@@ -38,14 +38,14 @@ import lehjr.powersuits.config.MPSSettings;
 import lehjr.powersuits.constants.MPSConstants;
 import lehjr.powersuits.item.module.AbstractPowerModule;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.MobEntity;
+import net.minecraft.entity.Mob;
 import net.minecraft.entity.boss.dragon.EnderDragonEntity;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.Player;
 import net.minecraft.entity.projectile.ArrowEntity;
 import net.minecraft.entity.projectile.FireballEntity;
 import net.minecraft.entity.projectile.PotionEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -69,7 +69,7 @@ public class MobRepulsorModule extends AbstractPowerModule {
 
     @Nullable
     @Override
-    public ICapabilityProvider initCapabilities (ItemStack stack, @Nullable CompoundNBT nbt){
+    public ICapabilityProvider initCapabilities (ItemStack stack, @Nullable CompoundTag nbt){
         return new CapProvider(stack);
     }
 
@@ -99,7 +99,7 @@ public class MobRepulsorModule extends AbstractPowerModule {
             }
 
             @Override
-            public void onPlayerTickActive(PlayerEntity player, @Nonnull ItemStack item) {
+            public void onPlayerTickActive(Player player, @Nonnull ItemStack item) {
                 int energyConsumption = (int) applyPropertyModifiers(MPSConstants.MOB_REPULSOR_ENERGY);
                 if (ElectricItemUtils.getPlayerEnergy(player) > energyConsumption) {
                     if (player.level.getGameTime() % 20 == 0) {
@@ -115,7 +115,7 @@ public class MobRepulsorModule extends AbstractPowerModule {
                         playerPos.offset(-distance, -distance, -distance),
                         playerPos.offset(distance, distance, distance));
 
-                for (Entity entity : world.getEntitiesOfClass(MobEntity.class, area)) {
+                for (Entity entity : world.getEntitiesOfClass(Mob.class, area)) {
                     push(entity, playerPos);
                 }
 
@@ -133,7 +133,7 @@ public class MobRepulsorModule extends AbstractPowerModule {
             }
 
             private void push(Entity entity, BlockPos playerPos) {
-                if (!(entity instanceof PlayerEntity) && !(entity instanceof EnderDragonEntity)) {
+                if (!(entity instanceof Player) && !(entity instanceof EnderDragonEntity)) {
                     BlockPos distance = playerPos.subtract(entity.blockPosition());
 
                     double dX = distance.getX();

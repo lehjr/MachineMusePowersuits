@@ -8,11 +8,11 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.Player;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.util.text.TranslatableComponent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import org.lwjgl.opengl.GL11;
@@ -32,7 +32,7 @@ public enum MPSOverlayRenderer {
         }
 
         final Minecraft mc = Minecraft.getInstance();
-        final PlayerEntity player = mc.player;
+        final Player player = mc.player;
         if (player == null) {
             return;
         }
@@ -134,7 +134,7 @@ public enum MPSOverlayRenderer {
         tessellator.end();
 
         Migration.FontRenderer.drawStringWithShadow(mc.font, event.getMatrixStack(),
-                new TranslationTextComponent(Constants.GUI_SCANNER_PROGRESS, MathHelper.floor(progress * 100)),
+                new TranslatableComponent(Constants.GUI_SCANNER_PROGRESS, MathHelper.floor(progress * 100)),
                 right + 12, midY - mc.font.lineHeight / 2, 0xCCAACCEE);
 
         RenderSystem.bindTexture(0);

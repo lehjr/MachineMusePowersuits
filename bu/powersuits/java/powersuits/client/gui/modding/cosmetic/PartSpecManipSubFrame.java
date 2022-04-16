@@ -48,9 +48,9 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.entity.MobEntity;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.entity.Mob;
+import net.minecraft.inventory.EquipmentSlot;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.math.vector.Matrix4f;
 import org.lwjgl.opengl.GL11;
 
@@ -119,7 +119,7 @@ public class PartSpecManipSubFrame extends DrawableTile {
         this.partSpecs = new ArrayList<>();
         getRenderCapability()
                 .ifPresent(iModelSpecNBT -> {
-                            EquipmentSlotType slot = MobEntity.getEquipmentSlotForItem(iModelSpecNBT.getItemStack());
+                            EquipmentSlot slot = Mob.getEquipmentSlotForItem(iModelSpecNBT.getItemStack());
                             if (iModelSpecNBT instanceof IArmorModelSpecNBT) {
                                 model.getPartSpecs().forEach(spec -> {
                                     if (spec.getBinding().getSlot().equals(slot)) {
@@ -128,7 +128,7 @@ public class PartSpecManipSubFrame extends DrawableTile {
                                 });
                             } else if (iModelSpecNBT instanceof IHandHeldModelSpecNBT) {
                                 model.getPartSpecs().forEach(spec -> {
-                                    if (spec.getBinding().getSlot().getType().equals(EquipmentSlotType.Group.HAND)) {
+                                    if (spec.getBinding().getSlot().getType().equals(EquipmentSlot.Type.HAND)) {
                                         partSpecs.add(spec);
                                     }
                                 });
@@ -147,10 +147,10 @@ public class PartSpecManipSubFrame extends DrawableTile {
     }
 
     @Nullable
-    public CompoundNBT getOrDontGetSpecTag(PartSpecBase partSpec) {
+    public CompoundTag getOrDontGetSpecTag(PartSpecBase partSpec) {
         return getRenderCapability().map(iModelSpecNBT -> {
-            CompoundNBT specTag = new CompoundNBT();
-            CompoundNBT renderTag = iModelSpecNBT.getRenderTag();
+            CompoundTag specTag = new CompoundTag();
+            CompoundTag renderTag = iModelSpecNBT.getRenderTag();
             if (renderTag != null /*&& !renderTag.isEmpty()*/) {
                 // there can be many ModelPartSpecs
                 if (partSpec instanceof ModelPartSpec) {
@@ -159,24 +159,24 @@ public class PartSpecManipSubFrame extends DrawableTile {
                 }
                 // Only one TexturePartSpec is allowed at a time, so figure out if this one is enabled
                 if (partSpec instanceof TexturePartSpec && renderTag.contains(NuminaConstants.NBT_TEXTURESPEC_TAG)) {
-                    CompoundNBT texSpecTag = renderTag.getCompound(NuminaConstants.NBT_TEXTURESPEC_TAG);
+                    CompoundTag texSpecTag = renderTag.getCompound(NuminaConstants.NBT_TEXTURESPEC_TAG);
                     if (partSpec.spec.getOwnName().equals(texSpecTag.getString(NuminaConstants.TAG_MODEL))) {
                         specTag = renderTag.getCompound(NuminaConstants.NBT_TEXTURESPEC_TAG);
                     }
                 }
             }
             return specTag;
-        }).orElse(new CompoundNBT());
+        }).orElse(new CompoundTag());
     }
 
-    public CompoundNBT getSpecTag(PartSpecBase partSpec) {
-        CompoundNBT nbt = getOrDontGetSpecTag(partSpec);
-        return nbt != null ? nbt : new CompoundNBT();
+    public CompoundTag getSpecTag(PartSpecBase partSpec) {
+        CompoundTag nbt = getOrDontGetSpecTag(partSpec);
+        return nbt != null ? nbt : new CompoundTag();
     }
 
-    public CompoundNBT getOrMakeSpecTag(PartSpecBase partSpec) {
+    public CompoundTag getOrMakeSpecTag(PartSpecBase partSpec) {
         String name;
-        CompoundNBT nbt = getSpecTag(partSpec);
+        CompoundTag nbt = getSpecTag(partSpec);
         if (nbt.isEmpty()) {
             if (partSpec instanceof ModelPartSpec) {
                 name = ModelRegistry.getInstance().makeName(partSpec);
@@ -189,7 +189,7 @@ public class PartSpecManipSubFrame extends DrawableTile {
             // update the render tag client side. The server side update is called below.
             if (getRenderCapability() != null) {
                 this.getRenderCapability().ifPresent(specNBT->{
-                    CompoundNBT renderTag  = specNBT.getRenderTag();
+                    CompoundTag renderTag  = specNBT.getRenderTag();
                     if (renderTag != null && !renderTag.isEmpty()) {
                         renderTag.put(name, nbt);
                         specNBT.setRenderTag(renderTag, NuminaConstants.TAG_RENDER);
@@ -223,7 +223,7 @@ public class PartSpecManipSubFrame extends DrawableTile {
     public void decrAbove(int index) {
         for (PartSpecBase spec : partSpecs) {
             String tagname = ModelRegistry.getInstance().makeName(spec);
-            CompoundNBT tagdata = getOrDontGetSpecTag(spec);
+            CompoundTag tagdata = getOrDontGetSpecTag(spec);
 
             if (tagdata != null) {
                 int oldindex = spec.getColourIndex(tagdata);
@@ -240,7 +240,7 @@ public class PartSpecManipSubFrame extends DrawableTile {
 //        super.render(matrixStack, (int)x, (int)y, Minecraft.getInstance().getFrameTime()); // draws the border, mainly a debugging thing
 
         GuiIcon icon = MuseIconUtils.getIcon();
-        CompoundNBT tag = this.getSpecTag(partSpec);
+        CompoundTag tag = this.getSpecTag(partSpec);
         int selcomp = tag.isEmpty() ? 0 : (partSpec instanceof ModelPartSpec && ((ModelPartSpec) partSpec).getGlow(tag) ? 2 : 1);
         int selcolour = partSpec.getColourIndex(tag);
 
@@ -314,7 +314,7 @@ public class PartSpecManipSubFrame extends DrawableTile {
     }
 
     public boolean tryMouseClick(double x, double y) {
-        CompoundNBT tagdata;
+        CompoundTag tagdata;
         String tagname;
 
         // player clicked outside the area
@@ -339,7 +339,7 @@ public class PartSpecManipSubFrame extends DrawableTile {
                 case 0: {
                     tagname = spec instanceof TexturePartSpec ? NuminaConstants.NBT_TEXTURESPEC_TAG : ModelRegistry.getInstance().makeName(spec);
                     this.itemSelector.selectedType().ifPresent(slotType ->
-                            NuminaPackets.CHANNEL_INSTANCE.sendToServer(new CosmeticInfoPacket(slotType, tagname, new CompoundNBT())));
+                            NuminaPackets.CHANNEL_INSTANCE.sendToServer(new CosmeticInfoPacket(slotType, tagname, new CompoundTag())));
                     this.refreshPartSpecs();
                     return true;
                 }

@@ -33,7 +33,7 @@ import lehjr.numina.util.capabilities.module.powermodule.PowerModule;
 import lehjr.numina.util.nbt.MuseNBTUtils;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.ByteNBT;
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.INBTSerializable;
 
@@ -51,7 +51,7 @@ public class ToggleableModule extends PowerModule implements IToggleableModule, 
 
     @Override
     public void updateFromNBT() {
-        final CompoundNBT nbt = MuseNBTUtils.getModuleTag(module);
+        final CompoundTag nbt = MuseNBTUtils.getModuleTag(module);
         if (nbt != null && nbt.contains(TAG_ONLINE, Constants.NBT.TAG_BYTE)) {
             deserializeNBT((ByteNBT) nbt.get(TAG_ONLINE));
         } else {

@@ -27,8 +27,8 @@
 package lehjr.powersuits.network.packets;
 
 import lehjr.numina.util.capabilities.render.ModelSpecNBTCapability;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.entity.player.ServerPlayer;
+import net.minecraft.inventory.EquipmentSlot;
 import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.fml.network.NetworkEvent;
 
@@ -41,13 +41,13 @@ import java.util.function.Supplier;
  * Ported to Java by lehjr on 11/14/16.
  */
 public class ColourInfoPacket /* implements IMusePacket<ColourInfoPacket> */{
-    protected EquipmentSlotType slotType;
+    protected EquipmentSlot slotType;
     protected int[] tagData;
 
     public ColourInfoPacket() {
     }
 
-    public ColourInfoPacket(EquipmentSlotType slotType, int[] tagData) {
+    public ColourInfoPacket(EquipmentSlot slotType, int[] tagData) {
         this.slotType = slotType;
         this.tagData = tagData;
     }
@@ -58,13 +58,13 @@ public class ColourInfoPacket /* implements IMusePacket<ColourInfoPacket> */{
     }
 
     public static ColourInfoPacket read(PacketBuffer packetBuffer) {
-        return new ColourInfoPacket(packetBuffer.readEnum(EquipmentSlotType.class), packetBuffer.readVarIntArray());
+        return new ColourInfoPacket(packetBuffer.readEnum(EquipmentSlot.class), packetBuffer.readVarIntArray());
     }
 
     public static void handle(ColourInfoPacket message, Supplier<NetworkEvent.Context> ctx) {
         ctx.get().enqueueWork(() -> {
-            final ServerPlayerEntity player = ctx.get().getSender();
-            EquipmentSlotType slotType = message.slotType;
+            final ServerPlayer player = ctx.get().getSender();
+            EquipmentSlot slotType = message.slotType;
             int[] tagData = message.tagData;
             player.getItemBySlot(slotType).getCapability(ModelSpecNBTCapability.RENDER)
                     .ifPresent(render -> render.setColorArray(tagData));

@@ -27,8 +27,8 @@
 package lehjr.numina.network.packets;
 
 import lehjr.numina.util.capabilities.inventory.modularitem.IModularItem;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.entity.player.ServerPlayer;
+import net.minecraft.inventory.EquipmentSlot;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.network.NetworkEvent;
@@ -37,7 +37,7 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import java.util.function.Supplier;
 
 public class TweakRequestDoublePacket {
-    protected EquipmentSlotType type;
+    protected EquipmentSlot type;
     protected ResourceLocation moduleName;
     protected String tweakName;
     protected double tweakValue;
@@ -46,7 +46,7 @@ public class TweakRequestDoublePacket {
 
     }
 
-    public TweakRequestDoublePacket(EquipmentSlotType type, ResourceLocation moduleRegName, String tweakName, double tweakValue) {
+    public TweakRequestDoublePacket(EquipmentSlot type, ResourceLocation moduleRegName, String tweakName, double tweakValue) {
         this.type = type;
         this.moduleName = moduleRegName;
         this.tweakName = tweakName;
@@ -62,7 +62,7 @@ public class TweakRequestDoublePacket {
 
     public static TweakRequestDoublePacket decode(PacketBuffer packetBuffer) {
         return new TweakRequestDoublePacket(
-                packetBuffer.readEnum(EquipmentSlotType.class),
+                packetBuffer.readEnum(EquipmentSlot.class),
                 packetBuffer.readResourceLocation(),
                 packetBuffer.readUtf(500),
                 packetBuffer.readDouble());
@@ -70,12 +70,12 @@ public class TweakRequestDoublePacket {
 
     public static void handle(TweakRequestDoublePacket message, Supplier<NetworkEvent.Context> ctx) {
         ctx.get().enqueueWork(() -> {
-            final ServerPlayerEntity player = ctx.get().getSender();
+            final ServerPlayer player = ctx.get().getSender();
             ResourceLocation moduleName = message.moduleName;
             String tweakName = message.tweakName;
             double tweakValue = message.tweakValue;
             if (moduleName != null && tweakName != null) {
-                EquipmentSlotType type = message.type;
+                EquipmentSlot type = message.type;
                 player.getItemBySlot(type).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
                         .filter(IModularItem.class::isInstance)
                         .map(IModularItem.class::cast)

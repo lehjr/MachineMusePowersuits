@@ -3,7 +3,7 @@
 //import net.minecraft.client.Minecraft;
 //import net.minecraft.client.renderer.texture.TextureManager;
 //import net.minecraft.entity.Entity;
-//import net.minecraft.entity.player.PlayerEntity;
+//import net.minecraft.entity.player.Player;
 //import net.minecraft.item.ItemStack;
 //import net.minecraft.util.math.MathHelper;
 //import net.minecraft.world.storage.MapData;
@@ -118,7 +118,7 @@
 //
 //    }
 //    // getFirstPersonRenderer() ??
-//    public void renderFirstPersonArm(PlayerEntity entityclientplayermp, float par1) {
+//    public void renderFirstPersonArm(Player entityclientplayermp, float par1) {
 //        Minecraft mc = Minecraft.getInstance();
 //        float changeItemProgress = 0;
 //

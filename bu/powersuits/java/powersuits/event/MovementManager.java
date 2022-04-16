@@ -39,8 +39,8 @@ import lehjr.powersuits.client.sound.MPSSoundDictionary;
 import lehjr.powersuits.config.MPSSettings;
 import lehjr.powersuits.constants.MPSConstants;
 import lehjr.powersuits.constants.MPSRegistryNames;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.entity.player.Player;
+import net.minecraft.inventory.EquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.vector.Vector3d;
@@ -63,7 +63,7 @@ public enum MovementManager {
      */
     public static final double DEFAULT_GRAVITY = -0.0784000015258789;
 
-    public double getPlayerJumpMultiplier(PlayerEntity player) {
+    public double getPlayerJumpMultiplier(Player player) {
         if (playerJumpMultipliers.containsKey(player.getUUID())) {
             return playerJumpMultipliers.get(player.getUUID());
         } else {
@@ -71,7 +71,7 @@ public enum MovementManager {
         }
     }
 
-    public void setPlayerJumpTicks(PlayerEntity player, double number) {
+    public void setPlayerJumpTicks(Player player, double number) {
         playerJumpMultipliers.put(player.getUUID(), number);
     }
 
@@ -88,7 +88,7 @@ public enum MovementManager {
         return boolIn ? 1.0D : 0.0D;
     }
 
-    public static double thrust(PlayerEntity player, double thrust, boolean flightControl) {
+    public static double thrust(Player player, double thrust, boolean flightControl) {
         PlayerMovementInputWrapper.PlayerMovementInput playerInput = PlayerMovementInputWrapper.get(player);
         double thrustUsed = 0;
         if (flightControl) {
@@ -96,7 +96,7 @@ public enum MovementManager {
             double strafeX = desiredDirection.z;
             double strafeZ = -desiredDirection.x;
 
-            double flightVerticality = player.getItemBySlot(EquipmentSlotType.HEAD).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+            double flightVerticality = player.getItemBySlot(EquipmentSlot.HEAD).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
                     .filter(IModularItem.class::isInstance)
                     .map(IModularItem.class::cast)
                     .map(iModularItem -> iModularItem
@@ -206,15 +206,15 @@ public enum MovementManager {
 
 
 
-    public static double computePlayerVelocity(PlayerEntity player) {
+    public static double computePlayerVelocity(Player player) {
         return MuseMathUtils.pythag(player.getDeltaMovement().x, player.getDeltaMovement().y, player.getDeltaMovement().z);
     }
 
    @SubscribeEvent
     public void handleLivingJumpEvent(LivingJumpEvent event) {
-        if (event.getEntityLiving() instanceof PlayerEntity) {
-            PlayerEntity player = (PlayerEntity) event.getEntityLiving();
-            player.getItemBySlot(EquipmentSlotType.LEGS).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+        if (event.getEntityLiving() instanceof Player) {
+            Player player = (Player) event.getEntityLiving();
+            player.getItemBySlot(EquipmentSlot.LEGS).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
                     .filter(IModularItem.class::isInstance)
                     .map(IModularItem.class::cast)
                     .ifPresent(iModularItem -> iModularItem.getOnlineModuleOrEmpty(MPSRegistryNames.JUMP_ASSIST_MODULE_REGNAME).getCapability(PowerModuleCapability.POWER_MODULE).ifPresent(jumper -> {
@@ -241,9 +241,9 @@ public enum MovementManager {
 
     @SubscribeEvent
     public void handleFallEvent(LivingFallEvent event) {
-        if (event.getEntityLiving() instanceof PlayerEntity && event.getDistance() > 3.0) {
-            PlayerEntity player = (PlayerEntity) event.getEntityLiving();
-            player.getItemBySlot(EquipmentSlotType.FEET).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+        if (event.getEntityLiving() instanceof Player && event.getDistance() > 3.0) {
+            Player player = (Player) event.getEntityLiving();
+            player.getItemBySlot(EquipmentSlot.FEET).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
                     .filter(IModularItem.class::isInstance)
                     .map(IModularItem.class::cast)
                     .ifPresent(iModularItem -> iModularItem.getOnlineModuleOrEmpty(MPSRegistryNames.SHOCK_ABSORBER_MODULE_REGNAME).getCapability(PowerModuleCapability.POWER_MODULE).ifPresent(sa -> {

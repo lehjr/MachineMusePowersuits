@@ -2,8 +2,8 @@ package lehjr.numina.network.packets;
 
 import lehjr.numina.util.capabilities.inventory.modechanging.IModeChangingItem;
 import lehjr.numina.util.nbt.MuseNBTUtils;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.entity.player.ServerPlayer;
+import net.minecraft.inventory.EquipmentSlot;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.network.NetworkEvent;
@@ -32,8 +32,8 @@ public class BlockNamePacket {
     // Only set up to get for the AoE2 module, for now
     public static void handle(BlockNamePacket message, Supplier<NetworkEvent.Context> ctx) {
         ctx.get().enqueueWork(() -> {
-            final ServerPlayerEntity player = ctx.get().getSender();
-            player.getItemBySlot(EquipmentSlotType.MAINHAND).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).filter(IModeChangingItem.class::isInstance)
+            final ServerPlayer player = ctx.get().getSender();
+            player.getItemBySlot(EquipmentSlot.MAINHAND).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).filter(IModeChangingItem.class::isInstance)
                     .map(IModeChangingItem.class::cast)
                     .ifPresent(handler-> {
                         MuseNBTUtils.setModuleResourceLocation(handler.getActiveModule(), "block", message.regName);

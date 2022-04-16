@@ -38,9 +38,9 @@ import lehjr.numina.util.heat.MuseHeatUtils;
 import lehjr.powersuits.config.MPSSettings;
 import lehjr.powersuits.constants.MPSConstants;
 import lehjr.powersuits.item.module.AbstractPowerModule;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.Player;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Direction;
 import net.minecraft.world.LightType;
 import net.minecraft.world.World;
@@ -62,7 +62,7 @@ public class AdvancedSolarGeneratorModule extends AbstractPowerModule {
 
     @Nullable
     @Override
-    public ICapabilityProvider initCapabilities (ItemStack stack, @Nullable CompoundNBT nbt){
+    public ICapabilityProvider initCapabilities (ItemStack stack, @Nullable CompoundTag nbt){
         return new CapProvider(stack);
     }
 
@@ -105,7 +105,7 @@ public class AdvancedSolarGeneratorModule extends AbstractPowerModule {
             }
 
             @Override
-            public void onPlayerTickActive(PlayerEntity player, ItemStack itemStack) {
+            public void onPlayerTickActive(Player player, ItemStack itemStack) {
                 World world = player.level;
                 boolean isRaining, canRain = true;
                 if (world.getGameTime() % 20 == 0) {

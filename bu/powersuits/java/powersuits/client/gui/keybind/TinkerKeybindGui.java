@@ -33,7 +33,7 @@ import lehjr.powersuits.client.gui.common.TabSelectFrame;
 import net.minecraft.client.MainWindow;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.util.InputMappings;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.Player;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.client.settings.KeyModifier;
 
@@ -43,10 +43,10 @@ import net.minecraftforge.client.settings.KeyModifier;
  */
 public class TinkerKeybindGui extends ContainerlessGui {
     TabSelectFrame tabSelectFrame;
-    PlayerEntity player;
+    Player player;
     KeyBindFrame kbFrame;
 
-    public TinkerKeybindGui(PlayerEntity player, ITextComponent titleIn) {
+    public TinkerKeybindGui(Player player, ITextComponent titleIn) {
         super(titleIn, false);
         Minecraft.getInstance().keyboardHandler.setSendRepeatsToGui(true);
         this.player = player;

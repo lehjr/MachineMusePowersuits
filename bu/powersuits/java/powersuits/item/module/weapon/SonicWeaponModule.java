@@ -11,9 +11,9 @@
 //import lehjr.numina.heat.HeatUtils;
 //import lehjr.numina.nbt.NBTUtils;
 //import net.minecraft.entity.LivingEntity;
-//import net.minecraft.entity.player.PlayerEntity;
+//import net.minecraft.entity.player.Player;
 //import net.minecraft.item.ItemStack;
-//import net.minecraft.nbt.CompoundNBT;
+//import net.minecraft.nbt.CompoundTag;
 //import net.minecraft.particles.ParticleTypes;
 //import net.minecraft.util.*;
 //import net.minecraft.util.math.*;
@@ -39,7 +39,7 @@
 //
 //    @Nullable
 //    @Override
-//    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundNBT nbt) {
+//    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt) {
 //        return null;
 //    }
 //
@@ -63,14 +63,14 @@
 //            }
 //
 //            @Override
-//            public void onPlayerTickActive(PlayerEntity player, @Nonnull ItemStack itemStackIn) {
+//            public void onPlayerTickActive(Player player, @Nonnull ItemStack itemStackIn) {
 //                double timer = NBTUtils.getModularItemDoubleOrZero(itemStackIn, MPSConstants.TIMER);
 //                if (timer > 0)
 //                    NBTUtils.setModularItemDoubleOrRemove(itemStackIn, MPSConstants.TIMER, timer - 1 > 0 ? timer - 1 : 0);
 //            }
 //
 //            @Override
-//            public ActionResult onItemRightClick(ItemStack itemStackIn, World worldIn, PlayerEntity playerIn, Hand hand) {
+//            public ActionResult onItemRightClick(ItemStack itemStackIn, World worldIn, Player playerIn, Hand hand) {
 //                if (hand == Hand.MAIN_HAND) {
 //                    double range = 64;
 //                    double timer = NBTUtils.getModularItemDoubleOrZero(itemStackIn, MPSConstants.TIMER);
@@ -117,7 +117,7 @@
 //                return new ActionResult(ActionResultType.PASS, itemStackIn);
 //            }
 //
-//            public void drawParticleStreamTo(PlayerEntity source, World world, double x, double y, double z) {
+//            public void drawParticleStreamTo(Player source, World world, double x, double y, double z) {
 //                Vec3d direction = source.getLookVec().normalize();
 //                double xoffset = 1.3f;
 //                double yoffset = -.2;
@@ -147,7 +147,7 @@
 //            private final ResourceLocation GUARDIAN_BEAM_TEXTURE = new ResourceLocation("textures/entity/guardian_beam.png");
 //
 //
-//            public void doRender(PlayerEntity source, double x, double y, double z, float entityYaw, float partialTicks) {
+//            public void doRender(Player source, double x, double y, double z, float entityYaw, float partialTicks) {
 //////                super.doRender(attacker, x, y, z, entityYaw, partialTicks);
 ////                LivingEntity target = source.getTargetedEntity();
 ////                if (target != null) {
@@ -258,17 +258,17 @@
 ////    }
 ////
 ////    @Override
-////    public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, PlayerEntity playerIn, EnumHand hand) {
+////    public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, Player playerIn, EnumHand hand) {
 ////        return null;
 ////    }
 ////
 ////    @Override
-////    public ActionResultType onItemUse(ItemStack stack, PlayerEntity playerIn, World worldIn, BlockPos pos, EnumHand hand, Direction facing, float hitX, float hitY, float hitZ) {
+////    public ActionResultType onItemUse(ItemStack stack, Player playerIn, World worldIn, BlockPos pos, EnumHand hand, Direction facing, float hitX, float hitY, float hitZ) {
 ////        return null;
 ////    }
 ////
 ////    @Override
-////    public ActionResultType onItemUseFirst(ItemStack stack, PlayerEntity player, World world, BlockPos pos, Direction side, float hitX, float hitY, float hitZ, EnumHand hand) {
+////    public ActionResultType onItemUseFirst(ItemStack stack, Player player, World world, BlockPos pos, Direction side, float hitX, float hitY, float hitZ, EnumHand hand) {
 ////        return null;
 ////    }
 ////

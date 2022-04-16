@@ -37,7 +37,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.item.ItemEntity;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.Player;
 import net.minecraft.entity.projectile.ThrowableEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.IPacket;
@@ -69,10 +69,10 @@ public class SpinningBladeEntity extends ThrowableEntity {
     public SpinningBladeEntity(World worldIn, LivingEntity shootingEntity) {
         super(MPSObjects.SPINNING_BLADE_ENTITY_TYPE.get(), shootingEntity, worldIn);
         this.setOwner(shootingEntity);
-        if (shootingEntity instanceof PlayerEntity) {
+        if (shootingEntity instanceof Player) {
             AtomicDouble atomicDamage = new AtomicDouble(0);
 
-            this.shootingItem = ((PlayerEntity) shootingEntity).inventory.getSelected();
+            this.shootingItem = ((Player) shootingEntity).inventory.getSelected();
             this.shootingItem.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
                     .filter(IModeChangingItem.class::isInstance)
                     .map(IModeChangingItem.class::cast)
@@ -126,12 +126,12 @@ public class SpinningBladeEntity extends ThrowableEntity {
 
             BlockRayTraceResult result = (BlockRayTraceResult) hitResult;
             Block block = world.getBlockState(result.getBlockPos()).getBlock();
-            if (block instanceof IForgeShearable && this.getOwner() instanceof PlayerEntity) {
+            if (block instanceof IForgeShearable && this.getOwner() instanceof Player) {
                 IForgeShearable target = (IForgeShearable) block;
                 if (target.isShearable(this.shootingItem, world, result.getBlockPos()) && !world.isClientSide) {
-                    // onSheared(@Nullable PlayerEntity player, @Nonnull ItemStack item, World world, BlockPos pos, int fortune)
+                    // onSheared(@Nullable Player player, @Nonnull ItemStack item, World world, BlockPos pos, int fortune)
 
-                    List<ItemStack> drops = target.onSheared((PlayerEntity) this.getOwner(), this.shootingItem, world, result.getBlockPos(),
+                    List<ItemStack> drops = target.onSheared((Player) this.getOwner(), this.shootingItem, world, result.getBlockPos(),
                             EnchantmentHelper.getItemEnchantmentLevel(ForgeRegistries.ENCHANTMENTS.getValue(new ResourceLocation("fortune")), this.shootingItem));
                     Random rand = new Random();
 
@@ -144,8 +144,8 @@ public class SpinningBladeEntity extends ThrowableEntity {
                         entityitem.setPickUpDelay(10);
                         world.addFreshEntity(entityitem);
                     }
-//                    if (this.shootingEntity instanceof PlayerEntity) {
-//                        ((PlayerEntity) shootingEntity).addStat(StatList.getBlockStats(block), 1);
+//                    if (this.shootingEntity instanceof Player) {
+//                        ((Player) shootingEntity).addStat(StatList.getBlockStats(block), 1);
 //                    }
                 }
                 world.destroyBlock(result.getBlockPos(), true);// Destroy block and drop item
@@ -157,8 +157,8 @@ public class SpinningBladeEntity extends ThrowableEntity {
             if (result.getEntity() instanceof IForgeShearable) {
                 IForgeShearable target = (IForgeShearable) result.getEntity();
                 Entity entity = result.getEntity();
-                if (target.isShearable(this.shootingItem, entity.level, entity.blockPosition()) && this.getOwner() instanceof PlayerEntity) {
-                    List<ItemStack> drops = target.onSheared((PlayerEntity) getOwner(), this.shootingItem, entity.level,
+                if (target.isShearable(this.shootingItem, entity.level, entity.blockPosition()) && this.getOwner() instanceof Player) {
+                    List<ItemStack> drops = target.onSheared((Player) getOwner(), this.shootingItem, entity.level,
                             entity.blockPosition(),
                             EnchantmentHelper.getItemEnchantmentLevel(ForgeRegistries.ENCHANTMENTS.getValue(new ResourceLocation("fortune")), this.shootingItem));
 

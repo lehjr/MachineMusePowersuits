@@ -7,9 +7,9 @@ import appeng.core.AELog;
 import appeng.core.Api;
 import lehjr.numina.util.capabilities.inventory.modechanging.IModeChangingItem;
 import lehjr.numina.util.energy.ElectricItemUtils;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.Player;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -34,7 +34,7 @@ public class TerminalHandler implements IWirelessTermHandler {//}, IWirelessFlui
     }
 
     @Override
-    public boolean usePower(PlayerEntity player, double amount, ItemStack is) {
+    public boolean usePower(Player player, double amount, ItemStack is) {
         int drainVal = (int) PowerUnits.AE.convertTo(PowerUnits.RF, amount);
         if (ElectricItemUtils.getPlayerEnergy(player) > drainVal) {
             ElectricItemUtils.drainPlayerEnergy(player, drainVal, false);
@@ -44,7 +44,7 @@ public class TerminalHandler implements IWirelessTermHandler {//}, IWirelessFlui
     }
 
     @Override
-    public boolean hasPower(PlayerEntity player, double amount, ItemStack is) {
+    public boolean hasPower(Player player, double amount, ItemStack is) {
         return ElectricItemUtils.getPlayerEnergy(player) > PowerUnits.AE.convertTo(PowerUnits.RF, amount);
     }
 
@@ -67,7 +67,7 @@ public class TerminalHandler implements IWirelessTermHandler {//}, IWirelessFlui
                 .map(iModeChangingItem -> {
                     ItemStack module = iModeChangingItem.getOnlineModuleOrEmpty(WIRELESS_TERMINAL_REG);
                     if (!module.isEmpty()) {
-                        CompoundNBT tag = openNbtData(module);
+                        CompoundTag tag = openNbtData(module);
                         if (tag != null) {
                             return tag.getString(TAG_ENCRYPTION_KEY);
                         }
@@ -91,7 +91,7 @@ public class TerminalHandler implements IWirelessTermHandler {//}, IWirelessFlui
                 .ifPresent(iModeChangingItem -> {
                     ItemStack module = iModeChangingItem.getOnlineModuleOrEmpty(WIRELESS_TERMINAL_REG);
                     if (!module.isEmpty()) {
-                        CompoundNBT tag = openNbtData(item);
+                        CompoundTag tag = openNbtData(item);
                         if (tag != null) {
                             tag.putString(TAG_ENCRYPTION_KEY, encKey);
                         }
@@ -111,8 +111,8 @@ public class TerminalHandler implements IWirelessTermHandler {//}, IWirelessFlui
         }
     }
 
-    public static CompoundNBT openNbtData(ItemStack item) {
-        CompoundNBT compound = item.getOrCreateTag();
+    public static CompoundTag openNbtData(ItemStack item) {
+        CompoundTag compound = item.getOrCreateTag();
         return compound;
     }
 
@@ -153,8 +153,8 @@ public class TerminalHandler implements IWirelessTermHandler {//}, IWirelessFlui
         }
 
         @Override
-        public void writeToNBT(CompoundNBT destination) {
-            CompoundNBT tag = new CompoundNBT();
+        public void writeToNBT(CompoundTag destination) {
+            CompoundTag tag = new CompoundTag();
             if (destination.contains("configWirelessTerminal")) {
                 tag = destination.getCompound("configWirelessTerminal");
             }
@@ -166,8 +166,8 @@ public class TerminalHandler implements IWirelessTermHandler {//}, IWirelessFlui
         }
 
         @Override
-        public void readFromNBT(final CompoundNBT src) {
-            CompoundNBT tag = null;
+        public void readFromNBT(final CompoundTag src) {
+            CompoundTag tag = null;
             if (src.contains("configWirelessTerminal")) {
                 tag = src.getCompound("configWirelessTerminal");
             }

@@ -38,10 +38,10 @@ import lehjr.powersuits.constants.MPSRegistryNames;
 import lehjr.powersuits.item.module.AbstractPowerModule;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.Player;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -64,7 +64,7 @@ public class DiamondPickUpgradeModule extends AbstractPowerModule {
 
     @Nullable
     @Override
-    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundNBT nbt) {
+    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt) {
         return new CapProvider(stack);
     }
 
@@ -94,7 +94,7 @@ public class DiamondPickUpgradeModule extends AbstractPowerModule {
             }
 
             @Override
-            public boolean canHarvestBlock(@Nonnull ItemStack powerFist, BlockState state, PlayerEntity player, BlockPos pos, int playerEnergy) {
+            public boolean canHarvestBlock(@Nonnull ItemStack powerFist, BlockState state, Player player, BlockPos pos, int playerEnergy) {
                 AtomicBoolean canHarvest = new AtomicBoolean(false);
                 powerFist.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
                         .filter(IModeChangingItem.class::isInstance)
@@ -122,7 +122,7 @@ public class DiamondPickUpgradeModule extends AbstractPowerModule {
 
             @Override
             public boolean onBlockDestroyed(ItemStack powerFist, World worldIn, BlockState state, BlockPos pos, LivingEntity entityLiving, int playerEnergy) {
-                if (this.canHarvestBlock(powerFist, state, (PlayerEntity) entityLiving, pos, playerEnergy)) {
+                if (this.canHarvestBlock(powerFist, state, (Player) entityLiving, pos, playerEnergy)) {
                     AtomicInteger energyUsage = new AtomicInteger(0);
                     powerFist.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
                             .filter(IModeChangingItem.class::isInstance)
@@ -149,7 +149,7 @@ public class DiamondPickUpgradeModule extends AbstractPowerModule {
 
             @Override
             public void handleBreakSpeed(PlayerEvent.BreakSpeed event) {
-                PlayerEntity player = event.getPlayer();
+                Player player = event.getPlayer();
                 ItemStack powerFist = player.getMainHandItem();
                 AtomicDouble newSpeed = new AtomicDouble(event.getNewSpeed());
                 powerFist.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)

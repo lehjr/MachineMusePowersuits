@@ -37,9 +37,9 @@ import lehjr.numina.util.helper.ToolHelpers;
 import lehjr.powersuits.config.MPSSettings;
 import lehjr.powersuits.constants.MPSConstants;
 import lehjr.powersuits.item.module.AbstractPowerModule;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.Player;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
@@ -64,7 +64,7 @@ public class LeafBlowerModule extends AbstractPowerModule {
 
     @Nullable
     @Override
-    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundNBT nbt) {
+    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt) {
         return new CapProvider(stack);
     }
 
@@ -94,14 +94,14 @@ public class LeafBlowerModule extends AbstractPowerModule {
             }
 
             @Override
-            public ActionResult use(ItemStack itemStackIn, World worldIn, PlayerEntity playerIn, Hand hand) {
+            public ActionResult use(ItemStack itemStackIn, World worldIn, Player playerIn, Hand hand) {
                 int radius = (int) applyPropertyModifiers(MPSConstants.RADIUS);
                 if (useBlower(radius, itemStackIn, playerIn, worldIn, playerIn.blockPosition()))
                     return ActionResult.success(itemStackIn);
                 return ActionResult.pass(itemStackIn);
             }
 
-            private boolean useBlower(int radius, ItemStack itemStack, PlayerEntity player, World world, BlockPos pos) {
+            private boolean useBlower(int radius, ItemStack itemStack, Player player, World world, BlockPos pos) {
                 int totalEnergyDrain = 0;
                 BlockPos newPos;
                 for (int i = pos.getX() - radius; i < pos.getX() + radius; i++) {

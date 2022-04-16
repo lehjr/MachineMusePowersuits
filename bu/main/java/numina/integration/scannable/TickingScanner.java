@@ -16,15 +16,15 @@ import li.cil.scannable.common.config.Settings;
 import li.cil.scannable.common.inventory.ItemHandlerScanner;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.entity.player.Player;
+import net.minecraft.entity.player.ServerPlayer;
 import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.SoundEvents;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.util.text.TranslatableComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.LazyOptional;
@@ -47,7 +47,7 @@ public class TickingScanner extends PlayerTickModule implements IRightClickModul
     }
 
     @Override
-    public ActionResult use(ItemStack itemStackIn, World worldIn, PlayerEntity playerIn, Hand hand) {
+    public ActionResult use(ItemStack itemStackIn, World worldIn, Player playerIn, Hand hand) {
         final ItemStack module = ItemUtils.getActiveModuleOrEmpty(itemStackIn);
 
         if (!worldIn.isClientSide()) {
@@ -62,13 +62,13 @@ public class TickingScanner extends PlayerTickModule implements IRightClickModul
         if (playerIn.isShiftKeyDown()) {
             if (!worldIn.isClientSide) {
                 final INamedContainerProvider containerProvider = new MPSScannerContainerProvider(playerIn, hand);
-                NetworkHooks.openGui((ServerPlayerEntity) playerIn, containerProvider, buffer -> buffer.writeEnum(hand));
+                NetworkHooks.openGui((ServerPlayer) playerIn, containerProvider, buffer -> buffer.writeEnum(hand));
             }
         } else {
             final NonNullList<ItemStack> modules = collectModules(module);
             if (modules.isEmpty()) {
                 if (worldIn.isClientSide) {
-                    Minecraft.getInstance().gui.getChat().addMessage(new TranslationTextComponent(Constants.MESSAGE_NO_SCAN_MODULES));//, Constants.CHAT_LINE_ID);
+                    Minecraft.getInstance().gui.getChat().addMessage(new TranslatableComponent(Constants.MESSAGE_NO_SCAN_MODULES));//, Constants.CHAT_LINE_ID);
                 }
                 playerIn.getCooldowns().addCooldown(itemStackIn.getItem(), 10);
                 return ActionResult.fail(itemStackIn);
@@ -76,7 +76,7 @@ public class TickingScanner extends PlayerTickModule implements IRightClickModul
 
             if (!tryConsumeEnergy(playerIn, modules, true)) {
                 if (worldIn.isClientSide) {
-                    Minecraft.getInstance().gui.getChat().addMessage(new TranslationTextComponent(Constants.MESSAGE_NOT_ENOUGH_ENERGY));//, Constants.CHAT_LINE_ID);
+                    Minecraft.getInstance().gui.getChat().addMessage(new TranslatableComponent(Constants.MESSAGE_NOT_ENOUGH_ENERGY));//, Constants.CHAT_LINE_ID);
                 }
                 playerIn.getCooldowns().addCooldown(itemStackIn.getItem(), 10);
                 return ActionResult.fail(itemStackIn);
@@ -93,7 +93,7 @@ public class TickingScanner extends PlayerTickModule implements IRightClickModul
 
     @Override
     public ItemStack finishUsingItem(final ItemStack stack, final World world, final LivingEntity entity) {
-        if (!(entity instanceof PlayerEntity)) {
+        if (!(entity instanceof Player)) {
             return stack;
         }
 
@@ -108,7 +108,7 @@ public class TickingScanner extends PlayerTickModule implements IRightClickModul
             return stack;
         }
 
-        final boolean hasEnergy = tryConsumeEnergy((PlayerEntity) entity, modules, false);
+        final boolean hasEnergy = tryConsumeEnergy((Player) entity, modules, false);
 
 
 
@@ -123,7 +123,7 @@ public class TickingScanner extends PlayerTickModule implements IRightClickModul
             }
         }
 
-        final PlayerEntity player = (PlayerEntity) entity;
+        final Player player = (Player) entity;
         player.getCooldowns().addCooldown(stack.getItem(), 40);
         return stack;
     }
@@ -137,7 +137,7 @@ public class TickingScanner extends PlayerTickModule implements IRightClickModul
     }
 
     @Override
-    public void onPlayerTickActive(PlayerEntity player, @Nonnull ItemStack item) {
+    public void onPlayerTickActive(Player player, @Nonnull ItemStack item) {
         if (player.getCommandSenderWorld().isClientSide) {
             ScanManager.INSTANCE.updateScan(player, false);
         }
@@ -196,7 +196,7 @@ public class TickingScanner extends PlayerTickModule implements IRightClickModul
         return modules;
     }
 
-    private static boolean tryConsumeEnergy(final PlayerEntity player, final List<ItemStack> modules, final boolean simulate) {
+    private static boolean tryConsumeEnergy(final Player player, final List<ItemStack> modules, final boolean simulate) {
         if (!Settings.useEnergy) {
             return true;
         }
@@ -220,7 +220,7 @@ public class TickingScanner extends PlayerTickModule implements IRightClickModul
     }
 
 
-    static int getModuleEnergyCost(final PlayerEntity player, final ItemStack stack) {
+    static int getModuleEnergyCost(final Player player, final ItemStack stack) {
         final LazyOptional<ScannerModule> module = stack.getCapability(CapabilityScannerModule.SCANNER_MODULE_CAPABILITY);
         return module.map(p -> p.getEnergyCost(player, stack)).orElse(0);
     }

@@ -18,7 +18,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.util.text.TranslatableComponent;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.lwjgl.glfw.GLFW;
 
@@ -60,7 +60,7 @@ public class KeyBindFrame extends ScrollableFrame {
                 .filter(MPSKeyBinding.class::isInstance)
                 .map(MPSKeyBinding.class::cast)
                 .forEach(keyBinding -> {
-                    CheckBox checkbox = new CheckBox(MusePoint2D.ZERO, new TranslationTextComponent(keyBinding.getName()), false);
+                    CheckBox checkbox = new CheckBox(MusePoint2D.ZERO, new TranslatableComponent(keyBinding.getName()), false);
                     checkbox.setChecked(keyBinding.showOnHud);
                     checkbox.setOnPressed(onPressed -> {
                         keyBinding.showOnHud = checkbox.isChecked();
@@ -151,7 +151,7 @@ public class KeyBindFrame extends ScrollableFrame {
         if (this.isEnabled() && this.isVisible()) {
             for (Pair<CheckBox, ClickableButton2> pair : checkBoxList.values()) {
                 if (pair.getFirst().hitBox(x, y)) {
-                    return Arrays.asList(new TranslationTextComponent("gui.powersuits.showOnHUD"));
+                    return Arrays.asList(new TranslatableComponent("gui.powersuits.showOnHUD"));
                 }
             }
         }

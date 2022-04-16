@@ -44,10 +44,10 @@ import lehjr.powersuits.constants.MPSConstants;
 import lehjr.powersuits.constants.MPSRegistryNames;
 import lehjr.powersuits.event.MovementManager;
 import lehjr.powersuits.item.module.AbstractPowerModule;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.entity.player.Player;
+import net.minecraft.inventory.EquipmentSlot;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Direction;
 import net.minecraft.util.SoundCategory;
 import net.minecraftforge.common.capabilities.Capability;
@@ -66,7 +66,7 @@ public class JetPackModule extends AbstractPowerModule {
 
     @Nullable
     @Override
-    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundNBT nbt) {
+    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt) {
         return new CapProvider(stack);
     }
 
@@ -99,14 +99,14 @@ public class JetPackModule extends AbstractPowerModule {
             }
 
             @Override
-            public void onPlayerTickActive(PlayerEntity player, ItemStack torso) {
+            public void onPlayerTickActive(Player player, ItemStack torso) {
                 if (player.isInWater()) {
                     return;
                 }
 
                 PlayerMovementInputWrapper.PlayerMovementInput playerInput = PlayerMovementInputWrapper.get(player);
 
-                ItemStack helmet = player.getItemBySlot(EquipmentSlotType.HEAD);
+                ItemStack helmet = player.getItemBySlot(EquipmentSlot.HEAD);
                 boolean hasFlightControl = helmet.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
                         .filter(IModularItem.class::isInstance)
                         .map(IModularItem.class::cast)
@@ -134,7 +134,7 @@ public class JetPackModule extends AbstractPowerModule {
             }
 
             @Override
-            public void onPlayerTickInactive(PlayerEntity player, ItemStack item) {
+            public void onPlayerTickInactive(Player player, ItemStack item) {
                 if (player.level.isClientSide && NuminaSettings.useSounds()) {
                     Musique.stopPlayerSound(player, MPSSoundDictionary.JETPACK);
                 }

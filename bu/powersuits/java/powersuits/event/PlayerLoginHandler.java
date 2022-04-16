@@ -27,7 +27,7 @@
 package lehjr.powersuits.event;
 
 import lehjr.powersuits.client.control.KeybindManager;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.Player;
 import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
@@ -40,7 +40,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 public final class PlayerLoginHandler {
     @SubscribeEvent
     public static void onPlayerLoginClient(ClientPlayerNetworkEvent.LoggedInEvent event) {
-        PlayerEntity player = event.getPlayer();
+        Player player = event.getPlayer();
         if (player != null) {
             KeybindManager.INSTANCE.readInKeybinds();
         }

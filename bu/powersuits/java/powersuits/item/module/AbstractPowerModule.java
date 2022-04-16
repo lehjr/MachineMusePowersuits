@@ -29,10 +29,10 @@ package lehjr.powersuits.item.module;
 import lehjr.numina.util.string.AdditionalInfo;
 import lehjr.powersuits.basemod.MPSObjects;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.Player;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceContext;
 import net.minecraft.util.math.RayTraceResult;
@@ -54,7 +54,7 @@ public abstract class AbstractPowerModule extends Item {
                 .setNoRepair());
     }
 
-    public static RayTraceResult rayTrace(World worldIn, PlayerEntity player, RayTraceContext.FluidMode fluidMode, double range) {
+    public static RayTraceResult rayTrace(World worldIn, Player player, RayTraceContext.FluidMode fluidMode, double range) {
         float pitch = player.xRot;
         float yaw = player.yRot;
         Vector3d vec3d = player.getEyePosition(1.0F);
@@ -70,7 +70,7 @@ public abstract class AbstractPowerModule extends Item {
 
     @Nullable
     @Override
-    public abstract ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundNBT nbt);
+    public abstract ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt);
 
     @Override
     public void appendHoverText(ItemStack itemStack, @Nullable World worldIn, List<ITextComponent> tooltips, ITooltipFlag flagIn) {

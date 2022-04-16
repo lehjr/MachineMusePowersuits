@@ -5,7 +5,7 @@ import lehjr.numina.util.item.ItemUtils;
 import li.cil.scannable.common.container.AbstractHeldItemStackContainerProvider;
 import li.cil.scannable.common.inventory.ItemHandlerScanner;
 import li.cil.scannable.util.LazyOptionalUtil;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.Player;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.item.ItemStack;
@@ -20,12 +20,12 @@ import javax.annotation.Nullable;
  * Recreation of Scannable's ScannerContainerProvider to once again deal with the ItemStack check
  */
 public final class MPSScannerContainerProvider extends AbstractHeldItemStackContainerProvider {
-    public MPSScannerContainerProvider(PlayerEntity player, Hand hand) {
+    public MPSScannerContainerProvider(Player player, Hand hand) {
         super(player, hand);
     }
 
     @Nullable
-    public Container createMenu(int windowId, PlayerInventory inventory, PlayerEntity player) {
+    public Container createMenu(int windowId, PlayerInventory inventory, Player player) {
         ItemStack module = ItemUtils.getActiveModuleOrEmpty(player.getItemInHand(this.hand));
         LazyOptional<IItemHandler> capability = module.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY);
         IItemHandler itemHandler = LazyOptionalUtil.orNull(capability);

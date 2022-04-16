@@ -1,8 +1,8 @@
 package lehjr.powersuits.network.packets;
 
 import lehjr.numina.util.capabilities.inventory.modularitem.IModularItem;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.entity.player.ServerPlayer;
+import net.minecraft.inventory.EquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
@@ -15,13 +15,13 @@ import net.minecraftforge.registries.ForgeRegistries;
 import java.util.function.Supplier;
 
 public class CreativeInstallPacket {
-    protected EquipmentSlotType slotType;
+    protected EquipmentSlot slotType;
     protected ResourceLocation regName;
 
     public CreativeInstallPacket() {
     }
 
-    public CreativeInstallPacket(EquipmentSlotType slotType, ResourceLocation regName) {
+    public CreativeInstallPacket(EquipmentSlot slotType, ResourceLocation regName) {
         this.slotType = slotType;
         this.regName = regName;
     }
@@ -32,13 +32,13 @@ public class CreativeInstallPacket {
     }
 
     public static CreativeInstallPacket read(PacketBuffer packetBuffer) {
-        return new CreativeInstallPacket(packetBuffer.readEnum(EquipmentSlotType.class), packetBuffer.readResourceLocation());
+        return new CreativeInstallPacket(packetBuffer.readEnum(EquipmentSlot.class), packetBuffer.readResourceLocation());
     }
 
     public static void handle(CreativeInstallPacket message, Supplier<NetworkEvent.Context> ctx) {
         ctx.get().enqueueWork(() -> {
-            final ServerPlayerEntity player = ctx.get().getSender();
-            EquipmentSlotType slotType = message.slotType;
+            final ServerPlayer player = ctx.get().getSender();
+            EquipmentSlot slotType = message.slotType;
             ResourceLocation regName = message.regName;
             Item item = ForgeRegistries.ITEMS.getValue(regName);
             ItemStack module = new ItemStack(item, 1);

@@ -29,7 +29,7 @@ package lehjr.numina.util.client.render;
 import lehjr.numina.integration.scannable.MPSOverlayRenderer;
 import lehjr.numina.util.capabilities.inventory.modechanging.IModeChangingItem;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.player.ClientPlayerEntity;
+import net.minecraft.client.entity.player.ClientPlayer;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
@@ -62,7 +62,7 @@ public class RenderGameOverlayEventHandler {
 
     public void drawModeChangeIcons() {
         Minecraft mc = Minecraft.getInstance();
-        ClientPlayerEntity player = mc.player;
+        ClientPlayer player = mc.player;
         int i = player.inventory.selected;
         player.inventory.getSelected().getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
                 .filter(IModeChangingItem.class::isInstance)

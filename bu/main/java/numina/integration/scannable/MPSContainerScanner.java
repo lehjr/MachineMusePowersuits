@@ -3,7 +3,7 @@ package lehjr.numina.integration.scannable;
 import lehjr.numina.util.item.ItemUtils;
 import li.cil.scannable.common.Scannable;
 import li.cil.scannable.common.inventory.ItemHandlerScanner;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.Player;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.Slot;
@@ -17,7 +17,7 @@ import net.minecraftforge.items.SlotItemHandler;
  * a copy of the
  */
 public class MPSContainerScanner extends Container {
-    private final PlayerEntity player;
+    private final Player player;
     private final Hand hand;
     private final ItemStack tool;
     private final ItemStack module;
@@ -67,11 +67,11 @@ public class MPSContainerScanner extends Container {
         return this.hand;
     }
 
-    public boolean stillValid(PlayerEntity player) {
+    public boolean stillValid(Player player) {
         return player == this.player && ItemStack.matches(this.player.getItemInHand(hand), this.tool);
     }
 
-    public ItemStack quickMoveStack(PlayerEntity player, int index) {
+    public ItemStack quickMoveStack(Player player, int index) {
         Slot from = this.slots.get(index);
         if (from == null) {
             return ItemStack.EMPTY;

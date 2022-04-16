@@ -27,13 +27,13 @@
 package lehjr.numina.util.capabilities.module.tickable;
 
 import lehjr.numina.util.capabilities.module.toggleable.IToggleableModule;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.Player;
 import net.minecraft.item.ItemStack;
 
 import javax.annotation.Nonnull;
 
 public interface IPlayerTickModule extends IToggleableModule {
-    void onPlayerTickActive(PlayerEntity player, @Nonnull ItemStack item);
+    void onPlayerTickActive(Player player, @Nonnull ItemStack item);
 
-    void onPlayerTickInactive(PlayerEntity player, @Nonnull ItemStack item);
+    void onPlayerTickInactive(Player player, @Nonnull ItemStack item);
 }

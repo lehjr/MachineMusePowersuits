@@ -37,7 +37,7 @@ import lehjr.numina.util.math.Colour;
 import lehjr.numina.util.string.MuseStringUtils;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.util.text.TranslatableComponent;
 import net.minecraftforge.items.IItemHandler;
 
 import java.util.ArrayList;
@@ -152,7 +152,7 @@ public class ClickableModuleSlot extends UniversalSlot implements IClickable {
     public ITextComponent getLocalizedDescription() {
         if (this.getItem().isEmpty())
             return null;
-        return new TranslationTextComponent(this.getItem().getItem().getDescriptionId().concat(".desc"));
+        return new TranslatableComponent(this.getItem().getItem().getDescriptionId().concat(".desc"));
     }
 
     public EnumModuleCategory getCategory() {

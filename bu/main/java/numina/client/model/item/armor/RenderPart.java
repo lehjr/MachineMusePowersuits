@@ -42,7 +42,7 @@ import net.minecraft.client.renderer.model.Model;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.math.vector.*;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -104,7 +104,7 @@ public class RenderPart extends ModelRenderer {
     }
 
     private void doRendering(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
-        CompoundNBT renderSpec = ArmorModelInstance.getInstance().getRenderSpec();
+        CompoundTag renderSpec = ArmorModelInstance.getInstance().getRenderSpec();
         if (renderSpec != null) {
             MatrixStack.Entry entry = matrixStackIn.last();
 
@@ -115,7 +115,7 @@ public class RenderPart extends ModelRenderer {
             }
 
             int partColor;
-            for (CompoundNBT nbt : NBTTagAccessor.getValues(renderSpec)) {
+            for (CompoundTag nbt : NBTTagAccessor.getValues(renderSpec)) {
                 PartSpecBase part = ModelRegistry.getInstance().getPart(nbt);
                 if (part != null && part instanceof ModelPartSpec) {
                     if (part.getBinding().getSlot() == ArmorModelInstance.getInstance().getVisibleSection()

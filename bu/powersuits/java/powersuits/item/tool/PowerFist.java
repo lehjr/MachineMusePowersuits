@@ -37,7 +37,7 @@ import lehjr.powersuits.constants.MPSConstants;
 import lehjr.powersuits.constants.MPSRegistryNames;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.Player;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUseContext;
@@ -98,7 +98,7 @@ public class PowerFist extends AbstractElectricTool {
     }
 
     @Override
-    public boolean doesSneakBypassUse(ItemStack stack, IWorldReader world, BlockPos pos, PlayerEntity player) {
+    public boolean doesSneakBypassUse(ItemStack stack, IWorldReader world, BlockPos pos, Player player) {
         return true;
     }
 
@@ -135,13 +135,13 @@ public class PowerFist extends AbstractElectricTool {
      */
     @Override
     public boolean hurtEnemy(ItemStack itemStack, LivingEntity target, LivingEntity attacker) {
-        if (attacker instanceof PlayerEntity) {
+        if (attacker instanceof Player) {
             itemStack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
                     .filter(IModeChangingItem.class::isInstance)
                     .map(IModeChangingItem.class::cast)
                     .ifPresent(iItemHandler -> iItemHandler.getOnlineModuleOrEmpty(MPSRegistryNames.MELEE_ASSIST_MODULE_REGNAME)
                             .getCapability(PowerModuleCapability.POWER_MODULE).ifPresent(pm->{
-                                PlayerEntity player = (PlayerEntity) attacker;
+                                Player player = (Player) attacker;
                                 double drain = pm.applyPropertyModifiers(MPSConstants.PUNCH_ENERGY);
                                 if (ElectricItemUtils.getPlayerEnergy(player) > drain) {
                                     ElectricItemUtils.drainPlayerEnergy(player, (int) drain);
@@ -169,7 +169,7 @@ public class PowerFist extends AbstractElectricTool {
      * @return True to prevent harvesting, false to continue as normal
      */
     @Override
-    public boolean onBlockStartBreak(ItemStack itemstack, BlockPos pos, PlayerEntity player) {
+    public boolean onBlockStartBreak(ItemStack itemstack, BlockPos pos, Player player) {
         super.onBlockStartBreak(itemstack, pos, player);
         return itemstack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
                 .filter(IModeChangingItem.class::isInstance)
@@ -195,7 +195,7 @@ public class PowerFist extends AbstractElectricTool {
 
     // Only fires on blocks that need a tool
     @Override
-    public int getHarvestLevel(ItemStack itemStack, ToolType toolType, @Nullable PlayerEntity player, @Nullable BlockState state) {
+    public int getHarvestLevel(ItemStack itemStack, ToolType toolType, @Nullable Player player, @Nullable BlockState state) {
         return itemStack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
                 .filter(IModeChangingItem.class::isInstance)
                 .map(IModeChangingItem.class::cast)
@@ -300,7 +300,7 @@ public class PowerFist extends AbstractElectricTool {
     }
 
     @Override
-    public ActionResultType interactLivingEntity(ItemStack itemStackIn, PlayerEntity player, LivingEntity entity, Hand hand) {
+    public ActionResultType interactLivingEntity(ItemStack itemStackIn, Player player, LivingEntity entity, Hand hand) {
         return itemStackIn.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
                 .filter(IModeChangingItem.class::isInstance)
                 .map(IModeChangingItem.class::cast)
@@ -314,7 +314,7 @@ public class PowerFist extends AbstractElectricTool {
     }
 
     @Override
-    public ActionResult<ItemStack> use(World world, PlayerEntity playerIn, Hand handIn) {
+    public ActionResult<ItemStack> use(World world, Player playerIn, Hand handIn) {
         ItemStack fist = playerIn.getItemInHand(handIn);
         final ActionResult<ItemStack> fallback = new ActionResult<>(ActionResultType.PASS, fist);
         if (handIn != Hand.MAIN_HAND) {

@@ -42,9 +42,9 @@ import lehjr.powersuits.constants.MPSConstants;
 import lehjr.powersuits.entity.RailgunBoltEntity;
 import lehjr.powersuits.item.module.AbstractPowerModule;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.Player;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.*;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
@@ -62,7 +62,7 @@ public class RailgunModule extends AbstractPowerModule {
 
     @Nullable
     @Override
-    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundNBT nbt) {
+    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt) {
         return new CapProvider(stack);
     }
 
@@ -95,7 +95,7 @@ public class RailgunModule extends AbstractPowerModule {
             }
 
             @Override
-            public void onPlayerTickActive(PlayerEntity player, @Nonnull ItemStack itemStackIn) {
+            public void onPlayerTickActive(Player player, @Nonnull ItemStack itemStackIn) {
                 double timer = MuseNBTUtils.getModularItemDoubleOrZero(itemStackIn, MPSConstants.TIMER);
                 if (timer > 0) {
                     MuseNBTUtils.setModularItemDoubleOrRemove(itemStackIn, MPSConstants.TIMER, timer - 1 > 0 ? timer - 1 : 0);
@@ -103,7 +103,7 @@ public class RailgunModule extends AbstractPowerModule {
             }
 
             @Override
-            public ActionResult use(ItemStack itemStackIn, World worldIn, PlayerEntity playerIn, Hand hand) {
+            public ActionResult use(ItemStack itemStackIn, World worldIn, Player playerIn, Hand hand) {
                 if (hand == Hand.MAIN_HAND && ElectricItemUtils.getPlayerEnergy(playerIn) > getEnergyUsage()) {
                     playerIn.startUsingItem(hand);
                     return ActionResult.success(itemStackIn);
@@ -115,7 +115,7 @@ public class RailgunModule extends AbstractPowerModule {
             // from bow, since bow launches correctly each time
             public void releaseUsing(ItemStack itemStack, World worldIn, LivingEntity entityLiving, int timeLeft) {
                 int chargeTicks = (int) MuseMathUtils.clampDouble(itemStack.getUseDuration() - timeLeft, 10, 50);
-                if (!worldIn.isClientSide && entityLiving instanceof PlayerEntity) {
+                if (!worldIn.isClientSide && entityLiving instanceof Player) {
                     double chargePercent = chargeTicks * 0.02; // chargeticks/50
                     double energyConsumption = getEnergyUsage() * chargePercent;
                     double timer = MuseNBTUtils.getModularItemDoubleOrZero(itemStack, MPSConstants.TIMER);
@@ -123,7 +123,7 @@ public class RailgunModule extends AbstractPowerModule {
                     // TODO: replace with code similar to plasma_ball ... spawn... direction... velocity...
                     if (!worldIn.isClientSide && ElectricItemUtils.getPlayerEnergy(entityLiving) > energyConsumption && timer == 0) {
                         MuseNBTUtils.setModularItemDoubleOrRemove(itemStack, MPSConstants.TIMER, 10);
-                        PlayerEntity playerentity = (PlayerEntity)entityLiving;
+                        Player playerentity = (Player)entityLiving;
 
                         double velocity = applyPropertyModifiers(MPSConstants.RAILGUN_TOTAL_IMPULSE) * chargePercent;
                         double damage = velocity * 0.01; // original: impulse / 100.0

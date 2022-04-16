@@ -26,7 +26,7 @@
 
 package lehjr.numina.util.capabilities.player;
 
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.INBT;
 import net.minecraft.util.Direction;
 import net.minecraftforge.common.capabilities.Capability;
@@ -38,7 +38,7 @@ import net.minecraftforge.common.util.LazyOptional;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class CapabilityPlayerKeyStates implements ICapabilitySerializable<CompoundNBT> {
+public class CapabilityPlayerKeyStates implements ICapabilitySerializable<CompoundTag> {
     @CapabilityInject(IPlayerKeyStates.class)
     public static Capability<IPlayerKeyStates> PLAYER_KEYSTATES = null;
     private IPlayerKeyStates instance = PLAYER_KEYSTATES.getDefaultInstance();
@@ -47,7 +47,7 @@ public class CapabilityPlayerKeyStates implements ICapabilitySerializable<Compou
         CapabilityManager.INSTANCE.register(IPlayerKeyStates.class, new Capability.IStorage<IPlayerKeyStates>() {
                     @Override
                     public INBT writeNBT(Capability<IPlayerKeyStates> capability, IPlayerKeyStates instance, Direction side) {
-                        CompoundNBT nbt = new CompoundNBT();
+                        CompoundTag nbt = new CompoundTag();
                         nbt.putBoolean("forward", instance.getForwardKeyState());
                         nbt.putByte("strafe", instance.getStrafeKeyState());
                         nbt.putBoolean("jumpKey", instance.getJumpKeyState());
@@ -57,11 +57,11 @@ public class CapabilityPlayerKeyStates implements ICapabilitySerializable<Compou
 
                     @Override
                     public void readNBT(Capability<IPlayerKeyStates> capability, IPlayerKeyStates instance, Direction side, INBT nbt) {
-                        if (nbt instanceof CompoundNBT) {
-                            instance.setForwardKeyState(((CompoundNBT) nbt).getBoolean("forward"));
-                            instance.setStrafeKeyState(((CompoundNBT) nbt).getByte("strafe"));
-                            instance.setJumpKeyState(((CompoundNBT) nbt).getBoolean("jumpKey"));
-                            instance.setDownKeyState(((CompoundNBT) nbt).getBoolean("downKey"));
+                        if (nbt instanceof CompoundTag) {
+                            instance.setForwardKeyState(((CompoundTag) nbt).getBoolean("forward"));
+                            instance.setStrafeKeyState(((CompoundTag) nbt).getByte("strafe"));
+                            instance.setJumpKeyState(((CompoundTag) nbt).getBoolean("jumpKey"));
+                            instance.setDownKeyState(((CompoundTag) nbt).getBoolean("downKey"));
                         }
                     }
                 },
@@ -69,12 +69,12 @@ public class CapabilityPlayerKeyStates implements ICapabilitySerializable<Compou
     }
 
     @Override
-    public CompoundNBT serializeNBT() {
-        return (CompoundNBT) PLAYER_KEYSTATES.getStorage().writeNBT(PLAYER_KEYSTATES, this.instance, null);
+    public CompoundTag serializeNBT() {
+        return (CompoundTag) PLAYER_KEYSTATES.getStorage().writeNBT(PLAYER_KEYSTATES, this.instance, null);
     }
 
     @Override
-    public void deserializeNBT(CompoundNBT nbt) {
+    public void deserializeNBT(CompoundTag nbt) {
         PLAYER_KEYSTATES.getStorage().readNBT(PLAYER_KEYSTATES, this.instance, null, nbt);
     }
 

@@ -44,8 +44,8 @@ import lehjr.numina.util.nbt.propertymodifier.PropertyModifierIntLinearAdditive;
 import lehjr.numina.util.nbt.propertymodifier.PropertyModifierLinearAdditive;
 import lehjr.numina.util.string.MuseStringUtils;
 import lehjr.powersuits.client.gui.common.ModularItemSelectionFrame;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.text.TranslatableComponent;
 import net.minecraftforge.common.util.LazyOptional;
 
 import java.util.HashMap;
@@ -111,7 +111,7 @@ public class ModuleTweakFrame extends ScrollableFrame {
         RenderSystem.pushMatrix();
         RenderSystem.translatef(0, -currentScrollPixels, 0);
         // FIXME: translation
-        MuseRenderer.drawShadowedStringCentered(matrixStack, new TranslationTextComponent("gui.powersuits.tinker"), centerx(), top() + 7);
+        MuseRenderer.drawShadowedStringCentered(matrixStack, new TranslatableComponent("gui.powersuits.tinker"), centerx(), top() + 7);
 
         for (ClickableTinkerSlider slider : sliders) {
             slider.render(matrixStack, mouseX, mouseY, partialTicks);
@@ -124,7 +124,7 @@ public class ModuleTweakFrame extends ScrollableFrame {
             double valueWidth = MuseRenderer.getStringWidth(formattedValue);
             double allowedNameWidth = getRect().width() - valueWidth - margin * 2;
             List<String> namesList = MuseStringUtils.wrapStringToVisualLength(
-                    new TranslationTextComponent(NuminaConstants.MODULE_TRADEOFF_PREFIX + name).getString(), allowedNameWidth);
+                    new TranslatableComponent(NuminaConstants.MODULE_TRADEOFF_PREFIX + name).getString(), allowedNameWidth);
 
             for (int i = 0; i < namesList.size(); i++) {
                 MuseRenderer.drawLeftAlignedShadowedString(matrixStack, namesList.get(i), getRect().left() + margin, nexty + 9 * i);
@@ -149,7 +149,7 @@ public class ModuleTweakFrame extends ScrollableFrame {
         sliders.clear();
         this.totalSize = cap.map(pm -> {
             int totalSize = 0;
-            CompoundNBT moduleTag = pm.getModuleTag();
+            CompoundTag moduleTag = pm.getModuleTag();
             Map<String, List<IPropertyModifier>> propertyModifiers = pm.getPropertyModifiers();
             for (Map.Entry<String, List<IPropertyModifier>> property : propertyModifiers.entrySet()) {
                 double currValue = 0;
@@ -179,7 +179,7 @@ public class ModuleTweakFrame extends ScrollableFrame {
                             getRect().finalRight() - getRect().finalLeft() - 16,
                             moduleTag,
                             tweak,
-                            new TranslationTextComponent(NuminaConstants.MODULE_TRADEOFF_PREFIX + tweak),
+                            new TranslatableComponent(NuminaConstants.MODULE_TRADEOFF_PREFIX + tweak),
                             (PropertyModifierIntLinearAdditive) tweaks.get(tweak));
                     sliders.add(slider);
                     totalSize += slider.finalHeight();
@@ -189,7 +189,7 @@ public class ModuleTweakFrame extends ScrollableFrame {
                             getRect().finalRight() - getRect().finalLeft() - 16,
                             moduleTag,
                             tweak,
-                            new TranslationTextComponent(NuminaConstants.MODULE_TRADEOFF_PREFIX + tweak));
+                            new TranslatableComponent(NuminaConstants.MODULE_TRADEOFF_PREFIX + tweak));
                     sliders.add(slider);
                     totalSize += slider.finalHeight();
                 }

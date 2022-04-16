@@ -27,7 +27,7 @@
 package lehjr.numina.network.packets;
 
 import lehjr.numina.util.capabilities.inventory.modularitem.IModularItem;
-import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.entity.player.ServerPlayer;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.network.NetworkEvent;
@@ -57,7 +57,7 @@ public class ToggleRequestPacket {
     }
 
     public static void handle(ToggleRequestPacket message, Supplier<NetworkEvent.Context> ctx) {
-        final ServerPlayerEntity player = ctx.get().getSender();
+        final ServerPlayer player = ctx.get().getSender();
 
         if (player == null || player.getServer() == null)
             return;

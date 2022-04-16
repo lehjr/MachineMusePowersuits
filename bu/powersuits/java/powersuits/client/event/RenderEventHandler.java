@@ -43,13 +43,13 @@ import lehjr.powersuits.config.MPSSettings;
 import lehjr.powersuits.constants.MPSConstants;
 import lehjr.powersuits.constants.MPSRegistryNames;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.player.ClientPlayerEntity;
+import net.minecraft.client.entity.player.ClientPlayer;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.util.InputMappings;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.entity.player.Player;
+import net.minecraft.inventory.EquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -83,11 +83,11 @@ public enum RenderEventHandler {
     @OnlyIn(Dist.CLIENT)
     @SubscribeEvent
     public void renderBlockHighlight(DrawHighlightEvent event) {
-        if (event.getTarget().getType() != RayTraceResult.Type.BLOCK || !(event.getInfo().getEntity() instanceof PlayerEntity)) {
+        if (event.getTarget().getType() != RayTraceResult.Type.BLOCK || !(event.getInfo().getEntity() instanceof Player)) {
             return;
         }
 
-        PlayerEntity player = ((PlayerEntity) event.getInfo().getEntity());
+        Player player = ((Player) event.getInfo().getEntity());
 
         player.getMainHandItem().getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
                 .filter(IModeChangingItem.class::isInstance)
@@ -149,22 +149,22 @@ public enum RenderEventHandler {
         }
     }
 
-    private boolean playerHasFlightOn(PlayerEntity player) {
+    private boolean playerHasFlightOn(Player player) {
         return
-                player.getItemBySlot(EquipmentSlotType.HEAD).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+                player.getItemBySlot(EquipmentSlot.HEAD).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
                         .filter(IModularItem.class::isInstance)
                         .map(IModularItem.class::cast)
                         .map(iModularItem ->
                                 iModularItem.isModuleOnline(MPSRegistryNames.FLIGHT_CONTROL_MODULE_REGNAME)).orElse(false) ||
 
-                        player.getItemBySlot(EquipmentSlotType.CHEST).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+                        player.getItemBySlot(EquipmentSlot.CHEST).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
                                 .filter(IModularItem.class::isInstance)
                                 .map(IModularItem.class::cast)
                                 .map(iModularItem ->
                                         iModularItem.isModuleOnline(MPSRegistryNames.JETPACK_MODULE_REGNAME) ||
                                                 iModularItem.isModuleOnline(MPSRegistryNames.GLIDER_MODULE_REGNAME)).orElse(false) ||
 
-                        player.getItemBySlot(EquipmentSlotType.FEET).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+                        player.getItemBySlot(EquipmentSlot.FEET).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
                                 .filter(IModularItem.class::isInstance)
                                 .map(IModularItem.class::cast)
                                 .map(iModularItem ->
@@ -181,7 +181,7 @@ public enum RenderEventHandler {
 
     @SubscribeEvent
     public void onFOVUpdate(FOVUpdateEvent e) {
-        e.getEntity().getItemBySlot(EquipmentSlotType.HEAD).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+        e.getEntity().getItemBySlot(EquipmentSlot.HEAD).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
                 .filter(IModularItem.class::isInstance)
                 .map(IModularItem.class::cast)
                 .ifPresent(h-> {
@@ -209,8 +209,8 @@ public enum RenderEventHandler {
     }
 
     boolean isModularItemEquuiiped() {
-        PlayerEntity player = Minecraft.getInstance().player;
-        return Arrays.stream(EquipmentSlotType.values()).filter(type ->player.getItemBySlot(type).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).filter(IModularItem.class::isInstance).isPresent()).findFirst().isPresent();
+        Player player = Minecraft.getInstance().player;
+        return Arrays.stream(EquipmentSlot.values()).filter(type ->player.getItemBySlot(type).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).filter(IModularItem.class::isInstance).isPresent()).findFirst().isPresent();
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -251,7 +251,7 @@ public enum RenderEventHandler {
             }
         }
 
-        ClientPlayerEntity getPlayer() {
+        ClientPlayer getPlayer() {
             return Minecraft.getInstance().player;
         }
 
@@ -272,7 +272,7 @@ public enum RenderEventHandler {
                 boolean active = false;
                 // just using the icon
                 ItemStack module = new ItemStack(ForgeRegistries.ITEMS.getValue(kb.registryName));
-                for (EquipmentSlotType slot : EquipmentSlotType.values()) {
+                for (EquipmentSlot slot : EquipmentSlot.values()) {
                     ItemStack stack = getPlayer().getItemBySlot(slot);
                     active = stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
                             .filter(IModularItem.class::isInstance)

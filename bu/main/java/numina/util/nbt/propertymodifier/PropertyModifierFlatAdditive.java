@@ -26,7 +26,7 @@
 
 package lehjr.numina.util.nbt.propertymodifier;
 
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.CompoundTag;
 
 public class PropertyModifierFlatAdditive implements IPropertyModifier {
     public double valueAdded;
@@ -41,7 +41,7 @@ public class PropertyModifierFlatAdditive implements IPropertyModifier {
      * @return getValue + this.valueAdded
      */
     @Override
-    public double applyModifier(CompoundNBT moduleTag, double value) {
+    public double applyModifier(CompoundTag moduleTag, double value) {
         return value + this.valueAdded;
     }
 }

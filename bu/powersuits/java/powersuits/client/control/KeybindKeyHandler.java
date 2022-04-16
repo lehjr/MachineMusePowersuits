@@ -38,14 +38,14 @@ import lehjr.numina.util.capabilities.player.CapabilityPlayerKeyStates;
 import lehjr.powersuits.client.gui.modechanging.GuiModeSelector;
 import lehjr.powersuits.constants.MPSConstants;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.player.ClientPlayerEntity;
+import net.minecraft.client.entity.player.ClientPlayer;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.util.text.TranslatableComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.InputEvent;
@@ -61,9 +61,9 @@ public class KeybindKeyHandler {
     // FIXME: Translations
     public static final String mps =  "itemGroup.powersuits";
 
-    public static final KeyBinding goDownKey = new KeyBinding(new TranslationTextComponent("keybinding.powersuits.goDownKey").getKey(), GLFW.GLFW_KEY_Z, mps);
-    public static final KeyBinding cycleToolBackward = new KeyBinding(new TranslationTextComponent("keybinding.powersuits.cycleToolBackward").getKey(), GLFW.GLFW_KEY_UNKNOWN, mps);
-    public static final KeyBinding cycleToolForward = new KeyBinding(new TranslationTextComponent("keybinding.powersuits.cycleToolForward").getKey(), GLFW.GLFW_KEY_UNKNOWN, mps);
+    public static final KeyBinding goDownKey = new KeyBinding(new TranslatableComponent("keybinding.powersuits.goDownKey").getKey(), GLFW.GLFW_KEY_Z, mps);
+    public static final KeyBinding cycleToolBackward = new KeyBinding(new TranslatableComponent("keybinding.powersuits.cycleToolBackward").getKey(), GLFW.GLFW_KEY_UNKNOWN, mps);
+    public static final KeyBinding cycleToolForward = new KeyBinding(new TranslatableComponent("keybinding.powersuits.cycleToolForward").getKey(), GLFW.GLFW_KEY_UNKNOWN, mps);
     public static final KeyBinding openKeybindGUI = new KeyBinding("Open MPS Keybind GUI", GLFW.GLFW_KEY_UNKNOWN, mps);
     public static final KeyBinding openCosmeticGUI = new KeyBinding("Cosmetic (MPS)", GLFW.GLFW_KEY_UNKNOWN, mps);
 
@@ -110,7 +110,7 @@ public class KeybindKeyHandler {
         }
     }
 
-    void updatePlayerValues(ClientPlayerEntity clientPlayer) {
+    void updatePlayerValues(ClientPlayer clientPlayer) {
         if (clientPlayer == null) {
             return;
         }
@@ -156,7 +156,7 @@ public class KeybindKeyHandler {
 
     @SubscribeEvent
     public void onKeyInput(InputEvent.KeyInputEvent e) {
-        ClientPlayerEntity player = minecraft.player;
+        ClientPlayer player = minecraft.player;
         if (player == null) {
             return;
         }

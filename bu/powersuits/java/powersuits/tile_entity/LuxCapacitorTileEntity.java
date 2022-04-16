@@ -36,7 +36,7 @@ import lehjr.powersuits.basemod.MPSObjects;
 import lehjr.powersuits.block.LuxCapacitorBlock;
 import lehjr.powersuits.client.model.helper.LuxCapHelper;
 import net.minecraft.block.BlockState;
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.IntNBT;
 import net.minecraft.network.play.server.SUpdateTileEntityPacket;
 import net.minecraft.util.Direction;
@@ -71,8 +71,8 @@ public class LuxCapacitorTileEntity extends MuseTileEntity {
     }
 
     @Override
-    public CompoundNBT getUpdateTag() {
-        return this.save(new CompoundNBT());
+    public CompoundTag getUpdateTag() {
+        return this.save(new CompoundTag());
     }
 
     public void setColor(Colour colour) {
@@ -81,7 +81,7 @@ public class LuxCapacitorTileEntity extends MuseTileEntity {
     }
 
     @Override
-    public CompoundNBT save(CompoundNBT nbt) {
+    public CompoundTag save(CompoundTag nbt) {
 //        MuseLogger.logDebug("writing: " + nbt);
         colourNBT.ifPresent(colourNBT1 -> nbt.put("colour", colourNBT1.serializeNBT()));
         return super.save(nbt);
@@ -103,7 +103,7 @@ public class LuxCapacitorTileEntity extends MuseTileEntity {
     }
 
     @Override
-    public void load(BlockState state, CompoundNBT nbt) {
+    public void load(BlockState state, CompoundTag nbt) {
 //        MuseLogger.logDebug("reading");
 
         if (nbt.contains("colour", Constants.NBT.TAG_INT)) {

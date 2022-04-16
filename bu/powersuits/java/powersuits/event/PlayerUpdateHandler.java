@@ -33,8 +33,8 @@ import lehjr.powersuits.client.sound.MPSSoundDictionary;
 import lehjr.powersuits.item.armor.PowerArmorBoots;
 import lehjr.powersuits.item.armor.PowerArmorChestplate;
 import lehjr.powersuits.item.armor.PowerArmorLeggings;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.entity.player.Player;
+import net.minecraft.inventory.EquipmentSlot;
 import net.minecraft.util.SoundCategory;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
@@ -49,8 +49,8 @@ public class PlayerUpdateHandler {
     @SuppressWarnings("unchecked")
     @SubscribeEvent(priority = EventPriority.NORMAL)
     public void onPlayerUpdate(LivingEvent.LivingUpdateEvent event) {
-        if (event.getEntity() instanceof PlayerEntity) {
-            PlayerEntity player = (PlayerEntity) event.getEntity();
+        if (event.getEntity() instanceof Player) {
+            Player player = (Player) event.getEntity();
 
             // pretty sure the whole point of this was to reduce fall distance, not increase it.
             float fallDistance = (float) MovementManager.INSTANCE.computeFallHeightFromVelocity(MuseMathUtils.clampDouble(player.getDeltaMovement().y, -1000.0, 0.0));
@@ -60,7 +60,7 @@ public class PlayerUpdateHandler {
 
             // Sound update
             if (player.level.isClientSide && NuminaSettings.useSounds()) {
-                if ((player.getItemBySlot(EquipmentSlotType.CHEST).getItem() instanceof PowerArmorChestplate)) {
+                if ((player.getItemBySlot(EquipmentSlot.CHEST).getItem() instanceof PowerArmorChestplate)) {
                     double velsq2 = MuseMathUtils.sumsq(player.getDeltaMovement().x, player.getDeltaMovement().y, player.getDeltaMovement().z) - 0.5;
                     if (player.hasImpulse && velsq2 > 0) {
                         Musique.playerSound(player, MPSSoundDictionary.GLIDER, SoundCategory.PLAYERS, (float) (velsq2 / 3), 1.0f, true);
@@ -71,15 +71,15 @@ public class PlayerUpdateHandler {
                     Musique.stopPlayerSound(player, MPSSoundDictionary.GLIDER);
                 }
 
-                if (!(player.getItemBySlot(EquipmentSlotType.FEET).getItem() instanceof PowerArmorBoots)) {
+                if (!(player.getItemBySlot(EquipmentSlot.FEET).getItem() instanceof PowerArmorBoots)) {
                     Musique.stopPlayerSound(player, MPSSoundDictionary.JETBOOTS);
                 }
 
-                if (!(player.getItemBySlot(EquipmentSlotType.CHEST).getItem() instanceof PowerArmorChestplate)) {
+                if (!(player.getItemBySlot(EquipmentSlot.CHEST).getItem() instanceof PowerArmorChestplate)) {
                     Musique.stopPlayerSound(player, MPSSoundDictionary.JETPACK);
                 }
 
-                if (!(player.getItemBySlot(EquipmentSlotType.LEGS).getItem() instanceof PowerArmorLeggings)) {
+                if (!(player.getItemBySlot(EquipmentSlot.LEGS).getItem() instanceof PowerArmorLeggings)) {
                     Musique.stopPlayerSound(player, MPSSoundDictionary.SWIM_ASSIST);
                 }
             }

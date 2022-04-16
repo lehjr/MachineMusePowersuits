@@ -36,9 +36,9 @@ import lehjr.numina.util.capabilities.module.toggleable.IToggleableModule;
 import lehjr.numina.util.energy.ElectricItemUtils;
 import lehjr.powersuits.config.MPSSettings;
 import lehjr.powersuits.item.module.AbstractPowerModule;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.Player;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.potion.Effect;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
@@ -60,7 +60,7 @@ public class NightVisionModule extends AbstractPowerModule {
 
     @Nullable
     @Override
-    public ICapabilityProvider initCapabilities (ItemStack stack, @Nullable CompoundNBT nbt){
+    public ICapabilityProvider initCapabilities (ItemStack stack, @Nullable CompoundTag nbt){
         return new CapProvider(stack);
     }
 
@@ -88,7 +88,7 @@ public class NightVisionModule extends AbstractPowerModule {
             }
 
             @Override
-            public void onPlayerTickActive(PlayerEntity player, ItemStack item) {
+            public void onPlayerTickActive(Player player, ItemStack item) {
                 if (player.level.isClientSide) {
                     return;
                 }
@@ -107,7 +107,7 @@ public class NightVisionModule extends AbstractPowerModule {
             }
 
             @Override
-            public void onPlayerTickInactive(PlayerEntity player, ItemStack item) {
+            public void onPlayerTickInactive(Player player, ItemStack item) {
                 EffectInstance nightVisionEffect = null;
                 if (player.hasEffect(nightvision)) {
                     nightVisionEffect = player.getEffect(nightvision);

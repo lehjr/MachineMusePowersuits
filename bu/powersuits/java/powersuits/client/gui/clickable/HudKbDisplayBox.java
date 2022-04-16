@@ -15,7 +15,7 @@ import lehjr.numina.util.string.MuseStringUtils;
 import lehjr.powersuits.client.control.KeybindManager;
 import lehjr.powersuits.client.control.MPSKeyBinding;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.player.ClientPlayerEntity;
+import net.minecraft.client.entity.player.ClientPlayer;
 import net.minecraft.client.util.InputMappings;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -49,7 +49,7 @@ public class HudKbDisplayBox extends ClickableButton2 {
     }
 
     public void toggleModules() {
-        ClientPlayerEntity player = Minecraft.getInstance().player;
+        ClientPlayer player = Minecraft.getInstance().player;
         if (player == null) {
             return;
         }

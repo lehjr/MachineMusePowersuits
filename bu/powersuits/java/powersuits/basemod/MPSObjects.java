@@ -66,7 +66,7 @@ import lehjr.powersuits.tile_entity.TinkerTableTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
-import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.inventory.EquipmentSlot;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
@@ -257,7 +257,7 @@ public class MPSObjects {
 
     public static final RegistryObject<ContainerType<InstallSalvageContainer>> INSTALL_SALVAGE_CONTAINER_TYPE =
             CONTAINER_TYPES.register(MPSRegistryNames.INSTALL_SALVAGE_CONTAINER_TYPE,
-                    () -> IForgeContainerType.create((windowId, inv, data) -> new InstallSalvageContainer(windowId, inv, data.readEnum(EquipmentSlotType.class))));
+                    () -> IForgeContainerType.create((windowId, inv, data) -> new InstallSalvageContainer(windowId, inv, data.readEnum(EquipmentSlot.class))));
 
     static RegistryObject<Item> registerModule(String regName, Item item) {
         MPSModules.INSTANCE.addModule(MPSRegistryNames.getRegName(regName));

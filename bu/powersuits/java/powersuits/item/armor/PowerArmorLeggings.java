@@ -26,10 +26,10 @@
 
 package lehjr.powersuits.item.armor;
 
-import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.inventory.EquipmentSlot;
 
 public class PowerArmorLeggings extends AbstractElectricItemArmor {
     public PowerArmorLeggings() {
-        super(EquipmentSlotType.LEGS);
+        super(EquipmentSlot.LEGS);
     }
 }

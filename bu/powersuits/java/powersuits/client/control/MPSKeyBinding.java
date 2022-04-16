@@ -4,7 +4,7 @@ import lehjr.numina.network.NuminaPackets;
 import lehjr.numina.network.packets.ToggleRequestPacket;
 import lehjr.powersuits.client.event.RenderEventHandler;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.player.ClientPlayerEntity;
+import net.minecraft.client.entity.player.ClientPlayer;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.client.util.InputMappings;
 import net.minecraft.util.ResourceLocation;
@@ -39,7 +39,7 @@ public class MPSKeyBinding extends KeyBinding {
 
 
     public void toggleModules() {
-        ClientPlayerEntity player = Minecraft.getInstance().player;
+        ClientPlayer player = Minecraft.getInstance().player;
         if (player == null) {
             return;
         }

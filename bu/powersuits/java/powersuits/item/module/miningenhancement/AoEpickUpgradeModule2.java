@@ -23,9 +23,9 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.Player;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
@@ -56,7 +56,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class AoEpickUpgradeModule2 extends AbstractPowerModule {
     @Nullable
     @Override
-    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundNBT nbt) {
+    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt) {
         return new CapProvider(stack);
     }
 
@@ -98,7 +98,7 @@ public class AoEpickUpgradeModule2 extends AbstractPowerModule {
             }
 
             @Override
-            public ActionResult<ItemStack> use(@Nonnull ItemStack itemStackIn, World worldIn, PlayerEntity playerIn, Hand hand) {
+            public ActionResult<ItemStack> use(@Nonnull ItemStack itemStackIn, World worldIn, Player playerIn, Hand hand) {
                 if (hand.equals(Hand.MAIN_HAND) && worldIn.isClientSide()) {
                     if (KeybindKeyHandler.isKeyPressed(GLFW.GLFW_KEY_LEFT_SHIFT) || KeybindKeyHandler.isKeyPressed(GLFW.GLFW_KEY_RIGHT_SHIFT)) {
                         BlockRayTraceResult rayTraceResult = getPlayerPOVHitResult(playerIn.level, playerIn, RayTraceContext.FluidMode.NONE);
@@ -118,7 +118,7 @@ public class AoEpickUpgradeModule2 extends AbstractPowerModule {
             }
 
             @Override
-            public boolean onBlockStartBreak(ItemStack itemStack, BlockPos posIn, PlayerEntity player) {
+            public boolean onBlockStartBreak(ItemStack itemStack, BlockPos posIn, Player player) {
                 BlockState state = player.level.getBlockState(posIn);
                 Block block = state.getBlock();
 

@@ -12,7 +12,7 @@ import lehjr.numina.util.math.Colour;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.util.RecipeBookCategories;
-import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.inventory.EquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -30,9 +30,9 @@ public class ModularItemTabToggleWidget extends DrawableRelativeRect implements 
     private final Colour inactiveColor = Colour.DARK_GREY.withAlpha(0.8F);
     @Nonnull
     ItemStack icon;
-    EquipmentSlotType type;
+    EquipmentSlot type;
 
-    public ModularItemTabToggleWidget(EquipmentSlotType type) {
+    public ModularItemTabToggleWidget(EquipmentSlot type) {
         super(0,0, 0, 27, Colour.DARK_GREY.withAlpha(0.8F), Colour.BLACK);
         this.type = type;
         ItemStack test = getMinecraft().player.getItemBySlot(type);
@@ -61,7 +61,7 @@ public class ModularItemTabToggleWidget extends DrawableRelativeRect implements 
         int offset = this.isStateActive? -2 : -3;
         RenderSystem.disableDepthTest();
         if (this.icon.isEmpty()) {
-            if (EquipmentSlotType.MAINHAND.equals(type)) {
+            if (EquipmentSlot.MAINHAND.equals(type)) {
                 MuseIconUtils.drawIconAt((int)left() + 9 + offset, (float)top() + 7, MuseIconUtils.getIcon().weaponSlotBackground.getSprite(), Colour.WHITE);
             } else {
                 Pair<ResourceLocation, ResourceLocation> pair = NuminaObjects.getSlotBackground(type);
@@ -86,7 +86,7 @@ public class ModularItemTabToggleWidget extends DrawableRelativeRect implements 
         return this.isHovered;
     }
 
-    public EquipmentSlotType getSlotType() {
+    public EquipmentSlot getSlotType() {
         return this.type;
     }
 

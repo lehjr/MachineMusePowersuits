@@ -28,7 +28,7 @@ package lehjr.numina.util.capabilities.module.rightclick;
 
 import lehjr.numina.util.capabilities.module.powermodule.IPowerModule;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.Player;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUseContext;
 import net.minecraft.util.ActionResult;
@@ -47,7 +47,7 @@ public interface IRightClickModule extends IPowerModule {
      * @param hand
      * @return
      */
-    default ActionResult<ItemStack> use(@Nonnull ItemStack itemStackIn, World worldIn, PlayerEntity playerIn, Hand hand) {
+    default ActionResult<ItemStack> use(@Nonnull ItemStack itemStackIn, World worldIn, Player playerIn, Hand hand) {
         return new ActionResult<>(ActionResultType.PASS, itemStackIn);
     }
 
@@ -59,7 +59,7 @@ public interface IRightClickModule extends IPowerModule {
      * @param hand
      * @return
      */
-    default ActionResult<ItemStack> interactLivingEntity(ItemStack itemStackIn, PlayerEntity playerIn, LivingEntity entity, Hand hand) {
+    default ActionResult<ItemStack> interactLivingEntity(ItemStack itemStackIn, Player playerIn, LivingEntity entity, Hand hand) {
         return new ActionResult<>(ActionResultType.PASS, itemStackIn);
     }
 

@@ -26,8 +26,8 @@
 
 package lehjr.numina.util.nbt.propertymodifier;
 
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.CompoundTag;
 
 public interface IPropertyModifier {
-    double applyModifier(CompoundNBT moduleTag, double value);
+    double applyModifier(CompoundTag moduleTag, double value);
 }

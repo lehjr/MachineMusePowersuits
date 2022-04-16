@@ -40,7 +40,7 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.vector.Vector3f;
 import net.minecraftforge.common.model.TransformationHelper;
@@ -65,7 +65,7 @@ public class LuxCapacitorEntityRenderer extends NuminaEntityRenderer<LuxCapacito
 
     ItemStack getStack(Colour color) {
         ItemStack stack = new ItemStack(MPSObjects.LUX_CAPACITOR_MODULE.get());
-        CompoundNBT nbt = stack.getOrCreateTag();
+        CompoundTag nbt = stack.getOrCreateTag();
         nbt.putInt("colour", color.getInt());
         return stack;
     }

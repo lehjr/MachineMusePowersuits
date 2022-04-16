@@ -30,7 +30,7 @@ import lehjr.numina.util.capabilities.module.powermodule.IPowerModule;
 import lehjr.numina.util.helper.ToolHelpers;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.Player;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -39,7 +39,7 @@ import net.minecraftforge.event.entity.player.PlayerEvent;
 import javax.annotation.Nonnull;
 
 public interface IBlockBreakingModule extends IPowerModule {
-    default boolean canHarvestBlock(@Nonnull ItemStack stack, BlockState state, PlayerEntity player, BlockPos pos, int playerEnergy) {
+    default boolean canHarvestBlock(@Nonnull ItemStack stack, BlockState state, Player player, BlockPos pos, int playerEnergy) {
         if (playerEnergy >= this.getEnergyUsage() && ToolHelpers.isToolEffective(player.level, pos, getEmulatedTool()))
             return true;
         return false;

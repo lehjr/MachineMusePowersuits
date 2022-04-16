@@ -9,10 +9,10 @@ import lehjr.numina.util.client.gui.frame.MultiRectHolderFrame;
 import lehjr.numina.util.client.gui.frame.RectHolderFrame;
 import lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
 import lehjr.numina.util.math.Colour;
-import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.inventory.EquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.util.text.TranslatableComponent;
 import net.minecraftforge.items.CapabilityItemHandler;
 
 import javax.annotation.Nonnull;
@@ -29,13 +29,13 @@ import java.util.Optional;
 public class ModularItemSelectionFrame extends MultiRectHolderFrame {
     IChanged changed;
 
-    final EquipmentSlotType[] equipmentSlotTypes = new EquipmentSlotType[]{
-            EquipmentSlotType.HEAD,
-            EquipmentSlotType.CHEST,
-            EquipmentSlotType.LEGS,
-            EquipmentSlotType.FEET,
-            EquipmentSlotType.MAINHAND,
-            EquipmentSlotType.OFFHAND
+    final EquipmentSlot[] EquipmentSlots = new EquipmentSlot[]{
+            EquipmentSlot.HEAD,
+            EquipmentSlot.CHEST,
+            EquipmentSlot.LEGS,
+            EquipmentSlot.FEET,
+            EquipmentSlot.MAINHAND,
+            EquipmentSlot.OFFHAND
     };
 
     public ClickableButton creativeInstallButton;
@@ -44,17 +44,17 @@ public class ModularItemSelectionFrame extends MultiRectHolderFrame {
     public ModularItemTabToggleWidget selectedTab = null;
 
     public ModularItemSelectionFrame() {
-        this(EquipmentSlotType.HEAD);
+        this(EquipmentSlot.HEAD);
     }
 
-    public ModularItemSelectionFrame(EquipmentSlotType type) {
+    public ModularItemSelectionFrame(EquipmentSlot type) {
         super(false, true, 30, 0);
         /** 6 widgets * 27 high each = 162 + 5 spacers at 3 each = 177 gui height is 200 so 23 to split */
         // top spacer
         addRect(new GUISpacer(30, 11));
         int i=0;
         // look for modular items
-        for (EquipmentSlotType slotType : equipmentSlotTypes) {
+        for (EquipmentSlot slotType : EquipmentSlots) {
             ModularItemTabToggleWidget widget = new ModularItemTabToggleWidget(slotType);
             tabButtons.add(widget);
             widget.setOnPressed(pressed -> {
@@ -102,7 +102,7 @@ public class ModularItemSelectionFrame extends MultiRectHolderFrame {
             } else {
 //                addRect(new GUISpacer(30, 12));
                 addRect(new GUISpacer(30, 3));
-                creativeInstallButton = new ClickableButton(new TranslationTextComponent("gui.powersuits.creative.install"), MusePoint2D.ZERO, false);
+                creativeInstallButton = new ClickableButton(new TranslatableComponent("gui.powersuits.creative.install"), MusePoint2D.ZERO, false);
                 creativeInstallButton.setHeight(18);
                 creativeInstallButton.setWidth(30);
                 creativeInstallButton.disableAndHide();
@@ -111,7 +111,7 @@ public class ModularItemSelectionFrame extends MultiRectHolderFrame {
 
                 addRect(new RectHolderFrame(creativeInstallButton, 30, 27, RectHolderFrame.RectPlacement.CENTER_RIGHT) {
                     List<ITextComponent> toolTip =  new ArrayList<ITextComponent>() {{
-                        add(new TranslationTextComponent("gui.powersuits.creative.install.desc"));
+                        add(new TranslatableComponent("gui.powersuits.creative.install.desc"));
                     }};
 
                     @Override
@@ -165,23 +165,23 @@ public class ModularItemSelectionFrame extends MultiRectHolderFrame {
     }
 
     public boolean playerHasModularItems() {
-        return Arrays.stream(equipmentSlotTypes)
+        return Arrays.stream(EquipmentSlots)
                 .filter(type->getModularItemCapability(type)
                         .isPresent()).findFirst().isPresent();
     }
 
-    Optional<IModularItem> getModularItemCapability (EquipmentSlotType type) {
+    Optional<IModularItem> getModularItemCapability (EquipmentSlot type) {
         return getStack(type).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
                 .filter(IModularItem.class::isInstance)
                 .map(IModularItem.class::cast);
     }
 
     @Nonnull
-    ItemStack getStack(EquipmentSlotType type) {
+    ItemStack getStack(EquipmentSlot type) {
         return getMinecraft().player.getItemBySlot(type);
     }
 
-    public Optional<EquipmentSlotType> selectedType() {
+    public Optional<EquipmentSlot> selectedType() {
         return getSelectedTab().map(tab ->tab.getSlotType());
     }
 

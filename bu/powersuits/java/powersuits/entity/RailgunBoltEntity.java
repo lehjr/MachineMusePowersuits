@@ -31,8 +31,8 @@ import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.entity.player.Player;
+import net.minecraft.entity.player.ServerPlayer;
 import net.minecraft.entity.projectile.ThrowableEntity;
 import net.minecraft.network.IPacket;
 import net.minecraft.network.PacketBuffer;
@@ -82,7 +82,7 @@ public class RailgunBoltEntity extends ThrowableEntity implements IEntityAdditio
         this.setLevel(world);
 
         // todo: replace with something resembling original code
-        if (shooter instanceof PlayerEntity) {
+        if (shooter instanceof Player) {
             Vector3d direction = shooter.getLookAngle();//.normalize();
 
 //            System.out.println("lookvec: " + shooter.getLookAngle());
@@ -194,8 +194,8 @@ public class RailgunBoltEntity extends ThrowableEntity implements IEntityAdditio
                     EnchantmentHelper.doPostDamageEffects((LivingEntity)entity1, livingentity);
                 }
 
-                if (entity1 != null && livingentity != entity1 && livingentity instanceof PlayerEntity && entity1 instanceof ServerPlayerEntity && !this.isSilent()) {
-                    ((ServerPlayerEntity)entity1).connection.send(new SChangeGameStatePacket(SChangeGameStatePacket.ARROW_HIT_PLAYER, 0.0F));
+                if (entity1 != null && livingentity != entity1 && livingentity instanceof Player && entity1 instanceof ServerPlayer && !this.isSilent()) {
+                    ((ServerPlayer)entity1).connection.send(new SChangeGameStatePacket(SChangeGameStatePacket.ARROW_HIT_PLAYER, 0.0F));
                 }
             }
 
@@ -302,12 +302,12 @@ public class RailgunBoltEntity extends ThrowableEntity implements IEntityAdditio
      */
     public void drawParticleStreamTo(Vector3d hitVec) {
         Entity source = this.getOwner();
-        if (source != null && source instanceof PlayerEntity) {
+        if (source != null && source instanceof Player) {
             double x = hitVec.x;
             double y = hitVec.y;
             double z = hitVec.z;
 
-            PlayerEntity shooter = (PlayerEntity) source;
+            Player shooter = (Player) source;
             Vector3d direction = shooter.getLookAngle().normalize();
             double xoffset = 1.3f;
             double yoffset = -.2;

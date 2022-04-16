@@ -17,7 +17,7 @@ import lehjr.powersuits.network.MPSPackets;
 import lehjr.powersuits.network.packets.CreativeInstallPacket;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.util.text.TranslatableComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -50,11 +50,11 @@ public class InstallSalvageGui extends ExtendedContainerScreen<InstallSalvageCon
         MultiRectHolderFrame leftFrame = new MultiRectHolderFrame(false, true, 0,0);
 
         /** left label (takes place of spacer) */
-        modularSelectionLabel = new LabelBox(leftFrameWidth, 15, new TranslationTextComponent("gui.powersuits.compatible.modules"));
+        modularSelectionLabel = new LabelBox(leftFrameWidth, 15, new TranslatableComponent("gui.powersuits.compatible.modules"));
         leftFrame.addRect(modularSelectionLabel);
 
         /** the buttons that select the equipped modular item if any */
-        modularItemSelectionFrame = new ModularItemSelectionFrameContainered(container, container.getEquipmentSlotType());
+        modularItemSelectionFrame = new ModularItemSelectionFrameContainered(container, container.getEquipmentSlot());
 
         /** frame to display and allow selecting of installed modules */
         moduleSelectFrame = new CompatibleModuleDisplayFrame(modularItemSelectionFrame,

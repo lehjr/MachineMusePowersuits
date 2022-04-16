@@ -27,20 +27,20 @@
 package lehjr.numina.util.client.gui.clickable;
 
 import lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.text.TranslatableComponent;
 
 /**
  * Ported to Java by lehjr on 10/19/16.
  */
 public class ClickableTinkerSlider extends ClickableSlider {
-    public CompoundNBT moduleTag;
+    public CompoundTag moduleTag;
 
     public ClickableTinkerSlider(MusePoint2D topmiddle,
                                  double width,
-                                 CompoundNBT moduleTag,
+                                 CompoundTag moduleTag,
                                  String id,
-                                 TranslationTextComponent label) {
+                                 TranslatableComponent label) {
         super(topmiddle, width, id, label);
         this.moduleTag = moduleTag;
         setValue(getValue());

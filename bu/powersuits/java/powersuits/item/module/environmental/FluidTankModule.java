@@ -41,11 +41,11 @@ import lehjr.powersuits.item.module.AbstractPowerModule;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.IBucketPickupHandler;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.Player;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.Direction;
 import net.minecraft.util.SoundCategory;
@@ -77,7 +77,7 @@ public class FluidTankModule extends AbstractPowerModule {
 
     @Nullable
     @Override
-    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundNBT nbt) {
+    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt) {
         return new CapProvider(stack);
     }
 
@@ -105,7 +105,7 @@ public class FluidTankModule extends AbstractPowerModule {
             return PowerModuleCapability.POWER_MODULE.orEmpty(cap, LazyOptional.of(() -> ticker));
         }
 
-        class ModuleTank extends FluidTank implements IItemStackUpdate, IFluidTank, IFluidHandler, IFluidHandlerItem, INBTSerializable<CompoundNBT> {
+        class ModuleTank extends FluidTank implements IItemStackUpdate, IFluidTank, IFluidHandler, IFluidHandlerItem, INBTSerializable<CompoundTag> {
             public ModuleTank(int capacity) {
                 super(capacity);
                 this.updateFromNBT();
@@ -113,7 +113,7 @@ public class FluidTankModule extends AbstractPowerModule {
 
             @Override
             protected void onContentsChanged() {
-                MuseNBTUtils.getModuleTag(module).put(FLUID_NBT_KEY, writeToNBT(new CompoundNBT()));
+                MuseNBTUtils.getModuleTag(module).put(FLUID_NBT_KEY, writeToNBT(new CompoundTag()));
             }
 
             @Nonnull
@@ -124,19 +124,19 @@ public class FluidTankModule extends AbstractPowerModule {
 
             @Override
             public void updateFromNBT() {
-                CompoundNBT nbt = MuseNBTUtils.getModuleTag(module);
+                CompoundTag nbt = MuseNBTUtils.getModuleTag(module);
                 if (nbt != null && nbt.contains(FLUID_NBT_KEY, Constants.NBT.TAG_COMPOUND)) {
                     this.deserializeNBT(nbt.getCompound(FLUID_NBT_KEY));
                 }
             }
 
             @Override
-            public CompoundNBT serializeNBT() {
-                return this.writeToNBT(new CompoundNBT());
+            public CompoundTag serializeNBT() {
+                return this.writeToNBT(new CompoundTag());
             }
 
             @Override
-            public void deserializeNBT(CompoundNBT nbt) {
+            public void deserializeNBT(CompoundTag nbt) {
                 this.setFluid(FluidStack.loadFluidStackFromNBT(nbt));
             }
         }
@@ -147,7 +147,7 @@ public class FluidTankModule extends AbstractPowerModule {
             }
 
             @Override
-            public void onPlayerTickActive(PlayerEntity player, @Nonnull ItemStack item) {
+            public void onPlayerTickActive(Player player, @Nonnull ItemStack item) {
                 if (/*player.world.isRemote() &&*/ player.getCommandSenderWorld().getGameTime() % 10 == 0 ) {
                     // we only have one tank, so index 0;
                     int maxFluid = fluidHandler.getTankCapacity(0);

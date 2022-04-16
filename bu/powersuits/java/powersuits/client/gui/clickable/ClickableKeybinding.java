@@ -39,11 +39,11 @@ import lehjr.numina.util.math.Colour;
 import lehjr.numina.util.string.MuseStringUtils;
 import lehjr.powersuits.client.control.KeybindManager;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.player.ClientPlayerEntity;
+import net.minecraft.client.entity.player.ClientPlayer;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.util.text.TranslatableComponent;
 import net.minecraftforge.items.CapabilityItemHandler;
 
 import java.util.ArrayList;
@@ -68,9 +68,9 @@ public class ClickableKeybinding extends ClickableButton2 {
 
     static ITextComponent parseName(KeyBinding keybind) {
         if (keybind.getKey().getValue() < 0) {
-            return new TranslationTextComponent("Mouse" + (keybind.getKey().getValue() + 100));
+            return new TranslatableComponent("Mouse" + (keybind.getKey().getValue() + 100));
         } else {
-            return new TranslationTextComponent(keybind.getKey().getName());
+            return new TranslatableComponent(keybind.getKey().getName());
         }
     }
 
@@ -87,7 +87,7 @@ public class ClickableKeybinding extends ClickableButton2 {
     }
 
     public void toggleModules() {
-        ClientPlayerEntity player = Minecraft.getInstance().player;
+        ClientPlayer player = Minecraft.getInstance().player;
         if (player == null) {
             return;
         }

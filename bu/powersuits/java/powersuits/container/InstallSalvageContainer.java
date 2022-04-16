@@ -11,9 +11,9 @@ import lehjr.numina.util.client.render.MuseIconUtils;
 import lehjr.numina.util.math.Colour;
 import lehjr.numina.util.math.MuseMathUtils;
 import lehjr.powersuits.basemod.MPSObjects;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.Player;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.inventory.EquipmentSlot;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
@@ -24,16 +24,16 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
 public class InstallSalvageContainer  extends Container {
-    EquipmentSlotType slotType;
+    EquipmentSlot slotType;
     int mainInventoryStart = 0;
     int hotbarInventoryStart = 0;
 
-    public InstallSalvageContainer(int containerID, PlayerInventory playerInventory, EquipmentSlotType slotType) {
+    public InstallSalvageContainer(int containerID, PlayerInventory playerInventory, EquipmentSlot slotType) {
         super(MPSObjects.INSTALL_SALVAGE_CONTAINER_TYPE.get(), containerID);
         this.slotType = slotType;
 
         int row, col;
-        int parentSlot = slotType == EquipmentSlotType.MAINHAND ? playerInventory.selected : equipmentSlotToParent(slotType);
+        int parentSlot = slotType == EquipmentSlot.MAINHAND ? playerInventory.selected : equipmentSlotToParent(slotType);
 
         playerInventory.player.getItemBySlot(slotType).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
                 .filter(IModularItem.class::isInstance)
@@ -46,7 +46,7 @@ public class InstallSalvageContainer  extends Container {
                                 @OnlyIn(Dist.CLIENT)
                                 @Override
                                 public com.mojang.datafixers.util.Pair<ResourceLocation, ResourceLocation> getNoItemIcon() {
-                                    return NuminaObjects.getSlotBackground(EquipmentSlotType.OFFHAND);
+                                    return NuminaObjects.getSlotBackground(EquipmentSlot.OFFHAND);
                                 }
 
                                 @OnlyIn(Dist.CLIENT)
@@ -98,7 +98,7 @@ public class InstallSalvageContainer  extends Container {
                             .isPresent()) {
                 this.addSlot(new Slot(playerInventory, col, 8 + col * 18, 142) {
                     @Override
-                    public boolean mayPickup(PlayerEntity player) {
+                    public boolean mayPickup(Player player) {
                         return false;
                     }
                 });
@@ -115,11 +115,11 @@ public class InstallSalvageContainer  extends Container {
         }
     }
 
-    public EquipmentSlotType getEquipmentSlotType() {
+    public EquipmentSlot getEquipmentSlot() {
         return slotType;
     }
 
-    int equipmentSlotToParent(EquipmentSlotType slotType) {
+    int equipmentSlotToParent(EquipmentSlot slotType) {
         switch (slotType) {
             case HEAD:
                 return 39;
@@ -145,12 +145,12 @@ public class InstallSalvageContainer  extends Container {
     }
 
     // PlayerContainer version
-    public void removed(PlayerEntity playerEntity) {
+    public void removed(Player playerEntity) {
         super.removed(playerEntity);
     }
 
     // player container version
-    public boolean stillValid(PlayerEntity playerEntity) {
+    public boolean stillValid(Player playerEntity) {
         return true;
     }
 
@@ -162,7 +162,7 @@ public class InstallSalvageContainer  extends Container {
      * @return
      */
     @Override
-    public ItemStack quickMoveStack(PlayerEntity player, int index) {
+    public ItemStack quickMoveStack(Player player, int index) {
         ItemStack itemstack = ItemStack.EMPTY;
         Slot slot = this.slots.get(index);
         if (slot != null && slot.hasItem()) {

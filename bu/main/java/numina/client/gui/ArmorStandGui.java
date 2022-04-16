@@ -59,7 +59,7 @@ public class ArmorStandGui extends ExtendedContainerScreen<ArmorStandContainer> 
     public void init() {
         super.init();
         innerFrame.setPosition(backgroundRect.getPosition());
-        innerFrame.setPlayerEntity(getMinecraft().player);
+        innerFrame.setPlayer(getMinecraft().player);
         innerFrame.setArmorStandEntity(armorStandEntity);
         innerFrame.setGuiLeft(getGuiLeft());
         innerFrame.setGuiTop(getGuiTop());
@@ -186,7 +186,7 @@ public class ArmorStandGui extends ExtendedContainerScreen<ArmorStandContainer> 
             armorStandFrame.setLivingEntity(armorStand);
         }
 
-        public void setPlayerEntity(LivingEntity player) {
+        public void setPlayer(LivingEntity player) {
             playerFrame.setLivingEntity(player);
         }
     }

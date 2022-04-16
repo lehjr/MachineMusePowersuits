@@ -39,7 +39,7 @@ import net.minecraft.client.renderer.model.IModelTransform;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.model.ItemOverrideList;
 import net.minecraft.client.renderer.texture.AtlasTexture;
-import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.inventory.EquipmentSlot;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.vector.TransformationMatrix;
 import net.minecraft.util.math.vector.Vector3f;
@@ -298,8 +298,8 @@ public enum ModelSpecXMLReader {
         }
     }
 
-    // since the skinned armor can't have more than one texture per EquipmentSlotType the TexturePartSpec is named after the itemSlot
-    public static void getTexturePartSpec(TextureSpec textureSpec, Node bindingNode, EquipmentSlotType slot, String fileLocation) {
+    // since the skinned armor can't have more than one texture per EquipmentSlot the TexturePartSpec is named after the itemSlot
+    public static void getTexturePartSpec(TextureSpec textureSpec, Node bindingNode, EquipmentSlot slot, String fileLocation) {
         Element partSpecElement = (Element) bindingNode;
         Colour colour = partSpecElement.hasAttribute("defaultColor") ?
                 parseColour(partSpecElement.getAttribute("defaultColor")) : Colour.WHITE;
@@ -307,7 +307,7 @@ public enum ModelSpecXMLReader {
         if (colour.a == 0)
             colour = colour.withAlpha(1.0F);
 
-        if (!Objects.equals(slot, null) && Objects.equals(slot.getType(), EquipmentSlotType.Group.ARMOR)) {
+        if (!Objects.equals(slot, null) && Objects.equals(slot.getType(), EquipmentSlot.Type.ARMOR)) {
             textureSpec.put(slot.getName(),
                     new TexturePartSpec(textureSpec,
                             new SpecBinding(null, slot, "all"),
@@ -387,7 +387,7 @@ public enum ModelSpecXMLReader {
                 (((Element) bindingNode).hasAttribute("target")) ?
                         MorphTarget.getMorph(((Element) bindingNode).getAttribute("target")) : null,
                 (((Element) bindingNode).hasAttribute("itemSlot")) ?
-                        EquipmentSlotType.byName(((Element) bindingNode).getAttribute("itemSlot").toLowerCase()) : null,
+                        EquipmentSlot.byName(((Element) bindingNode).getAttribute("itemSlot").toLowerCase()) : null,
                 (((Element) bindingNode).hasAttribute("itemState")) ?
                         ((Element) bindingNode).getAttribute("itemState") : "all"
         );

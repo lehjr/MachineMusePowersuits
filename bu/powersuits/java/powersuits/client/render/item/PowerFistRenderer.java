@@ -19,9 +19,9 @@
 //import net.minecraft.client.renderer.IRenderTypeBuffer;
 //import net.minecraft.client.renderer.model.ItemCameraTransforms;
 //import net.minecraft.client.renderer.tileentity.ItemStackTileEntityRenderer;
-//import net.minecraft.entity.player.PlayerEntity;
+//import net.minecraft.entity.player.Player;
 //import net.minecraft.item.ItemStack;
-//import net.minecraft.nbt.CompoundNBT;
+//import net.minecraft.nbt.CompoundTag;
 //import net.minecraft.util.math.vector.TransformationMatrix;
 //
 //public class PowerFistRenderer extends ItemStackTileEntityRenderer {
@@ -36,7 +36,7 @@
 //
 //        stack.getCapability(ModelSpecNBTCapability.RENDER).ifPresent(specNBTCap -> {
 //            if (specNBTCap instanceof IHandHeldModelSpecNBT) {
-//                CompoundNBT renderSpec = specNBTCap.getRenderTag();
+//                CompoundTag renderSpec = specNBTCap.getRenderTag();
 //
 //                // Set the tag on the item so this lookup isn't happening on every loop.
 //                if (renderSpec == null || renderSpec.isEmpty()) {
@@ -47,7 +47,7 @@
 //                    if (renderSpec != null && !renderSpec.isEmpty() &&
 //                            (transformType == ItemCameraTransforms.TransformType.FIRST_PERSON_LEFT_HAND ||
 //                                    (transformType == ItemCameraTransforms.TransformType.FIRST_PERSON_RIGHT_HAND))) {
-//                        PlayerEntity player = Minecraft.getInstance().player;
+//                        Player player = Minecraft.getInstance().player;
 //                        int slot = -1;
 //                        if (player.getHeldItemMainhand().equals(stack)) {
 //                            slot = player.inventory.currentItem;
@@ -72,7 +72,7 @@
 //                    Colour partColor;
 //                    TransformationMatrix transform;
 //
-//                    for (CompoundNBT nbt : NBTTagAccessor.getValues(renderSpec)) {
+//                    for (CompoundTag nbt : NBTTagAccessor.getValues(renderSpec)) {
 //                        PartSpecBase partSpec = ModelRegistry.getInstance().getPart(nbt);
 //
 //                        String partName = nbt.getString("part");

@@ -30,8 +30,8 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.renderer.entity.model.BipedModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.inventory.EquipmentSlot;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -45,37 +45,37 @@ import net.minecraftforge.api.distmarker.OnlyIn;
  */
 @OnlyIn(Dist.CLIENT)
 public class HighPolyArmor extends BipedModel {
-    public CompoundNBT renderSpec = null;
-    public EquipmentSlotType visibleSection = EquipmentSlotType.HEAD;
+    public CompoundTag renderSpec = null;
+    public EquipmentSlot visibleSection = EquipmentSlot.HEAD;
 
     public HighPolyArmor() {
         super(0);
         init();
     }
 
-    public CompoundNBT getRenderSpec() {
+    public CompoundTag getRenderSpec() {
         return this.renderSpec;
     }
 
-    public void setRenderSpec(CompoundNBT nbt) {
+    public void setRenderSpec(CompoundTag nbt) {
         renderSpec = nbt;
     }
 
-    public EquipmentSlotType getVisibleSection() {
+    public EquipmentSlot getVisibleSection() {
         return this.visibleSection;
     }
 
-    public void setVisibleSection(EquipmentSlotType equipmentSlot) {
+    public void setVisibleSection(EquipmentSlot equipmentSlot) {
         this.visibleSection = equipmentSlot;
         this.hat.visible = false;
 
         // This may not actually be needed
-        this.head.visible = equipmentSlot == EquipmentSlotType.HEAD;
-        this.body.visible = equipmentSlot == EquipmentSlotType.CHEST;
-        this.rightArm.visible = equipmentSlot == EquipmentSlotType.CHEST;
-        this.leftArm.visible = equipmentSlot == EquipmentSlotType.CHEST;
-        this.rightLeg.visible = equipmentSlot == EquipmentSlotType.LEGS;
-        this.leftLeg.visible = equipmentSlot == EquipmentSlotType.LEGS;
+        this.head.visible = equipmentSlot == EquipmentSlot.HEAD;
+        this.body.visible = equipmentSlot == EquipmentSlot.CHEST;
+        this.rightArm.visible = equipmentSlot == EquipmentSlot.CHEST;
+        this.leftArm.visible = equipmentSlot == EquipmentSlot.CHEST;
+        this.rightLeg.visible = equipmentSlot == EquipmentSlot.LEGS;
+        this.leftLeg.visible = equipmentSlot == EquipmentSlot.LEGS;
     }
 
     @Override

@@ -27,7 +27,7 @@
 package lehjr.numina.network.packets;
 
 import lehjr.numina.util.capabilities.player.CapabilityPlayerKeyStates;
-import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.entity.player.ServerPlayer;
 import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.fml.network.NetworkEvent;
 
@@ -68,7 +68,7 @@ public class PlayerUpdatePacket {
     }
 
     public static void handle(PlayerUpdatePacket message, Supplier<NetworkEvent.Context> ctx) {
-        final ServerPlayerEntity player = ctx.get().getSender();
+        final ServerPlayer player = ctx.get().getSender();
         ctx.get().enqueueWork(() -> {
             player.getCapability(CapabilityPlayerKeyStates.PLAYER_KEYSTATES).ifPresent(playerCap ->{
                 playerCap.setForwardKeyState(message.forwardKeyState);

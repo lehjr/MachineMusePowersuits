@@ -31,12 +31,12 @@ import lehjr.numina.container.ArmorStandContainer;
 import lehjr.numina.util.client.sound.SoundDictionary;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.MobEntity;
+import net.minecraft.entity.Mob;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.item.ArmorStandEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.entity.player.Player;
+import net.minecraft.entity.player.ServerPlayer;
 import net.minecraft.inventory.container.SimpleNamedContainerProvider;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -44,7 +44,7 @@ import net.minecraft.util.ActionResultType;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.util.text.TranslatableComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkHooks;
 
@@ -64,7 +64,7 @@ public class NuminaArmorStandEntity extends ArmorStandEntity {
     }
 
     public static AttributeModifierMap.MutableAttribute setCustomAttributes() {
-        return MobEntity.createMobAttributes().add(Attributes.MAX_HEALTH, 10.0D);
+        return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 10.0D);
     }
 
     @Override
@@ -74,7 +74,7 @@ public class NuminaArmorStandEntity extends ArmorStandEntity {
     }
 
     @Override
-    public ActionResultType interactAt(PlayerEntity player, Vector3d vec, Hand hand) {
+    public ActionResultType interactAt(Player player, Vector3d vec, Hand hand) {
         ItemStack itemstack = player.getItemInHand(hand);
         if (!this.isMarker() && itemstack.getItem() != Items.NAME_TAG) {
             if (player.isSpectator()) {
@@ -83,10 +83,10 @@ public class NuminaArmorStandEntity extends ArmorStandEntity {
                 return ActionResultType.SUCCESS;
             } else {
                     player.playSound(SoundDictionary.SOUND_EVENT_GUI_SELECT, 1.0F, 1.0F);
-                    NetworkHooks.openGui((ServerPlayerEntity) player,
+                    NetworkHooks.openGui((ServerPlayer) player,
                             new SimpleNamedContainerProvider((windowID, playerInventory, playerEntity) ->
                                     new ArmorStandContainer(windowID, playerInventory, (ArmorStandEntity) getEntity()),
-                                    new TranslationTextComponent("screen.numina.armor_stand")),
+                                    new TranslatableComponent("screen.numina.armor_stand")),
                             buf -> buf.writeInt(getId()));
                 return ActionResultType.SUCCESS;
             }

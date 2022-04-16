@@ -26,14 +26,14 @@
 
 package lehjr.powersuits.capability;
 
-import lehjr.numina.util.capabilities.heat.HeatCapability;
+import lehjr.numina.util.capabilities.heat.CapabilityHeat;
 import lehjr.numina.util.capabilities.heat.HeatItemWrapper;
 import lehjr.numina.util.capabilities.inventory.modechanging.ModeChangingModularItem;
 import lehjr.numina.util.capabilities.inventory.modularitem.NuminaRangedWrapper;
 import lehjr.numina.util.capabilities.module.powermodule.EnumModuleCategory;
 import lehjr.powersuits.client.render.PowerFistSpecNBT;
 import lehjr.powersuits.config.MPSSettings;
-import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.inventory.EquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Direction;
 import net.minecraftforge.common.capabilities.Capability;
@@ -47,7 +47,7 @@ import java.util.Map;
 public class PowerFistCap extends AbstractModularPowerCap {
     public PowerFistCap(@Nonnull ItemStack itemStackIn) {
         this.itemStack = itemStackIn;
-        this.targetSlot = EquipmentSlotType.MAINHAND;
+        this.targetSlot = EquipmentSlot.MAINHAND;
 
         this.modularItemCap = new ModeChangingModularItem(itemStack, 40)  {{
             Map<EnumModuleCategory, NuminaRangedWrapper> rangedWrapperMap = new HashMap<>();
@@ -66,9 +66,9 @@ public class PowerFistCap extends AbstractModularPowerCap {
             return LazyOptional.empty();
         }
 
-        if (cap == HeatCapability.HEAT) {
+        if (cap == CapabilityHeat.HEAT) {
             heatStorage.updateFromNBT();
-            return HeatCapability.HEAT.orEmpty(cap, LazyOptional.of(()->heatStorage));
+            return CapabilityHeat.HEAT.orEmpty(cap, LazyOptional.of(()->heatStorage));
         }
 
         return super.getCapability(cap, side);

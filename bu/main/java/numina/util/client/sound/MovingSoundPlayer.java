@@ -28,7 +28,7 @@ package lehjr.numina.util.client.sound;
 
 import net.minecraft.client.audio.ISound;
 import net.minecraft.client.audio.TickableSound;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.Player;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraftforge.api.distmarker.Dist;
@@ -39,7 +39,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
  */
 @OnlyIn(Dist.CLIENT)
 public class MovingSoundPlayer extends TickableSound {
-    private static PlayerEntity player;
+    private static Player player;
 
     /*
      * Important porting note:
@@ -47,7 +47,7 @@ public class MovingSoundPlayer extends TickableSound {
      */
     public MovingSoundPlayer(SoundEvent soundIn,
                              SoundCategory categoryIn,
-                             PlayerEntity playerIn,
+                             Player playerIn,
                              float newvolume,
                              float pitchIn,
                              boolean loopingIn) {
@@ -71,7 +71,7 @@ public class MovingSoundPlayer extends TickableSound {
         return false;
     }
 
-    public PlayerEntity player() {
+    public Player player() {
         return this.player;
     }
 
