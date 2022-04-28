@@ -27,14 +27,14 @@ A clear and concise description of what you expected to happen.
 **Mod list**
 Including versions, provided by crash report if game crashed:
 
-Smallest sub-list that still produces issue, if any exclusion testing was done:
+**Smallest** sub-list that still produces issue, if any exclusion testing was done. I will not be doing this myself. Do not expect me to do this for you. I simply do not have that kind of time to do this on every bug report. Also be sure to include version numbers. I'm not going to guess:
 
 **Log files**
 (Link to pastebin, gist, or other hosting site preferred, file attachment okay.)
 Game log (make sure it's the log that was generated during the gameplay the issue occurred in):
 Crash report (if issue caused game to crash):
 Server log (if issue occurred on a server, make sure it's the log generated during the gameplay the issue occurred in):
-Server crash report (if issue caused server to crash):
+Server crash report (if issue caused server to crash).:
 
 **Screenshots**
 If applicable, add screenshots to help explain your problem.
