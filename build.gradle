@@ -112,7 +112,6 @@ def setupSourceSet(SourceSet sourceSet, String name) {
 // base module to the dependencies of the data generators source set that we are setting up
 def setupDataGenSourceSet(SourceSet datagenSourceSet, SourceSet baseSourceSet, String name) {
     datagenSourceSet.java.srcDirs = ['src/datagen/' + name + '/java']
-//    datagenSourceSet.compileClasspath += project.sourceSets.api.output
     datagenSourceSet.compileClasspath += project.sourceSets.main.output
     if (baseSourceSet == null) {
         //Base source set has resources that we put files that our annotation processor generates for consumption by our datagen

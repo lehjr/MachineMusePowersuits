@@ -59,10 +59,10 @@ public class NuminaArmorLayer<T extends LivingEntity, M extends BipedModel<T>, A
 
     @Override
     public void render(MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn, T entityIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-        this.renderPart(matrixStackIn, bufferIn, entityIn, EquipmentSlotType.CHEST, packedLightIn, this.getModelFromSlot(EquipmentSlotType.CHEST));
-        this.renderPart(matrixStackIn, bufferIn, entityIn, EquipmentSlotType.LEGS, packedLightIn, this.getModelFromSlot(EquipmentSlotType.LEGS));
-        this.renderPart(matrixStackIn, bufferIn, entityIn, EquipmentSlotType.FEET, packedLightIn, this.getModelFromSlot(EquipmentSlotType.FEET));
-        this.renderPart(matrixStackIn, bufferIn, entityIn, EquipmentSlotType.HEAD, packedLightIn, this.getModelFromSlot(EquipmentSlotType.HEAD));
+        this.renderArmorPiece(matrixStackIn, bufferIn, entityIn, EquipmentSlotType.CHEST, packedLightIn, this.getModelFromSlot(EquipmentSlotType.CHEST));
+        this.renderArmorPiece(matrixStackIn, bufferIn, entityIn, EquipmentSlotType.LEGS, packedLightIn, this.getModelFromSlot(EquipmentSlotType.LEGS));
+        this.renderArmorPiece(matrixStackIn, bufferIn, entityIn, EquipmentSlotType.FEET, packedLightIn, this.getModelFromSlot(EquipmentSlotType.FEET));
+        this.renderArmorPiece(matrixStackIn, bufferIn, entityIn, EquipmentSlotType.HEAD, packedLightIn, this.getModelFromSlot(EquipmentSlotType.HEAD));
     }
 
     private A getModelFromSlot(EquipmentSlotType slot) {
@@ -73,7 +73,8 @@ public class NuminaArmorLayer<T extends LivingEntity, M extends BipedModel<T>, A
         return slotIn == EquipmentSlotType.LEGS;
     }
 
-    private void renderPart(MatrixStack matrixIn, IRenderTypeBuffer bufferIn, T entityIn, EquipmentSlotType  slotIn, int packedLightIn, A model) {
+    @Override
+    public void renderArmorPiece(MatrixStack matrixIn, IRenderTypeBuffer bufferIn, T entityIn, EquipmentSlotType  slotIn, int packedLightIn, A model) {
         ItemStack itemstack = entityIn.getItemBySlot( slotIn);
         boolean hasEffect = itemstack.hasFoil();
 
@@ -96,27 +97,10 @@ public class NuminaArmorLayer<T extends LivingEntity, M extends BipedModel<T>, A
                         }
                     });
                 } else {
-                    this.getParentModel().copyPropertiesTo(model);
-                    this.setPartVisibility(model,  slotIn);
-
-                    if (armoritem instanceof IDyeableArmorItem) {
-                        int colorInt = ((IDyeableArmorItem)armoritem).getColor(itemstack);
-                        float red = (float)(colorInt >> 16 & 255) / 255.0F;
-                        float green = (float)(colorInt >> 8 & 255) / 255.0F;
-                        float blue = (float)(colorInt & 255) / 255.0F;
-                        this.func_241738_a_(matrixIn, bufferIn, packedLightIn, hasEffect, model, red, green, blue, this.getArmorResource(entityIn, itemstack,  slotIn, null));
-                        this.func_241738_a_(matrixIn, bufferIn, packedLightIn, hasEffect, model, 1.0F, 1.0F, 1.0F, this.getArmorResource(entityIn, itemstack,  slotIn, "overlay"));
-                    } else {
-                        this.func_241738_a_(matrixIn, bufferIn, packedLightIn, hasEffect, model, 1.0F, 1.0F, 1.0F, this.getArmorResource(entityIn, itemstack,  slotIn, null));
-                    }
+                    super.renderArmorPiece(matrixIn, bufferIn, entityIn, slotIn, packedLightIn, model);
                 }
             }
         }
-    }
-
-    private void func_241738_a_(MatrixStack matrixIn, IRenderTypeBuffer bufferIn, int packedLightIn, boolean hasEffect, A model, float red, float green, float blue, ResourceLocation armorResource) {
-        IVertexBuilder ivertexbuilder = ItemRenderer.getArmorFoilBuffer(bufferIn, RenderType.armorCutoutNoCull(armorResource), false, hasEffect);
-        model.renderToBuffer(matrixIn, ivertexbuilder, packedLightIn, OverlayTexture.NO_OVERLAY, red, green, blue, 1.0F);
     }
 
     /**
