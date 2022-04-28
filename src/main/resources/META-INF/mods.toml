@@ -33,20 +33,20 @@ license="All rights reserved"
 [[dependencies.numina]]
     modId="appliedenergistics2"
     mandatory=false
-    versionRange="[${ae2_version},)"
+    versionRange="${ae2_version_range}"
     ordering="AFTER"
     side="BOTH"
 
 [[dependencies.numina]]
     modId="scannable"
     mandatory=false
-    versionRange="[${scannable_version},)"
+    versionRange="${scannable_version_range}"
     ordering="AFTER"
     side="BOTH"
 
 [[dependencies.numina]]
     modId="refinedstorage"
     mandatory=false
-    versionRange="${refinedstorage_version}"
+    versionRange="${refinedstorage_version_range}"
     ordering="AFTER"
     side="BOTH"

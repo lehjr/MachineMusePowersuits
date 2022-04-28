@@ -26,8 +26,8 @@
 
 package lehjr.numina.util.client.gui.gemoetry;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
-import lehjr.numina.util.math.Colour;
+import com.mojang.blaze3d.matrix.PoseStack;
+import lehjr.numina.util.math.Color;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
@@ -35,59 +35,59 @@ import org.lwjgl.opengl.GL11;
 import java.nio.FloatBuffer;
 
 public class DrawableRelativeRect extends RelativeRect implements IDrawableRect {
-    Colour backgroundColour;
-    Colour borderColour;
-    Colour backgroundColour2 = null;
+    Color backgroundColor;
+    Color borderColor;
+    Color backgroundColor2 = null;
     float cornerradius = 3;
     float zLevel = 1;
     boolean shrinkBorder = true;
 
     public DrawableRelativeRect(double left, double top, double right, double bottom, boolean growFromMiddle,
-                                Colour backgroundColour,
-                                Colour borderColour) {
+                                Color backgroundColor,
+                                Color borderColor) {
         super(left, top, right, bottom, growFromMiddle);
-        this.backgroundColour = backgroundColour;
-        this.borderColour = borderColour;
+        this.backgroundColor = backgroundColor;
+        this.borderColor = borderColor;
     }
 
-    public DrawableRelativeRect(RelativeRect ref, Colour backgroundColour, Colour borderColour) {
+    public DrawableRelativeRect(RelativeRect ref, Color backgroundColor, Color borderColor) {
         super(ref.left(), ref.top(), ref.right(), ref.bottom(), ref.growFromMiddle());
-        this.backgroundColour = backgroundColour;
-        this.borderColour = borderColour;
+        this.backgroundColor = backgroundColor;
+        this.borderColor = borderColor;
     }
 
     public DrawableRelativeRect(double left, double top, double right, double bottom,
-                                Colour backgroundColour,
-                                Colour borderColour) {
+                                Color backgroundColor,
+                                Color borderColor) {
         super(left, top, right, bottom, false);
-        this.backgroundColour = backgroundColour;
-        this.borderColour = borderColour;
+        this.backgroundColor = backgroundColor;
+        this.borderColor = borderColor;
     }
 
     public DrawableRelativeRect(MusePoint2D ul, MusePoint2D br,
-                                Colour backgroundColour,
-                                Colour borderColour) {
+                                Color backgroundColor,
+                                Color borderColor) {
         super(ul, br);
-        this.backgroundColour = backgroundColour;
-        this.borderColour = borderColour;
+        this.backgroundColor = backgroundColor;
+        this.borderColor = borderColor;
     }
 
-    public DrawableRelativeRect(Colour backgroundColour, Colour borderColour) {
+    public DrawableRelativeRect(Color backgroundColor, Color borderColor) {
         super();
-        this.backgroundColour = backgroundColour;
-        this.borderColour = borderColour;
+        this.backgroundColor = backgroundColor;
+        this.borderColor = borderColor;
     }
 
-    public DrawableRelativeRect(Colour backgroundColour, Colour borderColour, boolean growFromMiddle) {
+    public DrawableRelativeRect(Color backgroundColor, Color borderColor, boolean growFromMiddle) {
         super(growFromMiddle);
-        this.backgroundColour = backgroundColour;
-        this.borderColour = borderColour;
+        this.backgroundColor = backgroundColor;
+        this.borderColor = borderColor;
     }
 
     @Override
     public DrawableRelativeRect copyOf() {
         return new DrawableRelativeRect(super.left(), super.top(), super.right(), super.bottom(),
-                this.growFromMiddle , backgroundColour, borderColour);
+                this.growFromMiddle , backgroundColor, borderColor);
     }
 
     @Override
@@ -110,18 +110,18 @@ public class DrawableRelativeRect extends RelativeRect implements IDrawableRect 
         this.shrinkBorder = shrinkBorder;
     }
 
-    public DrawableRelativeRect setBackgroundColour(Colour backgroundColour) {
-        this.backgroundColour = backgroundColour;
+    public DrawableRelativeRect setBackgroundColor(Color backgroundColor) {
+        this.backgroundColor = backgroundColor;
         return this;
     }
 
-    public DrawableRelativeRect setSecondBackgroundColour(Colour backgroundColour2In) {
-        backgroundColour2 = backgroundColour2In;
+    public DrawableRelativeRect setSecondBackgroundColor(Color backgroundColor2In) {
+        backgroundColor2 = backgroundColor2In;
         return this;
     }
 
-    public DrawableRelativeRect setBorderColour(Colour borderColour) {
-        this.borderColour = borderColour;
+    public DrawableRelativeRect setBorderColor(Color borderColor) {
+        this.borderColor = borderColor;
         return this;
     }
 
@@ -173,26 +173,26 @@ public class DrawableRelativeRect extends RelativeRect implements IDrawableRect 
         return vertices;
     }
 
-    public void drawBackground(MatrixStack matrixStack, FloatBuffer vertices) {
-        drawBuffer(matrixStack, vertices, backgroundColour, GL11.GL_TRIANGLE_FAN);
+    public void drawBackground(PoseStack matrixStack, FloatBuffer vertices) {
+        drawBuffer(matrixStack, vertices, backgroundColor, GL11.GL_TRIANGLE_FAN);
     }
 
-    public void drawBackground(MatrixStack matrixStack, FloatBuffer vertices, FloatBuffer colours) {
+    public void drawBackground(PoseStack matrixStack, FloatBuffer vertices, FloatBuffer colours) {
         drawBuffer(matrixStack, vertices, colours, GL11.GL_TRIANGLE_FAN);
     }
 
-    public void drawBorder(MatrixStack matrixStack, FloatBuffer vertices) {
-        drawBuffer(matrixStack, vertices, borderColour, GL11.GL_LINE_LOOP);
+    public void drawBorder(PoseStack matrixStack, FloatBuffer vertices) {
+        drawBuffer(matrixStack, vertices, borderColor, GL11.GL_LINE_LOOP);
     }
 
-    void drawBuffer(MatrixStack matrixStack, FloatBuffer vertices, Colour colour, int glMode) {
+    void drawBuffer(PoseStack matrixStack, FloatBuffer vertices, Color colour, int glMode) {
         preDraw(glMode, DefaultVertexFormats.POSITION_COLOR);
         addVerticesToBuffer(matrixStack.last().pose(), vertices, colour);
         drawTesselator();
         postDraw();
     }
 
-    void drawBuffer(MatrixStack matrixStack, FloatBuffer vertices, FloatBuffer colours, int glMode) {
+    void drawBuffer(PoseStack matrixStack, FloatBuffer vertices, FloatBuffer colours, int glMode) {
         preDraw(glMode, DefaultVertexFormats.POSITION_COLOR);
         addVerticesToBuffer(matrixStack.last().pose(), vertices, colours);
         drawTesselator();
@@ -257,13 +257,13 @@ public class DrawableRelativeRect extends RelativeRect implements IDrawableRect 
     }
 
     @Override
-    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float frameTime) {
+    public void render(PoseStack matrixStack, int mouseX, int mouseY, float frameTime) {
 
         FloatBuffer vertices = preDraw(0);
 
-        if (backgroundColour2 != null) {
-            FloatBuffer colours = GradientAndArcCalculator.getColourGradient(backgroundColour,
-                    backgroundColour2, vertices.limit() * 4);
+        if (backgroundColor2 != null) {
+            FloatBuffer colours = GradientAndArcCalculator.getColorGradient(backgroundColor,
+                    backgroundColor2, vertices.limit() * 4);
             drawBackground(matrixStack, vertices, colours);
         } else {
             drawBackground(matrixStack, vertices);
@@ -286,9 +286,9 @@ public class DrawableRelativeRect extends RelativeRect implements IDrawableRect 
     public String toString() {
         StringBuilder stringbuilder = new StringBuilder();
         stringbuilder.append(super.toString());
-        stringbuilder.append("Background Colour: ").append(backgroundColour.toString()).append("\n");
-        stringbuilder.append("Background Colour 2: ").append(backgroundColour2 == null? "null" : backgroundColour2.toString()).append("\n");
-        stringbuilder.append("Border Colour: ").append(borderColour.toString()).append("\n");
+        stringbuilder.append("Background Color: ").append(backgroundColor.toString()).append("\n");
+        stringbuilder.append("Background Color 2: ").append(backgroundColor2 == null? "null" : backgroundColor2.toString()).append("\n");
+        stringbuilder.append("Border Color: ").append(borderColor.toString()).append("\n");
         return stringbuilder.toString();
     }
 }

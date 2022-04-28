@@ -1,6 +1,6 @@
 package lehjr.powersuits.client;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.matrix.PoseStack;
 import lehjr.numina.util.capabilities.inventory.modularitem.IModularItem;
 import lehjr.numina.util.client.gui.IContainerULOffSet;
 import lehjr.numina.util.client.gui.frame.GUISpacer;
@@ -76,7 +76,7 @@ public class ScrollableInventoryFrame2 <C extends Container> extends MultiRectHo
         doneAdding();
     }
 
-    public void renderLabels(MatrixStack matrixStack, int mouseX, int mouseY) {
+    public void renderLabels(PoseStack matrixStack, int mouseX, int mouseY) {
         MusePoint2D position = new MusePoint2D(topSpacer.finalLeft() + 1, topSpacer.centery() - 3);
         if (labelUsesULShift) {
             position = position.minus(ulgetter.getULShift());

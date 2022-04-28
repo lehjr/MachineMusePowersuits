@@ -3,9 +3,9 @@ package com.lehjr.mpsrecipecreator.network.packets;
 import com.lehjr.mpsrecipecreator.basemod.DataPackWriter;
 import com.lehjr.mpsrecipecreator.basemod.config.Config;
 import net.minecraft.entity.player.ServerPlayer;
-import net.minecraft.network.PacketBuffer;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TextComponent;
 import net.minecraftforge.fml.network.NetworkEvent;
 
 import java.io.File;
@@ -25,7 +25,7 @@ public class RecipeWriterPacket {
         System.out.println("filename: " + fileName);
     }
 
-    public static void encode(RecipeWriterPacket msg, PacketBuffer packetBuffer) {
+    public static void encode(RecipeWriterPacket msg, FriendlyByteBuf packetBuffer) {
         int recipeSize = msg.recipe.length() + 32;
         packetBuffer.writeInt(recipeSize);
         packetBuffer.writeUtf(msg.recipe, recipeSize);
@@ -34,7 +34,7 @@ public class RecipeWriterPacket {
         packetBuffer.writeUtf(msg.fileName);
     }
 
-    public static RecipeWriterPacket decode(PacketBuffer packetBuffer) {
+    public static RecipeWriterPacket decode(FriendlyByteBuf packetBuffer) {
         return new RecipeWriterPacket(
                 packetBuffer.readUtf(packetBuffer.readInt()),
                 packetBuffer.readUtf(packetBuffer.readInt()));
@@ -77,11 +77,11 @@ public class RecipeWriterPacket {
                 }
             } else {
                 if (Config.allowOppedPlayersToCreateOnServer()) {
-                    player.sendMessage(new StringTextComponent("You do not have permission to create recipes :P" +
+                    player.sendMessage(new TextComponent("You do not have permission to create recipes :P" +
                             "\nRequiredLevel: " + Config.getOpLevelNeeded() +
                             "\nYourLevel: " + server.getProfilePermissions(player.getGameProfile())), player.getUUID());
                 } else {
-                    player.sendMessage(new StringTextComponent("Serve admin has disabled creating recipes on this server :P"), player.getUUID());
+                    player.sendMessage(new TextComponent("Serve admin has disabled creating recipes on this server :P"), player.getUUID());
                 }
             }
 
@@ -102,7 +102,7 @@ public class RecipeWriterPacket {
                 DataPackWriter.INSTANCE.fileWriter(recipeFile, message.recipe, Config.overwriteRecipes());
 
                 if (recipeFile.exists()) {
-                    player.sendMessage(new StringTextComponent("Server reloading data :P"), player.getUUID());
+                    player.sendMessage(new TextComponent("Server reloading data :P"), player.getUUID());
                     server.getCommands().performCommand(player.createCommandSourceStack(), "reload");
                 }
             }

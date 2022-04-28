@@ -6,7 +6,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.item.crafting.ShapedRecipe;
-import net.minecraft.network.PacketBuffer;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.energy.CapabilityEnergy;
@@ -60,7 +60,7 @@ public class ShapedEnergyRecipe extends ShapedRecipe {
 		}
 
 		@Override
-		public ShapedEnergyRecipe fromNetwork(final ResourceLocation recipeID, final PacketBuffer buffer) {
+		public ShapedEnergyRecipe fromNetwork(final ResourceLocation recipeID, final FriendlyByteBuf buffer) {
 			return new ShapedEnergyRecipe(super.fromNetwork(recipeID, buffer));
 		}
 	}

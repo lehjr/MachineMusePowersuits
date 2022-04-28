@@ -27,10 +27,10 @@
 package lehjr.numina.util.client.gui.gemoetry;
 
 
-import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.vertex.IVertexBuilder;
-import lehjr.numina.util.math.Colour;
-import net.minecraft.client.renderer.IRenderTypeBuffer;
+import com.mojang.blaze3d.matrix.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import lehjr.numina.util.math.Color;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.util.math.vector.Matrix4f;
 
 import java.nio.FloatBuffer;
@@ -38,21 +38,21 @@ import java.nio.FloatBuffer;
 public class DrawableSphere {
     final float radius = 4;
     protected static FloatBuffer points;
-    Colour colour;
+    Color colour;
 
-    public DrawableSphere(Colour colour) {
+    public DrawableSphere(Color colour) {
         this.colour = colour;
         points = GradientAndArcCalculator.getSphereVertices(20 ,radius);
     }
 
-    public void draw(MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, float radiusIn, float x, float y, float z) {
+    public void draw(PoseStack matrixStackIn, MultiBufferSource bufferIn, float radiusIn, float x, float y, float z) {
         points.rewind();
         float scale = radiusIn/this.radius;
 
         matrixStackIn.pushPose();
         matrixStackIn.translate(x, y, z);
         matrixStackIn.scale(scale, scale, scale);
-        IVertexBuilder vertBuffer = bufferIn.getBuffer(DrawableCircle.PLASMA_BALL);
+        VertexConsumer vertBuffer = bufferIn.getBuffer(DrawableCircle.PLASMA_BALL);
         Matrix4f matrix4f = matrixStackIn.last().pose();
 
         while (points.hasRemaining()) {

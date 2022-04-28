@@ -26,18 +26,18 @@
 
 package lehjr.numina.util.client.gui.clickable;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.matrix.PoseStack;
 import lehjr.numina.util.client.gui.gemoetry.IDrawable;
 import lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
 import lehjr.numina.util.client.render.MuseRenderer;
-import lehjr.numina.util.math.Colour;
+import lehjr.numina.util.math.Color;
 
 
 // fixme: revisit and rewrite
 public class ClickableLabel extends Clickable {
     protected IPressable onPressed;
     protected IReleasable onReleased;
-    Colour colour = Colour.WHITE;
+    Color colour = Color.WHITE;
     boolean shadowed = true;
 
     protected String label;
@@ -64,7 +64,7 @@ public class ClickableLabel extends Clickable {
         return this;
     }
 
-    public void setColour(Colour colour) {
+    public void setColor(Color colour) {
         this.colour = colour;
     }
 
@@ -78,7 +78,7 @@ public class ClickableLabel extends Clickable {
 
     // fixme: this isn't actually working as intended
     @Override
-    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
+    public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTicks) {
         matrixStack.pushPose();
         matrixStack.translate(0,0,100);
         if (shadowed) {

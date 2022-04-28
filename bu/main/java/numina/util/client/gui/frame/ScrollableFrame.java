@@ -26,13 +26,13 @@
 
 package lehjr.numina.util.client.gui.frame;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.matrix.PoseStack;
 import lehjr.numina.util.client.gui.gemoetry.DrawableTile;
 import lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
 import lehjr.numina.util.client.gui.gemoetry.RelativeRect;
-import lehjr.numina.util.math.Colour;
+import lehjr.numina.util.math.Color;
 import lehjr.numina.util.math.MuseMathUtils;
-import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.Component;
 
 import java.util.List;
 
@@ -50,18 +50,18 @@ public class ScrollableFrame extends DrawableTile implements IScrollable {
         super(0,0,0,0);
     }
 
-    public ScrollableFrame(Colour background, Colour topBorder, Colour bottomBorder) {
+    public ScrollableFrame(Color background, Color topBorder, Color bottomBorder) {
         super(0,0,0,0);
-        setBackgroundColour(background);
-        setBottomBorderColour(bottomBorder);
-        setTopBorderColour(topBorder);
+        setBackgroundColor(background);
+        setBottomBorderColor(bottomBorder);
+        setTopBorderColor(topBorder);
     }
 
-    public ScrollableFrame(MusePoint2D topleft, MusePoint2D bottomright, Colour background, Colour topBorder, Colour bottomBorder) {
+    public ScrollableFrame(MusePoint2D topleft, MusePoint2D bottomright, Color background, Color topBorder, Color bottomBorder) {
         super(topleft, bottomright);
-        setBackgroundColour(background);
-        setBottomBorderColour(bottomBorder);
-        setTopBorderColour(topBorder);
+        setBackgroundColor(background);
+        setBottomBorderColor(bottomBorder);
+        setTopBorderColor(topBorder);
     }
 
     @Override
@@ -130,7 +130,7 @@ public class ScrollableFrame extends DrawableTile implements IScrollable {
     }
 
     @Override
-    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float frameTime) {
+    public void render(PoseStack matrixStack, int mouseX, int mouseY, float frameTime) {
         if (isVisible()) {
             if (drawBackground) {
                 this.drawBackground(matrixStack);
@@ -145,7 +145,7 @@ public class ScrollableFrame extends DrawableTile implements IScrollable {
     }
 
     @Override
-    public List<ITextComponent> getToolTip(int x, int y) {
+    public List<Component> getToolTip(int x, int y) {
         return null;
     }
 

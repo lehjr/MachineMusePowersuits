@@ -26,15 +26,15 @@
 
 package lehjr.numina.util.client.gui.clickable;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.matrix.PoseStack;
 import lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
 import lehjr.numina.util.client.render.MuseRenderer;
-import lehjr.numina.util.math.Colour;
+import lehjr.numina.util.math.Color;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.Component;
 
 import javax.annotation.Nonnull;
 import java.util.List;
@@ -61,14 +61,14 @@ public class ClickableItem extends Clickable {
     }
 
     @Override
-    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
+    public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTicks) {
         MuseRenderer.drawItemAt(
                 getPosition().getX() - offsetx,
                 getPosition().getY() - offsety, getStack());
         if (inventorySlot > 35 || itemHandler.getSelected() == getStack()) {
             matrixStack.pushPose();
             matrixStack.translate(0,0,310);
-            MuseRenderer.drawShadowedString(matrixStack, "e", getPosition().getX() + 3, getPosition().getY() + 1, Colour.DARK_GREEN);
+            MuseRenderer.drawShadowedString(matrixStack, "e", getPosition().getX() + 3, getPosition().getY() + 1, Color.DARK_GREEN);
             matrixStack.popPose();
         }
     }
@@ -110,7 +110,7 @@ public class ClickableItem extends Clickable {
     }
 
     @Override
-    public List<ITextComponent> getToolTip(int x, int y) {
+    public List<Component> getToolTip(int x, int y) {
         if (hitBox(x, y)) {
             return getStack().getTooltipLines(Minecraft.getInstance().player, ITooltipFlag.TooltipFlags.NORMAL);
         }

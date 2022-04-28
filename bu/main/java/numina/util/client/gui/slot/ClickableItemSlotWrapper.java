@@ -33,7 +33,7 @@
 //import net.minecraft.client.Minecraft;
 //import net.minecraft.client.util.ITooltipFlag;
 //import net.minecraft.inventory.container.Slot;
-//import net.minecraft.util.text.ITextComponent;
+//import net.minecraft.util.text.Component;
 //
 //import java.util.List;
 //
@@ -99,7 +99,7 @@
 //    }
 //
 //    @Override
-//    public List<ITextComponent> getToolTip() {
+//    public List<Component> getToolTip() {
 //        return !slot.getStack().isEmpty() ? slot.getStack().getTooltip(Minecraft.getInstance().player, ITooltipFlag.TooltipFlags.NORMAL) : null;
 //    }
 //

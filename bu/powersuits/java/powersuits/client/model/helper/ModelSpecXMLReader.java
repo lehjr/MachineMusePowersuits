@@ -27,21 +27,21 @@
 package lehjr.powersuits.client.model.helper;
 
 import com.google.common.collect.ImmutableMap;
-import lehjr.numina.basemod.MuseLogger;
+import lehjr.numina.basemod.NuminaLogger;
 import lehjr.numina.constants.NuminaConstants;
 import lehjr.numina.util.capabilities.render.modelspec.*;
 import lehjr.numina.util.client.model.helper.ModelHelper;
 import lehjr.numina.util.client.model.obj.OBJBakedCompositeModel;
-import lehjr.numina.util.math.Colour;
+import lehjr.numina.util.math.Color;
 import lehjr.numina.util.string.MuseStringUtils;
 import lehjr.powersuits.config.MPSSettings;
 import net.minecraft.client.renderer.model.IModelTransform;
-import net.minecraft.client.renderer.model.ItemCameraTransforms;
+import net.minecraft.client.renderer.model.ItemTransforms;
 import net.minecraft.client.renderer.model.ItemOverrideList;
 import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraft.inventory.EquipmentSlot;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.vector.TransformationMatrix;
+import net.minecraft.util.math.vector.Transformation;
 import net.minecraft.util.math.vector.Vector3f;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -177,7 +177,7 @@ public enum ModelSpecXMLReader {
      * Biggest difference between the ModelSpec for Armor vs PowerFistModel2 is that the armor models don't need item camera transforms
      */
     public static void parseModelSpec(Node specNode, TextureStitchEvent.Pre event, ModelLoader bakery, EnumSpecType specType, String specName, boolean isDefault) {
-        NodeList models = specNode.getOwnerDocument().getElementsByTagName(NuminaConstants.TAG_MODEL);
+        NodeList models = specNode.getOwnerDocument().getElementsByTagName(NuminaConstants.MODEL);
         java.util.List<String> textures = new ArrayList<>();
         IModelTransform modelTransform = null;
 
@@ -203,10 +203,10 @@ public enum ModelSpecXMLReader {
                         modelTransform = getIModelTransform(cameraTransformNode);
                     } else {
                         // Get the transform for the model and add to the registry
-                        NodeList transformNodeList = modelElement.getElementsByTagName("transformationMatrix");
+                        NodeList transformNodeList = modelElement.getElementsByTagName("Transformation");
                         if (transformNodeList.getLength() > 0) {
-                            ImmutableMap.Builder<ItemCameraTransforms.TransformType, TransformationMatrix> builder = ImmutableMap.builder();
-                            builder.put(ItemCameraTransforms.TransformType.NONE, getTransform(transformNodeList.item(0)));
+                            ImmutableMap.Builder<ItemTransforms.TransformType, Transformation> builder = ImmutableMap.builder();
+                            builder.put(ItemTransforms.TransformType.NONE, getTransform(transformNodeList.item(0)));
                             modelTransform =  new SimpleModelTransform(builder.build());
                             // TODO... check and see how this works.. not sure about this
                             //modelTransform = new SimpleModelTransform(getTransform(transformNodeList.item(0)));
@@ -227,7 +227,7 @@ public enum ModelSpecXMLReader {
      * Do not use for non-vanilla code. For general usage, prefer getCombinedState.
      * /
                     @Deprecated
-                    ItemCameraTransforms getCameraTransforms();
+                    ItemTransforms getCameraTransforms();
 
                     / **
                      * @return The combined transformation state including vanilla and forge transforms data.
@@ -281,7 +281,7 @@ public enum ModelSpecXMLReader {
                         ModelRegistry.getInstance().put(MuseStringUtils.extractName(modelLocation), modelspec);
 
                     } else {
-                        MuseLogger.logger.error("Model file " + modelLocation + " not found! D:");
+                        NuminaLogger.logger.error("Model file " + modelLocation + " not found! D:");
                     }
                 }
             }
@@ -301,8 +301,8 @@ public enum ModelSpecXMLReader {
     // since the skinned armor can't have more than one texture per EquipmentSlot the TexturePartSpec is named after the itemSlot
     public static void getTexturePartSpec(TextureSpec textureSpec, Node bindingNode, EquipmentSlot slot, String fileLocation) {
         Element partSpecElement = (Element) bindingNode;
-        Colour colour = partSpecElement.hasAttribute("defaultColor") ?
-                parseColour(partSpecElement.getAttribute("defaultColor")) : Colour.WHITE;
+        Color colour = partSpecElement.hasAttribute("defaultColor") ?
+                parseColor(partSpecElement.getAttribute("defaultColor")) : Color.WHITE;
 
         if (colour.a == 0)
             colour = colour.withAlpha(1.0F);
@@ -311,7 +311,7 @@ public enum ModelSpecXMLReader {
             textureSpec.put(slot.getName(),
                     new TexturePartSpec(textureSpec,
                             new SpecBinding(null, slot, "all"),
-                            textureSpec.addColourIfNotExist(colour), slot.getName(), fileLocation));
+                            textureSpec.addColorIfNotExist(colour), slot.getName(), fileLocation));
         }
     }
 
@@ -322,8 +322,8 @@ public enum ModelSpecXMLReader {
         Element partSpecElement = (Element) partSpecNode;
         String partname = validatePolygroup(partSpecElement.getAttribute("partName"), modelSpec);
         boolean glow = Boolean.parseBoolean(partSpecElement.getAttribute("defaultglow"));
-        Colour colour = partSpecElement.hasAttribute("defaultColor") ?
-                parseColour(partSpecElement.getAttribute("defaultColor")) : Colour.WHITE;
+        Color colour = partSpecElement.hasAttribute("defaultColor") ?
+                parseColor(partSpecElement.getAttribute("defaultColor")) : Color.WHITE;
 
         if (colour.a == 0)
             colour = colour.withAlpha(1.0F);
@@ -332,12 +332,12 @@ public enum ModelSpecXMLReader {
             System.out.println("partName is NULL!!");
             System.out.println("ModelSpec model: " + modelSpec.getName());
             System.out.println("glow: " + glow);
-            System.out.println("colour: " + colour.hexColour());
+            System.out.println("colour: " + colour.hexColor());
         } else
             modelSpec.put(partname, new ModelPartSpec(modelSpec,
                     binding,
                     partname,
-                    modelSpec.addColourIfNotExist(colour),
+                    modelSpec.addColorIfNotExist(colour),
                     glow));
     }
 
@@ -347,32 +347,32 @@ public enum ModelSpecXMLReader {
     }
 
     /**
-     * This gets the map of TransformType, TransformationMatrix> used for handheld items
+     * This gets the map of TransformType, Transformation> used for handheld items
      *
      * @param itemCameraTransformsNode
      * @return
      */
     public static IModelTransform getIModelTransform(Node itemCameraTransformsNode) {
-        ImmutableMap.Builder<ItemCameraTransforms.TransformType, TransformationMatrix> builder = ImmutableMap.builder();
-        NodeList transformationList = ((Element) itemCameraTransformsNode).getElementsByTagName("transformationMatrix");
+        ImmutableMap.Builder<ItemTransforms.TransformType, Transformation> builder = ImmutableMap.builder();
+        NodeList transformationList = ((Element) itemCameraTransformsNode).getElementsByTagName("Transformation");
         for (int i = 0; i < transformationList.getLength(); i++) {
             Node transformationNode = transformationList.item(i);
-            ItemCameraTransforms.TransformType transformType =
-                    ItemCameraTransforms.TransformType.valueOf(((Element) transformationNode).getAttribute("type").toUpperCase());
-            TransformationMatrix trsrTransformation = getTransform(transformationNode);
+            ItemTransforms.TransformType transformType =
+                    ItemTransforms.TransformType.valueOf(((Element) transformationNode).getAttribute("type").toUpperCase());
+            Transformation trsrTransformation = getTransform(transformationNode);
             builder.put(transformType, trsrTransformation);
         }
         return new SimpleModelTransform(builder.build());
     }
 
     /**
-     * This gets the transforms for baking the models. TransformationMatrix is also used for item camera transforms to alter the
+     * This gets the transforms for baking the models. Transformation is also used for item camera transforms to alter the
      * position, scale, and translation of a held/dropped/framed item
      *
      * @param transformationNode
      * @return
      */
-    public static TransformationMatrix getTransform(Node transformationNode) {
+    public static Transformation getTransform(Node transformationNode) {
         Vector3f translation = parseVector(((Element) transformationNode).getAttribute("translation"));
         Vector3f rotation = parseVector(((Element) transformationNode).getAttribute("rotation"));
         Vector3f scale = parseVector(((Element) transformationNode).getAttribute("scale"));
@@ -396,7 +396,7 @@ public enum ModelSpecXMLReader {
     /**
      * Simple transformation for armor models. Powerfist (and shield?) will need one of these for every conceivable case except GUI which will be an icon
      */
-    public static TransformationMatrix getTransform(@Nullable Vector3f translation, @Nullable Vector3f rotation, @Nullable Vector3f scale) {
+    public static Transformation getTransform(@Nullable Vector3f translation, @Nullable Vector3f rotation, @Nullable Vector3f scale) {
         if (translation == null)
             translation = new Vector3f(0, 0, 0);
         if (rotation == null)
@@ -405,9 +405,9 @@ public enum ModelSpecXMLReader {
             scale = new Vector3f(1, 1, 1);
 
 
-        /// TransformationMatrix(@Nullable Vector3f translationIn, @Nullable Quaternion rotationLeftIn, @Nullable Vector3f scaleIn, @Nullable Quaternion rotationRightIn)
+        /// Transformation(@Nullable Vector3f translationIn, @Nullable Quaternion rotationLeftIn, @Nullable Vector3f scaleIn, @Nullable Quaternion rotationRightIn)
 
-        return new TransformationMatrix(
+        return new Transformation(
                 // Transform
                 new Vector3f(translation.x() / 16, translation.y() / 16, translation.z() / 16),
                 // Angles
@@ -430,7 +430,7 @@ public enum ModelSpecXMLReader {
         }
     }
 
-    public static Colour parseColour(String colourString) {
-        return Colour.fromHexString(colourString);
+    public static Color parseColor(String colourString) {
+        return Color.fromHexString(colourString);
     }
 }

@@ -46,8 +46,8 @@
 //        boolean drawIcon = false;
 //        ItemPowerFist item = (ItemPowerFist) itemStack.getItem();
 //
-//        Colour colour = item.getColorFromItemStack(itemStack);
-//        Colour glow = item.getColorFromItemStack(itemStack);
+//        Color colour = item.getColorFromItemStack(itemStack);
+//        Color glow = item.getColorFromItemStack(itemStack);
 //        switch (type) {
 //            case ENTITY:
 //                RenderBlocks renderEntity = (RenderBlocks) data[0];

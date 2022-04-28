@@ -26,50 +26,50 @@
 
 package lehjr.numina.util.client.gui.clickable;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.matrix.PoseStack;
 import lehjr.numina.util.client.gui.gemoetry.DrawableArrow;
 import lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
 import lehjr.numina.util.client.gui.gemoetry.RelativeRect;
-import lehjr.numina.util.math.Colour;
+import lehjr.numina.util.math.Color;
 
 public class ClickableArrow extends DrawableArrow implements IClickable {
     protected IPressable onPressed;
     protected IReleasable onReleased;
 
-    protected final Colour backgroundColourNotHighlighted;
-    protected final Colour backgroundColourHighlighted;
+    protected final Color backgroundColorNotHighlighted;
+    protected final Color backgroundColorHighlighted;
 
     protected boolean isEnabled = true;
     protected boolean isVisible = true;
 
-    public ClickableArrow(float left, float top, float right, float bottom, boolean growFromMiddle, Colour backgroundColour, Colour backgroundColourHighlighted, Colour borderColour) {
-        super(left, top, right, bottom, growFromMiddle, backgroundColour, borderColour);
-        this.backgroundColourNotHighlighted = backgroundColour;
-        this.backgroundColourHighlighted = backgroundColourHighlighted;
+    public ClickableArrow(float left, float top, float right, float bottom, boolean growFromMiddle, Color backgroundColor, Color backgroundColorHighlighted, Color borderColor) {
+        super(left, top, right, bottom, growFromMiddle, backgroundColor, borderColor);
+        this.backgroundColorNotHighlighted = backgroundColor;
+        this.backgroundColorHighlighted = backgroundColorHighlighted;
     }
 
-    public ClickableArrow(float left, float top, float right, float bottom, Colour backgroundColour, Colour backgroundColourHighlighted, Colour borderColour) {
-        super(left, top, right, bottom, backgroundColour, borderColour);
-        this.backgroundColourNotHighlighted = backgroundColour;
-        this.backgroundColourHighlighted = backgroundColourHighlighted;
+    public ClickableArrow(float left, float top, float right, float bottom, Color backgroundColor, Color backgroundColorHighlighted, Color borderColor) {
+        super(left, top, right, bottom, backgroundColor, borderColor);
+        this.backgroundColorNotHighlighted = backgroundColor;
+        this.backgroundColorHighlighted = backgroundColorHighlighted;
     }
 
-    public ClickableArrow(MusePoint2D ul, MusePoint2D br, Colour backgroundColour, Colour backgroundColourHighlighted, Colour borderColour) {
-        super(ul, br, backgroundColour, borderColour);
-        this.backgroundColourNotHighlighted = backgroundColour;
-        this.backgroundColourHighlighted = backgroundColourHighlighted;
+    public ClickableArrow(MusePoint2D ul, MusePoint2D br, Color backgroundColor, Color backgroundColorHighlighted, Color borderColor) {
+        super(ul, br, backgroundColor, borderColor);
+        this.backgroundColorNotHighlighted = backgroundColor;
+        this.backgroundColorHighlighted = backgroundColorHighlighted;
     }
 
-    public ClickableArrow(RelativeRect ref, Colour backgroundColour, Colour backgroundColourHighlighted, Colour borderColour) {
-        super(ref, backgroundColour, borderColour);
-        this.backgroundColourNotHighlighted = backgroundColour;
-        this.backgroundColourHighlighted = backgroundColourHighlighted;
+    public ClickableArrow(RelativeRect ref, Color backgroundColor, Color backgroundColorHighlighted, Color borderColor) {
+        super(ref, backgroundColor, borderColor);
+        this.backgroundColorNotHighlighted = backgroundColor;
+        this.backgroundColorHighlighted = backgroundColorHighlighted;
     }
 
     @Override
-    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float frameTime) {
+    public void render(PoseStack matrixStack, int mouseX, int mouseY, float frameTime) {
         if (isVisible) {
-            super.setBackgroundColour(hitBox(mouseX, mouseY) ? this.backgroundColourHighlighted : this.backgroundColourNotHighlighted);
+            super.setBackgroundColor(hitBox(mouseX, mouseY) ? this.backgroundColorHighlighted : this.backgroundColorNotHighlighted);
             super.render(matrixStack, mouseX, mouseY, frameTime);
         }
     }

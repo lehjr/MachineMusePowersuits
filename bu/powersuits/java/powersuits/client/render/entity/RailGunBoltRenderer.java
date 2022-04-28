@@ -26,16 +26,16 @@
 
 package lehjr.powersuits.client.render.entity;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.vertex.IVertexBuilder;
+import com.mojang.blaze3d.matrix.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import lehjr.numina.client.render.entity.NuminaEntityRenderer;
 import lehjr.numina.constants.NuminaConstants;
 import lehjr.numina.util.client.model.helper.ModelHelper;
 import lehjr.numina.util.client.model.obj.OBJBakedCompositeModel;
-import lehjr.numina.util.math.Colour;
+import lehjr.numina.util.math.Color;
 import lehjr.powersuits.constants.MPSConstants;
 import lehjr.powersuits.entity.RailgunBoltEntity;
-import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.model.BakedQuad;
@@ -51,7 +51,7 @@ import java.util.Random;
 public class RailGunBoltRenderer extends NuminaEntityRenderer<RailgunBoltEntity> {
 
 
-    static final Colour colour = new Colour(0.631F, 0.615F, 0.58F, 1F);
+    static final Color colour = new Color(0.631F, 0.615F, 0.58F, 1F);
     static final ResourceLocation modelLocation = new ResourceLocation(MPSConstants.MOD_ID, "models/entity/bolt.obj");
     // NonNullLazy doesn't init until called
     public static final NonNullLazy<OBJBakedCompositeModel> modelBolt = NonNullLazy.of(() -> ModelHelper.loadBakedModel(ModelRotation.X0_Y0, null, modelLocation));
@@ -63,7 +63,7 @@ public class RailGunBoltRenderer extends NuminaEntityRenderer<RailgunBoltEntity>
 
 
     @Override
-    public void render(RailgunBoltEntity entityIn, float entityYaw, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn) {
+    public void render(RailgunBoltEntity entityIn, float entityYaw, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn) {
 //        super.render(entityIn, entityYaw, partialTicks, matrixStackIn, bufferIn, packedLightIn);
 
         float size = 10;
@@ -86,19 +86,19 @@ public class RailGunBoltRenderer extends NuminaEntityRenderer<RailgunBoltEntity>
         matrixStackIn.popPose();
     }
 
-    public static void renderBolt(MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn) {
+    public static void renderBolt(PoseStack matrixStackIn, MultiBufferSource bufferIn) {
         renderBolt(bufferIn, getBoltRenderType(), // fixme get a better render type
                 matrixStackIn, /*combinedLight*/0x00F000F0, colour);
     }
 
-    public static void renderBolt(IRenderTypeBuffer bufferIn, RenderType rt, MatrixStack matrixStackIn, int packedLightIn, Colour colour) {
+    public static void renderBolt(MultiBufferSource bufferIn, RenderType rt, PoseStack matrixStackIn, int packedLightIn, Color colour) {
         renderBolt(bufferIn, rt, matrixStackIn, packedLightIn, OverlayTexture.NO_OVERLAY, colour);
     }
 
-    public static void renderBolt(IRenderTypeBuffer bufferIn, RenderType rt, MatrixStack matrixStackIn, int packedLightIn, int overlay, Colour colour) {
-        IVertexBuilder bb = bufferIn.getBuffer(rt);
+    public static void renderBolt(MultiBufferSource bufferIn, RenderType rt, PoseStack matrixStackIn, int packedLightIn, int overlay, Color colour) {
+        VertexConsumer bb = bufferIn.getBuffer(rt);
         for (BakedQuad quad : modelBolt.get().getQuads(null, null, rand, EmptyModelData.INSTANCE)) {
-            bb.addVertexData(matrixStackIn.last(), quad, colour.r, colour.g, colour.b, colour.a, packedLightIn, overlay, true);
+            bb.putBulkData(matrixStackIn.last(), quad, colour.r, colour.g, colour.b, colour.a, packedLightIn, overlay, true);
         }
     }
 

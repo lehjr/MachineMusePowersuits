@@ -26,7 +26,7 @@
 
 package lehjr.numina.util.client.gui.clickable;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.matrix.PoseStack;
 import lehjr.numina.util.client.gui.gemoetry.DrawableTile;
 import lehjr.numina.util.client.gui.gemoetry.IDrawable;
 import lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
@@ -57,12 +57,12 @@ public abstract class Clickable extends DrawableTile implements IClickable {
         this.drawBackground = drawBackground;
     }
 
-    public void superRender(MatrixStack matrixStack, int mouseX, int mouseY, float frameTime) {
+    public void superRender(PoseStack matrixStack, int mouseX, int mouseY, float frameTime) {
         super.render(matrixStack, mouseX, mouseY, frameTime);
     }
 
     @Override
-    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float frameTime) {
+    public void render(PoseStack matrixStack, int mouseX, int mouseY, float frameTime) {
         if (drawBackground) {
             super.render(matrixStack, mouseX, mouseY, frameTime);
         }

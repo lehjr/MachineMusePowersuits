@@ -9,13 +9,13 @@ import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.Player;
 import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.inventory.container.SimpleNamedContainerProvider;
-import net.minecraft.util.ActionResultType;
+import net.minecraft.util.InteractionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.IWorldPosCallable;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.Component;
 import net.minecraft.util.text.TranslatableComponent;
 import net.minecraft.world.World;
 
@@ -38,18 +38,18 @@ public class RecipeWorkbench extends Block {
     }
 
     @Override
-    public ActionResultType use(BlockState state, World worldIn, BlockPos pos, Player player, Hand handIn, BlockRayTraceResult hit) {
+    public InteractionResult use(BlockState state, World worldIn, BlockPos pos, Player player, Hand handIn, BlockRayTraceResult hit) {
         player.playSound(SoundDictionary.SOUND_EVENT_GUI_SELECT, 1.0F, 1.0F);
         if (worldIn.isClientSide) {
-            return ActionResultType.SUCCESS;
+            return InteractionResult.SUCCESS;
         } else {
             player.openMenu(state.getMenuProvider(worldIn, pos));
 //            player.addStat(Stats.INTERACT_WITH_CRAFTING_TABLE);
-            return ActionResultType.SUCCESS;
+            return InteractionResult.SUCCESS;
         }
     }
 
-    private static final ITextComponent title = new TranslatableComponent("container.crafting");
+    private static final Component title = new TranslatableComponent("container.crafting");
     public INamedContainerProvider getMenuProvider(BlockState state, World worldIn, BlockPos pos) {
         return new SimpleNamedContainerProvider((windowID, playerInventory, playerEntity) ->
                 new MPARCContainer(windowID, playerInventory, IWorldPosCallable.create(worldIn, pos)), title);

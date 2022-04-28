@@ -1,7 +1,7 @@
 <modelSpec specName="default_armor" type="armor model" default="true">
     <models>
         <model file="powersuits:models/item/armor/mps_helm.obj" textures="powersuits:item/armor/diffuse">
-            <transformationMatrix translation="0,0,0" rotation="0,0,0" scale="1,1,1"/>
+            <Transformation translation="0,0,0" rotation="0,0,0" scale="1,1,1"/>
             <binding itemSlot="head" target="Head">
                 <part partName="helm_main"/>
                 <part defaultColor="114EFF" defaultglow="true"  partName="visor"/>
@@ -11,7 +11,7 @@
             </binding>
         </model>
         <model file="powersuits:models/item/armor/mps_chest.obj" textures="powersuits:item/armor/diffuse">
-            <transformationMatrix translation="0,0,0" rotation="0,0,0" scale="1,1,1"/>
+            <Transformation translation="0,0,0" rotation="0,0,0" scale="1,1,1"/>
             <binding itemSlot="chest" target="Body">
                 <part partName="backpack"/>
                 <part partName="polySurface36"/>
@@ -22,14 +22,14 @@
             </binding>
         </model>
         <model file="powersuits:models/item/armor/jetpack.obj" textures="powersuits:item/armor/jetpack">
-            <transformationMatrix translation="0,0,0" rotation="0,0,0" scale="1,1,1"/>
+            <Transformation translation="0,0,0" rotation="0,0,0" scale="1,1,1"/>
             <binding itemSlot="chest" target="Body" itemState="jetpack">
                 <part defaultColor="114EFF" partName="jetpack5"/>
                 <part defaultColor="114EFF" defaultglow="true" partName="jetpack_glow"/>
             </binding>
         </model>
         <model file="powersuits:models/item/armor/mps_arms.obj" textures="powersuits:item/armor/diffuse">
-            <transformationMatrix translation="0,0,0" rotation="0,0,0" scale="1,1,1"/>
+            <Transformation translation="0,0,0" rotation="0,0,0" scale="1,1,1"/>
             <binding itemSlot="chest" target="RightArm">
                 <part defaultColor="114EFF" defaultglow="true" partName="crystal_shoulder_2"/>
                 <part partName="arms3"/>
@@ -40,7 +40,7 @@
             </binding>
         </model>
         <model file="powersuits:models/item/armor/mps_pantaloons.obj" textures="powersuits:item/armor/diffuse">
-            <transformationMatrix translation="0,0,0" rotation="0,0,0" scale="1,1,1"/>
+            <Transformation translation="0,0,0" rotation="0,0,0" scale="1,1,1"/>
             <binding itemSlot="legs" target="LeftLeg">
                 <part partName="leg2"/>
             </binding>
@@ -49,7 +49,7 @@
             </binding>
         </model>
         <model file="powersuits:models/item/armor/mps_boots.obj" textures="powersuits:item/armor/diffuse">
-            <transformationMatrix translation="0,0,0" rotation="0,0,0" scale="1,1,1"/>
+            <Transformation translation="0,0,0" rotation="0,0,0" scale="1,1,1"/>
             <binding itemSlot="feet" target="RightLeg">
                 <part partName="boots1"/>
             </binding>

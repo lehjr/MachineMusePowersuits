@@ -26,27 +26,27 @@
 
 package lehjr.numina.util.client.gui.gemoetry;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
-import lehjr.numina.util.math.Colour;
+import com.mojang.blaze3d.matrix.PoseStack;
+import lehjr.numina.util.math.Color;
 import lehjr.numina.util.math.MuseMathUtils;
 import org.lwjgl.opengl.GL11;
 
 import java.nio.FloatBuffer;
 
 public class Meter extends DrawableRelativeRect {
-    Colour meterColour;
+    Color meterColor;
 
-    public Meter(Colour meterColourIn) {
-        super(new MusePoint2D(0, 0), new MusePoint2D(0, 0), Colour.GREY.withAlpha(0.3F), Colour.BLACK.withAlpha(0.8F));
+    public Meter(Color meterColorIn) {
+        super(new MusePoint2D(0, 0), new MusePoint2D(0, 0), Color.GREY.withAlpha(0.3F), Color.BLACK.withAlpha(0.8F));
         setWidth(32);
         setHeight(8);
-        setSecondBackgroundColour(Colour.WHITE.withAlpha(0.3F));
+        setSecondBackgroundColor(Color.WHITE.withAlpha(0.3F));
         setShrinkBorder(true);
-        this.meterColour = meterColourIn;
+        this.meterColor = meterColorIn;
     }
 
-    public Meter setMeterColour(Colour meterColourIn) {
-        this.meterColour = meterColourIn;
+    public Meter setMeterColor(Color meterColorIn) {
+        this.meterColor = meterColorIn;
         return this;
     }
 
@@ -62,7 +62,7 @@ public class Meter extends DrawableRelativeRect {
 
     double value = 0;
 
-    public void draw(MatrixStack matrixStack, double x, double y, float zLevel, double valueIn) {
+    public void draw(PoseStack matrixStack, double x, double y, float zLevel, double valueIn) {
         this.setUL(x, y);
         this.value = MuseMathUtils.clampDouble(valueIn, 0, 1);
         this.draw(matrixStack, zLevel);
@@ -73,17 +73,17 @@ public class Meter extends DrawableRelativeRect {
         return getVertices(this.left() +1, this.top() + 1, right, this.bottom() -1);
     }
 
-    public void draw(MatrixStack matrixStack,float zLevel) {
+    public void draw(PoseStack matrixStack,float zLevel) {
         this.zLevel = zLevel;
 
         // background
         FloatBuffer backgroundVertices = this.getVertices(0.0F);
-        FloatBuffer backgroundColours = GradientAndArcCalculator.getColourGradient(this.backgroundColour, this.backgroundColour2, backgroundVertices.limit() * 4);
-        this.drawBackground(matrixStack, backgroundVertices, backgroundColours);
+        FloatBuffer backgroundColors = GradientAndArcCalculator.getColorGradient(this.backgroundColor, this.backgroundColor2, backgroundVertices.limit() * 4);
+        this.drawBackground(matrixStack, backgroundVertices, backgroundColors);
 
         // meter
         FloatBuffer meterVertices = this.getMeterVertices();
-        this.drawBuffer(matrixStack, meterVertices, meterColour, GL11.GL_TRIANGLE_FAN);
+        this.drawBuffer(matrixStack, meterVertices, meterColor, GL11.GL_TRIANGLE_FAN);
 
         // frame
         if (this.shrinkBorder) {

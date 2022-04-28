@@ -1,18 +1,18 @@
 package lehjr.numina.util.client.gui.frame;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.matrix.PoseStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import lehjr.numina.util.client.gui.gemoetry.DrawableTile;
 import lehjr.numina.util.client.gui.gemoetry.IDrawable;
-import lehjr.numina.util.math.Colour;
+import lehjr.numina.util.math.Color;
 import lehjr.numina.util.math.MuseMathUtils;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.math.vector.Quaternion;
 import net.minecraft.util.math.vector.Vector3f;
-import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.Component;
 
 import java.util.List;
 
@@ -43,9 +43,9 @@ public class EntityRenderFrame extends DrawableTile implements IGuiFrame {
 
     public EntityRenderFrame(boolean growFromMiddle) {
         super(0, 0, 0, 0, growFromMiddle);
-        setBackgroundColour(Colour.BLACK);
-        setBottomBorderColour(Colour.DARK_GREY);
-        setTopBorderColour(Colour.DARK_GREY);
+        setBackgroundColor(Color.BLACK);
+        setBottomBorderColor(Color.DARK_GREY);
+        setTopBorderColor(Color.DARK_GREY);
     }
 
     public void setLivingEntity(LivingEntity livingEntity) {
@@ -118,7 +118,7 @@ public class EntityRenderFrame extends DrawableTile implements IGuiFrame {
     }
 
     @Override
-    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
+    public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTicks) {
         if (isVisible) {
             super.render(matrixStack, mouseX, mouseY, partialTicks);
             float mouse_x = (float) ((guiLeft + 51) - this.oldMouseX);
@@ -136,7 +136,7 @@ public class EntityRenderFrame extends DrawableTile implements IGuiFrame {
         RenderSystem.pushMatrix();
         RenderSystem.translatef(posX, posY, 1050.0F);
         RenderSystem.scalef(1.0F, 1.0F, -1.0F);
-        MatrixStack matrixstack = new MatrixStack();
+        PoseStack matrixstack = new PoseStack();
         matrixstack.translate(0.0D, 0.0D, 1000.0D);
         matrixstack.scale((float)scale, (float)scale, (float)scale);
         Quaternion quaternion = Vector3f.ZP.rotationDegrees(180.0F);
@@ -157,18 +157,18 @@ public class EntityRenderFrame extends DrawableTile implements IGuiFrame {
         quaternion1.conj();
         entityrenderermanager.overrideCameraOrientation(quaternion1);
         entityrenderermanager.setRenderShadow(false);
-        IRenderTypeBuffer.Impl irendertypebuffer$impl = Minecraft.getInstance().renderBuffers().bufferSource();
+        MultiBufferSource.Impl MultiBufferSource$impl = Minecraft.getInstance().renderBuffers().bufferSource();
         RenderSystem.runAsFancy(() -> {
-            entityrenderermanager.render(livingEntity, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F, matrixstack, irendertypebuffer$impl, 15728880);
+            entityrenderermanager.render(livingEntity, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F, matrixstack, MultiBufferSource$impl, 15728880);
         });
-        irendertypebuffer$impl.endBatch();
+        MultiBufferSource$impl.endBatch();
         entityrenderermanager.setRenderShadow(true);
         livingEntity.yBodyRot = yBodyRot;
         livingEntity.yRot = yRot;
         livingEntity.xRot = xRot;
         livingEntity.yHeadRotO = yHeadRotO;
         livingEntity.yHeadRot = yHeadRot;
-        RenderSystem.popMatrix();
+        RenderSystem.popPose();
     }
 
     @Override
@@ -182,7 +182,7 @@ public class EntityRenderFrame extends DrawableTile implements IGuiFrame {
     }
 
     @Override
-    public List<ITextComponent> getToolTip(int x, int y) {
+    public List<Component> getToolTip(int x, int y) {
         return null;
     }
 

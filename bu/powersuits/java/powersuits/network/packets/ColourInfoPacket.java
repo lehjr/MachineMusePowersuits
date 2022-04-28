@@ -26,10 +26,10 @@
 
 package lehjr.powersuits.network.packets;
 
-import lehjr.numina.util.capabilities.render.ModelSpecNBTCapability;
+import lehjr.numina.util.capabilities.render.CapabilityModelSpec;
 import net.minecraft.entity.player.ServerPlayer;
 import net.minecraft.inventory.EquipmentSlot;
-import net.minecraft.network.PacketBuffer;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.fml.network.NetworkEvent;
 
 import java.util.function.Supplier;
@@ -40,33 +40,33 @@ import java.util.function.Supplier;
  * <p>
  * Ported to Java by lehjr on 11/14/16.
  */
-public class ColourInfoPacket /* implements IMusePacket<ColourInfoPacket> */{
+public class ColorInfoPacket /* implements IMusePacket<ColorInfoPacket> */{
     protected EquipmentSlot slotType;
     protected int[] tagData;
 
-    public ColourInfoPacket() {
+    public ColorInfoPacket() {
     }
 
-    public ColourInfoPacket(EquipmentSlot slotType, int[] tagData) {
+    public ColorInfoPacket(EquipmentSlot slotType, int[] tagData) {
         this.slotType = slotType;
         this.tagData = tagData;
     }
 
-    public static void write(ColourInfoPacket msg, PacketBuffer packetBuffer) {
+    public static void write(ColorInfoPacket msg, FriendlyByteBuf packetBuffer) {
         packetBuffer.writeEnum(msg.slotType);
         packetBuffer.writeVarIntArray(msg.tagData);
     }
 
-    public static ColourInfoPacket read(PacketBuffer packetBuffer) {
-        return new ColourInfoPacket(packetBuffer.readEnum(EquipmentSlot.class), packetBuffer.readVarIntArray());
+    public static ColorInfoPacket read(FriendlyByteBuf packetBuffer) {
+        return new ColorInfoPacket(packetBuffer.readEnum(EquipmentSlot.class), packetBuffer.readVarIntArray());
     }
 
-    public static void handle(ColourInfoPacket message, Supplier<NetworkEvent.Context> ctx) {
+    public static void handle(ColorInfoPacket message, Supplier<NetworkEvent.Context> ctx) {
         ctx.get().enqueueWork(() -> {
             final ServerPlayer player = ctx.get().getSender();
             EquipmentSlot slotType = message.slotType;
             int[] tagData = message.tagData;
-            player.getItemBySlot(slotType).getCapability(ModelSpecNBTCapability.RENDER)
+            player.getItemBySlot(slotType).getCapability(CapabilityModelSpec.RENDER)
                     .ifPresent(render -> render.setColorArray(tagData));
         });
         ctx.get().setPacketHandled(true);

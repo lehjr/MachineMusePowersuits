@@ -26,7 +26,7 @@
 
 package lehjr.numina.util.client.gui.slot;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.matrix.PoseStack;
 import lehjr.numina.util.client.gui.clickable.IClickable;
 import lehjr.numina.util.client.gui.gemoetry.IDrawable;
 import lehjr.numina.util.client.gui.gemoetry.IRect;
@@ -202,7 +202,7 @@ public class UniversalSlot extends Slot implements IClickable {
      * @param partialTicks
      */
     @Override
-    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
+    public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTicks) {
 
     }
 

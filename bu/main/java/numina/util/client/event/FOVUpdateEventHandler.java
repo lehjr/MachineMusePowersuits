@@ -33,7 +33,7 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.attributes.ModifiableAttributeInstance;
-import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.FOVUpdateEvent;
@@ -64,9 +64,9 @@ public class FOVUpdateEventHandler {
             if (fovToggleKey.consumeClick()) {
                 fovIsActive = !fovIsActive;
                 if (fovIsActive) {
-                    player.sendMessage(new StringTextComponent(I18n.get("fovfixtoggle.enabled")), player.getUUID());
+                    player.sendMessage(new TextComponent(I18n.get("fovfixtoggle.enabled")), player.getUUID());
                 } else {
-                    player.sendMessage(new StringTextComponent(I18n.get("fovfixtoggle.disabled")), player.getUUID());
+                    player.sendMessage(new TextComponent(I18n.get("fovfixtoggle.disabled")), player.getUUID());
                 }
             }
 

@@ -59,7 +59,7 @@ public class PowerFistSpecNBT extends ModelSpecNBT implements IHandHeldModelSpec
         // TextureSpecBase (only one texture visible at a time)
         CompoundTag texSpecTag = new CompoundTag();
 
-        // List of EnumColour indexes
+        // List of EnumColor indexes
         List<Integer> colours = new ArrayList<>();
 
         // temp data holder
@@ -71,12 +71,12 @@ public class PowerFistSpecNBT extends ModelSpecNBT implements IHandHeldModelSpec
             // Only generate NBT data from Specs marked as "default"
             if (spec.isDefault()) {
                 if (getItemStack().getItem() instanceof PowerFist && spec.getSpecType().equals(EnumSpecType.HANDHELD)) {
-                    colours = addNewColourstoList(colours, spec.getColours()); // merge new color int arrays in
+                    colours = addNewColorstoList(colours, spec.getColors()); // merge new color int arrays in
 
                     for (PartSpecBase partSpec : spec.getPartSpecs()) {
                         if (partSpec instanceof ModelPartSpec) {
                             prefArray.add(((ModelPartSpec) partSpec).multiSet(new CompoundTag(),
-                                    getNewColourIndex(colours, spec.getColours(), partSpec.getDefaultColourIndex()),
+                                    getNewColorIndex(colours, spec.getColors(), partSpec.getDefaultColorIndex()),
                                     ((ModelPartSpec) partSpec).getGlow()));
                         }
                     }
@@ -86,7 +86,7 @@ public class PowerFistSpecNBT extends ModelSpecNBT implements IHandHeldModelSpec
 
         CompoundTag nbt = new CompoundTag();
         for (CompoundTag elem : prefArray) {
-            nbt.put(elem.getString(NuminaConstants.TAG_MODEL) + "." + elem.getString(NuminaConstants.TAG_PART), elem);
+            nbt.put(elem.getString(NuminaConstants.MODEL) + "." + elem.getString(NuminaConstants.TAG_PART), elem);
         }
 
         if (!specList.isEmpty())
@@ -95,7 +95,7 @@ public class PowerFistSpecNBT extends ModelSpecNBT implements IHandHeldModelSpec
         if (!texSpecTag.isEmpty())
             nbt.put(NuminaConstants.NBT_TEXTURESPEC_TAG, texSpecTag);
 
-        nbt.put(NuminaConstants.TAG_COLOURS, new IntArrayNBT(colours));
+        nbt.put(NuminaConstants.COLOR, new IntArrayNBT(colours));
         return nbt;
     }
 }

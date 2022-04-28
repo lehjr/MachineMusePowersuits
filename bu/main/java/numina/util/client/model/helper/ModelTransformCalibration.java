@@ -26,9 +26,9 @@
 
 package lehjr.numina.util.client.model.helper;
 
-import lehjr.numina.basemod.MuseLogger;
+import lehjr.numina.basemod.NuminaLogger;
 import net.minecraft.client.Minecraft;
-import net.minecraft.util.math.vector.TransformationMatrix;
+import net.minecraft.util.math.vector.Transformation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.lwjgl.glfw.GLFW;
@@ -178,13 +178,13 @@ public class ModelTransformCalibration {
 
             if (isKeyPressed(GLFW.GLFW_KEY_KP_0)) {
 
-                MuseLogger.logDebug("FIXME: check consistency between using every constructor");
+                NuminaLogger.logDebug("FIXME: check consistency between using every constructor");
 
-                MuseLogger.logDebug("xOffest: " + xOffest + ", yOffest: " + yOffest + ", zOffest: " + zOffest);
-                MuseLogger.logDebug("xrot: " + angleX + ", yrot: " + angleY + ", zrot: " + angleZ);
-                MuseLogger.logDebug("scaleModifier: " + scalemodifier);
+                NuminaLogger.logDebug("xOffest: " + xOffest + ", yOffest: " + yOffest + ", zOffest: " + zOffest);
+                NuminaLogger.logDebug("xrot: " + angleX + ", yrot: " + angleY + ", zrot: " + angleZ);
+                NuminaLogger.logDebug("scaleModifier: " + scalemodifier);
 
-                MuseLogger.logDebug("MuseModelHelper.get(" + xOffest +", " + yOffest + ", " + zOffest + ", " + angleX + ", " + angleY+ ", " + angleZ + ", " + scalemodifier + ")" );
+                NuminaLogger.logDebug("MuseModelHelper.get(" + xOffest +", " + yOffest + ", " + zOffest + ", " + angleX + ", " + angleY+ ", " + angleZ + ", " + scalemodifier + ")" );
 
 
                 tap = true;
@@ -201,7 +201,7 @@ public class ModelTransformCalibration {
         }
     }
 
-    public TransformationMatrix getTransform() {
+    public Transformation getTransform() {
         transformCalibration();
         return ModelHelper.get(xOffest, yOffest, zOffest, angleX, angleY, angleZ, scalemodifier);
     }

@@ -27,8 +27,8 @@
 //package lehjr.powersuits.client.model.block;
 //
 //import com.google.common.collect.ImmutableList;
-//import com.mojang.blaze3d.matrix.MatrixStack;
-//import com.mojang.blaze3d.vertex.IVertexBuilder;
+//import com.mojang.blaze3d.matrix.PoseStack;
+//import com.mojang.blaze3d.vertex.VertexConsumer;
 //import net.minecraft.client.renderer.RenderType;
 //import net.minecraft.client.renderer.model.Model;
 //import net.minecraft.client.renderer.model.ModelRenderer;
@@ -189,7 +189,7 @@
 //
 //
 //    @Override
-//    public void render(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
+//    public void render(PoseStack matrixStackIn, VertexConsumer bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
 //        matrixStackIn.push();
 //        matrixStackIn.rotate(TransformationHelper.quatFromXYZ(new Vector3f(180.0F, 0.0F, 0.0F), true));
 //        matrixStackIn.translate(0.5F, -1.5F, -0.5F);

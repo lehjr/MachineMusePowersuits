@@ -1,6 +1,6 @@
 package lehjr.numina.integration.scannable;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.matrix.PoseStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import lehjr.numina.util.capabilities.inventory.modechanging.IModeChangingItem;
 import li.cil.scannable.api.API;
@@ -12,7 +12,7 @@ import net.minecraft.inventory.container.ClickType;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.Component;
 import net.minecraft.util.text.TranslatableComponent;
 import net.minecraftforge.items.CapabilityItemHandler;
 
@@ -34,7 +34,7 @@ public class MPSGuiScanner extends ContainerScreen<MPSContainerScanner> {
 
     // --------------------------------------------------------------------- //
 
-    public MPSGuiScanner(final MPSContainerScanner container, final PlayerInventory inventory, final ITextComponent title) {
+    public MPSGuiScanner(final MPSContainerScanner container, final PlayerInventory inventory, final Component title) {
         super(container, inventory, title);
         this.container = container;
         imageHeight = 159;
@@ -46,7 +46,7 @@ public class MPSGuiScanner extends ContainerScreen<MPSContainerScanner> {
     // --------------------------------------------------------------------- //
 
     @Override
-    public void render(final MatrixStack matrixStack, final int mouseX, final int mouseY, final float partialTicks) {
+    public void render(final PoseStack matrixStack, final int mouseX, final int mouseY, final float partialTicks) {
         renderBackground(matrixStack);
         super.render(matrixStack, mouseX, mouseY, partialTicks);
 
@@ -61,7 +61,7 @@ public class MPSGuiScanner extends ContainerScreen<MPSContainerScanner> {
     }
 
     @Override
-    protected void renderLabels(final MatrixStack matrixStack, final int mouseX, final int mouseY) {
+    protected void renderLabels(final PoseStack matrixStack, final int mouseX, final int mouseY) {
         super.renderLabels(matrixStack, mouseX, mouseY);
 
         Migration.FontRenderer.drawString(font, matrixStack, SCANNER_MODULES_TEXT, 8, 23, 0x404040);
@@ -69,7 +69,7 @@ public class MPSGuiScanner extends ContainerScreen<MPSContainerScanner> {
     }
 
     @Override
-    protected void renderBg(final MatrixStack matrixStack, final float partialTicks, final int mouseX, final int mouseY) {
+    protected void renderBg(final PoseStack matrixStack, final float partialTicks, final int mouseX, final int mouseY) {
         RenderSystem.color4f(1, 1, 1, 1);
         minecraft.getTextureManager().bind(BACKGROUND);
         final int x = (width - imageWidth) / 2;

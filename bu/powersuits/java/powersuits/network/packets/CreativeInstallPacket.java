@@ -5,7 +5,7 @@ import net.minecraft.entity.player.ServerPlayer;
 import net.minecraft.inventory.EquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.network.PacketBuffer;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.fml.network.NetworkEvent;
@@ -26,12 +26,12 @@ public class CreativeInstallPacket {
         this.regName = regName;
     }
 
-    public static void write(CreativeInstallPacket msg, PacketBuffer packetBuffer) {
+    public static void write(CreativeInstallPacket msg, FriendlyByteBuf packetBuffer) {
         packetBuffer.writeEnum(msg.slotType);
         packetBuffer.writeResourceLocation(msg.regName);
     }
 
-    public static CreativeInstallPacket read(PacketBuffer packetBuffer) {
+    public static CreativeInstallPacket read(FriendlyByteBuf packetBuffer) {
         return new CreativeInstallPacket(packetBuffer.readEnum(EquipmentSlot.class), packetBuffer.readResourceLocation());
     }
 

@@ -133,7 +133,7 @@ public enum MPSOverlayRenderer {
 
         tessellator.end();
 
-        Migration.FontRenderer.drawStringWithShadow(mc.font, event.getMatrixStack(),
+        Migration.FontRenderer.drawStringWithShadow(mc.font, event.getPoseStack(),
                 new TranslatableComponent(Constants.GUI_SCANNER_PROGRESS, MathHelper.floor(progress * 100)),
                 right + 12, midY - mc.font.lineHeight / 2, 0xCCAACCEE);
 

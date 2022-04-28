@@ -1,6 +1,6 @@
 package lehjr.powersuits.network;
 
-import net.minecraft.network.PacketBuffer;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.fml.network.NetworkEvent;
 
 import java.util.function.Supplier;
@@ -14,9 +14,9 @@ import java.util.function.Supplier;
  * @param <T>
  */
 public interface IMusePacket<T extends IMusePacket> {
-    void encode(T msg, PacketBuffer packetBuffer);
+    void encode(T msg, FriendlyByteBuf packetBuffer);
 
-    T decode(PacketBuffer packetBuffer);
+    T decode(FriendlyByteBuf packetBuffer);
 
     void handle(T message, Supplier<NetworkEvent.Context> ctx);
 }

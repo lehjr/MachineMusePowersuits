@@ -40,7 +40,7 @@ import net.minecraft.entity.player.ServerPlayer;
 import net.minecraft.inventory.container.SimpleNamedContainerProvider;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.util.ActionResultType;
+import net.minecraft.util.InteractionResult;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.vector.Vector3d;
@@ -74,13 +74,13 @@ public class NuminaArmorStandEntity extends ArmorStandEntity {
     }
 
     @Override
-    public ActionResultType interactAt(Player player, Vector3d vec, Hand hand) {
+    public InteractionResult interactAt(Player player, Vector3d vec, Hand hand) {
         ItemStack itemstack = player.getItemInHand(hand);
         if (!this.isMarker() && itemstack.getItem() != Items.NAME_TAG) {
             if (player.isSpectator()) {
-                return ActionResultType.SUCCESS;
+                return InteractionResult.SUCCESS;
             } else if (player.level.isClientSide) {
-                return ActionResultType.SUCCESS;
+                return InteractionResult.SUCCESS;
             } else {
                     player.playSound(SoundDictionary.SOUND_EVENT_GUI_SELECT, 1.0F, 1.0F);
                     NetworkHooks.openGui((ServerPlayer) player,
@@ -88,10 +88,10 @@ public class NuminaArmorStandEntity extends ArmorStandEntity {
                                     new ArmorStandContainer(windowID, playerInventory, (ArmorStandEntity) getEntity()),
                                     new TranslatableComponent("screen.numina.armor_stand")),
                             buf -> buf.writeInt(getId()));
-                return ActionResultType.SUCCESS;
+                return InteractionResult.SUCCESS;
             }
         } else {
-            return ActionResultType.PASS;
+            return InteractionResult.PASS;
         }
     }
 }

@@ -26,11 +26,11 @@
 
 package lehjr.numina.util.client.gui.frame;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.matrix.PoseStack;
 import lehjr.numina.util.client.gui.gemoetry.IDrawableRect;
 import lehjr.numina.util.client.gui.gemoetry.IRect;
 import lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
-import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.Component;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -87,7 +87,7 @@ public interface IGuiFrame extends IDrawableRect {
      * @param mouseY
      * @param partialTicks
      */
-    default void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
+    default void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTicks) {
 
     }
 
@@ -97,7 +97,7 @@ public interface IGuiFrame extends IDrawableRect {
      * @return tooltip or null if not returning tooltip;
      */
     @Nullable
-    default List<ITextComponent> getToolTip(int x, int y) {
+    default List<Component> getToolTip(int x, int y) {
         return null;
     }
 
@@ -310,7 +310,7 @@ public interface IGuiFrame extends IDrawableRect {
         getRect().onInit();
     }
 
-    default void renderLabels(MatrixStack matrixStack, int mouseX, int mouseY) {
+    default void renderLabels(PoseStack matrixStack, int mouseX, int mouseY) {
 
     }
 }

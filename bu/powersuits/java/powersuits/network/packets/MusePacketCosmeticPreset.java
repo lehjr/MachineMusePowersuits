@@ -27,9 +27,9 @@
 package lehjr.powersuits.network.packets;//package lehjr.powersuits.network.packets;
 //
 //import lehjr.mpalib.capabilities.render.ModelSpecNBT;
-//import lehjr.mpalib.capabilities.render.ModelSpecNBTCapability;
+//import lehjr.mpalib.capabilities.render.CapabilityModelSpec;
 //import net.minecraft.entity.player.ServerPlayer;
-//import net.minecraft.network.PacketBuffer;
+//import net.minecraft.network.FriendlyByteBuf;
 //import net.minecraftforge.fml.network.NetworkEvent;
 //
 //import java.util.function.Supplier;
@@ -46,12 +46,12 @@ package lehjr.powersuits.network.packets;//package lehjr.powersuits.network.pack
 //        this.presetName = presetName;
 //    }
 //
-//    public static void encode(MusePacketCosmeticPreset msg, PacketBuffer packetBuffer) {
+//    public static void encode(MusePacketCosmeticPreset msg, FriendlyByteBuf packetBuffer) {
 //        packetBuffer.writeInt(msg.itemSlot);
 //        packetBuffer.writeString(msg.presetName);
 //    }
 //
-//    public static MusePacketCosmeticPreset decode(PacketBuffer packetBuffer) {
+//    public static MusePacketCosmeticPreset decode(FriendlyByteBuf packetBuffer) {
 //        return new MusePacketCosmeticPreset(packetBuffer.readInt(), packetBuffer.readString(500));
 //    }
 //
@@ -61,7 +61,7 @@ package lehjr.powersuits.network.packets;//package lehjr.powersuits.network.pack
 //            int itemSlot = message.itemSlot;
 //            String presetName = message.presetName;
 //
-//            player.inventory.getStackInSlot(itemSlot).getCapability(ModelSpecNBTCapability.RENDER).ifPresent(render-> {
+//            player.inventory.getStackInSlot(itemSlot).getCapability(CapabilityModelSpec.RENDER).ifPresent(render-> {
 //                render.getRenderTag();
 //
 //

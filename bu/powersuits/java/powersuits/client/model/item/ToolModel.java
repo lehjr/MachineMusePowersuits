@@ -9,10 +9,10 @@
 //import lehjr.powersuits.client.renderer.entity.PlasmaBoltEntityRenderer;
 //import lehjr.numina.capabilities.inventory.modechanging.IModeChangingItem;
 //import lehjr.numina.client.render.RenderState;
-//import lehjr.numina.math.Colour;
-//import com.mojang.blaze3d.matrix.MatrixStack;
-//import com.mojang.blaze3d.vertex.IVertexBuilder;
-//import net.minecraft.client.renderer.model.ItemCameraTransforms;
+//import lehjr.numina.math.Color;
+//import com.mojang.blaze3d.matrix.PoseStack;
+//import com.mojang.blaze3d.vertex.VertexConsumer;
+//import net.minecraft.client.renderer.model.ItemTransforms;
 //import net.minecraft.client.renderer.model.Model;
 //import net.minecraft.client.renderer.model.ModelRenderer;
 //import net.minecraft.entity.Entity;
@@ -21,8 +21,8 @@
 //import net.minecraftforge.items.CapabilityItemHandler;
 //import org.lwjgl.opengl.GL11;
 //
-//import static net.minecraft.client.renderer.model.ItemCameraTransforms.TransformType.FIRST_PERSON_LEFT_HAND;
-//import static net.minecraft.client.renderer.model.ItemCameraTransforms.TransformType.FIRST_PERSON_RIGHT_HAND;
+//import static net.minecraft.client.renderer.model.ItemTransforms.TransformType.FIRST_PERSON_LEFT_HAND;
+//import static net.minecraft.client.renderer.model.ItemTransforms.TransformType.FIRST_PERSON_RIGHT_HAND;
 //
 //public class ToolModel extends Model {
 //    public int boltSize;
@@ -488,7 +488,7 @@
 ////        }
 ////    }
 //
-//    public void render(Entity entity, float scale, ItemCameraTransforms.TransformType cameraTransformTypeIn, Colour c1, Colour glow) {
+//    public void render(Entity entity, float scale, ItemTransforms.TransformType cameraTransformTypeIn, Color c1, Color glow) {
 //        GL11.glPushMatrix();
 //        GL11.glPushAttrib(GL11.GL_ENABLE_BIT);
 //        GL11.glDisable(GL11.GL_CULL_FACE);
@@ -553,7 +553,7 @@
 //        if (glow != null)
 //            glow.doGL();
 //        crystal.render(scale);
-//        Colour.WHITE.doGL();
+//        Color.WHITE.doGL();
 //
 //        // todo: move this to ModelPowerFist
 //        if (boltSize != 0) {
@@ -621,7 +621,7 @@
 //    }
 //
 //    @Override
-//    public void render(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
+//    public void render(PoseStack matrixStackIn, VertexConsumer bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
 //
 //    }
 //}

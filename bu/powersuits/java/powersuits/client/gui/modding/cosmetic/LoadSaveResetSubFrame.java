@@ -1,7 +1,7 @@
 //package lehjr.powersuits.client.gui.tinker.frame;
 //
 //import lehjr.numina.client.gui.frame.IGuiFrame;
-//import net.minecraft.util.text.ITextComponent;
+//import net.minecraft.util.text.Component;
 //
 //import java.util.List;
 //
@@ -32,7 +32,7 @@
 //    }
 //
 //    @Override
-//    public List<ITextComponent> getToolTip(int i, int i1) {
+//    public List<Component> getToolTip(int i, int i1) {
 //        return null;
 //    }
 ////    Player player;
@@ -41,7 +41,7 @@
 ////    protected ClickableButton loadButton;
 ////    protected ClickableButton saveButton;
 ////    protected ClickableButton resetButton;
-////    ColourPickerFrame colourpicker;
+////    ColorPickerFrame colourpicker;
 ////    ScrollableLabel saveAsLabel;
 ////    final boolean usingCosmeticPresets;
 ////    final boolean allowCosmeticPresetCreation;
@@ -57,9 +57,9 @@
 ////
 ////    TextFieldWidget presetNameInputBox;
 ////
-////    public LoadSaveResetSubFrame(ColourPickerFrame colourpicker, Player player, Rect borderRef, Colour insideColour, Colour borderColour, ItemSelectionFrame itemSelector, boolean usingCosmeticPresetsIn, boolean allowCosmeticPresetCreationIn, PartManipContainer partframe, CosmeticPresetContainer cosmeticFrame) {
+////    public LoadSaveResetSubFrame(ColorPickerFrame colourpicker, Player player, Rect borderRef, Color insideColor, Color borderColor, ItemSelectionFrame itemSelector, boolean usingCosmeticPresetsIn, boolean allowCosmeticPresetCreationIn, PartManipContainer partframe, CosmeticPresetContainer cosmeticFrame) {
 ////        this.player = player;
-////        this.border = new DrawableRect(borderRef, insideColour, borderColour);
+////        this.border = new DrawableRect(borderRef, insideColor, borderColor);
 ////        this.originalTop = border.top();
 ////        this.originalHeight = border.height();
 ////        this.originalBottom = border.bottom();
@@ -371,7 +371,7 @@
 ////    }
 ////
 ////    @Override
-////    public List<ITextComponent> getToolTip(int x, int y) {
+////    public List<Component> getToolTip(int x, int y) {
 ////        return null;
 ////    }
 ////

@@ -26,7 +26,7 @@
 
 package lehjr.powersuits.client.gui.common;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.matrix.PoseStack;
 import lehjr.numina.util.client.gui.clickable.ClickableButton2;
 import lehjr.numina.util.client.gui.frame.GuiFrameWithoutBackground;
 import lehjr.numina.util.client.gui.gemoetry.IRect;
@@ -41,7 +41,7 @@ import lehjr.powersuits.network.packets.ContainerGuiOpenPacket;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.Player;
 import net.minecraft.inventory.EquipmentSlot;
-import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.Component;
 import net.minecraft.util.text.TranslatableComponent;
 
 import java.util.ArrayList;
@@ -150,18 +150,18 @@ public class TabSelectFrame extends GuiFrameWithoutBackground {
     }
 
     @Override
-    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
+    public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTicks) {
         super.render(matrixStack, mouseX, mouseY, partialTicks);
         buttons.stream().forEach(b->b.render(matrixStack, mouseX, mouseY, partialTicks));
     }
 
 //    @Override
-//    public void renderLabels(MatrixStack matrixStack, int mouseX, int mouseY) {
+//    public void renderLabels(PoseStack matrixStack, int mouseX, int mouseY) {
 //        buttons.stream().forEach(b->b.renderText(matrixStack, mouseX, mouseY));
 //    }
 
     @Override
-    public List<ITextComponent> getToolTip(int i, int i1) {
+    public List<Component> getToolTip(int i, int i1) {
         return null;
     }
 }

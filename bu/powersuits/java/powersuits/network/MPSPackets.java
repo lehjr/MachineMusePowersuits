@@ -27,7 +27,7 @@
 package lehjr.powersuits.network;
 
 import lehjr.powersuits.constants.MPSConstants;
-import lehjr.powersuits.network.packets.ColourInfoPacket;
+import lehjr.powersuits.network.packets.ColorInfoPacket;
 import lehjr.powersuits.network.packets.ContainerGuiOpenPacket;
 import lehjr.powersuits.network.packets.CreativeInstallPacket;
 import net.minecraft.util.ResourceLocation;
@@ -48,10 +48,10 @@ public class MPSPackets {
         int i = 0;
         CHANNEL_INSTANCE.registerMessage(
                 i++,
-                ColourInfoPacket.class,
-                ColourInfoPacket::write,
-                ColourInfoPacket::read,
-                ColourInfoPacket::handle);
+                ColorInfoPacket.class,
+                ColorInfoPacket::write,
+                ColorInfoPacket::read,
+                ColorInfoPacket::handle);
 
         CHANNEL_INSTANCE.registerMessage(
                 i++,

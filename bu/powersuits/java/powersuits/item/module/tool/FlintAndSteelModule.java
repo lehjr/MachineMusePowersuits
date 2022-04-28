@@ -46,7 +46,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUseContext;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.state.properties.BlockStateProperties;
-import net.minecraft.util.ActionResultType;
+import net.minecraft.util.InteractionResult;
 import net.minecraft.util.Direction;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
@@ -100,11 +100,11 @@ public class FlintAndSteelModule extends AbstractPowerModule {
              * Called when this item is used when targetting a Block
              */
             @Override
-            public ActionResultType useOn(ItemUseContext context) {
+            public InteractionResult useOn(ItemUseContext context) {
                 int energyConsumption = getEnergyUsage();
                 Player player = context.getPlayer();
                 if (ElectricItemUtils.getPlayerEnergy(player) < energyConsumption ) {
-                    return ActionResultType.FAIL;
+                    return InteractionResult.FAIL;
                 }
 
                 World world = context.getLevel();
@@ -116,7 +116,7 @@ public class FlintAndSteelModule extends AbstractPowerModule {
                     if (player != null) {
                         ElectricItemUtils.drainPlayerEnergy(player, energyConsumption);
                     }
-                    return ActionResultType.sidedSuccess(world.isClientSide());
+                    return InteractionResult.sidedSuccess(world.isClientSide());
                 } else {
                     BlockPos blockpos1 = blockpos.relative(context.getClickedFace());
                     if (AbstractFireBlock.canBePlacedAt(world, blockpos1, context.getHorizontalDirection())) {
@@ -128,9 +128,9 @@ public class FlintAndSteelModule extends AbstractPowerModule {
                             CriteriaTriggers.PLACED_BLOCK.trigger((ServerPlayer)player, blockpos1, itemstack);
                             ElectricItemUtils.drainPlayerEnergy(player, energyConsumption);
                         }
-                        return ActionResultType.sidedSuccess(world.isClientSide());
+                        return InteractionResult.sidedSuccess(world.isClientSide());
                     } else {
-                        return ActionResultType.FAIL;
+                        return InteractionResult.FAIL;
                     }
                 }
             }

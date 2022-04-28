@@ -31,7 +31,7 @@ import lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.SimpleSound;
 import net.minecraft.client.audio.SoundHandler;
-import net.minecraft.client.util.InputMappings;
+import net.minecraft.client.util.InputConstants;
 import net.minecraft.util.SoundEvents;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -85,7 +85,7 @@ public interface IClickable extends IDrawableRect {
 
     default boolean mouseClicked(double mouseX, double mouseY, int button) {
         if(hitBox(mouseX, mouseY) && this.isEnabled() && this.isVisible()) {
-            InputMappings.Input mouseKey = InputMappings.Type.MOUSE.getOrCreate(button);
+            InputConstants.Input mouseKey = InputConstants.Type.MOUSE.getOrCreate(button);
             boolean flag = Minecraft.getInstance().options.keyPickItem.isActiveAndMatches(mouseKey);
 
             if (button == 0 || button == 1 || flag) {
@@ -103,7 +103,7 @@ public interface IClickable extends IDrawableRect {
 
     default boolean mouseReleased(double mouseX, double mouseY, int button) {
         if(this.isEnabled() && this.isVisible()) {
-            InputMappings.Input mouseKey = InputMappings.Type.MOUSE.getOrCreate(button);
+            InputConstants.Input mouseKey = InputConstants.Type.MOUSE.getOrCreate(button);
             boolean flag = Minecraft.getInstance().options.keyPickItem.isActiveAndMatches(mouseKey);
 
             if (button == 0 || button == 1 || flag) {

@@ -1,6 +1,6 @@
 package lehjr.powersuits.client.gui.common;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.matrix.PoseStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.datafixers.util.Pair;
 import lehjr.numina.basemod.NuminaObjects;
@@ -8,7 +8,7 @@ import lehjr.numina.util.capabilities.inventory.modularitem.IModularItem;
 import lehjr.numina.util.client.gui.clickable.IClickable;
 import lehjr.numina.util.client.gui.gemoetry.DrawableRelativeRect;
 import lehjr.numina.util.client.render.MuseIconUtils;
-import lehjr.numina.util.math.Colour;
+import lehjr.numina.util.math.Color;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.util.RecipeBookCategories;
@@ -26,14 +26,14 @@ public class ModularItemTabToggleWidget extends DrawableRelativeRect implements 
     boolean isEnabled = true;
     boolean isVisible = true;
     boolean isStateActive = false;
-    private final Colour activeColor = Colour.GREY_GUI_BACKGROUND;
-    private final Colour inactiveColor = Colour.DARK_GREY.withAlpha(0.8F);
+    private final Color activeColor = Color.GREY_GUI_BACKGROUND;
+    private final Color inactiveColor = Color.DARK_GREY.withAlpha(0.8F);
     @Nonnull
     ItemStack icon;
     EquipmentSlot type;
 
     public ModularItemTabToggleWidget(EquipmentSlot type) {
-        super(0,0, 0, 27, Colour.DARK_GREY.withAlpha(0.8F), Colour.BLACK);
+        super(0,0, 0, 27, Color.DARK_GREY.withAlpha(0.8F), Color.BLACK);
         this.type = type;
         ItemStack test = getMinecraft().player.getItemBySlot(type);
         this.icon = test.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
@@ -43,13 +43,13 @@ public class ModularItemTabToggleWidget extends DrawableRelativeRect implements 
     }
 
     @Override
-    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float frameTime) {
+    public void render(PoseStack matrixStack, int mouseX, int mouseY, float frameTime) {
         int xChange = this.isStateActive ? 2 : 0;
         double right = finalRight();
         this.setWidth(28+ xChange).setRight(right);
 
         this.isHovered = isVisible && isEnabled && this.containsPoint(mouseX, mouseY);
-        this.setBackgroundColour(this.isStateActive ? activeColor : inactiveColor);
+        this.setBackgroundColor(this.isStateActive ? activeColor : inactiveColor);
         super.render(matrixStack, mouseX, mouseY, frameTime);
         this.renderIcon(matrixStack);
     }
@@ -57,12 +57,12 @@ public class ModularItemTabToggleWidget extends DrawableRelativeRect implements 
     /**
      * Renders the item icons for the tabs. Some tabs have 2 icons, some just one.
      */
-    private void renderIcon(MatrixStack matrixStack) {
+    private void renderIcon(PoseStack matrixStack) {
         int offset = this.isStateActive? -2 : -3;
         RenderSystem.disableDepthTest();
         if (this.icon.isEmpty()) {
             if (EquipmentSlot.MAINHAND.equals(type)) {
-                MuseIconUtils.drawIconAt((int)left() + 9 + offset, (float)top() + 7, MuseIconUtils.getIcon().weaponSlotBackground.getSprite(), Colour.WHITE);
+                MuseIconUtils.drawIconAt((int)left() + 9 + offset, (float)top() + 7, MuseIconUtils.getIcon().weaponSlotBackground.getSprite(), Color.WHITE);
             } else {
                 Pair<ResourceLocation, ResourceLocation> pair = NuminaObjects.getSlotBackground(type);
                 if (pair != null) {

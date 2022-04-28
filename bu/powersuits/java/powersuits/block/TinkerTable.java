@@ -27,7 +27,7 @@
 package lehjr.powersuits.block;
 
 import lehjr.powersuits.client.gui.modding.module.tweak.ModuleTweakGui;
-import lehjr.powersuits.tile_entity.TinkerTableTileEntity;
+import lehjr.powersuits.tile_entity.TinkerTableBlockEntity;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
@@ -40,8 +40,8 @@ import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.tags.FluidTags;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ActionResultType;
+import net.minecraft.tileentity.BlockEntity;
+import net.minecraft.util.InteractionResult;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
@@ -79,12 +79,12 @@ public class TinkerTable extends HorizontalBlock implements IWaterLoggable {
 
     @SuppressWarnings("deprecation")
     @Override
-    public ActionResultType use(BlockState blockState, World world, BlockPos blockPos, Player player, Hand hand, BlockRayTraceResult result) {
+    public InteractionResult use(BlockState blockState, World world, BlockPos blockPos, Player player, Hand hand, BlockRayTraceResult result) {
         if (world.isClientSide) {
             openGui(world);
         }
 
-        return ActionResultType.SUCCESS;
+        return InteractionResult.SUCCESS;
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -154,13 +154,13 @@ public class TinkerTable extends HorizontalBlock implements IWaterLoggable {
     }
 
     @Override
-    public boolean hasTileEntity(BlockState state) {
+    public boolean hasBlockEntity(BlockState state) {
         return true;
     }
 
     @Nullable
     @Override
-    public TileEntity createTileEntity(BlockState state, IBlockReader world) {
-        return new TinkerTableTileEntity();
+    public BlockEntity createBlockEntity(BlockState state, IBlockReader world) {
+        return new TinkerTableBlockEntity();
     }
 }

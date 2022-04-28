@@ -26,9 +26,9 @@
 
 package lehjr.numina.util.client.gui.gemoetry;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.matrix.PoseStack;
 import com.mojang.blaze3d.systems.RenderSystem;
-import lehjr.numina.util.math.Colour;
+import lehjr.numina.util.math.Color;
 import net.minecraft.client.gui.IRenderable;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.Tessellator;
@@ -47,7 +47,7 @@ public interface IDrawable extends IRenderable {
      * @param mouseY
      * @param frameTime
      */
-    void render(MatrixStack matrixStack, int mouseX, int mouseY, float frameTime);
+    void render(PoseStack matrixStack, int mouseX, int mouseY, float frameTime);
 
     float getZLevel();
 
@@ -57,9 +57,9 @@ public interface IDrawable extends IRenderable {
      * Common code for adding vertices to the BufferBuilder
      * @param matrix4f
      * @param vertices
-     * @param colour a Colour to draw in
+     * @param colour a Color to draw in
      */
-    default void addVerticesToBuffer(Matrix4f matrix4f, FloatBuffer vertices, Colour colour) {
+    default void addVerticesToBuffer(Matrix4f matrix4f, FloatBuffer vertices, Color colour) {
         vertices.rewind();
         while(vertices.hasRemaining()) {
             getBufferBuilder().vertex(matrix4f, vertices.get(), vertices.get(), getZLevel()).color(colour.r, colour.g, colour.b, colour.a).endVertex();
@@ -70,9 +70,9 @@ public interface IDrawable extends IRenderable {
      * Common code for adding vertices to the BufferBuilder
      * @param matrix4f
      * @param vertices
-     * @param colour a Colour to draw in
+     * @param colour a Color to draw in
      */
-    default void addVerticesToBuffer(Matrix4f matrix4f, DoubleBuffer vertices, Colour colour) {
+    default void addVerticesToBuffer(Matrix4f matrix4f, DoubleBuffer vertices, Color colour) {
         vertices.rewind();
         Vector4f vector4f = new Vector4f((float)vertices.get(), (float)vertices.get(), getZLevel(), 1.0F);
         vector4f.transform(matrix4f);

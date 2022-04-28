@@ -29,7 +29,7 @@ package lehjr.powersuits.capability;
 import lehjr.numina.util.capabilities.heat.IHeatWrapper;
 import lehjr.numina.util.capabilities.inventory.modularitem.IModularItem;
 import lehjr.numina.util.capabilities.render.IModelSpecNBT;
-import lehjr.numina.util.capabilities.render.ModelSpecNBTCapability;
+import lehjr.numina.util.capabilities.render.CapabilityModelSpec;
 import net.minecraft.inventory.EquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Direction;
@@ -63,8 +63,8 @@ public abstract class AbstractModularPowerCap implements ICapabilityProvider {
         }
 
         // All
-        if (cap == ModelSpecNBTCapability.RENDER) {
-            return ModelSpecNBTCapability.RENDER.orEmpty(cap, LazyOptional.of(() -> modelSpec));
+        if (cap == CapabilityModelSpec.RENDER) {
+            return CapabilityModelSpec.RENDER.orEmpty(cap, LazyOptional.of(() -> modelSpec));
         }
 
         // All

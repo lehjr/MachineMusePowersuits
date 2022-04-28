@@ -1,6 +1,6 @@
 package lehjr.powersuits.client.gui.keybind;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.matrix.PoseStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.datafixers.util.Pair;
 import lehjr.numina.util.client.gui.clickable.CheckBox;
@@ -9,15 +9,15 @@ import lehjr.numina.util.client.gui.frame.ScrollableFrame;
 import lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
 import lehjr.numina.util.client.gui.gemoetry.RelativeRect;
 import lehjr.numina.util.client.render.MuseRenderer;
-import lehjr.numina.util.math.Colour;
+import lehjr.numina.util.math.Color;
 import lehjr.powersuits.client.control.KeybindManager;
 import lehjr.powersuits.client.control.MPSKeyBinding;
 import lehjr.powersuits.client.event.RenderEventHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.Component;
+import net.minecraft.util.text.TextComponent;
+import net.minecraft.util.text.ChatFormatting;
 import net.minecraft.util.text.TranslatableComponent;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.lwjgl.glfw.GLFW;
@@ -37,7 +37,7 @@ public class KeyBindFrame extends ScrollableFrame {
     Map<MPSKeyBinding, Pair<CheckBox, ClickableButton2>> checkBoxList = new HashMap<>();
 
     public KeyBindFrame(MusePoint2D topleft, MusePoint2D bottomright) {
-        super(topleft, bottomright, Colour.DARK_GREY, new Colour(0.216F, 0.216F, 0.216F, 1F), Colour.WHITE.withAlpha(0.8F));
+        super(topleft, bottomright, Color.DARK_GREY, new Color(0.216F, 0.216F, 0.216F, 1F), Color.WHITE.withAlpha(0.8F));
         this.enableAndShow();
         keybindingToRemap = null;
     }
@@ -86,7 +86,7 @@ public class KeyBindFrame extends ScrollableFrame {
     }
 
     @Override
-    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
+    public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTicks) {
         super.render(matrixStack, mouseX, mouseY, partialTicks);
         if (this.isEnabled() && this.isVisible()) {
             super.preRender(matrixStack, mouseX, mouseY, partialTicks);
@@ -105,9 +105,9 @@ public class KeyBindFrame extends ScrollableFrame {
                 ClickableButton2 button = entry.getValue().getSecond();
 
                 if (keybindingToRemap != null && keybindingToRemap == kb) {
-                    button.setLable((new StringTextComponent("> ")).append(kb.getKey().getDisplayName().copy().withStyle(TextFormatting.YELLOW)).append(" <").withStyle(TextFormatting.YELLOW));
+                    button.setLable((new TextComponent("> ")).append(kb.getKey().getDisplayName().copy().withStyle(ChatFormatting.YELLOW)).append(" <").withStyle(ChatFormatting.YELLOW));
                 } else  {
-                    button.setLable(kb.getKey().getDisplayName().copy().withStyle( /* keyCodeModifierConflict ? */ TextFormatting.WHITE /*: TextFormatting.RED*/));
+                    button.setLable(kb.getKey().getDisplayName().copy().withStyle( /* keyCodeModifierConflict ? */ ChatFormatting.WHITE /*: ChatFormatting.RED*/));
                 }
 
 //                button.setLable(entry.getKey().getKey().getDisplayName());// in case the mapping is changed
@@ -124,7 +124,7 @@ public class KeyBindFrame extends ScrollableFrame {
                 y += 20;
             }
 
-            RenderSystem.popMatrix();
+            RenderSystem.popPose();
             super.postRender(mouseX, mouseY, partialTicks);
         } else {
             super.preRender(matrixStack, mouseX, mouseY, partialTicks);
@@ -147,7 +147,7 @@ public class KeyBindFrame extends ScrollableFrame {
     }
 
     @Override
-    public List<ITextComponent> getToolTip(int x, int y) {
+    public List<Component> getToolTip(int x, int y) {
         if (this.isEnabled() && this.isVisible()) {
             for (Pair<CheckBox, ClickableButton2> pair : checkBoxList.values()) {
                 if (pair.getFirst().hitBox(x, y)) {

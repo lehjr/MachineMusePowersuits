@@ -42,7 +42,7 @@ import net.minecraft.entity.player.Player;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.ActionResult;
-import net.minecraft.util.ActionResultType;
+import net.minecraft.util.InteractionResult;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.world.World;
@@ -93,10 +93,10 @@ public class BladeLauncherModule extends AbstractPowerModule {
                 if (hand == Hand.MAIN_HAND) {
                     if (ElectricItemUtils.getPlayerEnergy(playerIn) > applyPropertyModifiers(MPSConstants.BLADE_ENERGY)) {
                         playerIn.startUsingItem(hand);
-                        return new ActionResult(ActionResultType.SUCCESS, itemStackIn);
+                        return new ActionResult(InteractionResult.SUCCESS, itemStackIn);
                     }
                 }
-                return new ActionResult(ActionResultType.PASS, itemStackIn);
+                return new ActionResult(InteractionResult.PASS, itemStackIn);
             }
 
             @Override

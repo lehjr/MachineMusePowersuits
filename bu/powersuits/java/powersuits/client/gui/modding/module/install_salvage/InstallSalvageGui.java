@@ -1,6 +1,6 @@
 package lehjr.powersuits.client.gui.modding.module.install_salvage;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.matrix.PoseStack;
 import lehjr.numina.util.client.gui.ExtendedContainerScreen;
 import lehjr.numina.util.client.gui.clickable.ClickableButton;
 import lehjr.numina.util.client.gui.frame.GUISpacer;
@@ -8,7 +8,7 @@ import lehjr.numina.util.client.gui.frame.LabelBox;
 import lehjr.numina.util.client.gui.frame.MultiRectHolderFrame;
 import lehjr.numina.util.client.gui.frame.PlayerInventoryFrame;
 import lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
-import lehjr.numina.util.math.Colour;
+import lehjr.numina.util.math.Color;
 import lehjr.powersuits.client.ScrollableInventoryFrame2;
 import lehjr.powersuits.client.gui.common.ModularItemSelectionFrameContainered;
 import lehjr.powersuits.client.gui.common.TabSelectFrame;
@@ -16,7 +16,7 @@ import lehjr.powersuits.container.InstallSalvageContainer;
 import lehjr.powersuits.network.MPSPackets;
 import lehjr.powersuits.network.packets.CreativeInstallPacket;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.Component;
 import net.minecraft.util.text.TranslatableComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -37,7 +37,7 @@ public class InstallSalvageGui extends ExtendedContainerScreen<InstallSalvageCon
     protected CompatibleModuleDisplayFrame moduleSelectFrame;
     protected LabelBox modularSelectionLabel;
 
-    public InstallSalvageGui(InstallSalvageContainer container, PlayerInventory playerInventory, ITextComponent title) {
+    public InstallSalvageGui(InstallSalvageContainer container, PlayerInventory playerInventory, Component title) {
         super(container, playerInventory, title, 340, 217, false);
 
         /** clickable buttons on the top of the GUI */
@@ -60,9 +60,9 @@ public class InstallSalvageGui extends ExtendedContainerScreen<InstallSalvageCon
         moduleSelectFrame = new CompatibleModuleDisplayFrame(modularItemSelectionFrame,
                 new MusePoint2D(0,0),
                 new MusePoint2D(leftFrameWidth, 195),
-                Colour.DARK_GREY.withAlpha(1F), // backgroundColour
-                new Colour(0.216F, 0.216F, 0.216F, 1F), // topBorderColour
-                Colour.WHITE.withAlpha(0.8F)); // bottomBorderColour
+                Color.DARK_GREY.withAlpha(1F), // backgroundColor
+                new Color(0.216F, 0.216F, 0.216F, 1F), // topBorderColor
+                Color.WHITE.withAlpha(0.8F)); // bottomBorderColor
 
         leftFrame.addRect(moduleSelectFrame);
         /** bottom left spacer */
@@ -96,7 +96,7 @@ public class InstallSalvageGui extends ExtendedContainerScreen<InstallSalvageCon
         addFrame(mainHolder);
 
         modularItemSelectionFrame.getCreativeInstallButton().setOnPressed(pressed -> {
-//            ((ClickableButton)pressed).setEnabledBackground(Colour.DARK_GREY);
+//            ((ClickableButton)pressed).setEnabledBackground(Color.DARK_GREY);
 //            modularItemSelectionFrame.getCreativeInstallButton().playDownSound(Minecraft.getInstance().getSoundManager());
 
             moduleSelectFrame.getSelectedModule().ifPresent(clickie -> {
@@ -105,7 +105,7 @@ public class InstallSalvageGui extends ExtendedContainerScreen<InstallSalvageCon
         });
 
         modularItemSelectionFrame.getCreativeInstallButton().setOnReleased(pressed -> {
-            ((ClickableButton)pressed).setEnabledBackground(Colour.LIGHT_GREY);
+            ((ClickableButton)pressed).setEnabledBackground(Color.LIGHT_GREY);
         });
     }
 
@@ -145,7 +145,7 @@ public class InstallSalvageGui extends ExtendedContainerScreen<InstallSalvageCon
      * @param frameTime
      */
     @Override
-    public void renderBackgroundRect(MatrixStack matrixStack, int mouseX, int mouseY, float frameTime) {
+    public void renderBackgroundRect(PoseStack matrixStack, int mouseX, int mouseY, float frameTime) {
         matrixStack.pushPose();
         matrixStack.translate(0,0, -1);
         super.renderBackgroundRect(matrixStack, mouseX, mouseY, frameTime);
@@ -153,7 +153,7 @@ public class InstallSalvageGui extends ExtendedContainerScreen<InstallSalvageCon
     }
 
     @Override
-    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float frameTime) {
+    public void render(PoseStack matrixStack, int mouseX, int mouseY, float frameTime) {
         modularItemSelectionFrame.setTop(mainHolder.finalTop());
         modularItemSelectionFrame.setRight(mainHolder.finalLeft());
 
@@ -169,7 +169,7 @@ public class InstallSalvageGui extends ExtendedContainerScreen<InstallSalvageCon
     }
 
     @Override
-    public void renderLabels(MatrixStack matrixStack, int mouseX, int mouseY) {
+    public void renderLabels(PoseStack matrixStack, int mouseX, int mouseY) {
         matrixStack.pushPose();
         matrixStack.translate(0,0, 10);
         this.modularItemInventory.renderLabels(matrixStack, mouseX, mouseY);

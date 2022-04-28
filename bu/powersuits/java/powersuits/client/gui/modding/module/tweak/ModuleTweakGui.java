@@ -26,19 +26,19 @@
 
 package lehjr.powersuits.client.gui.modding.module.tweak;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.matrix.PoseStack;
 import lehjr.numina.util.client.gui.ContainerlessGui;
 import lehjr.numina.util.client.gui.frame.GUISpacer;
 import lehjr.numina.util.client.gui.frame.LabelBox;
 import lehjr.numina.util.client.gui.frame.MultiRectHolderFrame;
 import lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
 import lehjr.numina.util.client.render.MuseRenderer;
-import lehjr.numina.util.math.Colour;
+import lehjr.numina.util.math.Color;
 import lehjr.powersuits.client.gui.common.ModularItemSelectionFrame;
 import lehjr.powersuits.client.gui.common.TabSelectFrame;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.Player;
-import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.Component;
 import net.minecraft.util.text.TranslatableComponent;
 
 /**
@@ -50,9 +50,9 @@ public class ModuleTweakGui extends ContainerlessGui {
     /** commonly used spacer value */
     final int spacer = 7;
     /** colours for frames used here */
-    Colour backgroundColour = Colour.DARK_GREY.withAlpha(1F);
-    Colour topBorderColour = new Colour(0.216F, 0.216F, 0.216F, 1F);
-    Colour bottomBorderColour = Colour.WHITE.withAlpha(0.8F);
+    Color backgroundColor = Color.DARK_GREY.withAlpha(1F);
+    Color topBorderColor = new Color(0.216F, 0.216F, 0.216F, 1F);
+    Color bottomBorderColor = Color.WHITE.withAlpha(0.8F);
 
     protected ModularItemSelectionFrame itemSelectFrame;
     protected ModuleSelectionFrame moduleSelectFrame;
@@ -62,7 +62,7 @@ public class ModuleTweakGui extends ContainerlessGui {
     protected LabelBox modularSelectionLabel;
     MultiRectHolderFrame mainHolder;
 
-    public ModuleTweakGui(ITextComponent titleIn, boolean growFromMiddle) {
+    public ModuleTweakGui(Component titleIn, boolean growFromMiddle) {
         super(titleIn, 340, 217, growFromMiddle);
         this.minecraft = Minecraft.getInstance();
         Player player = getMinecraft().player;
@@ -85,9 +85,9 @@ public class ModuleTweakGui extends ContainerlessGui {
         moduleSelectFrame = new ModuleSelectionFrame(itemSelectFrame,
                 new MusePoint2D(0,0),
                 new MusePoint2D(leftFrameWidth, 195),
-                backgroundColour,
-                topBorderColour,
-                bottomBorderColour);
+                backgroundColor,
+                topBorderColor,
+                bottomBorderColor);
         leftFrame.addRect(moduleSelectFrame);
         /** bottom left spacer */
         leftFrame.addRect(new GUISpacer(leftFrameWidth, spacer));
@@ -108,9 +108,9 @@ public class ModuleTweakGui extends ContainerlessGui {
         summaryFrame = new DetailedSummaryFrame(
                 new MusePoint2D(0, 0),
                 new MusePoint2D(rightFrameWidth, 40),
-                backgroundColour,
-                topBorderColour,
-                bottomBorderColour,
+                backgroundColor,
+                topBorderColor,
+                bottomBorderColor,
                 itemSelectFrame);
         rightFrame.addRect(summaryFrame);
         rightFrame.addRect(new GUISpacer(rightFrameWidth, 7));
@@ -118,9 +118,9 @@ public class ModuleTweakGui extends ContainerlessGui {
         tweakFrame = new ModuleTweakFrame(
                 new MusePoint2D(0,  0),
                 new MusePoint2D(rightFrameWidth, 156),
-                backgroundColour,
-                topBorderColour,
-                bottomBorderColour,
+                backgroundColor,
+                topBorderColor,
+                bottomBorderColor,
                 itemSelectFrame,
                 moduleSelectFrame);
         rightFrame.addRect(tweakFrame);
@@ -165,14 +165,14 @@ public class ModuleTweakGui extends ContainerlessGui {
     }
 
     @Override
-    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
+    public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTicks) {
         if (backgroundRect.doneGrowing()) {
             if (!itemSelectFrame.playerHasModularItems()) {
                 renderBackgroundRect(matrixStack, mouseX, mouseY, partialTicks);
                 float centerx = absX(0);
                 float centery = absY(0);
-                MuseRenderer.drawCenteredText(matrixStack, new TranslatableComponent("gui.powersuits.noModulesFound.line1"), centerx, centery - 5, Colour.WHITE);
-                MuseRenderer.drawCenteredText(matrixStack, new TranslatableComponent("gui.powersuits.noModulesFound.line2"), centerx, centery + 5, Colour.WHITE);
+                MuseRenderer.drawCenteredText(matrixStack, new TranslatableComponent("gui.powersuits.noModulesFound.line1"), centerx, centery - 5, Color.WHITE);
+                MuseRenderer.drawCenteredText(matrixStack, new TranslatableComponent("gui.powersuits.noModulesFound.line2"), centerx, centery + 5, Color.WHITE);
                 tabSelectFrame.render(matrixStack, mouseX, mouseY, partialTicks);
             } else {
                 super.render(matrixStack, mouseX, mouseY, partialTicks);
@@ -185,7 +185,7 @@ public class ModuleTweakGui extends ContainerlessGui {
     }
 
     @Override
-    public void renderLabels(MatrixStack matrixStack, int mouseX, int mouseY) {
+    public void renderLabels(PoseStack matrixStack, int mouseX, int mouseY) {
         super.renderLabels(matrixStack, mouseX, mouseY);
         modularSelectionLabel.renderLabel(matrixStack, 0, 1);
     }

@@ -53,10 +53,6 @@ idea {
 }
 
 sourceSets {
-    api {
-        //The API has no resources
-        resources.srcDirs = []
-    }
     main {
         resources {
             include '**/**'
@@ -68,8 +64,6 @@ sourceSets {
             //But exclude the cache of the generated data from what gets built
             exclude '.cache'
         }
-        compileClasspath += api.output
-        runtimeClasspath += api.output
     }
     powersuits { setupSourceSet(powersuits, 'powersuits') }
     recipecreator { setupSourceSet(recipecreator, 'recipecreator') }
@@ -77,8 +71,8 @@ sourceSets {
     test {
         //The test module has no resources
         resources.srcDirs = []
-        compileClasspath += api.output + main.output + powersuits.output + recipecreator.output + whatever.output
-        runtimeClasspath += api.output + main.output + powersuits.output + recipecreator.output + whatever.output
+        compileClasspath += main.output + powersuits.output + recipecreator.output + whatever.output
+        runtimeClasspath += main.output + powersuits.output + recipecreator.output + whatever.output
     }
     //Data gen modules for the different modules
     datagenmain { setupDataGenSourceSet(datagenmain, null, 'main') }
@@ -88,7 +82,7 @@ sourceSets {
 }
 
 //This method sets up an additional sourceSet in src/$name and adds a reference to the corresponding
-// data gen's resource directory excluding the cache. It also adds the api and main numina module
+// data gen's resource directory excluding the cache. It also adds the main numina module
 // to the dependencies of the source set we are setting up
 def setupSourceSet(SourceSet sourceSet, String name) {
     sourceSet.resources {
@@ -97,18 +91,14 @@ def setupSourceSet(SourceSet sourceSet, String name) {
         //But exclude the cache of the generated data from what gets built
         exclude '.cache'
     }
-    sourceSet.compileClasspath += sourceSets.api.output
-    sourceSet.compileClasspath += sourceSets.main.output
 }
 
-//This method sets up a source set in datagen/$name and adds the api, main numina module and an optional
+//This method sets up a source set in datagen/$name and adds the main numina module and an optional
 // base module to the dependencies of the data generators source set that we are setting up
 def setupDataGenSourceSet(SourceSet datagenSourceSet, SourceSet baseSourceSet, String name) {
     datagenSourceSet.java.srcDirs = ["src/datagen/${name}/java"]
     //Resources folder for if we have anything get created by our imaginary annotation processors
     datagenSourceSet.resources.srcDirs = ["src/datagen/${name}/resources"]
-    datagenSourceSet.compileClasspath += project.sourceSets.api.output
-    datagenSourceSet.compileClasspath += project.sourceSets.main.output
     if (baseSourceSet != null) {
         //Only case it is null is when we are doing datagenmain so other cases also add access to the stuff
         // in datagenmain so we can add helper classes
@@ -120,9 +110,9 @@ def setupDataGenSourceSet(SourceSet datagenSourceSet, SourceSet baseSourceSet, S
 configurations {
     //Make sure all our sub source set stuff extends the proper base methods so that
     // they can see all the dependencies we have in dependencies including forge
-    extendConfigurations(implementation, apiImplementation, testImplementation, datagenmainImplementation)
-    extendConfigurations(compileOnly, apiCompileOnly, testCompileOnly, datagenmainCompileOnly)
-    extendConfigurations(runtimeOnly, apiRuntimeOnly, datagenmainRuntimeOnly)
+    extendConfigurations(implementation, testImplementation, datagenmainImplementation)
+    extendConfigurations(compileOnly, testCompileOnly, datagenmainCompileOnly)
+    extendConfigurations(runtimeOnly, datagenmainRuntimeOnly)
     //Extend configurations for alternate modules. First by making the implementation, compileOnly, runtimeOnly equivalents
     // for those modules extend the main ones, and then by making the corresponding ones for datagen for the module extend those.
     // This way if we add a dependency/integration in a submodule instead of the main module of Mekanism, the datagen of the corresponding
@@ -146,7 +136,7 @@ ext {
                          "forge_version": forge_version_range,
                          "loader_version": loader_version_range,
                          "jei_version": jei_version_range,
-                         "ae2_version": ae2_version,
+                         "ae2_version_range": ae2_version_range,
                          "scannable_version_range": scannable_version_range,
                          "refinedstorage_version_range": refinedstorage_version_range]
     jsonPatterns = ["**/*.json", "**/*.mcmeta"]
@@ -239,9 +229,9 @@ minecraft {
             }
 
             mods {
-                numina.sources((SourceSet[]) [sourceSets.main, sourceSets.api])
+                numina.sources((SourceSet) sourceSets.main)
                 modularpowersuits.source((SourceSet) sourceSets.powersuits)
-                mpsmrecipecreator.source((SourceSet) sourceSets.recipecreator)
+                mpsrecipecreator.source((SourceSet) sourceSets.recipecreator)
                 mpswhatever.source((SourceSet) sourceSets.whatever)
             }
         }
@@ -261,9 +251,9 @@ minecraft {
             }
 
             mods {
-                numina.sources((SourceSet[]) [sourceSets.main, sourceSets.api])
+                numina.sources((SourceSet) sourceSets.main)
                 modularpowersuits.source((SourceSet) sourceSets.powersuits)
-                mpsmrecipecreator.source((SourceSet) sourceSets.recipecreator)
+                mpsrecipecreator.source((SourceSet) sourceSets.recipecreator)
                 mpswhatever.source((SourceSet) sourceSets.whatever)
             }
         }
@@ -288,15 +278,15 @@ minecraft {
                     '--existing', file('src/main/resources/'),
                     '--mod', 'modularpowersuits',
                     '--existing', file('src/powersuits/resources/'),
-                    '--mod', 'mpsmrecipecreator',
+                    '--mod', 'mpsrecipecreator',
                     '--existing', file('src/recipecreator/resources/'),
                     '--mod', 'mpswhatever',
                     '--existing', file('src/whatever/resources/')
 
             mods {
-                numina.sources((SourceSet[]) [sourceSets.main, sourceSets.api, sourceSets.datagenmain])
+                numina.sources((SourceSet[]) [sourceSets.main, sourceSets.datagenmain])
                 modularpowersuits.sources((SourceSet[]) [sourceSets.powersuits, sourceSets.datagenpowersuits])
-                mpsmrecipecreator.sources((SourceSet[]) [sourceSets.recipecreator, sourceSets.datagenrecipecreator])
+                mpsrecipecreator.sources((SourceSet[]) [sourceSets.recipecreator, sourceSets.datagenrecipecreator])
                 mpswhatever.sources((SourceSet[]) [sourceSets.whatever, sourceSets.datagenwhatever])
             }
         }
@@ -379,25 +369,17 @@ dependencies {
     compileOnly fg.deobf("mezz.jei:jei-${minecraft_version}:${jei_version}:api")
     runtimeOnly fg.deobf("mezz.jei:jei-${minecraft_version}:${jei_version}")
 
-//    // Only used as a convenience during testing
-//    runtimeOnly fg.deobf("mcjty.theoneprobe:theoneprobe:${top_version}") {
-//        transitive = false
-//    }
-
-    // top curseforge 245211
+    // Only used as a convenience during testing
     runtimeOnly fg.deobf("curse.maven:theoneprobe-245211:${top_version}"){ // FIXME!!!
         transitive = false
     }
 
-
     // The API isn't enough for compiling or testing
-    implementation fg.deobf("appeng:appliedenergistics2:${ae2_version}") {
+    implementation fg.deobf("curse.maven:applied-energistics-2-223794:${ae2_version}") {
         transitive = false
     }
-    implementation fg.deobf("curse.maven:scannable-266784:3565727")
 
-//    implementation fg.deobf("com.refinedmods:refinedstorage:${refinedstorage_version}")
-//    runtimeOnly fg.deobf("com.refinedmods:refinedstorage:${refinedstorage_version}")
+    implementation fg.deobf("curse.maven:scannable-266784:${scannable_version}")
 
     implementation fg.deobf("curse.maven:refined-storage-243076:${refinedstorage_version}");
 }
@@ -407,7 +389,7 @@ if (project.hasProperty('UPDATE_MAPPINGS')) {
     // so that whenever we need to update mappings it is quick and easy to do so.
     // Note: This needs to be below the dependencies and minecraft blocks so that it can properly read the mappings value
     // and also read and find the minecraft dep
-    def extraSourceSets = [sourceSets.api, sourceSets.powersuits, sourceSets.recipecreator, sourceSets.whatever, sourceSets.test,
+    def extraSourceSets = [sourceSets.powersuits, sourceSets.recipecreator, sourceSets.whatever, sourceSets.test,
                            sourceSets.datagenmain, sourceSets.datagenpowersuits, sourceSets.datagenrecipecreator, sourceSets.datagenwhatever]
     Set<File> allExtraDirs = new HashSet<>()
     for (def sourceSet : extraSourceSets) {
@@ -470,25 +452,16 @@ def getManifestAttributes(String title) {
 jar {
     duplicatesStrategy(DuplicatesStrategy.FAIL)
     archiveFileName.set("Numina-${project.version}.jar")
-    from([sourceSets.api.output, sourceSets.main.output])
+    from(sourceSets.main.output)
     manifest.attributes(getManifestAttributes("Numina"))
     afterEvaluate { finalizedBy reobfJar }
 }
 
-task sourcesJar(type: Jar, dependsOn: [classes, apiClasses, powersuitsClasses, recipecreatorClasses, whateverClasses]) {
+task sourcesJar(type: Jar, dependsOn: [classes, powersuitsClasses, recipecreatorClasses, whateverClasses]) {
     duplicatesStrategy(DuplicatesStrategy.FAIL)
     archiveClassifier.set("sources")
-    from(sourceSets.api.allJava, sourceSets.main.allJava, sourceSets.powersuits.allJava, sourceSets.recipecreator.allJava, sourceSets.whatever.allJava)
+    from(sourceSets.main.allJava, sourceSets.powersuits.allJava, sourceSets.recipecreator.allJava, sourceSets.whatever.allJava)
     manifest.attributes(getManifestAttributes("ModularPowersuits"))
-}
-
-task apiJar(type: Jar) {
-    duplicatesStrategy(DuplicatesStrategy.FAIL)
-    archiveFileName.set("Numina-API-${project.version}.jar")
-    archiveClassifier.set("api")
-    from sourceSets.api.output
-    manifest.attributes(getManifestAttributes("Numina-API"))
-    afterEvaluate { finalizedBy reobfApiJar }
 }
 
 task powersuitsJar(type: Jar) {
@@ -505,7 +478,7 @@ task recipecreatorJar(type: Jar) {
     archiveFileName.set("MPSRecipecreator-${project.version}.jar")
     archiveClassifier.set("recipecreator")
     from sourceSets.recipecreator.output
-    manifest.attributes(getManifestAttributes("MMPSRecipecreator"))
+    manifest.attributes(getManifestAttributes("MPSRecipecreator"))
     afterEvaluate { finalizedBy reobfRecipecreatorJar }
 }
 
@@ -551,7 +524,7 @@ tasks.withType(JavaCompile).configureEach({
 //Configure specific compile tasks to have the proper imaginary annotation processor info
 compileJava { setupCompileJava(compileJava, "main", "numina") }
 compilePowersuitsJava { setupCompileJava(compilePowersuitsJava, "powersuits", "modularpowersuits") }
-compileRecipecreatorJava { setupCompileJava(compileRecipecreatorJava, "recipecreator", "mpsmrecipecreator") }
+compileRecipecreatorJava { setupCompileJava(compileRecipecreatorJava, "recipecreator", "mpsrecipecreator") }
 compileWhateverJava { setupCompileJava(compileWhateverJava, "whatever", "mpswhatever") }
 
 def setupCompileJava(JavaCompile task, String baseFolder, String module) {
@@ -559,7 +532,6 @@ def setupCompileJava(JavaCompile task, String baseFolder, String module) {
 }
 
 artifacts {
-    archives apiJar
     archives jar
     archives powersuitsJar
     archives recipecreatorJar
@@ -568,7 +540,6 @@ artifacts {
 }
 
 reobf {
-    apiJar { classpath.from(sourceSets.api.compileClasspath) }
     jar { classpath.from(sourceSets.main.compileClasspath) }
     powersuitsJar { classpath.from(sourceSets.powersuits.compileClasspath) }
     recipecreatorJar { classpath.from(sourceSets.recipecreator.compileClasspath) }
@@ -610,7 +581,7 @@ tasks.withType(GenerateModuleMetadata) {
     enabled = false
 }
 
-tasks.curseforge.dependsOn jar, powersuitsJar, recipecreatorJar, whateverJar, apiJar
+tasks.curseforge.dependsOn jar, powersuitsJar, recipecreatorJar, whateverJar
 if (System.getenv("CURSEFORGE_KEY") != null || project.hasProperty('curseforgeKey')) {
     println "Enabling Curseforge config"
     curseforge {
@@ -676,7 +647,7 @@ if (System.getenv("CURSEFORGE_KEY") != null || project.hasProperty('curseforgeKe
             releaseType = "${curse_release_type}"
             mainArtifact(jar) {
                 relations {
-                        optionalDependency "applied-energistics-2"
+                    optionalDependency "applied-energistics-2"
                 }
             }
             addGameVersion "${minecraft_version}"

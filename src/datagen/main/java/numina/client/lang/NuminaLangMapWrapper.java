@@ -1,20 +1,19 @@
 package numina.client.lang;
 
 import com.google.gson.Gson;
-import com.google.gson.*;
-import net.minecraft.data.DirectoryCache;
-import net.minecraft.data.IDataProvider;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
 import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.lang3.text.translate.JavaUnicodeEscaper;
-import org.lwjgl.system.CallbackI;
 
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
 
 public class NuminaLangMapWrapper {
     private static final Gson GSON = (new GsonBuilder()).setPrettyPrinting().disableHtmlEscaping().create();

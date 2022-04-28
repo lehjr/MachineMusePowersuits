@@ -26,8 +26,8 @@
 
 package lehjr.powersuits.block;
 
-import lehjr.numina.util.math.Colour;
-import lehjr.powersuits.tile_entity.LuxCapacitorTileEntity;
+import lehjr.numina.util.math.Color;
+import lehjr.powersuits.tile_entity.LuxCapacitorBlockEntity;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.fluid.Fluid;
@@ -39,7 +39,7 @@ import net.minecraft.state.StateContainer;
 import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.FluidTags;
-import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.BlockEntity;
 import net.minecraft.util.BlockVoxelShape;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
@@ -54,7 +54,7 @@ import javax.annotation.Nullable;
 
 public class LuxCapacitorBlock extends DirectionalBlock implements IWaterLoggable {
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
-    public static final Colour defaultColor = new Colour(0.4F, 0.2F, 0.9F);
+    public static final Color defaultColor = new Color(0.4F, 0.2F, 0.9F);
 
     protected static final VoxelShape LUXCAPACITOR_EAST_AABB = Block.box(0, 1, 1, 4, 15, 15);
     protected static final VoxelShape LUXCAPACITOR_WEST_AABB = Block.box(12, 1, 1, 16, 15, 15);
@@ -153,13 +153,13 @@ public class LuxCapacitorBlock extends DirectionalBlock implements IWaterLoggabl
     }
 
     @Override
-    public boolean hasTileEntity(BlockState state) {
+    public boolean hasBlockEntity(BlockState state) {
         return true;
     }
 
     @Nullable
     @Override
-    public TileEntity createTileEntity(BlockState state, IBlockReader world) {
-        return new LuxCapacitorTileEntity();
+    public BlockEntity createBlockEntity(BlockState state, IBlockReader world) {
+        return new LuxCapacitorBlockEntity();
     }
 }

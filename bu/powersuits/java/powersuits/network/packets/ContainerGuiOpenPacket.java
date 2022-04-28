@@ -30,7 +30,7 @@ import lehjr.powersuits.container.InstallSalvageContainer;
 import net.minecraft.inventory.EquipmentSlot;
 import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.inventory.container.SimpleNamedContainerProvider;
-import net.minecraft.network.PacketBuffer;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.util.text.TranslatableComponent;
 import net.minecraftforge.fml.network.NetworkEvent;
 import net.minecraftforge.fml.network.NetworkHooks;
@@ -46,11 +46,11 @@ public class ContainerGuiOpenPacket {
         this.type = typeIn;
     }
 
-    public static void write(ContainerGuiOpenPacket msg, PacketBuffer packetBuffer) {
+    public static void write(ContainerGuiOpenPacket msg, FriendlyByteBuf packetBuffer) {
         packetBuffer.writeEnum(msg.type);
     }
 
-    public static ContainerGuiOpenPacket read(PacketBuffer packetBuffer) {
+    public static ContainerGuiOpenPacket read(FriendlyByteBuf packetBuffer) {
         return new ContainerGuiOpenPacket(packetBuffer.readEnum(EquipmentSlot.class));
     }
 

@@ -1,13 +1,13 @@
 package lehjr.numina.util.client.gui.frame;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.matrix.PoseStack;
 import lehjr.numina.config.NuminaSettings;
 import lehjr.numina.util.client.gui.gemoetry.DrawableRelativeRect;
 import lehjr.numina.util.client.gui.gemoetry.IDrawable;
 import lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
 import lehjr.numina.util.client.gui.gemoetry.RelativeRect;
-import lehjr.numina.util.math.Colour;
-import net.minecraft.util.text.ITextComponent;
+import lehjr.numina.util.math.Color;
+import net.minecraft.util.text.Component;
 
 import java.util.List;
 
@@ -17,7 +17,7 @@ import java.util.List;
 public class GUISpacer extends DrawableRelativeRect implements IGuiFrame {
     public GUISpacer(double widthIn, double heightIn) {
         super(new MusePoint2D(0,0 ), new MusePoint2D(widthIn, heightIn),
-                Colour.LIGHT_GREEN, Colour.PURPLE);
+                Color.LIGHT_GREEN, Color.PURPLE);
     }
 
     @Override
@@ -40,14 +40,14 @@ public class GUISpacer extends DrawableRelativeRect implements IGuiFrame {
     }
 
     @Override
-    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float frameTime) {
+    public void render(PoseStack matrixStack, int mouseX, int mouseY, float frameTime) {
         if (NuminaSettings.CLIENT_CONFIG.DRAW_GUI_SPACERS.get()) {
             super.render(matrixStack, mouseX, mouseY, frameTime);
         }
     }
 
     @Override
-    public List<ITextComponent> getToolTip(int x, int y) {
+    public List<Component> getToolTip(int x, int y) {
         return null;
     }
 

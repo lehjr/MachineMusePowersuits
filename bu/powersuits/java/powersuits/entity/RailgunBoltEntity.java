@@ -35,7 +35,7 @@ import net.minecraft.entity.player.Player;
 import net.minecraft.entity.player.ServerPlayer;
 import net.minecraft.entity.projectile.ThrowableEntity;
 import net.minecraft.network.IPacket;
-import net.minecraft.network.PacketBuffer;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.play.server.SChangeGameStatePacket;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.DamageSource;
@@ -333,7 +333,7 @@ public class RailgunBoltEntity extends ThrowableEntity implements IEntityAdditio
     }
 
     @Override
-    public void writeSpawnData(PacketBuffer buffer) {
+    public void writeSpawnData(FriendlyByteBuf buffer) {
         buffer.writeDouble(this.damage);
         buffer.writeInt(this.knockbackStrength);
         buffer.writeDouble(this.velocity);
@@ -341,7 +341,7 @@ public class RailgunBoltEntity extends ThrowableEntity implements IEntityAdditio
     }
 
     @Override
-    public void readSpawnData(PacketBuffer additionalData) {
+    public void readSpawnData(FriendlyByteBuf additionalData) {
         this.damage = additionalData.readDouble();
         this.knockbackStrength = additionalData.readInt();
         this.velocity = additionalData.readDouble();

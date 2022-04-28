@@ -1,18 +1,18 @@
 package com.lehjr.mpsrecipecreator.client.gui;
 
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.matrix.PoseStack;
 import lehjr.numina.util.client.gui.frame.ScrollableFrame;
 import lehjr.numina.util.client.render.MuseRenderer;
-import lehjr.numina.util.math.Colour;
+import lehjr.numina.util.math.Color;
 
 public class StackTextDisplayFrame extends ScrollableFrame {
     String label = "";
     int slot = -1;
 
-    public StackTextDisplayFrame(Colour backgroundColour) {
+    public StackTextDisplayFrame(Color backgroundColor) {
         super();
-        setBackgroundColour(backgroundColour);
+        setBackgroundColor(backgroundColor);
     }
 
     public void setSlot(int slot) {
@@ -24,7 +24,7 @@ public class StackTextDisplayFrame extends ScrollableFrame {
     }
 
     @Override
-    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
+    public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTicks) {
         super.render(matrixStack, mouseX, mouseY, partialTicks);
         MuseRenderer.drawLeftAlignedShadowedString(matrixStack, slot != -1 ? "Slot " + slot + ": " +
                 this.label : "No slot selected", finalLeft() + 4, center().getY());

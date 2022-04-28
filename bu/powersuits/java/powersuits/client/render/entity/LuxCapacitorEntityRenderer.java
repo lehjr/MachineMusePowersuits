@@ -26,16 +26,16 @@
 
 package lehjr.powersuits.client.render.entity;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.matrix.PoseStack;
 import lehjr.numina.client.render.entity.NuminaEntityRenderer;
-import lehjr.numina.util.math.Colour;
+import lehjr.numina.util.math.Color;
 import lehjr.powersuits.basemod.MPSObjects;
 import lehjr.powersuits.entity.LuxCapacitorEntity;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.model.IBakedModel;
-import net.minecraft.client.renderer.model.ItemCameraTransforms;
+import net.minecraft.client.renderer.model.ItemTransforms;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.Item;
@@ -63,7 +63,7 @@ public class LuxCapacitorEntityRenderer extends NuminaEntityRenderer<LuxCapacito
 
     private final Random random = new Random();
 
-    ItemStack getStack(Colour color) {
+    ItemStack getStack(Color color) {
         ItemStack stack = new ItemStack(MPSObjects.LUX_CAPACITOR_MODULE.get());
         CompoundTag nbt = stack.getOrCreateTag();
         nbt.putInt("colour", color.getInt());
@@ -71,7 +71,7 @@ public class LuxCapacitorEntityRenderer extends NuminaEntityRenderer<LuxCapacito
     }
 
     @Override
-    public void render(LuxCapacitorEntity entityIn, float entityYaw, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn) {
+    public void render(LuxCapacitorEntity entityIn, float entityYaw, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn) {
         matrixStackIn.pushPose();
         ItemStack itemstack = getStack(entityIn.color);
         int i = itemstack.isEmpty() ? 187 : Item.getId(itemstack.getItem()) + itemstack.getDamageValue();
@@ -83,7 +83,7 @@ public class LuxCapacitorEntityRenderer extends NuminaEntityRenderer<LuxCapacito
 
         boolean flag = ibakedmodel.isGui3d();
         matrixStackIn.pushPose();
-        Minecraft.getInstance().getItemRenderer().render(itemstack, ItemCameraTransforms.TransformType.GROUND, false, matrixStackIn, bufferIn, packedLightIn, OverlayTexture.NO_OVERLAY, ibakedmodel);
+        Minecraft.getInstance().getItemRenderer().render(itemstack, ItemTransforms.TransformType.GROUND, false, matrixStackIn, bufferIn, packedLightIn, OverlayTexture.NO_OVERLAY, ibakedmodel);
         matrixStackIn.popPose();
         if (!flag) {
             matrixStackIn.translate(0.0, 0.0, 0.09375F);

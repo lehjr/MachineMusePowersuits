@@ -27,7 +27,7 @@
 package lehjr.numina.util.client.model.obj;
 
 import lehjr.numina.util.client.model.helper.ModelHelper;
-import lehjr.numina.util.math.Colour;
+import lehjr.numina.util.math.Color;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.renderer.model.BakedQuad;
 import net.minecraft.client.renderer.model.IBakedModel;
@@ -62,7 +62,7 @@ public class OBJBakedPart extends BakedModelWrapper {
                 // glow is opposite ambient occlusion
                 boolean glow = (extraData.hasProperty(GLOW) ? extraData.getData(GLOW) : false);
                 // color applied to all quads in the part
-                Colour colour = extraData.hasProperty(COLOUR) ? new Colour(extraData.getData(COLOUR)) : Colour.WHITE;
+                Color colour = extraData.hasProperty(COLOUR) ? new Color(extraData.getData(COLOUR)) : Color.WHITE;
 
                 return ModelHelper.getColoredQuadsWithGlow(originalModel.getQuads(state, side, rand, extraData), colour, glow);
             }

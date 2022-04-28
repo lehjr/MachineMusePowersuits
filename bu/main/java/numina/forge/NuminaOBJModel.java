@@ -29,7 +29,7 @@ import net.minecraft.client.renderer.vertex.VertexFormatElement;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.vector.TransformationMatrix;
+import net.minecraft.util.math.vector.Transformation;
 import net.minecraft.util.math.vector.Vector2f;
 import net.minecraft.util.math.vector.Vector3f;
 import net.minecraft.util.math.vector.Vector4f;
@@ -374,7 +374,7 @@ public class NuminaOBJModel implements IMultipartModelGeometry<NuminaOBJModel> {
         return Optional.ofNullable(parts.get(name));
     }
 
-    private Pair<BakedQuad, Direction> makeQuad(int[][] indices, int tintIndex, Vector4f colorTint, Vector4f ambientColor, TextureAtlasSprite texture, TransformationMatrix transform) {
+    private Pair<BakedQuad, Direction> makeQuad(int[][] indices, int tintIndex, Vector4f colorTint, Vector4f ambientColor, TextureAtlasSprite texture, Transformation transform) {
         boolean needsNormalRecalculation = false;
         for (int[] ints : indices) {
             needsNormalRecalculation |= ints.length < 3;
@@ -409,7 +409,7 @@ public class NuminaOBJModel implements IMultipartModelGeometry<NuminaOBJModel> {
 
         boolean hasTransform = !transform.isIdentity();
         // The incoming transform is referenced on the center of the block, but our coords are referenced on the corner
-        TransformationMatrix transformation = hasTransform ? transform.blockCenterToCorner() : transform;
+        Transformation transformation = hasTransform ? transform.blockCenterToCorner() : transform;
 
         for (int i = 0; i < 4; i++) {
             int[] index = indices[Math.min(i, indices.length - 1)];

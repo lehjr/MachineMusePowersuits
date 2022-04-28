@@ -28,7 +28,7 @@ package lehjr.powersuits.client.model.helper;
 
 import com.google.common.collect.ImmutableMap;
 import lehjr.numina.util.client.model.obj.OBJPartData;
-import lehjr.numina.util.math.Colour;
+import lehjr.numina.util.math.Color;
 import net.minecraftforge.client.model.data.IModelData;
 import net.minecraftforge.client.model.data.ModelDataMap;
 
@@ -36,7 +36,7 @@ public class LuxCapHelper {
     public static IModelData getModelData(int colour) {
         ImmutableMap.Builder<String, IModelData> builder = ImmutableMap.builder();
         builder.put("lightlens", OBJPartData.makeOBJPartData(true, true, colour));
-        builder.put("lightBase", OBJPartData.makeOBJPartData(false, true, Colour.WHITE.getInt()));
+        builder.put("lightBase", OBJPartData.makeOBJPartData(false, true, Color.WHITE.getInt()));
         return new ModelDataMap.Builder().withInitial(OBJPartData.SUBMODEL_DATA, new OBJPartData(builder.build())).build();
     }
 }

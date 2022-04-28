@@ -65,7 +65,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.stats.Stats;
 import net.minecraft.util.*;
-import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.Component;
 import net.minecraft.util.text.TranslatableComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
@@ -183,7 +183,7 @@ public class ModularPowersuits {
                 @Override
                 public ActionResult use(ItemStack itemStackIn, World worldIn, Player playerIn, Hand hand) {
                     Api.instance().registries().wireless().openWirelessTerminalGui(itemStackIn, worldIn, playerIn, hand);
-                    return new ActionResult<>(ActionResultType.sidedSuccess(worldIn.isClientSide()), itemStackIn);
+                    return new ActionResult<>(InteractionResult.sidedSuccess(worldIn.isClientSide()), itemStackIn);
                 }
             };
 
@@ -252,7 +252,7 @@ public class ModularPowersuits {
 
             // Crafting workbench
         } else if (!event.getCapabilities().containsKey(MPSRegistryNames.PORTABLE_WORKBENCH_MODULE_REG) && event.getObject().getItem().equals(Items.CRAFTING_TABLE)) {
-            final ITextComponent CONTAINER_NAME = new TranslatableComponent("container.crafting");
+            final Component CONTAINER_NAME = new TranslatableComponent("container.crafting");
             IRightClickModule rightClick = new RightClickModule(itemStack, EnumModuleCategory.TOOL, EnumModuleTarget.TOOLONLY, MPSSettings::getModuleConfig) {
                 @Override
                 public ActionResult use(ItemStack itemStackIn, World worldIn, Player playerIn, Hand hand) {

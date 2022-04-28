@@ -44,7 +44,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TextComponent;
 import net.minecraft.util.text.TranslatableComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -176,7 +176,7 @@ public class KeybindKeyHandler {
                     .ifPresent(iModeChanging->{
                         if(player.level.isClientSide) {
                             if (!(Minecraft.getInstance().screen instanceof GuiModeSelector)) {
-                                Minecraft.getInstance().tell(() -> Minecraft.getInstance().setScreen(new GuiModeSelector(player, new StringTextComponent("modeChanging"))));
+                                Minecraft.getInstance().tell(() -> Minecraft.getInstance().setScreen(new GuiModeSelector(player, new TextComponent("modeChanging"))));
                             }
                         }
                     });

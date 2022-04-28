@@ -43,7 +43,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUseContext;
 import net.minecraft.item.UseAction;
 import net.minecraft.util.ActionResult;
-import net.minecraft.util.ActionResultType;
+import net.minecraft.util.InteractionResult;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
@@ -229,8 +229,8 @@ public class PowerFist extends AbstractElectricTool {
     }
 
     @Override
-    public ActionResultType useOn(ItemUseContext context) {
-        final ActionResultType fallback = ActionResultType.PASS;
+    public InteractionResult useOn(ItemUseContext context) {
+        final InteractionResult fallback = InteractionResult.PASS;
 
         final Hand hand = context.getHand();
         if (hand != Hand.MAIN_HAND) {
@@ -250,8 +250,8 @@ public class PowerFist extends AbstractElectricTool {
     }
 
     @Override
-    public ActionResultType onItemUseFirst(ItemStack itemStack, ItemUseContext context) {
-        final ActionResultType fallback = ActionResultType.PASS;
+    public InteractionResult onItemUseFirst(ItemStack itemStack, ItemUseContext context) {
+        final InteractionResult fallback = InteractionResult.PASS;
 
         final Hand hand = context.getHand();
         if (hand != Hand.MAIN_HAND) {
@@ -300,7 +300,7 @@ public class PowerFist extends AbstractElectricTool {
     }
 
     @Override
-    public ActionResultType interactLivingEntity(ItemStack itemStackIn, Player player, LivingEntity entity, Hand hand) {
+    public InteractionResult interactLivingEntity(ItemStack itemStackIn, Player player, LivingEntity entity, Hand hand) {
         return itemStackIn.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
                 .filter(IModeChangingItem.class::isInstance)
                 .map(IModeChangingItem.class::cast)
@@ -309,14 +309,14 @@ public class PowerFist extends AbstractElectricTool {
                             .filter(IRightClickModule.class::isInstance)
                             .map(IRightClickModule.class::cast)
                             .map(m-> m.interactLivingEntity(itemStackIn, player, entity, hand).getResult())
-                            .orElse(ActionResultType.PASS)
+                            .orElse(InteractionResult.PASS)
                 ).orElse(super.interactLivingEntity(itemStackIn, player, entity, hand));
     }
 
     @Override
     public ActionResult<ItemStack> use(World world, Player playerIn, Hand handIn) {
         ItemStack fist = playerIn.getItemInHand(handIn);
-        final ActionResult<ItemStack> fallback = new ActionResult<>(ActionResultType.PASS, fist);
+        final ActionResult<ItemStack> fallback = new ActionResult<>(InteractionResult.PASS, fist);
         if (handIn != Hand.MAIN_HAND) {
             return fallback;
         }

@@ -27,25 +27,25 @@
 package lehjr.powersuits.client.model.item;
 
 import com.google.common.collect.ImmutableList;
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.matrix.PoseStack;
 import lehjr.numina.constants.NuminaConstants;
 import lehjr.numina.network.NuminaPackets;
 import lehjr.numina.network.packets.CosmeticInfoPacket;
 import lehjr.numina.util.capabilities.inventory.modechanging.IModeChangingItem;
 import lehjr.numina.util.capabilities.render.IHandHeldModelSpecNBT;
-import lehjr.numina.util.capabilities.render.ModelSpecNBTCapability;
+import lehjr.numina.util.capabilities.render.CapabilityModelSpec;
 import lehjr.numina.util.capabilities.render.modelspec.ModelPartSpec;
 import lehjr.numina.util.capabilities.render.modelspec.ModelRegistry;
 import lehjr.numina.util.capabilities.render.modelspec.ModelSpec;
 import lehjr.numina.util.capabilities.render.modelspec.PartSpecBase;
 import lehjr.numina.util.client.model.helper.ModelHelper;
-import lehjr.numina.util.math.Colour;
+import lehjr.numina.util.math.Color;
 import lehjr.numina.util.nbt.NBTTagAccessor;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.model.BakedQuad;
 import net.minecraft.client.renderer.model.IBakedModel;
-import net.minecraft.client.renderer.model.ItemCameraTransforms;
+import net.minecraft.client.renderer.model.ItemTransforms;
 import net.minecraft.client.renderer.model.ItemOverrideList;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.LivingEntity;
@@ -54,7 +54,7 @@ import net.minecraft.inventory.EquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Direction;
-import net.minecraft.util.math.vector.TransformationMatrix;
+import net.minecraft.util.math.vector.Transformation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.model.BakedModelWrapper;
@@ -72,7 +72,7 @@ import java.util.Random;
  */
 @OnlyIn(Dist.CLIENT)
 public class PowerFistModel extends BakedModelWrapper {
-    static ItemCameraTransforms.TransformType modelcameraTransformType;
+    static ItemTransforms.TransformType modelcameraTransformType;
     static ItemStack itemStack;
     static boolean isFiring = false;
     Player player;
@@ -109,7 +109,7 @@ public class PowerFistModel extends BakedModelWrapper {
                 return originalModel.getQuads(state, side, rand, extraData);
         }
         ImmutableList.Builder<BakedQuad> builder = ImmutableList.builder();
-        itemStack.getCapability(ModelSpecNBTCapability.RENDER).ifPresent(specNBTCap -> {
+        itemStack.getCapability(CapabilityModelSpec.RENDER).ifPresent(specNBTCap -> {
             if (specNBTCap instanceof IHandHeldModelSpecNBT) {
                 CompoundTag renderSpec = specNBTCap.getRenderTag();
 
@@ -121,8 +121,8 @@ public class PowerFistModel extends BakedModelWrapper {
                     // first person transform type insures THIS client's player is the one holding the item rather than this
                     // client's player seeing another player holding it
                     if (renderSpec != null && !renderSpec.isEmpty() &&
-                            (modelcameraTransformType == ItemCameraTransforms.TransformType.FIRST_PERSON_LEFT_HAND ||
-                                    (modelcameraTransformType == ItemCameraTransforms.TransformType.FIRST_PERSON_RIGHT_HAND))) {
+                            (modelcameraTransformType == ItemTransforms.TransformType.FIRST_PERSON_LEFT_HAND ||
+                                    (modelcameraTransformType == ItemTransforms.TransformType.FIRST_PERSON_RIGHT_HAND))) {
                         Player player = Minecraft.getInstance().player;
                         EquipmentSlot slotType = EquipmentSlot.OFFHAND;
                         if (player.getMainHandItem().equals(itemStack)) {
@@ -134,9 +134,9 @@ public class PowerFistModel extends BakedModelWrapper {
                 }
 
                 if (renderSpec != null) {
-                    int[] colours = renderSpec.getIntArray(NuminaConstants.TAG_COLOURS);
-                    Colour partColor;
-                    TransformationMatrix transform;
+                    int[] colours = renderSpec.getIntArray(NuminaConstants.COLOR;
+                    Color partColor;
+                    Transformation transform;
 
                     for (CompoundTag nbt : NBTTagAccessor.getValues(renderSpec)) {
                         PartSpecBase partSpec = ModelRegistry.getInstance().getPart(nbt);
@@ -144,23 +144,23 @@ public class PowerFistModel extends BakedModelWrapper {
 
                             // only process this part if it's for the correct hand
                             if (partSpec.getBinding().getTarget().name().toUpperCase().equals(
-                                    modelcameraTransformType.equals(ItemCameraTransforms.TransformType.FIRST_PERSON_LEFT_HAND) ||
-                                            modelcameraTransformType.equals(ItemCameraTransforms.TransformType.THIRD_PERSON_LEFT_HAND) ?
+                                    modelcameraTransformType.equals(ItemTransforms.TransformType.FIRST_PERSON_LEFT_HAND) ||
+                                            modelcameraTransformType.equals(ItemTransforms.TransformType.THIRD_PERSON_LEFT_HAND) ?
                                             "LEFTHAND" : "RIGHTHAND")) {
 
                                 transform = ((ModelSpec) partSpec.spec).getTransform(modelcameraTransformType);
                                 String itemState = partSpec.getBinding().getItemState();
 
-                                int ix = partSpec.getColourIndex(nbt);
+                                int ix = partSpec.getColorIndex(nbt);
                                 if (ix < colours.length && ix >= 0) {
-                                    partColor = new Colour(colours[ix]);
+                                    partColor = new Color(colours[ix]);
                                 } else {
-                                    partColor = Colour.WHITE;
+                                    partColor = Color.WHITE;
                                 }
                                 boolean glow = ((ModelPartSpec) partSpec).getGlow(nbt);
 
                                 if ((!isFiring && (itemState.equals("all") || itemState.equals("normal"))) || (isFiring && (itemState.equals("all") || itemState.equals("firing")))) {
-                                    builder.addAll(ModelHelper.getColouredQuadsWithGlowAndTransform(((ModelPartSpec) partSpec).getPart().getQuads(state, side, rand, extraData), partColor, transform, glow));
+                                    builder.addAll(ModelHelper.getColoredQuadsWithGlowAndTransform(((ModelPartSpec) partSpec).getPart().getQuads(state, side, rand, extraData), partColor, transform, glow));
                                 }
                             }
                         }
@@ -176,7 +176,7 @@ public class PowerFistModel extends BakedModelWrapper {
      * type. However, when dealing with quads from different models, it's useless.
      */
     @Override
-    public IBakedModel handlePerspective(ItemCameraTransforms.TransformType cameraTransformType, MatrixStack mat) {
+    public IBakedModel handlePerspective(ItemTransforms.TransformType cameraTransformType, PoseStack mat) {
         modelcameraTransformType = cameraTransformType;
         switch (cameraTransformType) {
             case FIRST_PERSON_LEFT_HAND:

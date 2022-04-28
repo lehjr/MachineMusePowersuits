@@ -27,14 +27,14 @@
 package lehjr.powersuits.client.gui.modding.module.tweak;
 
 import com.google.common.util.concurrent.AtomicDouble;
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.matrix.PoseStack;
 import lehjr.numina.util.capabilities.inventory.modularitem.IModularItem;
 import lehjr.numina.util.capabilities.module.powermodule.EnumModuleCategory;
 import lehjr.numina.util.capabilities.module.powermodule.PowerModuleCapability;
 import lehjr.numina.util.client.gui.frame.ScrollableFrame;
 import lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
 import lehjr.numina.util.client.render.MuseRenderer;
-import lehjr.numina.util.math.Colour;
+import lehjr.numina.util.math.Color;
 import lehjr.numina.util.string.MuseStringUtils;
 import lehjr.powersuits.client.gui.common.ModularItemSelectionFrame;
 import lehjr.powersuits.constants.MPSConstants;
@@ -55,9 +55,9 @@ public class DetailedSummaryFrame extends ScrollableFrame {
     public DetailedSummaryFrame(
             MusePoint2D topleft,
             MusePoint2D bottomright,
-            Colour background,
-            Colour topBorder,
-            Colour bottomBorder,
+            Color background,
+            Color topBorder,
+            Color bottomBorder,
             ModularItemSelectionFrame itemSelectionFrame) {
         super(topleft, bottomright, background, topBorder, bottomBorder);
         this.itemSelectionFrame = itemSelectionFrame;
@@ -94,7 +94,7 @@ public class DetailedSummaryFrame extends ScrollableFrame {
     }
 
     @Override
-    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks)  {
+    public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTicks)  {
         if (getMinecraft().player != null) {
             super.render(matrixStack, mouseX, mouseY, partialTicks);
             int margin = 4;

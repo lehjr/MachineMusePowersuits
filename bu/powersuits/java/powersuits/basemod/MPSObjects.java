@@ -61,8 +61,8 @@ import lehjr.powersuits.item.module.vision.BinocularsModule;
 import lehjr.powersuits.item.module.vision.NightVisionModule;
 import lehjr.powersuits.item.module.weapon.*;
 import lehjr.powersuits.item.tool.PowerFist;
-import lehjr.powersuits.tile_entity.LuxCapacitorTileEntity;
-import lehjr.powersuits.tile_entity.TinkerTableTileEntity;
+import lehjr.powersuits.tile_entity.LuxCapacitorBlockEntity;
+import lehjr.powersuits.tile_entity.TinkerTableBlockEntity;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
@@ -70,7 +70,7 @@ import net.minecraft.inventory.EquipmentSlot;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
-import net.minecraft.tileentity.TileEntityType;
+import net.minecraft.tileentity.BlockEntityType;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.extensions.IForgeContainerType;
 import net.minecraftforge.fml.RegistryObject;
@@ -93,13 +93,13 @@ public class MPSObjects {
     /**
      * Tile Entity Types -------------------------------------------------------------------------
      */
-    public static final DeferredRegister<TileEntityType<?>> TILE_TYPES = DeferredRegister.create(ForgeRegistries.TILE_ENTITIES, MPSConstants.MOD_ID);
+    public static final DeferredRegister<BlockEntityType<?>> TILE_TYPES = DeferredRegister.create(ForgeRegistries.TILE_ENTITIES, MPSConstants.MOD_ID);
 
-    public static final RegistryObject<TileEntityType<TinkerTableTileEntity>> TINKER_TABLE_TILE_TYPE = TILE_TYPES.register(MPSRegistryNames.TINKER_TABLE,
-            () -> TileEntityType.Builder.of(TinkerTableTileEntity::new, TINKER_TABLE_BLOCK.get()).build(null));
+    public static final RegistryObject<BlockEntityType<TinkerTableBlockEntity>> TINKER_TABLE_TILE_TYPE = TILE_TYPES.register(MPSRegistryNames.TINKER_TABLE,
+            () -> BlockEntityType.Builder.of(TinkerTableBlockEntity::new, TINKER_TABLE_BLOCK.get()).build(null));
 
-    public static final RegistryObject<TileEntityType<LuxCapacitorTileEntity>> LUX_CAP_TILE_TYPE = TILE_TYPES.register(MPSRegistryNames.LUX_CAPACITOR,
-            () -> TileEntityType.Builder.of(LuxCapacitorTileEntity::new, LUX_CAPACITOR_BLOCK.get()).build(null));
+    public static final RegistryObject<BlockEntityType<LuxCapacitorBlockEntity>> LUX_CAP_TILE_TYPE = TILE_TYPES.register(MPSRegistryNames.LUX_CAPACITOR,
+            () -> BlockEntityType.Builder.of(LuxCapacitorBlockEntity::new, LUX_CAPACITOR_BLOCK.get()).build(null));
 
     /**
      * Entity Types ------------------------------------------------------------------------------

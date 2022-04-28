@@ -31,7 +31,7 @@ import lehjr.numina.entity.NuminaArmorStandEntity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.item.*;
-import net.minecraft.util.ActionResultType;
+import net.minecraft.util.InteractionResult;
 import net.minecraft.util.Direction;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
@@ -53,10 +53,10 @@ public class NuminaArmorStandItem extends ArmorStandItem {
     /**
      * Called when this item is used when targetting a Block
      */
-    public ActionResultType onItemUse(ItemUseContext context) {
+    public InteractionResult onItemUse(ItemUseContext context) {
         Direction direction = context.getClickedFace();
         if (direction == Direction.DOWN) {
-            return ActionResultType.FAIL;
+            return InteractionResult.FAIL;
         } else {
             World world = context.getLevel();
             BlockItemUseContext blockitemusecontext = new BlockItemUseContext(context);
@@ -69,7 +69,7 @@ public class NuminaArmorStandItem extends ArmorStandItem {
                     ServerWorld serverworld = (ServerWorld)world;
                     NuminaArmorStandEntity armorstandentity = NuminaObjects.ARMOR_WORKSTATION__ENTITY_TYPE.get().create(serverworld, itemstack.getTag(), null, context.getPlayer(), blockpos, SpawnReason.SPAWN_EGG, true, true);
                     if (armorstandentity == null) {
-                        return ActionResultType.FAIL;
+                        return InteractionResult.FAIL;
                     }
                     serverworld.addFreshEntityWithPassengers(armorstandentity);
                     float f = (float)MathHelper.floor((MathHelper.wrapDegrees(context.getRotation() - 180.0F) + 22.5F) / 45.0F) * 45.0F;
@@ -81,9 +81,9 @@ public class NuminaArmorStandItem extends ArmorStandItem {
                 }
 
                 itemstack.shrink(1);
-                return ActionResultType.sidedSuccess(world.isClientSide);
+                return InteractionResult.sidedSuccess(world.isClientSide);
             } else {
-                return ActionResultType.FAIL;
+                return InteractionResult.FAIL;
             }
         }
     }

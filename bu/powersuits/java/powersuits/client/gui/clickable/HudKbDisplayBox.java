@@ -2,7 +2,7 @@ package lehjr.powersuits.client.gui.clickable;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.matrix.PoseStack;
 import lehjr.numina.network.NuminaPackets;
 import lehjr.numina.network.packets.ToggleRequestPacket;
 import lehjr.numina.util.capabilities.inventory.modularitem.IModularItem;
@@ -10,13 +10,13 @@ import lehjr.numina.util.client.gui.clickable.ClickableButton2;
 import lehjr.numina.util.client.gui.clickable.ClickableModule;
 import lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
 import lehjr.numina.util.client.render.MuseRenderer;
-import lehjr.numina.util.math.Colour;
+import lehjr.numina.util.math.Color;
 import lehjr.numina.util.string.MuseStringUtils;
 import lehjr.powersuits.client.control.KeybindManager;
 import lehjr.powersuits.client.control.MPSKeyBinding;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.ClientPlayer;
-import net.minecraft.client.util.InputMappings;
+import net.minecraft.client.util.InputConstants;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.items.CapabilityItemHandler;
 
@@ -29,9 +29,9 @@ public class HudKbDisplayBox extends ClickableButton2 {
     public boolean displayOnHUD = false;
     boolean toggled = false;
 
-    InputMappings.Input key;
+    InputConstants.Input key;
 
-    public HudKbDisplayBox(InputMappings.Input keyIn) {
+    public HudKbDisplayBox(InputConstants.Input keyIn) {
         super(keyIn.getDisplayName(), MusePoint2D.ZERO, true);
         this.key = keyIn;
     }
@@ -69,10 +69,10 @@ public class HudKbDisplayBox extends ClickableButton2 {
     }
 
     @Override
-    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
+    public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTicks) {
         super.render(matrixStack, mouseX, mouseY, partialTicks);
         for (ClickableModule module : boundModules.values()) {
-            MuseRenderer.drawLineBetween(this, module, Colour.LIGHT_BLUE, 0); // FIXME
+            MuseRenderer.drawLineBetween(this, module, Color.LIGHT_BLUE, 0); // FIXME
             matrixStack.pushPose();
             matrixStack.scale(0.5F, 0.5F, 0.5F);
             matrixStack.translate(0, 0, 100);
@@ -85,7 +85,7 @@ public class HudKbDisplayBox extends ClickableButton2 {
         }
     }
 
-    public InputMappings.Input getKeyBinding() {
+    public InputConstants.Input getKeyBinding() {
         return key;
     }
 

@@ -42,9 +42,9 @@ import lehjr.numina.recipe.RecipeSerializersRegistry;
 import lehjr.numina.util.capabilities.heat.CapabilityHeat;
 import lehjr.numina.util.capabilities.module.powermodule.PowerModuleCapability;
 import lehjr.numina.util.capabilities.player.CapabilityPlayerKeyStates;
-import lehjr.numina.util.capabilities.render.ModelSpecNBTCapability;
+import lehjr.numina.util.capabilities.render.CapabilityModelSpec;
 import lehjr.numina.util.capabilities.render.chameleon.ChameleonCapability;
-import lehjr.numina.util.capabilities.render.colour.ColourCapability;
+import lehjr.numina.util.capabilities.render.colour.ColorCapability;
 import lehjr.numina.util.capabilities.render.highlight.HighLightCapability;
 import lehjr.numina.util.client.NuminaSpriteUploader;
 import lehjr.numina.util.client.event.ArmorLayerSetup;
@@ -152,11 +152,11 @@ public class Numina {
 
         CapabilityHeat.register();
 
-        ColourCapability.register();
+        ColorCapability.register();
 
         // Modules
         PowerModuleCapability.register();
-        ModelSpecNBTCapability.register();
+        CapabilityModelSpec.register();
         HighLightCapability.register();
         ChameleonCapability.register();
 

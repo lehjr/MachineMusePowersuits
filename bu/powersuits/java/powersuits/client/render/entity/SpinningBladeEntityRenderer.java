@@ -26,16 +26,16 @@
 
 package lehjr.powersuits.client.render.entity;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.matrix.PoseStack;
 import lehjr.numina.client.render.entity.NuminaEntityRenderer;
 import lehjr.powersuits.basemod.MPSObjects;
 import lehjr.powersuits.constants.MPSConstants;
 import lehjr.powersuits.entity.SpinningBladeEntity;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.model.IBakedModel;
-import net.minecraft.client.renderer.model.ItemCameraTransforms;
+import net.minecraft.client.renderer.model.ItemTransforms;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.Item;
@@ -65,7 +65,7 @@ public class SpinningBladeEntityRenderer extends NuminaEntityRenderer<SpinningBl
     private final Random random = new Random();
 
     @Override
-    public void render(SpinningBladeEntity entityIn, float entityYaw, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn) {
+    public void render(SpinningBladeEntity entityIn, float entityYaw, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn) {
         matrixStackIn.pushPose();
         ItemStack itemstack = new ItemStack(MPSObjects.BLADE_LAUNCHER_MODULE.get());
         int i = itemstack.isEmpty() ? 187 : Item.getId(itemstack.getItem()) + itemstack.getDamageValue();
@@ -81,7 +81,7 @@ public class SpinningBladeEntityRenderer extends NuminaEntityRenderer<SpinningBl
 
         boolean flag = ibakedmodel.isGui3d();
         matrixStackIn.pushPose();
-        Minecraft.getInstance().getItemRenderer().render(itemstack, ItemCameraTransforms.TransformType.GROUND, false, matrixStackIn, bufferIn, packedLightIn, OverlayTexture.NO_OVERLAY, ibakedmodel);
+        Minecraft.getInstance().getItemRenderer().render(itemstack, ItemTransforms.TransformType.GROUND, false, matrixStackIn, bufferIn, packedLightIn, OverlayTexture.NO_OVERLAY, ibakedmodel);
         matrixStackIn.popPose();
         if (!flag) {
             matrixStackIn.translate(0.0, 0.0, 0.09375F);

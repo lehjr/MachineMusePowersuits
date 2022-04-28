@@ -26,12 +26,12 @@
 
 package lehjr.powersuits.client.gui.modding.cosmetic;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.matrix.PoseStack;
 import com.mojang.blaze3d.systems.RenderSystem;
-import lehjr.numina.basemod.MuseLogger;
+import lehjr.numina.basemod.NuminaLogger;
 import lehjr.numina.constants.NuminaConstants;
 import lehjr.numina.util.capabilities.render.IModelSpecNBT;
-import lehjr.numina.util.capabilities.render.ModelSpecNBTCapability;
+import lehjr.numina.util.capabilities.render.CapabilityModelSpec;
 import lehjr.numina.util.client.gui.GuiIcon;
 import lehjr.numina.util.client.gui.clickable.ClickableLabel;
 import lehjr.numina.util.client.gui.clickable.ClickableSlider;
@@ -40,15 +40,15 @@ import lehjr.numina.util.client.gui.frame.GUISpacer;
 import lehjr.numina.util.client.gui.frame.ScrollableMultiRectFrame;
 import lehjr.numina.util.client.gui.gemoetry.DrawableTile;
 import lehjr.numina.util.client.render.MuseIconUtils;
-import lehjr.numina.util.math.Colour;
+import lehjr.numina.util.math.Color;
 import lehjr.powersuits.client.gui.common.ModularItemSelectionFrame;
 import lehjr.powersuits.network.MPSPackets;
-import lehjr.powersuits.network.packets.ColourInfoPacket;
+import lehjr.powersuits.network.packets.ColorInfoPacket;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.IntArrayNBT;
-import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.Component;
 import net.minecraft.util.text.TranslatableComponent;
 
 import java.util.Arrays;
@@ -62,7 +62,7 @@ import java.util.stream.Collectors;
  * <p>
  * Ported to Java by lehjr on 11/2/16.
  */
-public class ColourPickerFrame extends ScrollableMultiRectFrame {
+public class ColorPickerFrame extends ScrollableMultiRectFrame {
 
     // FIXME: slider click not working, clickable colour label not rendering
 
@@ -71,16 +71,16 @@ public class ColourPickerFrame extends ScrollableMultiRectFrame {
     protected ClickableSlider[] sliders = new ClickableSlider[4];
     final String[] slidersIds = new String[] { "red", "green", "blue", "alpha" };
 
-    ScrollableColourBox colourBox;
+    ScrollableColorBox colourBox;
     String COLOUR_PREFIX = I18n.get("gui.powersuits.colourPrefix");
 
     public ClickableLabel colourLabel;
 
     public Optional<ClickableSlider> selectedSlider = Optional.empty();
-    public int selectedColour;
+    public int selectedColor;
     public int decrAbove;
 
-    public ColourPickerFrame(ModularItemSelectionFrame itemSelector, double width, double height) {
+    public ColorPickerFrame(ModularItemSelectionFrame itemSelector, double width, double height) {
         super(true, width, height, width, height);
         setBackground(new DrawableTile(0,0,0,0));
         setMargin(7);
@@ -97,7 +97,7 @@ public class ColourPickerFrame extends ScrollableMultiRectFrame {
         }
 
         /** colour selector box ( box 4 ) ------------------------------------------------------ */
-        this.colourBox = new ScrollableColourBox();
+        this.colourBox = new ScrollableColorBox();
         this.colourBox.setWidth(width - margin * 2);
         this.colourBox.setHeight(18);
         addRect(this.colourBox);
@@ -111,31 +111,31 @@ public class ColourPickerFrame extends ScrollableMultiRectFrame {
         doneAdding();
 
         colourLabel.setOnPressed(pressed->{
-            if (colours().length > selectedColour) {
+            if (colours().length > selectedColor) {
                 // todo: insert chat to player
-                Minecraft.getInstance().keyboardHandler.setClipboard(new Colour(selectedColour).hexColour());
+                Minecraft.getInstance().keyboardHandler.setClipboard(new Color(selectedColor).hexColor());
             }
         });
 
         this.selectedSlider = Optional.empty();
-        this.selectedColour = 0;
+        this.selectedColor = 0;
         this.decrAbove = -1;
     }
 
     public ClickableSlider getSlider(String id, int index, double width) {
         ClickableSlider slider = new ClickableSlider(center(), width, id, new TranslatableComponent(NuminaConstants.MODULE_TRADEOFF_PREFIX + id));
         addRect(slider);
-        slider.setLabelColour(Colour.WHITE);
+        slider.setLabelColor(Color.WHITE);
         slider.setOnPressed(pressed -> selectedSlider = Optional.of(slider));
         return slider;
     }
 
     public int[] colours() {
-        return (getOrCreateColourTag() != null) ? getOrCreateColourTag().getAsIntArray() : new int[0];
+        return (getOrCreateColorTag() != null) ? getOrCreateColorTag().getAsIntArray() : new int[0];
     }
 
-    public IntArrayNBT getOrCreateColourTag() {
-        return this.itemSelector.getModularItemOrEmpty().getCapability(ModelSpecNBTCapability.RENDER)
+    public IntArrayNBT getOrCreateColorTag() {
+        return this.itemSelector.getModularItemOrEmpty().getCapability(CapabilityModelSpec.RENDER)
                 .filter(IModelSpecNBT.class::isInstance)
                 .map(IModelSpecNBT.class::cast)
                 .map(spec -> {
@@ -147,15 +147,15 @@ public class ColourPickerFrame extends ScrollableMultiRectFrame {
                 }).orElse(new IntArrayNBT(new int[0]));
     }
 
-    public IntArrayNBT setColourTagMaybe(List<Integer> intList) {
-        return itemSelector.getModularItemOrEmpty().getCapability(ModelSpecNBTCapability.RENDER)
+    public IntArrayNBT setColorTagMaybe(List<Integer> intList) {
+        return itemSelector.getModularItemOrEmpty().getCapability(CapabilityModelSpec.RENDER)
                 .filter(IModelSpecNBT.class::isInstance)
                 .map(IModelSpecNBT.class::cast)
                 .map(spec -> {
                     CompoundTag renderSpec = spec.getRenderTag();
-                    renderSpec.put(NuminaConstants.TAG_COLOURS, new IntArrayNBT(intList));
-                    this.itemSelector.selectedType().ifPresent(slotType -> MPSPackets.CHANNEL_INSTANCE.sendToServer(new ColourInfoPacket(slotType, this.colours())));
-                    return (IntArrayNBT) renderSpec.get(NuminaConstants.TAG_COLOURS);
+                    renderSpec.put(NuminaConstants.COLOR, new IntArrayNBT(intList));
+                    this.itemSelector.selectedType().ifPresent(slotType -> MPSPackets.CHANNEL_INSTANCE.sendToServer(new ColorInfoPacket(slotType, this.colours())));
+                    return (IntArrayNBT) renderSpec.get(NuminaConstants.COLOR;
                 }).orElse(new IntArrayNBT(new int[0]));
     }
 
@@ -164,8 +164,8 @@ public class ColourPickerFrame extends ScrollableMultiRectFrame {
         if (containsPoint(mouseX, mouseY)) {
             if (this.isEnabled() && super.mouseClicked(mouseX, mouseY, button) ) {
                 final double scrolledY = mouseY + currentScrollPixels;
-                colourBox.addColour(mouseX, scrolledY);
-                colourBox.removeColour(mouseX, scrolledY);
+                colourBox.addColor(mouseX, scrolledY);
+                colourBox.removeColor(mouseX, scrolledY);
                 return true;
             }
             return false;
@@ -181,24 +181,24 @@ public class ColourPickerFrame extends ScrollableMultiRectFrame {
         return super.mouseReleased(x, y, button);
     }
 
-    public void onSelectColour(int i) {
-        Colour c = new Colour(this.colours()[i]);
+    public void onSelectColor(int i) {
+        Color c = new Color(this.colours()[i]);
         this.sliders[0].setValue(c.r);
         this.sliders[1].setValue(c.g);
         this.sliders[2].setValue(c.b);
         this.sliders[3].setValue(c.a);
-        this.selectedColour = i;
+        this.selectedColor = i;
     }
 
     @Override
-    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
+    public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTicks) {
         final int scrolledY = mouseY + currentScrollPixels;
 
         renderBackground(matrixStack, mouseX, scrolledY, partialTicks);
         if (this.isVisible()) {
             this.currentScrollPixels = Math.min(currentScrollPixels, getMaxScrollPixels());
-            if (colours().length > selectedColour) {
-                colourLabel.setLabel(COLOUR_PREFIX + " 0X" + new Colour(colours()[selectedColour]).hexColour());
+            if (colours().length > selectedColor) {
+                colourLabel.setLabel(COLOUR_PREFIX + " 0X" + new Color(colours()[selectedColor]).hexColor());
             }
             super.preRender(matrixStack, mouseX, scrolledY, partialTicks);
             RenderSystem.pushMatrix();
@@ -209,7 +209,7 @@ public class ColourPickerFrame extends ScrollableMultiRectFrame {
             });
             this.colourBox.render(matrixStack, mouseX, scrolledY, partialTicks);
             this.colourLabel.render(matrixStack, mouseX, scrolledY, partialTicks);
-            RenderSystem.popMatrix();
+            RenderSystem.popPose();
             super.postRender(mouseX, scrolledY, partialTicks);
         }
     }
@@ -229,28 +229,28 @@ public class ColourPickerFrame extends ScrollableMultiRectFrame {
             if (selectedSlider.isPresent()) {
                 this.selectedSlider.ifPresent(slider-> {
                     slider.setValueByX(mousex);
-                    if (colours().length > selectedColour) {
-                        colours()[selectedColour] = Colour.getInt((float) sliders[0].getValue(), (float) sliders[1].getValue(), (float) sliders[2].getValue(), (float) sliders[3].getValue());
-                        this.itemSelector.selectedType().ifPresent(slotType -> MPSPackets.CHANNEL_INSTANCE.sendToServer(new ColourInfoPacket(slotType, this.colours())));
+                    if (colours().length > selectedColor) {
+                        colours()[selectedColor] = Color.getInt((float) sliders[0].getValue(), (float) sliders[1].getValue(), (float) sliders[2].getValue(), (float) sliders[3].getValue());
+                        this.itemSelector.selectedType().ifPresent(slotType -> MPSPackets.CHANNEL_INSTANCE.sendToServer(new ColorInfoPacket(slotType, this.colours())));
                     }});
                 // this just sets up the sliders on selecting an item
             } else if (!itemSelector.getModularItemOrEmpty().isEmpty() && colours().length > 0) {
-                if (selectedColour <= colours().length - 1) {
-                    onSelectColour(selectedColour);
+                if (selectedColor <= colours().length - 1) {
+                    onSelectColor(selectedColor);
                 }
             }
         }
     }
 
     @Override
-    public List<ITextComponent> getToolTip(int x, int y) {
+    public List<Component> getToolTip(int x, int y) {
         return null;
     }
 
 
 
-    class ScrollableColourBox extends DrawableTile implements IClickable {
-        public ScrollableColourBox() {
+    class ScrollableColorBox extends DrawableTile implements IClickable {
+        public ScrollableColorBox() {
             super(0,0,0,0);
         }
 
@@ -267,35 +267,35 @@ public class ColourPickerFrame extends ScrollableMultiRectFrame {
          * @param y
          * @return
          */
-        boolean addColour(double x, double y) {
+        boolean addColor(double x, double y) {
             if (y > this.top() + 8.0 && y < this.bottom()) {
                 int colourCol = (int) (x - left() - 8.0) / 8;
                 if (colourCol >= 0 && colourCol < colours().length) {
-                    onSelectColour(colourCol);
+                    onSelectColor(colourCol);
                 } else if (colourCol == colours().length) {
-                    MuseLogger.logger.debug("Adding");
-                    List<Integer> intList = Arrays.stream(getIntArray(getOrCreateColourTag())).boxed().collect(Collectors.toList());
-                    intList.add(Colour.WHITE.getInt());
-                    setColourTagMaybe(intList);
+                    NuminaLogger.logger.debug("Adding");
+                    List<Integer> intList = Arrays.stream(getIntArray(getOrCreateColorTag())).boxed().collect(Collectors.toList());
+                    intList.add(Color.WHITE.getInt());
+                    setColorTagMaybe(intList);
                 }
                 return true;
             }
             return false;
         }
 
-        boolean removeColour(double x, double y) {
-            if (y > this.top() + 1.5 && y < this.top() + 7 && x > left() + 8 + selectedColour * 8 && x < left() + 16 + selectedColour * 8) {
-                IntArrayNBT IntArrayNBT = getOrCreateColourTag();
+        boolean removeColor(double x, double y) {
+            if (y > this.top() + 1.5 && y < this.top() + 7 && x > left() + 8 + selectedColor * 8 && x < left() + 16 + selectedColor * 8) {
+                IntArrayNBT IntArrayNBT = getOrCreateColorTag();
                 List<Integer> intList = Arrays.stream(getIntArray(IntArrayNBT)).boxed().collect(Collectors.toList());
 
-                if (intList.size() > 1 && selectedColour <= intList.size() -1) {
-                    intList.remove(selectedColour); // with integer list, will default to index rather than getValue
-                    setColourTagMaybe(intList);
-                    decrAbove = selectedColour;
-                    if (selectedColour == getIntArray(IntArrayNBT).length) {
-                        selectedColour = selectedColour - 1;
+                if (intList.size() > 1 && selectedColor <= intList.size() -1) {
+                    intList.remove(selectedColor); // with integer list, will default to index rather than getValue
+                    setColorTagMaybe(intList);
+                    decrAbove = selectedColor;
+                    if (selectedColor == getIntArray(IntArrayNBT).length) {
+                        selectedColor = selectedColor - 1;
                     }
-                    itemSelector.selectedType().ifPresent(slotType -> MPSPackets.CHANNEL_INSTANCE.sendToServer(new ColourInfoPacket(slotType, IntArrayNBT.getAsIntArray())));
+                    itemSelector.selectedType().ifPresent(slotType -> MPSPackets.CHANNEL_INSTANCE.sendToServer(new ColorInfoPacket(slotType, IntArrayNBT.getAsIntArray())));
                 }
                 return true;
             }
@@ -303,18 +303,18 @@ public class ColourPickerFrame extends ScrollableMultiRectFrame {
         }
 
         @Override
-        public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
+        public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTicks) {
             GuiIcon icon = MuseIconUtils.getIcon();
 
             // colours
             for (int i=0; i < colours().length; i++) {
-                icon.armorColourPatch.draw(matrixStack, this.left() + 8 + i * 8, this.top() + 8 , new Colour(colours()[i]));
+                icon.armorColorPatch.draw(matrixStack, this.left() + 8 + i * 8, this.top() + 8 , new Color(colours()[i]));
             }
 
-            icon.armorColourPatch.draw(matrixStack, this.left() + 8 + colours().length * 8, this.top() + 8, Colour.WHITE);
-            icon.selectedArmorOverlay.draw(matrixStack, this.left() + 8 + selectedColour * 8, this.top() + 8, Colour.WHITE);
-            icon.minusSign.draw(matrixStack, this.left() + 8 + selectedColour * 8, this.top(), Colour.RED);
-            icon.plusSign.draw(matrixStack, this.left() + 8 + colours().length * 8, this.top() + 8, Colour.GREEN);
+            icon.armorColorPatch.draw(matrixStack, this.left() + 8 + colours().length * 8, this.top() + 8, Color.WHITE);
+            icon.selectedArmorOverlay.draw(matrixStack, this.left() + 8 + selectedColor * 8, this.top() + 8, Color.WHITE);
+            icon.minusSign.draw(matrixStack, this.left() + 8 + selectedColor * 8, this.top(), Color.RED);
+            icon.plusSign.draw(matrixStack, this.left() + 8 + colours().length * 8, this.top() + 8, Color.GREEN);
         }
 
         @Override

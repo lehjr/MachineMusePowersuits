@@ -32,9 +32,9 @@ import lehjr.powersuits.client.control.KeybindManager;
 import lehjr.powersuits.client.gui.common.TabSelectFrame;
 import net.minecraft.client.MainWindow;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.util.InputMappings;
+import net.minecraft.client.util.InputConstants;
 import net.minecraft.entity.player.Player;
-import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.Component;
 import net.minecraftforge.client.settings.KeyModifier;
 
 
@@ -46,7 +46,7 @@ public class TinkerKeybindGui extends ContainerlessGui {
     Player player;
     KeyBindFrame kbFrame;
 
-    public TinkerKeybindGui(Player player, ITextComponent titleIn) {
+    public TinkerKeybindGui(Player player, Component titleIn) {
         super(titleIn, false);
         Minecraft.getInstance().keyboardHandler.setSendRepeatsToGui(true);
         this.player = player;
@@ -75,11 +75,11 @@ public class TinkerKeybindGui extends ContainerlessGui {
     public boolean keyPressed(int p_231046_1_, int p_231046_2_, int p_231046_3_) {
         if (kbFrame.keybindingToRemap != null) {
             if (p_231046_1_ == 256) {
-                kbFrame.keybindingToRemap.setKeyModifierAndCode(KeyModifier.getActiveModifier(), InputMappings.UNKNOWN);
-                Minecraft.getInstance().options.setKey(kbFrame.keybindingToRemap, InputMappings.UNKNOWN);
+                kbFrame.keybindingToRemap.setKeyModifierAndCode(KeyModifier.getActiveModifier(), InputConstants.UNKNOWN);
+                Minecraft.getInstance().options.setKey(kbFrame.keybindingToRemap, InputConstants.UNKNOWN);
             } else {
-                kbFrame.keybindingToRemap.setKeyModifierAndCode(KeyModifier.getActiveModifier(), InputMappings.getKey(p_231046_1_, p_231046_2_));
-                Minecraft.getInstance().options.setKey(kbFrame.keybindingToRemap, InputMappings.getKey(p_231046_1_, p_231046_2_));
+                kbFrame.keybindingToRemap.setKeyModifierAndCode(KeyModifier.getActiveModifier(), InputConstants.getKey(p_231046_1_, p_231046_2_));
+                Minecraft.getInstance().options.setKey(kbFrame.keybindingToRemap, InputConstants.getKey(p_231046_1_, p_231046_2_));
             }
 
             if (!KeyModifier.isKeyCodeModifier(kbFrame.keybindingToRemap.getKey())) {

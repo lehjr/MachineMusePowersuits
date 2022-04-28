@@ -26,9 +26,9 @@
 
 package lehjr.numina.util.client.gui.gemoetry;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.matrix.PoseStack;
 import com.mojang.blaze3d.systems.RenderSystem;
-import lehjr.numina.util.math.Colour;
+import lehjr.numina.util.math.Color;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
@@ -43,15 +43,15 @@ public class SwirlyMuseCircle {
     protected FloatBuffer colour;
     int numsegments;
 
-    public SwirlyMuseCircle(Colour c1, Colour c2) {
+    public SwirlyMuseCircle(Color c1, Color c2) {
         if (points == null) {
             points = GradientAndArcCalculator.getArcPoints(0, (float) (Math.PI * 2 + 0.0001), detail, 0, 0);
         }
         numsegments = points.limit() / 2;
-        colour = GradientAndArcCalculator.getColourGradient(c1, c2, points.limit() / 2);
+        colour = GradientAndArcCalculator.getColorGradient(c1, c2, points.limit() / 2);
     }
 
-    public void draw(MatrixStack matrixStack, double radius, double x, double y, float zLevel) {
+    public void draw(PoseStack matrixStack, double radius, double x, double y, float zLevel) {
         float ratio = (System.currentTimeMillis() % 2000) / 2000.0F;
         colour.rewind();
         points.rewind();
@@ -80,6 +80,6 @@ public class SwirlyMuseCircle {
         RenderSystem.enableAlphaTest();
         RenderSystem.enableTexture();
 
-        RenderSystem.popMatrix();
+        RenderSystem.popPose();
     }
 }

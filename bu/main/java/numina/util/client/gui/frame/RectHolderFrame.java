@@ -1,11 +1,11 @@
 package lehjr.numina.util.client.gui.frame;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.matrix.PoseStack;
 import lehjr.numina.util.client.gui.gemoetry.IDrawable;
 import lehjr.numina.util.client.gui.gemoetry.IRect;
 import lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
-import lehjr.numina.util.math.Colour;
-import net.minecraft.util.text.ITextComponent;
+import lehjr.numina.util.math.Color;
+import net.minecraft.util.text.Component;
 
 import java.util.List;
 
@@ -28,8 +28,8 @@ public abstract class RectHolderFrame<T extends IRect> extends GUISpacer {
     public RectHolderFrame(T rect, double widthIn, double heightIn, RectPlacement placement, IDoThis onChange) {
         super(widthIn, heightIn);
         this.rect = rect;
-        this.setBackgroundColour(Colour.YELLOW);
-        this.setBorderColour(Colour.RED);
+        this.setBackgroundColor(Color.YELLOW);
+        this.setBorderColor(Color.RED);
         this.placement = placement;
         this.setDoThisOnChange(iChange -> {
             if (onChange != null) {
@@ -55,7 +55,7 @@ public abstract class RectHolderFrame<T extends IRect> extends GUISpacer {
     }
 
     @Override
-    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float frameTime) {
+    public void render(PoseStack matrixStack, int mouseX, int mouseY, float frameTime) {
         super.render(matrixStack, mouseX, mouseY, frameTime);
         if (rect instanceof IDrawable) {
             ((IDrawable) rect).render(matrixStack, mouseX, mouseY, frameTime);
@@ -69,7 +69,7 @@ public abstract class RectHolderFrame<T extends IRect> extends GUISpacer {
     public abstract boolean mouseReleased(double mouseX, double mouseY, int button);
 
     @Override
-    public abstract List<ITextComponent> getToolTip(int x, int y);
+    public abstract List<Component> getToolTip(int x, int y);
 
     public void setRect() {
         switch (placement) {

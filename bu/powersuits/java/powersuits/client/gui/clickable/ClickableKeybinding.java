@@ -26,7 +26,7 @@
 
 package lehjr.powersuits.client.gui.clickable;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.matrix.PoseStack;
 import lehjr.numina.network.NuminaPackets;
 import lehjr.numina.network.packets.ToggleRequestPacket;
 import lehjr.numina.util.capabilities.inventory.modularitem.IModularItem;
@@ -35,14 +35,14 @@ import lehjr.numina.util.client.gui.clickable.ClickableModule;
 import lehjr.numina.util.client.gui.clickable.IClickable;
 import lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
 import lehjr.numina.util.client.render.MuseRenderer;
-import lehjr.numina.util.math.Colour;
+import lehjr.numina.util.math.Color;
 import lehjr.numina.util.string.MuseStringUtils;
 import lehjr.powersuits.client.control.KeybindManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.ClientPlayer;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.Component;
 import net.minecraft.util.text.TranslatableComponent;
 import net.minecraftforge.items.CapabilityItemHandler;
 
@@ -66,7 +66,7 @@ public class ClickableKeybinding extends ClickableButton2 {
         this.keybind = keybind;
     }
 
-    static ITextComponent parseName(KeyBinding keybind) {
+    static Component parseName(KeyBinding keybind) {
         if (keybind.getKey().getValue() < 0) {
             return new TranslatableComponent("Mouse" + (keybind.getKey().getValue() + 100));
         } else {
@@ -106,10 +106,10 @@ public class ClickableKeybinding extends ClickableButton2 {
     }
 
     @Override
-    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
+    public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTicks) {
         super.render(matrixStack, mouseX, mouseY, partialTicks);
         for (ClickableModule module : boundModules) {
-            MuseRenderer.drawLineBetween(this, module, Colour.LIGHT_BLUE, 0); // FIXME
+            MuseRenderer.drawLineBetween(this, module, Color.LIGHT_BLUE, 0); // FIXME
             matrixStack.pushPose();
             matrixStack.scale(0.5F, 0.5F, 0.5F);
             matrixStack.translate(0, 0, 100);

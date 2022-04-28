@@ -1,13 +1,13 @@
 package lehjr.numina.util.client.gui.clickable;
 
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.matrix.PoseStack;
 import lehjr.numina.util.client.gui.gemoetry.DrawableTile;
 import lehjr.numina.util.client.gui.gemoetry.IDrawable;
 import lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
 import lehjr.numina.util.client.render.MuseRenderer;
-import lehjr.numina.util.math.Colour;
-import net.minecraft.util.text.ITextComponent;
+import lehjr.numina.util.math.Color;
+import net.minecraft.util.text.Component;
 
 /**
  * @author MachineMuse
@@ -15,19 +15,19 @@ import net.minecraft.util.text.ITextComponent;
 public class ClickableButton2 extends DrawableTile implements IClickable {
     boolean isVisible = true;
     boolean isEnabled = true;
-    protected ITextComponent label;
+    protected Component label;
     protected MusePoint2D radius;
-    private Colour enabledTopBorder  = Colour.WHITE.withAlpha(0.8F);
-    private Colour enabledBottomBorder  = Colour.getGreyscale(0.216F, 1.0F);
-    private Colour enabledBackground = Colour.GREY_GUI_BACKGROUND;
-    private Colour disabledTopBorder = Colour.WHITE.withAlpha(0.8F);
+    private Color enabledTopBorder  = Color.WHITE.withAlpha(0.8F);
+    private Color enabledBottomBorder  = Color.getGreyscale(0.216F, 1.0F);
+    private Color enabledBackground = Color.GREY_GUI_BACKGROUND;
+    private Color disabledTopBorder = Color.WHITE.withAlpha(0.8F);
 
-    private Colour disabledBottomBorder = Colour.getGreyscale(0.216F, 1.0F);
-    private Colour disabledBackground = Colour.DARK_GREY.interpolate(Colour.WHITE, 0.2F);
+    private Color disabledBottomBorder = Color.getGreyscale(0.216F, 1.0F);
+    private Color disabledBackground = Color.DARK_GREY.interpolate(Color.WHITE, 0.2F);
     private IPressable onPressed;
     private IReleasable onReleased;
 
-    public ClickableButton2(ITextComponent label, MusePoint2D position, boolean enabled) {
+    public ClickableButton2(Component label, MusePoint2D position, boolean enabled) {
         super(1,1,1, 1);
         this.label = label;
         this.setPosition(position);
@@ -52,32 +52,32 @@ public class ClickableButton2 extends DrawableTile implements IClickable {
         this.setEnabled(enabled);
     }
 
-    public ClickableButton2 setEnabledTopBorder(Colour enabledTopBorder) {
+    public ClickableButton2 setEnabledTopBorder(Color enabledTopBorder) {
         this.enabledTopBorder = enabledTopBorder;
         return this;
     }
 
-    public ClickableButton2 setEnabledBottomBorder(Colour enabledBottomBorder) {
+    public ClickableButton2 setEnabledBottomBorder(Color enabledBottomBorder) {
         this.enabledBottomBorder = enabledBottomBorder;
         return this;
     }
 
-    public ClickableButton2 setEnabledBackground(Colour enabledBackground) {
+    public ClickableButton2 setEnabledBackground(Color enabledBackground) {
         this.enabledBackground = enabledBackground;
         return this;
     }
 
-    public ClickableButton2 setDisabledTopBorder(Colour disabledTopBorder) {
+    public ClickableButton2 setDisabledTopBorder(Color disabledTopBorder) {
         this.disabledTopBorder = disabledTopBorder;
         return this;
     }
 
-    public ClickableButton2 setDisabledBottomBorder(Colour disabledBottomBorder) {
+    public ClickableButton2 setDisabledBottomBorder(Color disabledBottomBorder) {
         this.disabledBottomBorder = disabledBottomBorder;
         return this;
     }
 
-    public ClickableButton2 setDisabledBackground(Colour disabledBackground) {
+    public ClickableButton2 setDisabledBackground(Color disabledBackground) {
         this.disabledBackground = disabledBackground;
         return this;
     }
@@ -90,7 +90,7 @@ public class ClickableButton2 extends DrawableTile implements IClickable {
      * @param partialTicks
      */
     @Override
-    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
+    public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTicks) {
         renderButton(matrixStack, mouseX, mouseY, partialTicks);
         renderText(matrixStack, mouseX, mouseY);
     }
@@ -113,11 +113,11 @@ public class ClickableButton2 extends DrawableTile implements IClickable {
      * @param mouseY
      * @param frameTIme
      */
-    public void renderButton(MatrixStack matrixStack, int mouseX, int mouseY, float frameTIme) {
+    public void renderButton(PoseStack matrixStack, int mouseX, int mouseY, float frameTIme) {
         if (isVisible) {
-            this.setBackgroundColour(isEnabled() ? enabledBackground : disabledBackground);
-            this.setTopBorderColour(isEnabled() ? enabledTopBorder : disabledTopBorder);
-            this.setBottomBorderColour(isEnabled() ? enabledBottomBorder : disabledBottomBorder);
+            this.setBackgroundColor(isEnabled() ? enabledBackground : disabledBackground);
+            this.setTopBorderColor(isEnabled() ? enabledTopBorder : disabledTopBorder);
+            this.setBottomBorderColor(isEnabled() ? enabledBottomBorder : disabledBottomBorder);
             super.render(matrixStack, mouseX, mouseY, frameTIme);
         }
     }
@@ -128,7 +128,7 @@ public class ClickableButton2 extends DrawableTile implements IClickable {
      * @param mouseX
      * @param mouseY
      */
-    public void renderText(MatrixStack matrixStack, int mouseX, int mouseY) {
+    public void renderText(PoseStack matrixStack, int mouseX, int mouseY) {
         if (isVisible()) {
             if (label.getString().contains("\n")) {
                 String[] s = label.getString().split("\n");
@@ -136,7 +136,7 @@ public class ClickableButton2 extends DrawableTile implements IClickable {
                     MuseRenderer.drawShadowedStringCentered(matrixStack, s[i], getPosition().getX(), getPosition().getY() + (i * MuseRenderer.getStringHeight() + 1));
                 }
             } else {
-                MuseRenderer.drawCenteredText(matrixStack, this.label, getPosition().getX(), getPosition().getY() + 1, new Colour(16777215));
+                MuseRenderer.drawCenteredText(matrixStack, this.label, getPosition().getX(), getPosition().getY() + 1, new Color(16777215));
             }
         }
     }
@@ -194,12 +194,12 @@ public class ClickableButton2 extends DrawableTile implements IClickable {
         }
     }
 
-    public ClickableButton2 setLable(ITextComponent label) {
+    public ClickableButton2 setLable(Component label) {
         this.label = label;
         return this;
     }
 
-    public ITextComponent getLabel() {
+    public Component getLabel() {
         return label;
     }
 }

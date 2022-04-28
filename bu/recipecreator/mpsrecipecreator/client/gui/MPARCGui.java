@@ -2,14 +2,14 @@ package com.lehjr.mpsrecipecreator.client.gui;
 
 import com.lehjr.mpsrecipecreator.basemod.DataPackWriter;
 import com.lehjr.mpsrecipecreator.container.MPARCContainer;
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.matrix.PoseStack;
 import lehjr.numina.util.client.gui.ExtendedContainerScreen;
 import lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
 import lehjr.numina.util.client.render.MuseRenderer;
-import lehjr.numina.util.math.Colour;
+import lehjr.numina.util.math.Color;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Slot;
-import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.Component;
 
 import javax.annotation.Nullable;
 
@@ -33,17 +33,17 @@ public class MPARCGui extends ExtendedContainerScreen<MPARCContainer> {
     // separate frame for each slot
 //    private final SlotOptionsFrame slotOptions;
 
-    protected final Colour topBorderColour = new Colour(0.216F, 0.216F, 0.216F, 1.0F);
-    protected final Colour bottomBorderColour = Colour.WHITE.withAlpha(0.8F);
-    protected final Colour  backgroundColour = Colour.GREY_GUI_BACKGROUND; //new Colour(0.545F, 0.545F, 0.545F, 1.0F);
+    protected final Color topBorderColor = new Color(0.216F, 0.216F, 0.216F, 1.0F);
+    protected final Color bottomBorderColor = Color.WHITE.withAlpha(0.8F);
+    protected final Color  backgroundColor = Color.GREY_GUI_BACKGROUND; //new Color(0.545F, 0.545F, 0.545F, 1.0F);
 
 
-    protected final Colour gridColour = new Colour(0.1F, 0.3F, 0.4F, 0.7F);
-    protected final Colour gridBorderColour = Colour.LIGHT_BLUE.withAlpha(0.8F);
-    protected final Colour gridBackGound = new Colour(0.545F, 0.545F, 0.545F, 1);
+    protected final Color gridColor = new Color(0.1F, 0.3F, 0.4F, 0.7F);
+    protected final Color gridBorderColor = Color.LIGHT_BLUE.withAlpha(0.8F);
+    protected final Color gridBackGound = new Color(0.545F, 0.545F, 0.545F, 1);
     public RecipeGen recipeGen;
 
-    public MPARCGui(MPARCContainer container, PlayerInventory playerInventory, ITextComponent title) {
+    public MPARCGui(MPARCContainer container, PlayerInventory playerInventory, Component title) {
         super(container, playerInventory, title, 400, 300, false);
         float zLevel = getBlitOffset();
 
@@ -53,16 +53,16 @@ public class MPARCGui extends ExtendedContainerScreen<MPARCContainer> {
                 new MusePoint2D(0, 0),
                 zLevel,
                 container,
-                backgroundColour,
-                topBorderColour,
-                bottomBorderColour,
+                backgroundColor,
+                topBorderColor,
+                bottomBorderColor,
                 this,
                 ulGetter());
         inventoryFrame.enableAndShow();
         addFrame(inventoryFrame);
 
         recipeOptions = new RecipeOptionsFrame(
-                Colour.DARKBLUE,
+                Color.DARKBLUE,
                 gridBackGound,
                 this
         );
@@ -70,7 +70,7 @@ public class MPARCGui extends ExtendedContainerScreen<MPARCContainer> {
         recipeGen = new RecipeGen(container, recipeOptions);
 
         // display for stack string in slot
-        tokenTxt = new StackTextDisplayFrame(Colour.DARKBLUE);
+        tokenTxt = new StackTextDisplayFrame(Color.DARKBLUE);
         addFrame(tokenTxt);
 
         slotOptions = new SlotOptionsFrame(
@@ -78,14 +78,14 @@ public class MPARCGui extends ExtendedContainerScreen<MPARCContainer> {
                 new MusePoint2D(0, 0),
                 recipeGen,
                 container,
-                Colour.DARKBLUE,
-                gridBorderColour,
-                Colour.DARK_GREY,
-                Colour.LIGHT_GREY,
-                Colour.BLACK);
+                Color.DARKBLUE,
+                gridBorderColor,
+                Color.DARK_GREY,
+                Color.LIGHT_GREY,
+                Color.BLACK);
         addFrame(slotOptions);
 
-        recipeDisplayFrame = new RecipeDisplayFrame(Colour.DARKBLUE);
+        recipeDisplayFrame = new RecipeDisplayFrame(Color.DARKBLUE);
         addFrame(recipeDisplayFrame);
     }
 
@@ -155,7 +155,7 @@ public class MPARCGui extends ExtendedContainerScreen<MPARCContainer> {
 //
 //        System.out.println("selected slot index: " + getSelectedSlot(x, y) == null ? null : container.inventorySlots.indexOf(getSelectedSlot(x, y)));
 //
-////            InputMappings.Input mouseKey = InputMappings.Type.MOUSE.getOrMakeInput(button);
+////            InputConstants.Input mouseKey = InputConstants.Type.MOUSE.getOrMakeInput(button);
 ////            boolean flag = Minecraft.getInstance().gameSettings.keyBindPickBlock.isActiveAndMatches(mouseKey);
 ////            boolean flag = Minecraft.getInstance().gameSettings.keyBindUseItem.isActiveAndMatches(mouseKey);
 ////            boolean flag = Minecraft.getInstance().gameSettings.keyBindAttack.isActiveAndMatches(mouseKey);
@@ -187,7 +187,7 @@ public class MPARCGui extends ExtendedContainerScreen<MPARCContainer> {
 
 
     @Override
-    public void renderLabels(MatrixStack matrixStack, int x, int y) {
+    public void renderLabels(PoseStack matrixStack, int x, int y) {
 //        super.renderLabels(matrixStack, x, y);
     }
 
@@ -222,7 +222,7 @@ public class MPARCGui extends ExtendedContainerScreen<MPARCContainer> {
     }
 
     @Override
-    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
+    public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTicks) {
         this.renderBackground(matrixStack);
         super.render(matrixStack, mouseX, mouseY, partialTicks);
 

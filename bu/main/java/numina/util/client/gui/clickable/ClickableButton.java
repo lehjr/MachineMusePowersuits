@@ -26,13 +26,13 @@
 
 package lehjr.numina.util.client.gui.clickable;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.matrix.PoseStack;
 import lehjr.numina.util.client.gui.gemoetry.DrawableRelativeRect;
 import lehjr.numina.util.client.gui.gemoetry.IDrawable;
 import lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
 import lehjr.numina.util.client.render.MuseRenderer;
-import lehjr.numina.util.math.Colour;
-import net.minecraft.util.text.ITextComponent;
+import lehjr.numina.util.math.Color;
+import net.minecraft.util.text.Component;
 
 /**
  * @author MachineMuse
@@ -40,18 +40,18 @@ import net.minecraft.util.text.ITextComponent;
 public class ClickableButton extends DrawableRelativeRect implements IClickable {
     boolean isVisible = true;
     boolean isEnabled = true;
-    protected ITextComponent label;
+    protected Component label;
     protected MusePoint2D radius;
 
-    private Colour enabledBorder  = new Colour(0.3F, 0.3F, 0.3F, 1);
-    private Colour enabledBackground = new Colour(0.5F, 0.6F, 0.8F, 1);
-    private Colour disabledBorder = new Colour(0.8F, 0.6F, 0.6F, 1);
-    private Colour disabledBackground = new Colour(0.8F, 0.3F, 0.3F, 1);
+    private Color enabledBorder  = new Color(0.3F, 0.3F, 0.3F, 1);
+    private Color enabledBackground = new Color(0.5F, 0.6F, 0.8F, 1);
+    private Color disabledBorder = new Color(0.8F, 0.6F, 0.6F, 1);
+    private Color disabledBackground = new Color(0.8F, 0.3F, 0.3F, 1);
     private IPressable onPressed;
     private IReleasable onReleased;
 
-    public ClickableButton(ITextComponent label, MusePoint2D position, boolean enabled) {
-        super(0,0,0, 0, Colour.BLACK, Colour.BLACK);
+    public ClickableButton(Component label, MusePoint2D position, boolean enabled) {
+        super(0,0,0, 0, Color.BLACK, Color.BLACK);
         this.label = label;
         this.setPosition(position);
 
@@ -72,33 +72,33 @@ public class ClickableButton extends DrawableRelativeRect implements IClickable 
         setTop(position.getY() - radius.getY());
         setWidth(radius.getX() * 2);
         setHeight(radius.getY() * 2);
-        setBorderColour(enabledBorder);
-        setBackgroundColour(enabledBackground);
+        setBorderColor(enabledBorder);
+        setBackgroundColor(enabledBackground);
         this.setEnabled(enabled);
     }
 
-    public ClickableButton setEnabledBorder(Colour enabledBorder) {
+    public ClickableButton setEnabledBorder(Color enabledBorder) {
         this.enabledBorder = enabledBorder;
         return this;
     }
 
-    public ClickableButton setEnabledBackground(Colour enabledBackground) {
+    public ClickableButton setEnabledBackground(Color enabledBackground) {
         this.enabledBackground = enabledBackground;
         return this;
     }
 
-    public ClickableButton setDisabledBorder(Colour disabledBorder) {
+    public ClickableButton setDisabledBorder(Color disabledBorder) {
         this.disabledBorder = disabledBorder;
         return this;
     }
 
-    public ClickableButton setDisabledBackground(Colour disabledBackground) {
+    public ClickableButton setDisabledBackground(Color disabledBackground) {
         this.disabledBackground = disabledBackground;
         return this;
     }
 
-    void setBackgroundColour(Colour backgroundColour, boolean hovered) {
-        super.setBackgroundColour(hovered? backgroundColour.copy().lighten(0.10F) : backgroundColour);
+    void setBackgroundColor(Color backgroundColor, boolean hovered) {
+        super.setBackgroundColor(hovered? backgroundColor.copy().lighten(0.10F) : backgroundColor);
     }
 
     /**
@@ -109,7 +109,7 @@ public class ClickableButton extends DrawableRelativeRect implements IClickable 
      * @param partialTicks
      */
     @Override
-    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
+    public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTicks) {
         renderButton(matrixStack, mouseX, mouseY, partialTicks);
         renderText(matrixStack, mouseX, mouseY);
     }
@@ -132,14 +132,14 @@ public class ClickableButton extends DrawableRelativeRect implements IClickable 
      * @param mouseY
      * @param frameTIme
      */
-    public void renderButton(MatrixStack matrixStack, int mouseX, int mouseY, float frameTIme) {
+    public void renderButton(PoseStack matrixStack, int mouseX, int mouseY, float frameTIme) {
         if (isVisible) {
 
-            setBackgroundColour(isEnabled() ? enabledBackground : disabledBackground, containsPoint(mouseX, mouseY));
+            setBackgroundColor(isEnabled() ? enabledBackground : disabledBackground, containsPoint(mouseX, mouseY));
 
 
 
-            this.setBorderColour(isEnabled() ? enabledBorder : disabledBorder);
+            this.setBorderColor(isEnabled() ? enabledBorder : disabledBorder);
 
 
             super.render(matrixStack, mouseX, mouseY, frameTIme);
@@ -153,7 +153,7 @@ public class ClickableButton extends DrawableRelativeRect implements IClickable 
      * @param mouseX
      * @param mouseY
      */
-    public void renderText(MatrixStack matrixStack, int mouseX, int mouseY) {
+    public void renderText(PoseStack matrixStack, int mouseX, int mouseY) {
         if (isVisible()) {
             if (label.getString().contains("\n")) {
                 String[] s = label.getString().split("\n");
@@ -219,12 +219,12 @@ public class ClickableButton extends DrawableRelativeRect implements IClickable 
         }
     }
 
-    public ClickableButton setLable(ITextComponent label) {
+    public ClickableButton setLable(Component label) {
         this.label = label;
         return this;
     }
 
-    public ITextComponent getLabel() {
+    public Component getLabel() {
         return label;
     }
 }

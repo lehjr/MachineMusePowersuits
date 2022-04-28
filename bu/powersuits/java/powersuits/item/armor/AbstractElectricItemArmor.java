@@ -40,7 +40,7 @@ import lehjr.numina.util.capabilities.module.powermodule.IPowerModule;
 import lehjr.numina.util.capabilities.module.powermodule.PowerModuleCapability;
 import lehjr.numina.util.capabilities.module.toggleable.IToggleableModule;
 import lehjr.numina.util.capabilities.render.IArmorModelSpecNBT;
-import lehjr.numina.util.capabilities.render.ModelSpecNBTCapability;
+import lehjr.numina.util.capabilities.render.CapabilityModelSpec;
 import lehjr.numina.util.capabilities.render.modelspec.EnumSpecType;
 import lehjr.numina.util.energy.ElectricItemUtils;
 import lehjr.numina.util.string.AdditionalInfo;
@@ -63,7 +63,7 @@ import net.minecraft.item.ArmorItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.Component;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -283,7 +283,7 @@ public abstract class AbstractElectricItemArmor extends ArmorItem {
             return NuminaConstants.BLANK_ARMOR_MODEL_PATH;
         }
 
-        return armor.getCapability(ModelSpecNBTCapability.RENDER)
+        return armor.getCapability(CapabilityModelSpec.RENDER)
                 .filter(IArmorModelSpecNBT.class::isInstance)
                 .map(IArmorModelSpecNBT.class::cast)
                 .map(spec-> {
@@ -315,7 +315,7 @@ public abstract class AbstractElectricItemArmor extends ArmorItem {
 //            return _default;
 //        }
 
-        return itemStack.getCapability(ModelSpecNBTCapability.RENDER).map(spec-> {
+        return itemStack.getCapability(CapabilityModelSpec.RENDER).map(spec-> {
             CompoundTag renderTag = spec.getRenderTag();
 
             EquipmentSlot slot = Mob.getEquipmentSlotForItem(itemStack);
@@ -355,7 +355,7 @@ public abstract class AbstractElectricItemArmor extends ArmorItem {
 
     @OnlyIn(Dist.CLIENT)
     @Override
-    public void appendHoverText(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+    public void appendHoverText(ItemStack stack, @Nullable World worldIn, List<Component> tooltip, ITooltipFlag flagIn) {
         if (worldIn != null) {
             AdditionalInfo.appendHoverText(stack, worldIn, tooltip, flagIn);
         }

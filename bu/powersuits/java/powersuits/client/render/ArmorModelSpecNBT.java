@@ -92,7 +92,7 @@ public class ArmorModelSpecNBT extends ModelSpecNBT implements IArmorModelSpecNB
         // TextureSpecBase (only one texture visible at a time)
         CompoundTag texSpecTag = new CompoundTag();
 
-        // List of EnumColour indexes
+        // List of EnumColor indexes
         List<Integer> colours = new ArrayList<>();
 
         // temp data holder
@@ -104,13 +104,13 @@ public class ArmorModelSpecNBT extends ModelSpecNBT implements IArmorModelSpecNB
             // Only generate NBT data from Specs marked as "default"
             if (spec.isDefault()) {
                 if (getItemStack().getItem() instanceof ArmorItem) {
-                    colours = addNewColourstoList(colours, spec.getColours()); // merge new color int arrays in
+                    colours = addNewColorstoList(colours, spec.getColors()); // merge new color int arrays in
 
                     // Armor Skin
                     if (spec.getSpecType().equals(EnumSpecType.ARMOR_SKIN) && spec.get(slot.getName()) != null) {
                         // only a single texture per equipment slot can be used at a time
                         texSpecTag = spec.get(slot.getName()).multiSet(new CompoundTag(),
-                                getNewColourIndex(colours, spec.getColours(), spec.get(slot.getName()).getDefaultColourIndex()));
+                                getNewColorIndex(colours, spec.getColors(), spec.get(slot.getName()).getDefaultColorIndex()));
                     }
 
                     // Armor models
@@ -123,7 +123,7 @@ public class ArmorModelSpecNBT extends ModelSpecNBT implements IArmorModelSpecNB
                                         (partSpec.binding.getItemState().equals("jetpack") &&
                                                 ModuleManager.INSTANCE.itemHasModule(stack, MPSModuleConstants.MODULE_JETPACK__DATANAME))) { */
                                 prefArray.add(((ModelPartSpec) partSpec).multiSet(new CompoundTag(),
-                                        getNewColourIndex(colours, spec.getColours(), partSpec.getDefaultColourIndex()),
+                                        getNewColorIndex(colours, spec.getColors(), partSpec.getDefaultColorIndex()),
                                         ((ModelPartSpec) partSpec).getGlow()));
                                 /*} */
                             }
@@ -135,7 +135,7 @@ public class ArmorModelSpecNBT extends ModelSpecNBT implements IArmorModelSpecNB
 
         CompoundTag nbt = new CompoundTag();
         for (CompoundTag elem : prefArray) {
-            nbt.put(elem.getString(NuminaConstants.TAG_MODEL) + "." + elem.getString(NuminaConstants.TAG_PART), elem);
+            nbt.put(elem.getString(NuminaConstants.MODEL) + "." + elem.getString(NuminaConstants.TAG_PART), elem);
         }
 
         if (!specList.isEmpty()) {
@@ -146,7 +146,7 @@ public class ArmorModelSpecNBT extends ModelSpecNBT implements IArmorModelSpecNB
             nbt.put(NuminaConstants.NBT_TEXTURESPEC_TAG, texSpecTag);
         }
 
-        nbt.put(NuminaConstants.TAG_COLOURS, new IntArrayNBT(colours));
+        nbt.put(NuminaConstants.COLOR, new IntArrayNBT(colours));
         return nbt;
     }
 

@@ -28,7 +28,7 @@ package lehjr.powersuits.client.model.helper;
 
 import lehjr.numina.util.client.model.helper.ModelHelper;
 import net.minecraft.client.Minecraft;
-import net.minecraft.util.math.vector.TransformationMatrix;
+import net.minecraft.util.math.vector.Transformation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.lwjgl.glfw.GLFW;
@@ -62,15 +62,15 @@ public class ModelTransformCalibration {
     }
 
     // unreliable
-//    public ModelTransformCalibration(TransformationMatrix transform) {
+//    public ModelTransformCalibration(Transformation transform) {
 //        this(
 //                transform.getTranslation().x * 16,
 //                transform.getTranslation().y * 16,
 //                transform.getTranslation().z * 16,
 //
-//                TransformationMatrix.toYXZDegrees(transform.getLeftRot()).x,
-//                TransformationMatrix.toYXZDegrees(transform.getLeftRot()).y,
-//                TransformationMatrix.toYXZDegrees(transform.getLeftRot()).z,
+//                Transformation.toYXZDegrees(transform.getLeftRot()).x,
+//                Transformation.toYXZDegrees(transform.getLeftRot()).y,
+//                Transformation.toYXZDegrees(transform.getLeftRot()).z,
 //
 //                transform.getScale().x
 //        );
@@ -201,7 +201,7 @@ public class ModelTransformCalibration {
         }
     }
 
-    public TransformationMatrix getTransform() {
+    public Transformation getTransform() {
         transformCalibration();
         return ModelHelper.get(xOffest, yOffest, zOffest, angleX, angleY, angleZ, scalemodifier);
     }

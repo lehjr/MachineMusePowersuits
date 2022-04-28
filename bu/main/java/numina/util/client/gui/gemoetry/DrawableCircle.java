@@ -26,13 +26,13 @@
 
 package lehjr.numina.util.client.gui.gemoetry;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.matrix.PoseStack;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.IVertexBuilder;
-import lehjr.numina.basemod.MuseLogger;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import lehjr.numina.basemod.NuminaLogger;
 import lehjr.numina.util.client.render.NuminaRenderState;
-import lehjr.numina.util.math.Colour;
+import lehjr.numina.util.math.Color;
 import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.math.vector.Matrix4f;
@@ -128,7 +128,7 @@ public class DrawableCircle<LIGHTMAP_ENABLED> {
     protected static FloatBuffer points;
     protected final FloatBuffer colour;
 
-    public DrawableCircle(Colour c1, Colour c2) {
+    public DrawableCircle(Color c1, Color c2) {
         FloatBuffer colourPoints;
         if (points == null) {
             colourPoints = GradientAndArcCalculator.getArcPoints(0, (float)(Math.PI * 2 + 0.0001), detail, 0F, 0F, 0F);
@@ -141,14 +141,14 @@ public class DrawableCircle<LIGHTMAP_ENABLED> {
             points.put(colourPoints.get());
             points.flip();
         }
-        colourPoints = GradientAndArcCalculator.getColourGradient(c1, c1, points.limit() / 3);
+        colourPoints = GradientAndArcCalculator.getColorGradient(c1, c1, points.limit() / 3);
         colour = BufferUtils.createFloatBuffer(colourPoints.limit() + 4); // space for rgba of c2
         colour.put(c2.asArray());
         colour.put(colourPoints);
         colour.flip();
     }
 
-    public void draw(MatrixStack matrixStack, double radius, double x, double y, float zLevel) {
+    public void draw(PoseStack matrixStack, double radius, double x, double y, float zLevel) {
         float ratio = (System.currentTimeMillis() % 2000) / 2000.0F;
         colour.rewind();
         points.rewind();
@@ -180,7 +180,7 @@ public class DrawableCircle<LIGHTMAP_ENABLED> {
         RenderSystem.enableAlphaTest();
         RenderSystem.enableTexture();
 
-        RenderSystem.popMatrix();
+        RenderSystem.popPose();
 
 //        /**
 //         * Specifies the location and organization of a color array.
@@ -219,7 +219,7 @@ public class DrawableCircle<LIGHTMAP_ENABLED> {
     }
 
 
-    public void draw(MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, float radius, float x, float y, float z/*,  int packedLightIn*/) {
+    public void draw(PoseStack matrixStackIn, MultiBufferSource bufferIn, float radius, float x, float y, float z/*,  int packedLightIn*/) {
         drawSphere(matrixStackIn, bufferIn, x, y, y, radius, 1, 1);
 
 
@@ -232,7 +232,7 @@ public class DrawableCircle<LIGHTMAP_ENABLED> {
 //        matrixStackIn.scale(radius / detail, radius / detail, 1.0F);
 //        matrixStackIn.rotate(Vector3f.YP.rotationDegrees(-ratio * 360.0f));
 //
-//        IVertexBuilder vertBuffer = bufferIn.getBuffer(PLASMA_BALL);
+//        VertexConsumer vertBuffer = bufferIn.getBuffer(PLASMA_BALL);
 //        Matrix4f matrix4f = matrixStackIn.last().pose();
 //
 //        while (points.hasRemaining() && colour.hasRemaining()) {
@@ -251,10 +251,10 @@ public class DrawableCircle<LIGHTMAP_ENABLED> {
      * @param stacks The number of subdivisions around the Z axis (similar to lines of longitude).
      * @param slices The number of subdivisions along the Z axis (similar to lines of latitude).
      */
-    public void drawSphere(MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn,
+    public void drawSphere(PoseStack matrixStackIn, MultiBufferSource bufferIn,
                                   float x, float y, float z,
                                   float radius, int stacks, int slices) {
-        Colour colourTest = Colour.MAGENTA.withAlpha(0.3F);
+        Color colourTest = Color.MAGENTA.withAlpha(0.3F);
 
         float r0, r1, alpha0, alpha1, x0, x1, y0, y1, z0, z1, beta;
         float stackStep = (float) (Math.PI / stacks);
@@ -262,7 +262,7 @@ public class DrawableCircle<LIGHTMAP_ENABLED> {
 
         matrixStackIn.pushPose();
         matrixStackIn.translate(x, y, z);
-        IVertexBuilder vertBuffer = bufferIn.getBuffer(PLASMA_BALL);
+        VertexConsumer vertBuffer = bufferIn.getBuffer(PLASMA_BALL);
         Matrix4f matrix4f = matrixStackIn.last().pose();
 
         int vertices = 0;
@@ -298,11 +298,11 @@ public class DrawableCircle<LIGHTMAP_ENABLED> {
 
                 vertices +=6;
 
-                MuseLogger.logDebug("j: " + j);
+                NuminaLogger.logDebug("j: " + j);
             }
         }
         matrixStackIn.popPose();
-        MuseLogger.logDebug("vertices: " + vertices);
-        MuseLogger.logDebug("numVertices: " + numVertices);
+        NuminaLogger.logDebug("vertices: " + vertices);
+        NuminaLogger.logDebug("numVertices: " + numVertices);
     }
 }

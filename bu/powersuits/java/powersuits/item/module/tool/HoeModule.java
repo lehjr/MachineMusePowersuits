@@ -49,7 +49,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUseContext;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.util.ActionResultType;
+import net.minecraft.util.InteractionResult;
 import net.minecraft.util.Direction;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
@@ -106,7 +106,7 @@ public class HoeModule extends AbstractPowerModule {
             }
 
             @Override
-            public ActionResultType useOn(ItemUseContext context) {
+            public InteractionResult useOn(ItemUseContext context) {
                 int energyConsumed = this.getEnergyUsage();
                 Player player = context.getPlayer();
                 World world = context.getLevel();
@@ -115,10 +115,10 @@ public class HoeModule extends AbstractPowerModule {
                 ItemStack itemStack = context.getItemInHand();
 
                 if (!player.mayUseItemAt(pos, facing, itemStack) || ElectricItemUtils.getPlayerEnergy(player) < energyConsumed) {
-                    return ActionResultType.PASS;
+                    return InteractionResult.PASS;
                 } else {
                     int hook = net.minecraftforge.event.ForgeEventFactory.onHoeUse(context);
-                    if (hook != 0) return hook > 0 ? ActionResultType.SUCCESS : ActionResultType.FAIL;
+                    if (hook != 0) return hook > 0 ? InteractionResult.SUCCESS : InteractionResult.FAIL;
                     int radius = (int)applyPropertyModifiers(MPSConstants.RADIUS);
                     for (int i = (int) Math.floor(-radius); i < radius; i++) {
                         for (int j = (int) Math.floor(-radius); j < radius; j++) {
@@ -141,7 +141,7 @@ public class HoeModule extends AbstractPowerModule {
                         }
                     }
                 }
-                return ActionResultType.SUCCESS;
+                return InteractionResult.SUCCESS;
             }
 
             @Override

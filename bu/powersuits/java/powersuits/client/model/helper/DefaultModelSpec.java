@@ -78,7 +78,7 @@ public class DefaultModelSpec {
         // TextureSpecBase (only one texture visible at a time)
         CompoundTag texSpecTag = new CompoundTag();
 
-        // List of EnumColour indexes
+        // List of EnumColor indexes
         List<Integer> colours = new ArrayList<>();
 
         // temp data holder
@@ -91,25 +91,25 @@ public class DefaultModelSpec {
 
                 /** Power Fist -------------------------------------------------------------------- */
                 if (stack.getItem() instanceof PowerFist && spec.getSpecType().equals(EnumSpecType.HANDHELD)) {
-                    colours = addNewColourstoList(colours, spec.getColours()); // merge new color int arrays in
+                    colours = addNewColorstoList(colours, spec.getColors()); // merge new color int arrays in
 
                     for (PartSpecBase partSpec : spec.getPartSpecs()) {
                         if (partSpec instanceof ModelPartSpec) {
                             prefArray.add(((ModelPartSpec) partSpec).multiSet(new CompoundTag(),
-                                    getNewColourIndex(colours, spec.getColours(), partSpec.getDefaultColourIndex()),
+                                    getNewColorIndex(colours, spec.getColors(), partSpec.getDefaultColorIndex()),
                                     ((ModelPartSpec) partSpec).getGlow()));
                         }
                     }
 
                     /** Power Armor ------------------------------------------------------------------- */
                 } else if (stack.getItem() instanceof AbstractElectricItemArmor) {
-                    colours = addNewColourstoList(colours, spec.getColours()); // merge new color int arrays in
+                    colours = addNewColorstoList(colours, spec.getColors()); // merge new color int arrays in
 
                     // Armor Skin
                     if (spec.getSpecType().equals(EnumSpecType.ARMOR_SKIN) && spec.get(slot.getName()) != null) {
                         // only a single texture per equipment itemSlot can be used at a time
                         texSpecTag = spec.get(slot.getName()).multiSet(new CompoundTag(),
-                                getNewColourIndex(colours, spec.getColours(), spec.get(slot.getName()).getDefaultColourIndex()));
+                                getNewColorIndex(colours, spec.getColors(), spec.get(slot.getName()).getDefaultColorIndex()));
                     }
 
                     // Armor models
@@ -123,7 +123,7 @@ public class DefaultModelSpec {
                                         (partSpec.binding.getItemState().equals("jetpack") &&
                                                 ModuleManager.INSTANCE.itemHasModule(stack, MPSModuleConstants.MODULE_JETPACK__DATANAME))) { */
                                     prefArray.add(((ModelPartSpec) partSpec).multiSet(new CompoundTag(),
-                                            getNewColourIndex(colours, spec.getColours(), partSpec.getDefaultColourIndex()),
+                                            getNewColorIndex(colours, spec.getColors(), partSpec.getDefaultColorIndex()),
                                             ((ModelPartSpec) partSpec).getGlow()));
                                 /*} */
                             }
@@ -135,7 +135,7 @@ public class DefaultModelSpec {
 
         CompoundTag nbt = new CompoundTag();
         for (CompoundTag elem : prefArray) {
-            nbt.put(elem.getString(NuminaConstants.TAG_MODEL) + "." + elem.getString(NuminaConstants.TAG_PART), elem);
+            nbt.put(elem.getString(NuminaConstants.MODEL) + "." + elem.getString(NuminaConstants.TAG_PART), elem);
         }
 
         if (!specList.isEmpty())
@@ -144,7 +144,7 @@ public class DefaultModelSpec {
         if (!texSpecTag.isEmpty())
             nbt.put(NuminaConstants.NBT_TEXTURESPEC_TAG, texSpecTag);
 
-        nbt.put(NuminaConstants.TAG_COLOURS, new IntArrayNBT(colours));
+        nbt.put(NuminaConstants.COLOR, new IntArrayNBT(colours));
 
         return nbt;
     }
@@ -152,7 +152,7 @@ public class DefaultModelSpec {
     /**
      * When dealing with possibly multiple specs and color lists, new list needs to be created, since there is only one list per item.
      */
-    static List<Integer> addNewColourstoList(List<Integer> colours, List<Integer> coloursToAdd) {
+    static List<Integer> addNewColorstoList(List<Integer> colours, List<Integer> coloursToAdd) {
         for (Integer i : coloursToAdd) {
             if (!colours.contains(i))
                 colours.add(i);
@@ -163,7 +163,7 @@ public class DefaultModelSpec {
     /**
      * new array means setting a new array index for the same getValue
      */
-    public static int getNewColourIndex(List<Integer> colours, List<Integer> oldColours, Integer index) {
-        return colours.indexOf(oldColours.get(index != null ? index : 0));
+    public static int getNewColorIndex(List<Integer> colours, List<Integer> oldColors, Integer index) {
+        return colours.indexOf(oldColors.get(index != null ? index : 0));
     }
 }

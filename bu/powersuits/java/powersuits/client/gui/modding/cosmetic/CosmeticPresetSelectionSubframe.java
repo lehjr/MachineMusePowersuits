@@ -26,7 +26,7 @@
 //
 //package lehjr.powersuits.client.gui.modding.cosmetic;
 //
-//import lehjr.numina.util.capabilities.render.ModelSpecNBTCapability;
+//import lehjr.numina.util.capabilities.render.CapabilityModelSpec;
 //import lehjr.numina.util.capabilities.render.modelspec.EnumSpecType;
 //import lehjr.numina.util.client.gui.clickable.ClickableItem;
 //import lehjr.numina.util.client.gui.clickable.ClickableLabel;
@@ -62,7 +62,7 @@
 //
 //    public boolean isValidItem(ClickableItem clickie, EquipmentSlot slot) {
 //        if (clickie != null) {
-//            clickie.getStack().getCapability(ModelSpecNBTCapability.RENDER).map(iModelSpecNBT -> {
+//            clickie.getStack().getCapability(CapabilityModelSpec.RENDER).map(iModelSpecNBT -> {
 //                EnumSpecType specType = iModelSpecNBT.getSpecType();
 //
 //                if (iModelSpecNBT.getSpecType().equals(EnumSpecType.HANDHELD) && slot.getType().equals(EquipmentSlot.Type.HAND)) {

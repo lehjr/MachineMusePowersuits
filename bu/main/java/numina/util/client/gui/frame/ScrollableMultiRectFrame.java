@@ -1,12 +1,12 @@
 package lehjr.numina.util.client.gui.frame;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.matrix.PoseStack;
 import lehjr.numina.util.client.gui.clickable.IClickable;
 import lehjr.numina.util.client.gui.gemoetry.IDrawable;
 import lehjr.numina.util.client.gui.gemoetry.IDrawableRect;
 import lehjr.numina.util.client.gui.gemoetry.IRect;
 import lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
-import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.Component;
 
 import javax.annotation.Nullable;
 import java.util.HashMap;
@@ -171,7 +171,7 @@ public class ScrollableMultiRectFrame<T extends Map<Integer, IRect>> extends GUI
         return false;
     }
 
-    public void renderRects(MatrixStack matrixStack, int mouseX, int mouseY, float frameTime) {
+    public void renderRects(PoseStack matrixStack, int mouseX, int mouseY, float frameTime) {
         if(isVisible()) {
             for (IRect rect : rects.values()) {
                 if (rect instanceof IDrawable) {
@@ -182,11 +182,11 @@ public class ScrollableMultiRectFrame<T extends Map<Integer, IRect>> extends GUI
     }
 
     @Override
-    public void preRender(MatrixStack matrixStack, int mouseX, int mouseY, float frameTime) {
+    public void preRender(PoseStack matrixStack, int mouseX, int mouseY, float frameTime) {
         IScrollable.super.preRender(matrixStack, mouseX, mouseY, frameTime);
     }
 
-    public void renderBackground(MatrixStack matrixStack, int mouseX, int mouseY, float frameTime) {
+    public void renderBackground(PoseStack matrixStack, int mouseX, int mouseY, float frameTime) {
         getBackground().ifPresent(background -> background.render(matrixStack, mouseX, mouseY, frameTime));
     }
 
@@ -195,12 +195,12 @@ public class ScrollableMultiRectFrame<T extends Map<Integer, IRect>> extends GUI
         IScrollable.super.postRender(mouseX, mouseY, frameTime);
     }
 
-    public void superRender(MatrixStack matrixStack, int mouseX, int mouseY, float frameTime) {
+    public void superRender(PoseStack matrixStack, int mouseX, int mouseY, float frameTime) {
         super.render(matrixStack, mouseX, mouseY, frameTime);
     }
 
     @Override
-    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float frameTime) {
+    public void render(PoseStack matrixStack, int mouseX, int mouseY, float frameTime) {
         super.render(matrixStack, mouseX, mouseY, frameTime);
         if(isVisible()) {
             renderBackground(matrixStack, mouseX, mouseY, frameTime);
@@ -211,8 +211,8 @@ public class ScrollableMultiRectFrame<T extends Map<Integer, IRect>> extends GUI
     }
 
     @Override
-    public List<ITextComponent> getToolTip(int x, int y) {
-        List<ITextComponent> toolTip = null;
+    public List<Component> getToolTip(int x, int y) {
+        List<Component> toolTip = null;
         for (IRect rect : rects.values()) {
             if (rect instanceof IDrawableRect) {
                 toolTip = ((IDrawableRect) rect).getToolTip(x, y);

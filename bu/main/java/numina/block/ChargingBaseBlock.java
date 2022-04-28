@@ -28,7 +28,7 @@ package lehjr.numina.block;
 
 import lehjr.numina.container.ChargingBaseContainer;
 import lehjr.numina.entity.NuminaArmorStandEntity;
-import lehjr.numina.tileentity.ChargingBaseTileEntity;
+import lehjr.numina.tileentity.ChargingBaseBlockEntity;
 import lehjr.numina.util.client.sound.SoundDictionary;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
@@ -48,14 +48,14 @@ import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.tags.FluidTags;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ActionResultType;
+import net.minecraft.tileentity.BlockEntity;
+import net.minecraft.util.InteractionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.Component;
 import net.minecraft.util.text.TranslatableComponent;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
@@ -69,7 +69,7 @@ import java.util.List;
  * Base of the armor workstation.
  */
 public class ChargingBaseBlock extends Block implements IWaterLoggable {
-    private static final ITextComponent title = new TranslatableComponent("container.crafting", new Object[0]);
+    private static final Component title = new TranslatableComponent("container.crafting", new Object[0]);
 
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
@@ -92,7 +92,7 @@ public class ChargingBaseBlock extends Block implements IWaterLoggable {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, @Nullable IBlockReader reader, List<ITextComponent> list, ITooltipFlag flags) {
+    public void appendHoverText(ItemStack stack, @Nullable IBlockReader reader, List<Component> list, ITooltipFlag flags) {
         list.add(new TranslatableComponent("message.charging_base", Integer.toString(/*Config.FIRSTBLOCK_GENERATE.get()*/ 1000)));
     }
 
@@ -103,14 +103,14 @@ public class ChargingBaseBlock extends Block implements IWaterLoggable {
 
     @SuppressWarnings("deprecation")
     @Override
-    public ActionResultType use(BlockState state, World worldIn, BlockPos pos, Player player, Hand handIn, BlockRayTraceResult hit) {
+    public InteractionResult use(BlockState state, World worldIn, BlockPos pos, Player player, Hand handIn, BlockRayTraceResult hit) {
         if (!worldIn.isClientSide) {
-            TileEntity tileEntity = worldIn.getBlockEntity(pos);
-            if (tileEntity instanceof ChargingBaseTileEntity) {
+            BlockEntity tileEntity = worldIn.getBlockEntity(pos);
+            if (tileEntity instanceof ChargingBaseBlockEntity) {
                 player.playSound(SoundDictionary.SOUND_EVENT_GUI_SELECT, 1.0F, 1.0F);
                 INamedContainerProvider containerProvider = new INamedContainerProvider() {
                     @Override
-                    public ITextComponent getDisplayName() {
+                    public Component getDisplayName() {
                         return new TranslatableComponent("screen.numina.charging_base");
                     }
 
@@ -124,7 +124,7 @@ public class ChargingBaseBlock extends Block implements IWaterLoggable {
                 throw new IllegalStateException("container provider is missing!");
             }
         }
-        return ActionResultType.SUCCESS;
+        return InteractionResult.SUCCESS;
     }
 
     // temporary fix for armor stand spawned below the block
@@ -153,12 +153,12 @@ public class ChargingBaseBlock extends Block implements IWaterLoggable {
 
     @Nullable
     @Override
-    public TileEntity createTileEntity(BlockState state, IBlockReader world) {
-        return new ChargingBaseTileEntity();
+    public BlockEntity createBlockEntity(BlockState state, IBlockReader world) {
+        return new ChargingBaseBlockEntity();
     }
 
     @Override
-    public boolean hasTileEntity(BlockState state) {
+    public boolean hasBlockEntity(BlockState state) {
         return true;
     }
 

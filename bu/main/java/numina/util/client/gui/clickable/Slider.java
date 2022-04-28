@@ -1,11 +1,11 @@
 package lehjr.numina.util.client.gui.clickable;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.matrix.PoseStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import lehjr.numina.util.client.gui.gemoetry.DrawableTile;
 import lehjr.numina.util.client.gui.gemoetry.IRect;
 import lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
-import lehjr.numina.util.math.Colour;
+import lehjr.numina.util.math.Color;
 import lehjr.numina.util.math.MuseMathUtils;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.Tessellator;
@@ -82,7 +82,7 @@ public class Slider extends DrawableTile implements IClickable {
     }
 
     @Override
-    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float frameTime) {
+    public void render(PoseStack matrixStack, int mouseX, int mouseY, float frameTime) {
         if (this.isVisible()) {
             super.render(matrixStack, mouseX, mouseY, frameTime);
             if (isHorizontal) {
@@ -94,11 +94,11 @@ public class Slider extends DrawableTile implements IClickable {
             if (showTickLines && tickVal != 0) {
                 if (isHorizontal) {
                     for (double val : calculateTickCoordinates()) {
-                        drawSingleLine(matrixStack, val, top(), val, bottom(), Colour.WHITE);
+                        drawSingleLine(matrixStack, val, top(), val, bottom(), Color.WHITE);
                     }
                 } else {
                     for (double val : calculateTickCoordinates()) {
-                        drawSingleLine(matrixStack, left(), val, right(), val, Colour.WHITE);
+                        drawSingleLine(matrixStack, left(), val, right(), val, Color.WHITE);
                     }
                 }
             }
@@ -192,13 +192,13 @@ public class Slider extends DrawableTile implements IClickable {
                     centery() + 4);
         }
 
-        this.knobRect.setBackgroundColour(Colour.LIGHT_GREY);
-        this.knobRect.setBottomBorderColour(Colour.BLACK);
-        this.knobRect.setTopBorderColour(Colour.WHITE);
+        this.knobRect.setBackgroundColor(Color.LIGHT_GREY);
+        this.knobRect.setBottomBorderColor(Color.BLACK);
+        this.knobRect.setTopBorderColor(Color.WHITE);
 
-        this.setBackgroundColour(Colour.DARK_GREY);
-        this.setBottomBorderColour(Colour.WHITE);
-        this.setTopBorderColour(Colour.BLACK);
+        this.setBackgroundColor(Color.DARK_GREY);
+        this.setBottomBorderColor(Color.WHITE);
+        this.setTopBorderColor(Color.BLACK);
         isCreatingNewRects = false;
     }
 
@@ -223,7 +223,7 @@ public class Slider extends DrawableTile implements IClickable {
     }
 
 
-    void drawSingleLine(MatrixStack matrixStack, double xStart, double yStart, double xEnd, double yEnd, Colour colour) {
+    void drawSingleLine(PoseStack matrixStack, double xStart, double yStart, double xEnd, double yEnd, Color colour) {
         Tessellator tessellator = Tessellator.getInstance();
         BufferBuilder builder = tessellator.getBuilder();
         Matrix4f matrix4f = matrixStack.last().pose();

@@ -26,20 +26,20 @@
 
 package lehjr.numina.util.client.gui.clickable;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.matrix.PoseStack;
 import lehjr.numina.util.capabilities.module.powermodule.EnumModuleCategory;
 import lehjr.numina.util.capabilities.module.powermodule.PowerModuleCapability;
 import lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
 import lehjr.numina.util.client.render.MuseIconUtils;
 import lehjr.numina.util.client.render.MuseRenderer;
-import lehjr.numina.util.math.Colour;
+import lehjr.numina.util.math.Color;
 import lehjr.numina.util.string.AdditionalInfo;
 import lehjr.numina.util.string.MuseStringUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.Component;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -54,7 +54,7 @@ import java.util.List;
  * Ported to Java by lehjr on 10/19/16.
  */
 public class ClickableModule extends Clickable {
-    final Colour checkmarkcolour = new Colour(0.0F, 0.667F, 0.0F, 1.0F);
+    final Color checkmarkcolour = new Color(0.0F, 0.667F, 0.0F, 1.0F);
     boolean allowed = true;
     boolean installed = false;
     boolean isEnabled = true;
@@ -87,7 +87,7 @@ public class ClickableModule extends Clickable {
     }
 
     @Override
-    public List<ITextComponent> getToolTip(int x, int y) {
+    public List<Component> getToolTip(int x, int y) {
         if (hitBox(x, y)) {
             return module.getTooltipLines(Minecraft.getInstance().player,
                     AdditionalInfo.doAdditionalInfo() ?
@@ -122,7 +122,7 @@ public class ClickableModule extends Clickable {
     }
 
     @Override
-    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
+    public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTicks) {
         // TODO: extra text and options to disable if player doesn't have the module available
 
         if (!getModule().isEmpty()) {

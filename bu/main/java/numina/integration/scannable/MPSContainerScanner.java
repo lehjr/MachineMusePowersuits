@@ -8,7 +8,7 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
-import net.minecraft.network.PacketBuffer;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.util.Hand;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
@@ -26,7 +26,7 @@ public class MPSContainerScanner extends Container {
         return new MPSContainerScanner(windowId, inventory, hand, itemHandler);
     }
 
-    public static MPSContainerScanner createForClient(int windowId, PlayerInventory inventory, PacketBuffer buffer) {
+    public static MPSContainerScanner createForClient(int windowId, PlayerInventory inventory, FriendlyByteBuf buffer) {
         Hand hand = buffer.readEnum(Hand.class);
         return new MPSContainerScanner(windowId, inventory, hand, new ItemHandlerScanner(inventory.player.getItemInHand(hand)));
     }

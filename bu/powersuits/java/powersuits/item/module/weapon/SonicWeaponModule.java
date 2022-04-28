@@ -112,9 +112,9 @@
 //                        }
 //                    }
 //                    playerIn.setActiveHand(hand);
-//                    return new ActionResult(ActionResultType.SUCCESS, itemStackIn);
+//                    return new ActionResult(InteractionResult.SUCCESS, itemStackIn);
 //                }
-//                return new ActionResult(ActionResultType.PASS, itemStackIn);
+//                return new ActionResult(InteractionResult.PASS, itemStackIn);
 //            }
 //
 //            public void drawParticleStreamTo(Player source, World world, double x, double y, double z) {
@@ -224,7 +224,7 @@
 ////                    buffer.pos(lvt_48_1_, lvt_21_1_, lvt_50_1_).tex(1.0D, lvt_78_1_).color(lvt_29_1_, lvt_30_1_, lvt_31_1_, 255).endVertex();
 ////                    buffer.pos(lvt_44_1_, lvt_21_1_, lvt_46_1_).tex(0.5D, lvt_78_1_).color(lvt_29_1_, lvt_30_1_, lvt_31_1_, 255).endVertex();
 ////                    tessellator.draw();
-////                    GlStateManager.popMatrix();
+////                    GlStateManager.popPose();
 ////                }
 //            }
 //
@@ -263,12 +263,12 @@
 ////    }
 ////
 ////    @Override
-////    public ActionResultType onItemUse(ItemStack stack, Player playerIn, World worldIn, BlockPos pos, EnumHand hand, Direction facing, float hitX, float hitY, float hitZ) {
+////    public InteractionResult onItemUse(ItemStack stack, Player playerIn, World worldIn, BlockPos pos, EnumHand hand, Direction facing, float hitX, float hitY, float hitZ) {
 ////        return null;
 ////    }
 ////
 ////    @Override
-////    public ActionResultType onItemUseFirst(ItemStack stack, Player player, World world, BlockPos pos, Direction side, float hitX, float hitY, float hitZ, EnumHand hand) {
+////    public InteractionResult onItemUseFirst(ItemStack stack, Player player, World world, BlockPos pos, Direction side, float hitX, float hitY, float hitZ, EnumHand hand) {
 ////        return null;
 ////    }
 ////

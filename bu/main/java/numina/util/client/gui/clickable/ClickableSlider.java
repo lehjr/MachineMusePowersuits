@@ -26,12 +26,12 @@
 
 package lehjr.numina.util.client.gui.clickable;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.matrix.PoseStack;
 import lehjr.numina.util.client.gui.frame.LabelBox;
 import lehjr.numina.util.client.gui.gemoetry.DrawableTile;
 import lehjr.numina.util.client.gui.gemoetry.IRect;
 import lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
-import lehjr.numina.util.math.Colour;
+import lehjr.numina.util.math.Color;
 import net.minecraft.util.text.TranslatableComponent;
 
 import javax.annotation.Nullable;
@@ -79,7 +79,7 @@ public class ClickableSlider extends DrawableTile implements IClickable {
             super.setWidth(16 + 8);
         }
         this.labelBox = new LabelBox(size, 16, label);
-        this.labelBox.setColor(Colour.WHITE);
+        this.labelBox.setColor(Color.WHITE);
         this.slider = new Slider(position, isHorizontal, size, id, currentVal, iSlider);
         this.slider.setMeBelow(this.labelBox);
         super.setHeight(labelBox.finalHeight() + slider.finalHeight());
@@ -94,12 +94,12 @@ public class ClickableSlider extends DrawableTile implements IClickable {
         this.labelBox.setLabel(label);
     }
 
-    public void setLabelColour(Colour colour) {
+    public void setLabelColor(Color colour) {
         this.labelBox.setColor(colour);
     }
 
     @Override
-    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float frameTime) {
+    public void render(PoseStack matrixStack, int mouseX, int mouseY, float frameTime) {
         labelBox.setPosition(new MusePoint2D(centerx(), top() + (labelBox.finalHeight() * 0.5)));
         slider.setPosition(new MusePoint2D(centerx(), bottom() - (slider.finalHeight() * 0.5)));
 

@@ -26,18 +26,18 @@
 
 package lehjr.powersuits.client.model.block;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.matrix.PoseStack;
 import lehjr.numina.util.capabilities.module.powermodule.PowerModuleCapability;
 import lehjr.numina.util.client.model.obj.OBJBakedCompositeModel;
 import lehjr.numina.util.client.model.obj.OBJPartData;
-import lehjr.numina.util.math.Colour;
+import lehjr.numina.util.math.Color;
 import lehjr.powersuits.block.LuxCapacitorBlock;
 import lehjr.powersuits.client.model.helper.LuxCapHelper;
 import lehjr.powersuits.constants.MPSConstants;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.renderer.model.BakedQuad;
 import net.minecraft.client.renderer.model.IBakedModel;
-import net.minecraft.client.renderer.model.ItemCameraTransforms;
+import net.minecraft.client.renderer.model.ItemTransforms;
 import net.minecraft.client.renderer.model.ItemOverrideList;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.LivingEntity;
@@ -60,7 +60,7 @@ import java.util.Random;
  */
 @OnlyIn(Dist.CLIENT)
 public class LuxCapacitorModelWrapper extends BakedModelWrapper<OBJBakedCompositeModel> {
-    Colour colour;
+    Color colour;
     private LuxCapacitorItemOverrideList overrides;
 
     public LuxCapacitorModelWrapper(OBJBakedCompositeModel original) {
@@ -72,14 +72,14 @@ public class LuxCapacitorModelWrapper extends BakedModelWrapper<OBJBakedComposit
     @Override
     public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, @Nonnull Random rand, @Nonnull IModelData extraData) {
         if (!extraData.hasProperty(OBJPartData.SUBMODEL_DATA)) {
-            extraData = LuxCapHelper.getModelData(colour != null ? colour.getInt() : Colour.WHITE.getInt());
+            extraData = LuxCapHelper.getModelData(colour != null ? colour.getInt() : Color.WHITE.getInt());
         }
         return originalModel.getQuads(state, side, rand, extraData);
     }
 
     @Override
     public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, Random rand) {
-        IModelData extraData = LuxCapHelper.getModelData(colour != null ? colour.getInt() : Colour.WHITE.getInt());
+        IModelData extraData = LuxCapHelper.getModelData(colour != null ? colour.getInt() : Color.WHITE.getInt());
         return originalModel.getQuads(state, side, rand, extraData);
     }
 
@@ -91,7 +91,7 @@ public class LuxCapacitorModelWrapper extends BakedModelWrapper<OBJBakedComposit
      * @return
      */
     @Override
-    public IBakedModel handlePerspective(ItemCameraTransforms.TransformType cameraTransformType, MatrixStack mat) {
+    public IBakedModel handlePerspective(ItemTransforms.TransformType cameraTransformType, PoseStack mat) {
         return PerspectiveMapWrapper.handlePerspective(this, ((OBJBakedCompositeModel)this.originalModel).getModelTransforms(), cameraTransformType, mat);
     }
 
@@ -112,10 +112,10 @@ public class LuxCapacitorModelWrapper extends BakedModelWrapper<OBJBakedComposit
         @Nullable
         @Override
         public IBakedModel resolve(IBakedModel model, ItemStack stack, @Nullable ClientWorld worldIn, @Nullable LivingEntity entityIn) {
-            Colour colour;
+            Color colour;
             // this one is just for the launched item
             if (stack.hasTag() && stack.getTag().contains("colour", Constants.NBT.TAG_INT)) {
-                colour = new Colour( stack.getTag().getInt("colour"));
+                colour = new Color( stack.getTag().getInt("colour"));
             // this is for the active icon
             } else {
                 colour = stack.getCapability(PowerModuleCapability.POWER_MODULE).map(pm -> {
@@ -123,7 +123,7 @@ public class LuxCapacitorModelWrapper extends BakedModelWrapper<OBJBakedComposit
                     float green = (float) pm.applyPropertyModifiers(MPSConstants.GREEN_HUE);
                     float blue = (float) pm.applyPropertyModifiers(MPSConstants.BLUE_HUE);
                     float alpha = (float) pm.applyPropertyModifiers(MPSConstants.OPACITY);
-                    return new Colour(red, green, blue, alpha);
+                    return new Color(red, green, blue, alpha);
                 }).orElse(LuxCapacitorBlock.defaultColor);
             }
 

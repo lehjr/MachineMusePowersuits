@@ -38,7 +38,7 @@ import org.apache.logging.log4j.Logger;
  * <p>
  * Ported to Java by lehjr on 10/23/16.
  */
-public final class MuseLogger {
+public final class NuminaLogger {
     public static final Logger logger = LogManager.getLogger("MachineMuse");
 
     public static void logDebug(String string) {

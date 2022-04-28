@@ -29,7 +29,7 @@ package lehjr.powersuits.network.packets;//package lehjr.powersuits.network.pack
 //import lehjr.mpalib.basemod.MPALibLogger;
 //import lehjr.mpalib.network.MuseByteBufferUtils;
 //import net.minecraft.nbt.CompoundTag;
-//import net.minecraft.network.PacketBuffer;
+//import net.minecraft.network.FriendlyByteBuf;
 //import net.minecraftforge.fml.network.NetworkEvent;
 //
 //import java.util.function.Supplier;
@@ -49,13 +49,13 @@ package lehjr.powersuits.network.packets;//package lehjr.powersuits.network.pack
 //        this.cosmeticSettings = cosmeticSettingsIn;
 //    }
 //
-//    public static void encode(MusePacketCosmeticPresetUpdate msg, PacketBuffer packetBuffer) {
+//    public static void encode(MusePacketCosmeticPresetUpdate msg, FriendlyByteBuf packetBuffer) {
 //        packetBuffer.writeString(msg.registryName);
 //        packetBuffer.writeString(msg.name);
 //        MuseByteBufferUtils.writeCompressedNBT(packetBuffer, msg.cosmeticSettings);
 //    }
 //
-//    public static MusePacketCosmeticPresetUpdate decode(PacketBuffer packetBuffer) {
+//    public static MusePacketCosmeticPresetUpdate decode(FriendlyByteBuf packetBuffer) {
 //        return new MusePacketCosmeticPresetUpdate(
 //                packetBuffer.readString(500),
 //        packetBuffer.readString(500),

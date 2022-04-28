@@ -3,7 +3,7 @@ package lehjr.powersuits.client.gui.modding.module.install_salvage;
 import lehjr.numina.util.capabilities.module.powermodule.PowerModuleCapability;
 import lehjr.numina.util.client.gui.clickable.ClickableModule;
 import lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
-import lehjr.numina.util.math.Colour;
+import lehjr.numina.util.math.Color;
 import lehjr.powersuits.client.gui.common.ModularItemSelectionFrame;
 import lehjr.powersuits.client.gui.modding.module.tweak.ModuleSelectionFrame;
 import lehjr.powersuits.client.gui.modding.module.tweak.ModuleSelectionSubFrame;
@@ -16,7 +16,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class CompatibleModuleDisplayFrame extends ModuleSelectionFrame {
-    public CompatibleModuleDisplayFrame(ModularItemSelectionFrame itemSelectFrameIn, MusePoint2D topleft, MusePoint2D bottomright, Colour background, Colour topBorder, Colour bottomBorder) {
+    public CompatibleModuleDisplayFrame(ModularItemSelectionFrame itemSelectFrameIn, MusePoint2D topleft, MusePoint2D bottomright, Color background, Color topBorder, Color bottomBorder) {
         super(itemSelectFrameIn, topleft, bottomright, background, topBorder, bottomBorder);
     }
 

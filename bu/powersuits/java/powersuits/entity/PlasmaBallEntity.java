@@ -31,7 +31,7 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.projectile.ThrowableEntity;
 import net.minecraft.network.IPacket;
-import net.minecraft.network.PacketBuffer;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
@@ -185,7 +185,7 @@ public class PlasmaBallEntity extends ThrowableEntity implements IEntityAddition
      * @param buffer The packet data stream
      */
     @Override
-    public void writeSpawnData(PacketBuffer buffer) {
+    public void writeSpawnData(FriendlyByteBuf buffer) {
         buffer.writeFloat(this.entityData.get(CHARGE_PERCENT));
         buffer.writeFloat(this.entityData.get(EXPLOSIVENESS));
         buffer.writeFloat(this.entityData.get(DAMAGINESS));
@@ -198,7 +198,7 @@ public class PlasmaBallEntity extends ThrowableEntity implements IEntityAddition
      * @param additionalData The packet data stream
      */
     @Override
-    public void readSpawnData(PacketBuffer additionalData) {
+    public void readSpawnData(FriendlyByteBuf additionalData) {
         this.entityData.set(CHARGE_PERCENT, additionalData.readFloat());
         this.entityData.set(EXPLOSIVENESS, additionalData.readFloat());
         this.entityData.set(DAMAGINESS, additionalData.readFloat());

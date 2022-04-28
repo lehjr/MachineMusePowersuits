@@ -26,7 +26,7 @@
 
 package lehjr.powersuits.tile_entity;
 
-import lehjr.numina.util.tileentity.MuseTileEntity;
+import lehjr.numina.util.tileentity.MuseBlockEntity;
 import lehjr.powersuits.basemod.MPSObjects;
 import net.minecraft.util.Direction;
 
@@ -35,15 +35,15 @@ import net.minecraft.util.Direction;
  * <p>
  * Ported to Java by lehjr on 10/21/16.
  */
-public class TinkerTableTileEntity extends MuseTileEntity {
+public class TinkerTableBlockEntity extends MuseBlockEntity {
     Direction facing;
 
-    public TinkerTableTileEntity() {
+    public TinkerTableBlockEntity() {
         super(MPSObjects.TINKER_TABLE_TILE_TYPE.get());
         this.facing = Direction.NORTH;
     }
 
-    public TinkerTableTileEntity(Direction facing) {
+    public TinkerTableBlockEntity(Direction facing) {
         super(MPSObjects.TINKER_TABLE_TILE_TYPE.get());
         this.facing = facing;
     }

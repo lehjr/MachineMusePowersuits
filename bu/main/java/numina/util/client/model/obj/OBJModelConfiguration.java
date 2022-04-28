@@ -147,8 +147,8 @@ public class OBJModelConfiguration implements IModelConfiguration {
      * Do not use for non-vanilla code. For general usage, prefer getCombinedState.
      */
     @Override
-    public ItemCameraTransforms getCameraTransforms() {
-        return ItemCameraTransforms.NO_TRANSFORMS;
+    public ItemTransforms. getCameraTransforms() {
+        return ItemTransforms..NO_TRANSFORMS;
     }
 
     public OBJModelConfiguration setCombinedTransform(IModelTransform combinedTransform) {

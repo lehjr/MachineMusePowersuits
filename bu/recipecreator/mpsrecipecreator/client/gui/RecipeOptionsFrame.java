@@ -1,15 +1,15 @@
 package com.lehjr.mpsrecipecreator.client.gui;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.matrix.PoseStack;
 import lehjr.numina.util.client.gui.clickable.CheckBox;
 import lehjr.numina.util.client.gui.clickable.ClickableButton;
 import lehjr.numina.util.client.gui.clickable.ClickableLabel;
 import lehjr.numina.util.client.gui.frame.ScrollableFrame;
 import lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
 import lehjr.numina.util.client.sound.Musique;
-import lehjr.numina.util.math.Colour;
+import lehjr.numina.util.math.Color;
 import net.minecraft.util.SoundEvents;
-import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.Component;
 import net.minecraft.util.text.TranslatableComponent;
 
 import java.util.ArrayList;
@@ -33,11 +33,11 @@ public class RecipeOptionsFrame extends ScrollableFrame {
     ConditionsFrame conditionsFrame;
 
     public RecipeOptionsFrame(
-            Colour backgroundColour,
-            Colour conditionsBorder,
+            Color backgroundColor,
+            Color conditionsBorder,
             MPARCGui mparcGui) {
         super();
-        setBackgroundColour(backgroundColour);
+        setBackgroundColor(backgroundColor);
 
         MusePoint2D starterPoint = MusePoint2D.ZERO;
         this.title = new ClickableLabel("Recipe Options", starterPoint);
@@ -78,9 +78,9 @@ public class RecipeOptionsFrame extends ScrollableFrame {
 
         conditionsFrame = new ConditionsFrame(
                 MusePoint2D.ZERO, MusePoint2D.ZERO,
-                Colour.PINK,
+                Color.PINK,
                 conditionsBorder,
-                Colour.MAGENTA
+                Color.MAGENTA
         );
         conditionsFrame.disable();
         conditionsFrame.hide();
@@ -130,7 +130,7 @@ public class RecipeOptionsFrame extends ScrollableFrame {
     }
 
     @Override
-    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
+    public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTicks) {
         if (isVisible()) {
             super.render(matrixStack, mouseX, mouseY, partialTicks);
             title.render(matrixStack, mouseX, mouseY, partialTicks);
@@ -195,11 +195,11 @@ public class RecipeOptionsFrame extends ScrollableFrame {
         return false;
     }
 
-    ClickableButton addButton(ITextComponent label) {
+    ClickableButton addButton(Component label) {
         ClickableButton button = new ClickableButton(label, MusePoint2D.ZERO, true);
-        button.setBorderColour(Colour.BLACK);
-        button.setDisabledBackground(Colour.RED);
-        button.setEnabledBackground(Colour.DARK_GREY);
+        button.setBorderColor(Color.BLACK);
+        button.setDisabledBackground(Color.RED);
+        button.setEnabledBackground(Color.DARK_GREY);
         button.setWidth(110);
         button.setHeight(20);
 

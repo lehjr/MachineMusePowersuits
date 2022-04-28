@@ -26,17 +26,17 @@
 
 package lehjr.numina.util.client.gui.slot;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.matrix.PoseStack;
 import lehjr.numina.util.capabilities.module.powermodule.EnumModuleCategory;
 import lehjr.numina.util.capabilities.module.powermodule.PowerModuleCapability;
 import lehjr.numina.util.client.gui.clickable.IClickable;
 import lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
 import lehjr.numina.util.client.render.MuseIconUtils;
 import lehjr.numina.util.client.render.MuseRenderer;
-import lehjr.numina.util.math.Colour;
+import lehjr.numina.util.math.Color;
 import lehjr.numina.util.string.MuseStringUtils;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.Component;
 import net.minecraft.util.text.TranslatableComponent;
 import net.minecraftforge.items.IItemHandler;
 
@@ -55,7 +55,7 @@ public class ClickableModuleSlot extends UniversalSlot implements IClickable {
     boolean isVisible = true;
     boolean isEnabled = true;
 
-    final Colour checkmarkcolour = new Colour(0.0F, 0.667F, 0.0F, 1.0F);
+    final Color checkmarkcolour = new Color(0.0F, 0.667F, 0.0F, 1.0F);
     boolean allowed = true;
     boolean installed = false;
 
@@ -76,7 +76,7 @@ public class ClickableModuleSlot extends UniversalSlot implements IClickable {
     }
 
     @Override
-    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
+    public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTicks) {
         if (!getItem().isEmpty()) {
             MuseRenderer.drawItemAt(getUL().getX(), getUL().getY(), getItem());
             if (!allowed) {
@@ -99,11 +99,11 @@ public class ClickableModuleSlot extends UniversalSlot implements IClickable {
     }
 
     @Override
-    public List<ITextComponent> getToolTip(int x, int y) {
+    public List<Component> getToolTip(int x, int y) {
         if (hitBox(x, y)) {
-            List<ITextComponent> toolTipText = new ArrayList<>();
+            List<Component> toolTipText = new ArrayList<>();
             toolTipText.add(getLocalizedName());
-            toolTipText.addAll(MuseStringUtils.wrapITextComponentToLength(getLocalizedDescription(), 30));
+            toolTipText.addAll(MuseStringUtils.wrapComponentToLength(getLocalizedDescription(), 30));
             return toolTipText;
         }
         return null;
@@ -143,13 +143,13 @@ public class ClickableModuleSlot extends UniversalSlot implements IClickable {
         }
     }
 
-    public ITextComponent getLocalizedName() {
+    public Component getLocalizedName() {
         if (this.getItem().isEmpty())
             return null;
         return this.getItem().getDisplayName();
     }
 
-    public ITextComponent getLocalizedDescription() {
+    public Component getLocalizedDescription() {
         if (this.getItem().isEmpty())
             return null;
         return new TranslatableComponent(this.getItem().getItem().getDescriptionId().concat(".desc"));

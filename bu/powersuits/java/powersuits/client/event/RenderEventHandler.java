@@ -27,15 +27,15 @@
 package lehjr.powersuits.client.event;
 
 import com.google.common.util.concurrent.AtomicDouble;
-import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.vertex.IVertexBuilder;
+import com.mojang.blaze3d.matrix.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import lehjr.numina.util.capabilities.inventory.modechanging.IModeChangingItem;
 import lehjr.numina.util.capabilities.inventory.modularitem.IModularItem;
 import lehjr.numina.util.capabilities.module.powermodule.PowerModuleCapability;
 import lehjr.numina.util.capabilities.render.highlight.HighLightCapability;
 import lehjr.numina.util.client.gui.gemoetry.DrawableRelativeRect;
 import lehjr.numina.util.client.render.MuseRenderer;
-import lehjr.numina.util.math.Colour;
+import lehjr.numina.util.math.Color;
 import lehjr.powersuits.client.control.KeybindManager;
 import lehjr.powersuits.client.control.MPSKeyBinding;
 import lehjr.powersuits.client.model.helper.MPSModelHelper;
@@ -44,10 +44,10 @@ import lehjr.powersuits.constants.MPSConstants;
 import lehjr.powersuits.constants.MPSRegistryNames;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.ClientPlayer;
-import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.WorldRenderer;
-import net.minecraft.client.util.InputMappings;
+import net.minecraft.client.util.InputConstants;
 import net.minecraft.entity.player.Player;
 import net.minecraft.inventory.EquipmentSlot;
 import net.minecraft.item.ItemStack;
@@ -56,7 +56,7 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.Component;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.*;
@@ -73,7 +73,7 @@ import java.util.stream.Collectors;
 public enum RenderEventHandler {
     INSTANCE;
     private static boolean ownFly = false;
-    private final DrawableRelativeRect frame = new DrawableRelativeRect(MPSSettings.getHudKeybindX(), MPSSettings.getHudKeybindY(), MPSSettings.getHudKeybindX() + (float) 16, MPSSettings.getHudKeybindY() +  16, true, Colour.DARK_GREEN.withAlpha(0.2F), Colour.GREEN.withAlpha(0.2F));
+    private final DrawableRelativeRect frame = new DrawableRelativeRect(MPSSettings.getHudKeybindX(), MPSSettings.getHudKeybindY(), MPSSettings.getHudKeybindX() + (float) 16, MPSSettings.getHudKeybindY() +  16, true, Color.DARK_GREEN.withAlpha(0.2F), Color.GREEN.withAlpha(0.2F));
 
 
     /**
@@ -100,9 +100,9 @@ public enum RenderEventHandler {
                             return;
                         }
 
-                        MatrixStack matrixStack = event.getMatrix();
-                        IRenderTypeBuffer buffer = event.getBuffers();
-                        IVertexBuilder lineBuilder = buffer.getBuffer(RenderType.LINES);
+                        PoseStack matrixStack = event.getMatrix();
+                        MultiBufferSource buffer = event.getBuffers();
+                        VertexConsumer lineBuilder = buffer.getBuffer(RenderType.LINES);
 
                         double partialTicks = event.getPartialTicks();
                         double x = player.xOld + (player.getX() - player.xOld) * partialTicks;
@@ -137,7 +137,7 @@ public enum RenderEventHandler {
     public void onPostRenderGameOverlayEvent(RenderGameOverlayEvent.Post e) {
         RenderGameOverlayEvent.ElementType elementType = e.getType();
         if (RenderGameOverlayEvent.ElementType.HOTBAR.equals(elementType)) {
-            this.drawKeybindToggles(e.getMatrixStack());
+            this.drawKeybindToggles(e.getPoseStack());
         }
     }
 
@@ -214,7 +214,7 @@ public enum RenderEventHandler {
     }
 
     @OnlyIn(Dist.CLIENT)
-    public void drawKeybindToggles(MatrixStack matrixStack) {
+    public void drawKeybindToggles(PoseStack matrixStack) {
         if (MPSSettings.displayHud() && isModularItemEquuiiped()) {
             Minecraft minecraft = Minecraft.getInstance();
             AtomicDouble top = new AtomicDouble(MPSSettings.getHudKeybindY());
@@ -234,14 +234,14 @@ public enum RenderEventHandler {
 
     class KBDisplay extends DrawableRelativeRect {
         List<MPSKeyBinding> boundKeybinds = new ArrayList<>();
-        final InputMappings.Input finalId;
+        final InputConstants.Input finalId;
         public KBDisplay(MPSKeyBinding kb, double left, double top, double right) {
-            super(left, top, right, top + 16, true, Colour.DARK_GREEN.withAlpha(0.2F), Colour.GREEN.withAlpha(0.2F));
+            super(left, top, right, top + 16, true, Color.DARK_GREEN.withAlpha(0.2F), Color.GREEN.withAlpha(0.2F));
             this.finalId = kb.getKey();
             boundKeybinds.add(kb);
         }
 
-        public ITextComponent getLabel() {
+        public Component getLabel() {
             return finalId.getDisplayName();
         }
 
@@ -256,7 +256,7 @@ public enum RenderEventHandler {
         }
 
         @Override
-        public void render(MatrixStack matrixStack, int mouseX, int mouseY, float frameTime) {
+        public void render(PoseStack matrixStack, int mouseX, int mouseY, float frameTime) {
             float stringwidth = (float) MuseRenderer.getFontRenderer().width(getLabel());
             setWidth(stringwidth + 8 + boundKeybinds.stream().filter(kb->kb.showOnHud).collect(Collectors.toList()).size() * 18);
             super.render(matrixStack, 0, 0, frameTime);
@@ -264,7 +264,7 @@ public enum RenderEventHandler {
             matrixStack.translate(0,0,100);
             boolean kbToggleVal = boundKeybinds.stream().filter(kb->kb.toggleval).findFirst().isPresent();
 
-            MuseRenderer.drawLeftAlignedText(matrixStack, getLabel(), (float) left() + 4, (float) top() + 9, (kbToggleVal) ? Colour.RED : Colour.GREEN);
+            MuseRenderer.drawLeftAlignedText(matrixStack, getLabel(), (float) left() + 4, (float) top() + 9, (kbToggleVal) ? Color.RED : Color.GREEN);
             matrixStack.popPose();
             AtomicDouble x = new AtomicDouble(left() + stringwidth + 8);
 

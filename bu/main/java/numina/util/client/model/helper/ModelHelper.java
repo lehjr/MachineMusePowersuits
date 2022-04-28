@@ -29,10 +29,10 @@ package lehjr.numina.util.client.model.helper;
 import com.google.common.collect.ImmutableList;
 import forge.NuminaOBJLoader;
 import forge.NuminaOBJModel;
-import lehjr.numina.basemod.MuseLogger;
+import lehjr.numina.basemod.NuminaLogger;
 import lehjr.numina.util.client.model.obj.OBJBakedCompositeModel;
 import lehjr.numina.util.client.model.obj.OBJModelConfiguration;
-import lehjr.numina.util.math.Colour;
+import lehjr.numina.util.math.Color;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.model.BakedQuad;
 import net.minecraft.client.renderer.model.IModelTransform;
@@ -41,7 +41,7 @@ import net.minecraft.client.renderer.model.RenderMaterial;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.VertexFormatElement;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.vector.TransformationMatrix;
+import net.minecraft.util.math.vector.Transformation;
 import net.minecraft.util.math.vector.Vector3f;
 import net.minecraft.util.math.vector.Vector4f;
 import net.minecraftforge.client.model.ModelLoader;
@@ -54,14 +54,14 @@ import java.util.List;
 import java.util.function.Function;
 
 public class ModelHelper {
-    public static TransformationMatrix get(float transformX, float transformY, float transformZ, float angleX, float angleY, float angleZ, float scaleX, float scaleY, float scaleZ) {
+    public static Transformation get(float transformX, float transformY, float transformZ, float angleX, float angleY, float angleZ, float scaleX, float scaleY, float scaleZ) {
         // (@Nullable Vector3f translationIn,
         // @Nullable Quaternion rotationLeftIn,
         // @Nullable Vector3f scaleIn,
         // @Nullable Quaternion rotationRightIn)
 
 
-        return new TransformationMatrix(
+        return new Transformation(
                 // Transform
                 new Vector3f(transformX / 16, transformY / 16, transformZ / 16),
                 // Angles
@@ -72,7 +72,7 @@ public class ModelHelper {
                 null);
     }
 
-    public static TransformationMatrix get(float transformX, float transformY, float transformZ, float angleX, float angleY, float angleZ, float scale) {
+    public static Transformation get(float transformX, float transformY, float transformZ, float angleX, float angleY, float angleZ, float scale) {
         return get(transformX, transformY, transformZ, angleX, angleY, angleZ, scale, scale, scale);
     }
 
@@ -96,13 +96,13 @@ public class ModelHelper {
         } catch (Exception e) {
             if (attempt < 6) {
                 model = getOBJModel(location, attempt + 1);
-                MuseLogger.logError("Model loading failed on attempt #" + attempt + "  :( " + location.toString());
+                NuminaLogger.logError("Model loading failed on attempt #" + attempt + "  :( " + location.toString());
             } else {
                 model = null;
-                MuseLogger.logError("Failed to load model. " + e);
+                NuminaLogger.logError("Failed to load model. " + e);
             }
         }
-        MuseLogger.logDebug("got model");
+        NuminaLogger.logDebug("got model");
         return model;
     }
 
@@ -129,26 +129,26 @@ public class ModelHelper {
      * This is better than changing material colors for Wavefront models because it means that you can use a single material for the entire model
      * instead of unique ones for each group. It also means you don't necessarily need a Wavefront model.
      */
-    public static List<BakedQuad> getColouredQuadsWithGlowAndTransform(List<BakedQuad> quadList, Colour colour, final TransformationMatrix transform, boolean glow) {
+    public static List<BakedQuad> getColoredQuadsWithGlowAndTransform(List<BakedQuad> quadList, Color colour, final Transformation transform, boolean glow) {
         ImmutableList.Builder<BakedQuad> builder = ImmutableList.builder();
         quadList.forEach(quad -> builder.add(colouredQuadWithGlowAndTransform(colour, quad, !glow, transform)));
         return builder.build();
     }
 
-    public static BakedQuad colouredQuadWithGlowAndTransform(Colour colour, BakedQuad quad, boolean applyDifuse, TransformationMatrix transform) {
+    public static BakedQuad colouredQuadWithGlowAndTransform(Color colour, BakedQuad quad, boolean applyDifuse, Transformation transform) {
         QuadTransformer transformer = new QuadTransformer(colour, transform, quad.getSprite(), applyDifuse);
         quad.pipe(transformer);
         return transformer.build();
     }
 
 
-    public static List<BakedQuad> getColoredQuadsWithGlow(List<BakedQuad> quadList, Colour color, boolean glow) {
+    public static List<BakedQuad> getColoredQuadsWithGlow(List<BakedQuad> quadList, Color color, boolean glow) {
         ImmutableList.Builder<BakedQuad> builder = ImmutableList.builder();
         quadList.forEach(quad -> builder.add(colorQuad(color, quad, !glow)));
         return builder.build();
     }
 
-    public static List<BakedQuad> getColoredQuads(List<BakedQuad> quadList, Colour color) {
+    public static List<BakedQuad> getColoredQuads(List<BakedQuad> quadList, Color color) {
         ImmutableList.Builder<BakedQuad> builder = ImmutableList.builder();
         for (BakedQuad quad : quadList) {
             builder.add(colorQuad(color, quad, quad.isShade()));
@@ -156,7 +156,7 @@ public class ModelHelper {
         return builder.build();
     }
 
-    public static BakedQuad colorQuad(Colour color, BakedQuad quad, boolean applyDifuse) {
+    public static BakedQuad colorQuad(Color color, BakedQuad quad, boolean applyDifuse) {
         QuadTransformer transformer = new QuadTransformer(color, quad.getSprite(), applyDifuse);
         quad.pipe(transformer);
         return transformer.build();
@@ -164,17 +164,17 @@ public class ModelHelper {
 
     // see TRSRTransformer as example
     private static class QuadTransformer extends VertexTransformer {
-        Colour colour;
+        Color colour;
         Boolean applyDiffuse;
-        TransformationMatrix transform;
+        Transformation transform;
 
-        public QuadTransformer(Colour colour, TextureAtlasSprite texture, boolean applyDiffuse) {
+        public QuadTransformer(Color colour, TextureAtlasSprite texture, boolean applyDiffuse) {
             super(new BakedQuadBuilder(texture));
             this.colour = colour;
             this.applyDiffuse = applyDiffuse;
         }
 
-        public QuadTransformer(Colour colour, final TransformationMatrix transform, TextureAtlasSprite texture, boolean applyDiffuse) {
+        public QuadTransformer(Color colour, final Transformation transform, TextureAtlasSprite texture, boolean applyDiffuse) {
             super(new BakedQuadBuilder(texture));
             this.transform = transform;
             this.colour = colour;

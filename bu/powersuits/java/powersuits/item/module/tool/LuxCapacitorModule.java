@@ -34,7 +34,7 @@ import lehjr.numina.util.capabilities.module.rightclick.IRightClickModule;
 import lehjr.numina.util.capabilities.module.rightclick.RightClickModule;
 import lehjr.numina.util.energy.ElectricItemUtils;
 import lehjr.numina.util.heat.MuseHeatUtils;
-import lehjr.numina.util.math.Colour;
+import lehjr.numina.util.math.Color;
 import lehjr.powersuits.config.MPSSettings;
 import lehjr.powersuits.constants.MPSConstants;
 import lehjr.powersuits.entity.LuxCapacitorEntity;
@@ -104,7 +104,7 @@ public class LuxCapacitorModule extends AbstractPowerModule {
                         float blue = (float) applyPropertyModifiers(MPSConstants.BLUE_HUE);
                         float alpha = (float) applyPropertyModifiers(MPSConstants.OPACITY);
 
-                        LuxCapacitorEntity luxCapacitor = new LuxCapacitorEntity(worldIn, playerIn, new Colour(red, green, blue, alpha));
+                        LuxCapacitorEntity luxCapacitor = new LuxCapacitorEntity(worldIn, playerIn, new Color(red, green, blue, alpha));
                         worldIn.addFreshEntity(luxCapacitor);
                     }
                     return ActionResult.success(itemStackIn);

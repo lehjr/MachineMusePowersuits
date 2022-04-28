@@ -71,7 +71,7 @@ public class RSWirelessHandler {
                 }
 
                 @Override
-                public ActionResultType onItemUseFirst(ItemStack itemStackIn, ItemUseContext context) {
+                public InteractionResult onItemUseFirst(ItemStack itemStackIn, ItemUseContext context) {
                     ItemStack module = ItemUtils.getActiveModuleOrEmpty(itemStackIn);
                     INetwork network = NetworkUtils.getNetworkFromNode(NetworkUtils.getNodeFromTile(context.getLevel().getBlockEntity(context.getClickedPos())));
                     if (network != null) {
@@ -88,10 +88,10 @@ public class RSWirelessHandler {
 
                         module.setTag(tag);
 
-                        return ActionResultType.SUCCESS;
+                        return InteractionResult.SUCCESS;
                     }
 
-                    return ActionResultType.PASS;
+                    return InteractionResult.PASS;
                 }
             };
 

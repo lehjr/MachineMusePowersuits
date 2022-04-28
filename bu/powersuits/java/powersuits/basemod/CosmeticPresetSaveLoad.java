@@ -27,9 +27,9 @@
 package lehjr.powersuits.basemod;
 
 import com.google.common.collect.HashBiMap;
-import lehjr.numina.basemod.MuseLogger;
+import lehjr.numina.basemod.NuminaLogger;
 import lehjr.numina.config.ConfigHelper;
-import lehjr.numina.util.capabilities.render.ModelSpecNBTCapability;
+import lehjr.numina.util.capabilities.render.CapabilityModelSpec;
 import lehjr.powersuits.constants.MPSConstants;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -159,14 +159,14 @@ public class CosmeticPresetSaveLoad {
                                 Files.copy(selectedPath, target);//, StandardCopyOption.REPLACE_EXISTING);
                         } catch(Exception e) {
                             // FIXME
-                            MuseLogger.logException("Exception here: ", e);
+                            NuminaLogger.logException("Exception here: ", e);
                         }
                     }
                     return FileVisitResult.CONTINUE;
                 }
             });
         } catch (Exception e) {
-            MuseLogger.logException("Something happened here: ", e);
+            NuminaLogger.logException("Something happened here: ", e);
         }
     }
 
@@ -196,7 +196,7 @@ public class CosmeticPresetSaveLoad {
         if (itemStack.isEmpty())
             return false;
 
-        return itemStack.getCapability(ModelSpecNBTCapability.RENDER).map(spec->{
+        return itemStack.getCapability(CapabilityModelSpec.RENDER).map(spec->{
             // get the render tag for the item
             CompoundTag renderTag =spec.getRenderTag().copy();
             if (renderTag != null) {
@@ -225,14 +225,14 @@ public class CosmeticPresetSaveLoad {
                 Files.createDirectories(directory);
             } catch(Exception e) {
                 // FIXME
-                MuseLogger.logException("Exception here: ", e); // debugging during development
+                NuminaLogger.logException("Exception here: ", e); // debugging during development
             }
 
             // final complete path
             Path fullPath = Paths.get(directory.toString(), nameIn + "." + EXTENSION);
             Files.write(fullPath, byteArray);
         } catch(Exception e) {
-            MuseLogger.logException("Failed to saveButton preset: ", e);
+            NuminaLogger.logException("Failed to saveButton preset: ", e);
             return false;
         }
         return true;

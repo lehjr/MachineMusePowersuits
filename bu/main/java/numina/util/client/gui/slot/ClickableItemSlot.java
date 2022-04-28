@@ -26,13 +26,13 @@
 
 package lehjr.numina.util.client.gui.slot;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.matrix.PoseStack;
 import lehjr.numina.util.client.gui.clickable.IClickable;
 import lehjr.numina.util.client.render.MuseRenderer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.Component;
 
 import java.util.List;
 
@@ -51,12 +51,12 @@ public class ClickableItemSlot extends UniversalSlot implements IClickable {
     }
 
     @Override
-    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
+    public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTicks) {
         MuseRenderer.drawItemAt(getUL().getX(), getUL().getY(), getItem());
     }
 
     @Override
-    public List<ITextComponent> getToolTip(int x, int y) {
+    public List<Component> getToolTip(int x, int y) {
         if (hitBox(x, y)) {
             return !getItem().isEmpty() ? getItem().getTooltipLines(Minecraft.getInstance().player, ITooltipFlag.TooltipFlags.NORMAL) : null;
         }

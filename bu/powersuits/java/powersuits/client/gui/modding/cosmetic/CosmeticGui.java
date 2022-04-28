@@ -26,7 +26,7 @@
 
 package lehjr.powersuits.client.gui.modding.cosmetic;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.matrix.PoseStack;
 import lehjr.numina.util.client.gui.ContainerlessGui;
 import lehjr.numina.util.client.gui.frame.EntityRenderFrame;
 import lehjr.powersuits.client.gui.common.ModularItemSelectionFrame;
@@ -36,7 +36,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.Player;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.server.management.OpEntry;
-import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.Component;
 
 /**
  * Author: MachineMuse (Claire Semple)
@@ -50,7 +50,7 @@ public class CosmeticGui extends ContainerlessGui {
 
     ModularItemSelectionFrame itemSelectFrame;
     EntityRenderFrame renderframe;
-    ColourPickerFrame colourpicker;
+    ColorPickerFrame colourpicker;
     PartManipContainer partframe;
 
 
@@ -59,7 +59,7 @@ public class CosmeticGui extends ContainerlessGui {
     protected final boolean allowCosmeticPresetCreation;
     protected final boolean usingCosmeticPresets;
 
-    public CosmeticGui(PlayerInventory inventory, ITextComponent title) {
+    public CosmeticGui(PlayerInventory inventory, Component title) {
         super(title, 340, 217, false);
         this.player = inventory.player;
         this.minecraft = Minecraft.getInstance();
@@ -92,7 +92,7 @@ public class CosmeticGui extends ContainerlessGui {
         addFrame(renderframe);
 
         /** for picking the colours ------------------------------------------------------------ */
-        colourpicker = new ColourPickerFrame(itemSelectFrame, 120, 106) ;
+        colourpicker = new ColorPickerFrame(itemSelectFrame, 120, 106) ;
         addFrame(colourpicker);
 
         /** for manipulating part selections --------------------------------------------------- */
@@ -144,8 +144,8 @@ public class CosmeticGui extends ContainerlessGui {
 //                        absY(-0.23f),
 //                        absX(0.95f),
 //                        absY(-0.025f)),
-//                Colour.LIGHTBLUE.withAlpha(0.8F),
-//                Colour.DARKBLUE.withAlpha(0.8F),
+//                Color.LIGHTBLUE.withAlpha(0.8F),
+//                Color.DARKBLUE.withAlpha(0.8F),
 //                itemSelect,
 //                usingCosmeticPresets,
 //                allowCosmeticPresetCreation,
@@ -155,7 +155,7 @@ public class CosmeticGui extends ContainerlessGui {
     }
 
     @Override
-    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
+    public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTicks) {
         if (backgroundRect.width() == backgroundRect.finalWidth() && backgroundRect.height() == backgroundRect.finalHeight()) {
             super.render(matrixStack, mouseX, mouseY, partialTicks);
             renderTooltip(matrixStack, mouseX, mouseY);
@@ -166,14 +166,14 @@ public class CosmeticGui extends ContainerlessGui {
 
 //    @Override
 //    public boolean mouseClicked(double x, double y, int button) {
-//        itemSelectFrame.getModularItemOrEmpty().getCapability(ModelSpecNBTCapability.RENDER)
+//        itemSelectFrame.getModularItemOrEmpty().getCapability(CapabilityModelSpec.RENDER)
 //                .filter(IModelSpecNBT.class::isInstance)
 //                .map(IModelSpecNBT.class::cast).ifPresent(spec -> System.out.println(spec.getRenderTag()));
 //        return super.mouseClicked(x, y, button);
 //    }
 
     @Override
-    public void renderBackground(MatrixStack matrixStack) {
+    public void renderBackground(PoseStack matrixStack) {
         super.renderBackground(matrixStack);
     }
 

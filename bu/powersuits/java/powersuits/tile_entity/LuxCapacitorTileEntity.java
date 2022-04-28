@@ -27,18 +27,18 @@
 package lehjr.powersuits.tile_entity;
 
 
-import lehjr.numina.basemod.MuseLogger;
-import lehjr.numina.util.capabilities.render.colour.ColourCapability;
-import lehjr.numina.util.capabilities.render.colour.ColourNBT;
-import lehjr.numina.util.math.Colour;
-import lehjr.numina.util.tileentity.MuseTileEntity;
+import lehjr.numina.basemod.NuminaLogger;
+import lehjr.numina.util.capabilities.render.colour.ColorCapability;
+import lehjr.numina.util.capabilities.render.colour.ColorNBT;
+import lehjr.numina.util.math.Color;
+import lehjr.numina.util.tileentity.MuseBlockEntity;
 import lehjr.powersuits.basemod.MPSObjects;
 import lehjr.powersuits.block.LuxCapacitorBlock;
 import lehjr.powersuits.client.model.helper.LuxCapHelper;
 import net.minecraft.block.BlockState;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.IntNBT;
-import net.minecraft.network.play.server.SUpdateTileEntityPacket;
+import net.minecraft.network.play.server.SUpdateBlockEntityPacket;
 import net.minecraft.util.Direction;
 import net.minecraftforge.client.model.data.IModelData;
 import net.minecraftforge.common.capabilities.Capability;
@@ -48,16 +48,16 @@ import net.minecraftforge.common.util.LazyOptional;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class LuxCapacitorTileEntity extends MuseTileEntity {
-    LazyOptional<ColourNBT> colourNBT = LazyOptional.of(()-> new ColourNBT());
+public class LuxCapacitorBlockEntity extends MuseBlockEntity {
+    LazyOptional<ColorNBT> colourNBT = LazyOptional.of(()-> new ColorNBT());
 
-    public LuxCapacitorTileEntity() {
+    public LuxCapacitorBlockEntity() {
         super(MPSObjects.LUX_CAP_TILE_TYPE.get());
     }
 
-    public LuxCapacitorTileEntity(Colour colour) {
+    public LuxCapacitorBlockEntity(Color colour) {
         super(MPSObjects.LUX_CAP_TILE_TYPE.get());
-        colourNBT.ifPresent(colourNBT1 -> colourNBT1.setColour(colour));
+        colourNBT.ifPresent(colourNBT1 -> colourNBT1.setColor(colour));
     }
 
     /**
@@ -66,8 +66,8 @@ public class LuxCapacitorTileEntity extends MuseTileEntity {
      */
     @Nullable
     @Override
-    public SUpdateTileEntityPacket getUpdatePacket() {
-        return new SUpdateTileEntityPacket(this.worldPosition, -1, this.getUpdateTag());
+    public SUpdateBlockEntityPacket getUpdatePacket() {
+        return new SUpdateBlockEntityPacket(this.worldPosition, -1, this.getUpdateTag());
     }
 
     @Override
@@ -75,14 +75,14 @@ public class LuxCapacitorTileEntity extends MuseTileEntity {
         return this.save(new CompoundTag());
     }
 
-    public void setColor(Colour colour) {
-//        MuseLogger.logDebug("setting colour: " + colour);
-        this.colourNBT.ifPresent(colourNBT1 -> colourNBT1.setColour(colour));
+    public void setColor(Color colour) {
+//        NuminaLogger.logDebug("setting colour: " + colour);
+        this.colourNBT.ifPresent(colourNBT1 -> colourNBT1.setColor(colour));
     }
 
     @Override
     public CompoundTag save(CompoundTag nbt) {
-//        MuseLogger.logDebug("writing: " + nbt);
+//        NuminaLogger.logDebug("writing: " + nbt);
         colourNBT.ifPresent(colourNBT1 -> nbt.put("colour", colourNBT1.serializeNBT()));
         return super.save(nbt);
     }
@@ -96,7 +96,7 @@ public class LuxCapacitorTileEntity extends MuseTileEntity {
     @Nonnull
     @Override
     public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
-        if (cap == ColourCapability.COLOUR) {
+        if (cap == ColorCapability.COLOUR) {
             return colourNBT.cast();
         }
         return super.getCapability(cap, side);
@@ -104,17 +104,17 @@ public class LuxCapacitorTileEntity extends MuseTileEntity {
 
     @Override
     public void load(BlockState state, CompoundTag nbt) {
-//        MuseLogger.logDebug("reading");
+//        NuminaLogger.logDebug("reading");
 
         if (nbt.contains("colour", Constants.NBT.TAG_INT)) {
             colourNBT.ifPresent(colourNBT1 -> colourNBT1.deserializeNBT((IntNBT) nbt.get("colour")));
         } else {
-            MuseLogger.logger.debug("No NBT found! D:");
+            NuminaLogger.logger.debug("No NBT found! D:");
         }
         super.load(state, nbt);
     }
 
-    public Colour getColor() {
-        return colourNBT.map(colourNBT1 -> colourNBT1.getColour()).orElse(LuxCapacitorBlock.defaultColor);
+    public Color getColor() {
+        return colourNBT.map(colourNBT1 -> colourNBT1.getColor()).orElse(LuxCapacitorBlock.defaultColor);
     }
 }

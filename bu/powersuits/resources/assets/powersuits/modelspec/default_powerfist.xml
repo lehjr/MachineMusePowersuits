@@ -2,9 +2,9 @@
     <models>
         <model file="powersuits:models/item/powerfist/powerfist.obj" localizedName="PowerFist" textures="powersuits:models/powerfist">
             <modelTransforms>
-                <transformationMatrix type="third_person_right_hand" translation="8, 8.01, 9" rotation="-15, 180, 0" scale="0.630, 0.630, 0.630"/>
-                <transformationMatrix type="first_person_right_hand" translation="11.8, 8, 7" rotation="-16, -162, 0" scale="0.5, 0.5, 0.5"/>
-                <transformationMatrix type="ground" translation="0, 5, 0" rotation="0,0,0" scale="0.630, 0.630, 0.630"/>
+                <Transformation type="third_person_right_hand" translation="8, 8.01, 9" rotation="-15, 180, 0" scale="0.630, 0.630, 0.630"/>
+                <Transformation type="first_person_right_hand" translation="11.8, 8, 7" rotation="-16, -162, 0" scale="0.5, 0.5, 0.5"/>
+                <Transformation type="ground" translation="0, 5, 0" rotation="0,0,0" scale="0.630, 0.630, 0.630"/>
             </modelTransforms>
             <binding itemSlot="mainhand" target="RightHand">
                 <part partName="mainarm"/>
@@ -36,9 +36,9 @@
         </model>
         <model file="powersuits:models/item/powerfist/powerfist_fingers_normal.obj" localizedName="PowerFistFingers" textures="powersuits:models/powerfist">
             <modelTransforms>
-                <transformationMatrix type="third_person_right_hand" translation="8, 8.01, 9" rotation="-15, 180, 0" scale="0.630, 0.630, 0.630"/>
-                <transformationMatrix type="first_person_right_hand" translation="11.8, 8, 7" rotation="-16, -162, 0" scale="0.5, 0.5, 0.5"/>
-                <transformationMatrix type="ground" translation="0, 5, 0" rotation="0,0,0" scale="0.630, 0.630, 0.630"/>
+                <Transformation type="third_person_right_hand" translation="8, 8.01, 9" rotation="-15, 180, 0" scale="0.630, 0.630, 0.630"/>
+                <Transformation type="first_person_right_hand" translation="11.8, 8, 7" rotation="-16, -162, 0" scale="0.5, 0.5, 0.5"/>
+                <Transformation type="ground" translation="0, 5, 0" rotation="0,0,0" scale="0.630, 0.630, 0.630"/>
             </modelTransforms>
             <binding itemSlot="mainhand" target="RightHand" itemState="normal">
                 <part partName="index1"/>
@@ -55,9 +55,9 @@
         </model>
         <model file="powersuits:models/item/powerfist/powerfist_fingers_firing.obj" localizedName="PowerFistFingers" textures="powersuits:models/powerfist">
             <modelTransforms>
-                <transformationMatrix type="third_person_right_hand" translation="8, 8.01, 9" rotation="-15, 180, 0" scale="0.630, 0.630, 0.630"/>
-                <transformationMatrix type="first_person_right_hand" translation="11.8, 8, 7" rotation="-16, -162, 0" scale="0.5, 0.5, 0.5"/>
-                <transformationMatrix type="ground" translation="0, 5, 0" rotation="0,0,0" scale="0.630, 0.630, 0.630"/>
+                <Transformation type="third_person_right_hand" translation="8, 8.01, 9" rotation="-15, 180, 0" scale="0.630, 0.630, 0.630"/>
+                <Transformation type="first_person_right_hand" translation="11.8, 8, 7" rotation="-16, -162, 0" scale="0.5, 0.5, 0.5"/>
+                <Transformation type="ground" translation="0, 5, 0" rotation="0,0,0" scale="0.630, 0.630, 0.630"/>
             </modelTransforms>
             <binding itemSlot="mainhand" target="RightHand" itemState="firing">
                 <part partName="index1"/>
@@ -74,8 +74,8 @@
         </model>
         <model file="powersuits:models/item/powerfist/powerfist_left.obj" localizedName="PowerFist" textures="powersuits:models/powerfist">
             <modelTransforms>
-                <transformationMatrix type="third_person_left_hand" translation="13.2, 8.01, 9" rotation="-15, 180, 0" scale="0.630, 0.630, 0.630"/>
-                <transformationMatrix type="first_person_left_hand" translation="6.8, 8, 7" rotation="344, 162, 0" scale="0.5, 0.5, 0.5"/>
+                <Transformation type="third_person_left_hand" translation="13.2, 8.01, 9" rotation="-15, 180, 0" scale="0.630, 0.630, 0.630"/>
+                <Transformation type="first_person_left_hand" translation="6.8, 8, 7" rotation="344, 162, 0" scale="0.5, 0.5, 0.5"/>
             </modelTransforms>
             <binding itemSlot="offhand" target="LeftHand">
                 <part partName="mainarm"/>
@@ -107,8 +107,8 @@
         </model>
         <model file="powersuits:models/item/powerfist/powerfist_fingers_normal_left.obj" localizedName="PowerFistFingers" textures="powersuits:models/powerfist">
             <modelTransforms>
-                <transformationMatrix type="third_person_left_hand" translation="13.2, 8.01, 9" rotation="-15, 180, 0" scale="0.630, 0.630, 0.630"/>
-                <transformationMatrix type="first_person_left_hand" translation="6.8, 8, 7" rotation="344, 162, 0" scale="0.5, 0.5, 0.5"/>
+                <Transformation type="third_person_left_hand" translation="13.2, 8.01, 9" rotation="-15, 180, 0" scale="0.630, 0.630, 0.630"/>
+                <Transformation type="first_person_left_hand" translation="6.8, 8, 7" rotation="344, 162, 0" scale="0.5, 0.5, 0.5"/>
             </modelTransforms>
             <binding itemSlot="offhand" target="LeftHand" itemState="normal">
                 <part partName="index1"/>
@@ -125,8 +125,8 @@
         </model>
         <model file="powersuits:models/item/powerfist/powerfist_fingers_firing_left.obj" localizedName="PowerFistFingers" textures="powersuits:models/powerfist">
             <modelTransforms>
-                <transformationMatrix type="third_person_left_hand" translation="13.2, 8.01, 9" rotation="-15, 180, 0" scale="0.630, 0.630, 0.630"/>
-                <transformationMatrix type="first_person_left_hand" translation="6.8, 8, 7" rotation="344, 162, 0" scale="0.5, 0.5, 0.5"/>
+                <Transformation type="third_person_left_hand" translation="13.2, 8.01, 9" rotation="-15, 180, 0" scale="0.630, 0.630, 0.630"/>
+                <Transformation type="first_person_left_hand" translation="6.8, 8, 7" rotation="344, 162, 0" scale="0.5, 0.5, 0.5"/>
             </modelTransforms>
             <binding itemSlot="offhand" target="LeftHand" itemState="firing">
                 <part partName="index1"/>

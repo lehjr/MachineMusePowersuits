@@ -1,19 +1,19 @@
 package lehjr.numina.util.client.gui.clickable;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.matrix.PoseStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import lehjr.numina.util.client.gui.gemoetry.DrawableTile;
 import lehjr.numina.util.client.gui.gemoetry.IDrawable;
 import lehjr.numina.util.client.gui.gemoetry.IRect;
 import lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
 import lehjr.numina.util.client.render.MuseRenderer;
-import lehjr.numina.util.math.Colour;
+import lehjr.numina.util.math.Color;
 import lehjr.numina.util.math.MuseMathUtils;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.math.vector.Matrix4f;
-import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.Component;
 import org.lwjgl.opengl.GL11;
 
 import javax.annotation.Nullable;
@@ -44,7 +44,7 @@ public class RangedSlider extends Clickable {
     /** width of the slider. Unchanged in vertical mode */
     protected double size = 16;
     /** just a label for the slider */
-    private ITextComponent label;
+    private Component label;
     /** the "knob" of the slider */
     DrawableTile knobRect;
     /** the "track" of the slider */
@@ -59,7 +59,7 @@ public class RangedSlider extends Clickable {
     public RangedSlider(MusePoint2D position,
                         boolean isHorizontal,
                         double size,
-                        ITextComponent label,
+                        Component label,
                         String id,
                         double minVal,
                         double maxVal,
@@ -70,7 +70,7 @@ public class RangedSlider extends Clickable {
     public RangedSlider(MusePoint2D position,
                         boolean isHorizontal,
                         double size,
-                        ITextComponent label,
+                        Component label,
                         String id,
                         double minVal,
                         double maxVal,
@@ -149,18 +149,18 @@ public class RangedSlider extends Clickable {
                     getPosition().getY() + size * 0.5);
         }
 
-        this.knobRect.setBackgroundColour(Colour.LIGHT_GREY);
-        this.knobRect.setBottomBorderColour(Colour.BLACK);
-        this.knobRect.setTopBorderColour(Colour.WHITE);
+        this.knobRect.setBackgroundColor(Color.LIGHT_GREY);
+        this.knobRect.setBottomBorderColor(Color.BLACK);
+        this.knobRect.setTopBorderColor(Color.WHITE);
 
-        this.trackRect.setBackgroundColour(Colour.DARK_GREY);
-        this.trackRect.setBottomBorderColour(Colour.WHITE);
-        this.trackRect.setTopBorderColour(Colour.BLACK);
+        this.trackRect.setBackgroundColor(Color.DARK_GREY);
+        this.trackRect.setBottomBorderColor(Color.WHITE);
+        this.trackRect.setTopBorderColor(Color.BLACK);
         super.setWH(new MusePoint2D(trackRect.finalWidth(), trackRect.finalHeight()));
     }
 
     @Override
-    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float frameTime) {
+    public void render(PoseStack matrixStack, int mouseX, int mouseY, float frameTime) {
         if (this.isVisible()) {
             if (label != null) {
                 MuseRenderer.drawShadowedStringCentered(matrixStack, label.getString(), getPosition().getX(), getPosition().getY());
@@ -180,11 +180,11 @@ public class RangedSlider extends Clickable {
             if (showTickLines && tickVal != 0) {
                 if (isHorizontal) {
                     for (double val : calculateTickCoordinates()) {
-                        drawSingleLine(matrixStack, val, trackRect.finalTop(), val, trackRect.finalBottom(), Colour.WHITE);
+                        drawSingleLine(matrixStack, val, trackRect.finalTop(), val, trackRect.finalBottom(), Color.WHITE);
                     }
                 } else {
                     for (double val : calculateTickCoordinates()) {
-                        drawSingleLine(matrixStack, trackRect.finalLeft(), val, trackRect.finalRight(), val, Colour.WHITE);
+                        drawSingleLine(matrixStack, trackRect.finalLeft(), val, trackRect.finalRight(), val, Color.WHITE);
                     }
                 }
             }
@@ -224,7 +224,7 @@ public class RangedSlider extends Clickable {
         }
     }
 
-    public void setLabel(ITextComponent label) {
+    public void setLabel(Component label) {
         this.label = label;
     }
 
@@ -300,7 +300,7 @@ public class RangedSlider extends Clickable {
         return this;
     }
 
-    void drawSingleLine(MatrixStack matrixStack, double xStart, double yStart, double xEnd, double yEnd, Colour colour) {
+    void drawSingleLine(PoseStack matrixStack, double xStart, double yStart, double xEnd, double yEnd, Color colour) {
         Tessellator tessellator = Tessellator.getInstance();
         BufferBuilder builder = tessellator.getBuilder();
         Matrix4f matrix4f = matrixStack.last().pose();

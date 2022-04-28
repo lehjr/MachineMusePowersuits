@@ -26,19 +26,19 @@
 
 package lehjr.powersuits.client.gui.modechanging;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.matrix.PoseStack;
 import lehjr.numina.util.client.gui.ContainerlessGui;
 import lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
 import net.minecraft.client.MainWindow;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.Player;
-import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.Component;
 
 public class GuiModeSelector extends ContainerlessGui {
     Player player;
     RadialModeSelectionFrame radialSelect;
 
-    public GuiModeSelector(Player player, ITextComponent titleIn) {
+    public GuiModeSelector(Player player, Component titleIn) {
         super(titleIn, true);
         Minecraft.getInstance().keyboardHandler.setSendRepeatsToGui(true);
         this.player = player;
@@ -54,7 +54,7 @@ public class GuiModeSelector extends ContainerlessGui {
     }
 
     @Override
-    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float frameTime) {
+    public void render(PoseStack matrixStack, int mouseX, int mouseY, float frameTime) {
         this.renderBackground(matrixStack);
         this.update((double)mouseX, (double)mouseY);
         matrixStack.pushPose();

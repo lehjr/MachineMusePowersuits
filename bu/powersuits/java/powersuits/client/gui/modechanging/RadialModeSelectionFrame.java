@@ -26,7 +26,7 @@
 
 package lehjr.powersuits.client.gui.modechanging;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.matrix.PoseStack;
 import lehjr.numina.network.NuminaPackets;
 import lehjr.numina.network.packets.ModeChangeRequestPacket;
 import lehjr.numina.util.capabilities.inventory.modechanging.IModeChangingItem;
@@ -40,7 +40,7 @@ import lehjr.numina.util.client.gui.gemoetry.SpiralPointToPoint2D;
 import lehjr.numina.util.client.render.MuseRenderer;
 import net.minecraft.entity.player.Player;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.Component;
 import net.minecraftforge.items.CapabilityItemHandler;
 
 import java.util.ArrayList;
@@ -116,7 +116,7 @@ public class RadialModeSelectionFrame extends RelativeRect implements IGuiFrame 
     }
 
     @Override
-    public void render(MatrixStack matrixStackIn, int mouseX, int mouseY, float partialTicks) {
+    public void render(PoseStack matrixStackIn, int mouseX, int mouseY, float partialTicks) {
         //Draw the installed power fist modes
         for (ClickableModule mode : modeButtons) {
             mode.render(matrixStackIn, mouseX, mouseY, partialTicks);
@@ -176,7 +176,7 @@ public class RadialModeSelectionFrame extends RelativeRect implements IGuiFrame 
         }
     }
 
-    public void drawSelection(MatrixStack matrixStackIn) {
+    public void drawSelection(PoseStack matrixStackIn) {
         ClickableModule module = getSelectedModule();
         if (module != null) {
             MusePoint2D pos = module.getPosition();
@@ -185,7 +185,7 @@ public class RadialModeSelectionFrame extends RelativeRect implements IGuiFrame 
     }
 
     @Override
-    public List<ITextComponent> getToolTip(int x, int y) {
+    public List<Component> getToolTip(int x, int y) {
         ClickableModule module = getSelectedModule();
         if (module != null) {
             return module.getToolTip(x, y);

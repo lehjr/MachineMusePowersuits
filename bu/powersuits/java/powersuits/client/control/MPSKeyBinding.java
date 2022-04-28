@@ -6,7 +6,7 @@ import lehjr.powersuits.client.event.RenderEventHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.ClientPlayer;
 import net.minecraft.client.settings.KeyBinding;
-import net.minecraft.client.util.InputMappings;
+import net.minecraft.client.util.InputConstants;
 import net.minecraft.util.ResourceLocation;
 
 public class MPSKeyBinding extends KeyBinding {
@@ -23,7 +23,7 @@ public class MPSKeyBinding extends KeyBinding {
      * Do not use this
      */
     @Override
-    public void setKey(InputMappings.Input key) {
+    public void setKey(InputConstants.Input key) {
         super.setKey(key);
         KeybindManager.INSTANCE.writeOutKeybindSetings();
         RenderEventHandler.INSTANCE.makeKBDisplayList();
@@ -33,7 +33,7 @@ public class MPSKeyBinding extends KeyBinding {
      * Use this one to set the key from inside MPS
      * @param key
      */
-    public void setKeyInternal(InputMappings.Input key) {
+    public void setKeyInternal(InputConstants.Input key) {
         super.setKey(key);
     }
 

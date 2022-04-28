@@ -26,31 +26,31 @@
 
 package lehjr.numina.util.client.gui.clickable;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.matrix.PoseStack;
 import lehjr.numina.util.client.gui.gemoetry.DrawableTile;
 import lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
 import lehjr.numina.util.client.render.MuseRenderer;
-import lehjr.numina.util.math.Colour;
+import lehjr.numina.util.math.Color;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.SimpleSound;
 import net.minecraft.util.SoundEvents;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.Component;
+import net.minecraft.util.text.TextComponent;
 
 public class CheckBox extends Clickable {
     protected boolean isChecked;
     protected DrawableTile tile;
-    ITextComponent label;
+    Component label;
 
     public CheckBox(MusePoint2D position, String displayString, boolean isChecked) {
         super(position);
         makeNewTile();
-        this.label = new StringTextComponent(displayString);
+        this.label = new TextComponent(displayString);
         this.isChecked = isChecked;
         this.enableAndShow();
     }
 
-    public CheckBox(MusePoint2D position, ITextComponent displayString, boolean isChecked) {
+    public CheckBox(MusePoint2D position, Component displayString, boolean isChecked) {
         super(position);
         makeNewTile();
         this.label = displayString;
@@ -59,20 +59,20 @@ public class CheckBox extends Clickable {
     }
 
 
-    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float frameTime) {
+    public void render(PoseStack matrixStack, int mouseX, int mouseY, float frameTime) {
         if (this.isVisible()) {
             this.tile.render(matrixStack, mouseX, mouseY, frameTime);
             if (this.isChecked) {
-                MuseRenderer.drawShadowedString(matrixStack, "x", this.tile.centerx() - 2.0D, this.tile.centery() - 5.0D, Colour.WHITE);
+                MuseRenderer.drawShadowedString(matrixStack, "x", this.tile.centerx() - 2.0D, this.tile.centery() - 5.0D, Color.WHITE);
             }
-            MuseRenderer.drawShadowedString(matrixStack, this.label, this.tile.centerx() + 8.0D, this.tile.centery() - 4.0D, Colour.WHITE);
+            MuseRenderer.drawShadowedString(matrixStack, this.label, this.tile.centerx() + 8.0D, this.tile.centery() - 4.0D, Color.WHITE);
         }
     }
 
     void makeNewTile() {
         if (tile == null) {
             MusePoint2D ul = getPosition().plus(4.0D, 4.0D);
-            this.tile = (new DrawableTile(ul, ul.plus(8.0D, 8.0D))).setBackgroundColour(Colour.BLACK).setTopBorderColour(Colour.DARK_GREY).setBottomBorderColour(Colour.DARK_GREY);
+            this.tile = (new DrawableTile(ul, ul.plus(8.0D, 8.0D))).setBackgroundColor(Color.BLACK).setTopBorderColor(Color.DARK_GREY).setBottomBorderColor(Color.DARK_GREY);
         }
     }
 

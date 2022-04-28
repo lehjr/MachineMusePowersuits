@@ -28,7 +28,7 @@ package lehjr.numina.util.client.model.obj;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.matrix.PoseStack;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.renderer.model.*;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -122,7 +122,7 @@ public class OBJBakedCompositeModel implements IDynamicBakedModel {
     }
 
     @Override
-    public IBakedModel handlePerspective(ItemCameraTransforms.TransformType cameraTransformType, MatrixStack mat) {
+    public IBakedModel handlePerspective(ItemTransforms..TransformType cameraTransformType, PoseStack mat) {
         return PerspectiveMapWrapper.handlePerspective(this, transforms, cameraTransformType, mat);
     }
 

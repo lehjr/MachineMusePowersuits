@@ -1,30 +1,38 @@
 package com.lehjr.numina.common;
 
+import com.lehjr.numina.api.capabilities.heat.CapabilityHeat;
+import com.lehjr.numina.api.constants.NuminaConstants;
+import com.lehjr.numina.client.ClientSetup;
+import com.lehjr.numina.client.event.ClientTickHandler;
+import com.mojang.blaze3d.platform.ScreenManager;
 import com.mojang.logging.LogUtils;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.InterModComms;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import numina.api.capabilities.heat.CapabilityHeat;
+import net.minecraftforge.fml.loading.FMLEnvironment;
 import org.slf4j.Logger;
 
 import java.util.stream.Collectors;
 
 // The value here should match an entry in the META-INF/mods.toml file
-@Mod("numina")
+@Mod(NuminaConstants.MOD_ID)
 public class Numina {
     // Directly reference a slf4j logger
-    private static final Logger LOGGER = LogUtils.getLogger();
+    public static final Logger LOGGER = LogUtils.getLogger();
 
     public Numina() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
@@ -37,12 +45,24 @@ public class Numina {
         modEventBus.addListener(this::processIMC);
 
 
+        NuminaObjects.ITEMS.register(modEventBus);
+        NuminaObjects.BLOCKS.register(modEventBus);
+        NuminaObjects.BLOCK_ENTITY_TYPES.register(modEventBus);
+        NuminaObjects.ENTITY_TYPES.register(modEventBus);
+        NuminaObjects.MENU_TYPES.register(modEventBus);
 
 
-
+        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> FMLJavaModLoadingContext.get().getModEventBus().register(ClientSetup.class));
+        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, ()-> ()-> ClientSetup.clientStart(modEventBus));
 
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
+
+
+        if (FMLEnvironment.dist == Dist.CLIENT) {
+            MinecraftForge.EVENT_BUS.addListener(ClientTickHandler.INSTANCE::onRenderTickEvent);
+//            MinecraftForge.EVENT_BUS.addListener(this::keyInputEvent);
+        }
     }
 
     @SubscribeEvent
@@ -51,8 +71,6 @@ public class Numina {
 
 
     }
-
-
 
     private void setup(final FMLCommonSetupEvent event) {
         // some preinit code
@@ -81,6 +99,8 @@ public class Numina {
         // Do something when the server starts
         LOGGER.info("HELLO from server starting");
     }
+
+
 
     // You can use EventBusSubscriber to automatically subscribe events on the contained class (this is subscribing to the MOD
     // Event bus for receiving Registry Events)

@@ -206,7 +206,7 @@ public final class NuminaRenderState {
     }
 
     public static void scissorsOff() {
-        RenderSystem.popMatrix();
+        RenderSystem.popPose();
         RenderSystem.popAttributes();
     }
 

@@ -26,22 +26,22 @@
 
 package lehjr.powersuits.client.gui.modding.cosmetic;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.matrix.PoseStack;
 import com.mojang.blaze3d.systems.RenderSystem;
-import lehjr.numina.basemod.MuseLogger;
+import lehjr.numina.basemod.NuminaLogger;
 import lehjr.numina.constants.NuminaConstants;
 import lehjr.numina.network.NuminaPackets;
 import lehjr.numina.network.packets.CosmeticInfoPacket;
 import lehjr.numina.util.capabilities.render.IArmorModelSpecNBT;
 import lehjr.numina.util.capabilities.render.IHandHeldModelSpecNBT;
 import lehjr.numina.util.capabilities.render.IModelSpecNBT;
-import lehjr.numina.util.capabilities.render.ModelSpecNBTCapability;
+import lehjr.numina.util.capabilities.render.CapabilityModelSpec;
 import lehjr.numina.util.capabilities.render.modelspec.*;
 import lehjr.numina.util.client.gui.GuiIcon;
 import lehjr.numina.util.client.gui.gemoetry.DrawableTile;
 import lehjr.numina.util.client.render.MuseIconUtils;
 import lehjr.numina.util.client.render.MuseRenderer;
-import lehjr.numina.util.math.Colour;
+import lehjr.numina.util.math.Color;
 import lehjr.numina.util.math.MuseMathUtils;
 import lehjr.powersuits.client.gui.common.ModularItemSelectionFrame;
 import net.minecraft.client.Minecraft;
@@ -67,7 +67,7 @@ import java.util.Optional;
  */
 public class PartSpecManipSubFrame extends DrawableTile {
     public SpecBase model;
-    public ColourPickerFrame colourframe;
+    public ColorPickerFrame colourframe;
     public ModularItemSelectionFrame itemSelector;
     public List<PartSpecBase> partSpecs;
     public boolean open;
@@ -81,7 +81,7 @@ public class PartSpecManipSubFrame extends DrawableTile {
                                  double top,
                                  double right,
                                  double bottom,
-                                 ColourPickerFrame colourframe,
+                                 ColorPickerFrame colourframe,
                                  ModularItemSelectionFrame itemSelector,
                                  float zLevel) {
         super(left, top, right, bottom);
@@ -92,16 +92,16 @@ public class PartSpecManipSubFrame extends DrawableTile {
         this.open = true;
         this.zLevel = zLevel;
         minecraft = Minecraft.getInstance();
-        setBackgroundColour(Colour.BLACK.withAlpha(0.1F));
+        setBackgroundColor(Color.BLACK.withAlpha(0.1F));
     }
 
     @Override
-    public void drawBackground(MatrixStack matrixStack) {
+    public void drawBackground(PoseStack matrixStack) {
 
     }
 
     public Optional<IModelSpecNBT> getRenderCapability() {
-        return this.itemSelector.getModularItemOrEmpty().getCapability(ModelSpecNBTCapability.RENDER)
+        return this.itemSelector.getModularItemOrEmpty().getCapability(CapabilityModelSpec.RENDER)
                 .filter(IModelSpecNBT.class::isInstance)
                 .map(IModelSpecNBT.class::cast);
     }
@@ -160,7 +160,7 @@ public class PartSpecManipSubFrame extends DrawableTile {
                 // Only one TexturePartSpec is allowed at a time, so figure out if this one is enabled
                 if (partSpec instanceof TexturePartSpec && renderTag.contains(NuminaConstants.NBT_TEXTURESPEC_TAG)) {
                     CompoundTag texSpecTag = renderTag.getCompound(NuminaConstants.NBT_TEXTURESPEC_TAG);
-                    if (partSpec.spec.getOwnName().equals(texSpecTag.getString(NuminaConstants.TAG_MODEL))) {
+                    if (partSpec.spec.getOwnName().equals(texSpecTag.getString(NuminaConstants.MODEL))) {
                         specTag = renderTag.getCompound(NuminaConstants.NBT_TEXTURESPEC_TAG);
                     }
                 }
@@ -204,7 +204,7 @@ public class PartSpecManipSubFrame extends DrawableTile {
         return open;
     }
 
-    public void drawPartial(MatrixStack matrixStack, double min, double max) {
+    public void drawPartial(PoseStack matrixStack, double min, double max) {
         if (!partSpecs.isEmpty()) {
             MuseRenderer.drawShadowedString(matrixStack, model.getDisaplayName(), left() + iconWidth, top());
             drawOpenArrow(matrixStack, min, max);
@@ -226,9 +226,9 @@ public class PartSpecManipSubFrame extends DrawableTile {
             CompoundTag tagdata = getOrDontGetSpecTag(spec);
 
             if (tagdata != null) {
-                int oldindex = spec.getColourIndex(tagdata);
+                int oldindex = spec.getColorIndex(tagdata);
                 if (oldindex >= index && oldindex > 0) {
-                    spec.setColourIndex(tagdata, oldindex - 1);
+                    spec.setColorIndex(tagdata, oldindex - 1);
                     this.itemSelector.selectedType().ifPresent(slotType ->
                             NuminaPackets.CHANNEL_INSTANCE.sendToServer(new CosmeticInfoPacket(slotType, tagname, tagdata)));
                 }
@@ -236,39 +236,39 @@ public class PartSpecManipSubFrame extends DrawableTile {
         }
     }
 
-    public void drawSpecPartial(MatrixStack matrixStack, double x, double y, PartSpecBase partSpec) {
+    public void drawSpecPartial(PoseStack matrixStack, double x, double y, PartSpecBase partSpec) {
 //        super.render(matrixStack, (int)x, (int)y, Minecraft.getInstance().getFrameTime()); // draws the border, mainly a debugging thing
 
         GuiIcon icon = MuseIconUtils.getIcon();
         CompoundTag tag = this.getSpecTag(partSpec);
         int selcomp = tag.isEmpty() ? 0 : (partSpec instanceof ModelPartSpec && ((ModelPartSpec) partSpec).getGlow(tag) ? 2 : 1);
-        int selcolour = partSpec.getColourIndex(tag);
+        int selcolour = partSpec.getColorIndex(tag);
 
-        icon.transparentArmor.draw(matrixStack, x, y, Colour.WHITE);
+        icon.transparentArmor.draw(matrixStack, x, y, Color.WHITE);
 
-        icon.normalArmor.draw(matrixStack, x+ iconWidth, y, Colour.WHITE);
+        icon.normalArmor.draw(matrixStack, x+ iconWidth, y, Color.WHITE);
 
         if (partSpec instanceof ModelPartSpec) {
-            icon.glowArmor.draw(matrixStack, x + 16, y, Colour.WHITE);
+            icon.glowArmor.draw(matrixStack, x + 16, y, Color.WHITE);
         }
 
-        icon.selectedArmorOverlay.draw(matrixStack, x + selcomp * iconWidth, y, Colour.WHITE);
+        icon.selectedArmorOverlay.draw(matrixStack, x + selcomp * iconWidth, y, Color.WHITE);
 
         double acc = (x + 28);
         for (int colour : colourframe.colours()) {
-            icon.armorColourPatch.draw(matrixStack, acc, y, new Colour(colour));
+            icon.armorColorPatch.draw(matrixStack, acc, y, new Color(colour));
             acc += 8;
         }
 
         double textstartx = acc;
         if (selcomp > 0) {
-            icon.selectedArmorOverlay.draw(matrixStack, x + 28 + selcolour * iconWidth, y, Colour.WHITE);
+            icon.selectedArmorOverlay.draw(matrixStack, x + 28 + selcolour * iconWidth, y, Color.WHITE);
         }
-        MuseRenderer.drawText(matrixStack, partSpec.getDisaplayName(), (float) textstartx + 4, (float) y, Colour.WHITE);
+        MuseRenderer.drawText(matrixStack, partSpec.getDisaplayName(), (float) textstartx + 4, (float) y, Color.WHITE);
     }
 
     // FIXME
-    public void drawOpenArrow(MatrixStack matrixStack, double min, double max) {
+    public void drawOpenArrow(PoseStack matrixStack, double min, double max) {
         RenderSystem.disableTexture();
         RenderSystem.enableBlend();
         RenderSystem.disableAlphaTest();
@@ -281,28 +281,28 @@ public class PartSpecManipSubFrame extends DrawableTile {
         buffer.begin(GL11.GL_TRIANGLES, DefaultVertexFormats.POSITION_COLOR_LIGHTMAP);
         if (this.open) {
             buffer.vertex(matrix4f,(float)this.left() + 3, (float) MuseMathUtils.clampDouble(this.top() + 3, min, max), zLevel)
-                    .color(Colour.LIGHT_BLUE.r, Colour.LIGHT_BLUE.b, Colour.LIGHT_BLUE.b, Colour.LIGHT_BLUE.a)
+                    .color(Color.LIGHT_BLUE.r, Color.LIGHT_BLUE.b, Color.LIGHT_BLUE.b, Color.LIGHT_BLUE.a)
                     .uv2(0x00F000F0)
                     .endVertex();
             buffer.vertex(matrix4f,(float)this.left() + 5, (float)MuseMathUtils.clampDouble(this.top() + 7, min, max), zLevel)
-                    .color(Colour.LIGHT_BLUE.r, Colour.LIGHT_BLUE.b, Colour.LIGHT_BLUE.b, Colour.LIGHT_BLUE.a)
+                    .color(Color.LIGHT_BLUE.r, Color.LIGHT_BLUE.b, Color.LIGHT_BLUE.b, Color.LIGHT_BLUE.a)
                     .uv2(0x00F000F0)
                     .endVertex();
             buffer.vertex(matrix4f,(float)this.left() + 7, (float)MuseMathUtils.clampDouble(this.top() + 3, min, max), zLevel)
-                    .color(Colour.LIGHT_BLUE.r, Colour.LIGHT_BLUE.b, Colour.LIGHT_BLUE.b, Colour.LIGHT_BLUE.a)
+                    .color(Color.LIGHT_BLUE.r, Color.LIGHT_BLUE.b, Color.LIGHT_BLUE.b, Color.LIGHT_BLUE.a)
                     .uv2(0x00F000F0)
                     .endVertex();
         } else {
             buffer.vertex(matrix4f,(float)this.left() + 3, (float)MuseMathUtils.clampDouble(this.top() + 3, min, max), zLevel)
-                    .color(Colour.LIGHT_BLUE.r, Colour.LIGHT_BLUE.b, Colour.LIGHT_BLUE.b, Colour.LIGHT_BLUE.a)
+                    .color(Color.LIGHT_BLUE.r, Color.LIGHT_BLUE.b, Color.LIGHT_BLUE.b, Color.LIGHT_BLUE.a)
                     .uv2(0x00F000F0)
                     .endVertex();
             buffer.vertex(matrix4f,(float)this.left() + 3, (float)MuseMathUtils.clampDouble(this.top() + 7, min, max), zLevel)
-                    .color(Colour.LIGHT_BLUE.r, Colour.LIGHT_BLUE.b, Colour.LIGHT_BLUE.b, Colour.LIGHT_BLUE.a)
+                    .color(Color.LIGHT_BLUE.r, Color.LIGHT_BLUE.b, Color.LIGHT_BLUE.b, Color.LIGHT_BLUE.a)
                     .uv2(0x00F000F0)
                     .endVertex();
             buffer.vertex(matrix4f,(float)this.left() + 7, (float)MuseMathUtils.clampDouble(this.top() + 5, min, max), zLevel)
-                    .color(Colour.LIGHT_BLUE.r, Colour.LIGHT_BLUE.b, Colour.LIGHT_BLUE.b, Colour.LIGHT_BLUE.a)
+                    .color(Color.LIGHT_BLUE.r, Color.LIGHT_BLUE.b, Color.LIGHT_BLUE.b, Color.LIGHT_BLUE.a)
                     .uv2(0x00F000F0)
                     .endVertex();
         }
@@ -332,7 +332,7 @@ public class PartSpecManipSubFrame extends DrawableTile {
             int lineNumber = (int) ((y - this.top() - specHeight) / specHeight);
             int columnNumber = (int) ((x - this.left()) / iconWidth);
             PartSpecBase spec = partSpecs.get(Math.max(Math.min(lineNumber, partSpecs.size() - 1), 0));
-            MuseLogger.logger.debug("Line " + lineNumber + " Column " + columnNumber);
+            NuminaLogger.logger.debug("Line " + lineNumber + " Column " + columnNumber);
 
             switch (columnNumber) {
                 // removes the associated tag from the render tag making the part not isEnabled
@@ -381,7 +381,7 @@ public class PartSpecManipSubFrame extends DrawableTile {
             PartSpecBase spec = partSpecs.get(Math.max(Math.min(lineNumber, partSpecs.size() - 1), 0));
             tagname = spec instanceof TexturePartSpec ? NuminaConstants.NBT_TEXTURESPEC_TAG : ModelRegistry.getInstance().makeName(spec);
             tagdata = this.getOrMakeSpecTag(spec);
-            spec.setColourIndex(tagdata, columnNumber);
+            spec.setColorIndex(tagdata, columnNumber);
             this.itemSelector.selectedType().ifPresent(slotType ->
                     NuminaPackets.CHANNEL_INSTANCE.sendToServer(new CosmeticInfoPacket(slotType, tagname, tagdata)));
             return true;

@@ -37,7 +37,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceContext;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.Component;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
@@ -73,7 +73,7 @@ public abstract class AbstractPowerModule extends Item {
     public abstract ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt);
 
     @Override
-    public void appendHoverText(ItemStack itemStack, @Nullable World worldIn, List<ITextComponent> tooltips, ITooltipFlag flagIn) {
+    public void appendHoverText(ItemStack itemStack, @Nullable World worldIn, List<Component> tooltips, ITooltipFlag flagIn) {
         if (worldIn != null) {
             AdditionalInfo.appendHoverText(itemStack, worldIn, tooltips, flagIn);
         }

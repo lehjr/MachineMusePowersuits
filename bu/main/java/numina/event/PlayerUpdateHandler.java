@@ -26,7 +26,7 @@
 
 package lehjr.numina.event;
 
-import lehjr.numina.basemod.MuseLogger;
+import lehjr.numina.basemod.NuminaLogger;
 import lehjr.numina.util.capabilities.inventory.modechanging.IModeChangingItem;
 import lehjr.numina.util.capabilities.inventory.modularitem.IModularItem;
 import lehjr.numina.util.heat.MuseHeatUtils;
@@ -76,7 +76,7 @@ public class PlayerUpdateHandler {
                                     modularItems.add(i.getModularItemStack());
                                     });
                         } catch (Exception exception) {
-                            MuseLogger.logException(player.getItemBySlot(slot).toString(), exception);
+                            NuminaLogger.logException(player.getItemBySlot(slot).toString(), exception);
                         }
                         break;
                 }

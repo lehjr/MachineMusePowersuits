@@ -40,7 +40,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
-import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.Component;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
@@ -72,7 +72,7 @@ public class Battery extends Item {
     }
 
     @Override
-    public void appendHoverText(ItemStack itemStack, @Nullable World worldIn, List<ITextComponent> tooltips, ITooltipFlag flagIn) {
+    public void appendHoverText(ItemStack itemStack, @Nullable World worldIn, List<Component> tooltips, ITooltipFlag flagIn) {
         if (worldIn != null) {
             super.appendHoverText(itemStack, worldIn, tooltips, flagIn);
             AdditionalInfo.appendHoverText(itemStack, worldIn, tooltips, flagIn);

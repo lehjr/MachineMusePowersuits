@@ -26,7 +26,7 @@
 
 package lehjr.powersuits.client.event;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.matrix.PoseStack;
 import lehjr.numina.util.capabilities.inventory.modechanging.IModeChangingItem;
 import lehjr.numina.util.capabilities.inventory.modularitem.IModularItem;
 import lehjr.numina.util.client.gui.meters.EnergyMeter;
@@ -71,7 +71,7 @@ public class ClientTickHandler {
     protected WaterMeter waterMeter = null;
     protected PlasmaChargeMeter plasmaMeter = null;
     static final ItemStack food = new ItemStack(Items.COOKED_BEEF);
-    MatrixStack matrixStack = new MatrixStack();
+    PoseStack matrixStack = new PoseStack();
     final double meterTextOffsetY = 6;
 
 //    @SubscribeEvent

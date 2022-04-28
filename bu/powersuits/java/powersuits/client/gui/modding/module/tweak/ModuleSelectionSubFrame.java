@@ -26,7 +26,7 @@
 
 package lehjr.powersuits.client.gui.modding.module.tweak;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.matrix.PoseStack;
 import lehjr.numina.util.capabilities.module.powermodule.EnumModuleCategory;
 import lehjr.numina.util.client.gui.clickable.ClickableModule;
 import lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
@@ -34,9 +34,9 @@ import lehjr.numina.util.client.gui.gemoetry.RelativeRect;
 import lehjr.numina.util.client.render.MuseRenderer;
 import lehjr.numina.util.client.sound.Musique;
 import lehjr.numina.util.client.sound.SoundDictionary;
-import lehjr.numina.util.math.Colour;
+import lehjr.numina.util.math.Color;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.Component;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
@@ -65,9 +65,9 @@ public class ModuleSelectionSubFrame {
         return clickie;
     }
 
-    public void drawPartial(MatrixStack matrixStack, int min, int max, float partialTicks) {
+    public void drawPartial(PoseStack matrixStack, int min, int max, float partialTicks) {
         refreshButtonPositions();
-        MuseRenderer.drawShadowedString(matrixStack, this.category.getTranslation().getString(), border.left(), border.top(), Colour.WHITE);
+        MuseRenderer.drawShadowedString(matrixStack, this.category.getTranslation().getString(), border.left(), border.top(), Color.WHITE);
         for (ClickableModule clickie : moduleButtons) {
             clickie.render(matrixStack, min, max, partialTicks);
         }
@@ -122,7 +122,7 @@ public class ModuleSelectionSubFrame {
     }
 
     // TODO: better tooltips? Fix clickable module tooltips at source instead of this workaround?
-    public List<ITextComponent> getToolTip(int x, int y) {
+    public List<Component> getToolTip(int x, int y) {
         if (border.containsPoint(x, y)) {
             if (moduleButtons != null) {
                 for (ClickableModule module : moduleButtons) {

@@ -26,20 +26,20 @@
 
 package lehjr.numina.client.render.item;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.vertex.IVertexBuilder;
+import com.mojang.blaze3d.matrix.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import lehjr.numina.constants.NuminaConstants;
 import lehjr.numina.util.client.model.helper.ModelHelper;
 import lehjr.numina.util.client.model.obj.OBJBakedCompositeModel;
 import lehjr.numina.util.client.render.MuseIconUtils;
-import lehjr.numina.util.math.Colour;
-import net.minecraft.client.renderer.IRenderTypeBuffer;
+import lehjr.numina.util.math.Color;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.model.BakedQuad;
-import net.minecraft.client.renderer.model.ItemCameraTransforms;
+import net.minecraft.client.renderer.model.ItemTransforms.;
 import net.minecraft.client.renderer.model.ModelRotation;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.client.renderer.tileentity.ItemStackTileEntityRenderer;
+import net.minecraft.client.renderer.tileentity.ItemStackBlockEntityRenderer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.vector.Vector3f;
@@ -48,11 +48,11 @@ import net.minecraftforge.common.util.NonNullLazy;
 
 import java.util.Random;
 
-public class PlasmaBallTestRenderer  extends ItemStackTileEntityRenderer {
-    static final Colour colour1 = new Colour(0.3F, 0.3F, 1F, 0.3F);
-    static final Colour colour2 = new Colour(0.4F, 0.4F, 1F, 0.5F);
-    static final Colour colour3 = new Colour(0.8F, 0.8F, 1F, 0.7F);
-    static final Colour colour4 = new Colour(1F, 1F, 1F, 0.9F);
+public class PlasmaBallTestRenderer  extends ItemStackBlockEntityRenderer {
+    static final Color colour1 = new Color(0.3F, 0.3F, 1F, 0.3F);
+    static final Color colour2 = new Color(0.4F, 0.4F, 1F, 0.5F);
+    static final Color colour3 = new Color(0.8F, 0.8F, 1F, 0.7F);
+    static final Color colour4 = new Color(1F, 1F, 1F, 0.9F);
 
     static final ResourceLocation modelLocation = new ResourceLocation(NuminaConstants.MOD_ID, "models/item/test/sphere.obj");
     // NonNullLazy doesn't init until called
@@ -66,15 +66,15 @@ public class PlasmaBallTestRenderer  extends ItemStackTileEntityRenderer {
 
     @Override
     public void renderByItem(ItemStack stack,
-                               ItemCameraTransforms.TransformType transformType,
-                               MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int combinedLight, int combinedOverlay) {
+                               ItemTransforms..TransformType transformType,
+                               PoseStack matrixStackIn, MultiBufferSource bufferIn, int combinedLight, int combinedOverlay) {
         renderAsItem(matrixStackIn, bufferIn, size, transformType);
     }
 
-    public void renderAsItem(MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, float boltSizeIn, ItemCameraTransforms.TransformType cameraTransformTypeIn) {
+    public void renderAsItem(PoseStack matrixStackIn, MultiBufferSource bufferIn, float boltSizeIn, ItemTransforms..TransformType cameraTransformTypeIn) {
         if (boltSizeIn != 0) {
             matrixStackIn.pushPose();
-            if (cameraTransformTypeIn == ItemCameraTransforms.TransformType.FIRST_PERSON_RIGHT_HAND || cameraTransformTypeIn == ItemCameraTransforms.TransformType.FIRST_PERSON_LEFT_HAND) {
+            if (cameraTransformTypeIn == ItemTransforms..TransformType.FIRST_PERSON_RIGHT_HAND || cameraTransformTypeIn == ItemTransforms..TransformType.FIRST_PERSON_LEFT_HAND) {
                 matrixStackIn.scale(0.0625f, 0.0625f, 0.0625f); // negative scale mirrors the model
                 matrixStackIn.mulPose(Vector3f.XP.rotationDegrees(-182));
             } else {
@@ -95,7 +95,7 @@ public class PlasmaBallTestRenderer  extends ItemStackTileEntityRenderer {
         }
     }
 
-    public void renderPlasma(MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, float size) {
+    public void renderPlasma(PoseStack matrixStackIn, MultiBufferSource bufferIn, float size) {
         matrixStackIn.pushPose();
         float scalFactor = 3;
 
@@ -111,7 +111,7 @@ public class PlasmaBallTestRenderer  extends ItemStackTileEntityRenderer {
             MuseIconUtils.getIcon().lightning.drawLightning(bufferIn, matrixStackIn,
                     (float)(Math.cos(angle1) * 0.5), (float)(Math.sin(angle1) * 0.5), (float)(Math.cos(angle3) * 0.5),
                     (float) (Math.cos(angle2) * 5), (float)(Math.sin(angle2) * 5), (float)(Math.sin(angle3) * 5),
-                    new Colour(1F, 1F, 1F, 0.9F));
+                    new Color(1F, 1F, 1F, 0.9F));
         }
 
         // spheres
@@ -130,7 +130,7 @@ public class PlasmaBallTestRenderer  extends ItemStackTileEntityRenderer {
         return RenderType.entityTranslucentCull(NuminaConstants.TEXTURE_WHITE);
     }
 
-    void renderPlasmaBall(MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, float scale, Colour colour) {
+    void renderPlasmaBall(PoseStack matrixStackIn, MultiBufferSource bufferIn, float scale, Color colour) {
         matrixStackIn.pushPose();
         matrixStackIn.translate(0.5, 0.5, 0.5);
         matrixStackIn.scale(scale, scale, scale);
@@ -139,14 +139,14 @@ public class PlasmaBallTestRenderer  extends ItemStackTileEntityRenderer {
         matrixStackIn.popPose();
     }
 
-    public void renderSphere(IRenderTypeBuffer bufferIn, RenderType rt, MatrixStack matrixStackIn, int packedLightIn, Colour colour) {
+    public void renderSphere(MultiBufferSource bufferIn, RenderType rt, PoseStack matrixStackIn, int packedLightIn, Color colour) {
         renderSphere(bufferIn, rt, matrixStackIn, packedLightIn, OverlayTexture.NO_OVERLAY, colour);
     }
 
-    public void renderSphere(IRenderTypeBuffer bufferIn, RenderType rt, MatrixStack matrixStackIn, int packedLightIn, int overlay, Colour colour) {
-        IVertexBuilder bb = bufferIn.getBuffer(rt);
+    public void renderSphere(MultiBufferSource bufferIn, RenderType rt, PoseStack matrixStackIn, int packedLightIn, int overlay, Color colour) {
+        VertexConsumer bb = bufferIn.getBuffer(rt);
         for (BakedQuad quad : modelSphere.get().getQuads(null, null, rand, EmptyModelData.INSTANCE)) {
-            bb.addVertexData(matrixStackIn.last(), quad, colour.r, colour.g, colour.b, colour.a, packedLightIn, overlay, true);
+            bb.putBulkData(matrixStackIn.last(), quad, colour.r, colour.g, colour.b, colour.a, packedLightIn, overlay, true);
         }
     }
 }

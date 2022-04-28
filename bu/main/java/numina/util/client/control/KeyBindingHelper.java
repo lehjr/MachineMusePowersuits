@@ -27,7 +27,7 @@
 //package lehjr.numina.util.client.control;
 //
 //import net.minecraft.client.settings.KeyBinding;
-//import net.minecraft.client.util.InputMappings;
+//import net.minecraft.client.util.InputConstants;
 //import net.minecraftforge.client.settings.KeyBindingMap;
 //import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 //
@@ -52,15 +52,15 @@
 //        return hash;
 //    }
 //
-//    public static InputMappings.Input getInputByCode(int keyCode) {
-//        return InputMappings.Type.KEYSYM.getOrCreate(keyCode);
+//    public static InputConstants.Input getInputByCode(int keyCode) {
+//        return InputConstants.Type.KEYSYM.getOrCreate(keyCode);
 //    }
 //
 //    public boolean keyBindingHasKey(int keyCode) {
 //        return keyBindingHasKey(getInputByCode(keyCode));
 //    }
 //
-//    public boolean keyBindingHasKey(InputMappings.Input keyCode) {
+//    public boolean keyBindingHasKey(InputConstants.Input keyCode) {
 //        try {
 //            return (getKeyBindingMap() != null) ? (getKeyBindingMap().lookupActive(keyCode) != null) : false;
 //        } catch (Exception ignored) {
@@ -73,7 +73,7 @@
 //        removeKey(getInputByCode(keyCode));
 //    }
 //
-//    public void removeKey(InputMappings.Input keyCode) {
+//    public void removeKey(InputConstants.Input keyCode) {
 //        try {
 //            if (getKeyBindingMap() != null)
 //                hash.removeKey(hash.lookupActive(keyCode));

@@ -29,50 +29,50 @@
 //import lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
 //import lehjr.numina.util.client.gui.gemoetry.RelativeRect;
 //import lehjr.numina.util.client.render.MuseRenderer;
-//import lehjr.numina.util.math.Colour;
-//import com.mojang.blaze3d.matrix.MatrixStack;
+//import lehjr.numina.util.math.Color;
+//import com.mojang.blaze3d.matrix.PoseStack;
 //
 //@Deprecated
 //public class LabledButton extends Button {
 //    String label;
 //
 //    public LabledButton(float left, float top, float right, float bottom, boolean growFromMiddle,
-//                        Colour insideColourEnabled,
-//                        Colour insideColourDisabled,
-//                        Colour outsideColourEnabled,
-//                        Colour outsideColourDisabled,
+//                        Color insideColorEnabled,
+//                        Color insideColorDisabled,
+//                        Color outsideColorEnabled,
+//                        Color outsideColorDisabled,
 //                        String label) {
-//        super(left, top, right, bottom, growFromMiddle, insideColourEnabled, insideColourDisabled, outsideColourEnabled, outsideColourDisabled);
+//        super(left, top, right, bottom, growFromMiddle, insideColorEnabled, insideColorDisabled, outsideColorEnabled, outsideColorDisabled);
 //        this.label = label;
 //    }
 //
 //    public LabledButton(float left, float top, float right, float bottom,
-//                        Colour insideColourEnabled,
-//                        Colour insideColourDisabled,
-//                        Colour outsideColourEnabled,
-//                        Colour outsideColourDisabled,
+//                        Color insideColorEnabled,
+//                        Color insideColorDisabled,
+//                        Color outsideColorEnabled,
+//                        Color outsideColorDisabled,
 //                        String label) {
-//        super(left, top, right, bottom, insideColourEnabled, insideColourDisabled, outsideColourEnabled, outsideColourDisabled);
+//        super(left, top, right, bottom, insideColorEnabled, insideColorDisabled, outsideColorEnabled, outsideColorDisabled);
 //        this.label = label;
 //    }
 //
 //    public LabledButton(MusePoint2D ul, MusePoint2D br,
-//                        Colour insideColourEnabled,
-//                        Colour insideColourDisabled,
-//                        Colour outsideColourEnabled,
-//                        Colour outsideColourDisabled,
+//                        Color insideColorEnabled,
+//                        Color insideColorDisabled,
+//                        Color outsideColorEnabled,
+//                        Color outsideColorDisabled,
 //                        String label) {
-//        super(ul, br, insideColourEnabled, insideColourDisabled, outsideColourEnabled, outsideColourDisabled);
+//        super(ul, br, insideColorEnabled, insideColorDisabled, outsideColorEnabled, outsideColorDisabled);
 //        this.label = label;
 //    }
 //
 //    public LabledButton(RelativeRect ref,
-//                        Colour insideColourEnabled,
-//                        Colour insideColourDisabled,
-//                        Colour outsideColourEnabled,
-//                        Colour outsideColourDisabled,
+//                        Color insideColorEnabled,
+//                        Color insideColorDisabled,
+//                        Color outsideColorEnabled,
+//                        Color outsideColorDisabled,
 //                        String label) {
-//        super(ref, insideColourEnabled, insideColourDisabled, outsideColourEnabled, outsideColourDisabled);
+//        super(ref, insideColorEnabled, insideColorDisabled, outsideColorEnabled, outsideColorDisabled);
 //        this.label = label;
 //    }
 //
@@ -85,7 +85,7 @@
 //    }
 //
 //    @Override
-//    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
+//    public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTicks) {
 //        super.render(matrixStack, mouseX, mouseY, partialTicks);
 //        MuseRenderer.drawShadowedStringCentered(matrixStack, this.label, centerx(), centery());
 //    }

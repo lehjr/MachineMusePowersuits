@@ -26,7 +26,7 @@
 
 package lehjr.numina.util.client.gui.gemoetry;
 
-import lehjr.numina.util.math.Colour;
+import lehjr.numina.util.math.Color;
 import org.lwjgl.BufferUtils;
 
 import java.nio.FloatBuffer;
@@ -228,7 +228,7 @@ public class GradientAndArcCalculator {
      * @param numsegments
      * @return
      */
-    public static FloatBuffer getColourGradient(Colour c1, Colour c2, int numsegments) {
+    public static FloatBuffer getColorGradient(Color c1, Color c2, int numsegments) {
         FloatBuffer buffer = BufferUtils.createFloatBuffer(numsegments * 4);
         if (c1.equals(c2)) {
             for (double i = 0; i < numsegments; i++) {
@@ -240,7 +240,7 @@ public class GradientAndArcCalculator {
         } else {
             for (double i = 0; i < numsegments; i++) {
                 // declaring "i" as an int instead of double is what broke the swirly circle.
-                Colour c3 = c1.interpolate(c2, (float) (i / (double)numsegments));
+                Color c3 = c1.interpolate(c2, (float) (i / (double)numsegments));
                 buffer.put(c3.r);
                 buffer.put(c3.g);
                 buffer.put(c3.b);
