@@ -53,7 +53,8 @@ public class NuminaArmorStandItem extends ArmorStandItem {
     /**
      * Called when this item is used when targetting a Block
      */
-    public ActionResultType onItemUse(ItemUseContext context) {
+    @Override
+    public ActionResultType useOn(ItemUseContext context) {
         Direction direction = context.getClickedFace();
         if (direction == Direction.DOWN) {
             return ActionResultType.FAIL;

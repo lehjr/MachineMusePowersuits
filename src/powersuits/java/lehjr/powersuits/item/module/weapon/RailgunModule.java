@@ -114,7 +114,7 @@ public class RailgunModule extends AbstractPowerModule {
             @Override
             // from bow, since bow launches correctly each time
             public void releaseUsing(ItemStack itemStack, World worldIn, LivingEntity entityLiving, int timeLeft) {
-                int chargeTicks = (int) MuseMathUtils.clampDouble(itemStack.getUseDuration() - timeLeft, 10, 50);
+                int chargeTicks = (int) MuseMathUtils.clampDouble(getUseDuration() - timeLeft, 10, 50);
                 if (!worldIn.isClientSide && entityLiving instanceof PlayerEntity) {
                     double chargePercent = chargeTicks * 0.02; // chargeticks/50
                     double energyConsumption = getEnergyUsage() * chargePercent;

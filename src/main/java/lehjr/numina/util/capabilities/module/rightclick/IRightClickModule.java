@@ -85,4 +85,8 @@ public interface IRightClickModule extends IPowerModule {
     default int getEnergyUsage() {
         return 0;
     }
+
+    default int getUseDuration() {
+        return 72000;
+    }
 }

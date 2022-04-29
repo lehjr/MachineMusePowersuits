@@ -94,16 +94,22 @@ public class PlasmaCannonModule extends AbstractPowerModule {
 
             @Override
             public ActionResult use(ItemStack itemStackIn, World worldIn, PlayerEntity playerIn, Hand hand) {
+                System.out.println("use");
+
                 if (hand == Hand.MAIN_HAND && ElectricItemUtils.getPlayerEnergy(playerIn) > getEnergyUsage()) {
+                    System.out.println("use success");
+
                     playerIn.startUsingItem(hand);
                     return ActionResult.success(itemStackIn);
                 }
+                System.out.println("use fail");
+
                 return ActionResult.pass(itemStackIn);
             }
 
             @Override
             public void releaseUsing(ItemStack itemStack, World worldIn, LivingEntity entityLiving, int timeLeft) {
-                int chargeTicks = (int) MuseMathUtils.clampDouble(itemStack.getUseDuration() - timeLeft, 10, 50);
+                int chargeTicks = (int) MuseMathUtils.clampDouble(getUseDuration() - timeLeft, 10, 50);
                 if (!worldIn.isClientSide && entityLiving instanceof PlayerEntity) {
                     double chargePercent = chargeTicks * 0.02; // chargeticks/50
                     double energyConsumption = getEnergyUsage() * chargePercent;
