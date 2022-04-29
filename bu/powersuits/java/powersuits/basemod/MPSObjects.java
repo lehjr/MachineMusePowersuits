@@ -111,10 +111,7 @@ public class MPSObjects {
                     .sized(0.25F, 0.25F)
                     .build(new ResourceLocation(MPSConstants.MOD_ID, MPSRegistryNames.LUX_CAPACITOR).toString()));
 
-    public static final RegistryObject<EntityType<SpinningBladeEntity>> SPINNING_BLADE_ENTITY_TYPE = ENTITY_TYPES.register(MPSRegistryNames.SPINNING_BLADE,
-            ()-> EntityType.Builder.<SpinningBladeEntity>of(SpinningBladeEntity::new, EntityClassification.MISC)
-                    .sized(0.25F, 0.25F) // FIXME! check size
-                    .build(new ResourceLocation(MPSConstants.MOD_ID, MPSRegistryNames.SPINNING_BLADE).toString()));
+
 
     public static final RegistryObject<EntityType<PlasmaBallEntity>> PLASMA_BALL_ENTITY_TYPE = ENTITY_TYPES.register(MPSRegistryNames.PLASMA_BALL,
             ()-> EntityType.Builder.<PlasmaBallEntity>of(PlasmaBallEntity::new, EntityClassification.MISC)

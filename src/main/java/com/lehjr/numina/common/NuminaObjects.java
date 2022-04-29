@@ -179,6 +179,8 @@ public class NuminaObjects {
                 int entityID = data.readInt();
                 Entity armorStand = inv.player.level.getEntity(entityID);
 
+                System.out.println("entity id: " + entityID);
+                System.out.println("armorStand: " + armorStand);
                 if (armorStand instanceof ArmorStand) {
                     return new ArmorStandMenu(windowId, inv, (ArmorStand) armorStand);
                 }
@@ -186,7 +188,8 @@ public class NuminaObjects {
             }));
 
     // FIXME!!
-    public static final RegistryObject<MenuType<ChargingBaseMenu>> CHARGING_BASE_CONTAINER_TYPE = MENU_TYPES.register("charging_base", () -> IForgeMenuType.create((windowId, inv, data) -> {
+    public static final RegistryObject<MenuType<ChargingBaseMenu>> CHARGING_BASE_CONTAINER_TYPE = MENU_TYPES.register("charging_base",
+            () -> IForgeMenuType.create((windowId, inv, data) -> {
         BlockPos pos = data.readBlockPos();
 //        Level level = inv.player.level;
         return new ChargingBaseMenu(windowId, inv, pos);

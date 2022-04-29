@@ -29,116 +29,11 @@ package lehjr.powersuits.constants;
 import net.minecraft.util.ResourceLocation;
 
 public class MPSRegistryNames {
-    /**
-     * Entities -----------------------------------------------------------------------------------
-     */
-    public static final String SPINNING_BLADE = "spinning_blade";
-    public static final String PLASMA_BALL = "plasma_ball";
-    public static final String RAILGUN_BOLT = "railgun_bolt";
 
-    /**
-     * Blocks -------------------------------------------------------------------------------------
-     */
-    public static final String TINKER_TABLE = "tinkertable";
-    public static final String LUX_CAPACITOR = "luxcapacitor";
 
-    /**
-     * Armor --------------------------------------------------------------------------------------
-     */
-    public static final String POWER_ARMOR_HELMET = "powerarmor_head";
-    public static final String POWER_ARMOR_CHESTPLATE = "powerarmor_torso";
-    public static final String POWER_ARMOR_LEGGINGS = "powerarmor_legs";
-    public static final String POWER_ARMOR_BOOTS = "powerarmor_feet";
 
-    /**
-     * HandHeld -----------------------------------------------------------------------------------
-     */
-    public static final String POWER_FIST = "powerfist";
 
-    /**
-     * Modules ------------------------------------------------------------------------------------
-     */
-    // Armor --------------------------------------------------------------------------------------
-    public static final String LEATHER_PLATING_MODULE = "plating_leather";
-    public static final String IRON_PLATING_MODULE =  "plating_iron";
-    public static final String DIAMOND_PLATING_MODULE = "plating_diamond";
-    public static final String ENERGY_SHIELD_MODULE = "energy_shield";
 
-    // Cosmetic -----------------------------------------------------------------------------------
-    public static final String TRANSPARENT_ARMOR_MODULE = "transparent_armor";
-
-    // Energy Generation -----------------------------------------------------------------------------
-    public static final String SOLAR_GENERATOR_MODULE = "generator_solar";
-    public static final String ADVANCED_SOLAR_GENERATOR_MODULE = "generator_solar_adv";
-    public static final String KINETIC_GENERATOR_MODULE = "generator_kinetic";
-    public static final String THERMAL_GENERATOR_MODULE = "generator_thermal";
-
-    // todo
-    // Debug --------------------------------------------------------------------------------------
-    public static final String DEBUG = "debug_module";
-
-    // Environmental ------------------------------------------------------------------------------
-    public static final String COOLING_SYSTEM_MODULE = "cooling_system";
-    public static final String FLUID_TANK_MODULE = "fluid_tank";
-    public static final String AUTO_FEEDER_MODULE = "auto_feeder";
-    public static final String MOB_REPULSOR_MODULE = "mob_repulsor";
-    public static final String WATER_ELECTROLYZER_MODULE = "water_electrolyzer";
-
-    // Mining Enhancements ------------------------------------------------------------------------
-    public static final String AOE_PICK_UPGRADE_MODULE = "aoe_pick_upgrade"; // no icon
-    public static final String SILK_TOUCH_MODULE = "silk_touch";
-    public static final String FORTUNE_MODULE = "fortune";
-    public static final String VEIN_MINER_MODULE = "vein_miner";
-
-    // WIP
-    public static final String TUNNEL_BORE_MODULE = "tunnel_bore"; // no icon
-    public static final String AOE_PICK_UPGRADE_MODULE2 = "aoe_pick_upgrade2"; // no icon
-
-    // Movement -----------------------------------------------------------------------------------
-    public static final String BLINK_DRIVE_MODULE = "blink_drive";
-    public static final String CLIMB_ASSIST_MODULE = "climb_assist";
-    public static final String DIMENSIONAL_RIFT_MODULE = "dim_rift_gen";
-    public static final String FLIGHT_CONTROL_MODULE = "flight_control";
-    public static final String GLIDER_MODULE = "glider";
-    public static final String JETBOOTS_MODULE = "jet_boots";
-    public static final String JETPACK_MODULE = "jetpack";
-    public static final String JUMP_ASSIST_MODULE = "jump_assist";
-    public static final String PARACHUTE_MODULE = "parachute";
-    public static final String SHOCK_ABSORBER_MODULE = "shock_absorber";
-    public static final String SPRINT_ASSIST_MODULE = "sprint_assist";
-    public static final String SWIM_BOOST_MODULE = "swim_assist";
-
-    // Special ------------------------------------------------------------------------------------
-    public static final String CLOCK_MODULE = "clock";
-    public static final String COMPASS_MODULE = "compass";
-    public static final String ACTIVE_CAMOUFLAGE_MODULE = "invisibility";
-    public static final String MAGNET_MODULE = "magnet";
-    public static final String PIGLIN_PACIFICATION_MODULE = "piglin_pacification_module";
-
-    // Tools --------------------------------------------------------------------------------------
-    public static final String AQUA_AFFINITY_MODULE = "aqua_affinity";
-    public static final String AXE_MODULE = "axe";
-    public static final String DIAMOND_PICK_UPGRADE_MODULE = "diamond_pick_upgrade";
-    public static final String PORTABLE_WORKBENCH_MODULE = "portable_tinkertable";
-    public static final String FLINT_AND_STEEL_MODULE = "flint_and_steel";
-    public static final String HOE_MODULE = "hoe";
-    public static final String LEAF_BLOWER_MODULE = "leaf_blower";
-    public static final String LUX_CAPACITOR_MODULE = "luxcapacitor_module";
-    public static final String PORTABLE_CRAFTING_MODULE = "portable_crafting_table";
-    public static final String PICKAXE_MODULE = "pickaxe";
-    public static final String SHEARS_MODULE = "shears";
-    public static final String SHOVEL_MODULE = "shovel";
-
-    // Vision -------------------------------------------------------------------------------------
-    public static final String BINOCULARS_MODULE = "binoculars";
-    public static final String NIGHT_VISION_MODULE = "night_vision";
-
-    // Weapons ------------------------------------------------------------------------------------
-    public static final String BLADE_LAUNCHER_MODULE = "blade_launcher";
-    public static final String LIGHTNING_MODULE = "lightning_summoner";
-    public static final String MELEE_ASSIST_MODULE = "melee_assist";
-    public static final String PLASMA_CANNON_MODULE = "plasma_cannon";
-    public static final String RAILGUN_MODULE = "railgun";
 //    public static final String SONIC_WEAPON_MODULE = "sonic_weapon"; // TODO?
 
     /**

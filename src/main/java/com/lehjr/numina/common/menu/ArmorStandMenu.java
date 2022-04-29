@@ -58,6 +58,8 @@ public class ArmorStandMenu extends AbstractContainerMenu {
 
     public ArmorStandMenu(int windowID, Inventory playerInventory, ArmorStand armorStand) {
         super(NuminaObjects.ARMOR_STAND_CONTAINER_TYPE.get(), windowID);
+        System.out.println("made it here");
+
         this.player = playerInventory.player;
         this.armorStandEntity = armorStand;
         armorStandInventory = new SimpleContainer(

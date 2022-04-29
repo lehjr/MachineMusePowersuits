@@ -30,8 +30,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TranslatableComponent;
 
 public class MPSConstants {
-    public static final String MOD_ID = "powersuits";
-    public static final String RESOURCE_PREFIX = MPSConstants.MOD_ID + ":";
+
     public static final String TEXTURE_PREFIX = RESOURCE_PREFIX + "textures/";
     public static final String RESOURCE_DOMAIN = MOD_ID.toLowerCase();
 

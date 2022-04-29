@@ -26,165 +26,41 @@
 
 package com.lehjr.numina.client.screen;
 
+import com.lehjr.numina.api.constants.NuminaConstants;
 import com.lehjr.numina.common.menu.ArmorStandMenu;
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 
 public class ArmorStandScreen extends AbstractContainerScreen<ArmorStandMenu> {
+    public static final ResourceLocation BACKGROUND = new ResourceLocation(NuminaConstants.MOD_ID, "textures/gui/container/armorstand.png");
+
     public ArmorStandScreen(ArmorStandMenu pMenu, Inventory pPlayerInventory, Component pTitle) {
         super(pMenu, pPlayerInventory, pTitle);
     }
 
     @Override
     protected void renderBg(PoseStack pPoseStack, float pPartialTick, int pMouseX, int pMouseY) {
-
+        RenderSystem.setShader(GameRenderer::getPositionTexShader);
+        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+        RenderSystem.setShaderTexture(0, BACKGROUND);
+        int i = this.leftPos;
+        int j = this.topPos;
+        this.blit(pPoseStack, i, j, 0, 0, this.imageWidth, this.imageHeight);
     }
-//    InnerFrame innerFrame;
-//    int spacer = 7;
-//    ArmorStandEntity armorStandEntity;
-//
-//    public ArmorStandGui(ArmorStandContainer containerIn, PlayerInventory inv, Component titleIn) {
-//        super(containerIn, inv, titleIn, 176,  172, true);
-//        innerFrame = new InnerFrame(containerIn, ulGetter());
-//        addFrame(innerFrame);
-//        this.armorStandEntity = containerIn.getArmorStandEntity();
-//    }
-//
-//    @Override
-//    public void init() {
-//        super.init();
-//        innerFrame.setPosition(backgroundRect.getPosition());
-//        innerFrame.setPlayer(getMinecraft().player);
-//        innerFrame.setArmorStandEntity(armorStandEntity);
-//        innerFrame.setGuiLeft(getGuiLeft());
-//        innerFrame.setGuiTop(getGuiTop());
-//    }
-//
-//    @Override
-//    public void renderBg(PoseStack matrixStack, float frameTime, int mouseX, int mouseY) {
-//        super.renderBg(matrixStack, frameTime, mouseX, mouseY);
-//        RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-//    }
-//
-//    @Override
-//    public void render(PoseStack matrixStack, int mouseX, int mouseY, float frameTIme) {
-//        renderBackground(matrixStack);
-//        if (backgroundRect.doneGrowing()) {
-//            super.render(matrixStack, mouseX, mouseY, frameTIme);
-//            this.renderTooltip(matrixStack, mouseX, mouseY);
-//        }
-//    }
-//
-//    @Override
-//    public void renderLabels(PoseStack matrixStack, int mouseX, int mouseY) {
-////        this.font.draw(matrixStack, this.inventory.getDisplayName(), (float)this.inventoryLabelX, (float)this.inventoryLabelY + 8, 4210752);
-//        this.innerFrame.renderLabels(matrixStack, mouseX, mouseY);
-//    }
-//
-//    class ArmorInventoryFrame extends InventoryFrame {
-//        public ArmorInventoryFrame(Container containerIn, List<Integer> slotIndexesIn, IContainerULOffSet.ulGetter ulGetter) {
-//            super(containerIn, Color.LIGHT_GREY, Color.DARK_GREY, Color.DARK_GREY, 1, 4, slotIndexesIn, ulGetter);
-//        }
-//    }
-//
-//    class InnerFrame extends MultiRectHolderFrame {
-//        protected ArmorInventoryFrame playerArmor, armorStandArmor;
-//        protected EntityRenderFrame playerFrame, armorStandFrame;
-//        InventoryFrame playerShield, armorStandHands;
-//        protected PlayerInventoryFrame playerInventoryFrame;
-//
-//        public InnerFrame(Container containerIn, IContainerULOffSet.ulGetter ulGetter) {
-//            super(false, true, 0, 0);
-//
-//            /** Center box with player armor and both armor stand hand slots */
-//            MultiRectHolderFrame centerFrame = new MultiRectHolderFrame(false, true, 0, 0);
-//            // slot 4-5
-//            armorStandHands = new InventoryFrame(containerIn,
-//                    1, 2, new ArrayList<Integer>(){{
-//                IntStream.range(4, 6).forEach(i-> add(i));
-//            }}, ulGetter);
-//            centerFrame.addRect(armorStandHands);
-//            centerFrame.addRect(new GUISpacer(18, 18));
-//
-//            // slot 46
-//            playerShield = new InventoryFrame(containerIn,
-//                    1, 1, new ArrayList<Integer>(){{
-//                IntStream.range(46, 47).forEach(i-> add(i));
-//            }}, ulGetter);
-//            centerFrame.addRect(playerShield);
-//            centerFrame.doneAdding();
-//
-//            /** Horizontal layout with all of the standing top boxes */
-//            MultiRectHolderFrame topHorizontalLayout = new MultiRectHolderFrame(true, true, 0, 0);
-//
-//            // slot 6-9
-//            playerArmor = new ArmorInventoryFrame(containerIn,
-//                    new ArrayList<Integer>(){{
-//                        IntStream.range(6, 10).forEach(i-> add(i));
-//                    }}, ulGetter);
-//            topHorizontalLayout.addRect(new GUISpacer(spacer, playerArmor.finalHeight()));
-//            topHorizontalLayout.addRect(playerArmor);
-//            topHorizontalLayout.addRect(new GUISpacer(3, playerArmor.finalHeight()));
-//
-//            playerFrame = new EntityRenderFrame(false);
-//            playerFrame.setWidth(48);
-//            playerFrame.setHeight(playerArmor.finalHeight());
-//            topHorizontalLayout.addRect(playerFrame);
-//
-//            topHorizontalLayout.addRect(new GUISpacer(3, playerArmor.finalHeight()));
-//            topHorizontalLayout.addRect(centerFrame);
-//            topHorizontalLayout.addRect(new GUISpacer(3, playerArmor.finalHeight()));
-//
-//            armorStandFrame = new EntityRenderFrame(false);
-//            armorStandFrame.setWidth(48);
-//            armorStandFrame.setHeight(playerArmor.finalHeight());
-//            topHorizontalLayout.addRect(armorStandFrame);
-//            topHorizontalLayout.addRect(new GUISpacer(3, playerArmor.finalHeight()));
-//
-//            // slot 0-3
-//            armorStandArmor = new ArmorInventoryFrame(
-//                    containerIn,
-//                    new ArrayList<Integer>(){{
-//                        IntStream.range(0, 4).forEach(i-> add(i));
-//                    }}, ulGetter
-//            );
-//            topHorizontalLayout.addRect(armorStandArmor);
-//            topHorizontalLayout.addRect(new GUISpacer(spacer, playerArmor.finalHeight()));
-//            topHorizontalLayout.doneAdding();
-//
-//            /** final complete layout with all boxes in place */
-//            GUISpacer topSpacer = new GUISpacer(topHorizontalLayout.finalWidth(), spacer -3);
-//            addRect(topSpacer);
-//
-//            addRect(topHorizontalLayout);
-//
-//            playerInventoryFrame = new PlayerInventoryFrame(containerIn, 10, 37, ulGetter);
-//            addRect(playerInventoryFrame);
-//            doneAdding();
-//        }
-//
-//        public void renderLabels(PoseStack matrixStack, int mouseX, int mouseY) {
-//            playerInventoryFrame.renderLabels(matrixStack, mouseX, mouseY);
-//        }
-//
-//        public void setGuiLeft(double guiLeft) {
-//            playerFrame.setGuiLeft(guiLeft);
-//            armorStandFrame.setGuiLeft(guiLeft);
-//        }
-//
-//        public void setGuiTop(double guiTop) {
-//            playerFrame.setGuiTop(guiTop);
-//            armorStandFrame.setGuiTop(guiTop);
-//        }
-//
-//        public void setArmorStandEntity(LivingEntity armorStand) {
-//            armorStandFrame.setLivingEntity(armorStand);
-//        }
-//
-//        public void setPlayer(LivingEntity player) {
-//            playerFrame.setLivingEntity(player);
-//        }
-//    }
+
+    @Override
+    public void render(PoseStack pPoseStack, int pMouseX, int pMouseY, float pPartialTick) {
+        renderBackground(pPoseStack);
+        super.render(pPoseStack, pMouseX, pMouseY, pPartialTick);
+        this.renderTooltip(pPoseStack, pMouseX, pMouseY);
+    }
+
+    @Override
+    protected void renderLabels(PoseStack pPoseStack, int pMouseX, int pMouseY) {
+    }
 }

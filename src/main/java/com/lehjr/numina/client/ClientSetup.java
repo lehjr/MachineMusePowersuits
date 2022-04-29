@@ -3,6 +3,7 @@ package com.lehjr.numina.client;
 import com.lehjr.numina.api.gui.GuiIcon;
 import com.lehjr.numina.api.gui.IconUtils;
 import com.lehjr.numina.api.render.NuminaSpriteUploader;
+import com.lehjr.numina.client.screen.ArmorStandScreen;
 import com.lehjr.numina.client.screen.ChargingBaseScreen;
 import com.lehjr.numina.common.Numina;
 import com.lehjr.numina.common.NuminaObjects;
@@ -23,7 +24,7 @@ public final class ClientSetup {
     @SubscribeEvent
     public static void handleSetupEvent(final FMLClientSetupEvent event) {
         MenuScreens.register(NuminaObjects.CHARGING_BASE_CONTAINER_TYPE.get(), ChargingBaseScreen::new);
-
+        MenuScreens.register(NuminaObjects.ARMOR_STAND_CONTAINER_TYPE.get(), ArmorStandScreen::new);
 
     }
 

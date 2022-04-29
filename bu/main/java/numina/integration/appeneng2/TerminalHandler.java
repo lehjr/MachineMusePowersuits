@@ -201,4 +201,23 @@ public class TerminalHandler implements IWirelessTermHandler {//}, IWirelessFlui
             }
         }
     }
+
+    // new
+    private static class LinkableHandler implements IGridLinkableHandler {
+        private LinkableHandler() {
+        }
+
+        public boolean canLink(ItemStack stack) {
+            return stack.getItem() instanceof WirelessTerminalItem;
+        }
+
+        public void link(ItemStack itemStack, long securityKey) {
+            itemStack.getOrCreateTag().putLong("gridKey", securityKey);
+        }
+
+        public void unlink(ItemStack itemStack) {
+            itemStack.removeTagKey("gridKey");
+        }
+    }
+
 }
