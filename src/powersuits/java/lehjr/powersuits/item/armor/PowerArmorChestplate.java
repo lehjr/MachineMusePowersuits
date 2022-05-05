@@ -46,17 +46,17 @@ public class PowerArmorChestplate extends AbstractElectricItemArmor {
                 entity.getItemBySlot(EquipmentSlotType.HEAD).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
                         .filter(IModularItem.class::isInstance)
                         .map(IModularItem.class::cast)
-                        .map(iModularItem -> iModularItem.isModuleOnline(MPSRegistryNames.FLIGHT_CONTROL_MODULE_REGNAME)).orElse(false) &&
+                        .map(iModularItem -> iModularItem.isModuleOnline(MPSRegistryNames.FLIGHT_CONTROL_MODULE)).orElse(false) &&
 
                         entity.getItemBySlot(EquipmentSlotType.CHEST).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
                                 .filter(IModularItem.class::isInstance)
                                 .map(IModularItem.class::cast)
-                                .map(iModularItem -> iModularItem.isModuleOnline(MPSRegistryNames.GLIDER_MODULE_REGNAME)).orElse(false) &&
+                                .map(iModularItem -> iModularItem.isModuleOnline(MPSRegistryNames.GLIDER_MODULE)).orElse(false) &&
 
                         entity.getItemBySlot(EquipmentSlotType.CHEST).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
                                 .filter(IModularItem.class::isInstance)
                                 .map(IModularItem.class::cast)
-                                .map(iModularItem -> iModularItem.isModuleOnline(MPSRegistryNames.JETPACK_MODULE_REGNAME)).orElse(false);
+                                .map(iModularItem -> iModularItem.isModuleOnline(MPSRegistryNames.JETPACK_MODULE)).orElse(false);
     }
 
     @Override

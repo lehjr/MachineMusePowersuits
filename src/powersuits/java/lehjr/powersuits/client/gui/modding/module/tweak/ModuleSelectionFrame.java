@@ -29,7 +29,7 @@ package lehjr.powersuits.client.gui.modding.module.tweak;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import lehjr.numina.util.capabilities.inventory.modularitem.IModularItem;
-import lehjr.numina.util.capabilities.module.powermodule.EnumModuleCategory;
+import lehjr.numina.util.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.util.capabilities.module.powermodule.IPowerModule;
 import lehjr.numina.util.capabilities.module.powermodule.PowerModuleCapability;
 import lehjr.numina.util.client.gui.clickable.ClickableModule;
@@ -53,7 +53,7 @@ import java.util.concurrent.atomic.AtomicReference;
 
 public class ModuleSelectionFrame extends ScrollableFrame {
     protected ModularItemSelectionFrame target;
-    protected Map<EnumModuleCategory, ModuleSelectionSubFrame> categories = new LinkedHashMap<>();
+    protected Map<ModuleCategory, ModuleSelectionSubFrame> categories = new LinkedHashMap<>();
     protected RelativeRect lastPosition;
     Optional<ClickableModule> selectedModule = Optional.ofNullable(null);
     LazyOptional<IPowerModule> moduleCap = LazyOptional.empty();
@@ -66,7 +66,7 @@ public class ModuleSelectionFrame extends ScrollableFrame {
         this.target = itemSelectFrameIn;
     }
 
-    protected ModuleSelectionSubFrame getOrCreateCategory(EnumModuleCategory category) {
+    protected ModuleSelectionSubFrame getOrCreateCategory(ModuleCategory category) {
         if (categories.containsKey(category)) {
             return categories.get(category);
         } else {

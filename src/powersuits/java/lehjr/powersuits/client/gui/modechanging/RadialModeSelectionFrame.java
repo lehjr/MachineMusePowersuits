@@ -30,7 +30,7 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import lehjr.numina.network.NuminaPackets;
 import lehjr.numina.network.packets.ModeChangeRequestPacket;
 import lehjr.numina.util.capabilities.inventory.modechanging.IModeChangingItem;
-import lehjr.numina.util.capabilities.module.powermodule.EnumModuleCategory;
+import lehjr.numina.util.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.util.client.gui.clickable.ClickableModule;
 import lehjr.numina.util.client.gui.frame.IGuiFrame;
 import lehjr.numina.util.client.gui.gemoetry.IDrawable;
@@ -147,7 +147,7 @@ public class RadialModeSelectionFrame extends RelativeRect implements IGuiFrame 
                             selectedModuleOriginal = activeMode;
                         int modeNum = 0;
                         for (int mode : modes) {
-                            ClickableModule clickie = new ClickableModule(handler.getStackInSlot(mode), new SpiralPointToPoint2D(getPosition(), radius, ((3D * Math.PI / 2) - ((2D * Math.PI * modeNum) / modes.size())), 250D), mode, EnumModuleCategory.NONE);
+                            ClickableModule clickie = new ClickableModule(handler.getStackInSlot(mode), new SpiralPointToPoint2D(getPosition(), radius, ((3D * Math.PI / 2) - ((2D * Math.PI * modeNum) / modes.size())), 250D), mode, ModuleCategory.NONE);
                             modeButtons.add(clickie);
                             modeNum ++;
                         }

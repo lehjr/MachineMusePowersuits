@@ -28,8 +28,8 @@ package lehjr.powersuits.item.module.armor;
 
 import lehjr.numina.constants.NuminaConstants;
 import lehjr.numina.util.capabilities.heat.HeatCapability;
-import lehjr.numina.util.capabilities.module.powermodule.EnumModuleCategory;
-import lehjr.numina.util.capabilities.module.powermodule.EnumModuleTarget;
+import lehjr.numina.util.capabilities.module.powermodule.ModuleCategory;
+import lehjr.numina.util.capabilities.module.powermodule.ModuleTarget;
 import lehjr.numina.util.capabilities.module.powermodule.IConfig;
 import lehjr.numina.util.capabilities.module.powermodule.PowerModuleCapability;
 import lehjr.numina.util.capabilities.module.tickable.IPlayerTickModule;
@@ -67,10 +67,10 @@ public class EnergyShieldModule extends AbstractPowerModule {
 
         public CapProvider(@Nonnull ItemStack module) {
             this.module = module;
-            ticker = new Ticker(module, EnumModuleCategory.ARMOR, EnumModuleTarget.ARMORONLY, MPSSettings::getModuleConfig, true) {
+            ticker = new Ticker(module, ModuleCategory.ARMOR, ModuleTarget.ARMORONLY, MPSSettings::getModuleConfig, true) {
                 @Override
                 public int getTier() {
-                    return 4;
+                    return 3;
                 }
 
                 @Override
@@ -99,7 +99,7 @@ public class EnergyShieldModule extends AbstractPowerModule {
         }
 
         class Ticker extends PlayerTickModule {
-            public Ticker(@Nonnull ItemStack module, EnumModuleCategory category, EnumModuleTarget target, Callable<IConfig> config, boolean defBool) {
+            public Ticker(@Nonnull ItemStack module, ModuleCategory category, ModuleTarget target, Callable<IConfig> config, boolean defBool) {
                 super(module, category, target, config, defBool);
             }
 

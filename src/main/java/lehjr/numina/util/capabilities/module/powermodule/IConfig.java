@@ -35,26 +35,26 @@ import java.util.Optional;
 
 public interface IConfig {
     double getBasePropertyDoubleOrDefault(
-            EnumModuleCategory category,
+            ModuleCategory category,
             @Nonnull ItemStack module,
             String propertyName,
             double baseVal);
 
     double getTradeoffPropertyDoubleOrDefault(
-            EnumModuleCategory category,
+            ModuleCategory category,
             @Nonnull ItemStack module,
             String tradeoffName,
             String propertyName,
             double multiplier);
 
     int getTradeoffPropertyIntegerOrDefault(
-            EnumModuleCategory category,
+            ModuleCategory category,
             @Nonnull ItemStack module,
             String tradeoffName,
             String propertyName,
             int multiplier);
 
-    boolean isModuleAllowed(EnumModuleCategory category, @Nonnull ItemStack module);
+    boolean isModuleAllowed(ModuleCategory category, @Nonnull ItemStack module);
 
     void setServerConfig(@Nullable ModConfig serverConfig);
 

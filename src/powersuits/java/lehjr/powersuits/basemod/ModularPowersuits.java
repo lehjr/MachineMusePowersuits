@@ -31,8 +31,8 @@ import com.electronwill.nightconfig.core.file.CommentedFileConfig;
 import lehjr.numina.config.ConfigHelper;
 import lehjr.numina.integration.refinedstorage.RSWirelessHandler;
 import lehjr.numina.integration.scannable.ScannableHandler;
-import lehjr.numina.util.capabilities.module.powermodule.EnumModuleCategory;
-import lehjr.numina.util.capabilities.module.powermodule.EnumModuleTarget;
+import lehjr.numina.util.capabilities.module.powermodule.ModuleCategory;
+import lehjr.numina.util.capabilities.module.powermodule.ModuleTarget;
 import lehjr.numina.util.capabilities.module.powermodule.PowerModuleCapability;
 import lehjr.numina.util.capabilities.module.rightclick.IRightClickModule;
 import lehjr.numina.util.capabilities.module.rightclick.RightClickModule;
@@ -52,7 +52,6 @@ import lehjr.powersuits.constants.MPSConstants;
 import lehjr.powersuits.constants.MPSRegistryNames;
 import lehjr.powersuits.event.*;
 import lehjr.powersuits.network.MPSPackets;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScreenManager;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -86,8 +85,6 @@ import net.minecraftforge.fml.network.NetworkHooks;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.List;
 
 @Mod(MPSConstants.MOD_ID)
 public class ModularPowersuits {
@@ -163,6 +160,9 @@ public class ModularPowersuits {
         MinecraftForge.EVENT_BUS.addListener(PlayerLoginHandler::onPlayerLoginClient);// just to populated keybinds -_-
 
         RenderingRegistry.registerEntityRenderingHandler(MPSObjects.RAILGUN_BOLT_ENTITY_TYPE.get(), RailGunBoltRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(MPSObjects.RAILGUN_BOLT_ENTITY2_TYPE.get(), RailgunBolt2Renderer::new);
+
+
         RenderingRegistry.registerEntityRenderingHandler(MPSObjects.LUX_CAPACITOR_ENTITY_TYPE.get(), LuxCapacitorEntityRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(MPSObjects.PLASMA_BALL_ENTITY_TYPE.get(), PlasmaBoltEntityRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(MPSObjects.SPINNING_BLADE_ENTITY_TYPE.get(), SpinningBladeEntityRenderer::new);
@@ -179,7 +179,7 @@ public class ModularPowersuits {
 
         // AE2 Wireless terminal
         if (regName.equals(new ResourceLocation("appliedenergistics2:wireless_terminal"))) {
-            IRightClickModule ae2wirelessterminal = new RightClickModule(itemStack, EnumModuleCategory.TOOL, EnumModuleTarget.TOOLONLY, MPSSettings::getModuleConfig) {
+            IRightClickModule ae2wirelessterminal = new RightClickModule(itemStack, ModuleCategory.TOOL, ModuleTarget.TOOLONLY, MPSSettings::getModuleConfig) {
                 @Override
                 public ActionResult use(ItemStack itemStackIn, World worldIn, PlayerEntity playerIn, Hand hand) {
                     Api.instance().registries().wireless().openWirelessTerminalGui(itemStackIn, worldIn, playerIn, hand);
@@ -222,9 +222,9 @@ public class ModularPowersuits {
 
 
         // Clock
-        if (!event.getCapabilities().containsKey(MPSRegistryNames.CLOCK_MODULE_REG) && event.getObject().getItem().equals(Items.CLOCK)) {
-            IToggleableModule clock = new ToggleableModule(itemStack, EnumModuleCategory.SPECIAL, EnumModuleTarget.HEADONLY, MPSSettings::getModuleConfig, true);
-            event.addCapability(MPSRegistryNames.CLOCK_MODULE_REG, new ICapabilityProvider() {
+        if (!event.getCapabilities().containsKey(MPSRegistryNames.CLOCK_MODULE) && event.getObject().getItem().equals(Items.CLOCK)) {
+            IToggleableModule clock = new ToggleableModule(itemStack, ModuleCategory.SPECIAL, ModuleTarget.HEADONLY, MPSSettings::getModuleConfig, true);
+            event.addCapability(MPSRegistryNames.CLOCK_MODULE, new ICapabilityProvider() {
                 @Nonnull
                 @Override
                 public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
@@ -236,10 +236,10 @@ public class ModularPowersuits {
             });
 
             // Compass
-        } else if (!event.getCapabilities().containsKey(MPSRegistryNames.COMPASS_MODULE_REG) && event.getObject().getItem().equals(Items.COMPASS)) {
-            IToggleableModule compass = new ToggleableModule(itemStack, EnumModuleCategory.SPECIAL, EnumModuleTarget.HEADONLY, MPSSettings::getModuleConfig, true);
+        } else if (!event.getCapabilities().containsKey(MPSRegistryNames.COMPASS_MODULE) && event.getObject().getItem().equals(Items.COMPASS)) {
+            IToggleableModule compass = new ToggleableModule(itemStack, ModuleCategory.SPECIAL, ModuleTarget.HEADONLY, MPSSettings::getModuleConfig, true);
 
-            event.addCapability(MPSRegistryNames.COMPASS_MODULE_REG, new ICapabilityProvider() {
+            event.addCapability(MPSRegistryNames.COMPASS_MODULE, new ICapabilityProvider() {
                 @Nonnull
                 @Override
                 public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
@@ -251,9 +251,9 @@ public class ModularPowersuits {
             });
 
             // Crafting workbench
-        } else if (!event.getCapabilities().containsKey(MPSRegistryNames.PORTABLE_WORKBENCH_MODULE_REG) && event.getObject().getItem().equals(Items.CRAFTING_TABLE)) {
+        } else if (!event.getCapabilities().containsKey(MPSRegistryNames.PORTABLE_WORKBENCH_MODULE) && event.getObject().getItem().equals(Items.CRAFTING_TABLE)) {
             final ITextComponent CONTAINER_NAME = new TranslationTextComponent("container.crafting");
-            IRightClickModule rightClick = new RightClickModule(itemStack, EnumModuleCategory.TOOL, EnumModuleTarget.TOOLONLY, MPSSettings::getModuleConfig) {
+            IRightClickModule rightClick = new RightClickModule(itemStack, ModuleCategory.TOOL, ModuleTarget.TOOLONLY, MPSSettings::getModuleConfig) {
                 @Override
                 public ActionResult use(ItemStack itemStackIn, World worldIn, PlayerEntity playerIn, Hand hand) {
                     if (worldIn.isClientSide) {
@@ -334,7 +334,7 @@ public class ModularPowersuits {
                 }
             };
 
-            event.addCapability(MPSRegistryNames.PORTABLE_WORKBENCH_MODULE_REG, new ICapabilityProvider() {
+            event.addCapability(MPSRegistryNames.PORTABLE_WORKBENCH_MODULE, new ICapabilityProvider() {
                 @Nonnull
                 @Override
                 public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {

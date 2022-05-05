@@ -58,10 +58,10 @@ public class DiamondPlatingModule extends AbstractPowerModule {
 
         public CapProvider(@Nonnull ItemStack module) {
             this.module = module;
-            moduleCap = new PowerModule(module, EnumModuleCategory.ARMOR, EnumModuleTarget.ARMORONLY, MPSSettings::getModuleConfig) {
+            moduleCap = new PowerModule(module, ModuleCategory.ARMOR, ModuleTarget.ARMORONLY, MPSSettings::getModuleConfig) {
                 @Override
                 public int getTier() {
-                    return 3;
+                    return 2;
                 }
 
                 @Override

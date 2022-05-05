@@ -66,6 +66,7 @@ public class LuxCapacitorEntity extends ThrowableEntity implements IEntityAdditi
         this.color = color != null ? color : LuxCapacitorBlock.defaultColor;
         Vector3d direction = shootingEntity.getLookAngle().normalize();
         double speed = 1.0;
+
         this.setDeltaMovement(
                 direction.x * speed,
                 direction.y * speed,
@@ -73,16 +74,11 @@ public class LuxCapacitorEntity extends ThrowableEntity implements IEntityAdditi
         );
 
         double r = 0.4375;
-        double xoffset = 0.1;
-        double yoffset = 0;
-        double zoffset = 0;
-        double horzScale = Math.sqrt(direction.x * direction.x + direction.z * direction.z);
-        double horzx = direction.x / horzScale;
-        double horzz = direction.z / horzScale;
         this.setPos(
-                (shootingEntity.getX() + direction.x * xoffset - direction.y * horzx * yoffset - horzz * zoffset),
-                (shootingEntity.getY() + shootingEntity.getEyeHeight() + direction.y * xoffset + (1 - Math.abs(direction.y)) * yoffset),
-                (shootingEntity.getZ() + direction.z * xoffset - direction.y * horzz * yoffset + horzx * zoffset));
+                shootingEntity.getX(),
+                shootingEntity.getY() + shootingEntity.getEyeHeight(),
+                shootingEntity.getZ());
+
         this.setBoundingBox(new AxisAlignedBB(getX() - r, getY() - 0.0625, getZ() - r, getX() + r, getY() + 0.0625, getZ() + r));
     }
 

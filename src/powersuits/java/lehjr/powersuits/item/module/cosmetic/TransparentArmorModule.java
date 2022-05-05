@@ -26,8 +26,8 @@
 
 package lehjr.powersuits.item.module.cosmetic;
 
-import lehjr.numina.util.capabilities.module.powermodule.EnumModuleCategory;
-import lehjr.numina.util.capabilities.module.powermodule.EnumModuleTarget;
+import lehjr.numina.util.capabilities.module.powermodule.ModuleCategory;
+import lehjr.numina.util.capabilities.module.powermodule.ModuleTarget;
 import lehjr.numina.util.capabilities.module.powermodule.PowerModuleCapability;
 import lehjr.numina.util.capabilities.module.toggleable.IToggleableModule;
 import lehjr.numina.util.capabilities.module.toggleable.ToggleableModule;
@@ -60,7 +60,7 @@ public class TransparentArmorModule extends AbstractPowerModule {
 
         public CapProvider(@Nonnull ItemStack module) {
             this.module = module;
-            this.moduleToggle = new ToggleableModule(module, EnumModuleCategory.COSMETIC, EnumModuleTarget.ARMORONLY, MPSSettings::getModuleConfig, true);
+            this.moduleToggle = new ToggleableModule(module, ModuleCategory.COSMETIC, ModuleTarget.ARMORONLY, MPSSettings::getModuleConfig, true);
         }
 
         @Nonnull

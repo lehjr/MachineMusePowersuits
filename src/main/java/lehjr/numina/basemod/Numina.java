@@ -53,7 +53,6 @@ import lehjr.numina.util.client.event.ToolTipEvent;
 import lehjr.numina.util.client.gui.GuiIcon;
 import lehjr.numina.util.client.render.MuseIconUtils;
 import lehjr.numina.util.client.render.RenderGameOverlayEventHandler;
-import li.cil.scannable.client.gui.GuiScanner;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScreenManager;
 import net.minecraft.entity.Entity;
@@ -105,7 +104,8 @@ public class Numina {
 
         MinecraftForge.EVENT_BUS.register(new LogoutEventHandler());
 
-        DistExecutor.runWhenOn(Dist.CLIENT, ()-> ()-> clientStart(modEventBus));
+//        DistExecutor.runWhenOn(Dist.CLIENT, ()-> ()-> clientStart(modEventBus));
+        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, ()-> ()-> clientStart(modEventBus));
 
         // TODO? reload recipes on config change?
         // [14:33:10] [Thread-1/DEBUG] [ne.mi.fm.co.ConfigFileTypeHandler/CONFIG]: Config file numina-server.toml changed, sending notifies

@@ -31,7 +31,7 @@ import net.minecraft.util.text.TranslationTextComponent;
 /**
  * The module categories
  */
-public enum EnumModuleCategory {
+public enum ModuleCategory {
     NONE("numina.module.category.none", "None"),
     DEBUG("numina.module.category.debug", "Debug_Modules"),
     ARMOR("numina.module.category.armor", "Armor_Modules"),
@@ -49,7 +49,7 @@ public enum EnumModuleCategory {
     private final String configTitle;
     private final TranslationTextComponent translation;
 
-    EnumModuleCategory(String translationString, String configTitle) {
+    ModuleCategory(String translationString, String configTitle) {
         this.translation = new TranslationTextComponent(translationString);
         this.configTitle = configTitle;
     }

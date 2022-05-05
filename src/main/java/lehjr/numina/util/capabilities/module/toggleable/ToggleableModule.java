@@ -26,8 +26,8 @@
 
 package lehjr.numina.util.capabilities.module.toggleable;
 
-import lehjr.numina.util.capabilities.module.powermodule.EnumModuleCategory;
-import lehjr.numina.util.capabilities.module.powermodule.EnumModuleTarget;
+import lehjr.numina.util.capabilities.module.powermodule.ModuleCategory;
+import lehjr.numina.util.capabilities.module.powermodule.ModuleTarget;
 import lehjr.numina.util.capabilities.module.powermodule.IConfig;
 import lehjr.numina.util.capabilities.module.powermodule.PowerModule;
 import lehjr.numina.util.nbt.MuseNBTUtils;
@@ -44,7 +44,7 @@ public class ToggleableModule extends PowerModule implements IToggleableModule, 
     Boolean online;
     public static final String TAG_ONLINE = "Active";
     static boolean defBool;
-    public ToggleableModule(@Nonnull ItemStack module, EnumModuleCategory category, EnumModuleTarget target, Callable<IConfig> moduleConfigGetterIn, boolean defToggleVal) {
+    public ToggleableModule(@Nonnull ItemStack module, ModuleCategory category, ModuleTarget target, Callable<IConfig> moduleConfigGetterIn, boolean defToggleVal) {
         super(module, category, target, moduleConfigGetterIn);
         defBool = defToggleVal;
     }

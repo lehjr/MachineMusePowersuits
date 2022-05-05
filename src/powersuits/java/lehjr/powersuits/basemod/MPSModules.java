@@ -27,7 +27,6 @@
 package lehjr.powersuits.basemod;
 
 import lehjr.numina.constants.NuminaConstants;
-import lehjr.powersuits.constants.MPSConstants;
 import lehjr.powersuits.constants.MPSRegistryNames;
 import net.minecraft.util.ResourceLocation;
 
@@ -46,7 +45,7 @@ public enum MPSModules {
         add(new ResourceLocation(NuminaConstants.MOD_ID, NuminaConstants.MODULE_BATTERY_ADVANCED__REGNAME));
         add(new ResourceLocation(NuminaConstants.MOD_ID, NuminaConstants.MODULE_BATTERY_ELITE__REGNAME));
         add(new ResourceLocation(NuminaConstants.MOD_ID, NuminaConstants.MODULE_BATTERY_ULTIMATE__REGNAME));
-        add(new ResourceLocation(MPSConstants.MOD_ID, MPSRegistryNames.TINKER_TABLE));
+        add(MPSRegistryNames.TINKER_TABLE);
 
         add(new ResourceLocation("clock"));
         add(new ResourceLocation("compass"));

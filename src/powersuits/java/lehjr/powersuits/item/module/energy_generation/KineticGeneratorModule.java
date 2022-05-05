@@ -26,8 +26,8 @@
 
 package lehjr.powersuits.item.module.energy_generation;
 
-import lehjr.numina.util.capabilities.module.powermodule.EnumModuleCategory;
-import lehjr.numina.util.capabilities.module.powermodule.EnumModuleTarget;
+import lehjr.numina.util.capabilities.module.powermodule.ModuleCategory;
+import lehjr.numina.util.capabilities.module.powermodule.ModuleTarget;
 import lehjr.numina.util.capabilities.module.powermodule.IConfig;
 import lehjr.numina.util.capabilities.module.powermodule.PowerModuleCapability;
 import lehjr.numina.util.capabilities.module.tickable.IPlayerTickModule;
@@ -65,7 +65,7 @@ public class KineticGeneratorModule extends AbstractPowerModule {
 
         public CapProvider(@Nonnull ItemStack module) {
             this.module = module;
-            this.ticker = new Ticker(module, EnumModuleCategory.ENERGY_GENERATION, EnumModuleTarget.LEGSONLY, MPSSettings::getModuleConfig) {{
+            this.ticker = new Ticker(module, ModuleCategory.ENERGY_GENERATION, ModuleTarget.LEGSONLY, MPSSettings::getModuleConfig) {{
                 addBaseProperty(MPSConstants.ENERGY_GENERATION, 2000);
                 addTradeoffProperty(MPSConstants.ENERGY_GENERATED, MPSConstants.ENERGY_GENERATION, 6000, "FE");
                 addBaseProperty(MPSConstants.MOVEMENT_RESISTANCE, 0.01F);
@@ -83,7 +83,7 @@ public class KineticGeneratorModule extends AbstractPowerModule {
         }
 
         class Ticker extends PlayerTickModule {
-            public Ticker(@Nonnull ItemStack module, EnumModuleCategory category, EnumModuleTarget target, Callable<IConfig> config) {
+            public Ticker(@Nonnull ItemStack module, ModuleCategory category, ModuleTarget target, Callable<IConfig> config) {
                 super(module, category, target, config, true);
             }
 

@@ -91,20 +91,26 @@ public class SpinningBladeEntity extends ThrowableEntity {
                 direction.z * speed
         );
         double r = 1;
-        double xoffset = 1.3f + r - direction.y * shootingEntity.getEyeHeight();
-        double yoffset = -.2;
-        double zoffset = 0.3f;
-        double horzScale = Math.sqrt(direction.x * direction.x + direction.z * direction.z);
-        double horzx = direction.x / horzScale;
-        double horzz = direction.z / horzScale;
+//        double xoffset = 1.3f + r - direction.y * shootingEntity.getEyeHeight();
+//        double yoffset = -.2;
+//        double zoffset = 0.3f;
+//        double horzScale = Math.sqrt(direction.x * direction.x + direction.z * direction.z);
+//        double horzx = direction.x / horzScale;
+//        double horzz = direction.z / horzScale;
+//        this.setPos(
+//                // x
+//                (shootingEntity.getX() + direction.x * xoffset - direction.y * horzx * yoffset - horzz * zoffset),
+//                // y
+//                (shootingEntity.getY() + shootingEntity.getEyeHeight() + direction.y * xoffset + (1 - Math.abs(direction.y)) * yoffset),
+//                // z
+//                (shootingEntity.getZ() + direction.z * xoffset - direction.y * horzz * yoffset + horzx * zoffset));
+
         this.setPos(
-                // x
-                (shootingEntity.getX() + direction.x * xoffset - direction.y * horzx * yoffset - horzz * zoffset),
-                // y
-                (shootingEntity.getY() + shootingEntity.getEyeHeight() + direction.y * xoffset + (1 - Math.abs(direction.y)) * yoffset),
-                // z
-                (shootingEntity.getZ() + direction.z * xoffset - direction.y * horzz * yoffset + horzx * zoffset)
-        );
+                shootingEntity.getX(),
+                shootingEntity.getY() + shootingEntity.getEyeHeight(),
+                shootingEntity.getZ());
+
+
         this.setBoundingBox(new AxisAlignedBB(getX() - r, getY() - r, getZ() - r, getX() + r, getY() + r, getZ() + r));
     }
 

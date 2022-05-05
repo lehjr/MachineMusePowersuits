@@ -31,11 +31,9 @@ import lehjr.numina.util.client.model.obj.OBJBakedCompositeModel;
 import lehjr.powersuits.client.model.block.LuxCapacitorModelWrapper;
 import lehjr.powersuits.client.model.helper.MPSModelHelper;
 import lehjr.powersuits.client.model.item.PowerFistModel;
-import lehjr.powersuits.constants.MPSConstants;
 import lehjr.powersuits.constants.MPSRegistryNames;
 import net.minecraft.client.renderer.model.IBakedModel;
 import net.minecraft.client.renderer.model.ModelResourceLocation;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
@@ -43,10 +41,10 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 public enum ModelBakeEventHandler {
     INSTANCE;
 
-    ModelResourceLocation luxCapItemLocation = new ModelResourceLocation(new ResourceLocation(MPSConstants.MOD_ID, MPSRegistryNames.LUX_CAPACITOR), "inventory");
-    ModelResourceLocation luxCapModuleLocation = new ModelResourceLocation(new ResourceLocation(MPSConstants.MOD_ID, MPSRegistryNames.LUX_CAPACITOR_MODULE), "inventory");
+    ModelResourceLocation luxCapItemLocation = new ModelResourceLocation(MPSRegistryNames.LUX_CAPACITOR, "inventory");
+    ModelResourceLocation luxCapModuleLocation = new ModelResourceLocation(MPSRegistryNames.LUX_CAPACITOR_MODULE, "inventory");
 
-    public static final ModelResourceLocation powerFistIconLocation = new ModelResourceLocation(new ResourceLocation(MPSConstants.MOD_ID, MPSRegistryNames.POWER_FIST), "inventory");
+    public static final ModelResourceLocation powerFistIconLocation = new ModelResourceLocation(MPSRegistryNames.POWER_FIST, "inventory");
 
     @SubscribeEvent
     public void onModelBake(ModelBakeEvent event) {

@@ -26,8 +26,8 @@
 
 package lehjr.powersuits.item.module.weapon;
 
-import lehjr.numina.util.capabilities.module.powermodule.EnumModuleCategory;
-import lehjr.numina.util.capabilities.module.powermodule.EnumModuleTarget;
+import lehjr.numina.util.capabilities.module.powermodule.ModuleCategory;
+import lehjr.numina.util.capabilities.module.powermodule.ModuleTarget;
 import lehjr.numina.util.capabilities.module.powermodule.IConfig;
 import lehjr.numina.util.capabilities.module.powermodule.PowerModuleCapability;
 import lehjr.numina.util.capabilities.module.rightclick.IRightClickModule;
@@ -72,7 +72,7 @@ public class RailgunModule extends AbstractPowerModule {
 
         public CapProvider(@Nonnull ItemStack module) {
             this.module = module;
-            this.ticker = new Ticker(module, EnumModuleCategory.WEAPON, EnumModuleTarget.TOOLONLY, MPSSettings::getModuleConfig) {{
+            this.ticker = new Ticker(module, ModuleCategory.WEAPON, ModuleTarget.TOOLONLY, MPSSettings::getModuleConfig) {{
                 addBaseProperty(MPSConstants.RAILGUN_TOTAL_IMPULSE, 500, "Ns");
                 addBaseProperty(MPSConstants.RAILGUN_ENERGY_COST, 5000, "FE");
                 addBaseProperty(MPSConstants.RAILGUN_HEAT_EMISSION, 2, "");
@@ -90,7 +90,7 @@ public class RailgunModule extends AbstractPowerModule {
 
         class Ticker extends PlayerTickModule implements IRightClickModule {
 
-            public Ticker(@Nonnull ItemStack module, EnumModuleCategory category, EnumModuleTarget target, Callable<IConfig> config) {
+            public Ticker(@Nonnull ItemStack module, ModuleCategory category, ModuleTarget target, Callable<IConfig> config) {
                 super(module, category, target, config, true);
             }
 
@@ -130,9 +130,10 @@ public class RailgunModule extends AbstractPowerModule {
                         double knockback = damage * 0.05; // original: damage / 20.0;
 
                         RailgunBoltEntity bolt = new RailgunBoltEntity(worldIn, entityLiving, velocity, chargePercent, damage, knockback);
-
                         // Only run if enntity is added
                         if (worldIn.addFreshEntity(bolt)) {
+                            System.out.println("doing something here");
+
                             Vector3d lookVec = playerentity.getLookAngle();
                             worldIn.playSound(null, entityLiving.getX(), entityLiving.getY(), entityLiving.getZ(), SoundEvents.CROSSBOW_SHOOT, SoundCategory.PLAYERS, 1.0F, 1.0F);
                             ElectricItemUtils.drainPlayerEnergy(entityLiving, (int) energyConsumption);

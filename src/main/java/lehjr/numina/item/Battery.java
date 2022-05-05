@@ -92,7 +92,7 @@ public class Battery extends Item {
 
         public CapProvider(@Nonnull ItemStack module) {
             this.module = module;
-            this.moduleCap = new PowerModule(module, EnumModuleCategory.ENERGY_STORAGE, EnumModuleTarget.ALLITEMS, NuminaSettings::getModuleConfig) {
+            this.moduleCap = new PowerModule(module, ModuleCategory.ENERGY_STORAGE, ModuleTarget.ALLITEMS, NuminaSettings::getModuleConfig) {
                 @Override
                 public int getTier() {
                     return tier;

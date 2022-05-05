@@ -28,8 +28,8 @@ package lehjr.powersuits.item.module.movement;
 
 import lehjr.numina.config.NuminaSettings;
 import lehjr.numina.util.capabilities.inventory.modularitem.IModularItem;
-import lehjr.numina.util.capabilities.module.powermodule.EnumModuleCategory;
-import lehjr.numina.util.capabilities.module.powermodule.EnumModuleTarget;
+import lehjr.numina.util.capabilities.module.powermodule.ModuleCategory;
+import lehjr.numina.util.capabilities.module.powermodule.ModuleTarget;
 import lehjr.numina.util.capabilities.module.powermodule.IConfig;
 import lehjr.numina.util.capabilities.module.powermodule.PowerModuleCapability;
 import lehjr.numina.util.capabilities.module.tickable.IPlayerTickModule;
@@ -75,7 +75,7 @@ public class JetBootsModule extends AbstractPowerModule {
 
         public CapProvider(@Nonnull ItemStack module) {
             this.module = module;
-            this.ticker = new Ticker(module, EnumModuleCategory.MOVEMENT, EnumModuleTarget.FEETONLY, MPSSettings::getModuleConfig) {{
+            this.ticker = new Ticker(module, ModuleCategory.MOVEMENT, ModuleTarget.FEETONLY, MPSSettings::getModuleConfig) {{
                 addBaseProperty(MPSConstants.JETBOOTS_ENERGY, 0);
                 addBaseProperty(MPSConstants.JETBOOTS_THRUST, 0);
                 addTradeoffProperty(MPSConstants.THRUST, MPSConstants.JETBOOTS_ENERGY, 750, "FE");
@@ -93,7 +93,7 @@ public class JetBootsModule extends AbstractPowerModule {
         }
 
         class Ticker extends PlayerTickModule {
-            public Ticker(@Nonnull ItemStack module, EnumModuleCategory category, EnumModuleTarget target, Callable<IConfig> config) {
+            public Ticker(@Nonnull ItemStack module, ModuleCategory category, ModuleTarget target, Callable<IConfig> config) {
                 super(module, category, target, config, false);
             }
 
@@ -105,7 +105,7 @@ public class JetBootsModule extends AbstractPowerModule {
                 boolean hasFlightControl = player.getItemBySlot(EquipmentSlotType.HEAD).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
                         .filter(IModularItem.class::isInstance)
                         .map(IModularItem.class::cast)
-                        .map(m-> m.isModuleOnline(MPSRegistryNames.FLIGHT_CONTROL_MODULE_REGNAME)).orElse(false);
+                        .map(m-> m.isModuleOnline(MPSRegistryNames.FLIGHT_CONTROL_MODULE)).orElse(false);
 
                 double jetEnergy = applyPropertyModifiers(MPSConstants.JETBOOTS_ENERGY);
                 double thrust = applyPropertyModifiers(MPSConstants.JETBOOTS_THRUST);

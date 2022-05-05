@@ -26,8 +26,8 @@
 
 package lehjr.numina.util.capabilities.module.miningenhancement;
 
-import lehjr.numina.util.capabilities.module.powermodule.EnumModuleCategory;
-import lehjr.numina.util.capabilities.module.powermodule.EnumModuleTarget;
+import lehjr.numina.util.capabilities.module.powermodule.ModuleCategory;
+import lehjr.numina.util.capabilities.module.powermodule.ModuleTarget;
 import lehjr.numina.util.capabilities.module.powermodule.IConfig;
 import lehjr.numina.util.capabilities.module.rightclick.IRightClickModule;
 import lehjr.numina.util.capabilities.module.toggleable.ToggleableModule;
@@ -39,7 +39,7 @@ import javax.annotation.Nonnull;
 import java.util.concurrent.Callable;
 
 public class MiningEnhancement extends ToggleableModule implements IRightClickModule, IMiningEnhancementModule {
-    public MiningEnhancement(@Nonnull ItemStack module, EnumModuleCategory category, EnumModuleTarget target, Callable<IConfig> moduleConfigGetterIn) {
+    public MiningEnhancement(@Nonnull ItemStack module, ModuleCategory category, ModuleTarget target, Callable<IConfig> moduleConfigGetterIn) {
         super(module, category, target, moduleConfigGetterIn, true);
     }
 

@@ -73,20 +73,11 @@ public class PlasmaBallEntity extends ThrowableEntity implements IEntityAddition
 
         Vector3d direction = shootingEntity.getLookAngle().normalize();
         double radius = chargePercent;
-        double xoffset = 1.3f + radius - direction.y * shootingEntity.getEyeHeight();
-        double yoffset = -.2;
-        double zoffset = 0.3f;
-        double horzScale = Math.sqrt(direction.x * direction.x + direction.z * direction.z);
-        double horzx = direction.x / horzScale;
-        double horzz = direction.z / horzScale;
         this.setPos(
-                // x
-                (shootingEntity.getX() + direction.x * xoffset - direction.y * horzx * yoffset - horzz * zoffset),
-                // y
-                (shootingEntity.getY() + shootingEntity.getEyeHeight() + direction.y * xoffset + (1 - Math.abs(direction.y)) * yoffset),
-                //z
-                (shootingEntity.getZ() + direction.z * xoffset - direction.y * horzz * yoffset + horzx * zoffset)
-        );
+                shootingEntity.getX(),
+                shootingEntity.getY() + shootingEntity.getEyeHeight(),
+                shootingEntity.getZ());
+
 
         this.setDeltaMovement(direction);
         this.setBoundingBox(new AxisAlignedBB(getX() - radius, getY() - radius, getZ()- radius, getX() + radius, getY() + radius, getZ() + radius));

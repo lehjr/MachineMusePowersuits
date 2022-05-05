@@ -26,8 +26,8 @@
 
 package lehjr.numina.util.capabilities.module.tickable;
 
-import lehjr.numina.util.capabilities.module.powermodule.EnumModuleCategory;
-import lehjr.numina.util.capabilities.module.powermodule.EnumModuleTarget;
+import lehjr.numina.util.capabilities.module.powermodule.ModuleCategory;
+import lehjr.numina.util.capabilities.module.powermodule.ModuleTarget;
 import lehjr.numina.util.capabilities.module.powermodule.IConfig;
 import lehjr.numina.util.capabilities.module.toggleable.ToggleableModule;
 import net.minecraft.entity.player.PlayerEntity;
@@ -37,7 +37,7 @@ import javax.annotation.Nonnull;
 import java.util.concurrent.Callable;
 
 public class PlayerTickModule extends ToggleableModule implements IPlayerTickModule {
-    public PlayerTickModule(@Nonnull ItemStack module, EnumModuleCategory category, EnumModuleTarget target, Callable<IConfig> moduleConfigGetterIn, boolean defBool) {
+    public PlayerTickModule(@Nonnull ItemStack module, ModuleCategory category, ModuleTarget target, Callable<IConfig> moduleConfigGetterIn, boolean defBool) {
         super(module, category, target, moduleConfigGetterIn, defBool);
     }
 

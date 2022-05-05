@@ -68,7 +68,7 @@ public class AxeModule extends AbstractPowerModule {
 
         public CapProvider(@Nonnull ItemStack module) {
             this.module = module;
-            this.blockBreaking = new BlockBreaker(module, EnumModuleCategory.TOOL, EnumModuleTarget.TOOLONLY, MPSSettings::getModuleConfig) {{
+            this.blockBreaking = new BlockBreaker(module, ModuleCategory.TOOL, ModuleTarget.TOOLONLY, MPSSettings::getModuleConfig) {{
                 addBaseProperty(MPSConstants.AXE_ENERGY, 500, "FE");
                 addBaseProperty(MPSConstants.AXE_HARVEST_SPEED, 8, "x");
                 addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.AXE_ENERGY, 9500);
@@ -83,7 +83,7 @@ public class AxeModule extends AbstractPowerModule {
         }
 
         class BlockBreaker extends PowerModule implements IBlockBreakingModule {
-            public BlockBreaker(@Nonnull ItemStack module, EnumModuleCategory category, EnumModuleTarget target, Callable<IConfig> config) {
+            public BlockBreaker(@Nonnull ItemStack module, ModuleCategory category, ModuleTarget target, Callable<IConfig> config) {
                 super(module, category, target, config);
             }
 

@@ -33,7 +33,7 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.entity.projectile.ThrowableEntity;
+import net.minecraft.entity.projectile.DamagingProjectileEntity;
 import net.minecraft.network.IPacket;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.play.server.SChangeGameStatePacket;
@@ -44,7 +44,6 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.EntityRayTraceResult;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
@@ -53,7 +52,9 @@ import net.minecraftforge.fml.network.NetworkHooks;
 
 import javax.annotation.Nullable;
 
-public class RailgunBoltEntity extends ThrowableEntity implements IEntityAdditionalSpawnData {
+
+// TODO... fix this mess to work correctly...
+public class RailgunBoltEntity extends DamagingProjectileEntity /*ThrowableEntity*/ implements IEntityAdditionalSpawnData {
     private double damage = 2.0D;
     private int knockbackStrength;
     private double velocity;
@@ -83,59 +84,30 @@ public class RailgunBoltEntity extends ThrowableEntity implements IEntityAdditio
 
         // todo: replace with something resembling original code
         if (shooter instanceof PlayerEntity) {
-            Vector3d direction = shooter.getLookAngle();//.normalize();
-
-//            System.out.println("lookvec: " + shooter.getLookAngle());
-//            System.out.println("lookVec oldCalc: " + getVectorForRotationTest(shooter.xRot, shooter.yRot));
-
-
-
-            double xoffset = 1.3f + 0 - direction.y * shooter.getEyeHeight();
-            double yoffset = -.2;
-            double zoffset = 0.3f;
-            double horzScale = Math.sqrt(direction.x * direction.x + direction.z * direction.z);
-            double horzx = direction.x / horzScale;
-            double horzz = direction.z / horzScale;
-
-            this.absMoveTo(
-                    // x
-                    (shooter.getX() + direction.x * xoffset - direction.y * horzx * yoffset - horzz * zoffset),
-                    // y
-                    (shooter.getY() + shooter.getEyeHeight() + direction.y * xoffset + (1 - Math.abs(direction.y)) * yoffset),
-                    //z
-                    (shooter.getZ() + direction.z * xoffset - direction.y * horzz * yoffset + horzx * zoffset),
-                    shooter.yRot * -1,
-                    shooter.xRot * -1
-            );
-
+            Vector3d direction = shooter.getLookAngle().normalize();
             if (chargePercent >= 0.75) {
                 // fire
-                setSecondsOnFire((int) (chargePercent * 100));
+                setSecondsOnFire((int) (chargePercent * 10));
             }
 
 //            double inaccuracy = (chargePercent * 0.25F);
-//
+
 //            if (inaccuracy > 0.5) {
 //                direction = direction
-//                        .add(this.rand.nextGaussian() * 0.0075 * inaccuracy,
-//                                this.rand.nextGaussian() * 0.0075 * inaccuracy,
-//                                this.rand.nextGaussian() * 0.0075 * inaccuracy);
+//                        .add(this.random.nextGaussian() * 0.0075 * inaccuracy,
+//                                this.random.nextGaussian() * 0.0075 * inaccuracy,
+//                                this.random.nextGaussian() * 0.0075 * inaccuracy);
 //            }
+
+            this.setPos(
+                    shooter.getX(),
+                    shooter.getY() + shooter.getEyeHeight(),
+                    shooter.getZ());
 
             this.setDeltaMovement(direction.scale(velocity));
         }
         setNoGravity(true);
     }
-
-    protected final Vector3d getVectorForRotationTest(float pitch, float yaw)
-    {
-        float f = MathHelper.cos(-yaw * 0.017453292F - (float)Math.PI);
-        float f1 = MathHelper.sin(-yaw * 0.017453292F - (float)Math.PI);
-        float f2 = -MathHelper.cos(-pitch * 0.017453292F);
-        float f3 = MathHelper.sin(-pitch * 0.017453292F);
-        return new Vector3d(f1 * f2, f3, f * f2);
-    }
-
 
     @Override
     protected void onHit(RayTraceResult result) {
@@ -225,8 +197,6 @@ public class RailgunBoltEntity extends ThrowableEntity implements IEntityAdditio
         // copied from AbstractArrow // working?
         if (this.isInWater()) {
 //            System.out.println("working?");
-
-            float f2;
             // motion vector with scale applied because the bolt moves too fast to draw bubbles
             Vector3d vector3d = this.getDeltaMovement();//.scale(0.05);
             double d3 = vector3d.x;
@@ -240,9 +210,7 @@ public class RailgunBoltEntity extends ThrowableEntity implements IEntityAdditio
             for(int j = 0; j < 4; ++j) {
                 this.level.addParticle(ParticleTypes.BUBBLE, d5 - d3 * 0.25D, d1 - d4 * 0.25D, d2 - d0 * 0.25D, d3, d4, d0);
             }
-
-            f2 = this.getWaterDrag();
-            this.setDeltaMovement(vector3d.scale(f2));
+            this.setDeltaMovement(vector3d.scale(this.getWaterDrag()));
         }
     }
 
@@ -274,10 +242,10 @@ public class RailgunBoltEntity extends ThrowableEntity implements IEntityAdditio
         this.playSound(this.hitSound, 1.0F, 1.2F / (this.random.nextFloat() * 0.2F + 0.9F));
     }
 
-    @Override
-    protected float getGravity() {
-        return 0.0F;
-    }
+//    @Override
+//    protected float getGravity() {
+//        return 0.0F;
+//    }
 
 
     @Override

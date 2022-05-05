@@ -32,7 +32,7 @@ import net.minecraft.inventory.EquipmentSlotType;
 /**
  * Used for determining where a module can be installed.
  */
-public enum EnumModuleTarget {
+public enum ModuleTarget {
     NONE(null),
     ARMORONLY(EquipmentSlotType.Group.ARMOR),
     ALLITEMS(null),
@@ -44,7 +44,7 @@ public enum EnumModuleTarget {
 
     private final EquipmentSlotType.Group type;
 
-    EnumModuleTarget(EquipmentSlotType.Group type) {
+    ModuleTarget(EquipmentSlotType.Group type) {
         this.type = type;
     }
 

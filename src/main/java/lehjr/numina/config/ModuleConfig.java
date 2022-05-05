@@ -28,7 +28,7 @@ package lehjr.numina.config;
 
 import lehjr.numina.basemod.MuseLogger;
 import lehjr.numina.constants.NuminaConstants;
-import lehjr.numina.util.capabilities.module.powermodule.EnumModuleCategory;
+import lehjr.numina.util.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.util.capabilities.module.powermodule.IConfig;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.ModList;
@@ -147,7 +147,7 @@ public class ModuleConfig implements IConfig {
 
     @Override
     public double getBasePropertyDoubleOrDefault (
-            EnumModuleCategory category,
+            ModuleCategory category,
             @Nonnull ItemStack module,
             String propertyName, double baseVal) {
         String moduleName = itemTranslationKeyToConfigKey(module.getItem().getDescriptionId());
@@ -190,7 +190,7 @@ public class ModuleConfig implements IConfig {
 
     @Override
     public double getTradeoffPropertyDoubleOrDefault(
-            EnumModuleCategory category,
+            ModuleCategory category,
             @Nonnull ItemStack module,
             String tradeoffName,
             String propertyName,
@@ -236,7 +236,7 @@ public class ModuleConfig implements IConfig {
     }
 
     @Override
-    public int getTradeoffPropertyIntegerOrDefault(EnumModuleCategory category, @Nonnull ItemStack module, String tradeoffName, String propertyName, int multiplier) {
+    public int getTradeoffPropertyIntegerOrDefault(ModuleCategory category, @Nonnull ItemStack module, String tradeoffName, String propertyName, int multiplier) {
         String moduleName = itemTranslationKeyToConfigKey(module.getItem().getDescriptionId());
         String entry = propertyName + "_" + tradeoffName + "_multiplier";
 
@@ -271,7 +271,7 @@ public class ModuleConfig implements IConfig {
     }
 
     @Override
-    public boolean isModuleAllowed(EnumModuleCategory category, @Nonnull ItemStack module) {
+    public boolean isModuleAllowed(ModuleCategory category, @Nonnull ItemStack module) {
         String moduleName = itemTranslationKeyToConfigKey(module.getItem().getDescriptionId());
         String entry = "isAllowed";
 

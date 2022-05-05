@@ -439,7 +439,7 @@ public class PowerFistModel2 extends Model {
                     .filter(IModeChangingItem.class::isInstance)
                     .map(IModeChangingItem.class::cast)
                     .ifPresent(iItemHandler -> {
-                if (iItemHandler.hasActiveModule(MPSRegistryNames.PLASMA_CANNON_MODULE_REGNAME)) {
+                if (iItemHandler.hasActiveModule(MPSRegistryNames.PLASMA_CANNON_MODULE)) {
                     setPose(1.5f, -1, 1.5f, -1, 1.5f, -1);
                     this.boltSize = player.getUseItemRemainingTicks() > 50 ? 50 : player.getUseItemRemainingTicks();
                 }

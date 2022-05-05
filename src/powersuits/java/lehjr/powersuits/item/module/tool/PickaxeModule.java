@@ -67,7 +67,7 @@ public class PickaxeModule extends AbstractPowerModule {
 
         public CapProvider(@Nonnull ItemStack module) {
             this.module = module;
-            this.blockBreaking = new BlockBreaker(module, EnumModuleCategory.TOOL, EnumModuleTarget.TOOLONLY, MPSSettings::getModuleConfig)  {{
+            this.blockBreaking = new BlockBreaker(module, ModuleCategory.TOOL, ModuleTarget.TOOLONLY, MPSSettings::getModuleConfig)  {{
                 addBaseProperty(MPSConstants.PICKAXE_ENERGY, 500, "FE");
                 addBaseProperty(MPSConstants.PICKAXE_HARVEST_SPEED, 8, "x");
                 addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.PICKAXE_ENERGY, 9500);
@@ -82,7 +82,7 @@ public class PickaxeModule extends AbstractPowerModule {
         }
 
         class BlockBreaker extends PowerModule implements IBlockBreakingModule {
-            public BlockBreaker(@Nonnull ItemStack module, EnumModuleCategory category, EnumModuleTarget target, Callable<IConfig> config) {
+            public BlockBreaker(@Nonnull ItemStack module, ModuleCategory category, ModuleTarget target, Callable<IConfig> config) {
                 super(module, category, target, config);
             }
 

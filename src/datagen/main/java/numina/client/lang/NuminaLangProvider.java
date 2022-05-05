@@ -8,15 +8,11 @@ import net.minecraft.data.DirectoryCache;
 import net.minecraft.data.IDataProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import numina.ResourceList;
-import org.apache.commons.lang3.text.translate.JavaUnicodeEscaper;
 
-import javax.annotation.Nonnull;
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.*;
+import java.util.ArrayList;
 import java.util.regex.Pattern;
 
 /**

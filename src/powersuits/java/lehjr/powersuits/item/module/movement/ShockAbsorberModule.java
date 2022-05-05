@@ -26,8 +26,8 @@
 
 package lehjr.powersuits.item.module.movement;
 
-import lehjr.numina.util.capabilities.module.powermodule.EnumModuleCategory;
-import lehjr.numina.util.capabilities.module.powermodule.EnumModuleTarget;
+import lehjr.numina.util.capabilities.module.powermodule.ModuleCategory;
+import lehjr.numina.util.capabilities.module.powermodule.ModuleTarget;
 import lehjr.numina.util.capabilities.module.powermodule.PowerModuleCapability;
 import lehjr.numina.util.capabilities.module.toggleable.IToggleableModule;
 import lehjr.numina.util.capabilities.module.toggleable.ToggleableModule;
@@ -60,7 +60,7 @@ public class ShockAbsorberModule extends AbstractPowerModule {
 
         public CapProvider(@Nonnull ItemStack module) {
             this.module = module;
-            this.moduleToggle = new ToggleableModule(module, EnumModuleCategory.MOVEMENT, EnumModuleTarget.FEETONLY, MPSSettings::getModuleConfig, true) {{
+            this.moduleToggle = new ToggleableModule(module, ModuleCategory.MOVEMENT, ModuleTarget.FEETONLY, MPSSettings::getModuleConfig, true) {{
                 addBaseProperty(MPSConstants.SHOCK_ENERGY, 0, "FE/m");
                 addTradeoffProperty(MPSConstants.SHOCK_POWER, MPSConstants.SHOCK_ENERGY, 100);
                 addBaseProperty(MPSConstants.MULTIPLIER, 0, "%");

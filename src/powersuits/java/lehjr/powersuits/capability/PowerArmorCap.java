@@ -31,7 +31,7 @@ import lehjr.numina.util.capabilities.heat.HeatCapability;
 import lehjr.numina.util.capabilities.heat.HeatItemWrapper;
 import lehjr.numina.util.capabilities.inventory.modularitem.ModularItem;
 import lehjr.numina.util.capabilities.inventory.modularitem.NuminaRangedWrapper;
-import lehjr.numina.util.capabilities.module.powermodule.EnumModuleCategory;
+import lehjr.numina.util.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.util.capabilities.module.powermodule.PowerModuleCapability;
 import lehjr.powersuits.client.render.ArmorModelSpecNBT;
 import lehjr.powersuits.config.MPSSettings;
@@ -56,14 +56,14 @@ public class PowerArmorCap extends AbstractModularPowerCap {
         this.itemStack = itemStackIn;
         this.targetSlot = slot;
         this.modelSpec = new ArmorModelSpecNBT(itemStackIn);
-        Map<EnumModuleCategory, NuminaRangedWrapper> rangedWrapperMap = new HashMap<>();
+        Map<ModuleCategory, NuminaRangedWrapper> rangedWrapperMap = new HashMap<>();
         switch(targetSlot) {
             case HEAD: {
                 this.modularItemCap = new ModularItem(itemStack, 18) {{
-                    rangedWrapperMap.put(EnumModuleCategory.ARMOR,new NuminaRangedWrapper(this, 0, 1));
-                    rangedWrapperMap.put(EnumModuleCategory.ENERGY_STORAGE,new NuminaRangedWrapper(this, 1, 2));
-                    rangedWrapperMap.put(EnumModuleCategory.ENERGY_GENERATION,new NuminaRangedWrapper(this, 2, 3));
-                    rangedWrapperMap.put(EnumModuleCategory.NONE,new NuminaRangedWrapper(this, 3, this.getSlots()));
+                    rangedWrapperMap.put(ModuleCategory.ARMOR,new NuminaRangedWrapper(this, 0, 1));
+                    rangedWrapperMap.put(ModuleCategory.ENERGY_STORAGE,new NuminaRangedWrapper(this, 1, 2));
+                    rangedWrapperMap.put(ModuleCategory.ENERGY_GENERATION,new NuminaRangedWrapper(this, 2, 3));
+                    rangedWrapperMap.put(ModuleCategory.NONE,new NuminaRangedWrapper(this, 3, this.getSlots()));
                     setRangedWrapperMap(rangedWrapperMap);
                 }};
 
@@ -73,10 +73,10 @@ public class PowerArmorCap extends AbstractModularPowerCap {
 
             case CHEST: {
                 this.modularItemCap = new ModularItem(itemStack, 18) {{
-                    rangedWrapperMap.put(EnumModuleCategory.ARMOR,new NuminaRangedWrapper(this, 0, 1));
-                    rangedWrapperMap.put(EnumModuleCategory.ENERGY_STORAGE,new NuminaRangedWrapper(this, 1, 2));
-                    rangedWrapperMap.put(EnumModuleCategory.ENERGY_GENERATION,new NuminaRangedWrapper(this, 2, 3));
-                    rangedWrapperMap.put(EnumModuleCategory.NONE,new NuminaRangedWrapper(this, 3, this.getSlots()));
+                    rangedWrapperMap.put(ModuleCategory.ARMOR,new NuminaRangedWrapper(this, 0, 1));
+                    rangedWrapperMap.put(ModuleCategory.ENERGY_STORAGE,new NuminaRangedWrapper(this, 1, 2));
+                    rangedWrapperMap.put(ModuleCategory.ENERGY_GENERATION,new NuminaRangedWrapper(this, 2, 3));
+                    rangedWrapperMap.put(ModuleCategory.NONE,new NuminaRangedWrapper(this, 3, this.getSlots()));
                     this.setRangedWrapperMap(rangedWrapperMap);
                 }};
                 this.maxHeat = MPSSettings.getMaxHeatChestplate();
@@ -85,10 +85,10 @@ public class PowerArmorCap extends AbstractModularPowerCap {
 
             case LEGS: {
                 this.modularItemCap = new ModularItem(itemStackIn, 10) {{
-                    rangedWrapperMap.put(EnumModuleCategory.ARMOR,new NuminaRangedWrapper(this, 0, 1));
-                    rangedWrapperMap.put(EnumModuleCategory.ENERGY_STORAGE,new NuminaRangedWrapper(this, 1, 2));
-                    rangedWrapperMap.put(EnumModuleCategory.ENERGY_GENERATION,new NuminaRangedWrapper(this, 2, 3));
-                    rangedWrapperMap.put(EnumModuleCategory.NONE,new NuminaRangedWrapper(this, 3, this.getSlots()));
+                    rangedWrapperMap.put(ModuleCategory.ARMOR,new NuminaRangedWrapper(this, 0, 1));
+                    rangedWrapperMap.put(ModuleCategory.ENERGY_STORAGE,new NuminaRangedWrapper(this, 1, 2));
+                    rangedWrapperMap.put(ModuleCategory.ENERGY_GENERATION,new NuminaRangedWrapper(this, 2, 3));
+                    rangedWrapperMap.put(ModuleCategory.NONE,new NuminaRangedWrapper(this, 3, this.getSlots()));
                     this.setRangedWrapperMap(rangedWrapperMap);
                 }};
                 this.maxHeat = MPSSettings.getMaxHeatLegs();
@@ -97,9 +97,9 @@ public class PowerArmorCap extends AbstractModularPowerCap {
 
             case FEET: {
                 this.modularItemCap = new ModularItem(itemStack, 8) {{
-                    rangedWrapperMap.put(EnumModuleCategory.ARMOR,new NuminaRangedWrapper(this, 0, 1));
-                    rangedWrapperMap.put(EnumModuleCategory.ENERGY_STORAGE,new NuminaRangedWrapper(this, 1, 2));
-                    rangedWrapperMap.put(EnumModuleCategory.NONE,new NuminaRangedWrapper(this, 2, this.getSlots()));
+                    rangedWrapperMap.put(ModuleCategory.ARMOR,new NuminaRangedWrapper(this, 0, 1));
+                    rangedWrapperMap.put(ModuleCategory.ENERGY_STORAGE,new NuminaRangedWrapper(this, 1, 2));
+                    rangedWrapperMap.put(ModuleCategory.NONE,new NuminaRangedWrapper(this, 2, this.getSlots()));
                     this.setRangedWrapperMap(rangedWrapperMap);
                 }};
                 this.maxHeat = MPSSettings.getMaxHeatBoots();
@@ -130,7 +130,7 @@ public class PowerArmorCap extends AbstractModularPowerCap {
         if (targetSlot == EquipmentSlotType.CHEST && cap == CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY) {
             modularItemCap.updateFromNBT();
             return CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY.orEmpty(cap,
-                    LazyOptional.of(()->modularItemCap.getOnlineModuleOrEmpty(MPSRegistryNames.FLUID_TANK_MODULE_REGNAME).getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).orElse(new EmptyFluidHandler())));
+                    LazyOptional.of(()->modularItemCap.getOnlineModuleOrEmpty(MPSRegistryNames.FLUID_TANK_MODULE).getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).orElse(new EmptyFluidHandler())));
         }
 
         return super.getCapability(cap, side);

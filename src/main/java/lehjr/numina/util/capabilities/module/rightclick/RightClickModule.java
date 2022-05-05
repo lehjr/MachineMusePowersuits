@@ -26,8 +26,8 @@
 
 package lehjr.numina.util.capabilities.module.rightclick;
 
-import lehjr.numina.util.capabilities.module.powermodule.EnumModuleCategory;
-import lehjr.numina.util.capabilities.module.powermodule.EnumModuleTarget;
+import lehjr.numina.util.capabilities.module.powermodule.ModuleCategory;
+import lehjr.numina.util.capabilities.module.powermodule.ModuleTarget;
 import lehjr.numina.util.capabilities.module.powermodule.IConfig;
 import lehjr.numina.util.capabilities.module.powermodule.PowerModule;
 import net.minecraft.item.ItemStack;
@@ -36,7 +36,7 @@ import javax.annotation.Nonnull;
 import java.util.concurrent.Callable;
 
 public class RightClickModule extends PowerModule implements IRightClickModule {
-    public RightClickModule(@Nonnull ItemStack module, EnumModuleCategory category, EnumModuleTarget target, Callable<IConfig> moduleConfigGetterIn) {
+    public RightClickModule(@Nonnull ItemStack module, ModuleCategory category, ModuleTarget target, Callable<IConfig> moduleConfigGetterIn) {
         super(module, category, target, moduleConfigGetterIn);
     }
 }

@@ -26,8 +26,8 @@
 
 package lehjr.numina.util.capabilities.inventory.modularitem;
 
-import lehjr.numina.util.capabilities.module.powermodule.EnumModuleCategory;
-import lehjr.numina.util.capabilities.module.powermodule.EnumModuleTarget;
+import lehjr.numina.util.capabilities.module.powermodule.ModuleCategory;
+import lehjr.numina.util.capabilities.module.powermodule.ModuleTarget;
 import lehjr.numina.util.capabilities.module.powermodule.IPowerModule;
 import lehjr.numina.util.capabilities.module.powermodule.PowerModuleCapability;
 import lehjr.numina.util.capabilities.module.tickable.IPlayerTickModule;
@@ -58,8 +58,8 @@ public class ModularItem extends ItemStackHandler implements IModularItem {
     public static final String TAG_MODULE_SETTINGS = "Module Settings";
 
     ItemStack modularItem;
-    Map<EnumModuleCategory, NuminaRangedWrapper> rangedWrappers;
-    EnumModuleTarget target;
+    Map<ModuleCategory, NuminaRangedWrapper> rangedWrappers;
+    ModuleTarget target;
 
     public ModularItem(@Nonnull ItemStack modularItem, int size) {
         this(modularItem, NonNullList.withSize(size, ItemStack.EMPTY));
@@ -72,7 +72,7 @@ public class ModularItem extends ItemStackHandler implements IModularItem {
     }
 
     @Override
-    public void setRangedWrapperMap(Map<EnumModuleCategory, NuminaRangedWrapper> rangedWrappers) {
+    public void setRangedWrapperMap(Map<ModuleCategory, NuminaRangedWrapper> rangedWrappers) {
         this.rangedWrappers = rangedWrappers;
     }
 
@@ -95,7 +95,7 @@ public class ModularItem extends ItemStackHandler implements IModularItem {
 
     @Override
     @Nullable
-    public Pair getRangeForCategory(EnumModuleCategory category) {
+    public Pair getRangeForCategory(ModuleCategory category) {
         NuminaRangedWrapper rangedWrapper = rangedWrappers.get(category);
         if (rangedWrapper != null){
             return rangedWrapper.getRange();
@@ -282,15 +282,15 @@ public class ModularItem extends ItemStackHandler implements IModularItem {
             }
 
             // get the module category... CATEGORY_NONE) is actually just a fallback
-            EnumModuleCategory category = module.getCapability(PowerModuleCapability.POWER_MODULE).map(m -> m.getCategory())
-                    .orElse(EnumModuleCategory.NONE);
+            ModuleCategory category = module.getCapability(PowerModuleCapability.POWER_MODULE).map(m -> m.getCategory())
+                    .orElse(ModuleCategory.NONE);
 
             // Specfic module type for limited modules
             NuminaRangedWrapper wrapper = rangedWrappers.get(category);
 
             // fallback on generic type if null
             if (wrapper == null) {
-                wrapper = rangedWrappers.get(EnumModuleCategory.NONE);
+                wrapper = rangedWrappers.get(ModuleCategory.NONE);
             }
 
             if (wrapper != null && wrapper.contains(slot)) {

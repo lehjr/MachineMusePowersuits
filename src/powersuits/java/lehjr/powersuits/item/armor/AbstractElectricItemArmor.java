@@ -35,7 +35,7 @@ import lehjr.numina.constants.NuminaConstants;
 import lehjr.numina.network.NuminaPackets;
 import lehjr.numina.network.packets.CosmeticInfoPacket;
 import lehjr.numina.util.capabilities.inventory.modularitem.IModularItem;
-import lehjr.numina.util.capabilities.module.powermodule.EnumModuleCategory;
+import lehjr.numina.util.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.util.capabilities.module.powermodule.IPowerModule;
 import lehjr.numina.util.capabilities.module.powermodule.PowerModuleCapability;
 import lehjr.numina.util.capabilities.module.toggleable.IToggleableModule;
@@ -104,7 +104,7 @@ public abstract class AbstractElectricItemArmor extends ArmorItem {
         return stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
                 .filter(IModularItem.class::isInstance)
                 .map(IModularItem.class::cast)
-                .map(iModularItem -> iModularItem.isModuleOnline(MPSRegistryNames.PIGLIN_PACIFICATION_MODULE_REGNAME)).orElse(false);
+                .map(iModularItem -> iModularItem.isModuleOnline(MPSRegistryNames.PIGLIN_PACIFICATION_MODULE)).orElse(false);
     }
 
     //    /*
@@ -120,7 +120,7 @@ public abstract class AbstractElectricItemArmor extends ArmorItem {
                 .filter(IModularItem.class::isInstance)
                 .map(IModularItem.class::cast)
                 .map(iItemHandler -> {
-                    Pair<Integer, Integer> range = iItemHandler.getRangeForCategory(EnumModuleCategory.ARMOR);
+                    Pair<Integer, Integer> range = iItemHandler.getRangeForCategory(ModuleCategory.ARMOR);
                     double energyUsed = 0;
                     for (int x = range.getKey(); x < range.getRight(); x ++) {
                         energyUsed += iItemHandler.getStackInSlot(x).getCapability(PowerModuleCapability.POWER_MODULE)
@@ -160,7 +160,7 @@ public abstract class AbstractElectricItemArmor extends ArmorItem {
                 .ifPresent(iItemHandler -> {
 
                     // Armor **should** only occupy one slot
-                    Pair<Integer, Integer> range = iItemHandler.getRangeForCategory(EnumModuleCategory.ARMOR);
+                    Pair<Integer, Integer> range = iItemHandler.getRangeForCategory(ModuleCategory.ARMOR);
                     if (range != null) {
                         for (int i = range.getLeft(); i < range.getRight(); i++) {
                             iItemHandler.getStackInSlot(i).getCapability(PowerModuleCapability.POWER_MODULE).ifPresent(pm -> {
@@ -341,7 +341,7 @@ public abstract class AbstractElectricItemArmor extends ArmorItem {
             if (chestplate.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
                     .filter(IModularItem.class::isInstance)
                     .map(IModularItem.class::cast)
-                    .map(iItemHandler -> iItemHandler.isModuleOnline(MPSRegistryNames.ACTIVE_CAMOUFLAGE_MODULE_REGNAME)).orElse(false)) {
+                    .map(iItemHandler -> iItemHandler.isModuleOnline(MPSRegistryNames.ACTIVE_CAMOUFLAGE_MODULE)).orElse(false)) {
                 ((HighPolyArmor) model).setVisibleSection(null);
             } else {
                 if (renderTag != null) {

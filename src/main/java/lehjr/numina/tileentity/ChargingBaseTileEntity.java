@@ -34,7 +34,6 @@ import lehjr.numina.util.energy.ElectricItemUtils;
 import lehjr.numina.util.tileentity.MuseTileEntity;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.play.server.SUpdateTileEntityPacket;
@@ -52,7 +51,6 @@ import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.Arrays;
 import java.util.List;
 
 public class ChargingBaseTileEntity extends MuseTileEntity implements ITickableTileEntity {

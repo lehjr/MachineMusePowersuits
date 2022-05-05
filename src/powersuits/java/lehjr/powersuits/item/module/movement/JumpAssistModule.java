@@ -26,8 +26,8 @@
 
 package lehjr.powersuits.item.module.movement;
 
-import lehjr.numina.util.capabilities.module.powermodule.EnumModuleCategory;
-import lehjr.numina.util.capabilities.module.powermodule.EnumModuleTarget;
+import lehjr.numina.util.capabilities.module.powermodule.ModuleCategory;
+import lehjr.numina.util.capabilities.module.powermodule.ModuleTarget;
 import lehjr.numina.util.capabilities.module.powermodule.IConfig;
 import lehjr.numina.util.capabilities.module.powermodule.PowerModuleCapability;
 import lehjr.numina.util.capabilities.module.tickable.PlayerTickModule;
@@ -66,7 +66,7 @@ public class JumpAssistModule extends AbstractPowerModule {
 
         public CapProvider(@Nonnull ItemStack module) {
             this.module = module;
-            this.ticker = new Ticker(module, EnumModuleCategory.MOVEMENT, EnumModuleTarget.LEGSONLY, MPSSettings::getModuleConfig) {{
+            this.ticker = new Ticker(module, ModuleCategory.MOVEMENT, ModuleTarget.LEGSONLY, MPSSettings::getModuleConfig) {{
                 addSimpleTradeoff(MPSConstants.JUMP_POWER, MPSConstants.JUMP_ENERGY, "FE", 0, 250, MPSConstants.MULTIPLIER, "%", 1, 4);
                 addSimpleTradeoff(MPSConstants.COMPENSATION, MPSConstants.JUMP_ENERGY, "FE", 0, 50, MPSConstants.FOOD_COMPENSATION, "%", 0, 1);
             }};
@@ -82,7 +82,7 @@ public class JumpAssistModule extends AbstractPowerModule {
         }
 
         class Ticker extends PlayerTickModule {
-            public Ticker(@Nonnull ItemStack module, EnumModuleCategory category, EnumModuleTarget target, Callable<IConfig> config) {
+            public Ticker(@Nonnull ItemStack module, ModuleCategory category, ModuleTarget target, Callable<IConfig> config) {
                 super(module, category, target, config, true);
             }
 

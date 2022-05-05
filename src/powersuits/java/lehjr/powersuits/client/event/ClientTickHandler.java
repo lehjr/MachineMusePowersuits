@@ -123,7 +123,7 @@ public class ClientTickHandler {
                         .map(IModularItem.class::cast)
                         .ifPresent(h -> {
                             // AutoFeeder
-                            ItemStack autoFeeder = h.getOnlineModuleOrEmpty(MPSRegistryNames.AUTO_FEEDER_MODULE_REG);
+                            ItemStack autoFeeder = h.getOnlineModuleOrEmpty(MPSRegistryNames.AUTO_FEEDER_MODULE);
                             if (!autoFeeder.isEmpty()) {
                                 int foodLevel = (int) ((AutoFeederModule) autoFeeder.getItem()).getFoodLevel(autoFeeder);
                                 String num = MuseStringUtils.formatNumberShort(foodLevel);
@@ -228,7 +228,7 @@ public class ClientTickHandler {
                                 int maxDuration = modechanging.getModularItemStack().getUseDuration();
                                 if (!module.isEmpty()) {
                                     // Plasma Cannon
-                                    if (module.getItem().getRegistryName().equals(MPSRegistryNames.PLASMA_CANNON_MODULE_REGNAME)) {
+                                    if (module.getItem().getRegistryName().equals(MPSRegistryNames.PLASMA_CANNON_MODULE)) {
                                         actualCount = (maxDuration - player.getUseItemRemainingTicks());
                                         currentPlasma.set(
                                                 currentPlasma.get() + (actualCount > 50 ? 50 : actualCount) * 2);

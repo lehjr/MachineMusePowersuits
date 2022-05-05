@@ -45,9 +45,9 @@ public interface IPowerModule {
      */
     ItemStack getModuleStack();
 
-    EnumModuleTarget getTarget();
+    ModuleTarget getTarget();
 
-    EnumModuleCategory getCategory();
+    ModuleCategory getCategory();
 
     default int getTier() {
         return -1;

@@ -29,8 +29,8 @@ package lehjr.powersuits.client.control;
 import lehjr.numina.network.NuminaPackets;
 import lehjr.numina.network.packets.PlayerUpdatePacket;
 import lehjr.numina.util.capabilities.inventory.modechanging.IModeChangingItem;
-import lehjr.numina.util.capabilities.module.powermodule.EnumModuleCategory;
-import lehjr.numina.util.capabilities.module.powermodule.EnumModuleTarget;
+import lehjr.numina.util.capabilities.module.powermodule.ModuleCategory;
+import lehjr.numina.util.capabilities.module.powermodule.ModuleTarget;
 import lehjr.numina.util.capabilities.module.powermodule.PowerModuleCapability;
 import lehjr.numina.util.capabilities.module.rightclick.IRightClickModule;
 import lehjr.numina.util.capabilities.module.toggleable.IToggleableModule;
@@ -92,8 +92,8 @@ public class KeybindKeyHandler {
                         .map(IToggleableModule.class::cast)
                         .ifPresent(pm -> {
                             // Tool settings are a bit odd
-                            if (pm.getTarget() == EnumModuleTarget.TOOLONLY) {
-                                if (pm.getCategory() == EnumModuleCategory.MINING_ENHANCEMENT) {
+                            if (pm.getTarget() == ModuleTarget.TOOLONLY) {
+                                if (pm.getCategory() == ModuleCategory.MINING_ENHANCEMENT) {
                                     modules.add(pm.getModuleStack());
                                     RegisterKeybinding(item.getRegistryName());
                                 } else if (!IRightClickModule.class.isAssignableFrom(pm.getClass())) {

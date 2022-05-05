@@ -26,17 +26,13 @@
 
 package lehjr.numina.util.capabilities.module.powermodule;
 
-import lehjr.numina.constants.NuminaConstants;
 import lehjr.numina.util.nbt.MuseNBTUtils;
 import lehjr.numina.util.nbt.propertymodifier.IPropertyModifier;
 import lehjr.numina.util.nbt.propertymodifier.PropertyModifierFlatAdditive;
 import lehjr.numina.util.nbt.propertymodifier.PropertyModifierIntLinearAdditive;
 import lehjr.numina.util.nbt.propertymodifier.PropertyModifierLinearAdditive;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
 import javax.annotation.Nonnull;
 import java.util.*;
@@ -44,12 +40,12 @@ import java.util.concurrent.Callable;
 
 public class PowerModule implements IPowerModule {
     protected ItemStack module;
-    protected final EnumModuleCategory category;
-    protected final EnumModuleTarget target;
+    protected final ModuleCategory category;
+    protected final ModuleTarget target;
     protected Map<String, List<IPropertyModifier>> propertyModifiers;
     Callable<IConfig> moduleConfigGetter;
 
-    public PowerModule(@Nonnull ItemStack module, EnumModuleCategory category, EnumModuleTarget target,
+    public PowerModule(@Nonnull ItemStack module, ModuleCategory category, ModuleTarget target,
                        Callable<IConfig> moduleConfigGetterIn) {
         propertyModifiers = new HashMap<>();
         this.module = module;
@@ -64,12 +60,12 @@ public class PowerModule implements IPowerModule {
     }
 
     @Override
-    public EnumModuleTarget getTarget() {
+    public ModuleTarget getTarget() {
         return target;
     }
 
     @Override
-    public EnumModuleCategory getCategory() {
+    public ModuleCategory getCategory() {
         return category;
     }
 

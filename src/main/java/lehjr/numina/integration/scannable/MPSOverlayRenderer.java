@@ -1,7 +1,6 @@
 package lehjr.numina.integration.scannable;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import li.cil.scannable.api.API;
 import li.cil.scannable.common.config.Constants;
 import li.cil.scannable.util.Migration;
 import net.minecraft.client.Minecraft;

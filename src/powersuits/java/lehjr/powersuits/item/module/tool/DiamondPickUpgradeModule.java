@@ -74,7 +74,7 @@ public class DiamondPickUpgradeModule extends AbstractPowerModule {
 
         public CapProvider(@Nonnull ItemStack module) {
             this.module = module;
-            this.blockBreaking = new BlockBreaker(module, EnumModuleCategory.TOOL, EnumModuleTarget.TOOLONLY, MPSSettings::getModuleConfig) {{
+            this.blockBreaking = new BlockBreaker(module, ModuleCategory.TOOL, ModuleTarget.TOOLONLY, MPSSettings::getModuleConfig) {{
                 addBaseProperty(MPSConstants.DIAMOND_PICK_ENERGY, 500, "FE");
             }};
 //            this.blockBreaking.addBaseProperty(MPSConstants.HARVEST_SPEED, 10, "x");
@@ -89,7 +89,7 @@ public class DiamondPickUpgradeModule extends AbstractPowerModule {
         }
 
         class BlockBreaker extends PowerModule implements IBlockBreakingModule {
-            public BlockBreaker(@Nonnull ItemStack module, EnumModuleCategory category, EnumModuleTarget target, Callable<IConfig> config) {
+            public BlockBreaker(@Nonnull ItemStack module, ModuleCategory category, ModuleTarget target, Callable<IConfig> config) {
                 super(module, category, target, config);
             }
 
@@ -100,7 +100,7 @@ public class DiamondPickUpgradeModule extends AbstractPowerModule {
                         .filter(IModeChangingItem.class::isInstance)
                         .map(IModeChangingItem.class::cast)
                         .ifPresent(modeChanging -> {
-                        ItemStack pickaxeModule = modeChanging.getOnlineModuleOrEmpty(MPSRegistryNames.PICKAXE_MODULE_REGNAME);
+                        ItemStack pickaxeModule = modeChanging.getOnlineModuleOrEmpty(MPSRegistryNames.PICKAXE_MODULE);
                         if (!pickaxeModule.isEmpty()) {
                             int energyUsage = pickaxeModule.getCapability(PowerModuleCapability.POWER_MODULE).map(m -> {
                                 if (m instanceof IBlockBreakingModule) {
@@ -128,7 +128,7 @@ public class DiamondPickUpgradeModule extends AbstractPowerModule {
                             .filter(IModeChangingItem.class::isInstance)
                             .map(IModeChangingItem.class::cast)
                             .ifPresent(modeChanging -> {
-                            ItemStack pickaxeModule = modeChanging.getOnlineModuleOrEmpty(MPSRegistryNames.PICKAXE_MODULE_REGNAME);
+                            ItemStack pickaxeModule = modeChanging.getOnlineModuleOrEmpty(MPSRegistryNames.PICKAXE_MODULE);
                             if (!pickaxeModule.isEmpty()) {
                                 energyUsage.set(pickaxeModule.getCapability(PowerModuleCapability.POWER_MODULE)
                                         .filter(IBlockBreakingModule.class::isInstance)
@@ -156,7 +156,7 @@ public class DiamondPickUpgradeModule extends AbstractPowerModule {
                         .filter(IModeChangingItem.class::isInstance)
                         .map(IModeChangingItem.class::cast)
                         .ifPresent(modeChanging -> {
-                            ItemStack pickaxeModule = modeChanging.getOnlineModuleOrEmpty(MPSRegistryNames.PICKAXE_MODULE_REGNAME);
+                            ItemStack pickaxeModule = modeChanging.getOnlineModuleOrEmpty(MPSRegistryNames.PICKAXE_MODULE);
                             if (!pickaxeModule.isEmpty()) {
                                 newSpeed.set(newSpeed.get() *
                                         pickaxeModule.getCapability(PowerModuleCapability.POWER_MODULE).map(m ->

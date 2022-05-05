@@ -30,7 +30,7 @@ import lehjr.numina.util.capabilities.heat.HeatCapability;
 import lehjr.numina.util.capabilities.heat.HeatItemWrapper;
 import lehjr.numina.util.capabilities.inventory.modechanging.ModeChangingModularItem;
 import lehjr.numina.util.capabilities.inventory.modularitem.NuminaRangedWrapper;
-import lehjr.numina.util.capabilities.module.powermodule.EnumModuleCategory;
+import lehjr.numina.util.capabilities.module.powermodule.ModuleCategory;
 import lehjr.powersuits.client.render.PowerFistSpecNBT;
 import lehjr.powersuits.config.MPSSettings;
 import net.minecraft.inventory.EquipmentSlotType;
@@ -50,9 +50,9 @@ public class PowerFistCap extends AbstractModularPowerCap {
         this.targetSlot = EquipmentSlotType.MAINHAND;
 
         this.modularItemCap = new ModeChangingModularItem(itemStack, 40)  {{
-            Map<EnumModuleCategory, NuminaRangedWrapper> rangedWrapperMap = new HashMap<>();
-            rangedWrapperMap.put(EnumModuleCategory.ENERGY_STORAGE, new NuminaRangedWrapper(this, 0, 1));
-            rangedWrapperMap.put(EnumModuleCategory.NONE, new NuminaRangedWrapper(this, 1, this.getSlots() ));
+            Map<ModuleCategory, NuminaRangedWrapper> rangedWrapperMap = new HashMap<>();
+            rangedWrapperMap.put(ModuleCategory.ENERGY_STORAGE, new NuminaRangedWrapper(this, 0, 1));
+            rangedWrapperMap.put(ModuleCategory.NONE, new NuminaRangedWrapper(this, 1, this.getSlots() ));
             this.setRangedWrapperMap(rangedWrapperMap);
         }};
         this.modelSpec = new PowerFistSpecNBT(itemStack);

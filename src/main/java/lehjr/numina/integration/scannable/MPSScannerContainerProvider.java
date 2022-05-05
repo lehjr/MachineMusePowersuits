@@ -1,6 +1,5 @@
 package lehjr.numina.integration.scannable;
 
-import lehjr.numina.util.capabilities.inventory.modechanging.IModeChangingItem;
 import lehjr.numina.util.item.ItemUtils;
 import li.cil.scannable.common.container.AbstractHeldItemStackContainerProvider;
 import li.cil.scannable.common.inventory.ItemHandlerScanner;

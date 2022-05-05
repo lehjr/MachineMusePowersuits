@@ -26,8 +26,8 @@
 
 package lehjr.powersuits.item.module.vision;
 
-import lehjr.numina.util.capabilities.module.powermodule.EnumModuleCategory;
-import lehjr.numina.util.capabilities.module.powermodule.EnumModuleTarget;
+import lehjr.numina.util.capabilities.module.powermodule.ModuleCategory;
+import lehjr.numina.util.capabilities.module.powermodule.ModuleTarget;
 import lehjr.numina.util.capabilities.module.powermodule.PowerModuleCapability;
 import lehjr.numina.util.capabilities.module.toggleable.IToggleableModule;
 import lehjr.numina.util.capabilities.module.toggleable.ToggleableModule;
@@ -66,7 +66,7 @@ public class BinocularsModule extends AbstractPowerModule {
 
         public CapProvider(@Nonnull ItemStack module) {
             this.module = module;
-            this.moduleToggle = new ToggleableModule(module, EnumModuleCategory.VISION, EnumModuleTarget.HEADONLY, MPSSettings::getModuleConfig, false) {{
+            this.moduleToggle = new ToggleableModule(module, ModuleCategory.VISION, ModuleTarget.HEADONLY, MPSSettings::getModuleConfig, false) {{
                 addBaseProperty(MPSConstants.FOV, 0.5F);
                 addTradeoffProperty(MPSConstants.FIELD_OF_VIEW, MPSConstants.FOV, 9.5F, "%");
             }};

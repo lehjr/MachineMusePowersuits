@@ -108,19 +108,19 @@ public class PowerFist extends AbstractElectricTool {
                 .map(IModeChangingItem.class::cast)
                 .map(iItemHandler -> {
                     Set<ToolType> retSet = new HashSet<>();
-                    if (!iItemHandler.getOnlineModuleOrEmpty(MPSRegistryNames.PICKAXE_MODULE_REGNAME).isEmpty()) {
+                    if (!iItemHandler.getOnlineModuleOrEmpty(MPSRegistryNames.PICKAXE_MODULE).isEmpty()) {
                         retSet.add(ToolType.PICKAXE);
                     }
 
-                    if (!iItemHandler.getOnlineModuleOrEmpty(MPSRegistryNames.AXE_MODULE_REGNAME).isEmpty()) {
+                    if (!iItemHandler.getOnlineModuleOrEmpty(MPSRegistryNames.AXE_MODULE).isEmpty()) {
                         retSet.add(ToolType.AXE);
                     }
 
-                    if (!iItemHandler.getOnlineModuleOrEmpty(MPSRegistryNames.SHOVEL_MODULE_REGNAME).isEmpty()) {
+                    if (!iItemHandler.getOnlineModuleOrEmpty(MPSRegistryNames.SHOVEL_MODULE).isEmpty()) {
                         retSet.add(ToolType.SHOVEL);
                     }
 
-                    if (!iItemHandler.getOnlineModuleOrEmpty(MPSRegistryNames.HOE_MODULE_REGNAME).isEmpty()) {
+                    if (!iItemHandler.getOnlineModuleOrEmpty(MPSRegistryNames.HOE_MODULE).isEmpty()) {
                         retSet.add(ToolType.HOE);
                     }
 
@@ -138,7 +138,7 @@ public class PowerFist extends AbstractElectricTool {
             itemStack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
                     .filter(IModeChangingItem.class::isInstance)
                     .map(IModeChangingItem.class::cast)
-                    .ifPresent(iItemHandler -> iItemHandler.getOnlineModuleOrEmpty(MPSRegistryNames.MELEE_ASSIST_MODULE_REGNAME)
+                    .ifPresent(iItemHandler -> iItemHandler.getOnlineModuleOrEmpty(MPSRegistryNames.MELEE_ASSIST_MODULE)
                             .getCapability(PowerModuleCapability.POWER_MODULE).ifPresent(pm->{
                                 PlayerEntity player = (PlayerEntity) attacker;
                                 double drain = pm.applyPropertyModifiers(MPSConstants.PUNCH_ENERGY);

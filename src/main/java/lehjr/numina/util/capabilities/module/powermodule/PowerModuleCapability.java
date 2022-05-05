@@ -50,6 +50,6 @@ public class PowerModuleCapability {
                             throw new IllegalArgumentException("Can not deserialize to an instance that isn't the default implementation");
                     }
                 },
-                () -> new PowerModule(ItemStack.EMPTY, EnumModuleCategory.NONE, EnumModuleTarget.NONE, null));
+                () -> new PowerModule(ItemStack.EMPTY, ModuleCategory.NONE, ModuleTarget.NONE, null));
     }
 }

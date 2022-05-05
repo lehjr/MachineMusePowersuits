@@ -27,7 +27,7 @@
 package lehjr.numina.util.capabilities.inventory.modularitem;
 
 import lehjr.numina.util.capabilities.IItemStackUpdate;
-import lehjr.numina.util.capabilities.module.powermodule.EnumModuleCategory;
+import lehjr.numina.util.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.util.capabilities.module.powermodule.IPowerModule;
 import lehjr.numina.util.capabilities.module.powermodule.PowerModuleCapability;
 import lehjr.numina.util.string.MuseStringUtils;
@@ -51,7 +51,7 @@ import java.util.Map;
  *
  */
 public interface IModularItem extends IItemHandler, IItemHandlerModifiable, IItemStackUpdate, INBTSerializable<CompoundNBT> {
-    void setRangedWrapperMap(Map<EnumModuleCategory, NuminaRangedWrapper> rangedWrappers);
+    void setRangedWrapperMap(Map<ModuleCategory, NuminaRangedWrapper> rangedWrappers);
 
     boolean isModuleValid(@Nonnull ItemStack module);
 
@@ -66,7 +66,7 @@ public interface IModularItem extends IItemHandler, IItemHandlerModifiable, IIte
     void toggleModule(ResourceLocation moduleName, boolean online);
 
     @Nullable
-    Pair<Integer, Integer> getRangeForCategory(EnumModuleCategory category);
+    Pair<Integer, Integer> getRangeForCategory(ModuleCategory category);
 
     List<ResourceLocation> getInstalledModuleNames();
 
