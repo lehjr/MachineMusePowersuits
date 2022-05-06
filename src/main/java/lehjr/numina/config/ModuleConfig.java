@@ -28,8 +28,8 @@ package lehjr.numina.config;
 
 import lehjr.numina.basemod.MuseLogger;
 import lehjr.numina.constants.NuminaConstants;
-import lehjr.numina.util.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.util.capabilities.module.powermodule.IConfig;
+import lehjr.numina.util.capabilities.module.powermodule.ModuleCategory;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.config.ModConfig;

@@ -26,9 +26,9 @@
 
 package lehjr.powersuits.item.module.weapon;
 
+import lehjr.numina.util.capabilities.module.powermodule.IConfig;
 import lehjr.numina.util.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.util.capabilities.module.powermodule.ModuleTarget;
-import lehjr.numina.util.capabilities.module.powermodule.IConfig;
 import lehjr.numina.util.capabilities.module.powermodule.PowerModuleCapability;
 import lehjr.numina.util.capabilities.module.rightclick.IRightClickModule;
 import lehjr.numina.util.capabilities.module.tickable.IPlayerTickModule;
@@ -132,8 +132,6 @@ public class RailgunModule extends AbstractPowerModule {
                         RailgunBoltEntity bolt = new RailgunBoltEntity(worldIn, entityLiving, velocity, chargePercent, damage, knockback);
                         // Only run if enntity is added
                         if (worldIn.addFreshEntity(bolt)) {
-                            System.out.println("doing something here");
-
                             Vector3d lookVec = playerentity.getLookAngle();
                             worldIn.playSound(null, entityLiving.getX(), entityLiving.getY(), entityLiving.getZ(), SoundEvents.CROSSBOW_SHOOT, SoundCategory.PLAYERS, 1.0F, 1.0F);
                             ElectricItemUtils.drainPlayerEnergy(entityLiving, (int) energyConsumption);

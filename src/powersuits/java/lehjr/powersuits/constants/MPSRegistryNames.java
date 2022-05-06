@@ -35,7 +35,6 @@ public class MPSRegistryNames {
     public static final ResourceLocation SPINNING_BLADE = getRegName("spinning_blade");
     public static final ResourceLocation PLASMA_BALL = getRegName("plasma_ball");
     public static final ResourceLocation RAILGUN_BOLT = getRegName("railgun_bolt");
-    public static final ResourceLocation RAILGUN_BOLT2 = getRegName("railgun_bolt2"); // possible replacement
     /**
      * Blocks -------------------------------------------------------------------------------------
      */

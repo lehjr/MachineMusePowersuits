@@ -26,9 +26,9 @@
 
 package lehjr.numina.util.capabilities.module.toggleable;
 
+import lehjr.numina.util.capabilities.module.powermodule.IConfig;
 import lehjr.numina.util.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.util.capabilities.module.powermodule.ModuleTarget;
-import lehjr.numina.util.capabilities.module.powermodule.IConfig;
 import lehjr.numina.util.capabilities.module.powermodule.PowerModule;
 import lehjr.numina.util.nbt.MuseNBTUtils;
 import net.minecraft.item.ItemStack;

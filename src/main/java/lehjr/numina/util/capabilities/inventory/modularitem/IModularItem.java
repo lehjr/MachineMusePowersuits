@@ -27,8 +27,8 @@
 package lehjr.numina.util.capabilities.inventory.modularitem;
 
 import lehjr.numina.util.capabilities.IItemStackUpdate;
-import lehjr.numina.util.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.util.capabilities.module.powermodule.IPowerModule;
+import lehjr.numina.util.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.util.capabilities.module.powermodule.PowerModuleCapability;
 import lehjr.numina.util.string.MuseStringUtils;
 import net.minecraft.entity.player.PlayerEntity;
