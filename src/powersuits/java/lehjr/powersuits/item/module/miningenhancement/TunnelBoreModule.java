@@ -56,8 +56,6 @@ public class TunnelBoreModule extends AbstractPowerModule {
         private final Highlighter highlight;
         private final LazyOptional<IHighlight> highlightHolder;
 
-
-
         public CapProvider(@Nonnull ItemStack module) {
             this.module = module;
             this.miningEnhancement = new Enhancement(module, ModuleCategory.MINING_ENHANCEMENT, ModuleTarget.TOOLONLY, MPSSettings::getModuleConfig) {{

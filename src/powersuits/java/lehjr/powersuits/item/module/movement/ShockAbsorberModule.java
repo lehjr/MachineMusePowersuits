@@ -26,6 +26,7 @@
 
 package lehjr.powersuits.item.module.movement;
 
+import lehjr.numina.util.capabilities.module.powermodule.IPowerModule;
 import lehjr.numina.util.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.util.capabilities.module.powermodule.ModuleTarget;
 import lehjr.numina.util.capabilities.module.powermodule.PowerModuleCapability;
@@ -56,7 +57,8 @@ public class ShockAbsorberModule extends AbstractPowerModule {
 
     public class CapProvider implements ICapabilityProvider {
         ItemStack module;
-        IToggleableModule moduleToggle;
+        private final ToggleableModule moduleToggle;
+        private final LazyOptional<IPowerModule> powerModuleHolder;
 
         public CapProvider(@Nonnull ItemStack module) {
             this.module = module;
@@ -66,15 +68,22 @@ public class ShockAbsorberModule extends AbstractPowerModule {
                 addBaseProperty(MPSConstants.MULTIPLIER, 0, "%");
                 addTradeoffProperty(MPSConstants.SHOCK_POWER, MPSConstants.MULTIPLIER, 10);
             }};
+
+            powerModuleHolder = LazyOptional.of(() -> {
+                moduleToggle.updateFromNBT();
+                return moduleToggle;
+            });
         }
 
-        @Nonnull
+        /** ICapabilityProvider ----------------------------------------------------------------------- */
         @Override
-        public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
-            if (cap instanceof IToggleableModule) {
-                ((IToggleableModule) cap).updateFromNBT();
+        @Nonnull
+        public <T> LazyOptional<T> getCapability(@Nonnull final Capability<T> capability, final @Nullable Direction side) {
+            final LazyOptional<T> powerModuleCapability = PowerModuleCapability.POWER_MODULE.orEmpty(capability, powerModuleHolder);
+            if (powerModuleCapability.isPresent()) {
+                return powerModuleCapability;
             }
-            return PowerModuleCapability.POWER_MODULE.orEmpty(cap, LazyOptional.of(()-> moduleToggle));
+            return LazyOptional.empty();
         }
     }
 }

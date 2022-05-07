@@ -28,10 +28,7 @@ package lehjr.powersuits.item.module.movement;
 
 import lehjr.numina.config.NuminaSettings;
 import lehjr.numina.util.capabilities.inventory.modularitem.IModularItem;
-import lehjr.numina.util.capabilities.module.powermodule.IConfig;
-import lehjr.numina.util.capabilities.module.powermodule.ModuleCategory;
-import lehjr.numina.util.capabilities.module.powermodule.ModuleTarget;
-import lehjr.numina.util.capabilities.module.powermodule.PowerModuleCapability;
+import lehjr.numina.util.capabilities.module.powermodule.*;
 import lehjr.numina.util.capabilities.module.tickable.IPlayerTickModule;
 import lehjr.numina.util.capabilities.module.tickable.PlayerTickModule;
 import lehjr.numina.util.capabilities.module.toggleable.IToggleableModule;
@@ -72,7 +69,8 @@ public class JetPackModule extends AbstractPowerModule {
 
     public class CapProvider implements ICapabilityProvider {
         ItemStack module;
-        IPlayerTickModule ticker;
+        private final Ticker ticker;
+        private final LazyOptional<IPowerModule> powerModuleHolder;
 
         public CapProvider(@Nonnull ItemStack module) {
             this.module = module;
@@ -82,15 +80,11 @@ public class JetPackModule extends AbstractPowerModule {
                 addTradeoffProperty(MPSConstants.THRUST, MPSConstants.JETPACK_ENERGY, 15000);
                 addTradeoffProperty(MPSConstants.THRUST, MPSConstants.JETPACK_THRUST, 0.16F);
             }};
-        }
 
-        @Nonnull
-        @Override
-        public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
-            if (cap instanceof IToggleableModule) {
-                ((IToggleableModule) cap).updateFromNBT();
-            }
-            return PowerModuleCapability.POWER_MODULE.orEmpty(cap, LazyOptional.of(() -> ticker));
+            powerModuleHolder = LazyOptional.of(() -> {
+                ticker.updateFromNBT();
+                return ticker;
+            });
         }
 
         class Ticker extends PlayerTickModule {
@@ -139,6 +133,17 @@ public class JetPackModule extends AbstractPowerModule {
                     Musique.stopPlayerSound(player, MPSSoundDictionary.JETPACK);
                 }
             }
+        }
+
+        /** ICapabilityProvider ----------------------------------------------------------------------- */
+        @Override
+        @Nonnull
+        public <T> LazyOptional<T> getCapability(@Nonnull final Capability<T> capability, final @Nullable Direction side) {
+            final LazyOptional<T> powerModuleCapability = PowerModuleCapability.POWER_MODULE.orEmpty(capability, powerModuleHolder);
+            if (powerModuleCapability.isPresent()) {
+                return powerModuleCapability;
+            }
+            return LazyOptional.empty();
         }
     }
 }

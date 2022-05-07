@@ -26,10 +26,7 @@
 
 package lehjr.powersuits.item.module.movement;
 
-import lehjr.numina.util.capabilities.module.powermodule.IConfig;
-import lehjr.numina.util.capabilities.module.powermodule.ModuleCategory;
-import lehjr.numina.util.capabilities.module.powermodule.ModuleTarget;
-import lehjr.numina.util.capabilities.module.powermodule.PowerModuleCapability;
+import lehjr.numina.util.capabilities.module.powermodule.*;
 import lehjr.numina.util.capabilities.module.tickable.PlayerTickModule;
 import lehjr.numina.util.capabilities.module.toggleable.IToggleableModule;
 import lehjr.numina.util.client.control.PlayerMovementInputWrapper;
@@ -62,7 +59,8 @@ public class JumpAssistModule extends AbstractPowerModule {
 
     public class CapProvider implements ICapabilityProvider {
         ItemStack module;
-        PlayerTickModule ticker;
+        private final Ticker ticker;
+        private final LazyOptional<IPowerModule> powerModuleHolder;
 
         public CapProvider(@Nonnull ItemStack module) {
             this.module = module;
@@ -70,15 +68,11 @@ public class JumpAssistModule extends AbstractPowerModule {
                 addSimpleTradeoff(MPSConstants.JUMP_POWER, MPSConstants.JUMP_ENERGY, "FE", 0, 250, MPSConstants.MULTIPLIER, "%", 1, 4);
                 addSimpleTradeoff(MPSConstants.COMPENSATION, MPSConstants.JUMP_ENERGY, "FE", 0, 50, MPSConstants.FOOD_COMPENSATION, "%", 0, 1);
             }};
-        }
 
-        @Nonnull
-        @Override
-        public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
-            if (cap instanceof IToggleableModule) {
-                ((IToggleableModule) cap).updateFromNBT();
-            }
-            return PowerModuleCapability.POWER_MODULE.orEmpty(cap, LazyOptional.of(()-> ticker));
+            powerModuleHolder = LazyOptional.of(() -> {
+                ticker.updateFromNBT();
+                return ticker;
+            });
         }
 
         class Ticker extends PlayerTickModule {
@@ -101,6 +95,17 @@ public class JumpAssistModule extends AbstractPowerModule {
                 }
                 PlayerUtils.resetFloatKickTicks(player);
             }
+        }
+
+        /** ICapabilityProvider ----------------------------------------------------------------------- */
+        @Override
+        @Nonnull
+        public <T> LazyOptional<T> getCapability(@Nonnull final Capability<T> capability, final @Nullable Direction side) {
+            final LazyOptional<T> powerModuleCapability = PowerModuleCapability.POWER_MODULE.orEmpty(capability, powerModuleHolder);
+            if (powerModuleCapability.isPresent()) {
+                return powerModuleCapability;
+            }
+            return LazyOptional.empty();
         }
     }
 }

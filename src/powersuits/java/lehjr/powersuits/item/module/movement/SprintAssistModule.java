@@ -26,10 +26,7 @@
 
 package lehjr.powersuits.item.module.movement;
 
-import lehjr.numina.util.capabilities.module.powermodule.IConfig;
-import lehjr.numina.util.capabilities.module.powermodule.ModuleCategory;
-import lehjr.numina.util.capabilities.module.powermodule.ModuleTarget;
-import lehjr.numina.util.capabilities.module.powermodule.PowerModuleCapability;
+import lehjr.numina.util.capabilities.module.powermodule.*;
 import lehjr.numina.util.capabilities.module.tickable.IPlayerTickModule;
 import lehjr.numina.util.capabilities.module.tickable.PlayerTickModule;
 import lehjr.numina.util.energy.ElectricItemUtils;
@@ -71,7 +68,8 @@ public class SprintAssistModule extends AbstractPowerModule {
 
     public class CapProvider implements ICapabilityProvider {
         ItemStack module;
-        IPlayerTickModule ticker;
+        private final Ticker ticker;
+        private final LazyOptional<IPowerModule> powerModuleHolder;
 
         public CapProvider(@Nonnull ItemStack module) {
             this.module = module;
@@ -83,15 +81,11 @@ public class SprintAssistModule extends AbstractPowerModule {
                 // Walking
                 addSimpleTradeoff(MPSConstants.WALKING_ASSISTANCE, MPSConstants.WALKING_ENERGY_CONSUMPTION, "RF", 0, 5000, MPSConstants.WALKING_SPEED_MULTIPLIER, "%", 0.01, 1.99);
             }};
-        }
 
-        @Nonnull
-        @Override
-        public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
-            if (cap instanceof IPlayerTickModule) {
+            powerModuleHolder = LazyOptional.of(() -> {
                 ticker.updateFromNBT();
-            }
-            return PowerModuleCapability.POWER_MODULE.orEmpty(cap, LazyOptional.of(()-> ticker));
+                return ticker;
+            });
         }
 
         class Ticker extends PlayerTickModule {
@@ -133,10 +127,6 @@ public class SprintAssistModule extends AbstractPowerModule {
                                     // every 20 ticks
                                     (player.level.getGameTime() % 20) == 0) {
                                 ElectricItemUtils.drainPlayerEnergy(player, (int) (walkCost * horzMovement));
-
-
-
-
                             }
                             setMovementModifier(getModuleStack(), walkMultiplier * 0.1, Attributes.MOVEMENT_SPEED, Attributes.MOVEMENT_SPEED.getDescriptionId());
                             player.flyingSpeed = player.getSpeed() * 0.2f;
@@ -151,6 +141,17 @@ public class SprintAssistModule extends AbstractPowerModule {
 //                itemStack.removeTagKey("AttributeModifiers");
                 setMovementModifier(getModuleStack(), 0, Attributes.MOVEMENT_SPEED, Attributes.MOVEMENT_SPEED.getDescriptionId());
             }
+        }
+
+        /** ICapabilityProvider ----------------------------------------------------------------------- */
+        @Override
+        @Nonnull
+        public <T> LazyOptional<T> getCapability(@Nonnull final Capability<T> capability, final @Nullable Direction side) {
+            final LazyOptional<T> powerModuleCapability = PowerModuleCapability.POWER_MODULE.orEmpty(capability, powerModuleHolder);
+            if (powerModuleCapability.isPresent()) {
+                return powerModuleCapability;
+            }
+            return LazyOptional.empty();
         }
     }
 
@@ -189,4 +190,5 @@ public class SprintAssistModule extends AbstractPowerModule {
             itemStack.addAttributeModifier(attributeModifier, new AttributeModifier(key, multiplier, AttributeModifier.Operation.ADDITION), EquipmentSlotType.LEGS);
         }
     }
+
 }
