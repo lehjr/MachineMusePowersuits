@@ -26,10 +26,7 @@
 
 package lehjr.powersuits.item.module.tool;
 
-import lehjr.numina.util.capabilities.module.powermodule.IConfig;
-import lehjr.numina.util.capabilities.module.powermodule.ModuleCategory;
-import lehjr.numina.util.capabilities.module.powermodule.ModuleTarget;
-import lehjr.numina.util.capabilities.module.powermodule.PowerModuleCapability;
+import lehjr.numina.util.capabilities.module.powermodule.*;
 import lehjr.numina.util.capabilities.module.rightclick.IRightClickModule;
 import lehjr.numina.util.capabilities.module.rightclick.RightClickModule;
 import lehjr.numina.util.energy.ElectricItemUtils;
@@ -76,20 +73,17 @@ public class FlintAndSteelModule extends AbstractPowerModule {
 
     public class CapProvider implements ICapabilityProvider {
         ItemStack module;
-        IRightClickModule rightClick;
+        private final RightClickie rightClickie;
+        private final LazyOptional<IPowerModule> powerModuleHolder;
 
         public CapProvider(@Nonnull ItemStack module) {
             this.module = module;
-            this.rightClick = new RightClickie(module, ModuleCategory.TOOL, ModuleTarget.TOOLONLY, MPSSettings::getModuleConfig) {{
+            this.rightClickie = new RightClickie(module, ModuleCategory.TOOL, ModuleTarget.TOOLONLY, MPSSettings::getModuleConfig) {{
                 addBaseProperty(MPSConstants.FLINT_AND_STEELE_ENERGY, 10000, "FE");
             }};
+            powerModuleHolder = LazyOptional.of(() -> rightClickie);
         }
 
-        @Nonnull
-        @Override
-        public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
-            return PowerModuleCapability.POWER_MODULE.orEmpty(cap, LazyOptional.of(() -> rightClick));
-        }
 
         class RightClickie extends RightClickModule {
             public RightClickie(@Nonnull ItemStack module, ModuleCategory category, ModuleTarget target, Callable<IConfig> config) {
@@ -139,6 +133,17 @@ public class FlintAndSteelModule extends AbstractPowerModule {
             public int getEnergyUsage() {
                 return (int) applyPropertyModifiers(MPSConstants.FLINT_AND_STEELE_ENERGY);
             }
+        }
+
+        /** ICapabilityProvider ----------------------------------------------------------------------- */
+        @Override
+        @Nonnull
+        public <T> LazyOptional<T> getCapability(@Nonnull final Capability<T> capability, final @Nullable Direction side) {
+            final LazyOptional<T> powerModuleCapability = PowerModuleCapability.POWER_MODULE.orEmpty(capability, powerModuleHolder);
+            if (powerModuleCapability.isPresent()) {
+                return powerModuleCapability;
+            }
+            return LazyOptional.empty();
         }
     }
 }

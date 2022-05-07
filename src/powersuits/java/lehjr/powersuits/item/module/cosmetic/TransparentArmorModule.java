@@ -26,9 +26,7 @@
 
 package lehjr.powersuits.item.module.cosmetic;
 
-import lehjr.numina.util.capabilities.module.powermodule.ModuleCategory;
-import lehjr.numina.util.capabilities.module.powermodule.ModuleTarget;
-import lehjr.numina.util.capabilities.module.powermodule.PowerModuleCapability;
+import lehjr.numina.util.capabilities.module.powermodule.*;
 import lehjr.numina.util.capabilities.module.toggleable.IToggleableModule;
 import lehjr.numina.util.capabilities.module.toggleable.ToggleableModule;
 import lehjr.powersuits.config.MPSSettings;
@@ -56,20 +54,27 @@ public class TransparentArmorModule extends AbstractPowerModule {
 
     public class CapProvider implements ICapabilityProvider {
         ItemStack module;
-        IToggleableModule moduleToggle;
+        private final ToggleableModule moduleToggle;
+        private final LazyOptional<IPowerModule> powerModuleHolder;
 
         public CapProvider(@Nonnull ItemStack module) {
             this.module = module;
             this.moduleToggle = new ToggleableModule(module, ModuleCategory.COSMETIC, ModuleTarget.ARMORONLY, MPSSettings::getModuleConfig, true);
+            powerModuleHolder = LazyOptional.of(() -> {
+                moduleToggle.updateFromNBT();
+                return moduleToggle;
+            });
         }
 
-        @Nonnull
+        /** ICapabilityProvider ----------------------------------------------------------------------- */
         @Override
-        public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
-            if (cap instanceof IToggleableModule) {
-                ((IToggleableModule) cap).updateFromNBT();
+        @Nonnull
+        public <T> LazyOptional<T> getCapability(@Nonnull final Capability<T> capability, final @Nullable Direction side) {
+            final LazyOptional<T> powerModuleCapability = PowerModuleCapability.POWER_MODULE.orEmpty(capability, powerModuleHolder);
+            if (powerModuleCapability.isPresent()) {
+                return powerModuleCapability;
             }
-            return PowerModuleCapability.POWER_MODULE.orEmpty(cap, LazyOptional.of(()-> moduleToggle));
+            return LazyOptional.empty();
         }
     }
 }

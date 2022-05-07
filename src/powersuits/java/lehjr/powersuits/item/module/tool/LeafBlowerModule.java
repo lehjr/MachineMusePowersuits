@@ -26,10 +26,7 @@
 
 package lehjr.powersuits.item.module.tool;
 
-import lehjr.numina.util.capabilities.module.powermodule.IConfig;
-import lehjr.numina.util.capabilities.module.powermodule.ModuleCategory;
-import lehjr.numina.util.capabilities.module.powermodule.ModuleTarget;
-import lehjr.numina.util.capabilities.module.powermodule.PowerModuleCapability;
+import lehjr.numina.util.capabilities.module.powermodule.*;
 import lehjr.numina.util.capabilities.module.rightclick.IRightClickModule;
 import lehjr.numina.util.capabilities.module.rightclick.RightClickModule;
 import lehjr.numina.util.energy.ElectricItemUtils;
@@ -70,22 +67,19 @@ public class LeafBlowerModule extends AbstractPowerModule {
 
     public class CapProvider implements ICapabilityProvider {
         ItemStack module;
-        IRightClickModule rightClick;
+        private final RightClickie rightClickie;
+        private final LazyOptional<IPowerModule> powerModuleHolder;
+
 
         public CapProvider(@Nonnull ItemStack module) {
             this.module = module;
-            this.rightClick = new RightClickie(module, ModuleCategory.TOOL, ModuleTarget.TOOLONLY, MPSSettings::getModuleConfig) {{
+            this.rightClickie = new RightClickie(module, ModuleCategory.TOOL, ModuleTarget.TOOLONLY, MPSSettings::getModuleConfig) {{
                 addBaseProperty(MPSConstants.LEAF_BLOWER_ENERGY, 500, "FE");
                 addTradeoffProperty(MPSConstants.RADIUS, MPSConstants.LEAF_BLOWER_ENERGY, 9500);
                 addBaseProperty(MPSConstants.RADIUS, 1, "m");
                 addTradeoffProperty(MPSConstants.RADIUS, MPSConstants.RADIUS, 15);
             }};
-        }
-
-        @Nonnull
-        @Override
-        public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
-            return PowerModuleCapability.POWER_MODULE.orEmpty(cap, LazyOptional.of(() -> rightClick));
+            powerModuleHolder = LazyOptional.of(() -> rightClickie);
         }
 
         class RightClickie extends RightClickModule {
@@ -122,6 +116,17 @@ public class LeafBlowerModule extends AbstractPowerModule {
             public int getEnergyUsage() {
                 return (int) applyPropertyModifiers(MPSConstants.LEAF_BLOWER_ENERGY);
             }
+        }
+
+        /** ICapabilityProvider ----------------------------------------------------------------------- */
+        @Override
+        @Nonnull
+        public <T> LazyOptional<T> getCapability(@Nonnull final Capability<T> capability, final @Nullable Direction side) {
+            final LazyOptional<T> powerModuleCapability = PowerModuleCapability.POWER_MODULE.orEmpty(capability, powerModuleHolder);
+            if (powerModuleCapability.isPresent()) {
+                return powerModuleCapability;
+            }
+            return LazyOptional.empty();
         }
     }
 }

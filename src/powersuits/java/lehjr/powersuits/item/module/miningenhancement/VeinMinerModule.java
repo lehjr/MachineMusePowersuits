@@ -30,10 +30,7 @@ import lehjr.numina.util.capabilities.inventory.modechanging.IModeChangingItem;
 import lehjr.numina.util.capabilities.module.blockbreaking.IBlockBreakingModule;
 import lehjr.numina.util.capabilities.module.miningenhancement.IMiningEnhancementModule;
 import lehjr.numina.util.capabilities.module.miningenhancement.MiningEnhancement;
-import lehjr.numina.util.capabilities.module.powermodule.IConfig;
-import lehjr.numina.util.capabilities.module.powermodule.ModuleCategory;
-import lehjr.numina.util.capabilities.module.powermodule.ModuleTarget;
-import lehjr.numina.util.capabilities.module.powermodule.PowerModuleCapability;
+import lehjr.numina.util.capabilities.module.powermodule.*;
 import lehjr.numina.util.energy.ElectricItemUtils;
 import lehjr.powersuits.config.MPSSettings;
 import lehjr.powersuits.constants.MPSConstants;
@@ -74,19 +71,19 @@ public class VeinMinerModule extends AbstractPowerModule {
 
     public class CapProvider implements ICapabilityProvider {
         ItemStack module;
-        IMiningEnhancementModule miningEnhancement;
+        private final Enhancement miningEnhancement;
+        private final LazyOptional<IPowerModule> powerModuleHolder;
 
         public CapProvider(@Nonnull ItemStack module) {
             this.module = module;
             this.miningEnhancement = new Enhancement(module, ModuleCategory.MINING_ENHANCEMENT, ModuleTarget.TOOLONLY, MPSSettings::getModuleConfig) {{
                 addBaseProperty(MPSConstants.VEIN_MINER_ENERGY, 500, "FE");
             }};
-        }
 
-        @Nonnull
-        @Override
-        public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
-            return PowerModuleCapability.POWER_MODULE.orEmpty(cap, LazyOptional.of(() -> miningEnhancement));
+            powerModuleHolder = LazyOptional.of(() -> {
+                miningEnhancement.updateFromNBT();
+                return miningEnhancement;
+            });
         }
 
         class Enhancement extends MiningEnhancement {
@@ -240,6 +237,17 @@ public class VeinMinerModule extends AbstractPowerModule {
             public int getEnergyUsage() {
                 return (int) applyPropertyModifiers(MPSConstants.VEIN_MINER_ENERGY);
             }
+        }
+
+        /** ICapabilityProvider ----------------------------------------------------------------------- */
+        @Override
+        @Nonnull
+        public <T> LazyOptional<T> getCapability(@Nonnull final Capability<T> capability, final @Nullable Direction side) {
+            final LazyOptional<T> powerModuleCapability = PowerModuleCapability.POWER_MODULE.orEmpty(capability, powerModuleHolder);
+            if (powerModuleCapability.isPresent()) {
+                return powerModuleCapability;
+            }
+            return LazyOptional.empty();
         }
     }
 }

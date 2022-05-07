@@ -30,14 +30,12 @@ import lehjr.numina.util.capabilities.inventory.modechanging.IModeChangingItem;
 import lehjr.numina.util.capabilities.module.blockbreaking.IBlockBreakingModule;
 import lehjr.numina.util.capabilities.module.miningenhancement.IMiningEnhancementModule;
 import lehjr.numina.util.capabilities.module.miningenhancement.MiningEnhancement;
-import lehjr.numina.util.capabilities.module.powermodule.IConfig;
-import lehjr.numina.util.capabilities.module.powermodule.ModuleCategory;
-import lehjr.numina.util.capabilities.module.powermodule.ModuleTarget;
-import lehjr.numina.util.capabilities.module.powermodule.PowerModuleCapability;
+import lehjr.numina.util.capabilities.module.powermodule.*;
 import lehjr.numina.util.energy.ElectricItemUtils;
 import lehjr.powersuits.config.MPSSettings;
 import lehjr.powersuits.constants.MPSConstants;
 import lehjr.powersuits.item.module.AbstractPowerModule;
+import lehjr.powersuits.item.module.armor.EnergyShieldModule;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -78,7 +76,9 @@ public class AOEPickUpgradeModule extends AbstractPowerModule {
     /** TODO: Add charge system like plasma cannon */
     public class CapProvider implements ICapabilityProvider {
         ItemStack module;
-        IMiningEnhancementModule miningEnhancement;
+
+        private final Enhancement miningEnhancement;
+        private final LazyOptional<IPowerModule> powerModuleHolder;
 
         public CapProvider(@Nonnull ItemStack module) {
             this.module = module;
@@ -88,12 +88,11 @@ public class AOEPickUpgradeModule extends AbstractPowerModule {
                 addTradeoffProperty(MPSConstants.DIAMETER, MPSConstants.AOE_ENERGY, 9500);
                 addIntTradeoffProperty(MPSConstants.DIAMETER, MPSConstants.AOE_MINING_RADIUS, 5, "m", 2, 1);
             }};
-        }
 
-        @Nonnull
-        @Override
-        public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
-            return PowerModuleCapability.POWER_MODULE.orEmpty(cap, LazyOptional.of(() -> miningEnhancement));
+            powerModuleHolder = LazyOptional.of(() -> {
+                miningEnhancement.updateFromNBT();
+                return miningEnhancement;
+            });
         }
 
         class Enhancement extends MiningEnhancement {
@@ -146,35 +145,35 @@ public class AOEPickUpgradeModule extends AbstractPowerModule {
                         .filter(IModeChangingItem.class::isInstance)
                         .map(IModeChangingItem.class::cast)
                         .ifPresent(modeChanging -> {
-                        posList.forEach(blockPos-> {
-                            BlockState state = player.level.getBlockState(blockPos);
-                            // find an installed module to break current block
-                            for (ItemStack blockBreakingModule : modeChanging.getInstalledModulesOfType(IBlockBreakingModule.class)) {
-                                int playerEnergy = ElectricItemUtils.getPlayerEnergy(player);
-                                if (blockBreakingModule.getCapability(PowerModuleCapability.POWER_MODULE).map(b -> {
-                                    // check if module can break block
-                                    if(b instanceof IBlockBreakingModule) {
-                                        return ((IBlockBreakingModule) b).canHarvestBlock(itemStack, state, player, blockPos, playerEnergy - energyUsage);
+                            posList.forEach(blockPos-> {
+                                BlockState state = player.level.getBlockState(blockPos);
+                                // find an installed module to break current block
+                                for (ItemStack blockBreakingModule : modeChanging.getInstalledModulesOfType(IBlockBreakingModule.class)) {
+                                    int playerEnergy = ElectricItemUtils.getPlayerEnergy(player);
+                                    if (blockBreakingModule.getCapability(PowerModuleCapability.POWER_MODULE).map(b -> {
+                                        // check if module can break block
+                                        if(b instanceof IBlockBreakingModule) {
+                                            return ((IBlockBreakingModule) b).canHarvestBlock(itemStack, state, player, blockPos, playerEnergy - energyUsage);
+                                        }
+                                        return false;
+                                    }).orElse(false)) {
+                                        if (posIn == blockPos) { // center block
+                                            harvested.set(true);
+                                        }
+                                        blocksBroken.getAndAdd(1);
+                                        Block.updateOrDestroy(state, Blocks.AIR.defaultBlockState(), player.level, blockPos, Constants.BlockFlags.DEFAULT);
+                                        ElectricItemUtils.drainPlayerEnergy(player,
+                                                blockBreakingModule.getCapability(PowerModuleCapability.POWER_MODULE).map(m -> {
+                                                    if (m instanceof IBlockBreakingModule) {
+                                                        return ((IBlockBreakingModule) m).getEnergyUsage();
+                                                    }
+                                                    return 0;
+                                                }).orElse(0) + energyUsage);
+                                        break;
                                     }
-                                    return false;
-                                }).orElse(false)) {
-                                    if (posIn == blockPos) { // center block
-                                        harvested.set(true);
-                                    }
-                                    blocksBroken.getAndAdd(1);
-                                    Block.updateOrDestroy(state, Blocks.AIR.defaultBlockState(), player.level, blockPos, Constants.BlockFlags.DEFAULT);
-                                    ElectricItemUtils.drainPlayerEnergy(player,
-                                            blockBreakingModule.getCapability(PowerModuleCapability.POWER_MODULE).map(m -> {
-                                                if (m instanceof IBlockBreakingModule) {
-                                                    return ((IBlockBreakingModule) m).getEnergyUsage();
-                                                }
-                                                return 0;
-                                            }).orElse(0) + energyUsage);
-                                    break;
                                 }
-                            }
+                            });
                         });
-                });
                 return harvested.get();
             }
 
@@ -182,6 +181,17 @@ public class AOEPickUpgradeModule extends AbstractPowerModule {
             public int getEnergyUsage() {
                 return (int) applyPropertyModifiers(MPSConstants.AOE_ENERGY);
             }
+        }
+
+        /** ICapabilityProvider ----------------------------------------------------------------------- */
+        @Override
+        @Nonnull
+        public <T> LazyOptional<T> getCapability(@Nonnull final Capability<T> capability, final @Nullable Direction side) {
+            final LazyOptional<T> powerModuleCapability = PowerModuleCapability.POWER_MODULE.orEmpty(capability, powerModuleHolder);
+            if (powerModuleCapability.isPresent()) {
+                return powerModuleCapability;
+            }
+            return LazyOptional.empty();
         }
     }
 }

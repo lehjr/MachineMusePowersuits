@@ -28,10 +28,7 @@ package lehjr.powersuits.item.module.miningenhancement;
 
 import lehjr.numina.util.capabilities.module.blockbreaking.IBlockBreakingModule;
 import lehjr.numina.util.capabilities.module.miningenhancement.MiningEnhancement;
-import lehjr.numina.util.capabilities.module.powermodule.IConfig;
-import lehjr.numina.util.capabilities.module.powermodule.ModuleCategory;
-import lehjr.numina.util.capabilities.module.powermodule.ModuleTarget;
-import lehjr.numina.util.capabilities.module.powermodule.PowerModuleCapability;
+import lehjr.numina.util.capabilities.module.powermodule.*;
 import lehjr.numina.util.energy.ElectricItemUtils;
 import lehjr.powersuits.config.MPSSettings;
 import lehjr.powersuits.constants.MPSConstants;
@@ -67,22 +64,22 @@ public class AquaAffinityModule extends AbstractPowerModule {
 
     public class CapProvider implements ICapabilityProvider {
         ItemStack module;
-        MiningEnhancement miningEnhancement;
+        private final BlockBreaker miningEnhancement;
+        private final LazyOptional<IPowerModule> powerModuleHolder;
 
         public CapProvider(@Nonnull ItemStack module) {
             this.module = module;
             this.miningEnhancement = new BlockBreaker(module, ModuleCategory.MINING_ENHANCEMENT, ModuleTarget.TOOLONLY, MPSSettings::getModuleConfig) {{
-                addBaseProperty(MPSConstants.AQUA_ENERGY , 0, "FE");
+                addBaseProperty(MPSConstants.AQUA_ENERGY, 0, "FE");
                 addBaseProperty(MPSConstants.AQUA_HARVEST_SPEED, 0.2F, "%");
-                addTradeoffProperty(MPSConstants.AQUA_POWER, MPSConstants.AQUA_ENERGY , 1000);
+                addTradeoffProperty(MPSConstants.AQUA_POWER, MPSConstants.AQUA_ENERGY, 1000);
                 addTradeoffProperty(MPSConstants.AQUA_POWER, MPSConstants.AQUA_HARVEST_SPEED, 0.8F);
             }};
-        }
 
-        @Nonnull
-        @Override
-        public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
-            return PowerModuleCapability.POWER_MODULE.orEmpty(cap, LazyOptional.of(() -> miningEnhancement));
+            powerModuleHolder = LazyOptional.of(() -> {
+                miningEnhancement.updateFromNBT();
+                return miningEnhancement;
+            });
         }
 
         class BlockBreaker extends MiningEnhancement implements IBlockBreakingModule {
@@ -115,7 +112,7 @@ public class AquaAffinityModule extends AbstractPowerModule {
 
             @Override
             public int getEnergyUsage() {
-                return (int) applyPropertyModifiers(MPSConstants.AQUA_ENERGY );
+                return (int) applyPropertyModifiers(MPSConstants.AQUA_ENERGY);
             }
 
             @Nonnull
@@ -123,11 +120,22 @@ public class AquaAffinityModule extends AbstractPowerModule {
             public ItemStack getEmulatedTool() {
                 return ItemStack.EMPTY; // FIXME?
             }
-        }
-    }
 
-    @Override
-    public boolean onBlockStartBreak(ItemStack itemstack, BlockPos pos, PlayerEntity player) {
-        return false;
+            @Override
+            public boolean onBlockStartBreak(ItemStack itemstack, BlockPos pos, PlayerEntity player) {
+                return false;
+            }
+        }
+
+        /** ICapabilityProvider ----------------------------------------------------------------------- */
+        @Override
+        @Nonnull
+        public <T> LazyOptional<T> getCapability(@Nonnull final Capability<T> capability, final @Nullable Direction side) {
+            final LazyOptional<T> powerModuleCapability = PowerModuleCapability.POWER_MODULE.orEmpty(capability, powerModuleHolder);
+            if (powerModuleCapability.isPresent()) {
+                return powerModuleCapability;
+            }
+            return LazyOptional.empty();
+        }
     }
 }

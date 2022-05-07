@@ -26,10 +26,7 @@
 
 package lehjr.powersuits.item.module.weapon;
 
-import lehjr.numina.util.capabilities.module.powermodule.IConfig;
-import lehjr.numina.util.capabilities.module.powermodule.ModuleCategory;
-import lehjr.numina.util.capabilities.module.powermodule.ModuleTarget;
-import lehjr.numina.util.capabilities.module.powermodule.PowerModuleCapability;
+import lehjr.numina.util.capabilities.module.powermodule.*;
 import lehjr.numina.util.capabilities.module.rightclick.IRightClickModule;
 import lehjr.numina.util.capabilities.module.rightclick.RightClickModule;
 import lehjr.numina.util.energy.ElectricItemUtils;
@@ -67,7 +64,8 @@ public class PlasmaCannonModule extends AbstractPowerModule {
 
     public class CapProvider implements ICapabilityProvider {
         ItemStack module;
-        IRightClickModule rightClickie;
+        private final RightClickie rightClickie;
+        private final LazyOptional<IPowerModule> powerModuleHolder;
 
         public CapProvider(@Nonnull ItemStack module) {
             this.module = module;
@@ -79,12 +77,8 @@ public class PlasmaCannonModule extends AbstractPowerModule {
                 addTradeoffProperty(MPSConstants.VOLTAGE, MPSConstants.PLASMA_CANNON_ENERGY_PER_TICK, 500, "FE");
                 addTradeoffProperty(MPSConstants.VOLTAGE, MPSConstants.PLASMA_CANNON_EXPLOSIVENESS, 0.5F, MPSConstants.CREEPER);
             }};
-        }
 
-        @Nonnull
-        @Override
-        public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
-            return PowerModuleCapability.POWER_MODULE.orEmpty(cap, LazyOptional.of(() -> rightClickie));
+            powerModuleHolder = LazyOptional.of(() -> rightClickie);
         }
 
         class RightClickie extends RightClickModule {
@@ -124,6 +118,17 @@ public class PlasmaCannonModule extends AbstractPowerModule {
             public int getEnergyUsage() {
                 return (int) Math.round(applyPropertyModifiers(MPSConstants.PLASMA_CANNON_ENERGY_PER_TICK));
             }
+        }
+
+        /** ICapabilityProvider ----------------------------------------------------------------------- */
+        @Override
+        @Nonnull
+        public <T> LazyOptional<T> getCapability(@Nonnull final Capability<T> capability, final @Nullable Direction side) {
+            final LazyOptional<T> powerModuleCapability = PowerModuleCapability.POWER_MODULE.orEmpty(capability, powerModuleHolder);
+            if (powerModuleCapability.isPresent()) {
+                return powerModuleCapability;
+            }
+            return LazyOptional.empty();
         }
     }
 }

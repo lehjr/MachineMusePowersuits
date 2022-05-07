@@ -76,7 +76,7 @@ public class LightningModule extends AbstractPowerModule {
 
     public class CapProvider implements ICapabilityProvider {
         ItemStack module;
-        IRightClickModule rightClickie;
+        RightClickie rightClickie;
 
         public CapProvider(@Nonnull ItemStack module) {
             this.module = module;

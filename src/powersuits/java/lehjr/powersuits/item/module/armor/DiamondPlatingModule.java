@@ -53,12 +53,14 @@ public class DiamondPlatingModule extends AbstractPowerModule {
     }
 
     public class CapProvider implements ICapabilityProvider {
+        private final PowerModule powerModule;
+        private final LazyOptional<IPowerModule> powerModuleHolder;
         ItemStack module;
-        IPowerModule moduleCap;
 
-        public CapProvider(@Nonnull ItemStack module) {
+        public CapProvider(final ItemStack module) {
             this.module = module;
-            moduleCap = new PowerModule(module, ModuleCategory.ARMOR, ModuleTarget.ARMORONLY, MPSSettings::getModuleConfig) {
+
+            powerModule = new PowerModule(module, ModuleCategory.ARMOR, ModuleTarget.ARMORONLY, MPSSettings::getModuleConfig) {
                 @Override
                 public int getTier() {
                     return 2;
@@ -74,12 +76,19 @@ public class DiamondPlatingModule extends AbstractPowerModule {
                     addBaseProperty(HeatCapability.MAXIMUM_HEAT, 400);
                     addBaseProperty(MPSConstants.KNOCKBACK_RESISTANCE, 0.25F);
                 }};
+
+            powerModuleHolder = LazyOptional.of(() -> powerModule);
         }
 
-        @Nonnull
+        /** ICapabilityProvider ----------------------------------------------------------------------- */
         @Override
-        public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
-            return PowerModuleCapability.POWER_MODULE.orEmpty(cap, LazyOptional.of(()-> moduleCap));
+        @Nonnull
+        public <T> LazyOptional<T> getCapability(@Nonnull final Capability<T> capability, final @Nullable Direction side) {
+            final LazyOptional<T> powerModuleCapability = PowerModuleCapability.POWER_MODULE.orEmpty(capability, powerModuleHolder);
+            if (powerModuleCapability.isPresent()) {
+                return powerModuleCapability;
+            }
+            return LazyOptional.empty();
         }
     }
 }

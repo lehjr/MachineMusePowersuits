@@ -27,10 +27,7 @@
 package lehjr.powersuits.item.module.environmental;
 
 import lehjr.numina.util.capabilities.IItemStackUpdate;
-import lehjr.numina.util.capabilities.module.powermodule.IConfig;
-import lehjr.numina.util.capabilities.module.powermodule.ModuleCategory;
-import lehjr.numina.util.capabilities.module.powermodule.ModuleTarget;
-import lehjr.numina.util.capabilities.module.powermodule.PowerModuleCapability;
+import lehjr.numina.util.capabilities.module.powermodule.*;
 import lehjr.numina.util.capabilities.module.tickable.IPlayerTickModule;
 import lehjr.numina.util.capabilities.module.tickable.PlayerTickModule;
 import lehjr.numina.util.heat.MuseHeatUtils;
@@ -38,6 +35,7 @@ import lehjr.numina.util.nbt.MuseNBTUtils;
 import lehjr.powersuits.config.MPSSettings;
 import lehjr.powersuits.constants.MPSConstants;
 import lehjr.powersuits.item.module.AbstractPowerModule;
+import lehjr.powersuits.item.module.armor.EnergyShieldModule;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.IBucketPickupHandler;
@@ -83,8 +81,10 @@ public class FluidTankModule extends AbstractPowerModule {
 
     public class CapProvider implements ICapabilityProvider {
         ItemStack module;
-        IPlayerTickModule ticker;
-        IFluidHandlerItem fluidHandler;
+        private final Ticker ticker;
+        private final LazyOptional<IPowerModule> powerModuleHolder;
+        private final ModuleTank fluidHandler;
+        private final LazyOptional<IFluidHandlerItem> fluidHandlerHolder;
 
         public CapProvider(@Nonnull ItemStack module) {
             this.module = module;
@@ -93,16 +93,18 @@ public class FluidTankModule extends AbstractPowerModule {
                 addBaseProperty(MPSConstants.HEAT_ACTIVATION_PERCENT, 0.5);
                 addTradeoffProperty(MPSConstants.ACTIVATION_PERCENT, MPSConstants.HEAT_ACTIVATION_PERCENT, 0.5, "%");
             }};
-            this.fluidHandler = new ModuleTank((int)ticker.applyPropertyModifiers(MPSConstants.FLUID_TANK_SIZE));
-        }
 
-        @Nonnull
-        @Override
-        public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
-            if (cap == CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY) {
-                return CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY.orEmpty(cap, LazyOptional.of(() -> fluidHandler));
-            }
-            return PowerModuleCapability.POWER_MODULE.orEmpty(cap, LazyOptional.of(() -> ticker));
+            powerModuleHolder = LazyOptional.of(() -> {
+                ticker.updateFromNBT();
+                return ticker;
+            });
+
+            this.fluidHandler = new ModuleTank((int)ticker.applyPropertyModifiers(MPSConstants.FLUID_TANK_SIZE));
+            fluidHandlerHolder = LazyOptional.of(()->{
+                fluidHandler.updateFromNBT();
+                return fluidHandler;
+            });
+
         }
 
         class ModuleTank extends FluidTank implements IItemStackUpdate, IFluidTank, IFluidHandler, IFluidHandlerItem, INBTSerializable<CompoundNBT> {
@@ -200,6 +202,22 @@ public class FluidTankModule extends AbstractPowerModule {
                     }
                 }
             }
+        }
+
+        /** ICapabilityProvider ----------------------------------------------------------------------- */
+        @Override
+        @Nonnull
+        public <T> LazyOptional<T> getCapability(@Nonnull final Capability<T> capability, final @Nullable Direction side) {
+            final LazyOptional<T> powerModuleCapability = PowerModuleCapability.POWER_MODULE.orEmpty(capability, powerModuleHolder);
+            if (powerModuleCapability.isPresent()) {
+                return powerModuleCapability;
+            }
+
+            final LazyOptional<T> fluidCapability = CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY.orEmpty(capability, fluidHandlerHolder);
+            if (fluidCapability.isPresent()) {
+                return fluidCapability;
+            }
+            return LazyOptional.empty();
         }
     }
 }

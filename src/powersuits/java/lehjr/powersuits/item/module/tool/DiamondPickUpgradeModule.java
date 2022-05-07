@@ -70,7 +70,8 @@ public class DiamondPickUpgradeModule extends AbstractPowerModule {
 
     public class CapProvider implements ICapabilityProvider {
         ItemStack module;
-        IBlockBreakingModule blockBreaking;
+        private final BlockBreaker blockBreaking;
+        private final LazyOptional<IPowerModule> powerModuleHolder;
 
         public CapProvider(@Nonnull ItemStack module) {
             this.module = module;
@@ -80,12 +81,7 @@ public class DiamondPickUpgradeModule extends AbstractPowerModule {
 //            this.blockBreaking.addBaseProperty(MPSConstants.HARVEST_SPEED, 10, "x");
 //            this.blockBreaking.addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.DIAMOND_PICK_ENERGY, 9500);
 //            this.blockBreaking.addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.HARVEST_SPEED, 52);
-        }
-
-        @Nonnull
-        @Override
-        public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
-            return PowerModuleCapability.POWER_MODULE.orEmpty(cap, LazyOptional.of(() -> blockBreaking));
+            powerModuleHolder = LazyOptional.of(() -> blockBreaking);
         }
 
         class BlockBreaker extends PowerModule implements IBlockBreakingModule {
@@ -170,6 +166,17 @@ public class DiamondPickUpgradeModule extends AbstractPowerModule {
             public int getEnergyUsage() {
                 return (int) applyPropertyModifiers(MPSConstants.DIAMOND_PICK_ENERGY);
             }
+        }
+
+        /** ICapabilityProvider ----------------------------------------------------------------------- */
+        @Override
+        @Nonnull
+        public <T> LazyOptional<T> getCapability(@Nonnull final Capability<T> capability, final @Nullable Direction side) {
+            final LazyOptional<T> powerModuleCapability = PowerModuleCapability.POWER_MODULE.orEmpty(capability, powerModuleHolder);
+            if (powerModuleCapability.isPresent()) {
+                return powerModuleCapability;
+            }
+            return LazyOptional.empty();
         }
     }
 }

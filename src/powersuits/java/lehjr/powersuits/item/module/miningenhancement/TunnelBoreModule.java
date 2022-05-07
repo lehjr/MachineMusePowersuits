@@ -4,10 +4,10 @@ import lehjr.numina.util.capabilities.inventory.modechanging.IModeChangingItem;
 import lehjr.numina.util.capabilities.module.blockbreaking.IBlockBreakingModule;
 import lehjr.numina.util.capabilities.module.miningenhancement.IMiningEnhancementModule;
 import lehjr.numina.util.capabilities.module.miningenhancement.MiningEnhancement;
-import lehjr.numina.util.capabilities.module.powermodule.IConfig;
-import lehjr.numina.util.capabilities.module.powermodule.ModuleCategory;
-import lehjr.numina.util.capabilities.module.powermodule.ModuleTarget;
-import lehjr.numina.util.capabilities.module.powermodule.PowerModuleCapability;
+import lehjr.numina.util.capabilities.module.powermodule.*;
+import lehjr.numina.util.capabilities.render.chameleon.Chameleon;
+import lehjr.numina.util.capabilities.render.chameleon.ChameleonCapability;
+import lehjr.numina.util.capabilities.render.chameleon.IChameleon;
 import lehjr.numina.util.capabilities.render.highlight.HighLightCapability;
 import lehjr.numina.util.capabilities.render.highlight.Highlight;
 import lehjr.numina.util.capabilities.render.highlight.IHighlight;
@@ -51,8 +51,12 @@ public class TunnelBoreModule extends AbstractPowerModule {
     /** TODO: Add cooldown timer */
     public class CapProvider implements ICapabilityProvider {
         ItemStack module;
-        IMiningEnhancementModule miningEnhancement;
-        IHighlight highlight;
+        private final Enhancement miningEnhancement;
+        private final LazyOptional<IPowerModule> powerModuleHolder;
+        private final Highlighter highlight;
+        private final LazyOptional<IHighlight> highlightHolder;
+
+
 
         public CapProvider(@Nonnull ItemStack module) {
             this.module = module;
@@ -63,16 +67,14 @@ public class TunnelBoreModule extends AbstractPowerModule {
                 addTradeoffProperty(MPSConstants.DIAMETER, MPSConstants.AOE_ENERGY, 9500);
                 addIntTradeoffProperty(MPSConstants.DIAMETER, MPSConstants.AOE_MINING_RADIUS, 5, "m", 2, 1);
             }};
-            this.highlight = new Highlighter();
-        }
 
-        @Nonnull
-        @Override
-        public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
-            if (cap == HighLightCapability.HIGHLIGHT) {
-                return HighLightCapability.HIGHLIGHT.orEmpty(cap, LazyOptional.of(() -> highlight));
-            }
-            return PowerModuleCapability.POWER_MODULE.orEmpty(cap, LazyOptional.of(() -> miningEnhancement));
+            powerModuleHolder = LazyOptional.of(() -> {
+                miningEnhancement.updateFromNBT();
+                return miningEnhancement;
+            });
+
+            this.highlight = new Highlighter();
+            highlightHolder = LazyOptional.of(() -> highlight);
         }
 
         class Enhancement extends MiningEnhancement {
@@ -180,6 +182,19 @@ public class TunnelBoreModule extends AbstractPowerModule {
                 return retList;
             }
         }
+        /** ICapabilityProvider ----------------------------------------------------------------------- */
+        @Override
+        @Nonnull
+        public <T> LazyOptional<T> getCapability(@Nonnull final Capability<T> capability, final @Nullable Direction side) {
+            final LazyOptional<T> powerModuleCapability = PowerModuleCapability.POWER_MODULE.orEmpty(capability, powerModuleHolder);
+            if (powerModuleCapability.isPresent()) {
+                return powerModuleCapability;
+            }
+            final LazyOptional<T> highlightCapability = HighLightCapability.HIGHLIGHT.orEmpty(capability, highlightHolder);
+            if (highlightCapability.isPresent()) {
+                return highlightCapability;
+            }
+            return LazyOptional.empty();
+        }
     }
 }
-

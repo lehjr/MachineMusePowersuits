@@ -29,10 +29,7 @@ package lehjr.powersuits.item.module.tool;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import lehjr.numina.util.capabilities.module.blockbreaking.IBlockBreakingModule;
-import lehjr.numina.util.capabilities.module.powermodule.IConfig;
-import lehjr.numina.util.capabilities.module.powermodule.ModuleCategory;
-import lehjr.numina.util.capabilities.module.powermodule.ModuleTarget;
-import lehjr.numina.util.capabilities.module.powermodule.PowerModuleCapability;
+import lehjr.numina.util.capabilities.module.powermodule.*;
 import lehjr.numina.util.capabilities.module.rightclick.IRightClickModule;
 import lehjr.numina.util.capabilities.module.rightclick.RightClickModule;
 import lehjr.numina.util.energy.ElectricItemUtils;
@@ -79,11 +76,12 @@ public class HoeModule extends AbstractPowerModule {
 
     public class CapProvider implements ICapabilityProvider {
         ItemStack module;
-        IRightClickModule rightClick;
+        private final RightClickie rightClickie;
+        private final LazyOptional<IPowerModule> powerModuleHolder;
 
         public CapProvider(@Nonnull ItemStack module) {
             this.module = module;
-            this.rightClick = new RightClickie(module, ModuleCategory.TOOL, ModuleTarget.TOOLONLY, MPSSettings::getModuleConfig) {{
+            this.rightClickie = new RightClickie(module, ModuleCategory.TOOL, ModuleTarget.TOOLONLY, MPSSettings::getModuleConfig) {{
                 addBaseProperty(MPSConstants.HOE_ENERGY, 500, "FE");
                 addTradeoffProperty(MPSConstants.RADIUS, MPSConstants.HOE_ENERGY, 9500);
                 addIntTradeoffProperty(MPSConstants.RADIUS, MPSConstants.RADIUS, 8, "m", 1, 0);
@@ -92,12 +90,7 @@ public class HoeModule extends AbstractPowerModule {
                 addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.HOE_ENERGY, 9500);
                 addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.HOE_HARVEST_SPEED, 22);
             }};
-        }
-
-        @Nonnull
-        @Override
-        public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
-            return PowerModuleCapability.POWER_MODULE.orEmpty(cap, LazyOptional.of(() -> rightClick));
+            powerModuleHolder = LazyOptional.of(() -> rightClickie);
         }
 
         class RightClickie extends RightClickModule implements IBlockBreakingModule {
@@ -168,6 +161,17 @@ public class HoeModule extends AbstractPowerModule {
             public ItemStack getEmulatedTool() {
                 return new ItemStack(Items.IRON_HOE);
             }
+        }
+
+        /** ICapabilityProvider ----------------------------------------------------------------------- */
+        @Override
+        @Nonnull
+        public <T> LazyOptional<T> getCapability(@Nonnull final Capability<T> capability, final @Nullable Direction side) {
+            final LazyOptional<T> powerModuleCapability = PowerModuleCapability.POWER_MODULE.orEmpty(capability, powerModuleHolder);
+            if (powerModuleCapability.isPresent()) {
+                return powerModuleCapability;
+            }
+            return LazyOptional.empty();
         }
     }
 }

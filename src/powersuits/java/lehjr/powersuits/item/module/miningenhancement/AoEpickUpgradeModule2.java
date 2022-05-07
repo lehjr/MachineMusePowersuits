@@ -4,10 +4,7 @@ import lehjr.numina.util.capabilities.inventory.modechanging.IModeChangingItem;
 import lehjr.numina.util.capabilities.module.blockbreaking.IBlockBreakingModule;
 import lehjr.numina.util.capabilities.module.miningenhancement.IMiningEnhancementModule;
 import lehjr.numina.util.capabilities.module.miningenhancement.MiningEnhancement;
-import lehjr.numina.util.capabilities.module.powermodule.IConfig;
-import lehjr.numina.util.capabilities.module.powermodule.ModuleCategory;
-import lehjr.numina.util.capabilities.module.powermodule.ModuleTarget;
-import lehjr.numina.util.capabilities.module.powermodule.PowerModuleCapability;
+import lehjr.numina.util.capabilities.module.powermodule.*;
 import lehjr.numina.util.capabilities.render.chameleon.Chameleon;
 import lehjr.numina.util.capabilities.render.chameleon.ChameleonCapability;
 import lehjr.numina.util.capabilities.render.chameleon.IChameleon;
@@ -62,9 +59,14 @@ public class AoEpickUpgradeModule2 extends AbstractPowerModule {
 
     public class CapProvider implements ICapabilityProvider {
         ItemStack module;
-        IMiningEnhancementModule miningEnhancement;
-        IChameleon chameleon;
-        IHighlight highlight;
+        private final Enhancement miningEnhancement;
+        private final LazyOptional<IPowerModule> powerModuleHolder;
+        private final Chameleon chameleon;
+
+        private final LazyOptional<IChameleon> chameleonHolder;
+        private final Highlighter highlight;
+        private final LazyOptional<IHighlight> highlightHolder;
+
 
         public CapProvider(@Nonnull ItemStack module) {
             this.module = module;
@@ -75,21 +77,16 @@ public class AoEpickUpgradeModule2 extends AbstractPowerModule {
                 addIntTradeoffProperty(MPSConstants.AOE2_LIMIT, MPSConstants.AOE2_LIMIT, 59, "Blocks", 1, 0);
             }};
 
+            powerModuleHolder = LazyOptional.of(() -> {
+                miningEnhancement.updateFromNBT();
+                return miningEnhancement;
+            });
+
             this.chameleon = new Chameleon(module);
+            chameleonHolder = LazyOptional.of(() -> chameleon);
+
             this.highlight = new Highlighter();
-        }
-
-        @Nonnull
-        @Override
-        public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
-            if (cap == HighLightCapability.HIGHLIGHT) {
-                return HighLightCapability.HIGHLIGHT.orEmpty(cap, LazyOptional.of(() -> highlight));
-            }
-            if (cap == ChameleonCapability.CHAMELEON) {
-                return ChameleonCapability.CHAMELEON.orEmpty(cap, LazyOptional.of(() -> chameleon));
-            }
-
-            return PowerModuleCapability.POWER_MODULE.orEmpty(cap, LazyOptional.of(() -> miningEnhancement));
+            highlightHolder = LazyOptional.of(() -> highlight);
         }
 
         class Enhancement extends MiningEnhancement {
@@ -271,9 +268,27 @@ public class AoEpickUpgradeModule2 extends AbstractPowerModule {
             }
             return list;
         }
+
+        /** ICapabilityProvider ----------------------------------------------------------------------- */
+        @Override
+        @Nonnull
+        public <T> LazyOptional<T> getCapability(@Nonnull final Capability<T> capability, final @Nullable Direction side) {
+            final LazyOptional<T> powerModuleCapability = PowerModuleCapability.POWER_MODULE.orEmpty(capability, powerModuleHolder);
+            if (powerModuleCapability.isPresent()) {
+                return powerModuleCapability;
+            }
+            final LazyOptional<T> chameleonCapability = ChameleonCapability.CHAMELEON.orEmpty(capability, chameleonHolder);
+            if (chameleonCapability.isPresent()) {
+                return chameleonCapability;
+            }
+            final LazyOptional<T> highlightCapability = HighLightCapability.HIGHLIGHT.orEmpty(capability, highlightHolder);
+            if (highlightCapability.isPresent()) {
+                return highlightCapability;
+            }
+            return LazyOptional.empty();
+        }
     }
 }
-
 
 
 

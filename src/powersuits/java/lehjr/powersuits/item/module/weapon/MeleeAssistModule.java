@@ -52,7 +52,8 @@ public class MeleeAssistModule extends AbstractPowerModule {
 
     public class CapProvider implements ICapabilityProvider {
         ItemStack module;
-        IPowerModule moduleCap;
+        private final PowerModule moduleCap;
+        private final LazyOptional<IPowerModule> powerModuleHolder;
 
         public CapProvider(@Nonnull ItemStack module) {
             this.module = module;
@@ -64,12 +65,19 @@ public class MeleeAssistModule extends AbstractPowerModule {
                 addTradeoffProperty(MPSConstants.CARRY_THROUGH, MPSConstants.PUNCH_ENERGY, 200, "FE");
                 addTradeoffProperty(MPSConstants.CARRY_THROUGH, MPSConstants.PUNCH_KNOCKBACK, 1, "P");
             }};
+
+            powerModuleHolder = LazyOptional.of(() -> moduleCap);
         }
 
-        @Nonnull
+        /** ICapabilityProvider ----------------------------------------------------------------------- */
         @Override
-        public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
-            return PowerModuleCapability.POWER_MODULE.orEmpty(cap, LazyOptional.of(()-> moduleCap));
+        @Nonnull
+        public <T> LazyOptional<T> getCapability(@Nonnull final Capability<T> capability, final @Nullable Direction side) {
+            final LazyOptional<T> powerModuleCapability = PowerModuleCapability.POWER_MODULE.orEmpty(capability, powerModuleHolder);
+            if (powerModuleCapability.isPresent()) {
+                return powerModuleCapability;
+            }
+            return LazyOptional.empty();
         }
     }
 }

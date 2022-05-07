@@ -26,10 +26,7 @@
 
 package lehjr.powersuits.item.module.weapon;
 
-import lehjr.numina.util.capabilities.module.powermodule.IConfig;
-import lehjr.numina.util.capabilities.module.powermodule.ModuleCategory;
-import lehjr.numina.util.capabilities.module.powermodule.ModuleTarget;
-import lehjr.numina.util.capabilities.module.powermodule.PowerModuleCapability;
+import lehjr.numina.util.capabilities.module.powermodule.*;
 import lehjr.numina.util.capabilities.module.rightclick.IRightClickModule;
 import lehjr.numina.util.capabilities.module.tickable.IPlayerTickModule;
 import lehjr.numina.util.capabilities.module.tickable.PlayerTickModule;
@@ -41,6 +38,7 @@ import lehjr.powersuits.config.MPSSettings;
 import lehjr.powersuits.constants.MPSConstants;
 import lehjr.powersuits.entity.RailgunBoltEntity;
 import lehjr.powersuits.item.module.AbstractPowerModule;
+import lehjr.powersuits.item.module.energy_generation.ThermalGeneratorModule;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -68,7 +66,8 @@ public class RailgunModule extends AbstractPowerModule {
 
     public class CapProvider implements ICapabilityProvider {
         ItemStack module;
-        IPlayerTickModule ticker;
+        private final Ticker ticker;
+        private final LazyOptional<IPowerModule> powerModuleHolder;
 
         public CapProvider(@Nonnull ItemStack module) {
             this.module = module;
@@ -80,16 +79,14 @@ public class RailgunModule extends AbstractPowerModule {
                 addTradeoffProperty(MPSConstants.VOLTAGE, MPSConstants.RAILGUN_ENERGY_COST, 25000);
                 addTradeoffProperty(MPSConstants.VOLTAGE, MPSConstants.RAILGUN_HEAT_EMISSION, 10);
             }};
-        }
 
-        @Nonnull
-        @Override
-        public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
-            return PowerModuleCapability.POWER_MODULE.orEmpty(cap, LazyOptional.of(() -> ticker));
+            powerModuleHolder = LazyOptional.of(() -> {
+                ticker.updateFromNBT();
+                return ticker;
+            });
         }
 
         class Ticker extends PlayerTickModule implements IRightClickModule {
-
             public Ticker(@Nonnull ItemStack module, ModuleCategory category, ModuleTarget target, Callable<IConfig> config) {
                 super(module, category, target, config, true);
             }
@@ -149,6 +146,17 @@ public class RailgunModule extends AbstractPowerModule {
             public int getEnergyUsage() {
                 return (int) Math.round(applyPropertyModifiers(MPSConstants.RAILGUN_ENERGY_COST));
             }
+        }
+
+        /** ICapabilityProvider ----------------------------------------------------------------------- */
+        @Override
+        @Nonnull
+        public <T> LazyOptional<T> getCapability(@Nonnull final Capability<T> capability, final @Nullable Direction side) {
+            final LazyOptional<T> powerModuleCapability = PowerModuleCapability.POWER_MODULE.orEmpty(capability, powerModuleHolder);
+            if (powerModuleCapability.isPresent()) {
+                return powerModuleCapability;
+            }
+            return LazyOptional.empty();
         }
     }
 }

@@ -30,10 +30,7 @@ package lehjr.powersuits.item.module.miningenhancement;
 import lehjr.numina.util.capabilities.module.enchantment.IEnchantmentModule;
 import lehjr.numina.util.capabilities.module.miningenhancement.IMiningEnhancementModule;
 import lehjr.numina.util.capabilities.module.miningenhancement.MiningEnhancement;
-import lehjr.numina.util.capabilities.module.powermodule.IConfig;
-import lehjr.numina.util.capabilities.module.powermodule.ModuleCategory;
-import lehjr.numina.util.capabilities.module.powermodule.ModuleTarget;
-import lehjr.numina.util.capabilities.module.powermodule.PowerModuleCapability;
+import lehjr.numina.util.capabilities.module.powermodule.*;
 import lehjr.numina.util.energy.ElectricItemUtils;
 import lehjr.powersuits.config.MPSSettings;
 import lehjr.powersuits.constants.MPSConstants;
@@ -65,8 +62,8 @@ public class FortuneModule extends AbstractPowerModule {
 
     public class CapProvider implements ICapabilityProvider {
         ItemStack module;
-        IMiningEnhancementModule miningEnhancement;
-        IEnchantmentModule enchantmentModule;
+        private final Enhancement miningEnhancement;
+        private final LazyOptional<IPowerModule> powerModuleHolder;
 
         public CapProvider(@Nonnull ItemStack module) {
             this.module = module;
@@ -75,12 +72,11 @@ public class FortuneModule extends AbstractPowerModule {
                 addTradeoffProperty(MPSConstants.ENCHANTMENT_LEVEL, MPSConstants.FORTUNE_ENERGY_CONSUMPTION, 9500);
                 addIntTradeoffProperty(MPSConstants.ENCHANTMENT_LEVEL, MPSConstants.FORTUNE_ENCHANTMENT_LEVEL, 3, "", 1, 1);
             }};
-        }
 
-        @Nonnull
-        @Override
-        public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
-            return PowerModuleCapability.POWER_MODULE.orEmpty(cap, LazyOptional.of(() -> miningEnhancement));
+            powerModuleHolder = LazyOptional.of(() -> {
+                miningEnhancement.updateFromNBT();
+                return miningEnhancement;
+            });
         }
 
         class Enhancement extends MiningEnhancement implements IEnchantmentModule {
@@ -102,7 +98,7 @@ public class FortuneModule extends AbstractPowerModule {
             public boolean onBlockStartBreak(ItemStack itemstack, BlockPos pos, PlayerEntity player) {
                 if (!player.level.isClientSide) {
                     if (getEnergyUsage() > ElectricItemUtils.getPlayerEnergy(player))
-                        enchantmentModule.removeEnchantment(itemstack);
+                        removeEnchantment(itemstack);
                     else
                         ElectricItemUtils.drainPlayerEnergy(player, getEnergyUsage());
                 }
@@ -123,6 +119,17 @@ public class FortuneModule extends AbstractPowerModule {
             public int getLevel(@Nonnull ItemStack itemStack) {
                 return (int) applyPropertyModifiers(MPSConstants.FORTUNE_ENCHANTMENT_LEVEL);
             }
+        }
+
+        /** ICapabilityProvider ----------------------------------------------------------------------- */
+        @Override
+        @Nonnull
+        public <T> LazyOptional<T> getCapability(@Nonnull final Capability<T> capability, final @Nullable Direction side) {
+            final LazyOptional<T> powerModuleCapability = PowerModuleCapability.POWER_MODULE.orEmpty(capability, powerModuleHolder);
+            if (powerModuleCapability.isPresent()) {
+                return powerModuleCapability;
+            }
+            return LazyOptional.empty();
         }
     }
 }

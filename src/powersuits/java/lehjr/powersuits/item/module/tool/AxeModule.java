@@ -64,7 +64,8 @@ public class AxeModule extends AbstractPowerModule {
 
     public class CapProvider implements ICapabilityProvider {
         ItemStack module;
-        IBlockBreakingModule blockBreaking;
+        private final BlockBreaker blockBreaking;
+        private final LazyOptional<IPowerModule> powerModuleHolder;
 
         public CapProvider(@Nonnull ItemStack module) {
             this.module = module;
@@ -74,12 +75,7 @@ public class AxeModule extends AbstractPowerModule {
                 addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.AXE_ENERGY, 9500);
                 addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.AXE_HARVEST_SPEED, 22);
             }};
-        }
-
-        @Nonnull
-        @Override
-        public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
-            return PowerModuleCapability.POWER_MODULE.orEmpty(cap, LazyOptional.of(() -> blockBreaking));
+            powerModuleHolder = LazyOptional.of(() -> blockBreaking);
         }
 
         class BlockBreaker extends PowerModule implements IBlockBreakingModule {
@@ -110,6 +106,17 @@ public class AxeModule extends AbstractPowerModule {
             public void handleBreakSpeed(PlayerEvent.BreakSpeed event) {
                 event.setNewSpeed((float) (event.getNewSpeed() * applyPropertyModifiers(MPSConstants.AXE_HARVEST_SPEED)));
             }
+        }
+
+        /** ICapabilityProvider ----------------------------------------------------------------------- */
+        @Override
+        @Nonnull
+        public <T> LazyOptional<T> getCapability(@Nonnull final Capability<T> capability, final @Nullable Direction side) {
+            final LazyOptional<T> powerModuleCapability = PowerModuleCapability.POWER_MODULE.orEmpty(capability, powerModuleHolder);
+            if (powerModuleCapability.isPresent()) {
+                return powerModuleCapability;
+            }
+            return LazyOptional.empty();
         }
     }
 }
