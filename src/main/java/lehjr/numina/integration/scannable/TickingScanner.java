@@ -47,6 +47,11 @@ public class TickingScanner extends PlayerTickModule implements IRightClickModul
     }
 
     @Override
+    public int getUseDuration() {
+        return getModuleStack().getUseDuration();
+    }
+
+    @Override
     public ActionResult use(ItemStack itemStackIn, World worldIn, PlayerEntity playerIn, Hand hand) {
         final ItemStack module = ItemUtils.getActiveModuleOrEmpty(itemStackIn);
 
@@ -88,6 +93,7 @@ public class TickingScanner extends PlayerTickModule implements IRightClickModul
                 SoundManager.INSTANCE.playChargingSound();
             }
         }
+        
         return ActionResult.success(itemStackIn);
     }
 
@@ -101,17 +107,12 @@ public class TickingScanner extends PlayerTickModule implements IRightClickModul
             SoundCanceler.cancelEquipSound();
         }
 
-        final ItemStack module = ItemUtils.getActiveModuleOrEmpty(stack);
-
         final NonNullList<ItemStack> modules = collectModules(module);
         if (modules.isEmpty()) {
             return stack;
         }
 
         final boolean hasEnergy = tryConsumeEnergy((PlayerEntity) entity, modules, false);
-
-
-
         if (world.isClientSide) {
             SoundManager.INSTANCE.stopChargingSound();
 
@@ -128,6 +129,7 @@ public class TickingScanner extends PlayerTickModule implements IRightClickModul
         return stack;
     }
 
+
     @Override
     public void releaseUsing(final ItemStack stack, final World world, final LivingEntity entity, final int timeLeft) {
         if (world.isClientSide) {
@@ -138,7 +140,7 @@ public class TickingScanner extends PlayerTickModule implements IRightClickModul
 
     @Override
     public void onPlayerTickActive(PlayerEntity player, @Nonnull ItemStack item) {
-        if (player.getCommandSenderWorld().isClientSide) {
+        if (player.isUsingItem() && player.getCommandSenderWorld().isClientSide) {
             ScanManager.INSTANCE.updateScan(player, false);
         }
     }
@@ -218,7 +220,6 @@ public class TickingScanner extends PlayerTickModule implements IRightClickModul
 
         return true;
     }
-
 
     static int getModuleEnergyCost(final PlayerEntity player, final ItemStack stack) {
         final LazyOptional<ScannerModule> module = stack.getCapability(CapabilityScannerModule.SCANNER_MODULE_CAPABILITY);

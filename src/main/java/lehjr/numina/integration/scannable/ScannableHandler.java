@@ -1,9 +1,6 @@
 package lehjr.numina.integration.scannable;
 
-import lehjr.numina.util.capabilities.module.powermodule.IConfig;
-import lehjr.numina.util.capabilities.module.powermodule.ModuleCategory;
-import lehjr.numina.util.capabilities.module.powermodule.ModuleTarget;
-import lehjr.numina.util.capabilities.module.powermodule.PowerModuleCapability;
+import lehjr.numina.util.capabilities.module.powermodule.*;
 import lehjr.numina.util.item.ItemUtils;
 import li.cil.scannable.common.item.ItemScanner;
 import net.minecraft.item.ItemStack;
@@ -25,19 +22,20 @@ public class ScannableHandler {
     public static void attach(AttachCapabilitiesEvent<ItemStack> event, Callable<IConfig> moduleConfigGetterIn) {
         final ItemStack itemStack = event.getObject();
 
-        TickingScanner scanner = new TickingScanner(itemStack, ModuleCategory.TOOL, ModuleTarget.TOOLONLY, moduleConfigGetterIn);
+        final TickingScanner scanner = new TickingScanner(itemStack, ModuleCategory.TOOL, ModuleTarget.TOOLONLY, moduleConfigGetterIn);
+        final LazyOptional<IPowerModule> scannerHolder = LazyOptional.of(()-> scanner);
 
         event.addCapability(new ResourceLocation("scannable:scanner"), new ICapabilityProvider() {
             @Nonnull
             @Override
             public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
+                final LazyOptional<T> scannerCapability = PowerModuleCapability.POWER_MODULE.orEmpty(cap, scannerHolder);
                 if (cap == PowerModuleCapability.POWER_MODULE) {
-                    return LazyOptional.of(() -> (T) scanner);
+                    return scannerCapability;
                 }
                 return LazyOptional.empty();
             }
         });
-
     }
 
     public static boolean isScanner(@Nonnull ItemStack itemStack) {
