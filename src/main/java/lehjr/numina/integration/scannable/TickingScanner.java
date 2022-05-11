@@ -13,6 +13,7 @@ import li.cil.scannable.client.audio.SoundManager;
 import li.cil.scannable.common.capabilities.CapabilityScannerModule;
 import li.cil.scannable.common.config.Constants;
 import li.cil.scannable.common.config.Settings;
+import li.cil.scannable.common.container.ScannerContainerProvider;
 import li.cil.scannable.common.inventory.ItemHandlerScanner;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.LivingEntity;
@@ -93,12 +94,14 @@ public class TickingScanner extends PlayerTickModule implements IRightClickModul
                 SoundManager.INSTANCE.playChargingSound();
             }
         }
-        
         return ActionResult.success(itemStackIn);
     }
 
     @Override
     public ItemStack finishUsingItem(final ItemStack stack, final World world, final LivingEntity entity) {
+        System.out.println("doiung something here");
+
+
         if (!(entity instanceof PlayerEntity)) {
             return stack;
         }
@@ -132,6 +135,9 @@ public class TickingScanner extends PlayerTickModule implements IRightClickModul
 
     @Override
     public void releaseUsing(final ItemStack stack, final World world, final LivingEntity entity, final int timeLeft) {
+        System.out.println("doiung something here");
+
+
         if (world.isClientSide) {
             ScanManager.INSTANCE.cancelScan();
             SoundManager.INSTANCE.stopChargingSound();

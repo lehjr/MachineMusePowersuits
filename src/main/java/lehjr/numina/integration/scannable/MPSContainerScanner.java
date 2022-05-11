@@ -1,5 +1,6 @@
 package lehjr.numina.integration.scannable;
 
+import lehjr.numina.util.capabilities.inventory.modechanging.IModeChangingItem;
 import lehjr.numina.util.item.ItemUtils;
 import li.cil.scannable.common.Scannable;
 import li.cil.scannable.common.inventory.ItemHandlerScanner;
@@ -10,17 +11,20 @@ import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.Hand;
+import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 
+import java.util.Optional;
+
 /**
- * a copy of the
+ * a copy of ContainerScanner from Scannable
  */
 public class MPSContainerScanner extends Container {
     private final PlayerEntity player;
     private final Hand hand;
     private final ItemStack tool;
-    private final ItemStack module;
+    private final ItemHandlerScanner itemHandler;
 
     public static MPSContainerScanner createForServer(int windowId, PlayerInventory inventory, Hand hand, ItemHandlerScanner itemHandler) {
         return new MPSContainerScanner(windowId, inventory, hand, itemHandler);
@@ -28,27 +32,39 @@ public class MPSContainerScanner extends Container {
 
     public static MPSContainerScanner createForClient(int windowId, PlayerInventory inventory, PacketBuffer buffer) {
         Hand hand = buffer.readEnum(Hand.class);
-        return new MPSContainerScanner(windowId, inventory, hand, new ItemHandlerScanner(inventory.player.getItemInHand(hand)));
+        return new MPSContainerScanner(windowId, inventory, hand, new ItemHandlerScanner(ItemUtils.getActiveModuleOrEmpty(inventory.player.getItemInHand(hand))));
     }
 
     public MPSContainerScanner(int windowId, PlayerInventory inventory, Hand hand, ItemHandlerScanner itemHandler) {
         super(Scannable.SCANNER_CONTAINER.get(), windowId);
+
+        this.itemHandler = itemHandler;
+
         this.player = inventory.player;
         this.hand = hand;
         this.tool = this.player.getItemInHand(hand);
-        this.module = ItemUtils.getActiveModuleOrEmpty(tool);
 
         IItemHandler activeModules = itemHandler.getActiveModules();
-
         for(int slot = 0; slot < activeModules.getSlots(); ++slot) {
-            this.addSlot(new SlotItemHandler(activeModules, slot, 62 + slot * 18, 20));
+            this.addSlot(new SlotItemHandler(activeModules, slot, 62 + slot * 18, 20) {
+                @Override
+                public void setChanged() {
+                    super.setChanged();
+                    update();
+                }
+            });
         }
 
         IItemHandler storedModules = itemHandler.getInactiveModules();
-
         int slot;
         for(slot = 0; slot < storedModules.getSlots(); ++slot) {
-            this.addSlot(new SlotItemHandler(storedModules, slot, 62 + slot * 18, 46));
+            this.addSlot(new SlotItemHandler(storedModules, slot, 62 + slot * 18, 46) {
+                @Override
+                public void setChanged() {
+                    super.setChanged();
+                    update();
+                }
+            });
         }
 
         for(slot = 0; slot < 3; ++slot) {
@@ -60,7 +76,6 @@ public class MPSContainerScanner extends Container {
         for(slot = 0; slot < 9; ++slot) {
             this.addSlot(new Slot(inventory, slot, 8 + slot * 18, 135));
         }
-
     }
 
     public Hand getHand() {
@@ -68,7 +83,7 @@ public class MPSContainerScanner extends Container {
     }
 
     public boolean stillValid(PlayerEntity player) {
-        return player == this.player && ItemStack.matches(this.player.getItemInHand(hand), this.tool);
+        return player == this.player && ItemStack.matches(this.tool, player.getItemInHand(hand));
     }
 
     public ItemStack quickMoveStack(PlayerEntity player, int index) {
@@ -132,5 +147,19 @@ public class MPSContainerScanner extends Container {
                 return from.getItem().getCount() < stack.getCount() ? from.getItem() : ItemStack.EMPTY;
             }
         }
+    }
+
+    /**
+     * Updates the scanner's tags
+     */
+    void update() {
+        final ItemStack tool = player.inventory.getItem(player.inventory.selected);
+        Optional<IModeChangingItem> modeChangingItem = tool.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).filter(IModeChangingItem.class::isInstance).map(IModeChangingItem.class::cast);
+        modeChangingItem.ifPresent(iModeChangingItem -> {
+            int activeModule = iModeChangingItem.getActiveMode();
+            final ItemStack module = iModeChangingItem.getActiveModule();
+            module.addTagElement("items", itemHandler.serializeNBT());
+            iModeChangingItem.setStackInSlot(activeModule, module);
+        });
     }
 }

@@ -2,9 +2,11 @@ package lehjr.numina.integration.scannable;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
+import lehjr.numina.util.item.ItemUtils;
 import li.cil.scannable.api.API;
 import li.cil.scannable.common.config.Constants;
 import li.cil.scannable.util.Migration;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.ClickType;
@@ -88,6 +90,20 @@ public class MPSGuiScanner extends ContainerScreen<MPSContainerScanner> {
         }
 
         super.slotClicked(slot, slotId, mouseButton, type);
+    }
+
+    @Override
+    public void removed() {
+        System.out.println(ItemUtils.getActiveModuleOrEmpty(Minecraft.getInstance().player.getMainHandItem()).serializeNBT());
+
+        super.removed();
+    }
+
+    @Override
+    public void onClose() {
+        System.out.println(ItemUtils.getActiveModuleOrEmpty(Minecraft.getInstance().player.getMainHandItem()).serializeNBT());
+
+        super.onClose();
     }
 }
 
