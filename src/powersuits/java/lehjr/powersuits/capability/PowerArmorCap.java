@@ -106,6 +106,7 @@ public class PowerArmorCap extends AbstractModularPowerCap {
                 break;
             }
         }
+        modularItemCap.updateFromNBT();
     }
 
     @Nonnull
@@ -117,10 +118,9 @@ public class PowerArmorCap extends AbstractModularPowerCap {
 
         // update item handler to gain access to the armor module if installed
         if (cap == HeatCapability.HEAT) {
-            modularItemCap.updateFromNBT();
+//            modularItemCap.updateFromNBT();
             // initialize heat storage with whatever value is retrieved
-            heatStorage = new HeatItemWrapper(
-                    itemStack, maxHeat, modularItemCap.getStackInSlot(0).getCapability(PowerModuleCapability.POWER_MODULE));
+            heatStorage = new HeatItemWrapper(itemStack, maxHeat, modularItemCap.getStackInSlot(0).getCapability(PowerModuleCapability.POWER_MODULE));
             // update heat storage to set current heat amount
             heatStorage.updateFromNBT();
             return HeatCapability.HEAT.orEmpty(cap, LazyOptional.of(()-> heatStorage));
@@ -128,7 +128,7 @@ public class PowerArmorCap extends AbstractModularPowerCap {
 
         // Chest only
         if (targetSlot == EquipmentSlotType.CHEST && cap == CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY) {
-            modularItemCap.updateFromNBT();
+//            modularItemCap.updateFromNBT();
             return CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY.orEmpty(cap,
                     LazyOptional.of(()->modularItemCap.getOnlineModuleOrEmpty(MPSRegistryNames.FLUID_TANK_MODULE).getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).orElse(new EmptyFluidHandler())));
         }
@@ -142,3 +142,87 @@ public class PowerArmorCap extends AbstractModularPowerCap {
         }
     }
 }
+
+
+//public class PowerArmorCap extends AbstractModularPowerCap {
+//    public static PowerArmorCap get(@Nonnull final ItemStack itemStack, final EquipmentSlotType targetSlot) {
+//        switch (targetSlot) {
+//            case HEAD:
+//                return head(itemStack);
+//            case CHEST:
+//                return chest(itemStack);
+//            case LEGS:
+//                return legs(itemStack);
+//            case FEET:
+//                return feet(itemStack);
+//        }
+//        return null;
+//    }
+//    PowerArmorCap(
+//            final ItemStack itemStack,
+//            final EquipmentSlotType targetSlot,
+//            final ModularItem modularItem,
+//            final IModelSpecNBT modelSpec,
+//            final double maxHeat) {
+//        super(itemStack, targetSlot, modularItem, maxHeat, modelSpec);
+//    }
+//
+//    public static PowerArmorCap head(@Nonnull ItemStack itemStackIn) {
+//        return new PowerArmorCap(itemStackIn,
+//                EquipmentSlotType.HEAD,
+//                new ModularItem(itemStackIn, 18) {{
+//                    Map<ModuleCategory, NuminaRangedWrapper> rangedWrapperMap = new HashMap<>();
+//                    rangedWrapperMap.put(ModuleCategory.ARMOR, new NuminaRangedWrapper(this, 0, 1));
+//                    rangedWrapperMap.put(ModuleCategory.ENERGY_STORAGE, new NuminaRangedWrapper(this, 1, 2));
+//                    rangedWrapperMap.put(ModuleCategory.ENERGY_GENERATION, new NuminaRangedWrapper(this, 2, 3));
+//                    rangedWrapperMap.put(ModuleCategory.NONE, new NuminaRangedWrapper(this, 3, this.getSlots()));
+//                    setRangedWrapperMap(rangedWrapperMap);
+//                }},
+//                new ArmorModelSpecNBT(itemStackIn),
+//                MPSSettings.getMaxHeatHelmet());
+//    }
+//
+//    public static PowerArmorCap chest(@Nonnull ItemStack itemStackIn) {
+//        return new PowerArmorCap(itemStackIn,
+//                EquipmentSlotType.CHEST,
+//                new ModularItem(itemStackIn, 18) {{
+//                    Map<ModuleCategory, NuminaRangedWrapper> rangedWrapperMap = new HashMap<>();
+//                    rangedWrapperMap.put(ModuleCategory.ARMOR,new NuminaRangedWrapper(this, 0, 1));
+//                    rangedWrapperMap.put(ModuleCategory.ENERGY_STORAGE,new NuminaRangedWrapper(this, 1, 2));
+//                    rangedWrapperMap.put(ModuleCategory.ENERGY_GENERATION,new NuminaRangedWrapper(this, 2, 3));
+//                    rangedWrapperMap.put(ModuleCategory.NONE,new NuminaRangedWrapper(this, 3, this.getSlots()));
+//                    setRangedWrapperMap(rangedWrapperMap);
+//                }},
+//                new ArmorModelSpecNBT(itemStackIn),
+//                MPSSettings.getMaxHeatChestplate());
+//    }
+//
+//    public static PowerArmorCap legs(@Nonnull ItemStack itemStackIn) {
+//        return new PowerArmorCap(itemStackIn,
+//                EquipmentSlotType.LEGS,
+//                new ModularItem(itemStackIn, 10) {{
+//                    Map<ModuleCategory, NuminaRangedWrapper> rangedWrapperMap = new HashMap<>();
+//                    rangedWrapperMap.put(ModuleCategory.ARMOR,new NuminaRangedWrapper(this, 0, 1));
+//                    rangedWrapperMap.put(ModuleCategory.ENERGY_STORAGE,new NuminaRangedWrapper(this, 1, 2));
+//                    rangedWrapperMap.put(ModuleCategory.ENERGY_GENERATION,new NuminaRangedWrapper(this, 2, 3));
+//                    rangedWrapperMap.put(ModuleCategory.NONE,new NuminaRangedWrapper(this, 3, this.getSlots()));
+//                    this.setRangedWrapperMap(rangedWrapperMap);
+//                }},
+//                new ArmorModelSpecNBT(itemStackIn),
+//                MPSSettings.getMaxHeatLegs());
+//    }
+//
+//    public static PowerArmorCap feet(@Nonnull ItemStack itemStackIn) {
+//        return new PowerArmorCap(itemStackIn,
+//                EquipmentSlotType.FEET,
+//                new ModularItem(itemStackIn, 8) {{
+//                    Map<ModuleCategory, NuminaRangedWrapper> rangedWrapperMap = new HashMap<>();
+//                    rangedWrapperMap.put(ModuleCategory.ARMOR,new NuminaRangedWrapper(this, 0, 1));
+//                    rangedWrapperMap.put(ModuleCategory.ENERGY_STORAGE,new NuminaRangedWrapper(this, 1, 2));
+//                    rangedWrapperMap.put(ModuleCategory.NONE,new NuminaRangedWrapper(this, 2, this.getSlots()));
+//                    this.setRangedWrapperMap(rangedWrapperMap);
+//                }},
+//                new ArmorModelSpecNBT(itemStackIn),
+//                MPSSettings.getMaxHeatBoots());
+//    }
+//}

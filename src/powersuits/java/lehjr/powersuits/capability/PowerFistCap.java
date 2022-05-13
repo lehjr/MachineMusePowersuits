@@ -44,6 +44,8 @@ import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.Map;
 
+
+
 public class PowerFistCap extends AbstractModularPowerCap {
     public PowerFistCap(@Nonnull ItemStack itemStackIn) {
         this.itemStack = itemStackIn;
@@ -74,3 +76,21 @@ public class PowerFistCap extends AbstractModularPowerCap {
         return super.getCapability(cap, side);
     }
 }
+
+//public class PowerFistCap extends AbstractModularPowerCap {
+//    public PowerFistCap(@Nonnull ItemStack itemStackIn) {
+//        super(
+//                itemStackIn,
+//                EquipmentSlotType.MAINHAND,
+//
+//                new ModeChangingModularItem(itemStackIn, 40)  {{
+//                    Map<ModuleCategory, NuminaRangedWrapper> rangedWrapperMap = new HashMap<>();
+//                    rangedWrapperMap.put(ModuleCategory.ENERGY_STORAGE, new NuminaRangedWrapper(this, 0, 1));
+//                    rangedWrapperMap.put(ModuleCategory.NONE, new NuminaRangedWrapper(this, 1, this.getSlots() ));
+//                    this.setRangedWrapperMap(rangedWrapperMap);
+//                }},
+//                new PowerFistSpecNBT(itemStackIn),
+//                new HeatItemWrapper(itemStackIn, MPSSettings.getMaxHeatPowerFist())
+//        );
+//    }
+//}
