@@ -53,12 +53,10 @@ idea {
 }
 
 sourceSets {
+    // Numina
     main {
         resources {
             include '**/**'
-            // copy everything else, but blender and bbmodel files.
-            exclude '**/*.blend'
-            exclude '**/*.bbmodel'
             //Add the generated main module resources
             srcDirs += 'src/datagen/generated/numina'
             //But exclude the cache of the generated data from what gets built
@@ -68,12 +66,7 @@ sourceSets {
     powersuits { setupSourceSet(powersuits, 'powersuits') }
     recipecreator { setupSourceSet(recipecreator, 'recipecreator') }
     whatever { setupSourceSet(whatever, 'whatever') }
-    test {
-        //The test module has no resources
-        resources.srcDirs = []
-        compileClasspath += main.output + powersuits.output + recipecreator.output + whatever.output
-        runtimeClasspath += main.output + powersuits.output + recipecreator.output + whatever.output
-    }
+
     //Data gen modules for the different modules
     datagenmain { setupDataGenSourceSet(datagenmain, null, 'main') }
     datagenpowersuits { setupDataGenSourceSet(datagenpowersuits, powersuits, 'powersuits') }
@@ -91,6 +84,7 @@ def setupSourceSet(SourceSet sourceSet, String name) {
         //But exclude the cache of the generated data from what gets built
         exclude '.cache'
     }
+    sourceSet.compileClasspath += sourceSets.main.output
 }
 
 //This method sets up a source set in datagen/$name and adds the main numina module and an optional
@@ -110,12 +104,12 @@ def setupDataGenSourceSet(SourceSet datagenSourceSet, SourceSet baseSourceSet, S
 configurations {
     //Make sure all our sub source set stuff extends the proper base methods so that
     // they can see all the dependencies we have in dependencies including forge
-    extendConfigurations(implementation, testImplementation, datagenmainImplementation)
-    extendConfigurations(compileOnly, testCompileOnly, datagenmainCompileOnly)
+    extendConfigurations(implementation, datagenmainImplementation)
+    extendConfigurations(compileOnly, datagenmainCompileOnly)
     extendConfigurations(runtimeOnly, datagenmainRuntimeOnly)
     //Extend configurations for alternate modules. First by making the implementation, compileOnly, runtimeOnly equivalents
     // for those modules extend the main ones, and then by making the corresponding ones for datagen for the module extend those.
-    // This way if we add a dependency/integration in a submodule instead of the main module of Mekanism, the datagen of the corresponding
+    // This way if we add a dependency/integration in a submodule instead of the main module of Numina, the datagen of the corresponding
     // module will be able to properly access the dependency
     for (def name : ["powersuits", "recipecreator", "whatever"]) {
         maybeCreate("datagen${name}Implementation").extendsFrom(maybeCreate("${name}Implementation").extendsFrom(implementation))
@@ -328,7 +322,7 @@ repositories {
         name 'CurseMaven'
         url 'https://www.cursemaven.com'
         content {
-            includeGroup 'curse.maven'//def getManifestAttributes(String title) {
+            includeGroup 'curse.maven'
         }
     }
     maven {
@@ -359,10 +353,6 @@ repositories {
     }
 }
 
-test {
-    useJUnitPlatform()
-}
-
 dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
 
@@ -389,7 +379,7 @@ if (project.hasProperty('UPDATE_MAPPINGS')) {
     // so that whenever we need to update mappings it is quick and easy to do so.
     // Note: This needs to be below the dependencies and minecraft blocks so that it can properly read the mappings value
     // and also read and find the minecraft dep
-    def extraSourceSets = [sourceSets.powersuits, sourceSets.recipecreator, sourceSets.whatever, sourceSets.test,
+    def extraSourceSets = [sourceSets.powersuits, sourceSets.recipecreator, sourceSets.whatever,
                            sourceSets.datagenmain, sourceSets.datagenpowersuits, sourceSets.datagenrecipecreator, sourceSets.datagenwhatever]
     Set<File> allExtraDirs = new HashSet<>()
     for (def sourceSet : extraSourceSets) {
@@ -484,10 +474,10 @@ task recipecreatorJar(type: Jar) {
 
 task whateverJar(type: Jar) {
     duplicatesStrategy(DuplicatesStrategy.FAIL)
-    archiveFileName.set("MekanismWhatever-${project.version}.jar")
+    archiveFileName.set("MPSWhatever-${project.version}.jar")
     archiveClassifier.set("whatever")
     from sourceSets.whatever.output
-    manifest.attributes(getManifestAttributes("MekanismWhatever"))
+    manifest.attributes(getManifestAttributes("MPSWhatever"))
     afterEvaluate { finalizedBy reobfWhateverJar }
 }
 

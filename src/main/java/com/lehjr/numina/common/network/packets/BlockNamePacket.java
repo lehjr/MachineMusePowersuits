@@ -7,8 +7,8 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.network.NetworkEvent;
-import com.lehjr.numina.api.capabilities.inventory.modechanging.IModeChangingItem;
-import com.lehjr.numina.api.constants.TagConstants;
+import com.lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
+import com.lehjr.numina.common.constants.TagConstants;
 
 import java.util.function.Supplier;
 

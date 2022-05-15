@@ -63,8 +63,8 @@ public class RenderGameOverlayEventHandler {
     public void drawModeChangeIcons() {
         Minecraft mc = Minecraft.getInstance();
         ClientPlayer player = mc.player;
-        int i = player.inventory.selected;
-        player.inventory.getSelected().getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+        int i = player.getInventory().selected;
+        player.getInventory().getSelected().getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
                 .filter(IModeChangingItem.class::isInstance)
                 .map(IModeChangingItem.class::cast)
                 .ifPresent(handler->

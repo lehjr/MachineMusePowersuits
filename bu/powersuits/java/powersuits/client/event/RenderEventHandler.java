@@ -31,7 +31,7 @@ import com.mojang.blaze3d.matrix.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import lehjr.numina.util.capabilities.inventory.modechanging.IModeChangingItem;
 import lehjr.numina.util.capabilities.inventory.modularitem.IModularItem;
-import lehjr.numina.util.capabilities.module.powermodule.PowerModuleCapability;
+import lehjr.numina.util.capabilities.module.powermodule.CapabilityPowerModule;
 import lehjr.numina.util.capabilities.render.highlight.HighLightCapability;
 import lehjr.numina.util.client.gui.gemoetry.DrawableRelativeRect;
 import lehjr.numina.util.client.render.MuseRenderer;
@@ -188,7 +188,7 @@ public enum RenderEventHandler {
                             if (h instanceof IModularItem) {
                                 ItemStack binnoculars = h.getOnlineModuleOrEmpty(MPSRegistryNames.BINOCULARS_MODULE_REGNAME);
                                 if (!binnoculars.isEmpty())
-                                    e.setNewfov((float) (e.getNewfov() / binnoculars.getCapability(PowerModuleCapability.POWER_MODULE)
+                                    e.setNewfov((float) (e.getNewfov() / binnoculars.getCapability(CapabilityPowerModule.POWER_MODULE)
                                             .map(m->m.applyPropertyModifiers(MPSConstants.FOV)).orElse(1D)));
                             }
                         }

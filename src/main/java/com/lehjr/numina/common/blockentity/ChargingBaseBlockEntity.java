@@ -26,9 +26,8 @@
 
 package com.lehjr.numina.common.blockentity;
 
-import com.lehjr.numina.api.blockentity.NuminaBlockEntity;
-import com.lehjr.numina.api.energy.ElectricItemUtils;
-import com.lehjr.numina.common.NuminaObjects;
+import com.lehjr.numina.common.energy.ElectricItemUtils;
+import com.lehjr.numina.common.base.NuminaObjects;
 import com.lehjr.numina.common.capabilities.energy.TileEnergyStorage;
 import com.lehjr.numina.common.capabilities.energy.TileEnergyWrapper;
 import com.lehjr.numina.common.config.NuminaSettings;

@@ -4,10 +4,10 @@ import com.refinedmods.refinedstorage.api.network.INetwork;
 import com.refinedmods.refinedstorage.item.NetworkItem;
 import com.refinedmods.refinedstorage.util.NetworkUtils;
 import lehjr.numina.util.capabilities.inventory.modechanging.IModeChangingItem;
-import lehjr.numina.util.capabilities.module.powermodule.EnumModuleCategory;
-import lehjr.numina.util.capabilities.module.powermodule.EnumModuleTarget;
+import lehjr.numina.util.capabilities.module.powermodule.ModuleCategory;
+import lehjr.numina.util.capabilities.module.powermodule.ModuleTarget;
 import lehjr.numina.util.capabilities.module.powermodule.IConfig;
-import lehjr.numina.util.capabilities.module.powermodule.PowerModuleCapability;
+import lehjr.numina.util.capabilities.module.powermodule.CapabilityPowerModule;
 import lehjr.numina.util.capabilities.module.rightclick.IRightClickModule;
 import lehjr.numina.util.capabilities.module.rightclick.RightClickModule;
 import lehjr.numina.util.energy.ElectricItemUtils;
@@ -50,7 +50,7 @@ public class RSWirelessHandler {
             refinedstorage:wireless_fluid_grid
              */
         if (regName.equals(wireless_grid) || regName.equals(wireless_fluid_grid)) {
-            IRightClickModule rsTerminal = new RightClickModule(itemStack, EnumModuleCategory.TOOL, EnumModuleTarget.TOOLONLY, moduleConfigGetterIn) {
+            IRightClickModule rsTerminal = new RightClickModule(itemStack, ModuleCategory.TOOL, ModuleTarget.TOOLONLY, moduleConfigGetterIn) {
                 @Override
                 public ActionResult use(ItemStack itemStackIn, World worldIn, Player playerIn, Hand hand) {
                     ItemStack module = ItemUtils.getActiveModuleOrEmpty(itemStackIn);
@@ -99,7 +99,7 @@ public class RSWirelessHandler {
                 @Nonnull
                 @Override
                 public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
-                    if (cap == PowerModuleCapability.POWER_MODULE) {
+                    if (cap == CapabilityPowerModule.POWER_MODULE) {
                         return LazyOptional.of(() -> (T) rsTerminal);
                     }
                     return LazyOptional.empty();

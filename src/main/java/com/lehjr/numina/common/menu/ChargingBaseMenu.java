@@ -26,10 +26,10 @@
 
 package com.lehjr.numina.common.menu;
 
-import com.lehjr.numina.api.gui.IconUtils;
-import com.lehjr.numina.api.gui.slot.IconItemHandlerSlot;
-import com.lehjr.numina.api.math.Color;
-import com.lehjr.numina.common.NuminaObjects;
+import com.lehjr.numina.client.gui.IconUtils;
+import com.lehjr.numina.client.gui.slot.IconItemHandlerSlot;
+import com.lehjr.numina.common.math.Color;
+import com.lehjr.numina.common.base.NuminaObjects;
 import com.lehjr.numina.common.blockentity.ChargingBaseBlockEntity;
 import com.lehjr.numina.common.capabilities.energy.TileEnergyStorage;
 import com.mojang.blaze3d.vertex.PoseStack;

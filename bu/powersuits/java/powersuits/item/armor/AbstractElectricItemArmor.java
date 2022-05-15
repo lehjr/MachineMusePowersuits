@@ -35,9 +35,9 @@ import lehjr.numina.constants.NuminaConstants;
 import lehjr.numina.network.NuminaPackets;
 import lehjr.numina.network.packets.CosmeticInfoPacket;
 import lehjr.numina.util.capabilities.inventory.modularitem.IModularItem;
-import lehjr.numina.util.capabilities.module.powermodule.EnumModuleCategory;
+import lehjr.numina.util.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.util.capabilities.module.powermodule.IPowerModule;
-import lehjr.numina.util.capabilities.module.powermodule.PowerModuleCapability;
+import lehjr.numina.util.capabilities.module.powermodule.CapabilityPowerModule;
 import lehjr.numina.util.capabilities.module.toggleable.IToggleableModule;
 import lehjr.numina.util.capabilities.render.IArmorModelSpecNBT;
 import lehjr.numina.util.capabilities.render.CapabilityModelSpec;
@@ -120,10 +120,10 @@ public abstract class AbstractElectricItemArmor extends ArmorItem {
                 .filter(IModularItem.class::isInstance)
                 .map(IModularItem.class::cast)
                 .map(iItemHandler -> {
-                    Pair<Integer, Integer> range = iItemHandler.getRangeForCategory(EnumModuleCategory.ARMOR);
+                    Pair<Integer, Integer> range = iItemHandler.getRangeForCategory(ModuleCategory.ARMOR);
                     double energyUsed = 0;
                     for (int x = range.getKey(); x < range.getRight(); x ++) {
-                        energyUsed += iItemHandler.getStackInSlot(x).getCapability(PowerModuleCapability.POWER_MODULE)
+                        energyUsed += iItemHandler.getStackInSlot(x).getCapability(CapabilityPowerModule.POWER_MODULE)
                                 .map(pm->pm.applyPropertyModifiers(MPSConstants.ARMOR_ENERGY_CONSUMPTION)).orElse(0D);
                     }
                     return energyUsed;
@@ -160,10 +160,10 @@ public abstract class AbstractElectricItemArmor extends ArmorItem {
                 .ifPresent(iItemHandler -> {
 
                     // Armor **should** only occupy one slot
-                    Pair<Integer, Integer> range = iItemHandler.getRangeForCategory(EnumModuleCategory.ARMOR);
+                    Pair<Integer, Integer> range = iItemHandler.getRangeForCategory(ModuleCategory.ARMOR);
                     if (range != null) {
                         for (int i = range.getLeft(); i < range.getRight(); i++) {
-                            iItemHandler.getStackInSlot(i).getCapability(PowerModuleCapability.POWER_MODULE).ifPresent(pm -> {
+                            iItemHandler.getStackInSlot(i).getCapability(CapabilityPowerModule.POWER_MODULE).ifPresent(pm -> {
                                 if (pm.isAllowed()) {
                                     // physical armor and hybrid energy/physical armor
                                     double armorDouble = pm.applyPropertyModifiers(MPSConstants.ARMOR_VALUE_PHYSICAL);
@@ -189,7 +189,7 @@ public abstract class AbstractElectricItemArmor extends ArmorItem {
                     if (slotType == EquipmentSlot.LEGS) {
                         for(int i= 0; i < iItemHandler.getSlots(); i++) {
                             /** Note: attribute should already be removed when module is offline */
-                            iItemHandler.getStackInSlot(i).getCapability(PowerModuleCapability.POWER_MODULE)
+                            iItemHandler.getStackInSlot(i).getCapability(CapabilityPowerModule.POWER_MODULE)
                                     .filter(IPowerModule.class::isInstance)
                                     .map(IPowerModule.class::cast)
                                     .filter(IPowerModule::isModuleOnline)

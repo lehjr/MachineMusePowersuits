@@ -1,7 +1,7 @@
 package com.lehjr.numina.common.entity;
 
-import com.lehjr.numina.api.constants.NuminaConstants;
-import com.lehjr.numina.common.NuminaObjects;
+import com.lehjr.numina.common.constants.NuminaConstants;
+import com.lehjr.numina.common.base.NuminaObjects;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;

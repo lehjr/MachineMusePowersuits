@@ -40,7 +40,7 @@ import lehjr.numina.integration.scannable.MPSGuiScanner;
 import lehjr.numina.network.NuminaPackets;
 import lehjr.numina.recipe.RecipeSerializersRegistry;
 import lehjr.numina.util.capabilities.heat.CapabilityHeat;
-import lehjr.numina.util.capabilities.module.powermodule.PowerModuleCapability;
+import lehjr.numina.util.capabilities.module.powermodule.CapabilityPowerModule;
 import lehjr.numina.util.capabilities.player.CapabilityPlayerKeyStates;
 import lehjr.numina.util.capabilities.render.CapabilityModelSpec;
 import lehjr.numina.util.capabilities.render.chameleon.ChameleonCapability;
@@ -155,7 +155,7 @@ public class Numina {
         ColorCapability.register();
 
         // Modules
-        PowerModuleCapability.register();
+        CapabilityPowerModule.register();
         CapabilityModelSpec.register();
         HighLightCapability.register();
         ChameleonCapability.register();

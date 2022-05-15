@@ -31,7 +31,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.network.NetworkEvent;
-import com.lehjr.numina.api.capabilities.inventory.modularitem.IModularItem;
+import com.lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
 
 import java.util.function.Supplier;
 

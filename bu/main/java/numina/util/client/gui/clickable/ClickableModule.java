@@ -27,8 +27,8 @@
 package lehjr.numina.util.client.gui.clickable;
 
 import com.mojang.blaze3d.matrix.PoseStack;
-import lehjr.numina.util.capabilities.module.powermodule.EnumModuleCategory;
-import lehjr.numina.util.capabilities.module.powermodule.PowerModuleCapability;
+import lehjr.numina.util.capabilities.module.powermodule.ModuleCategory;
+import lehjr.numina.util.capabilities.module.powermodule.CapabilityPowerModule;
 import lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
 import lehjr.numina.util.client.render.MuseIconUtils;
 import lehjr.numina.util.client.render.MuseRenderer;
@@ -61,19 +61,19 @@ public class ClickableModule extends Clickable {
     boolean isVisible = true;
     ItemStack module;
     int inventorySlot;
-    public final EnumModuleCategory category;
+    public final ModuleCategory category;
     Integer tier;
     ResourceLocation regName;
 
-    public ClickableModule(@Nonnull ItemStack module, MusePoint2D position, int inventorySlot, EnumModuleCategory category) {
+    public ClickableModule(@Nonnull ItemStack module, MusePoint2D position, int inventorySlot, ModuleCategory category) {
         super();
         setWH(new MusePoint2D(16, 16));
         super.setPosition(position);
         this.module = module;
         this.inventorySlot = inventorySlot;
         this.category = category;
-        allowed = module.getCapability(PowerModuleCapability.POWER_MODULE).map(pm->pm.isAllowed()).orElse(false);
-        tier = module.getCapability(PowerModuleCapability.POWER_MODULE).map(pm-> pm.getTier()).orElse(null);
+        allowed = module.getCapability(CapabilityPowerModule.POWER_MODULE).map(pm->pm.isAllowed()).orElse(false);
+        tier = module.getCapability(CapabilityPowerModule.POWER_MODULE).map(pm-> pm.getTier()).orElse(null);
         this.regName = module.getItem().getRegistryName();
     }
 

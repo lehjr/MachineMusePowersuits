@@ -29,7 +29,7 @@ package com.lehjr.numina.common.network.packets;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.network.NetworkEvent;
-import com.lehjr.numina.api.capabilities.player.CapabilityPlayerKeyStates;
+import com.lehjr.numina.common.capabilities.player.CapabilityPlayerKeyStates;
 
 import java.util.function.Supplier;
 

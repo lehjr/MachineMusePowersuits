@@ -1,6 +1,6 @@
 package com.lehjr.numina.common.capabilities;
 
-import com.lehjr.numina.api.capabilities.module.powermodule.*;
+import com.lehjr.numina.common.capabilities.module.powermodule.*;
 import com.lehjr.numina.common.capabilities.energy.ModuleEnergyWrapper;
 import com.lehjr.numina.common.config.NuminaSettings;
 import net.minecraft.core.Direction;
@@ -11,7 +11,7 @@ import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
-import com.lehjr.numina.api.constants.TagConstants;
+import com.lehjr.numina.common.constants.TagConstants;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -59,9 +59,9 @@ public class BatteryCapabilityProvider implements ICapabilityProvider {
     @Override
     @Nonnull
     public <T> LazyOptional<T> getCapability(@Nonnull final Capability<T> capability, final @Nullable Direction side) {
-        final LazyOptional<T> powerModuleCapability = CapabilityPowerModule.POWER_MODULE.orEmpty(capability, powerModuleHolder);
-        if (powerModuleCapability.isPresent()) {
-            return powerModuleCapability;
+        final LazyOptional<T> capabilityPowerModule = CapabilityPowerModule.POWER_MODULE.orEmpty(capability, powerModuleHolder);
+        if (capabilityPowerModule.isPresent()) {
+            return capabilityPowerModule;
         }
 
         final LazyOptional<T> energyCapability = CapabilityEnergy.ENERGY.orEmpty(capability, energyStorageHolder);

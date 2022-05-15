@@ -28,7 +28,7 @@ package lehjr.powersuits.event;
 
 import lehjr.numina.util.capabilities.inventory.modechanging.IModeChangingItem;
 import lehjr.numina.util.capabilities.module.blockbreaking.IBlockBreakingModule;
-import lehjr.numina.util.capabilities.module.powermodule.PowerModuleCapability;
+import lehjr.numina.util.capabilities.module.powermodule.CapabilityPowerModule;
 import lehjr.numina.util.energy.ElectricItemUtils;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.Player;
@@ -56,7 +56,7 @@ public class HarvestEventHandler {
             return;
         }
 
-        player.inventory.getSelected().getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+        player.getInventory().getSelected().getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
                 .filter(IModeChangingItem.class::isInstance)
                 .map(IModeChangingItem.class::cast)
                 .ifPresent(iItemHandler -> {
@@ -77,7 +77,7 @@ public class HarvestEventHandler {
                     int playerEnergy = ElectricItemUtils.getPlayerEnergy(player);
 
                     for (ItemStack module : iItemHandler.getInstalledModulesOfType(IBlockBreakingModule.class)) {
-                        if (module.getCapability(PowerModuleCapability.POWER_MODULE)
+                        if (module.getCapability(CapabilityPowerModule.POWER_MODULE)
                                 .filter(IBlockBreakingModule.class::isInstance)
                                 .map(IBlockBreakingModule.class::cast)
                                 .map(pm-> pm.canHarvestBlock(iItemHandler.getModularItemStack(), state, player, pos, playerEnergy)).orElse(false)) {
@@ -109,7 +109,7 @@ public class HarvestEventHandler {
     public static void handleBreakSpeed(PlayerEvent.BreakSpeed event) {
         // Note: here we can actually get the position if needed. we can't easily om the harvest check.
         Player player = event.getPlayer();
-        ItemStack stack = player.inventory.getSelected();
+        ItemStack stack = player.getInventory().getSelected();
         stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
                 .filter(IModeChangingItem.class::isInstance)
                 .map(IModeChangingItem.class::cast)
@@ -123,7 +123,7 @@ public class HarvestEventHandler {
                     int playerEnergy = ElectricItemUtils.getPlayerEnergy(player);
 
                     for (ItemStack module : iItemHandler.getInstalledModulesOfType(IBlockBreakingModule.class)) {
-                        module.getCapability(PowerModuleCapability.POWER_MODULE)
+                        module.getCapability(CapabilityPowerModule.POWER_MODULE)
                                 .filter(IBlockBreakingModule.class::isInstance)
                                 .map(IBlockBreakingModule.class::cast)
                                 .ifPresent(pm -> {

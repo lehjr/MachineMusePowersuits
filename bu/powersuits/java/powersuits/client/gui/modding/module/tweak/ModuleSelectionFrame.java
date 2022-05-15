@@ -29,9 +29,9 @@ package lehjr.powersuits.client.gui.modding.module.tweak;
 import com.mojang.blaze3d.matrix.PoseStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import lehjr.numina.util.capabilities.inventory.modularitem.IModularItem;
-import lehjr.numina.util.capabilities.module.powermodule.EnumModuleCategory;
+import lehjr.numina.util.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.util.capabilities.module.powermodule.IPowerModule;
-import lehjr.numina.util.capabilities.module.powermodule.PowerModuleCapability;
+import lehjr.numina.util.capabilities.module.powermodule.CapabilityPowerModule;
 import lehjr.numina.util.client.gui.clickable.ClickableModule;
 import lehjr.numina.util.client.gui.frame.ScrollableFrame;
 import lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
@@ -53,7 +53,7 @@ import java.util.concurrent.atomic.AtomicReference;
 
 public class ModuleSelectionFrame extends ScrollableFrame {
     protected ModularItemSelectionFrame target;
-    protected Map<EnumModuleCategory, ModuleSelectionSubFrame> categories = new LinkedHashMap<>();
+    protected Map<ModuleCategory, ModuleSelectionSubFrame> categories = new LinkedHashMap<>();
     protected RelativeRect lastPosition;
     Optional<ClickableModule> selectedModule = Optional.ofNullable(null);
     LazyOptional<IPowerModule> moduleCap = LazyOptional.empty();
@@ -66,7 +66,7 @@ public class ModuleSelectionFrame extends ScrollableFrame {
         this.target = itemSelectFrameIn;
     }
 
-    protected ModuleSelectionSubFrame getOrCreateCategory(EnumModuleCategory category) {
+    protected ModuleSelectionSubFrame getOrCreateCategory(ModuleCategory category) {
         if (categories.containsKey(category)) {
             return categories.get(category);
         } else {
@@ -84,7 +84,7 @@ public class ModuleSelectionFrame extends ScrollableFrame {
             categories.put(category, frame);
             frame.setDoOnNewSelect(thing-> {
                 selectedModule = Optional.of(thing.getSelectedModule());
-                moduleCap = selectedModule.map(clickableModule -> clickableModule.getModule()).orElse(ItemStack.EMPTY).getCapability(PowerModuleCapability.POWER_MODULE);
+                moduleCap = selectedModule.map(clickableModule -> clickableModule.getModule()).orElse(ItemStack.EMPTY).getCapability(CapabilityPowerModule.POWER_MODULE);
             });
             return frame;
         }
@@ -114,7 +114,7 @@ public class ModuleSelectionFrame extends ScrollableFrame {
             for (int index = 0; index < iModularItem.getSlots(); index++) {
                 ItemStack module = iModularItem.getStackInSlot(index);
                 int finalIndex = index;
-                module.getCapability(PowerModuleCapability.POWER_MODULE).ifPresent(m->{
+                module.getCapability(CapabilityPowerModule.POWER_MODULE).ifPresent(m->{
                     if (m.isAllowed()) {
                         getOrCreateCategory(m.getCategory()).addModule(module, finalIndex);
                     }
@@ -197,7 +197,7 @@ public class ModuleSelectionFrame extends ScrollableFrame {
 
     public LazyOptional<IPowerModule> getModuleCap() {
 //        return getSelectedModule()
-//                .map(clickableModule -> clickableModule.getModule()).orElse(ItemStack.EMPTY).getCapability(PowerModuleCapability.POWER_MODULE);
+//                .map(clickableModule -> clickableModule.getModule()).orElse(ItemStack.EMPTY).getCapability(CapabilityPowerModule.POWER_MODULE);
         return moduleCap;
     }
 

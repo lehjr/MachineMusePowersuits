@@ -27,7 +27,7 @@
 package com.lehjr.numina.client.config;
 
 import net.minecraftforge.common.ForgeConfigSpec;
-import com.lehjr.numina.api.constants.NuminaConstants;
+import com.lehjr.numina.common.constants.NuminaConstants;
 
 public class ClientConfig {
     public ForgeConfigSpec.BooleanValue

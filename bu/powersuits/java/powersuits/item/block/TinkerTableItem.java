@@ -26,10 +26,10 @@
 
 package lehjr.powersuits.item.block;
 
-import lehjr.numina.util.capabilities.module.powermodule.EnumModuleCategory;
-import lehjr.numina.util.capabilities.module.powermodule.EnumModuleTarget;
+import lehjr.numina.util.capabilities.module.powermodule.ModuleCategory;
+import lehjr.numina.util.capabilities.module.powermodule.ModuleTarget;
 import lehjr.numina.util.capabilities.module.powermodule.IConfig;
-import lehjr.numina.util.capabilities.module.powermodule.PowerModuleCapability;
+import lehjr.numina.util.capabilities.module.powermodule.CapabilityPowerModule;
 import lehjr.numina.util.capabilities.module.rightclick.IRightClickModule;
 import lehjr.numina.util.capabilities.module.rightclick.RightClickModule;
 import lehjr.powersuits.basemod.MPSObjects;
@@ -80,17 +80,17 @@ public class TinkerTableItem extends BlockItem {
 
         public CapProvider(@Nonnull ItemStack module) {
             this.module = module;
-            this.rightClick = new RightClickie(module, EnumModuleCategory.TOOL, EnumModuleTarget.TOOLONLY, MPSSettings::getModuleConfig);
+            this.rightClick = new RightClickie(module, ModuleCategory.TOOL, ModuleTarget.TOOLONLY, MPSSettings::getModuleConfig);
         }
 
         @Nonnull
         @Override
         public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
-            return PowerModuleCapability.POWER_MODULE.orEmpty(cap, LazyOptional.of(() -> rightClick));
+            return CapabilityPowerModule.POWER_MODULE.orEmpty(cap, LazyOptional.of(() -> rightClick));
         }
 
         class RightClickie extends RightClickModule {
-            public RightClickie(@Nonnull ItemStack module, EnumModuleCategory category, EnumModuleTarget target, Callable<IConfig> config) {
+            public RightClickie(@Nonnull ItemStack module, ModuleCategory category, ModuleTarget target, Callable<IConfig> config) {
                 super(module, category, target, config);
             }
 

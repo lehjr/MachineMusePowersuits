@@ -29,7 +29,7 @@ package lehjr.powersuits.item.tool;
 import lehjr.numina.util.capabilities.inventory.modechanging.IModeChangingItem;
 import lehjr.numina.util.capabilities.module.blockbreaking.IBlockBreakingModule;
 import lehjr.numina.util.capabilities.module.miningenhancement.IMiningEnhancementModule;
-import lehjr.numina.util.capabilities.module.powermodule.PowerModuleCapability;
+import lehjr.numina.util.capabilities.module.powermodule.CapabilityPowerModule;
 import lehjr.numina.util.capabilities.module.rightclick.IRightClickModule;
 import lehjr.numina.util.energy.ElectricItemUtils;
 import lehjr.powersuits.basemod.MPSObjects;
@@ -69,7 +69,7 @@ public class PowerFist extends AbstractElectricTool {
                 .filter(IModeChangingItem.class::isInstance)
                 .map(IModeChangingItem.class::cast)
                 .map(handler->
-                        handler.getActiveModule().getCapability(PowerModuleCapability.POWER_MODULE)
+                        handler.getActiveModule().getCapability(CapabilityPowerModule.POWER_MODULE)
                                 .filter(IRightClickModule.class::isInstance)
                                 .map(IRightClickModule.class::cast)
                                 .map(m-> m.getModuleStack().getUseDuration())
@@ -84,7 +84,7 @@ public class PowerFist extends AbstractElectricTool {
                 .filter(IModeChangingItem.class::isInstance)
                 .map(IModeChangingItem.class::cast)
                 .map(iItemHandler -> iItemHandler.getInstalledModulesOfType(IBlockBreakingModule.class).stream().anyMatch(module ->
-                        module.getCapability(PowerModuleCapability.POWER_MODULE)
+                        module.getCapability(CapabilityPowerModule.POWER_MODULE)
                                 .filter(IBlockBreakingModule.class::isInstance)
                                 .map(IBlockBreakingModule.class::cast)
                                 .map(pm-> pm.onBlockDestroyed(powerFist, worldIn, state, pos, entityLiving, playerEnergy))
@@ -140,7 +140,7 @@ public class PowerFist extends AbstractElectricTool {
                     .filter(IModeChangingItem.class::isInstance)
                     .map(IModeChangingItem.class::cast)
                     .ifPresent(iItemHandler -> iItemHandler.getOnlineModuleOrEmpty(MPSRegistryNames.MELEE_ASSIST_MODULE_REGNAME)
-                            .getCapability(PowerModuleCapability.POWER_MODULE).ifPresent(pm->{
+                            .getCapability(CapabilityPowerModule.POWER_MODULE).ifPresent(pm->{
                                 Player player = (Player) attacker;
                                 double drain = pm.applyPropertyModifiers(MPSConstants.PUNCH_ENERGY);
                                 if (ElectricItemUtils.getPlayerEnergy(player) > drain) {
@@ -175,7 +175,7 @@ public class PowerFist extends AbstractElectricTool {
                 .filter(IModeChangingItem.class::isInstance)
                 .map(IModeChangingItem.class::cast)
                 .map(iItemHandler -> iItemHandler.getActiveModule()
-                        .getCapability(PowerModuleCapability.POWER_MODULE)
+                        .getCapability(CapabilityPowerModule.POWER_MODULE)
                         .filter(IMiningEnhancementModule.class::isInstance)
                         .map(IMiningEnhancementModule.class::cast)
                         .filter(pm ->pm.isModuleOnline())
@@ -201,7 +201,7 @@ public class PowerFist extends AbstractElectricTool {
                 .map(IModeChangingItem.class::cast)
                 .map(iItemHandler -> iItemHandler.getInstalledModulesOfType(IBlockBreakingModule.class)
                         .stream().mapToInt(
-                                module -> module.getCapability(PowerModuleCapability.POWER_MODULE)
+                                module -> module.getCapability(CapabilityPowerModule.POWER_MODULE)
                                         .filter(IBlockBreakingModule.class::isInstance)
                                         .map(IBlockBreakingModule.class::cast)
                                         .map(pm-> pm.getEmulatedTool().getHarvestLevel(toolType, player, state)).orElse(-1))
@@ -221,7 +221,7 @@ public class PowerFist extends AbstractElectricTool {
                 .map(IModeChangingItem.class::cast)
                 .map(iItemHandler -> iItemHandler.getInstalledModulesOfType(IBlockBreakingModule.class)
                         .stream().anyMatch(module ->
-                                        module.getCapability(PowerModuleCapability.POWER_MODULE)
+                                        module.getCapability(CapabilityPowerModule.POWER_MODULE)
                                         .filter(IBlockBreakingModule.class::isInstance)
                                         .map(IBlockBreakingModule.class::cast)
                                         .map(pm ->pm.getEmulatedTool().isCorrectToolForDrops(state)).orElse(false)
@@ -242,7 +242,7 @@ public class PowerFist extends AbstractElectricTool {
                 .map(IModeChangingItem.class::cast)
                 .map(handler->{
                     ItemStack module = handler.getActiveModule();
-                    return module.getCapability(PowerModuleCapability.POWER_MODULE)
+                    return module.getCapability(CapabilityPowerModule.POWER_MODULE)
                             .filter(IRightClickModule.class::isInstance)
                             .map(IRightClickModule.class::cast)
                             .map(m-> m.useOn(context)).orElse(fallback);
@@ -263,7 +263,7 @@ public class PowerFist extends AbstractElectricTool {
                 .map(IModeChangingItem.class::cast)
                 .map(handler->{
                     ItemStack module = handler.getActiveModule();
-                    return module.getCapability(PowerModuleCapability.POWER_MODULE)
+                    return module.getCapability(CapabilityPowerModule.POWER_MODULE)
                             .filter(IRightClickModule.class::isInstance)
                             .map(IRightClickModule.class::cast)
                             .map(m-> m.onItemUseFirst(itemStack, context))
@@ -278,7 +278,7 @@ public class PowerFist extends AbstractElectricTool {
                 .map(IModeChangingItem.class::cast)
                 .ifPresent(handler->{
                     ItemStack module = handler.getActiveModule();
-                    module.getCapability(PowerModuleCapability.POWER_MODULE)
+                    module.getCapability(CapabilityPowerModule.POWER_MODULE)
                             .filter(IRightClickModule.class::isInstance)
                             .map(IRightClickModule.class::cast)
                             .ifPresent(m-> m.releaseUsing(stack, worldIn, entityLiving, timeLeft));
@@ -291,7 +291,7 @@ public class PowerFist extends AbstractElectricTool {
                 .filter(IModeChangingItem.class::isInstance)
                 .map(IModeChangingItem.class::cast)
                 .map(handler->
-                    handler.getActiveModule().getCapability(PowerModuleCapability.POWER_MODULE)
+                    handler.getActiveModule().getCapability(CapabilityPowerModule.POWER_MODULE)
                             .filter(IRightClickModule.class::isInstance)
                             .map(IRightClickModule.class::cast)
                             .map(m-> m.finishUsingItem(stack, worldIn, entity))
@@ -305,7 +305,7 @@ public class PowerFist extends AbstractElectricTool {
                 .filter(IModeChangingItem.class::isInstance)
                 .map(IModeChangingItem.class::cast)
                 .map(handler->
-                    handler.getActiveModule().getCapability(PowerModuleCapability.POWER_MODULE)
+                    handler.getActiveModule().getCapability(CapabilityPowerModule.POWER_MODULE)
                             .filter(IRightClickModule.class::isInstance)
                             .map(IRightClickModule.class::cast)
                             .map(m-> m.interactLivingEntity(itemStackIn, player, entity, hand).getResult())
@@ -325,7 +325,7 @@ public class PowerFist extends AbstractElectricTool {
                 .filter(IModeChangingItem.class::isInstance)
                 .map(IModeChangingItem.class::cast)
                 .map(handler-> handler.getActiveModule().
-                        getCapability(PowerModuleCapability.POWER_MODULE)
+                        getCapability(CapabilityPowerModule.POWER_MODULE)
                         .filter(IRightClickModule.class::isInstance)
                         .map(IRightClickModule.class::cast)
                         .map(rc-> rc.use(fist, world, playerIn, handIn)).orElse(fallback)).orElse(fallback);

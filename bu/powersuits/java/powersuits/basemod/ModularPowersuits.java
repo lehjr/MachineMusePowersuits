@@ -31,9 +31,9 @@ import com.electronwill.nightconfig.core.file.CommentedFileConfig;
 import lehjr.numina.config.ConfigHelper;
 import lehjr.numina.integration.refinedstorage.RSWirelessHandler;
 import lehjr.numina.integration.scannable.ScannableHandler;
-import lehjr.numina.util.capabilities.module.powermodule.EnumModuleCategory;
-import lehjr.numina.util.capabilities.module.powermodule.EnumModuleTarget;
-import lehjr.numina.util.capabilities.module.powermodule.PowerModuleCapability;
+import lehjr.numina.util.capabilities.module.powermodule.ModuleCategory;
+import lehjr.numina.util.capabilities.module.powermodule.ModuleTarget;
+import lehjr.numina.util.capabilities.module.powermodule.CapabilityPowerModule;
 import lehjr.numina.util.capabilities.module.rightclick.IRightClickModule;
 import lehjr.numina.util.capabilities.module.rightclick.RightClickModule;
 import lehjr.numina.util.capabilities.module.toggleable.IToggleableModule;
@@ -179,7 +179,7 @@ public class ModularPowersuits {
 
         // AE2 Wireless terminal
         if (regName.equals(new ResourceLocation("appliedenergistics2:wireless_terminal"))) {
-            IRightClickModule ae2wirelessterminal = new RightClickModule(itemStack, EnumModuleCategory.TOOL, EnumModuleTarget.TOOLONLY, MPSSettings::getModuleConfig) {
+            IRightClickModule ae2wirelessterminal = new RightClickModule(itemStack, ModuleCategory.TOOL, ModuleTarget.TOOLONLY, MPSSettings::getModuleConfig) {
                 @Override
                 public ActionResult use(ItemStack itemStackIn, World worldIn, Player playerIn, Hand hand) {
                     Api.instance().registries().wireless().openWirelessTerminalGui(itemStackIn, worldIn, playerIn, hand);
@@ -191,7 +191,7 @@ public class ModularPowersuits {
                 @Nonnull
                 @Override
                 public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
-                    if (cap == PowerModuleCapability.POWER_MODULE) {
+                    if (cap == CapabilityPowerModule.POWER_MODULE) {
                         return LazyOptional.of(() -> (T) ae2wirelessterminal);
                     }
                     return LazyOptional.empty();
@@ -223,12 +223,12 @@ public class ModularPowersuits {
 
         // Clock
         if (!event.getCapabilities().containsKey(MPSRegistryNames.CLOCK_MODULE_REG) && event.getObject().getItem().equals(Items.CLOCK)) {
-            IToggleableModule clock = new ToggleableModule(itemStack, EnumModuleCategory.SPECIAL, EnumModuleTarget.HEADONLY, MPSSettings::getModuleConfig, true);
+            IToggleableModule clock = new ToggleableModule(itemStack, ModuleCategory.SPECIAL, ModuleTarget.HEADONLY, MPSSettings::getModuleConfig, true);
             event.addCapability(MPSRegistryNames.CLOCK_MODULE_REG, new ICapabilityProvider() {
                 @Nonnull
                 @Override
                 public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
-                    if (cap == PowerModuleCapability.POWER_MODULE) {
+                    if (cap == CapabilityPowerModule.POWER_MODULE) {
                         return LazyOptional.of(()->(T)clock);
                     }
                     return LazyOptional.empty();
@@ -237,13 +237,13 @@ public class ModularPowersuits {
 
             // Compass
         } else if (!event.getCapabilities().containsKey(MPSRegistryNames.COMPASS_MODULE_REG) && event.getObject().getItem().equals(Items.COMPASS)) {
-            IToggleableModule compass = new ToggleableModule(itemStack, EnumModuleCategory.SPECIAL, EnumModuleTarget.HEADONLY, MPSSettings::getModuleConfig, true);
+            IToggleableModule compass = new ToggleableModule(itemStack, ModuleCategory.SPECIAL, ModuleTarget.HEADONLY, MPSSettings::getModuleConfig, true);
 
             event.addCapability(MPSRegistryNames.COMPASS_MODULE_REG, new ICapabilityProvider() {
                 @Nonnull
                 @Override
                 public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
-                    if (cap == PowerModuleCapability.POWER_MODULE) {
+                    if (cap == CapabilityPowerModule.POWER_MODULE) {
                         return LazyOptional.of(()->(T)compass);
                     }
                     return LazyOptional.empty();
@@ -253,7 +253,7 @@ public class ModularPowersuits {
             // Crafting workbench
         } else if (!event.getCapabilities().containsKey(MPSRegistryNames.PORTABLE_WORKBENCH_MODULE_REG) && event.getObject().getItem().equals(Items.CRAFTING_TABLE)) {
             final Component CONTAINER_NAME = new TranslatableComponent("container.crafting");
-            IRightClickModule rightClick = new RightClickModule(itemStack, EnumModuleCategory.TOOL, EnumModuleTarget.TOOLONLY, MPSSettings::getModuleConfig) {
+            IRightClickModule rightClick = new RightClickModule(itemStack, ModuleCategory.TOOL, ModuleTarget.TOOLONLY, MPSSettings::getModuleConfig) {
                 @Override
                 public ActionResult use(ItemStack itemStackIn, World worldIn, Player playerIn, Hand hand) {
                     if (worldIn.isClientSide) {
@@ -338,7 +338,7 @@ public class ModularPowersuits {
                 @Nonnull
                 @Override
                 public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
-                    if (cap == PowerModuleCapability.POWER_MODULE) {
+                    if (cap == CapabilityPowerModule.POWER_MODULE) {
                         return LazyOptional.of(()->(T)rightClick);
                     }
                     return LazyOptional.empty();

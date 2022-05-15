@@ -78,16 +78,7 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 
 public class MPSObjects {
-    public static final MPSCreativeTab creativeTab = new MPSCreativeTab();
 
-    /**
-     * Blocks ------------------------------------------------------------------------------------
-     */
-    public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, MPSConstants.MOD_ID);
-
-    public static final RegistryObject<TinkerTable> TINKER_TABLE_BLOCK = BLOCKS.register(MPSRegistryNames.TINKER_TABLE, TinkerTable::new);
-
-    public static final RegistryObject<LuxCapacitorBlock> LUX_CAPACITOR_BLOCK = BLOCKS.register(MPSRegistryNames.LUX_CAPACITOR, LuxCapacitorBlock::new);
 
 
     /**

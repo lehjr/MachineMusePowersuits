@@ -50,10 +50,10 @@
 //                        Player player = Minecraft.getInstance().player;
 //                        int slot = -1;
 //                        if (player.getHeldItemMainhand().equals(stack)) {
-//                            slot = player.inventory.currentItem;
+//                            slot = player.getInventory().currentItem;
 //                        } else {
-//                            for (int i = 0; i < player.inventory.getSizeInventory(); i++) {
-//                                if (player.inventory.getStackInSlot(i).equals(stack)) {
+//                            for (int i = 0; i < player.getInventory().getSizeInventory(); i++) {
+//                                if (player.getInventory().getStackInSlot(i).equals(stack)) {
 //                                    slot = i;
 //                                    break;
 //                                }

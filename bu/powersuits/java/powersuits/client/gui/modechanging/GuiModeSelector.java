@@ -78,7 +78,7 @@ public class GuiModeSelector extends ContainerlessGui {
 
     @Override
     public boolean keyReleased(int keyCode, int scanCode, int modifiers) {
-        if (minecraft.options.keyHotbarSlots[player.inventory.selected].matches(keyCode, scanCode)) {
+        if (minecraft.options.keyHotbarSlots[player.getInventory().selected].matches(keyCode, scanCode)) {
             this.player.closeContainer();
             return true;
         }
@@ -100,7 +100,7 @@ public class GuiModeSelector extends ContainerlessGui {
 //    @Override
 //    public void update() {
 //        super.update();
-//        if (!Keyboard.isKeyDown(Minecraft.getMinecraft().gameSettings.keyBindsHotbar[player.inventory.currentItem].getKeyCode())) {
+//        if (!Keyboard.isKeyDown(Minecraft.getMinecraft().gameSettings.keyBindsHotbar[player.getInventory().currentItem].getKeyCode())) {
 //            //close animation
 //            //TODO
 //            //close Gui

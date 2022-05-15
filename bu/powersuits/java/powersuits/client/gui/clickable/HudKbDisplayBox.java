@@ -57,8 +57,8 @@ public class HudKbDisplayBox extends ClickableButton2 {
         for (ClickableModule module : boundModules.values()) {
             ResourceLocation registryName = module.getRegName();
 
-            for (int i = 0; i < player.inventory.getContainerSize(); i++) {
-                player.inventory.getItem(i).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+            for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
+                player.getInventory().getItem(i).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
                         .filter(IModularItem.class::isInstance)
                         .map(IModularItem.class::cast)
                         .ifPresent(handler -> handler.toggleModule(registryName, toggleval));

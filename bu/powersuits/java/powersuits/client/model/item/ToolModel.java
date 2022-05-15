@@ -596,7 +596,7 @@
 //    }
 //
 //    public void setPoseForPlayer(Player player, ItemStack itemStack) {
-//        if (player.isHandActive() && player.inventory.getStackInSlot(player.inventory.currentItem) == itemStack
+//        if (player.isHandActive() && player.getInventory().getStackInSlot(player.getInventory().currentItem) == itemStack
 //                && itemStack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).map(iItemHandler -> {
 //            if (iItemHandler instanceof IModeChangingItem) {
 //

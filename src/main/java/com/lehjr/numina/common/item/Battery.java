@@ -1,7 +1,7 @@
 package com.lehjr.numina.common.item;
 
-import com.lehjr.numina.api.string.AdditionalInfo;
-import com.lehjr.numina.common.NuminaObjects;
+import com.lehjr.numina.common.string.AdditionalInfo;
+import com.lehjr.numina.common.base.NuminaObjects;
 import com.lehjr.numina.common.capabilities.BatteryCapabilityProvider;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;

@@ -27,7 +27,7 @@
 package lehjr.powersuits.client.gui.modding.module.tweak;
 
 import com.mojang.blaze3d.matrix.PoseStack;
-import lehjr.numina.util.capabilities.module.powermodule.EnumModuleCategory;
+import lehjr.numina.util.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.util.client.gui.clickable.ClickableModule;
 import lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
 import lehjr.numina.util.client.gui.gemoetry.RelativeRect;
@@ -49,9 +49,9 @@ public class ModuleSelectionSubFrame {
     public int selectedModule = -1;
     int oldSelected = -1;
     protected RelativeRect border;
-    public EnumModuleCategory category;
+    public ModuleCategory category;
 
-    public ModuleSelectionSubFrame(EnumModuleCategory category, RelativeRect border) {
+    public ModuleSelectionSubFrame(ModuleCategory category, RelativeRect border) {
         this.category = category;
         this.border = border;
         this.moduleButtons = new ArrayList<>();

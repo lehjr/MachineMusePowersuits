@@ -26,7 +26,7 @@
 
 package com.lehjr.numina.common.capabilities.energy;
 
-import com.lehjr.numina.api.capabilities.CapabilityUpdate;
+import com.lehjr.numina.common.capabilities.CapabilityUpdate;
 import net.minecraftforge.energy.EnergyStorage;
 
 /**

@@ -1,7 +1,7 @@
 package com.lehjr.numina.common.entity;
 
 import com.lehjr.numina.common.menu.ArmorStandMenu;
-import com.lehjr.numina.common.NuminaObjects;
+import com.lehjr.numina.common.base.NuminaObjects;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
@@ -20,7 +20,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkHooks;
-import com.lehjr.numina.api.sound.SoundDictionary;
+import com.lehjr.numina.client.sound.SoundDictionary;
 
 public class NuminaArmorStand extends ArmorStand {
     public NuminaArmorStand(EntityType<? extends ArmorStand> entityType, Level level) {

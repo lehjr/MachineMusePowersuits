@@ -27,27 +27,13 @@
 package com.lehjr.numina.common.item;
 
 import com.lehjr.numina.client.render.item.NuminaArmorStandItemRenderer;
-import com.lehjr.numina.common.NuminaObjects;
+import com.lehjr.numina.common.base.NuminaObjects;
 import com.lehjr.numina.common.entity.NuminaArmorStand;
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.model.ArmorStandModel;
-import net.minecraft.client.model.HumanoidModel;
-import net.minecraft.client.model.Model;
-import net.minecraft.client.model.geom.EntityModelSet;
-import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
-import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.block.model.ItemTransforms;
-import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Rotations;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
@@ -62,12 +48,9 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.client.IItemRenderProperties;
-import net.minecraftforge.common.util.Lazy;
 
-import javax.annotation.Nonnull;
 import java.util.Random;
 import java.util.function.Consumer;
-import java.util.function.Function;
 
 public class NuminaArmorStandItem extends ArmorStandItem {
     public NuminaArmorStandItem(Item.Properties builder) {

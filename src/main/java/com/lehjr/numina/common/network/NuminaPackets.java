@@ -30,7 +30,7 @@ import com.lehjr.numina.common.network.packets.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.network.NetworkRegistry;
 import net.minecraftforge.network.simple.SimpleChannel;
-import com.lehjr.numina.api.constants.NuminaConstants;
+import com.lehjr.numina.common.constants.NuminaConstants;
 
 public class NuminaPackets {
     private static final String PROTOCOL_VERSION = "1";

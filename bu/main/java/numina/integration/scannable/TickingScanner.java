@@ -1,7 +1,7 @@
 package lehjr.numina.integration.scannable;
 
-import lehjr.numina.util.capabilities.module.powermodule.EnumModuleCategory;
-import lehjr.numina.util.capabilities.module.powermodule.EnumModuleTarget;
+import lehjr.numina.util.capabilities.module.powermodule.ModuleCategory;
+import lehjr.numina.util.capabilities.module.powermodule.ModuleTarget;
 import lehjr.numina.util.capabilities.module.powermodule.IConfig;
 import lehjr.numina.util.capabilities.module.rightclick.IRightClickModule;
 import lehjr.numina.util.capabilities.module.tickable.PlayerTickModule;
@@ -42,7 +42,7 @@ import java.util.concurrent.Callable;
  * This is mostly a recreation of the ItemScanner in Scannable, but wrapped in a capability
  */
 public class TickingScanner extends PlayerTickModule implements IRightClickModule {
-    public TickingScanner(@Nonnull ItemStack module, EnumModuleCategory category, EnumModuleTarget target, Callable<IConfig> moduleConfigGetterIn) {
+    public TickingScanner(@Nonnull ItemStack module, ModuleCategory category, ModuleTarget target, Callable<IConfig> moduleConfigGetterIn) {
         super(module, category, target, moduleConfigGetterIn, true);
     }
 
@@ -149,7 +149,7 @@ public class TickingScanner extends PlayerTickModule implements IRightClickModul
     }
 
     @Override
-    public void updateFromNBT() {
+    public void onLoad() {
 
     }
 

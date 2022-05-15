@@ -116,6 +116,6 @@ public class MPSRegistryNames {
 
 
     static ResourceLocation toResLocation(String path) {
-        return new ResourceLocation(MPSContstants.MOD_ID, path);
+        return new ResourceLocation(MPSConstants.MOD_ID, path);
     }
 }

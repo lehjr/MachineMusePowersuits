@@ -1,10 +1,10 @@
 package lehjr.numina.integration.scannable;
 
 import lehjr.numina.util.capabilities.inventory.modechanging.IModeChangingItem;
-import lehjr.numina.util.capabilities.module.powermodule.EnumModuleCategory;
-import lehjr.numina.util.capabilities.module.powermodule.EnumModuleTarget;
+import lehjr.numina.util.capabilities.module.powermodule.ModuleCategory;
+import lehjr.numina.util.capabilities.module.powermodule.ModuleTarget;
 import lehjr.numina.util.capabilities.module.powermodule.IConfig;
-import lehjr.numina.util.capabilities.module.powermodule.PowerModuleCapability;
+import lehjr.numina.util.capabilities.module.powermodule.CapabilityPowerModule;
 import lehjr.numina.util.item.ItemUtils;
 import li.cil.scannable.common.item.ItemScanner;
 import net.minecraft.item.ItemStack;
@@ -27,13 +27,13 @@ public class ScannableHandler {
     public static void attach(AttachCapabilitiesEvent<ItemStack> event, Callable<IConfig> moduleConfigGetterIn) {
         final ItemStack itemStack = event.getObject();
 
-        TickingScanner scanner = new TickingScanner(itemStack, EnumModuleCategory.TOOL, EnumModuleTarget.TOOLONLY, moduleConfigGetterIn);
+        TickingScanner scanner = new TickingScanner(itemStack, ModuleCategory.TOOL, ModuleTarget.TOOLONLY, moduleConfigGetterIn);
 
         event.addCapability(new ResourceLocation("scannable:scanner"), new ICapabilityProvider() {
             @Nonnull
             @Override
             public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
-                if (cap == PowerModuleCapability.POWER_MODULE) {
+                if (cap == CapabilityPowerModule.POWER_MODULE) {
                     return LazyOptional.of(() -> (T) scanner);
                 }
                 return LazyOptional.empty();

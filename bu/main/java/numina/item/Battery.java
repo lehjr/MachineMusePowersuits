@@ -92,7 +92,7 @@ public class Battery extends Item {
 
         public CapProvider(@Nonnull ItemStack module) {
             this.module = module;
-            this.moduleCap = new PowerModule(module, EnumModuleCategory.ENERGY_STORAGE, EnumModuleTarget.ALLITEMS, NuminaSettings::getModuleConfig) {
+            this.moduleCap = new PowerModule(module, ModuleCategory.ENERGY_STORAGE, ModuleTarget.ALLITEMS, NuminaSettings::getModuleConfig) {
                 @Override
                 public int getTier() {
                     return tier;
@@ -119,11 +119,11 @@ public class Battery extends Item {
         @Override
         public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
             if (cap == CapabilityEnergy.ENERGY) {
-                energyStorage.updateFromNBT();
+                energyStorage.onLoad();
                 return CapabilityEnergy.ENERGY.orEmpty(cap, LazyOptional.of(() -> energyStorage));
             }
-            if (cap == PowerModuleCapability.POWER_MODULE) {
-                return PowerModuleCapability.POWER_MODULE.orEmpty(cap, LazyOptional.of(() -> moduleCap));
+            if (cap == CapabilityPowerModule.POWER_MODULE) {
+                return CapabilityPowerModule.POWER_MODULE.orEmpty(cap, LazyOptional.of(() -> moduleCap));
             }
             return LazyOptional.empty();
         }

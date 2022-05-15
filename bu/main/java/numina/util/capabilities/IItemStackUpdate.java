@@ -31,5 +31,5 @@ package lehjr.numina.util.capabilities;
  * This is usually done by looking at the values stored in the NBT tags of the parent ("container") ItemStack
  */
 public interface IItemStackUpdate {
-    void updateFromNBT();
+    void onLoad();
 }

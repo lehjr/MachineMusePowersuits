@@ -1,12 +1,12 @@
 package com.lehjr.numina.client;
 
-import com.lehjr.numina.api.gui.GuiIcon;
-import com.lehjr.numina.api.gui.IconUtils;
-import com.lehjr.numina.api.render.NuminaSpriteUploader;
+import com.lehjr.numina.client.gui.GuiIcon;
+import com.lehjr.numina.client.gui.IconUtils;
+import com.lehjr.numina.client.render.NuminaSpriteUploader;
 import com.lehjr.numina.client.screen.ArmorStandScreen;
 import com.lehjr.numina.client.screen.ChargingBaseScreen;
-import com.lehjr.numina.common.Numina;
-import com.lehjr.numina.common.NuminaObjects;
+import com.lehjr.numina.common.base.Numina;
+import com.lehjr.numina.common.base.NuminaObjects;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.server.packs.resources.ReloadableResourceManager;

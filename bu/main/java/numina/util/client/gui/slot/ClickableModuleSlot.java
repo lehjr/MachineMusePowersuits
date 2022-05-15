@@ -27,8 +27,8 @@
 package lehjr.numina.util.client.gui.slot;
 
 import com.mojang.blaze3d.matrix.PoseStack;
-import lehjr.numina.util.capabilities.module.powermodule.EnumModuleCategory;
-import lehjr.numina.util.capabilities.module.powermodule.PowerModuleCapability;
+import lehjr.numina.util.capabilities.module.powermodule.ModuleCategory;
+import lehjr.numina.util.capabilities.module.powermodule.CapabilityPowerModule;
 import lehjr.numina.util.client.gui.clickable.IClickable;
 import lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
 import lehjr.numina.util.client.render.MuseIconUtils;
@@ -155,8 +155,8 @@ public class ClickableModuleSlot extends UniversalSlot implements IClickable {
         return new TranslatableComponent(this.getItem().getItem().getDescriptionId().concat(".desc"));
     }
 
-    public EnumModuleCategory getCategory() {
-        return getItem().getCapability(PowerModuleCapability.POWER_MODULE).map(m->m.getCategory()).orElse(EnumModuleCategory.NONE);
+    public ModuleCategory getCategory() {
+        return getItem().getCapability(CapabilityPowerModule.POWER_MODULE).map(m->m.getCategory()).orElse(ModuleCategory.NONE);
     }
 
     public boolean equals(ClickableModuleSlot other) {

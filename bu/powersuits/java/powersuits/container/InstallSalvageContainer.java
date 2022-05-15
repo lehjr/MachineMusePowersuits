@@ -3,7 +3,7 @@ package lehjr.powersuits.container;
 import com.mojang.blaze3d.matrix.PoseStack;
 import lehjr.numina.basemod.NuminaObjects;
 import lehjr.numina.util.capabilities.inventory.modularitem.IModularItem;
-import lehjr.numina.util.capabilities.module.powermodule.EnumModuleCategory;
+import lehjr.numina.util.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.util.client.gui.slot.HideableSlotItemHandler;
 import lehjr.numina.util.client.gui.slot.IHideableSlot;
 import lehjr.numina.util.client.gui.slot.IIConProvider;
@@ -40,7 +40,7 @@ public class InstallSalvageContainer  extends Container {
                 .map(IModularItem.class::cast)
                 .ifPresent(iItemHandler -> {
                     for (int modularItemInvIndex = 0; modularItemInvIndex < iItemHandler.getSlots(); modularItemInvIndex ++) {
-                        if (MuseMathUtils.isIntInRange(iItemHandler.getRangeForCategory(EnumModuleCategory.ARMOR), modularItemInvIndex)) {
+                        if (MuseMathUtils.isIntInRange(iItemHandler.getRangeForCategory(ModuleCategory.ARMOR), modularItemInvIndex)) {
                             addSlot(new IconSlot(iItemHandler, parentSlot, modularItemInvIndex, -1000, -1000) {
 
                                 @OnlyIn(Dist.CLIENT)
@@ -55,7 +55,7 @@ public class InstallSalvageContainer  extends Container {
 
                                 }
                             });
-                        } else if (MuseMathUtils.isIntInRange(iItemHandler.getRangeForCategory(EnumModuleCategory.ENERGY_STORAGE), modularItemInvIndex)) {
+                        } else if (MuseMathUtils.isIntInRange(iItemHandler.getRangeForCategory(ModuleCategory.ENERGY_STORAGE), modularItemInvIndex)) {
                             addSlot(new IconSlot(iItemHandler, parentSlot, modularItemInvIndex, -1000, -1000) {
                                 @OnlyIn(Dist.CLIENT)
                                 @Override
@@ -64,7 +64,7 @@ public class InstallSalvageContainer  extends Container {
                                 }
                             });
 
-                        } else if (MuseMathUtils.isIntInRange(iItemHandler.getRangeForCategory(EnumModuleCategory.ENERGY_GENERATION), modularItemInvIndex)) {
+                        } else if (MuseMathUtils.isIntInRange(iItemHandler.getRangeForCategory(ModuleCategory.ENERGY_GENERATION), modularItemInvIndex)) {
                             addSlot(new IconSlot(iItemHandler, parentSlot, modularItemInvIndex, -1000, -1000) {
                                 @OnlyIn(Dist.CLIENT)
                                 @Override

@@ -29,8 +29,8 @@ package lehjr.powersuits.client.gui.modding.module.tweak;
 import com.google.common.util.concurrent.AtomicDouble;
 import com.mojang.blaze3d.matrix.PoseStack;
 import lehjr.numina.util.capabilities.inventory.modularitem.IModularItem;
-import lehjr.numina.util.capabilities.module.powermodule.EnumModuleCategory;
-import lehjr.numina.util.capabilities.module.powermodule.PowerModuleCapability;
+import lehjr.numina.util.capabilities.module.powermodule.ModuleCategory;
+import lehjr.numina.util.capabilities.module.powermodule.CapabilityPowerModule;
 import lehjr.numina.util.client.gui.frame.ScrollableFrame;
 import lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
 import lehjr.numina.util.client.render.MuseRenderer;
@@ -73,17 +73,17 @@ public class DetailedSummaryFrame extends ScrollableFrame {
                     .filter(IModularItem.class::isInstance)
                     .map(IModularItem.class::cast)
                     .ifPresent(iModularItem -> {
-                        Pair<Integer, Integer> range = iModularItem.getRangeForCategory(EnumModuleCategory.ARMOR);
+                        Pair<Integer, Integer> range = iModularItem.getRangeForCategory(ModuleCategory.ARMOR);
                         if (range != null) {
                             for (int i = range.getLeft(); i < range.getRight(); i++) {
-                                iModularItem.getStackInSlot(i).getCapability(PowerModuleCapability.POWER_MODULE).ifPresent(iPowerModule -> {
+                                iModularItem.getStackInSlot(i).getCapability(CapabilityPowerModule.POWER_MODULE).ifPresent(iPowerModule -> {
                                     armor.getAndAdd(iPowerModule.applyPropertyModifiers(MPSConstants.ARMOR_VALUE_PHYSICAL));
                                     armor.getAndAdd(iPowerModule.applyPropertyModifiers(MPSConstants.ARMOR_VALUE_ENERGY));
                                 });
                             }
                         }
 
-                        range =  iModularItem.getRangeForCategory(EnumModuleCategory.ENERGY_STORAGE);
+                        range =  iModularItem.getRangeForCategory(ModuleCategory.ENERGY_STORAGE);
                         if (range != null) {
                             for (int i = range.getLeft(); i < range.getRight(); i++) {
                                 energy.getAndAdd(iModularItem.getStackInSlot(i).getCapability(CapabilityEnergy.ENERGY).map((energyHandler) -> energyHandler.getEnergyStored()).orElse(0));

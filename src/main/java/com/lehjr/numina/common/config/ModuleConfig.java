@@ -29,10 +29,9 @@ package com.lehjr.numina.common.config;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.config.ModConfig;
-import com.lehjr.numina.api.capabilities.module.powermodule.IConfig;
-import com.lehjr.numina.api.capabilities.module.powermodule.ModuleCategory;
-import com.lehjr.numina.api.config.ConfigHelper;
-import com.lehjr.numina.api.constants.NuminaConstants;
+import com.lehjr.numina.common.capabilities.module.powermodule.IConfig;
+import com.lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
+import com.lehjr.numina.common.constants.NuminaConstants;
 import org.apache.commons.io.FileUtils;
 
 import javax.annotation.Nonnull;

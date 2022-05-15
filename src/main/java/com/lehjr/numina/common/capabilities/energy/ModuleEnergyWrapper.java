@@ -30,8 +30,8 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.energy.EnergyStorage;
-import com.lehjr.numina.api.capabilities.CapabilityUpdate;
-import com.lehjr.numina.api.constants.TagConstants;
+import com.lehjr.numina.common.capabilities.CapabilityUpdate;
+import com.lehjr.numina.common.constants.TagConstants;
 
 import javax.annotation.Nonnull;
 

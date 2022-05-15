@@ -30,7 +30,7 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.network.NetworkEvent;
-import com.lehjr.numina.api.capabilities.inventory.modechanging.IModeChangingItem;
+import com.lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
 
 import java.util.function.Supplier;
 

@@ -1,6 +1,6 @@
 package lehjr.powersuits.client.gui.modding.module.install_salvage;
 
-import lehjr.numina.util.capabilities.module.powermodule.PowerModuleCapability;
+import lehjr.numina.util.capabilities.module.powermodule.CapabilityPowerModule;
 import lehjr.numina.util.client.gui.clickable.ClickableModule;
 import lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
 import lehjr.numina.util.math.Color;
@@ -42,7 +42,7 @@ public class CompatibleModuleDisplayFrame extends ModuleSelectionFrame {
             ForgeRegistries.ITEMS.getValues().forEach(item -> {
                 ItemStack module = new ItemStack(item, 1);
                 if (iModularItem.isModuleValid(module) && !possibleItems.contains(module)) {
-                    module.getCapability(PowerModuleCapability.POWER_MODULE).ifPresent(m->
+                    module.getCapability(CapabilityPowerModule.POWER_MODULE).ifPresent(m->
                             getOrCreateCategory(m.getCategory()).addModule(module, -1));
                     possibleItems.add(module);
                 }

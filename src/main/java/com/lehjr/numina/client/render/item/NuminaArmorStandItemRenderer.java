@@ -27,7 +27,7 @@
 package com.lehjr.numina.client.render.item;
 
 
-import com.lehjr.numina.api.constants.NuminaConstants;
+import com.lehjr.numina.common.constants.NuminaConstants;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.Minecraft;

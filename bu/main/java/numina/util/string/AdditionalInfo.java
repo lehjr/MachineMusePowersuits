@@ -29,7 +29,7 @@ package lehjr.numina.util.string;
 import lehjr.numina.constants.NuminaConstants;
 import lehjr.numina.util.capabilities.inventory.modechanging.IModeChangingItem;
 import lehjr.numina.util.capabilities.inventory.modularitem.IModularItem;
-import lehjr.numina.util.capabilities.module.powermodule.PowerModuleCapability;
+import lehjr.numina.util.capabilities.module.powermodule.CapabilityPowerModule;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
@@ -142,7 +142,7 @@ public class AdditionalInfo {
                     }
                 });
 
-        stack.getCapability(PowerModuleCapability.POWER_MODULE).ifPresent(iPowerModule -> {
+        stack.getCapability(CapabilityPowerModule.POWER_MODULE).ifPresent(iPowerModule -> {
             if (doAdditionalInfo()) {
                 String description = I18n.get( stack.getItem().getDescriptionId() + ".desc");
                 currentTipList.addAll(MuseStringUtils.wrapStringToLength(description, 30));

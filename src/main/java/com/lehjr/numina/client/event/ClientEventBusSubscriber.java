@@ -27,15 +27,14 @@
 package com.lehjr.numina.client.event;
 
 
-import com.lehjr.numina.api.constants.NuminaConstants;
+import com.lehjr.numina.common.constants.NuminaConstants;
 import com.lehjr.numina.client.render.entity.NuminaArmorStandRenderer;
-import com.lehjr.numina.common.Numina;
-import com.lehjr.numina.common.NuminaObjects;
+import com.lehjr.numina.common.base.Numina;
+import com.lehjr.numina.common.base.NuminaObjects;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
-import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 

@@ -26,9 +26,9 @@
 
 package com.lehjr.numina.client.screen;
 
-import com.lehjr.numina.api.constants.NuminaConstants;
-import com.lehjr.numina.api.gui.screen.NuminaAbstractContainerScreen;
-import com.lehjr.numina.api.string.StringUtils;
+import com.lehjr.numina.common.constants.NuminaConstants;
+import com.lehjr.numina.client.gui.screen.NuminaAbstractContainerScreen;
+import com.lehjr.numina.common.string.StringUtils;
 import com.lehjr.numina.common.menu.ChargingBaseMenu;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -51,7 +51,7 @@ public class ChargingBaseScreen extends NuminaAbstractContainerScreen<ChargingBa
         renderBackground(pPoseStack);
         super.render(pPoseStack, pMouseX, pMouseY, pPartialTick);
         this.renderTooltip(pPoseStack, pMouseX, pMouseY);
-        //        energyMeter.draw(matrixStack, (float) batterySlot.centerx() - 16,
+//        energyMeter.draw(matrixStack, (float) batterySlot.centerx() - 16,
 //                (float) (batterySlot.finalBottom() + spacer * 0.25),
 //                menu.getEnergyForMeter(),
 //                getBlitOffset() + 2);

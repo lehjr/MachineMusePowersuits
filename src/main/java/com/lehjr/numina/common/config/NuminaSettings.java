@@ -26,8 +26,8 @@
 
 package com.lehjr.numina.common.config;
 
-import com.lehjr.numina.api.capabilities.module.powermodule.IConfig;
-import com.lehjr.numina.api.constants.NuminaConstants;
+import com.lehjr.numina.common.capabilities.module.powermodule.IConfig;
+import com.lehjr.numina.common.constants.NuminaConstants;
 import com.lehjr.numina.client.config.ClientConfig;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.util.NonNullLazy;

@@ -26,7 +26,7 @@
 
 package com.lehjr.numina.common.config;
 
-import com.lehjr.numina.api.constants.NuminaConstants;
+import com.lehjr.numina.common.constants.NuminaConstants;
 import net.minecraftforge.common.ForgeConfigSpec;
 
 public class ServerConfig {

@@ -29,9 +29,9 @@ package lehjr.powersuits.client.control;
 import lehjr.numina.network.NuminaPackets;
 import lehjr.numina.network.packets.PlayerUpdatePacket;
 import lehjr.numina.util.capabilities.inventory.modechanging.IModeChangingItem;
-import lehjr.numina.util.capabilities.module.powermodule.EnumModuleCategory;
-import lehjr.numina.util.capabilities.module.powermodule.EnumModuleTarget;
-import lehjr.numina.util.capabilities.module.powermodule.PowerModuleCapability;
+import lehjr.numina.util.capabilities.module.powermodule.ModuleCategory;
+import lehjr.numina.util.capabilities.module.powermodule.ModuleTarget;
+import lehjr.numina.util.capabilities.module.powermodule.CapabilityPowerModule;
 import lehjr.numina.util.capabilities.module.rightclick.IRightClickModule;
 import lehjr.numina.util.capabilities.module.toggleable.IToggleableModule;
 import lehjr.numina.util.capabilities.player.CapabilityPlayerKeyStates;
@@ -87,13 +87,13 @@ public class KeybindKeyHandler {
 
         for (Item item : ForgeRegistries.ITEMS.getValues()) {
             if (item.getRegistryName().getNamespace().contains(MPSConstants.MOD_ID)) {
-                new ItemStack(item).getCapability(PowerModuleCapability.POWER_MODULE)
+                new ItemStack(item).getCapability(CapabilityPowerModule.POWER_MODULE)
                         .filter(IToggleableModule.class::isInstance)
                         .map(IToggleableModule.class::cast)
                         .ifPresent(pm -> {
                             // Tool settings are a bit odd
-                            if (pm.getTarget() == EnumModuleTarget.TOOLONLY) {
-                                if (pm.getCategory() == EnumModuleCategory.MINING_ENHANCEMENT) {
+                            if (pm.getTarget() == ModuleTarget.TOOLONLY) {
+                                if (pm.getCategory() == ModuleCategory.MINING_ENHANCEMENT) {
                                     modules.add(pm.getModuleStack());
                                     RegisterKeybinding(item.getRegistryName());
                                 } else if (!IRightClickModule.class.isAssignableFrom(pm.getClass())) {
@@ -169,8 +169,8 @@ public class KeybindKeyHandler {
         updatePlayerValues(player);
 
         // Mode changinging GUI
-        if (hotbarKeys[player.inventory.selected].isDown() && minecraft.isWindowActive()) {
-            player.inventory.getSelected().getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+        if (hotbarKeys[player.getInventory().selected].isDown() && minecraft.isWindowActive()) {
+            player.getInventory().getSelected().getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
                     .filter(IModeChangingItem.class::isInstance)
                     .map(IModeChangingItem.class::cast)
                     .ifPresent(iModeChanging->{
@@ -185,7 +185,7 @@ public class KeybindKeyHandler {
         /* cycleToolBackward/cycleToolForward */
         if (cycleToolBackward.isDown()) {
             minecraft.gameMode.tick();
-            player.inventory.getItem(player.inventory.selected).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+            player.getInventory().getItem(player.getInventory().selected).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
                     .filter(IModeChangingItem.class::isInstance)
                     .map(IModeChangingItem.class::cast)
                     .ifPresent(handler-> handler.cycleMode(player, 1));
@@ -193,7 +193,7 @@ public class KeybindKeyHandler {
 
         if (cycleToolForward.isDown()) {
             minecraft.gameMode.tick();
-            player.inventory.getItem(player.inventory.selected).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+            player.getInventory().getItem(player.getInventory().selected).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
                     .filter(IModeChangingItem.class::isInstance)
                     .map(IModeChangingItem.class::cast)
                     .ifPresent(handler-> handler.cycleMode(player, -1));

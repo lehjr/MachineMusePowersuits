@@ -118,11 +118,11 @@ public class ItemUtils {
         player.getMainHandItem().getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
                 .filter(IModeChangingItem.class::isInstance)
                 .map(IModeChangingItem.class::cast)
-                .ifPresent(handler -> slots.add(player.inventory.selected));
+                .ifPresent(handler -> slots.add(player.getInventory().selected));
 
-        for (int i = 36; i < player.inventory.getContainerSize(); i++) {
+        for (int i = 36; i < player.getInventory().getContainerSize(); i++) {
             int index = i;
-            player.inventory.getItem(i).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+            player.getInventory().getItem(i).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
                     .filter(IModularItem.class::isInstance)
                     .map(IModularItem.class::cast)
                     .ifPresent(handler -> slots.add(index));
@@ -138,9 +138,9 @@ public class ItemUtils {
      */
     public static List<Integer> getModularItemSlotsInInventory(Player player) {
         ArrayList<Integer> slots = new ArrayList<>();
-        for (int i = 0; i < player.inventory.getContainerSize(); i++) {
+        for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
             int finalI = i;
-            player.inventory.getItem(i).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+            player.getInventory().getItem(i).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
                     .filter(IModularItem.class::isInstance)
                     .map(IModularItem.class::cast)
                     .ifPresent(handler -> slots.add(finalI));

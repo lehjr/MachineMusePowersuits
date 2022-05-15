@@ -26,7 +26,7 @@
 
 package com.lehjr.numina.client.render.entity;
 
-import com.lehjr.numina.api.constants.NuminaConstants;
+import com.lehjr.numina.common.constants.NuminaConstants;
 import net.minecraft.client.renderer.entity.ArmorStandRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;

@@ -31,7 +31,7 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraftforge.network.NetworkEvent;
-import com.lehjr.numina.api.capabilities.render.CapabilityModelSpec;
+import com.lehjr.numina.common.capabilities.render.CapabilityModelSpec;
 
 import java.util.function.Supplier;
 

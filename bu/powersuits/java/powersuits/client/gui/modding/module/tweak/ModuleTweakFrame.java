@@ -32,7 +32,7 @@ import lehjr.numina.constants.NuminaConstants;
 import lehjr.numina.network.NuminaPackets;
 import lehjr.numina.network.packets.TweakRequestDoublePacket;
 import lehjr.numina.util.capabilities.module.powermodule.IPowerModule;
-import lehjr.numina.util.capabilities.module.powermodule.PowerModuleCapability;
+import lehjr.numina.util.capabilities.module.powermodule.CapabilityPowerModule;
 import lehjr.numina.util.client.gui.clickable.ClickableTinkerIntSlider;
 import lehjr.numina.util.client.gui.clickable.ClickableTinkerSlider;
 import lehjr.numina.util.client.gui.frame.ScrollableFrame;
@@ -99,7 +99,7 @@ public class ModuleTweakFrame extends ScrollableFrame {
     }
 
     String getUnit(String key) {
-        return moduleTarget.getSelectedModule().map(target->target.getModule().getCapability(PowerModuleCapability.POWER_MODULE)
+        return moduleTarget.getSelectedModule().map(target->target.getModule().getCapability(CapabilityPowerModule.POWER_MODULE)
                 .map(pm-> pm.getUnit(key)).orElse("")).orElse("");
     }
 
