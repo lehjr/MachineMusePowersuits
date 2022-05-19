@@ -1,6 +1,10 @@
 package com.lehjr.powersuits.client.event;
 
 import com.lehjr.powersuits.client.control.KeybindKeyHandler;
+import com.lehjr.powersuits.client.gui.inventory.ModularItemInventoryScreen;
+import com.lehjr.powersuits.common.base.MPSObjects;
+import com.mojang.blaze3d.platform.ScreenManager;
+import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -11,6 +15,11 @@ public class ClientSetup {
     public static void handleSetupEvent(final FMLClientSetupEvent event) {
         // register gui stuff here
 
+//        RenderingRegistry.registerEntityRenderingHandler(MPSObjects.RAILGUN_BOLT_ENTITY_TYPE.get(), RailGunBoltRenderer::new);
+//        RenderingRegistry.registerEntityRenderingHandler(MPSObjects.LUX_CAPACITOR_ENTITY_TYPE.get(), LuxCapacitorEntityRenderer::new);
+//        RenderingRegistry.registerEntityRenderingHandler(MPSObjects.PLASMA_BALL_ENTITY_TYPE.get(), PlasmaBoltEntityRenderer::new);
+//        RenderingRegistry.registerEntityRenderingHandler(MPSObjects.SPINNING_BLADE_ENTITY_TYPE.get(), SpinningBladeEntityRenderer::new);
+        MenuScreens.register(MPSObjects.MODULAR_ITEM_INVENTORY_MENU_TYPE.get(), ModularItemInventoryScreen::new);
     }
 
     public static void miscClientReg() {

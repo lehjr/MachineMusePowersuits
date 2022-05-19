@@ -34,7 +34,7 @@ import com.lehjr.numina.common.capabilities.module.rightclick.IRightClickModule;
 import com.lehjr.numina.common.capabilities.module.rightclick.RightClickModule;
 import com.lehjr.powersuits.common.base.MPSObjects;
 import com.lehjr.powersuits.common.config.MPSSettings;
-import com.lehjr.powersuits.common.menu.InstallSalvageMenu;
+import com.lehjr.powersuits.common.menu.ModularItemInventoryMenu;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.TranslatableComponent;
@@ -104,7 +104,7 @@ public class TinkerTableItem extends BlockItem {
             @Override
             public InteractionResultHolder<ItemStack> use(@Nonnull ItemStack itemStackIn, Level worldIn, Player playerIn, InteractionHand hand) {
                 if (!worldIn.isClientSide()) {
-                    SimpleMenuProvider container = new SimpleMenuProvider((id, inventory, player) -> new InstallSalvageMenu(id, inventory, EquipmentSlot.MAINHAND), new TranslatableComponent("gui.powersuits.tab.install.salvage"));
+                    SimpleMenuProvider container = new SimpleMenuProvider((id, inventory, player) -> new ModularItemInventoryMenu(id, inventory, EquipmentSlot.MAINHAND), new TranslatableComponent("gui.powersuits.tab.install.salvage"));
                     NetworkHooks.openGui((ServerPlayer) playerIn, container, buffer -> buffer.writeEnum(EquipmentSlot.MAINHAND));
                 }
                 return super.use(itemStackIn, worldIn, playerIn, hand);

@@ -35,7 +35,7 @@ import com.lehjr.numina.common.capabilities.module.toggleable.IToggleableModule;
 import com.lehjr.numina.common.capabilities.player.CapabilityPlayerKeyStates;
 import com.lehjr.numina.common.network.NuminaPackets;
 import com.lehjr.numina.common.network.packets.PlayerUpdatePacket;
-import com.lehjr.powersuits.client.gui.modechanging.GuiModeSelector;
+import com.lehjr.powersuits.client.gui.modechanging.ModeSelectorScreen;
 import com.lehjr.powersuits.common.constants.MPSConstants;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
@@ -175,8 +175,8 @@ public class KeybindKeyHandler {
                     .map(IModeChangingItem.class::cast)
                     .ifPresent(iModeChanging->{
                         if(player.level.isClientSide) {
-                            if (!(Minecraft.getInstance().screen instanceof GuiModeSelector)) {
-                                Minecraft.getInstance().tell(() -> Minecraft.getInstance().setScreen(new GuiModeSelector(player, new TextComponent("modeChanging"))));
+                            if (!(Minecraft.getInstance().screen instanceof ModeSelectorScreen)) {
+                                Minecraft.getInstance().tell(() -> Minecraft.getInstance().setScreen(new ModeSelectorScreen(player, new TextComponent("modeChanging"))));
                             }
                         }
                     });

@@ -26,7 +26,7 @@
 
 package com.lehjr.powersuits.common.network.packets;
 
-import com.lehjr.powersuits.common.menu.InstallSalvageMenu;
+import com.lehjr.powersuits.common.menu.ModularItemInventoryMenu;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.SimpleMenuProvider;
@@ -55,7 +55,7 @@ public class ContainerGuiOpenPacket {
 
     public static void handle(ContainerGuiOpenPacket msg, Supplier<NetworkEvent.Context> ctx) {
         ctx.get().enqueueWork(() -> {
-            SimpleMenuProvider container = new SimpleMenuProvider((id, inventory, player) -> new InstallSalvageMenu(id, inventory, msg.type), new TranslatableComponent("gui.powersuits.tab.install.salvage"));
+            SimpleMenuProvider container = new SimpleMenuProvider((id, inventory, player) -> new ModularItemInventoryMenu(id, inventory, msg.type), new TranslatableComponent("gui.powersuits.tab.install.salvage"));
             NetworkHooks.openGui(ctx.get().getSender(), container, buffer -> buffer.writeEnum(msg.type));
         });
         ctx.get().setPacketHandled(true);

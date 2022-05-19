@@ -1,6 +1,9 @@
 package com.lehjr.powersuits.common.base;
 
+import com.lehjr.numina.common.config.ConfigHelper;
 import com.lehjr.powersuits.client.event.ClientSetup;
+import com.lehjr.powersuits.common.config.MPSSettings;
+import com.lehjr.powersuits.common.constants.MPSConstants;
 import com.mojang.logging.LogUtils;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -12,7 +15,9 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.InterModComms;
+import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
@@ -29,6 +34,11 @@ public class ModularPowersuits {
     private static final Logger LOGGER = LogUtils.getLogger();
 
     public ModularPowersuits() {
+        // Config
+        ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, MPSSettings.CLIENT_SPEC, ConfigHelper.setupConfigFile("mps-client-only.toml", MPSConstants.MOD_ID).getAbsolutePath());
+        ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, MPSSettings.SERVER_SPEC); // note config file location for dedicated server is stored in the world config
+
+
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
 

@@ -1,6 +1,6 @@
 package com.lehjr.powersuits.common.block;
 
-import com.lehjr.powersuits.common.menu.InstallSalvageMenu;
+import com.lehjr.powersuits.common.menu.ModularItemInventoryMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.TranslatableComponent;
@@ -59,7 +59,7 @@ public class TinkerTable extends HorizontalDirectionalBlock implements SimpleWat
     public InteractionResult use(BlockState pState, Level level, BlockPos pPos, Player player, InteractionHand pHand, BlockHitResult pHit) {
 
         if (!level.isClientSide()) {
-            SimpleMenuProvider container = new SimpleMenuProvider((id, inventory, player1) -> new InstallSalvageMenu(id, inventory, EquipmentSlot.MAINHAND), new TranslatableComponent("gui.powersuits.tab.install.salvage"));
+            SimpleMenuProvider container = new SimpleMenuProvider((id, inventory, player1) -> new ModularItemInventoryMenu(id, inventory, EquipmentSlot.MAINHAND), new TranslatableComponent("gui.powersuits.tab.install.salvage"));
             NetworkHooks.openGui((ServerPlayer) player, container, buffer -> buffer.writeEnum(EquipmentSlot.MAINHAND));
         }
 

@@ -34,11 +34,11 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
 
-public class GuiModeSelector extends NuminaAbstractContainerlessScreen {
+public class ModeSelectorScreen extends NuminaAbstractContainerlessScreen {
     Player player;
     RadialModeSelectionFrame radialSelect;
 
-    public GuiModeSelector(Player player, Component titleIn) {
+    public ModeSelectorScreen(Player player, Component titleIn) {
         super(titleIn);
         Minecraft.getInstance().keyboardHandler.setSendRepeatsToGui(true);
         this.player = player;

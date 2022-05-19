@@ -34,7 +34,7 @@ import com.lehjr.powersuits.common.item.module.tool.*;
 import com.lehjr.powersuits.common.item.module.vision.BinocularsModule;
 import com.lehjr.powersuits.common.item.module.vision.NightVisionModule;
 import com.lehjr.powersuits.common.item.module.weapon.*;
-import com.lehjr.powersuits.common.menu.InstallSalvageMenu;
+import com.lehjr.powersuits.common.menu.ModularItemInventoryMenu;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -229,9 +229,9 @@ public class MPSObjects {
 //            CONTAINER_TYPES.register(MPSRegistryNames.INSTALL_SALVAGE_CRAFT_CONTAINER_TYPE,
 //                    () -> IForgeContainerType.create((windowId, inv, data) -> new InstallSalvageCraftContainer(windowId, inv)));
 
-    public static final RegistryObject<MenuType<InstallSalvageMenu>> INSTALL_SALVAGE_MENU_TYPE =
+    public static final RegistryObject<MenuType<ModularItemInventoryMenu>> MODULAR_ITEM_INVENTORY_MENU_TYPE =
             MENU_TYPES.register(MPSRegistryNames.INSTALL_SALVAGE_MENU_TYPE,
-                    () -> IForgeMenuType.create((windowId, inv, data) -> new InstallSalvageMenu(windowId, inv, data.readEnum(EquipmentSlot.class))));
+                    () -> IForgeMenuType.create((windowId, inv, data) -> new ModularItemInventoryMenu(windowId, inv, data.readEnum(EquipmentSlot.class))));
 
 
 
