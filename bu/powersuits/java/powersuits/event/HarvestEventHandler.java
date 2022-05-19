@@ -65,7 +65,7 @@ public class HarvestEventHandler {
                         return;
                     }
 
-                    RayTraceResult rayTraceResult = rayTrace(player.level, player, RayTraceContext.FluidMode.SOURCE_ONLY);
+                    RayTraceResult rayTraceResult = rayTrace(player.level, player, ClipContext.Fluid.SOURCE_ONLY);
                     if (rayTraceResult == null || rayTraceResult.getType() != RayTraceResult.Type.BLOCK)
                         return;
 

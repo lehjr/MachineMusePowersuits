@@ -155,9 +155,7 @@ public class ModularPowersuits {
         modEventBus.addListener(ModelBakeEventHandler.INSTANCE::onModelBake);
         modEventBus.addListener(RenderEventHandler.INSTANCE::preTextureStitch);
 
-        MinecraftForge.EVENT_BUS.register(RenderEventHandler.INSTANCE);
-        MinecraftForge.EVENT_BUS.register(new ClientTickHandler());
-        MinecraftForge.EVENT_BUS.register(new KeybindKeyHandler());
+
         MinecraftForge.EVENT_BUS.register(new LogoutEventHandler());
 
         MinecraftForge.EVENT_BUS.addListener(PlayerLoginHandler::onPlayerLoginClient);// just to populated keybinds -_-

@@ -27,29 +27,29 @@
 package com.lehjr.powersuits.common.item.module.tool;
 
 import com.google.common.util.concurrent.AtomicDouble;
-import lehjr.numina.util.capabilities.inventory.modechanging.IModeChangingItem;
-import lehjr.numina.util.capabilities.module.blockbreaking.IBlockBreakingModule;
-import lehjr.numina.util.capabilities.module.powermodule.*;
-import lehjr.numina.util.energy.ElectricItemUtils;
-import lehjr.numina.util.helper.ToolHelpers;
-import lehjr.powersuits.config.MPSSettings;
-import lehjr.powersuits.constants.MPSConstants;
-import lehjr.powersuits.constants.MPSRegistryNames;
-import lehjr.powersuits.item.module.AbstractPowerModule;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.Player;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
+import com.lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
+import com.lehjr.numina.common.capabilities.module.blockbreaking.IBlockBreakingModule;
+import com.lehjr.numina.common.capabilities.module.powermodule.*;
+import com.lehjr.numina.common.energy.ElectricItemUtils;
+import com.lehjr.powersuits.common.config.MPSSettings;
+import com.lehjr.powersuits.common.constants.MPSConstants;
+import com.lehjr.powersuits.common.constants.MPSRegistryNames;
+import com.lehjr.powersuits.common.item.module.AbstractPowerModule;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.items.CapabilityItemHandler;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -96,39 +96,39 @@ public class DiamondPickUpgradeModule extends AbstractPowerModule {
             @Override
             public boolean canHarvestBlock(@Nonnull ItemStack powerFist, BlockState state, Player player, BlockPos pos, int playerEnergy) {
                 AtomicBoolean canHarvest = new AtomicBoolean(false);
-                powerFist.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-                        .filter(IModeChangingItem.class::isInstance)
-                        .map(IModeChangingItem.class::cast)
-                        .ifPresent(modeChanging -> {
-                        ItemStack pickaxeModule = modeChanging.getOnlineModuleOrEmpty(MPSRegistryNames.PICKAXE_MODULE_REGNAME);
-                        if (!pickaxeModule.isEmpty()) {
-                            int energyUsage = pickaxeModule.getCapability(CapabilityPowerModule.POWER_MODULE).map(m -> {
-                                if (m instanceof IBlockBreakingModule) {
-                                    return ((IBlockBreakingModule) m).getEnergyUsage();
-                                }
-                                return 0;
-                            }).orElse(0);
-                            canHarvest.set(pickaxeModule.getCapability(CapabilityPowerModule.POWER_MODULE).map(m -> {
-                                if (m instanceof IBlockBreakingModule) {
-                                    return !((IBlockBreakingModule) m).canHarvestBlock(powerFist, state, player, pos, playerEnergy) &&
-                                            playerEnergy >= energyUsage && ToolHelpers.isToolEffective(player.getCommandSenderWorld(), pos, getEmulatedTool());
-                                }
-                                return false;
-                            }).orElse(false));
-                        }
-                });
+//                powerFist.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+//                        .filter(IModeChangingItem.class::isInstance)
+//                        .map(IModeChangingItem.class::cast)
+//                        .ifPresent(modeChanging -> {
+//                        ItemStack pickaxeModule = modeChanging.getOnlineModuleOrEmpty(MPSRegistryNames.PICKAXE_MODULE);
+//                        if (!pickaxeModule.isEmpty()) {
+//                            int energyUsage = pickaxeModule.getCapability(CapabilityPowerModule.POWER_MODULE).map(m -> {
+//                                if (m instanceof IBlockBreakingModule) {
+//                                    return ((IBlockBreakingModule) m).getEnergyUsage();
+//                                }
+//                                return 0;
+//                            }).orElse(0);
+//                            canHarvest.set(pickaxeModule.getCapability(CapabilityPowerModule.POWER_MODULE).map(m -> {
+//                                if (m instanceof IBlockBreakingModule) {
+//                                    return !((IBlockBreakingModule) m).canHarvestBlock(powerFist, state, player, pos, playerEnergy) &&
+//                                            playerEnergy >= energyUsage && ToolHelpers.isToolEffective(player.getCommandSenderWorld(), pos, getEmulatedTool());
+//                                }
+//                                return false;
+//                            }).orElse(false));
+//                        }
+//                });
                 return canHarvest.get();
             }
 
             @Override
-            public boolean onBlockDestroyed(ItemStack powerFist, World worldIn, BlockState state, BlockPos pos, LivingEntity entityLiving, int playerEnergy) {
+            public boolean mineBlock(@NotNull ItemStack powerFist, Level worldIn, BlockState state, BlockPos pos, LivingEntity entityLiving, int playerEnergy) {
                 if (this.canHarvestBlock(powerFist, state, (Player) entityLiving, pos, playerEnergy)) {
                     AtomicInteger energyUsage = new AtomicInteger(0);
                     powerFist.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
                             .filter(IModeChangingItem.class::isInstance)
                             .map(IModeChangingItem.class::cast)
                             .ifPresent(modeChanging -> {
-                            ItemStack pickaxeModule = modeChanging.getOnlineModuleOrEmpty(MPSRegistryNames.PICKAXE_MODULE_REGNAME);
+                            ItemStack pickaxeModule = modeChanging.getOnlineModuleOrEmpty(MPSRegistryNames.PICKAXE_MODULE);
                             if (!pickaxeModule.isEmpty()) {
                                 energyUsage.set(pickaxeModule.getCapability(CapabilityPowerModule.POWER_MODULE)
                                         .filter(IBlockBreakingModule.class::isInstance)
@@ -156,7 +156,7 @@ public class DiamondPickUpgradeModule extends AbstractPowerModule {
                         .filter(IModeChangingItem.class::isInstance)
                         .map(IModeChangingItem.class::cast)
                         .ifPresent(modeChanging -> {
-                            ItemStack pickaxeModule = modeChanging.getOnlineModuleOrEmpty(MPSRegistryNames.PICKAXE_MODULE_REGNAME);
+                            ItemStack pickaxeModule = modeChanging.getOnlineModuleOrEmpty(MPSRegistryNames.PICKAXE_MODULE);
                             if (!pickaxeModule.isEmpty()) {
                                 newSpeed.set(newSpeed.get() *
                                         pickaxeModule.getCapability(CapabilityPowerModule.POWER_MODULE).map(m ->

@@ -1,5 +1,6 @@
 package com.lehjr.powersuits.common.block;
 
+import com.lehjr.numina.common.math.Color;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.tags.FluidTags;
@@ -21,6 +22,7 @@ import org.jetbrains.annotations.Nullable;
 
 public class LuxCapacitor extends DirectionalBlock implements SimpleWaterloggedBlock {
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
+    public static final Color defaultColor = new Color(0.4F, 0.2F, 0.9F);
 
     protected static final VoxelShape EAST_AABB = Block.box(0, 1, 1, 4, 15, 15);
     protected static final VoxelShape WEST_AABB = Block.box(12, 1, 1, 16, 15, 15);

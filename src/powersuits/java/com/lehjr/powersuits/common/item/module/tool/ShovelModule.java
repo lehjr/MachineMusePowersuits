@@ -27,17 +27,25 @@
 package com.lehjr.powersuits.common.item.module.tool;
 
 import com.lehjr.numina.common.capabilities.module.blockbreaking.IBlockBreakingModule;
-import com.lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
-import com.lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
+import com.lehjr.numina.common.capabilities.module.powermodule.*;
+import com.lehjr.numina.common.energy.ElectricItemUtils;
 import com.lehjr.powersuits.common.config.MPSSettings;
 import com.lehjr.powersuits.common.constants.MPSConstants;
 import com.lehjr.powersuits.common.item.module.AbstractPowerModule;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.entity.player.PlayerEvent;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -79,8 +87,8 @@ public class ShovelModule extends AbstractPowerModule {//
             }
 
             @Override
-            public boolean onBlockDestroyed(ItemStack itemStack, World worldIn, BlockState state, BlockPos pos, LivingEntity entityLiving, int playerEnergy) {
-                if (this.canHarvestBlock(itemStack, state, (Player) entityLiving, pos, playerEnergy)) {
+            public boolean mineBlock(@NotNull ItemStack powerFist, Level worldIn, BlockState state, BlockPos pos, LivingEntity entityLiving, int playerEnergy) {
+                if (this.canHarvestBlock(powerFist, state, (Player) entityLiving, pos, playerEnergy)) {
                     ElectricItemUtils.drainPlayerEnergy((Player) entityLiving, getEnergyUsage());
                     return true;
                 }
@@ -96,6 +104,8 @@ public class ShovelModule extends AbstractPowerModule {//
             public int getEnergyUsage() {
                 return (int) applyPropertyModifiers(MPSConstants.SHOVEL_ENERGY);
             }
+
+
 
             @Override
             public void handleBreakSpeed(PlayerEvent.BreakSpeed event) {

@@ -26,22 +26,22 @@
 
 package com.lehjr.powersuits.common.item.module.movement;
 
-import lehjr.numina.util.capabilities.module.powermodule.IConfig;
-import lehjr.numina.util.capabilities.module.powermodule.ModuleCategory;
-import lehjr.numina.util.capabilities.module.powermodule.ModuleTarget;
-import lehjr.numina.util.capabilities.module.powermodule.CapabilityPowerModule;
-import lehjr.numina.util.capabilities.module.tickable.PlayerTickModule;
-import lehjr.numina.util.capabilities.module.toggleable.IToggleableModule;
-import lehjr.numina.util.client.control.PlayerMovementInputWrapper;
-import lehjr.numina.util.player.PlayerUtils;
-import lehjr.powersuits.config.MPSSettings;
-import lehjr.powersuits.constants.MPSConstants;
-import lehjr.powersuits.event.MovementManager;
-import lehjr.powersuits.item.module.AbstractPowerModule;
-import net.minecraft.entity.player.Player;
-import net.minecraft.item.ItemStack;
+import com.lehjr.numina.client.control.PlayerMovementInputWrapper;
+import com.lehjr.numina.common.capabilities.module.powermodule.CapabilityPowerModule;
+import com.lehjr.numina.common.capabilities.module.powermodule.IConfig;
+import com.lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
+import com.lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
+import com.lehjr.numina.common.capabilities.module.tickable.PlayerTickModule;
+import com.lehjr.numina.common.capabilities.module.toggleable.IToggleableModule;
+import com.lehjr.numina.common.player.PlayerUtils;
+import com.lehjr.powersuits.common.config.MPSSettings;
+import com.lehjr.powersuits.common.constants.MPSConstants;
+import com.lehjr.powersuits.common.event.MovementManager;
+import com.lehjr.powersuits.common.item.module.AbstractPowerModule;
+import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.util.Direction;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;

@@ -26,6 +26,7 @@
 
 package com.lehjr.powersuits.common.item.module.movement;
 
+import com.lehjr.numina.client.control.PlayerMovementInputWrapper;
 import com.lehjr.numina.client.sound.Musique;
 import com.lehjr.numina.common.capabilities.module.powermodule.CapabilityPowerModule;
 import com.lehjr.numina.common.capabilities.module.powermodule.IConfig;
@@ -39,9 +40,11 @@ import com.lehjr.numina.common.energy.ElectricItemUtils;
 import com.lehjr.powersuits.client.sound.MPSSoundDictionary;
 import com.lehjr.powersuits.common.config.MPSSettings;
 import com.lehjr.powersuits.common.constants.MPSConstants;
+import com.lehjr.powersuits.common.event.MovementManager;
 import com.lehjr.powersuits.common.item.module.AbstractPowerModule;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.ForgeMod;
@@ -112,7 +115,7 @@ public class SwimAssistModule extends AbstractPowerModule {
 
                     if (swimEnergyConsumption < playerEnergy) {
                         if (player.level.isClientSide && NuminaSettings.useSounds()) {
-                            Musique.playerSound(player, MPSSoundDictionary.SWIM_ASSIST, SoundCategory.PLAYERS, 1.0f, 1.0f, true);
+                            Musique.playerSound(player, MPSSoundDictionary.SWIM_ASSIST, SoundSource.PLAYERS, 1.0f, 1.0f, true);
                         } else if (
                             // every 20 ticks
                                 (player.level.getGameTime() % 5) == 0) {

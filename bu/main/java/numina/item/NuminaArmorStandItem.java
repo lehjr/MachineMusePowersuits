@@ -59,7 +59,7 @@ public class NuminaArmorStandItem extends ArmorStandItem {
             return InteractionResult.FAIL;
         } else {
             World world = context.getLevel();
-            BlockItemUseContext blockitemusecontext = new BlockItemUseContext(context);
+            BlockPlaceContext blockitemusecontext = new BlockPlaceContext(context);
             BlockPos blockpos = blockitemusecontext.getClickedPos();
             ItemStack itemstack = context.getItemInHand();
             Vector3d vector3d = Vector3d.atBottomCenterOf(blockpos);

@@ -75,28 +75,7 @@ import java.util.Random;
  * @author MachineMuse
  */
 public abstract class MuseRenderer {
-    protected static SwirlyMuseCircle selectionCircle;
-    static boolean messagedAboutSlick = false;
 
-
-
-
-    /**
-     * Does the rotating green circle around the selection, e.g. in GUI.
-     *
-     *
-     * @param matrixStack
-     * @param xoffset
-     * @param yoffset
-     * @param radius
-     * @param zLevel
-     */
-    public static void drawCircleAround(PoseStack matrixStack, double xoffset, double yoffset, double radius, float zLevel) {
-        if (selectionCircle == null) {
-            selectionCircle = new SwirlyMuseCircle(new Color(0.0f, 1.0f, 0.0f, 0.0f), new Color(0.8f, 1.0f, 0.8f, 1.0f));
-        }
-        selectionCircle.draw(matrixStack, radius, xoffset, yoffset, zLevel);
-    }
 
 
     // FIXME: need lighting/shading for this module model
@@ -104,23 +83,7 @@ public abstract class MuseRenderer {
 
 
 
-    /**
-     * Makes the appropriate openGL calls and draws an itemStack and overlay using the default icon
-     */
-    public static void drawItemAt(double x, double y, @Nonnull ItemStack itemStack) {
-        if (!itemStack.isEmpty()) {
-            getItemRenderer().renderAndDecorateItem(itemStack, (int) x, (int) y);
-            getItemRenderer().renderGuiItemDecorations(getFontRenderer(), itemStack, (int) x, (int) y, (String) null);
-        }
-    }
 
-    public static void drawItemAt(PoseStack matrixStack, double x, double y, @Nonnull ItemStack itemStack, Color colour) {
-        if (!itemStack.isEmpty()) {
-
-            Minecraft.getInstance().getItemRenderer().renderAndDecorateItem(itemStack, (int) x, (int) y);
-            Minecraft.getInstance().getItemRenderer().renderGuiItemDecorations(getFontRenderer(), itemStack, (int) x, (int) y, (String) null);
-        }
-    }
 
 
 
@@ -162,7 +125,7 @@ public abstract class MuseRenderer {
                 RenderSystem.enableDepthTest();
             }
 
-            ClientPlayer clientplayerentity = Minecraft.getInstance().player;
+            LocalPlayer clientplayerentity = Minecraft.getInstance().player;
             float f3 = clientplayerentity == null ? 0.0F : clientplayerentity.getCooldowns().getCooldownPercent(stack.getItem(), Minecraft.getInstance().getFrameTime());
             if (f3 > 0.0F) {
                 RenderSystem.disableDepthTest();

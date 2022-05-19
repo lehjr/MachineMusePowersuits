@@ -28,45 +28,50 @@ package com.lehjr.powersuits.common.item.module.tool;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
-import lehjr.numina.util.capabilities.module.blockbreaking.IBlockBreakingModule;
-import lehjr.numina.util.capabilities.module.powermodule.IConfig;
-import lehjr.numina.util.capabilities.module.powermodule.ModuleCategory;
-import lehjr.numina.util.capabilities.module.powermodule.ModuleTarget;
-import lehjr.numina.util.capabilities.module.powermodule.CapabilityPowerModule;
-import lehjr.numina.util.capabilities.module.rightclick.IRightClickModule;
-import lehjr.numina.util.capabilities.module.rightclick.RightClickModule;
-import lehjr.numina.util.energy.ElectricItemUtils;
-import lehjr.numina.util.helper.ToolHelpers;
-import lehjr.powersuits.config.MPSSettings;
-import lehjr.powersuits.constants.MPSConstants;
-import lehjr.powersuits.item.module.AbstractPowerModule;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.Player;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemUseContext;
-import net.minecraft.item.Items;
+import com.lehjr.numina.common.capabilities.module.blockbreaking.IBlockBreakingModule;
+import com.lehjr.numina.common.capabilities.module.powermodule.CapabilityPowerModule;
+import com.lehjr.numina.common.capabilities.module.powermodule.IConfig;
+import com.lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
+import com.lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
+import com.lehjr.numina.common.capabilities.module.rightclick.IRightClickModule;
+import com.lehjr.numina.common.capabilities.module.rightclick.RightClickModule;
+import com.lehjr.numina.common.energy.ElectricItemUtils;
+import com.lehjr.powersuits.common.config.MPSSettings;
+import com.lehjr.powersuits.common.constants.MPSConstants;
+import com.lehjr.powersuits.common.item.module.AbstractPowerModule;
+import com.mojang.datafixers.util.Pair;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.util.Direction;
-import net.minecraft.util.InteractionResult;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.HoeItem;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.level.ItemLike;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.entity.player.PlayerEvent;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Map;
 import java.util.concurrent.Callable;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
 
 public class HoeModule extends AbstractPowerModule {
-    protected static final Map<Block, BlockState> HOE_LOOKUP = Maps.newHashMap(ImmutableMap.of(Blocks.GRASS_BLOCK, Blocks.FARMLAND.defaultBlockState(), Blocks.GRASS_PATH, Blocks.FARMLAND.defaultBlockState(), Blocks.DIRT, Blocks.FARMLAND.defaultBlockState(), Blocks.COARSE_DIRT, Blocks.DIRT.defaultBlockState()));
+
 
     public HoeModule() {
     }
@@ -78,8 +83,16 @@ public class HoeModule extends AbstractPowerModule {
     }
 
     public class CapProvider implements ICapabilityProvider {
+        @Deprecated
+        protected static final Map<Block, Pair<Predicate<UseOnContext>, Consumer<UseOnContext>>> TILLABLES = Maps.newHashMap(ImmutableMap.of(Blocks.GRASS_BLOCK, Pair.of(CapProvider::onlyIfAirAbove, changeIntoState(Blocks.FARMLAND.defaultBlockState())), Blocks.DIRT_PATH, Pair.of(CapProvider::onlyIfAirAbove, changeIntoState(Blocks.FARMLAND.defaultBlockState())), Blocks.DIRT, Pair.of(CapProvider::onlyIfAirAbove, changeIntoState(Blocks.FARMLAND.defaultBlockState())), Blocks.COARSE_DIRT, Pair.of(CapProvider::onlyIfAirAbove, changeIntoState(Blocks.DIRT.defaultBlockState())), Blocks.ROOTED_DIRT, Pair.of((p_150861_) -> {
+            return true;
+        }, changeIntoStateAndDropItem(Blocks.DIRT.defaultBlockState(), Items.HANGING_ROOTS))));
+
+
+
         ItemStack module;
         IRightClickModule rightClick;
+
 
         public CapProvider(@Nonnull ItemStack module) {
             this.module = module;
@@ -92,6 +105,10 @@ public class HoeModule extends AbstractPowerModule {
                 addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.HOE_ENERGY, 9500);
                 addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.HOE_HARVEST_SPEED, 22);
             }};
+
+
+
+
         }
 
         @Nonnull
@@ -105,11 +122,11 @@ public class HoeModule extends AbstractPowerModule {
                 super(module, category, target, config);
             }
 
-            @Override
-            public InteractionResult useOn(ItemUseContext context) {
+//            @Override
+            public InteractionResult useOn1(UseOnContext context) {
                 int energyConsumed = this.getEnergyUsage();
                 Player player = context.getPlayer();
-                World world = context.getLevel();
+                Level world = context.getLevel();
                 BlockPos pos = context.getClickedPos();
                 Direction facing = context.getClickedFace();
                 ItemStack itemStack = context.getItemInHand();
@@ -124,19 +141,19 @@ public class HoeModule extends AbstractPowerModule {
                         for (int j = (int) Math.floor(-radius); j < radius; j++) {
                             if (i * i + j * j < radius * radius) {
                                 BlockPos newPos = pos.offset(i, 0, j);
-                                if (facing != Direction.DOWN && (world.isEmptyBlock(newPos.above()) || ToolHelpers.blockCheckAndHarvest(player, world, newPos.above()))) {
-                                    if (facing != Direction.DOWN && world.isEmptyBlock(newPos.above())) {
-                                        BlockState blockstate = HOE_LOOKUP.get(world.getBlockState(newPos).getBlock());
-                                        if (blockstate != null) {
-                                            world.playSound(player, newPos, SoundEvents.HOE_TILL, SoundCategory.BLOCKS, 1.0F, 1.0F);
-
-                                            if (!world.isClientSide) {
-                                                world.setBlock(newPos, blockstate, 11);
-                                                ElectricItemUtils.drainPlayerEnergy(player, energyConsumed);
-                                            }
-                                        }
-                                    }
-                                }
+//                                if (facing != Direction.DOWN && (world.isEmptyBlock(newPos.above()) || ToolHelpers.blockCheckAndHarvest(player, world, newPos.above()))) {
+//                                    if (facing != Direction.DOWN && world.isEmptyBlock(newPos.above())) {
+//                                        BlockState blockstate = HOE_LOOKUP.get(world.getBlockState(newPos).getBlock());
+//                                        if (blockstate != null) {
+//                                            world.playSound(player, newPos, SoundEvents.HOE_TILL, SoundSource.BLOCKS, 1.0F, 1.0F);
+//
+//                                            if (!world.isClientSide) {
+//                                                world.setBlock(newPos, blockstate, 11);
+//                                                ElectricItemUtils.drainPlayerEnergy(player, energyConsumed);
+//                                            }
+//                                        }
+//                                    }
+//                                }
                             }
                         }
                     }
@@ -145,8 +162,8 @@ public class HoeModule extends AbstractPowerModule {
             }
 
             @Override
-            public boolean onBlockDestroyed(ItemStack itemStack, World worldIn, BlockState state, BlockPos pos, LivingEntity entityLiving, int playerEnergy) {
-                if (this.canHarvestBlock(itemStack, state, (Player) entityLiving, pos, playerEnergy)) {
+            public boolean mineBlock(@NotNull ItemStack powerFist, Level worldIn, BlockState state, BlockPos pos, LivingEntity entityLiving, int playerEnergy) {
+                if (this.canHarvestBlock(powerFist, state, (Player) entityLiving, pos, playerEnergy)) {
                     ElectricItemUtils.drainPlayerEnergy(entityLiving, getEnergyUsage());
                     return true;
                 }
@@ -168,6 +185,80 @@ public class HoeModule extends AbstractPowerModule {
             public ItemStack getEmulatedTool() {
                 return new ItemStack(Items.IRON_HOE);
             }
+
+
+
+
+
+            public InteractionResult useOn(UseOnContext pContext) {
+                int hook = net.minecraftforge.event.ForgeEventFactory.onHoeUse(pContext);
+                if (hook != 0) return hook > 0 ? InteractionResult.SUCCESS : InteractionResult.FAIL;
+                Level level = pContext.getLevel();
+                BlockPos blockpos = pContext.getClickedPos();
+                BlockState toolModifiedState = level.getBlockState(blockpos).getToolModifiedState(pContext, net.minecraftforge.common.ToolActions.HOE_TILL, false);
+                Pair<Predicate<UseOnContext>, Consumer<UseOnContext>> pair = toolModifiedState == null ? null : Pair.of(ctx -> true, changeIntoState(toolModifiedState));
+
+
+
+
+
+
+
+                if (pair == null) {
+                    return InteractionResult.PASS;
+                } else {
+                    Predicate<UseOnContext> predicate = pair.getFirst();
+                    Consumer<UseOnContext> consumer = pair.getSecond();
+                    if (predicate.test(pContext)) {
+                        Player player = pContext.getPlayer();
+                        level.playSound(player, blockpos, SoundEvents.HOE_TILL, SoundSource.BLOCKS, 1.0F, 1.0F);
+                        if (!level.isClientSide) {
+                            consumer.accept(pContext);
+                            if (player != null) {
+
+                                pContext.getItemInHand().hurtAndBreak(1, player, (p_150845_) -> {
+                                    p_150845_.broadcastBreakEvent(pContext.getHand());
+
+
+                                });
+                            }
+                        }
+
+                        return InteractionResult.sidedSuccess(level.isClientSide);
+                    } else {
+                        return InteractionResult.PASS;
+                    }
+                }
+            }
+
+
+
+
+
+
+
+//            @Override
+//            public boolean canPerformAction(ItemStack stack, net.minecraftforge.common.ToolAction toolAction) {
+//                return net.minecraftforge.common.ToolActions.DEFAULT_HOE_ACTIONS.contains(toolAction);
+//            }
+        }
+
+
+        public static Consumer<UseOnContext> changeIntoStateAndDropItem(BlockState pState, ItemLike pItemToDrop) {
+            return (useOnContext) -> {
+                useOnContext.getLevel().setBlock(useOnContext.getClickedPos(), pState, 11);
+                Block.popResourceFromFace(useOnContext.getLevel(), useOnContext.getClickedPos(), useOnContext.getClickedFace(), new ItemStack(pItemToDrop));
+            };
+        }
+
+        public static boolean onlyIfAirAbove(UseOnContext useOnContext) {
+            return useOnContext.getClickedFace() != Direction.DOWN && useOnContext.getLevel().getBlockState(useOnContext.getClickedPos().above()).isAir();
+        }
+
+        public static Consumer<UseOnContext> changeIntoState(BlockState pState) {
+            return (useOnContext) -> {
+                useOnContext.getLevel().setBlock(useOnContext.getClickedPos(), pState, 11);
+            };
         }
     }
 }

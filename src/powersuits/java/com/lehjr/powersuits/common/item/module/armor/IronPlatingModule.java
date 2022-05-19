@@ -85,9 +85,9 @@ public class IronPlatingModule extends AbstractPowerModule {
         @Override
         @Nonnull
         public <T> LazyOptional<T> getCapability(@Nonnull final Capability<T> capability, final @Nullable Direction side) {
-            final LazyOptional<T> CapabilityPowerModule = CapabilityPowerModule.POWER_MODULE.orEmpty(capability, powerModuleHolder);
-            if (CapabilityPowerModule.isPresent()) {
-                return CapabilityPowerModule;
+            final LazyOptional<T> capabilityPowerModule = CapabilityPowerModule.POWER_MODULE.orEmpty(capability, powerModuleHolder);
+            if (capabilityPowerModule.isPresent()) {
+                return capabilityPowerModule;
             }
             return LazyOptional.empty();
         }

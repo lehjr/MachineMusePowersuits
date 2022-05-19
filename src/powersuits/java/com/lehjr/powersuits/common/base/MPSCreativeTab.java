@@ -16,9 +16,7 @@ public class MPSCreativeTab extends CreativeModeTab {
     @OnlyIn(Dist.CLIENT)
     @Override
     public ItemStack makeIcon() {
-//        Item item = MPSObjects.POWER_ARMOR_HELMET.get();
-        Item item = Items.STICK;
-
+        Item item = MPSObjects.POWER_ARMOR_HELMET.get();
         return new ItemStack(item);
     }
 }

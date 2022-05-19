@@ -26,6 +26,7 @@
 
 package com.lehjr.powersuits.common.capability;
 
+import com.lehjr.numina.common.base.NuminaLogger;
 import com.lehjr.numina.common.capabilities.heat.CapabilityHeat;
 import com.lehjr.numina.common.capabilities.heat.HeatItemWrapper;
 import com.lehjr.numina.common.capabilities.heat.IHeatStorage;
@@ -35,6 +36,8 @@ import com.lehjr.numina.common.capabilities.module.powermodule.CapabilityPowerMo
 import com.lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import com.lehjr.numina.common.capabilities.render.CapabilityModelSpec;
 import com.lehjr.numina.common.capabilities.render.IModelSpec;
+import com.lehjr.numina.common.constants.TagConstants;
+import com.lehjr.powersuits.client.render.ArmorModelSpecNBT;
 import com.lehjr.powersuits.common.config.MPSSettings;
 import com.lehjr.powersuits.common.constants.MPSRegistryNames;
 import net.minecraft.core.Direction;
@@ -58,7 +61,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class PowerArmorCap implements ICapabilityProvider {
-    final ItemStack itemStack;
+//    final ItemStack itemStack;
     final EquipmentSlot targetSlot;
     final ModularItem modularItem;
     final LazyOptional<IItemHandler> modularItemHolder;
@@ -73,15 +76,17 @@ public class PowerArmorCap implements ICapabilityProvider {
 
     final LazyOptional<IFluidHandlerItem> fluidHolder;
 
-    double maxHeat;
+
 
     public PowerArmorCap(@Nonnull ItemStack itemStackIn, EquipmentSlot slot) {
-        this.itemStack = itemStackIn;
+        double maxHeat;
+
+//        this.itemStack = itemStackIn;
         this.targetSlot = slot;
         Map<ModuleCategory, NuminaRangedWrapper> rangedWrapperMap = new HashMap<>();
         switch(targetSlot) {
             case HEAD: {
-                this.modularItem = new ModularItem(itemStack, 18) {{
+                this.modularItem = new ModularItem(itemStackIn, 18) {{
                     rangedWrapperMap.put(ModuleCategory.ARMOR,new NuminaRangedWrapper(this, 0, 1));
                     rangedWrapperMap.put(ModuleCategory.ENERGY_STORAGE,new NuminaRangedWrapper(this, 1, 2));
                     rangedWrapperMap.put(ModuleCategory.ENERGY_GENERATION,new NuminaRangedWrapper(this, 2, 3));
@@ -89,19 +94,19 @@ public class PowerArmorCap implements ICapabilityProvider {
                     setRangedWrapperMap(rangedWrapperMap);
                 }};
 
-                this.maxHeat = MPSSettings.getMaxHeatHelmet();
+                maxHeat = MPSSettings.getMaxHeatHelmet();
                 break;
             }
 
             case CHEST: {
-                this.modularItem = new ModularItem(itemStack, 18) {{
+                this.modularItem = new ModularItem(itemStackIn, 18) {{
                     rangedWrapperMap.put(ModuleCategory.ARMOR,new NuminaRangedWrapper(this, 0, 1));
                     rangedWrapperMap.put(ModuleCategory.ENERGY_STORAGE,new NuminaRangedWrapper(this, 1, 2));
                     rangedWrapperMap.put(ModuleCategory.ENERGY_GENERATION,new NuminaRangedWrapper(this, 2, 3));
                     rangedWrapperMap.put(ModuleCategory.NONE,new NuminaRangedWrapper(this, 3, this.getSlots()));
                     this.setRangedWrapperMap(rangedWrapperMap);
                 }};
-                this.maxHeat = MPSSettings.getMaxHeatChestplate();
+                maxHeat = MPSSettings.getMaxHeatChestplate();
                 break;
             }
 
@@ -113,23 +118,25 @@ public class PowerArmorCap implements ICapabilityProvider {
                     rangedWrapperMap.put(ModuleCategory.NONE,new NuminaRangedWrapper(this, 3, this.getSlots()));
                     this.setRangedWrapperMap(rangedWrapperMap);
                 }};
-                this.maxHeat = MPSSettings.getMaxHeatLegs();
+                maxHeat = MPSSettings.getMaxHeatLegs();
                 break;
             }
 
             case FEET: {
-                this.modularItem = new ModularItem(itemStack, 8) {{
+                this.modularItem = new ModularItem(itemStackIn, 8) {{
                     rangedWrapperMap.put(ModuleCategory.ARMOR,new NuminaRangedWrapper(this, 0, 1));
                     rangedWrapperMap.put(ModuleCategory.ENERGY_STORAGE,new NuminaRangedWrapper(this, 1, 2));
                     rangedWrapperMap.put(ModuleCategory.NONE,new NuminaRangedWrapper(this, 2, this.getSlots()));
                     this.setRangedWrapperMap(rangedWrapperMap);
                 }};
-                this.maxHeat = MPSSettings.getMaxHeatBoots();
+                maxHeat = MPSSettings.getMaxHeatBoots();
                 break;
             }
 
-            default:
-                this.modularItem = new ModularItem(itemStack, 8);
+            default: {
+                this.modularItem = new ModularItem(itemStackIn, 8);
+                maxHeat = 0;
+            }
 
         }
 
@@ -138,15 +145,21 @@ public class PowerArmorCap implements ICapabilityProvider {
             return modularItem;
         });
 
-        this.modelSpec = new ArmorModelSpec(itemStackIn);
+        this.modelSpec = new ArmorModelSpecNBT(itemStackIn);
         this.modelSpecHolder = LazyOptional.of(()-> modelSpec);
 
-        heatStorage = new HeatItemWrapper(itemStack, maxHeat, modularItem.getStackInSlot(0).getCapability(CapabilityPowerModule.POWER_MODULE));
+        NuminaLogger.logDebug("stack here in PowerArmorCap: " + itemStackIn);
+
+        heatStorage = new HeatItemWrapper(itemStackIn, maxHeat);
         heatHolder = LazyOptional.of(() -> {
             modularItem.onLoad();
+            heatStorage.setHeatCapacity(maxHeat + modularItem.getStackInSlot(0)
+                    .getCapability(CapabilityPowerModule.POWER_MODULE).map(pm->pm.applyPropertyModifiers(TagConstants.MAXIMUM_HEAT)).orElse(0D));
             heatStorage.onLoad();
             return heatStorage;
         });
+
+        NuminaLogger.logDebug("stack here in PowerArmorCap again: " + itemStackIn);
 
         energyHolder = LazyOptional.of(()-> {
             modularItem.onLoad();

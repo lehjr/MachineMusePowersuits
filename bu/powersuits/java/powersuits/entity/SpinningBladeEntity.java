@@ -44,7 +44,7 @@ import net.minecraft.network.IPacket;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.util.math.BlockHitResult;
 import net.minecraft.util.math.EntityRayTraceResult;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.vector.Vector3d;
@@ -124,7 +124,7 @@ public class SpinningBladeEntity extends ThrowableEntity {
                 return;
             }
 
-            BlockRayTraceResult result = (BlockRayTraceResult) hitResult;
+            BlockHitResult result = (BlockHitResult) hitResult;
             Block block = world.getBlockState(result.getBlockPos()).getBlock();
             if (block instanceof IForgeShearable && this.getOwner() instanceof Player) {
                 IForgeShearable target = (IForgeShearable) block;

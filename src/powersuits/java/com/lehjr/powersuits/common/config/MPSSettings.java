@@ -80,10 +80,10 @@ public class MPSSettings {
         return CLIENT_CONFIG != null ? toFloat(CLIENT_CONFIG.HUD_KEYBIND_Y.get()) : 32.0F;
     }
 
-    // General -----------------------------------------------------------------------------------
-    public static boolean allowConfictingKeyBinds() {
-        return CLIENT_CONFIG != null ? CLIENT_CONFIG.GENERAL_ALLOW_CONFLICTING_KEYBINDS.get() : true;
-    }
+//    // General -----------------------------------------------------------------------------------
+//    public static boolean allowConfictingKeyBinds() {
+//        return CLIENT_CONFIG != null ? CLIENT_CONFIG.GENERAL_ALLOW_CONFLICTING_KEYBINDS.get() : true;
+//    }
 
     /**
      * Server -------------------------------------------------------------------------------------

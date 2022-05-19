@@ -1,19 +1,23 @@
 package com.lehjr.powersuits.common.base;
 
+import com.lehjr.powersuits.client.event.ClientSetup;
 import com.mojang.logging.LogUtils;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.InterModComms;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.fml.loading.FMLEnvironment;
 import org.slf4j.Logger;
 
 import java.util.stream.Collectors;
@@ -37,13 +41,21 @@ public class ModularPowersuits {
 
         MPSObjects.ITEMS.register(modEventBus);
         MPSObjects.BLOCKS.register(modEventBus);
-//        NuminaObjects.BLOCK_ENTITY_TYPES.register(modEventBus);
-//        NuminaObjects.ENTITY_TYPES.register(modEventBus);
-//        NuminaObjects.MENU_TYPES.register(modEventBus);
+        MPSObjects.BLOCK_ENTITY_TYPES.register(modEventBus);
+        MPSObjects.ENTITY_TYPES.register(modEventBus);
+        MPSObjects.MENU_TYPES.register(modEventBus);
 
 
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
+
+        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> FMLJavaModLoadingContext.get().getModEventBus().register(ClientSetup.class));
+        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, ()-> ()-> ClientSetup.clientStart(modEventBus));
+
+
+        if (FMLEnvironment.dist == Dist.CLIENT) {
+            ClientSetup.miscClientReg();
+        }
     }
 
     private void setup(final FMLCommonSetupEvent event) {

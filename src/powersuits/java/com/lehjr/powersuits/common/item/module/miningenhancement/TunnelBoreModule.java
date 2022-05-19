@@ -1,35 +1,34 @@
 package com.lehjr.powersuits.common.item.module.miningenhancement;
 
-import lehjr.numina.util.capabilities.inventory.modechanging.IModeChangingItem;
-import lehjr.numina.util.capabilities.module.blockbreaking.IBlockBreakingModule;
-import lehjr.numina.util.capabilities.module.miningenhancement.IMiningEnhancementModule;
-import lehjr.numina.util.capabilities.module.miningenhancement.MiningEnhancement;
-import lehjr.numina.util.capabilities.module.powermodule.IConfig;
-import lehjr.numina.util.capabilities.module.powermodule.ModuleCategory;
-import lehjr.numina.util.capabilities.module.powermodule.ModuleTarget;
-import lehjr.numina.util.capabilities.module.powermodule.CapabilityPowerModule;
-import lehjr.numina.util.capabilities.render.highlight.HighLightCapability;
-import lehjr.numina.util.capabilities.render.highlight.Highlight;
-import lehjr.numina.util.capabilities.render.highlight.IHighlight;
-import lehjr.numina.util.energy.ElectricItemUtils;
-import lehjr.powersuits.config.MPSSettings;
-import lehjr.powersuits.constants.MPSConstants;
-import lehjr.powersuits.item.module.AbstractPowerModule;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.entity.player.Player;
-import net.minecraft.item.ItemStack;
+import com.lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
+import com.lehjr.numina.common.capabilities.module.blockbreaking.IBlockBreakingModule;
+import com.lehjr.numina.common.capabilities.module.miningenhancement.IMiningEnhancementModule;
+import com.lehjr.numina.common.capabilities.module.miningenhancement.MiningEnhancement;
+import com.lehjr.numina.common.capabilities.module.powermodule.CapabilityPowerModule;
+import com.lehjr.numina.common.capabilities.module.powermodule.IConfig;
+import com.lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
+import com.lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
+import com.lehjr.numina.common.capabilities.render.highlight.HighLightCapability;
+import com.lehjr.numina.common.capabilities.render.highlight.Highlight;
+import com.lehjr.numina.common.capabilities.render.highlight.IHighlight;
+import com.lehjr.numina.common.energy.ElectricItemUtils;
+import com.lehjr.powersuits.common.config.MPSSettings;
+import com.lehjr.powersuits.common.constants.MPSConstants;
+import com.lehjr.powersuits.common.item.module.AbstractPowerModule;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.util.Direction;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.RayTraceContext;
-import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.ClipContext;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
-import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.CapabilityItemHandler;
 
@@ -87,8 +86,8 @@ public class TunnelBoreModule extends AbstractPowerModule {
                 }
 
                 AtomicBoolean harvested = new AtomicBoolean(false);
-                RayTraceResult rayTraceResult = getPlayerPOVHitResult(player.level, player, RayTraceContext.FluidMode.SOURCE_ONLY);
-                if (rayTraceResult == null || rayTraceResult.getType() != RayTraceResult.Type.BLOCK) {
+                HitResult rayTraceResult = getPlayerPOVHitResult(player.level, player, ClipContext.Fluid.SOURCE_ONLY);
+                if (rayTraceResult == null || rayTraceResult.getType() != HitResult.Type.BLOCK) {
                     return false;
                 }
                 int radius = (int) (applyPropertyModifiers(MPSConstants.AOE_MINING_RADIUS) - 1) / 2;
@@ -96,7 +95,7 @@ public class TunnelBoreModule extends AbstractPowerModule {
                     return false;
                 }
 
-                NonNullList<BlockPos> posList = highlight.getBlockPositions((BlockRayTraceResult) rayTraceResult);
+                NonNullList<BlockPos> posList = highlight.getBlockPositions((BlockHitResult) rayTraceResult);
                 int energyUsage = this.getEnergyUsage();
 
                 AtomicInteger blocksBroken = new AtomicInteger(0);
@@ -115,7 +114,7 @@ public class TunnelBoreModule extends AbstractPowerModule {
                                             .map(b -> {
                                                 // check if module can break block
                                                 if (b.canHarvestBlock(itemStack, state, player, blockPos, playerEnergy - energyUsage)) {
-                                                    Block.updateOrDestroy(state, Blocks.AIR.defaultBlockState(), player.level, blockPos, Constants.BlockFlags.DEFAULT);
+                                                    Block.updateOrDestroy(state, Blocks.AIR.defaultBlockState(), player.level, blockPos, Block.UPDATE_ALL);
                                                     ElectricItemUtils.drainPlayerEnergy(player, b.getEnergyUsage() + energyUsage);
                                                     return true;
                                                 }
@@ -143,7 +142,7 @@ public class TunnelBoreModule extends AbstractPowerModule {
         class Highlighter extends Highlight {
 
             @Override
-            public NonNullList<BlockPos> getBlockPositions(BlockRayTraceResult rayTraceResult) {
+            public NonNullList<BlockPos> getBlockPositions(BlockHitResult rayTraceResult) {
                 NonNullList retList = NonNullList.create();
 
                 if(miningEnhancement.isModuleOnline()) {

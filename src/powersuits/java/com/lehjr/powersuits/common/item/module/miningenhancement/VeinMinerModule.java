@@ -26,31 +26,31 @@
 
 package com.lehjr.powersuits.common.item.module.miningenhancement;
 
-import lehjr.numina.util.capabilities.inventory.modechanging.IModeChangingItem;
-import lehjr.numina.util.capabilities.module.blockbreaking.IBlockBreakingModule;
-import lehjr.numina.util.capabilities.module.miningenhancement.IMiningEnhancementModule;
-import lehjr.numina.util.capabilities.module.miningenhancement.MiningEnhancement;
-import lehjr.numina.util.capabilities.module.powermodule.IConfig;
-import lehjr.numina.util.capabilities.module.powermodule.ModuleCategory;
-import lehjr.numina.util.capabilities.module.powermodule.ModuleTarget;
-import lehjr.numina.util.capabilities.module.powermodule.CapabilityPowerModule;
-import lehjr.numina.util.energy.ElectricItemUtils;
-import lehjr.powersuits.config.MPSSettings;
-import lehjr.powersuits.constants.MPSConstants;
-import lehjr.powersuits.item.module.AbstractPowerModule;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.entity.player.Player;
-import net.minecraft.item.ItemStack;
+import com.lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
+import com.lehjr.numina.common.capabilities.module.blockbreaking.IBlockBreakingModule;
+import com.lehjr.numina.common.capabilities.module.miningenhancement.IMiningEnhancementModule;
+import com.lehjr.numina.common.capabilities.module.miningenhancement.MiningEnhancement;
+import com.lehjr.numina.common.capabilities.module.powermodule.CapabilityPowerModule;
+import com.lehjr.numina.common.capabilities.module.powermodule.IConfig;
+import com.lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
+import com.lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
+import com.lehjr.numina.common.energy.ElectricItemUtils;
+import com.lehjr.powersuits.common.config.MPSSettings;
+import com.lehjr.powersuits.common.constants.MPSConstants;
+import com.lehjr.powersuits.common.item.module.AbstractPowerModule;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.util.Direction;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
-import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.CapabilityItemHandler;
 
@@ -61,6 +61,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.Callable;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Stream;
 
 public class VeinMinerModule extends AbstractPowerModule {
     public VeinMinerModule() {
@@ -94,7 +95,7 @@ public class VeinMinerModule extends AbstractPowerModule {
                 super(module, category, target, config);
             }
 
-            List<BlockPos> getPosList(Block block, BlockPos startPos, World world) {
+            List<BlockPos> getPosList(Block block, BlockPos startPos, Level world) {
                 List<BlockPos> list = new ArrayList<BlockPos>() {{add(startPos);}};
                 for (Direction direction : Direction.values()) {
                     int i = 0;
@@ -119,9 +120,9 @@ public class VeinMinerModule extends AbstractPowerModule {
                 return list;
             }
 
-            void harvestBlocks(List<BlockPos> posList, World world) {
+            void harvestBlocks(List<BlockPos> posList, Level world) {
                 for (BlockPos pos: posList) {
-                    Block.updateOrDestroy(world.getBlockState(pos), Blocks.AIR.defaultBlockState(), world, pos, Constants.BlockFlags.DEFAULT);
+                    Block.updateOrDestroy(world.getBlockState(pos), Blocks.AIR.defaultBlockState(), world, pos, Block.UPDATE_ALL);
                 }
             }
 
@@ -161,14 +162,9 @@ public class VeinMinerModule extends AbstractPowerModule {
 
                 // check if block is an ore
                 List<ResourceLocation> defaultOreTags = MPSSettings.getOreList();
-                Set<ResourceLocation> oretags = player.level.getBlockState(posIn).getBlock().getTags();
+                Stream<TagKey<Block>> oretags = player.level.getBlockState(posIn).getTags();
                 boolean isOre = false;
-                for ( ResourceLocation location : oretags ) {
-                    if (defaultOreTags.contains(location)) {
-                        isOre = true;
-                        break;
-                    }
-                }
+                isOre = oretags.anyMatch(tag-> defaultOreTags.contains(tag.location()));
 
                 if (isOre || MPSSettings.getBlockList().contains(block.getRegistryName())) {
                     int energyRequired = this.getEnergyUsage() + bbModuleEnergyUsage.get();

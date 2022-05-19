@@ -28,13 +28,12 @@ package com.lehjr.powersuits.client.render;
 
 import com.lehjr.numina.common.capabilities.render.IHandHeldModelSpecNBT;
 import com.lehjr.numina.common.capabilities.render.ModelSpecNBT;
-import com.lehjr.numina.common.capabilities.render.modelspec.ModelPartSpec;
-import com.lehjr.numina.common.capabilities.render.modelspec.ModelRegistry;
-import com.lehjr.numina.common.capabilities.render.modelspec.PartSpecBase;
-import com.lehjr.numina.common.capabilities.render.modelspec.SpecBase;
+import com.lehjr.numina.common.capabilities.render.modelspec.*;
 import com.lehjr.numina.common.constants.NuminaConstants;
 import com.lehjr.numina.common.constants.TagConstants;
+import com.lehjr.powersuits.common.item.handheld.PowerFist;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.IntArrayTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ItemStack;
@@ -72,7 +71,7 @@ public class PowerFistSpecNBT extends ModelSpecNBT implements IHandHeldModelSpec
         for (SpecBase spec : ModelRegistry.getInstance().getSpecs()) {
             // Only generate NBT data from Specs marked as "default"
             if (spec.isDefault()) {
-                if (getItemStack().getItem() instanceof PowerFist && spec.getSpecType().equals(EnumSpecType.HANDHELD)) {
+                if (getItemStack().getItem() instanceof PowerFist && spec.getSpecType().equals(SpecType.HANDHELD)) {
                     colours = addNewColorstoList(colours, spec.getColors()); // merge new color int arrays in
 
                     for (PartSpecBase partSpec : spec.getPartSpecs()) {
@@ -88,7 +87,7 @@ public class PowerFistSpecNBT extends ModelSpecNBT implements IHandHeldModelSpec
 
         CompoundTag nbt = new CompoundTag();
         for (CompoundTag elem : prefArray) {
-            nbt.put(elem.getString(NuminaConstants.MODEL) + "." + elem.getString(TagConstants.PART), elem);
+            nbt.put(elem.getString(TagConstants.MODEL) + "." + elem.getString(TagConstants.PART), elem);
         }
 
         if (!specList.isEmpty())
@@ -97,7 +96,7 @@ public class PowerFistSpecNBT extends ModelSpecNBT implements IHandHeldModelSpec
         if (!texSpecTag.isEmpty())
             nbt.put(TagConstants.TEXTURESPEC, texSpecTag);
 
-        nbt.put(NuminaConstants.COLOR, new IntArrayNBT(colours));
+        nbt.put(TagConstants.COLORS, new IntArrayTag(colours));
         return nbt;
     }
 }

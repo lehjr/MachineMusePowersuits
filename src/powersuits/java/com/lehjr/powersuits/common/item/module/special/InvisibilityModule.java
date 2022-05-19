@@ -26,23 +26,23 @@
 
 package com.lehjr.powersuits.common.item.module.special;
 
-import lehjr.numina.util.capabilities.module.powermodule.IConfig;
-import lehjr.numina.util.capabilities.module.powermodule.ModuleCategory;
-import lehjr.numina.util.capabilities.module.powermodule.ModuleTarget;
-import lehjr.numina.util.capabilities.module.powermodule.CapabilityPowerModule;
-import lehjr.numina.util.capabilities.module.tickable.IPlayerTickModule;
-import lehjr.numina.util.capabilities.module.tickable.PlayerTickModule;
-import lehjr.numina.util.capabilities.module.toggleable.IToggleableModule;
-import lehjr.numina.util.energy.ElectricItemUtils;
-import lehjr.powersuits.config.MPSSettings;
-import lehjr.powersuits.item.module.AbstractPowerModule;
-import net.minecraft.entity.player.Player;
-import net.minecraft.item.ItemStack;
+import com.lehjr.numina.common.capabilities.module.powermodule.CapabilityPowerModule;
+import com.lehjr.numina.common.capabilities.module.powermodule.IConfig;
+import com.lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
+import com.lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
+import com.lehjr.numina.common.capabilities.module.tickable.IPlayerTickModule;
+import com.lehjr.numina.common.capabilities.module.tickable.PlayerTickModule;
+import com.lehjr.numina.common.capabilities.module.toggleable.IToggleableModule;
+import com.lehjr.numina.common.energy.ElectricItemUtils;
+import com.lehjr.powersuits.common.config.MPSSettings;
+import com.lehjr.powersuits.common.item.module.AbstractPowerModule;
+import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.potion.Effect;
-import net.minecraft.potion.EffectInstance;
-import net.minecraft.potion.Effects;
-import net.minecraft.util.Direction;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
@@ -52,7 +52,7 @@ import javax.annotation.Nullable;
 import java.util.concurrent.Callable;
 
 public class InvisibilityModule extends AbstractPowerModule {
-    private final Effect invisibility = Effects.INVISIBILITY;
+    private final MobEffect invisibility = MobEffects.INVISIBILITY;
 
     @Nullable
     @Override
@@ -86,13 +86,13 @@ public class InvisibilityModule extends AbstractPowerModule {
             @Override
             public void onPlayerTickActive(Player player, ItemStack item) {
                 double totalEnergy = ElectricItemUtils.getPlayerEnergy(player);
-                EffectInstance invis = null;
+                MobEffectInstance invis = null;
                 if (player.hasEffect(invisibility)) {
                     invis = player.getEffect(invisibility);
                 }
                 if (50 < totalEnergy) {
                     if (invis == null || invis.getDuration() < 210) {
-                        player.addEffect(new EffectInstance(invisibility, 500, -3, false, false));
+                        player.addEffect(new MobEffectInstance(invisibility, 500, -3, false, false));
                         ElectricItemUtils.drainPlayerEnergy(player, 50);
                     }
                 } else {
@@ -102,7 +102,7 @@ public class InvisibilityModule extends AbstractPowerModule {
 
             @Override
             public void onPlayerTickInactive(Player player, ItemStack item) {
-                EffectInstance invis = null;
+                MobEffectInstance invis = null;
                 if (player.hasEffect(invisibility)) {
                     invis = player.getEffect(invisibility);
                 }

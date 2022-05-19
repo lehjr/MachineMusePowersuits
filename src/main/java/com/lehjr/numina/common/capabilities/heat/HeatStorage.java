@@ -55,7 +55,6 @@ public abstract class HeatStorage implements IHeatStorage, INBTSerializable<Doub
         this.maxReceive = maxReceive;
         this.maxExtract = maxExtract;
         this.heat = heat;
-        onLoad();
     }
 
     @Override
@@ -104,6 +103,11 @@ public abstract class HeatStorage implements IHeatStorage, INBTSerializable<Doub
     @Override
     public boolean canReceive() {
         return this.maxReceive > 0;
+    }
+
+    @Override
+    public void setHeatCapacity(double maxHeat) {
+        this.capacity = maxHeat;
     }
 
     /** INBTSerializable -------------------------------------------------------------------------- */

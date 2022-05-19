@@ -49,7 +49,7 @@ public class HudKbDisplayBox extends ClickableButton2 {
     }
 
     public void toggleModules() {
-        ClientPlayer player = Minecraft.getInstance().player;
+        LocalPlayer player = Minecraft.getInstance().player;
         if (player == null) {
             return;
         }

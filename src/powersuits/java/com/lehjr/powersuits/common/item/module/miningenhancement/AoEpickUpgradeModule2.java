@@ -1,46 +1,46 @@
 package com.lehjr.powersuits.common.item.module.miningenhancement;
 
-import lehjr.numina.util.capabilities.inventory.modechanging.IModeChangingItem;
-import lehjr.numina.util.capabilities.module.blockbreaking.IBlockBreakingModule;
-import lehjr.numina.util.capabilities.module.miningenhancement.IMiningEnhancementModule;
-import lehjr.numina.util.capabilities.module.miningenhancement.MiningEnhancement;
-import lehjr.numina.util.capabilities.module.powermodule.IConfig;
-import lehjr.numina.util.capabilities.module.powermodule.ModuleCategory;
-import lehjr.numina.util.capabilities.module.powermodule.ModuleTarget;
-import lehjr.numina.util.capabilities.module.powermodule.CapabilityPowerModule;
-import lehjr.numina.util.capabilities.render.chameleon.Chameleon;
-import lehjr.numina.util.capabilities.render.chameleon.ChameleonCapability;
-import lehjr.numina.util.capabilities.render.chameleon.IChameleon;
-import lehjr.numina.util.capabilities.render.highlight.HighLightCapability;
-import lehjr.numina.util.capabilities.render.highlight.Highlight;
-import lehjr.numina.util.capabilities.render.highlight.IHighlight;
-import lehjr.numina.util.energy.ElectricItemUtils;
-import lehjr.powersuits.client.control.KeybindKeyHandler;
-import lehjr.powersuits.config.MPSSettings;
-import lehjr.powersuits.constants.MPSConstants;
-import lehjr.powersuits.item.module.AbstractPowerModule;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
+import com.lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
+import com.lehjr.numina.common.capabilities.module.blockbreaking.IBlockBreakingModule;
+import com.lehjr.numina.common.capabilities.module.miningenhancement.IMiningEnhancementModule;
+import com.lehjr.numina.common.capabilities.module.miningenhancement.MiningEnhancement;
+import com.lehjr.numina.common.capabilities.module.powermodule.CapabilityPowerModule;
+import com.lehjr.numina.common.capabilities.module.powermodule.IConfig;
+import com.lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
+import com.lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
+import com.lehjr.numina.common.capabilities.render.chameleon.Chameleon;
+import com.lehjr.numina.common.capabilities.render.chameleon.ChameleonCapability;
+import com.lehjr.numina.common.capabilities.render.chameleon.IChameleon;
+import com.lehjr.numina.common.capabilities.render.highlight.HighLightCapability;
+import com.lehjr.numina.common.capabilities.render.highlight.Highlight;
+import com.lehjr.numina.common.capabilities.render.highlight.IHighlight;
+import com.lehjr.numina.common.energy.ElectricItemUtils;
+import com.lehjr.powersuits.client.control.KeybindKeyHandler;
+import com.lehjr.powersuits.common.config.MPSSettings;
+import com.lehjr.powersuits.common.constants.MPSConstants;
+import com.lehjr.powersuits.common.item.module.AbstractPowerModule;
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.player.Player;
-import net.minecraft.item.ItemStack;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Hand;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.RayTraceContext;
-import net.minecraft.world.World;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.ClipContext;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
-import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.CapabilityItemHandler;
+import org.jetbrains.annotations.NotNull;
 import org.lwjgl.glfw.GLFW;
 
 import javax.annotation.Nonnull;
@@ -98,10 +98,10 @@ public class AoEpickUpgradeModule2 extends AbstractPowerModule {
             }
 
             @Override
-            public ActionResult<ItemStack> use(@Nonnull ItemStack itemStackIn, World worldIn, Player playerIn, Hand hand) {
-                if (hand.equals(Hand.MAIN_HAND) && worldIn.isClientSide()) {
+            public InteractionResultHolder<ItemStack> use(@NotNull ItemStack itemStackIn, Level worldIn, Player playerIn, InteractionHand hand) {
+                if (hand.equals(InteractionHand.MAIN_HAND) && worldIn.isClientSide()) {
                     if (KeybindKeyHandler.isKeyPressed(GLFW.GLFW_KEY_LEFT_SHIFT) || KeybindKeyHandler.isKeyPressed(GLFW.GLFW_KEY_RIGHT_SHIFT)) {
-                        BlockRayTraceResult rayTraceResult = getPlayerPOVHitResult(playerIn.level, playerIn, RayTraceContext.FluidMode.NONE);
+                        BlockHitResult rayTraceResult = getPlayerPOVHitResult(playerIn.level, playerIn, ClipContext.Fluid.NONE);
                         if (!(rayTraceResult == null)) {
                             chameleon.setTargetBlock(worldIn.getBlockState(rayTraceResult.getBlockPos()).getBlock());
                         }
@@ -111,9 +111,9 @@ public class AoEpickUpgradeModule2 extends AbstractPowerModule {
                 return super.use(itemStackIn, worldIn, playerIn, hand);
             }
 
-            void harvestBlocks(List<BlockPos> posList, World world) {
+            void harvestBlocks(List<BlockPos> posList, Level world) {
                 for (BlockPos pos : posList) {
-                    Block.updateOrDestroy(world.getBlockState(pos), Blocks.AIR.defaultBlockState(), world, pos, Constants.BlockFlags.DEFAULT);
+                    Block.updateOrDestroy(world.getBlockState(pos), Blocks.AIR.defaultBlockState(), world, pos, Block.UPDATE_ALL);
                 }
             }
 
@@ -243,12 +243,12 @@ public class AoEpickUpgradeModule2 extends AbstractPowerModule {
             }
 
             @Override
-            public NonNullList<BlockPos> getBlockPositions(BlockRayTraceResult rayTraceResult) {
-                return findBlockPositionsClient(rayTraceResult.getBlockPos());
+            public NonNullList<BlockPos> getBlockPositions(BlockHitResult result) {
+                return findBlockPositionsClient(result.getBlockPos());
             }
         }
 
-        NonNullList<BlockPos> getPosList(Block block, BlockPos startPos, World world) {
+        NonNullList<BlockPos> getPosList(Block block, BlockPos startPos, Level world) {
             NonNullList<BlockPos> list = NonNullList.create();
             if (world.getBlockState(startPos).getBlock() == block) {
                 list.add(startPos.immutable());
@@ -257,9 +257,9 @@ public class AoEpickUpgradeModule2 extends AbstractPowerModule {
                 // this is really, really stupid and if you have a better way, use it.
                 outerLoop:
                 while (list.size() <= miningEnhancement.applyPropertyModifiers(MPSConstants.AOE2_LIMIT) && i < 2 /* set at 2 for performance reassons */) {
-                    for (BlockPos.Mutable mutable : BlockPos.spiralAround(startPos, i, Direction.EAST, Direction.SOUTH)) {
-                        for (BlockPos.Mutable mutable2 : BlockPos.spiralAround(mutable, i, Direction.UP, Direction.NORTH)) {
-                            for (BlockPos.Mutable mutable3 : BlockPos.spiralAround(mutable2, i, Direction.WEST, Direction.DOWN)) {
+                    for (BlockPos.MutableBlockPos mutable : BlockPos.spiralAround(startPos, i, Direction.EAST, Direction.SOUTH)) {
+                        for (BlockPos.MutableBlockPos mutable2 : BlockPos.spiralAround(mutable, i, Direction.UP, Direction.NORTH)) {
+                            for (BlockPos.MutableBlockPos mutable3 : BlockPos.spiralAround(mutable2, i, Direction.WEST, Direction.DOWN)) {
                                 if (world.getBlockState(mutable3).getBlock() == block && !list.contains(mutable3)) {
                                     list.add(new BlockPos(mutable3).immutable());
                                 }

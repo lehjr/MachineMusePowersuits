@@ -1,9 +1,16 @@
 package com.lehjr.numina.common.base;
 
 import com.lehjr.numina.common.capabilities.heat.CapabilityHeat;
+import com.lehjr.numina.common.capabilities.module.powermodule.CapabilityPowerModule;
+import com.lehjr.numina.common.capabilities.player.CapabilityPlayerKeyStates;
+import com.lehjr.numina.common.capabilities.render.CapabilityModelSpec;
+import com.lehjr.numina.common.capabilities.render.chameleon.ChameleonCapability;
+import com.lehjr.numina.common.capabilities.render.color.CapabilityColor;
+import com.lehjr.numina.common.capabilities.render.highlight.HighLightCapability;
 import com.lehjr.numina.common.constants.NuminaConstants;
 import com.lehjr.numina.client.ClientSetup;
 import com.lehjr.numina.client.event.ClientTickHandler;
+import com.lehjr.numina.common.network.NuminaPackets;
 import com.mojang.logging.LogUtils;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -65,12 +72,26 @@ public class Numina {
 
     @SubscribeEvent
     public static void initialize(final RegisterCapabilitiesEvent event) {
+
         CapabilityHeat.register(event);
 
 
+        CapabilityColor.register(event);
+
+        // Modules
+        CapabilityPowerModule.register(event);
+        CapabilityModelSpec.register(event);
+        HighLightCapability.register(event);
+        ChameleonCapability.register(event);
+
+        // Player
+        CapabilityPlayerKeyStates.register(event);
     }
 
     private void setup(final FMLCommonSetupEvent event) {
+        NuminaPackets.registerNuminaPackets();
+
+
         // some preinit code
         LOGGER.info("HELLO FROM PREINIT");
         LOGGER.info("DIRT BLOCK >> {}", Blocks.DIRT.getRegistryName());

@@ -31,21 +31,21 @@ import net.minecraftforge.common.ForgeConfigSpec;
 
 public class ClientConfig {
     /** HUD ---------------------------------------------------------------------------------------*/
-    protected ForgeConfigSpec.BooleanValue
-            HUD_USE_GRAPHICAL_METERS,
-            HUD_TOGGLE_MODULE_SPAM,
-            HUD_DISPLAY_HUD,
-            HUD_USE_24_HOUR_CLOCK;
+    public ForgeConfigSpec.BooleanValue
+            HUD_USE_GRAPHICAL_METERS;
+    protected ForgeConfigSpec.BooleanValue HUD_TOGGLE_MODULE_SPAM;
+    public ForgeConfigSpec.BooleanValue HUD_DISPLAY_HUD;
+    public ForgeConfigSpec.BooleanValue HUD_USE_24_HOUR_CLOCK;
 
-    protected ForgeConfigSpec.DoubleValue
-            HUD_KEYBIND_X,
-            HUD_KEYBIND_Y;
+    public ForgeConfigSpec.DoubleValue
+            HUD_KEYBIND_X;
+    public ForgeConfigSpec.DoubleValue HUD_KEYBIND_Y;
 
     /** General ----------------------------------------------------------------------------------- */
-    protected ForgeConfigSpec.BooleanValue
+    public ForgeConfigSpec.BooleanValue
             GENERAL_ALLOW_CONFLICTING_KEYBINDS;
 
-    protected ClientConfig(ForgeConfigSpec.Builder builder) {
+    public ClientConfig(ForgeConfigSpec.Builder builder) {
         // HUD ------------------------------------------------------------------------------------
         builder.comment("HUD settings").push("HUD");
         HUD_USE_GRAPHICAL_METERS = builder

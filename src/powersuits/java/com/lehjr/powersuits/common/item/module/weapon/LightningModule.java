@@ -39,14 +39,21 @@ import com.lehjr.powersuits.common.constants.MPSConstants;
 import com.lehjr.powersuits.common.item.module.AbstractPowerModule;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LightningBolt;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.ClipContext;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.HitResult;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -91,29 +98,29 @@ public class LightningModule extends AbstractPowerModule {
             }
 
             @Override
-            public ActionResult use(ItemStack itemStackIn, World worldIn, Player playerIn, Hand hand) {
-                if (hand == Hand.MAIN_HAND) {
+            public InteractionResultHolder<ItemStack> use(@NotNull ItemStack itemStackIn, Level worldIn, Player playerIn, InteractionHand hand) {
+                if (hand == InteractionHand.MAIN_HAND.MAIN_HAND) {
                     int energyConsumption = getEnergyUsage();
                     if (energyConsumption < ElectricItemUtils.getPlayerEnergy(playerIn)) {
                         if (!worldIn.isClientSide()) {
                             double range = 64;
 
-                            RayTraceResult raytraceResult = rayTrace(worldIn, playerIn, RayTraceContext.FluidMode.SOURCE_ONLY, range);
-                            if (raytraceResult != null && raytraceResult.getType() != RayTraceResult.Type.MISS) {
-                                if(worldIn instanceof ServerWorld) {
+                            HitResult raytraceResult = rayTrace(worldIn, playerIn, ClipContext.Fluid.SOURCE_ONLY, range);
+                            if (raytraceResult != null && raytraceResult.getType() != HitResult.Type.MISS) {
+                                if(worldIn instanceof ServerLevel) {
                                     ElectricItemUtils.drainPlayerEnergy(playerIn, energyConsumption);
                                     HeatUtils.heatPlayer(playerIn, applyPropertyModifiers(MPSConstants.HEAT_EMISSION));
                                     LightningBolt sparkie = new LightningBolt(EntityType.LIGHTNING_BOLT, worldIn);
                                     sparkie.setPos(raytraceResult.getLocation().x, raytraceResult.getLocation().y, raytraceResult.getLocation().z);
                                     sparkie.setCause((ServerPlayer) playerIn);
-                                    ((ServerWorld) worldIn).loadFromChunk(sparkie);
+//                                    ((ServerLevel) worldIn).loadFromChunk(sparkie);// hmm?
                                 }
                             }
                         }
-                        return ActionResult.success(itemStackIn);
+                        return InteractionResultHolder.success(itemStackIn);
                     }
                 }
-                return ActionResult.pass(itemStackIn);
+                return InteractionResultHolder.pass(itemStackIn);
             }
 
             @Override

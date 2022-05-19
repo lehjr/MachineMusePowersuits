@@ -48,8 +48,6 @@ public interface IRightClickModule extends IPowerModule {
      * @return
      */
 
-    // public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pUsedHand) {
-
     default InteractionResultHolder<ItemStack> use(@Nonnull ItemStack itemStackIn, Level worldIn, Player playerIn, InteractionHand hand) {
         return new InteractionResultHolder<>(InteractionResult.PASS, itemStackIn);
     }
@@ -70,9 +68,9 @@ public interface IRightClickModule extends IPowerModule {
         return InteractionResult.PASS;
     }
 
-//    default InteractionResult onItemUseFirst(ItemStack stack, ItemUseContext context) {
-//        return InteractionResult.PASS;
-//    }
+    default InteractionResult onItemUseFirst(ItemStack stack, UseOnContext context) {
+        return InteractionResult.PASS;
+    }
 
     default void releaseUsing(@Nonnull ItemStack stack, Level worldIn, LivingEntity entityLiving, int timeLeft) {
     }

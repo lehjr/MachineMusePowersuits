@@ -80,7 +80,7 @@ package com.lehjr.powersuits.common.item.module.weapon;//package lehjr.powersuit
 //                        NBTUtils.setModularItemDoubleOrRemove(itemStackIn, MPSConstants.TIMER, 10);
 //
 //                        HeatUtils.heatPlayer(playerIn, applyPropertyModifiers(MPSConstants.RAILGUN_HEAT_EMISSION));
-//                        RayTraceResult raytraceresult = rayTrace(worldIn, playerIn, RayTraceContext.FluidMode.SOURCE_ONLY);
+//                        RayTraceResult raytraceresult = rayTrace(worldIn, playerIn, ClipContext.Fluid.SOURCE_ONLY);
 //
 //                        if (raytraceresult != null) {
 ////                            double damage = applyPropertyModifiers(MPSConstants.RAILGUN_TOTAL_IMPULSE) / 100.0;
@@ -90,18 +90,18 @@ package com.lehjr.powersuits.common.item.module.weapon;//package lehjr.powersuit
 //
 //                            switch (raytraceresult.getType()) {
 //                                case MISS:
-//                                    worldIn.playSound(playerIn, playerIn.getPosition(), SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.PLAYERS, 0.5F, 0.4F / ((float) Math.random() * 0.4F + 0.8F));
+//                                    worldIn.playSound(playerIn, playerIn.getPosition(), SoundEvents.ENTITY_ARROW_SHOOT, SoundSource.PLAYERS, 0.5F, 0.4F / ((float) Math.random() * 0.4F + 0.8F));
 //                                    break;
 //
 //                                case BLOCK:
 //                                    drawParticleStreamTo(playerIn, worldIn, raytraceresult.getHitVec().x, raytraceresult.getHitVec().y, raytraceresult.getHitVec().z);
-//                                    worldIn.playSound(playerIn, playerIn.getPosition(), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.PLAYERS, 0.5F, 0.4F / ((float) Math.random() * 0.4F + 0.8F));
+//                                    worldIn.playSound(playerIn, playerIn.getPosition(), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundSource.PLAYERS, 0.5F, 0.4F / ((float) Math.random() * 0.4F + 0.8F));
 //                                    break;
 //
 //
 //                                case ENTITY:
 //                                    drawParticleStreamTo(playerIn, worldIn, raytraceresult.getHitVec().x, raytraceresult.getHitVec().y, raytraceresult.getHitVec().z);
-//                                    worldIn.playSound(playerIn, playerIn.getPosition(), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.PLAYERS, 0.5F, 0.4F / ((float) Math.random() * 0.4F + 0.8F));
+//                                    worldIn.playSound(playerIn, playerIn.getPosition(), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundSource.PLAYERS, 0.5F, 0.4F / ((float) Math.random() * 0.4F + 0.8F));
 //                                    DamageSource damageSource = DamageSource.causePlayerDamage(playerIn);
 //                                    if (((EntityRayTraceResult) raytraceresult).getEntity().attackEntityFrom(damageSource, (int) damage)) {
 //                                        ((EntityRayTraceResult) raytraceresult).getEntity().addVelocity(lookVec.x * knockback, Math.abs(lookVec.y + 0.2f) * knockback, lookVec.z * knockback);

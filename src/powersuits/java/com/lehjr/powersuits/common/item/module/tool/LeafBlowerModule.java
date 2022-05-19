@@ -26,28 +26,28 @@
 
 package com.lehjr.powersuits.common.item.module.tool;
 
-import lehjr.numina.util.capabilities.module.powermodule.IConfig;
-import lehjr.numina.util.capabilities.module.powermodule.ModuleCategory;
-import lehjr.numina.util.capabilities.module.powermodule.ModuleTarget;
-import lehjr.numina.util.capabilities.module.powermodule.CapabilityPowerModule;
-import lehjr.numina.util.capabilities.module.rightclick.IRightClickModule;
-import lehjr.numina.util.capabilities.module.rightclick.RightClickModule;
-import lehjr.numina.util.energy.ElectricItemUtils;
-import lehjr.numina.util.helper.ToolHelpers;
-import lehjr.powersuits.config.MPSSettings;
-import lehjr.powersuits.constants.MPSConstants;
-import lehjr.powersuits.item.module.AbstractPowerModule;
-import net.minecraft.entity.player.Player;
-import net.minecraft.item.ItemStack;
+import com.lehjr.numina.common.capabilities.module.powermodule.CapabilityPowerModule;
+import com.lehjr.numina.common.capabilities.module.powermodule.IConfig;
+import com.lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
+import com.lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
+import com.lehjr.numina.common.capabilities.module.rightclick.IRightClickModule;
+import com.lehjr.numina.common.capabilities.module.rightclick.RightClickModule;
+import com.lehjr.numina.common.energy.ElectricItemUtils;
+import com.lehjr.powersuits.common.config.MPSSettings;
+import com.lehjr.powersuits.common.constants.MPSConstants;
+import com.lehjr.powersuits.common.item.module.AbstractPowerModule;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Hand;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -94,27 +94,27 @@ public class LeafBlowerModule extends AbstractPowerModule {
             }
 
             @Override
-            public ActionResult use(ItemStack itemStackIn, World worldIn, Player playerIn, Hand hand) {
+            public InteractionResultHolder<ItemStack> use(@NotNull ItemStack itemStackIn, Level worldIn, Player playerIn, InteractionHand hand) {
                 int radius = (int) applyPropertyModifiers(MPSConstants.RADIUS);
                 if (useBlower(radius, itemStackIn, playerIn, worldIn, playerIn.blockPosition()))
-                    return ActionResult.success(itemStackIn);
-                return ActionResult.pass(itemStackIn);
+                    return InteractionResultHolder.success(itemStackIn);
+                return InteractionResultHolder.pass(itemStackIn);
             }
 
-            private boolean useBlower(int radius, ItemStack itemStack, Player player, World world, BlockPos pos) {
-                int totalEnergyDrain = 0;
-                BlockPos newPos;
-                for (int i = pos.getX() - radius; i < pos.getX() + radius; i++) {
-                    for (int j = pos.getY() - radius; j < pos.getY() + radius; j++) {
-                        for (int k = pos.getZ() - radius; k < pos.getZ() + radius; k++) {
-                            newPos = new BlockPos(i, j, k);
-                            if (ToolHelpers.blockCheckAndHarvest(player, world, newPos)) {
-                                totalEnergyDrain += getEnergyUsage();
-                            }
-                        }
-                    }
-                }
-                ElectricItemUtils.drainPlayerEnergy(player, totalEnergyDrain);
+            private boolean useBlower(int radius, ItemStack itemStack, Player player, Level world, BlockPos pos) {
+//                int totalEnergyDrain = 0;
+//                BlockPos newPos;
+//                for (int i = pos.getX() - radius; i < pos.getX() + radius; i++) {
+//                    for (int j = pos.getY() - radius; j < pos.getY() + radius; j++) {
+//                        for (int k = pos.getZ() - radius; k < pos.getZ() + radius; k++) {
+//                            newPos = new BlockPos(i, j, k);
+//                            if (ToolHelpers.blockCheckAndHarvest(player, world, newPos)) {
+//                                totalEnergyDrain += getEnergyUsage();
+//                            }
+//                        }
+//                    }
+//                }
+//                ElectricItemUtils.drainPlayerEnergy(player, totalEnergyDrain);
                 return true;
             }
 

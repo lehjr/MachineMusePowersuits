@@ -35,7 +35,7 @@ import net.minecraft.entity.player.Player;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
-import net.minecraft.item.BlockItemUseContext;
+import net.minecraft.item.BlockPlaceContext;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.state.properties.BlockStateProperties;
@@ -45,7 +45,7 @@ import net.minecraft.util.InteractionResult;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.util.math.BlockHitResult;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.text.TranslatableComponent;
@@ -79,7 +79,7 @@ public class TinkerTable extends HorizontalBlock implements IWaterLoggable {
 
     @SuppressWarnings("deprecation")
     @Override
-    public InteractionResult use(BlockState blockState, World world, BlockPos blockPos, Player player, Hand hand, BlockRayTraceResult result) {
+    public InteractionResult use(BlockState blockState, World world, BlockPos blockPos, Player player, Hand hand, BlockHitResult result) {
         if (world.isClientSide) {
             openGui(world);
         }
@@ -126,7 +126,7 @@ public class TinkerTable extends HorizontalBlock implements IWaterLoggable {
 
     @Nullable
     @Override
-    public BlockState getStateForPlacement(BlockItemUseContext context) {
+    public BlockState getStateForPlacement(BlockPlaceContext context) {
         FluidState ifluidstate = context.getLevel().getFluidState(context.getClickedPos());
         return this.defaultBlockState().setValue(FACING, context.getHorizontalDirection().getOpposite())
                 .setValue(WATERLOGGED, Boolean.valueOf(ifluidstate.is(FluidTags.WATER) && ifluidstate.getAmount() == 8));

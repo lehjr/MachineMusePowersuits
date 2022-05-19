@@ -1,21 +1,21 @@
 package com.lehjr.numina.common.base;
 
+import com.lehjr.numina.common.config.NuminaSettings;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class NuminaLogger {
     public static final Logger logger = LogManager.getLogger("MachineMuse");
-
-//        public static void logDebug(String string) {
-//            boolean debugging = true;
+        public static void logDebug(String string) {
+            boolean debugging = true;
 //            try {
 //                if (!NuminaSettings.enableDebugging()) {
 //                    debugging = false;
 //                }
 //            } catch (Exception ignored) {
 //            }
-//            if (debugging) logger.info(string);
-//        }
+            if (debugging) logger.info(string);
+        }
 
         public static void logError(String string) {
             logger.warn(string);

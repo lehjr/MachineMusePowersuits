@@ -26,28 +26,30 @@
 
 package com.lehjr.powersuits.common.item.module.special;
 
-import lehjr.numina.util.capabilities.module.powermodule.IConfig;
-import lehjr.numina.util.capabilities.module.powermodule.ModuleCategory;
-import lehjr.numina.util.capabilities.module.powermodule.ModuleTarget;
-import lehjr.numina.util.capabilities.module.powermodule.CapabilityPowerModule;
-import lehjr.numina.util.capabilities.module.tickable.IPlayerTickModule;
-import lehjr.numina.util.capabilities.module.tickable.PlayerTickModule;
-import lehjr.numina.util.capabilities.module.toggleable.IToggleableModule;
-import lehjr.numina.util.energy.ElectricItemUtils;
-import lehjr.powersuits.config.MPSSettings;
-import lehjr.powersuits.constants.MPSConstants;
-import lehjr.powersuits.item.module.AbstractPowerModule;
-import net.minecraft.entity.item.ItemEntity;
-import net.minecraft.entity.player.Player;
-import net.minecraft.entity.projectile.ArrowEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
+import com.lehjr.numina.common.capabilities.module.powermodule.CapabilityPowerModule;
+import com.lehjr.numina.common.capabilities.module.powermodule.IConfig;
+import com.lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
+import com.lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
+import com.lehjr.numina.common.capabilities.module.tickable.IPlayerTickModule;
+import com.lehjr.numina.common.capabilities.module.tickable.PlayerTickModule;
+import com.lehjr.numina.common.capabilities.module.toggleable.IToggleableModule;
+import com.lehjr.numina.common.energy.ElectricItemUtils;
+import com.lehjr.powersuits.common.config.MPSSettings;
+import com.lehjr.powersuits.common.constants.MPSConstants;
+import com.lehjr.powersuits.common.item.module.AbstractPowerModule;
+import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.util.Direction;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.world.World;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.AbstractArrow;
+import net.minecraft.world.entity.projectile.Arrow;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.AABB;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
@@ -106,19 +108,19 @@ public class MagnetModule extends AbstractPowerModule {
                         ElectricItemUtils.drainPlayerEnergy(player, energyUSage);
                     }
                     int range = (int) applyPropertyModifiers(MPSConstants.RADIUS);
-                    World world = player.level;
-                    AxisAlignedBB bounds = player.getBoundingBox().inflate(range);
+                    Level world = player.level;
+                    AABB bounds = player.getBoundingBox().inflate(range);
 
                     if (isServerSide) {
                         bounds.expandTowards(0.2000000029802322D, 0.2000000029802322D, 0.2000000029802322D);
                         if (stack.getDamageValue() >> 1 >= 7) {
-                            List<ArrowEntity> arrows = world.getEntitiesOfClass(ArrowEntity.class, bounds);
-                            for (ArrowEntity arrow : arrows) {
-                                if ((arrow.pickup == ArrowEntity.PickupStatus.ALLOWED) && (world.random.nextInt(6) == 0)) {
+                            List<Arrow> arrows = world.getEntitiesOfClass(Arrow.class, bounds);
+                            for (Arrow arrow : arrows) {
+                                if ((arrow.pickup == AbstractArrow.Pickup.ALLOWED) && (world.random.nextInt(6) == 0)) {
                                     ItemEntity replacement = new ItemEntity(world, arrow.getX(), arrow.getY(), arrow.getZ(), new ItemStack(Items.ARROW));
                                     world.addFreshEntity(replacement);
                                 }
-                                arrow.remove();
+                                arrow.remove(Entity.RemovalReason.DISCARDED);
                             }
                         }
                     }
@@ -144,7 +146,7 @@ public class MagnetModule extends AbstractPowerModule {
                                 }
                             } else if (world.random.nextInt(20) == 0) {
                                 float pitch = 0.85F - world.random.nextFloat() * 3.0F / 10.0F;
-                                world.playLocalSound(e.getX(), e.getY(), e.getZ(), SoundEvents.ENDERMAN_TELEPORT, SoundCategory.PLAYERS, 0.6F, pitch, true);
+                                world.playLocalSound(e.getX(), e.getY(), e.getZ(), SoundEvents.ENDERMAN_TELEPORT, SoundSource.PLAYERS, 0.6F, pitch, true);
                             }
                         }
                     }

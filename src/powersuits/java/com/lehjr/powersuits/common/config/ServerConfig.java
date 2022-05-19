@@ -26,6 +26,7 @@
 
 package com.lehjr.powersuits.common.config;
 
+import com.lehjr.powersuits.common.constants.MPSConstants;
 import net.minecraftforge.common.ForgeConfigSpec;
 
 import java.util.Arrays;

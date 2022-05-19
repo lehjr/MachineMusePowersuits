@@ -35,6 +35,7 @@ import com.lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import com.lehjr.numina.common.capabilities.render.CapabilityModelSpec;
 import com.lehjr.numina.common.capabilities.render.IModelSpec;
 import com.lehjr.numina.common.capabilities.render.ModelSpecNBT;
+import com.lehjr.powersuits.client.render.PowerFistSpecNBT;
 import com.lehjr.powersuits.common.config.MPSSettings;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.EquipmentSlot;

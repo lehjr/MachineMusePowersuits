@@ -26,29 +26,30 @@
 
 package com.lehjr.powersuits.common.item.module.tool;
 
-import lehjr.numina.util.capabilities.module.powermodule.IConfig;
-import lehjr.numina.util.capabilities.module.powermodule.ModuleCategory;
-import lehjr.numina.util.capabilities.module.powermodule.ModuleTarget;
-import lehjr.numina.util.capabilities.module.powermodule.CapabilityPowerModule;
-import lehjr.numina.util.capabilities.module.rightclick.IRightClickModule;
-import lehjr.numina.util.capabilities.module.rightclick.RightClickModule;
-import lehjr.numina.util.energy.ElectricItemUtils;
-import lehjr.numina.util.heat.MuseHeatUtils;
-import lehjr.numina.util.math.Color;
-import lehjr.powersuits.config.MPSSettings;
-import lehjr.powersuits.constants.MPSConstants;
-import lehjr.powersuits.entity.LuxCapacitorEntity;
-import lehjr.powersuits.item.module.AbstractPowerModule;
-import net.minecraft.entity.player.Player;
-import net.minecraft.item.ItemStack;
+import com.lehjr.numina.common.capabilities.module.powermodule.CapabilityPowerModule;
+import com.lehjr.numina.common.capabilities.module.powermodule.IConfig;
+import com.lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
+import com.lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
+import com.lehjr.numina.common.capabilities.module.rightclick.IRightClickModule;
+import com.lehjr.numina.common.capabilities.module.rightclick.RightClickModule;
+import com.lehjr.numina.common.energy.ElectricItemUtils;
+import com.lehjr.numina.common.heat.HeatUtils;
+import com.lehjr.numina.common.math.Color;
+import com.lehjr.powersuits.common.config.MPSSettings;
+import com.lehjr.powersuits.common.constants.MPSConstants;
+import com.lehjr.powersuits.common.entity.LuxCapacitorEntity;
+import com.lehjr.powersuits.common.item.module.AbstractPowerModule;
+import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Hand;
-import net.minecraft.world.World;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -91,11 +92,11 @@ public class LuxCapacitorModule extends AbstractPowerModule {
             }
 
             @Override
-            public ActionResult use(ItemStack itemStackIn, World worldIn, Player playerIn, Hand hand) {
+            public InteractionResultHolder<ItemStack> use(@NotNull ItemStack itemStackIn, Level worldIn, Player playerIn, InteractionHand hand) {
                 float energyConsumption = getEnergyUsage();
                 if (ElectricItemUtils.getPlayerEnergy(playerIn) > energyConsumption) {
                     if (!worldIn.isClientSide) {
-                        MuseHeatUtils.heatPlayer(playerIn, energyConsumption / 500);
+                        HeatUtils.heatPlayer(playerIn, energyConsumption / 500);
 
                         ElectricItemUtils.drainPlayerEnergy(playerIn, (int) energyConsumption);
 
@@ -107,9 +108,9 @@ public class LuxCapacitorModule extends AbstractPowerModule {
                         LuxCapacitorEntity luxCapacitor = new LuxCapacitorEntity(worldIn, playerIn, new Color(red, green, blue, alpha));
                         worldIn.addFreshEntity(luxCapacitor);
                     }
-                    return ActionResult.success(itemStackIn);
+                    return InteractionResultHolder.success(itemStackIn);
                 }
-                return ActionResult.pass(itemStackIn);
+                return InteractionResultHolder.pass(itemStackIn);
             }
 
             @Override

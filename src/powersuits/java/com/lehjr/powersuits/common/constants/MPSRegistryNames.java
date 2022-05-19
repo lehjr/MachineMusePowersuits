@@ -114,6 +114,10 @@ public class MPSRegistryNames {
     public static final ResourceLocation PLASMA_CANNON_MODULE = toResLocation("plasma_cannon");
     public static final ResourceLocation RAILGUN_MODULE = toResLocation("railgun");
 
+    /**
+     * Menu ---------------------------------------------------------------------------------------
+     */
+    public static final String INSTALL_SALVAGE_MENU_TYPE = "install_salvage_menu_type";
 
     static ResourceLocation toResLocation(String path) {
         return new ResourceLocation(MPSConstants.MOD_ID, path);

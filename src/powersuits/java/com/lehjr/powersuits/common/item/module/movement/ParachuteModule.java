@@ -26,6 +26,7 @@
 
 package com.lehjr.powersuits.common.item.module.movement;
 
+import com.lehjr.numina.client.control.PlayerMovementInputWrapper;
 import com.lehjr.numina.common.capabilities.module.powermodule.CapabilityPowerModule;
 import com.lehjr.numina.common.capabilities.module.powermodule.IConfig;
 import com.lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
@@ -36,11 +37,11 @@ import com.lehjr.numina.common.capabilities.module.toggleable.IToggleableModule;
 import com.lehjr.numina.common.player.PlayerUtils;
 import com.lehjr.powersuits.common.config.MPSSettings;
 import com.lehjr.powersuits.common.item.module.AbstractPowerModule;
-import com.mojang.math.Vector3d;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
@@ -94,7 +95,7 @@ public class ParachuteModule extends AbstractPowerModule {
                 if (player.isCrouching() && player.getDeltaMovement().y < -0.1 && (!hasGlider || !playerInput.forwardKey)) {
                     double totalVelocity = Math.sqrt(player.getDeltaMovement().x * player.getDeltaMovement().x + player.getDeltaMovement().z * player.getDeltaMovement().z + player.getDeltaMovement().y * player.getDeltaMovement().y);
                     if (totalVelocity > 0) {
-                        Vector3d motion = player.getDeltaMovement();
+                        Vec3 motion = player.getDeltaMovement();
                         player.setDeltaMovement(
                                 motion.x * 0.1 / totalVelocity,
                                 motion.y * 0.1 / totalVelocity,

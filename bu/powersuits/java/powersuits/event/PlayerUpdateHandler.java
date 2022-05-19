@@ -63,7 +63,7 @@ public class PlayerUpdateHandler {
                 if ((player.getItemBySlot(EquipmentSlot.CHEST).getItem() instanceof PowerArmorChestplate)) {
                     double velsq2 = MuseMathUtils.sumsq(player.getDeltaMovement().x, player.getDeltaMovement().y, player.getDeltaMovement().z) - 0.5;
                     if (player.hasImpulse && velsq2 > 0) {
-                        Musique.playerSound(player, MPSSoundDictionary.GLIDER, SoundCategory.PLAYERS, (float) (velsq2 / 3), 1.0f, true);
+                        Musique.playerSound(player, MPSSoundDictionary.GLIDER, SoundSource.PLAYERS, (float) (velsq2 / 3), 1.0f, true);
                     } else {
                         Musique.stopPlayerSound(player, MPSSoundDictionary.GLIDER);
                     }

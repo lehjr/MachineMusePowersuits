@@ -26,30 +26,30 @@
 
 package com.lehjr.powersuits.common.item.module.movement;
 
-import lehjr.numina.config.NuminaSettings;
-import lehjr.numina.util.capabilities.inventory.modularitem.IModularItem;
-import lehjr.numina.util.capabilities.module.powermodule.IConfig;
-import lehjr.numina.util.capabilities.module.powermodule.ModuleCategory;
-import lehjr.numina.util.capabilities.module.powermodule.ModuleTarget;
-import lehjr.numina.util.capabilities.module.powermodule.CapabilityPowerModule;
-import lehjr.numina.util.capabilities.module.tickable.IPlayerTickModule;
-import lehjr.numina.util.capabilities.module.tickable.PlayerTickModule;
-import lehjr.numina.util.capabilities.module.toggleable.IToggleableModule;
-import lehjr.numina.util.client.control.PlayerMovementInputWrapper;
-import lehjr.numina.util.client.sound.Musique;
-import lehjr.numina.util.energy.ElectricItemUtils;
-import lehjr.powersuits.client.sound.MPSSoundDictionary;
-import lehjr.powersuits.config.MPSSettings;
-import lehjr.powersuits.constants.MPSConstants;
-import lehjr.powersuits.constants.MPSRegistryNames;
-import lehjr.powersuits.event.MovementManager;
-import lehjr.powersuits.item.module.AbstractPowerModule;
-import net.minecraft.entity.player.Player;
-import net.minecraft.inventory.EquipmentSlot;
-import net.minecraft.item.ItemStack;
+import com.lehjr.numina.client.control.PlayerMovementInputWrapper;
+import com.lehjr.numina.client.sound.Musique;
+import com.lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
+import com.lehjr.numina.common.capabilities.module.powermodule.CapabilityPowerModule;
+import com.lehjr.numina.common.capabilities.module.powermodule.IConfig;
+import com.lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
+import com.lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
+import com.lehjr.numina.common.capabilities.module.tickable.IPlayerTickModule;
+import com.lehjr.numina.common.capabilities.module.tickable.PlayerTickModule;
+import com.lehjr.numina.common.capabilities.module.toggleable.IToggleableModule;
+import com.lehjr.numina.common.config.NuminaSettings;
+import com.lehjr.numina.common.energy.ElectricItemUtils;
+import com.lehjr.powersuits.client.sound.MPSSoundDictionary;
+import com.lehjr.powersuits.common.config.MPSSettings;
+import com.lehjr.powersuits.common.constants.MPSConstants;
+import com.lehjr.powersuits.common.constants.MPSRegistryNames;
+import com.lehjr.powersuits.common.event.MovementManager;
+import com.lehjr.powersuits.common.item.module.AbstractPowerModule;
+import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.util.Direction;
-import net.minecraft.util.SoundCategory;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
@@ -111,7 +111,7 @@ public class JetPackModule extends AbstractPowerModule {
                         .filter(IModularItem.class::isInstance)
                         .map(IModularItem.class::cast)
                         .map(m->
-                        m.isModuleOnline(MPSRegistryNames.FLIGHT_CONTROL_MODULE_REGNAME)).orElse(false);
+                        m.isModuleOnline(MPSRegistryNames.FLIGHT_CONTROL_MODULE)).orElse(false);
                 double jetEnergy = 0;
                 double thrust = 0;
                 jetEnergy += applyPropertyModifiers(MPSConstants.JETPACK_ENERGY);
@@ -126,7 +126,7 @@ public class JetPackModule extends AbstractPowerModule {
                                 ElectricItemUtils.drainPlayerEnergy(player, (int) (thrust * jetEnergy * 5));
                             }
                         } else if (NuminaSettings.useSounds()) {
-                            Musique.playerSound(player, MPSSoundDictionary.JETPACK, SoundCategory.PLAYERS, (float) (thrust * 6.25), 1.0f, true);
+                            Musique.playerSound(player, MPSSoundDictionary.JETPACK, SoundSource.PLAYERS, (float) (thrust * 6.25), 1.0f, true);
                         }
                     } else {
                         onPlayerTickInactive(player, torso);

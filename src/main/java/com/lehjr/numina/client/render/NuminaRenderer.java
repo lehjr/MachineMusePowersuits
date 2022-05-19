@@ -1,7 +1,9 @@
 package com.lehjr.numina.client.render;
 
+import com.lehjr.numina.client.gui.geometry.SwirlyMuseCircle;
 import com.lehjr.numina.common.constants.NuminaConstants;
 import com.lehjr.numina.common.math.Color;
+import com.lehjr.numina.common.string.StringUtils;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.platform.Lighting;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -39,6 +41,23 @@ import java.util.Map;
 import java.util.Random;
 
 public class NuminaRenderer {
+    protected static SwirlyMuseCircle selectionCircle;
+    /**
+     * Does the rotating green circle around the selection, e.g. in GUI.
+     *
+     *
+     * @param matrixStack
+     * @param xoffset
+     * @param yoffset
+     * @param radius
+     * @param zLevel
+     */
+    public static void drawCircleAround(PoseStack matrixStack, double xoffset, double yoffset, double radius, float zLevel) {
+        if (selectionCircle == null) {
+            selectionCircle = new SwirlyMuseCircle(new Color(0.0f, 1.0f, 0.0f, 0.0f), new Color(0.8f, 1.0f, 0.8f, 1.0f));
+        }
+        selectionCircle.draw(matrixStack, radius, xoffset, yoffset, zLevel);
+    }
 
     public static ItemRenderer getItemRenderer() {
         return Minecraft.getInstance().getItemRenderer();
@@ -50,6 +69,24 @@ public class NuminaRenderer {
 
     static ItemModelShaper getItemModelShaper() {
         return getItemRenderer().getItemModelShaper();
+    }
+
+    /**
+     * Makes the appropriate openGL calls and draws an itemStack and overlay using the default icon
+     */
+    public static void drawItemAt(double x, double y, @Nonnull ItemStack itemStack) {
+        if (!itemStack.isEmpty()) {
+            getItemRenderer().renderAndDecorateItem(itemStack, (int) x, (int) y);
+            getItemRenderer().renderGuiItemDecorations(StringUtils.getFontRenderer(), itemStack, (int) x, (int) y, (String) null);
+        }
+    }
+
+    public static void drawItemAt(PoseStack matrixStack, double x, double y, @Nonnull ItemStack itemStack, Color colour) {
+        if (!itemStack.isEmpty()) {
+
+            Minecraft.getInstance().getItemRenderer().renderAndDecorateItem(itemStack, (int) x, (int) y);
+            Minecraft.getInstance().getItemRenderer().renderGuiItemDecorations(StringUtils.getFontRenderer(), itemStack, (int) x, (int) y, (String) null);
+        }
     }
 
     static BakedModel getModel(@Nonnull ItemStack itemStack) {

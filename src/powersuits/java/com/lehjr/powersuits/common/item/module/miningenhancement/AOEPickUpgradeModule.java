@@ -43,9 +43,12 @@ import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
@@ -104,8 +107,8 @@ public class AOEPickUpgradeModule extends AbstractPowerModule {
                 }
 
                 AtomicBoolean harvested = new AtomicBoolean(false);
-                RayTraceResult rayTraceResult = getPlayerPOVHitResult(player.level, player, RayTraceContext.FluidMode.SOURCE_ONLY);
-                if (rayTraceResult == null || rayTraceResult.getType() != RayTraceResult.Type.BLOCK) {
+                HitResult rayTraceResult = getPlayerPOVHitResult(player.level, player, ClipContext.Fluid.SOURCE_ONLY);
+                if (rayTraceResult == null || rayTraceResult.getType() != HitResult.Type.BLOCK) {
                     return false;
                 }
                 int radius = (int) (applyPropertyModifiers(MPSConstants.AOE_MINING_RADIUS) - 1) / 2;
@@ -113,7 +116,7 @@ public class AOEPickUpgradeModule extends AbstractPowerModule {
                     return false;
                 }
 
-                Direction side = ((BlockRayTraceResult) rayTraceResult).getDirection();
+                Direction side = ((BlockHitResult) rayTraceResult).getDirection();
                 Stream<BlockPos> posList;
                 switch (side) {
                     case UP:
@@ -158,7 +161,7 @@ public class AOEPickUpgradeModule extends AbstractPowerModule {
                                         harvested.set(true);
                                     }
                                     blocksBroken.getAndAdd(1);
-                                    Block.updateOrDestroy(state, Blocks.AIR.defaultBlockState(), player.level, blockPos, Constants.BlockFlags.DEFAULT);
+                                    Block.updateOrDestroy(state, Blocks.AIR.defaultBlockState(), player.level, blockPos, Block.UPDATE_ALL);
                                     ElectricItemUtils.drainPlayerEnergy(player,
                                             blockBreakingModule.getCapability(CapabilityPowerModule.POWER_MODULE).map(m -> {
                                                 if (m instanceof IBlockBreakingModule) {

@@ -26,6 +26,7 @@
 
 package com.lehjr.numina.common.capabilities.heat;
 
+import com.lehjr.numina.common.base.NuminaLogger;
 import com.lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
 import com.lehjr.numina.common.constants.TagConstants;
 import net.minecraft.nbt.CompoundTag;
@@ -38,15 +39,48 @@ import javax.annotation.Nonnull;
 
 public class HeatItemWrapper extends HeatStorage {
     ItemStack stack;
-    public HeatItemWrapper(@Nonnull ItemStack stack, int baseMax, LazyOptional<IPowerModule> moduleCap) {
-        super(baseMax + moduleCap.map(cap->cap.applyPropertyModifiers(TagConstants.MAXIMUM_HEAT)).orElse(0D));
-        this.stack = stack;
+
+//    @Deprecated
+//    public HeatItemWrapper(@Nonnull ItemStack stack, int baseMax, LazyOptional<IPowerModule> moduleCap) {
+//        super(baseMax + moduleCap.map(cap->cap.applyPropertyModifiers(TagConstants.MAXIMUM_HEAT)).orElse(0D));
+//        this.stack = stack;
+//    }
+//    public HeatItemWrapper(@Nonnull ItemStack stack, double baseMax, LazyOptional<IPowerModule> moduleCap) {
+//        super(baseMax + moduleCap.map(cap->cap.applyPropertyModifiers(TagConstants.MAXIMUM_HEAT)).orElse(0D));
+//        NuminaLogger.logDebug("stack here in HeatItemWrapper: " + stack);
+//
+//        this.stack = stack;
+//    }
+
+    public HeatItemWrapper(@Nonnull ItemStack stackIn, double capacity, double maxReceive, double maxExtract) {
+        super(capacity, maxReceive, maxExtract, 0);
+        this.stack = stackIn;
+
+        NuminaLogger.logDebug("stak here init: " + stack);
+        NuminaLogger.logDebug("stackIn here init: " + stackIn);
     }
+
+    public HeatItemWrapper(@Nonnull ItemStack stackIn, double capacity) {
+        this(stackIn, capacity, capacity, capacity);
+
+        NuminaLogger.logDebug("stak here init: " + stackIn);
+        NuminaLogger.logDebug("stackIn here init: " + stackIn);
+    }
+
+    public HeatItemWrapper(@Nonnull ItemStack stack, double capacity, double maxTransfer) {
+        this(stack, capacity, maxTransfer, maxTransfer);
+    }
+
+
 
     @Override
     public void onLoad() {
-        final CompoundTag tag = stack.getOrCreateTag();
+        NuminaLogger.logDebug("stak here onload: " + stack);
+
+        final CompoundTag tag = this.stack.getOrCreateTag();
         if (tag != null && tag.contains(TagConstants.HEAT, Tag.TAG_DOUBLE)) {
+
+
             deserializeNBT((DoubleTag) tag.get(TagConstants.HEAT));
         }
     }

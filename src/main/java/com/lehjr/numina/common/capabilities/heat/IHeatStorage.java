@@ -71,4 +71,6 @@ public interface IHeatStorage extends CapabilityUpdate {
      * If this is false, then any calls to receiveHeat will return 0.
      */
     boolean canReceive();
+
+    void setHeatCapacity(double maxHeat);
 }
