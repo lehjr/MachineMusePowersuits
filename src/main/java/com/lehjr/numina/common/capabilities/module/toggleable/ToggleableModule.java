@@ -49,7 +49,7 @@ public class ToggleableModule extends PowerModule implements IToggleableModule, 
     }
 
     @Override
-    public void onLoad() {
+    public void loadCapValues() {
         final CompoundTag tag = module.getOrCreateTag();
         if (tag.contains(TAG_ONLINE, Tag.TAG_BYTE)) {
             deserializeNBT((ByteTag) tag.get(TAG_ONLINE));
@@ -83,7 +83,7 @@ public class ToggleableModule extends PowerModule implements IToggleableModule, 
     @Override
     public boolean isModuleOnline() {
         if (online == null) {
-            onLoad();
+            loadCapValues();
         }
         return online;
     }

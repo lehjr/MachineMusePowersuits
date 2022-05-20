@@ -50,7 +50,7 @@ public class BatteryCapabilityProvider implements ICapabilityProvider {
         );
 
         energyStorageHolder = LazyOptional.of(() -> {
-            energyStorage.onLoad();
+            energyStorage.loadCapValues();
             return energyStorage;
         });
     }

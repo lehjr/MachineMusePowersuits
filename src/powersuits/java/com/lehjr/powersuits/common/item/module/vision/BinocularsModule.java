@@ -73,7 +73,7 @@ public class BinocularsModule extends AbstractPowerModule {
             }};
 
             powerModuleHolder = LazyOptional.of(() -> {
-                moduleToggle.onLoad();
+                moduleToggle.loadCapValues();
                 return moduleToggle;
             });
         }

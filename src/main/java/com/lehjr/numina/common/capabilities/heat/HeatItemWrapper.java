@@ -74,7 +74,7 @@ public class HeatItemWrapper extends HeatStorage {
 
 
     @Override
-    public void onLoad() {
+    public void loadCapValues() {
         NuminaLogger.logDebug("stak here onload: " + stack);
 
         final CompoundTag tag = this.stack.getOrCreateTag();

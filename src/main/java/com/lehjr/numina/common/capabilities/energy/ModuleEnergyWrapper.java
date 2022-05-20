@@ -50,7 +50,7 @@ public class ModuleEnergyWrapper extends EnergyStorage implements CapabilityUpda
      * CapabilityUpdate --------------------------------------------------------------------------
      */
     @Override
-    public void onLoad() {
+    public void loadCapValues() {
         final CompoundTag nbt = stack.getOrCreateTag();
         if (nbt.contains(TagConstants.ENERGY, Tag.TAG_INT)) {
             deserializeNBT(nbt.get(TagConstants.ENERGY));

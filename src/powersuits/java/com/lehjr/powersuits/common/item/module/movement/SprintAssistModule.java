@@ -89,7 +89,7 @@ public class SprintAssistModule extends AbstractPowerModule {
         @Override
         public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
             if (cap instanceof IPlayerTickModule) {
-                ticker.onLoad();
+                ticker.loadCapValues();
             }
             return CapabilityPowerModule.POWER_MODULE.orEmpty(cap, LazyOptional.of(()-> ticker));
         }

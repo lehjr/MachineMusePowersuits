@@ -226,10 +226,11 @@ public class ModeChangingModularItem extends ModularItem implements IModeChangin
 
     @Override
     public void deserializeNBT(CompoundTag nbt) {
-        if (nbt.contains(TAG_MODE))
+        if (nbt.contains(TAG_MODE)) {
             activeMode = nbt.getInt(TAG_MODE);
-        else
+        } else {
             activeMode = -1;
+        }
         super.deserializeNBT(nbt);
     }
 }

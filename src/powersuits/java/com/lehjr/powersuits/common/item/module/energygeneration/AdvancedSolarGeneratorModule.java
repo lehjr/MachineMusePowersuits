@@ -77,7 +77,7 @@ public class AdvancedSolarGeneratorModule extends AbstractPowerModule {
             }};
 
             powerModuleHolder = LazyOptional.of(() -> {
-                ticker.onLoad();
+                ticker.loadCapValues();
                 return ticker;
             });
         }

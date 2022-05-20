@@ -83,7 +83,7 @@ public class PowerFistCap implements ICapabilityProvider {
         }};
 
         this.modularItemHolder = LazyOptional.of(()-> {
-            modularItem.onLoad();
+            modularItem.loadCapValues();
             return modularItem;
         });
 
@@ -93,12 +93,12 @@ public class PowerFistCap implements ICapabilityProvider {
         this.heatStorage = new HeatItemWrapper(itemStack, MPSSettings.getMaxHeatPowerFist());
         heatHolder = LazyOptional.of(() -> {
 //            modularItem.onLoad();
-            heatStorage.onLoad();
+            heatStorage.loadCapValues();
             return heatStorage;
         });
 
         energyHolder = LazyOptional.of(()-> {
-            modularItem.onLoad();
+            modularItem.loadCapValues();
             return modularItem.getStackInSlot(1).getCapability(CapabilityEnergy.ENERGY).orElse(new EnergyStorage(0));
         });
     }

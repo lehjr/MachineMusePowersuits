@@ -24,18 +24,12 @@
  *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package lehjr.numina.util.client.render;
+package com.lehjr.powersuits.client.event;
 
-import lehjr.numina.integration.scannable.MPSOverlayRenderer;
-import lehjr.numina.util.capabilities.inventory.modechanging.IModeChangingItem;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.player.ClientPlayer;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.ModList;
-import net.minecraftforge.items.CapabilityItemHandler;
 
 /**
  * Author: MachineMuse (Claire Semple)
@@ -52,22 +46,11 @@ public class RenderGameOverlayEventHandler {
 
     @SubscribeEvent
     public void onPostRenderGameOverlayEvent(final RenderGameOverlayEvent.Post e) {
-        if (e.getType().equals(RenderGameOverlayEvent.ElementType.HOTBAR)) {
-            drawModeChangeIcons();
+        if (e.getType().equals(RenderGameOverlayEvent.ElementType.LAYER)) {
+            // FIXME!!! move to MPS where it belongs !!!!
+//        if (ModList.get().isLoaded("scannable")) {
+//            MPSOverlayRenderer.INSTANCE.onOverlayRender(e);
+//        }
         }
-        if (ModList.get().isLoaded("scannable")) {
-            MPSOverlayRenderer.INSTANCE.onOverlayRender(e);
-        }
-    }
-
-    public void drawModeChangeIcons() {
-        Minecraft mc = Minecraft.getInstance();
-        LocalPlayer player = mc.player;
-        int i = player.getInventory().selected;
-        player.getInventory().getSelected().getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-                .filter(IModeChangingItem.class::isInstance)
-                .map(IModeChangingItem.class::cast)
-                .ifPresent(handler->
-                handler.drawModeChangeIcon(player, i, mc));
     }
 }

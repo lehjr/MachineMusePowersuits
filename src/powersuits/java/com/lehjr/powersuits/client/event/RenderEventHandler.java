@@ -139,7 +139,19 @@ public enum RenderEventHandler {
         RenderGameOverlayEvent.ElementType elementType = e.getType();
         if (RenderGameOverlayEvent.ElementType.LAYER.equals(elementType)) {
             this.drawKeybindToggles(e.getMatrixStack());
+            drawModeChangeIcons();
         }
+    }
+
+    public void drawModeChangeIcons() {
+        Minecraft mc = Minecraft.getInstance();
+        LocalPlayer player = mc.player;
+        int i = player.getInventory().selected;
+        player.getInventory().getSelected().getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+                .filter(IModeChangingItem.class::isInstance)
+                .map(IModeChangingItem.class::cast)
+                .ifPresent(handler->
+                        handler.drawModeChangeIcon(player, i, mc));
     }
 
     @SubscribeEvent

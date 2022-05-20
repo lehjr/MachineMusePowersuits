@@ -87,7 +87,7 @@ public class JetBootsModule extends AbstractPowerModule {
         @Override
         public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
             if (cap instanceof IToggleableModule) {
-                ((IToggleableModule) cap).onLoad();
+                ((IToggleableModule) cap).loadCapValues();
             }
             return CapabilityPowerModule.POWER_MODULE.orEmpty(cap, LazyOptional.of(() -> ticker));
         }

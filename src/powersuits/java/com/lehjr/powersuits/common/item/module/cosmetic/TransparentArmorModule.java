@@ -65,7 +65,7 @@ public class TransparentArmorModule extends AbstractPowerModule {
             this.module = module;
             powerModule = new ToggleableModule(module, ModuleCategory.COSMETIC, ModuleTarget.ARMORONLY, MPSSettings::getModuleConfig, true);
             powerModuleHolder = LazyOptional.of(() -> {
-                powerModule.onLoad();
+                powerModule.loadCapValues();
                 return powerModule;
             });
         }

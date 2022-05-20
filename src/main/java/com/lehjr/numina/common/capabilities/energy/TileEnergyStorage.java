@@ -36,11 +36,11 @@ public class TileEnergyStorage extends EnergyStorage implements CapabilityUpdate
 
     public TileEnergyStorage(int capacity, int maxTransfer) {
         super(capacity, maxTransfer);
-        onLoad();
+        loadCapValues(); // FIXME
     }
 
     @Override
-    public void onLoad() {
+    public void loadCapValues() {
 
     }
 

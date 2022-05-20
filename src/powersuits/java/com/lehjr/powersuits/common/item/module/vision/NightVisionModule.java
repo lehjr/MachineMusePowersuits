@@ -26,19 +26,11 @@
 
 package com.lehjr.powersuits.common.item.module.vision;
 
-import com.lehjr.numina.common.capabilities.heat.CapabilityHeat;
-import com.lehjr.numina.common.capabilities.heat.HeatItemWrapper;
-import com.lehjr.numina.common.capabilities.heat.IHeatStorage;
 import com.lehjr.numina.common.capabilities.module.powermodule.*;
-import com.lehjr.numina.common.capabilities.module.tickable.IPlayerTickModule;
 import com.lehjr.numina.common.capabilities.module.tickable.PlayerTickModule;
-import com.lehjr.numina.common.capabilities.module.toggleable.IToggleableModule;
 import com.lehjr.numina.common.energy.ElectricItemUtils;
 import com.lehjr.powersuits.common.config.MPSSettings;
 import com.lehjr.powersuits.common.item.module.AbstractPowerModule;
-import com.lehjr.powersuits.common.item.module.armor.EnergyShieldModule;
-import com.mojang.blaze3d.shaders.Effect;
-import net.minecraft.client.renderer.EffectInstance;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.effect.MobEffect;
@@ -77,7 +69,7 @@ public class NightVisionModule extends AbstractPowerModule {
             this.ticker = new Ticker(module, ModuleCategory.VISION, ModuleTarget.HEADONLY, MPSSettings::getModuleConfig);
 
             powerModuleHolder = LazyOptional.of(() -> {
-                ticker.onLoad();
+                ticker.loadCapValues();
                 return ticker;
             });
         }

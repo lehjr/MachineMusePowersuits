@@ -26,17 +26,12 @@
 
 package com.lehjr.powersuits.common.item.module.environmental;
 
-import com.lehjr.numina.common.capabilities.heat.CapabilityHeat;
-import com.lehjr.numina.common.capabilities.heat.HeatItemWrapper;
-import com.lehjr.numina.common.capabilities.heat.IHeatStorage;
 import com.lehjr.numina.common.capabilities.module.powermodule.*;
-import com.lehjr.numina.common.capabilities.module.tickable.IPlayerTickModule;
 import com.lehjr.numina.common.capabilities.module.tickable.PlayerTickModule;
 import com.lehjr.numina.common.heat.HeatUtils;
 import com.lehjr.powersuits.common.config.MPSSettings;
 import com.lehjr.powersuits.common.constants.MPSConstants;
 import com.lehjr.powersuits.common.item.module.AbstractPowerModule;
-import com.lehjr.powersuits.common.item.module.armor.EnergyShieldModule;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
@@ -48,20 +43,14 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.BucketPickup;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
-import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidUtil;
-import net.minecraftforge.fluids.IFluidTank;
-import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 import net.minecraftforge.fluids.capability.templates.FluidHandlerItemStack;
-import net.minecraftforge.fluids.capability.templates.FluidTank;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -96,7 +85,7 @@ public class FluidTankModule extends AbstractPowerModule {
             }};
 
             powerModuleHolder = LazyOptional.of(() -> {
-                ticker.onLoad();
+                ticker.loadCapValues();
                 return ticker;
             });
 

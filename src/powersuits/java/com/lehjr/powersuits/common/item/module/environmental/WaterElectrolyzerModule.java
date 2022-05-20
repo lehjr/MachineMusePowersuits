@@ -69,7 +69,7 @@ public class WaterElectrolyzerModule extends AbstractPowerModule {
             }};
 
             powerModuleHolder = LazyOptional.of(() -> {
-                ticker.onLoad();
+                ticker.loadCapValues();
                 return ticker;
             });
         }

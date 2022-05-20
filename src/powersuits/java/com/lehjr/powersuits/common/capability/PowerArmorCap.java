@@ -141,7 +141,7 @@ public class PowerArmorCap implements ICapabilityProvider {
         }
 
         this.modularItemHolder = LazyOptional.of(()-> {
-            modularItem.onLoad();
+            modularItem.loadCapValues();
             return modularItem;
         });
 
@@ -152,23 +152,23 @@ public class PowerArmorCap implements ICapabilityProvider {
 
         heatStorage = new HeatItemWrapper(itemStackIn, maxHeat);
         heatHolder = LazyOptional.of(() -> {
-            modularItem.onLoad();
+            modularItem.loadCapValues();
             heatStorage.setHeatCapacity(maxHeat + modularItem.getStackInSlot(0)
                     .getCapability(CapabilityPowerModule.POWER_MODULE).map(pm->pm.applyPropertyModifiers(TagConstants.MAXIMUM_HEAT)).orElse(0D));
-            heatStorage.onLoad();
+            heatStorage.loadCapValues();
             return heatStorage;
         });
 
         NuminaLogger.logDebug("stack here in PowerArmorCap again: " + itemStackIn);
 
         energyHolder = LazyOptional.of(()-> {
-            modularItem.onLoad();
+            modularItem.loadCapValues();
             return modularItem.getStackInSlot(1).getCapability(CapabilityEnergy.ENERGY).orElse(new EnergyStorage(0));
         });
 
         this.fluidHolder = LazyOptional.of(()-> {
             if (targetSlot == EquipmentSlot.CHEST ) {
-                modularItem.onLoad();
+                modularItem.loadCapValues();
                 return modularItem.getOnlineModuleOrEmpty(MPSRegistryNames.FLUID_TANK_MODULE).getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).orElse(new EmptyFluidHandler());
             } else {
                 return new EmptyFluidHandler();

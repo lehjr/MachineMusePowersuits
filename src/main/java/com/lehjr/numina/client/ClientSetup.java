@@ -25,7 +25,6 @@ public final class ClientSetup {
     public static void handleSetupEvent(final FMLClientSetupEvent event) {
         MenuScreens.register(NuminaObjects.CHARGING_BASE_CONTAINER_TYPE.get(), ChargingBaseScreen::new);
         MenuScreens.register(NuminaObjects.ARMOR_STAND_CONTAINER_TYPE.get(), ArmorStandScreen::new);
-
     }
 
     // Ripped from JEI
@@ -42,6 +41,11 @@ public final class ClientSetup {
                     IconUtils.setIconInstance(icons));
         });
     }
+
+    public static void miscClientReg() {
+    }
+
+
 
     private void onClientSetup(FMLClientSetupEvent event) {
 //        MinecraftForge.EVENT_BUS.register(new FOVUpdateEventHandler());

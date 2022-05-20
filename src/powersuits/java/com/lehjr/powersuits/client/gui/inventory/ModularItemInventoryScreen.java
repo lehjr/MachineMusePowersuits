@@ -8,6 +8,16 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 
 public class ModularItemInventoryScreen extends AbstractContainerScreen<ModularItemInventoryMenu> {
+
+    /*
+    todo:
+        2 backgrounds (split window for displaying compatible modules for modular item)
+        tabs for selecting modular item in equipment slot
+        recipe window triggered by clicking on compatible items.
+
+     */
+
+
     public ModularItemInventoryScreen(ModularItemInventoryMenu pMenu, Inventory pPlayerInventory, Component pTitle) {
         super(pMenu, pPlayerInventory, pTitle);
     }

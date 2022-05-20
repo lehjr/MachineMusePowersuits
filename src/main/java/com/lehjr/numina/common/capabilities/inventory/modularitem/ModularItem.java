@@ -319,7 +319,7 @@ public class ModularItem extends ItemStackHandler implements IModularItem, Capab
     }
 
     @Override
-    public void onLoad() {
+    public void loadCapValues() {
         final CompoundTag nbt = getModularItemStack().getOrCreateTag();
         if (nbt.contains(TagConstants.TAG_MODULE_SETTINGS, Tag.TAG_COMPOUND)) {
             deserializeNBT((CompoundTag) nbt.get(TagConstants.TAG_MODULE_SETTINGS));
