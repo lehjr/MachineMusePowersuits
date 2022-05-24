@@ -75,7 +75,7 @@ public enum ModelBakeEventHandler {
         }
 
         IBakedModel powerFistIcon = event.getModelRegistry().get(powerFistIconLocation);
-        if (luxCapItemModel instanceof OBJBakedCompositeModel) {
+        if (!OBJBakedCompositeModel.class.isInstance(powerFistIcon)) {
             event.getModelRegistry().put(powerFistIconLocation, new PowerFistModel(powerFistIcon));
         }
 
