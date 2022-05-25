@@ -59,7 +59,6 @@ public class ModuleEnergyWrapper extends EnergyStorage implements CapabilityUpda
 
     @Override
     public void onValueChanged() {
-        System.out.println("updating tag");
         this.stack.addTagElement(TagConstants.ENERGY, serializeNBT());
     }
 

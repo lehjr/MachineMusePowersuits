@@ -27,27 +27,36 @@
 package com.lehjr.powersuits.common.blockentity;
 
 
+import com.lehjr.numina.common.base.NuminaLogger;
 import com.lehjr.numina.common.blockentity.NuminaBlockEntity;
 import com.lehjr.numina.common.capabilities.render.color.CapabilityColor;
 import com.lehjr.numina.common.capabilities.render.color.ColorStorage;
 import com.lehjr.numina.common.capabilities.render.color.IColorTag;
 import com.lehjr.numina.common.math.Color;
+import com.lehjr.powersuits.client.model.helper.LuxCapHelper;
 import com.lehjr.powersuits.common.base.MPSObjects;
+import com.lehjr.powersuits.common.block.LuxCapacitor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.IntTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.client.model.data.IModelData;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.CapabilityItemHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import javax.annotation.Nonnull;
+
 public class LuxCapacitorBlockEntity extends NuminaBlockEntity /*implements ITickableBlockEntity */{
     final ColorStorage colorStorage = new ColorStorage();
-    LazyOptional<IColorTag> colorHolder = LazyOptional.of(()-> new ColorStorage());
-
-    public LuxCapacitorBlockEntity(BlockPos pWorldPosition, BlockState pBlockState) {
-        super(MPSObjects.LUX_CAP_BLOCK_ENTITY_TYPE.get(), pWorldPosition, pBlockState);
+    final LazyOptional<IColorTag> colorHolder;
+    public LuxCapacitorBlockEntity(BlockPos pos, BlockState state) {
+        super(MPSObjects.LUX_CAP_BLOCK_ENTITY_TYPE.get(), pos, state);
+        colorHolder = LazyOptional.of(()-> colorStorage);
     }
 
     public void setColor(Color color) {
@@ -70,71 +79,37 @@ public class LuxCapacitorBlockEntity extends NuminaBlockEntity /*implements ITic
         return LazyOptional.empty();
     }
 
-    //
-//    public LuxCapacitorBlockEntity() {
-//        super(MPSObjects.LUX_CAP_TILE_TYPE.get());
+    @Override
+    public void load(CompoundTag tag) {
+        super.load(tag);
+        if (tag.contains("color", Tag.TAG_INT)) {
+            colorHolder.ifPresent(colorNBT-> ((ColorStorage)colorNBT).deserializeNBT((IntTag) tag.get("color")));
+        } else {
+            colorHolder.ifPresent(colorNBT-> colorNBT.setColor(LuxCapacitor.defaultColor));
+
+            NuminaLogger.logger.debug("No NBT found! D:");
+        }
+    }
+
+    @Override
+    protected void saveAdditional(CompoundTag tag) {
+        super.saveAdditional(tag);
+        colorHolder.ifPresent(colorNBT -> tag.put("colour", ((ColorStorage)colorNBT).serializeNBT()));
+    }
+
+//        @Override
+//    public void requestModelDataUpdate() {
+//        super.requestModelDataUpdate();
 //    }
-//
-//    public LuxCapacitorBlockEntity(Color colour) {
-//        super(MPSObjects.LUX_CAP_TILE_TYPE.get());
-//        colourNBT.ifPresent(colourNBT1 -> colourNBT1.setColor(colour));
-//    }
-//
-//    /**
-//     * Retrieves packet to send to the client whenever this Tile Entity is resynced via World.notifyBlockUpdate. For
-//     * modded TE's, this packet comes back to you clientside in {@link #onDataPacket}
-//     */
-//    @Nullable
-//    @Override
-//    public SUpdateBlockEntityPacket getUpdatePacket() {
-//        return new SUpdateBlockEntityPacket(this.worldPosition, -1, this.getUpdateTag());
-//    }
-//
-//    @Override
-//    public CompoundTag getUpdateTag() {
-//        return this.save(new CompoundTag());
-//    }
-//
-//    public void setColor(Color colour) {
-////        NuminaLogger.logDebug("setting colour: " + colour);
-//        this.colourNBT.ifPresent(colourNBT1 -> colourNBT1.setColor(colour));
-//    }
-//
-//    @Override
-//    public CompoundTag save(CompoundTag nbt) {
-////        NuminaLogger.logDebug("writing: " + nbt);
-//        colourNBT.ifPresent(colourNBT1 -> nbt.put("colour", colourNBT1.serializeNBT()));
-//        return super.save(nbt);
-//    }
-//
-//    @Nonnull
-//    @Override
-//    public IModelData getModelData() {
-//        return LuxCapHelper.getModelData(getColor().getInt());
-//    }
-//
-//    @Nonnull
-//    @Override
-//    public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
-//        if (cap == ColorCapability.COLOUR) {
-//            return colourNBT.cast();
-//        }
-//        return super.getCapability(cap, side);
-//    }
-//
-//    @Override
-//    public void load(BlockState state, CompoundTag nbt) {
-////        NuminaLogger.logDebug("reading");
-//
-//        if (nbt.contains("colour", Tag.TAG_INT)) {
-//            colourNBT.ifPresent(colourNBT1 -> colourNBT1.deserializeNBT((IntTag) nbt.get("colour")));
-//        } else {
-//            NuminaLogger.logger.debug("No NBT found! D:");
-//        }
-//        super.load(state, nbt);
-//    }
-//
-//    public Color getColor() {
-//        return colourNBT.map(colourNBT1 -> colourNBT1.getColor()).orElse(LuxCapacitor.defaultColor);
-//    }
+
+    @Nonnull
+    @Override
+    public IModelData getModelData() {
+        // FIXME: insert luxcaphelper here
+        return LuxCapHelper.getModelData(getColor().getInt());
+    }
+
+    public Color getColor() {
+        return colorHolder.map(colourNBT1 -> colourNBT1.getColor()).orElse(LuxCapacitor.defaultColor);
+    }
 }

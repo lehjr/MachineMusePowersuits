@@ -4,6 +4,7 @@ import com.lehjr.numina.common.config.ConfigHelper;
 import com.lehjr.powersuits.client.event.ClientSetup;
 import com.lehjr.powersuits.common.config.MPSSettings;
 import com.lehjr.powersuits.common.constants.MPSConstants;
+import com.lehjr.powersuits.common.network.MPSPackets;
 import com.mojang.logging.LogUtils;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -69,6 +70,9 @@ public class ModularPowersuits {
     }
 
     private void setup(final FMLCommonSetupEvent event) {
+        MPSPackets.registerMPSPackets();
+
+
         // some preinit code
         LOGGER.info("HELLO FROM PREINIT");
         LOGGER.info("DIRT BLOCK >> {}", Blocks.DIRT.getRegistryName());

@@ -356,8 +356,6 @@ public abstract class AbstractElectricItemArmor extends ArmorItem {
     @Nullable
     @Override
     public ICapabilityProvider initCapabilities(@Nonnull ItemStack stack, @Nullable CompoundTag nbt) {
-        NuminaLogger.logDebug("stack here in initCapabilities: " + stack);
-
         assert stack != null;
         return new PowerArmorCap(stack, this.slot);
     }

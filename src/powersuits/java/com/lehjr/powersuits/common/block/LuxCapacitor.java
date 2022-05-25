@@ -1,15 +1,15 @@
 package com.lehjr.powersuits.common.block;
 
 import com.lehjr.numina.common.math.Color;
+import com.lehjr.powersuits.common.blockentity.LuxCapacitorBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.DirectionalBlock;
-import net.minecraft.world.level.block.SimpleWaterloggedBlock;
-import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -20,7 +20,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
-public class LuxCapacitor extends DirectionalBlock implements SimpleWaterloggedBlock {
+public class LuxCapacitor extends DirectionalBlock implements SimpleWaterloggedBlock, EntityBlock {
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
     public static final Color defaultColor = new Color(0.4F, 0.2F, 0.9F);
 
@@ -53,57 +53,6 @@ public class LuxCapacitor extends DirectionalBlock implements SimpleWaterloggedB
         builder.add(FACING).add(WATERLOGGED);
     }
 
-
-
-//    @Override
-//    public boolean canPlaceLiquid(IBlockReader worldIn, BlockPos pos, BlockState state, Fluid fluidIn) {
-//        return true;
-//    }
-//
-//    @Override
-//    public FluidState getFluidState(BlockState state) {
-//        return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
-//    }
-//
-//    @Override
-//    public boolean placeLiquid(IWorld worldIn, BlockPos pos, BlockState state, FluidState fluidStateIn) {
-//        return IWaterLoggable.super.placeLiquid(worldIn, pos, state, fluidStateIn);
-//    }
-//
-//    @Override
-//    public Fluid takeLiquid(IWorld worldIn, BlockPos pos, BlockState state) {
-//        return Fluids.EMPTY;
-//    }
-//
-//    @Override
-//    public int getHarvestLevel(BlockState state) {
-//        return 0;
-//    }
-//
-//    @Nullable
-//    @Override
-//    public ToolType getHarvestTool(BlockState state) {
-//        return ToolType.PICKAXE;
-//    }
-//
-//    BlockPos relative(BlockPos pos, Direction direction) {
-//        return pos.relative(direction);
-//    }
-//
-
-//
-//    @SuppressWarnings( "deprecation" )
-//    @Override
-//    public boolean canSurvive(BlockState state, IWorldReader worldIn, BlockPos pos) {
-//        Direction facing = state.hasProperty(FACING) ? state.getValue(FACING) : Direction.UP;
-//        return canSupportCenter(worldIn, pos.relative(facing.getOpposite()), facing);
-//    }
-//
-//    public static boolean canSupportCenter(IWorldReader world, BlockPos pos, Direction direction) {
-//        BlockState blockstate = world.getBlockState(pos);
-//        return direction == Direction.DOWN && blockstate.is(BlockTags.UNSTABLE_BOTTOM_CENTER) ? false : blockstate.isFaceSturdy(world, pos, direction, BlockVoxelShape.CENTER);
-//    }
-
     @SuppressWarnings( "deprecation" )
     @Override
     public VoxelShape getShape(BlockState state, BlockGetter plevel, BlockPos pos, CollisionContext context) {
@@ -124,16 +73,9 @@ public class LuxCapacitor extends DirectionalBlock implements SimpleWaterloggedB
         }
     }
 
-//
-//    @Override
-//    public boolean hasBlockEntity(BlockState state) {
-//        return true;
-//    }
-//
-//    @Nullable
-//    @Override
-//    public BlockEntity createBlockEntity(BlockState state, IBlockReader world) {
-//        return new LuxCapacitorBlockEntity();
-//    }
-
+    @Nullable
+    @Override
+    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+        return new LuxCapacitorBlockEntity(pos, state);
+    }
 }

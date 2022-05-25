@@ -24,11 +24,12 @@
  *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package lehjr.powersuits.client.model.helper;
+package com.lehjr.powersuits.client.model.helper;
 
 import com.google.common.collect.ImmutableMap;
-import lehjr.numina.util.client.model.obj.OBJPartData;
-import lehjr.numina.util.math.Color;
+
+import com.lehjr.numina.client.model.obj.OBJPartData;
+import com.lehjr.numina.common.math.Color;
 import net.minecraftforge.client.model.data.IModelData;
 import net.minecraftforge.client.model.data.ModelDataMap;
 

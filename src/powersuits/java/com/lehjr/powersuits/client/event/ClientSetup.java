@@ -2,6 +2,7 @@ package com.lehjr.powersuits.client.event;
 
 import com.lehjr.powersuits.client.control.KeybindKeyHandler;
 import com.lehjr.powersuits.client.gui.inventory.ModularItemInventoryScreen;
+import com.lehjr.powersuits.client.render.entity.LuxCapacitorEntityRenderer;
 import com.lehjr.powersuits.common.base.MPSObjects;
 import com.mojang.blaze3d.platform.ScreenManager;
 import net.minecraft.client.gui.screens.MenuScreens;
@@ -16,7 +17,7 @@ public class ClientSetup {
         // register gui stuff here
 
 //        RenderingRegistry.registerEntityRenderingHandler(MPSObjects.RAILGUN_BOLT_ENTITY_TYPE.get(), RailGunBoltRenderer::new);
-//        RenderingRegistry.registerEntityRenderingHandler(MPSObjects.LUX_CAPACITOR_ENTITY_TYPE.get(), LuxCapacitorEntityRenderer::new);
+
 //        RenderingRegistry.registerEntityRenderingHandler(MPSObjects.PLASMA_BALL_ENTITY_TYPE.get(), PlasmaBoltEntityRenderer::new);
 //        RenderingRegistry.registerEntityRenderingHandler(MPSObjects.SPINNING_BLADE_ENTITY_TYPE.get(), SpinningBladeEntityRenderer::new);
         MenuScreens.register(MPSObjects.MODULAR_ITEM_INVENTORY_MENU_TYPE.get(), ModularItemInventoryScreen::new);
@@ -30,7 +31,7 @@ public class ClientSetup {
 
 
     public static void clientStart(IEventBus modEventBus) {
-
+        modEventBus.addListener(ModelBakeEventHandler.INSTANCE::onModelBake);
 
 
 

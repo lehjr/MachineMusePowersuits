@@ -55,16 +55,10 @@ public class HeatItemWrapper extends HeatStorage {
     public HeatItemWrapper(@Nonnull ItemStack stackIn, double capacity, double maxReceive, double maxExtract) {
         super(capacity, maxReceive, maxExtract, 0);
         this.stack = stackIn;
-
-        NuminaLogger.logDebug("stak here init: " + stack);
-        NuminaLogger.logDebug("stackIn here init: " + stackIn);
     }
 
     public HeatItemWrapper(@Nonnull ItemStack stackIn, double capacity) {
         this(stackIn, capacity, capacity, capacity);
-
-        NuminaLogger.logDebug("stak here init: " + stackIn);
-        NuminaLogger.logDebug("stackIn here init: " + stackIn);
     }
 
     public HeatItemWrapper(@Nonnull ItemStack stack, double capacity, double maxTransfer) {
@@ -75,12 +69,8 @@ public class HeatItemWrapper extends HeatStorage {
 
     @Override
     public void loadCapValues() {
-        NuminaLogger.logDebug("stak here onload: " + stack);
-
         final CompoundTag tag = this.stack.getOrCreateTag();
         if (tag != null && tag.contains(TagConstants.HEAT, Tag.TAG_DOUBLE)) {
-
-
             deserializeNBT((DoubleTag) tag.get(TagConstants.HEAT));
         }
     }

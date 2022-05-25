@@ -44,7 +44,7 @@ public class MPSPackets {
             PROTOCOL_VERSION::equals
     );
 
-    public static void registerMPAPackets() {
+    public static void registerMPSPackets() {
         int i = 0;
         CHANNEL_INSTANCE.registerMessage(
                 i++,

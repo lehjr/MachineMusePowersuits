@@ -27,17 +27,25 @@
 package com.lehjr.numina.client.gui.frame;
 
 
-import com.lehjr.numina.client.gui.geometry.IDrawableRect;
 import com.lehjr.numina.client.gui.geometry.IRect;
 import com.lehjr.numina.client.gui.geometry.MusePoint2D;
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.network.chat.Component;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public interface IGuiFrame extends IDrawableRect {
+public interface IGuiFrame<T extends IRect> extends GuiEventListener, IRect {
+
+    void setRect(T rect);
+
+    T getRect();
+
+    default void renderLabels(PoseStack matrixStack, int mouseX, int mouseY) {
+
+    }
+
     /**
      * @param mouseX
      * @param mouseY
@@ -67,9 +75,6 @@ public interface IGuiFrame extends IDrawableRect {
     default boolean mouseScrolled(double mouseX, double mouseY, double dWheel) {
         return false;
     }
-
-    @Nonnull
-    IRect getRect();
 
     /**
      * Miscellaneous functions required before rendering
@@ -309,9 +314,5 @@ public interface IGuiFrame extends IDrawableRect {
     @Override
     default void onInit() {
         getRect().onInit();
-    }
-
-    default void renderLabels(PoseStack matrixStack, int mouseX, int mouseY) {
-
     }
 }

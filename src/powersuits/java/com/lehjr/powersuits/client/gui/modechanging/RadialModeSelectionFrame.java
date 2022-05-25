@@ -28,10 +28,7 @@ package com.lehjr.powersuits.client.gui.modechanging;
 
 import com.lehjr.numina.client.gui.clickable.ClickableModule;
 import com.lehjr.numina.client.gui.frame.IGuiFrame;
-import com.lehjr.numina.client.gui.geometry.IDrawable;
-import com.lehjr.numina.client.gui.geometry.MusePoint2D;
-import com.lehjr.numina.client.gui.geometry.RelativeRect;
-import com.lehjr.numina.client.gui.geometry.SpiralPointToPoint2D;
+import com.lehjr.numina.client.gui.geometry.*;
 import com.lehjr.numina.client.render.NuminaRenderer;
 import com.lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
 import com.lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
@@ -68,6 +65,12 @@ public class RadialModeSelectionFrame extends RelativeRect implements IGuiFrame 
         this.zLevel = zLevel;
         loadItems();
     }
+
+    @Override
+    public void setRect(IRect rect) {
+
+    }
+
 
     @Override
     public RelativeRect init(double left, double top, double right, double bottom) {
@@ -124,17 +127,6 @@ public class RadialModeSelectionFrame extends RelativeRect implements IGuiFrame 
         //Draw the selected mode indicator
         drawSelection(matrixStackIn);
     }
-
-    @Override
-    public float getZLevel() {
-        return 0;
-    }
-
-    @Override
-    public IDrawable setZLevel(float v) {
-        return this;
-    }
-
     private void loadItems() {
         if (player != null && modeButtons.isEmpty()) {
             stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)

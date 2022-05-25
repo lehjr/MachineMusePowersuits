@@ -24,31 +24,30 @@
  *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package lehjr.powersuits.client.model.block;
+package com.lehjr.powersuits.client.model.block;
 
-import com.mojang.blaze3d.matrix.PoseStack;
-import lehjr.numina.util.capabilities.module.powermodule.CapabilityPowerModule;
-import lehjr.numina.util.client.model.obj.OBJBakedCompositeModel;
-import lehjr.numina.util.client.model.obj.OBJPartData;
-import lehjr.numina.util.math.Color;
-import lehjr.powersuits.block.LuxCapacitorBlock;
-import lehjr.powersuits.client.model.helper.LuxCapHelper;
-import lehjr.powersuits.constants.MPSConstants;
-import net.minecraft.block.BlockState;
-import net.minecraft.client.renderer.model.BakedQuad;
-import net.minecraft.client.renderer.model.IBakedModel;
-import net.minecraft.client.renderer.model.ItemTransforms;
-import net.minecraft.client.renderer.model.ItemOverrideList;
-import net.minecraft.client.world.ClientWorld;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.Direction;
+import com.lehjr.numina.common.capabilities.module.powermodule.CapabilityPowerModule;
+import com.lehjr.powersuits.client.model.helper.LuxCapHelper;
+import com.lehjr.numina.client.model.obj.OBJBakedCompositeModel;
+import com.lehjr.numina.client.model.obj.OBJPartData;
+import com.lehjr.numina.common.math.Color;
+import com.lehjr.powersuits.common.block.LuxCapacitor;
+import com.lehjr.powersuits.common.constants.MPSConstants;
+import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.renderer.block.model.BakedQuad;
+import net.minecraft.client.renderer.block.model.ItemOverrides;
+import net.minecraft.client.renderer.block.model.ItemTransforms;
+import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.Tag;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.model.BakedModelWrapper;
-import net.minecraftforge.client.model.PerspectiveMapWrapper;
 import net.minecraftforge.client.model.data.IModelData;
-import net.minecraftforge.common.util.Constants;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -87,23 +86,35 @@ public class LuxCapacitorModelWrapper extends BakedModelWrapper<OBJBakedComposit
      *  This is needed in order to return this wrapper with the transforms from the base model
      * otherwise the base model is returned from the super method skipping the setting of the lens color
      * @param cameraTransformType
-     * @param mat
+     * @param poseStack
      * @return
      */
+
     @Override
-    public IBakedModel handlePerspective(ItemTransforms.TransformType cameraTransformType, PoseStack mat) {
-        return PerspectiveMapWrapper.handlePerspective(this, ((OBJBakedCompositeModel)this.originalModel).getModelTransforms(), cameraTransformType, mat);
+    public BakedModel handlePerspective(ItemTransforms.TransformType cameraTransformType, PoseStack poseStack) {
+        return super.handlePerspective(cameraTransformType, poseStack);
     }
+
+    @Override
+    public boolean doesHandlePerspectives() {
+        return super.doesHandlePerspectives();
+    }
+
+    //    FIXME!!
+//    @Override
+//    public BakedModel handlePerspective(ItemTransforms.TransformType cameraTransformType, PoseStack mat) {
+//        return PerspectiveMapWrapper.handlePerspective(this, ((OBJBakedCompositeModel)this.originalModel).getOverrides(), cameraTransformType, mat);
+//    }
 
     /**
      * required to set Lens color
      */
     @Override
-    public ItemOverrideList getOverrides() {
+    public ItemOverrides getOverrides() {
         return overrides;
     }
 
-    private class LuxCapacitorItemOverrideList extends ItemOverrideList {
+    private class LuxCapacitorItemOverrideList extends ItemOverrides {
         LuxCapacitorModelWrapper itemModel;
         public LuxCapacitorItemOverrideList(LuxCapacitorModelWrapper model) {
             this.itemModel = model;
@@ -111,10 +122,10 @@ public class LuxCapacitorModelWrapper extends BakedModelWrapper<OBJBakedComposit
 
         @Nullable
         @Override
-        public IBakedModel resolve(IBakedModel model, ItemStack stack, @Nullable ClientWorld worldIn, @Nullable LivingEntity entityIn) {
+        public BakedModel resolve(BakedModel model, ItemStack stack, @Nullable ClientLevel worldIn, @Nullable LivingEntity entityIn,  int pSeed) {
             Color colour;
             // this one is just for the launched item
-            if (stack.hasTag() && stack.getTag().contains("colour", Constants.NBT.TAG_INT)) {
+            if (stack.hasTag() && stack.getTag().contains("colour", Tag.TAG_INT)) {
                 colour = new Color( stack.getTag().getInt("colour"));
             // this is for the active icon
             } else {
@@ -124,7 +135,7 @@ public class LuxCapacitorModelWrapper extends BakedModelWrapper<OBJBakedComposit
                     float blue = (float) pm.applyPropertyModifiers(MPSConstants.BLUE_HUE);
                     float alpha = (float) pm.applyPropertyModifiers(MPSConstants.OPACITY);
                     return new Color(red, green, blue, alpha);
-                }).orElse(LuxCapacitorBlock.defaultColor);
+                }).orElse(LuxCapacitor.defaultColor);
             }
 
             if (model instanceof LuxCapacitorModelWrapper) {

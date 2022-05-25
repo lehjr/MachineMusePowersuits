@@ -24,34 +24,34 @@
  *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package lehjr.powersuits.client.render.entity;
+package com.lehjr.powersuits.client.render.entity;
 
-import com.mojang.blaze3d.matrix.PoseStack;
-import lehjr.numina.client.render.entity.NuminaEntityRenderer;
-import lehjr.numina.util.math.Color;
-import lehjr.powersuits.basemod.MPSObjects;
-import lehjr.powersuits.entity.LuxCapacitorEntity;
+import com.lehjr.numina.common.math.Color;
+import com.lehjr.powersuits.common.base.MPSObjects;
+import com.lehjr.powersuits.common.entity.LuxCapacitorEntity;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Vector3f;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.entity.EntityRendererManager;
-import net.minecraft.client.renderer.model.IBakedModel;
-import net.minecraft.client.renderer.model.ItemTransforms;
+import net.minecraft.client.renderer.block.model.ItemTransforms;
+import net.minecraft.client.renderer.entity.EntityRenderer;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.vector.Vector3f;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.model.TransformationHelper;
 
 import javax.annotation.Nullable;
 import java.util.Random;
 
-public class LuxCapacitorEntityRenderer extends NuminaEntityRenderer<LuxCapacitorEntity> {
+public class LuxCapacitorEntityRenderer extends EntityRenderer<LuxCapacitorEntity> {
 
 
-    public LuxCapacitorEntityRenderer(EntityRendererManager renderManager) {
+    public LuxCapacitorEntityRenderer(EntityRendererProvider.Context renderManager) {
         super(renderManager);
     }
 
@@ -76,7 +76,7 @@ public class LuxCapacitorEntityRenderer extends NuminaEntityRenderer<LuxCapacito
         ItemStack itemstack = getStack(entityIn.color);
         int i = itemstack.isEmpty() ? 187 : Item.getId(itemstack.getItem()) + itemstack.getDamageValue();
         this.random.setSeed((long) i);
-        IBakedModel ibakedmodel = Minecraft.getInstance().getItemRenderer().getModel(itemstack, entityIn.level, (LivingEntity) null);
+        BakedModel ibakedmodel = Minecraft.getInstance().getItemRenderer().getModel(itemstack, entityIn.level, (LivingEntity) null, entityIn.getId());
         int time = (int) System.currentTimeMillis() % 360;
         matrixStackIn.mulPose(TransformationHelper.quatFromXYZ(new Vector3f(0, time / 2, 0), true));
         matrixStackIn.scale(1.8F, 1.8F, 1.8F);

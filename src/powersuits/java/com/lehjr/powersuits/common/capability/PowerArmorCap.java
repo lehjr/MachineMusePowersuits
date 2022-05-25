@@ -61,7 +61,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class PowerArmorCap implements ICapabilityProvider {
-//    final ItemStack itemStack;
+    //    final ItemStack itemStack;
     final EquipmentSlot targetSlot;
     final ModularItem modularItem;
     final LazyOptional<IItemHandler> modularItemHolder;
@@ -148,8 +148,6 @@ public class PowerArmorCap implements ICapabilityProvider {
         this.modelSpec = new ArmorModelSpecNBT(itemStackIn);
         this.modelSpecHolder = LazyOptional.of(()-> modelSpec);
 
-        NuminaLogger.logDebug("stack here in PowerArmorCap: " + itemStackIn);
-
         heatStorage = new HeatItemWrapper(itemStackIn, maxHeat);
         heatHolder = LazyOptional.of(() -> {
             modularItem.loadCapValues();
@@ -158,8 +156,6 @@ public class PowerArmorCap implements ICapabilityProvider {
             heatStorage.loadCapValues();
             return heatStorage;
         });
-
-        NuminaLogger.logDebug("stack here in PowerArmorCap again: " + itemStackIn);
 
         energyHolder = LazyOptional.of(()-> {
             modularItem.loadCapValues();

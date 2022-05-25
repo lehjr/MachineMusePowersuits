@@ -27,11 +27,15 @@
 package com.lehjr.powersuits.client.event;
 
 
+import com.lehjr.numina.client.model.obj.OBJBakedCompositeModel;
+import com.lehjr.powersuits.client.model.block.LuxCapacitorModelWrapper;
 import com.lehjr.powersuits.common.constants.MPSConstants;
 import com.lehjr.powersuits.common.constants.MPSRegistryNames;
+import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.ModelResourceLocation;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.client.resources.model.SimpleBakedModel;
 import net.minecraftforge.client.event.ModelBakeEvent;
+import net.minecraftforge.client.model.obj.OBJModel;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 
@@ -45,37 +49,40 @@ public enum ModelBakeEventHandler {
 
     @SubscribeEvent
     public void onModelBake(ModelBakeEvent event) {
-        /*
-
-        from itemModelProvider
-              for(int j = 0; j < 32; ++j) {
-         if (j != 16) {
-            this.generateFlatItem(Items.COMPASS, String.format("_%02d", j), StockModelShapes.GENERATED);
-         }
-      }
+        /**
+         * Notes: looks like all current models are "SimpleBakedModels"
          */
+        // replace LuxCapacitor model with one that can generate the model data needed to color the lens for the item model
+        BakedModel luxCapItemModel = event.getModelRegistry().get(luxCapItemLocation);
+        if (luxCapItemModel instanceof OBJBakedCompositeModel) {
+            event.getModelRegistry().put(luxCapItemLocation, new LuxCapacitorModelWrapper((OBJBakedCompositeModel) luxCapItemModel));
+        }
 
-        System.out.println("fixme!!");
+        // and the same for the module
+        BakedModel luxCapModuleModel = event.getModelRegistry().get(luxCapModuleLocation);
+        if (luxCapItemModel instanceof OBJBakedCompositeModel) {
+            event.getModelRegistry().put(luxCapModuleLocation, new LuxCapacitorModelWrapper((OBJBakedCompositeModel) luxCapModuleModel));
+        }
 
-//        /**
-//         * Notes: looks like all current models are "SimpleBakedModels"
-//         */
-//        // replace LuxCapacitor model with one that can generate the model data needed to color the lens for the item model
-//        IBakedModel luxCapItemModel = event.getModelRegistry().get(luxCapItemLocation);
-//        if (luxCapItemModel instanceof OBJBakedCompositeModel) {
-//            event.getModelRegistry().put(luxCapItemLocation, new LuxCapacitorModelWrapper((OBJBakedCompositeModel) luxCapItemModel));
-//        }
-//
-//        IBakedModel luxCapModuleModel = event.getModelRegistry().get(luxCapModuleLocation);
-//        if (luxCapItemModel instanceof OBJBakedCompositeModel) {
-//            event.getModelRegistry().put(luxCapModuleLocation, new LuxCapacitorModelWrapper((OBJBakedCompositeModel) luxCapModuleModel));
-//        }
-//
-//        IBakedModel powerFistIcon = event.getModelRegistry().get(powerFistIconLocation);
+// fixme.... luxcap just using default obj model without wrappers
+
+        event.getModelRegistry().forEach((resourceLocation, bakedModel) -> {
+            if (resourceLocation.getNamespace().equals(MPSConstants.MOD_ID)) {
+                System.out.println("resourceLocation: " + resourceLocation + ", class: " + bakedModel.getClass());
+            }
+            if (bakedModel instanceof SimpleBakedModel) {
+//                bakedModel
+            }
+
+
+        } );
+
+
+//        BakedModel powerFistIcon = event.getModelRegistry().get(powerFistIconLocation);
 //        if (luxCapItemModel instanceof OBJBakedCompositeModel) {
 //            event.getModelRegistry().put(powerFistIconLocation, new PowerFistModel(powerFistIcon));
 //        }
-//
+
 //        MPSModelHelper.loadArmorModels(null, event.getModelLoader());
     }
 }
