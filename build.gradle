@@ -52,6 +52,12 @@ idea {
     }
 }
 
+group = group_id
+version = "${mod_version}." + (System.env.BUILD_NUMBER ?: 000)
+archivesBaseName = "ModularPowersuits"
+
+println("version: ${project.version}")
+
 sourceSets {
     // Numina
     main {
@@ -128,8 +134,12 @@ static void extendConfigurations(Configuration base, Configuration... configurat
     }
 }
 
+
+
+
+
 ext {
-    versionProperties = ["version": mod_version,
+    versionProperties = ["mod_version": project.version,
                          "minecraft_version": minecraft_version_range,
                          "forge_version": forge_version_range,
                          "loader_version": loader_version_range,
@@ -176,14 +186,6 @@ def createReplaceResourcesTask(String output, SourceSet sourceSet) {
         }
     }
 }
-
-group = group_id
-mod_version = "${mod_version}." + (System.env.BUILD_NUMBER ?: 000)
-version = "${minecraft_version}-${mod_version}"
-archivesBaseName = "ModularPowersuits"
-
-println("mod version: ${mod_version}")
-//println("version: ${project.version}")
 
 minecraft {
     mappings channel: "${mappings_channel}", version: "${mappings_version}"
@@ -426,9 +428,9 @@ def getManifestAttributes(String title) {
     return [
             "Specification-Title"     : title,
             "Specification-Vendor"    : "MachineMuse",
-            "Specification-Version"   : "${project.mod_version}",
+            "Specification-Version"   : "${project.version}",
             "Implementation-Title"    : title,
-            "Implementation-Version"  : "${project.mod_version}",
+            "Implementation-Version"  : "${project.version}",
             "Implementation-Vendor"   : "MachineMuse",
             "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
             "Automatic-Module-Name": title.toLowerCase(Locale.ROOT)
@@ -437,7 +439,7 @@ def getManifestAttributes(String title) {
 
 jar {
     duplicatesStrategy(DuplicatesStrategy.FAIL)
-    archiveFileName.set("Numina-${project.version}.jar")
+    archiveFileName.set("Numina-${minecraft_version}-${project.version}.jar")
     from(sourceSets.main.output)
     manifest.attributes(getManifestAttributes("Numina"))
     afterEvaluate { finalizedBy reobfJar }
@@ -452,7 +454,7 @@ task sourcesJar(type: Jar, dependsOn: [classes, powersuitsClasses, recipecreator
 
 task powersuitsJar(type: Jar) {
     duplicatesStrategy(DuplicatesStrategy.FAIL)
-    archiveFileName.set("ModularPowersuits-${project.version}.jar")
+    archiveFileName.set("ModularPowersuits-${minecraft_version}-${project.version}.jar")
     archiveClassifier.set("powersuits")
     from sourceSets.powersuits.output
     manifest.attributes(getManifestAttributes("ModularPowersuits"))
@@ -461,7 +463,7 @@ task powersuitsJar(type: Jar) {
 
 task recipecreatorJar(type: Jar) {
     duplicatesStrategy(DuplicatesStrategy.FAIL)
-    archiveFileName.set("MPSRecipecreator-${project.version}.jar")
+    archiveFileName.set("MPSRecipecreator-${minecraft_version}-${project.version}.jar")
     archiveClassifier.set("recipecreator")
     from sourceSets.recipecreator.output
     manifest.attributes(getManifestAttributes("MPSRecipecreator"))
@@ -470,7 +472,7 @@ task recipecreatorJar(type: Jar) {
 
 task whateverJar(type: Jar) {
     duplicatesStrategy(DuplicatesStrategy.FAIL)
-    archiveFileName.set("MPSWhatever-${project.version}.jar")
+    archiveFileName.set("MPSWhatever-${minecraft_version}-${project.version}.jar")
     archiveClassifier.set("whatever")
     from sourceSets.whatever.output
     manifest.attributes(getManifestAttributes("MPSWhatever"))
@@ -601,7 +603,7 @@ if (System.getenv("CURSEFORGE_KEY") != null || project.hasProperty('curseforgeKe
                 println "Changelog generated"
             }
 
-            def releaseNotesFile = project.file("docs/release_${mod_version}.html")
+            def releaseNotesFile = project.file("docs/release_${project.version}.html")
             if (releaseNotesFile.exists()) {
                 //Add any version specific changelog stuff
                 def releaseNotes = releaseNotesFile.getText()

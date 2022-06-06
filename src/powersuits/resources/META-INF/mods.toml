@@ -5,7 +5,7 @@ license="All rights reserved"
 
 [[mods]]
     modId="powersuits"
-    version="${version}"
+    version="${mod_version}"
     displayName="MachineMuse's Modular Powersuits"
     updateJSONURL="https://mc-curse-update-checker.herokuapp.com/235442"
     displayURL="https://www.curseforge.com/minecraft/mc-mods/modular-powersuits"
@@ -31,7 +31,7 @@ A mod which adds modular power armor, power tool, and a tinker table to configur
 [[dependencies.powersuits]]
     modId="numina"
     mandatory=true
-    versionRange="[${version}]"
+    versionRange="[${mod_version},)"
     ordering="AFTER"
     side="BOTH"
 

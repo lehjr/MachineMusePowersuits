@@ -4,7 +4,7 @@ issueTrackerURL="https://github.com/lehjr/MachineMusePowersuits/issues"
 license="All rights reserved"
 [[mods]]
     modId="numina"
-    version="${version}"
+    version="${mod_version}"
     displayName="Numina"
     updateJSONURL="https://mc-curse-update-checker.herokuapp.com/235440"
     displayURL="https://www.curseforge.com/minecraft/mc-mods/numina"
