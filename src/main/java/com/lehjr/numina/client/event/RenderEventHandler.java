@@ -1,5 +1,6 @@
 package com.lehjr.numina.client.event;
 
+import com.lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
 import com.lehjr.numina.common.energy.ElectricItemUtils;
 import com.lehjr.numina.client.gui.meter.EnergyMeter;
 import com.lehjr.numina.client.gui.meter.HeatMeter;
@@ -10,21 +11,44 @@ import com.lehjr.numina.common.string.StringUtils;
 import com.mojang.blaze3d.platform.Window;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.items.CapabilityItemHandler;
 
 import java.util.concurrent.atomic.AtomicReference;
 
 @OnlyIn(Dist.CLIENT)
-public enum ClientTickHandler {
+public enum RenderEventHandler {
     INSTANCE;
+
+    @OnlyIn(Dist.CLIENT)
+    @SubscribeEvent
+    public void onPostRenderGameOverlayEvent(RenderGameOverlayEvent.Post e) {
+        RenderGameOverlayEvent.ElementType elementType = e.getType();
+        if (RenderGameOverlayEvent.ElementType.LAYER.equals(elementType)) {
+            drawModeChangeIcons();
+        }
+    }
+
+    public void drawModeChangeIcons() {
+        Minecraft mc = Minecraft.getInstance();
+        LocalPlayer player = mc.player;
+        int i = player.getInventory().selected;
+        player.getInventory().getSelected().getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+                .filter(IModeChangingItem.class::isInstance)
+                .map(IModeChangingItem.class::cast)
+                .ifPresent(handler->
+                        handler.drawModeChangeIcon(player, i, mc));
+    }
 
     protected HeatMeter heatMeter = null;
     protected EnergyMeter energyMeter = null;

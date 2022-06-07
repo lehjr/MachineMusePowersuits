@@ -40,31 +40,5 @@ public class MPSModelHelper {
     // TODO: extract to subdir of config dir and scan for others ... also rename this
 
 
-    public static void loadArmorModels(@Nullable TextureStitchEvent.Pre event, ModelLoader bakery) {
-        ArrayList<String> resourceList = new ArrayList<String>() {{
-            add("/assets/powersuits/modelspec/armor2.xml");
-            add("/assets/powersuits/modelspec/default_armor.xml");
-            add("/assets/powersuits/modelspec/default_armorskin.xml");
-            add("/assets/powersuits/modelspec/armor_skin2.xml");
-            add("/assets/powersuits/modelspec/default_powerfist.xml");
-        }};
 
-        for (String resourceString : resourceList) {
-            parseSpecFile(resourceString, event, bakery);
-        }
-//
-//        URL resource = MPSModelHelper.class.getResource("/assets/powersuits/models/item/armor/modelspec.xml");
-//        ModelSpecXMLReader.INSTANCE.parseFile(resource, event);
-//        URL otherResource = MPSModelHelper.class.getResource("/assets/powersuits/models/item/armor/armor2.xml");
-//        ModelSpecXMLReader.INSTANCE.parseFile(otherResource, event);
-
-//        ModelPowerFistHelper.INSTANCE.loadPowerFistModels(event);
-
-//        ModelRegistry.getInstance().getNames().forEach(name->System.out.println("modelregistry name: " + name));
-    }
-
-    public static void parseSpecFile(String resourceString, @Nullable TextureStitchEvent.Pre event, ModelLoader bakery) {
-        URL resource = MPSModelHelper.class.getResource(resourceString);
-        ModelSpecXMLReader.INSTANCE.parseFile(resource, event, bakery);
-    }
 }

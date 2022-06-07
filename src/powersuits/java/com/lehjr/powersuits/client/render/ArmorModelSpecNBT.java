@@ -36,6 +36,7 @@ import com.lehjr.powersuits.common.config.MPSSettings;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.IntArrayTag;
 import net.minecraft.nbt.ListTag;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.item.ArmorItem;
@@ -152,9 +153,9 @@ public class ArmorModelSpecNBT extends ModelSpecNBT implements IArmorModelSpecNB
     }
 
     @Override
-    public String getArmorTexture() {
+    public ResourceLocation getArmorTexture() {
         CompoundTag itemTag = getItemStack().getOrCreateTag();
-        CompoundTag renderTag = itemTag.getCompound(TagConstants.TAG_RENDER);
+        CompoundTag renderTag = itemTag.getCompound(TagConstants.RENDER);
         try {
             TexturePartSpec partSpec = (TexturePartSpec) ModelRegistry.getInstance().getPart(renderTag.getCompound(TagConstants.TEXTURESPEC));
             return partSpec.getTextureLocation();

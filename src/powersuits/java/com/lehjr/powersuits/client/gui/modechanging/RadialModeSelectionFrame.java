@@ -28,7 +28,10 @@ package com.lehjr.powersuits.client.gui.modechanging;
 
 import com.lehjr.numina.client.gui.clickable.ClickableModule;
 import com.lehjr.numina.client.gui.frame.IGuiFrame;
-import com.lehjr.numina.client.gui.geometry.*;
+import com.lehjr.numina.client.gui.geometry.IRect;
+import com.lehjr.numina.client.gui.geometry.MusePoint2D;
+import com.lehjr.numina.client.gui.geometry.RelativeRect;
+import com.lehjr.numina.client.gui.geometry.SpiralPointToPoint2D;
 import com.lehjr.numina.client.render.NuminaRenderer;
 import com.lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
 import com.lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;

@@ -1,7 +1,13 @@
 package com.lehjr.powersuits.client.gui.inventory;
 
+import com.lehjr.numina.client.gui.frame.IGuiFrame;
+import com.lehjr.numina.client.gui.frame.IGuiScreen;
+import com.lehjr.numina.client.gui.geometry.IRect;
 import com.lehjr.numina.client.gui.geometry.MusePoint2D;
+import com.lehjr.numina.client.gui.geometry.RelativeRect;
+import com.lehjr.numina.client.gui.screen.NuminaAbstractContainerScreen;
 import com.lehjr.powersuits.client.gui.common.selection.modularitem.ModularItemSelectionFrame;
+import com.lehjr.powersuits.client.gui.common.selection.module.ModuleSelectionFrame;
 import com.lehjr.powersuits.common.constants.MPSConstants;
 import com.lehjr.powersuits.common.menu.ModularItemInventoryMenu;
 import com.lehjr.powersuits.common.network.MPSPackets;
@@ -15,14 +21,19 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.Slot;
 
-public class ModularItemInventoryScreen extends AbstractContainerScreen<ModularItemInventoryMenu> {
+public class ModularItemInventoryScreen extends NuminaAbstractContainerScreen<ModularItemInventoryMenu, RelativeRect> implements IGuiScreen {
     public static final ResourceLocation BACKGROUND = new ResourceLocation(MPSConstants.MOD_ID, "textures/gui/container/modulariteminventory.png");
+    private static final ModuleSelectionFrame moduleSelectionFrame = new ModuleSelectionFrame();
+
+
     public static ModularItemSelectionFrame itemSelectionFrame;
 
 
 
-    /** whether or not the second panel is visible */
+    /** whether the module selection panel is visible */
     boolean showingSidePanel = false;
+    boolean widthTooNarrow = false;
+
 
 
     /*
@@ -34,35 +45,110 @@ public class ModularItemInventoryScreen extends AbstractContainerScreen<ModularI
 
 
     public ModularItemInventoryScreen(ModularItemInventoryMenu pMenu, Inventory pPlayerInventory, Component pTitle) {
-        super(pMenu, pPlayerInventory, pTitle);
+        super(pMenu, new RelativeRect(), pPlayerInventory, pTitle);
         this.imageHeight = 215;
+        this.imageWidth = 176;
         this.inventoryLabelY = 123;
         this.titleLabelY = 4;
-        this.itemSelectionFrame = new ModularItemSelectionFrame(getMenu().getEquipmentSlot());
+
+        // ModularItemSelectionFrame(EquipmentSlot equipmentSlot, @Nullable ModuleSelectionFrame moduleSelectionFrame, ModularItemInventoryMenu menu)
+        this.itemSelectionFrame = new ModularItemSelectionFrame(getMenu().getEquipmentSlot(), moduleSelectionFrame, getMenu());
+        this.itemSelectionFrame.setDoThisOnSomeEvent(doThis ->
+                itemSelectionFrame.getSelectedTab().ifPresent(modularItemSelectionTab ->
+                        MPSPackets.CHANNEL_INSTANCE.sendToServer(new ContainerGuiOpenPacket(modularItemSelectionTab.getEquipmentSlot()))));
 
 
 
 
-//        this.height * 0.5;
-
-//        System.out.println("frame location here (before): " + itemSelectionFrame.getUL());
 
 
-        // fixme: move somewhere else, maybe in init. Also move down a bit
+//        moduleSelectionFrame.setDoThisOnSomeEvent(doThis -> {
+//            if (moduleSelectionFrame.isVisible()) {
+//                itemSelectionFrame.setMeLeftOf(moduleSelectionFrame);
+//                System.out.println("setMeLeftOf(moduleSelectionFrame)");
+//
+//            } else {
+//                itemSelectionFrame.setMeLeftOf(this);
+//                System.out.println("setMeLeftOf(this)");
+//            }
+//        });
 
-//        itemSelectionFrame.setP.setTop(this.topPos + 4);
+        this.itemSelectionFrame.setDoThisOnVisibilityToggle(doThis -> {
+            updatePositions();
+        });
 
-//        System.out.println("frame location here (after): " + itemSelectionFrame.getUL());
+
+
+
+
+
+
+    }
+
+    void updatePositions() {
+        this.setLeft(this.moduleSelectionFrame.updateScreenPosition(getScreenWidth(), getImageWidth()));
+        if (moduleSelectionFrame.isVisible()) {
+            itemSelectionFrame.setUL(moduleSelectionFrame.getUL().minus(itemSelectionFrame.width(), -2 ));
+        } else {
+            itemSelectionFrame.setUL(this.getUL().minus(itemSelectionFrame.width(), -2 ));
+        }
     }
 
 
+//    @Override
+//    public void renderLabels(PoseStack matrixStack, int mouseX, int mouseY) {
+//        IGuiScreen.super.renderLabels(matrixStack, mouseX, mouseY);
+//    }
+
     @Override
     protected void init() {
+//        System.out.println("width before init: " + width); // width value is writen when the GUI is opened or resized.. pretty sure it related to the window size
         super.init();
-        itemSelectionFrame.setUL(new MusePoint2D(this.leftPos - itemSelectionFrame.width(), this.topPos + 4));
-        this.itemSelectionFrame.setDoThisOnChange(doThis ->
-                itemSelectionFrame.getSelectedTab().ifPresent(modularItemSelectionTab ->
-                        MPSPackets.CHANNEL_INSTANCE.sendToServer(new ContainerGuiOpenPacket(modularItemSelectionTab.getEquipmentSlot()))));
+//        System.out.println("width after init: " + this.width + ", this.height: " + this.height);
+        this.widthTooNarrow = this.width < 426; // 323 is total without tabs what is this number indicitive of?  ( recipebook width is 147, container screen default is 176
+        this.moduleSelectionFrame.init(this.width, this.height, this.minecraft, this.widthTooNarrow, this.itemSelectionFrame);
+        updatePositions();
+
+
+
+//        moduleSelectionFrame.setTop(this.top());
+
+
+//        this.addWidget(this.moduleSelectionFrame);
+        this.setInitialFocus(this.moduleSelectionFrame);
+
+
+//        if (moduleSelectionFrame.isVisible()) {
+//            itemSelectionFrame.setPosition(new MusePoint2D(this.left() - (itemSelectionFrame.width() * .05) , this.centery()));
+//
+//
+//
+////            itemSelectionFrame
+//        }
+
+
+
+
+        /*
+
+           protected void init() {
+      super.init();
+      this.widthTooNarrow = this.width < 379;
+      this.recipeBookComponent.init(this.width, this.height, this.minecraft, this.widthTooNarrow, this.menu);
+      this.leftPos = this.recipeBookComponent.updateScreenPosition(this.width, this.imageWidth);
+      this.addRenderableWidget(new ImageButton(this.leftPos + 5, this.height / 2 - 49, 20, 18, 0, 0, 19, RECIPE_BUTTON_LOCATION, (p_98484_) -> {
+         this.recipeBookComponent.toggleVisibility();
+         this.leftPos = this.recipeBookComponent.updateScreenPosition(this.width, this.imageWidth);
+         ((ImageButton)p_98484_).setPosition(this.leftPos + 5, this.height / 2 - 49);
+      }));
+      this.addWidget(this.recipeBookComponent);
+      this.setInitialFocus(this.recipeBookComponent);
+      this.titleLabelX = 29;
+   }
+
+         */
+
+
 
     }
 
@@ -71,6 +157,45 @@ public class ModularItemInventoryScreen extends AbstractContainerScreen<ModularI
         renderBackground(pPoseStack);
         super.render(pPoseStack, pMouseX, pMouseY, pPartialTick);
         this.renderTooltip(pPoseStack, pMouseX, pMouseY);
+        if (moduleSelectionFrame.isVisible()) {
+            moduleSelectionFrame.render(pPoseStack, pMouseX, pMouseY, pPartialTick);
+        }
+
+    }
+
+    @Override
+    public void setEnabled(boolean enabled) {
+
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
+
+    @Override
+    public void setVisible(boolean visible) {
+
+    }
+
+    @Override
+    public boolean isVisible() {
+        return true;
+    }
+
+    @Override
+    public int getScreenWidth() {
+        return width;
+    }
+
+    @Override
+    public int getScreenHeight() {
+        return height;
+    }
+
+    @Override
+    public void setRect(IRect rect) {
+
     }
 
     @Override
@@ -129,12 +254,33 @@ public class ModularItemInventoryScreen extends AbstractContainerScreen<ModularI
 //    }
 
     @Override
-    public boolean mouseScrolled(double pMouseX, double pMouseY, double pDelta) {
-        xoffset += (int) pDelta;
-        System.out.println("xoffset: " + xoffset);
+    public boolean mouseScrolled(double mouseX, double mouseY, double delta) {
 
-        itemSelectionFrame.setRight(this.leftPos + xoffset);
+        //        itemSelectionFrame.setOffset(delta);
+        return true;
+    }
 
-        return super.mouseScrolled(pMouseX, pMouseY, pDelta);
+//    @Override
+//    public void update(double mouseX, double mouseY) {
+//        IGuiScreen.super.update(mouseX, mouseY);
+//    }
+
+    @Override
+    public IRect setLeft(double value) {
+        this.leftPos = (int) value;
+        return super.setLeft((int)value);
+    }
+
+    @Override
+    public IRect setTop(double value) {
+        this.topPos = (int) value;
+        return super.setTop((int)value);
+    }
+
+    @Override
+    public IRect setUL(MusePoint2D ul) {
+        this.topPos = (int) ul.getY();
+        this.leftPos = (int) ul.getX();
+        return super.setUL(ul);
     }
 }

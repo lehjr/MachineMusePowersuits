@@ -16,7 +16,6 @@ public class TagConstants {
     public static final String MAXIMUM_HEAT = "maxHeat";
 
     // Model Stuff --------------------------------------------------------------------------------
-    public static final String TAG_RENDER = "render";
     public static final String TEXTURESPEC = "texSpec";
     public static final String SPECLIST = "specList";
     public static final String RENDER = "render";

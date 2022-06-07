@@ -29,14 +29,19 @@ package com.lehjr.powersuits.client.event;
 
 import com.lehjr.numina.client.model.obj.OBJBakedCompositeModel;
 import com.lehjr.powersuits.client.model.block.LuxCapacitorModelWrapper;
-import com.lehjr.powersuits.common.constants.MPSConstants;
+import com.lehjr.powersuits.client.model.helper.ModelSpecXMLReader;
+import com.lehjr.powersuits.client.model.item.PowerFistModel;
 import com.lehjr.powersuits.common.constants.MPSRegistryNames;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.ModelResourceLocation;
-import net.minecraft.client.resources.model.SimpleBakedModel;
 import net.minecraftforge.client.event.ModelBakeEvent;
-import net.minecraftforge.client.model.obj.OBJModel;
+import net.minecraftforge.client.event.TextureStitchEvent;
+import net.minecraftforge.client.model.ForgeModelBakery;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+
+import javax.annotation.Nullable;
+import java.net.URL;
+import java.util.ArrayList;
 
 
 public enum ModelBakeEventHandler {
@@ -64,25 +69,43 @@ public enum ModelBakeEventHandler {
             event.getModelRegistry().put(luxCapModuleLocation, new LuxCapacitorModelWrapper((OBJBakedCompositeModel) luxCapModuleModel));
         }
 
-// fixme.... luxcap just using default obj model without wrappers
+        // powerfist ... preserve icon while using the real model for everythign else
+        BakedModel powerFistIcon = event.getModelRegistry().get(powerFistIconLocation);
+        if (!OBJBakedCompositeModel.class.isInstance(powerFistIcon)) {
+            System.out.println("powerfist model doing something");
 
-        event.getModelRegistry().forEach((resourceLocation, bakedModel) -> {
-            if (resourceLocation.getNamespace().equals(MPSConstants.MOD_ID)) {
-                System.out.println("resourceLocation: " + resourceLocation + ", class: " + bakedModel.getClass());
-            }
-            if (bakedModel instanceof SimpleBakedModel) {
-//                bakedModel
-            }
+            event.getModelRegistry().put(powerFistIconLocation, new PowerFistModel(powerFistIcon));
+        }
 
-
-        } );
+        loadArmorModels(null);
+    }
 
 
-//        BakedModel powerFistIcon = event.getModelRegistry().get(powerFistIconLocation);
-//        if (luxCapItemModel instanceof OBJBakedCompositeModel) {
-//            event.getModelRegistry().put(powerFistIconLocation, new PowerFistModel(powerFistIcon));
-//        }
+    public static void loadArmorModels(@Nullable TextureStitchEvent.Pre event) {
+        ArrayList<String> resourceList = new ArrayList<>() {{
+            add("/assets/powersuits/modelspec/armor2.xml");
+            add("/assets/powersuits/modelspec/default_armor.xml");
+            add("/assets/powersuits/modelspec/default_armorskin.xml");
+            add("/assets/powersuits/modelspec/armor_skin2.xml");
+            add("/assets/powersuits/modelspec/default_powerfist.xml");
+        }};
 
-//        MPSModelHelper.loadArmorModels(null, event.getModelLoader());
+        for (String resourceString : resourceList) {
+            parseSpecFile(resourceString, event);
+        }
+//
+//        URL resource = MPSModelHelper.class.getResource("/assets/powersuits/models/item/armor/modelspec.xml");
+//        ModelSpecXMLReader.INSTANCE.parseFile(resource, event);
+//        URL otherResource = MPSModelHelper.class.getResource("/assets/powersuits/models/item/armor/armor2.xml");
+//        ModelSpecXMLReader.INSTANCE.parseFile(otherResource, event);
+
+//        ModelPowerFistHelper.INSTANCE.loadPowerFistModels(event);
+
+//        ModelRegistry.getInstance().getNames().forEach(name->System.out.println("modelregistry name: " + name));
+    }
+
+    public static void parseSpecFile(String resourceString, @Nullable TextureStitchEvent.Pre event) {
+        URL resource = ModelBakeEventHandler.class.getResource(resourceString);
+        ModelSpecXMLReader.INSTANCE.parseFile(resource, event);
     }
 }

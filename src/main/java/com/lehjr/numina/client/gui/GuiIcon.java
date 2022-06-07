@@ -140,37 +140,35 @@ public class GuiIcon {
 
 
         public void draw(PoseStack matrixStack, double xOffset, double yOffset, double maskTop, double maskBottom, double maskLeft, double maskRight, Color colour) {
-            System.out.println("fixme");
+            double textureWidth = this.width;
+            double textureHeight = this.height;
 
-            //            double textureWidth = this.width;
-//            double textureHeight = this.height;
-//
-//            bindTexture();
-//            TextureAtlasSprite icon = spriteUploader.getSprite(location);
-//            float blitOffset = getMinecraft().screen.getBlitOffset();
-//
-//            double posLeft = xOffset + maskLeft;
-//            double posTop = yOffset + maskTop;
-//            double width = textureWidth - maskRight - maskLeft;
-//            double height = textureHeight - maskBottom - maskTop;
-//
-//            double posRight = posLeft + width;
-//            double posBottom = posTop + height;
-//
-//            double uSize = icon.getU1() - icon.getU0();
-//            double vSize = icon.getV1() - icon.getV0();
-//            float minU = (float) (icon.getU0() + uSize * (maskLeft / textureWidth));
-//            float minV = (float) (icon.getV0() + vSize * (maskTop / textureHeight));
-//            float maxU = (float) (icon.getU1() - uSize * (maskRight / textureWidth));
-//            float maxV = (float) (icon.getV1() - vSize * (maskBottom / textureHeight));
-//
-//            RenderSystem.enableBlend();
+            bindTexture();
+            TextureAtlasSprite icon = spriteUploader.getSprite(location);
+            float blitOffset = getMinecraft().screen.getBlitOffset();
+
+            double posLeft = xOffset + maskLeft;
+            double posTop = yOffset + maskTop;
+            double width = textureWidth - maskRight - maskLeft;
+            double height = textureHeight - maskBottom - maskTop;
+
+            double posRight = posLeft + width;
+            double posBottom = posTop + height;
+
+            double uSize = icon.getU1() - icon.getU0();
+            double vSize = icon.getV1() - icon.getV0();
+            float minU = (float) (icon.getU0() + uSize * (maskLeft / textureWidth));
+            float minV = (float) (icon.getV0() + vSize * (maskTop / textureHeight));
+            float maxU = (float) (icon.getU1() - uSize * (maskRight / textureWidth));
+            float maxV = (float) (icon.getV1() - vSize * (maskBottom / textureHeight));
+
+            RenderSystem.enableBlend();
 //            RenderSystem.disableAlphaTest();
-//            RenderSystem.defaultBlendFunc();
-//            innerBlit(matrixStack.last().pose(), posLeft, posRight, posTop, posBottom, blitOffset, minU, maxU, minV, maxV, colour);
-//            RenderSystem.disableBlend();
-////            RenderSystem.enableAlphaTest();
-//            RenderSystem.enableDepthTest();
+            RenderSystem.defaultBlendFunc();
+            innerBlit(matrixStack.last().pose(), posLeft, posRight, posTop, posBottom, blitOffset, minU, maxU, minV, maxV, colour);
+            RenderSystem.disableBlend();
+//            RenderSystem.enableAlphaTest();
+            RenderSystem.enableDepthTest();
         }
 
         public TextureAtlasSprite getSprite() {
@@ -398,23 +396,28 @@ public class GuiIcon {
                                   float minV,
                                   float maxV,
                                   Color colour) {
+        RenderSystem.setShader(GameRenderer::getPositionColorTexShader);
         BufferBuilder bufferbuilder = Tesselator.getInstance().getBuilder();
 
         colour.setShaderColor();
-        bufferbuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
 
+        bufferbuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR_TEX);
         // bottom left
-        bufferbuilder.vertex(matrix4f, (float)left, (float)bottom, blitOffset).uv(minU, maxV).endVertex();
-
+        bufferbuilder.vertex(matrix4f, (float)left, (float)bottom, blitOffset)
+                .color(colour.r, colour.g, colour.b, colour.a)
+                .uv(minU, maxV).endVertex();
         // bottom right
-        bufferbuilder.vertex(matrix4f, (float)right, (float)bottom, blitOffset).uv(maxU, maxV).endVertex();
-
+        bufferbuilder.vertex(matrix4f, (float)right, (float)bottom, blitOffset)
+                .color(colour.r, colour.g, colour.b, colour.a)
+                .uv(maxU, maxV).endVertex();
         // top right
-        bufferbuilder.vertex(matrix4f, (float)right, (float)top, blitOffset).uv(maxU, minV).endVertex();
-
+        bufferbuilder.vertex(matrix4f, (float)right, (float)top, blitOffset)
+                .color(colour.r, colour.g, colour.b, colour.a)
+                .uv(maxU, minV).endVertex();
         // top left
-        bufferbuilder.vertex(matrix4f, (float)left, (float)top, blitOffset).uv(minU, minV).endVertex();
-
+        bufferbuilder.vertex(matrix4f, (float)left, (float)top, blitOffset)
+                .color(colour.r, colour.g, colour.b, colour.a)
+                .uv(minU, minV).endVertex();
         bufferbuilder.end();
         BufferUploader.end(bufferbuilder);
     }
@@ -487,8 +490,7 @@ public class GuiIcon {
     }
 
     void bindTexture() {
-        TextureManager textureManager = getMinecraft().getTextureManager();
-        textureManager.bindForSetup(NuminaConstants.LOCATION_NUMINA_GUI_TEXTURE_ATLAS);
+        RenderSystem.setShaderTexture(0, NuminaConstants.LOCATION_NUMINA_GUI_TEXTURE_ATLAS);
     }
 
     int getRandomNumber(int min, int max) {

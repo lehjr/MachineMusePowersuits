@@ -31,6 +31,6 @@ public class NuminaConstants {
     public static final String TEXTURE_PREFIX = RESOURCE_PREFIX + "textures/";
     public static final ResourceLocation GLASS_TEXTURE = new ResourceLocation(TEXTURE_PREFIX + "gui/glass.png");
     public static final ResourceLocation LOCATION_NUMINA_GUI_TEXTURE_ATLAS = new ResourceLocation(RESOURCE_PREFIX +"atlas/gui.png");
-    public static final String BLANK_ARMOR_MODEL_PATH = TEXTURE_PREFIX + "item/armor/blankarmor.png";
+    public static final ResourceLocation BLANK_ARMOR_MODEL_PATH = new ResourceLocation(TEXTURE_PREFIX + "item/armor/blankarmor.png");
     public static final ResourceLocation WEAPON_SLOT_BACKGROUND = new ResourceLocation(TEXTURE_PREFIX + "gui/weapon.png");
 }

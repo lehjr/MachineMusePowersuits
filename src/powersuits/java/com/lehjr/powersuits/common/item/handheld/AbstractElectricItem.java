@@ -1,7 +1,6 @@
 package com.lehjr.powersuits.common.item.handheld;
 
 import com.lehjr.numina.common.string.AdditionalInfo;
-import com.lehjr.powersuits.common.capability.PowerFistCap;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
@@ -16,7 +15,6 @@ import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
 
 import javax.annotation.Nullable;
-import java.util.HashSet;
 import java.util.List;
 
 public abstract class AbstractElectricItem extends Item {

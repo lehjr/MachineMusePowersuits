@@ -24,38 +24,31 @@
  *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.lehjr.numina.client.render;
+package com.lehjr.numina.client.render.item;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-/**
- * Author: MachineMuse (Claire Semple)
- * Created: 9:24 PM, 11/07/13
- * <p>
- * Ported to Java by lehjr on 11/7/16.
- * <p>
- * FIXME: IMPORTANT!!!!: Note that SmartMoving will mess up the rendering here and the armor's yaw will not change with the player's yaw but will be fine with it not installed.
- */
+import java.util.HashMap;
+
 @OnlyIn(Dist.CLIENT)
-public class HighPolyArmor extends HumanoidModel {
+public class HighPolyArmor<T extends LivingEntity> extends HumanoidModel<T> {
     public CompoundTag renderSpec = null;
     public EquipmentSlot visibleSection = EquipmentSlot.HEAD;
 
     public HighPolyArmor(ModelPart pRoot) {
         super(pRoot);
+        init();
     }
-
-//    public HighPolyArmor() {
-//        super(0);
-//        init();
-//    }
 
     public CompoundTag getRenderSpec() {
         return this.renderSpec;
@@ -100,21 +93,21 @@ public class HighPolyArmor extends HumanoidModel {
     }
 
     public void init() {
-        clearAndAddChild(head, 0.0F, 24.0F, 0.0F);
-        clearAndAddChild(body,0.0F, 24.0F, 0.0F);
-        clearAndAddChild(rightArm,5.0F, 24.0F, 0.0F);
-        clearAndAddChild(leftArm,-5.0F, 24.0F, 0.0F);
-        clearAndAddChild(rightLeg,1.9F, 12.0F, 0.0F);
-        clearAndAddChild(leftLeg,-1.9F, 12.0F, 0.0F);
+        clearAndAddChild(head, "head", 0.0F, 24.0F, 0.0F);
+        clearAndAddChild(body, "body", 0.0F, 24.0F, 0.0F);
+        clearAndAddChild(rightArm, "right_leg", 5.0F, 24.0F, 0.0F);
+        clearAndAddChild(leftArm, "left_arm",-5.0F, 24.0F, 0.0F);
+        clearAndAddChild(rightLeg, "right_leg",1.9F, 12.0F, 0.0F);
+        clearAndAddChild(leftLeg, "left_leg", -1.9F, 12.0F, 0.0F);
         hat.cubes.clear();
     }
 
-    public void clearAndAddChild(ModelPart mr, float x, float y, float z) {
-        mr.cubes.clear();
-        System.out.println("fixme");
-
-//        RenderPart rp = new RenderPart(this, mr);
-//        mr.addChild(rp);
-//        rp.setPos(x, y, z);
+    public void clearAndAddChild(ModelPart mp, String partName, float x, float y, float z) {
+        mp.cubes.clear();
+        RenderPart rp = new RenderPart(this, mp);
+        rp.children = new HashMap<>() {{
+            put(partName, rp);
+        }};
+        rp.setPos(x, y, z);
     }
 }

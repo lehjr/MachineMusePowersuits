@@ -205,10 +205,10 @@
 ////        if (clickie != null) {
 ////            ItemStack itemStack = clickie.getItem();
 ////            CompoundTag itemNBT = NBTUtils.getMuseItemTag(itemStack);
-////            if (itemNBT.contains(NuminaConstants.TAG_RENDER,Constants.NBT.TAG_COMPOUND)) {
+////            if (itemNBT.contains(NuminaConstants.RENDER,Constants.NBT.TAG_COMPOUND)) {
 ////                BiMap<String, CompoundTag> presetMap = MPSSettings::getModuleConfig.getCosmeticPresets(itemStack);
-////                if (presetMap.containsValue(itemNBT.getCompound(NuminaConstants.TAG_RENDER))) {
-////                    String name = presetMap.inverse().get(itemNBT.getCompound(NuminaConstants.TAG_RENDER));
+////                if (presetMap.containsValue(itemNBT.getCompound(NuminaConstants.RENDER))) {
+////                    String name = presetMap.inverse().get(itemNBT.getCompound(NuminaConstants.RENDER));
 ////                    MPSPackets.sendToServer(new MusePacketCosmeticPreset(Minecraft.getInstance().player.getEntityId(), clickie.inventorySlot, name));
 ////                } else
 ////                    MPSPackets.sendToServer(new MusePacketCosmeticPreset(Minecraft.getInstance().player.getEntityId(), clickie.inventorySlot, "Default"));
@@ -304,7 +304,7 @@
 ////                    } else if (resetButton.hitBox(x, y)) {
 ////                        if (isValidItem(getSelectedItem(), getEquipmentSlot())) {
 ////                            CompoundTag nbt = getDefaultPreset(itemSelector.getSelectedItem().getItem());
-////                            MPSPackets.sendToServer(new MusePacketCosmeticInfo(player.getEntityId(), itemSelector.getSelectedItem().inventorySlot, NuminaConstants.TAG_RENDER, nbt));
+////                            MPSPackets.sendToServer(new MusePacketCosmeticInfo(player.getEntityId(), itemSelector.getSelectedItem().inventorySlot, NuminaConstants.RENDER, nbt));
 ////                        }
 ////                        // cancel creation
 ////                    } else if (loadButton.hitBox(x, y)) {
@@ -318,7 +318,7 @@
 ////                        if (isValidItem(getSelectedItem(), getEquipmentSlot())) {
 ////                            isEditing = true;
 ////                            CompoundTag nbt = MPSModelHelper.getRenderTag(getSelectedItem().getItem(), getEquipmentSlot());
-////                            MPSPackets.sendToServer(new MusePacketCosmeticInfo(Minecraft.getInstance().player.getEntityId(), this.getSelectedItem().inventorySlot, NuminaConstants.TAG_RENDER, nbt));
+////                            MPSPackets.sendToServer(new MusePacketCosmeticInfo(Minecraft.getInstance().player.getEntityId(), this.getSelectedItem().inventorySlot, NuminaConstants.RENDER, nbt));
 ////                        }
 ////                    } else if (resetButton.hitBox(x, y)) {
 ////                        if (isValidItem(getSelectedItem(), getEquipmentSlot())) {
@@ -338,7 +338,7 @@
 ////            if (resetButton.hitBox(x, y)) {
 ////                if (isValidItem(getSelectedItem(), getEquipmentSlot())) {
 ////                    CompoundTag nbt = DefaultModelSpec.makeModelPrefs(itemSelector.getSelectedItem().getItem());
-////                    MPSPackets.sendToServer(new MusePacketCosmeticInfo(player.getEntityId(), itemSelector.getSelectedItem().inventorySlot, NuminaConstants.TAG_RENDER, nbt));
+////                    MPSPackets.sendToServer(new MusePacketCosmeticInfo(player.getEntityId(), itemSelector.getSelectedItem().inventorySlot, NuminaConstants.RENDER, nbt));
 ////                }
 ////            }
 ////        }

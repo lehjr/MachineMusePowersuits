@@ -56,21 +56,21 @@ public class ModelSpecNBT implements IModelSpec, INBTSerializable<CompoundTag> {
     public CompoundTag setRenderTag(CompoundTag renderDataIn, String tagName) {
         CompoundTag itemTag = itemStack.getOrCreateTag();
         if (tagName != null) {
-            if (Objects.equals(tagName, TagConstants.TAG_RENDER)) {
-                itemTag.remove(TagConstants.TAG_RENDER);
+            if (Objects.equals(tagName, TagConstants.RENDER)) {
+                itemTag.remove(TagConstants.RENDER);
                 if (!renderDataIn.isEmpty()) {
-                    itemTag.put(TagConstants.TAG_RENDER, renderDataIn);
+                    itemTag.put(TagConstants.RENDER, renderDataIn);
                 } else {
-                    itemTag.put(TagConstants.TAG_RENDER, new CompoundTag());
+                    itemTag.put(TagConstants.RENDER, new CompoundTag());
                     setColorArray(new int[]{-1});
                 }
             } else {
                 CompoundTag renderTag;
-                if (!itemTag.contains(TagConstants.TAG_RENDER)) {
+                if (!itemTag.contains(TagConstants.RENDER)) {
                     renderTag = new CompoundTag();
-                    itemTag.put(TagConstants.TAG_RENDER, renderTag);
+                    itemTag.put(TagConstants.RENDER, renderTag);
                 } else {
-                    renderTag = itemTag.getCompound(TagConstants.TAG_RENDER);
+                    renderTag = itemTag.getCompound(TagConstants.RENDER);
                 }
                 if (renderDataIn.isEmpty()) {
                     NuminaLogger.logger.debug("Removing tag " + tagName);
@@ -96,7 +96,7 @@ public class ModelSpecNBT implements IModelSpec, INBTSerializable<CompoundTag> {
     @Override
     @Nullable
     public CompoundTag getRenderTag() {
-        return itemStack.getOrCreateTag().getCompound(TagConstants.TAG_RENDER);
+        return itemStack.getOrCreateTag().getCompound(TagConstants.RENDER);
     }
 
     @Override
@@ -144,6 +144,6 @@ public class ModelSpecNBT implements IModelSpec, INBTSerializable<CompoundTag> {
 
     @Override
     public void deserializeNBT(CompoundTag nbt) {
-        setRenderTag(nbt, TagConstants.TAG_RENDER);
+        setRenderTag(nbt, TagConstants.RENDER);
     }
 }

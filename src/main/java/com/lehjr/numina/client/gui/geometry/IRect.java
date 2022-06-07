@@ -76,7 +76,15 @@ public interface IRect {
 
     IRect setUL(MusePoint2D ul);
 
+    default IRect setUL(double left, double top) {
+        return setUL(new MusePoint2D(left, top));
+    }
+
     IRect setWH(MusePoint2D wh);
+
+    default IRect setWH(double width, double height) {
+        return setWH(new MusePoint2D(width, height));
+    }
 
     IRect setLeft(double value);
 
@@ -149,7 +157,7 @@ public interface IRect {
     void setDoThisOnChange(IDoThis iDoThis);
 
     interface IDoThis {
-        void doThisOnChange(IRect doThis);
+        void doThis(IRect doThis);
     }
 
     @OnlyIn(Dist.CLIENT)

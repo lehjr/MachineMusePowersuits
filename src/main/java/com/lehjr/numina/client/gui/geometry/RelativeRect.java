@@ -372,7 +372,7 @@ public class RelativeRect implements IRect{
     @Override
     public void doThisOnChange() {
         if (this.iDoThis != null) {
-            this.iDoThis.doThisOnChange(this);
+            this.iDoThis.doThis(this);
         }
     }
 

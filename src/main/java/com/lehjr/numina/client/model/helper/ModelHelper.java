@@ -1,18 +1,102 @@
-package com.lehjr.numina.client.model;
+package com.lehjr.numina.client.model.helper;
 
 import com.google.common.collect.ImmutableList;
+import com.lehjr.numina.client.model.obj.OBJBakedCompositeModel;
+import com.lehjr.numina.client.model.obj.OBJModelConfiguration;
+import com.lehjr.numina.client.model.obj.forge.NuminaOBJLoader;
+import com.lehjr.numina.client.model.obj.forge.NuminaOBJModel;
+import com.lehjr.numina.common.base.NuminaLogger;
 import com.lehjr.numina.common.math.Color;
 import com.mojang.blaze3d.vertex.VertexFormatElement;
 import com.mojang.math.Transformation;
+import com.mojang.math.Vector3f;
 import com.mojang.math.Vector4f;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.BakedQuad;
+import net.minecraft.client.renderer.block.model.ItemOverrides;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.resources.model.Material;
+import net.minecraft.client.resources.model.ModelState;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraftforge.client.model.ForgeModelBakery;
 import net.minecraftforge.client.model.pipeline.BakedQuadBuilder;
 import net.minecraftforge.client.model.pipeline.VertexTransformer;
+import net.minecraftforge.common.model.TransformationHelper;
 
+import javax.annotation.Nullable;
 import java.util.List;
+import java.util.function.Function;
 
 public class ModelHelper {
+    public static Transformation get(float transformX, float transformY, float transformZ, float angleX, float angleY, float angleZ, float scaleX, float scaleY, float scaleZ) {
+        // (@Nullable Vector3f translationIn,
+        // @Nullable Quaternion rotationLeftIn,
+        // @Nullable Vector3f scaleIn,
+        // @Nullable Quaternion rotationRightIn)
+
+
+        return new Transformation(
+                // Transform
+                new Vector3f(transformX / 16, transformY / 16, transformZ / 16),
+                // Angles
+                TransformationHelper.quatFromXYZ(new Vector3f(angleX, angleY, angleZ), true),
+
+                // Scale
+                new Vector3f(scaleX, scaleY, scaleZ),
+                null);
+    }
+
+    public static Transformation get(float transformX, float transformY, float transformZ, float angleX, float angleY, float angleZ, float scale) {
+        return get(transformX, transformY, transformZ, angleX, angleY, angleZ, scale, scale, scale);
+    }
+
+    /**
+     * Get the default texture getter the models will be baked with.
+     */
+    public static Function<ResourceLocation, TextureAtlasSprite> defaultTextureGetter(ResourceLocation location) {
+        return Minecraft.getInstance().getTextureAtlas(location);
+    }
+
+    public static Function<Material, TextureAtlasSprite> whiteTextureGetter() {
+        return (iHateNamingPointlessVariables)->ForgeModelBakery.White.instance();
+    }
+
+    @Nullable
+    public static NuminaOBJModel getOBJModel(ResourceLocation location, int attempt) {
+        NuminaOBJModel model;
+        try {
+            model = NuminaOBJLoader.INSTANCE.loadModel(
+                    new NuminaOBJModel.ModelSettings(location, true, true, true, true, null));
+        } catch (Exception e) {
+            if (attempt < 6) {
+                model = getOBJModel(location, attempt + 1);
+                NuminaLogger.logError("Model loading failed on attempt #" + attempt + "  :( " + location.toString());
+            } else {
+                model = null;
+                NuminaLogger.logError("Failed to load model. " + e);
+            }
+        }
+        NuminaLogger.logDebug("got model");
+        return model;
+    }
+
+    @Nullable
+    public static OBJBakedCompositeModel loadBakedModel(ModelState modelTransform,
+                                                        ItemOverrides overrides,
+                                                        ResourceLocation modelLocation) {
+        NuminaOBJModel model = getOBJModel(modelLocation, 0);
+
+        if (model != null) {
+            OBJBakedCompositeModel bakedModel = model.bake(new OBJModelConfiguration(modelLocation).setCombinedTransform(modelTransform),
+                    ForgeModelBakery.instance(),
+                    ForgeModelBakery.defaultTextureGetter(),
+                    modelTransform,
+                    overrides,
+                    modelLocation);
+            return bakedModel;
+        }
+        return null;
+    }
 
     /*
      * Here we can color the quads or change the transform using the setup below.

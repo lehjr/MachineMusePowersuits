@@ -29,7 +29,6 @@ package com.lehjr.powersuits.client.render;
 import com.lehjr.numina.common.capabilities.render.IHandHeldModelSpecNBT;
 import com.lehjr.numina.common.capabilities.render.ModelSpecNBT;
 import com.lehjr.numina.common.capabilities.render.modelspec.*;
-import com.lehjr.numina.common.constants.NuminaConstants;
 import com.lehjr.numina.common.constants.TagConstants;
 import com.lehjr.powersuits.common.item.handheld.PowerFist;
 import net.minecraft.nbt.CompoundTag;

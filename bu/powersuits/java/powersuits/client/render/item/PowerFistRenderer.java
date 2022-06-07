@@ -61,8 +61,8 @@
 //                        }
 //
 //                        if (slot != -1) {
-//                            specNBTCap.setRenderTag(renderSpec, NuminaConstants.TAG_RENDER);
-//                            MPAPackets.CHANNEL_INSTANCE.sendToServer(new CosmeticInfoPacket(slot, NuminaConstants.TAG_RENDER, renderSpec));
+//                            specNBTCap.setRenderTag(renderSpec, NuminaConstants.RENDER);
+//                            MPAPackets.CHANNEL_INSTANCE.sendToServer(new CosmeticInfoPacket(slot, NuminaConstants.RENDER, renderSpec));
 //                        }
 //                    }
 //                }

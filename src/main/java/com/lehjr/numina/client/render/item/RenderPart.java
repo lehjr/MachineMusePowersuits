@@ -24,7 +24,7 @@
  *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.lehjr.numina.client.render;
+package com.lehjr.numina.client.render.item;
 
 import com.google.common.collect.ImmutableList;
 import com.lehjr.numina.common.capabilities.render.modelspec.ModelPartSpec;
@@ -38,6 +38,7 @@ import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.*;
+import net.minecraft.client.model.Model;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
@@ -66,14 +67,17 @@ public class RenderPart extends ModelPart {
     final float div255 = 0.003921569F;
     ModelPart parent;
 
-    public RenderPart() {
+    public RenderPart(Model model, ModelPart parent) {
         super(new ArrayList<>(), new HashMap<>());
+        this.parent = parent;
     }
 
 //    public RenderPart(Model base, ModelPart parent) {
 //        super(base);
 //        this.parent = parent;
 //    }
+
+
 
     @Override
     public void render(PoseStack matrixStackIn, VertexConsumer bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
@@ -147,10 +151,10 @@ public class RenderPart extends ModelPart {
                         long i = 42L;
                         random.setSeed(i);
 
-                        System.out.println("fixme!!");
+//                        System.out.println("fixme!!");
 //                        ((ModelPartSpec) part).getPart().ifPresent(iModelGeometryPart -> iModelGeometryPart.addQuads());
 //
-//                        builder.addAll(((ModelPartSpec) part).getPart().getQuads(null, null, random));
+                        builder.addAll(((ModelPartSpec) part).getPart().getQuads(null, null, random));
 
                         renderQuads(entry,
                                 bufferIn,

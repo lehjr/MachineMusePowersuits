@@ -1,4 +1,4 @@
-package com.lehjr.numina.client;
+package com.lehjr.numina.client.event;
 
 import com.lehjr.numina.client.gui.GuiIcon;
 import com.lehjr.numina.client.gui.IconUtils;

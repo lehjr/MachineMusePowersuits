@@ -24,37 +24,37 @@
  *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package lehjr.powersuits.client.model.item;
+package com.lehjr.powersuits.client.model.item;
 
 import com.google.common.collect.ImmutableList;
-import com.mojang.blaze3d.matrix.PoseStack;
-import lehjr.numina.constants.NuminaConstants;
-import lehjr.numina.network.NuminaPackets;
-import lehjr.numina.network.packets.CosmeticInfoPacket;
-import lehjr.numina.util.capabilities.inventory.modechanging.IModeChangingItem;
-import lehjr.numina.util.capabilities.render.IHandHeldModelSpecNBT;
-import lehjr.numina.util.capabilities.render.CapabilityModelSpec;
-import lehjr.numina.util.capabilities.render.modelspec.ModelPartSpec;
-import lehjr.numina.util.capabilities.render.modelspec.ModelRegistry;
-import lehjr.numina.util.capabilities.render.modelspec.ModelSpec;
-import lehjr.numina.util.capabilities.render.modelspec.PartSpecBase;
-import lehjr.numina.util.client.model.helper.ModelHelper;
-import lehjr.numina.util.math.Color;
-import lehjr.numina.util.nbt.NBTTagAccessor;
-import net.minecraft.block.BlockState;
+import com.lehjr.numina.client.model.helper.ModelHelper;
+import com.lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
+import com.lehjr.numina.common.capabilities.render.CapabilityModelSpec;
+import com.lehjr.numina.common.capabilities.render.IHandHeldModelSpecNBT;
+import com.lehjr.numina.common.capabilities.render.modelspec.ModelPartSpec;
+import com.lehjr.numina.common.capabilities.render.modelspec.ModelRegistry;
+import com.lehjr.numina.common.capabilities.render.modelspec.ModelSpec;
+import com.lehjr.numina.common.capabilities.render.modelspec.PartSpecBase;
+import com.lehjr.numina.common.constants.TagConstants;
+import com.lehjr.numina.common.math.Color;
+import com.lehjr.numina.common.network.NuminaPackets;
+import com.lehjr.numina.common.network.packets.CosmeticInfoPacket;
+import com.lehjr.numina.common.tags.NBTTagAccessor;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Transformation;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.model.BakedQuad;
-import net.minecraft.client.renderer.model.IBakedModel;
-import net.minecraft.client.renderer.model.ItemTransforms;
-import net.minecraft.client.renderer.model.ItemOverrideList;
-import net.minecraft.client.world.ClientWorld;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.Player;
-import net.minecraft.inventory.EquipmentSlot;
-import net.minecraft.item.ItemStack;
+import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.renderer.block.model.BakedQuad;
+import net.minecraft.client.renderer.block.model.ItemOverrides;
+import net.minecraft.client.renderer.block.model.ItemTransforms;
+import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.vector.Transformation;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.model.BakedModelWrapper;
@@ -77,7 +77,7 @@ public class PowerFistModel extends BakedModelWrapper {
     static boolean isFiring = false;
     Player player;
 
-    public PowerFistModel(IBakedModel bakedModelIn) {
+    public PowerFistModel(BakedModel bakedModelIn) {
         super(bakedModelIn);
 //        calibration = new ModelTransformCalibration();
     }
@@ -106,6 +106,7 @@ public class PowerFistModel extends BakedModelWrapper {
             case GUI:
             case FIXED:
             case NONE:
+
                 return originalModel.getQuads(state, side, rand, extraData);
         }
         ImmutableList.Builder<BakedQuad> builder = ImmutableList.builder();
@@ -128,13 +129,13 @@ public class PowerFistModel extends BakedModelWrapper {
                         if (player.getMainHandItem().equals(itemStack)) {
                             slotType = EquipmentSlot.MAINHAND;
                         }
-                        specNBTCap.setRenderTag(renderSpec, NuminaConstants.TAG_RENDER);
-                        NuminaPackets.CHANNEL_INSTANCE.sendToServer(new CosmeticInfoPacket(slotType, NuminaConstants.TAG_RENDER, renderSpec));
+                        specNBTCap.setRenderTag(renderSpec, TagConstants.RENDER);
+                        NuminaPackets.CHANNEL_INSTANCE.sendToServer(new CosmeticInfoPacket(slotType, TagConstants.RENDER, renderSpec));
                     }
                 }
 
                 if (renderSpec != null) {
-                    int[] colours = renderSpec.getIntArray(NuminaConstants.COLOR;
+                    int[] colours = renderSpec.getIntArray(TagConstants.COLORS);
                     Color partColor;
                     Transformation transform;
 
@@ -176,7 +177,7 @@ public class PowerFistModel extends BakedModelWrapper {
      * type. However, when dealing with quads from different models, it's useless.
      */
     @Override
-    public IBakedModel handlePerspective(ItemTransforms.TransformType cameraTransformType, PoseStack mat) {
+    public BakedModel handlePerspective(ItemTransforms.TransformType cameraTransformType, PoseStack mat) {
         modelcameraTransformType = cameraTransformType;
         switch (cameraTransformType) {
             case FIRST_PERSON_LEFT_HAND:
@@ -205,7 +206,7 @@ public class PowerFistModel extends BakedModelWrapper {
     }
 
     @Override
-    public ItemOverrideList getOverrides() {
+    public ItemOverrides getOverrides() {
         return new PowerFistItemOverrideList();
     }
 
@@ -213,10 +214,11 @@ public class PowerFistModel extends BakedModelWrapper {
      * Overrides are interesting. If you set them up both in the model and in the item's constructor,
      * the model being passed to the IBaked parameter here should change depending on that.
      */
-    public class PowerFistItemOverrideList extends ItemOverrideList {
+    public class PowerFistItemOverrideList extends ItemOverrides {
+
         @Nullable
         @Override
-        public IBakedModel resolve(IBakedModel originalModel, ItemStack itemStackIn, @Nullable ClientWorld world, @Nullable LivingEntity entityIn) {
+        public BakedModel resolve(BakedModel model, ItemStack itemStackIn, @Nullable ClientLevel level, @Nullable LivingEntity entityIn, int seed) {
             itemStack = itemStackIn;
             if (entityIn instanceof Player) {
                 Player player = (Player) entityIn;
@@ -238,7 +240,7 @@ public class PowerFistModel extends BakedModelWrapper {
                     isFiring = false;
                 }
             }
-            return originalModel;
+            return model;
         }
     }
 }

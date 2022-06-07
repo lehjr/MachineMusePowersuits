@@ -26,9 +26,6 @@
 
 package com.lehjr.powersuits.common.item.module.armor;
 
-import com.lehjr.numina.common.capabilities.heat.CapabilityHeat;
-import com.lehjr.numina.common.capabilities.heat.HeatItemWrapper;
-import com.lehjr.numina.common.capabilities.heat.IHeatStorage;
 import com.lehjr.numina.common.capabilities.module.powermodule.*;
 import com.lehjr.numina.common.constants.TagConstants;
 import com.lehjr.powersuits.common.config.MPSSettings;

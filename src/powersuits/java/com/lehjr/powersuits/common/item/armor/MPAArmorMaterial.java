@@ -38,8 +38,6 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 import java.util.function.Supplier;
 
-import static appeng.core.localization.GuiText.Items;
-
 public enum MPAArmorMaterial implements ArmorMaterial {
     EMPTY_ARMOR("nothing", 5, new int[]{0, 0, 0, 0}, 15, SoundEvents.ARMOR_EQUIP_LEATHER, 0.0F, () -> {
         return Ingredient.of(ItemStack.EMPTY.getItem());

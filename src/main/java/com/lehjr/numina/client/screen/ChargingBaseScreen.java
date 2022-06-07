@@ -26,6 +26,7 @@
 
 package com.lehjr.numina.client.screen;
 
+import com.lehjr.numina.client.gui.geometry.RelativeRect;
 import com.lehjr.numina.common.constants.NuminaConstants;
 import com.lehjr.numina.client.gui.screen.NuminaAbstractContainerScreen;
 import com.lehjr.numina.common.string.StringUtils;
@@ -39,11 +40,11 @@ import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 
-public class ChargingBaseScreen extends NuminaAbstractContainerScreen<ChargingBaseMenu> {
+public class ChargingBaseScreen extends NuminaAbstractContainerScreen<ChargingBaseMenu, RelativeRect> {
     public static final ResourceLocation BACKGROUND = new ResourceLocation(NuminaConstants.MOD_ID, "textures/gui/container/chargingbase.png");
 
     public ChargingBaseScreen(ChargingBaseMenu pMenu, Inventory pPlayerInventory, Component pTitle) {
-        super(pMenu, pPlayerInventory, pTitle);
+        super(pMenu, new RelativeRect(), pPlayerInventory, pTitle);
     }
 
     @Override

@@ -32,7 +32,6 @@ import com.lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import com.lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
 import com.lehjr.numina.common.capabilities.module.rightclick.IRightClickModule;
 import com.lehjr.numina.common.capabilities.module.rightclick.RightClickModule;
-import com.lehjr.numina.common.energy.ElectricItemUtils;
 import com.lehjr.powersuits.common.config.MPSSettings;
 import com.lehjr.powersuits.common.constants.MPSConstants;
 import com.lehjr.powersuits.common.item.module.AbstractPowerModule;

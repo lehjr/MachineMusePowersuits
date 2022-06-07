@@ -192,7 +192,7 @@ public class PartSpecManipSubFrame extends DrawableTile {
                     CompoundTag renderTag  = specNBT.getRenderTag();
                     if (renderTag != null && !renderTag.isEmpty()) {
                         renderTag.put(name, nbt);
-                        specNBT.setRenderTag(renderTag, NuminaConstants.TAG_RENDER);
+                        specNBT.setRenderTag(renderTag, NuminaConstants.RENDER);
                     }
                 });
             }

@@ -74,7 +74,6 @@ public class BladeLauncherModule extends AbstractPowerModule {
             }};
 
             powerModuleHolder = LazyOptional.of(() -> {
-//                rightClickie.onLoad();
                 return rightClickie;
             });
         }

@@ -306,6 +306,16 @@ public interface IGuiFrame<T extends IRect> extends GuiEventListener, IRect {
         return getRect().setMeBelow(otherAboveMe);
     }
 
+    default void doThisOnSomeEvent() {};
+
+    default void setDoThisOnSomeEvent(IDoThis iDoThis) {}
+
+    @Override
+    default void doThisOnChange() {}
+
+    @Override
+    default void setDoThisOnChange(IDoThis iDoThis) {}
+
     @Override
     default void setOnInit(IInit onInit) {
         getRect().setOnInit(onInit);

@@ -26,6 +26,7 @@
 
 package com.lehjr.numina.common.capabilities.render.modelspec;
 
+import com.lehjr.numina.client.model.obj.OBJBakedCompositeModel;
 import com.lehjr.numina.common.map.NuminaRegistry;
 import com.lehjr.numina.common.string.StringUtils;
 import net.minecraft.nbt.CompoundTag;
@@ -62,7 +63,7 @@ public class ModelRegistry extends NuminaRegistry<SpecBase> {
      * TextureSpec does not have an IModelState so this is relatively safe
      * @return
      */
-    public OBJModel loadBakedModel(ResourceLocation resource) {
+    public OBJBakedCompositeModel loadBakedModel(ResourceLocation resource) {
         String name = StringUtils.extractName(resource);
         SpecBase spec = get(name);
         return ((ModelSpec) (spec)).getModel();

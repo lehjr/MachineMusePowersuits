@@ -26,11 +26,11 @@
 
 package com.lehjr.powersuits.client.model.block;
 
-import com.lehjr.numina.common.capabilities.module.powermodule.CapabilityPowerModule;
-import com.lehjr.powersuits.client.model.helper.LuxCapHelper;
 import com.lehjr.numina.client.model.obj.OBJBakedCompositeModel;
 import com.lehjr.numina.client.model.obj.OBJPartData;
+import com.lehjr.numina.common.capabilities.module.powermodule.CapabilityPowerModule;
 import com.lehjr.numina.common.math.Color;
+import com.lehjr.powersuits.client.model.helper.LuxCapHelper;
 import com.lehjr.powersuits.common.block.LuxCapacitor;
 import com.lehjr.powersuits.common.constants.MPSConstants;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -47,6 +47,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.model.BakedModelWrapper;
+import net.minecraftforge.client.model.PerspectiveMapWrapper;
 import net.minecraftforge.client.model.data.IModelData;
 
 import javax.annotation.Nonnull;
@@ -82,6 +83,11 @@ public class LuxCapacitorModelWrapper extends BakedModelWrapper<OBJBakedComposit
         return originalModel.getQuads(state, side, rand, extraData);
     }
 
+    @Override
+    public ItemTransforms getTransforms() {
+        return super.getTransforms();
+    }
+
     /**
      *  This is needed in order to return this wrapper with the transforms from the base model
      * otherwise the base model is returned from the super method skipping the setting of the lens color
@@ -89,22 +95,10 @@ public class LuxCapacitorModelWrapper extends BakedModelWrapper<OBJBakedComposit
      * @param poseStack
      * @return
      */
-
     @Override
     public BakedModel handlePerspective(ItemTransforms.TransformType cameraTransformType, PoseStack poseStack) {
-        return super.handlePerspective(cameraTransformType, poseStack);
+        return PerspectiveMapWrapper.handlePerspective(this, originalModel.getModelState(), cameraTransformType, poseStack);
     }
-
-    @Override
-    public boolean doesHandlePerspectives() {
-        return super.doesHandlePerspectives();
-    }
-
-    //    FIXME!!
-//    @Override
-//    public BakedModel handlePerspective(ItemTransforms.TransformType cameraTransformType, PoseStack mat) {
-//        return PerspectiveMapWrapper.handlePerspective(this, ((OBJBakedCompositeModel)this.originalModel).getOverrides(), cameraTransformType, mat);
-//    }
 
     /**
      * required to set Lens color

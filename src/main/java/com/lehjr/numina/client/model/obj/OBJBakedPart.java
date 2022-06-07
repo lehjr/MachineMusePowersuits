@@ -1,6 +1,6 @@
 package com.lehjr.numina.client.model.obj;
 
-import com.lehjr.numina.client.model.ModelHelper;
+import com.lehjr.numina.client.model.helper.ModelHelper;
 import com.lehjr.numina.common.math.Color;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.resources.model.BakedModel;

@@ -26,16 +26,16 @@
 
 package com.lehjr.numina.common.capabilities.render.modelspec;
 
+import com.lehjr.numina.client.model.obj.OBJBakedPart;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.model.geometry.IModelGeometryPart;
 import com.lehjr.numina.common.constants.TagConstants;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
-import java.util.Optional;
 
 /**
  * Ported to Java by lehjr on 11/8/16.
@@ -76,7 +76,8 @@ public class ModelPartSpec extends PartSpecBase {
         else nbt.putBoolean(TagConstants.GLOW, g);
     }
 
-    public Optional<? extends IModelGeometryPart> getPart() {
+    @Nullable
+    public  OBJBakedPart getPart() {
         return ((ModelSpec) (this.spec)).getModel().getPart(this.partName);
     }
 

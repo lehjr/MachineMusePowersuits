@@ -61,7 +61,7 @@ public class ModularPowersuits {
         MinecraftForge.EVENT_BUS.register(this);
 
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> FMLJavaModLoadingContext.get().getModEventBus().register(ClientSetup.class));
-        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, ()-> ()-> ClientSetup.clientStart(modEventBus));
+        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, ()-> ()-> ClientSetup.INSTANCE.clientStart(modEventBus));
 
 
         if (FMLEnvironment.dist == Dist.CLIENT) {

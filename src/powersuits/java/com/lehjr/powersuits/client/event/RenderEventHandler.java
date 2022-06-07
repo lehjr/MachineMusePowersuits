@@ -40,7 +40,9 @@ import com.lehjr.powersuits.client.control.MPSKeyBinding;
 import com.lehjr.powersuits.common.config.MPSSettings;
 import com.lehjr.powersuits.common.constants.MPSConstants;
 import com.lehjr.powersuits.common.constants.MPSRegistryNames;
+import com.lehjr.powersuits.common.item.module.environmental.AutoFeederModule;
 import com.mojang.blaze3d.platform.InputConstants;
+import com.mojang.blaze3d.platform.Window;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.Minecraft;
@@ -54,12 +56,16 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.event.*;
+import net.minecraftforge.client.event.DrawSelectionEvent;
+import net.minecraftforge.client.event.FOVModifierEvent;
+import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -68,17 +74,122 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
+@OnlyIn(Dist.CLIENT)
 public enum RenderEventHandler {
     INSTANCE;
-    private static boolean ownFly = false;
-    private final DrawableRelativeRect frame = new DrawableRelativeRect(MPSSettings.getHudKeybindX(), MPSSettings.getHudKeybindY(), MPSSettings.getHudKeybindX() + (float) 16, MPSSettings.getHudKeybindY() +  16, true, Color.DARK_GREEN.withAlpha(0.2F), Color.GREEN.withAlpha(0.2F));
 
+
+    @SubscribeEvent
+    public void onPostRenderGameOverlayEvent(RenderGameOverlayEvent.Post e) {
+        RenderGameOverlayEvent.ElementType elementType = e.getType();
+        if (RenderGameOverlayEvent.ElementType.LAYER.equals(elementType)) {
+            this.renderHud(e.getMatrixStack());
+
+            //        if (ModList.get().isLoaded("scannable")) {
+//            MPSOverlayRenderer.INSTANCE.onOverlayRender(e);
+//        }
+            this.drawKeybindToggles(e.getMatrixStack());
+        }
+    }
 
     /**
-     * Just for a couple modules that can break multiple blocks at once
-     * @param event
+     * HUD ------------------------------------------------------------------------------------------------------------------------------------------
+     */
+    static final ItemStack food = new ItemStack(Items.COOKED_BEEF);
+    public void renderHud(PoseStack matrixStack) {
+
+        Minecraft minecraft = Minecraft.getInstance();
+        if (minecraft.player == null) {
+            return;
+        }
+        int yOffsetString = 18;
+        float yOffsetIcon = 16.0F;
+        float yBaseIcon;
+        int yBaseString;
+        if (MPSSettings.useGraphicalMeters()) {
+            yBaseIcon = 150.0F;
+            yBaseString = 155;
+        } else {
+            yBaseIcon = 26.0F;
+            yBaseString = 32;
+        }
+
+        Player player = minecraft.player;
+        if (player != null && Minecraft.renderNames() && minecraft.screen == null) {
+            Minecraft mc = minecraft;
+            Window screen = mc.getWindow();
+
+            // Misc Overlay Items ---------------------------------------------------------------------------------
+            AtomicInteger index = new AtomicInteger(0);
+
+            // Helmet modules with overlay
+            player.getItemBySlot(EquipmentSlot.HEAD).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+                    .filter(IModularItem.class::isInstance)
+                    .map(IModularItem.class::cast)
+                    .ifPresent(h -> {
+                        // AutoFeeder
+                        ItemStack autoFeeder = h.getOnlineModuleOrEmpty(MPSRegistryNames.AUTO_FEEDER_MODULE);
+                        if (!autoFeeder.isEmpty()) {
+                            int foodLevel = (int) ((AutoFeederModule) autoFeeder.getItem()).getFoodLevel(autoFeeder);
+                            String num = StringUtils.formatNumberShort(foodLevel);
+                            StringUtils.drawShadowedString(matrixStack, num, 17, yBaseString + (yOffsetString * index.get()));
+                            NuminaRenderer.drawItemAt(-1.0, yBaseIcon + (yOffsetIcon * index.get()), food);
+                            index.addAndGet(1);
+                        }
+
+                        // Clock
+                        ItemStack clock = h.getOnlineModuleOrEmpty(Items.CLOCK.getRegistryName());
+                        if (!clock.isEmpty()) {
+                            String ampm;
+                            long time = player.level.getDayTime();
+                            long hour = ((time % 24000) / 1000);
+                            if (MPSSettings.use24HourClock()) {
+                                if (hour < 19) {
+                                    hour += 6;
+                                } else {
+                                    hour -= 18;
+                                }
+                                ampm = "h";
+                            } else {
+                                if (hour < 6) {
+                                    hour += 6;
+                                    ampm = " AM";
+                                } else if (hour == 6) {
+                                    hour = 12;
+                                    ampm = " PM";
+                                } else if (hour > 6 && hour < 18) {
+                                    hour -= 6;
+                                    ampm = " PM";
+                                } else if (hour == 18) {
+                                    hour = 12;
+                                    ampm = " AM";
+                                } else {
+                                    hour -= 18;
+                                    ampm = " AM";
+                                }
+
+                                StringUtils.drawShadowedString(matrixStack, hour + ampm, 17, yBaseString + (yOffsetString * index.get()));
+                                NuminaRenderer.drawItemAt(-1.0, yBaseIcon + (yOffsetIcon * index.get()), clock);
+
+                                index.addAndGet(1);
+                            }
+                        }
+
+                        // Compass
+                        ItemStack compass = h.getOnlineModuleOrEmpty(Items.COMPASS.getRegistryName());
+                        if (!compass.isEmpty()) {
+                            NuminaRenderer.drawItemAt(-1.0, yBaseIcon + (yOffsetIcon * index.get()), compass);
+                            index.addAndGet(1);
+                        }
+                    });
+        }
+    }
+
+    /**
+     * Highlight block breaking target area ---------------------------------------------------------------------------------------------------------
      */
     @OnlyIn(Dist.CLIENT)
     @SubscribeEvent
@@ -121,38 +232,11 @@ public enum RenderEventHandler {
                 });
     }
 
-    @OnlyIn(Dist.CLIENT)
-    @SubscribeEvent
-    public void preTextureStitch(TextureStitchEvent.Pre event) {
-        System.out.println("fixme!!!");
-//        MPSModelHelper.loadArmorModels(event, null);
-    }
 
-    @OnlyIn(Dist.CLIENT)
-    @SubscribeEvent
-    public void onTextureStitch(TextureStitchEvent.Post event) {
-    }
-
-    @OnlyIn(Dist.CLIENT)
-    @SubscribeEvent
-    public void onPostRenderGameOverlayEvent(RenderGameOverlayEvent.Post e) {
-        RenderGameOverlayEvent.ElementType elementType = e.getType();
-        if (RenderGameOverlayEvent.ElementType.LAYER.equals(elementType)) {
-            this.drawKeybindToggles(e.getMatrixStack());
-            drawModeChangeIcons();
-        }
-    }
-
-    public void drawModeChangeIcons() {
-        Minecraft mc = Minecraft.getInstance();
-        LocalPlayer player = mc.player;
-        int i = player.getInventory().selected;
-        player.getInventory().getSelected().getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-                .filter(IModeChangingItem.class::isInstance)
-                .map(IModeChangingItem.class::cast)
-                .ifPresent(handler->
-                        handler.drawModeChangeIcon(player, i, mc));
-    }
+    /**
+     *  Flight control ------------------------------------------------------------------------------------------------------------------------------
+     */
+    private static boolean ownFly = false;
 
     @SubscribeEvent
     public void onPreRenderPlayer(RenderPlayerEvent.Pre event) {
@@ -192,6 +276,10 @@ public enum RenderEventHandler {
         }
     }
 
+
+    /**
+     * FOV ------------------------------------------------------------------------------------------------------------------------------------------
+     */
     @SubscribeEvent
     public void onFOVUpdate(FOVModifierEvent e) {
         e.getEntity().getItemBySlot(EquipmentSlot.HEAD).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
@@ -208,6 +296,9 @@ public enum RenderEventHandler {
                 );
     }
 
+    /**
+     * Keybindings ----------------------------------------------------------------------------------------------------------------------------------
+     */
     final List<KBDisplay> kbDisplayList = new ArrayList<>();
     public void makeKBDisplayList() {
         kbDisplayList.clear();
@@ -232,8 +323,6 @@ public enum RenderEventHandler {
             Minecraft minecraft = Minecraft.getInstance();
             AtomicDouble top = new AtomicDouble(MPSSettings.getHudKeybindY());
             kbDisplayList.forEach(kbDisplay -> {
-//                System.out.println("\nkbDisplay.boundKeybinds: " + kbDisplay.boundKeybinds);
-
                 if (!kbDisplay.boundKeybinds.isEmpty()) {
                     kbDisplay.setLeft(MPSSettings.getHudKeybindX());
                     kbDisplay.setTop(top.get());

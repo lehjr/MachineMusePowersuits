@@ -74,6 +74,10 @@ public class OBJBakedCompositeModel implements IDynamicBakedModel {
         return diffuseLighting;
     }
 
+    public ModelState getModelState() {
+        return transforms;
+    }
+
     @Override
     public boolean isCustomRenderer() {
         return false;
@@ -98,11 +102,6 @@ public class OBJBakedCompositeModel implements IDynamicBakedModel {
     public BakedModel handlePerspective(ItemTransforms.TransformType cameraTransformType, PoseStack mat) {
         return PerspectiveMapWrapper.handlePerspective(this, transforms, cameraTransformType, mat);
     }
-
-//    @Override
-//    public ItemTransforms getTransforms() {
-//        return transforms.;
-//    }
 
     @Nullable
     public OBJBakedPart getPart(String name) {

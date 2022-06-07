@@ -67,7 +67,7 @@ package com.lehjr.powersuits.common.network.packets;//package lehjr.powersuits.n
 //
 //                        // fixme preset stuff again
 ////                    CompoundTag itemTag = NBTUtils.getMuseItemTag(stack);
-////                    itemTag.remove(MPALibConstants.TAG_RENDER);
+////                    itemTag.remove(MPALibConstants.RENDER);
 ////                    itemTag.putString(MPALibConstants.TAG_COSMETIC_PRESET, presetName);
 //            });
 //        });

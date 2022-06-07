@@ -26,6 +26,7 @@
 
 package com.lehjr.numina.common.capabilities.render.modelspec;
 
+import com.lehjr.numina.client.model.obj.OBJBakedCompositeModel;
 import com.mojang.math.Transformation;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.resources.model.ModelState;
@@ -42,10 +43,10 @@ import java.util.Objects;
  * Ported to Java by lehjr on 11/8/16.
  */
 public class ModelSpec extends SpecBase {
-    private final OBJModel model;
+    private final OBJBakedCompositeModel model;
     private final ModelState modelTransforms;
 
-    public ModelSpec(final OBJModel model, final ModelState transforms, final String name, final boolean isDefault, final SpecType specType) {
+    public ModelSpec(final OBJBakedCompositeModel model, final ModelState transforms, final String name, final boolean isDefault, final SpecType specType) {
         super(name, isDefault, specType);
         this.modelTransforms = transforms;
         this.model = model;
@@ -70,7 +71,7 @@ public class ModelSpec extends SpecBase {
         return (name != null) ? name : "";
     }
 
-    public OBJModel getModel() {
+    public OBJBakedCompositeModel getModel() {
         return model;
     }
 

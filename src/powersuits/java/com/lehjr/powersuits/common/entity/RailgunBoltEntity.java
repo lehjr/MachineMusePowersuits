@@ -27,9 +27,7 @@
 package com.lehjr.powersuits.common.entity;
 
 
-
 import com.lehjr.powersuits.common.base.MPSObjects;
-import com.mojang.math.Vector3d;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.Packet;

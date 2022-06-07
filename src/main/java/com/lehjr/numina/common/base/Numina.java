@@ -8,8 +8,8 @@ import com.lehjr.numina.common.capabilities.render.chameleon.ChameleonCapability
 import com.lehjr.numina.common.capabilities.render.color.CapabilityColor;
 import com.lehjr.numina.common.capabilities.render.highlight.HighLightCapability;
 import com.lehjr.numina.common.constants.NuminaConstants;
-import com.lehjr.numina.client.ClientSetup;
-import com.lehjr.numina.client.event.ClientTickHandler;
+import com.lehjr.numina.client.event.ClientSetup;
+import com.lehjr.numina.client.event.RenderEventHandler;
 import com.lehjr.numina.common.network.NuminaPackets;
 import com.mojang.logging.LogUtils;
 import net.minecraft.world.level.block.Block;
@@ -65,7 +65,8 @@ public class Numina {
 
 
         if (FMLEnvironment.dist == Dist.CLIENT) {
-            MinecraftForge.EVENT_BUS.addListener(ClientTickHandler.INSTANCE::onRenderTickEvent);
+            MinecraftForge.EVENT_BUS.addListener(RenderEventHandler.INSTANCE::onRenderTickEvent);
+            MinecraftForge.EVENT_BUS.addListener(RenderEventHandler.INSTANCE::onPostRenderGameOverlayEvent);
 //            MinecraftForge.EVENT_BUS.addListener(this::keyInputEvent);
         }
     }

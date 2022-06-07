@@ -29,18 +29,19 @@ package com.lehjr.numina.common.capabilities.render.modelspec;
 import com.google.common.base.Objects;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.resources.ResourceLocation;
 
 /**
  * This just provides a way to tie the armor skin for vanilla armor
  */
 public class TexturePartSpec extends PartSpecBase {
-    final String textureLocation;
+    final ResourceLocation textureLocation;
 
     public TexturePartSpec(final SpecBase spec,
                            final SpecBinding binding,
                            final Integer enumColorIndex,
                            final String partName,
-                           final String textureLocation) {
+                           final ResourceLocation textureLocation) {
         super(spec, binding, partName, enumColorIndex);
         this.textureLocation = textureLocation;
     }
@@ -53,7 +54,7 @@ public class TexturePartSpec extends PartSpecBase {
                 .toString());
     }
 
-    public String getTextureLocation() {
+    public ResourceLocation getTextureLocation() {
         return textureLocation;
     }
 

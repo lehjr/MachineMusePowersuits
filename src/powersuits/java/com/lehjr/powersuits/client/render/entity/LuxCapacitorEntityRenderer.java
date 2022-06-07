@@ -49,8 +49,6 @@ import javax.annotation.Nullable;
 import java.util.Random;
 
 public class LuxCapacitorEntityRenderer extends EntityRenderer<LuxCapacitorEntity> {
-
-
     public LuxCapacitorEntityRenderer(EntityRendererProvider.Context renderManager) {
         super(renderManager);
     }
