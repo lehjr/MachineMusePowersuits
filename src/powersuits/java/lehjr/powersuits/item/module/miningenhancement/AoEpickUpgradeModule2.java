@@ -105,7 +105,7 @@ public class AoEpickUpgradeModule2 extends AbstractPowerModule {
                     }
                 }
 
-                return super.use(itemStackIn, worldIn, playerIn, hand);
+                return ActionResult.success(itemStackIn);
             }
 
             void harvestBlocks(List<BlockPos> posList, World world) {
