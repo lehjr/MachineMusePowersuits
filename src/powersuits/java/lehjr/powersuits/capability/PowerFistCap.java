@@ -102,7 +102,7 @@ public class PowerFistCap implements ICapabilityProvider {
 
         energyHolder = LazyOptional.of(()-> {
             modularItem.updateFromNBT();
-            return modularItem.getStackInSlot(1).getCapability(CapabilityEnergy.ENERGY).orElse(new EnergyStorage(0));
+            return modularItem.getStackInSlot(0).getCapability(CapabilityEnergy.ENERGY).orElse(new EnergyStorage(0));
         });
     }
 
