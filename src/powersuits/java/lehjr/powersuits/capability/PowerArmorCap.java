@@ -68,7 +68,7 @@ public class PowerArmorCap implements ICapabilityProvider {
     final ArmorModelSpecNBT modelSpec;
     final LazyOptional<IModelSpecNBT> modelSpecHolder;
 
-    final HeatItemWrapper heatStorage;
+
     final LazyOptional<IHeatStorage> heatHolder;
 
     final LazyOptional<IEnergyStorage> energyHolder;
@@ -143,9 +143,11 @@ public class PowerArmorCap implements ICapabilityProvider {
         this.modelSpec = new ArmorModelSpecNBT(itemStackIn);
         this.modelSpecHolder = LazyOptional.of(()-> modelSpec);
 
-        heatStorage = new HeatItemWrapper(itemStack, maxHeat, modularItem.getStackInSlot(0).getCapability(PowerModuleCapability.POWER_MODULE));
+
         heatHolder = LazyOptional.of(() -> {
             modularItem.updateFromNBT();
+
+            final HeatItemWrapper heatStorage = new HeatItemWrapper(itemStack, maxHeat, modularItem.getStackInSlot(0).getCapability(PowerModuleCapability.POWER_MODULE));
             heatStorage.updateFromNBT();
             return heatStorage;
         });
