@@ -5,6 +5,7 @@ import lehjr.numina.util.capabilities.module.blockbreaking.IBlockBreakingModule;
 import lehjr.numina.util.capabilities.module.miningenhancement.IMiningEnhancementModule;
 import lehjr.numina.util.capabilities.module.miningenhancement.MiningEnhancement;
 import lehjr.numina.util.capabilities.module.powermodule.*;
+import lehjr.numina.util.capabilities.module.rightclick.IRightClickModule;
 import lehjr.numina.util.capabilities.render.chameleon.Chameleon;
 import lehjr.numina.util.capabilities.render.chameleon.ChameleonCapability;
 import lehjr.numina.util.capabilities.render.chameleon.IChameleon;
@@ -22,14 +23,13 @@ import net.minecraft.block.Blocks;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemUseContext;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Hand;
-import net.minecraft.util.NonNullList;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.RayTraceContext;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -70,7 +70,6 @@ public class AoEpickUpgradeModule2 extends AbstractPowerModule {
 
         public CapProvider(@Nonnull ItemStack module) {
             this.module = module;
-
             this.miningEnhancement = new Enhancement(module, ModuleCategory.MINING_ENHANCEMENT, ModuleTarget.TOOLONLY, MPSSettings::getModuleConfig) {{
                 addBaseProperty(MPSConstants.AOE2_ENERGY, 500, "FE");
                 addBaseProperty(MPSConstants.AOE2_LIMIT, 1);
@@ -83,29 +82,31 @@ public class AoEpickUpgradeModule2 extends AbstractPowerModule {
             });
 
             this.chameleon = new Chameleon(module);
-            chameleonHolder = LazyOptional.of(() -> chameleon);
+            chameleonHolder = LazyOptional.of(() -> {
+                chameleon.updateFromNBT();
+                return chameleon;
+            });
 
             this.highlight = new Highlighter();
             highlightHolder = LazyOptional.of(() -> highlight);
         }
 
-        class Enhancement extends MiningEnhancement {
+        class Enhancement extends MiningEnhancement implements IRightClickModule {
             public Enhancement(@Nonnull ItemStack module, ModuleCategory category, ModuleTarget target, Callable<IConfig> config) {
                 super(module, category, target, config);
             }
 
             @Override
-            public ActionResult<ItemStack> use(@Nonnull ItemStack itemStackIn, World worldIn, PlayerEntity playerIn, Hand hand) {
-                if (hand.equals(Hand.MAIN_HAND) && worldIn.isClientSide()) {
+            public ActionResultType onItemUseFirst(ItemStack stack, ItemUseContext context) {
+                if (context.getHand().equals(Hand.MAIN_HAND) && context.getLevel().isClientSide()) {
                     if (KeybindKeyHandler.isKeyPressed(GLFW.GLFW_KEY_LEFT_SHIFT) || KeybindKeyHandler.isKeyPressed(GLFW.GLFW_KEY_RIGHT_SHIFT)) {
-                        BlockRayTraceResult rayTraceResult = getPlayerPOVHitResult(playerIn.level, playerIn, RayTraceContext.FluidMode.NONE);
-                        if (!(rayTraceResult == null)) {
-                            chameleon.setTargetBlock(worldIn.getBlockState(rayTraceResult.getBlockPos()).getBlock());
+                        BlockRayTraceResult rayTraceResult = getPlayerPOVHitResult(context.getLevel(), context.getPlayer(), RayTraceContext.FluidMode.NONE);
+                        if (rayTraceResult.getType() == RayTraceResult.Type.BLOCK) {
+                            chameleon.setTargetBlock(context.getLevel().getBlockState(rayTraceResult.getBlockPos()).getBlock());
                         }
                     }
                 }
-
-                return ActionResult.success(itemStackIn);
+                return super.onItemUseFirst(stack, context);
             }
 
             void harvestBlocks(List<BlockPos> posList, World world) {
@@ -118,7 +119,7 @@ public class AoEpickUpgradeModule2 extends AbstractPowerModule {
             public boolean onBlockStartBreak(ItemStack itemStack, BlockPos posIn, PlayerEntity player) {
                 BlockState state = player.level.getBlockState(posIn);
                 Block block = state.getBlock();
-
+                chameleon.updateFromNBT();
                 // abort if block is not set
                 if (block == Blocks.AIR || block == Blocks.BEDROCK || !chameleon.getTargetBlock().filter(targetBlock -> targetBlock == block).isPresent()) {
                     return false;
@@ -236,6 +237,7 @@ public class AoEpickUpgradeModule2 extends AbstractPowerModule {
         class Highlighter extends Highlight {
             @OnlyIn(Dist.CLIENT)
             NonNullList<BlockPos> findBlockPositionsClient(BlockPos targetPos) {
+                chameleon.updateFromNBT();
                 return chameleon.getTargetBlock().map(targetBlock -> getPosList(targetBlock, targetPos, Minecraft.getInstance().player.level)).orElse(NonNullList.create());
             }
 

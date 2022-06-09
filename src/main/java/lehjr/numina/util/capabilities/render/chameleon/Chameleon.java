@@ -1,23 +1,29 @@
 package lehjr.numina.util.capabilities.render.chameleon;
 
+import lehjr.numina.util.capabilities.IItemStackUpdate;
 import lehjr.numina.util.nbt.MuseNBTUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.ByteNBT;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.StringNBT;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nonnull;
 import java.util.Optional;
 
-public class Chameleon implements IChameleon, INBTSerializable<StringNBT> {
+public class Chameleon implements IChameleon, IItemStackUpdate, INBTSerializable<StringNBT> {
     ResourceLocation blockRegName = Blocks.AIR.getRegistryName();
-    @Nonnull ItemStack module;
+    @Nonnull
+    ItemStack module;
+
     public Chameleon(@Nonnull ItemStack module) {
         this.module = module;
-        this.blockRegName = MuseNBTUtils.getModuleResourceLocation(module, "block").orElse(null);
+        this.blockRegName = MuseNBTUtils.getModuleResourceLocation(module, "block").orElse(Blocks.AIR.getRegistryName());
     }
 
     @Override
@@ -55,6 +61,16 @@ public class Chameleon implements IChameleon, INBTSerializable<StringNBT> {
     public void deserializeNBT(StringNBT nbt) {
         if (nbt != null) {
             this.blockRegName = new ResourceLocation(nbt.getAsString());
+        }
+    }
+
+    @Override
+    public void updateFromNBT() {
+        final CompoundNBT nbt = MuseNBTUtils.getModuleTag(module);
+        if (nbt.contains("block", Constants.NBT.TAG_STRING)) {
+            deserializeNBT(StringNBT.valueOf(nbt.getString("block")));
+        } else {
+            this.blockRegName = Blocks.AIR.getRegistryName();
         }
     }
 }

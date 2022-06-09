@@ -36,7 +36,12 @@ public class BlockNamePacket {
             player.getItemBySlot(EquipmentSlotType.MAINHAND).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).filter(IModeChangingItem.class::isInstance)
                     .map(IModeChangingItem.class::cast)
                     .ifPresent(handler-> {
+                        System.out.println("tag before: " + handler.getActiveModule().serializeNBT());
+
+
                         MuseNBTUtils.setModuleResourceLocation(handler.getActiveModule(), "block", message.regName);
+
+                        System.out.println("tag after: " + handler.getActiveModule().serializeNBT());
                     });
         });
         ctx.get().setPacketHandled(true);
