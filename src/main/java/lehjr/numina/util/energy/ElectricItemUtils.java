@@ -27,11 +27,13 @@
 package lehjr.numina.util.energy;
 
 import lehjr.numina.basemod.NuminaObjects;
+import lehjr.numina.util.capabilities.inventory.modechanging.IModeChangingItem;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.energy.CapabilityEnergy;
+import net.minecraftforge.items.CapabilityItemHandler;
 
 import javax.annotation.Nonnull;
 
@@ -74,17 +76,24 @@ public class ElectricItemUtils {
      * Note that charging held items while in use causes issues so they are skipped
      */
     public static int drainPlayerEnergy(LivingEntity entity, int drainAmount, boolean simulate){
-        if (entity.level.isClientSide || (entity instanceof PlayerEntity && ((PlayerEntity) entity).abilities.instabuild)) {
-            return drainAmount;
-        }
         int drainleft = drainAmount;
-        for (EquipmentSlotType slot : EquipmentSlotType.values()) {
-            if (drainleft == 0) {
-                break;
+        if (entity instanceof PlayerEntity) {
+            PlayerEntity player = (PlayerEntity) entity;
+            if (player.level.isClientSide || player.abilities.instabuild) {
+                return drainAmount;
             }
 
-            ItemStack stack = entity.getItemBySlot(slot);
-            drainleft = drainleft - drainItem(stack, drainleft, simulate);
+            for (EquipmentSlotType slot : EquipmentSlotType.values()) {
+                if (drainleft <= 0) {
+                    break;
+                }
+
+                ItemStack stack = entity.getItemBySlot(slot);
+                drainleft = drainleft - drainItem(stack, drainleft, simulate);
+            }
+            if (drainAmount - drainleft > 0) {
+                player.inventory.setChanged();
+            }
         }
         return drainAmount - drainleft;
     }
@@ -101,21 +110,29 @@ public class ElectricItemUtils {
      */
     public static int givePlayerEnergy(LivingEntity entity, int rfToGive, boolean simulate) {
         int rfLeft = rfToGive;
-        for (EquipmentSlotType slot : EquipmentSlotType.values()) {
-            if (rfLeft > 0) {
-                rfLeft = rfLeft - chargeItem(entity.getItemBySlot(slot), rfLeft, simulate);
-            } else {
-                break;
-            }
-        }
-        // charge other compatible items in inventory
-        if (rfLeft > 0 && entity instanceof PlayerEntity) {
-            for(int i = 0; i < ((PlayerEntity) entity).inventory.getContainerSize(); i++ ) {
+        if (entity instanceof PlayerEntity) {
+            PlayerEntity player = (PlayerEntity) entity;
+
+            for (EquipmentSlotType slot : EquipmentSlotType.values()) {
                 if (rfLeft > 0) {
-                    rfLeft = rfLeft - chargeItem(((PlayerEntity) entity).inventory.getItem(i), rfLeft, simulate);
+                    ItemStack stack = player.getItemBySlot(slot);
+                    rfLeft = rfLeft - chargeItem(stack, rfLeft, simulate);
                 } else {
                     break;
                 }
+            }
+            // charge other compatible items in inventory
+            if (rfLeft > 0 && entity instanceof PlayerEntity) {
+                for (int i = 0; i < player.inventory.getContainerSize(); i++) {
+                    if (rfLeft > 0) {
+                        rfLeft = rfLeft - chargeItem(((PlayerEntity) entity).inventory.getItem(i), rfLeft, simulate);
+                    } else {
+                        break;
+                    }
+                }
+            }
+            if (rfToGive - rfLeft > 0) {
+                player.inventory.setChanged();
             }
         }
         return rfToGive - rfLeft;
@@ -151,6 +168,6 @@ public class ElectricItemUtils {
 
     static int getMaxEnergyForComparison() {
 //        return 0;
-         return (int) (0.8 * new ItemStack(NuminaObjects.BASIC_BATTERY.get()).getCapability(CapabilityEnergy.ENERGY).map(energyHandler -> energyHandler.getMaxEnergyStored()).orElse(0));
+        return (int) (0.8 * new ItemStack(NuminaObjects.BASIC_BATTERY.get()).getCapability(CapabilityEnergy.ENERGY).map(energyHandler -> energyHandler.getMaxEnergyStored()).orElse(0));
     }
 }

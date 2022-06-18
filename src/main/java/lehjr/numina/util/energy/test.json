@@ -1,0 +1,633 @@
+{
+  id: "powersuits:powerfist",
+  Count: 1b,
+  tag: {
+    MMModItem: {
+      render: {
+        powerfist_left.supportrightfront: {
+          model: "powerfist_left",
+          part: "supportrightfront"
+        },
+        powerfist.palm: {
+          model: "powerfist",
+          part: "palm"
+        },
+        powerfist_fingers_normal.middlefinger2: {
+          model: "powerfist_fingers_normal",
+          part: "middlefinger2"
+        },
+        powerfist_fingers_normal_left.ringfinger2: {
+          model: "powerfist_fingers_normal_left",
+          part: "ringfinger2"
+        },
+        powerfist.mainarm: {
+          model: "powerfist",
+          part: "mainarm"
+        },
+        powerfist_fingers_normal_left.ringfinger1: {
+          model: "powerfist_fingers_normal_left",
+          part: "ringfinger1"
+        },
+        powerfist_fingers_firing_left.middlefinger1: {
+          model: "powerfist_fingers_firing_left",
+          part: "middlefinger1"
+        },
+        powerfist.supportbaseright: {
+          model: "powerfist",
+          part: "supportbaseright"
+        },
+        powerfist_fingers_normal.index2: {
+          model: "powerfist_fingers_normal",
+          part: "index2"
+        },
+        powerfist_fingers_firing_left.middlefinger2: {
+          model: "powerfist_fingers_firing_left",
+          part: "middlefinger2"
+        },
+        powerfist_fingers_normal.middlefinger1: {
+          model: "powerfist_fingers_normal",
+          part: "middlefinger1"
+        },
+        powerfist_fingers_normal.pinky1: {
+          model: "powerfist_fingers_normal",
+          part: "pinky1"
+        },
+        powerfist_left.palm: {
+          model: "powerfist_left",
+          part: "palm"
+        },
+        powerfist_fingers_normal.index1: {
+          model: "powerfist_fingers_normal",
+          part: "index1"
+        },
+        powerfist_fingers_normal.pinky2: {
+          model: "powerfist_fingers_normal",
+          part: "pinky2"
+        },
+        powerfist_fingers_normal_left.middlefinger1: {
+          model: "powerfist_fingers_normal_left",
+          part: "middlefinger1"
+        },
+        powerfist_fingers_firing_left.pinky1: {
+          model: "powerfist_fingers_firing_left",
+          part: "pinky1"
+        },
+        powerfist_fingers_normal.thumb2: {
+          model: "powerfist_fingers_normal",
+          part: "thumb2"
+        },
+        powerfist_fingers_normal_left.middlefinger2: {
+          model: "powerfist_fingers_normal_left",
+          part: "middlefinger2"
+        },
+        powerfist_fingers_firing_left.pinky2: {
+          model: "powerfist_fingers_firing_left",
+          part: "pinky2"
+        },
+        powerfist_fingers_normal.thumb1: {
+          model: "powerfist_fingers_normal",
+          part: "thumb1"
+        },
+        powerfist_left.crystalholder: {
+          model: "powerfist_left",
+          part: "crystalholder"
+        },
+        powerfist_left.supportright5: {
+          model: "powerfist_left",
+          part: "supportright5"
+        },
+        powerfist_left.supportright4: {
+          model: "powerfist_left",
+          part: "supportright4"
+        },
+        powerfist_left.supportright3: {
+          model: "powerfist_left",
+          part: "supportright3"
+        },
+        powerfist_left.supportright2: {
+          model: "powerfist_left",
+          part: "supportright2"
+        },
+        powerfist_left.supportright1: {
+          model: "powerfist_left",
+          part: "supportright1"
+        },
+        powerfist.supportleftfront: {
+          model: "powerfist",
+          part: "supportleftfront"
+        },
+        powerfist.crystalholder: {
+          model: "powerfist",
+          part: "crystalholder"
+        },
+        powerfist_fingers_firing_left.thumb2: {
+          model: "powerfist_fingers_firing_left",
+          part: "thumb2"
+        },
+        powerfist_left.fingerguard: {
+          model: "powerfist_left",
+          part: "fingerguard"
+        },
+        powerfist_fingers_firing_left.thumb1: {
+          model: "powerfist_fingers_firing_left",
+          part: "thumb1"
+        },
+        powerfist.armorright: {
+          model: "powerfist",
+          part: "armorright"
+        },
+        powerfist_left.crystal: {
+          model: "powerfist_left",
+          part: "crystal"
+        },
+        powerfist.wristtopright: {
+          model: "powerfist",
+          part: "wristtopright"
+        },
+        powerfist_fingers_firing.thumb1: {
+          model: "powerfist_fingers_firing",
+          part: "thumb1"
+        },
+        powerfist_fingers_firing_left.index2: {
+          model: "powerfist_fingers_firing_left",
+          part: "index2"
+        },
+        powerfist_left.armorright: {
+          model: "powerfist_left",
+          part: "armorright"
+        },
+        powerfist_fingers_firing.thumb2: {
+          model: "powerfist_fingers_firing",
+          part: "thumb2"
+        },
+        powerfist_fingers_firing_left.index1: {
+          model: "powerfist_fingers_firing_left",
+          part: "index1"
+        },
+        powerfist.supportbaseleft: {
+          model: "powerfist",
+          part: "supportbaseleft"
+        },
+        powerfist.wristbottomleft: {
+          model: "powerfist",
+          part: "wristbottomleft"
+        },
+        powerfist_left.supportbaseright: {
+          model: "powerfist_left",
+          part: "supportbaseright"
+        },
+        colours: [
+          I
+          ;
+          -1
+        ],
+        powerfist_left.wristbottomright: {
+          model: "powerfist_left",
+          part: "wristbottomright"
+        },
+        powerfist.supportright1: {
+          model: "powerfist",
+          part: "supportright1"
+        },
+        powerfist_left.supportleftfront: {
+          model: "powerfist_left",
+          part: "supportleftfront"
+        },
+        powerfist_fingers_firing.pinky1: {
+          model: "powerfist_fingers_firing",
+          part: "pinky1"
+        },
+        powerfist_fingers_normal_left.index2: {
+          model: "powerfist_fingers_normal_left",
+          part: "index2"
+        },
+        powerfist_fingers_firing.index1: {
+          model: "powerfist_fingers_firing",
+          part: "index1"
+        },
+        powerfist_fingers_firing.pinky2: {
+          model: "powerfist_fingers_firing",
+          part: "pinky2"
+        },
+        powerfist_fingers_normal_left.pinky1: {
+          model: "powerfist_fingers_normal_left",
+          part: "pinky1"
+        },
+        powerfist_fingers_normal_left.index1: {
+          model: "powerfist_fingers_normal_left",
+          part: "index1"
+        },
+        powerfist_fingers_normal_left.pinky2: {
+          model: "powerfist_fingers_normal_left",
+          part: "pinky2"
+        },
+        powerfist.fingerguard: {
+          model: "powerfist",
+          part: "fingerguard"
+        },
+        powerfist_fingers_firing.index2: {
+          model: "powerfist_fingers_firing",
+          part: "index2"
+        },
+        powerfist_left.mainarm: {
+          model: "powerfist_left",
+          part: "mainarm"
+        },
+        powerfist.wristtopleft: {
+          model: "powerfist",
+          part: "wristtopleft"
+        },
+        powerfist.crystal: {
+          model: "powerfist",
+          part: "crystal"
+        },
+        powerfist_fingers_normal.ringfinger1: {
+          model: "powerfist_fingers_normal",
+          part: "ringfinger1"
+        },
+        powerfist_fingers_normal.ringfinger2: {
+          model: "powerfist_fingers_normal",
+          part: "ringfinger2"
+        },
+        powerfist_fingers_normal_left.thumb2: {
+          model: "powerfist_fingers_normal_left",
+          part: "thumb2"
+        },
+        powerfist_fingers_normal_left.thumb1: {
+          model: "powerfist_fingers_normal_left",
+          part: "thumb1"
+        },
+        powerfist_left.wristtopright: {
+          model: "powerfist_left",
+          part: "wristtopright"
+        },
+        powerfist.armorleft: {
+          model: "powerfist",
+          part: "armorleft"
+        },
+        powerfist_left.wristtopleft: {
+          model: "powerfist_left",
+          part: "wristtopleft"
+        },
+        powerfist_fingers_firing_left.ringfinger1: {
+          model: "powerfist_fingers_firing_left",
+          part: "ringfinger1"
+        },
+        powerfist_fingers_firing.middlefinger2: {
+          model: "powerfist_fingers_firing",
+          part: "middlefinger2"
+        },
+        powerfist_left.supportbaseleft: {
+          model: "powerfist_left",
+          part: "supportbaseleft"
+        },
+        powerfist_fingers_firing_left.ringfinger2: {
+          model: "powerfist_fingers_firing_left",
+          part: "ringfinger2"
+        },
+        powerfist.supportrightfront: {
+          model: "powerfist",
+          part: "supportrightfront"
+        },
+        powerfist_fingers_firing.middlefinger1: {
+          model: "powerfist_fingers_firing",
+          part: "middlefinger1"
+        },
+        powerfist_left.supportleft5: {
+          model: "powerfist_left",
+          part: "supportleft5"
+        },
+        powerfist.wristbottomright: {
+          model: "powerfist",
+          part: "wristbottomright"
+        },
+        powerfist_fingers_firing.ringfinger1: {
+          model: "powerfist_fingers_firing",
+          part: "ringfinger1"
+        },
+        powerfist_left.wristbottomleft: {
+          model: "powerfist_left",
+          part: "wristbottomleft"
+        },
+        powerfist_fingers_firing.ringfinger2: {
+          model: "powerfist_fingers_firing",
+          part: "ringfinger2"
+        },
+        powerfist_left.supportleft4: {
+          model: "powerfist_left",
+          part: "supportleft4"
+        },
+        powerfist.supportleft5: {
+          model: "powerfist",
+          part: "supportleft5"
+        },
+        powerfist_left.armorleft: {
+          model: "powerfist_left",
+          part: "armorleft"
+        },
+        powerfist_left.supportleft3: {
+          model: "powerfist_left",
+          part: "supportleft3"
+        },
+        powerfist_left.supportleft2: {
+          model: "powerfist_left",
+          part: "supportleft2"
+        },
+        powerfist_left.supportleft1: {
+          model: "powerfist_left",
+          part: "supportleft1"
+        },
+        powerfist.supportright3: {
+          model: "powerfist",
+          part: "supportright3"
+        },
+        powerfist.supportleft2: {
+          model: "powerfist",
+          part: "supportleft2"
+        },
+        powerfist.supportright2: {
+          model: "powerfist",
+          part: "supportright2"
+        },
+        powerfist.supportleft1: {
+          model: "powerfist",
+          part: "supportleft1"
+        },
+        powerfist.supportright5: {
+          model: "powerfist",
+          part: "supportright5"
+        },
+        powerfist.supportleft4: {
+          model: "powerfist",
+          part: "supportleft4"
+        },
+        powerfist.supportright4: {
+          model: "powerfist",
+          part: "supportright4"
+        },
+        powerfist.supportleft3: {
+          model: "powerfist",
+          part: "supportleft3"
+        }
+      }
+    },
+    "Module Settings": {
+      mode: 12,
+      Items: [
+        {
+          Slot: 1,
+          id: "appliedenergistics2:wireless_terminal",
+          Count: 1b,
+          tag: {
+            internalCurrentPower: 1600000.0d
+          }
+        },
+        {
+          Slot: 2,
+          id: "minecraft:crafting_table",
+          Count: 1b
+        },
+        {
+          Slot: 3,
+          id: "powersuits:axe",
+          Count: 1b,
+          tag: {
+            MMModModule: {}
+          }
+        },
+        {
+          Slot: 4,
+          id: "powersuits:diamond_pick_upgrade",
+          Count: 1b
+        },
+        {
+          Slot: 5,
+          id: "powersuits:flint_and_steel",
+          Count: 1b
+        },
+        {
+          Slot: 6,
+          id: "powersuits:hoe",
+          Count: 1b,
+          tag: {
+            MMModModule: {}
+          }
+        },
+        {
+          Slot: 7,
+          id: "powersuits:leaf_blower",
+          Count: 1b,
+          tag: {
+            MMModModule: {}
+          }
+        },
+        {
+          Slot: 8,
+          id: "powersuits:luxcapacitor_module",
+          Count: 1b,
+          tag: {
+            MMModModule: {
+              red: 0.3904109589041096d,
+              green: 0.7534246575342466d,
+              blue: 0.595890410958904d,
+              alpha: 0.7328767123287672d
+            }
+          }
+        },
+        {
+          Slot: 9,
+          id: "powersuits:pickaxe",
+          Count: 1b,
+          tag: {
+            MMModModule: {}
+          }
+        },
+        {
+          Slot: 10,
+          id: "powersuits:shears",
+          Count: 1b,
+          tag: {
+            MMModModule: {}
+          }
+        },
+        {
+          Slot: 11,
+          id: "powersuits:shovel",
+          Count: 1b,
+          tag: {
+            MMModModule: {}
+          }
+        },
+        {
+          Slot: 12,
+          id: "powersuits:tinkertable",
+          Count: 1b
+        },
+        {
+          Slot: 13,
+          id: "refinedstorage:wireless_fluid_grid",
+          Count: 1b,
+          tag: {
+            Energy: 3200
+          }
+        },
+        {
+          Slot: 14,
+          id: "refinedstorage:wireless_grid",
+          Count: 1b,
+          tag: {
+            Energy: 3200
+          }
+        },
+        {
+          Slot: 15,
+          id: "scannable:scanner",
+          Count: 1b,
+          tag: {
+            items: {
+              Size: 9,
+              Items: [
+                {
+                  Slot: 0,
+                  id: "scannable:module_ore_rare",
+                  Count: 1b
+                },
+                {
+                  Slot: 3,
+                  id: "scannable:module_block",
+                  Count: 1b
+                }
+              ]
+            },
+            energy: 5000
+          }
+        },
+        {
+          Slot: 16,
+          id: "powersuits:aoe_pick_upgrade",
+          Count: 1b,
+          tag: {
+            MMModModule: {
+              Active: 1b
+            }
+          }
+        },
+        {
+          Slot: 17,
+          id: "powersuits:aoe_pick_upgrade2",
+          Count: 1b,
+          tag: {
+            MMModModule: {
+              aoe2Limit: 1.0d,
+              Active: 1b,
+              block: "minecraft:clay"
+            }
+          }
+        },
+        {
+          Slot: 18,
+          id: "powersuits:aqua_affinity",
+          Count: 1b,
+          tag: {
+            MMModModule: {
+              Active: 1b
+            }
+          }
+        },
+        {
+          Slot: 19,
+          id: "powersuits:fortune",
+          Count: 1b,
+          tag: {
+            MMModModule: {
+              Active: 1b
+            }
+          }
+        },
+        {
+          Slot: 20,
+          id: "powersuits:silk_touch",
+          Count: 1b,
+          tag: {
+            MMModModule: {
+              Active: 1b
+            }
+          }
+        },
+        {
+          Slot: 21,
+          id: "powersuits:tunnel_bore",
+          Count: 1b,
+          tag: {
+            MMModModule: {
+              Active: 1b
+            }
+          }
+        },
+        {
+          Slot: 22,
+          id: "powersuits:vein_miner",
+          Count: 1b,
+          tag: {
+            MMModModule: {
+              Active: 1b
+            }
+          }
+        },
+        {
+          Slot: 23,
+          id: "powersuits:blade_launcher",
+          Count: 1b,
+          tag: {
+            MMModModule: {}
+          }
+        },
+        {
+          Slot: 24,
+          id: "powersuits:lightning_summoner",
+          Count: 1b
+        },
+        {
+          Slot: 25,
+          id: "powersuits:melee_assist",
+          Count: 1b
+        },
+        {
+          Slot: 26,
+          id: "powersuits:plasma_cannon",
+          Count: 1b,
+          tag: {
+            MMModModule: {}
+          }
+        },
+        {
+          Slot: 27,
+          id: "powersuits:railgun",
+          Count: 1b,
+          tag: {
+            MMModModule: {
+              Active: 1b
+            }
+          }
+        },
+        {
+          Slot: 28,
+          id: "powersuits:blink_drive",
+          Count: 1b,
+          tag: {
+            MMModModule: {
+              range: 1.0d
+            }
+          }
+        },
+        {
+          Slot: 29,
+          id: "powersuits:dim_rift_gen",
+          Count: 1b
+        }
+      ],
+      Size: 40
+    }
+  }
+}
+

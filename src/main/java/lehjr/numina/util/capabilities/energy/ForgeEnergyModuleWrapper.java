@@ -30,6 +30,7 @@ import lehjr.numina.util.nbt.MuseNBTUtils;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.IntNBT;
+import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.EnergyStorage;
@@ -52,7 +53,7 @@ public class ForgeEnergyModuleWrapper extends EnergyStorage implements IEnergyWr
     @Override
     public void updateFromNBT() {
         final CompoundNBT nbt = MuseNBTUtils.getModuleTag(stack);
-        if (nbt != null && nbt.contains(TAG_ENERGY, net.minecraftforge.common.util.Constants.NBT.TAG_INT)) {
+        if (nbt != null && nbt.contains(TAG_ENERGY, Constants.NBT.TAG_INT)) {
             deserializeNBT((IntNBT) nbt.get(TAG_ENERGY));
         }
     }
@@ -62,7 +63,10 @@ public class ForgeEnergyModuleWrapper extends EnergyStorage implements IEnergyWr
     public int receiveEnergy(final int maxReceive, final boolean simulate) {
         final int energyReceived = super.receiveEnergy(maxReceive, simulate);
         if (!simulate && energyReceived != 0) {
-            MuseNBTUtils.setModuleIntOrRemove(stack, TAG_ENERGY, energy);
+            final CompoundNBT nbt = MuseNBTUtils.getModuleTag(stack);
+            if (nbt != null && CapabilityEnergy.ENERGY != null) { // capability is null during game loading
+                nbt.put(TAG_ENERGY, serializeNBT());
+            }
         }
         return energyReceived;
     }
@@ -71,7 +75,10 @@ public class ForgeEnergyModuleWrapper extends EnergyStorage implements IEnergyWr
     public int extractEnergy(final int maxExtract, final boolean simulate) {
         final int energyExtracted = super.extractEnergy(maxExtract, simulate);
         if (!simulate && energyExtracted != 0) {
-            MuseNBTUtils.setModuleIntOrRemove(stack, TAG_ENERGY, energy);
+            final CompoundNBT nbt = MuseNBTUtils.getModuleTag(stack);
+            if (nbt != null && CapabilityEnergy.ENERGY != null) {  // capability is null during game loading
+                nbt.put(TAG_ENERGY, serializeNBT());
+            }
         }
         return energyExtracted;
     }

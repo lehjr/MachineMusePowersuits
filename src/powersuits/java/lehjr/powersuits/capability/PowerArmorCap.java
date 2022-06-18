@@ -68,10 +68,7 @@ public class PowerArmorCap implements ICapabilityProvider {
     final ArmorModelSpecNBT modelSpec;
     final LazyOptional<IModelSpecNBT> modelSpecHolder;
 
-
     final LazyOptional<IHeatStorage> heatHolder;
-
-    final LazyOptional<IEnergyStorage> energyHolder;
 
     final LazyOptional<IFluidHandlerItem> fluidHolder;
 
@@ -152,11 +149,6 @@ public class PowerArmorCap implements ICapabilityProvider {
             return heatStorage;
         });
 
-        energyHolder = LazyOptional.of(()-> {
-            modularItem.updateFromNBT();
-            return modularItem.getStackInSlot(1).getCapability(CapabilityEnergy.ENERGY).orElse(new EnergyStorage(0));
-        });
-
         this.fluidHolder = LazyOptional.of(()-> {
             if (targetSlot == EquipmentSlotType.CHEST ) {
                 modularItem.updateFromNBT();
@@ -189,9 +181,11 @@ public class PowerArmorCap implements ICapabilityProvider {
             return heatCapability;
         }
 
-        final LazyOptional<T> energyCapability = CapabilityEnergy.ENERGY.orEmpty(cap, energyHolder);
-        if (energyCapability.isPresent()) {
-            return energyCapability;
+        // update item handler to gain access to the battery module if installed
+        if (cap == CapabilityEnergy.ENERGY) {
+            modularItem.updateFromNBT();
+            // armor first slot is armor plating, second slot is energy
+            return modularItem.getStackInSlot(1).getCapability(cap, side);
         }
 
         final LazyOptional<T> fluidCapability = CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY.orEmpty(cap, fluidHolder);

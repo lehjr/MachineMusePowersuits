@@ -17,13 +17,15 @@ import javax.annotation.Nonnull;
 import java.util.Optional;
 
 public class Chameleon implements IChameleon, IItemStackUpdate, INBTSerializable<StringNBT> {
+    public static final String BLOCK = "block";
+
     ResourceLocation blockRegName = Blocks.AIR.getRegistryName();
     @Nonnull
     ItemStack module;
 
     public Chameleon(@Nonnull ItemStack module) {
         this.module = module;
-        this.blockRegName = MuseNBTUtils.getModuleResourceLocation(module, "block").orElse(Blocks.AIR.getRegistryName());
+        this.blockRegName = MuseNBTUtils.getModuleResourceLocation(module, BLOCK).orElse(Blocks.AIR.getRegistryName());
     }
 
     @Override
@@ -38,8 +40,8 @@ public class Chameleon implements IChameleon, IItemStackUpdate, INBTSerializable
 
     @Nonnull
     @Override
-    public ItemStack getStackToRender() {
-        return getTargetBlock().map(block -> new ItemStack(block.asItem())).orElse(module);
+    public ItemStack getModule() {
+        return module;
     }
 
     @Override
@@ -67,8 +69,8 @@ public class Chameleon implements IChameleon, IItemStackUpdate, INBTSerializable
     @Override
     public void updateFromNBT() {
         final CompoundNBT nbt = MuseNBTUtils.getModuleTag(module);
-        if (nbt.contains("block", Constants.NBT.TAG_STRING)) {
-            deserializeNBT(StringNBT.valueOf(nbt.getString("block")));
+        if (nbt.contains(BLOCK, Constants.NBT.TAG_STRING)) {
+            deserializeNBT(StringNBT.valueOf(nbt.getString(BLOCK)));
         } else {
             this.blockRegName = Blocks.AIR.getRegistryName();
         }

@@ -99,9 +99,6 @@ public class TickingScanner extends PlayerTickModule implements IRightClickModul
 
     @Override
     public ItemStack finishUsingItem(final ItemStack stack, final World world, final LivingEntity entity) {
-        System.out.println("doiung something here");
-
-
         if (!(entity instanceof PlayerEntity)) {
             return stack;
         }
@@ -132,12 +129,8 @@ public class TickingScanner extends PlayerTickModule implements IRightClickModul
         return stack;
     }
 
-
     @Override
     public void releaseUsing(final ItemStack stack, final World world, final LivingEntity entity, final int timeLeft) {
-        System.out.println("doiung something here");
-
-
         if (world.isClientSide) {
             ScanManager.INSTANCE.cancelScan();
             SoundManager.INSTANCE.stopChargingSound();

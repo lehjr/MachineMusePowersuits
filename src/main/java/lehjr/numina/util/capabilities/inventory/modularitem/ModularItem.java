@@ -323,7 +323,7 @@ public class ModularItem extends ItemStackHandler implements IModularItem {
      * ItemStackHandler --------------------------------------------------------------------------
      */
     @Override
-    protected void onContentsChanged(final int slot) {
+    public void onContentsChanged(final int slot) {
         super.onContentsChanged(slot);
         modularItem.addTagElement(TAG_MODULE_SETTINGS, serializeNBT());
     }

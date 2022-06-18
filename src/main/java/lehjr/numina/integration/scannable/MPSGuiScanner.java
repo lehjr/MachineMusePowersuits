@@ -94,14 +94,14 @@ public class MPSGuiScanner extends ContainerScreen<MPSContainerScanner> {
 
     @Override
     public void removed() {
-        System.out.println(ItemUtils.getActiveModuleOrEmpty(Minecraft.getInstance().player.getMainHandItem()).serializeNBT());
+//        System.out.println(ItemUtils.getActiveModuleOrEmpty(Minecraft.getInstance().player.getMainHandItem()).serializeNBT());
 
         super.removed();
     }
 
     @Override
     public void onClose() {
-        System.out.println(ItemUtils.getActiveModuleOrEmpty(Minecraft.getInstance().player.getMainHandItem()).serializeNBT());
+//        System.out.println(ItemUtils.getActiveModuleOrEmpty(Minecraft.getInstance().player.getMainHandItem()).serializeNBT());
 
         super.onClose();
     }

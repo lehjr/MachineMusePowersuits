@@ -102,7 +102,11 @@ public class AoEpickUpgradeModule2 extends AbstractPowerModule {
                     if (KeybindKeyHandler.isKeyPressed(GLFW.GLFW_KEY_LEFT_SHIFT) || KeybindKeyHandler.isKeyPressed(GLFW.GLFW_KEY_RIGHT_SHIFT)) {
                         BlockRayTraceResult rayTraceResult = getPlayerPOVHitResult(context.getLevel(), context.getPlayer(), RayTraceContext.FluidMode.NONE);
                         if (rayTraceResult.getType() == RayTraceResult.Type.BLOCK) {
+                            System.out.println("before set: " + chameleon.getTargetBlockRegName());
+
                             chameleon.setTargetBlock(context.getLevel().getBlockState(rayTraceResult.getBlockPos()).getBlock());
+
+                            System.out.println("after set: " + chameleon.getTargetBlockRegName());
                         }
                     }
                 }

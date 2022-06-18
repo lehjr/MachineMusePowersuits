@@ -2,6 +2,7 @@ package lehjr.numina.util.capabilities.render.chameleon;
 
 import lehjr.numina.network.NuminaPackets;
 import lehjr.numina.network.packets.BlockNamePacket;
+import lehjr.numina.util.nbt.MuseNBTUtils;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -19,10 +20,16 @@ public interface IChameleon {
     Optional<Block> getTargetBlock();
 
     @Nonnull
-    ItemStack getStackToRender();
+    default ItemStack getStackToRender() {
+        return getTargetBlock().map(block -> new ItemStack(block.asItem())).orElse(getModule());
+    }
+
+    @Nonnull
+    ItemStack getModule();
 
     default void setTargetBlockByRegName(ResourceLocation regName) {
         NuminaPackets.CHANNEL_INSTANCE.sendToServer(new BlockNamePacket(regName));
+        MuseNBTUtils.setModuleResourceLocation(getModule(), Chameleon.BLOCK, regName);
     }
 
     default void setTargetBlock(Block block) {

@@ -183,16 +183,16 @@ public class MuseNBTUtils {
         return (nbt.contains(tagName, Constants.NBT.TAG_INT) ? nbt.getInt(tagName) : 0);
     }
 
-    public static void setModuleIntOrRemove(@Nonnull ItemStack stack, String tagName, int value) {
-        setIntOrRemove(getModuleTag(stack), tagName, value);
+    public static void setModuleIntOrRemove(@Nonnull ItemStack stack, String tagName, int value, boolean remove) {
+        setIntOrRemove(getModuleTag(stack), tagName, value, remove);
     }
 
-    public static void setModularItemIntOrRemove(@Nonnull ItemStack stack, String tagName, int value) {
-        setIntOrRemove(getMuseItemTag(stack), tagName, value);
+    public static void setModularItemIntOrRemove(@Nonnull ItemStack stack, String tagName, int value, boolean remove) {
+        setIntOrRemove(getMuseItemTag(stack), tagName, value, remove);
     }
 
-    public static void setIntOrRemove(@Nonnull CompoundNBT nbt, String tagName, int value) {
-        if (value == 0)
+    public static void setIntOrRemove(@Nonnull CompoundNBT nbt, String tagName, int value, boolean remove) {
+        if (value == 0 && remove)
             nbt.remove(tagName);
         else
             nbt.putInt(tagName, value);

@@ -29,6 +29,7 @@ package lehjr.powersuits.capability;
 import lehjr.numina.util.capabilities.heat.HeatCapability;
 import lehjr.numina.util.capabilities.heat.HeatItemWrapper;
 import lehjr.numina.util.capabilities.heat.IHeatStorage;
+import lehjr.numina.util.capabilities.inventory.modechanging.IModeChangingItem;
 import lehjr.numina.util.capabilities.inventory.modechanging.ModeChangingModularItem;
 import lehjr.numina.util.capabilities.inventory.modularitem.ModularItem;
 import lehjr.numina.util.capabilities.inventory.modularitem.NuminaRangedWrapper;
@@ -71,9 +72,6 @@ public class PowerFistCap implements ICapabilityProvider {
     final HeatItemWrapper heatStorage;
     final LazyOptional<IHeatStorage> heatHolder;
 
-    final LazyOptional<IEnergyStorage> energyHolder;
-
-//    final LazyOptional<IFluidHandlerItem> fluidHolder;
     public PowerFistCap(@Nonnull ItemStack itemStackIn) {
         this.itemStack = itemStackIn;
         this.targetSlot = EquipmentSlotType.MAINHAND;
@@ -95,14 +93,9 @@ public class PowerFistCap implements ICapabilityProvider {
 
         this.heatStorage = new HeatItemWrapper(itemStack, MPSSettings.getMaxHeatPowerFist());
         heatHolder = LazyOptional.of(() -> {
-//            modularItem.updateFromNBT();
+            modularItem.updateFromNBT();
             heatStorage.updateFromNBT();
             return heatStorage;
-        });
-
-        energyHolder = LazyOptional.of(()-> {
-            modularItem.updateFromNBT();
-            return modularItem.getStackInSlot(0).getCapability(CapabilityEnergy.ENERGY).orElse(new EnergyStorage(0));
         });
     }
 
@@ -128,10 +121,13 @@ public class PowerFistCap implements ICapabilityProvider {
             return heatCapability;
         }
 
-        final LazyOptional<T> energyCapability = CapabilityEnergy.ENERGY.orEmpty(cap, energyHolder);
-        if (energyCapability.isPresent()) {
-            return energyCapability;
+        // update item handler to gain access to the battery module if installed
+        if (cap == CapabilityEnergy.ENERGY) {
+            modularItem.updateFromNBT();
+            // armor first slot is armor plating, second slot is energy
+            return modularItem.getStackInSlot(0).getCapability(cap, side);
         }
+
         return LazyOptional.empty();
     }
 }

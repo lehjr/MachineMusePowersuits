@@ -1,6 +1,7 @@
 package lehjr.numina.network.packets;
 
 import lehjr.numina.util.capabilities.inventory.modechanging.IModeChangingItem;
+import lehjr.numina.util.capabilities.render.chameleon.Chameleon;
 import lehjr.numina.util.nbt.MuseNBTUtils;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
@@ -33,15 +34,13 @@ public class BlockNamePacket {
     public static void handle(BlockNamePacket message, Supplier<NetworkEvent.Context> ctx) {
         ctx.get().enqueueWork(() -> {
             final ServerPlayerEntity player = ctx.get().getSender();
+
+
             player.getItemBySlot(EquipmentSlotType.MAINHAND).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).filter(IModeChangingItem.class::isInstance)
                     .map(IModeChangingItem.class::cast)
                     .ifPresent(handler-> {
-                        System.out.println("tag before: " + handler.getActiveModule().serializeNBT());
-
-
-                        MuseNBTUtils.setModuleResourceLocation(handler.getActiveModule(), "block", message.regName);
-
-                        System.out.println("tag after: " + handler.getActiveModule().serializeNBT());
+                        MuseNBTUtils.setModuleResourceLocation(handler.getActiveModule(), Chameleon.BLOCK, message.regName);
+                        player.inventory.setChanged();
                     });
         });
         ctx.get().setPacketHandled(true);

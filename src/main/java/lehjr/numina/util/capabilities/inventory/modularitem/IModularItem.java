@@ -87,4 +87,6 @@ public interface IModularItem extends IItemHandler, IItemHandlerModifiable, IIte
     }
 
     boolean setModuleTweakDouble(ResourceLocation moduleName, String key, double value);
+
+    void onContentsChanged(final int slot);
 }
