@@ -29,9 +29,6 @@ public class ModularItemInventoryScreen extends NuminaAbstractContainerScreen<Mo
     public static ModularItemSelectionFrame itemSelectionFrame;
 
 
-
-    /** whether the module selection panel is visible */
-    boolean showingSidePanel = false;
     boolean widthTooNarrow = false;
 
 
@@ -160,7 +157,7 @@ public class ModularItemInventoryScreen extends NuminaAbstractContainerScreen<Mo
         if (moduleSelectionFrame.isVisible()) {
             moduleSelectionFrame.render(pPoseStack, pMouseX, pMouseY, pPartialTick);
         }
-
+        itemSelectionFrame.render(pPoseStack, pMouseX, pMouseY, pPartialTick);
     }
 
     @Override
@@ -234,7 +231,7 @@ public class ModularItemInventoryScreen extends NuminaAbstractContainerScreen<Mo
             }
         }
 
-        itemSelectionFrame.render(pPoseStack, pMouseX, pMouseY, pPartialTick);
+
 
 
 
