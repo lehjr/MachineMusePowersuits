@@ -1,16 +1,26 @@
-package com.lehjr.powersuits.client.gui.common.widget;
+package com.lehjr.powersuits.client.gui.common.selection.module;
 
+import com.lehjr.numina.client.gui.GuiIcon;
+import com.lehjr.numina.client.gui.clickable.ClickableModule;
+import com.lehjr.numina.client.gui.geometry.MusePoint2D;
+import com.lehjr.numina.client.render.NuminaRenderer;
+import com.lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import com.lehjr.powersuits.client.gui.common.selection.modularitem.ModularItemSelectionTab;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.gui.components.AbstractWidget;
+import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 import javax.annotation.Nonnull;
+import java.util.function.Consumer;
 
 /**
  * TODO: 3 states ("no ingredients/disabled", "can craft", "installed"
@@ -19,14 +29,15 @@ import javax.annotation.Nonnull;
  *
  *
  */
-public class ClickableModuleWidget extends AbstractWidget {
+public class ClickableModuleWidget extends ClickableModule {
     final ResourceLocation background = ModularItemSelectionTab.BACKGROUND_LOCATION;
     State state;
 
     ItemStack module;
 
-    public ClickableModuleWidget(@Nonnull ItemStack module, int pX, int pY, int pWidth, int pHeight, Component pMessage) {
-        super(pX, pY,  25,25, pMessage);
+    public ClickableModuleWidget(@Nonnull ItemStack module, MusePoint2D pos, int index, ModuleCategory category) {
+        super(module, pos, index, category);
+        super.setWH(25,25);
         this.module = module;
         this.state = State.DISABLED;
     }
@@ -53,24 +64,35 @@ public class ClickableModuleWidget extends AbstractWidget {
     }
 
     @Override
-    public void renderButton(PoseStack poseStack, int pMouseX, int pMouseY, float pPartialTick) {
+    public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTicks) {
+        boolean isHovered = hitBox(mouseX, mouseY);
+        int x = (int) this.getPosition().getX();
+        int y = (int) this.getPosition().getY();
+
+
+
+//
+
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderTexture(0, this.background);
         RenderSystem.disableDepthTest();
         int i = state.getTextStartLeft(isHovered);
         int j = state.getTextStartTop(isHovered);
 
-        blit(poseStack, this.x, this.y, i, j, this.width, this.height, 256, 256);
+        GuiComponent.blit(matrixStack, x, y, i, j, (int)this.width(), (int)this.height(), 256, 256);
         RenderSystem.enableDepthTest();
-        if (this.isHovered) {
-            this.renderToolTip(poseStack, pMouseX, pMouseY);
+
+//        NuminaRenderer.getItemRenderer().renderAndDecorateFakeItem(module, (int) (this.getPosition().getX() + 9 + i), (int) (this.getPosition().getY() + 5));
+
+        super.render(matrixStack, mouseX, mouseY, partialTicks);
+
+        if (isHovered) {
+            System.out.println("render Clickable module widget tooltip");
+
+//            this.renderToolTip(matrixStack, pMouseX, pMouseY);
         }
     }
 
-    @Override
-    public void updateNarration(NarrationElementOutput pNarrationElementOutput) {
-
-    }
     public enum State {
         CRAFTABLE(197,222, 0, 0),
         DISABLED(197,222, 25, 25),

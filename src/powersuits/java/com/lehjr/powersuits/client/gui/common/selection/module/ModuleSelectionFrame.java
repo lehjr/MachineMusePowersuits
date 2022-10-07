@@ -3,6 +3,7 @@ package com.lehjr.powersuits.client.gui.common.selection.module;
 import com.lehjr.numina.client.gui.frame.IGuiFrame;
 import com.lehjr.numina.client.gui.geometry.IRect;
 import com.lehjr.numina.client.gui.geometry.RelativeRect;
+import com.lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
 import com.lehjr.powersuits.client.gui.common.selection.modularitem.ModularItemSelectionFrame;
 import com.lehjr.powersuits.common.constants.MPSConstants;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -12,6 +13,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.gui.components.Widget;
 import net.minecraft.client.gui.components.events.GuiEventListener;
+import net.minecraft.client.gui.screens.recipebook.RecipeCollection;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.resources.language.LanguageInfo;
 import net.minecraft.client.resources.language.LanguageManager;
@@ -19,6 +21,9 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.Slot;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 public class ModuleSelectionFrame extends GuiComponent implements Widget, GuiEventListener, IGuiFrame /*, NarratableEntry, RecipeShownListener, PlaceRecipe<Ingredient> */ {
 
@@ -54,6 +59,25 @@ public class ModuleSelectionFrame extends GuiComponent implements Widget, GuiEve
         minecraft.keyboardHandler.setSendRepeatsToGui(true);
     }
 
+    public List<ClickableModuleWidget> createModuleList() {
+        List<ClickableModuleWidget> modules = new ArrayList();
+
+
+        Optional<IModularItem> modularItem = itemSelectionFrame.getModularItem();
+
+
+        List<RecipeCollection> recipes = getMinecraft().player.getRecipeBook().getCollections();
+
+
+
+
+
+
+
+
+    }
+
+
 
     public void initVisuals() {
         this.xOffset = this.widthTooNarrow ? 0 : OFFSET_X_POSITION;
@@ -61,6 +85,7 @@ public class ModuleSelectionFrame extends GuiComponent implements Widget, GuiEve
         int top = (int) ((this.height - IMAGE_HEIGHT) * 0.5);
         this.setUL(left, top);
         System.out.println("widthTooNarrow: " + widthTooNarrow);
+
 
 
 
