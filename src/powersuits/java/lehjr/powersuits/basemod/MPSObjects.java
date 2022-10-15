@@ -41,10 +41,7 @@ import lehjr.powersuits.item.armor.PowerArmorChestplate;
 import lehjr.powersuits.item.armor.PowerArmorHelmet;
 import lehjr.powersuits.item.armor.PowerArmorLeggings;
 import lehjr.powersuits.item.block.TinkerTableItem;
-import lehjr.powersuits.item.module.armor.DiamondPlatingModule;
-import lehjr.powersuits.item.module.armor.EnergyShieldModule;
-import lehjr.powersuits.item.module.armor.IronPlatingModule;
-import lehjr.powersuits.item.module.armor.LeatherPlatingModule;
+import lehjr.powersuits.item.module.armor.*;
 import lehjr.powersuits.item.module.cosmetic.TransparentArmorModule;
 import lehjr.powersuits.item.module.energy_generation.AdvancedSolarGeneratorModule;
 import lehjr.powersuits.item.module.energy_generation.BasicSolarGeneratorModule;
@@ -164,6 +161,7 @@ public class MPSObjects {
     public static final RegistryObject<Item> LEATHER_PLATING_MODULE = registerModule(MPSRegistryNames.LEATHER_PLATING_MODULE.getPath(), new LeatherPlatingModule());
     public static final RegistryObject<Item> IRON_PLATING_MODULE = registerModule(MPSRegistryNames.IRON_PLATING_MODULE.getPath(), new IronPlatingModule());
     public static final RegistryObject<Item> DIAMOND_PLATING_MODULE = registerModule(MPSRegistryNames.DIAMOND_PLATING_MODULE.getPath(), new DiamondPlatingModule());
+    public static final RegistryObject<Item> NETHERITE_PLATING_MODULE = registerModule(MPSRegistryNames.NETHERITE_PLATING_MODULE.getPath(), new NetheritePlatingModule());
     public static final RegistryObject<Item> ENERGY_SHIELD_MODULE = registerModule(MPSRegistryNames.ENERGY_SHIELD_MODULE.getPath(), new EnergyShieldModule());
 
     // Cosmetic -----------------------------------------------------------------------------------

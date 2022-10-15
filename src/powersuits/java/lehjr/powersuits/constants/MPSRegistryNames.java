@@ -61,6 +61,7 @@ public class MPSRegistryNames {
     public static final ResourceLocation LEATHER_PLATING_MODULE = getRegName("plating_leather");
     public static final ResourceLocation IRON_PLATING_MODULE = getRegName("plating_iron");
     public static final ResourceLocation DIAMOND_PLATING_MODULE = getRegName("plating_diamond");
+    public static final ResourceLocation NETHERITE_PLATING_MODULE = getRegName("plating_netherite");
     public static final ResourceLocation ENERGY_SHIELD_MODULE = getRegName("energy_shield");
 
     // Cosmetic -----------------------------------------------------------------------------------

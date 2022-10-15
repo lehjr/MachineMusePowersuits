@@ -169,17 +169,21 @@ public abstract class AbstractElectricItemArmor extends ArmorItem {
                                     double armorDouble = pm.applyPropertyModifiers(MPSConstants.ARMOR_VALUE_PHYSICAL);
                                     double knockBack = 0;
 
-                                    if (pm instanceof IToggleableModule && ((IToggleableModule) pm).isModuleOnline()) {
+                                    if (pm instanceof IToggleableModule && pm.isModuleOnline()) {
                                         armorDouble += pm.applyPropertyModifiers(MPSConstants.ARMOR_VALUE_ENERGY);
                                     }
 
                                     if (armorDouble > 0) {
-                                        knockBack = pm.applyPropertyModifiers(MPSConstants.KNOCKBACK_RESISTANCE);
                                         armorVal.getAndAdd(armorDouble);
-                                    }
+                                        knockbackResistance.getAndAdd(pm.applyPropertyModifiers(MPSConstants.KNOCKBACK_RESISTANCE));
+                                        toughnessVal.addAndGet(pm.applyPropertyModifiers(MPSConstants.ARMOR_TOUGHNESS));
 
-                                    if (knockBack > 0) {
-                                        knockbackResistance.getAndAdd(knockBack);
+                                        /*
+                                        toughness for diamond = 2 per
+                                        */
+
+
+
                                     }
                                 }
                             });

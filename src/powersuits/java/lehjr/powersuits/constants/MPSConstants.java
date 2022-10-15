@@ -94,6 +94,8 @@ public class MPSConstants {
     public static final String ARMOR_VALUE_ENERGY = "armorEnergy";
     public static final String ARMOR_ENERGY_CONSUMPTION = "armorEnergyPerDamage";
     public static final String KNOCKBACK_RESISTANCE = "knockbackResistance";
+
+    public static final String ARMOR_TOUGHNESS = "armorToughness";
     public static final String MODULE_FIELD_STRENGTH = "fieldStrength";
 
     /** Energy Generation ---------------------------------------------------------------------- */

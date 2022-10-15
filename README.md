@@ -23,7 +23,6 @@ http://machinemuse.net/download.php
 Jenkins: No longer working
 
 #Issues
-This mod is no longer under active development. I (lehjr) no longer have access to upload any new versions of MPS. Furthermore, a recent openJDK8 update killed the development environment for 1.12.2, and there will be no support from Forge to fix this. Lastly, all effort is going into Modular Power Armor, a successor to MPS. https://github.com/lehjr/ModularPowerArmor
 
 
 #Contacts
