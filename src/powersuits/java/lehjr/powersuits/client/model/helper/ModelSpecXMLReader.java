@@ -27,14 +27,14 @@
 package lehjr.powersuits.client.model.helper;
 
 import com.google.common.collect.ImmutableMap;
-import lehjr.numina.basemod.MuseLogger;
-import lehjr.numina.constants.NuminaConstants;
-import lehjr.numina.util.capabilities.render.modelspec.*;
-import lehjr.numina.util.client.model.helper.ModelHelper;
-import lehjr.numina.util.client.model.obj.OBJBakedCompositeModel;
-import lehjr.numina.util.math.Colour;
-import lehjr.numina.util.string.MuseStringUtils;
-import lehjr.powersuits.config.MPSSettings;
+import lehjr.numina.client.model.helper.ModelHelper;
+import lehjr.numina.client.model.obj.OBJBakedCompositeModel;
+import lehjr.numina.common.base.NuminaLogger;
+import lehjr.numina.common.capabilities.render.modelspec.*;
+import lehjr.numina.common.constants.NuminaConstants;
+import lehjr.numina.common.math.Colour;
+import lehjr.numina.common.string.StringUtils;
+import lehjr.powersuits.common.config.MPSSettings;
 import net.minecraft.client.renderer.model.IModelTransform;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.model.ItemOverrideList;
@@ -278,10 +278,10 @@ public enum ModelSpecXMLReader {
                             }
                         }
 
-                        ModelRegistry.getInstance().put(MuseStringUtils.extractName(modelLocation), modelspec);
+                        ModelRegistry.getInstance().put(StringUtils.extractName(modelLocation), modelspec);
 
                     } else {
-                        MuseLogger.logger.error("Model file " + modelLocation + " not found! D:");
+                        NuminaLogger.logger.error("Model file " + modelLocation + " not found! D:");
                     }
                 }
             }

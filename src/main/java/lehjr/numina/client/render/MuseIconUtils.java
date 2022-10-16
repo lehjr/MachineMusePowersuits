@@ -1,0 +1,156 @@
+/*
+ * Copyright (c) 2021. MachineMuse, Lehjr
+ *  All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ *      Redistributions of source code must retain the above copyright notice, this
+ *      list of conditions and the following disclaimer.
+ *
+ *     Redistributions in binary form must reproduce the above copyright notice,
+ *     this list of conditions and the following disclaimer in the documentation
+ *     and/or other materials provided with the distribution.
+ *
+ *  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ *  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ *  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ *  DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+ *  ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ *  (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ *  LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ *  ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
+package lehjr.numina.client.render;
+
+import com.google.common.base.Preconditions;
+import com.mojang.blaze3d.systems.RenderSystem;
+import lehjr.numina.common.math.Colour;
+import lehjr.numina.common.math.MathUtils;
+import lehjr.numina.client.gui.GuiIcon;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.BufferBuilder;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.texture.AtlasTexture;
+import net.minecraft.client.renderer.texture.MissingTextureSprite;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.renderer.texture.TextureManager;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import org.lwjgl.opengl.GL11;
+
+/**
+ * Author: MachineMuse (Claire Semple)
+ * Created: 2:37 PM, 9/6/13
+ * <p>
+ * Ported to Java by lehjr on 10/25/16.
+ */
+@OnlyIn(Dist.CLIENT)
+public enum MuseIconUtils {
+    INSTANCE;
+    public static GuiIcon getIcon() {
+        Preconditions.checkState(INSTANCE.icon != null, "Calling icons too early.");
+        return INSTANCE.icon;
+    }
+
+    protected static GuiIcon icon;
+    public static void setIconInstance(GuiIcon iconIn) {
+        INSTANCE.icon = iconIn;
+    }
+
+    static TextureAtlasSprite getMissingIcon() {
+        return Minecraft.getInstance().getTextureAtlas(AtlasTexture.LOCATION_BLOCKS).apply(MissingTextureSprite.getLocation());
+    }
+
+    /**
+     * Draws a MuseIcon
+     *
+     * @param x
+     * @param y
+     * @param icon
+     * @param colour
+     */
+    public static void drawIconAt(float x, float y, TextureAtlasSprite icon, Colour colour) {
+        drawIconPartial(x, y, icon, colour, 0, 0, 16, 16);
+    }
+
+    public static void drawIconPartialOccluded(float x, float y, TextureAtlasSprite icon, Colour colour, float left, float top, float right, float bottom) {
+        float xmin = MathUtils.clampFloat(left - x, 0, 16);
+        float ymin = MathUtils.clampFloat(top - y, 0, 16);
+        float xmax = MathUtils.clampFloat(right - x, 0, 16);
+        float ymax = MathUtils.clampFloat(bottom - y, 0, 16);
+        drawIconPartial(x, y, icon, colour, xmin, ymin, xmax, ymax);
+    }
+
+    /**
+     * Draws a MuseIcon
+     *
+     * @param x
+     * @param y
+     * @param icon
+     * @param colour
+     */
+    public static void drawIconPartial(double x, double y, TextureAtlasSprite icon, Colour colour, float left, float top, float right, float bottom) {
+        if (icon == null) {
+            icon = getMissingIcon();
+        }
+
+//        RenderSystem.disableTexture();
+//        RenderSystem.enableBlend();
+//        RenderSystem.disableAlphaTest();
+//        RenderSystem.defaultBlendFunc();
+        Minecraft minecraft = Minecraft.getInstance();
+        TextureManager textureManager = minecraft.getTextureManager();
+        textureManager.bind(icon.atlas().location());
+
+
+        RenderSystem.shadeModel(GL11.GL_SMOOTH);
+
+        Tessellator tess = Tessellator.getInstance();
+        BufferBuilder bufferBuilder = tess.getBuilder();
+        if (colour != null) {
+            colour.doGL();
+        }
+        bufferBuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+        float u0 = icon.getU0();
+        float v0 = icon.getV0();
+        float u1 = icon.getU1();
+        float v1 = icon.getV1();
+
+        float xoffset1 = left * (u1 - u0) / 16.0f;
+        float yoffset1 = top * (v1 - v0) / 16.0f;
+        float xoffset2 = right * (u1 - u0) / 16.0f;
+        float yoffset2 = bottom * (v1 - v0) / 16.0f;
+
+        // top left
+        bufferBuilder.vertex(x + left, y + top, 0);
+        bufferBuilder.uv(u0 + xoffset1, v0 + yoffset1);
+        bufferBuilder.endVertex();
+
+        // bottom left
+        bufferBuilder.vertex(x + left, y + bottom, 0);
+        bufferBuilder.uv(u0 + xoffset1, v0 + yoffset2);
+        bufferBuilder.endVertex();
+
+        // bottom right
+        bufferBuilder.vertex(x + right, y + bottom, 0);
+        bufferBuilder.uv(u0 + xoffset2, v0 + yoffset2);
+        bufferBuilder.endVertex();
+
+        // top right
+        bufferBuilder.vertex(x + right, y + top, 0);
+        bufferBuilder.uv(u0 + xoffset2, v0 + yoffset1);
+        bufferBuilder.endVertex();
+
+        tess.end();
+
+        RenderSystem.shadeModel(GL11.GL_FLAT);
+//        RenderSystem.disableBlend();
+//        RenderSystem.enableAlphaTest();
+//        RenderSystem.enableTexture();
+    }
+}

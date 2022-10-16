@@ -28,22 +28,22 @@ package lehjr.powersuits.client.gui.modding.cosmetic;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
-import lehjr.numina.basemod.MuseLogger;
-import lehjr.numina.constants.NuminaConstants;
-import lehjr.numina.util.capabilities.render.IModelSpecNBT;
-import lehjr.numina.util.capabilities.render.ModelSpecNBTCapability;
-import lehjr.numina.util.client.gui.GuiIcon;
-import lehjr.numina.util.client.gui.clickable.ClickableLabel;
-import lehjr.numina.util.client.gui.clickable.ClickableSlider;
-import lehjr.numina.util.client.gui.clickable.IClickable;
-import lehjr.numina.util.client.gui.frame.GUISpacer;
-import lehjr.numina.util.client.gui.frame.ScrollableMultiRectFrame;
-import lehjr.numina.util.client.gui.gemoetry.DrawableTile;
-import lehjr.numina.util.client.render.MuseIconUtils;
-import lehjr.numina.util.math.Colour;
+import lehjr.numina.client.render.MuseIconUtils;
+import lehjr.numina.common.base.NuminaLogger;
+import lehjr.numina.common.capabilities.render.IModelSpecNBT;
+import lehjr.numina.common.capabilities.render.ModelSpecNBTCapability;
+import lehjr.numina.common.constants.NuminaConstants;
+import lehjr.numina.common.math.Colour;
+import lehjr.numina.client.gui.GuiIcon;
+import lehjr.numina.client.gui.clickable.ClickableLabel;
+import lehjr.numina.client.gui.clickable.ClickableSlider;
+import lehjr.numina.client.gui.clickable.IClickable;
+import lehjr.numina.client.gui.frame.GUISpacer;
+import lehjr.numina.client.gui.frame.ScrollableMultiRectFrame;
+import lehjr.numina.client.gui.gemoetry.DrawableTile;
 import lehjr.powersuits.client.gui.common.ModularItemSelectionFrame;
-import lehjr.powersuits.network.MPSPackets;
-import lehjr.powersuits.network.packets.ColourInfoPacket;
+import lehjr.powersuits.common.network.MPSPackets;
+import lehjr.powersuits.common.network.packets.ColourInfoPacket;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.nbt.CompoundNBT;
@@ -273,7 +273,7 @@ public class ColourPickerFrame extends ScrollableMultiRectFrame {
                 if (colourCol >= 0 && colourCol < colours().length) {
                     onSelectColour(colourCol);
                 } else if (colourCol == colours().length) {
-                    MuseLogger.logger.debug("Adding");
+                    NuminaLogger.logger.debug("Adding");
                     List<Integer> intList = Arrays.stream(getIntArray(getOrCreateColourTag())).boxed().collect(Collectors.toList());
                     intList.add(Colour.WHITE.getInt());
                     setColourTagMaybe(intList);

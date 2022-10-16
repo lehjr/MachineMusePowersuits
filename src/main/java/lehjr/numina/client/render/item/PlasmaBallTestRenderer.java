@@ -28,11 +28,11 @@ package lehjr.numina.client.render.item;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
-import lehjr.numina.constants.NuminaConstants;
-import lehjr.numina.util.client.model.helper.ModelHelper;
-import lehjr.numina.util.client.model.obj.OBJBakedCompositeModel;
-import lehjr.numina.util.client.render.MuseIconUtils;
-import lehjr.numina.util.math.Colour;
+import lehjr.numina.client.model.helper.ModelHelper;
+import lehjr.numina.client.model.obj.OBJBakedCompositeModel;
+import lehjr.numina.client.render.MuseIconUtils;
+import lehjr.numina.common.constants.NuminaConstants;
+import lehjr.numina.common.math.Colour;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.model.BakedQuad;

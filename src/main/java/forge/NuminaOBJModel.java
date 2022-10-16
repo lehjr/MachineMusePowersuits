@@ -21,8 +21,8 @@ package forge;
 
 import com.google.common.collect.*;
 import joptsimple.internal.Strings;
-import lehjr.numina.util.client.model.obj.OBJBakedCompositeModel;
-import lehjr.numina.util.client.model.obj.OBJBakedPart;
+import lehjr.numina.client.model.obj.OBJBakedCompositeModel;
+import lehjr.numina.client.model.obj.OBJBakedPart;
 import net.minecraft.client.renderer.model.*;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.VertexFormatElement;

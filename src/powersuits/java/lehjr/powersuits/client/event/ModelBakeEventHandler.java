@@ -27,11 +27,11 @@
 package lehjr.powersuits.client.event;
 
 
-import lehjr.numina.util.client.model.obj.OBJBakedCompositeModel;
+import lehjr.numina.client.model.obj.OBJBakedCompositeModel;
 import lehjr.powersuits.client.model.block.LuxCapacitorModelWrapper;
 import lehjr.powersuits.client.model.helper.MPSModelHelper;
 import lehjr.powersuits.client.model.item.PowerFistModel;
-import lehjr.powersuits.constants.MPSRegistryNames;
+import lehjr.powersuits.common.constants.MPSRegistryNames;
 import net.minecraft.client.renderer.model.IBakedModel;
 import net.minecraft.client.renderer.model.ModelResourceLocation;
 import net.minecraftforge.client.event.ModelBakeEvent;

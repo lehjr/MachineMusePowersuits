@@ -1,7 +1,7 @@
 package lehjr.powersuits.client.control;
 
-import lehjr.numina.network.NuminaPackets;
-import lehjr.numina.network.packets.ToggleRequestPacket;
+import lehjr.numina.common.network.NuminaPackets;
+import lehjr.numina.common.network.packets.ToggleRequestPacket;
 import lehjr.powersuits.client.event.RenderEventHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.ClientPlayerEntity;

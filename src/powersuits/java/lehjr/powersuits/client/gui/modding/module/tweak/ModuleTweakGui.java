@@ -27,13 +27,13 @@
 package lehjr.powersuits.client.gui.modding.module.tweak;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import lehjr.numina.util.client.gui.ContainerlessGui;
-import lehjr.numina.util.client.gui.frame.GUISpacer;
-import lehjr.numina.util.client.gui.frame.LabelBox;
-import lehjr.numina.util.client.gui.frame.MultiRectHolderFrame;
-import lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
-import lehjr.numina.util.client.render.MuseRenderer;
-import lehjr.numina.util.math.Colour;
+import lehjr.numina.client.render.MuseRenderer;
+import lehjr.numina.common.math.Colour;
+import lehjr.numina.client.gui.ContainerlessGui;
+import lehjr.numina.client.gui.frame.GUISpacer;
+import lehjr.numina.client.gui.frame.LabelBox;
+import lehjr.numina.client.gui.frame.MultiRectHolderFrame;
+import lehjr.numina.client.gui.gemoetry.MusePoint2D;
 import lehjr.powersuits.client.gui.common.ModularItemSelectionFrame;
 import lehjr.powersuits.client.gui.common.TabSelectFrame;
 import net.minecraft.client.Minecraft;

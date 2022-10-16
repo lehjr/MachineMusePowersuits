@@ -1,4 +1,4 @@
-import lehjr.powersuits.constants.MPSConstants;
+import lehjr.powersuits.common.constants.MPSConstants;
 import net.minecraft.data.DataGenerator;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.eventbus.api.SubscribeEvent;

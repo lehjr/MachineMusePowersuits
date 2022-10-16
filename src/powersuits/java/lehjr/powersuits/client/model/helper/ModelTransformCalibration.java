@@ -26,7 +26,7 @@
 
 package lehjr.powersuits.client.model.helper;
 
-import lehjr.numina.util.client.model.helper.ModelHelper;
+import lehjr.numina.client.model.helper.ModelHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.math.vector.TransformationMatrix;
 import net.minecraftforge.api.distmarker.Dist;

@@ -26,11 +26,11 @@
 
 package lehjr.powersuits.client.render;
 
-import lehjr.numina.constants.NuminaConstants;
-import lehjr.numina.util.capabilities.render.IHandHeldModelSpecNBT;
-import lehjr.numina.util.capabilities.render.ModelSpecNBT;
-import lehjr.numina.util.capabilities.render.modelspec.*;
-import lehjr.powersuits.item.tool.PowerFist;
+import lehjr.numina.common.capabilities.render.IHandHeldModelSpecNBT;
+import lehjr.numina.common.capabilities.render.ModelSpecNBT;
+import lehjr.numina.common.capabilities.render.modelspec.*;
+import lehjr.numina.common.constants.NuminaConstants;
+import lehjr.powersuits.common.item.tool.PowerFist;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;

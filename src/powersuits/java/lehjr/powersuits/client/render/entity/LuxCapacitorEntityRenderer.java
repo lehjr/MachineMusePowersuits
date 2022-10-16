@@ -28,9 +28,9 @@ package lehjr.powersuits.client.render.entity;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import lehjr.numina.client.render.entity.NuminaEntityRenderer;
-import lehjr.numina.util.math.Colour;
-import lehjr.powersuits.basemod.MPSObjects;
-import lehjr.powersuits.entity.LuxCapacitorEntity;
+import lehjr.numina.common.math.Colour;
+import lehjr.powersuits.common.base.MPSObjects;
+import lehjr.powersuits.common.entity.LuxCapacitorEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;

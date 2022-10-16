@@ -26,8 +26,8 @@
 
 package lehjr.powersuits.client.gui.keybind;
 
-import lehjr.numina.util.client.gui.ContainerlessGui;
-import lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
+import lehjr.numina.client.gui.ContainerlessGui;
+import lehjr.numina.client.gui.gemoetry.MusePoint2D;
 import lehjr.powersuits.client.control.KeybindManager;
 import lehjr.powersuits.client.gui.common.TabSelectFrame;
 import net.minecraft.client.MainWindow;

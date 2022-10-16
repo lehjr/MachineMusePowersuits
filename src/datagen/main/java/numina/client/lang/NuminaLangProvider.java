@@ -2,7 +2,7 @@ package numina.client.lang;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import lehjr.numina.constants.NuminaConstants;
+import lehjr.numina.common.constants.NuminaConstants;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DirectoryCache;
 import net.minecraft.data.IDataProvider;

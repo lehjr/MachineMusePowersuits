@@ -27,8 +27,8 @@
 package lehjr.powersuits.client.model.helper;
 
 import com.google.common.collect.ImmutableMap;
-import lehjr.numina.util.client.model.obj.OBJPartData;
-import lehjr.numina.util.math.Colour;
+import lehjr.numina.client.model.obj.OBJPartData;
+import lehjr.numina.common.math.Colour;
 import net.minecraftforge.client.model.data.IModelData;
 import net.minecraftforge.client.model.data.ModelDataMap;
 

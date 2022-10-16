@@ -1,17 +1,17 @@
 package lehjr.powersuits.client;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import lehjr.numina.util.capabilities.inventory.modularitem.IModularItem;
-import lehjr.numina.util.client.gui.IContainerULOffSet;
-import lehjr.numina.util.client.gui.frame.GUISpacer;
-import lehjr.numina.util.client.gui.frame.InventoryFrame;
-import lehjr.numina.util.client.gui.frame.MultiRectHolderFrame;
-import lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
+import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
+import lehjr.numina.client.gui.IContainerULOffSet;
+import lehjr.numina.client.gui.frame.GUISpacer;
+import lehjr.numina.client.gui.frame.InventoryFrame;
+import lehjr.numina.client.gui.frame.MultiRectHolderFrame;
+import lehjr.numina.client.gui.gemoetry.MusePoint2D;
 import lehjr.powersuits.client.gui.common.ModularItemSelectionFrameContainered;
 import lehjr.powersuits.client.gui.common.ModularItemTabToggleWidget;
-import lehjr.powersuits.constants.MPSConstants;
-import lehjr.powersuits.network.MPSPackets;
-import lehjr.powersuits.network.packets.ContainerGuiOpenPacket;
+import lehjr.powersuits.common.constants.MPSConstants;
+import lehjr.powersuits.common.network.MPSPackets;
+import lehjr.powersuits.common.network.packets.ContainerGuiOpenPacket;
 import net.minecraft.client.Minecraft;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.inventory.container.Container;

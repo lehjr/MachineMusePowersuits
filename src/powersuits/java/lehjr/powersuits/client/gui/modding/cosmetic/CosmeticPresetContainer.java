@@ -26,10 +26,10 @@
 //
 //package lehjr.powersuits.client.gui.modding.cosmetic;
 //
-//import lehjr.numina.util.client.gui.frame.ScrollableFrame;
-//import lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
-//import lehjr.numina.util.client.gui.gemoetry.RelativeRect;
-//import lehjr.numina.util.math.Colour;
+//import lehjr.numina.client.gui.frame.ScrollableFrame;
+//import lehjr.numina.client.gui.gemoetry.MusePoint2D;
+//import lehjr.numina.client.gui.gemoetry.RelativeRect;
+//import lehjr.numina.common.math.Colour;
 //import lehjr.powersuits.client.gui.common.ModularItemSelectionFrame;
 //import com.mojang.blaze3d.matrix.MatrixStack;
 //import net.minecraft.item.ItemStack;

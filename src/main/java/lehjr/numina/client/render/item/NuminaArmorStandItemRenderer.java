@@ -28,7 +28,7 @@ package lehjr.numina.client.render.item;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
-import lehjr.numina.constants.NuminaConstants;
+import lehjr.numina.common.constants.NuminaConstants;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.entity.model.ArmorStandModel;

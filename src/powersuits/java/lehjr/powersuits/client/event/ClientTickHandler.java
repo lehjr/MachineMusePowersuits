@@ -27,20 +27,20 @@
 package lehjr.powersuits.client.event;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import lehjr.numina.util.capabilities.inventory.modechanging.IModeChangingItem;
-import lehjr.numina.util.capabilities.inventory.modularitem.IModularItem;
-import lehjr.numina.util.client.gui.meters.EnergyMeter;
-import lehjr.numina.util.client.gui.meters.HeatMeter;
-import lehjr.numina.util.client.gui.meters.PlasmaChargeMeter;
-import lehjr.numina.util.client.gui.meters.WaterMeter;
-import lehjr.numina.util.client.render.MuseRenderer;
-import lehjr.numina.util.energy.ElectricItemUtils;
-import lehjr.numina.util.heat.MuseHeatUtils;
-import lehjr.numina.util.math.MuseMathUtils;
-import lehjr.numina.util.string.MuseStringUtils;
-import lehjr.powersuits.config.MPSSettings;
-import lehjr.powersuits.constants.MPSRegistryNames;
-import lehjr.powersuits.item.module.environmental.AutoFeederModule;
+import lehjr.numina.client.render.MuseRenderer;
+import lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
+import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
+import lehjr.numina.common.energy.ElectricItemUtils;
+import lehjr.numina.common.heat.HeatUtils;
+import lehjr.numina.common.math.MathUtils;
+import lehjr.numina.common.string.StringUtils;
+import lehjr.numina.client.gui.meters.EnergyMeter;
+import lehjr.numina.client.gui.meters.HeatMeter;
+import lehjr.numina.client.gui.meters.PlasmaChargeMeter;
+import lehjr.numina.client.gui.meters.WaterMeter;
+import lehjr.powersuits.common.config.MPSSettings;
+import lehjr.powersuits.common.constants.MPSRegistryNames;
+import lehjr.powersuits.common.item.module.environmental.AutoFeederModule;
 import net.minecraft.client.MainWindow;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerEntity;
@@ -126,7 +126,7 @@ public class ClientTickHandler {
                             ItemStack autoFeeder = h.getOnlineModuleOrEmpty(MPSRegistryNames.AUTO_FEEDER_MODULE);
                             if (!autoFeeder.isEmpty()) {
                                 int foodLevel = (int) ((AutoFeederModule) autoFeeder.getItem()).getFoodLevel(autoFeeder);
-                                String num = MuseStringUtils.formatNumberShort(foodLevel);
+                                String num = StringUtils.formatNumberShort(foodLevel);
                                 MuseRenderer.drawShadowedString(matrixStack, num, 17, yBaseString + (yOffsetString * index.get()));
                                 MuseRenderer.drawItemAt(-1.0, yBaseIcon + (yOffsetIcon * index.get()), food);
                                 index.addAndGet(1);
@@ -185,15 +185,15 @@ public class ClientTickHandler {
                 // energy
                 float maxEnergy = ElectricItemUtils.getMaxPlayerEnergy(player);
                 float currEnergy = ElectricItemUtils.getPlayerEnergy(player);
-                String currEnergyStr = MuseStringUtils.formatNumberShort(currEnergy) + "FE";
-                String maxEnergyStr = MuseStringUtils.formatNumberShort(maxEnergy);
+                String currEnergyStr = StringUtils.formatNumberShort(currEnergy) + "FE";
+                String maxEnergyStr = StringUtils.formatNumberShort(maxEnergy);
 
                 // heat
-                float maxHeat = (float) MuseHeatUtils.getPlayerMaxHeat(player);
-                float currHeat = (float) MuseHeatUtils.getPlayerHeat(player);
+                float maxHeat = (float) HeatUtils.getPlayerMaxHeat(player);
+                float currHeat = (float) HeatUtils.getPlayerHeat(player);
 
-                String currHeatStr = MuseStringUtils.formatNumberShort(currHeat);
-                String maxHeatStr = MuseStringUtils.formatNumberShort(maxHeat);
+                String currHeatStr = StringUtils.formatNumberShort(currHeat);
+                String maxHeatStr = StringUtils.formatNumberShort(maxHeat);
 
                 // Water
                 AtomicReference<Float> currWater = new AtomicReference<Float>(0F);
@@ -208,8 +208,8 @@ public class ClientTickHandler {
                             FluidStack fluidStack = fh.getFluidInTank(i);
                             currWater.set(currWater.get() + fluidStack.getAmount());
                             waterMeter = new WaterMeter();
-                            currWaterStr.set(MuseStringUtils.formatNumberShort(currWater.get()));
-                            maxWaterStr.set(MuseStringUtils.formatNumberShort(maxWater.get()));
+                            currWaterStr.set(StringUtils.formatNumberShort(currWater.get()));
+                            maxWaterStr.set(StringUtils.formatNumberShort(maxWater.get()));
                         }
                     }
                 });
@@ -246,8 +246,8 @@ public class ClientTickHandler {
                 }
 
                 float val = currentPlasma.get();
-                String currPlasmaStr = MuseStringUtils.formatNumberShort((int)val) + "%";
-                String maxPlasmaStr = MuseStringUtils.formatNumberShort(maxPlasma.get());
+                String currPlasmaStr = StringUtils.formatNumberShort((int)val) + "%";
+                String maxPlasmaStr = StringUtils.formatNumberShort(maxPlasma.get());
 
                 if (MPSSettings.useGraphicalMeters()) {
                     int numMeters = 0;
@@ -289,13 +289,13 @@ public class ClientTickHandler {
                     }
 
                     if (heatMeter != null) {
-                        heatMeter.draw(matrixStack, left, top + (totalMeters - numMeters) * 9, MuseMathUtils.clampFloat(currHeat, 0, maxHeat) / maxHeat, 0);
+                        heatMeter.draw(matrixStack, left, top + (totalMeters - numMeters) * 9, MathUtils.clampFloat(currHeat, 0, maxHeat) / maxHeat, 0);
                         MuseRenderer.drawRightAlignedShadowedString(matrixStack, currHeatStr, stringX, meterTextOffsetY + top + (totalMeters - numMeters) * 9);
                         numMeters--;
                     }
 
                     if (waterMeter != null) {
-                        waterMeter.draw(matrixStack, left, top + (totalMeters - numMeters) * 9, MuseMathUtils.clampFloat(currWater.get(), 0, maxWater.get()) / maxWater.get(), 0);
+                        waterMeter.draw(matrixStack, left, top + (totalMeters - numMeters) * 9, MathUtils.clampFloat(currWater.get(), 0, maxWater.get()) / maxWater.get(), 0);
                         MuseRenderer.drawRightAlignedShadowedString(matrixStack, currWaterStr.get(), stringX, meterTextOffsetY + top + (totalMeters - numMeters) * 9);
                         numMeters--;
                     }

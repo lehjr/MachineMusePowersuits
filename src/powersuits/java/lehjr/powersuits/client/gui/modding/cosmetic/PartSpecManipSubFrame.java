@@ -28,21 +28,21 @@ package lehjr.powersuits.client.gui.modding.cosmetic;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
-import lehjr.numina.basemod.MuseLogger;
-import lehjr.numina.constants.NuminaConstants;
-import lehjr.numina.network.NuminaPackets;
-import lehjr.numina.network.packets.CosmeticInfoPacket;
-import lehjr.numina.util.capabilities.render.IArmorModelSpecNBT;
-import lehjr.numina.util.capabilities.render.IHandHeldModelSpecNBT;
-import lehjr.numina.util.capabilities.render.IModelSpecNBT;
-import lehjr.numina.util.capabilities.render.ModelSpecNBTCapability;
-import lehjr.numina.util.capabilities.render.modelspec.*;
-import lehjr.numina.util.client.gui.GuiIcon;
-import lehjr.numina.util.client.gui.gemoetry.DrawableTile;
-import lehjr.numina.util.client.render.MuseIconUtils;
-import lehjr.numina.util.client.render.MuseRenderer;
-import lehjr.numina.util.math.Colour;
-import lehjr.numina.util.math.MuseMathUtils;
+import lehjr.numina.client.render.MuseIconUtils;
+import lehjr.numina.client.render.MuseRenderer;
+import lehjr.numina.common.base.NuminaLogger;
+import lehjr.numina.common.capabilities.render.IArmorModelSpecNBT;
+import lehjr.numina.common.capabilities.render.IHandHeldModelSpecNBT;
+import lehjr.numina.common.capabilities.render.IModelSpecNBT;
+import lehjr.numina.common.capabilities.render.ModelSpecNBTCapability;
+import lehjr.numina.common.capabilities.render.modelspec.*;
+import lehjr.numina.common.constants.NuminaConstants;
+import lehjr.numina.common.math.Colour;
+import lehjr.numina.common.math.MathUtils;
+import lehjr.numina.common.network.NuminaPackets;
+import lehjr.numina.common.network.packets.CosmeticInfoPacket;
+import lehjr.numina.client.gui.GuiIcon;
+import lehjr.numina.client.gui.gemoetry.DrawableTile;
 import lehjr.powersuits.client.gui.common.ModularItemSelectionFrame;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
@@ -280,28 +280,28 @@ public class PartSpecManipSubFrame extends DrawableTile {
         BufferBuilder buffer = tessellator.getBuilder();
         buffer.begin(GL11.GL_TRIANGLES, DefaultVertexFormats.POSITION_COLOR_LIGHTMAP);
         if (this.open) {
-            buffer.vertex(matrix4f,(float)this.left() + 3, (float) MuseMathUtils.clampDouble(this.top() + 3, min, max), zLevel)
+            buffer.vertex(matrix4f,(float)this.left() + 3, (float) MathUtils.clampDouble(this.top() + 3, min, max), zLevel)
                     .color(Colour.LIGHT_BLUE.r, Colour.LIGHT_BLUE.b, Colour.LIGHT_BLUE.b, Colour.LIGHT_BLUE.a)
                     .uv2(0x00F000F0)
                     .endVertex();
-            buffer.vertex(matrix4f,(float)this.left() + 5, (float)MuseMathUtils.clampDouble(this.top() + 7, min, max), zLevel)
+            buffer.vertex(matrix4f,(float)this.left() + 5, (float) MathUtils.clampDouble(this.top() + 7, min, max), zLevel)
                     .color(Colour.LIGHT_BLUE.r, Colour.LIGHT_BLUE.b, Colour.LIGHT_BLUE.b, Colour.LIGHT_BLUE.a)
                     .uv2(0x00F000F0)
                     .endVertex();
-            buffer.vertex(matrix4f,(float)this.left() + 7, (float)MuseMathUtils.clampDouble(this.top() + 3, min, max), zLevel)
+            buffer.vertex(matrix4f,(float)this.left() + 7, (float) MathUtils.clampDouble(this.top() + 3, min, max), zLevel)
                     .color(Colour.LIGHT_BLUE.r, Colour.LIGHT_BLUE.b, Colour.LIGHT_BLUE.b, Colour.LIGHT_BLUE.a)
                     .uv2(0x00F000F0)
                     .endVertex();
         } else {
-            buffer.vertex(matrix4f,(float)this.left() + 3, (float)MuseMathUtils.clampDouble(this.top() + 3, min, max), zLevel)
+            buffer.vertex(matrix4f,(float)this.left() + 3, (float) MathUtils.clampDouble(this.top() + 3, min, max), zLevel)
                     .color(Colour.LIGHT_BLUE.r, Colour.LIGHT_BLUE.b, Colour.LIGHT_BLUE.b, Colour.LIGHT_BLUE.a)
                     .uv2(0x00F000F0)
                     .endVertex();
-            buffer.vertex(matrix4f,(float)this.left() + 3, (float)MuseMathUtils.clampDouble(this.top() + 7, min, max), zLevel)
+            buffer.vertex(matrix4f,(float)this.left() + 3, (float) MathUtils.clampDouble(this.top() + 7, min, max), zLevel)
                     .color(Colour.LIGHT_BLUE.r, Colour.LIGHT_BLUE.b, Colour.LIGHT_BLUE.b, Colour.LIGHT_BLUE.a)
                     .uv2(0x00F000F0)
                     .endVertex();
-            buffer.vertex(matrix4f,(float)this.left() + 7, (float)MuseMathUtils.clampDouble(this.top() + 5, min, max), zLevel)
+            buffer.vertex(matrix4f,(float)this.left() + 7, (float) MathUtils.clampDouble(this.top() + 5, min, max), zLevel)
                     .color(Colour.LIGHT_BLUE.r, Colour.LIGHT_BLUE.b, Colour.LIGHT_BLUE.b, Colour.LIGHT_BLUE.a)
                     .uv2(0x00F000F0)
                     .endVertex();
@@ -332,7 +332,7 @@ public class PartSpecManipSubFrame extends DrawableTile {
             int lineNumber = (int) ((y - this.top() - specHeight) / specHeight);
             int columnNumber = (int) ((x - this.left()) / iconWidth);
             PartSpecBase spec = partSpecs.get(Math.max(Math.min(lineNumber, partSpecs.size() - 1), 0));
-            MuseLogger.logger.debug("Line " + lineNumber + " Column " + columnNumber);
+            NuminaLogger.logger.debug("Line " + lineNumber + " Column " + columnNumber);
 
             switch (columnNumber) {
                 // removes the associated tag from the render tag making the part not isEnabled

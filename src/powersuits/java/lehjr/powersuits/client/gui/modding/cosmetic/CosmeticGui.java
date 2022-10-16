@@ -27,11 +27,11 @@
 package lehjr.powersuits.client.gui.modding.cosmetic;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import lehjr.numina.util.client.gui.ContainerlessGui;
-import lehjr.numina.util.client.gui.frame.EntityRenderFrame;
+import lehjr.numina.client.gui.ContainerlessGui;
+import lehjr.numina.client.gui.frame.EntityRenderFrame;
 import lehjr.powersuits.client.gui.common.ModularItemSelectionFrame;
 import lehjr.powersuits.client.gui.common.TabSelectFrame;
-import lehjr.powersuits.config.MPSSettings;
+import lehjr.powersuits.common.config.MPSSettings;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;

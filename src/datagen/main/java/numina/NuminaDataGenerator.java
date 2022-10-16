@@ -1,6 +1,6 @@
 package numina;
 
-import lehjr.numina.constants.NuminaConstants;
+import lehjr.numina.common.constants.NuminaConstants;
 import net.minecraft.data.DataGenerator;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.eventbus.api.SubscribeEvent;

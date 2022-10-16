@@ -27,10 +27,10 @@
 package lehjr.powersuits.client.control;
 
 import com.google.gson.*;
-import lehjr.numina.basemod.MuseLogger;
-import lehjr.numina.config.ConfigHelper;
+import lehjr.numina.common.base.NuminaLogger;
+import lehjr.numina.common.config.ConfigHelper;
 import lehjr.powersuits.client.event.RenderEventHandler;
-import lehjr.powersuits.constants.MPSConstants;
+import lehjr.powersuits.common.constants.MPSConstants;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.util.InputMappings;
 import net.minecraft.util.ResourceLocation;
@@ -83,7 +83,7 @@ public enum KeybindManager {
             String prettyJsonString = gson.toJson(je);
             fileWriter(file, prettyJsonString, true);
         } catch (Exception e) {
-            MuseLogger.logger.error("Problem writing out keyconfig :(");
+            NuminaLogger.logger.error("Problem writing out keyconfig :(");
             e.printStackTrace();
         }
     }
@@ -126,7 +126,7 @@ public enum KeybindManager {
                 }
             }
         } catch (Exception e) {
-            MuseLogger.logger.error("Problem reading in keyconfig :(");
+            NuminaLogger.logger.error("Problem reading in keyconfig :(");
             e.printStackTrace();
         }
         RenderEventHandler.INSTANCE.makeKBDisplayList();
@@ -136,7 +136,7 @@ public enum KeybindManager {
         try {
             File file = getLegacyKeyBindConfig();
             if (!file.exists()) {
-                MuseLogger.logger.error("No modular power armor keybind file found.");
+                NuminaLogger.logger.error("No modular power armor keybind file found.");
                 writeOutKeybindSetings();
                 return;
             }
@@ -188,7 +188,7 @@ public enum KeybindManager {
             }
             reader.close();
         } catch (Exception e) {
-            MuseLogger.logger.error("Problem reading in keyconfig :(");
+            NuminaLogger.logger.error("Problem reading in keyconfig :(");
             e.printStackTrace();
         }
     }

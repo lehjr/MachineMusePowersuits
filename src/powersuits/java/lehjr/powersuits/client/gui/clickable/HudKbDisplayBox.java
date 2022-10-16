@@ -3,15 +3,15 @@ package lehjr.powersuits.client.gui.clickable;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import com.mojang.blaze3d.matrix.MatrixStack;
-import lehjr.numina.network.NuminaPackets;
-import lehjr.numina.network.packets.ToggleRequestPacket;
-import lehjr.numina.util.capabilities.inventory.modularitem.IModularItem;
-import lehjr.numina.util.client.gui.clickable.ClickableButton2;
-import lehjr.numina.util.client.gui.clickable.ClickableModule;
-import lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
-import lehjr.numina.util.client.render.MuseRenderer;
-import lehjr.numina.util.math.Colour;
-import lehjr.numina.util.string.MuseStringUtils;
+import lehjr.numina.client.render.MuseRenderer;
+import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
+import lehjr.numina.common.math.Colour;
+import lehjr.numina.common.network.NuminaPackets;
+import lehjr.numina.common.network.packets.ToggleRequestPacket;
+import lehjr.numina.common.string.StringUtils;
+import lehjr.numina.client.gui.clickable.ClickableButton2;
+import lehjr.numina.client.gui.clickable.ClickableModule;
+import lehjr.numina.client.gui.gemoetry.MusePoint2D;
 import lehjr.powersuits.client.control.KeybindManager;
 import lehjr.powersuits.client.control.MPSKeyBinding;
 import net.minecraft.client.Minecraft;
@@ -77,9 +77,9 @@ public class HudKbDisplayBox extends ClickableButton2 {
             matrixStack.scale(0.5F, 0.5F, 0.5F);
             matrixStack.translate(0, 0, 100);
             if (displayOnHUD) {
-                MuseRenderer.drawShadowedString(matrixStack, MuseStringUtils.wrapFormatTags("HUD", MuseStringUtils.FormatCodes.BrightGreen), this.getPosition().getX() * 2 + 6, this.getPosition().getY() * 2 + 6);
+                MuseRenderer.drawShadowedString(matrixStack, StringUtils.wrapFormatTags("HUD", StringUtils.FormatCodes.BrightGreen), this.getPosition().getX() * 2 + 6, this.getPosition().getY() * 2 + 6);
             } else {
-                MuseRenderer.drawShadowedString(matrixStack, MuseStringUtils.wrapFormatTags("x", MuseStringUtils.FormatCodes.Red), this.getPosition().getX() * 2 + 6, this.getPosition().getY() * 2 + 6);
+                MuseRenderer.drawShadowedString(matrixStack, StringUtils.wrapFormatTags("x", StringUtils.FormatCodes.Red), this.getPosition().getX() * 2 + 6, this.getPosition().getY() * 2 + 6);
             }
             matrixStack.popPose();
         }

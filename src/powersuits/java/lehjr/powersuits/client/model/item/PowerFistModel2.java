@@ -28,8 +28,8 @@ package lehjr.powersuits.client.model.item;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
-import lehjr.numina.util.capabilities.inventory.modechanging.IModeChangingItem;
-import lehjr.powersuits.constants.MPSRegistryNames;
+import lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
+import lehjr.powersuits.common.constants.MPSRegistryNames;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.model.Model;
 import net.minecraft.client.renderer.model.ModelRenderer;

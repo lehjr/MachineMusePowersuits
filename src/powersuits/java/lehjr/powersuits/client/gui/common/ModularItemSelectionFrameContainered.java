@@ -1,6 +1,6 @@
 package lehjr.powersuits.client.gui.common;
 
-import lehjr.numina.util.client.gui.slot.IHideableSlot;
+import lehjr.numina.client.gui.slot.IHideableSlot;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.Slot;

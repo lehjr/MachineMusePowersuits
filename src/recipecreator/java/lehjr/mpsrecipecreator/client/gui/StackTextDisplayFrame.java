@@ -2,9 +2,9 @@ package lehjr.mpsrecipecreator.client.gui;
 
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import lehjr.numina.util.client.gui.frame.ScrollableFrame;
-import lehjr.numina.util.client.render.MuseRenderer;
-import lehjr.numina.util.math.Colour;
+import lehjr.numina.client.render.MuseRenderer;
+import lehjr.numina.common.math.Colour;
+import lehjr.numina.client.gui.frame.ScrollableFrame;
 
 public class StackTextDisplayFrame extends ScrollableFrame {
     String label = "";

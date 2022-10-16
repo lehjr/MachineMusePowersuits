@@ -26,15 +26,15 @@
 //
 //package lehjr.powersuits.client.gui.modding.cosmetic;
 //
-//import lehjr.numina.util.capabilities.render.ModelSpecNBTCapability;
-//import lehjr.numina.util.capabilities.render.modelspec.EnumSpecType;
-//import lehjr.numina.util.client.gui.clickable.ClickableItem;
-//import lehjr.numina.util.client.gui.clickable.ClickableLabel;
-//import lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
-//import lehjr.numina.util.client.gui.gemoetry.RelativeRect;
-//import lehjr.numina.util.client.gui.gemoetry.RelativeRect;
+//import lehjr.numina.common.capabilities.render.ModelSpecNBTCapability;
+//import lehjr.numina.common.capabilities.render.modelspec.EnumSpecType;
+//import lehjr.numina.client.gui.clickable.ClickableItem;
+//import lehjr.numina.client.gui.clickable.ClickableLabel;
+//import lehjr.numina.client.gui.gemoetry.MusePoint2D;
+//import lehjr.numina.client.gui.gemoetry.RelativeRect;
+//import lehjr.numina.client.gui.gemoetry.RelativeRect;
 //import lehjr.numina.util.client.gui.scrollable.ScrollableLabel;
-//import lehjr.numina.util.nbt.MuseNBTUtils;
+//import lehjr.numina.common.tags.MuseNBTUtils;
 //import lehjr.powersuits.client.gui.common.ItemSelectionFrame;
 //import lehjr.powersuits.item.armor.AbstractElectricItemArmor;
 //import net.minecraft.client.Minecraft;

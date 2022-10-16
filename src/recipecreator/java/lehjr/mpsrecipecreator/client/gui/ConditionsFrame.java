@@ -5,11 +5,11 @@ import com.google.gson.JsonObject;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import lehjr.mpsrecipecreator.basemod.ConditionsJsonLoader;
-import lehjr.numina.util.client.gui.clickable.CheckBox;
-import lehjr.numina.util.client.gui.frame.ScrollableFrame;
-import lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
-import lehjr.numina.util.client.gui.gemoetry.RelativeRect;
-import lehjr.numina.util.math.Colour;
+import lehjr.numina.common.math.Colour;
+import lehjr.numina.client.gui.clickable.CheckBox;
+import lehjr.numina.client.gui.frame.ScrollableFrame;
+import lehjr.numina.client.gui.gemoetry.MusePoint2D;
+import lehjr.numina.client.gui.gemoetry.RelativeRect;
 
 import java.util.HashMap;
 import java.util.Map;

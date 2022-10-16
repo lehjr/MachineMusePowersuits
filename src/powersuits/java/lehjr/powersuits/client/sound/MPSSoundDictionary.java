@@ -26,7 +26,7 @@
 
 package lehjr.powersuits.client.sound;
 
-import lehjr.powersuits.constants.MPSConstants;
+import lehjr.powersuits.common.constants.MPSConstants;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraftforge.api.distmarker.Dist;

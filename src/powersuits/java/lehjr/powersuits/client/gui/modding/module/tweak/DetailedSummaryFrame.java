@@ -28,16 +28,16 @@ package lehjr.powersuits.client.gui.modding.module.tweak;
 
 import com.google.common.util.concurrent.AtomicDouble;
 import com.mojang.blaze3d.matrix.MatrixStack;
-import lehjr.numina.util.capabilities.inventory.modularitem.IModularItem;
-import lehjr.numina.util.capabilities.module.powermodule.ModuleCategory;
-import lehjr.numina.util.capabilities.module.powermodule.PowerModuleCapability;
-import lehjr.numina.util.client.gui.frame.ScrollableFrame;
-import lehjr.numina.util.client.gui.gemoetry.MusePoint2D;
-import lehjr.numina.util.client.render.MuseRenderer;
-import lehjr.numina.util.math.Colour;
-import lehjr.numina.util.string.MuseStringUtils;
+import lehjr.numina.client.render.MuseRenderer;
+import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
+import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
+import lehjr.numina.common.capabilities.module.powermodule.PowerModuleCapability;
+import lehjr.numina.common.math.Colour;
+import lehjr.numina.common.string.StringUtils;
+import lehjr.numina.client.gui.frame.ScrollableFrame;
+import lehjr.numina.client.gui.gemoetry.MusePoint2D;
 import lehjr.powersuits.client.gui.common.ModularItemSelectionFrame;
-import lehjr.powersuits.constants.MPSConstants;
+import lehjr.powersuits.common.constants.MPSConstants;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraftforge.energy.CapabilityEnergy;
@@ -103,11 +103,11 @@ public class DetailedSummaryFrame extends ScrollableFrame {
             nexty += 10;
 
             // Max Energy
-            String formattedValue = MuseStringUtils.formatNumberFromUnits(energy.get(), "FE");
+            String formattedValue = StringUtils.formatNumberFromUnits(energy.get(), "FE");
             String name = I18n.get("gui.powersuits.energyStorage");
             double valueWidth = MuseRenderer.getStringWidth(formattedValue);
             double allowedNameWidth = getRect().width() - valueWidth - margin * 2;
-            List<String> namesList = MuseStringUtils.wrapStringToVisualLength(name, allowedNameWidth);
+            List<String> namesList = StringUtils.wrapStringToVisualLength(name, allowedNameWidth);
             for (int i = 0; i < namesList.size(); i++) {
                 MuseRenderer.drawShadowedString(matrixStack, namesList.get(i), getRect().left() + margin, nexty + 9 * i);
             }
@@ -115,11 +115,11 @@ public class DetailedSummaryFrame extends ScrollableFrame {
             nexty += 10 * namesList.size() + 1;
 
             // Armor points
-            formattedValue = MuseStringUtils.formatNumberFromUnits(armor.get(), "pts");
+            formattedValue = StringUtils.formatNumberFromUnits(armor.get(), "pts");
             name = I18n.get("gui.powersuits.armor");
             valueWidth = MuseRenderer.getStringWidth(formattedValue);
             allowedNameWidth = getRect().width() - valueWidth - margin * 2;
-            namesList = MuseStringUtils.wrapStringToVisualLength(name, allowedNameWidth);
+            namesList = StringUtils.wrapStringToVisualLength(name, allowedNameWidth);
             assert namesList != null;
             for (int i = 0; i < namesList.size(); i++) {
                 MuseRenderer.drawShadowedString(matrixStack, namesList.get(i), getRect().left() + margin, nexty + 9 * i);

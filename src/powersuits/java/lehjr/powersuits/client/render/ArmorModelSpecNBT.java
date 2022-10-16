@@ -26,12 +26,12 @@
 
 package lehjr.powersuits.client.render;
 
-import lehjr.numina.constants.NuminaConstants;
-import lehjr.numina.util.capabilities.render.IArmorModelSpecNBT;
-import lehjr.numina.util.capabilities.render.ModelSpecNBT;
-import lehjr.numina.util.capabilities.render.modelspec.*;
-import lehjr.numina.util.nbt.MuseNBTUtils;
-import lehjr.powersuits.config.MPSSettings;
+import lehjr.numina.common.capabilities.render.IArmorModelSpecNBT;
+import lehjr.numina.common.capabilities.render.ModelSpecNBT;
+import lehjr.numina.common.capabilities.render.modelspec.*;
+import lehjr.numina.common.constants.NuminaConstants;
+import lehjr.numina.common.tags.TagUtils;
+import lehjr.powersuits.common.config.MPSSettings;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ArmorItem;
@@ -152,7 +152,7 @@ public class ArmorModelSpecNBT extends ModelSpecNBT implements IArmorModelSpecNB
 
     @Override
     public String getArmorTexture() {
-        CompoundNBT itemTag = MuseNBTUtils.getMuseItemTag(getItemStack());
+        CompoundNBT itemTag = TagUtils.getMuseItemTag(getItemStack());
         CompoundNBT renderTag = itemTag.getCompound(NuminaConstants.TAG_RENDER);
         try {
             TexturePartSpec partSpec = (TexturePartSpec) ModelRegistry.getInstance().getPart(renderTag.getCompound(NuminaConstants.NBT_TEXTURESPEC_TAG));

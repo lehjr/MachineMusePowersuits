@@ -26,17 +26,17 @@
 
 package lehjr.powersuits.client.control;
 
-import lehjr.numina.network.NuminaPackets;
-import lehjr.numina.network.packets.PlayerUpdatePacket;
-import lehjr.numina.util.capabilities.inventory.modechanging.IModeChangingItem;
-import lehjr.numina.util.capabilities.module.powermodule.ModuleCategory;
-import lehjr.numina.util.capabilities.module.powermodule.ModuleTarget;
-import lehjr.numina.util.capabilities.module.powermodule.PowerModuleCapability;
-import lehjr.numina.util.capabilities.module.rightclick.IRightClickModule;
-import lehjr.numina.util.capabilities.module.toggleable.IToggleableModule;
-import lehjr.numina.util.capabilities.player.CapabilityPlayerKeyStates;
+import lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
+import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
+import lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
+import lehjr.numina.common.capabilities.module.powermodule.PowerModuleCapability;
+import lehjr.numina.common.capabilities.module.rightclick.IRightClickModule;
+import lehjr.numina.common.capabilities.module.toggleable.IToggleableModule;
+import lehjr.numina.common.capabilities.player.CapabilityPlayerKeyStates;
+import lehjr.numina.common.network.NuminaPackets;
+import lehjr.numina.common.network.packets.PlayerUpdatePacket;
 import lehjr.powersuits.client.gui.modechanging.GuiModeSelector;
-import lehjr.powersuits.constants.MPSConstants;
+import lehjr.powersuits.common.constants.MPSConstants;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.client.settings.KeyBinding;

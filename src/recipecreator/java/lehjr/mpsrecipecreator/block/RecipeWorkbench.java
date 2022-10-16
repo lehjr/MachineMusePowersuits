@@ -1,7 +1,7 @@
 package lehjr.mpsrecipecreator.block;
 
 import lehjr.mpsrecipecreator.container.MPARCContainer;
-import lehjr.numina.util.client.sound.SoundDictionary;
+import lehjr.numina.client.sound.SoundDictionary;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;

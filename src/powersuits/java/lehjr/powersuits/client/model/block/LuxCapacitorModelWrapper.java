@@ -27,13 +27,13 @@
 package lehjr.powersuits.client.model.block;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import lehjr.numina.util.capabilities.module.powermodule.PowerModuleCapability;
-import lehjr.numina.util.client.model.obj.OBJBakedCompositeModel;
-import lehjr.numina.util.client.model.obj.OBJPartData;
-import lehjr.numina.util.math.Colour;
-import lehjr.powersuits.block.LuxCapacitorBlock;
+import lehjr.numina.client.model.obj.OBJBakedCompositeModel;
+import lehjr.numina.client.model.obj.OBJPartData;
+import lehjr.numina.common.capabilities.module.powermodule.PowerModuleCapability;
+import lehjr.numina.common.math.Colour;
+import lehjr.powersuits.common.block.LuxCapacitorBlock;
 import lehjr.powersuits.client.model.helper.LuxCapHelper;
-import lehjr.powersuits.constants.MPSConstants;
+import lehjr.powersuits.common.constants.MPSConstants;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.renderer.model.BakedQuad;
 import net.minecraft.client.renderer.model.IBakedModel;
