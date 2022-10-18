@@ -2,13 +2,13 @@ package lehjr.numina.client.gui.clickable;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
-import lehjr.numina.client.render.MuseRenderer;
-import lehjr.numina.common.math.Colour;
-import lehjr.numina.common.math.MathUtils;
 import lehjr.numina.client.gui.gemoetry.DrawableTile;
 import lehjr.numina.client.gui.gemoetry.IDrawable;
 import lehjr.numina.client.gui.gemoetry.IRect;
 import lehjr.numina.client.gui.gemoetry.MusePoint2D;
+import lehjr.numina.common.math.Colour;
+import lehjr.numina.common.math.MathUtils;
+import lehjr.numina.common.string.StringUtils;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
@@ -163,7 +163,7 @@ public class RangedSlider extends Clickable {
     public void render(MatrixStack matrixStack, int mouseX, int mouseY, float frameTime) {
         if (this.isVisible()) {
             if (label != null) {
-                MuseRenderer.drawShadowedStringCentered(matrixStack, label.getString(), getPosition().getX(), getPosition().getY());
+                StringUtils.drawShadowedStringCentered(matrixStack, label.getString(), getPosition().getX(), getPosition().getY());
             }
 
             this.trackRect.render(matrixStack, mouseX, mouseY, frameTime);

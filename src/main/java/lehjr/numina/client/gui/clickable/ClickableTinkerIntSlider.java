@@ -1,7 +1,7 @@
 package lehjr.numina.client.gui.clickable;
 
-import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
 import lehjr.numina.client.gui.gemoetry.MusePoint2D;
+import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.text.TranslationTextComponent;
 

@@ -30,6 +30,7 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import lehjr.numina.client.gui.ExtendedContainerScreen;
 import lehjr.numina.client.gui.IContainerULOffSet;
+import lehjr.numina.client.gui.frame.*;
 import lehjr.numina.common.container.ArmorStandContainer;
 import lehjr.numina.common.math.Colour;
 import net.minecraft.entity.LivingEntity;

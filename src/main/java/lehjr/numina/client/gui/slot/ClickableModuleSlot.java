@@ -27,14 +27,14 @@
 package lehjr.numina.client.gui.slot;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import lehjr.numina.client.render.MuseIconUtils;
-import lehjr.numina.client.render.MuseRenderer;
+import lehjr.numina.client.gui.clickable.IClickable;
+import lehjr.numina.client.gui.gemoetry.MusePoint2D;
+import lehjr.numina.client.render.IconUtils;
+import lehjr.numina.client.render.NuminaRenderer;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.capabilities.module.powermodule.PowerModuleCapability;
 import lehjr.numina.common.math.Colour;
 import lehjr.numina.common.string.StringUtils;
-import lehjr.numina.client.gui.clickable.IClickable;
-import lehjr.numina.client.gui.gemoetry.MusePoint2D;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -78,12 +78,12 @@ public class ClickableModuleSlot extends UniversalSlot implements IClickable {
     @Override
     public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
         if (!getItem().isEmpty()) {
-            MuseRenderer.drawItemAt(getUL().getX(), getUL().getY(), getItem());
+            NuminaRenderer.drawItemAt(getUL().getX(), getUL().getY(), getItem());
             if (!allowed) {
                 String string = StringUtils.wrapFormatTags("x", StringUtils.FormatCodes.DarkRed);
-                MuseRenderer.drawShadowedString(matrixStack, string, getPosition().getX() + 3, getPosition().getY() + 1);
+                StringUtils.drawShadowedString(matrixStack, string, getPosition().getX() + 3, getPosition().getY() + 1);
             } else if (installed) {
-                MuseIconUtils.getIcon().checkmark.draw(matrixStack, getUL().getX() + 1, getUL().getY() + 1, checkmarkcolour);
+                IconUtils.getIcon().checkmark.draw(matrixStack, getUL().getX() + 1, getUL().getY() + 1, checkmarkcolour);
             }
         }
     }

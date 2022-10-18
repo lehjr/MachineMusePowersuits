@@ -24,16 +24,13 @@
  *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package lehjr.numina.client.gui.meters;
+package lehjr.numina.client.gui.old_meters;
 
 
 import lehjr.numina.common.math.Colour;
 
-/**
- * Created by leon on 4/9/17.
- */
-public class PlasmaChargeMeter extends HeatMeter {
-    public PlasmaChargeMeter() {
+public class EnergyMeter extends HeatMeter {
+    public EnergyMeter() {
         super(Colour.LIGHT_GREEN.withAlpha(0.7F));
     }
 }

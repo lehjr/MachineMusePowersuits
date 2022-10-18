@@ -30,7 +30,7 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import lehjr.numina.client.model.helper.ModelHelper;
 import lehjr.numina.client.model.obj.OBJBakedCompositeModel;
-import lehjr.numina.client.render.MuseIconUtils;
+import lehjr.numina.client.render.IconUtils;
 import lehjr.numina.common.constants.NuminaConstants;
 import lehjr.numina.common.math.Colour;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
@@ -108,7 +108,7 @@ public class PlasmaBallTestRenderer  extends ItemStackTileEntityRenderer {
             double angle1 = (Math.random() * 2 * Math.PI);
             double angle2 = (Math.random() * 2 * Math.PI);
             double angle3 = (Math.random() * 2 * Math.PI);
-            MuseIconUtils.getIcon().lightning.drawLightning(bufferIn, matrixStackIn,
+            IconUtils.getIcon().lightning.drawLightning(bufferIn, matrixStackIn,
                     (float)(Math.cos(angle1) * 0.5), (float)(Math.sin(angle1) * 0.5), (float)(Math.cos(angle3) * 0.5),
                     (float) (Math.cos(angle2) * 5), (float)(Math.sin(angle2) * 5), (float)(Math.sin(angle3) * 5),
                     new Colour(1F, 1F, 1F, 0.9F));

@@ -3,7 +3,7 @@ package lehjr.powersuits.client.gui.common;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.datafixers.util.Pair;
-import lehjr.numina.client.render.MuseIconUtils;
+import lehjr.numina.client.render.IconUtils;
 import lehjr.numina.common.base.NuminaObjects;
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
 import lehjr.numina.common.math.Colour;
@@ -62,7 +62,7 @@ public class ModularItemTabToggleWidget extends DrawableRelativeRect implements 
         RenderSystem.disableDepthTest();
         if (this.icon.isEmpty()) {
             if (EquipmentSlotType.MAINHAND.equals(type)) {
-                MuseIconUtils.drawIconAt((int)left() + 9 + offset, (float)top() + 7, MuseIconUtils.getIcon().weaponSlotBackground.getSprite(), Colour.WHITE);
+                IconUtils.drawIconAt((int)left() + 9 + offset, (float)top() + 7, IconUtils.getIcon().weaponSlotBackground.getSprite(), Colour.WHITE);
             } else {
                 Pair<ResourceLocation, ResourceLocation> pair = NuminaObjects.getSlotBackground(type);
                 if (pair != null) {

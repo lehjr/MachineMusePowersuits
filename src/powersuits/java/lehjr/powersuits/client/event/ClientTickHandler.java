@@ -27,17 +27,14 @@
 package lehjr.powersuits.client.event;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import lehjr.numina.client.render.MuseRenderer;
+import lehjr.numina.client.render.NuminaRenderer;
 import lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
 import lehjr.numina.common.energy.ElectricItemUtils;
 import lehjr.numina.common.heat.HeatUtils;
 import lehjr.numina.common.math.MathUtils;
 import lehjr.numina.common.string.StringUtils;
-import lehjr.numina.client.gui.meters.EnergyMeter;
-import lehjr.numina.client.gui.meters.HeatMeter;
-import lehjr.numina.client.gui.meters.PlasmaChargeMeter;
-import lehjr.numina.client.gui.meters.WaterMeter;
+import lehjr.numina.client.gui.meter.*;
 import lehjr.powersuits.common.config.MPSSettings;
 import lehjr.powersuits.common.constants.MPSRegistryNames;
 import lehjr.powersuits.common.item.module.environmental.AutoFeederModule;
@@ -70,24 +67,10 @@ public class ClientTickHandler {
     protected HeatMeter energyMeter = null;
     protected WaterMeter waterMeter = null;
     protected PlasmaChargeMeter plasmaMeter = null;
+
     static final ItemStack food = new ItemStack(Items.COOKED_BEEF);
     MatrixStack matrixStack = new MatrixStack();
     final double meterTextOffsetY = 6;
-
-//    @SubscribeEvent
-//    public void onPreClientTick(TickEvent.ClientTickEvent event) {
-//        if (Minecraft.getInstance().player == null) {
-//            return;
-//        }
-//
-////        if (event.phase == TickEvent.Phase.START) {
-////            System.out.println("fixme");
-////
-//////            for (ClickableKeybinding kb : KeybindManager.INSTANCE.getKeybindings()) {
-//////                kb.doToggleTick();
-//////            }
-////        }
-//    }
 
     @OnlyIn(Dist.CLIENT)
     @SubscribeEvent
@@ -127,8 +110,8 @@ public class ClientTickHandler {
                             if (!autoFeeder.isEmpty()) {
                                 int foodLevel = (int) ((AutoFeederModule) autoFeeder.getItem()).getFoodLevel(autoFeeder);
                                 String num = StringUtils.formatNumberShort(foodLevel);
-                                MuseRenderer.drawShadowedString(matrixStack, num, 17, yBaseString + (yOffsetString * index.get()));
-                                MuseRenderer.drawItemAt(-1.0, yBaseIcon + (yOffsetIcon * index.get()), food);
+                                StringUtils.drawShadowedString(matrixStack, num, 17, yBaseString + (yOffsetString * index.get()));
+                                NuminaRenderer.drawItemAt(-1.0, yBaseIcon + (yOffsetIcon * index.get()), food);
                                 index.addAndGet(1);
                             }
 
@@ -163,8 +146,8 @@ public class ClientTickHandler {
                                         ampm = " AM";
                                     }
 
-                                    MuseRenderer.drawShadowedString(matrixStack, hour + ampm, 17, yBaseString + (yOffsetString * index.get()));
-                                    MuseRenderer.drawItemAt(-1.0, yBaseIcon + (yOffsetIcon * index.get()), clock);
+                                    StringUtils.drawShadowedString(matrixStack, hour + ampm, 17, yBaseString + (yOffsetString * index.get()));
+                                    NuminaRenderer.drawItemAt(-1.0, yBaseIcon + (yOffsetIcon * index.get()), clock);
 
                                     index.addAndGet(1);
                                 }
@@ -173,7 +156,7 @@ public class ClientTickHandler {
                             // Compass
                             ItemStack compass = h.getOnlineModuleOrEmpty(Items.COMPASS.getRegistryName());
                             if (!compass.isEmpty()) {
-                                MuseRenderer.drawItemAt(-1.0, yBaseIcon + (yOffsetIcon * index.get()), compass);
+                                NuminaRenderer.drawItemAt(-1.0, yBaseIcon + (yOffsetIcon * index.get()), compass);
                                 index.addAndGet(1);
                             }
                         });
@@ -283,45 +266,45 @@ public class ClientTickHandler {
                     //but including it won't hurt and this makes it easier to swap them around.
 
                     if (energyMeter != null) {
-                        energyMeter.draw(matrixStack, left, top + (totalMeters - numMeters) * 9, currEnergy / maxEnergy, 0);
-                        MuseRenderer.drawRightAlignedShadowedString(matrixStack, currEnergyStr, stringX, meterTextOffsetY + top);
+                        energyMeter.draw(matrixStack, left, top + (totalMeters - numMeters) * 9, currEnergy / maxEnergy);
+                        StringUtils.drawRightAlignedShadowedString(matrixStack, currEnergyStr, stringX, meterTextOffsetY + top);
                         numMeters--;
                     }
 
                     if (heatMeter != null) {
-                        heatMeter.draw(matrixStack, left, top + (totalMeters - numMeters) * 9, MathUtils.clampFloat(currHeat, 0, maxHeat) / maxHeat, 0);
-                        MuseRenderer.drawRightAlignedShadowedString(matrixStack, currHeatStr, stringX, meterTextOffsetY + top + (totalMeters - numMeters) * 9);
+                        heatMeter.draw(matrixStack, left, top + (totalMeters - numMeters) * 9, MathUtils.clampFloat(currHeat, 0, maxHeat) / maxHeat);
+                        StringUtils.drawRightAlignedShadowedString(matrixStack, currHeatStr, stringX, meterTextOffsetY + top + (totalMeters - numMeters) * 9);
                         numMeters--;
                     }
 
                     if (waterMeter != null) {
-                        waterMeter.draw(matrixStack, left, top + (totalMeters - numMeters) * 9, MathUtils.clampFloat(currWater.get(), 0, maxWater.get()) / maxWater.get(), 0);
-                        MuseRenderer.drawRightAlignedShadowedString(matrixStack, currWaterStr.get(), stringX, meterTextOffsetY + top + (totalMeters - numMeters) * 9);
+                        waterMeter.draw(matrixStack, left, top + (totalMeters - numMeters) * 9, MathUtils.clampFloat(currWater.get(), 0, maxWater.get()) / maxWater.get());
+                        StringUtils.drawRightAlignedShadowedString(matrixStack, currWaterStr.get(), stringX, meterTextOffsetY + top + (totalMeters - numMeters) * 9);
                         numMeters--;
                     }
 
                     if (plasmaMeter != null) {
-                        plasmaMeter.draw(matrixStack, left, top + (totalMeters - numMeters) * 9, currentPlasma.get() / maxPlasma.get(), 0);
-                        MuseRenderer.drawRightAlignedShadowedString(matrixStack, currPlasmaStr, stringX, meterTextOffsetY + top + (totalMeters - numMeters) * 9);
+                        plasmaMeter.draw(matrixStack, left, top + (totalMeters - numMeters) * 9, currentPlasma.get() / maxPlasma.get());
+                        StringUtils.drawRightAlignedShadowedString(matrixStack, currPlasmaStr, stringX, meterTextOffsetY + top + (totalMeters - numMeters) * 9);
                     }
 
                 } else {
                     int numReadouts = 0;
                     if (maxEnergy > 0) {
-                        MuseRenderer.drawShadowedString(matrixStack, currEnergyStr + '/' + maxEnergyStr + " \u1D60", 2, 2);
+                        StringUtils.drawShadowedString(matrixStack, currEnergyStr + '/' + maxEnergyStr + " \u1D60", 2, 2);
                         numReadouts += 1;
                     }
 
-                    MuseRenderer.drawShadowedString(matrixStack, currHeatStr + '/' + maxHeatStr + " C", 2, 2 + (numReadouts * 9));
+                    StringUtils.drawShadowedString(matrixStack, currHeatStr + '/' + maxHeatStr + " C", 2, 2 + (numReadouts * 9));
                     numReadouts += 1;
 
                     if (maxWater.get() > 0) {
-                        MuseRenderer.drawShadowedString(matrixStack, currWaterStr.get() + '/' + maxWaterStr.get() + " buckets", 2, 2 + (numReadouts * 9));
+                        StringUtils.drawShadowedString(matrixStack, currWaterStr.get() + '/' + maxWaterStr.get() + " buckets", 2, 2 + (numReadouts * 9));
                         numReadouts += 1;
                     }
 
                     if (maxPlasma.get() > 0 /* && drawPlasmaMeter */) {
-                        MuseRenderer.drawShadowedString(matrixStack, currPlasmaStr + '/' + maxPlasmaStr + "%", 2, 2 + (numReadouts * 9));
+                        StringUtils.drawShadowedString(matrixStack, currPlasmaStr + '/' + maxPlasmaStr + "%", 2, 2 + (numReadouts * 9));
                     }
                 }
             }

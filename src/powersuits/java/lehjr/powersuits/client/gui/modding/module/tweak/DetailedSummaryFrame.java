@@ -28,7 +28,7 @@ package lehjr.powersuits.client.gui.modding.module.tweak;
 
 import com.google.common.util.concurrent.AtomicDouble;
 import com.mojang.blaze3d.matrix.MatrixStack;
-import lehjr.numina.client.render.MuseRenderer;
+import lehjr.numina.client.render.NuminaRenderer;
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.capabilities.module.powermodule.PowerModuleCapability;
@@ -99,32 +99,32 @@ public class DetailedSummaryFrame extends ScrollableFrame {
             super.render(matrixStack, mouseX, mouseY, partialTicks);
             int margin = 4;
             int nexty = (int) getRect().top() + margin + 4;
-            MuseRenderer.drawShadowedStringCentered(matrixStack, I18n.get("gui.powersuits.equippedTotals"), (getRect().left() + getRect().right()) / 2, nexty);
+            StringUtils.drawShadowedStringCentered(matrixStack, I18n.get("gui.powersuits.equippedTotals"), (getRect().left() + getRect().right()) / 2, nexty);
             nexty += 10;
 
             // Max Energy
             String formattedValue = StringUtils.formatNumberFromUnits(energy.get(), "FE");
             String name = I18n.get("gui.powersuits.energyStorage");
-            double valueWidth = MuseRenderer.getStringWidth(formattedValue);
+            double valueWidth = StringUtils.getStringWidth(formattedValue);
             double allowedNameWidth = getRect().width() - valueWidth - margin * 2;
             List<String> namesList = StringUtils.wrapStringToVisualLength(name, allowedNameWidth);
             for (int i = 0; i < namesList.size(); i++) {
-                MuseRenderer.drawShadowedString(matrixStack, namesList.get(i), getRect().left() + margin, nexty + 9 * i);
+                StringUtils.drawShadowedString(matrixStack, namesList.get(i), getRect().left() + margin, nexty + 9 * i);
             }
-            MuseRenderer.drawRightAlignedShadowedString(matrixStack, formattedValue, getRect().right() - margin, nexty + 9 * (namesList.size() - 1) / 2);
+            StringUtils.drawRightAlignedShadowedString(matrixStack, formattedValue, getRect().right() - margin, nexty + 9 * (namesList.size() - 1) / 2);
             nexty += 10 * namesList.size() + 1;
 
             // Armor points
             formattedValue = StringUtils.formatNumberFromUnits(armor.get(), "pts");
             name = I18n.get("gui.powersuits.armor");
-            valueWidth = MuseRenderer.getStringWidth(formattedValue);
+            valueWidth = StringUtils.getStringWidth(formattedValue);
             allowedNameWidth = getRect().width() - valueWidth - margin * 2;
             namesList = StringUtils.wrapStringToVisualLength(name, allowedNameWidth);
             assert namesList != null;
             for (int i = 0; i < namesList.size(); i++) {
-                MuseRenderer.drawShadowedString(matrixStack, namesList.get(i), getRect().left() + margin, nexty + 9 * i);
+                StringUtils.drawShadowedString(matrixStack, namesList.get(i), getRect().left() + margin, nexty + 9 * i);
             }
-            MuseRenderer.drawRightAlignedShadowedString(matrixStack, formattedValue, getRect().right() - margin, nexty + 9 * (namesList.size() - 1) / 2);
+            StringUtils.drawRightAlignedShadowedString(matrixStack, formattedValue, getRect().right() - margin, nexty + 9 * (namesList.size() - 1) / 2);
         }
     }
 }

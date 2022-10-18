@@ -27,14 +27,14 @@
 package lehjr.numina.client.gui.clickable;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import lehjr.numina.client.render.MuseIconUtils;
-import lehjr.numina.client.render.MuseRenderer;
+import lehjr.numina.client.gui.gemoetry.MusePoint2D;
+import lehjr.numina.client.render.IconUtils;
+import lehjr.numina.client.render.NuminaRenderer;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.capabilities.module.powermodule.PowerModuleCapability;
 import lehjr.numina.common.math.Colour;
 import lehjr.numina.common.string.AdditionalInfo;
 import lehjr.numina.common.string.StringUtils;
-import lehjr.numina.client.gui.gemoetry.MusePoint2D;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemStack;
@@ -126,17 +126,17 @@ public class ClickableModule extends Clickable {
         // TODO: extra text and options to disable if player doesn't have the module available
 
         if (!getModule().isEmpty()) {
-            MuseRenderer.drawModuleAt(matrixStack, left(), top(), getModule(), true);
+            NuminaRenderer.drawModuleAt(matrixStack, left(), top(), getModule(), true);
             if (!allowed) {
                 matrixStack.pushPose();
                 matrixStack.translate(0, 0, 250);
                 String string = StringUtils.wrapMultipleFormatTags("X", StringUtils.FormatCodes.Bold, StringUtils.FormatCodes.DarkRed);
-                MuseRenderer.drawShadowedString(matrixStack, string, getPosition().getX() + 3, getPosition().getY() + 1);
+                StringUtils.drawShadowedString(matrixStack, string, getPosition().getX() + 3, getPosition().getY() + 1);
                 matrixStack.popPose();
             } else if (installed) {
                 matrixStack.pushPose();
                 matrixStack.translate(0, 0,250);
-                MuseIconUtils.getIcon().checkmark.draw(matrixStack, left() + 1, top() + 1, checkmarkcolour.withAlpha(0.6F));
+                IconUtils.getIcon().checkmark.draw(matrixStack, left() + 1, top() + 1, checkmarkcolour.withAlpha(0.6F));
                 matrixStack.popPose();
             }
         }

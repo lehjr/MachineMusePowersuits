@@ -27,12 +27,12 @@
 package lehjr.numina.common.container;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import lehjr.numina.common.capabilities.energy.BlockEnergyStorage;
-import lehjr.numina.client.render.MuseIconUtils;
+import lehjr.numina.client.gui.slot.IIConProvider;
+import lehjr.numina.client.render.IconUtils;
 import lehjr.numina.common.base.NuminaObjects;
 import lehjr.numina.common.blockentity.ChargingBaseTileEntity;
+import lehjr.numina.common.capabilities.energy.BlockEnergyStorage;
 import lehjr.numina.common.math.Colour;
-import lehjr.numina.client.gui.slot.IIConProvider;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
@@ -68,7 +68,7 @@ public class ChargingBaseContainer extends Container {
                 addSlot(new IconSlot(h, 0, 64, 24) {
                     @Override
                     public void drawIconAt(MatrixStack matrixStack, double posX, double posY, Colour colour) {
-                        MuseIconUtils.getIcon().energyStorageBackground.renderIconScaledWithColour(matrixStack, posX, posY, 16, 16, Colour.WHITE);
+                        IconUtils.getIcon().energyStorageBackground.renderIconScaledWithColour(matrixStack, posX, posY, 16, 16, Colour.WHITE);
                     }
                 });
             });

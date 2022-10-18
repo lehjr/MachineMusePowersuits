@@ -24,11 +24,11 @@
  *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package lehjr.numina.client.gui.meters;
+package lehjr.numina.client.gui.old_meters;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import lehjr.numina.common.math.Colour;
 import lehjr.numina.client.gui.gemoetry.Meter;
+import lehjr.numina.common.math.Colour;
 import net.minecraft.client.Minecraft;
 
 public class HeatMeter {

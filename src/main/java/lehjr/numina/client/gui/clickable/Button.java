@@ -27,10 +27,10 @@
 package lehjr.numina.client.gui.clickable;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import lehjr.numina.common.math.Colour;
 import lehjr.numina.client.gui.gemoetry.DrawableRelativeRect;
 import lehjr.numina.client.gui.gemoetry.MusePoint2D;
 import lehjr.numina.client.gui.gemoetry.RelativeRect;
+import lehjr.numina.common.math.Colour;
 
 public class Button extends DrawableRelativeRect implements IClickable {
     protected IPressable onPressed;

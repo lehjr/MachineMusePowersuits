@@ -27,9 +27,10 @@
 package lehjr.numina.client.gui.clickable;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import lehjr.numina.client.render.MuseRenderer;
-import lehjr.numina.common.math.Colour;
 import lehjr.numina.client.gui.gemoetry.MusePoint2D;
+import lehjr.numina.client.render.NuminaRenderer;
+import lehjr.numina.common.math.Colour;
+import lehjr.numina.common.string.StringUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerInventory;
@@ -62,13 +63,13 @@ public class ClickableItem extends Clickable {
 
     @Override
     public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
-        MuseRenderer.drawItemAt(
+        NuminaRenderer.drawItemAt(
                 getPosition().getX() - offsetx,
                 getPosition().getY() - offsety, getStack());
         if (inventorySlot > 35 || itemHandler.getSelected() == getStack()) {
             matrixStack.pushPose();
             matrixStack.translate(0,0,310);
-            MuseRenderer.drawShadowedString(matrixStack, "e", getPosition().getX() + 3, getPosition().getY() + 1, Colour.DARK_GREEN);
+            StringUtils.drawShadowedString(matrixStack, "e", getPosition().getX() + 3, getPosition().getY() + 1, Colour.DARK_GREEN);
             matrixStack.popPose();
         }
     }

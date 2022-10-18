@@ -27,7 +27,7 @@
 package lehjr.numina.common.capabilities.inventory.modechanging;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import lehjr.numina.client.render.MuseRenderer;
+import lehjr.numina.client.render.NuminaRenderer;
 import lehjr.numina.common.capabilities.inventory.modularitem.ModularItem;
 import lehjr.numina.common.capabilities.module.powermodule.PowerModuleCapability;
 import lehjr.numina.common.capabilities.module.rightclick.IRightClickModule;
@@ -94,7 +94,7 @@ public class ModeChangingModularItem extends ModularItem implements IModeChangin
             if (module.getCapability(PowerModuleCapability.POWER_MODULE).map(pm-> pm.isModuleOnline()).orElse(false)) {
                 mc.getItemRenderer().renderGuiItem(module.getCapability(ChameleonCapability.CHAMELEON).map(iChameleon -> iChameleon.getStackToRender()).orElse(module), (int)currX, (int)currY);
             } else {
-                MuseRenderer.drawModuleAt(new MatrixStack(), currX, currY, module.getCapability(ChameleonCapability.CHAMELEON).map(iChameleon -> iChameleon.getStackToRender()).orElse(module), false);
+                NuminaRenderer.drawModuleAt(new MatrixStack(), currX, currY, module.getCapability(ChameleonCapability.CHAMELEON).map(iChameleon -> iChameleon.getStackToRender()).orElse(module), false);
             }
         }
     }

@@ -27,11 +27,11 @@
 package lehjr.numina.client.gui.frame;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import lehjr.numina.common.math.Colour;
-import lehjr.numina.common.math.MathUtils;
 import lehjr.numina.client.gui.gemoetry.DrawableTile;
 import lehjr.numina.client.gui.gemoetry.MusePoint2D;
 import lehjr.numina.client.gui.gemoetry.RelativeRect;
+import lehjr.numina.common.math.Colour;
+import lehjr.numina.common.math.MathUtils;
 import net.minecraft.util.text.ITextComponent;
 
 import java.util.List;

@@ -27,9 +27,9 @@
 package lehjr.numina.client.gui.clickable;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import lehjr.numina.client.render.MuseRenderer;
-import lehjr.numina.common.math.Colour;
 import lehjr.numina.client.gui.slot.ClickableItemSlot;
+import lehjr.numina.common.math.Colour;
+import lehjr.numina.common.string.StringUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerInventory;
 
@@ -48,7 +48,7 @@ public class ClickableModularItem extends ClickableItemSlot {
     public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
         super.render(matrixStack, mouseX, mouseY, partialTicks);
         if (this.index > 35 || this.index == Minecraft.getInstance().player.inventory.selected) {
-            MuseRenderer.drawShadowedString(matrixStack, "e", getPosition().getX() + 3, getPosition().getY() + 1, Colour.DARK_GREEN);
+            StringUtils.drawShadowedString(matrixStack, "e", getPosition().getX() + 3, getPosition().getY() + 1, Colour.DARK_GREEN);
         }
     }
 }

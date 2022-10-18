@@ -1,10 +1,10 @@
 package lehjr.numina.client.gui.frame;
 
-import lehjr.numina.common.math.Colour;
 import lehjr.numina.client.gui.gemoetry.DrawableRelativeRect;
 import lehjr.numina.client.gui.gemoetry.IDrawable;
 import lehjr.numina.client.gui.gemoetry.MusePoint2D;
 import lehjr.numina.client.gui.gemoetry.RelativeRect;
+import lehjr.numina.common.math.Colour;
 
 public abstract class GuiFrame extends DrawableRelativeRect implements IGuiFrame {
     float zLevel = 0;

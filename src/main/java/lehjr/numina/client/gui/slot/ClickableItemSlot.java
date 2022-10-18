@@ -27,8 +27,8 @@
 package lehjr.numina.client.gui.slot;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import lehjr.numina.client.render.MuseRenderer;
 import lehjr.numina.client.gui.clickable.IClickable;
+import lehjr.numina.client.render.NuminaRenderer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.inventory.IInventory;
@@ -52,7 +52,7 @@ public class ClickableItemSlot extends UniversalSlot implements IClickable {
 
     @Override
     public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
-        MuseRenderer.drawItemAt(getUL().getX(), getUL().getY(), getItem());
+        NuminaRenderer.drawItemAt(getUL().getX(), getUL().getY(), getItem());
     }
 
     @Override

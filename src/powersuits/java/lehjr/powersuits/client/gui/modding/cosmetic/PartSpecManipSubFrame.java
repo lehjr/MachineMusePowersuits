@@ -28,8 +28,8 @@ package lehjr.powersuits.client.gui.modding.cosmetic;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
-import lehjr.numina.client.render.MuseIconUtils;
-import lehjr.numina.client.render.MuseRenderer;
+import lehjr.numina.client.render.IconUtils;
+import lehjr.numina.client.render.NuminaRenderer;
 import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.capabilities.render.IArmorModelSpecNBT;
 import lehjr.numina.common.capabilities.render.IHandHeldModelSpecNBT;
@@ -43,6 +43,7 @@ import lehjr.numina.common.network.NuminaPackets;
 import lehjr.numina.common.network.packets.CosmeticInfoPacket;
 import lehjr.numina.client.gui.GuiIcon;
 import lehjr.numina.client.gui.gemoetry.DrawableTile;
+import lehjr.numina.common.string.StringUtils;
 import lehjr.powersuits.client.gui.common.ModularItemSelectionFrame;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
@@ -206,7 +207,7 @@ public class PartSpecManipSubFrame extends DrawableTile {
 
     public void drawPartial(MatrixStack matrixStack, double min, double max) {
         if (!partSpecs.isEmpty()) {
-            MuseRenderer.drawShadowedString(matrixStack, model.getDisaplayName(), left() + iconWidth, top());
+            StringUtils.drawShadowedString(matrixStack, model.getDisaplayName(), left() + iconWidth, top());
             drawOpenArrow(matrixStack, min, max);
             if (open) {
                 int y = (int) (top() + specHeight);
@@ -239,7 +240,7 @@ public class PartSpecManipSubFrame extends DrawableTile {
     public void drawSpecPartial(MatrixStack matrixStack, double x, double y, PartSpecBase partSpec) {
 //        super.render(matrixStack, (int)x, (int)y, Minecraft.getInstance().getFrameTime()); // draws the border, mainly a debugging thing
 
-        GuiIcon icon = MuseIconUtils.getIcon();
+        GuiIcon icon = IconUtils.getIcon();
         CompoundNBT tag = this.getSpecTag(partSpec);
         int selcomp = tag.isEmpty() ? 0 : (partSpec instanceof ModelPartSpec && ((ModelPartSpec) partSpec).getGlow(tag) ? 2 : 1);
         int selcolour = partSpec.getColourIndex(tag);
@@ -264,7 +265,7 @@ public class PartSpecManipSubFrame extends DrawableTile {
         if (selcomp > 0) {
             icon.selectedArmorOverlay.draw(matrixStack, x + 28 + selcolour * iconWidth, y, Colour.WHITE);
         }
-        MuseRenderer.drawText(matrixStack, partSpec.getDisaplayName(), (float) textstartx + 4, (float) y, Colour.WHITE);
+        StringUtils.drawText(matrixStack, partSpec.getDisaplayName(), (float) textstartx + 4, (float) y, Colour.WHITE);
     }
 
     // FIXME

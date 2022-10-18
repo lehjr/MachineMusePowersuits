@@ -29,13 +29,14 @@ package lehjr.powersuits.client.event;
 import com.google.common.util.concurrent.AtomicDouble;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
-import lehjr.numina.client.render.MuseRenderer;
+import lehjr.numina.client.render.NuminaRenderer;
 import lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
 import lehjr.numina.common.capabilities.module.powermodule.PowerModuleCapability;
 import lehjr.numina.common.capabilities.render.highlight.HighLightCapability;
 import lehjr.numina.common.math.Colour;
 import lehjr.numina.client.gui.gemoetry.DrawableRelativeRect;
+import lehjr.numina.common.string.StringUtils;
 import lehjr.powersuits.client.control.KeybindManager;
 import lehjr.powersuits.client.control.MPSKeyBinding;
 import lehjr.powersuits.client.model.helper.MPSModelHelper;
@@ -257,14 +258,14 @@ public enum RenderEventHandler {
 
         @Override
         public void render(MatrixStack matrixStack, int mouseX, int mouseY, float frameTime) {
-            float stringwidth = (float) MuseRenderer.getFontRenderer().width(getLabel());
+            float stringwidth = (float) StringUtils.getFontRenderer().width(getLabel());
             setWidth(stringwidth + 8 + boundKeybinds.stream().filter(kb->kb.showOnHud).collect(Collectors.toList()).size() * 18);
             super.render(matrixStack, 0, 0, frameTime);
             matrixStack.pushPose();
             matrixStack.translate(0,0,100);
             boolean kbToggleVal = boundKeybinds.stream().filter(kb->kb.toggleval).findFirst().isPresent();
 
-            MuseRenderer.drawLeftAlignedText(matrixStack, getLabel(), (float) left() + 4, (float) top() + 9, (kbToggleVal) ? Colour.RED : Colour.GREEN);
+            StringUtils.drawLeftAlignedText(matrixStack, getLabel(), (float) left() + 4, (float) top() + 9, (kbToggleVal) ? Colour.RED : Colour.GREEN);
             matrixStack.popPose();
             AtomicDouble x = new AtomicDouble(left() + stringwidth + 8);
 
@@ -290,7 +291,7 @@ public enum RenderEventHandler {
                         break;
                     }
                 }
-                MuseRenderer.drawModuleAt(matrixStack, x.get(), top(), module, active);
+                NuminaRenderer.drawModuleAt(matrixStack, x.get(), top(), module, active);
                 x.getAndAdd(16);
             });
         }

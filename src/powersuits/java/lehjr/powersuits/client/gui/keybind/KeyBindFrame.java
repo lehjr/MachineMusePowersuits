@@ -3,7 +3,7 @@ package lehjr.powersuits.client.gui.keybind;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.datafixers.util.Pair;
-import lehjr.numina.client.render.MuseRenderer;
+import lehjr.numina.client.render.NuminaRenderer;
 import lehjr.numina.common.math.Colour;
 import lehjr.numina.client.gui.clickable.CheckBox;
 import lehjr.numina.client.gui.clickable.ClickableButton2;
@@ -95,7 +95,7 @@ public class KeyBindFrame extends ScrollableFrame {
 
             double y = top() + 8;
             for (Map.Entry<MPSKeyBinding, Pair<CheckBox, ClickableButton2>> entry : checkBoxList.entrySet()) {
-                MuseRenderer.drawModuleAt(matrixStack, finalLeft() + 2, y -8, new ItemStack(ForgeRegistries.ITEMS.getValue(entry.getKey().registryName)), true);
+                NuminaRenderer.drawModuleAt(matrixStack, finalLeft() + 2, y -8, new ItemStack(ForgeRegistries.ITEMS.getValue(entry.getKey().registryName)), true);
                 MPSKeyBinding kb = entry.getKey();
                 CheckBox checkbox = entry.getValue().getFirst();
                 checkbox.setPosition(new MusePoint2D(finalLeft() + 24, y));

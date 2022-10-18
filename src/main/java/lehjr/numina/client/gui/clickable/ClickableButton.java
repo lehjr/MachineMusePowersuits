@@ -27,11 +27,11 @@
 package lehjr.numina.client.gui.clickable;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import lehjr.numina.client.render.MuseRenderer;
-import lehjr.numina.common.math.Colour;
 import lehjr.numina.client.gui.gemoetry.DrawableRelativeRect;
 import lehjr.numina.client.gui.gemoetry.IDrawable;
 import lehjr.numina.client.gui.gemoetry.MusePoint2D;
+import lehjr.numina.common.math.Colour;
+import lehjr.numina.common.string.StringUtils;
 import net.minecraft.util.text.ITextComponent;
 
 /**
@@ -63,9 +63,9 @@ public class ClickableButton extends DrawableRelativeRect implements IClickable 
                 if (x[i].length() > x[longestIndex].length())
                     longestIndex = i;
             }
-            this.radius = new MusePoint2D((float) (MuseRenderer.getStringWidth(x[longestIndex]) / 2F + 2F), 6 * x.length);
+            this.radius = new MusePoint2D((float) (StringUtils.getStringWidth(x[longestIndex]) / 2F + 2F), 6 * x.length);
         } else {
-            this.radius = new MusePoint2D((float) (MuseRenderer.getStringWidth(label.getString()) / 2F + 2F), 6);
+            this.radius = new MusePoint2D((float) (StringUtils.getStringWidth(label.getString()) / 2F + 2F), 6);
         }
 
         setLeft(position.getX() - radius.getX());
@@ -158,10 +158,10 @@ public class ClickableButton extends DrawableRelativeRect implements IClickable 
             if (label.getString().contains("\n")) {
                 String[] s = label.getString().split("\n");
                 for (int i = 0; i < s.length; i++) {
-                    MuseRenderer.drawShadowedStringCentered(matrixStack, s[i], getPosition().getX(), getPosition().getY() + (i * MuseRenderer.getStringHeight() + 2));
+                    StringUtils.drawShadowedStringCentered(matrixStack, s[i], getPosition().getX(), getPosition().getY() + (i * StringUtils.getStringHeight() + 2));
                 }
             } else {
-                MuseRenderer.drawShadowedStringCentered(matrixStack, this.label.getString(), getPosition().getX(), getPosition().getY());
+                StringUtils.drawShadowedStringCentered(matrixStack, this.label.getString(), getPosition().getX(), getPosition().getY());
             }
         }
     }

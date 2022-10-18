@@ -3,7 +3,7 @@ package lehjr.powersuits.client.gui.clickable;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import com.mojang.blaze3d.matrix.MatrixStack;
-import lehjr.numina.client.render.MuseRenderer;
+import lehjr.numina.client.render.NuminaRenderer;
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
 import lehjr.numina.common.math.Colour;
 import lehjr.numina.common.network.NuminaPackets;
@@ -72,14 +72,14 @@ public class HudKbDisplayBox extends ClickableButton2 {
     public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
         super.render(matrixStack, mouseX, mouseY, partialTicks);
         for (ClickableModule module : boundModules.values()) {
-            MuseRenderer.drawLineBetween(this, module, Colour.LIGHT_BLUE, 0); // FIXME
+            NuminaRenderer.drawLineBetween(this, module, Colour.LIGHT_BLUE, 0); // FIXME
             matrixStack.pushPose();
             matrixStack.scale(0.5F, 0.5F, 0.5F);
             matrixStack.translate(0, 0, 100);
             if (displayOnHUD) {
-                MuseRenderer.drawShadowedString(matrixStack, StringUtils.wrapFormatTags("HUD", StringUtils.FormatCodes.BrightGreen), this.getPosition().getX() * 2 + 6, this.getPosition().getY() * 2 + 6);
+                StringUtils.drawShadowedString(matrixStack, StringUtils.wrapFormatTags("HUD", StringUtils.FormatCodes.BrightGreen), this.getPosition().getX() * 2 + 6, this.getPosition().getY() * 2 + 6);
             } else {
-                MuseRenderer.drawShadowedString(matrixStack, StringUtils.wrapFormatTags("x", StringUtils.FormatCodes.Red), this.getPosition().getX() * 2 + 6, this.getPosition().getY() * 2 + 6);
+                StringUtils.drawShadowedString(matrixStack, StringUtils.wrapFormatTags("x", StringUtils.FormatCodes.Red), this.getPosition().getX() * 2 + 6, this.getPosition().getY() * 2 + 6);
             }
             matrixStack.popPose();
         }

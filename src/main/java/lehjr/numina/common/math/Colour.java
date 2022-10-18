@@ -27,6 +27,7 @@
 package lehjr.numina.common.math;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.IVertexBuilder;
 import lehjr.numina.common.base.NuminaLogger;
 import net.minecraft.util.math.vector.Vector4f;
 import org.lwjgl.opengl.GL11;
@@ -101,9 +102,10 @@ public class Colour {
     }
 
     // TODO?
-//    public IVertexBuilder addToVertex(IVertexBuilder builderIn) {
+    public IVertexBuilder addToVertex(IVertexBuilder builderIn) {
 //        return builderIn.color((int)(r * 255.0F), (int)(g * 255.0F), (int)(b * 255.0F), (int)(a * 255.0F));
-//    }
+        return builderIn.color(r, g, b, a);
+    }
 
     public Vector4f getVec4F() {
         return new Vector4f(r, g, b, a);

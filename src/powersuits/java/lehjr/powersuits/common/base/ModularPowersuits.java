@@ -51,7 +51,6 @@ import lehjr.powersuits.common.config.MPSSettings;
 import lehjr.powersuits.common.constants.MPSConstants;
 import lehjr.powersuits.common.constants.MPSRegistryNames;
 import lehjr.powersuits.common.event.*;
-import lehjr.powersuits.event.*;
 import lehjr.powersuits.common.network.MPSPackets;
 import net.minecraft.client.gui.ScreenManager;
 import net.minecraft.entity.player.PlayerEntity;

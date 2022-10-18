@@ -1,8 +1,8 @@
 package lehjr.numina.client.gui.frame;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import lehjr.numina.client.render.MuseRenderer;
 import lehjr.numina.common.math.Colour;
+import lehjr.numina.common.string.StringUtils;
 import net.minecraft.util.text.TranslationTextComponent;
 
 /**
@@ -21,7 +21,7 @@ public class LabelBox extends GUISpacer {
     }
 
     public void renderLabel(MatrixStack matrixStack, float offsetX, float offsetY) {
-        MuseRenderer.drawCenteredText(matrixStack, translationTextComponent, centerx() + offsetX, centery() +  offsetY, colour);
+        StringUtils.drawCenteredText(matrixStack, translationTextComponent, centerx() + offsetX, centery() +  offsetY, colour);
     }
 
     public void setLabel(TranslationTextComponent translationTextComponent) {

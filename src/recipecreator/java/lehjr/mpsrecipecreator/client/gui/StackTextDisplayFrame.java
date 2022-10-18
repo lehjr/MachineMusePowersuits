@@ -2,9 +2,10 @@ package lehjr.mpsrecipecreator.client.gui;
 
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import lehjr.numina.client.render.MuseRenderer;
+import lehjr.numina.client.render.NuminaRenderer;
 import lehjr.numina.common.math.Colour;
 import lehjr.numina.client.gui.frame.ScrollableFrame;
+import lehjr.numina.common.string.StringUtils;
 
 public class StackTextDisplayFrame extends ScrollableFrame {
     String label = "";
@@ -26,7 +27,7 @@ public class StackTextDisplayFrame extends ScrollableFrame {
     @Override
     public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
         super.render(matrixStack, mouseX, mouseY, partialTicks);
-        MuseRenderer.drawLeftAlignedShadowedString(matrixStack, slot != -1 ? "Slot " + slot + ": " +
+        StringUtils.drawLeftAlignedShadowedString(matrixStack, slot != -1 ? "Slot " + slot + ": " +
                 this.label : "No slot selected", finalLeft() + 4, center().getY());
     }
 }

@@ -24,7 +24,7 @@
  *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package lehjr.numina.client.render;
+package lehjr.numina.client.event;
 
 import lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
 import lehjr.numina.common.integration.scannable.MPSOverlayRenderer;
@@ -44,11 +44,8 @@ import net.minecraftforge.items.CapabilityItemHandler;
  * Ported to Java by lehjr on 10/25/16.
  */
 @OnlyIn(Dist.CLIENT)
-public class RenderGameOverlayEventHandler {
-
-    static {
-        new RenderGameOverlayEventHandler();
-    }
+public enum RenderEventHandler {
+    INSTANCE;
 
     @SubscribeEvent
     public void onPostRenderGameOverlayEvent(final RenderGameOverlayEvent.Post e) {
@@ -70,4 +67,5 @@ public class RenderGameOverlayEventHandler {
                 .ifPresent(handler->
                 handler.drawModeChangeIcon(player, i, mc));
     }
+
 }

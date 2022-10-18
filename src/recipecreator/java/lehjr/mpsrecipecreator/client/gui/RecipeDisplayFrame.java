@@ -2,9 +2,10 @@ package lehjr.mpsrecipecreator.client.gui;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
-import lehjr.numina.client.render.MuseRenderer;
+import lehjr.numina.client.render.NuminaRenderer;
 import lehjr.numina.common.math.Colour;
 import lehjr.numina.client.gui.frame.ScrollableFrame;
+import lehjr.numina.common.string.StringUtils;
 
 public class RecipeDisplayFrame extends ScrollableFrame {
     String[] recipe = new String[0];
@@ -39,13 +40,13 @@ public class RecipeDisplayFrame extends ScrollableFrame {
             super.preRender(matrixStack, mouseX, mouseY, partialTicks);
             RenderSystem.pushMatrix();
             RenderSystem.translatef(0, -getCurrentScrollPixels(), 0);
-            MuseRenderer.drawLeftAlignedShadowedString(matrixStack, "FileName: " + title,
+            StringUtils.drawLeftAlignedShadowedString(matrixStack, "FileName: " + title,
                     finalLeft() + 4,
                     finalTop() + 12);
 
             if (recipe.length > 0) {
                 for (int index = 0; index < recipe.length; index ++) {
-                    MuseRenderer.drawLeftAlignedShadowedString(matrixStack, recipe[index],
+                    StringUtils.drawLeftAlignedShadowedString(matrixStack, recipe[index],
                             finalLeft() + 4,
                             (finalTop() + 12) + (12 * index));
                 }

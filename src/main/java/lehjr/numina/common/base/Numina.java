@@ -29,11 +29,13 @@ package lehjr.numina.common.base;
 import forge.NuminaOBJLoader;
 import lehjr.numina.client.event.ArmorLayerSetup;
 import lehjr.numina.client.event.FOVUpdateEventHandler;
+import lehjr.numina.client.event.RenderEventHandler;
 import lehjr.numina.client.event.ToolTipEvent;
+import lehjr.numina.client.gui.GuiIcon;
+import lehjr.numina.client.render.IconUtils;
+import lehjr.numina.client.render.NuminaSpriteUploader;
 import lehjr.numina.client.screen.ArmorStandGui;
 import lehjr.numina.client.screen.ChargingBaseGui;
-import lehjr.numina.client.render.MuseIconUtils;
-import lehjr.numina.client.render.RenderGameOverlayEventHandler;
 import lehjr.numina.common.capabilities.heat.HeatCapability;
 import lehjr.numina.common.capabilities.module.powermodule.PowerModuleCapability;
 import lehjr.numina.common.capabilities.player.CapabilityPlayerKeyStates;
@@ -51,8 +53,6 @@ import lehjr.numina.common.event.PlayerUpdateHandler;
 import lehjr.numina.common.integration.scannable.MPSGuiScanner;
 import lehjr.numina.common.network.NuminaPackets;
 import lehjr.numina.common.recipe.RecipeSerializersRegistry;
-import lehjr.numina.client.render.NuminaSpriteUploader;
-import lehjr.numina.client.gui.GuiIcon;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScreenManager;
 import net.minecraft.entity.Entity;
@@ -135,7 +135,7 @@ public class Numina {
                 reloadableResourceManager.registerReloadListener(iconUploader);
             }
             EventBusHelper.addLifecycleListener(Numina.class, modEventBus, FMLLoadCompleteEvent.class, loadCompleteEvent ->
-                    MuseIconUtils.setIconInstance(icons));
+                    IconUtils.setIconInstance(icons));
         });
     }
 
@@ -172,7 +172,7 @@ public class Numina {
 
     private void doClientStuff(final FMLClientSetupEvent event) {
         MinecraftForge.EVENT_BUS.register(new FOVUpdateEventHandler());
-        MinecraftForge.EVENT_BUS.register(new RenderGameOverlayEventHandler());
+        MinecraftForge.EVENT_BUS.register(RenderEventHandler.INSTANCE);
 
 //        MinecraftForge.EVENT_BUS.register(new LogoutEventHandler());
 

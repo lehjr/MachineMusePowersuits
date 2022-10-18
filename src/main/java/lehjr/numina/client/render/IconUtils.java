@@ -27,10 +27,11 @@
 package lehjr.numina.client.render;
 
 import com.google.common.base.Preconditions;
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
+import lehjr.numina.client.gui.GuiIcon;
 import lehjr.numina.common.math.Colour;
 import lehjr.numina.common.math.MathUtils;
-import lehjr.numina.client.gui.GuiIcon;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.Tessellator;
@@ -39,6 +40,7 @@ import net.minecraft.client.renderer.texture.MissingTextureSprite;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.util.math.vector.Matrix4f;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.lwjgl.opengl.GL11;
@@ -50,7 +52,7 @@ import org.lwjgl.opengl.GL11;
  * Ported to Java by lehjr on 10/25/16.
  */
 @OnlyIn(Dist.CLIENT)
-public enum MuseIconUtils {
+public enum IconUtils {
     INSTANCE;
     public static GuiIcon getIcon() {
         Preconditions.checkState(INSTANCE.icon != null, "Calling icons too early.");
@@ -78,12 +80,98 @@ public enum MuseIconUtils {
         drawIconPartial(x, y, icon, colour, 0, 0, 16, 16);
     }
 
+    /**
+     * Draws a MuseIcon
+     *
+     * @param x
+     * @param y
+     * @param icon
+     * @param colour
+     */
+    public static void drawIconAt(MatrixStack poseStack, float x, float y, TextureAtlasSprite icon, Colour colour) {
+        drawIconPartial(poseStack, x, y, icon, colour, 0, 0, 16, 16);
+    }
+
+
     public static void drawIconPartialOccluded(float x, float y, TextureAtlasSprite icon, Colour colour, float left, float top, float right, float bottom) {
         float xmin = MathUtils.clampFloat(left - x, 0, 16);
         float ymin = MathUtils.clampFloat(top - y, 0, 16);
         float xmax = MathUtils.clampFloat(right - x, 0, 16);
         float ymax = MathUtils.clampFloat(bottom - y, 0, 16);
         drawIconPartial(x, y, icon, colour, xmin, ymin, xmax, ymax);
+    }
+
+
+
+
+    /**
+     * Draws a MuseIcon
+     *
+     * @param x
+     * @param y
+     * @param icon
+     * @param colour
+     */
+    public static void drawIconPartial(MatrixStack poseStack, double x, double y, TextureAtlasSprite icon, Colour colour, float left, float top, float right, float bottom) {
+        if (icon == null) {
+            icon = getMissingIcon();
+        }
+
+//        RenderSystem.disableTexture();
+//        RenderSystem.enableBlend();
+//        RenderSystem.disableAlphaTest();
+//        RenderSystem.defaultBlendFunc();
+        Minecraft minecraft = Minecraft.getInstance();
+        TextureManager textureManager = minecraft.getTextureManager();
+        textureManager.bind(icon.atlas().location());
+
+
+        RenderSystem.shadeModel(GL11.GL_SMOOTH);
+
+        Tessellator tess = Tessellator.getInstance();
+        BufferBuilder bufferBuilder = tess.getBuilder();
+        if (colour != null) {
+            colour.doGL();
+        }
+        bufferBuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+        float u0 = icon.getU0();
+        float v0 = icon.getV0();
+        float u1 = icon.getU1();
+        float v1 = icon.getV1();
+
+        float xoffset1 = left * (u1 - u0) / 16.0f;
+        float yoffset1 = top * (v1 - v0) / 16.0f;
+        float xoffset2 = right * (u1 - u0) / 16.0f;
+        float yoffset2 = bottom * (v1 - v0) / 16.0f;
+        Matrix4f matrix4f = poseStack.last().pose();
+
+
+        // top left
+        bufferBuilder.vertex(matrix4f, (float) (x + left), (float) (y + top), 0);
+        bufferBuilder.uv(u0 + xoffset1, v0 + yoffset1);
+        bufferBuilder.endVertex();
+
+        // bottom left
+        bufferBuilder.vertex(matrix4f, (float) (x + left), (float) (y + bottom), 0);
+        bufferBuilder.uv(u0 + xoffset1, v0 + yoffset2);
+        bufferBuilder.endVertex();
+
+        // bottom right
+        bufferBuilder.vertex(matrix4f, (float) (x + right), (float) (y + bottom), 0);
+        bufferBuilder.uv(u0 + xoffset2, v0 + yoffset2);
+        bufferBuilder.endVertex();
+
+        // top right
+        bufferBuilder.vertex(matrix4f, (float) (x + right), (float) (y + top), 0);
+        bufferBuilder.uv(u0 + xoffset2, v0 + yoffset1);
+        bufferBuilder.endVertex();
+
+        tess.end();
+
+        RenderSystem.shadeModel(GL11.GL_FLAT);
+//        RenderSystem.disableBlend();
+//        RenderSystem.enableAlphaTest();
+//        RenderSystem.enableTexture();
     }
 
     /**

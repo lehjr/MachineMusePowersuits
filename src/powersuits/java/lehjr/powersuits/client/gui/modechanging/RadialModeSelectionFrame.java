@@ -27,7 +27,7 @@
 package lehjr.powersuits.client.gui.modechanging;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import lehjr.numina.client.render.MuseRenderer;
+import lehjr.numina.client.render.NuminaRenderer;
 import lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.network.NuminaPackets;
@@ -180,7 +180,7 @@ public class RadialModeSelectionFrame extends RelativeRect implements IGuiFrame 
         ClickableModule module = getSelectedModule();
         if (module != null) {
             MusePoint2D pos = module.getPosition();
-            MuseRenderer.drawCircleAround(matrixStackIn, pos.getX(), pos.getY(), 10, zLevel);
+            NuminaRenderer.drawCircleAround(matrixStackIn, pos.getX(), pos.getY(), 10, zLevel);
         }
     }
 

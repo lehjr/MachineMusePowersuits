@@ -26,9 +26,9 @@
 
 package lehjr.numina.common.blockentity;
 
+import lehjr.numina.common.base.NuminaObjects;
 import lehjr.numina.common.capabilities.energy.BlockEnergyStorage;
 import lehjr.numina.common.capabilities.energy.BlockEnergyWrapper;
-import lehjr.numina.common.base.NuminaObjects;
 import lehjr.numina.common.config.NuminaSettings;
 import lehjr.numina.common.energy.ElectricItemUtils;
 import net.minecraft.block.BlockState;

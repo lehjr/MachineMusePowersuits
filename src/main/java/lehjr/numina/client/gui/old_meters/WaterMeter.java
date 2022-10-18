@@ -24,13 +24,16 @@
  *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package lehjr.numina.client.gui.meters;
-
+package lehjr.numina.client.gui.old_meters;
 
 import lehjr.numina.common.math.Colour;
 
-public class EnergyMeter extends HeatMeter {
-    public EnergyMeter() {
-        super(Colour.LIGHT_GREEN.withAlpha(0.7F));
+/**
+ * Created by User: Andrew2448
+ * 4:30 PM 6/21/13
+ */
+public class WaterMeter extends HeatMeter {
+    public WaterMeter() {
+        super(Colour.BLUE.withAlpha(0.7F));
     }
 }

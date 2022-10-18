@@ -27,13 +27,14 @@
 package lehjr.powersuits.client.gui.modding.module.tweak;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import lehjr.numina.client.render.MuseRenderer;
+import lehjr.numina.client.render.NuminaRenderer;
 import lehjr.numina.common.math.Colour;
 import lehjr.numina.client.gui.ContainerlessGui;
 import lehjr.numina.client.gui.frame.GUISpacer;
 import lehjr.numina.client.gui.frame.LabelBox;
 import lehjr.numina.client.gui.frame.MultiRectHolderFrame;
 import lehjr.numina.client.gui.gemoetry.MusePoint2D;
+import lehjr.numina.common.string.StringUtils;
 import lehjr.powersuits.client.gui.common.ModularItemSelectionFrame;
 import lehjr.powersuits.client.gui.common.TabSelectFrame;
 import net.minecraft.client.Minecraft;
@@ -171,8 +172,8 @@ public class ModuleTweakGui extends ContainerlessGui {
                 renderBackgroundRect(matrixStack, mouseX, mouseY, partialTicks);
                 float centerx = absX(0);
                 float centery = absY(0);
-                MuseRenderer.drawCenteredText(matrixStack, new TranslationTextComponent("gui.powersuits.noModulesFound.line1"), centerx, centery - 5, Colour.WHITE);
-                MuseRenderer.drawCenteredText(matrixStack, new TranslationTextComponent("gui.powersuits.noModulesFound.line2"), centerx, centery + 5, Colour.WHITE);
+                StringUtils.drawCenteredText(matrixStack, new TranslationTextComponent("gui.powersuits.noModulesFound.line1"), centerx, centery - 5, Colour.WHITE);
+                StringUtils.drawCenteredText(matrixStack, new TranslationTextComponent("gui.powersuits.noModulesFound.line2"), centerx, centery + 5, Colour.WHITE);
                 tabSelectFrame.render(matrixStack, mouseX, mouseY, partialTicks);
             } else {
                 super.render(matrixStack, mouseX, mouseY, partialTicks);

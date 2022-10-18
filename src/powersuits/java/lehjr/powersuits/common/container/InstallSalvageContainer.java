@@ -1,7 +1,7 @@
 package lehjr.powersuits.common.container;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import lehjr.numina.client.render.MuseIconUtils;
+import lehjr.numina.client.render.IconUtils;
 import lehjr.numina.common.base.NuminaObjects;
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
@@ -60,7 +60,7 @@ public class InstallSalvageContainer  extends Container {
                                 @OnlyIn(Dist.CLIENT)
                                 @Override
                                 public void drawIconAt(MatrixStack matrixStack, double posX, double posY, Colour colour) {
-                                    MuseIconUtils.getIcon().energyStorageBackground.renderIconScaledWithColour(matrixStack, posX, posY, 16, 16, Colour.WHITE);
+                                    IconUtils.getIcon().energyStorageBackground.renderIconScaledWithColour(matrixStack, posX, posY, 16, 16, Colour.WHITE);
                                 }
                             });
 
@@ -69,7 +69,7 @@ public class InstallSalvageContainer  extends Container {
                                 @OnlyIn(Dist.CLIENT)
                                 @Override
                                 public void drawIconAt(MatrixStack matrixStack, double posX, double posY, Colour colour) {
-                                    MuseIconUtils.getIcon().energyGenerationBackground.renderIconScaledWithColour(matrixStack, posX, posY, 16, 16, Colour.WHITE);
+                                    IconUtils.getIcon().energyGenerationBackground.renderIconScaledWithColour(matrixStack, posX, posY, 16, 16, Colour.WHITE);
                                 }
                             });
                         } else {

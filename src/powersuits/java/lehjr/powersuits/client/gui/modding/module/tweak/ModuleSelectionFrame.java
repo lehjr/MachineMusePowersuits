@@ -28,7 +28,7 @@ package lehjr.powersuits.client.gui.modding.module.tweak;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
-import lehjr.numina.client.render.MuseRenderer;
+import lehjr.numina.client.render.NuminaRenderer;
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
 import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
@@ -182,7 +182,7 @@ public class ModuleSelectionFrame extends ScrollableFrame {
         getSelectedModule().ifPresent(module ->{
             MusePoint2D pos = module.getPosition();
             if (pos.getY() > this.currentScrollPixels + getRect().top() + 4 && pos.getY() < this.currentScrollPixels + getRect().top() + getRect().height() - 4) {
-                MuseRenderer.drawCircleAround(matrixStack, pos.getX(), pos.getY(), 10, getzLevel());
+                NuminaRenderer.drawCircleAround(matrixStack, pos.getX(), pos.getY(), 10, getzLevel());
             }
         });
     }

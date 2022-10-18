@@ -28,7 +28,7 @@ package lehjr.powersuits.client.gui.modding.cosmetic;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
-import lehjr.numina.client.render.MuseIconUtils;
+import lehjr.numina.client.render.IconUtils;
 import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.capabilities.render.IModelSpecNBT;
 import lehjr.numina.common.capabilities.render.ModelSpecNBTCapability;
@@ -304,7 +304,7 @@ public class ColourPickerFrame extends ScrollableMultiRectFrame {
 
         @Override
         public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
-            GuiIcon icon = MuseIconUtils.getIcon();
+            GuiIcon icon = IconUtils.getIcon();
 
             // colours
             for (int i=0; i < colours().length; i++) {

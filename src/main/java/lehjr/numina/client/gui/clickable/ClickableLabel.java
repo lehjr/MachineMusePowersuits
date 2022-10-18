@@ -27,10 +27,10 @@
 package lehjr.numina.client.gui.clickable;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import lehjr.numina.client.render.MuseRenderer;
-import lehjr.numina.common.math.Colour;
 import lehjr.numina.client.gui.gemoetry.IDrawable;
 import lehjr.numina.client.gui.gemoetry.MusePoint2D;
+import lehjr.numina.common.math.Colour;
+import lehjr.numina.common.string.StringUtils;
 
 
 // fixme: revisit and rewrite
@@ -46,15 +46,15 @@ public class ClickableLabel extends Clickable {
     public ClickableLabel(String label, MusePoint2D position) {
         this.label = label;
         this.mode = JustifyMode.CENTERED;
-        super.setWidth(MuseRenderer.getStringWidth(label));
-        super.setHeight(MuseRenderer.getStringHeight());
+        super.setWidth(StringUtils.getStringWidth(label));
+        super.setHeight(StringUtils.getStringHeight());
         super.setPosition(position);
     }
 
     public ClickableLabel(String label, MusePoint2D position, JustifyMode mode) {
         this.label = label;
-        super.setWidth(MuseRenderer.getStringWidth(label));
-        super.setHeight(MuseRenderer.getStringHeight());
+        super.setWidth(StringUtils.getStringWidth(label));
+        super.setHeight(StringUtils.getStringHeight());
         super.setPosition(position);
         this.mode = mode;
     }
@@ -84,29 +84,29 @@ public class ClickableLabel extends Clickable {
         if (shadowed) {
             switch (mode) {
                 case LEFT:
-                    MuseRenderer.drawLeftAlignedShadowedString(matrixStack, this.label, centerx(), centery(), colour);
+                    StringUtils.drawLeftAlignedShadowedString(matrixStack, this.label, centerx(), centery(), colour);
                     break;
 
                 case CENTERED:
-                    MuseRenderer.drawShadowedStringCentered(matrixStack, this.label, centerx(), centery(), colour);
+                    StringUtils.drawShadowedStringCentered(matrixStack, this.label, centerx(), centery(), colour);
                     break;
 
                 case RIGHT:
-                    MuseRenderer.drawRightAlignedShadowedString(matrixStack, this.label, centerx(), centery(), colour);
+                    StringUtils.drawRightAlignedShadowedString(matrixStack, this.label, centerx(), centery(), colour);
                     break;
             }
         } else {
             switch (mode) {
                 case LEFT:
-                    MuseRenderer.drawLeftAlignedText(matrixStack, this.label, centerx(), centery(), colour);
+                    StringUtils.drawLeftAlignedText(matrixStack, this.label, centerx(), centery(), colour);
                     break;
 
                 case CENTERED:
-                    MuseRenderer.drawCenteredText(matrixStack, this.label, centerx(), centery(), colour);
+                    StringUtils.drawCenteredText(matrixStack, this.label, centerx(), centery(), colour);
                     break;
 
                 case RIGHT:
-                    MuseRenderer.drawRightAlignedText(matrixStack, this.label, centerx(), centery(), colour);
+                    StringUtils.drawRightAlignedText(matrixStack, this.label, centerx(), centery(), colour);
                     break;
             }
         }
@@ -128,7 +128,7 @@ public class ClickableLabel extends Clickable {
         if (label == null || label.isEmpty()) {
             return false;
         }
-        MusePoint2D radius = new MusePoint2D((double) (MuseRenderer.getStringWidth(label) / 2F + 2F), MuseRenderer.getStringHeight());
+        MusePoint2D radius = new MusePoint2D((double) (StringUtils.getStringWidth(label) / 2F + 2F), StringUtils.getStringHeight());
         return Math.abs(centerx() - x) < radius.getX() && Math.abs(centery() - y) < radius.getY();
     }
 

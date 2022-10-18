@@ -28,7 +28,7 @@ package lehjr.powersuits.client.gui.modding.module.tweak;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
-import lehjr.numina.client.render.MuseRenderer;
+import lehjr.numina.client.render.NuminaRenderer;
 import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
 import lehjr.numina.common.capabilities.module.powermodule.PowerModuleCapability;
 import lehjr.numina.common.constants.NuminaConstants;
@@ -108,7 +108,7 @@ public class ModuleTweakFrame extends ScrollableFrame {
         RenderSystem.pushMatrix();
         RenderSystem.translatef(0, -currentScrollPixels, 0);
         // FIXME: translation
-        MuseRenderer.drawShadowedStringCentered(matrixStack, new TranslationTextComponent("gui.powersuits.tinker"), centerx(), top() + 7);
+        StringUtils.drawShadowedStringCentered(matrixStack, new TranslationTextComponent("gui.powersuits.tinker"), centerx(), top() + 7);
 
         for (ClickableTinkerSlider slider : sliders) {
             slider.render(matrixStack, mouseX, mouseY, partialTicks);
@@ -118,15 +118,15 @@ public class ModuleTweakFrame extends ScrollableFrame {
         for (Map.Entry<String, Double> property : propertyStrings.entrySet()) {
             String name = property.getKey();
             String formattedValue = StringUtils.formatNumberFromUnits(property.getValue(), getUnit(name));
-            double valueWidth = MuseRenderer.getStringWidth(formattedValue);
+            double valueWidth = StringUtils.getStringWidth(formattedValue);
             double allowedNameWidth = getRect().width() - valueWidth - margin * 2;
             List<String> namesList = StringUtils.wrapStringToVisualLength(
                     new TranslationTextComponent(NuminaConstants.MODULE_TRADEOFF_PREFIX + name).getString(), allowedNameWidth);
 
             for (int i = 0; i < namesList.size(); i++) {
-                MuseRenderer.drawLeftAlignedShadowedString(matrixStack, namesList.get(i), getRect().left() + margin, nexty + 9 * i);
+                StringUtils.drawLeftAlignedShadowedString(matrixStack, namesList.get(i), getRect().left() + margin, nexty + 9 * i);
             }
-            MuseRenderer.drawRightAlignedShadowedString(matrixStack, formattedValue, getRect().right() - margin, nexty + 9 * (namesList.size() - 1) / 2);
+            StringUtils.drawRightAlignedShadowedString(matrixStack, formattedValue, getRect().right() - margin, nexty + 9 * (namesList.size() - 1) / 2);
             nexty += 9 * namesList.size() + 1;
         }
 

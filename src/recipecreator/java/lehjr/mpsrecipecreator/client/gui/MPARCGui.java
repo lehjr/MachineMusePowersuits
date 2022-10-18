@@ -3,10 +3,11 @@ package lehjr.mpsrecipecreator.client.gui;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import lehjr.mpsrecipecreator.basemod.DataPackWriter;
 import lehjr.mpsrecipecreator.container.MPARCContainer;
-import lehjr.numina.client.render.MuseRenderer;
+import lehjr.numina.client.render.NuminaRenderer;
 import lehjr.numina.common.math.Colour;
 import lehjr.numina.client.gui.ExtendedContainerScreen;
 import lehjr.numina.client.gui.gemoetry.MusePoint2D;
+import lehjr.numina.common.string.StringUtils;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.util.text.ITextComponent;
@@ -227,7 +228,7 @@ public class MPARCGui extends ExtendedContainerScreen<MPARCContainer> {
         super.render(matrixStack, mouseX, mouseY, partialTicks);
 
         // Title
-        MuseRenderer.drawShadowedStringCentered(matrixStack, "MPS-RecipeCreator", backgroundRect.centerx(), backgroundRect.finalTop() - 20);
+        StringUtils.drawShadowedStringCentered(matrixStack, "MPS-RecipeCreator", backgroundRect.centerx(), backgroundRect.finalTop() - 20);
         renderTooltip(matrixStack, mouseX, mouseY);
     }
 

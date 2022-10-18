@@ -28,12 +28,12 @@ package lehjr.numina.client.screen;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import lehjr.numina.client.gui.ExtendedContainerScreen;
-import lehjr.numina.common.container.ChargingBaseContainer;
-import lehjr.numina.common.string.StringUtils;
 import lehjr.numina.client.gui.frame.InventoryFrame;
 import lehjr.numina.client.gui.frame.PlayerInventoryFrame;
 import lehjr.numina.client.gui.gemoetry.MusePoint2D;
-import lehjr.numina.client.gui.meters.EnergyMeter;
+import lehjr.numina.client.gui.meter.EnergyMeter;
+import lehjr.numina.common.container.ChargingBaseContainer;
+import lehjr.numina.common.string.StringUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.text.ITextComponent;
@@ -114,9 +114,8 @@ public class ChargingBaseGui extends ExtendedContainerScreen<ChargingBaseContain
 //        backgroundRect.render(matrixStack, mouseX, mouseY, frameTime);
         super.renderBg(matrixStack, frameTime, mouseX, mouseY);
         energyMeter.draw(matrixStack, (float) batterySlot.centerx() - 16,
-                (float) (batterySlot.finalBottom() + spacer * 0.25),
-                menu.getEnergyForMeter(),
-                getBlitOffset() + 2);
+                (float) (batterySlot.finalBottom() + spacer * 0.25) + 8,
+                menu.getEnergyForMeter());
         this.renderTooltip(matrixStack, mouseX, mouseY);
     }
 }

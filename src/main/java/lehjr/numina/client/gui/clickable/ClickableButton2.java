@@ -2,11 +2,11 @@ package lehjr.numina.client.gui.clickable;
 
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import lehjr.numina.client.render.MuseRenderer;
-import lehjr.numina.common.math.Colour;
 import lehjr.numina.client.gui.gemoetry.DrawableTile;
 import lehjr.numina.client.gui.gemoetry.IDrawable;
 import lehjr.numina.client.gui.gemoetry.MusePoint2D;
+import lehjr.numina.common.math.Colour;
+import lehjr.numina.common.string.StringUtils;
 import net.minecraft.util.text.ITextComponent;
 
 /**
@@ -40,9 +40,9 @@ public class ClickableButton2 extends DrawableTile implements IClickable {
                 if (x[i].length() > x[longestIndex].length())
                     longestIndex = i;
             }
-            this.radius = new MusePoint2D((float) (MuseRenderer.getStringWidth(x[longestIndex]) / 2F + 2F), 6 * x.length);
+            this.radius = new MusePoint2D((float) (StringUtils.getStringWidth(x[longestIndex]) / 2F + 2F), 6 * x.length);
         } else {
-            this.radius = new MusePoint2D((float) (MuseRenderer.getStringWidth(label.getString()) / 2F + 2F), 6);
+            this.radius = new MusePoint2D((float) (StringUtils.getStringWidth(label.getString()) / 2F + 2F), 6);
         }
 
         setLeft(position.getX() - radius.getX());
@@ -133,10 +133,10 @@ public class ClickableButton2 extends DrawableTile implements IClickable {
             if (label.getString().contains("\n")) {
                 String[] s = label.getString().split("\n");
                 for (int i = 0; i < s.length; i++) {
-                    MuseRenderer.drawShadowedStringCentered(matrixStack, s[i], getPosition().getX(), getPosition().getY() + (i * MuseRenderer.getStringHeight() + 1));
+                    StringUtils.drawShadowedStringCentered(matrixStack, s[i], getPosition().getX(), getPosition().getY() + (i * StringUtils.getStringHeight() + 1));
                 }
             } else {
-                MuseRenderer.drawCenteredText(matrixStack, this.label, getPosition().getX(), getPosition().getY() + 1, new Colour(16777215));
+                StringUtils.drawCenteredText(matrixStack, this.label, getPosition().getX(), getPosition().getY() + 1, new Colour(16777215));
             }
         }
     }
