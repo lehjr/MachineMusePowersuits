@@ -143,7 +143,7 @@ public class ElectricItemUtils {
         if (BlackList.blacklistModIds.contains(itemStack.getItem().getRegistryName().getNamespace())) {
             return 0;
         }
-        return itemStack.getCapability(CapabilityEnergy.ENERGY).map(energyHandler -> energyHandler.extractEnergy(drainAmount, simulate)).orElse(0);
+        return itemStack.getCapability(CapabilityEnergy.ENERGY).filter(iEnergyStorage -> iEnergyStorage.getMaxEnergyStored() >= getMaxEnergyForComparison()).map(energyHandler -> energyHandler.extractEnergy(drainAmount, simulate)).orElse(0);
     }
 
     /**
@@ -164,8 +164,12 @@ public class ElectricItemUtils {
         return itemStack.getCapability(CapabilityEnergy.ENERGY).map(energyHandler -> energyHandler.receiveEnergy(chargeAmount, simulate)).orElse(0);
     }
 
+    /**
+     * Hacky way of determining if item is a power source.
+     * @return
+     */
     static int getMaxEnergyForComparison() {
 //        return 0;
-        return (int) (0.8 * new ItemStack(NuminaObjects.BASIC_BATTERY.get()).getCapability(CapabilityEnergy.ENERGY).map(energyHandler -> energyHandler.getMaxEnergyStored()).orElse(0));
+        return (int) (0.8 * new ItemStack(NuminaObjects.BASIC_BATTERY.get()).getCapability(CapabilityEnergy.ENERGY).map(energyHandler -> energyHandler.getMaxEnergyStored() ).orElse(0));
     }
 }
