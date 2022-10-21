@@ -2,9 +2,8 @@ package lehjr.mpsrecipecreator.client.gui;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
-import lehjr.numina.client.render.NuminaRenderer;
-import lehjr.numina.common.math.Colour;
 import lehjr.numina.client.gui.frame.ScrollableFrame;
+import lehjr.numina.common.math.Colour;
 import lehjr.numina.common.string.StringUtils;
 
 public class RecipeDisplayFrame extends ScrollableFrame {

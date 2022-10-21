@@ -28,8 +28,8 @@ package lehjr.powersuits.common.item.module.weapon;
 
 import lehjr.numina.common.capabilities.module.powermodule.*;
 import lehjr.powersuits.common.config.MPSSettings;
-import lehjr.powersuits.common.item.module.AbstractPowerModule;
 import lehjr.powersuits.common.constants.MPSConstants;
+import lehjr.powersuits.common.item.module.AbstractPowerModule;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;

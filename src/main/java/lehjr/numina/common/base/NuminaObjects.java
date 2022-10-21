@@ -31,8 +31,8 @@ import lehjr.numina.client.render.item.NuminaArmorStandItemRenderer;
 import lehjr.numina.common.block.ChargingBase;
 import lehjr.numina.common.blockentity.ChargingBaseTileEntity;
 import lehjr.numina.common.constants.NuminaConstants;
-import lehjr.numina.common.container.ArmorStandContainer;
-import lehjr.numina.common.container.ChargingBaseContainer;
+import lehjr.numina.common.container.ArmorStandMenu;
+import lehjr.numina.common.container.ChargingBaseMenu;
 import lehjr.numina.common.entity.NuminaArmorStandEntity;
 import lehjr.numina.common.integration.scannable.MPSContainerScanner;
 import lehjr.numina.common.item.Battery;
@@ -180,21 +180,21 @@ public class NuminaObjects {
      */
     public static final DeferredRegister<ContainerType<?>> CONTAINER_TYPES = DeferredRegister.create(ForgeRegistries.CONTAINERS, NuminaConstants.MOD_ID);
 
-    public static final RegistryObject<ContainerType<ArmorStandContainer>> ARMOR_STAND_CONTAINER_TYPE = CONTAINER_TYPES.register("armorstand_modding_container",
+    public static final RegistryObject<ContainerType<ArmorStandMenu>> ARMOR_STAND_CONTAINER_TYPE = CONTAINER_TYPES.register("armorstand_modding_container",
             () -> IForgeContainerType.create((windowId, inv, data) -> {
                 int entityID = data.readInt();
                 Entity armorStand = inv.player.level.getEntity(entityID);
 
                 if (armorStand instanceof ArmorStandEntity) {
-                    return new ArmorStandContainer(windowId, inv, (ArmorStandEntity) armorStand);
+                    return new ArmorStandMenu(windowId, inv, (ArmorStandEntity) armorStand);
                 }
                 return null;
             }));
 
-    public static final RegistryObject<ContainerType<ChargingBaseContainer>> CHARGING_BASE_CONTAINER_TYPE = CONTAINER_TYPES.register("charging_base", () -> IForgeContainerType.create((windowId, inv, data) -> {
+    public static final RegistryObject<ContainerType<ChargingBaseMenu>> CHARGING_BASE_CONTAINER_TYPE = CONTAINER_TYPES.register("charging_base", () -> IForgeContainerType.create((windowId, inv, data) -> {
         BlockPos pos = data.readBlockPos();
         World world = inv.player.level;
-        return new ChargingBaseContainer(windowId, world, pos, inv, inv.player);
+        return new ChargingBaseMenu(windowId, pos, inv);
     }));
 
     public static final RegistryObject<ContainerType<MPSContainerScanner>> SCANNER_CONTAINER = CONTAINER_TYPES.register(Constants.NAME_SCANNER, () -> IForgeContainerType.create(MPSContainerScanner::createForClient));

@@ -28,7 +28,7 @@ package lehjr.numina.common.entity;
 
 import lehjr.numina.client.sound.SoundDictionary;
 import lehjr.numina.common.base.NuminaObjects;
-import lehjr.numina.common.container.ArmorStandContainer;
+import lehjr.numina.common.container.ArmorStandMenu;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.MobEntity;
@@ -85,7 +85,7 @@ public class NuminaArmorStandEntity extends ArmorStandEntity {
                     player.playSound(SoundDictionary.SOUND_EVENT_GUI_SELECT, 1.0F, 1.0F);
                     NetworkHooks.openGui((ServerPlayerEntity) player,
                             new SimpleNamedContainerProvider((windowID, playerInventory, playerEntity) ->
-                                    new ArmorStandContainer(windowID, playerInventory, (ArmorStandEntity) getEntity()),
+                                    new ArmorStandMenu(windowID, playerInventory, (ArmorStandEntity) getEntity()),
                                     new TranslationTextComponent("screen.numina.armor_stand")),
                             buf -> buf.writeInt(getId()));
                 return ActionResultType.SUCCESS;

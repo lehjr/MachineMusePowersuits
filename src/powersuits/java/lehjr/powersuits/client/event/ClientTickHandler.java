@@ -27,6 +27,10 @@
 package lehjr.powersuits.client.event;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
+import lehjr.numina.client.gui.meter.EnergyMeter;
+import lehjr.numina.client.gui.meter.HeatMeter;
+import lehjr.numina.client.gui.meter.PlasmaChargeMeter;
+import lehjr.numina.client.gui.meter.WaterMeter;
 import lehjr.numina.client.render.NuminaRenderer;
 import lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
@@ -34,7 +38,6 @@ import lehjr.numina.common.energy.ElectricItemUtils;
 import lehjr.numina.common.heat.HeatUtils;
 import lehjr.numina.common.math.MathUtils;
 import lehjr.numina.common.string.StringUtils;
-import lehjr.numina.client.gui.meter.*;
 import lehjr.powersuits.common.config.MPSSettings;
 import lehjr.powersuits.common.constants.MPSRegistryNames;
 import lehjr.powersuits.common.item.module.environmental.AutoFeederModule;

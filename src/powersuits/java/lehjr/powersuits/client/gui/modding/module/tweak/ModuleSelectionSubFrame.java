@@ -27,14 +27,13 @@
 package lehjr.powersuits.client.gui.modding.module.tweak;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import lehjr.numina.client.render.NuminaRenderer;
+import lehjr.numina.client.gui.clickable.ClickableModule;
+import lehjr.numina.client.gui.gemoetry.MusePoint2D;
+import lehjr.numina.client.gui.gemoetry.RelativeRect;
 import lehjr.numina.client.sound.Musique;
 import lehjr.numina.client.sound.SoundDictionary;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.math.Colour;
-import lehjr.numina.client.gui.clickable.ClickableModule;
-import lehjr.numina.client.gui.gemoetry.MusePoint2D;
-import lehjr.numina.client.gui.gemoetry.RelativeRect;
 import lehjr.numina.common.string.StringUtils;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.ITextComponent;

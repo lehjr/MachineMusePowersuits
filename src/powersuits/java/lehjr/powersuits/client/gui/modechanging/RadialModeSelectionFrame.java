@@ -27,17 +27,17 @@
 package lehjr.powersuits.client.gui.modechanging;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import lehjr.numina.client.render.NuminaRenderer;
-import lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
-import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
-import lehjr.numina.common.network.NuminaPackets;
-import lehjr.numina.common.network.packets.ModeChangeRequestPacket;
 import lehjr.numina.client.gui.clickable.ClickableModule;
 import lehjr.numina.client.gui.frame.IGuiFrame;
 import lehjr.numina.client.gui.gemoetry.IDrawable;
 import lehjr.numina.client.gui.gemoetry.MusePoint2D;
 import lehjr.numina.client.gui.gemoetry.RelativeRect;
 import lehjr.numina.client.gui.gemoetry.SpiralPointToPoint2D;
+import lehjr.numina.client.render.NuminaRenderer;
+import lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
+import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
+import lehjr.numina.common.network.NuminaPackets;
+import lehjr.numina.common.network.packets.ModeChangeRequestPacket;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.ITextComponent;

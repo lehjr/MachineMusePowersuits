@@ -27,12 +27,12 @@
 package lehjr.powersuits.client.gui.common;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import lehjr.numina.client.sound.Musique;
-import lehjr.numina.client.sound.SoundDictionary;
 import lehjr.numina.client.gui.clickable.ClickableButton2;
 import lehjr.numina.client.gui.frame.GuiFrameWithoutBackground;
 import lehjr.numina.client.gui.gemoetry.IRect;
 import lehjr.numina.client.gui.gemoetry.MusePoint2D;
+import lehjr.numina.client.sound.Musique;
+import lehjr.numina.client.sound.SoundDictionary;
 import lehjr.powersuits.client.gui.keybind.TinkerKeybindGui;
 import lehjr.powersuits.client.gui.modding.cosmetic.CosmeticGui;
 import lehjr.powersuits.client.gui.modding.module.tweak.ModuleTweakGui;

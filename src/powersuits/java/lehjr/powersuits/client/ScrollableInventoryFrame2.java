@@ -1,12 +1,12 @@
 package lehjr.powersuits.client;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
 import lehjr.numina.client.gui.IContainerULOffSet;
 import lehjr.numina.client.gui.frame.GUISpacer;
 import lehjr.numina.client.gui.frame.InventoryFrame;
 import lehjr.numina.client.gui.frame.MultiRectHolderFrame;
 import lehjr.numina.client.gui.gemoetry.MusePoint2D;
+import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
 import lehjr.powersuits.client.gui.common.ModularItemSelectionFrameContainered;
 import lehjr.powersuits.client.gui.common.ModularItemTabToggleWidget;
 import lehjr.powersuits.common.constants.MPSConstants;

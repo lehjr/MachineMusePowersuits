@@ -28,7 +28,7 @@ package lehjr.numina.common.block;
 
 import lehjr.numina.client.sound.SoundDictionary;
 import lehjr.numina.common.blockentity.ChargingBaseTileEntity;
-import lehjr.numina.common.container.ChargingBaseContainer;
+import lehjr.numina.common.container.ChargingBaseMenu;
 import lehjr.numina.common.entity.NuminaArmorStandEntity;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
@@ -116,7 +116,7 @@ public class ChargingBase extends Block implements IWaterLoggable {
 
                     @Override
                     public Container createMenu(int i, PlayerInventory playerInventory, PlayerEntity playerEntity) {
-                        return new ChargingBaseContainer(i, worldIn, pos, playerInventory, playerEntity);
+                        return new ChargingBaseMenu(i, pos, playerInventory);
                     }
                 };
                 NetworkHooks.openGui((ServerPlayerEntity) player, containerProvider, tileEntity.getBlockPos());

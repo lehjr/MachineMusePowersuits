@@ -28,12 +28,12 @@ package lehjr.powersuits.client.gui.modding.cosmetic;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
+import lehjr.numina.client.gui.frame.ScrollableFrame;
+import lehjr.numina.client.gui.gemoetry.RelativeRect;
 import lehjr.numina.common.capabilities.render.modelspec.EnumSpecType;
 import lehjr.numina.common.capabilities.render.modelspec.ModelRegistry;
 import lehjr.numina.common.capabilities.render.modelspec.SpecBase;
 import lehjr.numina.common.math.Colour;
-import lehjr.numina.client.gui.frame.ScrollableFrame;
-import lehjr.numina.client.gui.gemoetry.RelativeRect;
 import lehjr.powersuits.client.gui.common.ModularItemSelectionFrame;
 import lehjr.powersuits.client.gui.common.ModularItemTabToggleWidget;
 import net.minecraft.inventory.EquipmentSlotType;

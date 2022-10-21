@@ -32,10 +32,10 @@ import lehjr.numina.common.capabilities.module.blockbreaking.IBlockBreakingModul
 import lehjr.numina.common.capabilities.module.powermodule.*;
 import lehjr.numina.common.energy.ElectricItemUtils;
 import lehjr.numina.common.helper.ToolHelpers;
-import lehjr.powersuits.common.item.module.AbstractPowerModule;
 import lehjr.powersuits.common.config.MPSSettings;
 import lehjr.powersuits.common.constants.MPSConstants;
 import lehjr.powersuits.common.constants.MPSRegistryNames;
+import lehjr.powersuits.common.item.module.AbstractPowerModule;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;

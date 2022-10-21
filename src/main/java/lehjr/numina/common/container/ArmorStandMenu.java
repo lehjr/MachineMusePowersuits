@@ -28,7 +28,7 @@ package lehjr.numina.common.container;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.datafixers.util.Pair;
-import lehjr.numina.client.gui.slot.IIConProvider;
+import lehjr.numina.client.gui.slot.IconSlot;
 import lehjr.numina.client.render.IconUtils;
 import lehjr.numina.common.base.NuminaObjects;
 import lehjr.numina.common.math.Colour;
@@ -48,15 +48,14 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-
-public class ArmorStandContainer extends Container {
+public class ArmorStandMenu extends Container {
     private final IInventory armorStandInventory;
     private static final EquipmentSlotType[] VALID_EQUIPMENT_SLOTS = new EquipmentSlotType[]{EquipmentSlotType.HEAD, EquipmentSlotType.CHEST, EquipmentSlotType.LEGS, EquipmentSlotType.FEET};
     private final PlayerEntity player;
     private final ArmorStandEntity armorStandEntity;
 
-    public ArmorStandContainer(int id, PlayerInventory playerInventory, final ArmorStandEntity armorStand) { // base class for MPAArmorStandEntity
-        super(NuminaObjects.ARMOR_STAND_CONTAINER_TYPE.get(), id);
+    public ArmorStandMenu(int windowID, PlayerInventory playerInventory, final ArmorStandEntity armorStand) {
+        super(NuminaObjects.ARMOR_STAND_CONTAINER_TYPE.get(), windowID);
         this.player = playerInventory.player;
         this.armorStandEntity = armorStand;
         armorStandInventory = new Inventory(
@@ -70,8 +69,8 @@ public class ArmorStandContainer extends Container {
 
         // ArmorStand Equipment (container slots 0-3)
         for(int k = 0; k < 4; ++k) {
-            final EquipmentSlotType equipmentslottype = VALID_EQUIPMENT_SLOTS[k];
-            this.addSlot(new Slot(armorStandInventory, 5 - k, 153, 8 + k * 18) {
+            final EquipmentSlotType equipmentSlot = VALID_EQUIPMENT_SLOTS[k];
+            this.addSlot(new Slot(armorStandInventory, 5 - k, 152, 8 + k * 18) {
                 /**
                  * Returns the maximum stack size for a given slot (usually the same as getInventoryStackLimit(), but 1 in
                  * the case of armor slots)
@@ -86,7 +85,7 @@ public class ArmorStandContainer extends Container {
                  */
                 @Override
                 public boolean mayPlace(ItemStack stack) {
-                    return stack.canEquip(equipmentslottype, player);
+                    return stack.canEquip(equipmentSlot, player);
                 }
 
                 /**
@@ -100,26 +99,26 @@ public class ArmorStandContainer extends Container {
 
                 @Override
                 public ItemStack onTake(PlayerEntity thePlayer, ItemStack stack) {
-                    armorStand.getItemBySlot(equipmentslottype);
+                    armorStand.getItemBySlot(equipmentSlot);
                     return super.onTake(thePlayer, stack);
                 }
 
                 @Override
                 public void set(ItemStack stack) {
-                    armorStand.setItemSlot(equipmentslottype, stack.copy());
+                    armorStand.setItemSlot(equipmentSlot, stack.copy());
                     super.set(stack);
                 }
 
                 @OnlyIn(Dist.CLIENT)
                 @Override
                 public Pair<ResourceLocation, ResourceLocation> getNoItemIcon() {
-                    return NuminaObjects.getSlotBackground(equipmentslottype);
+                    return Pair.of(PlayerContainer.BLOCK_ATLAS, NuminaObjects.ARMOR_SLOT_TEXTURES.get(equipmentSlot));
                 }
             });
         }
 
         // ArmorStand OffHand (container slot 4)
-        this.addSlot(new Slot(armorStandInventory, 1, 80, 8) {
+        this.addSlot(new Slot(armorStandInventory, 1, 83, 8) {
             @OnlyIn(Dist.CLIENT)
             @Override
             public Pair<ResourceLocation, ResourceLocation> getNoItemIcon() {
@@ -140,7 +139,7 @@ public class ArmorStandContainer extends Container {
         });
 
         // ArmorStand MainHand (container slot 5)
-        this.addSlot(new IconSlot(armorStandInventory, 0, 80, 26) {
+        this.addSlot(new IconSlot(armorStandInventory, 0, 83, 26) {
             @Override
             public void drawIconAt(MatrixStack matrixStack, double posX, double posY, Colour colour) {
                 IconUtils.getIcon().weaponSlotBackground.draw(matrixStack, posX, posY, colour);
@@ -161,7 +160,7 @@ public class ArmorStandContainer extends Container {
 
         // Player Equipment (container slots 6-9)
         for(int k = 0; k < 4; ++k) {
-            final EquipmentSlotType equipmentslottype = VALID_EQUIPMENT_SLOTS[k];
+            final EquipmentSlotType equipmentSlot = VALID_EQUIPMENT_SLOTS[k];
             this.addSlot(new Slot(playerInventory, 39 - k, 8, 8 + k * 18) {
                 /**
                  * Returns the maximum stack size for a given slot (usually the same as getInventoryStackLimit(), but 1 in
@@ -177,7 +176,7 @@ public class ArmorStandContainer extends Container {
                  */
                 @Override
                 public boolean mayPlace(ItemStack stack) {
-                    return stack.canEquip(equipmentslottype, player);
+                    return stack.canEquip(equipmentSlot, player);
                 }
 
                 /**
@@ -192,7 +191,7 @@ public class ArmorStandContainer extends Container {
                 @OnlyIn(Dist.CLIENT)
                 @Override
                 public Pair<ResourceLocation, ResourceLocation> getNoItemIcon() {
-                    return Pair.of(PlayerContainer.BLOCK_ATLAS, NuminaObjects.ARMOR_SLOT_TEXTURES.get(equipmentslottype));
+                    return Pair.of(PlayerContainer.BLOCK_ATLAS, NuminaObjects.ARMOR_SLOT_TEXTURES.get(equipmentSlot));
                 }
             });
         }
@@ -210,7 +209,7 @@ public class ArmorStandContainer extends Container {
         }
 
         // Player Shield (container slot 46)
-        this.addSlot(new Slot(playerInventory, 40, 80, 62) {
+        this.addSlot(new Slot(playerInventory, 40, 77, 62) {
             @OnlyIn(Dist.CLIENT)
             @Override
             public Pair<ResourceLocation, ResourceLocation> getNoItemIcon() {
@@ -253,13 +252,13 @@ public class ArmorStandContainer extends Container {
                     return ItemStack.EMPTY;
                 }
 
-            // from Player Armor Slots to Player Inventory
+                // from Player Armor Slots to Player Inventory
             } else if (index >= 6 && index < 10) {
                 if (!this.moveItemStackTo(itemstack1, 9, 45, false)) {
                     return ItemStack.EMPTY;
                 }
 
-            // to Armor Stand from Player Inventory
+                // to Armor Stand from Player Inventory
             } else if (equipmentslottype.getType() == EquipmentSlotType.Group.ARMOR && !this.slots.get(3 - equipmentslottype.getIndex()).hasItem()) {
                 // Armor Stand first 4 slots is armor inventory
                 int i = 3 - equipmentslottype.getIndex();
@@ -267,7 +266,7 @@ public class ArmorStandContainer extends Container {
                     return ItemStack.EMPTY;
                 }
 
-            // to Player Armor from Player Inventory
+                // to Player Armor from Player Inventory
             } else if (equipmentslottype.getType() == EquipmentSlotType.Group.ARMOR && !this.slots.get(9 - equipmentslottype.getIndex()).hasItem()) {
                 // player armor inventory
                 int i = 9 - equipmentslottype.getIndex();
@@ -275,31 +274,31 @@ public class ArmorStandContainer extends Container {
                     return ItemStack.EMPTY;
                 }
 
-            // Armor Stand offhand
+                // Armor Stand offhand
             } else if (equipmentslottype == EquipmentSlotType.OFFHAND && !this.slots.get(4).hasItem()) {
                 if (!this.moveItemStackTo(itemstack1, 4, 5, false)) {
                     return ItemStack.EMPTY;
                 }
 
-            // player offhand
+                // player offhand
             } else if (equipmentslottype == EquipmentSlotType.OFFHAND && !this.slots.get(46).hasItem()) {
                 if (!this.moveItemStackTo(itemstack1, 45, 46, false)) {
                     return ItemStack.EMPTY;
                 }
 
-            // player main inventory
+                // player main inventory
             } else if (index >= 10 && index < 37) {
                 if (!this.moveItemStackTo(itemstack1, 36, 45, false)) {
                     return ItemStack.EMPTY;
                 }
 
-            // player hotbar
+                // player hotbar
             } else if (index >= 36 && index < 45) {
                 if (!this.moveItemStackTo(itemstack1, 9, 36, false)) {
                     return ItemStack.EMPTY;
                 }
 
-            // player inventory
+                // player inventory
             } else if (!this.moveItemStackTo(itemstack1, 10, 46, false)) {
                 return ItemStack.EMPTY;
             }
@@ -329,11 +328,5 @@ public class ArmorStandContainer extends Container {
     public void removed(PlayerEntity playerIn) {
         super.removed(playerIn);
         this.armorStandInventory.stopOpen(playerIn);
-    }
-
-    abstract class IconSlot extends Slot implements IIConProvider {
-        public IconSlot(IInventory iInventory, int inventoryIndex, int posX, int posY) {
-            super(iInventory, inventoryIndex, posX, posY);
-        }
     }
 }

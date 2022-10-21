@@ -30,9 +30,9 @@ import lehjr.numina.common.capabilities.module.blockbreaking.IBlockBreakingModul
 import lehjr.numina.common.capabilities.module.powermodule.*;
 import lehjr.numina.common.capabilities.module.rightclick.RightClickModule;
 import lehjr.numina.common.energy.ElectricItemUtils;
-import lehjr.powersuits.common.item.module.AbstractPowerModule;
 import lehjr.powersuits.common.config.MPSSettings;
 import lehjr.powersuits.common.constants.MPSConstants;
+import lehjr.powersuits.common.item.module.AbstractPowerModule;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;

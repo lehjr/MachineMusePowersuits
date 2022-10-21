@@ -27,16 +27,16 @@
 package lehjr.powersuits.client.gui.clickable;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
+import lehjr.numina.client.gui.clickable.ClickableButton2;
+import lehjr.numina.client.gui.clickable.ClickableModule;
+import lehjr.numina.client.gui.clickable.IClickable;
+import lehjr.numina.client.gui.gemoetry.MusePoint2D;
 import lehjr.numina.client.render.NuminaRenderer;
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
 import lehjr.numina.common.math.Colour;
 import lehjr.numina.common.network.NuminaPackets;
 import lehjr.numina.common.network.packets.ToggleRequestPacket;
 import lehjr.numina.common.string.StringUtils;
-import lehjr.numina.client.gui.clickable.ClickableButton2;
-import lehjr.numina.client.gui.clickable.ClickableModule;
-import lehjr.numina.client.gui.clickable.IClickable;
-import lehjr.numina.client.gui.gemoetry.MusePoint2D;
 import lehjr.powersuits.client.control.KeybindManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.ClientPlayerEntity;

@@ -1,15 +1,15 @@
 package lehjr.powersuits.common.container;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
+import lehjr.numina.client.gui.slot.HideableSlotItemHandler;
+import lehjr.numina.client.gui.slot.IHideableSlot;
+import lehjr.numina.client.gui.slot.IIConProvider;
 import lehjr.numina.client.render.IconUtils;
 import lehjr.numina.common.base.NuminaObjects;
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.math.Colour;
 import lehjr.numina.common.math.MathUtils;
-import lehjr.numina.client.gui.slot.HideableSlotItemHandler;
-import lehjr.numina.client.gui.slot.IHideableSlot;
-import lehjr.numina.client.gui.slot.IIConProvider;
 import lehjr.powersuits.common.base.MPSObjects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;

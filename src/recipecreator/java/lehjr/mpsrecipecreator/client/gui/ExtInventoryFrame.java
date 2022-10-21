@@ -1,7 +1,6 @@
 package lehjr.mpsrecipecreator.client.gui;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import lehjr.numina.common.math.Colour;
 import lehjr.numina.client.gui.IContainerULOffSet;
 import lehjr.numina.client.gui.frame.IGuiFrame;
 import lehjr.numina.client.gui.frame.InventoryFrame;
@@ -9,6 +8,7 @@ import lehjr.numina.client.gui.frame.PlayerInventoryFrame;
 import lehjr.numina.client.gui.frame.ScrollableFrame;
 import lehjr.numina.client.gui.gemoetry.MusePoint2D;
 import lehjr.numina.client.gui.gemoetry.RelativeRect;
+import lehjr.numina.common.math.Colour;
 import net.minecraft.inventory.container.Container;
 
 import java.util.ArrayList;

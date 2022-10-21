@@ -34,9 +34,9 @@ import lehjr.numina.common.capabilities.module.powermodule.PowerModuleCapability
 import lehjr.numina.common.capabilities.module.rightclick.RightClickModule;
 import lehjr.numina.common.energy.ElectricItemUtils;
 import lehjr.numina.common.heat.HeatUtils;
-import lehjr.powersuits.common.item.module.AbstractPowerModule;
 import lehjr.powersuits.common.config.MPSSettings;
 import lehjr.powersuits.common.constants.MPSConstants;
+import lehjr.powersuits.common.item.module.AbstractPowerModule;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.effect.LightningBoltEntity;
 import net.minecraft.entity.player.PlayerEntity;

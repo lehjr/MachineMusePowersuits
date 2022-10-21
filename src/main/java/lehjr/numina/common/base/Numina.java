@@ -34,8 +34,8 @@ import lehjr.numina.client.event.ToolTipEvent;
 import lehjr.numina.client.gui.GuiIcon;
 import lehjr.numina.client.render.IconUtils;
 import lehjr.numina.client.render.NuminaSpriteUploader;
-import lehjr.numina.client.screen.ArmorStandGui;
-import lehjr.numina.client.screen.ChargingBaseGui;
+import lehjr.numina.client.screen.ArmorStandScreen;
+import lehjr.numina.client.screen.ChargingBaseScreen;
 import lehjr.numina.common.capabilities.heat.HeatCapability;
 import lehjr.numina.common.capabilities.module.powermodule.PowerModuleCapability;
 import lehjr.numina.common.capabilities.player.CapabilityPlayerKeyStates;
@@ -178,8 +178,8 @@ public class Numina {
 
         MinecraftForge.EVENT_BUS.register(new ToolTipEvent());
 
-        ScreenManager.register(NuminaObjects.CHARGING_BASE_CONTAINER_TYPE.get(), ChargingBaseGui::new);
-        ScreenManager.register(NuminaObjects.ARMOR_STAND_CONTAINER_TYPE.get(), ArmorStandGui::new);
+        ScreenManager.register(NuminaObjects.CHARGING_BASE_CONTAINER_TYPE.get(), ChargingBaseScreen::new);
+        ScreenManager.register(NuminaObjects.ARMOR_STAND_CONTAINER_TYPE.get(), ArmorStandScreen::new);
 
         ScreenManager.register(NuminaObjects.SCANNER_CONTAINER.get(), MPSGuiScanner::new);
     }

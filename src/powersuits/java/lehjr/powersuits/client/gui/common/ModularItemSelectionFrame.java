@@ -2,13 +2,13 @@ package lehjr.powersuits.client.gui.common;
 
 import com.google.common.collect.Lists;
 import com.mojang.blaze3d.matrix.MatrixStack;
-import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
-import lehjr.numina.common.math.Colour;
 import lehjr.numina.client.gui.clickable.ClickableButton;
 import lehjr.numina.client.gui.frame.GUISpacer;
 import lehjr.numina.client.gui.frame.MultiRectHolderFrame;
 import lehjr.numina.client.gui.frame.RectHolderFrame;
 import lehjr.numina.client.gui.gemoetry.MusePoint2D;
+import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
+import lehjr.numina.common.math.Colour;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.ITextComponent;

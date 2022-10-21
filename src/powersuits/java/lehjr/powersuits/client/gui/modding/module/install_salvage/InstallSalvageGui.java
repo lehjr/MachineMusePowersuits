@@ -1,7 +1,6 @@
 package lehjr.powersuits.client.gui.modding.module.install_salvage;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import lehjr.numina.common.math.Colour;
 import lehjr.numina.client.gui.ExtendedContainerScreen;
 import lehjr.numina.client.gui.clickable.ClickableButton;
 import lehjr.numina.client.gui.frame.GUISpacer;
@@ -9,6 +8,7 @@ import lehjr.numina.client.gui.frame.LabelBox;
 import lehjr.numina.client.gui.frame.MultiRectHolderFrame;
 import lehjr.numina.client.gui.frame.PlayerInventoryFrame;
 import lehjr.numina.client.gui.gemoetry.MusePoint2D;
+import lehjr.numina.common.math.Colour;
 import lehjr.powersuits.client.ScrollableInventoryFrame2;
 import lehjr.powersuits.client.gui.common.ModularItemSelectionFrameContainered;
 import lehjr.powersuits.client.gui.common.TabSelectFrame;

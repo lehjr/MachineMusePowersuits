@@ -1,18 +1,17 @@
 package lehjr.mpsrecipecreator.client.gui;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import lehjr.numina.client.gui.gemoetry.*;
-import lehjr.numina.client.render.NuminaRenderer;
-import lehjr.numina.client.sound.Musique;
-import lehjr.numina.client.sound.SoundDictionary;
-import lehjr.numina.common.config.NuminaSettings;
-import lehjr.numina.common.math.Colour;
 import lehjr.numina.client.gui.IContainerULOffSet;
 import lehjr.numina.client.gui.clickable.Button;
 import lehjr.numina.client.gui.clickable.ClickableArrow;
 import lehjr.numina.client.gui.frame.IGuiFrame;
+import lehjr.numina.client.gui.gemoetry.*;
 import lehjr.numina.client.gui.slot.IHideableSlot;
 import lehjr.numina.client.gui.slot.UniversalSlot;
+import lehjr.numina.client.sound.Musique;
+import lehjr.numina.client.sound.SoundDictionary;
+import lehjr.numina.common.config.NuminaSettings;
+import lehjr.numina.common.math.Colour;
 import lehjr.numina.common.string.StringUtils;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.Slot;

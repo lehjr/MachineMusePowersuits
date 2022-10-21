@@ -1,13 +1,13 @@
 package lehjr.mpsrecipecreator.client.gui;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import lehjr.numina.client.sound.Musique;
-import lehjr.numina.common.math.Colour;
 import lehjr.numina.client.gui.clickable.CheckBox;
 import lehjr.numina.client.gui.clickable.ClickableButton;
 import lehjr.numina.client.gui.clickable.ClickableLabel;
 import lehjr.numina.client.gui.frame.ScrollableFrame;
 import lehjr.numina.client.gui.gemoetry.MusePoint2D;
+import lehjr.numina.client.sound.Musique;
+import lehjr.numina.common.math.Colour;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
