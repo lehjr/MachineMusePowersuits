@@ -30,6 +30,7 @@ import lehjr.numina.common.capabilities.module.powermodule.*;
 import lehjr.numina.common.capabilities.module.tickable.PlayerTickModule;
 import lehjr.numina.common.energy.ElectricItemUtils;
 import lehjr.powersuits.common.config.MPSSettings;
+import lehjr.powersuits.common.constants.MPSConstants;
 import lehjr.powersuits.common.item.module.AbstractPowerModule;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -62,7 +63,11 @@ public class InvisibilityModule extends AbstractPowerModule {
 
         public CapProvider(@Nonnull ItemStack module) {
             this.module = module;
-            this.ticker = new Ticker(module, ModuleCategory.SPECIAL, ModuleTarget.TORSOONLY, MPSSettings::getModuleConfig);
+            this.ticker = new Ticker(module, ModuleCategory.SPECIAL, ModuleTarget.TORSOONLY, MPSSettings::getModuleConfig) {
+                {
+                    addBaseProperty(MPSConstants.ACTIVE_CAMOUFLAGE_ENERGY, 100, "FE");
+                }
+            };
 
             powerModuleHolder = LazyOptional.of(() -> {
                 ticker.updateFromNBT();
@@ -81,11 +86,18 @@ public class InvisibilityModule extends AbstractPowerModule {
                 EffectInstance invis = null;
                 if (player.hasEffect(invisibility)) {
                     invis = player.getEffect(invisibility);
+
+                    /* skip handling if effect isn't being done by this module  */
+                    if (invis.getAmplifier() != -3) {
+                        return;
+                    }
                 }
-                if (50 < totalEnergy) {
+
+                int energyUsage = (int) ticker.applyPropertyModifiers(MPSConstants.ACTIVE_CAMOUFLAGE_ENERGY);
+                if (totalEnergy >= energyUsage) {
                     if (invis == null || invis.getDuration() < 210) {
                         player.addEffect(new EffectInstance(invisibility, 500, -3, false, false));
-                        ElectricItemUtils.drainPlayerEnergy(player, 50);
+                        ElectricItemUtils.drainPlayerEnergy(player, energyUsage, false);
                     }
                 } else {
                     onPlayerTickInactive(player, item);

@@ -30,6 +30,7 @@ import com.google.common.util.concurrent.AtomicDouble;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import lehjr.numina.client.gui.gemoetry.DrawableRelativeRect;
+import lehjr.numina.client.model.item.armor.HighPolyArmor;
 import lehjr.numina.client.render.NuminaRenderer;
 import lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
@@ -147,6 +148,13 @@ public enum RenderEventHandler {
         if (!event.getPlayer().abilities.flying && !event.getPlayer().isOnGround() && this.playerHasFlightOn(event.getPlayer())) {
             event.getPlayer().abilities.flying = true;
             RenderEventHandler.ownFly = true;
+        }
+
+        if(event.getPlayer().getItemBySlot(EquipmentSlotType.CHEST).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+                .filter(IModularItem.class::isInstance)
+                .map(IModularItem.class::cast)
+                .map(iItemHandler -> iItemHandler.isModuleOnline(MPSRegistryNames.ACTIVE_CAMOUFLAGE_MODULE)).orElse(false)) {
+            event.setCanceled(true);
         }
     }
 

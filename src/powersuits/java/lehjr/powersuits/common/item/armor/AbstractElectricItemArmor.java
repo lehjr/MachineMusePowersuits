@@ -287,6 +287,15 @@ public abstract class AbstractElectricItemArmor extends ArmorItem {
             return NuminaConstants.BLANK_ARMOR_MODEL_PATH;
         }
 
+        if (entity instanceof LivingEntity) {
+            if (armor.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+                    .filter(IModularItem.class::isInstance)
+                    .map(IModularItem.class::cast)
+                    .map(iItemHandler -> iItemHandler.isModuleOnline(MPSRegistryNames.TRANSPARENT_ARMOR_MODULE)).orElse(false)) {
+                return NuminaConstants.BLANK_ARMOR_MODEL_PATH;
+            }
+        }
+
         return armor.getCapability(ModelSpecNBTCapability.RENDER)
                 .filter(IArmorModelSpecNBT.class::isInstance)
                 .map(IArmorModelSpecNBT.class::cast)
@@ -323,7 +332,6 @@ public abstract class AbstractElectricItemArmor extends ArmorItem {
             CompoundNBT renderTag = spec.getRenderTag();
 
             EquipmentSlotType slot = MobEntity.getEquipmentSlotForItem(itemStack);
-
             /** sets up default spec tags. A tag with all parts disabled should still have a color tag rather than being empty or null */
 //            PlayerEntity player = (PlayerEntity) entityLiving;
 //            if ((renderTag == null ||  renderTag.isEmpty()) && player == Minecraft.getInstance().player && armorSlot == slot) {
@@ -341,13 +349,14 @@ public abstract class AbstractElectricItemArmor extends ArmorItem {
             }
 
             BipedModel model = ArmorModelInstance.getInstance();
-            ItemStack chestplate = entityLiving.getItemBySlot(EquipmentSlotType.CHEST);
-            if (chestplate.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-                    .filter(IModularItem.class::isInstance)
-                    .map(IModularItem.class::cast)
-                    .map(iItemHandler -> iItemHandler.isModuleOnline(MPSRegistryNames.ACTIVE_CAMOUFLAGE_MODULE)).orElse(false)) {
-                ((HighPolyArmor) model).setVisibleSection(null);
-            } else {
+//            ItemStack chestplate = entityLiving.getItemBySlot(EquipmentSlotType.CHEST);
+//            if (chestplate.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+//                    .filter(IModularItem.class::isInstance)
+//                    .map(IModularItem.class::cast)
+//                    .map(iItemHandler -> iItemHandler.isModuleOnline(MPSRegistryNames.ACTIVE_CAMOUFLAGE_MODULE)).orElse(false)) {
+//                ((HighPolyArmor) model).setVisibleSection(null);
+//            } else
+            {
                 if (renderTag != null) {
                     ((HighPolyArmor) model).setVisibleSection(slot);
                     ((HighPolyArmor) model).setRenderSpec(renderTag);

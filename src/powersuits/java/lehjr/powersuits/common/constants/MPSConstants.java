@@ -192,6 +192,8 @@ public class MPSConstants {
     /** Special -------------------------------------------------------------------------------- */
     public static final String MAGNET_ENERGY = "magnetEnergy";
     public static final String MAGNET_POWER = "magnetPower";
+    public static final String ACTIVE_CAMOUFLAGE_ENERGY = "invisibilityEnergy";
+
     /** Tool ----------------------------------------------------------------------------------- */
     // Generic
     public static final String OVERCLOCK = "overclock";

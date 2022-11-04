@@ -126,24 +126,24 @@ public class NuminaArmorLayer<T extends LivingEntity, M extends BipedModel<T>, A
         modelIn.renderToBuffer(matrixStackIn, ivertexbuilder, packedLightIn, OverlayTexture.NO_OVERLAY, red, green, blue, 1.0F);
     }
 
-    /**
-     * More generic ForgeHook version of the above function, it allows for Items to have more control over what texture they provide.
-     *
-     * @param entity Entity wearing the armor
-     * @param stack  ItemStack for the armor
-     * @param slot   Slot ID that the item is in
-     * @param type   Subtype, can be null or "overlay"
-     * @return ResourceLocation pointing at the armor's texture
-     */
-    @Override
-    public ResourceLocation getArmorResource(Entity entity, @Nonnull ItemStack stack, EquipmentSlotType slot, @Nullable String type) {
-        return stack.getCapability(ModelSpecNBTCapability.RENDER).map(spec->{
-            if (spec.getSpecType() == EnumSpecType.ARMOR_SKIN && spec instanceof IArmorModelSpecNBT) {
-                return new ResourceLocation(((IArmorModelSpecNBT) spec).getArmorTexture());
-            }
-            return AtlasTexture.LOCATION_BLOCKS;
-        }).orElse(super.getArmorResource(entity, stack, slot, type));
-    }
+//    /**
+//     * More generic ForgeHook version of the above function, it allows for Items to have more control over what texture they provide.
+//     *
+//     * @param entity Entity wearing the armor
+//     * @param stack  ItemStack for the armor
+//     * @param slot   Slot ID that the item is in
+//     * @param type   Subtype, can be null or "overlay"
+//     * @return ResourceLocation pointing at the armor's texture
+//     */
+//    @Override
+//    public ResourceLocation getArmorResource(Entity entity, @Nonnull ItemStack stack, EquipmentSlotType slot, @Nullable String type) {
+//        return stack.getCapability(ModelSpecNBTCapability.RENDER).map(spec->{
+//            if (spec.getSpecType() == EnumSpecType.ARMOR_SKIN && spec instanceof IArmorModelSpecNBT) {
+//                return new ResourceLocation(((IArmorModelSpecNBT) spec).getArmorTexture());
+//            }
+//            return AtlasTexture.LOCATION_BLOCKS;
+//        }).orElse(super.getArmorResource(entity, stack, slot, type));
+//    }
 
     @Override
     protected A getArmorModelHook(T entity, ItemStack itemStack, EquipmentSlotType slot, A model) {
