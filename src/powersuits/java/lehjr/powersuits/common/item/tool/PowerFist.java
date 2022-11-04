@@ -189,10 +189,6 @@ public class PowerFist extends AbstractElectricTool {
 
     @Override
     public boolean canContinueUsing(ItemStack oldStack, ItemStack newStack) {
-        System.out.println("can continue using: " + oldStack.sameItem(newStack));
-
-
-
         return oldStack.sameItem(newStack);
     }
 
