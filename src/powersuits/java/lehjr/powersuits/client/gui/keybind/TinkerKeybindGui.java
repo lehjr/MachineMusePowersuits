@@ -26,14 +26,18 @@
 
 package lehjr.powersuits.client.gui.keybind;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.systems.RenderSystem;
 import lehjr.numina.client.gui.ContainerlessGui;
 import lehjr.numina.client.gui.gemoetry.MusePoint2D;
 import lehjr.powersuits.client.control.KeybindManager;
 import lehjr.powersuits.client.gui.common.TabSelectFrame;
+import lehjr.powersuits.common.constants.MPSConstants;
 import net.minecraft.client.MainWindow;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.util.InputMappings;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.client.settings.KeyModifier;
 
@@ -42,6 +46,9 @@ import net.minecraftforge.client.settings.KeyModifier;
  * Fixme: buttons rendering on top of module icons and their label/text
  */
 public class TinkerKeybindGui extends ContainerlessGui {
+    public static final ResourceLocation BACKGROUND = new ResourceLocation(MPSConstants.MOD_ID, "textures/gui/background/keybinds.png");
+
+
     TabSelectFrame tabSelectFrame;
     PlayerEntity player;
     KeyBindFrame kbFrame;
@@ -51,7 +58,7 @@ public class TinkerKeybindGui extends ContainerlessGui {
         Minecraft.getInstance().keyboardHandler.setSendRepeatsToGui(true);
         this.player = player;
         MainWindow screen = Minecraft.getInstance().getWindow();
-        this./*xSize*/imageWidth = 340;
+        this./*xSize*/imageWidth = 358 /*340 */;
         this./*ySize*/imageHeight = 217;
         tabSelectFrame = new TabSelectFrame(player, 2);
         kbFrame = new KeyBindFrame(
@@ -59,6 +66,27 @@ public class TinkerKeybindGui extends ContainerlessGui {
                 new MusePoint2D(backgroundRect.right() -8, backgroundRect.bottom() -8));
         addFrame(tabSelectFrame);
         addFrame(kbFrame);
+    }
+
+//    double scrollVal = 0;
+//    @Override
+//    public boolean mouseScrolled(double mouseX, double mouseY, double dWheel) {
+//
+//        scrollVal += dWheel;
+//
+//
+//
+//        return super.mouseScrolled(mouseX, mouseY, dWheel);
+//    }
+
+    @Override
+    public void renderBackgroundRect(MatrixStack matrixStack, int mouseX, int mouseY, float frameTime) {
+//        super.renderBackgroundRect(matrixStack, mouseX, mouseY, frameTime);
+        RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+        this.minecraft.getTextureManager().bind(this.BACKGROUND);
+        int i = this.leftPos;
+        int j = this.topPos;
+        this.blit(matrixStack, i, j, this.getBlitOffset(), 0, 0, imageWidth, imageHeight, 512, 512);
     }
 
     /**

@@ -37,6 +37,7 @@ import net.minecraft.util.SoundEvents;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 
+@Deprecated
 public class CheckBox extends Clickable {
     protected boolean isChecked;
     protected DrawableTile tile;

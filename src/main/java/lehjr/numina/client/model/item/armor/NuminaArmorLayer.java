@@ -28,7 +28,6 @@ package lehjr.numina.client.model.item.armor;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
-import lehjr.numina.common.capabilities.render.IArmorModelSpecNBT;
 import lehjr.numina.common.capabilities.render.ModelSpecNBTCapability;
 import lehjr.numina.common.capabilities.render.modelspec.EnumSpecType;
 import lehjr.numina.common.math.Colour;
@@ -41,15 +40,11 @@ import net.minecraft.client.renderer.entity.layers.BipedArmorLayer;
 import net.minecraft.client.renderer.entity.model.BipedModel;
 import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 public class NuminaArmorLayer<T extends LivingEntity, M extends BipedModel<T>, A extends BipedModel<T>> extends BipedArmorLayer<T, M, A> {
     public NuminaArmorLayer(IEntityRenderer<T, M> entityRenderer, A modelLeggings, A modelArmor) {

@@ -30,7 +30,6 @@ import com.google.common.util.concurrent.AtomicDouble;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import lehjr.numina.client.gui.gemoetry.DrawableRelativeRect;
-import lehjr.numina.client.model.item.armor.HighPolyArmor;
 import lehjr.numina.client.render.NuminaRenderer;
 import lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;

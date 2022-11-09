@@ -48,9 +48,9 @@ public class ContainerlessGui extends Screen {
     /** The Y size of the inventory window in pixels. */
     public int imageHeight = 166;
     /** Starting X position for the Gui. Inconsistent use for Gui backgrounds. */
-    public int guiLeft;
+    public int leftPos;
     /** Starting Y position for the Gui. Inconsistent use for Gui backgrounds. */
-    public int guiTop;
+    public int topPos;
 
     private List<IGuiFrame> frames;
 
@@ -75,6 +75,8 @@ public class ContainerlessGui extends Screen {
         minecraft.keyboardHandler.setSendRepeatsToGui(true);
         creationTime = System.currentTimeMillis();
         backgroundRect.init(absX(-1), absY(-1), absX(1), absY(1));
+        this.leftPos = (this.width - this.imageWidth) / 2;
+        this.topPos = (this.height - this.imageHeight) / 2;
     }
 
     /**
@@ -217,15 +219,15 @@ public class ContainerlessGui extends Screen {
     }
 
     public MusePoint2D center() {
-        return new MusePoint2D(getGuiLeft(), getGuiTop()).plus(getXSize() * 0.5, getYSize() * 0.5);
+        return new MusePoint2D(getLeftPos(), getTopPos()).plus(getXSize() * 0.5, getYSize() * 0.5);
     }
 
-    public int getGuiLeft() {
-        return guiLeft;
+    public int getLeftPos() {
+        return leftPos;
     }
 
-    public int getGuiTop() {
-        return guiTop;
+    public int getTopPos() {
+        return topPos;
     }
 
     public int getXSize() {
@@ -234,7 +236,7 @@ public class ContainerlessGui extends Screen {
 
     public void setXSize(int xSize) {
         this.imageWidth = xSize;
-        this.guiLeft = (this.width - getXSize()) / 2;
+        this.leftPos = (this.width - getXSize()) / 2;
     }
 
     public int getYSize() {
@@ -243,7 +245,7 @@ public class ContainerlessGui extends Screen {
 
     public void setYSize(int ySize) {
         this.imageHeight = ySize;
-        this.guiTop = (this.height - getYSize()) / 2;
+        this.topPos = (this.height - getYSize()) / 2;
     }
 
     @Override
