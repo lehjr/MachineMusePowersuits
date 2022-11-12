@@ -3,8 +3,9 @@ package lehjr.powersuits.client.gui.keybind;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.datafixers.util.Pair;
-import lehjr.numina.client.gui.clickable.Checkbox2;
+import lehjr.numina.client.gui.clickable.Checkbox;
 import lehjr.numina.client.gui.clickable.ClickableButton2;
+import lehjr.numina.client.gui.clickable.ScrollBar;
 import lehjr.numina.client.gui.frame.ScrollableFrame;
 import lehjr.numina.client.gui.gemoetry.MusePoint2D;
 import lehjr.numina.client.gui.gemoetry.RelativeRect;
@@ -34,17 +35,32 @@ import java.util.Map;
 public class KeyBindFrame extends ScrollableFrame {
     @Nullable
     MPSKeyBinding keybindingToRemap = null;
-   Map<MPSKeyBinding, Pair<Checkbox2, ClickableButton2>> checkBoxList = new HashMap<>();
+    Map<MPSKeyBinding, Pair<Checkbox, ClickableButton2>> checkBoxList = new HashMap<>();
 
-   public KeyBindFrame(MusePoint2D topleft, MusePoint2D bottomright) {
-        super(topleft, bottomright, Colour.DARK_GREY, new Colour(0.216F, 0.216F, 0.216F, 1F), Colour.WHITE.withAlpha(0.8F));
+    /**
+     scroll bar width always 12
+     scroll height here is 201
+
+
+     */
+
+    ScrollBar scrollBar;
+
+
+
+    public KeyBindFrame(MusePoint2D topleft, MusePoint2D bottomright) {
+        super(topleft, bottomright, Colour.DARK_GREY, new Colour(0.216F, 0.216F, 0.216F, 0F), Colour.WHITE.withAlpha(0F));
         this.enableAndShow();
         keybindingToRemap = null;
+        scrollBar = new ScrollBar(MusePoint2D.ZERO, 201, ":-P");
     }
 
     @Override
     public RelativeRect init(double left, double top, double right, double bottom) {
         super.init(left, top, right, bottom);
+        scrollBar.setTop(top);
+        scrollBar.setLeft(right + 6);
+
         loadConditions();
         return this;
     }
@@ -60,26 +76,23 @@ public class KeyBindFrame extends ScrollableFrame {
                 .filter(MPSKeyBinding.class::isInstance)
                 .map(MPSKeyBinding.class::cast)
                 .forEach(keyBinding -> {
-                    Checkbox2 checkboxButton = new Checkbox2(
+                    Checkbox checkboxButton = new Checkbox(
                             0, // x
                             0, // y
                             150, // width
                             //20, // height
                             new TranslationTextComponent(keyBinding.getName()),
                             keyBinding.showOnHud) {
-                        @Override
-                        public void onPress() {
-                            super.onPress();
-                            keyBinding.showOnHud = selected();
-                            KeybindManager.INSTANCE.writeOutKeybindSetings();
-                            RenderEventHandler.INSTANCE.makeKBDisplayList();
-                        }
                     };
-                    ClickableButton2 button = new ClickableButton2(keyBinding.getKey().getDisplayName(), MusePoint2D.ZERO, true);
-                    button.setOnPressed(onPressed->
-                    {
-                        keybindingToRemap = keyBinding;
+
+                    checkboxButton.setOnPressed(pressed ->{
+                        keyBinding.showOnHud = checkboxButton.isChecked();
+                        KeybindManager.INSTANCE.writeOutKeybindSetings();
+                        RenderEventHandler.INSTANCE.makeKBDisplayList();
                     });
+
+                    ClickableButton2 button = new ClickableButton2(keyBinding.getKey().getDisplayName(), MusePoint2D.ZERO, true);
+                    button.setOnPressed(onPressed-> keybindingToRemap = keyBinding);
                     button.setWidth(95);
                     button.setHeight(16);
                     checkBoxList.put(keyBinding, Pair.of(checkboxButton, button));
@@ -99,21 +112,13 @@ public class KeyBindFrame extends ScrollableFrame {
             RenderSystem.pushMatrix();
             RenderSystem.translated(0.0, -this.currentScrollPixels, 0.0);
             double y = top() + 8;
-            for (Map.Entry<MPSKeyBinding, Pair<Checkbox2, ClickableButton2>> entry : checkBoxList.entrySet()) {
+            for (Map.Entry<MPSKeyBinding, Pair<Checkbox, ClickableButton2>> entry : checkBoxList.entrySet()) {
                 NuminaRenderer.drawModuleAt(matrixStack, finalLeft() + 2, y -8, new ItemStack(ForgeRegistries.ITEMS.getValue(entry.getKey().registryName)), true);
                 MPSKeyBinding kb = entry.getKey();
-                Checkbox2 checkbox = entry.getValue().getFirst();
-                checkbox.x = (int) (finalLeft() + 24);
-                checkbox.y = (int) y -10; // - half height
-                checkbox.visible = true;
-
-                if (checkbox.isMouseOver(mouseX, mouseY) && !checkbox.isFocused()) {
-                    checkbox.changeFocus(true);
-                } else if (checkbox.isFocused()) {
-                    checkbox.changeFocus(true);
-                }
-
-                checkbox.render(matrixStack, mouseX, mouseY, partialTicks);
+                Checkbox checkbox = entry.getValue().getFirst();
+                checkbox.setPosition(new MusePoint2D(finalLeft() + 30, y));
+                checkbox.enableAndShow();
+                checkbox.render(matrixStack, mouseX, mouseY + getCurrentScrollPixels(), partialTicks);
                 ClickableButton2 button = entry.getValue().getSecond();
 
                 if (keybindingToRemap != null && keybindingToRemap == kb) {
@@ -129,6 +134,7 @@ public class KeyBindFrame extends ScrollableFrame {
 
             RenderSystem.popMatrix();
             super.postRender(mouseX, mouseY, partialTicks);
+            scrollBar.render(matrixStack, mouseX, mouseY, partialTicks);
         } else {
             super.preRender(matrixStack, mouseX, mouseY, partialTicks);
             super.postRender(mouseX, mouseY, partialTicks);
@@ -139,7 +145,10 @@ public class KeyBindFrame extends ScrollableFrame {
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
         if (this.isEnabled() && this.isVisible()) {
             super.mouseClicked(mouseX, mouseY, button);
-            for (Pair<Checkbox2, ClickableButton2> pair : checkBoxList.values()) {
+            if (scrollBar.mouseClicked(mouseX, mouseY, button)) {
+                return true;
+            }
+            for (Pair<Checkbox, ClickableButton2> pair : checkBoxList.values()) {
                 if (pair.getFirst().mouseClicked(mouseX, mouseY + getCurrentScrollPixels(), button) ||
                         pair.getSecond().mouseClicked(mouseX, mouseY + getCurrentScrollPixels(), button)) {
                     return true;
@@ -150,10 +159,24 @@ public class KeyBindFrame extends ScrollableFrame {
     }
 
     @Override
+    public void update(double mouseX, double mouseY) {
+        super.update(mouseX, mouseY);
+        scrollBar.update(mouseX, mouseY);
+    }
+
+    @Override
+    public boolean mouseReleased(double mouseX, double mouseY, int button) {
+        if (scrollBar.mouseReleased(mouseX, mouseY, button)) {
+            return true;
+        }
+        return super.mouseReleased(mouseX, mouseY, button);
+    }
+
+    @Override
     public List<ITextComponent> getToolTip(int x, int y) {
         if (this.isEnabled() && this.isVisible()) {
-            for (Pair<Checkbox2, ClickableButton2> pair : checkBoxList.values()) {
-                if (pair.getFirst().isMouseOver(x, y)) {
+            for (Pair<Checkbox, ClickableButton2> pair : checkBoxList.values()) {
+                if (pair.getFirst().hitBox(x, y + getCurrentScrollPixels())) {
                     return Arrays.asList(new TranslationTextComponent("gui.powersuits.showOnHUD"));
                 }
             }

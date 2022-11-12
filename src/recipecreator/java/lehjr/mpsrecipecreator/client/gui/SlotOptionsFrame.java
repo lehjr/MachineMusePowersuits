@@ -2,7 +2,7 @@ package lehjr.mpsrecipecreator.client.gui;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import lehjr.mpsrecipecreator.container.MPARCContainer;
-import lehjr.numina.client.gui.clickable.CheckBox;
+import lehjr.numina.client.gui.clickable.Checkbox;
 import lehjr.numina.client.gui.clickable.ClickableArrow;
 import lehjr.numina.client.gui.clickable.ClickableLabel;
 import lehjr.numina.client.gui.frame.ScrollableFrame;
@@ -26,7 +26,7 @@ public class SlotOptionsFrame extends ScrollableFrame {
     private ClickableLabel title;
     int activeSlotID;
     MPARCContainer container;
-    CheckBox[] useOreDictCheckbox = new CheckBox[9];
+    Checkbox[] useOreDictCheckbox = new Checkbox[9];
     RecipeGen recipeGen;
 
     private Map<Integer, ResourceLocation> oreTags = new HashMap<>();
@@ -69,7 +69,7 @@ public class SlotOptionsFrame extends ScrollableFrame {
         activeSlotID = -1;
 
         for(int i=0; i < 9; i++) {
-            useOreDictCheckbox[i] = new CheckBox(new MusePoint2D(0, 0), "Use ore dictionary", false);
+            useOreDictCheckbox[i] = new Checkbox(new MusePoint2D(0, 0), "Use ore dictionary", false);
             useOreDictCheckbox[i].disableAndHide();
             useOreDictCheckbox[i].setOnPressed(pressed -> {
                 if (getActiveSlotID() > 0) {

@@ -1,7 +1,7 @@
 package lehjr.mpsrecipecreator.client.gui;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import lehjr.numina.client.gui.clickable.CheckBox;
+import lehjr.numina.client.gui.clickable.Checkbox;
 import lehjr.numina.client.gui.clickable.ClickableButton;
 import lehjr.numina.client.gui.clickable.ClickableLabel;
 import lehjr.numina.client.gui.frame.ScrollableFrame;
@@ -19,11 +19,11 @@ import java.util.List;
  * @author lehjr
  */
 public class RecipeOptionsFrame extends ScrollableFrame {
-    protected List<CheckBox> checkBoxes = new ArrayList<>();
+    protected List<Checkbox> checkBoxes = new ArrayList<>();
     protected List<ClickableButton> buttons = new ArrayList<>();
 
     final int spacer = 4;
-    private CheckBox
+    private Checkbox
             shapeless,
             mirrored,
             conditions;
@@ -47,7 +47,7 @@ public class RecipeOptionsFrame extends ScrollableFrame {
         title.setMode(ClickableLabel.JustifyMode.LEFT);
 
 
-        CheckBox test =  new CheckBox(MusePoint2D.ZERO, "Shapeless", false);
+        Checkbox test =  new Checkbox(MusePoint2D.ZERO, "Shapeless", false);
 
         System.out.println(test);
 
@@ -55,8 +55,8 @@ public class RecipeOptionsFrame extends ScrollableFrame {
         shapeless = addCheckBox(test
 //                new CheckBox(starterPoint, "Shapeless", false)
         );//ID_SHAPELESS
-        mirrored = addCheckBox(new CheckBox(starterPoint, "Mirrored", true));//ID_MIRRORED
-        conditions = addCheckBox(new CheckBox(starterPoint, "Conditions", false));//ID_CONDITIONS // fixme... not tied to anything yet
+        mirrored = addCheckBox(new Checkbox(starterPoint, "Mirrored", true));//ID_MIRRORED
+        conditions = addCheckBox(new Checkbox(starterPoint, "Conditions", false));//ID_CONDITIONS // fixme... not tied to anything yet
 
         shapeless.setOnPressed(press->{
             mirrored.setEnabled(!(shapeless.isChecked()));
@@ -135,7 +135,7 @@ public class RecipeOptionsFrame extends ScrollableFrame {
             super.render(matrixStack, mouseX, mouseY, partialTicks);
             title.render(matrixStack, mouseX, mouseY, partialTicks);
 
-            for (CheckBox checkBox : checkBoxes) {
+            for (Checkbox checkBox : checkBoxes) {
                 checkBox.render(matrixStack, mouseX, mouseY, partialTicks);
             }
 
@@ -160,7 +160,7 @@ public class RecipeOptionsFrame extends ScrollableFrame {
         if (isVisible() && isEnabled()) {
             super.mouseClicked(mouseX, mouseY, button);
 
-            for (CheckBox checkBox : checkBoxes) {
+            for (Checkbox checkBox : checkBoxes) {
                 if (checkBox.mouseClicked(mouseX, mouseY, button)) {
                     return true;
                 }
@@ -208,7 +208,7 @@ public class RecipeOptionsFrame extends ScrollableFrame {
         return button;
     }
 
-    CheckBox addCheckBox(CheckBox checkBox) {
+    Checkbox addCheckBox(Checkbox checkBox) {
         checkBoxes.add(checkBox);
         return checkBox;
     }

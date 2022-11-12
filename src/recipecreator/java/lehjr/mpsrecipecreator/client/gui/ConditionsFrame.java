@@ -5,7 +5,7 @@ import com.google.gson.JsonObject;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import lehjr.mpsrecipecreator.basemod.ConditionsJsonLoader;
-import lehjr.numina.client.gui.clickable.CheckBox;
+import lehjr.numina.client.gui.clickable.Checkbox;
 import lehjr.numina.client.gui.frame.ScrollableFrame;
 import lehjr.numina.client.gui.gemoetry.MusePoint2D;
 import lehjr.numina.client.gui.gemoetry.RelativeRect;
@@ -18,7 +18,7 @@ import java.util.Map;
  * @author lehjr
  */
 public class ConditionsFrame extends ScrollableFrame {
-    Map<CheckBox, JsonObject> checkBoxList = new HashMap<>();
+    Map<Checkbox, JsonObject> checkBoxList = new HashMap<>();
 
     public ConditionsFrame(MusePoint2D topleft, MusePoint2D bottomright, Colour background, Colour topBorder, Colour bottomBorder) {
         super(topleft, bottomright, background, topBorder, bottomBorder);
@@ -48,7 +48,7 @@ public class ConditionsFrame extends ScrollableFrame {
                         String condition = jsonObject.get("display_name").getAsString();
                         jsonObject.remove("display_name");
 
-                        CheckBox checkbox = new CheckBox(
+                        Checkbox checkbox = new Checkbox(
                                 starterPoint.plus(0, checkBoxList.size() * 10),
                                 condition, false);
                         checkBoxList.put(checkbox, jsonObject);
@@ -58,7 +58,7 @@ public class ConditionsFrame extends ScrollableFrame {
             // moves the checkboxes without recreating them so their state is preserved
         } else {
             int i =0;
-            for (CheckBox checkBox : checkBoxList.keySet()) {
+            for (Checkbox checkBox : checkBoxList.keySet()) {
                 checkBox.setPosition(starterPoint.plus(0, i * 10));
                 i++;
             }
@@ -71,7 +71,7 @@ public class ConditionsFrame extends ScrollableFrame {
      */
     public JsonArray getJsonArray() {
         JsonArray array = new JsonArray();
-        for (CheckBox box : checkBoxList.keySet()) {
+        for (Checkbox box : checkBoxList.keySet()) {
             if (box.isChecked()) {
                 array.add(checkBoxList.get(box));
             }
@@ -86,7 +86,7 @@ public class ConditionsFrame extends ScrollableFrame {
             super.preRender(matrixStack, mouseX, mouseY, partialTicks);
             RenderSystem.pushMatrix();
             RenderSystem.translatef(0, -getCurrentScrollPixels(), 0);
-            for (CheckBox checkBox : checkBoxList.keySet()) {
+            for (Checkbox checkBox : checkBoxList.keySet()) {
                 checkBox.render(matrixStack, mouseX, mouseY, partialTicks);
             }
             RenderSystem.popMatrix();
@@ -99,7 +99,7 @@ public class ConditionsFrame extends ScrollableFrame {
         if (this.isEnabled() && this.isVisible()) {
             super.mouseClicked(mouseX, mouseY, button);
 
-            for (CheckBox checkBox : checkBoxList.keySet()) {
+            for (Checkbox checkBox : checkBoxList.keySet()) {
                 if (checkBox.mouseClicked(mouseX, mouseY + getCurrentScrollPixels(), button)) {
                     return true;
                 }

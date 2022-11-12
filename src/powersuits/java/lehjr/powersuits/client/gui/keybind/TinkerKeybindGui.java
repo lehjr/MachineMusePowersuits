@@ -61,9 +61,19 @@ public class TinkerKeybindGui extends ContainerlessGui {
         this./*xSize*/imageWidth = 358 /*340 */;
         this./*ySize*/imageHeight = 217;
         tabSelectFrame = new TabSelectFrame(player, 2);
-        kbFrame = new KeyBindFrame(
-                new MusePoint2D(backgroundRect.left() + 8, backgroundRect.top() + 8),
-                new MusePoint2D(backgroundRect.right() -8, backgroundRect.bottom() -8));
+
+        // top left should be 9,9
+        // bottom right should be 332, 210
+        // 332 - 9 = 323
+        //
+        MusePoint2D kbTL =  new MusePoint2D(backgroundRect.left() + 9, backgroundRect.top() + 9);
+        kbFrame = new KeyBindFrame( kbTL, kbTL.plus(332, 210));
+//        kbFrame.setWidth(332);
+//        kbFrame.setHeight(201);
+
+
+//                new MusePoint2D(backgroundRect.left() + 9, backgroundRect.top() + 9),
+//                new MusePoint2D(backgroundRect.right() -32, backgroundRect.bottom() -8));
         addFrame(tabSelectFrame);
         addFrame(kbFrame);
     }
@@ -95,7 +105,17 @@ public class TinkerKeybindGui extends ContainerlessGui {
     @Override
     public void init() {
         super.init();
-        kbFrame.init(backgroundRect.finalLeft() + 8, backgroundRect.finalTop() + 8, backgroundRect.finalRight() -8, backgroundRect.finalBottom() -8);
+        MusePoint2D kbTL =  new MusePoint2D(backgroundRect.left() + 9, backgroundRect.top() + 9);
+//        kbFrame.init( kbTL, kbTL.plus(332, 201));
+
+
+        kbFrame.init(
+                backgroundRect.finalLeft() + 9,
+                backgroundRect.finalTop() + 9,
+                backgroundRect.finalLeft() + 332,
+                backgroundRect.finalTop() + 210);
+        System.out.println("kbFrame: " + kbFrame);
+
         tabSelectFrame.initFromBackgroundRect(this.backgroundRect);
     }
 

@@ -21,6 +21,8 @@ public class Slider extends DrawableTile implements IClickable {
     IPressable onPressed;
     IReleasable onReleased;
 
+    public boolean keepKnobWithinBounds=false;
+
     protected boolean isVisible = true;
 
     protected boolean isEnabled = true;
@@ -37,10 +39,7 @@ public class Slider extends DrawableTile implements IClickable {
     protected boolean showTickLines = false;
     /** The value of this slider control. Based on a value representing 0 - 100%*/
     public double internalVal = 0;
-    /** z offset for rendering. AKA blitOffset*/
-    protected final double thickness = 8;
-    /** width of the slider. Unchanged in vertical mode */
-    protected double size = 16;
+
     /** the "knob" of the slider */
     DrawableTile knobRect;
     /** Is this slider control being dragged.*/
@@ -68,13 +67,45 @@ public class Slider extends DrawableTile implements IClickable {
                   @Nullable ISlider iSlider) {
         super(1,1,1,1);
         this.isHorizontal = isHorizontal;
-        this.size = size;
+        setSize(size);
         this.id = id;
         parent = iSlider;
         setValue(currentVal);
         this.setPosition(position);
         this.createNewRects();
         calculateTickCoordinates();
+    }
+
+    public void setThickness(double thicknessIn) {
+        if (isHorizontal) {
+            this.setHeight(thicknessIn);
+        } else {
+            this.setWidth(thicknessIn);
+        }
+    }
+
+    public double getThickness() {
+        if (isHorizontal) {
+            return height();
+        } else {
+            return width();
+        }
+    }
+
+    public void setSize(double size) {
+        if (isHorizontal) {
+            setWidth(size);
+        } else {
+            setHeight(size);
+        }
+    }
+
+    public double getSize() {
+        double retVal = isHorizontal? width() : height();
+        if (keepKnobWithinBounds) {
+            return retVal - (isHorizontal ? knobRect.width() : knobRect.height());
+        }
+        return retVal;
     }
 
     public String id() {
@@ -86,33 +117,43 @@ public class Slider extends DrawableTile implements IClickable {
         if (this.isVisible()) {
             super.render(matrixStack, mouseX, mouseY, frameTime);
             if (isHorizontal) {
-                this.knobRect.setPosition(new MusePoint2D(this.centerx() + this.size * (this.internalVal - 0.5), this.centery()));
+                renderHorizontal(matrixStack, mouseX, mouseY, frameTime);
             } else {
-                this.knobRect.setPosition(new MusePoint2D(this.centerx(), this.centery() +  this.size * (this.internalVal - 0.5)));
+                renderVertical(matrixStack, mouseX, mouseY, frameTime);
             }
-
-            if (showTickLines && tickVal != 0) {
-                if (isHorizontal) {
-                    for (double val : calculateTickCoordinates()) {
-                        drawSingleLine(matrixStack, val, top(), val, bottom(), Colour.WHITE);
-                    }
-                } else {
-                    for (double val : calculateTickCoordinates()) {
-                        drawSingleLine(matrixStack, left(), val, right(), val, Colour.WHITE);
-                    }
-                }
-            }
-            this.knobRect.render(matrixStack, mouseX, mouseY, frameTime);
+            renderKnob(matrixStack, mouseX, mouseY, frameTime);
         }
+    }
+
+    public void renderHorizontal(MatrixStack matrixStack, int mouseX, int mouseY, float frameTime) {
+        this.knobRect.setPosition(new MusePoint2D(this.centerx() + getSize() * (this.internalVal - 0.5), this.centery()));
+        if (showTickLines && tickVal != 0) {
+            for (double val : calculateTickCoordinates()) {
+                drawSingleLine(matrixStack, val, top(), val, bottom(), Colour.WHITE);
+            }
+        }
+    }
+
+    public void renderVertical(MatrixStack matrixStack, int mouseX, int mouseY, float frameTime) {
+        this.knobRect.setPosition(new MusePoint2D(this.centerx(), this.centery() +  getSize() * (this.internalVal - 0.5)));
+        if (showTickLines && tickVal != 0) {
+            for (double val : calculateTickCoordinates()) {
+                drawSingleLine(matrixStack, left(), val, right(), val, Colour.WHITE);
+            }
+        }
+    }
+
+    public void renderKnob(MatrixStack matrixStack, int mouseX, int mouseY, float frameTime) {
+        this.knobRect.render(matrixStack, mouseX, mouseY, frameTime);
     }
 
     public void update(double mouseX, double mouseY) {
         double siderStart = this.internalVal;
         if (this.isEnabled() && this.isVisible() && dragging) {
             if (isHorizontal) {
-                this.internalVal = MathUtils.clampDouble((mouseX - centerx()) / (this.size - knobRect.finalWidth() * 0.5) + 0.5, 0.0, 1.0);
+                this.internalVal = MathUtils.clampDouble((mouseX - centerx()) / (this.getSize() - knobRect.finalWidth() * 0.5) + 0.5, 0.0, 1.0);
             } else {
-                this.internalVal = MathUtils.clampDouble((mouseY - centery()) / (this.size - knobRect.finalHeight() * 0.5) + 0.5, 0.0, 1.0);
+                this.internalVal = MathUtils.clampDouble((mouseY - centery()) / (this.getSize() - knobRect.finalHeight() * 0.5) + 0.5, 0.0, 1.0);
             }
         } else {
             this.internalVal = MathUtils.clampDouble(internalVal, 0.0, 1.0);
@@ -124,7 +165,6 @@ public class Slider extends DrawableTile implements IClickable {
             parent.onChangeSliderValue(this);
         }
     }
-
 
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
@@ -165,30 +205,24 @@ public class Slider extends DrawableTile implements IClickable {
         if (isHorizontal) {
             this.internalVal = MathUtils.clampDouble((value - centerx()) / this.width() + 0.5D, 0.0D, 1.0D);
         } else {
-            internalVal = MathUtils.clampDouble((value - centery()) / size + 0.5F, 0, 1);
+            internalVal = MathUtils.clampDouble((value - centery()) / getSize() + 0.5F, 0, 1);
         }
     }
 
-    void createNewRects() {
+    public void createNewRects() {
         isCreatingNewRects = true;
         if (isHorizontal) {
-            super.setHeight(thickness);
-            super.setWidth(size);
-
             this.knobRect = new DrawableTile(
                     centerx() - 4,
-                    centery() - 1 - thickness * 0.5,
+                    centery() - 1 - getThickness() * 0.5,
                     centerx() + 4,
-                    centery() + 1 + thickness * 0.5);
+                    centery() + 1 + getThickness() * 0.5);
         } else {
-            super.setHeight(size);
-            super.setWidth(thickness);
-
             // should put it right in the center
             this.knobRect = new DrawableTile(
-                    centerx() - 1 - thickness * 0.5,
+                    centerx() - 1 - getThickness() * 0.5,
                     centery() - 4,
-                    centerx() + 1 + thickness * 0.5,
+                    centerx() + 1 + getThickness() * 0.5,
                     centery() + 4);
         }
 
@@ -208,7 +242,7 @@ public class Slider extends DrawableTile implements IClickable {
             for (double i = getMinVal() + tickVal; i < getMaxValue(); i += tickVal) {
                 vals.add((this.isHorizontal ?
                         finalLeft() : finalTop())
-                        + this.size  * (MathUtils.clampDouble((i - getMinVal()) / (getMaxValue() - getMinVal()), 0.0, 1.0)));
+                        + this.getSize()  * (MathUtils.clampDouble((i - getMinVal()) / (getMaxValue() - getMinVal()), 0.0, 1.0)));
             }
         }
         return vals;
@@ -222,7 +256,6 @@ public class Slider extends DrawableTile implements IClickable {
         return 1;
     }
 
-
     void drawSingleLine(MatrixStack matrixStack, double xStart, double yStart, double xEnd, double yEnd, Colour colour) {
         Tessellator tessellator = Tessellator.getInstance();
         BufferBuilder builder = tessellator.getBuilder();
@@ -234,29 +267,6 @@ public class Slider extends DrawableTile implements IClickable {
         builder.vertex(matrix4f, (float) xEnd, (float) yEnd, getZLevel()).color(colour.r, colour.g, colour.b, colour.a).endVertex();
         drawTesselator();
         postDraw();
-    }
-
-    @Override
-    public IRect setWH(MusePoint2D wh) {
-        setHeight(wh.getY());
-        setWidth(wh.getX());
-        return this;
-    }
-
-    @Override
-    public IRect setWidth(double value) {
-        if (isHorizontal) {
-            super.setWidth(value);
-        }
-        return this;
-    }
-
-    @Override
-    public IRect setHeight(double value) {
-        if(!isHorizontal) {
-            super.setHeight(value);
-        }
-        return this;
     }
 
     @Override
@@ -314,6 +324,14 @@ public class Slider extends DrawableTile implements IClickable {
         if (this.isVisible() && this.isEnabled() && this.onReleased != null) {
             this.onReleased.onReleased(this);
         }
+    }
+
+    public void setKnobRect(DrawableTile knobRectIn) {
+        this.knobRect = knobRectIn;
+    }
+
+    public void setIsCreatingNewRects(boolean isCreatingNewRects) {
+        this.isCreatingNewRects = isCreatingNewRects;
     }
 
     public interface ISlider {

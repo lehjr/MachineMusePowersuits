@@ -27,53 +27,65 @@
 package lehjr.numina.client.gui.clickable;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
+import lehjr.numina.client.gui.GuiIcon;
 import lehjr.numina.client.gui.gemoetry.DrawableTile;
 import lehjr.numina.client.gui.gemoetry.MusePoint2D;
 import lehjr.numina.common.math.Colour;
 import lehjr.numina.common.string.StringUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.SimpleSound;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 
-@Deprecated
-public class CheckBox extends Clickable {
+public class Checkbox extends Clickable {
+    private static final ResourceLocation TEXTURE = new ResourceLocation("textures/gui/checkbox.png");
+    private final boolean showLabel;
     protected boolean isChecked;
-    protected DrawableTile tile;
+    protected CheckboxTile tile;
     ITextComponent label;
 
-    public CheckBox(MusePoint2D position, String displayString, boolean isChecked) {
-        super(position);
-        makeNewTile();
-        this.label = new StringTextComponent(displayString);
-        this.isChecked = isChecked;
-        this.enableAndShow();
+    public Checkbox(MusePoint2D position, String displayString, boolean isChecked) {
+        this(position, new StringTextComponent(displayString), isChecked);
     }
 
-    public CheckBox(MusePoint2D position, ITextComponent displayString, boolean isChecked) {
+    public Checkbox(MusePoint2D position, ITextComponent displayString, boolean isChecked) {
+        this(position, displayString, isChecked, true);
+    }
+
+    public Checkbox(MusePoint2D position, ITextComponent displayString, boolean isChecked, boolean showLabel) {
         super(position);
         makeNewTile();
         this.label = displayString;
         this.isChecked = isChecked;
         this.enableAndShow();
+        this.showLabel = showLabel;
+        this.setHeight(20);
     }
 
+    public Checkbox(double posX, double posY, int width, ITextComponent message, boolean checked) {
+        this(posX, posY, width, message, checked, true);
+    }
+
+    public Checkbox(double posX, double posY, double width, ITextComponent message, boolean checked, boolean showLabel) {
+        this(new MusePoint2D(posX, posY), message, checked, showLabel);
+        this.setWidth(width);
+    }
 
     public void render(MatrixStack matrixStack, int mouseX, int mouseY, float frameTime) {
         if (this.isVisible()) {
             this.tile.render(matrixStack, mouseX, mouseY, frameTime);
-            if (this.isChecked) {
-                StringUtils.drawShadowedString(matrixStack, "x", this.tile.centerx() - 2.0D, this.tile.centery() - 5.0D, Colour.WHITE);
+            if (showLabel) {
+                StringUtils.drawShadowedString(matrixStack, this.label, this.tile.centerx() + 10.0D, this.tile.centery() - 4.0D, Colour.WHITE);
             }
-            StringUtils.drawShadowedString(matrixStack, this.label, this.tile.centerx() + 8.0D, this.tile.centery() - 4.0D, Colour.WHITE);
         }
     }
 
     void makeNewTile() {
         if (tile == null) {
             MusePoint2D ul = getPosition().plus(4.0D, 4.0D);
-            this.tile = (new DrawableTile(ul, ul.plus(8.0D, 8.0D))).setBackgroundColour(Colour.BLACK).setTopBorderColour(Colour.DARK_GREY).setBottomBorderColour(Colour.DARK_GREY);
+            this.tile = (new CheckboxTile(ul));//.setBackgroundColour(Colour.BLACK).setTopBorderColour(Colour.DARK_GREY).setBottomBorderColour(Colour.DARK_GREY);
         }
     }
 
@@ -103,5 +115,26 @@ public class CheckBox extends Clickable {
             this.isChecked = !this.isChecked;
         }
         super.onPressed();
+    }
+
+    class CheckboxTile extends DrawableTile {
+        public CheckboxTile(MusePoint2D ul) {
+            super(ul, ul.plus(10, 10));
+        }
+
+        @Override
+        public void render(MatrixStack matrixStack, int mouseX, int mouseY, float frameTime) {
+            GuiIcon.renderTextureWithColour(TEXTURE, matrixStack,
+                    left(), right(), top(), bottom(), getZLevel(),
+                    // int uWidth, int vHeight,
+                    20, 20,
+                    // image start x (xOffset)
+                    hitBox(mouseX, mouseY) ? 20 : 0.0F,
+                    // image start y (yOffset)
+                    isChecked() ? 20 : 0.0F,
+                    // textureWidth, textureHeight
+                    64, 64,
+                    Colour.WHITE);
+        }
     }
 }
