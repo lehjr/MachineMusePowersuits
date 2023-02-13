@@ -7,7 +7,7 @@ import lehjr.numina.client.gui.frame.InventoryFrame;
 import lehjr.numina.client.gui.frame.PlayerInventoryFrame;
 import lehjr.numina.client.gui.frame.ScrollableFrame;
 import lehjr.numina.client.gui.gemoetry.MusePoint2D;
-import lehjr.numina.client.gui.gemoetry.RelativeRect;
+import lehjr.numina.client.gui.gemoetry.Rect;
 import lehjr.numina.common.math.Colour;
 import net.minecraft.inventory.container.Container;
 
@@ -85,29 +85,29 @@ public class ExtInventoryFrame extends ScrollableFrame {
         frames.add(hotbar);
     }
 
-    @Override
-    public RelativeRect init(double left, double top, double right, double bottom) {
-        super.init(left, top, right, bottom);
-
-        hotbar.init(
-                left + spacer,
-                bottom - spacer - slotHeight,
-                right - spacer,
-                bottom - spacer);
-
-        mainInventory.init(
-                left + spacer,
-                hotbar.finalTop() - spacer - 3 * slotHeight,
-                right - spacer,
-                hotbar.finalTop() - spacer);
-        craftingGrid.init(
-                left + spacer,
-                mainInventory.finalTop() - spacer * 2 - 96,
-
-                0, // ignored
-                0); // ignored
-        return this;
-    }
+//    @Override
+//    public Rect init(double left, double top, double right, double bottom) {
+//        super.init(left, top, right, bottom);
+//
+//        hotbar.init(
+//                left + spacer,
+//                bottom - spacer - slotHeight,
+//                right - spacer,
+//                bottom - spacer);
+//
+//        mainInventory.init(
+//                left + spacer,
+//                hotbar.finalTop() - spacer - 3 * slotHeight,
+//                right - spacer,
+//                hotbar.finalTop() - spacer);
+//        craftingGrid.init(
+//                left + spacer,
+//                mainInventory.finalTop() - spacer * 2 - 96,
+//
+//                0, // ignored
+//                0); // ignored
+//        return this;
+//    }
 
     @Override
     public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {

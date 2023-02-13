@@ -63,6 +63,8 @@ import java.util.Random;
  */
 @OnlyIn(Dist.CLIENT)
 public class RenderPart extends ModelRenderer {
+    final int FULL_BRIGHTNESS = 0XF000F0; // 15728880 also used in vanilla rendering item in gui
+
     // replace division operation with multiplication
     final float div255 = 0.003921569F;
     ModelRenderer parent;
@@ -148,7 +150,8 @@ public class RenderPart extends ModelRenderer {
                         renderQuads(entry,
                                 bufferIn,
                                 builder.build(),
-                                ((ModelPartSpec) part).getGlow() ? 0x00F000F0 : packedLightIn, OverlayTexture.NO_OVERLAY,
+                                ((ModelPartSpec) part).getGlow() ? FULL_BRIGHTNESS : packedLightIn,
+                                OverlayTexture.NO_OVERLAY,
                                 partColor);
                     }
                 }
@@ -197,17 +200,19 @@ public class RenderPart extends ModelRenderer {
             for (int v = 0; v < vertexCount; ++v) {
                 ((Buffer) intbuffer).clear();
                 intbuffer.put(aint, v * 8, 8);
-                float f = bytebuffer.getFloat(0);
-                float f1 = bytebuffer.getFloat(4);
-                float f2 = bytebuffer.getFloat(8);
+                float x = bytebuffer.getFloat(0);
+                float y = bytebuffer.getFloat(4);
+                float z = bytebuffer.getFloat(8);
                 int lightmapCoord = bufferIn.applyBakedLighting(lightmapCoordIn, bytebuffer);
                 float f9 = bytebuffer.getFloat(16);
                 float f10 = bytebuffer.getFloat(20);
 
                 /** scaled like TexturedQuads, but using multiplication instead of division due to speed advantage.  */
-                Vector4f pos = new Vector4f(f * 0.0625F, f1 * 0.0625F, f2 * 0.0625F, 1.0F); // scales to 1/16 like the TexturedQuads but with multiplication (faster than division)
+                Vector4f pos = new Vector4f(x * 0.0625F, y * 0.0625F, z * 0.0625F, 1.0F); // scales to 1/16 like the TexturedQuads but with multiplication (faster than division)
                 pos.transform(matrix4f);
                 bufferIn.applyBakedNormals(normal, bytebuffer, matrixEntry.normal());
+
+
                 bufferIn.vertex(pos.x(), pos.y(), pos.z(), red, green, blue, alpha, f9, f10, overlayCoords, lightmapCoord, normal.x(), normal.y(), normal.z());
             }
         }

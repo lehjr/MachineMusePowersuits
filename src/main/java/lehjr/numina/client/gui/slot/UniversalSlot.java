@@ -31,7 +31,7 @@ import lehjr.numina.client.gui.clickable.IClickable;
 import lehjr.numina.client.gui.gemoetry.IDrawable;
 import lehjr.numina.client.gui.gemoetry.IRect;
 import lehjr.numina.client.gui.gemoetry.MusePoint2D;
-import lehjr.numina.client.gui.gemoetry.RelativeRect;
+import lehjr.numina.client.gui.gemoetry.Rect;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Inventory;
@@ -56,27 +56,19 @@ public class UniversalSlot extends Slot implements IClickable {
     protected final boolean isIItemHandler;
     boolean isVisible;
     boolean isEnabled;
-    RelativeRect rect = new RelativeRect(false);
+    Rect rect;
 
     public UniversalSlot(IInventory inventory, int index, int xPosition, int yPosition) {
         this(inventory, index, new MusePoint2D(xPosition, yPosition));
-        this.rect.init(x, y, x + 16, y + 16);
-        this.rect.setDoThisOnChange(doThis -> {
-            x = (int)rect.finalLeft();
-            y = (int)rect.finalTop();
-        });
+        this.rect = new Rect(x, y, x + 16, y + 16);
     }
 
     public UniversalSlot(IInventory inventory, int index, MusePoint2D position) {
-        super(inventory, index, (int)position.getX(), (int)position.getX());
+        super(inventory, index, (int)position.x(), (int)position.y());
         this.index = index;
         this.itemHandler = new ItemStackHandler();
         isIItemHandler = false;
-        this.rect.init(position.getX() -8, position.getY() -8, position.getX() + 8, position.getY() + 8);
-        this.rect.setDoThisOnChange(doThis -> {
-            x = (int)rect.finalLeft();
-            y = (int)rect.finalTop();
-        });
+        this.rect = new Rect(position.x() -8, position.y() -8, position.x() + 8, position.y() + 8);
     }
 
     public UniversalSlot(IItemHandler itemHandler, int index, int xPosition, int yPosition) {
@@ -84,16 +76,12 @@ public class UniversalSlot extends Slot implements IClickable {
     }
 
     public UniversalSlot(IItemHandler itemHandler, int index, MusePoint2D position) {
-        super(emptyInventory, index, (int)position.getX(), (int)position.getX());
+        super(emptyInventory, index, (int)position.x(), (int)position.y());
         this.itemHandler = itemHandler;
         isIItemHandler = true;
         this.isVisible = true;
         this.isEnabled = true;
-        this.rect.init(position.getX() -8, position.getY() -8, position.getX() + 8, position.getY() + 8);
-        this.rect.setDoThisOnChange(doThis -> {
-            x = (int)rect.finalLeft();
-            y = (int)rect.finalTop();
-        });
+        this.rect= new Rect(position.x() -8, position.y() -8, position.x() + 8, position.y() + 8);
     }
 
     @Override
@@ -164,10 +152,6 @@ public class UniversalSlot extends Slot implements IClickable {
         return this.container;
     }
 
-    public void setPosition(MusePoint2D position) {
-        this.rect.setPosition(position);
-    }
-
     @Override
     @Nonnull
     public ItemStack getItem() {
@@ -203,7 +187,6 @@ public class UniversalSlot extends Slot implements IClickable {
      */
     @Override
     public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
-
     }
 
     @Override
@@ -217,163 +200,28 @@ public class UniversalSlot extends Slot implements IClickable {
     }
 
     @Override
-    public MusePoint2D getPosition() {
-        return rect.getPosition();
+    public MusePoint2D center() {
+        return rect.center();
     }
 
     @Override
-    public boolean growFromMiddle() {
-        return false;
+    public boolean isEnabled() {
+        return isEnabled;
     }
 
     @Override
-    public void initGrowth() {
-        rect.initGrowth();
-    }
-
-    @Override
-    public IRect setMeLeftOf(IRect otherRightOfMe) {
-        return rect.setMeLeftOf(otherRightOfMe);
-    }
-
-    @Override
-    public IRect setMeRightOf(IRect otherLeftOfMe) {
-        return rect.setMeRightOf(otherLeftOfMe);
-    }
-
-    @Override
-    public IRect setMeAbove(IRect otherBelowMe) {
-        return rect.setMeAbove(otherBelowMe);
-    }
-
-    @Override
-    public IRect setMeBelow(IRect otherAboveMe) {
-        return rect.setMeBelow(otherAboveMe);
-    }
-
-    @Override
-    public MusePoint2D getUL() {
-        return rect.getUL();
-    }
-
-    @Override
-    public MusePoint2D getWH() {
-        return rect.getWH();
-    }
-
-    @Override
-    public double left() {
-        return rect.left();
-    }
-
-    @Override
-    public double finalLeft() {
-        return rect.finalLeft();
-    }
-
-    @Override
-    public double top() {
-        return rect.top();
-    }
-
-    @Override
-    public double finalTop() {
-        return rect.finalTop();
-    }
-
-    @Override
-    public double right() {
-        return rect.right();
-    }
-
-    @Override
-    public double finalRight() {
-        return rect.finalRight();
-    }
-
-    @Override
-    public double bottom() {
-        return rect.bottom();
-    }
-
-    @Override
-    public double finalBottom() {
-        return rect.finalBottom();
-    }
-
-    @Override
-    public double width() {
-        return rect.width();
-    }
-
-    @Override
-    public double finalWidth() {
-        return rect.finalWidth();
-    }
-
-    @Override
-    public double height() {
-        return rect.height();
-    }
-
-    @Override
-    public double finalHeight() {
-        return rect.finalHeight();
-    }
-
-    @Override
-    public IRect setUL(MusePoint2D ul) {
-        return rect.setUL(ul);
-    }
-
-    @Override
-    public IRect setWH(MusePoint2D wh) {
-        return rect.setWH(wh);
-    }
-
-    @Override
-    public IRect setLeft(double value) {
-        return rect.setLeft(value);
-    }
-
-    @Override
-    public IRect setRight(double value) {
-        return rect.setRight(value);
-    }
-
-    @Override
-    public IRect setTop(double value) {
-        return rect.setTop(value);
-    }
-
-    @Override
-    public IRect setBottom(double value) {
-        return rect.setBottom(value);
-    }
-
-    @Override
-    public IRect setWidth(double value) {
-        return rect.setWidth(value);
-    }
-
-    @Override
-    public IRect setHeight(double value) {
-        return rect.setHeight(value);
-    }
-
-    @Override
-    public void move(double x, double y) {
-        this.rect.move(x, y);
-    }
-
-    @Override
-    public boolean hitBox(double x, double y) {
-        return rect.containsPoint(x, y);
+    public void setEnabled(boolean enabled) {
+        this.isEnabled = enabled;
     }
 
     @Override
     public boolean isVisible() {
         return isVisible;
+    }
+
+    @Override
+    public void setVisible(boolean visible) {
+        this.isVisible = visible;
     }
 
     @Override
@@ -401,40 +249,131 @@ public class UniversalSlot extends Slot implements IClickable {
     }
 
     @Override
-    public void setVisible(boolean visible) {
-        this.isVisible = visible;
+    public double top() {
+        return rect.top();
     }
 
     @Override
-    public boolean isEnabled() {
-        return isEnabled;
+    public Rect setTop(double value) {
+        return rect.setTop(value);
     }
 
     @Override
-    public void setEnabled(boolean enabled) {
-        this.isEnabled = enabled;
+    public double left() {
+        return rect.left();
     }
 
     @Override
-    public void setOnInit(IInit onInit) {
-
+    public Rect setLeft(double value) {
+        return rect.setLeft(value);
     }
 
     @Override
-    public void onInit() {
-
+    public double bottom() {
+        return rect.bottom();
     }
 
     @Override
-    public void setDoThisOnChange(IDoThis iDoThis) {
-        this.iDoThis = iDoThis;
+    public Rect setBottom(double value) {
+        return rect.setBottom(value);
     }
 
-    IRect.IDoThis iDoThis;
     @Override
-    public void doThisOnChange() {
-        if (this.iDoThis != null) {
-            this.iDoThis.doThisOnChange(this);
-        }
+    public double right() {
+        return rect.right();
     }
+
+    @Override
+    public Rect setRight(double value) {
+        return rect.setRight(value);
+    }
+
+    @Override
+    public double width() {
+        return rect.width();
+    }
+
+    @Override
+    public Rect setWidth(double value) {
+        return rect.setWidth(value);
+    }
+
+    @Override
+    public double height() {
+        return rect.height();
+    }
+
+    @Override
+    public Rect setHeight(double value) {
+        return rect.setHeight(value);
+    }
+    public void setPosition(MusePoint2D position) {
+        this.rect.setPosition(position);
+    }
+
+
+    @Override
+    public Rect setAbove(IRect otherBelowMe) {
+        return rect.setAbove(otherBelowMe);
+    }
+
+    @Override
+    public Rect setLeftOf(IRect otherRightOfMe) {
+        return rect.setLeftOf(otherRightOfMe);
+    }
+
+    @Override
+    public Rect setBelow(IRect otherAboveMe) {
+        return rect.setBelow(otherAboveMe);
+    }
+
+    @Override
+    public Rect setRightOf(IRect otherLeftOfMe) {
+        return rect.setRightOf(otherLeftOfMe);
+    }
+
+    @Override
+    public MusePoint2D getUL() {
+        return rect.getUL();
+    }
+
+    @Override
+    public MusePoint2D getWH() {
+        return rect.getWH();
+    }
+
+
+    @Override
+    public IRect setUL(MusePoint2D ul) {
+        return rect.setUL(ul);
+    }
+
+    @Override
+    public Rect setWH(MusePoint2D wh) {
+        return rect.setWH(wh);
+    }
+
+    @Override
+    public void moveBy(double x, double y) {
+        this.rect.moveBy(x, y);
+    }
+
+    @Override
+    public boolean containsPoint(double x, double y) {
+        return rect.containsPoint(x, y);
+    }
+
+//
+//    @Override
+//    public void setDoThisOnChange(IDoThis iDoThis) {
+//        this.iDoThis = iDoThis;
+//    }
+//
+//    IRect.IDoThis iDoThis;
+//    @Override
+//    public void doThisOnChange() {
+//        if (this.iDoThis != null) {
+//            this.iDoThis.doThisOnChange(this);
+//        }
+//    }
 }

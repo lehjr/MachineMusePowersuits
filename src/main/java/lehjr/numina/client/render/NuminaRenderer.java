@@ -331,15 +331,15 @@ public abstract class NuminaRenderer {
         // period = 2
         // seconds
         float gradientRatio = 1.0F - ((varia + 1000) % 1000) / 1000.0F;
-        MusePoint2D midpoint = (firstClickable.getPosition().minus(secondClickable.getPosition()).times((float)Math.abs(varia / 1000.0))
-                .plus(secondClickable.getPosition()));
+        MusePoint2D midpoint = (firstClickable.center().minus(secondClickable.center()).times((float)Math.abs(varia / 1000.0))
+                .plus(secondClickable.center()));
         MusePoint2D firstpoint, secondpoint;
         if (varia < 0) {
-            firstpoint = secondClickable.getPosition();
-            secondpoint = firstClickable.getPosition();
+            firstpoint = secondClickable.center();
+            secondpoint = firstClickable.center();
         } else {
-            firstpoint = firstClickable.getPosition();
-            secondpoint = secondClickable.getPosition();
+            firstpoint = firstClickable.center();
+            secondpoint = secondClickable.center();
         }
 
         RenderSystem.disableTexture();
@@ -354,19 +354,19 @@ public abstract class NuminaRenderer {
 
 //        RenderSystem.lineWidth(3.0F);
 
-        buffer.vertex(midpoint.getX(), midpoint.getY(), zLevel + 10)
+        buffer.vertex(midpoint.x(), midpoint.y(), zLevel + 10)
                 .color(gradientColour.r, gradientColour.g, gradientColour.b, gradientRatio)
                 .endVertex();
 
-        buffer.vertex(firstpoint.getX(), firstpoint.getY(), zLevel + 10)
+        buffer.vertex(firstpoint.x(), firstpoint.y(), zLevel + 10)
                 .color(gradientColour.r, gradientColour.g, gradientColour.b, 0.0F)
                 .endVertex();
 
-        buffer.vertex(secondpoint.getX(), secondpoint.getY(), zLevel + 10)
+        buffer.vertex(secondpoint.x(), secondpoint.y(), zLevel + 10)
                 .color(gradientColour.r, gradientColour.g, gradientColour.b, gradientRatio)
                 .endVertex();
 
-        buffer.vertex(midpoint.getX(), midpoint.getY(), zLevel + 10)
+        buffer.vertex(midpoint.x(), midpoint.y(), zLevel + 10)
                 .color(1.0F, 1.0F, 1.0F, 1.0F)
                 .endVertex();
         tessellator.end();

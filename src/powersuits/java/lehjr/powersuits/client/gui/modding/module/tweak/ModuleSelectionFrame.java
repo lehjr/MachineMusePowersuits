@@ -31,7 +31,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import lehjr.numina.client.gui.clickable.ClickableModule;
 import lehjr.numina.client.gui.frame.ScrollableFrame;
 import lehjr.numina.client.gui.gemoetry.MusePoint2D;
-import lehjr.numina.client.gui.gemoetry.RelativeRect;
+import lehjr.numina.client.gui.gemoetry.Rect;
 import lehjr.numina.client.render.NuminaRenderer;
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
 import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
@@ -54,7 +54,7 @@ import java.util.concurrent.atomic.AtomicReference;
 public class ModuleSelectionFrame extends ScrollableFrame {
     protected ModularItemSelectionFrame target;
     protected Map<ModuleCategory, ModuleSelectionSubFrame> categories = new LinkedHashMap<>();
-    protected RelativeRect lastPosition;
+    protected Rect lastPosition;
     Optional<ClickableModule> selectedModule = Optional.ofNullable(null);
     LazyOptional<IPowerModule> moduleCap = LazyOptional.empty();
 
@@ -70,12 +70,12 @@ public class ModuleSelectionFrame extends ScrollableFrame {
         if (categories.containsKey(category)) {
             return categories.get(category);
         } else {
-            RelativeRect position = new RelativeRect(
-                    getRect().left() + 4,
-                    getRect().top() + 4,
-                    getRect().right() - 4,
-                    getRect().top() + 36);
-            position.setMeBelow(lastPosition);
+            Rect position = new Rect(
+                    left() + 4,
+                    top() + 4,
+                    right() - 4,
+                    top() + 36);
+            position.setBelow(lastPosition);
             lastPosition = position;
             ModuleSelectionSubFrame frame = new ModuleSelectionSubFrame(
                     category,
@@ -151,13 +151,13 @@ public class ModuleSelectionFrame extends ScrollableFrame {
             this.totalSize = 0;
 
             for (ModuleSelectionSubFrame frame : categories.values()) {
-                totalSize = (int) Math.max(frame.border.bottom() - this.getRect().top(), totalSize);
+                totalSize = (int) Math.max(frame.border.bottom() - this.top(), totalSize);
             }
 
             this.currentScrollPixels = Math.min(currentScrollPixels, getMaxScrollPixels());
             super.preRender(matrixStack, mouseX, mouseY, partialTicks);
             RenderSystem.pushMatrix();
-            RenderSystem.translatef(0, -currentScrollPixels, 0);
+            RenderSystem.translatef(0, (float)-currentScrollPixels, 0);
             drawItems(matrixStack, partialTicks);
             drawSelection(matrixStack);
             RenderSystem.popMatrix();
@@ -169,8 +169,8 @@ public class ModuleSelectionFrame extends ScrollableFrame {
 
     private void drawItems(MatrixStack matrixStack, float partialTicks) {
         for (ModuleSelectionSubFrame frame : categories.values()) {
-            frame.drawPartial(matrixStack, (int) (this.currentScrollPixels + getRect().top() + 4),
-                    (int) (this.currentScrollPixels + getRect().top() + getRect().height() - 4), partialTicks);
+            frame.drawPartial(matrixStack, (int) (this.currentScrollPixels + top() + 4),
+                    (int) (this.currentScrollPixels + top() + height() - 4), partialTicks);
         }
     }
 
@@ -180,9 +180,9 @@ public class ModuleSelectionFrame extends ScrollableFrame {
 
     private void drawSelection(MatrixStack matrixStack) {
         getSelectedModule().ifPresent(module ->{
-            MusePoint2D pos = module.getPosition();
-            if (pos.getY() > this.currentScrollPixels + getRect().top() + 4 && pos.getY() < this.currentScrollPixels + getRect().top() + getRect().height() - 4) {
-                NuminaRenderer.drawCircleAround(matrixStack, pos.getX(), pos.getY(), 10, getzLevel());
+            MusePoint2D pos = module.center();
+            if (pos.y() > this.currentScrollPixels + top() + 4 && pos.y() < this.currentScrollPixels + top() + height() - 4) {
+                NuminaRenderer.drawCircleAround(matrixStack, pos.x(), pos.y(), 10, getzLevel());
             }
         });
     }
@@ -206,7 +206,7 @@ public class ModuleSelectionFrame extends ScrollableFrame {
         if (super.mouseClicked(x, y, button)) {
             ModuleSelectionSubFrame sel = null;
 
-            if (getRect().containsPoint(x, y)) {
+            if (containsPoint(x, y)) {
                 y += currentScrollPixels;
                 for (ModuleSelectionSubFrame frame : categories.values()) {
                     if (frame.mouseClicked(x, y, button)) {
@@ -236,7 +236,7 @@ public class ModuleSelectionFrame extends ScrollableFrame {
 
     @Override
     public List<ITextComponent> getToolTip(int x, int y) {
-        if (getRect().containsPoint(x, y)) {
+        if (containsPoint(x, y)) {
             y += currentScrollPixels;
             if (!categories.isEmpty()) {
                 for (ModuleSelectionSubFrame category : categories.values()) {

@@ -114,9 +114,9 @@ public class ClickableKeybinding extends ClickableButton2 {
             matrixStack.scale(0.5F, 0.5F, 0.5F);
             matrixStack.translate(0, 0, 100);
             if (displayOnHUD) {
-                StringUtils.drawShadowedString(matrixStack, StringUtils.wrapFormatTags("HUD", StringUtils.FormatCodes.BrightGreen), this.getPosition().getX() * 2 + 6, this.getPosition().getY() * 2 + 6);
+                StringUtils.drawShadowedString(matrixStack, StringUtils.wrapFormatTags("HUD", StringUtils.FormatCodes.BrightGreen), this.centerX() * 2 + 6, this.centerY() * 2 + 6);
             } else {
-                StringUtils.drawShadowedString(matrixStack, StringUtils.wrapFormatTags("x", StringUtils.FormatCodes.Red), this.getPosition().getX() * 2 + 6, this.getPosition().getY() * 2 + 6);
+                StringUtils.drawShadowedString(matrixStack, StringUtils.wrapFormatTags("x", StringUtils.FormatCodes.Red), this.centerX() * 2 + 6, this.centerY() * 2 + 6);
             }
             matrixStack.popPose();
         }
@@ -146,7 +146,7 @@ public class ClickableKeybinding extends ClickableButton2 {
         while (iterator.hasNext()) {
             module = iterator.next();
             int maxDistance = getTargetDistance() * 2;
-            double distanceSq = module.getPosition().distanceSq(this.getPosition());
+            double distanceSq = module.center().distanceSq(this.center());
             if (distanceSq > maxDistance * maxDistance) {
                 iterator.remove();
             }
@@ -160,10 +160,10 @@ public class ClickableKeybinding extends ClickableButton2 {
     public void attractBoundModules(IClickable exception) {
         for (ClickableModule module : boundModules) {
             if (!module.equals(exception)) {
-                MusePoint2D euclideanDistance = module.getPosition().minus(this.getPosition());
+                MusePoint2D euclideanDistance = module.center().minus(this.center());
                 MusePoint2D directionVector = euclideanDistance.normalize();
-                MusePoint2D tangentTarget = directionVector.times(getTargetDistance()).plus(this.getPosition());
-                MusePoint2D midpointTangent = module.getPosition().midpoint(tangentTarget);
+                MusePoint2D tangentTarget = directionVector.times(getTargetDistance()).plus(this.center());
+                MusePoint2D midpointTangent = module.center().midpoint(tangentTarget);
                 module.setPosition(midpointTangent.copy());
             }
         }

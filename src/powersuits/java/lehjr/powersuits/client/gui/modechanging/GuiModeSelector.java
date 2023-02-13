@@ -27,14 +27,14 @@
 package lehjr.powersuits.client.gui.modechanging;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import lehjr.numina.client.gui.ContainerlessGui;
+import lehjr.numina.client.gui.ContainerlessGui2;
 import lehjr.numina.client.gui.gemoetry.MusePoint2D;
 import net.minecraft.client.MainWindow;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.text.ITextComponent;
 
-public class GuiModeSelector extends ContainerlessGui {
+public class GuiModeSelector extends ContainerlessGui2 {
     PlayerEntity player;
     RadialModeSelectionFrame radialSelect;
 
@@ -73,7 +73,7 @@ public class GuiModeSelector extends ContainerlessGui {
     @Override
     public void init() {
         super.init();
-        radialSelect.init(absX(-0.5F), absY(-0.5F), absX(0.5F), absY(0.5F));
+//        radialSelect.init(absX(-0.5F), absY(-0.5F), absX(0.5F), absY(0.5F));
     }
 
     @Override

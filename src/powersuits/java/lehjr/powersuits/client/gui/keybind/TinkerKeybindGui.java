@@ -29,6 +29,7 @@ package lehjr.powersuits.client.gui.keybind;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import lehjr.numina.client.gui.ContainerlessGui;
+import lehjr.numina.client.gui.ContainerlessGui2;
 import lehjr.numina.client.gui.gemoetry.MusePoint2D;
 import lehjr.powersuits.client.control.KeybindManager;
 import lehjr.powersuits.client.gui.common.TabSelectFrame;
@@ -47,35 +48,16 @@ import net.minecraftforge.client.settings.KeyModifier;
  */
 public class TinkerKeybindGui extends ContainerlessGui {
     public static final ResourceLocation BACKGROUND = new ResourceLocation(MPSConstants.MOD_ID, "textures/gui/background/keybinds.png");
-
-
     TabSelectFrame tabSelectFrame;
     PlayerEntity player;
     KeyBindFrame kbFrame;
 
     public TinkerKeybindGui(PlayerEntity player, ITextComponent titleIn) {
-        super(titleIn, false);
+        super(titleIn, 352, 217);
         Minecraft.getInstance().keyboardHandler.setSendRepeatsToGui(true);
         this.player = player;
-        MainWindow screen = Minecraft.getInstance().getWindow();
-        this./*xSize*/imageWidth = 358 /*340 */;
+        this./*xSize*/imageWidth = 352 /*340 */;
         this./*ySize*/imageHeight = 217;
-        tabSelectFrame = new TabSelectFrame(player, 2);
-
-        // top left should be 9,9
-        // bottom right should be 332, 210
-        // 332 - 9 = 323
-        //
-        MusePoint2D kbTL =  new MusePoint2D(backgroundRect.left() + 9, backgroundRect.top() + 9);
-        kbFrame = new KeyBindFrame( kbTL, kbTL.plus(332, 210));
-//        kbFrame.setWidth(332);
-//        kbFrame.setHeight(201);
-
-
-//                new MusePoint2D(backgroundRect.left() + 9, backgroundRect.top() + 9),
-//                new MusePoint2D(backgroundRect.right() -32, backgroundRect.bottom() -8));
-        addFrame(tabSelectFrame);
-        addFrame(kbFrame);
     }
 
 //    double scrollVal = 0;
@@ -89,15 +71,6 @@ public class TinkerKeybindGui extends ContainerlessGui {
 //        return super.mouseScrolled(mouseX, mouseY, dWheel);
 //    }
 
-    @Override
-    public void renderBackgroundRect(MatrixStack matrixStack, int mouseX, int mouseY, float frameTime) {
-//        super.renderBackgroundRect(matrixStack, mouseX, mouseY, frameTime);
-        RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-        this.minecraft.getTextureManager().bind(this.BACKGROUND);
-        int i = this.leftPos;
-        int j = this.topPos;
-        this.blit(matrixStack, i, j, this.getBlitOffset(), 0, 0, imageWidth, imageHeight, 512, 512);
-    }
 
     /**
      * Add the buttons (and other controls) to the screen.
@@ -105,19 +78,29 @@ public class TinkerKeybindGui extends ContainerlessGui {
     @Override
     public void init() {
         super.init();
-        MusePoint2D kbTL =  new MusePoint2D(backgroundRect.left() + 9, backgroundRect.top() + 9);
-//        kbFrame.init( kbTL, kbTL.plus(332, 201));
-
-
-        kbFrame.init(
-                backgroundRect.finalLeft() + 9,
-                backgroundRect.finalTop() + 9,
-                backgroundRect.finalLeft() + 332,
-                backgroundRect.finalTop() + 210);
-        System.out.println("kbFrame: " + kbFrame);
-
-        tabSelectFrame.initFromBackgroundRect(this.backgroundRect);
+        frames.clear();
+        tabSelectFrame = new TabSelectFrame(this.leftPos, this.topPos, this.imageWidth, player, 2);
+        tabSelectFrame.setPosition(center());
+        tabSelectFrame.setBottom(topPos);
+        addFrame(tabSelectFrame);
+        MusePoint2D kbTL =  new MusePoint2D(leftPos + 9, topPos + 9);
+        kbFrame = new KeyBindFrame( kbTL, kbTL.plus(334, 201));
+        addFrame(tabSelectFrame);
+        addFrame(kbFrame);
+        System.out.println("kbFrame: " + kbFrame.getBackgroundRect());
     }
+
+    @Override
+    public void renderBackground(MatrixStack matrixStack) {
+        super.renderBackground(matrixStack);
+        RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+        this.minecraft.getTextureManager().bind(this.BACKGROUND);
+        int i = this.leftPos;
+        int j = this.topPos;
+        this.blit(matrixStack, i, j, this.getBlitOffset(), 0, 0, imageWidth, imageHeight, 512, 512);
+    }
+
+
 
     @Override
     public boolean keyPressed(int p_231046_1_, int p_231046_2_, int p_231046_3_) {

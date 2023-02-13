@@ -2,10 +2,7 @@ package lehjr.numina.client.gui.frame;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import lehjr.numina.client.gui.clickable.IClickable;
-import lehjr.numina.client.gui.gemoetry.IDrawable;
-import lehjr.numina.client.gui.gemoetry.IDrawableRect;
-import lehjr.numina.client.gui.gemoetry.IRect;
-import lehjr.numina.client.gui.gemoetry.MusePoint2D;
+import lehjr.numina.client.gui.gemoetry.*;
 import net.minecraft.util.text.ITextComponent;
 
 import javax.annotation.Nullable;
@@ -21,7 +18,7 @@ import java.util.Optional;
 public class ScrollableMultiRectFrame<T extends Map<Integer, IRect>> extends GUISpacer implements IScrollable {
     protected int buttonSize = 5;
     protected int totalSize;
-    protected int currentScrollPixels;
+    protected double currentScrollPixels;
     protected double scrollAmount = 8;
     protected double margin;
     protected double maxHeight = -1;
@@ -67,9 +64,9 @@ public class ScrollableMultiRectFrame<T extends Map<Integer, IRect>> extends GUI
     public ScrollableMultiRectFrame addRect(IRect rect) {
         if (rects.size() >0) {
             if (startTop) {
-                rect.setMeBelow(rects.get(rects.size() -1));
+                rect.setBelow(rects.get(rects.size() -1));
             } else {
-                rect.setMeAbove(rects.get(rects.size() -1));
+                rect.setAbove(rects.get(rects.size() -1));
             }
         }
         rects.put(rects.size(), rect);
@@ -116,23 +113,23 @@ public class ScrollableMultiRectFrame<T extends Map<Integer, IRect>> extends GUI
         double highestVal = 0;
         for (IRect rect : rects.values()) {
             // single max width, multiple heights
-            finalVal += rect.finalHeight();
-            if (rect.finalWidth() > highestVal) {
-                highestVal = rect.finalWidth();
+            finalVal += rect.height();
+            if (rect.width() > highestVal) {
+                highestVal = rect.width();
             }
         }
         highestVal += margin * 2;
         {
             if (maxWidth > 0) {
-                super.setWidth(Math.min(Math.max(highestVal, super.finalWidth()), maxWidth));
+                super.setWidth(Math.min(Math.max(highestVal, super.width()), maxWidth));
             } else {
-                super.setWidth(Math.max(highestVal, super.finalWidth()));
+                super.setWidth(Math.max(highestVal, super.width()));
             }
             if (maxHeight > 0) {
-                super.setHeight(Math.min(Math.max(finalVal, super.finalHeight()), maxHeight));
+                super.setHeight(Math.min(Math.max(finalVal, super.height()), maxHeight));
                 this.totalSize = (int) (finalVal + 10);
             } else {
-                super.setHeight(Math.max(finalVal, super.finalHeight()));
+                super.setHeight(Math.max(finalVal, super.height()));
             }
         }
     }
@@ -277,14 +274,14 @@ public class ScrollableMultiRectFrame<T extends Map<Integer, IRect>> extends GUI
         return this;
     }
 
-    @Override
-    public void initGrowth() {
-        super.initGrowth();
-        for(IRect rect : rects.values()) {
-            rect.initGrowth();
-        }
-        refreshRects();
-    }
+//    @Override
+//    public void initGrowth() {
+//        super.initGrowth();
+//        for(IRect rect : rects.values()) {
+//            rect.initGrowth();
+//        }
+//        refreshRects();
+//    }
 
     // FIXME: this is just a workaround... maybe figure out why this is needed in the first place and fix
     public void refreshRects() {
@@ -292,25 +289,25 @@ public class ScrollableMultiRectFrame<T extends Map<Integer, IRect>> extends GUI
             {
                 // all boxes linked from top to bottom
                 if (startTop) {
-                    rects.get(0).setTop(finalTop());
+                    rects.get(0).setTop(top());
                     // all boxes lined from bottom to top
                 } else {
-                    rects.get(rects.size() - 1).setBottom(this.finalBottom());
+                    rects.get(rects.size() - 1).setBottom(this.bottom());
                 }
 
                 for (int i = 0; i< rects.size(); i++) {
                     // centered height
-                    rects.get(i).setTop(rects.get(i).finalTop());
+                    rects.get(i).setTop(rects.get(i).top());
                     /** sets the rects centered horizontally */
-                    rects.get(i).setLeft(this.centerx() - rects.get(i).finalWidth() * 0.5);
+                    rects.get(i).setLeft(this.centerX() - rects.get(i).width() * 0.5);
                 }
             }
         }
 
         getBackground().ifPresent(rect-> {
-            rect.setPosition(this.getPosition());
-            rect.setWidth(this.finalWidth());
-            rect.setHeight(this.finalHeight());
+            rect.setPosition(this.center());
+            rect.setWidth(this.width());
+            rect.setHeight(this.height());
         });
     }
 
@@ -335,12 +332,12 @@ public class ScrollableMultiRectFrame<T extends Map<Integer, IRect>> extends GUI
     }
 
     @Override
-    public int getCurrentScrollPixels() {
+    public double getCurrentScrollPixels() {
         return this.currentScrollPixels;
     }
 
     @Override
-    public void setCurrentScrollPixels(int scrollPixels) {
+    public void setCurrentScrollPixels(double scrollPixels) {
         this.currentScrollPixels = scrollPixels;
     }
 
@@ -364,13 +361,13 @@ public class ScrollableMultiRectFrame<T extends Map<Integer, IRect>> extends GUI
     }
 
     @Override
-    public IRect setWH(MusePoint2D wh) {
+    public Rect setWH(MusePoint2D wh) {
         return this;
     }
 
-    @Override
-    public void doThisOnChange() {
-        refreshRects();
-        super.doThisOnChange();
-    }
+//    @Override
+//    public void doThisOnChange() {
+//        refreshRects();
+//        super.doThisOnChange();
+//    }
 }

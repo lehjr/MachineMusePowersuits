@@ -1,12 +1,12 @@
 package lehjr.numina.client.gui.frame;
 
-import lehjr.numina.client.gui.gemoetry.DrawableRelativeRect;
+import lehjr.numina.client.gui.gemoetry.DrawableRect;
 import lehjr.numina.client.gui.gemoetry.IDrawable;
 import lehjr.numina.client.gui.gemoetry.MusePoint2D;
-import lehjr.numina.client.gui.gemoetry.RelativeRect;
+import lehjr.numina.client.gui.gemoetry.Rect;
 import lehjr.numina.common.math.Colour;
 
-public abstract class GuiFrame extends DrawableRelativeRect implements IGuiFrame {
+public abstract class GuiFrame extends DrawableRect implements IGuiFrame {
     float zLevel = 0;
     boolean isEnabled=true;
     boolean isVisible=true;
@@ -15,7 +15,7 @@ public abstract class GuiFrame extends DrawableRelativeRect implements IGuiFrame
         super(left, top, right, bottom, growFromMiddle, backgroundColour, borderColour);
     }
 
-    public GuiFrame(RelativeRect ref, Colour backgroundColour, Colour borderColour) {
+    public GuiFrame(Rect ref, Colour backgroundColour, Colour borderColour) {
         super(ref, backgroundColour, borderColour);
     }
 
@@ -25,14 +25,6 @@ public abstract class GuiFrame extends DrawableRelativeRect implements IGuiFrame
 
     public GuiFrame(MusePoint2D ul, MusePoint2D br, Colour backgroundColour, Colour borderColour) {
         super(ul, br, backgroundColour, borderColour);
-    }
-
-    public GuiFrame(Colour backgroundColour, Colour borderColour) {
-        super(backgroundColour, borderColour);
-    }
-
-    public GuiFrame(Colour backgroundColour, Colour borderColour, boolean growFromMiddle) {
-        super(backgroundColour, borderColour, growFromMiddle);
     }
 
     @Override

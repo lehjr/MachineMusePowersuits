@@ -27,15 +27,22 @@
 package lehjr.powersuits.client.gui.modding.cosmetic;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.systems.RenderSystem;
 import lehjr.numina.client.gui.ContainerlessGui;
 import lehjr.numina.client.gui.frame.EntityRenderFrame;
+import lehjr.numina.client.gui.gemoetry.MusePoint2D;
 import lehjr.powersuits.client.gui.common.ModularItemSelectionFrame;
 import lehjr.powersuits.client.gui.common.TabSelectFrame;
+import lehjr.powersuits.client.gui.modding.cosmetic.colourpicker.ColourPickerFrame;
+import lehjr.powersuits.client.gui.modding.cosmetic.partmanip.ModelManipFrame;
 import lehjr.powersuits.common.config.MPSSettings;
+import lehjr.powersuits.common.constants.MPSConstants;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.server.management.OpEntry;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 
 /**
@@ -45,25 +52,29 @@ import net.minecraft.util.text.ITextComponent;
  * Ported to Java by lehjr on 10/19/16.
  */
 public class CosmeticGui extends ContainerlessGui {
+    public static final ResourceLocation BACKGROUND = new ResourceLocation(MPSConstants.MOD_ID, "textures/gui/background/cosmetic.png");
     PlayerEntity player;
-    final int spacer = 7;
-
     ModularItemSelectionFrame itemSelectFrame;
     EntityRenderFrame renderframe;
     ColourPickerFrame colourpicker;
-    PartManipContainer partframe;
-
-
+    ModelManipFrame partframe;
     TabSelectFrame tabSelectFrame;
-
-    protected final boolean allowCosmeticPresetCreation;
-    protected final boolean usingCosmeticPresets;
+    protected boolean allowCosmeticPresetCreation;
+    protected boolean usingCosmeticPresets;
 
     public CosmeticGui(PlayerInventory inventory, ITextComponent title) {
-        super(title, 340, 217, false);
+        super(title, 352, 217);
         this.player = inventory.player;
         this.minecraft = Minecraft.getInstance();
+    }
 
+    /**
+     * Add the buttons (and other controls) to the screen.
+     */
+    @Override
+    public void init() {
+        super.init();
+        frames.clear();
         usingCosmeticPresets = !MPSSettings.useLegacyCosmeticSystem();
         if (usingCosmeticPresets) {
             // check if player is the server owner
@@ -79,62 +90,43 @@ public class CosmeticGui extends ContainerlessGui {
             allowCosmeticPresetCreation = false;
         }
 
-        itemSelectFrame = new ModularItemSelectionFrame();
+        /** for selecting the item to manipulate ------------------------------------------------ */
+        EquipmentSlotType type;
+        if (itemSelectFrame != null) {
+            type = itemSelectFrame.selectedType().orElse(EquipmentSlotType.FEET);
+        } else {
+            type = EquipmentSlotType.FEET;
+        }
+        itemSelectFrame = new ModularItemSelectionFrame(new MusePoint2D(leftPos - 30, topPos), type);
+        itemSelectFrame.refreshRects();
         addFrame(itemSelectFrame);
 
         /** renders the player ----------------------------------------------------------------- */
-        renderframe = new EntityRenderFrame(false);
-        renderframe.setWidth(120);
-        renderframe.setHeight(90);
+        renderframe = new EntityRenderFrame(leftPos + 220, topPos + 14, leftPos + 344, topPos + 102);
         renderframe.setLivingEntity(getMinecraft().player);
         renderframe.setAllowDrag(true);
         renderframe.setAllowZoom(true);
         addFrame(renderframe);
 
         /** for picking the colours ------------------------------------------------------------ */
-        colourpicker = new ColourPickerFrame(itemSelectFrame, 120, 106) ;
+        colourpicker = new ColourPickerFrame(itemSelectFrame, leftPos + 220, topPos + 108, leftPos + 344, topPos + 207);
         addFrame(colourpicker);
 
         /** for manipulating part selections --------------------------------------------------- */
-        partframe = new PartManipContainer(itemSelectFrame, colourpicker);
+        partframe = new ModelManipFrame(leftPos + 8, topPos + 14, leftPos + 211, topPos + 207, itemSelectFrame, colourpicker);
         addFrame(partframe);
 
         /** for selecting GUI ------------------------------------------------------------------ */
-        tabSelectFrame = new TabSelectFrame(player, 3);
+        tabSelectFrame = new TabSelectFrame(this.leftPos, this.topPos, this.imageWidth, player, 3);
+        tabSelectFrame.setPosition(center());
+        tabSelectFrame.setBottom(topPos);
         addFrame(tabSelectFrame);
 
         /** for selecting modular item to adjust settings for ---------------------------------- */
-        itemSelectFrame.setDoThisOnChange(doThis -> partframe.refreshModelframes());
-    }
+//        partframe.setWH(new MusePoint2D(201, 195));
+//        partframe.setUL(new MusePoint2D(leftPos + 7, topPos + 13));
 
-    /**
-     * Add the buttons (and other controls) to the screen.
-     */
-    @Override
-    public void init() {
-        super.init();
-        tabSelectFrame.initFromBackgroundRect(this.backgroundRect);
-
-        itemSelectFrame.setMeLeftOf(backgroundRect); // does nothing
-        itemSelectFrame.setTop(backgroundRect.finalTop()); // displaces buttons
-        itemSelectFrame.setRight(backgroundRect.finalLeft());  // displaces buttons
-        itemSelectFrame.initGrowth();
-
-
-        renderframe.setRight(backgroundRect.finalRight() - spacer);
-        renderframe.setTop(backgroundRect.finalTop() + spacer);
-
-        colourpicker.setTop(renderframe.finalBottom() + spacer);
-        colourpicker.setRight(backgroundRect.finalRight() - spacer);
-
-        partframe.init(
-                backgroundRect.finalLeft()  + spacer,
-                backgroundRect.finalTop() + spacer,
-                colourpicker.finalLeft() - spacer,
-                backgroundRect.finalBottom() - spacer
-        );
-
-
+        // TODO
 //        // if not using presets then only the reset button is displayed
 //        loadSaveResetSubFrame = new LoadSaveResetSubFrame(
 //                colourpicker,
@@ -152,30 +144,39 @@ public class CosmeticGui extends ContainerlessGui {
 //                partframe,
 //                cosmeticFrame);
 //        frames.add(loadSaveResetSubFrame);
+
     }
 
     @Override
     public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
-        if (backgroundRect.width() == backgroundRect.finalWidth() && backgroundRect.height() == backgroundRect.finalHeight()) {
-            super.render(matrixStack, mouseX, mouseY, partialTicks);
-            renderTooltip(matrixStack, mouseX, mouseY);
-        } else {
-            this.renderBackground(matrixStack);
-        }
+        super.render(matrixStack, mouseX, mouseY, partialTicks);
+        renderTooltip(matrixStack, mouseX, mouseY);
     }
-
-//    @Override
-//    public boolean mouseClicked(double x, double y, int button) {
-//        itemSelectFrame.getModularItemOrEmpty().getCapability(ModelSpecNBTCapability.RENDER)
-//                .filter(IModelSpecNBT.class::isInstance)
-//                .map(IModelSpecNBT.class::cast).ifPresent(spec -> System.out.println(spec.getRenderTag()));
-//        return super.mouseClicked(x, y, button);
-//    }
 
     @Override
     public void renderBackground(MatrixStack matrixStack) {
         super.renderBackground(matrixStack);
+        RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+        this.minecraft.getTextureManager().bind(this.BACKGROUND);
+        int i = this.leftPos;
+        int j = this.topPos;
+        this.blit(matrixStack, i, j, 0, 0, this.imageWidth, this.imageHeight, 512, 512);
     }
+
+//    double zVal = 0;
+//
+//    @Override
+//    public boolean mouseScrolled(double mouseX, double mouseY, double dWheel) {
+//        zVal += dWheel;
+//
+//        System.out.println("zval: " + zVal);
+//
+//        itemSelectFrame.moveBy(zVal, 0);
+//        itemSelectFrame.refreshRects();
+//
+//
+//        return super.mouseScrolled(mouseX, mouseY, dWheel);
+//    }
 
     @Override
     public void removed() {

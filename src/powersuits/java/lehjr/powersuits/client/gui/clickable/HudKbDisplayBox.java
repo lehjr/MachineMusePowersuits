@@ -77,9 +77,9 @@ public class HudKbDisplayBox extends ClickableButton2 {
             matrixStack.scale(0.5F, 0.5F, 0.5F);
             matrixStack.translate(0, 0, 100);
             if (displayOnHUD) {
-                StringUtils.drawShadowedString(matrixStack, StringUtils.wrapFormatTags("HUD", StringUtils.FormatCodes.BrightGreen), this.getPosition().getX() * 2 + 6, this.getPosition().getY() * 2 + 6);
+                StringUtils.drawShadowedString(matrixStack, StringUtils.wrapFormatTags("HUD", StringUtils.FormatCodes.BrightGreen), this.centerX() * 2 + 6, this.centerY() * 2 + 6);
             } else {
-                StringUtils.drawShadowedString(matrixStack, StringUtils.wrapFormatTags("x", StringUtils.FormatCodes.Red), this.getPosition().getX() * 2 + 6, this.getPosition().getY() * 2 + 6);
+                StringUtils.drawShadowedString(matrixStack, StringUtils.wrapFormatTags("x", StringUtils.FormatCodes.Red), this.centerX() * 2 + 6, this.centerY() * 2 + 6);
             }
             matrixStack.popPose();
         }

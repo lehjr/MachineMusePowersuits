@@ -28,6 +28,7 @@ package lehjr.numina.client.gui.frame;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import lehjr.numina.client.gui.IContainerULOffSet;
+import lehjr.numina.client.gui.frame.fixed.ScrollableFrame2;
 import lehjr.numina.client.gui.gemoetry.DrawableTile;
 import lehjr.numina.client.gui.gemoetry.MusePoint2D;
 import lehjr.numina.client.gui.slot.IHideableSlot;
@@ -203,7 +204,7 @@ public class InventoryFrame extends ScrollableFrame implements IContainerULOffSe
 
         this.slot_ulShift = getULShift();
         Pair<Integer, Integer> gridRange = getVisibleRows();
-        MusePoint2D ul = new MusePoint2D(finalLeft(), finalTop());
+        MusePoint2D ul = new MusePoint2D(left(), top());
 
         int i = gridRange.getLeft() * gridWidth;
         outerLoop:
@@ -216,15 +217,15 @@ public class InventoryFrame extends ScrollableFrame implements IContainerULOffSe
 
                 if (i > 0) {
                     if (col > 0) {
-                        this.tiles.get(i).setMeRightOf(this.tiles.get(i - 1));
+                        this.tiles.get(i).setRightOf(this.tiles.get(i - 1));
                     }
 
                     if (row > 0) {
-                        this.tiles.get(i).setMeBelow(this.tiles.get(i - this.gridWidth));
+                        this.tiles.get(i).setBelow(this.tiles.get(i - this.gridWidth));
                     }
                 }
 
-                MusePoint2D position = new MusePoint2D(this.tiles.get(i).finalLeft(), this.tiles.get(i).finalTop()).minus(slot_ulShift);
+                MusePoint2D position = new MusePoint2D(this.tiles.get(i).left(), this.tiles.get(i).top()).minus(slot_ulShift);
                 Slot slot = container.getSlot(slotIndexes.get(i));
 
                 if (slot instanceof UniversalSlot) {
@@ -233,8 +234,8 @@ public class InventoryFrame extends ScrollableFrame implements IContainerULOffSe
                     ((IHideableSlot) slot).setPosition(position);
                     ((IHideableSlot) slot).enable();
                 } else {
-                    slot.x = (int) position.getX();
-                    slot.y = (int) position.getY();
+                    slot.x = (int) position.x();
+                    slot.y = (int) position.y();
                 }
                 i++;
             }
@@ -269,11 +270,11 @@ public class InventoryFrame extends ScrollableFrame implements IContainerULOffSe
         return false;
     }
 
-    @Override
-    public void initGrowth() {
-        super.initGrowth();
-        loadSlots();
-    }
+//    @Override
+//    public void initGrowth() {
+//        super.initGrowth();
+//        loadSlots();
+//    }
 
     @Override
     public void update(double mouseX, double mouseY) {

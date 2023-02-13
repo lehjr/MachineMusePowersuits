@@ -58,8 +58,10 @@ public class ModelSpecNBT implements IModelSpecNBT, INBTSerializable<CompoundNBT
         CompoundNBT itemTag = TagUtils.getMuseItemTag(itemStack);
         if (tagName != null) {
             if (Objects.equals(tagName, NuminaConstants.TAG_RENDER)) {
+                NuminaLogger.logger.debug("Removing render tag");
                 itemTag.remove(NuminaConstants.TAG_RENDER);
                 if (!renderDataIn.isEmpty()) {
+                    NuminaLogger.logger.debug("Adding tag " + NuminaConstants.TAG_RENDER + " : " + renderDataIn);
                     itemTag.put(NuminaConstants.TAG_RENDER, renderDataIn);
                 } else {
                     itemTag.put(NuminaConstants.TAG_RENDER, new CompoundNBT());

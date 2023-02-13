@@ -35,7 +35,7 @@ import org.lwjgl.opengl.GL11;
 
 import java.nio.FloatBuffer;
 
-public class DrawableTile extends RelativeRect implements IDrawableRect {
+public class DrawableTile extends Rect implements IDrawableRect {
     final float lineWidth = 1F;
     Colour topBorderColour = new Colour(0.216F, 0.216F, 0.216F, 1F);
     Colour bottomBorderColour = Colour.WHITE.withAlpha(0.8F);
@@ -85,15 +85,6 @@ public class DrawableTile extends RelativeRect implements IDrawableRect {
     public DrawableTile setBorderShrinkValue(float shrinkBy) {
         this.shrinkBoarderBy = shrinkBy;
         return this;
-    }
-
-    @Override
-    public DrawableTile copyOf() {
-        return new DrawableTile(super.left(), super.top(), super.right(), super.bottom(),
-               this.growFromMiddle)
-                .setBackgroundColour(backgroundColour)
-                .setTopBorderColour(topBorderColour)
-                .setBottomBorderColour(bottomBorderColour);
     }
 
     public void internalDraw(MatrixStack matrixStack, Colour colour, int glMode, double shrinkBy) {

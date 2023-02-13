@@ -64,7 +64,7 @@ public class ClickableModuleSlot extends UniversalSlot implements IClickable {
     }
 
     public ClickableModuleSlot(IInventory inventory, int index, MusePoint2D position) {
-        super(inventory, index, (int)position.getX(), (int)position.getY());
+        super(inventory, index, (int)position.x(), (int)position.y());
     }
 
     public ClickableModuleSlot(IItemHandler itemHandler, int index, int xPosition, int yPosition) {
@@ -72,35 +72,25 @@ public class ClickableModuleSlot extends UniversalSlot implements IClickable {
     }
 
     public ClickableModuleSlot(IItemHandler itemHandler, int index, MusePoint2D position) {
-        super(itemHandler, index, (int)position.getX(), (int)position.getY());
+        super(itemHandler, index, (int)position.x(), (int)position.y());
     }
 
     @Override
     public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
         if (!getItem().isEmpty()) {
-            NuminaRenderer.drawItemAt(getUL().getX(), getUL().getY(), getItem());
+            NuminaRenderer.drawItemAt(getUL().x(), getUL().y(), getItem());
             if (!allowed) {
                 String string = StringUtils.wrapFormatTags("x", StringUtils.FormatCodes.DarkRed);
-                StringUtils.drawShadowedString(matrixStack, string, getPosition().getX() + 3, getPosition().getY() + 1);
+                StringUtils.drawShadowedString(matrixStack, string, centerX() + 3, centerY() + 1);
             } else if (installed) {
-                IconUtils.getIcon().checkmark.draw(matrixStack, getUL().getX() + 1, getUL().getY() + 1, checkmarkcolour);
+                IconUtils.getIcon().checkmark.draw(matrixStack, getUL().x() + 1, getUL().y() + 1, checkmarkcolour);
             }
         }
     }
 
     @Override
-    public void doThisOnChange() {
-
-    }
-
-    @Override
-    public void setDoThisOnChange(IDoThis iDoThis) {
-
-    }
-
-    @Override
     public List<ITextComponent> getToolTip(int x, int y) {
-        if (hitBox(x, y)) {
+        if (containsPoint(x, y)) {
             List<ITextComponent> toolTipText = new ArrayList<>();
             toolTipText.add(getLocalizedName());
             toolTipText.addAll(StringUtils.wrapITextComponentToLength(getLocalizedDescription(), 30));

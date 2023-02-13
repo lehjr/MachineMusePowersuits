@@ -1,6 +1,5 @@
 package lehjr.numina.client.gui.frame;
 
-import lehjr.numina.client.gui.gemoetry.RelativeRect;
 import lehjr.numina.client.gui.gemoetry.WidgetWrapper;
 import net.minecraft.client.gui.widget.Widget;
 
@@ -23,10 +22,5 @@ public abstract class WidgetHolderFrame extends RectHolderFrame {
 
     public Widget getWidget() {
         return ((WidgetWrapper)rect).getWidget();
-    }
-
-    @Override
-    public RelativeRect getRect() {
-        return super.getRect();
     }
 }

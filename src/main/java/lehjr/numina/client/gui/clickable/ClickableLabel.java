@@ -29,8 +29,10 @@ package lehjr.numina.client.gui.clickable;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import lehjr.numina.client.gui.gemoetry.IDrawable;
 import lehjr.numina.client.gui.gemoetry.MusePoint2D;
+import lehjr.numina.client.gui.gemoetry.Rect;
 import lehjr.numina.common.math.Colour;
 import lehjr.numina.common.string.StringUtils;
+import net.minecraft.util.text.ITextComponent;
 
 
 // fixme: revisit and rewrite
@@ -40,22 +42,29 @@ public class ClickableLabel extends Clickable {
     Colour colour = Colour.WHITE;
     boolean shadowed = true;
 
-    protected String label;
+    protected ITextComponent label;
     protected JustifyMode mode;
 
-    public ClickableLabel(String label, MusePoint2D position) {
+    public ClickableLabel(ITextComponent label, Rect rect) {
+        super(rect);
         this.label = label;
-        this.mode = JustifyMode.CENTERED;
-        super.setWidth(StringUtils.getStringWidth(label));
-        super.setHeight(StringUtils.getStringHeight());
-        super.setPosition(position);
+        this.mode =JustifyMode.CENTERED;
     }
 
-    public ClickableLabel(String label, MusePoint2D position, JustifyMode mode) {
+    public ClickableLabel(ITextComponent label, MusePoint2D ul) {
+        this(label, ul, JustifyMode.CENTERED);
+    }
+
+    public ClickableLabel(ITextComponent label, MusePoint2D ul, JustifyMode mode) {
+        super(ul, ul.plus(StringUtils.getStringWidth(label),
+                Math.max(StringUtils.getStringHeight(), 10)));
         this.label = label;
-        super.setWidth(StringUtils.getStringWidth(label));
-        super.setHeight(StringUtils.getStringHeight());
-        super.setPosition(position);
+        this.mode = mode;
+    }
+
+    public ClickableLabel(double left, double top, double width, ITextComponent label, JustifyMode mode) {
+        super(left, top, left + width, top + Math.max(StringUtils.getStringHeight(), 10));
+        this.label = label;
         this.mode = mode;
     }
 
@@ -72,41 +81,43 @@ public class ClickableLabel extends Clickable {
         this.shadowed = shadowed;
     }
 
-    public void setLabel(String label) {
+    public void setLabel(ITextComponent label) {
         this.label = label;
     }
 
     // fixme: this isn't actually working as intended
     @Override
     public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
+        super.render(matrixStack, mouseX, mouseY, partialTicks);
+
         matrixStack.pushPose();
         matrixStack.translate(0,0,100);
         if (shadowed) {
             switch (mode) {
                 case LEFT:
-                    StringUtils.drawLeftAlignedShadowedString(matrixStack, this.label, centerx(), centery(), colour);
+                    StringUtils.drawLeftAlignedShadowedString(matrixStack, this.label, centerX(), centerY(), colour);
                     break;
 
                 case CENTERED:
-                    StringUtils.drawShadowedStringCentered(matrixStack, this.label, centerx(), centery(), colour);
+                    StringUtils.drawShadowedStringCentered(matrixStack, this.label, centerX(), centerY(), colour);
                     break;
 
                 case RIGHT:
-                    StringUtils.drawRightAlignedShadowedString(matrixStack, this.label, centerx(), centery(), colour);
+                    StringUtils.drawRightAlignedShadowedString(matrixStack, this.label, centerX(), centerY(), colour);
                     break;
             }
         } else {
             switch (mode) {
                 case LEFT:
-                    StringUtils.drawLeftAlignedText(matrixStack, this.label, centerx(), centery(), colour);
+                    StringUtils.drawLeftAlignedText(matrixStack, this.label, centerX(), centerY(), colour);
                     break;
 
                 case CENTERED:
-                    StringUtils.drawCenteredText(matrixStack, this.label, centerx(), centery(), colour);
+                    StringUtils.drawCenteredText(matrixStack, this.label, centerX(), centerY(), colour);
                     break;
 
                 case RIGHT:
-                    StringUtils.drawRightAlignedText(matrixStack, this.label, centerx(), centery(), colour);
+                    StringUtils.drawRightAlignedText(matrixStack, this.label, centerX(), centerY(), colour);
                     break;
             }
         }
@@ -124,12 +135,12 @@ public class ClickableLabel extends Clickable {
     }
 
     @Override
-    public boolean hitBox(double x, double y) {
-        if (label == null || label.isEmpty()) {
+    public boolean containsPoint(double x, double y) {
+        if (label == null || label.getContents().isEmpty()) {
             return false;
         }
         MusePoint2D radius = new MusePoint2D((double) (StringUtils.getStringWidth(label) / 2F + 2F), StringUtils.getStringHeight());
-        return Math.abs(centerx() - x) < radius.getX() && Math.abs(centery() - y) < radius.getY();
+        return Math.abs(centerX() - x) < radius.x() && Math.abs(centerY() - y) < radius.y();
     }
 
     public enum JustifyMode {

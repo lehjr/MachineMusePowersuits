@@ -17,33 +17,27 @@ public abstract class RectHolderFrame<T extends IRect> extends GUISpacer {
     RectPlacement placement;
     public RectHolderFrame(T rect, double widthIn, double heightIn) {
         this(rect, widthIn, heightIn, RectPlacement.CENTER);
-        this.setDoThisOnChange(iChange ->setRect());
+//        this.setDoThisOnChange(iChange ->setRect());
         setRect();
     }
 
-    public RectHolderFrame(T rect, double widthIn, double heightIn, RectPlacement placement) {
-        this(rect, widthIn, heightIn, placement, null);
-    }
+//    public RectHolderFrame(T rect, double widthIn, double heightIn, RectPlacement placement) {
+//        this(rect, widthIn, heightIn, placement, null);
+//    }
 
-    public RectHolderFrame(T rect, double widthIn, double heightIn, RectPlacement placement, IDoThis onChange) {
+    public RectHolderFrame(T rect, double widthIn, double heightIn, RectPlacement placement/*, IDoThis onChange*/) {
         super(widthIn, heightIn);
         this.rect = rect;
         this.setBackgroundColour(Colour.YELLOW);
         this.setBorderColour(Colour.RED);
         this.placement = placement;
-        this.setDoThisOnChange(iChange -> {
-            if (onChange != null) {
-                onChange.doThisOnChange(this);
-            }
-            setRect();
-        });
+//        this.setDoThisOnChange(iChange -> {
+//            if (onChange != null) {
+//                onChange.doThisOnChange(this);
+//            }
+//            setRect();
+//        });
         setRect();
-    }
-
-    @Override
-    public void initGrowth() {
-        super.initGrowth();
-        rect.initGrowth();
     }
 
     @Override
@@ -78,34 +72,34 @@ public abstract class RectHolderFrame<T extends IRect> extends GUISpacer {
                 break;
 
             case CENTER_LEFT:
-                rect.setPosition(new MusePoint2D(super.finalLeft()  + 0.5 * rect.finalWidth(), super.centery()));
+                rect.setPosition(new MusePoint2D(super.left()  + 0.5 * rect.width(), super.centerY()));
                 break;
 
             case CENTER_RIGHT:
-                rect.setPosition(new MusePoint2D(super.finalRight() - 0.5 * rect.finalWidth(), super.centery()));
+                rect.setPosition(new MusePoint2D(super.right() - 0.5 * rect.width(), super.centerY()));
                 break;
 
             case CENTER_TOP:
-                rect.setPosition(new MusePoint2D(super.centerx(), super.finalTop() + 0.5 * rect.finalHeight()));
+                rect.setPosition(new MusePoint2D(super.centerX(), super.top() + 0.5 * rect.height()));
                 break;
 
             case CENTER_BOTTOM:
-                rect.setPosition(new MusePoint2D(super.centerx(), super.finalBottom() - 0.5 * rect.finalHeight()));
+                rect.setPosition(new MusePoint2D(super.centerX(), super.bottom() - 0.5 * rect.height()));
                 break;
 
             case UPPER_LEFT:
-                rect.setPosition(new MusePoint2D(super.finalLeft() + 0.5 * rect.finalWidth(), super.finalTop() + 0.5 * rect.finalHeight()));
+                rect.setPosition(new MusePoint2D(super.left() + 0.5 * rect.width(), super.top() + 0.5 * rect.height()));
                 break;
 
             case LOWER_LEFT:
-                rect.setPosition(new MusePoint2D(super.finalLeft() + + 0.5 * rect.finalWidth(), super.finalBottom() - 0.5 * rect.finalHeight()));
+                rect.setPosition(new MusePoint2D(super.left() + + 0.5 * rect.width(), super.bottom() - 0.5 * rect.height()));
                 break;
 
             case UPPER_RIGHT:
-                rect.setPosition(new MusePoint2D(super.finalRight() - 0.5 * rect.finalWidth(), super.finalTop() + 0.5 * rect.finalHeight()));
+                rect.setPosition(new MusePoint2D(super.right() - 0.5 * rect.width(), super.top() + 0.5 * rect.height()));
                 break;
             case LOWER_RIGHT:
-                rect.setPosition(new MusePoint2D(super.finalRight() - 0.5 * rect.finalWidth(), super.finalBottom() - 0.5 * rect.finalHeight()));
+                rect.setPosition(new MusePoint2D(super.right() - 0.5 * rect.width(), super.bottom() - 0.5 * rect.height()));
                 break;
         }
     }

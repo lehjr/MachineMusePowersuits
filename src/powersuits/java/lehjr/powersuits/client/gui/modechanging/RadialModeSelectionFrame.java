@@ -31,7 +31,7 @@ import lehjr.numina.client.gui.clickable.ClickableModule;
 import lehjr.numina.client.gui.frame.IGuiFrame;
 import lehjr.numina.client.gui.gemoetry.IDrawable;
 import lehjr.numina.client.gui.gemoetry.MusePoint2D;
-import lehjr.numina.client.gui.gemoetry.RelativeRect;
+import lehjr.numina.client.gui.gemoetry.Rect;
 import lehjr.numina.client.gui.gemoetry.SpiralPointToPoint2D;
 import lehjr.numina.client.render.NuminaRenderer;
 import lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
@@ -46,7 +46,7 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RadialModeSelectionFrame extends RelativeRect implements IGuiFrame {
+public class RadialModeSelectionFrame extends Rect implements IGuiFrame {
     boolean visible = true;
     boolean enabled = true;
     protected final long spawnTime;
@@ -63,20 +63,20 @@ public class RadialModeSelectionFrame extends RelativeRect implements IGuiFrame 
         super(topleft, bottomright);
         spawnTime = System.currentTimeMillis();
         this.player = player;
-        this.radius = Math.min(finalWidth(), finalHeight());
+        this.radius = Math.min(width(), height());
         this.stack = player.inventory.getSelected();
         this.zLevel = zLevel;
         loadItems();
     }
 
-    @Override
-    public RelativeRect init(double left, double top, double right, double bottom) {
-        super.init(left, top, right, bottom);
-        super.initGrowth();
-        this.radius = Math.min(finalWidth(), finalHeight());
-        modeButtons.clear();
-        return this;
-    }
+//    @Override
+//    public Rect init(double left, double top, double right, double bottom) {
+//        super.init(left, top, right, bottom);
+////        super.initGrowth();
+//        this.radius = Math.min(width(), height());
+//        modeButtons.clear();
+//        return this;
+//    }
 
     @Override
     public boolean mouseClicked(double x, double y, int button) {
@@ -147,7 +147,7 @@ public class RadialModeSelectionFrame extends RelativeRect implements IGuiFrame 
                             selectedModuleOriginal = activeMode;
                         int modeNum = 0;
                         for (int mode : modes) {
-                            ClickableModule clickie = new ClickableModule(handler.getStackInSlot(mode), new SpiralPointToPoint2D(getPosition(), radius, ((3D * Math.PI / 2) - ((2D * Math.PI * modeNum) / modes.size())), 250D), mode, ModuleCategory.NONE);
+                            ClickableModule clickie = new ClickableModule(handler.getStackInSlot(mode), new SpiralPointToPoint2D(center(), radius, ((3D * Math.PI / 2) - ((2D * Math.PI * modeNum) / modes.size())), 250D), mode, ModuleCategory.NONE);
                             modeButtons.add(clickie);
                             modeNum ++;
                         }
@@ -159,7 +159,7 @@ public class RadialModeSelectionFrame extends RelativeRect implements IGuiFrame 
         if (modeButtons != null) {
             int i = 0;
             for (ClickableModule module : modeButtons) {
-                if (module.hitBox(x, y)) {
+                if (module.containsPoint(x, y)) {
                     selectedModuleNew = i;
                     break;
                 }
@@ -179,8 +179,8 @@ public class RadialModeSelectionFrame extends RelativeRect implements IGuiFrame 
     public void drawSelection(MatrixStack matrixStackIn) {
         ClickableModule module = getSelectedModule();
         if (module != null) {
-            MusePoint2D pos = module.getPosition();
-            NuminaRenderer.drawCircleAround(matrixStackIn, pos.getX(), pos.getY(), 10, zLevel);
+            MusePoint2D pos = module.center();
+            NuminaRenderer.drawCircleAround(matrixStackIn, pos.x(), pos.y(), 10, zLevel);
         }
     }
 
@@ -191,11 +191,6 @@ public class RadialModeSelectionFrame extends RelativeRect implements IGuiFrame 
             return module.getToolTip(x, y);
         }
         return null;
-    }
-
-    @Override
-    public RelativeRect getRect() {
-        return this;
     }
 
     @Override
@@ -217,14 +212,14 @@ public class RadialModeSelectionFrame extends RelativeRect implements IGuiFrame 
     public boolean isVisible() {
         return visible;
     }
-
-    @Override
-    public void setOnInit(IInit iInit) {
-
-    }
-
-    @Override
-    public void onInit() {
-
-    }
+//
+//    @Override
+//    public void setOnInit(IInit iInit) {
+//
+//    }
+//
+//    @Override
+//    public void onInit() {
+//
+//    }
 }

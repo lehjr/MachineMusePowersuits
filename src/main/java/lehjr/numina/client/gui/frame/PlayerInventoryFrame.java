@@ -63,21 +63,21 @@ public class PlayerInventoryFrame extends MultiRectHolderFrame {
 
         /** add spacers to the side ----------------------------------------------------------------------------------- */
         // left spacer
-        addRect(new GUISpacer(spacerSize, inventoryFrame.finalHeight()));
+        addRect(new GUISpacer(spacerSize, inventoryFrame.height()));
 
         // the main set of frames
         addRect(inventoryFrame);
 
         // right spacer
-        addRect(new GUISpacer(spacerSize, inventoryFrame.finalHeight()));
+        addRect(new GUISpacer(spacerSize, inventoryFrame.height()));
         doneAdding();
     }
 
     public void renderLabels(MatrixStack matrixStack, int mouseX, int mouseY) {
-        MusePoint2D position = new MusePoint2D(topSpacer.finalLeft() + 1, topSpacer.centery() - 3);
+        MusePoint2D position = new MusePoint2D(topSpacer.left() + 1, topSpacer.centerY() - 3);
         if (labelUsesULShift) {
             position = position.minus(ulgetter.getULShift());
         }
-        Minecraft.getInstance().font.draw(matrixStack, title, (float)position.getX(), (float)position.getY(), 4210752);
+        Minecraft.getInstance().font.draw(matrixStack, title, (float)position.x(), (float)position.y(), 4210752);
     }
 }

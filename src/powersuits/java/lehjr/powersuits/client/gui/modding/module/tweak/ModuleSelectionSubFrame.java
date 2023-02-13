@@ -29,7 +29,7 @@ package lehjr.powersuits.client.gui.modding.module.tweak;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import lehjr.numina.client.gui.clickable.ClickableModule;
 import lehjr.numina.client.gui.gemoetry.MusePoint2D;
-import lehjr.numina.client.gui.gemoetry.RelativeRect;
+import lehjr.numina.client.gui.gemoetry.Rect;
 import lehjr.numina.client.sound.Musique;
 import lehjr.numina.client.sound.SoundDictionary;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
@@ -48,10 +48,10 @@ public class ModuleSelectionSubFrame {
     public List<ClickableModule> moduleButtons;
     public int selectedModule = -1;
     int oldSelected = -1;
-    protected RelativeRect border;
+    protected Rect border;
     public ModuleCategory category;
 
-    public ModuleSelectionSubFrame(ModuleCategory category, RelativeRect border) {
+    public ModuleSelectionSubFrame(ModuleCategory category, Rect border) {
         this.category = category;
         this.border = border;
         this.moduleButtons = new ArrayList<>();
@@ -107,7 +107,7 @@ public class ModuleSelectionSubFrame {
     public boolean mouseClicked(double x, double y, int button) {
         if (border.containsPoint(x, y)) {
             for (ClickableModule module : moduleButtons) {
-                if (module.hitBox((float) x, (float)y)) {
+                if (module.containsPoint((float) x, (float)y)) {
                     Musique.playClientSound(SoundDictionary.SOUND_EVENT_GUI_SELECT, 1);
                     selectedModule = moduleButtons.indexOf(module);
                     if (selectedModule != oldSelected) {
@@ -126,7 +126,7 @@ public class ModuleSelectionSubFrame {
         if (border.containsPoint(x, y)) {
             if (moduleButtons != null) {
                 for (ClickableModule module : moduleButtons) {
-                    if (module.hitBox(x, y)) {
+                    if (module.containsPoint(x, y)) {
                         return module.getToolTip(x, y);
                     }
                 }

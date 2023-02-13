@@ -3,7 +3,7 @@ package lehjr.numina.client.gui.clickable;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import lehjr.numina.client.gui.GuiIcon;
 import lehjr.numina.client.gui.gemoetry.MusePoint2D;
-import lehjr.numina.client.gui.gemoetry.RelativeRect;
+import lehjr.numina.client.gui.gemoetry.Rect;
 import lehjr.numina.common.math.Colour;
 import net.minecraft.util.ResourceLocation;
 
@@ -24,7 +24,7 @@ public class TexturedToggleButton extends AbstractTexturedButton {
         super(ul, br, backgroundColourEnabled, backgroundColourDisabled, borderColourEnabled, borderColourDisabled, textureWidth, textureHeight, textureLocation);
     }
 
-    public TexturedToggleButton(RelativeRect ref, Colour backgroundColourEnabled, Colour backgroundColourDisabled, Colour borderColourEnabled, Colour borderColourDisabled, double textureWidth, double textureHeight, ResourceLocation textureLocation) {
+    public TexturedToggleButton(Rect ref, Colour backgroundColourEnabled, Colour backgroundColourDisabled, Colour borderColourEnabled, Colour borderColourDisabled, double textureWidth, double textureHeight, ResourceLocation textureLocation) {
         super(ref, backgroundColourEnabled, backgroundColourDisabled, borderColourEnabled, borderColourDisabled, textureWidth, textureHeight, textureLocation);
     }
 
@@ -59,7 +59,7 @@ public class TexturedToggleButton extends AbstractTexturedButton {
             super.render(matrixStack, mouseX, mouseY, partialTicks);
             Colour color;
             if (this.isEnabled) {
-                color = this.hitBox(mouseX, mouseY) ? Colour.LIGHT_BLUE.withAlpha(0.6F) : Colour.WHITE;
+                color = this.containsPoint(mouseX, mouseY) ? Colour.LIGHT_BLUE.withAlpha(0.6F) : Colour.WHITE;
             } else {
                 color = Colour.RED.withAlpha(0.6F);
             }

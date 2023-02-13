@@ -1,9 +1,14 @@
 package lehjr.numina.client.gui.frame;
 
 import lehjr.numina.client.gui.gemoetry.IDrawable;
-import lehjr.numina.client.gui.gemoetry.RelativeRect;
+import lehjr.numina.client.gui.gemoetry.MusePoint2D;
+import lehjr.numina.client.gui.gemoetry.Rect;
 
-public abstract class GuiFrameWithoutBackground extends RelativeRect implements IGuiFrame {
+public abstract class GuiFrameWithoutBackground extends Rect implements IGuiFrame {
+    public GuiFrameWithoutBackground() {
+        super(MusePoint2D.ZERO, MusePoint2D.ZERO);
+    }
+
     float zLevel = 0;
     boolean isEnabled=true;
     boolean isVisible=true;

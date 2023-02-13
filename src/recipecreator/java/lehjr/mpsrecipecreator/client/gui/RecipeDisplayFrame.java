@@ -38,16 +38,16 @@ public class RecipeDisplayFrame extends ScrollableFrame {
             setCurrentScrollPixels(Math.min(getCurrentScrollPixels(), getMaxScrollPixels()));
             super.preRender(matrixStack, mouseX, mouseY, partialTicks);
             RenderSystem.pushMatrix();
-            RenderSystem.translatef(0, -getCurrentScrollPixels(), 0);
+            RenderSystem.translatef(0, (float) -getCurrentScrollPixels(), 0);
             StringUtils.drawLeftAlignedShadowedString(matrixStack, "FileName: " + title,
-                    finalLeft() + 4,
-                    finalTop() + 12);
+                    left() + 4,
+                    top() + 12);
 
             if (recipe.length > 0) {
                 for (int index = 0; index < recipe.length; index ++) {
                     StringUtils.drawLeftAlignedShadowedString(matrixStack, recipe[index],
-                            finalLeft() + 4,
-                            (finalTop() + 12) + (12 * index));
+                            left() + 4,
+                            (top() + 12) + (12 * index));
                 }
             }
             RenderSystem.popMatrix();

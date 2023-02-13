@@ -21,7 +21,7 @@ public class LabelBox extends GUISpacer {
     }
 
     public void renderLabel(MatrixStack matrixStack, float offsetX, float offsetY) {
-        StringUtils.drawCenteredText(matrixStack, translationTextComponent, centerx() + offsetX, centery() +  offsetY, colour);
+        StringUtils.drawCenteredText(matrixStack, translationTextComponent, centerX() + offsetX, centerY() +  offsetY, colour);
     }
 
     public void setLabel(TranslationTextComponent translationTextComponent) {

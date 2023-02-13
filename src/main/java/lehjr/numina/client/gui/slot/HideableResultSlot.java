@@ -61,7 +61,7 @@ public class HideableResultSlot extends CraftingResultSlot implements IHideableS
 
     @Override
     public void setPosition(MusePoint2D position) {
-        this.x = (int) position.getX();
-        this.y = (int) position.getY();
+        this.x = (int) position.x();
+        this.y = (int) position.y();
     }
 }

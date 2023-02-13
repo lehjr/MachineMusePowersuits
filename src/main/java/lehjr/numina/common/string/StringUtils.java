@@ -494,6 +494,14 @@ public class StringUtils {
     /**
      * Does the necessary openGL calls and calls the Minecraft font renderer to draw a string such that the xcoord is halfway through the string
      */
+    public static void drawRightAlignedShadowedString(MatrixStack matrixStack, ITextComponent s, double x, double y, Colour colour) {
+        drawShadowedString(matrixStack, s, x - getStringWidth(s), y - (getStringHeight() * 0.5), colour);
+    }
+
+
+    /**
+     * Does the necessary openGL calls and calls the Minecraft font renderer to draw a string such that the xcoord is halfway through the string
+     */
     public static void drawRightAlignedShadowedString(MatrixStack matrixStack, String s, double x, double y, Colour colour) {
         drawShadowedString(matrixStack, s, x - getStringWidth(s), y - (getStringHeight() * 0.5), colour);
     }

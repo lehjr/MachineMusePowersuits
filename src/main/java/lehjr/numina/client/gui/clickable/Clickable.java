@@ -27,50 +27,52 @@
 package lehjr.numina.client.gui.clickable;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import lehjr.numina.client.gui.gemoetry.DrawableTile;
-import lehjr.numina.client.gui.gemoetry.IDrawable;
-import lehjr.numina.client.gui.gemoetry.MusePoint2D;
+import lehjr.numina.client.gui.gemoetry.*;
 
 /**
  * Defines a generic clickable itemStack for a MuseGui.
  *
  * @author MachineMuse
  */
-public abstract class Clickable extends DrawableTile implements IClickable {
+public abstract class Clickable<T extends IRect> implements IClickable, IRectWrapper {
+    /** run this extra code when pressed */
     IPressable onPressed;
+    /** run this extra code when released */
     IReleasable onReleased;
     boolean isEnabled = true;
     boolean isVisible = true;
     float blitOffset = 0;
-    boolean drawBackground = false;
 
-    public Clickable() {
-        this(new MusePoint2D(0, 0));
+    T rect;
+
+    public Clickable(T rect) {
+        this.rect = rect;
     }
 
-    public Clickable(MusePoint2D point) {
-        super(0, 0, 0, 0);
-        setPosition(point);
+    public Clickable(double left, double top, double right, double bottom) {
+        this.rect = (T) new Rect(left, top, right, bottom);
     }
 
-    public void setDrawBackground(boolean drawBackground) {
-        this.drawBackground = drawBackground;
+    public Clickable(double left, double top, double right, double bottom, boolean growFromMiddle) {
+        this.rect = (T) new Rect(left, top, right, bottom, growFromMiddle);
     }
 
-    public void superRender(MatrixStack matrixStack, int mouseX, int mouseY, float frameTime) {
-        super.render(matrixStack, mouseX, mouseY, frameTime);
+    public Clickable(MusePoint2D ul, MusePoint2D br) {
+        this.rect = (T) new Rect(ul, br);
     }
 
-    @Override
-    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float frameTime) {
-        if (drawBackground) {
-            super.render(matrixStack, mouseX, mouseY, frameTime);
-        }
+    public Clickable(MusePoint2D ul, MusePoint2D br, boolean growFromMiddle) {
+        this.rect = (T) new Rect(ul, br, growFromMiddle);
     }
 
     @Override
-    public void setPosition(MusePoint2D positionIn) {
-        setUL(positionIn.minus(finalWidth() * 0.5, finalHeight() * 0.5));
+    public T getRect() {
+        return this.rect;
+    }
+
+    @Override
+    public void setRect(IRect rect) {
+        this.rect = (T) rect;
     }
 
     @Override
@@ -83,6 +85,19 @@ public abstract class Clickable extends DrawableTile implements IClickable {
         this.blitOffset = zLevel;
         return this;
     }
+
+//    @Override
+//    public void moveBy(double x, double y) {
+//        IClickable.super.moveBy(x, y);
+//    }
+
+    @Override
+    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
+        if (rect instanceof IDrawableRect) {
+            ((IDrawableRect) rect).render(matrixStack, mouseX, mouseY, partialTicks);
+        }
+    }
+
 
     @Override
     public boolean isEnabled() {

@@ -41,7 +41,8 @@ public class InstallSalvageGui extends ExtendedContainerScreen<InstallSalvageCon
         super(container, playerInventory, title, 340, 217, false);
 
         /** clickable buttons on the top of the GUI */
-        tabSelectFrame = new TabSelectFrame(playerInventory.player, 0);
+        // FIXME
+        tabSelectFrame = new TabSelectFrame(0,0,0, playerInventory.player, 0);
         addFrame(tabSelectFrame);
 
         /** Compatible module frame */
@@ -54,7 +55,7 @@ public class InstallSalvageGui extends ExtendedContainerScreen<InstallSalvageCon
         leftFrame.addRect(modularSelectionLabel);
 
         /** the buttons that select the equipped modular item if any */
-        modularItemSelectionFrame = new ModularItemSelectionFrameContainered(container, container.getEquipmentSlotType());
+        modularItemSelectionFrame = new ModularItemSelectionFrameContainered(container, new MusePoint2D(leftPos + 35, topPos), container.getEquipmentSlotType());
 
         /** frame to display and allow selecting of installed modules */
         moduleSelectFrame = new CompatibleModuleDisplayFrame(modularItemSelectionFrame,
@@ -124,16 +125,16 @@ public class InstallSalvageGui extends ExtendedContainerScreen<InstallSalvageCon
         super.init();
         /** do not call anything recipe book related before this */
 
-        modularItemSelectionFrame.setMeLeftOf(mainHolder);
-        modularItemSelectionFrame.setTop(mainHolder.finalTop());
-        modularItemSelectionFrame.initGrowth();
+        modularItemSelectionFrame.setLeftOf(mainHolder);
+        modularItemSelectionFrame.setTop(mainHolder.top());
+//        modularItemSelectionFrame.initGrowth();
 
         this.titleLabelX = 29;
 
-        mainHolder.setPosition(backgroundRect.getPosition());
-        mainHolder.initGrowth();
+        mainHolder.setPosition(backgroundRect.center());
+//        mainHolder.initGrowth();
 
-        tabSelectFrame.init(leftPos, getGuiTop(), getGuiLeft() + getXSize(), getGuiTop() + getYSize());
+//        tabSelectFrame.init(leftPos, getGuiTop(), getGuiLeft() + getXSize(), getGuiTop() + getYSize());
         moduleSelectFrame.loadModules(false);
     }
 
@@ -154,18 +155,18 @@ public class InstallSalvageGui extends ExtendedContainerScreen<InstallSalvageCon
 
     @Override
     public void render(MatrixStack matrixStack, int mouseX, int mouseY, float frameTime) {
-        modularItemSelectionFrame.setTop(mainHolder.finalTop());
-        modularItemSelectionFrame.setRight(mainHolder.finalLeft());
-
-        this.renderBackground(matrixStack);
-        if (backgroundRect.doneGrowing()) {
-            super.render(matrixStack, mouseX, mouseY, frameTime);
-            this.renderTooltip(matrixStack, mouseX, mouseY);
-            tabSelectFrame.render(matrixStack, mouseX, mouseY, frameTime);
-            renderTooltip(matrixStack, mouseX, mouseY);
-        } else {
-            renderBackgroundRect(matrixStack, mouseX, mouseY, frameTime);
-        }
+//        modularItemSelectionFrame.setTop(mainHolder.finalTop());
+//        modularItemSelectionFrame.setRight(mainHolder.finalLeft());
+//
+//        this.renderBackground(matrixStack);
+//        if (backgroundRect.doneGrowing()) {
+//            super.render(matrixStack, mouseX, mouseY, frameTime);
+//            this.renderTooltip(matrixStack, mouseX, mouseY);
+//            tabSelectFrame.render(matrixStack, mouseX, mouseY, frameTime);
+//            renderTooltip(matrixStack, mouseX, mouseY);
+//        } else {
+//            renderBackgroundRect(matrixStack, mouseX, mouseY, frameTime);
+//        }
     }
 
     @Override
@@ -174,7 +175,7 @@ public class InstallSalvageGui extends ExtendedContainerScreen<InstallSalvageCon
         matrixStack.translate(0,0, 10);
         this.modularItemInventory.renderLabels(matrixStack, mouseX, mouseY);
         this.playerInventoryFrame.renderLabels(matrixStack, mouseX, mouseY);
-        modularSelectionLabel.renderLabel(matrixStack, (float) - ulGetter().getULShift().getX(), (float) - ulGetter().getULShift().getY() + 1);
+        modularSelectionLabel.renderLabel(matrixStack, (float) - ulGetter().getULShift().x(), (float) - ulGetter().getULShift().y() + 1);
         matrixStack.popPose();
     }
 }

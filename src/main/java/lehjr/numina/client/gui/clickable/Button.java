@@ -27,12 +27,12 @@
 package lehjr.numina.client.gui.clickable;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import lehjr.numina.client.gui.gemoetry.DrawableRelativeRect;
+import lehjr.numina.client.gui.gemoetry.DrawableRect;
 import lehjr.numina.client.gui.gemoetry.MusePoint2D;
-import lehjr.numina.client.gui.gemoetry.RelativeRect;
+import lehjr.numina.client.gui.gemoetry.Rect;
 import lehjr.numina.common.math.Colour;
 
-public class Button extends DrawableRelativeRect implements IClickable {
+public class Button extends DrawableRect implements IClickable {
     protected IPressable onPressed;
     protected IReleasable onReleased;
 
@@ -81,7 +81,7 @@ public class Button extends DrawableRelativeRect implements IClickable {
         this.borderColourDisabled = borderColourDisabled;
     }
 
-    public Button(RelativeRect ref,
+    public Button(Rect ref,
                   Colour backgroundColourEnabled,
                   Colour backgroundColourDisabled,
                   Colour borderColourEnabled,
@@ -108,7 +108,7 @@ public class Button extends DrawableRelativeRect implements IClickable {
     public void render(MatrixStack matrixStack, int mouseX, int mouseY, float frameTIme) {
         if (isVisible) {
             if (isEnabled()) {
-                if (hitBox(mouseX, mouseY)) {
+                if (containsPoint(mouseX, mouseY)) {
                     super.setBackgroundColour(new Colour(
                             (byte)(this.backgroundColourEnabled.r + highlight < 255 ? this.backgroundColourEnabled.r + highlight : 255),
                             (byte)(this.backgroundColourEnabled.g + highlight < 255 ? this.backgroundColourEnabled.g + highlight : 255),
@@ -127,7 +127,7 @@ public class Button extends DrawableRelativeRect implements IClickable {
     }
 
     @Override
-    public boolean hitBox(double x, double y) {
+    public boolean containsPoint(double x, double y) {
         if (isVisible() && isEnabled())
             return x >= left() && x <= right() && y >= top() && y <= bottom();
         return false;

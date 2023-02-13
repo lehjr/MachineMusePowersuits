@@ -2,9 +2,9 @@ package lehjr.numina.client.gui.frame;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
-import lehjr.numina.client.gui.gemoetry.DrawableTile;
+import lehjr.numina.client.gui.frame.fixed.AbstractGuiFrame;
 import lehjr.numina.client.gui.gemoetry.IDrawable;
-import lehjr.numina.common.math.Colour;
+import lehjr.numina.client.gui.gemoetry.Rect;
 import lehjr.numina.common.math.MathUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
@@ -14,9 +14,10 @@ import net.minecraft.util.math.vector.Quaternion;
 import net.minecraft.util.math.vector.Vector3f;
 import net.minecraft.util.text.ITextComponent;
 
+import javax.annotation.Nonnull;
 import java.util.List;
 
-public class EntityRenderFrame extends DrawableTile implements IGuiFrame {
+public class EntityRenderFrame extends AbstractGuiFrame implements IGuiFrame {
     boolean isVisible = true;
     boolean isEnabled = true;
     boolean allowDrag = false;
@@ -41,11 +42,12 @@ public class EntityRenderFrame extends DrawableTile implements IGuiFrame {
 
     LivingEntity livingEntity;
 
-    public EntityRenderFrame(boolean growFromMiddle) {
-        super(0, 0, 0, 0, growFromMiddle);
-        setBackgroundColour(Colour.BLACK);
-        setBottomBorderColour(Colour.DARK_GREY);
-        setTopBorderColour(Colour.DARK_GREY);
+    public EntityRenderFrame(double left, double top, double right, double bottom) {
+        this(left, top, right, bottom, false);
+    }
+
+    public EntityRenderFrame(double left, double top, double right, double bottom, boolean growFromMiddle) {
+        super(new Rect(left, top, right, bottom, growFromMiddle));
     }
 
     public void setLivingEntity(LivingEntity livingEntity) {
@@ -120,11 +122,10 @@ public class EntityRenderFrame extends DrawableTile implements IGuiFrame {
     @Override
     public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
         if (isVisible) {
-            super.render(matrixStack, mouseX, mouseY, partialTicks);
             float mouse_x = (float) ((guiLeft + 51) - this.oldMouseX);
             float mouse_y = (float) ((float) ((int) guiTop + 75 - 50) - this.oldMouseY);
-            float i = (float) (centerx() + offsetx);
-            float j = (float) (finalBottom() - 5 + offsety);
+            float i = (float) (centerX() + offsetx);
+            float j = (float) (bottom() - 5 + offsety);
             renderEntityInInventory(i, j, zoom, mouse_x, mouse_y, this.livingEntity);
         }
     }

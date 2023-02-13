@@ -28,11 +28,9 @@ package lehjr.numina.client.gui.frame;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import lehjr.numina.client.gui.gemoetry.IDrawableRect;
-import lehjr.numina.client.gui.gemoetry.IRect;
-import lehjr.numina.client.gui.gemoetry.MusePoint2D;
+import net.minecraft.client.Minecraft;
 import net.minecraft.util.text.ITextComponent;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
 
@@ -67,9 +65,6 @@ public interface IGuiFrame extends IDrawableRect {
         return false;
     }
 
-    @Nonnull
-    IRect getRect();
-
     /**
      * Miscellaneous functions required before rendering
      * @param mouseX
@@ -88,7 +83,6 @@ public interface IGuiFrame extends IDrawableRect {
      * @param partialTicks
      */
     default void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
-
     }
 
     /**
@@ -135,182 +129,11 @@ public interface IGuiFrame extends IDrawableRect {
         hide();
     }
 
-    @Override
-    default IRect init(double left, double top, double right, double bottom) {
-        return getRect().init(left, top, right, bottom);
-    }
-
-    @Override
-    default MusePoint2D getUL() {
-        return getRect().getUL();
-    }
-
-    @Override
-    default MusePoint2D getWH() {
-        return getRect().getWH();
-    }
-
-    @Override
-    default double left() {
-        return getRect().left();
-    }
-
-    @Override
-    default double finalLeft() {
-        return getRect().finalLeft();
-    }
-
-    @Override
-    default double top() {
-        return getRect().top();
-    }
-
-    @Override
-    default double finalTop() {
-        return getRect().finalTop();
-    }
-
-    @Override
-    default double right() {
-        return getRect().right();
-    }
-
-    @Override
-    default double finalRight() {
-        return getRect().finalRight();
-    }
-
-    @Override
-    default double bottom() {
-        return getRect().bottom();
-    }
-
-    @Override
-    default double finalBottom() {
-        return getRect().finalBottom();
-    }
-
-    @Override
-    default double width() {
-        return getRect().width();
-    }
-
-    @Override
-    default double finalWidth() {
-        return getRect().finalWidth();
-    }
-
-    @Override
-    default double height() {
-        return getRect().height();
-    }
-
-    @Override
-    default double finalHeight() {
-        return getRect().finalHeight();
-    }
-
-    @Override
-    default IRect setUL(MusePoint2D ul) {
-        return getRect().setUL(ul);
-    }
-
-    @Override
-    default IRect setWH(MusePoint2D wh) {
-        return getRect().setWH(wh);
-    }
-
-    @Override
-    default IRect setLeft(double value) {
-        return getRect().setLeft(value);
-    }
-
-    @Override
-    default IRect setRight(double value) {
-        return getRect().setRight(value);
-    }
-
-    @Override
-    default IRect setTop(double value) {
-        return getRect().setTop(value);
-    }
-
-    @Override
-    default IRect setBottom(double value) {
-        return getRect().setBottom(value);
-    }
-
-    @Override
-    default IRect setWidth(double value) {
-        return getRect().setWidth(value);
-    }
-
-    @Override
-    default IRect setHeight(double value) {
-        return getRect().setHeight(value);
-    }
-
-    @Override
-    default void move(MusePoint2D moveAmount) {
-        getRect().move(moveAmount);
-    }
-
-    @Override
-    default void move(double x, double y) {
-        getRect().move(x, y);
-    }
-
-    @Override
-    default void setPosition(MusePoint2D position) {
-        getRect().setPosition(position);
-    }
-
-    @Override
-    default boolean growFromMiddle() {
-        return getRect().growFromMiddle();
-    }
-
-    @Override
-    default boolean doneGrowing() {
-        return getRect().doneGrowing();
-    }
-
-    @Override
-    default void initGrowth() {
-        getRect().initGrowth();
-    }
-
-    @Override
-    default IRect setMeLeftOf(IRect otherRightOfMe) {
-        return getRect().setMeLeftOf(otherRightOfMe);
-    }
-
-    @Override
-    default IRect setMeRightOf(IRect otherLeftOfMe) {
-        return getRect().setMeRightOf(otherLeftOfMe);
-    }
-
-    @Override
-    default IRect setMeAbove(IRect otherBelowMe) {
-        return getRect().setMeAbove(otherBelowMe);
-    }
-
-    @Override
-    default IRect setMeBelow(IRect otherAboveMe) {
-        return getRect().setMeBelow(otherAboveMe);
-    }
-
-    @Override
-    default void setOnInit(IInit onInit) {
-        getRect().setOnInit(onInit);
-    }
-
-    @Override
-    default void onInit() {
-        getRect().onInit();
-    }
-
     default void renderLabels(MatrixStack matrixStack, int mouseX, int mouseY) {
 
+    }
+
+    default Minecraft getMinecraft() {
+        return Minecraft.getInstance();
     }
 }

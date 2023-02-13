@@ -33,7 +33,7 @@ import org.lwjgl.opengl.GL11;
 
 import java.nio.FloatBuffer;
 
-public class Meter extends DrawableRelativeRect {
+public class Meter extends DrawableRect {
     Colour meterColour;
 
     public Meter(Colour meterColourIn) {

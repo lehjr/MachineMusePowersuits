@@ -28,7 +28,7 @@ package lehjr.numina.client.gui;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import lehjr.numina.client.gui.frame.IGuiFrame;
-import lehjr.numina.client.gui.gemoetry.DrawableRelativeRect;
+import lehjr.numina.client.gui.gemoetry.DrawableRect;
 import lehjr.numina.client.gui.gemoetry.MusePoint2D;
 import lehjr.numina.client.gui.slot.IHideableSlot;
 import lehjr.numina.client.gui.slot.IIConProvider;
@@ -49,20 +49,20 @@ import java.util.List;
  */
 public class ExtendedContainerScreen<T extends Container> extends ContainerScreen<T> {
     protected long creationTime;
-    protected DrawableRelativeRect tooltipRect;
+    protected DrawableRect tooltipRect;
     /** The outer gui rectangle */
-    protected DrawableRelativeRect backgroundRect;
+    protected DrawableRect backgroundRect;
     private List<IGuiFrame> frames;
 
     public ExtendedContainerScreen(T screenContainer, PlayerInventory inv, ITextComponent titleIn, boolean growFromMiddle) {
         super(screenContainer, inv, titleIn);
         frames = new ArrayList();
-        tooltipRect = new DrawableRelativeRect(
+        tooltipRect = new DrawableRect(
                 0, 0, 0, 0,
                 false,
                 Colour.BLACK.withAlpha(0.9F),
                 Colour.PURPLE);
-        backgroundRect = new DrawableRelativeRect(0, 0, 0, 0, growFromMiddle, Colour.GREY_GUI_BACKGROUND, Colour.BLACK);
+        backgroundRect = new DrawableRect(0, 0, 0, 0, growFromMiddle, Colour.GREY_GUI_BACKGROUND, Colour.BLACK);
         this.minecraft = Minecraft.getInstance();
     }
 
@@ -127,7 +127,7 @@ public class ExtendedContainerScreen<T extends Container> extends ContainerScree
         super.init();
         minecraft.keyboardHandler.setSendRepeatsToGui(true);
         creationTime = System.currentTimeMillis();
-        backgroundRect.init(absX(-1), absY(-1), absX(1), absY(1));
+        backgroundRect.setLeft(absX(-1)).setTop(absY(-1)).setRight(absX(1)).setBottom(absY(1));
     }
 
     /**

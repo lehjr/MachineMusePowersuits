@@ -8,7 +8,7 @@ import lehjr.mpsrecipecreator.basemod.ConditionsJsonLoader;
 import lehjr.numina.client.gui.clickable.Checkbox;
 import lehjr.numina.client.gui.frame.ScrollableFrame;
 import lehjr.numina.client.gui.gemoetry.MusePoint2D;
-import lehjr.numina.client.gui.gemoetry.RelativeRect;
+import lehjr.numina.client.gui.gemoetry.Rect;
 import lehjr.numina.common.math.Colour;
 
 import java.util.HashMap;
@@ -24,12 +24,12 @@ public class ConditionsFrame extends ScrollableFrame {
         super(topleft, bottomright, background, topBorder, bottomBorder);
     }
 
-    @Override
-    public RelativeRect init(double left, double top, double right, double bottom) {
-        super.init(left, top, right, bottom);
-        loadConditions();
-        return this;
-    }
+//    @Override
+//    public Rect init(double left, double top, double right, double bottom) {
+//        super.init(left, top, right, bottom);
+//        loadConditions();
+//        return this;
+//    }
 
     @Override
     public void setVisible(boolean visible) {
@@ -85,7 +85,7 @@ public class ConditionsFrame extends ScrollableFrame {
             this.setCurrentScrollPixels(Math.min(getCurrentScrollPixels(), getMaxScrollPixels()));
             super.preRender(matrixStack, mouseX, mouseY, partialTicks);
             RenderSystem.pushMatrix();
-            RenderSystem.translatef(0, -getCurrentScrollPixels(), 0);
+            RenderSystem.translatef(0, (float) -getCurrentScrollPixels(), 0);
             for (Checkbox checkBox : checkBoxList.keySet()) {
                 checkBox.render(matrixStack, mouseX, mouseY, partialTicks);
             }

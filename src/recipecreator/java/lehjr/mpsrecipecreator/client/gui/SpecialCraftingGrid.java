@@ -17,14 +17,13 @@ import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.util.text.ITextComponent;
 
-import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Spaced crafting grid with result and corresponding buttons
  */
-public class SpecialCraftingGrid extends DrawableRelativeRect implements IGuiFrame, IContainerULOffSet {
+public class SpecialCraftingGrid extends DrawableRect implements IGuiFrame, IContainerULOffSet {
     Container container;
     Colour backgroundColour;
     Colour gridColour;
@@ -63,7 +62,7 @@ public class SpecialCraftingGrid extends DrawableRelativeRect implements IGuiFra
 
     public void loadSlots() {
         MusePoint2D wh = new MusePoint2D(slotWidth + spacing, slotHeight + spacing);
-        MusePoint2D ul = new MusePoint2D(finalLeft(), finalTop());
+        MusePoint2D ul = new MusePoint2D(left(), top());
         this.boxes.clear();;
         int i = 0;
 
@@ -87,11 +86,11 @@ public class SpecialCraftingGrid extends DrawableRelativeRect implements IGuiFra
 
                 if (i > 0) {
                     if (col > 0) {
-                        this.boxes.get(i).setMeRightOf(this.boxes.get(i - 1));
+                        this.boxes.get(i).setRightOf(this.boxes.get(i - 1));
                     }
 
                     if (row > 0) {
-                        this.boxes.get(i).setMeBelow(this.boxes.get(i - 5));
+                        this.boxes.get(i).setBelow(this.boxes.get(i - 5));
                     }
                 }
                 ++i;
@@ -112,7 +111,7 @@ public class SpecialCraftingGrid extends DrawableRelativeRect implements IGuiFra
         if (this.containsPoint(mouseX, mouseY)) {
             for (BoxHolder holder : boxes) {
                 if (holder instanceof DrawableBoxHolder) {
-                    if(((DrawableBoxHolder) holder).button.hitBox((float)mouseX, (float) mouseY)) {
+                    if(((DrawableBoxHolder) holder).button.containsPoint((float)mouseX, (float) mouseY)) {
                         ((DrawableBoxHolder) holder).button.onPressed();
 //                        return true; // testing
                         break;
@@ -128,7 +127,7 @@ public class SpecialCraftingGrid extends DrawableRelativeRect implements IGuiFra
         if (this.containsPoint(mouseX, mouseY)) {
             for (BoxHolder holder : boxes) {
                 if (holder instanceof DrawableBoxHolder) {
-                    if(((DrawableBoxHolder) holder).button.hitBox((float)mouseX, (float) mouseY)) {
+                    if(((DrawableBoxHolder) holder).button.containsPoint((float)mouseX, (float) mouseY)) {
                         ((DrawableBoxHolder) holder).button.onReleased();
                         break;
                     }
@@ -138,12 +137,12 @@ public class SpecialCraftingGrid extends DrawableRelativeRect implements IGuiFra
         return false;
     }
 
-    @Override
-    public RelativeRect init(double left, double top, double right, double bottom) {
-        super.init(left, top, left +  borderWH.getX(), top + borderWH.getY());
-        loadSlots();
-        return this;
-    }
+//    @Override
+//    public Rect init(double left, double top, double right, double bottom) {
+//        super.init(left, top, left +  borderWH.getX(), top + borderWH.getY());
+//        loadSlots();
+//        return this;
+//    }
 
     @Override
     public void update(double mouseX, double mouseY) {
@@ -170,16 +169,16 @@ public class SpecialCraftingGrid extends DrawableRelativeRect implements IGuiFra
         return this;
     }
 
-    public void setTargetDimensions(MusePoint2D ul, MusePoint2D wh) {
-        super.init(ul.getX(), ul.getY(), ul.getX() + wh.getX(), ul.getY() + wh.getY());
-        loadSlots();
-    }
+//    public void setTargetDimensions(MusePoint2D ul, MusePoint2D wh) {
+//        super.init(ul.getX(), ul.getY(), ul.getX() + wh.getX(), ul.getY() + wh.getY());
+//        loadSlots();
+//    }
 
-    @Override
-    public void doThisOnChange() {
-        super.doThisOnChange();
-        loadSlots();
-    }
+//    @Override
+//    public void doThisOnChange() {
+//        super.doThisOnChange();
+//        loadSlots();
+//    }
 
     @Override
     public void setULGetter(IContainerULOffSet.ulGetter ulGetter) {
@@ -206,12 +205,6 @@ public class SpecialCraftingGrid extends DrawableRelativeRect implements IGuiFra
         return null;
     }
 
-    @Nonnull
-    @Override
-    public RelativeRect getRect() {
-        return this;
-    }
-
     @Override
     public void setEnabled(boolean b) {
         this.isEnabled = b;
@@ -233,7 +226,7 @@ public class SpecialCraftingGrid extends DrawableRelativeRect implements IGuiFra
     }
 
     /** ---------------------------------------------------------------------------------------- */
-    class BoxHolder extends DrawableRelativeRect {
+    class BoxHolder extends DrawableRect {
         public BoxHolder(MusePoint2D ul, MusePoint2D br, Colour backgroundColour, Colour borderColour) {
             super(ul, br, backgroundColour, borderColour);
         }
@@ -275,7 +268,7 @@ public class SpecialCraftingGrid extends DrawableRelativeRect implements IGuiFra
         }
 
         void  fixSlotPos() {
-            MusePoint2D position = new MusePoint2D(tile.finalLeft(), tile.finalTop()).minus(slot_ulShift);
+            MusePoint2D position = new MusePoint2D(tile.left(), tile.top()).minus(slot_ulShift);
 
             Slot slot = container.getSlot(index);
             if (slot instanceof UniversalSlot) {
@@ -284,14 +277,14 @@ public class SpecialCraftingGrid extends DrawableRelativeRect implements IGuiFra
                 ((IHideableSlot) slot).setPosition(center().copy());
             } else {
                 // Vanilla slots coordinates are UL rather than center
-                slot.x = (int) position.getX();
-                slot.y = (int) position.getY();
+                slot.x = (int) position.x();
+                slot.y = (int) position.y();
             }
         }
 
         @Override
         public void render(MatrixStack matrixStack, int mouseX, int mouseY, float frameTime) {
-            if (button.getPosition() != center()) {
+            if (button.center() != center()) {
                 button.setPosition(center().copy());
             }
             button.render(matrixStack, mouseX, mouseY, frameTime);

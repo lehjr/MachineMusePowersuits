@@ -201,16 +201,16 @@ public class GradientAndArcCalculator {
             default:
                 // distance / num spaces
                 MusePoint2D step = b.minus(a).times(1.0F / (num + 1));
-                if (step.getX() < 0) {
-                    step.setX(Math.min(-minSpacingX, step.x));
+                if (step.x() < 0) {
+                    step.setX(Math.min(-minSpacingX, step.x()));
                 } else {
-                    step.setX(Math.max(minSpacingX, step.x));
+                    step.setX(Math.max(minSpacingX, step.x()));
                 }
 
-                if (step.getY() < 0) {
-                    step.setY(Math.min(-minSpacingY, step.y));
+                if (step.y() < 0) {
+                    step.setY(Math.min(-minSpacingY, step.y()));
                 } else {
-                    step.setY(Math.max(minSpacingY, step.y));
+                    step.setY(Math.max(minSpacingY, step.y()));
                 }
 
                 for (int i = 0; i < num; i++) {

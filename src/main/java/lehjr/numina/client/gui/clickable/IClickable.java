@@ -37,16 +37,12 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 public interface IClickable extends IDrawableRect {
-    default void move(double x, double y) {
-        this.move(new MusePoint2D(x, y));
+    default void moveBy(double x, double y) {
+        this.moveBy(new MusePoint2D(x, y));
     }
 
-    default void move(MusePoint2D position) {
-        setPosition(getPosition().plus(position));
-    }
-
-    default boolean hitBox(double x, double y) {
-        return containsPoint(x, y);
+    default void moveBy(MusePoint2D amount) {
+        setPosition(center().plus(amount));
     }
 
     void setEnabled(boolean enabled);
@@ -84,7 +80,7 @@ public interface IClickable extends IDrawableRect {
     }
 
     default boolean mouseClicked(double mouseX, double mouseY, int button) {
-        if(hitBox(mouseX, mouseY) && this.isEnabled() && this.isVisible()) {
+        if(containsPoint(mouseX, mouseY) && this.isEnabled() && this.isVisible()) {
             InputMappings.Input mouseKey = InputMappings.Type.MOUSE.getOrCreate(button);
             boolean flag = Minecraft.getInstance().options.keyPickItem.isActiveAndMatches(mouseKey);
 
@@ -129,5 +125,9 @@ public interface IClickable extends IDrawableRect {
     @OnlyIn(Dist.CLIENT)
     interface IReleasable {
         void onReleased(IClickable doThis);
+    }
+
+    default Minecraft getMinecraft() {
+        return Minecraft.getInstance();
     }
 }

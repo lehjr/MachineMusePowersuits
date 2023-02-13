@@ -96,41 +96,41 @@ public class MPARCGui extends ExtendedContainerScreen<MPARCContainer> {
 
 
         // left side of inventory slots
-        double inventoryLeft = backgroundRect.finalRight() - spacer * 2 - 9 * slotWidth;
+        double inventoryLeft = backgroundRect.right() - spacer * 2 - 9 * slotWidth;
 
         // set the ulShift before setting init, since ulshift is set in init
-        inventoryFrame.init(
-                inventoryLeft - spacer,
-                backgroundRect.finalTop() + spacer,
-                backgroundRect.finalRight() - spacer,
-                backgroundRect.finalTop() + spacer + 188);
-
-        recipeOptions.init(
-                backgroundRect.finalLeft() + spacer,
-                backgroundRect.finalTop() + spacer,
-                inventoryLeft - spacer * 2,
-                backgroundRect.finalTop() + spacer + 150
-        );
-
-        slotOptions.init(
-                backgroundRect.finalLeft() + spacer,
-                backgroundRect.finalTop() + spacer * 2 + 150,
-                inventoryLeft - spacer * 2,
-                backgroundRect.finalTop() + spacer + 188);
-
-        tokenTxt.init(
-                backgroundRect.finalLeft() + spacer,
-                backgroundRect.finalTop() + spacer * 2 + 188,
-                backgroundRect.finalRight() - spacer,
-                backgroundRect.finalTop() + spacer * 2 + 188 + 20
-        );
-        tokenTxt.setVisible(true);
-
-        recipeDisplayFrame.init(
-                backgroundRect.finalLeft() + spacer,
-                backgroundRect.finalTop() + spacer * 2 + 212,
-                backgroundRect.finalRight() - spacer,
-                backgroundRect.finalBottom() - spacer);
+//        inventoryFrame.init(
+//                inventoryLeft - spacer,
+//                backgroundRect.finalTop() + spacer,
+//                backgroundRect.finalRight() - spacer,
+//                backgroundRect.finalTop() + spacer + 188);
+//
+//        recipeOptions.init(
+//                backgroundRect.finalLeft() + spacer,
+//                backgroundRect.finalTop() + spacer,
+//                inventoryLeft - spacer * 2,
+//                backgroundRect.finalTop() + spacer + 150
+//        );
+//
+//        slotOptions.init(
+//                backgroundRect.finalLeft() + spacer,
+//                backgroundRect.finalTop() + spacer * 2 + 150,
+//                inventoryLeft - spacer * 2,
+//                backgroundRect.finalTop() + spacer + 188);
+//
+//        tokenTxt.init(
+//                backgroundRect.finalLeft() + spacer,
+//                backgroundRect.finalTop() + spacer * 2 + 188,
+//                backgroundRect.finalRight() - spacer,
+//                backgroundRect.finalTop() + spacer * 2 + 188 + 20
+//        );
+//        tokenTxt.setVisible(true);
+//
+//        recipeDisplayFrame.init(
+//                backgroundRect.finalLeft() + spacer,
+//                backgroundRect.finalTop() + spacer * 2 + 212,
+//                backgroundRect.finalRight() - spacer,
+//                backgroundRect.finalBottom() - spacer);
     }
 
     public void resetRecipes() {
@@ -227,7 +227,7 @@ public class MPARCGui extends ExtendedContainerScreen<MPARCContainer> {
         super.render(matrixStack, mouseX, mouseY, partialTicks);
 
         // Title
-        StringUtils.drawShadowedStringCentered(matrixStack, "MPS-RecipeCreator", backgroundRect.centerx(), backgroundRect.finalTop() - 20);
+        StringUtils.drawShadowedStringCentered(matrixStack, "MPS-RecipeCreator", backgroundRect.centerX(), backgroundRect.top() - 20);
         renderTooltip(matrixStack, mouseX, mouseY);
     }
 

@@ -1,12 +1,13 @@
 package lehjr.powersuits.client.gui.common;
 
-import com.google.common.collect.Lists;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import lehjr.numina.client.gui.clickable.ClickableButton;
-import lehjr.numina.client.gui.frame.GUISpacer;
-import lehjr.numina.client.gui.frame.MultiRectHolderFrame;
-import lehjr.numina.client.gui.frame.RectHolderFrame;
+import lehjr.numina.client.gui.clickable.IClickable;
+import lehjr.numina.client.gui.frame.fixed.AbstractGuiFrame;
+import lehjr.numina.client.gui.gemoetry.DrawableTile;
+import lehjr.numina.client.gui.gemoetry.IRect;
 import lehjr.numina.client.gui.gemoetry.MusePoint2D;
+import lehjr.numina.client.gui.gemoetry.Rect;
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
 import lehjr.numina.common.math.Colour;
 import net.minecraft.inventory.EquipmentSlotType;
@@ -16,47 +17,46 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.items.CapabilityItemHandler;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-/**
- * A containerless GUI version of the tab toggle widget holder
- *
- * TODO: replace Modular Item Selection frame with this?
- */
-public class ModularItemSelectionFrame extends MultiRectHolderFrame {
+public class ModularItemSelectionFrame extends AbstractGuiFrame {
+    public ModularItemTabToggleWidget selectedTab = null;
+    public ClickableButton creativeInstallButton;
+
     IChanged changed;
 
-    final EquipmentSlotType[] equipmentSlotTypes = new EquipmentSlotType[]{
+    List<IRect> boxes;
+    final List<EquipmentSlotType> equipmentSlotTypes = Arrays.asList(
             EquipmentSlotType.HEAD,
             EquipmentSlotType.CHEST,
             EquipmentSlotType.LEGS,
             EquipmentSlotType.FEET,
             EquipmentSlotType.MAINHAND,
-            EquipmentSlotType.OFFHAND
-    };
-
-    public ClickableButton creativeInstallButton;
-
-    public final List<ModularItemTabToggleWidget> tabButtons = Lists.newArrayList();
-    public ModularItemTabToggleWidget selectedTab = null;
-
-    public ModularItemSelectionFrame() {
-        this(EquipmentSlotType.HEAD);
+            EquipmentSlotType.OFFHAND);
+    public ModularItemSelectionFrame(MusePoint2D ul) {
+        this(ul, EquipmentSlotType.HEAD);
     }
 
-    public ModularItemSelectionFrame(EquipmentSlotType type) {
-        super(false, true, 30, 0);
+    public ModularItemSelectionFrame(MusePoint2D ul, EquipmentSlotType type) {
+        super(new DrawableTile(ul, ul.plus(35, 200)));
+        boxes = new ArrayList<>();
+        // each tab is 27 tall and 35 wide
         /** 6 widgets * 27 high each = 162 + 5 spacers at 3 each = 177 gui height is 200 so 23 to split */
+
         // top spacer
-        addRect(new GUISpacer(30, 11));
-        int i=0;
+        boxes.add(new Rect(ul.copy(), ul.plus(35, 11)));
+
+        int i = 0;
         // look for modular items
         for (EquipmentSlotType slotType : equipmentSlotTypes) {
             ModularItemTabToggleWidget widget = new ModularItemTabToggleWidget(slotType);
-            tabButtons.add(widget);
+            widget.setUL(ul.copy());
+            widget.setBelow(boxes.get(boxes.size() - 1));
+
             widget.setOnPressed(pressed -> {
                 if (widget != selectedTab) {
                     this.selectedTab.setStateActive(false);
@@ -64,84 +64,46 @@ public class ModularItemSelectionFrame extends MultiRectHolderFrame {
                     this.selectedTab.setStateActive(true);
                     this.onChanged();
                     disableContainerSlots();
-                }});
+                }
+            });
 
             if (slotType == type) {
                 this.selectedTab = widget;
                 this.selectedTab.setStateActive(true);
             }
 
-            addRect(new RectHolderFrame(widget, 30, 27, RectHolderFrame.RectPlacement.CENTER_RIGHT) {
-                @Override
-                public boolean mouseClicked(double mouseX, double mouseY, int button) {
-                    return widget.mouseClicked(mouseX, mouseY, button);
-                }
-
-                @Override
-                public boolean mouseReleased(double mouseX, double mouseY, int button) {
-                    return widget.mouseReleased(mouseX, mouseY, button);
-                }
-
-                @Override
-                public List<ITextComponent> getToolTip(int x, int y) {
-                    return widget.getToolTip(x, y);
-                }
-
-                @Override
-                public void render(MatrixStack matrixStack, int mouseX, int mouseY, float frameTime) {
-                    super.render(matrixStack, mouseX, mouseY, frameTime);
-                    widget.render(matrixStack, mouseX, mouseY, frameTime);
-                }
-            });
-
-            // spacer under each widget
-            if (i < 5) {
-                addRect(new GUISpacer(30, 3));
-
-                // bottom spacer
-            } else {
-//                addRect(new GUISpacer(30, 12));
-                addRect(new GUISpacer(30, 3));
-                creativeInstallButton = new ClickableButton(new TranslationTextComponent("gui.powersuits.creative.install"), MusePoint2D.ZERO, false);
-                creativeInstallButton.setHeight(18);
-                creativeInstallButton.setWidth(30);
-                creativeInstallButton.disableAndHide();
-                creativeInstallButton.setEnabledBackground(Colour.LIGHT_GREY);
-                creativeInstallButton.setDisabledBackground(Colour.RED);
-
-                addRect(new RectHolderFrame(creativeInstallButton, 30, 27, RectHolderFrame.RectPlacement.CENTER_RIGHT) {
-                    List<ITextComponent> toolTip =  new ArrayList<ITextComponent>() {{
-                        add(new TranslationTextComponent("gui.powersuits.creative.install.desc"));
-                    }};
-
-                    @Override
-                    public boolean mouseClicked(double mouseX, double mouseY, int button) {
-                        return creativeInstallButton.mouseClicked(mouseX, mouseY, button);
-                    }
-
-                    @Override
-                    public boolean mouseReleased(double mouseX, double mouseY, int button) {
-                        return creativeInstallButton.mouseReleased(mouseX, mouseY, button);
-                    }
-
-                    @Override
-                    public List<ITextComponent> getToolTip(int x, int y) {
-                        if (creativeInstallButton.containsPoint(x, y)) {
-                            return toolTip;
-                        }
-                        return null;
-                    }
-
-                    @Override
-                    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float frameTime) {
-                        super.render(matrixStack, mouseX, mouseY, frameTime);
-                        creativeInstallButton.render(matrixStack, mouseX, mouseY, frameTime);
-                    }
-                });
-                doneAdding();
-            }
-            i++;
+            boxes.add(widget);
+            boxes.add(new Rect(ul, ul.plus(35, 3)));
         }
+        creativeInstallButton = new ClickableButton(new TranslationTextComponent("gui.powersuits.creative.install"), MusePoint2D.ZERO, false);
+        creativeInstallButton.setHeight(18);
+        creativeInstallButton.setWidth(30);
+        creativeInstallButton.disableAndHide();
+        creativeInstallButton.setEnabledBackground(Colour.LIGHT_GREY);
+        creativeInstallButton.setDisabledBackground(Colour.RED);
+        creativeInstallButton.setUL(getUL().copy());
+
+
+//        List<ITextComponent> toolTip =  new ArrayList<ITextComponent>() {{
+//            add(new TranslationTextComponent("gui.powersuits.creative.install.desc"));
+//        }};
+        boxes.add(creativeInstallButton);
+        refreshRects();
+    }
+
+    public void refreshRects() {
+        double finalHeight = 0;
+
+        for (int index = 0; index < boxes.size(); index++) {
+            IRect rect = boxes.get(index);
+            if (index == 0) {
+                rect.setUL(this.getUL());
+            } else {
+                rect.setLeft(left()).setBelow(boxes.get(index -1));
+            }
+            finalHeight += rect.height();;
+        }
+        setHeight(finalHeight);
     }
 
     public ClickableButton getCreativeInstallButton() {
@@ -165,7 +127,7 @@ public class ModularItemSelectionFrame extends MultiRectHolderFrame {
     }
 
     public boolean playerHasModularItems() {
-        return Arrays.stream(equipmentSlotTypes)
+        return equipmentSlotTypes.stream()
                 .filter(type->getModularItemCapability(type)
                         .isPresent()).findFirst().isPresent();
     }
@@ -185,21 +147,59 @@ public class ModularItemSelectionFrame extends MultiRectHolderFrame {
         return getSelectedTab().map(tab ->tab.getSlotType());
     }
 
-    public boolean selectedIsSlotHovered() {
-        return getSelectedTab().map(tab->tab.isHovered()).orElse(false);
-    }
+//    public boolean selectedIsSlotHovered() {
+//        return getSelectedTab().map(tab->tab.isHovered()).orElse(false);
+//    }
 
     public Optional<ModularItemTabToggleWidget> getSelectedTab() {
         if (this.selectedTab == null) {
-            this.selectedTab = this.tabButtons.get(0);
-            this.selectedTab.setStateActive(true);
-        }
-        for (ModularItemTabToggleWidget widget : tabButtons) {
-            if (widget != selectedTab) {
-                widget.setStateActive(false);
+            this.selectedTab = boxes.stream().filter(ModularItemTabToggleWidget.class::isInstance).map(ModularItemTabToggleWidget.class::cast).findFirst().orElse(null);
+            if (selectedTab != null) {
+                this.selectedTab.setStateActive(true);
             }
         }
+
+        boxes.stream().filter(ModularItemTabToggleWidget.class::isInstance)
+                .map(ModularItemTabToggleWidget.class::cast).forEach(widget ->
+                        widget.setStateActive(widget==selectedTab));
+
         return Optional.ofNullable(selectedTab);
+    }
+
+    @Override
+    public boolean mouseClicked(double mouseX, double mouseY, int button) {
+        if (boxes.stream().filter(IClickable.class::isInstance)
+                .map(IClickable.class::cast).filter(box->box.mouseClicked(mouseX, mouseY, button)).findFirst().isPresent()) {
+            return true;
+        }
+        return super.mouseClicked(mouseX, mouseY, button);
+    }
+
+    @Override
+    public boolean mouseReleased(double mouseX, double mouseY, int button) {
+        if (boxes.stream().filter(IClickable.class::isInstance)
+                .map(IClickable.class::cast).filter(box->box.mouseReleased(mouseX, mouseY, button)).findFirst().isPresent()) {
+            return true;
+        }
+        return super.mouseReleased(mouseX, mouseY, button);
+    }
+
+    @Override
+    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
+        super.render(matrixStack, mouseX, mouseY, partialTicks);
+        boxes.stream().filter(IClickable.class::isInstance)
+                .map(IClickable.class::cast)
+                .forEach(box-> {
+                    box.render(matrixStack, mouseX, mouseY, partialTicks);
+                });
+    }
+
+    @Nullable
+    @Override
+    public List<ITextComponent> getToolTip(int x, int y) {
+        return boxes.stream().filter(IClickable.class::isInstance)
+                .map(IClickable.class::cast).filter(box -> box.containsPoint(x, y))
+                .findFirst().map(box -> box.getToolTip(x, y)).orElse(super.getToolTip(x, y));
     }
 
     @Override
@@ -207,6 +207,8 @@ public class ModularItemSelectionFrame extends MultiRectHolderFrame {
         super.update(mouseX, mouseY);
         getSelectedTab();
     }
+
+
 
     public void setOnChanged(IChanged changed) {
         this.changed = changed;

@@ -27,6 +27,6 @@ public class StackTextDisplayFrame extends ScrollableFrame {
     public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
         super.render(matrixStack, mouseX, mouseY, partialTicks);
         StringUtils.drawLeftAlignedShadowedString(matrixStack, slot != -1 ? "Slot " + slot + ": " +
-                this.label : "No slot selected", finalLeft() + 4, center().getY());
+                this.label : "No slot selected", left() + 4, centerY());
     }
 }

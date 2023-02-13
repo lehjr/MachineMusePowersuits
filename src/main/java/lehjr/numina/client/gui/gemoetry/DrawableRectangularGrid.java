@@ -37,13 +37,15 @@ import org.lwjgl.opengl.GL11;
 
 import java.nio.FloatBuffer;
 
-public class DrawableRectangularGrid extends DrawableRelativeRect {
+public class DrawableRectangularGrid extends DrawableRect {
+    public float zLevel = 0;
+
     Colour gridColour;
     int gridHeight;
     int gridWidth;
     Double horizontalSegmentSize;
     Double verticleSegmentSize;
-    final RelativeRect[] boxes;
+    final Rect[] boxes;
 
     public DrawableRectangularGrid(double left, double top, double right, double bottom, boolean growFromMiddle,
                                    Colour insideColour,
@@ -55,7 +57,7 @@ public class DrawableRectangularGrid extends DrawableRelativeRect {
         this.gridColour = gridColour;
         this.gridHeight = gridHeight;
         this.gridWidth = gridWidth;
-        this.boxes = new RelativeRect[gridHeight*gridWidth];
+        this.boxes = new Rect[gridHeight*gridWidth];
         setBoxes();
     }
 
@@ -69,7 +71,7 @@ public class DrawableRectangularGrid extends DrawableRelativeRect {
         this.gridColour = gridColour;
         this.gridHeight = gridHeight;
         this.gridWidth = gridWidth;
-        this.boxes = new RelativeRect[gridHeight*gridWidth];
+        this.boxes = new Rect[gridHeight*gridWidth];
         setBoxes();
     }
 
@@ -83,32 +85,18 @@ public class DrawableRectangularGrid extends DrawableRelativeRect {
         this.gridColour = gridColour;
         this.gridHeight = gridHeight;
         this.gridWidth = gridWidth;
-        this.boxes = new RelativeRect[gridHeight*gridWidth];
-        setBoxes();
-    }
-
-    public DrawableRectangularGrid(RelativeRect ref,
-                                   Colour insideColour,
-                                   Colour outsideColour,
-                                   Colour gridColour,
-                                   int gridHeight,
-                                   int gridWidth) {
-        super(ref.left(), ref.top(), ref.right(), ref.bottom(), ref.growFromMiddle(), insideColour, outsideColour);
-        this.gridColour = gridColour;
-        this.gridHeight = gridHeight;
-        this.gridWidth = gridWidth;
-        this.boxes = new RelativeRect[gridHeight*gridWidth];
+        this.boxes = new Rect[gridHeight*gridWidth];
         setBoxes();
     }
 
     void setBoxes() {
         for (int i = 0; i < boxes.length; i++) {
-            boxes[i] = new RelativeRect(0, 0, 0, 0);
+            boxes[i] = new Rect(0, 0, 0, 0);
         }
     }
 
 
-    public RelativeRect[] getBoxes() {
+    public Rect[] getBoxes() {
         return boxes;
     }
 
@@ -127,9 +115,9 @@ public class DrawableRectangularGrid extends DrawableRelativeRect {
 
                 if (i >0) {
                     if (x > 0)
-                        boxes[i].setMeRightOf(boxes[i-1]);
+                        boxes[i].setRightOf(boxes[i-1]);
                     if (y > 0){
-                        boxes[i].setMeBelow(boxes[i-gridWidth]);
+                        boxes[i].setBelow(boxes[i-gridWidth]);
                     }
                 }
                 i++;
@@ -152,7 +140,7 @@ public class DrawableRectangularGrid extends DrawableRelativeRect {
             setBoxes();
         }
 
-        if (horizontalSegmentSize == null || verticleSegmentSize == null || (!doneGrowing())) {
+        if (horizontalSegmentSize == null || verticleSegmentSize == null /*|| (!doneGrowing())*/) {
             setupGrid();
         }
 
@@ -193,10 +181,10 @@ public class DrawableRectangularGrid extends DrawableRelativeRect {
     }
 
     @Override
-    public DrawableRelativeRect setLeft(double value) {
+    public DrawableRect setLeft(double value) {
         double diff = value - left();
         super.setLeft(value);
-        for (RelativeRect box : boxes) {
+        for (Rect box : boxes) {
             if (box != null) {
                 box.setLeft(box.left() + diff);
             }

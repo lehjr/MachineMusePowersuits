@@ -26,6 +26,9 @@
 
 package lehjr.powersuits.common.block;
 
+import lehjr.numina.client.sound.Musique;
+import lehjr.numina.client.sound.SoundDictionary;
+import lehjr.powersuits.client.gui.modding.cosmetic.CosmeticGui;
 import lehjr.powersuits.client.gui.modding.module.tweak.ModuleTweakGui;
 import lehjr.powersuits.common.blockentity.TinkerTableBlockEntity;
 import net.minecraft.block.*;
@@ -90,7 +93,11 @@ public class TinkerTable extends HorizontalBlock implements IWaterLoggable {
     @OnlyIn(Dist.CLIENT)
     public void openGui(World world) {
         if (world.isClientSide) {
-            Minecraft.getInstance().tell(() -> Minecraft.getInstance().setScreen(new ModuleTweakGui(new TranslationTextComponent("gui.tinkertable"), true)));
+
+            Musique.playClientSound(SoundDictionary.SOUND_EVENT_GUI_SELECT, 1);
+            Minecraft.getInstance().tell(() -> Minecraft.getInstance().setScreen(new CosmeticGui(Minecraft.getInstance().player.inventory, new TranslationTextComponent("gui.tinkertable"))));
+
+//            Minecraft.getInstance().tell(() -> Minecraft.getInstance().setScreen(new ModuleTweakGui(new TranslationTextComponent("gui.tinkertable"), true)));
         }
     }
 

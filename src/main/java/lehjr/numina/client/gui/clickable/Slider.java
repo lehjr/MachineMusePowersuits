@@ -3,7 +3,6 @@ package lehjr.numina.client.gui.clickable;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import lehjr.numina.client.gui.gemoetry.DrawableTile;
-import lehjr.numina.client.gui.gemoetry.IRect;
 import lehjr.numina.client.gui.gemoetry.MusePoint2D;
 import lehjr.numina.common.math.Colour;
 import lehjr.numina.common.math.MathUtils;
@@ -126,7 +125,7 @@ public class Slider extends DrawableTile implements IClickable {
     }
 
     public void renderHorizontal(MatrixStack matrixStack, int mouseX, int mouseY, float frameTime) {
-        this.knobRect.setPosition(new MusePoint2D(this.centerx() + getSize() * (this.internalVal - 0.5), this.centery()));
+        this.knobRect.setPosition(new MusePoint2D(this.centerX() + getSize() * (this.internalVal - 0.5), this.centerY()));
         if (showTickLines && tickVal != 0) {
             for (double val : calculateTickCoordinates()) {
                 drawSingleLine(matrixStack, val, top(), val, bottom(), Colour.WHITE);
@@ -135,7 +134,7 @@ public class Slider extends DrawableTile implements IClickable {
     }
 
     public void renderVertical(MatrixStack matrixStack, int mouseX, int mouseY, float frameTime) {
-        this.knobRect.setPosition(new MusePoint2D(this.centerx(), this.centery() +  getSize() * (this.internalVal - 0.5)));
+        this.knobRect.setPosition(new MusePoint2D(this.centerX(), this.centerY() +  getSize() * (this.internalVal - 0.5)));
         if (showTickLines && tickVal != 0) {
             for (double val : calculateTickCoordinates()) {
                 drawSingleLine(matrixStack, left(), val, right(), val, Colour.WHITE);
@@ -151,9 +150,9 @@ public class Slider extends DrawableTile implements IClickable {
         double siderStart = this.internalVal;
         if (this.isEnabled() && this.isVisible() && dragging) {
             if (isHorizontal) {
-                this.internalVal = MathUtils.clampDouble((mouseX - centerx()) / (this.getSize() - knobRect.finalWidth() * 0.5) + 0.5, 0.0, 1.0);
+                this.internalVal = MathUtils.clampDouble((mouseX - centerX()) / (this.getSize() - knobRect.width() * 0.5) + 0.5, 0.0, 1.0);
             } else {
-                this.internalVal = MathUtils.clampDouble((mouseY - centery()) / (this.getSize() - knobRect.finalHeight() * 0.5) + 0.5, 0.0, 1.0);
+                this.internalVal = MathUtils.clampDouble((mouseY - centerY()) / (this.getSize() - knobRect.height() * 0.5) + 0.5, 0.0, 1.0);
             }
         } else {
             this.internalVal = MathUtils.clampDouble(internalVal, 0.0, 1.0);
@@ -203,9 +202,9 @@ public class Slider extends DrawableTile implements IClickable {
 
     public void setValueByX(double value) {
         if (isHorizontal) {
-            this.internalVal = MathUtils.clampDouble((value - centerx()) / this.width() + 0.5D, 0.0D, 1.0D);
+            this.internalVal = MathUtils.clampDouble((value - centerX()) / this.width() + 0.5D, 0.0D, 1.0D);
         } else {
-            internalVal = MathUtils.clampDouble((value - centery()) / getSize() + 0.5F, 0, 1);
+            internalVal = MathUtils.clampDouble((value - centerY()) / getSize() + 0.5F, 0, 1);
         }
     }
 
@@ -213,17 +212,17 @@ public class Slider extends DrawableTile implements IClickable {
         isCreatingNewRects = true;
         if (isHorizontal) {
             this.knobRect = new DrawableTile(
-                    centerx() - 4,
-                    centery() - 1 - getThickness() * 0.5,
-                    centerx() + 4,
-                    centery() + 1 + getThickness() * 0.5);
+                    centerX() - 4,
+                    centerY() - 1 - getThickness() * 0.5,
+                    centerX() + 4,
+                    centerY() + 1 + getThickness() * 0.5);
         } else {
             // should put it right in the center
             this.knobRect = new DrawableTile(
-                    centerx() - 1 - getThickness() * 0.5,
-                    centery() - 4,
-                    centerx() + 1 + getThickness() * 0.5,
-                    centery() + 4);
+                    centerX() - 1 - getThickness() * 0.5,
+                    centerY() - 4,
+                    centerX() + 1 + getThickness() * 0.5,
+                    centerY() + 4);
         }
 
         this.knobRect.setBackgroundColour(Colour.LIGHT_GREY);
@@ -241,7 +240,7 @@ public class Slider extends DrawableTile implements IClickable {
         if (tickVal !=0) {
             for (double i = getMinVal() + tickVal; i < getMaxValue(); i += tickVal) {
                 vals.add((this.isHorizontal ?
-                        finalLeft() : finalTop())
+                        left() : top())
                         + this.getSize()  * (MathUtils.clampDouble((i - getMinVal()) / (getMaxValue() - getMinVal()), 0.0, 1.0)));
             }
         }
@@ -294,13 +293,13 @@ public class Slider extends DrawableTile implements IClickable {
         return this.isVisible;
     }
 
-    @Override
-    public void doThisOnChange() {
-        if (!isCreatingNewRects) {
-            createNewRects();
-        }
-        super.doThisOnChange();
-    }
+//    @Override
+//    public void doThisOnChange() {
+//        if (!isCreatingNewRects) {
+//            createNewRects();
+//        }
+//        super.doThisOnChange();
+//    }
 
     @Override
     public void setOnPressed(IPressable onPressed) {

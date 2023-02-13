@@ -8,10 +8,11 @@ import javax.annotation.Nonnull;
  * A wrapper for vanilla widgets used for positioning
  * @param <T>
  */
-public class WidgetWrapper<T extends Widget> extends RelativeRect {
+public class WidgetWrapper<T extends Widget> extends Rect {
     T widget;
 
     public WidgetWrapper(@Nonnull T widget) {
+        super(MusePoint2D.ZERO, MusePoint2D.ZERO);
         this.widget = widget;
         super.setWidth(widget.getWidth());
         super.setHeight(widget.getHeight());
@@ -22,68 +23,68 @@ public class WidgetWrapper<T extends Widget> extends RelativeRect {
     }
 
     void setWidgetPosition() {
-        widget.x = (int) finalLeft();
-        widget.y = (int) finalTop();
+        widget.x = (int) left();
+        widget.y = (int) top();
     }
 
     void setWidgetWidthHeight() {
-        widget.setWidth((int) finalWidth());
-        widget.setHeight((int) finalHeight());
+        widget.setWidth((int) width());
+        widget.setHeight((int) height());
     }
 
     @Override
-    public IRect setUL(MusePoint2D ul) {
+    public Rect setUL(MusePoint2D ul) {
         super.setUL(ul);
         setWidgetPosition();
         return this;
     }
 
     @Override
-    public IRect setWH(MusePoint2D wh) {
+    public Rect setWH(MusePoint2D wh) {
         super.setWH(wh);
         setWidgetWidthHeight();
         return this;
     }
 
     @Override
-    public IRect setLeft(double value) {
+    public Rect setLeft(double value) {
         return super.setLeft(value);
     }
 
     @Override
-    public IRect setRight(double value) {
+    public Rect setRight(double value) {
         return super.setRight(value);
     }
 
     @Override
-    public IRect setTop(double value) {
+    public Rect setTop(double value) {
         return super.setTop(value);
     }
 
     @Override
-    public IRect setBottom(double value) {
+    public Rect setBottom(double value) {
         return super.setBottom(value);
     }
 
     @Override
-    public IRect setWidth(double value) {
+    public Rect setWidth(double value) {
         return super.setWidth(value);
     }
 
     @Override
-    public IRect setHeight(double value) {
+    public Rect setHeight(double value) {
         return super.setHeight(value);
     }
 
     @Override
-    public void move(MusePoint2D moveAmount) {
-        super.move(moveAmount);
+    public void moveBy(MusePoint2D amount) {
+        super.moveBy(amount);
         setWidgetPosition();
     }
 
     @Override
-    public void move(double x, double y) {
-        super.move(x, y);
+    public void moveBy(double x, double y) {
+        super.moveBy(x, y);
         setWidgetPosition();
     }
 
@@ -94,40 +95,30 @@ public class WidgetWrapper<T extends Widget> extends RelativeRect {
     }
 
     @Override
-    public boolean growFromMiddle() {
-        return super.growFromMiddle();
-    }
-
-    @Override
-    public IRect setMeLeftOf(IRect otherRightOfMe) {
-        super.setMeLeftOf(otherRightOfMe);
+    public Rect setLeftOf(IRect otherRightOfMe) {
+        super.setLeftOf(otherRightOfMe);
         setWidgetPosition();
         return this;
     }
 
     @Override
-    public IRect setMeRightOf(IRect otherLeftOfMe) {
-        super.setMeRightOf(otherLeftOfMe);
+    public Rect setRightOf(IRect otherLeftOfMe) {
+        super.setRightOf(otherLeftOfMe);
         setWidgetPosition();
         return this;
     }
 
     @Override
-    public IRect setMeAbove(IRect otherBelowMe) {
-        super.setMeAbove(otherBelowMe);
+    public Rect setAbove(IRect otherBelowMe) {
+        super.setAbove(otherBelowMe);
         setWidgetPosition();
         return this;
     }
 
     @Override
-    public IRect setMeBelow(IRect otherAboveMe) {
-        super.setMeBelow(otherAboveMe);
+    public Rect setBelow(IRect otherAboveMe) {
+        super.setBelow(otherAboveMe);
         setWidgetPosition();
         return this;
-    }
-
-    @Override
-    public RelativeRect getRect() {
-        return super.getRect();
     }
 }

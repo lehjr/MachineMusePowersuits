@@ -28,8 +28,7 @@ package lehjr.numina.client.gui.clickable;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import lehjr.numina.client.gui.GuiIcon;
-import lehjr.numina.client.gui.gemoetry.DrawableTile;
-import lehjr.numina.client.gui.gemoetry.MusePoint2D;
+import lehjr.numina.client.gui.gemoetry.*;
 import lehjr.numina.common.math.Colour;
 import lehjr.numina.common.string.StringUtils;
 import net.minecraft.client.Minecraft;
@@ -46,16 +45,21 @@ public class Checkbox extends Clickable {
     protected CheckboxTile tile;
     ITextComponent label;
 
+
+    @Deprecated
     public Checkbox(MusePoint2D position, String displayString, boolean isChecked) {
         this(position, new StringTextComponent(displayString), isChecked);
     }
+
+    @Deprecated
 
     public Checkbox(MusePoint2D position, ITextComponent displayString, boolean isChecked) {
         this(position, displayString, isChecked, true);
     }
 
     public Checkbox(MusePoint2D position, ITextComponent displayString, boolean isChecked, boolean showLabel) {
-        super(position);
+        super(MusePoint2D.ZERO, MusePoint2D.ZERO);
+        setPosition(position); // FIXME: IS this center or UL?
         makeNewTile();
         this.label = displayString;
         this.isChecked = isChecked;
@@ -64,8 +68,11 @@ public class Checkbox extends Clickable {
         this.setHeight(20);
     }
 
-    public Checkbox(double posX, double posY, int width, ITextComponent message, boolean checked) {
-        this(posX, posY, width, message, checked, true);
+    public Checkbox(double left, double top, int width, ITextComponent message, boolean checked) {
+        super(new Rect(left, top, left + width, top + 20));
+        this.isChecked = checked;
+        this.label = message;
+        this.showLabel = true;
     }
 
     public Checkbox(double posX, double posY, double width, ITextComponent message, boolean checked, boolean showLabel) {
@@ -74,22 +81,27 @@ public class Checkbox extends Clickable {
     }
 
     public void render(MatrixStack matrixStack, int mouseX, int mouseY, float frameTime) {
+        super.render(matrixStack, mouseX, mouseY, frameTime);
+
         if (this.isVisible()) {
+            makeNewTile();
             this.tile.render(matrixStack, mouseX, mouseY, frameTime);
             if (showLabel) {
-                StringUtils.drawShadowedString(matrixStack, this.label, this.tile.centerx() + 10.0D, this.tile.centery() - 4.0D, Colour.WHITE);
+                StringUtils.drawShadowedString(matrixStack, this.label, this.tile.centerX() + 10.0D, this.tile.centerY() - 4.0D, Colour.WHITE);
             }
         }
     }
 
     void makeNewTile() {
         if (tile == null) {
-            MusePoint2D ul = getPosition().plus(4.0D, 4.0D);
+            MusePoint2D ul = new MusePoint2D(left() + 2, centerY() - 5);
             this.tile = (new CheckboxTile(ul));//.setBackgroundColour(Colour.BLACK).setTopBorderColour(Colour.DARK_GREY).setBottomBorderColour(Colour.DARK_GREY);
+        } else {
+            tile.setUL(new MusePoint2D(left() + 2, centerY() - 5));
         }
     }
 
-    public boolean hitBox(double x, double y) {
+    public boolean containsPoint(double x, double y) {
         return this.isVisible() && this.isEnabled() ? this.tile.containsPoint(x, y) : false;
     }
 
@@ -117,7 +129,7 @@ public class Checkbox extends Clickable {
         super.onPressed();
     }
 
-    class CheckboxTile extends DrawableTile {
+    class CheckboxTile extends Rect implements IDrawableRect {
         public CheckboxTile(MusePoint2D ul) {
             super(ul, ul.plus(10, 10));
         }
@@ -129,12 +141,22 @@ public class Checkbox extends Clickable {
                     // int uWidth, int vHeight,
                     20, 20,
                     // image start x (xOffset)
-                    hitBox(mouseX, mouseY) ? 20 : 0.0F,
+                    Checkbox.this.containsPoint(mouseX, mouseY) ? 20 : 0.0F,
                     // image start y (yOffset)
                     isChecked() ? 20 : 0.0F,
                     // textureWidth, textureHeight
                     64, 64,
                     Colour.WHITE);
+        }
+
+        @Override
+        public float getZLevel() {
+            return 0;
+        }
+
+        @Override
+        public IDrawable setZLevel(float zLevel) {
+            return this;
         }
     }
 }

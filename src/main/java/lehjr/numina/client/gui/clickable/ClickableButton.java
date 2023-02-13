@@ -27,7 +27,7 @@
 package lehjr.numina.client.gui.clickable;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import lehjr.numina.client.gui.gemoetry.DrawableRelativeRect;
+import lehjr.numina.client.gui.gemoetry.DrawableRect;
 import lehjr.numina.client.gui.gemoetry.IDrawable;
 import lehjr.numina.client.gui.gemoetry.MusePoint2D;
 import lehjr.numina.common.math.Colour;
@@ -37,7 +37,7 @@ import net.minecraft.util.text.ITextComponent;
 /**
  * @author MachineMuse
  */
-public class ClickableButton extends DrawableRelativeRect implements IClickable {
+public class ClickableButton extends DrawableRect implements IClickable {
     boolean isVisible = true;
     boolean isEnabled = true;
     protected ITextComponent label;
@@ -68,10 +68,10 @@ public class ClickableButton extends DrawableRelativeRect implements IClickable 
             this.radius = new MusePoint2D((float) (StringUtils.getStringWidth(label.getString()) / 2F + 2F), 6);
         }
 
-        setLeft(position.getX() - radius.getX());
-        setTop(position.getY() - radius.getY());
-        setWidth(radius.getX() * 2);
-        setHeight(radius.getY() * 2);
+        setLeft(position.x() - radius.x());
+        setTop(position.y() - radius.y());
+        setWidth(radius.x() * 2);
+        setHeight(radius.y() * 2);
         setBorderColour(enabledBorder);
         setBackgroundColour(enabledBackground);
         this.setEnabled(enabled);
@@ -158,21 +158,16 @@ public class ClickableButton extends DrawableRelativeRect implements IClickable 
             if (label.getString().contains("\n")) {
                 String[] s = label.getString().split("\n");
                 for (int i = 0; i < s.length; i++) {
-                    StringUtils.drawShadowedStringCentered(matrixStack, s[i], getPosition().getX(), getPosition().getY() + (i * StringUtils.getStringHeight() + 2));
+                    StringUtils.drawShadowedStringCentered(matrixStack, s[i], centerX(), centerY() + (i * StringUtils.getStringHeight() + 2));
                 }
             } else {
-                StringUtils.drawShadowedStringCentered(matrixStack, this.label.getString(), getPosition().getX(), getPosition().getY());
+                StringUtils.drawShadowedStringCentered(matrixStack, this.label.getString(), centerX(), centerY());
             }
         }
     }
 
     public MusePoint2D getRadius () {
         return radius.copy();
-    }
-
-    @Override
-    public boolean hitBox(double x, double y) {
-        return containsPoint(x, y);
     }
 
     @Override

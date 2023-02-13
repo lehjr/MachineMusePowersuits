@@ -58,10 +58,10 @@ public class CraftingFrame extends MultiRectHolderFrame {
 
             @Override
             public void update(double mouseX, double mouseY) {
-                MusePoint2D position = getPosition();
-                if (!position.equals(arrow.getPosition())) {
+                MusePoint2D position = center();
+                if (!position.equals(arrow.center())) {
                     arrow.setPosition(position);
-                    arrow.initGrowth();
+//                    arrow.initGrowth();
                 }
             }
 
@@ -100,10 +100,10 @@ public class CraftingFrame extends MultiRectHolderFrame {
 
             @Override
             public void update(double mouseX, double mouseY) {
-                MusePoint2D position = getPosition();
-                if (!position.equals(resultFrame.getPosition())) {
+                MusePoint2D position = center();
+                if (!position.equals(resultFrame.center())) {
                     resultFrame.setPosition(position);
-                    resultFrame.initGrowth();
+//                    resultFrame.initGrowth();
                 }
             }
 

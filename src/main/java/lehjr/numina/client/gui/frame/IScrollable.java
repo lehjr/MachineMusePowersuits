@@ -21,12 +21,12 @@ public interface IScrollable extends IGuiFrame, IDrawableRect {
 
     int getTotalSize();
 
-    int getCurrentScrollPixels();
+    double getCurrentScrollPixels();
 
-    void setCurrentScrollPixels(int scrollPixels);
+    void setCurrentScrollPixels(double scrollPixels);
 
-    default int getMaxScrollPixels() {
-        return (int) Math.max(getTotalSize() - height(), 0);
+    default double getMaxScrollPixels() {
+        return Math.max(getTotalSize() - height(), 0);
     }
 
     default double getScrollAmount() {
@@ -50,14 +50,14 @@ public interface IScrollable extends IGuiFrame, IDrawableRect {
     @Override
     default boolean mouseClicked(double x, double y, int button) {
         if (isVisible() && containsPoint(x, y) && button == 0) {
-            int dscroll = 0;
+            double dscroll = 0;
             if (y - top() < getButtonSize() && this.getCurrentScrollPixels() > 0) {
-                dscroll = (int) ((double) dscroll - this.getScrollAmount());
+                dscroll = ((double) dscroll - this.getScrollAmount());
             } else if (bottom() - y < getButtonSize()) {
-                dscroll = (int) ((double) dscroll + this.getScrollAmount());
+                dscroll = ((double) dscroll + this.getScrollAmount());
             }
             if (dscroll != 0) {
-                setCurrentScrollPixels((int) MathUtils.clampDouble(this.getCurrentScrollPixels() + dscroll, 0.0D, this.getMaxScrollPixels()));
+                setCurrentScrollPixels(MathUtils.clampDouble(this.getCurrentScrollPixels() + dscroll, 0.0D, this.getMaxScrollPixels()));
             }
             return true;
         }

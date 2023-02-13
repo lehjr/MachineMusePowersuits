@@ -4,8 +4,8 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import lehjr.numina.client.gui.gemoetry.DrawableTile;
 import lehjr.numina.client.gui.gemoetry.IDrawable;
-import lehjr.numina.client.gui.gemoetry.IRect;
 import lehjr.numina.client.gui.gemoetry.MusePoint2D;
+import lehjr.numina.client.gui.gemoetry.Rect;
 import lehjr.numina.common.math.Colour;
 import lehjr.numina.common.math.MathUtils;
 import lehjr.numina.common.string.StringUtils;
@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 // TODO: ticks and tickmarks
+@Deprecated
 public class RangedSlider extends Clickable {
     /** useful for differentiating sliders */
     String id="";
@@ -76,6 +77,7 @@ public class RangedSlider extends Clickable {
                         double maxVal,
                         double currentVal,
                         @Nullable ISlider iSlider) {
+        super(MusePoint2D.ZERO, MusePoint2D.ZERO);
         this.isHorizontal = isHorizontal;
         this.size = size;
         this.label = label;
@@ -86,7 +88,7 @@ public class RangedSlider extends Clickable {
         setValue(currentVal);
         this.setPosition(position);
         calculateTickCoordinates();
-        setDoThisOnChange(doThis-> createNewRects());
+//        setDoThisOnChange(doThis-> createNewRects());
     }
 
     public String id() {
@@ -107,7 +109,7 @@ public class RangedSlider extends Clickable {
         if (tickVal !=0) {
             for (double i = minValue + tickVal; i < maxValue; i += tickVal) {
                 vals.add((this.isHorizontal ?
-                        trackRect.finalLeft() : trackRect.finalTop())
+                        trackRect.left() : trackRect.top())
                         + this.size  * (MathUtils.clampDouble((i - minValue) / (maxValue - minValue), 0.0, 1.0)));
             }
         }
@@ -120,33 +122,33 @@ public class RangedSlider extends Clickable {
 
             // FIXME
             this.knobRect = new DrawableTile(
-                    getPosition().getX() - 4,
-                    getPosition().getY() - 1 - thickness * 0.5,
-                    getPosition().getX() + 4,
-                    getPosition().getY() + 1 + thickness * 0.5);
+                    centerX() - 4,
+                    centerY() - 1 - thickness * 0.5,
+                    centerX() + 4,
+                    centerY() + 1 + thickness * 0.5);
 
             // FIXME
             this.trackRect = new DrawableTile(
-                    getPosition().getX() - size * 0.5,
-                    getPosition().getY() - thickness * 0.5,
-                    getPosition().getX() + size * 0.5,
-                    getPosition().getY() + thickness * 0.5);
+                    centerX() - size * 0.5,
+                    centerY() - thickness * 0.5,
+                    centerX() + size * 0.5,
+                    centerY() + thickness * 0.5);
 
             // both Knob and track are wrong
         } else {
             // should put it right in the center
             this.knobRect = new DrawableTile(
-                    getPosition().getX() - 1 - thickness * 0.5,
-                    getPosition().getY() - 4,
-                    getPosition().getX() + 1 + thickness * 0.5,
-                    getPosition().getY() + 4);
+                    centerX() - 1 - thickness * 0.5,
+                    centerY() - 4,
+                    centerX() + 1 + thickness * 0.5,
+                    centerY() + 4);
 
 
             this.trackRect = new DrawableTile(
-                    getPosition().getX() - thickness * 0.5,
-                    getPosition().getY() - size * 0.5F,
-                    getPosition().getX() + thickness * 0.5,
-                    getPosition().getY() + size * 0.5);
+                    centerX() - thickness * 0.5,
+                    centerY() - size * 0.5F,
+                    centerX() + thickness * 0.5,
+                    centerY() + size * 0.5);
         }
 
         this.knobRect.setBackgroundColour(Colour.LIGHT_GREY);
@@ -156,35 +158,35 @@ public class RangedSlider extends Clickable {
         this.trackRect.setBackgroundColour(Colour.DARK_GREY);
         this.trackRect.setBottomBorderColour(Colour.WHITE);
         this.trackRect.setTopBorderColour(Colour.BLACK);
-        super.setWH(new MusePoint2D(trackRect.finalWidth(), trackRect.finalHeight()));
+        super.setWH(new MusePoint2D(trackRect.width(), trackRect.height()));
     }
 
     @Override
     public void render(MatrixStack matrixStack, int mouseX, int mouseY, float frameTime) {
         if (this.isVisible()) {
             if (label != null) {
-                StringUtils.drawShadowedStringCentered(matrixStack, label.getString(), getPosition().getX(), getPosition().getY());
+                StringUtils.drawShadowedStringCentered(matrixStack, label.getString(), centerX(), centerY());
             }
 
             this.trackRect.render(matrixStack, mouseX, mouseY, frameTime);
             if (isHorizontal) {
                 this.knobRect.setPosition(new MusePoint2D(
-                        this.getPosition().getX() + this.size * (this.sliderValue - 0.5),
-                        this.trackRect.centery()));
+                        this.centerX() + this.size * (this.sliderValue - 0.5),
+                        this.trackRect.centerY()));
             } else {
                 this.knobRect.setPosition(
-                        new MusePoint2D(this.trackRect.centerx(),
-                                this.getPosition().getY() +  this.size * (this.sliderValue - 0.5)));
+                        new MusePoint2D(this.trackRect.centerX(),
+                                this.centerY() +  this.size * (this.sliderValue - 0.5)));
             }
 
             if (showTickLines && tickVal != 0) {
                 if (isHorizontal) {
                     for (double val : calculateTickCoordinates()) {
-                        drawSingleLine(matrixStack, val, trackRect.finalTop(), val, trackRect.finalBottom(), Colour.WHITE);
+                        drawSingleLine(matrixStack, val, trackRect.top(), val, trackRect.bottom(), Colour.WHITE);
                     }
                 } else {
                     for (double val : calculateTickCoordinates()) {
-                        drawSingleLine(matrixStack, trackRect.finalLeft(), val, trackRect.finalRight(), val, Colour.WHITE);
+                        drawSingleLine(matrixStack, trackRect.left(), val, trackRect.right(), val, Colour.WHITE);
                     }
                 }
             }
@@ -209,9 +211,9 @@ public class RangedSlider extends Clickable {
         double siderStart = this.sliderValue;
         if (this.isEnabled() && this.isVisible() && dragging) {
             if (isHorizontal) {
-                this.sliderValue = MathUtils.clampDouble((mouseX - this.getPosition().getX()) / (this.size - knobRect.finalWidth() * 0.5) + 0.5, 0.0, 1.0);
+                this.sliderValue = MathUtils.clampDouble((mouseX - this.centerX()) / (this.size - knobRect.width() * 0.5) + 0.5, 0.0, 1.0);
             } else {
-                this.sliderValue = MathUtils.clampDouble((mouseY - this.getPosition().getY()) / (this.size - knobRect.finalHeight() * 0.5) + 0.5, 0.0, 1.0);
+                this.sliderValue = MathUtils.clampDouble((mouseY - this.centerY()) / (this.size - knobRect.height() * 0.5) + 0.5, 0.0, 1.0);
             }
         } else {
             this.sliderValue = MathUtils.clampDouble(sliderValue, 0.0, 1.0);
@@ -259,7 +261,7 @@ public class RangedSlider extends Clickable {
 
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
-        if (this.isEnabled() && this.isVisible() && this.hitBox(mouseX, mouseY)) {
+        if (this.isEnabled() && this.isVisible() && this.containsPoint(mouseX, mouseY)) {
             update(mouseX, mouseY);
             this.dragging = true;
             return true;
@@ -268,7 +270,7 @@ public class RangedSlider extends Clickable {
     }
 
     @Override
-    public boolean hitBox(double x, double y) {
+    public boolean containsPoint(double x, double y) {
         return x > trackRect.left() - 2 && x < trackRect.right() + 2 && y > trackRect.top() - 2 && y < trackRect.bottom() + 2;
     }
 
@@ -283,21 +285,21 @@ public class RangedSlider extends Clickable {
     }
 
     @Override
-    public IRect setWH(MusePoint2D wh) {
+    public Rect setWH(MusePoint2D wh) {
         createNewRects();
-        return this;
+        return (Rect) getRect();
     }
 
     @Override
-    public IRect setWidth(double value) {
+    public Rect setWidth(double value) {
         createNewRects();
-        return this;
+        return (Rect) getRect();
     }
 
     @Override
-    public IRect setHeight(double value) {
+    public Rect setHeight(double value) {
         createNewRects();
-        return this;
+        return (Rect) getRect();
     }
 
     void drawSingleLine(MatrixStack matrixStack, double xStart, double yStart, double xEnd, double yEnd, Colour colour) {

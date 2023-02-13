@@ -29,7 +29,6 @@ package lehjr.numina.client.gui.frame;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import lehjr.numina.client.gui.gemoetry.DrawableTile;
 import lehjr.numina.client.gui.gemoetry.MusePoint2D;
-import lehjr.numina.client.gui.gemoetry.RelativeRect;
 import lehjr.numina.common.math.Colour;
 import lehjr.numina.common.math.MathUtils;
 import net.minecraft.util.text.ITextComponent;
@@ -39,7 +38,7 @@ import java.util.List;
 public class ScrollableFrame extends DrawableTile implements IScrollable {
     protected int buttonSize = 5;
     protected int totalSize;
-    protected int currentScrollPixels;
+    protected double currentScrollPixels;
     protected boolean visible = true;
     protected boolean enabled = true;
     protected float zLevel;
@@ -83,11 +82,6 @@ public class ScrollableFrame extends DrawableTile implements IScrollable {
     }
 
     @Override
-    public RelativeRect getRect() {
-        return this;
-    }
-
-    @Override
     public int getTotalSize() {
         return this.totalSize;
     }
@@ -98,16 +92,16 @@ public class ScrollableFrame extends DrawableTile implements IScrollable {
     }
 
     @Override
-    public int getCurrentScrollPixels() {
+    public double getCurrentScrollPixels() {
         return this.currentScrollPixels;
     }
 
     @Override
-    public void setCurrentScrollPixels(int scrollPixels) {
+    public void setCurrentScrollPixels(double scrollPixels) {
         this.currentScrollPixels = scrollPixels;
     }
 
-    public int getMaxScrollPixels() {
+    public double getMaxScrollPixels() {
         return (int) Math.max(totalSize - height(), 0);
     }
 

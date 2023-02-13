@@ -56,7 +56,7 @@ public class SpiralPointToPoint2D extends MusePoint2D {
     public SpiralPointToPoint2D(MusePoint2D center,
                                 MusePoint2D target,
                                 double timeTo, boolean outwards) {
-        this(center.getX(), center.getY(), target.getX(), target.getY(), timeTo, outwards);
+        this(center.x(), center.y(), target.x(), target.y(), timeTo, outwards);
     }
 
     public SpiralPointToPoint2D(MusePoint2D center,
@@ -68,7 +68,7 @@ public class SpiralPointToPoint2D extends MusePoint2D {
     public SpiralPointToPoint2D(MusePoint2D center,
                                 double radius, double rotation,
                                 double timeTo, boolean outward) {
-        this(center.getX(), center.getY(), (double) (radius * Math.cos(rotation)), (double)(radius * Math.sin(rotation)), timeTo, outward);
+        this(center.x(), center.y(), (double) (radius * Math.cos(rotation)), (double)(radius * Math.sin(rotation)), timeTo, outward);
         this.radius = radius;
         this.rotation = rotation;
     }
@@ -97,15 +97,15 @@ public class SpiralPointToPoint2D extends MusePoint2D {
     }
 
     @Override
-    public double getX() {
+    public double x() {
         //getX = r × cos(θ)
-        return (double) (center.getX() + (radius * getRatio()) * Math.cos(getTheta()));
+        return (double) (center.x() + (radius * getRatio()) * Math.cos(getTheta()));
     }
 
     @Override
-    public double getY() {
+    public double y() {
         //getY = r × sin(θ)
-        return (double) (center.getY() + (radius * getRatio()) * Math.sin(getTheta()));
+        return (double) (center.y() + (radius * getRatio()) * Math.sin(getTheta()));
     }
 
     @Override
@@ -141,7 +141,7 @@ public class SpiralPointToPoint2D extends MusePoint2D {
     @Override
     public String toString() {
         return "\ntarget.X: " + x + ", target.Y: " + y +
-                "\nactualX: " + getX() + "actualX: " + getY() +
+                "\nactualX: " + x() + "actualX: " + y() +
                 "\nrotation: " + rotation +
                 "\nradius: " + radius;
     }

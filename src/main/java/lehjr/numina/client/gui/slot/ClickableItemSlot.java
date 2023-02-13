@@ -52,12 +52,12 @@ public class ClickableItemSlot extends UniversalSlot implements IClickable {
 
     @Override
     public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
-        NuminaRenderer.drawItemAt(getUL().getX(), getUL().getY(), getItem());
+        NuminaRenderer.drawItemAt(getUL().x(), getUL().y(), getItem());
     }
 
     @Override
     public List<ITextComponent> getToolTip(int x, int y) {
-        if (hitBox(x, y)) {
+        if (containsPoint(x, y)) {
             return !getItem().isEmpty() ? getItem().getTooltipLines(Minecraft.getInstance().player, ITooltipFlag.TooltipFlags.NORMAL) : null;
         }
         return null;

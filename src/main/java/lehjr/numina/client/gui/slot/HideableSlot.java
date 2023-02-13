@@ -64,7 +64,7 @@ public class HideableSlot extends Slot implements IHideableSlot {
 
     @Override
     public void setPosition(MusePoint2D position) {
-        this.x = (int) position.getX();
-        this.y = (int) position.getY();
+        this.x = (int) position.x();
+        this.y = (int) position.y();
     }
 }

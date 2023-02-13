@@ -29,7 +29,6 @@ package lehjr.numina.client.gui.clickable;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import lehjr.numina.client.gui.gemoetry.DrawableArrow;
 import lehjr.numina.client.gui.gemoetry.MusePoint2D;
-import lehjr.numina.client.gui.gemoetry.RelativeRect;
 import lehjr.numina.common.math.Colour;
 
 public class ClickableArrow extends DrawableArrow implements IClickable {
@@ -60,32 +59,32 @@ public class ClickableArrow extends DrawableArrow implements IClickable {
         this.backgroundColourHighlighted = backgroundColourHighlighted;
     }
 
-    public ClickableArrow(RelativeRect ref, Colour backgroundColour, Colour backgroundColourHighlighted, Colour borderColour) {
-        super(ref, backgroundColour, borderColour);
-        this.backgroundColourNotHighlighted = backgroundColour;
-        this.backgroundColourHighlighted = backgroundColourHighlighted;
-    }
+//    public ClickableArrow(Rect ref, Colour backgroundColour, Colour backgroundColourHighlighted, Colour borderColour) {
+//        super(ref, backgroundColour, borderColour);
+//        this.backgroundColourNotHighlighted = backgroundColour;
+//        this.backgroundColourHighlighted = backgroundColourHighlighted;
+//    }
 
     @Override
     public void render(MatrixStack matrixStack, int mouseX, int mouseY, float frameTime) {
         if (isVisible) {
-            super.setBackgroundColour(hitBox(mouseX, mouseY) ? this.backgroundColourHighlighted : this.backgroundColourNotHighlighted);
+            super.setBackgroundColour(containsPoint(mouseX, mouseY) ? this.backgroundColourHighlighted : this.backgroundColourNotHighlighted);
             super.render(matrixStack, mouseX, mouseY, frameTime);
         }
     }
 
-    @Override
-    public MusePoint2D getPosition() {
-        return center();
-    }
+//    @Override
+//    public MusePoint2D getPosition() {
+//        return center();
+//    }
 
-    @Override
-    public boolean hitBox(double x, double y) {
-        if (isVisible() && isEnabled()) {
-            return x >= left() && x <= right() && y >= top() && y <= bottom();
-        }
-        return false;
-    }
+//    @Override
+//    public boolean hitBox(double x, double y) {
+//        if (isVisible() && isEnabled()) {
+//            return x >= left() && x <= right() && y >= top() && y <= bottom();
+//        }
+//        return false;
+//    }
 
     public void setOnPressed(IPressable onPressed) {
         this.onPressed = onPressed;

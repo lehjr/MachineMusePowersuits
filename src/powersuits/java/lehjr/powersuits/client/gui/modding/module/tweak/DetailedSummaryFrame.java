@@ -34,16 +34,13 @@ import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.capabilities.module.powermodule.PowerModuleCapability;
 import lehjr.numina.common.math.Colour;
-import lehjr.numina.common.string.StringUtils;
 import lehjr.powersuits.client.gui.common.ModularItemSelectionFrame;
 import lehjr.powersuits.common.constants.MPSConstants;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.items.CapabilityItemHandler;
 import org.apache.commons.lang3.tuple.Pair;
 
-import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class DetailedSummaryFrame extends ScrollableFrame {
@@ -94,36 +91,36 @@ public class DetailedSummaryFrame extends ScrollableFrame {
 
     @Override
     public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks)  {
-        if (getMinecraft().player != null) {
-            super.render(matrixStack, mouseX, mouseY, partialTicks);
-            int margin = 4;
-            int nexty = (int) getRect().top() + margin + 4;
-            StringUtils.drawShadowedStringCentered(matrixStack, I18n.get("gui.powersuits.equippedTotals"), (getRect().left() + getRect().right()) / 2, nexty);
-            nexty += 10;
-
-            // Max Energy
-            String formattedValue = StringUtils.formatNumberFromUnits(energy.get(), "FE");
-            String name = I18n.get("gui.powersuits.energyStorage");
-            double valueWidth = StringUtils.getStringWidth(formattedValue);
-            double allowedNameWidth = getRect().width() - valueWidth - margin * 2;
-            List<String> namesList = StringUtils.wrapStringToVisualLength(name, allowedNameWidth);
-            for (int i = 0; i < namesList.size(); i++) {
-                StringUtils.drawShadowedString(matrixStack, namesList.get(i), getRect().left() + margin, nexty + 9 * i);
-            }
-            StringUtils.drawRightAlignedShadowedString(matrixStack, formattedValue, getRect().right() - margin, nexty + 9 * (namesList.size() - 1) / 2);
-            nexty += 10 * namesList.size() + 1;
-
-            // Armor points
-            formattedValue = StringUtils.formatNumberFromUnits(armor.get(), "pts");
-            name = I18n.get("gui.powersuits.armor");
-            valueWidth = StringUtils.getStringWidth(formattedValue);
-            allowedNameWidth = getRect().width() - valueWidth - margin * 2;
-            namesList = StringUtils.wrapStringToVisualLength(name, allowedNameWidth);
-            assert namesList != null;
-            for (int i = 0; i < namesList.size(); i++) {
-                StringUtils.drawShadowedString(matrixStack, namesList.get(i), getRect().left() + margin, nexty + 9 * i);
-            }
-            StringUtils.drawRightAlignedShadowedString(matrixStack, formattedValue, getRect().right() - margin, nexty + 9 * (namesList.size() - 1) / 2);
-        }
+//        if (getMinecraft().player != null) {
+//            super.render(matrixStack, mouseX, mouseY, partialTicks);
+//            int margin = 4;
+//            int nexty = (int) getRect().top() + margin + 4;
+//            StringUtils.drawShadowedStringCentered(matrixStack, I18n.get("gui.powersuits.equippedTotals"), (getRect().left() + getRect().right()) / 2, nexty);
+//            nexty += 10;
+//
+//            // Max Energy
+//            String formattedValue = StringUtils.formatNumberFromUnits(energy.get(), "FE");
+//            String name = I18n.get("gui.powersuits.energyStorage");
+//            double valueWidth = StringUtils.getStringWidth(formattedValue);
+//            double allowedNameWidth = getRect().width() - valueWidth - margin * 2;
+//            List<String> namesList = StringUtils.wrapStringToVisualLength(name, allowedNameWidth);
+//            for (int i = 0; i < namesList.size(); i++) {
+//                StringUtils.drawShadowedString(matrixStack, namesList.get(i), getRect().left() + margin, nexty + 9 * i);
+//            }
+//            StringUtils.drawRightAlignedShadowedString(matrixStack, formattedValue, getRect().right() - margin, nexty + 9 * (namesList.size() - 1) / 2);
+//            nexty += 10 * namesList.size() + 1;
+//
+//            // Armor points
+//            formattedValue = StringUtils.formatNumberFromUnits(armor.get(), "pts");
+//            name = I18n.get("gui.powersuits.armor");
+//            valueWidth = StringUtils.getStringWidth(formattedValue);
+//            allowedNameWidth = getRect().width() - valueWidth - margin * 2;
+//            namesList = StringUtils.wrapStringToVisualLength(name, allowedNameWidth);
+//            assert namesList != null;
+//            for (int i = 0; i < namesList.size(); i++) {
+//                StringUtils.drawShadowedString(matrixStack, namesList.get(i), getRect().left() + margin, nexty + 9 * i);
+//            }
+//            StringUtils.drawRightAlignedShadowedString(matrixStack, formattedValue, getRect().right() - margin, nexty + 9 * (namesList.size() - 1) / 2);
+//        }
     }
 }

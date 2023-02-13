@@ -9,29 +9,42 @@ import net.minecraft.util.ResourceLocation;
 
 import javax.annotation.Nullable;
 
-public class ScrollBar extends Slider {
-    /** The location of the creative inventory tabs texture
+public class VanillaInventoryScrollBar extends Slider {
+    /**
      texture is 256x256
-     image startX 232
-     image startY 0
-     image endY 15
-     */
-    private static final ResourceLocation TEXTURE = new ResourceLocation("textures/gui/container/creative_inventory/tabs.png");
+     image X 232-244(highlighted), 244-256 (not highlighted) 12 wide
+     image Y 0-15
 
-    public ScrollBar(MusePoint2D position, double height, String id) {
+     vanilla scroll bar (not inventory scroll) is only 6 pixels wide
+
+
+
+     todo: maybe split it like the vanilla slider knob
+
+     ------------------
+     Frame scroll bar...
+     width should always be 6
+     height should be locked to frame
+     knob height should have a height range dependant on the total height of the frame's contents
+
+
+
+     */
+    private static final ResourceLocation KNOB_TEXTURE = new ResourceLocation("textures/gui/container/creative_inventory/tabs.png");
+
+    public VanillaInventoryScrollBar(MusePoint2D position, double height, String id) {
         this(position, height, id, 0);
     }
 
-    public ScrollBar(MusePoint2D position, double height, String id, double currentVal) {
+    public VanillaInventoryScrollBar(MusePoint2D position, double height, String id, double currentVal) {
         this(position, height, id, currentVal, null);
     }
 
-    public ScrollBar(MusePoint2D position, double height, String id, double currentVal, @Nullable ISlider iSlider) {
+    public VanillaInventoryScrollBar(MusePoint2D position, double height, String id, double currentVal, @Nullable ISlider iSlider) {
         super(position, false, height, id, currentVal, iSlider);
         this.setWidth(12);
         keepKnobWithinBounds=true;
     }
-
 
     @Override
     public void renderKnob(MatrixStack matrixStack, int mouseX, int mouseY, float frameTime) {
@@ -52,7 +65,7 @@ public class ScrollBar extends Slider {
 
         @Override
         public void render(MatrixStack matrixStack, int mouseX, int mouseY, float frameTime) {
-            GuiIcon.renderTextureWithColour(TEXTURE, matrixStack,
+            GuiIcon.renderTextureWithColour(KNOB_TEXTURE, matrixStack,
                     left(), right(), top(), bottom(), getZLevel(),
                     // int uWidth, int vHeight,
                     12, 15,

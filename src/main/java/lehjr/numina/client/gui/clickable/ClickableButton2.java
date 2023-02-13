@@ -45,10 +45,10 @@ public class ClickableButton2 extends DrawableTile implements IClickable {
             this.radius = new MusePoint2D((float) (StringUtils.getStringWidth(label.getString()) / 2F + 2F), 6);
         }
 
-        setLeft(position.getX() - radius.getX());
-        setTop(position.getY() - radius.getY());
-        setWidth(radius.getX() * 2);
-        setHeight(radius.getY() * 2);
+        setLeft(position.x() - radius.x());
+        setTop(position.y() - radius.y());
+        setWidth(radius.x() * 2);
+        setHeight(radius.y() * 2);
         this.setEnabled(enabled);
     }
 
@@ -133,21 +133,16 @@ public class ClickableButton2 extends DrawableTile implements IClickable {
             if (label.getString().contains("\n")) {
                 String[] s = label.getString().split("\n");
                 for (int i = 0; i < s.length; i++) {
-                    StringUtils.drawShadowedStringCentered(matrixStack, s[i], getPosition().getX(), getPosition().getY() + (i * StringUtils.getStringHeight() + 1));
+                    StringUtils.drawShadowedStringCentered(matrixStack, s[i], centerX(), centerY() + (i * StringUtils.getStringHeight() + 1));
                 }
             } else {
-                StringUtils.drawCenteredText(matrixStack, this.label, getPosition().getX(), getPosition().getY() + 1, new Colour(16777215));
+                StringUtils.drawCenteredText(matrixStack, this.label, centerX(), centerY() + 1, new Colour(16777215));
             }
         }
     }
 
     public MusePoint2D getRadius () {
         return radius.copy();
-    }
-
-    @Override
-    public boolean hitBox(double x, double y) {
-        return containsPoint(x, y);
     }
 
     @Override

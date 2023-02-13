@@ -27,21 +27,15 @@
 package lehjr.powersuits.client.gui.modding.module.tweak;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.systems.RenderSystem;
-import lehjr.numina.client.gui.clickable.ClickableTinkerIntSlider;
 import lehjr.numina.client.gui.clickable.ClickableTinkerSlider;
 import lehjr.numina.client.gui.frame.ScrollableFrame;
 import lehjr.numina.client.gui.gemoetry.MusePoint2D;
 import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
 import lehjr.numina.common.capabilities.module.powermodule.PowerModuleCapability;
-import lehjr.numina.common.constants.NuminaConstants;
 import lehjr.numina.common.math.Colour;
 import lehjr.numina.common.network.NuminaPackets;
 import lehjr.numina.common.network.packets.TweakRequestDoublePacket;
-import lehjr.numina.common.string.StringUtils;
 import lehjr.powersuits.client.gui.common.ModularItemSelectionFrame;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.common.util.LazyOptional;
 
 import java.util.HashMap;
@@ -101,36 +95,36 @@ public class ModuleTweakFrame extends ScrollableFrame {
 
     @Override
     public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
-        super.render(matrixStack, mouseX, mouseY, partialTicks);
-
-        super.preRender(matrixStack, mouseX, mouseY, partialTicks);
-        RenderSystem.pushMatrix();
-        RenderSystem.translatef(0, -currentScrollPixels, 0);
-        // FIXME: translation
-        StringUtils.drawShadowedStringCentered(matrixStack, new TranslationTextComponent("gui.powersuits.tinker"), centerx(), top() + 7);
-
-        for (ClickableTinkerSlider slider : sliders) {
-            slider.render(matrixStack, mouseX, mouseY, partialTicks);
-        }
-        int nexty = (int) (sliders.size() * 24 + getRect().top() + 18);
-
-        for (Map.Entry<String, Double> property : propertyStrings.entrySet()) {
-            String name = property.getKey();
-            String formattedValue = StringUtils.formatNumberFromUnits(property.getValue(), getUnit(name));
-            double valueWidth = StringUtils.getStringWidth(formattedValue);
-            double allowedNameWidth = getRect().width() - valueWidth - margin * 2;
-            List<String> namesList = StringUtils.wrapStringToVisualLength(
-                    new TranslationTextComponent(NuminaConstants.MODULE_TRADEOFF_PREFIX + name).getString(), allowedNameWidth);
-
-            for (int i = 0; i < namesList.size(); i++) {
-                StringUtils.drawLeftAlignedShadowedString(matrixStack, namesList.get(i), getRect().left() + margin, nexty + 9 * i);
-            }
-            StringUtils.drawRightAlignedShadowedString(matrixStack, formattedValue, getRect().right() - margin, nexty + 9 * (namesList.size() - 1) / 2);
-            nexty += 9 * namesList.size() + 1;
-        }
-
-        RenderSystem.popMatrix();
-        super.postRender(mouseX, mouseY, partialTicks);
+//        super.render(matrixStack, mouseX, mouseY, partialTicks);
+//
+//        super.preRender(matrixStack, mouseX, mouseY, partialTicks);
+//        RenderSystem.pushMatrix();
+//        RenderSystem.translatef(0, -currentScrollPixels, 0);
+//        // FIXME: translation
+//        StringUtils.drawShadowedStringCentered(matrixStack, new TranslationTextComponent("gui.powersuits.tinker"), centerX(), top() + 7);
+//
+//        for (ClickableTinkerSlider slider : sliders) {
+//            slider.render(matrixStack, mouseX, mouseY, partialTicks);
+//        }
+//        int nexty = (int) (sliders.size() * 24 + getRect().top() + 18);
+//
+//        for (Map.Entry<String, Double> property : propertyStrings.entrySet()) {
+//            String name = property.getKey();
+//            String formattedValue = StringUtils.formatNumberFromUnits(property.getValue(), getUnit(name));
+//            double valueWidth = StringUtils.getStringWidth(formattedValue);
+//            double allowedNameWidth = getRect().width() - valueWidth - margin * 2;
+//            List<String> namesList = StringUtils.wrapStringToVisualLength(
+//                    new TranslationTextComponent(NuminaConstants.MODULE_TRADEOFF_PREFIX + name).getString(), allowedNameWidth);
+//
+//            for (int i = 0; i < namesList.size(); i++) {
+//                StringUtils.drawLeftAlignedShadowedString(matrixStack, namesList.get(i), getRect().left() + margin, nexty + 9 * i);
+//            }
+//            StringUtils.drawRightAlignedShadowedString(matrixStack, formattedValue, getRect().right() - margin, nexty + 9 * (namesList.size() - 1) / 2);
+//            nexty += 9 * namesList.size() + 1;
+//        }
+//
+//        RenderSystem.popMatrix();
+//        super.postRender(mouseX, mouseY, partialTicks);
     }
 
     /**
@@ -145,51 +139,51 @@ public class ModuleTweakFrame extends ScrollableFrame {
         sliders.clear();
         this.totalSize = cap.map(pm -> {
             int totalSize = 0;
-            CompoundNBT moduleTag = pm.getModuleTag();
-            Map<String, List<IPowerModule.IPropertyModifier>> propertyModifiers = pm.getPropertyModifiers();
-            for (Map.Entry<String, List<IPowerModule.IPropertyModifier>> property : propertyModifiers.entrySet()) {
-                double currValue = 0;
-                for (IPowerModule.IPropertyModifier modifier : property.getValue()) {
-                    currValue = modifier.applyModifier(moduleTag, currValue);
-                    if (modifier instanceof IPowerModule.PropertyModifierLinearAdditive) {
-                        String modifierName = ((IPowerModule.PropertyModifierLinearAdditive) modifier).getTradeoffName();
-                        // overwriting PropertyModifierIntLinearAdditive messes up rounding to int
-                        if (!(tweaks.get(modifierName) instanceof IPowerModule.PropertyModifierIntLinearAdditive)) {
-                            tweaks.put(modifierName, (IPowerModule.PropertyModifierLinearAdditive) modifier);
-                        }
-                        totalSize += 9;
-                    }
-                }
-                propertyStrings.put(property.getKey(), currValue);
-                totalSize += 9;
-            }
-
-            int y = 0;
-            for (String tweak : tweaks.keySet()) {
-                y += 23;
-                MusePoint2D center = new MusePoint2D(getRect().centerx(), getRect().top() + y);
-                IPowerModule.PropertyModifierLinearAdditive tweakObj = tweaks.get(tweak);
-                if (tweakObj instanceof IPowerModule.PropertyModifierIntLinearAdditive) {
-                    ClickableTinkerIntSlider slider = new ClickableTinkerIntSlider(
-                            center,
-                            getRect().finalRight() - getRect().finalLeft() - 16,
-                            moduleTag,
-                            tweak,
-                            new TranslationTextComponent(NuminaConstants.MODULE_TRADEOFF_PREFIX + tweak),
-                            (IPowerModule.PropertyModifierIntLinearAdditive) tweaks.get(tweak));
-                    sliders.add(slider);
-                    totalSize += slider.finalHeight();
-                } else {
-                    ClickableTinkerSlider slider = new ClickableTinkerSlider(
-                            center,
-                            getRect().finalRight() - getRect().finalLeft() - 16,
-                            moduleTag,
-                            tweak,
-                            new TranslationTextComponent(NuminaConstants.MODULE_TRADEOFF_PREFIX + tweak));
-                    sliders.add(slider);
-                    totalSize += slider.finalHeight();
-                }
-            }
+//            CompoundNBT moduleTag = pm.getModuleTag();
+//            Map<String, List<IPowerModule.IPropertyModifier>> propertyModifiers = pm.getPropertyModifiers();
+//            for (Map.Entry<String, List<IPowerModule.IPropertyModifier>> property : propertyModifiers.entrySet()) {
+//                double currValue = 0;
+//                for (IPowerModule.IPropertyModifier modifier : property.getValue()) {
+//                    currValue = modifier.applyModifier(moduleTag, currValue);
+//                    if (modifier instanceof IPowerModule.PropertyModifierLinearAdditive) {
+//                        String modifierName = ((IPowerModule.PropertyModifierLinearAdditive) modifier).getTradeoffName();
+//                        // overwriting PropertyModifierIntLinearAdditive messes up rounding to int
+//                        if (!(tweaks.get(modifierName) instanceof IPowerModule.PropertyModifierIntLinearAdditive)) {
+//                            tweaks.put(modifierName, (IPowerModule.PropertyModifierLinearAdditive) modifier);
+//                        }
+//                        totalSize += 9;
+//                    }
+//                }
+//                propertyStrings.put(property.getKey(), currValue);
+//                totalSize += 9;
+//            }
+//
+//            int y = 0;
+//            for (String tweak : tweaks.keySet()) {
+//                y += 23;
+//                MusePoint2D center = new MusePoint2D(getRect().centerx(), getRect().top() + y);
+//                IPowerModule.PropertyModifierLinearAdditive tweakObj = tweaks.get(tweak);
+//                if (tweakObj instanceof IPowerModule.PropertyModifierIntLinearAdditive) {
+//                    ClickableTinkerIntSlider slider = new ClickableTinkerIntSlider(
+//                            center,
+//                            getRect().finalRight() - getRect().finalLeft() - 16,
+//                            moduleTag,
+//                            tweak,
+//                            new TranslationTextComponent(NuminaConstants.MODULE_TRADEOFF_PREFIX + tweak),
+//                            (IPowerModule.PropertyModifierIntLinearAdditive) tweaks.get(tweak));
+//                    sliders.add(slider);
+//                    totalSize += slider.height();
+//                } else {
+//                    ClickableTinkerSlider slider = new ClickableTinkerSlider(
+//                            center,
+//                            getRect().finalRight() - getRect().finalLeft() - 16,
+//                            moduleTag,
+//                            tweak,
+//                            new TranslationTextComponent(NuminaConstants.MODULE_TRADEOFF_PREFIX + tweak));
+//                    sliders.add(slider);
+//                    totalSize += slider.height();
+//                }
+//            }
             return totalSize + 20;
         }).orElse(0);
     }

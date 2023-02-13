@@ -10,6 +10,7 @@ import lehjr.numina.client.sound.Musique;
 import lehjr.numina.common.math.Colour;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 
 import java.util.ArrayList;
@@ -40,7 +41,7 @@ public class RecipeOptionsFrame extends ScrollableFrame {
         setBackgroundColour(backgroundColour);
 
         MusePoint2D starterPoint = MusePoint2D.ZERO;
-        this.title = new ClickableLabel("Recipe Options", starterPoint);
+        this.title = new ClickableLabel(new StringTextComponent("Recipe Options"), starterPoint);
 
         System.out.println("startpoint: " + starterPoint);
 
@@ -107,27 +108,27 @@ public class RecipeOptionsFrame extends ScrollableFrame {
         return mirrored.isChecked();
     }
 
-    @Override
-    public ScrollableFrame init(double left, double top, double right, double bottom) {
-        super.init(left, top, right, bottom);
-
-        float nextLineRC = 0;
-        MusePoint2D genericRecipeCol = new MusePoint2D(left + 8, top + 8);
-        title.setPosition(genericRecipeCol);
-        shapeless.setPosition(genericRecipeCol.plus(0, nextLineRC+=12));
-        mirrored.setPosition(genericRecipeCol.plus(0, nextLineRC+=12));
-        conditions.setPosition(genericRecipeCol.plus(0, nextLineRC+=12));
-
-        conditionsFrame.init(
-                left + 3,
-                conditions.getPosition().getY() + spacer * 2,
-                right - 3,
-                bottom - spacer
-        );
-        save.setPosition(new MusePoint2D(right, top).copy().plus(-(spacer + save.finalWidth() * 0.5F), spacer + save.finalHeight() * 0.5F));
-        reset.setPosition(save.getPosition().plus(0, 24F));
-        return this;
-    }
+//    @Override
+//    public ScrollableFrame init(double left, double top, double right, double bottom) {
+//        super.init(left, top, right, bottom);
+//
+//        float nextLineRC = 0;
+//        MusePoint2D genericRecipeCol = new MusePoint2D(left + 8, top + 8);
+//        title.setPosition(genericRecipeCol);
+//        shapeless.setPosition(genericRecipeCol.plus(0, nextLineRC+=12));
+//        mirrored.setPosition(genericRecipeCol.plus(0, nextLineRC+=12));
+//        conditions.setPosition(genericRecipeCol.plus(0, nextLineRC+=12));
+//
+//        conditionsFrame.init(
+//                left + 3,
+//                conditions.centerY() + spacer * 2,
+//                right - 3,
+//                bottom - spacer
+//        );
+//        save.setPosition(new MusePoint2D(right, top).copy().plus(-(spacer + save.width() * 0.5F), spacer + save.height() * 0.5F));
+//        reset.setPosition(save.center().plus(0, 24F));
+//        return this;
+//    }
 
     @Override
     public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {

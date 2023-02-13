@@ -29,7 +29,7 @@ package lehjr.powersuits.client.event;
 import com.google.common.util.concurrent.AtomicDouble;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
-import lehjr.numina.client.gui.gemoetry.DrawableRelativeRect;
+import lehjr.numina.client.gui.gemoetry.DrawableRect;
 import lehjr.numina.client.render.NuminaRenderer;
 import lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
@@ -74,7 +74,7 @@ import java.util.stream.Collectors;
 public enum RenderEventHandler {
     INSTANCE;
     private static boolean ownFly = false;
-    private final DrawableRelativeRect frame = new DrawableRelativeRect(MPSSettings.getHudKeybindX(), MPSSettings.getHudKeybindY(), MPSSettings.getHudKeybindX() + (float) 16, MPSSettings.getHudKeybindY() +  16, true, Colour.DARK_GREEN.withAlpha(0.2F), Colour.GREEN.withAlpha(0.2F));
+    private final DrawableRect frame = new DrawableRect(MPSSettings.getHudKeybindX(), MPSSettings.getHudKeybindY(), MPSSettings.getHudKeybindX() + (float) 16, MPSSettings.getHudKeybindY() +  16, true, Colour.DARK_GREEN.withAlpha(0.2F), Colour.GREEN.withAlpha(0.2F));
 
 
     /**
@@ -240,7 +240,7 @@ public enum RenderEventHandler {
         }
     }
 
-    class KBDisplay extends DrawableRelativeRect {
+    class KBDisplay extends DrawableRect {
         List<MPSKeyBinding> boundKeybinds = new ArrayList<>();
         final InputMappings.Input finalId;
         public KBDisplay(MPSKeyBinding kb, double left, double top, double right) {

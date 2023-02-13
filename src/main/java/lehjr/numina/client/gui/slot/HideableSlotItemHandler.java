@@ -74,8 +74,8 @@ public class HideableSlotItemHandler extends SlotItemHandler implements IHideabl
 
     @Override
     public void setPosition(MusePoint2D position) {
-        this.x = (int) position.getX();
-        this.y = (int) position.getY();
+        this.x = (int) position.x();
+        this.y = (int) position.y();
     }
 
     @Override

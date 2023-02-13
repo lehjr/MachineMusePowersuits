@@ -11,11 +11,11 @@ public class ClickableTinkerIntSlider extends ClickableTinkerSlider {
     IPowerModule.PropertyModifierIntLinearAdditive modifier;
 
     public ClickableTinkerIntSlider(MusePoint2D topmiddle,
-                                 double width,
-                                 CompoundNBT moduleTag,
-                                 String id,
-                                 TranslationTextComponent label,
-                                 @Nullable IPowerModule.PropertyModifierIntLinearAdditive modifier) {
+                                    double width,
+                                    CompoundNBT moduleTag,
+                                    String id,
+                                    TranslationTextComponent label,
+                                    @Nullable IPowerModule.PropertyModifierIntLinearAdditive modifier) {
         super(topmiddle,
         width,
         moduleTag,

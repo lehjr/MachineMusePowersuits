@@ -55,7 +55,7 @@ public class ScrollableInventoryFrame2 <C extends Container> extends MultiRectHo
             if (selected != tab) {
                 selected = tab;
                 EquipmentSlotType type = tab.getSlotType();
-                getMinecraft().player.getItemBySlot(type).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+                Minecraft.getInstance().player.getItemBySlot(type).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
                         .filter(IModularItem.class::isInstance)
                         .map(IModularItem.class::cast)
                         .ifPresent(iItemHandler -> {
@@ -77,11 +77,11 @@ public class ScrollableInventoryFrame2 <C extends Container> extends MultiRectHo
     }
 
     public void renderLabels(MatrixStack matrixStack, int mouseX, int mouseY) {
-        MusePoint2D position = new MusePoint2D(topSpacer.finalLeft() + 1, topSpacer.centery() - 3);
+        MusePoint2D position = new MusePoint2D(topSpacer.left() + 1, topSpacer.centerY() - 3);
         if (labelUsesULShift) {
             position = position.minus(ulgetter.getULShift());
         }
-        Minecraft.getInstance().font.draw(matrixStack, title, (float)position.getX(), (float)position.getY(), 4210752);
+        Minecraft.getInstance().font.draw(matrixStack, title, (float)position.x(), (float)position.y(), 4210752);
     }
 
     @Override

@@ -8,12 +8,12 @@ import lehjr.numina.client.gui.clickable.ClickableLabel;
 import lehjr.numina.client.gui.frame.ScrollableFrame;
 import lehjr.numina.client.gui.gemoetry.DrawableArrow;
 import lehjr.numina.client.gui.gemoetry.MusePoint2D;
-import lehjr.numina.client.gui.gemoetry.RelativeRect;
 import lehjr.numina.common.math.Colour;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.StringTextComponent;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -50,7 +50,7 @@ public class SlotOptionsFrame extends ScrollableFrame {
 
         MusePoint2D starterPoint = this.getUL().copy().plus(4, 4);
 
-        this.title = new ClickableLabel("Slot Options", starterPoint.copy());
+        this.title = new ClickableLabel(new StringTextComponent("Slot Options"), starterPoint.copy());
         title.setMode(ClickableLabel.JustifyMode.LEFT);
 
         nextOreDictArrow = new ClickableArrow(0, 0, 0, 0, true, arrowNormalBackGound, arrowHighlightedBackground, arrowBorderColour);
@@ -84,22 +84,22 @@ public class SlotOptionsFrame extends ScrollableFrame {
         return activeSlotID;
     }
 
-    @Override
-    public RelativeRect init(double left, double top, double right, double bottom) {
-        super.init(left, top, right, bottom);
-        // Slot-specific controls
-        MusePoint2D slotSpecificCol = this.getUL().plus(spacer, spacer);
-        float nextLineSC = 0;
-
-        title.setPosition(slotSpecificCol.plus(0,spacer));
-
-        for(int i=0; i<9; i++) {
-            useOreDictCheckbox[i].setPosition(slotSpecificCol.plus(4, nextLineSC + 18));
-        }
-        prevOreDictArrow.setWH(new MusePoint2D(12, 17)).setLeft(right - 40).setTop(top + 8);
-        nextOreDictArrow.setWH(new MusePoint2D(12, 17)).setLeft(right - 20).setTop(top + 8);
-        return this;
-    }
+//    @Override
+//    public Rect init(double left, double top, double right, double bottom) {
+//        super.init(left, top, right, bottom);
+//        // Slot-specific controls
+//        MusePoint2D slotSpecificCol = this.getUL().plus(spacer, spacer);
+//        float nextLineSC = 0;
+//
+//        title.setPosition(slotSpecificCol.plus(0,spacer));
+//
+//        for(int i=0; i<9; i++) {
+//            useOreDictCheckbox[i].setPosition(slotSpecificCol.plus(4, nextLineSC + 18));
+//        }
+//        prevOreDictArrow.setWH(new MusePoint2D(12, 17)).setLeft(right - 40).setTop(top + 8);
+//        nextOreDictArrow.setWH(new MusePoint2D(12, 17)).setLeft(right - 20).setTop(top + 8);
+//        return this;
+//    }
 
     @Override
     public void update(double mouseX, double mouseY) {
@@ -197,7 +197,7 @@ public class SlotOptionsFrame extends ScrollableFrame {
     }
 
     void setLabel() {
-        this.title.setLabel("Slot " + (activeSlotID >=0 && activeSlotID <=10 ? activeSlotID + " " : "") + "Options");
+        this.title.setLabel(new StringTextComponent("Slot " + (activeSlotID >=0 && activeSlotID <=10 ? activeSlotID + " " : "") + "Options"));
     }
 
     public void reset() {

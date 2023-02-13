@@ -34,62 +34,43 @@ import org.lwjgl.opengl.GL11;
 
 import java.nio.FloatBuffer;
 
-public class DrawableRelativeRect extends RelativeRect implements IDrawableRect {
+public class DrawableRect extends Rect implements IDrawableRect {
     Colour backgroundColour;
     Colour borderColour;
     Colour backgroundColour2 = null;
     float cornerradius = 3;
-    float zLevel = 1;
+    public float zLevel = 1;
     boolean shrinkBorder = true;
 
-    public DrawableRelativeRect(double left, double top, double right, double bottom, boolean growFromMiddle,
-                                Colour backgroundColour,
-                                Colour borderColour) {
+    public DrawableRect(double left, double top, double right, double bottom, boolean growFromMiddle,
+                        Colour backgroundColour,
+                        Colour borderColour) {
         super(left, top, right, bottom, growFromMiddle);
         this.backgroundColour = backgroundColour;
         this.borderColour = borderColour;
     }
 
-    public DrawableRelativeRect(RelativeRect ref, Colour backgroundColour, Colour borderColour) {
-        super(ref.left(), ref.top(), ref.right(), ref.bottom(), ref.growFromMiddle());
+    public DrawableRect(Rect ref, Colour backgroundColour, Colour borderColour) {
+        super(ref.getUL(), ref.getWH());
         this.backgroundColour = backgroundColour;
         this.borderColour = borderColour;
     }
 
-    public DrawableRelativeRect(double left, double top, double right, double bottom,
-                                Colour backgroundColour,
-                                Colour borderColour) {
+    public DrawableRect(double left, double top, double right, double bottom,
+                        Colour backgroundColour,
+                        Colour borderColour) {
         super(left, top, right, bottom, false);
         this.backgroundColour = backgroundColour;
         this.borderColour = borderColour;
     }
 
-    public DrawableRelativeRect(MusePoint2D ul, MusePoint2D br,
-                                Colour backgroundColour,
-                                Colour borderColour) {
+    public DrawableRect(MusePoint2D ul, MusePoint2D br,
+                        Colour backgroundColour,
+                        Colour borderColour) {
         super(ul, br);
         this.backgroundColour = backgroundColour;
         this.borderColour = borderColour;
     }
-
-    public DrawableRelativeRect(Colour backgroundColour, Colour borderColour) {
-        super();
-        this.backgroundColour = backgroundColour;
-        this.borderColour = borderColour;
-    }
-
-    public DrawableRelativeRect(Colour backgroundColour, Colour borderColour, boolean growFromMiddle) {
-        super(growFromMiddle);
-        this.backgroundColour = backgroundColour;
-        this.borderColour = borderColour;
-    }
-
-    @Override
-    public DrawableRelativeRect copyOf() {
-        return new DrawableRelativeRect(super.left(), super.top(), super.right(), super.bottom(),
-                this.growFromMiddle , backgroundColour, borderColour);
-    }
-
     @Override
     public float getZLevel() {
         return this.zLevel;
@@ -110,17 +91,17 @@ public class DrawableRelativeRect extends RelativeRect implements IDrawableRect 
         this.shrinkBorder = shrinkBorder;
     }
 
-    public DrawableRelativeRect setBackgroundColour(Colour backgroundColour) {
+    public DrawableRect setBackgroundColour(Colour backgroundColour) {
         this.backgroundColour = backgroundColour;
         return this;
     }
 
-    public DrawableRelativeRect setSecondBackgroundColour(Colour backgroundColour2In) {
+    public DrawableRect setSecondBackgroundColour(Colour backgroundColour2In) {
         backgroundColour2 = backgroundColour2In;
         return this;
     }
 
-    public DrawableRelativeRect setBorderColour(Colour borderColour) {
+    public DrawableRect setBorderColour(Colour borderColour) {
         this.borderColour = borderColour;
         return this;
     }
@@ -203,7 +184,7 @@ public class DrawableRelativeRect extends RelativeRect implements IDrawableRect 
         return cornerradius;
     }
 
-    public DrawableRelativeRect setCornerradius(float cornerradiusIn) {
+    public DrawableRect setCornerradius(float cornerradiusIn) {
         this.cornerradius = cornerradiusIn;
         return this;
     }
@@ -275,11 +256,6 @@ public class DrawableRelativeRect extends RelativeRect implements IDrawableRect 
             vertices.rewind();
         }
         drawBorder(matrixStack, vertices);
-    }
-
-    @Override
-    public RelativeRect getRect() {
-        return this;
     }
 
     @Override

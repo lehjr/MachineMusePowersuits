@@ -27,13 +27,12 @@
 package lehjr.powersuits.client.gui.modding.module.tweak;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import lehjr.numina.client.gui.ContainerlessGui;
+import lehjr.numina.client.gui.ContainerlessGui2;
 import lehjr.numina.client.gui.frame.GUISpacer;
 import lehjr.numina.client.gui.frame.LabelBox;
 import lehjr.numina.client.gui.frame.MultiRectHolderFrame;
 import lehjr.numina.client.gui.gemoetry.MusePoint2D;
 import lehjr.numina.common.math.Colour;
-import lehjr.numina.common.string.StringUtils;
 import lehjr.powersuits.client.gui.common.ModularItemSelectionFrame;
 import lehjr.powersuits.client.gui.common.TabSelectFrame;
 import net.minecraft.client.Minecraft;
@@ -46,7 +45,7 @@ import net.minecraft.util.text.TranslationTextComponent;
  *
  *
  */
-public class ModuleTweakGui extends ContainerlessGui {
+public class ModuleTweakGui extends ContainerlessGui2 {
     /** commonly used spacer value */
     final int spacer = 7;
     /** colours for frames used here */
@@ -66,11 +65,12 @@ public class ModuleTweakGui extends ContainerlessGui {
         super(titleIn, 340, 217, growFromMiddle);
         this.minecraft = Minecraft.getInstance();
         PlayerEntity player = getMinecraft().player;
-        tabSelectFrame = new TabSelectFrame(player, 1);
+        // FIXME
+        tabSelectFrame = new TabSelectFrame(0, 0, 0, player, 1);
         addFrame(tabSelectFrame);
 
         /** Selector for the modular item that holds the modules */
-        itemSelectFrame = new ModularItemSelectionFrame();
+        itemSelectFrame = new ModularItemSelectionFrame(new MusePoint2D(leftPos + 35, topPos));
 
         /** common width for left side frames */
         double leftFrameWidth = 157;
@@ -144,9 +144,9 @@ public class ModuleTweakGui extends ContainerlessGui {
 
         addFrame(mainHolder);
 
-        backgroundRect.setOnInit(rect -> {
-            mainHolder.setPosition(rect.getPosition());
-        });
+//        backgroundRect.setOnInit(rect -> {
+//            mainHolder.setPosition(rect.getPosition());
+//        });
 
 
 
@@ -156,32 +156,33 @@ public class ModuleTweakGui extends ContainerlessGui {
     @Override
     public void init() {
         super.init();
-        itemSelectFrame.setMeLeftOf(mainHolder); // does nothing
-        itemSelectFrame.setTop(mainHolder.finalTop()); // displaces buttons
-        itemSelectFrame.setRight(mainHolder.finalLeft());  // displaces buttons
-        itemSelectFrame.initGrowth();
-        tabSelectFrame.initFromBackgroundRect(this.backgroundRect);
+        itemSelectFrame.setLeftOf(mainHolder); // does nothing
+        itemSelectFrame.setTop(mainHolder.top()); // displaces buttons
+        itemSelectFrame.setRight(mainHolder.left());  // displaces buttons
+//        itemSelectFrame.initGrowth();
+//        tabSelectFrame.initFromBackgroundRect(this.backgroundRect);
         moduleSelectFrame.loadModules(true);
     }
 
     @Override
     public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
-        if (backgroundRect.doneGrowing()) {
-            if (!itemSelectFrame.playerHasModularItems()) {
-                renderBackgroundRect(matrixStack, mouseX, mouseY, partialTicks);
-                float centerx = absX(0);
-                float centery = absY(0);
-                StringUtils.drawCenteredText(matrixStack, new TranslationTextComponent("gui.powersuits.noModulesFound.line1"), centerx, centery - 5, Colour.WHITE);
-                StringUtils.drawCenteredText(matrixStack, new TranslationTextComponent("gui.powersuits.noModulesFound.line2"), centerx, centery + 5, Colour.WHITE);
-                tabSelectFrame.render(matrixStack, mouseX, mouseY, partialTicks);
-            } else {
-                super.render(matrixStack, mouseX, mouseY, partialTicks);
-                super.renderTooltip(matrixStack, mouseX, mouseY);
-            }
-        } else {
+//        if (backgroundRect.doneGrowing()) {
+////            if (!itemSelectFrame.playerHasModularItems()) {
+////                renderBackgroundRect(matrixStack, mouseX, mouseY, partialTicks);
+////                float centerx = absX(0);
+////                float centery = absY(0);
+////                StringUtils.drawCenteredText(matrixStack, new TranslationTextComponent("gui.powersuits.noModulesFound.line1"), centerx, centery - 5, Colour.WHITE);
+////                StringUtils.drawCenteredText(matrixStack, new TranslationTextComponent("gui.powersuits.noModulesFound.line2"), centerx, centery + 5, Colour.WHITE);
+////                tabSelectFrame.render(matrixStack, mouseX, mouseY, partialTicks);
+////            } else
+////            {
+////                super.render(matrixStack, mouseX, mouseY, partialTicks);
+////                super.renderTooltip(matrixStack, mouseX, mouseY);
+////            }
+//        } else {
             this.renderBackground(matrixStack);
             renderBackgroundRect(matrixStack, mouseX, mouseY, partialTicks);
-        }
+//        }
     }
 
     @Override

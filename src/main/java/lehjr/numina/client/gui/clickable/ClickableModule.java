@@ -66,8 +66,7 @@ public class ClickableModule extends Clickable {
     ResourceLocation regName;
 
     public ClickableModule(@Nonnull ItemStack module, MusePoint2D position, int inventorySlot, ModuleCategory category) {
-        super();
-        setWH(new MusePoint2D(16, 16));
+        super(MusePoint2D.ZERO, new MusePoint2D(16, 16));
         super.setPosition(position);
         this.module = module;
         this.inventorySlot = inventorySlot;
@@ -88,7 +87,7 @@ public class ClickableModule extends Clickable {
 
     @Override
     public List<ITextComponent> getToolTip(int x, int y) {
-        if (hitBox(x, y)) {
+        if (containsPoint(x, y)) {
             return module.getTooltipLines(Minecraft.getInstance().player,
                     AdditionalInfo.doAdditionalInfo() ?
                             ITooltipFlag.TooltipFlags.ADVANCED :
@@ -131,7 +130,7 @@ public class ClickableModule extends Clickable {
                 matrixStack.pushPose();
                 matrixStack.translate(0, 0, 250);
                 String string = StringUtils.wrapMultipleFormatTags("X", StringUtils.FormatCodes.Bold, StringUtils.FormatCodes.DarkRed);
-                StringUtils.drawShadowedString(matrixStack, string, getPosition().getX() + 3, getPosition().getY() + 1);
+                StringUtils.drawShadowedString(matrixStack, string, centerX() + 3, centerY() + 1);
                 matrixStack.popPose();
             } else if (installed) {
                 matrixStack.pushPose();
@@ -143,7 +142,7 @@ public class ClickableModule extends Clickable {
     }
 
     @Override
-    public boolean hitBox(double x, double y) {
+    public boolean containsPoint(double x, double y) {
         return containsPoint(x, y);
     }
 
