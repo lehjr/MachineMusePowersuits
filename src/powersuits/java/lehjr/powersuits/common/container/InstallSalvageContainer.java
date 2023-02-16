@@ -23,6 +23,17 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
+
+// FIXME rewrite so that player inventory is the first loaded slots, this way the range for them will never change.. \
+//  then everything after that is the modular item inventory
+
+
+
+
+
+
+
+
 public class InstallSalvageContainer  extends Container {
     EquipmentSlotType slotType;
     int mainInventoryStart = 0;
@@ -39,9 +50,14 @@ public class InstallSalvageContainer  extends Container {
                 .filter(IModularItem.class::isInstance)
                 .map(IModularItem.class::cast)
                 .ifPresent(iItemHandler -> {
+                    int innerrow = 0;
+                    int innercol = 0;
                     for (int modularItemInvIndex = 0; modularItemInvIndex < iItemHandler.getSlots(); modularItemInvIndex ++) {
+                        innercol = modularItemInvIndex % 16;
+                        innerrow = (modularItemInvIndex - innercol)/16;
+
                         if (MathUtils.isIntInRange(iItemHandler.getRangeForCategory(ModuleCategory.ARMOR), modularItemInvIndex)) {
-                            addSlot(new IconSlot(iItemHandler, parentSlot, modularItemInvIndex, -1000, -1000) {
+                            addSlot(new IconSlot(iItemHandler, parentSlot, modularItemInvIndex, 178 + innercol * 18, 14 + innerrow * 18) {
 
                                 @OnlyIn(Dist.CLIENT)
                                 @Override
@@ -56,7 +72,7 @@ public class InstallSalvageContainer  extends Container {
                                 }
                             });
                         } else if (MathUtils.isIntInRange(iItemHandler.getRangeForCategory(ModuleCategory.ENERGY_STORAGE), modularItemInvIndex)) {
-                            addSlot(new IconSlot(iItemHandler, parentSlot, modularItemInvIndex, -1000, -1000) {
+                            addSlot(new IconSlot(iItemHandler, parentSlot, modularItemInvIndex, 178 + innercol * 18, 14 + innerrow * 18) {
                                 @OnlyIn(Dist.CLIENT)
                                 @Override
                                 public void drawIconAt(MatrixStack matrixStack, double posX, double posY, Colour colour) {
@@ -65,7 +81,7 @@ public class InstallSalvageContainer  extends Container {
                             });
 
                         } else if (MathUtils.isIntInRange(iItemHandler.getRangeForCategory(ModuleCategory.ENERGY_GENERATION), modularItemInvIndex)) {
-                            addSlot(new IconSlot(iItemHandler, parentSlot, modularItemInvIndex, -1000, -1000) {
+                            addSlot(new IconSlot(iItemHandler, parentSlot, modularItemInvIndex, 178 + innercol * 18, -1000) {
                                 @OnlyIn(Dist.CLIENT)
                                 @Override
                                 public void drawIconAt(MatrixStack matrixStack, double posX, double posY, Colour colour) {
@@ -73,7 +89,7 @@ public class InstallSalvageContainer  extends Container {
                                 }
                             });
                         } else {
-                            addSlot(new HideableSlotItemHandler(iItemHandler, parentSlot, modularItemInvIndex, -1000, -1000));
+                            addSlot(new HideableSlotItemHandler(iItemHandler, parentSlot, modularItemInvIndex, 178 + innercol * 18, 14 + innerrow * 18));
                         }
                     }
                 });
@@ -83,7 +99,7 @@ public class InstallSalvageContainer  extends Container {
         /** Main inventory */
         for(row = 0; row < 3; ++row) {
             for(col = 0; col < 9; ++col) {
-                this.addSlot(new Slot(playerInventory, col + row * 9 + 9, 8 + col * 18, 84 + row * 18));
+                this.addSlot(new Slot(playerInventory, col + row * 9 + 9, 178 + col * 18, 133 + row * 18));
             }
         }
 
@@ -96,23 +112,22 @@ public class InstallSalvageContainer  extends Container {
                             .filter(IModularItem.class::isInstance)
                             .map(IModularItem.class::cast)
                             .isPresent()) {
-                this.addSlot(new Slot(playerInventory, col, 8 + col * 18, 142) {
+                this.addSlot(new Slot(playerInventory, col, 178 + col * 18, 191) {
                     @Override
                     public boolean mayPickup(PlayerEntity player) {
                         return false;
                     }
                 });
             } else {
-                this.addSlot(new Slot(playerInventory, col, 8 + col * 18, 142)
-                );
+                this.addSlot(new Slot(playerInventory, col, 178 + col * 18, 191));
             }
         }
 
-        for (Slot slot : this.slots) {
-            if(slot instanceof IHideableSlot) {
-                ((IHideableSlot) slot).disable();
-            }
-        }
+//        for (Slot slot : this.slots) {
+//            if(slot instanceof IHideableSlot) {
+//                ((IHideableSlot) slot).disable();
+//            }
+//        }
     }
 
     public EquipmentSlotType getEquipmentSlotType() {

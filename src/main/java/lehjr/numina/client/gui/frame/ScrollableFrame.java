@@ -35,6 +35,7 @@ import net.minecraft.util.text.ITextComponent;
 
 import java.util.List;
 
+@Deprecated
 public class ScrollableFrame extends DrawableTile implements IScrollable {
     protected int buttonSize = 5;
     protected int totalSize;

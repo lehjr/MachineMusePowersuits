@@ -27,16 +27,19 @@
 package lehjr.powersuits.client.gui.modding.module.tweak;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.systems.RenderSystem;
 import lehjr.numina.client.gui.ContainerlessGui2;
-import lehjr.numina.client.gui.frame.GUISpacer;
 import lehjr.numina.client.gui.frame.LabelBox;
 import lehjr.numina.client.gui.frame.MultiRectHolderFrame;
 import lehjr.numina.client.gui.gemoetry.MusePoint2D;
+import lehjr.numina.client.gui.gemoetry.Rect;
 import lehjr.numina.common.math.Colour;
 import lehjr.powersuits.client.gui.common.ModularItemSelectionFrame;
 import lehjr.powersuits.client.gui.common.TabSelectFrame;
+import lehjr.powersuits.common.constants.MPSConstants;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 
@@ -46,6 +49,9 @@ import net.minecraft.util.text.TranslationTextComponent;
  *
  */
 public class ModuleTweakGui extends ContainerlessGui2 {
+    public static final ResourceLocation BACKGROUND = new ResourceLocation(MPSConstants.MOD_ID, "textures/gui/background/install_salvage.png");
+
+
     /** commonly used spacer value */
     final int spacer = 7;
     /** colours for frames used here */
@@ -83,14 +89,11 @@ public class ModuleTweakGui extends ContainerlessGui2 {
 
         /** frame to display and allow selecting of installed modules */
         moduleSelectFrame = new ModuleSelectionFrame(itemSelectFrame,
-                new MusePoint2D(0,0),
-                new MusePoint2D(leftFrameWidth, 195),
-                backgroundColour,
-                topBorderColour,
-                bottomBorderColour);
+                new Rect(new MusePoint2D(0,0),
+                new MusePoint2D(leftFrameWidth, 195)));
         leftFrame.addRect(moduleSelectFrame);
         /** bottom left spacer */
-        leftFrame.addRect(new GUISpacer(leftFrameWidth, spacer));
+        leftFrame.addRect(new Rect(MusePoint2D.ZERO, new MusePoint2D(leftFrameWidth, spacer)));
         leftFrame.doneAdding();
 
         /** setup call to make the modules reload when new button pressed */
@@ -103,7 +106,7 @@ public class ModuleTweakGui extends ContainerlessGui2 {
         double rightFrameWidth = 162;
 
         MultiRectHolderFrame rightFrame = new MultiRectHolderFrame(false, true, 0,0);
-        rightFrame.addRect(new GUISpacer(rightFrameWidth, spacer));
+        rightFrame.addRect(new Rect(MusePoint2D.ZERO, new MusePoint2D(rightFrameWidth, spacer)));
 
         summaryFrame = new DetailedSummaryFrame(
                 new MusePoint2D(0, 0),
@@ -113,7 +116,7 @@ public class ModuleTweakGui extends ContainerlessGui2 {
                 bottomBorderColour,
                 itemSelectFrame);
         rightFrame.addRect(summaryFrame);
-        rightFrame.addRect(new GUISpacer(rightFrameWidth, 7));
+        rightFrame.addRect(new Rect(MusePoint2D.ZERO, new MusePoint2D(rightFrameWidth, 7)));
 
         tweakFrame = new ModuleTweakFrame(
                 new MusePoint2D(0,  0),
@@ -126,20 +129,20 @@ public class ModuleTweakGui extends ContainerlessGui2 {
         rightFrame.addRect(tweakFrame);
 
         /** bottom right spacer */
-        rightFrame.addRect(new GUISpacer(rightFrameWidth, 7));
+        rightFrame.addRect(new Rect(MusePoint2D.ZERO, new MusePoint2D(rightFrameWidth, 7)));
         rightFrame.doneAdding();
 
         mainHolder = new MultiRectHolderFrame(true, true, 0, 0);
         /** left spacer */
-        mainHolder.addRect(new GUISpacer(spacer, 217));
+        mainHolder.addRect(new Rect(MusePoint2D.ZERO, new MusePoint2D(spacer, 217)));
 
         mainHolder.addRect(leftFrame);
         /** middle spacer */
-        mainHolder.addRect(new GUISpacer(spacer, 217));
+        mainHolder.addRect(new Rect(MusePoint2D.ZERO, new MusePoint2D(spacer, 217)));
 
         mainHolder.addRect(rightFrame);
         /** right spacer */
-        mainHolder.addRect(new GUISpacer(spacer, 217));
+        mainHolder.addRect(new Rect(MusePoint2D.ZERO, new MusePoint2D(spacer, 217)));
         mainHolder.doneAdding();
 
         addFrame(mainHolder);
@@ -184,6 +187,18 @@ public class ModuleTweakGui extends ContainerlessGui2 {
             renderBackgroundRect(matrixStack, mouseX, mouseY, partialTicks);
 //        }
     }
+
+
+    @Override
+    public void renderBackground(MatrixStack matrixStack) {
+        super.renderBackground(matrixStack);
+        RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+        this.minecraft.getTextureManager().bind(this.BACKGROUND);
+        int i = this.leftPos;
+        int j = this.topPos;
+        this.blit(matrixStack, i, j, this.getBlitOffset(), 0, 0, imageWidth, imageHeight, 512, 512);
+    }
+
 
     @Override
     public void renderLabels(MatrixStack matrixStack, int mouseX, int mouseY) {

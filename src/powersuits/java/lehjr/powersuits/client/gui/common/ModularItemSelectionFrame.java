@@ -3,7 +3,7 @@ package lehjr.powersuits.client.gui.common;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import lehjr.numina.client.gui.clickable.ClickableButton;
 import lehjr.numina.client.gui.clickable.IClickable;
-import lehjr.numina.client.gui.frame.fixed.AbstractGuiFrame;
+import lehjr.numina.client.gui.frame.AbstractGuiFrame;
 import lehjr.numina.client.gui.gemoetry.DrawableTile;
 import lehjr.numina.client.gui.gemoetry.IRect;
 import lehjr.numina.client.gui.gemoetry.MusePoint2D;

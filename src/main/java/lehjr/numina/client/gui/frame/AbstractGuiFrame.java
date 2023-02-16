@@ -1,4 +1,4 @@
-package lehjr.numina.client.gui.frame.fixed;
+package lehjr.numina.client.gui.frame;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import lehjr.numina.client.gui.frame.IGuiFrame;

@@ -35,13 +35,14 @@ import lehjr.numina.common.string.StringUtils;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.IFormattableTextComponent;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 
 public class ChargingBaseScreen extends ContainerScreen<ChargingBaseMenu> {
     public static final ResourceLocation BACKGROUND = new ResourceLocation(NuminaConstants.MOD_ID, "textures/gui/container/chargingbase.png");
-
+    static final IFormattableTextComponent ENERGYSTRING = new TranslationTextComponent("numina.energy").append(": ");
     EnergyMeter energyMeter;
 
     public ChargingBaseScreen(ChargingBaseMenu pMenu, PlayerInventory pPlayerInventory, ITextComponent pTitle) {
@@ -54,9 +55,7 @@ public class ChargingBaseScreen extends ContainerScreen<ChargingBaseMenu> {
         renderBackground(poseStack);
         super.render(poseStack, pMouseX, pMouseY, pPartialTick);
         this.renderTooltip(poseStack, pMouseX, pMouseY);
-        energyMeter.draw(poseStack, 195.5F,
-                95,
-                menu.getEnergyForMeter());
+        energyMeter.draw(poseStack, 71 + leftPos, 58 + topPos, menu.getEnergyForMeter());
     }
 
     @Override
@@ -70,7 +69,11 @@ public class ChargingBaseScreen extends ContainerScreen<ChargingBaseMenu> {
 
     @Override
     public void renderLabels(MatrixStack matrixStack, int mouseX, int mouseY) {
-        this.font.draw(matrixStack,  new TranslationTextComponent("numina.energy").append(": "), 32F, (float) 58, 4210752);
+        super.renderLabels(matrixStack, mouseX, mouseY);
+        this.font.draw(matrixStack, ENERGYSTRING,
+                (float)(imageWidth - 102 - font.width(ENERGYSTRING)),
+                (float)(this.imageHeight - 108.0),
+                4210752);
 
         String energyString = new StringBuilder()
                 .append(StringUtils.formatNumberShort(menu.getEnergy()))
@@ -78,7 +81,8 @@ public class ChargingBaseScreen extends ContainerScreen<ChargingBaseMenu> {
 
         this.font.draw(matrixStack,
                 new StringTextComponent(energyString),
-                (float)((250 - font.width(energyString) / 2) - leftPos), // guiLeft here is important
-                58F, 4210752);
+                (float)(imageWidth -71),
+                (float)(this.imageHeight - 108.0),
+                4210752);
     }
 }

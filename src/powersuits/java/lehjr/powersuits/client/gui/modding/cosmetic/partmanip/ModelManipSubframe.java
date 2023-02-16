@@ -29,7 +29,7 @@ package lehjr.powersuits.client.gui.modding.cosmetic.partmanip;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import lehjr.numina.client.gui.clickable.ClickableIndicatorArrow;
 import lehjr.numina.client.gui.clickable.RadioButton;
-import lehjr.numina.client.gui.frame.fixed.AbstractGuiFrame;
+import lehjr.numina.client.gui.frame.AbstractGuiFrame;
 import lehjr.numina.client.gui.gemoetry.MusePoint2D;
 import lehjr.numina.client.gui.gemoetry.Rect;
 import lehjr.numina.client.render.IconUtils;
@@ -51,7 +51,6 @@ import net.minecraft.entity.MobEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.nbt.CompoundNBT;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;

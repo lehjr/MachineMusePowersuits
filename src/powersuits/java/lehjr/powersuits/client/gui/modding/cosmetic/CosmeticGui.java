@@ -93,9 +93,9 @@ public class CosmeticGui extends ContainerlessGui {
         /** for selecting the item to manipulate ------------------------------------------------ */
         EquipmentSlotType type;
         if (itemSelectFrame != null) {
-            type = itemSelectFrame.selectedType().orElse(EquipmentSlotType.FEET);
+            type = itemSelectFrame.selectedType().orElse(EquipmentSlotType.HEAD);
         } else {
-            type = EquipmentSlotType.FEET;
+            type = EquipmentSlotType.HEAD;
         }
         itemSelectFrame = new ModularItemSelectionFrame(new MusePoint2D(leftPos - 30, topPos), type);
         itemSelectFrame.refreshRects();

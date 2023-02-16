@@ -2,9 +2,7 @@ package lehjr.numina.client.gui.frame;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import lehjr.numina.client.gui.clickable.IClickable;
-import lehjr.numina.client.gui.gemoetry.IDrawable;
-import lehjr.numina.client.gui.gemoetry.IDrawableRect;
-import lehjr.numina.client.gui.gemoetry.IRect;
+import lehjr.numina.client.gui.gemoetry.*;
 import net.minecraft.util.text.ITextComponent;
 
 import javax.annotation.Nullable;
@@ -17,7 +15,8 @@ import java.util.stream.Collectors;
  * A bunch of rectangles laid out either vertically or horizontally
  */
 
-public class MultiRectHolderFrame<T extends List<IRect>> extends GUISpacer {
+@Deprecated
+public class MultiRectHolderFrame<T extends List<IRect>> extends AbstractGuiFrame {
     protected double margin;
     protected double maxHeight = -1;
     protected double maxWidth = -1;
@@ -41,13 +40,13 @@ public class MultiRectHolderFrame<T extends List<IRect>> extends GUISpacer {
      * @param minHeight
      */
     public MultiRectHolderFrame(boolean horizontalLayout, boolean startTopLeft, double minWidth, double minHeight) {
-        super(minWidth, minHeight);
+        super(new Rect(MusePoint2D.ZERO, new MusePoint2D(minWidth, minHeight)));
         this.horizontalLayout = horizontalLayout;
         this.startTopLeft = startTopLeft;
     }
 
     public MultiRectHolderFrame(boolean horizontalLayout, boolean startTopLeft, double minWidth, double minHeight, double maxWidth, double maxHeight) {
-        super(minWidth, minHeight);
+        super(new Rect(MusePoint2D.ZERO, new MusePoint2D(minWidth, minHeight)));
         this.horizontalLayout = horizontalLayout;
         this.startTopLeft = startTopLeft;
         this.maxHeight = maxHeight;

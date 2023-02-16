@@ -28,7 +28,7 @@ package lehjr.powersuits.client.gui.common;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import lehjr.numina.client.gui.clickable.button.VanillaButton;
-import lehjr.numina.client.gui.frame.fixed.AbstractGuiFrame;
+import lehjr.numina.client.gui.frame.AbstractGuiFrame;
 import lehjr.numina.client.gui.gemoetry.MusePoint2D;
 import lehjr.numina.client.gui.gemoetry.Rect;
 import lehjr.numina.client.sound.Musique;
@@ -59,16 +59,6 @@ public class TabSelectFrame extends AbstractGuiFrame {
         super(new Rect(left, bottom - 20, left + width, bottom));
         this.player = player;
         VanillaButton button;
-        System.out.println("active: " + active);
-
-
-//        /** TODO? Craft Install Salvage GUI (the only Containered GUI)*/
-//        button = new ClickableButton2(new TranslationTextComponent("gui.powersuits.tab.craft.install.salvage"), new MusePoint2D(0, 0), active != 0);
-//        button.setOnPressed(onPressed->{
-//            Musique.playClientSound(SoundDictionary.SOUND_EVENT_GUI_SELECT, 1);
-//            MPSPackets.CHANNEL_INSTANCE.sendToServer(new ContainerGuiOpenPacket(0));
-//        });
-//        buttons.add(button);
 
         /** Install Salvage GUI (the only Containered GUI)*/
         button = new VanillaButton(left(), top(), new TranslationTextComponent("gui.powersuits.tab.install.salvage"), active != 0);

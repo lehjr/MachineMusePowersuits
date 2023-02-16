@@ -29,7 +29,10 @@ package lehjr.powersuits.client.gui.modding.module.tweak;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import lehjr.numina.client.gui.clickable.ClickableModule;
+import lehjr.numina.client.gui.clickable.slider.VanillaFrameScrollBar;
 import lehjr.numina.client.gui.frame.ScrollableFrame;
+import lehjr.numina.client.gui.frame.fixed.ScrollableFrame2;
+import lehjr.numina.client.gui.gemoetry.DrawableTile;
 import lehjr.numina.client.gui.gemoetry.MusePoint2D;
 import lehjr.numina.client.gui.gemoetry.Rect;
 import lehjr.numina.client.render.NuminaRenderer;
@@ -51,19 +54,22 @@ import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
-public class ModuleSelectionFrame extends ScrollableFrame {
+public class ModuleSelectionFrame extends ScrollableFrame2 {
     protected ModularItemSelectionFrame target;
     protected Map<ModuleCategory, ModuleSelectionSubFrame> categories = new LinkedHashMap<>();
     protected Rect lastPosition;
     Optional<ClickableModule> selectedModule = Optional.ofNullable(null);
     LazyOptional<IPowerModule> moduleCap = LazyOptional.empty();
 
-    public ModuleSelectionFrame(ModularItemSelectionFrame itemSelectFrameIn, MusePoint2D topleft, MusePoint2D bottomright,
-                                Colour background,
-                                Colour topBorder,
-                                Colour bottomBorder) {
-        super(topleft, bottomright, background, topBorder, bottomBorder);
+    VanillaFrameScrollBar scrollBar;
+
+
+    public ModuleSelectionFrame(ModularItemSelectionFrame itemSelectFrameIn, Rect rect) {
+        super(rect);
         this.target = itemSelectFrameIn;
+        this.scrollBar = new VanillaFrameScrollBar(this, "scrollbar");
+        this.scrollBar.setValue(0);
+
     }
 
     protected ModuleSelectionSubFrame getOrCreateCategory(ModuleCategory category) {
@@ -140,6 +146,7 @@ public class ModuleSelectionFrame extends ScrollableFrame {
     @Override
     public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
         super.render(matrixStack, mouseX, mouseY, partialTicks);
+        this.scrollBar.render(matrixStack, mouseX, mouseY, partialTicks);
 
         Optional<IModularItem> iModularItem = target.getModularItemCapability();
 
@@ -148,13 +155,13 @@ public class ModuleSelectionFrame extends ScrollableFrame {
         });
 
         if (iModularItem.isPresent()) {
-            this.totalSize = 0;
+            int totalHeight=0;
 
             for (ModuleSelectionSubFrame frame : categories.values()) {
-                totalSize = (int) Math.max(frame.border.bottom() - this.top(), totalSize);
+//                totalSize = (int) Math.max(frame.border.bottom() - this.top(), totalSize);
+                totalHeight += frame.border.height();
             }
-
-            this.currentScrollPixels = Math.min(currentScrollPixels, getMaxScrollPixels());
+            setTotalSize(totalHeight);
             super.preRender(matrixStack, mouseX, mouseY, partialTicks);
             RenderSystem.pushMatrix();
             RenderSystem.translatef(0, (float)-currentScrollPixels, 0);
@@ -171,6 +178,7 @@ public class ModuleSelectionFrame extends ScrollableFrame {
         for (ModuleSelectionSubFrame frame : categories.values()) {
             frame.drawPartial(matrixStack, (int) (this.currentScrollPixels + top() + 4),
                     (int) (this.currentScrollPixels + top() + height() - 4), partialTicks);
+
         }
     }
 
@@ -202,14 +210,41 @@ public class ModuleSelectionFrame extends ScrollableFrame {
     }
 
     @Override
-    public boolean mouseClicked(double x, double y, int button) {
-        if (super.mouseClicked(x, y, button)) {
+    public boolean mouseScrolled(double mouseX, double mouseY, double dWheel) {
+        boolean retVal = super.mouseScrolled(mouseX, mouseY, dWheel);
+        scrollBar.setValue(currentScrollPixels);
+        return retVal;
+    }
+
+    @Override
+    public void update(double mouseX, double mouseY) {
+        scrollBar.setMaxValue(getMaxScrollPixels());
+        scrollBar.setValueByMouse(mouseY);
+        setCurrentScrollPixels(scrollBar.getValue());
+        super.update(mouseX, mouseY);
+    }
+
+    @Override
+    public boolean mouseReleased(double mouseX, double mouseY, int button) {
+        if (scrollBar.mouseReleased(mouseX, mouseY, button)) {
+            return true;
+        }
+        return super.mouseReleased(mouseX, mouseY, button);
+    }
+
+    @Override
+    public boolean mouseClicked(double mouseX, double mouseY, int button) {
+        if(scrollBar.mouseClicked(mouseX, mouseY, button)) {
+            return true;
+        }
+
+        if (super.mouseClicked(mouseX, mouseY, button)) {
             ModuleSelectionSubFrame sel = null;
 
-            if (containsPoint(x, y)) {
-                y += currentScrollPixels;
+            if (containsPoint(mouseX, mouseY)) {
+                mouseY += currentScrollPixels;
                 for (ModuleSelectionSubFrame frame : categories.values()) {
-                    if (frame.mouseClicked(x, y, button)) {
+                    if (frame.mouseClicked(mouseX, mouseY, button)) {
                         sel = frame;
                     }
                 }

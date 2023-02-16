@@ -2,7 +2,6 @@ package lehjr.numina.client.gui.frame;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
-import lehjr.numina.client.gui.frame.fixed.AbstractGuiFrame;
 import lehjr.numina.client.gui.gemoetry.IDrawable;
 import lehjr.numina.client.gui.gemoetry.Rect;
 import lehjr.numina.common.math.MathUtils;
@@ -14,7 +13,6 @@ import net.minecraft.util.math.vector.Quaternion;
 import net.minecraft.util.math.vector.Vector3f;
 import net.minecraft.util.text.ITextComponent;
 
-import javax.annotation.Nonnull;
 import java.util.List;
 
 public class EntityRenderFrame extends AbstractGuiFrame implements IGuiFrame {

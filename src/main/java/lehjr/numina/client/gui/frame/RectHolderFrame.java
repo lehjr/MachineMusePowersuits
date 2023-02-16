@@ -4,6 +4,7 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import lehjr.numina.client.gui.gemoetry.IDrawable;
 import lehjr.numina.client.gui.gemoetry.IRect;
 import lehjr.numina.client.gui.gemoetry.MusePoint2D;
+import lehjr.numina.client.gui.gemoetry.Rect;
 import lehjr.numina.common.math.Colour;
 import net.minecraft.util.text.ITextComponent;
 
@@ -12,7 +13,8 @@ import java.util.List;
 /**
  * a wrapper for frames and rectangles to aid in GUI design.
  */
-public abstract class RectHolderFrame<T extends IRect> extends GUISpacer {
+@Deprecated
+public abstract class RectHolderFrame<T extends IRect> extends AbstractGuiFrame {
     T rect;
     RectPlacement placement;
     public RectHolderFrame(T rect, double widthIn, double heightIn) {
@@ -26,10 +28,10 @@ public abstract class RectHolderFrame<T extends IRect> extends GUISpacer {
 //    }
 
     public RectHolderFrame(T rect, double widthIn, double heightIn, RectPlacement placement/*, IDoThis onChange*/) {
-        super(widthIn, heightIn);
+        super(new Rect(MusePoint2D.ZERO, new MusePoint2D(widthIn, heightIn)));
         this.rect = rect;
-        this.setBackgroundColour(Colour.YELLOW);
-        this.setBorderColour(Colour.RED);
+//        this.setBackgroundColour(Colour.YELLOW);
+//        this.setBorderColour(Colour.RED);
         this.placement = placement;
 //        this.setDoThisOnChange(iChange -> {
 //            if (onChange != null) {

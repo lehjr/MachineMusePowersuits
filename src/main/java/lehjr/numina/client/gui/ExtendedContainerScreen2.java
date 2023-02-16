@@ -1,34 +1,7 @@
-/*
- * Copyright (c) 2021. MachineMuse, Lehjr
- *  All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *
- *      Redistributions of source code must retain the above copyright notice, this
- *      list of conditions and the following disclaimer.
- *
- *     Redistributions in binary form must reproduce the above copyright notice,
- *     this list of conditions and the following disclaimer in the documentation
- *     and/or other materials provided with the distribution.
- *
- *  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
- *  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
- *  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- *  DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
- *  ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- *  (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
- *  LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
- *  ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
-
 package lehjr.numina.client.gui;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import lehjr.numina.client.gui.frame.IGuiFrame;
-import lehjr.numina.client.gui.gemoetry.DrawableRect;
 import lehjr.numina.client.gui.gemoetry.MusePoint2D;
 import lehjr.numina.client.gui.slot.IHideableSlot;
 import lehjr.numina.client.gui.slot.IIConProvider;
@@ -47,35 +20,18 @@ import java.util.List;
  * TODO: inventory label
  * @param <T>
  */
-public class ExtendedContainerScreen<T extends Container> extends ContainerScreen<T> {
+public class ExtendedContainerScreen2 <T extends Container> extends ContainerScreen<T> {
     protected long creationTime;
-    protected DrawableRect tooltipRect;
-    /** The outer gui rectangle */
-    protected DrawableRect backgroundRect;
     private List<IGuiFrame> frames;
 
-    public ExtendedContainerScreen(T screenContainer, PlayerInventory inv, ITextComponent titleIn, boolean growFromMiddle) {
+    public ExtendedContainerScreen2(T screenContainer, PlayerInventory inv, ITextComponent titleIn) {
         super(screenContainer, inv, titleIn);
         frames = new ArrayList();
-        tooltipRect = new DrawableRect(
-                0, 0, 0, 0,
-                false,
-                Colour.BLACK.withAlpha(0.9F),
-                Colour.PURPLE);
-        backgroundRect = new DrawableRect(0, 0, 0, 0, growFromMiddle, Colour.GREY_GUI_BACKGROUND, Colour.BLACK);
         this.minecraft = Minecraft.getInstance();
     }
 
-    /**
-     *
-     * @param screenContainer
-     * @param inv
-     * @param titleIn
-     * @param guiWidth sets the "imageWidth" parameter to determine the
-     * @param guiHeight
-     */
-    public ExtendedContainerScreen(T screenContainer, PlayerInventory inv, ITextComponent titleIn, int guiWidth, int guiHeight, boolean growFromMiddle) {
-        this(screenContainer, inv, titleIn, growFromMiddle);
+    public ExtendedContainerScreen2(T screenContainer, PlayerInventory inv, ITextComponent titleIn, int guiWidth, int guiHeight) {
+        this(screenContainer, inv, titleIn);
         this.imageWidth = guiWidth;
         this.imageHeight = guiHeight;
     }
@@ -93,12 +49,19 @@ public class ExtendedContainerScreen<T extends Container> extends ContainerScree
         if (slot!= null && slot instanceof IHideableSlot) {
             if (slot.isActive()) {
                 super.renderSlot(matrixStack, slot);
+            } else {
+                System.out.println("index: "+ menu.slots.indexOf(slot));
             }
         } else {
             super.renderSlot(matrixStack, slot);
+
+
+//            System.out.println("index: "+ menu.slots.indexOf(slot) +", class: " + slot.getClass());
         }
 
         if (slot instanceof IIConProvider && slot.getItem().isEmpty() && slot.isActive() ) {
+//            System.out.println("rendering");
+
             this.setBlitOffset(100);
             this.itemRenderer.blitOffset = 100.0F;
             ((IIConProvider) slot).drawIconAt(matrixStack, slot.x, slot.y, Colour.WHITE);
@@ -107,22 +70,12 @@ public class ExtendedContainerScreen<T extends Container> extends ContainerScree
         }
     }
 
-    public void renderBackgroundRect(MatrixStack matrixStack, int mouseX, int mouseY, float frameTime) {
-        backgroundRect.render(matrixStack, mouseX, mouseY, frameTime);
-    }
-
-    @Override
-    public void init(Minecraft minecraft, int width, int height) {
-        super.init(minecraft, width, height);
-    }
-
-
     @Override
     public void init() {
         super.init();
+        frames.clear();
         minecraft.keyboardHandler.setSendRepeatsToGui(true);
         creationTime = System.currentTimeMillis();
-        backgroundRect.setLeft(absX(-1)).setTop(absY(-1)).setRight(absX(1)).setBottom(absY(1));
     }
 
     /**
@@ -143,7 +96,6 @@ public class ExtendedContainerScreen<T extends Container> extends ContainerScree
      */
     @Override
     public void renderBg(MatrixStack matrixStack, float frameTime, int mouseX, int mouseY) {
-        renderBackgroundRect(matrixStack, mouseX, mouseY , frameTime);
         update(mouseX, mouseY);
         renderFrames(matrixStack, mouseX, mouseY, frameTime);
     }

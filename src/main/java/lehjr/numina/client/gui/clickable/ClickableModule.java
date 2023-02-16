@@ -141,11 +141,6 @@ public class ClickableModule extends Clickable {
         }
     }
 
-    @Override
-    public boolean containsPoint(double x, double y) {
-        return containsPoint(x, y);
-    }
-
     @Nonnull
     public ItemStack getModule() {
         return module;
