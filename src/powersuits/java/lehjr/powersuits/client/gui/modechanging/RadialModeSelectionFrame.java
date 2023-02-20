@@ -28,7 +28,7 @@ package lehjr.powersuits.client.gui.modechanging;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import lehjr.numina.client.gui.clickable.ClickableModule;
-import lehjr.numina.client.gui.frame.IGuiFrame;
+import lehjr.numina.client.gui.frame.AbstractGuiFrame;
 import lehjr.numina.client.gui.gemoetry.IDrawable;
 import lehjr.numina.client.gui.gemoetry.MusePoint2D;
 import lehjr.numina.client.gui.gemoetry.Rect;
@@ -46,7 +46,7 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RadialModeSelectionFrame extends Rect implements IGuiFrame {
+public class RadialModeSelectionFrame extends AbstractGuiFrame {
     boolean visible = true;
     boolean enabled = true;
     protected final long spawnTime;
@@ -60,7 +60,7 @@ public class RadialModeSelectionFrame extends Rect implements IGuiFrame {
     float zLevel;
 
     public RadialModeSelectionFrame(MusePoint2D topleft, MusePoint2D bottomright, PlayerEntity player, float zLevel) {
-        super(topleft, bottomright);
+        super(new Rect(topleft, bottomright));
         spawnTime = System.currentTimeMillis();
         this.player = player;
         this.radius = Math.min(width(), height());
@@ -68,15 +68,6 @@ public class RadialModeSelectionFrame extends Rect implements IGuiFrame {
         this.zLevel = zLevel;
         loadItems();
     }
-
-//    @Override
-//    public Rect init(double left, double top, double right, double bottom) {
-//        super.init(left, top, right, bottom);
-////        super.initGrowth();
-//        this.radius = Math.min(width(), height());
-//        modeButtons.clear();
-//        return this;
-//    }
 
     @Override
     public boolean mouseClicked(double x, double y, int button) {
@@ -99,7 +90,7 @@ public class RadialModeSelectionFrame extends Rect implements IGuiFrame {
         loadItems();
         //Determine which mode is selected
         if (System.currentTimeMillis() - spawnTime > 250) {
-            selectModule((float) mousex, (float) mousey);
+            selectModule(mousex, mousey);
         }
         //Switch to selected mode if mode changed
         if (getSelectedModule() != null && selectedModuleOriginal != selectedModuleNew) {
@@ -155,7 +146,7 @@ public class RadialModeSelectionFrame extends Rect implements IGuiFrame {
         }
     }
 
-    private void selectModule(float x, float y) {
+    private void selectModule(double x, double y) {
         if (modeButtons != null) {
             int i = 0;
             for (ClickableModule module : modeButtons) {

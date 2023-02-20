@@ -2,23 +2,19 @@ package lehjr.numina.client.gui.clickable.slider;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
-import lehjr.numina.client.gui.frame.fixed.ScrollableFrame2;
-import lehjr.numina.client.gui.gemoetry.MusePoint2D;
-import lehjr.numina.client.gui.gemoetry.Rect;
+import lehjr.numina.client.gui.frame.ScrollableFrame;
 import lehjr.numina.client.render.IconUtils;
 import lehjr.numina.common.constants.NuminaConstants;
-import lehjr.numina.common.math.MathUtils;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.widget.Widget;
 import net.minecraft.util.ResourceLocation;
 
 public class VanillaFrameScrollBar extends AbstractSlider {
     ResourceLocation SCROLL_TEXTURE = new ResourceLocation(NuminaConstants.MOD_ID, "textures/gui/scrollbar.png");
-    ScrollableFrame2 parent;
-    public VanillaFrameScrollBar(ScrollableFrame2 parent, String id) {
+    ScrollableFrame parent;
+    public VanillaFrameScrollBar(ScrollableFrame parent, String id) {
         super(parent.right() -6, parent.top(), parent.right(), parent.bottom(), id,  false);
         this.parent = parent;
+        this.setValue(0);
     }
 
     @Override

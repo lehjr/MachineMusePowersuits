@@ -122,7 +122,11 @@ public class ModularPowersuits {
             new RuntimeException("Got config " + event.getConfig() + " name " + event.getConfig().getModId() + ":" + event.getConfig().getFileName());
 
             final ModConfig config = event.getConfig();
-            if (config.getSpec() == MPSSettings.SERVER_SPEC) {
+            if (config.getSpec()!= null && config.getSpec() == MPSSettings.SERVER_SPEC) {
+                System.out.println("config file: " + config.getFullPath().toString());
+                System.out.println("config modID: " + config.getModId());
+                System.out.println("config modID: " + config.getConfigData());
+
                 MPSSettings.getModuleConfig().setServerConfig(config);
 
                 // This is actually for a feature that isn't even currently enabled :P
@@ -317,11 +321,8 @@ public class ModularPowersuits {
                                         pPlayer.drop(itemstack2, false);
                                     }
                                 }
-
                                 return itemstack;
                             }
-
-
                         }, MPSConstants.CRAFTING_TABLE_CONTAINER_NAME);
                         NetworkHooks.openGui((ServerPlayerEntity) playerIn, container, buffer -> buffer.writeBlockPos(playerIn.blockPosition()));
                         NetworkHooks.openGui((ServerPlayerEntity) playerIn, container);

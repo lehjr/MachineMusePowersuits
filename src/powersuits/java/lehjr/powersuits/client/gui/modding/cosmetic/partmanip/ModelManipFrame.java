@@ -28,7 +28,7 @@ package lehjr.powersuits.client.gui.modding.cosmetic.partmanip;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import lehjr.numina.client.gui.clickable.slider.VanillaFrameScrollBar;
-import lehjr.numina.client.gui.frame.fixed.ScrollableFrame2;
+import lehjr.numina.client.gui.frame.ScrollableFrame;
 import lehjr.numina.client.gui.gemoetry.Rect;
 import lehjr.numina.common.capabilities.render.IModelSpecNBT;
 import lehjr.numina.common.capabilities.render.ModelSpecNBTCapability;
@@ -56,7 +56,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * <p>
  * Ported to Java by lehjr on 11/9/16.
  */
-public class ModelManipFrame extends ScrollableFrame2 {
+public class ModelManipFrame extends ScrollableFrame {
     public ModularItemSelectionFrame itemSelect;
     public ColourPickerFrame colourSelect;
     public ModularItemTabToggleWidget lastItemSlot;

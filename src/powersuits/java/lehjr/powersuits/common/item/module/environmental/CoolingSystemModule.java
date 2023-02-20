@@ -67,8 +67,8 @@ public class CoolingSystemModule extends AbstractPowerModule {
         public CapProvider(@Nonnull ItemStack module) {
             this.module = module;
             this.ticker = new Ticker(module, ModuleCategory.ENVIRONMENTAL, ModuleTarget.TORSOONLY, MPSSettings::getModuleConfig, true) {{
-                addTradeoffProperty(MPSConstants.COOLING_POWER, MPSConstants.COOLING_BONUS, 1, "%");
-                addTradeoffProperty(MPSConstants.COOLING_POWER, MPSConstants.COOLING_ENERGY, 40, "RF/t");
+                addTradeoffProperty(MPSConstants.ENERGY_CONSUMPTION, MPSConstants.COOLING_BONUS, 1, "%");
+                addTradeoffProperty(MPSConstants.ENERGY_CONSUMPTION, MPSConstants.ENERGY_CONSUMPTION, 40, "RF/t");
             }};
 
             powerModuleHolder = LazyOptional.of(() -> {
@@ -88,7 +88,7 @@ public class CoolingSystemModule extends AbstractPowerModule {
 
                 HeatUtils.coolPlayer(player, /*0.1 * */ applyPropertyModifiers(MPSConstants.COOLING_BONUS));
                 double cooling = heatBefore - HeatUtils.getPlayerHeat(player);
-                ElectricItemUtils.drainPlayerEnergy(player, (int) (cooling * applyPropertyModifiers(MPSConstants.COOLING_ENERGY)));
+                ElectricItemUtils.drainPlayerEnergy(player, (int) (cooling * applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION)));
             }
         }
 

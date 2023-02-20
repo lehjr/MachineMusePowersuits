@@ -211,18 +211,23 @@ public class Slider extends DrawableTile implements IClickable {
     public void createNewRects() {
         isCreatingNewRects = true;
         if (isHorizontal) {
-            this.knobRect = new DrawableTile(
-                    centerX() - 4,
-                    centerY() - 1 - getThickness() * 0.5,
-                    centerX() + 4,
-                    centerY() + 1 + getThickness() * 0.5);
-        } else {
             // should put it right in the center
             this.knobRect = new DrawableTile(
                     centerX() - 1 - getThickness() * 0.5,
                     centerY() - 4,
                     centerX() + 1 + getThickness() * 0.5,
                     centerY() + 4);
+
+
+        } else {
+            this.knobRect = new DrawableTile(
+                    centerX() - 4,
+                    centerY() - 1 - getThickness() * 0.5,
+                    centerX() + 4,
+                    centerY() + 1 + getThickness() * 0.5);
+
+
+
         }
 
         this.knobRect.setBackgroundColour(Colour.LIGHT_GREY);

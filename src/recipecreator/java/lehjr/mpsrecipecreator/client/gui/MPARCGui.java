@@ -1,17 +1,9 @@
 package lehjr.mpsrecipecreator.client.gui;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
-import lehjr.mpsrecipecreator.basemod.DataPackWriter;
 import lehjr.mpsrecipecreator.container.MPARCContainer;
 import lehjr.numina.client.gui.ExtendedContainerScreen;
-import lehjr.numina.client.gui.gemoetry.MusePoint2D;
-import lehjr.numina.common.math.Colour;
-import lehjr.numina.common.string.StringUtils;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.container.Slot;
 import net.minecraft.util.text.ITextComponent;
-
-import javax.annotation.Nullable;
 
 /**
  * @author Dries007

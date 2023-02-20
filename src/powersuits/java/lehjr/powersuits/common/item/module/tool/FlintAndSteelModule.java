@@ -78,7 +78,7 @@ public class FlintAndSteelModule extends AbstractPowerModule {
         public CapProvider(@Nonnull ItemStack module) {
             this.module = module;
             this.rightClickie = new RightClickie(module, ModuleCategory.TOOL, ModuleTarget.TOOLONLY, MPSSettings::getModuleConfig) {{
-                addBaseProperty(MPSConstants.FLINT_AND_STEELE_ENERGY, 10000, "FE");
+                addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, 10000, "FE");
             }};
             powerModuleHolder = LazyOptional.of(() -> rightClickie);
         }
@@ -130,7 +130,7 @@ public class FlintAndSteelModule extends AbstractPowerModule {
 
             @Override
             public int getEnergyUsage() {
-                return (int) applyPropertyModifiers(MPSConstants.FLINT_AND_STEELE_ENERGY);
+                return (int) applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION);
             }
         }
 

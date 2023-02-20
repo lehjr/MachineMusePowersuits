@@ -72,9 +72,9 @@ public class JetBootsModule extends AbstractPowerModule {
         public CapProvider(@Nonnull ItemStack module) {
             this.module = module;
             this.ticker = new Ticker(module, ModuleCategory.MOVEMENT, ModuleTarget.FEETONLY, MPSSettings::getModuleConfig) {{
-                addBaseProperty(MPSConstants.JETBOOTS_ENERGY, 0);
+                addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, 0);
                 addBaseProperty(MPSConstants.JETBOOTS_THRUST, 0);
-                addTradeoffProperty(MPSConstants.THRUST, MPSConstants.JETBOOTS_ENERGY, 750, "FE");
+                addTradeoffProperty(MPSConstants.THRUST, MPSConstants.ENERGY_CONSUMPTION, 750, "FE");
                 addTradeoffProperty(MPSConstants.THRUST, MPSConstants.JETBOOTS_THRUST, 0.08F);
             }};
 
@@ -99,7 +99,7 @@ public class JetBootsModule extends AbstractPowerModule {
                         .map(IModularItem.class::cast)
                         .map(m-> m.isModuleOnline(MPSRegistryNames.FLIGHT_CONTROL_MODULE)).orElse(false);
 
-                double jetEnergy = applyPropertyModifiers(MPSConstants.JETBOOTS_ENERGY);
+                double jetEnergy = applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION);
                 double thrust = applyPropertyModifiers(MPSConstants.JETBOOTS_THRUST);
 
                 PlayerMovementInputWrapper.PlayerMovementInput playerInput = PlayerMovementInputWrapper.get(player);

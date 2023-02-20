@@ -31,8 +31,6 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import lehjr.numina.client.gui.clickable.ClickableModule;
 import lehjr.numina.client.gui.clickable.slider.VanillaFrameScrollBar;
 import lehjr.numina.client.gui.frame.ScrollableFrame;
-import lehjr.numina.client.gui.frame.fixed.ScrollableFrame2;
-import lehjr.numina.client.gui.gemoetry.DrawableTile;
 import lehjr.numina.client.gui.gemoetry.MusePoint2D;
 import lehjr.numina.client.gui.gemoetry.Rect;
 import lehjr.numina.client.render.NuminaRenderer;
@@ -40,7 +38,6 @@ import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
 import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.capabilities.module.powermodule.PowerModuleCapability;
-import lehjr.numina.common.math.Colour;
 import lehjr.powersuits.client.gui.common.ModularItemSelectionFrame;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
@@ -54,13 +51,12 @@ import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
-public class ModuleSelectionFrame extends ScrollableFrame2 {
+public class ModuleSelectionFrame extends ScrollableFrame {
     protected ModularItemSelectionFrame target;
     protected Map<ModuleCategory, ModuleSelectionSubFrame> categories = new LinkedHashMap<>();
     protected Rect lastPosition;
     Optional<ClickableModule> selectedModule = Optional.ofNullable(null);
     LazyOptional<IPowerModule> moduleCap = LazyOptional.empty();
-
     VanillaFrameScrollBar scrollBar;
 
 
@@ -69,7 +65,8 @@ public class ModuleSelectionFrame extends ScrollableFrame2 {
         this.target = itemSelectFrameIn;
         this.scrollBar = new VanillaFrameScrollBar(this, "scrollbar");
         this.scrollBar.setValue(0);
-
+        this.currentScrollPixels = 0;
+        loadModules(false);
     }
 
     protected ModuleSelectionSubFrame getOrCreateCategory(ModuleCategory category) {
@@ -83,9 +80,7 @@ public class ModuleSelectionFrame extends ScrollableFrame2 {
                     top() + 36);
             position.setBelow(lastPosition);
             lastPosition = position;
-            ModuleSelectionSubFrame frame = new ModuleSelectionSubFrame(
-                    category,
-                    position);
+            ModuleSelectionSubFrame frame = new ModuleSelectionSubFrame(category, position);
 
             categories.put(category, frame);
             frame.setDoOnNewSelect(thing-> {
@@ -101,6 +96,10 @@ public class ModuleSelectionFrame extends ScrollableFrame2 {
      * load this whenever a modular item is selected or when a module is installed
      */
     public void loadModules(boolean preserveSelected) {
+        if (!preserveSelected) {
+            setCurrentScrollPixels(0);
+        }
+
         this.lastPosition = null;
         // temp holder
         AtomicReference<Optional<ClickableModule>> selCopy = new AtomicReference<>(getSelectedModule());
@@ -162,6 +161,7 @@ public class ModuleSelectionFrame extends ScrollableFrame2 {
                 totalHeight += frame.border.height();
             }
             setTotalSize(totalHeight);
+
             super.preRender(matrixStack, mouseX, mouseY, partialTicks);
             RenderSystem.pushMatrix();
             RenderSystem.translatef(0, (float)-currentScrollPixels, 0);
@@ -178,7 +178,6 @@ public class ModuleSelectionFrame extends ScrollableFrame2 {
         for (ModuleSelectionSubFrame frame : categories.values()) {
             frame.drawPartial(matrixStack, (int) (this.currentScrollPixels + top() + 4),
                     (int) (this.currentScrollPixels + top() + height() - 4), partialTicks);
-
         }
     }
 
@@ -196,17 +195,17 @@ public class ModuleSelectionFrame extends ScrollableFrame2 {
     }
 
     public Optional<ClickableModule> getSelectedModule() {
-//        if (!categories.isEmpty()) {
-//            return categories.values().stream().filter(frame -> frame !=null && frame.getSelectedModule() != null).findFirst().map(frame->frame.getSelectedModule());
-//        }
-//        return Optional.empty();
-        return selectedModule;
+        if (!categories.isEmpty()) {
+            return categories.values().stream().filter(frame -> frame !=null && frame.getSelectedModule() != null).findFirst().map(frame->frame.getSelectedModule());
+        }
+        return Optional.empty();
+//        return selectedModule;
     }
 
     public LazyOptional<IPowerModule> getModuleCap() {
-//        return getSelectedModule()
-//                .map(clickableModule -> clickableModule.getModule()).orElse(ItemStack.EMPTY).getCapability(PowerModuleCapability.POWER_MODULE);
-        return moduleCap;
+        return getSelectedModule()
+                .map(clickableModule -> clickableModule.getModule()).orElse(ItemStack.EMPTY).getCapability(PowerModuleCapability.POWER_MODULE);
+//        return moduleCap;
     }
 
     @Override

@@ -332,9 +332,9 @@ public class StringUtils {
         return wrappedLine.toString().split(System.lineSeparator());
     }
 
-    public static List<ITextComponent> wrapITextComponentToLength(ITextComponent component, int length) {
+    public static List<ITextComponent> wrapStringToVisualLength(ITextComponent component, int length) {
         if (component == null) {
-            component = new StringTextComponent("");
+            component = new StringTextComponent("").append(component);
         }
         return wrapStringToLength(component.getContents(), length);
     }
@@ -510,7 +510,7 @@ public class StringUtils {
      * Does the necessary openGL calls and calls the Minecraft font renderer to draw a string such that the xcoord is halfway through the string
      */
     public static void drawRightAlignedShadowedString(MatrixStack matrixStack, String s, double x, double y) {
-        drawShadowedString(matrixStack, s, x - getStringWidth(s), y - (getStringHeight() * 0.5));
+        drawShadowedString(matrixStack, s, x - getStringWidth(s), y /*- (getStringHeight() * 0.5)*/);
     }
 
     public static void drawLeftAlignedShadowedString(MatrixStack matrixStack, ITextComponent text, double x, double y) {

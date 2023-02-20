@@ -70,10 +70,10 @@ public class AquaAffinityModule extends AbstractPowerModule {
         public CapProvider(@Nonnull ItemStack module) {
             this.module = module;
             this.miningEnhancement = new BlockBreaker(module, ModuleCategory.MINING_ENHANCEMENT, ModuleTarget.TOOLONLY, MPSSettings::getModuleConfig) {{
-                addBaseProperty(MPSConstants.AQUA_ENERGY, 0, "FE");
+                addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, 0, "FE");
                 addBaseProperty(MPSConstants.AQUA_HARVEST_SPEED, 0.2F, "%");
-                addTradeoffProperty(MPSConstants.AQUA_POWER, MPSConstants.AQUA_ENERGY, 1000);
-                addTradeoffProperty(MPSConstants.AQUA_POWER, MPSConstants.AQUA_HARVEST_SPEED, 0.8F);
+                addTradeoffProperty(MPSConstants.POWER, MPSConstants.ENERGY_CONSUMPTION, 1000);
+                addTradeoffProperty(MPSConstants.POWER, MPSConstants.AQUA_HARVEST_SPEED, 0.8F);
             }};
 
             powerModuleHolder = LazyOptional.of(() -> {
@@ -112,7 +112,7 @@ public class AquaAffinityModule extends AbstractPowerModule {
 
             @Override
             public int getEnergyUsage() {
-                return (int) applyPropertyModifiers(MPSConstants.AQUA_ENERGY);
+                return (int) applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION);
             }
 
             @Nonnull

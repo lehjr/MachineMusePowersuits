@@ -1,8 +1,6 @@
 package lehjr.powersuits.client;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
 import lehjr.numina.client.gui.IContainerULOffSet;
-import lehjr.numina.client.gui.clickable.slider.VanillaFrameScrollBar;
 import lehjr.numina.client.gui.frame.InventoryFrame;
 import lehjr.numina.client.gui.gemoetry.Rect;
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
@@ -20,12 +18,7 @@ import java.util.stream.IntStream;
 
 public class ScrollableInventoryFrame2 <C extends Container> extends InventoryFrame implements IContainerULOffSet {
     ModularItemSelectionFrameContainered modularItemSelectionFrame;
-    /**
-     * gets the annoying UL offset setup by the main containerscreen class
-     */
     ModularItemTabToggleWidget selected;
-
-
 
     public ScrollableInventoryFrame2(C containerIn,
                                      Rect rect,
@@ -50,7 +43,6 @@ public class ScrollableInventoryFrame2 <C extends Container> extends InventoryFr
         this.modularItemSelectionFrame = modularItemSelectionFrame;
         modularItemSelectionFrame.getSelectedTab().ifPresent(tab-> selected = tab);
     }
-
 
     @Override
     public void update(double mouseX, double mouseY) {

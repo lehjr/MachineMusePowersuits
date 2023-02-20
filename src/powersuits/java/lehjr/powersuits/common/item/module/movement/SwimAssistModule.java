@@ -70,7 +70,7 @@ public class SwimAssistModule extends AbstractPowerModule {
         public CapProvider(@Nonnull ItemStack module) {
             this.module = module;
             this.ticker = new Ticker(module, ModuleCategory.MOVEMENT, ModuleTarget.LEGSONLY, MPSSettings::getModuleConfig) {{
-                addTradeoffProperty(MPSConstants.THRUST, MPSConstants.SWIM_ENERGY, 1000, "FE");
+                addTradeoffProperty(MPSConstants.THRUST, MPSConstants.ENERGY_CONSUMPTION, 1000, "FE");
                 addTradeoffProperty(MPSConstants.THRUST, MPSConstants.SWIM_BOOST_AMOUNT, 1, "m/s");
             }};
 
@@ -101,7 +101,7 @@ public class SwimAssistModule extends AbstractPowerModule {
                         moveRatio += 0.2 * 0.2;
                     }
                     double swimAssistRate = applyPropertyModifiers(MPSConstants.SWIM_BOOST_AMOUNT) * 0.05 * moveRatio;
-                    double swimEnergyConsumption = applyPropertyModifiers(MPSConstants.SWIM_ENERGY);
+                    double swimEnergyConsumption = applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION);
 
                     int playerEnergy = ElectricItemUtils.getPlayerEnergy(player);
 

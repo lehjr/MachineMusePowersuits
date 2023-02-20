@@ -28,166 +28,100 @@ package lehjr.powersuits.client.gui.modding.module.tweak;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
-import lehjr.numina.client.gui.ContainerlessGui2;
-import lehjr.numina.client.gui.frame.LabelBox;
-import lehjr.numina.client.gui.frame.MultiRectHolderFrame;
+import lehjr.numina.client.gui.ContainerlessGui;
 import lehjr.numina.client.gui.gemoetry.MusePoint2D;
 import lehjr.numina.client.gui.gemoetry.Rect;
-import lehjr.numina.common.math.Colour;
+import lehjr.numina.common.string.StringUtils;
 import lehjr.powersuits.client.gui.common.ModularItemSelectionFrame;
 import lehjr.powersuits.client.gui.common.TabSelectFrame;
 import lehjr.powersuits.common.constants.MPSConstants;
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.client.entity.player.ClientPlayerEntity;
+import net.minecraft.client.resources.I18n;
+import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
+
+import java.util.Optional;
 
 /**
  * Requires all module and inventory slots be accounted for before constructing
  *
  *
  */
-public class ModuleTweakGui extends ContainerlessGui2 {
-    public static final ResourceLocation BACKGROUND = new ResourceLocation(MPSConstants.MOD_ID, "textures/gui/background/install_salvage.png");
+public class ModuleTweakGui extends ContainerlessGui {
+    TranslationTextComponent MODULE_SELECTION_LABEL = new TranslationTextComponent("gui.powersuits.installed.modules");
+    TranslationTextComponent TINKER_FRAME_LABEL = new TranslationTextComponent("gui.powersuits.tinker");
+    TranslationTextComponent SUMMARY_FRAME_LABEL = new TranslationTextComponent("gui.powersuits.equippedTotals");
 
 
-    /** commonly used spacer value */
-    final int spacer = 7;
-    /** colours for frames used here */
-    Colour backgroundColour = Colour.DARK_GREY.withAlpha(1F);
-    Colour topBorderColour = new Colour(0.216F, 0.216F, 0.216F, 1F);
-    Colour bottomBorderColour = Colour.WHITE.withAlpha(0.8F);
-
+    public static final ResourceLocation BACKGROUND = new ResourceLocation(MPSConstants.MOD_ID, "textures/gui/background/module_tweak.png");
     protected ModularItemSelectionFrame itemSelectFrame;
     protected ModuleSelectionFrame moduleSelectFrame;
     protected DetailedSummaryFrame summaryFrame;
     protected ModuleTweakFrame tweakFrame;
     protected TabSelectFrame tabSelectFrame;
-    protected LabelBox modularSelectionLabel;
-    MultiRectHolderFrame mainHolder;
+    ClientPlayerEntity player;
 
-    public ModuleTweakGui(ITextComponent titleIn, boolean growFromMiddle) {
-        super(titleIn, 340, 217, growFromMiddle);
+    public ModuleTweakGui(ITextComponent title) {
+        super(title, 352, 217);
         this.minecraft = Minecraft.getInstance();
-        PlayerEntity player = getMinecraft().player;
-        // FIXME
-        tabSelectFrame = new TabSelectFrame(0, 0, 0, player, 1);
-        addFrame(tabSelectFrame);
-
-        /** Selector for the modular item that holds the modules */
-        itemSelectFrame = new ModularItemSelectionFrame(new MusePoint2D(leftPos + 35, topPos));
-
-        /** common width for left side frames */
-        double leftFrameWidth = 157;
-
-        MultiRectHolderFrame leftFrame = new MultiRectHolderFrame(false, true, 0,0);
-
-        /** left label (takes place of spacer) */
-        modularSelectionLabel = new LabelBox(leftFrameWidth, 15, new TranslationTextComponent("gui.powersuits.installed.modules"));
-        leftFrame.addRect(modularSelectionLabel);
-
-        /** frame to display and allow selecting of installed modules */
-        moduleSelectFrame = new ModuleSelectionFrame(itemSelectFrame,
-                new Rect(new MusePoint2D(0,0),
-                new MusePoint2D(leftFrameWidth, 195)));
-        leftFrame.addRect(moduleSelectFrame);
-        /** bottom left spacer */
-        leftFrame.addRect(new Rect(MusePoint2D.ZERO, new MusePoint2D(leftFrameWidth, spacer)));
-        leftFrame.doneAdding();
-
-        /** setup call to make the modules reload when new button pressed */
-        itemSelectFrame.setOnChanged(()-> {
-            moduleSelectFrame.loadModules(false);
-            tweakFrame.resetScroll();
-        });
-        addFrame(itemSelectFrame);
-
-        double rightFrameWidth = 162;
-
-        MultiRectHolderFrame rightFrame = new MultiRectHolderFrame(false, true, 0,0);
-        rightFrame.addRect(new Rect(MusePoint2D.ZERO, new MusePoint2D(rightFrameWidth, spacer)));
-
-        summaryFrame = new DetailedSummaryFrame(
-                new MusePoint2D(0, 0),
-                new MusePoint2D(rightFrameWidth, 40),
-                backgroundColour,
-                topBorderColour,
-                bottomBorderColour,
-                itemSelectFrame);
-        rightFrame.addRect(summaryFrame);
-        rightFrame.addRect(new Rect(MusePoint2D.ZERO, new MusePoint2D(rightFrameWidth, 7)));
-
-        tweakFrame = new ModuleTweakFrame(
-                new MusePoint2D(0,  0),
-                new MusePoint2D(rightFrameWidth, 156),
-                backgroundColour,
-                topBorderColour,
-                bottomBorderColour,
-                itemSelectFrame,
-                moduleSelectFrame);
-        rightFrame.addRect(tweakFrame);
-
-        /** bottom right spacer */
-        rightFrame.addRect(new Rect(MusePoint2D.ZERO, new MusePoint2D(rightFrameWidth, 7)));
-        rightFrame.doneAdding();
-
-        mainHolder = new MultiRectHolderFrame(true, true, 0, 0);
-        /** left spacer */
-        mainHolder.addRect(new Rect(MusePoint2D.ZERO, new MusePoint2D(spacer, 217)));
-
-        mainHolder.addRect(leftFrame);
-        /** middle spacer */
-        mainHolder.addRect(new Rect(MusePoint2D.ZERO, new MusePoint2D(spacer, 217)));
-
-        mainHolder.addRect(rightFrame);
-        /** right spacer */
-        mainHolder.addRect(new Rect(MusePoint2D.ZERO, new MusePoint2D(spacer, 217)));
-        mainHolder.doneAdding();
-
-        addFrame(mainHolder);
-
-//        backgroundRect.setOnInit(rect -> {
-//            mainHolder.setPosition(rect.getPosition());
-//        });
-
-
-
-//        moduleSelectFrame.setDoOnNewSelect();
+        this.player = Minecraft.getInstance().player;
     }
 
     @Override
     public void init() {
         super.init();
-        itemSelectFrame.setLeftOf(mainHolder); // does nothing
-        itemSelectFrame.setTop(mainHolder.top()); // displaces buttons
-        itemSelectFrame.setRight(mainHolder.left());  // displaces buttons
-//        itemSelectFrame.initGrowth();
-//        tabSelectFrame.initFromBackgroundRect(this.backgroundRect);
-        moduleSelectFrame.loadModules(true);
-    }
+        frames.clear();
+
+        /** for selecting the item to manipulate ------------------------------------------------ */
+        EquipmentSlotType type;
+        if (itemSelectFrame != null) {
+            type = itemSelectFrame.selectedType().orElse(EquipmentSlotType.HEAD);
+        } else {
+            type = EquipmentSlotType.HEAD;
+        }
+        itemSelectFrame = new ModularItemSelectionFrame(new MusePoint2D(leftPos - 30, topPos), type);
+        itemSelectFrame.refreshRects();
+        addFrame(itemSelectFrame);
+
+        /** for selecting GUI ------------------------------------------------------------------ */
+        tabSelectFrame = new TabSelectFrame(this.leftPos, this.topPos, this.imageWidth, player, 1);
+        tabSelectFrame.setPosition(center());
+        tabSelectFrame.setBottom(topPos);
+        addFrame(tabSelectFrame);
+
+        /** setup call to make the modules reload when new button pressed */
+        itemSelectFrame.setOnChanged(()-> {
+            moduleSelectFrame.selectedModule = Optional.ofNullable(null);
+            moduleSelectFrame.loadModules(false);
+            tweakFrame.resetScroll();
+        });
+
+        /** frame to display and allow selecting of installed modules -------------------------------------------------- */
+        boolean keepOnReload = moduleSelectFrame != null;
+        moduleSelectFrame = new ModuleSelectionFrame(itemSelectFrame, new Rect(leftPos + 8, topPos + 13, leftPos + 172, topPos + 208));
+        moduleSelectFrame.loadModules(keepOnReload); // <- this probably won't make any difference
+        addFrame(moduleSelectFrame);
+
+
+        summaryFrame = new DetailedSummaryFrame(new Rect(leftPos + 176, topPos + 12, leftPos + 344,topPos + 46),
+                itemSelectFrame);
+        addFrame(summaryFrame);
+
+
+        tweakFrame = new ModuleTweakFrame(new Rect(leftPos + 176, topPos + 58, leftPos + 345, topPos + 208),
+        itemSelectFrame,
+        moduleSelectFrame);
+        addFrame(tweakFrame);
+   }
 
     @Override
     public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
-//        if (backgroundRect.doneGrowing()) {
-////            if (!itemSelectFrame.playerHasModularItems()) {
-////                renderBackgroundRect(matrixStack, mouseX, mouseY, partialTicks);
-////                float centerx = absX(0);
-////                float centery = absY(0);
-////                StringUtils.drawCenteredText(matrixStack, new TranslationTextComponent("gui.powersuits.noModulesFound.line1"), centerx, centery - 5, Colour.WHITE);
-////                StringUtils.drawCenteredText(matrixStack, new TranslationTextComponent("gui.powersuits.noModulesFound.line2"), centerx, centery + 5, Colour.WHITE);
-////                tabSelectFrame.render(matrixStack, mouseX, mouseY, partialTicks);
-////            } else
-////            {
-////                super.render(matrixStack, mouseX, mouseY, partialTicks);
-////                super.renderTooltip(matrixStack, mouseX, mouseY);
-////            }
-//        } else {
-            this.renderBackground(matrixStack);
-            renderBackgroundRect(matrixStack, mouseX, mouseY, partialTicks);
-//        }
+        super.render(matrixStack, mouseX, mouseY, partialTicks);
+        renderTooltip(matrixStack, mouseX, mouseY);
     }
-
 
     @Override
     public void renderBackground(MatrixStack matrixStack) {
@@ -199,10 +133,20 @@ public class ModuleTweakGui extends ContainerlessGui2 {
         this.blit(matrixStack, i, j, this.getBlitOffset(), 0, 0, imageWidth, imageHeight, 512, 512);
     }
 
-
     @Override
     public void renderLabels(MatrixStack matrixStack, int mouseX, int mouseY) {
-        super.renderLabels(matrixStack, mouseX, mouseY);
-        modularSelectionLabel.renderLabel(matrixStack, 0, 1);
+        this.font.draw(matrixStack, this.MODULE_SELECTION_LABEL,
+                leftPos + 12,
+                topPos + 5, 4210752);
+
+        this.font.draw(matrixStack, this.TINKER_FRAME_LABEL,
+                (float)(leftPos + 184),
+                (float)(topPos + 49),
+                4210752);
+
+        this.font.draw(matrixStack, this.SUMMARY_FRAME_LABEL,
+                (float)(leftPos + 184),
+                (float)(topPos + 5),
+                4210752);
     }
 }

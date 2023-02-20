@@ -141,7 +141,7 @@ public class PowerFist extends AbstractElectricTool {
                     .ifPresent(iItemHandler -> iItemHandler.getOnlineModuleOrEmpty(MPSRegistryNames.MELEE_ASSIST_MODULE)
                             .getCapability(PowerModuleCapability.POWER_MODULE).ifPresent(pm->{
                                 PlayerEntity player = (PlayerEntity) attacker;
-                                double drain = pm.applyPropertyModifiers(MPSConstants.PUNCH_ENERGY);
+                                double drain = pm.applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION);
                                 if (ElectricItemUtils.getPlayerEnergy(player) > drain) {
                                     ElectricItemUtils.drainPlayerEnergy(player, (int) drain);
                                     double damage = pm.applyPropertyModifiers(MPSConstants.PUNCH_DAMAGE);

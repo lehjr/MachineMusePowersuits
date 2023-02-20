@@ -68,10 +68,10 @@ public class ShovelModule extends AbstractPowerModule {//
         public CapProvider(@Nonnull ItemStack module) {
             this.module = module;
             this.blockBreaking = new BlockBreaker(module, ModuleCategory.TOOL, ModuleTarget.TOOLONLY, MPSSettings::getModuleConfig) {{
-                addBaseProperty(MPSConstants.SHOVEL_ENERGY, 500, "FE");
-                addBaseProperty(MPSConstants.SHOVEL_HARVEST_SPEED, 8, "x");
-                addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.SHOVEL_ENERGY, 9500);
-                addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.SHOVEL_HARVEST_SPEED, 22);
+                addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, 500, "FE");
+                addBaseProperty(MPSConstants.HARVEST_SPEED, 8, "x");
+                addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.ENERGY_CONSUMPTION, 9500);
+                addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.HARVEST_SPEED, 22);
             }};
             powerModuleHolder = LazyOptional.of(() -> blockBreaking);
         }
@@ -97,12 +97,12 @@ public class ShovelModule extends AbstractPowerModule {//
 
             @Override
             public int getEnergyUsage() {
-                return (int) applyPropertyModifiers(MPSConstants.SHOVEL_ENERGY);
+                return (int) applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION);
             }
 
             @Override
             public void handleBreakSpeed(PlayerEvent.BreakSpeed event) {
-                event.setNewSpeed((float) (event.getNewSpeed() * applyPropertyModifiers(MPSConstants.SHOVEL_HARVEST_SPEED)));
+                event.setNewSpeed((float) (event.getNewSpeed() * applyPropertyModifiers(MPSConstants.HARVEST_SPEED)));
             }
         }
 

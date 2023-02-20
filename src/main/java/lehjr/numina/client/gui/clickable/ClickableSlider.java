@@ -36,7 +36,6 @@ import lehjr.numina.common.math.Colour;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.widget.Widget;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TranslationTextComponent;
 
 import javax.annotation.Nullable;
@@ -51,21 +50,6 @@ import javax.annotation.Nullable;
  *
  */
 public class ClickableSlider extends DrawableTile implements IClickable {
-    /*
-        slider background x
-        top 0-75; 130-200
-
-
-
-
-     */
-
-
-
-
-
-
-
     boolean isVisible = true;
     boolean isEnabled = true;
     LabelBox labelBox;
@@ -103,9 +87,6 @@ public class ClickableSlider extends DrawableTile implements IClickable {
         this.slider = new Slider(position, isHorizontal, size, id, currentVal, iSlider);
         this.slider.setThickness(6);
         this.slider.setBelow(this.labelBox);
-        System.out.println("slider height: " + slider.height());
-
-
         super.setHeight(labelBox.height() + slider.height());
         super.setWidth(labelBox.width());
         super.setPosition(position);
@@ -129,7 +110,7 @@ public class ClickableSlider extends DrawableTile implements IClickable {
 
         if (this.isVisible()) {
             this.slider.render(matrixStack, mouseX, mouseY, frameTime);
-            this.renderButton(matrixStack, mouseX, mouseY, frameTime);
+//            this.renderButton(matrixStack, mouseX, mouseY, frameTime);
 
             this.labelBox.renderLabel(matrixStack, 0, 2);
         }
@@ -143,22 +124,22 @@ public class ClickableSlider extends DrawableTile implements IClickable {
      */
 
 
-    protected void renderBg(MatrixStack pMatrixStack, int pMouseX, int pMouseY) {
-        Minecraft.getInstance().getTextureManager().bind(Widget.WIDGETS_LOCATION);
-        RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-        int i = (this.containsPoint(pMouseX, pMouseY) ? 2 : 1) * 20;
-
-        // position.getx should be just left(), position.getY should be top()
-        Minecraft.getInstance().screen.blit(pMatrixStack,
-                (int) (this.centerX() + (int)(this.getValue() * (double)(this.width() - 8))),
-                (int) this.centerY(), 0, 46 + i, 4, 20);
-        Minecraft.getInstance().screen.blit(pMatrixStack,
-                (int) (this.centerX() + (int)(this.getValue() * (double)(this.width() - 8)) + 4),
-                (int) this.centerY(), 196, 46 + i, 4, 20);
-
-
-        // public void blit(MatrixStack pMatrixStack, int pX, int pY, int pUOffset, int pVOffset, int pUWidth, int pVHeight) {
-    }
+//    protected void renderBg(MatrixStack pMatrixStack, int pMouseX, int pMouseY) {
+//        Minecraft.getInstance().getTextureManager().bind(Widget.WIDGETS_LOCATION);
+//        RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+//        int i = (this.containsPoint(pMouseX, pMouseY) ? 2 : 1) * 20;
+//
+//        // position.getx should be just left(), position.getY should be top()
+//        Minecraft.getInstance().screen.blit(pMatrixStack,
+//                (int) (this.centerX() + (int)(this.getValue() * (double)(this.width() - 8))),
+//                (int) this.centerY(), 0, 46 + i, 4, 20);
+//        Minecraft.getInstance().screen.blit(pMatrixStack,
+//                (int) (this.centerX() + (int)(this.getValue() * (double)(this.width() - 8)) + 4),
+//                (int) this.centerY(), 196, 46 + i, 4, 20);
+//
+//
+//        // public void blit(MatrixStack pMatrixStack, int pX, int pY, int pUOffset, int pVOffset, int pUWidth, int pVHeight) {
+//    }
 
     float alpha = 1;
 
@@ -170,24 +151,24 @@ public class ClickableSlider extends DrawableTile implements IClickable {
      * @param pMouseY
      * @param pPartialTicks
      */
-    public void renderButton(MatrixStack pMatrixStack, int pMouseX, int pMouseY, float pPartialTicks) {
-        Minecraft minecraft = Minecraft.getInstance();
-        FontRenderer fontrenderer = minecraft.font;
-        minecraft.getTextureManager().bind(Widget.WIDGETS_LOCATION);
-        RenderSystem.color4f(1.0F, 1.0F, 1.0F, this.alpha);
-        int i = this.getYImage(containsPoint(pMouseX, pMouseY));
-        RenderSystem.enableBlend();
-        RenderSystem.defaultBlendFunc();
-        RenderSystem.enableDepthTest();
-        Minecraft.getInstance().screen.blit(pMatrixStack,
-                (int) this.getUL().x(),
-                (int) this.getUL().y(),
-                0, 46 + i * 20, (int) (this.width() / 2), (int) this.height());
-        Minecraft.getInstance().screen.blit(pMatrixStack, (int) (this.getUL().x() + this.width() / 2), (int) this.getUL().y(), (int) (200 - this.width() / 2), 46 + i * 20, (int) (this.width() / 2), (int) this.height());
-        this.renderBg(pMatrixStack, pMouseX, pMouseY);
-        int j = getFGColor();
-//        drawCenteredString(pMatrixStack, fontrenderer, this.getMessage(), this.x + this.width / 2, this.y + (this.height - 8) / 2, j | MathHelper.ceil(this.alpha * 255.0F) << 24);
-    }
+//    public void renderButton(MatrixStack pMatrixStack, int pMouseX, int pMouseY, float pPartialTicks) {
+//        Minecraft minecraft = Minecraft.getInstance();
+//        FontRenderer fontrenderer = minecraft.font;
+//        minecraft.getTextureManager().bind(Widget.WIDGETS_LOCATION);
+//        RenderSystem.color4f(1.0F, 1.0F, 1.0F, this.alpha);
+//        int i = this.getYImage(containsPoint(pMouseX, pMouseY));
+//        RenderSystem.enableBlend();
+//        RenderSystem.defaultBlendFunc();
+//        RenderSystem.enableDepthTest();
+//        Minecraft.getInstance().screen.blit(pMatrixStack,
+//                (int) this.getUL().x(),
+//                (int) this.getUL().y(),
+//                0, 46 + i * 20, (int) (this.width() / 2), (int) this.height());
+//        Minecraft.getInstance().screen.blit(pMatrixStack, (int) (this.getUL().x() + this.width() / 2), (int) this.getUL().y(), (int) (200 - this.width() / 2), 46 + i * 20, (int) (this.width() / 2), (int) this.height());
+////        this.renderBg(pMatrixStack, pMouseX, pMouseY);
+//        int j = getFGColor();
+////        drawCenteredString(pMatrixStack, fontrenderer, this.getMessage(), this.x + this.width / 2, this.y + (this.height - 8) / 2, j | MathHelper.ceil(this.alpha * 255.0F) << 24);
+//    }
 
     public static final int UNSET_FG_COLOR = -1;
     protected int packedFGColor = UNSET_FG_COLOR;

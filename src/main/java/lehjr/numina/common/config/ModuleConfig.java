@@ -31,6 +31,7 @@ import lehjr.numina.common.capabilities.module.powermodule.IConfig;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.constants.NuminaConstants;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.config.ModConfig;
 import org.apache.commons.io.FileUtils;
@@ -63,9 +64,12 @@ public class ModuleConfig implements IConfig {
         return serverConfig;
     }
 
+    final boolean generateNewConfigValues = true;
+
+
     boolean isInDevMode() {
         // fixme: find better way of doing this
-        ModList.get().getModContainerById(NuminaConstants.MOD_ID).get().getModInfo().getModProperties();
+//        ModList.get().getModContainerById(NuminaConstants.MOD_ID).get().getModInfo().getModProperties();
 
         return ModList.get().getModContainerById(NuminaConstants.MOD_ID).map(container ->container.getModInfo().getOwningFile().getFileProperties().isEmpty()).orElse(false);
     }
@@ -77,7 +81,7 @@ public class ModuleConfig implements IConfig {
 
     void addtoMap(String category, String moduleName, String entry) {
         // values may not be missing if config is not yet present (such as during startup)
-        if (serverConfig.isPresent()) {
+        if (getModConfig().isPresent()) {
             NuminaLogger.logDebug("adding to map: " + category + ", " + moduleName + ", " + entry);
 
             Map<String, ArrayList<String>> modulesForCategory;
@@ -153,29 +157,9 @@ public class ModuleConfig implements IConfig {
         String moduleName = itemTranslationKeyToConfigKey(module.getItem().getDescriptionId());
         String entry = "base_" + propertyName;
 
-        // if config is not null then look up value and add it if not present
-        return getModConfig().map(config -> {
-
-            // config data is null when logging out and back in?
-            if (config.getConfigData() != null) {
-                ArrayList<String> key = new ArrayList<String>() {{
-                    add("Modules");
-                    add(category.getConfigTitle());
-                    add(moduleName);
-                    add(entry);
-                }};
-
-                if (config.getConfigData().contains(key)) {
-                    return config.getConfigData().get(key);
-                } else if (!isInDevMode()) {
-                    config.getConfigData().set(key, baseVal);
-                }
-            }
-            return baseVal;
-
-            // Add to map then return base val
-        }).orElseGet(()-> {
-            addtoMap(category.getConfigTitle(),
+        // Add to map
+        if (isInDevMode() && generateNewConfigValues) {
+            addtoMap(category.getConfigTitle().replace(" ", "_"),
                     moduleName,
                     new StringBuilder("builder.defineInRange(\"")
                             .append(entry).append("\", ")
@@ -184,8 +168,23 @@ public class ModuleConfig implements IConfig {
                             .append(Double.MAX_VALUE)
                             .append(");\n").toString());
             isModuleAllowed(category, module); // initialize the value
+        }
+
+        // if config is not null then look up value and add it if not present
+        return getModConfig().map(config -> {
+            // config data is null when logging out and back in?
+            if (config.getConfigData() != null) {
+                ArrayList<String> key = new ArrayList<String>() {{
+                    add("Modules");
+                    add(category.getConfigTitle().replace(" ", "_"));
+                    add(moduleName);
+                    add(entry);
+                }};
+                // return value or baseValue
+                return config.getConfigData().getOrElse(key, baseVal);
+            }
             return baseVal;
-        });
+        }).orElse(baseVal);
     }
 
     @Override
@@ -199,29 +198,8 @@ public class ModuleConfig implements IConfig {
         String moduleName = itemTranslationKeyToConfigKey(module.getItem().getDescriptionId());
         String entry = propertyName + "_" + tradeoffName + "_multiplier";
 
-        return getModConfig().map(config-> {
-            if (config.getConfigData() != null) {
-
-                ArrayList<String> key = new ArrayList<String>() {{
-                    add("Modules");
-                    add(category.getConfigTitle().replace(" ", "_"));
-                    add(moduleName);
-                    add(entry);
-                }};
-
-                if (config.getConfigData().contains(key)) {
-                    Double val = config.getConfigData().get(key);
-//                MuseLogger.logDebug("common config value: " + config.getConfigData().get(key));
-
-                    // FIXME: logging out and back in creates null values?
-                    return val != null ? val : multiplier;
-                } else if (!isInDevMode()) {
-                    config.getConfigData().set(key, multiplier);
-                }
-            }
-            return multiplier;
-        }).orElseGet(()->{
-            addtoMap(category.getConfigTitle(),
+        if (isInDevMode() && generateNewConfigValues) {
+            addtoMap(category.getConfigTitle().replace(" ", "_"),
                     moduleName,
                     new StringBuilder("builder.defineInRange(\"")
                             .append(entry).append("\", ")
@@ -230,9 +208,31 @@ public class ModuleConfig implements IConfig {
                             .append(Double.MAX_VALUE)
                             .append(");\n").toString());
             isModuleAllowed(category, module);
+        }
 
+        return getModConfig().map(config-> {
+            if (config.getConfigData() != null) {
+                ArrayList<String> key = new ArrayList<String>() {{
+                    add("Modules");
+                    add(category.getConfigTitle().replace(" ", "_"));
+                    add(moduleName);
+                    add(entry);
+                }};
+
+                return config.getConfigData().getOrElse(key, multiplier);
+
+//                if (config.getConfigData().contains(key)) {
+//                    Double val = config.getConfigData().get(key);
+////                MuseLogger.logDebug("common config value: " + config.getConfigData().get(key));
+//
+//                    // FIXME: logging out and back in creates null values?
+//                    return val != null ? val : multiplier;
+//                } else if (!isInDevMode()) {
+//                    config.getConfigData().set(key, multiplier);
+//                }
+            }
             return multiplier;
-        });
+        }).orElse(multiplier);
     }
 
     @Override
@@ -240,23 +240,8 @@ public class ModuleConfig implements IConfig {
         String moduleName = itemTranslationKeyToConfigKey(module.getItem().getDescriptionId());
         String entry = propertyName + "_" + tradeoffName + "_multiplier";
 
-        return getModConfig().map(config->{
-            if (config.getConfigData() != null) {
-                ArrayList<String> key = new ArrayList<String>() {{
-                    add("Modules");
-                    add(category.getConfigTitle());
-                    add(moduleName);
-                    add(entry);
-                }};
-                if (config.getConfigData().contains(key)) {
-                    return config.getConfigData().get(key);
-                } else if (!isInDevMode()) {
-                    config.getConfigData().set(key, multiplier);
-                }
-            }
-            return multiplier;
-        }).orElseGet(()->{
-            addtoMap(category.getConfigTitle(),
+        if (isInDevMode() && generateNewConfigValues) {
+            addtoMap(category.getConfigTitle().replace(" ", "_"),
                     moduleName,
                     new StringBuilder("builder.defineInRange(\"")
                             .append(entry).append("\", ")
@@ -265,9 +250,21 @@ public class ModuleConfig implements IConfig {
                             .append(Integer.MAX_VALUE)
                             .append(");\n").toString());
             isModuleAllowed(category, module);
+        }
 
+        return getModConfig().map(config->{
+            if (config.getConfigData() != null) {
+                ArrayList<String> key = new ArrayList<String>() {{
+                    add("Modules");
+                    add(category.getConfigTitle().replace(" ", "_"));
+                    add(moduleName);
+                    add(entry);
+                }};
+
+                return config.getConfigData().getOrElse(key, multiplier);
+            }
             return multiplier;
-        });
+        }).orElse(multiplier);
     }
 
     @Override
@@ -275,26 +272,28 @@ public class ModuleConfig implements IConfig {
         String moduleName = itemTranslationKeyToConfigKey(module.getItem().getDescriptionId());
         String entry = "isAllowed";
 
+        if (isInDevMode() && generateNewConfigValues) {
+            addtoMap(category.getConfigTitle().replace(" ", "_"),
+                    moduleName,
+                    new StringBuilder("builder.define(\"")
+                            .append(entry)
+                            .append("\", true);\n").toString());
+        }
+
+
         return getModConfig().map(config->{
             if (config.getConfigData() != null) {
                 ArrayList<String> key = new ArrayList<String>() {{
                     add("Modules");
-                    add(category.getConfigTitle());
+                    add(category.getConfigTitle().replace(" ", "_"));
                     add(moduleName);
                     add(entry);
                 }};
 
-                if (config.getConfigData().contains(key)) {
-                    return config.getConfigData().get(key);
-                } else if (!isInDevMode()) {
-                    config.getConfigData().set(key, true);
-                }
+                return config.getConfigData().getOrElse(key, true);
             }
             return true;
-        }).orElseGet(()->{
-            addtoMap(category.getConfigTitle(), moduleName, new StringBuilder("builder.define(\"").append(entry).append("\", true);\n").toString());
-            return true;
-        });
+        }).orElse(true);
     }
 
     String itemTranslationKeyToConfigKey(String translationKey) {

@@ -73,9 +73,9 @@ public class JetPackModule extends AbstractPowerModule {
         public CapProvider(@Nonnull ItemStack module) {
             this.module = module;
             this.ticker = new Ticker(module, ModuleCategory.MOVEMENT, ModuleTarget.TORSOONLY, MPSSettings::getModuleConfig) {{
-                addBaseProperty(MPSConstants.JETPACK_ENERGY, 0, "RF/t");
+                addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, 0, "RF/t");
                 addBaseProperty(MPSConstants.JETPACK_THRUST, 0, "N");
-                addTradeoffProperty(MPSConstants.THRUST, MPSConstants.JETPACK_ENERGY, 15000);
+                addTradeoffProperty(MPSConstants.THRUST, MPSConstants.ENERGY_CONSUMPTION, 15000);
                 addTradeoffProperty(MPSConstants.THRUST, MPSConstants.JETPACK_THRUST, 0.16F);
             }};
 
@@ -106,7 +106,7 @@ public class JetPackModule extends AbstractPowerModule {
                         m.isModuleOnline(MPSRegistryNames.FLIGHT_CONTROL_MODULE)).orElse(false);
                 double jetEnergy = 0;
                 double thrust = 0;
-                jetEnergy += applyPropertyModifiers(MPSConstants.JETPACK_ENERGY);
+                jetEnergy += applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION);
                 thrust += applyPropertyModifiers(MPSConstants.JETPACK_THRUST);
 
                 if ((jetEnergy < ElectricItemUtils.getPlayerEnergy(player)) &&

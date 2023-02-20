@@ -70,10 +70,10 @@ public class MagnetModule extends AbstractPowerModule {
         public CapProvider(@Nonnull ItemStack module) {
             this.module = module;
             this.ticker = new Ticker(module, ModuleCategory.SPECIAL, ModuleTarget.TORSOONLY, MPSSettings::getModuleConfig) {{
-                addBaseProperty(MPSConstants.MAGNET_ENERGY, 0, "FE");
-                addTradeoffProperty(MPSConstants.MAGNET_POWER, MPSConstants.MAGNET_ENERGY, 2000);
-                addBaseProperty(MPSConstants.RADIUS, 5);
-                addTradeoffProperty(MPSConstants.MAGNET_POWER, MPSConstants.RADIUS, 10);
+                addBaseProperty(MPSConstants.RADIUS, 1, "m");
+                addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, 5, "FE");
+                addTradeoffProperty(MPSConstants.RADIUS, MPSConstants.ENERGY_CONSUMPTION, 2000);
+                addIntTradeoffProperty(MPSConstants.RADIUS, MPSConstants.RADIUS, 9, "m", 1, 0);
             }};
 
             powerModuleHolder = LazyOptional.of(() -> {
@@ -89,7 +89,7 @@ public class MagnetModule extends AbstractPowerModule {
 
             @Override
             public void onPlayerTickActive(PlayerEntity player, ItemStack stack) {
-                int energyUSage = (int) applyPropertyModifiers(MPSConstants.MAGNET_ENERGY);
+                int energyUSage = (int) applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION);
 
                 if (ElectricItemUtils.getPlayerEnergy(player) > energyUSage) {
                     boolean isServerSide = !player.level.isClientSide;

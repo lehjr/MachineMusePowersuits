@@ -73,8 +73,9 @@ public class InstallSalvageGui extends ExtendedContainerScreen2<InstallSalvageCo
         addFrame(moduleSelectFrame);
 
         /** inventory frame for the modular item inventory. Changes with different selected modular items */
+        boolean keepOnReload = moduleSelectFrame != null;
         modularItemInventory = new ScrollableInventoryFrame2(menu, new Rect(178,14,353,119), itemSelectFrame, this.ulGetter());
-        moduleSelectFrame.loadModules(false);
+        moduleSelectFrame.loadModules(keepOnReload);
         addFrame(modularItemInventory);
     }
 

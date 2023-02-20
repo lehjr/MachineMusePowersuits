@@ -3,16 +3,15 @@ package lehjr.mpsrecipecreator.client.gui;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import lehjr.numina.client.gui.frame.ScrollableFrame;
-import lehjr.numina.common.math.Colour;
+import lehjr.numina.client.gui.gemoetry.Rect;
 import lehjr.numina.common.string.StringUtils;
 
 public class StackTextDisplayFrame extends ScrollableFrame {
     String label = "";
     int slot = -1;
 
-    public StackTextDisplayFrame(Colour backgroundColour) {
-        super();
-        setBackgroundColour(backgroundColour);
+    public StackTextDisplayFrame(Rect rect) {
+        super(rect);
     }
 
     public void setSlot(int slot) {

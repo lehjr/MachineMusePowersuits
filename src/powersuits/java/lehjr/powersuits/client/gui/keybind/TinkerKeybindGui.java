@@ -58,18 +58,6 @@ public class TinkerKeybindGui extends ContainerlessGui {
         this./*ySize*/imageHeight = 217;
     }
 
-//    double scrollVal = 0;
-//    @Override
-//    public boolean mouseScrolled(double mouseX, double mouseY, double dWheel) {
-//
-//        scrollVal += dWheel;
-//
-//
-//
-//        return super.mouseScrolled(mouseX, mouseY, dWheel);
-//    }
-
-
     /**
      * Add the buttons (and other controls) to the screen.
      */
@@ -85,7 +73,6 @@ public class TinkerKeybindGui extends ContainerlessGui {
         kbFrame = new KeyBindFrame( kbTL, kbTL.plus(334, 201));
         addFrame(tabSelectFrame);
         addFrame(kbFrame);
-        System.out.println("kbFrame: " + kbFrame.getBackgroundRect());
     }
 
     @Override
@@ -97,8 +84,6 @@ public class TinkerKeybindGui extends ContainerlessGui {
         int j = this.topPos;
         this.blit(matrixStack, i, j, this.getBlitOffset(), 0, 0, imageWidth, imageHeight, 512, 512);
     }
-
-
 
     @Override
     public boolean keyPressed(int p_231046_1_, int p_231046_2_, int p_231046_3_) {

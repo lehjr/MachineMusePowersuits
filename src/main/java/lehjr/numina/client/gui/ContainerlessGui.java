@@ -212,4 +212,48 @@ public class ContainerlessGui extends Screen {
         this.minecraft = Minecraft.getInstance();
         return this.minecraft;
     }
+
+    /**
+     * Returns absolute screen coordinates (int 0 to width) from a relative
+     * coordinate (float -1.0F to +1.0F)
+     *
+     * @param relx Relative X coordinate
+     * @return Absolute X coordinate
+     */
+    public int absX(double relx) {
+        int absx = (int) ((relx + 1) * getImageWidth() / 2);
+        int xpadding = (width - getImageWidth()) / 2;
+        return absx + xpadding;
+    }
+
+    /**
+     * Returns relative coordinate (float -1.0F to +1.0F) from absolute
+     * coordinates (int 0 to width)
+     */
+    public int relX(double absx) {
+        int padding = (width - getImageWidth()) / 2;
+        return (int) ((absx - padding) * 2 / getImageWidth() - 1);
+    }
+
+    /**
+     * Returns absolute screen coordinates (int 0 to width) from a relative
+     * coordinate (float -1.0F to +1.0F)
+     *
+     * @param rely Relative Y coordinate
+     * @return Absolute Y coordinate
+     */
+    public int absY(double rely) {
+        int absy = (int) ((rely + 1) * imageHeight / 2);
+        int ypadding = (height - imageHeight) / 2;
+        return absy + ypadding;
+    }
+
+    /**
+     * Returns relative coordinate (float -1.0F to +1.0F) from absolute
+     * coordinates (int 0 to width)
+     */
+    public int relY(float absy) {
+        int padding = (height - getYSize()) / 2;
+        return (int) ((absy - padding) * 2 / getYSize() - 1);
+    }
 }

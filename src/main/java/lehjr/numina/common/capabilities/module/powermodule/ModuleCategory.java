@@ -33,18 +33,18 @@ import net.minecraft.util.text.TranslationTextComponent;
  */
 public enum ModuleCategory {
     NONE("numina.module.category.none", "None"),
-    DEBUG("numina.module.category.debug", "Debug_Modules"),
-    ARMOR("numina.module.category.armor", "Armor_Modules"),
-    ENERGY_STORAGE("numina.module.category.energystorage", "Energy_Storage_Modules"),
-    ENERGY_GENERATION("numina.module.category.energygeneration", "Energy_Generation_Modules"),
-    TOOL("numina.module.category.tool", "Tool_Modules"),
-    WEAPON("numina.module.category.weapon", "Weapon_Modules"),
-    MOVEMENT("numina.module.category.movement", "Movement_Modules"),
-    COSMETIC("numina.module.category.cosmetic", "Cosmetic_Modules"),
-    VISION("numina.module.category.vision", "Vision_Modules"),
-    ENVIRONMENTAL("numina.module.category.environment", "Environment_Modules"),
-    SPECIAL("numina.module.category.special", "Special_Modules"),
-    MINING_ENHANCEMENT("numina.module.category.miningenhancement", "Mining_Enhancement_Modules");
+    DEBUG("numina.module.category.debug", "Debug"),
+    ARMOR("numina.module.category.armor", "Armor"),
+    ENERGY_STORAGE("numina.module.category.energystorage", "Energy_Storage"),
+    ENERGY_GENERATION("numina.module.category.energygeneration", "Energy_Generation"),
+    TOOL("numina.module.category.tool", "Tool"),
+    WEAPON("numina.module.category.weapon", "Weapon"),
+    MOVEMENT("numina.module.category.movement", "Movement"),
+    COSMETIC("numina.module.category.cosmetic", "Cosmetic"),
+    VISION("numina.module.category.vision", "Vision"),
+    ENVIRONMENTAL("numina.module.category.environment", "Environment"),
+    SPECIAL("numina.module.category.special", "Special"),
+    MINING_ENHANCEMENT("numina.module.category.miningenhancement", "Mining_Enhancement");
 
     private final String configTitle;
     private final TranslationTextComponent translation;

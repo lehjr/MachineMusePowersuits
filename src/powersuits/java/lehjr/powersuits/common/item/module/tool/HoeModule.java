@@ -81,13 +81,13 @@ public class HoeModule extends AbstractPowerModule {
         public CapProvider(@Nonnull ItemStack module) {
             this.module = module;
             this.rightClickie = new RightClickie(module, ModuleCategory.TOOL, ModuleTarget.TOOLONLY, MPSSettings::getModuleConfig) {{
-                addBaseProperty(MPSConstants.HOE_ENERGY, 500, "FE");
-                addTradeoffProperty(MPSConstants.RADIUS, MPSConstants.HOE_ENERGY, 9500);
+                addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, 500, "FE");
+                addTradeoffProperty(MPSConstants.RADIUS, MPSConstants.ENERGY_CONSUMPTION, 9500);
                 addIntTradeoffProperty(MPSConstants.RADIUS, MPSConstants.RADIUS, 8, "m", 1, 0);
 
-                addBaseProperty(MPSConstants.HOE_HARVEST_SPEED, 8, "x");
-                addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.HOE_ENERGY, 9500);
-                addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.HOE_HARVEST_SPEED, 22);
+                addBaseProperty(MPSConstants.HARVEST_SPEED, 8, "x");
+                addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.ENERGY_CONSUMPTION, 9500);
+                addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.HARVEST_SPEED, 22);
             }};
             powerModuleHolder = LazyOptional.of(() -> rightClickie);
         }
@@ -147,12 +147,12 @@ public class HoeModule extends AbstractPowerModule {
 
             @Override
             public void handleBreakSpeed(PlayerEvent.BreakSpeed event) {
-                event.setNewSpeed((float) (event.getNewSpeed() * applyPropertyModifiers(MPSConstants.HOE_HARVEST_SPEED)));
+                event.setNewSpeed((float) (event.getNewSpeed() * applyPropertyModifiers(MPSConstants.HARVEST_SPEED)));
             }
 
             @Override
             public int getEnergyUsage() {
-                return (int) applyPropertyModifiers(MPSConstants.HOE_ENERGY);
+                return (int) applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION);
             }
 
             @Nonnull

@@ -81,7 +81,7 @@ public class DimensionalRiftModule extends AbstractPowerModule {
             this.module = module;
             this.rightClickie = new RightClickie(module, ModuleCategory.MOVEMENT, ModuleTarget.TOOLONLY, MPSSettings::getModuleConfig) {{
                 addBaseProperty(MPSConstants.HEAT_GENERATION, 55);
-                addBaseProperty(MPSConstants.DIM_RIFT_ENERGY, 200000);
+                addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, 200000);
             }};
 
             powerModuleHolder = LazyOptional.of(() -> rightClickie);
@@ -106,7 +106,7 @@ public class DimensionalRiftModule extends AbstractPowerModule {
 
                     if (level != null) {
                         BlockPos coords = playerIn.blockPosition();
-                        int energyConsumption = (int) applyPropertyModifiers(MPSConstants.DIM_RIFT_ENERGY);
+                        int energyConsumption = (int) applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION);
                         int playerEnergy = ElectricItemUtils.getPlayerEnergy(playerIn);
                         if (playerEnergy >= energyConsumption) {
                             Optional<BlockPos> targetPos = findSafeLocation(coords, Direction.Axis.X, level, playerIn);
@@ -125,7 +125,7 @@ public class DimensionalRiftModule extends AbstractPowerModule {
 
             @Override
             public int getEnergyUsage() {
-                return (int) applyPropertyModifiers(MPSConstants.DIM_RIFT_ENERGY);
+                return (int) applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION);
             }
         }
 

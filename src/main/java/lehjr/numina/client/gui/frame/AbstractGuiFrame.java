@@ -1,7 +1,6 @@
 package lehjr.numina.client.gui.frame;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import lehjr.numina.client.gui.frame.IGuiFrame;
 import lehjr.numina.client.gui.gemoetry.*;
 
 import javax.annotation.Nonnull;

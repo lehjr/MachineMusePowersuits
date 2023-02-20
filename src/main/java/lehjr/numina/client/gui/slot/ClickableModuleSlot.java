@@ -93,7 +93,7 @@ public class ClickableModuleSlot extends UniversalSlot implements IClickable {
         if (containsPoint(x, y)) {
             List<ITextComponent> toolTipText = new ArrayList<>();
             toolTipText.add(getLocalizedName());
-            toolTipText.addAll(StringUtils.wrapITextComponentToLength(getLocalizedDescription(), 30));
+            toolTipText.addAll(StringUtils.wrapStringToVisualLength(getLocalizedDescription(), 30));
             return toolTipText;
         }
         return null;

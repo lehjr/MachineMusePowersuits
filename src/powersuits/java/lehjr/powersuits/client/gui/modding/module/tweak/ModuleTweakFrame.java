@@ -27,41 +27,42 @@
 package lehjr.powersuits.client.gui.modding.module.tweak;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import lehjr.numina.client.gui.clickable.ClickableTinkerSlider;
+import com.mojang.blaze3d.systems.RenderSystem;
+import lehjr.numina.client.gui.clickable.slider.VanillaFrameScrollBar;
+import lehjr.numina.client.gui.clickable.slider.VanillaTinkerIntSlider;
+import lehjr.numina.client.gui.clickable.slider.VanillaTinkerSlider;
 import lehjr.numina.client.gui.frame.ScrollableFrame;
 import lehjr.numina.client.gui.gemoetry.MusePoint2D;
+import lehjr.numina.client.gui.gemoetry.Rect;
 import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
 import lehjr.numina.common.capabilities.module.powermodule.PowerModuleCapability;
-import lehjr.numina.common.math.Colour;
+import lehjr.numina.common.constants.NuminaConstants;
 import lehjr.numina.common.network.NuminaPackets;
 import lehjr.numina.common.network.packets.TweakRequestDoublePacket;
+import lehjr.numina.common.string.StringUtils;
 import lehjr.powersuits.client.gui.common.ModularItemSelectionFrame;
+import lehjr.powersuits.client.gui.common.ModularItemTabToggleWidget;
+import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.common.util.LazyOptional;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class ModuleTweakFrame extends ScrollableFrame {
     protected static int margin = 4;
     protected ModularItemSelectionFrame itemTarget;
     protected ModuleSelectionFrame moduleTarget;
-    protected List<ClickableTinkerSlider> sliders = new LinkedList<>();
+    protected List<VanillaTinkerSlider> sliders = new LinkedList<>();
     protected Map<String, Double> propertyStrings = new HashMap<>();
-    protected ClickableTinkerSlider selectedSlider;
+    protected VanillaTinkerSlider selectedSlider;
+    VanillaFrameScrollBar scrollBar;
 
-    public ModuleTweakFrame(
-            MusePoint2D topleft,
-            MusePoint2D bottomright,
-            Colour background,
-            Colour topBorder,
-            Colour bottomBorder,
-            ModularItemSelectionFrame itemTarget,
-            ModuleSelectionFrame moduleTarget) {
-        super(topleft, bottomright, background, topBorder, bottomBorder);
+    public ModuleTweakFrame(Rect rect, ModularItemSelectionFrame itemTarget, ModuleSelectionFrame moduleTarget) {
+        super(rect);
         this.itemTarget = itemTarget;
         this.moduleTarget = moduleTarget;
+        this.scrollBar = new VanillaFrameScrollBar(this, "slider");
     }
 
     @Override
@@ -70,18 +71,21 @@ public class ModuleTweakFrame extends ScrollableFrame {
         if (cap.isPresent()) {
             loadTweaks(cap);
         } else {
-            sliders.clear();
-            propertyStrings.clear();
-            selectedSlider = null;
+            this.sliders.clear();
+            this.propertyStrings.clear();
+            this.selectedSlider = null;
         }
 
-        for (ClickableTinkerSlider slider : sliders) {
+        for (VanillaTinkerSlider slider : sliders) {
             slider.update(mousex, mousey);
         }
 
         if (selectedSlider != null) {
-            selectedSlider.setValueByX(mousex);
+            selectedSlider.setValueByMouse(mousex);
         }
+        scrollBar.setMaxValue(getMaxScrollPixels());
+        scrollBar.setValueByMouse(mousey);
+        setCurrentScrollPixels(scrollBar.getValue());
     }
 
     public void resetScroll() {
@@ -95,36 +99,31 @@ public class ModuleTweakFrame extends ScrollableFrame {
 
     @Override
     public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
-//        super.render(matrixStack, mouseX, mouseY, partialTicks);
-//
-//        super.preRender(matrixStack, mouseX, mouseY, partialTicks);
-//        RenderSystem.pushMatrix();
-//        RenderSystem.translatef(0, -currentScrollPixels, 0);
-//        // FIXME: translation
-//        StringUtils.drawShadowedStringCentered(matrixStack, new TranslationTextComponent("gui.powersuits.tinker"), centerX(), top() + 7);
-//
-//        for (ClickableTinkerSlider slider : sliders) {
-//            slider.render(matrixStack, mouseX, mouseY, partialTicks);
-//        }
-//        int nexty = (int) (sliders.size() * 24 + getRect().top() + 18);
-//
-//        for (Map.Entry<String, Double> property : propertyStrings.entrySet()) {
-//            String name = property.getKey();
-//            String formattedValue = StringUtils.formatNumberFromUnits(property.getValue(), getUnit(name));
-//            double valueWidth = StringUtils.getStringWidth(formattedValue);
-//            double allowedNameWidth = getRect().width() - valueWidth - margin * 2;
-//            List<String> namesList = StringUtils.wrapStringToVisualLength(
-//                    new TranslationTextComponent(NuminaConstants.MODULE_TRADEOFF_PREFIX + name).getString(), allowedNameWidth);
-//
-//            for (int i = 0; i < namesList.size(); i++) {
-//                StringUtils.drawLeftAlignedShadowedString(matrixStack, namesList.get(i), getRect().left() + margin, nexty + 9 * i);
-//            }
-//            StringUtils.drawRightAlignedShadowedString(matrixStack, formattedValue, getRect().right() - margin, nexty + 9 * (namesList.size() - 1) / 2);
-//            nexty += 9 * namesList.size() + 1;
-//        }
-//
-//        RenderSystem.popMatrix();
-//        super.postRender(mouseX, mouseY, partialTicks);
+        double scrolledY = mouseY + currentScrollPixels;
+        super.render(matrixStack, mouseX, mouseY, partialTicks);
+        scrollBar.render(matrixStack, mouseX, mouseY, partialTicks);
+        super.preRender(matrixStack, mouseX, mouseY, partialTicks);
+        RenderSystem.pushMatrix();
+        RenderSystem.translatef(0, (float) -currentScrollPixels, 0);
+        sliders.forEach(slider->  slider.render(matrixStack, mouseX, (int)scrolledY, partialTicks));
+        int nexty = sliders.size() > 0 ? (int) sliders.get(sliders.size() - 1).bottom() + 9 : 4;
+
+        for (Map.Entry<String, Double> property : propertyStrings.entrySet()) {
+            String name = property.getKey();
+            String formattedValue = StringUtils.formatNumberFromUnits(property.getValue(), getUnit(name));
+            double valueWidth = StringUtils.getStringWidth(formattedValue);
+            double allowedNameWidth = width() - valueWidth - margin * 2;
+            List<String> namesList = StringUtils.wrapStringToVisualLength(
+                    new TranslationTextComponent(NuminaConstants.MODULE_TRADEOFF_PREFIX + name).getString(), allowedNameWidth);
+
+            for (int i = 0; i < namesList.size(); i++) {
+                StringUtils.drawLeftAlignedShadowedString(matrixStack, namesList.get(i), left() + margin, nexty + 9 * i);
+            }
+            StringUtils.drawRightAlignedShadowedString(matrixStack, formattedValue, right() - margin, -5 + nexty + 9 * (namesList.size() - 1) / 2);            nexty += 9 * namesList.size() + 1;
+        }
+
+        RenderSystem.popMatrix();
+        super.postRender(mouseX, mouseY, partialTicks);
     }
 
     /**
@@ -135,77 +134,90 @@ public class ModuleTweakFrame extends ScrollableFrame {
      */
     private void loadTweaks(LazyOptional<IPowerModule> cap) {
         propertyStrings = new HashMap();
+        sliders = new LinkedList<>();
         Map<String, IPowerModule.PropertyModifierLinearAdditive> tweaks = new HashMap<>();
-        sliders.clear();
+
         this.totalSize = cap.map(pm -> {
             int totalSize = 0;
-//            CompoundNBT moduleTag = pm.getModuleTag();
-//            Map<String, List<IPowerModule.IPropertyModifier>> propertyModifiers = pm.getPropertyModifiers();
-//            for (Map.Entry<String, List<IPowerModule.IPropertyModifier>> property : propertyModifiers.entrySet()) {
-//                double currValue = 0;
-//                for (IPowerModule.IPropertyModifier modifier : property.getValue()) {
-//                    currValue = modifier.applyModifier(moduleTag, currValue);
-//                    if (modifier instanceof IPowerModule.PropertyModifierLinearAdditive) {
-//                        String modifierName = ((IPowerModule.PropertyModifierLinearAdditive) modifier).getTradeoffName();
-//                        // overwriting PropertyModifierIntLinearAdditive messes up rounding to int
-//                        if (!(tweaks.get(modifierName) instanceof IPowerModule.PropertyModifierIntLinearAdditive)) {
-//                            tweaks.put(modifierName, (IPowerModule.PropertyModifierLinearAdditive) modifier);
-//                        }
-//                        totalSize += 9;
-//                    }
-//                }
-//                propertyStrings.put(property.getKey(), currValue);
+            CompoundNBT moduleTag = pm.getModuleTag();
+
+            Map<String, List<IPowerModule.IPropertyModifier>> propertyModifiers = new HashMap<>();
+
+            pm.getPropertyModifiers().entrySet().stream()
+                    .sorted(Map.Entry.comparingByKey())
+                    .forEachOrdered(property -> {
+                        propertyModifiers.put(property.getKey(), property.getValue());
+                    });
+
+            for (Map.Entry<String, List<IPowerModule.IPropertyModifier>> property : propertyModifiers.entrySet()) {
+                double currValue = 0;
+                for (IPowerModule.IPropertyModifier modifier : property.getValue()) {
+                    currValue = modifier.applyModifier(moduleTag, currValue);
+                    if (modifier instanceof IPowerModule.PropertyModifierLinearAdditive) {
+                        String modifierName = ((IPowerModule.PropertyModifierLinearAdditive) modifier).getTradeoffName();
+                        // overwriting PropertyModifierIntLinearAdditive messes up rounding to int
+                        if (!(tweaks.get(modifierName) instanceof IPowerModule.PropertyModifierIntLinearAdditive)) {
+                            tweaks.put(modifierName, (IPowerModule.PropertyModifierLinearAdditive) modifier);
+                            totalSize += 9;
+                        }
+
+                    }
+                }
+                propertyStrings.put(property.getKey(), currValue);
 //                totalSize += 9;
-//            }
-//
-//            int y = 0;
-//            for (String tweak : tweaks.keySet()) {
-//                y += 23;
-//                MusePoint2D center = new MusePoint2D(getRect().centerx(), getRect().top() + y);
-//                IPowerModule.PropertyModifierLinearAdditive tweakObj = tweaks.get(tweak);
-//                if (tweakObj instanceof IPowerModule.PropertyModifierIntLinearAdditive) {
-//                    ClickableTinkerIntSlider slider = new ClickableTinkerIntSlider(
-//                            center,
-//                            getRect().finalRight() - getRect().finalLeft() - 16,
-//                            moduleTag,
-//                            tweak,
-//                            new TranslationTextComponent(NuminaConstants.MODULE_TRADEOFF_PREFIX + tweak),
-//                            (IPowerModule.PropertyModifierIntLinearAdditive) tweaks.get(tweak));
-//                    sliders.add(slider);
-//                    totalSize += slider.height();
-//                } else {
-//                    ClickableTinkerSlider slider = new ClickableTinkerSlider(
-//                            center,
-//                            getRect().finalRight() - getRect().finalLeft() - 16,
-//                            moduleTag,
-//                            tweak,
-//                            new TranslationTextComponent(NuminaConstants.MODULE_TRADEOFF_PREFIX + tweak));
-//                    sliders.add(slider);
-//                    totalSize += slider.height();
-//                }
-//            }
-            return totalSize + 20;
+            }
+
+            double left = centerX() - ((width() -16) * 0.5 );
+            int y = 5;
+            for (String tweak : tweaks.keySet()) {
+                MusePoint2D ul = new MusePoint2D(left, top() +y);
+
+                IPowerModule.PropertyModifierLinearAdditive tweakObj = tweaks.get(tweak);
+                if (tweakObj instanceof IPowerModule.PropertyModifierIntLinearAdditive) {
+                    VanillaTinkerIntSlider slider = new VanillaTinkerIntSlider(
+                            ul,
+                            width() - 16,
+                            moduleTag,
+                            tweak,
+                            new TranslationTextComponent(NuminaConstants.MODULE_TRADEOFF_PREFIX + tweak),
+                            (IPowerModule.PropertyModifierIntLinearAdditive) tweaks.get(tweak));
+                    sliders.add(slider);
+                    totalSize += slider.height();
+                } else {
+                    VanillaTinkerSlider slider = new VanillaTinkerSlider(
+                            ul,
+                            width() - 16,
+                            moduleTag,
+                            tweak,
+                            new TranslationTextComponent(NuminaConstants.MODULE_TRADEOFF_PREFIX + tweak));
+                    sliders.add(slider);
+                    totalSize += slider.height();
+                }
+                y += 22;
+            }
+            return totalSize;// + 20;
         }).orElse(0);
     }
 
     @Override
-    public boolean mouseClicked(double x, double y, int button) {
-        if (button == 0) {
-            y += currentScrollPixels;
-            for (ClickableTinkerSlider slider : sliders) {
-                if (slider.mouseClicked(x, y, button)) {
+    public boolean mouseClicked(double mouseX, double mouseY, int button) {
+        if (super.mouseClicked(mouseX, mouseY, button)) {
+            mouseY += currentScrollPixels;
+            for (VanillaTinkerSlider slider : sliders) {
+                if (slider.mouseClicked(mouseX, mouseY, button)) {
                     selectedSlider = slider;
                     return true;
                 }
             }
+            return scrollBar.mouseClicked(mouseX, mouseY, button);
         }
         return false;
     }
 
     @Override
-    public boolean mouseReleased(double x, double y, int button) {
-        if (selectedSlider != null && button == 0) {
-            selectedSlider.mouseReleased(x, y, button);
+    public boolean mouseReleased(double mouseX, double mouseY, int button) {
+        if (selectedSlider != null) {
+            selectedSlider.mouseReleased(mouseX, mouseY, button);
             itemTarget.selectedType().ifPresent(type-> moduleTarget.getModuleCap().ifPresent(pm->
                     NuminaPackets.CHANNEL_INSTANCE.sendToServer(
                             new TweakRequestDoublePacket(
@@ -216,6 +228,6 @@ public class ModuleTweakFrame extends ScrollableFrame {
             selectedSlider = null;
             return true;
         }
-        return false;
+        return scrollBar.mouseReleased(mouseX, mouseY, button);
     }
 }

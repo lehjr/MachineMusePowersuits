@@ -64,7 +64,7 @@ public class WaterElectrolyzerModule extends AbstractPowerModule {
         public CapProvider(@Nonnull ItemStack module) {
             this.module = module;
             this.ticker = new Ticker(module, ModuleCategory.ENVIRONMENTAL, ModuleTarget.HEADONLY, MPSSettings::getModuleConfig) {{
-                addBaseProperty(MPSConstants.WATER_ELECTROLYZER_ENERGY, 10000, "FE");
+                addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, 10000, "FE");
             }};
             powerModuleHolder = LazyOptional.of(() -> {
                 ticker.updateFromNBT();
@@ -80,7 +80,7 @@ public class WaterElectrolyzerModule extends AbstractPowerModule {
             @Override
             public void onPlayerTickActive(PlayerEntity player, ItemStack item) {
                 int energy = ElectricItemUtils.getPlayerEnergy(player);
-                int energyConsumption = (int) Math.round(applyPropertyModifiers(MPSConstants.WATER_ELECTROLYZER_ENERGY));
+                int energyConsumption = (int) Math.round(applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION));
                 if (energy > energyConsumption && player.getAirSupply() < 10) {
                     if ((player.level.isClientSide()) && NuminaSettings.useSounds()) {
                         player.playSound(MPSSoundDictionary.ELECTROLYZER, 1.0f, 1.0f);

@@ -58,11 +58,11 @@ public class MeleeAssistModule extends AbstractPowerModule {
         public CapProvider(@Nonnull ItemStack module) {
             this.module = module;
             this.moduleCap = new PowerModule(module, ModuleCategory.WEAPON, ModuleTarget.TOOLONLY, MPSSettings::getModuleConfig) {{
-                addBaseProperty(MPSConstants.PUNCH_ENERGY, 10, "FE");
+                addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, 10, "FE");
                 addBaseProperty(MPSConstants.PUNCH_DAMAGE, 2, "pt");
-                addTradeoffProperty(MPSConstants.IMPACT, MPSConstants.PUNCH_ENERGY, 1000, "FE");
+                addTradeoffProperty(MPSConstants.IMPACT, MPSConstants.ENERGY_CONSUMPTION, 1000, "FE");
                 addTradeoffProperty(MPSConstants.IMPACT, MPSConstants.PUNCH_DAMAGE, 8, "pt");
-                addTradeoffProperty(MPSConstants.CARRY_THROUGH, MPSConstants.PUNCH_ENERGY, 200, "FE");
+                addTradeoffProperty(MPSConstants.CARRY_THROUGH, MPSConstants.ENERGY_CONSUMPTION, 200, "FE");
                 addTradeoffProperty(MPSConstants.CARRY_THROUGH, MPSConstants.PUNCH_KNOCKBACK, 1, "P");
             }};
 

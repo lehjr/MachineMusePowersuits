@@ -72,7 +72,7 @@ public class TabSelectFrame extends AbstractGuiFrame {
         button = new VanillaButton(left(), top(), new TranslationTextComponent("gui.powersuits.tab.module.tweak"), active != 1);
         button.setOnPressed(onPressed->{
             Musique.playClientSound(SoundDictionary.SOUND_EVENT_GUI_SELECT, 1);
-            Minecraft.getInstance().tell(() -> Minecraft.getInstance().setScreen(new ModuleTweakGui(new TranslationTextComponent("gui.tinkertable"), false)));
+            Minecraft.getInstance().tell(() -> Minecraft.getInstance().setScreen(new ModuleTweakGui(new TranslationTextComponent("gui.tinkertable"))));
         });
         buttons.add(button);
 

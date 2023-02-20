@@ -32,8 +32,7 @@ import lehjr.numina.client.gui.clickable.Clickable;
 import lehjr.numina.client.gui.clickable.ClickableLabel;
 import lehjr.numina.client.gui.clickable.slider.VanillaFrameScrollBar;
 import lehjr.numina.client.gui.clickable.slider.VanillaSlider;
-import lehjr.numina.client.gui.frame.fixed.ScrollableFrame2;
-import lehjr.numina.client.gui.gemoetry.DrawableTile;
+import lehjr.numina.client.gui.frame.ScrollableFrame;
 import lehjr.numina.client.gui.gemoetry.IRect;
 import lehjr.numina.client.gui.gemoetry.Rect;
 import lehjr.numina.client.render.IconUtils;
@@ -64,7 +63,7 @@ import java.util.stream.Collectors;
  * <p>
  * Ported to Java by lehjr on 11/2/16.
  */
-public class ColourPickerFrame extends ScrollableFrame2 {
+public class ColourPickerFrame extends ScrollableFrame {
     public ModularItemSelectionFrame itemSelector;
     protected List<IRect> rects = new ArrayList<>();
     static final List<String> slidersIds = new ArrayList<>(Arrays.asList( "red", "green", "blue", "alpha"));
@@ -79,7 +78,6 @@ public class ColourPickerFrame extends ScrollableFrame2 {
     public ColourPickerFrame(ModularItemSelectionFrame itemSelector, double left, double top, double right, double bottom) {
         super(new Rect(left, top, right, bottom));
         this.scrollBar = new VanillaFrameScrollBar(this, "slider");
-        this.scrollBar.setValue(0);
         this.itemSelector = itemSelector;
 
         /** colour sliders ( boxes 0-3 ) ------------------------------------------------------- */

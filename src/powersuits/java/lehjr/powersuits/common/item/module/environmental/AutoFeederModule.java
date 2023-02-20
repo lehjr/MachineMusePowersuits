@@ -84,9 +84,9 @@ public class AutoFeederModule extends AbstractPowerModule {
         public CapProvider(@Nonnull ItemStack module) {
             this.module = module;
             this.ticker = new Ticker(module, ModuleCategory.ENVIRONMENTAL, ModuleTarget.HEADONLY, MPSSettings::getModuleConfig) {{
-                addBaseProperty(MPSConstants.AUTO_FEEDER_ENERGY, 100);
+                addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, 100);
                 addBaseProperty(MPSConstants.EATING_EFFICIENCY, 50);
-                addTradeoffProperty(MPSConstants.EFFICIENCY, MPSConstants.AUTO_FEEDER_ENERGY, 1000, "FE");
+                addTradeoffProperty(MPSConstants.EFFICIENCY, MPSConstants.ENERGY_CONSUMPTION, 1000, "FE");
                 addTradeoffProperty(MPSConstants.EFFICIENCY, MPSConstants.EATING_EFFICIENCY, 50);
             }};
 
@@ -106,7 +106,7 @@ public class AutoFeederModule extends AbstractPowerModule {
                 float foodLevel = getFoodLevel(module);
                 float saturationLevel = getSaturationLevel(module);
                 IInventory inv = player.inventory;
-                double eatingEnergyConsumption = applyPropertyModifiers(MPSConstants.AUTO_FEEDER_ENERGY);
+                double eatingEnergyConsumption = applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION);
                 double efficiency = applyPropertyModifiers(MPSConstants.EATING_EFFICIENCY);
 
                 FoodStats foodStats = player.getFoodData();

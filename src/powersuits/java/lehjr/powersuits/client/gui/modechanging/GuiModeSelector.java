@@ -27,25 +27,33 @@
 package lehjr.powersuits.client.gui.modechanging;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import lehjr.numina.client.gui.ContainerlessGui2;
+import lehjr.numina.client.gui.ContainerlessGui;
 import lehjr.numina.client.gui.gemoetry.MusePoint2D;
 import net.minecraft.client.MainWindow;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.text.ITextComponent;
 
-public class GuiModeSelector extends ContainerlessGui2 {
+public class GuiModeSelector extends ContainerlessGui {
     PlayerEntity player;
     RadialModeSelectionFrame radialSelect;
 
     public GuiModeSelector(PlayerEntity player, ITextComponent titleIn) {
-        super(titleIn, true);
+        super(titleIn);
         Minecraft.getInstance().keyboardHandler.setSendRepeatsToGui(true);
         this.player = player;
         MainWindow screen = Minecraft.getInstance().getWindow();
         this./*xSize*/imageWidth = Math.min(screen.getGuiScaledWidth() - 50, 500);
         this./*ySize*/imageHeight = Math.min(screen.getGuiScaledHeight() - 50, 300);
+    }
 
+    /**
+     * Add the buttons (and other controls) to the screen.
+     */
+    @Override
+    public void init() {
+        super.init();
+        frames.clear();
         radialSelect = new RadialModeSelectionFrame(
                 new MusePoint2D(absX(-0.5), absY(-0.5)),
                 new MusePoint2D(absX(0.5), absY(0.5)),
@@ -65,15 +73,6 @@ public class GuiModeSelector extends ContainerlessGui2 {
         this.renderLabels(matrixStack, mouseX, mouseY);
         matrixStack.popPose();
         renderTooltip(matrixStack, mouseX, mouseY);
-    }
-
-    /**
-     * Add the buttons (and other controls) to the screen.
-     */
-    @Override
-    public void init() {
-        super.init();
-//        radialSelect.init(absX(-0.5F), absY(-0.5F), absX(0.5F), absY(0.5F));
     }
 
     @Override

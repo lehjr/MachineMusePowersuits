@@ -42,6 +42,7 @@ public class LogoutEventHandler {
             MinecraftServer server = event.getPlayer().getServer();
             if (server != null && server.isSingleplayer() || server.isSingleplayerOwner(event.getPlayer().getGameProfile())) {
                 if (moduleConfig instanceof ModuleConfig) {
+                    System.out.println("write missing values");
                     ((ModuleConfig) moduleConfig).writeMissingConfigValues();
                 }
             }

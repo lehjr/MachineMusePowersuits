@@ -68,7 +68,7 @@ public class LuxCapacitorModule extends AbstractPowerModule {
         public CapProvider(@Nonnull ItemStack module) {
             this.module = module;
             this.rightClickie = new RightClickie(module, ModuleCategory.TOOL, ModuleTarget.TOOLONLY, MPSSettings::getModuleConfig) {{
-                addBaseProperty(MPSConstants.LUX_CAP_ENERGY, 1000, "FE");
+                addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, 1000, "FE");
                 addTradeoffProperty(MPSConstants.RED, MPSConstants.RED_HUE, 1, "%");
                 addTradeoffProperty(MPSConstants.GREEN, MPSConstants.GREEN_HUE, 1, "%");
                 addTradeoffProperty(MPSConstants.BLUE, MPSConstants.BLUE_HUE, 1, "%");
@@ -106,7 +106,7 @@ public class LuxCapacitorModule extends AbstractPowerModule {
 
             @Override
             public int getEnergyUsage() {
-                return (int) applyPropertyModifiers(MPSConstants.LUX_CAP_ENERGY);
+                return (int) applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION);
             }
         }
 

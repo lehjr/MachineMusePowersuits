@@ -47,7 +47,6 @@ public class NetheritePlatingModule extends AbstractPowerModule {
                 public String getModuleGroup() {
                     return "Armor";
                 }
-
                 {
                     addBaseProperty(MPSConstants.ARMOR_VALUE_PHYSICAL, 7.5, NuminaConstants.MODULE_TRADEOFF_PREFIX + MPSConstants.ARMOR_POINTS);
                     addBaseProperty(HeatCapability.MAXIMUM_HEAT, 750);

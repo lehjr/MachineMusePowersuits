@@ -6,7 +6,7 @@ import lehjr.numina.client.gui.clickable.Checkbox;
 import lehjr.numina.client.gui.clickable.button.VanillaButton;
 import lehjr.numina.client.gui.clickable.slider.VanillaFrameScrollBar;
 import lehjr.numina.client.gui.frame.AbstractGuiFrame;
-import lehjr.numina.client.gui.frame.fixed.ScrollableFrame2;
+import lehjr.numina.client.gui.frame.ScrollableFrame;
 import lehjr.numina.client.gui.gemoetry.MusePoint2D;
 import lehjr.numina.client.gui.gemoetry.Rect;
 import lehjr.numina.client.render.NuminaRenderer;
@@ -31,7 +31,7 @@ import java.util.List;
 /**
  * @author lehjr
  */
-public class KeyBindFrame extends ScrollableFrame2 {
+public class KeyBindFrame extends ScrollableFrame {
     @Nullable
     MPSKeyBinding keybindingToRemap = null;
     //    Map<MPSKeyBinding, Pair<Checkbox, VanillaButton>> checkBoxList = new HashMap<>();

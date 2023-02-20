@@ -73,7 +73,7 @@ public class AoEpickUpgradeModule2 extends AbstractPowerModule {
         public CapProvider(@Nonnull ItemStack module) {
             this.module = module;
             this.miningEnhancement = new Enhancement(module, ModuleCategory.MINING_ENHANCEMENT, ModuleTarget.TOOLONLY, MPSSettings::getModuleConfig) {{
-                addBaseProperty(MPSConstants.AOE2_ENERGY, 500, "FE");
+                addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, 500, "FE");
                 addBaseProperty(MPSConstants.AOE2_LIMIT, 1);
                 addIntTradeoffProperty(MPSConstants.AOE2_LIMIT, MPSConstants.AOE2_LIMIT, 59, "Blocks", 1, 0);
             }};
@@ -235,7 +235,7 @@ public class AoEpickUpgradeModule2 extends AbstractPowerModule {
 
             @Override
             public int getEnergyUsage() {
-                return (int) applyPropertyModifiers(MPSConstants.AOE2_ENERGY);
+                return (int) applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION);
             }
         }
 

@@ -29,7 +29,6 @@ package lehjr.numina.client.gui.frame;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import lehjr.numina.client.gui.IContainerULOffSet;
-import lehjr.numina.client.gui.frame.fixed.ScrollableFrame2;
 import lehjr.numina.client.gui.gemoetry.IDrawable;
 import lehjr.numina.client.gui.gemoetry.IDrawableRect;
 import lehjr.numina.client.gui.gemoetry.MusePoint2D;
@@ -49,7 +48,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class InventoryFrame extends ScrollableFrame2 implements IContainerULOffSet {
+public abstract class InventoryFrame extends ScrollableFrame implements IContainerULOffSet {
     IContainerULOffSet.ulGetter ulGetter;
     Container container;
 //    Colour gridColour;

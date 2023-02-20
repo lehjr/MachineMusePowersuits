@@ -76,7 +76,7 @@ public class DiamondPickUpgradeModule extends AbstractPowerModule {
         public CapProvider(@Nonnull ItemStack module) {
             this.module = module;
             this.blockBreaking = new BlockBreaker(module, ModuleCategory.TOOL, ModuleTarget.TOOLONLY, MPSSettings::getModuleConfig) {{
-                addBaseProperty(MPSConstants.DIAMOND_PICK_ENERGY, 500, "FE");
+                addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, 500, "FE");
             }};
 //            this.blockBreaking.addBaseProperty(MPSConstants.HARVEST_SPEED, 10, "x");
 //            this.blockBreaking.addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.DIAMOND_PICK_ENERGY, 9500);
@@ -156,7 +156,7 @@ public class DiamondPickUpgradeModule extends AbstractPowerModule {
                             if (!pickaxeModule.isEmpty()) {
                                 newSpeed.set(newSpeed.get() *
                                         pickaxeModule.getCapability(PowerModuleCapability.POWER_MODULE).map(m ->
-                                                m.applyPropertyModifiers(MPSConstants.PICKAXE_HARVEST_SPEED)).orElse(1D));
+                                                m.applyPropertyModifiers(MPSConstants.HARVEST_SPEED)).orElse(1D));
                             }
                         });
                 event.setNewSpeed((float) newSpeed.get());
@@ -164,7 +164,7 @@ public class DiamondPickUpgradeModule extends AbstractPowerModule {
 
             @Override
             public int getEnergyUsage() {
-                return (int) applyPropertyModifiers(MPSConstants.DIAMOND_PICK_ENERGY);
+                return (int) applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION);
             }
         }
 

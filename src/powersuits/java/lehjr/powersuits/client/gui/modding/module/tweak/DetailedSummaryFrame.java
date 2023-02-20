@@ -29,14 +29,15 @@ package lehjr.powersuits.client.gui.modding.module.tweak;
 import com.google.common.util.concurrent.AtomicDouble;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import lehjr.numina.client.gui.frame.ScrollableFrame;
-import lehjr.numina.client.gui.gemoetry.MusePoint2D;
+import lehjr.numina.client.gui.gemoetry.Rect;
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.capabilities.module.powermodule.PowerModuleCapability;
-import lehjr.numina.common.math.Colour;
+import lehjr.numina.common.string.StringUtils;
 import lehjr.powersuits.client.gui.common.ModularItemSelectionFrame;
 import lehjr.powersuits.common.constants.MPSConstants;
 import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.items.CapabilityItemHandler;
 import org.apache.commons.lang3.tuple.Pair;
@@ -47,15 +48,11 @@ public class DetailedSummaryFrame extends ScrollableFrame {
     protected AtomicInteger energy = new AtomicInteger(0);
     protected AtomicDouble armor = new AtomicDouble(0);
     protected ModularItemSelectionFrame itemSelectionFrame;
+    TranslationTextComponent energyText = new TranslationTextComponent("gui.powersuits.energyStorage");
+    TranslationTextComponent armorText = new TranslationTextComponent("gui.powersuits.armor");
 
-    public DetailedSummaryFrame(
-            MusePoint2D topleft,
-            MusePoint2D bottomright,
-            Colour background,
-            Colour topBorder,
-            Colour bottomBorder,
-            ModularItemSelectionFrame itemSelectionFrame) {
-        super(topleft, bottomright, background, topBorder, bottomBorder);
+    public DetailedSummaryFrame(Rect rect, ModularItemSelectionFrame itemSelectionFrame) {
+        super(rect);
         this.itemSelectionFrame = itemSelectionFrame;
     }
 
@@ -89,38 +86,24 @@ public class DetailedSummaryFrame extends ScrollableFrame {
         }
     }
 
+
     @Override
     public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks)  {
-//        if (getMinecraft().player != null) {
-//            super.render(matrixStack, mouseX, mouseY, partialTicks);
-//            int margin = 4;
-//            int nexty = (int) getRect().top() + margin + 4;
-//            StringUtils.drawShadowedStringCentered(matrixStack, I18n.get("gui.powersuits.equippedTotals"), (getRect().left() + getRect().right()) / 2, nexty);
-//            nexty += 10;
-//
-//            // Max Energy
-//            String formattedValue = StringUtils.formatNumberFromUnits(energy.get(), "FE");
-//            String name = I18n.get("gui.powersuits.energyStorage");
-//            double valueWidth = StringUtils.getStringWidth(formattedValue);
-//            double allowedNameWidth = getRect().width() - valueWidth - margin * 2;
-//            List<String> namesList = StringUtils.wrapStringToVisualLength(name, allowedNameWidth);
-//            for (int i = 0; i < namesList.size(); i++) {
-//                StringUtils.drawShadowedString(matrixStack, namesList.get(i), getRect().left() + margin, nexty + 9 * i);
-//            }
-//            StringUtils.drawRightAlignedShadowedString(matrixStack, formattedValue, getRect().right() - margin, nexty + 9 * (namesList.size() - 1) / 2);
-//            nexty += 10 * namesList.size() + 1;
-//
-//            // Armor points
-//            formattedValue = StringUtils.formatNumberFromUnits(armor.get(), "pts");
-//            name = I18n.get("gui.powersuits.armor");
-//            valueWidth = StringUtils.getStringWidth(formattedValue);
-//            allowedNameWidth = getRect().width() - valueWidth - margin * 2;
-//            namesList = StringUtils.wrapStringToVisualLength(name, allowedNameWidth);
-//            assert namesList != null;
-//            for (int i = 0; i < namesList.size(); i++) {
-//                StringUtils.drawShadowedString(matrixStack, namesList.get(i), getRect().left() + margin, nexty + 9 * i);
-//            }
-//            StringUtils.drawRightAlignedShadowedString(matrixStack, formattedValue, getRect().right() - margin, nexty + 9 * (namesList.size() - 1) / 2);
-//        }
+        if (getMinecraft().player != null) {
+            super.render(matrixStack, mouseX, mouseY, partialTicks);
+            int margin = 4;
+            int nexty = (int) top() + margin + 4;
+
+            // Max Energy
+            String formattedValue = StringUtils.formatNumberFromUnits(energy.get(), "FE");
+            StringUtils.drawShadowedString(matrixStack, energyText, left() + margin, nexty);
+            StringUtils.drawRightAlignedShadowedString(matrixStack, formattedValue, right() - margin, nexty);
+            nexty += 10;
+
+            // Armor points
+            formattedValue = StringUtils.formatNumberFromUnits(armor.get(), "pts");
+            StringUtils.drawShadowedString(matrixStack, armorText, left() + margin, nexty);
+            StringUtils.drawRightAlignedShadowedString(matrixStack, formattedValue, right() - margin, nexty);
+        }
     }
 }

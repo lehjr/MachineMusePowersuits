@@ -95,8 +95,8 @@ public class ShearsModule extends AbstractPowerModule {
         public CapProvider(@Nonnull ItemStack module) {
             this.module = module;
             this.blockBreaking = new BlockBreaker(module, ModuleCategory.TOOL, ModuleTarget.TOOLONLY, MPSSettings::getModuleConfig) {{
-                addBaseProperty(MPSConstants.SHEARS_ENERGY, 1000, "FE");
-                addBaseProperty(MPSConstants.SHEARS_HARVEST_SPEED , 8, "x");
+                addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, 1000, "FE");
+                addBaseProperty(MPSConstants.HARVEST_SPEED , 8, "x");
             }};
 
             powerModuleHolder = LazyOptional.of(() -> blockBreaking);
@@ -137,12 +137,12 @@ public class ShearsModule extends AbstractPowerModule {
 
             @Override
             public int getEnergyUsage() {
-                return (int) applyPropertyModifiers(MPSConstants.SHEARS_ENERGY);
+                return (int) applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION);
             }
 
             @Override
             public void handleBreakSpeed(PlayerEvent.BreakSpeed event) {
-                event.setNewSpeed((float) (event.getNewSpeed() * applyPropertyModifiers(MPSConstants.SHEARS_HARVEST_SPEED )));
+                event.setNewSpeed((float) (event.getNewSpeed() * applyPropertyModifiers(MPSConstants.HARVEST_SPEED )));
             }
 
             @Override

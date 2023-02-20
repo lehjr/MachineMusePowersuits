@@ -62,10 +62,10 @@ public class ShockAbsorberModule extends AbstractPowerModule {
         public CapProvider(@Nonnull ItemStack module) {
             this.module = module;
             this.moduleToggle = new ToggleableModule(module, ModuleCategory.MOVEMENT, ModuleTarget.FEETONLY, MPSSettings::getModuleConfig, true) {{
-                addBaseProperty(MPSConstants.SHOCK_ENERGY, 0, "FE/m");
-                addTradeoffProperty(MPSConstants.SHOCK_POWER, MPSConstants.SHOCK_ENERGY, 100);
+                addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, 0, "FE/m");
+                addTradeoffProperty(MPSConstants.POWER, MPSConstants.ENERGY_CONSUMPTION, 100);
                 addBaseProperty(MPSConstants.MULTIPLIER, 0, "%");
-                addTradeoffProperty(MPSConstants.SHOCK_POWER, MPSConstants.MULTIPLIER, 10);
+                addTradeoffProperty(MPSConstants.POWER, MPSConstants.MULTIPLIER, 10);
             }};
 
             powerModuleHolder = LazyOptional.of(() -> {

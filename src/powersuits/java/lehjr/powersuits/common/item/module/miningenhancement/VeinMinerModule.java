@@ -76,7 +76,7 @@ public class VeinMinerModule extends AbstractPowerModule {
         public CapProvider(@Nonnull ItemStack module) {
             this.module = module;
             this.miningEnhancement = new Enhancement(module, ModuleCategory.MINING_ENHANCEMENT, ModuleTarget.TOOLONLY, MPSSettings::getModuleConfig) {{
-                addBaseProperty(MPSConstants.VEIN_MINER_ENERGY, 500, "FE");
+                addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, 500, "FE");
             }};
 
             powerModuleHolder = LazyOptional.of(() -> {
@@ -234,7 +234,7 @@ public class VeinMinerModule extends AbstractPowerModule {
 
             @Override
             public int getEnergyUsage() {
-                return (int) applyPropertyModifiers(MPSConstants.VEIN_MINER_ENERGY);
+                return (int) applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION);
             }
         }
 

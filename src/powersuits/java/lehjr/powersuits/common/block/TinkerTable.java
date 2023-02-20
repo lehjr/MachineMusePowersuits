@@ -95,8 +95,8 @@ public class TinkerTable extends HorizontalBlock implements IWaterLoggable {
         if (world.isClientSide) {
 
             Musique.playClientSound(SoundDictionary.SOUND_EVENT_GUI_SELECT, 1);
-            Minecraft.getInstance().tell(() -> Minecraft.getInstance().setScreen(new CosmeticGui(Minecraft.getInstance().player.inventory, new TranslationTextComponent("gui.tinkertable"))));
-
+//            Minecraft.getInstance().tell(() -> Minecraft.getInstance().setScreen(new CosmeticGui(Minecraft.getInstance().player.inventory, new TranslationTextComponent("gui.tinkertable"))));
+            Minecraft.getInstance().tell(() -> Minecraft.getInstance().setScreen(new ModuleTweakGui(new TranslationTextComponent("gui.tinkertable"))));
 //            Minecraft.getInstance().tell(() -> Minecraft.getInstance().setScreen(new ModuleTweakGui(new TranslationTextComponent("gui.tinkertable"), true)));
         }
     }

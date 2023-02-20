@@ -9,7 +9,6 @@ import lehjr.numina.client.gui.clickable.Checkbox;
 import lehjr.numina.client.gui.frame.ScrollableFrame;
 import lehjr.numina.client.gui.gemoetry.MusePoint2D;
 import lehjr.numina.client.gui.gemoetry.Rect;
-import lehjr.numina.common.math.Colour;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -20,8 +19,8 @@ import java.util.Map;
 public class ConditionsFrame extends ScrollableFrame {
     Map<Checkbox, JsonObject> checkBoxList = new HashMap<>();
 
-    public ConditionsFrame(MusePoint2D topleft, MusePoint2D bottomright, Colour background, Colour topBorder, Colour bottomBorder) {
-        super(topleft, bottomright, background, topBorder, bottomBorder);
+    public ConditionsFrame(MusePoint2D topleft, MusePoint2D bottomright) {
+        super(new Rect(topleft, bottomright));
     }
 
 //    @Override

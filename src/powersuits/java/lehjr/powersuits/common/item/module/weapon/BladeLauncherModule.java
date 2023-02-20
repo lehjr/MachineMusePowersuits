@@ -69,7 +69,7 @@ public class BladeLauncherModule extends AbstractPowerModule {
         public CapProvider(@Nonnull ItemStack module) {
             this.module = module;
             this.rightClickie = new RightClickie(module, ModuleCategory.WEAPON, ModuleTarget.TOOLONLY, MPSSettings::getModuleConfig) {{
-                addBaseProperty(MPSConstants.BLADE_ENERGY, 5000, "FE");
+                addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, 5000, "FE");
                 addBaseProperty(MPSConstants.BLADE_DAMAGE, 6, "pt");
             }};
             powerModuleHolder = LazyOptional.of(() -> rightClickie);
@@ -83,7 +83,7 @@ public class BladeLauncherModule extends AbstractPowerModule {
             @Override
             public ActionResult use(ItemStack itemStackIn, World worldIn, PlayerEntity playerIn, Hand hand) {
                 if (hand == Hand.MAIN_HAND) {
-                    if (ElectricItemUtils.getPlayerEnergy(playerIn) > applyPropertyModifiers(MPSConstants.BLADE_ENERGY)) {
+                    if (ElectricItemUtils.getPlayerEnergy(playerIn) > applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION)) {
                         playerIn.startUsingItem(hand);
                         return new ActionResult(ActionResultType.SUCCESS, itemStackIn);
                     }
@@ -106,7 +106,7 @@ public class BladeLauncherModule extends AbstractPowerModule {
 
             @Override
             public int getEnergyUsage() {
-                return (int) Math.round(applyPropertyModifiers(MPSConstants.BLADE_ENERGY));
+                return (int) Math.round(applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION));
             }
         }
 

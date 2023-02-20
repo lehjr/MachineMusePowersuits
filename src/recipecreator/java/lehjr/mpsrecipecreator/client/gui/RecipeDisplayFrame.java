@@ -3,17 +3,16 @@ package lehjr.mpsrecipecreator.client.gui;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import lehjr.numina.client.gui.frame.ScrollableFrame;
-import lehjr.numina.common.math.Colour;
+import lehjr.numina.client.gui.gemoetry.Rect;
 import lehjr.numina.common.string.StringUtils;
 
 public class RecipeDisplayFrame extends ScrollableFrame {
     String[] recipe = new String[0];
     String title;;
 
-    public RecipeDisplayFrame(Colour backgroundColour) {
-        super();
+    public RecipeDisplayFrame(Rect rect) {
+        super(rect);
         reset();
-        setBackgroundColour(backgroundColour);
     }
 
     public void setFileName(String fileName) {
@@ -33,8 +32,6 @@ public class RecipeDisplayFrame extends ScrollableFrame {
     @Override
     public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
         if (this.isEnabled() && this.isVisible()) {
-            this.drawBackground(matrixStack);
-            this.drawBorder(matrixStack, 0.0D);
             setCurrentScrollPixels(Math.min(getCurrentScrollPixels(), getMaxScrollPixels()));
             super.preRender(matrixStack, mouseX, mouseY, partialTicks);
             RenderSystem.pushMatrix();
