@@ -188,17 +188,6 @@ public class ModelManipFrame extends ScrollableFrame {
     @Override
     public boolean mouseClicked(double x, double y, int button) {
         if (super.mouseClicked(x, y, button)) {
-            itemSelect.getModularItemOrEmpty().getCapability(ModelSpecNBTCapability.RENDER)
-                    .filter(IModelSpecNBT.class::isInstance)
-                    .map(IModelSpecNBT.class::cast).ifPresent(spec ->System.out.println("renderTag: " + spec.getRenderTag()));
-
-            itemSelect.getModularItemOrEmpty().getCapability(ModelSpecNBTCapability.RENDER)
-                    .filter(IModelSpecNBT.class::isInstance)
-                    .map(IModelSpecNBT.class::cast).ifPresent(spec ->System.out.println("default renderTag: " + spec.getDefaultRenderTag()));
-
-            System.out.println("default full item tag: " + itemSelect.getModularItemOrEmpty().serializeNBT());
-
-
             for (ModelManipSubframe frame : modelframes) {
                 if (frame.mouseClicked(x, y + getCurrentScrollPixels(), button)) {
                     return true;
@@ -263,8 +252,6 @@ public class ModelManipFrame extends ScrollableFrame {
      * @param index
      */
     public void decrAbove(int index) {
-        System.out.println("dec above : " + index);
-
         for (ModelManipSubframe frame : modelframes) frame.decrAbove(index);
     }
 

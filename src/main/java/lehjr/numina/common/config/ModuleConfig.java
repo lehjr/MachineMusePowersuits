@@ -64,7 +64,7 @@ public class ModuleConfig implements IConfig {
         return serverConfig;
     }
 
-    final boolean generateNewConfigValues = true;
+    final boolean generateNewConfigValues = false;
 
 
     boolean isInDevMode() {

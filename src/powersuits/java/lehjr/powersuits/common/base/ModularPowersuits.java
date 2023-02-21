@@ -39,8 +39,8 @@ import lehjr.numina.common.config.ConfigHelper;
 import lehjr.numina.common.integration.refinedstorage.RSWirelessHandler;
 import lehjr.numina.common.integration.scannable.ScannableHandler;
 import lehjr.powersuits.client.control.KeybindKeyHandler;
-import lehjr.powersuits.client.event.ClientTickHandler;
 import lehjr.powersuits.client.event.ModelBakeEventHandler;
+import lehjr.powersuits.client.event.PlayerLoginHandler;
 import lehjr.powersuits.client.event.RenderEventHandler;
 import lehjr.powersuits.client.gui.modding.module.install_salvage.InstallSalvageGui;
 import lehjr.powersuits.client.render.entity.LuxCapacitorEntityRenderer;
@@ -123,10 +123,6 @@ public class ModularPowersuits {
 
             final ModConfig config = event.getConfig();
             if (config.getSpec()!= null && config.getSpec() == MPSSettings.SERVER_SPEC) {
-                System.out.println("config file: " + config.getFullPath().toString());
-                System.out.println("config modID: " + config.getModId());
-                System.out.println("config modID: " + config.getConfigData());
-
                 MPSSettings.getModuleConfig().setServerConfig(config);
 
                 // This is actually for a feature that isn't even currently enabled :P
@@ -157,7 +153,6 @@ public class ModularPowersuits {
         modEventBus.addListener(RenderEventHandler.INSTANCE::preTextureStitch);
 
         MinecraftForge.EVENT_BUS.register(RenderEventHandler.INSTANCE);
-        MinecraftForge.EVENT_BUS.register(new ClientTickHandler());
         MinecraftForge.EVENT_BUS.register(new KeybindKeyHandler());
         MinecraftForge.EVENT_BUS.register(new LogoutEventHandler());
 
@@ -230,13 +225,14 @@ public class ModularPowersuits {
                 @Override
                 public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
                     if (cap == PowerModuleCapability.POWER_MODULE) {
+                        clock.updateFromNBT();
                         return LazyOptional.of(()->(T)clock);
                     }
                     return LazyOptional.empty();
                 }
             });
 
-            // Compass
+        // Compass
         } else if (!event.getCapabilities().containsKey(MPSRegistryNames.COMPASS_MODULE) && event.getObject().getItem().equals(Items.COMPASS)) {
             IToggleableModule compass = new ToggleableModule(itemStack, ModuleCategory.SPECIAL, ModuleTarget.HEADONLY, MPSSettings::getModuleConfig, true);
 
@@ -245,13 +241,14 @@ public class ModularPowersuits {
                 @Override
                 public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
                     if (cap == PowerModuleCapability.POWER_MODULE) {
+                        compass.updateFromNBT();
                         return LazyOptional.of(()->(T)compass);
                     }
                     return LazyOptional.empty();
                 }
             });
 
-            // Crafting workbench
+        // Crafting workbench
         } else if (!event.getCapabilities().containsKey(MPSRegistryNames.PORTABLE_WORKBENCH_MODULE) && event.getObject().getItem().equals(Items.CRAFTING_TABLE)) {
             final ITextComponent CONTAINER_NAME = new TranslationTextComponent("container.crafting");
             IRightClickModule rightClick = new RightClickModule(itemStack, ModuleCategory.TOOL, ModuleTarget.TOOLONLY, MPSSettings::getModuleConfig) {

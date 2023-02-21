@@ -139,6 +139,7 @@ public enum RenderEventHandler {
         RenderGameOverlayEvent.ElementType elementType = e.getType();
         if (RenderGameOverlayEvent.ElementType.HOTBAR.equals(elementType)) {
             this.drawKeybindToggles(e.getMatrixStack());
+            ClientOverlayHandler.INSTANCE.render(e);
         }
     }
 
@@ -227,8 +228,6 @@ public enum RenderEventHandler {
             Minecraft minecraft = Minecraft.getInstance();
             AtomicDouble top = new AtomicDouble(MPSSettings.getHudKeybindY());
             kbDisplayList.forEach(kbDisplay -> {
-//                System.out.println("\nkbDisplay.boundKeybinds: " + kbDisplay.boundKeybinds);
-
                 if (!kbDisplay.boundKeybinds.isEmpty()) {
                     kbDisplay.setLeft(MPSSettings.getHudKeybindX());
                     kbDisplay.setTop(top.get());

@@ -34,6 +34,7 @@ import lehjr.numina.common.tags.TagUtils;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.ByteNBT;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.INBTSerializable;
 
@@ -67,7 +68,11 @@ public class ToggleableModule extends PowerModule implements IToggleableModule, 
 
     @Override
     public void deserializeNBT(ByteNBT nbt) {
-        online = nbt.getAsByte() == 1;
+        if (nbt != null) {
+            online = nbt.getAsByte() == 1;
+        } else {
+            online = defBool;
+        }
     }
 
     @Override
@@ -81,6 +86,6 @@ public class ToggleableModule extends PowerModule implements IToggleableModule, 
         if (online == null) {
             updateFromNBT();
         }
-        return online;
+        return online == null ? defBool : online; // this shouldn't happen but probably will -_-
     }
 }

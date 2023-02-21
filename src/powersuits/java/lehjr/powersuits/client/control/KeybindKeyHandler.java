@@ -73,40 +73,12 @@ public class KeybindKeyHandler {
         return GLFW.glfwGetKey(Minecraft.getInstance().getWindow().getWindow(), key) == GLFW.GLFW_PRESS;
     }
 
-    void RegisterKeybinding(ResourceLocation registryName) {
-        ClientRegistry.registerKeyBinding(new MPSKeyBinding(registryName, "keybinding.powersuits." + registryName.getPath(), GLFW.GLFW_KEY_UNKNOWN, mps));
-    }
+
 
     public KeybindKeyHandler() {
         minecraft = Minecraft.getInstance();
         for (KeyBinding key : keybindArray) {
             ClientRegistry.registerKeyBinding(key);
-        }
-        int i = 0;
-        NonNullList<ItemStack> modules = NonNullList.create();
-
-        for (Item item : ForgeRegistries.ITEMS.getValues()) {
-            if (item.getRegistryName().getNamespace().contains(MPSConstants.MOD_ID)) {
-                new ItemStack(item).getCapability(PowerModuleCapability.POWER_MODULE)
-                        .filter(IToggleableModule.class::isInstance)
-                        .map(IToggleableModule.class::cast)
-                        .ifPresent(pm -> {
-                            // Tool settings are a bit odd
-                            if (pm.getTarget() == ModuleTarget.TOOLONLY) {
-                                if (pm.getCategory() == ModuleCategory.MINING_ENHANCEMENT) {
-                                    modules.add(pm.getModuleStack());
-                                    RegisterKeybinding(item.getRegistryName());
-                                } else if (!IRightClickModule.class.isAssignableFrom(pm.getClass())) {
-                                    modules.add(pm.getModuleStack());
-                                    RegisterKeybinding(item.getRegistryName());
-                                }
-                            } else {
-                                modules.add(pm.getModuleStack());
-                                RegisterKeybinding(item.getRegistryName());
-                            }
-                        });
-                i++;
-            }
         }
     }
 

@@ -203,14 +203,4 @@ public class RadialModeSelectionFrame extends AbstractGuiFrame {
     public boolean isVisible() {
         return visible;
     }
-//
-//    @Override
-//    public void setOnInit(IInit iInit) {
-//
-//    }
-//
-//    @Override
-//    public void onInit() {
-//
-//    }
 }

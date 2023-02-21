@@ -55,8 +55,8 @@ public class ClientEventBusSubscriber {
         }
     }
 
-    @SubscribeEvent
-    public static void onModelBake(ModelBakeEvent event) {
-
-    }
+//    @SubscribeEvent
+//    public static void onModelBake(ModelBakeEvent event) {
+//
+//    }
 }
