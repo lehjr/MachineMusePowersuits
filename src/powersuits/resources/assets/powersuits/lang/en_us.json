@@ -1,4 +1,11 @@
 {
+
+  "keybinding.powersuits.openKeybindGui": "Open MPS Keybind GUI",
+  "keybinding.powersuits.openCosmeticGUI": "Open MPS Cosmetic GUI",
+  "keybinding.powersuits.openModuleTweakGUI": "Open MPS Keybind GUI",
+  "keybinding.powersuits.openInstallSalvageGUI": "Cosmetic GUI (MPS)",
+  "keybinding.minecraft.clock": "Toggle Clock",
+  "keybinding.minecraft.compass": "Toggle Compass",
   "module.tradeoff.energyCon": "Energy Consumption",
   "keybinding.powersuits.jet_boots": "Toggle Jet Boots",
   "module.tradeoff.maxHeat": "Maximum Heat",

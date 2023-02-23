@@ -1,4 +1,4 @@
-package lehjr.numina.client.event;
-
-public class ClientSetup {
-}
+//package lehjr.numina.client.event;
+//
+//public class ClientSetup {
+//}

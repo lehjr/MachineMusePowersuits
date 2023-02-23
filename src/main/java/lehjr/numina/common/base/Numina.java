@@ -189,6 +189,6 @@ public class Numina {
         if (!(event.getObject() instanceof PlayerEntity)) {
             return;
         }
-        event.addCapability(new ResourceLocation(NuminaConstants.MOD_ID, "player_keystates"), new CapabilityPlayerKeyStates());
+        event.addCapability(new ResourceLocation(NuminaConstants.MOD_ID, "player_keystates1"), new CapabilityPlayerKeyStates());
     }
 }

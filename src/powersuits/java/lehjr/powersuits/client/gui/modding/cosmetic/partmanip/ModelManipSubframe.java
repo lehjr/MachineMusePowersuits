@@ -207,7 +207,6 @@ public class ModelManipSubframe extends AbstractGuiFrame {
      * @param index
      */
     public void decrAbove(int index) {
-        System.out.println("dec above: " + index);
         for (PartManipSubFrame subFrame : parts) {
             subFrame.decrAbove(index);
         }

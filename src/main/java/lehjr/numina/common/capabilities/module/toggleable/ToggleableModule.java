@@ -83,9 +83,9 @@ public class ToggleableModule extends PowerModule implements IToggleableModule, 
 
     @Override
     public boolean isModuleOnline() {
-        if (online == null) {
-            updateFromNBT();
-        }
+//        if (online == null) {
+//            updateFromNBT();
+//        }
         return online == null ? defBool : online; // this shouldn't happen but probably will -_-
     }
 }

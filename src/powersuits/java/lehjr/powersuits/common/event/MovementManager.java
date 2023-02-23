@@ -103,10 +103,14 @@ public enum MovementManager {
                             .getOnlineModuleOrEmpty(MPSRegistryNames.FLIGHT_CONTROL_MODULE)
                             .getCapability(PowerModuleCapability.POWER_MODULE)
                             .map(pm -> pm.applyPropertyModifiers(MPSConstants.FLIGHT_VERTICALITY)).orElse(0D)).orElse(0D);
+
+            int strafeState = ((playerInput.strafeRightKey ? -1 : 0) + (playerInput.strafeLeftKey ? 1 : 0));
+            double forwardReverse = ((playerInput.reverseKey ? -1D : 0) + (playerInput.forwardKey ? 1D : 0));
+
             desiredDirection = new Vector3d(
-                    (desiredDirection.x * boolToVal(playerInput.forwardKey) + strafeX * playerInput.strafeKey),
+                    (desiredDirection.x * forwardReverse + strafeX * strafeState),
                     (flightVerticality * desiredDirection.y * boolToVal(playerInput.forwardKey) + boolToVal(playerInput.jumpKey) - boolToVal(playerInput.downKey)),
-                    (desiredDirection.z * boolToVal(playerInput.forwardKey) + strafeZ * playerInput.strafeKey));
+                    (desiredDirection.z * forwardReverse + strafeZ * strafeState));
 
             desiredDirection = desiredDirection.normalize();
 

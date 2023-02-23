@@ -35,20 +35,25 @@ import net.minecraftforge.common.util.LazyOptional;
 public class PlayerMovementInputWrapper {
     public static class PlayerMovementInput {
         public boolean forwardKey;
-        public byte strafeKey;
-        public boolean jumpKey;
+        public boolean reverseKey;
+        public boolean strafeLeftKey;
+        public boolean strafeRightKey;
         public boolean downKey;
+        public boolean jumpKey;
 
         public PlayerMovementInput(
                 boolean forwardKey,
-                byte strafeKey,
-                boolean jumpKey,
-                boolean downKey
-        ) {
+                boolean reverseKey,
+                boolean strafeLeftKey,
+                boolean strafeRightKey,
+                boolean downKey,
+                boolean jumpKey) {
             this.forwardKey = forwardKey;
-            this.strafeKey = strafeKey;
-            this.jumpKey = jumpKey;
+            this.reverseKey = reverseKey;
+            this.strafeLeftKey = strafeLeftKey;
+            this.strafeRightKey = strafeRightKey;
             this.downKey = downKey;
+            this.jumpKey = jumpKey;
         }
     }
 
@@ -68,42 +73,54 @@ public class PlayerMovementInputWrapper {
 
     static PlayerMovementInput fromServer(PlayerEntity player) {
         boolean forwardKey = false;
-        byte strafeKey = 0;
-        boolean jumpKey = false;
+        boolean reverseKey = false;
+        boolean strafeLeftKey = false;
+        boolean strafeRightKey = false;
         boolean downKey = false;
+        boolean jumpKey = false;
 
         LazyOptional<IPlayerKeyStates> playerCap = getCapability(player);
         if (playerCap.isPresent()) {
-            forwardKey = playerCap.map(m -> m.getForwardKeyState()).orElse(false);
-            strafeKey = playerCap.map(m -> m.getStrafeKeyState()).orElse((byte)0);
-            jumpKey = playerCap.map(m -> m.getJumpKeyState()).orElse(false);
+            forwardKey =  playerCap.map(m -> m.getForwardKeyState()).orElse(false);
+            reverseKey =  playerCap.map(m -> m.getReverseKeyState()).orElse(false);
+            strafeLeftKey =  playerCap.map(m -> m.getLeftStrafeKeyState()).orElse(false);
+            strafeRightKey = playerCap.map(m -> m.getRightStrafeKeyState()).orElse(false);
             downKey = playerCap.map(m -> m.getDownKeyState()).orElse(false);
+            jumpKey = playerCap.map(m -> m.getJumpKeyState()).orElse(false);
         }
 
         return new PlayerMovementInput(
-                forwardKey,
-                strafeKey,
-                jumpKey,
-                downKey);
+        forwardKey,
+        reverseKey,
+        strafeLeftKey,
+        strafeRightKey,
+        downKey,
+        jumpKey);
     }
 
     static PlayerMovementInput fromClient(PlayerEntity player) {
         boolean forwardKey = false;
-        byte strafeKey = 0;
-        boolean jumpKey = false;
+        boolean reverseKey = false;
+        boolean strafeLeftKey = false;
+        boolean strafeRightKey = false;
         boolean downKey = false;
+        boolean jumpKey = false;
         LazyOptional<IPlayerKeyStates> playerCap = getCapability(player);
         if (playerCap.isPresent()) {
-            forwardKey = playerCap.map(m -> m.getForwardKeyState()).orElse(false);
-            strafeKey = playerCap.map(m -> m.getStrafeKeyState()).orElse((byte)0);
-            jumpKey = playerCap.map(m -> m.getJumpKeyState()).orElse(false);
+            forwardKey =  playerCap.map(m -> m.getForwardKeyState()).orElse(false);
+            reverseKey =  playerCap.map(m -> m.getReverseKeyState()).orElse(false);
+            strafeLeftKey =  playerCap.map(m -> m.getLeftStrafeKeyState()).orElse(false);
+            strafeRightKey = playerCap.map(m -> m.getRightStrafeKeyState()).orElse(false);
             downKey = playerCap.map(m -> m.getDownKeyState()).orElse(false);
+            jumpKey = playerCap.map(m -> m.getJumpKeyState()).orElse(false);
         }
 
         return new PlayerMovementInput(
                 forwardKey,
-                strafeKey,
-                jumpKey,
-                downKey);
+                reverseKey,
+                strafeLeftKey,
+                strafeRightKey,
+                downKey,
+                jumpKey);
     }
 }

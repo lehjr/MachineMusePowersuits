@@ -26,6 +26,8 @@
 
 package lehjr.numina.common.capabilities.player;
 
+import lehjr.numina.common.math.MathUtils;
+import net.minecraft.nbt.ByteNBT;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.INBT;
 import net.minecraft.util.Direction;
@@ -38,7 +40,7 @@ import net.minecraftforge.common.util.LazyOptional;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class CapabilityPlayerKeyStates implements ICapabilitySerializable<CompoundNBT> {
+public class CapabilityPlayerKeyStates implements ICapabilitySerializable<ByteNBT> {
     @CapabilityInject(IPlayerKeyStates.class)
     public static Capability<IPlayerKeyStates> PLAYER_KEYSTATES = null;
     private IPlayerKeyStates instance = PLAYER_KEYSTATES.getDefaultInstance();
@@ -47,21 +49,33 @@ public class CapabilityPlayerKeyStates implements ICapabilitySerializable<Compou
         CapabilityManager.INSTANCE.register(IPlayerKeyStates.class, new Capability.IStorage<IPlayerKeyStates>() {
                     @Override
                     public INBT writeNBT(Capability<IPlayerKeyStates> capability, IPlayerKeyStates instance, Direction side) {
-                        CompoundNBT nbt = new CompoundNBT();
-                        nbt.putBoolean("forward", instance.getForwardKeyState());
-                        nbt.putByte("strafe", instance.getStrafeKeyState());
-                        nbt.putBoolean("jumpKey", instance.getJumpKeyState());
-                        nbt.putBoolean("downKey", instance.getDownKeyState());
-                        return nbt;
+                        boolean[] boolArray = new boolean[]{
+                                instance.getForwardKeyState(),
+                                instance.getReverseKeyState(),
+                                instance.getLeftStrafeKeyState(),
+                                instance.getRightStrafeKeyState(),
+                                instance.getDownKeyState(),
+                                instance.getJumpKeyState(),
+                                false,
+                                false
+                        };
+
+                        byte byteOut = MathUtils.boolArrayToByte(boolArray);
+                        return ByteNBT.valueOf(byteOut);
                     }
 
                     @Override
                     public void readNBT(Capability<IPlayerKeyStates> capability, IPlayerKeyStates instance, Direction side, INBT nbt) {
-                        if (nbt instanceof CompoundNBT) {
-                            instance.setForwardKeyState(((CompoundNBT) nbt).getBoolean("forward"));
-                            instance.setStrafeKeyState(((CompoundNBT) nbt).getByte("strafe"));
-                            instance.setJumpKeyState(((CompoundNBT) nbt).getBoolean("jumpKey"));
-                            instance.setDownKeyState(((CompoundNBT) nbt).getBoolean("downKey"));
+                        if (nbt instanceof ByteNBT) {
+                            byte byteOut = ((ByteNBT) nbt).getAsByte();
+                            boolean[] boolArray = MathUtils.byteToBooleanArray(byteOut);
+
+                            instance.setForwardKeyState(boolArray[0]);
+                            instance.setReverseKeyState(boolArray[1]);
+                            instance.setLeftStrafeKeyState(boolArray[2]);
+                            instance.setRightStrafeKeyState(boolArray[3]);
+                            instance.setDownKeyState(boolArray[4]);
+                            instance.setJumpKeyState(boolArray[5]);
                         }
                     }
                 },
@@ -69,12 +83,12 @@ public class CapabilityPlayerKeyStates implements ICapabilitySerializable<Compou
     }
 
     @Override
-    public CompoundNBT serializeNBT() {
-        return (CompoundNBT) PLAYER_KEYSTATES.getStorage().writeNBT(PLAYER_KEYSTATES, this.instance, null);
+    public ByteNBT serializeNBT() {
+        return (ByteNBT) PLAYER_KEYSTATES.getStorage().writeNBT(PLAYER_KEYSTATES, this.instance, null);
     }
 
     @Override
-    public void deserializeNBT(CompoundNBT nbt) {
+    public void deserializeNBT(ByteNBT nbt) {
         PLAYER_KEYSTATES.getStorage().readNBT(PLAYER_KEYSTATES, this.instance, null, nbt);
     }
 

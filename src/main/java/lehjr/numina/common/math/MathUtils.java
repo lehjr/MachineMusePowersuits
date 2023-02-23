@@ -73,4 +73,23 @@ public final class MathUtils {
         }
         return false;
     }
+
+    public static byte boolArrayToByte(boolean[] boolArray) {
+        byte keysOut = 0;
+        for(int i = 0; i < 8; i++ ) {
+            if (boolArray.length > i) {
+                keysOut = (byte) (keysOut | (byte) (((boolArray[i] ? 1 : 0) <<  i)));
+            }
+        }
+        return keysOut;
+    }
+
+
+    public static boolean[] byteToBooleanArray(byte byteVal) {
+        boolean[] boolArray = new boolean[8];
+        for (int i=0; i< 8; i++) {
+            boolArray[i] = byteVal >> i > 0;
+        }
+        return boolArray;
+    }
 }

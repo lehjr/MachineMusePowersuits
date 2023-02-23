@@ -28,10 +28,16 @@ package lehjr.numina.common.capabilities.player;
 
 public class PlayerKeyStateStorage implements IPlayerKeyStates {
     private boolean forwardKeyState = false;
-    private byte strafeKeyState = 0; // left=-1, none=0, right = 1
+    private boolean reverseKeyState = false;
+    private boolean strafeLeftKeyState = false;
+    private boolean strafeRightKeyState = false;
     private boolean downKeyState = false;
     private boolean jumpKeyState = false;
-    private boolean sneakKeyState = false;
+
+    @Override
+    public boolean getForwardKeyState() {
+        return forwardKeyState;
+    }
 
     @Override
     public void setForwardKeyState(boolean state) {
@@ -39,18 +45,43 @@ public class PlayerKeyStateStorage implements IPlayerKeyStates {
     }
 
     @Override
-    public boolean getForwardKeyState() {
-        return this.forwardKeyState;
+    public boolean getReverseKeyState() {
+        return reverseKeyState;
     }
 
     @Override
-    public void setStrafeKeyState(byte state) {
-        this.strafeKeyState = state;
+    public void setReverseKeyState(boolean state) {
+        this.reverseKeyState = state;
     }
 
     @Override
-    public byte getStrafeKeyState() {
-        return this.strafeKeyState;
+    public boolean getLeftStrafeKeyState() {
+        return strafeLeftKeyState;
+    }
+
+    @Override
+    public void setLeftStrafeKeyState(boolean state) {
+        this.strafeLeftKeyState = state;
+    }
+
+    @Override
+    public boolean getRightStrafeKeyState() {
+        return strafeRightKeyState;
+    }
+
+    @Override
+    public void setRightStrafeKeyState(boolean state) {
+        this.strafeRightKeyState = state;
+    }
+
+    @Override
+    public boolean getJumpKeyState() {
+        return jumpKeyState;
+    }
+
+    @Override
+    public void setJumpKeyState(boolean state) {
+        this.jumpKeyState = state;
     }
 
     @Override
@@ -60,16 +91,17 @@ public class PlayerKeyStateStorage implements IPlayerKeyStates {
 
     @Override
     public boolean getDownKeyState() {
-        return this.downKeyState;
+        return downKeyState;
     }
 
     @Override
-    public void setJumpKeyState(boolean state) {
-        this.jumpKeyState = state;
-    }
-
-    @Override
-    public boolean getJumpKeyState() {
-        return this.jumpKeyState;
+    public String toString() {
+        return new StringBuilder("forwardKeyState: ").append(getForwardKeyState())
+                .append(", reverseKeyState: ").append(getReverseKeyState())
+                .append(", leftStrafeKeyState: ").append(getLeftStrafeKeyState())
+                .append(",  rightStrafeKeyState: ").append(getRightStrafeKeyState())
+                .append(", downKeyState: ").append(getDownKeyState())
+                .append(", jumpKeyState: ").append(getJumpKeyState())
+                .toString();
     }
 }

@@ -163,32 +163,9 @@ public class CosmeticGui extends ContainerlessGui {
         this.blit(matrixStack, i, j, 0, 0, this.imageWidth, this.imageHeight, 512, 512);
     }
 
-//    double zVal = 0;
-//
-//    @Override
-//    public boolean mouseScrolled(double mouseX, double mouseY, double dWheel) {
-//        zVal += dWheel;
-//
-//        System.out.println("zval: " + zVal);
-//
-//        itemSelectFrame.moveBy(zVal, 0);
-//        itemSelectFrame.refreshRects();
-//
-//
-//        return super.mouseScrolled(mouseX, mouseY, dWheel);
-//    }
-
     @Override
     public void removed() {
         super.removed();
 //        loadSaveResetSubFrame.onClose();
     }
-    // FIXME!!! I have no idea what this return value should be based on... 0 documentation
-//    @Override
-//    public boolean charTyped(char typedChar, int keyCode) {
-//        boolean ret = super.charTyped(typedChar, keyCode);
-//        if (loadSaveResetSubFrame != null)
-//            loadSaveResetSubFrame.charTyped(typedChar, keyCode);
-//        return ret;
-//    }
 }

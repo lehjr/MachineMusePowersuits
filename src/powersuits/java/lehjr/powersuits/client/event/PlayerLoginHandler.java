@@ -32,20 +32,15 @@ import lehjr.numina.common.capabilities.module.powermodule.PowerModuleCapability
 import lehjr.numina.common.capabilities.module.rightclick.IRightClickModule;
 import lehjr.numina.common.capabilities.module.toggleable.IToggleableModule;
 import lehjr.powersuits.client.control.KeybindManager;
-import lehjr.powersuits.client.control.MPSKeyBinding;
-import lehjr.powersuits.common.constants.MPSConstants;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.registries.ForgeRegistries;
-import org.lwjgl.glfw.GLFW;
 
-import static lehjr.powersuits.client.control.KeybindKeyHandler.mps;
+import static lehjr.powersuits.client.control.KeybindKeyHandler.RegisterKeybinding;
 
 /**
  * Author: MachineMuse (Claire Semple)
@@ -58,12 +53,8 @@ public final class PlayerLoginHandler {
     public static void onPlayerLoginClient(ClientPlayerNetworkEvent.LoggedInEvent event) {
         PlayerEntity player = event.getPlayer();
         if (player != null) {
-
-            int i = 0;
             NonNullList<ItemStack> modules = NonNullList.create();
-
             for (Item item : ForgeRegistries.ITEMS.getValues()) {
-//                if (item.getRegistryName().getNamespace().contains(MPSConstants.MOD_ID)) {
                     new ItemStack(item).getCapability(PowerModuleCapability.POWER_MODULE)
                             .filter(IToggleableModule.class::isInstance)
                             .map(IToggleableModule.class::cast)
@@ -82,14 +73,8 @@ public final class PlayerLoginHandler {
                                     RegisterKeybinding(item.getRegistryName());
                                 }
                             });
-                    i++;
                 }
-//            }
-            KeybindManager.INSTANCE.readInKeybinds();
+            KeybindManager.INSTANCE.readInKeybinds(true);
         }
-    }
-
-    static void RegisterKeybinding(ResourceLocation registryName) {
-        ClientRegistry.registerKeyBinding(new MPSKeyBinding(registryName, "keybinding.powersuits." + registryName.getPath(), GLFW.GLFW_KEY_UNKNOWN, mps));
     }
 }

@@ -41,13 +41,11 @@ public class MPSKeyBinding extends KeyBinding {
 
 
     public void toggleModules() {
-        System.out.println("toggling here?");
-
         ClientPlayerEntity player = Minecraft.getInstance().player;
         if (player == null) {
             return;
         }
-    // FIXME: needed client side?
+
         NuminaPackets.CHANNEL_INSTANCE.sendToServer(new ToggleRequestPacket(registryName, toggleval));
         for (int i = 0; i < player.inventory.getContainerSize(); i++) {
             player.inventory.getItem(i).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)

@@ -27,57 +27,40 @@
 package lehjr.numina.common.network.packets;
 
 import lehjr.numina.common.capabilities.player.CapabilityPlayerKeyStates;
+import lehjr.numina.common.math.MathUtils;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.nbt.ByteNBT;
 import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.fml.network.NetworkEvent;
 
 import java.util.function.Supplier;
 
 public class PlayerUpdatePacket {
-    boolean forwardKeyState;
-    byte strafeKeyState;
-    boolean downKeyState;
-    boolean jumpKeyState;
+    byte data;
 
-    public PlayerUpdatePacket(
-            boolean forwardKeyState,
-            byte strafeKeyState,
-            boolean downKeyState,
-            boolean jumpKeyState) {
-
-        this.forwardKeyState = forwardKeyState;
-        this.strafeKeyState = strafeKeyState;
-        this.downKeyState =  downKeyState;
-        this.jumpKeyState = jumpKeyState;
+    public PlayerUpdatePacket(byte data) {
+        this.data = data;
     }
 
     public static void encode(PlayerUpdatePacket msg, PacketBuffer packetBuffer) {
-        packetBuffer.writeBoolean(msg.forwardKeyState);
-        packetBuffer.writeByte(msg.strafeKeyState);
-        packetBuffer.writeBoolean(msg.downKeyState);
-        packetBuffer.writeBoolean(msg.jumpKeyState);
+        packetBuffer.writeByte(msg.data);
     }
 
     public static PlayerUpdatePacket decode(PacketBuffer packetBuffer) {
-        return new PlayerUpdatePacket(
-                packetBuffer.readBoolean(),
-                packetBuffer.readByte(),
-                packetBuffer.readBoolean(),
-                packetBuffer.readBoolean()
-        );
+        return new PlayerUpdatePacket(packetBuffer.readByte());
     }
 
     public static void handle(PlayerUpdatePacket message, Supplier<NetworkEvent.Context> ctx) {
         final ServerPlayerEntity player = ctx.get().getSender();
-        ctx.get().enqueueWork(() -> {
-            player.getCapability(CapabilityPlayerKeyStates.PLAYER_KEYSTATES).ifPresent(playerCap ->{
-                playerCap.setForwardKeyState(message.forwardKeyState);
-                playerCap.setStrafeKeyState(message.strafeKeyState);
-                playerCap.setDownKeyState(message.downKeyState);
-                playerCap.setJumpKeyState(message.jumpKeyState);
-
-            });
-        });
+        ctx.get().enqueueWork(() -> player.getCapability(CapabilityPlayerKeyStates.PLAYER_KEYSTATES).ifPresent(playerCap ->{
+            boolean[] boolArray = MathUtils.byteToBooleanArray(message.data);
+            playerCap.setForwardKeyState(boolArray[0]);
+            playerCap.setReverseKeyState(boolArray[1]);
+            playerCap.setLeftStrafeKeyState(boolArray[2]);
+            playerCap.setRightStrafeKeyState(boolArray[3]);
+            playerCap.setDownKeyState(boolArray[4]);
+            playerCap.setJumpKeyState(boolArray[5]);
+        }));
         ctx.get().setPacketHandled(true);
     }
 }

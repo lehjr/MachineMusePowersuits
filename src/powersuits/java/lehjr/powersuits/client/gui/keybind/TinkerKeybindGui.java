@@ -113,10 +113,8 @@ public class TinkerKeybindGui extends ContainerlessGui {
         super.tick();
         if (!minecraft.isWindowActive()) {
             KeybindManager.INSTANCE.writeOutKeybindSetings();
-            this.player.closeContainer();
-
-//            super.onClose();
-//            container.onContainerClosed(player);
+            Minecraft.getInstance().options.save(); // fixme
+//            this.player.closeContainer();
         }
     }
 }

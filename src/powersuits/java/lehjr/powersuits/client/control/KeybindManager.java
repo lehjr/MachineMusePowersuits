@@ -33,21 +33,29 @@ import lehjr.powersuits.client.event.RenderEventHandler;
 import lehjr.powersuits.common.constants.MPSConstants;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.util.InputMappings;
+import net.minecraft.item.Items;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
+import org.lwjgl.glfw.GLFW;
 
 import java.io.*;
 import java.nio.file.Files;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
+
+import static lehjr.powersuits.client.control.KeybindKeyHandler.mps;
 
 /**
  * For setting up the keybindings used in the onscreen display
  */
 public enum KeybindManager {
     INSTANCE;
+    static final String formatVersionKey = "formatVersion";
+    static final String registryNameKey = "registryName";
+    static final String showOnHudKey = "showOnHud";
+    static final String defaultKeyKey = "defaultKey"; // :-p
+
+
 
     /**
      * For loading older keybinding configurations
@@ -71,11 +79,16 @@ public enum KeybindManager {
                 file.createNewFile();
             }
             JsonObject kbSettings = new JsonObject();
+            kbSettings.addProperty(formatVersionKey, 2);
             Arrays.stream(Minecraft.getInstance().options.keyMappings)
                     .filter(MPSKeyBinding.class::isInstance)
                     .map(MPSKeyBinding.class::cast)
                     .forEach(keyBinding -> {
-                        kbSettings.addProperty(keyBinding.getName(), keyBinding.showOnHud);
+                        JsonObject jsonKBSetting = new JsonObject();
+                        jsonKBSetting.addProperty(registryNameKey, keyBinding.registryName.toString());
+                        jsonKBSetting.addProperty(showOnHudKey, keyBinding.showOnHud);
+                        jsonKBSetting.addProperty(defaultKeyKey, keyBinding.getKey().getValue());
+                        kbSettings.add(keyBinding.getName(), jsonKBSetting);
                     });
             Gson gson = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
             JsonParser jp = new JsonParser();
@@ -106,7 +119,8 @@ public enum KeybindManager {
         return Arrays.stream(Minecraft.getInstance().options.keyMappings).filter(MPSKeyBinding.class::isInstance).map(MPSKeyBinding.class::cast).collect(Collectors.toList());
     }
 
-    public void readInKeybinds() {
+
+    public void readInKeybinds(boolean onLogin) {
         File file = getKeyBindConfig();
         if (!file.exists()) {
             readLegacyKeybinds();
@@ -119,10 +133,53 @@ public enum KeybindManager {
             if (object instanceof JsonObject) {
                 JsonObject jsonObject = (JsonObject) object;
                 Set<Map.Entry<String, JsonElement>> elements = jsonObject.entrySet();
-                for (Map.Entry entry : elements) {
-                    String name = (String) entry.getKey();
-                    boolean value = jsonObject.get(name).getAsBoolean();
-                    getMPSKeyBinds().stream().filter(kb->kb.getName().equals(name)).findFirst().ifPresent(kb->kb.showOnHud = value);
+
+                /** check for new format and load keybinds accordingly */
+                if (jsonObject.has(formatVersionKey) && jsonObject.get(formatVersionKey).getAsInt() == 2) {
+                    List<String> keybindNames = Arrays.stream(Minecraft.getInstance().options.keyMappings).map(keyBinding -> keyBinding.getName()).collect(Collectors.toList());
+
+
+
+
+                    NuminaLogger.logDebug("loading keybind format 2.0");
+
+                    for (Map.Entry entry : elements) {
+                        String name = (String) entry.getKey();
+
+                        if(!(entry.getValue() instanceof JsonObject)) {
+                            continue;
+                        }
+                        JsonObject data = ((JsonObject) entry.getValue()).getAsJsonObject();
+                        boolean showOnHud = data.get(showOnHudKey).getAsBoolean();
+                        int defaultKey = data.get(defaultKeyKey).getAsInt();
+                        ResourceLocation registryName = new ResourceLocation(data.get(registryNameKey).getAsString());
+                        MPSKeyBinding keyBinding = new MPSKeyBinding(registryName, name, defaultKey, mps);
+                        keyBinding.showOnHud = showOnHud;
+                        ClientRegistry.registerKeyBinding(keyBinding);
+                    }
+
+                    /** fallback if settings hasn't been converted to new format yet */
+                } else {
+                    NuminaLogger.logDebug("loading keybind format 1.2");
+                    for (Map.Entry entry : elements) {
+                        String name = ((String) entry.getKey());
+                        boolean value = jsonObject.get(name).getAsBoolean();
+                        String name1 = name
+                                .replace("keybinding.powersuits.clock", "keybinding.minecraft.clock")
+                                .replace("keybinding.powersuits.compass", "keybinding.minecraft.compass");
+
+                        // runs again on login
+                        if (onLogin) {
+                            getMPSKeyBinds().stream().filter(kb->kb.getName().equals(name1)).findFirst().ifPresent(kb->kb.showOnHud = value);
+                            // temporary way of registering keybinds to be replaced on login
+                        } else {
+                            System.out.println("name here: " + name);
+                            MPSKeyBinding kb = new MPSKeyBinding(Items.AIR.getRegistryName(), name1, GLFW.GLFW_KEY_UNKNOWN, mps);
+                            kb.showOnHud = value;
+                            ClientRegistry.registerKeyBinding(kb);
+//                                    new KeyBinding(new TranslationTextComponent(name).getKey(), GLFW.GLFW_KEY_UNKNOWN, mps));
+                        }
+                    }
                 }
             }
         } catch (Exception e) {
@@ -170,7 +227,7 @@ public enum KeybindManager {
                         id = null;
                     }
 
-                /** bind modules to it */
+                    /** bind modules to it */
                 } else if (line.contains("~") && id != null) {
                     String[] exploded = line.split("~");
                     ResourceLocation regName = new ResourceLocation(MPSConstants.MOD_ID, exploded[0]);
@@ -178,12 +235,12 @@ public enum KeybindManager {
                     InputMappings.Input finalId = id;
                     boolean finalToggleval = toggleval;
                     getMPSKeyBinds().stream().filter(kb ->kb.registryName.equals(regName)).findFirst().ifPresent(kb -> {
-                                kb.showOnHud = finalDisplayOnHUD;
-                                if (finalId != null) {
-                                    kb.setKeyInternal(finalId);
-                                }
-                                kb.toggleval = finalToggleval; // Not saved or loaded in new system
-                            });
+                        kb.showOnHud = finalDisplayOnHUD;
+                        if (finalId != null) {
+                            kb.setKeyInternal(finalId);
+                        }
+                        kb.toggleval = finalToggleval; // Not saved or loaded in new system
+                    });
                 }
             }
             reader.close();
