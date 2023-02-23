@@ -1,6 +1,7 @@
 package lehjr.powersuits.client.gui.modding.module.install_salvage;
 
 import lehjr.numina.client.gui.clickable.ClickableModule;
+import lehjr.numina.client.gui.gemoetry.MusePoint2D;
 import lehjr.numina.client.gui.gemoetry.Rect;
 import lehjr.numina.common.capabilities.module.powermodule.PowerModuleCapability;
 import lehjr.powersuits.client.gui.common.ModularItemSelectionFrame;
@@ -8,15 +9,30 @@ import lehjr.powersuits.client.gui.modding.module.tweak.ModuleSelectionFrame;
 import lehjr.powersuits.client.gui.modding.module.tweak.ModuleSelectionSubFrame;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.registries.ForgeRegistries;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Collectors;
 
 public class CompatibleModuleDisplayFrame extends ModuleSelectionFrame {
     public CompatibleModuleDisplayFrame(ModularItemSelectionFrame itemSelectFrameIn, Rect rect) {
         super(itemSelectFrameIn, rect);
+    }
+
+    @Override
+    public void update(double mouseX, double mouseY) {
+        super.update(mouseX, mouseY);
+        target.getModularItemCapability().ifPresent(iModularItem -> {
+            for (ModuleSelectionSubFrame subframe : categories.values()) {
+                for (ClickableModule module : subframe.moduleButtons) {
+                    module.setInstalled(iModularItem.isModuleInstalled(module.getRegName()));
+                }
+            }
+        });
     }
 
     /**
@@ -37,10 +53,14 @@ public class CompatibleModuleDisplayFrame extends ModuleSelectionFrame {
         target.getModularItemCapability().ifPresent(iModularItem -> {
             // get list of all possible modules
             ForgeRegistries.ITEMS.getValues().forEach(item -> {
+                boolean isModuleInstalled = iModularItem.isModuleInstalled(item.getRegistryName());
                 ItemStack module = new ItemStack(item, 1);
                 if (iModularItem.isModuleValid(module) && !possibleItems.contains(module)) {
-                    module.getCapability(PowerModuleCapability.POWER_MODULE).ifPresent(m->
-                            getOrCreateCategory(m.getCategory()).addModule(module, -1));
+                    module.getCapability(PowerModuleCapability.POWER_MODULE).ifPresent(m-> {
+                        ClickableModule clickie = getOrCreateCategory(m.getCategory()).addModule(module, -1);
+                        clickie.setInstalled(isModuleInstalled);
+                    });
+
                     possibleItems.add(module);
                 }
             });
@@ -51,6 +71,7 @@ public class CompatibleModuleDisplayFrame extends ModuleSelectionFrame {
 
             // actually preserve the module selection during call to init due to it being called on gui resize
             if(preserveSelected && selCopy.get().isPresent() && frame.category == selCopy.get().get().category) {
+
                 for (ClickableModule button : frame.moduleButtons) {
                     if (button.getModule().sameItem(selCopy.get().get().getModule())) {
                         frame.selectedModule = frame.moduleButtons.indexOf(button);

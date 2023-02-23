@@ -41,13 +41,14 @@ import lehjr.numina.common.network.NuminaPackets;
 import lehjr.numina.common.network.packets.TweakRequestDoublePacket;
 import lehjr.numina.common.string.StringUtils;
 import lehjr.powersuits.client.gui.common.ModularItemSelectionFrame;
-import lehjr.powersuits.client.gui.common.ModularItemTabToggleWidget;
-import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.common.util.LazyOptional;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 public class ModuleTweakFrame extends ScrollableFrame {
     protected static int margin = 4;

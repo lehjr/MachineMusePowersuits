@@ -35,12 +35,14 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.util.InputMappings;
 import net.minecraft.item.Items;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.client.registry.ClientRegistry;
 import org.lwjgl.glfw.GLFW;
 
 import java.io.*;
 import java.nio.file.Files;
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import static lehjr.powersuits.client.control.KeybindKeyHandler.mps;
@@ -119,7 +121,6 @@ public enum KeybindManager {
         return Arrays.stream(Minecraft.getInstance().options.keyMappings).filter(MPSKeyBinding.class::isInstance).map(MPSKeyBinding.class::cast).collect(Collectors.toList());
     }
 
-
     public void readInKeybinds(boolean onLogin) {
         File file = getKeyBindConfig();
         if (!file.exists()) {
@@ -138,9 +139,6 @@ public enum KeybindManager {
                 if (jsonObject.has(formatVersionKey) && jsonObject.get(formatVersionKey).getAsInt() == 2) {
                     List<String> keybindNames = Arrays.stream(Minecraft.getInstance().options.keyMappings).map(keyBinding -> keyBinding.getName()).collect(Collectors.toList());
 
-
-
-
                     NuminaLogger.logDebug("loading keybind format 2.0");
 
                     for (Map.Entry entry : elements) {
@@ -153,9 +151,7 @@ public enum KeybindManager {
                         boolean showOnHud = data.get(showOnHudKey).getAsBoolean();
                         int defaultKey = data.get(defaultKeyKey).getAsInt();
                         ResourceLocation registryName = new ResourceLocation(data.get(registryNameKey).getAsString());
-                        MPSKeyBinding keyBinding = new MPSKeyBinding(registryName, name, defaultKey, mps);
-                        keyBinding.showOnHud = showOnHud;
-                        ClientRegistry.registerKeyBinding(keyBinding);
+                        KeybindKeyHandler.registerKeyBinding(registryName, name, defaultKey, mps, showOnHud);
                     }
 
                     /** fallback if settings hasn't been converted to new format yet */
@@ -173,11 +169,7 @@ public enum KeybindManager {
                             getMPSKeyBinds().stream().filter(kb->kb.getName().equals(name1)).findFirst().ifPresent(kb->kb.showOnHud = value);
                             // temporary way of registering keybinds to be replaced on login
                         } else {
-                            System.out.println("name here: " + name);
-                            MPSKeyBinding kb = new MPSKeyBinding(Items.AIR.getRegistryName(), name1, GLFW.GLFW_KEY_UNKNOWN, mps);
-                            kb.showOnHud = value;
-                            ClientRegistry.registerKeyBinding(kb);
-//                                    new KeyBinding(new TranslationTextComponent(name).getKey(), GLFW.GLFW_KEY_UNKNOWN, mps));
+                            KeybindKeyHandler.registerKeyBinding(Items.AIR.getRegistryName(), name1, GLFW.GLFW_KEY_UNKNOWN, mps, value);
                         }
                     }
                 }

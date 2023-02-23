@@ -29,7 +29,6 @@ package lehjr.numina.common.network.packets;
 import lehjr.numina.common.capabilities.player.CapabilityPlayerKeyStates;
 import lehjr.numina.common.math.MathUtils;
 import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.nbt.ByteNBT;
 import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.fml.network.NetworkEvent;
 

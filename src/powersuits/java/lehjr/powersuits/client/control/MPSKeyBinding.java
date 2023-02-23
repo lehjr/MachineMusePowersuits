@@ -21,6 +21,13 @@ public class MPSKeyBinding extends KeyBinding {
         this.registryName = registryName;
     }
 
+    public MPSKeyBinding(ResourceLocation registryName, String name, int key, String category, boolean showOnHud) {
+        super(name, key, category);
+        this.registryName = registryName;
+        this.showOnHud = showOnHud;
+    }
+
+
     /**
      * Do not use this
      */

@@ -47,6 +47,7 @@ import java.util.List;
 
 public class ModuleSelectionSubFrame {
     public List<ClickableModule> moduleButtons;
+
     public int selectedModule = -1;
     int oldSelected = -1;
     protected Rect border;

@@ -40,7 +40,7 @@ import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.registries.ForgeRegistries;
 
-import static lehjr.powersuits.client.control.KeybindKeyHandler.RegisterKeybinding;
+import static lehjr.powersuits.client.control.KeybindKeyHandler.registerKeybinding;
 
 /**
  * Author: MachineMuse (Claire Semple)
@@ -63,14 +63,14 @@ public final class PlayerLoginHandler {
                                 if (pm.getTarget() == ModuleTarget.TOOLONLY) {
                                     if (pm.getCategory() == ModuleCategory.MINING_ENHANCEMENT) {
                                         modules.add(pm.getModuleStack());
-                                        RegisterKeybinding(item.getRegistryName());
+                                        registerKeybinding(item.getRegistryName(), false);
                                     } else if (!IRightClickModule.class.isAssignableFrom(pm.getClass())) {
                                         modules.add(pm.getModuleStack());
-                                        RegisterKeybinding(item.getRegistryName());
+                                        registerKeybinding(item.getRegistryName(), false);
                                     }
                                 } else {
                                     modules.add(pm.getModuleStack());
-                                    RegisterKeybinding(item.getRegistryName());
+                                    registerKeybinding(item.getRegistryName(), false);
                                 }
                             });
                 }

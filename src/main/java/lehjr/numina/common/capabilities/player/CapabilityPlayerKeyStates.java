@@ -28,7 +28,6 @@ package lehjr.numina.common.capabilities.player;
 
 import lehjr.numina.common.math.MathUtils;
 import net.minecraft.nbt.ByteNBT;
-import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.INBT;
 import net.minecraft.util.Direction;
 import net.minecraftforge.common.capabilities.Capability;

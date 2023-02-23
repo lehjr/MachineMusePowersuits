@@ -27,24 +27,15 @@
 package lehjr.powersuits.client.control;
 
 import lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
-import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
-import lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
-import lehjr.numina.common.capabilities.module.powermodule.PowerModuleCapability;
-import lehjr.numina.common.capabilities.module.rightclick.IRightClickModule;
-import lehjr.numina.common.capabilities.module.toggleable.IToggleableModule;
 import lehjr.numina.common.capabilities.player.CapabilityPlayerKeyStates;
 import lehjr.numina.common.math.MathUtils;
 import lehjr.numina.common.network.NuminaPackets;
 import lehjr.numina.common.network.packets.PlayerUpdatePacket;
 import lehjr.powersuits.client.gui.modechanging.GuiModeSelector;
-import lehjr.powersuits.common.constants.MPSConstants;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.client.settings.KeyBinding;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -54,10 +45,8 @@ import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.items.CapabilityItemHandler;
-import net.minecraftforge.registries.ForgeRegistries;
 import org.apache.commons.lang3.ArrayUtils;
 import org.lwjgl.glfw.GLFW;
-import sun.security.util.ArrayUtil;
 
 import java.util.Arrays;
 import java.util.Optional;
@@ -150,8 +139,6 @@ public class KeybindKeyHandler {
 
             byte byteOut = MathUtils.boolArrayToByte(boolArray);
 
-            System.out.println("byteOut: " + byteOut);
-
             if (markForSync) {
                 NuminaPackets.CHANNEL_INSTANCE.sendToServer(new PlayerUpdatePacket(byteOut));
             }
@@ -213,14 +200,17 @@ public class KeybindKeyHandler {
         return Arrays.stream(Minecraft.getInstance().options.keyMappings).filter(keyBinding1 -> keyBinding1.getName().equals(keybindingName)).findFirst();
     }
 
-
-    public static void RegisterKeybinding(ResourceLocation registryName) {
+    public static void registerKeybinding(ResourceLocation registryName, boolean showOnHud) {
         String keybindingName = new StringBuilder("keybinding.").append(registryName.getNamespace()).append(".").append(registryName.getPath()).toString();
+        registerKeyBinding(registryName, keybindingName, GLFW.GLFW_KEY_UNKNOWN, mps, showOnHud);
+    }
+
+    public static void registerKeyBinding(ResourceLocation registryName, String  keybindingName, int keyIn, String category, boolean showOnHud) {
         Optional<KeyBinding> keyBinding = getKeyIfExits(keybindingName);
 
+        // Don't add duplicate keybinds
         if (keyBinding.isPresent()) {
             keyBinding.ifPresent(kb-> {
-                // This is to replace keybindings in the
                 if(!(kb instanceof MPSKeyBinding) || ((MPSKeyBinding) kb).registryName == Items.AIR.getRegistryName()) {
                     int index = ArrayUtils.indexOf(Minecraft.getInstance().options.keyMappings, kb);
                     int key = kb.getKey().getValue();
@@ -232,8 +222,10 @@ public class KeybindKeyHandler {
                 }
             });
         } else {
+
+
             // This is mostly just to populate the list in the event the list doesn't exist or to add new modules
-            ClientRegistry.registerKeyBinding(new MPSKeyBinding(registryName, keybindingName, GLFW.GLFW_KEY_UNKNOWN, mps));
+            ClientRegistry.registerKeyBinding(new MPSKeyBinding(registryName, keybindingName, keyIn, category));
         }
     }
 }
