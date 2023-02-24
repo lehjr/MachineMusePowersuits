@@ -2,7 +2,7 @@ package lehjr.numina.client.gui;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import lehjr.numina.client.gui.frame.IGuiFrame;
-import lehjr.numina.client.gui.gemoetry.MusePoint2D;
+import lehjr.numina.client.gui.geometry.MusePoint2D;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.util.text.ITextComponent;

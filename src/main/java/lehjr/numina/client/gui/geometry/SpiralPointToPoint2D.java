@@ -24,7 +24,7 @@
  *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package lehjr.numina.client.gui.gemoetry;
+package lehjr.numina.client.gui.geometry;
 
 public class SpiralPointToPoint2D extends MusePoint2D {
     protected final MusePoint2D center;

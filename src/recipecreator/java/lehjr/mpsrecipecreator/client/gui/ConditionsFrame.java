@@ -7,8 +7,8 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import lehjr.mpsrecipecreator.basemod.ConditionsJsonLoader;
 import lehjr.numina.client.gui.clickable.Checkbox;
 import lehjr.numina.client.gui.frame.ScrollableFrame;
-import lehjr.numina.client.gui.gemoetry.MusePoint2D;
-import lehjr.numina.client.gui.gemoetry.Rect;
+import lehjr.numina.client.gui.geometry.MusePoint2D;
+import lehjr.numina.client.gui.geometry.Rect;
 
 import java.util.HashMap;
 import java.util.Map;

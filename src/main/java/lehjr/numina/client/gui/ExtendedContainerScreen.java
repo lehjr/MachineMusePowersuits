@@ -28,8 +28,8 @@ package lehjr.numina.client.gui;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import lehjr.numina.client.gui.frame.IGuiFrame;
-import lehjr.numina.client.gui.gemoetry.DrawableRect;
-import lehjr.numina.client.gui.gemoetry.MusePoint2D;
+import lehjr.numina.client.gui.geometry.DrawableRect;
+import lehjr.numina.client.gui.geometry.MusePoint2D;
 import lehjr.numina.client.gui.slot.IHideableSlot;
 import lehjr.numina.client.gui.slot.IIConProvider;
 import lehjr.numina.common.math.Colour;

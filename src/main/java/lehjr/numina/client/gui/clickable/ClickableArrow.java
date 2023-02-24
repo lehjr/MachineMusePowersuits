@@ -27,8 +27,8 @@
 package lehjr.numina.client.gui.clickable;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import lehjr.numina.client.gui.gemoetry.DrawableArrow;
-import lehjr.numina.client.gui.gemoetry.MusePoint2D;
+import lehjr.numina.client.gui.geometry.DrawableArrow;
+import lehjr.numina.client.gui.geometry.MusePoint2D;
 import lehjr.numina.common.math.Colour;
 
 public class ClickableArrow extends DrawableArrow implements IClickable {

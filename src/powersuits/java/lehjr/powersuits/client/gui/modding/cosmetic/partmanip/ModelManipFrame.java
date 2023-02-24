@@ -29,7 +29,7 @@ package lehjr.powersuits.client.gui.modding.cosmetic.partmanip;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import lehjr.numina.client.gui.clickable.slider.VanillaFrameScrollBar;
 import lehjr.numina.client.gui.frame.ScrollableFrame;
-import lehjr.numina.client.gui.gemoetry.Rect;
+import lehjr.numina.client.gui.geometry.Rect;
 import lehjr.numina.common.capabilities.render.modelspec.EnumSpecType;
 import lehjr.numina.common.capabilities.render.modelspec.ModelRegistry;
 import lehjr.numina.common.capabilities.render.modelspec.SpecBase;

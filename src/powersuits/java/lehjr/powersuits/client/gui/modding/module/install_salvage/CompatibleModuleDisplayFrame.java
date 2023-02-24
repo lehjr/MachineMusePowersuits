@@ -1,22 +1,18 @@
 package lehjr.powersuits.client.gui.modding.module.install_salvage;
 
 import lehjr.numina.client.gui.clickable.ClickableModule;
-import lehjr.numina.client.gui.gemoetry.MusePoint2D;
-import lehjr.numina.client.gui.gemoetry.Rect;
+import lehjr.numina.client.gui.geometry.Rect;
 import lehjr.numina.common.capabilities.module.powermodule.PowerModuleCapability;
 import lehjr.powersuits.client.gui.common.ModularItemSelectionFrame;
 import lehjr.powersuits.client.gui.modding.module.tweak.ModuleSelectionFrame;
 import lehjr.powersuits.client.gui.modding.module.tweak.ModuleSelectionSubFrame;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.registries.ForgeRegistries;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.stream.Collectors;
 
 public class CompatibleModuleDisplayFrame extends ModuleSelectionFrame {
     public CompatibleModuleDisplayFrame(ModularItemSelectionFrame itemSelectFrameIn, Rect rect) {

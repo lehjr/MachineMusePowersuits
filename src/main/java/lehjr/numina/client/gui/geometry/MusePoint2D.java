@@ -1,4 +1,4 @@
-package lehjr.numina.client.gui.gemoetry;
+package lehjr.numina.client.gui.geometry;
 
 /**
  * Base class for Points. The main reason for this is to have a

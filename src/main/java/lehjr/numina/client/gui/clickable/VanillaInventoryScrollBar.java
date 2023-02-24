@@ -2,8 +2,8 @@ package lehjr.numina.client.gui.clickable;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import lehjr.numina.client.gui.GuiIcon;
-import lehjr.numina.client.gui.gemoetry.DrawableTile;
-import lehjr.numina.client.gui.gemoetry.MusePoint2D;
+import lehjr.numina.client.gui.geometry.DrawableTile;
+import lehjr.numina.client.gui.geometry.MusePoint2D;
 import lehjr.numina.common.math.Colour;
 import net.minecraft.util.ResourceLocation;
 

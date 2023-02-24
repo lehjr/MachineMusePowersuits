@@ -26,8 +26,8 @@
 
 package lehjr.numina.client.gui.clickable;
 
-import lehjr.numina.client.gui.gemoetry.IDrawableRect;
-import lehjr.numina.client.gui.gemoetry.MusePoint2D;
+import lehjr.numina.client.gui.geometry.IDrawableRect;
+import lehjr.numina.client.gui.geometry.MusePoint2D;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.SimpleSound;
 import net.minecraft.client.audio.SoundHandler;

@@ -2,7 +2,7 @@ package lehjr.powersuits.client.gui.modding.cosmetic.colourpicker;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import lehjr.numina.client.gui.clickable.RadioButton;
-import lehjr.numina.client.gui.gemoetry.MusePoint2D;
+import lehjr.numina.client.gui.geometry.MusePoint2D;
 import lehjr.numina.client.render.IconUtils;
 import lehjr.numina.common.math.Colour;
 

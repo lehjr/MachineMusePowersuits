@@ -27,7 +27,7 @@
 package lehjr.numina.client.gui.clickable;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import lehjr.numina.client.gui.gemoetry.*;
+import lehjr.numina.client.gui.geometry.*;
 
 /**
  * Defines a generic clickable itemStack for a MuseGui.

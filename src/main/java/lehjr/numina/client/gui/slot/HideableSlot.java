@@ -26,7 +26,7 @@
 
 package lehjr.numina.client.gui.slot;
 
-import lehjr.numina.client.gui.gemoetry.MusePoint2D;
+import lehjr.numina.client.gui.geometry.MusePoint2D;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.container.Slot;
 

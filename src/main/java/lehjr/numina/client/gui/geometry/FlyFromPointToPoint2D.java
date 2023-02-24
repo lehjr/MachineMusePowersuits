@@ -1,4 +1,4 @@
-package lehjr.numina.client.gui.gemoetry;
+package lehjr.numina.client.gui.geometry;
 
 public class FlyFromPointToPoint2D extends MusePoint2D {
     protected MusePoint2D prev;

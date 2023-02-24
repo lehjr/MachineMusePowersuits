@@ -29,7 +29,7 @@ package lehjr.powersuits.client.gui.keybind;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import lehjr.numina.client.gui.ContainerlessGui;
-import lehjr.numina.client.gui.gemoetry.MusePoint2D;
+import lehjr.numina.client.gui.geometry.MusePoint2D;
 import lehjr.powersuits.client.control.KeybindManager;
 import lehjr.powersuits.client.gui.common.TabSelectFrame;
 import lehjr.powersuits.common.constants.MPSConstants;

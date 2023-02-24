@@ -31,8 +31,8 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import lehjr.numina.client.gui.clickable.ClickableModule;
 import lehjr.numina.client.gui.clickable.slider.VanillaFrameScrollBar;
 import lehjr.numina.client.gui.frame.ScrollableFrame;
-import lehjr.numina.client.gui.gemoetry.MusePoint2D;
-import lehjr.numina.client.gui.gemoetry.Rect;
+import lehjr.numina.client.gui.geometry.MusePoint2D;
+import lehjr.numina.client.gui.geometry.Rect;
 import lehjr.numina.client.render.NuminaRenderer;
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
 import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
@@ -50,7 +50,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.stream.Collectors;
 
 public class ModuleSelectionFrame extends ScrollableFrame {
     protected ModularItemSelectionFrame target;

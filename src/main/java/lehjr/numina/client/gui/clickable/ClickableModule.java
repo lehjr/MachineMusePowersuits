@@ -27,7 +27,7 @@
 package lehjr.numina.client.gui.clickable;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import lehjr.numina.client.gui.gemoetry.MusePoint2D;
+import lehjr.numina.client.gui.geometry.MusePoint2D;
 import lehjr.numina.client.render.IconUtils;
 import lehjr.numina.client.render.NuminaRenderer;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;

@@ -27,7 +27,7 @@
 package lehjr.numina.client.gui.frame;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import lehjr.numina.client.gui.gemoetry.IDrawableRect;
+import lehjr.numina.client.gui.geometry.IDrawableRect;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.text.ITextComponent;
 

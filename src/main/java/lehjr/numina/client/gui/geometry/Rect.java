@@ -1,4 +1,4 @@
-package lehjr.numina.client.gui.gemoetry;
+package lehjr.numina.client.gui.geometry;
 
 public class Rect implements IRect {
     MusePoint2D ul;

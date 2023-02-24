@@ -28,7 +28,7 @@ package lehjr.powersuits.client.gui.modechanging;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import lehjr.numina.client.gui.ContainerlessGui;
-import lehjr.numina.client.gui.gemoetry.MusePoint2D;
+import lehjr.numina.client.gui.geometry.MusePoint2D;
 import net.minecraft.client.MainWindow;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerEntity;

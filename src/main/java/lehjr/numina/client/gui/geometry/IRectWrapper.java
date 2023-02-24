@@ -1,4 +1,4 @@
-package lehjr.numina.client.gui.gemoetry;
+package lehjr.numina.client.gui.geometry;
 
 public interface IRectWrapper<T extends IRect> extends IRect {
 

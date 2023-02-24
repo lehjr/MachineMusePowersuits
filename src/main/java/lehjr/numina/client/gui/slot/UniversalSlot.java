@@ -28,10 +28,10 @@ package lehjr.numina.client.gui.slot;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import lehjr.numina.client.gui.clickable.IClickable;
-import lehjr.numina.client.gui.gemoetry.IDrawable;
-import lehjr.numina.client.gui.gemoetry.IRect;
-import lehjr.numina.client.gui.gemoetry.MusePoint2D;
-import lehjr.numina.client.gui.gemoetry.Rect;
+import lehjr.numina.client.gui.geometry.IDrawable;
+import lehjr.numina.client.gui.geometry.IRect;
+import lehjr.numina.client.gui.geometry.MusePoint2D;
+import lehjr.numina.client.gui.geometry.Rect;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Inventory;

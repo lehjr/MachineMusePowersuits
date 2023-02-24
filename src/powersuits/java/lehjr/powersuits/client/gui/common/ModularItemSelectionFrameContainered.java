@@ -1,6 +1,6 @@
 package lehjr.powersuits.client.gui.common;
 
-import lehjr.numina.client.gui.gemoetry.MusePoint2D;
+import lehjr.numina.client.gui.geometry.MusePoint2D;
 import lehjr.numina.client.gui.slot.IHideableSlot;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.inventory.container.Container;

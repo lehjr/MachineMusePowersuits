@@ -2,7 +2,7 @@ package lehjr.powersuits.client;
 
 import lehjr.numina.client.gui.IContainerULOffSet;
 import lehjr.numina.client.gui.frame.InventoryFrame;
-import lehjr.numina.client.gui.gemoetry.Rect;
+import lehjr.numina.client.gui.geometry.Rect;
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
 import lehjr.powersuits.client.gui.common.ModularItemSelectionFrameContainered;
 import lehjr.powersuits.client.gui.common.ModularItemTabToggleWidget;

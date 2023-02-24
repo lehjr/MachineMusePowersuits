@@ -2,7 +2,7 @@ package lehjr.numina.client.gui;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import lehjr.numina.client.gui.frame.IGuiFrame;
-import lehjr.numina.client.gui.gemoetry.MusePoint2D;
+import lehjr.numina.client.gui.geometry.MusePoint2D;
 import lehjr.numina.client.gui.slot.IHideableSlot;
 import lehjr.numina.client.gui.slot.IIConProvider;
 import lehjr.numina.common.math.Colour;
@@ -49,9 +49,10 @@ public class ExtendedContainerScreen2 <T extends Container> extends ContainerScr
         if (slot!= null && slot instanceof IHideableSlot) {
             if (slot.isActive()) {
                 super.renderSlot(matrixStack, slot);
-            } else {
-                System.out.println("index: "+ menu.slots.indexOf(slot));
             }
+//            else {
+//                System.out.println("index: "+ menu.slots.indexOf(slot));
+//            }
         } else {
             super.renderSlot(matrixStack, slot);
 

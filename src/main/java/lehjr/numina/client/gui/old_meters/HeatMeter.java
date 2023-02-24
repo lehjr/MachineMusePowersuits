@@ -27,7 +27,7 @@
 package lehjr.numina.client.gui.old_meters;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import lehjr.numina.client.gui.gemoetry.Meter;
+import lehjr.numina.client.gui.geometry.Meter;
 import lehjr.numina.common.math.Colour;
 import net.minecraft.client.Minecraft;
 

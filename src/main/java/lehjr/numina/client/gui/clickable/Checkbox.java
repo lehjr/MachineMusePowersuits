@@ -28,10 +28,10 @@ package lehjr.numina.client.gui.clickable;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import lehjr.numina.client.gui.GuiIcon;
-import lehjr.numina.client.gui.gemoetry.IDrawable;
-import lehjr.numina.client.gui.gemoetry.IDrawableRect;
-import lehjr.numina.client.gui.gemoetry.MusePoint2D;
-import lehjr.numina.client.gui.gemoetry.Rect;
+import lehjr.numina.client.gui.geometry.IDrawable;
+import lehjr.numina.client.gui.geometry.IDrawableRect;
+import lehjr.numina.client.gui.geometry.MusePoint2D;
+import lehjr.numina.client.gui.geometry.Rect;
 import lehjr.numina.common.math.Colour;
 import lehjr.numina.common.string.StringUtils;
 import net.minecraft.client.Minecraft;

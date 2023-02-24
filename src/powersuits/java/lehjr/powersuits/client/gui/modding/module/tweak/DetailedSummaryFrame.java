@@ -29,7 +29,7 @@ package lehjr.powersuits.client.gui.modding.module.tweak;
 import com.google.common.util.concurrent.AtomicDouble;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import lehjr.numina.client.gui.frame.ScrollableFrame;
-import lehjr.numina.client.gui.gemoetry.Rect;
+import lehjr.numina.client.gui.geometry.Rect;
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.capabilities.module.powermodule.PowerModuleCapability;

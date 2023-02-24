@@ -24,7 +24,7 @@
  *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package lehjr.numina.client.gui.gemoetry;
+package lehjr.numina.client.gui.geometry;
 
 import lehjr.numina.common.math.Colour;
 import org.lwjgl.BufferUtils;

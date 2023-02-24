@@ -1,8 +1,8 @@
 package lehjr.numina.client.gui.frame;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import lehjr.numina.client.gui.gemoetry.MusePoint2D;
-import lehjr.numina.client.gui.gemoetry.Rect;
+import lehjr.numina.client.gui.geometry.MusePoint2D;
+import lehjr.numina.client.gui.geometry.Rect;
 import lehjr.numina.common.math.Colour;
 import lehjr.numina.common.string.StringUtils;
 import net.minecraft.util.text.TranslationTextComponent;

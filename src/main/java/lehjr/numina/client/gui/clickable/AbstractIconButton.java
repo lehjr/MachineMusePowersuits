@@ -1,7 +1,7 @@
 package lehjr.numina.client.gui.clickable;
 
 import lehjr.numina.client.gui.GuiIcon;
-import lehjr.numina.client.gui.gemoetry.MusePoint2D;
+import lehjr.numina.client.gui.geometry.MusePoint2D;
 
 public abstract class AbstractIconButton extends Clickable {
     GuiIcon.DrawableGuiIcon icon;
