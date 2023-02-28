@@ -28,34 +28,65 @@ package lehjr.powersuits.common.item.tool;
 
 import lehjr.numina.common.string.AdditionalInfo;
 import lehjr.powersuits.common.capability.PowerFistCap;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ToolItem;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.world.World;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.util.Mth;
+import net.minecraft.world.item.*;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.energy.CapabilityEnergy;
+import net.minecraftforge.energy.IEnergyStorage;
 
 import javax.annotation.Nullable;
 import java.util.HashSet;
 import java.util.List;
 
-public class AbstractElectricTool extends ToolItem {
+public class AbstractElectricTool extends DiggerItem {
     public AbstractElectricTool(Item.Properties properties) {
         super(0.0F,
                 0.0F,
-                MPAToolMaterial.EMPTY_TOOL,
-                new HashSet<>(),
+//                MPAToolMaterial.EMPTY_TOOL,
+                new Tier() {
+                    @Override
+                    public int getUses() {
+                        return 0;
+                    }
+
+                    @Override
+                    public float getSpeed() {
+                        return 0;
+                    }
+
+                    @Override
+                    public float getAttackDamageBonus() {
+                        return 0;
+                    }
+
+                    @Override
+                    public int getLevel() {
+                        return 0;
+                    }
+
+                    @Override
+                    public int getEnchantmentValue() {
+                        return 0;
+                    }
+
+                    @Override
+                    public Ingredient getRepairIngredient() {
+                        return null;
+                    }
+                },
+                null,
                 properties);
     }
 
     @OnlyIn(Dist.CLIENT)
     @Override
-    public void appendHoverText(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+    public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
         if (worldIn != null) {
             AdditionalInfo.appendHoverText(stack, worldIn, tooltip, flagIn);
         }
@@ -63,21 +94,28 @@ public class AbstractElectricTool extends ToolItem {
 
     @Nullable
     @Override
-    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundNBT nbt) {
+    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt) {
         return new PowerFistCap(stack);
     }
 
     /** Durability bar for showing energy level ------------------------------------------------------------------ */
     @Override
-    public boolean showDurabilityBar(final ItemStack stack) {
-        return stack.getCapability(CapabilityEnergy.ENERGY)
-                .map( energyCap-> energyCap.getMaxEnergyStored() > 0).orElse(false);
+    public boolean isBarVisible(ItemStack stack) {
+        return stack.getCapability(CapabilityEnergy.ENERGY).map(iEnergyStorage -> iEnergyStorage.getMaxEnergyStored() > 1).orElse(false);
     }
 
     @Override
-    public double getDurabilityForDisplay(final ItemStack stack) {
-        return stack.getCapability(CapabilityEnergy.ENERGY)
-                .map( energyCap-> 1 - energyCap.getEnergyStored() / (double) energyCap.getMaxEnergyStored()).orElse(1D);
+    public int getBarWidth(ItemStack stack) {
+        return stack.getCapability(CapabilityEnergy.ENERGY).map(iEnergyStorage -> iEnergyStorage.getEnergyStored() * 13 / iEnergyStorage.getMaxEnergyStored()).orElse(1);
+    }
+
+    @Override
+    public int getBarColor(ItemStack stack) {
+        IEnergyStorage energy = stack.getCapability(CapabilityEnergy.ENERGY).orElse(null);
+        if (energy == null) {
+            return super.getBarColor(stack);
+        }
+        return Mth.hsvToRgb(Math.max(0.0F, (float) energy.getEnergyStored() / (float) energy.getMaxEnergyStored()) / 3.0F, 1.0F, 1.0F);
     }
 
     @Override

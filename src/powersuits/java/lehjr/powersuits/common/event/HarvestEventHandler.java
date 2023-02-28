@@ -30,15 +30,16 @@ import lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem
 import lehjr.numina.common.capabilities.module.blockbreaking.IBlockBreakingModule;
 import lehjr.numina.common.capabilities.module.powermodule.PowerModuleCapability;
 import lehjr.numina.common.energy.ElectricItemUtils;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.RayTraceContext;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.Mth;
+import net.minecraft.world.level.ClipContext;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -46,7 +47,7 @@ import net.minecraftforge.items.CapabilityItemHandler;
 public class HarvestEventHandler {
     @SubscribeEvent
     public static void handleHarvestCheck(PlayerEvent.HarvestCheck event) {
-        PlayerEntity player = event.getPlayer();
+        Player player = event.getPlayer();
         if (player == null) {
             return;
         }
@@ -56,7 +57,7 @@ public class HarvestEventHandler {
             return;
         }
 
-        player.inventory.getSelected().getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+        player.getInventory().getSelected().getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
                 .filter(IModeChangingItem.class::isInstance)
                 .map(IModeChangingItem.class::cast)
                 .ifPresent(iItemHandler -> {
@@ -65,8 +66,8 @@ public class HarvestEventHandler {
                         return;
                     }
 
-                    RayTraceResult rayTraceResult = rayTrace(player.level, player, RayTraceContext.FluidMode.SOURCE_ONLY);
-                    if (rayTraceResult == null || rayTraceResult.getType() != RayTraceResult.Type.BLOCK)
+                    HitResult rayTraceResult = rayTrace(player.level, player, ClipContext.Fluid.SOURCE_ONLY);
+                    if (rayTraceResult == null || rayTraceResult.getType() != HitResult.Type.BLOCK)
                         return;
 
                     BlockPos pos = new BlockPos(rayTraceResult.getLocation());
@@ -90,26 +91,26 @@ public class HarvestEventHandler {
     }
 
     // copied from vanilla item
-    protected static RayTraceResult rayTrace(World worldIn, PlayerEntity player, RayTraceContext.FluidMode fluidMode) {
-        float pitch = player.xRot;
-        float yaw = player.yRot;
-        Vector3d vec3d = player.getEyePosition(1.0F);
-        float f2 = MathHelper.cos(-yaw * ((float)Math.PI / 180F) - (float)Math.PI);
-        float f3 = MathHelper.sin(-yaw * ((float)Math.PI / 180F) - (float)Math.PI);
-        float f4 = -MathHelper.cos(-pitch * ((float)Math.PI / 180F));
-        float f5 = MathHelper.sin(-pitch * ((float)Math.PI / 180F));
+    protected static HitResult rayTrace(Level worldIn, Player player, ClipContext.Fluid fluidMode) {
+        float pitch = player.xRotO;
+        float yaw = player.getYRot();
+        Vec3 vec3d = player.getEyePosition(1.0F);
+        float f2 = Mth.cos(-yaw * ((float)Math.PI / 180F) - (float)Math.PI);
+        float f3 = Mth.sin(-yaw * ((float)Math.PI / 180F) - (float)Math.PI);
+        float f4 = -Mth.cos(-pitch * ((float)Math.PI / 180F));
+        float f5 = Mth.sin(-pitch * ((float)Math.PI / 180F));
         float f6 = f3 * f4;
         float f7 = f2 * f4;
         double d0 = player.getAttribute(net.minecraftforge.common.ForgeMod.REACH_DISTANCE.get()).getValue();
-        Vector3d vec3d1 = vec3d.add((double)f6 * d0, (double)f5 * d0, (double)f7 * d0);
-        return worldIn.clip(new RayTraceContext(vec3d, vec3d1, RayTraceContext.BlockMode.OUTLINE, fluidMode, player));
+        Vec3 vec3d1 = vec3d.add((double)f6 * d0, (double)f5 * d0, (double)f7 * d0);
+        return worldIn.clip(new ClipContext(vec3d, vec3d1, ClipContext.Block.OUTLINE, fluidMode, player));
     }
 
     @SubscribeEvent
     public static void handleBreakSpeed(PlayerEvent.BreakSpeed event) {
         // Note: here we can actually get the position if needed. we can't easily om the harvest check.
-        PlayerEntity player = event.getPlayer();
-        ItemStack stack = player.inventory.getSelected();
+        Player player = event.getPlayer();
+        ItemStack stack = player.getInventory().getSelected();
         stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
                 .filter(IModeChangingItem.class::isInstance)
                 .map(IModeChangingItem.class::cast)

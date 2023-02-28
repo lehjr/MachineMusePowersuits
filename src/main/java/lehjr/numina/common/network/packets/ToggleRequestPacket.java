@@ -27,11 +27,11 @@
 package lehjr.numina.common.network.packets;
 
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.network.NetworkEvent;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.network.NetworkEvent;
 
 import java.util.function.Supplier;
 
@@ -44,12 +44,12 @@ public class ToggleRequestPacket {
         this.toggleval = active;
     }
 
-    public static void encode(ToggleRequestPacket msg, PacketBuffer packetBuffer) {
+    public static void encode(ToggleRequestPacket msg, FriendlyByteBuf packetBuffer) {
         packetBuffer.writeUtf(msg.registryName.toString());
         packetBuffer.writeBoolean(msg.toggleval);
     }
 
-    public static ToggleRequestPacket decode(PacketBuffer packetBuffer) {
+    public static ToggleRequestPacket decode(FriendlyByteBuf packetBuffer) {
         return new ToggleRequestPacket(
                 new ResourceLocation(packetBuffer.readUtf(500)),
                 packetBuffer.readBoolean()
@@ -57,7 +57,7 @@ public class ToggleRequestPacket {
     }
 
     public static void handle(ToggleRequestPacket message, Supplier<NetworkEvent.Context> ctx) {
-        final ServerPlayerEntity player = ctx.get().getSender();
+        final ServerPlayer player = ctx.get().getSender();
 
         if (player == null || player.getServer() == null)
             return;
@@ -69,13 +69,13 @@ public class ToggleRequestPacket {
             if (player == null)
                 return;
 
-            for (int i = 0; i < player.inventory.getContainerSize(); i++) {
-                player.inventory.getItem(i).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+            for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
+                player.getInventory().getItem(i).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
                         .filter(IModularItem.class::isInstance)
                         .map(IModularItem.class::cast)
                         .ifPresent(handler -> handler.toggleModule(registryName, toggleval));
             }
-            player.inventory.setChanged();
+            player.getInventory().setChanged();
         });
         ctx.get().setPacketHandled(true);
     }

@@ -26,12 +26,13 @@
 
 package lehjr.numina.common.player;
 
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.world.biome.Biome;
+import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.biome.Biomes;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
 
 import javax.annotation.Nonnull;
 
@@ -41,15 +42,15 @@ import javax.annotation.Nonnull;
  * Ported to Java by lehjr on 10/24/16.
  */
 public final class PlayerUtils {
-    public static void resetFloatKickTicks(PlayerEntity player) {
-        if (player instanceof ServerPlayerEntity) {
-            ((ServerPlayerEntity) player).connection.aboveGroundTickCount = 0;
+    public static void resetFloatKickTicks(Player player) {
+        if (player instanceof ServerPlayer) {
+            ((ServerPlayer) player).connection.aboveGroundTickCount = 0;
         }
     }
 
-    public static void teleportEntity(PlayerEntity PlayerEntity, RayTraceResult rayTraceResult) {
-        if (rayTraceResult != null && PlayerEntity instanceof ServerPlayerEntity) {
-            ServerPlayerEntity player = (ServerPlayerEntity) PlayerEntity;
+    public static void teleportEntity(Player Player, HitResult rayTraceResult) {
+        if (rayTraceResult != null && Player instanceof ServerPlayer) {
+            ServerPlayer player = (ServerPlayer) Player;
             if (player.connection.connection.isConnected()) {
                 switch (rayTraceResult.getType()) {
                     case ENTITY:
@@ -59,7 +60,7 @@ public final class PlayerUtils {
                         double hitx = rayTraceResult.getLocation().x;
                         double hity = rayTraceResult.getLocation().y;
                         double hitz = rayTraceResult.getLocation().z;
-                        switch (((BlockRayTraceResult)rayTraceResult).getDirection()) {
+                        switch (((BlockHitResult)rayTraceResult).getDirection()) {
                             case DOWN: // Bottom
                                 hity -= 2;
                                 break;
@@ -90,7 +91,7 @@ public final class PlayerUtils {
         }
     }
 
-    public static float getPlayerCoolingBasedOnMaterial(@Nonnull PlayerEntity player) {
+    public static float getPlayerCoolingBasedOnMaterial(@Nonnull Player player) {
         if (player.isInLava()) {
             return 0;
         }
@@ -105,13 +106,13 @@ public final class PlayerUtils {
             cool += 0.5;
 
         // If nighttime and in the desert, increase cooling
-        if (!player.level.isDay() && getBiome(player).getBiomeCategory() == Biome.Category.DESERT) {
+        if (!player.level.isDay() && getBiome(player).getBiomeCategory().equals(Biomes.DESERT)) {
             cool += 0.8;
         }
 
         // check for rain and if player is in the rain
         // check if rain can happen in the biome the player is in
-        if (player.level.getBiome(player.blockPosition()).getPrecipitation() != Biome.RainType.NONE
+        if (getBiome(player).getPrecipitation() != Biome.Precipitation.NONE
                 // check if raining in the world
                 && player.level.isRaining()
                 // check if the player can see the sky
@@ -122,7 +123,7 @@ public final class PlayerUtils {
         return cool;
     }
 
-    public static Biome getBiome(PlayerEntity player) {
-        return player.level.getBiome(player.blockPosition());
+    public static Biome getBiome(Player player) {
+        return player.level.getBiome(player.blockPosition()).value();
     }
 }

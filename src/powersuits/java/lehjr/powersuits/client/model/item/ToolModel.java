@@ -10,54 +10,54 @@
 //import lehjr.numina.capabilities.inventory.modechanging.IModeChangingItem;
 //import lehjr.numina.client.render.RenderState;
 //import lehjr.numina.math.Colour;
-//import com.mojang.blaze3d.matrix.MatrixStack;
-//import com.mojang.blaze3d.vertex.IVertexBuilder;
-//import net.minecraft.client.renderer.model.ItemCameraTransforms;
+//import com.mojang.blaze3d.vertex.PoseStack;
+//import com.mojang.blaze3d.vertex.VertexConsumer;
+//import net.minecraft.client.renderer.model.ItemTransforms;
 //import net.minecraft.client.renderer.model.Model;
-//import net.minecraft.client.renderer.model.ModelRenderer;
+//import net.minecraft.client.renderer.model.ModelPart;
 //import net.minecraft.entity.Entity;
-//import net.minecraft.entity.player.PlayerEntity;
-//import net.minecraft.item.ItemStack;
+//import net.minecraft.world.entity.player.Player;
+//import net.minecraft.world.item.ItemStack;
 //import net.minecraftforge.items.CapabilityItemHandler;
 //import org.lwjgl.opengl.GL11;
 //
-//import static net.minecraft.client.renderer.model.ItemCameraTransforms.TransformType.FIRST_PERSON_LEFT_HAND;
-//import static net.minecraft.client.renderer.model.ItemCameraTransforms.TransformType.FIRST_PERSON_RIGHT_HAND;
+//import static net.minecraft.client.renderer.model.ItemTransforms.TransformType.FIRST_PERSON_LEFT_HAND;
+//import static net.minecraft.client.renderer.model.ItemTransforms.TransformType.FIRST_PERSON_RIGHT_HAND;
 //
 //public class ToolModel extends Model {
 //    public int boltSize;
 //    boolean isRightHand;
 //
-//    public ModelRenderer mainarm;
-//    public ModelRenderer armorright;
-//    public ModelRenderer armorleft;
-//    public ModelRenderer wristtopright;
-//    public ModelRenderer wristtopleft;
-//    public ModelRenderer wristbottomright;
-//    public ModelRenderer wristbottomleft;
-//    public ModelRenderer index1;
-//    public ModelRenderer index2;
-//    public ModelRenderer middlefinger1;
-//    public ModelRenderer middlefinger2;
-//    public ModelRenderer ringfinger1;
-//    public ModelRenderer ringfinger2;
-//    public ModelRenderer pinky1;
-//    public ModelRenderer pinky2;
-//    public ModelRenderer thumb1;
-//    public ModelRenderer thumb2;
-//    public ModelRenderer fingerguard;
-//    public ModelRenderer crystalholder;
-//    public ModelRenderer crystal;
-//    public ModelRenderer supportright1;
-//    public ModelRenderer supportright2;
-//    public ModelRenderer supportright3;
-//    public ModelRenderer supportright4;
-//    public ModelRenderer supportright5;
-//    public ModelRenderer supportbaseright;
-//    public ModelRenderer palm;
-//    public ModelRenderer supportbaseleft;
-//    public ModelRenderer supportleftfront;
-//    public ModelRenderer supportrightfront;
+//    public ModelPart mainarm;
+//    public ModelPart armorright;
+//    public ModelPart armorleft;
+//    public ModelPart wristtopright;
+//    public ModelPart wristtopleft;
+//    public ModelPart wristbottomright;
+//    public ModelPart wristbottomleft;
+//    public ModelPart index1;
+//    public ModelPart index2;
+//    public ModelPart middlefinger1;
+//    public ModelPart middlefinger2;
+//    public ModelPart ringfinger1;
+//    public ModelPart ringfinger2;
+//    public ModelPart pinky1;
+//    public ModelPart pinky2;
+//    public ModelPart thumb1;
+//    public ModelPart thumb2;
+//    public ModelPart fingerguard;
+//    public ModelPart crystalholder;
+//    public ModelPart crystal;
+//    public ModelPart supportright1;
+//    public ModelPart supportright2;
+//    public ModelPart supportright3;
+//    public ModelPart supportright4;
+//    public ModelPart supportright5;
+//    public ModelPart supportbaseright;
+//    public ModelPart palm;
+//    public ModelPart supportbaseleft;
+//    public ModelPart supportleftfront;
+//    public ModelPart supportrightfront;
 //    public ModelRenderer supportleft1;
 //    public ModelRenderer supportleft2;
 //    public ModelRenderer supportleft3;
@@ -488,7 +488,7 @@
 ////        }
 ////    }
 //
-//    public void render(Entity entity, float scale, ItemCameraTransforms.TransformType cameraTransformTypeIn, Colour c1, Colour glow) {
+//    public void render(Entity entity, float scale, ItemTransforms.TransformType cameraTransformTypeIn, Colour c1, Colour glow) {
 //        GL11.glPushMatrix();
 //        GL11.glPushAttrib(GL11.GL_ENABLE_BIT);
 //        GL11.glDisable(GL11.GL_CULL_FACE);
@@ -595,7 +595,7 @@
 //        thumb2.rotateAngleY = (isRightHand) ? -thumbFlex : thumbFlex;
 //    }
 //
-//    public void setPoseForPlayer(PlayerEntity player, ItemStack itemStack) {
+//    public void setPoseForPlayer(Player player, ItemStack itemStack) {
 //        if (player.isHandActive() && player.inventory.getStackInSlot(player.inventory.currentItem) == itemStack
 //                && itemStack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).map(iItemHandler -> {
 //            if (iItemHandler instanceof IModeChangingItem) {
@@ -621,7 +621,7 @@
 //    }
 //
 //    @Override
-//    public void render(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
+//    public void render(PoseStack matrixStackIn, VertexConsumer bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
 //
 //    }
 //}

@@ -32,10 +32,10 @@ import lehjr.numina.common.capabilities.module.powermodule.PowerModuleCapability
 import lehjr.numina.common.capabilities.module.rightclick.IRightClickModule;
 import lehjr.numina.common.capabilities.module.toggleable.IToggleableModule;
 import lehjr.powersuits.client.control.KeybindManager;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.NonNullList;
+import net.minecraft.core.NonNullList;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -51,7 +51,7 @@ import static lehjr.powersuits.client.control.KeybindKeyHandler.registerKeybindi
 public final class PlayerLoginHandler {
     @SubscribeEvent
     public static void onPlayerLoginClient(ClientPlayerNetworkEvent.LoggedInEvent event) {
-        PlayerEntity player = event.getPlayer();
+        Player player = event.getPlayer();
         if (player != null) {
             NonNullList<ItemStack> modules = NonNullList.create();
             for (Item item : ForgeRegistries.ITEMS.getValues()) {

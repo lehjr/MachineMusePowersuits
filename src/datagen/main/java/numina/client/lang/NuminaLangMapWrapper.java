@@ -3,8 +3,8 @@ package numina.client.lang;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
-import net.minecraft.data.DirectoryCache;
-import net.minecraft.data.IDataProvider;
+import net.minecraft.data.DataProvider;
+import net.minecraft.data.HashCache;
 import org.apache.commons.io.FilenameUtils;
 
 import java.io.File;
@@ -85,7 +85,7 @@ public class NuminaLangMapWrapper {
 
     }
 
-    public void savetoOutputFolder(DirectoryCache cache, Path outputFolder) {
+    public void savetoOutputFolder(HashCache cache, Path outputFolder) {
         try {
             if (!thisIsDefault()) {
                 if (!extraData.isEmpty()) {
@@ -122,7 +122,7 @@ public class NuminaLangMapWrapper {
         return jsonObject;
     }
 
-    private void save(DirectoryCache cache, Object object, Path target, boolean overwrite) throws IOException {
+    private void save(HashCache cache, Object object, Path target, boolean overwrite) throws IOException {
 //        if (locale.startsWith("zh_")) {
             fileWriter(cache, object, target, overwrite);
 //        } else {
@@ -142,9 +142,9 @@ public class NuminaLangMapWrapper {
     }
 
 
-    public void fileWriter(DirectoryCache cache, Object object, Path target, boolean overwrite) {
+    public void fileWriter(HashCache cache, Object object, Path target, boolean overwrite) {
         String dataOut = GSON.toJson(object);
-        String hash = IDataProvider.SHA1.hashUnencodedChars(dataOut).toString();
+        String hash = DataProvider.SHA1.hashUnencodedChars(dataOut).toString();
         try {
             Files.createDirectories(target.getParent());
             if (overwrite || !target.toFile().exists()) {

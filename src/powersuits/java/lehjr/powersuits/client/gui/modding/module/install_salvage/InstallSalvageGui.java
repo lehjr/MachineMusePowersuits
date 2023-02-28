@@ -1,31 +1,32 @@
 package lehjr.powersuits.client.gui.modding.module.install_salvage;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
-import lehjr.numina.client.gui.ExtendedContainerScreen2;
+import com.mojang.blaze3d.vertex.PoseStack;
+import lehjr.numina.client.gui.ExtendedContainerScreen;
 import lehjr.numina.client.gui.clickable.ClickableButton;
 import lehjr.numina.client.gui.geometry.MusePoint2D;
 import lehjr.numina.client.gui.geometry.Rect;
-import lehjr.numina.common.math.Colour;
+import lehjr.numina.common.math.Color;
 import lehjr.powersuits.client.ScrollableInventoryFrame2;
 import lehjr.powersuits.client.gui.common.ModularItemSelectionFrameContainered;
 import lehjr.powersuits.client.gui.common.TabSelectFrame;
 import lehjr.powersuits.common.constants.MPSConstants;
-import lehjr.powersuits.common.container.InstallSalvageContainer;
+import lehjr.powersuits.common.container.InstallSalvageMenu;
 import lehjr.powersuits.common.network.MPSPackets;
 import lehjr.powersuits.common.network.packets.CreativeInstallPacket;
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Inventory;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class InstallSalvageGui extends ExtendedContainerScreen2<InstallSalvageContainer> {
-    TranslationTextComponent modularItemInventoryLabel = new TranslationTextComponent(MPSConstants.MOD_ID + ".modularitem.inventory");
-    TranslationTextComponent moduleSelectionFrameLabel = new TranslationTextComponent("gui.powersuits.compatible.modules");
+public class InstallSalvageGui extends ExtendedContainerScreen<InstallSalvageMenu> {
+    TranslatableComponent modularItemInventoryLabel = new TranslatableComponent(MPSConstants.MOD_ID + ".modularitem.inventory");
+    TranslatableComponent moduleSelectionFrameLabel = new TranslatableComponent("gui.powersuits.compatible.modules");
     public static final ResourceLocation BACKGROUND = new ResourceLocation(MPSConstants.MOD_ID, "textures/gui/background/install_salvage.png");
     protected TabSelectFrame tabSelectFrame;
     ModularItemSelectionFrameContainered itemSelectFrame;
@@ -33,9 +34,9 @@ public class InstallSalvageGui extends ExtendedContainerScreen2<InstallSalvageCo
     ScrollableInventoryFrame2 modularItemInventory;
     protected CompatibleModuleDisplayFrame moduleSelectFrame;
 
-    PlayerInventory playerInventory;
+    Inventory playerInventory;
 
-    public InstallSalvageGui(InstallSalvageContainer container, PlayerInventory playerInventory, ITextComponent title) {
+    public InstallSalvageGui(InstallSalvageMenu container, Inventory playerInventory, Component title) {
         super(container, playerInventory, title, 352, 217);
         this.playerInventory = playerInventory;
     }
@@ -55,7 +56,7 @@ public class InstallSalvageGui extends ExtendedContainerScreen2<InstallSalvageCo
         addFrame(tabSelectFrame);
 
         /** the buttons that select the equipped modular item if any --------------------------------------------------- */
-        itemSelectFrame = new ModularItemSelectionFrameContainered(menu, new MusePoint2D(leftPos - 30, topPos), menu.getEquipmentSlotType());
+        itemSelectFrame = new ModularItemSelectionFrameContainered(menu, new MusePoint2D(leftPos - 30, topPos), menu.getEquipmentSlot());
         addFrame(itemSelectFrame);
 
         /** frame to display and allow selecting of installed modules -------------------------------------------------- */
@@ -68,7 +69,7 @@ public class InstallSalvageGui extends ExtendedContainerScreen2<InstallSalvageCo
         });
 
         itemSelectFrame.getCreativeInstallButton().setOnReleased(pressed -> {
-            ((ClickableButton)pressed).setEnabledBackground(Colour.LIGHT_GREY);
+            ((ClickableButton)pressed).setEnabledBackground(Color.LIGHT_GREY);
         });
         addFrame(moduleSelectFrame);
 
@@ -82,7 +83,6 @@ public class InstallSalvageGui extends ExtendedContainerScreen2<InstallSalvageCo
     @Override
     public void tick() {
         super.tick();
-
         // FIXME: replace button with something more native
         if(getMinecraft().player.isCreative()) {
             itemSelectFrame.getCreativeInstallButton().enableAndShow();
@@ -91,14 +91,14 @@ public class InstallSalvageGui extends ExtendedContainerScreen2<InstallSalvageCo
         }
     }
     @Override
-    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float frameTime) {
+    public void render(PoseStack matrixStack, int mouseX, int mouseY, float frameTime) {
         this.renderBackground(matrixStack);
         super.render(matrixStack, mouseX, mouseY, frameTime);
         this.renderTooltip(matrixStack, mouseX, mouseY);
     }
 
     @Override
-    public void renderLabels(MatrixStack matrixStack, int mouseX, int mouseY) {
+    public void renderLabels(PoseStack matrixStack, int mouseX, int mouseY) {
         this.font.draw(matrixStack, this.moduleSelectionFrameLabel,
                 titleLabelX,
                 (float)this.titleLabelY, 4210752);
@@ -107,17 +107,18 @@ public class InstallSalvageGui extends ExtendedContainerScreen2<InstallSalvageCo
                 (float)(titleLabelX + 173),
                 (float)this.titleLabelY, 4210752);
 
-        this.font.draw(matrixStack, this.inventory.getDisplayName(),
+        this.font.draw(matrixStack, this.playerInventory.getDisplayName(),
                 (float)(this.inventoryLabelX),
                 (float)(inventoryLabelY),
                 4210752);
     }
 
     @Override
-    public void renderBackground(MatrixStack matrixStack) {
+    public void renderBackground(PoseStack matrixStack) {
         super.renderBackground(matrixStack);
-        RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-        this.minecraft.getTextureManager().bind(this.BACKGROUND);
+        RenderSystem.setShader(GameRenderer::getPositionTexShader);
+        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+        RenderSystem.setShaderTexture(0, BACKGROUND);
         int i = this.leftPos;
         int j = this.topPos;
         this.blit(matrixStack, i, j, this.getBlitOffset(), 0, 0, imageWidth, imageHeight, 512, 512);

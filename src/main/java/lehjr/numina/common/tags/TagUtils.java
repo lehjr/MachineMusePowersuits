@@ -26,10 +26,10 @@
 
 package lehjr.numina.common.tags;
 
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.common.util.Constants;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
 
 import javax.annotation.Nonnull;
 import java.util.Optional;
@@ -42,15 +42,15 @@ public class TagUtils {
      * Gets or creates stack.getTag.getTag(TAG_ITEM_PREFIX)
      *
      * @param stack
-     * @return an CompoundNBT, may be newly created. If stack is empty, returns null.
+     * @return an CompoundTag, may be newly created. If stack is empty, returns null.
      */
-    public static CompoundNBT getMuseItemTag(@Nonnull ItemStack stack) {
+    public static CompoundTag getMuseItemTag(@Nonnull ItemStack stack) {
         if (stack.isEmpty()) {
-            return new CompoundNBT();
+            return new CompoundTag();
         }
 
-        CompoundNBT stackTag = stack.getOrCreateTag();
-        CompoundNBT properties = (stackTag.contains(TAG_ITEM_PREFIX)) ? stackTag.getCompound(TAG_ITEM_PREFIX) : new CompoundNBT();
+        CompoundTag stackTag = stack.getOrCreateTag();
+        CompoundTag properties = (stackTag.contains(TAG_ITEM_PREFIX)) ? stackTag.getCompound(TAG_ITEM_PREFIX) : new CompoundTag();
         stackTag.put(TAG_ITEM_PREFIX, properties);
         stack.setTag(stackTag);
         return properties;
@@ -60,15 +60,15 @@ public class TagUtils {
      * Gets or creates stack.getTag.getTag(TAG_MODULE_PREFIX)
      *
      * @param module
-     * @return an CompoundNBT, may be newly created. If stack is empty, returns null.
+     * @return an CompoundTag, may be newly created. If stack is empty, returns null.
      */
-    public static CompoundNBT getModuleTag(@Nonnull ItemStack module) {
+    public static CompoundTag getModuleTag(@Nonnull ItemStack module) {
         if (module.isEmpty()) {
-            return new CompoundNBT();
+            return new CompoundTag();
         }
 
-        CompoundNBT stackTag = module.getOrCreateTag();
-        CompoundNBT properties = (stackTag.contains(TAG_MODULE_PREFIX)) ? stackTag.getCompound(TAG_MODULE_PREFIX) : new CompoundNBT();
+        CompoundTag stackTag = module.getOrCreateTag();
+        CompoundTag properties = (stackTag.contains(TAG_MODULE_PREFIX)) ? stackTag.getCompound(TAG_MODULE_PREFIX) : new CompoundTag();
         stackTag.put(TAG_MODULE_PREFIX, properties);
         module.setTag(stackTag);
         return properties;
@@ -87,8 +87,8 @@ public class TagUtils {
         return getFloatOrZero(getMuseItemTag(stack), string);
     }
 
-    public static float getFloatOrZero(CompoundNBT nbt, String tagName) {
-        return (nbt.contains(tagName, Constants.NBT.TAG_FLOAT) ? nbt.getFloat(tagName) : 0);
+    public static float getFloatOrZero(CompoundTag nbt, String tagName) {
+        return (nbt.contains(tagName, Tag.TAG_FLOAT) ? nbt.getFloat(tagName) : 0);
     }
 
     /**
@@ -107,7 +107,7 @@ public class TagUtils {
      * Sets the getValue of the given nbt tag, or removes it if the getValue would be
      * zero.
      */
-    public static void setFloatOrRemove(CompoundNBT itemProperties, String string, float value) {
+    public static void setFloatOrRemove(CompoundTag itemProperties, String string, float value) {
         if (itemProperties != null) {
             /**
              * Float#compare(f1, f2);
@@ -136,8 +136,8 @@ public class TagUtils {
         return getDoubleOrZero(getMuseItemTag(stack), string);
     }
 
-    public static double getDoubleOrZero(CompoundNBT nbt, String tagName) {
-        return (nbt.contains(tagName, Constants.NBT.TAG_DOUBLE) ? nbt.getDouble(tagName) : 0);
+    public static double getDoubleOrZero(CompoundTag nbt, String tagName) {
+        return (nbt.contains(tagName,Tag.TAG_DOUBLE) ? nbt.getDouble(tagName) : 0);
     }
 
     /**
@@ -156,7 +156,7 @@ public class TagUtils {
      * Sets the getValue of the given nbt tag, or removes it if the getValue would be
      * zero.
      */
-    public static void setDoubleOrRemove(CompoundNBT itemProperties, String string, double value) {
+    public static void setDoubleOrRemove(CompoundTag itemProperties, String string, double value) {
         if (itemProperties != null) {
             if (value == 0) {
                 itemProperties.remove(string);
@@ -179,8 +179,8 @@ public class TagUtils {
         return getIntOrZero(getMuseItemTag(module), string);
     }
 
-    static int getIntOrZero(CompoundNBT nbt, String tagName) {
-        return (nbt.contains(tagName, Constants.NBT.TAG_INT) ? nbt.getInt(tagName) : 0);
+    static int getIntOrZero(CompoundTag nbt, String tagName) {
+        return (nbt.contains(tagName, Tag.TAG_INT) ? nbt.getInt(tagName) : 0);
     }
 
     public static void setModuleIntOrRemove(@Nonnull ItemStack stack, String tagName, int value, boolean remove) {
@@ -191,7 +191,7 @@ public class TagUtils {
         setIntOrRemove(getMuseItemTag(stack), tagName, value, remove);
     }
 
-    public static void setIntOrRemove(@Nonnull CompoundNBT nbt, String tagName, int value, boolean remove) {
+    public static void setIntOrRemove(@Nonnull CompoundTag nbt, String tagName, int value, boolean remove) {
         if (value == 0 && remove)
             nbt.remove(tagName);
         else
@@ -200,8 +200,8 @@ public class TagUtils {
 
     // Boolean --------------------------------------------------------------------------------------------------------
     public static boolean getModuleBooleanOrSetDefault(@Nonnull ItemStack module, String tagName, boolean defBool) {
-        CompoundNBT moduleTag = getModuleTag(module);
-        if (moduleTag.contains(tagName, Constants.NBT.TAG_BYTE)) {
+        CompoundTag moduleTag = getModuleTag(module);
+        if (moduleTag.contains(tagName, Tag.TAG_BYTE)) {
             return getBooleanOrFalse(moduleTag, tagName);
         } else {
             moduleTag.putBoolean(tagName, defBool);
@@ -217,8 +217,8 @@ public class TagUtils {
         return getBooleanOrFalse(getMuseItemTag(module), string);
     }
 
-    static boolean getBooleanOrFalse(CompoundNBT nbt, String tagName) {
-        return (nbt.contains(tagName, Constants.NBT.TAG_BYTE) ? nbt.getBoolean(tagName) : false);
+    static boolean getBooleanOrFalse(CompoundTag nbt, String tagName) {
+        return (nbt.contains(tagName, Tag.TAG_BYTE) ? nbt.getBoolean(tagName) : false);
     }
 
     public static void setModuleBoolean(@Nonnull ItemStack module, String string, boolean value) {
@@ -235,8 +235,8 @@ public class TagUtils {
     }
 
     public static Optional<ResourceLocation> getModuleResourceLocation(@Nonnull ItemStack module, String string) {
-        CompoundNBT moduleTag = getModuleTag(module);
-        if (moduleTag.contains(string, Constants.NBT.TAG_STRING)) {
+        CompoundTag moduleTag = getModuleTag(module);
+        if (moduleTag.contains(string, Tag.TAG_STRING)) {
             return Optional.of(new ResourceLocation(moduleTag.getString(string)));
         }
         return Optional.empty();

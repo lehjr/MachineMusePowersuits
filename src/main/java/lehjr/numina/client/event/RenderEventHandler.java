@@ -27,9 +27,8 @@
 package lehjr.numina.client.event;
 
 import lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
-import lehjr.numina.common.integration.scannable.MPSOverlayRenderer;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.player.ClientPlayerEntity;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
@@ -49,19 +48,20 @@ public enum RenderEventHandler {
 
     @SubscribeEvent
     public void onPostRenderGameOverlayEvent(final RenderGameOverlayEvent.Post e) {
-        if (e.getType().equals(RenderGameOverlayEvent.ElementType.HOTBAR)) {
+        RenderGameOverlayEvent.ElementType elementType = e.getType();
+        if (RenderGameOverlayEvent.ElementType.LAYER.equals(elementType)) {
             drawModeChangeIcons();
-        }
-        if (ModList.get().isLoaded("scannable")) {
-            MPSOverlayRenderer.INSTANCE.onOverlayRender(e);
+            if (ModList.get().isLoaded("scannable")) {
+//                MPSOverlayRenderer.INSTANCE.onOverlayRender(e);
+            }
         }
     }
 
     public void drawModeChangeIcons() {
         Minecraft mc = Minecraft.getInstance();
-        ClientPlayerEntity player = mc.player;
-        int i = player.inventory.selected;
-        player.inventory.getSelected().getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+        LocalPlayer player = mc.player;
+        int i = player.getInventory().selected;
+        player.getInventory().getSelected().getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
                 .filter(IModeChangingItem.class::isInstance)
                 .map(IModeChangingItem.class::cast)
                 .ifPresent(handler->

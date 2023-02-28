@@ -26,22 +26,22 @@
 
 package lehjr.numina.common.capabilities.render.modelspec;
 
-import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.world.entity.EquipmentSlot;
 
 import javax.annotation.Nullable;
 
 public class SpecBinding {
     private final MorphTarget target;
-    private final EquipmentSlotType slot;
+    private final EquipmentSlot slot;
     private final String itemStateString;
 
-    public SpecBinding(@Nullable MorphTarget target, @Nullable EquipmentSlotType slot, @Nullable String itemState) {
+    public SpecBinding(@Nullable MorphTarget target, @Nullable EquipmentSlot slot, @Nullable String itemState) {
         this.target = target;
         this.slot = slot;
         this.itemStateString = (itemState != null || !itemState.isEmpty()) ? itemState : "all";
     }
 
-    public SpecBinding(EquipmentSlotType slot, @Nullable String itemState) {
+    public SpecBinding(EquipmentSlot slot, @Nullable String itemState) {
         this.target = null;
         this.slot = slot;
         this.itemStateString = (itemState != null || !itemState.isEmpty()) ? itemState : "all";
@@ -52,7 +52,7 @@ public class SpecBinding {
         return target;
     }
 
-    public EquipmentSlotType getSlot() {
+    public EquipmentSlot getSlot() {
         return slot;
     }
 

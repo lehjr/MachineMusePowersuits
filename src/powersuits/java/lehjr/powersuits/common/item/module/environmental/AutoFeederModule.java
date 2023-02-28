@@ -33,12 +33,12 @@ import lehjr.numina.common.tags.TagUtils;
 import lehjr.powersuits.common.config.MPSSettings;
 import lehjr.powersuits.common.constants.MPSConstants;
 import lehjr.powersuits.common.item.module.AbstractPowerModule;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.Direction;
-import net.minecraft.util.FoodStats;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.food.FoodData;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
@@ -56,7 +56,7 @@ public class AutoFeederModule extends AbstractPowerModule {
 
     @Nullable
     @Override
-    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundNBT nbt) {
+    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt) {
         return new CapProvider(stack);
     }
 
@@ -91,7 +91,7 @@ public class AutoFeederModule extends AbstractPowerModule {
             }};
 
             powerModuleHolder = LazyOptional.of(() -> {
-                ticker.updateFromNBT();
+                ticker.loadCapValues();
                 return ticker;
             });
         }
@@ -102,14 +102,14 @@ public class AutoFeederModule extends AbstractPowerModule {
             }
 
             @Override
-            public void onPlayerTickActive(PlayerEntity player, ItemStack itemX) {
+            public void onPlayerTickActive(Player player, ItemStack itemX) {
                 float foodLevel = getFoodLevel(module);
                 float saturationLevel = getSaturationLevel(module);
-                IInventory inv = player.inventory;
+                Inventory inv = player.getInventory();
                 double eatingEnergyConsumption = applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION);
                 double efficiency = applyPropertyModifiers(MPSConstants.EATING_EFFICIENCY);
 
-                FoodStats foodStats = player.getFoodData();
+                FoodData foodStats = player.getFoodData();
                 int foodNeeded = 20 - foodStats.getFoodLevel();
                 float saturationNeeded = 20 - foodStats.getSaturationLevel();
 
@@ -125,7 +125,7 @@ public class AutoFeederModule extends AbstractPowerModule {
                                 //  copied this from FoodStats.addStats()
                                 saturationLevel += Math.min(stack.getItem().getFoodProperties().getNutrition() * stack.getItem().getFoodProperties().getSaturationModifier() * 2.0F, 20F) * efficiency / 100.0;
                             }
-                            player.inventory.setItem(i, ItemStack.EMPTY);
+                            player.getInventory().setItem(i, ItemStack.EMPTY);
                         }
                     }
                     setFoodLevel(module, foodLevel);
@@ -143,10 +143,10 @@ public class AutoFeederModule extends AbstractPowerModule {
                                     saturationLevel += Math.min(stack.getItem().getFoodProperties().getNutrition() * stack.getItem().getFoodProperties().getSaturationModifier() * 2.0D, 20D) * efficiency / 100.0;
                                     stack.setCount(stack.getCount() - 1);
                                     if (stack.getCount() == 0) {
-                                        player.inventory.setItem(i, ItemStack.EMPTY);
+                                        player.getInventory().setItem(i, ItemStack.EMPTY);
                                         break;
                                     } else
-                                        player.inventory.setItem(i, stack);
+                                        player.getInventory().setItem(i, stack);
                                 } else
                                     break;
                             }
@@ -156,7 +156,7 @@ public class AutoFeederModule extends AbstractPowerModule {
                     setSaturationLevel(module, saturationLevel);
                 }
 
-                CompoundNBT foodStatNBT = new CompoundNBT();
+                CompoundTag foodStatNBT = new CompoundTag();
 
                 // only consume saturation if food is consumed. This keeps the food buffer from overloading with food while the
                 //   saturation buffer drains completely.

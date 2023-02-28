@@ -26,9 +26,9 @@
 
 package lehjr.numina.common.capabilities.render.modelspec;
 
-import net.minecraft.client.renderer.entity.model.BipedModel;
-import net.minecraft.client.renderer.model.ModelRenderer;
-import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.client.model.HumanoidModel;
+import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.world.entity.EquipmentSlot;
 
 import java.util.Arrays;
 
@@ -39,26 +39,26 @@ import java.util.Arrays;
  * Ported to Java by lehjr on 11/8/16.
  */
 public enum MorphTarget {
-    Head("HEAD", EquipmentSlotType.HEAD),
-    Body("BODY", EquipmentSlotType.CHEST),
-    RightArm("RIGHTARM", EquipmentSlotType.CHEST),
-    LeftArm("LEFTARM", EquipmentSlotType.CHEST),
-    RightLeg("RIGHTLEG", EquipmentSlotType.LEGS),
-    LeftLeg("LEFTLEG", EquipmentSlotType.LEGS),
-    RightFoot("RIGHTFOOT", EquipmentSlotType.FEET),
-    LeftFoot("LEFTFOOT", EquipmentSlotType.FEET),
+    Head("HEAD", EquipmentSlot.HEAD),
+    Body("BODY", EquipmentSlot.CHEST),
+    RightArm("RIGHTARM", EquipmentSlot.CHEST),
+    LeftArm("LEFTARM", EquipmentSlot.CHEST),
+    RightLeg("RIGHTLEG", EquipmentSlot.LEGS),
+    LeftLeg("LEFTLEG", EquipmentSlot.LEGS),
+    RightFoot("RIGHTFOOT", EquipmentSlot.FEET),
+    LeftFoot("LEFTFOOT", EquipmentSlot.FEET),
 
     /**
      * Note that these may be reversed and special checks are needed for rendering
      * hand-dependant models.
      */
-    RightHand("RIGHTHAND", EquipmentSlotType.MAINHAND),
-    Lefthand("LEFTHAND", EquipmentSlotType.OFFHAND);
+    RightHand("RIGHTHAND", EquipmentSlot.MAINHAND),
+    Lefthand("LEFTHAND", EquipmentSlot.OFFHAND);
 
     String name;
-    EquipmentSlotType slot;
+    EquipmentSlot slot;
 
-    MorphTarget(String name, EquipmentSlotType slot) {
+    MorphTarget(String name, EquipmentSlot slot) {
         this.name = name;
         this.slot = slot;
     }
@@ -67,7 +67,7 @@ public enum MorphTarget {
         return Arrays.stream(values()).filter(morph -> name.toUpperCase().equals(morph.name)).findAny().orElseGet(null);
     }
 
-    public ModelRenderer apply(BipedModel m) {
+    public ModelPart apply(HumanoidModel m) {
         switch (this) {
             case Head:
                 return m.head;

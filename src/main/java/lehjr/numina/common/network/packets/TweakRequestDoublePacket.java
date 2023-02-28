@@ -27,17 +27,17 @@
 package lehjr.numina.common.network.packets;
 
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.network.NetworkEvent;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.network.NetworkEvent;
 
 import java.util.function.Supplier;
 
 public class TweakRequestDoublePacket {
-    protected EquipmentSlotType type;
+    protected EquipmentSlot type;
     protected ResourceLocation moduleName;
     protected String tweakName;
     protected double tweakValue;
@@ -46,23 +46,23 @@ public class TweakRequestDoublePacket {
 
     }
 
-    public TweakRequestDoublePacket(EquipmentSlotType type, ResourceLocation moduleRegName, String tweakName, double tweakValue) {
+    public TweakRequestDoublePacket(EquipmentSlot type, ResourceLocation moduleRegName, String tweakName, double tweakValue) {
         this.type = type;
         this.moduleName = moduleRegName;
         this.tweakName = tweakName;
         this.tweakValue = tweakValue;
     }
 
-    public static void encode(TweakRequestDoublePacket msg, PacketBuffer packetBuffer) {
+    public static void encode(TweakRequestDoublePacket msg, FriendlyByteBuf packetBuffer) {
         packetBuffer.writeEnum(msg.type);
         packetBuffer.writeResourceLocation(msg.moduleName);
         packetBuffer.writeUtf(msg.tweakName);
         packetBuffer.writeDouble(msg.tweakValue);
     }
 
-    public static TweakRequestDoublePacket decode(PacketBuffer packetBuffer) {
+    public static TweakRequestDoublePacket decode(FriendlyByteBuf packetBuffer) {
         return new TweakRequestDoublePacket(
-                packetBuffer.readEnum(EquipmentSlotType.class),
+                packetBuffer.readEnum(EquipmentSlot.class),
                 packetBuffer.readResourceLocation(),
                 packetBuffer.readUtf(500),
                 packetBuffer.readDouble());
@@ -70,17 +70,17 @@ public class TweakRequestDoublePacket {
 
     public static void handle(TweakRequestDoublePacket message, Supplier<NetworkEvent.Context> ctx) {
         ctx.get().enqueueWork(() -> {
-            final ServerPlayerEntity player = ctx.get().getSender();
+            final ServerPlayer player = ctx.get().getSender();
             ResourceLocation moduleName = message.moduleName;
             String tweakName = message.tweakName;
             double tweakValue = message.tweakValue;
             if (moduleName != null && tweakName != null) {
-                EquipmentSlotType type = message.type;
+                EquipmentSlot type = message.type;
                 player.getItemBySlot(type).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
                         .filter(IModularItem.class::isInstance)
                         .map(IModularItem.class::cast)
                         .ifPresent(iItemHandler -> iItemHandler.setModuleTweakDouble(moduleName, tweakName, tweakValue));
-                player.inventory.setChanged();
+                player.getInventory().setChanged();
             }
         });
         ctx.get().setPacketHandled(true);

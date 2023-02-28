@@ -27,56 +27,56 @@
 package lehjr.powersuits.client.render;
 
 import lehjr.numina.common.capabilities.render.IHandHeldModelSpecNBT;
-import lehjr.numina.common.capabilities.render.ModelSpecNBT;
+import lehjr.numina.common.capabilities.render.ModelSpecStorage;
 import lehjr.numina.common.capabilities.render.modelspec.*;
 import lehjr.numina.common.constants.NuminaConstants;
 import lehjr.powersuits.common.item.tool.PowerFist;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.IntArrayNBT;
-import net.minecraft.nbt.ListNBT;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.IntArrayTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.ItemStack;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PowerFistSpecNBT extends ModelSpecNBT implements IHandHeldModelSpecNBT {
+public class PowerFistSpecNBT extends ModelSpecStorage implements IHandHeldModelSpecNBT {
     public PowerFistSpecNBT(@Nonnull ItemStack itemStackIn) {
         super(itemStackIn);
     }
 
     @Override
-    public CompoundNBT getDefaultRenderTag() {
+    public CompoundTag getDefaultRenderTag() {
         if (getItemStack().isEmpty())
-            return new CompoundNBT();
+            return new CompoundTag();
 
-        List<CompoundNBT> prefArray = new ArrayList<>();
+        List<CompoundTag> prefArray = new ArrayList<>();
 
         // ModelPartSpecs
-        ListNBT specList = new ListNBT();
+        ListTag specList = new ListTag();
 
         // TextureSpecBase (only one texture visible at a time)
-        CompoundNBT texSpecTag = new CompoundNBT();
+        CompoundTag texSpecTag = new CompoundTag();
 
         // List of EnumColour indexes
         List<Integer> colours = new ArrayList<>();
 
         // temp data holder
-        CompoundNBT tempNBT;
+        CompoundTag tempNBT;
 
-        EquipmentSlotType slot = getItemStack().getEquipmentSlot();
+        EquipmentSlot slot = getItemStack().getEquipmentSlot();
 
         for (SpecBase spec : ModelRegistry.getInstance().getSpecs()) {
             // Only generate NBT data from Specs marked as "default"
             if (spec.isDefault()) {
-                if (getItemStack().getItem() instanceof PowerFist && spec.getSpecType().equals(EnumSpecType.HANDHELD)) {
-                    colours = addNewColourstoList(colours, spec.getColours()); // merge new color int arrays in
+                if (getItemStack().getItem() instanceof PowerFist && spec.getSpecType().equals(SpecType.HANDHELD)) {
+                    colours = addNewColourstoList(colours, spec.getColors()); // merge new color int arrays in
 
                     for (PartSpecBase partSpec : spec.getPartSpecs()) {
                         if (partSpec instanceof ModelPartSpec) {
-                            prefArray.add(((ModelPartSpec) partSpec).multiSet(new CompoundNBT(),
-                                    getNewColourIndex(colours, spec.getColours(), partSpec.getDefaultColourIndex()),
+                            prefArray.add(((ModelPartSpec) partSpec).multiSet(new CompoundTag(),
+                                    getNewColourIndex(colours, spec.getColors(), partSpec.getDefaultColourIndex()),
                                     ((ModelPartSpec) partSpec).getGlow()));
                         }
                     }
@@ -84,8 +84,8 @@ public class PowerFistSpecNBT extends ModelSpecNBT implements IHandHeldModelSpec
             }
         }
 
-        CompoundNBT nbt = new CompoundNBT();
-        for (CompoundNBT elem : prefArray) {
+        CompoundTag nbt = new CompoundTag();
+        for (CompoundTag elem : prefArray) {
             nbt.put(elem.getString(NuminaConstants.TAG_MODEL) + "." + elem.getString(NuminaConstants.TAG_PART), elem);
         }
 
@@ -95,7 +95,7 @@ public class PowerFistSpecNBT extends ModelSpecNBT implements IHandHeldModelSpec
         if (!texSpecTag.isEmpty())
             nbt.put(NuminaConstants.NBT_TEXTURESPEC_TAG, texSpecTag);
 
-        nbt.put(NuminaConstants.TAG_COLOURS, new IntArrayNBT(colours));
+        nbt.put(NuminaConstants.TAG_COLOURS, new IntArrayTag(colours));
         return nbt;
     }
 }

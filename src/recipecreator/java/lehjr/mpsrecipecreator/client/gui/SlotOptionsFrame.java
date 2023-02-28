@@ -1,7 +1,7 @@
 //package lehjr.mpsrecipecreator.client.gui;
 //
-//import com.mojang.blaze3d.matrix.MatrixStack;
-//import lehjr.mpsrecipecreator.container.MPARCContainer;
+//import com.mojang.blaze3d.vertex.PoseStack;
+//import lehjr.mpsrecipecreator.container.MPARCAbstractContainerMenu;
 //import lehjr.numina.client.gui.clickable.Checkbox;
 //import lehjr.numina.client.gui.clickable.ClickableArrow;
 //import lehjr.numina.client.gui.clickable.ClickableLabel;
@@ -9,11 +9,11 @@
 //import lehjr.numina.client.gui.gemoetry.DrawableArrow;
 //import lehjr.numina.client.gui.gemoetry.MusePoint2D;
 //import lehjr.numina.common.math.Colour;
-//import net.minecraft.item.Item;
-//import net.minecraft.item.ItemStack;
+//import net.minecraft.world.item.Item;
+//import net.minecraft.world.item.ItemStack;
 //import net.minecraft.tags.ItemTags;
-//import net.minecraft.util.ResourceLocation;
-//import net.minecraft.util.text.StringTextComponent;
+//import net.minecraft.resources.ResourceLocation;
+//import net.minecraft.network.chat.TextComponent;
 //
 //import java.util.ArrayList;
 //import java.util.HashMap;
@@ -25,7 +25,7 @@
 //public class SlotOptionsFrame extends ScrollableFrame {
 //    private ClickableLabel title;
 //    int activeSlotID;
-//    MPARCContainer container;
+//    MPARCAbstractContainerMenu container;
 //    Checkbox[] useOreDictCheckbox = new Checkbox[9];
 //    RecipeGen recipeGen;
 //
@@ -37,7 +37,7 @@
 //    public SlotOptionsFrame(MusePoint2D topleft,
 //                            MusePoint2D bottomright,
 //                            RecipeGen recipeGenIn,
-//                            MPARCContainer container,
+//                            MPARCAbstractContainerMenu container,
 //                            Colour backgroundColour,
 //
 //                            Colour borderColour,
@@ -50,7 +50,7 @@
 //
 //        MusePoint2D starterPoint = this.getUL().copy().plus(4, 4);
 //
-//        this.title = new ClickableLabel(new StringTextComponent("Slot Options"), starterPoint.copy());
+//        this.title = new ClickableLabel(new TextComponent("Slot Options"), starterPoint.copy());
 //        title.setMode(ClickableLabel.JustifyMode.LEFT);
 //
 //        nextOreDictArrow = new ClickableArrow(0, 0, 0, 0, true, arrowNormalBackGound, arrowHighlightedBackground, arrowBorderColour);
@@ -158,7 +158,7 @@
 //    }
 //
 //    @Override
-//    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
+//    public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTicks) {
 //        super.render(matrixStack, mouseX, mouseY, partialTicks);
 //        if (isVisible()) {
 //            title.render(matrixStack, mouseX, mouseY, partialTicks);
@@ -197,7 +197,7 @@
 //    }
 //
 //    void setLabel() {
-//        this.title.setLabel(new StringTextComponent("Slot " + (activeSlotID >=0 && activeSlotID <=10 ? activeSlotID + " " : "") + "Options"));
+//        this.title.setLabel(new TextComponent("Slot " + (activeSlotID >=0 && activeSlotID <=10 ? activeSlotID + " " : "") + "Options"));
 //    }
 //
 //    public void reset() {

@@ -362,13 +362,16 @@ dependencies {
     runtimeOnly fg.deobf("mezz.jei:jei-${minecraft_version}:${jei_version}")
 
     // Only used as a convenience during testing
-    runtimeOnly fg.deobf("mcjty.theoneprobe:TheOneProbe-1.16:${top_version}")
-
-    // The API isn't enough for compiling or testing
-    implementation fg.deobf("appeng:appliedenergistics2:${ae2_version}") {
+    runtimeOnly fg.deobf("curse.maven:theoneprobe-245211:${top_version}"){ // FIXME!!!
         transitive = false
     }
-    implementation fg.deobf("curse.maven:scannable-266784:3565727")
+
+    // The API isn't enough for compiling or testing
+    implementation fg.deobf("curse.maven:applied-energistics-2-223794:${ae2_version}") {
+        transitive = false
+    }
+
+    implementation fg.deobf("curse.maven:scannable-266784:3738448")
 
 //    implementation fg.deobf("com.mods:refinedstorage:${refinedstorage_version}")
 //    runtimeOnly fg.deobf("com.refinedmods:refinedstorage:${refinedstorage_version}")
@@ -378,7 +381,7 @@ dependencies {
 
 
 }
-
+/*
 if (project.hasProperty('UPDATE_MAPPINGS')) {
     //If the project has the update mappings property, configure it to be able to target all our extra sourceSets as well
     // so that whenever we need to update mappings it is quick and easy to do so.
@@ -398,7 +401,7 @@ if (project.hasProperty('UPDATE_MAPPINGS')) {
     }
     allExtraDirs.each { extractMappedNew.addTarget it }
 }
-
+*/
 //Set the various variables/settings for the different process resources tasks
 processResources { setupProcessResources(processResources, mainReplaceResources) }
 processPowersuitsResources { setupProcessResources(processPowersuitsResources, powersuitsReplaceResources) }

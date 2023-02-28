@@ -1,15 +1,15 @@
 package lehjr.numina.common.capabilities.render.highlight;
 
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.NonNullList;
+import net.minecraft.world.phys.BlockHitResult;
 
 public class Highlight implements IHighlight {
     public Highlight() {
     }
 
     @Override
-    public NonNullList<BlockPos> getBlockPositions(BlockRayTraceResult result) {
+    public NonNullList<BlockPos> getBlockPositions(BlockHitResult result) {
         return NonNullList.of(result.getBlockPos());
     }
 }

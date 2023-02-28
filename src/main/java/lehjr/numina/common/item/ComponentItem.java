@@ -27,7 +27,7 @@
 package lehjr.numina.common.item;
 
 import lehjr.numina.common.base.NuminaObjects;
-import net.minecraft.item.Item;
+import net.minecraft.world.item.Item;
 
 public class ComponentItem extends Item {
     public ComponentItem() {

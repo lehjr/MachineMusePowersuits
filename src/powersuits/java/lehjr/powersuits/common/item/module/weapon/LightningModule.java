@@ -37,22 +37,23 @@ import lehjr.numina.common.heat.HeatUtils;
 import lehjr.powersuits.common.config.MPSSettings;
 import lehjr.powersuits.common.constants.MPSConstants;
 import lehjr.powersuits.common.item.module.AbstractPowerModule;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.effect.LightningBoltEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Hand;
-import net.minecraft.util.math.RayTraceContext;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LightningBolt;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.ClipContext;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.HitResult;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -69,7 +70,7 @@ public class LightningModule extends AbstractPowerModule {
 
     @Nullable
     @Override
-    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundNBT nbt) {
+    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt) {
         return new CapProvider(stack);
     }
 
@@ -97,29 +98,29 @@ public class LightningModule extends AbstractPowerModule {
             }
 
             @Override
-            public ActionResult use(ItemStack itemStackIn, World worldIn, PlayerEntity playerIn, Hand hand) {
-                if (hand == Hand.MAIN_HAND) {
+            public InteractionResultHolder<ItemStack> use(@NotNull ItemStack itemStackIn, Level worldIn, Player playerIn, InteractionHand hand) {
+                if (hand == InteractionHand.MAIN_HAND.MAIN_HAND) {
                     int energyConsumption = getEnergyUsage();
                     if (energyConsumption < ElectricItemUtils.getPlayerEnergy(playerIn)) {
                         if (!worldIn.isClientSide()) {
                             double range = 64;
 
-                            RayTraceResult raytraceResult = rayTrace(worldIn, playerIn, RayTraceContext.FluidMode.SOURCE_ONLY, range);
-                            if (raytraceResult != null && raytraceResult.getType() != RayTraceResult.Type.MISS) {
-                                if(worldIn instanceof ServerWorld) {
+                            HitResult raytraceResult = rayTrace(worldIn, playerIn, ClipContext.Fluid.SOURCE_ONLY, range);
+                            if (raytraceResult != null && raytraceResult.getType() != HitResult.Type.MISS) {
+                                if(worldIn instanceof ServerLevel) {
                                     ElectricItemUtils.drainPlayerEnergy(playerIn, energyConsumption);
                                     HeatUtils.heatPlayer(playerIn, applyPropertyModifiers(MPSConstants.HEAT_EMISSION));
-                                    LightningBoltEntity sparkie = new LightningBoltEntity(EntityType.LIGHTNING_BOLT, worldIn);
+                                    LightningBolt sparkie = new LightningBolt(EntityType.LIGHTNING_BOLT, worldIn);
                                     sparkie.setPos(raytraceResult.getLocation().x, raytraceResult.getLocation().y, raytraceResult.getLocation().z);
-                                    sparkie.setCause((ServerPlayerEntity) playerIn);
-                                    ((ServerWorld) worldIn).loadFromChunk(sparkie);
+                                    sparkie.setCause((ServerPlayer) playerIn);
+//                                    ((ServerLevel) worldIn).loadFromChunk(sparkie);// hmm?
                                 }
                             }
                         }
-                        return ActionResult.success(itemStackIn);
+                        return InteractionResultHolder.success(itemStackIn);
                     }
                 }
-                return ActionResult.pass(itemStackIn);
+                return InteractionResultHolder.pass(itemStackIn);
             }
 
             @Override

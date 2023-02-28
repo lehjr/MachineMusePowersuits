@@ -29,11 +29,11 @@
 //import lehjr.powersuits.client.model.block.TinkerTableModel2;
 //import lehjr.powersuits.constants.MPSConstants;
 //import lehjr.powersuits.tile_entity.TinkerTableTileEntity;
-//import com.mojang.blaze3d.matrix.MatrixStack;
-//import net.minecraft.client.renderer.IRenderTypeBuffer;
+//import com.mojang.blaze3d.vertex.PoseStack;
+//import net.minecraft.client.renderer.MultiBufferSource;
 //import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 //import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
-//import net.minecraft.util.ResourceLocation;
+//import net.minecraft.resources.ResourceLocation;
 //
 //public class TinkerTableRenderer<T extends TinkerTableTileEntity> extends TileEntityRenderer<T> {
 //    ResourceLocation TEXTURE = new ResourceLocation(MPSConstants.MOD_ID, "textures/models/tinkertable_tx.png");
@@ -45,7 +45,7 @@
 //    }
 //
 //    @Override
-//    public void render(T tileEntityIn, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int combinedLightIn, int combinedOverlayIn) {
+//    public void render(T tileEntityIn, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
 //        test.render(matrixStackIn,
 //                bufferIn.getBuffer(test.getRenderType(TEXTURE)),
 //                combinedLightIn, combinedOverlayIn, 1F, 1F, 1F, 1F);

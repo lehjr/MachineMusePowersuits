@@ -27,32 +27,32 @@
 package lehjr.powersuits.common.entity;
 
 import lehjr.powersuits.common.base.MPSObjects;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.projectile.ThrowableEntity;
-import net.minecraft.network.IPacket;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.particles.ParticleTypes;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.EntityRayTraceResult;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.Explosion;
-import net.minecraft.world.GameRules;
-import net.minecraft.world.World;
-import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
-import net.minecraftforge.fml.network.NetworkHooks;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.projectile.ThrowableProjectile;
+import net.minecraft.world.level.Explosion;
+import net.minecraft.world.level.GameRules;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.entity.IEntityAdditionalSpawnData;
+import net.minecraftforge.network.NetworkHooks;
 
-public class PlasmaBallEntity extends ThrowableEntity implements IEntityAdditionalSpawnData {
-    private static final DataParameter<Float> CHARGE_PERCENT = EntityDataManager.defineId(PlasmaBallEntity.class, DataSerializers.FLOAT);
-    private static final DataParameter<Float> EXPLOSIVENESS = EntityDataManager.defineId(PlasmaBallEntity.class, DataSerializers.FLOAT);
-    private static final DataParameter<Float> DAMAGINESS = EntityDataManager.defineId(PlasmaBallEntity.class, DataSerializers.FLOAT);
+public class PlasmaBallEntity extends ThrowableProjectile implements IEntityAdditionalSpawnData {
+    private static final EntityDataAccessor<Float> CHARGE_PERCENT = SynchedEntityData.defineId(PlasmaBallEntity.class, EntityDataSerializers.FLOAT);
+    private static final EntityDataAccessor<Float> EXPLOSIVENESS = SynchedEntityData.defineId(PlasmaBallEntity.class, EntityDataSerializers.FLOAT);
+    private static final EntityDataAccessor<Float> DAMAGINESS = SynchedEntityData.defineId(PlasmaBallEntity.class, EntityDataSerializers.FLOAT);
 
-    public PlasmaBallEntity(EntityType<? extends PlasmaBallEntity> entityType, World world) {
+    public PlasmaBallEntity(EntityType<? extends PlasmaBallEntity> entityType, Level world) {
         super(entityType, world);
     }
 
@@ -63,7 +63,7 @@ public class PlasmaBallEntity extends ThrowableEntity implements IEntityAddition
      * @param finalDamaginess damaginess * chargePercent
      * @param chargePercent percent of charge in decimal form (0 - 1)
      */
-    public PlasmaBallEntity(World world, LivingEntity shootingEntity, float finalExplosiveness, float finalDamaginess, float chargePercent) {
+    public PlasmaBallEntity(Level world, LivingEntity shootingEntity, float finalExplosiveness, float finalDamaginess, float chargePercent) {
         super(MPSObjects.PLASMA_BALL_ENTITY_TYPE.get(), world);
         this.setOwner(shootingEntity);
 
@@ -71,16 +71,25 @@ public class PlasmaBallEntity extends ThrowableEntity implements IEntityAddition
         this.entityData.set(EXPLOSIVENESS, finalExplosiveness);
         this.entityData.set(DAMAGINESS, finalDamaginess);
 
-        Vector3d direction = shootingEntity.getLookAngle().normalize();
+        Vec3 direction = shootingEntity.getLookAngle().normalize();
         double radius = chargePercent;
+        double xoffset = 1.3f + radius - direction.y * shootingEntity.getEyeHeight();
+        double yoffset = -.2;
+        double zoffset = 0.3f;
+        double horzScale = Math.sqrt(direction.x * direction.x + direction.z * direction.z);
+        double horzx = direction.x / horzScale;
+        double horzz = direction.z / horzScale;
         this.setPos(
-                shootingEntity.getX(),
-                shootingEntity.getY() + shootingEntity.getEyeHeight(),
-                shootingEntity.getZ());
-
+                // x
+                (shootingEntity.getX() + direction.x * xoffset - direction.y * horzx * yoffset - horzz * zoffset),
+                // y
+                (shootingEntity.getY() + shootingEntity.getEyeHeight() + direction.y * xoffset + (1 - Math.abs(direction.y)) * yoffset),
+                //z
+                (shootingEntity.getZ() + direction.z * xoffset - direction.y * horzz * yoffset + horzx * zoffset)
+        );
 
         this.setDeltaMovement(direction);
-        this.setBoundingBox(new AxisAlignedBB(getX() - radius, getY() - radius, getZ()- radius, getX() + radius, getY() + radius, getZ() + radius));
+        this.setBoundingBox(new AABB(getX() - radius, getY() - radius, getZ()- radius, getX() + radius, getY() + radius, getZ() + radius));
     }
 
     @Override
@@ -94,11 +103,11 @@ public class PlasmaBallEntity extends ThrowableEntity implements IEntityAddition
     public void baseTick() {
         super.baseTick();
         if (this.tickCount > this.getMaxLifetime()) {
-            this.remove();
+            this.remove(RemovalReason.DISCARDED);
         }
 
         if (this.isInWater()) {
-            this.remove();
+            this.remove(RemovalReason.DISCARDED);
             for (int i = 0; i <  getChargePercent() * 50F; ++i) {
                 this.level.addParticle(ParticleTypes.FLAME,
                         this.getX() + Math.random() * 1,
@@ -109,6 +118,7 @@ public class PlasmaBallEntity extends ThrowableEntity implements IEntityAddition
         }
     }
 
+
     public int getMaxLifetime() {
         return 200;
     }
@@ -117,11 +127,11 @@ public class PlasmaBallEntity extends ThrowableEntity implements IEntityAddition
      * returns if this entity triggers Block.onEntityWalking on the blocks they
      * walk on. used for spiders and wolves to prevent them from trampling crops
      */
-    @Override
-    protected boolean isMovementNoisy() {
-        return false;
-    }
-
+//    @Override
+//    protected boolean func_225502_at_() {
+//        return false;
+//    }
+//
 
     /**
      * Gets the amount of gravity to apply to the thrown entity with each tick.
@@ -132,10 +142,10 @@ public class PlasmaBallEntity extends ThrowableEntity implements IEntityAddition
     }
 
     @Override
-    protected void onHit(RayTraceResult result) {
+    protected void onHit(HitResult result) {
         switch (result.getType()) {
             case ENTITY:
-                EntityRayTraceResult rayTraceResult = (EntityRayTraceResult) result;
+                EntityHitResult rayTraceResult = (EntityHitResult)result;
                 if (rayTraceResult.getEntity() != null && rayTraceResult.getEntity() != getOwner()) {
                     rayTraceResult.getEntity().hurt(DamageSource.thrown(this, getOwner()), this.entityData.get(DAMAGINESS));
                 }
@@ -148,7 +158,7 @@ public class PlasmaBallEntity extends ThrowableEntity implements IEntityAddition
         if (!this.level.isClientSide) { // Dist.SERVER
             boolean flag = this.level.getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING);
             // FIXME: this is probably all wrong
-            this.level.explode(this, this.getX(), this.getY(), this.getZ(), 3 * this.entityData.get(EXPLOSIVENESS), flag ? Explosion.Mode.DESTROY : Explosion.Mode.BREAK);
+            this.level.explode(this, this.getX(), this.getY(), this.getZ(), 3 * this.entityData.get(EXPLOSIVENESS), flag ? Explosion.BlockInteraction.DESTROY : Explosion.BlockInteraction.BREAK);
         }
         for (int var3 = 0; var3 < 8; ++var3) {
             this.level.addParticle(ParticleTypes.FLAME,
@@ -158,7 +168,7 @@ public class PlasmaBallEntity extends ThrowableEntity implements IEntityAddition
                     0.0D, 0.0D, 0.0D);
         }
         if (!this.level.isClientSide) {
-            this.remove();
+            this.remove(RemovalReason.DISCARDED);
         }
     }
 
@@ -176,7 +186,7 @@ public class PlasmaBallEntity extends ThrowableEntity implements IEntityAddition
      * @param buffer The packet data stream
      */
     @Override
-    public void writeSpawnData(PacketBuffer buffer) {
+    public void writeSpawnData(FriendlyByteBuf buffer) {
         buffer.writeFloat(this.entityData.get(CHARGE_PERCENT));
         buffer.writeFloat(this.entityData.get(EXPLOSIVENESS));
         buffer.writeFloat(this.entityData.get(DAMAGINESS));
@@ -189,14 +199,14 @@ public class PlasmaBallEntity extends ThrowableEntity implements IEntityAddition
      * @param additionalData The packet data stream
      */
     @Override
-    public void readSpawnData(PacketBuffer additionalData) {
+    public void readSpawnData(FriendlyByteBuf additionalData) {
         this.entityData.set(CHARGE_PERCENT, additionalData.readFloat());
         this.entityData.set(EXPLOSIVENESS, additionalData.readFloat());
         this.entityData.set(DAMAGINESS, additionalData.readFloat());
     }
 
     @Override
-    public IPacket<?> getAddEntityPacket() {
+    public Packet<?> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
 }

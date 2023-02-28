@@ -11,21 +11,20 @@ import lehjr.numina.common.energy.ElectricItemUtils;
 import lehjr.powersuits.common.config.MPSSettings;
 import lehjr.powersuits.common.constants.MPSConstants;
 import lehjr.powersuits.common.item.module.AbstractPowerModule;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.Direction;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.RayTraceContext;
-import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.NonNullList;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.ClipContext;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
-import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.CapabilityItemHandler;
 
@@ -41,7 +40,7 @@ public class TunnelBoreModule extends AbstractPowerModule {
 
     @Nullable
     @Override
-    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundNBT nbt) {
+    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt) {
         return new CapProvider(stack);
     }
     /** TODO: Add cooldown timer */
@@ -63,7 +62,7 @@ public class TunnelBoreModule extends AbstractPowerModule {
             }};
 
             powerModuleHolder = LazyOptional.of(() -> {
-                miningEnhancement.updateFromNBT();
+                miningEnhancement.loadCapValues();
                 return miningEnhancement;
             });
 
@@ -77,14 +76,14 @@ public class TunnelBoreModule extends AbstractPowerModule {
             }
 
             @Override
-            public boolean onBlockStartBreak(ItemStack itemStack, BlockPos posIn, PlayerEntity player) {
+            public boolean onBlockStartBreak(ItemStack itemStack, BlockPos posIn, Player player) {
                 if (player.level.isClientSide) {
                     return false; // fixme : check?
                 }
 
                 AtomicBoolean harvested = new AtomicBoolean(false);
-                RayTraceResult rayTraceResult = getPlayerPOVHitResult(player.level, player, RayTraceContext.FluidMode.SOURCE_ONLY);
-                if (rayTraceResult == null || rayTraceResult.getType() != RayTraceResult.Type.BLOCK) {
+                HitResult rayTraceResult = getPlayerPOVHitResult(player.level, player, ClipContext.Fluid.SOURCE_ONLY);
+                if (rayTraceResult == null || rayTraceResult.getType() != HitResult.Type.BLOCK) {
                     return false;
                 }
                 int radius = (int) (applyPropertyModifiers(MPSConstants.AOE_MINING_RADIUS) - 1) / 2;
@@ -92,7 +91,7 @@ public class TunnelBoreModule extends AbstractPowerModule {
                     return false;
                 }
 
-                NonNullList<BlockPos> posList = highlight.getBlockPositions((BlockRayTraceResult) rayTraceResult);
+                NonNullList<BlockPos> posList = highlight.getBlockPositions((BlockHitResult) rayTraceResult);
                 int energyUsage = this.getEnergyUsage();
 
                 AtomicInteger blocksBroken = new AtomicInteger(0);
@@ -111,7 +110,7 @@ public class TunnelBoreModule extends AbstractPowerModule {
                                             .map(b -> {
                                                 // check if module can break block
                                                 if (b.canHarvestBlock(itemStack, state, player, blockPos, playerEnergy - energyUsage)) {
-                                                    Block.updateOrDestroy(state, Blocks.AIR.defaultBlockState(), player.level, blockPos, Constants.BlockFlags.DEFAULT);
+                                                    Block.updateOrDestroy(state, Blocks.AIR.defaultBlockState(), player.level, blockPos, Block.UPDATE_ALL);
                                                     ElectricItemUtils.drainPlayerEnergy(player, b.getEnergyUsage() + energyUsage);
                                                     return true;
                                                 }
@@ -139,7 +138,7 @@ public class TunnelBoreModule extends AbstractPowerModule {
         class Highlighter extends Highlight {
 
             @Override
-            public NonNullList<BlockPos> getBlockPositions(BlockRayTraceResult rayTraceResult) {
+            public NonNullList<BlockPos> getBlockPositions(BlockHitResult rayTraceResult) {
                 NonNullList retList = NonNullList.create();
 
                 if(miningEnhancement.isModuleOnline()) {

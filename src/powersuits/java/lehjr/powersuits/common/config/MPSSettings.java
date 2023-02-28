@@ -29,7 +29,7 @@ package lehjr.powersuits.common.config;
 import lehjr.numina.common.capabilities.module.powermodule.IConfig;
 import lehjr.numina.common.config.ModuleConfig;
 import lehjr.powersuits.common.constants.MPSConstants;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.util.NonNullLazy;
 import org.apache.commons.lang3.tuple.Pair;

@@ -27,10 +27,10 @@
 package lehjr.numina.common.base;
 
 import lehjr.numina.common.constants.NuminaConstants;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.ItemStack;
 
-public class NuminaCreativeTab extends ItemGroup {
+public class NuminaCreativeTab extends CreativeModeTab {
     public NuminaCreativeTab() {
         super(NuminaConstants.MOD_ID);
     }

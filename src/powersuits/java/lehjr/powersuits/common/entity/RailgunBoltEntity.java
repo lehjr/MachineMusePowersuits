@@ -27,34 +27,34 @@
 package lehjr.powersuits.common.entity;
 
 import lehjr.powersuits.common.base.MPSObjects;
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.entity.projectile.DamagingProjectileEntity;
-import net.minecraft.network.IPacket;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.network.play.server.SChangeGameStatePacket;
-import net.minecraft.particles.ParticleTypes;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.IndirectEntityDamageSource;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.EntityRayTraceResult;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.World;
-import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
-import net.minecraftforge.fml.network.NetworkHooks;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientboundGameEventPacket;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.IndirectEntityDamageSource;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.ThrowableProjectile;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.entity.IEntityAdditionalSpawnData;
+import net.minecraftforge.network.NetworkHooks;
 
 import javax.annotation.Nullable;
 
 
 // TODO... fix this mess to work correctly...
-public class RailgunBoltEntity extends DamagingProjectileEntity /*ThrowableEntity*/ implements IEntityAdditionalSpawnData {
+public class RailgunBoltEntity extends ThrowableProjectile implements IEntityAdditionalSpawnData {
     private double damage = 2.0D;
     private int knockbackStrength;
     private double velocity;
@@ -63,11 +63,11 @@ public class RailgunBoltEntity extends DamagingProjectileEntity /*ThrowableEntit
 
     private final SoundEvent hitSound = SoundEvents.GENERIC_EXPLODE;
 
-    public RailgunBoltEntity(EntityType<? extends RailgunBoltEntity> type, World worldIn) {
+    public RailgunBoltEntity(EntityType<? extends RailgunBoltEntity> type, Level worldIn) {
         super(type, worldIn);
     }
 
-    public RailgunBoltEntity(World world,
+    public RailgunBoltEntity(Level world,
                              LivingEntity shooter,
                              double velocity,
                              double chargePercent,
@@ -80,16 +80,15 @@ public class RailgunBoltEntity extends DamagingProjectileEntity /*ThrowableEntit
 
 
         this.setOwner(shooter);
-        this.setLevel(world);
+//        this.func_70029_a(world);
 
         // todo: replace with something resembling original code
-        if (shooter instanceof PlayerEntity) {
-            Vector3d direction = shooter.getLookAngle().normalize();
+        if (shooter instanceof Player) {
+            Vec3 direction = shooter.getLookAngle();//.normalize();
             if (chargePercent >= 0.75) {
                 // fire
-                setSecondsOnFire((int) (chargePercent * 10));
+                setSecondsOnFire((int) (chargePercent * 100));
             }
-
 //            double inaccuracy = (chargePercent * 0.25F);
 
 //            if (inaccuracy > 0.5) {
@@ -98,21 +97,26 @@ public class RailgunBoltEntity extends DamagingProjectileEntity /*ThrowableEntit
 //                                this.random.nextGaussian() * 0.0075 * inaccuracy,
 //                                this.random.nextGaussian() * 0.0075 * inaccuracy);
 //            }
-
-            this.setPos(
-                    shooter.getX(),
-                    shooter.getY() + shooter.getEyeHeight(),
-                    shooter.getZ());
+//
+//            this.func_70107_b(
+//                    shooter.getX(),
+//                    shooter.getY() + shooter.func_70047_e(),
+//                    shooter.getZ());
 
             this.setDeltaMovement(direction.scale(velocity));
         }
         setNoGravity(true);
     }
 
+
+
+
+
+
     @Override
-    protected void onHit(RayTraceResult result) {
+    protected void onHit(HitResult result) {
         super.onHit(result);
-        Vector3d hitVec = result.getLocation();
+        Vec3 hitVec = result.getLocation();
         drawParticleStreamTo(hitVec);
     }
 
@@ -120,14 +124,14 @@ public class RailgunBoltEntity extends DamagingProjectileEntity /*ThrowableEntit
      * Called when the arrow hits an entity
      */
     @Override
-    protected void onHitEntity(EntityRayTraceResult traceResult) {
+    protected void onHitEntity(EntityHitResult traceResult) {
         super.onHitEntity(traceResult);
         Entity entity = traceResult.getEntity();
 
         int pierceLimit = (int) (5 * chargePercent); // pierceLevel of 5 or less
         if (pierceLimit > 0) {
             if (this.piercedEntities >= pierceLimit + 1) {
-                this.remove();
+                this.remove(RemovalReason.DISCARDED);
                 return;
             }
             this.piercedEntities ++;
@@ -155,7 +159,7 @@ public class RailgunBoltEntity extends DamagingProjectileEntity /*ThrowableEntit
 
                 // apply knockback
                 if (this.knockbackStrength > 0) {
-                    Vector3d vector3d = this.getDeltaMovement().multiply(1.0D, 0.0D, 1.0D).normalize().scale((double)this.knockbackStrength * 0.6D);
+                    Vec3 vector3d = this.getDeltaMovement().multiply(1.0D, 0.0D, 1.0D).normalize().scale((double)this.knockbackStrength * 0.6D);
                     if (vector3d.lengthSqr() > 0.0D) {
                         livingentity.push(vector3d.x, 0.1D, vector3d.z);
                     }
@@ -166,22 +170,22 @@ public class RailgunBoltEntity extends DamagingProjectileEntity /*ThrowableEntit
                     EnchantmentHelper.doPostDamageEffects((LivingEntity)entity1, livingentity);
                 }
 
-                if (entity1 != null && livingentity != entity1 && livingentity instanceof PlayerEntity && entity1 instanceof ServerPlayerEntity && !this.isSilent()) {
-                    ((ServerPlayerEntity)entity1).connection.send(new SChangeGameStatePacket(SChangeGameStatePacket.ARROW_HIT_PLAYER, 0.0F));
+                if (entity1 != null && livingentity != entity1 && livingentity instanceof Player && entity1 instanceof ServerPlayer && !this.isSilent()) {
+                    ((ServerPlayer)entity1).connection.send(new ClientboundGameEventPacket(ClientboundGameEventPacket.ARROW_HIT_PLAYER, 0.0F));
                 }
             }
 
             this.playSound(this.hitSound, 1.0F, 1.2F / (this.random.nextFloat() * 0.2F + 0.9F));
             if (pierceLimit <= 0) {
-                this.remove();
+                this.remove(RemovalReason.DISCARDED);
             }
         } else {
             entity.setRemainingFireTicks(fireTimer);
             this.setDeltaMovement(this.getDeltaMovement().scale(-0.1D));
-            this.yRot += 180.0F;
+            this.setYRot(this.getYRot() + 180.0F);
             this.yRotO += 180.0F;
             if (!this.level.isClientSide && this.getDeltaMovement().lengthSqr() < 1.0E-7D) {
-                this.remove();
+                this.remove(RemovalReason.DISCARDED);
             }
         }
     }
@@ -197,8 +201,10 @@ public class RailgunBoltEntity extends DamagingProjectileEntity /*ThrowableEntit
         // copied from AbstractArrow // working?
         if (this.isInWater()) {
 //            System.out.println("working?");
+
+            float f2;
             // motion vector with scale applied because the bolt moves too fast to draw bubbles
-            Vector3d vector3d = this.getDeltaMovement();//.scale(0.05);
+            Vec3 vector3d = this.getDeltaMovement();//.scale(0.05);
             double d3 = vector3d.x;
             double d4 = vector3d.y;
             double d0 = vector3d.z;
@@ -210,7 +216,9 @@ public class RailgunBoltEntity extends DamagingProjectileEntity /*ThrowableEntit
             for(int j = 0; j < 4; ++j) {
                 this.level.addParticle(ParticleTypes.BUBBLE, d5 - d3 * 0.25D, d1 - d4 * 0.25D, d2 - d0 * 0.25D, d3, d4, d0);
             }
-            this.setDeltaMovement(vector3d.scale(this.getWaterDrag()));
+
+            f2 = this.getWaterDrag();
+            this.setDeltaMovement(vector3d.scale(f2));
         }
     }
 
@@ -222,13 +230,13 @@ public class RailgunBoltEntity extends DamagingProjectileEntity /*ThrowableEntit
     public void baseTick() {
         super.baseTick();
         if (this.tickCount > this.getMaxLifetime()) {
-            this.remove();
+            this.remove(RemovalReason.DISCARDED);
         }
 
         // remove "ghosts"
-        Vector3d motion = getDeltaMovement();
+        Vec3 motion = getDeltaMovement();
         if (motion.x == 0 && motion.y ==0 && motion.z ==0) {
-            this.remove();
+            this.remove(RemovalReason.DISCARDED);
         }
     }
 
@@ -237,7 +245,7 @@ public class RailgunBoltEntity extends DamagingProjectileEntity /*ThrowableEntit
      * @param rayTraceResult
      */
     @Override
-    protected void onHitBlock(BlockRayTraceResult rayTraceResult) {
+    protected void onHitBlock(BlockHitResult rayTraceResult) {
         super.onHitBlock(rayTraceResult);
         this.playSound(this.hitSound, 1.0F, 1.2F / (this.random.nextFloat() * 0.2F + 0.9F));
     }
@@ -260,28 +268,28 @@ public class RailgunBoltEntity extends DamagingProjectileEntity /*ThrowableEntit
      * returns if this entity triggers Block.onEntityWalking on the blocks they
      * walk on. used for spiders and wolves to prevent them from trampling crops
      */
-    @Override
-    protected boolean isMovementNoisy() {
-        return false;
-    }
+//    @Override
+//    protected boolean isMovementNoisy() {
+//        return false;
+//    }
 
     /**
      * Originally this was only drawn only on impact.
      */
-    public void drawParticleStreamTo(Vector3d hitVec) {
+    public void drawParticleStreamTo(Vec3 hitVec) {
         Entity source = this.getOwner();
-        if (source != null && source instanceof PlayerEntity) {
+        if (source != null && source instanceof Player) {
             double x = hitVec.x;
             double y = hitVec.y;
             double z = hitVec.z;
 
-            PlayerEntity shooter = (PlayerEntity) source;
-            Vector3d direction = shooter.getLookAngle().normalize();
+            Player shooter = (Player) source;
+            Vec3 direction = shooter.getLookAngle().normalize();
             double xoffset = 1.3f;
             double yoffset = -.2;
             double zoffset = 0.3f;
-            Vector3d horzdir = direction.normalize();
-            horzdir = new Vector3d(horzdir.x, 0, horzdir.z);
+            Vec3 horzdir = direction.normalize();
+            horzdir = new Vec3(horzdir.x, 0, horzdir.z);
             horzdir = horzdir.normalize();
             double cx = shooter.getX() + direction.x * xoffset - direction.y * horzdir.x * yoffset - horzdir.z * zoffset;
             double cy = shooter.getY() + shooter.getEyeHeight() + direction.y * xoffset + (1 - Math.abs(direction.y)) * yoffset;
@@ -301,7 +309,7 @@ public class RailgunBoltEntity extends DamagingProjectileEntity /*ThrowableEntit
     }
 
     @Override
-    public void writeSpawnData(PacketBuffer buffer) {
+    public void writeSpawnData(FriendlyByteBuf buffer) {
         buffer.writeDouble(this.damage);
         buffer.writeInt(this.knockbackStrength);
         buffer.writeDouble(this.velocity);
@@ -309,7 +317,7 @@ public class RailgunBoltEntity extends DamagingProjectileEntity /*ThrowableEntit
     }
 
     @Override
-    public void readSpawnData(PacketBuffer additionalData) {
+    public void readSpawnData(FriendlyByteBuf additionalData) {
         this.damage = additionalData.readDouble();
         this.knockbackStrength = additionalData.readInt();
         this.velocity = additionalData.readDouble();
@@ -317,7 +325,7 @@ public class RailgunBoltEntity extends DamagingProjectileEntity /*ThrowableEntit
     }
 
     @Override
-    public IPacket<?> getAddEntityPacket() {
+    public Packet<?> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
 }

@@ -28,9 +28,9 @@ package lehjr.numina.common.capabilities.render.modelspec;
 
 import lehjr.numina.client.model.obj.OBJBakedPart;
 import lehjr.numina.common.constants.NuminaConstants;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -53,8 +53,8 @@ public class ModelPartSpec extends PartSpecBase {
     }
 
     @Override
-    public ITextComponent getDisaplayName() {
-        return new TranslationTextComponent(new StringBuilder("model.")
+    public Component getDisaplayName() {
+        return new TranslatableComponent(new StringBuilder("model.")
                 .append(this.spec.getOwnName())
                 .append(".")
                 .append(this.partName)
@@ -66,11 +66,11 @@ public class ModelPartSpec extends PartSpecBase {
         return this.defaultglow;
     }
 
-    public boolean getGlow(CompoundNBT nbt) {
+    public boolean getGlow(CompoundTag nbt) {
         return nbt.contains(NuminaConstants.TAG_GLOW) ? nbt.getBoolean(NuminaConstants.TAG_GLOW) : this.defaultglow;
     }
 
-    public void setGlow(CompoundNBT nbt, boolean g) {
+    public void setGlow(CompoundTag nbt, boolean g) {
         if (g == this.defaultglow) nbt.remove(NuminaConstants.TAG_GLOW);
         else nbt.putBoolean(NuminaConstants.TAG_GLOW, g);
     }
@@ -79,7 +79,7 @@ public class ModelPartSpec extends PartSpecBase {
         return ((ModelSpec) (this.spec)).getModel().getPart(this.partName);
     }
 
-    public CompoundNBT multiSet(CompoundNBT nbt, Integer colourIndex, Boolean glow) {
+    public CompoundTag multiSet(CompoundTag nbt, Integer colourIndex, Boolean glow) {
         super.multiSet(nbt, colourIndex);
         this.setGlow(nbt, (glow != null) ? glow : false);
         return nbt;

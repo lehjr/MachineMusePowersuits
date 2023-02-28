@@ -27,28 +27,28 @@
 package lehjr.numina.common.capabilities.module.powermodule;
 
 
-import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.world.entity.EquipmentSlot;
 
 /**
  * Used for determining where a module can be installed.
  */
 public enum ModuleTarget {
     NONE(null),
-    ARMORONLY(EquipmentSlotType.Group.ARMOR),
+    ARMORONLY(EquipmentSlot.Type.ARMOR),
     ALLITEMS(null),
-    HEADONLY(EquipmentSlotType.Group.ARMOR),
-    TORSOONLY(EquipmentSlotType.Group.ARMOR),
-    LEGSONLY(EquipmentSlotType.Group.ARMOR),
-    FEETONLY(EquipmentSlotType.Group.ARMOR),
-    TOOLONLY(EquipmentSlotType.Group.HAND);
+    HEADONLY(EquipmentSlot.Type.ARMOR),
+    TORSOONLY(EquipmentSlot.Type.ARMOR),
+    LEGSONLY(EquipmentSlot.Type.ARMOR),
+    FEETONLY(EquipmentSlot.Type.ARMOR),
+    TOOLONLY(EquipmentSlot.Type.HAND);
 
-    private final EquipmentSlotType.Group type;
+    private final EquipmentSlot.Type type;
 
-    ModuleTarget(EquipmentSlotType.Group type) {
+    ModuleTarget(EquipmentSlot.Type type) {
         this.type = type;
     }
 
-    public EquipmentSlotType.Group getType() {
+    public EquipmentSlot.Type getType() {
         return type;
     }
 }

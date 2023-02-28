@@ -37,8 +37,8 @@ import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.capabilities.module.powermodule.PowerModuleCapability;
 import lehjr.numina.common.capabilities.module.toggleable.IToggleableModule;
 import lehjr.numina.common.capabilities.render.IArmorModelSpecNBT;
-import lehjr.numina.common.capabilities.render.ModelSpecNBTCapability;
-import lehjr.numina.common.capabilities.render.modelspec.EnumSpecType;
+import lehjr.numina.common.capabilities.render.ModelSpecCapability;
+import lehjr.numina.common.capabilities.render.modelspec.SpecType;
 import lehjr.numina.common.constants.NuminaConstants;
 import lehjr.numina.common.energy.ElectricItemUtils;
 import lehjr.numina.common.network.NuminaPackets;
@@ -49,27 +49,31 @@ import lehjr.powersuits.common.capability.PowerArmorCap;
 import lehjr.powersuits.common.constants.MPSConstants;
 import lehjr.powersuits.common.constants.MPSRegistryNames;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.entity.model.BipedModel;
-import net.minecraft.client.renderer.texture.AtlasTexture;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.MobEntity;
-import net.minecraft.entity.ai.attributes.Attribute;
-import net.minecraft.entity.ai.attributes.AttributeModifier;
-import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.ArmorItem;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.world.World;
+import net.minecraft.client.model.HumanoidModel;
+import net.minecraft.client.model.Model;
+import net.minecraft.client.renderer.texture.TextureAtlas;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.item.ArmorItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.client.IItemRenderProperties;
 import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.energy.CapabilityEnergy;
+import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.items.CapabilityItemHandler;
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -87,11 +91,11 @@ public abstract class AbstractElectricItemArmor extends ArmorItem {
             UUID.randomUUID(),
             UUID.randomUUID()};
 
-    public AbstractElectricItemArmor(EquipmentSlotType slots, Properties builder) {
+    public AbstractElectricItemArmor(EquipmentSlot slots, Properties builder) {
         super(MPAArmorMaterial.EMPTY_ARMOR, slots, builder);
     }
 
-    public AbstractElectricItemArmor(EquipmentSlotType slots) {
+    public AbstractElectricItemArmor(EquipmentSlot slots) {
         super(MPAArmorMaterial.EMPTY_ARMOR, slots, new Item.Properties()
                 .stacksTo(1)
                 .tab(MPSObjects.creativeTab)
@@ -122,9 +126,9 @@ public abstract class AbstractElectricItemArmor extends ArmorItem {
                 .map(iItemHandler -> {
                     Pair<Integer, Integer> range = iItemHandler.getRangeForCategory(ModuleCategory.ARMOR);
                     double energyUsed = 0;
-                    for (int x = range.getKey(); x < range.getRight(); x ++) {
+                    for (int x = range.getKey(); x < range.getRight(); x++) {
                         energyUsed += iItemHandler.getStackInSlot(x).getCapability(PowerModuleCapability.POWER_MODULE)
-                                .map(pm->pm.applyPropertyModifiers(MPSConstants.ARMOR_ENERGY_CONSUMPTION)).orElse(0D);
+                                .map(pm -> pm.applyPropertyModifiers(MPSConstants.ARMOR_ENERGY_CONSUMPTION)).orElse(0D);
                     }
                     return energyUsed;
                 }).orElse(0D));
@@ -137,12 +141,12 @@ public abstract class AbstractElectricItemArmor extends ArmorItem {
     }
 
     @Override
-    public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlotType slot, ItemStack stack) {
+    public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlot slot, ItemStack stack) {
         // PropertyModifier tags applied directly to armor will disable the ItemStack sensitive version
         stack.removeTagKey("AttributeModifiers");
 
         Multimap<Attribute, AttributeModifier> multimap = super.getAttributeModifiers(slot, stack);
-        EquipmentSlotType slotType = MobEntity.getEquipmentSlotForItem(stack);
+        EquipmentSlot slotType = Mob.getEquipmentSlotForItem(stack);
         if (slot != slotType) {
             return multimap;
         }
@@ -183,22 +187,21 @@ public abstract class AbstractElectricItemArmor extends ArmorItem {
                                         */
 
 
-
                                     }
                                 }
                             });
                         }
                     }
 
-                    if (slotType == EquipmentSlotType.LEGS) {
-                        for(int i= 0; i < iItemHandler.getSlots(); i++) {
+                    if (slotType == EquipmentSlot.LEGS) {
+                        for (int i = 0; i < iItemHandler.getSlots(); i++) {
                             /** Note: attribute should already be removed when module is offline */
                             iItemHandler.getStackInSlot(i).getCapability(PowerModuleCapability.POWER_MODULE)
                                     .filter(IPowerModule.class::isInstance)
                                     .map(IPowerModule.class::cast)
                                     .filter(IPowerModule::isModuleOnline)
                                     .ifPresent(iPowerModule -> {
-                                        movementResistance.getAndAdd( iPowerModule.applyPropertyModifiers(MPSConstants.MOVEMENT_RESISTANCE));
+                                        movementResistance.getAndAdd(iPowerModule.applyPropertyModifiers(MPSConstants.MOVEMENT_RESISTANCE));
                                         iPowerModule.getModuleStack().getAttributeModifiers(slotType).get(Attributes.MOVEMENT_SPEED).forEach(attributeModifier -> speed.getAndAdd(attributeModifier.getAmount()));
                                         iPowerModule.getModuleStack().getAttributeModifiers(slotType).get(ForgeMod.SWIM_SPEED.get()).forEach(attributeModifier -> {
                                             swimBoost.getAndAdd(attributeModifier.getAmount());
@@ -211,7 +214,7 @@ public abstract class AbstractElectricItemArmor extends ArmorItem {
         ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
 
         for (Map.Entry entry : multimap.entries()) {
-            builder.put((Attribute)entry.getKey(), (AttributeModifier)entry.getValue());
+            builder.put((Attribute) entry.getKey(), (AttributeModifier) entry.getValue());
         }
 
         if (armorVal.get() > 0) {
@@ -270,6 +273,7 @@ public abstract class AbstractElectricItemArmor extends ArmorItem {
 
     /**
      * This will work for the vanilla type models. This will not work for high polly models due to how the rendering works
+     *
      * @param armor
      * @param entity
      * @param equipmentSlotType
@@ -278,13 +282,13 @@ public abstract class AbstractElectricItemArmor extends ArmorItem {
      */
     @Nullable
     @Override
-    public String getArmorTexture(ItemStack armor, Entity entity, EquipmentSlotType equipmentSlotType, String type) {
+    public String getArmorTexture(ItemStack armor, Entity entity, EquipmentSlot equipmentSlotType, String type) {
         if (type == "overlay") { // this is to allow a tint to be applied tot the armor
-            return NuminaConstants.BLANK_ARMOR_MODEL_PATH;
+            return NuminaConstants.BLANK_ARMOR_MODEL_PATH.toString();
         }
 
         if (!equipmentSlotType.equals(armor.getEquipmentSlot())) {
-            return NuminaConstants.BLANK_ARMOR_MODEL_PATH;
+            return NuminaConstants.BLANK_ARMOR_MODEL_PATH.toString();
         }
 
         if (entity instanceof LivingEntity) {
@@ -292,81 +296,86 @@ public abstract class AbstractElectricItemArmor extends ArmorItem {
                     .filter(IModularItem.class::isInstance)
                     .map(IModularItem.class::cast)
                     .map(iItemHandler -> iItemHandler.isModuleOnline(MPSRegistryNames.TRANSPARENT_ARMOR_MODULE)).orElse(false)) {
-                return NuminaConstants.BLANK_ARMOR_MODEL_PATH;
+                return NuminaConstants.BLANK_ARMOR_MODEL_PATH.toString();
             }
         }
 
-        return armor.getCapability(ModelSpecNBTCapability.RENDER)
+        return armor.getCapability(ModelSpecCapability.RENDER)
                 .filter(IArmorModelSpecNBT.class::isInstance)
                 .map(IArmorModelSpecNBT.class::cast)
-                .map(spec-> {
-                    if (spec.getSpecType() == EnumSpecType.NONE) {
-                        return NuminaConstants.BLANK_ARMOR_MODEL_PATH;
+                .map(spec -> {
+                    if (spec.getSpecType() == SpecType.NONE) {
+                        return NuminaConstants.BLANK_ARMOR_MODEL_PATH.toString();
                     }
 
                     if (spec.getRenderTag() != null && spec.getRenderTag().isEmpty()) {
-                        return NuminaConstants.BLANK_ARMOR_MODEL_PATH;
+                        return NuminaConstants.BLANK_ARMOR_MODEL_PATH.toString();
                     }
-                    return spec.getArmorTexture();
+                    return spec.getArmorTexture().toString();
                 })
-                .orElse(AtlasTexture.LOCATION_BLOCKS.toString());
+                .orElse(TextureAtlas.LOCATION_BLOCKS.toString());
     }
 
-    /**
-     * Null return gets replaced with the _default elsewhere
-     * @param entityLiving
-     * @param itemStack
-     * @param armorSlot
-     * @param _default
-     * @return
-     */
-    @Nullable
     @Override
-    @OnlyIn(Dist.CLIENT)
-    public BipedModel getArmorModel(LivingEntity entityLiving, ItemStack itemStack, EquipmentSlotType armorSlot, BipedModel _default) {
-//        if (!(entityLiving instanceof PlayerEntity)) {
+    public void initializeClient(Consumer<IItemRenderProperties> consumer) {
+        consumer.accept(new IItemRenderProperties() {
+            /**
+             * Null return gets replaced with the _default elsewhere
+             *
+             * @param entityLiving
+             * @param itemStack
+             * @param armorSlot
+             * @param _default
+             * @return
+             */
+            @Override
+            @Nonnull
+            public Model getBaseArmorModel(LivingEntity entityLiving, ItemStack itemStack, EquipmentSlot armorSlot, HumanoidModel<?> _default) {
+//        if (!(entityLiving instanceof Player)) {
 //            return _default;
 //        }
 
-        return itemStack.getCapability(ModelSpecNBTCapability.RENDER).map(spec-> {
-            CompoundNBT renderTag = spec.getRenderTag();
+                return itemStack.getCapability(ModelSpecCapability.RENDER).map(spec -> {
+                    CompoundTag renderTag = spec.getRenderTag();
 
-            EquipmentSlotType slot = MobEntity.getEquipmentSlotForItem(itemStack);
-            /** sets up default spec tags. A tag with all parts disabled should still have a color tag rather than being empty or null */
-            if ((renderTag == null ||  renderTag.isEmpty()) && entityLiving == Minecraft.getInstance().player && armorSlot == slot) {
-                renderTag = spec.getDefaultRenderTag();
-                if (renderTag != null && !renderTag.isEmpty()) {
-                    spec.setRenderTag(renderTag, NuminaConstants.TAG_RENDER);
-                    NuminaPackets.CHANNEL_INSTANCE.sendToServer(new CosmeticInfoPacket(armorSlot, NuminaConstants.TAG_RENDER, renderTag));
-                }
-            }
+                    EquipmentSlot slot = Mob.getEquipmentSlotForItem(itemStack);
+                    /** sets up default spec tags. A tag with all parts disabled should still have a color tag rather than being empty or null */
+                    if ((renderTag == null || renderTag.isEmpty()) && entityLiving == Minecraft.getInstance().player && armorSlot == slot) {
+                        renderTag = spec.getDefaultRenderTag();
+                        if (renderTag != null && !renderTag.isEmpty()) {
+                            spec.setRenderTag(renderTag, NuminaConstants.TAG_RENDER);
+                            NuminaPackets.CHANNEL_INSTANCE.sendToServer(new CosmeticInfoPacket(armorSlot, NuminaConstants.TAG_RENDER, renderTag));
+                        }
+                    }
 
-            /** Armor skin uses vanilla model, but returning _default for EnumSpecType.NONE renders a garbage model */
-            if (spec.getRenderTag() != null && (spec.getSpecType() == EnumSpecType.ARMOR_SKIN)) {
-                return _default;
-            }
+                    /** Armor skin uses vanilla model, but returning _default for EnumSpecType.NONE renders a garbage model */
+                    if (spec.getRenderTag() != null && (spec.getSpecType() == SpecType.ARMOR_SKIN)) {
+                        return _default;
+                    }
 
-            BipedModel model = ArmorModelInstance.getInstance();
-            ItemStack chestplate = entityLiving.getItemBySlot(EquipmentSlotType.CHEST);
-            if (chestplate.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-                    .filter(IModularItem.class::isInstance)
-                    .map(IModularItem.class::cast)
-                    .map(iItemHandler -> iItemHandler.isModuleOnline(MPSRegistryNames.ACTIVE_CAMOUFLAGE_MODULE)).orElse(false)) {
-                ((HighPolyArmor) model).setVisibleSection(null);
-            } else
-            {
-                if (renderTag != null) {
-                    ((HighPolyArmor) model).setVisibleSection(slot);
-                    ((HighPolyArmor) model).setRenderSpec(renderTag);
-                }
+                    HumanoidModel model = ArmorModelInstance.getInstance();
+                    ItemStack chestplate = entityLiving.getItemBySlot(EquipmentSlot.CHEST);
+                    if (chestplate.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+                            .filter(IModularItem.class::isInstance)
+                            .map(IModularItem.class::cast)
+                            .map(iItemHandler -> iItemHandler.isModuleOnline(MPSRegistryNames.ACTIVE_CAMOUFLAGE_MODULE)).orElse(false)) {
+                        ((HighPolyArmor) model).setVisibleSection(null);
+                    } else {
+                        if (renderTag != null) {
+                            ((HighPolyArmor) model).setVisibleSection(slot);
+                            ((HighPolyArmor) model).setRenderSpec(renderTag);
+                        }
+                    }
+                    return model;
+                }).orElse(_default);
             }
-            return model;
-        }).orElse(_default);
+        });
     }
+
 
     @OnlyIn(Dist.CLIENT)
     @Override
-    public void appendHoverText(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+    public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
         if (worldIn != null) {
             AdditionalInfo.appendHoverText(stack, worldIn, tooltip, flagIn);
         }
@@ -374,20 +383,28 @@ public abstract class AbstractElectricItemArmor extends ArmorItem {
 
     @Nullable
     @Override
-    public ICapabilityProvider initCapabilities(@Nonnull ItemStack stack, @Nullable CompoundNBT nbt) {
+    public ICapabilityProvider initCapabilities(@Nonnull ItemStack stack, @Nullable CompoundTag nbt) {
+        assert stack != null;
         return new PowerArmorCap(stack, this.slot);
     }
 
     @Override
-    public boolean showDurabilityBar(final ItemStack stack) {
-        return stack.getCapability(CapabilityEnergy.ENERGY)
-                .map( energyCap-> energyCap.getMaxEnergyStored() > 0).orElse(false);
+    public boolean isBarVisible(ItemStack stack) {
+        return stack.getCapability(CapabilityEnergy.ENERGY).map(iEnergyStorage -> iEnergyStorage.getMaxEnergyStored() > 1).orElse(false);
     }
 
     @Override
-    public double getDurabilityForDisplay(final ItemStack stack) {
-        return stack.getCapability(CapabilityEnergy.ENERGY)
-                .map( energyCap-> 1 - energyCap.getEnergyStored() / (double) energyCap.getMaxEnergyStored()).orElse(1D);
+    public int getBarWidth(ItemStack stack) {
+        return stack.getCapability(CapabilityEnergy.ENERGY).map(iEnergyStorage -> iEnergyStorage.getEnergyStored() * 13 / iEnergyStorage.getMaxEnergyStored()).orElse(1);
+    }
+
+    @Override
+    public int getBarColor(ItemStack stack) {
+        IEnergyStorage energy = stack.getCapability(CapabilityEnergy.ENERGY).orElse(null);
+        if (energy == null) {
+            return super.getBarColor(stack);
+        }
+        return Mth.hsvToRgb(Math.max(0.0F, (float) energy.getEnergyStored() / (float) energy.getMaxEnergyStored()) / 3.0F, 1.0F, 1.0F);
     }
 
     @Override

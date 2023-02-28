@@ -26,10 +26,12 @@
 
 package lehjr.numina.common.capabilities.heat;
 
+import lehjr.numina.common.capabilities.CapabilityUpdate;
+
 /**
  * Same as ForgeEnergy/RF, except for heat
  */
-public interface IHeatStorage {
+public interface IHeatStorage extends CapabilityUpdate {
     /**
      * Adds heat to the storage. Returns quantity of heat that was accepted.
      *
@@ -69,4 +71,6 @@ public interface IHeatStorage {
      * If this is false, then any calls to receiveHeat will return 0.
      */
     boolean canReceive();
+
+    void setHeatCapacity(double maxHeat);
 }

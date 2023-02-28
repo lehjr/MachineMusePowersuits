@@ -26,9 +26,9 @@
 
 package lehjr.numina.client.model.helper;
 
+import com.mojang.math.Transformation;
 import lehjr.numina.common.base.NuminaLogger;
 import net.minecraft.client.Minecraft;
-import net.minecraft.util.math.vector.TransformationMatrix;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.lwjgl.glfw.GLFW;
@@ -201,7 +201,7 @@ public class ModelTransformCalibration {
         }
     }
 
-    public TransformationMatrix getTransform() {
+    public Transformation getTransform() {
         transformCalibration();
         return ModelHelper.get(xOffest, yOffest, zOffest, angleX, angleY, angleZ, scalemodifier);
     }

@@ -26,7 +26,7 @@
 
 package lehjr.powersuits.client.gui.modding.module.tweak;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 import lehjr.numina.client.gui.clickable.ClickableModule;
 import lehjr.numina.client.gui.geometry.IDrawableRect;
 import lehjr.numina.client.gui.geometry.MusePoint2D;
@@ -34,10 +34,10 @@ import lehjr.numina.client.gui.geometry.Rect;
 import lehjr.numina.client.sound.Musique;
 import lehjr.numina.client.sound.SoundDictionary;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
-import lehjr.numina.common.math.Colour;
+import lehjr.numina.common.math.Color;
 import lehjr.numina.common.string.StringUtils;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.text.ITextComponent;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.ItemStack;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
@@ -67,13 +67,13 @@ public class ModuleSelectionSubFrame {
         return clickie;
     }
 
-    public void drawPartial(MatrixStack matrixStack, int min, int max, float partialTicks) {
+    public void drawPartial(PoseStack matrixStack, int min, int max, float partialTicks) {
         if (border instanceof IDrawableRect) {
             ((IDrawableRect) border).render(matrixStack, min, max, partialTicks);
         }
 
         refreshButtonPositions();
-        StringUtils.drawShadowedString(matrixStack, this.category.getTranslation().getString(), border.left(), border.top(), Colour.WHITE);
+        StringUtils.drawShadowedString(matrixStack, this.category.getTranslation().getString(), border.left(), border.top(), Color.WHITE);
         for (ClickableModule clickie : moduleButtons) {
             clickie.render(matrixStack, min, max, partialTicks);
         }
@@ -128,7 +128,7 @@ public class ModuleSelectionSubFrame {
     }
 
     // TODO: better tooltips? Fix clickable module tooltips at source instead of this workaround?
-    public List<ITextComponent> getToolTip(int x, int y) {
+    public List<Component> getToolTip(int x, int y) {
         if (border.containsPoint(x, y)) {
             if (moduleButtons != null) {
                 for (ClickableModule module : moduleButtons) {

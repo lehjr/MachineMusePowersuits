@@ -32,18 +32,18 @@ import lehjr.numina.common.energy.ElectricItemUtils;
 import lehjr.powersuits.common.config.MPSSettings;
 import lehjr.powersuits.common.constants.MPSConstants;
 import lehjr.powersuits.common.item.module.AbstractPowerModule;
-import net.minecraft.entity.ai.attributes.Attribute;
-import net.minecraft.entity.ai.attributes.AttributeModifier;
-import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.ListNBT;
-import net.minecraft.util.Direction;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.Tag;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
-import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.LazyOptional;
 
 import javax.annotation.Nonnull;
@@ -61,7 +61,7 @@ public class SprintAssistModule extends AbstractPowerModule {
 
     @Nullable
     @Override
-    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundNBT nbt) {
+    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt) {
         return new CapProvider(stack);
     }
 
@@ -82,7 +82,7 @@ public class SprintAssistModule extends AbstractPowerModule {
             }};
 
             powerModuleHolder = LazyOptional.of(() -> {
-                ticker.updateFromNBT();
+                ticker.loadCapValues();
                 return ticker;
             });
         }
@@ -93,8 +93,8 @@ public class SprintAssistModule extends AbstractPowerModule {
             }
 
             @Override
-            public void onPlayerTickActive(PlayerEntity player, @Nonnull ItemStack itemStack) {
-                if (player.abilities.flying || player.isPassenger() || player.isFallFlying()) {
+            public void onPlayerTickActive(Player player, @Nonnull ItemStack itemStack) {
+                if (player.getAbilities().flying || player.isPassenger() || player.isFallFlying()) {
                     onPlayerTickInactive(player, itemStack);
                     return;
                 }
@@ -126,6 +126,10 @@ public class SprintAssistModule extends AbstractPowerModule {
                                     // every 20 ticks
                                     (player.level.getGameTime() % 20) == 0) {
                                 ElectricItemUtils.drainPlayerEnergy(player, (int) (walkCost * horzMovement));
+
+
+
+
                             }
                             setMovementModifier(getModuleStack(), walkMultiplier * 0.1, Attributes.MOVEMENT_SPEED, Attributes.MOVEMENT_SPEED.getDescriptionId());
                             player.flyingSpeed = player.getSpeed() * 0.2f;
@@ -136,7 +140,7 @@ public class SprintAssistModule extends AbstractPowerModule {
             }
 
             @Override
-            public void onPlayerTickInactive(PlayerEntity player, @Nonnull ItemStack itemStack) {
+            public void onPlayerTickInactive(Player player, @Nonnull ItemStack itemStack) {
 //                itemStack.removeTagKey("AttributeModifiers");
                 setMovementModifier(getModuleStack(), 0, Attributes.MOVEMENT_SPEED, Attributes.MOVEMENT_SPEED.getDescriptionId());
             }
@@ -156,14 +160,14 @@ public class SprintAssistModule extends AbstractPowerModule {
 
     // moved here so it is still accessible if sprint assist module isn't installed.
     public static void setMovementModifier(ItemStack itemStack, double multiplier, Attribute attributeModifier, String key) {
-        CompoundNBT itemNBT = itemStack.getOrCreateTag();
+        CompoundTag itemNBT = itemStack.getOrCreateTag();
         boolean hasAttribute = false;
-        if (itemNBT.contains("AttributeModifiers", Constants.NBT.TAG_LIST)) {
-            ListNBT listnbt = itemNBT.getList("AttributeModifiers", Constants.NBT.TAG_COMPOUND);
+        if (itemNBT.contains("AttributeModifiers", Tag.TAG_LIST)) {
+            ListTag listnbt = itemNBT.getList("AttributeModifiers", Tag.TAG_COMPOUND);
             ArrayList<Integer> remove = new ArrayList();
 
             for (int i = 0; i < listnbt.size(); ++i) {
-                CompoundNBT attributeTag = listnbt.getCompound(i);
+                CompoundTag attributeTag = listnbt.getCompound(i);
                 AttributeModifier attributemodifier = AttributeModifier.load(attributeTag);
                 if (attributemodifier != null && attributemodifier.getName().equals(key)) {
                     // adjust the tag
@@ -186,8 +190,7 @@ public class SprintAssistModule extends AbstractPowerModule {
         }
 
         if (!hasAttribute && multiplier != 0) {
-            itemStack.addAttributeModifier(attributeModifier, new AttributeModifier(key, multiplier, AttributeModifier.Operation.ADDITION), EquipmentSlotType.LEGS);
+            itemStack.addAttributeModifier(attributeModifier, new AttributeModifier(key, multiplier, AttributeModifier.Operation.ADDITION), EquipmentSlot.LEGS);
         }
     }
-
 }

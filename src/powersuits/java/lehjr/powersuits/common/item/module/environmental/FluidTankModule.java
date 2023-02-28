@@ -26,38 +26,31 @@
 
 package lehjr.powersuits.common.item.module.environmental;
 
-import lehjr.numina.common.capabilities.IItemStackUpdate;
 import lehjr.numina.common.capabilities.module.powermodule.*;
 import lehjr.numina.common.capabilities.module.tickable.PlayerTickModule;
 import lehjr.numina.common.heat.HeatUtils;
-import lehjr.numina.common.tags.TagUtils;
 import lehjr.powersuits.common.config.MPSSettings;
 import lehjr.powersuits.common.constants.MPSConstants;
 import lehjr.powersuits.common.item.module.AbstractPowerModule;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.IBucketPickupHandler;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.fluid.Fluid;
-import net.minecraft.fluid.Fluids;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.particles.ParticleTypes;
-import net.minecraft.util.Direction;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.BucketPickup;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
-import net.minecraftforge.common.util.Constants;
-import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.IFluidTank;
-import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.fluids.capability.IFluidHandlerItem;
-import net.minecraftforge.fluids.capability.templates.FluidTank;
+import net.minecraftforge.fluids.capability.templates.FluidHandlerItemStack;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -73,7 +66,7 @@ public class FluidTankModule extends AbstractPowerModule {
 
     @Nullable
     @Override
-    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundNBT nbt) {
+    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt) {
         return new CapProvider(stack);
     }
 
@@ -81,8 +74,7 @@ public class FluidTankModule extends AbstractPowerModule {
         ItemStack module;
         private final Ticker ticker;
         private final LazyOptional<IPowerModule> powerModuleHolder;
-        private final ModuleTank fluidHandler;
-        private final LazyOptional<IFluidHandlerItem> fluidHandlerHolder;
+        FluidHandlerItemStack fluidHandler;
 
         public CapProvider(@Nonnull ItemStack module) {
             this.module = module;
@@ -93,52 +85,11 @@ public class FluidTankModule extends AbstractPowerModule {
             }};
 
             powerModuleHolder = LazyOptional.of(() -> {
-                ticker.updateFromNBT();
+                ticker.loadCapValues();
                 return ticker;
             });
 
-            this.fluidHandler = new ModuleTank((int)ticker.applyPropertyModifiers(MPSConstants.FLUID_TANK_SIZE));
-            fluidHandlerHolder = LazyOptional.of(()->{
-                fluidHandler.updateFromNBT();
-                return fluidHandler;
-            });
-
-        }
-
-        class ModuleTank extends FluidTank implements IItemStackUpdate, IFluidTank, IFluidHandler, IFluidHandlerItem, INBTSerializable<CompoundNBT> {
-            public ModuleTank(int capacity) {
-                super(capacity);
-                this.updateFromNBT();
-            }
-
-            @Override
-            protected void onContentsChanged() {
-                TagUtils.getModuleTag(module).put(FLUID_NBT_KEY, writeToNBT(new CompoundNBT()));
-            }
-
-            @Nonnull
-            @Override
-            public ItemStack getContainer() {
-                return module;
-            }
-
-            @Override
-            public void updateFromNBT() {
-                CompoundNBT nbt = TagUtils.getModuleTag(module);
-                if (nbt != null && nbt.contains(FLUID_NBT_KEY, Constants.NBT.TAG_COMPOUND)) {
-                    this.deserializeNBT(nbt.getCompound(FLUID_NBT_KEY));
-                }
-            }
-
-            @Override
-            public CompoundNBT serializeNBT() {
-                return this.writeToNBT(new CompoundNBT());
-            }
-
-            @Override
-            public void deserializeNBT(CompoundNBT nbt) {
-                this.setFluid(FluidStack.loadFluidStackFromNBT(nbt));
-            }
+            this.fluidHandler = new FluidHandlerItemStack(module, (int)ticker.applyPropertyModifiers(MPSConstants.FLUID_TANK_SIZE));
         }
 
         class Ticker extends PlayerTickModule {
@@ -147,7 +98,7 @@ public class FluidTankModule extends AbstractPowerModule {
             }
 
             @Override
-            public void onPlayerTickActive(PlayerEntity player, @Nonnull ItemStack item) {
+            public void onPlayerTickActive(Player player, @Nonnull ItemStack item) {
                 if (/*player.world.isRemote() &&*/ player.getCommandSenderWorld().getGameTime() % 10 == 0 ) {
                     // we only have one tank, so index 0;
                     int maxFluid = fluidHandler.getTankCapacity(0);
@@ -160,13 +111,16 @@ public class FluidTankModule extends AbstractPowerModule {
 
                         // fill by being in water
                         if (player.isInWater() && player.level.getBlockState(pos).getBlock() != Blocks.BUBBLE_COLUMN) {
-                            if (blockstate.getBlock() instanceof IBucketPickupHandler && blockstate.getFluidState().getType() == Fluids.WATER) {
-                                Fluid fluid = ((IBucketPickupHandler) blockstate.getBlock()).takeLiquid(player.level, pos, blockstate);
-                                FluidStack water = new FluidStack(fluid, 1000);
+                            if (blockstate.getBlock() instanceof BucketPickup && blockstate.getFluidState().getType() == Fluids.WATER) {
+                                FluidUtil.tryPickUpFluid(module, player, player.level, pos, null); // fixme?
+
+
+//                                Fluid fluid = ((BucketPickup) blockstate.getBlock()).takeLiquid(player.level, pos, blockstate);
+//                                FluidStack water = new FluidStack(fluid, 1000);
                                 // only play sound if actually filling
-                                if (fluidHandler.fill(water, IFluidHandler.FluidAction.EXECUTE) > 0) {
-                                    player.playSound(SoundEvents.BUCKET_FILL, 1.0F, 1.0F);
-                                }
+//                                if (fluidHandler.fill(water, IFluidHandler.FluidAction.EXECUTE) > 0) {
+//                                    player.playSound(SoundEvents.BUCKET_FILL, 1.0F, 1.0F);
+//                                }
                             }
                             // fill by being in the rain or bubble column
                         } else if (player.isInWaterRainOrBubble()) {
@@ -185,15 +139,15 @@ public class FluidTankModule extends AbstractPowerModule {
 
                     // cool 200 per bucket
                     double coolAmount = fluidHandler.drain(
-                            // adjust so cooling does not exceed cooling needed
-                            (int) Math.min(1000, currentHeat/coolingFactor),
-                            // only execute on server, simulate on client
-                            player.level.isClientSide ? IFluidHandler.FluidAction.SIMULATE : IFluidHandler.FluidAction.EXECUTE)
+                                    // adjust so cooling does not exceed cooling needed
+                                    (int) Math.min(1000, currentHeat/coolingFactor),
+                                    // only execute on server, simulate on client
+                                    player.level.isClientSide ? IFluidHandler.FluidAction.SIMULATE : IFluidHandler.FluidAction.EXECUTE)
                             .getAmount() * coolingFactor;
 
                     HeatUtils.coolPlayer(player, coolAmount);
                     if (coolAmount > 0) {
-                        player.level.playSound(player, player.blockPosition(), SoundEvents.GENERIC_EXTINGUISH_FIRE, SoundCategory.MASTER, 1.0F, 1.0F);
+                        player.level.playSound(player, player.blockPosition(), SoundEvents.GENERIC_EXTINGUISH_FIRE, SoundSource.MASTER, 1.0F, 1.0F);
                         for (int i = 0; i < 4; i++) {
                             player.level.addAlwaysVisibleParticle(ParticleTypes.SMOKE, player.getX(), player.getY() + 0.5, player.getZ(), 0.0D, 0.0D, 0.0D);
                         }
@@ -206,12 +160,12 @@ public class FluidTankModule extends AbstractPowerModule {
         @Override
         @Nonnull
         public <T> LazyOptional<T> getCapability(@Nonnull final Capability<T> capability, final @Nullable Direction side) {
-            final LazyOptional<T> powerModuleCapability = PowerModuleCapability.POWER_MODULE.orEmpty(capability, powerModuleHolder);
-            if (powerModuleCapability.isPresent()) {
-                return powerModuleCapability;
+            final LazyOptional<T> capabilityPowerModule = PowerModuleCapability.POWER_MODULE.orEmpty(capability, powerModuleHolder);
+            if (capabilityPowerModule.isPresent()) {
+                return capabilityPowerModule;
             }
 
-            final LazyOptional<T> fluidCapability = CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY.orEmpty(capability, fluidHandlerHolder);
+            final LazyOptional<T> fluidCapability = fluidHandler.getCapability(capability, side);
             if (fluidCapability.isPresent()) {
                 return fluidCapability;
             }

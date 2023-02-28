@@ -26,7 +26,7 @@
 
 package lehjr.numina.common.capabilities.render;
 
-public interface IHandHeldModelSpecNBT extends IModelSpecNBT {
+public interface IHandHeldModelSpecNBT extends IModelSpec {
 
 
 }

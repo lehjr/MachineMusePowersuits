@@ -26,28 +26,29 @@
 
 package lehjr.numina.client.sound;
 
-import net.minecraft.client.audio.ISound;
-import net.minecraft.client.audio.TickableSound;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvent;
+import net.minecraft.client.resources.sounds.AbstractTickableSoundInstance;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+
+import static net.minecraft.client.resources.sounds.SoundInstance.Attenuation.LINEAR;
 
 /**
  * Ported to Java by lehjr on 10/22/16.
  */
 @OnlyIn(Dist.CLIENT)
-public class MovingSoundPlayer extends TickableSound {
-    private static PlayerEntity player;
+public class MovingSoundPlayer extends AbstractTickableSoundInstance {
+    private static Player player;
 
     /*
      * Important porting note:
      * Sounds are now event based instead of resource location.
      */
     public MovingSoundPlayer(SoundEvent soundIn,
-                             SoundCategory categoryIn,
-                             PlayerEntity playerIn,
+                             SoundSource categoryIn,
+                             Player playerIn,
                              float newvolume,
                              float pitchIn,
                              boolean loopingIn) {
@@ -71,7 +72,7 @@ public class MovingSoundPlayer extends TickableSound {
         return false;
     }
 
-    public PlayerEntity player() {
+    public Player player() {
         return this.player;
     }
 
@@ -91,8 +92,8 @@ public class MovingSoundPlayer extends TickableSound {
     }
 
     @Override
-    public ISound.AttenuationType getAttenuation() {
-        return ISound.AttenuationType.LINEAR;
+    public Attenuation getAttenuation() {
+        return LINEAR;
     }
 
     public void stopPlaying() {

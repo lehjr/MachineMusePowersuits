@@ -39,12 +39,12 @@ import lehjr.powersuits.common.constants.MPSConstants;
 import lehjr.powersuits.common.constants.MPSRegistryNames;
 import lehjr.powersuits.common.event.MovementManager;
 import lehjr.powersuits.common.item.module.AbstractPowerModule;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.Direction;
-import net.minecraft.util.SoundCategory;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
@@ -61,7 +61,7 @@ public class JetPackModule extends AbstractPowerModule {
 
     @Nullable
     @Override
-    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundNBT nbt) {
+    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt) {
         return new CapProvider(stack);
     }
 
@@ -80,7 +80,7 @@ public class JetPackModule extends AbstractPowerModule {
             }};
 
             powerModuleHolder = LazyOptional.of(() -> {
-                ticker.updateFromNBT();
+                ticker.loadCapValues();
                 return ticker;
             });
         }
@@ -91,14 +91,14 @@ public class JetPackModule extends AbstractPowerModule {
             }
 
             @Override
-            public void onPlayerTickActive(PlayerEntity player, ItemStack torso) {
+            public void onPlayerTickActive(Player player, ItemStack torso) {
                 if (player.isInWater()) {
                     return;
                 }
 
                 PlayerMovementInputWrapper.PlayerMovementInput playerInput = PlayerMovementInputWrapper.get(player);
 
-                ItemStack helmet = player.getItemBySlot(EquipmentSlotType.HEAD);
+                ItemStack helmet = player.getItemBySlot(EquipmentSlot.HEAD);
                 boolean hasFlightControl = helmet.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
                         .filter(IModularItem.class::isInstance)
                         .map(IModularItem.class::cast)
@@ -118,7 +118,7 @@ public class JetPackModule extends AbstractPowerModule {
                                 ElectricItemUtils.drainPlayerEnergy(player, (int) (thrust * jetEnergy * 5));
                             }
                         } else if (NuminaSettings.useSounds()) {
-                            Musique.playerSound(player, MPSSoundDictionary.JETPACK, SoundCategory.PLAYERS, (float) (thrust * 6.25), 1.0f, true);
+                            Musique.playerSound(player, MPSSoundDictionary.JETPACK, SoundSource.PLAYERS, (float) (thrust * 6.25), 1.0f, true);
                         }
                     } else {
                         onPlayerTickInactive(player, torso);
@@ -126,7 +126,7 @@ public class JetPackModule extends AbstractPowerModule {
             }
 
             @Override
-            public void onPlayerTickInactive(PlayerEntity player, ItemStack item) {
+            public void onPlayerTickInactive(Player player, ItemStack item) {
                 if (player.level.isClientSide && NuminaSettings.useSounds()) {
                     Musique.stopPlayerSound(player, MPSSoundDictionary.JETPACK);
                 }

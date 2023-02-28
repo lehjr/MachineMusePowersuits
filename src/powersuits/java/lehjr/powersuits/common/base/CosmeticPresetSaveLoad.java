@@ -28,14 +28,14 @@ package lehjr.powersuits.common.base;
 
 import com.google.common.collect.HashBiMap;
 import lehjr.numina.common.base.NuminaLogger;
-import lehjr.numina.common.capabilities.render.ModelSpecNBTCapability;
+import lehjr.numina.common.capabilities.render.ModelSpecCapability;
 import lehjr.numina.common.config.ConfigHelper;
 import lehjr.powersuits.common.constants.MPSConstants;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.CompressedStreamTools;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtIo;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 
 import javax.annotation.Nonnull;
 import java.io.ByteArrayOutputStream;
@@ -69,13 +69,13 @@ public class CosmeticPresetSaveLoad {
         return configDirString;
     }
 
-    public static Map<String, CompoundNBT> loadPresetsForItem(@Nonnull ItemStack itemStack) {
+    public static Map<String, CompoundTag> loadPresetsForItem(@Nonnull ItemStack itemStack) {
         return loadPresetsForItem(itemStack.getItem(), 0);
     }
 
-    public static Map<String, CompoundNBT> loadPresetsForItem(Item item, int count) {
+    public static Map<String, CompoundTag> loadPresetsForItem(Item item, int count) {
 
-        Map<String, CompoundNBT> retmap = new HashMap<>();
+        Map<String, CompoundTag> retmap = new HashMap<>();
         if (item == null || count > 4) {
             return HashBiMap.create(retmap);
         }
@@ -92,7 +92,7 @@ public class CosmeticPresetSaveLoad {
                     public FileVisitResult visitFile(Path selectedPath, BasicFileAttributes attrs) throws IOException {
                         if (selectedPath.getFileName().toString().endsWith("." + EXTENSION)) {
                             String name = selectedPath.getFileName().toString().replaceFirst("[.][^.]+$", "");
-                            CompoundNBT nbt = CompressedStreamTools.readCompressed(Files.newInputStream(selectedPath));
+                            CompoundTag nbt = NbtIo.readCompressed(Files.newInputStream(selectedPath));
 
                             if (nbt != null && name != null && !name.isEmpty()) {
                             if (retmap.containsKey("id"))
@@ -173,11 +173,11 @@ public class CosmeticPresetSaveLoad {
     /**
      * "adapted" from 1.7.10
      */
-    public static byte[] compressGZip(CompoundNBT nbt) {
+    public static byte[] compressGZip(CompoundTag nbt) {
         ByteArrayOutputStream bytearrayoutputstream = new ByteArrayOutputStream();
         try {
             DataOutputStream dataoutputstream = new DataOutputStream(new GZIPOutputStream(bytearrayoutputstream));
-            CompressedStreamTools.write(nbt, dataoutputstream);
+            NbtIo.write(nbt, dataoutputstream);
 
             // bytearrayoutputstream only updates if dataoutputstream closes
             dataoutputstream.close();
@@ -196,9 +196,9 @@ public class CosmeticPresetSaveLoad {
         if (itemStack.isEmpty())
             return false;
 
-        return itemStack.getCapability(ModelSpecNBTCapability.RENDER).map(spec->{
+        return itemStack.getCapability(ModelSpecCapability.RENDER).map(spec->{
             // get the render tag for the item
-            CompoundNBT renderTag =spec.getRenderTag().copy();
+            CompoundTag renderTag =spec.getRenderTag().copy();
             if (renderTag != null) {
                 return savePreset(itemStack.getItem().getRegistryName(), presetName, renderTag);
             }
@@ -210,7 +210,7 @@ public class CosmeticPresetSaveLoad {
     /**
      * This is not logical side specific.
      */
-    public static boolean savePreset(ResourceLocation registryNameIn, String nameIn, CompoundNBT cosmeticSettingsIn) {
+    public static boolean savePreset(ResourceLocation registryNameIn, String nameIn, CompoundTag cosmeticSettingsIn) {
         // byte array
         byte [] byteArray = compressGZip(cosmeticSettingsIn);
 

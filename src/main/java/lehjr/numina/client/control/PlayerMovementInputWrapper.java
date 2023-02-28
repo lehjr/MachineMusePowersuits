@@ -26,10 +26,10 @@
 
 package lehjr.numina.client.control;
 
-import lehjr.numina.common.capabilities.player.CapabilityPlayerKeyStates;
 import lehjr.numina.common.capabilities.player.IPlayerKeyStates;
-import net.minecraft.client.entity.player.RemoteClientPlayerEntity;
-import net.minecraft.entity.player.PlayerEntity;
+import lehjr.numina.common.capabilities.player.PlayerKeyStatesCapability;
+import net.minecraft.client.player.RemotePlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.common.util.LazyOptional;
 
 public class PlayerMovementInputWrapper {
@@ -57,9 +57,9 @@ public class PlayerMovementInputWrapper {
         }
     }
 
-    public static PlayerMovementInput get(PlayerEntity player) {
+    public static PlayerMovementInput get(Player player) {
         if (player.level.isClientSide) {
-            if (player instanceof RemoteClientPlayerEntity) { // multiplayer not dedicated server
+            if (player instanceof RemotePlayer) { // multiplayer not dedicated server
                 return fromServer(player);
             }
             return fromClient(player);
@@ -67,11 +67,11 @@ public class PlayerMovementInputWrapper {
         return fromServer(player);
     }
 
-    static LazyOptional<IPlayerKeyStates> getCapability(PlayerEntity player) {
-        return player.getCapability(CapabilityPlayerKeyStates.PLAYER_KEYSTATES, null);
+    static LazyOptional<IPlayerKeyStates> getCapability(Player player) {
+        return player.getCapability(PlayerKeyStatesCapability.PLAYER_KEYSTATES, null);
     }
 
-    static PlayerMovementInput fromServer(PlayerEntity player) {
+    static PlayerMovementInput fromServer(Player player) {
         boolean forwardKey = false;
         boolean reverseKey = false;
         boolean strafeLeftKey = false;
@@ -98,7 +98,7 @@ public class PlayerMovementInputWrapper {
         jumpKey);
     }
 
-    static PlayerMovementInput fromClient(PlayerEntity player) {
+    static PlayerMovementInput fromClient(Player player) {
         boolean forwardKey = false;
         boolean reverseKey = false;
         boolean strafeLeftKey = false;

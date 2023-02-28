@@ -26,7 +26,6 @@
 
 package lehjr.powersuits.common.base;
 
-import appeng.core.Api;
 import com.electronwill.nightconfig.core.file.CommentedFileConfig;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
@@ -36,37 +35,35 @@ import lehjr.numina.common.capabilities.module.rightclick.RightClickModule;
 import lehjr.numina.common.capabilities.module.toggleable.IToggleableModule;
 import lehjr.numina.common.capabilities.module.toggleable.ToggleableModule;
 import lehjr.numina.common.config.ConfigHelper;
-import lehjr.numina.common.integration.refinedstorage.RSWirelessHandler;
-import lehjr.numina.common.integration.scannable.ScannableHandler;
 import lehjr.powersuits.client.control.KeybindKeyHandler;
 import lehjr.powersuits.client.event.ModelBakeEventHandler;
 import lehjr.powersuits.client.event.PlayerLoginHandler;
 import lehjr.powersuits.client.event.RenderEventHandler;
 import lehjr.powersuits.client.gui.modding.module.install_salvage.InstallSalvageGui;
-import lehjr.powersuits.client.render.entity.LuxCapacitorEntityRenderer;
-import lehjr.powersuits.client.render.entity.PlasmaBoltEntityRenderer;
-import lehjr.powersuits.client.render.entity.RailGunBoltRenderer;
-import lehjr.powersuits.client.render.entity.SpinningBladeEntityRenderer;
 import lehjr.powersuits.common.config.MPSSettings;
 import lehjr.powersuits.common.constants.MPSConstants;
 import lehjr.powersuits.common.constants.MPSRegistryNames;
 import lehjr.powersuits.common.event.*;
 import lehjr.powersuits.common.network.MPSPackets;
-import net.minecraft.client.gui.ScreenManager;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.container.INamedContainerProvider;
-import net.minecraft.inventory.container.SimpleNamedContainerProvider;
-import net.minecraft.inventory.container.Slot;
-import net.minecraft.inventory.container.WorkbenchContainer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
+import net.minecraft.client.gui.screens.MenuScreens;
+import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stats;
-import net.minecraft.util.*;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
+import net.minecraft.world.Container;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.SimpleMenuProvider;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.ContainerLevelAccess;
+import net.minecraft.world.inventory.CraftingMenu;
+import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.CraftingTableBlock;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
@@ -75,13 +72,13 @@ import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModLoadingContext;
-import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
+import net.minecraftforge.fml.event.config.ModConfigEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.fml.network.NetworkHooks;
+import net.minecraftforge.network.NetworkHooks;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -118,7 +115,7 @@ public class ModularPowersuits {
         MPSObjects.CONTAINER_TYPES.register(modEventBus);
 
         // handles loading and reloading event
-        modEventBus.addListener((ModConfig.ModConfigEvent event) -> {
+        modEventBus.addListener((ModConfigEvent event) -> {
             new RuntimeException("Got config " + event.getConfig() + " name " + event.getConfig().getModId() + ":" + event.getConfig().getFileName());
 
             final ModConfig config = event.getConfig();
@@ -158,11 +155,8 @@ public class ModularPowersuits {
 
         MinecraftForge.EVENT_BUS.addListener(PlayerLoginHandler::onPlayerLoginClient);// just to populated keybinds -_-
 
-        RenderingRegistry.registerEntityRenderingHandler(MPSObjects.RAILGUN_BOLT_ENTITY_TYPE.get(), RailGunBoltRenderer::new);
-        RenderingRegistry.registerEntityRenderingHandler(MPSObjects.LUX_CAPACITOR_ENTITY_TYPE.get(), LuxCapacitorEntityRenderer::new);
-        RenderingRegistry.registerEntityRenderingHandler(MPSObjects.PLASMA_BALL_ENTITY_TYPE.get(), PlasmaBoltEntityRenderer::new);
-        RenderingRegistry.registerEntityRenderingHandler(MPSObjects.SPINNING_BLADE_ENTITY_TYPE.get(), SpinningBladeEntityRenderer::new);
-        ScreenManager.register(MPSObjects.INSTALL_SALVAGE_CONTAINER_TYPE.get(), InstallSalvageGui::new);
+
+        MenuScreens.register(MPSObjects.INSTALL_SALVAGE_MENU_TYPE.get(), InstallSalvageGui::new);
     }
 
     /**
@@ -173,47 +167,47 @@ public class ModularPowersuits {
         final ItemStack itemStack = event.getObject();
         final ResourceLocation regName = itemStack.getItem().getRegistryName();
 
-        // AE2 Wireless terminal
-        if (regName.equals(new ResourceLocation("appliedenergistics2:wireless_terminal"))) {
-            IRightClickModule ae2wirelessterminal = new RightClickModule(itemStack, ModuleCategory.TOOL, ModuleTarget.TOOLONLY, MPSSettings::getModuleConfig) {
-                @Override
-                public ActionResult use(ItemStack itemStackIn, World worldIn, PlayerEntity playerIn, Hand hand) {
-                    Api.instance().registries().wireless().openWirelessTerminalGui(itemStackIn, worldIn, playerIn, hand);
-                    return new ActionResult<>(ActionResultType.sidedSuccess(worldIn.isClientSide()), itemStackIn);
-                }
-            };
-
-            event.addCapability(regName, new ICapabilityProvider() {
-                @Nonnull
-                @Override
-                public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
-                    if (cap == PowerModuleCapability.POWER_MODULE) {
-                        return LazyOptional.of(() -> (T) ae2wirelessterminal);
-                    }
-                    return LazyOptional.empty();
-                }
-            });
-        }
+//        // AE2 Wireless terminal
+//        if (regName.equals(new ResourceLocation("appliedenergistics2:wireless_terminal"))) {
+//            IRightClickModule ae2wirelessterminal = new RightClickModule(itemStack, ModuleCategory.TOOL, ModuleTarget.TOOLONLY, MPSSettings::getModuleConfig) {
+//                @Override
+//                public InteractionResultHolder<ItemStack> use(ItemStack itemStackIn, Level worldIn, Player playerIn, InteractionHand hand) {
+//                    Api.instance().registries().wireless().openWirelessTerminalGui(itemStackIn, worldIn, playerIn, hand);
+//                    return new InteractionResultHolder<>(InteractionResult.func_233537_a_(worldIn.isClientSide()), itemStackIn);
+//                }
+//            };
+//
+//            event.addCapability(regName, new ICapabilityProvider() {
+//                @Nonnull
+//                @Override
+//                public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
+//                    if (cap == PowerModuleCapability.POWER_MODULE) {
+//                        return LazyOptional.of(() -> (T) ae2wirelessterminal);
+//                    }
+//                    return LazyOptional.empty();
+//                }
+//            });
+//        }
 
         // Scannable scanner
-        if (regName.equals(new ResourceLocation("scannable:scanner"))) {
-            ScannableHandler.attach(event, MPSSettings::getModuleConfig);
-        }
-
-        if(regName.getNamespace().contains("refinedstorage") && regName.getPath().contains("wireless")) {
-            RSWirelessHandler.attach(event, MPSSettings::getModuleConfig);
-//            System.out.println("regname" + regName);
-//            /*
-//            refinedstorage:wireless_grid
-//            refinedstorage:wireless_fluid_grid
-//            refinedstorage:wireless_grid
-//            refinedstorage:wireless_fluid_grid
-//            refinedstorage:wireless_grid
-//            refinedstorage:wireless_fluid_grid
-//            refinedstorage:wireless_grid
-//             */
+//        if (regName.equals(new ResourceLocation("scannable:scanner"))) {
+//            ScannableHandler.attach(event, MPSSettings::getModuleConfig);
+//        }
 //
-        }
+//        if(regName.getNamespace().contains("refinedstorage") && regName.getPath().contains("wireless")) {
+//            RSWirelessHandler.attach(event, MPSSettings::getModuleConfig);
+////            System.out.println("regname" + regName);
+////            /*
+////            refinedstorage:wireless_grid
+////            refinedstorage:wireless_fluid_grid
+////            refinedstorage:wireless_grid
+////            refinedstorage:wireless_fluid_grid
+////            refinedstorage:wireless_grid
+////            refinedstorage:wireless_fluid_grid
+////            refinedstorage:wireless_grid
+////             */
+////
+//        }
 
 
 
@@ -225,7 +219,7 @@ public class ModularPowersuits {
                 @Override
                 public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
                     if (cap == PowerModuleCapability.POWER_MODULE) {
-                        clock.updateFromNBT();
+                        clock.loadCapValues();
                         return LazyOptional.of(()->(T)clock);
                     }
                     return LazyOptional.empty();
@@ -241,7 +235,7 @@ public class ModularPowersuits {
                 @Override
                 public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
                     if (cap == PowerModuleCapability.POWER_MODULE) {
-                        compass.updateFromNBT();
+                        compass.loadCapValues();
                         return LazyOptional.of(()->(T)compass);
                     }
                     return LazyOptional.empty();
@@ -250,34 +244,34 @@ public class ModularPowersuits {
 
         // Crafting workbench
         } else if (!event.getCapabilities().containsKey(MPSRegistryNames.PORTABLE_WORKBENCH_MODULE) && event.getObject().getItem().equals(Items.CRAFTING_TABLE)) {
-            final ITextComponent CONTAINER_NAME = new TranslationTextComponent("container.crafting");
+            final Component CONTAINER_NAME = new TranslatableComponent("container.crafting");
             IRightClickModule rightClick = new RightClickModule(itemStack, ModuleCategory.TOOL, ModuleTarget.TOOLONLY, MPSSettings::getModuleConfig) {
                 @Override
-                public ActionResult use(ItemStack itemStackIn, World worldIn, PlayerEntity playerIn, Hand hand) {
+                public InteractionResultHolder<ItemStack> use(ItemStack itemStackIn, Level worldIn, Player playerIn, InteractionHand hand) {
                     if (worldIn.isClientSide) {
-                        return ActionResult.success(itemStackIn);
+                        return InteractionResultHolder.sidedSuccess(itemStackIn, worldIn.isClientSide);
                     } else {
-                        INamedContainerProvider container = new SimpleNamedContainerProvider((id, inven, player) -> new WorkbenchContainer(id, inven, IWorldPosCallable.NULL) {
+                        SimpleMenuProvider container = new SimpleMenuProvider((id, inven, player) -> new CraftingMenu(id, inven, ContainerLevelAccess.NULL) {
                             @Override
-                            public void slotsChanged(IInventory inventory) {
-                                WorkbenchContainer.slotChangedCraftingGrid(this.containerId, this.player.level, this.player, this.craftSlots, this.resultSlots);
+                            public void slotsChanged(Container inventory) {
+                                    slotChangedCraftingGrid(this, player.level, this.player, this.craftSlots, this.resultSlots);
                             }
 
                             @Override
-                            public void removed(PlayerEntity player) {
+                            public void removed(Player player) {
                                 super.removed(player);
                                 this.resultSlots.clearContent();
                                 if (!player.level.isClientSide) {
-                                    this.clearContainer(player, player.level, this.craftSlots);
+                                    this.clearContainer(player, this.craftSlots);
                                 }
                             }
 
                             @Override
-                            public boolean stillValid(PlayerEntity player) {
+                            public boolean stillValid(Player player) {
                                 return true;
                             }
 
-                            public ItemStack quickMoveStack(PlayerEntity pPlayer, int p_82846_2_) {
+                            public ItemStack quickMoveStack(Player pPlayer, int p_82846_2_) {
                                 ItemStack itemstack = ItemStack.EMPTY;
                                 Slot slot = this.slots.get(p_82846_2_);
                                 if (slot != null && slot.hasItem()) {
@@ -313,18 +307,18 @@ public class ModularPowersuits {
                                         return ItemStack.EMPTY;
                                     }
 
-                                    ItemStack itemstack2 = slot.onTake(pPlayer, itemstack1);
+                                    slot.onTake(pPlayer, itemstack1);
                                     if (p_82846_2_ == 0) {
-                                        pPlayer.drop(itemstack2, false);
+                                        pPlayer.drop(itemstack1, false);
                                     }
                                 }
                                 return itemstack;
                             }
                         }, MPSConstants.CRAFTING_TABLE_CONTAINER_NAME);
-                        NetworkHooks.openGui((ServerPlayerEntity) playerIn, container, buffer -> buffer.writeBlockPos(playerIn.blockPosition()));
-                        NetworkHooks.openGui((ServerPlayerEntity) playerIn, container);
+                        NetworkHooks.openGui((ServerPlayer) playerIn, container, buffer -> buffer.writeBlockPos(playerIn.blockPosition()));
+//                        NetworkHooks.openGui((ServerPlayer) playerIn, container);
                         playerIn.awardStat(Stats.INTERACT_WITH_CRAFTING_TABLE);
-                        return ActionResult.consume(itemStackIn);
+                        return InteractionResultHolder.consume(itemStackIn);
                     }
                 }
             };

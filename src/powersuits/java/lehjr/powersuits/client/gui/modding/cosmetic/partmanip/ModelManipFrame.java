@@ -26,21 +26,21 @@
 
 package lehjr.powersuits.client.gui.modding.cosmetic.partmanip;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 import lehjr.numina.client.gui.clickable.slider.VanillaFrameScrollBar;
 import lehjr.numina.client.gui.frame.ScrollableFrame;
 import lehjr.numina.client.gui.geometry.Rect;
-import lehjr.numina.common.capabilities.render.modelspec.EnumSpecType;
 import lehjr.numina.common.capabilities.render.modelspec.ModelRegistry;
 import lehjr.numina.common.capabilities.render.modelspec.SpecBase;
-import lehjr.numina.common.math.Colour;
+import lehjr.numina.common.capabilities.render.modelspec.SpecType;
+import lehjr.numina.common.math.Color;
 import lehjr.powersuits.client.gui.common.ModularItemSelectionFrame;
 import lehjr.powersuits.client.gui.common.ModularItemTabToggleWidget;
 import lehjr.powersuits.client.gui.modding.cosmetic.colourpicker.ColourPickerFrame;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.ArmorItem;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.ArmorItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
@@ -87,11 +87,11 @@ public class ModelManipFrame extends ScrollableFrame {
      */
     public int getColour() {
         if (getItem().isEmpty()) {
-            return Colour.WHITE.getInt();
+            return Color.WHITE.getInt();
         } else if (colourSelect.selectedColour < colourSelect.colours().length && colourSelect.selectedColour >= 0) {
             return colourSelect.colours()[colourSelect.selectedColour];
         }
-        return Colour.WHITE.getInt();
+        return Color.WHITE.getInt();
     }
 
     /**
@@ -136,15 +136,15 @@ public class ModelManipFrame extends ScrollableFrame {
         if (!getItem().isEmpty()) {
             Item item = getItem().getItem();
 
-            EquipmentSlotType slotType;
+            EquipmentSlot slotType;
             if (item instanceof ArmorItem) {
                 slotType = ((ArmorItem) item).getSlot();
-                return specBase.getSpecType().equals(EnumSpecType.ARMOR_MODEL) ||
-                        specBase.getSpecType().equals(EnumSpecType.ARMOR_SKIN) &&
+                return specBase.getSpecType().equals(SpecType.ARMOR_MODEL) ||
+                        specBase.getSpecType().equals(SpecType.ARMOR_SKIN) &&
                                 doesSpecHaveSlotType(specBase, slotType);
             } else {
-                return specBase.getSpecType().equals(EnumSpecType.HANDHELD) &&
-                        (doesSpecHaveSlotType(specBase, EquipmentSlotType.OFFHAND) || doesSpecHaveSlotType(specBase, EquipmentSlotType.MAINHAND));
+                return specBase.getSpecType().equals(SpecType.HANDHELD) &&
+                        (doesSpecHaveSlotType(specBase, EquipmentSlot.OFFHAND) || doesSpecHaveSlotType(specBase, EquipmentSlot.MAINHAND));
             }
         }
         return false;
@@ -156,7 +156,7 @@ public class ModelManipFrame extends ScrollableFrame {
      * @param slot
      * @return
      */
-    boolean doesSpecHaveSlotType(SpecBase specBase, EquipmentSlotType slot) {
+    boolean doesSpecHaveSlotType(SpecBase specBase, EquipmentSlot slot) {
         AtomicBoolean hasType = new AtomicBoolean(false);
         specBase.getPartSpecs().forEach(spec->{
             if (spec.getBinding().getSlot().equals(slot)) {
@@ -254,22 +254,22 @@ public class ModelManipFrame extends ScrollableFrame {
     }
 
     @Override
-    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
-        super.render(matrixStack, mouseX, mouseY, partialTicks);
-        scrollBar.render(matrixStack, mouseX, mouseY, partialTicks);
+    public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTick) {
+        super.render(matrixStack, mouseX, mouseY, partialTick);
+        scrollBar.render(matrixStack, mouseX, mouseY, partialTick);
 
         if (this.isVisible() && !modelframes.isEmpty()) {
-            super.preRender(matrixStack, mouseX, mouseY, partialTicks);
+            super.preRender(matrixStack, mouseX, mouseY, partialTick);
             matrixStack.pushPose();
             matrixStack.translate(0.0, -this.currentScrollPixels, 0.0);
             for (ModelManipSubframe f : modelframes) {
-                f.render(matrixStack, mouseX, (int)(this.currentScrollPixels + mouseY), partialTicks);
+                f.render(matrixStack, mouseX, (int)(this.currentScrollPixels + mouseY), partialTick);
             }
             matrixStack.popPose();
-            super.postRender(mouseX, mouseY, partialTicks);
+            super.postRender(mouseX, mouseY, partialTick);
         } else {
-            super.preRender(matrixStack, mouseX, mouseY, partialTicks);
-            super.postRender(mouseX, mouseY, partialTicks);
+            super.preRender(matrixStack, mouseX, mouseY, partialTick);
+            super.postRender(mouseX, mouseY, partialTick);
         }
     }
 }

@@ -26,40 +26,67 @@
 
 package lehjr.numina.common.blockentity;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.play.server.SUpdateTileEntityPacket;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityType;
+import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.Connection;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
 
-import javax.annotation.Nullable;
+public class NuminaBlockEntity extends BlockEntity {
+    public NuminaBlockEntity(BlockEntityType<?> pType, BlockPos pWorldPosition, BlockState pBlockState) {
+        super(pType, pWorldPosition, pBlockState);
+    }
+//    public NuminaBlockEntity(BlockEntityType<?> type) {
+//        super(type);
+//    }
 
-public class NuminaBlockEntity extends TileEntity {
-    public NuminaBlockEntity(TileEntityType<?> type) {
-        super(type);
+    @Override
+    public CompoundTag getUpdateTag() {
+        return super.getUpdateTag();
     }
 
     @Override
-    public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
-        BlockState state = getLevel().getBlockState(getBlockPos());
-        load(state, pkt.getTag());
-        getLevel().sendBlockUpdated(getBlockPos(), state, state, 3);
+    public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
+        super.onDataPacket(net, pkt);
     }
 
-    @Nullable
+    //    @Override
+//    public void onDataPacket(NetworkManager net, SUpdateBlockEntityPacket pkt) {
+//        BlockState state = getLevel().getBlockState(getBlockPos());
+//        load(state, pkt.getTag());
+//        getLevel().sendBlockUpdated(getBlockPos(), state, state, 3);
+//    }
+
+    //    @Nullable
+//    @Override
+//    public SUpdateBlockEntityPacket getUpdatePacket() {
+//        return new SUpdateBlockEntityPacket(this.getBlockPos(), 0, getUpdateTag());
+//    }
+//
+//    @Override
+//    public void load(BlockState state, CompoundTag nbt) {
+//        super.load(state, nbt);
+//    }
+//
+//    @Override
+//    public CompoundTag save(CompoundTag compound) {
+//        return super.save(compound);
+//    }
     @Override
-    public SUpdateTileEntityPacket getUpdatePacket() {
-        return new SUpdateTileEntityPacket(this.getBlockPos(), 0, getUpdateTag());
+    protected void saveAdditional(CompoundTag pTag) {
+        super.saveAdditional(pTag);
     }
+//
+//
+//    @Override
+//    public void saveToItem(ItemStack p_187477_) {
+//        super.saveToItem(p_187477_);
+//    }
 
     @Override
-    public void load(BlockState state, CompoundNBT nbt) {
-        super.load(state, nbt);
-    }
-
-    @Override
-    public CompoundNBT save(CompoundNBT compound) {
-        return super.save(compound);
+    public void load(CompoundTag pTag) {
+        super.load(pTag);
     }
 }

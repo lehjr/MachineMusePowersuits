@@ -26,7 +26,7 @@
 
 package lehjr.numina.common.capabilities.module.powermodule;
 
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.fml.config.ModConfig;
 
 import javax.annotation.Nonnull;
@@ -61,6 +61,6 @@ public interface IConfig {
     Optional<ModConfig> getModConfig();
 
     default boolean isLoadingDone() {
-        return getModConfig().map(config ->config.getSpec().isLoaded()).orElse(false);
+        return getModConfig().map(config ->config.getSpec().isCorrecting()).orElse(false);
     }
 }

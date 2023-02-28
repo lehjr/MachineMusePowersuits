@@ -26,18 +26,17 @@
 
 package lehjr.powersuits.common.item.module.armor;
 
-import lehjr.numina.common.capabilities.heat.HeatCapability;
 import lehjr.numina.common.capabilities.module.powermodule.*;
 import lehjr.numina.common.capabilities.module.tickable.PlayerTickModule;
-import lehjr.numina.common.constants.NuminaConstants;
+import lehjr.numina.common.constants.TagConstants;
 import lehjr.numina.common.energy.ElectricItemUtils;
 import lehjr.powersuits.common.config.MPSSettings;
 import lehjr.powersuits.common.constants.MPSConstants;
 import lehjr.powersuits.common.item.module.AbstractPowerModule;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.Direction;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
@@ -52,7 +51,7 @@ public class EnergyShieldModule extends AbstractPowerModule {
 
     @Nullable
     @Override
-    public ICapabilityProvider initCapabilities(@Nonnull ItemStack stack, @Nullable CompoundNBT nbt) {
+    public ICapabilityProvider initCapabilities(@Nonnull ItemStack stack, @Nullable CompoundTag nbt) {
         return new CapProvider(stack);
     }
 
@@ -75,14 +74,14 @@ public class EnergyShieldModule extends AbstractPowerModule {
                 }
 
                 {
-                    addTradeoffProperty(MPSConstants.MODULE_FIELD_STRENGTH, MPSConstants.ARMOR_VALUE_ENERGY, 6, NuminaConstants.MODULE_TRADEOFF_PREFIX + MPSConstants.ARMOR_POINTS);
+                    addTradeoffProperty(MPSConstants.MODULE_FIELD_STRENGTH, MPSConstants.ARMOR_VALUE_ENERGY, 6, TagConstants.MODULE_TRADEOFF_PREFIX + MPSConstants.ARMOR_POINTS);
                     addTradeoffProperty(MPSConstants.MODULE_FIELD_STRENGTH, MPSConstants.ARMOR_ENERGY_CONSUMPTION, 5000, "FE");
-                    addTradeoffProperty(MPSConstants.MODULE_FIELD_STRENGTH, HeatCapability.MAXIMUM_HEAT, 500);
+                    addTradeoffProperty(MPSConstants.MODULE_FIELD_STRENGTH, TagConstants.MAXIMUM_HEAT, 500);
                     addBaseProperty(MPSConstants.KNOCKBACK_RESISTANCE, 0.25F);
                 }};
 
             powerModuleHolder = LazyOptional.of(() -> {
-                ticker.updateFromNBT();
+                ticker.loadCapValues();
                 return ticker;
             });
         }
@@ -93,7 +92,7 @@ public class EnergyShieldModule extends AbstractPowerModule {
             }
 
             @Override
-            public void onPlayerTickActive(PlayerEntity player, @Nonnull ItemStack item) {
+            public void onPlayerTickActive(Player player, @Nonnull ItemStack item) {
                 int energy = ElectricItemUtils.getPlayerEnergy(player);
                 int energyUsage = (int) applyPropertyModifiers(MPSConstants.ARMOR_ENERGY_CONSUMPTION);
 

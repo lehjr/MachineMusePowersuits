@@ -39,11 +39,11 @@ import lehjr.powersuits.client.sound.MPSSoundDictionary;
 import lehjr.powersuits.common.config.MPSSettings;
 import lehjr.powersuits.common.constants.MPSConstants;
 import lehjr.powersuits.common.constants.MPSRegistryNames;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingJumpEvent;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -63,7 +63,7 @@ public enum MovementManager {
      */
     public static final double DEFAULT_GRAVITY = -0.0784000015258789;
 
-    public double getPlayerJumpMultiplier(PlayerEntity player) {
+    public double getPlayerJumpMultiplier(Player player) {
         if (playerJumpMultipliers.containsKey(player.getUUID())) {
             return playerJumpMultipliers.get(player.getUUID());
         } else {
@@ -71,7 +71,7 @@ public enum MovementManager {
         }
     }
 
-    public void setPlayerJumpTicks(PlayerEntity player, double number) {
+    public void setPlayerJumpTicks(Player player, double number) {
         playerJumpMultipliers.put(player.getUUID(), number);
     }
 
@@ -88,15 +88,15 @@ public enum MovementManager {
         return boolIn ? 1.0D : 0.0D;
     }
 
-    public static double thrust(PlayerEntity player, double thrust, boolean flightControl) {
+    public static double thrust(Player player, double thrust, boolean flightControl) {
         PlayerMovementInputWrapper.PlayerMovementInput playerInput = PlayerMovementInputWrapper.get(player);
         double thrustUsed = 0;
         if (flightControl) {
-            Vector3d desiredDirection = player.getLookAngle().normalize();
+            Vec3 desiredDirection = player.getLookAngle().normalize();
             double strafeX = desiredDirection.z;
             double strafeZ = -desiredDirection.x;
 
-            double flightVerticality = player.getItemBySlot(EquipmentSlotType.HEAD).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+            double flightVerticality = player.getItemBySlot(EquipmentSlot.HEAD).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
                     .filter(IModularItem.class::isInstance)
                     .map(IModularItem.class::cast)
                     .map(iModularItem -> iModularItem
@@ -107,7 +107,7 @@ public enum MovementManager {
             int strafeState = ((playerInput.strafeRightKey ? -1 : 0) + (playerInput.strafeLeftKey ? 1 : 0));
             double forwardReverse = ((playerInput.reverseKey ? -1D : 0) + (playerInput.forwardKey ? 1D : 0));
 
-            desiredDirection = new Vector3d(
+            desiredDirection = new Vec3(
                     (desiredDirection.x * forwardReverse + strafeX * strafeState),
                     (flightVerticality * desiredDirection.y * boolToVal(playerInput.forwardKey) + boolToVal(playerInput.jumpKey) - boolToVal(playerInput.downKey)),
                     (desiredDirection.z * forwardReverse + strafeZ * strafeState));
@@ -149,7 +149,7 @@ public enum MovementManager {
             if (Math.abs(player.getDeltaMovement().z) > 0 && desiredDirection.length() == 0) {
                 if (Math.abs(player.getDeltaMovement().z) > thrust) {
                     player.setDeltaMovement(
-                            player.getDeltaMovement().subtract(
+                            player.getDeltaMovement().add(
                                     0, 0, Math.signum(player.getDeltaMovement().z) * thrust));
                     thrustUsed += thrust;
                     thrust = 0;
@@ -169,8 +169,8 @@ public enum MovementManager {
 
 
         } else {
-            Vector3d desiredDirection = player.getLookAngle().normalize();
-            desiredDirection = new Vector3d(desiredDirection.x, 0, desiredDirection.z);
+            Vec3 desiredDirection = player.getLookAngle().normalize();
+            desiredDirection = new Vec3(desiredDirection.x, 0, desiredDirection.z);
             desiredDirection.normalize();
             if (!playerInput.forwardKey) {
                 player.setDeltaMovement(player.getDeltaMovement().add(0, thrust, 0));
@@ -210,15 +210,15 @@ public enum MovementManager {
 
 
 
-    public static double computePlayerVelocity(PlayerEntity player) {
+    public static double computePlayerVelocity(Player player) {
         return MathUtils.pythag(player.getDeltaMovement().x, player.getDeltaMovement().y, player.getDeltaMovement().z);
     }
 
    @SubscribeEvent
     public void handleLivingJumpEvent(LivingJumpEvent event) {
-        if (event.getEntityLiving() instanceof PlayerEntity) {
-            PlayerEntity player = (PlayerEntity) event.getEntityLiving();
-            player.getItemBySlot(EquipmentSlotType.LEGS).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+        if (event.getEntityLiving() instanceof Player) {
+            Player player = (Player) event.getEntityLiving();
+            player.getItemBySlot(EquipmentSlot.LEGS).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
                     .filter(IModularItem.class::isInstance)
                     .map(IModularItem.class::cast)
                     .ifPresent(iModularItem -> iModularItem.getOnlineModuleOrEmpty(MPSRegistryNames.JUMP_ASSIST_MODULE).getCapability(PowerModuleCapability.POWER_MODULE).ifPresent(jumper -> {
@@ -226,7 +226,7 @@ public enum MovementManager {
                         double drain = jumper.applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION);
                         int avail = ElectricItemUtils.getPlayerEnergy(player);
                         if ((player.level.isClientSide()) && NuminaSettings.useSounds()) {
-                            Musique.playerSound(player, MPSSoundDictionary.JUMP_ASSIST, SoundCategory.PLAYERS, (float) (jumpAssist / 8.0), (float) 1, false);
+                            Musique.playerSound(player, MPSSoundDictionary.JUMP_ASSIST, SoundSource.PLAYERS, (float) (jumpAssist / 8.0), (float) 1, false);
                         }
 
                         if (drain < avail) {
@@ -245,15 +245,15 @@ public enum MovementManager {
 
     @SubscribeEvent
     public void handleFallEvent(LivingFallEvent event) {
-        if (event.getEntityLiving() instanceof PlayerEntity && event.getDistance() > 3.0) {
-            PlayerEntity player = (PlayerEntity) event.getEntityLiving();
-            player.getItemBySlot(EquipmentSlotType.FEET).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+        if (event.getEntityLiving() instanceof Player && event.getDistance() > 3.0) {
+            Player player = (Player) event.getEntityLiving();
+            player.getItemBySlot(EquipmentSlot.FEET).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
                     .filter(IModularItem.class::isInstance)
                     .map(IModularItem.class::cast)
                     .ifPresent(iModularItem -> iModularItem.getOnlineModuleOrEmpty(MPSRegistryNames.SHOCK_ABSORBER_MODULE).getCapability(PowerModuleCapability.POWER_MODULE).ifPresent(sa -> {
                         double distanceAbsorb = event.getDistance() * sa.applyPropertyModifiers(MPSConstants.MULTIPLIER);
                         if (player.level.isClientSide && NuminaSettings.useSounds()) {
-                            Musique.playerSound(player, SoundDictionary.SOUND_EVENT_GUI_INSTALL, SoundCategory.PLAYERS, (float) (distanceAbsorb), (float) 1, false);
+                            Musique.playerSound(player, SoundDictionary.SOUND_EVENT_GUI_INSTALL, SoundSource.PLAYERS, (float) (distanceAbsorb), (float) 1, false);
                         }
                         double drain = distanceAbsorb * sa.applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION);
                         int avail = ElectricItemUtils.getPlayerEnergy(player);

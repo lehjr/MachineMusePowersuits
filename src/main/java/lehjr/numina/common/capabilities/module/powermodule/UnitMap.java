@@ -1,7 +1,9 @@
 package lehjr.numina.common.capabilities.module.powermodule;
 
-import lehjr.numina.common.constants.NuminaConstants;
-import net.minecraft.client.resources.I18n;
+import lehjr.numina.common.constants.TagConstants;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
 
 import javax.annotation.Nonnull;
 import java.util.HashMap;
@@ -14,22 +16,23 @@ import java.util.Map;
  */
 public enum UnitMap {
     MAP;
+    static final Component EMPTY = new TextComponent("");
 
-    protected static Map<String, String> units = new HashMap<>();
+    protected static Map<String, Component> units = new HashMap<>();
 
     public void addUnitLabel(@Nonnull String propertyName, String unit) {
         if (unit != null && !unit.isEmpty()) {
             if (!units.containsKey(propertyName)) {
-                units.put(propertyName, unit);
+                if (unit.startsWith(TagConstants.MODULE_TRADEOFF_PREFIX)) {
+                    units.put(propertyName, new TranslatableComponent(unit));
+                } else {
+                    units.put(propertyName, new TextComponent(unit));
+                }
             }
         }
     }
 
-    public String getUnit(@Nonnull String propertyName) {
-        String unit = units.get(propertyName);
-        if (unit != null && unit.startsWith(NuminaConstants.MODULE_TRADEOFF_PREFIX)) {
-            unit = I18n.get(unit);
-        }
-        return unit == null ? "" : unit;
+    public Component getUnit(@Nonnull String propertyName) {
+        return units.getOrDefault(propertyName, EMPTY);
     }
 }

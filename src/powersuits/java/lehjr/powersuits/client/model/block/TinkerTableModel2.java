@@ -27,32 +27,32 @@
 //package lehjr.powersuits.client.model.block;
 //
 //import com.google.common.collect.ImmutableList;
-//import com.mojang.blaze3d.matrix.MatrixStack;
-//import com.mojang.blaze3d.vertex.IVertexBuilder;
+//import com.mojang.blaze3d.vertex.PoseStack;
+//import com.mojang.blaze3d.vertex.VertexConsumer;
 //import net.minecraft.client.renderer.RenderType;
 //import net.minecraft.client.renderer.model.Model;
-//import net.minecraft.client.renderer.model.ModelRenderer;
-//import net.minecraft.util.ResourceLocation;
+//import net.minecraft.client.renderer.model.ModelPart;
+//import net.minecraft.resources.ResourceLocation;
 //import net.minecraft.util.math.vector.Vector3f;
 //import net.minecraftforge.common.model.TransformationHelper;
 //
 //import java.util.function.Function;
 //
 //public class TinkerTableModel2 extends Model {
-//    ModelRenderer cube;
-//    ModelRenderer screen3;
-//    ModelRenderer screen2;
-//    ModelRenderer screen1;
-//    ModelRenderer middletable;
-//    ModelRenderer uppertable;
-//    ModelRenderer particles;
-//    ModelRenderer footbase;
-//    ModelRenderer foot1;
-//    ModelRenderer fatfoot2;
-//    ModelRenderer fatfoot1;
-//    ModelRenderer backsupport;
-//    ModelRenderer tank3;
-//    ModelRenderer tank2;
+//    ModelPart cube;
+//    ModelPart screen3;
+//    ModelPart screen2;
+//    ModelPart screen1;
+//    ModelPart middletable;
+//    ModelPart uppertable;
+//    ModelPart particles;
+//    ModelPart footbase;
+//    ModelPart foot1;
+//    ModelPart fatfoot2;
+//    ModelPart fatfoot1;
+//    ModelPart backsupport;
+//    ModelPart tank3;
+//    ModelPart tank2;
 //    ModelRenderer tank1;
 //    ModelRenderer wireshort4;
 //    ModelRenderer wireshort3;
@@ -189,7 +189,7 @@
 //
 //
 //    @Override
-//    public void render(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
+//    public void render(PoseStack matrixStackIn, VertexConsumer bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
 //        matrixStackIn.push();
 //        matrixStackIn.rotate(TransformationHelper.quatFromXYZ(new Vector3f(180.0F, 0.0F, 0.0F), true));
 //        matrixStackIn.translate(0.5F, -1.5F, -0.5F);

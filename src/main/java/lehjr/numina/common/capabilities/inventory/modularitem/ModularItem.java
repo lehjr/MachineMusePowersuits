@@ -26,23 +26,24 @@
 
 package lehjr.numina.common.capabilities.inventory.modularitem;
 
+import lehjr.numina.common.capabilities.CapabilityUpdate;
 import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
 import lehjr.numina.common.capabilities.module.powermodule.PowerModuleCapability;
 import lehjr.numina.common.capabilities.module.tickable.IPlayerTickModule;
 import lehjr.numina.common.capabilities.module.toggleable.IToggleableModule;
-import lehjr.numina.common.tags.TagUtils;
-import net.minecraft.entity.MobEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.ArmorItem;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ToolItem;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.common.util.Constants;
+import lehjr.numina.common.constants.TagConstants;
+import net.minecraft.core.NonNullList;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.DoubleTag;
+import net.minecraft.nbt.Tag;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ArmorItem;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.items.ItemStackHandler;
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -53,23 +54,35 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ModularItem extends ItemStackHandler implements IModularItem {
-    public static final String TAG_MODULES = "Modules"; // ModularItemHandler tag
-    public static final String TAG_MODULE_SETTINGS = "Module Settings";
-
+public class ModularItem extends ItemStackHandler implements IModularItem, CapabilityUpdate {
+    final boolean isTool;
     ItemStack modularItem;
     Map<ModuleCategory, NuminaRangedWrapper> rangedWrappers;
     ModuleTarget target;
 
     public ModularItem(@Nonnull ItemStack modularItem, int size) {
-        this(modularItem, NonNullList.withSize(size, ItemStack.EMPTY));
+        this(modularItem, size, false);
+    }
+
+    public ModularItem(@Nonnull ItemStack modularItem, int size, boolean isTool) {
+        this(modularItem, NonNullList.withSize(size, ItemStack.EMPTY), isTool);
     }
 
     public ModularItem(@Nonnull ItemStack modularItem, NonNullList<ItemStack> stacks) {
         super(stacks);
         this.modularItem = modularItem;
         this.rangedWrappers = new HashMap<>();
+        this.isTool = false;
     }
+
+    public ModularItem(@Nonnull ItemStack modularItem, NonNullList<ItemStack> stacks, boolean isTool) {
+        super(stacks);
+        this.modularItem = modularItem;
+        this.rangedWrappers = new HashMap<>();
+        this.isTool = isTool;
+    }
+
+
 
     @Override
     public void setRangedWrapperMap(Map<ModuleCategory, NuminaRangedWrapper> rangedWrappers) {
@@ -175,21 +188,21 @@ public class ModularItem extends ItemStackHandler implements IModularItem {
                     case ALLITEMS:
                         return true;
                     case TOOLONLY:
-                        return modularItem.getItem() instanceof ToolItem;
+                        return isTool;
                     case ARMORONLY:
                         return modularItem.getItem() instanceof ArmorItem;
                     case HEADONLY:
                         return modularItem.getItem() instanceof ArmorItem
-                                && MobEntity.getEquipmentSlotForItem(modularItem) == EquipmentSlotType.HEAD;
+                                && Mob.getEquipmentSlotForItem(modularItem) == EquipmentSlot.HEAD;
                     case TORSOONLY:
                         return modularItem.getItem() instanceof ArmorItem
-                                && MobEntity.getEquipmentSlotForItem(modularItem) == EquipmentSlotType.CHEST;
+                                && Mob.getEquipmentSlotForItem(modularItem) == EquipmentSlot.CHEST;
                     case LEGSONLY:
                         return modularItem.getItem() instanceof ArmorItem
-                                && MobEntity.getEquipmentSlotForItem(modularItem) == EquipmentSlotType.LEGS;
+                                && Mob.getEquipmentSlotForItem(modularItem) == EquipmentSlot.LEGS;
                     case FEETONLY:
                         return modularItem.getItem() instanceof ArmorItem
-                                && MobEntity.getEquipmentSlotForItem(modularItem) == EquipmentSlotType.FEET;
+                                && Mob.getEquipmentSlotForItem(modularItem) == EquipmentSlot.FEET;
                     default:
                         return false;
                 }
@@ -238,7 +251,7 @@ public class ModularItem extends ItemStackHandler implements IModularItem {
     }
 
     @Override
-    public void tick(PlayerEntity player) {
+    public void tick(Player player) {
         for (int i = 0; i < getSlots(); i++) {
             getStackInSlot(i).getCapability(PowerModuleCapability.POWER_MODULE)
                     .filter(IPlayerTickModule.class::isInstance)
@@ -257,17 +270,6 @@ public class ModularItem extends ItemStackHandler implements IModularItem {
     @Override
     public ItemStack getModularItemStack() {
         return modularItem;
-    }
-
-    /**
-     * IItemStackContainerUpdate -----------------------------------------------------------------
-     */
-    @Override
-    public void updateFromNBT() {
-        final CompoundNBT nbt = getModularItemStack().getOrCreateTag();
-        if (nbt.contains(TAG_MODULE_SETTINGS, Constants.NBT.TAG_COMPOUND)) {
-            deserializeNBT((CompoundNBT) nbt.get(TAG_MODULE_SETTINGS));
-        }
     }
 
     /**
@@ -307,7 +309,7 @@ public class ModularItem extends ItemStackHandler implements IModularItem {
             ItemStack module = getStackInSlot(i);
             if (!module.isEmpty() && module.getItem().getRegistryName().equals(moduleName)) {
                 if (module.getCapability(PowerModuleCapability.POWER_MODULE).map(m -> {
-                    TagUtils.setModuleDoubleOrRemove(module, key, value);
+                    module.addTagElement(key, DoubleTag.valueOf(value));
                     return true;
                 }).orElse(false)) {
                     onContentsChanged(i);
@@ -323,8 +325,20 @@ public class ModularItem extends ItemStackHandler implements IModularItem {
      * ItemStackHandler --------------------------------------------------------------------------
      */
     @Override
-    public void onContentsChanged(final int slot) {
+    protected void onContentsChanged(final int slot) {
         super.onContentsChanged(slot);
-        modularItem.addTagElement(TAG_MODULE_SETTINGS, serializeNBT());
+        modularItem.addTagElement(TagConstants.TAG_MODULE_SETTINGS, serializeNBT());
+    }
+
+    @Override
+    public void loadCapValues() {
+        final CompoundTag nbt = getModularItemStack().getOrCreateTag();
+        if (nbt.contains(TagConstants.TAG_MODULE_SETTINGS, Tag.TAG_COMPOUND)) {
+            deserializeNBT((CompoundTag) nbt.get(TagConstants.TAG_MODULE_SETTINGS));
+        }
+    }
+
+    @Override
+    public void onValueChanged() {
     }
 }

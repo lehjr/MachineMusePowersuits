@@ -27,24 +27,26 @@
 package lehjr.numina.client.render;
 
 import com.google.common.base.Preconditions;
-import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.*;
+import com.mojang.datafixers.util.Pair;
+import com.mojang.math.Matrix4f;
 import lehjr.numina.client.gui.GuiIcon;
-import lehjr.numina.common.math.Colour;
+import lehjr.numina.common.constants.NuminaConstants;
+import lehjr.numina.common.math.Color;
 import lehjr.numina.common.math.MathUtils;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.WorldVertexBufferUploader;
-import net.minecraft.client.renderer.texture.AtlasTexture;
-import net.minecraft.client.renderer.texture.MissingTextureSprite;
+import net.minecraft.client.renderer.texture.MissingTextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureManager;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.util.math.vector.Matrix4f;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.lwjgl.opengl.GL11;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Author: MachineMuse (Claire Semple)
@@ -66,7 +68,7 @@ public enum IconUtils {
     }
 
     static TextureAtlasSprite getMissingIcon() {
-        return Minecraft.getInstance().getTextureAtlas(AtlasTexture.LOCATION_BLOCKS).apply(MissingTextureSprite.getLocation());
+        return Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(MissingTextureAtlasSprite.getLocation());
     }
 
     /**
@@ -77,7 +79,7 @@ public enum IconUtils {
      * @param icon
      * @param colour
      */
-    public static void drawIconAt(double x, double y, TextureAtlasSprite icon, Colour colour) {
+    public static void drawIconAt(double x, double y, TextureAtlasSprite icon, Color colour) {
         drawIconPartial(x, y, icon, colour, 0, 0, 16, 16);
     }
 
@@ -89,12 +91,12 @@ public enum IconUtils {
      * @param icon
      * @param colour
      */
-    public static void drawIconAt(MatrixStack poseStack, double x, double y, TextureAtlasSprite icon, Colour colour) {
+    public static void drawIconAt(PoseStack poseStack, double x, double y, TextureAtlasSprite icon, Color colour) {
         drawIconPartial(poseStack, x, y, icon, colour, 0, 0, 16, 16);
     }
 
 
-    public static void drawIconPartialOccluded(double x, double y, TextureAtlasSprite icon, Colour colour, double textureStarX, double textureStartY, double textureEndX, double textureEndY) {
+    public static void drawIconPartialOccluded(double x, double y, TextureAtlasSprite icon, Color colour, double textureStarX, double textureStartY, double textureEndX, double textureEndY) {
         double xmin = MathUtils.clampDouble(textureStarX - x, 0, 16);
         double ymin = MathUtils.clampDouble(textureStartY - y, 0, 16);
         double xmax = MathUtils.clampDouble(textureEndX - x, 0, 16);
@@ -113,24 +115,24 @@ public enum IconUtils {
      * @param icon
      * @param colour
      */
-    public static void drawIconPartial(MatrixStack poseStack, double x, double y, TextureAtlasSprite icon, Colour colour, double textureStartX, double textureStartY, double textureEndX, double textureEndY) {
+    public static void drawIconPartial(PoseStack poseStack, double x, double y, TextureAtlasSprite icon, Color colour, double textureStartX, double textureStartY, double textureEndX, double textureEndY) {
         if (icon == null) {
             icon = getMissingIcon();
         }
 
         Minecraft minecraft = Minecraft.getInstance();
         TextureManager textureManager = minecraft.getTextureManager();
-        textureManager.bind(icon.atlas().location());
+        textureManager.bindForSetup(icon.atlas().location());
 
 
-        RenderSystem.shadeModel(GL11.GL_SMOOTH);
+        GL11.glEnable(GL11.GL_SMOOTH);
 
-        Tessellator tess = Tessellator.getInstance();
+        Tesselator tess = Tesselator.getInstance();
         BufferBuilder bufferBuilder = tess.getBuilder();
         if (colour != null) {
-            colour.doGL();
+            colour.setShaderColor();
         }
-        bufferBuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+        bufferBuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
         double u0 = icon.getU0();
         double v0 = icon.getV0();
         double u1 = icon.getU1();
@@ -165,7 +167,7 @@ public enum IconUtils {
 
         tess.end();
 
-        RenderSystem.shadeModel(GL11.GL_FLAT);
+        GL11.glEnable(GL11.GL_FLAT);
     }
 
     /**
@@ -176,23 +178,23 @@ public enum IconUtils {
      * @param icon
      * @param colour
      */
-    public static void drawIconPartial(double x, double y, TextureAtlasSprite icon, Colour colour, double left, double top, double right, double bottom) {
+    public static void drawIconPartial(double x, double y, TextureAtlasSprite icon, Color colour, double left, double top, double right, double bottom) {
         if (icon == null) {
             icon = getMissingIcon();
         }
         Minecraft minecraft = Minecraft.getInstance();
         TextureManager textureManager = minecraft.getTextureManager();
-        textureManager.bind(icon.atlas().location());
+        textureManager.bindForSetup(icon.atlas().location());
 
 
-        RenderSystem.shadeModel(GL11.GL_SMOOTH);
+        GL11.glEnable(GL11.GL_SMOOTH);
 
-        Tessellator tess = Tessellator.getInstance();
+        Tesselator tess = Tesselator.getInstance();
         BufferBuilder bufferBuilder = tess.getBuilder();
         if (colour != null) {
-            colour.doGL();
+            colour.setShaderColor();
         }
-        bufferBuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+        bufferBuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
         double uMin = icon.getU0();
         double vMin = icon.getV0();
         double uMax = icon.getU1();
@@ -225,7 +227,7 @@ public enum IconUtils {
 
         tess.end();
 
-        RenderSystem.shadeModel(GL11.GL_FLAT);
+        GL11.glEnable(GL11.GL_FLAT);
     }
 
 
@@ -250,7 +252,7 @@ public enum IconUtils {
 
 
 
-    public static void blit(MatrixStack matrixStack, double posX, double posY, double pBlitOffset, double drawWidth, double drawHeight, TextureAtlasSprite pSprite) {
+    public static void blit(PoseStack matrixStack, double posX, double posY, double pBlitOffset, double drawWidth, double drawHeight, TextureAtlasSprite pSprite) {
         innerBlit(matrixStack.last().pose(),
                 posX, // drawStartX
                 posX + drawWidth, // drawEndX
@@ -265,43 +267,43 @@ public enum IconUtils {
 
 
 
-    public void blit(MatrixStack pMatrixStack, double posX, double posY, double uOffset, double vOffset, double uWidth, double vHeight) {
-        blit(pMatrixStack, posX, posY, this.getBlitOffset(), uOffset, vOffset, uWidth, vHeight, 256, 256);
+    public void blit(PoseStack pPoseStack, double posX, double posY, double uOffset, double vOffset, double uWidth, double vHeight) {
+        blit(pPoseStack, posX, posY, this.getBlitOffset(), uOffset, vOffset, uWidth, vHeight, 256, 256);
     }
 
-    public static void blit(MatrixStack pMatrixStack, double posX, double posY, double blitOffset, double uOffset, double vOffset, double uWidth, double vHeight, double textureHeight, double textureWidth) {
-        innerBlit(pMatrixStack, posX, posX + uWidth, posY, posY + vHeight, blitOffset, uWidth, vHeight, uOffset, vOffset, textureWidth, textureHeight);
+    public static void blit(PoseStack pPoseStack, double posX, double posY, double blitOffset, double uOffset, double vOffset, double uWidth, double vHeight, double textureHeight, double textureWidth) {
+        innerBlit(pPoseStack, posX, posX + uWidth, posY, posY + vHeight, blitOffset, uWidth, vHeight, uOffset, vOffset, textureWidth, textureHeight);
     }
 
-    public static void blit(MatrixStack pMatrixStack, double posX, double posY, double pBlitOffset, double pUOffset, double vOffset, double uWidth, double pVHeight, double textureHeight, double textureWidth, Colour colour) {
-        innerBlit(pMatrixStack, posX, posX + uWidth, posY, posY + pVHeight, pBlitOffset, uWidth, pVHeight, pUOffset, vOffset, textureWidth, textureHeight, colour);
+    public static void blit(PoseStack pPoseStack, double posX, double posY, double pBlitOffset, double pUOffset, double vOffset, double uWidth, double pVHeight, double textureHeight, double textureWidth, Color colour) {
+        innerBlit(pPoseStack, posX, posX + uWidth, posY, posY + pVHeight, pBlitOffset, uWidth, pVHeight, pUOffset, vOffset, textureWidth, textureHeight, colour);
     }
 
-    public static void blit(MatrixStack pMatrixStack, double drawStartX, double drawStartY, double pUOffset, double pVOffset, double pWidth, double pHeight, double textureWidth, double textureHeight) {
-        blit(pMatrixStack, drawStartX, drawStartY, pWidth, pHeight, pUOffset, pVOffset, pWidth, pHeight, textureWidth, textureHeight);
+    public static void blit(PoseStack pPoseStack, double drawStartX, double drawStartY, double pUOffset, double pVOffset, double pWidth, double pHeight, double textureWidth, double textureHeight) {
+        blit(pPoseStack, drawStartX, drawStartY, pWidth, pHeight, pUOffset, pVOffset, pWidth, pHeight, textureWidth, textureHeight);
     }
 
-    public static void blit(MatrixStack pMatrixStack, double drawStartX, double drawStartY, double drawWidth, double drawHeight, double uOffset, double vOffset, double uWidth, double vHeight, double textureWidth, double textureHeight) {
-        innerBlit(pMatrixStack, drawStartX, drawStartX + drawWidth, drawStartY, drawStartY + drawHeight, 0, uWidth, vHeight, uOffset, vOffset, textureWidth, textureHeight);
+    public static void blit(PoseStack pPoseStack, double drawStartX, double drawStartY, double drawWidth, double drawHeight, double uOffset, double vOffset, double uWidth, double vHeight, double textureWidth, double textureHeight) {
+        innerBlit(pPoseStack, drawStartX, drawStartX + drawWidth, drawStartY, drawStartY + drawHeight, 0, uWidth, vHeight, uOffset, vOffset, textureWidth, textureHeight);
     }
 
-    public static void innerBlit(MatrixStack pMatrixStack, double posX, double pX2, double pY1, double pY2, double pBlitOffset, double uWidth, double vHeight, double uOffset, double vOffset, double textureWidth, double textureHeight) {
-        innerBlit(pMatrixStack.last().pose(), posX, pX2, pY1, pY2, pBlitOffset,
+    public static void innerBlit(PoseStack pPoseStack, double posX, double pX2, double pY1, double pY2, double pBlitOffset, double uWidth, double vHeight, double uOffset, double vOffset, double textureWidth, double textureHeight) {
+        innerBlit(pPoseStack.last().pose(), posX, pX2, pY1, pY2, pBlitOffset,
                 (uOffset + 0.0F) / textureWidth,
                 (uOffset + uWidth) / textureWidth, (vOffset + 0.0F) / textureHeight,
                 (vOffset + vHeight) / textureHeight);
     }
 
     public static void innerBlit(Matrix4f matrix4f, double drawStartX, double drawEndX, double drawStartY, double drawEndY, double blitOffset, double uMin, double uMax, double vMin, double vMax) {
-        BufferBuilder bufferbuilder = Tessellator.getInstance().getBuilder();
-        bufferbuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+        BufferBuilder bufferbuilder = Tesselator.getInstance().getBuilder();
+        bufferbuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
         bufferbuilder.vertex(matrix4f, (float) drawStartX, (float) drawEndY, (float) blitOffset).uv((float) uMin, (float) vMax).endVertex();
         bufferbuilder.vertex(matrix4f, (float) drawEndX, (float) drawEndY, (float) blitOffset).uv((float) uMax, (float) vMax).endVertex();
         bufferbuilder.vertex(matrix4f, (float) drawEndX, (float) drawStartY, (float) blitOffset).uv((float) uMax, (float) vMin).endVertex();
         bufferbuilder.vertex(matrix4f, (float) drawStartX, (float) drawStartY, (float) blitOffset).uv((float) uMin, (float) vMin).endVertex();
         bufferbuilder.end();
-        RenderSystem.enableAlphaTest();
-        WorldVertexBufferUploader.end(bufferbuilder);
+//        RenderSystem.enableAlphaTest();
+        BufferUploader.end(bufferbuilder);
     }
 
 
@@ -315,7 +317,7 @@ public enum IconUtils {
 
 
 
-    public static void blit(MatrixStack matrixStack, double posX, double posY, double pBlitOffset, double drawWidth, double drawHeight, TextureAtlasSprite sprite, Colour colour) {
+    public static void blit(PoseStack matrixStack, double posX, double posY, double pBlitOffset, double drawWidth, double drawHeight, TextureAtlasSprite sprite, Color colour) {
         innerBlit(matrixStack.last().pose(),
                 posX, // drawStartX
                 posX + drawWidth, // drawEndX
@@ -329,20 +331,20 @@ public enum IconUtils {
                 colour);
     }
 
-    public void blit(MatrixStack pMatrixStack, double posX, double posY, double uOffset, double vOffset, double uWidth, double vHeight, Colour colour) {
-        blit(pMatrixStack, posX, posY, this.getBlitOffset(), uOffset, vOffset, uWidth, vHeight, 256, 256, colour);
+    public void blit(PoseStack pPoseStack, double posX, double posY, double uOffset, double vOffset, double uWidth, double vHeight, Color colour) {
+        blit(pPoseStack, posX, posY, this.getBlitOffset(), uOffset, vOffset, uWidth, vHeight, 256, 256, colour);
     }
 
-    public static void blit(MatrixStack pMatrixStack, double posX, double posY, double pUOffset, double pVOffset, double pWidth, double pHeight, double textureWidth, double textureHeight, Colour colour) {
-        blit(pMatrixStack, posX, posY, pWidth, pHeight, pUOffset, pVOffset, pWidth, pHeight, textureWidth, textureHeight, colour);
+    public static void blit(PoseStack pPoseStack, double posX, double posY, double pUOffset, double pVOffset, double pWidth, double pHeight, double textureWidth, double textureHeight, Color colour) {
+        blit(pPoseStack, posX, posY, pWidth, pHeight, pUOffset, pVOffset, pWidth, pHeight, textureWidth, textureHeight, colour);
     }
 
-    public static void blit(MatrixStack pMatrixStack, double posX, double posY, double drawWidth, double drawHeight, double uOffset, double vOffset, double uWidth, double vHeight, double textureWidth, double textureHeight, Colour colour) {
-        innerBlit(pMatrixStack, posX, posX + drawWidth, posY, posY + drawHeight, 0, uWidth, vHeight, uOffset, vOffset, textureWidth, textureHeight, colour);
+    public static void blit(PoseStack pPoseStack, double posX, double posY, double drawWidth, double drawHeight, double uOffset, double vOffset, double uWidth, double vHeight, double textureWidth, double textureHeight, Color colour) {
+        innerBlit(pPoseStack, posX, posX + drawWidth, posY, posY + drawHeight, 0, uWidth, vHeight, uOffset, vOffset, textureWidth, textureHeight, colour);
     }
 
-    public static void innerBlit(MatrixStack pMatrixStack, double drawStartX, double drawEndX, double drawStartY, double drawEndY, double blitOffset, double uWidth, double vHeight, double uOffset, double vOffset, double textureWidth, double textureHeight, Colour colour) {
-        innerBlit(pMatrixStack.last().pose(), drawStartX, drawEndX, drawStartY, drawEndY, blitOffset,
+    public static void innerBlit(PoseStack pPoseStack, double drawStartX, double drawEndX, double drawStartY, double drawEndY, double blitOffset, double uWidth, double vHeight, double uOffset, double vOffset, double textureWidth, double textureHeight, Color colour) {
+        innerBlit(pPoseStack.last().pose(), drawStartX, drawEndX, drawStartY, drawEndY, blitOffset,
                 (uOffset) / textureWidth,
                 (uOffset + uWidth) / textureWidth,
                 (vOffset) / textureHeight,
@@ -350,9 +352,9 @@ public enum IconUtils {
                 colour);
     }
 
-    public static void innerBlit(Matrix4f matrix4f, double drawStartX, double drawEndX, double drawStartY, double drawEndY, double blitOffset, double uMin, double uMax, double vMin, double vMax, Colour colour) {
-        BufferBuilder bufferbuilder = Tessellator.getInstance().getBuilder();
-        bufferbuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR_TEX);
+    public static void innerBlit(Matrix4f matrix4f, double drawStartX, double drawEndX, double drawStartY, double drawEndY, double blitOffset, double uMin, double uMax, double vMin, double vMax, Color colour) {
+        BufferBuilder bufferbuilder = Tesselator.getInstance().getBuilder();
+        bufferbuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR_TEX);
 
 
         bufferbuilder.vertex(matrix4f, (float) drawStartX, (float) drawEndY, (float) blitOffset)
@@ -369,8 +371,8 @@ public enum IconUtils {
                 .uv((float) uMin, (float) vMin).endVertex();
 
         bufferbuilder.end();
-        RenderSystem.enableAlphaTest();
-        WorldVertexBufferUploader.end(bufferbuilder);
+//        RenderSystem.enableAlphaTest();
+        BufferUploader.end(bufferbuilder);
     }
 
     double getBlitOffset() {
@@ -381,4 +383,23 @@ public enum IconUtils {
         return Minecraft.getInstance();
     }
 
+
+    public static final Map<EquipmentSlot, ResourceLocation> ARMOR_SLOT_TEXTURES = new HashMap<EquipmentSlot, ResourceLocation>(){{
+        put(EquipmentSlot.HEAD, InventoryMenu.EMPTY_ARMOR_SLOT_HELMET);
+        put(EquipmentSlot.CHEST, InventoryMenu.EMPTY_ARMOR_SLOT_CHESTPLATE);
+        put(EquipmentSlot.LEGS, InventoryMenu.EMPTY_ARMOR_SLOT_LEGGINGS);
+        put(EquipmentSlot.FEET, InventoryMenu.EMPTY_ARMOR_SLOT_BOOTS);
+        put(EquipmentSlot.OFFHAND, InventoryMenu.EMPTY_ARMOR_SLOT_SHIELD);
+        put(EquipmentSlot.MAINHAND, NuminaConstants.WEAPON_SLOT_BACKGROUND); //FIXME: broken for slot rendering, actually crashes
+    }};
+
+    public static final Pair<ResourceLocation, ResourceLocation> getSlotBackground(EquipmentSlot slotType) {
+        switch (slotType) {
+            case MAINHAND:
+                return Pair.of(NuminaConstants.LOCATION_NUMINA_GUI_TEXTURE_ATLAS, ARMOR_SLOT_TEXTURES.get(slotType)); // FIXME: broken for slot rendering, actually crashes
+//                 return Pair.of(InventoryMenu.BLOCK_ATLAS, InventoryMenu.EMPTY_ARMOR_SLOT_SHIELD);
+            default:
+                return Pair.of(InventoryMenu.BLOCK_ATLAS, ARMOR_SLOT_TEXTURES.get(slotType));
+        }
+    }
 }

@@ -39,7 +39,7 @@ public class BlockEnergyWrapper implements IEnergyStorage {
     LazyOptional<IItemHandler> itemHandler;
     public BlockEnergyWrapper(LazyOptional<IEnergyStorage> tileEnergyIn, LazyOptional<IItemHandler> itemHandlerIn) {
         tileEnergy = tileEnergyIn;
-         itemHandler = itemHandlerIn;
+        itemHandler = itemHandlerIn;
     }
 
     protected BlockEnergyWrapper() {

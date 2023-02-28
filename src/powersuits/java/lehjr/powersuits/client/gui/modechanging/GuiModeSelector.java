@@ -26,23 +26,23 @@
 
 package lehjr.powersuits.client.gui.modechanging;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.platform.Window;
+import com.mojang.blaze3d.vertex.PoseStack;
 import lehjr.numina.client.gui.ContainerlessGui;
 import lehjr.numina.client.gui.geometry.MusePoint2D;
-import net.minecraft.client.MainWindow;
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.text.ITextComponent;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.entity.player.Player;
 
 public class GuiModeSelector extends ContainerlessGui {
-    PlayerEntity player;
+    Player player;
     RadialModeSelectionFrame radialSelect;
 
-    public GuiModeSelector(PlayerEntity player, ITextComponent titleIn) {
+    public GuiModeSelector(Player player, Component titleIn) {
         super(titleIn);
         Minecraft.getInstance().keyboardHandler.setSendRepeatsToGui(true);
         this.player = player;
-        MainWindow screen = Minecraft.getInstance().getWindow();
+        Window screen = Minecraft.getInstance().getWindow();
         this./*xSize*/imageWidth = Math.min(screen.getGuiScaledWidth() - 50, 500);
         this./*ySize*/imageHeight = Math.min(screen.getGuiScaledHeight() - 50, 300);
     }
@@ -62,7 +62,7 @@ public class GuiModeSelector extends ContainerlessGui {
     }
 
     @Override
-    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float frameTime) {
+    public void render(PoseStack matrixStack, int mouseX, int mouseY, float frameTime) {
         this.renderBackground(matrixStack);
         this.update((double)mouseX, (double)mouseY);
         matrixStack.pushPose();
@@ -77,7 +77,7 @@ public class GuiModeSelector extends ContainerlessGui {
 
     @Override
     public boolean keyReleased(int keyCode, int scanCode, int modifiers) {
-        if (minecraft.options.keyHotbarSlots[player.inventory.selected].matches(keyCode, scanCode)) {
+        if (minecraft.options.keyHotbarSlots[player.getInventory().selected].matches(keyCode, scanCode)) {
             this.player.closeContainer();
             return true;
         }
@@ -90,7 +90,7 @@ public class GuiModeSelector extends ContainerlessGui {
         if (!minecraft.isWindowActive()) {
             this.player.closeContainer();
 //            super.onClose();
-//            container.onContainerClosed(player);
+//            container.onAbstractContainerMenuClosed(player);
         }
     }
 

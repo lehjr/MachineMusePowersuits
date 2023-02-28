@@ -26,10 +26,13 @@
 
 package lehjr.numina.common.capabilities.heat;
 
+import net.minecraft.nbt.DoubleTag;
+import net.minecraftforge.common.util.INBTSerializable;
+
 /**
  * Based on Forge Energy and CoHF RF, but using doubles and max heat value is only a safety threshold, not a cap
  */
-public class HeatStorage implements IHeatStorage {
+public abstract class HeatStorage implements IHeatStorage, INBTSerializable<DoubleTag> {
     protected double heat;
     protected double capacity; // this is just a safety boundary, not an absolute cap
     protected double maxReceive;
@@ -61,8 +64,10 @@ public class HeatStorage implements IHeatStorage {
         }
 
         double heatReceived = Math.min(capacity - heat, Math.min(this.maxReceive, maxReceive));
-        if (!simulate)
+        if (!simulate && heatReceived !=0) {
             heat += heatReceived;
+            onValueChanged();
+        }
         return heatReceived;
     }
 
@@ -73,8 +78,9 @@ public class HeatStorage implements IHeatStorage {
         }
 
         double heatExtracted = Math.min(heat, maxExtract);
-        if (!simulate) {
+        if (!simulate && heatExtracted != 0) {
             heat -= heatExtracted;
+            onValueChanged();
         }
         return heatExtracted;
     }
@@ -97,5 +103,21 @@ public class HeatStorage implements IHeatStorage {
     @Override
     public boolean canReceive() {
         return this.maxReceive > 0;
+    }
+
+    @Override
+    public void setHeatCapacity(double maxHeat) {
+        this.capacity = maxHeat;
+    }
+
+    /** INBTSerializable -------------------------------------------------------------------------- */
+    @Override
+    public DoubleTag serializeNBT() {
+        return DoubleTag.valueOf(heat);
+    }
+
+    @Override
+    public void deserializeNBT(final DoubleTag nbt) {
+        this.heat = nbt.getAsDouble();
     }
 }

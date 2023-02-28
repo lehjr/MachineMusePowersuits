@@ -26,27 +26,27 @@
 
 package lehjr.numina.client.gui.old_meters;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 import lehjr.numina.client.gui.geometry.Meter;
-import lehjr.numina.common.math.Colour;
+import lehjr.numina.common.math.Color;
 import net.minecraft.client.Minecraft;
 
 public class HeatMeter {
     public final Meter meter;
 
-    public HeatMeter(Colour color) {
+    public HeatMeter(Color color) {
         meter = new Meter(color);
     }
 
     public HeatMeter() {
-        meter = new Meter(Colour.RED.withAlpha(0.5F));
+        meter = new Meter(Color.RED.withAlpha(0.5F));
     }
 
-    public void draw(MatrixStack matrixStack, float xpos, float ypos, float value) {
+    public void draw(PoseStack matrixStack, float xpos, float ypos, float value) {
         meter.draw(matrixStack, xpos, ypos, Minecraft.getInstance().screen.getBlitOffset(), value);
     }
 
-    public void draw(MatrixStack matrixStack, float xpos, float ypos, float value, float zLevel) {
+    public void draw(PoseStack matrixStack, float xpos, float ypos, float value, float zLevel) {
         meter.draw(matrixStack, xpos, ypos, zLevel, value);
     }
 }

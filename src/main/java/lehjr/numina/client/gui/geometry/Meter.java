@@ -26,26 +26,26 @@
 
 package lehjr.numina.client.gui.geometry;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
-import lehjr.numina.common.math.Colour;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexFormat;
+import lehjr.numina.common.math.Color;
 import lehjr.numina.common.math.MathUtils;
-import org.lwjgl.opengl.GL11;
 
 import java.nio.FloatBuffer;
 
 public class Meter extends DrawableRect {
-    Colour meterColour;
+    Color meterColour;
 
-    public Meter(Colour meterColourIn) {
-        super(new MusePoint2D(0, 0), new MusePoint2D(0, 0), Colour.GREY.withAlpha(0.3F), Colour.BLACK.withAlpha(0.8F));
+    public Meter(Color meterColourIn) {
+        super(new MusePoint2D(0, 0), new MusePoint2D(0, 0), Color.GREY.withAlpha(0.3F), Color.BLACK.withAlpha(0.8F));
         setWidth(32);
         setHeight(8);
-        setSecondBackgroundColour(Colour.WHITE.withAlpha(0.3F));
+        setSecondBackgroundColour(Color.WHITE.withAlpha(0.3F));
         setShrinkBorder(true);
         this.meterColour = meterColourIn;
     }
 
-    public Meter setMeterColour(Colour meterColourIn) {
+    public Meter setMeterColour(Color meterColourIn) {
         this.meterColour = meterColourIn;
         return this;
     }
@@ -62,7 +62,7 @@ public class Meter extends DrawableRect {
 
     double value = 0;
 
-    public void draw(MatrixStack matrixStack, double x, double y, float zLevel, double valueIn) {
+    public void draw(PoseStack matrixStack, double x, double y, float zLevel, double valueIn) {
         this.setUL(x, y);
         this.value = MathUtils.clampDouble(valueIn, 0, 1);
         this.draw(matrixStack, zLevel);
@@ -73,7 +73,7 @@ public class Meter extends DrawableRect {
         return getVertices(this.left() +1, this.top() + 1, right, this.bottom() -1);
     }
 
-    public void draw(MatrixStack matrixStack,float zLevel) {
+    public void draw(PoseStack matrixStack,float zLevel) {
         this.zLevel = zLevel;
 
         // background
@@ -83,7 +83,7 @@ public class Meter extends DrawableRect {
 
         // meter
         FloatBuffer meterVertices = this.getMeterVertices();
-        this.drawBuffer(matrixStack, meterVertices, meterColour, GL11.GL_TRIANGLE_FAN);
+        this.drawBuffer(matrixStack, meterVertices, meterColour, VertexFormat.Mode.TRIANGLE_FAN);
 
         // frame
         if (this.shrinkBorder) {

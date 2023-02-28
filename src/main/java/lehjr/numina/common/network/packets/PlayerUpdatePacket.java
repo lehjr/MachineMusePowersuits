@@ -26,11 +26,11 @@
 
 package lehjr.numina.common.network.packets;
 
-import lehjr.numina.common.capabilities.player.CapabilityPlayerKeyStates;
+import lehjr.numina.common.capabilities.player.PlayerKeyStatesCapability;
 import lehjr.numina.common.math.MathUtils;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.network.PacketBuffer;
-import net.minecraftforge.fml.network.NetworkEvent;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraftforge.network.NetworkEvent;
 
 import java.util.function.Supplier;
 
@@ -41,25 +41,28 @@ public class PlayerUpdatePacket {
         this.data = data;
     }
 
-    public static void encode(PlayerUpdatePacket msg, PacketBuffer packetBuffer) {
+    public static void encode(PlayerUpdatePacket msg, FriendlyByteBuf packetBuffer) {
         packetBuffer.writeByte(msg.data);
     }
 
-    public static PlayerUpdatePacket decode(PacketBuffer packetBuffer) {
+    public static PlayerUpdatePacket decode(FriendlyByteBuf packetBuffer) {
         return new PlayerUpdatePacket(packetBuffer.readByte());
     }
 
     public static void handle(PlayerUpdatePacket message, Supplier<NetworkEvent.Context> ctx) {
-        final ServerPlayerEntity player = ctx.get().getSender();
-        ctx.get().enqueueWork(() -> player.getCapability(CapabilityPlayerKeyStates.PLAYER_KEYSTATES).ifPresent(playerCap ->{
-            boolean[] boolArray = MathUtils.byteToBooleanArray(message.data);
-            playerCap.setForwardKeyState(boolArray[0]);
-            playerCap.setReverseKeyState(boolArray[1]);
-            playerCap.setLeftStrafeKeyState(boolArray[2]);
-            playerCap.setRightStrafeKeyState(boolArray[3]);
-            playerCap.setDownKeyState(boolArray[4]);
-            playerCap.setJumpKeyState(boolArray[5]);
-        }));
+        final ServerPlayer player = ctx.get().getSender();
+        ctx.get().enqueueWork(() -> {
+            player.getCapability(PlayerKeyStatesCapability.PLAYER_KEYSTATES).ifPresent(playerCap -> {
+                boolean[] boolArray = MathUtils.byteToBooleanArray(message.data);
+                playerCap.setForwardKeyState(boolArray[0]);
+                playerCap.setReverseKeyState(boolArray[1]);
+                playerCap.setLeftStrafeKeyState(boolArray[2]);
+                playerCap.setRightStrafeKeyState(boolArray[3]);
+                playerCap.setDownKeyState(boolArray[4]);
+                playerCap.setJumpKeyState(boolArray[5]);
+
+            });
+        });
         ctx.get().setPacketHandled(true);
     }
 }

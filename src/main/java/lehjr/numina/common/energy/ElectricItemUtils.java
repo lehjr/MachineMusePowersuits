@@ -27,10 +27,10 @@
 package lehjr.numina.common.energy;
 
 import lehjr.numina.common.base.NuminaObjects;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.energy.CapabilityEnergy;
 
 import javax.annotation.Nonnull;
@@ -44,7 +44,7 @@ public class ElectricItemUtils {
     public static int getPlayerEnergy(LivingEntity entity) {
         int avail = 0;
 
-        for (EquipmentSlotType slot : EquipmentSlotType.values()) {
+        for (EquipmentSlot slot : EquipmentSlot.values()) {
             avail += getItemEnergy(entity.getItemBySlot(slot));
         }
         return avail;
@@ -57,7 +57,7 @@ public class ElectricItemUtils {
      */
     public static int getMaxPlayerEnergy(LivingEntity entity) {
         int avail = 0;
-        for (EquipmentSlotType slot : EquipmentSlotType.values()) {
+        for (EquipmentSlot slot : EquipmentSlot.values()) {
             avail += getMaxItemEnergy(entity.getItemBySlot(slot));
         }
         return avail;
@@ -75,13 +75,13 @@ public class ElectricItemUtils {
      */
     public static int drainPlayerEnergy(LivingEntity entity, int drainAmount, boolean simulate){
         int drainleft = drainAmount;
-        if (entity instanceof PlayerEntity) {
-            PlayerEntity player = (PlayerEntity) entity;
-            if (player.level.isClientSide || player.abilities.instabuild) {
+        if (entity instanceof Player) {
+            Player player = (Player) entity;
+            if (player.level.isClientSide || player.getAbilities().instabuild) {
                 return drainAmount;
             }
 
-            for (EquipmentSlotType slot : EquipmentSlotType.values()) {
+            for (EquipmentSlot slot : EquipmentSlot.values()) {
                 if (drainleft <= 0) {
                     break;
                 }
@@ -90,7 +90,7 @@ public class ElectricItemUtils {
                 drainleft = drainleft - drainItem(stack, drainleft, simulate);
             }
             if (drainAmount - drainleft > 0) {
-                player.inventory.setChanged();
+                player.getInventory().setChanged();
             }
         }
         return drainAmount - drainleft;
@@ -108,10 +108,10 @@ public class ElectricItemUtils {
      */
     public static int givePlayerEnergy(LivingEntity entity, int rfToGive, boolean simulate) {
         int rfLeft = rfToGive;
-        if (entity instanceof PlayerEntity) {
-            PlayerEntity player = (PlayerEntity) entity;
+        if (entity instanceof Player) {
+            Player player = (Player) entity;
 
-            for (EquipmentSlotType slot : EquipmentSlotType.values()) {
+            for (EquipmentSlot slot : EquipmentSlot.values()) {
                 if (rfLeft > 0) {
                     ItemStack stack = player.getItemBySlot(slot);
                     rfLeft = rfLeft - chargeItem(stack, rfLeft, simulate);
@@ -120,17 +120,17 @@ public class ElectricItemUtils {
                 }
             }
             // charge other compatible items in inventory
-            if (rfLeft > 0 && entity instanceof PlayerEntity) {
-                for (int i = 0; i < player.inventory.getContainerSize(); i++) {
+            if (rfLeft > 0 && entity instanceof Player) {
+                for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
                     if (rfLeft > 0) {
-                        rfLeft = rfLeft - chargeItem(((PlayerEntity) entity).inventory.getItem(i), rfLeft, simulate);
+                        rfLeft = rfLeft - chargeItem(((Player) entity).getInventory().getItem(i), rfLeft, simulate);
                     } else {
                         break;
                     }
                 }
             }
             if (rfToGive - rfLeft > 0) {
-                player.inventory.setChanged();
+                player.getInventory().setChanged();
             }
         }
         return rfToGive - rfLeft;

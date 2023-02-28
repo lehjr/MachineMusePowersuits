@@ -32,20 +32,20 @@ import lehjr.numina.common.energy.ElectricItemUtils;
 import lehjr.powersuits.common.config.MPSSettings;
 import lehjr.powersuits.common.constants.MPSConstants;
 import lehjr.powersuits.common.item.module.AbstractPowerModule;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.MobEntity;
-import net.minecraft.entity.boss.dragon.EnderDragonEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.projectile.ArrowEntity;
-import net.minecraft.entity.projectile.FireballEntity;
-import net.minecraft.entity.projectile.PotionEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.Arrow;
+import net.minecraft.world.entity.projectile.Fireball;
+import net.minecraft.world.entity.projectile.ThrownPotion;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
@@ -64,7 +64,7 @@ public class MobRepulsorModule extends AbstractPowerModule {
 
     @Nullable
     @Override
-    public ICapabilityProvider initCapabilities (ItemStack stack, @Nullable CompoundNBT nbt){
+    public ICapabilityProvider initCapabilities (ItemStack stack, @Nullable CompoundTag nbt){
         return new CapProvider(stack);
     }
 
@@ -80,7 +80,7 @@ public class MobRepulsorModule extends AbstractPowerModule {
             }};
 
             powerModuleHolder = LazyOptional.of(() -> {
-                ticker.updateFromNBT();
+                ticker.loadCapValues();
                 return ticker;
             });
         }
@@ -91,7 +91,7 @@ public class MobRepulsorModule extends AbstractPowerModule {
             }
 
             @Override
-            public void onPlayerTickActive(PlayerEntity player, @Nonnull ItemStack item) {
+            public void onPlayerTickActive(Player player, @Nonnull ItemStack item) {
                 int energyConsumption = (int) applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION);
                 if (ElectricItemUtils.getPlayerEnergy(player) > energyConsumption) {
                     if (player.level.getGameTime() % 20 == 0) {
@@ -101,31 +101,32 @@ public class MobRepulsorModule extends AbstractPowerModule {
                 }
             }
 
-            public void repulse(World world, BlockPos playerPos) {
+            // FIXME: check for instances instead of direct references
+            public void repulse(Level world, BlockPos playerPos) {
                 float distance = 5.0F;
-                AxisAlignedBB area = new AxisAlignedBB(
+                AABB area = new AABB(
                         playerPos.offset(-distance, -distance, -distance),
                         playerPos.offset(distance, distance, distance));
 
-                for (Entity entity : world.getEntitiesOfClass(MobEntity.class, area)) {
+                for (Entity entity : world.getEntitiesOfClass(Mob.class, area)) {
                     push(entity, playerPos);
                 }
 
-                for (ArrowEntity entity : world.getEntitiesOfClass(ArrowEntity.class, area)) {
+                for (Arrow entity : world.getEntitiesOfClass(Arrow.class, area)) {
                     push(entity, playerPos);
                 }
 
-                for (FireballEntity entity : world.getEntitiesOfClass(FireballEntity.class, area)) {
+                for (Fireball entity : world.getEntitiesOfClass(Fireball.class, area)) {
                     push(entity, playerPos);
                 }
 
-                for (PotionEntity entity : world.getEntitiesOfClass(PotionEntity.class, area)) {
+                for (ThrownPotion entity : world.getEntitiesOfClass(ThrownPotion.class, area)) {
                     push(entity, playerPos);
                 }
             }
 
             private void push(Entity entity, BlockPos playerPos) {
-                if (!(entity instanceof PlayerEntity) && !(entity instanceof EnderDragonEntity)) {
+                if (!(entity instanceof Player) && !(entity instanceof EnderDragon)) {
                     BlockPos distance = playerPos.subtract(entity.blockPosition());
 
                     double dX = distance.getX();
@@ -152,7 +153,7 @@ public class MobRepulsorModule extends AbstractPowerModule {
                         } else if (d7 < 0.0D) {
                             d7 = -0.22D;
                         }
-                        Vector3d motion = entity.getDeltaMovement();
+                        Vec3 motion = entity.getDeltaMovement();
                         entity.setDeltaMovement(motion.x + d5, motion.y + d6, motion.z + d7);
                     }
                 }

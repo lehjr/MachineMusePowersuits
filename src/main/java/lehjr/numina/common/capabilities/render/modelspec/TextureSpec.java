@@ -26,19 +26,20 @@
 
 package lehjr.numina.common.capabilities.render.modelspec;
 
-import net.minecraft.client.resources.I18n;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 
 /**
  * This is just a way of mapping a possible texture combinations for a piece of PowerArmor using the default vanilla model
  */
 public class TextureSpec extends SpecBase {
     public TextureSpec(final String name, final boolean isDefault) {
-        super(name, isDefault, EnumSpecType.ARMOR_SKIN);
+        super(name, isDefault, SpecType.ARMOR_SKIN);
     }
 
     @Override
-    public String getDisaplayName() {
-        return I18n.get(new StringBuilder("textureSpec.")
+    public Component getDisaplayName() {
+        return new TranslatableComponent(new StringBuilder("textureSpec.")
                 .append(this.getName())
                 .append(".specName")
                 .toString());

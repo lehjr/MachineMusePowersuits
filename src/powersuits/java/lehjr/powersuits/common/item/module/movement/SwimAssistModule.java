@@ -37,11 +37,11 @@ import lehjr.powersuits.common.config.MPSSettings;
 import lehjr.powersuits.common.constants.MPSConstants;
 import lehjr.powersuits.common.event.MovementManager;
 import lehjr.powersuits.common.item.module.AbstractPowerModule;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.Direction;
-import net.minecraft.util.SoundCategory;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
@@ -58,7 +58,7 @@ public class SwimAssistModule extends AbstractPowerModule {
 
     @Nullable
     @Override
-    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundNBT nbt) {
+    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt) {
         return new CapProvider(stack);
     }
 
@@ -75,7 +75,7 @@ public class SwimAssistModule extends AbstractPowerModule {
             }};
 
             powerModuleHolder = LazyOptional.of(() -> {
-                ticker.updateFromNBT();
+                ticker.loadCapValues();
                 return ticker;
             });
         }
@@ -86,7 +86,7 @@ public class SwimAssistModule extends AbstractPowerModule {
             }
 
             @Override
-            public void onPlayerTickActive(PlayerEntity player, ItemStack itemStack) {
+            public void onPlayerTickActive(Player player, ItemStack itemStack) {
 //                if (player.isSwimming()) { // doesn't work when strafing without "swimming"
                 PlayerMovementInputWrapper.PlayerMovementInput playerInput = PlayerMovementInputWrapper.get(player);
                 if((player.isInWater() && !player.isPassenger()) && (playerInput.strafeLeftKey || playerInput.strafeRightKey || playerInput.forwardKey || playerInput.reverseKey || playerInput.jumpKey || player.isCrouching())) {
@@ -107,7 +107,7 @@ public class SwimAssistModule extends AbstractPowerModule {
 
                     if (swimEnergyConsumption < playerEnergy) {
                         if (player.level.isClientSide && NuminaSettings.useSounds()) {
-                            Musique.playerSound(player, MPSSoundDictionary.SWIM_ASSIST, SoundCategory.PLAYERS, 1.0f, 1.0f, true);
+                            Musique.playerSound(player, MPSSoundDictionary.SWIM_ASSIST, SoundSource.PLAYERS, 1.0f, 1.0f, true);
                         } else if (
                             // every 20 ticks
                                 (player.level.getGameTime() % 5) == 0) {
@@ -124,7 +124,7 @@ public class SwimAssistModule extends AbstractPowerModule {
             }
 
             @Override
-            public void onPlayerTickInactive(PlayerEntity player, @Nonnull ItemStack itemStack) {
+            public void onPlayerTickInactive(Player player, @Nonnull ItemStack itemStack) {
                 if (player.level.isClientSide && NuminaSettings.useSounds()) {
                     Musique.stopPlayerSound(player, MPSSoundDictionary.SWIM_ASSIST);
                 }

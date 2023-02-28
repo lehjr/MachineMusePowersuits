@@ -28,14 +28,14 @@ package lehjr.powersuits.common.item.armor;
 
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
 import lehjr.powersuits.common.constants.MPSRegistryNames;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.items.CapabilityItemHandler;
 
 public class PowerArmorChestplate extends AbstractElectricItemArmor {
     public PowerArmorChestplate() {
-        super(EquipmentSlotType.CHEST);
+        super(EquipmentSlot.CHEST);
     }
 
 
@@ -43,17 +43,17 @@ public class PowerArmorChestplate extends AbstractElectricItemArmor {
     public boolean canElytraFly(ItemStack stack, LivingEntity entity) {
         return
                 // Flight control module
-                entity.getItemBySlot(EquipmentSlotType.HEAD).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+                entity.getItemBySlot(EquipmentSlot.HEAD).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
                         .filter(IModularItem.class::isInstance)
                         .map(IModularItem.class::cast)
                         .map(iModularItem -> iModularItem.isModuleOnline(MPSRegistryNames.FLIGHT_CONTROL_MODULE)).orElse(false) &&
 
-                        entity.getItemBySlot(EquipmentSlotType.CHEST).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+                        entity.getItemBySlot(EquipmentSlot.CHEST).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
                                 .filter(IModularItem.class::isInstance)
                                 .map(IModularItem.class::cast)
                                 .map(iModularItem -> iModularItem.isModuleOnline(MPSRegistryNames.GLIDER_MODULE)).orElse(false) &&
 
-                        entity.getItemBySlot(EquipmentSlotType.CHEST).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+                        entity.getItemBySlot(EquipmentSlot.CHEST).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
                                 .filter(IModularItem.class::isInstance)
                                 .map(IModularItem.class::cast)
                                 .map(iModularItem -> iModularItem.isModuleOnline(MPSRegistryNames.JETPACK_MODULE)).orElse(false);
@@ -63,7 +63,7 @@ public class PowerArmorChestplate extends AbstractElectricItemArmor {
     public boolean elytraFlightTick(ItemStack stack, LivingEntity entity, int flightTicks) {
 //        if (!entity.level.isClientSide && (flightTicks + 1) % 20 == 0) {
 //            // drain instead?
-//            // stack.hurtAndBreak(1, entity, e -> e.broadcastBreakEvent(net.minecraft.inventory.EquipmentSlotType.CHEST));
+//            // stack.hurtAndBreak(1, entity, e -> e.broadcastBreakEvent(net.minecraft.inventory.EquipmentSlot.CHEST));
 //        }
         return true;
     }

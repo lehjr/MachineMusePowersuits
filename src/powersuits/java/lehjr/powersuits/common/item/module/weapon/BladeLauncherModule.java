@@ -31,20 +31,20 @@ import lehjr.numina.common.capabilities.module.rightclick.RightClickModule;
 import lehjr.numina.common.energy.ElectricItemUtils;
 import lehjr.powersuits.common.config.MPSSettings;
 import lehjr.powersuits.common.constants.MPSConstants;
-import lehjr.powersuits.common.entity.SpinningBladeEntity;
 import lehjr.powersuits.common.item.module.AbstractPowerModule;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Hand;
-import net.minecraft.world.World;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -57,7 +57,7 @@ public class BladeLauncherModule extends AbstractPowerModule {
 
     @Nullable
     @Override
-    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundNBT nbt) {
+    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt) {
         return new CapProvider(stack);
     }
 
@@ -81,25 +81,27 @@ public class BladeLauncherModule extends AbstractPowerModule {
             }
 
             @Override
-            public ActionResult use(ItemStack itemStackIn, World worldIn, PlayerEntity playerIn, Hand hand) {
-                if (hand == Hand.MAIN_HAND) {
+            public InteractionResultHolder<ItemStack> use(@NotNull ItemStack itemStackIn, Level worldIn, Player playerIn, InteractionHand hand) {
+                if (hand == InteractionHand.MAIN_HAND) {
                     if (ElectricItemUtils.getPlayerEnergy(playerIn) > applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION)) {
                         playerIn.startUsingItem(hand);
-                        return new ActionResult(ActionResultType.SUCCESS, itemStackIn);
+                        return new InteractionResultHolder(InteractionResult.SUCCESS, itemStackIn);
                     }
                 }
-                return new ActionResult(ActionResultType.PASS, itemStackIn);
+                return new InteractionResultHolder(InteractionResult.PASS, itemStackIn);
             }
 
             @Override
-            public void releaseUsing(ItemStack stack, World worldIn, LivingEntity entityLiving, int timeLeft) {
+            public void releaseUsing(ItemStack stack, Level worldIn, LivingEntity entityLiving, int timeLeft) {
                 if (!worldIn.isClientSide) {
-                   int energyConsumption = getEnergyUsage();
+                    int energyConsumption = getEnergyUsage();
 
                     if (ElectricItemUtils.getPlayerEnergy(entityLiving) > energyConsumption) {
                         ElectricItemUtils.drainPlayerEnergy(entityLiving, energyConsumption);
-                        SpinningBladeEntity blade = new SpinningBladeEntity(worldIn, entityLiving);
-                        worldIn.addFreshEntity(blade);
+                        System.out.println("FIXME!!!");
+
+//                        SpinningBladeEntity blade = new SpinningBladeEntity(worldIn, entityLiving);
+//                        worldIn.addFreshEntity(blade);
                     }
                 }
             }

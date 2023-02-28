@@ -1,21 +1,23 @@
 package lehjr.numina.client.gui.clickable.slider;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.PoseStack;
 import lehjr.numina.client.gui.geometry.MusePoint2D;
 import lehjr.numina.client.render.IconUtils;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.widget.Widget;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.components.AbstractWidget;
+import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.util.Mth;
+
 
 /**
  * uses vanilla texture for vanilla look and feel
  */
 public class VanillaSlider extends AbstractSlider {
-    public ITextComponent displayString = new StringTextComponent("");
-    public ITextComponent message = new StringTextComponent("");
+    public Component displayString = new TextComponent("");
+    public Component message = new TextComponent("");
     public String suffix = "";
     boolean showDecimal = false;
     int precision = 2;
@@ -41,10 +43,12 @@ public class VanillaSlider extends AbstractSlider {
 
 
     @Override
-    public void renderBg(MatrixStack matrixStack, int mouseX, int mouseY, float frameTime) {
-        FontRenderer fontrenderer = getMinecraft().font;
-        getMinecraft().getTextureManager().bind(Widget.WIDGETS_LOCATION);
-        RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+    public void renderBg(PoseStack matrixStack, int mouseX, int mouseY, float frameTime) {
+        Font fontrenderer = getMinecraft().font;
+        RenderSystem.setShader(GameRenderer::getPositionTexShader);
+        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+        RenderSystem.setShaderTexture(0, AbstractWidget.WIDGETS_LOCATION);
+
         int i = 0;
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
@@ -66,17 +70,18 @@ public class VanillaSlider extends AbstractSlider {
                 this.height());
 //            this.renderBg(matrixStack, mouseX, mouseY);
         int j = getFGColor();
-        getMinecraft().screen.drawCenteredString(matrixStack, fontrenderer, this.getMessage(), (int) (this.left() + this.width() / 2), (int) (this.top() + (this.height() - 8) / 2), j | MathHelper.ceil(255.0F) << 24);
+        getMinecraft().screen.drawCenteredString(matrixStack, fontrenderer, this.getMessage(), (int) (this.left() + this.width() / 2), (int) (this.top() + (this.height() - 8) / 2), j | Mth.ceil(255.0F) << 24);
     }
 
-    ITextComponent getMessage() {
+    Component getMessage() {
         return message;
     }
 
     @Override
-    public void renderKnob(MatrixStack matrixStack, int mouseX, int mouseY, float frameTime) {
-        getMinecraft().getTextureManager().bind(Widget.WIDGETS_LOCATION);
-        RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+    public void renderKnob(PoseStack matrixStack, int mouseX, int mouseY, float frameTime) {
+        RenderSystem.setShader(GameRenderer::getPositionTexShader);
+        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+        RenderSystem.setShaderTexture(0, AbstractWidget.WIDGETS_LOCATION);
         int i = (this.containsPoint(mouseX, mouseY) ? 2 : 1) * 20;
         IconUtils.INSTANCE.blit(matrixStack,
                 (this.left() + (this.sliderValue * (this.width() - 8))),
@@ -96,11 +101,11 @@ public class VanillaSlider extends AbstractSlider {
         updateSlider();
     }
 
-    public void setDisplayString(ITextComponent dispString) {
+    public void setDisplayString(Component dispString) {
         this.displayString = dispString;
     }
 
-    public void setMessage(ITextComponent pMessage) {
+    public void setMessage(Component pMessage) {
         this.message = pMessage;
     }
 
@@ -142,7 +147,7 @@ public class VanillaSlider extends AbstractSlider {
         }
 
         if (drawString) {
-            setMessage(new StringTextComponent("").append(displayString).append(valString).append(suffix));
+            setMessage(new TextComponent("").append(displayString).append(valString).append(suffix));
         }
     }
 }

@@ -26,10 +26,10 @@
 
 package lehjr.numina.common.network.packets;
 
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.network.PacketBuffer;
-import net.minecraftforge.fml.network.NetworkEvent;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.network.NetworkEvent;
 
 import javax.annotation.Nonnull;
 import java.util.function.Supplier;
@@ -48,25 +48,24 @@ public class CreativeInstallModuleRequestPacket {
         itemStack = itemStackIn;
     }
 
-    public static void encode(CreativeInstallModuleRequestPacket msg, PacketBuffer packetBuffer) {
+    public static void encode(CreativeInstallModuleRequestPacket msg, FriendlyByteBuf packetBuffer) {
         packetBuffer.writeInt(msg.windowId);
         packetBuffer.writeInt(msg.slotId);
         packetBuffer.writeItem(msg.itemStack);
     }
 
-    public static CreativeInstallModuleRequestPacket decode(PacketBuffer packetBuffer) {
+    public static CreativeInstallModuleRequestPacket decode(FriendlyByteBuf packetBuffer) {
         return new CreativeInstallModuleRequestPacket(
                 packetBuffer.readInt(),
                 packetBuffer.readInt(),
                 packetBuffer.readItem());
     }
 
-
     public static void handle(CreativeInstallModuleRequestPacket message, Supplier<NetworkEvent.Context> ctx) {
         ctx.get().enqueueWork(() -> {
-            ServerPlayerEntity player = ctx.get().getSender();
+            ServerPlayer player = ctx.get().getSender();
             if (player.containerMenu != null && player.containerMenu.containerId == message.windowId) {
-                player.containerMenu.setItem(message.slotId, message.itemStack);
+                player.getInventory().setItem(message.slotId, message.itemStack);
                 player.containerMenu.broadcastChanges();
             }
         });

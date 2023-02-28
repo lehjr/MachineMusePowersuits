@@ -26,33 +26,34 @@
 
 package lehjr.powersuits.common.entity;
 
-import lehjr.numina.common.math.Colour;
+import com.mojang.math.Vector3d;
+import lehjr.numina.common.math.Color;
 import lehjr.powersuits.common.base.MPSObjects;
 import lehjr.powersuits.common.block.LuxCapacitorBlock;
 import lehjr.powersuits.common.blockentity.LuxCapacitorBlockEntity;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.projectile.ThrowableEntity;
-import net.minecraft.item.BlockItemUseContext;
-import net.minecraft.item.ItemUseContext;
-import net.minecraft.network.IPacket;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.World;
-import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
-import net.minecraftforge.fml.network.NetworkHooks;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.ThrowableProjectile;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.entity.IEntityAdditionalSpawnData;
+import net.minecraftforge.network.NetworkHooks;
 
-public class LuxCapacitorEntity extends ThrowableEntity implements IEntityAdditionalSpawnData {
-    public Colour color;
+public class LuxCapacitorEntity extends ThrowableProjectile implements IEntityAdditionalSpawnData {
+    public Color color;
 
-    public LuxCapacitorEntity(EntityType<? extends LuxCapacitorEntity> entityType, World world) {
+    public LuxCapacitorEntity(EntityType<? extends LuxCapacitorEntity> entityType, Level world) {
         super(entityType, world);
         this.setNoGravity(true);
         if (color == null) {
@@ -60,13 +61,12 @@ public class LuxCapacitorEntity extends ThrowableEntity implements IEntityAdditi
         }
     }
 
-    public LuxCapacitorEntity(World world, LivingEntity shootingEntity, Colour color) {
+    public LuxCapacitorEntity(Level world, LivingEntity shootingEntity, Color color) {
         super(MPSObjects.LUX_CAPACITOR_ENTITY_TYPE.get(), shootingEntity, world);
         this.setNoGravity(true);
         this.color = color != null ? color : LuxCapacitorBlock.defaultColor;
-        Vector3d direction = shootingEntity.getLookAngle().normalize();
+        Vec3 direction = shootingEntity.getLookAngle().normalize();
         double speed = 1.0;
-
         this.setDeltaMovement(
                 direction.x * speed,
                 direction.y * speed,
@@ -74,41 +74,46 @@ public class LuxCapacitorEntity extends ThrowableEntity implements IEntityAdditi
         );
 
         double r = 0.4375;
+        double xoffset = 0.1;
+        double yoffset = 0;
+        double zoffset = 0;
+        double horzScale = Math.sqrt(direction.x * direction.x + direction.z * direction.z);
+        double horzx = direction.x / horzScale;
+        double horzz = direction.z / horzScale;
         this.setPos(
-                shootingEntity.getX(),
-                shootingEntity.getY() + shootingEntity.getEyeHeight(),
-                shootingEntity.getZ());
-
-        this.setBoundingBox(new AxisAlignedBB(getX() - r, getY() - 0.0625, getZ() - r, getX() + r, getY() + 0.0625, getZ() + r));
+                (shootingEntity.getX() + direction.x * xoffset - direction.y * horzx * yoffset - horzz * zoffset),
+                (shootingEntity.getY() + shootingEntity.getEyeHeight() + direction.y * xoffset + (1 - Math.abs(direction.y)) * yoffset),
+                (shootingEntity.getZ() + direction.z * xoffset - direction.y * horzz * yoffset + horzx * zoffset));
+        this.setBoundingBox(new AABB(getX() - r, getY() - 0.0625, getZ() - r, getX() + r, getY() + 0.0625, getZ() + r));
     }
 
-    BlockItemUseContext getUseContext(BlockPos pos, Direction facing, BlockRayTraceResult hitResult) {
-        return new BlockItemUseContext(
-                new ItemUseContext(
-                        (PlayerEntity)this.getOwner(),
-                        ((PlayerEntity) this.getOwner()).getUsedItemHand(),
+    BlockPlaceContext getUseContext(BlockPos pos, Direction facing, BlockHitResult hitResult) {
+        return new BlockPlaceContext(
+                new UseOnContext(
+                        (Player)this.getOwner(),
+                        ((Player) this.getOwner()).getUsedItemHand(),
                         hitResult));
     }
 
     @Override
-    protected void onHit(RayTraceResult hitResult) {
+    protected void onHit(HitResult hitResult) {
         if (level.isClientSide()) {
             return;
         }
 
         if (color == null) {
-            color = Colour.WHITE;
+            color = Color.WHITE;
         }
 
-        if (this.isAlive() && hitResult.getType() == RayTraceResult.Type.BLOCK) {
-            BlockRayTraceResult blockRayTrace = (BlockRayTraceResult)hitResult;
+        if (this.isAlive() && hitResult.getType() == HitResult.Type.BLOCK) {
+            BlockHitResult blockRayTrace = (BlockHitResult)hitResult;
             Direction dir = blockRayTrace.getDirection().getOpposite();
             int x = blockRayTrace.getBlockPos().getX() - dir.getStepX();
             int y = blockRayTrace.getBlockPos().getY() - dir.getStepY();
             int z = blockRayTrace.getBlockPos().getZ() - dir.getStepZ();
             BlockPos blockPos = new BlockPos(x, y, z);
 
-            BlockItemUseContext context = getUseContext(blockPos, blockRayTrace.getDirection(), blockRayTrace);
+            BlockPlaceContext context = getUseContext(blockPos, blockRayTrace.getDirection(), blockRayTrace);
 
             if (y > 0 && level.getBlockState(blockPos).canBeReplaced(context)) {
                 BlockState blockState = MPSObjects.LUX_CAPACITOR_BLOCK.get().getStateForPlacement(getUseContext(blockPos, blockRayTrace.getDirection(), blockRayTrace));
@@ -121,7 +126,7 @@ public class LuxCapacitorEntity extends ThrowableEntity implements IEntityAdditi
                     }
                 }
             }
-            this.remove();
+            this.remove(RemovalReason.DISCARDED);
         }
     }
 
@@ -133,7 +138,8 @@ public class LuxCapacitorEntity extends ThrowableEntity implements IEntityAdditi
     boolean placedBlock(BlockState state, BlockPos pos) {
         if (state.canSurvive(level, pos)) {
             level.setBlockAndUpdate(pos, state);
-            level.setBlockEntity(pos, new LuxCapacitorBlockEntity(color));
+
+            level.setBlockEntity(new LuxCapacitorBlockEntity(pos, state));
             return true;
         }
         return false;
@@ -153,7 +159,7 @@ public class LuxCapacitorEntity extends ThrowableEntity implements IEntityAdditi
     }
 
     @Override
-    public IPacket<?> getAddEntityPacket() {
+    public Packet<?> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
 
@@ -161,7 +167,7 @@ public class LuxCapacitorEntity extends ThrowableEntity implements IEntityAdditi
     public void tick() {
         super.tick();
         if (this.tickCount > 400) {
-            this.remove();
+            this.remove(RemovalReason.DISCARDED);
         }
     }
 
@@ -172,7 +178,7 @@ public class LuxCapacitorEntity extends ThrowableEntity implements IEntityAdditi
      * @param buffer The packet data stream
      */
     @Override
-    public void writeSpawnData(PacketBuffer buffer) {
+    public void writeSpawnData(FriendlyByteBuf buffer) {
         buffer.writeInt(this.color.getInt());
     }
 
@@ -183,7 +189,7 @@ public class LuxCapacitorEntity extends ThrowableEntity implements IEntityAdditi
      * @param additionalData The packet data stream
      */
     @Override
-    public void readSpawnData(PacketBuffer additionalData) {
-        this.color = new Colour(additionalData.readInt());
+    public void readSpawnData(FriendlyByteBuf additionalData) {
+        this.color = new Color(additionalData.readInt());
     }
 }

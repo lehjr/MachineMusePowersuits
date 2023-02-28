@@ -30,19 +30,18 @@ import lehjr.numina.common.capabilities.module.powermodule.IConfig;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
 import lehjr.numina.common.capabilities.module.powermodule.PowerModule;
-import lehjr.numina.common.tags.TagUtils;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.ByteNBT;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraftforge.common.util.Constants;
+import lehjr.numina.common.constants.TagConstants;
+import net.minecraft.nbt.ByteTag;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.util.INBTSerializable;
 
 import javax.annotation.Nonnull;
 import java.util.concurrent.Callable;
 
-public class ToggleableModule extends PowerModule implements IToggleableModule, INBTSerializable<ByteNBT> {
+public class ToggleableModule extends PowerModule implements IToggleableModule, INBTSerializable<ByteTag> {
     Boolean online;
-    public static final String TAG_ONLINE = "Active";
     static boolean defBool;
     public ToggleableModule(@Nonnull ItemStack module, ModuleCategory category, ModuleTarget target, Callable<IConfig> moduleConfigGetterIn, boolean defToggleVal) {
         super(module, category, target, moduleConfigGetterIn);
@@ -50,41 +49,42 @@ public class ToggleableModule extends PowerModule implements IToggleableModule, 
     }
 
     @Override
-    public void updateFromNBT() {
-        final CompoundNBT nbt = TagUtils.getModuleTag(module);
-        if (nbt != null && nbt.contains(TAG_ONLINE, Constants.NBT.TAG_BYTE)) {
-            deserializeNBT((ByteNBT) nbt.get(TAG_ONLINE));
+    public void loadCapValues() {
+        final CompoundTag tag = module.getOrCreateTag();
+        if (tag.contains(TagConstants.TAG_ONLINE, Tag.TAG_BYTE)) {
+            deserializeNBT((ByteTag) tag.get(TagConstants.TAG_ONLINE));
         } else {
-            nbt.putBoolean(TAG_ONLINE, defBool);
-            deserializeNBT(ByteNBT.valueOf((byte) (defBool ? 1 : 0)));
+            tag.putBoolean(TagConstants.TAG_ONLINE, defBool);
+            deserializeNBT(ByteTag.valueOf((byte) (defBool ? 1 : 0)));
         }
     }
 
     @Override
-    public ByteNBT serializeNBT() {
-        return ByteNBT.valueOf((byte) (online ? 1 : 0));
+    public ByteTag serializeNBT() {
+        return ByteTag.valueOf((byte) (online ? 1 : 0));
     }
 
     @Override
-    public void deserializeNBT(ByteNBT nbt) {
-        if (nbt != null) {
-            online = nbt.getAsByte() == 1;
-        } else {
-            online = defBool;
-        }
+    public void deserializeNBT(ByteTag nbt) {
+        online = nbt.getAsByte() == 1;
     }
 
     @Override
     public void toggleModule(boolean online) {
         this.online = online;
-        TagUtils.setModuleBoolean(module, TAG_ONLINE, online);
+        onValueChanged();
+    }
+
+    @Override
+    public void onValueChanged() {
+        module.addTagElement(TagConstants.TAG_ONLINE, serializeNBT());
     }
 
     @Override
     public boolean isModuleOnline() {
-//        if (online == null) {
-//            updateFromNBT();
-//        }
-        return online == null ? defBool : online; // this shouldn't happen but probably will -_-
+        if (online == null) {
+            loadCapValues();
+        }
+        return online !=null ? online : defBool;
     }
 }

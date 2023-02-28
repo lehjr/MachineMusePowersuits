@@ -26,17 +26,18 @@
 
 package lehjr.numina.client.screen;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.PoseStack;
 import lehjr.numina.common.constants.NuminaConstants;
 import lehjr.numina.common.container.ArmorStandMenu;
-import net.minecraft.client.gui.screen.inventory.ContainerScreen;
-import net.minecraft.client.gui.screen.inventory.InventoryScreen;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.ITextComponent;
+import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.gui.screens.inventory.InventoryScreen;
+import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Inventory;
 
-public class ArmorStandScreen extends ContainerScreen<ArmorStandMenu> {
+public class ArmorStandScreen extends AbstractContainerScreen<ArmorStandMenu> {
     public static final ResourceLocation BACKGROUND = new ResourceLocation(NuminaConstants.MOD_ID, "textures/gui/container/armorstand.png");
     /** The old x position of the mouse pointer */
     /** The old x position of the mouse pointer */
@@ -45,23 +46,24 @@ public class ArmorStandScreen extends ContainerScreen<ArmorStandMenu> {
     private float yMouse;
 
 
-    public ArmorStandScreen(ArmorStandMenu pMenu, PlayerInventory pPlayerInventory, ITextComponent pTitle) {
-        super(pMenu, pPlayerInventory, pTitle);
+    public ArmorStandScreen(ArmorStandMenu pMenu, Inventory pInventory, Component pTitle) {
+        super(pMenu, pInventory, pTitle);
     }
 
     @Override
-    protected void renderBg(MatrixStack pPoseStack, float pPartialTick, int pMouseX, int pMouseY) {
-        RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-        this.minecraft.getTextureManager().bind(this.BACKGROUND);
+    protected void renderBg(PoseStack pPoseStack, float pPartialTick, int pMouseX, int pMouseY) {
+        RenderSystem.setShader(GameRenderer::getPositionTexShader);
+        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+        RenderSystem.setShaderTexture(0, BACKGROUND);
         int i = this.leftPos;
         int j = this.topPos;
         this.blit(pPoseStack, i, j, 0, 0, this.imageWidth, this.imageHeight);
         InventoryScreen.renderEntityInInventory(i + 51, j + 75, 30, (float)(i + 51) - this.xMouse, (float)(j + 75 - 50) - this.yMouse, this.minecraft.player);
-        InventoryScreen.renderEntityInInventory(i + 126, j + 75, 30, (float)(i + 126) - this.xMouse, (float)(j + 75 - 50) - this.yMouse, this.menu.getArmorStandEntity());
+        InventoryScreen.renderEntityInInventory(i + 126, j + 75, 30, (float)(i + 126) - this.xMouse, (float)(j + 75 - 50) - this.yMouse, this.menu.getArmorStand());
     }
 
     @Override
-    public void render(MatrixStack pPoseStack, int pMouseX, int pMouseY, float pPartialTick) {
+    public void render(PoseStack pPoseStack, int pMouseX, int pMouseY, float pPartialTick) {
         renderBackground(pPoseStack);
         super.render(pPoseStack, pMouseX, pMouseY, pPartialTick);
         this.renderTooltip(pPoseStack, pMouseX, pMouseY);
@@ -70,6 +72,6 @@ public class ArmorStandScreen extends ContainerScreen<ArmorStandMenu> {
     }
 
     @Override
-    protected void renderLabels(MatrixStack pPoseStack, int pMouseX, int pMouseY) {
+    protected void renderLabels(PoseStack pPoseStack, int pMouseX, int pMouseY) {
     }
 }

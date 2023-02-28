@@ -27,30 +27,28 @@
 package lehjr.numina.common.capabilities.module.blockbreaking;
 
 import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
-import lehjr.numina.common.helper.ToolHelpers;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.common.IForgeShearable;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 
 import javax.annotation.Nonnull;
 
 public interface IBlockBreakingModule extends IPowerModule {
-    default boolean canHarvestBlock(@Nonnull ItemStack stack, BlockState state, PlayerEntity player, BlockPos pos, int playerEnergy) {
-        if (playerEnergy >= this.getEnergyUsage() && ToolHelpers.isToolEffective(player.level, pos, getEmulatedTool()))
+    default boolean canHarvestBlock(@Nonnull ItemStack stack, BlockState state, Player player, BlockPos pos, int playerEnergy) {
+        if (playerEnergy >= this.getEnergyUsage() && isToolEffective(player.level, pos, getEmulatedTool()))
             return true;
         return false;
     }
 
-    default boolean mineBlock(@Nonnull ItemStack powerFist, World worldIn, BlockState state, BlockPos pos, LivingEntity entityLiving, int playerEnergy) {
-        return onBlockDestroyed(powerFist, worldIn, state, pos, entityLiving, playerEnergy);
-    }
-
-    @Deprecated
-    boolean onBlockDestroyed(@Nonnull ItemStack itemStack, World worldIn, BlockState state, BlockPos pos, LivingEntity entityLiving, int playerEnergy);
+    boolean mineBlock(@Nonnull ItemStack powerFist, Level worldIn, BlockState state, BlockPos pos, LivingEntity entityLiving, int playerEnergy);
 
     void handleBreakSpeed(PlayerEvent.BreakSpeed event);
 
@@ -58,4 +56,38 @@ public interface IBlockBreakingModule extends IPowerModule {
 
     @Nonnull
     ItemStack getEmulatedTool();
+
+
+    default boolean isToolEffective(BlockGetter world, BlockPos pos, @Nonnull ItemStack emulatedTool) {
+        BlockState state = world.getBlockState(pos);
+
+        if(emulatedTool.isCorrectToolForDrops(state)) {
+            return true;
+        }
+
+        if (Float.compare(state.getDestroySpeed(world, pos), -1.0F) <= 0 ) {// unbreakable
+            return false;
+        }
+
+        if (emulatedTool.getItem().isCorrectToolForDrops(state)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    default boolean blockCheckAndHarvest(Player player, Level world, BlockPos pos) {
+        BlockState state = world.getBlockState(pos);
+        Block block = state.getBlock();
+
+        if (block == null || world.isEmptyBlock(pos) || block == Blocks.BEDROCK)
+            return false;
+        if ((block instanceof IForgeShearable || block instanceof FlowerBlock || block instanceof BushBlock || block instanceof LeavesBlock)
+                && block.canHarvestBlock(state, world, pos, player) || block == Blocks.SNOW || block == Blocks.SNOW_BLOCK) {
+            block.playerDestroy(world, player, pos, state, world.getBlockEntity(pos), new ItemStack(Items.IRON_SHOVEL));
+            world.removeBlock(pos, false);
+            return true;
+        }
+        return false;
+    }
 }

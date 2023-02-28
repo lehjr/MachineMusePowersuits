@@ -26,7 +26,8 @@
 
 package lehjr.numina.common.capabilities.inventory.modechanging;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.platform.Window;
+import com.mojang.blaze3d.vertex.PoseStack;
 import lehjr.numina.client.render.NuminaRenderer;
 import lehjr.numina.common.capabilities.inventory.modularitem.ModularItem;
 import lehjr.numina.common.capabilities.module.powermodule.PowerModuleCapability;
@@ -34,14 +35,13 @@ import lehjr.numina.common.capabilities.module.rightclick.IRightClickModule;
 import lehjr.numina.common.capabilities.render.chameleon.ChameleonCapability;
 import lehjr.numina.common.network.NuminaPackets;
 import lehjr.numina.common.network.packets.ModeChangeRequestPacket;
-import net.minecraft.client.MainWindow;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.model.IBakedModel;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.core.NonNullList;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -69,21 +69,21 @@ public class ModeChangingModularItem extends ModularItem implements IModeChangin
     @OnlyIn(Dist.CLIENT)
     @Nullable
     @Override
-    public IBakedModel getInventoryModel() {
+    public BakedModel getInventoryModel() {
         return Minecraft.getInstance().getItemRenderer().getItemModelShaper().getItemModel(getActiveModule());
     }
 
     @OnlyIn(Dist.CLIENT)
     @Override
-    public void drawModeChangeIcon(PlayerEntity player, int hotbarIndex, Minecraft mc) {
+    public void drawModeChangeIcon(Player player, int hotbarIndex, Minecraft mc) {
         ItemStack module = getActiveModule();
         if (!module.isEmpty()) {
-            MainWindow screen = mc.getWindow();
+            Window screen = mc.getWindow();
             double currX;
             double currY;
             int sw = screen.getGuiScaledWidth();
             int baroffset = 22;
-            if (!player.abilities.instabuild) {
+            if (!player.getAbilities().instabuild) {
                 baroffset += 16;
                 int totalArmorValue = player.getArmorValue();
                 baroffset += 8 * (int) Math.ceil((double)totalArmorValue / 20); // 20 points per row @ 2 armor points per icon
@@ -94,14 +94,14 @@ public class ModeChangingModularItem extends ModularItem implements IModeChangin
             if (module.getCapability(PowerModuleCapability.POWER_MODULE).map(pm-> pm.isModuleOnline()).orElse(false)) {
                 mc.getItemRenderer().renderGuiItem(module.getCapability(ChameleonCapability.CHAMELEON).map(iChameleon -> iChameleon.getStackToRender()).orElse(module), (int)currX, (int)currY);
             } else {
-                NuminaRenderer.drawModuleAt(new MatrixStack(), currX, currY, module.getCapability(ChameleonCapability.CHAMELEON).map(iChameleon -> iChameleon.getStackToRender()).orElse(module), false);
+                NuminaRenderer.drawModuleAt(new PoseStack(), currX, currY, module.getCapability(ChameleonCapability.CHAMELEON).map(iChameleon -> iChameleon.getStackToRender()).orElse(module), false);
             }
         }
     }
 
     @Override
     public List<Integer> getValidModes() {
-        this.updateFromNBT();
+        this.loadCapValues();
         List<Integer>moduleIndexes = new ArrayList<>();
 
         // note: starting at 1 skips the power storage there
@@ -175,13 +175,13 @@ public class ModeChangingModularItem extends ModularItem implements IModeChangin
     }
 
     @Override
-    public void cycleMode(PlayerEntity player, int dMode) {
+    public void cycleMode(Player player, int dMode) {
         List<Integer> modes = this.getValidModes();
         if (modes.size() > 0) {
             int newindex = clampMode(modes.indexOf(this.getActiveMode()) + dMode, modes.size());
             int newmode = modes.get(newindex);
             this.setActiveMode(newmode);
-            NuminaPackets.CHANNEL_INSTANCE.sendToServer(new ModeChangeRequestPacket(newmode, player.inventory.selected));
+            NuminaPackets.CHANNEL_INSTANCE.sendToServer(new ModeChangeRequestPacket(newmode, player.getInventory().selected));
         }
     }
 
@@ -218,14 +218,14 @@ public class ModeChangingModularItem extends ModularItem implements IModeChangin
     }
 
     @Override
-    public CompoundNBT serializeNBT() {
-        CompoundNBT nbt = super.serializeNBT();
+    public CompoundTag serializeNBT() {
+        CompoundTag nbt = super.serializeNBT();
         nbt.putInt(TAG_MODE, activeMode);
         return nbt;
     }
 
     @Override
-    public void deserializeNBT(CompoundNBT nbt) {
+    public void deserializeNBT(CompoundTag nbt) {
         if (nbt.contains(TAG_MODE))
             activeMode = nbt.getInt(TAG_MODE);
         else

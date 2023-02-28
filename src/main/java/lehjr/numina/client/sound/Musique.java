@@ -28,12 +28,12 @@ package lehjr.numina.client.sound;
 
 import lehjr.numina.common.config.NuminaSettings;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.audio.SimpleSound;
-import net.minecraft.client.audio.SoundHandler;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvent;
+import net.minecraft.client.resources.sounds.SimpleSoundInstance;
+import net.minecraft.client.sounds.SoundManager;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -48,25 +48,25 @@ import java.util.HashMap;
 public class Musique {
     private static HashMap<String, MovingSoundPlayer> soundMap = new HashMap<>();
 
-    public static SoundHandler mcsound() {
+    public static SoundManager mcsound() {
         return Minecraft.getInstance().getSoundManager();
     }
 
     public static void playClientSound(SoundEvent soundEvt, float volumeIn) {
         if (NuminaSettings.useSounds()) {
-            mcsound().play(SimpleSound.forUI(soundEvt, volumeIn));
+            mcsound().play(SimpleSoundInstance.forUI(soundEvt, volumeIn));
         }
     }
 
-    public static String makeSoundString(PlayerEntity player, SoundEvent soundEvt) {
+    public static String makeSoundString(Player player, SoundEvent soundEvt) {
         return makeSoundString(player, soundEvt.getRegistryName());
     }
 
-    public static String makeSoundString(PlayerEntity player, ResourceLocation soundname) {
+    public static String makeSoundString(Player player, ResourceLocation soundname) {
         return player.getUUID().toString() + soundname;
     }
 
-    public static void playerSound(PlayerEntity player, SoundEvent soundEvt, SoundCategory categoryIn, float volume, Float pitch, Boolean continuous) {
+    public static void playerSound(Player player, SoundEvent soundEvt, SoundSource categoryIn, float volume, Float pitch, Boolean continuous) {
         pitch = (pitch != null) ? pitch : 1.0F;
         continuous = (continuous != null) ? continuous : true;
         if (NuminaSettings.useSounds() && soundEvt != null) {
@@ -88,7 +88,7 @@ public class Musique {
         }
     }
 
-    public static void stopPlayerSound(PlayerEntity player, SoundEvent soundEvt) {
+    public static void stopPlayerSound(Player player, SoundEvent soundEvt) {
         if (NuminaSettings.useSounds()) {
             String soundID = makeSoundString(player, soundEvt);
             MovingSoundPlayer sound = soundMap.get(soundID);

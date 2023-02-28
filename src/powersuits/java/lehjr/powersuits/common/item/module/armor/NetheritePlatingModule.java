@@ -1,14 +1,13 @@
 package lehjr.powersuits.common.item.module.armor;
 
-import lehjr.numina.common.capabilities.heat.HeatCapability;
 import lehjr.numina.common.capabilities.module.powermodule.*;
-import lehjr.numina.common.constants.NuminaConstants;
+import lehjr.numina.common.constants.TagConstants;
 import lehjr.powersuits.common.config.MPSSettings;
 import lehjr.powersuits.common.constants.MPSConstants;
 import lehjr.powersuits.common.item.module.AbstractPowerModule;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.Direction;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
@@ -25,7 +24,7 @@ public class NetheritePlatingModule extends AbstractPowerModule {
 
     @Nullable
     @Override
-    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundNBT nbt) {
+    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt) {
         return new CapProvider(stack);
     }
 
@@ -48,8 +47,8 @@ public class NetheritePlatingModule extends AbstractPowerModule {
                     return "Armor";
                 }
                 {
-                    addBaseProperty(MPSConstants.ARMOR_VALUE_PHYSICAL, 7.5, NuminaConstants.MODULE_TRADEOFF_PREFIX + MPSConstants.ARMOR_POINTS);
-                    addBaseProperty(HeatCapability.MAXIMUM_HEAT, 750);
+                    addBaseProperty(MPSConstants.ARMOR_VALUE_PHYSICAL, 7.5, TagConstants.MODULE_TRADEOFF_PREFIX + MPSConstants.ARMOR_POINTS);
+                    addBaseProperty(TagConstants.MAXIMUM_HEAT, 750);
                     addBaseProperty(MPSConstants.KNOCKBACK_RESISTANCE, 1.5F);
                     addBaseProperty(MPSConstants.ARMOR_TOUGHNESS, 3.5F);
                 }};

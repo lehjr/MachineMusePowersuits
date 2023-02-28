@@ -27,12 +27,12 @@
 package lehjr.powersuits.common.network;
 
 import lehjr.powersuits.common.constants.MPSConstants;
-import lehjr.powersuits.common.network.packets.ColourInfoPacket;
+import lehjr.powersuits.common.network.packets.ColorInfoPacket;
 import lehjr.powersuits.common.network.packets.ContainerGuiOpenPacket;
 import lehjr.powersuits.common.network.packets.CreativeInstallPacket;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.network.NetworkRegistry;
-import net.minecraftforge.fml.network.simple.SimpleChannel;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraftforge.network.NetworkRegistry;
+import net.minecraftforge.network.simple.SimpleChannel;
 
 public class MPSPackets {
     private static final String PROTOCOL_VERSION = "1";
@@ -48,10 +48,10 @@ public class MPSPackets {
         int i = 0;
         CHANNEL_INSTANCE.registerMessage(
                 i++,
-                ColourInfoPacket.class,
-                ColourInfoPacket::write,
-                ColourInfoPacket::read,
-                ColourInfoPacket::handle);
+                ColorInfoPacket.class,
+                ColorInfoPacket::write,
+                ColorInfoPacket::read,
+                ColorInfoPacket::handle);
 
         CHANNEL_INSTANCE.registerMessage(
                 i++,

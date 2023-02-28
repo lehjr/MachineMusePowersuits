@@ -26,35 +26,35 @@
 
 package lehjr.numina.common.container;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 import lehjr.numina.client.gui.slot.IconSlotItemHandler;
 import lehjr.numina.client.render.IconUtils;
 import lehjr.numina.common.base.NuminaObjects;
-import lehjr.numina.common.blockentity.ChargingBaseTileEntity;
+import lehjr.numina.common.blockentity.ChargingBaseBlockEntity;
 import lehjr.numina.common.capabilities.energy.BlockEnergyStorage;
-import lehjr.numina.common.math.Colour;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.container.Container;
-import net.minecraft.inventory.container.Slot;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IWorldPosCallable;
-import net.minecraft.util.IntReferenceHolder;
-import net.minecraft.util.math.BlockPos;
+import lehjr.numina.common.math.Color;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.ContainerLevelAccess;
+import net.minecraft.world.inventory.DataSlot;
+import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.wrapper.InvWrapper;
 
-public class ChargingBaseMenu extends Container {
+public class ChargingBaseMenu extends AbstractContainerMenu {
 
-    private TileEntity blockEntity;
-    private PlayerEntity player;
+    private BlockEntity blockEntity;
+    private Player player;
     private IItemHandler playerInventory;
 
-    public ChargingBaseMenu(int windowID, BlockPos pos, PlayerInventory playerInventory) { // (int windowId, World world, BlockPos pos, PlayerInventory playerInventory, PlayerEntity player)
+    public ChargingBaseMenu(int windowID, BlockPos pos, Inventory playerInventory) { // (int windowId, Level world, BlockPos pos, Inventory playerInventory, Player player)
         super(NuminaObjects.CHARGING_BASE_CONTAINER_TYPE.get(), windowID);
         this.player = playerInventory.player;
         this.blockEntity = player.level.getBlockEntity(pos);
@@ -66,8 +66,8 @@ public class ChargingBaseMenu extends Container {
             blockEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
                 addSlot(new IconSlotItemHandler(h, 0, 79, 35) {
                     @Override
-                    public void drawIconAt(MatrixStack matrixStack, double posX, double posY, Colour colour) {
-                        IconUtils.getIcon().energyStorageBackground.renderIconScaledWithColour(matrixStack, posX, posY, 16, 16, Colour.WHITE);
+                    public void drawIconAt(PoseStack matrixStack, double posX, double posY, Color colour) {
+                        IconUtils.getIcon().energyStorageBackground.renderIconScaledWithColour(matrixStack, posX, posY, 16, 16, Color.WHITE);
                     }
                 });
             });
@@ -93,32 +93,32 @@ public class ChargingBaseMenu extends Container {
     private void trackPower() {
         // Unfortunatelly on a dedicated server ints are actually truncated to short so we need
         // to split our integer here (split our 32 bit integer into two 16 bit integers)
-        addDataSlot(new IntReferenceHolder() {
+        addDataSlot(new DataSlot() {
             @Override
             public int get() {
-                return getTileEnergy() & 0xffff;
+                return getBlockEnergy() & 0xffff;
             }
 
             @Override
             public void set(int value) {
-                if (blockEntity instanceof ChargingBaseTileEntity) {
-                    ((ChargingBaseTileEntity) blockEntity).getTileEnergyHandler().ifPresent(h -> {
+                if (blockEntity instanceof ChargingBaseBlockEntity) {
+                    ((ChargingBaseBlockEntity) blockEntity).getBlockEnergyHandler().ifPresent(h -> {
                         int energyStored = h.getEnergyStored() & 0xffff0000;
                         ((BlockEnergyStorage) h).setEnergy(energyStored + (value & 0xffff));
                     });
                 }
             }
         });
-        addDataSlot(new IntReferenceHolder() {
+        addDataSlot(new DataSlot() {
             @Override
             public int get() {
-                return (getTileEnergy() >> 16) & 0xffff;
+                return (getBlockEnergy() >> 16) & 0xffff;
             }
 
             @Override
             public void set(int value) {
-                if (blockEntity instanceof ChargingBaseTileEntity) {
-                    ((ChargingBaseTileEntity) blockEntity).getTileEnergyHandler().ifPresent(h -> {
+                if (blockEntity instanceof ChargingBaseBlockEntity) {
+                    ((ChargingBaseBlockEntity) blockEntity).getBlockEnergyHandler().ifPresent(h -> {
                         int energyStored = h.getEnergyStored() & 0x0000ffff;
                         ((BlockEnergyStorage) h).setEnergy(energyStored | (value << 16));
                     });
@@ -139,13 +139,13 @@ public class ChargingBaseMenu extends Container {
         return blockEntity.getCapability(CapabilityEnergy.ENERGY).map(energy->(float)energy.getEnergyStored()/(float) energy.getMaxEnergyStored()).orElse(0F);
     }
 
-    public int getTileEnergy() {
-        return blockEntity instanceof ChargingBaseTileEntity ?
-                ((ChargingBaseTileEntity) blockEntity).getTileEnergyHandler().map(IEnergyStorage::getEnergyStored).orElse(0) : 0;
+    public int getBlockEnergy() {
+        return blockEntity instanceof ChargingBaseBlockEntity ?
+                ((ChargingBaseBlockEntity) blockEntity).getBlockEnergyHandler().map(IEnergyStorage::getEnergyStored).orElse(0) : 0;
     }
 
     @Override
-    public ItemStack quickMoveStack(PlayerEntity playerIn, int index) {
+    public ItemStack quickMoveStack(Player playerIn, int index) {
         ItemStack itemstack = ItemStack.EMPTY;
         Slot slot = this.slots.get(index);
         if (slot != null && slot.hasItem()) {
@@ -193,7 +193,7 @@ public class ChargingBaseMenu extends Container {
     }
 
     @Override
-    public boolean stillValid(PlayerEntity playerIn) {
-        return stillValid(IWorldPosCallable.create(blockEntity.getLevel(), blockEntity.getBlockPos()), player, NuminaObjects.CHARGING_BASE_BLOCK.get());
+    public boolean stillValid(Player playerIn) {
+        return stillValid(ContainerLevelAccess.create(blockEntity.getLevel(), blockEntity.getBlockPos()), player, NuminaObjects.CHARGING_BASE_BLOCK.get());
     }
 }

@@ -28,31 +28,100 @@ package lehjr.numina.client.event;
 
 
 import lehjr.numina.client.render.entity.NuminaArmorStandRenderer;
+import lehjr.numina.client.render.item.NuminaArmorLayer;
 import lehjr.numina.common.base.NuminaObjects;
 import lehjr.numina.common.constants.NuminaConstants;
-import net.minecraft.client.renderer.texture.AtlasTexture;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.model.HumanoidModel;
+import net.minecraft.client.renderer.entity.EntityRenderer;
+import net.minecraft.client.renderer.entity.LivingEntityRenderer;
+import net.minecraft.client.renderer.entity.layers.ElytraLayer;
+import net.minecraft.client.renderer.entity.layers.HumanoidArmorLayer;
+import net.minecraft.client.renderer.entity.layers.RenderLayer;
+import net.minecraft.client.renderer.entity.player.PlayerRenderer;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.TextureStitchEvent;
+import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+
+import javax.annotation.Nullable;
+import java.util.Map;
 
 @Mod.EventBusSubscriber(modid = NuminaConstants.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class ClientEventBusSubscriber {
     @SubscribeEvent
-    public static void onClientSetup(FMLClientSetupEvent event) {
-        RenderingRegistry.registerEntityRenderingHandler(NuminaObjects.ARMOR_WORKSTATION__ENTITY_TYPE.get(), NuminaArmorStandRenderer::new);
+    public static void onRegisterRenderers(final EntityRenderersEvent.RegisterRenderers event) {
+        event.registerEntityRenderer(NuminaObjects.ARMOR_STAND__ENTITY_TYPE.get(), NuminaArmorStandRenderer::new);
+
+
+
+
     }
 
     @SubscribeEvent
-    public static void onTextureStitchPre(TextureStitchEvent.Pre event) {
-        AtlasTexture map = event.getMap();
-        // only adds if it doesn't already exist
-        if (map.location() == AtlasTexture.LOCATION_BLOCKS) {
-            event.addSprite(NuminaConstants.TEXTURE_WHITE_SHORT);
+    public static void addLayers(EntityRenderersEvent.AddLayers event) {
+        //Add our own custom armor layer to the various player renderers
+        for (String skinName : event.getSkins()) {
+            addCustomLayers(EntityType.PLAYER, (PlayerRenderer) event.getSkin(skinName));
+        }
+        //Add our own custom armor layer to everything that has an armor layer
+        //Note: This includes any modded mobs that have vanilla's BipedArmorLayer added to them
+        for (Map.Entry<EntityType<?>, EntityRenderer<?>> entry : Minecraft.getInstance().getEntityRenderDispatcher().renderers.entrySet()) {
+            EntityRenderer<?> renderer = entry.getValue();
+            if (renderer instanceof LivingEntityRenderer) {
+                EntityType<?> entityType = entry.getKey();
+                //noinspection unchecked,rawtypes
+                addCustomLayers(entityType, event.getRenderer((EntityType) entityType));
+            }
         }
     }
+
+    private static <T extends LivingEntity, M extends HumanoidModel<T>> void addCustomLayers(EntityType<?> type, @Nullable LivingEntityRenderer<T, M> renderer) {
+        if (renderer == null) {
+            return;
+        }
+        HumanoidArmorLayer<T, M, ?> bipedArmorLayer = null;
+        boolean hasElytra = false;
+        for (RenderLayer<T, M> layerRenderer : renderer.layers) {
+            //Validate against the layer render being null, as it seems like some mods do stupid things and add in null layers
+            if (layerRenderer != null) {
+                //Only allow an exact class match, so we don't add to modded entities that only have a modded extended armor or elytra layer
+                Class<?> layerClass = layerRenderer.getClass();
+                if (layerClass == HumanoidArmorLayer.class) {
+                    bipedArmorLayer = (HumanoidArmorLayer<T, M, ?>) layerRenderer;
+                    if (hasElytra) {
+                        break;
+                    }
+                } else if (layerClass == ElytraLayer.class) {
+                    hasElytra = true;
+                    if (bipedArmorLayer != null) {
+                        break;
+                    }
+                }
+            }
+        }
+        if (bipedArmorLayer != null) {
+            renderer.addLayer(new NuminaArmorLayer<>(renderer, bipedArmorLayer.innerModel, bipedArmorLayer.outerModel));
+//            Mekanism.logger.debug("Added Mekanism Armor Layer to entity of type: {}", type.getRegistryName());
+        }
+//        if (hasElytra) {
+//            renderer.addLayer(new MekanismElytraLayer<>(renderer, Minecraft.getInstance().getEntityModels()));
+//            Mekanism.logger.debug("Added Mekanism Elytra Layer to entity of type: {}", type.getRegistryName());
+//        }
+    }
+
+
+
+//    @SubscribeEvent
+//    public static void onTextureStitchPre(TextureStitchEvent.Pre event) {
+//        TextureAtlas map = event.getMap();
+//        // only adds if it doesn't already exist
+//        if (map.location() == TextureAtlas.field_110575_b) {
+//            event.addSprite(NuminaConstants.TEXTURE_WHITE_SHORT);
+//        }
+//    }
 
 //    @SubscribeEvent
 //    public static void onModelBake(ModelBakeEvent event) {

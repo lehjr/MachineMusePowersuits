@@ -1,7 +1,7 @@
 //package lehjr.mpsrecipecreator.client.gui;
 //
-//import com.mojang.blaze3d.matrix.MatrixStack;
-//import lehjr.numina.client.gui.IContainerULOffSet;
+//import com.mojang.blaze3d.vertex.PoseStack;
+//import lehjr.numina.client.gui.IAbstractContainerMenuULOffSet;
 //import lehjr.numina.client.gui.clickable.Button;
 //import lehjr.numina.client.gui.clickable.ClickableArrow;
 //import lehjr.numina.client.gui.frame.IGuiFrame;
@@ -13,9 +13,9 @@
 //import lehjr.numina.common.config.NuminaSettings;
 //import lehjr.numina.common.math.Colour;
 //import lehjr.numina.common.string.StringUtils;
-//import net.minecraft.inventory.container.Container;
+//import net.minecraft.inventory.container.AbstractContainerMenu;
 //import net.minecraft.inventory.container.Slot;
-//import net.minecraft.util.text.ITextComponent;
+//import net.minecraft.network.chat.Component;
 //
 //import java.util.ArrayList;
 //import java.util.List;
@@ -23,8 +23,8 @@
 ///**
 // * Spaced crafting grid with result and corresponding buttons
 // */
-//public class SpecialCraftingGrid extends DrawableRect implements IGuiFrame, IContainerULOffSet {
-//    Container container;
+//public class SpecialCraftingGrid extends DrawableRect implements IGuiFrame, IAbstractContainerMenuULOffSet {
+//    AbstractContainerMenu container;
 //    Colour backgroundColour;
 //    Colour gridColour;
 //    public final int slotWidth = 18;
@@ -35,18 +35,18 @@
 //    boolean isVisible = true;
 //    float zLevel;
 //    MusePoint2D slot_ulShift = new MusePoint2D(0, 0);
-//    IContainerULOffSet.ulGetter ulGetter;
+//    IAbstractContainerMenuULOffSet.ulGetter ulGetter;
 //
 //    List<BoxHolder> boxes = new ArrayList<>();
 //    final MusePoint2D borderWH = new MusePoint2D(160, 96);
 //
-//    public SpecialCraftingGrid(Container containerIn,
+//    public SpecialCraftingGrid(AbstractContainerMenu containerIn,
 //                               MusePoint2D topleft,
 //                               float zLevel,
 //                               Colour backgroundColour,
 //                               Colour borderColour,
 //                               MPARCGui mparcGui,
-//                               IContainerULOffSet.ulGetter ulGetter) {
+//                               IAbstractContainerMenuULOffSet.ulGetter ulGetter) {
 //
 //        // (MusePoint2D ul, MusePoint2D br, Colour backgroundColour, Colour borderColour)
 //        super(topleft, topleft.plus(new MusePoint2D(160, 96)), backgroundColour, borderColour);
@@ -150,7 +150,7 @@
 //    }
 //
 //    @Override
-//    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float frameTime) {
+//    public void render(PoseStack matrixStack, int mouseX, int mouseY, float frameTime) {
 //        super.render(matrixStack, mouseX, mouseY, frameTime);
 //        if (this.boxes != null && !this.boxes.isEmpty()) {
 //            for (BoxHolder boxHolder : boxes) {
@@ -181,7 +181,7 @@
 ////    }
 //
 //    @Override
-//    public void setULGetter(IContainerULOffSet.ulGetter ulGetter) {
+//    public void setULGetter(IAbstractContainerMenuULOffSet.ulGetter ulGetter) {
 //        this.ulGetter = ulGetter;
 //    }
 //
@@ -201,7 +201,7 @@
 //    }
 //
 //    @Override
-//    public List<ITextComponent> getToolTip(int i, int i1) {
+//    public List<Component> getToolTip(int i, int i1) {
 //        return null;
 //    }
 //
@@ -231,7 +231,7 @@
 //            super(ul, br, backgroundColour, borderColour);
 //        }
 //
-//        public void render(MatrixStack matrixStackIn, int mouseX, int mouseY, float frameTime) {
+//        public void render(PoseStack matrixStackIn, int mouseX, int mouseY, float frameTime) {
 //            if (NuminaSettings.CLIENT_CONFIG.DRAW_GUI_SPACERS.get()) {
 //                super.render(matrixStackIn, mouseX, mouseY, frameTime);
 //            }
@@ -283,7 +283,7 @@
 //        }
 //
 //        @Override
-//        public void render(MatrixStack matrixStack, int mouseX, int mouseY, float frameTime) {
+//        public void render(PoseStack matrixStack, int mouseX, int mouseY, float frameTime) {
 //            if (button.center() != center()) {
 //                button.setPosition(center().copy());
 //            }
@@ -312,7 +312,7 @@
 //        }
 //
 //        @Override
-//        public void render(MatrixStack matrixStack, int mouseX, int mouseY, float frameTime) {
+//        public void render(PoseStack matrixStack, int mouseX, int mouseY, float frameTime) {
 //            if (arrow.center() != center()) {
 //                arrow.setPosition(center().copy());
 //            }

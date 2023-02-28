@@ -32,10 +32,10 @@ import lehjr.numina.common.energy.ElectricItemUtils;
 import lehjr.powersuits.common.config.MPSSettings;
 import lehjr.powersuits.common.constants.MPSConstants;
 import lehjr.powersuits.common.item.module.AbstractPowerModule;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.Direction;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
@@ -50,7 +50,7 @@ public class KineticGeneratorModule extends AbstractPowerModule {
 
     @Nullable
     @Override
-    public ICapabilityProvider initCapabilities (ItemStack stack, @Nullable CompoundNBT nbt){
+    public ICapabilityProvider initCapabilities (ItemStack stack, @Nullable CompoundTag nbt){
         return new CapProvider(stack);
     }
 
@@ -69,7 +69,7 @@ public class KineticGeneratorModule extends AbstractPowerModule {
             }};
 
             powerModuleHolder = LazyOptional.of(() -> {
-                ticker.updateFromNBT();
+                ticker.loadCapValues();
                 return ticker;
             });
         }
@@ -80,8 +80,8 @@ public class KineticGeneratorModule extends AbstractPowerModule {
             }
 
             @Override
-            public void onPlayerTickActive(PlayerEntity player, @Nonnull ItemStack itemStackIn) {
-                if (player.abilities.flying || player.isPassenger() || player.isFallFlying() || !player.isOnGround())
+            public void onPlayerTickActive(Player player, @Nonnull ItemStack itemStackIn) {
+                if (player.getAbilities().flying || player.isPassenger() || player.isFallFlying() || !player.isOnGround())
                     onPlayerTickInactive(player, itemStackIn);
 
                 // really hate running this check on every tick but needed for player speed adjustments
@@ -99,7 +99,7 @@ public class KineticGeneratorModule extends AbstractPowerModule {
             }
 
             @Override
-            public void onPlayerTickInactive(PlayerEntity player, ItemStack itemStackIn) {
+            public void onPlayerTickInactive(Player player, ItemStack itemStackIn) {
                 // remove attribute modifier when not active
                 getModuleStack().removeTagKey("AttributeModifiers");
             }

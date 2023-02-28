@@ -26,12 +26,12 @@
 
 package lehjr.numina.common.network.packets;
 
-import lehjr.numina.common.capabilities.render.ModelSpecNBTCapability;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.PacketBuffer;
-import net.minecraftforge.fml.network.NetworkEvent;
+import lehjr.numina.common.capabilities.render.ModelSpecCapability;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraftforge.network.NetworkEvent;
 
 import java.util.function.Supplier;
 
@@ -42,42 +42,42 @@ import java.util.function.Supplier;
  * Ported to Java by lehjr on 11/14/16.
  */
 public class CosmeticInfoPacket {
-    protected EquipmentSlotType slotType;
+    protected EquipmentSlot slotType;
     protected String tagName;
-    protected CompoundNBT tagData;
+    protected CompoundTag tagData;
 
     public CosmeticInfoPacket() {
     }
 
-    public CosmeticInfoPacket(EquipmentSlotType slotType, String tagName, CompoundNBT tagData) {
+    public CosmeticInfoPacket(EquipmentSlot slotType, String tagName, CompoundTag tagData) {
         this.slotType = slotType;
         this.tagName = tagName;
         this.tagData = tagData;
     }
 
-    public static void encode(CosmeticInfoPacket msg, PacketBuffer packetBuffer) {
+    public static void encode(CosmeticInfoPacket msg, FriendlyByteBuf packetBuffer) {
         packetBuffer.writeEnum(msg.slotType);
         packetBuffer.writeUtf(msg.tagName);
         packetBuffer.writeNbt(msg.tagData);
     }
 
-    public static CosmeticInfoPacket decode(PacketBuffer packetBuffer) {
+    public static CosmeticInfoPacket decode(FriendlyByteBuf packetBuffer) {
         return new CosmeticInfoPacket(
-                packetBuffer.readEnum(EquipmentSlotType.class),
+                packetBuffer.readEnum(EquipmentSlot.class),
                 packetBuffer.readUtf(500),
                 packetBuffer.readNbt());
     }
 
     public static void handle(CosmeticInfoPacket message, Supplier<NetworkEvent.Context> ctx) {
         ctx.get().enqueueWork(() -> {
-            final ServerPlayerEntity player = ctx.get().getSender();
-            EquipmentSlotType slotType = message.slotType;
+            final ServerPlayer player = ctx.get().getSender();
+            EquipmentSlot slotType = message.slotType;
             String tagName = message.tagName;
-            CompoundNBT tagData = message.tagData;
-            player.getItemBySlot(slotType).getCapability(ModelSpecNBTCapability.RENDER).ifPresent(render-> {
+            CompoundTag tagData = message.tagData;
+            player.getItemBySlot(slotType).getCapability(ModelSpecCapability.RENDER).ifPresent(render-> {
                 render.setRenderTag(tagData, tagName);
             });
-            player.inventory.setChanged();
+            player.getInventory().setChanged();
         });
         ctx.get().setPacketHandled(true);
     }

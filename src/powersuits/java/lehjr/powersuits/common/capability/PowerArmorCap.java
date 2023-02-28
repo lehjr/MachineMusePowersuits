@@ -34,14 +34,14 @@ import lehjr.numina.common.capabilities.inventory.modularitem.ModularItem;
 import lehjr.numina.common.capabilities.inventory.modularitem.NuminaRangedWrapper;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.capabilities.module.powermodule.PowerModuleCapability;
-import lehjr.numina.common.capabilities.render.IModelSpecNBT;
-import lehjr.numina.common.capabilities.render.ModelSpecNBTCapability;
+import lehjr.numina.common.capabilities.render.IModelSpec;
+import lehjr.numina.common.capabilities.render.ModelSpecCapability;
 import lehjr.powersuits.client.render.ArmorModelSpecNBT;
 import lehjr.powersuits.common.config.MPSSettings;
 import lehjr.powersuits.common.constants.MPSRegistryNames;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.Direction;
+import net.minecraft.core.Direction;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
@@ -59,12 +59,12 @@ import java.util.Map;
 
 public class PowerArmorCap implements ICapabilityProvider {
     final ItemStack itemStack;
-    final EquipmentSlotType targetSlot;
+    final EquipmentSlot targetSlot;
     final ModularItem modularItem;
     final LazyOptional<IItemHandler> modularItemHolder;
 
     final ArmorModelSpecNBT modelSpec;
-    final LazyOptional<IModelSpecNBT> modelSpecHolder;
+    final LazyOptional<IModelSpec> modelSpecHolder;
 
     final LazyOptional<IHeatStorage> heatHolder;
 
@@ -72,7 +72,7 @@ public class PowerArmorCap implements ICapabilityProvider {
 
     double maxHeat;
 
-    public PowerArmorCap(@Nonnull ItemStack itemStackIn, EquipmentSlotType slot) {
+    public PowerArmorCap(@Nonnull ItemStack itemStackIn, EquipmentSlot slot) {
         this.itemStack = itemStackIn;
         this.targetSlot = slot;
         Map<ModuleCategory, NuminaRangedWrapper> rangedWrapperMap = new HashMap<>();
@@ -131,7 +131,7 @@ public class PowerArmorCap implements ICapabilityProvider {
         }
 
         this.modularItemHolder = LazyOptional.of(()-> {
-            modularItem.updateFromNBT();
+            modularItem.loadCapValues();
             return modularItem;
         });
 
@@ -140,16 +140,16 @@ public class PowerArmorCap implements ICapabilityProvider {
 
 
         heatHolder = LazyOptional.of(() -> {
-            modularItem.updateFromNBT();
+            modularItem.loadCapValues();
 
             final HeatItemWrapper heatStorage = new HeatItemWrapper(itemStack, maxHeat, modularItem.getStackInSlot(0).getCapability(PowerModuleCapability.POWER_MODULE));
-            heatStorage.updateFromNBT();
+            heatStorage.loadCapValues();
             return heatStorage;
         });
 
         this.fluidHolder = LazyOptional.of(()-> {
-            if (targetSlot == EquipmentSlotType.CHEST ) {
-                modularItem.updateFromNBT();
+            if (targetSlot == EquipmentSlot.CHEST ) {
+                modularItem.loadCapValues();
                 return modularItem.getOnlineModuleOrEmpty(MPSRegistryNames.FLUID_TANK_MODULE).getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).orElse(new EmptyFluidHandler());
             } else {
                 return new EmptyFluidHandler();
@@ -169,7 +169,7 @@ public class PowerArmorCap implements ICapabilityProvider {
             return modularItemCapability;
         }
 
-        final LazyOptional<T> modelSpecCapability = ModelSpecNBTCapability.RENDER.orEmpty(cap, modelSpecHolder);
+        final LazyOptional<T> modelSpecCapability = ModelSpecCapability.RENDER.orEmpty(cap, modelSpecHolder);
         if (modelSpecCapability.isPresent()) {
             return modelSpecCapability;
         }
@@ -181,7 +181,7 @@ public class PowerArmorCap implements ICapabilityProvider {
 
         // update item handler to gain access to the battery module if installed
         if (cap == CapabilityEnergy.ENERGY) {
-            modularItem.updateFromNBT();
+            modularItem.loadCapValues();
             // armor first slot is armor plating, second slot is energy
             return modularItem.getStackInSlot(1).getCapability(cap, side);
         }

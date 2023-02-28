@@ -1,6 +1,6 @@
 package lehjr.powersuits.client.gui.common;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 import lehjr.numina.client.gui.clickable.ClickableButton;
 import lehjr.numina.client.gui.clickable.IClickable;
 import lehjr.numina.client.gui.frame.AbstractGuiFrame;
@@ -9,11 +9,11 @@ import lehjr.numina.client.gui.geometry.IRect;
 import lehjr.numina.client.gui.geometry.MusePoint2D;
 import lehjr.numina.client.gui.geometry.Rect;
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
-import lehjr.numina.common.math.Colour;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import lehjr.numina.common.math.Color;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.items.CapabilityItemHandler;
 
 import javax.annotation.Nonnull;
@@ -30,18 +30,18 @@ public class ModularItemSelectionFrame extends AbstractGuiFrame {
     IChanged changed;
 
     List<IRect> boxes;
-    final List<EquipmentSlotType> equipmentSlotTypes = Arrays.asList(
-            EquipmentSlotType.HEAD,
-            EquipmentSlotType.CHEST,
-            EquipmentSlotType.LEGS,
-            EquipmentSlotType.FEET,
-            EquipmentSlotType.MAINHAND,
-            EquipmentSlotType.OFFHAND);
+    final List<EquipmentSlot> equipmentSlotTypes = Arrays.asList(
+            EquipmentSlot.HEAD,
+            EquipmentSlot.CHEST,
+            EquipmentSlot.LEGS,
+            EquipmentSlot.FEET,
+            EquipmentSlot.MAINHAND,
+            EquipmentSlot.OFFHAND);
     public ModularItemSelectionFrame(MusePoint2D ul) {
-        this(ul, EquipmentSlotType.HEAD);
+        this(ul, EquipmentSlot.HEAD);
     }
 
-    public ModularItemSelectionFrame(MusePoint2D ul, EquipmentSlotType type) {
+    public ModularItemSelectionFrame(MusePoint2D ul, EquipmentSlot type) {
         super(new DrawableTile(ul, ul.plus(35, 200)));
         boxes = new ArrayList<>();
         // each tab is 27 tall and 35 wide
@@ -52,7 +52,7 @@ public class ModularItemSelectionFrame extends AbstractGuiFrame {
 
         int i = 0;
         // look for modular items
-        for (EquipmentSlotType slotType : equipmentSlotTypes) {
+        for (EquipmentSlot slotType : equipmentSlotTypes) {
             ModularItemTabToggleWidget widget = new ModularItemTabToggleWidget(slotType);
             widget.setUL(ul.copy());
             widget.setBelow(boxes.get(boxes.size() - 1));
@@ -63,7 +63,7 @@ public class ModularItemSelectionFrame extends AbstractGuiFrame {
                     this.selectedTab = widget;
                     this.selectedTab.setStateActive(true);
                     this.onChanged();
-                    disableContainerSlots();
+                    disableAbstractContainerMenuSlots();
                 }
             });
 
@@ -75,17 +75,17 @@ public class ModularItemSelectionFrame extends AbstractGuiFrame {
             boxes.add(widget);
             boxes.add(new Rect(ul, ul.plus(35, 3)));
         }
-        creativeInstallButton = new ClickableButton(new TranslationTextComponent("gui.powersuits.creative.install"), MusePoint2D.ZERO, false);
+        creativeInstallButton = new ClickableButton(new TranslatableComponent("gui.powersuits.creative.install"), MusePoint2D.ZERO, false);
         creativeInstallButton.setHeight(18);
         creativeInstallButton.setWidth(30);
         creativeInstallButton.disableAndHide();
-        creativeInstallButton.setEnabledBackground(Colour.LIGHT_GREY);
-        creativeInstallButton.setDisabledBackground(Colour.RED);
+        creativeInstallButton.setEnabledBackground(Color.LIGHT_GREY);
+        creativeInstallButton.setDisabledBackground(Color.RED);
         creativeInstallButton.setUL(getUL().copy());
 
 
-//        List<ITextComponent> toolTip =  new ArrayList<ITextComponent>() {{
-//            add(new TranslationTextComponent("gui.powersuits.creative.install.desc"));
+//        List<Component> toolTip =  new ArrayList<Component>() {{
+//            add(new TranslatableComponent("gui.powersuits.creative.install.desc"));
 //        }};
         boxes.add(creativeInstallButton);
         refreshRects();
@@ -110,7 +110,7 @@ public class ModularItemSelectionFrame extends AbstractGuiFrame {
         return creativeInstallButton;
     }
 
-    void disableContainerSlots() {
+    void disableAbstractContainerMenuSlots() {
     }
 
     public ItemStack getModularItemOrEmpty() {
@@ -132,18 +132,18 @@ public class ModularItemSelectionFrame extends AbstractGuiFrame {
                         .isPresent()).findFirst().isPresent();
     }
 
-    Optional<IModularItem> getModularItemCapability (EquipmentSlotType type) {
+    Optional<IModularItem> getModularItemCapability (EquipmentSlot type) {
         return getStack(type).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
                 .filter(IModularItem.class::isInstance)
                 .map(IModularItem.class::cast);
     }
 
     @Nonnull
-    ItemStack getStack(EquipmentSlotType type) {
+    ItemStack getStack(EquipmentSlot type) {
         return getMinecraft().player.getItemBySlot(type);
     }
 
-    public Optional<EquipmentSlotType> selectedType() {
+    public Optional<EquipmentSlot> selectedType() {
         return getSelectedTab().map(tab ->tab.getSlotType());
     }
 
@@ -185,18 +185,18 @@ public class ModularItemSelectionFrame extends AbstractGuiFrame {
     }
 
     @Override
-    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
-        super.render(matrixStack, mouseX, mouseY, partialTicks);
+    public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTick) {
+        super.render(matrixStack, mouseX, mouseY, partialTick);
         boxes.stream().filter(IClickable.class::isInstance)
                 .map(IClickable.class::cast)
                 .forEach(box-> {
-                    box.render(matrixStack, mouseX, mouseY, partialTicks);
+                    box.render(matrixStack, mouseX, mouseY, partialTick);
                 });
     }
 
     @Nullable
     @Override
-    public List<ITextComponent> getToolTip(int x, int y) {
+    public List<Component> getToolTip(int x, int y) {
         return boxes.stream().filter(IClickable.class::isInstance)
                 .map(IClickable.class::cast).filter(box -> box.containsPoint(x, y))
                 .findFirst().map(box -> box.getToolTip(x, y)).orElse(super.getToolTip(x, y));

@@ -27,33 +27,34 @@
 package lehjr.numina.common.capabilities.render.modelspec;
 
 import com.google.common.base.Objects;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.resources.ResourceLocation;
 
 /**
  * This just provides a way to tie the armor skin for vanilla armor
  */
 public class TexturePartSpec extends PartSpecBase {
-    final String textureLocation;
+    final ResourceLocation textureLocation;
 
     public TexturePartSpec(final SpecBase spec,
                            final SpecBinding binding,
                            final Integer enumColourIndex,
                            final String partName,
-                           final String textureLocation) {
+                           final ResourceLocation textureLocation) {
         super(spec, binding, partName, enumColourIndex);
         this.textureLocation = textureLocation;
     }
 
     @Override
-    public ITextComponent getDisaplayName() {
-        return new TranslationTextComponent(new StringBuilder("textureSpec.")
+    public Component getDisaplayName() {
+        return new TranslatableComponent(new StringBuilder("textureSpec.")
                 .append(this.binding.getSlot().getName())
                 .append(".partName")
                 .toString());
     }
 
-    public String getTextureLocation() {
+    public ResourceLocation getTextureLocation() {
         return textureLocation;
     }
 

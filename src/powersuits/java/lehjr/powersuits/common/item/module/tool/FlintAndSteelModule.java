@@ -28,26 +28,14 @@ package lehjr.powersuits.common.item.module.tool;
 
 import lehjr.numina.common.capabilities.module.powermodule.*;
 import lehjr.numina.common.capabilities.module.rightclick.RightClickModule;
-import lehjr.numina.common.energy.ElectricItemUtils;
 import lehjr.powersuits.common.config.MPSSettings;
 import lehjr.powersuits.common.constants.MPSConstants;
 import lehjr.powersuits.common.item.module.AbstractPowerModule;
-import net.minecraft.advancements.CriteriaTriggers;
-import net.minecraft.block.AbstractFireBlock;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.CampfireBlock;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemUseContext;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.state.properties.BlockStateProperties;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.UseOnContext;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
@@ -66,7 +54,7 @@ public class FlintAndSteelModule extends AbstractPowerModule {
 
     @Nullable
     @Override
-    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundNBT nbt) {
+    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt) {
         return new CapProvider(stack);
     }
 
@@ -93,39 +81,39 @@ public class FlintAndSteelModule extends AbstractPowerModule {
              * Called when this item is used when targetting a Block
              */
             @Override
-            public ActionResultType useOn(ItemUseContext context) {
-                int energyConsumption = getEnergyUsage();
-                PlayerEntity player = context.getPlayer();
-                if (ElectricItemUtils.getPlayerEnergy(player) < energyConsumption ) {
-                    return ActionResultType.FAIL;
-                }
-
-                World world = context.getLevel();
-                BlockPos blockpos = context.getClickedPos();
-                BlockState blockstate = world.getBlockState(blockpos);
-                if (CampfireBlock.canLight(blockstate)) {
-                    world.playSound(player, blockpos, SoundEvents.FLINTANDSTEEL_USE, SoundCategory.BLOCKS, 1.0F, random.nextFloat() * 0.4F + 0.8F);
-                    world.setBlock(blockpos, blockstate.setValue(BlockStateProperties.LIT, Boolean.valueOf(true)), 11);
-                    if (player != null) {
-                        ElectricItemUtils.drainPlayerEnergy(player, energyConsumption);
-                    }
-                    return ActionResultType.sidedSuccess(world.isClientSide());
-                } else {
-                    BlockPos blockpos1 = blockpos.relative(context.getClickedFace());
-                    if (AbstractFireBlock.canBePlacedAt(world, blockpos1, context.getHorizontalDirection())) {
-                        world.playSound(player, blockpos1, SoundEvents.FLINTANDSTEEL_USE, SoundCategory.BLOCKS, 1.0F, random.nextFloat() * 0.4F + 0.8F);
-                        BlockState blockstate1 = AbstractFireBlock.getState(world, blockpos1);
-                        world.setBlock(blockpos1, blockstate1, 11);
-                        ItemStack itemstack = context.getItemInHand();
-                        if (player instanceof ServerPlayerEntity) {
-                            CriteriaTriggers.PLACED_BLOCK.trigger((ServerPlayerEntity)player, blockpos1, itemstack);
-                            ElectricItemUtils.drainPlayerEnergy(player, energyConsumption);
-                        }
-                        return ActionResultType.sidedSuccess(world.isClientSide());
-                    } else {
-                        return ActionResultType.FAIL;
-                    }
-                }
+            public InteractionResult useOn(UseOnContext context) {
+//                int energyConsumption = getEnergyUsage();
+//                Player player = context.getPlayer();
+//                if (ElectricItemUtils.getPlayerEnergy(player) < energyConsumption ) {
+//                    return InteractionResult.FAIL;
+//                }
+//
+//                Level world = context.getLevel();
+//                BlockPos blockpos = context.func_195995_a();
+//                BlockState blockstate = world.getBlockState(blockpos);
+//                if (CampfireBlock.func_241470_h_(blockstate)) {
+//                    world.func_184133_a(player, blockpos, SoundEvents.field_187649_bu, SoundSource.BLOCKS, 1.0F, field_77697_d.nextFloat() * 0.4F + 0.8F);
+//                    world.func_180501_a(blockpos, blockstate.func_206870_a(BlockStateProperties.field_208190_q, Boolean.valueOf(true)), 11);
+//                    if (player != null) {
+//                        ElectricItemUtils.drainPlayerEnergy(player, energyConsumption);
+//                    }
+//                    return InteractionResult.func_233537_a_(world.isClientSide());
+//                } else {
+//                    BlockPos blockpos1 = blockpos.func_177972_a(context.func_196000_l());
+//                    if (AbstractFireBlock.func_241465_a_(world, blockpos1, context.func_195992_f())) {
+//                        world.func_184133_a(player, blockpos1, SoundEvents.field_187649_bu, SoundSource.BLOCKS, 1.0F, field_77697_d.nextFloat() * 0.4F + 0.8F);
+//                        BlockState blockstate1 = AbstractFireBlock.func_235326_a_(world, blockpos1);
+//                        world.func_180501_a(blockpos1, blockstate1, 11);
+//                        ItemStack itemstack = context.func_195996_i();
+//                        if (player instanceof ServerPlayer) {
+//                            CriteriaTriggers.field_193137_x.func_193173_a((ServerPlayer)player, blockpos1, itemstack);
+//                            ElectricItemUtils.drainPlayerEnergy(player, energyConsumption);
+//                        }
+//                        return InteractionResult.func_233537_a_(world.isClientSide());
+//                    } else {
+                        return InteractionResult.FAIL;
+//                    }
+//                }
             }
 
             @Override

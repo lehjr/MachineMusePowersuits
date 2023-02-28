@@ -26,32 +26,33 @@
 
 package lehjr.numina.client.gui.clickable;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 import lehjr.numina.client.gui.geometry.DrawableRect;
 import lehjr.numina.client.gui.geometry.IDrawable;
 import lehjr.numina.client.gui.geometry.MusePoint2D;
-import lehjr.numina.common.math.Colour;
+import lehjr.numina.common.math.Color;
 import lehjr.numina.common.string.StringUtils;
-import net.minecraft.util.text.ITextComponent;
+import net.minecraft.network.chat.Component;
 
 /**
  * @author MachineMuse
  */
+@Deprecated
 public class ClickableButton extends DrawableRect implements IClickable {
     boolean isVisible = true;
     boolean isEnabled = true;
-    protected ITextComponent label;
+    protected Component label;
     protected MusePoint2D radius;
 
-    private Colour enabledBorder  = new Colour(0.3F, 0.3F, 0.3F, 1);
-    private Colour enabledBackground = new Colour(0.5F, 0.6F, 0.8F, 1);
-    private Colour disabledBorder = new Colour(0.8F, 0.6F, 0.6F, 1);
-    private Colour disabledBackground = new Colour(0.8F, 0.3F, 0.3F, 1);
+    private Color enabledBorder  = new Color(0.3F, 0.3F, 0.3F, 1);
+    private Color enabledBackground = new Color(0.5F, 0.6F, 0.8F, 1);
+    private Color disabledBorder = new Color(0.8F, 0.6F, 0.6F, 1);
+    private Color disabledBackground = new Color(0.8F, 0.3F, 0.3F, 1);
     private IPressable onPressed;
     private IReleasable onReleased;
 
-    public ClickableButton(ITextComponent label, MusePoint2D position, boolean enabled) {
-        super(0,0,0, 0, Colour.BLACK, Colour.BLACK);
+    public ClickableButton(Component label, MusePoint2D position, boolean enabled) {
+        super(0,0,0, 0, Color.BLACK, Color.BLACK);
         this.label = label;
         this.setPosition(position);
 
@@ -77,40 +78,40 @@ public class ClickableButton extends DrawableRect implements IClickable {
         this.setEnabled(enabled);
     }
 
-    public ClickableButton setEnabledBorder(Colour enabledBorder) {
+    public ClickableButton setEnabledBorder(Color enabledBorder) {
         this.enabledBorder = enabledBorder;
         return this;
     }
 
-    public ClickableButton setEnabledBackground(Colour enabledBackground) {
+    public ClickableButton setEnabledBackground(Color enabledBackground) {
         this.enabledBackground = enabledBackground;
         return this;
     }
 
-    public ClickableButton setDisabledBorder(Colour disabledBorder) {
+    public ClickableButton setDisabledBorder(Color disabledBorder) {
         this.disabledBorder = disabledBorder;
         return this;
     }
 
-    public ClickableButton setDisabledBackground(Colour disabledBackground) {
+    public ClickableButton setDisabledBackground(Color disabledBackground) {
         this.disabledBackground = disabledBackground;
         return this;
     }
 
-    void setBackgroundColour(Colour backgroundColour, boolean hovered) {
+    void setBackgroundColour(Color backgroundColour, boolean hovered) {
         super.setBackgroundColour(hovered? backgroundColour.copy().lighten(0.10F) : backgroundColour);
     }
 
     /**
-     * Container based GUI's should use the separate button and text renderer
+     * AbstractContainerMenu based GUI's should use the separate button and text renderer
      *
      * @param mouseX
      * @param mouseY
-     * @param partialTicks
+     * @param partialTick
      */
     @Override
-    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
-        renderButton(matrixStack, mouseX, mouseY, partialTicks);
+    public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTick) {
+        renderButton(matrixStack, mouseX, mouseY, partialTick);
         renderText(matrixStack, mouseX, mouseY);
     }
 
@@ -125,14 +126,14 @@ public class ClickableButton extends DrawableRect implements IClickable {
     }
 
     /**
-     * Container based GUI's should use the separate button and text renderer
+     * AbstractContainerMenu based GUI's should use the separate button and text renderer
      * Call this from the container GUI's main render loop
      *
      * @param mouseX
      * @param mouseY
      * @param frameTIme
      */
-    public void renderButton(MatrixStack matrixStack, int mouseX, int mouseY, float frameTIme) {
+    public void renderButton(PoseStack matrixStack, int mouseX, int mouseY, float frameTIme) {
         if (isVisible) {
 
             setBackgroundColour(isEnabled() ? enabledBackground : disabledBackground, containsPoint(mouseX, mouseY));
@@ -148,12 +149,12 @@ public class ClickableButton extends DrawableRect implements IClickable {
 
 
     /**
-     * Container based GUI's should use the separate button and text renderer
-     * Call this from the container GUI's drawGuiContainerForegroundLayer
+     * AbstractContainerMenu based GUI's should use the separate button and text renderer
+     * Call this from the container GUI's drawGuiAbstractContainerMenuForegroundLayer
      * @param mouseX
      * @param mouseY
      */
-    public void renderText(MatrixStack matrixStack, int mouseX, int mouseY) {
+    public void renderText(PoseStack matrixStack, int mouseX, int mouseY) {
         if (isVisible()) {
             if (label.getString().contains("\n")) {
                 String[] s = label.getString().split("\n");
@@ -214,12 +215,12 @@ public class ClickableButton extends DrawableRect implements IClickable {
         }
     }
 
-    public ClickableButton setLable(ITextComponent label) {
+    public ClickableButton setLable(Component label) {
         this.label = label;
         return this;
     }
 
-    public ITextComponent getLabel() {
+    public Component getLabel() {
         return label;
     }
 }

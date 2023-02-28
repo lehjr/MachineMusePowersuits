@@ -34,19 +34,19 @@ import lehjr.numina.common.energy.ElectricItemUtils;
 import lehjr.powersuits.common.config.MPSSettings;
 import lehjr.powersuits.common.constants.MPSConstants;
 import lehjr.powersuits.common.item.module.AbstractPowerModule;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.Direction;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
-import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.CapabilityItemHandler;
 
@@ -54,9 +54,9 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import java.util.concurrent.Callable;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Stream;
 
 public class VeinMinerModule extends AbstractPowerModule {
     public VeinMinerModule() {
@@ -64,7 +64,7 @@ public class VeinMinerModule extends AbstractPowerModule {
 
     @Nullable
     @Override
-    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundNBT nbt) {
+    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt) {
         return new CapProvider(stack);
     }
 
@@ -80,7 +80,7 @@ public class VeinMinerModule extends AbstractPowerModule {
             }};
 
             powerModuleHolder = LazyOptional.of(() -> {
-                miningEnhancement.updateFromNBT();
+                miningEnhancement.loadCapValues();
                 return miningEnhancement;
             });
         }
@@ -90,7 +90,7 @@ public class VeinMinerModule extends AbstractPowerModule {
                 super(module, category, target, config);
             }
 
-            List<BlockPos> getPosList(Block block, BlockPos startPos, World world) {
+            List<BlockPos> getPosList(Block block, BlockPos startPos, Level world) {
                 List<BlockPos> list = new ArrayList<BlockPos>() {{add(startPos);}};
                 for (Direction direction : Direction.values()) {
                     int i = 0;
@@ -115,14 +115,14 @@ public class VeinMinerModule extends AbstractPowerModule {
                 return list;
             }
 
-            void harvestBlocks(List<BlockPos> posList, World world) {
+            void harvestBlocks(List<BlockPos> posList, Level world) {
                 for (BlockPos pos: posList) {
-                    Block.updateOrDestroy(world.getBlockState(pos), Blocks.AIR.defaultBlockState(), world, pos, Constants.BlockFlags.DEFAULT);
+                    Block.updateOrDestroy(world.getBlockState(pos), Blocks.AIR.defaultBlockState(), world, pos, Block.UPDATE_ALL);
                 }
             }
 
             @Override
-            public boolean onBlockStartBreak(ItemStack itemStack, BlockPos posIn, PlayerEntity player) {
+            public boolean onBlockStartBreak(ItemStack itemStack, BlockPos posIn, Player player) {
                 BlockState state = player.level.getBlockState(posIn);
                 Block block = state.getBlock();
 
@@ -157,14 +157,8 @@ public class VeinMinerModule extends AbstractPowerModule {
 
                 // check if block is an ore
                 List<ResourceLocation> defaultOreTags = MPSSettings.getOreList();
-                Set<ResourceLocation> oretags = player.level.getBlockState(posIn).getBlock().getTags();
-                boolean isOre = false;
-                for ( ResourceLocation location : oretags ) {
-                    if (defaultOreTags.contains(location)) {
-                        isOre = true;
-                        break;
-                    }
-                }
+                Stream<TagKey<Block>> oretags = player.level.getBlockState(posIn).getTags();
+                boolean isOre = oretags.anyMatch(tag-> defaultOreTags.contains(tag.location()));
 
                 if (isOre || MPSSettings.getBlockList().contains(block.getRegistryName())) {
                     int energyRequired = this.getEnergyUsage() + bbModuleEnergyUsage.get();

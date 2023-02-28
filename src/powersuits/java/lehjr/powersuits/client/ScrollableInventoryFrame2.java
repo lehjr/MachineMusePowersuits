@@ -9,14 +9,14 @@ import lehjr.powersuits.client.gui.common.ModularItemTabToggleWidget;
 import lehjr.powersuits.common.network.MPSPackets;
 import lehjr.powersuits.common.network.packets.ContainerGuiOpenPacket;
 import net.minecraft.client.Minecraft;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.inventory.container.Container;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraftforge.items.CapabilityItemHandler;
 
 import java.util.ArrayList;
 import java.util.stream.IntStream;
 
-public class ScrollableInventoryFrame2 <C extends Container> extends InventoryFrame implements IContainerULOffSet {
+public class ScrollableInventoryFrame2 <C extends AbstractContainerMenu> extends InventoryFrame implements IContainerULOffSet {
     ModularItemSelectionFrameContainered modularItemSelectionFrame;
     ModularItemTabToggleWidget selected;
 
@@ -29,7 +29,7 @@ public class ScrollableInventoryFrame2 <C extends Container> extends InventoryFr
                 9,
                 new ArrayList<Integer>() {{
                     modularItemSelectionFrame.getSelectedTab().ifPresent(tab->{
-                        EquipmentSlotType type = tab.getSlotType();
+                        EquipmentSlot type = tab.getSlotType();
                         Minecraft.getInstance().player.getItemBySlot(type).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
                                 .filter(IModularItem.class::isInstance)
                                 .map(IModularItem.class::cast)
@@ -49,7 +49,7 @@ public class ScrollableInventoryFrame2 <C extends Container> extends InventoryFr
         modularItemSelectionFrame.getSelectedTab().ifPresent(tab->{
             if (selected != tab) {
                 selected = tab;
-                EquipmentSlotType type = tab.getSlotType();
+                EquipmentSlot type = tab.getSlotType();
                 MPSPackets.CHANNEL_INSTANCE.sendToServer(new ContainerGuiOpenPacket(type));
             }
         });

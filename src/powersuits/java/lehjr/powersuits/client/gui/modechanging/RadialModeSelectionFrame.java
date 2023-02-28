@@ -26,7 +26,7 @@
 
 package lehjr.powersuits.client.gui.modechanging;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 import lehjr.numina.client.gui.clickable.ClickableModule;
 import lehjr.numina.client.gui.frame.AbstractGuiFrame;
 import lehjr.numina.client.gui.geometry.IDrawable;
@@ -38,9 +38,9 @@ import lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.network.NuminaPackets;
 import lehjr.numina.common.network.packets.ModeChangeRequestPacket;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.text.ITextComponent;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.items.CapabilityItemHandler;
 
 import java.util.ArrayList;
@@ -54,17 +54,17 @@ public class RadialModeSelectionFrame extends AbstractGuiFrame {
     protected int selectedModuleOriginal = -1;
     protected int selectedModuleNew = -1;
 
-    protected PlayerEntity player;
+    protected Player player;
     protected double radius;
     protected ItemStack stack;
     float zLevel;
 
-    public RadialModeSelectionFrame(MusePoint2D topleft, MusePoint2D bottomright, PlayerEntity player, float zLevel) {
+    public RadialModeSelectionFrame(MusePoint2D topleft, MusePoint2D bottomright, Player player, float zLevel) {
         super(new Rect(topleft, bottomright));
         spawnTime = System.currentTimeMillis();
         this.player = player;
         this.radius = Math.min(width(), height());
-        this.stack = player.inventory.getSelected();
+        this.stack = player.getInventory().getSelected();
         this.zLevel = zLevel;
         loadItems();
     }
@@ -101,16 +101,16 @@ public class RadialModeSelectionFrame extends AbstractGuiFrame {
                     .map(IModeChangingItem.class::cast)
                     .ifPresent(handler->{
                         handler.setActiveMode(getSelectedModule().getInventorySlot());
-                        NuminaPackets.CHANNEL_INSTANCE.sendToServer(new ModeChangeRequestPacket(getSelectedModule().getInventorySlot(), player.inventory.selected));
+                        NuminaPackets.CHANNEL_INSTANCE.sendToServer(new ModeChangeRequestPacket(getSelectedModule().getInventorySlot(), player.getInventory().selected));
                     });
         }
     }
 
     @Override
-    public void render(MatrixStack matrixStackIn, int mouseX, int mouseY, float partialTicks) {
+    public void render(PoseStack matrixStackIn, int mouseX, int mouseY, float partialTick) {
         //Draw the installed power fist modes
         for (ClickableModule mode : modeButtons) {
-            mode.render(matrixStackIn, mouseX, mouseY, partialTicks);
+            mode.render(matrixStackIn, mouseX, mouseY, partialTick);
         }
         //Draw the selected mode indicator
         drawSelection(matrixStackIn);
@@ -167,7 +167,7 @@ public class RadialModeSelectionFrame extends AbstractGuiFrame {
         }
     }
 
-    public void drawSelection(MatrixStack matrixStackIn) {
+    public void drawSelection(PoseStack matrixStackIn) {
         ClickableModule module = getSelectedModule();
         if (module != null) {
             MusePoint2D pos = module.center();
@@ -176,7 +176,7 @@ public class RadialModeSelectionFrame extends AbstractGuiFrame {
     }
 
     @Override
-    public List<ITextComponent> getToolTip(int x, int y) {
+    public List<Component> getToolTip(int x, int y) {
         ClickableModule module = getSelectedModule();
         if (module != null) {
             return module.getToolTip(x, y);

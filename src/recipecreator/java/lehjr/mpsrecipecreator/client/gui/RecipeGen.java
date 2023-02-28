@@ -1,12 +1,12 @@
 //package lehjr.mpsrecipecreator.client.gui;
 //
 //import com.google.gson.*;
-//import lehjr.mpsrecipecreator.container.MPARCContainer;
+//import lehjr.mpsrecipecreator.container.MPARCAbstractContainerMenu;
 //import lehjr.numina.common.tags.NBT2Json;
-//import net.minecraft.item.Item;
-//import net.minecraft.item.ItemStack;
+//import net.minecraft.world.item.Item;
+//import net.minecraft.world.item.ItemStack;
 //import net.minecraft.tags.ItemTags;
-//import net.minecraft.util.ResourceLocation;
+//import net.minecraft.resources.ResourceLocation;
 //
 //import javax.annotation.Nonnull;
 //import java.util.ArrayList;
@@ -21,10 +21,10 @@
 //public class RecipeGen {
 //    private Map<Integer, Integer> oreTagIndices = new HashMap<>();
 //    public Map<Integer, Boolean> useOredict = new HashMap<>();
-//    MPARCContainer container;
+//    MPARCAbstractContainerMenu container;
 //    RecipeOptionsFrame recipeOptions;
 //
-//    public RecipeGen(MPARCContainer containerIn, RecipeOptionsFrame recipeOptionsIn) {
+//    public RecipeGen(MPARCAbstractContainerMenu containerIn, RecipeOptionsFrame recipeOptionsIn) {
 //        this.container = containerIn;
 //        this.recipeOptions = recipeOptionsIn;
 //        reset();
@@ -99,7 +99,7 @@
 //
 //            stackJson.addProperty("item", stack.getItem().getRegistryName().toString());
 //            if (stack.hasTag()) {
-//                JsonObject tagJson = NBT2Json.CompoundNBT2Json(stack.getTag(), new JsonObject());
+//                JsonObject tagJson = NBT2Json.CompoundTag2Json(stack.getTag(), new JsonObject());
 //                if (tagJson.size() > 0) {
 //                    stackJson.add("nbt", tagJson);
 //                }

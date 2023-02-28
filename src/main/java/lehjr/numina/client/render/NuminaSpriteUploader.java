@@ -28,16 +28,16 @@ package lehjr.numina.client.render;
 
 import lehjr.numina.common.constants.NuminaConstants;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.texture.SpriteUploader;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.client.resources.TextureAtlasHolder;
+import net.minecraft.resources.ResourceLocation;
 
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Stream;
 
-public class NuminaSpriteUploader extends SpriteUploader {
+public class NuminaSpriteUploader extends TextureAtlasHolder {
     private final Set<ResourceLocation> registeredSprites = new HashSet<>();
 
     public NuminaSpriteUploader() {

@@ -27,10 +27,10 @@
 package lehjr.powersuits.common.network;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.world.entity.player.Player;
 
 public class NetworkHelper {
-    public static PlayerEntity getClientPlayer() {
+    public static Player getLocalPlayer() {
         return Minecraft.getInstance().player;
     }
 }

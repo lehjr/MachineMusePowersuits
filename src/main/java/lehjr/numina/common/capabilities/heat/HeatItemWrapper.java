@@ -27,24 +27,21 @@
 package lehjr.numina.common.capabilities.heat;
 
 import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
-import lehjr.numina.common.tags.TagUtils;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.DoubleNBT;
-import net.minecraft.util.Direction;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ICapabilityProvider;
-import net.minecraftforge.common.util.INBTSerializable;
+import lehjr.numina.common.constants.TagConstants;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.DoubleTag;
+import net.minecraft.nbt.Tag;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.util.LazyOptional;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
-public class HeatItemWrapper extends HeatStorage implements ICapabilityProvider, IHeatWrapper, INBTSerializable<DoubleNBT> {
+public class HeatItemWrapper extends HeatStorage {
     ItemStack stack;
     private final LazyOptional<IHeatStorage> holder = LazyOptional.of(() -> this);
 
     public HeatItemWrapper(@Nonnull ItemStack stack, double baseMax, LazyOptional<IPowerModule> moduleCap) {
-        this(stack, baseMax + moduleCap.map(cap->cap.applyPropertyModifiers(HeatCapability.MAXIMUM_HEAT)).orElse(0D));
+        this(stack, baseMax + moduleCap.map(cap->cap.applyPropertyModifiers(TagConstants.MAXIMUM_HEAT)).orElse(0D));
     }
 
     public HeatItemWrapper(@Nonnull ItemStack stack, double capacity) {
@@ -60,44 +57,16 @@ public class HeatItemWrapper extends HeatStorage implements ICapabilityProvider,
         this.stack = stack;
     }
 
-    /** IItemStackContainerUpdate ----------------------------------------------------------------- */
     @Override
-    public void updateFromNBT() {
-        heat = Math.min(capacity, TagUtils.getModularItemDoubleOrZero(stack, HeatCapability.CURRENT_HEAT));
-    }
-    @Override
-    public double receiveHeat(double heatProvided, boolean simulate) {
-        final double heatReceived = super.receiveHeat(heatProvided, simulate);
-        if (!simulate && heatReceived > 0) {
-            TagUtils.setModularItemDoubleOrRemove(stack, HeatCapability.CURRENT_HEAT, heat);
+    public void loadCapValues() {
+        final CompoundTag tag = this.stack.getOrCreateTag();
+        if (tag != null && tag.contains(TagConstants.HEAT, Tag.TAG_DOUBLE)) {
+            deserializeNBT((DoubleTag) tag.get(TagConstants.HEAT));
         }
-        return heatReceived;
     }
 
     @Override
-    public double extractHeat(double heatRequested, boolean simulate) {
-        final double heatExtracted = super.extractHeat(heatRequested, simulate);
-        if (!simulate && heatExtracted > 0) {
-            TagUtils.setModularItemDoubleOrRemove(stack, HeatCapability.CURRENT_HEAT, heat);
-        }
-        return heatExtracted;
-    }
-
-    /** INBTSerializable -------------------------------------------------------------------------- */
-    @Override
-    public DoubleNBT serializeNBT() {
-        return (DoubleNBT) HeatCapability.HEAT.writeNBT(this, null);
-    }
-
-    @Override
-    public void deserializeNBT(final DoubleNBT nbt) {
-        HeatCapability.HEAT.readNBT(this, null, nbt);
-    }
-
-    /** INBTSerializable<NBTTagDouble> ------------------------------------------------------------ */
-    @Nonnull
-    @Override
-    public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
-        return HeatCapability.HEAT.orEmpty(cap, holder);
+    public void onValueChanged() {
+        this.stack.addTagElement(TagConstants.HEAT, serializeNBT());
     }
 }

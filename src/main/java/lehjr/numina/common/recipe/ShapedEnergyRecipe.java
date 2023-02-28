@@ -1,14 +1,14 @@
 package lehjr.numina.common.recipe;
 
 import com.google.gson.JsonObject;
-import net.minecraft.inventory.CraftingInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipeSerializer;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.item.crafting.ShapedRecipe;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.core.NonNullList;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.inventory.CraftingContainer;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.ShapedRecipe;
 import net.minecraftforge.energy.CapabilityEnergy;
 
 import java.util.concurrent.atomic.AtomicInteger;
@@ -18,7 +18,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class ShapedEnergyRecipe extends ShapedRecipe {
 	public ShapedEnergyRecipe(ShapedRecipe shaped) {
-		this(shaped.getId(), shaped.getGroup(), shaped.getWidth(), shaped.getHeight(), shaped.getIngredients(), shaped.getResultItem());
+		this(shaped.getId(), shaped.getGroup(), shaped.getWidth(), shaped.getRecipeHeight(), shaped.getIngredients(), shaped.getResultItem());
 	}
 
 	public ShapedEnergyRecipe(final ResourceLocation id, final String group, final int recipeWidth, final int recipeHeight, final NonNullList<Ingredient> ingredients, final ItemStack recipeOutput) {
@@ -30,7 +30,7 @@ public class ShapedEnergyRecipe extends ShapedRecipe {
 	 * @return result with energy from ingredients up to max value
 	 */
 	@Override
-	public ItemStack assemble(final CraftingInventory inv) {
+	public ItemStack assemble(final CraftingContainer inv) {
 		final ItemStack output = super.assemble(inv).copy(); // Get the default output
 		AtomicInteger energy = new AtomicInteger(0);
 		for(int i = 0; i < inv.getContainerSize(); ++i) {
@@ -49,7 +49,7 @@ public class ShapedEnergyRecipe extends ShapedRecipe {
 	}
 
 	@Override
-	public IRecipeSerializer<?> getSerializer() {
+	public RecipeSerializer<?> getSerializer() {
 		return RecipeSerializersRegistry.TEST_RECIPE_SERIALIZER.get();
 	}
 
@@ -60,7 +60,7 @@ public class ShapedEnergyRecipe extends ShapedRecipe {
 		}
 
 		@Override
-		public ShapedEnergyRecipe fromNetwork(final ResourceLocation recipeID, final PacketBuffer buffer) {
+		public ShapedEnergyRecipe fromNetwork(final ResourceLocation recipeID, final FriendlyByteBuf buffer) {
 			return new ShapedEnergyRecipe(super.fromNetwork(recipeID, buffer));
 		}
 	}

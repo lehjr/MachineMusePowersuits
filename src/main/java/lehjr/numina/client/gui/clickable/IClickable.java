@@ -26,13 +26,13 @@
 
 package lehjr.numina.client.gui.clickable;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import lehjr.numina.client.gui.geometry.IDrawableRect;
 import lehjr.numina.client.gui.geometry.MusePoint2D;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.audio.SimpleSound;
-import net.minecraft.client.audio.SoundHandler;
-import net.minecraft.client.util.InputMappings;
-import net.minecraft.util.SoundEvents;
+import net.minecraft.client.resources.sounds.SimpleSoundInstance;
+import net.minecraft.client.sounds.SoundManager;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -81,7 +81,7 @@ public interface IClickable extends IDrawableRect {
 
     default boolean mouseClicked(double mouseX, double mouseY, int button) {
         if(containsPoint(mouseX, mouseY) && this.isEnabled() && this.isVisible()) {
-            InputMappings.Input mouseKey = InputMappings.Type.MOUSE.getOrCreate(button);
+            InputConstants.Key mouseKey = InputConstants.Type.MOUSE.getOrCreate(button);
             boolean flag = Minecraft.getInstance().options.keyPickItem.isActiveAndMatches(mouseKey);
 
             if (button == 0 || button == 1 || flag) {
@@ -93,13 +93,13 @@ public interface IClickable extends IDrawableRect {
         return false;
     }
 
-    default void playDownSound(SoundHandler soundHandler) {
-        soundHandler.play(SimpleSound.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0F));
+    default void playDownSound(SoundManager soundHandler) {
+        soundHandler.play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0F));
     }
 
     default boolean mouseReleased(double mouseX, double mouseY, int button) {
         if(this.isEnabled() && this.isVisible()) {
-            InputMappings.Input mouseKey = InputMappings.Type.MOUSE.getOrCreate(button);
+            InputConstants.Key mouseKey = InputConstants.Type.MOUSE.getOrCreate(button);
             boolean flag = Minecraft.getInstance().options.keyPickItem.isActiveAndMatches(mouseKey);
 
             if (button == 0 || button == 1 || flag) {

@@ -27,13 +27,13 @@
 package lehjr.numina.client.gui.old_meters;
 
 
-import lehjr.numina.common.math.Colour;
+import lehjr.numina.common.math.Color;
 
 /**
  * Created by leon on 4/9/17.
  */
 public class PlasmaChargeMeter extends HeatMeter {
     public PlasmaChargeMeter() {
-        super(Colour.LIGHT_GREEN.withAlpha(0.7F));
+        super(Color.LIGHT_GREEN.withAlpha(0.7F));
     }
 }

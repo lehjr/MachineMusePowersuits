@@ -28,7 +28,7 @@ package lehjr.powersuits.common.base;
 
 import lehjr.numina.common.constants.NuminaConstants;
 import lehjr.powersuits.common.constants.MPSRegistryNames;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 
 import java.util.ArrayList;
 import java.util.List;

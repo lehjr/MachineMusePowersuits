@@ -38,10 +38,10 @@
 //import lehjr.powersuits.client.gui.common.ItemSelectionFrame;
 //import lehjr.powersuits.item.armor.AbstractElectricItemArmor;
 //import net.minecraft.client.Minecraft;
-//import net.minecraft.entity.player.PlayerEntity;
-//import net.minecraft.inventory.EquipmentSlotType;
-//import net.minecraft.item.ItemStack;
-//import net.minecraft.nbt.CompoundNBT;
+//import net.minecraft.world.entity.player.Player;
+//import net.minecraft.world.entity.EquipmentSlot;
+//import net.minecraft.world.item.ItemStack;
+//import net.minecraft.nbt.CompoundTag;
 //
 //public class CosmeticPresetSelectionSubframe extends ScrollableLabel {
 //    public RelativeRect border;
@@ -60,16 +60,16 @@
 //        minecraft = Minecraft.getInstance();
 //    }
 //
-//    public boolean isValidItem(ClickableItem clickie, EquipmentSlotType slot) {
+//    public boolean isValidItem(ClickableItem clickie, EquipmentSlot slot) {
 //        if (clickie != null) {
 //            clickie.getStack().getCapability(ModelSpecNBTCapability.RENDER).map(iModelSpecNBT -> {
 //                EnumSpecType specType = iModelSpecNBT.getSpecType();
 //
-//                if (iModelSpecNBT.getSpecType().equals(EnumSpecType.HANDHELD) && slot.getType().equals(EquipmentSlotType.Group.HAND)) {
+//                if (iModelSpecNBT.getSpecType().equals(EnumSpecType.HANDHELD) && slot.getType().equals(EquipmentSlot.Type.HAND)) {
 //                    return true;
 //                }
 //                if (specType.equals(EnumSpecType.ARMOR_MODEL) || specType.equals(EnumSpecType.ARMOR_MODEL)
-//                        && slot.getType().equals(EquipmentSlotType.Group.ARMOR)) {
+//                        && slot.getType().equals(EquipmentSlot.Type.ARMOR)) {
 //                    return true;
 //                }
 //                return false;
@@ -85,23 +85,23 @@
 //    /**
 //     * Get's the equipment itemSlot the item is for.
 //     */
-//    public EquipmentSlotType getEquipmentSlot() {
+//    public EquipmentSlot getEquipmentSlot() {
 //        ItemStack selectedItem = getSelectedItem().getStack();
 //        if (!selectedItem.isEmpty() && selectedItem.getItem() instanceof AbstractElectricItemArmor)
 //            return selectedItem.getEquipmentSlot();
-//        PlayerEntity player = minecraft.player;
+//        Player player = minecraft.player;
 //        ItemStack heldItem = player.getOffhandItem();
 //
 //        if (!heldItem.isEmpty() && ItemStack.matches(selectedItem, heldItem))
-//            return EquipmentSlotType.OFFHAND;
-//        return EquipmentSlotType.MAINHAND;
+//            return EquipmentSlot.OFFHAND;
+//        return EquipmentSlot.MAINHAND;
 //    }
 //
 //    public String getName() {
 //        return name;
 //    }
 //
-//    public CompoundNBT getItemTag() {
+//    public CompoundTag getItemTag() {
 //        return MuseNBTUtils.getMuseItemTag(this.getSelectedItem().getStack());
 //    }
 //

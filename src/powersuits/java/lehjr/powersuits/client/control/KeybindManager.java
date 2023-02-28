@@ -27,14 +27,14 @@
 package lehjr.powersuits.client.control;
 
 import com.google.gson.*;
+import com.mojang.blaze3d.platform.InputConstants;
 import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.config.ConfigHelper;
 import lehjr.powersuits.client.event.RenderEventHandler;
 import lehjr.powersuits.common.constants.MPSConstants;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.util.InputMappings;
-import net.minecraft.item.Items;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Items;
 import org.lwjgl.glfw.GLFW;
 
 import java.io.*;
@@ -83,8 +83,8 @@ public enum KeybindManager {
             JsonObject kbSettings = new JsonObject();
             kbSettings.addProperty(formatVersionKey, 2);
             Arrays.stream(Minecraft.getInstance().options.keyMappings)
-                    .filter(MPSKeyBinding.class::isInstance)
-                    .map(MPSKeyBinding.class::cast)
+                    .filter(MPSKeyMapping.class::isInstance)
+                    .map(MPSKeyMapping.class::cast)
                     .forEach(keyBinding -> {
                         JsonObject jsonKBSetting = new JsonObject();
                         jsonKBSetting.addProperty(registryNameKey, keyBinding.registryName.toString());
@@ -117,8 +117,8 @@ public enum KeybindManager {
         }
     }
 
-    public List<MPSKeyBinding> getMPSKeyBinds() {
-        return Arrays.stream(Minecraft.getInstance().options.keyMappings).filter(MPSKeyBinding.class::isInstance).map(MPSKeyBinding.class::cast).collect(Collectors.toList());
+    public List<MPSKeyMapping> getMPSKeyBinds() {
+        return Arrays.stream(Minecraft.getInstance().options.keyMappings).filter(MPSKeyMapping.class::isInstance).map(MPSKeyMapping.class::cast).collect(Collectors.toList());
     }
 
     public void readInKeybinds(boolean onLogin) {
@@ -194,7 +194,7 @@ public enum KeybindManager {
             BufferedReader reader = new BufferedReader(new FileReader(file));
             boolean displayOnHUD = false;
             boolean toggleval = false;
-            InputMappings.Input id = null;
+            InputConstants.Key id = null;
 
             while (reader.ready()) {
                 String line = reader.readLine();
@@ -224,7 +224,7 @@ public enum KeybindManager {
                     String[] exploded = line.split("~");
                     ResourceLocation regName = new ResourceLocation(MPSConstants.MOD_ID, exploded[0]);
                     boolean finalDisplayOnHUD = displayOnHUD;
-                    InputMappings.Input finalId = id;
+                    InputConstants.Key finalId = id;
                     boolean finalToggleval = toggleval;
                     getMPSKeyBinds().stream().filter(kb ->kb.registryName.equals(regName)).findFirst().ifPresent(kb -> {
                         kb.showOnHud = finalDisplayOnHUD;
@@ -242,7 +242,7 @@ public enum KeybindManager {
         }
     }
 
-    public InputMappings.Input getInputByCode(int keyCode) {
-        return InputMappings.Type.KEYSYM.getOrCreate(keyCode);
+    public InputConstants.Key getInputByCode(int keyCode) {
+        return InputConstants.Type.KEYSYM.getOrCreate(keyCode);
     }
 }

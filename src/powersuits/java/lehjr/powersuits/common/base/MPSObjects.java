@@ -30,10 +30,9 @@ package lehjr.powersuits.common.base;
 import lehjr.powersuits.common.block.LuxCapacitorBlock;
 import lehjr.powersuits.common.block.TinkerTable;
 import lehjr.powersuits.common.blockentity.LuxCapacitorBlockEntity;
-import lehjr.powersuits.common.blockentity.TinkerTableBlockEntity;
 import lehjr.powersuits.common.constants.MPSConstants;
 import lehjr.powersuits.common.constants.MPSRegistryNames;
-import lehjr.powersuits.common.container.InstallSalvageContainer;
+import lehjr.powersuits.common.container.InstallSalvageMenu;
 import lehjr.powersuits.common.entity.LuxCapacitorEntity;
 import lehjr.powersuits.common.entity.PlasmaBallEntity;
 import lehjr.powersuits.common.entity.RailgunBoltEntity;
@@ -60,18 +59,18 @@ import lehjr.powersuits.common.item.module.vision.BinocularsModule;
 import lehjr.powersuits.common.item.module.vision.NightVisionModule;
 import lehjr.powersuits.common.item.module.weapon.*;
 import lehjr.powersuits.common.item.tool.PowerFist;
-import net.minecraft.block.Block;
-import net.minecraft.entity.EntityClassification;
-import net.minecraft.entity.EntityType;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.inventory.container.ContainerType;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.Item;
-import net.minecraft.tileentity.TileEntityType;
-import net.minecraftforge.common.extensions.IForgeContainerType;
-import net.minecraftforge.fml.RegistryObject;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.inventory.MenuType;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraftforge.common.extensions.IForgeMenuType;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
 
 public class MPSObjects {
     public static final MPSCreativeTab creativeTab = new MPSCreativeTab();
@@ -89,13 +88,13 @@ public class MPSObjects {
     /**
      * Tile Entity Types -------------------------------------------------------------------------
      */
-    public static final DeferredRegister<TileEntityType<?>> TILE_TYPES = DeferredRegister.create(ForgeRegistries.TILE_ENTITIES, MPSConstants.MOD_ID);
+    public static final DeferredRegister<BlockEntityType<?>> TILE_TYPES = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITIES, MPSConstants.MOD_ID);
 
-    public static final RegistryObject<TileEntityType<TinkerTableBlockEntity>> TINKER_TABLE_TILE_TYPE = TILE_TYPES.register(MPSRegistryNames.TINKER_TABLE.getPath(),
-            () -> TileEntityType.Builder.of(TinkerTableBlockEntity::new, TINKER_TABLE_BLOCK.get()).build(null));
+//    public static final RegistryObject<BlockEntityType<TinkerTableBlockEntity>> TINKER_TABLE_TILE_TYPE = TILE_TYPES.register(MPSRegistryNames.TINKER_TABLE.getPath(),
+//            () -> BlockEntityType.Builder.of(TinkerTableBlockEntity::new, TINKER_TABLE_BLOCK.get()).build(null));
 
-    public static final RegistryObject<TileEntityType<LuxCapacitorBlockEntity>> LUX_CAP_TILE_TYPE = TILE_TYPES.register(MPSRegistryNames.LUX_CAPACITOR.getPath(),
-            () -> TileEntityType.Builder.of(LuxCapacitorBlockEntity::new, LUX_CAPACITOR_BLOCK.get()).build(null));
+    public static final RegistryObject<BlockEntityType<LuxCapacitorBlockEntity>> LUX_CAP_BLOCK_ENTITY_TYPE = TILE_TYPES.register(MPSRegistryNames.LUX_CAPACITOR.getPath(),
+            () -> BlockEntityType.Builder.of(LuxCapacitorBlockEntity::new, LUX_CAPACITOR_BLOCK.get()).build(null));
 
     /**
      * Entity Types ------------------------------------------------------------------------------
@@ -103,22 +102,22 @@ public class MPSObjects {
     public static final DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(ForgeRegistries.ENTITIES, MPSConstants.MOD_ID);
 
     public static final RegistryObject<EntityType<LuxCapacitorEntity>> LUX_CAPACITOR_ENTITY_TYPE = ENTITY_TYPES.register(MPSRegistryNames.LUX_CAPACITOR.getPath(),
-            ()-> EntityType.Builder.<LuxCapacitorEntity>of(LuxCapacitorEntity::new, EntityClassification.MISC)
+            ()-> EntityType.Builder.<LuxCapacitorEntity>of(LuxCapacitorEntity::new, MobCategory.MISC)
                     .sized(0.25F, 0.25F)
                     .build(MPSRegistryNames.LUX_CAPACITOR.toString()));
 
     public static final RegistryObject<EntityType<SpinningBladeEntity>> SPINNING_BLADE_ENTITY_TYPE = ENTITY_TYPES.register(MPSRegistryNames.SPINNING_BLADE.getPath(),
-            ()-> EntityType.Builder.<SpinningBladeEntity>of(SpinningBladeEntity::new, EntityClassification.MISC)
+            ()-> EntityType.Builder.<SpinningBladeEntity>of(SpinningBladeEntity::new, MobCategory.MISC)
                     .sized(0.25F, 0.25F) // FIXME! check size
                     .build(MPSRegistryNames.SPINNING_BLADE.toString()));
 
     public static final RegistryObject<EntityType<PlasmaBallEntity>> PLASMA_BALL_ENTITY_TYPE = ENTITY_TYPES.register(MPSRegistryNames.PLASMA_BALL.getPath(),
-            ()-> EntityType.Builder.<PlasmaBallEntity>of(PlasmaBallEntity::new, EntityClassification.MISC)
+            ()-> EntityType.Builder.<PlasmaBallEntity>of(PlasmaBallEntity::new, MobCategory.MISC)
 //                    .size(0.25F, 0.25F)
                     .build(MPSRegistryNames.PLASMA_BALL.toString()));
 
     public static final RegistryObject<EntityType<RailgunBoltEntity>> RAILGUN_BOLT_ENTITY_TYPE = ENTITY_TYPES.register(MPSRegistryNames.RAILGUN_BOLT.getPath(),
-            ()-> EntityType.Builder.<RailgunBoltEntity>of(RailgunBoltEntity::new, EntityClassification.MISC)
+            ()-> EntityType.Builder.<RailgunBoltEntity>of(RailgunBoltEntity::new, MobCategory.MISC)
                     .sized(0.25F, 0.25F)
                     .build(MPSRegistryNames.RAILGUN_BOLT.toString()));
 
@@ -243,18 +242,18 @@ public class MPSObjects {
     public static final RegistryObject<Item> RAILGUN_MODULE = registerModule(MPSRegistryNames.RAILGUN_MODULE.getPath(), new RailgunModule());
 
     /**
-     * Container Types ----------------------------------------------------------------------------
+     * AbstractContainerMenu Types ----------------------------------------------------------------------------
      */
-    public static final DeferredRegister<ContainerType<?>> CONTAINER_TYPES = DeferredRegister.create(ForgeRegistries.CONTAINERS, MPSConstants.MOD_ID);
+    public static final DeferredRegister<MenuType<?>> CONTAINER_TYPES = DeferredRegister.create(ForgeRegistries.CONTAINERS, MPSConstants.MOD_ID);
 
 //    // Module crafting/install/salvage GUI
-//    public static final RegistryObject<ContainerType<InstallSalvageCraftContainer>> SALVAGE_CRAFT_CONTAINER_TYPE =
+//    public static final RegistryObject<MenuType<InstallSalvageCraftAbstractContainerMenu>> SALVAGE_CRAFT_CONTAINER_TYPE =
 //            CONTAINER_TYPES.register(MPSRegistryNames.INSTALL_SALVAGE_CRAFT_CONTAINER_TYPE,
-//                    () -> IForgeContainerType.create((windowId, inv, data) -> new InstallSalvageCraftContainer(windowId, inv)));
+//                    () -> IForgeMenuType.create((windowId, inv, data) -> new InstallSalvageCraftAbstractContainerMenu(windowId, inv)));
 
-    public static final RegistryObject<ContainerType<InstallSalvageContainer>> INSTALL_SALVAGE_CONTAINER_TYPE =
+    public static final RegistryObject<MenuType<InstallSalvageMenu>> INSTALL_SALVAGE_MENU_TYPE =
             CONTAINER_TYPES.register(MPSRegistryNames.INSTALL_SALVAGE_CONTAINER_TYPE,
-                    () -> IForgeContainerType.create((windowId, inv, data) -> new InstallSalvageContainer(windowId, inv, data.readEnum(EquipmentSlotType.class))));
+                    () -> IForgeMenuType.create((windowId, inv, data) -> new InstallSalvageMenu(windowId, inv, data.readEnum(EquipmentSlot.class))));
 
     static RegistryObject<Item> registerModule(String regName, Item item) {
         MPSModules.INSTANCE.addModule(MPSRegistryNames.getRegName(regName));

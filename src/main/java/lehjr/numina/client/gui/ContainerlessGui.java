@@ -1,11 +1,11 @@
 package lehjr.numina.client.gui;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 import lehjr.numina.client.gui.frame.IGuiFrame;
 import lehjr.numina.client.gui.geometry.MusePoint2D;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.util.text.ITextComponent;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.network.chat.Component;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,12 +22,12 @@ public class ContainerlessGui extends Screen {
 
     protected List<IGuiFrame> frames;
 
-    protected ContainerlessGui(ITextComponent titleIn) {
+    protected ContainerlessGui(Component titleIn) {
         super(titleIn);
         frames = new ArrayList();
     }
 
-    public ContainerlessGui(ITextComponent titleIn, int guiWidth, int guiHeight) {
+    public ContainerlessGui(Component titleIn, int guiWidth, int guiHeight) {
         this(titleIn);
         this.imageWidth = guiWidth;
         this.imageHeight = guiHeight;
@@ -51,7 +51,7 @@ public class ContainerlessGui extends Screen {
     }
 
     @Override
-    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float frameTime) {
+    public void render(PoseStack matrixStack, int mouseX, int mouseY, float frameTime) {
         this.renderBackground(matrixStack);
         update(mouseX, mouseY);
         matrixStack.pushPose();
@@ -71,17 +71,17 @@ public class ContainerlessGui extends Screen {
         }
     }
 
-    public void renderFrames(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
+    public void renderFrames(PoseStack matrixStack, int mouseX, int mouseY, float partialTicks) {
         for (IGuiFrame frame : frames) {
             frame.render(matrixStack, mouseX, mouseY, partialTicks);
         }
     }
 
-    public void renderLabels(MatrixStack matrixStack, int mouseX, int mouseY) {
+    public void renderLabels(PoseStack matrixStack, int mouseX, int mouseY) {
         renderFrameLabels(matrixStack, mouseX, mouseY);
     }
 
-    public void renderFrameLabels(MatrixStack matrixStack, int mouseX, int mouseY) {
+    public void renderFrameLabels(PoseStack matrixStack, int mouseX, int mouseY) {
         frames.forEach(frame -> frame.renderLabels(matrixStack, mouseX, mouseY));
     }
 
@@ -131,15 +131,15 @@ public class ContainerlessGui extends Screen {
         return false;
     }
 
-    public void renderTooltip(MatrixStack matrixStack, int mouseX, int mouseY) {
-        List<ITextComponent> tooltip = getToolTip(mouseX, mouseY);
+    public void renderTooltip(PoseStack matrixStack, int mouseX, int mouseY) {
+        List<Component> tooltip = getToolTip(mouseX, mouseY);
         if (tooltip != null) {
             renderComponentTooltip(matrixStack,tooltip, mouseX,mouseY);
         }
     }
 
-    public List<ITextComponent> getToolTip(int x, int y) {
-        List<ITextComponent> hitTip;
+    public List<Component> getToolTip(int x, int y) {
+        List<Component> hitTip;
         for (IGuiFrame frame : frames) {
             hitTip = frame.getToolTip(x, y);
             if (hitTip != null) {

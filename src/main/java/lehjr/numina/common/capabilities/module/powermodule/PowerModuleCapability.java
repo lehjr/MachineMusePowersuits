@@ -26,30 +26,16 @@
 
 package lehjr.numina.common.capabilities.module.powermodule;
 
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.INBT;
-import net.minecraft.util.Direction;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.capabilities.CapabilityManager;
+import net.minecraftforge.common.capabilities.CapabilityToken;
+import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 
 public class PowerModuleCapability {
-    @CapabilityInject(IPowerModule.class)
-    public static Capability<IPowerModule> POWER_MODULE = null;
+    public static final Capability<IPowerModule> POWER_MODULE = CapabilityManager.get(new CapabilityToken<>(){});;
 
-    public static void register() {
-        CapabilityManager.INSTANCE.register(IPowerModule.class, new Capability.IStorage<IPowerModule>() {
-                    @Override
-                    public INBT writeNBT(Capability<IPowerModule> capability, IPowerModule instance, Direction side) {
-                        return null;
-                    }
-
-                    @Override
-                    public void readNBT(Capability<IPowerModule> capability, IPowerModule instance, Direction side, INBT nbt) {
-                        if (!(instance instanceof PowerModule))
-                            throw new IllegalArgumentException("Can not deserialize to an instance that isn't the default implementation");
-                    }
-                },
-                () -> new PowerModule(ItemStack.EMPTY, ModuleCategory.NONE, ModuleTarget.NONE, null));
+    public static void register(RegisterCapabilitiesEvent event)
+    {
+        event.register(IPowerModule.class);
     }
 }

@@ -35,7 +35,7 @@ import java.util.Map;
 
 public class OBJPartData {
     public static final ModelProperty<OBJPartData> SUBMODEL_DATA = new ModelProperty<>();
-    public static final ModelProperty<Integer> COLOUR = new ModelProperty<>();
+    public static final ModelProperty<Integer> COLOR = new ModelProperty<>();
     public static final ModelProperty<Boolean> VISIBLE = new ModelProperty<>();
     public static final ModelProperty<Boolean> GLOW = new ModelProperty<>();
 
@@ -56,7 +56,7 @@ public class OBJPartData {
     public static IModelData makeOBJPartData(boolean glow, boolean visible, int colour) {
         return new ModelDataMap.Builder()
                 .withInitial(GLOW, glow)
-                .withInitial(COLOUR, colour)
+                .withInitial(COLOR, colour)
                 .withInitial(VISIBLE, visible)
                 .build();
     }

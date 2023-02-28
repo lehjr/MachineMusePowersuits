@@ -27,8 +27,9 @@
 package lehjr.numina.common.capabilities.module.powermodule;
 
 import lehjr.numina.common.tags.TagUtils;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -68,7 +69,7 @@ public interface IPowerModule {
 
     double applyPropertyModifiers(String propertyName);
 
-    double applyPropertyModifiers(String propertyName, CompoundNBT moduleTag);
+    double applyPropertyModifiers(String propertyName, CompoundTag moduleTag);
 
     Map<String, List<IPropertyModifier>> getPropertyModifiers();
 
@@ -76,7 +77,7 @@ public interface IPowerModule {
 
     boolean isAllowed();
 
-    default CompoundNBT getModuleTag() {
+    default CompoundTag getModuleTag() {
         return TagUtils.getModuleTag(getModuleStack());
     }
 
@@ -86,7 +87,7 @@ public interface IPowerModule {
 
     // TODO: move to somewhere else??
     @OnlyIn(Dist.CLIENT) // only used by the client for display purposes
-    default String getUnit(@Nonnull String propertyName) {
+    default Component getUnit(@Nonnull String propertyName) {
         return UnitMap.MAP.getUnit(propertyName);
     }
 
@@ -95,7 +96,7 @@ public interface IPowerModule {
     }
 
     interface IPropertyModifier {
-        double applyModifier(CompoundNBT moduleTag, double value);
+        double applyModifier(CompoundTag moduleTag, double value);
     }
 
     class PropertyModifierFlatAdditive implements IPropertyModifier {
@@ -111,7 +112,7 @@ public interface IPowerModule {
          * @return getValue + this.valueAdded
          */
         @Override
-        public double applyModifier(CompoundNBT moduleTag, double value) {
+        public double applyModifier(CompoundTag moduleTag, double value) {
             return value + this.valueAdded;
         }
     }
@@ -127,12 +128,12 @@ public interface IPowerModule {
         }
 
         @Override
-        public double applyModifier(CompoundNBT moduleTag, double value) {
+        public double applyModifier(CompoundTag moduleTag, double value) {
             long result = (long) (value + multiplier * TagUtils.getDoubleOrZero(moduleTag, tradeoffName));
             return Double.valueOf(roundWithOffset(result, roundTo, offset));
         }
 
-        public double getScaledDouble(CompoundNBT moduleTag, double value) {
+        public double getScaledDouble(CompoundTag moduleTag, double value) {
             double scaledVal = applyModifier(moduleTag, value);
             double ret = (scaledVal - value)/multiplier;
             TagUtils.setDoubleOrRemove(moduleTag, tradeoffName, ret);
@@ -162,7 +163,7 @@ public interface IPowerModule {
         }
 
         @Override
-        public double applyModifier(CompoundNBT moduleTag, double value) {
+        public double applyModifier(CompoundTag moduleTag, double value) {
             return value + multiplier * TagUtils.getDoubleOrZero(moduleTag, tradeoffName);
         }
 

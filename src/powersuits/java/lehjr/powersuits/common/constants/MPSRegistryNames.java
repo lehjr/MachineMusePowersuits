@@ -26,7 +26,7 @@
 
 package lehjr.powersuits.common.constants;
 
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 
 public class MPSRegistryNames {
     /**
@@ -142,7 +142,7 @@ public class MPSRegistryNames {
 //    public static final ResourceLocation SONIC_WEAPON_MODULE = "sonic_weapon"; // TODO?
 
     /**
-     * Container ----------------------------------------------------------------------------------
+     * AbstractContainerMenu ----------------------------------------------------------------------------------
      */
     public static final String MPS_CRAFTING_CONTAINER_TYPE = "mps_crafting_container";
     public static final String TINKERTABLE_CONTAINER_TYPE = "tinkertable_container_type";

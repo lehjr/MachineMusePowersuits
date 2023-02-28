@@ -32,17 +32,19 @@ import lehjr.numina.common.energy.ElectricItemUtils;
 import lehjr.powersuits.common.config.MPSSettings;
 import lehjr.powersuits.common.constants.MPSConstants;
 import lehjr.powersuits.common.item.module.AbstractPowerModule;
-import net.minecraft.entity.item.ItemEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.projectile.ArrowEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.Direction;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.world.World;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.AbstractArrow;
+import net.minecraft.world.entity.projectile.Arrow;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.AABB;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
@@ -58,7 +60,7 @@ public class MagnetModule extends AbstractPowerModule {
 
     @Nullable
     @Override
-    public ICapabilityProvider initCapabilities (ItemStack stack, @Nullable CompoundNBT nbt){
+    public ICapabilityProvider initCapabilities (ItemStack stack, @Nullable CompoundTag nbt){
         return new CapProvider(stack);
     }
 
@@ -77,7 +79,7 @@ public class MagnetModule extends AbstractPowerModule {
             }};
 
             powerModuleHolder = LazyOptional.of(() -> {
-                ticker.updateFromNBT();
+                ticker.loadCapValues();
                 return ticker;
             });
         }
@@ -88,9 +90,8 @@ public class MagnetModule extends AbstractPowerModule {
             }
 
             @Override
-            public void onPlayerTickActive(PlayerEntity player, ItemStack stack) {
+            public void onPlayerTickActive(Player player, ItemStack stack) {
                 int energyUSage = (int) applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION);
-
                 if (ElectricItemUtils.getPlayerEnergy(player) > energyUSage) {
                     boolean isServerSide = !player.level.isClientSide;
 
@@ -98,19 +99,19 @@ public class MagnetModule extends AbstractPowerModule {
                         ElectricItemUtils.drainPlayerEnergy(player, energyUSage);
                     }
                     int range = (int) applyPropertyModifiers(MPSConstants.RADIUS);
-                    World world = player.level;
-                    AxisAlignedBB bounds = player.getBoundingBox().inflate(range);
+                    Level world = player.level;
+                    AABB bounds = player.getBoundingBox().inflate(range);
 
                     if (isServerSide) {
                         bounds.expandTowards(0.2000000029802322D, 0.2000000029802322D, 0.2000000029802322D);
                         if (stack.getDamageValue() >> 1 >= 7) {
-                            List<ArrowEntity> arrows = world.getEntitiesOfClass(ArrowEntity.class, bounds);
-                            for (ArrowEntity arrow : arrows) {
-                                if ((arrow.pickup == ArrowEntity.PickupStatus.ALLOWED) && (world.random.nextInt(6) == 0)) {
+                            List<Arrow> arrows = world.getEntitiesOfClass(Arrow.class, bounds);
+                            for (Arrow arrow : arrows) {
+                                if ((arrow.pickup == AbstractArrow.Pickup.ALLOWED) && (world.random.nextInt(6) == 0)) {
                                     ItemEntity replacement = new ItemEntity(world, arrow.getX(), arrow.getY(), arrow.getZ(), new ItemStack(Items.ARROW));
                                     world.addFreshEntity(replacement);
                                 }
-                                arrow.remove();
+                                arrow.remove(Entity.RemovalReason.DISCARDED);
                             }
                         }
                     }
@@ -136,7 +137,7 @@ public class MagnetModule extends AbstractPowerModule {
                                 }
                             } else if (world.random.nextInt(20) == 0) {
                                 float pitch = 0.85F - world.random.nextFloat() * 3.0F / 10.0F;
-                                world.playLocalSound(e.getX(), e.getY(), e.getZ(), SoundEvents.ENDERMAN_TELEPORT, SoundCategory.PLAYERS, 0.6F, pitch, true);
+                                world.playLocalSound(e.getX(), e.getY(), e.getZ(), SoundEvents.ENDERMAN_TELEPORT, SoundSource.PLAYERS, 0.6F, pitch, true);
                             }
                         }
                     }

@@ -26,13 +26,56 @@
 
 package lehjr.numina.common.capabilities.player;
 
-public class PlayerKeyStateStorage implements IPlayerKeyStates {
+import lehjr.numina.common.capabilities.CapabilityUpdate;
+import lehjr.numina.common.math.MathUtils;
+import net.minecraft.nbt.ByteTag;
+import net.minecraftforge.common.util.INBTSerializable;
+import net.minecraftforge.common.util.LazyOptional;
+
+public class PlayerKeyStateStorage implements IPlayerKeyStates, INBTSerializable<ByteTag>, CapabilityUpdate {
+    LazyOptional<PlayerKeyStateStorage> instance = LazyOptional.of(()-> this);
+
+
     private boolean forwardKeyState = false;
     private boolean reverseKeyState = false;
     private boolean strafeLeftKeyState = false;
     private boolean strafeRightKeyState = false;
     private boolean downKeyState = false;
     private boolean jumpKeyState = false;
+
+    public PlayerKeyStateStorage() {
+        this.forwardKeyState = false;
+        this.reverseKeyState = false;
+        this.strafeLeftKeyState = false;
+        this.strafeRightKeyState = false;
+        this.downKeyState = false;
+        this.jumpKeyState = false;
+    }
+
+    public PlayerKeyStateStorage(
+            boolean forwardKeyState,
+            boolean reverseKeyState,
+            boolean strafeLeftKeyState,
+            boolean strafeRightKeyState,
+            boolean downKeyState,
+            boolean jumpKeyState) {
+        this.forwardKeyState = forwardKeyState;
+        this.reverseKeyState = reverseKeyState;
+        this.strafeLeftKeyState = strafeLeftKeyState;
+        this.strafeRightKeyState = strafeRightKeyState;
+        this.downKeyState = downKeyState;
+        this.jumpKeyState = jumpKeyState;
+    }
+
+    public PlayerKeyStateStorage(byte packedKeyStates) {
+        boolean[] boolArray = MathUtils.byteToBooleanArray(packedKeyStates);
+        this.forwardKeyState = boolArray[0];
+        this.reverseKeyState = boolArray[1];
+        this.strafeLeftKeyState = boolArray[2];
+        this.strafeRightKeyState = boolArray[3];
+        this.downKeyState = boolArray[4];
+        this.jumpKeyState = boolArray[5];
+    }
 
     @Override
     public boolean getForwardKeyState() {
@@ -96,12 +139,52 @@ public class PlayerKeyStateStorage implements IPlayerKeyStates {
 
     @Override
     public String toString() {
-        return new StringBuilder("forwardKeyState: ").append(getForwardKeyState())
-                .append(", reverseKeyState: ").append(getReverseKeyState())
-                .append(", leftStrafeKeyState: ").append(getLeftStrafeKeyState())
-                .append(",  rightStrafeKeyState: ").append(getRightStrafeKeyState())
-                .append(", downKeyState: ").append(getDownKeyState())
-                .append(", jumpKeyState: ").append(getJumpKeyState())
-                .toString();
+        return "forwardKeyState: " + getForwardKeyState() +
+                ", reverseKeyState: " + getReverseKeyState() +
+                ", leftStrafeKeyState: " + getLeftStrafeKeyState() +
+                ",  rightStrafeKeyState: " + getRightStrafeKeyState() +
+                ", downKeyState: " + getDownKeyState() +
+                ", jumpKeyState: " + getJumpKeyState();
+    }
+
+    @Override
+    public ByteTag serializeNBT() {
+        boolean[] boolArray = new boolean[]{
+                getForwardKeyState(),
+                getReverseKeyState(),
+                getLeftStrafeKeyState(),
+                getRightStrafeKeyState(),
+                getDownKeyState(),
+                getJumpKeyState(),
+                false,
+                false
+        };
+        byte byteOut = MathUtils.boolArrayToByte(boolArray);
+        return ByteTag.valueOf(byteOut);
+    }
+
+    @Override
+    public void deserializeNBT(ByteTag nbt) {
+        if (nbt instanceof ByteTag) {
+            byte byteOut = nbt.getAsByte();
+            boolean[] boolArray = MathUtils.byteToBooleanArray(byteOut);
+
+            setForwardKeyState(boolArray[0]);
+            setReverseKeyState(boolArray[1]);
+            setLeftStrafeKeyState(boolArray[2]);
+            setRightStrafeKeyState(boolArray[3]);
+            setDownKeyState(boolArray[4]);
+            setJumpKeyState(boolArray[5]);
+        }
+    }
+
+    @Override
+    public void loadCapValues() {
+
+    }
+
+    @Override
+    public void onValueChanged() {
+
     }
 }

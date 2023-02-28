@@ -26,20 +26,20 @@
 
 package lehjr.numina.client.gui.geometry;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
-import lehjr.numina.common.math.Colour;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.util.math.vector.Matrix4f;
+import com.mojang.blaze3d.vertex.DefaultVertexFormat;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexFormat;
+import com.mojang.math.Matrix4f;
+import lehjr.numina.common.math.Color;
 import org.lwjgl.BufferUtils;
-import org.lwjgl.opengl.GL11;
 
 import java.nio.FloatBuffer;
 
 public class DrawableTile extends Rect implements IDrawableRect {
     final float lineWidth = 1F;
-    Colour topBorderColour = new Colour(0.216F, 0.216F, 0.216F, 1F);
-    Colour bottomBorderColour = Colour.WHITE.withAlpha(0.8F);
-    Colour backgroundColour = new Colour(0.545F, 0.545F, 0.545F, 1F);
+    Color topBorderColour = new Color(0.216F, 0.216F, 0.216F, 1F);
+    Color bottomBorderColour = Color.WHITE.withAlpha(0.8F);
+    Color backgroundColour = new Color(0.545F, 0.545F, 0.545F, 1F);
     float zLevel = 0;
     float shrinkBoarderBy = 0;
 
@@ -55,30 +55,30 @@ public class DrawableTile extends Rect implements IDrawableRect {
         super(ul, br);
     }
 
-    public DrawableTile setTopBorderColour(Colour topBorderColour) {
+    public DrawableTile setTopBorderColour(Color topBorderColour) {
         this.topBorderColour = topBorderColour;
         return this;
     }
 
-    public Colour getTopBorderColour() {
+    public Color getTopBorderColour() {
         return this.topBorderColour;
     }
 
-    public DrawableTile setBottomBorderColour(Colour bottomBorderColour) {
+    public DrawableTile setBottomBorderColour(Color bottomBorderColour) {
         this.bottomBorderColour = bottomBorderColour;
         return this;
     }
 
-    public Colour getBottomBorderColour() {
+    public Color getBottomBorderColour() {
         return this.bottomBorderColour;
     }
 
-    public DrawableTile setBackgroundColour(Colour insideColour) {
+    public DrawableTile setBackgroundColour(Color insideColour) {
         this.backgroundColour = insideColour;
         return this;
     }
 
-    public Colour getBackgroundColour() {
+    public Color getBackgroundColour() {
         return this.backgroundColour;
     }
 
@@ -87,18 +87,18 @@ public class DrawableTile extends Rect implements IDrawableRect {
         return this;
     }
 
-    public void internalDraw(MatrixStack matrixStack, Colour colour, int glMode, double shrinkBy) {
+    public void internalDraw(PoseStack matrixStack, Color colour, VertexFormat.Mode mode, double shrinkBy) {
         internalDrawRect(matrixStack,
                 left() + shrinkBy,
                 top() + shrinkBy,
                 right() - shrinkBy,
                 bottom() - shrinkBy,
                 colour,
-                glMode);
+                mode);
     }
 
-    public void internalDrawRect(MatrixStack matrixStack, double left, double top, double right, double bottom, Colour colourIn, int glMode) {
-        preDraw(glMode, DefaultVertexFormats.POSITION_COLOR);
+    public void internalDrawRect(PoseStack matrixStack, double left, double top, double right, double bottom, Color colourIn, VertexFormat.Mode mode) {
+        preDraw(mode, DefaultVertexFormat.POSITION_COLOR);
         FloatBuffer vertices = BufferUtils.createFloatBuffer(8);
         Matrix4f matrix4f = matrixStack.last().pose();
 
@@ -126,12 +126,12 @@ public class DrawableTile extends Rect implements IDrawableRect {
         postDraw();
     }
 
-    public void drawBackground(MatrixStack matrixStack) {
-        internalDraw(matrixStack, backgroundColour, GL11.GL_QUADS, 0);
+    public void drawBackground(PoseStack matrixStack) {
+        internalDraw(matrixStack, backgroundColour, VertexFormat.Mode.QUADS, 0);
     }
 
-    public void drawBorder(MatrixStack matrixStack, double shrinkBy) {
-        internalDraw(matrixStack, topBorderColour, GL11.GL_LINE_LOOP, shrinkBy);
+    public void drawBorder(PoseStack matrixStack, double shrinkBy) {
+        internalDraw(matrixStack, topBorderColour, VertexFormat.Mode.DEBUG_LINES, shrinkBy);
     }
 
     /**
@@ -139,7 +139,7 @@ public class DrawableTile extends Rect implements IDrawableRect {
      * @param matrixStack
      * @param shrinkBy
      */
-    public void drawDualColourBorder(MatrixStack matrixStack, float shrinkBy) {
+    public void drawDualColourBorder(PoseStack matrixStack, float shrinkBy) {
         float halfWidth = lineWidth * 0.5F;
 
         //----------------------------------------
@@ -151,7 +151,7 @@ public class DrawableTile extends Rect implements IDrawableRect {
                 right() - shrinkBy + halfWidth,
                 top() + shrinkBy + halfWidth,
                 topBorderColour,
-                GL11.GL_QUADS);
+                VertexFormat.Mode.QUADS);
 
         //----------------------------------------
         // Left line
@@ -162,7 +162,7 @@ public class DrawableTile extends Rect implements IDrawableRect {
                 left() + shrinkBy + halfWidth,
                 bottom() - shrinkBy + halfWidth,
                 topBorderColour,
-                GL11.GL_QUADS);
+                VertexFormat.Mode.QUADS);
 
         //----------------------------------------
         // Bottom line
@@ -173,7 +173,7 @@ public class DrawableTile extends Rect implements IDrawableRect {
                 right() - shrinkBy + halfWidth,
                 bottom() - shrinkBy + halfWidth,
                 bottomBorderColour,
-                GL11.GL_QUADS);
+                VertexFormat.Mode.QUADS);
 
         //----------------------------------------
         // Right line
@@ -184,11 +184,11 @@ public class DrawableTile extends Rect implements IDrawableRect {
                 right() - shrinkBy + halfWidth,
                 bottom() - shrinkBy + halfWidth,
                 bottomBorderColour,
-                GL11.GL_QUADS);
+                VertexFormat.Mode.QUADS);
     }
 
     @Override
-    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float frameTime) {
+    public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTick) {
         drawBackground(matrixStack);
         if (topBorderColour.equals(bottomBorderColour)) {
             drawBorder(matrixStack, shrinkBoarderBy);

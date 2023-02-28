@@ -28,10 +28,10 @@ package lehjr.numina.common.capabilities.inventory.modechanging;
 
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.model.IBakedModel;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -47,10 +47,10 @@ import java.util.List;
 public interface IModeChangingItem extends IModularItem {
     @OnlyIn(Dist.CLIENT)
     @Nullable
-    IBakedModel getInventoryModel();
+    BakedModel getInventoryModel();
 
     @OnlyIn(Dist.CLIENT)
-    void drawModeChangeIcon(PlayerEntity player, int hotbarIndex, Minecraft mc);
+    void drawModeChangeIcon(Player player, int hotbarIndex, Minecraft mc);
 
     List<Integer> getValidModes();
 
@@ -66,7 +66,7 @@ public interface IModeChangingItem extends IModularItem {
 
     boolean hasActiveModule(ResourceLocation regName);
 
-    void cycleMode(PlayerEntity player, int dMode);
+    void cycleMode(Player player, int dMode);
 
     int nextMode();
 

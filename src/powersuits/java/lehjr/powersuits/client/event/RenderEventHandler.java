@@ -27,37 +27,37 @@
 package lehjr.powersuits.client.event;
 
 import com.google.common.util.concurrent.AtomicDouble;
-import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.vertex.IVertexBuilder;
+import com.mojang.blaze3d.platform.InputConstants;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import lehjr.numina.client.gui.geometry.DrawableRect;
 import lehjr.numina.client.render.NuminaRenderer;
 import lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
 import lehjr.numina.common.capabilities.module.powermodule.PowerModuleCapability;
 import lehjr.numina.common.capabilities.render.highlight.HighLightCapability;
-import lehjr.numina.common.math.Colour;
+import lehjr.numina.common.math.Color;
 import lehjr.numina.common.string.StringUtils;
 import lehjr.powersuits.client.control.KeybindManager;
-import lehjr.powersuits.client.control.MPSKeyBinding;
+import lehjr.powersuits.client.control.MPSKeyMapping;
 import lehjr.powersuits.client.model.helper.MPSModelHelper;
 import lehjr.powersuits.common.config.MPSSettings;
 import lehjr.powersuits.common.constants.MPSConstants;
 import lehjr.powersuits.common.constants.MPSRegistryNames;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.player.ClientPlayerEntity;
-import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.client.renderer.LevelRenderer;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.WorldRenderer;
-import net.minecraft.client.util.InputMappings;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.text.ITextComponent;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.NonNullList;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.*;
@@ -74,7 +74,7 @@ import java.util.stream.Collectors;
 public enum RenderEventHandler {
     INSTANCE;
     private static boolean ownFly = false;
-    private final DrawableRect frame = new DrawableRect(MPSSettings.getHudKeybindX(), MPSSettings.getHudKeybindY(), MPSSettings.getHudKeybindX() + (float) 16, MPSSettings.getHudKeybindY() +  16, true, Colour.DARK_GREEN.withAlpha(0.2F), Colour.GREEN.withAlpha(0.2F));
+    private final DrawableRect frame = new DrawableRect(MPSSettings.getHudKeybindX(), MPSSettings.getHudKeybindY(), MPSSettings.getHudKeybindX() + (float) 16, MPSSettings.getHudKeybindY() +  16, true, Color.DARK_GREEN.withAlpha(0.2F), Color.GREEN.withAlpha(0.2F));
 
 
     /**
@@ -83,27 +83,27 @@ public enum RenderEventHandler {
      */
     @OnlyIn(Dist.CLIENT)
     @SubscribeEvent
-    public void renderBlockHighlight(DrawHighlightEvent event) {
-        if (event.getTarget().getType() != RayTraceResult.Type.BLOCK || !(event.getInfo().getEntity() instanceof PlayerEntity)) {
+    public void renderBlockHighlight(DrawSelectionEvent event) {
+        if (event.getTarget().getType() != HitResult.Type.BLOCK || !(event.getCamera().getEntity() instanceof Player)) {
             return;
         }
 
-        PlayerEntity player = ((PlayerEntity) event.getInfo().getEntity());
+        Player player = ((Player) event.getCamera().getEntity());
 
         player.getMainHandItem().getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
                 .filter(IModeChangingItem.class::isInstance)
                 .map(IModeChangingItem.class::cast).ifPresent(iModeChangingItem -> {
                     iModeChangingItem.getActiveModule().getCapability(HighLightCapability.HIGHLIGHT).ifPresent(iHighlight -> {
-                        BlockRayTraceResult result = (BlockRayTraceResult) event.getTarget();
+                        BlockHitResult result = (BlockHitResult) event.getTarget();
                         NonNullList<BlockPos> blocks = iHighlight.getBlockPositions(result);
 
                         if(blocks.isEmpty()) {
                             return;
                         }
 
-                        MatrixStack matrixStack = event.getMatrix();
-                        IRenderTypeBuffer buffer = event.getBuffers();
-                        IVertexBuilder lineBuilder = buffer.getBuffer(RenderType.LINES);
+                        PoseStack matrixStack = event.getPoseStack();
+                        MultiBufferSource buffer = event.getMultiBufferSource();
+                        VertexConsumer lineBuilder = buffer.getBuffer(RenderType.LINES);
 
                         double partialTicks = event.getPartialTicks();
                         double x = player.xOld + (player.getX() - player.xOld) * partialTicks;
@@ -112,9 +112,9 @@ public enum RenderEventHandler {
 
                         matrixStack.pushPose();
                         blocks.forEach(blockPos -> {
-                            AxisAlignedBB aabb = new AxisAlignedBB(blockPos).move(-x, -y, -z);
+                            AABB aabb = new AABB(blockPos).move(-x, -y, -z);
 
-                            WorldRenderer.renderLineBox(matrixStack, lineBuilder, aabb, blockPos.equals(result.getBlockPos()) ? 1 : 0 , 0, 0, 0.4F);
+                            LevelRenderer.renderLineBox(matrixStack, lineBuilder, aabb, blockPos.equals(result.getBlockPos()) ? 1 : 0 , 0, 0, 0.4F);
                         });
                         matrixStack.popPose();
                         event.setCanceled(true);
@@ -137,7 +137,7 @@ public enum RenderEventHandler {
     @SubscribeEvent
     public void onPostRenderGameOverlayEvent(RenderGameOverlayEvent.Post e) {
         RenderGameOverlayEvent.ElementType elementType = e.getType();
-        if (RenderGameOverlayEvent.ElementType.HOTBAR.equals(elementType)) {
+        if (RenderGameOverlayEvent.ElementType.LAYER.equals(elementType)) {
             this.drawKeybindToggles(e.getMatrixStack());
             ClientOverlayHandler.INSTANCE.render(e);
         }
@@ -145,12 +145,12 @@ public enum RenderEventHandler {
 
     @SubscribeEvent
     public void onPreRenderPlayer(RenderPlayerEvent.Pre event) {
-        if (!event.getPlayer().abilities.flying && !event.getPlayer().isOnGround() && this.playerHasFlightOn(event.getPlayer())) {
-            event.getPlayer().abilities.flying = true;
+        if (!event.getPlayer().getAbilities().flying && !event.getPlayer().isOnGround() && this.playerHasFlightOn(event.getPlayer())) {
+            event.getPlayer().getAbilities().flying = true;
             RenderEventHandler.ownFly = true;
         }
 
-        if(event.getPlayer().getItemBySlot(EquipmentSlotType.CHEST).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+        if(event.getPlayer().getItemBySlot(EquipmentSlot.CHEST).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
                 .filter(IModularItem.class::isInstance)
                 .map(IModularItem.class::cast)
                 .map(iItemHandler -> iItemHandler.isModuleOnline(MPSRegistryNames.ACTIVE_CAMOUFLAGE_MODULE)).orElse(false)) {
@@ -158,22 +158,22 @@ public enum RenderEventHandler {
         }
     }
 
-    private boolean playerHasFlightOn(PlayerEntity player) {
+    private boolean playerHasFlightOn(Player player) {
         return
-                player.getItemBySlot(EquipmentSlotType.HEAD).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+                player.getItemBySlot(EquipmentSlot.HEAD).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
                         .filter(IModularItem.class::isInstance)
                         .map(IModularItem.class::cast)
                         .map(iModularItem ->
                                 iModularItem.isModuleOnline(MPSRegistryNames.FLIGHT_CONTROL_MODULE)).orElse(false) ||
 
-                        player.getItemBySlot(EquipmentSlotType.CHEST).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+                        player.getItemBySlot(EquipmentSlot.CHEST).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
                                 .filter(IModularItem.class::isInstance)
                                 .map(IModularItem.class::cast)
                                 .map(iModularItem ->
                                         iModularItem.isModuleOnline(MPSRegistryNames.JETPACK_MODULE) ||
                                                 iModularItem.isModuleOnline(MPSRegistryNames.GLIDER_MODULE)).orElse(false) ||
 
-                        player.getItemBySlot(EquipmentSlotType.FEET).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+                        player.getItemBySlot(EquipmentSlot.FEET).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
                                 .filter(IModularItem.class::isInstance)
                                 .map(IModularItem.class::cast)
                                 .map(iModularItem ->
@@ -184,13 +184,13 @@ public enum RenderEventHandler {
     public void onPostRenderPlayer(RenderPlayerEvent.Post event) {
         if (RenderEventHandler.ownFly) {
             RenderEventHandler.ownFly = false;
-            event.getPlayer().abilities.flying = false;
+            event.getPlayer().getAbilities().flying = false;
         }
     }
 
     @SubscribeEvent
-    public void onFOVUpdate(FOVUpdateEvent e) {
-        e.getEntity().getItemBySlot(EquipmentSlotType.HEAD).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+    public void onFOVUpdate(FOVModifierEvent e) {
+        e.getEntity().getItemBySlot(EquipmentSlot.HEAD).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
                 .filter(IModularItem.class::isInstance)
                 .map(IModularItem.class::cast)
                 .ifPresent(h-> {
@@ -218,12 +218,12 @@ public enum RenderEventHandler {
     }
 
     boolean isModularItemEquuiiped() {
-        PlayerEntity player = Minecraft.getInstance().player;
-        return Arrays.stream(EquipmentSlotType.values()).filter(type ->player.getItemBySlot(type).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).filter(IModularItem.class::isInstance).isPresent()).findFirst().isPresent();
+        Player player = Minecraft.getInstance().player;
+        return Arrays.stream(EquipmentSlot.values()).filter(type ->player.getItemBySlot(type).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).filter(IModularItem.class::isInstance).isPresent()).findFirst().isPresent();
     }
 
     @OnlyIn(Dist.CLIENT)
-    public void drawKeybindToggles(MatrixStack matrixStack) {
+    public void drawKeybindToggles(PoseStack matrixStack) {
         if (MPSSettings.displayHud() && isModularItemEquuiiped()) {
             Minecraft minecraft = Minecraft.getInstance();
             AtomicDouble top = new AtomicDouble(MPSSettings.getHudKeybindY());
@@ -240,38 +240,38 @@ public enum RenderEventHandler {
     }
 
     class KBDisplay extends DrawableRect {
-        List<MPSKeyBinding> boundKeybinds = new ArrayList<>();
-        final InputMappings.Input finalId;
-        public KBDisplay(MPSKeyBinding kb, double left, double top, double right) {
-            super(left, top, right, top + 16, true, Colour.DARK_GREEN.withAlpha(0.2F), Colour.GREEN.withAlpha(0.2F));
+        List<MPSKeyMapping> boundKeybinds = new ArrayList<>();
+        final InputConstants.Key finalId;
+        public KBDisplay(MPSKeyMapping kb, double left, double top, double right) {
+            super(left, top, right, top + 16, true, Color.DARK_GREEN.withAlpha(0.2F), Color.GREEN.withAlpha(0.2F));
             this.finalId = kb.getKey();
             boundKeybinds.add(kb);
         }
 
-        public ITextComponent getLabel() {
+        public Component getLabel() {
             return finalId.getDisplayName();
         }
 
-        public void addKeyBind(MPSKeyBinding kb) {
+        public void addKeyBind(MPSKeyMapping kb) {
             if (!boundKeybinds.contains(kb)){
                 boundKeybinds.add(kb);
             }
         }
 
-        ClientPlayerEntity getPlayer() {
+        LocalPlayer getPlayer() {
             return Minecraft.getInstance().player;
         }
 
         @Override
-        public void render(MatrixStack matrixStack, int mouseX, int mouseY, float frameTime) {
+        public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTick) {
             float stringwidth = (float) StringUtils.getFontRenderer().width(getLabel());
             setWidth(stringwidth + 8 + boundKeybinds.stream().filter(kb->kb.showOnHud).collect(Collectors.toList()).size() * 18);
-            super.render(matrixStack, 0, 0, frameTime);
+            super.render(matrixStack, 0, 0, partialTick);
             matrixStack.pushPose();
             matrixStack.translate(0,0,100);
             boolean kbToggleVal = boundKeybinds.stream().filter(kb->kb.toggleval).findFirst().isPresent();
 
-            StringUtils.drawLeftAlignedText(matrixStack, getLabel(), (float) left() + 4, (float) top() + 9, (kbToggleVal) ? Colour.RED : Colour.GREEN);
+            StringUtils.drawLeftAlignedText(matrixStack, getLabel(), (float) left() + 4, (float) top() + 9, (kbToggleVal) ? Color.RED : Color.GREEN);
             matrixStack.popPose();
             AtomicDouble x = new AtomicDouble(left() + stringwidth + 8);
 
@@ -279,7 +279,7 @@ public enum RenderEventHandler {
                 boolean active = false;
                 // just using the icon
                 ItemStack module = new ItemStack(ForgeRegistries.ITEMS.getValue(kb.registryName));
-                for (EquipmentSlotType slot : EquipmentSlotType.values()) {
+                for (EquipmentSlot slot : EquipmentSlot.values()) {
                     ItemStack stack = getPlayer().getItemBySlot(slot);
                     active = stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
                             .filter(IModularItem.class::isInstance)

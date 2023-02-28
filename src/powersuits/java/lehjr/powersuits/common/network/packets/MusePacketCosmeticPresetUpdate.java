@@ -28,8 +28,8 @@ package lehjr.powersuits.common.network.packets;//package lehjr.powersuits.netwo
 //
 //import lehjr.mpalib.basemod.MPALibLogger;
 //import lehjr.mpalib.network.MuseByteBufferUtils;
-//import net.minecraft.nbt.CompoundNBT;
-//import net.minecraft.network.PacketBuffer;
+//import net.minecraft.nbt.CompoundTag;
+//import net.minecraft.network.FriendlyByteBuf;
 //import net.minecraftforge.fml.network.NetworkEvent;
 //
 //import java.util.function.Supplier;
@@ -37,25 +37,25 @@ package lehjr.powersuits.common.network.packets;//package lehjr.powersuits.netwo
 //public class MusePacketCosmeticPresetUpdate {
 //    String registryName;
 //    String name;
-//    CompoundNBT cosmeticSettings;
+//    CompoundTag cosmeticSettings;
 //
 //    public MusePacketCosmeticPresetUpdate() {
 //
 //    }
 //
-//    public MusePacketCosmeticPresetUpdate(String registryNameIn, String nameIn, CompoundNBT cosmeticSettingsIn) {
+//    public MusePacketCosmeticPresetUpdate(String registryNameIn, String nameIn, CompoundTag cosmeticSettingsIn) {
 //        this.registryName = registryNameIn;
 //        this.name = nameIn;
 //        this.cosmeticSettings = cosmeticSettingsIn;
 //    }
 //
-//    public static void encode(MusePacketCosmeticPresetUpdate msg, PacketBuffer packetBuffer) {
+//    public static void encode(MusePacketCosmeticPresetUpdate msg, FriendlyByteBuf packetBuffer) {
 //        packetBuffer.writeString(msg.registryName);
 //        packetBuffer.writeString(msg.name);
 //        MuseByteBufferUtils.writeCompressedNBT(packetBuffer, msg.cosmeticSettings);
 //    }
 //
-//    public static MusePacketCosmeticPresetUpdate decode(PacketBuffer packetBuffer) {
+//    public static MusePacketCosmeticPresetUpdate decode(FriendlyByteBuf packetBuffer) {
 //        return new MusePacketCosmeticPresetUpdate(
 //                packetBuffer.readString(500),
 //        packetBuffer.readString(500),
@@ -69,7 +69,7 @@ package lehjr.powersuits.common.network.packets;//package lehjr.powersuits.netwo
 //
 ////        if (ctx.side == Side.SERVER) {
 ////            boolean allowCosmeticPresetCreation;
-////            final ServerPlayerEntity player = ctx.getServerHandler().player;
+////            final ServerPlayer player = ctx.getServerHandler().player;
 ////            // check if player is the server owner
 ////            if (FMLCommonHandler.instance().getMinecraftServerInstance().isSinglePlayer()) {
 ////                allowCosmeticPresetCreation = player.getName().equals(FMLCommonHandler.instance().getMinecraftServerInstance().getServerOwner());
@@ -83,7 +83,7 @@ package lehjr.powersuits.common.network.packets;//package lehjr.powersuits.netwo
 ////                ctx.get().enqueueWork(() -> {
 ////                    ResourceLocation registryName = message.registryName;
 ////                    String name = message.name;
-////                    CompoundNBT cosmeticSettings = message.cosmeticSettings;
+////                    CompoundTag cosmeticSettings = message.cosmeticSettings;
 ////                    MPSServerSettings settings = MPASettings::getModuleConfig.getServerSettings();
 ////                    if (settings != null) {
 ////                        settings.updateCosmeticInfo(registryName, name, cosmeticSettings);
@@ -101,7 +101,7 @@ package lehjr.powersuits.common.network.packets;//package lehjr.powersuits.netwo
 ////            Minecraft.getInstance().addScheduledTask(() -> {
 ////                ResourceLocation registryName = message.registryName;
 ////                String name = message.name;
-////                CompoundNBT cosmeticSettings = message.cosmeticSettings;
+////                CompoundTag cosmeticSettings = message.cosmeticSettings;
 ////                MPSServerSettings settings = MPASettings::getModuleConfig.getServerSettings();
 ////                settings.updateCosmeticInfo(registryName, name, cosmeticSettings);
 ////            });

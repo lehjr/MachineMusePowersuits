@@ -2,7 +2,7 @@
 //
 //import lehjr.numina.common.base.NuminaObjects;
 //import lehjr.numina.client.render.item.PlasmaBallTestRenderer;
-//import net.minecraft.item.Item;
+//import net.minecraft.world.item.Item;
 //
 //public class PlasmaBallTest extends Item {
 //    public PlasmaBallTest() {

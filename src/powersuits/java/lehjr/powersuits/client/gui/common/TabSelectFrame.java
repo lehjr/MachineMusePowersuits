@@ -26,22 +26,22 @@
 
 package lehjr.powersuits.client.gui.common;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 import lehjr.numina.client.gui.clickable.button.VanillaButton;
 import lehjr.numina.client.gui.frame.AbstractGuiFrame;
 import lehjr.numina.client.gui.geometry.MusePoint2D;
 import lehjr.numina.client.gui.geometry.Rect;
 import lehjr.numina.client.sound.Musique;
 import lehjr.numina.client.sound.SoundDictionary;
-import lehjr.powersuits.client.gui.keybind.TinkerKeybindGui;
+import lehjr.powersuits.client.gui.keymap.TinkerKeymapGui;
 import lehjr.powersuits.client.gui.modding.cosmetic.CosmeticGui;
 import lehjr.powersuits.client.gui.modding.module.tweak.ModuleTweakGui;
 import lehjr.powersuits.common.network.MPSPackets;
 import lehjr.powersuits.common.network.packets.ContainerGuiOpenPacket;
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.player.Player;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,43 +52,43 @@ import java.util.List;
  * Ported to Java by lehjr on 10/19/16.
  */
 public class TabSelectFrame extends AbstractGuiFrame {
-    PlayerEntity player;
+    Player player;
     List<VanillaButton> buttons = new ArrayList<>();
 
-    public TabSelectFrame(double left, double bottom, double width, PlayerEntity player, int active) {
+    public TabSelectFrame(double left, double bottom, double width, Player player, int active) {
         super(new Rect(left, bottom - 20, left + width, bottom));
         this.player = player;
         VanillaButton button;
 
-        /** Install Salvage GUI (the only Containered GUI)*/
-        button = new VanillaButton(left(), top(), new TranslationTextComponent("gui.powersuits.tab.install.salvage"), active != 0);
+        /** Install Salvage GUI (the only AbstractContainerMenued GUI)*/
+        button = new VanillaButton(left(), top(), new TranslatableComponent("gui.powersuits.tab.install.salvage"), active != 0);
         button.setOnPressed(onPressed->{
             Musique.playClientSound(SoundDictionary.SOUND_EVENT_GUI_SELECT, 1);
-            MPSPackets.CHANNEL_INSTANCE.sendToServer(new ContainerGuiOpenPacket(EquipmentSlotType.MAINHAND));
+            MPSPackets.CHANNEL_INSTANCE.sendToServer(new ContainerGuiOpenPacket(EquipmentSlot.MAINHAND));
         });
         buttons.add(button);
 
         /** Module Tweak Gui */
-        button = new VanillaButton(left(), top(), new TranslationTextComponent("gui.powersuits.tab.module.tweak"), active != 1);
+        button = new VanillaButton(left(), top(), new TranslatableComponent("gui.powersuits.tab.module.tweak"), active != 1);
         button.setOnPressed(onPressed->{
             Musique.playClientSound(SoundDictionary.SOUND_EVENT_GUI_SELECT, 1);
-            Minecraft.getInstance().tell(() -> Minecraft.getInstance().setScreen(new ModuleTweakGui(new TranslationTextComponent("gui.tinkertable"))));
+            Minecraft.getInstance().tell(() -> Minecraft.getInstance().setScreen(new ModuleTweakGui(new TranslatableComponent("gui.tinkertable"))));
         });
         buttons.add(button);
 
         /** Keybind Gui */
-        button = new VanillaButton(left(), top(), new TranslationTextComponent("gui.powersuits.tab.keybinds"), active !=2);
+        button = new VanillaButton(left(), top(), new TranslatableComponent("gui.powersuits.tab.keybinds"), active !=2);
         button.setOnPressed(onPressed->{
             Musique.playClientSound(SoundDictionary.SOUND_EVENT_GUI_SELECT, 1);
-            Minecraft.getInstance().tell(() -> Minecraft.getInstance().setScreen(new TinkerKeybindGui(player, new TranslationTextComponent("gui.powersuits.tab.keybinds.toggle"))));
+            Minecraft.getInstance().tell(() -> Minecraft.getInstance().setScreen(new TinkerKeymapGui(player, new TranslatableComponent("gui.powersuits.tab.keybinds.toggle"))));
         });
         buttons.add(button);
 
         /** Cosmetic Tweak Frame */
-        button = new VanillaButton(left(), top(), new TranslationTextComponent("gui.powersuits.tab.visual"), active !=3);
+        button = new VanillaButton(left(), top(), new TranslatableComponent("gui.powersuits.tab.visual"), active !=3);
         button.setOnPressed(onPressed->{
             Musique.playClientSound(SoundDictionary.SOUND_EVENT_GUI_SELECT, 1);
-            Minecraft.getInstance().tell(() -> Minecraft.getInstance().setScreen(new CosmeticGui(player.inventory, new TranslationTextComponent("gui.tinkertable"))));
+            Minecraft.getInstance().tell(() -> Minecraft.getInstance().setScreen(new CosmeticGui(player.getInventory(), new TranslatableComponent("gui.tinkertable"))));
         });
         buttons.add(button);
 
@@ -122,7 +122,7 @@ public class TabSelectFrame extends AbstractGuiFrame {
     }
 
     @Override
-    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
-        buttons.stream().forEach(b->b.render(matrixStack, mouseX, mouseY, partialTicks));
+    public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTick) {
+        buttons.stream().forEach(b->b.render(matrixStack, mouseX, mouseY, partialTick));
     }
 }

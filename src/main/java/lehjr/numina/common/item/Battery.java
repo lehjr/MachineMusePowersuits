@@ -27,25 +27,20 @@
 package lehjr.numina.common.item;
 
 import lehjr.numina.common.base.NuminaObjects;
-import lehjr.numina.common.capabilities.energy.ForgeEnergyModuleWrapper;
-import lehjr.numina.common.capabilities.energy.IEnergyWrapper;
-import lehjr.numina.common.capabilities.module.powermodule.*;
-import lehjr.numina.common.config.NuminaSettings;
-import lehjr.numina.common.constants.NuminaConstants;
+import lehjr.numina.common.capabilities.BatteryCapabilityProvider;
 import lehjr.numina.common.string.AdditionalInfo;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.Direction;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.world.World;
-import net.minecraftforge.common.capabilities.Capability;
+import net.minecraft.core.NonNullList;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.util.Mth;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
-import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.CapabilityEnergy;
+import net.minecraftforge.energy.IEnergyStorage;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -72,7 +67,7 @@ public class Battery extends Item {
     }
 
     @Override
-    public void appendHoverText(ItemStack itemStack, @Nullable World worldIn, List<ITextComponent> tooltips, ITooltipFlag flagIn) {
+    public void appendHoverText(ItemStack itemStack, @Nullable Level worldIn, List<Component> tooltips, TooltipFlag flagIn) {
         if (worldIn != null) {
             super.appendHoverText(itemStack, worldIn, tooltips, flagIn);
             AdditionalInfo.appendHoverText(itemStack, worldIn, tooltips, flagIn);
@@ -81,75 +76,38 @@ public class Battery extends Item {
 
     @Nullable
     @Override
-    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundNBT nbt) {
-        return new CapProvider(stack);
+    public ICapabilityProvider initCapabilities(ItemStack stack, @org.jetbrains.annotations.Nullable CompoundTag nbt) {
+        return new BatteryCapabilityProvider(stack, tier, maxEnergy, maxTransfer);
     }
 
-    public class CapProvider implements ICapabilityProvider {
-        ItemStack module;
-        IPowerModule moduleCap;
-        IEnergyWrapper energyStorage;
-
-        public CapProvider(@Nonnull ItemStack module) {
-            this.module = module;
-            this.moduleCap = new PowerModule(module, ModuleCategory.ENERGY_STORAGE, ModuleTarget.ALLITEMS, NuminaSettings::getModuleConfig) {
-                @Override
-                public int getTier() {
-                    return tier;
-                }
-
-                @Override
-                public String getModuleGroup() {
-                    return "Battery";
-                }
-
-                {
-                    addBaseProperty(NuminaConstants.MAX_ENERGY, maxEnergy, "FE");
-                    addBaseProperty(NuminaConstants.MAX_TRAMSFER, maxTransfer, "FE");
-                }};
-
-            this.energyStorage = new ForgeEnergyModuleWrapper(
-                    module,
-                    (int) moduleCap.applyPropertyModifiers(NuminaConstants.MAX_ENERGY),
-                    (int) moduleCap.applyPropertyModifiers(NuminaConstants.MAX_TRAMSFER)
-            );
-        }
-
-        @Nonnull
-        @Override
-        public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
-            if (cap == CapabilityEnergy.ENERGY) {
-                energyStorage.updateFromNBT();
-                return CapabilityEnergy.ENERGY.orEmpty(cap, LazyOptional.of(() -> energyStorage));
-            }
-            if (cap == PowerModuleCapability.POWER_MODULE) {
-                return PowerModuleCapability.POWER_MODULE.orEmpty(cap, LazyOptional.of(() -> moduleCap));
-            }
-            return LazyOptional.empty();
-        }
-    }
 
     @Override
-    public void fillItemCategory(@Nonnull ItemGroup group, @Nonnull NonNullList<ItemStack> items) {
+    public void fillItemCategory(@Nonnull CreativeModeTab group, @Nonnull NonNullList<ItemStack> items) {
         super.fillItemCategory(group, items);
         if (allowdedIn(group)) {
             ItemStack out = new ItemStack(this);
-            CapProvider provider = new CapProvider(out);
-            int maxEnergy = (int) provider.moduleCap.applyPropertyModifiers(NuminaConstants.MAX_ENERGY);
-            provider.energyStorage.receiveEnergy(maxEnergy, false);
+            BatteryCapabilityProvider provider = new BatteryCapabilityProvider(out, tier, maxEnergy, maxTransfer);
+            provider.setMaxEnergy();
             items.add(out);
         }
     }
 
     @Override
-    public boolean showDurabilityBar(final ItemStack stack) {
-        return stack.getCapability(CapabilityEnergy.ENERGY)
-                .map(energyCap -> energyCap.getMaxEnergyStored() > 0).orElse(false);
+    public boolean isBarVisible(ItemStack pStack) {
+        return true;
     }
 
     @Override
-    public double getDurabilityForDisplay(final ItemStack stack) {
-        return stack.getCapability(CapabilityEnergy.ENERGY)
-                .map(energyCap -> 1 - energyCap.getEnergyStored() / (double) energyCap.getMaxEnergyStored()).orElse(1D);
+    public int getBarWidth(ItemStack stack) {
+        return stack.getCapability(CapabilityEnergy.ENERGY).map(iEnergyStorage -> iEnergyStorage.getEnergyStored() * 13 / iEnergyStorage.getMaxEnergyStored()).orElse(0);
+    }
+
+    @Override
+    public int getBarColor(ItemStack stack) {
+        IEnergyStorage energy = stack.getCapability(CapabilityEnergy.ENERGY).orElse(null);
+        if (energy == null) {
+            return super.getBarColor(stack);
+        }
+        return Mth.hsvToRgb(Math.max(0.0F, (float) energy.getEnergyStored() / (float) energy.getMaxEnergyStored()) / 3.0F, 1.0F, 1.0F);
     }
 }

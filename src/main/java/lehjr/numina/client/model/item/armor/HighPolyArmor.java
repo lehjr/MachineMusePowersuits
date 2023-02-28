@@ -26,14 +26,17 @@
 
 package lehjr.numina.client.model.item.armor;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.vertex.IVertexBuilder;
-import net.minecraft.client.renderer.entity.model.BipedModel;
-import net.minecraft.client.renderer.model.ModelRenderer;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.nbt.CompoundNBT;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.minecraft.client.model.HumanoidModel;
+import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+
+import java.util.HashMap;
 
 /**
  * Author: MachineMuse (Claire Semple)
@@ -41,74 +44,75 @@ import net.minecraftforge.api.distmarker.OnlyIn;
  * <p>
  * Ported to Java by lehjr on 11/7/16.
  * <p>
- * FIXME: IMPORTANT!!!!: Note that SmartMoving will mess up the rendering here and the armor's yaw will not change with the player's yaw but will be fine with it not installed.
  */
 @OnlyIn(Dist.CLIENT)
-public class HighPolyArmor extends BipedModel {
-    public CompoundNBT renderSpec = null;
-    public EquipmentSlotType visibleSection = EquipmentSlotType.HEAD;
+public class HighPolyArmor<T extends LivingEntity> extends HumanoidModel<T> {
+    public CompoundTag renderSpec = null;
+    public EquipmentSlot visibleSection = EquipmentSlot.HEAD;
 
-    public HighPolyArmor() {
-        super(0);
+    public HighPolyArmor(ModelPart pRoot) {
+        super(pRoot);
         init();
     }
 
-    public CompoundNBT getRenderSpec() {
+    public CompoundTag getRenderSpec() {
         return this.renderSpec;
     }
 
-    public void setRenderSpec(CompoundNBT nbt) {
+    public void setRenderSpec(CompoundTag nbt) {
         renderSpec = nbt;
     }
 
-    public EquipmentSlotType getVisibleSection() {
+    public EquipmentSlot getVisibleSection() {
         return this.visibleSection;
     }
 
-    public void setVisibleSection(EquipmentSlotType equipmentSlot) {
+    public void setVisibleSection(EquipmentSlot equipmentSlot) {
         this.visibleSection = equipmentSlot;
         this.hat.visible = false;
 
         // This may not actually be needed
-        this.head.visible = equipmentSlot == EquipmentSlotType.HEAD;
-        this.body.visible = equipmentSlot == EquipmentSlotType.CHEST;
-        this.rightArm.visible = equipmentSlot == EquipmentSlotType.CHEST;
-        this.leftArm.visible = equipmentSlot == EquipmentSlotType.CHEST;
-        this.rightLeg.visible = equipmentSlot == EquipmentSlotType.LEGS;
-        this.leftLeg.visible = equipmentSlot == EquipmentSlotType.LEGS;
+        this.head.visible = equipmentSlot == EquipmentSlot.HEAD;
+        this.body.visible = equipmentSlot == EquipmentSlot.CHEST;
+        this.rightArm.visible = equipmentSlot == EquipmentSlot.CHEST;
+        this.leftArm.visible = equipmentSlot == EquipmentSlot.CHEST;
+        this.rightLeg.visible = equipmentSlot == EquipmentSlot.LEGS;
+        this.leftLeg.visible = equipmentSlot == EquipmentSlot.LEGS;
     }
 
     @Override
-    protected Iterable<ModelRenderer> headParts() {
+    protected Iterable<ModelPart> headParts() {
         return super.headParts();
     }
 
     @Override
-    protected Iterable<ModelRenderer> bodyParts() {
+    protected Iterable<ModelPart> bodyParts() {
         return super.bodyParts();
     }
 
     // packed overlay is for texture UV's ... see OverlayTexture.getPackedUV
     @Override
-    public void renderToBuffer(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
+    public void renderToBuffer(PoseStack matrixStackIn, VertexConsumer bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
         this.headParts().forEach((part) -> part.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha));
         this.bodyParts().forEach((part) -> part.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha));
     }
 
     public void init() {
-        clearAndAddChild(head, 0.0F, 24.0F, 0.0F);
-        clearAndAddChild(body,0.0F, 24.0F, 0.0F);
-        clearAndAddChild(rightArm,5.0F, 24.0F, 0.0F);
-        clearAndAddChild(leftArm,-5.0F, 24.0F, 0.0F);
-        clearAndAddChild(rightLeg,1.9F, 12.0F, 0.0F);
-        clearAndAddChild(leftLeg,-1.9F, 12.0F, 0.0F);
+        clearAndAddChild(head, "head", 0.0F, 24.0F, 0.0F);
+        clearAndAddChild(body, "body", 0.0F, 24.0F, 0.0F);
+        clearAndAddChild(rightArm, "right_leg", 5.0F, 24.0F, 0.0F);
+        clearAndAddChild(leftArm, "left_arm",-5.0F, 24.0F, 0.0F);
+        clearAndAddChild(rightLeg, "right_leg",1.9F, 12.0F, 0.0F);
+        clearAndAddChild(leftLeg, "left_leg", -1.9F, 12.0F, 0.0F);
         hat.cubes.clear();
     }
 
-    public void clearAndAddChild(ModelRenderer mr, float x, float y, float z) {
-        mr.cubes.clear();
-        RenderPart rp = new RenderPart(this, mr);
-        mr.addChild(rp);
+    public void clearAndAddChild(ModelPart mp, String partName, float x, float y, float z) {
+        mp.cubes.clear();
+        RenderPart rp = new RenderPart(this, mp);
+        rp.children = new HashMap<>() {{
+            put(partName, rp);
+        }};
         rp.setPos(x, y, z);
     }
 }

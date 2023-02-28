@@ -27,13 +27,13 @@
 package lehjr.powersuits.common.base;
 
 import lehjr.powersuits.common.constants.MPSConstants;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class MPSCreativeTab extends ItemGroup {
+public class MPSCreativeTab extends CreativeModeTab {
     public MPSCreativeTab() {
         super(MPSConstants.MOD_ID);
     }

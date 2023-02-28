@@ -27,43 +27,40 @@
 package lehjr.numina.client.model.obj;
 
 import lehjr.numina.client.model.helper.ModelHelper;
-import lehjr.numina.common.math.Colour;
-import net.minecraft.block.BlockState;
-import net.minecraft.client.renderer.model.BakedQuad;
-import net.minecraft.client.renderer.model.IBakedModel;
-import net.minecraft.util.Direction;
+import lehjr.numina.common.math.Color;
+import net.minecraft.client.renderer.block.model.BakedQuad;
+import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.core.Direction;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.client.model.BakedModelWrapper;
 import net.minecraftforge.client.model.data.EmptyModelData;
 import net.minecraftforge.client.model.data.IModelData;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import static lehjr.numina.client.model.obj.OBJPartData.*;
-
 public class OBJBakedPart extends BakedModelWrapper {
-    public OBJBakedPart(IBakedModel originalModel) {
+    public OBJBakedPart(BakedModel originalModel) {
         super(originalModel);
     }
 
-    @Nonnull
+    @NotNull
     @Override
-    public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, @Nonnull Random rand, @Nonnull IModelData extraData) {
+    public List<BakedQuad> getQuads(@org.jetbrains.annotations.Nullable BlockState state, @Nullable Direction side, @NotNull Random rand, @NotNull IModelData extraData) {
         // no extra data
         if (extraData == EmptyModelData.INSTANCE) {
             return originalModel.getQuads(state, side, rand, extraData);
         } else {
             // part is visibile
-            boolean visible = extraData.hasProperty(VISIBLE) ? extraData.getData(VISIBLE) : true;
+            boolean visible = extraData.hasProperty(OBJPartData.VISIBLE) ? extraData.getData(OBJPartData.VISIBLE) : true;
             if (visible) {
                 // glow is opposite ambient occlusion
-                boolean glow = (extraData.hasProperty(GLOW) ? extraData.getData(GLOW) : false);
+                boolean glow = (extraData.hasProperty(OBJPartData.GLOW) ? extraData.getData(OBJPartData.GLOW) : false);
                 // color applied to all quads in the part
-                Colour colour = extraData.hasProperty(COLOUR) ? new Colour(extraData.getData(COLOUR)) : Colour.WHITE;
-
+                Color colour = extraData.hasProperty(OBJPartData.COLOR) ? new Color(extraData.getData(OBJPartData.COLOR)) : Color.WHITE;
                 return ModelHelper.getColoredQuadsWithGlow(originalModel.getQuads(state, side, rand, extraData), colour, glow);
             }
         }

@@ -1,50 +1,24 @@
-/*
- * Copyright (c) 2021. MachineMuse, Lehjr
- *  All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *
- *      Redistributions of source code must retain the above copyright notice, this
- *      list of conditions and the following disclaimer.
- *
- *     Redistributions in binary form must reproduce the above copyright notice,
- *     this list of conditions and the following disclaimer in the documentation
- *     and/or other materials provided with the distribution.
- *
- *  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
- *  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
- *  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- *  DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
- *  ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- *  (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
- *  LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
- *  ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
-
 package lehjr.numina.client.model.helper;
 
 import com.google.common.collect.ImmutableList;
+import com.mojang.blaze3d.vertex.VertexFormatElement;
+import com.mojang.math.Transformation;
+import com.mojang.math.Vector3f;
+import com.mojang.math.Vector4f;
 import forge.NuminaOBJLoader;
 import forge.NuminaOBJModel;
 import lehjr.numina.client.model.obj.OBJBakedCompositeModel;
 import lehjr.numina.client.model.obj.OBJModelConfiguration;
 import lehjr.numina.common.base.NuminaLogger;
-import lehjr.numina.common.math.Colour;
+import lehjr.numina.common.math.Color;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.model.BakedQuad;
-import net.minecraft.client.renderer.model.IModelTransform;
-import net.minecraft.client.renderer.model.ItemOverrideList;
-import net.minecraft.client.renderer.model.RenderMaterial;
+import net.minecraft.client.renderer.block.model.BakedQuad;
+import net.minecraft.client.renderer.block.model.ItemOverrides;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.renderer.vertex.VertexFormatElement;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.vector.TransformationMatrix;
-import net.minecraft.util.math.vector.Vector3f;
-import net.minecraft.util.math.vector.Vector4f;
-import net.minecraftforge.client.model.ModelLoader;
+import net.minecraft.client.resources.model.Material;
+import net.minecraft.client.resources.model.ModelState;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraftforge.client.model.ForgeModelBakery;
 import net.minecraftforge.client.model.pipeline.BakedQuadBuilder;
 import net.minecraftforge.client.model.pipeline.VertexTransformer;
 import net.minecraftforge.common.model.TransformationHelper;
@@ -54,14 +28,14 @@ import java.util.List;
 import java.util.function.Function;
 
 public class ModelHelper {
-    public static TransformationMatrix get(float transformX, float transformY, float transformZ, float angleX, float angleY, float angleZ, float scaleX, float scaleY, float scaleZ) {
+    public static Transformation get(float transformX, float transformY, float transformZ, float angleX, float angleY, float angleZ, float scaleX, float scaleY, float scaleZ) {
         // (@Nullable Vector3f translationIn,
         // @Nullable Quaternion rotationLeftIn,
         // @Nullable Vector3f scaleIn,
         // @Nullable Quaternion rotationRightIn)
 
 
-        return new TransformationMatrix(
+        return new Transformation(
                 // Transform
                 new Vector3f(transformX / 16, transformY / 16, transformZ / 16),
                 // Angles
@@ -72,7 +46,7 @@ public class ModelHelper {
                 null);
     }
 
-    public static TransformationMatrix get(float transformX, float transformY, float transformZ, float angleX, float angleY, float angleZ, float scale) {
+    public static Transformation get(float transformX, float transformY, float transformZ, float angleX, float angleY, float angleZ, float scale) {
         return get(transformX, transformY, transformZ, angleX, angleY, angleZ, scale, scale, scale);
     }
 
@@ -83,8 +57,8 @@ public class ModelHelper {
         return Minecraft.getInstance().getTextureAtlas(location);
     }
 
-    public static Function<RenderMaterial, TextureAtlasSprite> whiteTextureGetter() {
-        return (iHateNamingPointlessVariables)->ModelLoader.White.instance();
+    public static Function<Material, TextureAtlasSprite> whiteTextureGetter() {
+        return (iHateNamingPointlessVariables)->ForgeModelBakery.White.instance();
     }
 
     @Nullable
@@ -107,15 +81,15 @@ public class ModelHelper {
     }
 
     @Nullable
-    public static OBJBakedCompositeModel loadBakedModel(IModelTransform modelTransform,
-                                                        ItemOverrideList overrides,
+    public static OBJBakedCompositeModel loadBakedModel(ModelState modelTransform,
+                                                        ItemOverrides overrides,
                                                         ResourceLocation modelLocation) {
         NuminaOBJModel model = getOBJModel(modelLocation, 0);
 
         if (model != null) {
             OBJBakedCompositeModel bakedModel = model.bake(new OBJModelConfiguration(modelLocation).setCombinedTransform(modelTransform),
-                    ModelLoader.instance(),
-                    ModelLoader.defaultTextureGetter(),
+                    ForgeModelBakery.instance(),
+                    ForgeModelBakery.defaultTextureGetter(),
                     modelTransform,
                     overrides,
                     modelLocation);
@@ -129,26 +103,24 @@ public class ModelHelper {
      * This is better than changing material colors for Wavefront models because it means that you can use a single material for the entire model
      * instead of unique ones for each group. It also means you don't necessarily need a Wavefront model.
      */
-    public static List<BakedQuad> getColouredQuadsWithGlowAndTransform(List<BakedQuad> quadList, Colour colour, final TransformationMatrix transform, boolean glow) {
+    public static List<BakedQuad> getColoredQuadsWithGlowAndTransform(List<BakedQuad> quadList, Color colour, final Transformation transform, boolean glow) {
         ImmutableList.Builder<BakedQuad> builder = ImmutableList.builder();
         quadList.forEach(quad -> builder.add(colouredQuadWithGlowAndTransform(colour, quad, !glow, transform)));
         return builder.build();
     }
 
-    public static BakedQuad colouredQuadWithGlowAndTransform(Colour colour, BakedQuad quad, boolean applyDifuse, TransformationMatrix transform) {
+    public static BakedQuad colouredQuadWithGlowAndTransform(Color colour, BakedQuad quad, boolean applyDifuse, Transformation transform) {
         QuadTransformer transformer = new QuadTransformer(colour, transform, quad.getSprite(), applyDifuse);
         quad.pipe(transformer);
         return transformer.build();
     }
-
-
-    public static List<BakedQuad> getColoredQuadsWithGlow(List<BakedQuad> quadList, Colour color, boolean glow) {
+    public static List<BakedQuad> getColoredQuadsWithGlow(List<BakedQuad> quadList, Color color, boolean glow) {
         ImmutableList.Builder<BakedQuad> builder = ImmutableList.builder();
         quadList.forEach(quad -> builder.add(colorQuad(color, quad, !glow)));
         return builder.build();
     }
 
-    public static List<BakedQuad> getColoredQuads(List<BakedQuad> quadList, Colour color) {
+    public static List<BakedQuad> getColoredQuads(List<BakedQuad> quadList, Color color) {
         ImmutableList.Builder<BakedQuad> builder = ImmutableList.builder();
         for (BakedQuad quad : quadList) {
             builder.add(colorQuad(color, quad, quad.isShade()));
@@ -156,7 +128,7 @@ public class ModelHelper {
         return builder.build();
     }
 
-    public static BakedQuad colorQuad(Colour color, BakedQuad quad, boolean applyDifuse) {
+    public static BakedQuad colorQuad(Color color, BakedQuad quad, boolean applyDifuse) {
         QuadTransformer transformer = new QuadTransformer(color, quad.getSprite(), applyDifuse);
         quad.pipe(transformer);
         return transformer.build();
@@ -164,17 +136,17 @@ public class ModelHelper {
 
     // see TRSRTransformer as example
     private static class QuadTransformer extends VertexTransformer {
-        Colour colour;
+        Color colour;
         Boolean applyDiffuse;
-        TransformationMatrix transform;
+        Transformation transform;
 
-        public QuadTransformer(Colour colour, TextureAtlasSprite texture, boolean applyDiffuse) {
+        public QuadTransformer(Color colour, TextureAtlasSprite texture, boolean applyDiffuse) {
             super(new BakedQuadBuilder(texture));
             this.colour = colour;
             this.applyDiffuse = applyDiffuse;
         }
 
-        public QuadTransformer(Colour colour, final TransformationMatrix transform, TextureAtlasSprite texture, boolean applyDiffuse) {
+        public QuadTransformer(Color colour, final Transformation transform, TextureAtlasSprite texture, boolean applyDiffuse) {
             super(new BakedQuadBuilder(texture));
             this.transform = transform;
             this.colour = colour;

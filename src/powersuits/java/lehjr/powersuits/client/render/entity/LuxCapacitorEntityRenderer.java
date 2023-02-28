@@ -26,32 +26,30 @@
 
 package lehjr.powersuits.client.render.entity;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
-import lehjr.numina.client.render.entity.NuminaEntityRenderer;
-import lehjr.numina.common.math.Colour;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Vector3f;
+import lehjr.numina.common.math.Color;
 import lehjr.powersuits.common.base.MPSObjects;
 import lehjr.powersuits.common.entity.LuxCapacitorEntity;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.IRenderTypeBuffer;
-import net.minecraft.client.renderer.entity.EntityRendererManager;
-import net.minecraft.client.renderer.model.IBakedModel;
-import net.minecraft.client.renderer.model.ItemCameraTransforms;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.block.model.ItemTransforms;
+import net.minecraft.client.renderer.entity.EntityRenderer;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.vector.Vector3f;
+import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.model.TransformationHelper;
 
 import javax.annotation.Nullable;
 import java.util.Random;
 
-public class LuxCapacitorEntityRenderer extends NuminaEntityRenderer<LuxCapacitorEntity> {
-
-
-    public LuxCapacitorEntityRenderer(EntityRendererManager renderManager) {
+public class LuxCapacitorEntityRenderer extends EntityRenderer<LuxCapacitorEntity> {
+    public LuxCapacitorEntityRenderer(EntityRendererProvider.Context renderManager) {
         super(renderManager);
     }
 
@@ -63,27 +61,27 @@ public class LuxCapacitorEntityRenderer extends NuminaEntityRenderer<LuxCapacito
 
     private final Random random = new Random();
 
-    ItemStack getStack(Colour color) {
+    ItemStack getStack(Color color) {
         ItemStack stack = new ItemStack(MPSObjects.LUX_CAPACITOR_MODULE.get());
-        CompoundNBT nbt = stack.getOrCreateTag();
+        CompoundTag nbt = stack.getOrCreateTag();
         nbt.putInt("colour", color.getInt());
         return stack;
     }
 
     @Override
-    public void render(LuxCapacitorEntity entityIn, float entityYaw, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn) {
+    public void render(LuxCapacitorEntity entityIn, float entityYaw, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn) {
         matrixStackIn.pushPose();
         ItemStack itemstack = getStack(entityIn.color);
         int i = itemstack.isEmpty() ? 187 : Item.getId(itemstack.getItem()) + itemstack.getDamageValue();
         this.random.setSeed((long) i);
-        IBakedModel ibakedmodel = Minecraft.getInstance().getItemRenderer().getModel(itemstack, entityIn.level, (LivingEntity) null);
+        BakedModel ibakedmodel = Minecraft.getInstance().getItemRenderer().getModel(itemstack, entityIn.level, (LivingEntity) null, entityIn.getId());
         int time = (int) System.currentTimeMillis() % 360;
         matrixStackIn.mulPose(TransformationHelper.quatFromXYZ(new Vector3f(0, time / 2, 0), true));
         matrixStackIn.scale(1.8F, 1.8F, 1.8F);
 
         boolean flag = ibakedmodel.isGui3d();
         matrixStackIn.pushPose();
-        Minecraft.getInstance().getItemRenderer().render(itemstack, ItemCameraTransforms.TransformType.GROUND, false, matrixStackIn, bufferIn, packedLightIn, OverlayTexture.NO_OVERLAY, ibakedmodel);
+        Minecraft.getInstance().getItemRenderer().render(itemstack, ItemTransforms.TransformType.GROUND, false, matrixStackIn, bufferIn, packedLightIn, OverlayTexture.NO_OVERLAY, ibakedmodel);
         matrixStackIn.popPose();
         if (!flag) {
             matrixStackIn.translate(0.0, 0.0, 0.09375F);

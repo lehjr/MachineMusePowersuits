@@ -26,7 +26,7 @@
 
 package lehjr.numina.client.gui.clickable;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 import lehjr.numina.client.gui.geometry.*;
 
 /**
@@ -92,9 +92,9 @@ public abstract class Clickable<T extends IRect> implements IClickable, IRectWra
 //    }
 
     @Override
-    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
+    public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTick) {
         if (rect instanceof IDrawableRect) {
-            ((IDrawableRect) rect).render(matrixStack, mouseX, mouseY, partialTicks);
+            ((IDrawableRect) rect).render(matrixStack, mouseX, mouseY, partialTick);
         }
     }
 

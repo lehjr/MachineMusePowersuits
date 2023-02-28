@@ -26,41 +26,41 @@
 
 package lehjr.numina.client.gui.clickable;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 import lehjr.numina.client.gui.GuiIcon;
 import lehjr.numina.client.gui.geometry.IDrawable;
 import lehjr.numina.client.gui.geometry.IDrawableRect;
 import lehjr.numina.client.gui.geometry.MusePoint2D;
 import lehjr.numina.client.gui.geometry.Rect;
-import lehjr.numina.common.math.Colour;
+import lehjr.numina.common.math.Color;
 import lehjr.numina.common.string.StringUtils;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.audio.SimpleSound;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.client.resources.sounds.SimpleSoundInstance;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvents;
 
 public class Checkbox extends Clickable {
     private static final ResourceLocation TEXTURE = new ResourceLocation("textures/gui/checkbox.png");
     private final boolean showLabel;
     protected boolean isChecked;
     protected CheckboxTile tile;
-    ITextComponent label;
+    Component label;
 
 
     @Deprecated
     public Checkbox(MusePoint2D position, String displayString, boolean isChecked) {
-        this(position, new StringTextComponent(displayString), isChecked);
+        this(position, new TextComponent(displayString), isChecked);
     }
 
     @Deprecated
 
-    public Checkbox(MusePoint2D position, ITextComponent displayString, boolean isChecked) {
+    public Checkbox(MusePoint2D position, Component displayString, boolean isChecked) {
         this(position, displayString, isChecked, true);
     }
 
-    public Checkbox(MusePoint2D position, ITextComponent displayString, boolean isChecked, boolean showLabel) {
+    public Checkbox(MusePoint2D position, Component displayString, boolean isChecked, boolean showLabel) {
         super(MusePoint2D.ZERO, MusePoint2D.ZERO);
         setPosition(position); // FIXME: IS this center or UL?
         makeNewTile();
@@ -71,26 +71,26 @@ public class Checkbox extends Clickable {
         this.setHeight(20);
     }
 
-    public Checkbox(double left, double top, int width, ITextComponent message, boolean checked) {
+    public Checkbox(double left, double top, int width, Component message, boolean checked) {
         super(new Rect(left, top, left + width, top + 20));
         this.isChecked = checked;
         this.label = message;
         this.showLabel = true;
     }
 
-    public Checkbox(double posX, double posY, double width, ITextComponent message, boolean checked, boolean showLabel) {
+    public Checkbox(double posX, double posY, double width, Component message, boolean checked, boolean showLabel) {
         this(new MusePoint2D(posX, posY), message, checked, showLabel);
         this.setWidth(width);
     }
 
-    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float frameTime) {
-        super.render(matrixStack, mouseX, mouseY, frameTime);
+    public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTick) {
+        super.render(matrixStack, mouseX, mouseY, partialTick);
 
         if (this.isVisible()) {
             makeNewTile();
-            this.tile.render(matrixStack, mouseX, mouseY, frameTime);
+            this.tile.render(matrixStack, mouseX, mouseY, partialTick);
             if (showLabel) {
-                StringUtils.drawShadowedString(matrixStack, this.label, this.tile.centerX() + 10.0D, this.tile.centerY() - 4.0D, Colour.WHITE);
+                StringUtils.drawShadowedString(matrixStack, this.label, this.tile.centerX() + 10.0D, this.tile.centerY() - 4.0D, Color.WHITE);
             }
         }
     }
@@ -126,7 +126,7 @@ public class Checkbox extends Clickable {
 
     public void onPressed() {
         if (this.isVisible() && this.isEnabled()) {
-            Minecraft.getInstance().getSoundManager().play(SimpleSound.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0F));
+            Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0F));
             this.isChecked = !this.isChecked;
         }
         super.onPressed();
@@ -138,7 +138,7 @@ public class Checkbox extends Clickable {
         }
 
         @Override
-        public void render(MatrixStack matrixStack, int mouseX, int mouseY, float frameTime) {
+        public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTick) {
             GuiIcon.renderTextureWithColour(TEXTURE, matrixStack,
                     left(), right(), top(), bottom(), getZLevel(),
                     // int uWidth, int vHeight,
@@ -149,7 +149,7 @@ public class Checkbox extends Clickable {
                     isChecked() ? 20 : 0.0F,
                     // textureWidth, textureHeight
                     64, 64,
-                    Colour.WHITE);
+                    Color.WHITE);
         }
 
         @Override

@@ -4,8 +4,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import lehjr.numina.common.constants.NuminaConstants;
 import net.minecraft.data.DataGenerator;
-import net.minecraft.data.DirectoryCache;
-import net.minecraft.data.IDataProvider;
+import net.minecraft.data.DataProvider;
+import net.minecraft.data.HashCache;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import numina.ResourceList;
 
@@ -20,7 +20,7 @@ import java.util.regex.Pattern;
  * Seriously, all this is for is aiding in porting old language files from MPS to the modern format with
  * the updated keys.
  */
-public class NuminaLangProvider implements IDataProvider {
+public class NuminaLangProvider implements DataProvider {
     private static final Gson GSON = (new GsonBuilder()).setPrettyPrinting().disableHtmlEscaping().create();
     private final DataGenerator gen;
     private final String modid;
@@ -38,8 +38,9 @@ public class NuminaLangProvider implements IDataProvider {
         this.root = root;
     }
 
+
     @Override
-    public void run(DirectoryCache cache) throws IOException {
+    public void run(HashCache cache) throws IOException {
         Path src = gen.getOutputFolder().getParent().getParent().getParent();
         File langFolder = new File(src.toFile(), root + "/resources/assets/" + modid + "/lang");
         System.out.println("source folder: " +langFolder);

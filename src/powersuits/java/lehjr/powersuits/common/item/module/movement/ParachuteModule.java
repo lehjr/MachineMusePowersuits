@@ -32,11 +32,11 @@ import lehjr.numina.common.capabilities.module.tickable.PlayerTickModule;
 import lehjr.numina.common.player.PlayerUtils;
 import lehjr.powersuits.common.config.MPSSettings;
 import lehjr.powersuits.common.item.module.AbstractPowerModule;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
@@ -51,7 +51,7 @@ public class ParachuteModule extends AbstractPowerModule {
 
     @Nullable
     @Override
-    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundNBT nbt) {
+    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt) {
         return new CapProvider(stack);
     }
 
@@ -69,7 +69,7 @@ public class ParachuteModule extends AbstractPowerModule {
             }};
 
             powerModuleHolder = LazyOptional.of(() -> {
-                ticker.updateFromNBT();
+                ticker.loadCapValues();
                 return ticker;
             });
         }
@@ -80,14 +80,14 @@ public class ParachuteModule extends AbstractPowerModule {
             }
 
             @Override
-            public void onPlayerTickActive (PlayerEntity player, ItemStack itemStack){
+            public void onPlayerTickActive (Player player, ItemStack itemStack){
                 PlayerMovementInputWrapper.PlayerMovementInput playerInput = PlayerMovementInputWrapper.get(player);
                 boolean hasGlider = false;
                 PlayerUtils.resetFloatKickTicks(player);
                 if (player.isCrouching() && player.getDeltaMovement().y < -0.1 && (!hasGlider || !playerInput.forwardKey)) {
                     double totalVelocity = Math.sqrt(player.getDeltaMovement().x * player.getDeltaMovement().x + player.getDeltaMovement().z * player.getDeltaMovement().z + player.getDeltaMovement().y * player.getDeltaMovement().y);
                     if (totalVelocity > 0) {
-                        Vector3d motion = player.getDeltaMovement();
+                        Vec3 motion = player.getDeltaMovement();
                         player.setDeltaMovement(
                                 motion.x * 0.1 / totalVelocity,
                                 motion.y * 0.1 / totalVelocity,

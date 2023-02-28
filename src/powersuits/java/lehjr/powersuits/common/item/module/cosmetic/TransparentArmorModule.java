@@ -33,9 +33,9 @@ import lehjr.numina.common.capabilities.module.powermodule.PowerModuleCapability
 import lehjr.numina.common.capabilities.module.toggleable.ToggleableModule;
 import lehjr.powersuits.common.config.MPSSettings;
 import lehjr.powersuits.common.item.module.AbstractPowerModule;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.Direction;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
@@ -50,7 +50,7 @@ public class TransparentArmorModule extends AbstractPowerModule {
 
     @Nullable
     @Override
-    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundNBT nbt) {
+    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt) {
         return new CapProvider(stack);
     }
 
@@ -63,7 +63,7 @@ public class TransparentArmorModule extends AbstractPowerModule {
             this.module = module;
             this.moduleToggle = new ToggleableModule(module, ModuleCategory.COSMETIC, ModuleTarget.ARMORONLY, MPSSettings::getModuleConfig, true);
             powerModuleHolder = LazyOptional.of(() -> {
-                moduleToggle.updateFromNBT();
+                moduleToggle.loadCapValues();
                 return moduleToggle;
             });
         }

@@ -26,7 +26,7 @@
 
 package lehjr.numina.client.gui.old_meters;
 
-import lehjr.numina.common.math.Colour;
+import lehjr.numina.common.math.Color;
 
 /**
  * Created by User: Andrew2448
@@ -34,6 +34,6 @@ import lehjr.numina.common.math.Colour;
  */
 public class WaterMeter extends HeatMeter {
     public WaterMeter() {
-        super(Colour.BLUE.withAlpha(0.7F));
+        super(Color.BLUE.withAlpha(0.7F));
     }
 }

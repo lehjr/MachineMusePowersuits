@@ -31,48 +31,44 @@ import lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem
 import lehjr.numina.common.capabilities.module.powermodule.PowerModuleCapability;
 import lehjr.powersuits.common.base.MPSObjects;
 import lehjr.powersuits.common.constants.MPSConstants;
-import net.minecraft.block.Block;
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.item.ItemEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.projectile.ThrowableEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.network.IPacket;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.EntityRayTraceResult;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.World;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.ThrowableProjectile;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.phys.*;
 import net.minecraftforge.common.IForgeShearable;
-import net.minecraftforge.fml.network.NetworkHooks;
 import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.List;
 import java.util.Random;
 
-public class SpinningBladeEntity extends ThrowableEntity {
+public class SpinningBladeEntity extends ThrowableProjectile {
     public static final int SIZE = 24;
     public double damage;
     public ItemStack shootingItem = ItemStack.EMPTY;
 
-    public SpinningBladeEntity(EntityType<? extends SpinningBladeEntity> entityType, World world) {
-        super(entityType, world);
+    public SpinningBladeEntity(EntityType<? extends ThrowableProjectile> entityType, Level level) {
+        super(entityType, level);
     }
 
-    public SpinningBladeEntity(World worldIn, LivingEntity shootingEntity) {
+    public SpinningBladeEntity(Level worldIn, LivingEntity shootingEntity) {
         super(MPSObjects.SPINNING_BLADE_ENTITY_TYPE.get(), shootingEntity, worldIn);
         this.setOwner(shootingEntity);
-        if (shootingEntity instanceof PlayerEntity) {
+        if (shootingEntity instanceof Player) {
             AtomicDouble atomicDamage = new AtomicDouble(0);
 
-            this.shootingItem = ((PlayerEntity) shootingEntity).inventory.getSelected();
+            this.shootingItem = ((Player) shootingEntity).getInventory().getSelected();
             this.shootingItem.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
                     .filter(IModeChangingItem.class::isInstance)
                     .map(IModeChangingItem.class::cast)
@@ -82,7 +78,7 @@ public class SpinningBladeEntity extends ThrowableEntity {
             });
             damage = atomicDamage.get();
         }
-        Vector3d direction = shootingEntity.getLookAngle().normalize();
+        Vec3 direction = shootingEntity.getLookAngle().normalize();
         double speed = 1.0;
         double scale = 1;
         this.setDeltaMovement(
@@ -111,33 +107,33 @@ public class SpinningBladeEntity extends ThrowableEntity {
                 shootingEntity.getZ());
 
 
-        this.setBoundingBox(new AxisAlignedBB(getX() - r, getY() - r, getZ() - r, getX() + r, getY() + r, getZ() + r));
+        this.setBoundingBox(new AABB(getX() - r, getY() - r, getZ() - r, getX() + r, getY() + r, getZ() + r));
     }
 
     @Override
     public void tick() {
         super.tick();
         if (this.tickCount > this.getMaxLifetime()) {
-            this.remove();
+            this.discard();
         }
     }
 
     @Override
-    protected void onHit(RayTraceResult hitResult) {
-        if (hitResult.getType() == RayTraceResult.Type.BLOCK) {
-            World world = this.level;
+    protected void onHit(HitResult hitResult) {
+        if (hitResult.getType() == HitResult.Type.BLOCK) {
+            Level world = this.level;
             if (world == null) {
                 return;
             }
 
-            BlockRayTraceResult result = (BlockRayTraceResult) hitResult;
+            BlockHitResult result = (BlockHitResult) hitResult;
             Block block = world.getBlockState(result.getBlockPos()).getBlock();
-            if (block instanceof IForgeShearable && this.getOwner() instanceof PlayerEntity) {
+            if (block instanceof IForgeShearable && this.getOwner() instanceof Player) {
                 IForgeShearable target = (IForgeShearable) block;
                 if (target.isShearable(this.shootingItem, world, result.getBlockPos()) && !world.isClientSide) {
-                    // onSheared(@Nullable PlayerEntity player, @Nonnull ItemStack item, World world, BlockPos pos, int fortune)
+                    // onSheared(@Nullable Player player, @Nonnull ItemStack item, Level world, BlockPos pos, int fortune)
 
-                    List<ItemStack> drops = target.onSheared((PlayerEntity) this.getOwner(), this.shootingItem, world, result.getBlockPos(),
+                    List<ItemStack> drops = target.onSheared((Player) this.getOwner(), this.shootingItem, world, result.getBlockPos(),
                             EnchantmentHelper.getItemEnchantmentLevel(ForgeRegistries.ENCHANTMENTS.getValue(new ResourceLocation("fortune")), this.shootingItem));
                     Random rand = new Random();
 
@@ -150,21 +146,21 @@ public class SpinningBladeEntity extends ThrowableEntity {
                         entityitem.setPickUpDelay(10);
                         world.addFreshEntity(entityitem);
                     }
-//                    if (this.shootingEntity instanceof PlayerEntity) {
-//                        ((PlayerEntity) shootingEntity).addStat(StatList.getBlockStats(block), 1);
+//                    if (this.shootingEntity instanceof Player) {
+//                        ((Player) shootingEntity).addStat(StatList.getBlockStats(block), 1);
 //                    }
                 }
                 world.destroyBlock(result.getBlockPos(), true);// Destroy block and drop item
             } else { // Block hit was not IForgeShearable
-                this.remove();
+                this.discard();
             }
-        } else if (hitResult.getType() == RayTraceResult.Type.ENTITY && ((EntityRayTraceResult)hitResult).getEntity() != getOwner()) {
-            EntityRayTraceResult result = (EntityRayTraceResult) hitResult;
+        } else if (hitResult.getType() == HitResult.Type.ENTITY && ((EntityHitResult)hitResult).getEntity() != getOwner()) {
+            EntityHitResult result = (EntityHitResult) hitResult;
             if (result.getEntity() instanceof IForgeShearable) {
                 IForgeShearable target = (IForgeShearable) result.getEntity();
                 Entity entity = result.getEntity();
-                if (target.isShearable(this.shootingItem, entity.level, entity.blockPosition()) && this.getOwner() instanceof PlayerEntity) {
-                    List<ItemStack> drops = target.onSheared((PlayerEntity) getOwner(), this.shootingItem, entity.level,
+                if (target.isShearable(this.shootingItem, entity.level, entity.blockPosition()) && this.getOwner() instanceof Player) {
+                    List<ItemStack> drops = target.onSheared((Player) getOwner(), this.shootingItem, entity.level,
                             entity.blockPosition(),
                             EnchantmentHelper.getItemEnchantmentLevel(ForgeRegistries.ENCHANTMENTS.getValue(new ResourceLocation("fortune")), this.shootingItem));
 
@@ -203,7 +199,7 @@ public class SpinningBladeEntity extends ThrowableEntity {
     }
 
     @Override
-    public IPacket<?> getAddEntityPacket() {
+    public Packet<?> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
 }

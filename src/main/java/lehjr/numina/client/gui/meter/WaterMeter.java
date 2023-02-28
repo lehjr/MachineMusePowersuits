@@ -1,10 +1,10 @@
 package lehjr.numina.client.gui.meter;
 
-import lehjr.numina.common.math.Colour;
+import lehjr.numina.common.math.Color;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.texture.AtlasTexture;
+import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 
 /**
  * Created by User: Andrew2448
@@ -17,11 +17,11 @@ public class WaterMeter extends HeatMeter {
         return 1.0F;
     }
 
-    public Colour getColour() {
-        return Colour.WHITE;
+    public Color getColour() {
+        return Color.WHITE;
     }
 
     public TextureAtlasSprite getTexture() {
-        return Minecraft.getInstance().getTextureAtlas(AtlasTexture.LOCATION_BLOCKS).apply(TEXTURE_LOCATION);
+        return Minecraft.getInstance().getTextureAtlas(TextureAtlas.LOCATION_BLOCKS).apply(TEXTURE_LOCATION);
     }
 }

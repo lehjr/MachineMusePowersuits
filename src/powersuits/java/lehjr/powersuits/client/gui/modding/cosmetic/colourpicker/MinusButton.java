@@ -1,10 +1,10 @@
 package lehjr.powersuits.client.gui.modding.cosmetic.colourpicker;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 import lehjr.numina.client.gui.clickable.RadioButton;
 import lehjr.numina.client.gui.geometry.MusePoint2D;
 import lehjr.numina.client.render.IconUtils;
-import lehjr.numina.common.math.Colour;
+import lehjr.numina.common.math.Color;
 
 public class MinusButton extends RadioButton {
     public MinusButton(double leftPos, double topPos) {
@@ -16,7 +16,7 @@ public class MinusButton extends RadioButton {
     }
 
     @Override
-    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float frameTime) {
-        getIcon().draw(matrixStack, this.left(), this.top() - 4, Colour.RED); // offset
+    public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTick) {
+        getIcon().draw(matrixStack, this.left(), this.top() - 4, Color.RED); // offset
     }
 }

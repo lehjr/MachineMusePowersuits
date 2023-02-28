@@ -26,28 +26,29 @@
 
 package lehjr.numina.client.gui.geometry;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
-import lehjr.numina.common.math.Colour;
-import net.minecraft.client.gui.IRenderable;
-import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.vertex.VertexFormat;
-import net.minecraft.util.math.vector.Matrix4f;
-import net.minecraft.util.math.vector.Vector4f;
+import com.mojang.blaze3d.vertex.BufferBuilder;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.Tesselator;
+import com.mojang.blaze3d.vertex.VertexFormat;
+import com.mojang.math.Matrix4f;
+import com.mojang.math.Vector4f;
+import lehjr.numina.common.math.Color;
+import net.minecraft.client.gui.components.Widget;
 import org.lwjgl.opengl.GL11;
 
 import java.nio.DoubleBuffer;
 import java.nio.FloatBuffer;
 
-public interface IDrawable extends IRenderable {
+public interface IDrawable extends Widget {
     /**
      * @param matrixStack
      * @param mouseX
      * @param mouseY
-     * @param frameTime
+     * @param partialTick
      */
-    void render(MatrixStack matrixStack, int mouseX, int mouseY, float frameTime);
+    @Override
+    void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTick);
 
     float getZLevel();
 
@@ -59,7 +60,7 @@ public interface IDrawable extends IRenderable {
      * @param vertices
      * @param colour a Colour to draw in
      */
-    default void addVerticesToBuffer(Matrix4f matrix4f, FloatBuffer vertices, Colour colour) {
+    default void addVerticesToBuffer(Matrix4f matrix4f, FloatBuffer vertices, Color colour) {
         vertices.rewind();
         while(vertices.hasRemaining()) {
             getBufferBuilder().vertex(matrix4f, vertices.get(), vertices.get(), getZLevel()).color(colour.r, colour.g, colour.b, colour.a).endVertex();
@@ -72,7 +73,7 @@ public interface IDrawable extends IRenderable {
      * @param vertices
      * @param colour a Colour to draw in
      */
-    default void addVerticesToBuffer(Matrix4f matrix4f, DoubleBuffer vertices, Colour colour) {
+    default void addVerticesToBuffer(Matrix4f matrix4f, DoubleBuffer vertices, Color colour) {
         vertices.rewind();
         Vector4f vector4f = new Vector4f((float)vertices.get(), (float)vertices.get(), getZLevel(), 1.0F);
         vector4f.transform(matrix4f);
@@ -95,31 +96,31 @@ public interface IDrawable extends IRenderable {
         }
     }
 
-    default Tessellator getTessellator() {
-        return Tessellator.getInstance();
+    default Tesselator getTesselator() {
+        return Tesselator.getInstance();
     }
 
     default BufferBuilder getBufferBuilder() {
-        return getTessellator().getBuilder();
+        return getTesselator().getBuilder();
     }
 
-    default void preDraw(int glMode, VertexFormat format) {
+    default void preDraw(VertexFormat.Mode mode, VertexFormat format) {
         RenderSystem.disableTexture();
         RenderSystem.enableBlend();
-        RenderSystem.disableAlphaTest();
+//        RenderSystem.disableAlphaTest();
         RenderSystem.defaultBlendFunc();
-        RenderSystem.shadeModel(GL11.GL_SMOOTH);
-        getBufferBuilder().begin(glMode, format);
+        GL11.glEnable(GL11.GL_SMOOTH);
+        getBufferBuilder().begin(mode, format);
     }
 
     default void postDraw() {
-        RenderSystem.shadeModel(GL11.GL_FLAT);
+        GL11.glEnable(GL11.GL_FLAT);
         RenderSystem.disableBlend();
-        RenderSystem.enableAlphaTest();
+//        RenderSystem.enableAlphaTest();
         RenderSystem.enableTexture();
     }
 
     default void drawTesselator() {
-        getTessellator().end();
+        getTesselator().end();
     }
 }

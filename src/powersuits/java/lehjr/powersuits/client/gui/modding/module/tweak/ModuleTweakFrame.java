@@ -26,8 +26,8 @@
 
 package lehjr.powersuits.client.gui.modding.module.tweak;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.PoseStack;
 import lehjr.numina.client.gui.clickable.slider.VanillaFrameScrollBar;
 import lehjr.numina.client.gui.clickable.slider.VanillaTinkerIntSlider;
 import lehjr.numina.client.gui.clickable.slider.VanillaTinkerSlider;
@@ -36,13 +36,15 @@ import lehjr.numina.client.gui.geometry.MusePoint2D;
 import lehjr.numina.client.gui.geometry.Rect;
 import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
 import lehjr.numina.common.capabilities.module.powermodule.PowerModuleCapability;
-import lehjr.numina.common.constants.NuminaConstants;
+import lehjr.numina.common.constants.TagConstants;
 import lehjr.numina.common.network.NuminaPackets;
 import lehjr.numina.common.network.packets.TweakRequestDoublePacket;
 import lehjr.numina.common.string.StringUtils;
 import lehjr.powersuits.client.gui.common.ModularItemSelectionFrame;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraftforge.common.util.LazyOptional;
 
 import java.util.HashMap;
@@ -93,20 +95,20 @@ public class ModuleTweakFrame extends ScrollableFrame {
         currentScrollPixels=0;
     }
 
-    String getUnit(String key) {
+    Component getUnit(String key) {
         return moduleTarget.getSelectedModule().map(target->target.getModule().getCapability(PowerModuleCapability.POWER_MODULE)
-                .map(pm-> pm.getUnit(key)).orElse("")).orElse("");
+                .map(pm-> pm.getUnit(key)).orElse(new TextComponent(""))).orElse(new TextComponent(""));
     }
 
     @Override
-    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
+    public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTick) {
         double scrolledY = mouseY + currentScrollPixels;
-        super.render(matrixStack, mouseX, mouseY, partialTicks);
-        scrollBar.render(matrixStack, mouseX, mouseY, partialTicks);
-        super.preRender(matrixStack, mouseX, mouseY, partialTicks);
-        RenderSystem.pushMatrix();
-        RenderSystem.translatef(0, (float) -currentScrollPixels, 0);
-        sliders.forEach(slider->  slider.render(matrixStack, mouseX, (int)scrolledY, partialTicks));
+        super.render(matrixStack, mouseX, mouseY, partialTick);
+        scrollBar.render(matrixStack, mouseX, mouseY, partialTick);
+        super.preRender(matrixStack, mouseX, mouseY, partialTick);
+        matrixStack.pushPose();
+        matrixStack.translate(0, (float) -currentScrollPixels, 0);
+        sliders.forEach(slider->  slider.render(matrixStack, mouseX, (int)scrolledY, partialTick));
         int nexty = sliders.size() > 0 ? (int) sliders.get(sliders.size() - 1).bottom() + 9 : 4;
 
         for (Map.Entry<String, Double> property : propertyStrings.entrySet()) {
@@ -114,8 +116,8 @@ public class ModuleTweakFrame extends ScrollableFrame {
             String formattedValue = StringUtils.formatNumberFromUnits(property.getValue(), getUnit(name));
             double valueWidth = StringUtils.getStringWidth(formattedValue);
             double allowedNameWidth = width() - valueWidth - margin * 2;
-            List<String> namesList = StringUtils.wrapStringToVisualLength(
-                    new TranslationTextComponent(NuminaConstants.MODULE_TRADEOFF_PREFIX + name).getString(), allowedNameWidth);
+            List<String> namesList = StringUtils.wrapComponentToLength(
+                    new TranslatableComponent(TagConstants.MODULE_TRADEOFF_PREFIX + name).getString(), allowedNameWidth);
 
             for (int i = 0; i < namesList.size(); i++) {
                 StringUtils.drawLeftAlignedShadowedString(matrixStack, namesList.get(i), left() + margin, nexty + 9 * i);
@@ -123,8 +125,8 @@ public class ModuleTweakFrame extends ScrollableFrame {
             StringUtils.drawRightAlignedShadowedString(matrixStack, formattedValue, right() - margin, -5 + nexty + 9 * (namesList.size() - 1) / 2);            nexty += 9 * namesList.size() + 1;
         }
 
-        RenderSystem.popMatrix();
-        super.postRender(mouseX, mouseY, partialTicks);
+        matrixStack.popPose();
+        super.postRender(mouseX, mouseY, partialTick);
     }
 
     /**
@@ -140,7 +142,7 @@ public class ModuleTweakFrame extends ScrollableFrame {
 
         this.totalSize = cap.map(pm -> {
             int totalSize = 0;
-            CompoundNBT moduleTag = pm.getModuleTag();
+            CompoundTag moduleTag = pm.getModuleTag();
 
             Map<String, List<IPowerModule.IPropertyModifier>> propertyModifiers = new HashMap<>();
 
@@ -180,7 +182,7 @@ public class ModuleTweakFrame extends ScrollableFrame {
                             width() - 16,
                             moduleTag,
                             tweak,
-                            new TranslationTextComponent(NuminaConstants.MODULE_TRADEOFF_PREFIX + tweak),
+                            new TranslatableComponent(TagConstants.MODULE_TRADEOFF_PREFIX + tweak),
                             (IPowerModule.PropertyModifierIntLinearAdditive) tweaks.get(tweak));
                     sliders.add(slider);
                     totalSize += slider.height();
@@ -190,7 +192,7 @@ public class ModuleTweakFrame extends ScrollableFrame {
                             width() - 16,
                             moduleTag,
                             tweak,
-                            new TranslationTextComponent(NuminaConstants.MODULE_TRADEOFF_PREFIX + tweak));
+                            new TranslatableComponent(TagConstants.MODULE_TRADEOFF_PREFIX + tweak));
                     sliders.add(slider);
                     totalSize += slider.height();
                 }

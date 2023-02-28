@@ -26,47 +26,47 @@
 
 package lehjr.numina.client.gui.geometry;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
-import lehjr.numina.common.math.Colour;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import com.mojang.blaze3d.vertex.DefaultVertexFormat;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexFormat;
+import lehjr.numina.common.math.Color;
 import org.lwjgl.BufferUtils;
-import org.lwjgl.opengl.GL11;
 
 import java.nio.FloatBuffer;
 
 public class DrawableRect extends Rect implements IDrawableRect {
-    Colour backgroundColour;
-    Colour borderColour;
-    Colour backgroundColour2 = null;
+    Color backgroundColour;
+    Color borderColour;
+    Color backgroundColour2 = null;
     float cornerradius = 3;
     public float zLevel = 1;
     boolean shrinkBorder = true;
 
     public DrawableRect(double left, double top, double right, double bottom, boolean growFromMiddle,
-                        Colour backgroundColour,
-                        Colour borderColour) {
+                        Color backgroundColour,
+                        Color borderColour) {
         super(left, top, right, bottom, growFromMiddle);
         this.backgroundColour = backgroundColour;
         this.borderColour = borderColour;
     }
 
-    public DrawableRect(Rect ref, Colour backgroundColour, Colour borderColour) {
+    public DrawableRect(Rect ref, Color backgroundColour, Color borderColour) {
         super(ref.getUL(), ref.getWH());
         this.backgroundColour = backgroundColour;
         this.borderColour = borderColour;
     }
 
     public DrawableRect(double left, double top, double right, double bottom,
-                        Colour backgroundColour,
-                        Colour borderColour) {
+                        Color backgroundColour,
+                        Color borderColour) {
         super(left, top, right, bottom, false);
         this.backgroundColour = backgroundColour;
         this.borderColour = borderColour;
     }
 
     public DrawableRect(MusePoint2D ul, MusePoint2D br,
-                        Colour backgroundColour,
-                        Colour borderColour) {
+                        Color backgroundColour,
+                        Color borderColour) {
         super(ul, br);
         this.backgroundColour = backgroundColour;
         this.borderColour = borderColour;
@@ -91,17 +91,17 @@ public class DrawableRect extends Rect implements IDrawableRect {
         this.shrinkBorder = shrinkBorder;
     }
 
-    public DrawableRect setBackgroundColour(Colour backgroundColour) {
+    public DrawableRect setBackgroundColour(Color backgroundColour) {
         this.backgroundColour = backgroundColour;
         return this;
     }
 
-    public DrawableRect setSecondBackgroundColour(Colour backgroundColour2In) {
+    public DrawableRect setSecondBackgroundColour(Color backgroundColour2In) {
         backgroundColour2 = backgroundColour2In;
         return this;
     }
 
-    public DrawableRect setBorderColour(Colour borderColour) {
+    public DrawableRect setBorderColour(Color borderColour) {
         this.borderColour = borderColour;
         return this;
     }
@@ -154,27 +154,27 @@ public class DrawableRect extends Rect implements IDrawableRect {
         return vertices;
     }
 
-    public void drawBackground(MatrixStack matrixStack, FloatBuffer vertices) {
-        drawBuffer(matrixStack, vertices, backgroundColour, GL11.GL_TRIANGLE_FAN);
+    public void drawBackground(PoseStack matrixStack, FloatBuffer vertices) {
+        drawBuffer(matrixStack, vertices, backgroundColour, VertexFormat.Mode.TRIANGLE_FAN);
     }
 
-    public void drawBackground(MatrixStack matrixStack, FloatBuffer vertices, FloatBuffer colours) {
-        drawBuffer(matrixStack, vertices, colours, GL11.GL_TRIANGLE_FAN);
+    public void drawBackground(PoseStack matrixStack, FloatBuffer vertices, FloatBuffer colours) {
+        drawBuffer(matrixStack, vertices, colours, VertexFormat.Mode.TRIANGLE_FAN);
     }
 
-    public void drawBorder(MatrixStack matrixStack, FloatBuffer vertices) {
-        drawBuffer(matrixStack, vertices, borderColour, GL11.GL_LINE_LOOP);
+    public void drawBorder(PoseStack matrixStack, FloatBuffer vertices) {
+        drawBuffer(matrixStack, vertices, borderColour, VertexFormat.Mode.DEBUG_LINE_STRIP); // FIXME!!!!
     }
 
-    void drawBuffer(MatrixStack matrixStack, FloatBuffer vertices, Colour colour, int glMode) {
-        preDraw(glMode, DefaultVertexFormats.POSITION_COLOR);
+    void drawBuffer(PoseStack matrixStack, FloatBuffer vertices, Color colour, VertexFormat.Mode glMode) {
+        preDraw(glMode, DefaultVertexFormat.POSITION_COLOR);
         addVerticesToBuffer(matrixStack.last().pose(), vertices, colour);
         drawTesselator();
         postDraw();
     }
 
-    void drawBuffer(MatrixStack matrixStack, FloatBuffer vertices, FloatBuffer colours, int glMode) {
-        preDraw(glMode, DefaultVertexFormats.POSITION_COLOR);
+    void drawBuffer(PoseStack matrixStack, FloatBuffer vertices, FloatBuffer colours, VertexFormat.Mode glMode) {
+        preDraw(glMode, DefaultVertexFormat.POSITION_COLOR);
         addVerticesToBuffer(matrixStack.last().pose(), vertices, colours);
         drawTesselator();
         postDraw();
@@ -238,7 +238,7 @@ public class DrawableRect extends Rect implements IDrawableRect {
     }
 
     @Override
-    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float frameTime) {
+    public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTick) {
 
         FloatBuffer vertices = preDraw(0);
 

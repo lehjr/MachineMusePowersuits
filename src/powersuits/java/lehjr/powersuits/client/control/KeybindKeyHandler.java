@@ -27,23 +27,23 @@
 package lehjr.powersuits.client.control;
 
 import lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
-import lehjr.numina.common.capabilities.player.CapabilityPlayerKeyStates;
+import lehjr.numina.common.capabilities.player.PlayerKeyStatesCapability;
 import lehjr.numina.common.math.MathUtils;
 import lehjr.numina.common.network.NuminaPackets;
 import lehjr.numina.common.network.packets.PlayerUpdatePacket;
 import lehjr.powersuits.client.gui.modechanging.GuiModeSelector;
+import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.player.ClientPlayerEntity;
-import net.minecraft.client.settings.KeyBinding;
-import net.minecraft.item.Items;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Items;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.client.ClientRegistry;
 import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.items.CapabilityItemHandler;
 import org.apache.commons.lang3.ArrayUtils;
 import org.lwjgl.glfw.GLFW;
@@ -57,14 +57,14 @@ public class KeybindKeyHandler {
     // FIXME: Translations
     public static final String mps =  "itemGroup.powersuits";
 
-    public static final KeyBinding goDownKey = new KeyBinding(new TranslationTextComponent("keybinding.powersuits.goDownKey").getKey(), GLFW.GLFW_KEY_Z, mps);
-    public static final KeyBinding cycleToolBackward = new KeyBinding(new TranslationTextComponent("keybinding.powersuits.cycleToolBackward").getKey(), GLFW.GLFW_KEY_UNKNOWN, mps);
-    public static final KeyBinding cycleToolForward = new KeyBinding(new TranslationTextComponent("keybinding.powersuits.cycleToolForward").getKey(), GLFW.GLFW_KEY_UNKNOWN, mps);
-    public static final KeyBinding openKeybindGUI = new KeyBinding(new TranslationTextComponent("keybinding.powersuits.openKeybindGui").getKey()/*"Open MPS Keybind GUI"*/, GLFW.GLFW_KEY_UNKNOWN, mps);
-    public static final KeyBinding openCosmeticGUI = new KeyBinding(new TranslationTextComponent("keybinding.powersuits.openCosmeticGUI").getKey() /*Cosmetic GUI (MPS)"*/, GLFW.GLFW_KEY_UNKNOWN, mps);
-    public static final KeyBinding openModuleTweakGUI = new KeyBinding(new TranslationTextComponent("keybinding.powersuits.openModuleTweakGUI").getKey() /*Open MPS Keybind GUI"*/, GLFW.GLFW_KEY_UNKNOWN, mps);
-    public static final KeyBinding openInstallSalvageGUI = new KeyBinding(new TranslationTextComponent("keybinding.powersuits.openInstallSalvageGUI").getKey() /*Cosmetic GUI (MPS)"*/, GLFW.GLFW_KEY_UNKNOWN, mps);
-    public static final KeyBinding[] keybindArray = new KeyBinding[]{goDownKey, cycleToolBackward, cycleToolForward, openKeybindGUI, openCosmeticGUI, openModuleTweakGUI, openInstallSalvageGUI};
+    public static final KeyMapping goDownKey = new KeyMapping(new TranslatableComponent("keybinding.powersuits.goDownKey").getKey(), GLFW.GLFW_KEY_Z, mps);
+    public static final KeyMapping cycleToolBackward = new KeyMapping(new TranslatableComponent("keybinding.powersuits.cycleToolBackward").getKey(), GLFW.GLFW_KEY_UNKNOWN, mps);
+    public static final KeyMapping cycleToolForward = new KeyMapping(new TranslatableComponent("keybinding.powersuits.cycleToolForward").getKey(), GLFW.GLFW_KEY_UNKNOWN, mps);
+    public static final KeyMapping openKeybindGUI = new KeyMapping(new TranslatableComponent("keybinding.powersuits.openKeybindGui").getKey()/*"Open MPS Keybind GUI"*/, GLFW.GLFW_KEY_UNKNOWN, mps);
+    public static final KeyMapping openCosmeticGUI = new KeyMapping(new TranslatableComponent("keybinding.powersuits.openCosmeticGUI").getKey() /*Cosmetic GUI (MPS)"*/, GLFW.GLFW_KEY_UNKNOWN, mps);
+    public static final KeyMapping openModuleTweakGUI = new KeyMapping(new TranslatableComponent("keybinding.powersuits.openModuleTweakGUI").getKey() /*Open MPS Keybind GUI"*/, GLFW.GLFW_KEY_UNKNOWN, mps);
+    public static final KeyMapping openInstallSalvageGUI = new KeyMapping(new TranslatableComponent("keybinding.powersuits.openInstallSalvageGUI").getKey() /*Cosmetic GUI (MPS)"*/, GLFW.GLFW_KEY_UNKNOWN, mps);
+    public static final KeyMapping[] keybindArray = new KeyMapping[]{goDownKey, cycleToolBackward, cycleToolForward, openKeybindGUI, openCosmeticGUI, openModuleTweakGUI, openInstallSalvageGUI};
 
     public static boolean isKeyPressed(int key) {
         return GLFW.glfwGetKey(Minecraft.getInstance().getWindow().getWindow(), key) == GLFW.GLFW_PRESS;
@@ -72,19 +72,19 @@ public class KeybindKeyHandler {
 
     public KeybindKeyHandler() {
         minecraft = Minecraft.getInstance();
-        for (KeyBinding key : keybindArray) {
+        for (KeyMapping key : keybindArray) {
             ClientRegistry.registerKeyBinding(key);
         }
 
         KeybindManager.INSTANCE.readInKeybinds(false);
     }
 
-    void updatePlayerValues(ClientPlayerEntity clientPlayer) {
+    void updatePlayerValues(LocalPlayer clientPlayer) {
         if (clientPlayer == null) {
             return;
         }
 
-        clientPlayer.getCapability(CapabilityPlayerKeyStates.PLAYER_KEYSTATES).ifPresent(playerCap -> {
+        clientPlayer.getCapability(PlayerKeyStatesCapability.PLAYER_KEYSTATES).ifPresent(playerCap -> {
             boolean markForSync = false;
 
             // minecraft.player.input
@@ -152,7 +152,7 @@ public class KeybindKeyHandler {
 
     @SubscribeEvent
     public void onKeyInput(InputEvent.KeyInputEvent e) {
-        ClientPlayerEntity player = minecraft.player;
+        LocalPlayer player = minecraft.player;
         if (player == null) {
             return;
         }
@@ -161,18 +161,18 @@ public class KeybindKeyHandler {
             kb.toggleModules();
         });
 
-        KeyBinding[] hotbarKeys = minecraft.options.keyHotbarSlots;
+        KeyMapping[] hotbarKeys = minecraft.options.keyHotbarSlots;
         updatePlayerValues(player);
 
         // Mode changinging GUI
-        if (hotbarKeys[player.inventory.selected].isDown() && minecraft.isWindowActive()) {
-            player.inventory.getSelected().getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+        if (hotbarKeys[player.getInventory().selected].isDown() && minecraft.isWindowActive()) {
+            player.getInventory().getSelected().getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
                     .filter(IModeChangingItem.class::isInstance)
                     .map(IModeChangingItem.class::cast)
                     .ifPresent(iModeChanging->{
                         if(player.level.isClientSide) {
                             if (!(Minecraft.getInstance().screen instanceof GuiModeSelector)) {
-                                Minecraft.getInstance().tell(() -> Minecraft.getInstance().setScreen(new GuiModeSelector(player, new StringTextComponent("modeChanging"))));
+                                Minecraft.getInstance().tell(() -> Minecraft.getInstance().setScreen(new GuiModeSelector(player, new TextComponent("modeChanging"))));
                             }
                         }
                     });
@@ -181,7 +181,7 @@ public class KeybindKeyHandler {
         /* cycleToolBackward/cycleToolForward */
         if (cycleToolBackward.isDown()) {
             minecraft.gameMode.tick();
-            player.inventory.getItem(player.inventory.selected).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+            player.getInventory().getItem(player.getInventory().selected).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
                     .filter(IModeChangingItem.class::isInstance)
                     .map(IModeChangingItem.class::cast)
                     .ifPresent(handler-> handler.cycleMode(player, 1));
@@ -189,14 +189,14 @@ public class KeybindKeyHandler {
 
         if (cycleToolForward.isDown()) {
             minecraft.gameMode.tick();
-            player.inventory.getItem(player.inventory.selected).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+            player.getInventory().getItem(player.getInventory().selected).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
                     .filter(IModeChangingItem.class::isInstance)
                     .map(IModeChangingItem.class::cast)
                     .ifPresent(handler-> handler.cycleMode(player, -1));
         }
     }
 
-    public static Optional<KeyBinding> getKeyIfExits(String keybindingName) {
+    public static Optional<KeyMapping> getKeyIfExits(String keybindingName) {
         return Arrays.stream(Minecraft.getInstance().options.keyMappings).filter(keyBinding1 -> keyBinding1.getName().equals(keybindingName)).findFirst();
     }
 
@@ -206,17 +206,17 @@ public class KeybindKeyHandler {
     }
 
     public static void registerKeyBinding(ResourceLocation registryName, String  keybindingName, int keyIn, String category, boolean showOnHud) {
-        Optional<KeyBinding> keyBinding = getKeyIfExits(keybindingName);
+        Optional<KeyMapping> keyBinding = getKeyIfExits(keybindingName);
 
         // Don't add duplicate keybinds
         if (keyBinding.isPresent()) {
             keyBinding.ifPresent(kb-> {
-                if(!(kb instanceof MPSKeyBinding) || ((MPSKeyBinding) kb).registryName == Items.AIR.getRegistryName()) {
+                if(!(kb instanceof MPSKeyMapping) || ((MPSKeyMapping) kb).registryName == Items.AIR.getRegistryName()) {
                     int index = ArrayUtils.indexOf(Minecraft.getInstance().options.keyMappings, kb);
                     int key = kb.getKey().getValue();
-                    MPSKeyBinding mpskb = new MPSKeyBinding(registryName, keybindingName, key, mps);
-                    if (kb instanceof MPSKeyBinding) {
-                        mpskb.showOnHud = ((MPSKeyBinding) kb).showOnHud;
+                    MPSKeyMapping mpskb = new MPSKeyMapping(registryName, keybindingName, key, mps);
+                    if (kb instanceof MPSKeyMapping) {
+                        mpskb.showOnHud = ((MPSKeyMapping) kb).showOnHud;
                     }
                     Minecraft.getInstance().options.keyMappings[index] = mpskb;
                 }
@@ -225,7 +225,7 @@ public class KeybindKeyHandler {
 
 
             // This is mostly just to populate the list in the event the list doesn't exist or to add new modules
-            ClientRegistry.registerKeyBinding(new MPSKeyBinding(registryName, keybindingName, keyIn, category));
+            ClientRegistry.registerKeyBinding(new MPSKeyMapping(registryName, keybindingName, keyIn, category));
         }
     }
 }

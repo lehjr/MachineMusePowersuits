@@ -1,38 +1,30 @@
 /*
- * Minecraft Forge
- * Copyright (c) 2016-2019.
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation version 2.1
- * of the License.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+ * Copyright (c) Forge Development LLC and contributors
+ * SPDX-License-Identifier: LGPL-2.1-only
  */
+
 
 package forge;
 
 import com.google.common.collect.*;
+import com.mojang.blaze3d.vertex.VertexFormatElement;
+import com.mojang.math.Transformation;
+import com.mojang.math.Vector3f;
+import com.mojang.math.Vector4f;
 import joptsimple.internal.Strings;
 import lehjr.numina.client.model.obj.OBJBakedCompositeModel;
 import lehjr.numina.client.model.obj.OBJBakedPart;
-import net.minecraft.client.renderer.model.*;
+import net.minecraft.client.renderer.block.model.BakedQuad;
+import net.minecraft.client.renderer.block.model.ItemOverrides;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.renderer.vertex.VertexFormatElement;
-import net.minecraft.util.Direction;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.vector.TransformationMatrix;
-import net.minecraft.util.math.vector.Vector2f;
-import net.minecraft.util.math.vector.Vector3f;
-import net.minecraft.util.math.vector.Vector4f;
+import net.minecraft.client.resources.model.Material;
+import net.minecraft.client.resources.model.ModelBakery;
+import net.minecraft.client.resources.model.ModelState;
+import net.minecraft.client.resources.model.UnbakedModel;
+import net.minecraft.core.Direction;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
+import net.minecraft.world.phys.Vec2;
 import net.minecraftforge.client.model.IModelBuilder;
 import net.minecraftforge.client.model.IModelConfiguration;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
@@ -40,8 +32,11 @@ import net.minecraftforge.client.model.geometry.IModelGeometryPart;
 import net.minecraftforge.client.model.geometry.IMultipartModelGeometry;
 import net.minecraftforge.client.model.obj.LineReader;
 import net.minecraftforge.client.model.obj.MaterialLibrary;
+import net.minecraftforge.client.model.obj.OBJLoader;
 import net.minecraftforge.client.model.pipeline.BakedQuadBuilder;
 import net.minecraftforge.client.model.pipeline.IVertexConsumer;
+import net.minecraftforge.client.model.renderable.SimpleRenderable;
+import net.minecraftforge.client.textures.UnitSprite;
 import org.apache.commons.lang3.tuple.Pair;
 
 import javax.annotation.Nonnull;
@@ -50,23 +45,24 @@ import java.io.IOException;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Copied from Forge's OBJ Model
  */
 public class NuminaOBJModel implements IMultipartModelGeometry<NuminaOBJModel> {
-    private static final Vector4f COLOR_WHITE = new Vector4f(1, 1, 1, 1);
-    private static final Vector2f[] DEFAULT_COORDS = {
-            new Vector2f(0, 0),
-            new Vector2f(0, 1),
-            new Vector2f(1, 1),
-            new Vector2f(1, 0),
+    private static Vector4f COLOR_WHITE = new Vector4f(1, 1, 1, 1);
+    private static Vec2[] DEFAULT_COORDS = {
+            new Vec2(0, 0),
+            new Vec2(0, 1),
+            new Vec2(1, 1),
+            new Vec2(1, 0),
     };
 
     private final Map<String, ModelGroup> parts = Maps.newHashMap();
 
     private final List<Vector3f> positions = Lists.newArrayList();
-    private final List<Vector2f> texCoords = Lists.newArrayList();
+    private final List<Vec2> texCoords = Lists.newArrayList();
     private final List<Vector3f> normals = Lists.newArrayList();
     private final List<Vector4f> colors = Lists.newArrayList();
 
@@ -80,57 +76,6 @@ public class NuminaOBJModel implements IMultipartModelGeometry<NuminaOBJModel> {
     @Nullable
     public final String materialLibraryOverrideLocation;
 
-    /**
-     * @param owner
-     * @param bakery
-     * @param spriteGetter
-     * @param modelTransform
-     * @param overrides
-     * @param modelLocation
-     * @return
-     */
-    @Override
-    public OBJBakedCompositeModel bake(IModelConfiguration owner,
-                                       ModelBakery bakery, // model loader get instance from bake event
-                                       Function<RenderMaterial, TextureAtlasSprite> spriteGetter, // get from model loader
-                                       IModelTransform modelTransform,
-                                       ItemOverrideList overrides,
-                                       ResourceLocation modelLocation) {
-
-        // Default implementation
-        TextureAtlasSprite particle = spriteGetter.apply(owner.resolveTexture("particle"));
-        ImmutableMap.Builder<String, OBJBakedPart> bakedParts = ImmutableMap.builder(); // store the quads for each part
-
-        getParts().stream().forEach(part -> {
-            IModelBuilder<?> builder = IModelBuilder.of(owner, overrides, particle);
-            part.addQuads(owner, builder, bakery, spriteGetter, modelTransform, modelLocation);
-            bakedParts.put(part.name(), new OBJBakedPart(builder.build())); // fixme
-        });
-
-        return new OBJBakedCompositeModel(
-                this.diffuseLighting,
-                owner.isShadedInGui(),
-                owner.useSmoothLighting(),
-                particle,
-                bakedParts.build(),
-                owner.getCombinedTransform(),
-                overrides);
-    }
-
-    @Override
-    public void addQuads(IModelConfiguration owner, IModelBuilder<?> modelBuilder, ModelBakery bakery, Function<RenderMaterial, TextureAtlasSprite> spriteGetter, IModelTransform modelTransform, ResourceLocation modelLocation) {
-        getParts().stream().filter(part -> owner.getPartVisibility(part))
-                .forEach(part -> part.addQuads(owner, modelBuilder, bakery, spriteGetter, modelTransform, modelLocation));
-    }
-
-    @Override
-    public Collection<RenderMaterial> getTextures(IModelConfiguration owner, Function<ResourceLocation, IUnbakedModel> modelGetter, Set<com.mojang.datafixers.util.Pair<String, String>> missingTextureErrors) {
-        Set<RenderMaterial> combined = Sets.newHashSet();
-        for (IModelGeometryPart part : getParts()) {
-            combined.addAll(part.getTextures(owner, modelGetter, missingTextureErrors));
-        }
-        return combined;
-    }
 
     NuminaOBJModel(LineReader reader, ModelSettings settings) throws IOException {
         this.modelLocation = settings.modelLocation;
@@ -160,31 +105,30 @@ public class NuminaOBJModel implements IMultipartModelGeometry<NuminaOBJModel> {
 
         if (materialLibraryOverrideLocation != null) {
             String lib = materialLibraryOverrideLocation;
-            if (lib.contains(":")) {
-                mtllib = NuminaOBJLoader.INSTANCE.loadMaterialLibrary(new ResourceLocation(lib));
-            } else {
-                mtllib = NuminaOBJLoader.INSTANCE.loadMaterialLibrary(new ResourceLocation(modelDomain, modelPath + lib));
-            }
+            if (lib.contains(":"))
+                mtllib = OBJLoader.INSTANCE.loadMaterialLibrary(new ResourceLocation(lib));
+            else
+                mtllib = OBJLoader.INSTANCE.loadMaterialLibrary(new ResourceLocation(modelDomain, modelPath + lib));
         }
 
         String[] line;
         while ((line = reader.readAndSplitLine(true)) != null) {
             switch (line[0]) {
-                // Loads material library
-                case "mtllib": {
+                case "mtllib": // Loads material library
+                {
                     if (materialLibraryOverrideLocation != null)
                         break;
 
                     String lib = line[1];
                     if (lib.contains(":"))
-                        mtllib = NuminaOBJLoader.INSTANCE.loadMaterialLibrary(new ResourceLocation(lib));
+                        mtllib = OBJLoader.INSTANCE.loadMaterialLibrary(new ResourceLocation(lib));
                     else
-                        mtllib = NuminaOBJLoader.INSTANCE.loadMaterialLibrary(new ResourceLocation(modelDomain, modelPath + lib));
+                        mtllib = OBJLoader.INSTANCE.loadMaterialLibrary(new ResourceLocation(modelDomain, modelPath + lib));
                     break;
                 }
 
-                // Sets the current material (starts new mesh)
-                case "usemtl": {
+                case "usemtl": // Sets the current material (starts new mesh)
+                {
                     String mat = Strings.join(Arrays.copyOfRange(line, 1, line.length), " ");
                     MaterialLibrary.Material newMat = mtllib.getMaterial(mat);
                     if (!Objects.equals(newMat, currentMat)) {
@@ -212,8 +156,8 @@ public class NuminaOBJModel implements IMultipartModelGeometry<NuminaOBJModel> {
                     colors.add(parseVector4(line));
                     break;
 
-                // Face
-                case "f": {
+                case "f": // Face
+                {
                     if (currentMesh == null) {
                         currentMesh = new ModelMesh(currentMat, currentSmoothingGroup);
                         if (currentObject != null) {
@@ -254,8 +198,8 @@ public class NuminaOBJModel implements IMultipartModelGeometry<NuminaOBJModel> {
                     break;
                 }
 
-                // Smoothing group (starts new mesh)
-                case "s": {
+                case "s": // Smoothing group (starts new mesh)
+                {
                     String smoothingGroup = "off".equals(line[1]) ? null : line[1];
                     if (!Objects.equals(currentSmoothingGroup, smoothingGroup)) {
                         currentSmoothingGroup = smoothingGroup;
@@ -304,6 +248,34 @@ public class NuminaOBJModel implements IMultipartModelGeometry<NuminaOBJModel> {
         }
     }
 
+    @Override
+    public OBJBakedCompositeModel bake(IModelConfiguration owner,
+                                       ModelBakery bakery, // model loader get instance from bake event
+                                       Function<Material, TextureAtlasSprite> spriteGetter, // get from model loader
+                                       ModelState modelTransform,
+                                       ItemOverrides overrides,
+                                       ResourceLocation modelLocation) {
+
+        // Default implementation
+        TextureAtlasSprite particle = spriteGetter.apply(owner.resolveTexture("particle"));
+        ImmutableMap.Builder<String, OBJBakedPart> bakedParts = ImmutableMap.builder(); // store the quads for each part
+
+        getParts().stream().forEach(part -> {
+            IModelBuilder<?> builder = IModelBuilder.of(owner, overrides, particle);
+            part.addQuads(owner, builder, bakery, spriteGetter, modelTransform, modelLocation);
+            bakedParts.put(part.name(), new OBJBakedPart(builder.build())); // fixme
+        });
+
+        return new OBJBakedCompositeModel(
+                this.diffuseLighting,
+                owner.isShadedInGui(),
+                owner.useSmoothLighting(),
+                particle,
+                bakedParts.build(),
+                owner.getCombinedTransform(),
+                overrides);
+    }
+
     public static Vector3f parseVector4To3(String[] line) {
         switch (line.length) {
             case 1:
@@ -325,14 +297,14 @@ public class NuminaOBJModel implements IMultipartModelGeometry<NuminaOBJModel> {
         }
     }
 
-    public static Vector2f parseVector2(String[] line) {
+    public static Vec2 parseVector2(String[] line) {
         switch (line.length) {
             case 1:
-                return new Vector2f(0, 0);
+                return new Vec2(0, 0);
             case 2:
-                return new Vector2f(Float.parseFloat(line[1]), 0);
+                return new Vec2(Float.parseFloat(line[1]), 0);
             default:
-                return new Vector2f(Float.parseFloat(line[1]), Float.parseFloat(line[2]));
+                return new Vec2(Float.parseFloat(line[1]), Float.parseFloat(line[2]));
         }
     }
 
@@ -374,7 +346,7 @@ public class NuminaOBJModel implements IMultipartModelGeometry<NuminaOBJModel> {
         return Optional.ofNullable(parts.get(name));
     }
 
-    private Pair<BakedQuad, Direction> makeQuad(int[][] indices, int tintIndex, Vector4f colorTint, Vector4f ambientColor, TextureAtlasSprite texture, TransformationMatrix transform) {
+    private Pair<BakedQuad, Direction> makeQuad(int[][] indices, int tintIndex, Vector4f colorTint, Vector4f ambientColor, TextureAtlasSprite texture, Transformation transform) {
         boolean needsNormalRecalculation = false;
         for (int[] ints : indices) {
             needsNormalRecalculation |= ints.length < 3;
@@ -400,22 +372,24 @@ public class NuminaOBJModel implements IMultipartModelGeometry<NuminaOBJModel> {
 
         builder.setQuadTint(tintIndex);
 
-        Vector2f uv2 = new Vector2f(0, 0);
+        Vec2 uv2 = new Vec2(0, 0);
         if (ambientToFullbright) {
             int fakeLight = (int) ((ambientColor.x() + ambientColor.y() + ambientColor.z()) * 15 / 3.0f);
-            uv2 = new Vector2f((fakeLight << 4) / 32767.0f, (fakeLight << 4) / 32767.0f);
+            uv2 = new Vec2((fakeLight << 4) / 32767.0f, (fakeLight << 4) / 32767.0f);
             builder.setApplyDiffuseLighting(fakeLight == 0);
+        } else {
+            builder.setApplyDiffuseLighting(diffuseLighting);
         }
 
         boolean hasTransform = !transform.isIdentity();
         // The incoming transform is referenced on the center of the block, but our coords are referenced on the corner
-        TransformationMatrix transformation = hasTransform ? transform.blockCenterToCorner() : transform;
+        Transformation transformation = hasTransform ? transform.blockCenterToCorner() : transform;
 
         for (int i = 0; i < 4; i++) {
             int[] index = indices[Math.min(i, indices.length - 1)];
             Vector3f pos0 = positions.get(index[0]);
             Vector4f position = new Vector4f(pos0);
-            Vector2f texCoord = index.length >= 2 && texCoords.size() > 0 ? texCoords.get(index[1]) : DEFAULT_COORDS[i];
+            Vec2 texCoord = index.length >= 2 && texCoords.size() > 0 ? texCoords.get(index[1]) : DEFAULT_COORDS[i];
             Vector3f norm0 = !needsNormalRecalculation && index.length >= 3 && normals.size() > 0 ? normals.get(index[2]) : faceNormal;
             Vector3f normal = norm0;
             Vector4f color = index.length >= 4 && colors.size() > 0 ? colors.get(index[3]) : COLOR_WHITE;
@@ -424,6 +398,7 @@ public class NuminaOBJModel implements IMultipartModelGeometry<NuminaOBJModel> {
                 transformation.transformPosition(position);
                 transformation.transformNormal(normal);
             }
+            ;
             Vector4f tintedColor = new Vector4f(
                     color.x() * colorTint.x(),
                     color.y() * colorTint.y(),
@@ -438,45 +413,45 @@ public class NuminaOBJModel implements IMultipartModelGeometry<NuminaOBJModel> {
 
         Direction cull = null;
         if (detectCullableFaces) {
-            if (MathHelper.equal(pos[0].x(), 0) && // vertex.position.x
-                    MathHelper.equal(pos[1].x(), 0) &&
-                    MathHelper.equal(pos[2].x(), 0) &&
-                    MathHelper.equal(pos[3].x(), 0) &&
+            if (Mth.equal(pos[0].x(), 0) && // vertex.position.x
+                    Mth.equal(pos[1].x(), 0) &&
+                    Mth.equal(pos[2].x(), 0) &&
+                    Mth.equal(pos[3].x(), 0) &&
                     norm[0].x() < 0) // vertex.normal.x
             {
                 cull = Direction.WEST;
-            } else if (MathHelper.equal(pos[0].x(), 1) && // vertex.position.x
-                    MathHelper.equal(pos[1].x(), 1) &&
-                    MathHelper.equal(pos[2].x(), 1) &&
-                    MathHelper.equal(pos[3].x(), 1) &&
+            } else if (Mth.equal(pos[0].x(), 1) && // vertex.position.x
+                    Mth.equal(pos[1].x(), 1) &&
+                    Mth.equal(pos[2].x(), 1) &&
+                    Mth.equal(pos[3].x(), 1) &&
                     norm[0].x() > 0) // vertex.normal.x
             {
                 cull = Direction.EAST;
-            } else if (MathHelper.equal(pos[0].z(), 0) && // vertex.position.z
-                    MathHelper.equal(pos[1].z(), 0) &&
-                    MathHelper.equal(pos[2].z(), 0) &&
-                    MathHelper.equal(pos[3].z(), 0) &&
+            } else if (Mth.equal(pos[0].z(), 0) && // vertex.position.z
+                    Mth.equal(pos[1].z(), 0) &&
+                    Mth.equal(pos[2].z(), 0) &&
+                    Mth.equal(pos[3].z(), 0) &&
                     norm[0].z() < 0) // vertex.normal.z
             {
                 cull = Direction.NORTH; // can never remember
-            } else if (MathHelper.equal(pos[0].z(), 1) && // vertex.position.z
-                    MathHelper.equal(pos[1].z(), 1) &&
-                    MathHelper.equal(pos[2].z(), 1) &&
-                    MathHelper.equal(pos[3].z(), 1) &&
+            } else if (Mth.equal(pos[0].z(), 1) && // vertex.position.z
+                    Mth.equal(pos[1].z(), 1) &&
+                    Mth.equal(pos[2].z(), 1) &&
+                    Mth.equal(pos[3].z(), 1) &&
                     norm[0].z() > 0) // vertex.normal.z
             {
                 cull = Direction.SOUTH;
-            } else if (MathHelper.equal(pos[0].y(), 0) && // vertex.position.y
-                    MathHelper.equal(pos[1].y(), 0) &&
-                    MathHelper.equal(pos[2].y(), 0) &&
-                    MathHelper.equal(pos[3].y(), 0) &&
+            } else if (Mth.equal(pos[0].y(), 0) && // vertex.position.y
+                    Mth.equal(pos[1].y(), 0) &&
+                    Mth.equal(pos[2].y(), 0) &&
+                    Mth.equal(pos[3].y(), 0) &&
                     norm[0].y() < 0) // vertex.normal.z
             {
                 cull = Direction.DOWN; // can never remember
-            } else if (MathHelper.equal(pos[0].y(), 1) && // vertex.position.y
-                    MathHelper.equal(pos[1].y(), 1) &&
-                    MathHelper.equal(pos[2].y(), 1) &&
-                    MathHelper.equal(pos[3].y(), 1) &&
+            } else if (Mth.equal(pos[0].y(), 1) && // vertex.position.y
+                    Mth.equal(pos[1].y(), 1) &&
+                    Mth.equal(pos[2].y(), 1) &&
+                    Mth.equal(pos[3].y(), 1) &&
                     norm[0].y() > 0) // vertex.normal.y
             {
                 cull = Direction.UP;
@@ -486,7 +461,7 @@ public class NuminaOBJModel implements IMultipartModelGeometry<NuminaOBJModel> {
         return Pair.of(builder.build(), cull);
     }
 
-    private void putVertexData(IVertexConsumer consumer, Vector4f position0, Vector2f texCoord0, Vector3f normal0, Vector4f color0, Vector2f uv2, TextureAtlasSprite texture) {
+    private void putVertexData(IVertexConsumer consumer, Vector4f position0, Vec2 texCoord0, Vector3f normal0, Vector4f color0, Vec2 uv2, TextureAtlasSprite texture) {
         ImmutableList<VertexFormatElement> elements = consumer.getVertexFormat().getElements();
         for (int j = 0; j < elements.size(); j++) {
             VertexFormatElement e = elements.get(j);
@@ -523,6 +498,18 @@ public class NuminaOBJModel implements IMultipartModelGeometry<NuminaOBJModel> {
         }
     }
 
+    public SimpleRenderable bakeRenderable(IModelConfiguration configuration) {
+        var builder = SimpleRenderable.builder();
+
+        for (var entry : parts.entrySet()) {
+            var name = entry.getKey();
+            var part = entry.getValue();
+            part.bake(builder.child(name), configuration);
+        }
+
+        return builder.get();
+    }
+
     public class ModelObject implements IModelGeometryPart {
         public final String name;
 
@@ -537,31 +524,26 @@ public class NuminaOBJModel implements IMultipartModelGeometry<NuminaOBJModel> {
             return name;
         }
 
-        // apparently all of these is for one part
         @Override
-        public void addQuads(IModelConfiguration owner, IModelBuilder<?> modelBuilder, ModelBakery bakery, Function<RenderMaterial, TextureAtlasSprite> spriteGetter, IModelTransform modelTransform, ResourceLocation modelLocation) {
+        public void addQuads(IModelConfiguration owner, IModelBuilder<?> modelBuilder, ModelBakery bakery, Function<Material, TextureAtlasSprite> spriteGetter, ModelState modelTransform, ResourceLocation modelLocation) {
             for (ModelMesh mesh : meshes) {
-                MaterialLibrary.Material mat = mesh.mat;
-                if (mat == null)
-                    continue;
-                TextureAtlasSprite texture = spriteGetter.apply(ModelLoaderRegistry.resolveTexture(mat.diffuseColorMap, owner));
-                int tintIndex = mat.diffuseTintIndex;
-                Vector4f colorTint = mat.diffuseColor;
+                mesh.addQuads(owner, modelBuilder, spriteGetter, modelTransform);
+            }
+        }
 
-                for (int[][] face : mesh.faces) {
-                    Pair<BakedQuad, Direction> quad = makeQuad(face, tintIndex, colorTint, mat.ambientColor, texture, modelTransform.getRotation());
-                    if (quad.getRight() == null) {
-                        modelBuilder.addGeneralQuad(quad.getLeft());
-                    } else {
-                        modelBuilder.addFaceQuad(quad.getRight(), quad.getLeft());
-                    }
-                }
+        public void bake(SimpleRenderable.PartBuilder<?> builder, IModelConfiguration configuration) {
+            for (ModelMesh mesh : this.meshes) {
+                mesh.bake(builder, configuration);
             }
         }
 
         @Override
-        public Collection<RenderMaterial> getTextures(IModelConfiguration owner, Function<ResourceLocation, IUnbakedModel> modelGetter, Set<com.mojang.datafixers.util.Pair<String, String>> missingTextureErrors) {
-            return meshes.stream().map(mesh -> ModelLoaderRegistry.resolveTexture(mesh.mat.diffuseColorMap, owner)).collect(Collectors.toSet());
+        public Collection<Material> getTextures(IModelConfiguration owner, Function<ResourceLocation, UnbakedModel> modelGetter, Set<com.mojang.datafixers.util.Pair<String, String>> missingTextureErrors) {
+            return meshes.stream()
+                    .flatMap(mesh -> mesh.mat != null
+                            ? Stream.of(ModelLoaderRegistry.resolveTexture(mesh.mat.diffuseColorMap, owner))
+                            : Stream.of())
+                    .collect(Collectors.toSet());
         }
     }
 
@@ -577,19 +559,30 @@ public class NuminaOBJModel implements IMultipartModelGeometry<NuminaOBJModel> {
         }
 
         @Override
-        public void addQuads(IModelConfiguration owner, IModelBuilder<?> modelBuilder, ModelBakery bakery, Function<RenderMaterial, TextureAtlasSprite> spriteGetter, IModelTransform modelTransform, ResourceLocation modelLocation) {
+        public void addQuads(IModelConfiguration owner, IModelBuilder<?> modelBuilder, ModelBakery bakery, Function<Material, TextureAtlasSprite> spriteGetter, ModelState modelTransform, ResourceLocation modelLocation) {
             super.addQuads(owner, modelBuilder, bakery, spriteGetter, modelTransform, modelLocation);
-            getParts().stream().filter(part -> owner.getPartVisibility(part))
+
+            getParts().stream().filter(owner::getPartVisibility)
                     .forEach(part -> part.addQuads(owner, modelBuilder, bakery, spriteGetter, modelTransform, modelLocation));
         }
 
         @Override
-        public Collection<RenderMaterial> getTextures(IModelConfiguration owner, Function<ResourceLocation, IUnbakedModel> modelGetter, Set<com.mojang.datafixers.util.Pair<String, String>> missingTextureErrors) {
-            Set<RenderMaterial> combined = Sets.newHashSet();
-            combined.addAll(super.getTextures(owner, modelGetter, missingTextureErrors));
-            for (IModelGeometryPart part : getParts()) {
-                combined.addAll(part.getTextures(owner, modelGetter, missingTextureErrors));
+        public void bake(SimpleRenderable.PartBuilder<?> builder, IModelConfiguration configuration) {
+            super.bake(builder, configuration);
+
+            for (var entry : parts.entrySet()) {
+                var name = entry.getKey();
+                var part = entry.getValue();
+                part.bake(builder.child(name), configuration);
             }
+        }
+
+        @Override
+        public Collection<Material> getTextures(IModelConfiguration owner, Function<ResourceLocation, UnbakedModel> modelGetter, Set<com.mojang.datafixers.util.Pair<String, String>> missingTextureErrors) {
+            Set<Material> combined = Sets.newHashSet();
+            combined.addAll(super.getTextures(owner, modelGetter, missingTextureErrors));
+            for (IModelGeometryPart part : getParts())
+                combined.addAll(part.getTextures(owner, modelGetter, missingTextureErrors));
             return combined;
         }
     }
@@ -605,53 +598,46 @@ public class NuminaOBJModel implements IMultipartModelGeometry<NuminaOBJModel> {
             this.mat = currentMat;
             this.smoothingGroup = currentSmoothingGroup;
         }
+
+        public void addQuads(IModelConfiguration owner, IModelBuilder<?> modelBuilder, Function<Material, TextureAtlasSprite> spriteGetter, ModelState modelTransform) {
+            if (mat == null)
+                return;
+            TextureAtlasSprite texture = spriteGetter.apply(ModelLoaderRegistry.resolveTexture(mat.diffuseColorMap, owner));
+            int tintIndex = mat.diffuseTintIndex;
+            Vector4f colorTint = mat.diffuseColor;
+
+            for (int[][] face : faces) {
+                Pair<BakedQuad, Direction> quad = makeQuad(face, tintIndex, colorTint, mat.ambientColor, texture, modelTransform.getRotation());
+                if (quad.getRight() == null)
+                    modelBuilder.addGeneralQuad(quad.getLeft());
+                else
+                    modelBuilder.addFaceQuad(quad.getRight(), quad.getLeft());
+            }
+        }
+
+        public void bake(SimpleRenderable.PartBuilder<?> builder, IModelConfiguration configuration) {
+            MaterialLibrary.Material mat = this.mat;
+            if (mat == null)
+                return;
+            int tintIndex = mat.diffuseTintIndex;
+            Vector4f colorTint = mat.diffuseColor;
+
+            final List<BakedQuad> quads = new ArrayList<>();
+
+            for (var face : this.faces) {
+                var pair = makeQuad(face, tintIndex, colorTint, mat.ambientColor, UnitSprite.INSTANCE, Transformation.identity());
+                quads.add(pair.getLeft());
+            }
+
+            ResourceLocation textureLocation = ModelLoaderRegistry.resolveTexture(mat.diffuseColorMap, configuration).texture();
+            ResourceLocation texturePath = new ResourceLocation(textureLocation.getNamespace(), "textures/" + textureLocation.getPath() + ".png");
+
+            builder.addMesh(texturePath, quads);
+        }
     }
 
-    public static class ModelSettings {
-        @Nonnull
-        public final ResourceLocation modelLocation;
-        public final boolean detectCullableFaces;
-        public final boolean diffuseLighting;
-        public final boolean flipV;
-        public final boolean ambientToFullbright;
-        @Nullable
-        public final String materialLibraryOverrideLocation;
-
-        public ModelSettings(
-                @Nonnull ResourceLocation modelLocation,
-                boolean detectCullableFaces,
-                boolean diffuseLighting,
-                boolean flipV,
-                boolean ambientToFullbright,
-                @Nullable String materialLibraryOverrideLocation) {
-            this.modelLocation = modelLocation;
-            this.detectCullableFaces = detectCullableFaces;
-            this.diffuseLighting = diffuseLighting;
-            this.flipV = flipV;
-            this.ambientToFullbright = ambientToFullbright;
-            this.materialLibraryOverrideLocation = materialLibraryOverrideLocation;
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-            ModelSettings that = (ModelSettings) o;
-            return equals(that);
-        }
-
-        public boolean equals(@Nonnull ModelSettings that) {
-            return detectCullableFaces == that.detectCullableFaces &&
-                    diffuseLighting == that.diffuseLighting &&
-                    flipV == that.flipV &&
-                    ambientToFullbright == that.ambientToFullbright &&
-                    modelLocation.equals(that.modelLocation) &&
-                    Objects.equals(materialLibraryOverrideLocation, that.materialLibraryOverrideLocation);
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(modelLocation, detectCullableFaces, diffuseLighting, flipV, ambientToFullbright, materialLibraryOverrideLocation);
-        }
+    public record ModelSettings(@Nonnull ResourceLocation modelLocation,
+                                boolean detectCullableFaces, boolean diffuseLighting, boolean flipV,
+                                boolean ambientToFullbright, @Nullable String materialLibraryOverrideLocation) {
     }
 }

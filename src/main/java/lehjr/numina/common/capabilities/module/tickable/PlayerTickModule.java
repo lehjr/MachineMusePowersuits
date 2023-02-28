@@ -30,8 +30,8 @@ import lehjr.numina.common.capabilities.module.powermodule.IConfig;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
 import lehjr.numina.common.capabilities.module.toggleable.ToggleableModule;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 
 import javax.annotation.Nonnull;
 import java.util.concurrent.Callable;
@@ -42,12 +42,12 @@ public class PlayerTickModule extends ToggleableModule implements IPlayerTickMod
     }
 
     @Override
-    public void onPlayerTickActive(PlayerEntity player, @Nonnull ItemStack item) {
+    public void onPlayerTickActive(Player player, @Nonnull ItemStack item) {
 
     }
 
     @Override
-    public void onPlayerTickInactive(PlayerEntity player, @Nonnull ItemStack item) {
+    public void onPlayerTickInactive(Player player, @Nonnull ItemStack item) {
 
     }
 }

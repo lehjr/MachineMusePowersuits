@@ -26,11 +26,12 @@
 
 package lehjr.numina.common.capabilities.render.modelspec;
 
+import com.mojang.math.Transformation;
 import lehjr.numina.client.model.obj.OBJBakedCompositeModel;
-import net.minecraft.client.renderer.model.IModelTransform;
-import net.minecraft.client.renderer.model.ItemCameraTransforms;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.util.math.vector.TransformationMatrix;
+import net.minecraft.client.renderer.block.model.ItemTransforms;
+import net.minecraft.client.resources.model.ModelState;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 
 import java.util.Objects;
 
@@ -42,22 +43,22 @@ import java.util.Objects;
  */
 public class ModelSpec extends SpecBase {
     private final OBJBakedCompositeModel model;
-    private final IModelTransform modelTransforms;
+    private final ModelState modelTransforms;
 
-    public ModelSpec(final OBJBakedCompositeModel model, final IModelTransform transforms, final String name, final boolean isDefault, final EnumSpecType specType) {
+    public ModelSpec(final OBJBakedCompositeModel model, final ModelState transforms, final String name, final boolean isDefault, final SpecType specType) {
         super(name, isDefault, specType);
         this.modelTransforms = transforms;
         this.model = model;
     }
 
-    public TransformationMatrix getTransform(ItemCameraTransforms.TransformType transformType) {
-        TransformationMatrix transformation = modelTransforms.getPartTransformation(transformType);
+    public Transformation getTransform(ItemTransforms.TransformType transformType) {
+        Transformation transformation = modelTransforms.getPartTransformation(transformType);
         return transformation;
     }
 
     @Override
-    public String getDisaplayName() {
-        return I18n.get(new StringBuilder("model.")
+    public Component getDisaplayName() {
+        return new TranslatableComponent(new StringBuilder("model.")
                 .append(this.getOwnName())
                 .append(".modelName")
                 .toString());

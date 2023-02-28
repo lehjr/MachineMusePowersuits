@@ -44,7 +44,7 @@ public class EntityDamageEvent {
 
 
 //        LivingEntity livingEntityy = event.getEntityLiving();
-//        if (livingEntityy instanceof PlayerEntity) {
+//        if (livingEntityy instanceof Player) {
 //            System.out.println("source: " + event.getSource().getDamageType());
 //            if (event.getSource().isFireDamage()) {
 //                event.setCanceled(true);

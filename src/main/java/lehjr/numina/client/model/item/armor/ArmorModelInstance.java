@@ -27,16 +27,22 @@
 package lehjr.numina.client.model.item.armor;
 
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.model.geom.ModelLayers;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraftforge.common.util.Lazy;
+
 /**
  * Author: MachineMuse (Claire Semple)
  * Created: 10:01 PM, 11/07/13
  */
 public class ArmorModelInstance {
+    private static final Lazy<HighPolyArmor<LivingEntity>> INSTANCE = Lazy.of(() -> new HighPolyArmor<>(Minecraft.getInstance().getEntityModels().bakeLayer(ModelLayers.PLAYER)));
     private static HighPolyArmor instance = null;
 
     public static HighPolyArmor getInstance() {
         if (instance == null) {
-                instance = new HighPolyArmor();
+            instance = INSTANCE.get();
         }
         return instance;
     }

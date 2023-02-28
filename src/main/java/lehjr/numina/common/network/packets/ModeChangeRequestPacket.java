@@ -27,10 +27,10 @@
 package lehjr.numina.common.network.packets;
 
 import lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.network.PacketBuffer;
-import net.minecraftforge.fml.network.NetworkEvent;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.network.NetworkEvent;
 
 import java.util.function.Supplier;
 
@@ -46,12 +46,12 @@ public class ModeChangeRequestPacket {
         ModeChangeRequestPacket.slot = slot;
     }
 
-    public static void encode(ModeChangeRequestPacket msg, PacketBuffer packetBuffer) {
+    public static void encode(ModeChangeRequestPacket msg, FriendlyByteBuf packetBuffer) {
         packetBuffer.writeInt(mode);
         packetBuffer.writeInt(slot);
     }
 
-    public static ModeChangeRequestPacket decode(PacketBuffer packetBuffer) {
+    public static ModeChangeRequestPacket decode(FriendlyByteBuf packetBuffer) {
         return new ModeChangeRequestPacket(
                 packetBuffer.readInt(),
                 packetBuffer.readInt()
@@ -59,12 +59,12 @@ public class ModeChangeRequestPacket {
     }
 
     public static void handle(ModeChangeRequestPacket message, Supplier<NetworkEvent.Context> ctx) {
-        final ServerPlayerEntity player = ctx.get().getSender();
+        final ServerPlayer player = ctx.get().getSender();
         ctx.get().enqueueWork(() -> {
             int slot = ModeChangeRequestPacket.slot;
             int mode = ModeChangeRequestPacket.mode;
             if (slot > -1 && slot < 9) {
-                player.inventory.items.get(slot).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+                player.getInventory().items.get(slot).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
                         .filter(IModeChangingItem.class::isInstance)
                         .map(IModeChangingItem.class::cast)
                         .ifPresent(handler -> handler.setActiveMode(mode));

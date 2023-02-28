@@ -26,41 +26,30 @@
 
 package lehjr.numina.common.base;
 
-import com.mojang.datafixers.util.Pair;
-import lehjr.numina.client.render.item.NuminaArmorStandItemRenderer;
 import lehjr.numina.common.block.ChargingBase;
-import lehjr.numina.common.blockentity.ChargingBaseTileEntity;
+import lehjr.numina.common.blockentity.ChargingBaseBlockEntity;
 import lehjr.numina.common.constants.NuminaConstants;
 import lehjr.numina.common.container.ArmorStandMenu;
 import lehjr.numina.common.container.ChargingBaseMenu;
-import lehjr.numina.common.entity.NuminaArmorStandEntity;
-import lehjr.numina.common.integration.scannable.MPSContainerScanner;
+import lehjr.numina.common.entity.NuminaArmorStand;
 import lehjr.numina.common.item.Battery;
 import lehjr.numina.common.item.ComponentItem;
 import lehjr.numina.common.item.NuminaArmorStandItem;
-import li.cil.scannable.common.config.Constants;
-import net.minecraft.block.Block;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityClassification;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.item.ArmorStandEntity;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.inventory.container.ContainerType;
-import net.minecraft.inventory.container.PlayerContainer;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.tileentity.TileEntityType;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
-import net.minecraftforge.common.extensions.IForgeContainerType;
-import net.minecraftforge.fml.RegistryObject;
+import net.minecraft.core.BlockPos;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.entity.decoration.ArmorStand;
+import net.minecraft.world.inventory.MenuType;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraftforge.common.extensions.IForgeMenuType;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
-
-import java.util.HashMap;
-import java.util.Map;
+import net.minecraftforge.registries.RegistryObject;
 
 public class NuminaObjects {
     public static final NuminaCreativeTab creativeTab = new NuminaCreativeTab();
@@ -149,20 +138,20 @@ public class NuminaObjects {
     // Charging base
     public static final RegistryObject<Item> CHARGING_BASE_ITEM = ITEMS.register(NuminaConstants.CHARGING_BASE_REGNAME,
             () -> new BlockItem(CHARGING_BASE_BLOCK.get(),
-                    new Item.Properties().tab(ItemGroup.TAB_DECORATIONS)));
+                    new Item.Properties().tab(creativeTab)));
 
     // Armor stand
     public static final RegistryObject<Item> ARMOR_STAND_ITEM = ITEMS.register(NuminaConstants.ARMORSTAND_REGNAME,
-            () -> new NuminaArmorStandItem(new Item.Properties().tab(ItemGroup.TAB_DECORATIONS).setISTER(() -> NuminaArmorStandItemRenderer::new)));
+            () -> new NuminaArmorStandItem(new Item.Properties().tab(creativeTab)));//.setISTER(() -> NuminaArmorStandItemRenderer::new)));
 
 
     /**
      * Tile Entity Types --------------------------------------------------------------------------
      */
-    public static final DeferredRegister<TileEntityType<?>> TILE_TYPES = DeferredRegister.create(ForgeRegistries.TILE_ENTITIES, NuminaConstants.MOD_ID);
+    public static final DeferredRegister<BlockEntityType<?>> TILE_TYPES = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITIES, NuminaConstants.MOD_ID);
 
-    public static final RegistryObject<TileEntityType<ChargingBaseTileEntity>> CHARGING_BASE_TILE = TILE_TYPES.register(NuminaConstants.CHARGING_BASE_REGNAME,
-            () -> TileEntityType.Builder.of(ChargingBaseTileEntity::new, CHARGING_BASE_BLOCK.get()).build(null));
+    public static final RegistryObject<BlockEntityType<ChargingBaseBlockEntity>> CHARGING_BASE_BLOCK_ENTITY = TILE_TYPES.register(NuminaConstants.CHARGING_BASE_REGNAME,
+            () -> BlockEntityType.Builder.of(ChargingBaseBlockEntity::new, CHARGING_BASE_BLOCK.get()).build(null));
 
 
     /**
@@ -170,58 +159,32 @@ public class NuminaObjects {
      */
     public static final DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(ForgeRegistries.ENTITIES, NuminaConstants.MOD_ID);
 
-    public static final RegistryObject<EntityType<NuminaArmorStandEntity>> ARMOR_WORKSTATION__ENTITY_TYPE = ENTITY_TYPES.register(NuminaConstants.ARMOR_STAND__ENTITY_TYPE_REGNAME,
-            () -> EntityType.Builder.<NuminaArmorStandEntity>of(NuminaArmorStandEntity::new, EntityClassification.CREATURE)
+    public static final RegistryObject<EntityType<NuminaArmorStand>> ARMOR_STAND__ENTITY_TYPE = ENTITY_TYPES.register(NuminaConstants.ARMOR_STAND__ENTITY_TYPE_REGNAME,
+            () -> EntityType.Builder.<NuminaArmorStand>of(NuminaArmorStand::new, MobCategory.CREATURE)
                     .sized(0.5F, 1.975F) // Hitbox Size
                     .build(new ResourceLocation(NuminaConstants.MOD_ID, NuminaConstants.ARMOR_STAND__ENTITY_TYPE_REGNAME).toString()));
 
     /**
-     * Container Types ----------------------------------------------------------------------------
+     * AbstractContainerMenu Types ----------------------------------------------------------------------------
      */
-    public static final DeferredRegister<ContainerType<?>> CONTAINER_TYPES = DeferredRegister.create(ForgeRegistries.CONTAINERS, NuminaConstants.MOD_ID);
+    public static final DeferredRegister<MenuType<?>> MENU_TYPES = DeferredRegister.create(ForgeRegistries.CONTAINERS, NuminaConstants.MOD_ID);
 
-    public static final RegistryObject<ContainerType<ArmorStandMenu>> ARMOR_STAND_CONTAINER_TYPE = CONTAINER_TYPES.register("armorstand_modding_container",
-            () -> IForgeContainerType.create((windowId, inv, data) -> {
+    public static final RegistryObject<MenuType<ArmorStandMenu>> ARMOR_STAND_CONTAINER_TYPE = MENU_TYPES.register("armorstand_modding_container",
+            () -> IForgeMenuType.create((windowId, inv, data) -> {
                 int entityID = data.readInt();
                 Entity armorStand = inv.player.level.getEntity(entityID);
 
-                if (armorStand instanceof ArmorStandEntity) {
-                    return new ArmorStandMenu(windowId, inv, (ArmorStandEntity) armorStand);
+                if (armorStand instanceof ArmorStand) {
+                    return new ArmorStandMenu(windowId, inv, (ArmorStand) armorStand);
                 }
                 return null;
             }));
 
-    public static final RegistryObject<ContainerType<ChargingBaseMenu>> CHARGING_BASE_CONTAINER_TYPE = CONTAINER_TYPES.register("charging_base", () -> IForgeContainerType.create((windowId, inv, data) -> {
-        BlockPos pos = data.readBlockPos();
-        World world = inv.player.level;
-        return new ChargingBaseMenu(windowId, pos, inv);
-    }));
+    public static final RegistryObject<MenuType<ChargingBaseMenu>> CHARGING_BASE_CONTAINER_TYPE = MENU_TYPES.register("charging_base",
+            () -> IForgeMenuType.create((windowId, inv, data) -> {
+                BlockPos pos = data.readBlockPos();
+                return new ChargingBaseMenu(windowId, pos, inv);
+            }));
 
-    public static final RegistryObject<ContainerType<MPSContainerScanner>> SCANNER_CONTAINER = CONTAINER_TYPES.register(Constants.NAME_SCANNER, () -> IForgeContainerType.create(MPSContainerScanner::createForClient));
-
-
-
-
-
-
-    /** Container background icons */
-    public static final Map<EquipmentSlotType, ResourceLocation> ARMOR_SLOT_TEXTURES = new HashMap<EquipmentSlotType, ResourceLocation>(){{
-        put(EquipmentSlotType.HEAD, PlayerContainer.EMPTY_ARMOR_SLOT_HELMET);
-        put(EquipmentSlotType.CHEST, PlayerContainer.EMPTY_ARMOR_SLOT_CHESTPLATE);
-        put(EquipmentSlotType.LEGS, PlayerContainer.EMPTY_ARMOR_SLOT_LEGGINGS);
-        put(EquipmentSlotType.FEET, PlayerContainer.EMPTY_ARMOR_SLOT_BOOTS);
-        put(EquipmentSlotType.OFFHAND, PlayerContainer.EMPTY_ARMOR_SLOT_SHIELD);
-        put(EquipmentSlotType.MAINHAND, NuminaConstants.WEAPON_SLOT_BACKGROUND); //FIXME: broken for slot rendering, actually crashes
-    }};
-
-    public static final Pair<ResourceLocation, ResourceLocation> getSlotBackground(EquipmentSlotType slotType) {
-        switch (slotType) {
-            case MAINHAND:
-                return Pair.of(NuminaConstants.LOCATION_NUMINA_GUI_TEXTURE_ATLAS, ARMOR_SLOT_TEXTURES.get(slotType)); // FIXME: broken for slot rendering, actually crashes
-//                 return Pair.of(PlayerContainer.BLOCK_ATLAS, PlayerContainer.EMPTY_ARMOR_SLOT_SHIELD);
-            default:
-                return Pair.of(PlayerContainer.BLOCK_ATLAS, ARMOR_SLOT_TEXTURES.get(slotType));
-        }
-    }
-
+//    public static final RegistryObject<MenuType<MPSAbstractContainerMenuScanner>> SCANNER_CONTAINER = MENU_TYPES.register(Constants.NAME_SCANNER, () -> IForgeMenuType.create(MPSAbstractContainerMenuScanner::createForClient));
 }

@@ -27,8 +27,8 @@
 package lehjr.numina.common.capabilities.module.powermodule;
 
 import lehjr.numina.common.tags.TagUtils;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.item.ItemStack;
 
 import javax.annotation.Nonnull;
 import java.util.*;
@@ -149,7 +149,7 @@ public class PowerModule implements IPowerModule {
     }
 
     @Override
-    public double applyPropertyModifiers(String propertyName, CompoundNBT moduleTag) {
+    public double applyPropertyModifiers(String propertyName, CompoundTag moduleTag) {
         double propertyValue = 0;
         if (propertyModifiers.containsKey(propertyName)) {
             Iterable<IPropertyModifier> propertyModifiersIterable = propertyModifiers.get(propertyName);

@@ -28,7 +28,8 @@ package lehjr.numina.common.capabilities.render.modelspec;
 
 
 import lehjr.numina.common.map.NuminaRegistry;
-import lehjr.numina.common.math.Colour;
+import lehjr.numina.common.math.Color;
+import net.minecraft.network.chat.Component;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,18 +44,18 @@ import java.util.Objects;
 public abstract class SpecBase extends NuminaRegistry<PartSpecBase> {
     private final String name;
     private final boolean isDefault;
-    private final EnumSpecType specType;
+    private final SpecType specType;
     private List<Integer> colours = new ArrayList() {{
-        add(Colour.WHITE.getInt());
+        add(Color.WHITE.getInt());
     }};
 
-    public SpecBase(final String name, final boolean isDefault, final EnumSpecType specType) {
+    public SpecBase(final String name, final boolean isDefault, final SpecType specType) {
         this.name = name;
         this.isDefault = isDefault;
         this.specType = specType;
     }
 
-    public abstract String getDisaplayName();
+    public abstract Component getDisaplayName();
 
     public Iterable<PartSpecBase> getPartSpecs() {
         return this.elems();
@@ -73,11 +74,11 @@ public abstract class SpecBase extends NuminaRegistry<PartSpecBase> {
         return isDefault;
     }
 
-    public EnumSpecType getSpecType() {
+    public SpecType getSpecType() {
         return specType;
     }
 
-    public List<Integer> getColours() {
+    public List<Integer> getColors() {
         return colours;
     }
 
@@ -87,7 +88,7 @@ public abstract class SpecBase extends NuminaRegistry<PartSpecBase> {
      * @param colour
      * @return returns the index of the colour
      */
-    public int addColourIfNotExist(Colour colour) {
+    public int addColorIfNotExist(Color colour) {
         int colourInt = colour.getInt();
         if (!colours.contains(colourInt)) {
             colours.add(colourInt);

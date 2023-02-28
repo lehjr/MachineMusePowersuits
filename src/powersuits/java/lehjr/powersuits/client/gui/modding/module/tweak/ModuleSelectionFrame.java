@@ -26,8 +26,7 @@
 
 package lehjr.powersuits.client.gui.modding.module.tweak;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.PoseStack;
 import lehjr.numina.client.gui.clickable.ClickableModule;
 import lehjr.numina.client.gui.clickable.slider.VanillaFrameScrollBar;
 import lehjr.numina.client.gui.frame.ScrollableFrame;
@@ -40,8 +39,8 @@ import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.capabilities.module.powermodule.PowerModuleCapability;
 import lehjr.powersuits.client.gui.common.ModularItemSelectionFrame;
 import net.minecraft.client.Minecraft;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.text.ITextComponent;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.util.LazyOptional;
 
 import java.util.LinkedHashMap;
@@ -143,9 +142,9 @@ public class ModuleSelectionFrame extends ScrollableFrame {
     }
 
     @Override
-    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
-        super.render(matrixStack, mouseX, mouseY, partialTicks);
-        this.scrollBar.render(matrixStack, mouseX, mouseY, partialTicks);
+    public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTick) {
+        super.render(matrixStack, mouseX, mouseY, partialTick);
+        this.scrollBar.render(matrixStack, mouseX, mouseY, partialTick);
 
         Optional<IModularItem> iModularItem = target.getModularItemCapability();
 
@@ -162,19 +161,19 @@ public class ModuleSelectionFrame extends ScrollableFrame {
             }
             setTotalSize(totalHeight);
 
-            super.preRender(matrixStack, mouseX, mouseY, partialTicks);
-            RenderSystem.pushMatrix();
-            RenderSystem.translatef(0, (float)-currentScrollPixels, 0);
-            drawItems(matrixStack, partialTicks);
+            super.preRender(matrixStack, mouseX, mouseY, partialTick);
+            matrixStack.pushPose();
+            matrixStack.translate(0, (float)-currentScrollPixels, 0);
+            drawItems(matrixStack, partialTick);
             drawSelection(matrixStack);
-            RenderSystem.popMatrix();
-            super.postRender(mouseX, mouseY, partialTicks);
+            matrixStack.popPose();
+            super.postRender(mouseX, mouseY, partialTick);
         } else {
-            super.render(matrixStack, mouseX, mouseY, partialTicks);
+            super.render(matrixStack, mouseX, mouseY, partialTick);
         }
     }
 
-    private void drawItems(MatrixStack matrixStack, float partialTicks) {
+    private void drawItems(PoseStack matrixStack, float partialTicks) {
         for (ModuleSelectionSubFrame frame : categories.values()) {
             frame.drawPartial(matrixStack, (int) (this.currentScrollPixels + top() + 4),
                     (int) (this.currentScrollPixels + top() + height() - 4), partialTicks);
@@ -185,7 +184,7 @@ public class ModuleSelectionFrame extends ScrollableFrame {
         return Minecraft.getInstance().screen.getBlitOffset();
     }
 
-    private void drawSelection(MatrixStack matrixStack) {
+    private void drawSelection(PoseStack matrixStack) {
         getSelectedModule().ifPresent(module ->{
             MusePoint2D pos = module.center();
             if (pos.y() > this.currentScrollPixels + top() + 4 && pos.y() < this.currentScrollPixels + top() + height() - 4) {
@@ -269,12 +268,12 @@ public class ModuleSelectionFrame extends ScrollableFrame {
     }
 
     @Override
-    public List<ITextComponent> getToolTip(int x, int y) {
+    public List<Component> getToolTip(int x, int y) {
         if (containsPoint(x, y)) {
             y += currentScrollPixels;
             if (!categories.isEmpty()) {
                 for (ModuleSelectionSubFrame category : categories.values()) {
-                    List<ITextComponent> tooltip = category.getToolTip(x, y);
+                    List<Component> tooltip = category.getToolTip(x, y);
                     if(tooltip != null) {
                         return tooltip;
                     }

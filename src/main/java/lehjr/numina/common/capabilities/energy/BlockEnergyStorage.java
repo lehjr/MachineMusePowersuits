@@ -26,33 +26,39 @@
 
 package lehjr.numina.common.capabilities.energy;
 
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraftforge.common.util.INBTSerializable;
+import lehjr.numina.common.capabilities.CapabilityUpdate;
 import net.minecraftforge.energy.EnergyStorage;
 
 /**
- * Energy handler for tile entity itself
+ * Energy handler for block entity itself
  */
-public class BlockEnergyStorage extends EnergyStorage implements INBTSerializable<CompoundNBT> {
+public class BlockEnergyStorage extends EnergyStorage implements CapabilityUpdate {
 
     public BlockEnergyStorage(int capacity, int maxTransfer) {
         super(capacity, maxTransfer);
+        loadCapValues(); // FIXME
     }
 
-    public void onEnergyChanged() {
+    @Override
+    public void loadCapValues() {
+
+    }
+
+    @Override
+    public void onValueChanged() {
 
     }
 
     public void setEnergy(int energy) {
         this.energy = energy;
-        onEnergyChanged();
+        onValueChanged();
     }
 
     @Override
     public int receiveEnergy(int maxReceive, boolean simulate) {
         int recieved =  super.receiveEnergy(maxReceive, simulate);
         if (recieved > 0) {
-            onEnergyChanged();
+            onValueChanged();
         }
         return recieved;
     }
@@ -61,20 +67,8 @@ public class BlockEnergyStorage extends EnergyStorage implements INBTSerializabl
     public int extractEnergy(int maxExtract, boolean simulate) {
         int extracted = super.extractEnergy(maxExtract, simulate);
         if(extracted > 0) {
-            onEnergyChanged();
+            onValueChanged();
         }
         return extracted;
-    }
-
-    @Override
-    public CompoundNBT serializeNBT() {
-        CompoundNBT tag = new CompoundNBT();
-        tag.putInt("energy", getEnergyStored());
-        return tag;
-    }
-
-    @Override
-    public void deserializeNBT(CompoundNBT nbt) {
-        setEnergy(nbt.getInt("energy"));
     }
 }

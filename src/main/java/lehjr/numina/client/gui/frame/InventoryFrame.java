@@ -26,23 +26,23 @@
 
 package lehjr.numina.client.gui.frame;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.PoseStack;
 import lehjr.numina.client.gui.IContainerULOffSet;
 import lehjr.numina.client.gui.geometry.IDrawable;
 import lehjr.numina.client.gui.geometry.IDrawableRect;
 import lehjr.numina.client.gui.geometry.MusePoint2D;
 import lehjr.numina.client.gui.geometry.Rect;
 import lehjr.numina.client.gui.slot.IHideableSlot;
-import lehjr.numina.client.gui.slot.UniversalSlot;
 import lehjr.numina.client.render.IconUtils;
 import lehjr.numina.common.constants.NuminaConstants;
 import lehjr.numina.common.math.MathUtils;
 import net.minecraft.client.Minecraft;
-import net.minecraft.inventory.container.Container;
-import net.minecraft.inventory.container.Slot;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.ITextComponent;
+import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.Slot;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.ArrayList;
@@ -50,7 +50,7 @@ import java.util.List;
 
 public abstract class InventoryFrame extends ScrollableFrame implements IContainerULOffSet {
     IContainerULOffSet.ulGetter ulGetter;
-    Container container;
+    AbstractContainerMenu container;
 //    Colour gridColour;
     public final int gridWidth;
     protected List<Integer> slotIndexes;
@@ -65,7 +65,7 @@ public abstract class InventoryFrame extends ScrollableFrame implements IContain
     int currentScroll=0;
 
     public InventoryFrame(Rect rect,
-                          Container containerIn,
+                          AbstractContainerMenu containerIn,
                           int gridWidth,
                           List<Integer> slotIndexesIn,
                           IContainerULOffSet.ulGetter ulGetter) {
@@ -148,9 +148,7 @@ public abstract class InventoryFrame extends ScrollableFrame implements IContain
                 MusePoint2D position = new MusePoint2D(this.tiles.get(i).left(), this.tiles.get(i).top()).minus(slot_ulShift);
                 Slot slot = container.getSlot(slotIndexes.get(i));
 
-                if (slot instanceof UniversalSlot) {
-                    ((UniversalSlot) slot).setPosition(position);
-                } else if (slot instanceof IHideableSlot) {
+                if (slot instanceof IHideableSlot) {
                     ((IHideableSlot) slot).setPosition(position);
                     ((IHideableSlot) slot).enable();
                 } else {
@@ -211,17 +209,17 @@ public abstract class InventoryFrame extends ScrollableFrame implements IContain
     }
 
     @Override
-    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float frameTime) {
+    public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTick) {
         if (this.tiles != null && !this.tiles.isEmpty()) {
             for (SlotRect tile : tiles) {
                 // add slight offset so the lines show up (this is why the param was added)
-                tile.render(matrixStack, mouseX, mouseY, frameTime);
+                tile.render(matrixStack, mouseX, mouseY, partialTick);
             }
         }
     }
 
     @Override
-    public List<ITextComponent> getToolTip(int i, int i1) {
+    public List<Component> getToolTip(int i, int i1) {
         return null;
     }
 
@@ -255,9 +253,10 @@ public abstract class InventoryFrame extends ScrollableFrame implements IContain
         }
 
         @Override
-        public void render(MatrixStack matrixStack, int mouseX, int mouseY, float frameTime) {
-            RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-            getMinecraft().getTextureManager().bind(this.BACKGROUND);
+        public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTick) {
+            RenderSystem.setShader(GameRenderer::getPositionTexShader);
+            RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+            RenderSystem.setShaderTexture(0, BACKGROUND);
             IconUtils.INSTANCE.blit(matrixStack, left(), top(), this.getZLevel(), 0, 0, width(), height(), 18, 18);
         }
 

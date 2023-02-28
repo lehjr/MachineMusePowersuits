@@ -27,52 +27,47 @@
 package lehjr.numina.common.base;
 
 import forge.NuminaOBJLoader;
-import lehjr.numina.client.event.ArmorLayerSetup;
 import lehjr.numina.client.event.FOVUpdateEventHandler;
 import lehjr.numina.client.event.RenderEventHandler;
 import lehjr.numina.client.event.ToolTipEvent;
 import lehjr.numina.client.gui.GuiIcon;
 import lehjr.numina.client.render.IconUtils;
 import lehjr.numina.client.render.NuminaSpriteUploader;
-import lehjr.numina.client.screen.ArmorStandScreen;
-import lehjr.numina.client.screen.ChargingBaseScreen;
 import lehjr.numina.common.capabilities.heat.HeatCapability;
 import lehjr.numina.common.capabilities.module.powermodule.PowerModuleCapability;
-import lehjr.numina.common.capabilities.player.CapabilityPlayerKeyStates;
-import lehjr.numina.common.capabilities.render.ModelSpecNBTCapability;
+import lehjr.numina.common.capabilities.player.PlayerKeyStateWrapper;
+import lehjr.numina.common.capabilities.player.PlayerKeyStatesCapability;
+import lehjr.numina.common.capabilities.render.ModelSpecCapability;
 import lehjr.numina.common.capabilities.render.chameleon.ChameleonCapability;
-import lehjr.numina.common.capabilities.render.colour.ColourCapability;
+import lehjr.numina.common.capabilities.render.colour.ColorCapability;
 import lehjr.numina.common.capabilities.render.highlight.HighLightCapability;
 import lehjr.numina.common.config.ConfigHelper;
 import lehjr.numina.common.config.NuminaSettings;
 import lehjr.numina.common.constants.NuminaConstants;
-import lehjr.numina.common.entity.NuminaArmorStandEntity;
 import lehjr.numina.common.event.EventBusHelper;
 import lehjr.numina.common.event.LogoutEventHandler;
 import lehjr.numina.common.event.PlayerUpdateHandler;
-import lehjr.numina.common.integration.scannable.MPSGuiScanner;
 import lehjr.numina.common.network.NuminaPackets;
 import lehjr.numina.common.recipe.RecipeSerializersRegistry;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.ScreenManager;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.ai.attributes.GlobalEntityTypeAttributes;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.resources.IReloadableResourceManager;
-import net.minecraft.resources.IResourceManager;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.packs.resources.ReloadableResourceManager;
+import net.minecraft.server.packs.resources.ResourceManager;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.DeferredWorkQueue;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
+import net.minecraftforge.fml.event.config.ModConfigEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
@@ -99,7 +94,7 @@ public class Numina {
         NuminaObjects.BLOCKS.register(modEventBus);
         NuminaObjects.TILE_TYPES.register(modEventBus);
         NuminaObjects.ENTITY_TYPES.register(modEventBus);
-        NuminaObjects.CONTAINER_TYPES.register(modEventBus);
+        NuminaObjects.MENU_TYPES.register(modEventBus);
         RecipeSerializersRegistry.RECIPE_SERIALIZERS.register(modEventBus);
 
         MinecraftForge.EVENT_BUS.register(new LogoutEventHandler());
@@ -110,7 +105,7 @@ public class Numina {
         // TODO? reload recipes on config change?
         // [14:33:10] [Thread-1/DEBUG] [ne.mi.fm.co.ConfigFileTypeHandler/CONFIG]: Config file numina-server.toml changed, sending notifies
         // handles loading and reloading event
-        modEventBus.addListener((ModConfig.ModConfigEvent event) -> {
+        modEventBus.addListener((ModConfigEvent event) -> {
             new RuntimeException("Got config " + event.getConfig() + " name " + event.getConfig().getModId() + ":" + event.getConfig().getFileName());
 
             final ModConfig config = event.getConfig();
@@ -129,45 +124,48 @@ public class Numina {
         EventBusHelper.addListener(Numina.class, modEventBus, ColorHandlerEvent.Block.class, setupEvent -> {
             NuminaSpriteUploader iconUploader = new NuminaSpriteUploader();
             GuiIcon icons = new GuiIcon(iconUploader);
-            IResourceManager resourceManager = Minecraft.getInstance().getResourceManager();
-            if (resourceManager instanceof IReloadableResourceManager) {
-                IReloadableResourceManager reloadableResourceManager = (IReloadableResourceManager) resourceManager;
-                reloadableResourceManager.registerReloadListener(iconUploader);
+            ResourceManager resourceManager = Minecraft.getInstance().getResourceManager();
+            if (resourceManager instanceof ReloadableResourceManager) {
+                ReloadableResourceManager reloadableResourceManager = (ReloadableResourceManager) resourceManager;
+                reloadableResourceManager.registerReloadListenerIfNotPresent(iconUploader);
             }
             EventBusHelper.addLifecycleListener(Numina.class, modEventBus, FMLLoadCompleteEvent.class, loadCompleteEvent ->
                     IconUtils.setIconInstance(icons));
         });
     }
 
-    @Mod.EventBusSubscriber(modid = NuminaConstants.MOD_ID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
-    public static class MyStaticClientOnlyEventHandler {
-        @SubscribeEvent
-        public static void loadComplete(FMLLoadCompleteEvent evt) {
-            ArmorLayerSetup.loadComplete(evt);
-        }
+//    @Mod.EventBusSubscriber(modid = NuminaConstants.MOD_ID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
+//    public static class MyStaticClientOnlyEventHandler {
+//        @SubscribeEvent
+//        public static void loadComplete(FMLLoadCompleteEvent evt) {
+//            ArmorLayerSetup.loadComplete(evt);
+//        }
+//    }
+
+    @SubscribeEvent
+    public static void initialize(final RegisterCapabilitiesEvent event) {
+        HeatCapability.register(event);
+
+        ColorCapability.register(event);
+
+        // Modules
+        PowerModuleCapability.register(event);
+        ModelSpecCapability.register(event);
+        HighLightCapability.register(event);
+        ChameleonCapability.register(event);
+
+        // Player
+        PlayerKeyStatesCapability.register(event);
     }
+
 
     private void setup(final FMLCommonSetupEvent event) {
         NuminaPackets.registerNuminaPackets();
-
-        HeatCapability.register();
-
-        ColourCapability.register();
-
-        // Modules
-        PowerModuleCapability.register();
-        ModelSpecNBTCapability.register();
-        HighLightCapability.register();
-        ChameleonCapability.register();
-
-        // Player
-        CapabilityPlayerKeyStates.register();
-
         MinecraftForge.EVENT_BUS.register(new PlayerUpdateHandler());
 
-        DeferredWorkQueue.runLater(() -> {
-            GlobalEntityTypeAttributes.put(NuminaObjects.ARMOR_WORKSTATION__ENTITY_TYPE.get(), NuminaArmorStandEntity.setCustomAttributes().build());
-        });
+//        DeferredWorkQueue.runLater(() -> {
+//            GlobalEntityTypeAttributes.put(NuminaObjects.ARMOR_STAND__ENTITY_TYPE.get(), NuminaArmorStand.createLivingAttributes().build());
+//        });
     }
 
     private void doClientStuff(final FMLClientSetupEvent event) {
@@ -178,17 +176,17 @@ public class Numina {
 
         MinecraftForge.EVENT_BUS.register(new ToolTipEvent());
 
-        ScreenManager.register(NuminaObjects.CHARGING_BASE_CONTAINER_TYPE.get(), ChargingBaseScreen::new);
-        ScreenManager.register(NuminaObjects.ARMOR_STAND_CONTAINER_TYPE.get(), ArmorStandScreen::new);
+//        ScreenManager.func_216911_a(NuminaObjects.CHARGING_BASE_CONTAINER_TYPE.get(), ChargingBaseScreen::new);
+//        ScreenManager.func_216911_a(NuminaObjects.ARMOR_STAND_CONTAINER_TYPE.get(), ArmorStandScreen::new);
 
-        ScreenManager.register(NuminaObjects.SCANNER_CONTAINER.get(), MPSGuiScanner::new);
+//        ScreenManager.func_216911_a(NuminaObjects.SCANNER_CONTAINER.get(), MPSGuiScanner::new);
     }
 
     @SubscribeEvent
     public void attachCapability(AttachCapabilitiesEvent<Entity> event) {
-        if (!(event.getObject() instanceof PlayerEntity)) {
+        if (!(event.getObject() instanceof Player)) {
             return;
         }
-        event.addCapability(new ResourceLocation(NuminaConstants.MOD_ID, "player_keystates1"), new CapabilityPlayerKeyStates());
+        event.addCapability(new ResourceLocation(NuminaConstants.MOD_ID, "player_keystates1"), new PlayerKeyStateWrapper((Player) event.getObject()));
     }
 }

@@ -26,14 +26,14 @@
 
 package lehjr.numina.common.container;
 
-import net.minecraft.inventory.container.Container;
+import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraftforge.items.SlotItemHandler;
 
 import java.util.List;
 import java.util.Map;
 
-public interface IModularItemToSlotMapProvider<T extends Container> {
+public interface IModularItemToSlotMapProvider<T extends AbstractContainerMenu> {
     Map<Integer, List<SlotItemHandler>> getModularItemToSlotMap();
 
-    T getContainer();
+    T getAbstractContainerMenu();
 }

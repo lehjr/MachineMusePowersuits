@@ -13,30 +13,30 @@
 //import lehjr.numina.common.capabilities.render.modelspec.PartSpecBase;
 //import lehjr.numina.common.math.Colour;
 //import lehjr.numina.common.tags.NBTTagAccessor;
-//import com.mojang.blaze3d.matrix.MatrixStack;
-//import com.mojang.blaze3d.vertex.IVertexBuilder;
+//import com.mojang.blaze3d.vertex.PoseStack;
+//import com.mojang.blaze3d.vertex.VertexConsumer;
 //import net.minecraft.client.Minecraft;
-//import net.minecraft.client.renderer.IRenderTypeBuffer;
-//import net.minecraft.client.renderer.model.ItemCameraTransforms;
+//import net.minecraft.client.renderer.MultiBufferSource;
+//import net.minecraft.client.renderer.model.ItemTransforms;
 //import net.minecraft.client.renderer.tileentity.ItemStackTileEntityRenderer;
-//import net.minecraft.entity.player.PlayerEntity;
-//import net.minecraft.item.ItemStack;
-//import net.minecraft.nbt.CompoundNBT;
-//import net.minecraft.util.math.vector.TransformationMatrix;
+//import net.minecraft.world.entity.player.Player;
+//import net.minecraft.world.item.ItemStack;
+//import net.minecraft.nbt.CompoundTag;
+//import net.minecraft.util.math.vector.Transformation;
 //
 //public class PowerFistRenderer extends ItemStackTileEntityRenderer {
 //    PowerFistModel2 powerFist = new PowerFistModel2();
 //    boolean isFiring = false;
 //
 //    @Override
-//    public void renderByItem/*render*/(ItemStack stack, ItemCameraTransforms.TransformType transformType, MatrixStack matrixStack, IRenderTypeBuffer buffer, int combinedLight, int combinedOverlay) {
+//    public void renderByItem/*render*/(ItemStack stack, ItemTransforms.TransformType transformType, PoseStack matrixStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay) {
 //
 //
-//        IVertexBuilder builder = buffer.getBuffer(powerFist.getRenderType(MPSConstants.POWER_FIST_TEXTURE));
+//        VertexConsumer builder = buffer.getBuffer(powerFist.getRenderType(MPSConstants.POWER_FIST_TEXTURE));
 //
 //        stack.getCapability(ModelSpecNBTCapability.RENDER).ifPresent(specNBTCap -> {
 //            if (specNBTCap instanceof IHandHeldModelSpecNBT) {
-//                CompoundNBT renderSpec = specNBTCap.getRenderTag();
+//                CompoundTag renderSpec = specNBTCap.getRenderTag();
 //
 //                // Set the tag on the item so this lookup isn't happening on every loop.
 //                if (renderSpec == null || renderSpec.isEmpty()) {
@@ -45,9 +45,9 @@
 //                    // first person transform type insures THIS client's player is the one holding the item rather than this
 //                    // client's player seeing another player holding it
 //                    if (renderSpec != null && !renderSpec.isEmpty() &&
-//                            (transformType == ItemCameraTransforms.TransformType.FIRST_PERSON_LEFT_HAND ||
-//                                    (transformType == ItemCameraTransforms.TransformType.FIRST_PERSON_RIGHT_HAND))) {
-//                        PlayerEntity player = Minecraft.getInstance().player;
+//                            (transformType == ItemTransforms.TransformType.FIRST_PERSON_LEFT_HAND ||
+//                                    (transformType == ItemTransforms.TransformType.FIRST_PERSON_RIGHT_HAND))) {
+//                        Player player = Minecraft.getInstance().player;
 //                        int slot = -1;
 //                        if (player.getHeldItemMainhand().equals(stack)) {
 //                            slot = player.inventory.currentItem;
@@ -70,9 +70,9 @@
 //                if (renderSpec != null) {
 //                    int[] colours = renderSpec.getIntArray(NuminaConstants.TAG_COLOURS);
 //                    Colour partColor;
-//                    TransformationMatrix transform;
+//                    Transformation transform;
 //
-//                    for (CompoundNBT nbt : NBTTagAccessor.getValues(renderSpec)) {
+//                    for (CompoundTag nbt : NBTTagAccessor.getValues(renderSpec)) {
 //                        PartSpecBase partSpec = ModelRegistry.getInstance().getPart(nbt);
 //
 //                        String partName = nbt.getString("part");
@@ -83,8 +83,8 @@
 //
 //                            // only process this part if it's for the correct hand
 //                            if (partSpec.getBinding().getTarget().name().toUpperCase().equals(
-//                                    transformType.equals(ItemCameraTransforms.TransformType.FIRST_PERSON_LEFT_HAND) ||
-//                                            transformType.equals(ItemCameraTransforms.TransformType.THIRD_PERSON_LEFT_HAND) ?
+//                                    transformType.equals(ItemTransforms.TransformType.FIRST_PERSON_LEFT_HAND) ||
+//                                            transformType.equals(ItemTransforms.TransformType.THIRD_PERSON_LEFT_HAND) ?
 //                                            "LEFTHAND" : "RIGHTHAND")) {
 //
 //                                transform = ((ModelSpec) partSpec.spec).getTransform(transformType);
@@ -153,7 +153,7 @@
 //
 //    }
 //
-//    String getPrefixString(ItemCameraTransforms.TransformType transformType) {
+//    String getPrefixString(ItemTransforms.TransformType transformType) {
 //        switch ((transformType)) {
 //            case FIRST_PERSON_LEFT_HAND:
 //            case THIRD_PERSON_LEFT_HAND: {

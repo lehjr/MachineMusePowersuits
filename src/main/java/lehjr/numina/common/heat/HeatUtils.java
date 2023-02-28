@@ -29,12 +29,12 @@ package lehjr.numina.common.heat;
 import com.google.common.util.concurrent.AtomicDouble;
 import lehjr.numina.common.capabilities.heat.HeatCapability;
 import lehjr.numina.common.constants.NuminaConstants;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.ArmorItem;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.DamageSource;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ArmorItem;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 
 import javax.annotation.Nonnull;
@@ -48,7 +48,7 @@ public class HeatUtils {
 
     public static double getPlayerHeat(LivingEntity entity) {
         double heat = 0;
-        for (EquipmentSlotType slot : EquipmentSlotType.values()) {
+        for (EquipmentSlot slot : EquipmentSlot.values()) {
             heat += getItemHeat(entity.getItemBySlot(slot));
         }
         return heat;
@@ -60,13 +60,15 @@ public class HeatUtils {
     public static double getPlayerMaxHeat(LivingEntity entity) {
         AtomicDouble maxHeat = new AtomicDouble(0);
 
-        for (EquipmentSlotType slot : EquipmentSlotType.values()) {
+        for (EquipmentSlot slot : EquipmentSlot.values()) {
             ItemStack itemStack = entity.getItemBySlot(slot);
 
-                if ((slot.getType().equals(EquipmentSlotType.Group.ARMOR)) ||
-                        (slot.getType().equals(EquipmentSlotType.Group.HAND) && !(itemStack.getItem() instanceof ArmorItem))) {
-                    itemStack.getCapability(HeatCapability.HEAT).ifPresent(heat->maxHeat.getAndAdd(heat.getMaxHeatStored()));
-                }
+            // Armor slots can't hold tools
+            if ((slot.getType().equals(EquipmentSlot.Type.ARMOR)) ||
+                    // but hand slots can hold armor
+                    (slot.getType().equals(EquipmentSlot.Type.HAND) && !(itemStack.getItem() instanceof ArmorItem))) {
+                itemStack.getCapability(HeatCapability.HEAT).ifPresent(heat->maxHeat.getAndAdd(heat.getMaxHeatStored()));
+            }
         }
         return maxHeat.get();
     }
@@ -77,11 +79,11 @@ public class HeatUtils {
         }
 
         double coolingLeft = coolJoules;
-        if (entity instanceof PlayerEntity) {
-            PlayerEntity player = (PlayerEntity) entity;
-            for (int i = 0; i < player.inventory.getContainerSize(); i++) {
-                ItemStack stack = player.inventory.getItem(i);
-                if (entity.isUsingItem() && player.inventory.getSelected() == stack) {
+        if (entity instanceof Player) {
+            Player player = (Player) entity;
+            for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
+                ItemStack stack = player.getInventory().getItem(i);
+                if (entity.isUsingItem() && player.getInventory().getSelected() == stack) {
                     continue;
                 }
                 if (coolingLeft > 0) {
@@ -91,7 +93,7 @@ public class HeatUtils {
                 }
             }
         } else {
-            for (EquipmentSlotType slot : EquipmentSlotType.values()) {
+            for (EquipmentSlot slot : EquipmentSlot.values()) {
                 if (coolingLeft > 0) {
                     coolingLeft -= coolItem(entity.getItemBySlot(slot), coolingLeft);
                 } else {
@@ -111,7 +113,7 @@ public class HeatUtils {
         }
 
         double heatLeftToGive = heatJoules;
-        for (EquipmentSlotType slot : EquipmentSlotType.values()) {
+        for (EquipmentSlot slot : EquipmentSlot.values()) {
             if (heatLeftToGive == 0) {
                 break;
             }
@@ -120,6 +122,11 @@ public class HeatUtils {
         return heatLeftToGive;
     }
 
+    /**
+     * Heats the player's equipment and puts out player >>IF<< the equipment's
+     * temperature is below the max threshold.
+     * @param event
+     */
     public static void heatEntity(LivingAttackEvent event) {
         if (event.getSource().isFire()) {
             // round amount due do float values being weird
@@ -136,7 +143,7 @@ public class HeatUtils {
                 }
             }
 
-            for (EquipmentSlotType slot : EquipmentSlotType.values()) {
+            for (EquipmentSlot slot : EquipmentSlot.values()) {
                 if (heatLeftToGive == 0) {
                     break;
                 }

@@ -26,6 +26,8 @@
 
 package lehjr.numina.common.capabilities.render;
 
-public interface IArmorModelSpecNBT extends IModelSpecNBT {
-    public String getArmorTexture();
+import net.minecraft.resources.ResourceLocation;
+
+public interface IArmorModelSpecNBT extends IModelSpec {
+    public ResourceLocation getArmorTexture();
 }

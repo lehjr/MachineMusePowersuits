@@ -26,7 +26,8 @@
 
 package lehjr.powersuits.client.event;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.platform.Window;
+import com.mojang.blaze3d.vertex.PoseStack;
 import lehjr.numina.client.gui.meter.EnergyMeter;
 import lehjr.numina.client.gui.meter.HeatMeter;
 import lehjr.numina.client.gui.meter.PlasmaChargeMeter;
@@ -42,12 +43,11 @@ import lehjr.numina.common.string.StringUtils;
 import lehjr.powersuits.common.config.MPSSettings;
 import lehjr.powersuits.common.constants.MPSRegistryNames;
 import lehjr.powersuits.common.item.module.environmental.AutoFeederModule;
-import net.minecraft.client.MainWindow;
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
@@ -69,10 +69,10 @@ public enum ClientOverlayHandler {
     final double meterTextOffsetY = 0;
 
     public void render(RenderGameOverlayEvent.Post e) {
-        MatrixStack matrixStack = e.getMatrixStack();
+        PoseStack matrixStack = e.getMatrixStack();
 
         Minecraft minecraft = Minecraft.getInstance();
-        PlayerEntity player;
+        Player player;
         if (minecraft.player == null) {
             return;
         }
@@ -90,13 +90,13 @@ public enum ClientOverlayHandler {
 
         if (player != null && Minecraft.renderNames() && minecraft.screen == null) {
 
-            MainWindow screen = e.getWindow();
+            Window screen = e.getWindow();
 
             // Misc Overlay Items ---------------------------------------------------------------------------------
             AtomicInteger index = new AtomicInteger(0);
 
             // Helmet modules with overlay
-            player.getItemBySlot(EquipmentSlotType.HEAD).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+            player.getItemBySlot(EquipmentSlot.HEAD).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
                     .filter(IModularItem.class::isInstance)
                     .map(IModularItem.class::cast)
 
@@ -191,7 +191,7 @@ public enum ClientOverlayHandler {
             AtomicReference<String> currWaterStr = new AtomicReference<>("");
             AtomicReference<String> maxWaterStr = new AtomicReference<>("");
 
-            player.getItemBySlot(EquipmentSlotType.CHEST).getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).ifPresent(fh -> {
+            player.getItemBySlot(EquipmentSlot.CHEST).getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).ifPresent(fh -> {
                 for (int i = 0; i < fh.getTanks(); i++) {
                     maxWater.set(maxWater.get() + fh.getTankCapacity(i));
                     if (maxWater.get() > 0) {

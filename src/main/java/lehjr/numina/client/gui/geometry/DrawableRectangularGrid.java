@@ -26,13 +26,13 @@
 //
 //package lehjr.numina.client.gui.gemoetry;
 //
-//import com.mojang.blaze3d.matrix.MatrixStack;
+//import com.mojang.blaze3d.vertex.PoseStack;
 //import com.mojang.blaze3d.systems.RenderSystem;
 //import lehjr.numina.common.math.Colour;
-//import net.minecraft.client.renderer.BufferBuilder;
-//import net.minecraft.client.renderer.Tessellator;
-//import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-//import net.minecraft.util.math.vector.Matrix4f;
+//import com.mojang.blaze3d.vertex.BufferBuilder;
+//import com.mojang.blaze3d.vertex.Tesselator;
+//import com.mojang.blaze3d.vertex.DefaultVertexFormat;
+//import com.mojang.math.Matrix4f;
 //import org.lwjgl.opengl.GL11;
 //
 //import java.nio.FloatBuffer;
@@ -125,7 +125,7 @@
 //        }
 //    }
 //
-//    void drawGrid(MatrixStack matrixStack) {
+//    void drawGrid(PoseStack matrixStack) {
 //
 //        // reinitialize values on "growFromCenter" or resize
 //        boolean needInt = false;
@@ -148,11 +148,11 @@
 //        RenderSystem.enableBlend();
 //        RenderSystem.disableAlphaTest();
 //        RenderSystem.defaultBlendFunc();
-//        RenderSystem.shadeModel(GL11.GL_SMOOTH);
+//        GL11.glEnable(GL11.GL_SMOOTH);
 //
-//        Tessellator tessellator = Tessellator.getInstance();
+//        Tesselator tessellator = Tesselator.getInstance();
 //        BufferBuilder buffer = tessellator.getBuilder();
-//        buffer.begin(GL11.GL_LINES, DefaultVertexFormats.POSITION_COLOR);
+//        buffer.begin(GL11.GL_LINES, DefaultVertexFormat.POSITION_COLOR);
 //
 //        Matrix4f matrix4f = matrixStack.last().pose();
 //
@@ -174,7 +174,7 @@
 //
 //        tessellator.end();
 //
-//        RenderSystem.shadeModel(GL11.GL_FLAT);
+//        GL11.glEnable(GL11.GL_FLAT);
 //        RenderSystem.disableBlend();
 //        RenderSystem.enableAlphaTest();
 //        RenderSystem.enableTexture();
@@ -193,7 +193,7 @@
 //    }
 //
 //    @Override
-//    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float frameTime) {
+//    public void render(PoseStack matrixStack, int mouseX, int mouseY, float frameTime) {
 //        FloatBuffer vertices = preDraw(0);
 //        drawBackground(matrixStack, vertices);
 //        drawGrid(matrixStack);

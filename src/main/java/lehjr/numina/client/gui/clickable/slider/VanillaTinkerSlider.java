@@ -1,17 +1,17 @@
 package lehjr.numina.client.gui.clickable.slider;
 
 import lehjr.numina.client.gui.geometry.MusePoint2D;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.TranslatableComponent;
 
 public class VanillaTinkerSlider extends VanillaSlider {
-    public CompoundNBT moduleTag;
+    public CompoundTag moduleTag;
 
     public VanillaTinkerSlider(MusePoint2D ul,
                                  double width,
-                                 CompoundNBT moduleTag,
+                                 CompoundTag moduleTag,
                                  String id,
-                                 TranslationTextComponent label) {
+                                 TranslatableComponent label) {
         super(ul, width, id);
         this.moduleTag = moduleTag;
         setValue(getValue());

@@ -27,10 +27,10 @@
 package lehjr.numina.client.gui.old_meters;
 
 
-import lehjr.numina.common.math.Colour;
+import lehjr.numina.common.math.Color;
 
 public class EnergyMeter extends HeatMeter {
     public EnergyMeter() {
-        super(Colour.LIGHT_GREEN.withAlpha(0.7F));
+        super(Color.LIGHT_GREEN.withAlpha(0.7F));
     }
 }

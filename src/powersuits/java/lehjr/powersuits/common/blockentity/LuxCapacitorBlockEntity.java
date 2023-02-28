@@ -29,92 +29,86 @@ package lehjr.powersuits.common.blockentity;
 
 import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.blockentity.NuminaBlockEntity;
-import lehjr.numina.common.capabilities.render.colour.ColourCapability;
-import lehjr.numina.common.capabilities.render.colour.ColourNBT;
-import lehjr.numina.common.math.Colour;
+import lehjr.numina.common.capabilities.render.colour.ColorCapability;
+import lehjr.numina.common.capabilities.render.colour.ColorStorage;
+import lehjr.numina.common.capabilities.render.colour.IColorTag;
+import lehjr.numina.common.math.Color;
 import lehjr.powersuits.client.model.helper.LuxCapHelper;
 import lehjr.powersuits.common.base.MPSObjects;
 import lehjr.powersuits.common.block.LuxCapacitorBlock;
-import net.minecraft.block.BlockState;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.IntNBT;
-import net.minecraft.network.play.server.SUpdateTileEntityPacket;
-import net.minecraft.util.Direction;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.IntTag;
+import net.minecraft.nbt.Tag;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.client.model.data.IModelData;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.LazyOptional;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 public class LuxCapacitorBlockEntity extends NuminaBlockEntity {
-    LazyOptional<ColourNBT> colourNBT = LazyOptional.of(()-> new ColourNBT());
-
-    public LuxCapacitorBlockEntity() {
-        super(MPSObjects.LUX_CAP_TILE_TYPE.get());
+    final ColorStorage colorStorage = new ColorStorage();
+    final LazyOptional<IColorTag> colorHolder;
+    public LuxCapacitorBlockEntity(BlockPos pos, BlockState state) {
+        super(MPSObjects.LUX_CAP_BLOCK_ENTITY_TYPE.get(), pos, state);
+        colorHolder = LazyOptional.of(()-> colorStorage);
     }
 
-    public LuxCapacitorBlockEntity(Colour colour) {
-        super(MPSObjects.LUX_CAP_TILE_TYPE.get());
-        colourNBT.ifPresent(colourNBT1 -> colourNBT1.setColour(colour));
+    public void setColor(Color color) {
+        this.getCapability(ColorCapability.COLOR, null).ifPresent(colorCap -> colorCap.setColor(color));
+        // fixme save color setting?
     }
 
-    /**
-     * Retrieves packet to send to the client whenever this Tile Entity is resynced via World.notifyBlockUpdate. For
-     * modded TE's, this packet comes back to you clientside in {@link #onDataPacket}
-     */
-    @Nullable
+    @NotNull
     @Override
-    public SUpdateTileEntityPacket getUpdatePacket() {
-        return new SUpdateTileEntityPacket(this.worldPosition, -1, this.getUpdateTag());
-    }
+    public <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
+        if (cap == null) {
+            return LazyOptional.empty();
+        }
 
-    @Override
-    public CompoundNBT getUpdateTag() {
-        return this.save(new CompoundNBT());
-    }
+        final LazyOptional<T> colorCapability = ColorCapability.COLOR.orEmpty(cap, colorHolder);
+        if (colorCapability.isPresent()) {
+            return colorCapability;
+        }
 
-    public void setColor(Colour colour) {
-//        MuseLogger.logDebug("setting colour: " + colour);
-        this.colourNBT.ifPresent(colourNBT1 -> colourNBT1.setColour(colour));
+        return LazyOptional.empty();
     }
 
     @Override
-    public CompoundNBT save(CompoundNBT nbt) {
-//        MuseLogger.logDebug("writing: " + nbt);
-        colourNBT.ifPresent(colourNBT1 -> nbt.put("colour", colourNBT1.serializeNBT()));
-        return super.save(nbt);
+    public void load(CompoundTag tag) {
+        super.load(tag);
+        if (tag.contains("color", Tag.TAG_INT)) {
+            colorHolder.ifPresent(colorNBT-> ((ColorStorage)colorNBT).deserializeNBT((IntTag) tag.get("color")));
+        } else {
+            colorHolder.ifPresent(colorNBT-> colorNBT.setColor(LuxCapacitorBlock.defaultColor));
+
+            NuminaLogger.logger.debug("No NBT found! D:");
+        }
     }
+
+    @Override
+    protected void saveAdditional(CompoundTag tag) {
+        super.saveAdditional(tag);
+        colorHolder.ifPresent(colorNBT -> tag.put("colour", ((ColorStorage)colorNBT).serializeNBT()));
+    }
+
+//        @Override
+//    public void requestModelDataUpdate() {
+//        super.requestModelDataUpdate();
+//    }
 
     @Nonnull
     @Override
     public IModelData getModelData() {
+        // FIXME: insert luxcaphelper here
         return LuxCapHelper.getModelData(getColor().getInt());
     }
 
-    @Nonnull
-    @Override
-    public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
-        if (cap == ColourCapability.COLOUR) {
-            return colourNBT.cast();
-        }
-        return super.getCapability(cap, side);
-    }
-
-    @Override
-    public void load(BlockState state, CompoundNBT nbt) {
-//        MuseLogger.logDebug("reading");
-
-        if (nbt.contains("colour", Constants.NBT.TAG_INT)) {
-            colourNBT.ifPresent(colourNBT1 -> colourNBT1.deserializeNBT((IntNBT) nbt.get("colour")));
-        } else {
-            NuminaLogger.logger.debug("No NBT found! D:");
-        }
-        super.load(state, nbt);
-    }
-
-    public Colour getColor() {
-        return colourNBT.map(colourNBT1 -> colourNBT1.getColour()).orElse(LuxCapacitorBlock.defaultColor);
+    public Color getColor() {
+        return colorHolder.map(colourNBT1 -> colourNBT1.getColor()).orElse(LuxCapacitorBlock.defaultColor);
     }
 }

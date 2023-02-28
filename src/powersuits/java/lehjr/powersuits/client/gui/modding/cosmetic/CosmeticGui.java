@@ -26,8 +26,8 @@
 
 package lehjr.powersuits.client.gui.modding.cosmetic;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.PoseStack;
 import lehjr.numina.client.gui.ContainerlessGui;
 import lehjr.numina.client.gui.frame.EntityRenderFrame;
 import lehjr.numina.client.gui.geometry.MusePoint2D;
@@ -38,12 +38,12 @@ import lehjr.powersuits.client.gui.modding.cosmetic.partmanip.ModelManipFrame;
 import lehjr.powersuits.common.config.MPSSettings;
 import lehjr.powersuits.common.constants.MPSConstants;
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.server.management.OpEntry;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.ITextComponent;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.players.ServerOpListEntry;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
 
 /**
  * Author: MachineMuse (Claire Semple)
@@ -53,7 +53,7 @@ import net.minecraft.util.text.ITextComponent;
  */
 public class CosmeticGui extends ContainerlessGui {
     public static final ResourceLocation BACKGROUND = new ResourceLocation(MPSConstants.MOD_ID, "textures/gui/background/cosmetic.png");
-    PlayerEntity player;
+    Player player;
     ModularItemSelectionFrame itemSelectFrame;
     EntityRenderFrame renderframe;
     ColourPickerFrame colourpicker;
@@ -62,7 +62,7 @@ public class CosmeticGui extends ContainerlessGui {
     protected boolean allowCosmeticPresetCreation;
     protected boolean usingCosmeticPresets;
 
-    public CosmeticGui(PlayerInventory inventory, ITextComponent title) {
+    public CosmeticGui(Inventory inventory, Component title) {
         super(title, 352, 217);
         this.player = inventory.player;
         this.minecraft = Minecraft.getInstance();
@@ -82,7 +82,7 @@ public class CosmeticGui extends ContainerlessGui {
                 allowCosmeticPresetCreation = player.getName().equals(minecraft.getSingleplayerServer().getSingleplayerName());
             } else {
                 // check if player is top level op
-                OpEntry opEntry = minecraft.player.getServer().getPlayerList().getOps().get(player.getGameProfile());
+                ServerOpListEntry opEntry = minecraft.player.getServer().getPlayerList().getOps().get(player.getGameProfile());
                 int opLevel = opEntry != null ? opEntry.getLevel() : 0;
                 allowCosmeticPresetCreation = opLevel == 4;
             }
@@ -91,11 +91,11 @@ public class CosmeticGui extends ContainerlessGui {
         }
 
         /** for selecting the item to manipulate ------------------------------------------------ */
-        EquipmentSlotType type;
+        EquipmentSlot type;
         if (itemSelectFrame != null) {
-            type = itemSelectFrame.selectedType().orElse(EquipmentSlotType.HEAD);
+            type = itemSelectFrame.selectedType().orElse(EquipmentSlot.HEAD);
         } else {
-            type = EquipmentSlotType.HEAD;
+            type = EquipmentSlot.HEAD;
         }
         itemSelectFrame = new ModularItemSelectionFrame(new MusePoint2D(leftPos - 30, topPos), type);
         itemSelectFrame.refreshRects();
@@ -148,16 +148,16 @@ public class CosmeticGui extends ContainerlessGui {
     }
 
     @Override
-    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
+    public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTicks) {
         super.render(matrixStack, mouseX, mouseY, partialTicks);
         renderTooltip(matrixStack, mouseX, mouseY);
     }
 
     @Override
-    public void renderBackground(MatrixStack matrixStack) {
+    public void renderBackground(PoseStack matrixStack) {
         super.renderBackground(matrixStack);
-        RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-        this.minecraft.getTextureManager().bind(this.BACKGROUND);
+        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+        this.minecraft.getTextureManager().bindForSetup(this.BACKGROUND);
         int i = this.leftPos;
         int j = this.topPos;
         this.blit(matrixStack, i, j, 0, 0, this.imageWidth, this.imageHeight, 512, 512);

@@ -26,14 +26,13 @@
 
 package lehjr.powersuits.common.network.packets;
 
-import lehjr.powersuits.common.container.InstallSalvageContainer;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.inventory.container.INamedContainerProvider;
-import net.minecraft.inventory.container.SimpleNamedContainerProvider;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraftforge.fml.network.NetworkEvent;
-import net.minecraftforge.fml.network.NetworkHooks;
+import lehjr.powersuits.common.container.InstallSalvageMenu;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.SimpleMenuProvider;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraftforge.network.NetworkEvent;
+import net.minecraftforge.network.NetworkHooks;
 
 import java.util.function.Supplier;
 
@@ -41,22 +40,22 @@ import java.util.function.Supplier;
  * A packet for sending a containerGui open request from the client side.
  */
 public class ContainerGuiOpenPacket {
-    EquipmentSlotType type;
-    public ContainerGuiOpenPacket(EquipmentSlotType typeIn) {
+    EquipmentSlot type;
+    public ContainerGuiOpenPacket(EquipmentSlot typeIn) {
         this.type = typeIn;
     }
 
-    public static void write(ContainerGuiOpenPacket msg, PacketBuffer packetBuffer) {
+    public static void write(ContainerGuiOpenPacket msg, FriendlyByteBuf packetBuffer) {
         packetBuffer.writeEnum(msg.type);
     }
 
-    public static ContainerGuiOpenPacket read(PacketBuffer packetBuffer) {
-        return new ContainerGuiOpenPacket(packetBuffer.readEnum(EquipmentSlotType.class));
+    public static ContainerGuiOpenPacket read(FriendlyByteBuf packetBuffer) {
+        return new ContainerGuiOpenPacket(packetBuffer.readEnum(EquipmentSlot.class));
     }
 
     public static void handle(ContainerGuiOpenPacket msg, Supplier<NetworkEvent.Context> ctx) {
         ctx.get().enqueueWork(() -> {
-            INamedContainerProvider container = new SimpleNamedContainerProvider((id, inventory, player) -> new InstallSalvageContainer(id, inventory, msg.type), new TranslationTextComponent("gui.powersuits.tab.install.salvage"));
+            SimpleMenuProvider container = new SimpleMenuProvider((id, inventory, player) ->  new InstallSalvageMenu(id, inventory, msg.type), new TranslatableComponent("gui.powersuits.tab.install.salvage"));
             NetworkHooks.openGui(ctx.get().getSender(), container, buffer -> buffer.writeEnum(msg.type));
         });
         ctx.get().setPacketHandled(true);

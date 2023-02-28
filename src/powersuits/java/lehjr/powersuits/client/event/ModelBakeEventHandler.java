@@ -32,8 +32,8 @@ import lehjr.powersuits.client.model.block.LuxCapacitorModelWrapper;
 import lehjr.powersuits.client.model.helper.MPSModelHelper;
 import lehjr.powersuits.client.model.item.PowerFistModel;
 import lehjr.powersuits.common.constants.MPSRegistryNames;
-import net.minecraft.client.renderer.model.IBakedModel;
-import net.minecraft.client.renderer.model.ModelResourceLocation;
+import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
@@ -52,17 +52,17 @@ public enum ModelBakeEventHandler {
          * Notes: looks like all current models are "SimpleBakedModels"
          */
         // replace LuxCapacitor model with one that can generate the model data needed to color the lens for the item model
-        IBakedModel luxCapItemModel = event.getModelRegistry().get(luxCapItemLocation);
+        BakedModel luxCapItemModel = event.getModelRegistry().get(luxCapItemLocation);
         if (luxCapItemModel instanceof OBJBakedCompositeModel) {
             event.getModelRegistry().put(luxCapItemLocation, new LuxCapacitorModelWrapper((OBJBakedCompositeModel) luxCapItemModel));
         }
 
-        IBakedModel luxCapModuleModel = event.getModelRegistry().get(luxCapModuleLocation);
+        BakedModel luxCapModuleModel = event.getModelRegistry().get(luxCapModuleLocation);
         if (luxCapItemModel instanceof OBJBakedCompositeModel) {
             event.getModelRegistry().put(luxCapModuleLocation, new LuxCapacitorModelWrapper((OBJBakedCompositeModel) luxCapModuleModel));
         }
 
-        IBakedModel powerFistIcon = event.getModelRegistry().get(powerFistIconLocation);
+        BakedModel powerFistIcon = event.getModelRegistry().get(powerFistIconLocation);
         if (!OBJBakedCompositeModel.class.isInstance(powerFistIcon)) {
             event.getModelRegistry().put(powerFistIconLocation, new PowerFistModel(powerFistIcon));
         }

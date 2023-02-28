@@ -26,17 +26,14 @@
 
 package lehjr.numina.common.capabilities.inventory.modularitem;
 
-import lehjr.numina.common.capabilities.IItemStackUpdate;
 import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.capabilities.module.powermodule.PowerModuleCapability;
 import lehjr.numina.common.string.StringUtils;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.common.util.INBTSerializable;
+import net.minecraft.core.NonNullList;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import org.apache.commons.lang3.tuple.Pair;
@@ -50,7 +47,7 @@ import java.util.Map;
  *
  *
  */
-public interface IModularItem extends IItemHandler, IItemHandlerModifiable, IItemStackUpdate, INBTSerializable<CompoundNBT> {
+public interface IModularItem extends IItemHandler, IItemHandlerModifiable {
     void setRangedWrapperMap(Map<ModuleCategory, NuminaRangedWrapper> rangedWrappers);
 
     boolean isModuleValid(@Nonnull ItemStack module);
@@ -80,13 +77,11 @@ public interface IModularItem extends IItemHandler, IItemHandlerModifiable, IIte
     @Nonnull
     ItemStack getModularItemStack();
 
-    void tick(PlayerEntity player);
+    void tick(Player player);
 
     default String formatInfo(String string, double value) {
         return string + '\t' + StringUtils.formatNumberShort(value);
     }
 
     boolean setModuleTweakDouble(ResourceLocation moduleName, String key, double value);
-
-    void onContentsChanged(final int slot);
 }

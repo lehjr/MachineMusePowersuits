@@ -1,6 +1,6 @@
 //package lehjr.mpsrecipecreator.client.gui;
 //
-//import com.mojang.blaze3d.matrix.MatrixStack;
+//import com.mojang.blaze3d.vertex.PoseStack;
 //import lehjr.numina.client.gui.clickable.Checkbox;
 //import lehjr.numina.client.gui.clickable.ClickableButton;
 //import lehjr.numina.client.gui.clickable.ClickableLabel;
@@ -9,9 +9,9 @@
 //import lehjr.numina.client.sound.Musique;
 //import lehjr.numina.common.math.Colour;
 //import net.minecraft.util.SoundEvents;
-//import net.minecraft.util.text.ITextComponent;
-//import net.minecraft.util.text.StringTextComponent;
-//import net.minecraft.util.text.TranslationTextComponent;
+//import net.minecraft.network.chat.Component;
+//import net.minecraft.network.chat.TextComponent;
+//import net.minecraft.network.chat.TranslatableComponent;
 //
 //import java.util.ArrayList;
 //import java.util.List;
@@ -41,7 +41,7 @@
 //        setBackgroundColour(backgroundColour);
 //
 //        MusePoint2D starterPoint = MusePoint2D.ZERO;
-//        this.title = new ClickableLabel(new StringTextComponent("Recipe Options"), starterPoint);
+//        this.title = new ClickableLabel(new TextComponent("Recipe Options"), starterPoint);
 //
 //        System.out.println("startpoint: " + starterPoint);
 //
@@ -86,13 +86,13 @@
 //        conditionsFrame.disable();
 //        conditionsFrame.hide();
 //
-//        save = addButton(new TranslationTextComponent("mpsrc.gui.save"));
+//        save = addButton(new TranslatableComponent("mpsrc.gui.save"));
 //        save.setOnPressed(pressed->{
 //            Musique.playClientSound(SoundEvents.UI_BUTTON_CLICK,1);
 //            mparcGui.save();
 //        });
 //
-//        reset = addButton(new TranslationTextComponent("mpsrc.gui.resetrecipe"));
+//        reset = addButton(new TranslatableComponent("mpsrc.gui.resetrecipe"));
 //        reset.setOnPressed(pressed-> {
 //            Musique.playClientSound(SoundEvents.UI_BUTTON_CLICK, 1);
 //            mparcGui.resetRecipes();
@@ -131,7 +131,7 @@
 ////    }
 //
 //    @Override
-//    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
+//    public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTicks) {
 //        if (isVisible()) {
 //            super.render(matrixStack, mouseX, mouseY, partialTicks);
 //            title.render(matrixStack, mouseX, mouseY, partialTicks);
@@ -196,7 +196,7 @@
 //        return false;
 //    }
 //
-//    ClickableButton addButton(ITextComponent label) {
+//    ClickableButton addButton(Component label) {
 //        ClickableButton button = new ClickableButton(label, MusePoint2D.ZERO, true);
 //        button.setBorderColour(Colour.BLACK);
 //        button.setDisabledBackground(Colour.RED);

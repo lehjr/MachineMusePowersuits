@@ -2,14 +2,14 @@ package lehjr.powersuits.client.gui.common;
 
 import lehjr.numina.client.gui.geometry.MusePoint2D;
 import lehjr.numina.client.gui.slot.IHideableSlot;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.inventory.container.Container;
-import net.minecraft.inventory.container.Slot;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.Slot;
 
-public class ModularItemSelectionFrameContainered<C extends Container> extends ModularItemSelectionFrame {
+public class ModularItemSelectionFrameContainered<C extends AbstractContainerMenu> extends ModularItemSelectionFrame {
     C container;
 
-    public ModularItemSelectionFrameContainered(C container, MusePoint2D ul, EquipmentSlotType type) {
+    public ModularItemSelectionFrameContainered(C container, MusePoint2D ul, EquipmentSlot type) {
         super(ul, type);
         this.container = container;
     }
@@ -20,7 +20,7 @@ public class ModularItemSelectionFrameContainered<C extends Container> extends M
     }
 
     @Override
-    void disableContainerSlots() {
+    void disableAbstractContainerMenuSlots() {
         for (Slot slot : container.slots) {
             if (slot instanceof IHideableSlot) {
                 ((IHideableSlot) slot).disable();

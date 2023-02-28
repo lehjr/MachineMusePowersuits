@@ -26,43 +26,43 @@
 
 package lehjr.numina.client.gui.clickable;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 import lehjr.numina.client.gui.geometry.IDrawable;
 import lehjr.numina.client.gui.geometry.MusePoint2D;
 import lehjr.numina.client.gui.geometry.Rect;
-import lehjr.numina.common.math.Colour;
+import lehjr.numina.common.math.Color;
 import lehjr.numina.common.string.StringUtils;
-import net.minecraft.util.text.ITextComponent;
+import net.minecraft.network.chat.Component;
 
 
 // fixme: revisit and rewrite
 public class ClickableLabel extends Clickable {
     protected IPressable onPressed;
     protected IReleasable onReleased;
-    Colour colour = Colour.WHITE;
+    Color colour = Color.WHITE;
     boolean shadowed = true;
 
-    protected ITextComponent label;
+    protected Component label;
     protected JustifyMode mode;
 
-    public ClickableLabel(ITextComponent label, Rect rect) {
+    public ClickableLabel(Component label, Rect rect) {
         super(rect);
         this.label = label;
         this.mode =JustifyMode.CENTERED;
     }
 
-    public ClickableLabel(ITextComponent label, MusePoint2D ul) {
+    public ClickableLabel(Component label, MusePoint2D ul) {
         this(label, ul, JustifyMode.CENTERED);
     }
 
-    public ClickableLabel(ITextComponent label, MusePoint2D ul, JustifyMode mode) {
+    public ClickableLabel(Component label, MusePoint2D ul, JustifyMode mode) {
         super(ul, ul.plus(StringUtils.getStringWidth(label),
                 Math.max(StringUtils.getStringHeight(), 10)));
         this.label = label;
         this.mode = mode;
     }
 
-    public ClickableLabel(double left, double top, double width, ITextComponent label, JustifyMode mode) {
+    public ClickableLabel(double left, double top, double width, Component label, JustifyMode mode) {
         super(left, top, left + width, top + Math.max(StringUtils.getStringHeight(), 10));
         this.label = label;
         this.mode = mode;
@@ -73,7 +73,7 @@ public class ClickableLabel extends Clickable {
         return this;
     }
 
-    public void setColour(Colour colour) {
+    public void setColour(Color colour) {
         this.colour = colour;
     }
 
@@ -81,14 +81,14 @@ public class ClickableLabel extends Clickable {
         this.shadowed = shadowed;
     }
 
-    public void setLabel(ITextComponent label) {
+    public void setLabel(Component label) {
         this.label = label;
     }
 
     // fixme: this isn't actually working as intended
     @Override
-    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
-        super.render(matrixStack, mouseX, mouseY, partialTicks);
+    public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTick) {
+        super.render(matrixStack, mouseX, mouseY, partialTick);
 
         matrixStack.pushPose();
         matrixStack.translate(0,0,100);

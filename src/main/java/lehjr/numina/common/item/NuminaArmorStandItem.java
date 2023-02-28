@@ -26,24 +26,33 @@
 
 package lehjr.numina.common.item;
 
+import lehjr.numina.client.render.item.NuminaArmorStandItemRenderer;
 import lehjr.numina.common.base.NuminaObjects;
-import lehjr.numina.common.entity.NuminaArmorStandEntity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.SpawnReason;
-import net.minecraft.item.*;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Rotations;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+import lehjr.numina.common.entity.NuminaArmorStand;
+import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.Rotations;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Mth;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.item.ArmorStandItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.client.IItemRenderProperties;
 
 import java.util.Random;
+import java.util.function.Consumer;
 
 public class NuminaArmorStandItem extends ArmorStandItem {
     public NuminaArmorStandItem(Item.Properties builder) {
@@ -54,42 +63,42 @@ public class NuminaArmorStandItem extends ArmorStandItem {
      * Called when this item is used when targetting a Block
      */
     @Override
-    public ActionResultType useOn(ItemUseContext context) {
+    public InteractionResult useOn(UseOnContext context) {
         Direction direction = context.getClickedFace();
         if (direction == Direction.DOWN) {
-            return ActionResultType.FAIL;
+            return InteractionResult.FAIL;
         } else {
-            World world = context.getLevel();
-            BlockItemUseContext blockitemusecontext = new BlockItemUseContext(context);
+            Level level = context.getLevel();
+            BlockPlaceContext blockitemusecontext = new BlockPlaceContext(context);
             BlockPos blockpos = blockitemusecontext.getClickedPos();
             ItemStack itemstack = context.getItemInHand();
-            Vector3d vector3d = Vector3d.atBottomCenterOf(blockpos);
-            AxisAlignedBB axisalignedbb = EntityType.ARMOR_STAND.getDimensions().makeBoundingBox(vector3d.x(), vector3d.y(), vector3d.z());
-            if (world.noCollision(null, axisalignedbb, (p_242390_0_) -> true) && world.getEntities(null, axisalignedbb).isEmpty()) {
-                if (world instanceof ServerWorld) {
-                    ServerWorld serverworld = (ServerWorld)world;
-                    NuminaArmorStandEntity armorstandentity = NuminaObjects.ARMOR_WORKSTATION__ENTITY_TYPE.get().create(serverworld, itemstack.getTag(), null, context.getPlayer(), blockpos, SpawnReason.SPAWN_EGG, true, true);
+            Vec3 vector3d = Vec3.atBottomCenterOf(blockpos);
+            AABB aabb = EntityType.ARMOR_STAND.getDimensions().makeBoundingBox(vector3d.x(), vector3d.y(), vector3d.z());
+            if (level.noCollision((Entity)null, aabb) && level.getEntities((Entity)null, aabb).isEmpty()) {
+                if (level instanceof ServerLevel) {
+                    ServerLevel serverworld = (ServerLevel)level;
+                    NuminaArmorStand armorstandentity = NuminaObjects.ARMOR_STAND__ENTITY_TYPE.get().create(serverworld, itemstack.getTag(), null, context.getPlayer(), blockpos, MobSpawnType.SPAWN_EGG, true, true);
                     if (armorstandentity == null) {
-                        return ActionResultType.FAIL;
+                        return InteractionResult.FAIL;
                     }
                     serverworld.addFreshEntityWithPassengers(armorstandentity);
-                    float f = (float)MathHelper.floor((MathHelper.wrapDegrees(context.getRotation() - 180.0F) + 22.5F) / 45.0F) * 45.0F;
+                    float f = (float) Mth.floor((Mth.wrapDegrees(context.getRotation() - 180.0F) + 22.5F) / 45.0F) * 45.0F;
                     armorstandentity.moveTo(armorstandentity.getX(), armorstandentity.getY(), armorstandentity.getZ(), f, 0.0F);
-                    this.applyRandomRotations(armorstandentity, world.random);
+                    this.randomizePose(armorstandentity, level.random);
                     // tries to add duplicate? results in error message about the same entity with the same uuid already added.
-//                    world.addEntity(armorstandentity);
-                    world.playSound(null, armorstandentity.getX(), armorstandentity.getY(), armorstandentity.getZ(), SoundEvents.ARMOR_STAND_PLACE, SoundCategory.BLOCKS, 0.75F, 0.8F);
+//                    level.addEntity(armorstandentity);
+                    level.playSound(null, armorstandentity.getX(), armorstandentity.getY(), armorstandentity.getZ(), SoundEvents.ARMOR_STAND_PLACE, SoundSource.BLOCKS, 0.75F, 0.8F);
                 }
 
                 itemstack.shrink(1);
-                return ActionResultType.sidedSuccess(world.isClientSide);
+                return InteractionResult.sidedSuccess(level.isClientSide);
             } else {
-                return ActionResultType.FAIL;
+                return InteractionResult.FAIL;
             }
         }
     }
 
-    private void applyRandomRotations(NuminaArmorStandEntity armorStand, Random rand) {
+    private void randomizePose(NuminaArmorStand armorStand, Random rand) {
         Rotations rotations = armorStand.getHeadPose();
         float f = rand.nextFloat() * 5.0F;
         float f1 = rand.nextFloat() * 20.0F - 10.0F;
@@ -99,5 +108,17 @@ public class NuminaArmorStandItem extends ArmorStandItem {
         f = rand.nextFloat() * 10.0F - 5.0F;
         rotations1 = new Rotations(rotations.getX(), rotations.getY() + f, rotations.getZ());
         armorStand.setBodyPose(rotations1);
+    }
+
+    @Override
+    public void initializeClient(Consumer<IItemRenderProperties> consumer) {
+        consumer.accept(new IItemRenderProperties() {
+            private final BlockEntityWithoutLevelRenderer renderer = new NuminaArmorStandItemRenderer();
+
+            @Override
+            public BlockEntityWithoutLevelRenderer getItemStackRenderer() {
+                return renderer;
+            }
+        });
     }
 }

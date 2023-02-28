@@ -37,16 +37,21 @@ import lehjr.powersuits.common.config.MPSSettings;
 import lehjr.powersuits.common.constants.MPSConstants;
 import lehjr.powersuits.common.entity.RailgunBoltEntity;
 import lehjr.powersuits.common.item.module.AbstractPowerModule;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.*;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.World;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -58,7 +63,7 @@ public class RailgunModule extends AbstractPowerModule {
 
     @Nullable
     @Override
-    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundNBT nbt) {
+    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt) {
         return new CapProvider(stack);
     }
 
@@ -79,7 +84,7 @@ public class RailgunModule extends AbstractPowerModule {
             }};
 
             powerModuleHolder = LazyOptional.of(() -> {
-                ticker.updateFromNBT();
+                ticker.loadCapValues();
                 return ticker;
             });
         }
@@ -90,7 +95,7 @@ public class RailgunModule extends AbstractPowerModule {
             }
 
             @Override
-            public void onPlayerTickActive(PlayerEntity player, @Nonnull ItemStack itemStackIn) {
+            public void onPlayerTickActive(Player player, @Nonnull ItemStack itemStackIn) {
                 double timer = TagUtils.getModularItemDoubleOrZero(itemStackIn, MPSConstants.TIMER);
                 if (timer > 0) {
                     TagUtils.setModularItemDoubleOrRemove(itemStackIn, MPSConstants.TIMER, timer - 1 > 0 ? timer - 1 : 0);
@@ -98,19 +103,19 @@ public class RailgunModule extends AbstractPowerModule {
             }
 
             @Override
-            public ActionResult use(ItemStack itemStackIn, World worldIn, PlayerEntity playerIn, Hand hand) {
-                if (hand == Hand.MAIN_HAND && ElectricItemUtils.getPlayerEnergy(playerIn) > getEnergyUsage()) {
+            public InteractionResultHolder<ItemStack> use(@NotNull ItemStack itemStackIn, Level worldIn, Player playerIn, InteractionHand hand) {
+                if (hand == InteractionHand.MAIN_HAND && ElectricItemUtils.getPlayerEnergy(playerIn) > getEnergyUsage()) {
                     playerIn.startUsingItem(hand);
-                    return ActionResult.success(itemStackIn);
+                    return InteractionResultHolder.success(itemStackIn);
                 }
-                return ActionResult.pass(itemStackIn);
+                return InteractionResultHolder.pass(itemStackIn);
             }
 
             @Override
             // from bow, since bow launches correctly each time
-            public void releaseUsing(ItemStack itemStack, World worldIn, LivingEntity entityLiving, int timeLeft) {
-                int chargeTicks = (int) MathUtils.clampDouble(getUseDuration() - timeLeft, 10, 50);
-                if (!worldIn.isClientSide && entityLiving instanceof PlayerEntity) {
+            public void releaseUsing(ItemStack itemStack, Level worldIn, LivingEntity entityLiving, int timeLeft) {
+                int chargeTicks = (int) MathUtils.clampDouble(itemStack.getUseDuration() - timeLeft, 10, 50);
+                if (!worldIn.isClientSide && entityLiving instanceof Player) {
                     double chargePercent = chargeTicks * 0.02; // chargeticks/50
                     double energyConsumption = getEnergyUsage() * chargePercent;
                     double timer = TagUtils.getModularItemDoubleOrZero(itemStack, MPSConstants.TIMER);
@@ -118,17 +123,18 @@ public class RailgunModule extends AbstractPowerModule {
                     // TODO: replace with code similar to plasma_ball ... spawn... direction... velocity...
                     if (!worldIn.isClientSide && ElectricItemUtils.getPlayerEnergy(entityLiving) > energyConsumption && timer == 0) {
                         TagUtils.setModularItemDoubleOrRemove(itemStack, MPSConstants.TIMER, 10);
-                        PlayerEntity playerentity = (PlayerEntity)entityLiving;
+                        Player playerentity = (Player)entityLiving;
 
                         double velocity = applyPropertyModifiers(MPSConstants.RAILGUN_TOTAL_IMPULSE) * chargePercent;
                         double damage = velocity * 0.01; // original: impulse / 100.0
                         double knockback = damage * 0.05; // original: damage / 20.0;
 
                         RailgunBoltEntity bolt = new RailgunBoltEntity(worldIn, entityLiving, velocity, chargePercent, damage, knockback);
+
                         // Only run if enntity is added
                         if (worldIn.addFreshEntity(bolt)) {
-                            Vector3d lookVec = playerentity.getLookAngle();
-                            worldIn.playSound(null, entityLiving.getX(), entityLiving.getY(), entityLiving.getZ(), SoundEvents.CROSSBOW_SHOOT, SoundCategory.PLAYERS, 1.0F, 1.0F);
+                            Vec3 lookVec = playerentity.getLookAngle();
+                            worldIn.playSound(null, entityLiving.getX(), entityLiving.getY(), entityLiving.getZ(), SoundEvents.CROSSBOW_SHOOT, SoundSource.PLAYERS, 1.0F, 1.0F);
                             ElectricItemUtils.drainPlayerEnergy(entityLiving, (int) energyConsumption);
                             HeatUtils.heatPlayer(entityLiving, applyPropertyModifiers(MPSConstants.RAILGUN_HEAT_EMISSION) * chargePercent);
                             entityLiving.push(-lookVec.x * knockback, Math.abs(-lookVec.y + 0.2f) * knockback, -lookVec.z * knockback);

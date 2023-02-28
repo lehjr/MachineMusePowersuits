@@ -30,8 +30,8 @@ import lehjr.numina.client.model.obj.OBJBakedCompositeModel;
 import lehjr.numina.common.constants.NuminaConstants;
 import lehjr.numina.common.map.NuminaRegistry;
 import lehjr.numina.common.string.StringUtils;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
 
 /**
  * Author: MachineMuse (Claire Semple)
@@ -79,19 +79,19 @@ public class ModelRegistry extends NuminaRegistry<SpecBase> {
     /**
      * FIXME: texture spec needs a model tag for this to work. Model tag does not have to be a real model, just a unique string for the spec k-v pair
      */
-    public SpecBase getModel(CompoundNBT nbt) {
+    public SpecBase getModel(CompoundTag nbt) {
         return get(nbt.getString(NuminaConstants.TAG_MODEL));
     }
 
-    public PartSpecBase getPart(CompoundNBT nbt, SpecBase model) {
+    public PartSpecBase getPart(CompoundTag nbt, SpecBase model) {
         return model.get(nbt.getString(NuminaConstants.TAG_PART));
     }
 
-    public PartSpecBase getPart(CompoundNBT nbt) {
+    public PartSpecBase getPart(CompoundTag nbt) {
         return getPart(nbt, getModel(nbt));
     }
 
-    public CompoundNBT getSpecTag(CompoundNBT museRenderTag, PartSpecBase spec) {
+    public CompoundTag getSpecTag(CompoundTag museRenderTag, PartSpecBase spec) {
         String name = makeName(spec);
         return (museRenderTag.contains(name)) ? (museRenderTag.getCompound(name)) : null;
     }

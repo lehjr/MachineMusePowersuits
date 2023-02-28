@@ -26,19 +26,19 @@
 
 package lehjr.powersuits.common.item.armor;
 
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.IArmorMaterial;
-import net.minecraft.item.Items;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.util.LazyValue;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.SoundEvents;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.util.LazyLoadedValue;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.ArmorMaterial;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 import java.util.function.Supplier;
 
-public enum MPAArmorMaterial implements IArmorMaterial {
+public enum MPAArmorMaterial implements ArmorMaterial {
     EMPTY_ARMOR("nothing", 5, new int[]{0, 0, 0, 0}, 15, SoundEvents.ARMOR_EQUIP_LEATHER, 0.0F, () -> {
         return Ingredient.of(Items.AIR);
     });
@@ -60,7 +60,7 @@ public enum MPAArmorMaterial implements IArmorMaterial {
     private final int enchantability;
     private final SoundEvent soundEvent;
     private final float toughness;
-    private final LazyValue<Ingredient> repairMaterial;
+    private final LazyLoadedValue<Ingredient> repairMaterial;
 
     private MPAArmorMaterial(String nameIn, int maxDamageFactor, int[] damageReductionAmountArray, int enchantability, SoundEvent soundEvent, float toughness, Supplier<Ingredient> repairMaterial) {
         this.name = nameIn;
@@ -69,14 +69,14 @@ public enum MPAArmorMaterial implements IArmorMaterial {
         this.enchantability = enchantability;
         this.soundEvent = soundEvent;
         this.toughness = toughness;
-        this.repairMaterial = new LazyValue<Ingredient>(repairMaterial);
+        this.repairMaterial = new LazyLoadedValue<Ingredient>(repairMaterial);
     }
 
-    public int getDurabilityForSlot(EquipmentSlotType slotIn) {
+    public int getDurabilityForSlot(EquipmentSlot slotIn) {
         return MAX_DAMAGE_ARRAY[slotIn.getIndex()] * this.maxDamageFactor;
     }
 
-    public int getDefenseForSlot(EquipmentSlotType slotIn) {
+    public int getDefenseForSlot(EquipmentSlot slotIn) {
         return this.damageReductionAmountArray[slotIn.getIndex()];
     }
 
@@ -88,6 +88,7 @@ public enum MPAArmorMaterial implements IArmorMaterial {
         return this.soundEvent;
     }
 
+    @Override
     public Ingredient getRepairIngredient() {
         return this.repairMaterial.get();
     }

@@ -27,23 +27,24 @@
 package lehjr.numina.client.model.item.armor;
 
 import com.google.common.collect.ImmutableList;
-import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.vertex.IVertexBuilder;
+import com.mojang.blaze3d.vertex.DefaultVertexFormat;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.math.*;
 import lehjr.numina.common.capabilities.render.modelspec.ModelPartSpec;
 import lehjr.numina.common.capabilities.render.modelspec.ModelRegistry;
 import lehjr.numina.common.capabilities.render.modelspec.ModelSpec;
 import lehjr.numina.common.capabilities.render.modelspec.PartSpecBase;
 import lehjr.numina.common.constants.NuminaConstants;
-import lehjr.numina.common.math.Colour;
+import lehjr.numina.common.math.Color;
 import lehjr.numina.common.tags.NBTTagAccessor;
-import net.minecraft.client.renderer.model.BakedQuad;
-import net.minecraft.client.renderer.model.ItemCameraTransforms;
-import net.minecraft.client.renderer.model.Model;
-import net.minecraft.client.renderer.model.ModelRenderer;
+import net.minecraft.client.model.Model;
+import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.renderer.block.model.BakedQuad;
+import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.math.vector.*;
+import net.minecraft.core.Vec3i;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.model.TransformationHelper;
@@ -52,6 +53,8 @@ import org.lwjgl.system.MemoryStack;
 import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
@@ -62,20 +65,20 @@ import java.util.Random;
  * Ported to Java by lehjr on 11/6/16.
  */
 @OnlyIn(Dist.CLIENT)
-public class RenderPart extends ModelRenderer {
+public class RenderPart extends ModelPart {
     final int FULL_BRIGHTNESS = 0XF000F0; // 15728880 also used in vanilla rendering item in gui
 
     // replace division operation with multiplication
     final float div255 = 0.003921569F;
-    ModelRenderer parent;
+    ModelPart parent;
 
-    public RenderPart(Model base, ModelRenderer parent) {
-        super(base);
+    public RenderPart(Model model, ModelPart parent) {
+        super(new ArrayList<>(), new HashMap<>());
         this.parent = parent;
     }
 
     @Override
-    public void render(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
+    public void render(PoseStack matrixStackIn, VertexConsumer bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
         if (this.visible) {
             matrixStackIn.pushPose();
             this.translateAndRotate(matrixStackIn);
@@ -85,7 +88,7 @@ public class RenderPart extends ModelRenderer {
     }
 
     @Override
-    public void translateAndRotate(MatrixStack matrixStackIn) {
+    public void translateAndRotate(PoseStack matrixStackIn) {
         matrixStackIn.translate(
                 this.x * 0.0625F, // left/right??
                 this.y * 0.0625F, // up/down
@@ -105,19 +108,19 @@ public class RenderPart extends ModelRenderer {
         matrixStackIn.mulPose(TransformationHelper.quatFromXYZ(new Vector3f(180, 0, 0), true));
     }
 
-    private void doRendering(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
-        CompoundNBT renderSpec = ArmorModelInstance.getInstance().getRenderSpec();
+    private void doRendering(PoseStack matrixStackIn, VertexConsumer bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
+        CompoundTag renderSpec = ArmorModelInstance.getInstance().getRenderSpec();
         if (renderSpec != null) {
-            MatrixStack.Entry entry = matrixStackIn.last();
+            PoseStack.Pose entry = matrixStackIn.last();
 
             int[] colours = renderSpec.getIntArray(NuminaConstants.TAG_COLOURS);
 
             if (colours.length == 0) {
-                colours = new int[]{Colour.WHITE.getInt()};
+                colours = new int[]{Color.WHITE.getInt()};
             }
 
             int partColor;
-            for (CompoundNBT nbt : NBTTagAccessor.getValues(renderSpec)) {
+            for (CompoundTag nbt : NBTTagAccessor.getValues(renderSpec)) {
                 PartSpecBase part = ModelRegistry.getInstance().getPart(nbt);
                 if (part != null && part instanceof ModelPartSpec) {
                     if (part.getBinding().getSlot() == ArmorModelInstance.getInstance().getVisibleSection()
@@ -130,9 +133,9 @@ public class RenderPart extends ModelRenderer {
                             partColor = -1;
                         }
 
-                        TransformationMatrix transform = ((ModelSpec) part.spec).getTransform(ItemCameraTransforms.TransformType.NONE);
-                        if (transform != TransformationMatrix.identity()) {
-                            MatrixStack stack = new MatrixStack();
+                        Transformation transform = ((ModelSpec) part.spec).getTransform(ItemTransforms.TransformType.NONE);
+                        if (transform != Transformation.identity()) {
+                            PoseStack stack = new PoseStack();
                             transform.push(stack);
                             // Apply the transformation to the real matrix stack
                             Matrix4f tMat = stack.last().pose();
@@ -159,8 +162,8 @@ public class RenderPart extends ModelRenderer {
         }
     }
 
-    public void renderQuads(MatrixStack.Entry entry,
-                            IVertexBuilder bufferIn,
+    public void renderQuads(PoseStack.Pose entry,
+                            VertexConsumer bufferIn,
                             List<BakedQuad> quadsIn,
                             int combinedLightIn,
                             int combinedOverlayIn,
@@ -176,25 +179,25 @@ public class RenderPart extends ModelRenderer {
     }
 
     // Copy of addQuad with alpha support
-    void addVertexData(IVertexBuilder bufferIn,
-                       MatrixStack.Entry matrixEntry,
+    void addVertexData(VertexConsumer bufferIn,
+                       PoseStack.Pose matrixEntry,
                        BakedQuad bakedQuad,
                        int lightmapCoordIn,
                        int overlayCoords, float red, float green, float blue, float alpha) {
         int[] aint = bakedQuad.getVertices();
-        Vector3i faceNormal = bakedQuad.getDirection().getNormal();
+        Vec3i faceNormal = bakedQuad.getDirection().getNormal();
         Vector3f normal = new Vector3f((float) faceNormal.getX(), (float) faceNormal.getY(), (float) faceNormal.getZ());
         Matrix4f matrix4f = matrixEntry.pose();// same as TexturedQuad renderer
         normal.transform(matrixEntry.normal()); // normals different here
 
-        int intSize = DefaultVertexFormats.BLOCK.getIntegerSize();
-//        int intSize = DefaultVertexFormats.POSITION_COLOR_TEX_LIGHTMAP.getIntegerSize();
+        int intSize = DefaultVertexFormat.BLOCK.getIntegerSize();
+//        int intSize = DefaultVertexFormat.POSITION_COLOR_TEX_LIGHTMAP.getIntegerSize();
 
         int vertexCount = aint.length / intSize;
 
         try (MemoryStack memorystack = MemoryStack.stackPush()) {
-            ByteBuffer bytebuffer = memorystack.malloc(DefaultVertexFormats.BLOCK.getVertexSize());
-//            ByteBuffer bytebuffer = memorystack.malloc(DefaultVertexFormats.POSITION_COLOR_TEX_LIGHTMAP.getVertexSize());
+            ByteBuffer bytebuffer = memorystack.malloc(DefaultVertexFormat.BLOCK.getVertexSize());
+//            ByteBuffer bytebuffer = memorystack.malloc(DefaultVertexFormat.POSITION_COLOR_TEX_LIGHTMAP.getVertexSize());
             IntBuffer intbuffer = bytebuffer.asIntBuffer();
 
             for (int v = 0; v < vertexCount; ++v) {

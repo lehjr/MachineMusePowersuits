@@ -5,8 +5,8 @@
 //import lehjr.numina.module.IPlayerTickModule;
 //import lehjr.numina.module.IToggleableModule;
 //import lehjr.powersuits.item.module.AbstractPowerModule;
-//import net.minecraft.entity.player.PlayerEntity;
-//import net.minecraft.item.ItemStack;
+//import net.minecraft.world.entity.player.Player;
+//import net.minecraft.world.item.ItemStack;
 //
 ///**
 // * Created by Eximius88 on 1/16/14.
@@ -37,11 +37,11 @@
 //    }
 //
 //    @Override
-//    public void onPlayerTickActive(PlayerEntity player, ItemStack item) {
+//    public void onPlayerTickActive(Player player, ItemStack item) {
 //
 //        // TODO: add charging code, change to more generic combustion types... maybe add GUI
 //
-////        IInventory inv = player.inventory;
+////        SimpleContainer inv = player.inventory;
 ////        int coalNeeded = (int) ModuleManager.INSTANCE.getOrSetModularPropertyDouble(item, MPSModuleConstants.MAX_COAL_STORAGE) - CoalGenHelper.getCoalLevel(item);
 ////        if (coalNeeded > 0) {
 ////            for (int i = 0; i < inv.getSizeInventory(); i++) {
@@ -66,7 +66,7 @@
 //    }
 //
 //    @Override
-//    public void onPlayerTickInactive(PlayerEntity player, ItemStack item) {
+//    public void onPlayerTickInactive(Player player, ItemStack item) {
 //    }
 //
 //    @Override

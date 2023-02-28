@@ -28,8 +28,8 @@ package lehjr.powersuits.common.network.packets;//package lehjr.powersuits.netwo
 //
 //import lehjr.mpalib.capabilities.render.ModelSpecNBT;
 //import lehjr.mpalib.capabilities.render.ModelSpecNBTCapability;
-//import net.minecraft.entity.player.ServerPlayerEntity;
-//import net.minecraft.network.PacketBuffer;
+//import net.minecraft.entity.player.ServerPlayer;
+//import net.minecraft.network.FriendlyByteBuf;
 //import net.minecraftforge.fml.network.NetworkEvent;
 //
 //import java.util.function.Supplier;
@@ -46,18 +46,18 @@ package lehjr.powersuits.common.network.packets;//package lehjr.powersuits.netwo
 //        this.presetName = presetName;
 //    }
 //
-//    public static void encode(MusePacketCosmeticPreset msg, PacketBuffer packetBuffer) {
+//    public static void encode(MusePacketCosmeticPreset msg, FriendlyByteBuf packetBuffer) {
 //        packetBuffer.writeInt(msg.itemSlot);
 //        packetBuffer.writeString(msg.presetName);
 //    }
 //
-//    public static MusePacketCosmeticPreset decode(PacketBuffer packetBuffer) {
+//    public static MusePacketCosmeticPreset decode(FriendlyByteBuf packetBuffer) {
 //        return new MusePacketCosmeticPreset(packetBuffer.readInt(), packetBuffer.readString(500));
 //    }
 //
 //    public static void handle(MusePacketCosmeticPreset message, Supplier<NetworkEvent.Context> ctx) {
 //        ctx.get().enqueueWork(() -> {
-//            final ServerPlayerEntity player = ctx.get().getSender();
+//            final ServerPlayer player = ctx.get().getSender();
 //            int itemSlot = message.itemSlot;
 //            String presetName = message.presetName;
 //
@@ -66,7 +66,7 @@ package lehjr.powersuits.common.network.packets;//package lehjr.powersuits.netwo
 //
 //
 //                        // fixme preset stuff again
-////                    CompoundNBT itemTag = NBTUtils.getMuseItemTag(stack);
+////                    CompoundTag itemTag = NBTUtils.getMuseItemTag(stack);
 ////                    itemTag.remove(MPALibConstants.TAG_RENDER);
 ////                    itemTag.putString(MPALibConstants.TAG_COSMETIC_PRESET, presetName);
 //            });

@@ -26,17 +26,18 @@
 
 package lehjr.numina.common.string;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
 import lehjr.numina.common.capabilities.module.powermodule.PowerModuleCapability;
 import lehjr.numina.common.constants.NuminaConstants;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.client.util.InputMappings;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.text.*;
-import net.minecraft.world.World;
+import net.minecraft.client.resources.language.I18n;
+import net.minecraft.network.chat.*;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.energy.CapabilityEnergy;
@@ -65,7 +66,7 @@ public class AdditionalInfo {
      * @param advancedToolTips Whether or not the player has 'advanced tooltips' turned on in
      *                         their settings.
      */
-    public static void appendHoverText(@Nonnull ItemStack stack, World worldIn, List currentTipList, ITooltipFlag advancedToolTips) {
+    public static void appendHoverText(@Nonnull ItemStack stack, Level worldIn, List currentTipList, TooltipFlag advancedToolTips) {
         if (worldIn == null) {
             return;
         }
@@ -86,25 +87,25 @@ public class AdditionalInfo {
                         ItemStack activeModule = ((IModeChangingItem) iItemHandler).getActiveModule();
                         if (!activeModule.isEmpty()) {
 
-                            // IFormattableTextComponent
-                            // TranslationTextComponent
-                            IFormattableTextComponent localizedName = (IFormattableTextComponent) activeModule.getDisplayName();
+                            // MutableComponent
+                            // TranslatableComponent
+                            MutableComponent localizedName = (MutableComponent) activeModule.getDisplayName();
                             currentTipList.add(
-                                    new TranslationTextComponent("tooltip.numina.mode")
+                                    new TranslatableComponent("tooltip.numina.mode")
 //                                        .appendString(" ")
-                                            .append(new StringTextComponent(" "))
-                                            .append(localizedName.setStyle(Style.EMPTY.applyFormat(TextFormatting.RED))));
+                                            .append(new TextComponent(" "))
+                                            .append(localizedName.setStyle(Style.EMPTY.applyFormat(ChatFormatting.RED))));
                         } else {
-                            currentTipList.add(new TranslationTextComponent("tooltip.numina.changeModes"));
+                            currentTipList.add(new TranslatableComponent("tooltip.numina.changeModes"));
                         }
                     }
 
                     if (doAdditionalInfo()) {
-                        List<ITextComponent> installed = new ArrayList<>();
-                        Map<ITextComponent, FluidInfo> fluids = new HashMap<>();
+                        List<Component> installed = new ArrayList<>();
+                        Map<Component, FluidInfo> fluids = new HashMap<>();
 
                         for (ItemStack module : iItemHandler.getInstalledModules()) {
-                            installed.add(((IFormattableTextComponent)module.getDisplayName()).setStyle(Style.EMPTY.applyFormat((TextFormatting.LIGHT_PURPLE))));
+                            installed.add(((MutableComponent)module.getDisplayName()).setStyle(Style.EMPTY.applyFormat((ChatFormatting.LIGHT_PURPLE))));
 
                             // check mpodule for fluid
                             module.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).ifPresent(fluidHandler ->{
@@ -117,7 +118,7 @@ public class AdditionalInfo {
                                     }
                                     int capacity = fluidHandler.getTankCapacity(i);
 
-                                    ITextComponent fluidName = fluidHandler.getFluidInTank(i).getDisplayName();
+                                    Component fluidName = fluidHandler.getFluidInTank(i).getDisplayName();
                                     FluidInfo fluidInfo = fluids.getOrDefault(fluidName, new FluidInfo(fluidName)).addAmmount(fluidStack.getAmount()).addMax(capacity);
                                     fluids.put(fluidName, fluidInfo);
                                 }
@@ -131,10 +132,10 @@ public class AdditionalInfo {
                         }
 
                         if (installed.size() == 0) {
-                            String message = I18n.get("tooltip.numina.noModules");
-                            currentTipList.addAll(StringUtils.wrapStringToLength(message, 30));
+                            Component message = new TranslatableComponent("tooltip.numina.noModules");
+                            currentTipList.addAll(StringUtils.wrapComponentToLength(message, 30));
                         } else {
-                            currentTipList.add(new TranslationTextComponent("tooltip.numina.installedModules"));
+                            currentTipList.add(new TranslatableComponent("tooltip.numina.installedModules"));
                             currentTipList.addAll(installed);
                         }
                     } else {
@@ -144,30 +145,31 @@ public class AdditionalInfo {
 
         stack.getCapability(PowerModuleCapability.POWER_MODULE).ifPresent(iPowerModule -> {
             if (doAdditionalInfo()) {
-                String description = I18n.get( stack.getItem().getDescriptionId() + ".desc");
-                currentTipList.addAll(StringUtils.wrapStringToLength(description, 30));
+                Component description = new TranslatableComponent( stack.getItem().getDescriptionId() + ".desc");
+                currentTipList.addAll(StringUtils.wrapComponentToLength(description, 30));
             } else {
                 currentTipList.add(additionalInfoInstructions());
             }
         });
 
         stack.getCapability(CapabilityEnergy.ENERGY).ifPresent(energyCap->
-                currentTipList.add(new StringTextComponent(I18n.get(NuminaConstants.TOOLTIP_ENERGY,
+                // FIXME use TranslatableComponent??? !!!
+                currentTipList.add(new TextComponent(I18n.get(NuminaConstants.TOOLTIP_ENERGY,
                         StringUtils.formatNumberShort(energyCap.getEnergyStored()),
                         StringUtils.formatNumberShort(energyCap.getMaxEnergyStored())))
-                        .setStyle(Style.EMPTY.applyFormat(TextFormatting.AQUA).withItalic(true))));
+                        .setStyle(Style.EMPTY.applyFormat(ChatFormatting.AQUA).withItalic(true))));
     }
 
     static class FluidInfo {
-        TranslationTextComponent displayName;
+        TranslatableComponent displayName;
         int currentAmount=0;
         int maxAmount=0;
 
-        FluidInfo(ITextComponent displayName) {
-            this.displayName = (TranslationTextComponent)displayName;
+        FluidInfo(Component displayName) {
+            this.displayName = (TranslatableComponent)displayName;
         }
 
-        public ITextComponent getDisplayName() {
+        public Component getDisplayName() {
             return displayName;
         }
 
@@ -189,25 +191,25 @@ public class AdditionalInfo {
             return this;
         }
 
-        public ITextComponent getOutput() {
-            return displayName.append(new StringTextComponent(": ")).append(new StringTextComponent(new StringBuilder(currentAmount).append("/").append(maxAmount).toString()))
-                    .setStyle(Style.EMPTY.applyFormat(TextFormatting.DARK_AQUA).withItalic(true));
+        public Component getOutput() {
+            return displayName.append(new TextComponent(": ")).append(new TextComponent(new StringBuilder(currentAmount).append("/").append(maxAmount).toString()))
+                    .setStyle(Style.EMPTY.applyFormat(ChatFormatting.DARK_AQUA).withItalic(true));
         }
     }
 
-    public static ITextComponent additionalInfoInstructions() {
-        return new TranslationTextComponent("tooltip.numina.pressShift")
-                .setStyle(Style.EMPTY.applyFormat(TextFormatting.GRAY).withItalic(true));
+    public static Component additionalInfoInstructions() {
+        return new TranslatableComponent("tooltip.numina.pressShift")
+                .setStyle(Style.EMPTY.applyFormat(ChatFormatting.GRAY).withItalic(true));
     }
 
-    public static List<ITextComponent> getItemInstalledModules(@Nonnull ItemStack stack) {
+    public static List<Component> getItemInstalledModules(@Nonnull ItemStack stack) {
         return stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
                 .filter(IModularItem.class::isInstance)
                 .map(IModularItem.class::cast)
                 .map(iItemHandler -> {
-            List<ITextComponent> moduleNames = new ArrayList<>();
+            List<Component> moduleNames = new ArrayList<>();
                 for (ItemStack module : iItemHandler.getInstalledModules()) {
-                    moduleNames.add(((IFormattableTextComponent) module.getDisplayName()).setStyle(Style.EMPTY.applyFormat(TextFormatting.LIGHT_PURPLE)));
+                    moduleNames.add(((MutableComponent) module.getDisplayName()).setStyle(Style.EMPTY.applyFormat(ChatFormatting.LIGHT_PURPLE)));
                 }
 
             return moduleNames;
@@ -215,6 +217,6 @@ public class AdditionalInfo {
     }
 
     public static boolean doAdditionalInfo() {
-        return InputMappings.isKeyDown(Minecraft.getInstance().getWindow().getWindow(), GLFW.GLFW_KEY_LEFT_SHIFT);
+        return InputConstants.isKeyDown(Minecraft.getInstance().getWindow().getWindow(), GLFW.GLFW_KEY_LEFT_SHIFT);
     }
 }

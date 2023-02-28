@@ -26,8 +26,8 @@
 
 package lehjr.powersuits.client.gui.modding.module.tweak;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.PoseStack;
 import lehjr.numina.client.gui.ContainerlessGui;
 import lehjr.numina.client.gui.geometry.MusePoint2D;
 import lehjr.numina.client.gui.geometry.Rect;
@@ -35,11 +35,11 @@ import lehjr.powersuits.client.gui.common.ModularItemSelectionFrame;
 import lehjr.powersuits.client.gui.common.TabSelectFrame;
 import lehjr.powersuits.common.constants.MPSConstants;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.player.ClientPlayerEntity;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.EquipmentSlot;
 
 import java.util.Optional;
 
@@ -49,9 +49,9 @@ import java.util.Optional;
  *
  */
 public class ModuleTweakGui extends ContainerlessGui {
-    TranslationTextComponent MODULE_SELECTION_LABEL = new TranslationTextComponent("gui.powersuits.installed.modules");
-    TranslationTextComponent TINKER_FRAME_LABEL = new TranslationTextComponent("gui.powersuits.tinker");
-    TranslationTextComponent SUMMARY_FRAME_LABEL = new TranslationTextComponent("gui.powersuits.equippedTotals");
+    TranslatableComponent MODULE_SELECTION_LABEL = new TranslatableComponent("gui.powersuits.installed.modules");
+    TranslatableComponent TINKER_FRAME_LABEL = new TranslatableComponent("gui.powersuits.tinker");
+    TranslatableComponent SUMMARY_FRAME_LABEL = new TranslatableComponent("gui.powersuits.equippedTotals");
 
 
     public static final ResourceLocation BACKGROUND = new ResourceLocation(MPSConstants.MOD_ID, "textures/gui/background/module_tweak.png");
@@ -60,9 +60,9 @@ public class ModuleTweakGui extends ContainerlessGui {
     protected DetailedSummaryFrame summaryFrame;
     protected ModuleTweakFrame tweakFrame;
     protected TabSelectFrame tabSelectFrame;
-    ClientPlayerEntity player;
+    LocalPlayer player;
 
-    public ModuleTweakGui(ITextComponent title) {
+    public ModuleTweakGui(Component title) {
         super(title, 352, 217);
         this.minecraft = Minecraft.getInstance();
         this.player = Minecraft.getInstance().player;
@@ -74,11 +74,11 @@ public class ModuleTweakGui extends ContainerlessGui {
         frames.clear();
 
         /** for selecting the item to manipulate ------------------------------------------------ */
-        EquipmentSlotType type;
+        EquipmentSlot type;
         if (itemSelectFrame != null) {
-            type = itemSelectFrame.selectedType().orElse(EquipmentSlotType.HEAD);
+            type = itemSelectFrame.selectedType().orElse(EquipmentSlot.HEAD);
         } else {
-            type = EquipmentSlotType.HEAD;
+            type = EquipmentSlot.HEAD;
         }
         itemSelectFrame = new ModularItemSelectionFrame(new MusePoint2D(leftPos - 30, topPos), type);
         itemSelectFrame.refreshRects();
@@ -116,23 +116,23 @@ public class ModuleTweakGui extends ContainerlessGui {
    }
 
     @Override
-    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
+    public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTicks) {
         super.render(matrixStack, mouseX, mouseY, partialTicks);
         renderTooltip(matrixStack, mouseX, mouseY);
     }
 
     @Override
-    public void renderBackground(MatrixStack matrixStack) {
+    public void renderBackground(PoseStack matrixStack) {
         super.renderBackground(matrixStack);
-        RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-        this.minecraft.getTextureManager().bind(this.BACKGROUND);
+        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+        this.minecraft.getTextureManager().bindForSetup(this.BACKGROUND);
         int i = this.leftPos;
         int j = this.topPos;
         this.blit(matrixStack, i, j, this.getBlitOffset(), 0, 0, imageWidth, imageHeight, 512, 512);
     }
 
     @Override
-    public void renderLabels(MatrixStack matrixStack, int mouseX, int mouseY) {
+    public void renderLabels(PoseStack matrixStack, int mouseX, int mouseY) {
         this.font.draw(matrixStack, this.MODULE_SELECTION_LABEL,
                 leftPos + 12,
                 topPos + 5, 4210752);

@@ -31,13 +31,13 @@ import lehjr.numina.common.capabilities.module.tickable.PlayerTickModule;
 import lehjr.numina.common.energy.ElectricItemUtils;
 import lehjr.powersuits.common.config.MPSSettings;
 import lehjr.powersuits.common.item.module.AbstractPowerModule;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.potion.Effect;
-import net.minecraft.potion.EffectInstance;
-import net.minecraft.potion.Effects;
-import net.minecraft.util.Direction;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
@@ -48,14 +48,14 @@ import java.util.concurrent.Callable;
 
 public class NightVisionModule extends AbstractPowerModule {
     static final int powerDrain = 50;
-    private static final Effect nightvision = Effects.NIGHT_VISION;
+    private static final MobEffect nightvision = MobEffects.NIGHT_VISION;
 
     public NightVisionModule() {
     }
 
     @Nullable
     @Override
-    public ICapabilityProvider initCapabilities (ItemStack stack, @Nullable CompoundNBT nbt){
+    public ICapabilityProvider initCapabilities (ItemStack stack, @Nullable CompoundTag nbt){
         return new CapProvider(stack);
     }
 
@@ -69,7 +69,7 @@ public class NightVisionModule extends AbstractPowerModule {
             this.ticker = new Ticker(module, ModuleCategory.VISION, ModuleTarget.HEADONLY, MPSSettings::getModuleConfig);
 
             powerModuleHolder = LazyOptional.of(() -> {
-                ticker.updateFromNBT();
+                ticker.loadCapValues();
                 return ticker;
             });
         }
@@ -80,17 +80,17 @@ public class NightVisionModule extends AbstractPowerModule {
             }
 
             @Override
-            public void onPlayerTickActive(PlayerEntity player, ItemStack item) {
+            public void onPlayerTickActive(Player player, ItemStack item) {
                 if (player.level.isClientSide) {
                     return;
                 }
 
                 double totalEnergy = ElectricItemUtils.getPlayerEnergy(player);
-                EffectInstance nightVisionEffect = player.hasEffect(nightvision) ? player.getEffect(nightvision) : null;
+                MobEffectInstance nightVisionEffect = player.hasEffect(nightvision) ? player.getEffect(nightvision) : null;
 
                 if (totalEnergy > powerDrain) {
                     if (nightVisionEffect == null || nightVisionEffect.getDuration() < 250 && nightVisionEffect.getAmplifier() == -3) {
-                        player.addEffect(new EffectInstance(nightvision, 500, -3, false, false));
+                        player.addEffect(new MobEffectInstance(nightvision, 500, -3, false, false));
                         ElectricItemUtils.drainPlayerEnergy(player, powerDrain);
                     }
                 } else {
@@ -99,8 +99,8 @@ public class NightVisionModule extends AbstractPowerModule {
             }
 
             @Override
-            public void onPlayerTickInactive(PlayerEntity player, ItemStack item) {
-                EffectInstance nightVisionEffect = null;
+            public void onPlayerTickInactive(Player player, ItemStack item) {
+                MobEffectInstance nightVisionEffect = null;
                 if (player.hasEffect(nightvision)) {
                     nightVisionEffect = player.getEffect(nightvision);
                     if (nightVisionEffect.getAmplifier() == -3) {

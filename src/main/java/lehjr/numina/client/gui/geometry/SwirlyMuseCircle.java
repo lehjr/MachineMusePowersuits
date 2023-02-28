@@ -26,13 +26,11 @@
 
 package lehjr.numina.client.gui.geometry;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
-import lehjr.numina.common.math.Colour;
-import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.util.math.vector.Matrix4f;
+import com.mojang.blaze3d.vertex.*;
+import com.mojang.math.Matrix4f;
+import com.mojang.math.Vector3f;
+import lehjr.numina.common.math.Color;
 import org.lwjgl.opengl.GL11;
 
 import java.nio.FloatBuffer;
@@ -43,7 +41,7 @@ public class SwirlyMuseCircle {
     protected FloatBuffer colour;
     int numsegments;
 
-    public SwirlyMuseCircle(Colour c1, Colour c2) {
+    public SwirlyMuseCircle(Color c1, Color c2) {
         if (points == null) {
             points = GradientAndArcCalculator.getArcPoints(0, (float) (Math.PI * 2 + 0.0001), detail, 0, 0);
         }
@@ -51,23 +49,57 @@ public class SwirlyMuseCircle {
         colour = GradientAndArcCalculator.getColourGradient(c1, c2, points.limit() / 2);
     }
 
-    public void draw(MatrixStack matrixStack, double radius, double x, double y, float zLevel) {
+    public void draw(PoseStack matrixStack, float radius, double x, double y, float zLevel) {
         float ratio = (System.currentTimeMillis() % 2000) / 2000.0F;
         colour.rewind();
         points.rewind();
-        RenderSystem.pushMatrix();
-        RenderSystem.translated(x, y, 0);
-        RenderSystem.scaled(radius / detail, radius / detail, 1.0);
-        RenderSystem.rotatef((float) (-ratio * 360.0), 0, 0, 1);
+        matrixStack.pushPose();
+        matrixStack.translate(x, y, 0);
+        matrixStack.scale(radius / detail, radius / detail, 1.0F);
+//        RenderSystem.rotatef((float) (-ratio * 360.0), 0, 0, 1);
+        matrixStack.mulPose(Vector3f.ZP.rotationDegrees(-ratio * 360.0F));
+
 
         RenderSystem.disableTexture();
         RenderSystem.enableBlend();
-        RenderSystem.disableAlphaTest();
+//        RenderSystem.disableAlphaTest();
         RenderSystem.defaultBlendFunc();
 
-        Tessellator tessellator = Tessellator.getInstance();
+        Tesselator tessellator = Tesselator.getInstance();
         BufferBuilder buffer = tessellator.getBuilder();
-        buffer.begin(GL11.GL_LINE_LOOP, DefaultVertexFormats.POSITION_COLOR);
+
+
+        buffer.begin(VertexFormat.Mode.DEBUG_LINE_STRIP, DefaultVertexFormat.POSITION_COLOR);
+        /**
+         FIXME: this may not work, but it's worth a shot
+         -----------------------------------------------
+         Analysis: GL11.GL_LINE_LOOP is not accessible, lines look most promising
+
+         GL_POINTS         = 0x0,
+         GL_LINES          = 0x1, *** (most promising) ?
+         GL_LINE_LOOP      = 0x2,
+         GL_LINE_STRIP     = 0x3, *** (most promising) ?
+         GL_TRIANGLES      = 0x4, *
+         GL_TRIANGLE_STRIP = 0x5, *
+         GL_TRIANGLE_FAN   = 0x6, *
+         GL_QUADS          = 0x7,
+         GL_QUAD_STRIP     = 0x8,
+         GL_POLYGON        = 0x9;
+
+
+        Either gonna be debug lines or debug strip... debug strip might be easiest
+
+
+
+         */
+
+
+
+
+
+
+
+
         Matrix4f matrix4f = matrixStack.last().pose();
 
         while (points.hasRemaining() && colour.hasRemaining()) {
@@ -75,11 +107,10 @@ public class SwirlyMuseCircle {
         }
         tessellator.end();
 
-        RenderSystem.shadeModel(GL11.GL_FLAT);
+        GL11.glEnable(GL11.GL_FLAT);
         RenderSystem.disableBlend();
-        RenderSystem.enableAlphaTest();
+//        RenderSystem.enableAlphaTest();
         RenderSystem.enableTexture();
-
-        RenderSystem.popMatrix();
+        matrixStack.popPose();
     }
 }

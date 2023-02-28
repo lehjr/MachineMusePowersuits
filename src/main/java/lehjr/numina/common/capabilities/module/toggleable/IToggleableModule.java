@@ -26,10 +26,10 @@
 
 package lehjr.numina.common.capabilities.module.toggleable;
 
-import lehjr.numina.common.capabilities.IItemStackUpdate;
+import lehjr.numina.common.capabilities.CapabilityUpdate;
 import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
 
-public interface IToggleableModule extends IPowerModule, IItemStackUpdate {
+public interface IToggleableModule extends IPowerModule, CapabilityUpdate {
     void toggleModule(boolean online);
 
     @Override

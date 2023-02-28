@@ -32,13 +32,13 @@ import lehjr.numina.common.energy.ElectricItemUtils;
 import lehjr.powersuits.common.config.MPSSettings;
 import lehjr.powersuits.common.constants.MPSConstants;
 import lehjr.powersuits.common.item.module.AbstractPowerModule;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.potion.Effect;
-import net.minecraft.potion.EffectInstance;
-import net.minecraft.potion.Effects;
-import net.minecraft.util.Direction;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
@@ -48,11 +48,11 @@ import javax.annotation.Nullable;
 import java.util.concurrent.Callable;
 
 public class InvisibilityModule extends AbstractPowerModule {
-    private final Effect invisibility = Effects.INVISIBILITY;
+    private final MobEffect invisibility = MobEffects.INVISIBILITY;
 
     @Nullable
     @Override
-    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundNBT nbt) {
+    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt) {
         return new CapProvider(stack);
     }
 
@@ -70,7 +70,7 @@ public class InvisibilityModule extends AbstractPowerModule {
             };
 
             powerModuleHolder = LazyOptional.of(() -> {
-                ticker.updateFromNBT();
+                ticker.loadCapValues();
                 return ticker;
             });
         }
@@ -81,23 +81,16 @@ public class InvisibilityModule extends AbstractPowerModule {
             }
 
             @Override
-            public void onPlayerTickActive(PlayerEntity player, ItemStack item) {
+            public void onPlayerTickActive(Player player, ItemStack item) {
                 double totalEnergy = ElectricItemUtils.getPlayerEnergy(player);
-                EffectInstance invis = null;
+                MobEffectInstance invis = null;
                 if (player.hasEffect(invisibility)) {
                     invis = player.getEffect(invisibility);
-
-                    /* skip handling if effect isn't being done by this module  */
-                    if (invis.getAmplifier() != -3) {
-                        return;
-                    }
                 }
-
-                int energyUsage = (int) ticker.applyPropertyModifiers(MPSConstants.ACTIVE_CAMOUFLAGE_ENERGY);
-                if (totalEnergy >= energyUsage) {
+                if (50 < totalEnergy) {
                     if (invis == null || invis.getDuration() < 210) {
-                        player.addEffect(new EffectInstance(invisibility, 500, -3, false, false));
-                        ElectricItemUtils.drainPlayerEnergy(player, energyUsage, false);
+                        player.addEffect(new MobEffectInstance(invisibility, 500, -3, false, false));
+                        ElectricItemUtils.drainPlayerEnergy(player, 50);
                     }
                 } else {
                     onPlayerTickInactive(player, item);
@@ -105,8 +98,8 @@ public class InvisibilityModule extends AbstractPowerModule {
             }
 
             @Override
-            public void onPlayerTickInactive(PlayerEntity player, ItemStack item) {
-                EffectInstance invis = null;
+            public void onPlayerTickInactive(Player player, ItemStack item) {
+                MobEffectInstance invis = null;
                 if (player.hasEffect(invisibility)) {
                     invis = player.getEffect(invisibility);
                 }

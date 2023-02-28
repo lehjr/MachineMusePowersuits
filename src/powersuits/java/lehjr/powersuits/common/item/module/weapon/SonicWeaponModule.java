@@ -10,14 +10,14 @@
 //import lehjr.numina.common.energy.ElectricItemUtils;
 //import lehjr.numina.heat.HeatUtils;
 //import lehjr.numina.nbt.NBTUtils;
-//import net.minecraft.entity.LivingEntity;
-//import net.minecraft.entity.player.PlayerEntity;
-//import net.minecraft.item.ItemStack;
-//import net.minecraft.nbt.CompoundNBT;
+//import net.minecraft.world.entity.LivingEntity;
+//import net.minecraft.world.entity.player.Player;
+//import net.minecraft.world.item.ItemStack;
+//import net.minecraft.nbt.CompoundTag;
 //import net.minecraft.particles.ParticleTypes;
 //import net.minecraft.util.*;
 //import net.minecraft.util.math.*;
-//import net.minecraft.world.World;
+//import net.minecraft.world.level.Level;
 //import net.minecraftforge.common.capabilities.Capability;
 //import net.minecraftforge.common.capabilities.ICapabilityProvider;
 //import net.minecraftforge.common.util.LazyOptional;
@@ -39,7 +39,7 @@
 //
 //    @Nullable
 //    @Override
-//    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundNBT nbt) {
+//    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt) {
 //        return null;
 //    }
 //
@@ -63,15 +63,15 @@
 //            }
 //
 //            @Override
-//            public void onPlayerTickActive(PlayerEntity player, @Nonnull ItemStack itemStackIn) {
+//            public void onPlayerTickActive(Player player, @Nonnull ItemStack itemStackIn) {
 //                double timer = NBTUtils.getModularItemDoubleOrZero(itemStackIn, MPSConstants.TIMER);
 //                if (timer > 0)
 //                    NBTUtils.setModularItemDoubleOrRemove(itemStackIn, MPSConstants.TIMER, timer - 1 > 0 ? timer - 1 : 0);
 //            }
 //
 //            @Override
-//            public ActionResult onItemRightClick(ItemStack itemStackIn, World worldIn, PlayerEntity playerIn, Hand hand) {
-//                if (hand == Hand.MAIN_HAND) {
+//            public ActionResult onItemRightClick(ItemStack itemStackIn, Level worldIn, Player playerIn, Hand hand) {
+//                if (hand == InteractionHand.MAIN_HAND) {
 //                    double range = 64;
 //                    double timer = NBTUtils.getModularItemDoubleOrZero(itemStackIn, MPSConstants.TIMER);
 //                    double energyConsumption = getEnergyUsage();
@@ -80,7 +80,7 @@
 //                        NBTUtils.setModularItemDoubleOrRemove(itemStackIn, MPSConstants.TIMER, 10);
 //
 //                        HeatUtils.heatPlayer(playerIn, applyPropertyModifiers(MPSConstants.RAILGUN_HEAT_EMISSION));
-//                        RayTraceResult raytraceresult = rayTrace(worldIn, playerIn, RayTraceContext.FluidMode.SOURCE_ONLY);
+//                        HitResult raytraceresult = rayTrace(worldIn, playerIn, ClipContext.Fluid.SOURCE_ONLY);
 //
 //                        if (raytraceresult != null) {
 ////                            double damage = applyPropertyModifiers(MPSConstants.RAILGUN_TOTAL_IMPULSE) / 100.0;
@@ -90,21 +90,21 @@
 //
 //                            switch (raytraceresult.getType()) {
 //                                case MISS:
-//                                    worldIn.playSound(playerIn, playerIn.getPosition(), SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.PLAYERS, 0.5F, 0.4F / ((float) Math.random() * 0.4F + 0.8F));
+//                                    worldIn.playSound(playerIn, playerIn.getPosition(), SoundEvents.ENTITY_ARROW_SHOOT, SoundSource.PLAYERS, 0.5F, 0.4F / ((float) Math.random() * 0.4F + 0.8F));
 //                                    break;
 //
 //                                case BLOCK:
 //                                    drawParticleStreamTo(playerIn, worldIn, raytraceresult.getHitVec().x, raytraceresult.getHitVec().y, raytraceresult.getHitVec().z);
-//                                    worldIn.playSound(playerIn, playerIn.getPosition(), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.PLAYERS, 0.5F, 0.4F / ((float) Math.random() * 0.4F + 0.8F));
+//                                    worldIn.playSound(playerIn, playerIn.getPosition(), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundSource.PLAYERS, 0.5F, 0.4F / ((float) Math.random() * 0.4F + 0.8F));
 //                                    break;
 //
 //
 //                                case ENTITY:
 //                                    drawParticleStreamTo(playerIn, worldIn, raytraceresult.getHitVec().x, raytraceresult.getHitVec().y, raytraceresult.getHitVec().z);
-//                                    worldIn.playSound(playerIn, playerIn.getPosition(), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.PLAYERS, 0.5F, 0.4F / ((float) Math.random() * 0.4F + 0.8F));
+//                                    worldIn.playSound(playerIn, playerIn.getPosition(), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundSource.PLAYERS, 0.5F, 0.4F / ((float) Math.random() * 0.4F + 0.8F));
 //                                    DamageSource damageSource = DamageSource.causePlayerDamage(playerIn);
-//                                    if (((EntityRayTraceResult) raytraceresult).getEntity().attackEntityFrom(damageSource, (int) damage)) {
-//                                        ((EntityRayTraceResult) raytraceresult).getEntity().addVelocity(lookVec.x * knockback, Math.abs(lookVec.y + 0.2f) * knockback, lookVec.z * knockback);
+//                                    if (((EntityHitResult) raytraceresult).getEntity().attackEntityFrom(damageSource, (int) damage)) {
+//                                        ((EntityHitResult) raytraceresult).getEntity().addVelocity(lookVec.x * knockback, Math.abs(lookVec.y + 0.2f) * knockback, lookVec.z * knockback);
 //                                    }
 //                                    break;
 //                            }
@@ -112,12 +112,12 @@
 //                        }
 //                    }
 //                    playerIn.setActiveHand(hand);
-//                    return new ActionResult(ActionResultType.SUCCESS, itemStackIn);
+//                    return new ActionResult(InteractionResult.SUCCESS, itemStackIn);
 //                }
-//                return new ActionResult(ActionResultType.PASS, itemStackIn);
+//                return new ActionResult(InteractionResult.PASS, itemStackIn);
 //            }
 //
-//            public void drawParticleStreamTo(PlayerEntity source, World world, double x, double y, double z) {
+//            public void drawParticleStreamTo(Player source, Level world, double x, double y, double z) {
 //                Vec3d direction = source.getLookVec().normalize();
 //                double xoffset = 1.3f;
 //                double yoffset = -.2;
@@ -147,12 +147,12 @@
 //            private final ResourceLocation GUARDIAN_BEAM_TEXTURE = new ResourceLocation("textures/entity/guardian_beam.png");
 //
 //
-//            public void doRender(PlayerEntity source, double x, double y, double z, float entityYaw, float partialTicks) {
+//            public void doRender(Player source, double x, double y, double z, float entityYaw, float partialTicks) {
 //////                super.doRender(attacker, x, y, z, entityYaw, partialTicks);
 ////                LivingEntity target = source.getTargetedEntity();
 ////                if (target != null) {
 ////                    float lvt_11_1_ = source.getAttackAnimationScale(partialTicks);
-////                    Tessellator tessellator = Tessellator.getInstance();
+////                    Tesselator tessellator = Tesselator.getInstance();
 ////                    BufferBuilder buffer = tessellator.getBuffer();
 ////                    this.bindTexture(GUARDIAN_BEAM_TEXTURE);
 ////                    GlStateManager.texParameter(3553, 10242, 10497);
@@ -180,7 +180,7 @@
 ////                    GlStateManager.rotatef(lvt_23_1_ * 57.295776F, 1.0F, 0.0F, 0.0F);
 ////                    int lvt_25_1_ = true;
 ////                    double lvt_26_1_ = (double)lvt_15_1_ * 0.05D * -1.5D;
-////                    buffer.begin(7, DefaultVertexFormats.POSITION_TEX_COLOR);
+////                    buffer.begin(7, DefaultVertexFormat.POSITION_TEX_COLOR);
 ////                    float lvt_28_1_ = lvt_11_1_ * lvt_11_1_;
 ////                    int lvt_29_1_ = 64 + (int)(lvt_28_1_ * 191.0F);
 ////                    int lvt_30_1_ = 32 + (int)(lvt_28_1_ * 191.0F);
@@ -258,22 +258,22 @@
 ////    }
 ////
 ////    @Override
-////    public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, PlayerEntity playerIn, EnumHand hand) {
+////    public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, Level worldIn, Player playerIn, EnumHand hand) {
 ////        return null;
 ////    }
 ////
 ////    @Override
-////    public ActionResultType onItemUse(ItemStack stack, PlayerEntity playerIn, World worldIn, BlockPos pos, EnumHand hand, Direction facing, float hitX, float hitY, float hitZ) {
+////    public InteractionResult onItemUse(ItemStack stack, Player playerIn, Level worldIn, BlockPos pos, EnumHand hand, Direction facing, float hitX, float hitY, float hitZ) {
 ////        return null;
 ////    }
 ////
 ////    @Override
-////    public ActionResultType onItemUseFirst(ItemStack stack, PlayerEntity player, World world, BlockPos pos, Direction side, float hitX, float hitY, float hitZ, EnumHand hand) {
+////    public InteractionResult onItemUseFirst(ItemStack stack, Player player, Level world, BlockPos pos, Direction side, float hitX, float hitY, float hitZ, EnumHand hand) {
 ////        return null;
 ////    }
 ////
 ////    @Override
-////    public void onPlayerStoppedUsing(ItemStack stack, World worldIn, LivingEntity entityLiving, int timeLeft) {
+////    public void onPlayerStoppedUsing(ItemStack stack, Level worldIn, LivingEntity entityLiving, int timeLeft) {
 ////    }
 ////
 ////    @Override

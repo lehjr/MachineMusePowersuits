@@ -1,24 +1,25 @@
 package lehjr.numina.client.gui.clickable.button;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.PoseStack;
 import lehjr.numina.client.gui.clickable.Clickable;
 import lehjr.numina.client.gui.geometry.MusePoint2D;
 import lehjr.numina.client.gui.geometry.Rect;
 import lehjr.numina.client.render.IconUtils;
 import lehjr.numina.common.string.StringUtils;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.widget.Widget;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.text.ITextComponent;
+import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.components.AbstractWidget;
+import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.network.chat.Component;
+import net.minecraft.util.Mth;
 
 
 /**
  * Vanilla styled button based on vanilla button
  */
 public class VanillaButton extends Clickable {
-    ITextComponent label;
+    Component label;
 
 
     /**
@@ -29,17 +30,17 @@ public class VanillaButton extends Clickable {
      * @param label
      * @param enabled
      */
-    public VanillaButton(double left, double top, double width, ITextComponent label, boolean enabled) {
+    public VanillaButton(double left, double top, double width, Component label, boolean enabled) {
         super(new Rect(left, top, left + width, top + 20));
         this.label = label;
         this.setEnabled(enabled);
     }
 
-    public VanillaButton(double left, double top, ITextComponent label, boolean enabled) {
+    public VanillaButton(double left, double top, Component label, boolean enabled) {
         this(new MusePoint2D(left, top), label, enabled);
     }
 
-    public VanillaButton(MusePoint2D ul, ITextComponent label, boolean enabled) {
+    public VanillaButton(MusePoint2D ul, Component label, boolean enabled) {
         super(ul, MusePoint2D.ZERO, false);
         this.label = label;
         this.setWH(new MusePoint2D(StringUtils.getStringWidth(label.getString()) + 20, 20));
@@ -47,9 +48,9 @@ public class VanillaButton extends Clickable {
     }
 
     @Override
-    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float frameTime) {
-        renderButton(matrixStack, mouseX, mouseY, frameTime);
-        renderBg(matrixStack, mouseX, mouseY, frameTime);
+    public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTick) {
+        renderButton(matrixStack, mouseX, mouseY, partialTick);
+        renderBg(matrixStack, mouseX, mouseY, partialTick);
     }
 
     public static final int UNSET_FG_COLOR = -1;
@@ -73,11 +74,13 @@ public class VanillaButton extends Clickable {
         return i;
     }
 
-    public void renderButton(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
+    public void renderButton(PoseStack matrixStack, int mouseX, int mouseY, float partialTicks) {
         Minecraft minecraft = Minecraft.getInstance();
-        FontRenderer fontrenderer = minecraft.font;
-        getMinecraft().getTextureManager().bind(Widget.WIDGETS_LOCATION);
-        RenderSystem.color4f(1.0F, 1.0F, 1.0F, this.alpha);
+        Font fontrenderer = minecraft.font;
+
+        RenderSystem.setShader(GameRenderer::getPositionTexShader);
+        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+        RenderSystem.setShaderTexture(0, AbstractWidget.WIDGETS_LOCATION);
         int i = this.getYImage(containsPoint(mouseX, mouseY));
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
@@ -86,18 +89,18 @@ public class VanillaButton extends Clickable {
         IconUtils.INSTANCE.blit(matrixStack, this.left() + this.width() / 2, this.top(), 200 - this.width() / 2, 46 + i * 20, this.width() / 2, this.height());
         this.renderBg(matrixStack, mouseX, mouseY, partialTicks);
         int j = getFGColor();
-        getMinecraft().screen.drawCenteredString(matrixStack, fontrenderer, this.getLabel(), (int) (this.left() + this.width() / 2), (int) (this.top() + (this.height() - 8) / 2), j | MathHelper.ceil(this.alpha * 255.0F) << 24);
+        getMinecraft().screen.drawCenteredString(matrixStack, fontrenderer, this.getLabel(), (int) (this.left() + this.width() / 2), (int) (this.top() + (this.height() - 8) / 2), j | Mth.ceil(this.alpha * 255.0F) << 24);
     }
 
-    protected void renderBg(MatrixStack pMatrixStack, int pMouseX, int pMouseY, float frameTime) {
+    protected void renderBg(PoseStack pPoseStack, int pMouseX, int pMouseY, float frameTime) {
 
     }
 
-    public void setLabel(ITextComponent label) {
+    public void setLabel(Component label) {
         this.label = label;
     }
 
-    public ITextComponent getLabel() {
+    public Component getLabel() {
         return label;
     }
 }
