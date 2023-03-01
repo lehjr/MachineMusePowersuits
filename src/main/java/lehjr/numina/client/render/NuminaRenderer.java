@@ -254,7 +254,14 @@ public abstract class NuminaRenderer {
     public static void drawMPDLightning(PoseStack poseStack, float x1, float y1, float z1, float x2, float y2, float z2, Color colour, double displacement,
                                         double detail) {
         Matrix4f matrix4f = poseStack.last().pose();
+        ShaderInstance oldShader = RenderSystem.getShader();
+        float lineWidth = RenderSystem.getShaderLineWidth();
+        RenderSystem.lineWidth(1F);
+
         drawMPDLightning(matrix4f, x1, y1, z1, x2, y2, z2, colour, displacement * 0.5F, detail);
+
+        RenderSystem.lineWidth(lineWidth);
+        RenderSystem.setShader(() -> oldShader);
     }
 
     public static void drawMPDLightning(Matrix4f matrix4f,
@@ -268,21 +275,23 @@ public abstract class NuminaRenderer {
             RenderSystem.disableDepthTest();
             RenderSystem.depthMask(false);
 
-            ShaderInstance oldShader = RenderSystem.getShader();
+
             RenderSystem.setShader(GameRenderer::getPositionColorShader);
 
-            GL11.glEnable(GL11.GL_LINE_SMOOTH);
-            GL11.glHint(GL11.GL_LINE_SMOOTH_HINT, GL11.GL_NICEST);
+
+
+//            GL11.glEnable(GL11.GL_LINE_SMOOTH);
+//            GL11.glHint(GL11.GL_LINE_SMOOTH_HINT, GL11.GL_NICEST);
 
             Tesselator tesselator = RenderSystem.renderThreadTesselator();
             BufferBuilder bufferbuilder = tesselator.getBuilder();
             bufferbuilder.begin(VertexFormat.Mode.DEBUG_LINES, DefaultVertexFormat.POSITION_COLOR);
+
             colour.addToVertex(bufferbuilder.vertex(matrix4f, x1, y1, z1)).endVertex();
             colour.addToVertex(bufferbuilder.vertex(matrix4f, x2, y2, z2)).endVertex();
 
             tesselator.end();
 
-            RenderSystem.setShader(() -> oldShader);
             RenderSystem.enableDepthTest();
             RenderSystem.enableTexture();
             RenderSystem.depthMask(true);

@@ -1,6 +1,5 @@
 package lehjr.powersuits.client.gui.keymap;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import lehjr.numina.client.gui.clickable.Checkbox;
 import lehjr.numina.client.gui.clickable.button.VanillaButton;

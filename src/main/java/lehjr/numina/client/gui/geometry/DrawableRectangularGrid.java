@@ -148,7 +148,6 @@
 //        RenderSystem.enableBlend();
 //        RenderSystem.disableAlphaTest();
 //        RenderSystem.defaultBlendFunc();
-//        GL11.glEnable(GL11.GL_SMOOTH);
 //
 //        Tesselator tessellator = Tesselator.getInstance();
 //        BufferBuilder buffer = tessellator.getBuilder();
@@ -174,7 +173,6 @@
 //
 //        tessellator.end();
 //
-//        GL11.glEnable(GL11.GL_FLAT);
 //        RenderSystem.disableBlend();
 //        RenderSystem.enableAlphaTest();
 //        RenderSystem.enableTexture();

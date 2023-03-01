@@ -27,6 +27,7 @@
 package lehjr.numina.common.entity;
 
 import lehjr.numina.client.sound.SoundDictionary;
+import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.base.NuminaObjects;
 import lehjr.numina.common.container.ArmorStandMenu;
 import net.minecraft.network.chat.TranslatableComponent;
@@ -57,6 +58,7 @@ public class NuminaArmorStand extends ArmorStand {
     public NuminaArmorStand(EntityType<? extends ArmorStand> entityType, Level level) {
         super(entityType, level);
         setShowArms(true);
+        createAttributes();
     }
 
     public NuminaArmorStand(Level level, double p_31557_, double p_31558_, double p_31559_) {
@@ -65,7 +67,6 @@ public class NuminaArmorStand extends ArmorStand {
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        System.out.println("doing somethinghere");
         return LivingEntity.createLivingAttributes().add(Attributes.MAX_HEALTH, 10.0D);
     }
 

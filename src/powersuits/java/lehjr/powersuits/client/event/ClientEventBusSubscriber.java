@@ -1,8 +1,5 @@
 package lehjr.powersuits.client.event;
 
-import lehjr.numina.client.render.entity.NuminaArmorStandRenderer;
-import lehjr.numina.common.base.NuminaObjects;
-import lehjr.numina.common.constants.NuminaConstants;
 import lehjr.powersuits.client.render.entity.LuxCapacitorEntityRenderer;
 import lehjr.powersuits.client.render.entity.PlasmaBoltEntityRenderer;
 import lehjr.powersuits.client.render.entity.RailGunBoltRenderer;

@@ -69,6 +69,11 @@ public enum ClientOverlayHandler {
     final double meterTextOffsetY = 0;
 
     public void render(RenderGameOverlayEvent.Post e) {
+        RenderGameOverlayEvent.ElementType elementType = e.getType();
+        if (!RenderGameOverlayEvent.ElementType.LAYER.equals(elementType)) {
+            return;
+        }
+
         PoseStack matrixStack = e.getMatrixStack();
 
         Minecraft minecraft = Minecraft.getInstance();

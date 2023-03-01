@@ -162,7 +162,6 @@
 //        }
 //        tessellator.end();
 //
-//        GL11.glEnable(GL11.GL_FLAT);
 //        RenderSystem.disableBlend();
 //        RenderSystem.enableAlphaTest();
 //        RenderSystem.enableTexture();

@@ -1,72 +1,76 @@
-//package lehjr.mpsrecipecreator.basemod;
-//
-//import lehjr.mpsrecipecreator.basemod.config.Config;
-//import lehjr.mpsrecipecreator.block.RecipeWorkbench;
-//import lehjr.mpsrecipecreator.client.gui.MPARCGui;
-//import lehjr.mpsrecipecreator.container.MPARCAbstractContainerMenu;
-//import lehjr.mpsrecipecreator.network.NetHandler;
-//import net.minecraft.client.gui.ScreenManager;
-//import net.minecraft.inventory.container.MenuType;
-//import net.minecraft.item.BlockItem;
-//import net.minecraft.resources.ResourceLocation;
-//import net.minecraft.world.item.Item;
-//import net.minecraft.world.level.block.Block;
-//import net.minecraftforge.event.RegistryEvent;
-//import net.minecraftforge.eventbus.api.IEventBus;
-//import net.minecraftforge.eventbus.api.SubscribeEvent;
-//import net.minecraftforge.fml.ModLoadingContext;
-//import net.minecraftforge.fml.common.Mod;
-//import net.minecraftforge.fml.config.ModConfig;
-//import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
-//import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-//import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-//
-///**
-// * @author lehjr
-// */
-//@Mod(Constants.MOD_ID)
-//public final class MPS_RecipeCreator {
-//
-//    public static final CreativeTab creativeTab = new CreativeTab();
-//
-//    public MPS_RecipeCreator() {
-//        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Config.COMMON_SPEC);
-//        ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, Config.SERVER_SPEC);
-//
-//        // Register the setup method for modloading
-//        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
-//        // Register the setupClient method for modloading
-//        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setupClient);
-//        IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
-//        modEventBus.register(this);
-//        ConditionsJsonLoader.setFile();
-//    }
-//
-//    private void setupClient(final FMLClientSetupEvent event) {
-//        ScreenManager.func_216911_a(ModObjects.RECIPE_WORKBENCH_CONTAINER_TYPE, MPARCGui::new);
-//    }
-//
-//    private void setup(final FMLCommonSetupEvent event) {
-//        NetHandler.registerMPALibPackets();
-//    }
-//
-//    @SubscribeEvent
-//    public void registerMenuTypes(final RegistryEvent.Register<MenuType<?>> event) {
-//        event.getRegistry().register(                // recipe creator gui
-//                new MenuType<>(MPARCAbstractContainerMenu::new)
-//                        .setRegistryName(Constants.RECIPE_WORKBENCH_TYPE__REG_NAME));
-//    }
-//
-//    @SubscribeEvent
-//    public void registerBlock(RegistryEvent.Register<Block> blockRegistryEvent) {
-//        blockRegistryEvent.getRegistry().register(new RecipeWorkbench(Constants.RECIPE_WORKBENCH__REGNAME));
-//    }
-//
-//    @SubscribeEvent
-//    public void registerItemBlock(RegistryEvent.Register<Item> itemBlockRegistryEvent) {
-//        itemBlockRegistryEvent.getRegistry().register(
-//                new BlockItem(ModObjects.recipeWorkBench,
-//                        new Item.Properties().tab(creativeTab))
-//                        .setRegistryName(new ResourceLocation(Constants.RECIPE_WORKBENCH__REGNAME)));
-//    }
-//}
+package lehjr.mpsrecipecreator.basemod;
+
+import com.mojang.logging.LogUtils;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.event.server.ServerStartingEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.InterModComms;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
+import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import org.slf4j.Logger;
+
+import java.util.stream.Collectors;
+
+
+@Mod(Constants.MOD_ID)
+public class MPS_RecipeCreator {
+    // Directly reference a slf4j logger
+    private static final Logger LOGGER = LogUtils.getLogger();
+
+    public MPS_RecipeCreator() {
+        // Register the setup method for modloading
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
+        // Register the enqueueIMC method for modloading
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::enqueueIMC);
+        // Register the processIMC method for modloading
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::processIMC);
+
+        // Register ourselves for server and other game events we are interested in
+        MinecraftForge.EVENT_BUS.register(this);
+    }
+
+    private void setup(final FMLCommonSetupEvent event) {
+        // some preinit code
+        LOGGER.info("HELLO FROM PREINIT");
+        LOGGER.info("DIRT BLOCK >> {}", Blocks.DIRT.getRegistryName());
+    }
+
+    private void enqueueIMC(final InterModEnqueueEvent event) {
+        // Some example code to dispatch IMC to another mod
+        InterModComms.sendTo("examplemod", "helloworld", () -> {
+            LOGGER.info("Hello world from the MDK");
+            return "Hello world";
+        });
+    }
+
+    private void processIMC(final InterModProcessEvent event) {
+        // Some example code to receive and process InterModComms from other mods
+        LOGGER.info("Got IMC {}", event.getIMCStream().
+                map(m -> m.messageSupplier().get()).
+                collect(Collectors.toList()));
+    }
+
+    // You can use SubscribeEvent and let the Event Bus discover methods to call
+    @SubscribeEvent
+    public void onServerStarting(ServerStartingEvent event) {
+        // Do something when the server starts
+        LOGGER.info("HELLO from server starting");
+    }
+
+    // You can use EventBusSubscriber to automatically subscribe events on the contained class (this is subscribing to the MOD
+    // Event bus for receiving Registry Events)
+    @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
+    public static class RegistryEvents {
+        @SubscribeEvent
+        public static void onBlocksRegistry(final RegistryEvent.Register<Block> blockRegistryEvent) {
+            // Register a new block here
+            LOGGER.info("HELLO from Register Block");
+        }
+    }
+}

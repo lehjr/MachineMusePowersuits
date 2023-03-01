@@ -27,6 +27,8 @@
 package lehjr.numina.client.render;
 
 import com.google.common.base.Preconditions;
+import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.math.Matrix4f;
@@ -44,7 +46,9 @@ import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL13;
 
+import javax.annotation.Nonnull;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -104,9 +108,6 @@ public enum IconUtils {
         drawIconPartial(x, y, icon, colour, xmin, ymin, xmax, ymax);
     }
 
-
-
-
     /**
      * Draws a MuseIcon
      *
@@ -115,24 +116,18 @@ public enum IconUtils {
      * @param icon
      * @param colour
      */
-    public static void drawIconPartial(PoseStack poseStack, double x, double y, TextureAtlasSprite icon, Color colour, double textureStartX, double textureStartY, double textureEndX, double textureEndY) {
+    public static void drawIconPartial(PoseStack poseStack, double x, double y, TextureAtlasSprite icon, @Nonnull Color colour, double textureStartX, double textureStartY, double textureEndX, double textureEndY) {
         if (icon == null) {
             icon = getMissingIcon();
         }
 
-        Minecraft minecraft = Minecraft.getInstance();
-        TextureManager textureManager = minecraft.getTextureManager();
-        textureManager.bindForSetup(icon.atlas().location());
-
-
-        GL11.glEnable(GL11.GL_SMOOTH);
-
+        RenderSystem.setShaderTexture(0, icon.atlas().location());
         Tesselator tess = Tesselator.getInstance();
         BufferBuilder bufferBuilder = tess.getBuilder();
-        if (colour != null) {
-            colour.setShaderColor();
-        }
-        bufferBuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
+//        if (colour != null) {
+//            colour.setShaderColor();
+//        }
+        bufferBuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
         double u0 = icon.getU0();
         double v0 = icon.getV0();
         double u1 = icon.getU1();
@@ -148,26 +143,29 @@ public enum IconUtils {
         // top left
         bufferBuilder.vertex(matrix4f, (float) (x + textureStartX), (float)(y + textureStartY), 0);
         bufferBuilder.uv((float) (u0 + xoffset1), (float) (v0 + yoffset1));
+        bufferBuilder.color(colour.r, colour.g, colour.b, colour.a);
         bufferBuilder.endVertex();
 
         // textureEndY left
         bufferBuilder.vertex(matrix4f, (float) (x + textureStartX), (float) (y + textureEndY), 0);
         bufferBuilder.uv((float) (u0 + xoffset1), (float) (v0 + yoffset2));
+        bufferBuilder.color(colour.r, colour.g, colour.b, colour.a);
         bufferBuilder.endVertex();
 
         // textureEndY right
         bufferBuilder.vertex(matrix4f, (float) (x + textureEndX), (float) (y + textureEndY), 0);
         bufferBuilder.uv((float) (u0 + xoffset2), (float) (v0 + yoffset2));
+        bufferBuilder.color(colour.r, colour.g, colour.b, colour.a);
         bufferBuilder.endVertex();
 
         // top right
         bufferBuilder.vertex(matrix4f, (float) (x + textureEndX), (float) (y + textureStartY), 0);
         bufferBuilder.uv((float) (u0 + xoffset2), (float) (v0 + yoffset1));
+        bufferBuilder.color(colour.r, colour.g, colour.b, colour.a);
         bufferBuilder.endVertex();
 
         tess.end();
 
-        GL11.glEnable(GL11.GL_FLAT);
     }
 
     /**
@@ -182,19 +180,11 @@ public enum IconUtils {
         if (icon == null) {
             icon = getMissingIcon();
         }
-        Minecraft minecraft = Minecraft.getInstance();
-        TextureManager textureManager = minecraft.getTextureManager();
-        textureManager.bindForSetup(icon.atlas().location());
-
-
-        GL11.glEnable(GL11.GL_SMOOTH);
-
+        RenderSystem.setShaderTexture(0, icon.atlas().location());
         Tesselator tess = Tesselator.getInstance();
         BufferBuilder bufferBuilder = tess.getBuilder();
-        if (colour != null) {
-            colour.setShaderColor();
-        }
-        bufferBuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
+        bufferBuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
+
         double uMin = icon.getU0();
         double vMin = icon.getV0();
         double uMax = icon.getU1();
@@ -207,50 +197,32 @@ public enum IconUtils {
 
         // top left
         bufferBuilder.vertex(x + left, y + top, 0);
+        bufferBuilder.color(colour.r, colour.g, colour.b, colour.a);
         bufferBuilder.uv((float) (uMin + xoffset1), (float) (vMin + yoffset1));
         bufferBuilder.endVertex();
 
         // bottom left
         bufferBuilder.vertex(x + left, y + bottom, 0);
+        bufferBuilder.color(colour.r, colour.g, colour.b, colour.a);
         bufferBuilder.uv((float) (uMin + xoffset1), (float) (vMin + yoffset2));
         bufferBuilder.endVertex();
 
         // bottom right
         bufferBuilder.vertex(x + right, y + bottom, 0);
+        bufferBuilder.color(colour.r, colour.g, colour.b, colour.a);
         bufferBuilder.uv((float) (uMin + xoffset2), (float) (vMin + yoffset2));
         bufferBuilder.endVertex();
 
         // top right
         bufferBuilder.vertex(x + right, y + top, 0);
+        bufferBuilder.color(colour.r, colour.g, colour.b, colour.a);
         bufferBuilder.uv((float) (uMin + xoffset2), (float) (vMin + yoffset1));
         bufferBuilder.endVertex();
 
         tess.end();
-
-        GL11.glEnable(GL11.GL_FLAT);
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     /** Code below based on Minecraft's AbstractGui ------------------------------------------------------------------------------------------------------------------------ */
-
-
-
-
-
-
 
     public static void blit(PoseStack matrixStack, double posX, double posY, double pBlitOffset, double drawWidth, double drawHeight, TextureAtlasSprite pSprite) {
         innerBlit(matrixStack.last().pose(),
@@ -264,8 +236,6 @@ public enum IconUtils {
                 pSprite.getV0(), // minV
                 pSprite.getV1()); // maxV
     }
-
-
 
     public void blit(PoseStack pPoseStack, double posX, double posY, double uOffset, double vOffset, double uWidth, double vHeight) {
         blit(pPoseStack, posX, posY, this.getBlitOffset(), uOffset, vOffset, uWidth, vHeight, 256, 256);
@@ -306,17 +276,6 @@ public enum IconUtils {
         BufferUploader.end(bufferbuilder);
     }
 
-
-
-
-
-
-
-
-
-
-
-
     public static void blit(PoseStack matrixStack, double posX, double posY, double pBlitOffset, double drawWidth, double drawHeight, TextureAtlasSprite sprite, Color colour) {
         innerBlit(matrixStack.last().pose(),
                 posX, // drawStartX
@@ -354,21 +313,24 @@ public enum IconUtils {
 
     public static void innerBlit(Matrix4f matrix4f, double drawStartX, double drawEndX, double drawStartY, double drawEndY, double blitOffset, double uMin, double uMax, double vMin, double vMax, Color colour) {
         BufferBuilder bufferbuilder = Tesselator.getInstance().getBuilder();
-        bufferbuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR_TEX);
-
+        bufferbuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
 
         bufferbuilder.vertex(matrix4f, (float) drawStartX, (float) drawEndY, (float) blitOffset)
+                .uv((float) uMin, (float) vMax)
                 .color(colour.r, colour.g, colour.b, colour.a)
-                .uv((float) uMin, (float) vMax).endVertex();
+                .endVertex();
         bufferbuilder.vertex(matrix4f, (float) drawEndX, (float) drawEndY, (float) blitOffset)
+                .uv((float) uMax, (float) vMax)
                 .color(colour.r, colour.g, colour.b, colour.a)
-                .uv((float) uMax, (float) vMax).endVertex();
+                .endVertex();
         bufferbuilder.vertex(matrix4f, (float) drawEndX, (float) drawStartY, (float) blitOffset)
+                .uv((float) uMax, (float) vMin)
                 .color(colour.r, colour.g, colour.b, colour.a)
-                .uv((float) uMax, (float) vMin).endVertex();
+                .endVertex();
         bufferbuilder.vertex(matrix4f, (float) drawStartX, (float) drawStartY, (float) blitOffset)
+                .uv((float) uMin, (float) vMin)
                 .color(colour.r, colour.g, colour.b, colour.a)
-                .uv((float) uMin, (float) vMin).endVertex();
+                .endVertex();
 
         bufferbuilder.end();
 //        RenderSystem.enableAlphaTest();

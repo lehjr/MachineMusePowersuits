@@ -33,6 +33,8 @@ import lehjr.numina.client.event.ToolTipEvent;
 import lehjr.numina.client.gui.GuiIcon;
 import lehjr.numina.client.render.IconUtils;
 import lehjr.numina.client.render.NuminaSpriteUploader;
+import lehjr.numina.client.screen.ArmorStandScreen;
+import lehjr.numina.client.screen.ChargingBaseScreen;
 import lehjr.numina.common.capabilities.heat.HeatCapability;
 import lehjr.numina.common.capabilities.module.powermodule.PowerModuleCapability;
 import lehjr.numina.common.capabilities.player.PlayerKeyStateWrapper;
@@ -44,12 +46,14 @@ import lehjr.numina.common.capabilities.render.highlight.HighLightCapability;
 import lehjr.numina.common.config.ConfigHelper;
 import lehjr.numina.common.config.NuminaSettings;
 import lehjr.numina.common.constants.NuminaConstants;
+import lehjr.numina.common.entity.NuminaArmorStand;
 import lehjr.numina.common.event.EventBusHelper;
 import lehjr.numina.common.event.LogoutEventHandler;
 import lehjr.numina.common.event.PlayerUpdateHandler;
 import lehjr.numina.common.network.NuminaPackets;
 import lehjr.numina.common.recipe.RecipeSerializersRegistry;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ReloadableResourceManager;
 import net.minecraft.server.packs.resources.ResourceManager;
@@ -61,6 +65,7 @@ import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
+import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
@@ -86,6 +91,8 @@ public class Numina {
 
         // Register the doClientStuff method for modloading
         modEventBus.addListener(this::doClientStuff);
+
+        modEventBus.addListener(this::addEntityAttributes);
 
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
@@ -117,6 +124,8 @@ public class Numina {
 
     // Ripped from JEI
     private static void clientStart(IEventBus modEventBus) {
+        NuminaLogger.logError("breaking stuff here");
+
         if (Minecraft.getInstance() != null) {
             ModelLoaderRegistry.registerLoader(new ResourceLocation(NuminaConstants.MOD_ID, "obj"), NuminaOBJLoader.INSTANCE); // crashes if called in mod constructor
         }
@@ -142,6 +151,11 @@ public class Numina {
 //        }
 //    }
 
+//    @SubscribeEvent
+    public void addEntityAttributes(EntityAttributeCreationEvent event) {
+        event.put(NuminaObjects.ARMOR_STAND__ENTITY_TYPE.get(), NuminaArmorStand.createAttributes().build());
+    }
+
     @SubscribeEvent
     public static void initialize(final RegisterCapabilitiesEvent event) {
         HeatCapability.register(event);
@@ -158,14 +172,9 @@ public class Numina {
         PlayerKeyStatesCapability.register(event);
     }
 
-
     private void setup(final FMLCommonSetupEvent event) {
         NuminaPackets.registerNuminaPackets();
         MinecraftForge.EVENT_BUS.register(new PlayerUpdateHandler());
-
-//        DeferredWorkQueue.runLater(() -> {
-//            GlobalEntityTypeAttributes.put(NuminaObjects.ARMOR_STAND__ENTITY_TYPE.get(), NuminaArmorStand.createLivingAttributes().build());
-//        });
     }
 
     private void doClientStuff(final FMLClientSetupEvent event) {
@@ -175,9 +184,8 @@ public class Numina {
 //        MinecraftForge.EVENT_BUS.register(new LogoutEventHandler());
 
         MinecraftForge.EVENT_BUS.register(new ToolTipEvent());
-
-//        ScreenManager.func_216911_a(NuminaObjects.CHARGING_BASE_CONTAINER_TYPE.get(), ChargingBaseScreen::new);
-//        ScreenManager.func_216911_a(NuminaObjects.ARMOR_STAND_CONTAINER_TYPE.get(), ArmorStandScreen::new);
+        MenuScreens.register(NuminaObjects.CHARGING_BASE_CONTAINER_TYPE.get(), ChargingBaseScreen::new);
+        MenuScreens.register(NuminaObjects.ARMOR_STAND_CONTAINER_TYPE.get(), ArmorStandScreen::new);
 
 //        ScreenManager.func_216911_a(NuminaObjects.SCANNER_CONTAINER.get(), MPSGuiScanner::new);
     }

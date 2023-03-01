@@ -41,7 +41,6 @@ import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
 
 import javax.annotation.Nullable;
-import java.util.HashSet;
 import java.util.List;
 
 public class AbstractElectricTool extends DiggerItem {

@@ -109,12 +109,10 @@ public interface IDrawable extends Widget {
         RenderSystem.enableBlend();
 //        RenderSystem.disableAlphaTest();
         RenderSystem.defaultBlendFunc();
-        GL11.glEnable(GL11.GL_SMOOTH);
         getBufferBuilder().begin(mode, format);
     }
 
     default void postDraw() {
-        GL11.glEnable(GL11.GL_FLAT);
         RenderSystem.disableBlend();
 //        RenderSystem.enableAlphaTest();
         RenderSystem.enableTexture();

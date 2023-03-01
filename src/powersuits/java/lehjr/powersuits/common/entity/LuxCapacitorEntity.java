@@ -26,7 +26,6 @@
 
 package lehjr.powersuits.common.entity;
 
-import com.mojang.math.Vector3d;
 import lehjr.numina.common.math.Color;
 import lehjr.powersuits.common.base.MPSObjects;
 import lehjr.powersuits.common.block.LuxCapacitorBlock;

@@ -5,7 +5,6 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.datafixers.util.Pair;
 import lehjr.numina.client.gui.clickable.Clickable;
 import lehjr.numina.client.render.IconUtils;
-import lehjr.numina.common.base.NuminaObjects;
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
 import lehjr.numina.common.math.Color;
 import net.minecraft.client.Minecraft;

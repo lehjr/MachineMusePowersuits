@@ -57,7 +57,7 @@ public class GuiIcon {
     public final DrawableGuiIcon armorColourPatch;
     public final DrawableGuiIcon minusSign;
     public final DrawableGuiIcon plusSign;
-    public final DrawableGuiIcon glassTexture;
+//    public final DrawableGuiIcon glassTexture;
     public final DrawableGuiIcon lightning;
     public final DrawableGuiIcon weaponSlotBackground;
     public final DrawableGuiIcon energyStorageBackground;
@@ -72,7 +72,7 @@ public class GuiIcon {
         armorColourPatch = registerIcon("colourclicker", 8, 8);
         minusSign = registerIcon("minussign", 8, 8);
         plusSign= registerIcon("plussign", 8, 8);
-        glassTexture = registerIcon("glass", 1, 8);
+//        glassTexture = registerIcon("glass", 1, 8);
         lightning = registerIcon("lightning", 800, 62);
         weaponSlotBackground = registerIcon("weapon", 16, 16);
         energyStorageBackground = registerIcon("energystorage",32, 32);

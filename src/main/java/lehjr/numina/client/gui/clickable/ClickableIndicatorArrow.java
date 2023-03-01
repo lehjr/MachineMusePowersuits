@@ -25,8 +25,6 @@ public class ClickableIndicatorArrow extends Clickable {
         RenderSystem.enableBlend();
 //        RenderSystem.disableAlphaTest();
         RenderSystem.defaultBlendFunc();
-        GL11.glEnable(GL11.GL_SMOOTH);
-
         Matrix4f matrix4f = matrixStack.last().pose();
         Tesselator tessellator = Tesselator.getInstance();
         BufferBuilder buffer = tessellator.getBuilder();
@@ -122,7 +120,6 @@ public class ClickableIndicatorArrow extends Clickable {
             }
         }
         tessellator.end();
-        GL11.glEnable(GL11.GL_FLAT);
         RenderSystem.disableBlend();
 //        RenderSystem.enableAlphaTest();
         RenderSystem.enableTexture();

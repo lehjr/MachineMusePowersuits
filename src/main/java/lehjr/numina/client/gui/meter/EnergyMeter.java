@@ -27,13 +27,13 @@ public class EnergyMeter extends HeatMeter {
 
     public void draw(PoseStack poseStack, float xpos, float ypos, float value) {
         super.draw(poseStack, xpos, ypos, value);
-        RenderSystem.enableBlend();
+//        RenderSystem.enableBlend();
         NuminaRenderer.drawMPDLightning(poseStack,
                 xpos + xsize * value, (float) (ypos + ysize * (Math.random() / 2F + 0.25)),
                 1F,
                 xpos, (float) (ypos + ysize * (Math.random() / 2 + 0.25)),
                 1F, Color.WHITE,
                 4, 1);
-        RenderSystem.disableBlend();
+//        RenderSystem.disableBlend();
     }
 }

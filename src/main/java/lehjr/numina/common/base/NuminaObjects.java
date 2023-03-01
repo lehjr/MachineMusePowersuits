@@ -146,7 +146,7 @@ public class NuminaObjects {
 
 
     /**
-     * Tile Entity Types --------------------------------------------------------------------------
+     * Block Entity Types --------------------------------------------------------------------------
      */
     public static final DeferredRegister<BlockEntityType<?>> TILE_TYPES = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITIES, NuminaConstants.MOD_ID);
 
@@ -173,7 +173,7 @@ public class NuminaObjects {
             () -> IForgeMenuType.create((windowId, inv, data) -> {
                 int entityID = data.readInt();
                 Entity armorStand = inv.player.level.getEntity(entityID);
-
+                NuminaLogger.logError("trying something here");
                 if (armorStand instanceof ArmorStand) {
                     return new ArmorStandMenu(windowId, inv, (ArmorStand) armorStand);
                 }
@@ -183,6 +183,9 @@ public class NuminaObjects {
     public static final RegistryObject<MenuType<ChargingBaseMenu>> CHARGING_BASE_CONTAINER_TYPE = MENU_TYPES.register("charging_base",
             () -> IForgeMenuType.create((windowId, inv, data) -> {
                 BlockPos pos = data.readBlockPos();
+
+                NuminaLogger.logError("trying something here");
+
                 return new ChargingBaseMenu(windowId, pos, inv);
             }));
 

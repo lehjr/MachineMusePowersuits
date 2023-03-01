@@ -55,8 +55,6 @@ import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.items.CapabilityItemHandler;
 
 import javax.annotation.Nullable;
-import java.util.HashSet;
-import java.util.Set;
 
 //public class PowerFist extends AbstractElectricTool {
 //    public PowerFist() {

@@ -67,7 +67,6 @@ public interface IScrollable extends IGuiFrame, IDrawableRect {
             RenderSystem.enableBlend();
 //            RenderSystem.disableAlphaTest();
             RenderSystem.defaultBlendFunc();
-//            GL11.glEnable(GL11.GL_SMOOTH);
 //            NuminaRenderState.glowOn();
 
             Tesselator tessellator = Tesselator.getInstance();
@@ -110,7 +109,6 @@ public interface IScrollable extends IGuiFrame, IDrawableRect {
             }
             tessellator.end();
 
-//            GL11.glEnable(GL11.GL_FLAT);
             RenderSystem.disableBlend();
 //            RenderSystem.enableAlphaTest();
             RenderSystem.enableTexture();

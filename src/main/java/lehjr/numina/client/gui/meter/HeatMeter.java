@@ -1,5 +1,7 @@
 package lehjr.numina.client.gui.meter;
 
+import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.platform.Lighting;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import com.mojang.math.Matrix4f;
@@ -7,6 +9,7 @@ import lehjr.numina.client.render.IconUtils;
 import lehjr.numina.common.constants.NuminaConstants;
 import lehjr.numina.common.math.Color;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.ShaderInstance;
 import net.minecraft.client.renderer.texture.TextureAtlas;
@@ -20,11 +23,11 @@ public class HeatMeter {
     float meterStart, meterLevel;
 
     public float getAlpha() {
-        return 0.7F;
+        return 0.75F;
     }
 
     public Color getColour() {
-        return Color.WHITE;
+        return Color.WHITE.withAlpha(0.3F);
     }
 
     // this "should" work
@@ -33,10 +36,15 @@ public class HeatMeter {
     }
 
     public void draw(PoseStack poseStack, float xpos, float ypos, float value) {
+        ShaderInstance oldShader = RenderSystem.getShader();
+        RenderSystem.setShader(GameRenderer::getPositionTexColorShader);
         RenderSystem.enableBlend();
+        Lighting.setupForEntityInInventory();
+        RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
         drawFluid(poseStack,xpos, ypos, value, getTexture());
         drawGlass(poseStack, xpos, ypos);
         RenderSystem.disableBlend();
+        RenderSystem.setShader(() -> oldShader);
     }
 
     public void drawFluid(PoseStack poseStack, float xpos, float ypos, float value, TextureAtlasSprite icon) {
@@ -45,7 +53,6 @@ public class HeatMeter {
         // New: Horizontal, fill from left.
         meterStart = xpos;
         meterLevel = (xpos + xsize * value);
-
         while (meterStart + 8 < meterLevel) {
             IconUtils.drawIconAt(poseStack, meterStart * 2, ypos * 2, icon, getColour().withAlpha(getAlpha()));
             meterStart += 8;
@@ -53,6 +60,9 @@ public class HeatMeter {
         IconUtils.drawIconPartial(poseStack, meterStart * 2, ypos * 2, icon, getColour().withAlpha(getAlpha()), 0, 0, (meterLevel - meterStart) * 2, 16);
         poseStack.popPose();
     }
+
+    final Color glassColor = Color.LIGHT_GREY.withAlpha(0.2F);
+
 
     /**
      * finally got this working again
@@ -68,32 +78,41 @@ public class HeatMeter {
         float right = left + xsize;
         float top = ypos;
         float bottom = top + ysize;
-        Matrix4f matrix4f = poseStack.last().pose();
+
+
         RenderSystem.setShaderTexture(0, NuminaConstants.GLASS_TEXTURE);
 
-        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-
-        ShaderInstance oldShader = RenderSystem.getShader();
-
-        RenderSystem.setShader(GameRenderer::getPositionTexShader);
         Tesselator tesselator = Tesselator.getInstance();
         BufferBuilder bufferbuilder = tesselator.getBuilder();
-        bufferbuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
+
+        bufferbuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
+        Matrix4f matrix4f = poseStack.last().pose();
 
         // bottom left
-        bufferbuilder.vertex(matrix4f, left, bottom, blitOffset).uv(maxU, maxV).endVertex();
+        bufferbuilder.vertex(matrix4f, left, bottom, blitOffset)
+                .uv(maxU, maxV)
+                .color(glassColor.r, glassColor.g, glassColor.b, glassColor.a)
+                .endVertex();
 
         // bottom right
-        bufferbuilder.vertex(matrix4f, right, bottom, blitOffset).uv(maxU, minV).endVertex();
+        bufferbuilder.vertex(matrix4f, right, bottom, blitOffset)
+                .uv(maxU, minV)
+                .color(glassColor.r, glassColor.g, glassColor.b, glassColor.a)
+                .endVertex();
 
         // top right
-        bufferbuilder.vertex(matrix4f, right, top, blitOffset).uv(minU, minV).endVertex();
+        bufferbuilder.vertex(matrix4f, right, top, blitOffset)
+                .uv(minU, minV)
+                .color(glassColor.r, glassColor.g, glassColor.b, glassColor.a)
+                .endVertex();
 
         // top left
-        bufferbuilder.vertex(matrix4f, left, top, blitOffset).uv(minU, maxV).endVertex();
+        bufferbuilder.vertex(matrix4f, left, top, blitOffset)
+                .uv(minU, maxV)
+                .color(glassColor.r, glassColor.g, glassColor.b, glassColor.a)
+                .endVertex();
 
         tesselator.end();
-        RenderSystem.setShader(() -> oldShader);
     }
 }
 
