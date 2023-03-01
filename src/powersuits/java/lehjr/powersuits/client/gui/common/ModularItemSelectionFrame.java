@@ -186,7 +186,7 @@ public class ModularItemSelectionFrame extends AbstractGuiFrame {
 
     @Override
     public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTick) {
-        super.render(matrixStack, mouseX, mouseY, partialTick);
+//        renderBackgroundRect(matrixStack, mouseX, mouseY, partialTick);
         boxes.stream().filter(IClickable.class::isInstance)
                 .map(IClickable.class::cast)
                 .forEach(box-> {

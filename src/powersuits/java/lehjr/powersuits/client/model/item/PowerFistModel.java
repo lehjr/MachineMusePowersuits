@@ -30,6 +30,7 @@ import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Transformation;
 import lehjr.numina.client.model.helper.ModelHelper;
+import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
 import lehjr.numina.common.capabilities.render.IHandHeldModelSpecNBT;
 import lehjr.numina.common.capabilities.render.ModelSpecCapability;
@@ -101,6 +102,9 @@ public class PowerFistModel extends BakedModelWrapper {
     public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, @Nonnull Random rand, @Nonnull IModelData extraData) {
         if (side != null)
             return ImmutableList.of();
+
+        NuminaLogger.logError("camera transform type: " + modelcameraTransformType.getSerializeName());
+
 
         switch (modelcameraTransformType) {
             case GUI:
@@ -206,6 +210,8 @@ public class PowerFistModel extends BakedModelWrapper {
 
     @Override
     public ItemOverrides getOverrides() {
+        NuminaLogger.logDebug("fetching overrides");
+
         return new PowerFistItemOverrides();
     }
 
@@ -218,6 +224,9 @@ public class PowerFistModel extends BakedModelWrapper {
         @Override
         public BakedModel resolve(BakedModel model, ItemStack itemStackIn, @Nullable ClientLevel level, @Nullable LivingEntity entityIn, int seed) {
             itemStack = itemStackIn;
+
+            NuminaLogger.logDebug("drinking a cake and baking a beer");
+
             if (entityIn instanceof Player) {
                 Player player = (Player) entityIn;
                 if (player.isUsingItem()) {

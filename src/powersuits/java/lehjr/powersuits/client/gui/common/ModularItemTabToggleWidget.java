@@ -8,6 +8,8 @@ import lehjr.numina.client.render.IconUtils;
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
 import lehjr.numina.common.math.Color;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.client.renderer.ShaderInstance;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -73,8 +75,10 @@ public class ModularItemTabToggleWidget extends Clickable {
             matrixStack.translate((float)(-(this.left() + 8)), (float)(-(this.top() + 12)), 0.0F);
         }
 
-        Minecraft minecraft = Minecraft.getInstance();
-        minecraft.getTextureManager().bindForSetup(this.resourceLocation);
+        RenderSystem.setShader(GameRenderer::getPositionTexShader);
+        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+        RenderSystem.setShaderTexture(0, this.resourceLocation);
+
         RenderSystem.disableDepthTest();
         float i = (float) this.xTexStart;
         float j = (float) this.yTexStart;
@@ -91,7 +95,6 @@ public class ModularItemTabToggleWidget extends Clickable {
             k -= 2;
         }
 
-        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         IconUtils.INSTANCE.blit(matrixStack, k, (float)this.top(), i, j, (float) this.width(), (float) this.height());
         RenderSystem.enableDepthTest();
         this.renderIcon(matrixStack);
@@ -109,13 +112,18 @@ public class ModularItemTabToggleWidget extends Clickable {
         RenderSystem.disableDepthTest();
         if (this.icon.isEmpty()) {
             if (EquipmentSlot.MAINHAND.equals(type)) {
-                IconUtils.drawIconAt((int)left() + 9 + offset, (float)top() + 7, IconUtils.getIcon().weaponSlotBackground.getSprite(), Color.WHITE);
+                ShaderInstance oldShader = RenderSystem.getShader();
+                RenderSystem.setShader(GameRenderer::getPositionTexColorShader);
+                IconUtils.getIcon().weaponSlotBackground.draw(matrixStack, left() + 9 + offset, top() + 5, Color.WHITE);
+                RenderSystem.setShader(() -> oldShader);
             } else {
                 Pair<ResourceLocation, ResourceLocation> pair = IconUtils.getSlotBackground(type);
                 if (pair != null) {
+                    ShaderInstance oldShader = RenderSystem.getShader();
                     TextureAtlasSprite textureatlassprite = getMinecraft().getTextureAtlas(pair.getFirst()).apply(pair.getSecond());
-                    Minecraft.getInstance().getTextureManager().bindForSetup(textureatlassprite.atlas().location());
+                    RenderSystem.setShaderTexture(0, textureatlassprite.atlas().location());
                     getMinecraft().screen.blit(matrixStack, (int)left() + 10 + offset, (int)top() + 5, getMinecraft().screen.getBlitOffset(), 16, 16, textureatlassprite);
+                    RenderSystem.setShader(() -> oldShader);
                 }
             }
             RenderSystem.enableDepthTest();

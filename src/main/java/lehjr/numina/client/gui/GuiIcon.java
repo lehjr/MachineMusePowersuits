@@ -435,8 +435,7 @@ public class GuiIcon {
     }
 
     void bindTexture() {
-        TextureManager textureManager = getMinecraft().getTextureManager();
-        textureManager.bindForSetup(NuminaConstants.LOCATION_NUMINA_GUI_TEXTURE_ATLAS);
+        RenderSystem.setShaderTexture(0, NuminaConstants.LOCATION_NUMINA_GUI_TEXTURE_ATLAS);
     }
 
     int getRandomNumber(int min, int max) {

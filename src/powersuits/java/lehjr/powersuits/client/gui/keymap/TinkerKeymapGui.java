@@ -35,6 +35,7 @@ import lehjr.powersuits.client.control.KeybindManager;
 import lehjr.powersuits.client.gui.common.TabSelectFrame;
 import lehjr.powersuits.common.constants.MPSConstants;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
@@ -78,8 +79,9 @@ public class TinkerKeymapGui extends ContainerlessGui {
     @Override
     public void renderBackground(PoseStack matrixStack) {
         super.renderBackground(matrixStack);
+        RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-        this.minecraft.getTextureManager().bindForSetup(this.BACKGROUND);
+        RenderSystem.setShaderTexture(0, BACKGROUND);
         int i = this.leftPos;
         int j = this.topPos;
         this.blit(matrixStack, i, j, this.getBlitOffset(), 0, 0, imageWidth, imageHeight, 512, 512);

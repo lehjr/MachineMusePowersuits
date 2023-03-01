@@ -28,6 +28,7 @@ package lehjr.powersuits.client.event;
 
 
 import lehjr.numina.client.model.obj.OBJBakedCompositeModel;
+import lehjr.numina.common.base.NuminaLogger;
 import lehjr.powersuits.client.model.block.LuxCapacitorModelWrapper;
 import lehjr.powersuits.client.model.helper.MPSModelHelper;
 import lehjr.powersuits.client.model.item.PowerFistModel;
@@ -48,6 +49,9 @@ public enum ModelBakeEventHandler {
 
     @SubscribeEvent
     public void onModelBake(ModelBakeEvent event) {
+        NuminaLogger.logError("baking something here");
+
+
         /**
          * Notes: looks like all current models are "SimpleBakedModels"
          */
@@ -64,6 +68,8 @@ public enum ModelBakeEventHandler {
 
         BakedModel powerFistIcon = event.getModelRegistry().get(powerFistIconLocation);
         if (!OBJBakedCompositeModel.class.isInstance(powerFistIcon)) {
+            NuminaLogger.logError("baking powerfister here");
+
             event.getModelRegistry().put(powerFistIconLocation, new PowerFistModel(powerFistIcon));
         }
 

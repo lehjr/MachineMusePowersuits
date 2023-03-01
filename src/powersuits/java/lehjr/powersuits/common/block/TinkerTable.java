@@ -28,6 +28,7 @@ package lehjr.powersuits.common.block;
 
 import lehjr.numina.client.sound.Musique;
 import lehjr.numina.client.sound.SoundDictionary;
+import lehjr.numina.common.base.NuminaLogger;
 import lehjr.powersuits.client.gui.modding.module.tweak.ModuleTweakGui;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
@@ -92,7 +93,9 @@ public class TinkerTable extends HorizontalDirectionalBlock implements SimpleWat
     @SuppressWarnings("deprecation")
     @Override
     public InteractionResult use(BlockState pState, Level level, BlockPos pPos, Player player, InteractionHand pHand, BlockHitResult pHit) {
-        if (!level.isClientSide()) {
+        NuminaLogger.logError("trying to open gui here, level is clienside? :  " + (level.isClientSide) );
+
+        if (level.isClientSide()) {
             openGui(level);
         }
 
@@ -102,6 +105,8 @@ public class TinkerTable extends HorizontalDirectionalBlock implements SimpleWat
     @OnlyIn(Dist.CLIENT)
     public void openGui(Level world) {
         if (world.isClientSide) {
+            NuminaLogger.logError("trying to open gui here");
+
 
             Musique.playClientSound(SoundDictionary.SOUND_EVENT_GUI_SELECT, 1);
 //            Minecraft.getInstance().tell(() -> Minecraft.getInstance().setScreen(new CosmeticGui(Minecraft.getInstance().player.inventory, new TranslatableComponent("gui.tinkertable"))));

@@ -38,6 +38,7 @@ import lehjr.powersuits.client.gui.modding.cosmetic.partmanip.ModelManipFrame;
 import lehjr.powersuits.common.config.MPSSettings;
 import lehjr.powersuits.common.constants.MPSConstants;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.players.ServerOpListEntry;
@@ -156,8 +157,9 @@ public class CosmeticGui extends ContainerlessGui {
     @Override
     public void renderBackground(PoseStack matrixStack) {
         super.renderBackground(matrixStack);
+        RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-        this.minecraft.getTextureManager().bindForSetup(this.BACKGROUND);
+        RenderSystem.setShaderTexture(0, BACKGROUND);
         int i = this.leftPos;
         int j = this.topPos;
         this.blit(matrixStack, i, j, 0, 0, this.imageWidth, this.imageHeight, 512, 512);

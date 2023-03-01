@@ -31,11 +31,13 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import lehjr.numina.client.gui.ContainerlessGui;
 import lehjr.numina.client.gui.geometry.MusePoint2D;
 import lehjr.numina.client.gui.geometry.Rect;
+import lehjr.numina.common.base.NuminaLogger;
 import lehjr.powersuits.client.gui.common.ModularItemSelectionFrame;
 import lehjr.powersuits.client.gui.common.TabSelectFrame;
 import lehjr.powersuits.common.constants.MPSConstants;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
@@ -52,7 +54,6 @@ public class ModuleTweakGui extends ContainerlessGui {
     TranslatableComponent MODULE_SELECTION_LABEL = new TranslatableComponent("gui.powersuits.installed.modules");
     TranslatableComponent TINKER_FRAME_LABEL = new TranslatableComponent("gui.powersuits.tinker");
     TranslatableComponent SUMMARY_FRAME_LABEL = new TranslatableComponent("gui.powersuits.equippedTotals");
-
 
     public static final ResourceLocation BACKGROUND = new ResourceLocation(MPSConstants.MOD_ID, "textures/gui/background/module_tweak.png");
     protected ModularItemSelectionFrame itemSelectFrame;
@@ -90,6 +91,12 @@ public class ModuleTweakGui extends ContainerlessGui {
         tabSelectFrame.setBottom(topPos);
         addFrame(tabSelectFrame);
 
+        /** frame to display and allow selecting of installed modules -------------------------------------------------- */
+        boolean keepOnReload = moduleSelectFrame != null;
+        moduleSelectFrame = new ModuleSelectionFrame(itemSelectFrame, new Rect(leftPos + 8, topPos + 13, leftPos + 172, topPos + 208));
+        moduleSelectFrame.loadModules(keepOnReload); // <- this probably won't make any difference
+        addFrame(moduleSelectFrame);
+
         /** setup call to make the modules reload when new button pressed */
         itemSelectFrame.setOnChanged(()-> {
             moduleSelectFrame.selectedModule = Optional.ofNullable(null);
@@ -97,17 +104,9 @@ public class ModuleTweakGui extends ContainerlessGui {
             tweakFrame.resetScroll();
         });
 
-        /** frame to display and allow selecting of installed modules -------------------------------------------------- */
-        boolean keepOnReload = moduleSelectFrame != null;
-        moduleSelectFrame = new ModuleSelectionFrame(itemSelectFrame, new Rect(leftPos + 8, topPos + 13, leftPos + 172, topPos + 208));
-        moduleSelectFrame.loadModules(keepOnReload); // <- this probably won't make any difference
-        addFrame(moduleSelectFrame);
-
-
         summaryFrame = new DetailedSummaryFrame(new Rect(leftPos + 176, topPos + 12, leftPos + 344,topPos + 46),
                 itemSelectFrame);
         addFrame(summaryFrame);
-
 
         tweakFrame = new ModuleTweakFrame(new Rect(leftPos + 176, topPos + 58, leftPos + 345, topPos + 208),
         itemSelectFrame,
@@ -124,8 +123,9 @@ public class ModuleTweakGui extends ContainerlessGui {
     @Override
     public void renderBackground(PoseStack matrixStack) {
         super.renderBackground(matrixStack);
+        RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-        this.minecraft.getTextureManager().bindForSetup(this.BACKGROUND);
+        RenderSystem.setShaderTexture(0, BACKGROUND);
         int i = this.leftPos;
         int j = this.topPos;
         this.blit(matrixStack, i, j, this.getBlitOffset(), 0, 0, imageWidth, imageHeight, 512, 512);

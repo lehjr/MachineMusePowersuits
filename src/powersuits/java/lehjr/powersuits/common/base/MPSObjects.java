@@ -27,6 +27,7 @@
 package lehjr.powersuits.common.base;
 
 
+import lehjr.numina.common.base.NuminaLogger;
 import lehjr.powersuits.common.block.LuxCapacitorBlock;
 import lehjr.powersuits.common.block.TinkerTable;
 import lehjr.powersuits.common.blockentity.LuxCapacitorBlockEntity;
@@ -253,7 +254,13 @@ public class MPSObjects {
 
     public static final RegistryObject<MenuType<InstallSalvageMenu>> INSTALL_SALVAGE_MENU_TYPE =
             CONTAINER_TYPES.register(MPSRegistryNames.INSTALL_SALVAGE_CONTAINER_TYPE,
-                    () -> IForgeMenuType.create((windowId, inv, data) -> new InstallSalvageMenu(windowId, inv, data.readEnum(EquipmentSlot.class))));
+
+
+                    () -> IForgeMenuType.create((windowId, inv, data) -> {
+                        NuminaLogger.logError("doing something with install/salvage");
+
+                        return new InstallSalvageMenu(windowId, inv, data.readEnum(EquipmentSlot.class));
+                    }));
 
     static RegistryObject<Item> registerModule(String regName, Item item) {
         MPSModules.INSTANCE.addModule(MPSRegistryNames.getRegName(regName));
