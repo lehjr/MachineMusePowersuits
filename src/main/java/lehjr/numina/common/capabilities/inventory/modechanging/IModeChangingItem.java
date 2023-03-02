@@ -26,16 +26,32 @@
 
 package lehjr.numina.common.capabilities.inventory.modechanging;
 
+import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
+import lehjr.numina.common.capabilities.module.blockbreaking.IBlockBreakingModule;
+import lehjr.numina.common.capabilities.module.miningenhancement.IMiningEnhancementModule;
+import lehjr.numina.common.capabilities.module.powermodule.PowerModuleCapability;
+import lehjr.numina.common.capabilities.module.rightclick.IRightClickModule;
+import lehjr.numina.common.energy.ElectricItemUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.items.CapabilityItemHandler;
 
 import javax.annotation.Nullable;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -73,4 +89,91 @@ public interface IModeChangingItem extends IModularItem {
     int prevMode();
 
     boolean isModuleActiveAndOnline(ResourceLocation moduleName);
+
+
+
+    default boolean onBlockStartBreak(ItemStack itemstack, BlockPos pos, Player player) {
+        return getActiveModule()
+                .getCapability(PowerModuleCapability.POWER_MODULE)
+                .filter(IMiningEnhancementModule.class::isInstance)
+                .map(IMiningEnhancementModule.class::cast)
+                .filter(pm ->pm.isModuleOnline())
+                .map(pm ->pm.onBlockStartBreak(itemstack, pos, player))
+                .orElse(false);
+    }
+
+    default int getUseDuration() {
+        return getActiveModule().getCapability(PowerModuleCapability.POWER_MODULE)
+                                .filter(IRightClickModule.class::isInstance)
+                                .map(IRightClickModule.class::cast)
+                                .map(m-> m.getModuleStack().getUseDuration())
+                                .orElse(72000);
+    }
+
+    default boolean mineBlock(ItemStack powerFist, Level worldIn, BlockState state, BlockPos pos, LivingEntity entityLiving) {
+        int playerEnergy = ElectricItemUtils.getPlayerEnergy(entityLiving);
+        return getInstalledModulesOfType(IBlockBreakingModule.class).stream().anyMatch(module ->
+                module.getCapability(PowerModuleCapability.POWER_MODULE)
+                        .filter(IBlockBreakingModule.class::isInstance)
+                        .map(IBlockBreakingModule.class::cast)
+                        .map(pm-> pm.mineBlock(powerFist, worldIn, state, pos, entityLiving, playerEnergy))
+                        .orElse(false));
+    }
+
+    default InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand, InteractionResultHolder<ItemStack> fallback) {
+        ItemStack fist = player.getItemInHand(hand);
+        return getActiveModule().
+                getCapability(PowerModuleCapability.POWER_MODULE)
+                .filter(IRightClickModule.class::isInstance)
+                .map(IRightClickModule.class::cast)
+                .map(rc-> rc.use(fist, level, player, hand)).orElse(fallback);
+    }
+
+   default InteractionResult onItemUseFirst(ItemStack itemStack, UseOnContext context, InteractionResult fallback) {
+        return getActiveModule().getCapability(PowerModuleCapability.POWER_MODULE)
+                            .filter(IRightClickModule.class::isInstance)
+                            .map(IRightClickModule.class::cast)
+                            .map(m-> m.onItemUseFirst(itemStack, context))
+                            .orElse(fallback);
+    }
+
+    default float getDestroySpeed(ItemStack pStack, BlockState pState) {
+        return getInstalledModules().stream()
+                .filter(IBlockBreakingModule.class::isInstance)
+                .map(IBlockBreakingModule.class::cast)
+                .filter(pm->pm.getEmulatedTool().getDestroySpeed(pState) > 1.0F)
+                .max(Comparator.comparing(pm->pm.getEmulatedTool().getDestroySpeed(pState)))
+                .map(pm-> pm.getEmulatedTool().getDestroySpeed(pState)).orElse(1.0F);
+    }
+
+    default ItemStack finishUsingItem(ItemStack stack, Level worldIn, LivingEntity entity) {
+        return getActiveModule().getCapability(PowerModuleCapability.POWER_MODULE)
+                                .filter(IRightClickModule.class::isInstance)
+                                .map(IRightClickModule.class::cast)
+                                .map(m-> m.finishUsingItem(stack, worldIn, entity))
+                                .orElse(stack);
+    }
+
+    default void releaseUsing(ItemStack stack, Level worldIn, LivingEntity entityLiving, int timeLeft) {
+                getActiveModule().getCapability(PowerModuleCapability.POWER_MODULE)
+                            .filter(IRightClickModule.class::isInstance)
+                            .map(IRightClickModule.class::cast)
+                            .ifPresent(m-> m.releaseUsing(stack, worldIn, entityLiving, timeLeft));
+    }
+
+    default InteractionResult useOn(UseOnContext context, InteractionResult fallback) {
+            return getActiveModule().getCapability(PowerModuleCapability.POWER_MODULE)
+                            .filter(IRightClickModule.class::isInstance)
+                            .map(IRightClickModule.class::cast)
+                            .map(m-> m.useOn(context)).orElse(fallback);
+    }
+
+    default boolean isCorrectToolForDrops(ItemStack itemStack, BlockState state) {
+        return getInstalledModulesOfType(IBlockBreakingModule.class)
+                .stream().anyMatch(module ->
+                        module.getCapability(PowerModuleCapability.POWER_MODULE)
+                                .filter(IBlockBreakingModule.class::isInstance)
+                                .map(IBlockBreakingModule.class::cast)
+                                .map(pm ->pm.getEmulatedTool().isCorrectToolForDrops(state)).orElse(false));
+    }
 }

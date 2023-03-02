@@ -27,7 +27,6 @@
 package lehjr.numina.common.entity;
 
 import lehjr.numina.client.sound.SoundDictionary;
-import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.base.NuminaObjects;
 import lehjr.numina.common.container.ArmorStandMenu;
 import net.minecraft.network.chat.TranslatableComponent;

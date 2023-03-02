@@ -329,10 +329,10 @@ public enum ModelSpecXMLReader {
             colour = colour.withAlpha(1.0F);
 
         if (partname == null) {
-            System.out.println("partName is NULL!!");
-            System.out.println("ModelSpec model: " + modelSpec.getName());
-            System.out.println("glow: " + glow);
-            System.out.println("colour: " + colour.hexColour());
+            NuminaLogger.logError("partName is NULL!!");
+            NuminaLogger.logError("ModelSpec model: " + modelSpec.getName());
+            NuminaLogger.logError("glow: " + glow);
+            NuminaLogger.logError("colour: " + colour.hexColour());
         } else
             modelSpec.put(partname, new ModelPartSpec(modelSpec,
                     binding,

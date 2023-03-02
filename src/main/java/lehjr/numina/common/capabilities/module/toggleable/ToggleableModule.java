@@ -31,6 +31,7 @@ import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
 import lehjr.numina.common.capabilities.module.powermodule.PowerModule;
 import lehjr.numina.common.constants.TagConstants;
+import lehjr.numina.common.tags.TagUtils;
 import net.minecraft.nbt.ByteTag;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
@@ -50,7 +51,7 @@ public class ToggleableModule extends PowerModule implements IToggleableModule, 
 
     @Override
     public void loadCapValues() {
-        final CompoundTag tag = module.getOrCreateTag();
+        final CompoundTag tag = TagUtils.getModuleTag(module);
         if (tag.contains(TagConstants.TAG_ONLINE, Tag.TAG_BYTE)) {
             deserializeNBT((ByteTag) tag.get(TagConstants.TAG_ONLINE));
         } else {
@@ -77,7 +78,7 @@ public class ToggleableModule extends PowerModule implements IToggleableModule, 
 
     @Override
     public void onValueChanged() {
-        module.addTagElement(TagConstants.TAG_ONLINE, serializeNBT());
+        TagUtils.setModuleBoolean(module, TagConstants.TAG_ONLINE, online);
     }
 
     @Override

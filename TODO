@@ -1,29 +1,51 @@
--GUI redesign
+1.18.2 broken stuff and todo
+----------------------------
+
+GUI
+-----------------------
+* creative install button - replace with vanilla styled button
+
+Model Spec
+----------------------
+This stuff is completely broken (high poly armor and power fist models are both broken)
+
+Capabilities
 ---------------------
-* Module installation/removal gui:
-    possibilities:
-    1a) separate from tweak gui, use drag and drop interface
-    1b) use icons do designate special slots (similar to player inventory gui)
-    --OR--
-    2a) redesign module list frame to look more like vanilla Minecraft inventory...
-    2b) redesign modular item selection frame to look more like vanilla inventory and use stock inventory background icons
-    2c) add "craft and install" ability back into the install/remove frame
-    --OR--
-    3) something else
+some stuff is working... module storage seems to be flawless
+revisit module code, especially block breaking
+fluid tank doesn't store water yet??
 
-* Keybinding frame:
-    - module icons and binding icons can end up outside the clickable area ... fix this
+Tweak Values not being saved
+---------------------
+(FIXED)module tweak values currently are not being saved (packet issue or path issue? both?)
 
-* Module selection frame:
-    - add selecting of already chosen module...
-    - fix selecting module not always working
+Recipes
+---------------------
+revisit recipes especially given the new availability of resources
+armor modules should use the next lowest tier module to craft
 
-* Better flight
-    - add elytra style flight (gliding, powered flight) with hovering when stationary
+mod integration
+---------------------
+investigate what's currently possible.
 
-* Finish recipes
-    - self explanatory
+Lux Capacitor
+---------------------
+color is lost when transitioning from entity to block
 
-* External mod integration (big one):
-    _ How to use items from other mods as tool type modules when some methods don't have an itemstack parameter but use a hand and a playerEntity parameter instead
-    > This means that the ItemStack checked is the one in that player's hand, not the one being used as a module
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

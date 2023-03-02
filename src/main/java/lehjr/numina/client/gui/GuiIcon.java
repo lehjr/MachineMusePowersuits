@@ -34,9 +34,10 @@ import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.constants.NuminaConstants;
 import lehjr.numina.common.math.Color;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.ShaderInstance;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.resources.ResourceLocation;
 
 /**
@@ -112,7 +113,12 @@ public class GuiIcon {
         }
 
         public void draw(PoseStack matrixStack, double x, double y, Color colour) {
+            ShaderInstance oldShader = RenderSystem.getShader();
+            RenderSystem.setShader(GameRenderer::getPositionTexColorShader);
+            RenderSystem.enableBlend();
             draw(matrixStack, x, y, 0, 0, 0, 0, colour);
+            RenderSystem.disableBlend();
+            RenderSystem.setShader(() -> oldShader);
         }
 
         public void renderIconScaledWithColour(PoseStack matrixStack,
@@ -293,7 +299,7 @@ public class GuiIcon {
     public static void renderTextureWithColour(ResourceLocation location, PoseStack matrixStack,
                                                double left, double right, double top, double bottom, float zLevel, double iconWidth, double iconHeight, double texStartX, double texStartY, double textureWidth, double textureHeight, Color colour) {
         Minecraft minecraft = Minecraft.getInstance();
-        minecraft.getTextureManager().bindForSetup(location);
+        RenderSystem.setShaderTexture(0, location);
         RenderSystem.enableBlend();
 //        RenderSystem.disableAlphaTest();
         RenderSystem.defaultBlendFunc();
@@ -346,21 +352,28 @@ public class GuiIcon {
      */
     private static void innerBlit(Matrix4f matrix4f, double left, double right, double top, double bottom, float zLevel, float minU, float maxU, float minV, float maxV, Color colour) {
         BufferBuilder bufferbuilder = Tesselator.getInstance().getBuilder();
-
         colour.setShaderColor();
-        bufferbuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
+        bufferbuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
 
         // bottom left
-        bufferbuilder.vertex(matrix4f, (float)left, (float)bottom, zLevel).uv(minU, maxV).endVertex();
+        bufferbuilder.vertex(matrix4f, (float)left, (float)bottom, zLevel).uv(minU, maxV)
+                .color(colour.r, colour.g, colour.b, colour.a)
+                .endVertex();
 
         // bottom right
-        bufferbuilder.vertex(matrix4f, (float)right, (float)bottom, zLevel).uv(maxU, maxV).endVertex();
+        bufferbuilder.vertex(matrix4f, (float)right, (float)bottom, zLevel).uv(maxU, maxV)
+                .color(colour.r, colour.g, colour.b, colour.a)
+                .endVertex();
 
         // top right
-        bufferbuilder.vertex(matrix4f, (float)right, (float)top, zLevel).uv(maxU, minV).endVertex();
+        bufferbuilder.vertex(matrix4f, (float)right, (float)top, zLevel).uv(maxU, minV)
+                .color(colour.r, colour.g, colour.b, colour.a)
+                .endVertex();
 
         // top left
-        bufferbuilder.vertex(matrix4f, (float)left, (float)top, zLevel).uv(minU, minV).endVertex();
+        bufferbuilder.vertex(matrix4f, (float)left, (float)top, zLevel).uv(minU, minV)
+                .color(colour.r, colour.g, colour.b, colour.a)
+                .endVertex();
 
         bufferbuilder.end();
 //        RenderSystem.enableAlphaTest();

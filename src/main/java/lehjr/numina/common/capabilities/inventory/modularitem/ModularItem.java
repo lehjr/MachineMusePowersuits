@@ -34,6 +34,7 @@ import lehjr.numina.common.capabilities.module.powermodule.PowerModuleCapability
 import lehjr.numina.common.capabilities.module.tickable.IPlayerTickModule;
 import lehjr.numina.common.capabilities.module.toggleable.IToggleableModule;
 import lehjr.numina.common.constants.TagConstants;
+import lehjr.numina.common.tags.TagUtils;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.DoubleTag;
@@ -309,7 +310,7 @@ public class ModularItem extends ItemStackHandler implements IModularItem, Capab
             ItemStack module = getStackInSlot(i);
             if (!module.isEmpty() && module.getItem().getRegistryName().equals(moduleName)) {
                 if (module.getCapability(PowerModuleCapability.POWER_MODULE).map(m -> {
-                    module.addTagElement(key, DoubleTag.valueOf(value));
+                    TagUtils.setModuleDoubleOrRemove(module, key, value);
                     return true;
                 }).orElse(false)) {
                     onContentsChanged(i);

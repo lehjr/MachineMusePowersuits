@@ -26,12 +26,15 @@
 
 package lehjr.numina.client.gui.geometry;
 
+import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.platform.Lighting;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import com.mojang.math.Matrix4f;
 import com.mojang.math.Vector3f;
 import lehjr.numina.common.math.Color;
-import org.lwjgl.opengl.GL11;
+import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.client.renderer.ShaderInstance;
 
 import java.nio.FloatBuffer;
 
@@ -59,57 +62,26 @@ public class SwirlyMuseCircle {
 //        RenderSystem.rotatef((float) (-ratio * 360.0), 0, 0, 1);
         matrixStack.mulPose(Vector3f.ZP.rotationDegrees(-ratio * 360.0F));
 
-
+        ShaderInstance oldShader = RenderSystem.getShader();
+        RenderSystem.setShader(GameRenderer::getPositionColorShader);
         RenderSystem.disableTexture();
         RenderSystem.enableBlend();
-//        RenderSystem.disableAlphaTest();
-        RenderSystem.defaultBlendFunc();
+        Lighting.setupForEntityInInventory();
+        RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
 
         Tesselator tessellator = Tesselator.getInstance();
         BufferBuilder buffer = tessellator.getBuilder();
-
-
         buffer.begin(VertexFormat.Mode.DEBUG_LINE_STRIP, DefaultVertexFormat.POSITION_COLOR);
-        /**
-         FIXME: this may not work, but it's worth a shot
-         -----------------------------------------------
-         Analysis: GL11.GL_LINE_LOOP is not accessible, lines look most promising
-
-         GL_POINTS         = 0x0,
-         GL_LINES          = 0x1, *** (most promising) ?
-         GL_LINE_LOOP      = 0x2,
-         GL_LINE_STRIP     = 0x3, *** (most promising) ?
-         GL_TRIANGLES      = 0x4, *
-         GL_TRIANGLE_STRIP = 0x5, *
-         GL_TRIANGLE_FAN   = 0x6, *
-         GL_QUADS          = 0x7,
-         GL_QUAD_STRIP     = 0x8,
-         GL_POLYGON        = 0x9;
-
-
-        Either gonna be debug lines or debug strip... debug strip might be easiest
-
-
-
-         */
-
-
-
-
-
-
-
-
         Matrix4f matrix4f = matrixStack.last().pose();
 
         while (points.hasRemaining() && colour.hasRemaining()) {
             buffer.vertex(matrix4f, points.get(), points.get(), zLevel).color(colour.get(), colour.get(), colour.get(), colour.get()).endVertex();
         }
         tessellator.end();
+        matrixStack.popPose();
 
         RenderSystem.disableBlend();
-//        RenderSystem.enableAlphaTest();
         RenderSystem.enableTexture();
-        matrixStack.popPose();
+        RenderSystem.setShader(() -> oldShader);
     }
 }

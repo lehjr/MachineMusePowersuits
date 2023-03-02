@@ -126,7 +126,15 @@ public abstract class NuminaRenderer {
         }
     }
 
-    // FIXME: PoseStack usage here seems dubious
+    /**
+     * Copied from vanilla renderer but edited to respect PoseStack param passed to method
+     * @param pStack
+     * @param poseStack
+     * @param x
+     * @param y
+     * @param bakedModel
+     * @param color
+     */
     public static void renderGuiItem(ItemStack pStack, PoseStack poseStack, float x, float y, BakedModel bakedModel, Color color) {
         Minecraft.getInstance().getTextureManager().getTexture(TextureAtlas.LOCATION_BLOCKS).setFilter(false, false);
         RenderSystem.setShaderTexture(0, TextureAtlas.LOCATION_BLOCKS);
@@ -141,8 +149,6 @@ public abstract class NuminaRenderer {
         poseStack.scale(1.0F, -1.0F, 1.0F);
         poseStack.scale(16.0F, 16.0F, 16.0F);
 //        RenderSystem.applyModelViewMatrix();
-
-
 
 //        PoseStack posestack1 = new PoseStack(); //
         MultiBufferSource.BufferSource multibuffersource$buffersource = Minecraft.getInstance().renderBuffers().bufferSource();

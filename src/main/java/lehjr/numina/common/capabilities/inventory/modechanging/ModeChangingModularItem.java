@@ -63,7 +63,7 @@ public class ModeChangingModularItem extends ModularItem implements IModeChangin
     }
 
     public ModeChangingModularItem(@Nonnull ItemStack modularItem, NonNullList<ItemStack> stacks) {
-        super(modularItem, stacks);
+        super(modularItem, stacks, true);
     }
 
     @OnlyIn(Dist.CLIENT)

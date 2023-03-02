@@ -26,6 +26,7 @@
 
 package lehjr.numina.common.tags;
 
+import lehjr.numina.common.constants.TagConstants;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
@@ -35,9 +36,6 @@ import javax.annotation.Nonnull;
 import java.util.Optional;
 
 public class TagUtils {
-    public static final String TAG_ITEM_PREFIX = "MMModItem";// Machine Muse Mod
-    public static final String TAG_MODULE_PREFIX = "MMModModule";// Machine Muse Mod
-
     /**
      * Gets or creates stack.getTag.getTag(TAG_ITEM_PREFIX)
      *
@@ -50,8 +48,8 @@ public class TagUtils {
         }
 
         CompoundTag stackTag = stack.getOrCreateTag();
-        CompoundTag properties = (stackTag.contains(TAG_ITEM_PREFIX)) ? stackTag.getCompound(TAG_ITEM_PREFIX) : new CompoundTag();
-        stackTag.put(TAG_ITEM_PREFIX, properties);
+        CompoundTag properties = (stackTag.contains(TagConstants.TAG_ITEM_PREFIX)) ? stackTag.getCompound(TagConstants.TAG_ITEM_PREFIX) : new CompoundTag();
+        stackTag.put(TagConstants.TAG_ITEM_PREFIX, properties);
         stack.setTag(stackTag);
         return properties;
     }
@@ -68,8 +66,8 @@ public class TagUtils {
         }
 
         CompoundTag stackTag = module.getOrCreateTag();
-        CompoundTag properties = (stackTag.contains(TAG_MODULE_PREFIX)) ? stackTag.getCompound(TAG_MODULE_PREFIX) : new CompoundTag();
-        stackTag.put(TAG_MODULE_PREFIX, properties);
+        CompoundTag properties = (stackTag.contains(TagConstants.TAG_MODULE_PREFIX)) ? stackTag.getCompound(TagConstants.TAG_MODULE_PREFIX) : new CompoundTag();
+        stackTag.put(TagConstants.TAG_MODULE_PREFIX, properties);
         module.setTag(stackTag);
         return properties;
     }

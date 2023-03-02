@@ -26,6 +26,7 @@
 
 package lehjr.numina.common.network.packets;
 
+import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
@@ -79,7 +80,14 @@ public class TweakRequestDoublePacket {
                 player.getItemBySlot(type).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
                         .filter(IModularItem.class::isInstance)
                         .map(IModularItem.class::cast)
-                        .ifPresent(iItemHandler -> iItemHandler.setModuleTweakDouble(moduleName, tweakName, tweakValue));
+                        .ifPresent(iItemHandler -> {
+                            NuminaLogger.logError("module before: " + iItemHandler.getOnlineModuleOrEmpty(moduleName).serializeNBT());
+
+
+                            iItemHandler.setModuleTweakDouble(moduleName, tweakName, tweakValue);
+
+                            NuminaLogger.logError("module after: " + iItemHandler.getOnlineModuleOrEmpty(moduleName).serializeNBT());
+                        });
                 player.getInventory().setChanged();
             }
         });

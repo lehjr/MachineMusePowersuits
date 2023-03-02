@@ -26,6 +26,7 @@
 
 package lehjr.numina.client.gui.clickable;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import lehjr.numina.client.gui.GuiIcon;
 import lehjr.numina.client.gui.geometry.IDrawable;
@@ -35,6 +36,8 @@ import lehjr.numina.client.gui.geometry.Rect;
 import lehjr.numina.common.math.Color;
 import lehjr.numina.common.string.StringUtils;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.client.renderer.ShaderInstance;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
@@ -139,6 +142,9 @@ public class Checkbox extends Clickable {
 
         @Override
         public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTick) {
+            ShaderInstance oldShader = RenderSystem.getShader();
+            RenderSystem.setShader(GameRenderer::getPositionTexColorShader);
+            RenderSystem.enableBlend();
             GuiIcon.renderTextureWithColour(TEXTURE, matrixStack,
                     left(), right(), top(), bottom(), getZLevel(),
                     // int uWidth, int vHeight,
@@ -150,6 +156,8 @@ public class Checkbox extends Clickable {
                     // textureWidth, textureHeight
                     64, 64,
                     Color.WHITE);
+            RenderSystem.disableBlend();
+            RenderSystem.setShader(() -> oldShader);
         }
 
         @Override

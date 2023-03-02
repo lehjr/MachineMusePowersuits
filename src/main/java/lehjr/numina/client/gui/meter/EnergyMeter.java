@@ -1,6 +1,5 @@
 package lehjr.numina.client.gui.meter;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import lehjr.numina.client.render.NuminaRenderer;
 import lehjr.numina.common.math.Color;

@@ -1,11 +1,14 @@
 package lehjr.numina.client.gui.clickable;
 
+import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.platform.Lighting;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import com.mojang.math.Matrix4f;
 import lehjr.numina.client.gui.geometry.MusePoint2D;
 import lehjr.numina.common.math.Color;
-import org.lwjgl.opengl.GL11;
+import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.client.renderer.ShaderInstance;
 
 public class ClickableIndicatorArrow extends Clickable {
     public float zLevel = 0;
@@ -21,14 +24,17 @@ public class ClickableIndicatorArrow extends Clickable {
 
     @Override
     public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTick) {
+        ShaderInstance oldShader = RenderSystem.getShader();
+        RenderSystem.setShader(GameRenderer::getPositionColorShader);
         RenderSystem.disableTexture();
         RenderSystem.enableBlend();
-//        RenderSystem.disableAlphaTest();
-        RenderSystem.defaultBlendFunc();
-        Matrix4f matrix4f = matrixStack.last().pose();
+        Lighting.setupForEntityInInventory();
+        RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
+
         Tesselator tessellator = Tesselator.getInstance();
         BufferBuilder buffer = tessellator.getBuilder();
         buffer.begin(VertexFormat.Mode.TRIANGLES, DefaultVertexFormat.POSITION_COLOR_LIGHTMAP);
+        Matrix4f matrix4f = matrixStack.last().pose();
 
         // DOWN
         switch (arrowDirection) {
@@ -121,8 +127,8 @@ public class ClickableIndicatorArrow extends Clickable {
         }
         tessellator.end();
         RenderSystem.disableBlend();
-//        RenderSystem.enableAlphaTest();
         RenderSystem.enableTexture();
+        RenderSystem.setShader(() -> oldShader);
     }
 
     public enum ArrowDirection {

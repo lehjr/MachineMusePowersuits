@@ -26,6 +26,7 @@
 
 package lehjr.powersuits.client.model.helper;
 
+import lehjr.numina.common.base.NuminaLogger;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.client.model.ForgeModelBakery;
 
@@ -41,6 +42,8 @@ public class MPSModelHelper {
 
 
     public static void loadArmorModels(@Nullable TextureStitchEvent.Pre event, ForgeModelBakery bakery) {
+        NuminaLogger.logError("loading cosmetic presets");
+
         ArrayList<String> resourceList = new ArrayList<String>() {{
             add("/assets/powersuits/modelspec/armor2.xml");
             add("/assets/powersuits/modelspec/default_armor.xml");
@@ -64,6 +67,7 @@ public class MPSModelHelper {
     }
 
     public static void parseSpecFile(String resourceString, @Nullable TextureStitchEvent.Pre event, ForgeModelBakery bakery) {
+        NuminaLogger.logError("loading cosmetic presets");
         URL resource = MPSModelHelper.class.getResource(resourceString);
         ModelSpecXMLReader.INSTANCE.parseFile(resource, event, bakery);
     }

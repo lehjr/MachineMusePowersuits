@@ -35,7 +35,6 @@ import com.mojang.math.Matrix4f;
 import com.mojang.math.Vector4f;
 import lehjr.numina.common.math.Color;
 import net.minecraft.client.gui.components.Widget;
-import org.lwjgl.opengl.GL11;
 
 import java.nio.DoubleBuffer;
 import java.nio.FloatBuffer;

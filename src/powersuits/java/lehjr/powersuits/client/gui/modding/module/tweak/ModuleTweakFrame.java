@@ -33,6 +33,7 @@ import lehjr.numina.client.gui.clickable.slider.VanillaTinkerSlider;
 import lehjr.numina.client.gui.frame.ScrollableFrame;
 import lehjr.numina.client.gui.geometry.MusePoint2D;
 import lehjr.numina.client.gui.geometry.Rect;
+import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
 import lehjr.numina.common.capabilities.module.powermodule.PowerModuleCapability;
 import lehjr.numina.common.constants.TagConstants;
@@ -220,13 +221,20 @@ public class ModuleTweakFrame extends ScrollableFrame {
     public boolean mouseReleased(double mouseX, double mouseY, int button) {
         if (selectedSlider != null) {
             selectedSlider.mouseReleased(mouseX, mouseY, button);
-            itemTarget.selectedType().ifPresent(type-> moduleTarget.getModuleCap().ifPresent(pm->
+
+            itemTarget.selectedType().ifPresent(type-> moduleTarget.getModuleCap().ifPresent(pm-> {
+                NuminaLogger.logError("item before: " + pm.getModuleStack().serializeNBT());
+
                     NuminaPackets.CHANNEL_INSTANCE.sendToServer(
                             new TweakRequestDoublePacket(
                                     type,
                                     pm.getModuleStack().getItem().getRegistryName(),
                                     selectedSlider.id(),
-                                    selectedSlider.getValue()))));
+                                    selectedSlider.getValue()));
+
+                NuminaLogger.logError("item after: " + pm.getModuleStack().serializeNBT());
+            }));
+
             selectedSlider = null;
             return true;
         }

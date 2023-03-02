@@ -1,6 +1,7 @@
 package lehjr.numina.common.capabilities.render.chameleon;
 
 import lehjr.numina.common.constants.TagConstants;
+import lehjr.numina.common.tags.TagUtils;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.StringTag;
 import net.minecraft.nbt.Tag;
@@ -18,7 +19,7 @@ public class Chameleon implements IChameleon, INBTSerializable<StringTag> {
     @Nonnull ItemStack module;
     public Chameleon(@Nonnull ItemStack module) {
         this.module = module;
-        CompoundTag tag = module.getOrCreateTag();
+        CompoundTag tag = TagUtils.getModuleTag(this.module);
         if (tag.contains(TagConstants.BLOCK, Tag.TAG_STRING)) {
             deserializeNBT((StringTag) tag.get(TagConstants.BLOCK));
         }
@@ -64,7 +65,7 @@ public class Chameleon implements IChameleon, INBTSerializable<StringTag> {
 
     @Override
     public void loadCapValues() {
-        CompoundTag tag = module.getOrCreateTag();
+        final CompoundTag tag = TagUtils.getModuleTag(module);
         if (tag.contains(TagConstants.BLOCK, Tag.TAG_STRING)) {
             deserializeNBT((StringTag) tag.get(TagConstants.BLOCK));
         }
@@ -72,7 +73,6 @@ public class Chameleon implements IChameleon, INBTSerializable<StringTag> {
 
     @Override
     public void onValueChanged() {
-        CompoundTag tag = module.getOrCreateTag();
-        tag.putString(TagConstants.BLOCK, this.blockRegName.toString());
+        TagUtils.setModuleResourceLocation(module, TagConstants.BLOCK, blockRegName);
     }
 }

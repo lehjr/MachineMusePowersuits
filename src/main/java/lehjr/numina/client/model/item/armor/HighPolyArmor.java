@@ -104,11 +104,11 @@ public class HighPolyArmor<T extends LivingEntity> extends HumanoidModel<T> {
         clearAndAddChild(leftArm, "left_arm",-5.0F, 24.0F, 0.0F);
         clearAndAddChild(rightLeg, "right_leg",1.9F, 12.0F, 0.0F);
         clearAndAddChild(leftLeg, "left_leg", -1.9F, 12.0F, 0.0F);
-        hat.cubes.clear();
+//        hat.cubes.clear(); // FIXME !!! Immutable collection !!!!!!!
     }
 
     public void clearAndAddChild(ModelPart mp, String partName, float x, float y, float z) {
-        mp.cubes.clear();
+//        mp.cubes.clear(); // FIXME !!! Immutable collection !!!!!!!
         RenderPart rp = new RenderPart(this, mp);
         rp.children = new HashMap<>() {{
             put(partName, rp);

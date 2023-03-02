@@ -1,7 +1,10 @@
 package lehjr.numina.common.network.packets;
 
+import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
+import lehjr.numina.common.capabilities.render.chameleon.Chameleon;
 import lehjr.numina.common.constants.TagConstants;
+import lehjr.numina.common.tags.TagUtils;
 import net.minecraft.nbt.StringTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
@@ -37,8 +40,13 @@ public class BlockNamePacket {
             player.getItemBySlot(EquipmentSlot.MAINHAND).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).filter(IModeChangingItem.class::isInstance)
                     .map(IModeChangingItem.class::cast)
                     .ifPresent(handler-> {
-                        handler.getActiveModule().addTagElement(TagConstants.BLOCK, StringTag.valueOf(message.regName.toString()));
+                        NuminaLogger.logError("module before: " + handler.getActiveModule().serializeNBT());
+
+                        TagUtils.setModuleResourceLocation(handler.getActiveModule(), TagConstants.BLOCK, message.regName);
+
+                        NuminaLogger.logError("module before: " + handler.getActiveModule().serializeNBT());
                     });
+            player.getInventory().setChanged();
         });
         ctx.get().setPacketHandled(true);
     }

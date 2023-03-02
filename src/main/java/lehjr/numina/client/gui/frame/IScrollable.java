@@ -1,5 +1,7 @@
 package lehjr.numina.client.gui.frame;
 
+import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.platform.Lighting;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import com.mojang.math.Matrix4f;
@@ -7,7 +9,8 @@ import lehjr.numina.client.gui.geometry.IDrawableRect;
 import lehjr.numina.common.math.Color;
 import lehjr.numina.common.math.MathUtils;
 import net.minecraft.client.Minecraft;
-import org.lwjgl.opengl.GL11;
+import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.client.renderer.ShaderInstance;
 
 public interface IScrollable extends IGuiFrame, IDrawableRect {
     void setTotalSize(int totalSize);
@@ -65,11 +68,12 @@ public interface IScrollable extends IGuiFrame, IDrawableRect {
     @Override
     default void preRender(PoseStack matrixStack, int mouseX, int mouseY, float frameTIme) {
         if (isVisible()) {
+            ShaderInstance oldShader = RenderSystem.getShader();
+            RenderSystem.setShader(GameRenderer::getPositionColorShader);
             RenderSystem.disableTexture();
             RenderSystem.enableBlend();
-//            RenderSystem.disableAlphaTest();
-            RenderSystem.defaultBlendFunc();
-//            NuminaRenderState.glowOn();
+            Lighting.setupForEntityInInventory();
+            RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
 
             Tesselator tessellator = Tesselator.getInstance();
             BufferBuilder buffer = tessellator.getBuilder();
@@ -112,8 +116,9 @@ public interface IScrollable extends IGuiFrame, IDrawableRect {
             tessellator.end();
 
             RenderSystem.disableBlend();
-//            RenderSystem.enableAlphaTest();
             RenderSystem.enableTexture();
+            RenderSystem.setShader(() -> oldShader);
+
             enableScissor((int)left(), (int)top(), (int)width(), (int)height()); // get rid of margins
         }
     }
@@ -129,8 +134,6 @@ public interface IScrollable extends IGuiFrame, IDrawableRect {
         double newh = h * scaleFactor;
         RenderSystem.enableScissor((int) newx, (int) newy, (int) neww, (int) newh);
     }
-
-
 
     @Override
     default void postRender(int mouseX, int mouseY, float partialTicks) {
