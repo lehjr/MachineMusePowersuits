@@ -6,6 +6,8 @@ import com.mojang.math.Matrix4f;
 import lehjr.numina.client.gui.geometry.IDrawableRect;
 import lehjr.numina.common.math.Color;
 import lehjr.numina.common.math.MathUtils;
+import net.minecraft.client.Minecraft;
+import org.lwjgl.opengl.GL11;
 
 public interface IScrollable extends IGuiFrame, IDrawableRect {
     void setTotalSize(int totalSize);
@@ -47,9 +49,9 @@ public interface IScrollable extends IGuiFrame, IDrawableRect {
         if (isVisible() && containsPoint(x, y) && button == 0) {
             double dscroll = 0;
             if (y - top() < getButtonSize() && this.getCurrentScrollPixels() > 0) {
-                dscroll = ((double) dscroll - this.getScrollAmount());
+                dscroll = (dscroll - this.getScrollAmount());
             } else if (bottom() - y < getButtonSize()) {
-                dscroll = ((double) dscroll + this.getScrollAmount());
+                dscroll = (dscroll + this.getScrollAmount());
             }
             if (dscroll != 0) {
                 setCurrentScrollPixels(MathUtils.clampDouble(this.getCurrentScrollPixels() + dscroll, 0.0D, this.getMaxScrollPixels()));
@@ -112,9 +114,23 @@ public interface IScrollable extends IGuiFrame, IDrawableRect {
             RenderSystem.disableBlend();
 //            RenderSystem.enableAlphaTest();
             RenderSystem.enableTexture();
-            RenderSystem.enableScissor((int)left(), (int)top(), (int)width(), (int)height()); // get rid of margins
+            enableScissor((int)left(), (int)top(), (int)width(), (int)height()); // get rid of margins
         }
     }
+
+
+    static void enableScissor(double x, double y, double w, double h) {
+        Minecraft mc = Minecraft.getInstance();
+        int dh = mc.getWindow().getHeight();
+        double scaleFactor = mc.getWindow().getGuiScale();
+        double newx = x * scaleFactor;
+        double newy = dh - h * scaleFactor - y * scaleFactor;
+        double neww = w * scaleFactor;
+        double newh = h * scaleFactor;
+        RenderSystem.enableScissor((int) newx, (int) newy, (int) neww, (int) newh);
+    }
+
+
 
     @Override
     default void postRender(int mouseX, int mouseY, float partialTicks) {

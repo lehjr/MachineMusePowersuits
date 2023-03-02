@@ -127,34 +127,38 @@ public abstract class NuminaRenderer {
     }
 
     // FIXME: PoseStack usage here seems dubious
-    public static void renderGuiItem(ItemStack pStack, PoseStack matrixStackIn, float x, float y, BakedModel bakedModel, Color color) {
+    public static void renderGuiItem(ItemStack pStack, PoseStack poseStack, float x, float y, BakedModel bakedModel, Color color) {
         Minecraft.getInstance().getTextureManager().getTexture(TextureAtlas.LOCATION_BLOCKS).setFilter(false, false);
         RenderSystem.setShaderTexture(0, TextureAtlas.LOCATION_BLOCKS);
         RenderSystem.enableBlend();
         RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-        PoseStack posestack = RenderSystem.getModelViewStack();
-        posestack.pushPose();
-        posestack.translate((double)x, (double)y, (double)(100.0F + Minecraft.getInstance().getItemRenderer().blitOffset));
-        posestack.translate(8.0D, 8.0D, 0.0D);
-        posestack.scale(1.0F, -1.0F, 1.0F);
-        posestack.scale(16.0F, 16.0F, 16.0F);
-        RenderSystem.applyModelViewMatrix();
-        PoseStack posestack1 = new PoseStack(); //
+
+//        PoseStack poseStack = RenderSystem.getModelViewStack();
+        poseStack.pushPose();
+        poseStack.translate((double)x, (double)y, (double)(100.0F + Minecraft.getInstance().getItemRenderer().blitOffset));
+        poseStack.translate(8.0D, 8.0D, 0.0D);
+        poseStack.scale(1.0F, -1.0F, 1.0F);
+        poseStack.scale(16.0F, 16.0F, 16.0F);
+//        RenderSystem.applyModelViewMatrix();
+
+
+
+//        PoseStack posestack1 = new PoseStack(); //
         MultiBufferSource.BufferSource multibuffersource$buffersource = Minecraft.getInstance().renderBuffers().bufferSource();
         boolean flag = !bakedModel.usesBlockLight();
         if (flag) {
             Lighting.setupForFlatItems();
         }
 
-        renderItem(pStack, ItemTransforms.TransformType.GUI, false, posestack1, multibuffersource$buffersource, 15728880, OverlayTexture.NO_OVERLAY, bakedModel, color);
+        renderItem(pStack, ItemTransforms.TransformType.GUI, false, poseStack/*posestack1*/, multibuffersource$buffersource, 15728880, OverlayTexture.NO_OVERLAY, bakedModel, color);
         multibuffersource$buffersource.endBatch();
         RenderSystem.enableDepthTest();
         if (flag) {
             Lighting.setupFor3DItems();
         }
 
-        posestack.popPose();
+        poseStack.popPose();
         RenderSystem.applyModelViewMatrix();
     }
 
