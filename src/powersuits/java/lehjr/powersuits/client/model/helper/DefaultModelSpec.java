@@ -28,6 +28,7 @@ package lehjr.powersuits.client.model.helper;
 
 import lehjr.numina.common.capabilities.render.modelspec.*;
 import lehjr.numina.common.constants.NuminaConstants;
+import lehjr.numina.common.constants.TagConstants;
 import lehjr.powersuits.common.config.MPSSettings;
 import lehjr.powersuits.common.item.armor.AbstractElectricItemArmor;
 import lehjr.powersuits.common.item.tool.PowerFist;
@@ -135,16 +136,16 @@ public class DefaultModelSpec {
 
         CompoundTag nbt = new CompoundTag();
         for (CompoundTag elem : prefArray) {
-            nbt.put(elem.getString(NuminaConstants.TAG_MODEL) + "." + elem.getString(NuminaConstants.TAG_PART), elem);
+            nbt.put(elem.getString(TagConstants.MODEL) + "." + elem.getString(TagConstants.PART), elem);
         }
 
         if (!specList.isEmpty())
-            nbt.put(NuminaConstants.NBT_SPECLIST_TAG, specList);
+            nbt.put(TagConstants.SPECLIST, specList);
 
         if (!texSpecTag.isEmpty())
-            nbt.put(NuminaConstants.NBT_TEXTURESPEC_TAG, texSpecTag);
+            nbt.put(TagConstants.TEXTURESPEC, texSpecTag);
 
-        nbt.put(NuminaConstants.TAG_COLOURS, new IntArrayTag(colours));
+        nbt.put(TagConstants.COLORS, new IntArrayTag(colours));
 
         return nbt;
     }

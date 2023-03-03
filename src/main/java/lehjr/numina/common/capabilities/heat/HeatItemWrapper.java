@@ -28,6 +28,7 @@ package lehjr.numina.common.capabilities.heat;
 
 import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
 import lehjr.numina.common.constants.TagConstants;
+import lehjr.numina.common.tags.TagUtils;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.DoubleTag;
 import net.minecraft.nbt.Tag;
@@ -59,14 +60,11 @@ public class HeatItemWrapper extends HeatStorage {
 
     @Override
     public void loadCapValues() {
-        final CompoundTag tag = this.stack.getOrCreateTag();
-        if (tag != null && tag.contains(TagConstants.HEAT, Tag.TAG_DOUBLE)) {
-            deserializeNBT((DoubleTag) tag.get(TagConstants.HEAT));
-        }
+        heat = Math.min(capacity, TagUtils.getModularItemDoubleOrZero(stack, TagConstants.HEAT));
     }
 
     @Override
     public void onValueChanged() {
-        this.stack.addTagElement(TagConstants.HEAT, serializeNBT());
+        TagUtils.setModularItemDoubleOrRemove(stack, TagConstants.HEAT, heat);
     }
 }

@@ -26,10 +26,13 @@
 
 package lehjr.numina.client.gui.geometry;
 
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import lehjr.numina.common.math.Color;
+import net.minecraft.client.renderer.ShaderInstance;
 import org.lwjgl.BufferUtils;
 
 import java.nio.FloatBuffer;
@@ -155,7 +158,9 @@ public class DrawableRect extends Rect implements IDrawableRect {
     }
 
     public void drawBackground(PoseStack matrixStack, FloatBuffer vertices) {
+
         drawBuffer(matrixStack, vertices, backgroundColour, VertexFormat.Mode.TRIANGLE_FAN);
+
     }
 
     public void drawBackground(PoseStack matrixStack, FloatBuffer vertices, FloatBuffer colours) {
@@ -163,21 +168,23 @@ public class DrawableRect extends Rect implements IDrawableRect {
     }
 
     public void drawBorder(PoseStack matrixStack, FloatBuffer vertices) {
+
         drawBuffer(matrixStack, vertices, borderColour, VertexFormat.Mode.DEBUG_LINE_STRIP); // FIXME!!!!
+
     }
 
     void drawBuffer(PoseStack matrixStack, FloatBuffer vertices, Color colour, VertexFormat.Mode glMode) {
-        preDraw(glMode, DefaultVertexFormat.POSITION_COLOR);
-        addVerticesToBuffer(matrixStack.last().pose(), vertices, colour);
-        drawTesselator();
-        postDraw();
+        BufferBuilder builder = preDraw(glMode, DefaultVertexFormat.POSITION_COLOR);
+        addVerticesToBuffer(builder, matrixStack.last().pose(), vertices, colour);
+        builder.end();
+        postDraw(builder);
     }
 
     void drawBuffer(PoseStack matrixStack, FloatBuffer vertices, FloatBuffer colours, VertexFormat.Mode glMode) {
-        preDraw(glMode, DefaultVertexFormat.POSITION_COLOR);
-        addVerticesToBuffer(matrixStack.last().pose(), vertices, colours);
-        drawTesselator();
-        postDraw();
+        BufferBuilder builder = preDraw(glMode, DefaultVertexFormat.POSITION_COLOR);
+        addVerticesToBuffer(builder, matrixStack.last().pose(), vertices, colours);
+        builder.end();
+        postDraw(builder);
     }
 
     public float getCornerradius() {
@@ -239,7 +246,7 @@ public class DrawableRect extends Rect implements IDrawableRect {
 
     @Override
     public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTick) {
-
+        ShaderInstance oldShader = RenderSystem.getShader();
         FloatBuffer vertices = preDraw(0);
 
         if (backgroundColour2 != null) {
@@ -256,6 +263,7 @@ public class DrawableRect extends Rect implements IDrawableRect {
             vertices.rewind();
         }
         drawBorder(matrixStack, vertices);
+        RenderSystem.setShader(() -> oldShader);
     }
 
     @Override

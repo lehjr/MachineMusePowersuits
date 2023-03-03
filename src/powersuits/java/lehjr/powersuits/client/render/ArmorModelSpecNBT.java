@@ -30,6 +30,7 @@ import lehjr.numina.common.capabilities.render.IArmorModelSpecNBT;
 import lehjr.numina.common.capabilities.render.ModelSpecStorage;
 import lehjr.numina.common.capabilities.render.modelspec.*;
 import lehjr.numina.common.constants.NuminaConstants;
+import lehjr.numina.common.constants.TagConstants;
 import lehjr.numina.common.tags.TagUtils;
 import lehjr.powersuits.common.config.MPSSettings;
 import net.minecraft.nbt.CompoundTag;
@@ -58,7 +59,7 @@ public class ArmorModelSpecNBT extends ModelSpecStorage implements IArmorModelSp
         }
 
         try {
-            TexturePartSpec partSpec = (TexturePartSpec) ModelRegistry.getInstance().getPart(renderTag.getCompound(NuminaConstants.NBT_TEXTURESPEC_TAG));
+            TexturePartSpec partSpec = (TexturePartSpec) ModelRegistry.getInstance().getPart(renderTag.getCompound(TagConstants.TEXTURESPEC));
             if (partSpec != null) {
                 return SpecType.ARMOR_SKIN;
             }
@@ -136,27 +137,27 @@ public class ArmorModelSpecNBT extends ModelSpecStorage implements IArmorModelSp
 
         CompoundTag nbt = new CompoundTag();
         for (CompoundTag elem : prefArray) {
-            nbt.put(elem.getString(NuminaConstants.TAG_MODEL) + "." + elem.getString(NuminaConstants.TAG_PART), elem);
+            nbt.put(elem.getString(TagConstants.MODEL) + "." + elem.getString(TagConstants.PART), elem);
         }
 
         if (!specList.isEmpty()) {
-            nbt.put(NuminaConstants.NBT_SPECLIST_TAG, specList);
+            nbt.put(TagConstants.SPECLIST, specList);
         }
 
         if (!texSpecTag.isEmpty()) {
-            nbt.put(NuminaConstants.NBT_TEXTURESPEC_TAG, texSpecTag);
+            nbt.put(TagConstants.TEXTURESPEC, texSpecTag);
         }
 
-        nbt.put(NuminaConstants.TAG_COLOURS, new IntArrayTag(colours));
+        nbt.put(TagConstants.COLORS, new IntArrayTag(colours));
         return nbt;
     }
 
     @Override
     public ResourceLocation getArmorTexture() {
         CompoundTag itemTag = TagUtils.getMuseItemTag(getItemStack());
-        CompoundTag renderTag = itemTag.getCompound(NuminaConstants.TAG_RENDER);
+        CompoundTag renderTag = itemTag.getCompound(TagConstants.RENDER);
         try {
-            TexturePartSpec partSpec = (TexturePartSpec) ModelRegistry.getInstance().getPart(renderTag.getCompound(NuminaConstants.NBT_TEXTURESPEC_TAG));
+            TexturePartSpec partSpec = (TexturePartSpec) ModelRegistry.getInstance().getPart(renderTag.getCompound(TagConstants.TEXTURESPEC));
             return partSpec.getTextureLocation();
         } catch (Exception ignored) {
             return NuminaConstants.BLANK_ARMOR_MODEL_PATH;

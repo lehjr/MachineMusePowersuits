@@ -27,14 +27,12 @@
 package lehjr.numina.client.gui.geometry;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.BufferBuilder;
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.Tesselator;
-import com.mojang.blaze3d.vertex.VertexFormat;
+import com.mojang.blaze3d.vertex.*;
 import com.mojang.math.Matrix4f;
 import com.mojang.math.Vector4f;
 import lehjr.numina.common.math.Color;
 import net.minecraft.client.gui.components.Widget;
+import net.minecraft.client.renderer.GameRenderer;
 
 import java.nio.DoubleBuffer;
 import java.nio.FloatBuffer;
@@ -59,10 +57,10 @@ public interface IDrawable extends Widget {
      * @param vertices
      * @param colour a Colour to draw in
      */
-    default void addVerticesToBuffer(Matrix4f matrix4f, FloatBuffer vertices, Color colour) {
+    default void addVerticesToBuffer(BufferBuilder bufferbuilder, Matrix4f matrix4f, FloatBuffer vertices, Color colour) {
         vertices.rewind();
         while(vertices.hasRemaining()) {
-            getBufferBuilder().vertex(matrix4f, vertices.get(), vertices.get(), getZLevel()).color(colour.r, colour.g, colour.b, colour.a).endVertex();
+            bufferbuilder.vertex(matrix4f, vertices.get(), vertices.get(), getZLevel()).color(colour.r, colour.g, colour.b, colour.a).endVertex();
         }
     }
 
@@ -72,12 +70,12 @@ public interface IDrawable extends Widget {
      * @param vertices
      * @param colour a Colour to draw in
      */
-    default void addVerticesToBuffer(Matrix4f matrix4f, DoubleBuffer vertices, Color colour) {
+    default void addVerticesToBuffer(BufferBuilder bufferbuilder, Matrix4f matrix4f, DoubleBuffer vertices, Color colour) {
         vertices.rewind();
         Vector4f vector4f = new Vector4f((float)vertices.get(), (float)vertices.get(), getZLevel(), 1.0F);
         vector4f.transform(matrix4f);
         while(vertices.hasRemaining()) {
-            getBufferBuilder().vertex((double)vector4f.x(), (double)vector4f.y(), (double)vector4f.z()).color(colour.r, colour.g, colour.b, colour.a).endVertex();
+            bufferbuilder.vertex((double)vector4f.x(), (double)vector4f.y(), (double)vector4f.z()).color(colour.r, colour.g, colour.b, colour.a).endVertex();
         }
     }
 
@@ -87,37 +85,38 @@ public interface IDrawable extends Widget {
      * @param vertices
      * @param colourBuffer FloatBuffer of colors
      */
-    default void addVerticesToBuffer(Matrix4f matrix4f, FloatBuffer vertices, FloatBuffer colourBuffer) {
+    default void addVerticesToBuffer(BufferBuilder bufferbuilder, Matrix4f matrix4f, FloatBuffer vertices, FloatBuffer colourBuffer) {
         vertices.rewind();
         colourBuffer.rewind();
         while(vertices.hasRemaining() && colourBuffer.hasRemaining()) {
-            getBufferBuilder().vertex(matrix4f, vertices.get(), vertices.get(), getZLevel()).color(colourBuffer.get(), colourBuffer.get(), colourBuffer.get(), colourBuffer.get()).endVertex();
+            bufferbuilder.vertex(matrix4f, vertices.get(), vertices.get(), getZLevel()).color(colourBuffer.get(), colourBuffer.get(), colourBuffer.get(), colourBuffer.get()).endVertex();
         }
     }
-
-    default Tesselator getTesselator() {
-        return Tesselator.getInstance();
-    }
-
     default BufferBuilder getBufferBuilder() {
-        return getTesselator().getBuilder();
+        return Tesselator.getInstance().getBuilder();
     }
 
-    default void preDraw(VertexFormat.Mode mode, VertexFormat format) {
-        RenderSystem.disableTexture();
+    default BufferBuilder preDraw(VertexFormat.Mode mode, VertexFormat format) {
+//        RenderSystem.disableTexture();
+//        RenderSystem.enableBlend();
+//        RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
+//
         RenderSystem.enableBlend();
-//        RenderSystem.disableAlphaTest();
+        RenderSystem.disableTexture();
         RenderSystem.defaultBlendFunc();
-        getBufferBuilder().begin(mode, format);
+        RenderSystem.setShader(GameRenderer::getPositionColorShader);
+        BufferBuilder builder = getBufferBuilder();
+        builder.begin(mode, format);
+        return builder;
     }
 
-    default void postDraw() {
-        RenderSystem.disableBlend();
-//        RenderSystem.enableAlphaTest();
+    default void postDraw(BufferBuilder builder) {
+//        RenderSystem.disableBlend();
+////        RenderSystem.enableAlphaTest();
+//        RenderSystem.enableTexture();
+
+        BufferUploader.end(builder);
         RenderSystem.enableTexture();
-    }
-
-    default void drawTesselator() {
-        getTesselator().end();
+        RenderSystem.disableBlend();
     }
 }

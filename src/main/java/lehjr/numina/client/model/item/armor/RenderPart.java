@@ -36,6 +36,7 @@ import lehjr.numina.common.capabilities.render.modelspec.ModelRegistry;
 import lehjr.numina.common.capabilities.render.modelspec.ModelSpec;
 import lehjr.numina.common.capabilities.render.modelspec.PartSpecBase;
 import lehjr.numina.common.constants.NuminaConstants;
+import lehjr.numina.common.constants.TagConstants;
 import lehjr.numina.common.math.Color;
 import lehjr.numina.common.tags.NBTTagAccessor;
 import net.minecraft.client.model.Model;
@@ -113,7 +114,7 @@ public class RenderPart extends ModelPart {
         if (renderSpec != null) {
             PoseStack.Pose entry = matrixStackIn.last();
 
-            int[] colours = renderSpec.getIntArray(NuminaConstants.TAG_COLOURS);
+            int[] colours = renderSpec.getIntArray(TagConstants.COLORS);
 
             if (colours.length == 0) {
                 colours = new int[]{Color.WHITE.getInt()};

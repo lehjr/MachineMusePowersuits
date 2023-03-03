@@ -33,12 +33,14 @@ import lehjr.numina.client.gui.frame.AbstractGuiFrame;
 import lehjr.numina.client.gui.geometry.MusePoint2D;
 import lehjr.numina.client.gui.geometry.Rect;
 import lehjr.numina.client.render.IconUtils;
+import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.capabilities.render.IArmorModelSpecNBT;
 import lehjr.numina.common.capabilities.render.IHandHeldModelSpecNBT;
 import lehjr.numina.common.capabilities.render.IModelSpec;
 import lehjr.numina.common.capabilities.render.ModelSpecCapability;
 import lehjr.numina.common.capabilities.render.modelspec.*;
 import lehjr.numina.common.constants.NuminaConstants;
+import lehjr.numina.common.constants.TagConstants;
 import lehjr.numina.common.math.Color;
 import lehjr.numina.common.network.NuminaPackets;
 import lehjr.numina.common.network.packets.CosmeticInfoPacket;
@@ -132,7 +134,7 @@ public class ModelManipSubframe extends AbstractGuiFrame {
                 if (iModelSpecNBT instanceof IArmorModelSpecNBT) {
                     model.getPartSpecs().forEach(spec -> {
                         if (spec.getBinding().getSlot().equals(slot)) {
-                            String tagName = spec instanceof TexturePartSpec ? NuminaConstants.NBT_TEXTURESPEC_TAG : ModelRegistry.getInstance().makeName(spec);
+                            String tagName = spec instanceof TexturePartSpec ? TagConstants.TEXTURESPEC : ModelRegistry.getInstance().makeName(spec);
 
                             parts.add(createNewFrame(spec, renderTag.getCompound(tagName)));
                         }
@@ -140,7 +142,7 @@ public class ModelManipSubframe extends AbstractGuiFrame {
                 } else if (iModelSpecNBT instanceof IHandHeldModelSpecNBT) {
                     model.getPartSpecs().forEach(spec -> {
                         if (spec.getBinding().getSlot().getType().equals(EquipmentSlot.Type.HAND)) {
-                            String tagName = spec instanceof TexturePartSpec ? NuminaConstants.NBT_TEXTURESPEC_TAG : ModelRegistry.getInstance().makeName(spec);
+                            String tagName = spec instanceof TexturePartSpec ? TagConstants.TEXTURESPEC : ModelRegistry.getInstance().makeName(spec);
                             parts.add(createNewFrame(spec, renderTag.getCompound(tagName)));
                         }
                     });
@@ -151,10 +153,10 @@ public class ModelManipSubframe extends AbstractGuiFrame {
                     spec.setVisible(this.open);
                     spec.setTop(this.top() + specHeight);
                     // Only one TexturePartSpec is allowed at a time, so figure out if this one is enabled
-                    if (spec.partSpec instanceof TexturePartSpec && renderTag.contains(NuminaConstants.NBT_TEXTURESPEC_TAG)) {
-                        CompoundTag texSpecTag = renderTag.getCompound(NuminaConstants.NBT_TEXTURESPEC_TAG);
-                        if (spec.partSpec.spec.getOwnName().equals(texSpecTag.getString(NuminaConstants.TAG_MODEL))) {
-                            spec.tagdata = renderTag.getCompound(NuminaConstants.NBT_TEXTURESPEC_TAG);
+                    if (spec.partSpec instanceof TexturePartSpec && renderTag.contains(TagConstants.TEXTURESPEC)) {
+                        CompoundTag texSpecTag = renderTag.getCompound(TagConstants.TEXTURESPEC);
+                        if (spec.partSpec.spec.getOwnName().equals(texSpecTag.getString(TagConstants.MODEL))) {
+                            spec.tagdata = renderTag.getCompound(TagConstants.TEXTURESPEC);
                         } else {
                             spec.tagdata = new CompoundTag();
                         }
@@ -229,10 +231,10 @@ public class ModelManipSubframe extends AbstractGuiFrame {
                     specTag = renderTag.contains(name) ? renderTag.getCompound(name) : new CompoundTag();
                 }
                 // Only one TexturePartSpec is allowed at a time, so figure out if this one is enabled
-                if (partSpec instanceof TexturePartSpec && renderTag.contains(NuminaConstants.NBT_TEXTURESPEC_TAG)) {
-                    CompoundTag texSpecTag = renderTag.getCompound(NuminaConstants.NBT_TEXTURESPEC_TAG);
-                    if (partSpec.spec.getOwnName().equals(texSpecTag.getString(NuminaConstants.TAG_MODEL))) {
-                        specTag = renderTag.getCompound(NuminaConstants.NBT_TEXTURESPEC_TAG);
+                if (partSpec instanceof TexturePartSpec && renderTag.contains(TagConstants.TEXTURESPEC)) {
+                    CompoundTag texSpecTag = renderTag.getCompound(TagConstants.TEXTURESPEC);
+                    if (partSpec.spec.getOwnName().equals(texSpecTag.getString(TagConstants.MODEL))) {
+                        specTag = renderTag.getCompound(TagConstants.TEXTURESPEC);
                     }
                 }
             }
@@ -253,7 +255,7 @@ public class ModelManipSubframe extends AbstractGuiFrame {
                 name = ModelRegistry.getInstance().makeName(partSpec);
                 ((ModelPartSpec) partSpec).multiSet(nbt, null, null);
             } else {
-                name = NuminaConstants.NBT_TEXTURESPEC_TAG;
+                name = TagConstants.TEXTURESPEC;
                 partSpec.multiSet(nbt, null);
             }
 
@@ -265,7 +267,7 @@ public class ModelManipSubframe extends AbstractGuiFrame {
                     if (renderTag != null && !renderTag.isEmpty()) {
                         renderTag.put(name, nbt);
                         // FIXME this is screwing up render tags!!!!!
-//                        specNBT.setRenderTag(renderTag, NuminaConstants.TAG_RENDER);
+//                        specNBT.setRenderTag(renderTag, TagConstants.RENDER);
                     }
                 });
             }
@@ -347,7 +349,7 @@ public class ModelManipSubframe extends AbstractGuiFrame {
         public PartManipSubFrame(PartSpecBase partSpec, double left, double top, double width, double height, CompoundTag tagdataIn) {
             super(new Rect(left, top, left + width, top + height));
             this.partSpec = partSpec;
-            this.tagname = partSpec instanceof TexturePartSpec ? NuminaConstants.NBT_TEXTURESPEC_TAG : ModelRegistry.getInstance().makeName(partSpec);
+            this.tagname = partSpec instanceof TexturePartSpec ? TagConstants.TEXTURESPEC : ModelRegistry.getInstance().makeName(partSpec);
             this.tagdata = tagdataIn;
             this.buttons = new ArrayList<>();
             this.colorButtons = new ArrayList<>();
@@ -508,10 +510,14 @@ public class ModelManipSubframe extends AbstractGuiFrame {
                     button.render(matrixStack, mouseX, mouseY, partialTick);
                 }
 
-                StringUtils.drawText(matrixStack, partSpec.getDisaplayName(),
-                        colorButtons.get(colorButtons.size() -1).right() + 4,
-                        top() + StringUtils.getStringHeight() - iconWidth,
-                        Color.WHITE);
+                if (!colorButtons.isEmpty()) {
+                    StringUtils.drawText(matrixStack, partSpec.getDisaplayName(),
+                            colorButtons.get(colorButtons.size() - 1).right() + 4,
+                            top() + StringUtils.getStringHeight() - iconWidth,
+                            Color.WHITE);
+                } else {
+                    NuminaLogger.logError("color buttons shouldn't be empty");
+                }
             }
         }
 

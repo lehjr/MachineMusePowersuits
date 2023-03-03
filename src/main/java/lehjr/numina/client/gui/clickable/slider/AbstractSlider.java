@@ -228,7 +228,7 @@ public abstract class AbstractSlider extends Clickable {
         RenderSystem.lineWidth(1);
         builder.vertex(matrix4f, (float) xStart, (float) yStart, getZLevel()).color(colour.r, colour.g, colour.b, colour.a).endVertex();
         builder.vertex(matrix4f, (float) xEnd, (float) yEnd, getZLevel()).color(colour.r, colour.g, colour.b, colour.a).endVertex();
-        drawTesselator();
-        postDraw();
+        builder.end();
+        postDraw(builder);
     }
 }

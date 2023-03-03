@@ -34,6 +34,7 @@ import lehjr.numina.client.model.obj.OBJBakedCompositeModel;
 import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.capabilities.render.modelspec.*;
 import lehjr.numina.common.constants.NuminaConstants;
+import lehjr.numina.common.constants.TagConstants;
 import lehjr.numina.common.math.Color;
 import lehjr.numina.common.string.StringUtils;
 import lehjr.powersuits.common.config.MPSSettings;
@@ -177,7 +178,7 @@ public enum ModelSpecXMLReader {
      * Biggest difference between the ModelSpec for Armor vs PowerFistModel2 is that the armor models don't need item camera transforms
      */
     public static void parseModelSpec(Node specNode, TextureStitchEvent.Pre event, ForgeModelBakery bakery, SpecType specType, String specName, boolean isDefault) {
-        NodeList models = specNode.getOwnerDocument().getElementsByTagName(NuminaConstants.TAG_MODEL);
+        NodeList models = specNode.getOwnerDocument().getElementsByTagName(TagConstants.MODEL);
         java.util.List<String> textures = new ArrayList<>();
         ModelState modelTransform = null;
 
@@ -271,7 +272,7 @@ public enum ModelSpecXMLReader {
                             for (int k = 0; k < bindingNodeList.getLength(); k++) {
                                 Node bindingNode = bindingNodeList.item(k);
                                 SpecBinding binding = getBinding(bindingNode);
-                                NodeList partNodeList = ((Element) bindingNode).getElementsByTagName(NuminaConstants.TAG_PART);
+                                NodeList partNodeList = ((Element) bindingNode).getElementsByTagName(TagConstants.PART);
                                 for (int j = 0; j < partNodeList.getLength(); j++) {
                                     getModelPartSpec(modelspec, partNodeList.item(j), binding);
                                 }

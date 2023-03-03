@@ -28,9 +28,11 @@ package lehjr.numina.common.capabilities.energy;
 
 import lehjr.numina.common.capabilities.CapabilityUpdate;
 import lehjr.numina.common.constants.TagConstants;
+import lehjr.numina.common.tags.TagUtils;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.EnergyStorage;
 
 import javax.annotation.Nonnull;
@@ -51,7 +53,7 @@ public class ModuleEnergyWrapper extends EnergyStorage implements CapabilityUpda
      */
     @Override
     public void loadCapValues() {
-        final CompoundTag nbt = stack.getOrCreateTag();
+        final CompoundTag nbt = TagUtils.getModuleTag(stack);
         if (nbt.contains(TagConstants.ENERGY, Tag.TAG_INT)) {
             deserializeNBT(nbt.get(TagConstants.ENERGY));
         }
@@ -59,7 +61,10 @@ public class ModuleEnergyWrapper extends EnergyStorage implements CapabilityUpda
 
     @Override
     public void onValueChanged() {
-        this.stack.addTagElement(TagConstants.ENERGY, serializeNBT());
+        final CompoundTag nbt = TagUtils.getModuleTag(stack);
+        if (nbt != null && CapabilityEnergy.ENERGY != null) { // capability is null during game loading
+            nbt.put(TagConstants.ENERGY, serializeNBT());
+        }
     }
 
     /**

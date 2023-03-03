@@ -28,6 +28,7 @@ package lehjr.powersuits.common.config;
 
 import lehjr.numina.common.capabilities.module.powermodule.IConfig;
 import lehjr.numina.common.config.ModuleConfig;
+import lehjr.powersuits.client.config.ClientConfig;
 import lehjr.powersuits.common.constants.MPSConstants;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.ForgeConfigSpec;
@@ -77,11 +78,6 @@ public class MPSSettings {
 
     public static float getHudKeybindY() {
         return CLIENT_CONFIG != null ? toFloat(CLIENT_CONFIG.HUD_KEYBIND_Y.get()) : 32.0F;
-    }
-
-    // General -----------------------------------------------------------------------------------
-    public static boolean allowConfictingKeyBinds() {
-        return CLIENT_CONFIG != null ? CLIENT_CONFIG.GENERAL_ALLOW_CONFLICTING_KEYBINDS.get() : true;
     }
 
     /**

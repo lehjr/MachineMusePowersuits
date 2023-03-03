@@ -36,6 +36,7 @@ import lehjr.numina.client.render.NuminaRenderer;
 import lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
 import lehjr.numina.common.capabilities.module.powermodule.PowerModuleCapability;
+import lehjr.numina.common.config.NuminaSettings;
 import lehjr.numina.common.energy.ElectricItemUtils;
 import lehjr.numina.common.heat.HeatUtils;
 import lehjr.numina.common.math.MathUtils;
@@ -60,20 +61,15 @@ import java.util.concurrent.atomic.AtomicReference;
 public enum ClientOverlayHandler {
     INSTANCE;
 
-    protected HeatMeter heatMeter = null;
-    protected HeatMeter energyMeter = null;
-    protected WaterMeter waterMeter = null;
-    protected PlasmaChargeMeter plasmaMeter = null;
+    private HeatMeter heatMeter = null;
+    private HeatMeter energyMeter = null;
+    private WaterMeter waterMeter = null;
+    private PlasmaChargeMeter plasmaMeter = null;
 
     static final ItemStack food = new ItemStack(Items.COOKED_BEEF);
     final double meterTextOffsetY = 0;
 
     public void render(RenderGameOverlayEvent.Post e) {
-        RenderGameOverlayEvent.ElementType elementType = e.getType();
-        if (!RenderGameOverlayEvent.ElementType.LAYER.equals(elementType)) {
-            return;
-        }
-
         PoseStack matrixStack = e.getMatrixStack();
 
         Minecraft minecraft = Minecraft.getInstance();
@@ -93,8 +89,7 @@ public enum ClientOverlayHandler {
             yBase = 26.0F;
         }
 
-        if (player != null && Minecraft.renderNames() && minecraft.screen == null) {
-
+        if (player != null && (NuminaSettings.showMetersWhenPaused() || (Minecraft.renderNames() && minecraft.screen == null))) {
             Window screen = e.getWindow();
 
             // Misc Overlay Items ---------------------------------------------------------------------------------
@@ -174,8 +169,17 @@ public enum ClientOverlayHandler {
                     }));
 
             // Meters ---------------------------------------------------------------------------------------------
-            float top = (float) screen.getGuiScaledHeight() / 2.0F - 16F;
-            float left = screen.getGuiScaledWidth() - 34;
+            float sw = (float) ((double) screen.getWidth() / screen.getGuiScale());
+            float sh = (float) ((double) screen.getHeight() / screen.getGuiScale());
+
+
+//            float top = (float) screen.getGuiScaledHeight() / 2.0F - 16F;
+//            float left = screen.getGuiScaledWidth() - 34;
+
+            float top = sh / 2.0F - 16F;
+            float left = sw - 36;
+
+
 
             // energy
             float maxEnergy = ElectricItemUtils.getMaxPlayerEnergy(player);

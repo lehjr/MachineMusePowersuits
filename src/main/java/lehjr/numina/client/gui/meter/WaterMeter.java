@@ -1,5 +1,6 @@
 package lehjr.numina.client.gui.meter;
 
+import lehjr.numina.common.config.NuminaSettings;
 import lehjr.numina.common.math.Color;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureAtlas;
@@ -14,11 +15,11 @@ public class WaterMeter extends HeatMeter {
     final ResourceLocation TEXTURE_LOCATION = new ResourceLocation("minecraft:block/water_still");
 
     public float getAlpha() {
-        return 1.0F;
+        return NuminaSettings.getWaterMeterColor().a;
     }
 
     public Color getColour() {
-        return Color.WHITE;
+        return NuminaSettings.getWaterMeterColor();
     }
 
     public TextureAtlasSprite getTexture() {

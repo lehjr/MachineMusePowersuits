@@ -26,11 +26,14 @@
 
 package lehjr.numina.client.gui.geometry;
 
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import com.mojang.math.Matrix4f;
 import lehjr.numina.common.math.Color;
+import net.minecraft.client.renderer.ShaderInstance;
 import org.lwjgl.BufferUtils;
 
 import java.nio.FloatBuffer;
@@ -98,7 +101,7 @@ public class DrawableTile extends Rect implements IDrawableRect {
     }
 
     public void internalDrawRect(PoseStack matrixStack, double left, double top, double right, double bottom, Color colourIn, VertexFormat.Mode mode) {
-        preDraw(mode, DefaultVertexFormat.POSITION_COLOR);
+        BufferBuilder builder = preDraw(mode, DefaultVertexFormat.POSITION_COLOR);
         FloatBuffer vertices = BufferUtils.createFloatBuffer(8);
         Matrix4f matrix4f = matrixStack.last().pose();
 
@@ -120,10 +123,9 @@ public class DrawableTile extends Rect implements IDrawableRect {
 
         vertices.flip();
         vertices.rewind();
-        addVerticesToBuffer(matrix4f, vertices, colourIn);
-
-        drawTesselator();
-        postDraw();
+        addVerticesToBuffer(builder, matrix4f, vertices, colourIn);
+        builder.end();
+        postDraw(builder);
     }
 
     public void drawBackground(PoseStack matrixStack) {
@@ -135,7 +137,7 @@ public class DrawableTile extends Rect implements IDrawableRect {
     }
 
     /**
-     * Unfortunately, the line drawing rounds to nearest whole number
+     * Unfortunately, the line drawing rounds to the nearest whole number
      * @param matrixStack
      * @param shrinkBy
      */
@@ -189,12 +191,14 @@ public class DrawableTile extends Rect implements IDrawableRect {
 
     @Override
     public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTick) {
+        ShaderInstance oldShader = RenderSystem.getShader();
         drawBackground(matrixStack);
         if (topBorderColour.equals(bottomBorderColour)) {
             drawBorder(matrixStack, shrinkBoarderBy);
         } else {
             drawDualColourBorder(matrixStack, shrinkBoarderBy);
         }
+        RenderSystem.setShader(() -> oldShader);
     }
 
     @Override

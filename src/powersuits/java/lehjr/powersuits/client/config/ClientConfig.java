@@ -24,28 +24,28 @@
  *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package lehjr.powersuits.common.config;
+package lehjr.powersuits.client.config;
 
 import lehjr.powersuits.common.constants.MPSConstants;
 import net.minecraftforge.common.ForgeConfigSpec;
 
 public class ClientConfig {
     /** HUD ---------------------------------------------------------------------------------------*/
-    protected ForgeConfigSpec.BooleanValue
+    public ForgeConfigSpec.BooleanValue
             HUD_USE_GRAPHICAL_METERS,
             HUD_TOGGLE_MODULE_SPAM,
             HUD_DISPLAY_HUD,
             HUD_USE_24_HOUR_CLOCK;
 
-    protected ForgeConfigSpec.DoubleValue
+    public ForgeConfigSpec.DoubleValue
             HUD_KEYBIND_X,
             HUD_KEYBIND_Y;
 
     /** General ----------------------------------------------------------------------------------- */
-    protected ForgeConfigSpec.BooleanValue
+    public ForgeConfigSpec.BooleanValue
             GENERAL_ALLOW_CONFLICTING_KEYBINDS;
 
-    protected ClientConfig(ForgeConfigSpec.Builder builder) {
+    public ClientConfig(ForgeConfigSpec.Builder builder) {
         // HUD ------------------------------------------------------------------------------------
         builder.comment("HUD settings").push("HUD");
         HUD_USE_GRAPHICAL_METERS = builder
@@ -71,7 +71,7 @@ public class ClientConfig {
         HUD_KEYBIND_Y = builder
                 .comment("x position")
                 .translation(MPSConstants.CONFIG_HUD_KEYBIND_HUD_Y)
-                .defineInRange("keybindHUDy", 32.0, 0, Double.MAX_VALUE);
+                .defineInRange("keybindHUDy", 60.0, 0, Double.MAX_VALUE);
 
         HUD_USE_24_HOUR_CLOCK = builder
                 .comment("Use a 24h clock instead of 12h")

@@ -40,6 +40,7 @@ import lehjr.numina.common.capabilities.render.IArmorModelSpecNBT;
 import lehjr.numina.common.capabilities.render.ModelSpecCapability;
 import lehjr.numina.common.capabilities.render.modelspec.SpecType;
 import lehjr.numina.common.constants.NuminaConstants;
+import lehjr.numina.common.constants.TagConstants;
 import lehjr.numina.common.energy.ElectricItemUtils;
 import lehjr.numina.common.network.NuminaPackets;
 import lehjr.numina.common.network.packets.CosmeticInfoPacket;
@@ -343,8 +344,8 @@ public abstract class AbstractElectricItemArmor extends ArmorItem {
                     if ((renderTag == null || renderTag.isEmpty()) && entityLiving == Minecraft.getInstance().player && armorSlot == slot) {
                         renderTag = spec.getDefaultRenderTag();
                         if (renderTag != null && !renderTag.isEmpty()) {
-                            spec.setRenderTag(renderTag, NuminaConstants.TAG_RENDER);
-                            NuminaPackets.CHANNEL_INSTANCE.sendToServer(new CosmeticInfoPacket(armorSlot, NuminaConstants.TAG_RENDER, renderTag));
+                            spec.setRenderTag(renderTag, TagConstants.RENDER);
+                            NuminaPackets.CHANNEL_INSTANCE.sendToServer(new CosmeticInfoPacket(armorSlot, TagConstants.RENDER, renderTag));
                         }
                     }
 

@@ -31,6 +31,7 @@ import lehjr.numina.common.capabilities.render.modelspec.ModelRegistry;
 import lehjr.numina.common.capabilities.render.modelspec.SpecType;
 import lehjr.numina.common.capabilities.render.modelspec.TexturePartSpec;
 import lehjr.numina.common.constants.NuminaConstants;
+import lehjr.numina.common.constants.TagConstants;
 import lehjr.numina.common.math.Color;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
@@ -64,9 +65,9 @@ public interface IModelSpec {
             if (renderTag == null || renderTag.isEmpty()) {
                 return Color.WHITE;
             }
-            if (renderTag.contains(NuminaConstants.NBT_TEXTURESPEC_TAG)) {
-                TexturePartSpec partSpec = (TexturePartSpec) ModelRegistry.getInstance().getPart(renderTag.getCompound(NuminaConstants.NBT_TEXTURESPEC_TAG));
-                CompoundTag specTag = renderTag.getCompound(NuminaConstants.NBT_TEXTURESPEC_TAG);
+            if (renderTag.contains(TagConstants.TEXTURESPEC)) {
+                TexturePartSpec partSpec = (TexturePartSpec) ModelRegistry.getInstance().getPart(renderTag.getCompound(TagConstants.TEXTURESPEC));
+                CompoundTag specTag = renderTag.getCompound(TagConstants.TEXTURESPEC);
                 int index = partSpec.getColourIndex(specTag);
                 int[] colours = getColorArray();
                 if (colours.length > index) {

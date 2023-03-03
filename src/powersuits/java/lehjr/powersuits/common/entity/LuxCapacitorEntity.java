@@ -137,7 +137,6 @@ public class LuxCapacitorEntity extends ThrowableProjectile implements IEntityAd
     boolean placedBlock(BlockState state, BlockPos pos) {
         if (state.canSurvive(level, pos)) {
             level.setBlockAndUpdate(pos, state);
-
             level.setBlockEntity(new LuxCapacitorBlockEntity(pos, state));
             return true;
         }

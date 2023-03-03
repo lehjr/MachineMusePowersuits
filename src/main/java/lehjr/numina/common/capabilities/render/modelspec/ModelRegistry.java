@@ -28,6 +28,7 @@ package lehjr.numina.common.capabilities.render.modelspec;
 
 import lehjr.numina.client.model.obj.OBJBakedCompositeModel;
 import lehjr.numina.common.constants.NuminaConstants;
+import lehjr.numina.common.constants.TagConstants;
 import lehjr.numina.common.map.NuminaRegistry;
 import lehjr.numina.common.string.StringUtils;
 import net.minecraft.nbt.CompoundTag;
@@ -80,11 +81,11 @@ public class ModelRegistry extends NuminaRegistry<SpecBase> {
      * FIXME: texture spec needs a model tag for this to work. Model tag does not have to be a real model, just a unique string for the spec k-v pair
      */
     public SpecBase getModel(CompoundTag nbt) {
-        return get(nbt.getString(NuminaConstants.TAG_MODEL));
+        return get(nbt.getString(TagConstants.MODEL));
     }
 
     public PartSpecBase getPart(CompoundTag nbt, SpecBase model) {
-        return model.get(nbt.getString(NuminaConstants.TAG_PART));
+        return model.get(nbt.getString(TagConstants.PART));
     }
 
     public PartSpecBase getPart(CompoundTag nbt) {

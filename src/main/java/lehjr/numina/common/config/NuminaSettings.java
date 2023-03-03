@@ -29,6 +29,8 @@ package lehjr.numina.common.config;
 import lehjr.numina.client.config.ClientConfig;
 import lehjr.numina.common.capabilities.module.powermodule.IConfig;
 import lehjr.numina.common.constants.NuminaConstants;
+import lehjr.numina.common.math.Color;
+import lehjr.numina.common.math.MathUtils;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.util.NonNullLazy;
 import org.apache.commons.lang3.tuple.Pair;
@@ -78,6 +80,65 @@ public class NuminaSettings {
 
     public static boolean enableDebugging() {
         return CLIENT_CONFIG != null ? CLIENT_CONFIG.DEBUGGING_INFO.get() : false;
+    }
+
+    public static Color getMeterGlassColor() {
+        if (CLIENT_CONFIG != null) {
+            double red = MathUtils.clampDouble(CLIENT_CONFIG.GLASS_RED.get(), 0, 1);
+            double green = MathUtils.clampDouble(CLIENT_CONFIG.GLASS_GREEN.get(), 0, 1);
+            double blue = MathUtils.clampDouble(CLIENT_CONFIG.GLASS_BLUE.get(), 0, 1);
+            double alpha = MathUtils.clampDouble(CLIENT_CONFIG.GLASS_ALPHA.get(), 0, 1);
+            return new Color((float) red, (float)green, (float)blue, (float)alpha);
+        }
+        return Color.WHITE;
+    }
+
+    public static Color getHeatMeterColor() {
+        if (CLIENT_CONFIG != null) {
+            double red = MathUtils.clampDouble(CLIENT_CONFIG.HEAT_METER_RED.get(), 0, 1);
+            double green = MathUtils.clampDouble(CLIENT_CONFIG.HEAT_METER_GREEN.get(), 0, 1);
+            double blue = MathUtils.clampDouble(CLIENT_CONFIG.HEAT_METER_BLUE.get(), 0, 1);
+            double alpha = MathUtils.clampDouble(CLIENT_CONFIG.HEAT_METER_ALPHA.get(), 0, 1);
+            return new Color((float) red, (float)green, (float)blue, (float)alpha);
+        }
+        return Color.WHITE;
+    }
+
+    public static Color getEnergyMeterColor() {
+        if (CLIENT_CONFIG != null) {
+            double red = MathUtils.clampDouble(CLIENT_CONFIG.ENERGY_METER_RED.get(), 0, 1);
+            double green = MathUtils.clampDouble(CLIENT_CONFIG.ENERGY_METER_GREEN.get(), 0, 1);
+            double blue = MathUtils.clampDouble(CLIENT_CONFIG.ENERGY_METER_BLUE.get(), 0, 1);
+            double alpha = MathUtils.clampDouble(CLIENT_CONFIG.ENERGY_METER_ALPHA.get(), 0, 1);
+            return new Color((float) red, (float)green, (float)blue, (float)alpha);
+        }
+        return Color.WHITE;
+    }
+
+    public static Color getPlasmaMeterColor() {
+        if (CLIENT_CONFIG != null) {
+            double red = MathUtils.clampDouble(CLIENT_CONFIG.PLASMA_METER_RED.get(), 0, 1);
+            double green = MathUtils.clampDouble(CLIENT_CONFIG.PLASMA_METER_GREEN.get(), 0, 1);
+            double blue = MathUtils.clampDouble(CLIENT_CONFIG.PLASMA_METER_BLUE.get(), 0, 1);
+            double alpha = MathUtils.clampDouble(CLIENT_CONFIG.PLASMA_METER_ALPHA.get(), 0, 1);
+            return new Color((float) red, (float)green, (float)blue, (float)alpha);
+        }
+        return Color.WHITE;
+    }
+
+    public static Color getWaterMeterColor() {
+        if (CLIENT_CONFIG != null) {
+            double red = MathUtils.clampDouble(CLIENT_CONFIG.WATER_METER_RED.get(), 0, 1);
+            double green = MathUtils.clampDouble(CLIENT_CONFIG.WATER_METER_GREEN.get(), 0, 1);
+            double blue = MathUtils.clampDouble(CLIENT_CONFIG.WATER_METER_BLUE.get(), 0, 1);
+            double alpha = MathUtils.clampDouble(CLIENT_CONFIG.WATER_METER_ALPHA.get(), 0, 1);
+            return new Color((float) red, (float)green, (float)blue, (float)alpha);
+        }
+        return Color.WHITE;
+    }
+
+    public static boolean showMetersWhenPaused() {
+        return CLIENT_CONFIG != null ? CLIENT_CONFIG.SHOW_METERS_WHEN_PAUSED.get() : false;
     }
 
     /** Server Settings --------------------------------------------------------------------------- */

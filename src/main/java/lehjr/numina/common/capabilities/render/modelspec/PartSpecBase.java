@@ -27,6 +27,7 @@
 package lehjr.numina.common.capabilities.render.modelspec;
 
 import lehjr.numina.common.constants.NuminaConstants;
+import lehjr.numina.common.constants.TagConstants;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 
@@ -65,14 +66,14 @@ public abstract class PartSpecBase {
     public abstract Component getDisaplayName();
 
     public int getColourIndex(CompoundTag nbt) {
-        return nbt.contains(NuminaConstants.TAG_COLOUR_INDEX) ? nbt.getInt(NuminaConstants.TAG_COLOUR_INDEX) : this.defaultcolourindex;
+        return nbt.contains(TagConstants.COLOUR_INDEX) ? nbt.getInt(TagConstants.COLOUR_INDEX) : this.defaultcolourindex;
     }
 
     public void setColourIndex(CompoundTag nbt, int c) {
         if (c == this.defaultcolourindex) {
-            nbt.remove(NuminaConstants.TAG_COLOUR_INDEX);
+            nbt.remove(TagConstants.COLOUR_INDEX);
         } else {
-            nbt.putInt(NuminaConstants.TAG_COLOUR_INDEX, c);
+            nbt.putInt(TagConstants.COLOUR_INDEX, c);
         }
     }
 
@@ -82,11 +83,11 @@ public abstract class PartSpecBase {
     }
 
     public void setModel(CompoundTag nbt, String modelname) {
-        nbt.putString(NuminaConstants.TAG_MODEL, modelname);
+        nbt.putString(TagConstants.MODEL, modelname);
     }
 
     public void setPart(CompoundTag nbt) {
-        nbt.putString(NuminaConstants.TAG_PART, this.partName);
+        nbt.putString(TagConstants.PART, this.partName);
     }
 
     public CompoundTag multiSet(CompoundTag nbt, Integer colourIndex) {

@@ -28,6 +28,7 @@ package lehjr.numina.common.capabilities.render.modelspec;
 
 import lehjr.numina.client.model.obj.OBJBakedPart;
 import lehjr.numina.common.constants.NuminaConstants;
+import lehjr.numina.common.constants.TagConstants;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
@@ -67,12 +68,12 @@ public class ModelPartSpec extends PartSpecBase {
     }
 
     public boolean getGlow(CompoundTag nbt) {
-        return nbt.contains(NuminaConstants.TAG_GLOW) ? nbt.getBoolean(NuminaConstants.TAG_GLOW) : this.defaultglow;
+        return nbt.contains(TagConstants.GLOW) ? nbt.getBoolean(TagConstants.GLOW) : this.defaultglow;
     }
 
     public void setGlow(CompoundTag nbt, boolean g) {
-        if (g == this.defaultglow) nbt.remove(NuminaConstants.TAG_GLOW);
-        else nbt.putBoolean(NuminaConstants.TAG_GLOW, g);
+        if (g == this.defaultglow) nbt.remove(TagConstants.GLOW);
+        else nbt.putBoolean(TagConstants.GLOW, g);
     }
 
     public OBJBakedPart getPart() {

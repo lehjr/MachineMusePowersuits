@@ -158,9 +158,9 @@ public class ColourPickerFrame extends ScrollableFrame {
                 .map(IModelSpec.class::cast)
                 .map(spec -> {
                     CompoundTag renderSpec = spec.getRenderTag();
-                    renderSpec.put(NuminaConstants.TAG_COLOURS, new IntArrayTag(intList));
+                    renderSpec.put(TagConstants.COLORS, new IntArrayTag(intList));
                     this.itemSelector.selectedType().ifPresent(slotType -> MPSPackets.CHANNEL_INSTANCE.sendToServer(new ColorInfoPacket(slotType, this.colours())));
-                    return (IntArrayTag) renderSpec.get(NuminaConstants.TAG_COLOURS);
+                    return (IntArrayTag) renderSpec.get(TagConstants.COLORS);
                 }).orElse(new IntArrayTag(new int[0]));
     }
 

@@ -59,7 +59,11 @@ public class LuxCapacitorBlockEntity extends NuminaBlockEntity {
     }
 
     public void setColor(Color color) {
+        NuminaLogger.logError("setting color as: " + color.toString());
+
         this.getCapability(ColorCapability.COLOR, null).ifPresent(colorCap -> colorCap.setColor(color));
+        this.setChanged();
+
         // fixme save color setting?
     }
 

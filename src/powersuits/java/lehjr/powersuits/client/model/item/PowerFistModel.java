@@ -39,6 +39,7 @@ import lehjr.numina.common.capabilities.render.modelspec.ModelRegistry;
 import lehjr.numina.common.capabilities.render.modelspec.ModelSpec;
 import lehjr.numina.common.capabilities.render.modelspec.PartSpecBase;
 import lehjr.numina.common.constants.NuminaConstants;
+import lehjr.numina.common.constants.TagConstants;
 import lehjr.numina.common.math.Color;
 import lehjr.numina.common.network.NuminaPackets;
 import lehjr.numina.common.network.packets.CosmeticInfoPacket;
@@ -132,13 +133,13 @@ public class PowerFistModel extends BakedModelWrapper {
                         if (player.getMainHandItem().equals(itemStack)) {
                             slotType = EquipmentSlot.MAINHAND;
                         }
-                        specNBTCap.setRenderTag(renderSpec, NuminaConstants.TAG_RENDER);
-                        NuminaPackets.CHANNEL_INSTANCE.sendToServer(new CosmeticInfoPacket(slotType, NuminaConstants.TAG_RENDER, renderSpec));
+                        specNBTCap.setRenderTag(renderSpec, TagConstants.RENDER);
+                        NuminaPackets.CHANNEL_INSTANCE.sendToServer(new CosmeticInfoPacket(slotType, TagConstants.RENDER, renderSpec));
                     }
                 }
 
                 if (renderSpec != null) {
-                    int[] colours = renderSpec.getIntArray(NuminaConstants.TAG_COLOURS);
+                    int[] colours = renderSpec.getIntArray(TagConstants.COLORS);
                     Color partColor;
                     Transformation transform;
 

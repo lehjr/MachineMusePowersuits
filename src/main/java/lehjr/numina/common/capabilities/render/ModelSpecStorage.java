@@ -29,6 +29,7 @@ package lehjr.numina.common.capabilities.render;
 import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.capabilities.render.modelspec.SpecType;
 import lehjr.numina.common.constants.NuminaConstants;
+import lehjr.numina.common.constants.TagConstants;
 import lehjr.numina.common.tags.TagUtils;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
@@ -57,23 +58,23 @@ public class ModelSpecStorage implements IModelSpec, INBTSerializable<CompoundTa
     public CompoundTag setRenderTag(CompoundTag renderDataIn, String tagName) {
         CompoundTag itemTag = TagUtils.getMuseItemTag(itemStack);
         if (tagName != null) {
-            if (Objects.equals(tagName, NuminaConstants.TAG_RENDER)) {
+            if (Objects.equals(tagName, TagConstants.RENDER)) {
                 NuminaLogger.logger.debug("Removing render tag");
-                itemTag.remove(NuminaConstants.TAG_RENDER);
+                itemTag.remove(TagConstants.RENDER);
                 if (!renderDataIn.isEmpty()) {
-                    NuminaLogger.logger.debug("Adding tag " + NuminaConstants.TAG_RENDER + " : " + renderDataIn);
-                    itemTag.put(NuminaConstants.TAG_RENDER, renderDataIn);
+                    NuminaLogger.logger.debug("Adding tag " + TagConstants.RENDER + " : " + renderDataIn);
+                    itemTag.put(TagConstants.RENDER, renderDataIn);
                 } else {
-                    itemTag.put(NuminaConstants.TAG_RENDER, new CompoundTag());
+                    itemTag.put(TagConstants.RENDER, new CompoundTag());
                     setColorArray(new int[]{-1});
                 }
             } else {
                 CompoundTag renderTag;
-                if (!itemTag.contains(NuminaConstants.TAG_RENDER)) {
+                if (!itemTag.contains(TagConstants.RENDER)) {
                     renderTag = new CompoundTag();
-                    itemTag.put(NuminaConstants.TAG_RENDER, renderTag);
+                    itemTag.put(TagConstants.RENDER, renderTag);
                 } else {
-                    renderTag = itemTag.getCompound(NuminaConstants.TAG_RENDER);
+                    renderTag = itemTag.getCompound(TagConstants.RENDER);
                 }
                 if (renderDataIn.isEmpty()) {
                     NuminaLogger.logger.debug("Removing tag " + tagName);
@@ -122,7 +123,7 @@ public class ModelSpecStorage implements IModelSpec, INBTSerializable<CompoundTa
 
     @Override
     public int[] getColorArray() {
-        return  getRenderTag().getIntArray(NuminaConstants.TAG_COLOURS);
+        return  getRenderTag().getIntArray(TagConstants.COLORS);
     }
 
 
@@ -136,7 +137,7 @@ public class ModelSpecStorage implements IModelSpec, INBTSerializable<CompoundTa
 
     @Override
     public CompoundTag setColorArray(int[] colors) {
-        getRenderTag().putIntArray(NuminaConstants.TAG_COLOURS, colors);
+        getRenderTag().putIntArray(TagConstants.COLORS, colors);
         return getRenderTag();
     }
 
@@ -148,6 +149,6 @@ public class ModelSpecStorage implements IModelSpec, INBTSerializable<CompoundTa
 
     @Override
     public void deserializeNBT(CompoundTag nbt) {
-        setRenderTag(nbt, NuminaConstants.TAG_RENDER);
+        setRenderTag(nbt, TagConstants.RENDER);
     }
 }

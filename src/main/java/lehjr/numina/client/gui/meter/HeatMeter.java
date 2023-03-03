@@ -5,7 +5,9 @@ import com.mojang.blaze3d.platform.Lighting;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import com.mojang.math.Matrix4f;
+import lehjr.numina.client.config.ClientConfig;
 import lehjr.numina.client.render.IconUtils;
+import lehjr.numina.common.config.NuminaSettings;
 import lehjr.numina.common.constants.NuminaConstants;
 import lehjr.numina.common.math.Color;
 import net.minecraft.client.Minecraft;
@@ -17,16 +19,22 @@ import net.minecraft.resources.ResourceLocation;
 
 public class HeatMeter {
     final ResourceLocation TEXTURE_LOCATION = new ResourceLocation("minecraft:block/lava_still");
+
+    Color glassColor;
+
+
     final int xsize = 32;
     final int ysize = 8;
     float meterStart, meterLevel;
 
     public float getAlpha() {
-        return 0.75F;
+        return NuminaSettings.getHeatMeterColor().a;
+//        return 0.75F;
     }
 
     public Color getColour() {
-        return Color.WHITE.withAlpha(0.3F);
+        return NuminaSettings.getHeatMeterColor();
+//        return Color.WHITE;
     }
 
     // this "should" work
@@ -36,12 +44,19 @@ public class HeatMeter {
 
     public void draw(PoseStack poseStack, float xpos, float ypos, float value) {
         ShaderInstance oldShader = RenderSystem.getShader();
-        RenderSystem.setShader(GameRenderer::getPositionTexColorShader);
+//        RenderSystem.setShader(GameRenderer::getPositionTexColorShader);
+//        RenderSystem.enableBlend();
+//        Lighting.setupForEntityInInventory();
+//        RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
+//
+
         RenderSystem.enableBlend();
-        Lighting.setupForEntityInInventory();
-        RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
+        RenderSystem.defaultBlendFunc();
+        RenderSystem.setShader(GameRenderer::getPositionTexColorShader);
+
         drawFluid(poseStack,xpos, ypos, value, getTexture());
         drawGlass(poseStack, xpos, ypos);
+
         RenderSystem.disableBlend();
         RenderSystem.setShader(() -> oldShader);
     }
@@ -60,7 +75,7 @@ public class HeatMeter {
         poseStack.popPose();
     }
 
-    final Color glassColor = Color.LIGHT_GREY.withAlpha(0.2F);
+
 
 
     /**
@@ -78,12 +93,14 @@ public class HeatMeter {
         float top = ypos;
         float bottom = top + ysize;
 
+        glassColor = NuminaSettings.getMeterGlassColor();
 
-        RenderSystem.setShaderTexture(0, NuminaConstants.GLASS_TEXTURE);
-
+//        RenderSystem.enableBlend();
+//        RenderSystem.defaultBlendFunc();
+//        RenderSystem.setShader(GameRenderer::getPositionTexColorShader);
         Tesselator tesselator = Tesselator.getInstance();
         BufferBuilder bufferbuilder = tesselator.getBuilder();
-
+        RenderSystem.setShaderTexture(0, NuminaConstants.GLASS_TEXTURE);
         bufferbuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
         Matrix4f matrix4f = poseStack.last().pose();
 
@@ -112,6 +129,7 @@ public class HeatMeter {
                 .endVertex();
 
         tesselator.end();
+//        RenderSystem.disableBlend();
     }
 }
 
