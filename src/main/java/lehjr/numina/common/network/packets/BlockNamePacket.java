@@ -40,11 +40,7 @@ public class BlockNamePacket {
             player.getItemBySlot(EquipmentSlot.MAINHAND).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).filter(IModeChangingItem.class::isInstance)
                     .map(IModeChangingItem.class::cast)
                     .ifPresent(handler-> {
-                        NuminaLogger.logError("module before: " + handler.getActiveModule().serializeNBT());
-
                         TagUtils.setModuleResourceLocation(handler.getActiveModule(), TagConstants.BLOCK, message.regName);
-
-                        NuminaLogger.logError("module before: " + handler.getActiveModule().serializeNBT());
                     });
             player.getInventory().setChanged();
         });

@@ -14,13 +14,11 @@ import com.mojang.math.Vector4f;
 import joptsimple.internal.Strings;
 import lehjr.numina.client.model.obj.OBJBakedCompositeModel;
 import lehjr.numina.client.model.obj.OBJBakedPart;
+import lehjr.numina.common.base.NuminaLogger;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.ItemOverrides;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.resources.model.Material;
-import net.minecraft.client.resources.model.ModelBakery;
-import net.minecraft.client.resources.model.ModelState;
-import net.minecraft.client.resources.model.UnbakedModel;
+import net.minecraft.client.resources.model.*;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
@@ -111,8 +109,13 @@ public class NuminaOBJModel implements IMultipartModelGeometry<NuminaOBJModel> {
                 mtllib = OBJLoader.INSTANCE.loadMaterialLibrary(new ResourceLocation(modelDomain, modelPath + lib));
         }
 
+//        NuminaLogger.logError("model location: " + modelLocation);
+
+
         String[] line;
         while ((line = reader.readAndSplitLine(true)) != null) {
+//            Arrays.asList(line).forEach(stringThing->NuminaLogger.logError("line: " +stringThing));;
+
             switch (line[0]) {
                 case "mtllib": // Loads material library
                 {
@@ -255,6 +258,9 @@ public class NuminaOBJModel implements IMultipartModelGeometry<NuminaOBJModel> {
                                        ModelState modelTransform,
                                        ItemOverrides overrides,
                                        ResourceLocation modelLocation) {
+        ModelState transformTest = BlockModelRotation.X0_Y0;
+
+
 
         // Default implementation
         TextureAtlasSprite particle = spriteGetter.apply(owner.resolveTexture("particle"));
@@ -262,7 +268,10 @@ public class NuminaOBJModel implements IMultipartModelGeometry<NuminaOBJModel> {
 
         getParts().stream().forEach(part -> {
             IModelBuilder<?> builder = IModelBuilder.of(owner, overrides, particle);
-            part.addQuads(owner, builder, bakery, spriteGetter, modelTransform, modelLocation);
+            part.addQuads(owner, builder, bakery, spriteGetter,
+                    modelTransform,
+//                    transformTest,
+                    modelLocation);
             bakedParts.put(part.name(), new OBJBakedPart(builder.build())); // fixme
         });
 

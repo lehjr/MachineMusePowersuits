@@ -1,18 +1,10 @@
 {
   "variants": {
-    "facing=west,waterlogged=false": { "model": "powersuits:block/luxcapacitor", "y": 90 },
-    "facing=east,waterlogged=false": { "model": "powersuits:block/luxcapacitor", "y": 270 },
-    "facing=north,waterlogged=false": { "model": "powersuits:block/luxcapacitor", "y": 180 },
-    "facing=south,waterlogged=false": { "model": "powersuits:block/luxcapacitor", "y": 0 },
-    "facing=up,waterlogged=false" : { "model": "powersuits:block/luxcapacitor", "x": 90 },
-    "facing=down,waterlogged=false" : { "model": "powersuits:block/luxcapacitor", "x": 270},
-
-
-    "facing=west,waterlogged=true": { "model": "powersuits:block/luxcapacitor", "y": 90 },
-    "facing=east,waterlogged=true": { "model": "powersuits:block/luxcapacitor", "y": 270 },
-    "facing=north,waterlogged=true": { "model": "powersuits:block/luxcapacitor", "y": 180 },
-    "facing=south,waterlogged=true": { "model": "powersuits:block/luxcapacitor", "y": 0 },
-    "facing=up,waterlogged=true" : { "model": "powersuits:block/luxcapacitor", "x": 90 },
-    "facing=down,waterlogged=true" : { "model": "powersuits:block/luxcapacitor", "x": 270}
+    "facing=west": { "model": "powersuits:block/luxcapacitor", "y": 90 },
+    "facing=east": { "model": "powersuits:block/luxcapacitor", "y": 270 },
+    "facing=north": { "model": "powersuits:block/luxcapacitor", "y": 180 },
+    "facing=south": { "model": "powersuits:block/luxcapacitor", "y": 0 },
+    "facing=up" : { "model": "powersuits:block/luxcapacitor", "x": 90 },
+    "facing=down" : { "model": "powersuits:block/luxcapacitor", "x": 270}
   }
 }

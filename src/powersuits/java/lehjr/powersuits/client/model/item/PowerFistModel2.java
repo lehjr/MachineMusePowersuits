@@ -1,30 +1,49 @@
-///*
-// * Copyright (c) 2021. MachineMuse, Lehjr
-// *  All rights reserved.
-// *
-// * Redistribution and use in source and binary forms, with or without
-// * modification, are permitted provided that the following conditions are met:
-// *
-// *      Redistributions of source code must retain the above copyright notice, this
-// *      list of conditions and the following disclaimer.
-// *
-// *     Redistributions in binary form must reproduce the above copyright notice,
-// *     this list of conditions and the following disclaimer in the documentation
-// *     and/or other materials provided with the distribution.
-// *
-// *  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
-// *  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-// *  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-// *  DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
-// *  ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-// *  (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
-// *  LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
-// *  ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-// *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
-// *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-// */
+package lehjr.powersuits.client.model.item;
+
+/*
+ * Copyright (c) 2021. MachineMuse, Lehjr
+ *  All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ *      Redistributions of source code must retain the above copyright notice, this
+ *      list of conditions and the following disclaimer.
+ *
+ *     Redistributions in binary form must reproduce the above copyright notice,
+ *     this list of conditions and the following disclaimer in the documentation
+ *     and/or other materials provided with the distribution.
+ *
+ *  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ *  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ *  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ *  DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+ *  ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ *  (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ *  LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ *  ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import lehjr.powersuits.common.constants.MPSConstants;
+import net.minecraft.client.model.Model;
+import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.model.geom.builders.CubeListBuilder;
+import net.minecraft.client.model.geom.builders.LayerDefinition;
+import net.minecraft.client.model.geom.builders.MeshDefinition;
+import net.minecraft.client.model.geom.builders.PartDefinition;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+
+
 //
-//package lehjr.powersuits.client.model.item;
+
 //
 //import com.mojang.blaze3d.vertex.PoseStack;
 //import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -47,82 +66,59 @@
 // * Keep in mind that you still need to fill in some blanks
 // * - ZeuX
 // */
-//public class PowerFistModel2 extends Model {
-//    // TODO: port this !!
-//
+
+@OnlyIn(Dist.CLIENT)
+public class PowerFistModel2 extends Model {
 //    public int boltSize = 0;
-//    public Map<String, ModelPart> partlMap = new HashMap<>();
-//
-//    ModelPart mainarm;
-//    ModelPart armorright;
-//    ModelPart armorleft;
-//    ModelPart wristtopright;
-//    ModelPart wristtopleft;
-//    ModelPart wristbottomright;
-//    ModelPart wristbottomleft;
-//    ModelPart index1;
-//    ModelPart index2;
-//    ModelPart middlefinger1;
-//    ModelPart middlefinger2;
-//    ModelPart ringfinger1;
-//    ModelPart ringfinger2;
-//    ModelPart pinky1;
-//    ModelPart pinky2;
-//    ModelPart thumb1;
-//    ModelPart thumb2;
-//    ModelPart fingerguard;
-//    ModelPart crystalholder;
-//    ModelPart crystal;
-//    ModelPart supportright1;
-//    ModelPart supportright2;
-//    ModelPart supportright3;
-//    ModelPart supportright4;
-//    ModelPart supportright5;
-//    ModelPart supportbaseright;
-//    ModelPart palm;
-//    ModelPart supportbaseleft;
-//    ModelPart supportleftfront;
-//    ModelPart supportrightfront;
-//    ModelPart supportleft1;
-//    ModelPart supportleft2;
-//    ModelPart supportleft3;
-//    ModelPart supportleft4;
-//    ModelPart supportleft5;
-//
-//    public PowerFistModel2() {
-//        super(RenderType::entitySolid);
-//        texWidth = 64;
-//        texHeight = 32;
-//
-//        mainarm = new ModelPart(this, 0, 16);
-//        mainarm.addBox(-3F, 0F, -8F, 6, 6, 10);
-//        mainarm.setPos(0F, 0F, 0F);
-//        mainarm.setTexSize(64, 32);
-//        mainarm.mirror = true;
-//        setRotation(mainarm, 0.2617994F, 0F, 0F);
-//
-//        armorright = new ModelPart(this, 42, 0);
-//        armorright.mirror = true;
-//        armorright.addBox(1F, -1F, -9F, 3, 5, 8);
-//        armorright.setPos(0F, 0F, 0F);
-//        armorright.setTexSize(64, 32);
-//        armorright.mirror = true;
-//        setRotation(armorright, 0.2617994F, 0F, 0F);
-//
-//        armorright.mirror = false;
-//        armorleft = new ModelPart(this, 42, 0);
-//        armorleft.addBox(-4F, -1F, -9F, 3, 5, 8);
-//        armorleft.setPos(0F, 0F, 0F);
-//        armorleft.setTexSize(64, 32);
-//        armorleft.mirror = true;
-//        setRotation(armorleft, 0.2617994F, 0F, 0F);
-//
-//        wristtopright = new ModelPart(this, 0, 11);
-//        wristtopright.addBox(1F, 1F, 2F, 1, 1, 4);
-//        wristtopright.setPos(0F, 0F, 0F);
+//    public Map<String, ModelPart> partlMap = new HashMap<>(); // use "children" now
+
+    /** code below copied from vanilla trident */
+
+    public static final ResourceLocation TEXTURE = new ResourceLocation(MPSConstants.MOD_ID, "textures/models/powerfist.png");
+    private final ModelPart root;
+
+    public PowerFistModel2(ModelPart pRoot) {
+        super(RenderType::itemEntityTranslucentCull);
+        this.root = pRoot;
+    }
+
+    public static LayerDefinition createLayer() {
+        MeshDefinition meshdefinition = new MeshDefinition();
+        PartDefinition partdefinition = meshdefinition.getRoot();
+//        PartDefinition mainarm = partdefinition.addOrReplaceChild("pole", CubeListBuilder.create().texOffs(0, 6).addBox(-0.5F, 2.0F, -0.5F, 1.0F, 25.0F, 1.0F), PartPose.ZERO);
+        PartDefinition mainarm = partdefinition.addOrReplaceChild( "mainarm", CubeListBuilder.create().texOffs(0, 16).addBox(-3F, 0F, -8F, 6, 6, 10).mirror(), PartPose.offset( 0.2617994F, 0F, 0F));
+        mainarm.addOrReplaceChild( "armorright", CubeListBuilder.create().texOffs(42, 0).addBox(1F, -1F, -9F, 3, 5, 8).mirror(), PartPose.offsetAndRotation(0F, 0F, 0F, 0.2617994F, 0F, 0F));
+        mainarm.addOrReplaceChild( "armorleft", CubeListBuilder.create().texOffs(42, 0).addBox(-4F, -1F, -9F, 3, 5, 8).mirror(), PartPose.offsetAndRotation(0F, 0F, 0F, 0.2617994F, 0F, 0F));
+        mainarm.addOrReplaceChild( "wristtopright", CubeListBuilder.create().texOffs( 0, 11).addBox(1F, 1F, 2F, 1, 1, 4).mirror(), PartPose.offsetAndRotation(0F, 0F, 0F, 0.2617994F, 0F, 0F));
+
+        /**
+         rendering changes in 1.17
+
+         this.bipedRightArm = new ModelRenderer(this, 40, 16);
+         this.bipedRightArm.addBox(-1.0F, -2.0F, -1.0F, 2.0F, 12.0F, 2.0F, modelSize);
+         this.bipedRightArm.setRotationPoint(-5.0F, 2.0F, 0.0F);
+
+         becomes
+
+         rootDefinition.addOrReplaceChild("right_arm",
+         CubeListBuilder.create()
+         .texOffs(40, 16)
+         .addBox(-1.0F, -2.0F, -1.0F, 2.0F, 12.0F, 2.0F),
+         PartPose.offset(-5.0F, 2.0F, 0.0F));
+
+         the uvs of the ModelRenderer become texOffs()
+         the last argument to addBox is skipped
+         the rotation point becomes the PartPose.offset()
+         */
+
+
+
+        //        wristtopright = new ModelPart(this,);
+//        wristtopright;
+//        wristtopright.setPos();
 //        wristtopright.setTexSize(64, 32);
 //        wristtopright.mirror = true;
-//        setRotation(wristtopright, 0.2617994F, 0F, 0F);
+//        setRotation(wristtopright, );
 //
 //        wristtopleft = new ModelPart(this, 0, 11);
 //        wristtopleft.addBox(-2F, 1F, 2F, 1, 1, 4);
@@ -144,6 +140,74 @@
 //        wristbottomleft.setTexSize(64, 32);
 //        wristbottomleft.mirror = true;
 //        setRotation(wristbottomleft, 0.2617994F, 0F, 0F);
+
+
+
+
+
+//        PartDefinition palm = mainarm.addOrReplaceChild( "palm", CubeListBuilder.create().texOffs(
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//
+//
+//    mainarm.addOrReplaceChild( "wristtopleft", CubeListBuilder.create().texOffs(
+//    mainarm.addOrReplaceChild( "wristbottomright", CubeListBuilder.create().texOffs(
+//    mainarm.addOrReplaceChild( "wristbottomleft", CubeListBuilder.create().texOffs(
+
+
+
+
+
+
+//    mainarm.addOrReplaceChild( "index1", CubeListBuilder.create().texOffs(
+//    mainarm.addOrReplaceChild( "index2", CubeListBuilder.create().texOffs(
+//    mainarm.addOrReplaceChild( "middlefinger1", CubeListBuilder.create().texOffs(
+//    mainarm.addOrReplaceChild( "middlefinger2", CubeListBuilder.create().texOffs(
+//    mainarm.addOrReplaceChild( "ringfinger1", CubeListBuilder.create().texOffs(
+//    mainarm.addOrReplaceChild( "ringfinger2", CubeListBuilder.create().texOffs(
+//    mainarm.addOrReplaceChild( "pinky1", CubeListBuilder.create().texOffs(
+//    mainarm.addOrReplaceChild( "pinky2", CubeListBuilder.create().texOffs(
+//    mainarm.addOrReplaceChild( "thumb1", CubeListBuilder.create().texOffs(
+//    mainarm.addOrReplaceChild( "thumb2", CubeListBuilder.create().texOffs(
+//    mainarm.addOrReplaceChild( "fingerguard", CubeListBuilder.create().texOffs(
+//    mainarm.addOrReplaceChild( "crystalholder", CubeListBuilder.create().texOffs(
+//    mainarm.addOrReplaceChild( "crystal", CubeListBuilder.create().texOffs(
+//    mainarm.addOrReplaceChild( "supportright1", CubeListBuilder.create().texOffs(
+//    mainarm.addOrReplaceChild( "supportright2", CubeListBuilder.create().texOffs(
+//    mainarm.addOrReplaceChild( "supportright3", CubeListBuilder.create().texOffs(
+//    mainarm.addOrReplaceChild( "supportright4", CubeListBuilder.create().texOffs(
+//    mainarm.addOrReplaceChild( "supportright5", CubeListBuilder.create().texOffs(
+//    mainarm.addOrReplaceChild( "supportbaseright", CubeListBuilder.create().texOffs(
+//
+//    mainarm.addOrReplaceChild( "supportbaseleft", CubeListBuilder.create().texOffs(
+//    mainarm.addOrReplaceChild( "supportleftfront", CubeListBuilder.create().texOffs(
+//    mainarm.addOrReplaceChild( "supportrightfront", CubeListBuilder.create().texOffs(
+//    mainarm.addOrReplaceChild( "supportleft1", CubeListBuilder.create().texOffs(
+//    mainarm.addOrReplaceChild( "supportleft2", CubeListBuilder.create().texOffs(
+//    mainarm.addOrReplaceChild( "supportleft3", CubeListBuilder.create().texOffs(
+//    mainarm.addOrReplaceChild( "supportleft4", CubeListBuilder.create().texOffs(
+
+
+
+
+//
+
+
+//
+
 //
 //        index1 = new ModelPart(this, 34, 13);
 //        index1.addBox(-.5F, -.5F, 0F, 1, 1, 5);
@@ -334,14 +398,20 @@
 //        supportleft4.setTexSize(64, 32);
 //        supportleft4.mirror = true;
 //        setRotation(supportleft4, 0F, 0.3688462F, 0F);
-//
+
+        //    mainarm.addOrReplaceChild( "supportleft5", CubeListBuilder.create().texOffs(
+
+
 //        supportleft5 = new ModelRenderer(this, 54, 27);
 //        supportleft5.addBox(-0.8666667F, 1F, 7F, 4, 1, 1);
 //        supportleft5.setPos(0F, 0F, 0F);
 //        supportleft5.setTexSize(64, 32);
 //        supportleft5.mirror = true;
 //        setRotation(supportleft5, 0F, -0.7714355F, 0F);
-//
+
+
+
+
 //        index1.addChild(index2);
 //        middlefinger1.addChild(middlefinger2);
 //        ringfinger1.addChild(ringfinger2);
@@ -353,6 +423,34 @@
 //        palm.addChild(ringfinger1);
 //        palm.addChild(pinky1);
 //        palm.addChild(thumb1);
+
+
+
+
+        return LayerDefinition.create(meshdefinition, 64, 32);
+    }
+
+    public void renderToBuffer(PoseStack pPoseStack, VertexConsumer pBuffer, int pPackedLight, int pPackedOverlay, float pRed, float pGreen, float pBlue, float pAlpha) {
+        this.root.render(pPoseStack, pBuffer, pPackedLight, pPackedOverlay, pRed, pGreen, pBlue, pAlpha);
+    }
+}
+
+
+
+//    // TODO: port this !!
+//
+
+//
+
+//
+//    public PowerFistModel2() {
+//        super(RenderType::entitySolid);
+//        texWidth = 64;
+//        texHeight = 32;
+//
+
+//
+
 //
 //        partlMap.put("mainarm", mainarm);
 //        partlMap.put("armorright", armorright);

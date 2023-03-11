@@ -36,6 +36,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.AABB;
@@ -51,11 +52,10 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class ChargingBaseBlockEntity extends NuminaBlockEntity /*implements ITickableBlockEntity */{
+public class ChargingBaseBlockEntity extends BlockEntity {
     public ChargingBaseBlockEntity(BlockPos pWorldPosition, BlockState pBlockState) {
         super(NuminaObjects.CHARGING_BASE_BLOCK_ENTITY.get(), pWorldPosition, pBlockState);
     }
-
 
     /**
      * Fetch the entities within a given position
@@ -114,17 +114,7 @@ public class ChargingBaseBlockEntity extends NuminaBlockEntity /*implements ITic
             }
         });
     }
-    //
-//    /**
-//     * Retrieves packet to send to the client whenever this Tile Entity is resynced via World.sendBlockUpdated. For
-//     * modded TE's, this packet comes back to you clientside in {@link #onDataPacket}
-//     */
-//    @Nullable
-//    @Override
-//    public SUpdateBlockEntityPacket getUpdatePacket() {
-//        return new SUpdateBlockEntityPacket(this.worldPosition, -1, this.getUpdateTag());
-//    }
-//
+
     @Override
     public CompoundTag getUpdateTag() {
         return this.save(new CompoundTag());

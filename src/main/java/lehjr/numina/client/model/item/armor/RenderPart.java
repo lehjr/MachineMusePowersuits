@@ -31,13 +31,15 @@ import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.*;
+import lehjr.numina.client.model.helper.ModelHelper;
+import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.capabilities.render.modelspec.ModelPartSpec;
 import lehjr.numina.common.capabilities.render.modelspec.ModelRegistry;
 import lehjr.numina.common.capabilities.render.modelspec.ModelSpec;
 import lehjr.numina.common.capabilities.render.modelspec.PartSpecBase;
-import lehjr.numina.common.constants.NuminaConstants;
 import lehjr.numina.common.constants.TagConstants;
 import lehjr.numina.common.math.Color;
+import lehjr.numina.common.math.MathUtils;
 import lehjr.numina.common.tags.NBTTagAccessor;
 import net.minecraft.client.model.Model;
 import net.minecraft.client.model.geom.ModelPart;
@@ -49,15 +51,15 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.model.TransformationHelper;
+import org.lwjgl.system.CallbackI;
 import org.lwjgl.system.MemoryStack;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 
 import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 /**
  * Author: MachineMuse (Claire Semple)
@@ -67,53 +69,95 @@ import java.util.Random;
  */
 @OnlyIn(Dist.CLIENT)
 public class RenderPart extends ModelPart {
+    public float xOffset = 0;
+    public float yOffset = 0;
+    public float zOffset = 0;
+    public float xRotOffset = 0;
+    public float yRotOffset = 0;
+    public float zRotOffset = 0;
     final int FULL_BRIGHTNESS = 0XF000F0; // 15728880 also used in vanilla rendering item in gui
 
     // replace division operation with multiplication
     final float div255 = 0.003921569F;
     ModelPart parent;
 
-    public RenderPart(Model model, ModelPart parent) {
+    /***
+     * 1.16.5 used the Consumer interface to set the parent which in turn was used to set the cubes
+     * @param base
+     * @param parent
+     */
+    public RenderPart(Model base, ModelPart parent) {
         super(new ArrayList<>(), new HashMap<>());
         this.parent = parent;
     }
 
     @Override
+    public void render(PoseStack pPoseStack, VertexConsumer pVertexConsumer, int pPackedLight, int pPackedOverlay) {
+        this.render(pPoseStack, pVertexConsumer, pPackedLight, pPackedOverlay, 1.0F, 1.0F, 1.0F, 1.0F);
+    }
+
+
+    @Override
     public void render(PoseStack matrixStackIn, VertexConsumer bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
         if (this.visible) {
-            matrixStackIn.pushPose();
             this.translateAndRotate(matrixStackIn);
+            // render actual parts...
             this.doRendering(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
-            matrixStackIn.popPose();
         }
     }
 
     @Override
     public void translateAndRotate(PoseStack matrixStackIn) {
+//        matrixStackIn.pushPose();
         matrixStackIn.translate(
-                this.x * 0.0625F, // left/right??
-                this.y * 0.0625F, // up/down
-                this.z * 0.0625F); // forward/backwards
-        if (this.zRot != 0.0F) {
-            matrixStackIn.mulPose(Vector3f.ZP.rotation(this.zRot));
+                (this.xOffset + this.x) * MathUtils.DIV_16F, // left/right??
+                (this.yOffset + this.y) * MathUtils.DIV_16F, // up/down
+                (this.zOffset + this.z) * MathUtils.DIV_16F); // forward/backwards
+
+        // forward/backwards axis
+        if (this.zRot + zRotOffset != 0.0F) {
+            matrixStackIn.mulPose(Vector3f.ZP.rotation(this.zRot + zRotOffset));
         }
 
-        if (this.yRot != 0.0F) {
-            matrixStackIn.mulPose(Vector3f.YP.rotation(this.yRot));
+        // up/down axis
+        if (this.yRot + yRotOffset != 0.0F) {
+            matrixStackIn.mulPose(Vector3f.YP.rotation(this.yRot + yRotOffset));
         }
 
-        if (this.xRot != 0.0F) {
-            matrixStackIn.mulPose(Vector3f.XP.rotation(this.xRot));
+        // left/right axis
+        if (this.xRot + xRotOffset != 0.0F) {
+            matrixStackIn.mulPose(Vector3f.XP.rotation(this.xRot + xRotOffset));
         }
-
         matrixStackIn.mulPose(TransformationHelper.quatFromXYZ(new Vector3f(180, 0, 0), true));
+        matrixStackIn.translate(0,  - yOffset * MathUtils.DIV_16F, 0);
+    }
+
+    PoseStack getCopy(PoseStack poseStack) {
+        PoseStack stack = new PoseStack();
+        // Apply the transformation to the real matrix stack
+        Matrix4f tMat = poseStack.last().pose();
+        Matrix3f nMat = poseStack.last().normal();
+        stack.last().pose().multiply(tMat);
+        stack.last().normal().mul(nMat);
+
+        return stack;
+    }
+
+    void applyTransform(PoseStack poseStack, Transformation transformation) {
+        if (transformation != Transformation.identity()) {
+            PoseStack stack = new PoseStack();
+            transformation.push(stack);
+            // Apply the transformation to the real matrix stack
+            Matrix4f tMat = stack.last().pose();
+            Matrix3f nMat = stack.last().normal();
+            poseStack.last().pose().multiply(tMat);
+            poseStack.last().normal().mul(nMat);
+        }
     }
 
     private void doRendering(PoseStack matrixStackIn, VertexConsumer bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
         CompoundTag renderSpec = ArmorModelInstance.getInstance().getRenderSpec();
         if (renderSpec != null) {
-            PoseStack.Pose entry = matrixStackIn.last();
-
             int[] colours = renderSpec.getIntArray(TagConstants.COLORS);
 
             if (colours.length == 0) {
@@ -122,8 +166,11 @@ public class RenderPart extends ModelPart {
 
             int partColor;
             for (CompoundTag nbt : NBTTagAccessor.getValues(renderSpec)) {
+                PoseStack workingStack = getCopy(matrixStackIn);
+
                 PartSpecBase part = ModelRegistry.getInstance().getPart(nbt);
-                if (part != null && part instanceof ModelPartSpec) {
+                if (part /* != null && part */ instanceof ModelPartSpec) {
+                    // TODO slim model?
                     if (part.getBinding().getSlot() == ArmorModelInstance.getInstance().getVisibleSection()
                             && part.getBinding().getTarget().apply(ArmorModelInstance.getInstance()) == parent) {
                         int ix = part.getColourIndex(nbt);
@@ -135,21 +182,15 @@ public class RenderPart extends ModelPart {
                         }
 
                         Transformation transform = ((ModelSpec) part.spec).getTransform(ItemTransforms.TransformType.NONE);
-                        if (transform != Transformation.identity()) {
-                            PoseStack stack = new PoseStack();
-                            transform.push(stack);
-                            // Apply the transformation to the real matrix stack
-                            Matrix4f tMat = stack.last().pose();
-                            Matrix3f nMat = stack.last().normal();
-                            matrixStackIn.last().pose().multiply(tMat);
-                            matrixStackIn.last().normal().mul(nMat);
-                        }
+                        applyTransform(workingStack, transform);
 
                         ImmutableList.Builder<BakedQuad> builder = ImmutableList.builder();
                         Random random = new Random();
                         long i = 42L;
                         random.setSeed(i);
                         builder.addAll(((ModelPartSpec) part).getPart().getQuads(null, null, random));
+
+                        PoseStack.Pose entry = workingStack.last();
 
                         renderQuads(entry,
                                 bufferIn,
@@ -191,6 +232,8 @@ public class RenderPart extends ModelPart {
         Matrix4f matrix4f = matrixEntry.pose();// same as TexturedQuad renderer
         normal.transform(matrixEntry.normal()); // normals different here
 
+        float scale = 0.0625F;
+
         int intSize = DefaultVertexFormat.BLOCK.getIntegerSize();
 //        int intSize = DefaultVertexFormat.POSITION_COLOR_TEX_LIGHTMAP.getIntegerSize();
 
@@ -212,7 +255,7 @@ public class RenderPart extends ModelPart {
                 float f10 = bytebuffer.getFloat(20);
 
                 /** scaled like TexturedQuads, but using multiplication instead of division due to speed advantage.  */
-                Vector4f pos = new Vector4f(x * 0.0625F, y * 0.0625F, z * 0.0625F, 1.0F); // scales to 1/16 like the TexturedQuads but with multiplication (faster than division)
+                Vector4f pos = new Vector4f(x * scale, y * scale, z * scale, 1.0F); // scales to 1/16 like the TexturedQuads but with multiplication (faster than division)
                 pos.transform(matrix4f);
                 bufferIn.applyBakedNormals(normal, bytebuffer, matrixEntry.normal());
 

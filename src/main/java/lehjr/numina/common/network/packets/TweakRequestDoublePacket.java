@@ -44,7 +44,6 @@ public class TweakRequestDoublePacket {
     protected double tweakValue;
 
     public TweakRequestDoublePacket() {
-
     }
 
     public TweakRequestDoublePacket(EquipmentSlot type, ResourceLocation moduleRegName, String tweakName, double tweakValue) {
@@ -81,12 +80,7 @@ public class TweakRequestDoublePacket {
                         .filter(IModularItem.class::isInstance)
                         .map(IModularItem.class::cast)
                         .ifPresent(iItemHandler -> {
-                            NuminaLogger.logError("module before: " + iItemHandler.getOnlineModuleOrEmpty(moduleName).serializeNBT());
-
-
                             iItemHandler.setModuleTweakDouble(moduleName, tweakName, tweakValue);
-
-                            NuminaLogger.logError("module after: " + iItemHandler.getOnlineModuleOrEmpty(moduleName).serializeNBT());
                         });
                 player.getInventory().setChanged();
             }

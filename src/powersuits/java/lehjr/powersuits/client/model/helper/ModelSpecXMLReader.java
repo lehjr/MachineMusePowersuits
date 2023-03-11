@@ -33,7 +33,6 @@ import lehjr.numina.client.model.helper.ModelHelper;
 import lehjr.numina.client.model.obj.OBJBakedCompositeModel;
 import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.capabilities.render.modelspec.*;
-import lehjr.numina.common.constants.NuminaConstants;
 import lehjr.numina.common.constants.TagConstants;
 import lehjr.numina.common.math.Color;
 import lehjr.numina.common.string.StringUtils;
@@ -49,7 +48,6 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.client.model.ForgeModelBakery;
 import net.minecraftforge.client.model.SimpleModelState;
-import net.minecraftforge.common.model.TransformationHelper;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -216,52 +214,17 @@ public enum ModelSpecXMLReader {
                         }
                     }
 
-
-
-
-
-                    /*
-
-
-                        / **
-     * Gets the vanilla camera transforms data.
-     * Do not use for non-vanilla code. For general usage, prefer getCombinedState.
-     * /
-                    @Deprecated
-                    ItemTransforms getCameraTransforms();
-
-                    / **
-                     * @return The combined transformation state including vanilla and forge transforms data.
-                     * /
-                    IModelTransform getCombinedTransform();
-
-                    this(model.useSmoothLighting(), // true
-                    model.isShadedInGui(), // true
-                    model.isSideLit(), // false
-                    model.getCameraTransforms(),
-                    overrides);
-
-
-                    loadBakedModel(
-                    IModelConfiguration owner,
-                    ModelBakery bakery,
-                    Function<Material, TextureAtlasSprite> spriteGetter,
-                    IModelTransform modelTransform,
-                    ItemOverrides overrides,
-                    ResourceLocation modelLocation)
-                     */
-
-
                     OBJBakedCompositeModel bakedModel =
-//                    BlockModelConfiguration
-
-                    //public static OBJBakedCompositeModel loadBakedModel(IModelTransform modelTransform, ItemOverrides overrides, ResourceLocation modelLocation) {
-
-
                         ModelHelper.loadBakedModel(
                             modelTransform,
                             ItemOverrides.EMPTY,
                             new ResourceLocation(modelLocation));
+
+                    if (bakedModel == null) {
+                        NuminaLogger.logError("bakedModel NULL for: " + modelLocation);
+                        return;
+                    }
+                    NuminaLogger.logDebug("bakedModel class: " + bakedModel.getClass() + ", name: " + modelLocation);
 
                     // ModelSpec stuff
                     if (bakedModel != null && bakedModel instanceof OBJBakedCompositeModel) {
@@ -377,7 +340,7 @@ public enum ModelSpecXMLReader {
         Vector3f translation = parseVector(((Element) transformationNode).getAttribute("translation"));
         Vector3f rotation = parseVector(((Element) transformationNode).getAttribute("rotation"));
         Vector3f scale = parseVector(((Element) transformationNode).getAttribute("scale"));
-        return getTransform(translation, rotation, scale);
+        return ModelHelper.getTransform(translation, rotation, scale);
     }
 
     /**
@@ -392,30 +355,6 @@ public enum ModelSpecXMLReader {
                 (((Element) bindingNode).hasAttribute("itemState")) ?
                         ((Element) bindingNode).getAttribute("itemState") : "all"
         );
-    }
-
-    /**
-     * Simple transformation for armor models. Powerfist (and shield?) will need one of these for every conceivable case except GUI which will be an icon
-     */
-    public static Transformation getTransform(@Nullable Vector3f translation, @Nullable Vector3f rotation, @Nullable Vector3f scale) {
-        if (translation == null)
-            translation = new Vector3f(0, 0, 0);
-        if (rotation == null)
-            rotation = new Vector3f(0, 0, 0);
-        if (scale == null)
-            scale = new Vector3f(1, 1, 1);
-
-
-        /// Transformation(@Nullable Vector3f translationIn, @Nullable Quaternion rotationLeftIn, @Nullable Vector3f scaleIn, @Nullable Quaternion rotationRightIn)
-
-        return new Transformation(
-                // Transform
-                new Vector3f(translation.x() / 16, translation.y() / 16, translation.z() / 16),
-                // Angles
-                TransformationHelper.quatFromXYZ(rotation, true),
-                // Scale
-                scale,
-                null);
     }
 
     @Nullable

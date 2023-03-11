@@ -26,6 +26,7 @@
 
 package lehjr.powersuits.common.entity;
 
+import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.math.Color;
 import lehjr.powersuits.common.base.MPSObjects;
 import lehjr.powersuits.common.block.LuxCapacitorBlock;
@@ -41,6 +42,7 @@ import net.minecraft.world.entity.projectile.ThrowableProjectile;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
@@ -138,6 +140,15 @@ public class LuxCapacitorEntity extends ThrowableProjectile implements IEntityAd
         if (state.canSurvive(level, pos)) {
             level.setBlockAndUpdate(pos, state);
             level.setBlockEntity(new LuxCapacitorBlockEntity(pos, state));
+            BlockEntity blockEntity = level.getBlockEntity(pos);
+            if (blockEntity instanceof LuxCapacitorBlockEntity) {
+                ((LuxCapacitorBlockEntity) blockEntity).setColor(color);
+                NuminaLogger.logError("color check found color: " + ((LuxCapacitorBlockEntity) blockEntity).getColor());
+
+            } else {
+                NuminaLogger.logError("failed to spawn block entity?");
+            }
+
             return true;
         }
         return false;

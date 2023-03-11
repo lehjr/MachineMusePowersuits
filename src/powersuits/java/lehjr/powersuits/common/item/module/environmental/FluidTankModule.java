@@ -26,6 +26,7 @@
 
 package lehjr.powersuits.common.item.module.environmental;
 
+import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.capabilities.module.powermodule.*;
 import lehjr.numina.common.capabilities.module.tickable.PlayerTickModule;
 import lehjr.numina.common.heat.HeatUtils;
@@ -43,10 +44,12 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.BucketPickup;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.fluids.FluidActionResult;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.IFluidHandler;
@@ -89,7 +92,12 @@ public class FluidTankModule extends AbstractPowerModule {
                 return ticker;
             });
 
-            this.fluidHandler = new FluidHandlerItemStack(module, (int)ticker.applyPropertyModifiers(MPSConstants.FLUID_TANK_SIZE));
+            this.fluidHandler = new FluidHandlerItemStack(module, (int)ticker.applyPropertyModifiers(MPSConstants.FLUID_TANK_SIZE)) {
+                @Override
+                public boolean canFillFluidType(FluidStack fluid) {
+                    return fluid.getFluid() == Fluids.WATER;
+                }
+            };
         }
 
         class Ticker extends PlayerTickModule {
@@ -112,15 +120,13 @@ public class FluidTankModule extends AbstractPowerModule {
                         // fill by being in water
                         if (player.isInWater() && player.level.getBlockState(pos).getBlock() != Blocks.BUBBLE_COLUMN) {
                             if (blockstate.getBlock() instanceof BucketPickup && blockstate.getFluidState().getType() == Fluids.WATER) {
-                                FluidUtil.tryPickUpFluid(module, player, player.level, pos, null); // fixme?
-
-
-//                                Fluid fluid = ((BucketPickup) blockstate.getBlock()).takeLiquid(player.level, pos, blockstate);
-//                                FluidStack water = new FluidStack(fluid, 1000);
-                                // only play sound if actually filling
-//                                if (fluidHandler.fill(water, IFluidHandler.FluidAction.EXECUTE) > 0) {
-//                                    player.playSound(SoundEvents.BUCKET_FILL, 1.0F, 1.0F);
-//                                }
+                                FluidActionResult pickup = FluidUtil.tryPickUpFluid(module, player, player.level, pos, null); // fixme?
+                                if(pickup.isSuccess()) {
+                                    FluidStack water = new FluidStack(Fluids.WATER, 1000);
+                                    if (fluidHandler.fill(water, IFluidHandler.FluidAction.EXECUTE) > 0) {
+                                        player.playSound(SoundEvents.BUCKET_FILL, 1.0F, 1.0F);
+                                    }
+                                }
                             }
                             // fill by being in the rain or bubble column
                         } else if (player.isInWaterRainOrBubble()) {

@@ -29,7 +29,9 @@ package lehjr.powersuits.client.model.block;
 import com.mojang.blaze3d.vertex.PoseStack;
 import lehjr.numina.client.model.obj.OBJBakedCompositeModel;
 import lehjr.numina.client.model.obj.OBJPartData;
+import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.capabilities.module.powermodule.PowerModuleCapability;
+import lehjr.numina.common.constants.TagConstants;
 import lehjr.numina.common.math.Color;
 import lehjr.powersuits.client.model.helper.LuxCapHelper;
 import lehjr.powersuits.common.block.LuxCapacitorBlock;
@@ -69,9 +71,12 @@ public class LuxCapacitorModelWrapper extends BakedModelWrapper<OBJBakedComposit
     }
 
     @Nonnull
-    @Override
+    @Override // FIXME : should this one even fire?
     public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, @Nonnull Random rand, @Nonnull IModelData extraData) {
         if (!extraData.hasProperty(OBJPartData.SUBMODEL_DATA)) {
+
+//            NuminaLogger.logError("getQuadsWithExtraData: color here: " + colour);
+
             extraData = LuxCapHelper.getModelData(colour != null ? colour.getInt() : Color.WHITE.getInt());
         }
         return originalModel.getQuads(state, side, rand, extraData);
@@ -79,6 +84,9 @@ public class LuxCapacitorModelWrapper extends BakedModelWrapper<OBJBakedComposit
 
     @Override
     public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, Random rand) {
+
+//        NuminaLogger.logError("shorter getQuads: color here: " + colour);
+
         IModelData extraData = LuxCapHelper.getModelData(colour != null ? colour.getInt() : Color.WHITE.getInt());
         return originalModel.getQuads(state, side, rand, extraData);
     }
@@ -114,8 +122,8 @@ public class LuxCapacitorModelWrapper extends BakedModelWrapper<OBJBakedComposit
         public BakedModel resolve(BakedModel model, ItemStack stack, @Nullable ClientLevel worldIn, @Nullable LivingEntity entityIn,  int pSeed) {
             Color colour;
             // this one is just for the launched item
-            if (stack.hasTag() && stack.getTag().contains("colour", Tag.TAG_INT)) {
-                colour = new Color( stack.getTag().getInt("colour"));
+            if (stack.hasTag() && stack.getTag().contains(TagConstants.COLOR, Tag.TAG_INT)) {
+                colour = new Color( stack.getTag().getInt(TagConstants.COLOR));
             // this is for the active icon
             } else {
                 colour = stack.getCapability(PowerModuleCapability.POWER_MODULE).map(pm -> {

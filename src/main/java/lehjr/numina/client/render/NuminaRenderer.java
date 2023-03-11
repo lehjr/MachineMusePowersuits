@@ -122,7 +122,7 @@ public abstract class NuminaRenderer {
     public static void drawModuleAt(PoseStack matrixStackIn, double x, double y, @Nonnull ItemStack itemStack, boolean active) {
         if (!itemStack.isEmpty()) {
             BakedModel model = getModel(itemStack);
-            renderGuiItem(itemStack, matrixStackIn, (float)x, (float) y, model, active? Color.WHITE : Color.DARK_GREY.withAlpha(0.5F));
+            renderGuiItem(itemStack, matrixStackIn, (float)x, (float) y, model, active? Color.WHITE : Color.DARK_GRAY.withAlpha(0.5F));
         }
     }
 

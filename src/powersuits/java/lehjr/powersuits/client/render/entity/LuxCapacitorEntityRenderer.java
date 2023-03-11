@@ -28,6 +28,7 @@ package lehjr.powersuits.client.render.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
+import lehjr.numina.common.constants.TagConstants;
 import lehjr.numina.common.math.Color;
 import lehjr.powersuits.common.base.MPSObjects;
 import lehjr.powersuits.common.entity.LuxCapacitorEntity;
@@ -64,7 +65,7 @@ public class LuxCapacitorEntityRenderer extends EntityRenderer<LuxCapacitorEntit
     ItemStack getStack(Color color) {
         ItemStack stack = new ItemStack(MPSObjects.LUX_CAPACITOR_MODULE.get());
         CompoundTag nbt = stack.getOrCreateTag();
-        nbt.putInt("colour", color.getInt());
+        nbt.putInt(TagConstants.COLOR, color.getInt());
         return stack;
     }
 

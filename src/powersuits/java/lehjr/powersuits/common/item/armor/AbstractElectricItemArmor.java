@@ -338,7 +338,6 @@ public abstract class AbstractElectricItemArmor extends ArmorItem {
 
                 return itemStack.getCapability(ModelSpecCapability.RENDER).map(spec -> {
                     CompoundTag renderTag = spec.getRenderTag();
-
                     EquipmentSlot slot = Mob.getEquipmentSlotForItem(itemStack);
                     /** sets up default spec tags. A tag with all parts disabled should still have a color tag rather than being empty or null */
                     if ((renderTag == null || renderTag.isEmpty()) && entityLiving == Minecraft.getInstance().player && armorSlot == slot) {

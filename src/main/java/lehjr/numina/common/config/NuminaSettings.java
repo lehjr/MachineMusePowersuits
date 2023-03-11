@@ -78,6 +78,8 @@ public class NuminaSettings {
         return CLIENT_CONFIG != null ? CLIENT_CONFIG.USE_SOUNDS.get() : true;
     }
 
+    /** Development ------------------------------------------------------------------------------- */
+
     public static boolean enableDebugging() {
         return CLIENT_CONFIG != null ? CLIENT_CONFIG.DEBUGGING_INFO.get() : false;
     }
@@ -139,6 +141,69 @@ public class NuminaSettings {
 
     public static boolean showMetersWhenPaused() {
         return CLIENT_CONFIG != null ? CLIENT_CONFIG.SHOW_METERS_WHEN_PAUSED.get() : false;
+    }
+
+    public static double getModelTranslationX() {
+        if (CLIENT_CONFIG != null) {
+            return CLIENT_CONFIG.MODEL_TRANSLATION_X.get() * (CLIENT_CONFIG.MODEL_TRANSLATION_X_INVERT.get() ? -1 : 1);
+        }
+        return 0;
+    }
+
+    public static double getModelTranslationY() {
+        if (CLIENT_CONFIG != null) {
+            return CLIENT_CONFIG.MODEL_TRANSLATION_Y.get() * (CLIENT_CONFIG.MODEL_TRANSLATION_Y_INVERT.get() ? -1 : 1);
+        }
+        return 0;
+    }
+
+    public static double getModelTranslationZ() {
+        if (CLIENT_CONFIG != null) {
+            return CLIENT_CONFIG.MODEL_TRANSLATION_Z.get() * (CLIENT_CONFIG.MODEL_TRANSLATION_Z_INVERT.get() ? -1 : 1);
+        }
+        return 0;
+    }
+
+    public static double getModelRotationX() {
+        if (CLIENT_CONFIG != null) {
+            return  CLIENT_CONFIG.MODEL_ROTATION_X.get() * (CLIENT_CONFIG.MODEL_ROTATION_X_INVERT.get() ? -1 : 1);
+        }
+        return 0;
+    }
+
+    public static double getModelRotationY() {
+        if (CLIENT_CONFIG != null) {
+            return  CLIENT_CONFIG.MODEL_ROTATION_Y.get() * (CLIENT_CONFIG.MODEL_ROTATION_Y_INVERT.get() ? -1 : 1);
+        }
+        return 0;
+    }
+
+    public static double getModelRotationZ() {
+        if (CLIENT_CONFIG != null) {
+            return  CLIENT_CONFIG.MODEL_ROTATION_Z.get() * (CLIENT_CONFIG.MODEL_ROTATION_Z_INVERT.get() ? -1 : 1);
+        }
+        return 0;
+    }
+
+    public static double getModelScaleX() {
+        if (CLIENT_CONFIG != null) {
+            return  CLIENT_CONFIG.MODEL_SCALE_X.get() * (CLIENT_CONFIG.MODEL_SCALE_X_INVERT.get() ? -1 : 1);
+        }
+        return 0;
+    }
+
+    public static double getModelScaleY() {
+        if (CLIENT_CONFIG != null) {
+            return  CLIENT_CONFIG.MODEL_SCALE_Y.get() * (CLIENT_CONFIG.MODEL_SCALE_Y_INVERT.get() ? -1 : 1);
+        }
+        return 0;
+    }
+
+    public static double getModelScaleZ() {
+        if (CLIENT_CONFIG != null) {
+            return  CLIENT_CONFIG.MODEL_SCALE_Z.get() * (CLIENT_CONFIG.MODEL_SCALE_Z_INVERT.get() ? -1 : 1);
+        }
+        return 0;
     }
 
     /** Server Settings --------------------------------------------------------------------------- */

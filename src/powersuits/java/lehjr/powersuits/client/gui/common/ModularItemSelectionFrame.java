@@ -79,7 +79,7 @@ public class ModularItemSelectionFrame extends AbstractGuiFrame {
         creativeInstallButton.setHeight(18);
         creativeInstallButton.setWidth(30);
         creativeInstallButton.disableAndHide();
-        creativeInstallButton.setEnabledBackground(Color.LIGHT_GREY);
+        creativeInstallButton.setEnabledBackground(Color.LIGHT_GRAY);
         creativeInstallButton.setDisabledBackground(Color.RED);
         creativeInstallButton.setUL(getUL().copy());
 

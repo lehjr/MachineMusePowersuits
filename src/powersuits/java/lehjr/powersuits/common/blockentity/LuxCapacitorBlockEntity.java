@@ -28,10 +28,10 @@ package lehjr.powersuits.common.blockentity;
 
 
 import lehjr.numina.common.base.NuminaLogger;
-import lehjr.numina.common.blockentity.NuminaBlockEntity;
 import lehjr.numina.common.capabilities.render.colour.ColorCapability;
 import lehjr.numina.common.capabilities.render.colour.ColorStorage;
 import lehjr.numina.common.capabilities.render.colour.IColorTag;
+import lehjr.numina.common.constants.TagConstants;
 import lehjr.numina.common.math.Color;
 import lehjr.powersuits.client.model.helper.LuxCapHelper;
 import lehjr.powersuits.common.base.MPSObjects;
@@ -41,6 +41,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.IntTag;
 import net.minecraft.nbt.Tag;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.client.model.data.IModelData;
 import net.minecraftforge.common.capabilities.Capability;
@@ -50,7 +51,7 @@ import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.Nonnull;
 
-public class LuxCapacitorBlockEntity extends NuminaBlockEntity {
+public class LuxCapacitorBlockEntity extends BlockEntity {
     final ColorStorage colorStorage = new ColorStorage();
     final LazyOptional<IColorTag> colorHolder;
     public LuxCapacitorBlockEntity(BlockPos pos, BlockState state) {
@@ -58,13 +59,14 @@ public class LuxCapacitorBlockEntity extends NuminaBlockEntity {
         colorHolder = LazyOptional.of(()-> colorStorage);
     }
 
-    public void setColor(Color color) {
-        NuminaLogger.logError("setting color as: " + color.toString());
+//    @Override
+//    public void handleUpdateTag(CompoundTag tag) {
+//        super.handleUpdateTag(tag);
+//    }
 
+    public void setColor(Color color) {
         this.getCapability(ColorCapability.COLOR, null).ifPresent(colorCap -> colorCap.setColor(color));
         this.setChanged();
-
-        // fixme save color setting?
     }
 
     @NotNull
@@ -85,34 +87,37 @@ public class LuxCapacitorBlockEntity extends NuminaBlockEntity {
     @Override
     public void load(CompoundTag tag) {
         super.load(tag);
-        if (tag.contains("color", Tag.TAG_INT)) {
-            colorHolder.ifPresent(colorNBT-> ((ColorStorage)colorNBT).deserializeNBT((IntTag) tag.get("color")));
-        } else {
-            colorHolder.ifPresent(colorNBT-> colorNBT.setColor(LuxCapacitorBlock.defaultColor));
-
-            NuminaLogger.logger.debug("No NBT found! D:");
-        }
+        colorStorage.deserializeNBT((IntTag) tag.get(TagConstants.COLOR));
     }
 
     @Override
-    protected void saveAdditional(CompoundTag tag) {
-        super.saveAdditional(tag);
-        colorHolder.ifPresent(colorNBT -> tag.put("colour", ((ColorStorage)colorNBT).serializeNBT()));
+    public CompoundTag getUpdateTag() {
+        return this.save(super.getUpdateTag());
     }
 
-//        @Override
-//    public void requestModelDataUpdate() {
-//        super.requestModelDataUpdate();
-//    }
+    @Override
+    protected void saveAdditional(CompoundTag pTag) {
+        super.saveAdditional(pTag);
+        save(pTag);
+    }
+
+    public CompoundTag save(CompoundTag tag) {
+        tag.put(TagConstants.COLOR, colorStorage.serializeNBT());
+        return tag;
+    }
 
     @Nonnull
     @Override
     public IModelData getModelData() {
-        // FIXME: insert luxcaphelper here
         return LuxCapHelper.getModelData(getColor().getInt());
     }
 
     public Color getColor() {
-        return colorHolder.map(colourNBT1 -> colourNBT1.getColor()).orElse(LuxCapacitorBlock.defaultColor);
+        return colorHolder.map(colorCap -> colorCap.getColor()).orElse(LuxCapacitorBlock.defaultColor);
+    }
+
+    @Override
+    public void requestModelDataUpdate() {
+        super.requestModelDataUpdate();
     }
 }

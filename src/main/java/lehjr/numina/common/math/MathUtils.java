@@ -34,6 +34,8 @@ import java.util.Random;
  * Ported to Java by lehjr on 10/22/16.
  */
 public final class MathUtils {
+    public static final float DIV_16F = 0.0625F;
+    public static final double DIV_16D = 0.0625D;
     private static Random random = new Random();
 
     public static Random random() {

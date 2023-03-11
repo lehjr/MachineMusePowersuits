@@ -9,6 +9,7 @@ import lehjr.numina.client.gui.frame.ScrollableFrame;
 import lehjr.numina.client.gui.geometry.MusePoint2D;
 import lehjr.numina.client.gui.geometry.Rect;
 import lehjr.numina.client.render.NuminaRenderer;
+import lehjr.numina.common.base.NuminaLogger;
 import lehjr.powersuits.client.control.KeybindManager;
 import lehjr.powersuits.client.control.MPSKeyMapping;
 import lehjr.powersuits.client.event.RenderEventHandler;

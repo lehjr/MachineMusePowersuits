@@ -49,7 +49,7 @@ public enum RenderEventHandler {
     @SubscribeEvent
     public void onPostRenderGameOverlayEvent(final RenderGameOverlayEvent.Post e) {
         RenderGameOverlayEvent.ElementType elementType = e.getType();
-        if (RenderGameOverlayEvent.ElementType.LAYER.equals(elementType)) {
+        if (RenderGameOverlayEvent.ElementType.TEXT.equals(elementType)) {
             drawModeChangeIcons();
             if (ModList.get().isLoaded("scannable")) {
 //                MPSOverlayRenderer.INSTANCE.onOverlayRender(e);

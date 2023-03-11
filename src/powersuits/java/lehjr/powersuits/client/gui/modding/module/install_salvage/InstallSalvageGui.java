@@ -69,7 +69,7 @@ public class InstallSalvageGui extends ExtendedContainerScreen<InstallSalvageMen
         });
 
         itemSelectFrame.getCreativeInstallButton().setOnReleased(pressed -> {
-            ((ClickableButton)pressed).setEnabledBackground(Color.LIGHT_GREY);
+            ((ClickableButton)pressed).setEnabledBackground(Color.LIGHT_GRAY);
         });
         addFrame(moduleSelectFrame);
 

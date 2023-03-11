@@ -211,7 +211,7 @@ public class PowerFistModel extends BakedModelWrapper {
 
     @Override
     public ItemOverrides getOverrides() {
-        NuminaLogger.logDebug("fetching overrides");
+//        NuminaLogger.logDebug("fetching overrides");
 
         return new PowerFistItemOverrides();
     }
@@ -226,7 +226,7 @@ public class PowerFistModel extends BakedModelWrapper {
         public BakedModel resolve(BakedModel model, ItemStack itemStackIn, @Nullable ClientLevel level, @Nullable LivingEntity entityIn, int seed) {
             itemStack = itemStackIn;
 
-            NuminaLogger.logDebug("drinking a cake and baking a beer");
+//            NuminaLogger.logDebug("drinking a cake and baking a beer");
 
             if (entityIn instanceof Player) {
                 Player player = (Player) entityIn;

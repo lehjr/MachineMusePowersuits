@@ -58,7 +58,7 @@ public class ModelTransformCalibration {
     public static boolean tap;
 
     public ModelTransformCalibration() {
-        this(0,0,0,0,0,0,0.625f);
+        this(0,0,0,0,0,0,/* 0.625f */ 1);
     }
 
     // unreliable
@@ -228,7 +228,22 @@ public class ModelTransformCalibration {
      PAUSE - scale   | NUM_PAD_0 = print
 
 
-     */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+*/
 
 
 }

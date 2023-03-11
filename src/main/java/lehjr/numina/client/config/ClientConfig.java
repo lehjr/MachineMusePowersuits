@@ -37,7 +37,19 @@ public class ClientConfig {
             USE_SOUNDS,
             DEBUGGING_INFO,
             DRAW_GUI_SPACERS,
-            SHOW_METERS_WHEN_PAUSED;
+            SHOW_METERS_WHEN_PAUSED,
+
+            MODEL_TRANSLATION_X_INVERT,
+            MODEL_TRANSLATION_Y_INVERT,
+            MODEL_TRANSLATION_Z_INVERT,
+
+            MODEL_ROTATION_X_INVERT,
+            MODEL_ROTATION_Y_INVERT,
+            MODEL_ROTATION_Z_INVERT,
+
+            MODEL_SCALE_X_INVERT,
+            MODEL_SCALE_Y_INVERT,
+            MODEL_SCALE_Z_INVERT;
 
     public ForgeConfigSpec.DoubleValue
                         GLASS_RED,
@@ -63,7 +75,19 @@ public class ClientConfig {
                         WATER_METER_RED,
                         WATER_METER_GREEN,
                         WATER_METER_BLUE,
-                        WATER_METER_ALPHA;
+                        WATER_METER_ALPHA,
+
+                        MODEL_TRANSLATION_X,
+                        MODEL_TRANSLATION_Y,
+                        MODEL_TRANSLATION_Z,
+
+                        MODEL_ROTATION_X,
+                        MODEL_ROTATION_Y,
+                        MODEL_ROTATION_Z,
+
+                        MODEL_SCALE_X,
+                        MODEL_SCALE_Y,
+                        MODEL_SCALE_Z;
 
 
     public ClientConfig(ForgeConfigSpec.Builder builder) {
@@ -196,6 +220,90 @@ public class ClientConfig {
                 .comment("Enable debugging info")
                 .translation(NuminaConstants.CONFIG_DEBUGGING_INFO)
                 .define("enableDebugging", false);
+
+
+        builder.push("model development");
+
+        // Translation ----------------------------------------------------------------------------
+        builder.push("translation");
+        MODEL_TRANSLATION_X = builder
+                .comment("model translation x")
+                .defineInRange("modelTranslationX", 0.0, 0, Double.MAX_VALUE);
+
+        MODEL_TRANSLATION_X_INVERT = builder
+                .comment("model translation x use negative value")
+                .define("modelTranslationXInverted", false);
+
+        MODEL_TRANSLATION_Y = builder
+                .comment("model translation y")
+                .defineInRange("modelTranslationY", 0.0, 0.0, Double.MAX_VALUE);
+
+        MODEL_TRANSLATION_Y_INVERT = builder
+                .comment("model translation y use negative value")
+                .define("modelTranslationYInverted", false);
+
+        MODEL_TRANSLATION_Z = builder
+                .comment("model translation z")
+                .defineInRange("modelTranslationZ", 0.0, 0.0, Double.MAX_VALUE);
+
+        MODEL_TRANSLATION_Z_INVERT = builder
+                .comment("model translation z use negative value")
+                .define("modelTranslationZInverted", false);
+        builder.pop(); // translation pop
+
+        // Rotation -------------------------------------------------------------------------------
+        builder.push("rotation");
+        MODEL_ROTATION_X = builder
+                .comment("model rotation x")
+                .defineInRange("modelRotationX", 0.0, 0.0, Double.MAX_VALUE);
+
+        MODEL_ROTATION_X_INVERT = builder
+                .comment("model rotation x use negative value")
+                .define("modelRotationXInverted", false);
+
+        MODEL_ROTATION_Y = builder
+                .comment("model rotation y")
+                .defineInRange("modelRotationY", 0.0, 0.0, Double.MAX_VALUE);
+
+        MODEL_ROTATION_Y_INVERT = builder
+                .comment("model rotation y use negative value")
+                .define("modelRotationYInverted", false);
+
+        MODEL_ROTATION_Z = builder
+                .comment("model rotation z")
+                .defineInRange("modelRotationZ", 0.0, 0.0, Double.MAX_VALUE);
+
+        MODEL_ROTATION_Z_INVERT = builder
+                .comment("model rotation z use negative value")
+                .define("modelRotationZInverted", false);
+        builder.pop(); // rotation pop
+
+        // Scale-----------------------------------------------------------------------------------
+        builder.push("scale");
+        MODEL_SCALE_X = builder
+                .comment("model scale x")
+                .defineInRange("modelScaleX", 1.0, 0.0, Double.MAX_VALUE);
+
+        MODEL_SCALE_X_INVERT = builder
+                .comment("model rotation x use negative value")
+                .define("modelScaleXInverted", false);
+
+        MODEL_SCALE_Y = builder
+                .comment("model scale y")
+                .defineInRange("modelScaleY", 1.0, 0.0, Double.MAX_VALUE);
+
+        MODEL_SCALE_Y_INVERT = builder
+                .comment("model rotation y use negative value")
+                .define("modelScaleYInverted", false);
+
+        MODEL_SCALE_Z = builder
+                .comment("model scale z")
+                .defineInRange("modelScaleZ", 1.0, 0.0, Double.MAX_VALUE);
+
+        MODEL_SCALE_Z_INVERT = builder
+                .comment("model rotation z use negative value")
+                .define("modelScaleZInverted", false);
+        builder.pop(); // scale pop
 
         builder.pop(); // Dev settings end
     }

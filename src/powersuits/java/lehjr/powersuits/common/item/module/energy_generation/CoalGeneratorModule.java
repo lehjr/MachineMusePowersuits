@@ -1,9 +1,11 @@
 //package lehjr.powersuits.item.module.energy.generation;
 //
+//import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 //import lehjr.numina.module.EnumModuleCategory;
 //import lehjr.numina.module.EnumModuleTarget;
 //import lehjr.numina.module.IPlayerTickModule;
 //import lehjr.numina.module.IToggleableModule;
+//import lehjr.powersuits.common.item.module.AbstractPowerModule;
 //import lehjr.powersuits.item.module.AbstractPowerModule;
 //import net.minecraft.world.entity.player.Player;
 //import net.minecraft.world.item.ItemStack;
@@ -25,8 +27,14 @@
 // *
 // *
 // */
-//public class ItemModuleGeneratorCoal extends AbstractPowerModule implements IPlayerTickModule, IToggleableModule {
-//    public ItemModuleGeneratorCoal(String regName) {
+//public class CoalGeneratorModule extends AbstractPowerModule {
+//
+//    public CoalGeneratorModule() {
+//
+//    }
+//
+//
+//    public CoalGeneratorModule(String regName) {
 //        super(regName, EnumModuleTarget.TORSOONLY, EnumModuleCategory.CATEGORY_ENERGY_GENERATION);
 ////        ModuleManager.INSTANCE.addInstallCost(getDataName(), new ItemStack(Blocks.FURNACE));
 ////        ModuleManager.INSTANCE.addInstallCost(getDataName(), ItemUtils.copyAndResize(Iteminecraftomponent.controlCircuit, 1));
@@ -64,13 +72,13 @@
 ////            }
 ////        }
 //    }
-//
-//    @Override
-//    public void onPlayerTickInactive(Player player, ItemStack item) {
-//    }
-//
-//    @Override
-//    public EnumModuleCategory getCategory() {
-//        return EnumModuleCategory.CATEGORY_ENERGY_GENERATION;
-//    }
+////
+////    @Override
+////    public void onPlayerTickInactive(Player player, ItemStack item) {
+////    }
+////
+////    @Override
+////    public ModuleCategory getCategory() {
+////        return ModuleCategory.ENERGY_GENERATION;
+////    }
 //}

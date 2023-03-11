@@ -1,8 +1,0 @@
-{
-  "loader": "forge:obj",
-  "model": "powersuits:models/block/luxcapacitor/luxcapacitor_lens.obj",
-  "flip-v": true,
-  "textures": {
-    "particle": "powersuits:models/luxcapacitor"
-  }
-}

@@ -1,24 +1,35 @@
 # Blender MTL File: 'None'
 # Material Count: 2
 
-newmtl BaseMaterial
+newmtl BaseUpperMaterial
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
-Kd 0.640000 0.640000 0.640000
+Kd 0.800000 0.800000 0.800000
 Ks 0.000000 0.000000 0.000000
 Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 1
-map_Kd powersuits:models/luxcapacitor
+map_Kd numina:models/luxlight
+
+newmtl BaseLowerMaterial
+Ns 0.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 1
+map_Kd numina:models/luxdark
 
 newmtl LensMaterial
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
-Kd 0.588000 0.588000 0.588000
+Kd 0.800000 0.800000 0.800000
 Ks 0.000000 0.000000 0.000000
 Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 1
-map_Kd powersuits:models/luxcapacitor
+map_Kd forge:white

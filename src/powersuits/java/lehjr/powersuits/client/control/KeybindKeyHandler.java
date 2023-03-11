@@ -222,10 +222,8 @@ public class KeybindKeyHandler {
                 }
             });
         } else {
-
-
             // This is mostly just to populate the list in the event the list doesn't exist or to add new modules
-            ClientRegistry.registerKeyBinding(new MPSKeyMapping(registryName, keybindingName, keyIn, category));
+            ClientRegistry.registerKeyBinding(new MPSKeyMapping(registryName, keybindingName, keyIn, category, showOnHud));
         }
     }
 }

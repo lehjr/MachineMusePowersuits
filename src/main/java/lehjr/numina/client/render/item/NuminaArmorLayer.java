@@ -28,14 +28,19 @@ package lehjr.numina.client.render.item;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import lehjr.numina.client.model.item.armor.HighPolyArmor;
+import lehjr.numina.client.render.NuminaRenderer;
+import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.capabilities.render.IArmorModelSpecNBT;
 import lehjr.numina.common.capabilities.render.ModelSpecCapability;
 import lehjr.numina.common.capabilities.render.modelspec.SpecType;
 import lehjr.numina.common.math.Color;
+import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.Model;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.HumanoidArmorLayer;
@@ -55,6 +60,10 @@ public class NuminaArmorLayer<T extends LivingEntity, M extends HumanoidModel<T>
         super(entityRenderer, modelLeggings, modelArmor);
     }
 
+    @Override
+    protected void setPartVisibility(A pModel, EquipmentSlot pSlot) {
+        super.setPartVisibility(pModel, pSlot);
+    }
 
     @Override
     public void render(PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn, T entityIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
@@ -76,63 +85,34 @@ public class NuminaArmorLayer<T extends LivingEntity, M extends HumanoidModel<T>
     public void renderArmorPiece(PoseStack matrixIn, MultiBufferSource bufferIn, T entityIn, EquipmentSlot slotIn, int packedLightIn, A model) {
         ItemStack itemstack = entityIn.getItemBySlot( slotIn);
         boolean hasEffect = itemstack.hasFoil();
-
-        if (itemstack.getItem() instanceof ArmorItem) {
-            Model actualModel = getArmorModelHook(entityIn, itemstack, slotIn, model);
+        if (itemstack.getItem() instanceof ArmorItem && itemstack.getCapability(ModelSpecCapability.RENDER).isPresent()) {
             ArmorItem armoritem = (ArmorItem)itemstack.getItem();
             if (armoritem.getSlot() ==  slotIn) {
+                Model actualModel = getArmorModelHook(entityIn, itemstack, slotIn, model);
 
-                this.getParentModel().copyPropertiesTo(model);
-                this.setPartVisibility(model, slotIn);
-
-                // ideally, this would replace the getArmorModel
-                if (itemstack.getCapability(ModelSpecCapability.RENDER).isPresent()) {
-                    itemstack.getCapability(ModelSpecCapability.RENDER).ifPresent(spec->{
-                        if (spec.getSpecType() == SpecType.ARMOR_SKIN) {
-                            Color colour = spec.getColorFromItemStack();
-                            this.renderModel(matrixIn, bufferIn, packedLightIn, hasEffect, (A)actualModel, colour.r, colour.g, colour.b, ((IArmorModelSpecNBT) spec).getArmorTexture());
-                            this.renderModel(matrixIn, bufferIn, packedLightIn, hasEffect, (A)actualModel, colour.r, colour.g, colour.b, ((IArmorModelSpecNBT) spec).getArmorTexture());
-                        } else {
-                            this.renderModel(matrixIn, bufferIn, packedLightIn, hasEffect, (A)actualModel, 1.0F, 1.0F, 1.0F, TextureAtlas.LOCATION_BLOCKS);
-                        }
-                    });
+                if(actualModel instanceof HighPolyArmor) {
+                    ((HighPolyArmor) actualModel).copyPropertiesFrom(getParentModel());
                 } else {
-                    super.renderArmorPiece(matrixIn, bufferIn, entityIn, slotIn, packedLightIn, model);
+                    this.getParentModel().copyPropertiesTo(model);
                 }
+
+                this.setPartVisibility(model, slotIn);
+                // ideally, this would replace the getArmorModel
+                itemstack.getCapability(ModelSpecCapability.RENDER).ifPresent(spec->{
+                    if (spec.getSpecType() == SpecType.ARMOR_SKIN) {
+                        Color colour = spec.getColorFromItemStack();
+                        this.renderModel(matrixIn, bufferIn, packedLightIn, hasEffect, (A)actualModel, colour.r, colour.g, colour.b, colour.a, ((IArmorModelSpecNBT) spec).getArmorTexture());
+                        this.renderModel(matrixIn, bufferIn, packedLightIn, hasEffect, (A)actualModel, colour.r, colour.g, colour.b, colour.a, ((IArmorModelSpecNBT) spec).getArmorTexture());
+                    } else {
+                        this.renderModel(matrixIn, bufferIn, packedLightIn, hasEffect, (A)actualModel, 1.0F, 1.0F, 1.0F, 1.0F, TextureAtlas.LOCATION_BLOCKS);
+                    }
+                });
             }
+        } else {
+            super.renderArmorPiece(matrixIn, bufferIn, entityIn, slotIn, packedLightIn, model);
         }
     }
 
-////
-//    @Override
-//    public void renderArmorPiece(PoseStack matrixIn, MultiBufferSource bufferIn, T entityIn, EquipmentSlot  slotIn, int packedLightIn, A model) {
-//        ItemStack itemstack = entityIn.getItemBySlot( slotIn);
-//        boolean hasEffect = itemstack.hasFoil();
-//
-//        if (itemstack.getItem() instanceof ArmorItem) {
-//            ArmorItem armoritem = (ArmorItem)itemstack.getItem();
-//            if (armoritem.getSlot() ==  slotIn) {
-//                // ideally, this would replace the getArmorModel
-//                if (itemstack.getCapability(ModelSpecCapability.RENDER).isPresent()) {
-//                    itemstack.getCapability(ModelSpecCapability.RENDER).ifPresent(spec->{
-//                        // gets the actual model from the
-//                        Model actualModel = this.getArmorModelHook(entityIn, itemstack, slotIn, model);
-//                        this.getParentModel().copyPropertiesTo(actualModel);
-//                        this.setPartVisibility(actualModel, slotIn);
-//                        if (spec.getSpecType() == SpecType.ARMOR_SKIN) {
-//                            Color colour = spec.getColorFromItemStack();
-//                            renderModel(matrixIn, bufferIn, packedLightIn, hasEffect, actualModel, colour.r, colour.g, colour.b, this.getArmorResource(entityIn, itemstack, slotIn, null));
-//                            renderModel(matrixIn, bufferIn, packedLightIn, hasEffect, actualModel, colour.r, colour.g, colour.b, this.getArmorResource(entityIn, itemstack, slotIn, "overlay"));
-//                        } else {
-//                            renderModel(matrixIn, bufferIn, packedLightIn, hasEffect, actualModel, 1.0F, 1.0F, 1.0F, this.getArmorResource(entityIn, itemstack, slotIn, null));
-//                        }
-//                    });
-//                } else {
-//                    super.renderArmorPiece(matrixIn, bufferIn, entityIn, slotIn, packedLightIn, model);
-//                }
-//            }
-//        }
-//    }
 
 //    /**
 //     * Sets the render type
@@ -148,9 +128,19 @@ public class NuminaArmorLayer<T extends LivingEntity, M extends HumanoidModel<T>
 //     * @param armorResource
 //     */
 
-    private void renderModel(PoseStack matrixIn, MultiBufferSource bufferIn, int packedLightIn, boolean hasEffect, Model model, float red, float green, float blue, ResourceLocation armorResource) {
-        VertexConsumer vertexconsumer = ItemRenderer.getArmorFoilBuffer(bufferIn, RenderType.armorCutoutNoCull(armorResource), false, hasEffect);
-        model.renderToBuffer(matrixIn, vertexconsumer, packedLightIn, OverlayTexture.NO_OVERLAY, red, green, blue, 1.0F);
+    private void renderModel(PoseStack matrixIn, MultiBufferSource bufferIn, int packedLightIn, boolean hasEffect, Model model, float red, float green, float blue, float alpha, ResourceLocation armorResource) {
+        RenderType renderType;
+        if (armorResource == TextureAtlas.LOCATION_BLOCKS) {
+            renderType = Sheets.translucentCullBlockSheet();
+        } else {
+            renderType = RenderType.armorCutoutNoCull(armorResource);
+        }
+
+        VertexConsumer vertexconsumer = ItemRenderer.getArmorFoilBuffer(bufferIn, renderType, false, hasEffect);
+        model.renderToBuffer(matrixIn, vertexconsumer, packedLightIn, OverlayTexture.NO_OVERLAY, red, green, blue, alpha);
+
+
+
     }
 
 

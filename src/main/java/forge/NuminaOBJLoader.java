@@ -7,6 +7,7 @@ package forge;
 import com.google.common.collect.Maps;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
+import lehjr.numina.common.base.NuminaLogger;
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.Resource;
@@ -40,6 +41,8 @@ public class NuminaOBJLoader implements IModelLoader<NuminaOBJModel> {
 
     @Override
     public NuminaOBJModel read(JsonDeserializationContext deserializationContext, JsonObject modelContents) {
+        NuminaLogger.logError(" NuminaOBJLoader loading OBJ Model");
+
         if (!modelContents.has("model"))
             throw new RuntimeException("OBJ Loader requires a 'model' key that points to a valid .OBJ model.");
 

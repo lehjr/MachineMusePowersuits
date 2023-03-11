@@ -27,6 +27,7 @@
 package lehjr.numina.client.model.obj;
 
 import lehjr.numina.client.model.helper.ModelHelper;
+import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.math.Color;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.resources.model.BakedModel;
@@ -47,6 +48,13 @@ public class OBJBakedPart extends BakedModelWrapper {
         super(originalModel);
     }
 
+    /**
+      * @param state
+     * @param side
+     * @param rand
+     * @param extraData
+     * @return
+     */
     @NotNull
     @Override
     public List<BakedQuad> getQuads(@org.jetbrains.annotations.Nullable BlockState state, @Nullable Direction side, @NotNull Random rand, @NotNull IModelData extraData) {
@@ -60,8 +68,11 @@ public class OBJBakedPart extends BakedModelWrapper {
                 // glow is opposite ambient occlusion
                 boolean glow = (extraData.hasProperty(OBJPartData.GLOW) ? extraData.getData(OBJPartData.GLOW) : false);
                 // color applied to all quads in the part
-                Color colour = extraData.hasProperty(OBJPartData.COLOR) ? new Color(extraData.getData(OBJPartData.COLOR)) : Color.WHITE;
-                return ModelHelper.getColoredQuadsWithGlow(originalModel.getQuads(state, side, rand, extraData), colour, glow);
+                Color color = extraData.hasProperty(OBJPartData.COLOR) ? new Color(extraData.getData(OBJPartData.COLOR)) : Color.WHITE;
+
+//                NuminaLogger.logError("color in baked part: " + color);
+
+                return ModelHelper.getColoredQuadsWithGlow(originalModel.getQuads(state, side, rand, extraData), color, glow);
             }
         }
         return new ArrayList<>();

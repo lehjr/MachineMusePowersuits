@@ -1,6 +1,8 @@
 package lehjr.numina.client.model.helper;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
+import com.mojang.blaze3d.vertex.VertexFormat;
 import com.mojang.blaze3d.vertex.VertexFormatElement;
 import com.mojang.math.Transformation;
 import com.mojang.math.Vector3f;
@@ -24,6 +26,7 @@ import net.minecraftforge.client.model.pipeline.VertexTransformer;
 import net.minecraftforge.common.model.TransformationHelper;
 
 import javax.annotation.Nullable;
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.Function;
 
@@ -49,6 +52,32 @@ public class ModelHelper {
     public static Transformation get(float transformX, float transformY, float transformZ, float angleX, float angleY, float angleZ, float scale) {
         return get(transformX, transformY, transformZ, angleX, angleY, angleZ, scale, scale, scale);
     }
+
+    /**
+     * Simple transformation for armor models. Powerfist (and shield?) will need one of these for every conceivable case except GUI which will be an icon
+     */
+    public static Transformation getTransform(@Nullable Vector3f translation, @Nullable Vector3f rotation, @Nullable Vector3f scale) {
+        if (translation == null)
+            translation = new Vector3f(0, 0, 0);
+        if (rotation == null)
+            rotation = new Vector3f(0, 0, 0);
+        if (scale == null)
+            scale = new Vector3f(1, 1, 1);
+
+
+        /// Transformation(@Nullable Vector3f translationIn, @Nullable Quaternion rotationLeftIn, @Nullable Vector3f scaleIn, @Nullable Quaternion rotationRightIn)
+
+        return new Transformation(
+                // Transform
+                new Vector3f(translation.x() / 16, translation.y() / 16, translation.z() / 16),
+                // Angles
+                TransformationHelper.quatFromXYZ(rotation, true),
+                // Scale
+                scale,
+                null);
+    }
+
+
 
     /**
      * Get the default texture getter the models will be baked with.
@@ -87,7 +116,7 @@ public class ModelHelper {
         NuminaOBJModel model = getOBJModel(modelLocation, 0);
 
         if (model != null) {
-            OBJBakedCompositeModel bakedModel = model.bake(new OBJModelConfiguration(modelLocation).setCombinedTransform(modelTransform),
+            OBJBakedCompositeModel bakedModel = model.bake(new OBJModelConfiguration(modelLocation)/*.setCombinedTransform(modelTransform)*/,
                     ForgeModelBakery.instance(),
                     ForgeModelBakery.defaultTextureGetter(),
                     modelTransform,
@@ -116,7 +145,10 @@ public class ModelHelper {
     }
     public static List<BakedQuad> getColoredQuadsWithGlow(List<BakedQuad> quadList, Color color, boolean glow) {
         ImmutableList.Builder<BakedQuad> builder = ImmutableList.builder();
-        quadList.forEach(quad -> builder.add(colorQuad(color, quad, !glow)));
+        quadList.forEach(quad -> {
+            builder.add(colorQuad(color, quad, !glow));
+
+        });
         return builder.build();
     }
 
@@ -141,41 +173,51 @@ public class ModelHelper {
         Transformation transform;
 
         public QuadTransformer(Color colour, TextureAtlasSprite texture, boolean applyDiffuse) {
-            super(new BakedQuadBuilder(texture));
+            super(new BakedQuadBuilder(texture)); // using baked quad builder with a vertex format of Blocks, but using color format of items??? FAIL??
             this.colour = colour;
             this.applyDiffuse = applyDiffuse;
         }
 
         public QuadTransformer(Color colour, final Transformation transform, TextureAtlasSprite texture, boolean applyDiffuse) {
             super(new BakedQuadBuilder(texture));
+
+            if(colour != null) {
+                super.setQuadTint(Color.WHITE.getInt());
+            }
+
             this.transform = transform;
             this.colour = colour;
             this.applyDiffuse = applyDiffuse;
+//            VertexFormat.Mode.
+
+//            public static final VertexFormat BLOCK = new VertexFormat(ImmutableMap.<String, VertexFormatElement>builder().put("Position", ELEMENT_POSITION).put("Color", ELEMENT_COLOR).put("UV0", ELEMENT_UV0).put("UV2", ELEMENT_UV2).put("Normal", ELEMENT_NORMAL).put("Padding", ELEMENT_PADDING).build());
+
+
         }
 
-        @Override
-        public void put(int element, float... data) {
-            VertexFormatElement.Usage usage = parent.getVertexFormat().getElements().get(element).getUsage();
-            // change color
-            if (colour != null && usage == VertexFormatElement.Usage.COLOR && data.length >= 4) {
-                data[0] = colour.r;
-                data[1] = colour.g;
-                data[2] = colour.b;
-                data[3] = colour.a;
-                super.put(element, data);
-                // transform normals and position
-            } else if (transform != null && usage == VertexFormatElement.Usage.POSITION && data.length >= 4) {
-                Vector4f pos = new Vector4f(data[0], data[1], data[2], data[3]);
-                transform.transformPosition(pos);
-                data[0] = pos.x();
-                data[1] = pos.y();
-                data[2] = pos.z();
-                data[3] = pos.w();
-                parent.put(element, data);
-            } else {
-                super.put(element, data);
-            }
-        }
+//        @Override
+//        public void put(int element, float... data) {
+//            VertexFormatElement.Usage usage = parent.getVertexFormat().getElements().get(element).getUsage();
+//            // change color
+//            if (colour != null && usage == VertexFormatElement.Usage.COLOR && data.length >= 4) {
+//                data[0] = colour.r;
+//                data[1] = colour.g;
+//                data[2] = colour.b;
+//                data[3] = colour.a;
+//                super.put(element, data);
+//                // transform normals and position
+//            } else if (transform != null && usage == VertexFormatElement.Usage.POSITION && data.length >= 4) {
+//                Vector4f pos = new Vector4f(data[0], data[1], data[2], data[3]);
+//                transform.transformPosition(pos);
+//                data[0] = pos.x();
+//                data[1] = pos.y();
+//                data[2] = pos.z();
+//                data[3] = pos.w();
+//                parent.put(element, data);
+//            } else {
+//                super.put(element, data);
+//            }
+//        }
 
         @Override
         public void setApplyDiffuseLighting(boolean diffuse) {

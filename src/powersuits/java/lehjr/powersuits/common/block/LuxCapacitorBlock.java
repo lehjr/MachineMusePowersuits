@@ -26,6 +26,7 @@
 
 package lehjr.powersuits.common.block;
 
+import lehjr.numina.common.constants.TagConstants;
 import lehjr.numina.common.math.Color;
 import lehjr.powersuits.common.blockentity.LuxCapacitorBlockEntity;
 import net.minecraft.core.BlockPos;
@@ -39,7 +40,9 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -65,12 +68,17 @@ public class LuxCapacitorBlock extends DirectionalBlock implements SimpleWaterlo
         registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.UP));
     }
 
-    @org.jetbrains.annotations.Nullable
+    @Nullable
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
         FluidState ifluidstate = context.getLevel().getFluidState(context.getClickedPos());
         return this.defaultBlockState().setValue(FACING, context.getNearestLookingDirection().getOpposite())
-                .setValue(WATERLOGGED, Boolean.valueOf(ifluidstate.is(FluidTags.WATER) && ifluidstate.getAmount() == 8));
+                .setValue(WATERLOGGED, ifluidstate.getType() == Fluids.WATER);
+    }
+
+    @Override
+    public FluidState getFluidState(BlockState pState) {
+        return pState.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(pState);
     }
 
     @Override

@@ -28,7 +28,10 @@ package lehjr.numina.common.math;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.math.Vector4f;
 import lehjr.numina.common.base.NuminaLogger;
+import net.minecraft.nbt.IntTag;
+import net.minecraftforge.common.util.INBTSerializable;
 
 import java.util.Objects;
 
@@ -38,14 +41,14 @@ import java.util.Objects;
  *
  * @author MachineMuse
  */
-public class Color {
+public class Color implements INBTSerializable<IntTag> {
     // 1/255 for faster math
     static final float div255 = 0.003921569F;
     // Colour values changed to match Java's AWT colors
     public static final Color WHITE = new Color(1F, 1F, 1F, 1F);
-    public static final Color LIGHT_GREY =new Color(0.753F, 0.753F, 0.753F,1F); // Java awt color
+    public static final Color LIGHT_GRAY =new Color(0.753F, 0.753F, 0.753F,1F); // Java awt color
     public static final Color GREY =new Color(0.502F, 0.502F, 0.502F,1F); // Java awt color
-    public static final Color DARK_GREY = new Color(0.251F, 0.251F, 0.251F, 1F);
+    public static final Color DARK_GRAY = new Color(0.251F, 0.251F, 0.251F, 1F);
     public static final Color GREY_GUI_BACKGROUND = new Color(0.776F, 0.776F, 0.776F, 1F);
     public static final Color BLACK = new Color(0F, 0F, 0F, 1F);
     public static final Color RED = new Color(1F, 0F, 0F, 1F);
@@ -92,6 +95,15 @@ public class Color {
         this.a = 1F;
     }
 
+    public Color(Vector4f vec4fColor)  {
+        this.r = vec4fColor.x();
+        this.g = vec4fColor.y();
+        this.b = vec4fColor.z();
+        this.a = vec4fColor.w();
+    }
+
+
+
     public Color(int r, int g, int b) {
         this.r = r * div255;
         this.g = g * div255;
@@ -105,9 +117,9 @@ public class Color {
         return builderIn.color(r, g, b, a);
     }
 
-//    public Vector4f getVec4F() {
-//        return new Vector4f(r, g, b, a);
-//    }
+    public Vector4f getVec4F() {
+        return new Vector4f(r, g, b, a);
+    }
 
     /**
      * Takes colours in the integer format that Minecraft uses, and converts.
@@ -197,7 +209,7 @@ public class Color {
     }
 
     /**
-     * Returns a colour at interval interval along a linear gradient from this
+     * Returns a colour at interval along a linear gradient from this
      * to target
      */
     public Color interpolate(Color target, float d) {
@@ -257,5 +269,21 @@ public class Color {
 
     public Color copy() {
         return new Color(this.r, this.g, this.b, this.a);
+    }
+
+    @Override
+    public IntTag serializeNBT() {
+        return IntTag.valueOf(getInt());
+    }
+
+    @Override
+    public void deserializeNBT(IntTag nbt) {
+        if (nbt != null && nbt instanceof IntTag) {
+            int c = nbt.getAsInt();
+            this.a = (c >> 24 & 0xFF) * div255;
+            this.r = (c >> 16 & 0xFF) * div255;
+            this.g = (c >> 8 & 0xFF) * div255;
+            this.b = (c & 0xFF) * div255;
+        }
     }
 }

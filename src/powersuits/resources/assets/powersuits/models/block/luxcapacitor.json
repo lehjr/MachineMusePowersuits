@@ -4,6 +4,6 @@
   "model": "powersuits:models/block/luxcapacitor/luxcapacitor.obj",
   "flip-v": true,
   "textures": {
-    "particle": "powersuits:models/luxcapacitor"
+    "particle": "forge:white"
   }
 }
