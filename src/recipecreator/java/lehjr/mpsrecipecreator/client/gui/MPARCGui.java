@@ -1,16 +1,16 @@
 package lehjr.mpsrecipecreator.client.gui;
 
 import lehjr.mpsrecipecreator.container.MPARCContainer;
-import lehjr.numina.client.gui.ExtendedContainerScreen;
+import lehjr.numina.client.gui.ExtendedContainerScreen2;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.text.ITextComponent;
 
 /**
  * @author Dries007
  */
-public class MPARCGui extends ExtendedContainerScreen<MPARCContainer> {
+public class MPARCGui extends ExtendedContainerScreen2<MPARCContainer> {
     public MPARCGui(MPARCContainer container, PlayerInventory playerInventory, ITextComponent title) {
-        super(container, playerInventory, title, 400, 300, false);
+        super(container, playerInventory, title);//, 400, 300, false);
     }
 //    protected long creationTime;
 //

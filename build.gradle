@@ -384,8 +384,15 @@ if (project.hasProperty('UPDATE_MAPPINGS')) {
     // so that whenever we need to update mappings it is quick and easy to do so.
     // Note: This needs to be below the dependencies and minecraft blocks so that it can properly read the mappings value
     // and also read and find the minecraft dep
-    def extraSourceSets = [sourceSets.powersuits, sourceSets.recipecreator, sourceSets.whatever,
-                           sourceSets.datagenmain, sourceSets.datagenpowersuits, sourceSets.datagenrecipecreator, sourceSets.datagenwhatever]
+    def extraSourceSets = [
+            sourceSets.powersuits,
+            sourceSets.recipecreator,
+            sourceSets.whatever,
+            sourceSets.datagenmain,
+            sourceSets.datagenpowersuits,
+            sourceSets.datagenrecipecreator,
+            sourceSets.datagenwhatever
+    ]
     Set<File> allExtraDirs = new HashSet<>()
     for (def sourceSet : extraSourceSets) {
         allExtraDirs.addAll(sourceSet.java.srcDirs)
