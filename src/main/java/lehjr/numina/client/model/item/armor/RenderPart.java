@@ -130,8 +130,10 @@ public class RenderPart extends ModelRenderer {
                             partColor = -1;
                         }
 
+                        // Fixed in 1.18.2, but is this working here?
                         TransformationMatrix transform = ((ModelSpec) part.spec).getTransform(ItemCameraTransforms.TransformType.NONE);
                         if (transform != TransformationMatrix.identity()) {
+                            matrixStackIn.pushPose();
                             MatrixStack stack = new MatrixStack();
                             transform.push(stack);
                             // Apply the transformation to the real matrix stack
@@ -153,6 +155,10 @@ public class RenderPart extends ModelRenderer {
                                 ((ModelPartSpec) part).getGlow() ? FULL_BRIGHTNESS : packedLightIn,
                                 OverlayTexture.NO_OVERLAY,
                                 partColor);
+
+                        if (transform != TransformationMatrix.identity()) {
+                            matrixStackIn.popPose();
+                        }
                     }
                 }
             }

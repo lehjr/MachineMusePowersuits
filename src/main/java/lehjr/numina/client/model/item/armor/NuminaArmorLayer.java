@@ -71,34 +71,29 @@ public class NuminaArmorLayer<T extends LivingEntity, M extends BipedModel<T>, A
     private boolean isLegSlot(EquipmentSlotType slotIn) {
         return slotIn == EquipmentSlotType.LEGS;
     }
-
     @Override
     public void renderArmorPiece(MatrixStack matrixIn, IRenderTypeBuffer bufferIn, T entityIn, EquipmentSlotType  slotIn, int packedLightIn, A model) {
         ItemStack itemstack = entityIn.getItemBySlot( slotIn);
         boolean hasEffect = itemstack.hasFoil();
-
-        if (itemstack.getItem() instanceof ArmorItem) {
+        if (itemstack.getItem() instanceof ArmorItem && itemstack.getCapability(ModelSpecNBTCapability.RENDER).isPresent()) {
             ArmorItem armoritem = (ArmorItem)itemstack.getItem();
             if (armoritem.getSlot() ==  slotIn) {
+                A actualModel = getArmorModelHook(entityIn, itemstack, slotIn, model);
+                this.getParentModel().copyPropertiesTo(actualModel);
+                this.setPartVisibility(actualModel, slotIn);
                 // ideally, this would replace the getArmorModel
-                if (itemstack.getCapability(ModelSpecNBTCapability.RENDER).isPresent()) {
-                    itemstack.getCapability(ModelSpecNBTCapability.RENDER).ifPresent(spec->{
-                        // gets the actual model from the
-                        A actualModel = this.getArmorModelHook(entityIn, itemstack, slotIn, model);
-                        this.getParentModel().copyPropertiesTo(actualModel);
-                        this.setPartVisibility(actualModel, slotIn);
-                        if (spec.getSpecType() == EnumSpecType.ARMOR_SKIN) {
-                            Colour colour = spec.getColorFromItemStack();
-                            renderArmor(matrixIn, bufferIn, packedLightIn, hasEffect, actualModel, colour.r, colour.g, colour.b, this.getArmorResource(entityIn, itemstack, slotIn, null));
-                            renderArmor(matrixIn, bufferIn, packedLightIn, hasEffect, actualModel, colour.r, colour.g, colour.b, this.getArmorResource(entityIn, itemstack, slotIn, "overlay"));
-                        } else {
-                            renderArmor(matrixIn, bufferIn, packedLightIn, hasEffect, actualModel, 1.0F, 1.0F, 1.0F, this.getArmorResource(entityIn, itemstack, slotIn, null));
-                        }
-                    });
-                } else {
-                    super.renderArmorPiece(matrixIn, bufferIn, entityIn, slotIn, packedLightIn, model);
-                }
+                itemstack.getCapability(ModelSpecNBTCapability.RENDER).ifPresent(spec->{
+                    if (spec.getSpecType() == EnumSpecType.ARMOR_SKIN) {
+                        Colour colour = spec.getColorFromItemStack();
+                        renderArmor(matrixIn, bufferIn, packedLightIn, hasEffect, actualModel, colour.r, colour.g, colour.b, colour.a, this.getArmorResource(entityIn, itemstack, slotIn, null));
+                        renderArmor(matrixIn, bufferIn, packedLightIn, hasEffect, actualModel, colour.r, colour.g, colour.b, colour.a, this.getArmorResource(entityIn, itemstack, slotIn, "overlay"));
+                    } else {
+                        renderArmor(matrixIn, bufferIn, packedLightIn, hasEffect, actualModel, 1.0F, 1.0F, 1.0F, 1.0F, this.getArmorResource(entityIn, itemstack, slotIn, null));
+                    }
+                });
             }
+        } else {
+            super.renderArmorPiece(matrixIn, bufferIn, entityIn, slotIn, packedLightIn, model);
         }
     }
 
@@ -115,7 +110,7 @@ public class NuminaArmorLayer<T extends LivingEntity, M extends BipedModel<T>, A
      * @param blue
      * @param armorResource
      */
-    private void renderArmor(MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn, boolean glintIn, A modelIn, float red, float green, float blue, ResourceLocation armorResource) {
+    private void renderArmor(MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn, boolean glintIn, A modelIn, float red, float green, float blue, float alpha, ResourceLocation armorResource) {
         RenderType renderType;
         if (armorResource == AtlasTexture.LOCATION_BLOCKS) {
             renderType = Atlases.translucentCullBlockSheet();
@@ -123,7 +118,7 @@ public class NuminaArmorLayer<T extends LivingEntity, M extends BipedModel<T>, A
             renderType = RenderType.entityCutoutNoCull(armorResource);
         }
         IVertexBuilder ivertexbuilder = ItemRenderer.getFoilBuffer(bufferIn, renderType, false, glintIn);
-        modelIn.renderToBuffer(matrixStackIn, ivertexbuilder, packedLightIn, OverlayTexture.NO_OVERLAY, red, green, blue, 1.0F);
+        modelIn.renderToBuffer(matrixStackIn, ivertexbuilder, packedLightIn, OverlayTexture.NO_OVERLAY, red, green, blue, alpha);
     }
 
     /**
