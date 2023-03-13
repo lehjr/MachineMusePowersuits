@@ -58,11 +58,11 @@
 //    public ModelPart supportbaseleft;
 //    public ModelPart supportleftfront;
 //    public ModelPart supportrightfront;
-//    public ModelRenderer supportleft1;
-//    public ModelRenderer supportleft2;
-//    public ModelRenderer supportleft3;
-//    public ModelRenderer supportleft4;
-//    public ModelRenderer supportleft5;
+//    public ModelPart supportleft1;
+//    public ModelPart supportleft2;
+//    public ModelPart supportleft3;
+//    public ModelPart supportleft4;
+//    public ModelPart supportleft5;
 //
 //    public ToolModel(boolean isRightHand) {
 //        super();
@@ -70,7 +70,7 @@
 //        textureHeight = 32;
 //        this.isRightHand = isRightHand;
 //
-//        mainarm = new ModelRenderer(this, 0, 16);
+//        mainarm = new ModelPart(this, 0, 16);
 //        mainarm.addBox(-3.0F, 0.0F, -8.0F, 6, 6, 10);
 //        mainarm.setRotationPoint(0.0F, 0.0F, 0.0F);
 //        mainarm.setTextureSize(64, 32);
@@ -78,7 +78,7 @@
 //        setRotation(mainarm, 0.2617994F, 0.0F, 0.0F);
 //
 //
-//        armorright = new ModelRenderer(this, 42, 0);
+//        armorright = new ModelPart(this, 42, 0);
 //        armorright.mirror = true;
 //        armorright.addBox(1.0F, -1.0F, -9.0F, 3, 5, 8);
 //        armorright.setRotationPoint(0.0F, 0.0F, 0.0F);
@@ -86,7 +86,7 @@
 //        setRotation(armorright, 0.2617994F, 0.0F, 0.0F);
 //
 //
-//        armorleft = new ModelRenderer(this, 42, 0);
+//        armorleft = new ModelPart(this, 42, 0);
 //        armorleft.addBox(-4.0F, -1.0F, -9.0F, 3, 5, 8);
 //        armorleft.setRotationPoint(0.0F, 0.0F, 0.0F);
 //        armorleft.setTextureSize(64, 32);
@@ -94,7 +94,7 @@
 //        setRotation(armorleft, 0.2617994F, 0.0F, 0.0F);
 //
 //
-//        wristtopright = new ModelRenderer(this, 0, 11);
+//        wristtopright = new ModelPart(this, 0, 11);
 //        wristtopright.addBox(1.0F, 1.0F, 2.0F, 1, 1, 4);
 //        wristtopright.setRotationPoint(0.0F, 0.0F, 0.0F);
 //        wristtopright.setTextureSize(64, 32);
@@ -102,7 +102,7 @@
 //        setRotation(wristtopright, 0.2617994F, 0.0F, 0.0F);
 //
 //
-//        wristtopleft = new ModelRenderer(this, 0, 11);
+//        wristtopleft = new ModelPart(this, 0, 11);
 //        wristtopleft.addBox(-2.0F, 1.0F, 2.0F, 1, 1, 4);
 //        wristtopleft.setRotationPoint(0.0F, 0.0F, 0.0F);
 //        wristtopleft.setTextureSize(64, 32);
@@ -110,7 +110,7 @@
 //        setRotation(wristtopleft, 0.2617994F, 0.0F, 0.0F);
 //
 //
-//        wristbottomright = new ModelRenderer(this, 0, 11);
+//        wristbottomright = new ModelPart(this, 0, 11);
 //        wristbottomright.addBox(1.0F, 3.0F, 2.0F, 1, 1, 4);
 //        wristbottomright.setRotationPoint(0.0F, 0.0F, 0.0F);
 //        wristbottomright.setTextureSize(64, 32);
@@ -118,7 +118,7 @@
 //        setRotation(wristbottomright, 0.2617994F, 0.0F, 0.0F);
 //
 //
-//        wristbottomleft = new ModelRenderer(this, 0, 11);
+//        wristbottomleft = new ModelPart(this, 0, 11);
 //        wristbottomleft.addBox(-2.0F, 3.0F, 2.0F, 1, 1, 4);
 //        wristbottomleft.setRotationPoint(0.0F, 0.0F, 0.0F);
 //        wristbottomleft.setTextureSize(64, 32);
@@ -126,7 +126,7 @@
 //        setRotation(wristbottomleft, 0.2617994F, 0.0F, 0.0F);
 //
 //
-//        index1 = new ModelRenderer(this, 34, 13);
+//        index1 = new ModelPart(this, 34, 13);
 //        index1.addBox(-0.5F, -0.5F, 0.0F, 1, 1, 5);
 //        index1.setRotationPoint((isRightHand) ? -3.5F : 2.5F, -1.5F, 10.0F);
 //        index1.setTextureSize(64, 32);
@@ -134,7 +134,7 @@
 //        setRotation(index1, 0.2617994F, 0.0F, 0.0F);
 //
 //
-//        index2 = new ModelRenderer(this, 34, 13);
+//        index2 = new ModelPart(this, 34, 13);
 //        index2.addBox(-0.5F, -0.5F, 0.0F, 1, 1, 4);
 //        index2.setRotationPoint(0.0F, 0.0F, 5.0F);
 //        index2.setTextureSize(64, 32);
@@ -143,7 +143,7 @@
 //        setRotation(index2, -0.2617994F * 2, 0.0F, 0.0F);
 //
 //
-//        middlefinger1 = new ModelRenderer(this, 34, 13);
+//        middlefinger1 = new ModelPart(this, 34, 13);
 //        middlefinger1.addBox(-0.5F, -0.5F, 0.0F, 1, 1, 6);
 //        middlefinger1.setRotationPoint((isRightHand) ? -1.5F : 0.5F, -1.5F, 10.0F);
 //        middlefinger1.setTextureSize(64, 32);
@@ -151,7 +151,7 @@
 //        setRotation(middlefinger1, 0.2617994F, 0.0F, 0.0F);
 //
 //
-//        middlefinger2 = new ModelRenderer(this, 34, 13);
+//        middlefinger2 = new ModelPart(this, 34, 13);
 //        middlefinger2.addBox(-0.5F, -0.5F, 0.0F, 1, 1, 4);
 //        middlefinger2.setRotationPoint(0.0F, 0.0F, 6.0F);
 //        middlefinger2.setTextureSize(64, 32);
@@ -159,7 +159,7 @@
 //        setRotation(middlefinger2, -0.3444116F, 0.0F, 0.0F);
 //
 //
-//        ringfinger1 = new ModelRenderer(this, 34, 13);
+//        ringfinger1 = new ModelPart(this, 34, 13);
 //        ringfinger1.addBox(-.5F, -.5F, 0.0F, 1, 1, 5);
 //        ringfinger1.setRotationPoint((isRightHand) ? 0.5F : -1.5F, -1.5F, 10.0F);
 //        ringfinger1.setTextureSize(64, 32);
@@ -167,7 +167,7 @@
 //        setRotation(ringfinger1, 0.2617994F, 0.0F, 0.0F);
 //
 //
-//        ringfinger2 = new ModelRenderer(this, 34, 13);
+//        ringfinger2 = new ModelPart(this, 34, 13);
 //        ringfinger2.addBox(-0.5F, -0.5F, 0.0F, 1, 1, 4);
 //        ringfinger2.setRotationPoint(0.0F, 0.0F, 5.0F);
 //        ringfinger2.setTextureSize(64, 32);
@@ -175,7 +175,7 @@
 //        setRotation(ringfinger2, -0.2617994F, 0.0F, 0.0F);
 //
 //
-//        pinky1 = new ModelRenderer(this, 34, 13);
+//        pinky1 = new ModelPart(this, 34, 13);
 //        pinky1.addBox(-0.5F, -0.5F, 0.0F, 1, 1, 4);
 //        pinky1.setRotationPoint((isRightHand) ? 2.5F : -3.5F, -1.5F, 10F);
 //        pinky1.setTextureSize(64, 32);
@@ -183,7 +183,7 @@
 //        setRotation(pinky1, 0.2617994F, 0.0F, 0.0F);
 //
 //
-//        pinky2 = new ModelRenderer(this, 34, 13);
+//        pinky2 = new ModelPart(this, 34, 13);
 //        pinky2.addBox(-0.5F, -0.5F, 0.0F, 1, 1, 4);
 //        pinky2.setRotationPoint(0.0F, 0.0F, 4.0F);
 //        pinky2.setTextureSize(64, 32);
@@ -191,7 +191,7 @@
 //        setRotation(pinky2, -0.4537856F, 0.0F, 0.0F);
 //
 //
-//        thumb1 = new ModelRenderer(this, 16, 9);
+//        thumb1 = new ModelPart(this, 16, 9);
 //        thumb1.addBox(-0.5F, -1.0F, 0.0F, 1, 2, 4);
 //        thumb1.setRotationPoint((isRightHand) ?-4.0F : 3.0F, 1.5F, 8.0F);
 //        thumb1.setTextureSize(64, 32);
@@ -199,7 +199,7 @@
 //        setRotation(thumb1, 0.0F, (isRightHand) ? -0.4014257F : 0.4014257F, 0.0F);
 //
 //
-//        thumb2 = new ModelRenderer(this, 10, 0);
+//        thumb2 = new ModelPart(this, 10, 0);
 //        thumb2.addBox(-0.5F, -0.5F, 0.0F, 1, 1, 3);
 //        thumb2.setRotationPoint(0.0F, 0.0F, 4.0F);
 //        thumb2.setTextureSize(64, 32);
@@ -207,7 +207,7 @@
 //        setRotation(thumb2, 0.0F, 0.0F, 0.0F);
 //
 //
-//        fingerguard = new ModelRenderer(this, 28, 9);
+//        fingerguard = new ModelPart(this, 28, 9);
 //        fingerguard.addBox(-3.0F, -2.0F, 8.0F, 5, 2, 2);
 //        fingerguard.setRotationPoint(0.0F, 0.0F, 0.0F);
 //        fingerguard.setTextureSize(64, 32);
@@ -215,7 +215,7 @@
 //        setRotation(fingerguard, 0.0F, 0.0F, 0.0F);
 //
 //
-//        crystalholder = new ModelRenderer(this, 48, 13);
+//        crystalholder = new ModelPart(this, 48, 13);
 //        crystalholder.addBox(-2.0F, -1.0F, -3.0F, 4, 4, 4);
 //        crystalholder.setRotationPoint(0.0F, 0.0F, 0.0F);
 //        crystalholder.setTextureSize(64, 32);
@@ -223,7 +223,7 @@
 //        setRotation(crystalholder, 0.0F, 0.0F, 0.0F);
 //
 //
-//        crystal = new ModelRenderer(this, 32, 27);
+//        crystal = new ModelPart(this, 32, 27);
 //        crystal.addBox(-1.0F, -2.0F, -2.0F, 2, 2, 2);
 //        crystal.setRotationPoint(0.0F, 0.0F, 0.0F);
 //        crystal.setTextureSize(64, 32);
@@ -231,7 +231,7 @@
 //        setRotation(crystal, 0.0F, 0.0F, 0.0F);
 //
 //
-//        supportright1 = new ModelRenderer(this, 54, 27);
+//        supportright1 = new ModelPart(this, 54, 27);
 //        supportright1.addBox(-1.8F, -0.8F, -6.066667F, 4, 1, 1);
 //        supportright1.setRotationPoint(0.0F, 0.0F, 0.0F);
 //        supportright1.setTextureSize(64, 32);
@@ -239,7 +239,7 @@
 //        setRotation(supportright1, 0.2722714F, -1.066972F, 0.0F);
 //
 //
-//        supportright2 = new ModelRenderer(this, 52, 21);
+//        supportright2 = new ModelPart(this, 52, 21);
 //        supportright2.addBox(4.0F, 0.4666667F, 2.5F, 2, 2, 1);
 //        supportright2.setRotationPoint(0.0F, 0.0F, 0.0F);
 //        supportright2.setTextureSize(64, 32);
@@ -247,7 +247,7 @@
 //        setRotation(supportright2, 0.0F, 0.6329786F, 0.0F);
 //
 //
-//        supportright3 = new ModelRenderer(this, 52, 21);
+//        supportright3 = new ModelPart(this, 52, 21);
 //        supportright3.addBox((isRightHand) ? 5.1F : 5.4F, 1.0F, (isRightHand) ? -0.8333333F : -0.5F, 1, 1, 5);
 //        supportright3.setRotationPoint(0.0F, 0.0F, 0.0F);
 //        supportright3.setTextureSize(64, 32);
@@ -255,7 +255,7 @@
 //        setRotation(supportright3, 0.0F, 0.0F, 0.0F);
 //
 //
-//        supportright4 = new ModelRenderer(this, 52, 21);
+//        supportright4 = new ModelPart(this, 52, 21);
 //        supportright4.addBox(5.633333F, 0.4666667F, 1.7F, 2, 2, 1);
 //        supportright4.setRotationPoint(0.0F, 0.0F, 0.0F);
 //        supportright4.setTextureSize(64, 32);
@@ -263,7 +263,7 @@
 //        setRotation(supportright4, 0.0F, -0.3688404F, 0.0F);
 //
 //
-//        supportright5 = new ModelRenderer(this, 54, 27);
+//        supportright5 = new ModelPart(this, 54, 27);
 //        supportright5.addBox(-2.866667F, 1F, 6.333333F, 4, 1, 1);
 //        supportright5.setRotationPoint(0.0F, 0.0F, 0.0F);
 //        supportright5.setTextureSize(64, 32);
@@ -271,7 +271,7 @@
 //        setRotation(supportright5, 0.0F, 0.7714355F, 0.0F);
 //
 //
-//        supportbaseright = new ModelRenderer(this, 47, 21);
+//        supportbaseright = new ModelPart(this, 47, 21);
 //        supportbaseright.addBox(1.433333F, -0.6666667F, -5.4F, 3, 3, 5);
 //        supportbaseright.setRotationPoint(0.0F, 0.0F, 0.0F);
 //        supportbaseright.setTextureSize(64, 32);
@@ -279,7 +279,7 @@
 //        setRotation(supportbaseright, 0.2617994F, 0.0F, 0.0F);
 //
 //
-//        palm = new ModelRenderer(this, 18, 0);
+//        palm = new ModelPart(this, 18, 0);
 //        palm.addBox(-4.0F, -1.0F, 5.0F, 7, 4, 5);
 //        palm.setRotationPoint(0.0F, 0.0F, 0.0F);
 //        palm.setTextureSize(64, 32);
@@ -287,7 +287,7 @@
 //        setRotation(palm, 0.0F, 0.0F, 0.0F);
 //
 //
-//        supportbaseleft = new ModelRenderer(this, 47, 21);
+//        supportbaseleft = new ModelPart(this, 47, 21);
 //        supportbaseleft.addBox(-4.4F, -0.6666667F, -5.4F, 3, 3, 5);
 //        supportbaseleft.setRotationPoint(0.0F, 0.0F, 0.0F);
 //        supportbaseleft.setTextureSize(64, 32);
@@ -295,7 +295,7 @@
 //        setRotation(supportbaseleft, 0.2617994F, 0.0F, 0.0F);
 //
 //
-//        supportleftfront = new ModelRenderer(this, 49, 23);
+//        supportleftfront = new ModelPart(this, 49, 23);
 //        supportleftfront.addBox((isRightHand) ? -4.333333F : -3.333333F, 0.3333333F, 4.666667F, 1, 2, 3);
 //        supportleftfront.setRotationPoint(0.0F, 0.0F, 0.0F);
 //        supportleftfront.setTextureSize(64, 32);
@@ -303,7 +303,7 @@
 //        setRotation(supportleftfront, 0.0F, 0.0F, 0.0F);
 //
 //
-//        supportrightfront = new ModelRenderer(this, 49, 23);
+//        supportrightfront = new ModelPart(this, 49, 23);
 //        supportrightfront.addBox((isRightHand) ? 2.3F : 3.3F, 0.3333333F, 4.666667F, 1, 2, 3);
 //        supportrightfront.setRotationPoint(0.0F, 0.0F, 0.0F);
 //        supportrightfront.setTextureSize(64, 32);
@@ -311,7 +311,7 @@
 //        setRotation(supportrightfront, 0.0F, 0.0F, 0.0F);
 //
 //
-//        supportleft1 = new ModelRenderer(this, 54, 27);
+//        supportleft1 = new ModelPart(this, 54, 27);
 //        supportleft1.addBox(-2.2F, -0.4F, -6.066667F, 4, 1, 1);
 //        supportleft1.setRotationPoint(0.0F, 0.0F, 0.0F);
 //        supportleft1.setTextureSize(64, 32);
@@ -319,7 +319,7 @@
 //        setRotation(supportleft1, 0.2722714F, 1.066978F, 0.0F);
 //
 //
-//        supportleft2 = new ModelRenderer(this, 52, 21);
+//        supportleft2 = new ModelPart(this, 52, 21);
 //        supportleft2.addBox(-6.0F, 0.4666667F, 2.5F, 2, 2, 1);
 //        supportleft2.setRotationPoint(0.0F, 0.0F, 0.0F);
 //        supportleft2.setTextureSize(64, 32);
@@ -327,7 +327,7 @@
 //        setRotation(supportleft2, 0.0F, -0.6329727F, 0.0F);
 //
 //
-//        supportleft3 = new ModelRenderer(this, 52, 21);
+//        supportleft3 = new ModelPart(this, 52, 21);
 //        supportleft3.addBox((isRightHand) ? -6.5F : -6.3F, 1.0F, (isRightHand) ? -0.5F : -0.83F, 1, 1, 5);
 //        supportleft3.setRotationPoint(0.0F, 0.0F, 0.0F);
 //        supportleft3.setTextureSize(64, 32);
@@ -335,7 +335,7 @@
 //        setRotation(supportleft3, 0.0F, 0.0F, 0.0F);
 //
 //
-//        supportleft4 = new ModelRenderer(this, 52, 21);
+//        supportleft4 = new ModelPart(this, 52, 21);
 //        supportleft4.addBox(-7.9F, 0.4666667F, 1.7F, 2, 2, 1);
 //        supportleft4.setRotationPoint(0.0F, 0.0F, 0.0F);
 //        supportleft4.setTextureSize(64, 32);
@@ -343,7 +343,7 @@
 //        setRotation(supportleft4, 0.0F, 0.3688462F, 0.0F);
 //
 //
-//        supportleft5 = new ModelRenderer(this, 54, 27);
+//        supportleft5 = new ModelPart(this, 54, 27);
 //        supportleft5.addBox(-0.8666667F, 1F, 7F, 4, 1, 1);
 //        supportleft5.setRotationPoint(0.0F, 0.0F, 0.0F);
 //        supportleft5.setTextureSize(64, 32);
@@ -374,7 +374,7 @@
 ////    public static float scalemodifier = 1;
 ////    public static boolean tap;
 //
-//    public void makeChild(ModelRenderer child, ModelRenderer parent) {
+//    public void makeChild(ModelPart child, ModelPart parent) {
 //        parent.addChild(child);
 //        child.rotationPointX -= parent.rotationPointX;
 //        child.rotationPointY -= parent.rotationPointY;
@@ -570,7 +570,7 @@
 //        GL11.glPopMatrix();
 //    }
 //
-//    private void setRotation(ModelRenderer model, float x, float y, float z) {
+//    private void setRotation(ModelPart model, float x, float y, float z) {
 //        model.rotateAngleX = x;
 //        model.rotateAngleY = y;
 //        model.rotateAngleZ = z;

@@ -53,12 +53,12 @@
 //    ModelPart backsupport;
 //    ModelPart tank3;
 //    ModelPart tank2;
-//    ModelRenderer tank1;
-//    ModelRenderer wireshort4;
-//    ModelRenderer wireshort3;
-//    ModelRenderer wireshort2;
-//    ModelRenderer wireshort1;
-//    ModelRenderer wirelong1;
+//    ModelPart tank1;
+//    ModelPart wireshort4;
+//    ModelPart wireshort3;
+//    ModelPart wireshort2;
+//    ModelPart wireshort1;
+//    ModelPart wirelong1;
 //
 //    public TinkerTableModel2() {
 //        this(RenderType::getEntityCutoutNoCull);
@@ -69,118 +69,118 @@
 //        this.textureWidth = 112;
 //        this.textureHeight = 70;
 //
-//        this.cube = new ModelRenderer(this, 96, 20);
+//        this.cube = new ModelPart(this, 96, 20);
 //        this.cube.mirror = true;
 //        this.cube.setRotationPoint(0.0F, 0.0F, 0.0F);
 //        this.cube.addBox(-2.0F, -2.0F, -2.0F, 4.0F, 4.0F, 4.0F, 0.0F, 0.0F, 0.0F);
 //
 //
-//        this.screen3 = new ModelRenderer(this, 1, 1);
+//        this.screen3 = new ModelPart(this, 1, 1);
 //        this.screen3.mirror = true;
 //        this.screen3.setRotationPoint(-9.67F, 3.47F, -7.0F);
 //        this.screen3.addBox(0.0F, 0.0F, 0.0F, 11.0F, 0.0F, 14.0F, 0.0F, 0.0F, 0.0F);
 //
 //
-//        this.screen2 = new ModelRenderer(this, 0, 32);
+//        this.screen2 = new ModelPart(this, 0, 32);
 //        this.screen2.mirror = true;
 //        this.screen2.setRotationPoint(2.0F, 4.966667F, -6.0F);
 //        this.screen2.addBox(0.0F, 0.0F, 0.0F, 8.0F, 0.0F, 11.0F, 0.0F, 0.0F, 0.0F);
 //
 //
-//        this.screen1 = new ModelRenderer(this, 3, 20);
+//        this.screen1 = new ModelPart(this, 3, 20);
 //        this.screen1.mirror = true;
 //        this.screen1.setRotationPoint(-6.0F, 2.47F, 3.0F);
 //        this.screen1.addBox(0.0F, 0.0F, 0.0F, 14.0F, 0.0F, 7.0F, 0.0F, 0.0F, 0.0F);
 //
 //
-//        this.middletable = new ModelRenderer(this, 40, 49);
+//        this.middletable = new ModelPart(this, 40, 49);
 //        this.middletable.setRotationPoint(-4.0F, 10.0F, -4.0F);
 //        this.middletable.addBox(-5.0F, 1.0F, -5.0F, 17.0F, 3.0F, 18.0F, 0.0F, 0.0F, 0.0F);
 //
 //
-//        this.uppertable = new ModelRenderer(this, 56, 28);
+//        this.uppertable = new ModelPart(this, 56, 28);
 //        this.uppertable.mirror = true;
 //        this.uppertable.setRotationPoint(-8.0F, 10.0F, -8.0F);
 //        this.uppertable.addBox(0.0F, 0.0F, 0.0F, 12.0F, 5.0F, 16.0F, 0.0F, 0.0F, 0.0F);
 //
 //
-//        this.particles = new ModelRenderer(this, 90, 0);
+//        this.particles = new ModelPart(this, 90, 0);
 //        this.particles.mirror = true;
 //        this.particles.setRotationPoint(-3.0F, 15.0F, -3.0F);
 //        this.particles.addBox(0.0F, 0.0F, 0.0F, 6.0F, 7.0F, 5.0F, 0.0F, 0.0F, 0.0F);
 //
 //
-//        this.footbase = new ModelRenderer(this, 0, 54);
+//        this.footbase = new ModelPart(this, 0, 54);
 //        this.footbase.mirror = true;
 //        this.footbase.setRotationPoint(-1.0F, 14.0F, -1.0F);
 //        this.footbase.addBox(-5.0F, 8.0F, -5.0F, 12.0F, 2.0F, 11.0F, 0.0F, 0.0F, 0.0F);
 //
 //
-//        this.foot1 = new ModelRenderer(this, 82, 13);
+//        this.foot1 = new ModelPart(this, 82, 13);
 //        this.foot1.mirror = true;
 //        this.foot1.setRotationPoint(-7.0F, 21.0F, -2.0F);
 //        this.foot1.addBox(0.0F, 0.0F, 0.0F, 4.0F, 3.0F, 3.0F, 0.0F, 0.0F, 0.0F);
 //
 //
-//        this.fatfoot2 = new ModelRenderer(this, 96, 13);
+//        this.fatfoot2 = new ModelPart(this, 96, 13);
 //        this.fatfoot2.mirror = true;
 //        this.fatfoot2.setRotationPoint(2.0F, 21.0F, -3.0F);
 //        this.fatfoot2.addBox(0.0F, 0.0F, 0.0F, 4.0F, 3.0F, 4.0F, 0.0F, 0.0F, 0.0F);
 //        this.setRotateAngle(fatfoot2, 3.141592653589793F, -8.742277643018003E-8F, 3.141592653589793F);
 //
 //
-//        this.fatfoot1 = new ModelRenderer(this, 96, 13);
+//        this.fatfoot1 = new ModelPart(this, 96, 13);
 //        this.fatfoot1.mirror = true;
 //        this.fatfoot1.setRotationPoint(-2.0F, 21.0F, 2.0F);
 //        this.fatfoot1.addBox(0.0F, 0.0F, 0.0F, 4.0F, 3.0F, 4.0F, 0.0F, 0.0F, 0.0F);
 //
 //
-//        this.backsupport = new ModelRenderer(this, 38, 34);
+//        this.backsupport = new ModelPart(this, 38, 34);
 //        this.backsupport.mirror = true;
 //        this.backsupport.setRotationPoint(3.0F, 14.0F, -2.0F);
 //        this.backsupport.addBox(0.0F, 0.0F, -2.0F, 2.0F, 8.0F, 7.0F, 0.0F, 0.0F, 0.0F);
 //
 //
-//        this.tank3 = new ModelRenderer(this, 51, 18);
+//        this.tank3 = new ModelPart(this, 51, 18);
 //        this.tank3.setRotationPoint(6.0F, 10.0F, 3.0F);
 //        this.tank3.addBox(0.0F, 0.0F, 0.0F, 3.0F, 5.0F, 3.0F, 0.0F, 0.0F, 0.0F);
 //
 //
-//        this.tank2 = new ModelRenderer(this, 51, 18);
+//        this.tank2 = new ModelPart(this, 51, 18);
 //        this.tank2.setRotationPoint(6.0F, 10.0F, -2.0F);
 //        this.tank2.addBox(0.0F, 0.0F, 0.0F, 3.0F, 5.0F, 3.0F, 0.0F, 0.0F, 0.0F);
 //
 //
-//        this.tank1 = new ModelRenderer(this, 51, 18);
+//        this.tank1 = new ModelPart(this, 51, 18);
 //        this.tank1.setRotationPoint(6.0F, 10.0F, -7.0F);
 //        this.tank1.addBox(0.0F, 0.0F, 0.0F, 3.0F, 5.0F, 3.0F, 0.0F, 0.0F, 0.0F);
 //
 //
-//        this.wireshort4 = new ModelRenderer(this, 71, 15);
+//        this.wireshort4 = new ModelPart(this, 71, 15);
 //        this.wireshort4.mirror = true;
 //        this.wireshort4.setRotationPoint(7.0F, 15.0F, -1.0F);
 //        this.wireshort4.addBox(0.0F, 0.0F, 0.0F, 1.0F, 2.0F, 1.0F, 0.0F, 0.0F, 0.0F);
 //
 //
-//        this.wireshort3 = new ModelRenderer(this, 71, 15);
+//        this.wireshort3 = new ModelPart(this, 71, 15);
 //        this.wireshort3.mirror = true;
 //        this.wireshort3.setRotationPoint(7.0F, 15.0F, -6.0F);
 //        this.wireshort3.addBox(0.0F, 0.0F, 0.0F, 1.0F, 2.0F, 1.0F, 0.0F, 0.0F, 0.0F);
 //
 //
-//        this.wireshort2 = new ModelRenderer(this, 69, 13);
+//        this.wireshort2 = new ModelPart(this, 69, 13);
 //        this.wireshort2.mirror = true;
 //        this.wireshort2.setRotationPoint(5.0F, 17.0F, -1.0F);
 //        this.wireshort2.addBox(0.0F, 0.0F, 0.0F, 2.0F, 1.0F, 1.0F, 0.0F, 0.0F, 0.0F);
 //
 //
-//        this.wireshort1 = new ModelRenderer(this, 71, 15);
+//        this.wireshort1 = new ModelPart(this, 71, 15);
 //        this.wireshort1.mirror = true;
 //        this.wireshort1.setRotationPoint(7.0F, 15.0F, -1.0F);
 //        this.wireshort1.addBox(0.0F, 0.0F, 5.0F, 1.0F, 2.0F, 1.0F, 0.0F, 0.0F, 0.0F);
 //
 //
-//        this.wirelong1 = new ModelRenderer(this, 77, 1);
+//        this.wirelong1 = new ModelPart(this, 77, 1);
 //        this.wirelong1.mirror = true;
 //        this.wirelong1.setRotationPoint(7.0F, 17.0F, -6.0F);
 //        this.wirelong1.addBox(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 11.0F, 0.0F, 0.0F, 0.0F);
@@ -220,7 +220,7 @@
 //    /**
 //     * This is a helper function from Tabula to set the rotation of model parts
 //     */
-//    public void setRotateAngle(ModelRenderer modelRenderer, float x, float y, float z) {
+//    public void setRotateAngle(ModelPart modelRenderer, float x, float y, float z) {
 //        modelRenderer.rotateAngleX = x;
 //        modelRenderer.rotateAngleY = y;
 //        modelRenderer.rotateAngleZ = z;
