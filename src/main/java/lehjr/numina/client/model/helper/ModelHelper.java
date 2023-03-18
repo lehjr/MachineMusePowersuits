@@ -195,29 +195,29 @@ public class ModelHelper {
 
         }
 
-//        @Override
-//        public void put(int element, float... data) {
-//            VertexFormatElement.Usage usage = parent.getVertexFormat().getElements().get(element).getUsage();
-//            // change color
-//            if (colour != null && usage == VertexFormatElement.Usage.COLOR && data.length >= 4) {
-//                data[0] = colour.r;
-//                data[1] = colour.g;
-//                data[2] = colour.b;
-//                data[3] = colour.a;
-//                super.put(element, data);
-//                // transform normals and position
-//            } else if (transform != null && usage == VertexFormatElement.Usage.POSITION && data.length >= 4) {
-//                Vector4f pos = new Vector4f(data[0], data[1], data[2], data[3]);
-//                transform.transformPosition(pos);
-//                data[0] = pos.x();
-//                data[1] = pos.y();
-//                data[2] = pos.z();
-//                data[3] = pos.w();
-//                parent.put(element, data);
-//            } else {
-//                super.put(element, data);
-//            }
-//        }
+        @Override
+        public void put(int element, float... data) {
+            VertexFormatElement.Usage usage = parent.getVertexFormat().getElements().get(element).getUsage();
+            // change color
+            if (colour != null && usage == VertexFormatElement.Usage.COLOR && data.length >= 4) {
+                data[0] = colour.r;
+                data[1] = colour.g;
+                data[2] = colour.b;
+                data[3] = colour.a;
+                super.put(element, data);
+                // transform normals and position
+            } else if (transform != null && usage == VertexFormatElement.Usage.POSITION && data.length >= 4) {
+                Vector4f pos = new Vector4f(data[0], data[1], data[2], data[3]);
+                transform.transformPosition(pos);
+                data[0] = pos.x();
+                data[1] = pos.y();
+                data[2] = pos.z();
+                data[3] = pos.w();
+                parent.put(element, data);
+            } else {
+                super.put(element, data);
+            }
+        }
 
         @Override
         public void setApplyDiffuseLighting(boolean diffuse) {

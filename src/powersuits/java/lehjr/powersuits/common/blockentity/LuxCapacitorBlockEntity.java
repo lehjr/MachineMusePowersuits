@@ -27,7 +27,6 @@
 package lehjr.powersuits.common.blockentity;
 
 
-import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.capabilities.render.colour.ColorCapability;
 import lehjr.numina.common.capabilities.render.colour.ColorStorage;
 import lehjr.numina.common.capabilities.render.colour.IColorTag;
@@ -40,7 +39,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.IntTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.client.model.data.IModelData;
@@ -58,11 +56,6 @@ public class LuxCapacitorBlockEntity extends BlockEntity {
         super(MPSObjects.LUX_CAP_BLOCK_ENTITY_TYPE.get(), pos, state);
         colorHolder = LazyOptional.of(()-> colorStorage);
     }
-
-//    @Override
-//    public void handleUpdateTag(CompoundTag tag) {
-//        super.handleUpdateTag(tag);
-//    }
 
     public void setColor(Color color) {
         this.getCapability(ColorCapability.COLOR, null).ifPresent(colorCap -> colorCap.setColor(color));
@@ -109,7 +102,12 @@ public class LuxCapacitorBlockEntity extends BlockEntity {
     @Nonnull
     @Override
     public IModelData getModelData() {
-        return LuxCapHelper.getModelData(getColor().getInt());
+        return LuxCapHelper.getBlockBaseModelData();
+//        return LuxCapHelper.getLensModelData(getColor().getInt());
+    }
+
+    public IModelData getLensData() {
+        return LuxCapHelper.getLensModelData(getColor().getInt());
     }
 
     public Color getColor() {

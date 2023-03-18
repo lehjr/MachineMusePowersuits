@@ -51,6 +51,8 @@ public enum ModelBakeEventHandler {
     public void onModelBake(ModelBakeEvent event) {
         NuminaLogger.logError("baking something here");
 
+        event.getModelRegistry().keySet().stream().filter(resourceLocation -> resourceLocation.toString().contains("powersuits:luxcapacitor")).forEach(resourceLocation -> NuminaLogger.logError("modelLocation: " + resourceLocation));
+        event.getModelRegistry().keySet().stream().filter(resourceLocation -> resourceLocation.toString().contains("powersuits:powerfist")).forEach(resourceLocation -> NuminaLogger.logError("modelLocation: " + resourceLocation));
 
         /**
          * Notes: looks like all current models are "SimpleBakedModels"

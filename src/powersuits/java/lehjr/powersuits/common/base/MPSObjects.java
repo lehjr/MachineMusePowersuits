@@ -31,6 +31,7 @@ import lehjr.numina.common.base.NuminaLogger;
 import lehjr.powersuits.common.block.LuxCapacitorBlock;
 import lehjr.powersuits.common.block.TinkerTable;
 import lehjr.powersuits.common.blockentity.LuxCapacitorBlockEntity;
+import lehjr.powersuits.common.blockentity.TinkerTableBlockEntity;
 import lehjr.powersuits.common.constants.MPSConstants;
 import lehjr.powersuits.common.constants.MPSRegistryNames;
 import lehjr.powersuits.common.container.InstallSalvageMenu;
@@ -87,14 +88,14 @@ public class MPSObjects {
 
 
     /**
-     * Tile Entity Types -------------------------------------------------------------------------
+     * Block Entity Types -------------------------------------------------------------------------
      */
-    public static final DeferredRegister<BlockEntityType<?>> TILE_TYPES = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITIES, MPSConstants.MOD_ID);
+    public static final DeferredRegister<BlockEntityType<?>> BLOCKENTITY_TYPES = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITIES, MPSConstants.MOD_ID);
 
-//    public static final RegistryObject<BlockEntityType<TinkerTableBlockEntity>> TINKER_TABLE_TILE_TYPE = TILE_TYPES.register(MPSRegistryNames.TINKER_TABLE.getPath(),
-//            () -> BlockEntityType.Builder.of(TinkerTableBlockEntity::new, TINKER_TABLE_BLOCK.get()).build(null));
+    public static final RegistryObject<BlockEntityType<TinkerTableBlockEntity>> TINKER_TABLE_BLOCKENTITY_TYPE = BLOCKENTITY_TYPES.register(MPSRegistryNames.TINKER_TABLE.getPath(),
+            () -> BlockEntityType.Builder.of(TinkerTableBlockEntity::new, TINKER_TABLE_BLOCK.get()).build(null));
 
-    public static final RegistryObject<BlockEntityType<LuxCapacitorBlockEntity>> LUX_CAP_BLOCK_ENTITY_TYPE = TILE_TYPES.register(MPSRegistryNames.LUX_CAPACITOR.getPath(),
+    public static final RegistryObject<BlockEntityType<LuxCapacitorBlockEntity>> LUX_CAP_BLOCK_ENTITY_TYPE = BLOCKENTITY_TYPES.register(MPSRegistryNames.LUX_CAPACITOR.getPath(),
             () -> BlockEntityType.Builder.of(LuxCapacitorBlockEntity::new, LUX_CAPACITOR_BLOCK.get()).build(null));
 
     /**

@@ -70,7 +70,7 @@ public enum ClientOverlayHandler {
     final double meterTextOffsetY = 0;
 
     public void render(RenderGameOverlayEvent.Post e) {
-        PoseStack matrixStack = e.getPoseStack();
+        PoseStack matrixStack = e.getMatrixStack();
 
         Minecraft minecraft = Minecraft.getInstance();
         Player player;

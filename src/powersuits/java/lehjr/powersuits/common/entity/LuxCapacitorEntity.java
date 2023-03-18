@@ -143,12 +143,9 @@ public class LuxCapacitorEntity extends ThrowableProjectile implements IEntityAd
             BlockEntity blockEntity = level.getBlockEntity(pos);
             if (blockEntity instanceof LuxCapacitorBlockEntity) {
                 ((LuxCapacitorBlockEntity) blockEntity).setColor(color);
-                NuminaLogger.logError("color check found color: " + ((LuxCapacitorBlockEntity) blockEntity).getColor());
-
             } else {
                 NuminaLogger.logError("failed to spawn block entity?");
             }
-
             return true;
         }
         return false;

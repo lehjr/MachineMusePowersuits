@@ -142,7 +142,7 @@ public enum RenderEventHandler {
     public void onPostRenderGameOverlayEvent(RenderGameOverlayEvent.Post e) {
 //        if (Re.getType() == RenderGameOverlayEvent.ElementType.LAYER) { // opaque rendering, completely ignores alpha setting
         if (e.getType() == RenderGameOverlayEvent.ElementType.TEXT) { // this one allows translucent rendering
-            this.drawKeybindToggles(e.getPoseStack());
+            this.drawKeybindToggles(e.getMatrixStack());
             ClientOverlayHandler.INSTANCE.render(e);
         }
     }

@@ -1,9 +1,6 @@
 {
-  "parent": "block/block",
-  "loader": "forge:obj",
-  "model": "powersuits:models/block/tinkertable.obj",
-  "flip-v": true,
+  "parent": "builtin/entity",
   "textures": {
-    "particle": "powersuits:block/powersuitsworkbench"
+    "particle": "powersuits:models/tinkertable_tx"
   }
 }

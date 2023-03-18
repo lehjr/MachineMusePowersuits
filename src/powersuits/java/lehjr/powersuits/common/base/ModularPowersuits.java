@@ -109,7 +109,7 @@ public class ModularPowersuits {
 
         MPSObjects.ITEMS.register(modEventBus);
         MPSObjects.BLOCKS.register(modEventBus);
-        MPSObjects.TILE_TYPES.register(modEventBus);
+        MPSObjects.BLOCKENTITY_TYPES.register(modEventBus);
         MPSObjects.ENTITY_TYPES.register(modEventBus);
         MPSObjects.CONTAINER_TYPES.register(modEventBus);
 

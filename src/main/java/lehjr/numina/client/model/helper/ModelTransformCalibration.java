@@ -35,6 +35,7 @@ import org.lwjgl.glfw.GLFW;
 
 @OnlyIn(Dist.CLIENT)
 public class ModelTransformCalibration {
+    // TODO: ItemTransforms.TransformType cameraTransformType default values as starting point for item transforms
     static float xOffest_original;
     static float yOffest_original;
     static float zOffest_original;
@@ -56,6 +57,13 @@ public class ModelTransformCalibration {
     public static float scalemodifier;
 
     public static boolean tap;
+
+
+
+
+
+
+
 
     public ModelTransformCalibration() {
         this(0,0,0,0,0,0,/* 0.625f */ 1);
@@ -226,22 +234,6 @@ public class ModelTransformCalibration {
      |                       |
      SCROLL_LOCK +scale | NUM_PAD_8 = reset     | L_SHIFT tap = false
      PAUSE - scale   | NUM_PAD_0 = print
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 */
 

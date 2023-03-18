@@ -73,22 +73,24 @@ public class LuxCapacitorModelWrapper extends BakedModelWrapper<OBJBakedComposit
     @Nonnull
     @Override // FIXME : should this one even fire?
     public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, @Nonnull Random rand, @Nonnull IModelData extraData) {
+//        NuminaLogger.logError("getting side here: " + side);
+        // FIXME: lense color causes issues in block rendering
+
         if (!extraData.hasProperty(OBJPartData.SUBMODEL_DATA)) {
-
-//            NuminaLogger.logError("getQuadsWithExtraData: color here: " + colour);
-
-            extraData = LuxCapHelper.getModelData(colour != null ? colour.getInt() : Color.WHITE.getInt());
+            extraData = LuxCapHelper.getLensModelData(colour != null ? colour.getInt() : Color.WHITE.getInt());
+//                    LuxCapHelper.getLensModelData(colour != null ? colour.getInt() : Color.WHITE.getInt());
         }
         return originalModel.getQuads(state, side, rand, extraData);
     }
 
     @Override
     public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, Random rand) {
-
-//        NuminaLogger.logError("shorter getQuads: color here: " + colour);
-
-        IModelData extraData = LuxCapHelper.getModelData(colour != null ? colour.getInt() : Color.WHITE.getInt());
-        return originalModel.getQuads(state, side, rand, extraData);
+        IModelData extraData;
+        if (state == null) {
+            extraData = LuxCapHelper.getLensModelData(colour != null ? colour.getInt() : Color.WHITE.getInt());
+            return originalModel.getQuads(state, side, rand, extraData);
+        }
+        return originalModel.getQuads(state, side, rand, LuxCapHelper.getBlockBaseModelData());
     }
 
     /**
@@ -120,7 +122,7 @@ public class LuxCapacitorModelWrapper extends BakedModelWrapper<OBJBakedComposit
         @Nullable
         @Override
         public BakedModel resolve(BakedModel model, ItemStack stack, @Nullable ClientLevel worldIn, @Nullable LivingEntity entityIn,  int pSeed) {
-            Color colour;
+//            Color colour;
             // this one is just for the launched item
             if (stack.hasTag() && stack.getTag().contains(TagConstants.COLOR, Tag.TAG_INT)) {
                 colour = new Color( stack.getTag().getInt(TagConstants.COLOR));

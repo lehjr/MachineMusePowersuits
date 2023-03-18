@@ -33,9 +33,30 @@ import net.minecraftforge.client.model.data.IModelData;
 import net.minecraftforge.client.model.data.ModelDataMap;
 
 public class LuxCapHelper {
-    public static IModelData getModelData(int colour) {
+    static final String LIGHT_BASE_LOWER = "lightBaseLower";
+    static final String LIGHT_BASE_UPPER = "lightBaseUpper";
+    static final String LIGHT_LENS = "lightlens";
+
+
+    public static IModelData getBlockBaseModelData() {
         ImmutableMap.Builder<String, IModelData> builder = ImmutableMap.builder();
-        builder.put("lightlens", OBJPartData.makeOBJPartData(true, true, colour));
+        builder.put(LIGHT_BASE_LOWER, OBJPartData.makeOBJPartData(false, true, Color.WHITE.getInt()));
+        builder.put(LIGHT_BASE_UPPER, OBJPartData.makeOBJPartData(false, true, Color.WHITE.getInt()));
+        builder.put(LIGHT_LENS, OBJPartData.makeOBJPartData(false, false, Color.WHITE.getInt()));
+        return new ModelDataMap.Builder().withInitial(OBJPartData.SUBMODEL_DATA, new OBJPartData(builder.build())).build();
+    }
+
+    public static IModelData getBlockLensModelData(int color) {
+        ImmutableMap.Builder<String, IModelData> builder = ImmutableMap.builder();
+        builder.put(LIGHT_BASE_LOWER, OBJPartData.makeOBJPartData(false, false, Color.WHITE.getInt()));
+        builder.put(LIGHT_BASE_UPPER, OBJPartData.makeOBJPartData(false, false, Color.WHITE.getInt()));
+        builder.put(LIGHT_LENS, OBJPartData.makeOBJPartData(true, true, color));
+        return new ModelDataMap.Builder().withInitial(OBJPartData.SUBMODEL_DATA, new OBJPartData(builder.build())).build();
+    }
+
+    public static IModelData getLensModelData(int color) {
+        ImmutableMap.Builder<String, IModelData> builder = ImmutableMap.builder();
+        builder.put(LIGHT_LENS, OBJPartData.makeOBJPartData(true, true, color));
         return new ModelDataMap.Builder().withInitial(OBJPartData.SUBMODEL_DATA, new OBJPartData(builder.build())).build();
     }
 }

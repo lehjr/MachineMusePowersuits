@@ -42,6 +42,8 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.items.CapabilityItemHandler;
 
 /**
@@ -51,17 +53,38 @@ import net.minecraftforge.items.CapabilityItemHandler;
  * Keep in mind that you still need to fill in some blanks
  * - ZeuX
  */
+@OnlyIn(Dist.CLIENT)
 public class PowerFistModel2 extends Model {
     public static final ResourceLocation TEXTURE = new ResourceLocation(MPSConstants.MOD_ID, "textures/models/powerfist.png");
 
     public int boltSize = 0;
     ModelPart mainarm;
-    ModelPart armorright;
-    ModelPart armorleft;
-    ModelPart wristtopright;
-    ModelPart wristtopleft;
-    ModelPart wristbottomright;
-    ModelPart wristbottomleft;
+//    ModelPart armorright;
+//    ModelPart armorleft;
+//    ModelPart wristtopright;
+//    ModelPart wristtopleft;
+//    ModelPart wristbottomright;
+//    ModelPart wristbottomleft;
+//    ModelPart fingerguard;
+//    ModelPart crystalholder;
+//    ModelPart crystal;
+//    ModelPart supportright1;
+//    ModelPart supportright2;
+//    ModelPart supportright3;
+//    ModelPart supportright4;
+//    ModelPart supportright5;
+//    ModelPart supportbaseright;
+//    ModelPart supportbaseleft;
+//    ModelPart supportleftfront;
+//    ModelPart supportrightfront;
+//    ModelPart supportleft1;
+//    ModelPart supportleft2;
+//    ModelPart supportleft3;
+//    ModelPart supportleft4;
+//    ModelPart supportleft5;
+
+    // Hand parts
+    ModelPart palm;
     ModelPart index1;
     ModelPart index2;
     ModelPart middlefinger1;
@@ -72,24 +95,7 @@ public class PowerFistModel2 extends Model {
     ModelPart pinky2;
     ModelPart thumb1;
     ModelPart thumb2;
-    ModelPart fingerguard;
-    ModelPart crystalholder;
-    ModelPart crystal;
-    ModelPart supportright1;
-    ModelPart supportright2;
-    ModelPart supportright3;
-    ModelPart supportright4;
-    ModelPart supportright5;
-    ModelPart supportbaseright;
-    ModelPart palm;
-    ModelPart supportbaseleft;
-    ModelPart supportleftfront;
-    ModelPart supportrightfront;
-    ModelPart supportleft1;
-    ModelPart supportleft2;
-    ModelPart supportleft3;
-    ModelPart supportleft4;
-    ModelPart supportleft5;
+
 
     private final ModelPart root;
 
@@ -99,31 +105,31 @@ public class PowerFistModel2 extends Model {
         this.root = root;
 
         mainarm = root.getChild("mainarm");
-        armorright = root.getChild("armorright");
-        armorleft = root.getChild("armorleft");
-        wristtopright = root.getChild("wristtopright");
-        wristtopleft = root.getChild("wristtopleft");
-        wristbottomright = root.getChild("wristbottomright");
-        wristbottomleft = root.getChild("wristbottomleft");
-        fingerguard = root.getChild("fingerguard");
-        crystalholder = root.getChild("crystalholder");
-        crystal = root.getChild("crystal");
-
-        supportright1 = root.getChild("supportright1");
-        supportright2 = root.getChild("supportright2");
-        supportright3 = root.getChild("supportright3");
-        supportright4 = root.getChild("supportright4");
-        supportright5 = root.getChild("supportright5");
-        supportbaseright = root.getChild("supportbaseright");
-
-        supportbaseleft = root.getChild("supportbaseleft");
-        supportleftfront = root.getChild("supportleftfront");
-        supportrightfront = root.getChild("supportrightfront");
-        supportleft1 = root.getChild("supportleft1");
-        supportleft2 = root.getChild("supportleft2");
-        supportleft3 = root.getChild("supportleft3");
-        supportleft4 = root.getChild("supportleft4");
-        supportleft5 = root.getChild("supportleft5");
+//        armorright = root.getChild("armorright");
+//        armorleft = root.getChild("armorleft");
+//        wristtopright = root.getChild("wristtopright");
+//        wristtopleft = root.getChild("wristtopleft");
+//        wristbottomright = root.getChild("wristbottomright");
+//        wristbottomleft = root.getChild("wristbottomleft");
+//        fingerguard = root.getChild("fingerguard");
+//        crystalholder = root.getChild("crystalholder");
+//        crystal = root.getChild("crystal");
+//
+//        supportright1 = root.getChild("supportright1");
+//        supportright2 = root.getChild("supportright2");
+//        supportright3 = root.getChild("supportright3");
+//        supportright4 = root.getChild("supportright4");
+//        supportright5 = root.getChild("supportright5");
+//        supportbaseright = root.getChild("supportbaseright");
+//
+//        supportbaseleft = root.getChild("supportbaseleft");
+//        supportleftfront = root.getChild("supportleftfront");
+//        supportrightfront = root.getChild("supportrightfront");
+//        supportleft1 = root.getChild("supportleft1");
+//        supportleft2 = root.getChild("supportleft2");
+//        supportleft3 = root.getChild("supportleft3");
+//        supportleft4 = root.getChild("supportleft4");
+//        supportleft5 = root.getChild("supportleft5");
 
         palm = root.getChild("palm");
 
@@ -141,6 +147,10 @@ public class PowerFistModel2 extends Model {
 
         thumb1 = palm.getChild("thumb1");
         thumb2 = thumb1.getChild("thumb2");
+    }
+
+    PowerFistModel2() {
+        this(createLayer().bakeRoot());
     }
 
     public static LayerDefinition createLayer() {
@@ -254,6 +264,17 @@ public class PowerFistModel2 extends Model {
             this.boltSize = 0;
         }
     }
+
+    public void setFiringBoltPose(int boltSize) {
+        this.boltSize = boltSize;
+        setFiringPose();
+    }
+
+
+    public void setFiringPose() {
+        setPose(1.5f, -1, 1.5f, -1, 1.5f, -1);
+    }
+
 
     public void setNeutralPose() {
         setPose(0.5f, -1, 0.5f, -1, 0.5f, -1);
