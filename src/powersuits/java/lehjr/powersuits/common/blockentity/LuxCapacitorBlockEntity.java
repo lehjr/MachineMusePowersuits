@@ -107,7 +107,7 @@ public class LuxCapacitorBlockEntity extends BlockEntity {
     }
 
     public IModelData getLensData() {
-        return LuxCapHelper.getLensModelData(getColor().getInt());
+        return LuxCapHelper.getBlockLensModelData(getColor().getInt());
     }
 
     public Color getColor() {

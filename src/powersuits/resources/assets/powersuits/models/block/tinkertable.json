@@ -1,6 +1,6 @@
 {
   "parent": "builtin/entity",
   "textures": {
-    "particle": "powersuits:models/tinkertable_tx"
+    "particle": "block/coal_block"
   }
 }

@@ -1,11 +1,8 @@
 package lehjr.numina.client.gui.meter;
 
-import com.mojang.blaze3d.platform.GlStateManager;
-import com.mojang.blaze3d.platform.Lighting;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import com.mojang.math.Matrix4f;
-import lehjr.numina.client.config.ClientConfig;
 import lehjr.numina.client.render.IconUtils;
 import lehjr.numina.common.config.NuminaSettings;
 import lehjr.numina.common.constants.NuminaConstants;

@@ -28,7 +28,6 @@ package lehjr.numina.client.model.item.armor;
 
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.model.ArmorStandArmorModel;
 import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraftforge.common.util.Lazy;

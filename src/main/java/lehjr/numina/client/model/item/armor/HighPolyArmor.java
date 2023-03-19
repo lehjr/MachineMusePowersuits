@@ -28,14 +28,8 @@ package lehjr.numina.client.model.item.armor;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Transformation;
-import com.mojang.math.Vector3f;
-import lehjr.numina.client.model.helper.ModelTransformCalibration;
 import lehjr.numina.common.base.NuminaLogger;
-import lehjr.numina.common.config.NuminaSettings;
-import lehjr.numina.common.math.Color;
 import lehjr.numina.common.math.MathUtils;
-import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.RenderType;
@@ -45,7 +39,6 @@ import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.common.model.TransformationHelper;
 
 import java.util.ArrayList;
 import java.util.HashMap;

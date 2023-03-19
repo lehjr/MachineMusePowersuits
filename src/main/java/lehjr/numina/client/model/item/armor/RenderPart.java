@@ -31,8 +31,6 @@ import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.*;
-import lehjr.numina.client.model.helper.ModelHelper;
-import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.capabilities.render.modelspec.ModelPartSpec;
 import lehjr.numina.common.capabilities.render.modelspec.ModelRegistry;
 import lehjr.numina.common.capabilities.render.modelspec.ModelSpec;
@@ -51,15 +49,15 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.model.TransformationHelper;
-import org.lwjgl.system.CallbackI;
 import org.lwjgl.system.MemoryStack;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
 
 import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Random;
 
 /**
  * Author: MachineMuse (Claire Semple)

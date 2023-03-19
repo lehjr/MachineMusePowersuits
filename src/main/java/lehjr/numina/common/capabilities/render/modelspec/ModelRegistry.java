@@ -27,7 +27,6 @@
 package lehjr.numina.common.capabilities.render.modelspec;
 
 import lehjr.numina.client.model.obj.OBJBakedCompositeModel;
-import lehjr.numina.common.constants.NuminaConstants;
 import lehjr.numina.common.constants.TagConstants;
 import lehjr.numina.common.map.NuminaRegistry;
 import lehjr.numina.common.string.StringUtils;

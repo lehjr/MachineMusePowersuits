@@ -39,7 +39,6 @@ import lehjr.numina.common.capabilities.render.IHandHeldModelSpecNBT;
 import lehjr.numina.common.capabilities.render.IModelSpec;
 import lehjr.numina.common.capabilities.render.ModelSpecCapability;
 import lehjr.numina.common.capabilities.render.modelspec.*;
-import lehjr.numina.common.constants.NuminaConstants;
 import lehjr.numina.common.constants.TagConstants;
 import lehjr.numina.common.math.Color;
 import lehjr.numina.common.network.NuminaPackets;

@@ -1,8 +1,6 @@
 package lehjr.numina.client.model.helper;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
-import com.mojang.blaze3d.vertex.VertexFormat;
 import com.mojang.blaze3d.vertex.VertexFormatElement;
 import com.mojang.math.Transformation;
 import com.mojang.math.Vector3f;
@@ -26,7 +24,6 @@ import net.minecraftforge.client.model.pipeline.VertexTransformer;
 import net.minecraftforge.common.model.TransformationHelper;
 
 import javax.annotation.Nullable;
-import java.util.Arrays;
 import java.util.List;
 import java.util.function.Function;
 

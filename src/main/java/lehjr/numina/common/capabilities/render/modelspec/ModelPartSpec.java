@@ -27,7 +27,6 @@
 package lehjr.numina.common.capabilities.render.modelspec;
 
 import lehjr.numina.client.model.obj.OBJBakedPart;
-import lehjr.numina.common.constants.NuminaConstants;
 import lehjr.numina.common.constants.TagConstants;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;

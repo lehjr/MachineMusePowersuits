@@ -70,8 +70,6 @@ public enum ModelBakeEventHandler {
 
         BakedModel powerFistIcon = event.getModelRegistry().get(powerFistIconLocation);
         if (!OBJBakedCompositeModel.class.isInstance(powerFistIcon)) {
-            NuminaLogger.logError("baking powerfister here");
-
             event.getModelRegistry().put(powerFistIconLocation, new PowerFistModel(powerFistIcon));
         }
 

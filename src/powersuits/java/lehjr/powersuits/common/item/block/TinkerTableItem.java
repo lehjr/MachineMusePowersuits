@@ -26,7 +26,6 @@
 
 package lehjr.powersuits.common.item.block;
 
-import lehjr.numina.client.render.item.NuminaArmorStandItemRenderer;
 import lehjr.numina.common.capabilities.module.powermodule.IConfig;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;

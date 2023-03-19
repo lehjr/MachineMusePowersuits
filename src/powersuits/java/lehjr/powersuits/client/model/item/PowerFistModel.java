@@ -38,7 +38,6 @@ import lehjr.numina.common.capabilities.render.modelspec.ModelPartSpec;
 import lehjr.numina.common.capabilities.render.modelspec.ModelRegistry;
 import lehjr.numina.common.capabilities.render.modelspec.ModelSpec;
 import lehjr.numina.common.capabilities.render.modelspec.PartSpecBase;
-import lehjr.numina.common.constants.NuminaConstants;
 import lehjr.numina.common.constants.TagConstants;
 import lehjr.numina.common.math.Color;
 import lehjr.numina.common.network.NuminaPackets;
@@ -71,6 +70,8 @@ import java.util.Random;
 
 /**
  * Created by lehjr on 12/19/16.
+ *
+ * TODO: replace with original model
  */
 @OnlyIn(Dist.CLIENT)
 public class PowerFistModel extends BakedModelWrapper {
@@ -89,6 +90,11 @@ public class PowerFistModel extends BakedModelWrapper {
         return this.getQuads(state, side, rand, EmptyModelData.INSTANCE);
     }
 
+    public PowerFistModel getModel() {
+        return this;
+    }
+
+
     /**
      * We don't actually have any IModelData being passed here, so we can ignore the parameter.
      *
@@ -103,10 +109,6 @@ public class PowerFistModel extends BakedModelWrapper {
     public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, @Nonnull Random rand, @Nonnull IModelData extraData) {
         if (side != null)
             return ImmutableList.of();
-
-        NuminaLogger.logError("camera transform type: " + modelcameraTransformType.getSerializeName());
-
-
         switch (modelcameraTransformType) {
             case GUI:
             case FIXED:
@@ -225,9 +227,6 @@ public class PowerFistModel extends BakedModelWrapper {
         @Override
         public BakedModel resolve(BakedModel model, ItemStack itemStackIn, @Nullable ClientLevel level, @Nullable LivingEntity entityIn, int seed) {
             itemStack = itemStackIn;
-
-//            NuminaLogger.logDebug("drinking a cake and baking a beer");
-
             if (entityIn instanceof Player) {
                 Player player = (Player) entityIn;
                 if (player.isUsingItem()) {
@@ -248,7 +247,7 @@ public class PowerFistModel extends BakedModelWrapper {
                     isFiring = false;
                 }
             }
-            return originalModel;
+            return getModel();
         }
     }
 }

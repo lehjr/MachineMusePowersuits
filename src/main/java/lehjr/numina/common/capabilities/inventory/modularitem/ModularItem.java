@@ -37,7 +37,6 @@ import lehjr.numina.common.constants.TagConstants;
 import lehjr.numina.common.tags.TagUtils;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.DoubleTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;

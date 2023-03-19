@@ -26,7 +26,6 @@
 
 package lehjr.powersuits.common.item.module.environmental;
 
-import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.capabilities.module.powermodule.*;
 import lehjr.numina.common.capabilities.module.tickable.PlayerTickModule;
 import lehjr.numina.common.heat.HeatUtils;
@@ -44,7 +43,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.BucketPickup;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;

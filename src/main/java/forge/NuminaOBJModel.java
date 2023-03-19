@@ -14,7 +14,6 @@ import com.mojang.math.Vector4f;
 import joptsimple.internal.Strings;
 import lehjr.numina.client.model.obj.OBJBakedCompositeModel;
 import lehjr.numina.client.model.obj.OBJBakedPart;
-import lehjr.numina.common.base.NuminaLogger;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.ItemOverrides;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;

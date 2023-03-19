@@ -29,7 +29,6 @@ package lehjr.powersuits.client.model.block;
 import com.mojang.blaze3d.vertex.PoseStack;
 import lehjr.numina.client.model.obj.OBJBakedCompositeModel;
 import lehjr.numina.client.model.obj.OBJPartData;
-import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.capabilities.module.powermodule.PowerModuleCapability;
 import lehjr.numina.common.constants.TagConstants;
 import lehjr.numina.common.math.Color;

@@ -43,7 +43,7 @@ import java.util.Objects;
  */
 public class Color implements INBTSerializable<IntTag> {
     // 1/255 for faster math
-    static final float div255 = 0.003921569F;
+    public static final float div255 = 0.003921569F;
     // Colour values changed to match Java's AWT colors
     public static final Color WHITE = new Color(1F, 1F, 1F, 1F);
     public static final Color LIGHT_GRAY =new Color(0.753F, 0.753F, 0.753F,1F); // Java awt color

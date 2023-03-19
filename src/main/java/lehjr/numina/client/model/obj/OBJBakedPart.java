@@ -27,7 +27,6 @@
 package lehjr.numina.client.model.obj;
 
 import lehjr.numina.client.model.helper.ModelHelper;
-import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.math.Color;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.resources.model.BakedModel;

@@ -30,7 +30,6 @@ import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.capabilities.render.modelspec.ModelRegistry;
 import lehjr.numina.common.capabilities.render.modelspec.SpecType;
 import lehjr.numina.common.capabilities.render.modelspec.TexturePartSpec;
-import lehjr.numina.common.constants.NuminaConstants;
 import lehjr.numina.common.constants.TagConstants;
 import lehjr.numina.common.math.Color;
 import net.minecraft.nbt.CompoundTag;

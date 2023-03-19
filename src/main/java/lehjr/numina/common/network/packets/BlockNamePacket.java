@@ -1,11 +1,8 @@
 package lehjr.numina.common.network.packets;
 
-import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
-import lehjr.numina.common.capabilities.render.chameleon.Chameleon;
 import lehjr.numina.common.constants.TagConstants;
 import lehjr.numina.common.tags.TagUtils;
-import net.minecraft.nbt.StringTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;

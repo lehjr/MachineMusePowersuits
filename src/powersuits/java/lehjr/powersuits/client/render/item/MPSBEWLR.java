@@ -1,38 +1,92 @@
 package lehjr.powersuits.client.render.item;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Transformation;
 import lehjr.numina.client.model.helper.ModelTransformCalibration;
 import lehjr.numina.common.base.NuminaLogger;
 import lehjr.powersuits.client.model.block.TinkerTableModel;
 import lehjr.powersuits.common.base.MPSObjects;
+import lehjr.powersuits.common.blockentity.TinkerTableBlockEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.common.util.Lazy;
 
 public class MPSBEWLR extends BlockEntityWithoutLevelRenderer {
     TinkerTableModel tinkerTableModel;
     ModelTransformCalibration CALIBRATION;
+    Lazy<TinkerTableBlockEntity> tinkerTableBlockEntity = Lazy.of(()->new TinkerTableBlockEntity(BlockPos.ZERO, MPSObjects.TINKER_TABLE_BLOCK.get().defaultBlockState()));
+
     public MPSBEWLR() {
         super(Minecraft.getInstance().getBlockEntityRenderDispatcher(), new EntityModelSet());
         tinkerTableModel = new TinkerTableModel();
+
         this.CALIBRATION = new ModelTransformCalibration();
+
     }
+
+
 
     @Override
     public void renderByItem(ItemStack itemStack, ItemTransforms.TransformType transformType, PoseStack poseStack, MultiBufferSource buffer, int packedLight, int packedOverlay) {
-        super.renderByItem(itemStack, transformType, poseStack, buffer, packedLight, packedOverlay);
+//        super.renderByItem(itemStack, transformType, poseStack, buffer, packedLight, packedOverlay);
         Item item = itemStack.getItem();
 
         if (item.equals(MPSObjects.TINKER_TABLE_ITEM.get())) {
-            tinkerTableModel.renderToBuffer(poseStack, buffer.getBuffer(RenderType.itemEntityTranslucentCull(TinkerTableModel.TEXTURE)), packedLight, packedOverlay, 1F, 1F, 1F, 1F);
+            switch(transformType) {
+                case FIRST_PERSON_LEFT_HAND -> tinkerTableModel.renderToBuffer(poseStack, buffer.getBuffer(RenderType.entityTranslucentCull(TinkerTableModel.TEXTURE)), packedLight, packedOverlay, 1F, 1F, 1F, 1F);
+                case FIRST_PERSON_RIGHT_HAND -> tinkerTableModel.renderToBuffer(poseStack, buffer.getBuffer(RenderType.entityTranslucentCull(TinkerTableModel.TEXTURE)), packedLight, packedOverlay, 1F, 1F, 1F, 1F);
+                case GUI -> tinkerTableModel.renderToBuffer(poseStack, buffer.getBuffer(RenderType.entityTranslucentCull(TinkerTableModel.TEXTURE)), packedLight, packedOverlay, 1F, 1F, 1F, 1F);
+                case HEAD -> tinkerTableModel.renderToBuffer(poseStack, buffer.getBuffer(RenderType.entityTranslucentCull(TinkerTableModel.TEXTURE)), packedLight, packedOverlay, 1F, 1F, 1F, 1F);
+                case FIXED -> tinkerTableModel.renderToBuffer(poseStack, buffer.getBuffer(RenderType.itemEntityTranslucentCull(TinkerTableModel.TEXTURE)), packedLight, packedOverlay, 1F, 1F, 1F, 1F);
+                case GROUND -> tinkerTableModel.renderToBuffer(poseStack, buffer.getBuffer(RenderType.itemEntityTranslucentCull(TinkerTableModel.TEXTURE)), packedLight, packedOverlay, 1F, 1F, 1F, 1F);
+                case THIRD_PERSON_LEFT_HAND -> tinkerTableModel.renderToBuffer(poseStack, buffer.getBuffer(RenderType.itemEntityTranslucentCull(TinkerTableModel.TEXTURE)), packedLight, packedOverlay, 1F, 1F, 1F, 1F);
+                case THIRD_PERSON_RIGHT_HAND -> tinkerTableModel.renderToBuffer(poseStack, buffer.getBuffer(RenderType.itemEntityTranslucentCull(TinkerTableModel.TEXTURE)), packedLight, packedOverlay, 1F, 1F, 1F, 1F);
+            }
+
+
+
+
+            /** Important: the render type used here is required for gui and first person rendering for some reason */
+//            tinkerTableModel.renderToBuffer(poseStack, buffer.getBuffer(RenderType.entityTranslucentCull(TinkerTableModel.TEXTURE)), packedLight, packedOverlay, 1F, 1F, 1F, 1F);
+
+            /**
+             * tried render types
+             * entityTranslucentCull: (works good for first person and gui )
+             * entityTranslucent: screens flicker like mad
+             *
+             *
+             */
+
+
+
+
+
+
+
+            if (transformType == ItemTransforms.TransformType.GUI) {
+//                NuminaLogger.logger.info("rendering in gui");
+            }
+
+
+//           Minecraft.getInstance().getBlockEntityRenderDispatcher().renderItem(tinkerTableBlockEntity.get(), poseStack, buffer, packedLight, packedOverlay);
         }
+
+        if (item.equals(MPSObjects.POWER_FIST)) {
+
+        }
+
+
+
+
+
+
     }
 
     Transformation transform(ItemTransforms.TransformType transformType) {
