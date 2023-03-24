@@ -178,18 +178,13 @@ public class ModelHelper {
         public QuadTransformer(Color colour, final Transformation transform, TextureAtlasSprite texture, boolean applyDiffuse) {
             super(new BakedQuadBuilder(texture));
 
-            if(colour != null) {
-                super.setQuadTint(Color.WHITE.getInt());
-            }
+//            if(colour != null) {
+//                super.setQuadTint(Color.WHITE.getInt());
+//            }
 
             this.transform = transform;
             this.colour = colour;
             this.applyDiffuse = applyDiffuse;
-//            VertexFormat.Mode.
-
-//            public static final VertexFormat BLOCK = new VertexFormat(ImmutableMap.<String, VertexFormatElement>builder().put("Position", ELEMENT_POSITION).put("Color", ELEMENT_COLOR).put("UV0", ELEMENT_UV0).put("UV2", ELEMENT_UV2).put("Normal", ELEMENT_NORMAL).put("Padding", ELEMENT_PADDING).build());
-
-
         }
 
         @Override

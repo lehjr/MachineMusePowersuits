@@ -53,9 +53,17 @@ public class LuxCapHelper {
         builder.put(LIGHT_LENS, OBJPartData.makeOBJPartData(true, true, color));
         return new ModelDataMap.Builder().withInitial(OBJPartData.SUBMODEL_DATA, new OBJPartData(builder.build())).build();
     }
+//
+//    public static IModelData getLensModelData(int color) {
+//        ImmutableMap.Builder<String, IModelData> builder = ImmutableMap.builder();
+//        builder.put(LIGHT_LENS, OBJPartData.makeOBJPartData(true, true, color));
+//        return new ModelDataMap.Builder().withInitial(OBJPartData.SUBMODEL_DATA, new OBJPartData(builder.build())).build();
+//    }
 
-    public static IModelData getLensModelData(int color) {
+    public static IModelData getItemModelData(int color) {
         ImmutableMap.Builder<String, IModelData> builder = ImmutableMap.builder();
+        builder.put(LIGHT_BASE_LOWER, OBJPartData.makeOBJPartData(false, true, Color.WHITE.getInt()));
+        builder.put(LIGHT_BASE_UPPER, OBJPartData.makeOBJPartData(false, true, Color.WHITE.getInt()));
         builder.put(LIGHT_LENS, OBJPartData.makeOBJPartData(true, true, color));
         return new ModelDataMap.Builder().withInitial(OBJPartData.SUBMODEL_DATA, new OBJPartData(builder.build())).build();
     }

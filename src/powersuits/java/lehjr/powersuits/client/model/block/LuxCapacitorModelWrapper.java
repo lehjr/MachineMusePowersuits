@@ -29,6 +29,7 @@ package lehjr.powersuits.client.model.block;
 import com.mojang.blaze3d.vertex.PoseStack;
 import lehjr.numina.client.model.obj.OBJBakedCompositeModel;
 import lehjr.numina.client.model.obj.OBJPartData;
+import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.capabilities.module.powermodule.PowerModuleCapability;
 import lehjr.numina.common.constants.TagConstants;
 import lehjr.numina.common.math.Color;
@@ -53,6 +54,7 @@ import net.minecraftforge.client.model.data.IModelData;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -69,27 +71,43 @@ public class LuxCapacitorModelWrapper extends BakedModelWrapper<OBJBakedComposit
         this.overrides = new LuxCapacitorItemOverrides(this);
     }
 
-    @Nonnull
-    @Override // FIXME : should this one even fire?
-    public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, @Nonnull Random rand, @Nonnull IModelData extraData) {
-//        NuminaLogger.logError("getting side here: " + side);
-        // FIXME: lense color causes issues in block rendering
 
+    public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, @Nonnull Random rand, @Nonnull IModelData extraData, boolean ignored) {
         if (!extraData.hasProperty(OBJPartData.SUBMODEL_DATA)) {
-            extraData = LuxCapHelper.getLensModelData(colour != null ? colour.getInt() : Color.WHITE.getInt());
-//                    LuxCapHelper.getLensModelData(colour != null ? colour.getInt() : Color.WHITE.getInt());
+            extraData = LuxCapHelper.getBlockBaseModelData();
         }
         return originalModel.getQuads(state, side, rand, extraData);
     }
 
+
+    @Nonnull
+    @Override // FIXME : should this one even fire?
+    public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, @Nonnull Random rand, @Nonnull IModelData extraData) {
+//        if (state == null) {
+//            return originalModel.getQuads(state, side, rand, extraData);
+//        }
+
+//        NuminaLogger.logError("getting side here: " + side);
+        // FIXME: lense color causes issues in block rendering
+
+//        if (!extraData.hasProperty(OBJPartData.SUBMODEL_DATA)) {
+//            extraData = LuxCapHelper.getLensModelData(colour != null ? colour.getInt() : Color.WHITE.getInt());
+////                    LuxCapHelper.getLensModelData(colour != null ? colour.getInt() : Color.WHITE.getInt());
+//        }
+        return empty;//
+    }
+
+    static final List<BakedQuad> empty = new ArrayList<>();
+
     @Override
     public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, Random rand) {
-        IModelData extraData;
+        // setup for item model
         if (state == null) {
-            extraData = LuxCapHelper.getLensModelData(colour != null ? colour.getInt() : Color.WHITE.getInt());
+            IModelData extraData = LuxCapHelper.getItemModelData(colour != null ? colour.getInt() : Color.WHITE.getInt());
             return originalModel.getQuads(state, side, rand, extraData);
         }
-        return originalModel.getQuads(state, side, rand, LuxCapHelper.getBlockBaseModelData());
+        // setup for block model
+        return empty;
     }
 
     /**
@@ -125,7 +143,7 @@ public class LuxCapacitorModelWrapper extends BakedModelWrapper<OBJBakedComposit
             // this one is just for the launched item
             if (stack.hasTag() && stack.getTag().contains(TagConstants.COLOR, Tag.TAG_INT)) {
                 colour = new Color( stack.getTag().getInt(TagConstants.COLOR));
-            // this is for the active icon
+                // this is for the active icon
             } else {
                 colour = stack.getCapability(PowerModuleCapability.POWER_MODULE).map(pm -> {
                     float red = (float) pm.applyPropertyModifiers(MPSConstants.RED_HUE);

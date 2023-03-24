@@ -1,6 +1,40 @@
 {
-  "parent": "item/generated",
-  "textures": {
-    "layer0": "powersuits:item/handitem"
+  "parent": "builtin/entity",
+  "display": {
+    "thirdperson_righthand": {
+      "rotation": [ 165, 0, 0 ],
+      "translation": [ 5.36, -6.56, -2.46 ],
+      "scale": [ 0.67, 0.67, 0.67 ]
+    },
+    "firstperson_righthand": {
+      "rotation": [ 176, 353, 0 ],
+      "translation": [ 1.75, -0.25, -0.75 ],
+      "scale": [ 0.40, 0.40, 0.40 ]
+    },
+    "firstperson_lefthand": {
+      "rotation": [ 176, 3, 0 ],
+      "translation": [ -3.25, -0.25, -0.61 ],
+      "scale": [ 0.40, 0.40, 0.40 ]
+    },
+    "thirdperson_lefthand": {
+      "rotation": [ 160, 0, 0 ],
+      "translation": [-5.36, -6.56, -2.46 ],
+      "scale": [ 0.65, 0.65, 0.65 ]
+    },
+    "gui": {
+      "rotation": [ 250, 0, 0 ],
+      "translation": [ 9.75, 1.00, 0.00 ],
+      "scale": [ 1.20, 0.25, 0.60 ]
+    },
+    "fixed": {
+      "rotation": [ 105, 180, 0 ],
+      "translation": [ -5.25, 0.75, 3.50 ],
+      "scale": [ 0.60, 0.60, 0.60 ]
+    },
+    "ground": {
+      "rotation": [ 160, 0, 0 ],
+      "translation": [ 2.00, 1.0, -1.75 ],
+      "scale": [ 0.25, 0.25, 0.25 ]
+    }
   }
 }

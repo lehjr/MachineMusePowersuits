@@ -28,6 +28,7 @@ package lehjr.powersuits.client.model.item;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
 import lehjr.powersuits.common.constants.MPSConstants;
 import lehjr.powersuits.common.constants.MPSRegistryNames;
@@ -45,6 +46,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.items.CapabilityItemHandler;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Date: 1/13/2013 3:17:20 AM
@@ -96,13 +100,21 @@ public class PowerFistModel2 extends Model {
     ModelPart thumb1;
     ModelPart thumb2;
 
+    boolean isRightHand = true;
 
     private final ModelPart root;
 
+    Map<String, ModelPart> partMap = new HashMap<>();
 
-    public PowerFistModel2(ModelPart root) {
+    public PowerFistModel2(boolean isRightHand) {
+        this(createLayer(isRightHand).bakeRoot(), isRightHand);
+    }
+
+
+    public PowerFistModel2(ModelPart root, boolean isRightHand) {
         super(RenderType::itemEntityTranslucentCull);
         this.root = root;
+        this.isRightHand = isRightHand;
 
         mainarm = root.getChild("mainarm");
 //        armorright = root.getChild("armorright");
@@ -149,66 +161,79 @@ public class PowerFistModel2 extends Model {
         thumb2 = thumb1.getChild("thumb2");
     }
 
-    PowerFistModel2() {
-        this(createLayer().bakeRoot());
+    // warning no error handling
+    ModelPart getPart(String path) {
+        ModelPart part = this.root;
+        if (path.contains(".")) {
+            String[] splitPath = path.split(".");
+            for (int i = 0; i < splitPath.length; i++) {
+                part = part.getChild(splitPath[i]);
+            }
+        } else {
+            part = part.getChild(path);
+        }
+        return part;
     }
 
-    public static LayerDefinition createLayer() {
+
+    public static LayerDefinition createLayer(boolean isRightHand) {
         MeshDefinition meshdefinition = new MeshDefinition();
         PartDefinition partdefinition = meshdefinition.getRoot();
 
         // Main arm parts
-        partdefinition.addOrReplaceChild("mainarm", CubeListBuilder.create().texOffs( 0, 16).addBox(-3F, 0F, -8F, 6, 6, 10).mirror(), PartPose.offsetAndRotation(0F, 0F, 0F, 0.2617994F, 0F, 0F));
-        partdefinition.addOrReplaceChild("armorright", CubeListBuilder.create().texOffs( 42, 0).addBox(1F, -1F, -9F, 3, 5, 8).mirror(), PartPose.offsetAndRotation(0F, 0F, 0F, 0.2617994F, 0F, 0F));
-        partdefinition.addOrReplaceChild("armorleft", CubeListBuilder.create().texOffs( 42, 0).addBox(-4F, -1F, -9F, 3, 5, 8).mirror(), PartPose.offsetAndRotation(0F, 0F, 0F, 0.2617994F, 0F, 0F));
-        partdefinition.addOrReplaceChild("wristtopright", CubeListBuilder.create().texOffs( 0, 11).addBox(1F, 1F, 2F, 1, 1, 4).mirror(), PartPose.offsetAndRotation(0F, 0F, 0F, 0.2617994F, 0F, 0F));
-        partdefinition.addOrReplaceChild("wristtopleft", CubeListBuilder.create().texOffs( 0, 11).addBox(-2F, 1F, 2F, 1, 1, 4).mirror(), PartPose.offsetAndRotation(0F, 0F, 0F, 0.2617994F, 0F, 0F));
-        partdefinition.addOrReplaceChild("wristbottomright", CubeListBuilder.create().texOffs( 0, 11).addBox(1F, 3F, 2F, 1, 1, 4).mirror(), PartPose.offsetAndRotation(0F, 0F, 0F, 0.2617994F, 0F, 0F));
-        partdefinition.addOrReplaceChild("wristbottomleft", CubeListBuilder.create().texOffs( 0, 11).addBox(-2F, 3F, 2F, 1, 1, 4).mirror(), PartPose.offsetAndRotation(0F, 0F, 0F, 0.2617994F, 0F, 0F));
-        partdefinition.addOrReplaceChild("fingerguard", CubeListBuilder.create().texOffs( 28, 9).addBox(-3F, -2F, 8F, 5, 2, 2).mirror(), PartPose.offsetAndRotation(0F, 0F, 0F, 0F, 0F, 0F));
-        partdefinition.addOrReplaceChild("crystalholder", CubeListBuilder.create().texOffs( 48, 13).addBox(-2F, -1F, -3F, 4, 4, 4).mirror(), PartPose.offsetAndRotation(0F, 0F, 0F, 0F, 0F, 0F));
-        partdefinition.addOrReplaceChild("crystal", CubeListBuilder.create().texOffs( 32, 27).addBox(-1F, -2F, -2F, 2, 2, 2).mirror(), PartPose.offsetAndRotation(0F, 0F, 0F, 0F, 0F, 0F));
+        /** mainarm is supposed to be a first person representation of the player's actual arm */
+        partdefinition.addOrReplaceChild("mainarm", CubeListBuilder.create().texOffs( 0, 16).addBox(-3F, 0F, -8F, 6, 6, 10).mirror(isRightHand), PartPose.offsetAndRotation(0F, 0F, 0F, 0.2617994F, 0F, 0F));
+        partdefinition.addOrReplaceChild("armorright", CubeListBuilder.create().texOffs( 42, 0).addBox(1F, -1F, -9F, 3, 5, 8).mirror(isRightHand), PartPose.offsetAndRotation(0F, 0F, 0F, 0.2617994F, 0F, 0F));
+        partdefinition.addOrReplaceChild("armorleft", CubeListBuilder.create().texOffs( 42, 0).addBox(-4F, -1F, -9F, 3, 5, 8).mirror(isRightHand), PartPose.offsetAndRotation(0F, 0F, 0F, 0.2617994F, 0F, 0F));
+        partdefinition.addOrReplaceChild("wristtopright", CubeListBuilder.create().texOffs( 0, 11).addBox(1F, 1F, 2F, 1, 1, 4).mirror(isRightHand), PartPose.offsetAndRotation(0F, 0F, 0F, 0.2617994F, 0F, 0F));
+        partdefinition.addOrReplaceChild("wristtopleft", CubeListBuilder.create().texOffs( 0, 11).addBox(-2F, 1F, 2F, 1, 1, 4).mirror(isRightHand), PartPose.offsetAndRotation(0F, 0F, 0F, 0.2617994F, 0F, 0F));
+        partdefinition.addOrReplaceChild("wristbottomright", CubeListBuilder.create().texOffs( 0, 11).addBox(1F, 3F, 2F, 1, 1, 4).mirror(isRightHand), PartPose.offsetAndRotation(0F, 0F, 0F, 0.2617994F, 0F, 0F));
+        partdefinition.addOrReplaceChild("wristbottomleft", CubeListBuilder.create().texOffs( 0, 11).addBox(-2F, 3F, 2F, 1, 1, 4).mirror(isRightHand), PartPose.offsetAndRotation(0F, 0F, 0F, 0.2617994F, 0F, 0F));
+        partdefinition.addOrReplaceChild("fingerguard", CubeListBuilder.create().texOffs( 28, 9).addBox(-3F, -2F, 8.1F, 5, 2, 2).mirror(isRightHand), PartPose.offsetAndRotation(0F, 0F, 0F, 0F, 0F, 0F));
+        partdefinition.addOrReplaceChild("crystalholder", CubeListBuilder.create().texOffs( 48, 13).addBox(-2F, -1F, -3F, 4, 4, 4).mirror(isRightHand), PartPose.offsetAndRotation(0F, 0F, 0F, 0F, 0F, 0F));
+        partdefinition.addOrReplaceChild("crystal", CubeListBuilder.create().texOffs( 32, 27).addBox(-1F, -2F, -2F, 2, 2, 2).mirror(isRightHand), PartPose.offsetAndRotation(0F, 0F, 0F, 0F, 0F, 0F));
 
         // Hand Parts ---------------------------------------------------------------------------------------------------
-        PartDefinition palmPartDef = partdefinition.addOrReplaceChild("palm", CubeListBuilder.create().texOffs( 18, 0).addBox(-4F, -1F, 5F, 7, 4, 5).mirror(), PartPose.offsetAndRotation(0F, 0F, 0F, 0F, 0F, 0F));
+        PartDefinition palmPartDef = partdefinition.addOrReplaceChild("palm", CubeListBuilder.create().texOffs( 18, 0).addBox(isRightHand? -4F : -3F, -1F, 5F, 7, 4, 5).mirror(isRightHand), PartPose.offsetAndRotation(0F, 0F, 0F, 0F, 0F, 0F));
 
         // Thumb
-        PartDefinition thumb1PartDef = palmPartDef.addOrReplaceChild("thumb1", CubeListBuilder.create().texOffs( 16, 9).addBox(-.5F, -1F, 0F, 1, 2, 4).mirror(), PartPose.offsetAndRotation(-4F, 1.5F, 8F, 0F, -0.4014257F, 0F));
-        thumb1PartDef.addOrReplaceChild("thumb2", CubeListBuilder.create().texOffs( 10, 0).addBox(-.5F, -.5F, 0F, 1, 1, 3).mirror(), PartPose.offsetAndRotation(0, 0, 4F, 0F, 0F, 0F));
+        PartDefinition thumb1PartDef = palmPartDef.addOrReplaceChild("thumb1", CubeListBuilder.create().texOffs( 16, 9).addBox(-.5F, -1F, 0F, 1, 2, 4).mirror(isRightHand), PartPose.offsetAndRotation(isRightHand ? -4F : 4F, 1.5F, 8F, 0F, isRightHand? -0.4014257F : 0.4014257F, 0F));
+        thumb1PartDef.addOrReplaceChild("thumb2", CubeListBuilder.create().texOffs( 10, 0).addBox(-.5F, -.5F, 0F, 1, 1, 3).mirror(isRightHand), PartPose.offsetAndRotation(0, 0, 4F, 0F, 0F, 0F));
 
         // Index finger
-        PartDefinition index1PartDef = palmPartDef.addOrReplaceChild("index1", CubeListBuilder.create().texOffs(34, 13).addBox(-.5F, -.5F, 0F, 1, 1, 5).mirror(), PartPose.offsetAndRotation(-3.5F, -1.5F, 10F, 0.2617994F, 0F, 0F));
-        index1PartDef.addOrReplaceChild("index2", CubeListBuilder.create().texOffs( 34, 13).addBox(-.5F, -.5F, 0F, 1, 1, 4).mirror(), PartPose.offsetAndRotation(0, 0, 5F, -0.2617994F * 2, 0F, 0F));
+        PartDefinition index1PartDef = palmPartDef.addOrReplaceChild("index1", CubeListBuilder.create().texOffs(34, 13).addBox(-.5F, -.5F, 0F, 1, 1, 5).mirror(isRightHand), PartPose.offsetAndRotation(isRightHand? -3.5F : 3.5F, -1.5F, 10F, 0.2617994F, 0F, 0F));
+        index1PartDef.addOrReplaceChild("index2", CubeListBuilder.create().texOffs( 34, 13).addBox(-.5F, -.5F, 0F, 1, 1, 4).mirror(isRightHand), PartPose.offsetAndRotation(0, 0, 5F, -0.2617994F * 2, 0F, 0F));
 
         // Middle finger
-        PartDefinition middlefinger1PartDef = palmPartDef.addOrReplaceChild("middlefinger1", CubeListBuilder.create().texOffs( 34, 13).addBox(-.5F, -.5F, 0F, 1, 1, 6).mirror(), PartPose.offsetAndRotation(-1.5F, -1.5F, 10F, 0.2617994F, 0F, 0F));
-        middlefinger1PartDef.addOrReplaceChild("middlefinger2", CubeListBuilder.create().texOffs( 34, 13).addBox(-.5F, -.5F, 0F, 1, 1, 4).mirror(), PartPose.offsetAndRotation(0, 0, 6F, -0.3444116F, 0F, 0F));
+        PartDefinition middlefinger1PartDef = palmPartDef.addOrReplaceChild("middlefinger1", CubeListBuilder.create().texOffs( 34, 13).addBox(-.5F, -.5F, 0F, 1, 1, 6).mirror(isRightHand), PartPose.offsetAndRotation(isRightHand? -1.5F : 1.5F, -1.5F, 10F, 0.2617994F, 0F, 0F));
+        middlefinger1PartDef.addOrReplaceChild("middlefinger2", CubeListBuilder.create().texOffs( 34, 13).addBox(-.5F, -.5F, 0F, 1, 1, 4).mirror(isRightHand), PartPose.offsetAndRotation(0, 0, 6F, -0.3444116F, 0F, 0F));
 
         // Ring finger
-        PartDefinition ringfinger1PartDef = palmPartDef.addOrReplaceChild("ringfinger1", CubeListBuilder.create().texOffs( 34, 13).addBox(-.5F, -.5F, 0F, 1, 1, 5).mirror(), PartPose.offsetAndRotation(0.5F, -1.5F, 10F, 0.2617994F, 0F, 0F));
-        ringfinger1PartDef.addOrReplaceChild("ringfinger2", CubeListBuilder.create().texOffs( 34, 13).addBox(-.5F, -.5F, 0F, 1, 1, 4).mirror(), PartPose.offsetAndRotation(0, 0, 5F, -0.2617994F, 0F, 0F));
+        PartDefinition ringfinger1PartDef = palmPartDef.addOrReplaceChild("ringfinger1", CubeListBuilder.create().texOffs( 34, 13).addBox(-.5F, -.5F, 0F, 1, 1, 5).mirror(isRightHand), PartPose.offsetAndRotation(isRightHand? 0.5F : -0.5F, -1.5F, 10F, 0.2617994F, 0F, 0F));
+        ringfinger1PartDef.addOrReplaceChild("ringfinger2", CubeListBuilder.create().texOffs( 34, 13).addBox(-.5F, -.5F, 0F, 1, 1, 4).mirror(isRightHand), PartPose.offsetAndRotation(0, 0, 5F, -0.2617994F, 0F, 0F));
 
         // Pinky
-        PartDefinition pinky1PartDef = palmPartDef.addOrReplaceChild("pinky1", CubeListBuilder.create().texOffs( 34, 13).addBox(-.5F, -.5F, 0F, 1, 1, 4).mirror(), PartPose.offsetAndRotation(2.5F, -1.5F, 10F, 0.2617994F, 0F, 0F));
-        pinky1PartDef.addOrReplaceChild("pinky2", CubeListBuilder.create().texOffs( 34, 13).addBox(-.5F, -.5F, 0F, 1, 1, 4).mirror(), PartPose.offsetAndRotation(0, 0, 4F, -0.4537856F, 0F, 0F));
+        PartDefinition pinky1PartDef = palmPartDef.addOrReplaceChild("pinky1", CubeListBuilder.create().texOffs( 34, 13).addBox(-.5F, -.5F, 0F, 1, 1, 4).mirror(isRightHand), PartPose.offsetAndRotation(isRightHand? 2.5F : -2.5F, -1.5F, 10F, 0.2617994F, 0F, 0F));
+        pinky1PartDef.addOrReplaceChild("pinky2", CubeListBuilder.create().texOffs( 34, 13).addBox(-.5F, -.5F, 0F, 1, 1, 4).mirror(isRightHand), PartPose.offsetAndRotation(0, 0, 4F, -0.4537856F, 0F, 0F));
+
+        /** FINISH me below *--------------------*/
+        // Left supports
+        partdefinition.addOrReplaceChild("supportbaseleft", CubeListBuilder.create().texOffs( 47, 21).addBox(-4.4F, -0.6666667F, -5.4F, 3, 3, 5).mirror(isRightHand), PartPose.offsetAndRotation(0F, 0F, 0F, 0.2617994F, 0F, 0F));
+        partdefinition.addOrReplaceChild("supportleftfront", CubeListBuilder.create().texOffs( 49, 23).addBox(isRightHand? -4.333333F : -3.333333F, 0.3333333F, 4.666667F, 1, 2, 3).mirror(isRightHand), PartPose.offsetAndRotation(0F, 0F, 0F,  0F, 0F, 0F));
+        partdefinition.addOrReplaceChild("supportleft1", CubeListBuilder.create().texOffs( 54, 27).addBox(-2.2F, -0.4F, -6.066667F, 4, 1, 1).mirror(isRightHand), PartPose.offsetAndRotation(0F, 0F, 0F, 0.2722714F, 1.066978F, 0F));
+        partdefinition.addOrReplaceChild("supportleft2", CubeListBuilder.create().texOffs( 52, 21).addBox(-6F, 0.4666667F, 2.5F, 2, 2, 1).mirror(isRightHand), PartPose.offsetAndRotation(0F, 0F, 0F, 0F, -0.6329727F, 0F));
+        partdefinition.addOrReplaceChild("supportleft3", CubeListBuilder.create().texOffs(52, 21).addBox(-6.5F, 1F, -0.5F, 1, 1, 5).mirror(isRightHand), PartPose.offsetAndRotation(0F, 0F, 0F, 0F, 0F, 0F));
+        partdefinition.addOrReplaceChild("supportleft4", CubeListBuilder.create().texOffs(52, 21).addBox(-7.9F, 0.4666667F, 1.7F, 2, 2, 1).mirror(isRightHand), PartPose.offsetAndRotation(0F, 0F, 0F, 0F, 0.3688462F, 0F));
+        partdefinition.addOrReplaceChild("supportleft5", CubeListBuilder.create().texOffs(54, 27).addBox(-0.8666667F, 1F, isRightHand? 7F : 6.333333F, 4, 1, 1).mirror(isRightHand), PartPose.offsetAndRotation(0F, 0F, 0F,0F, -0.7714355F, 0F));
 
         // Right supports
-        partdefinition.addOrReplaceChild("supportbaseright", CubeListBuilder.create().texOffs( 47, 21).addBox(1.433333F, -0.6666667F, -5.4F, 3, 3, 5).mirror(), PartPose.offsetAndRotation(0F, 0F, 0F, 0.2617994F, 0F, 0F));
-        partdefinition.addOrReplaceChild("supportrightfront", CubeListBuilder.create().texOffs( 49, 23).addBox(2.3F, 0.3333333F, 4.666667F, 1, 2, 3).mirror(), PartPose.offsetAndRotation(0F, 0F, 0F, 0F, 0F, 0F));
-        partdefinition.addOrReplaceChild("supportright1", CubeListBuilder.create().texOffs( 54, 27).addBox(-1.8F, -0.8F, -6.066667F, 4, 1, 1).mirror(), PartPose.offsetAndRotation(0F, 0F, 0F, 0.2722714F, -1.066972F, 0F));
-        partdefinition.addOrReplaceChild("supportright2",  CubeListBuilder.create().texOffs( 52, 21).mirror().addBox(4F, 0.4666667F, 2.5F, 2, 2, 1), PartPose.offsetAndRotation(0F, 0F, 0F, 0F, 0.6329786F, 0F));
-        partdefinition.addOrReplaceChild("supportright3", CubeListBuilder.create().texOffs( 52, 21).addBox(5.1F, 1F, -0.8333333F, 1, 1, 5).mirror(), PartPose.offsetAndRotation(0F, 0F, 0F, 0F, 0F, 0F));
-        partdefinition.addOrReplaceChild("supportright4", CubeListBuilder.create().texOffs( 52, 21).addBox(5.633333F, 0.4666667F, 1.7F, 2, 2, 1).mirror(), PartPose.offsetAndRotation(0F, 0F, 0F, 0F, -0.3688404F, 0F));
-        partdefinition.addOrReplaceChild("supportright5", CubeListBuilder.create().texOffs( 54, 27).addBox(-2.866667F, 1F, 6.333333F, 4, 1, 1).mirror(), PartPose.offsetAndRotation(0F, 0F, 0F, 0F, 0.7714355F, 0F));
-
-        // Left supports
-        partdefinition.addOrReplaceChild("supportbaseleft", CubeListBuilder.create().texOffs( 47, 21).addBox(-4.4F, -0.6666667F, -5.4F, 3, 3, 5).mirror(), PartPose.offsetAndRotation(0F, 0F, 0F, 0.2617994F, 0F, 0F));
-        partdefinition.addOrReplaceChild("supportleftfront", CubeListBuilder.create().texOffs( 49, 23).addBox(-4.333333F, 0.3333333F, 4.666667F, 1, 2, 3).mirror(), PartPose.offsetAndRotation(0F, 0F, 0F,  0F, 0F, 0F));
-        partdefinition.addOrReplaceChild("supportleft1", CubeListBuilder.create().texOffs( 54, 27).addBox(-2.2F, -0.4F, -6.066667F, 4, 1, 1).mirror(), PartPose.offsetAndRotation(0F, 0F, 0F, 0.2722714F, 1.066978F, 0F));
-        partdefinition.addOrReplaceChild("supportleft2", CubeListBuilder.create().texOffs( 52, 21).addBox(-6F, 0.4666667F, 2.5F, 2, 2, 1).mirror(), PartPose.offsetAndRotation(0F, 0F, 0F, 0F, -0.6329727F, 0F));
-        partdefinition.addOrReplaceChild("supportleft3", CubeListBuilder.create().texOffs(52, 21).addBox(-6.5F, 1F, -0.5F, 1, 1, 5).mirror(), PartPose.offsetAndRotation(0F, 0F, 0F, 0F, 0F, 0F));
-        partdefinition.addOrReplaceChild("supportleft4", CubeListBuilder.create().texOffs(52, 21).addBox(-7.9F, 0.4666667F, 1.7F, 2, 2, 1).mirror(), PartPose.offsetAndRotation(0F, 0F, 0F, 0F, 0.3688462F, 0F));
-        partdefinition.addOrReplaceChild("supportleft5", CubeListBuilder.create().texOffs(54, 27).addBox(-0.8666667F, 1F, 7F, 4, 1, 1).mirror(), PartPose.offsetAndRotation(0F, 0F, 0F,0F, -0.7714355F, 0F));
+        partdefinition.addOrReplaceChild("supportbaseright", CubeListBuilder.create().texOffs( 47, 21).addBox(1.433333F, -0.6666667F, -5.4F, 3, 3, 5).mirror(isRightHand), PartPose.offsetAndRotation(0F, 0F, 0F, 0.2617994F, 0F, 0F));
+        partdefinition.addOrReplaceChild("supportrightfront", CubeListBuilder.create().texOffs( 49, 23).addBox(isRightHand? 2.3F : 3.3F, 0.3333333F, 4.666667F, 1, 2, 3).mirror(isRightHand), PartPose.offsetAndRotation(0F, 0F, 0F, 0F, 0F, 0F));
+        partdefinition.addOrReplaceChild("supportright1", CubeListBuilder.create().texOffs( 54, 27).addBox(-1.8F, -0.8F, -6.066667F, 4, 1, 1).mirror(isRightHand), PartPose.offsetAndRotation(0F, 0F, 0F, 0.2722714F, -1.066972F, 0F));
+        partdefinition.addOrReplaceChild("supportright2",  CubeListBuilder.create().texOffs( 52, 21).addBox(4F, 0.4666667F, 2.5F, 2, 2, 1).mirror(isRightHand), PartPose.offsetAndRotation(0F, 0F, 0F, 0F, 0.6329786F, 0F));
+        partdefinition.addOrReplaceChild("supportright3", CubeListBuilder.create().texOffs( 52, 21).addBox(5.1F, 1F, -0.8333333F, 1, 1, 5).mirror(isRightHand), PartPose.offsetAndRotation(0F, 0F, 0F, 0F, 0F, 0F));
+        partdefinition.addOrReplaceChild("supportright4", CubeListBuilder.create().texOffs( 52, 21).addBox(5.633333F, 0.4666667F, 1.7F, 2, 2, 1).mirror(isRightHand), PartPose.offsetAndRotation(0F, 0F, 0F, 0F, -0.3688404F, 0F));
+        partdefinition.addOrReplaceChild("supportright5", CubeListBuilder.create().texOffs( 54, 27).addBox(-2.866667F, 1F, isRightHand? 6.333333F : 7F, 4, 1, 1).mirror(isRightHand), PartPose.offsetAndRotation(0F, 0F, 0F, 0F, 0.7714355F, 0F));
 
         return LayerDefinition.create(meshdefinition, 64, 32);
     }
@@ -217,9 +242,13 @@ public class PowerFistModel2 extends Model {
 //        partlMap.getOrDefault(part, mainarm).render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
     }
 
-    @Override
+    @Override // public void render(PoseStack pPoseStack, VertexConsumer pVertexConsumer, int pPackedLight, int pPackedOverlay, float pRed, float pGreen, float pBlue, float pAlpha)
     public void renderToBuffer(PoseStack matrixStackIn, VertexConsumer bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
-
+        this.mainarm.visible = true;
+        this.root.children.values().forEach(part-> {
+            part.visible = true;
+            part.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+        });
     }
 
     private void setRotation(ModelPart model, float x, float y, float z) {
@@ -228,12 +257,6 @@ public class PowerFistModel2 extends Model {
         model.zRot = z;
     }
 
-    /**
-     * Sets the model's various rotation angles. For bipeds, par1 and par2 are
-     * used for animating the movement of arms and legs, where par1 represents
-     * the time(so that arms and legs swing back and forth) and par2 represents
-     * how "far" arms and legs can swing at most.
-     */
     public void setPose(float indexOpen, float indexFlex, float thumbOpen, float thumbFlex, float otherFingersOpen, float otherFingersFlex) {
         index1.xRot = indexOpen;
         index2.xRot = indexFlex;
@@ -243,8 +266,9 @@ public class PowerFistModel2 extends Model {
         ringfinger2.xRot = otherFingersFlex;
         pinky1.xRot = otherFingersOpen - 0.1f;
         pinky2.xRot = otherFingersFlex;
-        thumb1.yRot = -thumbOpen;
-        thumb2.yRot = -thumbFlex;
+        // fixme left and right hand
+        thumb1.yRot = isRightHand? -thumbOpen : thumbOpen;
+        thumb2.yRot = isRightHand? -thumbFlex : thumbFlex;
     }
 
     // FIXME
@@ -272,11 +296,13 @@ public class PowerFistModel2 extends Model {
 
 
     public void setFiringPose() {
+        // FIXME: left and right hand values
         setPose(1.5f, -1, 1.5f, -1, 1.5f, -1);
     }
 
 
     public void setNeutralPose() {
+        // FIXME: left and right hand values
         setPose(0.5f, -1, 0.5f, -1, 0.5f, -1);
         this.boltSize = 0;
     }

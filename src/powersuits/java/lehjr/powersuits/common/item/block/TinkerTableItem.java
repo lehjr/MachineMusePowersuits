@@ -32,6 +32,8 @@ import lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
 import lehjr.numina.common.capabilities.module.powermodule.PowerModuleCapability;
 import lehjr.numina.common.capabilities.module.rightclick.IRightClickModule;
 import lehjr.numina.common.capabilities.module.rightclick.RightClickModule;
+import lehjr.powersuits.client.event.ModelBakeEventHandler;
+import lehjr.powersuits.client.model.item.PowerFistModel2;
 import lehjr.powersuits.client.render.item.MPSBEWLR;
 import lehjr.powersuits.common.base.MPSObjects;
 import lehjr.powersuits.common.config.MPSSettings;
@@ -111,7 +113,7 @@ public class TinkerTableItem extends BlockItem {
     @Override
     public void initializeClient(Consumer<IItemRenderProperties> consumer) {
         consumer.accept(new IItemRenderProperties() {
-            private final BlockEntityWithoutLevelRenderer renderer = new MPSBEWLR();
+            private final BlockEntityWithoutLevelRenderer renderer = ModelBakeEventHandler.INSTANCE.MPSBERINSTANCE;
 
             @Override
             public BlockEntityWithoutLevelRenderer getItemStackRenderer() {

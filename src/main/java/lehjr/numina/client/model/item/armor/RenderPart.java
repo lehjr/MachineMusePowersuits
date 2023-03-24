@@ -242,23 +242,21 @@ public class RenderPart extends ModelPart {
 //            ByteBuffer bytebuffer = memorystack.malloc(DefaultVertexFormat.POSITION_COLOR_TEX_LIGHTMAP.getVertexSize());
             IntBuffer intbuffer = bytebuffer.asIntBuffer();
 
-            for (int v = 0; v < vertexCount; ++v) {
+            for (int vert = 0; vert < vertexCount; ++vert) {
                 ((Buffer) intbuffer).clear();
-                intbuffer.put(aint, v * 8, 8);
+                intbuffer.put(aint, vert * 8, 8);
                 float x = bytebuffer.getFloat(0);
                 float y = bytebuffer.getFloat(4);
                 float z = bytebuffer.getFloat(8);
                 int lightmapCoord = bufferIn.applyBakedLighting(lightmapCoordIn, bytebuffer);
-                float f9 = bytebuffer.getFloat(16);
-                float f10 = bytebuffer.getFloat(20);
+                float u = bytebuffer.getFloat(16);
+                float v = bytebuffer.getFloat(20);
 
                 /** scaled like TexturedQuads, but using multiplication instead of division due to speed advantage.  */
                 Vector4f pos = new Vector4f(x * scale, y * scale, z * scale, 1.0F); // scales to 1/16 like the TexturedQuads but with multiplication (faster than division)
                 pos.transform(matrix4f);
                 bufferIn.applyBakedNormals(normal, bytebuffer, matrixEntry.normal());
-
-
-                bufferIn.vertex(pos.x(), pos.y(), pos.z(), red, green, blue, alpha, f9, f10, overlayCoords, lightmapCoord, normal.x(), normal.y(), normal.z());
+                bufferIn.vertex(pos.x(), pos.y(), pos.z(), red, green, blue, alpha, u, v, overlayCoords, lightmapCoord, normal.x(), normal.y(), normal.z());
             }
         }
     }

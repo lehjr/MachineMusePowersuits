@@ -103,9 +103,9 @@ public class NuminaOBJModel implements IMultipartModelGeometry<NuminaOBJModel> {
         if (materialLibraryOverrideLocation != null) {
             String lib = materialLibraryOverrideLocation;
             if (lib.contains(":"))
-                mtllib = OBJLoader.INSTANCE.loadMaterialLibrary(new ResourceLocation(lib));
+                mtllib = NuminaOBJLoader.INSTANCE.loadMaterialLibrary(new ResourceLocation(lib));
             else
-                mtllib = OBJLoader.INSTANCE.loadMaterialLibrary(new ResourceLocation(modelDomain, modelPath + lib));
+                mtllib = NuminaOBJLoader.INSTANCE.loadMaterialLibrary(new ResourceLocation(modelDomain, modelPath + lib));
         }
 
 //        NuminaLogger.logError("model location: " + modelLocation);
@@ -123,9 +123,9 @@ public class NuminaOBJModel implements IMultipartModelGeometry<NuminaOBJModel> {
 
                     String lib = line[1];
                     if (lib.contains(":"))
-                        mtllib = OBJLoader.INSTANCE.loadMaterialLibrary(new ResourceLocation(lib));
+                        mtllib = NuminaOBJLoader.INSTANCE.loadMaterialLibrary(new ResourceLocation(lib));
                     else
-                        mtllib = OBJLoader.INSTANCE.loadMaterialLibrary(new ResourceLocation(modelDomain, modelPath + lib));
+                        mtllib = NuminaOBJLoader.INSTANCE.loadMaterialLibrary(new ResourceLocation(modelDomain, modelPath + lib));
                     break;
                 }
 
@@ -406,7 +406,7 @@ public class NuminaOBJModel implements IMultipartModelGeometry<NuminaOBJModel> {
                 transformation.transformPosition(position);
                 transformation.transformNormal(normal);
             }
-            ;
+
             Vector4f tintedColor = new Vector4f(
                     color.x() * colorTint.x(),
                     color.y() * colorTint.y(),

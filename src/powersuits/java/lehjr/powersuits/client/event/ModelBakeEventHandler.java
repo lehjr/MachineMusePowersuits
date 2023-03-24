@@ -32,6 +32,7 @@ import lehjr.numina.common.base.NuminaLogger;
 import lehjr.powersuits.client.model.block.LuxCapacitorModelWrapper;
 import lehjr.powersuits.client.model.helper.MPSModelHelper;
 import lehjr.powersuits.client.model.item.PowerFistModel;
+import lehjr.powersuits.client.render.item.MPSBEWLR;
 import lehjr.powersuits.common.constants.MPSRegistryNames;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.ModelResourceLocation;
@@ -41,6 +42,8 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 public enum ModelBakeEventHandler {
     INSTANCE;
+    public MPSBEWLR MPSBERINSTANCE = new MPSBEWLR();
+
 
     ModelResourceLocation luxCapItemLocation = new ModelResourceLocation(MPSRegistryNames.LUX_CAPACITOR, "inventory");
     ModelResourceLocation luxCapModuleLocation = new ModelResourceLocation(MPSRegistryNames.LUX_CAPACITOR_MODULE, "inventory");
@@ -51,27 +54,17 @@ public enum ModelBakeEventHandler {
     public void onModelBake(ModelBakeEvent event) {
         NuminaLogger.logError("baking something here");
 
-        event.getModelRegistry().keySet().stream().filter(resourceLocation -> resourceLocation.toString().contains("powersuits:luxcapacitor")).forEach(resourceLocation -> NuminaLogger.logError("modelLocation: " + resourceLocation));
+        event.getModelRegistry().keySet().stream().filter(resourceLocation -> resourceLocation.toString().contains("powersuits:luxcapacitor")).forEach(resourceLocation ->
+                event.getModelRegistry().put(resourceLocation, new LuxCapacitorModelWrapper((OBJBakedCompositeModel) event.getModelRegistry().get(resourceLocation))));
+
         event.getModelRegistry().keySet().stream().filter(resourceLocation -> resourceLocation.toString().contains("powersuits:powerfist")).forEach(resourceLocation -> NuminaLogger.logError("modelLocation: " + resourceLocation));
 
-        /**
-         * Notes: looks like all current models are "SimpleBakedModels"
-         */
-        // replace LuxCapacitor model with one that can generate the model data needed to color the lens for the item model
-        BakedModel luxCapItemModel = event.getModelRegistry().get(luxCapItemLocation);
-        if (luxCapItemModel instanceof OBJBakedCompositeModel) {
-            event.getModelRegistry().put(luxCapItemLocation, new LuxCapacitorModelWrapper((OBJBakedCompositeModel) luxCapItemModel));
-        }
 
-        BakedModel luxCapModuleModel = event.getModelRegistry().get(luxCapModuleLocation);
-        if (luxCapItemModel instanceof OBJBakedCompositeModel) {
-            event.getModelRegistry().put(luxCapModuleLocation, new LuxCapacitorModelWrapper((OBJBakedCompositeModel) luxCapModuleModel));
-        }
 
-        BakedModel powerFistIcon = event.getModelRegistry().get(powerFistIconLocation);
-        if (!OBJBakedCompositeModel.class.isInstance(powerFistIcon)) {
-            event.getModelRegistry().put(powerFistIconLocation, new PowerFistModel(powerFistIcon));
-        }
+//        BakedModel powerFistIcon = event.getModelRegistry().get(powerFistIconLocation);
+//        if (!OBJBakedCompositeModel.class.isInstance(powerFistIcon)) {
+//            event.getModelRegistry().put(powerFistIconLocation, new PowerFistModel(powerFistIcon));
+//        }
 
         MPSModelHelper.loadArmorModels(null, event.getModelLoader());
     }

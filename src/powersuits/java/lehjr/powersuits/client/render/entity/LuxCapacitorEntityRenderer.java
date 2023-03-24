@@ -84,6 +84,8 @@ public class LuxCapacitorEntityRenderer extends EntityRenderer<LuxCapacitorEntit
         matrixStackIn.pushPose();
         Minecraft.getInstance().getItemRenderer().render(itemstack, ItemTransforms.TransformType.GROUND, false, matrixStackIn, bufferIn, packedLightIn, OverlayTexture.NO_OVERLAY, ibakedmodel);
         matrixStackIn.popPose();
+
+        // fixme ???? what is this for?
         if (!flag) {
             matrixStackIn.translate(0.0, 0.0, 0.09375F);
         }
