@@ -45,8 +45,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static lehjr.powersuits.client.control.KeybindKeyHandler.mps;
-
 /**
  * For setting up the keybindings used in the onscreen display
  */
@@ -151,7 +149,7 @@ public enum KeybindManager {
                         boolean showOnHud = data.get(showOnHudKey).getAsBoolean();
                         int defaultKey = data.get(defaultKeyKey).getAsInt();
                         ResourceLocation registryName = new ResourceLocation(data.get(registryNameKey).getAsString());
-                        KeybindKeyHandler.registerKeyBinding(registryName, name, defaultKey, mps, showOnHud);
+                        KeybindKeyHandler.registerKeyBinding(registryName, name, defaultKey, KeybindKeyHandler.mps, showOnHud);
                     }
 
                     /** fallback if settings hasn't been converted to new format yet */
@@ -169,7 +167,7 @@ public enum KeybindManager {
                             getMPSKeyBinds().stream().filter(kb->kb.getName().equals(name1)).findFirst().ifPresent(kb->kb.showOnHud = value);
                             // temporary way of registering keybinds to be replaced on login
                         } else {
-                            KeybindKeyHandler.registerKeyBinding(Items.AIR.getRegistryName(), name1, GLFW.GLFW_KEY_UNKNOWN, mps, value);
+                            KeybindKeyHandler.registerKeyBinding(Items.AIR.getRegistryName(), name1, GLFW.GLFW_KEY_UNKNOWN, KeybindKeyHandler.mps, value);
                         }
                     }
                 }

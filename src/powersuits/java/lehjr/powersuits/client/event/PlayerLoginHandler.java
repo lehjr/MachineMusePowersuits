@@ -31,6 +31,7 @@ import lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
 import lehjr.numina.common.capabilities.module.powermodule.PowerModuleCapability;
 import lehjr.numina.common.capabilities.module.rightclick.IRightClickModule;
 import lehjr.numina.common.capabilities.module.toggleable.IToggleableModule;
+import lehjr.powersuits.client.control.KeybindKeyHandler;
 import lehjr.powersuits.client.control.KeybindManager;
 import net.minecraft.core.NonNullList;
 import net.minecraft.world.entity.player.Player;
@@ -39,8 +40,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.registries.ForgeRegistries;
-
-import static lehjr.powersuits.client.control.KeybindKeyHandler.registerKeybinding;
 
 /**
  * Author: MachineMuse (Claire Semple)
@@ -63,14 +62,14 @@ public final class PlayerLoginHandler {
                                 if (pm.getTarget() == ModuleTarget.TOOLONLY) {
                                     if (pm.getCategory() == ModuleCategory.MINING_ENHANCEMENT) {
                                         modules.add(pm.getModuleStack());
-                                        registerKeybinding(item.getRegistryName(), false);
+                                        KeybindKeyHandler.registerKeybinding(item.getRegistryName(), false);
                                     } else if (!IRightClickModule.class.isAssignableFrom(pm.getClass())) {
                                         modules.add(pm.getModuleStack());
-                                        registerKeybinding(item.getRegistryName(), false);
+                                        KeybindKeyHandler.registerKeybinding(item.getRegistryName(), false);
                                     }
                                 } else {
                                     modules.add(pm.getModuleStack());
-                                    registerKeybinding(item.getRegistryName(), false);
+                                    KeybindKeyHandler.registerKeybinding(item.getRegistryName(), false);
                                 }
                             });
                 }

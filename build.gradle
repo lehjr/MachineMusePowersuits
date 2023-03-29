@@ -35,7 +35,7 @@ apply plugin: 'org.parchmentmc.librarian.forgegradle'
 
 wrapper {
     //Define wrapper values here so as to not have to always do so when updating gradlew.properties
-    gradleVersion = '7.4'
+    gradleVersion = '7.5.1'
     distributionType = Wrapper.DistributionType.ALL
 }
 
@@ -156,7 +156,7 @@ ext {
     jsonPatterns = ["**/*.json", "**/*.mcmeta"]
             
     //Setup the UPDATE_SOURCESET property in case we are doing any remappings
-    UPDATE_SOURCESETS = project.sourceSets.collect { it.name }.join(';')
+    UPDATE_SOURCESETS = project.sourceSets.collect { it.name }.join(';')   
 }
 
 def mainReplaceResources = createReplaceResourcesTask("main", sourceSets.main)
@@ -382,7 +382,7 @@ dependencies {
     }
 
 //    runtimeOnly fg.deobf("itemtransformhelper:1.0")
-    runtimeOnly fg.deobf("ignored:itemtransformhelper:1.0")
+//    runtimeOnly fg.deobf("ignored:itemtransformhelper:1.0")
 
     // The API isn't enough for compiling or testing
     implementation fg.deobf("curse.maven:applied-energistics-2-223794:${ae2_version}") {

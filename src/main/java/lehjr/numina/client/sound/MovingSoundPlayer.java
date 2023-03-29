@@ -33,8 +33,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-import static net.minecraft.client.resources.sounds.SoundInstance.Attenuation.LINEAR;
-
 /**
  * Ported to Java by lehjr on 10/22/16.
  */
@@ -93,7 +91,7 @@ public class MovingSoundPlayer extends AbstractTickableSoundInstance {
 
     @Override
     public Attenuation getAttenuation() {
-        return LINEAR;
+        return Attenuation.LINEAR;
     }
 
     public void stopPlaying() {
