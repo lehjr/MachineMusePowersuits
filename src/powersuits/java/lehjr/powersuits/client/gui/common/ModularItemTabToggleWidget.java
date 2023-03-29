@@ -111,18 +111,18 @@ public class ModularItemTabToggleWidget extends Clickable {
         RenderSystem.disableDepthTest();
         if (this.icon.isEmpty()) {
             if (EquipmentSlot.MAINHAND.equals(type)) {
-                ShaderInstance oldShader = RenderSystem.getShader();
+//                ShaderInstance oldShader = RenderSystem.getShader();
                 RenderSystem.setShader(GameRenderer::getPositionTexColorShader);
                 IconUtils.getIcon().weaponSlotBackground.draw(matrixStack, left() + 9 + offset, top() + 5, Color.WHITE);
-                RenderSystem.setShader(() -> oldShader);
+//                RenderSystem.setShader(() -> oldShader);
             } else {
                 Pair<ResourceLocation, ResourceLocation> pair = IconUtils.getSlotBackground(type);
                 if (pair != null) {
-                    ShaderInstance oldShader = RenderSystem.getShader();
+//                    ShaderInstance oldShader = RenderSystem.getShader();
                     TextureAtlasSprite textureatlassprite = getMinecraft().getTextureAtlas(pair.getFirst()).apply(pair.getSecond());
                     RenderSystem.setShaderTexture(0, textureatlassprite.atlas().location());
                     getMinecraft().screen.blit(matrixStack, (int)left() + 10 + offset, (int)top() + 5, getMinecraft().screen.getBlitOffset(), 16, 16, textureatlassprite);
-                    RenderSystem.setShader(() -> oldShader);
+//                    RenderSystem.setShader(() -> oldShader);
                 }
             }
             RenderSystem.enableDepthTest();

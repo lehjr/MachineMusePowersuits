@@ -191,14 +191,14 @@ public class DrawableTile extends Rect implements IDrawableRect {
 
     @Override
     public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTick) {
-        ShaderInstance oldShader = RenderSystem.getShader();
+//        ShaderInstance oldShader = RenderSystem.getShader();
         drawBackground(matrixStack);
         if (topBorderColour.equals(bottomBorderColour)) {
             drawBorder(matrixStack, shrinkBoarderBy);
         } else {
             drawDualColourBorder(matrixStack, shrinkBoarderBy);
         }
-        RenderSystem.setShader(() -> oldShader);
+//        RenderSystem.setShader(() -> oldShader);
     }
 
     @Override

@@ -39,6 +39,9 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.IntTag;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.client.model.data.IModelData;
@@ -60,6 +63,18 @@ public class LuxCapacitorBlockEntity extends BlockEntity {
     public void setColor(Color color) {
         this.getCapability(ColorCapability.COLOR, null).ifPresent(colorCap -> colorCap.setColor(color));
         this.setChanged();
+    }
+
+    @Override
+    public void handleUpdateTag(CompoundTag tag) {
+        super.handleUpdateTag(tag);
+    }
+
+
+    @Override
+    public Packet<ClientGamePacketListener> getUpdatePacket() {
+        // Will get tag from #getUpdateTag
+        return ClientboundBlockEntityDataPacket.create(this);
     }
 
     @NotNull
@@ -104,10 +119,6 @@ public class LuxCapacitorBlockEntity extends BlockEntity {
     public IModelData getModelData() {
         return LuxCapHelper.getBlockBaseModelData();
 //        return LuxCapHelper.getLensModelData(getColor().getInt());
-    }
-
-    public IModelData getLensData() {
-        return LuxCapHelper.getBlockLensModelData(getColor().getInt());
     }
 
     public Color getColor() {

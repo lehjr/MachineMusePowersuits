@@ -246,7 +246,7 @@ public class DrawableRect extends Rect implements IDrawableRect {
 
     @Override
     public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTick) {
-        ShaderInstance oldShader = RenderSystem.getShader();
+//        ShaderInstance oldShader = RenderSystem.getShader();
         FloatBuffer vertices = preDraw(0);
 
         if (backgroundColour2 != null) {
@@ -263,7 +263,7 @@ public class DrawableRect extends Rect implements IDrawableRect {
             vertices.rewind();
         }
         drawBorder(matrixStack, vertices);
-        RenderSystem.setShader(() -> oldShader);
+//        RenderSystem.setShader(() -> oldShader);
     }
 
     @Override

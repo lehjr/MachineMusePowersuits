@@ -40,7 +40,7 @@ public class HeatMeter {
     }
 
     public void draw(PoseStack poseStack, float xpos, float ypos, float value) {
-        ShaderInstance oldShader = RenderSystem.getShader();
+//        ShaderInstance oldShader = RenderSystem.getShader();
 //        RenderSystem.setShader(GameRenderer::getPositionTexColorShader);
 //        RenderSystem.enableBlend();
 //        Lighting.setupForEntityInInventory();
@@ -55,7 +55,7 @@ public class HeatMeter {
         drawGlass(poseStack, xpos, ypos);
 
         RenderSystem.disableBlend();
-        RenderSystem.setShader(() -> oldShader);
+//        RenderSystem.setShader(() -> oldShader);
     }
 
     public void drawFluid(PoseStack poseStack, float xpos, float ypos, float value, TextureAtlasSprite icon) {

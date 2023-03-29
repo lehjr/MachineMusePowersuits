@@ -194,7 +194,7 @@ public class RenderPart extends ModelPart {
                                 bufferIn,
                                 builder.build(),
                                 ((ModelPartSpec) part).getGlow() ? FULL_BRIGHTNESS : packedLightIn,
-                                OverlayTexture.NO_OVERLAY,
+                                ((ModelPartSpec) part).getGlow() ? OverlayTexture.NO_OVERLAY : packedOverlayIn,
                                 partColor);
                     }
                 }

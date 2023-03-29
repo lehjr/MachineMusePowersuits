@@ -62,7 +62,7 @@ public class SwirlyMuseCircle {
 //        RenderSystem.rotatef((float) (-ratio * 360.0), 0, 0, 1);
         matrixStack.mulPose(Vector3f.ZP.rotationDegrees(-ratio * 360.0F));
 
-        ShaderInstance oldShader = RenderSystem.getShader();
+//        ShaderInstance oldShader = RenderSystem.getShader();
         RenderSystem.setShader(GameRenderer::getPositionColorShader);
         RenderSystem.disableTexture();
         RenderSystem.enableBlend();
@@ -82,6 +82,6 @@ public class SwirlyMuseCircle {
 
         RenderSystem.disableBlend();
         RenderSystem.enableTexture();
-        RenderSystem.setShader(() -> oldShader);
+//        RenderSystem.setShader(() -> oldShader);
     }
 }

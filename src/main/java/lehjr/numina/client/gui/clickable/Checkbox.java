@@ -142,7 +142,7 @@ public class Checkbox extends Clickable {
 
         @Override
         public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTick) {
-            ShaderInstance oldShader = RenderSystem.getShader();
+//            ShaderInstance oldShader = RenderSystem.getShader();
             RenderSystem.setShader(GameRenderer::getPositionTexColorShader);
             RenderSystem.enableBlend();
             GuiIcon.renderTextureWithColour(TEXTURE, matrixStack,
@@ -157,7 +157,7 @@ public class Checkbox extends Clickable {
                     64, 64,
                     Color.WHITE);
             RenderSystem.disableBlend();
-            RenderSystem.setShader(() -> oldShader);
+//            RenderSystem.setShader(() -> oldShader);
         }
 
         @Override

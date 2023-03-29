@@ -27,12 +27,14 @@
 package lehjr.numina.common.capabilities.inventory.modechanging;
 
 import com.mojang.blaze3d.platform.Window;
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import lehjr.numina.client.render.NuminaRenderer;
 import lehjr.numina.common.capabilities.inventory.modularitem.ModularItem;
 import lehjr.numina.common.capabilities.module.powermodule.PowerModuleCapability;
 import lehjr.numina.common.capabilities.module.rightclick.IRightClickModule;
 import lehjr.numina.common.capabilities.render.chameleon.ChameleonCapability;
+import lehjr.numina.common.math.Color;
 import lehjr.numina.common.network.NuminaPackets;
 import lehjr.numina.common.network.packets.ModeChangeRequestPacket;
 import net.minecraft.client.Minecraft;
@@ -91,6 +93,7 @@ public class ModeChangingModularItem extends ModularItem implements IModeChangin
             baroffset = screen.getGuiScaledHeight() - baroffset;
             currX = sw / 2.0 - 89.0 + 20.0 * hotbarIndex;
             currY = baroffset - 18;
+            Color.WHITE.setShaderColor();
             if (module.getCapability(PowerModuleCapability.POWER_MODULE).map(pm-> pm.isModuleOnline()).orElse(false)) {
                 mc.getItemRenderer().renderGuiItem(module.getCapability(ChameleonCapability.CHAMELEON).map(iChameleon -> iChameleon.getStackToRender()).orElse(module), (int)currX, (int)currY);
             } else {

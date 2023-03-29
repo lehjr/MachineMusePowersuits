@@ -27,35 +27,87 @@
 package lehjr.powersuits.client.event;
 
 
+import com.google.gson.JsonElement;
 import lehjr.numina.client.model.obj.OBJBakedCompositeModel;
 import lehjr.numina.common.base.NuminaLogger;
+import lehjr.numina.common.math.Color;
 import lehjr.powersuits.client.model.block.LuxCapacitorModelWrapper;
+import lehjr.powersuits.client.model.helper.LuxCapHelper;
 import lehjr.powersuits.client.model.helper.MPSModelHelper;
 import lehjr.powersuits.client.model.item.PowerFistModel;
 import lehjr.powersuits.client.render.item.MPSBEWLR;
 import lehjr.powersuits.common.constants.MPSRegistryNames;
+import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.ModelResourceLocation;
+import net.minecraft.core.Direction;
+import net.minecraft.core.Vec3i;
+import net.minecraft.data.models.ItemModelGenerators;
+import net.minecraft.data.models.model.ModelTemplates;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import org.lwjgl.system.CallbackI;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
+import java.util.function.BiConsumer;
+import java.util.function.Supplier;
 
 
 public enum ModelBakeEventHandler {
     INSTANCE;
-    public MPSBEWLR MPSBERINSTANCE = new MPSBEWLR();
 
+
+
+//    Map<Direction, Map<DIR, List<BakedQuad>>> quadMap = new HashMap<>();
+//
+//
+//
+//    Map<Direction, BakedModel> luxCapacitorBlockModels = new HashMap<>();
+//
+//    public BakedModel getLuxCapModel(Direction facing) {
+//        return INSTANCE.luxCapacitorBlockModels.get(facing);
+//    }
+//
+//    public Map<DIR, List<BakedQuad>> getQuads(Direction facing) {
+//        return INSTANCE.quadMap.get(facing);
+//    }
+
+
+
+    public MPSBEWLR MPSBERINSTANCE = new MPSBEWLR();
 
     ModelResourceLocation luxCapItemLocation = new ModelResourceLocation(MPSRegistryNames.LUX_CAPACITOR, "inventory");
     ModelResourceLocation luxCapModuleLocation = new ModelResourceLocation(MPSRegistryNames.LUX_CAPACITOR_MODULE, "inventory");
 
     public static final ModelResourceLocation powerFistIconLocation = new ModelResourceLocation(MPSRegistryNames.POWER_FIST, "inventory");
 
+    Random rand = new Random();
+
+
     @SubscribeEvent
     public void onModelBake(ModelBakeEvent event) {
-        NuminaLogger.logError("baking something here");
+//        Map<ResourceLocation, BakedModel> registry = event.getModelRegistry();
+//        for (Direction facing : Direction.values()) {
+//            BakedModel model = registry.get(new ModelResourceLocation("powersuits:luxcapacitor#facing=" + facing + ",waterlogged=true"));
+//            HashMap<DIR, List<BakedQuad>> map = new HashMap<>();
+//            for (DIR dir : DIR.values()) {
+//                map.put(dir, model.getQuads(null, dir.direction, rand, LuxCapHelper.getBlockLensModelData(Color.WHITE.getInt())));
+//            }
+//            INSTANCE.quadMap.put(facing, map);
+//
+//            INSTANCE.luxCapacitorBlockModels.put(facing, model);
+//        }
 
-        event.getModelRegistry().keySet().stream().filter(resourceLocation -> resourceLocation.toString().contains("powersuits:luxcapacitor")).forEach(resourceLocation ->
-                event.getModelRegistry().put(resourceLocation, new LuxCapacitorModelWrapper((OBJBakedCompositeModel) event.getModelRegistry().get(resourceLocation))));
+
+
+
+        event.getModelRegistry().keySet().stream().filter(resourceLocation -> resourceLocation.toString().contains("powersuits:luxcapacitor")).forEach(resourceLocation -> {
+                    event.getModelRegistry().put(resourceLocation, new LuxCapacitorModelWrapper((OBJBakedCompositeModel) event.getModelRegistry().get(resourceLocation)));
+                });
 
         event.getModelRegistry().keySet().stream().filter(resourceLocation -> resourceLocation.toString().contains("powersuits:powerfist")).forEach(resourceLocation -> NuminaLogger.logError("modelLocation: " + resourceLocation));
 
@@ -68,4 +120,21 @@ public enum ModelBakeEventHandler {
 
         MPSModelHelper.loadArmorModels(null, event.getModelLoader());
     }
+
+    public enum DIR {
+        DOWN(Direction.DOWN),
+        UP(Direction.UP),
+        NORTH(Direction.NORTH),
+        SOUTH(Direction.SOUTH),
+        WEST(Direction.WEST),
+        EAST(Direction.EAST),
+        NONE(null);
+        public final Direction direction;
+        DIR(Direction direction) {
+            this.direction = direction;
+        }
+    }
+
+
+
 }

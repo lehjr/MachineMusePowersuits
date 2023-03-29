@@ -24,7 +24,7 @@ public class ClickableIndicatorArrow extends Clickable {
 
     @Override
     public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTick) {
-        ShaderInstance oldShader = RenderSystem.getShader();
+//        ShaderInstance oldShader = RenderSystem.getShader();
         RenderSystem.setShader(GameRenderer::getPositionColorShader);
         RenderSystem.disableTexture();
         RenderSystem.enableBlend();
@@ -128,7 +128,7 @@ public class ClickableIndicatorArrow extends Clickable {
         tessellator.end();
         RenderSystem.disableBlend();
         RenderSystem.enableTexture();
-        RenderSystem.setShader(() -> oldShader);
+//        RenderSystem.setShader(() -> oldShader);
     }
 
     public enum ArrowDirection {

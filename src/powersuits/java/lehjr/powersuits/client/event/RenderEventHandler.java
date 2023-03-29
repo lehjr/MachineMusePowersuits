@@ -28,6 +28,7 @@ package lehjr.powersuits.client.event;
 
 import com.google.common.util.concurrent.AtomicDouble;
 import com.mojang.blaze3d.platform.InputConstants;
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import lehjr.numina.client.gui.geometry.DrawableRect;
@@ -84,6 +85,8 @@ public enum RenderEventHandler {
     @OnlyIn(Dist.CLIENT)
     @SubscribeEvent
     public void renderBlockHighlight(DrawSelectionEvent event) {
+        Color.WHITE.setShaderColor();
+
         if (event.getTarget().getType() != HitResult.Type.BLOCK || !(event.getCamera().getEntity() instanceof Player)) {
             return;
         }

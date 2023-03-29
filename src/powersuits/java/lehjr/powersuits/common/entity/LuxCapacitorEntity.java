@@ -105,7 +105,6 @@ public class LuxCapacitorEntity extends ThrowableProjectile implements IEntityAd
         if (color == null) {
             color = Color.WHITE;
         }
-
         if (this.isAlive() && hitResult.getType() == HitResult.Type.BLOCK) {
             BlockHitResult blockRayTrace = (BlockHitResult)hitResult;
             Direction dir = blockRayTrace.getDirection().getOpposite();
@@ -116,7 +115,7 @@ public class LuxCapacitorEntity extends ThrowableProjectile implements IEntityAd
 
             BlockPlaceContext context = getUseContext(blockPos, blockRayTrace.getDirection(), blockRayTrace);
 
-            if (y > 0 && level.getBlockState(blockPos).canBeReplaced(context)) {
+            if (/*y > 0 && */ level.getBlockState(blockPos).canBeReplaced(context) /* level.getBlockState(blockPos).getMaterial().isReplaceable()*/) {
                 BlockState blockState = MPSObjects.LUX_CAPACITOR_BLOCK.get().getStateForPlacement(getUseContext(blockPos, blockRayTrace.getDirection(), blockRayTrace));
                 if (!placedBlock(blockState, blockPos)) {
                     for (Direction facing : context.getNearestLookingDirections()) {
@@ -138,15 +137,27 @@ public class LuxCapacitorEntity extends ThrowableProjectile implements IEntityAd
      */
     boolean placedBlock(BlockState state, BlockPos pos) {
         if (state.canSurvive(level, pos)) {
+
+
+//            BlockEntity beCheck = level.isEmptyBlock(pos);
+//            if ()
+
             level.setBlockAndUpdate(pos, state);
             level.setBlockEntity(new LuxCapacitorBlockEntity(pos, state));
             BlockEntity blockEntity = level.getBlockEntity(pos);
+
+            /** todo: how to find solid block to stick to */
+            if (state.hasProperty(LuxCapacitorBlock.FACING)) {
+                System.out.println("sturdy?: " +  state.isFaceSturdy(level, pos, state.getValue(LuxCapacitorBlock.FACING).getOpposite()));
+            }
+
             if (blockEntity instanceof LuxCapacitorBlockEntity) {
                 ((LuxCapacitorBlockEntity) blockEntity).setColor(color);
+                return true;
             } else {
                 NuminaLogger.logError("failed to spawn block entity?");
+                return false;
             }
-            return true;
         }
         return false;
     }

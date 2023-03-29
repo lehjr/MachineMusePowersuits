@@ -264,14 +264,14 @@ public abstract class NuminaRenderer {
     public static void drawMPDLightning(PoseStack poseStack, float x1, float y1, float z1, float x2, float y2, float z2, Color colour, double displacement,
                                         double detail) {
         Matrix4f matrix4f = poseStack.last().pose();
-        ShaderInstance oldShader = RenderSystem.getShader();
+//        ShaderInstance oldShader = RenderSystem.getShader();
         float lineWidth = RenderSystem.getShaderLineWidth();
         RenderSystem.lineWidth(1F);
 
         drawMPDLightning(matrix4f, x1, y1, z1, x2, y2, z2, colour, displacement * 0.5F, detail);
 
         RenderSystem.lineWidth(lineWidth);
-        RenderSystem.setShader(() -> oldShader);
+//        RenderSystem.setShader(() -> oldShader);
     }
 
     public static void drawMPDLightning(Matrix4f matrix4f,

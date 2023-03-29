@@ -68,7 +68,7 @@ public interface IScrollable extends IGuiFrame, IDrawableRect {
     @Override
     default void preRender(PoseStack matrixStack, int mouseX, int mouseY, float frameTIme) {
         if (isVisible()) {
-            ShaderInstance oldShader = RenderSystem.getShader();
+//            ShaderInstance oldShader = RenderSystem.getShader();
             RenderSystem.setShader(GameRenderer::getPositionColorShader);
             RenderSystem.disableTexture();
             RenderSystem.enableBlend();
@@ -117,7 +117,7 @@ public interface IScrollable extends IGuiFrame, IDrawableRect {
 
             RenderSystem.disableBlend();
             RenderSystem.enableTexture();
-            RenderSystem.setShader(() -> oldShader);
+//            RenderSystem.setShader(() -> oldShader);
 
             enableScissor((int)left(), (int)top(), (int)width(), (int)height()); // get rid of margins
         }

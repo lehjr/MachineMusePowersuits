@@ -71,42 +71,21 @@ public class LuxCapacitorModelWrapper extends BakedModelWrapper<OBJBakedComposit
         this.overrides = new LuxCapacitorItemOverrides(this);
     }
 
-
-    public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, @Nonnull Random rand, @Nonnull IModelData extraData, boolean ignored) {
-        if (!extraData.hasProperty(OBJPartData.SUBMODEL_DATA)) {
-            extraData = LuxCapHelper.getBlockBaseModelData();
-        }
-        return originalModel.getQuads(state, side, rand, extraData);
-    }
-
-
     @Nonnull
-    @Override // FIXME : should this one even fire?
+    @Override // don't cache the quads for blocks
     public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, @Nonnull Random rand, @Nonnull IModelData extraData) {
-//        if (state == null) {
-//            return originalModel.getQuads(state, side, rand, extraData);
-//        }
-
-//        NuminaLogger.logError("getting side here: " + side);
-        // FIXME: lense color causes issues in block rendering
-
-//        if (!extraData.hasProperty(OBJPartData.SUBMODEL_DATA)) {
-//            extraData = LuxCapHelper.getLensModelData(colour != null ? colour.getInt() : Color.WHITE.getInt());
-////                    LuxCapHelper.getLensModelData(colour != null ? colour.getInt() : Color.WHITE.getInt());
-//        }
-        return empty;//
+//        return originalModel.getQuads(state, side, rand, extraData);
+        return empty;
     }
 
     static final List<BakedQuad> empty = new ArrayList<>();
 
-    @Override
+    @Override // don't cache the quads for blocks
     public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, Random rand) {
-        // setup for item model
         if (state == null) {
             IModelData extraData = LuxCapHelper.getItemModelData(colour != null ? colour.getInt() : Color.WHITE.getInt());
             return originalModel.getQuads(state, side, rand, extraData);
         }
-        // setup for block model
         return empty;
     }
 
