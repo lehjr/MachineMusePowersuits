@@ -39,6 +39,12 @@ wrapper {
     distributionType = Wrapper.DistributionType.ALL
 }
 
+
+// Mojang ships Java 17 to end users in 1.18+, so your mod should target Java 17.
+java.toolchain.languageVersion = JavaLanguageVersion.of(17)
+
+println "Java: ${System.getProperty 'java.version'}, JVM: ${System.getProperty 'java.vm.version'} (${System.getProperty 'java.vendor'}), Arch: ${System.getProperty 'os.arch'}"
+
 defaultTasks 'build'
 
 idea {
@@ -148,6 +154,9 @@ ext {
                          "scannable_version": scannable_version,
                          "refinedstorage_version": refinedstorage_version_range]
     jsonPatterns = ["**/*.json", "**/*.mcmeta"]
+            
+    //Setup the UPDATE_SOURCESET property in case we are doing any remappings
+    UPDATE_SOURCESETS = project.sourceSets.collect { it.name }.join(';')
 }
 
 def mainReplaceResources = createReplaceResourcesTask("main", sourceSets.main)
@@ -390,27 +399,8 @@ dependencies {
 
 
 }
-/*
-if (project.hasProperty('UPDATE_MAPPINGS')) {
-    //If the project has the update mappings property, configure it to be able to target all our extra sourceSets as well
-    // so that whenever we need to update mappings it is quick and easy to do so.
-    // Note: This needs to be below the dependencies and minecraft blocks so that it can properly read the mappings value
-    // and also read and find the minecraft dep
-    def extraSourceSets = [sourceSets.powersuits, sourceSets.recipecreator, sourceSets.whatever,
-                           sourceSets.datagenmain, sourceSets.datagenpowersuits, sourceSets.datagenrecipecreator, sourceSets.datagenwhatever]
-    Set<File> allExtraDirs = new HashSet<>()
-    for (def sourceSet : extraSourceSets) {
-        allExtraDirs.addAll(sourceSet.java.srcDirs)
-    }
-    extractRangeMap {
-        sources.from(allExtraDirs)
-    }
-    applyRangeMap {
-        sources.from(allExtraDirs)
-    }
-    allExtraDirs.each { extractMappedNew.addTarget it }
-}
-*/
+
+
 //Set the various variables/settings for the different process resources tasks
 processResources { setupProcessResources(processResources, mainReplaceResources) }
 processPowersuitsResources { setupProcessResources(processPowersuitsResources, powersuitsReplaceResources) }
