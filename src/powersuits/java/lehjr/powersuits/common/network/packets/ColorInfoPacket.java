@@ -26,7 +26,7 @@
 
 package lehjr.powersuits.common.network.packets;
 
-import lehjr.numina.common.capabilities.render.ModelSpecCapability;
+import lehjr.numina.common.capabilities.NuminaCapabilities;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -66,7 +66,7 @@ public class ColorInfoPacket /* implements IMusePacket<ColorInfoPacket> */{
             final ServerPlayer player = ctx.get().getSender();
             EquipmentSlot slotType = message.slotType;
             int[] tagData = message.tagData;
-            player.getItemBySlot(slotType).getCapability(ModelSpecCapability.RENDER)
+            player.getItemBySlot(slotType).getCapability(NuminaCapabilities.RENDER)
                     .ifPresent(render -> render.setColorArray(tagData));
         });
         ctx.get().setPacketHandled(true);

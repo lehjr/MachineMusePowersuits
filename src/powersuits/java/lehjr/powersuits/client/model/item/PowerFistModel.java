@@ -30,9 +30,9 @@ import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Transformation;
 import lehjr.numina.client.model.helper.ModelHelper;
+import lehjr.numina.common.capabilities.NuminaCapabilities;
 import lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
 import lehjr.numina.common.capabilities.render.IHandHeldModelSpecNBT;
-import lehjr.numina.common.capabilities.render.ModelSpecCapability;
 import lehjr.numina.common.capabilities.render.modelspec.ModelPartSpec;
 import lehjr.numina.common.capabilities.render.modelspec.ModelRegistry;
 import lehjr.numina.common.capabilities.render.modelspec.ModelSpec;
@@ -109,7 +109,7 @@ public class PowerFistModel extends BakedModelWrapper {
                 return originalModel.getQuads(state, side, rand);//, extraData);
         }
         ImmutableList.Builder<BakedQuad> builder = ImmutableList.builder();
-        itemStack.getCapability(ModelSpecCapability.RENDER).ifPresent(specNBTCap -> {
+        itemStack.getCapability(NuminaCapabilities.RENDER).ifPresent(specNBTCap -> {
             if (specNBTCap instanceof IHandHeldModelSpecNBT) {
                 CompoundTag renderSpec = specNBTCap.getRenderTag();
 

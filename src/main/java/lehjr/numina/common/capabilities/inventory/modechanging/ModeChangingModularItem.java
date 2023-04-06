@@ -29,10 +29,9 @@ package lehjr.numina.common.capabilities.inventory.modechanging;
 import com.mojang.blaze3d.platform.Window;
 import com.mojang.blaze3d.vertex.PoseStack;
 import lehjr.numina.client.render.NuminaRenderer;
+import lehjr.numina.common.capabilities.NuminaCapabilities;
 import lehjr.numina.common.capabilities.inventory.modularitem.ModularItem;
-import lehjr.numina.common.capabilities.module.powermodule.PowerModuleCapability;
 import lehjr.numina.common.capabilities.module.rightclick.IRightClickModule;
-import lehjr.numina.common.capabilities.render.chameleon.ChameleonCapability;
 import lehjr.numina.common.item.ItemUtils;
 import lehjr.numina.common.math.Color;
 import lehjr.numina.common.network.NuminaPackets;
@@ -94,10 +93,10 @@ public class ModeChangingModularItem extends ModularItem implements IModeChangin
             currX = sw / 2.0 - 89.0 + 20.0 * hotbarIndex;
             currY = baroffset - 18;
             Color.WHITE.setShaderColor();
-            if (module.getCapability(PowerModuleCapability.POWER_MODULE).map(pm-> pm.isModuleOnline()).orElse(false)) {
-                mc.getItemRenderer().renderGuiItem(module.getCapability(ChameleonCapability.CHAMELEON).map(iChameleon -> iChameleon.getStackToRender()).orElse(module), (int)currX, (int)currY);
+            if (module.getCapability(NuminaCapabilities.POWER_MODULE).map(pm-> pm.isModuleOnline()).orElse(false)) {
+                mc.getItemRenderer().renderGuiItem(module.getCapability(NuminaCapabilities.CHAMELEON).map(iChameleon -> iChameleon.getStackToRender()).orElse(module), (int)currX, (int)currY);
             } else {
-                NuminaRenderer.drawModuleAt(new PoseStack(), currX, currY, module.getCapability(ChameleonCapability.CHAMELEON).map(iChameleon -> iChameleon.getStackToRender()).orElse(module), false);
+                NuminaRenderer.drawModuleAt(new PoseStack(), currX, currY, module.getCapability(NuminaCapabilities.CHAMELEON).map(iChameleon -> iChameleon.getStackToRender()).orElse(module), false);
             }
         }
     }
@@ -118,7 +117,7 @@ public class ModeChangingModularItem extends ModularItem implements IModeChangin
     }
 
     boolean isValidMode(@Nonnull ItemStack module) {
-        return module.getCapability(PowerModuleCapability.POWER_MODULE)
+        return module.getCapability(NuminaCapabilities.POWER_MODULE)
                 .map( m-> m.isAllowed() && m instanceof IRightClickModule).orElse(false);
     }
 
@@ -136,7 +135,7 @@ public class ModeChangingModularItem extends ModularItem implements IModeChangin
     public ItemStack getActiveModule() {
         int activeModeIndex = getActiveMode();
         ItemStack module = activeModeIndex != -1 ? getStackInSlot(activeModeIndex) : ItemStack.EMPTY;
-        return module.getCapability(PowerModuleCapability.POWER_MODULE).map(m->m.isAllowed() && m instanceof IRightClickModule).orElse(false)
+        return module.getCapability(NuminaCapabilities.POWER_MODULE).map(m->m.isAllowed() && m instanceof IRightClickModule).orElse(false)
                 ? module : ItemStack.EMPTY;
     }
 
@@ -164,7 +163,7 @@ public class ModeChangingModularItem extends ModularItem implements IModeChangin
         for(int i=1; i < getSlots();  i++) {
             ItemStack module = getStackInSlot(i);
             if (!module.isEmpty() && ItemUtils.getRegistryName(module).equals(moduleName)
-                    && module.getCapability(PowerModuleCapability.POWER_MODULE).map(m-> m instanceof IRightClickModule).orElse(false)) {
+                    && module.getCapability(NuminaCapabilities.POWER_MODULE).map(m-> m instanceof IRightClickModule).orElse(false)) {
                 setActiveMode(i);
                 return;
             }
@@ -215,7 +214,7 @@ public class ModeChangingModularItem extends ModularItem implements IModeChangin
     @Override
     public boolean isModuleActiveAndOnline(ResourceLocation moduleName) {
         if (hasActiveModule(moduleName)) {
-            return getActiveModule().getCapability(PowerModuleCapability.POWER_MODULE).map(pm-> pm.isModuleOnline()).orElse(false);
+            return getActiveModule().getCapability(NuminaCapabilities.POWER_MODULE).map(pm-> pm.isModuleOnline()).orElse(false);
         }
         return false;
     }

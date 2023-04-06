@@ -26,11 +26,10 @@
 
 package lehjr.powersuits.common.base;
 
-import com.electronwill.nightconfig.core.file.CommentedFileConfig;
 import lehjr.numina.common.base.NuminaLogger;
+import lehjr.numina.common.capabilities.NuminaCapabilities;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
-import lehjr.numina.common.capabilities.module.powermodule.PowerModuleCapability;
 import lehjr.numina.common.capabilities.module.rightclick.IRightClickModule;
 import lehjr.numina.common.capabilities.module.rightclick.RightClickModule;
 import lehjr.numina.common.capabilities.module.toggleable.IToggleableModule;
@@ -73,7 +72,6 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
-import net.minecraftforge.fml.event.config.ModConfigEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -179,7 +177,7 @@ public class ModularPowersuits {
 //                @Nonnull
 //                @Override
 //                public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
-//                    if (cap == PowerModuleCapability.POWER_MODULE) {
+//                    if (cap == NuminaCapabilities.POWER_MODULE) {
 //                        return LazyOptional.of(() -> (T) ae2wirelessterminal);
 //                    }
 //                    return LazyOptional.empty();
@@ -216,7 +214,7 @@ public class ModularPowersuits {
                 @Nonnull
                 @Override
                 public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
-                    if (cap == PowerModuleCapability.POWER_MODULE) {
+                    if (cap == NuminaCapabilities.POWER_MODULE) {
                         clock.loadCapValues();
                         return LazyOptional.of(()->(T)clock);
                     }
@@ -232,7 +230,7 @@ public class ModularPowersuits {
                 @Nonnull
                 @Override
                 public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
-                    if (cap == PowerModuleCapability.POWER_MODULE) {
+                    if (cap == NuminaCapabilities.POWER_MODULE) {
                         compass.loadCapValues();
                         return LazyOptional.of(()->(T)compass);
                     }
@@ -327,7 +325,7 @@ public class ModularPowersuits {
                 @Nonnull
                 @Override
                 public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
-                    if (cap == PowerModuleCapability.POWER_MODULE) {
+                    if (cap == NuminaCapabilities.POWER_MODULE) {
                         return LazyOptional.of(()->(T)rightClick);
                     }
                     return LazyOptional.empty();

@@ -26,8 +26,8 @@
 
 package lehjr.powersuits.common.item.tool;
 
+import lehjr.numina.common.capabilities.NuminaCapabilities;
 import lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
-import lehjr.numina.common.capabilities.module.powermodule.PowerModuleCapability;
 import lehjr.numina.common.capabilities.module.rightclick.IRightClickModule;
 import lehjr.numina.common.energy.ElectricItemUtils;
 import lehjr.powersuits.client.event.ModelBakeEventHandler;
@@ -128,7 +128,7 @@ public class PowerFist extends AbstractElectricTool {
                 .filter(IModeChangingItem.class::isInstance)
                 .map(IModeChangingItem.class::cast)
                 .map(handler->
-                        handler.getActiveModule().getCapability(PowerModuleCapability.POWER_MODULE)
+                        handler.getActiveModule().getCapability(NuminaCapabilities.POWER_MODULE)
                                 .filter(IRightClickModule.class::isInstance)
                                 .map(IRightClickModule.class::cast)
                                 .map(m-> m.interactLivingEntity(itemStackIn, player, entity, hand).getResult())
@@ -193,7 +193,7 @@ public class PowerFist extends AbstractElectricTool {
                     .filter(IModeChangingItem.class::isInstance)
                     .map(IModeChangingItem.class::cast)
                     .ifPresent(iItemHandler -> iItemHandler.getOnlineModuleOrEmpty(MPSRegistryNames.MELEE_ASSIST_MODULE)
-                            .getCapability(PowerModuleCapability.POWER_MODULE).ifPresent(pm->{
+                            .getCapability(NuminaCapabilities.POWER_MODULE).ifPresent(pm->{
                                 Player player = (Player) attacker;
                                 double drain = pm.applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION);
                                 if (ElectricItemUtils.getPlayerEnergy(player) > drain) {

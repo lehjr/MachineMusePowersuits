@@ -28,6 +28,7 @@ package lehjr.powersuits.common.item.module.tool;
 
 import com.google.common.util.concurrent.AtomicDouble;
 import lehjr.numina.common.base.NuminaLogger;
+import lehjr.numina.common.capabilities.NuminaCapabilities;
 import lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
 import lehjr.numina.common.capabilities.module.blockbreaking.IBlockBreakingModule;
 import lehjr.numina.common.capabilities.module.powermodule.*;
@@ -100,13 +101,13 @@ public class DiamondPickUpgradeModule extends AbstractPowerModule {
 //                        .ifPresent(modeChanging -> {
 //                        ItemStack pickaxeModule = modeChanging.getOnlineModuleOrEmpty(MPSRegistryNames.PICKAXE_MODULE);
 //                        if (!pickaxeModule.isEmpty()) {
-//                            int energyUsage = pickaxeModule.getCapability(PowerModuleCapability.POWER_MODULE).map(m -> {
+//                            int energyUsage = pickaxeModule.getCapability(NuminaCapabilities.POWER_MODULE).map(m -> {
 //                                if (m instanceof IBlockBreakingModule) {
 //                                    return ((IBlockBreakingModule) m).getEnergyUsage();
 //                                }
 //                                return 0;
 //                            }).orElse(0);
-//                            canHarvest.set(pickaxeModule.getCapability(PowerModuleCapability.POWER_MODULE).map(m -> {
+//                            canHarvest.set(pickaxeModule.getCapability(NuminaCapabilities.POWER_MODULE).map(m -> {
 //                                if (m instanceof IBlockBreakingModule) {
 //                                    return !((IBlockBreakingModule) m).canHarvestBlock(powerFist, state, player, pos, playerEnergy) &&
 //                                            playerEnergy >= energyUsage && ToolHelpers.isToolEffective(player.getCommandSenderWorld(), pos, getEmulatedTool());
@@ -128,7 +129,7 @@ public class DiamondPickUpgradeModule extends AbstractPowerModule {
                             .ifPresent(modeChanging -> {
                                 ItemStack pickaxeModule = modeChanging.getOnlineModuleOrEmpty(MPSRegistryNames.PICKAXE_MODULE);
                                 if (!pickaxeModule.isEmpty()) {
-                                    energyUsage.set(pickaxeModule.getCapability(PowerModuleCapability.POWER_MODULE)
+                                    energyUsage.set(pickaxeModule.getCapability(NuminaCapabilities.POWER_MODULE)
                                             .filter(IBlockBreakingModule.class::isInstance)
                                             .map(IBlockBreakingModule.class::cast)
                                             .map(m -> m.getEnergyUsage()).orElse(0));
@@ -157,7 +158,7 @@ public class DiamondPickUpgradeModule extends AbstractPowerModule {
                             ItemStack pickaxeModule = modeChanging.getOnlineModuleOrEmpty(MPSRegistryNames.PICKAXE_MODULE);
                             if (!pickaxeModule.isEmpty()) {
                                 newSpeed.set(newSpeed.get() *
-                                        pickaxeModule.getCapability(PowerModuleCapability.POWER_MODULE).map(m ->
+                                        pickaxeModule.getCapability(NuminaCapabilities.POWER_MODULE).map(m ->
                                                 m.applyPropertyModifiers(MPSConstants.HARVEST_SPEED)).orElse(1D));
                             }
                         });
@@ -174,7 +175,7 @@ public class DiamondPickUpgradeModule extends AbstractPowerModule {
         @Override
         @Nonnull
         public <T> LazyOptional<T> getCapability(@Nonnull final Capability<T> capability, final @Nullable Direction side) {
-            final LazyOptional<T> powerModuleCapability = PowerModuleCapability.POWER_MODULE.orEmpty(capability, powerModuleHolder);
+            final LazyOptional<T> powerModuleCapability = NuminaCapabilities.POWER_MODULE.orEmpty(capability, powerModuleHolder);
             if (powerModuleCapability.isPresent()) {
                 return powerModuleCapability;
             }

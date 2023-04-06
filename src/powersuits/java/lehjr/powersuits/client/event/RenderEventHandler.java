@@ -32,10 +32,9 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import lehjr.numina.client.gui.geometry.DrawableRect;
 import lehjr.numina.client.render.NuminaRenderer;
+import lehjr.numina.common.capabilities.NuminaCapabilities;
 import lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
-import lehjr.numina.common.capabilities.module.powermodule.PowerModuleCapability;
-import lehjr.numina.common.capabilities.render.highlight.HighLightCapability;
 import lehjr.numina.common.math.Color;
 import lehjr.numina.common.string.StringUtils;
 import lehjr.powersuits.client.control.KeybindManager;
@@ -95,7 +94,7 @@ public enum RenderEventHandler {
         player.getMainHandItem().getCapability(ForgeCapabilities.ITEM_HANDLER)
                 .filter(IModeChangingItem.class::isInstance)
                 .map(IModeChangingItem.class::cast).ifPresent(iModeChangingItem -> {
-                    iModeChangingItem.getActiveModule().getCapability(HighLightCapability.HIGHLIGHT).ifPresent(iHighlight -> {
+                    iModeChangingItem.getActiveModule().getCapability(NuminaCapabilities.HIGHLIGHT).ifPresent(iHighlight -> {
                         BlockHitResult result = (BlockHitResult) event.getTarget();
                         NonNullList<BlockPos> blocks = iHighlight.getBlockPositions(result);
 
@@ -199,7 +198,7 @@ public enum RenderEventHandler {
                             if (h instanceof IModularItem) {
                                 ItemStack binnoculars = h.getOnlineModuleOrEmpty(MPSRegistryNames.BINOCULARS_MODULE);
                                 if (!binnoculars.isEmpty())
-                                    e.setNewFovModifier((float) (e.getFovModifier() / binnoculars.getCapability(PowerModuleCapability.POWER_MODULE)
+                                    e.setNewFovModifier((float) (e.getFovModifier() / binnoculars.getCapability(NuminaCapabilities.POWER_MODULE)
                                             .map(m->m.applyPropertyModifiers(MPSConstants.FOV)).orElse(1D)));
                             }
                         }

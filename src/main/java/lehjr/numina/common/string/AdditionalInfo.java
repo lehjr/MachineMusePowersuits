@@ -27,9 +27,9 @@
 package lehjr.numina.common.string;
 
 import com.mojang.blaze3d.platform.InputConstants;
+import lehjr.numina.common.capabilities.NuminaCapabilities;
 import lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
-import lehjr.numina.common.capabilities.module.powermodule.PowerModuleCapability;
 import lehjr.numina.common.constants.NuminaConstants;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
@@ -143,7 +143,7 @@ public class AdditionalInfo {
                     }
                 });
 
-        stack.getCapability(PowerModuleCapability.POWER_MODULE).ifPresent(iPowerModule -> {
+        stack.getCapability(NuminaCapabilities.POWER_MODULE).ifPresent(iPowerModule -> {
             if (doAdditionalInfo()) {
                 Component description = Component.translatable( stack.getItem().getDescriptionId() + ".desc");
                 currentTipList.addAll(StringUtils.wrapComponentToLength(description, 30));

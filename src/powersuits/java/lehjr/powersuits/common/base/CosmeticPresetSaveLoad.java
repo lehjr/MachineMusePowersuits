@@ -28,7 +28,7 @@ package lehjr.powersuits.common.base;
 
 import com.google.common.collect.HashBiMap;
 import lehjr.numina.common.base.NuminaLogger;
-import lehjr.numina.common.capabilities.render.ModelSpecCapability;
+import lehjr.numina.common.capabilities.NuminaCapabilities;
 import lehjr.numina.common.config.ConfigHelper;
 import lehjr.numina.common.item.ItemUtils;
 import lehjr.powersuits.common.constants.MPSConstants;
@@ -200,7 +200,7 @@ public class CosmeticPresetSaveLoad {
         if (itemStack.isEmpty())
             return false;
 
-        return itemStack.getCapability(ModelSpecCapability.RENDER).map(spec->{
+        return itemStack.getCapability(NuminaCapabilities.RENDER).map(spec->{
             // get the render tag for the item
             CompoundTag renderTag =spec.getRenderTag().copy();
             if (renderTag != null) {

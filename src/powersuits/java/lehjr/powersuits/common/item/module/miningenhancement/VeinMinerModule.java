@@ -26,6 +26,7 @@
 
 package lehjr.powersuits.common.item.module.miningenhancement;
 
+import lehjr.numina.common.capabilities.NuminaCapabilities;
 import lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
 import lehjr.numina.common.capabilities.module.blockbreaking.IBlockBreakingModule;
 import lehjr.numina.common.capabilities.module.miningenhancement.MiningEnhancement;
@@ -142,7 +143,7 @@ public class VeinMinerModule extends AbstractPowerModule {
                         .map(IModeChangingItem.class::cast)
                         .ifPresent(modeChanging -> {
                         for (ItemStack blockBreakingModule : modeChanging.getInstalledModulesOfType(IBlockBreakingModule.class)) {
-                            if (blockBreakingModule.getCapability(PowerModuleCapability.POWER_MODULE).map(b -> {
+                            if (blockBreakingModule.getCapability(NuminaCapabilities.POWER_MODULE).map(b -> {
                                 if(b instanceof IBlockBreakingModule) {
                                     if (((IBlockBreakingModule) b).canHarvestBlock(itemStack, state, player, posIn, playerEnergy - energyUsage)) {
                                         bbModuleEnergyUsage.addAndGet(((IBlockBreakingModule) b).getEnergyUsage());
@@ -237,7 +238,7 @@ public class VeinMinerModule extends AbstractPowerModule {
         @Override
         @Nonnull
         public <T> LazyOptional<T> getCapability(@Nonnull final Capability<T> capability, final @Nullable Direction side) {
-            final LazyOptional<T> powerModuleCapability = PowerModuleCapability.POWER_MODULE.orEmpty(capability, powerModuleHolder);
+            final LazyOptional<T> powerModuleCapability = NuminaCapabilities.POWER_MODULE.orEmpty(capability, powerModuleHolder);
             if (powerModuleCapability.isPresent()) {
                 return powerModuleCapability;
             }

@@ -1,14 +1,13 @@
 package lehjr.powersuits.common.item.module.miningenhancement;
 
+import lehjr.numina.common.capabilities.NuminaCapabilities;
 import lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
 import lehjr.numina.common.capabilities.module.blockbreaking.IBlockBreakingModule;
 import lehjr.numina.common.capabilities.module.miningenhancement.MiningEnhancement;
 import lehjr.numina.common.capabilities.module.powermodule.*;
 import lehjr.numina.common.capabilities.module.rightclick.IRightClickModule;
 import lehjr.numina.common.capabilities.render.chameleon.Chameleon;
-import lehjr.numina.common.capabilities.render.chameleon.ChameleonCapability;
 import lehjr.numina.common.capabilities.render.chameleon.IChameleon;
-import lehjr.numina.common.capabilities.render.highlight.HighLightCapability;
 import lehjr.numina.common.capabilities.render.highlight.Highlight;
 import lehjr.numina.common.capabilities.render.highlight.IHighlight;
 import lehjr.numina.common.energy.ElectricItemUtils;
@@ -140,7 +139,7 @@ public class AoEpickUpgradeModule2 extends AbstractPowerModule {
                         .map(IModeChangingItem.class::cast)
                         .ifPresent(modeChanging -> {
                             for (ItemStack blockBreakingModule : modeChanging.getInstalledModulesOfType(IBlockBreakingModule.class)) {
-                                if (blockBreakingModule.getCapability(PowerModuleCapability.POWER_MODULE)
+                                if (blockBreakingModule.getCapability(NuminaCapabilities.POWER_MODULE)
                                         .filter(IBlockBreakingModule.class::isInstance)
                                         .map(IBlockBreakingModule.class::cast)
                                         .map(b -> {
@@ -280,15 +279,15 @@ public class AoEpickUpgradeModule2 extends AbstractPowerModule {
         @Override
         @Nonnull
         public <T> LazyOptional<T> getCapability(@Nonnull final Capability<T> capability, final @Nullable Direction side) {
-            final LazyOptional<T> powerModuleCapability = PowerModuleCapability.POWER_MODULE.orEmpty(capability, powerModuleHolder);
+            final LazyOptional<T> powerModuleCapability = NuminaCapabilities.POWER_MODULE.orEmpty(capability, powerModuleHolder);
             if (powerModuleCapability.isPresent()) {
                 return powerModuleCapability;
             }
-            final LazyOptional<T> chameleonCapability = ChameleonCapability.CHAMELEON.orEmpty(capability, chameleonHolder);
+            final LazyOptional<T> chameleonCapability = NuminaCapabilities.CHAMELEON.orEmpty(capability, chameleonHolder);
             if (chameleonCapability.isPresent()) {
                 return chameleonCapability;
             }
-            final LazyOptional<T> highlightCapability = HighLightCapability.HIGHLIGHT.orEmpty(capability, highlightHolder);
+            final LazyOptional<T> highlightCapability = NuminaCapabilities.HIGHLIGHT.orEmpty(capability, highlightHolder);
             if (highlightCapability.isPresent()) {
                 return highlightCapability;
             }

@@ -32,10 +32,9 @@ import lehjr.numina.client.gui.meter.EnergyMeter;
 import lehjr.numina.client.gui.meter.HeatMeter;
 import lehjr.numina.client.gui.meter.PlasmaChargeMeter;
 import lehjr.numina.client.gui.meter.WaterMeter;
-import lehjr.numina.client.render.NuminaRenderer;
+import lehjr.numina.common.capabilities.NuminaCapabilities;
 import lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
-import lehjr.numina.common.capabilities.module.powermodule.PowerModuleCapability;
 import lehjr.numina.common.energy.ElectricItemUtils;
 import lehjr.numina.common.heat.HeatUtils;
 import lehjr.numina.common.item.ItemUtils;
@@ -49,7 +48,6 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraftforge.client.event.CustomizeGuiOverlayEvent;
 import net.minecraftforge.client.event.RenderGuiOverlayEvent;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.fluids.FluidStack;
@@ -105,7 +103,7 @@ public enum ClientOverlayHandler {
                         // AutoFeeder
                         if (ItemUtils.getRegistryName(module).equals(MPSRegistryNames.AUTO_FEEDER_MODULE)) {
                             ItemStack autoFeeder = module;
-                            if (autoFeeder.getCapability(PowerModuleCapability.POWER_MODULE).map(pm-> {
+                            if (autoFeeder.getCapability(NuminaCapabilities.POWER_MODULE).map(pm-> {
                                                                 return pm.isModuleOnline();
                             }).orElse(false)) {
                                 int foodLevel = (int) ((AutoFeederModule) autoFeeder.getItem()).getFoodLevel(autoFeeder);
@@ -120,8 +118,8 @@ public enum ClientOverlayHandler {
                         // Clock
                         if (ItemUtils.getRegistryName(module).equals(ItemUtils.getRegistryName(Items.CLOCK))) {
                             ItemStack clock = module;
-                            if (clock.getCapability(PowerModuleCapability.POWER_MODULE).map(pm -> pm.isModuleOnline()).orElse(false)) {
-                                if (!clock.isEmpty() /*&& clock.getCapability(PowerModuleCapability.POWER_MODULE).map(pm->pm.isModuleOnline()).orElse(false)*/) {
+                            if (clock.getCapability(NuminaCapabilities.POWER_MODULE).map(pm -> pm.isModuleOnline()).orElse(false)) {
+                                if (!clock.isEmpty() /*&& clock.getCapability(NuminaCapabilities.POWER_MODULE).map(pm->pm.isModuleOnline()).orElse(false)*/) {
                                     String ampm;
                                     long time = player.level.getDayTime();
                                     long hour = ((time % 24000) / 1000);
@@ -163,7 +161,7 @@ public enum ClientOverlayHandler {
                         // Compass
                         if (ItemUtils.getRegistryName(module).equals(ItemUtils.getRegistryName(Items.COMPASS))) {
                             ItemStack compass = module;
-                            if (compass.getCapability(PowerModuleCapability.POWER_MODULE).map(pm -> pm.isModuleOnline()).orElse(false)) {
+                            if (compass.getCapability(NuminaCapabilities.POWER_MODULE).map(pm -> pm.isModuleOnline()).orElse(false)) {
                                 // FIXME
 //                                NuminaRenderer.drawItemAt(-1.0, yBase + (yOffsetIcon * index.get()), compass);
                                 index.addAndGet(1);

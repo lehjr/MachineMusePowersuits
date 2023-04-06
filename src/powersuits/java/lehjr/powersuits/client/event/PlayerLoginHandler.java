@@ -26,9 +26,9 @@
 
 package lehjr.powersuits.client.event;
 
+import lehjr.numina.common.capabilities.NuminaCapabilities;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
-import lehjr.numina.common.capabilities.module.powermodule.PowerModuleCapability;
 import lehjr.numina.common.capabilities.module.rightclick.IRightClickModule;
 import lehjr.numina.common.capabilities.module.toggleable.IToggleableModule;
 import lehjr.numina.common.item.ItemUtils;
@@ -55,7 +55,7 @@ public final class PlayerLoginHandler {
         if (player != null) {
             NonNullList<ItemStack> modules = NonNullList.create();
             for (Item item : ForgeRegistries.ITEMS.getValues()) {
-                    new ItemStack(item).getCapability(PowerModuleCapability.POWER_MODULE)
+                    new ItemStack(item).getCapability(NuminaCapabilities.POWER_MODULE)
                             .filter(IToggleableModule.class::isInstance)
                             .map(IToggleableModule.class::cast)
                             .ifPresent(pm -> {

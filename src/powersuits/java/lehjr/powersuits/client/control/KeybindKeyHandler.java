@@ -27,8 +27,8 @@
 package lehjr.powersuits.client.control;
 
 import lehjr.numina.common.base.NuminaLogger;
+import lehjr.numina.common.capabilities.NuminaCapabilities;
 import lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
-import lehjr.numina.common.capabilities.player.PlayerKeyStatesCapability;
 import lehjr.numina.common.item.ItemUtils;
 import lehjr.numina.common.math.MathUtils;
 import lehjr.numina.common.network.NuminaPackets;
@@ -86,7 +86,7 @@ public class KeybindKeyHandler {
             return;
         }
 
-        clientPlayer.getCapability(PlayerKeyStatesCapability.PLAYER_KEYSTATES).ifPresent(playerCap -> {
+        clientPlayer.getCapability(NuminaCapabilities.PLAYER_KEYSTATES).ifPresent(playerCap -> {
             boolean markForSync = false;
 
             // minecraft.player.input

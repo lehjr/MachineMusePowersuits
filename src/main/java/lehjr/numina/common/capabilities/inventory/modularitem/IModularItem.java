@@ -26,9 +26,9 @@
 
 package lehjr.numina.common.capabilities.inventory.modularitem;
 
+import lehjr.numina.common.capabilities.NuminaCapabilities;
 import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
-import lehjr.numina.common.capabilities.module.powermodule.PowerModuleCapability;
 import lehjr.numina.common.item.ItemUtils;
 import lehjr.numina.common.string.StringUtils;
 import net.minecraft.core.NonNullList;
@@ -57,7 +57,7 @@ public interface IModularItem extends IItemHandler, IItemHandlerModifiable {
     boolean isModuleInstalled(ResourceLocation regName);
 
     default boolean isModuleInstalled(@Nonnull ItemStack module) {
-        return module.getCapability(PowerModuleCapability.POWER_MODULE).isPresent() && isModuleInstalled(ItemUtils.getRegistryName(module));
+        return module.getCapability(NuminaCapabilities.POWER_MODULE).isPresent() && isModuleInstalled(ItemUtils.getRegistryName(module));
     }
 
     default boolean isModuleInstalled(Item item) {

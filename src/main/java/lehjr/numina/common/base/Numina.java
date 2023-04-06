@@ -32,14 +32,14 @@ import lehjr.numina.client.event.ToolTipEvent;
 import lehjr.numina.client.screen.ArmorStandScreen;
 import lehjr.numina.client.screen.ChargingBaseScreen;
 import lehjr.numina.client.sound.SoundDictionary;
-import lehjr.numina.common.capabilities.heat.HeatCapability;
-import lehjr.numina.common.capabilities.module.powermodule.PowerModuleCapability;
+import lehjr.numina.common.capabilities.heat.IHeatStorage;
+import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
+import lehjr.numina.common.capabilities.player.IPlayerKeyStates;
 import lehjr.numina.common.capabilities.player.PlayerKeyStateWrapper;
-import lehjr.numina.common.capabilities.player.PlayerKeyStatesCapability;
-import lehjr.numina.common.capabilities.render.ModelSpecCapability;
-import lehjr.numina.common.capabilities.render.chameleon.ChameleonCapability;
-import lehjr.numina.common.capabilities.render.colour.ColorCapability;
-import lehjr.numina.common.capabilities.render.highlight.HighLightCapability;
+import lehjr.numina.common.capabilities.render.IModelSpec;
+import lehjr.numina.common.capabilities.render.chameleon.IChameleon;
+import lehjr.numina.common.capabilities.render.color.IColorTag;
+import lehjr.numina.common.capabilities.render.highlight.IHighlight;
 import lehjr.numina.common.config.ConfigHelper;
 import lehjr.numina.common.config.NuminaSettings;
 import lehjr.numina.common.constants.NuminaConstants;
@@ -153,18 +153,17 @@ public class Numina {
 
     @SubscribeEvent
     public static void initialize(final RegisterCapabilitiesEvent event) {
-        HeatCapability.register(event);
-
-        ColorCapability.register(event);
+        event.register(IHeatStorage.class);
+        event.register(IColorTag.class);
 
         // Modules
-        PowerModuleCapability.register(event);
-        ModelSpecCapability.register(event);
-        HighLightCapability.register(event);
-        ChameleonCapability.register(event);
+        event.register(IPowerModule.class);
+        event.register(IModelSpec.class);
+        event.register(IHighlight.class);
+        event.register(IChameleon.class);
 
         // Player
-        PlayerKeyStatesCapability.register(event);
+        event.register(IPlayerKeyStates.class);
     }
 
     private void setup(final FMLCommonSetupEvent event) {

@@ -29,8 +29,8 @@ package lehjr.powersuits.common.event;
 import lehjr.numina.client.control.PlayerMovementInputWrapper;
 import lehjr.numina.client.sound.Musique;
 import lehjr.numina.client.sound.SoundDictionary;
+import lehjr.numina.common.capabilities.NuminaCapabilities;
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
-import lehjr.numina.common.capabilities.module.powermodule.PowerModuleCapability;
 import lehjr.numina.common.config.NuminaSettings;
 import lehjr.numina.common.energy.ElectricItemUtils;
 import lehjr.numina.common.math.MathUtils;
@@ -101,7 +101,7 @@ public enum MovementManager {
                     .map(IModularItem.class::cast)
                     .map(iModularItem -> iModularItem
                             .getOnlineModuleOrEmpty(MPSRegistryNames.FLIGHT_CONTROL_MODULE)
-                            .getCapability(PowerModuleCapability.POWER_MODULE)
+                            .getCapability(NuminaCapabilities.POWER_MODULE)
                             .map(pm -> pm.applyPropertyModifiers(MPSConstants.FLIGHT_VERTICALITY)).orElse(0D)).orElse(0D);
 
             int strafeState = ((playerInput.strafeRightKey ? -1 : 0) + (playerInput.strafeLeftKey ? 1 : 0));
@@ -221,7 +221,7 @@ public enum MovementManager {
             player.getItemBySlot(EquipmentSlot.LEGS).getCapability(ForgeCapabilities.ITEM_HANDLER)
                     .filter(IModularItem.class::isInstance)
                     .map(IModularItem.class::cast)
-                    .ifPresent(iModularItem -> iModularItem.getOnlineModuleOrEmpty(MPSRegistryNames.JUMP_ASSIST_MODULE).getCapability(PowerModuleCapability.POWER_MODULE).ifPresent(jumper -> {
+                    .ifPresent(iModularItem -> iModularItem.getOnlineModuleOrEmpty(MPSRegistryNames.JUMP_ASSIST_MODULE).getCapability(NuminaCapabilities.POWER_MODULE).ifPresent(jumper -> {
                         double jumpAssist = jumper.applyPropertyModifiers(MPSConstants.MULTIPLIER) * 2;
                         double drain = jumper.applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION);
                         int avail = ElectricItemUtils.getPlayerEnergy(player);
@@ -250,7 +250,7 @@ public enum MovementManager {
             player.getItemBySlot(EquipmentSlot.FEET).getCapability(ForgeCapabilities.ITEM_HANDLER)
                     .filter(IModularItem.class::isInstance)
                     .map(IModularItem.class::cast)
-                    .ifPresent(iModularItem -> iModularItem.getOnlineModuleOrEmpty(MPSRegistryNames.SHOCK_ABSORBER_MODULE).getCapability(PowerModuleCapability.POWER_MODULE).ifPresent(sa -> {
+                    .ifPresent(iModularItem -> iModularItem.getOnlineModuleOrEmpty(MPSRegistryNames.SHOCK_ABSORBER_MODULE).getCapability(NuminaCapabilities.POWER_MODULE).ifPresent(sa -> {
                         double distanceAbsorb = event.getDistance() * sa.applyPropertyModifiers(MPSConstants.MULTIPLIER);
                         if (player.level.isClientSide && NuminaSettings.useSounds()) {
                             Musique.playerSound(player, SoundDictionary.SOUND_EVENT_GUI_INSTALL.get(), SoundSource.PLAYERS, (float) (distanceAbsorb), (float) 1, false);

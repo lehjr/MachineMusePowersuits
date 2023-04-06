@@ -2,7 +2,7 @@ package lehjr.powersuits.client.gui.modding.module.install_salvage;
 
 import lehjr.numina.client.gui.clickable.ClickableModule;
 import lehjr.numina.client.gui.geometry.Rect;
-import lehjr.numina.common.capabilities.module.powermodule.PowerModuleCapability;
+import lehjr.numina.common.capabilities.NuminaCapabilities;
 import lehjr.powersuits.client.gui.common.ModularItemSelectionFrame;
 import lehjr.powersuits.client.gui.modding.module.tweak.ModuleSelectionFrame;
 import lehjr.powersuits.client.gui.modding.module.tweak.ModuleSelectionSubFrame;
@@ -52,7 +52,7 @@ public class CompatibleModuleDisplayFrame extends ModuleSelectionFrame {
                 boolean isModuleInstalled = iModularItem.isModuleInstalled(item);
                 ItemStack module = new ItemStack(item, 1);
                 if (iModularItem.isModuleValid(module) && !possibleItems.contains(module)) {
-                    module.getCapability(PowerModuleCapability.POWER_MODULE).ifPresent(m-> {
+                    module.getCapability(NuminaCapabilities.POWER_MODULE).ifPresent(m-> {
                         ClickableModule clickie = getOrCreateCategory(m.getCategory()).addModule(module, -1);
                         clickie.setInstalled(isModuleInstalled);
                     });

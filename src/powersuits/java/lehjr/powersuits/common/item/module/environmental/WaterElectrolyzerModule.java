@@ -26,6 +26,7 @@
 
 package lehjr.powersuits.common.item.module.environmental;
 
+import lehjr.numina.common.capabilities.NuminaCapabilities;
 import lehjr.numina.common.capabilities.module.powermodule.*;
 import lehjr.numina.common.capabilities.module.tickable.PlayerTickModule;
 import lehjr.numina.common.config.NuminaSettings;
@@ -95,7 +96,7 @@ public class WaterElectrolyzerModule extends AbstractPowerModule {
         @Override
         @Nonnull
         public <T> LazyOptional<T> getCapability(@Nonnull final Capability<T> capability, final @Nullable Direction side) {
-            final LazyOptional<T> powerModuleCapability = PowerModuleCapability.POWER_MODULE.orEmpty(capability, powerModuleHolder);
+            final LazyOptional<T> powerModuleCapability = NuminaCapabilities.POWER_MODULE.orEmpty(capability, powerModuleHolder);
             if (powerModuleCapability.isPresent()) {
                 return powerModuleCapability;
             }

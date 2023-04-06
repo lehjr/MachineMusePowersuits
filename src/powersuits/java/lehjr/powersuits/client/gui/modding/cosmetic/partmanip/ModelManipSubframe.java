@@ -34,10 +34,10 @@ import lehjr.numina.client.gui.geometry.MusePoint2D;
 import lehjr.numina.client.gui.geometry.Rect;
 import lehjr.numina.client.render.IconUtils;
 import lehjr.numina.common.base.NuminaLogger;
+import lehjr.numina.common.capabilities.NuminaCapabilities;
 import lehjr.numina.common.capabilities.render.IArmorModelSpecNBT;
 import lehjr.numina.common.capabilities.render.IHandHeldModelSpecNBT;
 import lehjr.numina.common.capabilities.render.IModelSpec;
-import lehjr.numina.common.capabilities.render.ModelSpecCapability;
 import lehjr.numina.common.capabilities.render.modelspec.*;
 import lehjr.numina.common.constants.TagConstants;
 import lehjr.numina.common.math.Color;
@@ -101,7 +101,7 @@ public class ModelManipSubframe extends AbstractGuiFrame {
     }
 
     public Optional<IModelSpec> getRenderCapability() {
-        return this.itemSelector.getModularItemOrEmpty().getCapability(ModelSpecCapability.RENDER)
+        return this.itemSelector.getModularItemOrEmpty().getCapability(NuminaCapabilities.RENDER)
                 .filter(IModelSpec.class::isInstance)
                 .map(IModelSpec.class::cast);
     }

@@ -26,8 +26,8 @@
 
 package lehjr.numina.client.control;
 
+import lehjr.numina.common.capabilities.NuminaCapabilities;
 import lehjr.numina.common.capabilities.player.IPlayerKeyStates;
-import lehjr.numina.common.capabilities.player.PlayerKeyStatesCapability;
 import net.minecraft.client.player.RemotePlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.common.util.LazyOptional;
@@ -68,7 +68,7 @@ public class PlayerMovementInputWrapper {
     }
 
     static LazyOptional<IPlayerKeyStates> getCapability(Player player) {
-        return player.getCapability(PlayerKeyStatesCapability.PLAYER_KEYSTATES, null);
+        return player.getCapability(NuminaCapabilities.PLAYER_KEYSTATES, null);
     }
 
     static PlayerMovementInput fromServer(Player player) {

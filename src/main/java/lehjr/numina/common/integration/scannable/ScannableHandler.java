@@ -29,8 +29,8 @@
 //            @Nonnull
 //            @Override
 //            public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
-//                final LazyOptional<T> scannerCapability = PowerModuleCapability.POWER_MODULE.orEmpty(cap, scannerHolder);
-//                if (cap == PowerModuleCapability.POWER_MODULE) {
+//                final LazyOptional<T> scannerCapability = NuminaCapabilities.POWER_MODULE.orEmpty(cap, scannerHolder);
+//                if (cap == NuminaCapabilities.POWER_MODULE) {
 //                    return scannerCapability;
 //                }
 //                return LazyOptional.empty();

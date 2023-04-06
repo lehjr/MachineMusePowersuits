@@ -27,21 +27,19 @@
 package lehjr.powersuits.common.item.block;
 
 import lehjr.numina.common.base.NuminaLogger;
+import lehjr.numina.common.capabilities.NuminaCapabilities;
 import lehjr.numina.common.capabilities.module.powermodule.IConfig;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
-import lehjr.numina.common.capabilities.module.powermodule.PowerModuleCapability;
 import lehjr.numina.common.capabilities.module.rightclick.IRightClickModule;
 import lehjr.numina.common.capabilities.module.rightclick.RightClickModule;
 import lehjr.powersuits.client.event.ModelBakeEventHandler;
-import lehjr.powersuits.common.base.MPSObjects;
 import lehjr.powersuits.common.config.MPSSettings;
 import lehjr.powersuits.common.container.InstallSalvageMenu;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.SimpleMenuProvider;
@@ -56,7 +54,6 @@ import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.network.NetworkHooks;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -89,7 +86,7 @@ public class TinkerTableItem extends BlockItem {
         @Nonnull
         @Override
         public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
-            return PowerModuleCapability.POWER_MODULE.orEmpty(cap, LazyOptional.of(() -> rightClick));
+            return NuminaCapabilities.POWER_MODULE.orEmpty(cap, LazyOptional.of(() -> rightClick));
         }
 
         class RightClickie extends RightClickModule {

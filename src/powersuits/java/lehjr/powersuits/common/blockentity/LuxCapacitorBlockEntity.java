@@ -27,9 +27,9 @@
 package lehjr.powersuits.common.blockentity;
 
 
-import lehjr.numina.common.capabilities.render.colour.ColorCapability;
-import lehjr.numina.common.capabilities.render.colour.ColorStorage;
-import lehjr.numina.common.capabilities.render.colour.IColorTag;
+import lehjr.numina.common.capabilities.NuminaCapabilities;
+import lehjr.numina.common.capabilities.render.color.ColorStorage;
+import lehjr.numina.common.capabilities.render.color.IColorTag;
 import lehjr.numina.common.constants.TagConstants;
 import lehjr.numina.common.math.Color;
 import lehjr.powersuits.client.model.helper.LuxCapHelper;
@@ -61,7 +61,7 @@ public class LuxCapacitorBlockEntity extends BlockEntity {
     }
 
     public void setColor(Color color) {
-        this.getCapability(ColorCapability.COLOR, null).ifPresent(colorCap -> colorCap.setColor(color));
+        this.getCapability(NuminaCapabilities.COLOR, null).ifPresent(colorCap -> colorCap.setColor(color));
         this.setChanged();
     }
 
@@ -84,7 +84,7 @@ public class LuxCapacitorBlockEntity extends BlockEntity {
             return LazyOptional.empty();
         }
 
-        final LazyOptional<T> colorCapability = ColorCapability.COLOR.orEmpty(cap, colorHolder);
+        final LazyOptional<T> colorCapability = NuminaCapabilities.COLOR.orEmpty(cap, colorHolder);
         if (colorCapability.isPresent()) {
             return colorCapability;
         }

@@ -96,7 +96,7 @@
 //                @Nonnull
 //                @Override
 //                public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
-//                    if (cap == PowerModuleCapability.POWER_MODULE) {
+//                    if (cap == NuminaCapabilities.POWER_MODULE) {
 //                        return LazyOptional.of(() -> (T) rsTerminal);
 //                    }
 //                    return LazyOptional.empty();

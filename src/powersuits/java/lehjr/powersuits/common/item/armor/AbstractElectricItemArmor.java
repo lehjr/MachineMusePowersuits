@@ -31,13 +31,12 @@ import com.google.common.collect.Multimap;
 import com.google.common.util.concurrent.AtomicDouble;
 import lehjr.numina.client.model.item.armor.ArmorModelInstance;
 import lehjr.numina.client.model.item.armor.HighPolyArmor;
+import lehjr.numina.common.capabilities.NuminaCapabilities;
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
 import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
-import lehjr.numina.common.capabilities.module.powermodule.PowerModuleCapability;
 import lehjr.numina.common.capabilities.module.toggleable.IToggleableModule;
 import lehjr.numina.common.capabilities.render.IArmorModelSpecNBT;
-import lehjr.numina.common.capabilities.render.ModelSpecCapability;
 import lehjr.numina.common.capabilities.render.modelspec.SpecType;
 import lehjr.numina.common.constants.NuminaConstants;
 import lehjr.numina.common.constants.TagConstants;
@@ -50,7 +49,6 @@ import lehjr.powersuits.common.constants.MPSConstants;
 import lehjr.powersuits.common.constants.MPSRegistryNames;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.HumanoidModel;
-import net.minecraft.client.model.Model;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -126,7 +124,7 @@ public abstract class AbstractElectricItemArmor extends ArmorItem {
                     Pair<Integer, Integer> range = iItemHandler.getRangeForCategory(ModuleCategory.ARMOR);
                     double energyUsed = 0;
                     for (int x = range.getKey(); x < range.getRight(); x++) {
-                        energyUsed += iItemHandler.getStackInSlot(x).getCapability(PowerModuleCapability.POWER_MODULE)
+                        energyUsed += iItemHandler.getStackInSlot(x).getCapability(NuminaCapabilities.POWER_MODULE)
                                 .map(pm -> pm.applyPropertyModifiers(MPSConstants.ARMOR_ENERGY_CONSUMPTION)).orElse(0D);
                     }
                     return energyUsed;
@@ -166,7 +164,7 @@ public abstract class AbstractElectricItemArmor extends ArmorItem {
                     Pair<Integer, Integer> range = iItemHandler.getRangeForCategory(ModuleCategory.ARMOR);
                     if (range != null) {
                         for (int i = range.getLeft(); i < range.getRight(); i++) {
-                            iItemHandler.getStackInSlot(i).getCapability(PowerModuleCapability.POWER_MODULE).ifPresent(pm -> {
+                            iItemHandler.getStackInSlot(i).getCapability(NuminaCapabilities.POWER_MODULE).ifPresent(pm -> {
                                 if (pm.isAllowed()) {
                                     // physical armor and hybrid energy/physical armor
                                     double armorDouble = pm.applyPropertyModifiers(MPSConstants.ARMOR_VALUE_PHYSICAL);
@@ -195,7 +193,7 @@ public abstract class AbstractElectricItemArmor extends ArmorItem {
                     if (slotType == EquipmentSlot.LEGS) {
                         for (int i = 0; i < iItemHandler.getSlots(); i++) {
                             /** Note: attribute should already be removed when module is offline */
-                            iItemHandler.getStackInSlot(i).getCapability(PowerModuleCapability.POWER_MODULE)
+                            iItemHandler.getStackInSlot(i).getCapability(NuminaCapabilities.POWER_MODULE)
                                     .filter(IPowerModule.class::isInstance)
                                     .map(IPowerModule.class::cast)
                                     .filter(IPowerModule::isModuleOnline)
@@ -299,7 +297,7 @@ public abstract class AbstractElectricItemArmor extends ArmorItem {
             }
         }
 
-        return armor.getCapability(ModelSpecCapability.RENDER)
+        return armor.getCapability(NuminaCapabilities.RENDER)
                 .filter(IArmorModelSpecNBT.class::isInstance)
                 .map(IArmorModelSpecNBT.class::cast)
                 .map(spec -> {
@@ -320,7 +318,7 @@ public abstract class AbstractElectricItemArmor extends ArmorItem {
         consumer.accept(new IClientItemExtensions() {
             @Override
             public @NotNull HumanoidModel<?> getHumanoidArmorModel(LivingEntity livingEntity, ItemStack itemStack, EquipmentSlot armorSlot, HumanoidModel<?> _default) {
-                return itemStack.getCapability(ModelSpecCapability.RENDER).map(spec -> {
+                return itemStack.getCapability(NuminaCapabilities.RENDER).map(spec -> {
                     CompoundTag renderTag = spec.getRenderTag();
                     EquipmentSlot slot = Mob.getEquipmentSlotForItem(itemStack);
                     /** sets up default spec tags. A tag with all parts disabled should still have a color tag rather than being empty or null */

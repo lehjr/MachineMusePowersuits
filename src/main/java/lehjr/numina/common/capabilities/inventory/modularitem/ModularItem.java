@@ -27,10 +27,10 @@
 package lehjr.numina.common.capabilities.inventory.modularitem;
 
 import lehjr.numina.common.capabilities.CapabilityUpdate;
+import lehjr.numina.common.capabilities.NuminaCapabilities;
 import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
-import lehjr.numina.common.capabilities.module.powermodule.PowerModuleCapability;
 import lehjr.numina.common.capabilities.module.tickable.IPlayerTickModule;
 import lehjr.numina.common.capabilities.module.toggleable.IToggleableModule;
 import lehjr.numina.common.constants.TagConstants;
@@ -97,7 +97,7 @@ public class ModularItem extends ItemStackHandler implements IModularItem, Capab
             ItemStack module = getStackInSlot(i);
             if (!module.isEmpty() && ItemUtils.getRegistryName(module).equals(moduleName)) {
                 final int index = i;
-                module.getCapability(PowerModuleCapability.POWER_MODULE).ifPresent(m -> {
+                module.getCapability(NuminaCapabilities.POWER_MODULE).ifPresent(m -> {
                     if (m instanceof IToggleableModule) {
                         ((IToggleableModule) m).toggleModule(online);
                         // not enough to update the module, the tag for the item in the slot has to be updated too
@@ -137,7 +137,7 @@ public class ModularItem extends ItemStackHandler implements IModularItem, Capab
 
         for (int i = 0; i < getSlots(); i++) {
             ItemStack module = getStackInSlot(i);
-            module.getCapability(PowerModuleCapability.POWER_MODULE).filter(type::isInstance).ifPresent(pm -> modules.add(module));
+            module.getCapability(NuminaCapabilities.POWER_MODULE).filter(type::isInstance).ifPresent(pm -> modules.add(module));
         }
         return modules;
     }
@@ -180,7 +180,7 @@ public class ModularItem extends ItemStackHandler implements IModularItem, Capab
             return false;
 
         // is module valid for this targer?
-        return (module.getCapability(PowerModuleCapability.POWER_MODULE).map(m -> {
+        return (module.getCapability(NuminaCapabilities.POWER_MODULE).map(m -> {
 
             // check if allowed
             if (m.isAllowed()) {
@@ -234,7 +234,7 @@ public class ModularItem extends ItemStackHandler implements IModularItem, Capab
      * return true for a module is allowed and either can't be turned off or is on, otherwise return false
      */
     public boolean isModuleOnline(ItemStack module) {
-        return module.getCapability(PowerModuleCapability.POWER_MODULE)
+        return module.getCapability(NuminaCapabilities.POWER_MODULE)
                 .map(m -> m.isAllowed() && m.isModuleOnline()).orElse(false);
     }
 
@@ -244,7 +244,7 @@ public class ModularItem extends ItemStackHandler implements IModularItem, Capab
         for (int i = 0; i < getSlots(); i++) {
             ItemStack module = getStackInSlot(i);
             if (!module.isEmpty() && ItemUtils.getRegistryName(module).equals(moduleName)) {
-                if (module.getCapability(PowerModuleCapability.POWER_MODULE).map(m -> m.isAllowed() && m.isModuleOnline()).orElse(false)) {
+                if (module.getCapability(NuminaCapabilities.POWER_MODULE).map(m -> m.isAllowed() && m.isModuleOnline()).orElse(false)) {
                     return module;
                 }
             }
@@ -255,7 +255,7 @@ public class ModularItem extends ItemStackHandler implements IModularItem, Capab
     @Override
     public void tick(Player player) {
         for (int i = 0; i < getSlots(); i++) {
-            getStackInSlot(i).getCapability(PowerModuleCapability.POWER_MODULE)
+            getStackInSlot(i).getCapability(NuminaCapabilities.POWER_MODULE)
                     .filter(IPlayerTickModule.class::isInstance)
                     .map(IPlayerTickModule.class::cast)
                     .filter(IPlayerTickModule::isAllowed).ifPresent(m -> {
@@ -286,7 +286,7 @@ public class ModularItem extends ItemStackHandler implements IModularItem, Capab
             }
 
             // get the module category... CATEGORY_NONE) is actually just a fallback
-            ModuleCategory category = module.getCapability(PowerModuleCapability.POWER_MODULE).map(m -> m.getCategory())
+            ModuleCategory category = module.getCapability(NuminaCapabilities.POWER_MODULE).map(m -> m.getCategory())
                     .orElse(ModuleCategory.NONE);
 
             // Specfic module type for limited modules
@@ -310,7 +310,7 @@ public class ModularItem extends ItemStackHandler implements IModularItem, Capab
         for (int i = 0; i < getSlots(); i++) {
             ItemStack module = getStackInSlot(i);
             if (!module.isEmpty() && ItemUtils.getRegistryName(module).equals(moduleName)) {
-                if (module.getCapability(PowerModuleCapability.POWER_MODULE).map(m -> {
+                if (module.getCapability(NuminaCapabilities.POWER_MODULE).map(m -> {
                     TagUtils.setModuleDoubleOrRemove(module, key, value);
                     return true;
                 }).orElse(false)) {

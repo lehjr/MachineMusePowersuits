@@ -37,8 +37,8 @@ import lehjr.numina.client.gui.geometry.IRect;
 import lehjr.numina.client.gui.geometry.Rect;
 import lehjr.numina.client.render.IconUtils;
 import lehjr.numina.common.base.NuminaLogger;
+import lehjr.numina.common.capabilities.NuminaCapabilities;
 import lehjr.numina.common.capabilities.render.IModelSpec;
-import lehjr.numina.common.capabilities.render.ModelSpecCapability;
 import lehjr.numina.common.constants.TagConstants;
 import lehjr.numina.common.math.Color;
 import lehjr.numina.common.string.StringUtils;
@@ -138,7 +138,7 @@ public class ColourPickerFrame extends ScrollableFrame {
     }
 
     public IntArrayTag getOrCreateColourTag() {
-        return this.itemSelector.getModularItemOrEmpty().getCapability(ModelSpecCapability.RENDER)
+        return this.itemSelector.getModularItemOrEmpty().getCapability(NuminaCapabilities.RENDER)
                 .filter(IModelSpec.class::isInstance)
                 .map(IModelSpec.class::cast)
                 .map(spec -> {
@@ -151,7 +151,7 @@ public class ColourPickerFrame extends ScrollableFrame {
     }
 
     public IntArrayTag setColourTagMaybe(List<Integer> intList) {
-        return itemSelector.getModularItemOrEmpty().getCapability(ModelSpecCapability.RENDER)
+        return itemSelector.getModularItemOrEmpty().getCapability(NuminaCapabilities.RENDER)
                 .filter(IModelSpec.class::isInstance)
                 .map(IModelSpec.class::cast)
                 .map(spec -> {

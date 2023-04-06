@@ -26,10 +26,10 @@
 
 package lehjr.numina.common.capabilities.inventory.modechanging;
 
+import lehjr.numina.common.capabilities.NuminaCapabilities;
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
 import lehjr.numina.common.capabilities.module.blockbreaking.IBlockBreakingModule;
 import lehjr.numina.common.capabilities.module.miningenhancement.IMiningEnhancementModule;
-import lehjr.numina.common.capabilities.module.powermodule.PowerModuleCapability;
 import lehjr.numina.common.capabilities.module.rightclick.IRightClickModule;
 import lehjr.numina.common.energy.ElectricItemUtils;
 import net.minecraft.client.Minecraft;
@@ -92,7 +92,7 @@ public interface IModeChangingItem extends IModularItem {
 
     default boolean onBlockStartBreak(ItemStack itemstack, BlockPos pos, Player player) {
         return getActiveModule()
-                .getCapability(PowerModuleCapability.POWER_MODULE)
+                .getCapability(NuminaCapabilities.POWER_MODULE)
                 .filter(IMiningEnhancementModule.class::isInstance)
                 .map(IMiningEnhancementModule.class::cast)
                 .filter(pm ->pm.isModuleOnline())
@@ -101,7 +101,7 @@ public interface IModeChangingItem extends IModularItem {
     }
 
     default int getUseDuration() {
-        return getActiveModule().getCapability(PowerModuleCapability.POWER_MODULE)
+        return getActiveModule().getCapability(NuminaCapabilities.POWER_MODULE)
                                 .filter(IRightClickModule.class::isInstance)
                                 .map(IRightClickModule.class::cast)
                                 .map(m-> m.getModuleStack().getUseDuration())
@@ -111,7 +111,7 @@ public interface IModeChangingItem extends IModularItem {
     default boolean mineBlock(ItemStack powerFist, Level worldIn, BlockState state, BlockPos pos, LivingEntity entityLiving) {
         int playerEnergy = ElectricItemUtils.getPlayerEnergy(entityLiving);
         return getInstalledModulesOfType(IBlockBreakingModule.class).stream().anyMatch(module ->
-                module.getCapability(PowerModuleCapability.POWER_MODULE)
+                module.getCapability(NuminaCapabilities.POWER_MODULE)
                         .filter(IBlockBreakingModule.class::isInstance)
                         .map(IBlockBreakingModule.class::cast)
                         .map(pm-> pm.mineBlock(powerFist, worldIn, state, pos, entityLiving, playerEnergy))
@@ -121,14 +121,14 @@ public interface IModeChangingItem extends IModularItem {
     default InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand, InteractionResultHolder<ItemStack> fallback) {
         ItemStack fist = player.getItemInHand(hand);
         return getActiveModule().
-                getCapability(PowerModuleCapability.POWER_MODULE)
+                getCapability(NuminaCapabilities.POWER_MODULE)
                 .filter(IRightClickModule.class::isInstance)
                 .map(IRightClickModule.class::cast)
                 .map(rc-> rc.use(fist, level, player, hand)).orElse(fallback);
     }
 
    default InteractionResult onItemUseFirst(ItemStack itemStack, UseOnContext context, InteractionResult fallback) {
-        return getActiveModule().getCapability(PowerModuleCapability.POWER_MODULE)
+        return getActiveModule().getCapability(NuminaCapabilities.POWER_MODULE)
                             .filter(IRightClickModule.class::isInstance)
                             .map(IRightClickModule.class::cast)
                             .map(m-> m.onItemUseFirst(itemStack, context))
@@ -145,7 +145,7 @@ public interface IModeChangingItem extends IModularItem {
     }
 
     default ItemStack finishUsingItem(ItemStack stack, Level worldIn, LivingEntity entity) {
-        return getActiveModule().getCapability(PowerModuleCapability.POWER_MODULE)
+        return getActiveModule().getCapability(NuminaCapabilities.POWER_MODULE)
                                 .filter(IRightClickModule.class::isInstance)
                                 .map(IRightClickModule.class::cast)
                                 .map(m-> m.finishUsingItem(stack, worldIn, entity))
@@ -153,14 +153,14 @@ public interface IModeChangingItem extends IModularItem {
     }
 
     default void releaseUsing(ItemStack stack, Level worldIn, LivingEntity entityLiving, int timeLeft) {
-                getActiveModule().getCapability(PowerModuleCapability.POWER_MODULE)
+                getActiveModule().getCapability(NuminaCapabilities.POWER_MODULE)
                             .filter(IRightClickModule.class::isInstance)
                             .map(IRightClickModule.class::cast)
                             .ifPresent(m-> m.releaseUsing(stack, worldIn, entityLiving, timeLeft));
     }
 
     default InteractionResult useOn(UseOnContext context, InteractionResult fallback) {
-            return getActiveModule().getCapability(PowerModuleCapability.POWER_MODULE)
+            return getActiveModule().getCapability(NuminaCapabilities.POWER_MODULE)
                             .filter(IRightClickModule.class::isInstance)
                             .map(IRightClickModule.class::cast)
                             .map(m-> m.useOn(context)).orElse(fallback);
@@ -169,7 +169,7 @@ public interface IModeChangingItem extends IModularItem {
     default boolean isCorrectToolForDrops(ItemStack itemStack, BlockState state) {
         return getInstalledModulesOfType(IBlockBreakingModule.class)
                 .stream().anyMatch(module ->
-                        module.getCapability(PowerModuleCapability.POWER_MODULE)
+                        module.getCapability(NuminaCapabilities.POWER_MODULE)
                                 .filter(IBlockBreakingModule.class::isInstance)
                                 .map(IBlockBreakingModule.class::cast)
                                 .map(pm ->pm.getEmulatedTool().isCorrectToolForDrops(state)).orElse(false));

@@ -26,9 +26,8 @@
 
 package lehjr.powersuits.client.model.block;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import lehjr.numina.client.model.obj.OBJBakedCompositeModel;
-import lehjr.numina.common.capabilities.module.powermodule.PowerModuleCapability;
+import lehjr.numina.common.capabilities.NuminaCapabilities;
 import lehjr.numina.common.constants.TagConstants;
 import lehjr.numina.common.math.Color;
 import lehjr.powersuits.client.model.helper.LuxCapHelper;
@@ -38,7 +37,6 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.ItemOverrides;
-import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.Tag;
@@ -52,11 +50,9 @@ import net.minecraftforge.client.model.BakedModelWrapper;
 import net.minecraftforge.client.model.data.ModelData;
 import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 /**
  * Only used for the item model. Not needed for the block model
@@ -122,7 +118,7 @@ public class LuxCapacitorModelWrapper extends BakedModelWrapper<OBJBakedComposit
                 colour = new Color( stack.getTag().getInt(TagConstants.COLOR));
                 // this is for the active icon
             } else {
-                colour = stack.getCapability(PowerModuleCapability.POWER_MODULE).map(pm -> {
+                colour = stack.getCapability(NuminaCapabilities.POWER_MODULE).map(pm -> {
                     float red = (float) pm.applyPropertyModifiers(MPSConstants.RED_HUE);
                     float green = (float) pm.applyPropertyModifiers(MPSConstants.GREEN_HUE);
                     float blue = (float) pm.applyPropertyModifiers(MPSConstants.BLUE_HUE);

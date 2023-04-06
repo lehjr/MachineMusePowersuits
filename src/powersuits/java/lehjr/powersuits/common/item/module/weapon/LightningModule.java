@@ -27,10 +27,10 @@
 package lehjr.powersuits.common.item.module.weapon;
 
 
+import lehjr.numina.common.capabilities.NuminaCapabilities;
 import lehjr.numina.common.capabilities.module.powermodule.IConfig;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
-import lehjr.numina.common.capabilities.module.powermodule.PowerModuleCapability;
 import lehjr.numina.common.capabilities.module.rightclick.RightClickModule;
 import lehjr.numina.common.energy.ElectricItemUtils;
 import lehjr.numina.common.heat.HeatUtils;
@@ -89,7 +89,7 @@ public class LightningModule extends AbstractPowerModule {
         @Nonnull
         @Override
         public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
-            return PowerModuleCapability.POWER_MODULE.orEmpty(cap, LazyOptional.of(() -> rightClickie));
+            return NuminaCapabilities.POWER_MODULE.orEmpty(cap, LazyOptional.of(() -> rightClickie));
         }
 
         class RightClickie extends RightClickModule {

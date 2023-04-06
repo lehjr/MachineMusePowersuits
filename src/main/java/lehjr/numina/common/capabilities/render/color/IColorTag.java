@@ -24,18 +24,13 @@
  *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package lehjr.numina.common.capabilities.player;
+package lehjr.numina.common.capabilities.render.color;
 
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.CapabilityManager;
-import net.minecraftforge.common.capabilities.CapabilityToken;
-import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
+import lehjr.numina.common.math.Color;
 
-public class PlayerKeyStatesCapability {
-    public static final Capability<IPlayerKeyStates> PLAYER_KEYSTATES = CapabilityManager.get(new CapabilityToken<>(){});;
+public interface IColorTag {
 
-    public static void register(RegisterCapabilitiesEvent event)
-    {
-        event.register(IPlayerKeyStates.class);
-    }
+    Color getColor();
+
+    void setColor(Color color);
 }

@@ -33,10 +33,10 @@ import lehjr.numina.client.gui.frame.ScrollableFrame;
 import lehjr.numina.client.gui.geometry.MusePoint2D;
 import lehjr.numina.client.gui.geometry.Rect;
 import lehjr.numina.client.render.NuminaRenderer;
+import lehjr.numina.common.capabilities.NuminaCapabilities;
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
 import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
-import lehjr.numina.common.capabilities.module.powermodule.PowerModuleCapability;
 import lehjr.powersuits.client.gui.common.ModularItemSelectionFrame;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
@@ -84,7 +84,7 @@ public class ModuleSelectionFrame extends ScrollableFrame {
             categories.put(category, frame);
             frame.setDoOnNewSelect(thing-> {
                 selectedModule = Optional.of(thing.getSelectedModule());
-                moduleCap = selectedModule.map(clickableModule -> clickableModule.getModule()).orElse(ItemStack.EMPTY).getCapability(PowerModuleCapability.POWER_MODULE);
+                moduleCap = selectedModule.map(clickableModule -> clickableModule.getModule()).orElse(ItemStack.EMPTY).getCapability(NuminaCapabilities.POWER_MODULE);
             });
             return frame;
         }
@@ -118,7 +118,7 @@ public class ModuleSelectionFrame extends ScrollableFrame {
             for (int index = 0; index < iModularItem.getSlots(); index++) {
                 ItemStack module = iModularItem.getStackInSlot(index);
                 int finalIndex = index;
-                module.getCapability(PowerModuleCapability.POWER_MODULE).ifPresent(m->{
+                module.getCapability(NuminaCapabilities.POWER_MODULE).ifPresent(m->{
                     if (m.isAllowed()) {
                         getOrCreateCategory(m.getCategory()).addModule(module, finalIndex);
                     }
@@ -203,7 +203,7 @@ public class ModuleSelectionFrame extends ScrollableFrame {
 
     public LazyOptional<IPowerModule> getModuleCap() {
         return getSelectedModule()
-                .map(clickableModule -> clickableModule.getModule()).orElse(ItemStack.EMPTY).getCapability(PowerModuleCapability.POWER_MODULE);
+                .map(clickableModule -> clickableModule.getModule()).orElse(ItemStack.EMPTY).getCapability(NuminaCapabilities.POWER_MODULE);
 //        return moduleCap;
     }
 

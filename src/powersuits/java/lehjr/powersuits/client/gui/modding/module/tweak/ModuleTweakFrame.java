@@ -33,8 +33,8 @@ import lehjr.numina.client.gui.clickable.slider.VanillaTinkerSlider;
 import lehjr.numina.client.gui.frame.ScrollableFrame;
 import lehjr.numina.client.gui.geometry.MusePoint2D;
 import lehjr.numina.client.gui.geometry.Rect;
+import lehjr.numina.common.capabilities.NuminaCapabilities;
 import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
-import lehjr.numina.common.capabilities.module.powermodule.PowerModuleCapability;
 import lehjr.numina.common.constants.TagConstants;
 import lehjr.numina.common.item.ItemUtils;
 import lehjr.numina.common.network.NuminaPackets;
@@ -94,7 +94,7 @@ public class ModuleTweakFrame extends ScrollableFrame {
     }
 
     Component getUnit(String key) {
-        return moduleTarget.getSelectedModule().map(target->target.getModule().getCapability(PowerModuleCapability.POWER_MODULE)
+        return moduleTarget.getSelectedModule().map(target->target.getModule().getCapability(NuminaCapabilities.POWER_MODULE)
                 .map(pm-> pm.getUnit(key)).orElse(Component.literal(""))).orElse(Component.literal(""));
     }
 

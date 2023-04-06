@@ -30,8 +30,8 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import lehjr.numina.client.gui.geometry.MusePoint2D;
 import lehjr.numina.client.render.IconUtils;
 import lehjr.numina.client.render.NuminaRenderer;
+import lehjr.numina.common.capabilities.NuminaCapabilities;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
-import lehjr.numina.common.capabilities.module.powermodule.PowerModuleCapability;
 import lehjr.numina.common.math.Color;
 import lehjr.numina.common.string.AdditionalInfo;
 import lehjr.numina.common.string.StringUtils;
@@ -72,8 +72,8 @@ public class ClickableModule extends Clickable {
         this.module = module;
         this.inventorySlot = inventorySlot;
         this.category = category;
-        allowed = module.getCapability(PowerModuleCapability.POWER_MODULE).map(pm->pm.isAllowed()).orElse(false);
-        tier = module.getCapability(PowerModuleCapability.POWER_MODULE).map(pm-> pm.getTier()).orElse(null);
+        allowed = module.getCapability(NuminaCapabilities.POWER_MODULE).map(pm->pm.isAllowed()).orElse(false);
+        tier = module.getCapability(NuminaCapabilities.POWER_MODULE).map(pm-> pm.getTier()).orElse(null);
         this.regName = ForgeRegistries.ITEMS.getKey(module.getItem());
     }
 

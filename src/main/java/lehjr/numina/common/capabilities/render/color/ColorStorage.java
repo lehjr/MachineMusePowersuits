@@ -24,18 +24,40 @@
  *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package lehjr.numina.common.capabilities.render;
+package lehjr.numina.common.capabilities.render.color;
 
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.CapabilityManager;
-import net.minecraftforge.common.capabilities.CapabilityToken;
-import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
+import lehjr.numina.common.math.Color;
+import net.minecraft.nbt.IntTag;
+import net.minecraftforge.common.util.INBTSerializable;
 
-public class ModelSpecCapability {
-    public static final Capability<IModelSpec> RENDER = CapabilityManager.get(new CapabilityToken<>(){});;
+public class ColorStorage implements IColorTag, INBTSerializable<IntTag> {
+    Color color;
 
-    public static void register(RegisterCapabilitiesEvent event)
-    {
-        event.register(IModelSpec.class);
+    public ColorStorage() {
+        color = Color.WHITE;
+    }
+
+    public ColorStorage(Color colorIn) {
+        color = colorIn;
+    }
+
+    @Override
+    public Color getColor() {
+        return color;
+    }
+
+    @Override
+    public void setColor(Color color) {
+        this.color = color;
+    }
+
+    @Override
+    public IntTag serializeNBT() {
+        return color.serializeNBT();
+    }
+
+    @Override
+    public void deserializeNBT(IntTag nbt) {
+        this.color.deserializeNBT(nbt);
     }
 }

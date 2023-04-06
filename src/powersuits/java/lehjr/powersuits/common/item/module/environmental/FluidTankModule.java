@@ -26,6 +26,7 @@
 
 package lehjr.powersuits.common.item.module.environmental;
 
+import lehjr.numina.common.capabilities.NuminaCapabilities;
 import lehjr.numina.common.capabilities.module.powermodule.*;
 import lehjr.numina.common.capabilities.module.tickable.PlayerTickModule;
 import lehjr.numina.common.heat.HeatUtils;
@@ -164,7 +165,7 @@ public class FluidTankModule extends AbstractPowerModule {
         @Override
         @Nonnull
         public <T> LazyOptional<T> getCapability(@Nonnull final Capability<T> capability, final @Nullable Direction side) {
-            final LazyOptional<T> capabilityPowerModule = PowerModuleCapability.POWER_MODULE.orEmpty(capability, powerModuleHolder);
+            final LazyOptional<T> capabilityPowerModule = NuminaCapabilities.POWER_MODULE.orEmpty(capability, powerModuleHolder);
             if (capabilityPowerModule.isPresent()) {
                 return capabilityPowerModule;
             }

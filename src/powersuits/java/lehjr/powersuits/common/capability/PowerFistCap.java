@@ -26,14 +26,13 @@
 
 package lehjr.powersuits.common.capability;
 
-import lehjr.numina.common.capabilities.heat.HeatCapability;
+import lehjr.numina.common.capabilities.NuminaCapabilities;
 import lehjr.numina.common.capabilities.heat.HeatItemWrapper;
 import lehjr.numina.common.capabilities.heat.IHeatStorage;
 import lehjr.numina.common.capabilities.inventory.modechanging.ModeChangingModularItem;
 import lehjr.numina.common.capabilities.inventory.modularitem.NuminaRangedWrapper;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.capabilities.render.IModelSpec;
-import lehjr.numina.common.capabilities.render.ModelSpecCapability;
 import lehjr.numina.common.capabilities.render.ModelSpecStorage;
 import lehjr.powersuits.client.render.PowerFistSpecNBT;
 import lehjr.powersuits.common.config.MPSSettings;
@@ -104,12 +103,12 @@ public class PowerFistCap implements ICapabilityProvider {
             return modularItemCapability;
         }
 
-        final LazyOptional<T> modelSpecCapability = ModelSpecCapability.RENDER.orEmpty(cap, modelSpecHolder);
+        final LazyOptional<T> modelSpecCapability = NuminaCapabilities.RENDER.orEmpty(cap, modelSpecHolder);
         if (modelSpecCapability.isPresent()) {
             return modelSpecCapability;
         }
 
-        final LazyOptional<T> heatCapability = HeatCapability.HEAT.orEmpty(cap, heatHolder);
+        final LazyOptional<T> heatCapability = NuminaCapabilities.HEAT.orEmpty(cap, heatHolder);
         if (heatCapability.isPresent()) {
             return heatCapability;
         }

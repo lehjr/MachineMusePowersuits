@@ -1,12 +1,28 @@
 package lehjr.numina.common.capabilities;
 
-public class NuminaCapabilities {
-    /*
-     Forge Capabilities example
-        public static final Capability<IEnergyStorage> ENERGY = get(new CapabilityToken<>(){});
-        public static final Capability<IFluidHandler> FLUID_HANDLER = get(new CapabilityToken<>(){});
-        public static final Capability<IFluidHandlerItem> FLUID_HANDLER_ITEM = get(new CapabilityToken<>(){});
-        public static final Capability<IItemHandler> ITEM_HANDLER = get(new CapabilityToken<>(){});
-    */
+import lehjr.numina.common.capabilities.heat.IHeatStorage;
+import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
+import lehjr.numina.common.capabilities.player.IPlayerKeyStates;
+import lehjr.numina.common.capabilities.render.IModelSpec;
+import lehjr.numina.common.capabilities.render.chameleon.IChameleon;
+import lehjr.numina.common.capabilities.render.color.IColorTag;
+import lehjr.numina.common.capabilities.render.highlight.IHighlight;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.CapabilityManager;
+import net.minecraftforge.common.capabilities.CapabilityToken;
 
+public class NuminaCapabilities {
+    public static final Capability<IHeatStorage> HEAT = CapabilityManager.get(new CapabilityToken<>(){});
+
+    public static final Capability<IColorTag> COLOR = CapabilityManager.get(new CapabilityToken<>(){});
+
+    public static final Capability<IPowerModule> POWER_MODULE = CapabilityManager.get(new CapabilityToken<>(){});
+
+    public static final Capability<IModelSpec> RENDER = CapabilityManager.get(new CapabilityToken<>(){});
+
+    public static final Capability<IHighlight> HIGHLIGHT = CapabilityManager.get(new CapabilityToken<>(){});
+
+    public static final Capability<IChameleon> CHAMELEON = CapabilityManager.get(new CapabilityToken<>(){});
+
+    public static final Capability<IPlayerKeyStates> PLAYER_KEYSTATES = CapabilityManager.get(new CapabilityToken<>(){});
 }

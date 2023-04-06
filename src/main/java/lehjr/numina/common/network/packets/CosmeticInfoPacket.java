@@ -26,7 +26,7 @@
 
 package lehjr.numina.common.network.packets;
 
-import lehjr.numina.common.capabilities.render.ModelSpecCapability;
+import lehjr.numina.common.capabilities.NuminaCapabilities;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
@@ -74,7 +74,7 @@ public class CosmeticInfoPacket {
             EquipmentSlot slotType = message.slotType;
             String tagName = message.tagName;
             CompoundTag tagData = message.tagData;
-            player.getItemBySlot(slotType).getCapability(ModelSpecCapability.RENDER).ifPresent(render-> {
+            player.getItemBySlot(slotType).getCapability(NuminaCapabilities.RENDER).ifPresent(render-> {
                 render.setRenderTag(tagData, tagName);
             });
             player.getInventory().setChanged();

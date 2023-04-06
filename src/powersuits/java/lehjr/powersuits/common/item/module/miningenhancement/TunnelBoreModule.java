@@ -1,10 +1,10 @@
 package lehjr.powersuits.common.item.module.miningenhancement;
 
+import lehjr.numina.common.capabilities.NuminaCapabilities;
 import lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
 import lehjr.numina.common.capabilities.module.blockbreaking.IBlockBreakingModule;
 import lehjr.numina.common.capabilities.module.miningenhancement.MiningEnhancement;
 import lehjr.numina.common.capabilities.module.powermodule.*;
-import lehjr.numina.common.capabilities.render.highlight.HighLightCapability;
 import lehjr.numina.common.capabilities.render.highlight.Highlight;
 import lehjr.numina.common.capabilities.render.highlight.IHighlight;
 import lehjr.numina.common.energy.ElectricItemUtils;
@@ -104,7 +104,7 @@ public class TunnelBoreModule extends AbstractPowerModule {
                                 // find an installed module to break current block
                                 for (ItemStack blockBreakingModule : modeChanging.getInstalledModulesOfType(IBlockBreakingModule.class)) {
                                     int playerEnergy = ElectricItemUtils.getPlayerEnergy(player);
-                                    if (blockBreakingModule.getCapability(PowerModuleCapability.POWER_MODULE)
+                                    if (blockBreakingModule.getCapability(NuminaCapabilities.POWER_MODULE)
                                             .filter(IBlockBreakingModule.class::isInstance)
                                             .map(IBlockBreakingModule.class::cast)
                                             .map(b -> {
@@ -179,11 +179,11 @@ public class TunnelBoreModule extends AbstractPowerModule {
         @Override
         @Nonnull
         public <T> LazyOptional<T> getCapability(@Nonnull final Capability<T> capability, final @Nullable Direction side) {
-            final LazyOptional<T> powerModuleCapability = PowerModuleCapability.POWER_MODULE.orEmpty(capability, powerModuleHolder);
+            final LazyOptional<T> powerModuleCapability = NuminaCapabilities.POWER_MODULE.orEmpty(capability, powerModuleHolder);
             if (powerModuleCapability.isPresent()) {
                 return powerModuleCapability;
             }
-            final LazyOptional<T> highlightCapability = HighLightCapability.HIGHLIGHT.orEmpty(capability, highlightHolder);
+            final LazyOptional<T> highlightCapability = NuminaCapabilities.HIGHLIGHT.orEmpty(capability, highlightHolder);
             if (highlightCapability.isPresent()) {
                 return highlightCapability;
             }

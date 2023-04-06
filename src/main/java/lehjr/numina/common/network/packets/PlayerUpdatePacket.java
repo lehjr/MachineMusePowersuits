@@ -26,7 +26,7 @@
 
 package lehjr.numina.common.network.packets;
 
-import lehjr.numina.common.capabilities.player.PlayerKeyStatesCapability;
+import lehjr.numina.common.capabilities.NuminaCapabilities;
 import lehjr.numina.common.math.MathUtils;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
@@ -52,7 +52,7 @@ public class PlayerUpdatePacket {
     public static void handle(PlayerUpdatePacket message, Supplier<NetworkEvent.Context> ctx) {
         final ServerPlayer player = ctx.get().getSender();
         ctx.get().enqueueWork(() -> {
-            player.getCapability(PlayerKeyStatesCapability.PLAYER_KEYSTATES).ifPresent(playerCap -> {
+            player.getCapability(NuminaCapabilities.PLAYER_KEYSTATES).ifPresent(playerCap -> {
                 boolean[] boolArray = MathUtils.byteToBooleanArray(message.data);
                 playerCap.setForwardKeyState(boolArray[0]);
                 playerCap.setReverseKeyState(boolArray[1]);

@@ -29,8 +29,8 @@ package lehjr.numina.client.render.item;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import lehjr.numina.client.model.item.armor.HighPolyArmor;
+import lehjr.numina.common.capabilities.NuminaCapabilities;
 import lehjr.numina.common.capabilities.render.IArmorModelSpecNBT;
-import lehjr.numina.common.capabilities.render.ModelSpecCapability;
 import lehjr.numina.common.capabilities.render.modelspec.SpecType;
 import lehjr.numina.common.math.Color;
 import net.minecraft.client.model.HumanoidModel;
@@ -82,7 +82,7 @@ public class NuminaArmorLayer<T extends LivingEntity, M extends HumanoidModel<T>
     public void renderArmorPiece(PoseStack matrixIn, MultiBufferSource bufferIn, T entityIn, EquipmentSlot slotIn, int packedLightIn, A model) {
         ItemStack itemstack = entityIn.getItemBySlot( slotIn);
         boolean hasEffect = itemstack.hasFoil();
-        if (itemstack.getItem() instanceof ArmorItem && itemstack.getCapability(ModelSpecCapability.RENDER).isPresent()) {
+        if (itemstack.getItem() instanceof ArmorItem && itemstack.getCapability(NuminaCapabilities.RENDER).isPresent()) {
             ArmorItem armoritem = (ArmorItem)itemstack.getItem();
             if (armoritem.getSlot() ==  slotIn) {
                 Model actualModel = getArmorModelHook(entityIn, itemstack, slotIn, model);
@@ -95,7 +95,7 @@ public class NuminaArmorLayer<T extends LivingEntity, M extends HumanoidModel<T>
 
                 this.setPartVisibility(model, slotIn);
                 // ideally, this would replace the getArmorModel
-                itemstack.getCapability(ModelSpecCapability.RENDER).ifPresent(spec->{
+                itemstack.getCapability(NuminaCapabilities.RENDER).ifPresent(spec->{
                     if (spec.getSpecType() == SpecType.ARMOR_SKIN) {
                         Color colour = spec.getColorFromItemStack();
                         this.renderModel(matrixIn, bufferIn, packedLightIn, hasEffect, (A)actualModel, colour.r, colour.g, colour.b, colour.a, ((IArmorModelSpecNBT) spec).getArmorTexture());
@@ -163,7 +163,7 @@ public class NuminaArmorLayer<T extends LivingEntity, M extends HumanoidModel<T>
      */
     @Override
     public ResourceLocation getArmorResource(Entity entity, @Nonnull ItemStack stack, EquipmentSlot slot, @Nullable String type) {
-        return stack.getCapability(ModelSpecCapability.RENDER).map(spec->{
+        return stack.getCapability(NuminaCapabilities.RENDER).map(spec->{
             if (spec.getSpecType() == SpecType.ARMOR_SKIN && spec instanceof IArmorModelSpecNBT) {
                 return ((IArmorModelSpecNBT) spec).getArmorTexture();
             }

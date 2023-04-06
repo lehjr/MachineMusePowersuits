@@ -27,7 +27,7 @@
 package lehjr.numina.common.heat;
 
 import com.google.common.util.concurrent.AtomicDouble;
-import lehjr.numina.common.capabilities.heat.HeatCapability;
+import lehjr.numina.common.capabilities.NuminaCapabilities;
 import lehjr.numina.common.constants.NuminaConstants;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -67,7 +67,7 @@ public class HeatUtils {
             if ((slot.getType().equals(EquipmentSlot.Type.ARMOR)) ||
                     // but hand slots can hold armor
                     (slot.getType().equals(EquipmentSlot.Type.HAND) && !(itemStack.getItem() instanceof ArmorItem))) {
-                itemStack.getCapability(HeatCapability.HEAT).ifPresent(heat->maxHeat.getAndAdd(heat.getMaxHeatStored()));
+                itemStack.getCapability(NuminaCapabilities.HEAT).ifPresent(heat->maxHeat.getAndAdd(heat.getMaxHeatStored()));
             }
         }
         return maxHeat.get();
@@ -137,7 +137,7 @@ public class HeatUtils {
             boolean allPresent = true;
 
             for (ItemStack stack : entity.getArmorSlots()) {
-                if (!stack.getCapability(HeatCapability.HEAT).isPresent()) {
+                if (!stack.getCapability(NuminaCapabilities.HEAT).isPresent()) {
                     allPresent = false;
                     break;
                 }
@@ -149,7 +149,7 @@ public class HeatUtils {
                 }
                 double finalHeatLeftToGive = heatLeftToGive;
                 heatLeftToGive -= entity.getItemBySlot(slot)
-                        .getCapability(HeatCapability.HEAT).map(heat->heat.receiveHeat(finalHeatLeftToGive, false)).orElse(0D);
+                        .getCapability(NuminaCapabilities.HEAT).map(heat->heat.receiveHeat(finalHeatLeftToGive, false)).orElse(0D);
             }
 
             // check if any heat applied to entity otherwise do nothing
@@ -165,19 +165,19 @@ public class HeatUtils {
     }
 
     public static double getItemMaxHeat(@Nonnull ItemStack stack) {
-        return stack.getCapability(HeatCapability.HEAT).map(h->h.getMaxHeatStored()).orElse(0D);
+        return stack.getCapability(NuminaCapabilities.HEAT).map(h->h.getMaxHeatStored()).orElse(0D);
     }
 
     public static double getItemHeat(@Nonnull ItemStack stack) {
-        return stack.getCapability(HeatCapability.HEAT).map(h->h.getHeatStored()).orElse(0D);
+        return stack.getCapability(NuminaCapabilities.HEAT).map(h->h.getHeatStored()).orElse(0D);
     }
 
     public static double heatItem(@Nonnull ItemStack stack, double value) {
-        return stack.getCapability(HeatCapability.HEAT, null).map(h->h.receiveHeat(value, false)).orElse(0D);
+        return stack.getCapability(NuminaCapabilities.HEAT, null).map(h->h.receiveHeat(value, false)).orElse(0D);
     }
 
     public static double coolItem(@Nonnull ItemStack stack, double value) {
-        return stack.getCapability(HeatCapability.HEAT, null).map(h->h.extractHeat(value, false)).orElse(0D);
+        return stack.getCapability(NuminaCapabilities.HEAT, null).map(h->h.extractHeat(value, false)).orElse(0D);
     }
 
     protected static final class OverheatDamage extends DamageSource {

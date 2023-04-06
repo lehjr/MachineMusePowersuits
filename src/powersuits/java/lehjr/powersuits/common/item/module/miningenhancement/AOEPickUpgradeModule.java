@@ -26,6 +26,7 @@
 
 package lehjr.powersuits.common.item.module.miningenhancement;
 
+import lehjr.numina.common.capabilities.NuminaCapabilities;
 import lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
 import lehjr.numina.common.capabilities.module.blockbreaking.IBlockBreakingModule;
 import lehjr.numina.common.capabilities.module.miningenhancement.MiningEnhancement;
@@ -147,7 +148,7 @@ public class AOEPickUpgradeModule extends AbstractPowerModule {
                                 // find an installed module to break current block
                                 for (ItemStack blockBreakingModule : modeChanging.getInstalledModulesOfType(IBlockBreakingModule.class)) {
                                     int playerEnergy = ElectricItemUtils.getPlayerEnergy(player);
-                                    if (blockBreakingModule.getCapability(PowerModuleCapability.POWER_MODULE).map(b -> {
+                                    if (blockBreakingModule.getCapability(NuminaCapabilities.POWER_MODULE).map(b -> {
                                         // check if module can break block
                                         if(b instanceof IBlockBreakingModule) {
                                             return ((IBlockBreakingModule) b).canHarvestBlock(itemStack, state, player, blockPos, playerEnergy - energyUsage);
@@ -160,7 +161,7 @@ public class AOEPickUpgradeModule extends AbstractPowerModule {
                                         blocksBroken.getAndAdd(1);
                                         Block.updateOrDestroy(state, Blocks.AIR.defaultBlockState(), player.level, blockPos, Block.UPDATE_ALL);
                                         ElectricItemUtils.drainPlayerEnergy(player,
-                                                blockBreakingModule.getCapability(PowerModuleCapability.POWER_MODULE).map(m -> {
+                                                blockBreakingModule.getCapability(NuminaCapabilities.POWER_MODULE).map(m -> {
                                                     if (m instanceof IBlockBreakingModule) {
                                                         return ((IBlockBreakingModule) m).getEnergyUsage();
                                                     }
@@ -184,7 +185,7 @@ public class AOEPickUpgradeModule extends AbstractPowerModule {
         @Override
         @Nonnull
         public <T> LazyOptional<T> getCapability(@Nonnull final Capability<T> capability, final @Nullable Direction side) {
-            final LazyOptional<T> powerModuleCapability = PowerModuleCapability.POWER_MODULE.orEmpty(capability, powerModuleHolder);
+            final LazyOptional<T> powerModuleCapability = NuminaCapabilities.POWER_MODULE.orEmpty(capability, powerModuleHolder);
             if (powerModuleCapability.isPresent()) {
                 return powerModuleCapability;
             }
