@@ -27,7 +27,6 @@
 package lehjr.numina.common.capabilities.render.modelspec;
 
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 
 /**
  * This is just a way of mapping a possible texture combinations for a piece of PowerArmor using the default vanilla model
@@ -39,7 +38,7 @@ public class TextureSpec extends SpecBase {
 
     @Override
     public Component getDisaplayName() {
-        return new TranslatableComponent(new StringBuilder("textureSpec.")
+        return Component.translatable(new StringBuilder("textureSpec.")
                 .append(this.getName())
                 .append(".specName")
                 .toString());

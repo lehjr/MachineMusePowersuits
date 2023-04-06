@@ -30,31 +30,24 @@ import lehjr.numina.common.constants.NuminaConstants;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
 
 @Mod.EventBusSubscriber(modid = NuminaConstants.MOD_ID, value = Dist.CLIENT)
 public class SoundDictionary {
-    public static SoundEvent SOUND_EVENT_GUI_INSTALL = initSoundSound("gui_install");
-    public static SoundEvent SOUND_EVENT_GUI_SELECT = initSoundSound("gui_select");
-    public static SoundEvent SOUND_EVENT_BOOP = initSoundSound("boop");
-
     static {
         new SoundDictionary();
     }
+   public static final DeferredRegister<SoundEvent> NUMINA_SOUND_EVENTS = DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, NuminaConstants.MOD_ID);
+    public static final RegistryObject<SoundEvent> SOUND_EVENT_GUI_INSTALL = NUMINA_SOUND_EVENTS.register("gui_install",
+            () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(NuminaConstants.MOD_ID, "gui_install")));
 
-    @SubscribeEvent
-    public static void registerSoundEvent(RegistryEvent.Register<SoundEvent> event) {
-        event.getRegistry().registerAll(
-                SOUND_EVENT_GUI_INSTALL,
-                SOUND_EVENT_GUI_SELECT,
-                SOUND_EVENT_BOOP);
-    }
+    public static final RegistryObject<SoundEvent> SOUND_EVENT_GUI_SELECT = NUMINA_SOUND_EVENTS.register("gui_select",
+            () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(NuminaConstants.MOD_ID, "gui_select")));
 
-    private static SoundEvent initSoundSound(String soundName) {
-        ResourceLocation location = new ResourceLocation(NuminaConstants.MOD_ID, soundName);
-        SoundEvent event = new SoundEvent(location).setRegistryName(location);
-        return event;
-    }
+
+    public static final RegistryObject<SoundEvent> SOUND_EVENT_BOOP = NUMINA_SOUND_EVENTS.register("boop",
+            () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(NuminaConstants.MOD_ID, "boop")));
 }

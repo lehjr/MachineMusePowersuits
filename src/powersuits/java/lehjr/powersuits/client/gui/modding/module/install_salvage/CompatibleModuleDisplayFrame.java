@@ -49,7 +49,7 @@ public class CompatibleModuleDisplayFrame extends ModuleSelectionFrame {
         target.getModularItemCapability().ifPresent(iModularItem -> {
             // get list of all possible modules
             ForgeRegistries.ITEMS.getValues().forEach(item -> {
-                boolean isModuleInstalled = iModularItem.isModuleInstalled(item.getRegistryName());
+                boolean isModuleInstalled = iModularItem.isModuleInstalled(item);
                 ItemStack module = new ItemStack(item, 1);
                 if (iModularItem.isModuleValid(module) && !possibleItems.contains(module)) {
                     module.getCapability(PowerModuleCapability.POWER_MODULE).ifPresent(m-> {

@@ -19,12 +19,12 @@ public class ClientEventBusSubscriber {
 
     @SubscribeEvent
     public static void onRegisterRenderers(final EntityRenderersEvent.RegisterRenderers event) {
-        event.registerEntityRenderer(MPSObjects.RAILGUN_BOLT_ENTITY_TYPE.get(), RailGunBoltRenderer::new);
-        event.registerEntityRenderer(MPSObjects.LUX_CAPACITOR_ENTITY_TYPE.get(), LuxCapacitorEntityRenderer::new);
-        event.registerEntityRenderer(MPSObjects.PLASMA_BALL_ENTITY_TYPE.get(), PlasmaBoltEntityRenderer::new);
-        event.registerEntityRenderer(MPSObjects.SPINNING_BLADE_ENTITY_TYPE.get(), SpinningBladeEntityRenderer::new);
-        event.registerBlockEntityRenderer(MPSObjects.LUX_CAP_BLOCK_ENTITY_TYPE.get(), LuxCapacitorBER::new);
-        event.registerBlockEntityRenderer(MPSObjects.TINKER_TABLE_BLOCKENTITY_TYPE.get(), TinkerTableBER::new);
+//        event.registerEntityRenderer(MPSObjects.RAILGUN_BOLT_ENTITY_TYPE.get(), RailGunBoltRenderer::new);
+//        event.registerEntityRenderer(MPSObjects.LUX_CAPACITOR_ENTITY_TYPE.get(), LuxCapacitorEntityRenderer::new);
+//        event.registerEntityRenderer(MPSObjects.PLASMA_BALL_ENTITY_TYPE.get(), PlasmaBoltEntityRenderer::new);
+//        event.registerEntityRenderer(MPSObjects.SPINNING_BLADE_ENTITY_TYPE.get(), SpinningBladeEntityRenderer::new);
+//        event.registerBlockEntityRenderer(MPSObjects.LUX_CAP_BLOCK_ENTITY_TYPE.get(), LuxCapacitorBER::new);
+//        event.registerBlockEntityRenderer(MPSObjects.TINKER_TABLE_BLOCKENTITY_TYPE.get(), TinkerTableBER::new);
     }
 }
 

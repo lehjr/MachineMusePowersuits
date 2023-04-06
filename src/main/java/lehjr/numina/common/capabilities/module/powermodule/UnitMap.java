@@ -2,8 +2,6 @@ package lehjr.numina.common.capabilities.module.powermodule;
 
 import lehjr.numina.common.constants.TagConstants;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 
 import javax.annotation.Nonnull;
 import java.util.HashMap;
@@ -16,7 +14,8 @@ import java.util.Map;
  */
 public enum UnitMap {
     MAP;
-    static final Component EMPTY = new TextComponent("");
+    static final Component EMPTY = Component.literal("");
+
 
     protected static Map<String, Component> units = new HashMap<>();
 
@@ -24,9 +23,9 @@ public enum UnitMap {
         if (unit != null && !unit.isEmpty()) {
             if (!units.containsKey(propertyName)) {
                 if (unit.startsWith(TagConstants.MODULE_TRADEOFF_PREFIX)) {
-                    units.put(propertyName, new TranslatableComponent(unit));
+                    units.put(propertyName, Component.translatable(unit));
                 } else {
-                    units.put(propertyName, new TextComponent(unit));
+                    units.put(propertyName, Component.literal(unit));
                 }
             }
         }

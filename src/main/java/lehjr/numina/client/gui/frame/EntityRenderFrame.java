@@ -3,8 +3,6 @@ package lehjr.numina.client.gui.frame;
 import com.mojang.blaze3d.platform.Lighting;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Quaternion;
-import com.mojang.math.Vector3f;
 import lehjr.numina.client.gui.geometry.IDrawable;
 import lehjr.numina.client.gui.geometry.Rect;
 import lehjr.numina.common.math.MathUtils;
@@ -13,6 +11,7 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.LivingEntity;
+import org.joml.Quaternionf;
 
 import java.util.List;
 
@@ -125,32 +124,34 @@ public class EntityRenderFrame extends AbstractGuiFrame implements IGuiFrame {
             float mouse_y = (float) ((float) ((int) guiTop + 75 - 50) - this.oldMouseY);
             double i = (centerX() + offsetx);
             double j = (bottom() - 5 + offsety);
-            renderEntityInInventory(i, j, zoom, mouse_x, mouse_y, this.livingEntity);
+            renderEntityInInventory(i, j, zoom, this.livingEntity);
         }
     }
 
     // TODO: model rotation based on a scaled value like in MPS for 1.7.10
     // coppied from player inventory
-    public static void renderEntityInInventory(double pPosX, double pPosY, float pScale, float pMouseX, float pMouseY, LivingEntity pLivingEntity) {
-        float f = (float)Math.atan(pMouseX / 40.0F);
-        float f1 = (float)Math.atan(pMouseY / 40.0F);
+    public void renderEntityInInventory(double posX, double posY, float scale, LivingEntity pLivingEntity) {
+        float f = (float) rotx;///(float)Math.atan(mouseX / 40.0F);
+        float f1 = (float) roty;//(float)Math.atan(mouseY / 40.0F);
+
+
         PoseStack posestack = RenderSystem.getModelViewStack();
         posestack.pushPose();
-        posestack.translate(pPosX, pPosY, 1050.0D);
+        posestack.translate((float)posX, (float)posY, 1050.0F);
         posestack.scale(1.0F, 1.0F, -1.0F);
         RenderSystem.applyModelViewMatrix();
         PoseStack posestack1 = new PoseStack();
-        posestack1.translate(0.0D, 0.0D, 1000.0D);
-        posestack1.scale(pScale, pScale, pScale);
-        Quaternion quaternion = Vector3f.ZP.rotationDegrees(180.0F);
-        Quaternion quaternion1 = Vector3f.XP.rotationDegrees(f1 * 20.0F);
-        quaternion.mul(quaternion1);
-        posestack1.mulPose(quaternion);
-        float f2 = pLivingEntity.yBodyRot;
-        float f3 = pLivingEntity.getYRot();
-        float f4 = pLivingEntity.getXRot();
-        float f5 = pLivingEntity.yHeadRotO;
-        float f6 = pLivingEntity.yHeadRot;
+        posestack1.translate(0.0F, 0.0F, 1000.0F);
+        posestack1.scale((float)scale, (float)scale, (float)scale);
+        Quaternionf quaternionf = (new Quaternionf()).rotateZ((float)Math.PI);
+        Quaternionf quaternionf1 = (new Quaternionf()).rotateX(f1 * 20.0F * ((float)Math.PI / 180F));
+        quaternionf.mul(quaternionf1);
+        posestack1.mulPose(quaternionf);
+        float yBodyRot = pLivingEntity.yBodyRot;
+        float yRot = pLivingEntity.getYRot();
+        float xRot = pLivingEntity.getXRot();
+        float yHeadRotO = pLivingEntity.yHeadRotO;
+        float yHeadRot = pLivingEntity.yHeadRot;
         pLivingEntity.yBodyRot = 180.0F + f * 20.0F;
         pLivingEntity.setYRot(180.0F + f * 40.0F);
         pLivingEntity.setXRot(-f1 * 20.0F);
@@ -158,8 +159,8 @@ public class EntityRenderFrame extends AbstractGuiFrame implements IGuiFrame {
         pLivingEntity.yHeadRotO = pLivingEntity.getYRot();
         Lighting.setupForEntityInInventory();
         EntityRenderDispatcher entityrenderdispatcher = Minecraft.getInstance().getEntityRenderDispatcher();
-        quaternion1.conj();
-        entityrenderdispatcher.overrideCameraOrientation(quaternion1);
+        quaternionf1.conjugate();
+        entityrenderdispatcher.overrideCameraOrientation(quaternionf1);
         entityrenderdispatcher.setRenderShadow(false);
         MultiBufferSource.BufferSource multibuffersource$buffersource = Minecraft.getInstance().renderBuffers().bufferSource();
         RenderSystem.runAsFancy(() -> {
@@ -167,11 +168,11 @@ public class EntityRenderFrame extends AbstractGuiFrame implements IGuiFrame {
         });
         multibuffersource$buffersource.endBatch();
         entityrenderdispatcher.setRenderShadow(true);
-        pLivingEntity.yBodyRot = f2;
-        pLivingEntity.setYRot(f3);
-        pLivingEntity.setXRot(f4);
-        pLivingEntity.yHeadRotO = f5;
-        pLivingEntity.yHeadRot = f6;
+        pLivingEntity.yBodyRot = yBodyRot;
+        pLivingEntity.setYRot(yRot);
+        pLivingEntity.setXRot(xRot);
+        pLivingEntity.yHeadRotO = yHeadRotO;
+        pLivingEntity.yHeadRot = yHeadRot;
         posestack.popPose();
         RenderSystem.applyModelViewMatrix();
         Lighting.setupFor3DItems();

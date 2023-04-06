@@ -28,8 +28,6 @@ package lehjr.powersuits.client.model.block;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import lehjr.numina.client.model.obj.OBJBakedCompositeModel;
-import lehjr.numina.client.model.obj.OBJPartData;
-import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.capabilities.module.powermodule.PowerModuleCapability;
 import lehjr.numina.common.constants.TagConstants;
 import lehjr.numina.common.math.Color;
@@ -37,20 +35,22 @@ import lehjr.powersuits.client.model.helper.LuxCapHelper;
 import lehjr.powersuits.common.block.LuxCapacitorBlock;
 import lehjr.powersuits.common.constants.MPSConstants;
 import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.ItemOverrides;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.Tag;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.model.BakedModelWrapper;
-import net.minecraftforge.client.model.PerspectiveMapWrapper;
-import net.minecraftforge.client.model.data.IModelData;
+import net.minecraftforge.client.model.data.ModelData;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -71,20 +71,18 @@ public class LuxCapacitorModelWrapper extends BakedModelWrapper<OBJBakedComposit
         this.overrides = new LuxCapacitorItemOverrides(this);
     }
 
-    @Nonnull
-    @Override // don't cache the quads for blocks
-    public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, @Nonnull Random rand, @Nonnull IModelData extraData) {
-//        return originalModel.getQuads(state, side, rand, extraData);
+    @Override
+    public @NotNull List<BakedQuad> getQuads(@org.jetbrains.annotations.Nullable BlockState state, @org.jetbrains.annotations.Nullable Direction side, @NotNull RandomSource rand, @NotNull ModelData extraData, @org.jetbrains.annotations.Nullable RenderType renderType) {
         return empty;
     }
 
     static final List<BakedQuad> empty = new ArrayList<>();
 
     @Override // don't cache the quads for blocks
-    public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, Random rand) {
+    public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, RandomSource rand) {
         if (state == null) {
-            IModelData extraData = LuxCapHelper.getItemModelData(colour != null ? colour.getInt() : Color.WHITE.getInt());
-            return originalModel.getQuads(state, side, rand, extraData);
+            ModelData extraData = LuxCapHelper.getItemModelData(colour != null ? colour.getARGBInt() : Color.WHITE.getARGBInt());
+            return originalModel.getQuads(state, side, rand);// FIXME, extraData);
         }
         return empty;
     }
@@ -96,10 +94,10 @@ public class LuxCapacitorModelWrapper extends BakedModelWrapper<OBJBakedComposit
      * @param poseStack
      * @return
      */
-    @Override
-    public BakedModel handlePerspective(ItemTransforms.TransformType cameraTransformType, PoseStack poseStack) {
-        return PerspectiveMapWrapper.handlePerspective(this, originalModel.getModelState(), cameraTransformType, poseStack);
-    }
+//    @Override
+//    public BakedModel handlePerspective(ItemTransforms.TransformType cameraTransformType, PoseStack poseStack) {
+//        return PerspectiveMapWrapper.handlePerspective(this, originalModel.getModelState(), cameraTransformType, poseStack);
+//    }
 
     /**
      * required to set Lens color

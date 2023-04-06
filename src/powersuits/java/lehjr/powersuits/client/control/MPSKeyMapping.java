@@ -9,7 +9,7 @@ import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 
 public class MPSKeyMapping extends KeyMapping {
     public final ResourceLocation registryName;
@@ -55,7 +55,7 @@ public class MPSKeyMapping extends KeyMapping {
 
         NuminaPackets.CHANNEL_INSTANCE.sendToServer(new ToggleRequestPacket(registryName, toggleval));
         for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
-            player.getInventory().getItem(i).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+            player.getInventory().getItem(i).getCapability(ForgeCapabilities.ITEM_HANDLER)
                     .filter(IModularItem.class::isInstance)
                     .map(IModularItem.class::cast)
                     .ifPresent(handler -> handler.toggleModule(registryName, toggleval));

@@ -30,7 +30,7 @@ import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.network.NetworkEvent;
 
 import java.util.function.Supplier;
@@ -70,7 +70,7 @@ public class ToggleRequestPacket {
                 return;
 
             for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
-                player.getInventory().getItem(i).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+                player.getInventory().getItem(i).getCapability(ForgeCapabilities.ITEM_HANDLER)
                         .filter(IModularItem.class::isInstance)
                         .map(IModularItem.class::cast)
                         .ifPresent(handler -> handler.toggleModule(registryName, toggleval));

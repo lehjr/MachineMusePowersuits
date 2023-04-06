@@ -1,6 +1,8 @@
 {
   "pack": {
-    "pack_format": 6,
-    "description": "Resources used for Modular Powersuits"
+    "description": "Resources used for Modular Powersuits",
+    "pack_format": 13,
+    "forge:client_resources_pack_format": 13,
+    "forge:server_data_pack_format": 12
   }
 }

@@ -26,7 +26,8 @@
 
 package lehjr.numina.common.capabilities.module.powermodule;
 
-import net.minecraft.network.chat.TranslatableComponent;
+
+import net.minecraft.network.chat.Component;
 
 /**
  * The module categories
@@ -47,14 +48,14 @@ public enum ModuleCategory {
     MINING_ENHANCEMENT("numina.module.category.miningenhancement", "Mining_Enhancement");
 
     private final String configTitle;
-    private final TranslatableComponent translation;
+    private final Component translation;
 
     ModuleCategory(String translationString, String configTitle) {
-        this.translation = new TranslatableComponent(translationString);
+        this.translation = Component.translatable(translationString);
         this.configTitle = configTitle;
     }
 
-    public TranslatableComponent getTranslation() {
+    public Component getTranslation() {
         return translation;
     }
 

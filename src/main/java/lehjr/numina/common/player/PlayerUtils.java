@@ -30,7 +30,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.biome.Biome;
-import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 
@@ -106,7 +105,7 @@ public final class PlayerUtils {
             cool += 0.5;
 
         // If nighttime and in the desert, increase cooling
-        if (!player.level.isDay() && getBiome(player).getBiomeCategory().equals(Biomes.DESERT)) {
+        if (!player.level.isDay() && getBiome(player).coldEnoughToSnow(player.blockPosition()) /*.getBiomeCategory().equals(Biomes.DESERT) FIXME*/) {
             cool += 0.8;
         }
 

@@ -28,26 +28,27 @@ package lehjr.numina.client.screen;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
+import lehjr.numina.client.config.IMeterConfig;
 import lehjr.numina.client.gui.meter.EnergyMeter;
+import lehjr.numina.common.config.NuminaSettings;
 import lehjr.numina.common.constants.NuminaConstants;
 import lehjr.numina.common.container.ChargingBaseMenu;
+import lehjr.numina.common.math.Color;
 import lehjr.numina.common.string.StringUtils;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 
 public class ChargingBaseScreen extends AbstractContainerScreen<ChargingBaseMenu> {
     public static final ResourceLocation BACKGROUND = new ResourceLocation(NuminaConstants.MOD_ID, "textures/gui/container/chargingbase.png");
-    static final Component ENERGYSTRING = new TranslatableComponent("numina.energy").append(": ");
+    static final Component ENERGYSTRING = Component.translatable("numina.energy").append(": ");
     EnergyMeter energyMeter;
 
     public ChargingBaseScreen(ChargingBaseMenu pMenu, Inventory pInventory, Component pTitle) {
         super(pMenu, pInventory, pTitle);
-        energyMeter = new EnergyMeter();
+        energyMeter = new EnergyMeter(NuminaSettings::getEnergyMeterConfig);
     }
 
     @Override
@@ -81,7 +82,7 @@ public class ChargingBaseScreen extends AbstractContainerScreen<ChargingBaseMenu
                 .append(" FE").toString();
 
         this.font.draw(matrixStack,
-                new TextComponent(energyString),
+                Component.literal(energyString),
                 (float)(imageWidth -71),
                 (float)(this.imageHeight - 108.0),
                 4210752);

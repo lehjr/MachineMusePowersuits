@@ -30,6 +30,7 @@ import lehjr.powersuits.common.base.MPSObjects;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -37,7 +38,6 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.ThrowableProjectile;
-import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
@@ -158,7 +158,7 @@ public class PlasmaBallEntity extends ThrowableProjectile implements IEntityAddi
         if (!this.level.isClientSide) { // Dist.SERVER
             boolean flag = this.level.getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING);
             // FIXME: this is probably all wrong
-            this.level.explode(this, this.getX(), this.getY(), this.getZ(), 3 * this.entityData.get(EXPLOSIVENESS), flag ? Explosion.BlockInteraction.DESTROY : Explosion.BlockInteraction.BREAK);
+            this.level.explode(this, this.getX(), this.getY(), this.getZ(), 3 * this.entityData.get(EXPLOSIVENESS), flag ? /* Explosion.BlockInteraction.DESTROY */ Level.ExplosionInteraction.MOB : Level.ExplosionInteraction.BLOCK /* Explosion.BlockInteraction.DESTROY_WITH_DECAY */);
         }
         for (int var3 = 0; var3 < 8; ++var3) {
             this.level.addParticle(ParticleTypes.FLAME,
@@ -206,7 +206,7 @@ public class PlasmaBallEntity extends ThrowableProjectile implements IEntityAddi
     }
 
     @Override
-    public Packet<?> getAddEntityPacket() {
+    public Packet<ClientGamePacketListener> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
 }

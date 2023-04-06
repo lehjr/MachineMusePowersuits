@@ -26,9 +26,7 @@
 
 package lehjr.numina.client.model.obj;
 
-import net.minecraftforge.client.model.data.EmptyModelData;
-import net.minecraftforge.client.model.data.IModelData;
-import net.minecraftforge.client.model.data.ModelDataMap;
+import net.minecraftforge.client.model.data.ModelData;
 import net.minecraftforge.client.model.data.ModelProperty;
 
 import java.util.Map;
@@ -38,33 +36,32 @@ public class OBJPartData {
     public static final ModelProperty<Integer> COLOR = new ModelProperty<>();
     public static final ModelProperty<Boolean> VISIBLE = new ModelProperty<>();
     public static final ModelProperty<Boolean> GLOW = new ModelProperty<>();
+    private final Map<String, ModelData> parts;
 
-    private final Map<String, IModelData> parts;
-
-    public OBJPartData(Map<String, IModelData> parts) {
+    public OBJPartData(Map<String, ModelData> parts) {
         this.parts = parts;
     }
 
-    public IModelData getSubmodelData(String name) {
-        return parts.getOrDefault(name, EmptyModelData.INSTANCE);
+    public ModelData getSubmodelData(String name) {
+        return parts.getOrDefault(name, ModelData.EMPTY);
     }
 
-    public void putSubmodelData(String name, IModelData data) {
+    public void putSubmodelData(String name, ModelData data) {
         parts.put(name, data);
     }
 
-    public static IModelData makeOBJPartData(boolean glow, boolean visible, int colour) {
-        return new ModelDataMap.Builder()
-                .withInitial(GLOW, glow)
-                .withInitial(COLOR, colour)
-                .withInitial(VISIBLE, visible)
+    public static ModelData makeOBJPartData(boolean glow, boolean visible, int colour) {
+        return ModelData.builder()
+                .with(GLOW, glow)
+                .with(COLOR, colour)
+                .with(VISIBLE, visible)
                 .build();
     }
 
-    public static IModelData getOBJPartData(IModelData extraData, String name) {
-        OBJPartData data = extraData.getData(SUBMODEL_DATA);
+    public static ModelData getOBJPartData(ModelData extraData, String name) {
+        OBJPartData data = extraData.get(SUBMODEL_DATA);
         if (data == null) {
-            return EmptyModelData.INSTANCE;
+            return ModelData.EMPTY;
         }
         return data.getSubmodelData(name);
     }

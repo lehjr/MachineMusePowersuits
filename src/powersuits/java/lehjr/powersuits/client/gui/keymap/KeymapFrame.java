@@ -15,8 +15,6 @@ import lehjr.powersuits.client.event.RenderEventHandler;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.lwjgl.glfw.GLFW;
@@ -151,7 +149,7 @@ public class KeymapFrame extends ScrollableFrame {
                     top(), // y
                     150, // width
                     //20, // height
-                    new TranslatableComponent(kb.getName()), kb.showOnHud);
+                    Component.translatable(kb.getName()), kb.showOnHud);
 
             this.checkbox.setOnPressed(pressed ->{
                 kb.showOnHud = this.checkbox.isChecked();
@@ -169,7 +167,7 @@ public class KeymapFrame extends ScrollableFrame {
             NuminaRenderer.drawModuleAt(matrixStack, left() + 2, top() + 3, module, true);
             checkbox.render(matrixStack, mouseX, mouseY, partialTick);
             if (keybindingToRemap != null && keybindingToRemap == kb) {
-                button.setLabel((new TextComponent("> ")).append(kb.getKey().getDisplayName().copy().withStyle(ChatFormatting.YELLOW)).append(" <").withStyle(ChatFormatting.YELLOW));
+                button.setLabel((Component.literal("> ")).append(kb.getKey().getDisplayName().copy().withStyle(ChatFormatting.YELLOW)).append(" <").withStyle(ChatFormatting.YELLOW));
             } else {
                 button.setLabel(kb.getKey().getDisplayName().copy().withStyle( /* keyCodeModifierConflict ? */ ChatFormatting.WHITE /*: ChatFormatting.RED*/));
             }
@@ -193,7 +191,7 @@ public class KeymapFrame extends ScrollableFrame {
         @Override
         public List<Component> getToolTip(int x, int y) {
             if (checkbox.containsPoint(x, y)) {
-                return Arrays.asList(new TranslatableComponent("gui.powersuits.showOnHud"));
+                return Arrays.asList(Component.translatable("gui.powersuits.showOnHud"));
             }
             return super.getToolTip(x, y);
         }

@@ -1,27 +1,23 @@
 package lehjr.numina.client.model.helper;
 
 import com.google.common.collect.ImmutableList;
-import com.mojang.blaze3d.vertex.VertexFormatElement;
 import com.mojang.math.Transformation;
-import com.mojang.math.Vector3f;
-import com.mojang.math.Vector4f;
-import forge.NuminaOBJLoader;
-import forge.NuminaOBJModel;
 import lehjr.numina.client.model.obj.OBJBakedCompositeModel;
-import lehjr.numina.client.model.obj.OBJModelConfiguration;
 import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.math.Color;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.ItemOverrides;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.resources.model.Material;
+import net.minecraft.client.resources.model.ModelBakery;
 import net.minecraft.client.resources.model.ModelState;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.client.model.ForgeModelBakery;
-import net.minecraftforge.client.model.pipeline.BakedQuadBuilder;
-import net.minecraftforge.client.model.pipeline.VertexTransformer;
-import net.minecraftforge.common.model.TransformationHelper;
+import net.minecraft.world.level.material.Material;
+import net.minecraftforge.client.model.QuadTransformers;
+import net.minecraftforge.client.model.obj.ObjLoader;
+import net.minecraftforge.client.model.obj.ObjModel;
+import net.minecraftforge.common.util.TransformationHelper;
+import org.joml.Vector3f;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -75,24 +71,23 @@ public class ModelHelper {
     }
 
 
-
-    /**
+        /**
      * Get the default texture getter the models will be baked with.
      */
     public static Function<ResourceLocation, TextureAtlasSprite> defaultTextureGetter(ResourceLocation location) {
         return Minecraft.getInstance().getTextureAtlas(location);
     }
 
-    public static Function<Material, TextureAtlasSprite> whiteTextureGetter() {
-        return (iHateNamingPointlessVariables)->ForgeModelBakery.White.instance();
-    }
+//    public static Function<Material, TextureAtlasSprite> whiteTextureGetter() {
+//        return (iHateNamingPointlessVariables)-> ModelBakery.White.instance();
+//    }
 
     @Nullable
-    public static NuminaOBJModel getOBJModel(ResourceLocation location, int attempt) {
-        NuminaOBJModel model;
+    public static ObjModel getOBJModel(ResourceLocation location, int attempt) {
+        ObjModel model;
         try {
-            model = NuminaOBJLoader.INSTANCE.loadModel(
-                    new NuminaOBJModel.ModelSettings(location, true, true, true, true, null));
+            model = ObjLoader.INSTANCE.loadModel(
+                    new ObjModel.ModelSettings(location, true, true, true, true, null));
         } catch (Exception e) {
             if (attempt < 6) {
                 model = getOBJModel(location, attempt + 1);
@@ -110,17 +105,17 @@ public class ModelHelper {
     public static OBJBakedCompositeModel loadBakedModel(ModelState modelTransform,
                                                         ItemOverrides overrides,
                                                         ResourceLocation modelLocation) {
-        NuminaOBJModel model = getOBJModel(modelLocation, 0);
+        ObjModel model = getOBJModel(modelLocation, 0);
 
-        if (model != null) {
-            OBJBakedCompositeModel bakedModel = model.bake(new OBJModelConfiguration(modelLocation)/*.setCombinedTransform(modelTransform)*/,
-                    ForgeModelBakery.instance(),
-                    ForgeModelBakery.defaultTextureGetter(),
-                    modelTransform,
-                    overrides,
-                    modelLocation);
-            return bakedModel;
-        }
+//        if (model != null) {
+//            OBJBakedCompositeModel bakedModel = model.bake(new OBJModelConfiguration(modelLocation)/*.setCombinedTransform(modelTransform)*/,
+//                    ForgeModelBakery.instance(),
+//                    ForgeModelBakery.defaultTextureGetter(),
+//                    modelTransform,
+//                    overrides,
+//                    modelLocation);
+//            return bakedModel;
+//        }
         return null;
     }
 
@@ -129,95 +124,43 @@ public class ModelHelper {
      * This is better than changing material colors for Wavefront models because it means that you can use a single material for the entire model
      * instead of unique ones for each group. It also means you don't necessarily need a Wavefront model.
      */
-    public static List<BakedQuad> getColoredQuadsWithGlowAndTransform(List<BakedQuad> quadList, Color colour, final Transformation transform, boolean glow) {
+    public static List<BakedQuad> getColoredQuadsWithGlowAndTransform(List<BakedQuad> quadList, Color color, final Transformation transform, boolean glow) {
         ImmutableList.Builder<BakedQuad> builder = ImmutableList.builder();
-        quadList.forEach(quad -> builder.add(colouredQuadWithGlowAndTransform(colour, quad, !glow, transform)));
+        quadList.forEach(quad -> {
+            if (glow)
+                QuadTransformers.settingMaxEmissivity().andThen(QuadTransformers.applyingColor(color.getARGBInt())).andThen(QuadTransformers.applying(transform)).processInPlace(quad);
+            else
+                QuadTransformers.applyingColor(color.getARGBInt()).andThen(QuadTransformers.applying(transform)).processInPlace(quad);
+            builder.add(quad);
+        });
         return builder.build();
     }
 
-    public static BakedQuad colouredQuadWithGlowAndTransform(Color colour, BakedQuad quad, boolean applyDifuse, Transformation transform) {
-        QuadTransformer transformer = new QuadTransformer(colour, transform, quad.getSprite(), applyDifuse);
-        quad.pipe(transformer);
-        return transformer.build();
+    public static BakedQuad colouredQuadWithGlowAndTransform(Color color, BakedQuad quad, boolean glow, Transformation transform) {
+        if (glow)
+            QuadTransformers.settingMaxEmissivity().andThen(QuadTransformers.applyingColor(color.getARGBInt())).andThen(QuadTransformers.applying(transform)).processInPlace(quad);
+        else
+            QuadTransformers.applyingColor(color.getARGBInt()).andThen(QuadTransformers.applying(transform)).processInPlace(quad);
+        return quad;
     }
+
     public static List<BakedQuad> getColoredQuadsWithGlow(List<BakedQuad> quadList, Color color, boolean glow) {
         ImmutableList.Builder<BakedQuad> builder = ImmutableList.builder();
         quadList.forEach(quad -> {
-            builder.add(colorQuad(color, quad, !glow));
-
+            if (glow)
+                QuadTransformers.settingMaxEmissivity().andThen(QuadTransformers.applyingColor(color.getARGBInt())).processInPlace(quad);
+            else QuadTransformers.applyingColor(color.getARGBInt()).processInPlace(quad);
+            builder.add(quad);
         });
         return builder.build();
     }
 
     public static List<BakedQuad> getColoredQuads(List<BakedQuad> quadList, Color color) {
         ImmutableList.Builder<BakedQuad> builder = ImmutableList.builder();
-        for (BakedQuad quad : quadList) {
-            builder.add(colorQuad(color, quad, quad.isShade()));
-        }
+        quadList.forEach(quad -> {
+            QuadTransformers.applyingColor(color.getARGBInt()).processInPlace(quad);
+            builder.add(quad);
+        });
         return builder.build();
-    }
-
-    public static BakedQuad colorQuad(Color color, BakedQuad quad, boolean applyDifuse) {
-        QuadTransformer transformer = new QuadTransformer(color, quad.getSprite(), applyDifuse);
-        quad.pipe(transformer);
-        return transformer.build();
-    }
-
-    // see TRSRTransformer as example
-    private static class QuadTransformer extends VertexTransformer {
-        Color colour;
-        Boolean applyDiffuse;
-        Transformation transform;
-
-        public QuadTransformer(Color colour, TextureAtlasSprite texture, boolean applyDiffuse) {
-            super(new BakedQuadBuilder(texture)); // using baked quad builder with a vertex format of Blocks, but using color format of items??? FAIL??
-            this.colour = colour;
-            this.applyDiffuse = applyDiffuse;
-        }
-
-        public QuadTransformer(Color colour, final Transformation transform, TextureAtlasSprite texture, boolean applyDiffuse) {
-            super(new BakedQuadBuilder(texture));
-
-//            if(colour != null) {
-//                super.setQuadTint(Color.WHITE.getInt());
-//            }
-
-            this.transform = transform;
-            this.colour = colour;
-            this.applyDiffuse = applyDiffuse;
-        }
-
-        @Override
-        public void put(int element, float... data) {
-            VertexFormatElement.Usage usage = parent.getVertexFormat().getElements().get(element).getUsage();
-            // change color
-            if (colour != null && usage == VertexFormatElement.Usage.COLOR && data.length >= 4) {
-                data[0] = colour.r;
-                data[1] = colour.g;
-                data[2] = colour.b;
-                data[3] = colour.a;
-                super.put(element, data);
-                // transform normals and position
-            } else if (transform != null && usage == VertexFormatElement.Usage.POSITION && data.length >= 4) {
-                Vector4f pos = new Vector4f(data[0], data[1], data[2], data[3]);
-                transform.transformPosition(pos);
-                data[0] = pos.x();
-                data[1] = pos.y();
-                data[2] = pos.z();
-                data[3] = pos.w();
-                parent.put(element, data);
-            } else {
-                super.put(element, data);
-            }
-        }
-
-        @Override
-        public void setApplyDiffuseLighting(boolean diffuse) {
-            super.setApplyDiffuseLighting(applyDiffuse != null ? applyDiffuse : diffuse);
-        }
-
-        public BakedQuad build() {
-            return ((BakedQuadBuilder) parent).build();
-        }
     }
 }

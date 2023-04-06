@@ -37,10 +37,8 @@ import lehjr.numina.common.math.Color;
 import lehjr.numina.common.string.StringUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GameRenderer;
-import net.minecraft.client.renderer.ShaderInstance;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 
@@ -54,7 +52,7 @@ public class Checkbox extends Clickable {
 
     @Deprecated
     public Checkbox(MusePoint2D position, String displayString, boolean isChecked) {
-        this(position, new TextComponent(displayString), isChecked);
+        this(position, Component.literal(displayString), isChecked);
     }
 
     @Deprecated

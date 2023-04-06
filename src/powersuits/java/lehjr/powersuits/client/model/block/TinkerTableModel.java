@@ -28,7 +28,7 @@ package lehjr.powersuits.client.model.block;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Vector3f;
+import lehjr.numina.common.math.MathUtils;
 import lehjr.powersuits.common.constants.MPSConstants;
 import net.minecraft.client.model.Model;
 import net.minecraft.client.model.geom.ModelPart;
@@ -40,7 +40,9 @@ import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.common.model.TransformationHelper;
+import net.minecraftforge.common.util.TransformationHelper;
+import org.joml.Quaternionf;
+import org.joml.Vector3f;
 
 import java.util.Random;
 
@@ -99,10 +101,10 @@ public class TinkerTableModel extends Model {
         double angle = timestep * Math.PI / 5000.0;
         matrixStackIn.translate(0.5f, 1.05f, 0.5f);
         matrixStackIn.translate(0, 0.02f * Math.sin(angle * 3), 0);
-        matrixStackIn.mulPose(Vector3f.YP.rotationDegrees((float) (angle * 57.2957795131)));
-        matrixStackIn.mulPose(Vector3f.XP.rotationDegrees(45f));
+        matrixStackIn.mulPose(new Quaternionf().fromAxisAngleDeg(MathUtils.YP,  ((float) (angle * 57.2957795131))));
+        matrixStackIn.mulPose(new Quaternionf().fromAxisAngleDeg(MathUtils.XP, 45f));
         // arctangent of 0.5.
-        matrixStackIn.mulPose(new Vector3f(0,1,1).rotationDegrees(35.2643897f));
+        matrixStackIn.mulPose(new Quaternionf().fromAxisAngleDeg(new Vector3f(0,1,1), 35.2643897f));
         matrixStackIn.scale(0.5f, 0.5f, 0.5f);
         root.children.get("cube").render(matrixStackIn, bufferIn, LightTexture.FULL_BRIGHT, packedOverlayIn, 1, 1, 1, 0.8F);
         matrixStackIn.popPose();

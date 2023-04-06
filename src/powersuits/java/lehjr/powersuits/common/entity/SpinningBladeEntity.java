@@ -32,6 +32,7 @@ import lehjr.numina.common.capabilities.module.powermodule.PowerModuleCapability
 import lehjr.powersuits.common.base.MPSObjects;
 import lehjr.powersuits.common.constants.MPSConstants;
 import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
@@ -46,7 +47,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.phys.*;
 import net.minecraftforge.common.IForgeShearable;
-import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -69,7 +70,7 @@ public class SpinningBladeEntity extends ThrowableProjectile {
             AtomicDouble atomicDamage = new AtomicDouble(0);
 
             this.shootingItem = ((Player) shootingEntity).getInventory().getSelected();
-            this.shootingItem.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+            this.shootingItem.getCapability(ForgeCapabilities.ITEM_HANDLER)
                     .filter(IModeChangingItem.class::isInstance)
                     .map(IModeChangingItem.class::cast)
                     .ifPresent(iModeChangingItem -> {
@@ -199,7 +200,7 @@ public class SpinningBladeEntity extends ThrowableProjectile {
     }
 
     @Override
-    public Packet<?> getAddEntityPacket() {
+    public Packet<ClientGamePacketListener> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
 }

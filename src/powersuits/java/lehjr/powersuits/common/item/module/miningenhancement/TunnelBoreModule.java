@@ -24,9 +24,9 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.items.CapabilityItemHandler;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -95,7 +95,7 @@ public class TunnelBoreModule extends AbstractPowerModule {
                 int energyUsage = this.getEnergyUsage();
 
                 AtomicInteger blocksBroken = new AtomicInteger(0);
-                itemStack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+                itemStack.getCapability(ForgeCapabilities.ITEM_HANDLER)
                         .filter(IModeChangingItem.class::isInstance)
                         .map(IModeChangingItem.class::cast)
                         .ifPresent(modeChanging -> {

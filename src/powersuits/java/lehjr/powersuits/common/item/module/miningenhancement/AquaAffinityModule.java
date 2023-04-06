@@ -104,7 +104,7 @@ public class AquaAffinityModule extends AbstractPowerModule {
 
             @Override
             public void handleBreakSpeed(PlayerEvent.BreakSpeed event) {
-                Player player = event.getPlayer();
+                Player player = event.getEntity();
                 if (event.getNewSpeed() > 1 && (player.isUnderWater() || !player.isOnGround())
                         && ElectricItemUtils.getPlayerEnergy(player) > getEnergyUsage()) {
                     event.setNewSpeed((float) (event.getNewSpeed() * 5 * applyPropertyModifiers(MPSConstants.AQUA_HARVEST_SPEED)));

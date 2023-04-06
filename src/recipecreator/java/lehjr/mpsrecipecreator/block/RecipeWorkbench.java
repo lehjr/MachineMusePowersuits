@@ -8,7 +8,7 @@
 //import net.minecraft.inventory.container.INamedAbstractContainerMenuProvider;
 //import net.minecraft.inventory.container.SimpleNamedAbstractContainerMenuProvider;
 //import net.minecraft.network.chat.Component;
-//import net.minecraft.network.chat.TranslatableComponent;
+//import net.minecraft.network.chat.Component;
 //import net.minecraft.resources.ResourceLocation;
 //import net.minecraft.util.ContainerLevelAccess;
 //import net.minecraft.util.Hand;
@@ -48,7 +48,7 @@
 //        }
 //    }
 //
-//    private static final Component title = new TranslatableComponent("container.crafting");
+//    private static final Component title = Component.translatable("container.crafting");
 //    public INamedAbstractContainerMenuProvider func_220052_b(BlockState state, Level worldIn, BlockPos pos) {
 //        return new SimpleNamedAbstractContainerMenuProvider((windowID, playerInventory, playerEntity) ->
 //                new MPARCAbstractContainerMenu(windowID, playerInventory, ContainerLevelAccess.create(worldIn, pos)), title);

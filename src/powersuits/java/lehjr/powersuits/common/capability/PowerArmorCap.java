@@ -43,13 +43,11 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.energy.CapabilityEnergy;
-import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 import net.minecraftforge.fluids.capability.templates.FluidHandlerItemStack;
-import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
 import javax.annotation.Nonnull;
@@ -150,7 +148,7 @@ public class PowerArmorCap implements ICapabilityProvider {
         this.fluidHolder = LazyOptional.of(()-> {
             if (targetSlot == EquipmentSlot.CHEST ) {
                 modularItem.loadCapValues();
-                return modularItem.getOnlineModuleOrEmpty(MPSRegistryNames.FLUID_TANK_MODULE).getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).orElse(new EmptyFluidHandler());
+                return modularItem.getOnlineModuleOrEmpty(MPSRegistryNames.FLUID_TANK_MODULE).getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).orElse(new EmptyFluidHandler());
             } else {
                 return new EmptyFluidHandler();
             }
@@ -164,7 +162,7 @@ public class PowerArmorCap implements ICapabilityProvider {
             return LazyOptional.empty();
         }
 
-        final LazyOptional<T> modularItemCapability = CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.orEmpty(cap, modularItemHolder);
+        final LazyOptional<T> modularItemCapability = ForgeCapabilities.ITEM_HANDLER.orEmpty(cap, modularItemHolder);
         if (modularItemCapability.isPresent()) {
             return modularItemCapability;
         }
@@ -180,13 +178,13 @@ public class PowerArmorCap implements ICapabilityProvider {
         }
 
         // update item handler to gain access to the battery module if installed
-        if (cap == CapabilityEnergy.ENERGY) {
+        if (cap == ForgeCapabilities.ENERGY) {
             modularItem.loadCapValues();
             // armor first slot is armor plating, second slot is energy
             return modularItem.getStackInSlot(1).getCapability(cap, side);
         }
 
-        final LazyOptional<T> fluidCapability = CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY.orEmpty(cap, fluidHolder);
+        final LazyOptional<T> fluidCapability = ForgeCapabilities.FLUID_HANDLER_ITEM.orEmpty(cap, fluidHolder);
         if (fluidCapability.isPresent()) {
             return fluidCapability;
         }

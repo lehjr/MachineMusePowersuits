@@ -30,6 +30,7 @@ import com.google.gson.*;
 import com.mojang.blaze3d.platform.InputConstants;
 import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.config.ConfigHelper;
+import lehjr.numina.common.item.ItemUtils;
 import lehjr.powersuits.client.event.RenderEventHandler;
 import lehjr.powersuits.common.constants.MPSConstants;
 import net.minecraft.client.Minecraft;
@@ -167,7 +168,7 @@ public enum KeybindManager {
                             getMPSKeyBinds().stream().filter(kb->kb.getName().equals(name1)).findFirst().ifPresent(kb->kb.showOnHud = value);
                             // temporary way of registering keybinds to be replaced on login
                         } else {
-                            KeybindKeyHandler.registerKeyBinding(Items.AIR.getRegistryName(), name1, GLFW.GLFW_KEY_UNKNOWN, KeybindKeyHandler.mps, value);
+                            KeybindKeyHandler.registerKeyBinding(ItemUtils.getRegistryName(Items.AIR), name1, GLFW.GLFW_KEY_UNKNOWN, KeybindKeyHandler.mps, value);
                         }
                     }
                 }

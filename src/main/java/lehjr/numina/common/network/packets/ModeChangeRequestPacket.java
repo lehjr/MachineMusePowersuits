@@ -29,7 +29,7 @@ package lehjr.numina.common.network.packets;
 import lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.network.NetworkEvent;
 
 import java.util.function.Supplier;
@@ -64,7 +64,7 @@ public class ModeChangeRequestPacket {
             int slot = ModeChangeRequestPacket.slot;
             int mode = ModeChangeRequestPacket.mode;
             if (slot > -1 && slot < 9) {
-                player.getInventory().items.get(slot).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+                player.getInventory().items.get(slot).getCapability(ForgeCapabilities.ITEM_HANDLER)
                         .filter(IModeChangingItem.class::isInstance)
                         .map(IModeChangingItem.class::cast)
                         .ifPresent(handler -> handler.setActiveMode(mode));

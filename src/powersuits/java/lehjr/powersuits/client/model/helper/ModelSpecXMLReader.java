@@ -28,7 +28,6 @@ package lehjr.powersuits.client.model.helper;
 
 import com.google.common.collect.ImmutableMap;
 import com.mojang.math.Transformation;
-import com.mojang.math.Vector3f;
 import lehjr.numina.client.model.helper.ModelHelper;
 import lehjr.numina.client.model.obj.OBJBakedCompositeModel;
 import lehjr.numina.common.base.NuminaLogger;
@@ -37,17 +36,17 @@ import lehjr.numina.common.constants.TagConstants;
 import lehjr.numina.common.math.Color;
 import lehjr.numina.common.string.StringUtils;
 import lehjr.powersuits.common.config.MPSSettings;
-import net.minecraft.client.renderer.block.model.ItemOverrides;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.texture.TextureAtlas;
+import net.minecraft.client.resources.model.ModelBakery;
 import net.minecraft.client.resources.model.ModelState;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.TextureStitchEvent;
-import net.minecraftforge.client.model.ForgeModelBakery;
 import net.minecraftforge.client.model.SimpleModelState;
+import org.joml.Vector3f;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -74,7 +73,7 @@ import java.util.Objects;
 public enum ModelSpecXMLReader {
     INSTANCE;
 
-    public static void parseFile(URL file, @Nullable TextureStitchEvent.Pre event, ForgeModelBakery bakery) {
+    public static void parseFile(URL file, @Nullable TextureStitchEvent event, ModelBakery bakery) {
         try {
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
@@ -86,7 +85,7 @@ public enum ModelSpecXMLReader {
         }
     }
 
-    public static void parseFile(File file, @Nullable TextureStitchEvent.Pre event, ForgeModelBakery bakery) {
+    public static void parseFile(File file, @Nullable TextureStitchEvent event, ModelBakery bakery) {
         if (file.exists()) {
             try {
                 DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
@@ -100,7 +99,7 @@ public enum ModelSpecXMLReader {
         }
     }
 
-    public static void parseXML(Document xml, @Nullable TextureStitchEvent.Pre event, ForgeModelBakery bakery) {
+    public static void parseXML(Document xml, @Nullable TextureStitchEvent event, ModelBakery bakery) {
         if (xml != null) {
             try {
                 xml.normalizeDocument();
@@ -175,7 +174,7 @@ public enum ModelSpecXMLReader {
     /**
      * Biggest difference between the ModelSpec for Armor vs PowerFistModel2 is that the armor models don't need item camera transforms
      */
-    public static void parseModelSpec(Node specNode, TextureStitchEvent.Pre event, ForgeModelBakery bakery, SpecType specType, String specName, boolean isDefault) {
+    public static void parseModelSpec(Node specNode, TextureStitchEvent event, ModelBakery bakery, SpecType specType, String specName, boolean isDefault) {
         NodeList models = specNode.getOwnerDocument().getElementsByTagName(TagConstants.MODEL);
         java.util.List<String> textures = new ArrayList<>();
         ModelState modelTransform = null;
@@ -206,19 +205,20 @@ public enum ModelSpecXMLReader {
                         if (transformNodeList.getLength() > 0) {
                             ImmutableMap.Builder<ItemTransforms.TransformType, Transformation> builder = ImmutableMap.builder();
                             builder.put(ItemTransforms.TransformType.NONE, getTransform(transformNodeList.item(0)));
-                            modelTransform =  new SimpleModelState(builder.build());
+                            modelTransform = new SimpleModelState(Transformation.identity());
+//                            modelTransform =  new SimpleModelState(builder.build());
                             // TODO... check and see how this works.. not sure about this
                             //modelTransform = new SimpleModelState(getTransform(transformNodeList.item(0)));
                         } else {
-                            modelTransform = SimpleModelState.IDENTITY;
+                            modelTransform = new SimpleModelState(Transformation.identity());
                         }
                     }
 
-                    OBJBakedCompositeModel bakedModel =
-                        ModelHelper.loadBakedModel(
-                            modelTransform,
-                            ItemOverrides.EMPTY,
-                            new ResourceLocation(modelLocation));
+                    OBJBakedCompositeModel bakedModel = null;
+//                        ModelHelper.loadBakedModel(
+//                            modelTransform,
+//                            ItemOverrides.EMPTY,
+//                            new ResourceLocation(modelLocation));
 
                     if (bakedModel == null) {
                         NuminaLogger.logError("bakedModel NULL for: " + modelLocation);
@@ -256,7 +256,8 @@ public enum ModelSpecXMLReader {
             // this is the atlas used
             if (event.getAtlas().location() == TextureAtlas.LOCATION_BLOCKS) {
                 for (String texture : textures) {
-                    event.addSprite(new ResourceLocation(texture));
+                    NuminaLogger.logError("fix texture loading");
+//                    event.getAtlas().addSprite(new ResourceLocation(texture));
                 }
             }
         }
@@ -296,7 +297,7 @@ public enum ModelSpecXMLReader {
             NuminaLogger.logError("partName is NULL!!");
             NuminaLogger.logError("ModelSpec model: " + modelSpec.getName());
             NuminaLogger.logError("glow: " + glow);
-            NuminaLogger.logError("colour: " + colour.hexColour());
+            NuminaLogger.logError("colour: " + colour.rgbaHexColour());
         } else
             modelSpec.put(partname, new ModelPartSpec(modelSpec,
                     binding,
@@ -326,7 +327,9 @@ public enum ModelSpecXMLReader {
             Transformation trsrTransformation = getTransform(transformationNode);
             builder.put(transformType, trsrTransformation);
         }
-        return new SimpleModelState(builder.build());
+        return new SimpleModelState(Transformation.identity());
+        // FIXME: Only one transform per model state now, so maybe do a map with  <ItemTransforms.TransformType, SimpleModelState(transformation)>
+//        return new SimpleModelState(builder.build());
     }
 
     /**
@@ -371,6 +374,6 @@ public enum ModelSpecXMLReader {
     }
 
     public static Color parseColour(String colourString) {
-        return Color.fromHexString(colourString);
+        return Color.fromARGBHexString(colourString);
     }
 }

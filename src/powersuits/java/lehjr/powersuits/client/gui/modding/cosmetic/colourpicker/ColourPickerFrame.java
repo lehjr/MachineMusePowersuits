@@ -48,8 +48,7 @@ import lehjr.powersuits.common.network.packets.ColorInfoPacket;
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.IntArrayTag;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -68,7 +67,7 @@ public class ColourPickerFrame extends ScrollableFrame {
     protected List<IRect> rects = new ArrayList<>();
     static final List<String> slidersIds = new ArrayList<>(Arrays.asList( "red", "green", "blue", "alpha"));
     ColourBox colourBox;
-    static final TranslatableComponent COLOUR_PREFIX = new TranslatableComponent("gui.powersuits.colourPrefix");
+    static final Component COLOUR_PREFIX = Component.translatable("gui.powersuits.colourPrefix");
     public ClickableLabel colourLabel;
     public Optional<VanillaSlider> selectedSlider;
     public int selectedColour;
@@ -99,7 +98,7 @@ public class ColourPickerFrame extends ScrollableFrame {
         colourLabel.setOnPressed(pressed->{
             if (colours().length > selectedColour) {
                 // todo: insert chat to player??? Maybe???
-                Minecraft.getInstance().keyboardHandler.setClipboard(new Color(selectedColour).hexColour());
+                Minecraft.getInstance().keyboardHandler.setClipboard(new Color(selectedColour).rgbaHexColour());
             }
         });
         this.totalSize += colourLabel.height();
@@ -121,11 +120,11 @@ public class ColourPickerFrame extends ScrollableFrame {
             @Override
             public void updateSlider() {
                 String valString = Integer.toString((int) Math.round(100 * sliderValue * (maxValue - minValue) + minValue));
-                setMessage(new TextComponent("").append(displayString.getString()).append(" ").append(valString).append(suffix));
+                setMessage(Component.literal("").append(displayString.getString()).append(" ").append(valString).append(suffix));
             }
         };
 
-        slider.setDisplayString(new TranslatableComponent(TagConstants.MODULE_TRADEOFF_PREFIX + id));
+        slider.setDisplayString(Component.translatable(TagConstants.MODULE_TRADEOFF_PREFIX + id));
         slider.setShowDecimal(false);
         slider.setSuffix("%");
         slider.setActive(true);
@@ -240,7 +239,7 @@ public class ColourPickerFrame extends ScrollableFrame {
 
         if (this.isVisible() && this.isEnabled()) {
             if (colours().length > selectedColour) {
-                colourLabel.setLabel(new TextComponent("").append(COLOUR_PREFIX).append(" 0X").append(new Color(colours()[selectedColour]).hexColour()));
+                colourLabel.setLabel(Component.literal("").append(COLOUR_PREFIX).append(" 0X").append(new Color(colours()[selectedColour]).rgbaHexColour()));
             }
             super.preRender(matrixStack, mouseX, mouseY, partialTick);
             matrixStack.pushPose();
@@ -274,7 +273,7 @@ public class ColourPickerFrame extends ScrollableFrame {
                 this.selectedSlider.ifPresent(slider-> {
                     slider.setValueByMouse(mousex);
                     if (colours().length > selectedColour) {
-                        colours()[selectedColour] = Color.getInt((float) ((VanillaSlider)rects.get(1)).getSliderInternalValue(), (float) ((VanillaSlider)rects.get(3)).getSliderInternalValue(), (float) ((VanillaSlider)rects.get(5)).getSliderInternalValue(), (float) ((VanillaSlider)rects.get(7)).getSliderInternalValue());
+                        colours()[selectedColour] = Color.getARGBInt((float) ((VanillaSlider)rects.get(1)).getSliderInternalValue(), (float) ((VanillaSlider)rects.get(3)).getSliderInternalValue(), (float) ((VanillaSlider)rects.get(5)).getSliderInternalValue(), (float) ((VanillaSlider)rects.get(7)).getSliderInternalValue());
                         this.itemSelector.selectedType().ifPresent(slotType -> MPSPackets.CHANNEL_INSTANCE.sendToServer(new ColorInfoPacket(slotType, this.colours())));
                     }});
                 // this just sets up the sliders on selecting an item
@@ -315,7 +314,7 @@ public class ColourPickerFrame extends ScrollableFrame {
                 } else if (colourCol == colours().length) {
                     NuminaLogger.logger.debug("Adding");
                     List<Integer> intList = Arrays.stream(getIntArray(getOrCreateColourTag())).boxed().collect(Collectors.toList());
-                    intList.add(Color.WHITE.getInt());
+                    intList.add(Color.WHITE.getARGBInt());
                     setColourTagMaybe(intList);
                 }
                 return true;

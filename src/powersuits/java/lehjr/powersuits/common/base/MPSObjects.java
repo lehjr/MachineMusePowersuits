@@ -61,21 +61,26 @@ import lehjr.powersuits.common.item.module.vision.BinocularsModule;
 import lehjr.powersuits.common.item.module.vision.NightVisionModule;
 import lehjr.powersuits.common.item.module.weapon.*;
 import lehjr.powersuits.common.item.tool.PowerFist;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.common.extensions.IForgeMenuType;
+import net.minecraftforge.event.CreativeModeTabEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
 public class MPSObjects {
-    public static final MPSCreativeTab creativeTab = new MPSCreativeTab();
 
     /**
      * Blocks ------------------------------------------------------------------------------------
@@ -90,7 +95,7 @@ public class MPSObjects {
     /**
      * Block Entity Types -------------------------------------------------------------------------
      */
-    public static final DeferredRegister<BlockEntityType<?>> BLOCKENTITY_TYPES = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITIES, MPSConstants.MOD_ID);
+    public static final DeferredRegister<BlockEntityType<?>> BLOCKENTITY_TYPES = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES, MPSConstants.MOD_ID);
 
     public static final RegistryObject<BlockEntityType<TinkerTableBlockEntity>> TINKER_TABLE_BLOCKENTITY_TYPE = BLOCKENTITY_TYPES.register(MPSRegistryNames.TINKER_TABLE.getPath(),
             () -> BlockEntityType.Builder.of(TinkerTableBlockEntity::new, TINKER_TABLE_BLOCK.get()).build(null));
@@ -101,7 +106,7 @@ public class MPSObjects {
     /**
      * Entity Types ------------------------------------------------------------------------------
      */
-    public static final DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(ForgeRegistries.ENTITIES, MPSConstants.MOD_ID);
+    public static final DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, MPSConstants.MOD_ID);
 
     public static final RegistryObject<EntityType<LuxCapacitorEntity>> LUX_CAPACITOR_ENTITY_TYPE = ENTITY_TYPES.register(MPSRegistryNames.LUX_CAPACITOR.getPath(),
             ()-> EntityType.Builder.<LuxCapacitorEntity>of(LuxCapacitorEntity::new, MobCategory.MISC)
@@ -126,35 +131,35 @@ public class MPSObjects {
     /**
      * Items -------------------------------------------------------------------------------------
      */
-    public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, MPSConstants.MOD_ID);
+    public static final DeferredRegister<Item> MPS_ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, MPSConstants.MOD_ID);
 
     /* BlockItems --------------------------------------------------------------------------------- */
     // use directly as a module
-    public static final RegistryObject<Item> TINKER_TABLE_ITEM = ITEMS.register(MPSRegistryNames.TINKER_TABLE.getPath(),
+    public static final RegistryObject<Item> TINKER_TABLE_ITEM = MPS_ITEMS.register(MPSRegistryNames.TINKER_TABLE.getPath(),
             () -> new TinkerTableItem(TINKER_TABLE_BLOCK.get()));
 
-    public static final RegistryObject<Item> LUX_CAPACITOR_ITEM = ITEMS.register(MPSRegistryNames.LUX_CAPACITOR.getPath(),
+    public static final RegistryObject<Item> LUX_CAPACITOR_ITEM = MPS_ITEMS.register(MPSRegistryNames.LUX_CAPACITOR.getPath(),
             () -> new BlockItem(LUX_CAPACITOR_BLOCK.get(), new Item.Properties()
-            .tab(MPSObjects.creativeTab)
+//            .m_41491_(MPSObjects.creativeTab)
             .stacksTo(64)
             .defaultDurability(-1)
             .setNoRepair()));
 
     /* Armor -------------------------------------------------------------------------------------- */
-    public static final RegistryObject<Item> POWER_ARMOR_HELMET = ITEMS.register(MPSRegistryNames.POWER_ARMOR_HELMET.getPath(),
+    public static final RegistryObject<Item> POWER_ARMOR_HELMET = MPS_ITEMS.register(MPSRegistryNames.POWER_ARMOR_HELMET.getPath(),
             () -> new PowerArmorHelmet());
 
-    public static final RegistryObject<Item> POWER_ARMOR_CHESTPLATE = ITEMS.register(MPSRegistryNames.POWER_ARMOR_CHESTPLATE.getPath(),
+    public static final RegistryObject<Item> POWER_ARMOR_CHESTPLATE = MPS_ITEMS.register(MPSRegistryNames.POWER_ARMOR_CHESTPLATE.getPath(),
             () -> new PowerArmorChestplate());
 
-    public static final RegistryObject<Item> POWER_ARMOR_LEGGINGS = ITEMS.register(MPSRegistryNames.POWER_ARMOR_LEGGINGS.getPath(),
+    public static final RegistryObject<Item> POWER_ARMOR_LEGGINGS = MPS_ITEMS.register(MPSRegistryNames.POWER_ARMOR_LEGGINGS.getPath(),
             () -> new PowerArmorLeggings());
 
-    public static final RegistryObject<Item> POWER_ARMOR_BOOTS = ITEMS.register(MPSRegistryNames.POWER_ARMOR_BOOTS.getPath(),
+    public static final RegistryObject<Item> POWER_ARMOR_BOOTS = MPS_ITEMS.register(MPSRegistryNames.POWER_ARMOR_BOOTS.getPath(),
             () -> new PowerArmorBoots());
 
     /* HandHeld ----------------------------------------------------------------------------------- */
-    public static final RegistryObject<Item> POWER_FIST = ITEMS.register(MPSRegistryNames.POWER_FIST.getPath(),
+    public static final RegistryObject<Item> POWER_FIST = MPS_ITEMS.register(MPSRegistryNames.POWER_FIST.getPath(),
             () -> new PowerFist());
 
     /* Modules ------------------------------------------------------------------------------------ */
@@ -246,7 +251,7 @@ public class MPSObjects {
     /**
      * AbstractContainerMenu Types ----------------------------------------------------------------------------
      */
-    public static final DeferredRegister<MenuType<?>> CONTAINER_TYPES = DeferredRegister.create(ForgeRegistries.CONTAINERS, MPSConstants.MOD_ID);
+    public static final DeferredRegister<MenuType<?>> CONTAINER_TYPES = DeferredRegister.create(ForgeRegistries.MENU_TYPES, MPSConstants.MOD_ID);
 
 //    // Module crafting/install/salvage GUI
 //    public static final RegistryObject<MenuType<InstallSalvageCraftAbstractContainerMenu>> SALVAGE_CRAFT_CONTAINER_TYPE =
@@ -265,6 +270,23 @@ public class MPSObjects {
 
     static RegistryObject<Item> registerModule(String regName, Item item) {
         MPSModules.INSTANCE.addModule(MPSRegistryNames.getRegName(regName));
-        return ITEMS.register(regName, () -> item);
+        return MPS_ITEMS.register(regName, () -> item);
+    }
+
+    public static CreativeModeTab creativeTab;
+    @SubscribeEvent
+    public static void addCreativeTab(CreativeModeTabEvent.Register event) {
+        creativeTab = event.registerCreativeModeTab(new ResourceLocation(MPSConstants.MOD_ID, "items"),
+                builder -> builder.icon(() -> new ItemStack(POWER_ARMOR_HELMET.get()))
+                        .title(Component.translatable(MPSConstants.MOD_ID)));
+    }
+
+    @SubscribeEvent
+    public static void onPopulateTab(CreativeModeTabEvent.BuildContents event)
+    {
+        if (event.getTab() == creativeTab)
+        {
+            MPS_ITEMS.getEntries().forEach(item->event.accept(new ItemStack(item.get())));
+        }
     }
 }

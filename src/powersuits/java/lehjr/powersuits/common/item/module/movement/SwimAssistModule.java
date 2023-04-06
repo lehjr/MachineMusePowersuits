@@ -107,7 +107,7 @@ public class SwimAssistModule extends AbstractPowerModule {
 
                     if (swimEnergyConsumption < playerEnergy) {
                         if (player.level.isClientSide && NuminaSettings.useSounds()) {
-                            Musique.playerSound(player, MPSSoundDictionary.SWIM_ASSIST, SoundSource.PLAYERS, 1.0f, 1.0f, true);
+                            Musique.playerSound(player, MPSSoundDictionary.SWIM_ASSIST.get(), SoundSource.PLAYERS, 1.0f, 1.0f, true);
                         } else if (
                             // every 20 ticks
                                 (player.level.getGameTime() % 5) == 0) {
@@ -126,7 +126,7 @@ public class SwimAssistModule extends AbstractPowerModule {
             @Override
             public void onPlayerTickInactive(Player player, @Nonnull ItemStack itemStack) {
                 if (player.level.isClientSide && NuminaSettings.useSounds()) {
-                    Musique.stopPlayerSound(player, MPSSoundDictionary.SWIM_ASSIST);
+                    Musique.stopPlayerSound(player, MPSSoundDictionary.SWIM_ASSIST.get());
                 }
                 SprintAssistModule.setMovementModifier(getModuleStack(), 0, ForgeMod.SWIM_SPEED.get(), ForgeMod.SWIM_SPEED.get().getDescriptionId());
             }

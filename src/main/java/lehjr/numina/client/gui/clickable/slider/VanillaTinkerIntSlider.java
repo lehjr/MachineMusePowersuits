@@ -3,7 +3,7 @@ package lehjr.numina.client.gui.clickable.slider;
 import lehjr.numina.client.gui.geometry.MusePoint2D;
 import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 
 import javax.annotation.Nullable;
 
@@ -14,7 +14,7 @@ public class VanillaTinkerIntSlider extends VanillaTinkerSlider {
                                   double width,
                                   CompoundTag moduleTag,
                                   String id,
-                                  TranslatableComponent label,
+                                  Component label,
                                   @Nullable IPowerModule.PropertyModifierIntLinearAdditive modifier) {
         super(ul, width, moduleTag, id, label);
         this.modifier =modifier;

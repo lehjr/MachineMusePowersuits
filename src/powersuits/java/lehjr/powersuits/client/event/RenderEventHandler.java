@@ -28,7 +28,6 @@ package lehjr.powersuits.client.event;
 
 import com.google.common.util.concurrent.AtomicDouble;
 import com.mojang.blaze3d.platform.InputConstants;
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import lehjr.numina.client.gui.geometry.DrawableRect;
@@ -62,8 +61,8 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.*;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.ArrayList;
@@ -84,7 +83,7 @@ public enum RenderEventHandler {
      */
     @OnlyIn(Dist.CLIENT)
     @SubscribeEvent
-    public void renderBlockHighlight(DrawSelectionEvent event) {
+    public void renderBlockHighlight(RenderHighlightEvent event) {
         Color.WHITE.setShaderColor();
 
         if (event.getTarget().getType() != HitResult.Type.BLOCK || !(event.getCamera().getEntity() instanceof Player)) {
@@ -93,7 +92,7 @@ public enum RenderEventHandler {
 
         Player player = ((Player) event.getCamera().getEntity());
 
-        player.getMainHandItem().getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+        player.getMainHandItem().getCapability(ForgeCapabilities.ITEM_HANDLER)
                 .filter(IModeChangingItem.class::isInstance)
                 .map(IModeChangingItem.class::cast).ifPresent(iModeChangingItem -> {
                     iModeChangingItem.getActiveModule().getCapability(HighLightCapability.HIGHLIGHT).ifPresent(iHighlight -> {
@@ -108,7 +107,7 @@ public enum RenderEventHandler {
                         MultiBufferSource buffer = event.getMultiBufferSource();
                         VertexConsumer lineBuilder = buffer.getBuffer(RenderType.LINES);
 
-                        double partialTicks = event.getPartialTicks();
+                        double partialTicks = event.getPartialTick();
                         double x = player.xOld + (player.getX() - player.xOld) * partialTicks;
                         double y = player.yOld + player.getEyeHeight() + (player.getY() - player.yOld) * partialTicks;
                         double z = player.zOld + (player.getZ() - player.zOld) * partialTicks;
@@ -127,7 +126,7 @@ public enum RenderEventHandler {
 
     @OnlyIn(Dist.CLIENT)
     @SubscribeEvent
-    public void preTextureStitch(TextureStitchEvent.Pre event) {
+    public void preTextureStitch(TextureStitchEvent event) {
         MPSModelHelper.loadArmorModels(event, null);
     }
 
@@ -138,22 +137,22 @@ public enum RenderEventHandler {
 
     @OnlyIn(Dist.CLIENT)
     @SubscribeEvent
-    public void onPostRenderGameOverlayEvent(RenderGameOverlayEvent.Post e) {
+    public void onPostRenderGameOverlayEvent(RenderGuiOverlayEvent.Post e) {
 //        if (Re.getType() == RenderGameOverlayEvent.ElementType.LAYER) { // opaque rendering, completely ignores alpha setting
-        if (e.getType() == RenderGameOverlayEvent.ElementType.TEXT) { // this one allows translucent rendering
-            this.drawKeybindToggles(e.getMatrixStack());
+//        if (e.getType() == RenderGameOverlayEvent.ElementType.TEXT) { // this one allows translucent rendering
+            this.drawKeybindToggles(e.getPoseStack());
             ClientOverlayHandler.INSTANCE.render(e);
-        }
+//        }
     }
 
     @SubscribeEvent
     public void onPreRenderPlayer(RenderPlayerEvent.Pre event) {
-        if (!event.getPlayer().getAbilities().flying && !event.getPlayer().isOnGround() && this.playerHasFlightOn(event.getPlayer())) {
-            event.getPlayer().getAbilities().flying = true;
+        if (!event.getEntity().getAbilities().flying && !event.getEntity().isOnGround() && this.playerHasFlightOn(event.getEntity())) {
+            event.getEntity().getAbilities().flying = true;
             RenderEventHandler.ownFly = true;
         }
 
-        if(event.getPlayer().getItemBySlot(EquipmentSlot.CHEST).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+        if(event.getEntity().getItemBySlot(EquipmentSlot.CHEST).getCapability(ForgeCapabilities.ITEM_HANDLER)
                 .filter(IModularItem.class::isInstance)
                 .map(IModularItem.class::cast)
                 .map(iItemHandler -> iItemHandler.isModuleOnline(MPSRegistryNames.ACTIVE_CAMOUFLAGE_MODULE)).orElse(false)) {
@@ -163,20 +162,20 @@ public enum RenderEventHandler {
 
     private boolean playerHasFlightOn(Player player) {
         return
-                player.getItemBySlot(EquipmentSlot.HEAD).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+                player.getItemBySlot(EquipmentSlot.HEAD).getCapability(ForgeCapabilities.ITEM_HANDLER)
                         .filter(IModularItem.class::isInstance)
                         .map(IModularItem.class::cast)
                         .map(iModularItem ->
                                 iModularItem.isModuleOnline(MPSRegistryNames.FLIGHT_CONTROL_MODULE)).orElse(false) ||
 
-                        player.getItemBySlot(EquipmentSlot.CHEST).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+                        player.getItemBySlot(EquipmentSlot.CHEST).getCapability(ForgeCapabilities.ITEM_HANDLER)
                                 .filter(IModularItem.class::isInstance)
                                 .map(IModularItem.class::cast)
                                 .map(iModularItem ->
                                         iModularItem.isModuleOnline(MPSRegistryNames.JETPACK_MODULE) ||
                                                 iModularItem.isModuleOnline(MPSRegistryNames.GLIDER_MODULE)).orElse(false) ||
 
-                        player.getItemBySlot(EquipmentSlot.FEET).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+                        player.getItemBySlot(EquipmentSlot.FEET).getCapability(ForgeCapabilities.ITEM_HANDLER)
                                 .filter(IModularItem.class::isInstance)
                                 .map(IModularItem.class::cast)
                                 .map(iModularItem ->
@@ -187,20 +186,20 @@ public enum RenderEventHandler {
     public void onPostRenderPlayer(RenderPlayerEvent.Post event) {
         if (RenderEventHandler.ownFly) {
             RenderEventHandler.ownFly = false;
-            event.getPlayer().getAbilities().flying = false;
+            event.getEntity().getAbilities().flying = false;
         }
     }
 
     @SubscribeEvent
-    public void onFOVUpdate(FOVModifierEvent e) {
-        e.getEntity().getItemBySlot(EquipmentSlot.HEAD).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+    public void onFOVUpdate(ComputeFovModifierEvent e) {
+        e.getPlayer().getItemBySlot(EquipmentSlot.HEAD).getCapability(ForgeCapabilities.ITEM_HANDLER)
                 .filter(IModularItem.class::isInstance)
                 .map(IModularItem.class::cast)
                 .ifPresent(h-> {
                             if (h instanceof IModularItem) {
                                 ItemStack binnoculars = h.getOnlineModuleOrEmpty(MPSRegistryNames.BINOCULARS_MODULE);
                                 if (!binnoculars.isEmpty())
-                                    e.setNewfov((float) (e.getNewfov() / binnoculars.getCapability(PowerModuleCapability.POWER_MODULE)
+                                    e.setNewFovModifier((float) (e.getFovModifier() / binnoculars.getCapability(PowerModuleCapability.POWER_MODULE)
                                             .map(m->m.applyPropertyModifiers(MPSConstants.FOV)).orElse(1D)));
                             }
                         }
@@ -222,7 +221,7 @@ public enum RenderEventHandler {
 
     boolean isModularItemEquuiiped() {
         Player player = Minecraft.getInstance().player;
-        return Arrays.stream(EquipmentSlot.values()).filter(type ->player.getItemBySlot(type).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).filter(IModularItem.class::isInstance).isPresent()).findFirst().isPresent();
+        return Arrays.stream(EquipmentSlot.values()).filter(type ->player.getItemBySlot(type).getCapability(ForgeCapabilities.ITEM_HANDLER).filter(IModularItem.class::isInstance).isPresent()).findFirst().isPresent();
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -284,7 +283,7 @@ public enum RenderEventHandler {
                 ItemStack module = new ItemStack(ForgeRegistries.ITEMS.getValue(kb.registryName));
                 for (EquipmentSlot slot : EquipmentSlot.values()) {
                     ItemStack stack = getPlayer().getItemBySlot(slot);
-                    active = stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+                    active = stack.getCapability(ForgeCapabilities.ITEM_HANDLER)
                             .filter(IModularItem.class::isInstance)
                             .map(IModularItem.class::cast)
                             .map(iItemHandler -> {

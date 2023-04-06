@@ -32,7 +32,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.FormattedText;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FormattedCharSequence;
 
@@ -241,7 +240,7 @@ public class StringUtils {
 
         List<Component> retList = new ArrayList<>();
         for (String s : stringArray)
-            retList.add(new TextComponent(s));
+            retList.add(Component.literal(s));
         return retList;
     }
 
@@ -334,9 +333,9 @@ public class StringUtils {
 
     public static List<Component> wrapComponentToLength(Component component, int length) {
         if (component == null) {
-            component = new TextComponent("").append(component);
+            component = Component.literal("").append(component);
         }
-        return wrapStringToLength(component.getContents(), length);
+        return wrapStringToLength(component.getString(), length);
     }
 
     /**
@@ -449,11 +448,11 @@ public class StringUtils {
     }
 
     public static void drawText(PoseStack matrixStack, Component component, double x, double y, Color colour) {
-        getFontRenderer().draw(matrixStack, component,  (float) x, (float) y, colour.getInt());
+        getFontRenderer().draw(matrixStack, component,  (float) x, (float) y, colour.getARGBInt());
     }
 
     public static void drawText(PoseStack matrixStack, String s, double x, double y, Color colour) {
-        getFontRenderer().draw(matrixStack, s,  (float) x, (float) y, colour.getInt());
+        getFontRenderer().draw(matrixStack, s,  (float) x, (float) y, colour.getARGBInt());
     }
 
     /**
@@ -541,14 +540,14 @@ public class StringUtils {
      * Does the necessary openGL calls and calls the Minecraft font renderer to draw a string at the specified coords
      */
     public static void drawShadowedString(PoseStack matrixStack, Component s, double x, double y, Color c) {
-        getFontRenderer().drawShadow(matrixStack, s, (int) x, (int) y, c.getInt());
+        getFontRenderer().drawShadow(matrixStack, s, (int) x, (int) y, c.getARGBInt());
     }
 
     /**
      * Does the necessary openGL calls and calls the Minecraft font renderer to draw a string at the specified coords
      */
     public static void drawShadowedString(PoseStack matrixStack, String s, double x, double y, Color c) {
-        getFontRenderer().drawShadow(matrixStack, s, (int) x, (int) y, c.getInt());
+        getFontRenderer().drawShadow(matrixStack, s, (int) x, (int) y, c.getARGBInt());
     }
 
     public static void drawShadowedStringsJustified(PoseStack matrixStack, List<String> words, double x1, double x2, double y) {

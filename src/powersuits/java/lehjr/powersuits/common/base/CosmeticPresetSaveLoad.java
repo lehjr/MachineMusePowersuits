@@ -30,6 +30,7 @@ import com.google.common.collect.HashBiMap;
 import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.capabilities.render.ModelSpecCapability;
 import lehjr.numina.common.config.ConfigHelper;
+import lehjr.numina.common.item.ItemUtils;
 import lehjr.powersuits.common.constants.MPSConstants;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtIo;
@@ -84,7 +85,7 @@ public class CosmeticPresetSaveLoad {
         }
 
         // sub folder based on the item id
-        String subfolder = item.getRegistryName().getPath();
+        String subfolder = ItemUtils.getRegistryName(item).getPath();
 
         // path with subfolder
         Path directory = Paths.get(getConfigDirString(), "cosmeticpresets", subfolder);
@@ -203,7 +204,7 @@ public class CosmeticPresetSaveLoad {
             // get the render tag for the item
             CompoundTag renderTag =spec.getRenderTag().copy();
             if (renderTag != null) {
-                return savePreset(itemStack.getItem().getRegistryName(), presetName, renderTag);
+                return savePreset(ItemUtils.getRegistryName(itemStack), presetName, renderTag);
             }
 
         return false;

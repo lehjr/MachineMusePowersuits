@@ -6,6 +6,7 @@ import lehjr.numina.common.network.packets.BlockNamePacket;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nonnull;
 import java.util.Optional;
@@ -27,6 +28,6 @@ public interface IChameleon extends CapabilityUpdate {
     }
 
     default void setTargetBlock(Block block) {
-        setTargetBlockByRegName(block.getRegistryName());
+        setTargetBlockByRegName(ForgeRegistries.BLOCKS.getKey(block));
     }
 }

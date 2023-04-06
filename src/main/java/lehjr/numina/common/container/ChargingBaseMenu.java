@@ -42,9 +42,8 @@ import net.minecraft.world.inventory.DataSlot;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraftforge.energy.CapabilityEnergy;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.energy.IEnergyStorage;
-import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.wrapper.InvWrapper;
 
@@ -63,7 +62,7 @@ public class ChargingBaseMenu extends AbstractContainerMenu {
 
         // slot 0
         if (blockEntity != null) {
-            blockEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
+            blockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent(h -> {
                 addSlot(new IconSlotItemHandler(h, 0, 79, 35) {
                     @Override
                     public void drawIconAt(PoseStack matrixStack, double posX, double posY, Color colour) {
@@ -128,15 +127,15 @@ public class ChargingBaseMenu extends AbstractContainerMenu {
     }
 
     public int getEnergy() {
-        return blockEntity.getCapability(CapabilityEnergy.ENERGY).map(IEnergyStorage::getEnergyStored).orElse(0);
+        return blockEntity.getCapability(ForgeCapabilities.ENERGY).map(IEnergyStorage::getEnergyStored).orElse(0);
     }
 
     public int getMaxEnergy() {
-        return blockEntity.getCapability(CapabilityEnergy.ENERGY).map(IEnergyStorage::getMaxEnergyStored).orElse(0);
+        return blockEntity.getCapability(ForgeCapabilities.ENERGY).map(IEnergyStorage::getMaxEnergyStored).orElse(0);
     }
 
     public float getEnergyForMeter() {
-        return blockEntity.getCapability(CapabilityEnergy.ENERGY).map(energy->(float)energy.getEnergyStored()/(float) energy.getMaxEnergyStored()).orElse(0F);
+        return blockEntity.getCapability(ForgeCapabilities.ENERGY).map(energy->(float)energy.getEnergyStored()/(float) energy.getMaxEnergyStored()).orElse(0F);
     }
 
     public int getBlockEnergy() {
@@ -160,7 +159,7 @@ public class ChargingBaseMenu extends AbstractContainerMenu {
             } else {
                 // battery slot
                 if (blockEntity != null &&
-                    blockEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).map(h ->
+                    blockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER).map(h ->
                         h.isItemValid(0, stack)).orElse(false)) {
                     if (!this.moveItemStackTo(stack, 0, 1, false)) {
                         return ItemStack.EMPTY;

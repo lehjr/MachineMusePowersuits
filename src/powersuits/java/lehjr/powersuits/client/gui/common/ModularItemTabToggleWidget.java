@@ -8,12 +8,11 @@ import lehjr.numina.client.render.IconUtils;
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
 import lehjr.numina.common.math.Color;
 import net.minecraft.client.renderer.GameRenderer;
-import net.minecraft.client.renderer.ShaderInstance;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 
 import javax.annotation.Nonnull;
 
@@ -41,7 +40,7 @@ public class ModularItemTabToggleWidget extends Clickable {
 
         this.type = type;
         ItemStack test = getMinecraft().player.getItemBySlot(type);
-        this.icon = test.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+        this.icon = test.getCapability(ForgeCapabilities.ITEM_HANDLER)
                 .filter(IModularItem.class::isInstance)
                 .map(IModularItem.class::cast)
                 .map(iItemHandler -> test).orElse(ItemStack.EMPTY);
@@ -120,7 +119,7 @@ public class ModularItemTabToggleWidget extends Clickable {
                 if (pair != null) {
 //                    ShaderInstance oldShader = RenderSystem.getShader();
                     TextureAtlasSprite textureatlassprite = getMinecraft().getTextureAtlas(pair.getFirst()).apply(pair.getSecond());
-                    RenderSystem.setShaderTexture(0, textureatlassprite.atlas().location());
+                    RenderSystem.setShaderTexture(0, textureatlassprite.atlasLocation());
                     getMinecraft().screen.blit(matrixStack, (int)left() + 10 + offset, (int)top() + 5, getMinecraft().screen.getBlitOffset(), 16, 16, textureatlassprite);
 //                    RenderSystem.setShader(() -> oldShader);
                 }

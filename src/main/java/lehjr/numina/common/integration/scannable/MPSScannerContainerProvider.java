@@ -26,7 +26,7 @@
 //    @Nullable
 //    public AbstractContainerMenu createMenu(int windowId, Inventory inventory, Player player) {
 //        ItemStack module = ItemUtils.getActiveModuleOrEmpty(player.getItemInHand(this.hand));
-//        LazyOptional<IItemHandler> capability = module.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY);
+//        LazyOptional<IItemHandler> capability = module.getCapability(ForgeCapabilities.ITEM_HANDLER);
 //        IItemHandler itemHandler = LazyOptionalUtil.orNull(capability);
 //        return this.createAbstractContainerMenu(windowId, inventory, this.hand, itemHandler);
 //    }

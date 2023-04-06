@@ -37,8 +37,8 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.item.ArmorStandItem;
@@ -47,11 +47,11 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.client.IItemRenderProperties;
+import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 
-import java.util.Random;
 import java.util.function.Consumer;
 
 public class NuminaArmorStandItem extends ArmorStandItem {
@@ -60,34 +60,35 @@ public class NuminaArmorStandItem extends ArmorStandItem {
     }
 
     /**
-     * Called when this item is used when targetting a Block
+     * Called when this item is used when targeting a Block
      */
     @Override
-    public InteractionResult useOn(UseOnContext context) {
-        Direction direction = context.getClickedFace();
+    public InteractionResult useOn(UseOnContext pContext) {
+        Direction direction = pContext.getClickedFace();
         if (direction == Direction.DOWN) {
             return InteractionResult.FAIL;
         } else {
-            Level level = context.getLevel();
-            BlockPlaceContext blockitemusecontext = new BlockPlaceContext(context);
-            BlockPos blockpos = blockitemusecontext.getClickedPos();
-            ItemStack itemstack = context.getItemInHand();
-            Vec3 vector3d = Vec3.atBottomCenterOf(blockpos);
-            AABB aabb = EntityType.ARMOR_STAND.getDimensions().makeBoundingBox(vector3d.x(), vector3d.y(), vector3d.z());
-            if (level.noCollision((Entity)null, aabb) && level.getEntities((Entity)null, aabb).isEmpty()) {
-                if (level instanceof ServerLevel) {
-                    ServerLevel serverworld = (ServerLevel)level;
-                    NuminaArmorStand armorstandentity = NuminaObjects.ARMOR_STAND__ENTITY_TYPE.get().create(serverworld, itemstack.getTag(), null, context.getPlayer(), blockpos, MobSpawnType.SPAWN_EGG, true, true);
-                    if (armorstandentity == null) {
+            Level level = pContext.getLevel();
+            BlockPlaceContext blockplacecontext = new BlockPlaceContext(pContext);
+            BlockPos blockpos = blockplacecontext.getClickedPos();
+            ItemStack itemstack = pContext.getItemInHand();
+            Vec3 vec3 = Vec3.atBottomCenterOf(blockpos);
+            AABB aabb = EntityType.ARMOR_STAND.getDimensions().makeBoundingBox(vec3.x(), vec3.y(), vec3.z());
+            if (level.noCollision(null, aabb) && level.getEntities(null, aabb).isEmpty()) {
+                if (level instanceof ServerLevel serverlevel) {
+                    Consumer<NuminaArmorStand> consumer = EntityType.appendCustomEntityStackConfig((p_263581_) -> {
+                    }, serverlevel, itemstack, pContext.getPlayer());
+                    NuminaArmorStand armorstand = NuminaObjects.ARMOR_STAND__ENTITY_TYPE.get().create(serverlevel, itemstack.getTag(), consumer, blockpos, MobSpawnType.SPAWN_EGG, true, true);
+                    if (armorstand == null) {
                         return InteractionResult.FAIL;
                     }
-                    serverworld.addFreshEntityWithPassengers(armorstandentity);
-                    float f = (float) Mth.floor((Mth.wrapDegrees(context.getRotation() - 180.0F) + 22.5F) / 45.0F) * 45.0F;
-                    armorstandentity.moveTo(armorstandentity.getX(), armorstandentity.getY(), armorstandentity.getZ(), f, 0.0F);
-                    this.randomizePose(armorstandentity, level.random);
-                    // tries to add duplicate? results in error message about the same entity with the same uuid already added.
-//                    level.addEntity(armorstandentity);
-                    level.playSound(null, armorstandentity.getX(), armorstandentity.getY(), armorstandentity.getZ(), SoundEvents.ARMOR_STAND_PLACE, SoundSource.BLOCKS, 0.75F, 0.8F);
+
+                    float f = (float)Mth.floor((Mth.wrapDegrees(pContext.getRotation() - 180.0F) + 22.5F) / 45.0F) * 45.0F;
+                    armorstand.moveTo(armorstand.getX(), armorstand.getY(), armorstand.getZ(), f, 0.0F);
+                    this.randomizePose(armorstand, level.random);
+                    serverlevel.addFreshEntityWithPassengers(armorstand);
+                    level.playSound(null, armorstand.getX(), armorstand.getY(), armorstand.getZ(), SoundEvents.ARMOR_STAND_PLACE, SoundSource.BLOCKS, 0.75F, 0.8F);
+                    armorstand.gameEvent(GameEvent.ENTITY_PLACE, pContext.getPlayer());
                 }
 
                 itemstack.shrink(1);
@@ -98,7 +99,7 @@ public class NuminaArmorStandItem extends ArmorStandItem {
         }
     }
 
-    private void randomizePose(NuminaArmorStand armorStand, Random rand) {
+    private void randomizePose(NuminaArmorStand armorStand, RandomSource rand) {
         Rotations rotations = armorStand.getHeadPose();
         float f = rand.nextFloat() * 5.0F;
         float f1 = rand.nextFloat() * 20.0F - 10.0F;
@@ -111,12 +112,12 @@ public class NuminaArmorStandItem extends ArmorStandItem {
     }
 
     @Override
-    public void initializeClient(Consumer<IItemRenderProperties> consumer) {
-        consumer.accept(new IItemRenderProperties() {
+    public void initializeClient(Consumer<IClientItemExtensions> consumer) {
+       consumer.accept(new IClientItemExtensions() {
             private final BlockEntityWithoutLevelRenderer renderer = new NuminaArmorStandItemRenderer();
 
-            @Override
-            public BlockEntityWithoutLevelRenderer getItemStackRenderer() {
+           @Override
+           public BlockEntityWithoutLevelRenderer getCustomRenderer() {
                 return renderer;
             }
         });

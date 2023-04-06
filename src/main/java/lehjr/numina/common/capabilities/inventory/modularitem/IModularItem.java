@@ -29,10 +29,12 @@ package lehjr.numina.common.capabilities.inventory.modularitem;
 import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.capabilities.module.powermodule.PowerModuleCapability;
+import lehjr.numina.common.item.ItemUtils;
 import lehjr.numina.common.string.StringUtils;
 import net.minecraft.core.NonNullList;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
@@ -55,7 +57,11 @@ public interface IModularItem extends IItemHandler, IItemHandlerModifiable {
     boolean isModuleInstalled(ResourceLocation regName);
 
     default boolean isModuleInstalled(@Nonnull ItemStack module) {
-        return module.getCapability(PowerModuleCapability.POWER_MODULE).isPresent() && isModuleInstalled(module.getItem().getRegistryName());
+        return module.getCapability(PowerModuleCapability.POWER_MODULE).isPresent() && isModuleInstalled(ItemUtils.getRegistryName(module));
+    }
+
+    default boolean isModuleInstalled(Item item) {
+        return isModuleInstalled(ItemUtils.getRegistryName(item));
     }
 
     boolean isModuleOnline(ResourceLocation moduleName);

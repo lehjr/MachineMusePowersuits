@@ -92,9 +92,9 @@ package lehjr.powersuits.common.network.packets;//package lehjr.powersuits.netwo
 ////                        MPSSettings.cosmetics.updateCosmeticInfo(registryName, name, cosmeticSettings);
 ////                    }
 ////                    if (CosmeticPresetSaveLoad.savePreset(registryName, name, cosmeticSettings))
-////                        player.sendMessage(new TextComponentTranslation("gui.powersuits.savesuccessful"));
+////                        player.sendMessage(Component.literalTranslation("gui.powersuits.savesuccessful"));
 //////                        else
-//////                            player.sendMessage(new TextComponentTranslation("gui.powersuits.fail"));
+//////                            player.sendMessage(Component.literalTranslation("gui.powersuits.fail"));
 ////                });
 ////            }
 ////        } else {

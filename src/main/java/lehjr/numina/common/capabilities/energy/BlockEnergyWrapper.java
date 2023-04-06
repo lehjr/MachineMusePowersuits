@@ -26,8 +26,8 @@
 
 package lehjr.numina.common.capabilities.energy;
 
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.items.IItemHandler;
 
@@ -96,6 +96,6 @@ public class BlockEnergyWrapper implements IEnergyStorage {
     }
 
     LazyOptional<IEnergyStorage> getBatteryEnergyHandler() {
-        return itemHandler.map(iItemHandler -> iItemHandler.getStackInSlot(0).getCapability(CapabilityEnergy.ENERGY)).orElse(LazyOptional.empty());
+        return itemHandler.map(iItemHandler -> iItemHandler.getStackInSlot(0).getCapability(ForgeCapabilities.ENERGY)).orElse(LazyOptional.empty());
     }
 }

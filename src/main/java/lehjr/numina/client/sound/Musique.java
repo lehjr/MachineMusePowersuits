@@ -59,7 +59,7 @@ public class Musique {
     }
 
     public static String makeSoundString(Player player, SoundEvent soundEvt) {
-        return makeSoundString(player, soundEvt.getRegistryName());
+        return makeSoundString(player, soundEvt.getLocation());
     }
 
     public static String makeSoundString(Player player, ResourceLocation soundname) {

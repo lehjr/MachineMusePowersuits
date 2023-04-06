@@ -39,14 +39,14 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.items.CapabilityItemHandler;
 
 public class HarvestEventHandler {
     @SubscribeEvent
     public static void handleHarvestCheck(PlayerEvent.HarvestCheck event) {
-        Player player = event.getPlayer();
+        Player player = event.getEntity();
         if (player == null) {
             return;
         }
@@ -56,7 +56,7 @@ public class HarvestEventHandler {
             return;
         }
 
-        player.getInventory().getSelected().getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+        player.getInventory().getSelected().getCapability(ForgeCapabilities.ITEM_HANDLER)
                 .filter(IModeChangingItem.class::isInstance)
                 .map(IModeChangingItem.class::cast)
                 .ifPresent(iItemHandler -> {
@@ -108,9 +108,9 @@ public class HarvestEventHandler {
     @SubscribeEvent
     public static void handleBreakSpeed(PlayerEvent.BreakSpeed event) {
         // Note: here we can actually get the position if needed. we can't easily om the harvest check.
-        Player player = event.getPlayer();
+        Player player = event.getEntity();
         ItemStack stack = player.getInventory().getSelected();
-        stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+        stack.getCapability(ForgeCapabilities.ITEM_HANDLER)
                 .filter(IModeChangingItem.class::isInstance)
                 .map(IModeChangingItem.class::cast)
                 .ifPresent(iItemHandler -> {
@@ -127,7 +127,7 @@ public class HarvestEventHandler {
                                 .filter(IBlockBreakingModule.class::isInstance)
                                 .map(IBlockBreakingModule.class::cast)
                                 .ifPresent(pm -> {
-                                    if (pm.canHarvestBlock(stack, state, player, event.getPos(), playerEnergy)) {
+                                    if (pm.canHarvestBlock(stack, state, player, event.getPosition().get() /*FIXME */, playerEnergy)) {
                                         if (event.getNewSpeed() == 0) {
                                             event.setNewSpeed(1);
                                         }

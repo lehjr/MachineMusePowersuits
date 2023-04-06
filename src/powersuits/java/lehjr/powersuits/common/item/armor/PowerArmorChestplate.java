@@ -31,7 +31,7 @@ import lehjr.powersuits.common.constants.MPSRegistryNames;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 
 public class PowerArmorChestplate extends AbstractElectricItemArmor {
     public PowerArmorChestplate() {
@@ -43,17 +43,17 @@ public class PowerArmorChestplate extends AbstractElectricItemArmor {
     public boolean canElytraFly(ItemStack stack, LivingEntity entity) {
         return
                 // Flight control module
-                entity.getItemBySlot(EquipmentSlot.HEAD).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+                entity.getItemBySlot(EquipmentSlot.HEAD).getCapability(ForgeCapabilities.ITEM_HANDLER)
                         .filter(IModularItem.class::isInstance)
                         .map(IModularItem.class::cast)
                         .map(iModularItem -> iModularItem.isModuleOnline(MPSRegistryNames.FLIGHT_CONTROL_MODULE)).orElse(false) &&
 
-                        entity.getItemBySlot(EquipmentSlot.CHEST).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+                        entity.getItemBySlot(EquipmentSlot.CHEST).getCapability(ForgeCapabilities.ITEM_HANDLER)
                                 .filter(IModularItem.class::isInstance)
                                 .map(IModularItem.class::cast)
                                 .map(iModularItem -> iModularItem.isModuleOnline(MPSRegistryNames.GLIDER_MODULE)).orElse(false) &&
 
-                        entity.getItemBySlot(EquipmentSlot.CHEST).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+                        entity.getItemBySlot(EquipmentSlot.CHEST).getCapability(ForgeCapabilities.ITEM_HANDLER)
                                 .filter(IModularItem.class::isInstance)
                                 .map(IModularItem.class::cast)
                                 .map(iModularItem -> iModularItem.isModuleOnline(MPSRegistryNames.JETPACK_MODULE)).orElse(false);

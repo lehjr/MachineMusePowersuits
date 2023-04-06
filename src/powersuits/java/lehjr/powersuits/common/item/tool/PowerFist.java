@@ -31,7 +31,6 @@ import lehjr.numina.common.capabilities.module.powermodule.PowerModuleCapability
 import lehjr.numina.common.capabilities.module.rightclick.IRightClickModule;
 import lehjr.numina.common.energy.ElectricItemUtils;
 import lehjr.powersuits.client.event.ModelBakeEventHandler;
-import lehjr.powersuits.common.base.MPSObjects;
 import lehjr.powersuits.common.constants.MPSConstants;
 import lehjr.powersuits.common.constants.MPSRegistryNames;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
@@ -50,19 +49,19 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.client.IItemRenderProperties;
-import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.client.extensions.common.IClientItemExtensions;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 
 import java.util.function.Consumer;
 
 public class PowerFist extends AbstractElectricTool {
     public PowerFist() {
-        super(new Item.Properties().tab(MPSObjects.creativeTab).stacksTo(1).defaultDurability(0));
+        super(new Item.Properties().stacksTo(1).defaultDurability(0));
     }
 
     @Override
     public int getUseDuration(ItemStack stack) {
-        return stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+        return stack.getCapability(ForgeCapabilities.ITEM_HANDLER)
                 .filter(IModeChangingItem.class::isInstance)
                 .map(IModeChangingItem.class::cast)
                 .map(handler-> handler.getUseDuration()).orElse(7200);
@@ -70,7 +69,7 @@ public class PowerFist extends AbstractElectricTool {
 
     @Override
     public boolean mineBlock(ItemStack powerFist, Level worldIn, BlockState state, BlockPos pos, LivingEntity entityLiving) {
-        return powerFist.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+        return powerFist.getCapability(ForgeCapabilities.ITEM_HANDLER)
                 .filter(IModeChangingItem.class::isInstance)
                 .map(IModeChangingItem.class::cast)
                 .map(iItemHandler -> iItemHandler.mineBlock(powerFist, worldIn, state, pos, entityLiving)).orElse(false);
@@ -94,7 +93,7 @@ public class PowerFist extends AbstractElectricTool {
             return fallback;
         }
 
-        return fist.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+        return fist.getCapability(ForgeCapabilities.ITEM_HANDLER)
                 .filter(IModeChangingItem.class::isInstance)
                 .map(IModeChangingItem.class::cast)
                 .map(handler-> handler.use(level, player, hand, fallback)).orElse(fallback);
@@ -109,7 +108,7 @@ public class PowerFist extends AbstractElectricTool {
             return fallback;
         }
 
-        return context.getItemInHand().getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+        return context.getItemInHand().getCapability(ForgeCapabilities.ITEM_HANDLER)
                 .filter(IModeChangingItem.class::isInstance)
                 .map(IModeChangingItem.class::cast)
                 .map(handler-> handler.onItemUseFirst(itemStack, context, fallback)).orElse(fallback);
@@ -117,7 +116,7 @@ public class PowerFist extends AbstractElectricTool {
 
     @Override
     public float getDestroySpeed(ItemStack pStack, BlockState pState) {
-        return pStack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+        return pStack.getCapability(ForgeCapabilities.ITEM_HANDLER)
                 .filter(IModeChangingItem.class::isInstance)
                 .map(IModeChangingItem.class::cast)
                 .map(handler-> handler.getDestroySpeed(pStack, pState)).orElse(1.0F);
@@ -125,7 +124,7 @@ public class PowerFist extends AbstractElectricTool {
 
     @Override
     public InteractionResult interactLivingEntity(ItemStack itemStackIn, Player player, LivingEntity entity, InteractionHand hand) {
-         return itemStackIn.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+         return itemStackIn.getCapability(ForgeCapabilities.ITEM_HANDLER)
                 .filter(IModeChangingItem.class::isInstance)
                 .map(IModeChangingItem.class::cast)
                 .map(handler->
@@ -139,7 +138,7 @@ public class PowerFist extends AbstractElectricTool {
 
     @Override
     public ItemStack finishUsingItem(ItemStack stack, Level worldIn, LivingEntity entity) {
-        return stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+        return stack.getCapability(ForgeCapabilities.ITEM_HANDLER)
                 .filter(IModeChangingItem.class::isInstance)
                 .map(IModeChangingItem.class::cast)
                 .map(handler-> finishUsingItem(stack, worldIn, entity)).orElse(stack);
@@ -147,7 +146,7 @@ public class PowerFist extends AbstractElectricTool {
 
     @Override
     public void releaseUsing(ItemStack stack, Level worldIn, LivingEntity entityLiving, int timeLeft) {
-        stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+        stack.getCapability(ForgeCapabilities.ITEM_HANDLER)
                 .filter(IModeChangingItem.class::isInstance)
                 .map(IModeChangingItem.class::cast)
                 .ifPresent(handler-> handler.releaseUsing(stack, worldIn, entityLiving, timeLeft));
@@ -163,7 +162,7 @@ public class PowerFist extends AbstractElectricTool {
             return fallback;
         }
 
-        return context.getItemInHand().getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+        return context.getItemInHand().getCapability(ForgeCapabilities.ITEM_HANDLER)
                 .filter(IModeChangingItem.class::isInstance)
                 .map(IModeChangingItem.class::cast)
                 .map(handler-> handler.useOn(context, fallback)).orElse(fallback);
@@ -177,7 +176,7 @@ public class PowerFist extends AbstractElectricTool {
      */
     @Override
     public boolean isCorrectToolForDrops(ItemStack itemStack, BlockState state) {
-        return itemStack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+        return itemStack.getCapability(ForgeCapabilities.ITEM_HANDLER)
                 .filter(IModeChangingItem.class::isInstance)
                 .map(IModeChangingItem.class::cast)
                 .map(iItemHandler -> iItemHandler.isCorrectToolForDrops(itemStack, state)).orElse(false);
@@ -190,7 +189,7 @@ public class PowerFist extends AbstractElectricTool {
     @Override
     public boolean hurtEnemy(ItemStack itemStack, LivingEntity target, LivingEntity attacker) {
         if (attacker instanceof Player) {
-            itemStack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+            itemStack.getCapability(ForgeCapabilities.ITEM_HANDLER)
                     .filter(IModeChangingItem.class::isInstance)
                     .map(IModeChangingItem.class::cast)
                     .ifPresent(iItemHandler -> iItemHandler.getOnlineModuleOrEmpty(MPSRegistryNames.MELEE_ASSIST_MODULE)
@@ -224,7 +223,7 @@ public class PowerFist extends AbstractElectricTool {
      */
     @Override
     public boolean onBlockStartBreak(ItemStack itemstack, BlockPos pos, Player player) {
-        return itemstack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+        return itemstack.getCapability(ForgeCapabilities.ITEM_HANDLER)
                 .filter(IModeChangingItem.class::isInstance)
                 .map(IModeChangingItem.class::cast)
                 .map(iItemHandler -> iItemHandler.onBlockStartBreak(itemstack, pos, player)).orElse(false);
@@ -245,15 +244,13 @@ public class PowerFist extends AbstractElectricTool {
         return UseAnim.BLOCK;
     }
 
-
-
     @Override
-    public void initializeClient(Consumer<IItemRenderProperties> consumer) {
-        consumer.accept(new IItemRenderProperties() {
+    public void initializeClient(Consumer<IClientItemExtensions> consumer) {
+        consumer.accept(new IClientItemExtensions() {
             private final BlockEntityWithoutLevelRenderer renderer = ModelBakeEventHandler.INSTANCE.MPSBERINSTANCE;
 
             @Override
-            public BlockEntityWithoutLevelRenderer getItemStackRenderer() {
+            public BlockEntityWithoutLevelRenderer getCustomRenderer() {
                 return renderer;
             }
         });

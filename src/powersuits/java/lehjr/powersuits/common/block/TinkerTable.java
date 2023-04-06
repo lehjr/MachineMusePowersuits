@@ -33,7 +33,7 @@ import lehjr.powersuits.common.blockentity.TinkerTableBlockEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -90,8 +90,8 @@ public class TinkerTable extends HorizontalDirectionalBlock implements SimpleWat
     @OnlyIn(Dist.CLIENT)
     public void openGui(Level world) {
         if (world.isClientSide) {
-            Musique.playClientSound(SoundDictionary.SOUND_EVENT_GUI_SELECT, 1);
-            Minecraft.getInstance().tell(() -> Minecraft.getInstance().setScreen(new ModuleTweakGui(new TranslatableComponent("gui.tinkertable"))));
+            Musique.playClientSound(SoundDictionary.SOUND_EVENT_GUI_SELECT.get(), 1);
+            Minecraft.getInstance().tell(() -> Minecraft.getInstance().setScreen(new ModuleTweakGui(Component.translatable("gui.tinkertable"))));
         }
     }
 

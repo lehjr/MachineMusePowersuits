@@ -8,9 +8,9 @@ import net.minecraft.core.Direction;
 import net.minecraft.nbt.IntTag;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
 
 import javax.annotation.Nonnull;
@@ -64,7 +64,7 @@ public class BatteryCapabilityProvider implements ICapabilityProvider {
             return capabilityPowerModule;
         }
 
-        final LazyOptional<T> energyCapability = CapabilityEnergy.ENERGY.orEmpty(capability, energyStorageHolder);
+        final LazyOptional<T> energyCapability = ForgeCapabilities.ENERGY.orEmpty(capability, energyStorageHolder);
         if (energyCapability.isPresent()) {
             return energyCapability;
         }

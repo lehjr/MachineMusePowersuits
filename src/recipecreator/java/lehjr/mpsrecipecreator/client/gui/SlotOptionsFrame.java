@@ -13,7 +13,7 @@
 //import net.minecraft.world.item.ItemStack;
 //import net.minecraft.tags.ItemTags;
 //import net.minecraft.resources.ResourceLocation;
-//import net.minecraft.network.chat.TextComponent;
+//
 //
 //import java.util.ArrayList;
 //import java.util.HashMap;
@@ -50,7 +50,7 @@
 //
 //        MusePoint2D starterPoint = this.getUL().copy().plus(4, 4);
 //
-//        this.title = new ClickableLabel(new TextComponent("Slot Options"), starterPoint.copy());
+//        this.title = new ClickableLabel(Component.literal("Slot Options"), starterPoint.copy());
 //        title.setMode(ClickableLabel.JustifyMode.LEFT);
 //
 //        nextOreDictArrow = new ClickableArrow(0, 0, 0, 0, true, arrowNormalBackGound, arrowHighlightedBackground, arrowBorderColour);
@@ -197,7 +197,7 @@
 //    }
 //
 //    void setLabel() {
-//        this.title.setLabel(new TextComponent("Slot " + (activeSlotID >=0 && activeSlotID <=10 ? activeSlotID + " " : "") + "Options"));
+//        this.title.setLabel(Component.literal("Slot " + (activeSlotID >=0 && activeSlotID <=10 ? activeSlotID + " " : "") + "Options"));
 //    }
 //
 //    public void reset() {

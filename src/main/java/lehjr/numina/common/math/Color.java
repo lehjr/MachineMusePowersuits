@@ -28,10 +28,10 @@ package lehjr.numina.common.math;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Vector4f;
 import lehjr.numina.common.base.NuminaLogger;
 import net.minecraft.nbt.IntTag;
 import net.minecraftforge.common.util.INBTSerializable;
+import org.joml.Vector4f;
 
 import java.util.Objects;
 
@@ -64,6 +64,10 @@ public class Color implements INBTSerializable<IntTag> {
     public static final Color LIGHT_BLUE = new Color(0.5F, 0.5F, 1F, 1F);
     public static final Color DARKBLUE = new Color(0.0F, 0.0F, 0.5F, 1F);
     public static final Color PURPLE = new Color(0.6F, 0.1F, 0.9F, 1F);
+
+//    Color parseColor(String colorString) {
+//        java.awt.Color.getColor(colorString);
+//    }
 
 
     /**
@@ -102,14 +106,18 @@ public class Color implements INBTSerializable<IntTag> {
         this.a = vec4fColor.w();
     }
 
-
-
     public Color(int r, int g, int b) {
         this.r = r * div255;
         this.g = g * div255;
         this.b = b * div255;
         this.a = 1F;
     }
+
+//    public Color fromRGBAHex() {
+//
+//    }
+
+
 
     // TODO?
     public VertexConsumer addToVertex(VertexConsumer builderIn) {
@@ -145,7 +153,7 @@ public class Color implements INBTSerializable<IntTag> {
         return this;
     }
 
-    public static int getInt(float r, float g, float b, float a) {
+    public static int getARGBInt(float r, float g, float b, float a) {
         int val = 0;
         val = val | ((int) (a * 255) << 24);
         val = val | ((int) (r * 255) << 16);
@@ -155,6 +163,16 @@ public class Color implements INBTSerializable<IntTag> {
         return val;
     }
 
+    public int getAGBRInt() {
+        int val = 0;
+        val = val | ((int) (a * 255) << 24);
+        val = val | ((int) (g * 255) << 16);
+        val = val | ((int) (b * 255) << 8);
+        val = val | ((int) (r * 255));
+        return val;
+    }
+    
+    
     public void setShaderColor() {
         RenderSystem.setShaderColor(r, g, b, a);
     }
@@ -166,26 +184,23 @@ public class Color implements INBTSerializable<IntTag> {
         return new Color(value, value, value, alpha);
     }
 
-//    public static void doGLByInt(int c) {
-//        float a = (c >> 24 & 255) * div255;
-//        float r = (c >> 16 & 255) * div255;
-//        float g = (c >> 8 & 255) * div255;
-//        float b = (c & 255) * div255;
-//        GL11.glColor4f(r, g, b, a);
-//    }
-
     /**
      * Handles RRGGBB and RRGGBBAA hex strings
      *
      * @param hexString
      * @return new colour based on getValue or default of white if error
      */
-    public static Color fromHexString(String hexString) {
+    public static Color fromARGBHexString(String hexString) {
         try {
-            if (hexString == null || hexString.isEmpty())
+            if (hexString == null || hexString.isEmpty()) {
                 return WHITE;
-            return new Color((int) Long.parseLong(hexString, 16));
-
+            }
+            hexString.replaceAll("#", "");
+            int parsed = (int) Long.parseLong(hexString, 16);
+            // Integer.parse will fail for RGBA strings
+            Color color = new Color((int) Long.parseLong(hexString, 16));
+            if (color.a == 0) color.a = 1;
+            return color;
         } catch (Exception e) {
             NuminaLogger.logException("Failed to generate colour from Hex: ", e);
         }
@@ -199,7 +214,7 @@ public class Color implements INBTSerializable<IntTag> {
      *
      * @return int getValue of this colour
      */
-    public int getInt() {
+    public int getARGBInt() {
         int val = 0;
         val = val | ((int) (a * 255) << 24);
         val = val | ((int) (r * 255) << 16);
@@ -222,7 +237,7 @@ public class Color implements INBTSerializable<IntTag> {
         return new Color(this.r, this.g, this.b, newalpha);
     }
 
-    public float[] asArray() {
+    public float[] asFloatArray() {
         return new float[]{r, g, b, a};
     }
 
@@ -231,9 +246,20 @@ public class Color implements INBTSerializable<IntTag> {
     }
 
     // format is 0xRRGGBBAA
-    public String hexColour() {
+    public String rgbaHexColour() {
         return hexDigits(r) + hexDigits(g) + hexDigits(b) + (a > 0 ? hexDigits(a) : "");
     }
+/*
+bar color: Colour{r=1.0, g=0.41176474, b=0.85098046, a=0.09019608}
+---------(23)-(255)-(105)-(217)
+----------AA-RR-GG-BB--------------
+startHex: 17 FF 69 d9, value: 402614745, parsedToHex: 17ff69d9
+barColorHex: 1769d9ff
+
+ */
+
+
+
 
     public static String hexDigits(float x) {
         int y = (int) (x * 255);
@@ -273,7 +299,7 @@ public class Color implements INBTSerializable<IntTag> {
 
     @Override
     public IntTag serializeNBT() {
-        return IntTag.valueOf(getInt());
+        return IntTag.valueOf(getARGBInt());
     }
 
     @Override

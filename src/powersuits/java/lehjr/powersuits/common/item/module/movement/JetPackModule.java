@@ -46,9 +46,9 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.items.CapabilityItemHandler;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -99,7 +99,7 @@ public class JetPackModule extends AbstractPowerModule {
                 PlayerMovementInputWrapper.PlayerMovementInput playerInput = PlayerMovementInputWrapper.get(player);
 
                 ItemStack helmet = player.getItemBySlot(EquipmentSlot.HEAD);
-                boolean hasFlightControl = helmet.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+                boolean hasFlightControl = helmet.getCapability(ForgeCapabilities.ITEM_HANDLER)
                         .filter(IModularItem.class::isInstance)
                         .map(IModularItem.class::cast)
                         .map(m->
@@ -118,7 +118,7 @@ public class JetPackModule extends AbstractPowerModule {
                                 ElectricItemUtils.drainPlayerEnergy(player, (int) (thrust * jetEnergy * 5));
                             }
                         } else if (NuminaSettings.useSounds()) {
-                            Musique.playerSound(player, MPSSoundDictionary.JETPACK, SoundSource.PLAYERS, (float) (thrust * 6.25), 1.0f, true);
+                            Musique.playerSound(player, MPSSoundDictionary.JETPACK.get(), SoundSource.PLAYERS, (float) (thrust * 6.25), 1.0f, true);
                         }
                     } else {
                         onPlayerTickInactive(player, torso);
@@ -128,7 +128,7 @@ public class JetPackModule extends AbstractPowerModule {
             @Override
             public void onPlayerTickInactive(Player player, ItemStack item) {
                 if (player.level.isClientSide && NuminaSettings.useSounds()) {
-                    Musique.stopPlayerSound(player, MPSSoundDictionary.JETPACK);
+                    Musique.stopPlayerSound(player, MPSSoundDictionary.JETPACK.get());
                 }
             }
         }

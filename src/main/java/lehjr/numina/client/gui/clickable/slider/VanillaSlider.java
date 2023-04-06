@@ -8,7 +8,6 @@ import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.util.Mth;
 
 
@@ -16,8 +15,8 @@ import net.minecraft.util.Mth;
  * uses vanilla texture for vanilla look and feel
  */
 public class VanillaSlider extends AbstractSlider {
-    public Component displayString = new TextComponent("");
-    public Component message = new TextComponent("");
+    public Component displayString = Component.literal("");
+    public Component message = Component.literal("");
     public String suffix = "";
     boolean showDecimal = false;
     int precision = 2;
@@ -147,7 +146,7 @@ public class VanillaSlider extends AbstractSlider {
         }
 
         if (drawString) {
-            setMessage(new TextComponent("").append(displayString).append(valString).append(suffix));
+            setMessage(Component.literal("").append(displayString).append(valString).append(suffix));
         }
     }
 }

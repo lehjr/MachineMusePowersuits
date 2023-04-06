@@ -4,7 +4,7 @@
 //import lehjr.mpsrecipecreator.basemod.config.Config;
 //import net.minecraft.entity.player.ServerPlayer;
 //import net.minecraft.network.FriendlyByteBuf;
-//import net.minecraft.network.chat.TextComponent;
+//
 //import net.minecraft.server.MinecraftServer;
 //import net.minecraftforge.fml.network.NetworkEvent;
 //
@@ -77,11 +77,11 @@
 //                }
 //            } else {
 //                if (Config.allowOppedPlayersToCreateOnServer()) {
-//                    player.func_145747_a(new TextComponent("You do not have permission to create recipes :P" +
+//                    player.func_145747_a(Component.literal("You do not have permission to create recipes :P" +
 //                            "\nRequiredLevel: " + Config.getOpLevelNeeded() +
 //                            "\nYourLevel: " + server.func_211833_a(player.getGameProfile())), player.getUUID());
 //                } else {
-//                    player.func_145747_a(new TextComponent("Serve admin has disabled creating recipes on this server :P"), player.getUUID());
+//                    player.func_145747_a(Component.literal("Serve admin has disabled creating recipes on this server :P"), player.getUUID());
 //                }
 //            }
 //
@@ -102,7 +102,7 @@
 //                DataPackWriter.INSTANCE.fileWriter(recipeFile, message.recipe, Config.overwriteRecipes());
 //
 //                if (recipeFile.exists()) {
-//                    player.func_145747_a(new TextComponent("Server reloading data :P"), player.getUUID());
+//                    player.func_145747_a(Component.literal("Server reloading data :P"), player.getUUID());
 //                    server.func_195571_aL().func_197059_a(player.func_195051_bN(), "reload");
 //                }
 //            }

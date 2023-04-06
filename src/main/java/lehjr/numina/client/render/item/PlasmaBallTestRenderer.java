@@ -28,7 +28,7 @@
 //
 //import com.mojang.blaze3d.vertex.PoseStack;
 //import com.mojang.blaze3d.vertex.VertexConsumer;
-//import com.mojang.math.Vector3f;
+//import org.joml.Vector3f;
 //import lehjr.numina.client.model.helper.ModelHelper;
 //import lehjr.numina.client.model.obj.OBJBakedCompositeModel;
 //import lehjr.numina.client.render.IconUtils;
@@ -144,7 +144,7 @@
 //
 //    public void renderSphere(MultiBufferSource bufferIn, RenderType rt, PoseStack matrixStackIn, int packedLightIn, int overlay, Color colour) {
 //        VertexConsumer bb = bufferIn.getBuffer(rt);
-//        for (BakedQuad quad : modelSphere.get().getQuads(null, null, rand, EmptyModelData.INSTANCE)) {
+//        for (BakedQuad quad : modelSphere.get().getQuads(null, null, rand, ModelData.EMPTY)) {
 //            bb.putBulkData(matrixStackIn.last(), quad, colour.r, colour.g, colour.b, colour.a, packedLightIn, overlay, true);
 //        }
 //    }

@@ -26,11 +26,12 @@
 
 package lehjr.numina.common.item;
 
-import lehjr.numina.common.base.NuminaObjects;
 import net.minecraft.world.item.Item;
 
 public class ComponentItem extends Item {
+
+    // TODO? move to ingredients?
     public ComponentItem() {
-        super(new Item.Properties().tab(NuminaObjects.creativeTab));
+        super(new Item.Properties());
     }
 }

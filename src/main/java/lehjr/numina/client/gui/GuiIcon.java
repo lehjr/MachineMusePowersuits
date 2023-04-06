@@ -28,7 +28,6 @@ package lehjr.numina.client.gui;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
-import com.mojang.math.Matrix4f;
 import lehjr.numina.client.render.NuminaSpriteUploader;
 import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.constants.NuminaConstants;
@@ -39,6 +38,7 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.ShaderInstance;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.resources.ResourceLocation;
+import org.joml.Matrix4f;
 
 /**
  * Author: MachineMuse (Claire Semple)
@@ -375,9 +375,7 @@ public class GuiIcon {
                 .color(colour.r, colour.g, colour.b, colour.a)
                 .endVertex();
 
-        bufferbuilder.end();
-//        RenderSystem.enableAlphaTest();
-        BufferUploader.end(bufferbuilder);
+        BufferUploader.drawWithShader(bufferbuilder.end());
     }
 
     public void drawLightningTextured(VertexConsumer bufferIn, Matrix4f matrix4f, float x1, float y1, float z1, float x2, float y2, float z2, Color colour, TextureAtlasSprite icon, float textureWidth, float textureHeight) {

@@ -26,7 +26,7 @@
 
 package lehjr.powersuits.common.constants;
 
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 
 public class MPSConstants {
@@ -43,7 +43,7 @@ public class MPSConstants {
 
     public static final ResourceLocation POWER_FIST_TEXTURE = new ResourceLocation(TEXTURE_PREFIX + "models/powerfist.png");
 
-    public static final TranslatableComponent CRAFTING_TABLE_CONTAINER_NAME  = new TranslatableComponent("container.crafting");
+    public static final Component CRAFTING_TABLE_CONTAINER_NAME  = Component.translatable("container.crafting");
 
 
 

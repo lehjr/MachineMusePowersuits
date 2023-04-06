@@ -9,7 +9,7 @@
 //import net.minecraft.inventory.container.ClickType;
 //import net.minecraft.inventory.container.Slot;
 //import net.minecraft.network.chat.Component;
-//import net.minecraft.network.chat.TranslatableComponent;
+//import net.minecraft.network.chat.Component;
 //import net.minecraft.resources.ResourceLocation;
 //import net.minecraft.world.entity.player.Inventory;
 //import net.minecraft.world.item.ItemStack;
@@ -21,10 +21,10 @@
 // */
 //public class MPSGuiScanner extends AbstractContainerScreen<MPSAbstractContainerMenuScanner> {
 //    private static final ResourceLocation BACKGROUND = new ResourceLocation(API.MOD_ID, "textures/gui/container/scanner.png");
-//    private static final TranslatableComponent SCANNER_MODULES_TEXT = new TranslatableComponent(Constants.GUI_SCANNER_MODULES);
-//    private static final TranslatableComponent SCANNER_MODULES_TOOLTIP = new TranslatableComponent(Constants.GUI_SCANNER_MODULES_TOOLTIP);
-//    private static final TranslatableComponent SCANNER_MODULES_INACTIVE_TEXT = new TranslatableComponent(Constants.GUI_SCANNER_MODULES_INACTIVE);
-//    private static final TranslatableComponent SCANNER_MODULES_INACTIVE_TOOLTIP = new TranslatableComponent(Constants.GUI_SCANNER_MODULES_INACTIVE_TOOLTIP);
+//    private static final Component.translatable SCANNER_MODULES_TEXT = Component.translatable(Constants.GUI_SCANNER_MODULES);
+//    private static final Component.translatable SCANNER_MODULES_TOOLTIP = Component.translatable(Constants.GUI_SCANNER_MODULES_TOOLTIP);
+//    private static final Component.translatable SCANNER_MODULES_INACTIVE_TEXT = Component.translatable(Constants.GUI_SCANNER_MODULES_INACTIVE);
+//    private static final Component.translatable SCANNER_MODULES_INACTIVE_TOOLTIP = Component.translatable(Constants.GUI_SCANNER_MODULES_INACTIVE_TOOLTIP);
 //
 //    // --------------------------------------------------------------------- //
 //

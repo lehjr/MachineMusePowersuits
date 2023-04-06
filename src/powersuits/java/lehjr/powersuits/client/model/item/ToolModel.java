@@ -597,7 +597,7 @@
 //
 //    public void setPoseForPlayer(Player player, ItemStack itemStack) {
 //        if (player.isHandActive() && player.inventory.getStackInSlot(player.inventory.currentItem) == itemStack
-//                && itemStack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).map(iItemHandler -> {
+//                && itemStack.getCapability(ForgeCapabilities.ITEM_HANDLER).map(iItemHandler -> {
 //            if (iItemHandler instanceof IModeChangingItem) {
 //
 //                // fixme: check

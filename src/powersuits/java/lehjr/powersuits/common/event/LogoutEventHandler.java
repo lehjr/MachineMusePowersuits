@@ -38,9 +38,9 @@ public class LogoutEventHandler {
     @SubscribeEvent
     public void OnPlayerLogoutCommon(PlayerEvent.PlayerLoggedOutEvent event) {
         IConfig moduleConfig = MPSSettings.getModuleConfig();
-        if (event.getPlayer() != null) {
-            MinecraftServer server = event.getPlayer().getServer();
-            if (server != null && server.isSingleplayer() || server.isSingleplayerOwner(event.getPlayer().getGameProfile())) {
+        if (event.getEntity() != null) {
+            MinecraftServer server = event.getEntity().getServer();
+            if (server != null && server.isSingleplayer() || server.isSingleplayerOwner(event.getEntity().getGameProfile())) {
                 if (moduleConfig instanceof ModuleConfig) {
 //                    System.out.println("write missing values");
                     ((ModuleConfig) moduleConfig).writeMissingConfigValues();

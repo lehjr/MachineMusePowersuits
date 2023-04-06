@@ -18,7 +18,7 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.items.IItemHandler;
 
 public class InstallSalvageMenu extends AbstractContainerMenu {
@@ -33,7 +33,7 @@ public class InstallSalvageMenu extends AbstractContainerMenu {
         int row, col;
         int parentSlot = slotType == EquipmentSlot.MAINHAND ? playerInventory.selected : equipmentSlotToParent(slotType);
 
-        playerInventory.player.getItemBySlot(slotType).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+        playerInventory.player.getItemBySlot(slotType).getCapability(ForgeCapabilities.ITEM_HANDLER)
                 .filter(IModularItem.class::isInstance)
                 .map(IModularItem.class::cast)
                 .ifPresent(iItemHandler -> {
@@ -95,7 +95,7 @@ public class InstallSalvageMenu extends AbstractContainerMenu {
         /** Hotbar with pickup disabled for modular items */
         for(col = 0; col < 9; ++col) {
             if (col == playerInventory.selected &&
-                    playerInventory.getItem(playerInventory.selected).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+                    playerInventory.getItem(playerInventory.selected).getCapability(ForgeCapabilities.ITEM_HANDLER)
                             .filter(IModularItem.class::isInstance)
                             .map(IModularItem.class::cast)
                             .isPresent()) {

@@ -26,6 +26,7 @@
 
 package lehjr.powersuits.client.config;
 
+import lehjr.numina.common.constants.NuminaConstants;
 import lehjr.powersuits.common.constants.MPSConstants;
 import net.minecraftforge.common.ForgeConfigSpec;
 
@@ -35,11 +36,29 @@ public class ClientConfig {
             HUD_USE_GRAPHICAL_METERS,
             HUD_TOGGLE_MODULE_SPAM,
             HUD_DISPLAY_HUD,
-            HUD_USE_24_HOUR_CLOCK;
+            HUD_USE_24_HOUR_CLOCK,
+            SHOW_METERS_WHEN_PAUSED;
+
+    public ForgeConfigSpec.ConfigValue<String>
+            HEAT_METER_GLASS_COLOR,
+            HEAT_METER_BAR_COLOR,
+            ENERGY_METER_GLASS_COLOR,
+            ENERGY_METER_BAR_COLOR,
+            PLASMA_METER_GLASS_COLOR,
+            PLASMA_METER_BAR_COLOR,
+            WATER_METER_GLASS_COLOR,
+            WATER_METER_BAR_COLOR;
 
     public ForgeConfigSpec.DoubleValue
             HUD_KEYBIND_X,
-            HUD_KEYBIND_Y;
+            HUD_KEYBIND_Y,
+
+            // Heat Meter -----------------------
+            HEAT_METER_DEBUG_VAL,
+            ENERGY_METER_DEBUG_VAL,
+            PLASMA_METER_DEBUG_VAL,
+            WATER_METER_DEBUG_VAL;
+
 
     /** General ----------------------------------------------------------------------------------- */
     public ForgeConfigSpec.BooleanValue
@@ -79,10 +98,77 @@ public class ClientConfig {
                 .define("use24hClock", false);
         builder.pop();
 
-        builder.comment("General settings").push("General");
-        GENERAL_ALLOW_CONFLICTING_KEYBINDS = builder
-                .comment("Allow Conflicting Keybinds")
-                .translation(MPSConstants.CONFIG_GENERAL_ALLOW_CONFLICTING_KEYBINDS)
-                .define("allowConflictingKeybinds", true);
+        // Meter Settings --------------------------------------------------------------------------------------------
+        builder.push("Meter Settings");// meter settings start
+        SHOW_METERS_WHEN_PAUSED = builder
+                .comment("Show meters when paused\n Useful for trying different colors in real time")
+                .translation(NuminaConstants.CONFIG_USE_SOUNDS)
+                .define("showMetersWhenPaused", false);
+
+        // Heat Meter ------------------------------------------------------------------------------------------------
+        builder.push("Heat Meter Settings");
+        {
+            HEAT_METER_DEBUG_VAL = builder
+                    .comment("value to manually set the meter at.\n Useful for trying different colors in real time")
+                    .defineInRange("heatMeterDebugValue", 0, 0, 100D);
+
+            HEAT_METER_GLASS_COLOR = builder
+                    .comment("Meter bar glass in RGB or RGBA hex")
+                    .define("heatMeterGlassColor", "#FFFFFF");
+
+            HEAT_METER_BAR_COLOR = builder
+                    .comment("Meter bar color in RGB or RGBA hex")
+                    .define("heatMeterBarColor", "#FFFFFF");
+        }
+        builder.pop();
+
+        // Energy Meter ------------------------------------------------------------------------------------------------
+        builder.push("Energy Meter Settings");
+
+        ENERGY_METER_DEBUG_VAL = builder
+                .comment("value to manually set the meter at.\n Useful for trying different colors in real time")
+                .defineInRange("heatMeterDebugValue", 0, 0, 100D);
+
+
+        ENERGY_METER_GLASS_COLOR = builder
+                .comment("Meter bar glass in RGB or RGBA hex")
+                .define("energyMeterGlassColor", "#FFFFFF");
+
+        ENERGY_METER_BAR_COLOR = builder
+                .comment("Meter bar color in RGB or RGBA hex")
+                .define("energyMeterBarColor", "#FFFFFF");
+        builder.pop();
+
+        // Plasma Meter ------------------------------------------------------------------------------------------------
+        builder.push("Plasma Meter Settings");
+        PLASMA_METER_DEBUG_VAL = builder
+                .comment("value to manually set the meter at.\n Useful for trying different colors in real time")
+                .defineInRange("plasmaMeterDebugValue", 0, 0, 100D);
+
+        PLASMA_METER_GLASS_COLOR = builder
+                .comment("Meter bar glass in RGB or RGBA hex")
+                .define("plasmaMeterGlassColor", "#FFFFFF");
+
+        PLASMA_METER_BAR_COLOR = builder
+                .comment("Meter bar color in RGB or RGBA hex")
+                .define("plasmaMeterBarColor", "#FFFFFF");
+        builder.pop();
+
+        // Water Meter ------------------------------------------------------------------------------------------------
+        builder.push("Water Meter Settings");
+        WATER_METER_DEBUG_VAL = builder
+                .comment("value to manually set the meter at.\n Useful for trying different colors in real time")
+                .defineInRange("waterMeterDebugValue", 0, 0, 100D);
+
+        WATER_METER_GLASS_COLOR = builder
+                .comment("Meter bar glass in RGB or RGBA hex")
+                .define("waterMeterGlassColor", "#FFFFFF");
+
+        WATER_METER_BAR_COLOR = builder
+                .comment("Meter bar color in RGB or RGBA hex")
+                .define("waterMeterBarColor", "#FFFFFF");
+        builder.pop();
+
+        builder.pop(); // Meter settings end
     }
 }

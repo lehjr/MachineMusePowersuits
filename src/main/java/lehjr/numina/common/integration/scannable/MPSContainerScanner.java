@@ -154,7 +154,7 @@
 //     */
 //    void update() {
 //        final ItemStack tool = player.getInventory().getItem(player.getInventory().selected);
-//        Optional<IModeChangingItem> modeChangingItem = tool.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).filter(IModeChangingItem.class::isInstance).map(IModeChangingItem.class::cast);
+//        Optional<IModeChangingItem> modeChangingItem = tool.getCapability(ForgeCapabilities.ITEM_HANDLER).filter(IModeChangingItem.class::isInstance).map(IModeChangingItem.class::cast);
 //        modeChangingItem.ifPresent(iModeChangingItem -> {
 //            int activeModule = iModeChangingItem.getActiveMode();
 //            final ItemStack module = iModeChangingItem.getActiveModule();

@@ -53,7 +53,7 @@ public class TinkerKeymapGui extends ContainerlessGui {
 
     public TinkerKeymapGui(Player player, Component titleIn) {
         super(titleIn, 352, 217);
-        Minecraft.getInstance().keyboardHandler.setSendRepeatsToGui(true);
+//        Minecraft.getInstance().keyboardHandler.m_90926_(true);
         this.player = player;
         this./*xSize*/imageWidth = 352 /*340 */;
         this./*ySize*/imageHeight = 217;

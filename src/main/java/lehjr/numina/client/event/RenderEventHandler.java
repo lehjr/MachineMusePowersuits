@@ -31,10 +31,10 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import net.minecraftforge.client.event.CustomizeGuiOverlayEvent;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModList;
-import net.minecraftforge.items.CapabilityItemHandler;
 
 /**
  * Author: MachineMuse (Claire Semple)
@@ -47,13 +47,10 @@ public enum RenderEventHandler {
     INSTANCE;
 
     @SubscribeEvent
-    public void onPostRenderGameOverlayEvent(final RenderGameOverlayEvent.Post e) {
-        RenderGameOverlayEvent.ElementType elementType = e.getType();
-        if (RenderGameOverlayEvent.ElementType.TEXT.equals(elementType)) {
-            drawModeChangeIcons();
-            if (ModList.get().isLoaded("scannable")) {
+    public void onPostRenderGameOverlayEvent(final CustomizeGuiOverlayEvent e) {
+        drawModeChangeIcons();
+        if (ModList.get().isLoaded("scannable")) {
 //                MPSOverlayRenderer.INSTANCE.onOverlayRender(e);
-            }
         }
     }
 
@@ -61,11 +58,11 @@ public enum RenderEventHandler {
         Minecraft mc = Minecraft.getInstance();
         LocalPlayer player = mc.player;
         int i = player.getInventory().selected;
-        player.getInventory().getSelected().getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+        player.getInventory().getSelected().getCapability(ForgeCapabilities.ITEM_HANDLER) // FIXME!!!!!!
                 .filter(IModeChangingItem.class::isInstance)
                 .map(IModeChangingItem.class::cast)
                 .ifPresent(handler->
-                handler.drawModeChangeIcon(player, i, mc));
+                        handler.drawModeChangeIcon(player, i, mc));
     }
 
 }

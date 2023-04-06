@@ -26,8 +26,11 @@
 
 package lehjr.powersuits.common.config;
 
+import lehjr.numina.client.config.IMeterConfig;
 import lehjr.numina.common.capabilities.module.powermodule.IConfig;
 import lehjr.numina.common.config.ModuleConfig;
+import lehjr.numina.common.math.Color;
+import lehjr.numina.common.math.MathUtils;
 import lehjr.powersuits.client.config.ClientConfig;
 import lehjr.powersuits.common.constants.MPSConstants;
 import net.minecraft.resources.ResourceLocation;
@@ -78,6 +81,102 @@ public class MPSSettings {
 
     public static float getHudKeybindY() {
         return CLIENT_CONFIG != null ? toFloat(CLIENT_CONFIG.HUD_KEYBIND_Y.get()) : 32.0F;
+    }
+
+    public static IMeterConfig getHeatMeterConfig() {
+        return HeatMeterConfig.INSTANCE;
+    }
+
+    public enum HeatMeterConfig implements IMeterConfig {
+        INSTANCE;
+
+        @Override
+        public float getDebugValue() {
+            return (float) (0.01 * MathUtils.clampDouble(CLIENT_CONFIG.HEAT_METER_DEBUG_VAL.get(), 0, 100));
+        }
+
+        @Override
+        public Color getGlassColor() {
+            return Color.fromARGBHexString(CLIENT_CONFIG.HEAT_METER_GLASS_COLOR.get());
+        }
+
+        @Override
+        public Color getBarColor() {
+            return Color.fromARGBHexString(CLIENT_CONFIG.HEAT_METER_BAR_COLOR.get());
+        }
+    }
+
+    public static IMeterConfig getEnergyMeterConfig() {
+        return EnergyMeterConfig.INSTANCE;
+    }
+
+    public enum EnergyMeterConfig implements IMeterConfig {
+        INSTANCE;
+
+        @Override
+        public float getDebugValue() {
+            return (float) (0.01 * MathUtils.clampDouble(CLIENT_CONFIG.ENERGY_METER_DEBUG_VAL.get(), 0, 100));
+        }
+
+        @Override
+        public Color getGlassColor() {
+            return Color.fromARGBHexString(CLIENT_CONFIG.ENERGY_METER_GLASS_COLOR.get());
+        }
+
+        @Override
+        public Color getBarColor() {
+            return Color.fromARGBHexString(CLIENT_CONFIG.ENERGY_METER_BAR_COLOR.get());
+        }
+    }
+
+    public static IMeterConfig getPlasmaMeterConfig() {
+        return PlasmaMeterConfig.INSTANCE;
+    }
+
+    public enum PlasmaMeterConfig implements IMeterConfig {
+        INSTANCE;
+
+        @Override
+        public float getDebugValue() {
+            return (float) (0.01 * MathUtils.clampDouble(CLIENT_CONFIG.PLASMA_METER_DEBUG_VAL.get(), 0, 100));
+        }
+
+        @Override
+        public Color getGlassColor() {
+            return Color.fromARGBHexString(CLIENT_CONFIG.PLASMA_METER_GLASS_COLOR.get());
+        }
+
+        @Override
+        public Color getBarColor() {
+            return Color.fromARGBHexString(CLIENT_CONFIG.PLASMA_METER_BAR_COLOR.get());
+        }
+    }
+
+    public static IMeterConfig getWaterMeterConfig() {
+        return WaterMeterConfig.INSTANCE;
+    }
+
+    public enum WaterMeterConfig implements IMeterConfig {
+        INSTANCE;
+
+        @Override
+        public float getDebugValue() {
+            return (float) (0.01 * MathUtils.clampDouble(CLIENT_CONFIG.WATER_METER_DEBUG_VAL.get(), 0, 100));
+        }
+
+        @Override
+        public Color getGlassColor() {
+            return Color.fromARGBHexString(CLIENT_CONFIG.WATER_METER_GLASS_COLOR.get());
+        }
+
+        @Override
+        public Color getBarColor() {
+            return Color.fromARGBHexString(CLIENT_CONFIG.WATER_METER_BAR_COLOR.get());
+        }
+    }
+
+    public static boolean showMetersWhenPaused() {
+        return CLIENT_CONFIG != null ? CLIENT_CONFIG.SHOW_METERS_WHEN_PAUSED.get() : false;
     }
 
     /**

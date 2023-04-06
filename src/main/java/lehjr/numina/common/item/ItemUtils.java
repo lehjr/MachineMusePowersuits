@@ -29,11 +29,14 @@ package lehjr.numina.common.item;
 import lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
 import net.minecraft.core.NonNullList;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
@@ -52,7 +55,7 @@ public class ItemUtils {
         for (EquipmentSlot slot : EquipmentSlot.values()) {
             ItemStack itemStack = player.getItemBySlot(slot);
 
-            itemStack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+            itemStack.getCapability(ForgeCapabilities.ITEM_HANDLER)
                     .filter(IModularItem.class::isInstance)
                     .map(IModularItem.class::cast)
                     .ifPresent(handler-> {
@@ -92,7 +95,7 @@ public class ItemUtils {
 
         for (int i = 0; i < inv.getContainerSize(); i++) {
             ItemStack itemStack = inv.getItem(i);
-            itemStack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+            itemStack.getCapability(ForgeCapabilities.ITEM_HANDLER)
                     .filter(IModularItem.class::isInstance)
                     .map(IModularItem.class::cast)
                     .ifPresent(handler -> stacks.add(itemStack));
@@ -115,14 +118,14 @@ public class ItemUtils {
         // feet ....... 36
 
         ArrayList<Integer> slots = new ArrayList<>();
-        player.getMainHandItem().getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+        player.getMainHandItem().getCapability(ForgeCapabilities.ITEM_HANDLER)
                 .filter(IModeChangingItem.class::isInstance)
                 .map(IModeChangingItem.class::cast)
                 .ifPresent(handler -> slots.add(player.getInventory().selected));
 
         for (int i = 36; i < player.getInventory().getContainerSize(); i++) {
             int index = i;
-            player.getInventory().getItem(i).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+            player.getInventory().getItem(i).getCapability(ForgeCapabilities.ITEM_HANDLER)
                     .filter(IModularItem.class::isInstance)
                     .map(IModularItem.class::cast)
                     .ifPresent(handler -> slots.add(index));
@@ -140,7 +143,7 @@ public class ItemUtils {
         ArrayList<Integer> slots = new ArrayList<>();
         for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
             int finalI = i;
-            player.getInventory().getItem(i).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+            player.getInventory().getItem(i).getCapability(ForgeCapabilities.ITEM_HANDLER)
                     .filter(IModularItem.class::isInstance)
                     .map(IModularItem.class::cast)
                     .ifPresent(handler -> slots.add(finalI));
@@ -153,9 +156,17 @@ public class ItemUtils {
 
 
     public static ItemStack getActiveModuleOrEmpty(@Nonnull ItemStack itemStack) {
-        return itemStack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+        return itemStack.getCapability(ForgeCapabilities.ITEM_HANDLER)
                 .filter(IModeChangingItem.class::isInstance)
                 .map(IModeChangingItem.class::cast)
                 .map(iModeChangingItem -> iModeChangingItem.getActiveModule()).orElse(ItemStack.EMPTY);
+    }
+
+    public static ResourceLocation getRegistryName(@Nonnull ItemStack itemStack) {
+        return getRegistryName(itemStack.getItem());
+    }
+
+    public static ResourceLocation getRegistryName(Item item) {
+        return ForgeRegistries.ITEMS.getKey(item);
     }
 }

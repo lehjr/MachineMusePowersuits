@@ -28,50 +28,47 @@ package lehjr.numina.client.model.obj;
 
 import lehjr.numina.client.model.helper.ModelHelper;
 import lehjr.numina.common.math.Color;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.Direction;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.client.model.BakedModelWrapper;
-import net.minecraftforge.client.model.data.EmptyModelData;
-import net.minecraftforge.client.model.data.IModelData;
+import net.minecraftforge.client.model.data.ModelData;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class OBJBakedPart extends BakedModelWrapper {
     public OBJBakedPart(BakedModel originalModel) {
         super(originalModel);
     }
 
-    /**
-      * @param state
-     * @param side
-     * @param rand
-     * @param extraData
-     * @return
-     */
-    @NotNull
     @Override
-    public List<BakedQuad> getQuads(@org.jetbrains.annotations.Nullable BlockState state, @Nullable Direction side, @NotNull Random rand, @NotNull IModelData extraData) {
+    public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, RandomSource rand) {
+        return super.getQuads(state, side, rand);
+    }
+
+    @Override
+    public @NotNull List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, @NotNull RandomSource rand, @NotNull ModelData extraData, @Nullable RenderType renderType) {
         // no extra data
-        if (extraData == EmptyModelData.INSTANCE) {
-            return originalModel.getQuads(state, side, rand, extraData);
+        if (extraData == ModelData.EMPTY) {
+            return originalModel.getQuads(state, side, rand, extraData, renderType);
         } else {
             // part is visibile
-            boolean visible = extraData.hasProperty(OBJPartData.VISIBLE) ? extraData.getData(OBJPartData.VISIBLE) : true;
+            boolean visible = extraData.has(OBJPartData.VISIBLE) ? extraData.get(OBJPartData.VISIBLE) : true;
             if (visible) {
                 // glow is opposite ambient occlusion
-                boolean glow = (extraData.hasProperty(OBJPartData.GLOW) ? extraData.getData(OBJPartData.GLOW) : false);
+                boolean glow = (extraData.has(OBJPartData.GLOW) ? extraData.get(OBJPartData.GLOW) : false);
                 // color applied to all quads in the part
-                Color color = extraData.hasProperty(OBJPartData.COLOR) ? new Color(extraData.getData(OBJPartData.COLOR)) : Color.WHITE;
+                Color color = extraData.has(OBJPartData.COLOR) ? new Color(extraData.get(OBJPartData.COLOR)) : Color.WHITE;
 
 //                NuminaLogger.logError("color in baked part: " + color);
 
-                return ModelHelper.getColoredQuadsWithGlow(originalModel.getQuads(state, side, rand, extraData), color, glow);
+                return ModelHelper.getColoredQuadsWithGlow(originalModel.getQuads(state, side, rand, extraData, renderType), color, glow);
             }
         }
         return new ArrayList<>();

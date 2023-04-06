@@ -136,7 +136,7 @@ public class ClickableLabel extends Clickable {
 
     @Override
     public boolean containsPoint(double x, double y) {
-        if (label == null || label.getContents().isEmpty()) {
+        if (label == null || label.getString().isEmpty()) { // FIXME? check this may not work
             return false;
         }
         MusePoint2D radius = new MusePoint2D((double) (StringUtils.getStringWidth(label) / 2F + 2F), StringUtils.getStringHeight());

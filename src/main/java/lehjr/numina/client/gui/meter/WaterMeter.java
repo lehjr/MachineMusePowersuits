@@ -1,11 +1,12 @@
 package lehjr.numina.client.gui.meter;
 
-import lehjr.numina.common.config.NuminaSettings;
-import lehjr.numina.common.math.Color;
+import lehjr.numina.client.config.IMeterConfig;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.resources.ResourceLocation;
+
+import java.util.concurrent.Callable;
 
 /**
  * Created by User: Andrew2448
@@ -14,14 +15,11 @@ import net.minecraft.resources.ResourceLocation;
 public class WaterMeter extends HeatMeter {
     final ResourceLocation TEXTURE_LOCATION = new ResourceLocation("minecraft:block/water_still");
 
-    public float getAlpha() {
-        return NuminaSettings.getWaterMeterColor().a;
+    public WaterMeter(Callable<IMeterConfig> config) {
+        super(config);
     }
 
-    public Color getColour() {
-        return NuminaSettings.getWaterMeterColor();
-    }
-
+    @Override
     public TextureAtlasSprite getTexture() {
         return Minecraft.getInstance().getTextureAtlas(TextureAtlas.LOCATION_BLOCKS).apply(TEXTURE_LOCATION);
     }

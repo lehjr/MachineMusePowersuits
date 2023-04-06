@@ -34,16 +34,16 @@ import lehjr.numina.common.constants.NuminaConstants;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.language.I18n;
-import net.minecraft.network.chat.*;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.Style;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.energy.CapabilityEnergy;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
-import net.minecraftforge.items.CapabilityItemHandler;
 import org.lwjgl.glfw.GLFW;
 
 import javax.annotation.Nonnull;
@@ -77,7 +77,7 @@ public class AdditionalInfo {
 //        }
 
         // Modular Item Check
-        stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+        stack.getCapability(ForgeCapabilities.ITEM_HANDLER)
                 // base class
                 .filter(IModularItem.class::isInstance)
                 .map(IModularItem.class::cast)
@@ -88,15 +88,15 @@ public class AdditionalInfo {
                         if (!activeModule.isEmpty()) {
 
                             // MutableComponent
-                            // TranslatableComponent
+                            // Component.translatable
                             MutableComponent localizedName = (MutableComponent) activeModule.getDisplayName();
                             currentTipList.add(
-                                    new TranslatableComponent("tooltip.numina.mode")
+                                    Component.translatable("tooltip.numina.mode")
 //                                        .appendString(" ")
-                                            .append(new TextComponent(" "))
+                                            .append(Component.literal(" "))
                                             .append(localizedName.setStyle(Style.EMPTY.applyFormat(ChatFormatting.RED))));
                         } else {
-                            currentTipList.add(new TranslatableComponent("tooltip.numina.changeModes"));
+                            currentTipList.add(Component.translatable("tooltip.numina.changeModes"));
                         }
                     }
 
@@ -108,7 +108,7 @@ public class AdditionalInfo {
                             installed.add(((MutableComponent)module.getDisplayName()).setStyle(Style.EMPTY.applyFormat((ChatFormatting.LIGHT_PURPLE))));
 
                             // check mpodule for fluid
-                            module.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).ifPresent(fluidHandler ->{
+                            module.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).ifPresent(fluidHandler ->{
                                 int numTanks = fluidHandler.getTanks();
 
                                 for(int i=0; i < numTanks; i++) {
@@ -132,10 +132,10 @@ public class AdditionalInfo {
                         }
 
                         if (installed.size() == 0) {
-                            Component message = new TranslatableComponent("tooltip.numina.noModules");
+                            Component message = Component.translatable("tooltip.numina.noModules");
                             currentTipList.addAll(StringUtils.wrapComponentToLength(message, 30));
                         } else {
-                            currentTipList.add(new TranslatableComponent("tooltip.numina.installedModules"));
+                            currentTipList.add(Component.translatable("tooltip.numina.installedModules"));
                             currentTipList.addAll(installed);
                         }
                     } else {
@@ -145,28 +145,28 @@ public class AdditionalInfo {
 
         stack.getCapability(PowerModuleCapability.POWER_MODULE).ifPresent(iPowerModule -> {
             if (doAdditionalInfo()) {
-                Component description = new TranslatableComponent( stack.getItem().getDescriptionId() + ".desc");
+                Component description = Component.translatable( stack.getItem().getDescriptionId() + ".desc");
                 currentTipList.addAll(StringUtils.wrapComponentToLength(description, 30));
             } else {
                 currentTipList.add(additionalInfoInstructions());
             }
         });
 
-        stack.getCapability(CapabilityEnergy.ENERGY).ifPresent(energyCap->
-                // FIXME use TranslatableComponent??? !!!
-                currentTipList.add(new TextComponent(I18n.get(NuminaConstants.TOOLTIP_ENERGY,
+        stack.getCapability(ForgeCapabilities.ENERGY).ifPresent(energyCap->
+                // FIXME use Component.translatable??? !!!
+                currentTipList.add(Component.literal(I18n.get(NuminaConstants.TOOLTIP_ENERGY,
                         StringUtils.formatNumberShort(energyCap.getEnergyStored()),
                         StringUtils.formatNumberShort(energyCap.getMaxEnergyStored())))
                         .setStyle(Style.EMPTY.applyFormat(ChatFormatting.AQUA).withItalic(true))));
     }
 
     static class FluidInfo {
-        TranslatableComponent displayName;
+        Component displayName;
         int currentAmount=0;
         int maxAmount=0;
 
         FluidInfo(Component displayName) {
-            this.displayName = (TranslatableComponent)displayName;
+            this.displayName = displayName;
         }
 
         public Component getDisplayName() {
@@ -192,18 +192,18 @@ public class AdditionalInfo {
         }
 
         public Component getOutput() {
-            return displayName.append(new TextComponent(": ")).append(new TextComponent(new StringBuilder(currentAmount).append("/").append(maxAmount).toString()))
+            return displayName.copy().append(Component.literal(": ")).append(Component.literal(new StringBuilder(currentAmount).append("/").append(maxAmount).toString()))
                     .setStyle(Style.EMPTY.applyFormat(ChatFormatting.DARK_AQUA).withItalic(true));
         }
     }
 
     public static Component additionalInfoInstructions() {
-        return new TranslatableComponent("tooltip.numina.pressShift")
+        return Component.translatable("tooltip.numina.pressShift")
                 .setStyle(Style.EMPTY.applyFormat(ChatFormatting.GRAY).withItalic(true));
     }
 
     public static List<Component> getItemInstalledModules(@Nonnull ItemStack stack) {
-        return stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+        return stack.getCapability(ForgeCapabilities.ITEM_HANDLER)
                 .filter(IModularItem.class::isInstance)
                 .map(IModularItem.class::cast)
                 .map(iItemHandler -> {

@@ -48,7 +48,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 public class PlayerUpdateHandler {
     @SuppressWarnings("unchecked")
     @SubscribeEvent(priority = EventPriority.NORMAL)
-    public void onPlayerUpdate(LivingEvent.LivingUpdateEvent event) {
+    public void onPlayerUpdate(LivingEvent event) {
         if (event.getEntity() instanceof Player) {
             Player player = (Player) event.getEntity();
 
@@ -63,24 +63,24 @@ public class PlayerUpdateHandler {
                 if ((player.getItemBySlot(EquipmentSlot.CHEST).getItem() instanceof PowerArmorChestplate)) {
                     double velsq2 = MathUtils.sumsq(player.getDeltaMovement().x, player.getDeltaMovement().y, player.getDeltaMovement().z) - 0.5;
                     if (player.hasImpulse && velsq2 > 0) {
-                        Musique.playerSound(player, MPSSoundDictionary.GLIDER, SoundSource.PLAYERS, (float) (velsq2 / 3), 1.0f, true);
+                        Musique.playerSound(player, MPSSoundDictionary.GLIDER.get(), SoundSource.PLAYERS, (float) (velsq2 / 3), 1.0f, true);
                     } else {
-                        Musique.stopPlayerSound(player, MPSSoundDictionary.GLIDER);
+                        Musique.stopPlayerSound(player, MPSSoundDictionary.GLIDER.get());
                     }
                 } else {
-                    Musique.stopPlayerSound(player, MPSSoundDictionary.GLIDER);
+                    Musique.stopPlayerSound(player, MPSSoundDictionary.GLIDER.get());
                 }
 
                 if (!(player.getItemBySlot(EquipmentSlot.FEET).getItem() instanceof PowerArmorBoots)) {
-                    Musique.stopPlayerSound(player, MPSSoundDictionary.JETBOOTS);
+                    Musique.stopPlayerSound(player, MPSSoundDictionary.JETBOOTS.get());
                 }
 
                 if (!(player.getItemBySlot(EquipmentSlot.CHEST).getItem() instanceof PowerArmorChestplate)) {
-                    Musique.stopPlayerSound(player, MPSSoundDictionary.JETPACK);
+                    Musique.stopPlayerSound(player, MPSSoundDictionary.JETPACK.get());
                 }
 
                 if (!(player.getItemBySlot(EquipmentSlot.LEGS).getItem() instanceof PowerArmorLeggings)) {
-                    Musique.stopPlayerSound(player, MPSSoundDictionary.SWIM_ASSIST);
+                    Musique.stopPlayerSound(player, MPSSoundDictionary.SWIM_ASSIST.get());
                 }
             }
         }

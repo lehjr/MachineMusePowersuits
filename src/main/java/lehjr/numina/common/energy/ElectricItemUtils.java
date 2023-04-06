@@ -27,11 +27,12 @@
 package lehjr.numina.common.energy;
 
 import lehjr.numina.common.base.NuminaObjects;
+import lehjr.numina.common.item.ItemUtils;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.energy.CapabilityEnergy;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 
 import javax.annotation.Nonnull;
 
@@ -140,28 +141,28 @@ public class ElectricItemUtils {
      * returns the energy an itemStack has
      */
     public static int drainItem(@Nonnull ItemStack itemStack, int drainAmount, boolean simulate) {
-        if (BlackList.blacklistModIds.contains(itemStack.getItem().getRegistryName().getNamespace())) {
+        if (BlackList.blacklistModIds.contains(ItemUtils.getRegistryName(itemStack).getNamespace())) {
             return 0;
         }
-        return itemStack.getCapability(CapabilityEnergy.ENERGY).filter(iEnergyStorage -> iEnergyStorage.getMaxEnergyStored() >= getMaxEnergyForComparison()).map(energyHandler -> energyHandler.extractEnergy(drainAmount, simulate)).orElse(0);
+        return itemStack.getCapability(ForgeCapabilities.ENERGY).filter(iEnergyStorage -> iEnergyStorage.getMaxEnergyStored() >= getMaxEnergyForComparison()).map(energyHandler -> energyHandler.extractEnergy(drainAmount, simulate)).orElse(0);
     }
 
     /**
      * returns the energy an itemStack has
      */
     public static int getItemEnergy(@Nonnull ItemStack itemStack) {
-        return itemStack.getCapability(CapabilityEnergy.ENERGY).filter(iEnergyStorage -> iEnergyStorage.getMaxEnergyStored() >= getMaxEnergyForComparison()).map(energyHandler -> energyHandler.getEnergyStored()).orElse(0);
+        return itemStack.getCapability(ForgeCapabilities.ENERGY).filter(iEnergyStorage -> iEnergyStorage.getMaxEnergyStored() >= getMaxEnergyForComparison()).map(energyHandler -> energyHandler.getEnergyStored()).orElse(0);
     }
 
     /**
      * returns total possible energy an itemStack can hold
      */
     public static int getMaxItemEnergy(@Nonnull ItemStack itemStack) {
-        return itemStack.getCapability(CapabilityEnergy.ENERGY).filter(iEnergyStorage -> iEnergyStorage.getMaxEnergyStored() >= getMaxEnergyForComparison()).map(energyHandler -> energyHandler.getMaxEnergyStored()).orElse(0);
+        return itemStack.getCapability(ForgeCapabilities.ENERGY).filter(iEnergyStorage -> iEnergyStorage.getMaxEnergyStored() >= getMaxEnergyForComparison()).map(energyHandler -> energyHandler.getMaxEnergyStored()).orElse(0);
     }
 
     public static int chargeItem(@Nonnull ItemStack itemStack, int chargeAmount, boolean simulate) {
-        return itemStack.getCapability(CapabilityEnergy.ENERGY).map(energyHandler -> energyHandler.receiveEnergy(chargeAmount, simulate)).orElse(0);
+        return itemStack.getCapability(ForgeCapabilities.ENERGY).map(energyHandler -> energyHandler.receiveEnergy(chargeAmount, simulate)).orElse(0);
     }
 
     /**
@@ -170,6 +171,6 @@ public class ElectricItemUtils {
      */
     static int getMaxEnergyForComparison() {
 //        return 0;
-        return (int) (0.8 * new ItemStack(NuminaObjects.BASIC_BATTERY.get()).getCapability(CapabilityEnergy.ENERGY).map(energyHandler -> energyHandler.getMaxEnergyStored() ).orElse(0));
+        return (int) (0.8 * new ItemStack(NuminaObjects.BASIC_BATTERY.get()).getCapability(ForgeCapabilities.ENERGY).map(energyHandler -> energyHandler.getMaxEnergyStored() ).orElse(0));
     }
 }

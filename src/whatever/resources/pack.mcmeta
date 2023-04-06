@@ -1,6 +1,8 @@
 {
   "pack": {
-    "pack_format": 6,
-    "description": "Resources used for MPS-Whatever"
+    "description": "Resources used for MPS-Whatever",
+    "pack_format": 13,
+    "forge:client_resources_pack_format": 13,
+    "forge:server_data_pack_format": 12
   }
 }

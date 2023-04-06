@@ -31,7 +31,6 @@ import lehjr.numina.common.container.ChargingBaseMenu;
 import lehjr.numina.common.entity.NuminaArmorStand;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.InteractionHand;
@@ -68,7 +67,7 @@ import java.util.List;
  * Base of the armor workstation.
  */
 public class ChargingBase extends Block implements EntityBlock, SimpleWaterloggedBlock {
-    private static final Component title = new TranslatableComponent("container.chargingbase");
+    private static final Component title = Component.translatable("container.chargingbase");
 
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
@@ -79,7 +78,6 @@ public class ChargingBase extends Block implements EntityBlock, SimpleWaterlogge
             16.0D, // east
             1.0D, // up?
             16.0D); // South
-
 
     public ChargingBase() {
         super(Block.Properties.of(Material.METAL)
@@ -92,8 +90,8 @@ public class ChargingBase extends Block implements EntityBlock, SimpleWaterlogge
     }
 
     @Override
-    public void appendHoverText(ItemStack pStack, @org.jetbrains.annotations.Nullable BlockGetter pLevel, List<Component> list, TooltipFlag pFlag) {
-        list.add(new TranslatableComponent("message.charging_base", Integer.toString(1000)));
+    public void appendHoverText(ItemStack pStack, @Nullable BlockGetter pLevel, List<Component> list, TooltipFlag pFlag) {
+        list.add(Component.translatable("message.charging_base", Integer.toString(1000)));
     }
 
     @Override
@@ -130,7 +128,7 @@ public class ChargingBase extends Block implements EntityBlock, SimpleWaterlogge
         if (level.isClientSide) {
             return InteractionResult.SUCCESS;
         } else {
-            NetworkHooks.openGui((ServerPlayer) player,
+            NetworkHooks.openScreen((ServerPlayer) player,
                     new SimpleMenuProvider((windowID, inventory, playerEntity) ->
                             new ChargingBaseMenu(windowID, pos, inventory), title),
                     buf -> buf.writeBlockPos(pos));
@@ -138,7 +136,7 @@ public class ChargingBase extends Block implements EntityBlock, SimpleWaterlogge
         }
     }
 
-    @org.jetbrains.annotations.Nullable
+    @Nullable
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
         FluidState ifluidstate = context.getLevel().getFluidState(context.getClickedPos());

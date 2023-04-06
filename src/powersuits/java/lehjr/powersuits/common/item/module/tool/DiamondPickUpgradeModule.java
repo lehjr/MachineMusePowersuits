@@ -46,10 +46,10 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.entity.player.PlayerEvent;
-import net.minecraftforge.items.CapabilityItemHandler;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
@@ -94,7 +94,7 @@ public class DiamondPickUpgradeModule extends AbstractPowerModule {
             public boolean canHarvestBlock(@Nonnull ItemStack powerFist, BlockState state, Player player, BlockPos pos, int playerEnergy) {
                 AtomicBoolean canHarvest = new AtomicBoolean(false);
                 NuminaLogger.logDebug("FIXME!!!!");
-//                powerFist.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+//                powerFist.getCapability(ForgeCapabilities.ITEM_HANDLER)
 //                        .filter(IModeChangingItem.class::isInstance)
 //                        .map(IModeChangingItem.class::cast)
 //                        .ifPresent(modeChanging -> {
@@ -122,7 +122,7 @@ public class DiamondPickUpgradeModule extends AbstractPowerModule {
             public boolean mineBlock(@NotNull ItemStack powerFist, Level worldIn, BlockState state, BlockPos pos, LivingEntity entityLiving, int playerEnergy) {
                 if (this.canHarvestBlock(powerFist, state, (Player) entityLiving, pos, playerEnergy)) {
                     AtomicInteger energyUsage = new AtomicInteger(0);
-                    powerFist.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+                    powerFist.getCapability(ForgeCapabilities.ITEM_HANDLER)
                             .filter(IModeChangingItem.class::isInstance)
                             .map(IModeChangingItem.class::cast)
                             .ifPresent(modeChanging -> {
@@ -147,10 +147,10 @@ public class DiamondPickUpgradeModule extends AbstractPowerModule {
 
             @Override
             public void handleBreakSpeed(PlayerEvent.BreakSpeed event) {
-                Player player = event.getPlayer();
+                Player player = event.getEntity();
                 ItemStack powerFist = player.getMainHandItem();
                 AtomicDouble newSpeed = new AtomicDouble(event.getNewSpeed());
-                powerFist.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+                powerFist.getCapability(ForgeCapabilities.ITEM_HANDLER)
                         .filter(IModeChangingItem.class::isInstance)
                         .map(IModeChangingItem.class::cast)
                         .ifPresent(modeChanging -> {

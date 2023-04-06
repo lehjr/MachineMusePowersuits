@@ -7,7 +7,7 @@
 //import li.cil.scannable.util.Migration;
 //import net.minecraft.client.Minecraft;
 //import com.mojang.blaze3d.vertex.DefaultVertexFormat;
-//import net.minecraft.network.chat.TranslatableComponent;
+//import net.minecraft.network.chat.Component;
 //import net.minecraft.resources.ResourceLocation;
 //import net.minecraft.util.math.MathHelper;
 //import net.minecraft.world.entity.player.Player;
@@ -133,7 +133,7 @@
 //        tessellator.end();
 //
 //        Migration.FontRenderer.drawStringWithShadow(mc.font, event.getPoseStack(),
-//                new TranslatableComponent(Constants.GUI_SCANNER_PROGRESS, MathHelper.func_76141_d(progress * 100)),
+//                Component.translatable(Constants.GUI_SCANNER_PROGRESS, MathHelper.func_76141_d(progress * 100)),
 //                right + 12, midY - mc.font.field_78288_b / 2, 0xCCAACCEE);
 //
 //        RenderSystem.bindTexture(0);

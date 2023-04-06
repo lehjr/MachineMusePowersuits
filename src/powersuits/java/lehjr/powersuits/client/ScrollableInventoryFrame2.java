@@ -11,7 +11,7 @@ import lehjr.powersuits.common.network.packets.ContainerGuiOpenPacket;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 
 import java.util.ArrayList;
 import java.util.stream.IntStream;
@@ -30,7 +30,7 @@ public class ScrollableInventoryFrame2 <C extends AbstractContainerMenu> extends
                 new ArrayList<Integer>() {{
                     modularItemSelectionFrame.getSelectedTab().ifPresent(tab->{
                         EquipmentSlot type = tab.getSlotType();
-                        Minecraft.getInstance().player.getItemBySlot(type).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+                        Minecraft.getInstance().player.getItemBySlot(type).getCapability(ForgeCapabilities.ITEM_HANDLER)
                                 .filter(IModularItem.class::isInstance)
                                 .map(IModularItem.class::cast)
                                 .ifPresent(iItemHandler -> {

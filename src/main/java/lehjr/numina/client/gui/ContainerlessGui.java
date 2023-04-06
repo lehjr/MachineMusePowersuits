@@ -36,7 +36,6 @@ public class ContainerlessGui extends Screen {
     @Override
     public void init() {
         super.init();
-        minecraft.keyboardHandler.setSendRepeatsToGui(true);
         this.leftPos = (this.width - this.imageWidth) / 2;
         this.topPos = (this.height - this.imageHeight) / 2;
     }

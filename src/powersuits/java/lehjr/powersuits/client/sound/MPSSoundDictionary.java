@@ -30,37 +30,28 @@ import lehjr.powersuits.common.constants.MPSConstants;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
 
 @Mod.EventBusSubscriber(modid = MPSConstants.MOD_ID, value = Dist.CLIENT)
 public class MPSSoundDictionary {
-    public static SoundEvent GLIDER = initSound("glider");
-    public static SoundEvent JETBOOTS = initSound("jet_boots");
-    public static SoundEvent JETPACK = initSound("jetpack");
-    public static SoundEvent JUMP_ASSIST = initSound("jump_assist");
-    public static SoundEvent SWIM_ASSIST = initSound("swim_assist");
-    public static SoundEvent ELECTROLYZER = initSound("water_electrolyzer");
+    private static final DeferredRegister<SoundEvent> SOUND_EVENTS = DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, MPSConstants.MOD_ID);
+
+    public static final RegistryObject<SoundEvent> GLIDER = register("glider");
+    public static final RegistryObject<SoundEvent> JETBOOTS = register("jet_boots");
+    public static final RegistryObject<SoundEvent> JETPACK = register("jetpack");
+    public static final RegistryObject<SoundEvent> JUMP_ASSIST = register("jump_assist");
+    public static final RegistryObject<SoundEvent> SWIM_ASSIST = register("swim_assist");
+    public static final RegistryObject<SoundEvent> ELECTROLYZER = register("water_electrolyzer");
 
     static {
         new MPSSoundDictionary();
     }
 
-    @SubscribeEvent
-    public static void registerSoundEvent(RegistryEvent.Register<SoundEvent> event) {
-        event.getRegistry().registerAll(
-                GLIDER,
-                JETBOOTS,
-                JETPACK,
-                JUMP_ASSIST,
-                SWIM_ASSIST,
-                ELECTROLYZER);
-    }
-
-    private static SoundEvent initSound(String soundName) {
-        ResourceLocation location = new ResourceLocation(MPSConstants.MOD_ID, soundName);
-        SoundEvent event = new SoundEvent(location).setRegistryName(location);
-        return event;
+    public static RegistryObject<SoundEvent> register(String name) {
+        return SOUND_EVENTS.register(name,
+                () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(MPSConstants.MOD_ID, name)));
     }
 }

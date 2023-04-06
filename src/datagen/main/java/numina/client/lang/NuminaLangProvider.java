@@ -3,6 +3,7 @@ package numina.client.lang;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import lehjr.numina.common.constants.NuminaConstants;
+import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DataProvider;
 import net.minecraft.data.HashCache;
@@ -13,6 +14,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.concurrent.CompletableFuture;
 import java.util.regex.Pattern;
 
 /**
@@ -38,10 +40,9 @@ public class NuminaLangProvider implements DataProvider {
         this.root = root;
     }
 
-
     @Override
-    public void run(HashCache cache) throws IOException {
-        Path src = gen.getOutputFolder().getParent().getParent().getParent();
+    public CompletableFuture<?> run(CachedOutput cache) {
+        Path src = gen.getPackOutput().getOutputFolder().getParent().getParent().getParent();
         File langFolder = new File(src.toFile(), root + "/resources/assets/" + modid + "/lang");
         System.out.println("source folder: " +langFolder);
 
@@ -58,12 +59,13 @@ public class NuminaLangProvider implements DataProvider {
                 langMapWrappers.add(new NuminaLangMapWrapper(file, langMapWrappers.get(0)));
             });
 
-            System.out.println("modID: " + modid + ", output folder: " + gen.getOutputFolder());
+            System.out.println("modID: " + modid + ", output folder: " + gen.getPackOutput().getOutputFolder());
 
-            langMapWrappers.forEach(wrapper -> wrapper.savetoOutputFolder(cache, gen.getOutputFolder().resolve("assets/" + modid + "/lang/")));
+            langMapWrappers.forEach(wrapper -> wrapper.savetoOutputFolder(cache, gen.getPackOutput().getOutputFolder().resolve("assets/" + modid + "/lang/")));
         } else {
             System.out.println("lang folder not found !!!:");
         }
+        return null;
     }
 
     @Override

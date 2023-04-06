@@ -85,6 +85,8 @@ public class VanillaButton extends Clickable {
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
         RenderSystem.enableDepthTest();
+
+        // FIXME: still needed or able to use screen version?
         IconUtils.INSTANCE.blit(matrixStack, this.left(), this.top(), 0, 46 + i * 20, this.width() / 2, this.height());
         IconUtils.INSTANCE.blit(matrixStack, this.left() + this.width() / 2, this.top(), 200 - this.width() / 2, 46 + i * 20, this.width() / 2, this.height());
         this.renderBg(matrixStack, mouseX, mouseY, partialTicks);

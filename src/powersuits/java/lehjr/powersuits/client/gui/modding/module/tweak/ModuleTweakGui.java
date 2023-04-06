@@ -38,7 +38,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
 
@@ -50,9 +49,9 @@ import java.util.Optional;
  *
  */
 public class ModuleTweakGui extends ContainerlessGui {
-    TranslatableComponent MODULE_SELECTION_LABEL = new TranslatableComponent("gui.powersuits.installed.modules");
-    TranslatableComponent TINKER_FRAME_LABEL = new TranslatableComponent("gui.powersuits.tinker");
-    TranslatableComponent SUMMARY_FRAME_LABEL = new TranslatableComponent("gui.powersuits.equippedTotals");
+    Component MODULE_SELECTION_LABEL = Component.translatable("gui.powersuits.installed.modules");
+    Component TINKER_FRAME_LABEL = Component.translatable("gui.powersuits.tinker");
+    Component SUMMARY_FRAME_LABEL = Component.translatable("gui.powersuits.equippedTotals");
 
     public static final ResourceLocation BACKGROUND = new ResourceLocation(MPSConstants.MOD_ID, "textures/gui/background/module_tweak.png");
     protected ModularItemSelectionFrame itemSelectFrame;

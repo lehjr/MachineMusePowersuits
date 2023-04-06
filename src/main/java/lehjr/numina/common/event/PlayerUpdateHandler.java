@@ -35,16 +35,16 @@ import net.minecraft.core.NonNullList;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.items.CapabilityItemHandler;
 
 public class PlayerUpdateHandler {
     @SuppressWarnings("unchecked")
     @SubscribeEvent(priority = EventPriority.NORMAL)
-    public void onPlayerUpdate(LivingEvent.LivingUpdateEvent event) {
+    public void onPlayerUpdate(LivingEvent event) {
         if (event.getEntity() instanceof Player) {
             Player player = (Player) event.getEntity();
 
@@ -56,7 +56,7 @@ public class PlayerUpdateHandler {
 
                 switch (slot.getType()) {
                     case HAND:
-                        player.getItemBySlot(slot).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+                        player.getItemBySlot(slot).getCapability(ForgeCapabilities.ITEM_HANDLER)
                                 .filter(IModeChangingItem.class::isInstance)
                                 .map(IModeChangingItem.class::cast)
                                 .ifPresent(i-> {
@@ -68,7 +68,7 @@ public class PlayerUpdateHandler {
                     case ARMOR:
 
                         try {
-                            player.getItemBySlot(slot).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+                            player.getItemBySlot(slot).getCapability(ForgeCapabilities.ITEM_HANDLER)
                                     .filter(IModularItem.class::isInstance)
                                     .map(IModularItem.class::cast)
                                     .ifPresent(i-> {

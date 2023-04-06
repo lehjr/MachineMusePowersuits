@@ -31,7 +31,6 @@ import lehjr.numina.client.model.obj.OBJBakedCompositeModel;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.resources.model.ModelState;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 
 import java.util.Objects;
 
@@ -52,13 +51,14 @@ public class ModelSpec extends SpecBase {
     }
 
     public Transformation getTransform(ItemTransforms.TransformType transformType) {
-        Transformation transformation = modelTransforms.getPartTransformation(transformType);
+        // FIXME: Looks like model state only has one transform now
+        Transformation transformation = modelTransforms.getRotation()/*.getPartTransformation(transformType)*/; // FIXME!!!!!
         return transformation;
     }
 
     @Override
     public Component getDisaplayName() {
-        return new TranslatableComponent(new StringBuilder("model.")
+        return Component.translatable(new StringBuilder("model.")
                 .append(this.getOwnName())
                 .append(".modelName")
                 .toString());

@@ -29,8 +29,7 @@ package lehjr.powersuits.client.model.helper;
 import com.google.common.collect.ImmutableMap;
 import lehjr.numina.client.model.obj.OBJPartData;
 import lehjr.numina.common.math.Color;
-import net.minecraftforge.client.model.data.IModelData;
-import net.minecraftforge.client.model.data.ModelDataMap;
+import net.minecraftforge.client.model.data.ModelData;
 
 public class LuxCapHelper {
     static final String LIGHT_BASE_LOWER = "lightBaseLower";
@@ -38,20 +37,20 @@ public class LuxCapHelper {
     static final String LIGHT_LENS = "lightlens";
 
 
-    public static IModelData getBlockBaseModelData() {
-        ImmutableMap.Builder<String, IModelData> builder = ImmutableMap.builder();
-        builder.put(LIGHT_BASE_LOWER, OBJPartData.makeOBJPartData(false, true, Color.WHITE.getInt()));
-        builder.put(LIGHT_BASE_UPPER, OBJPartData.makeOBJPartData(false, true, Color.WHITE.getInt()));
-        builder.put(LIGHT_LENS, OBJPartData.makeOBJPartData(false, false, Color.WHITE.getInt()));
-        return new ModelDataMap.Builder().withInitial(OBJPartData.SUBMODEL_DATA, new OBJPartData(builder.build())).build();
+    public static ModelData getBlockBaseModelData() {
+        ImmutableMap.Builder<String, ModelData> builder = ImmutableMap.builder();
+        builder.put(LIGHT_BASE_LOWER, OBJPartData.makeOBJPartData(false, true, Color.WHITE.getARGBInt()));
+        builder.put(LIGHT_BASE_UPPER, OBJPartData.makeOBJPartData(false, true, Color.WHITE.getARGBInt()));
+        builder.put(LIGHT_LENS, OBJPartData.makeOBJPartData(false, false, Color.WHITE.getARGBInt()));
+        return ModelData.builder().with(OBJPartData.SUBMODEL_DATA, new OBJPartData(builder.build())).build();
     }
 
-    public static IModelData getBlockLensModelData(int color) {
-        ImmutableMap.Builder<String, IModelData> builder = ImmutableMap.builder();
-        builder.put(LIGHT_BASE_LOWER, OBJPartData.makeOBJPartData(false, false, Color.WHITE.getInt()));
-        builder.put(LIGHT_BASE_UPPER, OBJPartData.makeOBJPartData(false, false, Color.WHITE.getInt()));
+    public static ModelData getBlockLensModelData(int color) {
+        ImmutableMap.Builder<String, ModelData> builder = ImmutableMap.builder();
+        builder.put(LIGHT_BASE_LOWER, OBJPartData.makeOBJPartData(false, false, Color.WHITE.getARGBInt()));
+        builder.put(LIGHT_BASE_UPPER, OBJPartData.makeOBJPartData(false, false, Color.WHITE.getARGBInt()));
         builder.put(LIGHT_LENS, OBJPartData.makeOBJPartData(true, true, color));
-        return new ModelDataMap.Builder().withInitial(OBJPartData.SUBMODEL_DATA, new OBJPartData(builder.build())).build();
+        return ModelData.builder().with(OBJPartData.SUBMODEL_DATA, new OBJPartData(builder.build())).build();
     }
 //
 //    public static IModelData getLensModelData(int color) {
@@ -60,11 +59,11 @@ public class LuxCapHelper {
 //        return new ModelDataMap.Builder().withInitial(OBJPartData.SUBMODEL_DATA, new OBJPartData(builder.build())).build();
 //    }
 
-    public static IModelData getItemModelData(int color) {
-        ImmutableMap.Builder<String, IModelData> builder = ImmutableMap.builder();
-        builder.put(LIGHT_BASE_LOWER, OBJPartData.makeOBJPartData(false, true, Color.WHITE.getInt()));
-        builder.put(LIGHT_BASE_UPPER, OBJPartData.makeOBJPartData(false, true, Color.WHITE.getInt()));
+    public static ModelData getItemModelData(int color) {
+        ImmutableMap.Builder<String, ModelData> builder = ImmutableMap.builder();
+        builder.put(LIGHT_BASE_LOWER, OBJPartData.makeOBJPartData(false, true, Color.WHITE.getARGBInt()));
+        builder.put(LIGHT_BASE_UPPER, OBJPartData.makeOBJPartData(false, true, Color.WHITE.getARGBInt()));
         builder.put(LIGHT_LENS, OBJPartData.makeOBJPartData(true, true, color));
-        return new ModelDataMap.Builder().withInitial(OBJPartData.SUBMODEL_DATA, new OBJPartData(builder.build())).build();
+        return ModelData.builder().with(OBJPartData.SUBMODEL_DATA, new OBJPartData(builder.build())).build();
     }
 }

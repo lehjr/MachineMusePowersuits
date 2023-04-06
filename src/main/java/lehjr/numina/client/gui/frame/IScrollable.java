@@ -4,13 +4,12 @@ import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.platform.Lighting;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
-import com.mojang.math.Matrix4f;
 import lehjr.numina.client.gui.geometry.IDrawableRect;
 import lehjr.numina.common.math.Color;
 import lehjr.numina.common.math.MathUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GameRenderer;
-import net.minecraft.client.renderer.ShaderInstance;
+import org.joml.Matrix4f;
 
 public interface IScrollable extends IGuiFrame, IDrawableRect {
     void setTotalSize(int totalSize);

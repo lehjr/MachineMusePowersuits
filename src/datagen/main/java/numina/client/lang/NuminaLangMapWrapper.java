@@ -3,6 +3,7 @@ package numina.client.lang;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
+import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataProvider;
 import net.minecraft.data.HashCache;
 import org.apache.commons.io.FilenameUtils;
@@ -85,7 +86,7 @@ public class NuminaLangMapWrapper {
 
     }
 
-    public void savetoOutputFolder(HashCache cache, Path outputFolder) {
+    public void savetoOutputFolder(CachedOutput cache, Path outputFolder) {
         try {
             if (!thisIsDefault()) {
                 if (!extraData.isEmpty()) {
@@ -122,7 +123,7 @@ public class NuminaLangMapWrapper {
         return jsonObject;
     }
 
-    private void save(HashCache cache, Object object, Path target, boolean overwrite) throws IOException {
+    private void save(CachedOutput cache, Object object, Path target, boolean overwrite) throws IOException {
 //        if (locale.startsWith("zh_")) {
             fileWriter(cache, object, target, overwrite);
 //        } else {
@@ -142,22 +143,22 @@ public class NuminaLangMapWrapper {
     }
 
 
-    public void fileWriter(HashCache cache, Object object, Path target, boolean overwrite) {
+    public void fileWriter(CachedOutput cache, Object object, Path target, boolean overwrite) {
         String dataOut = GSON.toJson(object);
-        String hash = DataProvider.SHA1.hashUnencodedChars(dataOut).toString();
-        try {
-            Files.createDirectories(target.getParent());
-            if (overwrite || !target.toFile().exists()) {
-                FileWriter fileWriter = new FileWriter(target.toFile());
-                fileWriter.write(dataOut);
-                fileWriter.flush();
-                fileWriter.close();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        cache.putNew(target, hash);
+//        String hash = DataProvider..f_123918_.hashUnencodedChars(dataOut).toString();
+//        try {
+//            Files.createDirectories(target.getParent());
+//            if (overwrite || !target.toFile().exists()) {
+//                FileWriter fileWriter = new FileWriter(target.toFile());
+//                fileWriter.write(dataOut);
+//                fileWriter.flush();
+//                fileWriter.close();
+//            }
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//
+//        cache.m_123940_(target, hash);
     }
 }
 

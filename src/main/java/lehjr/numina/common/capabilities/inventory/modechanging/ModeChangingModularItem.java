@@ -27,13 +27,13 @@
 package lehjr.numina.common.capabilities.inventory.modechanging;
 
 import com.mojang.blaze3d.platform.Window;
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import lehjr.numina.client.render.NuminaRenderer;
 import lehjr.numina.common.capabilities.inventory.modularitem.ModularItem;
 import lehjr.numina.common.capabilities.module.powermodule.PowerModuleCapability;
 import lehjr.numina.common.capabilities.module.rightclick.IRightClickModule;
 import lehjr.numina.common.capabilities.render.chameleon.ChameleonCapability;
+import lehjr.numina.common.item.ItemUtils;
 import lehjr.numina.common.math.Color;
 import lehjr.numina.common.network.NuminaPackets;
 import lehjr.numina.common.network.packets.ModeChangeRequestPacket;
@@ -126,7 +126,7 @@ public class ModeChangingModularItem extends ModularItem implements IModeChangin
     public boolean isValidMode(ResourceLocation mode) {
         for(int i=1; i < getSlots();  i++) {
             ItemStack module = getStackInSlot(i);
-            if (!module.isEmpty() && module.getItem().getRegistryName().equals(mode) && isValidMode(module))
+            if (!module.isEmpty() && ItemUtils.getRegistryName(module).equals(mode) && isValidMode(module))
                 return true;
         }
         return false;
@@ -144,7 +144,7 @@ public class ModeChangingModularItem extends ModularItem implements IModeChangin
     public boolean hasActiveModule(ResourceLocation regName) {
         ItemStack module = getActiveModule();
         if (!module.isEmpty()) {
-            return module.getItem().getRegistryName().equals(regName);
+            return ItemUtils.getRegistryName(module).equals(regName);
         }
         return false;
     }
@@ -163,7 +163,7 @@ public class ModeChangingModularItem extends ModularItem implements IModeChangin
     public void setActiveMode(ResourceLocation moduleName) {
         for(int i=1; i < getSlots();  i++) {
             ItemStack module = getStackInSlot(i);
-            if (!module.isEmpty() && module.getItem().getRegistryName().equals(moduleName)
+            if (!module.isEmpty() && ItemUtils.getRegistryName(module).equals(moduleName)
                     && module.getCapability(PowerModuleCapability.POWER_MODULE).map(m-> m instanceof IRightClickModule).orElse(false)) {
                 setActiveMode(i);
                 return;

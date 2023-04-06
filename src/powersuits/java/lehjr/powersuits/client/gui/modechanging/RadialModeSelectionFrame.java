@@ -41,7 +41,7 @@ import lehjr.numina.common.network.packets.ModeChangeRequestPacket;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -96,7 +96,7 @@ public class RadialModeSelectionFrame extends AbstractGuiFrame {
         if (getSelectedModule() != null && selectedModuleOriginal != selectedModuleNew) {
             // update to detect mode changes
             selectedModuleOriginal = selectedModuleNew;
-            stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+            stack.getCapability(ForgeCapabilities.ITEM_HANDLER)
                     .filter(IModeChangingItem.class::isInstance)
                     .map(IModeChangingItem.class::cast)
                     .ifPresent(handler->{
@@ -128,7 +128,7 @@ public class RadialModeSelectionFrame extends AbstractGuiFrame {
 
     private void loadItems() {
         if (player != null && modeButtons.isEmpty()) {
-            stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+            stack.getCapability(ForgeCapabilities.ITEM_HANDLER)
                     .filter(IModeChangingItem.class::isInstance)
                     .map(IModeChangingItem.class::cast)
                     .ifPresent(handler->{

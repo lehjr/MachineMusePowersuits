@@ -1,20 +1,18 @@
 package lehjr.powersuits.client.gui.common;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import lehjr.numina.client.gui.clickable.ClickableButton;
 import lehjr.numina.client.gui.clickable.IClickable;
+import lehjr.numina.client.gui.clickable.button.VanillaButton;
 import lehjr.numina.client.gui.frame.AbstractGuiFrame;
 import lehjr.numina.client.gui.geometry.DrawableTile;
 import lehjr.numina.client.gui.geometry.IRect;
 import lehjr.numina.client.gui.geometry.MusePoint2D;
 import lehjr.numina.client.gui.geometry.Rect;
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
-import lehjr.numina.common.math.Color;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -25,7 +23,7 @@ import java.util.Optional;
 
 public class ModularItemSelectionFrame extends AbstractGuiFrame {
     public ModularItemTabToggleWidget selectedTab = null;
-    public ClickableButton creativeInstallButton;
+    public VanillaButton creativeInstallButton;
 
     IChanged changed;
 
@@ -75,17 +73,17 @@ public class ModularItemSelectionFrame extends AbstractGuiFrame {
             boxes.add(widget);
             boxes.add(new Rect(ul, ul.plus(35, 3)));
         }
-        creativeInstallButton = new ClickableButton(new TranslatableComponent("gui.powersuits.creative.install"), MusePoint2D.ZERO, false);
+        creativeInstallButton = new VanillaButton(MusePoint2D.ZERO, Component.translatable("gui.powersuits.creative.install"), false);
         creativeInstallButton.setHeight(18);
         creativeInstallButton.setWidth(30);
         creativeInstallButton.disableAndHide();
-        creativeInstallButton.setEnabledBackground(Color.LIGHT_GRAY);
-        creativeInstallButton.setDisabledBackground(Color.RED);
+//        creativeInstallButton.setEnabledBackground(Color.LIGHT_GRAY);
+//        creativeInstallButton.setDisabledBackground(Color.RED);
         creativeInstallButton.setUL(getUL().copy());
 
 
 //        List<Component> toolTip =  new ArrayList<Component>() {{
-//            add(new TranslatableComponent("gui.powersuits.creative.install.desc"));
+//            add(Component.translatable("gui.powersuits.creative.install.desc"));
 //        }};
         boxes.add(creativeInstallButton);
         refreshRects();
@@ -106,7 +104,7 @@ public class ModularItemSelectionFrame extends AbstractGuiFrame {
         setHeight(finalHeight);
     }
 
-    public ClickableButton getCreativeInstallButton() {
+    public VanillaButton getCreativeInstallButton() {
         return creativeInstallButton;
     }
 
@@ -121,7 +119,7 @@ public class ModularItemSelectionFrame extends AbstractGuiFrame {
     }
 
     public Optional<IModularItem> getModularItemCapability () {
-        return getModularItemOrEmpty().getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+        return getModularItemOrEmpty().getCapability(ForgeCapabilities.ITEM_HANDLER)
                 .filter(IModularItem.class::isInstance)
                 .map(IModularItem.class::cast);
     }
@@ -133,7 +131,7 @@ public class ModularItemSelectionFrame extends AbstractGuiFrame {
     }
 
     Optional<IModularItem> getModularItemCapability (EquipmentSlot type) {
-        return getStack(type).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+        return getStack(type).getCapability(ForgeCapabilities.ITEM_HANDLER)
                 .filter(IModularItem.class::isInstance)
                 .map(IModularItem.class::cast);
     }

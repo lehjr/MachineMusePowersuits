@@ -27,34 +27,21 @@
 package lehjr.powersuits.client.event;
 
 
-import com.google.gson.JsonElement;
 import lehjr.numina.client.model.obj.OBJBakedCompositeModel;
 import lehjr.numina.common.base.NuminaLogger;
-import lehjr.numina.common.math.Color;
 import lehjr.powersuits.client.model.block.LuxCapacitorModelWrapper;
-import lehjr.powersuits.client.model.helper.LuxCapHelper;
 import lehjr.powersuits.client.model.helper.MPSModelHelper;
-import lehjr.powersuits.client.model.item.PowerFistModel;
 import lehjr.powersuits.client.render.item.MPSBEWLR;
 import lehjr.powersuits.common.constants.MPSRegistryNames;
-import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.core.Direction;
-import net.minecraft.core.Vec3i;
-import net.minecraft.data.models.ItemModelGenerators;
-import net.minecraft.data.models.model.ModelTemplates;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.client.event.ModelBakeEvent;
+import net.minecraftforge.client.event.ModelEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import org.lwjgl.system.CallbackI;
 
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Random;
-import java.util.function.BiConsumer;
-import java.util.function.Supplier;
 
 
 public enum ModelBakeEventHandler {
@@ -89,8 +76,8 @@ public enum ModelBakeEventHandler {
 
 
     @SubscribeEvent
-    public void onModelBake(ModelBakeEvent event) {
-//        Map<ResourceLocation, BakedModel> registry = event.getModelRegistry();
+    public void onModelBake(ModelEvent.ModifyBakingResult event) {
+        Map<ResourceLocation, BakedModel> registry = event.getModels();
 //        for (Direction facing : Direction.values()) {
 //            BakedModel model = registry.get(new ModelResourceLocation("powersuits:luxcapacitor#facing=" + facing + ",waterlogged=true"));
 //            HashMap<DIR, List<BakedQuad>> map = new HashMap<>();
@@ -105,20 +92,20 @@ public enum ModelBakeEventHandler {
 
 
 
-        event.getModelRegistry().keySet().stream().filter(resourceLocation -> resourceLocation.toString().contains("powersuits:luxcapacitor")).forEach(resourceLocation -> {
-                    event.getModelRegistry().put(resourceLocation, new LuxCapacitorModelWrapper((OBJBakedCompositeModel) event.getModelRegistry().get(resourceLocation)));
+        event.getModels().keySet().stream().filter(resourceLocation -> resourceLocation.toString().contains("powersuits:luxcapacitor")).forEach(resourceLocation -> {
+                    event.getModels().put(resourceLocation, new LuxCapacitorModelWrapper((OBJBakedCompositeModel) event.getModels().get(resourceLocation)));
                 });
 
-        event.getModelRegistry().keySet().stream().filter(resourceLocation -> resourceLocation.toString().contains("powersuits:powerfist")).forEach(resourceLocation -> NuminaLogger.logError("modelLocation: " + resourceLocation));
+        event.getModels().keySet().stream().filter(resourceLocation -> resourceLocation.toString().contains("powersuits:powerfist")).forEach(resourceLocation -> NuminaLogger.logError("modelLocation: " + resourceLocation));
 
 
 
-//        BakedModel powerFistIcon = event.getModelRegistry().get(powerFistIconLocation);
+//        BakedModel powerFistIcon = event.getModels().get(powerFistIconLocation);
 //        if (!OBJBakedCompositeModel.class.isInstance(powerFistIcon)) {
-//            event.getModelRegistry().put(powerFistIconLocation, new PowerFistModel(powerFistIcon));
+//            event.getModels().put(powerFistIconLocation, new PowerFistModel(powerFistIcon));
 //        }
 
-        MPSModelHelper.loadArmorModels(null, event.getModelLoader());
+        MPSModelHelper.loadArmorModels(null, event.getModelBakery());
     }
 
     public enum DIR {

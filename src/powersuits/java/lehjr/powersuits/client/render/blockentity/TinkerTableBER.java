@@ -27,7 +27,7 @@
 package lehjr.powersuits.client.render.blockentity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
+import lehjr.numina.common.math.MathUtils;
 import lehjr.powersuits.client.model.block.TinkerTableModel;
 import lehjr.powersuits.common.block.TinkerTable;
 import lehjr.powersuits.common.blockentity.TinkerTableBlockEntity;
@@ -35,6 +35,7 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
+import org.joml.Quaternionf;
 
 public class TinkerTableBER implements BlockEntityRenderer<TinkerTableBlockEntity> {
     TinkerTableModel model;
@@ -49,18 +50,19 @@ public class TinkerTableBER implements BlockEntityRenderer<TinkerTableBlockEntit
         if (blockEntity != null) {
             switch (blockEntity.getBlockState().getValue(TinkerTable.FACING)) {
                 case WEST:
-                    poseStack.mulPose(Vector3f.YP.rotationDegrees(0f));
+//                    poseStack.mulPose(Vector3f.YP.rotationDegrees(0f));
                     break;
                 case EAST:
-                    poseStack.mulPose(Vector3f.YP.rotationDegrees(180f));
+                    poseStack.mulPose(new Quaternionf().fromAxisAngleDeg(MathUtils.YP,180f));
                     poseStack.translate(-1, 0, -1);
                     break;
                 case SOUTH:
-                    poseStack.mulPose(Vector3f.YP.rotationDegrees(90f));
+//                    poseStack.mulPose(Vector3f.YP.rotationDegrees(90f));
+                    poseStack.mulPose(new Quaternionf().fromAxisAngleDeg(MathUtils.YP, 90));
                     poseStack.translate(-1, 0, 0);
                     break;
                 case NORTH:
-                    poseStack.mulPose(Vector3f.YP.rotationDegrees(270f));
+                    poseStack.mulPose(new Quaternionf().fromAxisAngleDeg(MathUtils.YP,270f));
                     poseStack.translate(0, 0, -1);
                 default:
                     break;

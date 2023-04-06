@@ -31,18 +31,17 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import lehjr.numina.client.model.helper.ModelHelper;
 import lehjr.numina.client.model.obj.OBJBakedCompositeModel;
 import lehjr.numina.client.render.IconUtils;
+import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.constants.NuminaConstants;
 import lehjr.numina.common.math.Color;
 import lehjr.powersuits.common.entity.PlasmaBallEntity;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.resources.model.BlockModelRotation;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.client.model.data.EmptyModelData;
 import net.minecraftforge.common.util.NonNullLazy;
 
 import java.util.Random;
@@ -151,8 +150,10 @@ public class PlasmaBoltEntityRenderer extends EntityRenderer<PlasmaBallEntity> {
 
     public static void renderSphere(MultiBufferSource bufferIn, RenderType rt, PoseStack matrixStackIn, int packedLightIn, int overlay, Color colour) {
         VertexConsumer bb = bufferIn.getBuffer(rt);
-        for (BakedQuad quad : modelSphere.get().getQuads(null, null, rand, EmptyModelData.INSTANCE)) {
-            bb.putBulkData(matrixStackIn.last(), quad, colour.r, colour.g, colour.b, colour.a, packedLightIn, overlay, true);
-        }
+        NuminaLogger.logError("PlasmaBoltRenderer Render Spere quads not yet implemented");
+
+//        for (BakedQuad quad : modelSphere.get().getQuads(null, null, rand, ModelData.EMPTY)) {
+//            bb.putBulkData(matrixStackIn.last(), quad, colour.r, colour.g, colour.b, colour.a, packedLightIn, overlay, true);
+//        }
     }
 }

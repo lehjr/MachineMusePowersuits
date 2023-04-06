@@ -32,7 +32,7 @@ import lehjr.numina.common.tags.TagUtils;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.energy.CapabilityEnergy;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.energy.EnergyStorage;
 
 import javax.annotation.Nonnull;
@@ -62,7 +62,7 @@ public class ModuleEnergyWrapper extends EnergyStorage implements CapabilityUpda
     @Override
     public void onValueChanged() {
         final CompoundTag nbt = TagUtils.getModuleTag(stack);
-        if (nbt != null && CapabilityEnergy.ENERGY != null) { // capability is null during game loading
+        if (nbt != null && ForgeCapabilities.ENERGY != null) { // capability is null during game loading
             nbt.put(TagConstants.ENERGY, serializeNBT());
         }
     }

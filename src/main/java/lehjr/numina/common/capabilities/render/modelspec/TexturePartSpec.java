@@ -28,7 +28,6 @@ package lehjr.numina.common.capabilities.render.modelspec;
 
 import com.google.common.base.Objects;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 
 /**
@@ -48,7 +47,7 @@ public class TexturePartSpec extends PartSpecBase {
 
     @Override
     public Component getDisaplayName() {
-        return new TranslatableComponent(new StringBuilder("textureSpec.")
+        return Component.translatable(new StringBuilder("textureSpec.")
                 .append(this.binding.getSlot().getName())
                 .append(".partName")
                 .toString());

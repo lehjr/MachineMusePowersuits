@@ -40,7 +40,7 @@ public class GuiModeSelector extends ContainerlessGui {
 
     public GuiModeSelector(Player player, Component titleIn) {
         super(titleIn);
-        Minecraft.getInstance().keyboardHandler.setSendRepeatsToGui(true);
+//        Minecraft.getInstance().keyboardHandler.m_90926_(true);
         this.player = player;
         Window screen = Minecraft.getInstance().getWindow();
         this./*xSize*/imageWidth = Math.min(screen.getGuiScaledWidth() - 50, 500);

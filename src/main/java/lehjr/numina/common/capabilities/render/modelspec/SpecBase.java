@@ -46,7 +46,7 @@ public abstract class SpecBase extends NuminaRegistry<PartSpecBase> {
     private final boolean isDefault;
     private final SpecType specType;
     private List<Integer> colours = new ArrayList() {{
-        add(Color.WHITE.getInt());
+        add(Color.WHITE.getARGBInt());
     }};
 
     public SpecBase(final String name, final boolean isDefault, final SpecType specType) {
@@ -89,7 +89,7 @@ public abstract class SpecBase extends NuminaRegistry<PartSpecBase> {
      * @return returns the index of the colour
      */
     public int addColorIfNotExist(Color colour) {
-        int colourInt = colour.getInt();
+        int colourInt = colour.getARGBInt();
         if (!colours.contains(colourInt)) {
             colours.add(colourInt);
             return colours.size() - 1; // index of last entry

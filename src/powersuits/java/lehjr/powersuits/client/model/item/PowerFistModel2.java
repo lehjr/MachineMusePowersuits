@@ -28,7 +28,6 @@ package lehjr.powersuits.client.model.item;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
 import lehjr.powersuits.common.constants.MPSConstants;
 import lehjr.powersuits.common.constants.MPSRegistryNames;
@@ -45,7 +44,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -274,7 +273,7 @@ public class PowerFistModel2 extends Model {
     // FIXME
     public void setPoseForPlayer(Player player) {
         if (player.isUsingItem() && player.getUseItem() != ItemStack.EMPTY) {
-            player.getUseItem().getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+            player.getUseItem().getCapability(ForgeCapabilities.ITEM_HANDLER)
                     .filter(IModeChangingItem.class::isInstance)
                     .map(IModeChangingItem.class::cast)
                     .ifPresent(iItemHandler -> {

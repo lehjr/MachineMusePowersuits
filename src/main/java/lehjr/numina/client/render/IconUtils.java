@@ -30,19 +30,20 @@ import com.google.common.base.Preconditions;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import com.mojang.datafixers.util.Pair;
-import com.mojang.math.Matrix4f;
 import lehjr.numina.client.gui.GuiIcon;
 import lehjr.numina.common.constants.NuminaConstants;
 import lehjr.numina.common.math.Color;
 import lehjr.numina.common.math.MathUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.MissingTextureAtlasSprite;
+import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import org.joml.Matrix4f;
 
 import javax.annotation.Nonnull;
 import java.util.HashMap;
@@ -72,14 +73,14 @@ public enum IconUtils {
     }
 
     /**
-     * Draws a MuseIcon
+     * Draws a TextureAtlasSprite
      *
      * @param x
      * @param y
      * @param icon
      * @param colour
      */
-    public static void drawIconAt(double x, double y, TextureAtlasSprite icon, Color colour) {
+    public static void drawIconAt(double x, double y, @Nonnull TextureAtlasSprite icon, Color colour) {
         drawIconPartial(x, y, icon, colour, 0, 0, 16, 16);
     }
 
@@ -91,76 +92,74 @@ public enum IconUtils {
      * @param icon
      * @param colour
      */
-    public static void drawIconAt(PoseStack poseStack, double x, double y, TextureAtlasSprite icon, Color colour) {
-        drawIconPartial(poseStack, x, y, icon, colour, 0, 0, 16, 16);
+    public static void drawIconAt(PoseStack poseStack, double x, double y, @Nonnull TextureAtlasSprite icon, Color colour) {
+        drawIconPartial(poseStack, x, y, icon, colour, 0, 0, icon.contents().width(), icon.contents().height());
     }
 
-
-    public static void drawIconPartialOccluded(double x, double y, TextureAtlasSprite icon, Color colour, double textureStarX, double textureStartY, double textureEndX, double textureEndY) {
-        double xmin = MathUtils.clampDouble(textureStarX - x, 0, 16);
-        double ymin = MathUtils.clampDouble(textureStartY - y, 0, 16);
-        double xmax = MathUtils.clampDouble(textureEndX - x, 0, 16);
-        double ymax = MathUtils.clampDouble(textureEndY - y, 0, 16);
+    public static void drawIconPartialOccluded(double x, double y, @Nonnull TextureAtlasSprite icon, Color colour, double textureStarX, double textureStartY, double textureEndX, double textureEndY) {
+        double xmin = MathUtils.clampDouble(textureStarX - x, 0, icon.contents().width());
+        double ymin = MathUtils.clampDouble(textureStartY - y, 0, icon.contents().height());
+        double xmax = MathUtils.clampDouble(textureEndX - x, 0, icon.contents().width());
+        double ymax = MathUtils.clampDouble(textureEndY - y, 0, icon.contents().height());
         drawIconPartial(x, y, icon, colour, xmin, ymin, xmax, ymax);
     }
 
     /**
      * Draws a MuseIcon
      *
-     * @param x
-     * @param y
+     * @param posX
+     * @param posY
      * @param icon
      * @param colour
      */
-    public static void drawIconPartial(PoseStack poseStack, double x, double y, TextureAtlasSprite icon, @Nonnull Color colour, double textureStartX, double textureStartY, double textureEndX, double textureEndY) {
+    public static void drawIconPartial(PoseStack poseStack, double posX, double posY, TextureAtlasSprite icon, @Nonnull Color colour, double textureStartX, double textureStartY, double textureEndX, double textureEndY) {
         if (icon == null) {
             icon = getMissingIcon();
         }
-
-        RenderSystem.setShaderTexture(0, icon.atlas().location());
+        RenderSystem.setShaderTexture(0, icon.atlasLocation());
         Tesselator tess = Tesselator.getInstance();
         BufferBuilder bufferBuilder = tess.getBuilder();
-//        if (colour != null) {
-//            colour.setShaderColor();
-//        }
         bufferBuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
-        double u0 = icon.getU0();
-        double v0 = icon.getV0();
-        double u1 = icon.getU1();
-        double v1 = icon.getV1();
+        float minU = icon.getU0();
+        float maxU = icon.getU1();
+        float minV = icon.getV0();
+        float maxV = icon.getV1();
 
-        double xoffset1 = textureStartX * (u1 - u0) / 16.0f;
-        double yoffset1 = textureStartY * (v1 - v0) / 16.0f;
-        double xoffset2 = textureEndX * (u1 - u0) / 16.0f;
-        double yoffset2 = textureEndY * (v1 - v0) / 16.0f;
+        float iconWidthDiv = 1F/icon.contents().width();
+        float icomHeightDiv = 1F/icon.contents().height();
+
+        double xoffsetMin = textureStartX * (maxU - minU) * iconWidthDiv; // 0
+        double xoffsetMax = textureEndX * (maxU - minU) * iconWidthDiv;
+        double yoffsetMin = textureStartY * (maxV - minV) * icomHeightDiv; // 0
+        double yoffsetMax = textureEndY * (maxV - minV) * icomHeightDiv;
+
         Matrix4f matrix4f = poseStack.last().pose();
-
-
+//        System.out.println("textureStartX: " + textureStartX + ", textureEndX: " + textureEndX + ", textureStartY: " + textureStartY +", textureEndY: " + textureEndY);
         // top left
-        bufferBuilder.vertex(matrix4f, (float) (x + textureStartX), (float)(y + textureStartY), 0);
-        bufferBuilder.uv((float) (u0 + xoffset1), (float) (v0 + yoffset1));
+        bufferBuilder.vertex(matrix4f, (float) (posX + textureStartX), (float)(posY + textureStartY), 0);
+        bufferBuilder.uv((float) (minU + xoffsetMin), (float) (minV + yoffsetMin));
         bufferBuilder.color(colour.r, colour.g, colour.b, colour.a);
         bufferBuilder.endVertex();
 
         // textureEndY left
-        bufferBuilder.vertex(matrix4f, (float) (x + textureStartX), (float) (y + textureEndY), 0);
-        bufferBuilder.uv((float) (u0 + xoffset1), (float) (v0 + yoffset2));
+        bufferBuilder.vertex(matrix4f, (float) (posX + textureStartX), (float) (posY + textureEndY), 0);
+        bufferBuilder.uv((float) (minU + xoffsetMin), (float) (minV + yoffsetMax));
         bufferBuilder.color(colour.r, colour.g, colour.b, colour.a);
         bufferBuilder.endVertex();
 
         // textureEndY right
-        bufferBuilder.vertex(matrix4f, (float) (x + textureEndX), (float) (y + textureEndY), 0);
-        bufferBuilder.uv((float) (u0 + xoffset2), (float) (v0 + yoffset2));
+        bufferBuilder.vertex(matrix4f, (float) (posX + textureEndX), (float) (posY + textureEndY), 0);
+        bufferBuilder.uv((float) (minU + xoffsetMax), (float) (minV + yoffsetMax));
         bufferBuilder.color(colour.r, colour.g, colour.b, colour.a);
         bufferBuilder.endVertex();
 
         // top right
-        bufferBuilder.vertex(matrix4f, (float) (x + textureEndX), (float) (y + textureStartY), 0);
-        bufferBuilder.uv((float) (u0 + xoffset2), (float) (v0 + yoffset1));
+        bufferBuilder.vertex(matrix4f, (float) (posX + textureEndX), (float) (posY + textureStartY), 0);
+        bufferBuilder.uv((float) (minU + xoffsetMax), (float) (minV + yoffsetMin));
         bufferBuilder.color(colour.r, colour.g, colour.b, colour.a);
         bufferBuilder.endVertex();
 
-        tess.end();
+        BufferUploader.drawWithShader(bufferBuilder.end());
 
     }
 
@@ -176,7 +175,8 @@ public enum IconUtils {
         if (icon == null) {
             icon = getMissingIcon();
         }
-        RenderSystem.setShaderTexture(0, icon.atlas().location());
+
+        RenderSystem.setShaderTexture(0, icon.atlasLocation());
         Tesselator tess = Tesselator.getInstance();
         BufferBuilder bufferBuilder = tess.getBuilder();
         bufferBuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
@@ -267,9 +267,7 @@ public enum IconUtils {
         bufferbuilder.vertex(matrix4f, (float) drawEndX, (float) drawEndY, (float) blitOffset).uv((float) uMax, (float) vMax).endVertex();
         bufferbuilder.vertex(matrix4f, (float) drawEndX, (float) drawStartY, (float) blitOffset).uv((float) uMax, (float) vMin).endVertex();
         bufferbuilder.vertex(matrix4f, (float) drawStartX, (float) drawStartY, (float) blitOffset).uv((float) uMin, (float) vMin).endVertex();
-        bufferbuilder.end();
-//        RenderSystem.enableAlphaTest();
-        BufferUploader.end(bufferbuilder);
+        BufferUploader.drawWithShader(bufferbuilder.end());
     }
 
     public static void blit(PoseStack matrixStack, double posX, double posY, double pBlitOffset, double drawWidth, double drawHeight, TextureAtlasSprite sprite, Color colour) {
@@ -327,10 +325,7 @@ public enum IconUtils {
                 .uv((float) uMin, (float) vMin)
                 .color(colour.r, colour.g, colour.b, colour.a)
                 .endVertex();
-
-        bufferbuilder.end();
-//        RenderSystem.enableAlphaTest();
-        BufferUploader.end(bufferbuilder);
+        BufferUploader.drawWithShader(bufferbuilder.end());
     }
 
     double getBlitOffset() {

@@ -39,7 +39,7 @@ import lehjr.powersuits.client.gui.modding.module.tweak.ModuleTweakGui;
 import lehjr.powersuits.common.network.MPSPackets;
 import lehjr.powersuits.common.network.packets.ContainerGuiOpenPacket;
 import net.minecraft.client.Minecraft;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 
@@ -61,34 +61,34 @@ public class TabSelectFrame extends AbstractGuiFrame {
         VanillaButton button;
 
         /** Install Salvage GUI (the only AbstractContainerMenued GUI)*/
-        button = new VanillaButton(left(), top(), new TranslatableComponent("gui.powersuits.tab.install.salvage"), active != 0);
+        button = new VanillaButton(left(), top(), Component.translatable("gui.powersuits.tab.install.salvage"), active != 0);
         button.setOnPressed(onPressed->{
-            Musique.playClientSound(SoundDictionary.SOUND_EVENT_GUI_SELECT, 1);
+            Musique.playClientSound(SoundDictionary.SOUND_EVENT_GUI_SELECT.get(), 1);
             MPSPackets.CHANNEL_INSTANCE.sendToServer(new ContainerGuiOpenPacket(EquipmentSlot.MAINHAND));
         });
         buttons.add(button);
 
         /** Module Tweak Gui */
-        button = new VanillaButton(left(), top(), new TranslatableComponent("gui.powersuits.tab.module.tweak"), active != 1);
+        button = new VanillaButton(left(), top(), Component.translatable("gui.powersuits.tab.module.tweak"), active != 1);
         button.setOnPressed(onPressed->{
-            Musique.playClientSound(SoundDictionary.SOUND_EVENT_GUI_SELECT, 1);
-            Minecraft.getInstance().tell(() -> Minecraft.getInstance().setScreen(new ModuleTweakGui(new TranslatableComponent("gui.tinkertable"))));
+            Musique.playClientSound(SoundDictionary.SOUND_EVENT_GUI_SELECT.get(), 1);
+            Minecraft.getInstance().tell(() -> Minecraft.getInstance().setScreen(new ModuleTweakGui(Component.translatable("gui.tinkertable"))));
         });
         buttons.add(button);
 
         /** Keybind Gui */
-        button = new VanillaButton(left(), top(), new TranslatableComponent("gui.powersuits.tab.keybinds"), active !=2);
+        button = new VanillaButton(left(), top(), Component.translatable("gui.powersuits.tab.keybinds"), active !=2);
         button.setOnPressed(onPressed->{
-            Musique.playClientSound(SoundDictionary.SOUND_EVENT_GUI_SELECT, 1);
-            Minecraft.getInstance().tell(() -> Minecraft.getInstance().setScreen(new TinkerKeymapGui(player, new TranslatableComponent("gui.powersuits.tab.keybinds.toggle"))));
+            Musique.playClientSound(SoundDictionary.SOUND_EVENT_GUI_SELECT.get(), 1);
+            Minecraft.getInstance().tell(() -> Minecraft.getInstance().setScreen(new TinkerKeymapGui(player, Component.translatable("gui.powersuits.tab.keybinds.toggle"))));
         });
         buttons.add(button);
 
         /** Cosmetic Tweak Frame */
-        button = new VanillaButton(left(), top(), new TranslatableComponent("gui.powersuits.tab.visual"), active !=3);
+        button = new VanillaButton(left(), top(), Component.translatable("gui.powersuits.tab.visual"), active !=3);
         button.setOnPressed(onPressed->{
-            Musique.playClientSound(SoundDictionary.SOUND_EVENT_GUI_SELECT, 1);
-            Minecraft.getInstance().tell(() -> Minecraft.getInstance().setScreen(new CosmeticGui(player.getInventory(), new TranslatableComponent("gui.tinkertable"))));
+            Musique.playClientSound(SoundDictionary.SOUND_EVENT_GUI_SELECT.get(), 1);
+            Minecraft.getInstance().tell(() -> Minecraft.getInstance().setScreen(new CosmeticGui(player.getInventory(), Component.translatable("gui.tinkertable"))));
         });
         buttons.add(button);
 

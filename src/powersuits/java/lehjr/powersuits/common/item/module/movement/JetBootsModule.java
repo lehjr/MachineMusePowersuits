@@ -46,9 +46,9 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.items.CapabilityItemHandler;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -94,7 +94,7 @@ public class JetBootsModule extends AbstractPowerModule {
                 if (player.isInWater())
                     return;
 
-                boolean hasFlightControl = player.getItemBySlot(EquipmentSlot.HEAD).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+                boolean hasFlightControl = player.getItemBySlot(EquipmentSlot.HEAD).getCapability(ForgeCapabilities.ITEM_HANDLER)
                         .filter(IModularItem.class::isInstance)
                         .map(IModularItem.class::cast)
                         .map(m-> m.isModuleOnline(MPSRegistryNames.FLIGHT_CONTROL_MODULE)).orElse(false);
@@ -108,23 +108,23 @@ public class JetBootsModule extends AbstractPowerModule {
                     if (hasFlightControl && thrust > 0) {
                         thrust = MovementManager.INSTANCE.thrust(player, thrust, true);
                         if ((player.level.isClientSide) && NuminaSettings.useSounds()) {
-                            Musique.playerSound(player, MPSSoundDictionary.JETBOOTS, SoundSource.PLAYERS, (float) (thrust * 12.5), 1.0f, true);
+                            Musique.playerSound(player, MPSSoundDictionary.JETBOOTS.get(), SoundSource.PLAYERS, (float) (thrust * 12.5), 1.0f, true);
                         }
                         ElectricItemUtils.drainPlayerEnergy(player, (int) (thrust * jetEnergy));
                     } else if (playerInput.jumpKey && player.getDeltaMovement().y < 0.5) {
                         thrust = MovementManager.INSTANCE.thrust(player, thrust, false);
                         if ((player.level.isClientSide) && NuminaSettings.useSounds()) {
-                            Musique.playerSound(player, MPSSoundDictionary.JETBOOTS, SoundSource.PLAYERS, (float) (thrust * 12.5), 1.0f, true);
+                            Musique.playerSound(player, MPSSoundDictionary.JETBOOTS.get(), SoundSource.PLAYERS, (float) (thrust * 12.5), 1.0f, true);
                         }
                         ElectricItemUtils.drainPlayerEnergy(player, (int) (thrust * jetEnergy));
                     } else {
                         if ((player.level.isClientSide) && NuminaSettings.useSounds()) {
-                            Musique.stopPlayerSound(player, MPSSoundDictionary.JETBOOTS);
+                            Musique.stopPlayerSound(player, MPSSoundDictionary.JETBOOTS.get());
                         }
                     }
                 } else {
                     if (player.level.isClientSide && NuminaSettings.useSounds()) {
-                        Musique.stopPlayerSound(player, MPSSoundDictionary.JETBOOTS);
+                        Musique.stopPlayerSound(player, MPSSoundDictionary.JETBOOTS.get());
                     }
                 }
             }
@@ -132,7 +132,7 @@ public class JetBootsModule extends AbstractPowerModule {
             @Override
             public void onPlayerTickInactive(Player player, ItemStack item) {
                 if (player.level.isClientSide && NuminaSettings.useSounds()) {
-                    Musique.stopPlayerSound(player, MPSSoundDictionary.JETBOOTS);
+                    Musique.stopPlayerSound(player, MPSSoundDictionary.JETBOOTS.get());
                 }
             }
         }

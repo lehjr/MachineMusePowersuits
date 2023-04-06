@@ -26,23 +26,19 @@
 
 package lehjr.numina.common.item;
 
-import lehjr.numina.common.base.NuminaObjects;
 import lehjr.numina.common.capabilities.BatteryCapabilityProvider;
 import lehjr.numina.common.string.AdditionalInfo;
-import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
-import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
 
@@ -58,7 +54,7 @@ public class Battery extends Item {
     public Battery(int maxEnergy, int maxTransfer, int tier) {
         super(new Item.Properties()
                 .stacksTo(1)
-                .tab(NuminaObjects.creativeTab)
+//                .m_41491_(NuminaObjects.creativeTab)
                 .defaultDurability(-1)
                 .setNoRepair());
         this.maxEnergy = maxEnergy;
@@ -76,20 +72,8 @@ public class Battery extends Item {
 
     @Nullable
     @Override
-    public ICapabilityProvider initCapabilities(ItemStack stack, @org.jetbrains.annotations.Nullable CompoundTag nbt) {
+    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt) {
         return new BatteryCapabilityProvider(stack, tier, maxEnergy, maxTransfer);
-    }
-
-
-    @Override
-    public void fillItemCategory(@Nonnull CreativeModeTab group, @Nonnull NonNullList<ItemStack> items) {
-        super.fillItemCategory(group, items);
-        if (allowdedIn(group)) {
-            ItemStack out = new ItemStack(this);
-            BatteryCapabilityProvider provider = new BatteryCapabilityProvider(out, tier, maxEnergy, maxTransfer);
-            provider.setMaxEnergy();
-            items.add(out);
-        }
     }
 
     @Override
@@ -99,12 +83,12 @@ public class Battery extends Item {
 
     @Override
     public int getBarWidth(ItemStack stack) {
-        return stack.getCapability(CapabilityEnergy.ENERGY).map(iEnergyStorage -> iEnergyStorage.getEnergyStored() * 13 / iEnergyStorage.getMaxEnergyStored()).orElse(0);
+        return stack.getCapability(ForgeCapabilities.ENERGY).map(iEnergyStorage -> iEnergyStorage.getEnergyStored() * 13 / iEnergyStorage.getMaxEnergyStored()).orElse(0);
     }
 
     @Override
     public int getBarColor(ItemStack stack) {
-        IEnergyStorage energy = stack.getCapability(CapabilityEnergy.ENERGY).orElse(null);
+        IEnergyStorage energy = stack.getCapability(ForgeCapabilities.ENERGY).orElse(null);
         if (energy == null) {
             return super.getBarColor(stack);
         }

@@ -30,7 +30,6 @@ import lehjr.numina.client.model.obj.OBJBakedPart;
 import lehjr.numina.common.constants.TagConstants;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -54,7 +53,7 @@ public class ModelPartSpec extends PartSpecBase {
 
     @Override
     public Component getDisaplayName() {
-        return new TranslatableComponent(new StringBuilder("model.")
+        return Component.translatable(new StringBuilder("model.")
                 .append(this.spec.getOwnName())
                 .append(".")
                 .append(this.partName)

@@ -10,8 +10,8 @@
 //import lehjr.numina.common.math.Colour;
 //import net.minecraft.util.SoundEvents;
 //import net.minecraft.network.chat.Component;
-//import net.minecraft.network.chat.TextComponent;
-//import net.minecraft.network.chat.TranslatableComponent;
+//
+//import net.minecraft.network.chat.Component;
 //
 //import java.util.ArrayList;
 //import java.util.List;
@@ -41,7 +41,7 @@
 //        setBackgroundColour(backgroundColour);
 //
 //        MusePoint2D starterPoint = MusePoint2D.ZERO;
-//        this.title = new ClickableLabel(new TextComponent("Recipe Options"), starterPoint);
+//        this.title = new ClickableLabel(Component.literal("Recipe Options"), starterPoint);
 //
 //        System.out.println("startpoint: " + starterPoint);
 //
@@ -86,13 +86,13 @@
 //        conditionsFrame.disable();
 //        conditionsFrame.hide();
 //
-//        save = addButton(new TranslatableComponent("mpsrc.gui.save"));
+//        save = addButton(Component.translatable("mpsrc.gui.save"));
 //        save.setOnPressed(pressed->{
 //            Musique.playClientSound(SoundEvents.UI_BUTTON_CLICK,1);
 //            mparcGui.save();
 //        });
 //
-//        reset = addButton(new TranslatableComponent("mpsrc.gui.resetrecipe"));
+//        reset = addButton(Component.translatable("mpsrc.gui.resetrecipe"));
 //        reset.setOnPressed(pressed-> {
 //            Musique.playClientSound(SoundEvents.UI_BUTTON_CLICK, 1);
 //            mparcGui.resetRecipes();

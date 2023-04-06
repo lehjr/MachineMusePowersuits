@@ -35,9 +35,9 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.items.CapabilityItemHandler;
 import org.lwjgl.glfw.GLFW;
 
 import javax.annotation.Nonnull;
@@ -135,7 +135,7 @@ public class AoEpickUpgradeModule2 extends AbstractPowerModule {
 
                 AtomicInteger bbModuleEnergyUsage = new AtomicInteger(0);
 
-                itemStack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+                itemStack.getCapability(ForgeCapabilities.ITEM_HANDLER)
                         .filter(IModeChangingItem.class::isInstance)
                         .map(IModeChangingItem.class::cast)
                         .ifPresent(modeChanging -> {

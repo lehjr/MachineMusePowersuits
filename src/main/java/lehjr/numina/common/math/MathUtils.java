@@ -27,6 +27,7 @@
 package lehjr.numina.common.math;
 
 import org.apache.commons.lang3.tuple.Pair;
+import org.joml.Vector3f;
 
 import java.util.Random;
 
@@ -36,6 +37,16 @@ import java.util.Random;
 public final class MathUtils {
     public static final float DIV_16F = 0.0625F;
     public static final double DIV_16D = 0.0625D;
+
+    /* Copied from Minecraft 1.18.2 */
+    public static Vector3f XN = new Vector3f(-1.0F, 0.0F, 0.0F);
+    public static Vector3f XP = new Vector3f(1.0F, 0.0F, 0.0F);
+    public static Vector3f YN = new Vector3f(0.0F, -1.0F, 0.0F);
+    public static Vector3f YP = new Vector3f(0.0F, 1.0F, 0.0F);
+    public static Vector3f ZN = new Vector3f(0.0F, 0.0F, -1.0F);
+    public static Vector3f ZP = new Vector3f(0.0F, 0.0F, 1.0F);
+
+
     private static Random random = new Random();
 
     public static Random random() {

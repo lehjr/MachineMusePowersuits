@@ -133,7 +133,7 @@ public class HeatUtils {
             double heatLeftToGive = Math.round(event.getAmount());
             final double originalHeatToGive = heatLeftToGive;
 
-            LivingEntity entity = event.getEntityLiving();
+            LivingEntity entity = event.getEntity();
             boolean allPresent = true;
 
             for (ItemStack stack : entity.getArmorSlots()) {

@@ -44,10 +44,10 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingJumpEvent;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.items.CapabilityItemHandler;
 
 import javax.annotation.Nonnull;
 import java.util.HashMap;
@@ -96,7 +96,7 @@ public enum MovementManager {
             double strafeX = desiredDirection.z;
             double strafeZ = -desiredDirection.x;
 
-            double flightVerticality = player.getItemBySlot(EquipmentSlot.HEAD).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+            double flightVerticality = player.getItemBySlot(EquipmentSlot.HEAD).getCapability(ForgeCapabilities.ITEM_HANDLER)
                     .filter(IModularItem.class::isInstance)
                     .map(IModularItem.class::cast)
                     .map(iModularItem -> iModularItem
@@ -216,9 +216,9 @@ public enum MovementManager {
 
    @SubscribeEvent
     public void handleLivingJumpEvent(LivingJumpEvent event) {
-        if (event.getEntityLiving() instanceof Player) {
-            Player player = (Player) event.getEntityLiving();
-            player.getItemBySlot(EquipmentSlot.LEGS).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+        if (event.getEntity() instanceof Player) {
+            Player player = (Player) event.getEntity();
+            player.getItemBySlot(EquipmentSlot.LEGS).getCapability(ForgeCapabilities.ITEM_HANDLER)
                     .filter(IModularItem.class::isInstance)
                     .map(IModularItem.class::cast)
                     .ifPresent(iModularItem -> iModularItem.getOnlineModuleOrEmpty(MPSRegistryNames.JUMP_ASSIST_MODULE).getCapability(PowerModuleCapability.POWER_MODULE).ifPresent(jumper -> {
@@ -226,7 +226,7 @@ public enum MovementManager {
                         double drain = jumper.applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION);
                         int avail = ElectricItemUtils.getPlayerEnergy(player);
                         if ((player.level.isClientSide()) && NuminaSettings.useSounds()) {
-                            Musique.playerSound(player, MPSSoundDictionary.JUMP_ASSIST, SoundSource.PLAYERS, (float) (jumpAssist / 8.0), (float) 1, false);
+                            Musique.playerSound(player, MPSSoundDictionary.JUMP_ASSIST.get(), SoundSource.PLAYERS, (float) (jumpAssist / 8.0), (float) 1, false);
                         }
 
                         if (drain < avail) {
@@ -245,22 +245,22 @@ public enum MovementManager {
 
     @SubscribeEvent
     public void handleFallEvent(LivingFallEvent event) {
-        if (event.getEntityLiving() instanceof Player && event.getDistance() > 3.0) {
-            Player player = (Player) event.getEntityLiving();
-            player.getItemBySlot(EquipmentSlot.FEET).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+        if (event.getEntity() instanceof Player && event.getDistance() > 3.0) {
+            Player player = (Player) event.getEntity();
+            player.getItemBySlot(EquipmentSlot.FEET).getCapability(ForgeCapabilities.ITEM_HANDLER)
                     .filter(IModularItem.class::isInstance)
                     .map(IModularItem.class::cast)
                     .ifPresent(iModularItem -> iModularItem.getOnlineModuleOrEmpty(MPSRegistryNames.SHOCK_ABSORBER_MODULE).getCapability(PowerModuleCapability.POWER_MODULE).ifPresent(sa -> {
                         double distanceAbsorb = event.getDistance() * sa.applyPropertyModifiers(MPSConstants.MULTIPLIER);
                         if (player.level.isClientSide && NuminaSettings.useSounds()) {
-                            Musique.playerSound(player, SoundDictionary.SOUND_EVENT_GUI_INSTALL, SoundSource.PLAYERS, (float) (distanceAbsorb), (float) 1, false);
+                            Musique.playerSound(player, SoundDictionary.SOUND_EVENT_GUI_INSTALL.get(), SoundSource.PLAYERS, (float) (distanceAbsorb), (float) 1, false);
                         }
                         double drain = distanceAbsorb * sa.applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION);
                         int avail = ElectricItemUtils.getPlayerEnergy(player);
                         if (drain < avail) {
                             ElectricItemUtils.drainPlayerEnergy(player, (int) drain, false);
                             event.setDistance((float) (event.getDistance() - distanceAbsorb));
-    //                        event.getEntityLiving().sendMessage(new TextComponentString("modified fall settings: [ damage : " + event.getDamageMultiplier() + " ], [ distance : " + event.getDistance() + " ]"));
+    //                        event.getEntityLiving().sendMessage(Component.literalString("modified fall settings: [ damage : " + event.getDamageMultiplier() + " ], [ distance : " + event.getDistance() + " ]"));
                         }
                     }));
         }

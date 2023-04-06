@@ -75,7 +75,7 @@ public class ExtendedContainerScreen<T extends AbstractContainerMenu> extends Ab
     public void init() {
         super.init();
         frames.clear();
-        minecraft.keyboardHandler.setSendRepeatsToGui(true);
+//        minecraft.keyboardHandler.m_90926_(true);
         creationTime = System.currentTimeMillis();
     }
 

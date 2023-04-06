@@ -26,6 +26,7 @@
 
 package lehjr.powersuits.common.item.block;
 
+import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.capabilities.module.powermodule.IConfig;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
@@ -33,15 +34,13 @@ import lehjr.numina.common.capabilities.module.powermodule.PowerModuleCapability
 import lehjr.numina.common.capabilities.module.rightclick.IRightClickModule;
 import lehjr.numina.common.capabilities.module.rightclick.RightClickModule;
 import lehjr.powersuits.client.event.ModelBakeEventHandler;
-import lehjr.powersuits.client.model.item.PowerFistModel2;
-import lehjr.powersuits.client.render.item.MPSBEWLR;
 import lehjr.powersuits.common.base.MPSObjects;
 import lehjr.powersuits.common.config.MPSSettings;
 import lehjr.powersuits.common.container.InstallSalvageMenu;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -53,7 +52,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.minecraftforge.client.IItemRenderProperties;
+import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
@@ -68,7 +67,6 @@ public class TinkerTableItem extends BlockItem {
     public TinkerTableItem(Block blockIn) {
         super(blockIn, new Item.Properties()
                 .stacksTo(1)
-                .tab(MPSObjects.creativeTab)
                 .defaultDurability(-1)
                 .setNoRepair());
     }
@@ -102,8 +100,10 @@ public class TinkerTableItem extends BlockItem {
             @Override
             public InteractionResultHolder<ItemStack> use(@Nonnull ItemStack itemStackIn, Level worldIn, Player playerIn, InteractionHand hand) {
                 if (!worldIn.isClientSide()) {
-                    SimpleMenuProvider container = new SimpleMenuProvider((id, inventory, player) -> new InstallSalvageMenu(id, inventory, EquipmentSlot.MAINHAND), new TranslatableComponent("gui.powersuits.tab.install.salvage"));
-                    NetworkHooks.openGui((ServerPlayer) playerIn, container, buffer -> buffer.writeEnum(EquipmentSlot.MAINHAND));
+                    SimpleMenuProvider container = new SimpleMenuProvider((id, inventory, player) -> new InstallSalvageMenu(id, inventory, EquipmentSlot.MAINHAND), Component.translatable("gui.powersuits.tab.install.salvage"));
+                    NuminaLogger.logError("tinker table item can't open gui");
+
+                    //                    NetworkHooks.openGui((ServerPlayer) playerIn, container, buffer -> buffer.writeEnum(EquipmentSlot.MAINHAND));
                 }
                 return super.use(itemStackIn, worldIn, playerIn, hand);
             }
@@ -111,12 +111,12 @@ public class TinkerTableItem extends BlockItem {
     }
 
     @Override
-    public void initializeClient(Consumer<IItemRenderProperties> consumer) {
-        consumer.accept(new IItemRenderProperties() {
+    public void initializeClient(Consumer<IClientItemExtensions> consumer) {
+        consumer.accept(new IClientItemExtensions() {
             private final BlockEntityWithoutLevelRenderer renderer = ModelBakeEventHandler.INSTANCE.MPSBERINSTANCE;
 
             @Override
-            public BlockEntityWithoutLevelRenderer getItemStackRenderer() {
+            public BlockEntityWithoutLevelRenderer getCustomRenderer() {
                 return renderer;
             }
         });

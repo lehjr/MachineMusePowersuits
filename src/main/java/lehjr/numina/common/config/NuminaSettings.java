@@ -27,6 +27,7 @@
 package lehjr.numina.common.config;
 
 import lehjr.numina.client.config.ClientConfig;
+import lehjr.numina.client.config.IMeterConfig;
 import lehjr.numina.common.capabilities.module.powermodule.IConfig;
 import lehjr.numina.common.constants.NuminaConstants;
 import lehjr.numina.common.math.Color;
@@ -78,132 +79,32 @@ public class NuminaSettings {
         return CLIENT_CONFIG != null ? CLIENT_CONFIG.USE_SOUNDS.get() : true;
     }
 
+    public static IMeterConfig getEnergyMeterConfig() {
+        return EnergyMeterConfig.INSTANCE;
+    }
+
+    public enum EnergyMeterConfig implements IMeterConfig {
+        INSTANCE;
+
+        @Override
+        public float getDebugValue() {
+            return (float) (0.01 * MathUtils.clampDouble(CLIENT_CONFIG.ENERGY_METER_DEBUG_VAL.get(), 0, 100));
+        }
+
+        @Override
+        public Color getGlassColor() {
+            return Color.fromARGBHexString(CLIENT_CONFIG.ENERGY_METER_GLASS_COLOR.get());
+        }
+
+        @Override
+        public Color getBarColor() {
+            return Color.fromARGBHexString(CLIENT_CONFIG.ENERGY_METER_BAR_COLOR.get());
+        }
+    }
     /** Development ------------------------------------------------------------------------------- */
 
     public static boolean enableDebugging() {
         return CLIENT_CONFIG != null ? CLIENT_CONFIG.DEBUGGING_INFO.get() : false;
-    }
-
-    public static Color getMeterGlassColor() {
-        if (CLIENT_CONFIG != null) {
-            double red = MathUtils.clampDouble(CLIENT_CONFIG.GLASS_RED.get(), 0, 1);
-            double green = MathUtils.clampDouble(CLIENT_CONFIG.GLASS_GREEN.get(), 0, 1);
-            double blue = MathUtils.clampDouble(CLIENT_CONFIG.GLASS_BLUE.get(), 0, 1);
-            double alpha = MathUtils.clampDouble(CLIENT_CONFIG.GLASS_ALPHA.get(), 0, 1);
-            return new Color((float) red, (float)green, (float)blue, (float)alpha);
-        }
-        return Color.WHITE;
-    }
-
-    public static Color getHeatMeterColor() {
-        if (CLIENT_CONFIG != null) {
-            double red = MathUtils.clampDouble(CLIENT_CONFIG.HEAT_METER_RED.get(), 0, 1);
-            double green = MathUtils.clampDouble(CLIENT_CONFIG.HEAT_METER_GREEN.get(), 0, 1);
-            double blue = MathUtils.clampDouble(CLIENT_CONFIG.HEAT_METER_BLUE.get(), 0, 1);
-            double alpha = MathUtils.clampDouble(CLIENT_CONFIG.HEAT_METER_ALPHA.get(), 0, 1);
-            return new Color((float) red, (float)green, (float)blue, (float)alpha);
-        }
-        return Color.WHITE;
-    }
-
-    public static Color getEnergyMeterColor() {
-        if (CLIENT_CONFIG != null) {
-            double red = MathUtils.clampDouble(CLIENT_CONFIG.ENERGY_METER_RED.get(), 0, 1);
-            double green = MathUtils.clampDouble(CLIENT_CONFIG.ENERGY_METER_GREEN.get(), 0, 1);
-            double blue = MathUtils.clampDouble(CLIENT_CONFIG.ENERGY_METER_BLUE.get(), 0, 1);
-            double alpha = MathUtils.clampDouble(CLIENT_CONFIG.ENERGY_METER_ALPHA.get(), 0, 1);
-            return new Color((float) red, (float)green, (float)blue, (float)alpha);
-        }
-        return Color.WHITE;
-    }
-
-    public static Color getPlasmaMeterColor() {
-        if (CLIENT_CONFIG != null) {
-            double red = MathUtils.clampDouble(CLIENT_CONFIG.PLASMA_METER_RED.get(), 0, 1);
-            double green = MathUtils.clampDouble(CLIENT_CONFIG.PLASMA_METER_GREEN.get(), 0, 1);
-            double blue = MathUtils.clampDouble(CLIENT_CONFIG.PLASMA_METER_BLUE.get(), 0, 1);
-            double alpha = MathUtils.clampDouble(CLIENT_CONFIG.PLASMA_METER_ALPHA.get(), 0, 1);
-            return new Color((float) red, (float)green, (float)blue, (float)alpha);
-        }
-        return Color.WHITE;
-    }
-
-    public static Color getWaterMeterColor() {
-        if (CLIENT_CONFIG != null) {
-            double red = MathUtils.clampDouble(CLIENT_CONFIG.WATER_METER_RED.get(), 0, 1);
-            double green = MathUtils.clampDouble(CLIENT_CONFIG.WATER_METER_GREEN.get(), 0, 1);
-            double blue = MathUtils.clampDouble(CLIENT_CONFIG.WATER_METER_BLUE.get(), 0, 1);
-            double alpha = MathUtils.clampDouble(CLIENT_CONFIG.WATER_METER_ALPHA.get(), 0, 1);
-            return new Color((float) red, (float)green, (float)blue, (float)alpha);
-        }
-        return Color.WHITE;
-    }
-
-    public static boolean showMetersWhenPaused() {
-        return CLIENT_CONFIG != null ? CLIENT_CONFIG.SHOW_METERS_WHEN_PAUSED.get() : false;
-    }
-
-    public static double getModelTranslationX() {
-        if (CLIENT_CONFIG != null) {
-            return CLIENT_CONFIG.MODEL_TRANSLATION_X.get() * (CLIENT_CONFIG.MODEL_TRANSLATION_X_INVERT.get() ? -1 : 1);
-        }
-        return 0;
-    }
-
-    public static double getModelTranslationY() {
-        if (CLIENT_CONFIG != null) {
-            return CLIENT_CONFIG.MODEL_TRANSLATION_Y.get() * (CLIENT_CONFIG.MODEL_TRANSLATION_Y_INVERT.get() ? -1 : 1);
-        }
-        return 0;
-    }
-
-    public static double getModelTranslationZ() {
-        if (CLIENT_CONFIG != null) {
-            return CLIENT_CONFIG.MODEL_TRANSLATION_Z.get() * (CLIENT_CONFIG.MODEL_TRANSLATION_Z_INVERT.get() ? -1 : 1);
-        }
-        return 0;
-    }
-
-    public static double getModelRotationX() {
-        if (CLIENT_CONFIG != null) {
-            return  CLIENT_CONFIG.MODEL_ROTATION_X.get() * (CLIENT_CONFIG.MODEL_ROTATION_X_INVERT.get() ? -1 : 1);
-        }
-        return 0;
-    }
-
-    public static double getModelRotationY() {
-        if (CLIENT_CONFIG != null) {
-            return  CLIENT_CONFIG.MODEL_ROTATION_Y.get() * (CLIENT_CONFIG.MODEL_ROTATION_Y_INVERT.get() ? -1 : 1);
-        }
-        return 0;
-    }
-
-    public static double getModelRotationZ() {
-        if (CLIENT_CONFIG != null) {
-            return  CLIENT_CONFIG.MODEL_ROTATION_Z.get() * (CLIENT_CONFIG.MODEL_ROTATION_Z_INVERT.get() ? -1 : 1);
-        }
-        return 0;
-    }
-
-    public static double getModelScaleX() {
-        if (CLIENT_CONFIG != null) {
-            return  CLIENT_CONFIG.MODEL_SCALE_X.get() * (CLIENT_CONFIG.MODEL_SCALE_X_INVERT.get() ? -1 : 1);
-        }
-        return 0;
-    }
-
-    public static double getModelScaleY() {
-        if (CLIENT_CONFIG != null) {
-            return  CLIENT_CONFIG.MODEL_SCALE_Y.get() * (CLIENT_CONFIG.MODEL_SCALE_Y_INVERT.get() ? -1 : 1);
-        }
-        return 0;
-    }
-
-    public static double getModelScaleZ() {
-        if (CLIENT_CONFIG != null) {
-            return  CLIENT_CONFIG.MODEL_SCALE_Z.get() * (CLIENT_CONFIG.MODEL_SCALE_Z_INVERT.get() ? -1 : 1);
-        }
-        return 0;
     }
 
     /** Server Settings --------------------------------------------------------------------------- */

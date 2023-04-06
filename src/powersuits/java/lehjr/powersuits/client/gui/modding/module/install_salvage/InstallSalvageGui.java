@@ -3,9 +3,10 @@ package lehjr.powersuits.client.gui.modding.module.install_salvage;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import lehjr.numina.client.gui.ExtendedContainerScreen;
-import lehjr.numina.client.gui.clickable.ClickableButton;
+import lehjr.numina.client.gui.clickable.button.VanillaButton;
 import lehjr.numina.client.gui.geometry.MusePoint2D;
 import lehjr.numina.client.gui.geometry.Rect;
+import lehjr.numina.common.item.ItemUtils;
 import lehjr.numina.common.math.Color;
 import lehjr.powersuits.client.ScrollableInventoryFrame2;
 import lehjr.powersuits.client.gui.common.ModularItemSelectionFrameContainered;
@@ -17,7 +18,6 @@ import lehjr.powersuits.common.network.packets.CreativeInstallPacket;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraftforge.api.distmarker.Dist;
@@ -25,14 +25,15 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public class InstallSalvageGui extends ExtendedContainerScreen<InstallSalvageMenu> {
-    TranslatableComponent modularItemInventoryLabel = new TranslatableComponent(MPSConstants.MOD_ID + ".modularitem.inventory");
-    TranslatableComponent moduleSelectionFrameLabel = new TranslatableComponent("gui.powersuits.compatible.modules");
+    Component modularItemInventoryLabel = Component.translatable(MPSConstants.MOD_ID + ".modularitem.inventory");
+    Component moduleSelectionFrameLabel = Component.translatable("gui.powersuits.compatible.modules");
     public static final ResourceLocation BACKGROUND = new ResourceLocation(MPSConstants.MOD_ID, "textures/gui/background/install_salvage.png");
     protected TabSelectFrame tabSelectFrame;
     ModularItemSelectionFrameContainered itemSelectFrame;
 
     ScrollableInventoryFrame2 modularItemInventory;
     protected CompatibleModuleDisplayFrame moduleSelectFrame;
+    VanillaButton button;
 
     Inventory playerInventory;
 
@@ -64,12 +65,13 @@ public class InstallSalvageGui extends ExtendedContainerScreen<InstallSalvageMen
         itemSelectFrame.getCreativeInstallButton().setOnPressed(pressed -> {
             itemSelectFrame.getCreativeInstallButton().playDownSound(Minecraft.getInstance().getSoundManager());
             moduleSelectFrame.getSelectedModule().ifPresent(clickie -> {
-                MPSPackets.CHANNEL_INSTANCE.sendToServer(new CreativeInstallPacket(itemSelectFrame.selectedType().get(), clickie.getModule().getItem().getRegistryName()));
+                MPSPackets.CHANNEL_INSTANCE.sendToServer(new CreativeInstallPacket(itemSelectFrame.selectedType().get(), ItemUtils.getRegistryName(clickie.getModule())));
             });
         });
 
         itemSelectFrame.getCreativeInstallButton().setOnReleased(pressed -> {
-            ((ClickableButton)pressed).setEnabledBackground(Color.LIGHT_GRAY);
+
+//            ((VanillaButton)pressed).setEnabledBackground(Color.LIGHT_GRAY);
         });
         addFrame(moduleSelectFrame);
 
@@ -81,8 +83,8 @@ public class InstallSalvageGui extends ExtendedContainerScreen<InstallSalvageMen
     }
 
     @Override
-    public void tick() {
-        super.tick();
+    protected void containerTick() {
+        super.containerTick();
         // FIXME: replace button with something more native
         if(getMinecraft().player.isCreative()) {
             itemSelectFrame.getCreativeInstallButton().enableAndShow();

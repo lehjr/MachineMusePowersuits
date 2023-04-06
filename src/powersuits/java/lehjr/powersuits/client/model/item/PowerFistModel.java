@@ -30,7 +30,6 @@ import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Transformation;
 import lehjr.numina.client.model.helper.ModelHelper;
-import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
 import lehjr.numina.common.capabilities.render.IHandHeldModelSpecNBT;
 import lehjr.numina.common.capabilities.render.ModelSpecCapability;
@@ -45,12 +44,14 @@ import lehjr.numina.common.network.packets.CosmeticInfoPacket;
 import lehjr.numina.common.tags.NBTTagAccessor;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.ItemOverrides;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -59,14 +60,12 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.model.BakedModelWrapper;
-import net.minecraftforge.client.model.data.EmptyModelData;
-import net.minecraftforge.client.model.data.IModelData;
-import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.client.model.data.ModelData;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
-import java.util.Random;
 
 /**
  * Created by lehjr on 12/19/16.
@@ -86,8 +85,8 @@ public class PowerFistModel extends BakedModelWrapper {
     }
 
     @Override
-    public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, Random rand) {
-        return this.getQuads(state, side, rand, EmptyModelData.INSTANCE);
+    public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, RandomSource rand) {
+        return super.getQuads(state, side, rand);
     }
 
     public PowerFistModel getModel() {
@@ -98,22 +97,16 @@ public class PowerFistModel extends BakedModelWrapper {
     /**
      * We don't actually have any IModelData being passed here, so we can ignore the parameter.
      *
-     * @param state
-     * @param side
-     * @param rand
-     * @param extraData
-     * @return
      */
-    @Nonnull
     @Override
-    public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, @Nonnull Random rand, @Nonnull IModelData extraData) {
+    public @Nonnull List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, @Nonnull RandomSource rand, @Nonnull ModelData extraData, @Nullable RenderType renderType) {
         if (side != null)
             return ImmutableList.of();
         switch (modelcameraTransformType) {
             case GUI:
             case FIXED:
             case NONE:
-                return originalModel.getQuads(state, side, rand, extraData);
+                return originalModel.getQuads(state, side, rand);//, extraData);
         }
         ImmutableList.Builder<BakedQuad> builder = ImmutableList.builder();
         itemStack.getCapability(ModelSpecCapability.RENDER).ifPresent(specNBTCap -> {
@@ -167,7 +160,8 @@ public class PowerFistModel extends BakedModelWrapper {
                                 boolean glow = ((ModelPartSpec) partSpec).getGlow(nbt);
 
                                 if ((!isFiring && (itemState.equals("all") || itemState.equals("normal"))) || (isFiring && (itemState.equals("all") || itemState.equals("firing")))) {
-                                    builder.addAll(ModelHelper.getColoredQuadsWithGlowAndTransform(((ModelPartSpec) partSpec).getPart().getQuads(state, side, rand, extraData), partColor, transform, glow));
+                                    // FIXME
+                                    builder.addAll(ModelHelper.getColoredQuadsWithGlowAndTransform(((ModelPartSpec) partSpec).getPart().getQuads(state, side, rand), /*extraData),*/ partColor, transform, glow));
                                 }
                             }
                         }
@@ -177,24 +171,23 @@ public class PowerFistModel extends BakedModelWrapper {
         });
         return builder.build();
     }
-    
-    /**
-     * this is great for single models or those that share the exact same transforms for the different camera transform
-     * type. However, when dealing with quads from different models, it's useless.
-     */
+
     @Override
-    public BakedModel handlePerspective(ItemTransforms.TransformType cameraTransformType, PoseStack mat) {
+    public BakedModel applyTransform(ItemTransforms.TransformType cameraTransformType, PoseStack poseStack, boolean applyLeftHandTransform) {
         modelcameraTransformType = cameraTransformType;
-        switch (cameraTransformType) {
-            case FIRST_PERSON_LEFT_HAND:
-            case THIRD_PERSON_LEFT_HAND:
-            case FIRST_PERSON_RIGHT_HAND:
-            case THIRD_PERSON_RIGHT_HAND: {
-                return this;
-            }
-            default:
-                return super.handlePerspective(cameraTransformType, mat);
-        }
+
+        // TODO? Probably not... switching to other model
+//        switch (cameraTransformType) {
+//            case FIRST_PERSON_LEFT_HAND:
+//            case THIRD_PERSON_LEFT_HAND:
+//            case FIRST_PERSON_RIGHT_HAND:
+//            case THIRD_PERSON_RIGHT_HAND: {
+//                return this;
+//            }
+//            default:
+//                return super.handlePerspective(cameraTransformType, mat);
+//        }
+        return super.applyTransform(cameraTransformType, poseStack, applyLeftHandTransform);
     }
 
     public void setPlayer(Player player) {
@@ -230,7 +223,7 @@ public class PowerFistModel extends BakedModelWrapper {
             if (entityIn instanceof Player) {
                 Player player = (Player) entityIn;
                 if (player.isUsingItem()) {
-                    player.getItemInHand(player.getUsedItemHand()).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(modechanging -> {
+                    player.getItemInHand(player.getUsedItemHand()).getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent(modechanging -> {
                         if (!(modechanging instanceof IModeChangingItem)) {
                             return;
                         }

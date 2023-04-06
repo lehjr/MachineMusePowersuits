@@ -34,6 +34,7 @@ import lehjr.numina.common.capabilities.module.powermodule.PowerModuleCapability
 import lehjr.numina.common.capabilities.module.tickable.IPlayerTickModule;
 import lehjr.numina.common.capabilities.module.toggleable.IToggleableModule;
 import lehjr.numina.common.constants.TagConstants;
+import lehjr.numina.common.item.ItemUtils;
 import lehjr.numina.common.tags.TagUtils;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
@@ -45,6 +46,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.items.ItemStackHandler;
+import net.minecraftforge.registries.ForgeRegistries;
 import org.apache.commons.lang3.tuple.Pair;
 
 import javax.annotation.Nonnull;
@@ -93,7 +95,7 @@ public class ModularItem extends ItemStackHandler implements IModularItem, Capab
     public void toggleModule(ResourceLocation moduleName, boolean online) {
         for (int i = 0; i < getSlots(); i++) {
             ItemStack module = getStackInSlot(i);
-            if (!module.isEmpty() && module.getItem().getRegistryName().equals(moduleName)) {
+            if (!module.isEmpty() && ItemUtils.getRegistryName(module).equals(moduleName)) {
                 final int index = i;
                 module.getCapability(PowerModuleCapability.POWER_MODULE).ifPresent(m -> {
                     if (m instanceof IToggleableModule) {
@@ -123,7 +125,7 @@ public class ModularItem extends ItemStackHandler implements IModularItem, Capab
         for (int i = 0; i < getSlots(); i++) {
             ItemStack module = getStackInSlot(i);
             if (!module.isEmpty()) {
-                locations.add(module.getItem().getRegistryName());
+                locations.add(ItemUtils.getRegistryName(module));
             }
         }
         return locations;
@@ -158,7 +160,7 @@ public class ModularItem extends ItemStackHandler implements IModularItem, Capab
         for (int i = 0; i < getSlots(); i++) {
             ItemStack module = getStackInSlot(i);
             if (!module.isEmpty()) {
-                if (module.getItem().getRegistryName().equals(regName)) {
+                if (ItemUtils.getRegistryName(module).equals(regName)) {
                     return true;
                 }
             }
@@ -221,7 +223,7 @@ public class ModularItem extends ItemStackHandler implements IModularItem, Capab
     public boolean isModuleOnline(ResourceLocation moduleName) {
         for (int i = 0; i < getSlots(); i++) {
             ItemStack module = getStackInSlot(i);
-            if (!module.isEmpty() && module.getItem().getRegistryName().equals(moduleName)) {
+            if (!module.isEmpty() && ItemUtils.getRegistryName(module).equals(moduleName)) {
                 return isModuleOnline(module);
             }
         }
@@ -241,7 +243,7 @@ public class ModularItem extends ItemStackHandler implements IModularItem, Capab
     public ItemStack getOnlineModuleOrEmpty(ResourceLocation moduleName) {
         for (int i = 0; i < getSlots(); i++) {
             ItemStack module = getStackInSlot(i);
-            if (!module.isEmpty() && module.getItem().getRegistryName().equals(moduleName)) {
+            if (!module.isEmpty() && ItemUtils.getRegistryName(module).equals(moduleName)) {
                 if (module.getCapability(PowerModuleCapability.POWER_MODULE).map(m -> m.isAllowed() && m.isModuleOnline()).orElse(false)) {
                     return module;
                 }
@@ -279,7 +281,7 @@ public class ModularItem extends ItemStackHandler implements IModularItem, Capab
     protected int getStackLimit(final int slot, @Nonnull final ItemStack module) {
         if (isModuleValid(module)) {
             // is module already installed?
-            if (isModuleInstalled(module.getItem().getRegistryName())) {
+            if (isModuleInstalled(ForgeRegistries.ITEMS.getKey(module.getItem()))) { // fixme.. use item check instead? maybe?
                 return 0;
             }
 
@@ -307,7 +309,7 @@ public class ModularItem extends ItemStackHandler implements IModularItem, Capab
         boolean handled = false;
         for (int i = 0; i < getSlots(); i++) {
             ItemStack module = getStackInSlot(i);
-            if (!module.isEmpty() && module.getItem().getRegistryName().equals(moduleName)) {
+            if (!module.isEmpty() && ItemUtils.getRegistryName(module).equals(moduleName)) {
                 if (module.getCapability(PowerModuleCapability.POWER_MODULE).map(m -> {
                     TagUtils.setModuleDoubleOrRemove(module, key, value);
                     return true;

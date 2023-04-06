@@ -18,7 +18,7 @@
 //import net.minecraft.core.NonNullList;
 //import net.minecraft.entity.player.ServerPlayer;
 //import net.minecraft.inventory.container.INamedAbstractContainerMenuProvider;
-//import net.minecraft.network.chat.TranslatableComponent;
+//import net.minecraft.network.chat.Component;
 //import net.minecraft.util.ActionResult;
 //import net.minecraft.util.Hand;
 //import net.minecraft.util.SoundEvents;
@@ -72,7 +72,7 @@
 //            final NonNullList<ItemStack> modules = collectModules(module);
 //            if (modules.isEmpty()) {
 //                if (worldIn.isClientSide) {
-//                    Minecraft.getInstance().field_71456_v.func_146158_b().func_146227_a(new TranslatableComponent(Constants.MESSAGE_NO_SCAN_MODULES));//, Constants.CHAT_LINE_ID);
+//                    Minecraft.getInstance().field_71456_v.func_146158_b().func_146227_a(Component.translatable(Constants.MESSAGE_NO_SCAN_MODULES));//, Constants.CHAT_LINE_ID);
 //                }
 //                playerIn.func_184811_cZ().func_185145_a(itemStackIn.getItem(), 10);
 //                return ActionResult.func_226251_d_(itemStackIn);
@@ -80,7 +80,7 @@
 //
 //            if (!tryConsumeEnergy(playerIn, modules, true)) {
 //                if (worldIn.isClientSide) {
-//                    Minecraft.getInstance().field_71456_v.func_146158_b().func_146227_a(new TranslatableComponent(Constants.MESSAGE_NOT_ENOUGH_ENERGY));//, Constants.CHAT_LINE_ID);
+//                    Minecraft.getInstance().field_71456_v.func_146158_b().func_146227_a(Component.translatable(Constants.MESSAGE_NOT_ENOUGH_ENERGY));//, Constants.CHAT_LINE_ID);
 //                }
 //                playerIn.func_184811_cZ().func_185145_a(itemStackIn.getItem(), 10);
 //                return ActionResult.func_226251_d_(itemStackIn);
@@ -172,7 +172,7 @@
 //    private static NonNullList<ItemStack> collectModules(final ItemStack scanner) {
 //
 //        NonNullList<ItemStack> modules = NonNullList.create();
-//        scanner.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+//        scanner.getCapability(ForgeCapabilities.ITEM_HANDLER)
 //                .filter(handler -> handler instanceof ItemHandlerScanner)
 //                .ifPresent(handler -> {
 //                    final IItemHandler activeModules = ((ItemHandlerScanner) handler).getActiveModules();

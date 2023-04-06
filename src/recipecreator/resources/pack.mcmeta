@@ -1,6 +1,8 @@
 {
   "pack": {
   "description": "Resources used for Modular MPA-RecipeCreator",
-  "pack_format": 5
+    "pack_format": 13,
+    "forge:client_resources_pack_format": 13,
+    "forge:server_data_pack_format": 12
   }
 }

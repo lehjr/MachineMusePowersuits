@@ -535,7 +535,7 @@ public class PowerFistModel3 extends Model {
 //    // FIXME
 //    public void setPoseForPlayer(Player player) {
 //        if (player.isUsingItem() && player.getUseItem() != ItemStack.EMPTY) {
-//            player.getUseItem().getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+//            player.getUseItem().getCapability(ForgeCapabilities.ITEM_HANDLER)
 //                    .filter(IModeChangingItem.class::isInstance)
 //                    .map(IModeChangingItem.class::cast)
 //                    .ifPresent(iItemHandler -> {

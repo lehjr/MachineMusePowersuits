@@ -33,18 +33,16 @@ import lehjr.numina.client.gui.clickable.slider.VanillaTinkerSlider;
 import lehjr.numina.client.gui.frame.ScrollableFrame;
 import lehjr.numina.client.gui.geometry.MusePoint2D;
 import lehjr.numina.client.gui.geometry.Rect;
-import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
 import lehjr.numina.common.capabilities.module.powermodule.PowerModuleCapability;
 import lehjr.numina.common.constants.TagConstants;
+import lehjr.numina.common.item.ItemUtils;
 import lehjr.numina.common.network.NuminaPackets;
 import lehjr.numina.common.network.packets.TweakRequestDoublePacket;
 import lehjr.numina.common.string.StringUtils;
 import lehjr.powersuits.client.gui.common.ModularItemSelectionFrame;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraftforge.common.util.LazyOptional;
 
 import java.util.HashMap;
@@ -97,7 +95,7 @@ public class ModuleTweakFrame extends ScrollableFrame {
 
     Component getUnit(String key) {
         return moduleTarget.getSelectedModule().map(target->target.getModule().getCapability(PowerModuleCapability.POWER_MODULE)
-                .map(pm-> pm.getUnit(key)).orElse(new TextComponent(""))).orElse(new TextComponent(""));
+                .map(pm-> pm.getUnit(key)).orElse(Component.literal(""))).orElse(Component.literal(""));
     }
 
     @Override
@@ -117,7 +115,7 @@ public class ModuleTweakFrame extends ScrollableFrame {
             double valueWidth = StringUtils.getStringWidth(formattedValue);
             double allowedNameWidth = width() - valueWidth - margin * 2;
             List<String> namesList = StringUtils.wrapComponentToLength(
-                    new TranslatableComponent(TagConstants.MODULE_TRADEOFF_PREFIX + name).getString(), allowedNameWidth);
+                    Component.translatable(TagConstants.MODULE_TRADEOFF_PREFIX + name).getString(), allowedNameWidth);
 
             for (int i = 0; i < namesList.size(); i++) {
                 StringUtils.drawLeftAlignedShadowedString(matrixStack, namesList.get(i), left() + margin, nexty + 9 * i);
@@ -182,7 +180,7 @@ public class ModuleTweakFrame extends ScrollableFrame {
                             width() - 16,
                             moduleTag,
                             tweak,
-                            new TranslatableComponent(TagConstants.MODULE_TRADEOFF_PREFIX + tweak),
+                            Component.translatable(TagConstants.MODULE_TRADEOFF_PREFIX + tweak),
                             (IPowerModule.PropertyModifierIntLinearAdditive) tweaks.get(tweak));
                     sliders.add(slider);
                     totalSize += slider.height();
@@ -192,7 +190,7 @@ public class ModuleTweakFrame extends ScrollableFrame {
                             width() - 16,
                             moduleTag,
                             tweak,
-                            new TranslatableComponent(TagConstants.MODULE_TRADEOFF_PREFIX + tweak));
+                            Component.translatable(TagConstants.MODULE_TRADEOFF_PREFIX + tweak));
                     sliders.add(slider);
                     totalSize += slider.height();
                 }
@@ -225,7 +223,7 @@ public class ModuleTweakFrame extends ScrollableFrame {
                     NuminaPackets.CHANNEL_INSTANCE.sendToServer(
                             new TweakRequestDoublePacket(
                                     type,
-                                    pm.getModuleStack().getItem().getRegistryName(),
+                                    ItemUtils.getRegistryName(pm.getModuleStack()),
                                     selectedSlider.id(),
                                     selectedSlider.getValue()));
             }));

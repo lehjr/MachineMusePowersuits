@@ -31,13 +31,14 @@ import lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
 import lehjr.numina.common.capabilities.module.powermodule.PowerModuleCapability;
 import lehjr.numina.common.capabilities.module.rightclick.IRightClickModule;
 import lehjr.numina.common.capabilities.module.toggleable.IToggleableModule;
+import lehjr.numina.common.item.ItemUtils;
 import lehjr.powersuits.client.control.KeybindKeyHandler;
 import lehjr.powersuits.client.control.KeybindManager;
 import net.minecraft.core.NonNullList;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -49,8 +50,8 @@ import net.minecraftforge.registries.ForgeRegistries;
  */
 public final class PlayerLoginHandler {
     @SubscribeEvent
-    public static void onPlayerLoginClient(ClientPlayerNetworkEvent.LoggedInEvent event) {
-        Player player = event.getPlayer();
+    public static void onPlayerLoginClient(PlayerEvent.PlayerLoggedInEvent event) {
+        Player player = event.getEntity();
         if (player != null) {
             NonNullList<ItemStack> modules = NonNullList.create();
             for (Item item : ForgeRegistries.ITEMS.getValues()) {
@@ -62,14 +63,14 @@ public final class PlayerLoginHandler {
                                 if (pm.getTarget() == ModuleTarget.TOOLONLY) {
                                     if (pm.getCategory() == ModuleCategory.MINING_ENHANCEMENT) {
                                         modules.add(pm.getModuleStack());
-                                        KeybindKeyHandler.registerKeybinding(item.getRegistryName(), false);
+                                        KeybindKeyHandler.registerKeybinding(ItemUtils.getRegistryName(item), false);
                                     } else if (!IRightClickModule.class.isAssignableFrom(pm.getClass())) {
                                         modules.add(pm.getModuleStack());
-                                        KeybindKeyHandler.registerKeybinding(item.getRegistryName(), false);
+                                        KeybindKeyHandler.registerKeybinding(ItemUtils.getRegistryName(item), false);
                                     }
                                 } else {
                                     modules.add(pm.getModuleStack());
-                                    KeybindKeyHandler.registerKeybinding(item.getRegistryName(), false);
+                                    KeybindKeyHandler.registerKeybinding(ItemUtils.getRegistryName(item), false);
                                 }
                             });
                 }

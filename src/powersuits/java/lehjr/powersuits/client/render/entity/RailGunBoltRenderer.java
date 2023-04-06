@@ -28,11 +28,11 @@ package lehjr.powersuits.client.render.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Vector3f;
 import lehjr.numina.client.model.helper.ModelHelper;
 import lehjr.numina.client.model.obj.OBJBakedCompositeModel;
 import lehjr.numina.common.constants.NuminaConstants;
 import lehjr.numina.common.math.Color;
+import lehjr.numina.common.math.MathUtils;
 import lehjr.powersuits.common.constants.MPSConstants;
 import lehjr.powersuits.common.entity.RailgunBoltEntity;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -42,8 +42,10 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.resources.model.BlockModelRotation;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.client.model.data.EmptyModelData;
+import net.minecraft.util.RandomSource;
+import net.minecraftforge.client.model.data.ModelData;
 import net.minecraftforge.common.util.NonNullLazy;
+import org.joml.Quaternionf;
 
 import java.util.Random;
 
@@ -54,7 +56,7 @@ public class RailGunBoltRenderer extends net.minecraft.client.renderer.entity.En
     static final ResourceLocation modelLocation = new ResourceLocation(MPSConstants.MOD_ID, "models/entity/bolt.obj");
     // NonNullLazy doesn't init until called
     public static final NonNullLazy<OBJBakedCompositeModel> modelBolt = NonNullLazy.of(() -> ModelHelper.loadBakedModel(BlockModelRotation.X0_Y0, null, modelLocation));
-    protected static final Random rand = new Random();
+    protected static final RandomSource rand = RandomSource.create();
 
     public RailGunBoltRenderer(EntityRendererProvider.Context renderManager) {
         super(renderManager);
@@ -74,9 +76,8 @@ public class RailGunBoltRenderer extends net.minecraft.client.renderer.entity.En
 //        matrixStackIn.rotate(Vector3f.YP.rotationDegrees(MathHelper.lerp(partialTicks, entityIn.prevRotationYaw, entityIn.rotationYaw) - 90.0F));
 //        matrixStackIn.rotate(Vector3f.ZP.rotationDegrees(MathHelper.lerp(partialTicks, entityIn.prevRotationPitch, entityIn.rotationPitch)));
 
-        matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(entityYaw  - 90.0F));
-
-        matrixStackIn.mulPose(Vector3f.ZP.rotationDegrees(entityIn.xRotO));
+        matrixStackIn.mulPose(new Quaternionf().fromAxisAngleDeg(MathUtils.XP, entityYaw  - 90.0F));
+        matrixStackIn.mulPose(new Quaternionf().fromAxisAngleDeg(MathUtils.ZP, entityIn.xRotO));
 
         if(size > 0)  {
             renderBolt(matrixStackIn, bufferIn);
@@ -96,7 +97,7 @@ public class RailGunBoltRenderer extends net.minecraft.client.renderer.entity.En
 
     public static void renderBolt(MultiBufferSource bufferIn, RenderType rt, PoseStack matrixStackIn, int packedLightIn, int overlay, Color colour) {
         VertexConsumer bb = bufferIn.getBuffer(rt);
-        for (BakedQuad quad : modelBolt.get().getQuads(null, null, rand, EmptyModelData.INSTANCE)) {
+        for (BakedQuad quad : modelBolt.get().getQuads(null, null, rand)) {/*, ModelData.EMPTY)) {*/
             bb.putBulkData(matrixStackIn.last(), quad, colour.r, colour.g, colour.b, colour.a, packedLightIn, overlay, true);
         }
     }

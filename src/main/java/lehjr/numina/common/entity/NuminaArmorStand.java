@@ -29,7 +29,7 @@ package lehjr.numina.common.entity;
 import lehjr.numina.client.sound.SoundDictionary;
 import lehjr.numina.common.base.NuminaObjects;
 import lehjr.numina.common.container.ArmorStandMenu;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -60,8 +60,8 @@ public class NuminaArmorStand extends ArmorStand {
         createAttributes();
     }
 
-    public NuminaArmorStand(Level level, double p_31557_, double p_31558_, double p_31559_) {
-        super(level, p_31557_, p_31558_, p_31559_);
+    public NuminaArmorStand(Level level, double pX, double pY, double pZ) {
+        super(level, pX, pY, pZ);
         setShowArms(true);
     }
 
@@ -84,11 +84,11 @@ public class NuminaArmorStand extends ArmorStand {
             } else if (player.level.isClientSide) {
                 return InteractionResult.SUCCESS;
             } else {
-                player.playSound(SoundDictionary.SOUND_EVENT_GUI_SELECT, 1.0F, 1.0F);
-                NetworkHooks.openGui((ServerPlayer) player,
+                player.playSound(SoundDictionary.SOUND_EVENT_GUI_SELECT.get(), 16.0F, 1.0F);
+                NetworkHooks.openScreen((ServerPlayer) player,
                         new SimpleMenuProvider((windowID, playerInventory, playerEntity) ->
                                 new ArmorStandMenu(windowID, playerInventory, (ArmorStand) this),
-                                new TranslatableComponent("screen.numina.armor_stand")),
+                                Component.translatable("screen.numina.armor_stand")),
                         buf -> buf.writeInt(getId()));
                 return InteractionResult.SUCCESS;
             }

@@ -44,7 +44,7 @@ import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.client.model.data.IModelData;
+import net.minecraftforge.client.model.data.ModelData;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import org.jetbrains.annotations.NotNull;
@@ -70,7 +70,7 @@ public class LuxCapacitorBlockEntity extends BlockEntity {
         super.handleUpdateTag(tag);
     }
 
-
+    @Nullable
     @Override
     public Packet<ClientGamePacketListener> getUpdatePacket() {
         // Will get tag from #getUpdateTag
@@ -116,7 +116,7 @@ public class LuxCapacitorBlockEntity extends BlockEntity {
 
     @Nonnull
     @Override
-    public IModelData getModelData() {
+    public ModelData getModelData() {
         return LuxCapHelper.getBlockBaseModelData();
 //        return LuxCapHelper.getLensModelData(getColor().getInt());
     }

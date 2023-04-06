@@ -45,7 +45,6 @@ import lehjr.numina.common.energy.ElectricItemUtils;
 import lehjr.numina.common.network.NuminaPackets;
 import lehjr.numina.common.network.packets.CosmeticInfoPacket;
 import lehjr.numina.common.string.AdditionalInfo;
-import lehjr.powersuits.common.base.MPSObjects;
 import lehjr.powersuits.common.capability.PowerArmorCap;
 import lehjr.powersuits.common.constants.MPSConstants;
 import lehjr.powersuits.common.constants.MPSRegistryNames;
@@ -70,13 +69,13 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.IItemRenderProperties;
+import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import net.minecraftforge.common.ForgeMod;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
-import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
-import net.minecraftforge.items.CapabilityItemHandler;
 import org.apache.commons.lang3.tuple.Pair;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -99,14 +98,13 @@ public abstract class AbstractElectricItemArmor extends ArmorItem {
     public AbstractElectricItemArmor(EquipmentSlot slots) {
         super(MPAArmorMaterial.EMPTY_ARMOR, slots, new Item.Properties()
                 .stacksTo(1)
-                .tab(MPSObjects.creativeTab)
                 .durability(0)
                 .setNoRepair());
     }
 
     @Override
     public boolean makesPiglinsNeutral(ItemStack stack, LivingEntity wearer) {
-        return stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+        return stack.getCapability(ForgeCapabilities.ITEM_HANDLER)
                 .filter(IModularItem.class::isInstance)
                 .map(IModularItem.class::cast)
                 .map(iModularItem -> iModularItem.isModuleOnline(MPSRegistryNames.PIGLIN_PACIFICATION_MODULE)).orElse(false);
@@ -121,7 +119,7 @@ public abstract class AbstractElectricItemArmor extends ArmorItem {
     public <T extends LivingEntity> int damageItem(ItemStack stack, int amount, T entity, Consumer<T> onBroken) {
         // FIXME: this should probably factor in the damage value
 
-        int enerConsum = (int) Math.round(stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+        int enerConsum = (int) Math.round(stack.getCapability(ForgeCapabilities.ITEM_HANDLER)
                 .filter(IModularItem.class::isInstance)
                 .map(IModularItem.class::cast)
                 .map(iItemHandler -> {
@@ -159,7 +157,7 @@ public abstract class AbstractElectricItemArmor extends ArmorItem {
         AtomicDouble movementResistance = new AtomicDouble(0);
         AtomicDouble swimBoost = new AtomicDouble(0);
 
-        stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+        stack.getCapability(ForgeCapabilities.ITEM_HANDLER)
                 .filter(IModularItem.class::isInstance)
                 .map(IModularItem.class::cast)
                 .ifPresent(iItemHandler -> {
@@ -293,7 +291,7 @@ public abstract class AbstractElectricItemArmor extends ArmorItem {
         }
 
         if (entity instanceof LivingEntity) {
-            if (armor.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+            if (armor.getCapability(ForgeCapabilities.ITEM_HANDLER)
                     .filter(IModularItem.class::isInstance)
                     .map(IModularItem.class::cast)
                     .map(iItemHandler -> iItemHandler.isModuleOnline(MPSRegistryNames.TRANSPARENT_ARMOR_MODULE)).orElse(false)) {
@@ -318,29 +316,15 @@ public abstract class AbstractElectricItemArmor extends ArmorItem {
     }
 
     @Override
-    public void initializeClient(Consumer<IItemRenderProperties> consumer) {
-        consumer.accept(new IItemRenderProperties() {
-            /**
-             * Null return gets replaced with the _default elsewhere
-             *
-             * @param entityLiving
-             * @param itemStack
-             * @param armorSlot
-             * @param _default
-             * @return
-             */
+    public void initializeClient(Consumer<IClientItemExtensions> consumer) {
+        consumer.accept(new IClientItemExtensions() {
             @Override
-            @Nonnull
-            public Model getBaseArmorModel(LivingEntity entityLiving, ItemStack itemStack, EquipmentSlot armorSlot, HumanoidModel<?> _default) {
-//        if (!(entityLiving instanceof Player)) {
-//            return _default;
-//        }
-
+            public @NotNull HumanoidModel<?> getHumanoidArmorModel(LivingEntity livingEntity, ItemStack itemStack, EquipmentSlot armorSlot, HumanoidModel<?> _default) {
                 return itemStack.getCapability(ModelSpecCapability.RENDER).map(spec -> {
                     CompoundTag renderTag = spec.getRenderTag();
                     EquipmentSlot slot = Mob.getEquipmentSlotForItem(itemStack);
                     /** sets up default spec tags. A tag with all parts disabled should still have a color tag rather than being empty or null */
-                    if ((renderTag == null || renderTag.isEmpty()) && entityLiving == Minecraft.getInstance().player && armorSlot == slot) {
+                    if ((renderTag == null || renderTag.isEmpty()) && livingEntity == Minecraft.getInstance().player && armorSlot == slot) {
                         renderTag = spec.getDefaultRenderTag();
                         if (renderTag != null && !renderTag.isEmpty()) {
                             spec.setRenderTag(renderTag, TagConstants.RENDER);
@@ -354,8 +338,8 @@ public abstract class AbstractElectricItemArmor extends ArmorItem {
                     }
 
                     HumanoidModel model = ArmorModelInstance.getInstance();
-                    ItemStack chestplate = entityLiving.getItemBySlot(EquipmentSlot.CHEST);
-                    if (chestplate.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+                    ItemStack chestplate = livingEntity.getItemBySlot(EquipmentSlot.CHEST);
+                    if (chestplate.getCapability(ForgeCapabilities.ITEM_HANDLER)
                             .filter(IModularItem.class::isInstance)
                             .map(IModularItem.class::cast)
                             .map(iItemHandler -> iItemHandler.isModuleOnline(MPSRegistryNames.ACTIVE_CAMOUFLAGE_MODULE)).orElse(false)) {
@@ -390,17 +374,17 @@ public abstract class AbstractElectricItemArmor extends ArmorItem {
 
     @Override
     public boolean isBarVisible(ItemStack stack) {
-        return stack.getCapability(CapabilityEnergy.ENERGY).map(iEnergyStorage -> iEnergyStorage.getMaxEnergyStored() > 1).orElse(false);
+        return stack.getCapability(ForgeCapabilities.ENERGY).map(iEnergyStorage -> iEnergyStorage.getMaxEnergyStored() > 1).orElse(false);
     }
 
     @Override
     public int getBarWidth(ItemStack stack) {
-        return stack.getCapability(CapabilityEnergy.ENERGY).map(iEnergyStorage -> iEnergyStorage.getEnergyStored() * 13 / iEnergyStorage.getMaxEnergyStored()).orElse(1);
+        return stack.getCapability(ForgeCapabilities.ENERGY).map(iEnergyStorage -> iEnergyStorage.getEnergyStored() * 13 / iEnergyStorage.getMaxEnergyStored()).orElse(1);
     }
 
     @Override
     public int getBarColor(ItemStack stack) {
-        IEnergyStorage energy = stack.getCapability(CapabilityEnergy.ENERGY).orElse(null);
+        IEnergyStorage energy = stack.getCapability(ForgeCapabilities.ENERGY).orElse(null);
         if (energy == null) {
             return super.getBarColor(stack);
         }

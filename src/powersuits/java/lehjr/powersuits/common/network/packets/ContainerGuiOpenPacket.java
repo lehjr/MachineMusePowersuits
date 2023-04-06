@@ -26,13 +26,13 @@
 
 package lehjr.powersuits.common.network.packets;
 
+import lehjr.numina.common.base.NuminaLogger;
 import lehjr.powersuits.common.container.InstallSalvageMenu;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraftforge.network.NetworkEvent;
-import net.minecraftforge.network.NetworkHooks;
 
 import java.util.function.Supplier;
 
@@ -55,8 +55,10 @@ public class ContainerGuiOpenPacket {
 
     public static void handle(ContainerGuiOpenPacket msg, Supplier<NetworkEvent.Context> ctx) {
         ctx.get().enqueueWork(() -> {
-            SimpleMenuProvider container = new SimpleMenuProvider((id, inventory, player) ->  new InstallSalvageMenu(id, inventory, msg.type), new TranslatableComponent("gui.powersuits.tab.install.salvage"));
-            NetworkHooks.openGui(ctx.get().getSender(), container, buffer -> buffer.writeEnum(msg.type));
+            SimpleMenuProvider container = new SimpleMenuProvider((id, inventory, player) ->  new InstallSalvageMenu(id, inventory, msg.type), Component.translatable("gui.powersuits.tab.install.salvage"));
+            NuminaLogger.logError("opening gui in container open packet not yet impletmented");
+
+            //            NetworkHooks.openGui(ctx.get().getSender(), container, buffer -> buffer.writeEnum(msg.type));
         });
         ctx.get().setPacketHandled(true);
     }

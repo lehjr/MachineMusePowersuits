@@ -27,6 +27,7 @@
 package lehjr.powersuits.common.base;
 
 import com.electronwill.nightconfig.core.file.CommentedFileConfig;
+import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
 import lehjr.numina.common.capabilities.module.powermodule.PowerModuleCapability;
@@ -35,6 +36,7 @@ import lehjr.numina.common.capabilities.module.rightclick.RightClickModule;
 import lehjr.numina.common.capabilities.module.toggleable.IToggleableModule;
 import lehjr.numina.common.capabilities.module.toggleable.ToggleableModule;
 import lehjr.numina.common.config.ConfigHelper;
+import lehjr.numina.common.item.ItemUtils;
 import lehjr.powersuits.client.control.KeybindKeyHandler;
 import lehjr.powersuits.client.event.ModelBakeEventHandler;
 import lehjr.powersuits.client.event.PlayerLoginHandler;
@@ -48,9 +50,7 @@ import lehjr.powersuits.common.network.MPSPackets;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.Container;
 import net.minecraft.world.InteractionHand;
@@ -77,7 +77,6 @@ import net.minecraftforge.fml.event.config.ModConfigEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.network.NetworkHooks;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -89,46 +88,46 @@ public class ModularPowersuits {
         ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, MPSSettings.CLIENT_SPEC, ConfigHelper.setupConfigFile("mps-client-only.toml", MPSConstants.MOD_ID).getAbsolutePath());
         ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, MPSSettings.SERVER_SPEC); // note config file location for dedicated server is stored in the world config
 
-        IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
+//        IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
+//
+//        // Register the setup method for modloading
+//        modEventBus.addListener(this::setup);
+//
+//        // Register the doClientStuff method for modloading
+//        modEventBus.addListener(this::setupClient);
+//
+//        // Register ourselves for server and other game events we are interested in
+//        MinecraftForge.EVENT_BUS.register(this);
+//        MinecraftForge.EVENT_BUS.addListener(EntityDamageEvent::handleEntityDamageEvent);
+//        MinecraftForge.EVENT_BUS.addListener(EntityDamageEvent::entityAttackEventHandler);
+//        MinecraftForge.EVENT_BUS.register(new PlayerUpdateHandler());
+//        MinecraftForge.EVENT_BUS.register(MovementManager.INSTANCE);
+//
+//        MinecraftForge.EVENT_BUS.addListener(HarvestEventHandler::handleHarvestCheck);
+//        MinecraftForge.EVENT_BUS.addListener(HarvestEventHandler::handleBreakSpeed);
+//
+//        MPSObjects.MPS_ITEMS.register(modEventBus);
+//        MPSObjects.BLOCKS.register(modEventBus);
+//        MPSObjects.BLOCKENTITY_TYPES.register(modEventBus);
+//        MPSObjects.ENTITY_TYPES.register(modEventBus);
+//        MPSObjects.CONTAINER_TYPES.register(modEventBus);
 
-        // Register the setup method for modloading
-        modEventBus.addListener(this::setup);
-
-        // Register the doClientStuff method for modloading
-        modEventBus.addListener(this::setupClient);
-
-        // Register ourselves for server and other game events we are interested in
-        MinecraftForge.EVENT_BUS.register(this);
-        MinecraftForge.EVENT_BUS.addListener(EntityDamageEvent::handleEntityDamageEvent);
-        MinecraftForge.EVENT_BUS.addListener(EntityDamageEvent::entityAttackEventHandler);
-        MinecraftForge.EVENT_BUS.register(new PlayerUpdateHandler());
-        MinecraftForge.EVENT_BUS.register(MovementManager.INSTANCE);
-
-        MinecraftForge.EVENT_BUS.addListener(HarvestEventHandler::handleHarvestCheck);
-        MinecraftForge.EVENT_BUS.addListener(HarvestEventHandler::handleBreakSpeed);
-
-        MPSObjects.ITEMS.register(modEventBus);
-        MPSObjects.BLOCKS.register(modEventBus);
-        MPSObjects.BLOCKENTITY_TYPES.register(modEventBus);
-        MPSObjects.ENTITY_TYPES.register(modEventBus);
-        MPSObjects.CONTAINER_TYPES.register(modEventBus);
-
-        // handles loading and reloading event
-        modEventBus.addListener((ModConfigEvent event) -> {
-            new RuntimeException("Got config " + event.getConfig() + " name " + event.getConfig().getModId() + ":" + event.getConfig().getFileName());
-
-            final ModConfig config = event.getConfig();
-            if (config.getSpec()!= null && config.getSpec() == MPSSettings.SERVER_SPEC) {
-                MPSSettings.getModuleConfig().setServerConfig(config);
-
-                // This is actually for a feature that isn't even currently enabled :P
-                // getFullPath can't be used on client if it isn't also hosting the server
-                if (config instanceof CommentedFileConfig) {
-                    CosmeticPresetSaveLoad.setConfigDirString(config.getFullPath().getParent().toString());
-                    CosmeticPresetSaveLoad.copyPresetsFromJar(config.getFullPath().getParent().toString());
-                }
-            }
-        });
+//        // handles loading and reloading event
+//        modEventBus.addListener((ModConfigEvent event) -> {
+//            new RuntimeException("Got config " + event.getConfig() + " name " + event.getConfig().getModId() + ":" + event.getConfig().getFileName());
+//
+//            final ModConfig config = event.getConfig();
+//            if (config.getSpec()!= null && config.getSpec() == MPSSettings.SERVER_SPEC) {
+//                MPSSettings.getModuleConfig().setServerConfig(config);
+//
+//                // This is actually for a feature that isn't even currently enabled :P
+//                // getFullPath can't be used on client if it isn't also hosting the server
+//                if (config instanceof CommentedFileConfig) {
+//                    CosmeticPresetSaveLoad.setConfigDirString(config.getFullPath().getParent().toString());
+//                    CosmeticPresetSaveLoad.copyPresetsFromJar(config.getFullPath().getParent().toString());
+//                }
+//            }
+//        });
     }
 
     /**
@@ -164,7 +163,7 @@ public class ModularPowersuits {
     @SubscribeEvent
     public void attachCapability(AttachCapabilitiesEvent<ItemStack> event) {
         final ItemStack itemStack = event.getObject();
-        final ResourceLocation regName = itemStack.getItem().getRegistryName();
+        final ResourceLocation regName = ItemUtils.getRegistryName(itemStack);
 
 //        // AE2 Wireless terminal
 //        if (regName.equals(new ResourceLocation("appliedenergistics2:wireless_terminal"))) {
@@ -243,7 +242,7 @@ public class ModularPowersuits {
 
         // Crafting workbench
         } else if (!event.getCapabilities().containsKey(MPSRegistryNames.PORTABLE_WORKBENCH_MODULE) && event.getObject().getItem().equals(Items.CRAFTING_TABLE)) {
-            final Component CONTAINER_NAME = new TranslatableComponent("container.crafting");
+            final Component CONTAINER_NAME = Component.translatable("container.crafting");
             IRightClickModule rightClick = new RightClickModule(itemStack, ModuleCategory.TOOL, ModuleTarget.TOOLONLY, MPSSettings::getModuleConfig) {
                 @Override
                 public InteractionResultHolder<ItemStack> use(ItemStack itemStackIn, Level worldIn, Player playerIn, InteractionHand hand) {
@@ -314,7 +313,9 @@ public class ModularPowersuits {
                                 return itemstack;
                             }
                         }, MPSConstants.CRAFTING_TABLE_CONTAINER_NAME);
-                        NetworkHooks.openGui((ServerPlayer) playerIn, container, buffer -> buffer.writeBlockPos(playerIn.blockPosition()));
+                        NuminaLogger.logError("FIXME: ModularPowersuits main class opening gui not yet implemented");
+
+//                        NetworkHooks.openGui((ServerPlayer) playerIn, container, buffer -> buffer.writeBlockPos(playerIn.blockPosition()));
 //                        NetworkHooks.openGui((ServerPlayer) playerIn, container);
                         playerIn.awardStat(Stats.INTERACT_WITH_CRAFTING_TABLE);
                         return InteractionResultHolder.consume(itemStackIn);

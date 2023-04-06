@@ -2,7 +2,7 @@ package lehjr.numina.client.gui.clickable.slider;
 
 import lehjr.numina.client.gui.geometry.MusePoint2D;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 
 public class VanillaTinkerSlider extends VanillaSlider {
     public CompoundTag moduleTag;
@@ -11,7 +11,7 @@ public class VanillaTinkerSlider extends VanillaSlider {
                                  double width,
                                  CompoundTag moduleTag,
                                  String id,
-                                 TranslatableComponent label) {
+                                 Component label) {
         super(ul, width, id);
         this.moduleTag = moduleTag;
         setValue(getValue());

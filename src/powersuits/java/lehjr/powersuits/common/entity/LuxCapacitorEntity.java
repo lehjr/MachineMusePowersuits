@@ -35,6 +35,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -49,7 +50,6 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.entity.IEntityAdditionalSpawnData;
-import net.minecraftforge.network.NetworkHooks;
 
 public class LuxCapacitorEntity extends ThrowableProjectile implements IEntityAdditionalSpawnData {
     public Color color;
@@ -176,8 +176,8 @@ public class LuxCapacitorEntity extends ThrowableProjectile implements IEntityAd
     }
 
     @Override
-    public Packet<?> getAddEntityPacket() {
-        return NetworkHooks.getEntitySpawningPacket(this);
+    public Packet<ClientGamePacketListener> getAddEntityPacket() {
+        return super.getAddEntityPacket();
     }
 
     @Override
@@ -196,7 +196,7 @@ public class LuxCapacitorEntity extends ThrowableProjectile implements IEntityAd
      */
     @Override
     public void writeSpawnData(FriendlyByteBuf buffer) {
-        buffer.writeInt(this.color.getInt());
+        buffer.writeInt(this.color.getARGBInt());
     }
 
     /**

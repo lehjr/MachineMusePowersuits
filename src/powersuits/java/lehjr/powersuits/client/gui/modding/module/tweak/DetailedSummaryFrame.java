@@ -26,6 +26,7 @@
 
 package lehjr.powersuits.client.gui.modding.module.tweak;
 
+
 import com.google.common.util.concurrent.AtomicDouble;
 import com.mojang.blaze3d.vertex.PoseStack;
 import lehjr.numina.client.gui.frame.ScrollableFrame;
@@ -36,11 +37,9 @@ import lehjr.numina.common.capabilities.module.powermodule.PowerModuleCapability
 import lehjr.numina.common.string.StringUtils;
 import lehjr.powersuits.client.gui.common.ModularItemSelectionFrame;
 import lehjr.powersuits.common.constants.MPSConstants;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraftforge.energy.CapabilityEnergy;
-import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.concurrent.atomic.AtomicInteger;
@@ -49,8 +48,8 @@ public class DetailedSummaryFrame extends ScrollableFrame {
     protected AtomicInteger energy = new AtomicInteger(0);
     protected AtomicDouble armor = new AtomicDouble(0);
     protected ModularItemSelectionFrame itemSelectionFrame;
-    TranslatableComponent energyText = new TranslatableComponent("gui.powersuits.energyStorage");
-    TranslatableComponent armorText = new TranslatableComponent("gui.powersuits.armor");
+    Component energyText = Component.translatable("gui.powersuits.energyStorage");
+    Component armorText = Component.translatable("gui.powersuits.armor");
 
     public DetailedSummaryFrame(Rect rect, ModularItemSelectionFrame itemSelectionFrame) {
         super(rect);
@@ -63,7 +62,7 @@ public class DetailedSummaryFrame extends ScrollableFrame {
         armor.set(0);
 
         for (EquipmentSlot type : EquipmentSlot.values()) {
-            getMinecraft().player.getItemBySlot(type).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+            getMinecraft().player.getItemBySlot(type).getCapability(ForgeCapabilities.ITEM_HANDLER)
                     .filter(IModularItem.class::isInstance)
                     .map(IModularItem.class::cast)
                     .ifPresent(iModularItem -> {
@@ -80,7 +79,7 @@ public class DetailedSummaryFrame extends ScrollableFrame {
                         range =  iModularItem.getRangeForCategory(ModuleCategory.ENERGY_STORAGE);
                         if (range != null) {
                             for (int i = range.getLeft(); i < range.getRight(); i++) {
-                                energy.getAndAdd(iModularItem.getStackInSlot(i).getCapability(CapabilityEnergy.ENERGY).map((energyHandler) -> energyHandler.getEnergyStored()).orElse(0));
+                                energy.getAndAdd(iModularItem.getStackInSlot(i).getCapability(ForgeCapabilities.ENERGY).map((energyHandler) -> energyHandler.getEnergyStored()).orElse(0));
                             }
                         }
                     });
@@ -96,13 +95,13 @@ public class DetailedSummaryFrame extends ScrollableFrame {
             int nexty = (int) top() + margin + 4;
 
             // Max Energy
-            String formattedValue = StringUtils.formatNumberFromUnits(energy.get(), new TextComponent("FE"));
+            String formattedValue = StringUtils.formatNumberFromUnits(energy.get(), Component.literal("FE"));
             StringUtils.drawShadowedString(matrixStack, energyText, left() + margin, nexty);
             StringUtils.drawRightAlignedShadowedString(matrixStack, formattedValue, right() - margin, nexty);
             nexty += 10;
 
             // Armor points
-            formattedValue = StringUtils.formatNumberFromUnits(armor.get(), new TextComponent("pts"));
+            formattedValue = StringUtils.formatNumberFromUnits(armor.get(), Component.literal("pts"));
             StringUtils.drawShadowedString(matrixStack, armorText, left() + margin, nexty);
             StringUtils.drawRightAlignedShadowedString(matrixStack, formattedValue, right() - margin, nexty);
         }

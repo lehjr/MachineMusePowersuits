@@ -80,7 +80,7 @@ public class CosmeticGui extends ContainerlessGui {
         if (usingCosmeticPresets) {
             // check if player is the server owner
             if (minecraft.hasSingleplayerServer()) {
-                allowCosmeticPresetCreation = player.getName().equals(minecraft.getSingleplayerServer().getSingleplayerName());
+                allowCosmeticPresetCreation = player.getName().equals(minecraft.getSingleplayerServer().getSingleplayerProfile().getName());
             } else {
                 // check if player is top level op
                 ServerOpListEntry opEntry = minecraft.player.getServer().getPlayerList().getOps().get(player.getGameProfile());

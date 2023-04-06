@@ -27,8 +27,8 @@
 package lehjr.powersuits.client.model.helper;
 
 import lehjr.numina.common.base.NuminaLogger;
+import net.minecraft.client.resources.model.ModelBakery;
 import net.minecraftforge.client.event.TextureStitchEvent;
-import net.minecraftforge.client.model.ForgeModelBakery;
 
 import javax.annotation.Nullable;
 import java.net.URL;
@@ -41,7 +41,7 @@ public class MPSModelHelper {
     // TODO: extract to subdir of config dir and scan for others ... also rename this
 
 
-    public static void loadArmorModels(@Nullable TextureStitchEvent.Pre event, ForgeModelBakery bakery) {
+    public static void loadArmorModels(@Nullable TextureStitchEvent event, ModelBakery bakery) {
         NuminaLogger.logError("loading cosmetic presets");
 
         ArrayList<String> resourceList = new ArrayList<String>() {{
@@ -66,7 +66,7 @@ public class MPSModelHelper {
 //        ModelRegistry.getInstance().getNames().forEach(name->System.out.println("modelregistry name: " + name));
     }
 
-    public static void parseSpecFile(String resourceString, @Nullable TextureStitchEvent.Pre event, ForgeModelBakery bakery) {
+    public static void parseSpecFile(String resourceString, @Nullable TextureStitchEvent event, ModelBakery bakery) {
         NuminaLogger.logError("loading cosmetic presets");
         URL resource = MPSModelHelper.class.getResource(resourceString);
         ModelSpecXMLReader.INSTANCE.parseFile(resource, event, bakery);

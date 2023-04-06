@@ -27,7 +27,7 @@
 //    private static final String TAG_ENCRYPTION_KEY = "encryptionKey";
 //    @Override
 //    public boolean canHandle(ItemStack is) {
-//        return is.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+//        return is.getCapability(ForgeCapabilities.ITEM_HANDLER)
 //                .filter(IModeChangingItem.class::isInstance)
 //                .map(IModeChangingItem.class::cast)
 //                .map(iModeChangingItem -> iModeChangingItem.isModuleActiveAndOnline(WIRELESS_TERMINAL_REG)).orElse(false);
@@ -61,7 +61,7 @@
 //
 //    @Override
 //    public String getEncryptionKey(ItemStack item) {
-//        return item.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+//        return item.getCapability(ForgeCapabilities.ITEM_HANDLER)
 //                .filter(IModeChangingItem.class::isInstance)
 //                .map(IModeChangingItem.class::cast)
 //                .map(iModeChangingItem -> {
@@ -85,7 +85,7 @@
 //
 //    @Override
 //    public void setEncryptionKey(ItemStack item, String encKey, String name) {
-//        item.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+//        item.getCapability(ForgeCapabilities.ITEM_HANDLER)
 //                .filter(IModeChangingItem.class::isInstance)
 //                .map(IModeChangingItem.class::cast)
 //                .ifPresent(iModeChangingItem -> {

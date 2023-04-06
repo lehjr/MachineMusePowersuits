@@ -36,9 +36,9 @@ import lehjr.numina.client.render.NuminaRenderer;
 import lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
 import lehjr.numina.common.capabilities.module.powermodule.PowerModuleCapability;
-import lehjr.numina.common.config.NuminaSettings;
 import lehjr.numina.common.energy.ElectricItemUtils;
 import lehjr.numina.common.heat.HeatUtils;
+import lehjr.numina.common.item.ItemUtils;
 import lehjr.numina.common.math.MathUtils;
 import lehjr.numina.common.string.StringUtils;
 import lehjr.powersuits.common.config.MPSSettings;
@@ -49,10 +49,10 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import net.minecraftforge.client.event.CustomizeGuiOverlayEvent;
+import net.minecraftforge.client.event.RenderGuiOverlayEvent;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
-import net.minecraftforge.items.CapabilityItemHandler;
 
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
@@ -69,8 +69,8 @@ public enum ClientOverlayHandler {
     static final ItemStack food = new ItemStack(Items.COOKED_BEEF);
     final double meterTextOffsetY = 0;
 
-    public void render(RenderGameOverlayEvent.Post e) {
-        PoseStack matrixStack = e.getMatrixStack();
+    public void render(/*CustomizeGuiOverlayEvent  */ RenderGuiOverlayEvent.Post e) {
+        PoseStack matrixStack = e.getPoseStack();
 
         Minecraft minecraft = Minecraft.getInstance();
         Player player;
@@ -89,21 +89,21 @@ public enum ClientOverlayHandler {
             yBase = 26.0F;
         }
 
-        if (player != null && (NuminaSettings.showMetersWhenPaused() || (Minecraft.renderNames() && minecraft.screen == null))) {
+        if (player != null && (MPSSettings.showMetersWhenPaused() || (Minecraft.renderNames() && minecraft.screen == null))) {
             Window screen = e.getWindow();
 
             // Misc Overlay Items ---------------------------------------------------------------------------------
             AtomicInteger index = new AtomicInteger(0);
 
             // Helmet modules with overlay
-            player.getItemBySlot(EquipmentSlot.HEAD).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+            player.getItemBySlot(EquipmentSlot.HEAD).getCapability(ForgeCapabilities.ITEM_HANDLER)
                     .filter(IModularItem.class::isInstance)
                     .map(IModularItem.class::cast)
 
                     // Looping this way is far more efficient than looping for each module
                     .ifPresent(h -> h.getInstalledModules().forEach(module -> {
                         // AutoFeeder
-                        if (module.getItem().getRegistryName().equals(MPSRegistryNames.AUTO_FEEDER_MODULE)) {
+                        if (ItemUtils.getRegistryName(module).equals(MPSRegistryNames.AUTO_FEEDER_MODULE)) {
                             ItemStack autoFeeder = module;
                             if (autoFeeder.getCapability(PowerModuleCapability.POWER_MODULE).map(pm-> {
                                                                 return pm.isModuleOnline();
@@ -111,13 +111,14 @@ public enum ClientOverlayHandler {
                                 int foodLevel = (int) ((AutoFeederModule) autoFeeder.getItem()).getFoodLevel(autoFeeder);
                                 String num = StringUtils.formatNumberShort(foodLevel);
                                 StringUtils.drawShadowedString(matrixStack, num, 17, yBase + (yOffsetString * index.get()));
-                                NuminaRenderer.drawItemAt(-1.0, yBase + (yOffsetIcon * index.get()), food);
+                                // FIXME
+//                                NuminaRenderer.drawItemAt(-1.0, yBase + (yOffsetIcon * index.get()), food);
                                 index.addAndGet(1);
                             }
                         }
 
                         // Clock
-                        if (module.getItem().getRegistryName().equals(Items.CLOCK.getRegistryName())) {
+                        if (ItemUtils.getRegistryName(module).equals(ItemUtils.getRegistryName(Items.CLOCK))) {
                             ItemStack clock = module;
                             if (clock.getCapability(PowerModuleCapability.POWER_MODULE).map(pm -> pm.isModuleOnline()).orElse(false)) {
                                 if (!clock.isEmpty() /*&& clock.getCapability(PowerModuleCapability.POWER_MODULE).map(pm->pm.isModuleOnline()).orElse(false)*/) {
@@ -150,7 +151,8 @@ public enum ClientOverlayHandler {
                                         }
 
                                         StringUtils.drawShadowedString(matrixStack, hour + ampm, 17, yBase + (yOffsetString * index.get()));
-                                        NuminaRenderer.drawItemAt(-1.0, yBase + (yOffsetIcon * index.get()), clock);
+                                        // FIXME
+//                                        NuminaRenderer.drawItemAt(-1.0, yBase + (yOffsetIcon * index.get()), clock);
 
                                         index.addAndGet(1);
                                     }
@@ -159,10 +161,11 @@ public enum ClientOverlayHandler {
                         }
 
                         // Compass
-                        if (module.getItem().getRegistryName().equals(Items.COMPASS.getRegistryName())) {
+                        if (ItemUtils.getRegistryName(module).equals(ItemUtils.getRegistryName(Items.COMPASS))) {
                             ItemStack compass = module;
                             if (compass.getCapability(PowerModuleCapability.POWER_MODULE).map(pm -> pm.isModuleOnline()).orElse(false)) {
-                                NuminaRenderer.drawItemAt(-1.0, yBase + (yOffsetIcon * index.get()), compass);
+                                // FIXME
+//                                NuminaRenderer.drawItemAt(-1.0, yBase + (yOffsetIcon * index.get()), compass);
                                 index.addAndGet(1);
                             }
                         }
@@ -200,13 +203,13 @@ public enum ClientOverlayHandler {
             AtomicReference<String> currWaterStr = new AtomicReference<>("");
             AtomicReference<String> maxWaterStr = new AtomicReference<>("");
 
-            player.getItemBySlot(EquipmentSlot.CHEST).getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).ifPresent(fh -> {
+            player.getItemBySlot(EquipmentSlot.CHEST).getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).ifPresent(fh -> {
                 for (int i = 0; i < fh.getTanks(); i++) {
                     maxWater.set(maxWater.get() + fh.getTankCapacity(i));
                     if (maxWater.get() > 0) {
                         FluidStack fluidStack = fh.getFluidInTank(i);
                         currWater.set(currWater.get() + fluidStack.getAmount());
-                        waterMeter = new WaterMeter();
+                        waterMeter = new WaterMeter(MPSSettings::getWaterMeterConfig);
                         currWaterStr.set(StringUtils.formatNumberShort(currWater.get()));
                         maxWaterStr.set(StringUtils.formatNumberShort(maxWater.get()));
                     }
@@ -217,7 +220,7 @@ public enum ClientOverlayHandler {
             AtomicReference<Float> currentPlasma = new AtomicReference<Float>(0F);
             AtomicReference<Float> maxPlasma = new AtomicReference<Float>(0F);
             if (player.isUsingItem()) {
-                player.getItemInHand(player.getUsedItemHand()).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+                player.getItemInHand(player.getUsedItemHand()).getCapability(ForgeCapabilities.ITEM_HANDLER)
                         .filter(IModeChangingItem.class::isInstance)
                         .map(IModeChangingItem.class::cast)
                         .ifPresent(modechanging -> {
@@ -227,7 +230,7 @@ public enum ClientOverlayHandler {
                             int maxDuration = modechanging.getModularItemStack().getUseDuration();
                             if (!module.isEmpty()) {
                                 // Plasma Cannon
-                                if (module.getItem().getRegistryName().equals(MPSRegistryNames.PLASMA_CANNON_MODULE)) {
+                                if (ItemUtils.getRegistryName(module).equals(MPSRegistryNames.PLASMA_CANNON_MODULE)) {
                                     actualCount = (maxDuration - player.getUseItemRemainingTicks());
                                     currentPlasma.set(
                                             currentPlasma.get() + (actualCount > 50 ? 50 : actualCount) * 2);
@@ -254,14 +257,14 @@ public enum ClientOverlayHandler {
                 if (maxEnergy > 0) {
                     numMeters++;
                     if (energyMeter == null) {
-                        energyMeter = new EnergyMeter();
+                        energyMeter = new EnergyMeter(MPSSettings::getEnergyMeterConfig);
                     }
                 } else energyMeter = null;
 
                 if (maxHeat > 0) {
                     numMeters++;
                     if (heatMeter == null) {
-                        heatMeter = new HeatMeter();
+                        heatMeter = new HeatMeter(MPSSettings::getHeatMeterConfig);
                     }
                 } else heatMeter = null;
 
@@ -272,7 +275,7 @@ public enum ClientOverlayHandler {
                 if (maxPlasma.get() > 0 /* && drawPlasmaMeter */) {
                     numMeters++;
                     if (plasmaMeter == null) {
-                        plasmaMeter = new PlasmaChargeMeter();
+                        plasmaMeter = new PlasmaChargeMeter(MPSSettings::getPlasmaMeterConfig);
                     }
                 } else plasmaMeter = null;
 

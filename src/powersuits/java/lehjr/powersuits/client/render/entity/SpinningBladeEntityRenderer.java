@@ -27,7 +27,6 @@
 package lehjr.powersuits.client.render.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
 import lehjr.powersuits.common.base.MPSObjects;
 import lehjr.powersuits.common.constants.MPSConstants;
 import lehjr.powersuits.common.entity.SpinningBladeEntity;
@@ -41,7 +40,8 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.common.model.TransformationHelper;
+import net.minecraftforge.common.util.TransformationHelper;
+import org.joml.Vector3f;
 
 import javax.annotation.Nullable;
 import java.util.Random;

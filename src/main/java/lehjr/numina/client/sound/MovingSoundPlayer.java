@@ -29,6 +29,7 @@ package lehjr.numina.client.sound;
 import net.minecraft.client.resources.sounds.AbstractTickableSoundInstance;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -51,7 +52,7 @@ public class MovingSoundPlayer extends AbstractTickableSoundInstance {
                              float pitchIn,
                              boolean loopingIn) {
 
-        super(soundIn, categoryIn);
+        super(soundIn, categoryIn, RandomSource.create());
         this.player = playerIn;
         this.pitch = pitchIn;
         this.volume = newvolume;

@@ -46,9 +46,10 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -136,7 +137,7 @@ public class VeinMinerModule extends AbstractPowerModule {
 
                 AtomicInteger bbModuleEnergyUsage = new AtomicInteger(0);
 
-                itemStack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+                itemStack.getCapability(ForgeCapabilities.ITEM_HANDLER)
                         .filter(IModeChangingItem.class::isInstance)
                         .map(IModeChangingItem.class::cast)
                         .ifPresent(modeChanging -> {
@@ -160,7 +161,7 @@ public class VeinMinerModule extends AbstractPowerModule {
                 Stream<TagKey<Block>> oretags = player.level.getBlockState(posIn).getTags();
                 boolean isOre = oretags.anyMatch(tag-> defaultOreTags.contains(tag.location()));
 
-                if (isOre || MPSSettings.getBlockList().contains(block.getRegistryName())) {
+                if (isOre || MPSSettings.getBlockList().contains(ForgeRegistries.BLOCKS.getKey(block))) {
                     int energyRequired = this.getEnergyUsage() + bbModuleEnergyUsage.get();
 
                     // does player have enough energy to break first block?

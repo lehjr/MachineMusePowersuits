@@ -2,11 +2,11 @@ package lehjr.numina.client.gui.clickable.slider;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
-import com.mojang.math.Matrix4f;
 import lehjr.numina.client.gui.clickable.Clickable;
 import lehjr.numina.client.gui.geometry.MusePoint2D;
 import lehjr.numina.common.math.Color;
 import lehjr.numina.common.math.MathUtils;
+import org.joml.Matrix4f;
 
 import java.util.ArrayList;
 import java.util.List;

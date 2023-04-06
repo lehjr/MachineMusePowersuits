@@ -41,10 +41,9 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
-import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
@@ -151,13 +150,13 @@ public class ChargingBaseBlockEntity extends BlockEntity {
 
             @Override
             public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
-                return stack.getCapability(CapabilityEnergy.ENERGY).isPresent();
+                return stack.getCapability(ForgeCapabilities.ENERGY).isPresent();
             }
 
             @Nonnull
             @Override
             public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
-                if (!stack.getCapability(CapabilityEnergy.ENERGY).isPresent()) {
+                if (!stack.getCapability(ForgeCapabilities.ENERGY).isPresent()) {
                     return stack;
                 }
                 return super.insertItem(slot, stack, simulate);
@@ -181,17 +180,17 @@ public class ChargingBaseBlockEntity extends BlockEntity {
     @Nonnull
     @Override
     public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
-        if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+        if (cap == ForgeCapabilities.ITEM_HANDLER) {
             return handler.cast();
         }
-        if (cap == CapabilityEnergy.ENERGY) {
+        if (cap == ForgeCapabilities.ENERGY) {
             return energyWrapper.cast();
         }
         return super.getCapability(cap, side);
     }
 
     public LazyOptional<IEnergyStorage> getBatteryEnergyHandler() {
-        return handler.map(iItemHandler -> iItemHandler.getStackInSlot(0).getCapability(CapabilityEnergy.ENERGY)).orElse(LazyOptional.empty());
+        return handler.map(iItemHandler -> iItemHandler.getStackInSlot(0).getCapability(ForgeCapabilities.ENERGY)).orElse(LazyOptional.empty());
     }
 
     public LazyOptional<IEnergyStorage> getBlockEnergyHandler() {
