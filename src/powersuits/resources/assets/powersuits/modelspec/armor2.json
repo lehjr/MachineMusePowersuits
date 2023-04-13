@@ -1,0 +1,169 @@
+{
+  "modelSpec": {
+    "specName": "armor2",
+    "type": "armor model",
+    "models": [
+      {
+        "model": {
+          "file": "powersuits:models/item/armor/armor2.obj",
+          "texture": "powersuits:item/armor/armor2diffuse",
+          "bindings": [
+            {
+              "binding": {
+                "itemSlot": "legs",
+                "target": "LeftLeg",
+                "parts": [
+                  {
+                    "part": {
+                      "name": "leggray"
+                    },
+                    "part": {
+                      "name": "legbit"
+                    },
+                    "part": {
+                      "name": "legglow",
+                      "color": "11d2ff",
+                      "glow": true
+                    }
+                  }
+                ]
+              },
+              "binding": {
+                "itemSlot": "legs",
+                "target": "RightLeg",
+                "parts": [
+                  {
+                    "part": {
+                      "name": "leggray1"
+                    },
+                    "part": {
+                      "name": "legbit1"
+                    },
+                    "part": {
+                      "name": "legglow1",
+                      "color": "11d2ff",
+                      "glow": true
+                    }
+                  }
+                ]
+              },
+              "binding": {
+                "itemSlot": "feet",
+                "target": "RightLeg",
+                "parts": [
+                  {
+                    "part": {
+                      "name": "bootmain1"
+                    },
+                    "part": {
+                      "name": "bootglow1",
+                      "color": "11d2ff",
+                      "glow": true
+                    }
+                  }
+                ]
+              },
+              "binding": {
+                "itemSlot": "feet",
+                "target": "LeftLeg",
+                "parts": [
+                  {
+                    "part": {
+                      "name": "bootmain"
+                    },
+                    "part": {
+                      "name": "bootglow",
+                      "color": "11d2ff",
+                      "glow": true
+                    }
+                  }
+                ]
+              },
+              "binding": {
+                "itemSlot": "chest",
+                "target": "Body",
+                "parts": [
+                  {
+                    "part": {
+                      "name": "chestgray"
+                    },
+                    "part": {
+                      "name": "chestmain"
+                    },
+                    "part": {
+                      "name": "chestback1"
+                    },
+                    "part": {
+                      "name": "chestglowfront",
+                      "color": "11d2ff",
+                      "glow": true
+                    },
+                    "part": {
+                      "name": "chestglowback",
+                      "color": "11d2ff",
+                      "glow": true
+                    }
+                  }
+                ]
+              },
+              "binding": {
+                "itemSlot": "chest",
+                "target": "RightArm",
+                "parts": [
+                  {
+                    "part": {
+                      "name": "armglow1",
+                      "color": "11d2ff",
+                      "glow": true
+                    },
+                    "part": {
+                      "name": "armmain1"
+                    },
+                    "part": {
+                      "name": "armgray1"
+                    }
+                  }
+                ]
+              },
+              "binding": {
+                "itemSlot": "chest",
+                "target": "LeftArm",
+                "parts": [
+                  {
+                    "part": {
+                      "name": "armglow",
+                      "color": "11d2ff",
+                      "glow": true
+                    },
+                    "part": {
+                      "name": "armmain"
+                    },
+                    "part": {
+                      "name": "armgray"
+                    }
+                  }
+                ]
+              },
+              "binding": {
+                "itemSlot": "head",
+                "target": "Head",
+                "parts": [
+                  {
+                    "part": {
+                      "name": "helmetglow1",
+                      "color": "11d2ff",
+                      "glow": true
+                    },
+                    "part": {
+                      "name": "helmetmain"
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

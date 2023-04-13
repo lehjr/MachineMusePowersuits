@@ -1,7 +1,7 @@
 {
   "itemGroup.numina": "Numina",
 
-  "keybind.fovfixtoggle": "Toggle FOV fix",
+  "key..numina.fovfixtoggle": "Toggle FOV fix",
   "fovfixtoggle.enabled": "FOV Fix enabled",
   "fovfixtoggle.disabled": "FOV Fix disabled",
   "screen.numina.charging_base": "Charging Base",
@@ -10,6 +10,7 @@
   "_comment": "Charging Base",
   "block.numina.charging_base": "Charging Base",
   "message.charging_base":"Charges an entity's equipped items",
+  "gui.numina.chargingbase": "Charging Base",
 
   "_comment": "Armor Stand",
   "item.numina.armor_stand": "Armor Stand",

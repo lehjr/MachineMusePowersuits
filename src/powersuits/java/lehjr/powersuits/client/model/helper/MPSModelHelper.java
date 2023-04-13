@@ -47,7 +47,7 @@ public class MPSModelHelper {
         ArrayList<String> resourceList = new ArrayList<String>() {{
             add("/assets/powersuits/modelspec/armor2.xml");
             add("/assets/powersuits/modelspec/default_armor.xml");
-            add("/assets/powersuits/modelspec/default_armorskin.xml");
+            add("/assets/powersuits/modelspec/default_armorskin.json");
             add("/assets/powersuits/modelspec/armor_skin2.xml");
             add("/assets/powersuits/modelspec/default_powerfist.xml");
         }};
@@ -69,6 +69,6 @@ public class MPSModelHelper {
     public static void parseSpecFile(String resourceString, @Nullable TextureStitchEvent event, ModelBakery bakery) {
         NuminaLogger.logError("loading cosmetic presets");
         URL resource = MPSModelHelper.class.getResource(resourceString);
-        ModelSpecXMLReader.INSTANCE.parseFile(resource, event, bakery);
+//        ModelSpecXMLReader.INSTANCE.parseFile(resource, event, bakery); // FIXME replace with proper loader
     }
 }

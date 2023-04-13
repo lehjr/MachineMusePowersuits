@@ -44,12 +44,12 @@ import javax.annotation.Nullable;
 import java.util.List;
 
 public abstract class AbstractPowerModule extends Item {
+    public AbstractPowerModule(Item.Properties properties) {
+        super(properties);
+    }
 
     public AbstractPowerModule() {
-        super(new Item.Properties()
-                .stacksTo(1)
-                .defaultDurability(-1)
-                .setNoRepair());
+        super(new Item.Properties().stacksTo(1).defaultDurability(-1).setNoRepair());
     }
 
     public static BlockHitResult rayTrace(Level worldIn, Player player, ClipContext.Fluid fluidMode, double range) {
@@ -75,5 +75,10 @@ public abstract class AbstractPowerModule extends Item {
         if (worldIn != null) {
             AdditionalInfo.appendHoverText(itemStack, worldIn, tooltips, flagIn);
         }
+    }
+
+    @Override
+    public int getUseDuration(ItemStack pStack) {
+        return 72000;
     }
 }

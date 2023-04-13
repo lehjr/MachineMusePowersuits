@@ -26,8 +26,20 @@
 
 package lehjr.numina.client.event;
 
+import lehjr.numina.common.config.NuminaSettings;
+import lehjr.numina.common.constants.NuminaConstants;
+import net.minecraft.client.KeyMapping;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.client.event.ComputeFovModifierEvent;
+import net.minecraftforge.common.util.Lazy;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import org.lwjgl.glfw.GLFW;
 
 /**
  * Author: MachineMuse (Claire Semple)
@@ -38,34 +50,41 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public class FOVUpdateEventHandler {
-//    public FOVUpdateEventHandler() {
-//        ClientRegistry.registerKeyBinding(fovToggleKey);
-//    }
-//    public static KeyMapping fovToggleKey = new KeyMapping("keybind.fovfixtoggle", GLFW.GLFW_KEY_UNKNOWN, NuminaConstants.MOD_ID);
-//
-//    public boolean fovIsActive = NuminaSettings.fovFixDefaultState();
-//
-//    @SubscribeEvent
-//    public void onFOVUpdate(FOVModifierEvent e) {
-//        if (NuminaSettings.useFovFix()) {
-//            LocalPlayer player = Minecraft.getInstance().player;
-//            if (fovToggleKey.consumeClick()) {
-//                fovIsActive = !fovIsActive;
-//                if (fovIsActive) {
-//                    player.m_6352_(Component.translatable("fovfixtoggle.enabled"), player.getUUID());
-//                } else {
-//                    player.m_6352_(Component.translatable("fovfixtoggle.disabled"), player.getUUID());
-//                }
-//            }
-//
-//            if (fovIsActive) {
-//                AttributeInstance attributeinstance = e.getEntity().getAttribute(Attributes.MOVEMENT_SPEED);
-//                e.setNewfov((float) (e.getNewfov() / ((attributeinstance.getValue() / e.getEntity().getAbilities().getWalkingSpeed() + 1.0) / 2.0)));if (NuminaSettings.useFovNormalize()) {
-//                    if (e.getEntity().isSprinting()) {
-//                        e.setNewfov(e.getNewfov() + 0.15F);
-//                    }
-//                }
-//            }
-//        }
-//    }
+
+
+    public FOVUpdateEventHandler() {
+
+    }
+
+    public static final Lazy<KeyMapping> fovToggleKey = Lazy.of(()-> new KeyMapping("key..numina.fovfixtoggle", GLFW.GLFW_KEY_UNKNOWN, "key.categories." + NuminaConstants.MOD_ID));
+
+    public boolean fovIsActive = NuminaSettings.fovFixDefaultState();
+
+
+
+
+
+    @SubscribeEvent
+    public void onFOVUpdate(ComputeFovModifierEvent e) {
+        if (NuminaSettings.useFovFix()) {
+            LocalPlayer player = Minecraft.getInstance().player;
+            if (fovToggleKey.get().consumeClick()) {
+                fovIsActive = !fovIsActive;
+                if (fovIsActive) {
+                    player.sendSystemMessage(Component.translatable("fovfixtoggle.enabled"));//, player.getUUID());
+                } else {
+                    player.sendSystemMessage(Component.translatable("fovfixtoggle.disabled"));//, player.getUUID());
+                }
+            }
+
+            if (fovIsActive) {
+                AttributeInstance attributeinstance = e.getPlayer().getAttribute(Attributes.MOVEMENT_SPEED);
+                e.setNewFovModifier((float) (e.getNewFovModifier() / ((attributeinstance.getValue() / e.getPlayer().getAbilities().getWalkingSpeed() + 1.0) / 2.0)));if (NuminaSettings.useFovNormalize()) {
+                    if (e.getPlayer().isSprinting()) {
+                        e.setNewFovModifier(e.getNewFovModifier() + 0.15F);
+                    }
+                }
+            }
+        }
+    }
 }

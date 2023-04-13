@@ -54,9 +54,6 @@ import java.util.concurrent.Callable;
 
 
 public class AxeModule extends AbstractPowerModule {
-    public AxeModule() {
-        super();
-    }
 
     @Nullable
     @Override

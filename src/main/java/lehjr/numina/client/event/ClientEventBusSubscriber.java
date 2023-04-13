@@ -43,17 +43,23 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
+import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 import javax.annotation.Nullable;
 import java.util.Map;
 
-@Mod.EventBusSubscriber(modid = NuminaConstants.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
+@Mod.EventBusSubscriber(modid=NuminaConstants.MOD_ID, bus=Mod.EventBusSubscriber.Bus.MOD, value=Dist.CLIENT)
 public class ClientEventBusSubscriber {
     @SubscribeEvent
     public static void onRegisterRenderers(final EntityRenderersEvent.RegisterRenderers event) {
         event.registerEntityRenderer(NuminaObjects.ARMOR_STAND__ENTITY_TYPE.get(), NuminaArmorStandRenderer::new);
+    }
+
+    @SubscribeEvent
+    public void registerKeyBinding(RegisterKeyMappingsEvent event) {
+        event.register(FOVUpdateEventHandler.fovToggleKey.get());
     }
 
     @SubscribeEvent
@@ -100,12 +106,7 @@ public class ClientEventBusSubscriber {
         }
         if (bipedArmorLayer != null) {
             renderer.addLayer(new NuminaArmorLayer<>(renderer, bipedArmorLayer.innerModel, bipedArmorLayer.outerModel));
-//            Mekanism.logger.debug("Added Mekanism Armor Layer to entity of type: {}", type.getRegistryName());
         }
-//        if (hasElytra) {
-//            renderer.addLayer(new MekanismElytraLayer<>(renderer, Minecraft.getInstance().getEntityModels()));
-//            Mekanism.logger.debug("Added Mekanism Elytra Layer to entity of type: {}", type.getRegistryName());
-//        }
     }
 
 

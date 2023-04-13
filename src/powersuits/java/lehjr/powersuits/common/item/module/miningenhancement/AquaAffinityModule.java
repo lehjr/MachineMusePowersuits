@@ -29,7 +29,10 @@ package lehjr.powersuits.common.item.module.miningenhancement;
 import lehjr.numina.common.capabilities.NuminaCapabilities;
 import lehjr.numina.common.capabilities.module.blockbreaking.IBlockBreakingModule;
 import lehjr.numina.common.capabilities.module.miningenhancement.MiningEnhancement;
-import lehjr.numina.common.capabilities.module.powermodule.*;
+import lehjr.numina.common.capabilities.module.powermodule.IConfig;
+import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
+import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
+import lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
 import lehjr.numina.common.energy.ElectricItemUtils;
 import lehjr.powersuits.common.config.MPSSettings;
 import lehjr.powersuits.common.constants.MPSConstants;
@@ -55,8 +58,6 @@ import java.util.concurrent.Callable;
 
 // Note: tried as an enchantment, but failed to function properly due to how block breaking code works
 public class AquaAffinityModule extends AbstractPowerModule {
-    public AquaAffinityModule() {
-    }
 
     @Nullable
     @Override

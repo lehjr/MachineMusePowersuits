@@ -26,7 +26,7 @@
 
 package lehjr.powersuits.common.entity;
 
-import lehjr.powersuits.common.base.MPSObjects;
+import lehjr.powersuits.common.base.MPSEntities;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.Packet;
@@ -72,7 +72,7 @@ public class RailgunBoltEntity extends ThrowableProjectile implements IEntityAdd
                              double chargePercent,
                              double damage,
                              double knockback) {
-        super(MPSObjects.RAILGUN_BOLT_ENTITY_TYPE.get(), world);
+        super(MPSEntities.RAILGUN_BOLT_ENTITY_TYPE.get(), world);
         this.velocity = velocity;
         this.damage = damage;
         this.knockbackStrength = (int) knockback;

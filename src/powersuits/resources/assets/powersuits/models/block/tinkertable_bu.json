@@ -2,7 +2,7 @@
   "parent": "block/block",
   "loader": "forge:obj",
   "model": "powersuits:models/block/tinkertable.obj",
-  "flip-v": true,
+  "flip_v": true,
   "textures": {
     "particle": "powersuits:block/powersuitsworkbench"
   }

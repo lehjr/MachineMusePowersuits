@@ -27,7 +27,10 @@
 package lehjr.powersuits.common.item.module.environmental;
 
 import lehjr.numina.common.capabilities.NuminaCapabilities;
-import lehjr.numina.common.capabilities.module.powermodule.*;
+import lehjr.numina.common.capabilities.module.powermodule.IConfig;
+import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
+import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
+import lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
 import lehjr.numina.common.capabilities.module.tickable.PlayerTickModule;
 import lehjr.numina.common.energy.ElectricItemUtils;
 import lehjr.powersuits.common.config.MPSSettings;
@@ -60,9 +63,6 @@ import java.util.concurrent.Callable;
  * 8:26 PM 4/25/13
  */
 public class MobRepulsorModule extends AbstractPowerModule {
-    public MobRepulsorModule() {
-    }
-
     @Nullable
     @Override
     public ICapabilityProvider initCapabilities (ItemStack stack, @Nullable CompoundTag nbt){

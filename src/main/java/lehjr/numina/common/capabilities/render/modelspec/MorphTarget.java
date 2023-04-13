@@ -39,6 +39,7 @@ import java.util.Arrays;
  * Ported to Java by lehjr on 11/8/16.
  */
 public enum MorphTarget {
+    Hat("HAT", EquipmentSlot.HEAD),
     Head("HEAD", EquipmentSlot.HEAD),
     Body("BODY", EquipmentSlot.CHEST),
     RightArm("RIGHTARM", EquipmentSlot.CHEST),
@@ -69,6 +70,7 @@ public enum MorphTarget {
 
     public ModelPart apply(HumanoidModel m) {
         switch (this) {
+            case Hat:
             case Head:
                 return m.head;
 

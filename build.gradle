@@ -237,8 +237,8 @@ minecraft {
             workingDirectory file("run")
             // FIXME: is this still needed?
             //This fixes Mixin application problems from other mods because their refMaps are SRG-based, but we're in a MCP env
-//            property 'mixin.env.remapRefMap', 'true'
-//            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
+            property 'mixin.env.remapRefMap', 'true'
+            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
 
 
             //The below if statements are to add args to your gradle.properties file in user home
@@ -272,9 +272,9 @@ minecraft {
         }
         server {
             workingDirectory file("run")
-            //This fixes Mixin application problems from other mods because their refMaps are SRG-based, but we're in a MCP env
-//            property 'mixin.env.remapRefMap', 'true'
-//            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
+//            This fixes Mixin application problems from other mods because their refMaps are SRG-based, but we're in a MCP env
+            property 'mixin.env.remapRefMap', 'true'
+            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
 
             if (project.hasProperty('forge_force_ansi')) {
                 //Force ansi if declared as a gradle variable, as the auto detection doesn't detect IntelliJ properly
@@ -294,8 +294,8 @@ minecraft {
             workingDirectory file("run")
             environment 'target', 'fmluserdevdata'
             //This fixes Mixin application problems from other mods because their refMaps are SRG-based, but we're in a MCP env
-//            property 'mixin.env.remapRefMap', 'true'
-//            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
+            property 'mixin.env.remapRefMap', 'true'
+            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
 
             if (project.hasProperty('forge_force_ansi')) {
                 //Force ansi if declared as a gradle variable, as the auto detection doesn't detect IntelliJ properly
@@ -359,23 +359,30 @@ repositories { RepositoryHandler handler ->
 dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
 
-//    compileOnly fg.deobf("mezz.jei:jei-${minecraft_version}:${jei_version}:api")
-//    runtimeOnly fg.deobf("mezz.jei:jei-${minecraft_version}:${jei_version}")
-//
-//    // Only used as a convenience during testing
-//    runtimeOnly fg.deobf("curse.maven:theoneprobe-245211:${top_version}"){ // FIXME!!!
-//        transitive = false
-//    }
-//
+    compileOnly(fg.deobf("mezz.jei:jei-${minecraft_version}-common-api:${jei_version}"))
+    // at runtime, use the full JEI jar for Forge
+    runtimeOnly(fg.deobf("mezz.jei:jei-${minecraft_version}-forge:${jei_version}"))
+
+    // Only used as a convenience during testing
+    runtimeOnly fg.deobf("curse.maven:theoneprobe-245211:${top_version}"){ // FIXME!!!
+        transitive = false
+    }
+
+    // cannot even run with this. Not sure why this was ever needed, mod wasn't even that large
+//    runtimeOnly fg.deobf("curse.maven:architectury-api-419699:${architectury_version}")
+//    implementation fg.deobf("curse.maven:scannable-266784:4352640")
+
+
+
 ////    runtimeOnly fg.deobf("itemtransformhelper:1.0")
 //    runtimeOnly fg.deobf("ignored:itemtransformhelper:1.0")
 //
 //    // The API isn't enough for compiling or testing
-//    implementation fg.deobf("curse.maven:applied-energistics-2-223794:${ae2_version}") {
-//        transitive = false
-//    }
+    implementation fg.deobf("curse.maven:applied-energistics-2-223794:${ae2_version}") {
+        transitive = false
+    }
 //
-//    implementation fg.deobf("curse.maven:scannable-266784:3738448")
+
 //
 //
 //
@@ -438,11 +445,6 @@ task whateverJar(type: Jar) {
 }
 
 clean {
-    //TODO: Try to come up with a slightly better solution to this that deletes more,
-    // for example make it calculate the current hash and only leave that or only do
-    // this if clean build is being ran. We also ideally would have it remove some of
-    // the data from our generated folder, but for now this will do given jenkins runs
-    // a clean build because we need to make sure it doesn't fail
     def filteredDelete = new HashSet<>()
     for (def toDelete : getDelete()) {
         for (def f : file(toDelete).listFiles()) {

@@ -7,7 +7,6 @@ import lehjr.numina.client.gui.clickable.button.VanillaButton;
 import lehjr.numina.client.gui.geometry.MusePoint2D;
 import lehjr.numina.client.gui.geometry.Rect;
 import lehjr.numina.common.item.ItemUtils;
-import lehjr.numina.common.math.Color;
 import lehjr.powersuits.client.ScrollableInventoryFrame2;
 import lehjr.powersuits.client.gui.common.ModularItemSelectionFrameContainered;
 import lehjr.powersuits.client.gui.common.TabSelectFrame;

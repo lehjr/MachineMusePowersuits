@@ -2,7 +2,7 @@
   "parent": "minecraft:block/block",
   "ambientocclusion": false,
   "textures": {
-    "particle": "numina:models/base-unpowered"
+    "particle": "numina:block/base-unpowered"
   },
   "elements": [
     {

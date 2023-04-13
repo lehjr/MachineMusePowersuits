@@ -36,6 +36,7 @@ import lehjr.powersuits.common.constants.MPSConstants;
 import lehjr.powersuits.common.item.module.AbstractPowerModule;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
@@ -45,8 +46,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public class ShockAbsorberModule extends AbstractPowerModule {
-    public ShockAbsorberModule() {
-    }
 
     @Nullable
     @Override

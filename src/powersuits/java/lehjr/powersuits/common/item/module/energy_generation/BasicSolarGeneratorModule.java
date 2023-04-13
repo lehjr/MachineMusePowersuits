@@ -27,7 +27,10 @@
 package lehjr.powersuits.common.item.module.energy_generation;
 
 import lehjr.numina.common.capabilities.NuminaCapabilities;
-import lehjr.numina.common.capabilities.module.powermodule.*;
+import lehjr.numina.common.capabilities.module.powermodule.IConfig;
+import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
+import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
+import lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
 import lehjr.numina.common.capabilities.module.tickable.PlayerTickModule;
 import lehjr.numina.common.energy.ElectricItemUtils;
 import lehjr.powersuits.common.config.MPSSettings;
@@ -49,9 +52,6 @@ import javax.annotation.Nullable;
 import java.util.concurrent.Callable;
 
 public class BasicSolarGeneratorModule extends AbstractPowerModule {
-    public BasicSolarGeneratorModule() {
-    }
-
     @Nullable
     @Override
     public ICapabilityProvider initCapabilities (ItemStack stack, @Nullable CompoundTag nbt){

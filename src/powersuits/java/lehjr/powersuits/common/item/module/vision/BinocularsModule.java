@@ -36,6 +36,7 @@ import lehjr.powersuits.common.constants.MPSConstants;
 import lehjr.powersuits.common.item.module.AbstractPowerModule;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
@@ -51,8 +52,6 @@ import javax.annotation.Nullable;
  * Ported to Java by lehjr on 10/11/16.
  */
 public class BinocularsModule extends AbstractPowerModule {
-    public BinocularsModule() {
-    }
 
     @Nullable
     @Override

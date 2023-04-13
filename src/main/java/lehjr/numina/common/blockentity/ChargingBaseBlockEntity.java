@@ -36,6 +36,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -84,23 +85,23 @@ public class ChargingBaseBlockEntity extends BlockEntity {
         tileEnergy.invalidate();
     }
 
-    //    @Override
-    public void tick() {
+    public static <T extends BlockEntity> void tick(Level level, BlockPos pos, BlockState state, T blockEntity) {
+        ChargingBaseBlockEntity be = (ChargingBaseBlockEntity) blockEntity;
+
         if (level.isClientSide) {
             return;
         }
 
-        List<LivingEntity> entityList = level.getEntitiesOfClass(LivingEntity.class, new AABB(getBlockPos()), entity -> entity instanceof LivingEntity);
+        List<LivingEntity> entityList = level.getEntitiesOfClass(LivingEntity.class, new AABB(be.getBlockPos()), entity -> entity instanceof LivingEntity);
 
         for (LivingEntity entity : entityList) {
-            sendOutPower(entity);
+            be.sendOutPower(entity);
         }
 
-        BlockState state = this.level.getBlockState(getBlockPos());
-        BlockState newState = state.setValue(BlockStateProperties.POWERED, energyWrapper.map(IEnergyStorage::getEnergyStored).orElse(0) > 0);
+        BlockState newState = state.setValue(BlockStateProperties.POWERED, be.energyWrapper.map(IEnergyStorage::getEnergyStored).orElse(0) > 0);
 
         if (state != newState) {
-            this.level.setBlock(this.getBlockPos(), newState, 3);
+            level.setBlock(be.getBlockPos(), newState, 3);
         }
     }
 
@@ -122,7 +123,7 @@ public class ChargingBaseBlockEntity extends BlockEntity {
     @Override
     public void load(CompoundTag nbt) {
         itemHandler.deserializeNBT(nbt.getCompound("inv"));
-        energyStorage.deserializeNBT(nbt.getCompound("energy"));
+        energyStorage.deserializeNBT(nbt.get("energy"));
         super.load(nbt);
     }
 

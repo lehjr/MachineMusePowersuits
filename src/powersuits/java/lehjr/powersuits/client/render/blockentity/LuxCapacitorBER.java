@@ -1,21 +1,33 @@
 package lehjr.powersuits.client.render.blockentity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import lehjr.numina.common.math.Color;
+import lehjr.powersuits.client.event.ModelBakeEventHandler;
 import lehjr.powersuits.client.model.block.LuxCapacitorModel2;
 import lehjr.powersuits.client.model.item.IconModel;
 import lehjr.powersuits.common.block.LuxCapacitorBlock;
 import lehjr.powersuits.common.blockentity.LuxCapacitorBlockEntity;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.Sheets;
+import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.client.renderer.texture.TextureAtlas;
+import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.client.model.IQuadTransformer;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 // TODO: do I really want to go back to this just to avoid color issues?
@@ -23,8 +35,8 @@ import java.util.Random;
 public class LuxCapacitorBER implements BlockEntityRenderer<LuxCapacitorBlockEntity> {
     IconModel icon = new IconModel();
     LuxCapacitorModel2 model2 = new LuxCapacitorModel2(RenderType::itemEntityTranslucentCull);
-    ResourceLocation dark = new ResourceLocation("numina:textures/models/luxdark.png");
-    ResourceLocation light = new ResourceLocation("numina:textures/models/luxlight.png");
+    ResourceLocation dark = new ResourceLocation("powersuits:textures/block/luxdark.png");
+    ResourceLocation light = new ResourceLocation("powersuits:textures/block/luxlight.png");
     public LuxCapacitorBER(BlockEntityRendererProvider.Context context) {
 //        context.bakeLayer(new ModelLayerLocation(MPSRegistryNames.LUX_CAPACITOR, "facing:up"));
 
@@ -77,34 +89,39 @@ public class LuxCapacitorBER implements BlockEntityRenderer<LuxCapacitorBlockEnt
             BlockState state = entity.getBlockState();
             if (state.hasProperty(LuxCapacitorBlock.FACING)) {
                 Color color = entity.getColor();
-                model2.lens.render(poseStack, bufferSource.getBuffer(RenderType.itemEntityTranslucentCull(white)), LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, color.r, color.g, color.b, color.a);
-                model2.baseLower.render(poseStack, bufferSource.getBuffer(RenderType.entitySolid(dark)), packedLight, packedOverlay);//',  darkGray.r, darkGray.g, darkGray.b, darkGray.a);
-                model2.baseUpper.render(poseStack, bufferSource.getBuffer(RenderType.entitySolid(light)), packedLight, packedOverlay);//, lightGray.r, lightGray.g, lightGray.b, lightGray.a);
+//                model2.lens.render(poseStack, bufferSource.getBuffer(RenderType.entitySolid(white)), LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, color.r, color.g, color.b, color.a);
+//                model2.baseLower.render(poseStack, bufferSource.getBuffer(RenderType.entitySolid(dark)), packedLight, packedOverlay,  darkGray.r, darkGray.g, darkGray.b, darkGray.a);
+//                model2.baseUpper.render(poseStack, bufferSource.getBuffer(RenderType.entitySolid(light)), packedLight, packedOverlay, lightGray.r, lightGray.g, lightGray.b, lightGray.a);
+
+//                VertexConsumer builder = bufferSource.getBuffer(Sheets.translucentCullBlockSheet());
 
 //                public void render(PoseStack pPoseStack, VertexConsumer pVertexConsumer, int pPackedLight, int pPackedOverlay, float pRed, float pGreen, float pBlue, float pAlpha) {
 
 
+//                BakedModel model3 = Minecraft.getInstance().getModelManager().getModel();
+//
+                System.out.println("starting color: " + color);
+//
+                Direction facing = state.getValue(LuxCapacitorBlock.FACING);
+                Map<ModelBakeEventHandler.DIR, List<BakedQuad>> quadmap = ModelBakeEventHandler.INSTANCE.getQuads(facing);
 
-//
-//                System.out.println("starting color: " + color);
-//
-//                Direction facing = state.getValue(LuxCapacitorBlock.FACING);
-//                Map<ModelBakeEventHandler.DIR, List<BakedQuad>> quadmap = ModelBakeEventHandler.INSTANCE.getQuads(facing);
-//
+
 //                for (ModelBakeEventHandler.DIR dir : ModelBakeEventHandler.DIR.values()) {
-//                    List<BakedQuad> quads = quadmap.get(dir);
+//                    List<BakedQuad> quads = quadmap.getOrDefault(dir, new ArrayList<>());
 //                                        renderQuads(poseStack.last(),
 //                            bufferSource.getBuffer(RenderType.entityTranslucentCull(TextureAtlas.LOCATION_BLOCKS)),
 //                            quads,
-////                            packedLight,
-//                            LightTexture.FULL_BRIGHT,
-////                            packedOverlay,
-//                            OverlayTexture.NO_OVERLAY,
+//                            packedLight,
+////                            LightTexture.FULL_BRIGHT,
+//                            packedOverlay,
+////                            OverlayTexture.NO_OVERLAY,
 //                            color);
 //                }
             }
         }
     }
+
+
 
     @Override
     public boolean shouldRenderOffScreen(LuxCapacitorBlockEntity pBlockEntity) {
@@ -122,17 +139,17 @@ public class LuxCapacitorBER implements BlockEntityRenderer<LuxCapacitorBlockEnt
     }
 
 
-//    public void renderQuads(PoseStack.Pose entry,
-//                            VertexConsumer bufferIn,
-//                            List<BakedQuad> quadsIn,
-//                            int combinedLightIn,
-//                            int combinedOverlayIn,
-//                            Color color) {
-//        for (BakedQuad bakedquad : quadsIn) {
+    public void renderQuads(PoseStack.Pose entry,
+                            VertexConsumer bufferIn,
+                            List<BakedQuad> quadsIn,
+                            int combinedLightIn,
+                            int combinedOverlayIn,
+                            Color color) {
+        for (BakedQuad bakedquad : quadsIn) {
 //            putBulkData(bufferIn, entry, bakedquad, color, new int[]{combinedLightIn, combinedLightIn, combinedLightIn, combinedLightIn}, combinedOverlayIn);
-////            bufferIn.putBulkData(entry, bakedquad, color.r, color.g, color.b, color.a, combinedLightIn, combinedOverlayIn, true);
-//        }
-//    }
+            bufferIn.putBulkData(entry, bakedquad, color.r, color.g, color.b, color.a, combinedLightIn, combinedOverlayIn, true);
+        }
+    }
 //
 //    // Copy of putBulkData with alpha support
 //    void putBulkData(VertexConsumer bufferIn, PoseStack.Pose pose, BakedQuad bakedQuad, Color color, int[] lightmap, int packedOverlay) {

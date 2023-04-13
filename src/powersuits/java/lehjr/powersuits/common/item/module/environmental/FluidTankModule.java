@@ -27,7 +27,10 @@
 package lehjr.powersuits.common.item.module.environmental;
 
 import lehjr.numina.common.capabilities.NuminaCapabilities;
-import lehjr.numina.common.capabilities.module.powermodule.*;
+import lehjr.numina.common.capabilities.module.powermodule.IConfig;
+import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
+import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
+import lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
 import lehjr.numina.common.capabilities.module.tickable.PlayerTickModule;
 import lehjr.numina.common.heat.HeatUtils;
 import lehjr.powersuits.common.config.MPSSettings;
@@ -62,9 +65,6 @@ public class FluidTankModule extends AbstractPowerModule {
     static final String FLUID_NBT_KEY = "Fluid";
     // one heat unit per 5 mB of water
     static final double coolingFactor = 1.0/5.0;
-
-    public FluidTankModule() {
-    }
 
     @Nullable
     @Override

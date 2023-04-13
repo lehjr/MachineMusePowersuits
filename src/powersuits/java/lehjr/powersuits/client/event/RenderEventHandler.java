@@ -136,7 +136,7 @@ public enum RenderEventHandler {
 
     @OnlyIn(Dist.CLIENT)
     @SubscribeEvent
-    public void onPostRenderGameOverlayEvent(RenderGuiOverlayEvent.Post e) {
+    public void onPostRenderGameOverlayEvent(/*RenderGuiOverlayEvent.Post*/CustomizeGuiOverlayEvent e) {
 //        if (Re.getType() == RenderGameOverlayEvent.ElementType.LAYER) { // opaque rendering, completely ignores alpha setting
 //        if (e.getType() == RenderGameOverlayEvent.ElementType.TEXT) { // this one allows translucent rendering
             this.drawKeybindToggles(e.getPoseStack());

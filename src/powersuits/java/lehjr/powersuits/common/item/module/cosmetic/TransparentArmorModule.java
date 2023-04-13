@@ -44,9 +44,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public class TransparentArmorModule extends AbstractPowerModule {
-    public TransparentArmorModule() {
-        super();
-    }
 
     @Nullable
     @Override

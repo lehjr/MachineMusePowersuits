@@ -26,6 +26,7 @@
 
 package lehjr.numina.common.block;
 
+import lehjr.numina.common.base.NuminaObjects;
 import lehjr.numina.common.blockentity.ChargingBaseBlockEntity;
 import lehjr.numina.common.container.ChargingBaseMenu;
 import lehjr.numina.common.entity.NuminaArmorStand;
@@ -48,6 +49,8 @@ import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.SimpleWaterloggedBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -67,7 +70,7 @@ import java.util.List;
  * Base of the armor workstation.
  */
 public class ChargingBase extends Block implements EntityBlock, SimpleWaterloggedBlock {
-    private static final Component title = Component.translatable("container.chargingbase");
+    private static final Component title = Component.translatable("gui.numina.chargingbase");
 
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
@@ -153,5 +156,11 @@ public class ChargingBase extends Block implements EntityBlock, SimpleWaterlogge
 
     public FluidState getFluidState(BlockState pState) {
         return pState.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(pState);
+    }
+
+    @Nullable
+    @Override
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level pLevel, BlockState pState, BlockEntityType<T> type) {
+        return type == NuminaObjects.CHARGING_BASE_BLOCK_ENTITY.get() ? ChargingBaseBlockEntity::tick : null;
     }
 }

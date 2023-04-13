@@ -27,7 +27,10 @@
 package lehjr.powersuits.common.item.module.tool;
 
 import lehjr.numina.common.capabilities.NuminaCapabilities;
-import lehjr.numina.common.capabilities.module.powermodule.*;
+import lehjr.numina.common.capabilities.module.powermodule.IConfig;
+import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
+import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
+import lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
 import lehjr.numina.common.capabilities.module.rightclick.RightClickModule;
 import lehjr.powersuits.common.config.MPSSettings;
 import lehjr.powersuits.common.constants.MPSConstants;
@@ -54,9 +57,6 @@ import java.util.concurrent.Callable;
  * 7:13 PM 4/21/13
  */
 public class LeafBlowerModule extends AbstractPowerModule {
-
-    public LeafBlowerModule() {
-    }
 
     @Nullable
     @Override

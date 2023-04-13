@@ -2,6 +2,8 @@ package lehjr.numina.client.model.helper;
 
 import com.google.common.collect.ImmutableList;
 import com.mojang.math.Transformation;
+import forge.NuminaObjLoader;
+import forge.NuminaObjModel;
 import lehjr.numina.client.model.obj.OBJBakedCompositeModel;
 import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.math.Color;
@@ -9,13 +11,9 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.ItemOverrides;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.resources.model.ModelBakery;
 import net.minecraft.client.resources.model.ModelState;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.level.material.Material;
 import net.minecraftforge.client.model.QuadTransformers;
-import net.minecraftforge.client.model.obj.ObjLoader;
-import net.minecraftforge.client.model.obj.ObjModel;
 import net.minecraftforge.common.util.TransformationHelper;
 import org.joml.Vector3f;
 
@@ -71,23 +69,23 @@ public class ModelHelper {
     }
 
 
-        /**
+    /**
      * Get the default texture getter the models will be baked with.
      */
     public static Function<ResourceLocation, TextureAtlasSprite> defaultTextureGetter(ResourceLocation location) {
         return Minecraft.getInstance().getTextureAtlas(location);
     }
 
-//    public static Function<Material, TextureAtlasSprite> whiteTextureGetter() {
-//        return (iHateNamingPointlessVariables)-> ModelBakery.White.instance();
+//    public static Function<ObjMaterialLibrary.Material, TextureAtlasSprite> whiteTextureGetter() {
+//        return (iHateNamingPointlessVariables)-> IForgeModelBaker.White.instance();
 //    }
 
     @Nullable
-    public static ObjModel getOBJModel(ResourceLocation location, int attempt) {
-        ObjModel model;
+    public static NuminaObjModel getOBJModel(ResourceLocation location, int attempt) {
+        NuminaObjModel model;
         try {
-            model = ObjLoader.INSTANCE.loadModel(
-                    new ObjModel.ModelSettings(location, true, true, true, true, null));
+            model = NuminaObjLoader.INSTANCE.loadModel(
+                    new NuminaObjModel.ModelSettings(location, true, true, true, false, null));
         } catch (Exception e) {
             if (attempt < 6) {
                 model = getOBJModel(location, attempt + 1);
@@ -102,16 +100,21 @@ public class ModelHelper {
     }
 
     @Nullable
-    public static OBJBakedCompositeModel loadBakedModel(ModelState modelTransform,
+    public static OBJBakedCompositeModel loadBakedModel(ModelState modelState,
                                                         ItemOverrides overrides,
                                                         ResourceLocation modelLocation) {
-        ObjModel model = getOBJModel(modelLocation, 0);
+        NuminaObjModel model = getOBJModel(modelLocation, 0);
 
 //        if (model != null) {
-//            OBJBakedCompositeModel bakedModel = model.bake(new OBJModelConfiguration(modelLocation)/*.setCombinedTransform(modelTransform)*/,
+//            StandaloneGeometryBakingContext
+//
+//
+//            // OBJBakedCompositeModel bake(IGeometryBakingContext owner, ModelBaker baker, Function<Material, TextureAtlasSprite> spriteGetter, ModelState modelState, ItemOverrides overrides, ResourceLocation modelLocation) {
+//
+//            OBJBakedCompositeModel bakedModel = model.bake(new OBJModelConfiguration(modelLocation)/*.setCombinedTransform(modelState)*/,
 //                    ForgeModelBakery.instance(),
 //                    ForgeModelBakery.defaultTextureGetter(),
-//                    modelTransform,
+//                    modelState,
 //                    overrides,
 //                    modelLocation);
 //            return bakedModel;
@@ -125,15 +128,14 @@ public class ModelHelper {
      * instead of unique ones for each group. It also means you don't necessarily need a Wavefront model.
      */
     public static List<BakedQuad> getColoredQuadsWithGlowAndTransform(List<BakedQuad> quadList, Color color, final Transformation transform, boolean glow) {
-        ImmutableList.Builder<BakedQuad> builder = ImmutableList.builder();
-        quadList.forEach(quad -> {
-            if (glow)
-                QuadTransformers.settingMaxEmissivity().andThen(QuadTransformers.applyingColor(color.getARGBInt())).andThen(QuadTransformers.applying(transform)).processInPlace(quad);
-            else
-                QuadTransformers.applyingColor(color.getARGBInt()).andThen(QuadTransformers.applying(transform)).processInPlace(quad);
-            builder.add(quad);
-        });
-        return builder.build();
+        if (!quadList.isEmpty()) {
+            if (glow) {
+                QuadTransformers.settingMaxEmissivity().andThen(QuadTransformers.applyingColor(color.getARGBInt())).andThen(QuadTransformers.applying(transform)).processInPlace(quadList);
+            } else {
+                QuadTransformers.applyingColor(color.getARGBInt()).andThen(QuadTransformers.applying(transform)).processInPlace(quadList);
+            }
+        }
+        return quadList;
     }
 
     public static BakedQuad colouredQuadWithGlowAndTransform(Color color, BakedQuad quad, boolean glow, Transformation transform) {

@@ -103,14 +103,14 @@ public class CosmeticGui extends ContainerlessGui {
         addFrame(itemSelectFrame);
 
         /** renders the player ----------------------------------------------------------------- */
-        renderframe = new EntityRenderFrame(leftPos + 220, topPos + 14, leftPos + 344, topPos + 102);
+        renderframe = new EntityRenderFrame(leftPos + 220, topPos + 14, leftPos + 344, topPos + 86);
         renderframe.setLivingEntity(getMinecraft().player);
         renderframe.setAllowDrag(true);
         renderframe.setAllowZoom(true);
         addFrame(renderframe);
 
         /** for picking the colours ------------------------------------------------------------ */
-        colourpicker = new ColourPickerFrame(itemSelectFrame, leftPos + 220, topPos + 108, leftPos + 344, topPos + 207);
+        colourpicker = new ColourPickerFrame(itemSelectFrame, leftPos + 220, topPos +91, leftPos + 344, topPos + 207);
         addFrame(colourpicker);
 
         /** for manipulating part selections --------------------------------------------------- */

@@ -2,7 +2,7 @@
   "parent": "block/block",
   "loader": "numina:obj",
   "model": "powersuits:models/block/luxcapacitor/luxcapacitor.obj",
-  "flip-v": true,
+  "flip_v": true,
   "textures": {
     "particle": "forge:white"
   }

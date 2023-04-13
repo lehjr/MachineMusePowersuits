@@ -28,7 +28,10 @@ package lehjr.powersuits.common.item.module.movement;
 
 import lehjr.numina.client.control.PlayerMovementInputWrapper;
 import lehjr.numina.common.capabilities.NuminaCapabilities;
-import lehjr.numina.common.capabilities.module.powermodule.*;
+import lehjr.numina.common.capabilities.module.powermodule.IConfig;
+import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
+import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
+import lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
 import lehjr.numina.common.capabilities.module.tickable.PlayerTickModule;
 import lehjr.numina.common.player.PlayerUtils;
 import lehjr.powersuits.common.config.MPSSettings;
@@ -36,6 +39,7 @@ import lehjr.powersuits.common.item.module.AbstractPowerModule;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.capabilities.Capability;
@@ -47,8 +51,6 @@ import javax.annotation.Nullable;
 import java.util.concurrent.Callable;
 
 public class ParachuteModule extends AbstractPowerModule {
-    public ParachuteModule() {
-    }
 
     @Nullable
     @Override

@@ -26,7 +26,7 @@
 
 package lehjr.powersuits.common.blockentity;
 
-import lehjr.powersuits.common.base.MPSObjects;
+import lehjr.powersuits.common.base.MPSBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -38,6 +38,6 @@ import net.minecraft.world.level.block.state.BlockState;
  */
 public class TinkerTableBlockEntity extends BlockEntity {
     public TinkerTableBlockEntity(BlockPos pos, BlockState state) {
-        super(MPSObjects.TINKER_TABLE_BLOCKENTITY_TYPE.get(), pos, state);
+        super(MPSBlocks.TINKER_TABLE_BLOCKENTITY_TYPE.get(), pos, state);
     }
 }

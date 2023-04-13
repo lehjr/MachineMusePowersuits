@@ -1,7 +1,10 @@
 package lehjr.numina.common.capabilities;
 
 import lehjr.numina.common.capabilities.energy.ModuleEnergyWrapper;
-import lehjr.numina.common.capabilities.module.powermodule.*;
+import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
+import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
+import lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
+import lehjr.numina.common.capabilities.module.powermodule.PowerModule;
 import lehjr.numina.common.config.NuminaSettings;
 import lehjr.numina.common.constants.TagConstants;
 import net.minecraft.core.Direction;

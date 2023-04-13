@@ -57,17 +57,33 @@ public class NuminaArmorLayer<T extends LivingEntity, M extends HumanoidModel<T>
         super(entityRenderer, modelLeggings, modelArmor);
     }
 
-    @Override
-    protected void setPartVisibility(A pModel, EquipmentSlot pSlot) {
-        super.setPartVisibility(pModel, pSlot);
-    }
-
+    /* TODO further seperate armor models by body part (body, arms.. etc) to allow mixing of models, probably need
+    *
+    */
     @Override
     public void render(PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn, T entityIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
+        for(EquipmentSlot slot: EquipmentSlot.values()) {
+            if  (slot != EquipmentSlot.MAINHAND && slot != EquipmentSlot.OFFHAND) {
+                ItemStack stack = entityIn.getItemBySlot(slot);
+
+
+
+
+            }
+        }
+
+
+        // parts:
+        //  model.head;
+        //  model.hat;
+        this.renderArmorPiece(matrixStackIn, bufferIn, entityIn, EquipmentSlot.HEAD, packedLightIn, this.getModelFromSlot(EquipmentSlot.HEAD));
+        // get the itemstack instead and determine if there are multiple models/wrappers handled by this or not
+
+
+
         this.renderArmorPiece(matrixStackIn, bufferIn, entityIn, EquipmentSlot.CHEST, packedLightIn, this.getModelFromSlot(EquipmentSlot.CHEST));
         this.renderArmorPiece(matrixStackIn, bufferIn, entityIn, EquipmentSlot.LEGS, packedLightIn, this.getModelFromSlot(EquipmentSlot.LEGS));
         this.renderArmorPiece(matrixStackIn, bufferIn, entityIn, EquipmentSlot.FEET, packedLightIn, this.getModelFromSlot(EquipmentSlot.FEET));
-        this.renderArmorPiece(matrixStackIn, bufferIn, entityIn, EquipmentSlot.HEAD, packedLightIn, this.getModelFromSlot(EquipmentSlot.HEAD));
     }
 
     private A getModelFromSlot(EquipmentSlot slot) {
@@ -77,6 +93,35 @@ public class NuminaArmorLayer<T extends LivingEntity, M extends HumanoidModel<T>
     private boolean isLegSlot(EquipmentSlot slotIn) {
         return slotIn == EquipmentSlot.LEGS;
     }
+
+    // Fixme: not part specific
+
+
+    @Override
+    protected void setPartVisibility(A model, EquipmentSlot pSlot) {
+        model.setAllVisible(false);
+        switch (pSlot) {
+            case HEAD:
+                model.head.visible = true;
+                model.hat.visible = true;
+                break;
+            case CHEST:
+                model.body.visible = true;
+                model.rightArm.visible = true;
+                model.leftArm.visible = true;
+                break;
+            case LEGS:
+                model.body.visible = true;
+                model.rightLeg.visible = true;
+                model.leftLeg.visible = true;
+                break;
+            case FEET:
+                model.rightLeg.visible = true;
+                model.leftLeg.visible = true;
+        }
+
+    }
+
 
     @Override
     public void renderArmorPiece(PoseStack matrixIn, MultiBufferSource bufferIn, T entityIn, EquipmentSlot slotIn, int packedLightIn, A model) {
@@ -93,7 +138,12 @@ public class NuminaArmorLayer<T extends LivingEntity, M extends HumanoidModel<T>
                     this.getParentModel().copyPropertiesTo(model);
                 }
 
+
+
                 this.setPartVisibility(model, slotIn);
+
+
+
                 // ideally, this would replace the getArmorModel
                 itemstack.getCapability(NuminaCapabilities.RENDER).ifPresent(spec->{
                     if (spec.getSpecType() == SpecType.ARMOR_SKIN) {

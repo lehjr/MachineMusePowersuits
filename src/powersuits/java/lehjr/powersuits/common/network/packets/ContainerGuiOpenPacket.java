@@ -33,6 +33,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraftforge.network.NetworkEvent;
+import net.minecraftforge.network.NetworkHooks;
 
 import java.util.function.Supplier;
 
@@ -56,9 +57,7 @@ public class ContainerGuiOpenPacket {
     public static void handle(ContainerGuiOpenPacket msg, Supplier<NetworkEvent.Context> ctx) {
         ctx.get().enqueueWork(() -> {
             SimpleMenuProvider container = new SimpleMenuProvider((id, inventory, player) ->  new InstallSalvageMenu(id, inventory, msg.type), Component.translatable("gui.powersuits.tab.install.salvage"));
-            NuminaLogger.logError("opening gui in container open packet not yet impletmented");
-
-            //            NetworkHooks.openGui(ctx.get().getSender(), container, buffer -> buffer.writeEnum(msg.type));
+            NetworkHooks.openScreen(ctx.get().getSender(), container, buffer -> buffer.writeEnum(msg.type));
         });
         ctx.get().setPacketHandled(true);
     }

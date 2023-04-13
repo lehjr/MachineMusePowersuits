@@ -29,7 +29,10 @@ package lehjr.powersuits.common.item.module.miningenhancement;
 import lehjr.numina.common.capabilities.NuminaCapabilities;
 import lehjr.numina.common.capabilities.module.enchantment.IEnchantmentModule;
 import lehjr.numina.common.capabilities.module.miningenhancement.MiningEnhancement;
-import lehjr.numina.common.capabilities.module.powermodule.*;
+import lehjr.numina.common.capabilities.module.powermodule.IConfig;
+import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
+import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
+import lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
 import lehjr.numina.common.energy.ElectricItemUtils;
 import lehjr.powersuits.common.config.MPSSettings;
 import lehjr.powersuits.common.constants.MPSConstants;
@@ -52,8 +55,6 @@ import java.util.concurrent.Callable;
 
 
 public class SilkTouchModule extends AbstractPowerModule {
-    public SilkTouchModule() {
-    }
 
     @Nullable
     @Override

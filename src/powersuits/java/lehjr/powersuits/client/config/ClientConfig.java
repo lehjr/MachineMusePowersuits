@@ -132,11 +132,11 @@ public class ClientConfig {
 
         ENERGY_METER_GLASS_COLOR = builder
                 .comment("Meter bar glass in RGB or RGBA hex")
-                .define("energyMeterGlassColor", "#FFFFFF");
+                .define("energyMeterGlassColor", "#d9FFFFFF");
 
         ENERGY_METER_BAR_COLOR = builder
                 .comment("Meter bar color in RGB or RGBA hex")
-                .define("energyMeterBarColor", "#FFFFFF");
+                .define("energyMeterBarColor", "#d943ff64");
         builder.pop();
 
         // Plasma Meter ------------------------------------------------------------------------------------------------

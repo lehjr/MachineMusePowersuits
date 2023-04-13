@@ -45,9 +45,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public class FlightControlModule extends AbstractPowerModule {
-    public FlightControlModule() {
-        super();
-    }
 
     @Nullable
     @Override

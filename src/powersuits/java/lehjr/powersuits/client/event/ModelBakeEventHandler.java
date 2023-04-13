@@ -28,20 +28,25 @@ package lehjr.powersuits.client.event;
 
 
 import lehjr.numina.client.model.obj.OBJBakedCompositeModel;
-import lehjr.numina.common.base.NuminaLogger;
+import lehjr.numina.common.math.Color;
 import lehjr.powersuits.client.model.block.LuxCapacitorModelWrapper;
+import lehjr.powersuits.client.model.helper.LuxCapHelper;
 import lehjr.powersuits.client.model.helper.MPSModelHelper;
 import lehjr.powersuits.client.render.item.MPSBEWLR;
 import lehjr.powersuits.common.constants.MPSRegistryNames;
+import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.RandomSource;
+import net.minecraftforge.client.RenderTypeGroup;
 import net.minecraftforge.client.event.ModelEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.Random;
 
 
 public enum ModelBakeEventHandler {
@@ -49,19 +54,19 @@ public enum ModelBakeEventHandler {
 
 
 
-//    Map<Direction, Map<DIR, List<BakedQuad>>> quadMap = new HashMap<>();
+    Map<Direction, Map<DIR, List<BakedQuad>>> quadMap = new HashMap<>();
+    //
 //
 //
-//
-//    Map<Direction, BakedModel> luxCapacitorBlockModels = new HashMap<>();
-//
-//    public BakedModel getLuxCapModel(Direction facing) {
-//        return INSTANCE.luxCapacitorBlockModels.get(facing);
-//    }
-//
-//    public Map<DIR, List<BakedQuad>> getQuads(Direction facing) {
-//        return INSTANCE.quadMap.get(facing);
-//    }
+    Map<Direction, BakedModel> luxCapacitorBlockModels = new HashMap<>();
+
+    public BakedModel getLuxCapModel(Direction facing) {
+        return INSTANCE.luxCapacitorBlockModels.get(facing);
+    }
+
+    public Map<DIR, List<BakedQuad>> getQuads(Direction facing) {
+        return INSTANCE.quadMap.getOrDefault(facing, new HashMap<>());
+    }
 
 
 
@@ -72,31 +77,44 @@ public enum ModelBakeEventHandler {
 
     public static final ModelResourceLocation powerFistIconLocation = new ModelResourceLocation(MPSRegistryNames.POWER_FIST, "inventory");
 
-    Random rand = new Random();
+    RandomSource rand = RandomSource.create();
 
 
     @SubscribeEvent
     public void onModelBake(ModelEvent.ModifyBakingResult event) {
         Map<ResourceLocation, BakedModel> registry = event.getModels();
-//        for (Direction facing : Direction.values()) {
-//            BakedModel model = registry.get(new ModelResourceLocation("powersuits:luxcapacitor#facing=" + facing + ",waterlogged=true"));
-//            HashMap<DIR, List<BakedQuad>> map = new HashMap<>();
-//            for (DIR dir : DIR.values()) {
-//                map.put(dir, model.getQuads(null, dir.direction, rand, LuxCapHelper.getBlockLensModelData(Color.WHITE.getInt())));
-//            }
-//            INSTANCE.quadMap.put(facing, map);
-//
-//            INSTANCE.luxCapacitorBlockModels.put(facing, model);
-//        }
-
-
-
+        for (Direction facing : Direction.values()) {
+            BakedModel model = registry.get(new ModelResourceLocation(new ResourceLocation("powersuits:luxcapacitor"), "facing=" + facing + ",waterlogged=true"));
+            if(model instanceof OBJBakedCompositeModel) {
+                HashMap<DIR, List<BakedQuad>> map = new HashMap<>();
+                for (DIR dir : DIR.values()) {
+                    map.put(dir, model.getQuads(null, dir.direction, rand, LuxCapHelper.getBlockLensModelData(Color.WHITE.getARGBInt()), RenderTypeGroup.EMPTY.entity()));
+                }
+                INSTANCE.quadMap.put(facing, map);
+                INSTANCE.luxCapacitorBlockModels.put(facing, model);
+            }
+        }
 
         event.getModels().keySet().stream().filter(resourceLocation -> resourceLocation.toString().contains("powersuits:luxcapacitor")).forEach(resourceLocation -> {
-                    event.getModels().put(resourceLocation, new LuxCapacitorModelWrapper((OBJBakedCompositeModel) event.getModels().get(resourceLocation)));
-                });
+            BakedModel model = event.getModels().get(resourceLocation);
+            System.out.println("luxCap location: " + resourceLocation +", class: " + model.getClass());
 
-        event.getModels().keySet().stream().filter(resourceLocation -> resourceLocation.toString().contains("powersuits:powerfist")).forEach(resourceLocation -> NuminaLogger.logError("modelLocation: " + resourceLocation));
+            if (model instanceof OBJBakedCompositeModel) {
+                event.getModels().put(resourceLocation, new LuxCapacitorModelWrapper((OBJBakedCompositeModel)model));
+            } else {
+                System.out.println("class: " + model.getClass());
+            }
+        });
+
+//        event.getModels().keySet().stream().filter(resourceLocation -> resourceLocation.toString().contains("powersuits:powerfist")).forEach(resourceLocation -> NuminaLogger.logError("modelLocation: " + resourceLocation));
+
+
+//        event.getModels().keySet().stream().filter(resourceLocation -> resourceLocation.toString().contains("powersuits:luxcapacitor")).forEach(resourceLocation -> {
+//            event.getModels().put(resourceLocation, new LuxCapModelWrapper2(event.getModels().get(resourceLocation)));
+//        });
+
+//        event.getModels().keySet().stream().filter(resourceLocation -> resourceLocation.toString().contains("powersuits:powerfist")).forEach(resourceLocation -> NuminaLogger.logError("modelLocation: " + resourceLocation));
+
 
 
 

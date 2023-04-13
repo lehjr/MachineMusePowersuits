@@ -195,7 +195,7 @@ public class Color implements INBTSerializable<IntTag> {
             if (hexString == null || hexString.isEmpty()) {
                 return WHITE;
             }
-            hexString.replaceAll("#", "");
+            hexString = hexString.replaceAll("#", "");
             int parsed = (int) Long.parseLong(hexString, 16);
             // Integer.parse will fail for RGBA strings
             Color color = new Color((int) Long.parseLong(hexString, 16));

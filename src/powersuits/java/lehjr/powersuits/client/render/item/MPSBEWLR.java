@@ -1,11 +1,13 @@
 package lehjr.powersuits.client.render.item;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import lehjr.numina.common.item.ItemUtils;
 import lehjr.powersuits.client.model.block.TinkerTableModel;
 import lehjr.powersuits.client.model.item.IconModel;
 import lehjr.powersuits.client.model.item.PowerFistModel2;
-import lehjr.powersuits.common.base.MPSObjects;
+import lehjr.powersuits.common.base.MPSItems;
 import lehjr.powersuits.common.constants.MPSConstants;
+import lehjr.powersuits.common.constants.MPSRegistryNames;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
@@ -36,7 +38,7 @@ public class MPSBEWLR extends BlockEntityWithoutLevelRenderer {
     public void renderByItem(ItemStack itemStack, ItemTransforms.TransformType transformType, PoseStack poseStack, MultiBufferSource buffer, int packedLight, int packedOverlay) {
         Item item = itemStack.getItem();
         /** Important: the render types used here are not the same for each transform due to issues each one has in different perspectives (rendering issues with the screens) */
-        if (item.equals(MPSObjects.TINKER_TABLE_ITEM.get())) {
+        if (item.equals(MPSItems.TINKER_TABLE_ITEM.get())) {
             switch(transformType) {
                 case FIRST_PERSON_LEFT_HAND -> tinkerTableModel.renderToBuffer(poseStack, buffer.getBuffer(RenderType.entityTranslucentCull(TinkerTableModel.TEXTURE)), packedLight, packedOverlay, 1F, 1F, 1F, 1F);
                 case FIRST_PERSON_RIGHT_HAND -> tinkerTableModel.renderToBuffer(poseStack, buffer.getBuffer(RenderType.entityTranslucentCull(TinkerTableModel.TEXTURE)), packedLight, packedOverlay, 1F, 1F, 1F, 1F);
@@ -49,7 +51,7 @@ public class MPSBEWLR extends BlockEntityWithoutLevelRenderer {
             }
         }
 
-        if (item.equals(MPSObjects.POWER_FIST.get())) {
+        if (ItemUtils.getRegistryName(item).equals(MPSRegistryNames.POWER_FIST)) {
             if (transformType == ItemTransforms.TransformType.GUI) {
                 icon.renderToBuffer(poseStack,
                         buffer.getBuffer(RenderType.entityTranslucentCull(powerFistIcon)),
@@ -67,12 +69,4 @@ public class MPSBEWLR extends BlockEntityWithoutLevelRenderer {
             }
         }
     }
-
-
-
-
-
-
-
-
 }

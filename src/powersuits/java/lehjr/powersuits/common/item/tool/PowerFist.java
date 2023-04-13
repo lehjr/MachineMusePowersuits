@@ -61,14 +61,18 @@ public class PowerFist extends AbstractElectricTool {
 
     @Override
     public int getUseDuration(ItemStack stack) {
+        System.out.println("getDuration");
+
         return stack.getCapability(ForgeCapabilities.ITEM_HANDLER)
                 .filter(IModeChangingItem.class::isInstance)
                 .map(IModeChangingItem.class::cast)
-                .map(handler-> handler.getUseDuration()).orElse(7200);
+                .map(handler-> handler.getUseDuration()).orElse(72000);
     }
 
     @Override
     public boolean mineBlock(ItemStack powerFist, Level worldIn, BlockState state, BlockPos pos, LivingEntity entityLiving) {
+        System.out.println("mineBlock");
+
         return powerFist.getCapability(ForgeCapabilities.ITEM_HANDLER)
                 .filter(IModeChangingItem.class::isInstance)
                 .map(IModeChangingItem.class::cast)
@@ -87,6 +91,8 @@ public class PowerFist extends AbstractElectricTool {
 
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
+        System.out.println("use");
+
         ItemStack fist = player.getItemInHand(hand);
         final InteractionResultHolder<ItemStack> fallback = new InteractionResultHolder(InteractionResult.PASS, fist);
         if (hand != InteractionHand.MAIN_HAND) {
@@ -101,6 +107,8 @@ public class PowerFist extends AbstractElectricTool {
 
     @Override
     public InteractionResult onItemUseFirst(ItemStack itemStack, UseOnContext context) {
+        System.out.println("onItemUseFirst");
+
         final InteractionResult fallback = InteractionResult.PASS;
 
         final InteractionHand hand = context.getHand();
@@ -124,6 +132,8 @@ public class PowerFist extends AbstractElectricTool {
 
     @Override
     public InteractionResult interactLivingEntity(ItemStack itemStackIn, Player player, LivingEntity entity, InteractionHand hand) {
+        System.out.println("interactEntity");
+
          return itemStackIn.getCapability(ForgeCapabilities.ITEM_HANDLER)
                 .filter(IModeChangingItem.class::isInstance)
                 .map(IModeChangingItem.class::cast)
@@ -138,6 +148,8 @@ public class PowerFist extends AbstractElectricTool {
 
     @Override
     public ItemStack finishUsingItem(ItemStack stack, Level worldIn, LivingEntity entity) {
+        System.out.println("finish using");
+
         return stack.getCapability(ForgeCapabilities.ITEM_HANDLER)
                 .filter(IModeChangingItem.class::isInstance)
                 .map(IModeChangingItem.class::cast)
@@ -146,6 +158,8 @@ public class PowerFist extends AbstractElectricTool {
 
     @Override
     public void releaseUsing(ItemStack stack, Level worldIn, LivingEntity entityLiving, int timeLeft) {
+        System.out.println("release using");
+
         stack.getCapability(ForgeCapabilities.ITEM_HANDLER)
                 .filter(IModeChangingItem.class::isInstance)
                 .map(IModeChangingItem.class::cast)
@@ -155,6 +169,9 @@ public class PowerFist extends AbstractElectricTool {
 
     @Override
     public InteractionResult useOn(UseOnContext context) {
+        System.out.println("UseOn");
+
+
         final InteractionResult fallback = InteractionResult.PASS;
 
         final InteractionHand hand = context.getHand();

@@ -29,7 +29,7 @@ package lehjr.powersuits.common.entity;
 import com.google.common.util.concurrent.AtomicDouble;
 import lehjr.numina.common.capabilities.NuminaCapabilities;
 import lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
-import lehjr.powersuits.common.base.MPSObjects;
+import lehjr.powersuits.common.base.MPSEntities;
 import lehjr.powersuits.common.constants.MPSConstants;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
@@ -64,7 +64,7 @@ public class SpinningBladeEntity extends ThrowableProjectile {
     }
 
     public SpinningBladeEntity(Level worldIn, LivingEntity shootingEntity) {
-        super(MPSObjects.SPINNING_BLADE_ENTITY_TYPE.get(), shootingEntity, worldIn);
+        super(MPSEntities.SPINNING_BLADE_ENTITY_TYPE.get(), shootingEntity, worldIn);
         this.setOwner(shootingEntity);
         if (shootingEntity instanceof Player) {
             AtomicDouble atomicDamage = new AtomicDouble(0);

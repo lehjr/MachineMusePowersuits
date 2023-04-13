@@ -28,7 +28,8 @@ package lehjr.powersuits.common.entity;
 
 import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.math.Color;
-import lehjr.powersuits.common.base.MPSObjects;
+import lehjr.powersuits.common.base.MPSBlocks;
+import lehjr.powersuits.common.base.MPSEntities;
 import lehjr.powersuits.common.block.LuxCapacitorBlock;
 import lehjr.powersuits.common.blockentity.LuxCapacitorBlockEntity;
 import net.minecraft.core.BlockPos;
@@ -43,6 +44,7 @@ import net.minecraft.world.entity.projectile.ThrowableProjectile;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.SupportType;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
@@ -50,9 +52,10 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.entity.IEntityAdditionalSpawnData;
+import net.minecraftforge.network.NetworkHooks;
 
 public class LuxCapacitorEntity extends ThrowableProjectile implements IEntityAdditionalSpawnData {
-    public Color color;
+    public Color color = LuxCapacitorBlock.defaultColor;
 
     public LuxCapacitorEntity(EntityType<? extends LuxCapacitorEntity> entityType, Level world) {
         super(entityType, world);
@@ -63,7 +66,7 @@ public class LuxCapacitorEntity extends ThrowableProjectile implements IEntityAd
     }
 
     public LuxCapacitorEntity(Level world, LivingEntity shootingEntity, Color color) {
-        super(MPSObjects.LUX_CAPACITOR_ENTITY_TYPE.get(), shootingEntity, world);
+        super(MPSEntities.LUX_CAPACITOR_ENTITY_TYPE.get(), shootingEntity, world);
         this.setNoGravity(true);
         this.color = color != null ? color : LuxCapacitorBlock.defaultColor;
         Vec3 direction = shootingEntity.getLookAngle().normalize();
@@ -103,7 +106,7 @@ public class LuxCapacitorEntity extends ThrowableProjectile implements IEntityAd
         }
 
         if (color == null) {
-            color = Color.WHITE;
+            color = LuxCapacitorBlock.defaultColor;
         }
         if (this.isAlive() && hitResult.getType() == HitResult.Type.BLOCK) {
             BlockHitResult blockRayTrace = (BlockHitResult)hitResult;
@@ -114,13 +117,13 @@ public class LuxCapacitorEntity extends ThrowableProjectile implements IEntityAd
             BlockPos blockPos = new BlockPos(x, y, z);
 
             BlockPlaceContext context = getUseContext(blockPos, blockRayTrace.getDirection(), blockRayTrace);
-
+            // in some cases in newer versions, the y coordinate can be less than 0
             if (/*y > 0 && */ level.getBlockState(blockPos).canBeReplaced(context) /* level.getBlockState(blockPos).getMaterial().isReplaceable()*/) {
-                BlockState blockState = MPSObjects.LUX_CAPACITOR_BLOCK.get().getStateForPlacement(getUseContext(blockPos, blockRayTrace.getDirection(), blockRayTrace));
-                if (!placedBlock(blockState, blockPos)) {
+                BlockState blockState = MPSBlocks.LUX_CAPACITOR_BLOCK.get().getStateForPlacement(getUseContext(blockPos, blockRayTrace.getDirection(), blockRayTrace));
+                if (!placedBlock(blockState, blockPos, blockRayTrace.getDirection())) {
                     for (Direction facing : context.getNearestLookingDirections()) {
                         blockState = blockState.setValue(LuxCapacitorBlock.FACING, facing);
-                        if(placedBlock(blockState, blockPos)) {
+                        if(placedBlock(blockState, blockPos, facing)) {
                             break;
                         }
                     }
@@ -135,28 +138,21 @@ public class LuxCapacitorEntity extends ThrowableProjectile implements IEntityAd
      * @param pos
      * @return True if block was placed
      */
-    boolean placedBlock(BlockState state, BlockPos pos) {
+    boolean placedBlock(BlockState state, BlockPos pos, Direction facing) {
         if (state.canSurvive(level, pos)) {
-
-
-//            BlockEntity beCheck = level.isEmptyBlock(pos);
-//            if ()
-
-            level.setBlockAndUpdate(pos, state);
-            level.setBlockEntity(new LuxCapacitorBlockEntity(pos, state));
-            BlockEntity blockEntity = level.getBlockEntity(pos);
-
-            /** todo: how to find solid block to stick to */
             if (state.hasProperty(LuxCapacitorBlock.FACING)) {
-                System.out.println("sturdy?: " +  state.isFaceSturdy(level, pos, state.getValue(LuxCapacitorBlock.FACING).getOpposite()));
-            }
-
-            if (blockEntity instanceof LuxCapacitorBlockEntity) {
-                ((LuxCapacitorBlockEntity) blockEntity).setColor(color);
-                return true;
-            } else {
-                NuminaLogger.logError("failed to spawn block entity?");
-                return false;
+                BlockPos posToCheck = pos.relative(facing.getOpposite());
+                BlockState stateToCheck = level.getBlockState(posToCheck);
+                if (stateToCheck.isFaceSturdy(level, posToCheck, facing, SupportType.CENTER)) {
+                    level.setBlockAndUpdate(pos, state);
+                    level.setBlockEntity(new LuxCapacitorBlockEntity(pos, state));
+                    BlockEntity blockEntity = level.getBlockEntity(pos);
+                    if (blockEntity instanceof LuxCapacitorBlockEntity) {
+                        ((LuxCapacitorBlockEntity) blockEntity).setColor(color);
+                        return true;
+                    }
+                    NuminaLogger.logError("failed to spawn block entity?");
+                }
             }
         }
         return false;
@@ -172,18 +168,17 @@ public class LuxCapacitorEntity extends ThrowableProjectile implements IEntityAd
 
     @Override
     protected void defineSynchedData() {
-
     }
 
     @Override
     public Packet<ClientGamePacketListener> getAddEntityPacket() {
-        return super.getAddEntityPacket();
+        return NetworkHooks.getEntitySpawningPacket(this);
     }
 
     @Override
     public void tick() {
         super.tick();
-        if (this.tickCount > 400) {
+        if (this.tickCount > 40) {
             this.remove(RemovalReason.DISCARDED);
         }
     }

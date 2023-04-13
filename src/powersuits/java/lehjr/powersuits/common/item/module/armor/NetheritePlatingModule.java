@@ -1,7 +1,10 @@
 package lehjr.powersuits.common.item.module.armor;
 
 import lehjr.numina.common.capabilities.NuminaCapabilities;
-import lehjr.numina.common.capabilities.module.powermodule.*;
+import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
+import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
+import lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
+import lehjr.numina.common.capabilities.module.powermodule.PowerModule;
 import lehjr.numina.common.constants.TagConstants;
 import lehjr.powersuits.common.config.MPSSettings;
 import lehjr.powersuits.common.constants.MPSConstants;
@@ -20,9 +23,6 @@ import javax.annotation.Nullable;
  * TODO
  */
 public class NetheritePlatingModule extends AbstractPowerModule {
-    public NetheritePlatingModule() {
-    }
-
     @Nullable
     @Override
     public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt) {

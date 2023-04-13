@@ -27,8 +27,9 @@
 package lehjr.powersuits.client.render.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import lehjr.powersuits.common.base.MPSObjects;
+import lehjr.powersuits.common.base.MPSItems;
 import lehjr.powersuits.common.constants.MPSConstants;
+import lehjr.powersuits.common.constants.MPSRegistryNames;
 import lehjr.powersuits.common.entity.SpinningBladeEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -41,6 +42,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.util.TransformationHelper;
+import net.minecraftforge.registries.ForgeRegistries;
 import org.joml.Vector3f;
 
 import javax.annotation.Nullable;
@@ -66,23 +68,19 @@ public class SpinningBladeEntityRenderer extends net.minecraft.client.renderer.e
     @Override
     public void render(SpinningBladeEntity entityIn, float entityYaw, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn) {
         matrixStackIn.pushPose();
-        ItemStack itemstack = new ItemStack(MPSObjects.BLADE_LAUNCHER_MODULE.get());
+        ItemStack itemstack = new ItemStack(ForgeRegistries.ITEMS.getValue(MPSRegistryNames.BLADE_LAUNCHER_MODULE));
         int i = itemstack.isEmpty() ? 187 : Item.getId(itemstack.getItem()) + itemstack.getDamageValue();
-        this.random.setSeed((long) i);
-        BakedModel ibakedmodel = Minecraft.getInstance().getItemRenderer().getModel(itemstack, entityIn.level, (LivingEntity) null, entityIn.getId());
-
+        this.random.setSeed(i);
+        BakedModel ibakedmodel = Minecraft.getInstance().getItemRenderer().getModel(itemstack, entityIn.level, null, entityIn.getId());
         matrixStackIn.mulPose(TransformationHelper.quatFromXYZ(new Vector3f(90, 0, 0), true));
-//        double motionscale = Math.sqrt(entityIn.getMotion().z * entityIn.getMotion().z +entityIn.getMotion().x * entityIn.getMotion().x);
-//        GL11.glRotatef(-entity.rotationPitch, (float) (entity.getMotion().z /
-//                motionscale), 0.0f, (float) (- entity.getMotion().x / motionscale));
         int time = (int) System.currentTimeMillis() % 360;
         matrixStackIn.mulPose(TransformationHelper.quatFromXYZ(new Vector3f(0, 0, time / 2), true));
 
         boolean flag = ibakedmodel.isGui3d();
         matrixStackIn.pushPose();
-        Minecraft.getInstance().getItemRenderer().render(itemstack, ItemTransforms.TransformType.GROUND, false, matrixStackIn, bufferIn, packedLightIn, OverlayTexture.NO_OVERLAY, ibakedmodel);
+        Minecraft.getInstance().getItemRenderer().render(itemstack, ItemTransforms.TransformType.NONE, false, matrixStackIn, bufferIn, packedLightIn, OverlayTexture.NO_OVERLAY, ibakedmodel);
         matrixStackIn.popPose();
-        if (!flag) {
+        if (flag) {
             matrixStackIn.translate(0.0, 0.0, 0.09375F);
         }
         matrixStackIn.popPose();

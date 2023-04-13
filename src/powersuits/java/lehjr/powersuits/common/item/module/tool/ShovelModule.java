@@ -53,8 +53,6 @@ import javax.annotation.Nullable;
 import java.util.concurrent.Callable;
 
 public class ShovelModule extends AbstractPowerModule {
-    public ShovelModule() {
-    }
 
     @Nullable
     @Override

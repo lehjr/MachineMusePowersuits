@@ -64,9 +64,6 @@ import java.util.concurrent.Callable;
  * 5:56 PM 6/14/13
  */
 public class LightningModule extends AbstractPowerModule {
-    public LightningModule() {
-        super();
-    }
 
     @Nullable
     @Override

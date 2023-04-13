@@ -10,7 +10,7 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 1
-map_Kd numina:models/luxlight
+map_Kd powersuits:block/luxlight
 
 newmtl BaseLowerMaterial
 Ns 0.000000
@@ -21,7 +21,7 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 1
-map_Kd numina:models/luxdark
+map_Kd powersuits:block/luxdark
 
 newmtl LensMaterial
 Ns 0.000000

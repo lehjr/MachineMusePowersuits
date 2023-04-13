@@ -3,7 +3,7 @@
   "variants": {
     "normal": [{
       "textures": {},
-      "custom": { "flip-v": true },
+      "custom": { "flip_v": true },
       "model":  "powersuits:armor/armor2.obj"
     }]
   }

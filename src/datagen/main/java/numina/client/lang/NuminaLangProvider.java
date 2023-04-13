@@ -6,12 +6,10 @@ import lehjr.numina.common.constants.NuminaConstants;
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DataProvider;
-import net.minecraft.data.HashCache;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import numina.ResourceList;
 
 import java.io.File;
-import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.concurrent.CompletableFuture;

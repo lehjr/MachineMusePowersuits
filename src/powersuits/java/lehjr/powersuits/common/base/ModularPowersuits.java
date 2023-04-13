@@ -26,6 +26,7 @@
 
 package lehjr.powersuits.common.base;
 
+import com.electronwill.nightconfig.core.file.CommentedFileConfig;
 import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.capabilities.NuminaCapabilities;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
@@ -44,17 +45,16 @@ import lehjr.powersuits.client.gui.modding.module.install_salvage.InstallSalvage
 import lehjr.powersuits.common.config.MPSSettings;
 import lehjr.powersuits.common.constants.MPSConstants;
 import lehjr.powersuits.common.constants.MPSRegistryNames;
-import lehjr.powersuits.common.event.*;
+import lehjr.powersuits.common.event.EntityDamageEvent;
+import lehjr.powersuits.common.event.HarvestEventHandler;
+import lehjr.powersuits.common.event.LogoutEventHandler;
 import lehjr.powersuits.common.network.MPSPackets;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.stats.Stats;
-import net.minecraft.world.Container;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResultHolder;
-import net.minecraft.world.SimpleMenuProvider;
+import net.minecraft.world.*;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.inventory.CraftingMenu;
@@ -72,6 +72,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
+import net.minecraftforge.fml.event.config.ModConfigEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -86,46 +87,51 @@ public class ModularPowersuits {
         ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, MPSSettings.CLIENT_SPEC, ConfigHelper.setupConfigFile("mps-client-only.toml", MPSConstants.MOD_ID).getAbsolutePath());
         ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, MPSSettings.SERVER_SPEC); // note config file location for dedicated server is stored in the world config
 
-//        IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
-//
-//        // Register the setup method for modloading
-//        modEventBus.addListener(this::setup);
-//
-//        // Register the doClientStuff method for modloading
-//        modEventBus.addListener(this::setupClient);
+        IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
+
+        // Register the setup method for modloading
+        modEventBus.addListener(this::setup);
+
+
+        MPSItems.MPS_ITEMS.register(modEventBus);
+        MPSBlocks.BLOCKS.register(modEventBus);
+        MPSBlocks.BLOCKENTITY_TYPES.register(modEventBus);
+        MPSEntities.ENTITY_TYPES.register(modEventBus);
+        MPSMenuTypes.CONTAINER_TYPES.register(modEventBus);
+
+
+
+
+        // Register the doClientStuff method for modloading
+        modEventBus.addListener(this::setupClient);
 //
 //        // Register ourselves for server and other game events we are interested in
-//        MinecraftForge.EVENT_BUS.register(this);
-//        MinecraftForge.EVENT_BUS.addListener(EntityDamageEvent::handleEntityDamageEvent);
-//        MinecraftForge.EVENT_BUS.addListener(EntityDamageEvent::entityAttackEventHandler);
+        MinecraftForge.EVENT_BUS.register(this);
+        MinecraftForge.EVENT_BUS.addListener(EntityDamageEvent::handleEntityDamageEvent); // FIXME: does nothing
+        MinecraftForge.EVENT_BUS.addListener(EntityDamageEvent::entityAttackEventHandler); // FIXME: does nothing
 //        MinecraftForge.EVENT_BUS.register(new PlayerUpdateHandler());
-//        MinecraftForge.EVENT_BUS.register(MovementManager.INSTANCE);
-//
-//        MinecraftForge.EVENT_BUS.addListener(HarvestEventHandler::handleHarvestCheck);
-//        MinecraftForge.EVENT_BUS.addListener(HarvestEventHandler::handleBreakSpeed);
-//
-//        MPSObjects.MPS_ITEMS.register(modEventBus);
-//        MPSObjects.BLOCKS.register(modEventBus);
-//        MPSObjects.BLOCKENTITY_TYPES.register(modEventBus);
-//        MPSObjects.ENTITY_TYPES.register(modEventBus);
-//        MPSObjects.CONTAINER_TYPES.register(modEventBus);
+////        MinecraftForge.EVENT_BUS.register(MovementManager.INSTANCE);
+////
+        MinecraftForge.EVENT_BUS.addListener(HarvestEventHandler::handleHarvestCheck);
+        MinecraftForge.EVENT_BUS.addListener(HarvestEventHandler::handleBreakSpeed);
 
-//        // handles loading and reloading event
-//        modEventBus.addListener((ModConfigEvent event) -> {
-//            new RuntimeException("Got config " + event.getConfig() + " name " + event.getConfig().getModId() + ":" + event.getConfig().getFileName());
-//
-//            final ModConfig config = event.getConfig();
-//            if (config.getSpec()!= null && config.getSpec() == MPSSettings.SERVER_SPEC) {
-//                MPSSettings.getModuleConfig().setServerConfig(config);
-//
-//                // This is actually for a feature that isn't even currently enabled :P
-//                // getFullPath can't be used on client if it isn't also hosting the server
-//                if (config instanceof CommentedFileConfig) {
-//                    CosmeticPresetSaveLoad.setConfigDirString(config.getFullPath().getParent().toString());
-//                    CosmeticPresetSaveLoad.copyPresetsFromJar(config.getFullPath().getParent().toString());
-//                }
-//            }
-//        });
+
+        // handles loading and reloading event
+        modEventBus.addListener((ModConfigEvent event) -> {
+            new RuntimeException("Got config " + event.getConfig() + " name " + event.getConfig().getModId() + ":" + event.getConfig().getFileName());
+
+            final ModConfig config = event.getConfig();
+            if (config.getSpec()!= null && config.getSpec() == MPSSettings.SERVER_SPEC) {
+                MPSSettings.getModuleConfig().setServerConfig(config);
+
+                // This is actually for a feature that isn't even currently enabled :P
+                // getFullPath can't be used on client if it isn't also hosting the server
+                if (config instanceof CommentedFileConfig) {
+                    CosmeticPresetSaveLoad.setConfigDirString(config.getFullPath().getParent().toString());
+                    CosmeticPresetSaveLoad.copyPresetsFromJar(config.getFullPath().getParent().toString());
+                }
+            }
+        });
     }
 
     /**
@@ -152,7 +158,7 @@ public class ModularPowersuits {
         MinecraftForge.EVENT_BUS.addListener(PlayerLoginHandler::onPlayerLoginClient);// just to populated keybinds -_-
 
 
-        MenuScreens.register(MPSObjects.INSTALL_SALVAGE_MENU_TYPE.get(), InstallSalvageGui::new);
+        MenuScreens.register(MPSMenuTypes.INSTALL_SALVAGE_MENU_TYPE.get(), InstallSalvageGui::new);
     }
 
     /**
@@ -163,27 +169,28 @@ public class ModularPowersuits {
         final ItemStack itemStack = event.getObject();
         final ResourceLocation regName = ItemUtils.getRegistryName(itemStack);
 
-//        // AE2 Wireless terminal
-//        if (regName.equals(new ResourceLocation("appliedenergistics2:wireless_terminal"))) {
-//            IRightClickModule ae2wirelessterminal = new RightClickModule(itemStack, ModuleCategory.TOOL, ModuleTarget.TOOLONLY, MPSSettings::getModuleConfig) {
-//                @Override
-//                public InteractionResultHolder<ItemStack> use(ItemStack itemStackIn, Level worldIn, Player playerIn, InteractionHand hand) {
+        // AE2 Wireless terminal
+        if (regName.equals(new ResourceLocation("appliedenergistics2:wireless_terminal"))) {
+            IRightClickModule ae2wirelessterminal = new RightClickModule(itemStack, ModuleCategory.TOOL, ModuleTarget.TOOLONLY, MPSSettings::getModuleConfig) {
+                @Override
+                public InteractionResultHolder<ItemStack> use(ItemStack itemStackIn, Level worldIn, Player playerIn, InteractionHand hand) {
+                    // FIXME!!!
 //                    Api.instance().registries().wireless().openWirelessTerminalGui(itemStackIn, worldIn, playerIn, hand);
-//                    return new InteractionResultHolder<>(InteractionResult.func_233537_a_(worldIn.isClientSide()), itemStackIn);
-//                }
-//            };
-//
-//            event.addCapability(regName, new ICapabilityProvider() {
-//                @Nonnull
-//                @Override
-//                public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
-//                    if (cap == NuminaCapabilities.POWER_MODULE) {
-//                        return LazyOptional.of(() -> (T) ae2wirelessterminal);
-//                    }
-//                    return LazyOptional.empty();
-//                }
-//            });
-//        }
+                    return new InteractionResultHolder<>(InteractionResult.sidedSuccess(worldIn.isClientSide()), itemStackIn);
+                }
+            };
+
+            event.addCapability(regName, new ICapabilityProvider() {
+                @Nonnull
+                @Override
+                public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
+                    if (cap == NuminaCapabilities.POWER_MODULE) {
+                        return LazyOptional.of(() -> (T) ae2wirelessterminal);
+                    }
+                    return LazyOptional.empty();
+                }
+            });
+        }
 
         // Scannable scanner
 //        if (regName.equals(new ResourceLocation("scannable:scanner"))) {

@@ -26,19 +26,42 @@
 
 package lehjr.numina.client.render;
 
+import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.platform.Lighting;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
+import com.mojang.math.MatrixUtil;
 import lehjr.numina.client.gui.geometry.SwirlyMuseCircle;
 import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.math.Color;
 import lehjr.numina.common.string.StringUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.client.renderer.ItemModelShaper;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.block.model.BakedQuad;
+import net.minecraft.client.renderer.block.model.ItemTransforms;
+import net.minecraft.client.renderer.entity.ItemRenderer;
+import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.client.renderer.texture.TextureAtlas;
+import net.minecraft.client.renderer.texture.TextureManager;
+import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.core.Direction;
+import net.minecraft.tags.ItemTags;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.HalfTransparentBlock;
+import net.minecraft.world.level.block.StainedGlassPaneBlock;
+import net.minecraft.world.level.block.state.BlockState;
 import org.joml.Matrix4f;
 import org.lwjgl.opengl.GL11;
 
 import javax.annotation.Nonnull;
+import java.util.List;
 
 /**
  * Contains a bunch of random OpenGL-related functions, accessed statically.
@@ -67,18 +90,18 @@ public class NuminaRenderer {
         }
         selectionCircle.draw(matrixStack, (float) radius, xoffset, yoffset, zLevel);
     }
-//
-//    public static ItemRenderer getItemRenderer() {
-//        return Minecraft.getInstance().getItemRenderer();
-//    }
-//
-//    public TextureManager getTextureManager() {
-//        return Minecraft.getInstance().getTextureManager();
-//    }
-//
-//    static ItemModelShaper getItemModelShaper() {
-//        return getItemRenderer().getItemModelShaper();
-//    }
+
+    public static ItemRenderer getItemRenderer() {
+        return Minecraft.getInstance().getItemRenderer();
+    }
+
+    public static TextureManager getTextureManager() {
+        return Minecraft.getInstance().getTextureManager();
+    }
+
+    static ItemModelShaper getItemModelShaper() {
+        return getItemRenderer().getItemModelShaper();
+    }
 //
 //    /**
 //     * Makes the appropriate openGL calls and draws an itemStack and overlay using the default icon
@@ -93,66 +116,134 @@ public class NuminaRenderer {
     public static void drawItemAt(PoseStack matrixStack, double x, double y, @Nonnull ItemStack itemStack, Color colour) {
         if (!itemStack.isEmpty()) {
             Minecraft.getInstance().getItemRenderer().renderAndDecorateItem(itemStack, (int) x, (int) y);
-            Minecraft.getInstance().getItemRenderer().renderGuiItemDecorations(StringUtils.getFontRenderer(), itemStack, (int) x, (int) y, (String) null);
+            Minecraft.getInstance().getItemRenderer().renderGuiItemDecorations(StringUtils.getFontRenderer(), itemStack, (int) x, (int) y, null);
         }
     }
-//
-//    static BakedModel getModel(@Nonnull ItemStack itemStack) {
-//        Player player = Minecraft.getInstance().player;
-//        return getItemRenderer().getModel(itemStack, player.level, player, 0);
-//    }
-//
-    public static void drawModuleAt(PoseStack matrixStackIn, double x, double y, @Nonnull ItemStack itemStack, boolean active) {
-        NuminaLogger.logError("drawModuleAt NOT IMPLEMENTED YET");
 
-
-//        if (!itemStack.isEmpty()) {
-//            BakedModel model = getModel(itemStack);
-//            renderGuiItem(itemStack, matrixStackIn, (float)x, (float) y, model, active? Color.WHITE : Color.DARK_GRAY.withAlpha(0.5F));
-//        }
+    static BakedModel getModel(@Nonnull ItemStack itemStack) {
+        return getItemRenderer().getModel(itemStack, null, null, 0);
     }
-//
-//    /**
-//     * Copied from vanilla renderer but edited to respect PoseStack param passed to method
-//     * @param pStack
-//     * @param poseStack
-//     * @param x
-//     * @param y
-//     * @param bakedModel
-//     * @param color
-//     */
-//    public static void renderGuiItem(ItemStack pStack, PoseStack poseStack, float x, float y, BakedModel bakedModel, Color color) {
-//        Minecraft.getInstance().getTextureManager().getTexture(TextureAtlas.LOCATION_BLOCKS).setFilter(false, false);
-//        RenderSystem.setShaderTexture(0, TextureAtlas.LOCATION_BLOCKS);
-//        RenderSystem.enableBlend();
-//        RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
-//        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-//
-////        PoseStack poseStack = RenderSystem.getModelViewStack();
-//        poseStack.pushPose();
-//        poseStack.translate((double)x, (double)y, (double)(100.0F + Minecraft.getInstance().getItemRenderer().blitOffset));
-//        poseStack.translate(8.0D, 8.0D, 0.0D);
-//        poseStack.scale(1.0F, -1.0F, 1.0F);
-//        poseStack.scale(16.0F, 16.0F, 16.0F);
-////        RenderSystem.applyModelViewMatrix();
-//
-////        PoseStack posestack1 = new PoseStack(); //
-//        MultiBufferSource.BufferSource multibuffersource$buffersource = Minecraft.getInstance().renderBuffers().bufferSource();
-//        boolean flag = !bakedModel.usesBlockLight();
-//        if (flag) {
-//            Lighting.setupForFlatItems();
-//        }
-//
-//        renderItem(pStack, ItemTransforms.TransformType.GUI, false, poseStack/*posestack1*/, multibuffersource$buffersource, 15728880, OverlayTexture.NO_OVERLAY, bakedModel, color);
-//        multibuffersource$buffersource.endBatch();
-//        RenderSystem.enableDepthTest();
-//        if (flag) {
-//            Lighting.setupFor3DItems();
-//        }
-//
-//        poseStack.popPose();
+
+    public static void drawModuleAt(PoseStack poseStack, double x, double y, @Nonnull ItemStack itemStack, boolean active) {
+        if (!itemStack.isEmpty()) {
+            BakedModel model = getModel(itemStack);
+            renderGuiItem(itemStack, poseStack, (float)x, (float) y, model, active? Color.WHITE : Color.DARK_GRAY.withAlpha(0.5F));
+        }
+    }
+
+    protected static void renderGuiItem(ItemStack itemStack, PoseStack poseStack, float posX, float posY, BakedModel bakedModel, Color color) {
+        getTextureManager().getTexture(TextureAtlas.LOCATION_BLOCKS).setFilter(false, false);
+        RenderSystem.setShaderTexture(0, TextureAtlas.LOCATION_BLOCKS);
+        RenderSystem.enableBlend();
+        RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
+        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+//        PoseStack poseStack = RenderSystem.getModelViewStack();
+        poseStack.pushPose();
+        poseStack.translate(posX, posY, 100.0F + getItemRenderer().blitOffset);
+        poseStack.translate(8.0F, 8.0F, 0.0F);
+        poseStack.scale(1.0F, -1.0F, 1.0F);
+        poseStack.scale(16.0F, 16.0F, 16.0F);
 //        RenderSystem.applyModelViewMatrix();
-//    }
+//        PoseStack posestack1 = new PoseStack();
+        MultiBufferSource.BufferSource bufferSource = Minecraft.getInstance().renderBuffers().bufferSource();
+        boolean flag = !bakedModel.usesBlockLight();
+        if (flag) {
+            Lighting.setupForFlatItems();
+        }
+
+        render(itemStack, ItemTransforms.TransformType.GUI, false, poseStack, bufferSource, 15728880, OverlayTexture.NO_OVERLAY, bakedModel, color);
+        bufferSource.endBatch();
+        RenderSystem.enableDepthTest();
+        if (flag) {
+            Lighting.setupFor3DItems();
+        }
+
+        poseStack.popPose();
+        RenderSystem.applyModelViewMatrix();
+    }
+
+    public static void render(ItemStack itemStack, ItemTransforms.TransformType transformType, boolean leftHand, PoseStack poseStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay, BakedModel modelIn, Color color) {
+        if (!itemStack.isEmpty()) {
+            poseStack.pushPose();
+            boolean flag = transformType == ItemTransforms.TransformType.GUI || transformType == ItemTransforms.TransformType.GROUND || transformType == ItemTransforms.TransformType.FIXED;
+//            if (flag) {
+//                if (itemStack.is(Items.TRIDENT)) {
+//                    modelIn = getItemModelShaper().getModelManager().getModel(getItemRenderer().TRIDENT_MODEL);
+//                } else if (itemStack.is(Items.SPYGLASS)) {
+//                    modelIn = getItemModelShaper().getModelManager().getModel(getItemRenderer().SPYGLASS_MODEL);
+//                }
+//            }
+
+            modelIn = net.minecraftforge.client.ForgeHooksClient.handleCameraTransforms(poseStack, modelIn, transformType, leftHand);
+            poseStack.translate(-0.5F, -0.5F, -0.5F);
+            if (!modelIn.isCustomRenderer() && (!itemStack.is(Items.TRIDENT) || flag)) {
+                boolean flag1;
+                if (transformType != ItemTransforms.TransformType.GUI && !transformType.firstPerson() && itemStack.getItem() instanceof BlockItem) {
+                    Block block = ((BlockItem)itemStack.getItem()).getBlock();
+                    flag1 = !(block instanceof HalfTransparentBlock) && !(block instanceof StainedGlassPaneBlock);
+                } else {
+                    flag1 = true;
+                }
+                for (var model : modelIn.getRenderPasses(itemStack, flag1)) {
+                    for (var rendertype : model.getRenderTypes(itemStack, flag1)) {
+                        VertexConsumer vertexconsumer;
+                        if (itemStack.is(ItemTags.COMPASSES) && itemStack.hasFoil()) {
+                            poseStack.pushPose();
+                            PoseStack.Pose posestack$pose = poseStack.last();
+                            if (transformType == ItemTransforms.TransformType.GUI) {
+                                MatrixUtil.mulComponentWise(posestack$pose.pose(), 0.5F);
+                            } else if (transformType.firstPerson()) {
+                                MatrixUtil.mulComponentWise(posestack$pose.pose(), 0.75F);
+                            }
+
+                            if (flag1) {
+                                vertexconsumer = getItemRenderer().getCompassFoilBufferDirect(buffer, rendertype, posestack$pose);
+                            } else {
+                                vertexconsumer = getItemRenderer().getCompassFoilBuffer(buffer, rendertype, posestack$pose);
+                            }
+
+                            poseStack.popPose();
+                        } else if (flag1) {
+                            vertexconsumer = getItemRenderer().getFoilBufferDirect(buffer, rendertype, true, itemStack.hasFoil());
+                        } else {
+                            vertexconsumer = getItemRenderer().getFoilBuffer(buffer, rendertype, true, itemStack.hasFoil());
+                        }
+
+                        renderModelLists(model, itemStack, combinedLight, combinedOverlay, poseStack, vertexconsumer, color);
+                    }
+                }
+            } else {
+                net.minecraftforge.client.extensions.common.IClientItemExtensions.of(itemStack).getCustomRenderer().renderByItem(itemStack, transformType, poseStack, buffer, combinedLight, combinedOverlay);
+            }
+
+            poseStack.popPose();
+        }
+    }
+
+    public static void renderModelLists(BakedModel pModel, ItemStack pStack, int pCombinedLight, int pCombinedOverlay, PoseStack pMatrixStack, VertexConsumer pBuffer, Color color) {
+        RandomSource randomsource = RandomSource.create();
+        long i = 42L;
+
+        for(Direction direction : Direction.values()) {
+            randomsource.setSeed(42L);
+            renderQuads(pMatrixStack, pBuffer, pModel.getQuads(null, direction, randomsource), pStack, pCombinedLight, pCombinedOverlay, color);
+        }
+
+        randomsource.setSeed(42L);
+        renderQuads(pMatrixStack, pBuffer, pModel.getQuads(null, null, randomsource), pStack, pCombinedLight, pCombinedOverlay, color);
+    }
+        public static void renderQuads(PoseStack matrixStackIn, VertexConsumer bufferIn, List<BakedQuad> quadsIn, ItemStack itemStackIn, int combinedLightIn, int combinedOverlayIn, Color color) {
+        if (color == null) {
+            Minecraft.getInstance().getItemRenderer().renderQuadList(matrixStackIn, bufferIn, quadsIn, itemStackIn, combinedLightIn, combinedOverlayIn);
+        } else {
+            PoseStack.Pose matrixstack$entry = matrixStackIn.last();
+
+            for (BakedQuad bakedquad : quadsIn) {
+                bufferIn.putBulkData(matrixstack$entry, bakedquad, color.r, color.g, color.b, color.a, combinedLightIn, combinedOverlayIn, true);
+            }
+        }
+    }
+
 //
 //    public static void renderItem(ItemStack itemStack, ItemTransforms.TransformType transformType, boolean leftHand, PoseStack matrixStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay, BakedModel model, Color colour) {
 //        if (!itemStack.isEmpty()) {
@@ -225,17 +316,7 @@ public class NuminaRenderer {
 //        renderQuads(matrixStackIn, bufferIn, modelIn.m_6840_((BlockState)null, (Direction)null, random), stack, combinedLightIn, combinedOverlayIn, color);
 //    }
 //
-//    public static void renderQuads(PoseStack matrixStackIn, VertexConsumer bufferIn, List<BakedQuad> quadsIn, ItemStack itemStackIn, int combinedLightIn, int combinedOverlayIn, Color color) {
-//        if (color == null) {
-//            Minecraft.getInstance().getItemRenderer().renderQuadList(matrixStackIn, bufferIn, quadsIn, itemStackIn, combinedLightIn, combinedOverlayIn);
-//        } else {
-//            PoseStack.Pose matrixstack$entry = matrixStackIn.last();
-//
-//            for (BakedQuad bakedquad : quadsIn) {
-//                bufferIn.putBulkData(matrixstack$entry, bakedquad, color.r, color.g, color.b, color.a, combinedLightIn, combinedOverlayIn, true);
-//            }
-//        }
-//    }
+
 
 
     /** AbstractContainerMenu background icons */

@@ -29,9 +29,17 @@ package lehjr.numina.common.capabilities.render.modelspec;
 import java.util.Arrays;
 
 public enum SpecType {
+    // Obj models rendered as armor
     ARMOR_MODEL("ARMORMODEL"),
+
+    // pretty much what Minecraft already uses
     ARMOR_SKIN("ARMORSKIN"),
+
+    // model intended to render in the hand
     HANDHELD("HANDHELD"),
+
+    // java based model that renderes in the hand
+    HANDHELD_ENTITY("HANDHELD_ENTITY"),
     NONE("NONE");
 
     String name;

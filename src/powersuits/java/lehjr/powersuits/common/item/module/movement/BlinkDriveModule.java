@@ -27,7 +27,10 @@
 package lehjr.powersuits.common.item.module.movement;
 
 import lehjr.numina.common.capabilities.NuminaCapabilities;
-import lehjr.numina.common.capabilities.module.powermodule.*;
+import lehjr.numina.common.capabilities.module.powermodule.IConfig;
+import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
+import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
+import lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
 import lehjr.numina.common.capabilities.module.rightclick.RightClickModule;
 import lehjr.numina.common.energy.ElectricItemUtils;
 import lehjr.numina.common.player.PlayerUtils;
@@ -55,9 +58,6 @@ import javax.annotation.Nullable;
 import java.util.concurrent.Callable;
 
 public class BlinkDriveModule extends AbstractPowerModule {
-    public BlinkDriveModule() {
-    }
-
     @Nullable
     @Override
     public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt) {

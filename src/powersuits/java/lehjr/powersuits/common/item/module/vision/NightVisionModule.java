@@ -27,7 +27,10 @@
 package lehjr.powersuits.common.item.module.vision;
 
 import lehjr.numina.common.capabilities.NuminaCapabilities;
-import lehjr.numina.common.capabilities.module.powermodule.*;
+import lehjr.numina.common.capabilities.module.powermodule.IConfig;
+import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
+import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
+import lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
 import lehjr.numina.common.capabilities.module.tickable.PlayerTickModule;
 import lehjr.numina.common.energy.ElectricItemUtils;
 import lehjr.powersuits.common.config.MPSSettings;
@@ -50,9 +53,6 @@ import java.util.concurrent.Callable;
 public class NightVisionModule extends AbstractPowerModule {
     static final int powerDrain = 50;
     private static final MobEffect nightvision = MobEffects.NIGHT_VISION;
-
-    public NightVisionModule() {
-    }
 
     @Nullable
     @Override

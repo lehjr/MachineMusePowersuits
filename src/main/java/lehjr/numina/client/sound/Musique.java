@@ -26,6 +26,7 @@
 
 package lehjr.numina.client.sound;
 
+import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.config.NuminaSettings;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
@@ -80,7 +81,7 @@ public class Musique {
             if (sound != null) {
                 sound.updateVolume(volume).updatePitch(pitch).updateRepeat(continuous);
             } else {
-//                MuseLogger.logDebug("New sound: " + soundEvt.getSoundName());
+                NuminaLogger.logDebug("New sound: " + soundEvt.getLocation());
                 MovingSoundPlayer newsound = new MovingSoundPlayer(soundEvt, categoryIn, player, volume * 2.0f, pitch, continuous);
                 mcsound().play(newsound);
                 soundMap.put(soundID, newsound);
@@ -91,13 +92,15 @@ public class Musique {
     public static void stopPlayerSound(Player player, SoundEvent soundEvt) {
         if (NuminaSettings.useSounds()) {
             String soundID = makeSoundString(player, soundEvt);
+            System.out.println("soundId: " + soundID);
+
             MovingSoundPlayer sound = soundMap.get(soundID);
             if (sound != null) {
                 sound.stopPlaying();
                 mcsound().stop(sound);
             }
             soundMap.remove(soundID);
-//             MuseLogger.logDebug("Sound stopped: " + soundEvt.getSoundName());
+             NuminaLogger.logDebug("Sound stopped: " + soundEvt.getLocation());
         }
     }
 }

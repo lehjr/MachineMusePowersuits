@@ -54,8 +54,6 @@ import java.util.concurrent.Callable;
 
 
 public class PickaxeModule extends AbstractPowerModule {
-    public PickaxeModule() {
-    }
 
     @Nullable
     @Override

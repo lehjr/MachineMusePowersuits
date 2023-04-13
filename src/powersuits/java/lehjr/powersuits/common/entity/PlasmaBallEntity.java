@@ -26,7 +26,7 @@
 
 package lehjr.powersuits.common.entity;
 
-import lehjr.powersuits.common.base.MPSObjects;
+import lehjr.powersuits.common.base.MPSEntities;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.Packet;
@@ -64,7 +64,7 @@ public class PlasmaBallEntity extends ThrowableProjectile implements IEntityAddi
      * @param chargePercent percent of charge in decimal form (0 - 1)
      */
     public PlasmaBallEntity(Level world, LivingEntity shootingEntity, float finalExplosiveness, float finalDamaginess, float chargePercent) {
-        super(MPSObjects.PLASMA_BALL_ENTITY_TYPE.get(), world);
+        super(MPSEntities.PLASMA_BALL_ENTITY_TYPE.get(), world);
         this.setOwner(shootingEntity);
 
         this.entityData.set(CHARGE_PERCENT, chargePercent);

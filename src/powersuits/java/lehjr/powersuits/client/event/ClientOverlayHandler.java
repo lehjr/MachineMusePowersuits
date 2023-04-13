@@ -27,6 +27,7 @@
 package lehjr.powersuits.client.event;
 
 import com.mojang.blaze3d.platform.Window;
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import lehjr.numina.client.gui.meter.EnergyMeter;
 import lehjr.numina.client.gui.meter.HeatMeter;
@@ -48,6 +49,7 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraftforge.client.event.CustomizeGuiOverlayEvent;
 import net.minecraftforge.client.event.RenderGuiOverlayEvent;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.fluids.FluidStack;
@@ -67,7 +69,7 @@ public enum ClientOverlayHandler {
     static final ItemStack food = new ItemStack(Items.COOKED_BEEF);
     final double meterTextOffsetY = 0;
 
-    public void render(/*CustomizeGuiOverlayEvent  */ RenderGuiOverlayEvent.Post e) {
+    public void render(/*CustomizeGuiOverlayEvent  */ CustomizeGuiOverlayEvent e) {
         PoseStack matrixStack = e.getPoseStack();
 
         Minecraft minecraft = Minecraft.getInstance();
@@ -119,7 +121,7 @@ public enum ClientOverlayHandler {
                         if (ItemUtils.getRegistryName(module).equals(ItemUtils.getRegistryName(Items.CLOCK))) {
                             ItemStack clock = module;
                             if (clock.getCapability(NuminaCapabilities.POWER_MODULE).map(pm -> pm.isModuleOnline()).orElse(false)) {
-                                if (!clock.isEmpty() /*&& clock.getCapability(NuminaCapabilities.POWER_MODULE).map(pm->pm.isModuleOnline()).orElse(false)*/) {
+                                if (!clock.isEmpty() && clock.getCapability(NuminaCapabilities.POWER_MODULE).map(pm->pm.isModuleOnline()).orElse(false)) {
                                     String ampm;
                                     long time = player.level.getDayTime();
                                     long hour = ((time % 24000) / 1000);

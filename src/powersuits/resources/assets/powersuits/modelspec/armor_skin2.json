@@ -1,0 +1,56 @@
+{
+  "modelSpec": {
+    "specName": "citizenjoe_armorskin",
+    "type": "armor_skin",
+    "textures": [
+      {
+        "texture": {
+          "file": "powersuits:textures/item/armor/joearmor.png",
+          "bindings": [
+            {
+              "binding": {
+                "itemSlot": "head",
+                "target": "Head"
+              },
+              "binding": {
+                "itemSlot": "chest",
+                "target": "Body"
+              },
+              "binding": {
+                "itemSlot": "chest",
+                "target": "LeftArm"
+              },
+              "binding": {
+                "itemSlot": "chest",
+                "target": "RightArm"
+              },
+              "binding": {
+                "itemSlot": "feet",
+                "target": "LeftLeg"
+              },
+              "binding": {
+                "itemSlot": "feet",
+                "target": "RightLeg"
+              }
+            }
+          ]
+        },
+        "texture": {
+          "file": "powersuits:textures/item/armor/joearmorpants.png",
+          "bindings": [
+            {
+              "binding": {
+                "itemSlot": "legs",
+                "target": "LeftLeg"
+              },
+              "binding": {
+                "itemSlot": "legs",
+                "target": "RightLeg"
+              }
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

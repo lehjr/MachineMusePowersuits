@@ -50,7 +50,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.extensions.IForgeMenuType;
 import net.minecraftforge.event.CreativeModeTabEvent;
@@ -192,12 +191,10 @@ public class NuminaObjects {
     public static final RegistryObject<MenuType<ChargingBaseMenu>> CHARGING_BASE_CONTAINER_TYPE = MENU_TYPES.register("charging_base",
             () -> IForgeMenuType.create((windowId, inv, data) -> {
                 BlockPos pos = data.readBlockPos();
-
-                NuminaLogger.logError("trying something here");
-
                 return new ChargingBaseMenu(windowId, pos, inv);
             }));
 
+    // TODO!!
 //    public static final RegistryObject<MenuType<MPSAbstractContainerMenuScanner>> SCANNER_CONTAINER = MENU_TYPES.register(Constants.NAME_SCANNER, () -> IForgeMenuType.create(MPSAbstractContainerMenuScanner::createForClient));
 
     @SubscribeEvent

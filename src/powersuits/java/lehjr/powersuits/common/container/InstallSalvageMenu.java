@@ -8,7 +8,7 @@ import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.math.Color;
 import lehjr.numina.common.math.MathUtils;
-import lehjr.powersuits.common.base.MPSObjects;
+import lehjr.powersuits.common.base.MPSMenuTypes;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Inventory;
@@ -27,7 +27,7 @@ public class InstallSalvageMenu extends AbstractContainerMenu {
     int hotbarInventoryStart = 0;
 
     public InstallSalvageMenu(int containerID, Inventory playerInventory, EquipmentSlot slotType) {
-        super(MPSObjects.INSTALL_SALVAGE_MENU_TYPE.get(), containerID);
+        super(MPSMenuTypes.INSTALL_SALVAGE_MENU_TYPE.get(), containerID);
         this.slotType = slotType;
 
         int row, col;

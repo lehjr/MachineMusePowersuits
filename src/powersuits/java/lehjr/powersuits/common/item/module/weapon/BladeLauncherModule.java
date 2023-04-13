@@ -27,11 +27,15 @@
 package lehjr.powersuits.common.item.module.weapon;
 
 import lehjr.numina.common.capabilities.NuminaCapabilities;
-import lehjr.numina.common.capabilities.module.powermodule.*;
+import lehjr.numina.common.capabilities.module.powermodule.IConfig;
+import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
+import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
+import lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
 import lehjr.numina.common.capabilities.module.rightclick.RightClickModule;
 import lehjr.numina.common.energy.ElectricItemUtils;
 import lehjr.powersuits.common.config.MPSSettings;
 import lehjr.powersuits.common.constants.MPSConstants;
+import lehjr.powersuits.common.entity.SpinningBladeEntity;
 import lehjr.powersuits.common.item.module.AbstractPowerModule;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -52,9 +56,6 @@ import javax.annotation.Nullable;
 import java.util.concurrent.Callable;
 
 public class BladeLauncherModule extends AbstractPowerModule {
-    public BladeLauncherModule() {
-        super();
-    }
 
     @Nullable
     @Override
@@ -86,23 +87,28 @@ public class BladeLauncherModule extends AbstractPowerModule {
                 if (hand == InteractionHand.MAIN_HAND) {
                     if (ElectricItemUtils.getPlayerEnergy(playerIn) > applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION)) {
                         playerIn.startUsingItem(hand);
+
+                        System.out.println("use success");
+
                         return new InteractionResultHolder(InteractionResult.SUCCESS, itemStackIn);
                     }
                 }
+                System.out.println("use pass");
+
                 return new InteractionResultHolder(InteractionResult.PASS, itemStackIn);
             }
 
             @Override
             public void releaseUsing(ItemStack stack, Level worldIn, LivingEntity entityLiving, int timeLeft) {
+                System.out.println("release using");
+
                 if (!worldIn.isClientSide) {
                     int energyConsumption = getEnergyUsage();
 
                     if (ElectricItemUtils.getPlayerEnergy(entityLiving) > energyConsumption) {
                         ElectricItemUtils.drainPlayerEnergy(entityLiving, energyConsumption);
-                        System.out.println("FIXME!!!");
-
-//                        SpinningBladeEntity blade = new SpinningBladeEntity(worldIn, entityLiving);
-//                        worldIn.addFreshEntity(blade);
+                        SpinningBladeEntity blade = new SpinningBladeEntity(worldIn, entityLiving);
+                        worldIn.addFreshEntity(blade);
                     }
                 }
             }

@@ -28,12 +28,10 @@ package lehjr.numina.client.screen;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import lehjr.numina.client.config.IMeterConfig;
 import lehjr.numina.client.gui.meter.EnergyMeter;
 import lehjr.numina.common.config.NuminaSettings;
 import lehjr.numina.common.constants.NuminaConstants;
 import lehjr.numina.common.container.ChargingBaseMenu;
-import lehjr.numina.common.math.Color;
 import lehjr.numina.common.string.StringUtils;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.GameRenderer;

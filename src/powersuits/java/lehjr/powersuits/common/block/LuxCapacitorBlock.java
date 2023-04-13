@@ -32,6 +32,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -107,5 +108,10 @@ public class LuxCapacitorBlock extends DirectionalBlock implements SimpleWaterlo
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
         return new LuxCapacitorBlockEntity(pos, state);
+    }
+
+    @Override
+    public boolean canSurvive(BlockState pState, LevelReader pLevel, BlockPos pPos) {
+        return super.canSurvive(pState, pLevel, pPos);
     }
 }

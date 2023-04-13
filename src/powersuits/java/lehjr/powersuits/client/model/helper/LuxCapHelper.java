@@ -39,17 +39,18 @@ public class LuxCapHelper {
 
     public static ModelData getBlockBaseModelData() {
         ImmutableMap.Builder<String, ModelData> builder = ImmutableMap.builder();
-        builder.put(LIGHT_BASE_LOWER, OBJPartData.makeOBJPartData(false, true, Color.WHITE.getARGBInt()));
-        builder.put(LIGHT_BASE_UPPER, OBJPartData.makeOBJPartData(false, true, Color.WHITE.getARGBInt()));
         builder.put(LIGHT_LENS, OBJPartData.makeOBJPartData(false, false, Color.WHITE.getARGBInt()));
+        builder.put(LIGHT_BASE_LOWER, OBJPartData.makeOBJPartData(false, true, Color.WHITE.getAGBRInt()));
+        builder.put(LIGHT_BASE_UPPER, OBJPartData.makeOBJPartData(false, true, Color.WHITE.getARGBInt()));
         return ModelData.builder().with(OBJPartData.SUBMODEL_DATA, new OBJPartData(builder.build())).build();
     }
 
     public static ModelData getBlockLensModelData(int color) {
         ImmutableMap.Builder<String, ModelData> builder = ImmutableMap.builder();
-        builder.put(LIGHT_BASE_LOWER, OBJPartData.makeOBJPartData(false, false, Color.WHITE.getARGBInt()));
-        builder.put(LIGHT_BASE_UPPER, OBJPartData.makeOBJPartData(false, false, Color.WHITE.getARGBInt()));
         builder.put(LIGHT_LENS, OBJPartData.makeOBJPartData(true, true, color));
+//        builder.put(LIGHT_LENS, OBJPartData.makeOBJPartData(true, true, Color.WHITE.getARGBInt()));
+        builder.put(LIGHT_BASE_LOWER, OBJPartData.makeOBJPartData(false, false, Color.WHITE.getAGBRInt()));
+        builder.put(LIGHT_BASE_UPPER, OBJPartData.makeOBJPartData(false, false, Color.WHITE.getARGBInt()));
         return ModelData.builder().with(OBJPartData.SUBMODEL_DATA, new OBJPartData(builder.build())).build();
     }
 //
@@ -61,9 +62,11 @@ public class LuxCapHelper {
 
     public static ModelData getItemModelData(int color) {
         ImmutableMap.Builder<String, ModelData> builder = ImmutableMap.builder();
-        builder.put(LIGHT_BASE_LOWER, OBJPartData.makeOBJPartData(false, true, Color.WHITE.getARGBInt()));
-        builder.put(LIGHT_BASE_UPPER, OBJPartData.makeOBJPartData(false, true, Color.WHITE.getARGBInt()));
         builder.put(LIGHT_LENS, OBJPartData.makeOBJPartData(true, true, color));
+
+//        builder.put(LIGHT_LENS, OBJPartData.makeOBJPartData(true, true, Color.WHITE.getARGBInt()));
+        builder.put(LIGHT_BASE_LOWER, OBJPartData.makeOBJPartData(false, true, Color.WHITE.getAGBRInt()));
+        builder.put(LIGHT_BASE_UPPER, OBJPartData.makeOBJPartData(false, true, Color.WHITE.getAGBRInt()));
         return ModelData.builder().with(OBJPartData.SUBMODEL_DATA, new OBJPartData(builder.build())).build();
     }
 }

@@ -43,11 +43,8 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.resources.model.BlockModelRotation;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
-import net.minecraftforge.client.model.data.ModelData;
 import net.minecraftforge.common.util.NonNullLazy;
 import org.joml.Quaternionf;
-
-import java.util.Random;
 
 public class RailGunBoltRenderer extends net.minecraft.client.renderer.entity.EntityRenderer<RailgunBoltEntity> {
 
