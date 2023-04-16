@@ -26,19 +26,27 @@
 
 package lehjr.powersuits.common.item.tool;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import lehjr.numina.common.capabilities.NuminaCapabilities;
 import lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
 import lehjr.numina.common.capabilities.module.rightclick.IRightClickModule;
 import lehjr.numina.common.energy.ElectricItemUtils;
 import lehjr.powersuits.client.event.ModelBakeEventHandler;
+import lehjr.powersuits.client.render.item.MPSBEWLR;
 import lehjr.powersuits.common.constants.MPSConstants;
 import lehjr.powersuits.common.constants.MPSRegistryNames;
+import net.minecraft.client.gui.Font;
+import net.minecraft.client.model.HumanoidModel;
+import net.minecraft.client.model.Model;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -51,6 +59,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Consumer;
 
@@ -61,8 +71,6 @@ public class PowerFist extends AbstractElectricTool {
 
     @Override
     public int getUseDuration(ItemStack stack) {
-        System.out.println("getDuration");
-
         return stack.getCapability(ForgeCapabilities.ITEM_HANDLER)
                 .filter(IModeChangingItem.class::isInstance)
                 .map(IModeChangingItem.class::cast)
@@ -71,8 +79,6 @@ public class PowerFist extends AbstractElectricTool {
 
     @Override
     public boolean mineBlock(ItemStack powerFist, Level worldIn, BlockState state, BlockPos pos, LivingEntity entityLiving) {
-        System.out.println("mineBlock");
-
         return powerFist.getCapability(ForgeCapabilities.ITEM_HANDLER)
                 .filter(IModeChangingItem.class::isInstance)
                 .map(IModeChangingItem.class::cast)
@@ -91,8 +97,6 @@ public class PowerFist extends AbstractElectricTool {
 
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
-        System.out.println("use");
-
         ItemStack fist = player.getItemInHand(hand);
         final InteractionResultHolder<ItemStack> fallback = new InteractionResultHolder(InteractionResult.PASS, fist);
         if (hand != InteractionHand.MAIN_HAND) {
@@ -107,8 +111,6 @@ public class PowerFist extends AbstractElectricTool {
 
     @Override
     public InteractionResult onItemUseFirst(ItemStack itemStack, UseOnContext context) {
-        System.out.println("onItemUseFirst");
-
         final InteractionResult fallback = InteractionResult.PASS;
 
         final InteractionHand hand = context.getHand();
@@ -132,9 +134,7 @@ public class PowerFist extends AbstractElectricTool {
 
     @Override
     public InteractionResult interactLivingEntity(ItemStack itemStackIn, Player player, LivingEntity entity, InteractionHand hand) {
-        System.out.println("interactEntity");
-
-         return itemStackIn.getCapability(ForgeCapabilities.ITEM_HANDLER)
+        return itemStackIn.getCapability(ForgeCapabilities.ITEM_HANDLER)
                 .filter(IModeChangingItem.class::isInstance)
                 .map(IModeChangingItem.class::cast)
                 .map(handler->
@@ -148,8 +148,6 @@ public class PowerFist extends AbstractElectricTool {
 
     @Override
     public ItemStack finishUsingItem(ItemStack stack, Level worldIn, LivingEntity entity) {
-        System.out.println("finish using");
-
         return stack.getCapability(ForgeCapabilities.ITEM_HANDLER)
                 .filter(IModeChangingItem.class::isInstance)
                 .map(IModeChangingItem.class::cast)
@@ -158,20 +156,14 @@ public class PowerFist extends AbstractElectricTool {
 
     @Override
     public void releaseUsing(ItemStack stack, Level worldIn, LivingEntity entityLiving, int timeLeft) {
-        System.out.println("release using");
-
         stack.getCapability(ForgeCapabilities.ITEM_HANDLER)
                 .filter(IModeChangingItem.class::isInstance)
                 .map(IModeChangingItem.class::cast)
                 .ifPresent(handler-> handler.releaseUsing(stack, worldIn, entityLiving, timeLeft));
-
     }
 
     @Override
     public InteractionResult useOn(UseOnContext context) {
-        System.out.println("UseOn");
-
-
         final InteractionResult fallback = InteractionResult.PASS;
 
         final InteractionHand hand = context.getHand();
@@ -258,7 +250,7 @@ public class PowerFist extends AbstractElectricTool {
 
     @Override
     public UseAnim getUseAnimation(ItemStack pStack) {
-        return UseAnim.BLOCK;
+        return UseAnim.BOW;
     }
 
     @Override
@@ -270,7 +262,12 @@ public class PowerFist extends AbstractElectricTool {
             public BlockEntityWithoutLevelRenderer getCustomRenderer() {
                 return renderer;
             }
+
+            @Override
+            public boolean applyForgeHandTransform(PoseStack poseStack, LocalPlayer player, HumanoidArm arm, ItemStack itemInHand, float partialTick, float equipProcess, float swingProcess) {
+                ((MPSBEWLR)renderer).setFiringData(new MPSBEWLR.FiringData(player, arm, itemInHand));
+                return IClientItemExtensions.super.applyForgeHandTransform(poseStack, player, arm, itemInHand, partialTick, equipProcess, swingProcess);
+            }
         });
     }
-
 }

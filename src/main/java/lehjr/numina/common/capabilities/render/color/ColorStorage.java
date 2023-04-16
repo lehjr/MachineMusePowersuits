@@ -53,11 +53,11 @@ public class ColorStorage implements IColorTag, INBTSerializable<IntTag> {
 
     @Override
     public IntTag serializeNBT() {
-        return color.serializeNBT();
+        return IntTag.valueOf(color.getARGBInt());
     }
 
     @Override
     public void deserializeNBT(IntTag nbt) {
-        this.color.deserializeNBT(nbt);
+        this.color = new Color(nbt.getAsInt());
     }
 }

@@ -72,9 +72,12 @@ public class SpinningBladeEntityRenderer extends net.minecraft.client.renderer.e
         int i = itemstack.isEmpty() ? 187 : Item.getId(itemstack.getItem()) + itemstack.getDamageValue();
         this.random.setSeed(i);
         BakedModel ibakedmodel = Minecraft.getInstance().getItemRenderer().getModel(itemstack, entityIn.level, null, entityIn.getId());
+        //  FIXME... figure out how to rotate blades to correspond with path
+
         matrixStackIn.mulPose(TransformationHelper.quatFromXYZ(new Vector3f(90, 0, 0), true));
         int time = (int) System.currentTimeMillis() % 360;
         matrixStackIn.mulPose(TransformationHelper.quatFromXYZ(new Vector3f(0, 0, time / 2), true));
+
 
         boolean flag = ibakedmodel.isGui3d();
         matrixStackIn.pushPose();

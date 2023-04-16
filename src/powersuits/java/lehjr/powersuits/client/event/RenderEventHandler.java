@@ -60,6 +60,7 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.*;
+import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -136,12 +137,12 @@ public enum RenderEventHandler {
 
     @OnlyIn(Dist.CLIENT)
     @SubscribeEvent
-    public void onPostRenderGameOverlayEvent(/*RenderGuiOverlayEvent.Post*/CustomizeGuiOverlayEvent e) {
+    public void onPostRenderGameOverlayEvent(RenderGuiOverlayEvent.Pre /*CustomizeGuiOverlayEvent*/ e) {
 //        if (Re.getType() == RenderGameOverlayEvent.ElementType.LAYER) { // opaque rendering, completely ignores alpha setting
-//        if (e.getType() == RenderGameOverlayEvent.ElementType.TEXT) { // this one allows translucent rendering
+        if (e.getOverlay().id().equals(VanillaGuiOverlay.TITLE_TEXT.id())) { // this one allows translucent rendering
             this.drawKeybindToggles(e.getPoseStack());
             ClientOverlayHandler.INSTANCE.render(e);
-//        }
+        }
     }
 
     @SubscribeEvent

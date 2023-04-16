@@ -5,27 +5,18 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import lehjr.numina.common.math.Color;
 import lehjr.powersuits.client.event.ModelBakeEventHandler;
 import lehjr.powersuits.client.model.block.LuxCapacitorModel2;
-import lehjr.powersuits.client.model.item.IconModel;
 import lehjr.powersuits.common.block.LuxCapacitorBlock;
 import lehjr.powersuits.common.blockentity.LuxCapacitorBlockEntity;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
-import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.client.renderer.texture.TextureAtlas;
-import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.client.model.IQuadTransformer;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -33,7 +24,7 @@ import java.util.Random;
 // TODO: do I really want to go back to this just to avoid color issues?
 
 public class LuxCapacitorBER implements BlockEntityRenderer<LuxCapacitorBlockEntity> {
-    IconModel icon = new IconModel();
+//    IconModel icon = new IconModel();
     LuxCapacitorModel2 model2 = new LuxCapacitorModel2(RenderType::itemEntityTranslucentCull);
     ResourceLocation dark = new ResourceLocation("powersuits:textures/block/luxdark.png");
     ResourceLocation light = new ResourceLocation("powersuits:textures/block/luxlight.png");

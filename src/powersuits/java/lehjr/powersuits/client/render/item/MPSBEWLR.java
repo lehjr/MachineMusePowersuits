@@ -1,31 +1,36 @@
 package lehjr.powersuits.client.render.item;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import lehjr.numina.common.capabilities.NuminaCapabilities;
+import lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
 import lehjr.numina.common.item.ItemUtils;
 import lehjr.powersuits.client.model.block.TinkerTableModel;
-import lehjr.powersuits.client.model.item.IconModel;
 import lehjr.powersuits.client.model.item.PowerFistModel2;
 import lehjr.powersuits.common.base.MPSItems;
 import lehjr.powersuits.common.constants.MPSConstants;
 import lehjr.powersuits.common.constants.MPSRegistryNames;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.EntityModelSet;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
-import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
-import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
+
+import java.util.Objects;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class MPSBEWLR extends BlockEntityWithoutLevelRenderer {
     TinkerTableModel tinkerTableModel;
     PowerFistModel2 powerFistModelRight;
     PowerFistModel2 powerFistModelLeft;
     public static final ResourceLocation powerFistIcon = new ResourceLocation(MPSConstants.MOD_ID, "textures/item/handitem.png");
-    IconModel icon = new IconModel();
+//    IconModel icon = new IconModel();
 
     public MPSBEWLR() {
         super(Minecraft.getInstance().getBlockEntityRenderDispatcher(), new EntityModelSet());
@@ -52,21 +57,83 @@ public class MPSBEWLR extends BlockEntityWithoutLevelRenderer {
         }
 
         if (ItemUtils.getRegistryName(item).equals(MPSRegistryNames.POWER_FIST)) {
-            if (transformType == ItemTransforms.TransformType.GUI) {
-                icon.renderToBuffer(poseStack,
-                        buffer.getBuffer(RenderType.entityTranslucentCull(powerFistIcon)),
-                        LightTexture.FULL_BRIGHT,
-//                        packedOverlay,
-                        OverlayTexture.WHITE_OVERLAY_V,
-                        1F, 1F, 1F, 1F);
-            } else if (transformType == ItemTransforms.TransformType.FIRST_PERSON_LEFT_HAND || transformType == ItemTransforms.TransformType.THIRD_PERSON_LEFT_HAND) {
-                powerFistModelLeft.setNeutralPose();
+            AtomicReference<Float> firingPercent = new AtomicReference(0F);
+            itemStack.getCapability(NuminaCapabilities.RENDER).ifPresent(specNBTCap -> {
+                if (firingData != null && ItemStack.isSame(itemStack, firingData.itemInHand()) && firingData.player().isUsingItem()) {
+                    LocalPlayer player = firingData.player();
+                    firingPercent.set(firingData.itemInHand().getCapability(ForgeCapabilities.ITEM_HANDLER)
+                            .filter(IModeChangingItem.class::isInstance)
+                            .map(IModeChangingItem.class::cast)
+                            .map(modechanging -> {
+                                ItemStack module = modechanging.getActiveModule();
+                                int actualCount = 0;
+                                float maxPlasma = 0.01F;
+                                float currentPlasma = 0F;
+
+                                int maxDuration = modechanging.getModularItemStack().getUseDuration();
+                                if (!module.isEmpty()) {
+                                    actualCount = (maxDuration - player.getUseItemRemainingTicks());
+
+                                    System.out.println("actual count here: " + actualCount + ", remaining ticks: " + player.getUseItemRemainingTicks());
+
+                                    // Plasma Cannon
+                                    if (ItemUtils.getRegistryName(module).equals(MPSRegistryNames.PLASMA_CANNON_MODULE)) {
+                                        currentPlasma = (actualCount > 50F ? 50F : actualCount) * 2F;
+
+                                        // Ore Scanner or whatever
+                                    } else {
+                                        currentPlasma = (actualCount > 40F ? 40F : actualCount) * 2.5F;
+                                    }
+                                }
+                                System.out.println("actualCount: " + actualCount +", currentPlasma: " + currentPlasma + ", duration: " + player.getUseItemRemainingTicks());
+
+                                if (currentPlasma > 0) {
+                                    return currentPlasma * maxPlasma;
+                                }
+                                return 0F;
+                            }).orElse(0F));
+                }
+            });
+
+            if (transformType == ItemTransforms.TransformType.FIRST_PERSON_LEFT_HAND || transformType == ItemTransforms.TransformType.THIRD_PERSON_LEFT_HAND) {
+                if (firingPercent.get() > 0) {
+                    powerFistModelLeft.setFiringPose(firingPercent.get());
+                } else {
+                    powerFistModelLeft.setNeutralPose();
+                }
                 powerFistModelLeft.renderToBuffer(poseStack, buffer.getBuffer(RenderType.entityTranslucentCull(PowerFistModel2.TEXTURE)), packedLight, packedOverlay, 1F, 1F, 1F, 1F);
 
             } else {
-                powerFistModelRight.setNeutralPose();
+                if (firingPercent.get() > 0) {
+                    powerFistModelRight.setFiringPose(firingPercent.get());
+                    System.out.println("firing percent: " + firingPercent.get());
+
+                } else {
+                    powerFistModelRight.setNeutralPose();
+                }
                 powerFistModelRight.renderToBuffer(poseStack, buffer.getBuffer(RenderType.entityTranslucentCull(PowerFistModel2.TEXTURE)), packedLight, packedOverlay, 1F, 1F, 1F, 1F);
             }
+
+
+
+        }
+    }
+
+    FiringData firingData = null;
+
+    public FiringData getFiringData() {
+        return firingData;
+    }
+
+    public void setFiringData(FiringData firingData) {
+        this.firingData = firingData;
+    }
+
+    public record FiringData(LocalPlayer player, HumanoidArm arm, ItemStack itemInHand) {
+        public FiringData {
+            Objects.requireNonNull(arm);
+            Objects.requireNonNull(itemInHand);
+            Objects.requireNonNull(player);
         }
     }
 }

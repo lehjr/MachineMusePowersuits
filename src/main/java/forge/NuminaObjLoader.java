@@ -88,7 +88,19 @@ public class NuminaObjLoader implements IGeometryLoader<NuminaObjModel>, Resourc
             deprecationWarningsBuilder.put("materialLibraryOverride", "mtl_override");
         }
 
-        return loadModel(new NuminaObjModel.ModelSettings(new ResourceLocation(modelLocation), automaticCulling, shadeQuads, flipV, emissiveAmbient, mtlOverride), deprecationWarningsBuilder.build());
+        return loadModel(new NuminaObjModel.ModelSettings(
+                new ResourceLocation(modelLocation), automaticCulling, shadeQuads, flipV, emissiveAmbient, mtlOverride), deprecationWarningsBuilder.build());
+    }
+
+    public NuminaObjModel loadWithDefaultSettings(ResourceLocation location) {
+        return loadModel(
+        new NuminaObjModel.ModelSettings(
+                location,
+                true,
+                true,
+                false,
+                true,
+                null));
     }
 
     public NuminaObjModel loadModel(NuminaObjModel.ModelSettings settings)

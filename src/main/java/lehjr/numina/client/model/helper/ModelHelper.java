@@ -105,7 +105,7 @@ public class ModelHelper {
                                                         ResourceLocation modelLocation) {
         NuminaObjModel model = getOBJModel(modelLocation, 0);
 
-//        if (model != null) {
+        if (model != null) {
 //            StandaloneGeometryBakingContext
 //
 //
@@ -118,7 +118,7 @@ public class ModelHelper {
 //                    overrides,
 //                    modelLocation);
 //            return bakedModel;
-//        }
+        }
         return null;
     }
 

@@ -290,13 +290,14 @@ public class PowerFistModel2 extends Model {
 
     public void setFiringBoltPose(int boltSize) {
         this.boltSize = boltSize;
-        setFiringPose();
+        setFiringPose(boltSize);
     }
 
 
-    public void setFiringPose() {
+    public void setFiringPose(float chargePercent) {
         // FIXME: left and right hand values
-        setPose(1.5f, -1, 1.5f, -1, 1.5f, -1);
+//        setPose(1.5f, -1, 1.5f, -1, 1.5f, -1);
+        setPose(0.5f + chargePercent, -1, 0.5f + chargePercent, -1, 0.5f + chargePercent, -1);
     }
 
 

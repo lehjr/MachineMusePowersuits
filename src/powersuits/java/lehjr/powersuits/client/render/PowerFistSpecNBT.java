@@ -26,7 +26,7 @@
 
 package lehjr.powersuits.client.render;
 
-import lehjr.numina.common.capabilities.render.IHandHeldModelSpecNBT;
+import lehjr.numina.common.capabilities.render.IHandHeldEntitySpecNBT;
 import lehjr.numina.common.capabilities.render.ModelSpecStorage;
 import lehjr.numina.common.capabilities.render.modelspec.*;
 import lehjr.numina.common.constants.TagConstants;
@@ -41,7 +41,7 @@ import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PowerFistSpecNBT extends ModelSpecStorage implements IHandHeldModelSpecNBT {
+public class PowerFistSpecNBT extends ModelSpecStorage implements IHandHeldEntitySpecNBT {
     public PowerFistSpecNBT(@Nonnull ItemStack itemStackIn) {
         super(itemStackIn);
     }

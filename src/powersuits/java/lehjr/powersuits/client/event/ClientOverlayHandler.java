@@ -69,7 +69,7 @@ public enum ClientOverlayHandler {
     static final ItemStack food = new ItemStack(Items.COOKED_BEEF);
     final double meterTextOffsetY = 0;
 
-    public void render(/*CustomizeGuiOverlayEvent  */ CustomizeGuiOverlayEvent e) {
+    public void render(RenderGuiOverlayEvent.Pre e) {
         PoseStack matrixStack = e.getPoseStack();
 
         Minecraft minecraft = Minecraft.getInstance();
@@ -232,15 +232,13 @@ public enum ClientOverlayHandler {
                                 // Plasma Cannon
                                 if (ItemUtils.getRegistryName(module).equals(MPSRegistryNames.PLASMA_CANNON_MODULE)) {
                                     actualCount = (maxDuration - player.getUseItemRemainingTicks());
-                                    currentPlasma.set(
-                                            currentPlasma.get() + (actualCount > 50 ? 50 : actualCount) * 2);
+                                    currentPlasma.set(currentPlasma.get() + (actualCount > 50 ? 50 : actualCount) * 2);
                                     maxPlasma.set(maxPlasma.get() + 100F);
 
                                     // Ore Scanner or whatever
                                 } else {
                                     actualCount = (maxDuration - player.getUseItemRemainingTicks());
-                                    currentPlasma.set(
-                                            currentPlasma.get() + (actualCount > 40 ? 40 : actualCount) * 2.5F);
+                                    currentPlasma.set(currentPlasma.get() + (actualCount > 40 ? 40 : actualCount) * 2.5F);
                                     maxPlasma.set(maxPlasma.get() + 100F);
                                 }
                             }

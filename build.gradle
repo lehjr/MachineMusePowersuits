@@ -344,16 +344,21 @@ void exclusiveRepo(RepositoryHandler handler, String url, Consumer<InclusiveRepo
     }
 }
 
-repositories { RepositoryHandler handler ->
-    exclusiveRepo(handler, 'https://maven.blamejared.com', filter -> {
-        filter.includeGroupByRegex 'com\\.blamejared.*'
-        filter.includeGroup 'mezz.jei'
-    })
-    exclusiveRepo(handler, 'https://maven.theillusivec4.top/', 'top.theillusivec4.curios')
-    exclusiveRepo(handler, 'https://maven.tterrag.com/', 'team.chisel.ctm')
-    exclusiveRepo(handler, 'https://squiddev.cc/maven/', 'org.squiddev')
-    exclusiveRepo(handler, 'https://www.cursemaven.com', 'curse.maven')
-    exclusiveRepo(handler, 'https://modmaven.dev/', 'appeng', 'mcjty.theoneprobe')
+repositories {
+    RepositoryHandler handler ->
+        exclusiveRepo(handler, 'https://maven.blamejared.com', filter -> {
+            filter.includeGroupByRegex 'com\\.blamejared.*'
+            filter.includeGroup 'mezz.jei'
+        })
+        exclusiveRepo(handler, 'https://maven.theillusivec4.top/', 'top.theillusivec4.curios')
+        exclusiveRepo(handler, 'https://maven.tterrag.com/', 'team.chisel.ctm')
+        exclusiveRepo(handler, 'https://squiddev.cc/maven/', 'org.squiddev')
+        exclusiveRepo(handler, 'https://www.cursemaven.com', 'curse.maven')
+        exclusiveRepo(handler, 'https://modmaven.dev/', 'appeng', 'mcjty.theoneprobe')
+
+        flatDir {
+            dirs 'libs'
+        }
 }
 
 dependencies {
@@ -374,8 +379,8 @@ dependencies {
 
 
 
-////    runtimeOnly fg.deobf("itemtransformhelper:1.0")
-//    runtimeOnly fg.deobf("ignored:itemtransformhelper:1.0")
+
+    runtimeOnly fg.deobf("ignored:itemtransformhelper:1.0")
 //
 //    // The API isn't enough for compiling or testing
     implementation fg.deobf("curse.maven:applied-energistics-2-223794:${ae2_version}") {

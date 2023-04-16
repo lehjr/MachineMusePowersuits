@@ -32,6 +32,7 @@ import lehjr.numina.common.math.Color;
 import lehjr.powersuits.client.model.block.LuxCapacitorModelWrapper;
 import lehjr.powersuits.client.model.helper.LuxCapHelper;
 import lehjr.powersuits.client.model.helper.MPSModelHelper;
+import lehjr.powersuits.client.model.item.PowerFistModelWrapper;
 import lehjr.powersuits.client.render.item.MPSBEWLR;
 import lehjr.powersuits.common.constants.MPSRegistryNames;
 import net.minecraft.client.renderer.block.model.BakedQuad;
@@ -114,14 +115,14 @@ public enum ModelBakeEventHandler {
 //        });
 
 //        event.getModels().keySet().stream().filter(resourceLocation -> resourceLocation.toString().contains("powersuits:powerfist")).forEach(resourceLocation -> NuminaLogger.logError("modelLocation: " + resourceLocation));
+//
 
 
 
-
-//        BakedModel powerFistIcon = event.getModels().get(powerFistIconLocation);
-//        if (!OBJBakedCompositeModel.class.isInstance(powerFistIcon)) {
-//            event.getModels().put(powerFistIconLocation, new PowerFistModel(powerFistIcon));
-//        }
+        BakedModel powerFistIcon = event.getModels().get(powerFistIconLocation);
+        if (!OBJBakedCompositeModel.class.isInstance(powerFistIcon)) {
+            event.getModels().put(powerFistIconLocation, new PowerFistModelWrapper(powerFistIcon));
+        }
 
         MPSModelHelper.loadArmorModels(null, event.getModelBakery());
     }

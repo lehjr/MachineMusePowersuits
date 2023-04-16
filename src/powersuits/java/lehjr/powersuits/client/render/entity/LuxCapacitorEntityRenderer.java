@@ -67,9 +67,6 @@ public class LuxCapacitorEntityRenderer extends EntityRenderer<LuxCapacitorEntit
     ItemStack getStack(Color color) {
         ItemStack stack = new ItemStack(ForgeRegistries.ITEMS.getValue(MPSRegistryNames.LUX_CAPACITOR));
         CompoundTag nbt = stack.getOrCreateTag();
-
-        System.out.println("color here: " + color);
-
         nbt.putInt(TagConstants.COLOR, color.getARGBInt());
         return stack;
     }

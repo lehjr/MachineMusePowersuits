@@ -31,6 +31,7 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import lehjr.numina.common.base.NuminaLogger;
 import net.minecraft.nbt.IntTag;
 import net.minecraftforge.common.util.INBTSerializable;
+import org.checkerframework.checker.units.qual.C;
 import org.joml.Vector4f;
 
 import java.util.Objects;
@@ -41,7 +42,7 @@ import java.util.Objects;
  *
  * @author MachineMuse
  */
-public class Color implements INBTSerializable<IntTag> {
+public class Color /*implements INBTSerializable<IntTag>*/ {
     // 1/255 for faster math
     public static final float div255 = 0.003921569F;
     // Colour values changed to match Java's AWT colors
@@ -74,10 +75,10 @@ public class Color implements INBTSerializable<IntTag> {
      * The RGBA values are stored as floats from 0.0F (nothing) to 1.0F (full
      * saturation/opacity)
      */
-    public float r;
-    public float g;
-    public float b;
-    public float a;
+    public final float r;
+    public final float g;
+    public final float b;
+    public final float a;
 
     /**
      * Constructor. Just sets the RGBA values to the parameters.
@@ -140,17 +141,17 @@ public class Color implements INBTSerializable<IntTag> {
     }
 
     public Color lighten(float amount) {
-        this.r = Math.min(this.r + amount, 1F);
-        this.g = Math.min(this.g + amount, 1F);
-        this.b = Math.min(this.b + amount, 1F);
-        return this;
+        float r = Math.min(this.r + amount, 1F);
+        float g = Math.min(this.g + amount, 1F);
+        float b = Math.min(this.b + amount, 1F);
+        return new Color(r, g, b, this.a);
     }
 
     public Color darken(float amount) {
-        this.r = Math.max(this.r - amount, 0);
-        this.g = Math.max(this.g - amount, 0);
-        this.b = Math.max(this.b - amount, 0);
-        return this;
+        float r = Math.max(this.r - amount, 0);
+        float g = Math.max(this.g - amount, 0);
+        float b = Math.max(this.b - amount, 0);
+        return new Color(r, g, b, a);
     }
 
     public static int getARGBInt(float r, float g, float b, float a) {
@@ -199,7 +200,9 @@ public class Color implements INBTSerializable<IntTag> {
             int parsed = (int) Long.parseLong(hexString, 16);
             // Integer.parse will fail for RGBA strings
             Color color = new Color((int) Long.parseLong(hexString, 16));
-            if (color.a == 0) color.a = 1;
+            if (color.a == 0) {
+                return color.withAlpha(1F);
+            }
             return color;
         } catch (Exception e) {
             NuminaLogger.logException("Failed to generate colour from Hex: ", e);
@@ -249,17 +252,6 @@ public class Color implements INBTSerializable<IntTag> {
     public String rgbaHexColour() {
         return hexDigits(r) + hexDigits(g) + hexDigits(b) + (a > 0 ? hexDigits(a) : "");
     }
-/*
-bar color: Colour{r=1.0, g=0.41176474, b=0.85098046, a=0.09019608}
----------(23)-(255)-(105)-(217)
-----------AA-RR-GG-BB--------------
-startHex: 17 FF 69 d9, value: 402614745, parsedToHex: 17ff69d9
-barColorHex: 1769d9ff
-
- */
-
-
-
 
     public static String hexDigits(float x) {
         int y = (int) (x * 255);
@@ -297,19 +289,19 @@ barColorHex: 1769d9ff
         return new Color(this.r, this.g, this.b, this.a);
     }
 
-    @Override
-    public IntTag serializeNBT() {
-        return IntTag.valueOf(getARGBInt());
-    }
-
-    @Override
-    public void deserializeNBT(IntTag nbt) {
-        if (nbt != null && nbt instanceof IntTag) {
-            int c = nbt.getAsInt();
-            this.a = (c >> 24 & 0xFF) * div255;
-            this.r = (c >> 16 & 0xFF) * div255;
-            this.g = (c >> 8 & 0xFF) * div255;
-            this.b = (c & 0xFF) * div255;
-        }
-    }
+//    @Override
+//    public IntTag serializeNBT() {
+//        return IntTag.valueOf(getARGBInt());
+//    }
+//
+//    @Override
+//    public void deserializeNBT(IntTag nbt) {
+//        if (nbt != null && nbt instanceof IntTag) {
+//            int c = nbt.getAsInt();
+//            this.a = (c >> 24 & 0xFF) * div255;
+//            this.r = (c >> 16 & 0xFF) * div255;
+//            this.g = (c >> 8 & 0xFF) * div255;
+//            this.b = (c & 0xFF) * div255;
+//        }
+//    }
 }

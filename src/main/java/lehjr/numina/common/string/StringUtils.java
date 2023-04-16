@@ -26,6 +26,8 @@
 
 package lehjr.numina.common.string;
 
+import com.mojang.blaze3d.platform.Lighting;
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import lehjr.numina.common.math.Color;
 import net.minecraft.client.Minecraft;
@@ -516,16 +518,16 @@ public class StringUtils {
         drawShadowedString(matrixStack, text, x, y - (getStringHeight() * 0.5));
     }
 
-    public static void drawLeftAlignedShadowedString(PoseStack matrixStack, Component text, double x, double y, Color colour) {
-        drawShadowedString(matrixStack, text, x, y - (getStringHeight() * 0.5), colour);
+    public static void drawLeftAlignedShadowedString(PoseStack matrixStack, Component text, double x, double y, Color color) {
+        drawShadowedString(matrixStack, text, x, y - (getStringHeight() * 0.5), color);
     }
 
     public static void drawLeftAlignedShadowedString(PoseStack matrixStack, String s, double x, double y) {
         drawShadowedString(matrixStack, s, x, y - (getStringHeight() * 0.5));
     }
 
-    public static void drawLeftAlignedShadowedString(PoseStack matrixStack, String s, double x, double y, Color colour) {
-        drawShadowedString(matrixStack, s, x, y - (getStringHeight() * 0.5), colour);
+    public static void drawLeftAlignedShadowedString(PoseStack matrixStack, String s, double x, double y, final Color color) {
+        drawShadowedString(matrixStack, s, x, y - (getStringHeight() * 0.5), color);
     }
 
     public static void drawShadowedString(PoseStack matrixStack, Component s, double x, double y) {
@@ -539,15 +541,38 @@ public class StringUtils {
     /**
      * Does the necessary openGL calls and calls the Minecraft font renderer to draw a string at the specified coords
      */
-    public static void drawShadowedString(PoseStack matrixStack, Component s, double x, double y, Color c) {
-        getFontRenderer().drawShadow(matrixStack, s, (int) x, (int) y, c.getARGBInt());
+    public static void drawShadowedString(PoseStack matrixStack, Component s, double x, double y, final Color color) {
+        matrixStack.pushPose();
+        matrixStack.translate(0.0F, 0.0F, 32.0F);
+        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+        Lighting.setupFor3DItems();
+        RenderSystem.disableDepthTest();
+        RenderSystem.disableBlend();
+        getFontRenderer().drawShadow(matrixStack, s.getVisualOrderText(), (float)x, (float)y, color.getARGBInt());
+        RenderSystem.enableDepthTest();
+        RenderSystem.enableBlend();
+        matrixStack.popPose();
     }
 
     /**
      * Does the necessary openGL calls and calls the Minecraft font renderer to draw a string at the specified coords
      */
-    public static void drawShadowedString(PoseStack matrixStack, String s, double x, double y, Color c) {
-        getFontRenderer().drawShadow(matrixStack, s, (int) x, (int) y, c.getARGBInt());
+    public static void drawShadowedString(
+            PoseStack matrixStack,
+            String txt,
+            double x,
+            double y,
+            Color color) {
+        matrixStack.pushPose();
+        matrixStack.translate(0.0F, 0.0F, 32.0F);
+        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+        Lighting.setupFor3DItems();
+        RenderSystem.disableDepthTest();
+        RenderSystem.disableBlend();
+        getFontRenderer().drawShadow(matrixStack, txt, (float)x, (float)y, color.getARGBInt()/*16777215*/);
+        RenderSystem.enableDepthTest();
+        RenderSystem.enableBlend();
+        matrixStack.popPose();
     }
 
     public static void drawShadowedStringsJustified(PoseStack matrixStack, List<String> words, double x1, double x2, double y) {

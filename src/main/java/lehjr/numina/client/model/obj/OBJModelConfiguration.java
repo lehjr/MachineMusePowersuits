@@ -46,7 +46,6 @@ public class OBJModelConfiguration implements IGeometryBakingContext {
     boolean useBlockLight = true;
     boolean useAmbientOcclusion = true;
 
-
     ItemTransforms transforms = ItemTransforms.NO_TRANSFORMS;
 
     ModelState blockTransform = BlockModelRotation.X0_Y0;

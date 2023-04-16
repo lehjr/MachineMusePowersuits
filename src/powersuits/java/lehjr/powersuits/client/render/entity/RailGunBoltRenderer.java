@@ -94,6 +94,10 @@ public class RailGunBoltRenderer extends net.minecraft.client.renderer.entity.En
 
     public static void renderBolt(MultiBufferSource bufferIn, RenderType rt, PoseStack matrixStackIn, int packedLightIn, int overlay, Color colour) {
         VertexConsumer bb = bufferIn.getBuffer(rt);
+        if (modelBolt.get() == null) {
+            return;
+        }
+
         for (BakedQuad quad : modelBolt.get().getQuads(null, null, rand)) {/*, ModelData.EMPTY)) {*/
             bb.putBulkData(matrixStackIn.last(), quad, colour.r, colour.g, colour.b, colour.a, packedLightIn, overlay, true);
         }

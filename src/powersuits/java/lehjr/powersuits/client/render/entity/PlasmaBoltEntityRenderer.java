@@ -37,11 +37,14 @@ import lehjr.numina.common.math.Color;
 import lehjr.powersuits.common.entity.PlasmaBallEntity;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.resources.model.BlockModelRotation;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.RandomSource;
+import net.minecraftforge.client.model.data.ModelData;
 import net.minecraftforge.common.util.NonNullLazy;
 
 import java.util.Random;
@@ -55,7 +58,7 @@ public class PlasmaBoltEntityRenderer extends EntityRenderer<PlasmaBallEntity> {
     static final ResourceLocation modelLocation = new ResourceLocation(NuminaConstants.MOD_ID, "models/item/test/sphere.obj");
     // NonNullLazy doesn't init until called
     public static final NonNullLazy<OBJBakedCompositeModel> modelSphere = NonNullLazy.of(() -> ModelHelper.loadBakedModel(BlockModelRotation.X0_Y0, null, modelLocation));
-    protected static final Random rand = new Random();
+    protected static final RandomSource rand = RandomSource.create(42L);
 
     public PlasmaBoltEntityRenderer(EntityRendererProvider.Context renderManager) {
         super(renderManager);
@@ -150,10 +153,14 @@ public class PlasmaBoltEntityRenderer extends EntityRenderer<PlasmaBallEntity> {
 
     public static void renderSphere(MultiBufferSource bufferIn, RenderType rt, PoseStack matrixStackIn, int packedLightIn, int overlay, Color colour) {
         VertexConsumer bb = bufferIn.getBuffer(rt);
-        NuminaLogger.logError("PlasmaBoltRenderer Render Spere quads not yet implemented");
 
-//        for (BakedQuad quad : modelSphere.get().getQuads(null, null, rand, ModelData.EMPTY)) {
-//            bb.putBulkData(matrixStackIn.last(), quad, colour.r, colour.g, colour.b, colour.a, packedLightIn, overlay, true);
-//        }
+        if (modelSphere.get() == null) {
+            NuminaLogger.logError("PlasmaBoltRenderer Render Spere quads not yet implemented");
+            return;
+        }
+
+        for (BakedQuad quad : modelSphere.get().getQuads(null, null, rand/*, ModelData.EMPTY*/)) {
+            bb.putBulkData(matrixStackIn.last(), quad, colour.r, colour.g, colour.b, colour.a, packedLightIn, overlay, true);
+        }
     }
 }
