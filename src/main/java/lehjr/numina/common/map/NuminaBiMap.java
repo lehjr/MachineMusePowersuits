@@ -31,6 +31,7 @@ import com.google.common.collect.HashBiMap;
 import lehjr.numina.common.base.NuminaLogger;
 
 import java.util.Map;
+import java.util.stream.Stream;
 
 /**
  * Author: MachineMuse (Claire Semple)
@@ -53,8 +54,16 @@ public class NuminaBiMap<S, T> {
         return theMap.values();
     }
 
+    public Stream<T> elemsAsStream() {
+        return theMap.values().stream();
+    }
+
     public Iterable<S> names() {
         return theMap.keySet();
+    }
+
+    public Stream<S> namessAsStream() {
+        return theMap.keySet().stream();
     }
 
     public T putName(S name, T elem) {

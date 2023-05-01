@@ -75,8 +75,8 @@
 //        this.shrinkBorder = shrinkBorder;
 //    }
 //
-//    public void setBackgroundColour(Color colour) {
-//        this.backgroundColour = colour;
+//    public void setBackgroundColour(Color color) {
+//        this.backgroundColour = color;
 //    }
 //
 //    public void setDirection(ArrowDirection facing) {

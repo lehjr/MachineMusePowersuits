@@ -112,7 +112,7 @@ public class ModularItemTabToggleWidget extends Clickable {
             if (EquipmentSlot.MAINHAND.equals(type)) {
 //                ShaderInstance oldShader = RenderSystem.getShader();
                 RenderSystem.setShader(GameRenderer::getPositionTexColorShader);
-                IconUtils.getIcon().weaponSlotBackground.draw(matrixStack, left() + 9 + offset, top() + 5, Color.WHITE);
+                IconUtils.getIcon().weapon.draw(matrixStack, left() + 9 + offset, top() + 5, Color.WHITE);
 //                RenderSystem.setShader(() -> oldShader);
             } else {
                 Pair<ResourceLocation, ResourceLocation> pair = IconUtils.getSlotBackground(type);

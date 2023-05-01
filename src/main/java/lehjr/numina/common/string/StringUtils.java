@@ -81,7 +81,10 @@ public class StringUtils {
 
     public static String extractName(String filename) {
         int ix = Math.max(filename.lastIndexOf('/'), Math.max(filename.lastIndexOf('\\'), filename.lastIndexOf(':'))) + 1;
-        return filename.substring(ix, filename.lastIndexOf('.')).trim();
+        if (filename.contains(".")) {
+            return filename.substring(ix, filename.lastIndexOf('.')).trim();
+        }
+        return filename.substring(ix);
     }
 
 
@@ -417,51 +420,51 @@ public class StringUtils {
         }
     }
 
-    public static void drawLeftAlignedText(PoseStack matrixStack, Component text, double x, double y, Color colour) {
-        drawText(matrixStack, text, x, y - (getStringHeight() * 0.5), colour);
+    public static void drawLeftAlignedText(PoseStack matrixStack, Component text, double x, double y, Color color) {
+        drawText(matrixStack, text, x, y - (getStringHeight() * 0.5), color);
     }
 
-    public static void drawLeftAlignedText(PoseStack matrixStack, String s, double x, double y, Color colour) {
-        drawText(matrixStack, s, x, y - (getStringHeight() * 0.5), colour);
+    public static void drawLeftAlignedText(PoseStack matrixStack, String s, double x, double y, Color color) {
+        drawText(matrixStack, s, x, y - (getStringHeight() * 0.5), color);
     }
 
-    public static void drawRightAlignedText(PoseStack matrixStack, Component text, double x, double y, Color colour) {
-        drawText(matrixStack, text, x - getStringWidth(text), y - (getStringHeight() * 0.5), colour);
+    public static void drawRightAlignedText(PoseStack matrixStack, Component text, double x, double y, Color color) {
+        drawText(matrixStack, text, x - getStringWidth(text), y - (getStringHeight() * 0.5), color);
     }
 
-    public static void drawRightAlignedText(PoseStack matrixStack, String s, double x, double y, Color colour) {
-        drawText(matrixStack, s, x - getStringWidth(s), y - (getStringHeight() * 0.5), colour);
+    public static void drawRightAlignedText(PoseStack matrixStack, String s, double x, double y, Color color) {
+        drawText(matrixStack, s, x - getStringWidth(s), y - (getStringHeight() * 0.5), color);
     }
 
-    public static void drawCenteredText(PoseStack matrixStack, Component component, double x, double y, Color colour) {
-        drawCenteredText(matrixStack, component, (float) x, (float) y, colour);
+    public static void drawCenteredText(PoseStack matrixStack, Component component, double x, double y, Color color) {
+        drawCenteredText(matrixStack, component, (float) x, (float) y, color);
     }
 
-    public static void drawCenteredText(PoseStack matrixStack, Component component, float x, float y, Color colour) {
-        drawText(matrixStack, component, ((x - getFontRenderer().width(component) / 2)), (y - (getStringHeight() * 0.5F)), colour);
+    public static void drawCenteredText(PoseStack matrixStack, Component component, float x, float y, Color color) {
+        drawText(matrixStack, component, ((x - getFontRenderer().width(component) / 2)), (y - (getStringHeight() * 0.5F)), color);
     }
 
-    public static void drawCenteredText(PoseStack matrixStack, String s, double x, double y, Color colour) {
-        drawText(matrixStack, s, ((x - getFontRenderer().width(s) / 2)), (y - (getStringHeight() * 0.5F)), colour);
+    public static void drawCenteredText(PoseStack matrixStack, String s, double x, double y, Color color) {
+        drawText(matrixStack, s, ((x - getFontRenderer().width(s) / 2)), (y - (getStringHeight() * 0.5F)), color);
     }
 
-    public static void drawCenteredText(PoseStack matrixStack, String s, float x, float y, Color colour) {
-        drawText(matrixStack, s, ((x - getFontRenderer().width(s) / 2)), (y - (getStringHeight() * 0.5F)), colour);
+    public static void drawCenteredText(PoseStack matrixStack, String s, float x, float y, Color color) {
+        drawText(matrixStack, s, ((x - getFontRenderer().width(s) / 2)), (y - (getStringHeight() * 0.5F)), color);
     }
 
-    public static void drawText(PoseStack matrixStack, Component component, double x, double y, Color colour) {
-        getFontRenderer().draw(matrixStack, component,  (float) x, (float) y, colour.getARGBInt());
+    public static void drawText(PoseStack matrixStack, Component component, double x, double y, Color color) {
+        getFontRenderer().draw(matrixStack, component,  (float) x, (float) y, color.getARGBInt());
     }
 
-    public static void drawText(PoseStack matrixStack, String s, double x, double y, Color colour) {
-        getFontRenderer().draw(matrixStack, s,  (float) x, (float) y, colour.getARGBInt());
+    public static void drawText(PoseStack matrixStack, String s, double x, double y, Color color) {
+        getFontRenderer().draw(matrixStack, s,  (float) x, (float) y, color.getARGBInt());
     }
 
     /**
      * Does the necessary openGL calls and calls the Minecraft font renderer to draw a string such that the xcoord is halfway through the string
      */
-    public static void drawShadowedStringCentered(PoseStack matrixStack, Component text, double x, double y, Color colour) {
-        drawShadowedString(matrixStack, text, x - getStringWidth(text) / 2, y - (getStringHeight() * 0.5), colour);
+    public static void drawShadowedStringCentered(PoseStack matrixStack, Component text, double x, double y, Color color) {
+        drawShadowedString(matrixStack, text, x - getStringWidth(text) / 2, y - (getStringHeight() * 0.5), color);
     }
 
     /**
@@ -474,8 +477,8 @@ public class StringUtils {
     /**
      * Does the necessary openGL calls and calls the Minecraft font renderer to draw a string such that the xcoord is halfway through the string
      */
-    public static void drawShadowedStringCentered(PoseStack matrixStack, String s, double x, double y, Color colour) {
-        drawShadowedString(matrixStack, s, x - getStringWidth(s) / 2, y - (getStringHeight() * 0.5), colour);
+    public static void drawShadowedStringCentered(PoseStack matrixStack, String s, double x, double y, Color color) {
+        drawShadowedString(matrixStack, s, x - getStringWidth(s) / 2, y - (getStringHeight() * 0.5), color);
     }
 
     /**
@@ -495,16 +498,16 @@ public class StringUtils {
     /**
      * Does the necessary openGL calls and calls the Minecraft font renderer to draw a string such that the xcoord is halfway through the string
      */
-    public static void drawRightAlignedShadowedString(PoseStack matrixStack, Component s, double x, double y, Color colour) {
-        drawShadowedString(matrixStack, s, x - getStringWidth(s), y - (getStringHeight() * 0.5), colour);
+    public static void drawRightAlignedShadowedString(PoseStack matrixStack, Component s, double x, double y, Color color) {
+        drawShadowedString(matrixStack, s, x - getStringWidth(s), y - (getStringHeight() * 0.5), color);
     }
 
 
     /**
      * Does the necessary openGL calls and calls the Minecraft font renderer to draw a string such that the xcoord is halfway through the string
      */
-    public static void drawRightAlignedShadowedString(PoseStack matrixStack, String s, double x, double y, Color colour) {
-        drawShadowedString(matrixStack, s, x - getStringWidth(s), y - (getStringHeight() * 0.5), colour);
+    public static void drawRightAlignedShadowedString(PoseStack matrixStack, String s, double x, double y, Color color) {
+        drawShadowedString(matrixStack, s, x - getStringWidth(s), y - (getStringHeight() * 0.5), color);
     }
 
     /**

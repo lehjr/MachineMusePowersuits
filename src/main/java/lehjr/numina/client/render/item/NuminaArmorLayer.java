@@ -28,13 +28,19 @@ package lehjr.numina.client.render.item;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import lehjr.numina.client.model.item.armor.ArmorModelInstance;
 import lehjr.numina.client.model.item.armor.HighPolyArmor;
+import lehjr.numina.client.model.item.armor.RenderOBJPart;
 import lehjr.numina.common.capabilities.NuminaCapabilities;
-import lehjr.numina.common.capabilities.render.IArmorModelSpecNBT;
-import lehjr.numina.common.capabilities.render.modelspec.SpecType;
+import lehjr.numina.common.capabilities.render.IModelSpec;
+import lehjr.numina.common.capabilities.render.modelspec.*;
+import lehjr.numina.common.constants.NuminaConstants;
+import lehjr.numina.common.constants.TagConstants;
 import lehjr.numina.common.math.Color;
+import lehjr.numina.common.tags.NBTTagAccessor;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.Model;
+import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.Sheets;
@@ -43,47 +49,32 @@ import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.HumanoidArmorLayer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.texture.TextureAtlas;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ArmorItem;
+import net.minecraft.world.item.DyeableLeatherItem;
 import net.minecraft.world.item.ItemStack;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import java.util.*;
+
 public class NuminaArmorLayer<T extends LivingEntity, M extends HumanoidModel<T>, A extends HumanoidModel<T>> extends HumanoidArmorLayer<T, M, A> {
     public NuminaArmorLayer(RenderLayerParent<T, M> entityRenderer, A modelLeggings, A modelArmor) {
         super(entityRenderer, modelLeggings, modelArmor);
     }
 
-    /* TODO further seperate armor models by body part (body, arms.. etc) to allow mixing of models, probably need
-    *
-    */
+    Optional<IModelSpec> getRenderCapability(ItemStack itemStack) {
+        return itemStack.getCapability(NuminaCapabilities.RENDER)
+                .filter(IModelSpec.class::isInstance)
+                .map(IModelSpec.class::cast);
+    }
+
     @Override
     public void render(PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn, T entityIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-        for(EquipmentSlot slot: EquipmentSlot.values()) {
-            if  (slot != EquipmentSlot.MAINHAND && slot != EquipmentSlot.OFFHAND) {
-                ItemStack stack = entityIn.getItemBySlot(slot);
-
-
-
-
-            }
-        }
-
-
-        // parts:
-        //  model.head;
-        //  model.hat;
-        this.renderArmorPiece(matrixStackIn, bufferIn, entityIn, EquipmentSlot.HEAD, packedLightIn, this.getModelFromSlot(EquipmentSlot.HEAD));
-        // get the itemstack instead and determine if there are multiple models/wrappers handled by this or not
-
-
-
-        this.renderArmorPiece(matrixStackIn, bufferIn, entityIn, EquipmentSlot.CHEST, packedLightIn, this.getModelFromSlot(EquipmentSlot.CHEST));
-        this.renderArmorPiece(matrixStackIn, bufferIn, entityIn, EquipmentSlot.LEGS, packedLightIn, this.getModelFromSlot(EquipmentSlot.LEGS));
-        this.renderArmorPiece(matrixStackIn, bufferIn, entityIn, EquipmentSlot.FEET, packedLightIn, this.getModelFromSlot(EquipmentSlot.FEET));
+        Arrays.stream(EquipmentSlot.values()).filter(equipmentSlot -> equipmentSlot.isArmor()).forEach(slot -> {
+            renderArmorPiece(matrixStackIn, bufferIn, entityIn, slot, packedLightIn, this.getModelFromSlot(slot));
+        });
     }
 
     private A getModelFromSlot(EquipmentSlot slot) {
@@ -119,110 +110,70 @@ public class NuminaArmorLayer<T extends LivingEntity, M extends HumanoidModel<T>
                 model.rightLeg.visible = true;
                 model.leftLeg.visible = true;
         }
-
     }
 
-
     @Override
-    public void renderArmorPiece(PoseStack matrixIn, MultiBufferSource bufferIn, T entityIn, EquipmentSlot slotIn, int packedLightIn, A model) {
+    public void renderArmorPiece(PoseStack poseStack, MultiBufferSource bufferIn, T entityIn, EquipmentSlot slotIn, int packedLightIn, A model) {
         ItemStack itemstack = entityIn.getItemBySlot( slotIn);
-        boolean hasEffect = itemstack.hasFoil();
-        if (itemstack.getItem() instanceof ArmorItem && itemstack.getCapability(NuminaCapabilities.RENDER).isPresent()) {
-            ArmorItem armoritem = (ArmorItem)itemstack.getItem();
-            if (armoritem.getSlot() ==  slotIn) {
-                Model actualModel = getArmorModelHook(entityIn, itemstack, slotIn, model);
+        boolean withGlint = itemstack.hasFoil();
+        Optional<IModelSpec> renderCapabity = getRenderCapability(itemstack);
 
-                if(actualModel instanceof HighPolyArmor) {
-                    ((HighPolyArmor) actualModel).copyPropertiesFrom(getParentModel());
-                } else {
-                    this.getParentModel().copyPropertiesTo(model);
-                }
+        if (itemstack.getItem() instanceof ArmorItem armoritem && itemstack.getCapability(NuminaCapabilities.RENDER).isPresent()) {
+            if (armoritem.getSlot() == slotIn) {
+                renderCapabity.ifPresent(renderCap->{
+                    CompoundTag renderTag = renderCap.getRenderTag();
+                    if (renderTag != null && !renderTag.isEmpty()) {
+                        int[] colors = renderTag.getIntArray(TagConstants.COLORS);
+                        if (colors.length == 0) {
+                            colors = new int[]{Color.WHITE.getARGBInt()};
+                        }
+
+                        for (CompoundTag tag : NBTTagAccessor.getValues(renderTag)) {
+                            PartSpecBase partSpec = NuminaModelRegistry.getInstance().getPart(tag);
+                            int partColor;
+                            int ix = partSpec.getColourIndex(tag);
+                            // checks the range of the index to avoid errors OpenGL or crashing
+                            if (ix < colors.length && ix >= 0) {
+                                partColor = colors[ix];
+                            } else {
+                                partColor = -1;
+                            }
+                            Color color = new Color(partColor);
+                            boolean glow = partSpec.getGlow(tag);
+
+                            if (partSpec instanceof JavaPartSpec) {
+                                ResourceLocation location = ((JavaPartSpec) partSpec).getTextureLocation();
+                                this.getParentModel().copyPropertiesTo(model);
+                                ModelPart part = partSpec.getBinding().getTarget().apply(model);
+
+                                poseStack.pushPose();
+                                if (part != null) {
+                                    part.translateAndRotate(poseStack);
+//                                    VertexConsumer consumer = bufferIn.getBuffer(RenderType.entityTranslucentCull(location));
+                                    VertexConsumer consumer = ItemRenderer.getArmorFoilBuffer(bufferIn, RenderType.entityTranslucentCull(location), false, withGlint);
+
+                                    part.compile(poseStack.last(), consumer,
+                                            glow? NuminaConstants.FULL_BRIGHTNESS : packedLightIn,
+                                            OverlayTexture.NO_OVERLAY,
+                                            color.r, color.g, color.b, color.a);
+                                }
+                                poseStack.popPose();
+                            } else if (partSpec instanceof ObjlPartSpec) {
+                                ArmorModelInstance.getInstance().copyPropertiesFrom(getParentModel());
+                                ModelPart part = partSpec.getBinding().getTarget().apply(ArmorModelInstance.getInstance());
+                                if (part instanceof RenderOBJPart) {
+                                    RenderOBJPart objPart = (RenderOBJPart) part;
 
 
 
-                this.setPartVisibility(model, slotIn);
-
-
-
-                // ideally, this would replace the getArmorModel
-                itemstack.getCapability(NuminaCapabilities.RENDER).ifPresent(spec->{
-                    if (spec.getSpecType() == SpecType.ARMOR_SKIN) {
-                        Color colour = spec.getColorFromItemStack();
-                        this.renderModel(matrixIn, bufferIn, packedLightIn, hasEffect, (A)actualModel, colour.r, colour.g, colour.b, colour.a, ((IArmorModelSpecNBT) spec).getArmorTexture());
-                        this.renderModel(matrixIn, bufferIn, packedLightIn, hasEffect, (A)actualModel, colour.r, colour.g, colour.b, colour.a, ((IArmorModelSpecNBT) spec).getArmorTexture());
-                    } else {
-                        this.renderModel(matrixIn, bufferIn, packedLightIn, hasEffect, (A)actualModel, 1.0F, 1.0F, 1.0F, 1.0F, TextureAtlas.LOCATION_BLOCKS);
+                                }
+                            }
+                        }
                     }
                 });
             }
         } else {
-            super.renderArmorPiece(matrixIn, bufferIn, entityIn, slotIn, packedLightIn, model);
+            super.renderArmorPiece(poseStack, bufferIn, entityIn, slotIn, packedLightIn, model);
         }
-    }
-
-
-//    /**
-//     * Sets the render type
-//     *
-//     * @param matrixStackIn
-//     * @param bufferIn
-//     * @param packedLightIn
-//     * @param glintIn
-//     * @param modelIn
-//     * @param red
-//     * @param green
-//     * @param blue
-//     * @param armorResource
-//     */
-
-    private void renderModel(PoseStack matrixIn, MultiBufferSource bufferIn, int packedLightIn, boolean hasEffect, Model model, float red, float green, float blue, float alpha, ResourceLocation armorResource) {
-        RenderType renderType;
-        if (armorResource == TextureAtlas.LOCATION_BLOCKS) {
-            renderType = Sheets.translucentCullBlockSheet();
-        } else {
-            renderType = RenderType.armorCutoutNoCull(armorResource);
-        }
-
-        VertexConsumer vertexconsumer = ItemRenderer.getArmorFoilBuffer(bufferIn, renderType, false, hasEffect);
-        model.renderToBuffer(matrixIn, vertexconsumer, packedLightIn, OverlayTexture.NO_OVERLAY, red, green, blue, alpha);
-
-
-
-    }
-
-
-//    private void renderArmor(PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn, boolean glintIn, A modelIn, float red, float green, float blue, ResourceLocation armorResource) {
-//        RenderType renderType;
-//        if (armorResource == TextureAtlas.field_110575_b) {
-//            renderType = Atlases.func_228785_j_();
-//        } else {
-//            renderType = RenderType.func_228640_c_(armorResource);
-//        }
-//        VertexConsumer ivertexbuilder = ItemRenderer.func_229113_a_(bufferIn, renderType, false, glintIn);
-//        modelIn.renderToBuffer(matrixStackIn, ivertexbuilder, packedLightIn, OverlayTexture.NO_OVERLAY, red, green, blue, 1.0F);
-//    }
-
-    /**
-     * More generic ForgeHook version of the above function, it allows for Items to have more control over what texture they provide.
-     *
-     * @param entity Entity wearing the armor
-     * @param stack  ItemStack for the armor
-     * @param slot   Slot ID that the item is in
-     * @param type   Subtype, can be null or "overlay"
-     * @return ResourceLocation pointing at the armor's texture
-     */
-    @Override
-    public ResourceLocation getArmorResource(Entity entity, @Nonnull ItemStack stack, EquipmentSlot slot, @Nullable String type) {
-        return stack.getCapability(NuminaCapabilities.RENDER).map(spec->{
-            if (spec.getSpecType() == SpecType.ARMOR_SKIN && spec instanceof IArmorModelSpecNBT) {
-                return ((IArmorModelSpecNBT) spec).getArmorTexture();
-            }
-            return TextureAtlas.LOCATION_BLOCKS;
-        }).orElse(super.getArmorResource(entity, stack, slot, type));
-    }
-
-    @Override
-    protected Model getArmorModelHook(T entity, ItemStack itemStack, EquipmentSlot slot, A model) {
-        return super.getArmorModelHook(entity, itemStack, slot, model);
     }
 }

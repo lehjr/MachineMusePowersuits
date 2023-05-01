@@ -77,10 +77,10 @@ public enum IconUtils {
      * @param x
      * @param y
      * @param icon
-     * @param colour
+     * @param color
      */
-    public static void drawIconAt(double x, double y, @Nonnull TextureAtlasSprite icon, Color colour) {
-        drawIconPartial(x, y, icon, colour, 0, 0, 16, 16);
+    public static void drawIconAt(double x, double y, @Nonnull TextureAtlasSprite icon, Color color) {
+        drawIconPartial(x, y, icon, color, 0, 0, 16, 16);
     }
 
     /**
@@ -89,18 +89,18 @@ public enum IconUtils {
      * @param x
      * @param y
      * @param icon
-     * @param colour
+     * @param color
      */
-    public static void drawIconAt(PoseStack poseStack, double x, double y, @Nonnull TextureAtlasSprite icon, Color colour) {
-        drawIconPartial(poseStack, x, y, icon, colour, 0, 0, icon.contents().width(), icon.contents().height());
+    public static void drawIconAt(PoseStack poseStack, double x, double y, @Nonnull TextureAtlasSprite icon, Color color) {
+        drawIconPartial(poseStack, x, y, icon, color, 0, 0, icon.contents().width(), icon.contents().height());
     }
 
-    public static void drawIconPartialOccluded(double x, double y, @Nonnull TextureAtlasSprite icon, Color colour, double textureStarX, double textureStartY, double textureEndX, double textureEndY) {
+    public static void drawIconPartialOccluded(double x, double y, @Nonnull TextureAtlasSprite icon, Color color, double textureStarX, double textureStartY, double textureEndX, double textureEndY) {
         double xmin = MathUtils.clampDouble(textureStarX - x, 0, icon.contents().width());
         double ymin = MathUtils.clampDouble(textureStartY - y, 0, icon.contents().height());
         double xmax = MathUtils.clampDouble(textureEndX - x, 0, icon.contents().width());
         double ymax = MathUtils.clampDouble(textureEndY - y, 0, icon.contents().height());
-        drawIconPartial(x, y, icon, colour, xmin, ymin, xmax, ymax);
+        drawIconPartial(x, y, icon, color, xmin, ymin, xmax, ymax);
     }
 
     /**
@@ -109,9 +109,9 @@ public enum IconUtils {
      * @param posX
      * @param posY
      * @param icon
-     * @param colour
+     * @param color
      */
-    public static void drawIconPartial(PoseStack poseStack, double posX, double posY, TextureAtlasSprite icon, @Nonnull Color colour, double textureStartX, double textureStartY, double textureEndX, double textureEndY) {
+    public static void drawIconPartial(PoseStack poseStack, double posX, double posY, TextureAtlasSprite icon, @Nonnull Color color, double textureStartX, double textureStartY, double textureEndX, double textureEndY) {
         if (icon == null) {
             icon = getMissingIcon();
         }
@@ -137,25 +137,25 @@ public enum IconUtils {
         // top left
         bufferBuilder.vertex(matrix4f, (float) (posX + textureStartX), (float)(posY + textureStartY), 0);
         bufferBuilder.uv((float) (minU + xoffsetMin), (float) (minV + yoffsetMin));
-        bufferBuilder.color(colour.r, colour.g, colour.b, colour.a);
+        bufferBuilder.color(color.r, color.g, color.b, color.a);
         bufferBuilder.endVertex();
 
         // textureEndY left
         bufferBuilder.vertex(matrix4f, (float) (posX + textureStartX), (float) (posY + textureEndY), 0);
         bufferBuilder.uv((float) (minU + xoffsetMin), (float) (minV + yoffsetMax));
-        bufferBuilder.color(colour.r, colour.g, colour.b, colour.a);
+        bufferBuilder.color(color.r, color.g, color.b, color.a);
         bufferBuilder.endVertex();
 
         // textureEndY right
         bufferBuilder.vertex(matrix4f, (float) (posX + textureEndX), (float) (posY + textureEndY), 0);
         bufferBuilder.uv((float) (minU + xoffsetMax), (float) (minV + yoffsetMax));
-        bufferBuilder.color(colour.r, colour.g, colour.b, colour.a);
+        bufferBuilder.color(color.r, color.g, color.b, color.a);
         bufferBuilder.endVertex();
 
         // top right
         bufferBuilder.vertex(matrix4f, (float) (posX + textureEndX), (float) (posY + textureStartY), 0);
         bufferBuilder.uv((float) (minU + xoffsetMax), (float) (minV + yoffsetMin));
-        bufferBuilder.color(colour.r, colour.g, colour.b, colour.a);
+        bufferBuilder.color(color.r, color.g, color.b, color.a);
         bufferBuilder.endVertex();
 
         BufferUploader.drawWithShader(bufferBuilder.end());
@@ -168,9 +168,9 @@ public enum IconUtils {
      * @param x
      * @param y
      * @param icon
-     * @param colour
+     * @param color
      */
-    public static void drawIconPartial(double x, double y, TextureAtlasSprite icon, Color colour, double left, double top, double right, double bottom) {
+    public static void drawIconPartial(double x, double y, TextureAtlasSprite icon, Color color, double left, double top, double right, double bottom) {
         if (icon == null) {
             icon = getMissingIcon();
         }
@@ -192,25 +192,25 @@ public enum IconUtils {
 
         // top left
         bufferBuilder.vertex(x + left, y + top, 0);
-        bufferBuilder.color(colour.r, colour.g, colour.b, colour.a);
+        bufferBuilder.color(color.r, color.g, color.b, color.a);
         bufferBuilder.uv((float) (uMin + xoffset1), (float) (vMin + yoffset1));
         bufferBuilder.endVertex();
 
         // bottom left
         bufferBuilder.vertex(x + left, y + bottom, 0);
-        bufferBuilder.color(colour.r, colour.g, colour.b, colour.a);
+        bufferBuilder.color(color.r, color.g, color.b, color.a);
         bufferBuilder.uv((float) (uMin + xoffset1), (float) (vMin + yoffset2));
         bufferBuilder.endVertex();
 
         // bottom right
         bufferBuilder.vertex(x + right, y + bottom, 0);
-        bufferBuilder.color(colour.r, colour.g, colour.b, colour.a);
+        bufferBuilder.color(color.r, color.g, color.b, color.a);
         bufferBuilder.uv((float) (uMin + xoffset2), (float) (vMin + yoffset2));
         bufferBuilder.endVertex();
 
         // top right
         bufferBuilder.vertex(x + right, y + top, 0);
-        bufferBuilder.color(colour.r, colour.g, colour.b, colour.a);
+        bufferBuilder.color(color.r, color.g, color.b, color.a);
         bufferBuilder.uv((float) (uMin + xoffset2), (float) (vMin + yoffset1));
         bufferBuilder.endVertex();
 
@@ -240,8 +240,8 @@ public enum IconUtils {
         innerBlit(pPoseStack, posX, posX + uWidth, posY, posY + vHeight, blitOffset, uWidth, vHeight, uOffset, vOffset, textureWidth, textureHeight);
     }
 
-    public static void blit(PoseStack pPoseStack, double posX, double posY, double pBlitOffset, double pUOffset, double vOffset, double uWidth, double pVHeight, double textureHeight, double textureWidth, Color colour) {
-        innerBlit(pPoseStack, posX, posX + uWidth, posY, posY + pVHeight, pBlitOffset, uWidth, pVHeight, pUOffset, vOffset, textureWidth, textureHeight, colour);
+    public static void blit(PoseStack pPoseStack, double posX, double posY, double pBlitOffset, double pUOffset, double vOffset, double uWidth, double pVHeight, double textureHeight, double textureWidth, Color color) {
+        innerBlit(pPoseStack, posX, posX + uWidth, posY, posY + pVHeight, pBlitOffset, uWidth, pVHeight, pUOffset, vOffset, textureWidth, textureHeight, color);
     }
 
     public static void blit(PoseStack pPoseStack, double drawStartX, double drawStartY, double pUOffset, double pVOffset, double pWidth, double pHeight, double textureWidth, double textureHeight) {
@@ -269,7 +269,7 @@ public enum IconUtils {
         BufferUploader.drawWithShader(bufferbuilder.end());
     }
 
-    public static void blit(PoseStack matrixStack, double posX, double posY, double pBlitOffset, double drawWidth, double drawHeight, TextureAtlasSprite sprite, Color colour) {
+    public static void blit(PoseStack matrixStack, double posX, double posY, double pBlitOffset, double drawWidth, double drawHeight, TextureAtlasSprite sprite, Color color) {
         innerBlit(matrixStack.last().pose(),
                 posX, // drawStartX
                 posX + drawWidth, // drawEndX
@@ -280,49 +280,49 @@ public enum IconUtils {
                 sprite.getU1(), // maxU
                 sprite.getV0(), // minV
                 sprite.getV1(),// maxV
-                colour);
+                color);
     }
 
-    public void blit(PoseStack pPoseStack, double posX, double posY, double uOffset, double vOffset, double uWidth, double vHeight, Color colour) {
-        blit(pPoseStack, posX, posY, this.getBlitOffset(), uOffset, vOffset, uWidth, vHeight, 256, 256, colour);
+    public void blit(PoseStack pPoseStack, double posX, double posY, double uOffset, double vOffset, double uWidth, double vHeight, Color color) {
+        blit(pPoseStack, posX, posY, this.getBlitOffset(), uOffset, vOffset, uWidth, vHeight, 256, 256, color);
     }
 
-    public static void blit(PoseStack pPoseStack, double posX, double posY, double pUOffset, double pVOffset, double pWidth, double pHeight, double textureWidth, double textureHeight, Color colour) {
-        blit(pPoseStack, posX, posY, pWidth, pHeight, pUOffset, pVOffset, pWidth, pHeight, textureWidth, textureHeight, colour);
+    public static void blit(PoseStack pPoseStack, double posX, double posY, double pUOffset, double pVOffset, double pWidth, double pHeight, double textureWidth, double textureHeight, Color color) {
+        blit(pPoseStack, posX, posY, pWidth, pHeight, pUOffset, pVOffset, pWidth, pHeight, textureWidth, textureHeight, color);
     }
 
-    public static void blit(PoseStack pPoseStack, double posX, double posY, double drawWidth, double drawHeight, double uOffset, double vOffset, double uWidth, double vHeight, double textureWidth, double textureHeight, Color colour) {
-        innerBlit(pPoseStack, posX, posX + drawWidth, posY, posY + drawHeight, 0, uWidth, vHeight, uOffset, vOffset, textureWidth, textureHeight, colour);
+    public static void blit(PoseStack pPoseStack, double posX, double posY, double drawWidth, double drawHeight, double uOffset, double vOffset, double uWidth, double vHeight, double textureWidth, double textureHeight, Color color) {
+        innerBlit(pPoseStack, posX, posX + drawWidth, posY, posY + drawHeight, 0, uWidth, vHeight, uOffset, vOffset, textureWidth, textureHeight, color);
     }
 
-    public static void innerBlit(PoseStack pPoseStack, double drawStartX, double drawEndX, double drawStartY, double drawEndY, double blitOffset, double uWidth, double vHeight, double uOffset, double vOffset, double textureWidth, double textureHeight, Color colour) {
+    public static void innerBlit(PoseStack pPoseStack, double drawStartX, double drawEndX, double drawStartY, double drawEndY, double blitOffset, double uWidth, double vHeight, double uOffset, double vOffset, double textureWidth, double textureHeight, Color color) {
         innerBlit(pPoseStack.last().pose(), drawStartX, drawEndX, drawStartY, drawEndY, blitOffset,
                 (uOffset) / textureWidth,
                 (uOffset + uWidth) / textureWidth,
                 (vOffset) / textureHeight,
                 (vOffset + vHeight) / textureHeight,
-                colour);
+                color);
     }
 
-    public static void innerBlit(Matrix4f matrix4f, double drawStartX, double drawEndX, double drawStartY, double drawEndY, double blitOffset, double uMin, double uMax, double vMin, double vMax, Color colour) {
+    public static void innerBlit(Matrix4f matrix4f, double drawStartX, double drawEndX, double drawStartY, double drawEndY, double blitOffset, double uMin, double uMax, double vMin, double vMax, Color color) {
         BufferBuilder bufferbuilder = Tesselator.getInstance().getBuilder();
         bufferbuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
 
         bufferbuilder.vertex(matrix4f, (float) drawStartX, (float) drawEndY, (float) blitOffset)
                 .uv((float) uMin, (float) vMax)
-                .color(colour.r, colour.g, colour.b, colour.a)
+                .color(color.r, color.g, color.b, color.a)
                 .endVertex();
         bufferbuilder.vertex(matrix4f, (float) drawEndX, (float) drawEndY, (float) blitOffset)
                 .uv((float) uMax, (float) vMax)
-                .color(colour.r, colour.g, colour.b, colour.a)
+                .color(color.r, color.g, color.b, color.a)
                 .endVertex();
         bufferbuilder.vertex(matrix4f, (float) drawEndX, (float) drawStartY, (float) blitOffset)
                 .uv((float) uMax, (float) vMin)
-                .color(colour.r, colour.g, colour.b, colour.a)
+                .color(color.r, color.g, color.b, color.a)
                 .endVertex();
         bufferbuilder.vertex(matrix4f, (float) drawStartX, (float) drawStartY, (float) blitOffset)
                 .uv((float) uMin, (float) vMin)
-                .color(colour.r, colour.g, colour.b, colour.a)
+                .color(color.r, color.g, color.b, color.a)
                 .endVertex();
         BufferUploader.drawWithShader(bufferbuilder.end());
     }

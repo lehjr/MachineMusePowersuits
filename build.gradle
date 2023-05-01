@@ -239,7 +239,7 @@ minecraft {
             //This fixes Mixin application problems from other mods because their refMaps are SRG-based, but we're in a MCP env
             property 'mixin.env.remapRefMap', 'true'
             property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
-
+            property 'forge.logging.console.level', 'debug'
 
             //The below if statements are to add args to your gradle.properties file in user home
             // (DO NOT add them directly to the gradle.properties file for this project)
@@ -275,6 +275,8 @@ minecraft {
 //            This fixes Mixin application problems from other mods because their refMaps are SRG-based, but we're in a MCP env
             property 'mixin.env.remapRefMap', 'true'
             property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
+            property 'forge.logging.console.level', 'debug'
+
 
             if (project.hasProperty('forge_force_ansi')) {
                 //Force ansi if declared as a gradle variable, as the auto detection doesn't detect IntelliJ properly
@@ -296,6 +298,8 @@ minecraft {
             //This fixes Mixin application problems from other mods because their refMaps are SRG-based, but we're in a MCP env
             property 'mixin.env.remapRefMap', 'true'
             property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
+
+            property 'forge.logging.console.level', 'debug'
 
             if (project.hasProperty('forge_force_ansi')) {
                 //Force ansi if declared as a gradle variable, as the auto detection doesn't detect IntelliJ properly
@@ -379,8 +383,8 @@ dependencies {
 
 
 
-
-    runtimeOnly fg.deobf("ignored:itemtransformhelper:1.0")
+    // only enable when needed
+//    runtimeOnly fg.deobf("ignored:itemtransformhelper:1.0")
 //
 //    // The API isn't enough for compiling or testing
     implementation fg.deobf("curse.maven:applied-energistics-2-223794:${ae2_version}") {

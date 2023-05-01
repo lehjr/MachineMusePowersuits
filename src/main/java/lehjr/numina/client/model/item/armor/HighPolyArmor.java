@@ -56,7 +56,7 @@ import java.util.Map;
 public class HighPolyArmor<T extends LivingEntity> extends HumanoidModel<T> {
     public CompoundTag renderSpec = null;
     public EquipmentSlot visibleSection = EquipmentSlot.HEAD;
-    Map<ModelPart, RenderPart> mpToRp = new HashMap<>();
+    Map<ModelPart, RenderOBJPart> mpToRp = new HashMap<>();
     List<ModelPart> headParts = new ArrayList<>();
     List<ModelPart> bodyParts = new ArrayList<>();
 //    ModelTransformCalibration CALIBRATION;
@@ -112,9 +112,9 @@ public class HighPolyArmor<T extends LivingEntity> extends HumanoidModel<T> {
 
         try {
             this.headParts().forEach((part) -> {
-                if (part != null && part instanceof RenderPart) {
+                if (part != null) {
                     poseStack.pushPose();
-                    float offset = ((RenderPart) part).yOffset * MathUtils.DIV_16F;
+                    float offset = ((RenderOBJPart) part).yOffset * MathUtils.DIV_16F;
                     poseStack.translate(0,  -offset, 0);
 
                     part.render(poseStack, pBuffer, pPackedLight, pPackedOverlay, pRed, pGreen, pBlue, pAlpha);
@@ -130,9 +130,9 @@ public class HighPolyArmor<T extends LivingEntity> extends HumanoidModel<T> {
 
         try {
             this.bodyParts().forEach((part) -> {
-                if (part != null && part instanceof RenderPart) {
+                if (part != null && part instanceof RenderOBJPart) {
                     poseStack.pushPose();
-                    float offset = ((RenderPart) part).yOffset * MathUtils.DIV_16F;
+                    float offset = ((RenderOBJPart) part).yOffset * MathUtils.DIV_16F;
                     poseStack.translate(0,  -offset, 0);
                     part.render(poseStack, pBuffer, pPackedLight, pPackedOverlay, pRed, pGreen, pBlue, pAlpha);
                     poseStack.popPose();
@@ -180,7 +180,7 @@ public class HighPolyArmor<T extends LivingEntity> extends HumanoidModel<T> {
     }
 
     public void clearAndAddChildWithInitialOffsets(ModelPart mp, String partName, float x, float y, float z) {
-        RenderPart rp = new RenderPart(this, mp);
+        RenderOBJPart rp = new RenderOBJPart(this, mp);
         rp.setPos(x, y, z);
 
         rp.xOffset = x;

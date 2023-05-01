@@ -26,9 +26,12 @@
 
 package lehjr.powersuits.client.control;
 
-import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.capabilities.NuminaCapabilities;
 import lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
+import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
+import lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
+import lehjr.numina.common.capabilities.module.rightclick.IRightClickModule;
+import lehjr.numina.common.capabilities.module.toggleable.IToggleableModule;
 import lehjr.numina.common.item.ItemUtils;
 import lehjr.numina.common.math.MathUtils;
 import lehjr.numina.common.network.NuminaPackets;
@@ -37,22 +40,27 @@ import lehjr.powersuits.client.gui.modechanging.GuiModeSelector;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.Items;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import org.apache.commons.lang3.ArrayUtils;
+import net.minecraftforge.registries.ForgeRegistries;
 import org.lwjgl.glfw.GLFW;
 
 import java.util.Arrays;
-import java.util.Optional;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @OnlyIn(Dist.CLIENT)
-public class KeybindKeyHandler {
+public class KeymappingKeyHandler {
     Minecraft minecraft;
     // FIXME: Translations
     public static final String mps =  "itemGroup.powersuits";
@@ -70,15 +78,8 @@ public class KeybindKeyHandler {
         return GLFW.glfwGetKey(Minecraft.getInstance().getWindow().getWindow(), key) == GLFW.GLFW_PRESS;
     }
 
-    public KeybindKeyHandler() {
+    public KeymappingKeyHandler() {
         minecraft = Minecraft.getInstance();
-        for (KeyMapping key : keybindArray) {
-            NuminaLogger.logError("FIXME can't register keybinding here yet");
-
-//            ClientRegistry.registerKeyBinding(key);
-        }
-
-        KeybindManager.INSTANCE.readInKeybinds(false);
     }
 
     void updatePlayerValues(LocalPlayer clientPlayer) {
@@ -159,7 +160,7 @@ public class KeybindKeyHandler {
             return;
         }
 
-        KeybindManager.INSTANCE.getMPSKeyBinds().stream().filter(kb->kb.isDown()).forEach(kb->{
+        getMPSKeyMappings().stream().filter(kb->kb.isDown()).forEach(kb->{
             kb.toggleModules();
         });
 
@@ -198,37 +199,44 @@ public class KeybindKeyHandler {
         }
     }
 
-    public static Optional<KeyMapping> getKeyIfExits(String keybindingName) {
-        return Arrays.stream(Minecraft.getInstance().options.keyMappings).filter(keyBinding1 -> keyBinding1.getName().equals(keybindingName)).findFirst();
+    public static void loadKeyBindings() {
+        NonNullList<ItemStack> modules = NonNullList.create();
+        for (Item item : ForgeRegistries.ITEMS.getValues()) {
+            new ItemStack(item).getCapability(NuminaCapabilities.POWER_MODULE)
+                    .filter(IToggleableModule.class::isInstance)
+                    .map(IToggleableModule.class::cast)
+                    .ifPresent(pm -> {
+                        // Tool settings are a bit odd
+                        if (pm.getTarget() == ModuleTarget.TOOLONLY) {
+                            if (pm.getCategory() == ModuleCategory.MINING_ENHANCEMENT) {
+                                modules.add(pm.getModuleStack());
+                                registerKeybinding(ItemUtils.getRegistryName(item), false);
+                            } else if (!IRightClickModule.class.isAssignableFrom(pm.getClass())) {
+                                modules.add(pm.getModuleStack());
+                                registerKeybinding(ItemUtils.getRegistryName(item), false);
+                            }
+                        } else {
+                            modules.add(pm.getModuleStack());
+                            registerKeybinding(ItemUtils.getRegistryName(item), false);
+                        }
+                    });
+        }
     }
+
+    public static List<MPSKeyMapping> getMPSKeyMappings() {
+        return Arrays.stream(Minecraft.getInstance().options.keyMappings).filter(MPSKeyMapping.class::isInstance).map(MPSKeyMapping.class::cast).collect(Collectors.toList());
+    }
+
+    public static Map<String, MPSKeyMapping> keyMappings = new HashMap<>();
 
     public static void registerKeybinding(ResourceLocation registryName, boolean showOnHud) {
         String keybindingName = new StringBuilder("keybinding.").append(registryName.getNamespace()).append(".").append(registryName.getPath()).toString();
-        registerKeyBinding(registryName, keybindingName, GLFW.GLFW_KEY_UNKNOWN, mps, showOnHud);
+        registerKeyBinding(registryName, keybindingName, GLFW.GLFW_KEY_UNKNOWN, mps, showOnHud, false);
     }
 
-    public static void registerKeyBinding(ResourceLocation registryName, String  keybindingName, int keyIn, String category, boolean showOnHud) {
-        Optional<KeyMapping> keyBinding = getKeyIfExits(keybindingName);
-
-        // Don't add duplicate keybinds
-        if (keyBinding.isPresent()) {
-            keyBinding.ifPresent(kb-> {
-                if(!(kb instanceof MPSKeyMapping) || ((MPSKeyMapping) kb).registryName == ItemUtils.getRegistryName(Items.AIR)) {
-                    int index = ArrayUtils.indexOf(Minecraft.getInstance().options.keyMappings, kb);
-                    int key = kb.getKey().getValue();
-                    MPSKeyMapping mpskb = new MPSKeyMapping(registryName, keybindingName, key, mps);
-                    if (kb instanceof MPSKeyMapping) {
-                        mpskb.showOnHud = ((MPSKeyMapping) kb).showOnHud;
-                    }
-                    Minecraft.getInstance().options.keyMappings[index] = mpskb;
-                }
-            });
-        } else {
-            // This is mostly just to populate the list in the event the list doesn't exist or to add new modules
-//            ClientRegistry.registerKeyBinding(new MPSKeyMapping(registryName, keybindingName, keyIn, category, showOnHud));
-
-            NuminaLogger.logError("FIXME: Keybind handler register keybinding not ");
-
+    public static void registerKeyBinding(ResourceLocation registryName, String  keybindingName, int keyIn, String category, boolean showOnHud, boolean overwrite) {
+        if (overwrite || !keyMappings.containsKey(keybindingName) ) {
+            keyMappings.put(keybindingName, new MPSKeyMapping(registryName, keybindingName, keyIn, category, showOnHud));
         }
     }
 }

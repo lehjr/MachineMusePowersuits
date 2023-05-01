@@ -50,10 +50,10 @@ public class OBJPartData {
         parts.put(name, data);
     }
 
-    public static ModelData makeOBJPartData(boolean glow, boolean visible, int colour) {
+    public static ModelData makeOBJPartData(boolean glow, boolean visible, int color) {
         return ModelData.builder()
                 .with(GLOW, glow)
-                .with(COLOR, colour)
+                .with(COLOR, color)
                 .with(VISIBLE, visible)
                 .build();
     }

@@ -30,14 +30,16 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import lehjr.numina.client.gui.clickable.slider.VanillaFrameScrollBar;
 import lehjr.numina.client.gui.frame.ScrollableFrame;
 import lehjr.numina.client.gui.geometry.Rect;
-import lehjr.numina.common.capabilities.render.modelspec.ModelRegistry;
+import lehjr.numina.common.capabilities.render.modelspec.NuminaModelRegistry;
 import lehjr.numina.common.capabilities.render.modelspec.SpecBase;
 import lehjr.numina.common.capabilities.render.modelspec.SpecType;
 import lehjr.numina.common.math.Color;
 import lehjr.powersuits.client.gui.common.ModularItemSelectionFrame;
 import lehjr.powersuits.client.gui.common.ModularItemTabToggleWidget;
-import lehjr.powersuits.client.gui.modding.cosmetic.colourpicker.ColourPickerFrame;
+import lehjr.powersuits.client.gui.modding.cosmetic.colorpicker.ColourPickerFrame;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.HumanoidArm;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -46,6 +48,7 @@ import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
@@ -56,7 +59,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  */
 public class ModelManipFrame extends ScrollableFrame {
     public ModularItemSelectionFrame itemSelect;
-    public ColourPickerFrame colourSelect;
+    public ColourPickerFrame colorSelect;
     public ModularItemTabToggleWidget lastItemSlot;
     public int lastColour;
     public int lastColourIndex;
@@ -66,10 +69,10 @@ public class ModelManipFrame extends ScrollableFrame {
 
     public ModelManipFrame(double left, double top, double right, double bottom,
                            ModularItemSelectionFrame itemSelect,
-                           ColourPickerFrame colourSelect) {
+                           ColourPickerFrame colorSelect) {
         super(new Rect(left, top, right, bottom));
         this.itemSelect = itemSelect;
-        this.colourSelect = colourSelect;
+        this.colorSelect = colorSelect;
         this.lastItemSlot = null;
         this.lastColour = this.getColour();
         this.lastColourIndex = this.getColourIndex();
@@ -82,14 +85,18 @@ public class ModelManipFrame extends ScrollableFrame {
         return itemSelect.getModularItemOrEmpty();
     }
 
+    public Optional<EquipmentSlot> getSlot() {
+        return itemSelect.selectedType();
+    }
+
     /**
      * @return get int value representing selected color from color picker frame or default of white
      */
     public int getColour() {
         if (getItem().isEmpty()) {
             return Color.WHITE.getARGBInt();
-        } else if (colourSelect.selectedColour < colourSelect.colours().length && colourSelect.selectedColour >= 0) {
-            return colourSelect.colours()[colourSelect.selectedColour];
+        } else if (colorSelect.selectedColour < colorSelect.colors().length && colorSelect.selectedColour >= 0) {
+            return colorSelect.colors()[colorSelect.selectedColour];
         }
         return Color.WHITE.getARGBInt();
     }
@@ -98,7 +105,7 @@ public class ModelManipFrame extends ScrollableFrame {
      * @return index of color value. Color values are stored in an NBT INT array
      */
     public int getColourIndex() {
-        return this.colourSelect.selectedColour;
+        return this.colorSelect.selectedColour;
     }
 
     /**
@@ -107,23 +114,48 @@ public class ModelManipFrame extends ScrollableFrame {
     public void refreshModelframes() {
         this.modelframes = new ArrayList<>();
         if (!getItem().isEmpty()) {
-            Iterable<SpecBase> specCollection = ModelRegistry.getInstance().getSpecs();
-            ModelManipSubframe prev = null;
-            ModelManipSubframe newframe;
+            NuminaModelRegistry.getInstance().getSpecsAsStream().forEach(specBase -> {
+                if (isSpecValid(specBase)) {
+                    System.out.println("spec is valid for slot:  " + specBase.getOwnName() + ", slot: " + getSlot().get());
 
-            for (SpecBase modelspec : specCollection) {
-                if (isSpecValid(modelspec) ) {
-                    newframe = createNewFrame(modelspec);
-
+                    ModelManipSubframe newframe = createNewFrame(specBase);
                     // empty when the parts are for a different equipment slot
                     if (!newframe.getParts().isEmpty()) {
+                        ModelManipSubframe prev = modelframes.size() > 0 ? modelframes.get(modelframes.size() - 1) : null;
                         newframe.setBelow(prev);
-                        prev = newframe;
                         modelframes.add(newframe);
+                    } else {
+                        System.out.println("newframe.getParts().isEmpty()");
                     }
+                } else {
+                    System.out.println("spec not valid for slot:  " + specBase.getOwnName() + ", slot: " + getSlot().get());
                 }
-            }
+            });
         }
+
+
+//            Iterable<SpecBase> specCollection = NuminaModelRegistry.getInstance().getSpecs();
+//            ModelManipSubframe prev = null;
+//            ModelManipSubframe newframe;
+//
+//            for (SpecBase modelspec : specCollection) {
+//                if (isSpecValid(modelspec) ) {
+//                    System.out.println("spec is valid for item? " + modelspec.getOwnName() +", itemstack: " + getItem().getDisplayName());
+//
+//
+//                    newframe = createNewFrame(modelspec);
+//
+//                    // empty when the parts are for a different equipment slot
+//                    if (!newframe.getParts().isEmpty()) {
+//                        newframe.setBelow(prev);
+//                        prev = newframe;
+//                        modelframes.add(newframe);
+//                    }
+//                } else {
+//                    System.out.println("spec not valid for item? " + modelspec.getOwnName() +", itemstack: " + getItem().getDisplayName());
+//                }
+//            }
+//        }
     }
 
     /**
@@ -133,21 +165,32 @@ public class ModelManipFrame extends ScrollableFrame {
      * @return
      */
     boolean isSpecValid(SpecBase specBase) {
-        if (!getItem().isEmpty()) {
-            Item item = getItem().getItem();
+        if (getSlot().isPresent() && !getItem().isEmpty()) {
+            EquipmentSlot slot = getSlot().get();
 
-            EquipmentSlot slotType;
-            if (item instanceof ArmorItem) {
-                slotType = ((ArmorItem) item).getSlot();
-                return specBase.getSpecType().equals(SpecType.ARMOR_MODEL) ||
-                        specBase.getSpecType().equals(SpecType.ARMOR_SKIN) &&
-                                doesSpecHaveSlotType(specBase, slotType);
+            if (slot.isArmor()) {
+                return specBase.hasArmorEquipmentSlot(slot);
             } else {
-                return specBase.getSpecType().equals(SpecType.HANDHELD) &&
-                        (doesSpecHaveSlotType(specBase, EquipmentSlot.OFFHAND) || doesSpecHaveSlotType(specBase, EquipmentSlot.MAINHAND));
+                HumanoidArm arm = slot.equals(EquipmentSlot.MAINHAND) ? getMinecraft().player.getMainArm() : getMinecraft().player.getMainArm().getOpposite();
+                return specBase.getPartsAsStream().anyMatch(partSpecBase -> partSpecBase.isForHand(arm, getMinecraft().player));
             }
         }
         return false;
+
+//        if (!getItem().isEmpty()) {
+//            Item item = getItem().getItem();
+//            EquipmentSlot slotType;
+//            if (item instanceof ArmorItem) {
+//                slotType = ((ArmorItem) item).getSlot();
+//                return specBase.getSpecType().equals(SpecType.ARMOR_OBJ_MODEL) ||
+//                        specBase.getSpecType().equals(SpecType.ARMOR_SKIN) &&
+//                                doesSpecHaveSlotType(specBase, slotType);
+//            } else {
+//                return (specBase.getSpecType().equals(SpecType.HANDHELD_OBJ_MODEL) ||specBase.getSpecType().equals(SpecType.HANDHELD_JAVA_MODEL)) &&
+//                        (doesSpecHaveSlotType(specBase, EquipmentSlot.OFFHAND) || doesSpecHaveSlotType(specBase, EquipmentSlot.MAINHAND));
+//            }
+//        }
+//        return false;
     }
 
     /**
@@ -179,7 +222,7 @@ public class ModelManipFrame extends ScrollableFrame {
                 top() + 4,
                 right(),
                 top() + 10,
-                this.colourSelect, this.itemSelect, this.zLevel);
+                this.colorSelect, this.itemSelect, this.zLevel);
         return newFrame;
     }
 
@@ -211,16 +254,16 @@ public class ModelManipFrame extends ScrollableFrame {
         }
 
         if (!Objects.equals(lastItemSlot, itemSelect.getSelectedTab().get())) {
-            colourSelect.selectedColour = 0;
+            colorSelect.selectedColour = 0;
             setCurrentScrollPixels(0); // reset scroll
             lastItemSlot = itemSelect.getSelectedTab().get();
             refreshModelframes();
         }
 
         if(!itemSelect.getModularItemOrEmpty().isEmpty()) {
-            if (colourSelect.decrAbove > -1) {
-                decrAbove(colourSelect.decrAbove);
-                colourSelect.decrAbove = -1;
+            if (colorSelect.decrAbove > -1) {
+                decrAbove(colorSelect.decrAbove);
+                colorSelect.decrAbove = -1;
             }
 
             if (!itemSelect.getModularItemOrEmpty().isEmpty()) {

@@ -39,15 +39,15 @@ import lehjr.numina.common.capabilities.render.IArmorModelSpecNBT;
 import lehjr.numina.common.capabilities.render.IHandHeldModelSpecNBT;
 import lehjr.numina.common.capabilities.render.IModelSpec;
 import lehjr.numina.common.capabilities.render.modelspec.*;
-import lehjr.numina.common.constants.TagConstants;
 import lehjr.numina.common.math.Color;
 import lehjr.numina.common.network.NuminaPackets;
 import lehjr.numina.common.network.packets.CosmeticInfoPacket;
 import lehjr.numina.common.string.StringUtils;
 import lehjr.powersuits.client.gui.common.ModularItemSelectionFrame;
-import lehjr.powersuits.client.gui.modding.cosmetic.colourpicker.ColorRadioButton;
-import lehjr.powersuits.client.gui.modding.cosmetic.colourpicker.ColourPickerFrame;
+import lehjr.powersuits.client.gui.modding.cosmetic.colorpicker.ColorRadioButton;
+import lehjr.powersuits.client.gui.modding.cosmetic.colorpicker.ColourPickerFrame;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.Mob;
@@ -67,7 +67,7 @@ public class ModelManipSubframe extends AbstractGuiFrame {
     ClickableIndicatorArrow openCloseButton;
 
     public SpecBase model;
-    public ColourPickerFrame colourframe;
+    public ColourPickerFrame colorframe;
     public ModularItemSelectionFrame itemSelector;
     public List<PartManipSubFrame> parts;
     public boolean open;
@@ -81,12 +81,12 @@ public class ModelManipSubframe extends AbstractGuiFrame {
                               double top,
                               double right,
                               double bottom,
-                              ColourPickerFrame colourframe,
+                              ColourPickerFrame colorframe,
                               ModularItemSelectionFrame itemSelector,
                               float zLevel) {
         super(new Rect(left, top, right, bottom));
         this.model = model;
-        this.colourframe = colourframe;
+        this.colorframe = colorframe;
         this.itemSelector = itemSelector;
         this.open = true;
         this.zLevel = zLevel;
@@ -123,48 +123,60 @@ public class ModelManipSubframe extends AbstractGuiFrame {
      * @return
      */
     public void refreshPartSpecs(boolean startClean) {
-
-//        if (true) {
         this.parts = new ArrayList<>();
+        LocalPlayer player = minecraft.player;
         getRenderCapability().ifPresent(iModelSpecNBT -> {
             CompoundTag renderTag = iModelSpecNBT.getRenderTag();
             if (startClean || parts.isEmpty()) {
                 EquipmentSlot slot = Mob.getEquipmentSlotForItem(iModelSpecNBT.getItemStack());
-                if (iModelSpecNBT instanceof IArmorModelSpecNBT) {
-                    model.getPartSpecs().forEach(spec -> {
-                        if (spec.getBinding().getSlot().equals(slot)) {
-                            String tagName = spec instanceof TexturePartSpec ? TagConstants.TEXTURESPEC : ModelRegistry.getInstance().makeName(spec);
-
-                            parts.add(createNewFrame(spec, renderTag.getCompound(tagName)));
+                if (slot.isArmor()) {
+                    model.getPartSpecs().forEach(partSpecBase -> {
+                        if (partSpecBase.hasArmorEquipmentSlot(slot)) {
+                            String tagName = NuminaModelRegistry.getInstance().makeName(partSpecBase);
+                            parts.add(createNewFrame(partSpecBase, renderTag.getCompound(tagName)));
                         }
                     });
-                } else if (iModelSpecNBT instanceof IHandHeldModelSpecNBT) {
-                    model.getPartSpecs().forEach(spec -> {
-                        if (spec.getBinding().getSlot().getType().equals(EquipmentSlot.Type.HAND)) {
-                            String tagName = spec instanceof TexturePartSpec ? TagConstants.TEXTURESPEC : ModelRegistry.getInstance().makeName(spec);
-                            parts.add(createNewFrame(spec, renderTag.getCompound(tagName)));
+                } else {
+                    model.getPartSpecs().forEach(partSpecBase -> {
+                        SpecBinding binding = partSpecBase.getBinding();
+                        if (binding.getTarget().handMatches(player, slot)) {
+                            String tagName = NuminaModelRegistry.getInstance().makeName(partSpecBase);
+//                            System.out.println("PowerFist tagName: \"" + tagName +"\": ");
+
+                            parts.add(createNewFrame(partSpecBase, renderTag.getCompound(tagName)));
                         }
                     });
                 }
+
+
+
+//                if (iModelSpecNBT instanceof IArmorModelSpecNBT) {
+//                    model.getPartSpecs().forEach(spec -> {
+//                        if (spec.getBinding().getSlot().equals(slot)) {
+//                            String tagName = NuminaModelRegistry.getInstance().makeName(spec);
+//                            parts.add(createNewFrame(spec, renderTag.getCompound(tagName)));
+//                        }
+//                    });
+//                } else if (iModelSpecNBT instanceof IHandHeldModelSpecNBT) {
+//                    model.getPartSpecs().forEach(spec -> {
+//                        if (spec.getBinding().getSlot().getType().equals(EquipmentSlot.Type.HAND)) {
+//                            String tagName = NuminaModelRegistry.getInstance().makeName(spec);
+//                            // FIXME: get rid of TEXTURESPEC tag and use
+//                            System.out.println("make name: " +  NuminaModelRegistry.getInstance().makeName(spec));
+//                            parts.add(createNewFrame(spec, renderTag.getCompound(tagName)));
+//                        }
+//                    });
+//                }
 
                 parts.forEach(spec -> {
                     spec.setEnabled(this.open);
                     spec.setVisible(this.open);
                     spec.setTop(this.top() + specHeight);
-                    // Only one TexturePartSpec is allowed at a time, so figure out if this one is enabled
-                    if (spec.partSpec instanceof TexturePartSpec && renderTag.contains(TagConstants.TEXTURESPEC)) {
-                        CompoundTag texSpecTag = renderTag.getCompound(TagConstants.TEXTURESPEC);
-                        if (spec.partSpec.spec.getOwnName().equals(texSpecTag.getString(TagConstants.MODEL))) {
-                            spec.tagdata = renderTag.getCompound(TagConstants.TEXTURESPEC);
-                        } else {
-                            spec.tagdata = new CompoundTag();
-                        }
+
+                    if (renderTag.contains(spec.tagname)) {
+                        spec.tagdata = renderTag.getCompound(spec.tagname);
                     } else {
-                        if (renderTag.contains(spec.tagname)) {
-                            spec.tagdata = renderTag.getCompound(spec.tagname);
-                        } else {
-                            spec.tagdata = new CompoundTag();
-                        }
+                        spec.tagdata = new CompoundTag();
                     }
                 });
             }
@@ -223,19 +235,17 @@ public class ModelManipSubframe extends AbstractGuiFrame {
         return getRenderCapability().map(iModelSpecNBT -> {
             CompoundTag specTag = new CompoundTag();
             CompoundTag renderTag = iModelSpecNBT.getRenderTag();
-            if (renderTag != null /*&& !renderTag.isEmpty()*/) {
-                // there can be many ModelPartSpecs
-                if (partSpec instanceof ModelPartSpec) {
-                    String name = ModelRegistry.getInstance().makeName(partSpec);
-                    specTag = renderTag.contains(name) ? renderTag.getCompound(name) : new CompoundTag();
-                }
-                // Only one TexturePartSpec is allowed at a time, so figure out if this one is enabled
-                if (partSpec instanceof TexturePartSpec && renderTag.contains(TagConstants.TEXTURESPEC)) {
-                    CompoundTag texSpecTag = renderTag.getCompound(TagConstants.TEXTURESPEC);
-                    if (partSpec.spec.getOwnName().equals(texSpecTag.getString(TagConstants.MODEL))) {
-                        specTag = renderTag.getCompound(TagConstants.TEXTURESPEC);
-                    }
-                }
+
+            // FIXME!! this is where things get interesting.... figure out how to parse java models
+
+
+
+            if (renderTag != null) {
+                String name = NuminaModelRegistry.getInstance().makeName(partSpec);
+                specTag = renderTag.contains(name) ? renderTag.getCompound(name) : new CompoundTag();
+
+//                System.out.println("spec: " + specTag);
+
             }
             return specTag;
         }).orElse(new CompoundTag()); // this only returns empty
@@ -250,23 +260,18 @@ public class ModelManipSubframe extends AbstractGuiFrame {
         String name;
         CompoundTag nbt = getSpecTagOrEmpty(partSpec);
         if (nbt.isEmpty()) {
-            if (partSpec instanceof ModelPartSpec) {
-                name = ModelRegistry.getInstance().makeName(partSpec);
-                ((ModelPartSpec) partSpec).multiSet(nbt, null, null);
-            } else {
-                name = TagConstants.TEXTURESPEC;
-                partSpec.multiSet(nbt, null);
-            }
+            name = NuminaModelRegistry.getInstance().makeName(partSpec);
+            partSpec.multiSet(nbt, null, null);
+            System.out.println("name here: " + name);
+
+
 
             // update the render tag client side. The server side update is called below.
             if (getRenderCapability() != null) {
                 this.getRenderCapability().ifPresent(specNBT->{
-//                    CompoundTag renderTag  = specNBT.getRenderTag();
                     CompoundTag renderTag  = specNBT.getRenderTag().copy();
                     if (renderTag != null && !renderTag.isEmpty()) {
                         renderTag.put(name, nbt);
-                        // FIXME this is screwing up render tags!!!!!
-//                        specNBT.setRenderTag(renderTag, TagConstants.RENDER);
                     }
                 });
             }
@@ -348,7 +353,7 @@ public class ModelManipSubframe extends AbstractGuiFrame {
         public PartManipSubFrame(PartSpecBase partSpec, double left, double top, double width, double height, CompoundTag tagdataIn) {
             super(new Rect(left, top, left + width, top + height));
             this.partSpec = partSpec;
-            this.tagname = partSpec instanceof TexturePartSpec ? TagConstants.TEXTURESPEC : ModelRegistry.getInstance().makeName(partSpec);
+            this.tagname = NuminaModelRegistry.getInstance().makeName(partSpec);
             this.tagdata = tagdataIn;
             this.buttons = new ArrayList<>();
             this.colorButtons = new ArrayList<>();
@@ -367,10 +372,15 @@ public class ModelManipSubframe extends AbstractGuiFrame {
             /** Normal (enables rendering of part with normal lighting) */
             normal = new RadioButton(IconUtils.getIcon().normalArmor, 8, 8, 0,0);
             normal.setOnPressed(pressed -> {
+
+
+//                System.out.println("tagdata before: " + tagdata);
+
+
                 tagdata = getOrMakeSpecTag(partSpec);
-                if (partSpec instanceof ModelPartSpec) {
-                    ((ModelPartSpec) partSpec).setGlow(tagdata, false);
-                }
+//                System.out.println("tagdata after: " + tagdata);
+
+                partSpec.setGlow(tagdata, false);
                 itemSelector.selectedType().ifPresent(slotType -> {
                     NuminaPackets.CHANNEL_INSTANCE.sendToServer(new CosmeticInfoPacket(slotType, tagname, tagdata));
                 });
@@ -381,33 +391,28 @@ public class ModelManipSubframe extends AbstractGuiFrame {
             /** Glow (enables rendering of part with full brightness ) */
             glow = new RadioButton(IconUtils.getIcon().glowArmor, 8, 8, 0,0);
             glow.setOnPressed(pressed -> {
-                if (partSpec instanceof ModelPartSpec) {
-                    tagname = ModelRegistry.getInstance().makeName(partSpec);
-                    tagdata = getOrMakeSpecTag(partSpec);
-                    ((ModelPartSpec) partSpec).setGlow(tagdata, true);
-                    itemSelector.selectedType().ifPresent(slotType -> {
-                        NuminaPackets.CHANNEL_INSTANCE.sendToServer(new CosmeticInfoPacket(slotType, tagname, tagdata));
-                    });
-                }
+                tagname = NuminaModelRegistry.getInstance().makeName(partSpec);
+                tagdata = getOrMakeSpecTag(partSpec);
+                partSpec.setGlow(tagdata, true);
+                itemSelector.selectedType().ifPresent(slotType -> {
+                    NuminaPackets.CHANNEL_INSTANCE.sendToServer(new CosmeticInfoPacket(slotType, tagname, tagdata));
+                });
             });
-            glow.setEnabled(partSpec instanceof ModelPartSpec);
+            glow.setEnabled(true);
             glow.setRightOf(normal);
             buttons.add(glow);
 
             /** pick selected button according to current part settings */
-            int selcomp = tagdata.isEmpty() ? 0 : (partSpec instanceof ModelPartSpec && ((ModelPartSpec) partSpec).getGlow(tagdata) ? 2 : 1);
+            int selcomp = tagdata.isEmpty() ? 0 : (partSpec.getGlow(tagdata) ? 2 : 1);
             buttons.get(selcomp).isSelected = true;
             spacerRect = new Rect(MusePoint2D.ZERO, new MusePoint2D(4, height)).setRightOf(glow);
             //----------------------------
 
-            for (int i=0; i < colourframe.colours().length; i++) {
-                Color colour = new Color(colourframe.colours()[i]);
-                ColorRadioButton colorRadioButton = makeColourButton(colour);
+            for (int i=0; i < colorframe.colors().length; i++) {
+                Color color = new Color(colorframe.colors()[i]);
+                ColorRadioButton colorRadioButton = makeColourButton(color);
                 colorButtons.add(colorRadioButton);
             }
-        }
-
-        public void init() {
         }
 
         /**
@@ -423,14 +428,14 @@ public class ModelManipSubframe extends AbstractGuiFrame {
                     int newIndex = oldindex -1;
                     partSpec.setColourIndex(tagdata, newIndex);
                     // remove extra buttons
-                    while (colorButtons.size() > colourframe.colours().length) {
+                    while (colorButtons.size() > colorframe.colors().length) {
                         colorButtons.remove(colorButtons.size() -1);
                     }
 
                     // button arrayList is quite fluid so avoid index out of bounds
-                    for(int i =0; i < Math.min(colorButtons.size(), colourframe.colours().length); i++) {
+                    for(int i =0; i < Math.min(colorButtons.size(), colorframe.colors().length); i++) {
                         ColorRadioButton button = colorButtons.get(i);
-                        button.setColour(new Color(colourframe.colours()[i]));
+                        button.setColour(new Color(colorframe.colors()[i]));
                         button.isSelected = i == newIndex;
                     }
 
@@ -441,8 +446,8 @@ public class ModelManipSubframe extends AbstractGuiFrame {
             }
         }
 
-        ColorRadioButton makeColourButton(Color colour) {
-            ColorRadioButton colorRadioButton = new ColorRadioButton(0,0, colour);
+        ColorRadioButton makeColourButton(Color color) {
+            ColorRadioButton colorRadioButton = new ColorRadioButton(0,0, color);
             colorRadioButton.setOnPressed(pressed -> {
                 int index  = colorButtons.indexOf(colorRadioButton);
                 partSpec.setColourIndex(tagdata, index);
@@ -469,12 +474,10 @@ public class ModelManipSubframe extends AbstractGuiFrame {
                     transparent.isSelected = true;
                     normal.isSelected = false;
                     glow.isSelected = false;
-
-                } else if (partSpec instanceof ModelPartSpec && ((ModelPartSpec) partSpec).getGlow(tagdata)) {
+                } else if (partSpec.getGlow(tagdata)) {
                     transparent.isSelected = false;
                     normal.isSelected = false;
                     glow.isSelected = true;
-
                 } else {
                     transparent.isSelected = false;
                     normal.isSelected = true;
@@ -491,20 +494,20 @@ public class ModelManipSubframe extends AbstractGuiFrame {
                 spacerRect.setPosition(pos);
 
                 // remove extra buttons
-                while (colorButtons.size() > colourframe.colours().length) {
+                while (colorButtons.size() > colorframe.colors().length) {
                     colorButtons.remove(colorButtons.size() -1);
                 }
 
                 // add missing buttons
-                while (colorButtons.size() < colourframe.colours().length) {
-                    Color colour = new Color(colourframe.colours()[colorButtons.size()]); // button not added yet
-                    colorButtons.add(makeColourButton(colour));
+                while (colorButtons.size() < colorframe.colors().length) {
+                    Color color = new Color(colorframe.colors()[colorButtons.size()]); // button not added yet
+                    colorButtons.add(makeColourButton(color));
                 }
 
-                for(int i =0; i < Math.min(colorButtons.size(), colourframe.colours().length); i++) {
+                for(int i =0; i < Math.min(colorButtons.size(), colorframe.colors().length); i++) {
                     ColorRadioButton button = colorButtons.get(i);
                     button.setPosition(pos);
-                    button.setColour(new Color(colourframe.colours()[i]));
+                    button.setColour(new Color(colorframe.colors()[i]));
                     button.isSelected = i == partSpec.getColourIndex(tagdata);
                     button.render(matrixStack, mouseX, mouseY, partialTick);
                 }

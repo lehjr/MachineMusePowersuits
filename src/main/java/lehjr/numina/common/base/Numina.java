@@ -28,7 +28,6 @@ package lehjr.numina.common.base;
 
 import forge.NuminaObjLoader;
 import lehjr.numina.client.event.FOVUpdateEventHandler;
-import lehjr.numina.client.event.RenderEventHandler;
 import lehjr.numina.client.event.ToolTipEvent;
 import lehjr.numina.client.gui.GuiIcon;
 import lehjr.numina.client.render.IconUtils;
@@ -48,35 +47,28 @@ import lehjr.numina.common.config.ConfigHelper;
 import lehjr.numina.common.config.NuminaSettings;
 import lehjr.numina.common.constants.NuminaConstants;
 import lehjr.numina.common.entity.NuminaArmorStand;
-import lehjr.numina.common.event.EventBusHelper;
 import lehjr.numina.common.event.LogoutEventHandler;
 import lehjr.numina.common.event.PlayerUpdateHandler;
 import lehjr.numina.common.network.NuminaPackets;
 import lehjr.numina.common.recipe.RecipeSerializersRegistry;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.packs.resources.ReloadableResourceManager;
-import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.ModelEvent;
-import net.minecraftforge.client.event.RegisterColorHandlersEvent;
+import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.config.ModConfigEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 @Mod(NuminaConstants.MOD_ID)
@@ -97,20 +89,18 @@ public class Numina {
 
         modEventBus.addListener(this::modelRegistry);
 
+        modEventBus.addListener(this::onRegisterReloadListenerEvent);
+
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
-
+        SoundDictionary.NUMINA_SOUND_EVENTS.register(modEventBus);
         NuminaObjects.NUMINA_ITEMS.register(modEventBus);
         NuminaObjects.NUMINA_BLOCKS.register(modEventBus);
         NuminaObjects.TILE_TYPES.register(modEventBus);
         NuminaObjects.ENTITY_TYPES.register(modEventBus);
         NuminaObjects.MENU_TYPES.register(modEventBus);
         RecipeSerializersRegistry.RECIPE_SERIALIZERS.register(modEventBus);
-
         MinecraftForge.EVENT_BUS.register(new LogoutEventHandler());
-
-//        DistExecutor.runWhenOn(Dist.CLIENT, ()-> ()-> clientStart(modEventBus));
-        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, ()-> ()-> clientStart(modEventBus));
 
         // TODO? reload recipes on config change?
         // [14:33:10] [Thread-1/DEBUG] [ne.mi.fm.co.ConfigFileTypeHandler/CONFIG]: Config file numina-server.toml changed, sending notifies
@@ -125,40 +115,16 @@ public class Numina {
         });
     }
 
-    public void modelRegistry(ModelEvent.RegisterGeometryLoaders event)
-    {
+    public void modelRegistry(ModelEvent.RegisterGeometryLoaders event) {
         event.register( "obj", NuminaObjLoader.INSTANCE);
     }
 
-
-
-    // Ripped from JEI
-    private static void clientStart(IEventBus modEventBus) {
-        SoundDictionary.NUMINA_SOUND_EVENTS.register(modEventBus);
-
-        NuminaLogger.logError("breaking stuff here");
-
-        // FIXME?? why was this here??
-        EventBusHelper.addListener(Numina.class, modEventBus, RegisterColorHandlersEvent.Block.class, setupEvent -> {
-            NuminaSpriteUploader iconUploader = new NuminaSpriteUploader();
-            GuiIcon icons = new GuiIcon(iconUploader);
-            ResourceManager resourceManager = Minecraft.getInstance().getResourceManager();
-            if (resourceManager instanceof ReloadableResourceManager) {
-                ReloadableResourceManager reloadableResourceManager = (ReloadableResourceManager) resourceManager;
-                reloadableResourceManager.registerReloadListenerIfNotPresent(iconUploader);
-            }
-            EventBusHelper.addLifecycleListener(Numina.class, modEventBus, FMLLoadCompleteEvent.class, loadCompleteEvent ->
-                    IconUtils.setIconInstance(icons));
-        });
+    private void onRegisterReloadListenerEvent(RegisterClientReloadListenersEvent event) {
+        NuminaSpriteUploader iconUploader = new NuminaSpriteUploader();
+        GuiIcon icons = new GuiIcon(iconUploader);
+        IconUtils.INSTANCE.setIconInstance(icons);
+        event.registerReloadListener(iconUploader);
     }
-
-//    @Mod.EventBusSubscriber(modid = NuminaConstants.MOD_ID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
-//    public static class MyStaticClientOnlyEventHandler {
-//        @SubscribeEvent
-//        public static void loadComplete(FMLLoadCompleteEvent evt) {
-//            ArmorLayerSetup.loadComplete(evt);
-//        }
-//    }
 
     //    @SubscribeEvent
     public void addEntityAttributes(EntityAttributeCreationEvent event) {
@@ -187,18 +153,12 @@ public class Numina {
 
     private void doClientStuff(final FMLClientSetupEvent event) {
         MinecraftForge.EVENT_BUS.register(new FOVUpdateEventHandler());
-        MinecraftForge.EVENT_BUS.register(RenderEventHandler.INSTANCE);
-
-//        MinecraftForge.EVENT_BUS.register(new LogoutEventHandler());
-
         MinecraftForge.EVENT_BUS.register(new ToolTipEvent());
         event.enqueueWork(() -> {
             MenuScreens.register(NuminaObjects.CHARGING_BASE_CONTAINER_TYPE.get(), ChargingBaseScreen::new);
             MenuScreens.register(NuminaObjects.ARMOR_STAND_CONTAINER_TYPE.get(), ArmorStandScreen::new);
             //        ScreenManager.func_216911_a(NuminaObjects.SCANNER_CONTAINER.get(), MPSGuiScanner::new);
         });
-
-
     }
 
     @SubscribeEvent

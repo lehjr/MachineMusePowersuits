@@ -65,8 +65,8 @@ public class ChargingBaseMenu extends AbstractContainerMenu {
             blockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent(h -> {
                 addSlot(new IconSlotItemHandler(h, 0, 79, 35) {
                     @Override
-                    public void drawIconAt(PoseStack matrixStack, double posX, double posY, Color colour) {
-                        IconUtils.getIcon().energyStorageBackground.renderIconScaledWithColour(matrixStack, posX, posY, 16, 16, Color.WHITE);
+                    public void drawIconAt(PoseStack matrixStack, double posX, double posY, Color color) {
+                        IconUtils.getIcon().energystorage.renderIconScaledWithColor(matrixStack, posX, posY, 16, 16, Color.WHITE);
                     }
                 });
             });

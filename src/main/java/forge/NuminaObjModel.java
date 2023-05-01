@@ -55,7 +55,7 @@ import java.util.stream.Stream;
  * Supports positions, texture coordinates, normals and colors. The {@link ObjMaterialLibrary material library}
  * has support for numerous features, including support for {@link ResourceLocation} textures (non-standard).
  *
- * Note: Slightly modified from Forge to produce seprate models for each part
+ * Note: Slightly modified from Forge to produce separate models for each part
  */
 public class NuminaObjModel extends SimpleUnbakedGeometry<NuminaObjModel>
 {

@@ -143,7 +143,7 @@ public class Checkbox extends Clickable {
 //            ShaderInstance oldShader = RenderSystem.getShader();
             RenderSystem.setShader(GameRenderer::getPositionTexColorShader);
             RenderSystem.enableBlend();
-            GuiIcon.renderTextureWithColour(TEXTURE, matrixStack,
+            GuiIcon.renderTextureWithColor(TEXTURE, matrixStack,
                     left(), right(), top(), bottom(), getZLevel(),
                     // int uWidth, int vHeight,
                     20, 20,

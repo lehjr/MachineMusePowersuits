@@ -26,7 +26,6 @@
 
 package lehjr.powersuits.common.network.packets;
 
-import lehjr.numina.common.base.NuminaLogger;
 import lehjr.powersuits.common.container.InstallSalvageMenu;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;

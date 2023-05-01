@@ -29,10 +29,10 @@ package lehjr.powersuits.client.render;
 import lehjr.numina.common.capabilities.render.IArmorModelSpecNBT;
 import lehjr.numina.common.capabilities.render.ModelSpecStorage;
 import lehjr.numina.common.capabilities.render.modelspec.*;
-import lehjr.numina.common.constants.NuminaConstants;
 import lehjr.numina.common.constants.TagConstants;
-import lehjr.numina.common.tags.TagUtils;
 import lehjr.powersuits.common.config.MPSSettings;
+import net.minecraft.client.renderer.texture.TextureAtlas;
+import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.IntArrayTag;
 import net.minecraft.nbt.ListTag;
@@ -52,32 +52,24 @@ public class ArmorModelSpecNBT extends ModelSpecStorage implements IArmorModelSp
     }
 
     @Override
-    public SpecType getSpecType() {
+    public NonNullList<SpecBase> getSpecList() {
         CompoundTag renderTag = getRenderTag();
         if (renderTag == null || renderTag.isEmpty()) {
               renderTag = getDefaultRenderTag();
         }
-
-        try {
-            TexturePartSpec partSpec = (TexturePartSpec) ModelRegistry.getInstance().getPart(renderTag.getCompound(TagConstants.TEXTURESPEC));
-            if (partSpec != null) {
-                return SpecType.ARMOR_SKIN;
-            }
-        } catch (Exception ignored) {
-        }
-
+        NonNullList<SpecBase> specs = NonNullList.create();
         for (String key : renderTag.getAllKeys()) {
-            if (key.equals("colours")) {
+            if (key.equals(TagConstants.COLORS)) {
                 continue;
             }
             if (renderTag.get(key) instanceof CompoundTag) {
-                SpecBase testSpec = ModelRegistry.getInstance().getModel(renderTag.getCompound(key));
-                if (testSpec instanceof ModelSpec) {
-                    return SpecType.ARMOR_MODEL;
+                SpecBase testSpec = NuminaModelRegistry.getInstance().getModel(renderTag.getCompound(key));
+                if (testSpec instanceof ObjModelSpec || testSpec instanceof JavaModelSpec) {
+                    specs.add(testSpec);
                 }
             }
         }
-        return SpecType.NONE;
+        return specs;
     }
 
     @Override
@@ -91,32 +83,33 @@ public class ArmorModelSpecNBT extends ModelSpecStorage implements IArmorModelSp
         // ModelPartSpecs
         ListTag specList = new ListTag();
 
-        // TextureSpecBase (only one texture visible at a time)
-        CompoundTag texSpecTag = new CompoundTag();
-
         // List of EnumColour indexes
-        List<Integer> colours = new ArrayList<>();
+        List<Integer> colors = new ArrayList<>();
 
         // temp data holder
         CompoundTag tempNBT;
 
         EquipmentSlot slot = Mob.getEquipmentSlotForItem(getItemStack());
 
-        for (SpecBase spec : ModelRegistry.getInstance().getSpecs()) {
+        for (SpecBase spec : NuminaModelRegistry.getInstance().getSpecs()) {
             // Only generate NBT data from Specs marked as "default"
             if (spec.isDefault()) {
                 if (getItemStack().getItem() instanceof ArmorItem) {
-                    colours = addNewColourstoList(colours, spec.getColors()); // merge new color int arrays in
+                    colors = addNewColourstoList(colors, spec.getColors()); // merge new color int arrays in
 
                     // Armor Skin
                     if (spec.getSpecType().equals(SpecType.ARMOR_SKIN) && spec.get(slot.getName()) != null) {
-                        // only a single texture per equipment slot can be used at a time
-                        texSpecTag = spec.get(slot.getName()).multiSet(new CompoundTag(),
-                                getNewColourIndex(colours, spec.getColors(), spec.get(slot.getName()).getDefaultColourIndex()));
+                        for (PartSpecBase partSpec : spec.getPartSpecs()) {
+                            if (partSpec.getBinding().getSlot() == slot) {
+                                prefArray.add(partSpec.multiSet(new CompoundTag(),
+                                        getNewColourIndex(colors, spec.getColors(), partSpec.getDefaultColourIndex()),
+                                        partSpec.getGlow()));
+                            }
+                        }
                     }
 
                     // Armor models
-                    else if (spec.getSpecType().equals(SpecType.ARMOR_MODEL) && MPSSettings.allowHighPollyArmor()) {
+                    else if (spec.getSpecType().equals(SpecType.ARMOR_OBJ_MODEL) && MPSSettings.allowHighPollyArmor()) {
                         for (PartSpecBase partSpec : spec.getPartSpecs()) {
                             if (partSpec.getBinding().getSlot() == slot) {
                                 /*
@@ -124,9 +117,9 @@ public class ArmorModelSpecNBT extends ModelSpecStorage implements IArmorModelSp
                                 if (partSpec.binding.getItemState().equals("all") ||
                                         (partSpec.binding.getItemState().equals("jetpack") &&
                                                 ModuleManager.INSTANCE.itemHasModule(stack, MPSModuleConstants.MODULE_JETPACK__DATANAME))) { */
-                                prefArray.add(((ModelPartSpec) partSpec).multiSet(new CompoundTag(),
-                                        getNewColourIndex(colours, spec.getColors(), partSpec.getDefaultColourIndex()),
-                                        ((ModelPartSpec) partSpec).getGlow()));
+                                prefArray.add(partSpec.multiSet(new CompoundTag(),
+                                        getNewColourIndex(colors, spec.getColors(), partSpec.getDefaultColourIndex()),
+                                        partSpec.getGlow()));
                                 /*} */
                             }
                         }
@@ -143,24 +136,16 @@ public class ArmorModelSpecNBT extends ModelSpecStorage implements IArmorModelSp
         if (!specList.isEmpty()) {
             nbt.put(TagConstants.SPECLIST, specList);
         }
-
-        if (!texSpecTag.isEmpty()) {
-            nbt.put(TagConstants.TEXTURESPEC, texSpecTag);
-        }
-
-        nbt.put(TagConstants.COLORS, new IntArrayTag(colours));
+        nbt.put(TagConstants.COLORS, new IntArrayTag(colors));
         return nbt;
     }
 
     @Override
-    public ResourceLocation getArmorTexture() {
-        CompoundTag itemTag = TagUtils.getMuseItemTag(getItemStack());
-        CompoundTag renderTag = itemTag.getCompound(TagConstants.RENDER);
-        try {
-            TexturePartSpec partSpec = (TexturePartSpec) ModelRegistry.getInstance().getPart(renderTag.getCompound(TagConstants.TEXTURESPEC));
-            return partSpec.getTextureLocation();
-        } catch (Exception ignored) {
-            return NuminaConstants.BLANK_ARMOR_MODEL_PATH;
+    public ResourceLocation getArmorTexture(PartSpecBase part) {
+        if (part instanceof JavaPartSpec) {
+            return ((JavaPartSpec) part).getTextureLocation();
         }
+        // TODO: eventually, maybe put armor textures in their own atlas?
+        return TextureAtlas.LOCATION_BLOCKS;
     }
 }

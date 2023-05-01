@@ -219,15 +219,15 @@ public abstract class AbstractSlider extends Clickable {
         return this;
     }
 
-    void drawSingleLine(PoseStack matrixStack, double xStart, double yStart, double xEnd, double yEnd, Color colour) {
+    void drawSingleLine(PoseStack matrixStack, double xStart, double yStart, double xEnd, double yEnd, Color color) {
         Tesselator tessellator = Tesselator.getInstance();
         BufferBuilder builder = tessellator.getBuilder();
         Matrix4f matrix4f = matrixStack.last().pose();
 
         preDraw(VertexFormat.Mode.DEBUG_LINES, DefaultVertexFormat.POSITION_COLOR);
         RenderSystem.lineWidth(1);
-        builder.vertex(matrix4f, (float) xStart, (float) yStart, getZLevel()).color(colour.r, colour.g, colour.b, colour.a).endVertex();
-        builder.vertex(matrix4f, (float) xEnd, (float) yEnd, getZLevel()).color(colour.r, colour.g, colour.b, colour.a).endVertex();
+        builder.vertex(matrix4f, (float) xStart, (float) yStart, getZLevel()).color(color.r, color.g, color.b, color.a).endVertex();
+        builder.vertex(matrix4f, (float) xEnd, (float) yEnd, getZLevel()).color(color.r, color.g, color.b, color.a).endVertex();
         builder.end();
         postDraw(builder);
     }

@@ -27,14 +27,16 @@
 package lehjr.powersuits.client.event;
 
 
+import lehjr.numina.client.model.helper.ModelSpecLoader;
 import lehjr.numina.client.model.obj.OBJBakedCompositeModel;
 import lehjr.numina.common.math.Color;
 import lehjr.powersuits.client.model.block.LuxCapacitorModelWrapper;
 import lehjr.powersuits.client.model.helper.LuxCapHelper;
-import lehjr.powersuits.client.model.helper.MPSModelHelper;
 import lehjr.powersuits.client.model.item.PowerFistModelWrapper;
 import lehjr.powersuits.client.render.item.MPSBEWLR;
+import lehjr.powersuits.common.constants.MPSConstants;
 import lehjr.powersuits.common.constants.MPSRegistryNames;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.ModelResourceLocation;
@@ -61,9 +63,6 @@ public enum ModelBakeEventHandler {
 //
     Map<Direction, BakedModel> luxCapacitorBlockModels = new HashMap<>();
 
-    public BakedModel getLuxCapModel(Direction facing) {
-        return INSTANCE.luxCapacitorBlockModels.get(facing);
-    }
 
     public Map<DIR, List<BakedQuad>> getQuads(Direction facing) {
         return INSTANCE.quadMap.getOrDefault(facing, new HashMap<>());
@@ -98,12 +97,8 @@ public enum ModelBakeEventHandler {
 
         event.getModels().keySet().stream().filter(resourceLocation -> resourceLocation.toString().contains("powersuits:luxcapacitor")).forEach(resourceLocation -> {
             BakedModel model = event.getModels().get(resourceLocation);
-            System.out.println("luxCap location: " + resourceLocation +", class: " + model.getClass());
-
             if (model instanceof OBJBakedCompositeModel) {
                 event.getModels().put(resourceLocation, new LuxCapacitorModelWrapper((OBJBakedCompositeModel)model));
-            } else {
-                System.out.println("class: " + model.getClass());
             }
         });
 
@@ -124,7 +119,10 @@ public enum ModelBakeEventHandler {
             event.getModels().put(powerFistIconLocation, new PowerFistModelWrapper(powerFistIcon));
         }
 
-        MPSModelHelper.loadArmorModels(null, event.getModelBakery());
+        ModelSpecLoader.INSTANCE.parse();
+
+
+//        MPSModelHelper.loadArmorModels(null, event.getModelBakery());
     }
 
     public enum DIR {
@@ -141,6 +139,16 @@ public enum ModelBakeEventHandler {
         }
     }
 
+    ResourceLocation plasmaBall = new ResourceLocation(MPSConstants.MOD_ID, "entity/plasma");
+    @SubscribeEvent
+    public void onAddAdditional(ModelEvent.RegisterAdditional e) {
+        e.register(plasmaBall);
+    }
 
 
+
+
+    public BakedModel test() {
+        return  Minecraft.getInstance().getItemRenderer().getItemModelShaper().getModelManager().getModel(plasmaBall);
+    }
 }

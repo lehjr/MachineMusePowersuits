@@ -60,25 +60,25 @@ public class PowerFistSpecNBT extends ModelSpecStorage implements IHandHeldEntit
         CompoundTag texSpecTag = new CompoundTag();
 
         // List of EnumColour indexes
-        List<Integer> colours = new ArrayList<>();
+        List<Integer> colors = new ArrayList<>();
 
         // temp data holder
         CompoundTag tempNBT;
 
         EquipmentSlot slot = getItemStack().getEquipmentSlot();
 
-        for (SpecBase spec : ModelRegistry.getInstance().getSpecs()) {
+        for (SpecBase spec : NuminaModelRegistry.getInstance().getSpecs()) {
             // Only generate NBT data from Specs marked as "default"
             if (spec.isDefault()) {
-                if (getItemStack().getItem() instanceof PowerFist && spec.getSpecType().equals(SpecType.HANDHELD)) {
-                    colours = addNewColourstoList(colours, spec.getColors()); // merge new color int arrays in
+                if (getItemStack().getItem() instanceof PowerFist && (spec.getSpecType().equals(SpecType.HANDHELD_OBJ_MODEL) || spec.getSpecType().equals(SpecType.HANDHELD_JAVA_MODEL))) {
+                    colors = addNewColourstoList(colors, spec.getColors()); // merge new color int arrays in
 
                     for (PartSpecBase partSpec : spec.getPartSpecs()) {
-                        if (partSpec instanceof ModelPartSpec) {
-                            prefArray.add(((ModelPartSpec) partSpec).multiSet(new CompoundTag(),
-                                    getNewColourIndex(colours, spec.getColors(), partSpec.getDefaultColourIndex()),
-                                    ((ModelPartSpec) partSpec).getGlow()));
-                        }
+//                        if (partSpec instanceof ModelPartSpec) {
+                            prefArray.add(partSpec.multiSet(new CompoundTag(),
+                                    getNewColourIndex(colors, spec.getColors(), partSpec.getDefaultColourIndex()),
+                                    partSpec.getGlow()));
+//                        }
                     }
                 }
             }
@@ -92,10 +92,10 @@ public class PowerFistSpecNBT extends ModelSpecStorage implements IHandHeldEntit
         if (!specList.isEmpty())
             nbt.put(TagConstants.SPECLIST, specList);
 
-        if (!texSpecTag.isEmpty())
-            nbt.put(TagConstants.TEXTURESPEC, texSpecTag);
+//        if (!texSpecTag.isEmpty())
+//            nbt.put(TagConstants.TEXTURESPEC, texSpecTag);
 
-        nbt.put(TagConstants.COLORS, new IntArrayTag(colours));
+        nbt.put(TagConstants.COLORS, new IntArrayTag(colors));
         return nbt;
     }
 }

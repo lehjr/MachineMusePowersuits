@@ -1,0 +1,9 @@
+{
+  "parent": "builtin/entity",
+  "loader": "numina:obj",
+  "model": "powersuits:models/entity/obj/sphere.obj",
+  "flip_v": true,
+  "textures": {
+    "particle": "numina:block/white"
+  }
+}

@@ -4,7 +4,7 @@ import com.mojang.blaze3d.platform.InputConstants;
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
 import lehjr.numina.common.network.NuminaPackets;
 import lehjr.numina.common.network.packets.ToggleRequestPacket;
-import lehjr.powersuits.client.event.RenderEventHandler;
+import lehjr.powersuits.client.gui.overlay.MPSHud;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
@@ -34,8 +34,9 @@ public class MPSKeyMapping extends KeyMapping {
     @Override
     public void setKey(InputConstants.Key key) {
         super.setKey(key);
-        KeybindManager.INSTANCE.writeOutKeybindSetings();
-        RenderEventHandler.INSTANCE.makeKBDisplayList();
+        KeyMappingReaderWriter.INSTANCE.writeOutKeybindSetings();
+        MPSHud.makeKBDisplayList();
+//        RenderEventHandler.INSTANCE.makeKBDisplayList();
     }
 
     /**

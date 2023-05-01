@@ -29,6 +29,9 @@ package lehjr.numina.common.capabilities.render.modelspec;
 import lehjr.numina.common.constants.TagConstants;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.HumanoidArm;
+import net.minecraft.world.entity.LivingEntity;
 
 import java.util.Objects;
 
@@ -39,19 +42,61 @@ public abstract class PartSpecBase {
     public final SpecBase spec;
     final String partName;
     final SpecBinding binding;
-    Integer defaultcolourindex; // index getValue of NBTIntArray (array of colours as Int's.)
+    Integer defaultcolorindex; // index getValue of NBTIntArray (array of colors as Int's.)
+    private final boolean defaultglow;
 
     public PartSpecBase(final SpecBase spec,
                         final SpecBinding binding,
                         final String partName,
-                        final Integer defaultcolourindex) {
+                        final Integer defaultcolorindex,
+                        final Boolean defaultglow) {
         this.spec = spec;
         this.partName = partName;
         this.binding = binding;
-        if (defaultcolourindex != null && defaultcolourindex >= 0)
-            this.defaultcolourindex = defaultcolourindex;
+        if (defaultcolorindex != null && defaultcolorindex >= 0)
+            this.defaultcolorindex = defaultcolorindex;
         else
-            this.defaultcolourindex = 0;
+            this.defaultcolorindex = 0;
+        this.defaultglow = (defaultglow != null) ? defaultglow : false;
+    }
+
+    abstract String getNamePrefix();
+
+    public Component getDisaplayName() {
+        return Component.translatable(new StringBuilder(getNamePrefix())
+                .append(this.spec.getOwnName())
+                .append(".")
+                .append(this.partName)
+                .append(".partName")
+                .toString());
+    }
+
+    public String getPartName() {
+        return partName;
+    }
+
+    public boolean hasArmorEquipmentSlot(EquipmentSlot slot) {
+        return this.getBinding().getSlot().equals(slot) && slot.isArmor();
+    }
+
+    public boolean getGlow() {
+        return this.defaultglow;
+    }
+
+    public boolean getGlow(CompoundTag nbt) {
+        return nbt.contains(TagConstants.GLOW) ? nbt.getBoolean(TagConstants.GLOW) : this.defaultglow;
+    }
+
+    public void setGlow(CompoundTag nbt, boolean g) {
+        if (g == this.defaultglow) nbt.remove(TagConstants.GLOW);
+        else nbt.putBoolean(TagConstants.GLOW, g);
+    }
+
+    public boolean isForHand(HumanoidArm arm, LivingEntity entity) {
+        if (binding.getSlot().isArmor()) {
+            return false;
+        }
+        return binding.getTarget().getHandFromEquipmentSlot(entity).equals(arm);
     }
 
     public SpecBinding getBinding() {
@@ -59,17 +104,15 @@ public abstract class PartSpecBase {
     }
 
     public int getDefaultColourIndex() {
-        return this.defaultcolourindex;
+        return this.defaultcolorindex;
     }
 
-    public abstract Component getDisaplayName();
-
     public int getColourIndex(CompoundTag nbt) {
-        return nbt.contains(TagConstants.COLOUR_INDEX) ? nbt.getInt(TagConstants.COLOUR_INDEX) : this.defaultcolourindex;
+        return nbt.contains(TagConstants.COLOUR_INDEX) ? nbt.getInt(TagConstants.COLOUR_INDEX) : this.defaultcolorindex;
     }
 
     public void setColourIndex(CompoundTag nbt, int c) {
-        if (c == this.defaultcolourindex) {
+        if (c == this.defaultcolorindex) {
             nbt.remove(TagConstants.COLOUR_INDEX);
         } else {
             nbt.putInt(TagConstants.COLOUR_INDEX, c);
@@ -77,7 +120,7 @@ public abstract class PartSpecBase {
     }
 
     public void setModel(CompoundTag nbt, SpecBase model) {
-        String modelString = ModelRegistry.getInstance().getName(model);
+        String modelString = NuminaModelRegistry.getInstance().getName(model);
         setModel(nbt, ((modelString != null) ? modelString : ""));
     }
 
@@ -89,10 +132,11 @@ public abstract class PartSpecBase {
         nbt.putString(TagConstants.PART, this.partName);
     }
 
-    public CompoundTag multiSet(CompoundTag nbt, Integer colourIndex) {
+    public CompoundTag multiSet(CompoundTag nbt, Integer colorIndex, Boolean glow) {
+        this.setGlow(nbt, (glow != null) ? glow : false);
         this.setPart(nbt);
         this.setModel(nbt, this.spec);
-        this.setColourIndex(nbt, (colourIndex != null) ? colourIndex : defaultcolourindex);
+        this.setColourIndex(nbt, (colorIndex != null) ? colorIndex : defaultcolorindex);
         return nbt;
     }
 
@@ -104,11 +148,12 @@ public abstract class PartSpecBase {
         return Objects.equals(spec, that.spec) &&
                 Objects.equals(partName, that.partName) &&
                 Objects.equals(binding, that.binding) &&
-                Objects.equals(defaultcolourindex, that.defaultcolourindex);
+                Objects.equals(defaultcolorindex, that.defaultcolorindex) &&
+                Objects.equals(defaultglow, that.defaultglow);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(spec, partName, binding, defaultcolourindex);
+        return Objects.hash(spec, partName, binding, defaultcolorindex);
     }
 }

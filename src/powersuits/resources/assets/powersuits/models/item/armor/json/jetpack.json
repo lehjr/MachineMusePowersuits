@@ -1,11 +1,9 @@
 {
-  "forge_marker": 1,
-  "defaults": {
-    "textures": {},
-    "custom": { "flip_v": true },
-    "model": "powersuits:armor/jetpack.obj"
-  },
-  "variants": {
-    "normal": [{}]
+  "parent": "builtin/entity",
+  "loader": "numina:obj",
+  "model": "powersuits:models/item/armor/jetpack.obj",
+  "flip_v": true,
+  "textures": {
+    "particle": "numina:block/white"
   }
 }

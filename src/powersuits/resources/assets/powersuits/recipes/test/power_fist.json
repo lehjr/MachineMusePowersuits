@@ -176,7 +176,7 @@
             "part": "supportbaseright",
             "model": "powerfist_left"
           },
-          "colours": [
+          "color": [
             -1
           ],
           "powerfist_left.wristbottomright": {

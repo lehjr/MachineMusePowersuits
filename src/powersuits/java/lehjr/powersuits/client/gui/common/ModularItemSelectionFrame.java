@@ -28,6 +28,8 @@ public class ModularItemSelectionFrame extends AbstractGuiFrame {
     IChanged changed;
 
     List<IRect> boxes;
+
+    // just because I prefer this order :P
     final List<EquipmentSlot> equipmentSlotTypes = Arrays.asList(
             EquipmentSlot.HEAD,
             EquipmentSlot.CHEST,
@@ -75,7 +77,7 @@ public class ModularItemSelectionFrame extends AbstractGuiFrame {
         }
         creativeInstallButton = new VanillaButton(MusePoint2D.ZERO, Component.translatable("gui.powersuits.creative.install"), false);
         creativeInstallButton.setHeight(18);
-        creativeInstallButton.setWidth(30);
+        creativeInstallButton.setWidth(38);
         creativeInstallButton.disableAndHide();
 //        creativeInstallButton.setEnabledBackground(Color.LIGHT_GRAY);
 //        creativeInstallButton.setDisabledBackground(Color.RED);
@@ -102,6 +104,7 @@ public class ModularItemSelectionFrame extends AbstractGuiFrame {
             finalHeight += rect.height();;
         }
         setHeight(finalHeight);
+        creativeInstallButton.setLeft(left() -7);
     }
 
     public VanillaButton getCreativeInstallButton() {

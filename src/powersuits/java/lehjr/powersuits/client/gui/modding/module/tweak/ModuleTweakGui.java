@@ -91,7 +91,7 @@ public class ModuleTweakGui extends ContainerlessGui {
 
         /** frame to display and allow selecting of installed modules -------------------------------------------------- */
         boolean keepOnReload = moduleSelectFrame != null;
-        moduleSelectFrame = new ModuleSelectionFrame(itemSelectFrame, new Rect(leftPos + 8, topPos + 13, leftPos + 172, topPos + 208));
+        moduleSelectFrame = new ModuleSelectionFrame(itemSelectFrame, new Rect(leftPos + 8, topPos + 13, leftPos + 172, topPos + 207));
         moduleSelectFrame.loadModules(keepOnReload); // <- this probably won't make any difference
         addFrame(moduleSelectFrame);
 

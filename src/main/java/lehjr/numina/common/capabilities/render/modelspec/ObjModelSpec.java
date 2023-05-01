@@ -28,10 +28,15 @@ package lehjr.numina.common.capabilities.render.modelspec;
 
 import com.mojang.math.Transformation;
 import lehjr.numina.client.model.obj.OBJBakedCompositeModel;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.block.model.ItemTransform;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
-import net.minecraft.client.resources.model.ModelState;
+import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.Objects;
 
 /**
@@ -40,20 +45,31 @@ import java.util.Objects;
  * <p>
  * Ported to Java by lehjr on 11/8/16.
  */
-public class ModelSpec extends SpecBase {
-    private final OBJBakedCompositeModel model;
-    private final ModelState modelTransforms;
+public class ObjModelSpec extends SpecBase {
+    private Transformation modelTransform = Transformation.identity();
+    private ItemTransforms itemTransforms = ItemTransforms.NO_TRANSFORMS;
+    private final ResourceLocation location;
 
-    public ModelSpec(final OBJBakedCompositeModel model, final ModelState transforms, final String name, final boolean isDefault, final SpecType specType) {
-        super(name, isDefault, specType);
-        this.modelTransforms = transforms;
-        this.model = model;
+    public ObjModelSpec(final ResourceLocation location, final String name, final boolean isDefault, final SpecType specType) {
+        this(location, ItemTransforms.NO_TRANSFORMS, name, isDefault, specType);
     }
 
-    public Transformation getTransform(ItemTransforms.TransformType transformType) {
-        // FIXME: Looks like model state only has one transform now
-        Transformation transformation = modelTransforms.getRotation()/*.getPartTransformation(transformType)*/; // FIXME!!!!!
-        return transformation;
+    public ObjModelSpec(final ResourceLocation location, @Nonnull final ItemTransforms itemTransforms, final String name, final boolean isDefault, final SpecType specType) {
+        super(name, isDefault, specType);
+        this.itemTransforms = itemTransforms;
+        this.location = location;
+    }
+
+    public ItemTransform getTransform(ItemTransforms.TransformType transformType) {
+        return itemTransforms.getTransform(transformType);
+    }
+
+    public Transformation getModelTransform() {
+        return modelTransform;
+    }
+
+    public void setModelTransform(Transformation modelTransform) {
+        this.modelTransform = modelTransform;
     }
 
     @Override
@@ -66,12 +82,17 @@ public class ModelSpec extends SpecBase {
 
     @Override
     public String getOwnName() {
-        String name = ModelRegistry.getInstance().getName(this);
+        String name = NuminaModelRegistry.getInstance().getName(this);
         return (name != null) ? name : "";
     }
 
+    @Nullable
     public OBJBakedCompositeModel getModel() {
-        return model;
+        BakedModel model = Minecraft.getInstance().getItemRenderer().getItemModelShaper().getModelManager().getModel(location);
+        if (model instanceof OBJBakedCompositeModel) {
+            return (OBJBakedCompositeModel) model;
+        }
+        return null;
     }
 
     @Override
@@ -79,13 +100,13 @@ public class ModelSpec extends SpecBase {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
-        ModelSpec modelSpec = (ModelSpec) o;
-        return Objects.equals(model, modelSpec.model) &&
-                Objects.equals(modelTransforms, modelSpec.modelTransforms);
+        ObjModelSpec objModelSpec = (ObjModelSpec) o;
+        return Objects.equals(location, objModelSpec.location) &&
+                Objects.equals(itemTransforms, objModelSpec.itemTransforms);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), model, modelTransforms);
+        return Objects.hash(super.hashCode(), location, itemTransforms);
     }
 }

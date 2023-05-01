@@ -1,57 +1,13 @@
 {
   "modelSpec": {
     "specName": "default_armorskin",
-    "type": "armor skin",
+    "type": "ARMOR_SKIN",
     "default": true,
-    "textures": [
-      {
-        "texture": {
-          "file": "powersuits:textures/item/armor/sebkarmor.png",
-          "bindings": [
-            {
-              "binding": {
-                "itemSlot": "head",
-                "target": "Head"
-              },
-              "binding": {
-                "itemSlot": "chest",
-                "target": "Body"
-              },
-              "binding": {
-                "itemSlot": "chest",
-                "target": "LeftArm"
-              },
-              "binding": {
-                "itemSlot": "chest",
-                "target": "RightArm"
-              },
-              "binding": {
-                "itemSlot": "feet",
-                "target": "LeftLeg"
-              },
-              "binding": {
-                "itemSlot": "feet",
-                "target": "RightLeg"
-              }
-            }
-          ]
-        },
-        "texture": {
-          "file": "powersuits:textures/item/armor/sebkarmorpants.png",
-          "bindings": [
-            {
-              "binding": {
-                "itemSlot": "legs",
-                "target": "LeftLeg"
-              },
-              "binding": {
-                "itemSlot": "legs",
-                "target": "RightLeg"
-              }
-            }
-          ]
-        }
-      }
-    ]
+    "body": {
+      "texture": "powersuits:textures/item/armor/sebkarmor.png"
+    },
+    "legs": {
+      "texture": "powersuits:textures/item/armor/sebkarmorpants.png"
+    }
   }
 }

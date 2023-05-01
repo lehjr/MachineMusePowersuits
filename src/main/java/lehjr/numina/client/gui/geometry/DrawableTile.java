@@ -88,17 +88,17 @@ public class DrawableTile extends Rect implements IDrawableRect {
         return this;
     }
 
-    public void internalDraw(PoseStack matrixStack, Color colour, VertexFormat.Mode mode, double shrinkBy) {
+    public void internalDraw(PoseStack matrixStack, Color color, VertexFormat.Mode mode, double shrinkBy) {
         internalDrawRect(matrixStack,
                 left() + shrinkBy,
                 top() + shrinkBy,
                 right() - shrinkBy,
                 bottom() - shrinkBy,
-                colour,
+                color,
                 mode);
     }
 
-    public void internalDrawRect(PoseStack matrixStack, double left, double top, double right, double bottom, Color colourIn, VertexFormat.Mode mode) {
+    public void internalDrawRect(PoseStack matrixStack, double left, double top, double right, double bottom, Color colorIn, VertexFormat.Mode mode) {
         BufferBuilder builder = preDraw(mode, DefaultVertexFormat.POSITION_COLOR);
         FloatBuffer vertices = BufferUtils.createFloatBuffer(8);
         Matrix4f matrix4f = matrixStack.last().pose();
@@ -121,7 +121,7 @@ public class DrawableTile extends Rect implements IDrawableRect {
 
         vertices.flip();
         vertices.rewind();
-        addVerticesToBuffer(builder, matrix4f, vertices, colourIn);
+        addVerticesToBuffer(builder, matrix4f, vertices, colorIn);
         builder.end();
         postDraw(builder);
     }

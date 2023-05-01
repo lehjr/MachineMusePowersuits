@@ -26,12 +26,16 @@
 
 package lehjr.numina.common.capabilities.render.modelspec;
 
-import lehjr.numina.client.model.obj.OBJBakedCompositeModel;
 import lehjr.numina.common.constants.TagConstants;
 import lehjr.numina.common.map.NuminaRegistry;
-import lehjr.numina.common.string.StringUtils;
+import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.HumanoidArm;
+import net.minecraft.world.entity.LivingEntity;
+
+import javax.annotation.Nullable;
+import java.util.stream.Stream;
 
 /**
  * Author: MachineMuse (Claire Semple)
@@ -41,44 +45,51 @@ import net.minecraft.resources.ResourceLocation;
  * <p>
  * Note: make sure to have null checks in place.
  */
-public class ModelRegistry extends NuminaRegistry<SpecBase> {
-    private static volatile ModelRegistry INSTANCE;
+public class NuminaModelRegistry extends NuminaRegistry<SpecBase> {
+    private static volatile NuminaModelRegistry INSTANCE;
 
-    private ModelRegistry() {
+    private NuminaModelRegistry() {
     }
 
-    public static ModelRegistry getInstance() {
+    public static NuminaModelRegistry getInstance() {
         if (INSTANCE == null) {
-            synchronized (ModelRegistry.class) {
+            synchronized (NuminaModelRegistry.class) {
                 if (INSTANCE == null) {
-                    INSTANCE = new ModelRegistry();
+                    INSTANCE = new NuminaModelRegistry();
                 }
             }
         }
         return INSTANCE;
     }
 
-    /**
-     * TextureSpec does not have an IModelState so this is relatively safe
-     * @return
-     */
-    public OBJBakedCompositeModel loadBakedModel(ResourceLocation resource) {
-        String name = StringUtils.extractName(resource);
-        SpecBase spec = get(name);
-        return ((ModelSpec) (spec)).getModel();
-    }
-
     public Iterable<SpecBase> getSpecs() {
         return this.elems();
+    }
+
+    public Stream<SpecBase> getSpecsAsStream() {
+        return this.elemsAsStream();
+    }
+
+    public NonNullList<SpecBase> getSpecsForArmorEquipmentSlot(EquipmentSlot slot) {
+        NonNullList<SpecBase> ret = NonNullList.create();
+        if (slot.isArmor()) {
+            this.elemsAsStream().filter(specBase -> specBase.hasArmorEquipmentSlot(slot)).forEach(specBase -> ret.add(specBase));
+        }
+        return ret;
+    }
+
+    public NonNullList<SpecBase> getSpecsForHand(HumanoidArm arm, LivingEntity entity) {
+        NonNullList<SpecBase> ret = NonNullList.create();
+            this.elemsAsStream().filter(specBase -> specBase.elemsAsStream().filter(partSpecBase -> partSpecBase.isForHand(arm, entity)).findFirst().isPresent())
+                    .forEach(specBase -> ret.add(specBase));
+        return ret;
+
     }
 
     public Iterable<String> getNames() {
         return this.names();
     }
 
-    /**
-     * FIXME: texture spec needs a model tag for this to work. Model tag does not have to be a real model, just a unique string for the spec k-v pair
-     */
     public SpecBase getModel(CompoundTag nbt) {
         return get(nbt.getString(TagConstants.MODEL));
     }
@@ -91,9 +102,10 @@ public class ModelRegistry extends NuminaRegistry<SpecBase> {
         return getPart(nbt, getModel(nbt));
     }
 
-    public CompoundTag getSpecTag(CompoundTag museRenderTag, PartSpecBase spec) {
+    @Nullable
+    public CompoundTag getSpecTag(CompoundTag renderTag, PartSpecBase spec) {
         String name = makeName(spec);
-        return (museRenderTag.contains(name)) ? (museRenderTag.getCompound(name)) : null;
+        return (renderTag.contains(name)) ? (renderTag.getCompound(name)) : null;
     }
 
     public String makeName(PartSpecBase spec) {

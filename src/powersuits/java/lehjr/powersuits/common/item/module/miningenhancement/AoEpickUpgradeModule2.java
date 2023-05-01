@@ -14,7 +14,7 @@ import lehjr.numina.common.capabilities.render.chameleon.IChameleon;
 import lehjr.numina.common.capabilities.render.highlight.Highlight;
 import lehjr.numina.common.capabilities.render.highlight.IHighlight;
 import lehjr.numina.common.energy.ElectricItemUtils;
-import lehjr.powersuits.client.control.KeybindKeyHandler;
+import lehjr.powersuits.client.control.KeymappingKeyHandler;
 import lehjr.powersuits.common.config.MPSSettings;
 import lehjr.powersuits.common.constants.MPSConstants;
 import lehjr.powersuits.common.item.module.AbstractPowerModule;
@@ -102,7 +102,7 @@ public class AoEpickUpgradeModule2 extends AbstractPowerModule {
             @Override
             public InteractionResult onItemUseFirst(ItemStack stack, UseOnContext context) {
                 if (context.getHand().equals(InteractionHand.MAIN_HAND) && context.getLevel().isClientSide()) {
-                    if (KeybindKeyHandler.isKeyPressed(GLFW.GLFW_KEY_LEFT_SHIFT) || KeybindKeyHandler.isKeyPressed(GLFW.GLFW_KEY_RIGHT_SHIFT)) {
+                    if (KeymappingKeyHandler.isKeyPressed(GLFW.GLFW_KEY_LEFT_SHIFT) || KeymappingKeyHandler.isKeyPressed(GLFW.GLFW_KEY_RIGHT_SHIFT)) {
                         BlockHitResult rayTraceResult = getPlayerPOVHitResult(context.getLevel(), context.getPlayer(), ClipContext.Fluid.NONE);
 //                        if (rayTraceResult.getType() == HitResult.Type.BLOCK) {
                         if (!(rayTraceResult == null)) {

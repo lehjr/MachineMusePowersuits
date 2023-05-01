@@ -268,91 +268,97 @@ public abstract class AbstractElectricItemArmor extends ArmorItem {
         return builder.build();
     }
 
-    /**
-     * This will work for the vanilla type models. This will not work for high polly models due to how the rendering works
-     *
-     * @param armor
-     * @param entity
-     * @param equipmentSlotType
-     * @param type
-     * @return
-     */
-    @Nullable
     @Override
-    public String getArmorTexture(ItemStack armor, Entity entity, EquipmentSlot equipmentSlotType, String type) {
-        if (type == "overlay") { // this is to allow a tint to be applied tot the armor
-            return NuminaConstants.BLANK_ARMOR_MODEL_PATH.toString();
-        }
-
-        if (!equipmentSlotType.equals(armor.getEquipmentSlot())) {
-            return NuminaConstants.BLANK_ARMOR_MODEL_PATH.toString();
-        }
-
-        if (entity instanceof LivingEntity) {
-            if (armor.getCapability(ForgeCapabilities.ITEM_HANDLER)
-                    .filter(IModularItem.class::isInstance)
-                    .map(IModularItem.class::cast)
-                    .map(iItemHandler -> iItemHandler.isModuleOnline(MPSRegistryNames.TRANSPARENT_ARMOR_MODULE)).orElse(false)) {
-                return NuminaConstants.BLANK_ARMOR_MODEL_PATH.toString();
-            }
-        }
-
-        return armor.getCapability(NuminaCapabilities.RENDER)
-                .filter(IArmorModelSpecNBT.class::isInstance)
-                .map(IArmorModelSpecNBT.class::cast)
-                .map(spec -> {
-                    if (spec.getSpecType() == SpecType.NONE) {
-                        return NuminaConstants.BLANK_ARMOR_MODEL_PATH.toString();
-                    }
-
-                    if (spec.getRenderTag() != null && spec.getRenderTag().isEmpty()) {
-                        return NuminaConstants.BLANK_ARMOR_MODEL_PATH.toString();
-                    }
-                    return spec.getArmorTexture().toString();
-                })
-                .orElse(TextureAtlas.LOCATION_BLOCKS.toString());
+    public @Nullable String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String type) {
+        return NuminaConstants.BLANK_ARMOR_MODEL_PATH.toString();
     }
 
-    @Override
-    public void initializeClient(Consumer<IClientItemExtensions> consumer) {
-        consumer.accept(new IClientItemExtensions() {
-            @Override
-            public @NotNull HumanoidModel<?> getHumanoidArmorModel(LivingEntity livingEntity, ItemStack itemStack, EquipmentSlot armorSlot, HumanoidModel<?> _default) {
-                return itemStack.getCapability(NuminaCapabilities.RENDER).map(spec -> {
-                    CompoundTag renderTag = spec.getRenderTag();
-                    EquipmentSlot slot = Mob.getEquipmentSlotForItem(itemStack);
-                    /** sets up default spec tags. A tag with all parts disabled should still have a color tag rather than being empty or null */
-                    if ((renderTag == null || renderTag.isEmpty()) && livingEntity == Minecraft.getInstance().player && armorSlot == slot) {
-                        renderTag = spec.getDefaultRenderTag();
-                        if (renderTag != null && !renderTag.isEmpty()) {
-                            spec.setRenderTag(renderTag, TagConstants.RENDER);
-                            NuminaPackets.CHANNEL_INSTANCE.sendToServer(new CosmeticInfoPacket(armorSlot, TagConstants.RENDER, renderTag));
-                        }
-                    }
 
-                    /** Armor skin uses vanilla model, but returning _default for EnumSpecType.NONE renders a garbage model */
-                    if (spec.getRenderTag() != null && (spec.getSpecType() == SpecType.ARMOR_SKIN)) {
-                        return _default;
-                    }
+    //    /**
+//     * This will work for the vanilla type models. This will not work for high polly models due to how the rendering works
+//     *
+//     * @param armor
+//     * @param entity
+//     * @param equipmentSlotType
+//     * @param type
+//     * @return
+//     */
+//    @Nullable
+//    @Override
+//    public String getArmorTexture(ItemStack armor, Entity entity, EquipmentSlot equipmentSlotType, String type) {
+//        if (type == "overlay") { // this is to allow a tint to be applied tot the armor
+//            return NuminaConstants.BLANK_ARMOR_MODEL_PATH.toString();
+//        }
+//
+//        if (!equipmentSlotType.equals(armor.getEquipmentSlot())) {
+//            return NuminaConstants.BLANK_ARMOR_MODEL_PATH.toString();
+//        }
+//
+//        if (entity instanceof LivingEntity) {
+//            if (armor.getCapability(ForgeCapabilities.ITEM_HANDLER)
+//                    .filter(IModularItem.class::isInstance)
+//                    .map(IModularItem.class::cast)
+//                    .map(iItemHandler -> iItemHandler.isModuleOnline(MPSRegistryNames.TRANSPARENT_ARMOR_MODULE)).orElse(false)) {
+//                return NuminaConstants.BLANK_ARMOR_MODEL_PATH.toString();
+//            }
+//        }
+//
+//        return armor.getCapability(NuminaCapabilities.RENDER)
+//                .filter(IArmorModelSpecNBT.class::isInstance)
+//                .map(IArmorModelSpecNBT.class::cast)
+//                .map(spec -> {
+//                    if (spec.getSpecList() == SpecType.NONE) {
+//                        return NuminaConstants.BLANK_ARMOR_MODEL_PATH.toString();
+//                    }
+//
+//                    if (spec.getRenderTag() != null && spec.getRenderTag().isEmpty()) {
+//                        return NuminaConstants.BLANK_ARMOR_MODEL_PATH.toString();
+//                    }
+//                    return spec.getArmorTexture().toString();
+//                })
+//                .orElse(TextureAtlas.LOCATION_BLOCKS.toString());
+//    }
 
-                    HumanoidModel model = ArmorModelInstance.getInstance();
-                    ItemStack chestplate = livingEntity.getItemBySlot(EquipmentSlot.CHEST);
-                    if (chestplate.getCapability(ForgeCapabilities.ITEM_HANDLER)
-                            .filter(IModularItem.class::isInstance)
-                            .map(IModularItem.class::cast)
-                            .map(iItemHandler -> iItemHandler.isModuleOnline(MPSRegistryNames.ACTIVE_CAMOUFLAGE_MODULE)).orElse(false)) {
-                        ((HighPolyArmor) model).setVisibleSection(null);
-                    } else {
-                        if (renderTag != null) {
-                            ((HighPolyArmor) model).setVisibleSection(slot);
-                            ((HighPolyArmor) model).setRenderSpec(renderTag);
-                        }
-                    }
-                    return model;
-                }).orElse(_default);
-            }
-        });
-    }
+//    @Override
+//    public void initializeClient(Consumer<IClientItemExtensions> consumer) {
+//        consumer.accept(new IClientItemExtensions() {
+//            @Override
+//            public @NotNull HumanoidModel<?> getHumanoidArmorModel(LivingEntity livingEntity, ItemStack itemStack, EquipmentSlot armorSlot, HumanoidModel<?> _default) {
+//                return itemStack.getCapability(NuminaCapabilities.RENDER).map(spec -> {
+//                    CompoundTag renderTag = spec.getRenderTag();
+//                    EquipmentSlot slot = Mob.getEquipmentSlotForItem(itemStack);
+//                    /** sets up default spec tags. A tag with all parts disabled should still have a color tag rather than being empty or null */
+//                    if ((renderTag == null || renderTag.isEmpty()) && livingEntity == Minecraft.getInstance().player && armorSlot == slot) {
+//                        renderTag = spec.getDefaultRenderTag();
+//                        if (renderTag != null && !renderTag.isEmpty()) {
+//                            spec.setRenderTag(renderTag, TagConstants.RENDER);
+//                            NuminaPackets.CHANNEL_INSTANCE.sendToServer(new CosmeticInfoPacket(armorSlot, TagConstants.RENDER, renderTag));
+//                        }
+//                    }
+//
+//                    /** Armor skin uses vanilla model, but returning _default for EnumSpecType.NONE renders a garbage model */
+//                    if (spec.getRenderTag() != null && (spec.getSpecList() == SpecType.ARMOR_SKIN)) {
+//                        return _default;
+//                    }
+//
+//                    HumanoidModel model = ArmorModelInstance.getInstance();
+//                    ItemStack chestplate = livingEntity.getItemBySlot(EquipmentSlot.CHEST);
+//                    if (chestplate.getCapability(ForgeCapabilities.ITEM_HANDLER)
+//                            .filter(IModularItem.class::isInstance)
+//                            .map(IModularItem.class::cast)
+//                            .map(iItemHandler -> iItemHandler.isModuleOnline(MPSRegistryNames.ACTIVE_CAMOUFLAGE_MODULE)).orElse(false)) {
+//                        ((HighPolyArmor) model).setVisibleSection(null);
+//                    } else {
+//                        if (renderTag != null) {
+//                            ((HighPolyArmor) model).setVisibleSection(slot);
+//                            ((HighPolyArmor) model).setRenderSpec(renderTag);
+//                        }
+//                    }
+//                    return model;
+//                }).orElse(_default);
+//            }
+//        });
+//    }
 
 
     @OnlyIn(Dist.CLIENT)

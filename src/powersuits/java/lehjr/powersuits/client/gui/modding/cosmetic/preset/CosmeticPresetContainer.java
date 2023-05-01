@@ -42,7 +42,7 @@
 //
 //public class CosmeticPresetAbstractContainerMenu extends ScrollableFrame {
 //    public ModularItemSelectionFrame itemSelect;
-//    public ColourPickerFrame colourSelect;
+//    public ColourPickerFrame colorSelect;
 //    public MusePoint2D topleft;
 //    public MusePoint2D bottomright;
 //    public Integer lastItemSlot;
@@ -51,7 +51,7 @@
 //    protected boolean visibile;
 //
 //    public CosmeticPresetAbstractContainerMenu(ModularItemSelectionFrame itemSelect,
-//                                   ColourPickerFrame colourSelect,
+//                                   ColourPickerFrame colorSelect,
 //                                   MusePoint2D topleft,
 //                                   MusePoint2D bottomright,
 //                                   float zLevel,
@@ -59,7 +59,7 @@
 //                                   Colour insideColour) {
 //        super(topleft, bottomright, zLevel, borderColour, insideColour);
 //        this.itemSelect = itemSelect;
-//        this.colourSelect = colourSelect;
+//        this.colorSelect = colorSelect;
 //        this.topleft = topleft;
 //        this.bottomright = bottomright;
 //        this.lastItemSlot = null;
@@ -125,9 +125,9 @@
 ////                }
 ////                this.totalsize = (int) x;
 //////        }
-////                if (colourSelect.decrAbove > -1) {
-//////            decrAbove(colourSelect.decrAbove);
-////                    colourSelect.decrAbove = -1;
+////                if (colorSelect.decrAbove > -1) {
+//////            decrAbove(colorSelect.decrAbove);
+////                    colorSelect.decrAbove = -1;
 ////                }
 ////            }
 ////        }

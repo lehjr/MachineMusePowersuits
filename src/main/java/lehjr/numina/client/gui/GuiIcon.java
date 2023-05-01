@@ -50,39 +50,43 @@ public class GuiIcon {
     private static final String iconPrefix = "gui";
     private final NuminaSpriteUploader spriteUploader;
 
+    public final DrawableGuiIcon armordisplayselect;
     public final DrawableGuiIcon checkmark;
-    public final DrawableGuiIcon transparentArmor;
-    public final DrawableGuiIcon normalArmor;
+    public final DrawableGuiIcon colorclicker;
+    public final DrawableGuiIcon energygeneration;
+    public final DrawableGuiIcon energystorage;
     public final DrawableGuiIcon glowArmor;
-    public final DrawableGuiIcon selectedArmorOverlay;
-    public final DrawableGuiIcon armorColourPatch;
-    public final DrawableGuiIcon minusSign;
-    public final DrawableGuiIcon plusSign;
-//    public final DrawableGuiIcon glassTexture;
+
     public final DrawableGuiIcon lightning;
-    public final DrawableGuiIcon weaponSlotBackground;
-    public final DrawableGuiIcon energyStorageBackground;
-    public final DrawableGuiIcon energyGenerationBackground;
+    public final DrawableGuiIcon lightning2;
+    public final DrawableGuiIcon lightningmedium;
+    public final DrawableGuiIcon minusSign;
+    public final DrawableGuiIcon normalArmor;
+    public final DrawableGuiIcon plusSign;
+    public final DrawableGuiIcon transparentArmor;
+    public final DrawableGuiIcon weapon;
+
     public GuiIcon(NuminaSpriteUploader spriteUploader) {
         this.spriteUploader = spriteUploader;
+        armordisplayselect = registerIcon("armordisplayselect", 8, 8);
         checkmark = registerIcon("checkmark", 16, 16);
-        transparentArmor = registerIcon("transparentarmor", 8, 8);
-        normalArmor = registerIcon("normalarmor", 8, 8);
+        colorclicker = registerIcon("colorclicker", 8, 8);
+        energygeneration = registerIcon("energygeneration",32, 32);
+        energystorage = registerIcon("energystorage",32, 32);
         glowArmor= registerIcon("glowarmor", 8, 8);
-        selectedArmorOverlay = registerIcon("armordisplayselect", 8, 8);
-        armorColourPatch = registerIcon("colourclicker", 8, 8);
-        minusSign = registerIcon("minussign", 8, 8);
-        plusSign= registerIcon("plussign", 8, 8);
-//        glassTexture = registerIcon("glass", 1, 8);
         lightning = registerIcon("lightning", 800, 62);
-        weaponSlotBackground = registerIcon("weapon", 16, 16);
-        energyStorageBackground = registerIcon("energystorage",32, 32);
-        energyGenerationBackground = registerIcon("energygeneration",32, 32);
+        lightning2 = registerIcon("lightning2", 800, 62);
+        lightningmedium = registerIcon("lightningmedium", 800, 62);
+        minusSign = registerIcon("minussign", 8, 8);
+        normalArmor = registerIcon("normalarmor", 8, 8);
+        plusSign= registerIcon("plussign", 8, 8);
+        transparentArmor = registerIcon("transparentarmor", 8, 8);
+        weapon = registerIcon("weapon", 16, 16);
     }
 
     private DrawableGuiIcon registerIcon(String name, int width, int height) {
         ResourceLocation location = new ResourceLocation(NuminaConstants.MOD_ID, name);
-        spriteUploader.registerIcon(location);
+//        spriteUploader.registerIcon(location);
         return new DrawableGuiIcon(location, width, height);
     }
 
@@ -112,34 +116,34 @@ public class GuiIcon {
             return height;
         }
 
-        public void draw(PoseStack matrixStack, double x, double y, Color colour) {
+        public void draw(PoseStack matrixStack, double x, double y, Color color) {
             ShaderInstance oldShader = RenderSystem.getShader();
             RenderSystem.setShader(GameRenderer::getPositionTexColorShader);
             RenderSystem.enableBlend();
-            draw(matrixStack, x, y, 0, 0, 0, 0, colour);
+            draw(matrixStack, x, y, 0, 0, 0, 0, color);
             RenderSystem.disableBlend();
             RenderSystem.setShader(() -> oldShader);
         }
 
-        public void renderIconScaledWithColour(PoseStack matrixStack,
-                                               double posLeft, double posTop, double width, double height, Color colour) {
-            renderIconScaledWithColour(matrixStack, posLeft, posTop, width, height, getMinecraft().screen.getBlitOffset(), colour);
+        public void renderIconScaledWithColor(PoseStack matrixStack,
+                                              double posLeft, double posTop, double width, double height, Color color) {
+            renderIconScaledWithColor(matrixStack, posLeft, posTop, width, height, getMinecraft().screen.getBlitOffset(), color);
         }
 
-        public void renderIconScaledWithColour(PoseStack matrixStack,
-                                               double posLeft, double posTop, double width, double height, float zLevel, Color colour) {            bindTexture();
+        public void renderIconScaledWithColor(PoseStack matrixStack,
+                                              double posLeft, double posTop, double width, double height, float zLevel, Color color) {            bindTexture();
             TextureAtlasSprite icon = spriteUploader.getSprite(location);
             RenderSystem.enableBlend();
 //            RenderSystem.disableAlphaTest();
             RenderSystem.defaultBlendFunc();
-            innerBlit(matrixStack.last().pose(), posLeft, posLeft + width, posTop, posTop + height, zLevel, icon.getU0(), icon.getU1(), icon.getV0(), icon.getV1(), colour);
+            innerBlit(matrixStack.last().pose(), posLeft, posLeft + width, posTop, posTop + height, zLevel, icon.getU0(), icon.getU1(), icon.getV0(), icon.getV1(), color);
             RenderSystem.disableBlend();
 //            RenderSystem.enableAlphaTest();
             RenderSystem.enableDepthTest();
         }
 
 
-        public void draw(PoseStack matrixStack, double xOffset, double yOffset, double maskTop, double maskBottom, double maskLeft, double maskRight, Color colour) {
+        public void draw(PoseStack matrixStack, double xOffset, double yOffset, double maskTop, double maskBottom, double maskLeft, double maskRight, Color color) {
             double textureWidth = this.width;
             double textureHeight = this.height;
 
@@ -165,7 +169,7 @@ public class GuiIcon {
             RenderSystem.enableBlend();
 //            RenderSystem.disableAlphaTest();
             RenderSystem.defaultBlendFunc();
-            innerBlit(matrixStack.last().pose(), posLeft, posRight, posTop, posBottom, zLevel, minU, maxU, minV, maxV, colour);
+            innerBlit(matrixStack.last().pose(), posLeft, posRight, posTop, posBottom, zLevel, minU, maxU, minV, maxV, color);
             RenderSystem.disableBlend();
 //            RenderSystem.enableAlphaTest();
             RenderSystem.enableDepthTest();
@@ -189,7 +193,7 @@ public class GuiIcon {
             }
         }
 
-        public void drawLightning(MultiBufferSource bufferIn, PoseStack matrixStack, float x1, float y1, float z1, float x2, float y2, float z2, Color colour) {
+        public void drawLightning(MultiBufferSource bufferIn, PoseStack matrixStack, float x1, float y1, float z1, float x2, float y2, float z2, Color color) {
             TextureAtlasSprite icon = getSprite();
 //            bindTexture();
 //            MuseLogger.logDebug("toString: " + toString());
@@ -204,7 +208,7 @@ public class GuiIcon {
 //                    x2,
 //                    y2,
 //                    z2,
-//                    colour,
+//                    color,
 //                    icon,
 //                    this.width,
 //                    this.height);
@@ -249,10 +253,10 @@ public class GuiIcon {
      * @param top the top most position of the drawing rectangle
      * @param bottom bottom most position of the drawing rectangle
      * @param zLevel depth to draw at
-     * @param colour color to apply to the texture
+     * @param color color to apply to the texture
      */
-    public static void renderIcon8(ResourceLocation location, PoseStack matrixStack, double left, double top, double right, double bottom, float zLevel, Color colour) {
-        renderTextureWithColour(location, matrixStack, left, right, top, bottom, zLevel, 8, 8, 0, 0, 8, 8, colour);
+    public static void renderIcon8(ResourceLocation location, PoseStack matrixStack, double left, double top, double right, double bottom, float zLevel, Color color) {
+        renderTextureWithColor(location, matrixStack, left, right, top, bottom, zLevel, 8, 8, 0, 0, 8, 8, color);
     }
 
     /**
@@ -274,10 +278,10 @@ public class GuiIcon {
      * @param top the top most position of the drawing rectangle
      * @param bottom bottom most position of the drawing rectangle
      * @param zLevel depth to draw at
-     * @param colour color to apply to the texture
+     * @param color color to apply to the texture
      */
-    public static void renderIcon16(ResourceLocation location, PoseStack matrixStack, double left, double top, double right, double bottom, float zLevel, Color colour) {
-        renderTextureWithColour(location, matrixStack, left, right, top, bottom, zLevel, 16, 16, 0, 0, 16, 16, colour);
+    public static void renderIcon16(ResourceLocation location, PoseStack matrixStack, double left, double top, double right, double bottom, float zLevel, Color color) {
+        renderTextureWithColor(location, matrixStack, left, right, top, bottom, zLevel, 16, 16, 0, 0, 16, 16, color);
     }
 
     /**
@@ -294,16 +298,16 @@ public class GuiIcon {
      * @param texStartY the topmost point of the texture on the sheet (usually 0 for an icon)
      * @param textureWidth the width of the texture (often 8 or 16 for icons)
      * @param textureHeight the height of the texture (often 8 or 16 for icons)
-     * @param colour the Colour to apply to the texture
+     * @param color the Colour to apply to the texture
      */
-    public static void renderTextureWithColour(ResourceLocation location, PoseStack matrixStack,
-                                               double left, double right, double top, double bottom, float zLevel, double iconWidth, double iconHeight, double texStartX, double texStartY, double textureWidth, double textureHeight, Color colour) {
+    public static void renderTextureWithColor(ResourceLocation location, PoseStack matrixStack,
+                                              double left, double right, double top, double bottom, float zLevel, double iconWidth, double iconHeight, double texStartX, double texStartY, double textureWidth, double textureHeight, Color color) {
         Minecraft minecraft = Minecraft.getInstance();
         RenderSystem.setShaderTexture(0, location);
         RenderSystem.enableBlend();
 //        RenderSystem.disableAlphaTest();
         RenderSystem.defaultBlendFunc();
-        innerBlit(matrixStack, left, right, top, bottom, zLevel, iconWidth, iconHeight, texStartX, texStartY, textureWidth, textureHeight, colour);
+        innerBlit(matrixStack, left, right, top, bottom, zLevel, iconWidth, iconHeight, texStartX, texStartY, textureWidth, textureHeight, color);
         RenderSystem.disableBlend();
 //        RenderSystem.enableAlphaTest();
         RenderSystem.enableDepthTest();
@@ -322,19 +326,19 @@ public class GuiIcon {
      * @param texStartY location of the top of the texture on the sheet
      * @param textureWidth total texture sheet width
      * @param textureHeight total texture sheet iconHeight
-     * @param colour colour to apply to the texture
+     * @param color color to apply to the texture
      */
-    private static void innerBlit(PoseStack matrixStack, double left, double right, double top, double bottom, float zLevel, double iconWidth, double iconHeight, double texStartX, double texStartY, double textureWidth, double textureHeight, Color colour) {
+    private static void innerBlit(PoseStack matrixStack, double left, double right, double top, double bottom, float zLevel, double iconWidth, double iconHeight, double texStartX, double texStartY, double textureWidth, double textureHeight, Color color) {
         innerBlit(matrixStack.last().pose(), left, right, top, bottom, zLevel,
                 (float)((texStartX + 0.0F) / textureWidth),
                 (float)((texStartX + iconWidth) / textureWidth),
                 (float)((texStartY + 0.0F) / textureHeight),
                 (float)((texStartY + iconHeight) / textureHeight),
-                colour);
+                color);
     }
 
     /**
-     * Basically like vanilla's version but with floats and a colour parameter
+     * Basically like vanilla's version but with floats and a color parameter
      * Only does the inner texture rendering
      *
      * @param matrix4f
@@ -348,37 +352,37 @@ public class GuiIcon {
      * @param maxU the right most UV mapped position
      * @param minV the top most UV mapped position
      * @param maxV the bottom most UV mapped position
-     * @param colour the Colour to apply to the texture
+     * @param color the Colour to apply to the texture
      */
-    private static void innerBlit(Matrix4f matrix4f, double left, double right, double top, double bottom, float zLevel, float minU, float maxU, float minV, float maxV, Color colour) {
+    private static void innerBlit(Matrix4f matrix4f, double left, double right, double top, double bottom, float zLevel, float minU, float maxU, float minV, float maxV, Color color) {
         BufferBuilder bufferbuilder = Tesselator.getInstance().getBuilder();
-        colour.setShaderColor();
+        color.setShaderColor();
         bufferbuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
 
         // bottom left
         bufferbuilder.vertex(matrix4f, (float)left, (float)bottom, zLevel).uv(minU, maxV)
-                .color(colour.r, colour.g, colour.b, colour.a)
+                .color(color.r, color.g, color.b, color.a)
                 .endVertex();
 
         // bottom right
         bufferbuilder.vertex(matrix4f, (float)right, (float)bottom, zLevel).uv(maxU, maxV)
-                .color(colour.r, colour.g, colour.b, colour.a)
+                .color(color.r, color.g, color.b, color.a)
                 .endVertex();
 
         // top right
         bufferbuilder.vertex(matrix4f, (float)right, (float)top, zLevel).uv(maxU, minV)
-                .color(colour.r, colour.g, colour.b, colour.a)
+                .color(color.r, color.g, color.b, color.a)
                 .endVertex();
 
         // top left
         bufferbuilder.vertex(matrix4f, (float)left, (float)top, zLevel).uv(minU, minV)
-                .color(colour.r, colour.g, colour.b, colour.a)
+                .color(color.r, color.g, color.b, color.a)
                 .endVertex();
 
         BufferUploader.drawWithShader(bufferbuilder.end());
     }
 
-    public void drawLightningTextured(VertexConsumer bufferIn, Matrix4f matrix4f, float x1, float y1, float z1, float x2, float y2, float z2, Color colour, TextureAtlasSprite icon, float textureWidth, float textureHeight) {
+    public void drawLightningTextured(VertexConsumer bufferIn, Matrix4f matrix4f, float x1, float y1, float z1, float x2, float y2, float z2, Color color, TextureAtlasSprite icon, float textureWidth, float textureHeight) {
         float minV = icon.getV0();
         float maxV = icon.getV1();
         float uSize = icon.getU1() - icon.getU0();
@@ -403,7 +407,7 @@ public class GuiIcon {
             float minU = icon.getU0() + uSize * (index * 0.2F); // 1/50, there are 50 different lightning elements in the texture
             float maxU = minU + uSize * 0.2F;
 
-            drawLightningBetweenPointsFast(bufferIn, matrix4f, ax, ay, az, bx, by, bz, colour, minU, maxU, minV, maxV);
+            drawLightningBetweenPointsFast(bufferIn, matrix4f, ax, ay, az, bx, by, bz, color, minU, maxU, minV, maxV);
         }
     }
 
@@ -415,28 +419,28 @@ public class GuiIcon {
                                         float x2,
                                         float y2,
                                         float z2,
-                                        Color colour,
+                                        Color color,
                                         float minU, float maxU, float minV, float maxV) {
         float px = (y1 - y2) * 0.125F;
         float py = (x2 - x1) * 0.125F;
 
         bufferIn.vertex(matrix4f, x1 - px, y1 - py, z1) // top left front
-                .color(colour.r, colour.g, colour.b, colour.a)
+                .color(color.r, color.g, color.b, color.a)
                 .uv(minU, minV)
                 .uv2(0x00F000F0).endVertex();
 
         bufferIn.vertex(matrix4f, x1 + px, y1 + py, z1) // bottom right front
-                .color(colour.r, colour.g, colour.b, colour.a)
+                .color(color.r, color.g, color.b, color.a)
                 .uv(maxU, minV) // right top
                 .uv2(0x00F000F0).endVertex();
 
         bufferIn.vertex(matrix4f, x2 - px, y2 - py, z2) //  top left back
-                .color(colour.r, colour.g, colour.b, colour.a)
+                .color(color.r, color.g, color.b, color.a)
                 .uv(minU, maxV) // left bottom
                 .uv2(0x00F000F0).endVertex();
 
         bufferIn.vertex(matrix4f, x2 + px, y2 + py, z2) // bottom right back
-                .color(colour.r, colour.g, colour.b, colour.a)
+                .color(color.r, color.g, color.b, color.a)
                 .uv(maxU, maxV) // right bottom
                 .uv2(0x00F000F0).endVertex();
     }

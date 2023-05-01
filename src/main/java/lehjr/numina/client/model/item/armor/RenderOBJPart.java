@@ -32,9 +32,9 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Transformation;
 import lehjr.numina.common.base.NuminaLogger;
-import lehjr.numina.common.capabilities.render.modelspec.ModelPartSpec;
-import lehjr.numina.common.capabilities.render.modelspec.ModelRegistry;
-import lehjr.numina.common.capabilities.render.modelspec.ModelSpec;
+import lehjr.numina.common.capabilities.render.modelspec.ObjlPartSpec;
+import lehjr.numina.common.capabilities.render.modelspec.NuminaModelRegistry;
+import lehjr.numina.common.capabilities.render.modelspec.ObjModelSpec;
 import lehjr.numina.common.capabilities.render.modelspec.PartSpecBase;
 import lehjr.numina.common.constants.TagConstants;
 import lehjr.numina.common.math.Color;
@@ -43,7 +43,6 @@ import lehjr.numina.common.tags.NBTTagAccessor;
 import net.minecraft.client.model.Model;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.block.model.BakedQuad;
-import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.Vec3i;
 import net.minecraft.nbt.CompoundTag;
@@ -68,7 +67,7 @@ import java.util.Random;
  * Ported to Java by lehjr on 11/6/16.
  */
 @OnlyIn(Dist.CLIENT)
-public class RenderPart extends ModelPart {
+public class RenderOBJPart extends ModelPart {
     public float xOffset = 0;
     public float yOffset = 0;
     public float zOffset = 0;
@@ -86,7 +85,7 @@ public class RenderPart extends ModelPart {
      * @param base
      * @param parent
      */
-    public RenderPart(Model base, ModelPart parent) {
+    public RenderOBJPart(Model base, ModelPart parent) {
         super(new ArrayList<>(), new HashMap<>());
         this.parent = parent;
     }
@@ -96,13 +95,12 @@ public class RenderPart extends ModelPart {
         this.render(pPoseStack, pVertexConsumer, pPackedLight, pPackedOverlay, 1.0F, 1.0F, 1.0F, 1.0F);
     }
 
-
     @Override
     public void render(PoseStack matrixStackIn, VertexConsumer bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
         if (this.visible) {
             this.translateAndRotate(matrixStackIn);
             // render actual parts...
-            this.doRendering(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+            this.doRendering(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
         }
     }
 
@@ -149,33 +147,39 @@ public class RenderPart extends ModelPart {
         }
     }
 
-    private void doRendering(PoseStack matrixStackIn, VertexConsumer bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
-        CompoundTag renderSpec = ArmorModelInstance.getInstance().getRenderSpec();
+    private void doRendering(PoseStack matrixStackIn, VertexConsumer bufferIn, int packedLightIn, int packedOverlayIn) {
+        CompoundTag renderSpec = ArmorModelInstance.getInstance().getRenderSpec(); // FIXME: Not only is all of this stupid, it's probably not even threadsafe
         if (renderSpec != null) {
-            int[] colours = renderSpec.getIntArray(TagConstants.COLORS);
+            int[] colors = renderSpec.getIntArray(TagConstants.COLORS);
 
-            if (colours.length == 0) {
-                colours = new int[]{Color.WHITE.getARGBInt()};
+            if (colors.length == 0) {
+                colors = new int[]{Color.WHITE.getARGBInt()};
             }
 
             int partColor;
             for (CompoundTag nbt : NBTTagAccessor.getValues(renderSpec)) {
                 PoseStack workingStack = getCopy(matrixStackIn);
 
-                PartSpecBase part = ModelRegistry.getInstance().getPart(nbt);
-                if (part /* != null && part */ instanceof ModelPartSpec) {
+                PartSpecBase part = NuminaModelRegistry.getInstance().getPart(nbt);
+                if (part /* != null && part */ instanceof ObjlPartSpec) {
                     // TODO slim model?
                     if (part.getBinding().getSlot() == ArmorModelInstance.getInstance().getVisibleSection()
                             && part.getBinding().getTarget().apply(ArmorModelInstance.getInstance()) == parent) {
                         int ix = part.getColourIndex(nbt);
                         // checks the range of the index to avoid errors OpenGL or crashing
-                        if (ix < colours.length && ix >= 0) {
-                            partColor = colours[ix];
+                        if (ix < colors.length && ix >= 0) {
+                            partColor = colors[ix];
                         } else {
                             partColor = -1;
                         }
 
-                        Transformation transform = ((ModelSpec) part.spec).getTransform(ItemTransforms.TransformType.NONE);
+                        // special transfomration applied by model?
+                        Transformation transform = ((ObjModelSpec) part.spec).getModelTransform();
+
+                        // fixme use this?
+                        // getTransforms().getTransform(cameraTransformType).apply(applyLeftHandTransform, poseStack);
+
+
                         applyTransform(workingStack, transform);
 
                         ImmutableList.Builder<BakedQuad> builder = ImmutableList.builder();
@@ -190,8 +194,8 @@ public class RenderPart extends ModelPart {
                         renderQuads(entry,
                                 bufferIn,
                                 builder.build(),
-                                ((ModelPartSpec) part).getGlow() ? FULL_BRIGHTNESS : packedLightIn,
-                                ((ModelPartSpec) part).getGlow() ? OverlayTexture.NO_OVERLAY : packedOverlayIn,
+                                part.getGlow() ? FULL_BRIGHTNESS : packedLightIn,
+                                part.getGlow() ? OverlayTexture.NO_OVERLAY : packedOverlayIn,
                                 partColor);
                     }
                 }
@@ -204,11 +208,11 @@ public class RenderPart extends ModelPart {
                             List<BakedQuad> quadsIn,
                             int combinedLightIn,
                             int combinedOverlayIn,
-                            int colour) {
-        float a = (float) (colour >> 24 & 255) * div255;
-        float r = (float) (colour >> 16 & 255) * div255;
-        float g = (float) (colour >> 8 & 255) * div255;
-        float b = (float) (colour & 255) * div255;
+                            int color) {
+        float a = (float) (color >> 24 & 255) * div255;
+        float r = (float) (color >> 16 & 255) * div255;
+        float g = (float) (color >> 8 & 255) * div255;
+        float b = (float) (color & 255) * div255;
 
         for (BakedQuad bakedquad : quadsIn) {
             addVertexData(bufferIn, entry, bakedquad, combinedLightIn, combinedOverlayIn, r, g, b, a);

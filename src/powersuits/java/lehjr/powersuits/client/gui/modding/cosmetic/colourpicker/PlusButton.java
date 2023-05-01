@@ -1,4 +1,4 @@
-package lehjr.powersuits.client.gui.modding.cosmetic.colourpicker;
+package lehjr.powersuits.client.gui.modding.cosmetic.colorpicker;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import lehjr.numina.client.gui.clickable.RadioButton;

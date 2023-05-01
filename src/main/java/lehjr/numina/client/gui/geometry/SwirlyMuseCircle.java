@@ -41,7 +41,7 @@ import java.nio.FloatBuffer;
 public class SwirlyMuseCircle {
     public static final float detail = 2;
     protected FloatBuffer points;
-    protected FloatBuffer colour;
+    protected FloatBuffer color;
     int numsegments;
 
     public SwirlyMuseCircle(Color c1, Color c2) {
@@ -49,12 +49,12 @@ public class SwirlyMuseCircle {
             points = GradientAndArcCalculator.getArcPoints(0, (float) (Math.PI * 2 + 0.0001), detail, 0, 0);
         }
         numsegments = points.limit() / 2;
-        colour = GradientAndArcCalculator.getColourGradient(c1, c2, points.limit() / 2);
+        color = GradientAndArcCalculator.getColourGradient(c1, c2, points.limit() / 2);
     }
 
     public void draw(PoseStack matrixStack, float radius, double x, double y, float zLevel) {
         float ratio = (System.currentTimeMillis() % 2000) / 2000.0F;
-        colour.rewind();
+        color.rewind();
         points.rewind();
         matrixStack.pushPose();
         matrixStack.translate(x, y, 0);
@@ -73,8 +73,8 @@ public class SwirlyMuseCircle {
         buffer.begin(VertexFormat.Mode.DEBUG_LINE_STRIP, DefaultVertexFormat.POSITION_COLOR);
         Matrix4f matrix4f = matrixStack.last().pose();
 
-        while (points.hasRemaining() && colour.hasRemaining()) {
-            buffer.vertex(matrix4f, points.get(), points.get(), zLevel).color(colour.get(), colour.get(), colour.get(), colour.get()).endVertex();
+        while (points.hasRemaining() && color.hasRemaining()) {
+            buffer.vertex(matrix4f, points.get(), points.get(), zLevel).color(color.get(), color.get(), color.get(), color.get()).endVertex();
         }
         tessellator.end();
         matrixStack.popPose();

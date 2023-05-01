@@ -1,9 +1,15 @@
 package lehjr.powersuits.client.render.item;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import lehjr.numina.common.capabilities.NuminaCapabilities;
 import lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
+import lehjr.numina.common.capabilities.render.modelspec.NuminaModelRegistry;
+import lehjr.numina.common.capabilities.render.modelspec.PartSpecBase;
+import lehjr.numina.common.constants.TagConstants;
 import lehjr.numina.common.item.ItemUtils;
+import lehjr.numina.common.math.Color;
+import lehjr.numina.common.tags.NBTTagAccessor;
 import lehjr.powersuits.client.model.block.TinkerTableModel;
 import lehjr.powersuits.client.model.item.PowerFistModel2;
 import lehjr.powersuits.common.base.MPSItems;
@@ -16,6 +22,7 @@ import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.item.Item;
@@ -59,6 +66,7 @@ public class MPSBEWLR extends BlockEntityWithoutLevelRenderer {
         if (ItemUtils.getRegistryName(item).equals(MPSRegistryNames.POWER_FIST)) {
             AtomicReference<Float> firingPercent = new AtomicReference(0F);
             itemStack.getCapability(NuminaCapabilities.RENDER).ifPresent(specNBTCap -> {
+
                 if (firingData != null && ItemStack.isSame(itemStack, firingData.itemInHand()) && firingData.player().isUsingItem()) {
                     LocalPlayer player = firingData.player();
                     firingPercent.set(firingData.itemInHand().getCapability(ForgeCapabilities.ITEM_HANDLER)
@@ -74,8 +82,6 @@ public class MPSBEWLR extends BlockEntityWithoutLevelRenderer {
                                 if (!module.isEmpty()) {
                                     actualCount = (maxDuration - player.getUseItemRemainingTicks());
 
-                                    System.out.println("actual count here: " + actualCount + ", remaining ticks: " + player.getUseItemRemainingTicks());
-
                                     // Plasma Cannon
                                     if (ItemUtils.getRegistryName(module).equals(MPSRegistryNames.PLASMA_CANNON_MODULE)) {
                                         currentPlasma = (actualCount > 50F ? 50F : actualCount) * 2F;
@@ -85,37 +91,40 @@ public class MPSBEWLR extends BlockEntityWithoutLevelRenderer {
                                         currentPlasma = (actualCount > 40F ? 40F : actualCount) * 2.5F;
                                     }
                                 }
-                                System.out.println("actualCount: " + actualCount +", currentPlasma: " + currentPlasma + ", duration: " + player.getUseItemRemainingTicks());
-
                                 if (currentPlasma > 0) {
                                     return currentPlasma * maxPlasma;
                                 }
                                 return 0F;
                             }).orElse(0F));
                 }
+
+                CompoundTag renderTag =  specNBTCap.getRenderTag();
+                if (renderTag != null) {
+                    int[] colors = renderTag.getIntArray(TagConstants.COLORS);
+
+                    if (colors.length == 0) {
+                        colors = new int[]{Color.WHITE.getARGBInt()};
+                    }
+                    VertexConsumer consumer = buffer.getBuffer(RenderType.entityTranslucentCull(PowerFistModel2.TEXTURE));
+                    PowerFistModel2 modelToRender;
+
+                    if (transformType == ItemTransforms.TransformType.FIRST_PERSON_LEFT_HAND || transformType == ItemTransforms.TransformType.THIRD_PERSON_LEFT_HAND) {
+                        modelToRender = powerFistModelLeft;
+                    } else {
+                        modelToRender = powerFistModelRight;
+                    }
+
+                    if (firingPercent.get() > 0) {
+                        modelToRender.setFiringPose(firingPercent.get());
+                    } else {
+                        modelToRender.setNeutralPose();
+                    }
+
+                    for (CompoundTag nbt : NBTTagAccessor.getValues(renderTag)) {
+                        modelToRender.renderPart(nbt, colors, poseStack, consumer, packedLight, packedOverlay);
+                    }
+                }
             });
-
-            if (transformType == ItemTransforms.TransformType.FIRST_PERSON_LEFT_HAND || transformType == ItemTransforms.TransformType.THIRD_PERSON_LEFT_HAND) {
-                if (firingPercent.get() > 0) {
-                    powerFistModelLeft.setFiringPose(firingPercent.get());
-                } else {
-                    powerFistModelLeft.setNeutralPose();
-                }
-                powerFistModelLeft.renderToBuffer(poseStack, buffer.getBuffer(RenderType.entityTranslucentCull(PowerFistModel2.TEXTURE)), packedLight, packedOverlay, 1F, 1F, 1F, 1F);
-
-            } else {
-                if (firingPercent.get() > 0) {
-                    powerFistModelRight.setFiringPose(firingPercent.get());
-                    System.out.println("firing percent: " + firingPercent.get());
-
-                } else {
-                    powerFistModelRight.setNeutralPose();
-                }
-                powerFistModelRight.renderToBuffer(poseStack, buffer.getBuffer(RenderType.entityTranslucentCull(PowerFistModel2.TEXTURE)), packedLight, packedOverlay, 1F, 1F, 1F, 1F);
-            }
-
-
-
         }
     }
 

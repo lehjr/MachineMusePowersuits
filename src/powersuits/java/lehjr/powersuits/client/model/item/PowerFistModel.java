@@ -135,7 +135,7 @@
 //                }
 //
 //                if (renderSpec != null) {
-//                    int[] colours = renderSpec.getIntArray(TagConstants.COLORS);
+//                    int[] colors = renderSpec.getIntArray(TagConstants.COLORS);
 //                    Color partColor;
 //                    Transformation transform;
 //
@@ -153,8 +153,8 @@
 //                                String itemState = partSpec.getBinding().getItemState();
 //
 //                                int ix = partSpec.getColourIndex(nbt);
-//                                if (ix < colours.length && ix >= 0) {
-//                                    partColor = new Color(colours[ix]);
+//                                if (ix < colors.length && ix >= 0) {
+//                                    partColor = new Color(colors[ix]);
 //                                } else {
 //                                    partColor = Color.WHITE;
 //                                }

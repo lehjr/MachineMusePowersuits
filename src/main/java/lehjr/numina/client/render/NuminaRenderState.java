@@ -151,7 +151,7 @@
 ////
 ////
 ////    /**
-////     * Call before doing any pure geometry (ie. with colours rather than textures).
+////     * Call before doing any pure geometry (ie. with colors rather than textures).
 ////     */
 ////    public static void texturelessOn() {
 //////        GL11.glDisable(GL11.GL_TEXTURE_2D);
@@ -159,7 +159,7 @@
 ////    }
 ////
 ////    /**
-////     * Call after doing pure geometry (ie. with colours) to go back to the texture mode (default).
+////     * Call after doing pure geometry (ie. with colors) to go back to the texture mode (default).
 ////     */
 ////    public static void texturelessOff() {
 //////        GL11.glEnable(GL11.GL_TEXTURE_2D);

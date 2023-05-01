@@ -22,7 +22,6 @@ public class TagConstants {
 
     // Model Stuff --------------------------------------------------------------------------------
 
-    public static final String TEXTURESPEC = "texSpec";
     public static final String SPECLIST = "specList";
     public static final String RENDER = "render";
     public static final String COSMETIC_PRESET = "cosmeticPreset";
@@ -31,5 +30,5 @@ public class TagConstants {
     public static final String MODEL = "model";
     public static final String PART = "part";
     public static final String GLOW = "glow";
-    public static final String COLOUR_INDEX = "colourindex";
+    public static final String COLOUR_INDEX = "colorindex";
 }

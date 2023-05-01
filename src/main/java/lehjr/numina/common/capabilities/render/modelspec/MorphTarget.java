@@ -29,8 +29,12 @@ package lehjr.numina.common.capabilities.render.modelspec;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.HumanoidArm;
+import net.minecraft.world.entity.LivingEntity;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * Author: MachineMuse (Claire Semple)
@@ -39,33 +43,83 @@ import java.util.Arrays;
  * Ported to Java by lehjr on 11/8/16.
  */
 public enum MorphTarget {
-    Hat("HAT", EquipmentSlot.HEAD),
-    Head("HEAD", EquipmentSlot.HEAD),
-    Body("BODY", EquipmentSlot.CHEST),
-    RightArm("RIGHTARM", EquipmentSlot.CHEST),
-    LeftArm("LEFTARM", EquipmentSlot.CHEST),
-    RightLeg("RIGHTLEG", EquipmentSlot.LEGS),
-    LeftLeg("LEFTLEG", EquipmentSlot.LEGS),
-    RightFoot("RIGHTFOOT", EquipmentSlot.FEET),
-    LeftFoot("LEFTFOOT", EquipmentSlot.FEET),
+    Hat("hat", EquipmentSlot.HEAD),
+    Head("head", EquipmentSlot.HEAD),
+    Body("body", EquipmentSlot.CHEST),
+    RightArm("right_arm", EquipmentSlot.CHEST),
+    LeftArm("left_arm", EquipmentSlot.CHEST),
+    RightLeg("right_leg", EquipmentSlot.LEGS),
+    LeftLeg("left_leg", EquipmentSlot.LEGS),
+    RightFoot("right_foot", EquipmentSlot.FEET),
+    LeftFoot("left_foot", EquipmentSlot.FEET),
 
-    /**
-     * Note that these may be reversed and special checks are needed for rendering
-     * hand-dependant models.
-     */
-    RightHand("RIGHTHAND", EquipmentSlot.MAINHAND),
-    Lefthand("LEFTHAND", EquipmentSlot.OFFHAND);
+    /** these would be for something that changes model depending on if equipped in mainhand or offhand,
+     * like something that turns into a shield if offhand */
+    MainHand("main_hand",  EquipmentSlot.MAINHAND), // do not rely on left/right hand
+    OffHand("off_hand",  EquipmentSlot.OFFHAND), // do not rely on left/right hand
+
+    /** these are for hand specific models, like the MPS Power Fist. The equipment slot should be ignored */
+    RightHand("right_hand", EquipmentSlot.MAINHAND), // do not rely on slot alone
+    Lefthand("left_hand", EquipmentSlot.OFFHAND); // do not rely on slot alone
 
     String name;
     EquipmentSlot slot;
 
-    MorphTarget(String name, EquipmentSlot slot) {
+    MorphTarget(String name, EquipmentSlot slots) {
         this.name = name;
-        this.slot = slot;
+        this.slot = slots;
     }
 
     public static MorphTarget getMorph(final String name) {
-        return Arrays.stream(values()).filter(morph -> name.toUpperCase().equals(morph.name)).findAny().orElseGet(null);
+        return Arrays.stream(values()).filter(morph -> name.toLowerCase().equals(morph.name)).findAny().orElseGet(null);
+    }
+
+    public HumanoidArm getHandFromEquipmentSlot(LivingEntity entity) {
+        assert !this.slot.isArmor();
+        switch (this) {
+            case MainHand -> {return entity.getMainArm(); }
+            case OffHand -> { return entity.getMainArm().getOpposite(); }
+            case Lefthand -> { return HumanoidArm.LEFT; }
+            default -> {
+                return HumanoidArm.RIGHT;
+            }
+        }
+    }
+
+    public boolean handMatches(LivingEntity entity, EquipmentSlot slot) {
+        if (!slot.isArmor() && !this.slot.isArmor()) {
+            if (this.equals(MainHand) || this.equals(OffHand)) {
+                return slot.equals(this.slot);
+            }
+
+            HumanoidArm arm = slot.equals(EquipmentSlot.MAINHAND) ? entity.getMainArm() : entity.getMainArm().getOpposite();
+            return this.getHandFromEquipmentSlot(entity) == arm;
+        }
+        return false;
+    }
+
+
+
+
+    public static List<MorphTarget> getMorphTargetsFromEquipmentSlot(EquipmentSlot slot) {
+        switch (slot) {
+            case HEAD -> {
+                // armor models don't use hat part
+                return Arrays.asList(Head);
+            }
+            case CHEST -> {
+                return Arrays.asList(Body, LeftArm, RightArm);
+            }
+            case LEGS -> {
+                return Arrays.asList(LeftLeg, RightLeg);
+            }
+            case FEET -> {
+                return Arrays.asList(LeftFoot, RightFoot);
+            }
+            default -> {
+                return new ArrayList<>();
+            }
+        }
     }
 
     public ModelPart apply(HumanoidModel m) {

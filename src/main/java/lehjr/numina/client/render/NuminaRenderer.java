@@ -32,7 +32,6 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import com.mojang.math.MatrixUtil;
 import lehjr.numina.client.gui.geometry.SwirlyMuseCircle;
-import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.math.Color;
 import lehjr.numina.common.string.StringUtils;
 import net.minecraft.client.Minecraft;
@@ -49,14 +48,12 @@ import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.Direction;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.HalfTransparentBlock;
 import net.minecraft.world.level.block.StainedGlassPaneBlock;
-import net.minecraft.world.level.block.state.BlockState;
 import org.joml.Matrix4f;
 import org.lwjgl.opengl.GL11;
 
@@ -113,7 +110,7 @@ public class NuminaRenderer {
 //        }
 //    }
 //
-    public static void drawItemAt(PoseStack matrixStack, double x, double y, @Nonnull ItemStack itemStack, Color colour) {
+    public static void drawItemAt(PoseStack matrixStack, double x, double y, @Nonnull ItemStack itemStack, Color color) {
         if (!itemStack.isEmpty()) {
             Minecraft.getInstance().getItemRenderer().renderAndDecorateItem(itemStack, (int) x, (int) y);
             Minecraft.getInstance().getItemRenderer().renderGuiItemDecorations(StringUtils.getFontRenderer(), itemStack, (int) x, (int) y, null);
@@ -245,7 +242,7 @@ public class NuminaRenderer {
     }
 
 //
-//    public static void renderItem(ItemStack itemStack, ItemTransforms.TransformType transformType, boolean leftHand, PoseStack matrixStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay, BakedModel model, Color colour) {
+//    public static void renderItem(ItemStack itemStack, ItemTransforms.TransformType transformType, boolean leftHand, PoseStack matrixStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay, BakedModel model, Color color) {
 //        if (!itemStack.isEmpty()) {
 //            matrixStack.pushPose();
 //            boolean flag = transformType == ItemTransforms.TransformType.GUI || transformType == ItemTransforms.TransformType.GROUND || transformType == ItemTransforms.TransformType.FIXED;
@@ -293,7 +290,7 @@ public class NuminaRenderer {
 //                        vertexconsumer = getItemRenderer().getFoilBuffer(buffer, rendertype, true, itemStack.hasFoil());
 //                    }
 //
-//                    renderModel(model, itemStack, combinedLight, combinedOverlay, matrixStack, vertexconsumer, colour);
+//                    renderModel(model, itemStack, combinedLight, combinedOverlay, matrixStack, vertexconsumer, color);
 //                }
 //            } else {
 //                net.minecraftforge.client.RenderProperties.get(itemStack).getItemStackRenderer().renderByItem(itemStack, transformType, matrixStack, buffer, combinedLight, combinedOverlay);
@@ -323,19 +320,19 @@ public class NuminaRenderer {
 
 
 
-    public static void drawLightning(double x1, double y1, double z1, double x2, double y2, double z2, Color colour) {
-        drawLightningTextured(x1, y1, z1, x2, y2, z2, colour);
+    public static void drawLightning(double x1, double y1, double z1, double x2, double y2, double z2, Color color) {
+        drawLightningTextured(x1, y1, z1, x2, y2, z2, color);
     }
 
 
-    public static void drawMPDLightning(PoseStack poseStack, float x1, float y1, float z1, float x2, float y2, float z2, Color colour, double displacement,
+    public static void drawMPDLightning(PoseStack poseStack, float x1, float y1, float z1, float x2, float y2, float z2, Color color, double displacement,
                                         double detail) {
         Matrix4f matrix4f = poseStack.last().pose();
 //        ShaderInstance oldShader = RenderSystem.getShader();
         float lineWidth = RenderSystem.getShaderLineWidth();
         RenderSystem.lineWidth(1F);
 
-        drawMPDLightning(matrix4f, x1, y1, z1, x2, y2, z2, colour, displacement * 0.5F, detail);
+        drawMPDLightning(matrix4f, x1, y1, z1, x2, y2, z2, color, displacement * 0.5F, detail);
 
         RenderSystem.lineWidth(lineWidth);
 //        RenderSystem.setShader(() -> oldShader);
@@ -344,7 +341,7 @@ public class NuminaRenderer {
     public static void drawMPDLightning(Matrix4f matrix4f,
                                         float x1, float y1, float z1,
                                         float x2, float y2, float z2,
-                                        Color colour,
+                                        Color color,
                                         double displacement,
                                         double detail) {
         if (displacement < detail) {
@@ -364,8 +361,8 @@ public class NuminaRenderer {
             BufferBuilder bufferbuilder = tesselator.getBuilder();
             bufferbuilder.begin(VertexFormat.Mode.DEBUG_LINES, DefaultVertexFormat.POSITION_COLOR);
 
-            colour.addToVertex(bufferbuilder.vertex(matrix4f, x1, y1, z1)).endVertex();
-            colour.addToVertex(bufferbuilder.vertex(matrix4f, x2, y2, z2)).endVertex();
+            color.addToVertex(bufferbuilder.vertex(matrix4f, x1, y1, z1)).endVertex();
+            color.addToVertex(bufferbuilder.vertex(matrix4f, x2, y2, z2)).endVertex();
 
             tesselator.end();
 
@@ -379,12 +376,12 @@ public class NuminaRenderer {
             mid_x += (Math.random() - 0.5) * displacement;
             mid_y += (Math.random() - 0.5) * displacement;
             mid_z += (Math.random() - 0.5) * displacement;
-            drawMPDLightning(matrix4f, x1, y1, z1, mid_x, mid_y, mid_z, colour, displacement * 0.5F, detail);
-            drawMPDLightning(matrix4f, mid_x, mid_y, mid_z, x2, y2, z2, colour, displacement * 0.5F, detail);
+            drawMPDLightning(matrix4f, x1, y1, z1, mid_x, mid_y, mid_z, color, displacement * 0.5F, detail);
+            drawMPDLightning(matrix4f, mid_x, mid_y, mid_z, x2, y2, z2, color, displacement * 0.5F, detail);
         }
     }
 
-    public static void drawLightningTextured(double x1, double y1, double z1, double x2, double y2, double z2, Color colour) {
+    public static void drawLightningTextured(double x1, double y1, double z1, double x2, double y2, double z2, Color color) {
         double tx = x2 - x1, ty = y2 - y1, tz = z2 - z1;
 
 //        double ax = 0, ay = 0, az = 0;
@@ -396,7 +393,7 @@ public class NuminaRenderer {
 //        GL11.glEnable(GL11.GL_DEPTH_TEST);
 //        MuseTextureUtils.pushTexture(Config.LIGHTNING_TEXTURE);
 //        RenderState.blendingOn();
-//        colour.doGL();
+//        color.doGL();
 //        GL11.glBegin(GL11.GL_QUADS);
 //        while (Math.abs(cx) < Math.abs(tx) && Math.abs(cy) < Math.abs(ty) && Math.abs(cz) < Math.abs(tz)) {
 //            ax = x1 + cx;

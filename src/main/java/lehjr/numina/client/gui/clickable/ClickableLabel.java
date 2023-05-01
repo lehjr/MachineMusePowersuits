@@ -39,7 +39,7 @@ import net.minecraft.network.chat.Component;
 public class ClickableLabel extends Clickable {
     protected IPressable onPressed;
     protected IReleasable onReleased;
-    Color colour = Color.WHITE;
+    Color color = Color.WHITE;
     boolean shadowed = true;
 
     protected Component label;
@@ -73,8 +73,8 @@ public class ClickableLabel extends Clickable {
         return this;
     }
 
-    public void setColour(Color colour) {
-        this.colour = colour;
+    public void setColor(Color color) {
+        this.color = color;
     }
 
     public void setShadowed(boolean shadowed) {
@@ -95,29 +95,29 @@ public class ClickableLabel extends Clickable {
         if (shadowed) {
             switch (mode) {
                 case LEFT:
-                    StringUtils.drawLeftAlignedShadowedString(matrixStack, this.label, centerX(), centerY(), colour);
+                    StringUtils.drawLeftAlignedShadowedString(matrixStack, this.label, centerX(), centerY(), color);
                     break;
 
                 case CENTERED:
-                    StringUtils.drawShadowedStringCentered(matrixStack, this.label, centerX(), centerY(), colour);
+                    StringUtils.drawShadowedStringCentered(matrixStack, this.label, centerX(), centerY(), color);
                     break;
 
                 case RIGHT:
-                    StringUtils.drawRightAlignedShadowedString(matrixStack, this.label, centerX(), centerY(), colour);
+                    StringUtils.drawRightAlignedShadowedString(matrixStack, this.label, centerX(), centerY(), color);
                     break;
             }
         } else {
             switch (mode) {
                 case LEFT:
-                    StringUtils.drawLeftAlignedText(matrixStack, this.label, centerX(), centerY(), colour);
+                    StringUtils.drawLeftAlignedText(matrixStack, this.label, centerX(), centerY(), color);
                     break;
 
                 case CENTERED:
-                    StringUtils.drawCenteredText(matrixStack, this.label, centerX(), centerY(), colour);
+                    StringUtils.drawCenteredText(matrixStack, this.label, centerX(), centerY(), color);
                     break;
 
                 case RIGHT:
-                    StringUtils.drawRightAlignedText(matrixStack, this.label, centerX(), centerY(), colour);
+                    StringUtils.drawRightAlignedText(matrixStack, this.label, centerX(), centerY(), color);
                     break;
             }
         }

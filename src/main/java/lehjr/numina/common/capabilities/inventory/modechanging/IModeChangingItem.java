@@ -26,13 +26,17 @@
 
 package lehjr.numina.common.capabilities.inventory.modechanging;
 
+import com.mojang.blaze3d.vertex.PoseStack;
+import lehjr.numina.client.render.NuminaRenderer;
 import lehjr.numina.common.capabilities.NuminaCapabilities;
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
 import lehjr.numina.common.capabilities.module.blockbreaking.IBlockBreakingModule;
 import lehjr.numina.common.capabilities.module.miningenhancement.IMiningEnhancementModule;
 import lehjr.numina.common.capabilities.module.rightclick.IRightClickModule;
 import lehjr.numina.common.energy.ElectricItemUtils;
+import lehjr.numina.common.math.Color;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
@@ -47,6 +51,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.client.gui.overlay.ForgeGui;
 
 import javax.annotation.Nullable;
 import java.util.Comparator;
@@ -64,7 +69,29 @@ public interface IModeChangingItem extends IModularItem {
     BakedModel getInventoryModel();
 
     @OnlyIn(Dist.CLIENT)
-    void drawModeChangeIcon(Player player, int hotbarIndex, Minecraft mc);
+    default void drawModeChangeIcon(LocalPlayer player, int hotbarIndex, ForgeGui gui, Minecraft mc, PoseStack poseStack, float partialTick, int screenWidth, int screenHeight) {
+        ItemStack module = getActiveModule();
+        if (!module.isEmpty()) {
+            double currX;
+            double currY;
+
+            int baroffset = 22;
+            if (!player.isCreative()) {
+                baroffset += 16;
+                int totalArmorValue = player.getArmorValue();
+                baroffset += 8 * (int) Math.ceil((double)totalArmorValue / 20); // 20 points per row @ 2 armor points per icon
+            }
+            baroffset = screenHeight - baroffset;
+            currX = screenWidth / 2.0 - 89.0 + 20.0 * hotbarIndex;
+            currY = baroffset - 18;
+            Color.WHITE.setShaderColor();
+            if (module.getCapability(NuminaCapabilities.POWER_MODULE).map(pm-> pm.isModuleOnline()).orElse(false)) {
+                mc.getItemRenderer().renderGuiItem(module.getCapability(NuminaCapabilities.CHAMELEON).map(iChameleon -> iChameleon.getStackToRender()).orElse(module), (int)currX, (int)currY);
+            } else {
+                NuminaRenderer.drawModuleAt(poseStack, currX, currY, module.getCapability(NuminaCapabilities.CHAMELEON).map(iChameleon -> iChameleon.getStackToRender()).orElse(module), false);
+            }
+        }
+    }
 
     List<Integer> getValidModes();
 

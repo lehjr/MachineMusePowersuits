@@ -140,8 +140,8 @@ public class ArmorStandMenu extends AbstractContainerMenu {
         // ArmorStand MainHand (container slot 5)
         this.addSlot(new IconSlot(armorStandInventory, 0, 83, 26) {
             @Override
-            public void drawIconAt(PoseStack matrixStack, double posX, double posY, Color colour) {
-                IconUtils.getIcon().weaponSlotBackground.draw(matrixStack, posX, posY, colour);
+            public void drawIconAt(PoseStack matrixStack, double posX, double posY, Color color) {
+                IconUtils.getIcon().weapon.draw(matrixStack, posX, posY, color);
             }
 
             @Override

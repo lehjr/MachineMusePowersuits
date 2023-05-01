@@ -221,7 +221,7 @@ public class GradientAndArcCalculator {
     }
 
     /**
-     * Returns a DoubleBuffer full of colours that are gradually interpolated
+     * Returns a DoubleBuffer full of colors that are gradually interpolated
      *
      * @param c1
      * @param c2

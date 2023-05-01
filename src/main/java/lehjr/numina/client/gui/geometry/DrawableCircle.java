@@ -124,31 +124,31 @@
 //
 //    public static final float detail = 4;
 //    protected static FloatBuffer points;
-//    protected final FloatBuffer colour;
+//    protected final FloatBuffer color;
 //
 //    public DrawableCircle(Color c1, Color c2) {
-//        FloatBuffer colourPoints;
+//        FloatBuffer colorPoints;
 //        if (points == null) {
-//            colourPoints = GradientAndArcCalculator.getArcPoints(0, (float)(Math.PI * 2 + 0.0001), detail, 0F, 0F, 0F);
-//            points = BufferUtils.createFloatBuffer(colourPoints.limit() + 6);
+//            colorPoints = GradientAndArcCalculator.getArcPoints(0, (float)(Math.PI * 2 + 0.0001), detail, 0F, 0F, 0F);
+//            points = BufferUtils.createFloatBuffer(colorPoints.limit() + 6);
 //            points.put(new float[]{0, 0, 0});
-//            points.put(colourPoints);
-//            colourPoints.rewind();
-//            points.put(colourPoints.get());
-//            points.put(colourPoints.get());
-//            points.put(colourPoints.get());
+//            points.put(colorPoints);
+//            colorPoints.rewind();
+//            points.put(colorPoints.get());
+//            points.put(colorPoints.get());
+//            points.put(colorPoints.get());
 //            points.flip();
 //        }
-//        colourPoints = GradientAndArcCalculator.getColourGradient(c1, c1, points.limit() / 3);
-//        colour = BufferUtils.createFloatBuffer(colourPoints.limit() + 4); // space for rgba of c2
-//        colour.put(c2.asArray());
-//        colour.put(colourPoints);
-//        colour.flip();
+//        colorPoints = GradientAndArcCalculator.getColourGradient(c1, c1, points.limit() / 3);
+//        color = BufferUtils.createFloatBuffer(colorPoints.limit() + 4); // space for rgba of c2
+//        color.put(c2.asArray());
+//        color.put(colorPoints);
+//        color.flip();
 //    }
 //
 //    public void draw(PoseStack matrixStack, double radius, double x, double y, float zLevel) {
 //        float ratio = (System.currentTimeMillis() % 2000) / 2000.0F;
-//        colour.rewind();
+//        color.rewind();
 //        points.rewind();
 //        RenderSystem.pushPose();
 //        RenderSystem.translated(x, y, 0);
@@ -165,9 +165,9 @@
 //        buffer.begin(GL11.GL_TRIANGLE_FAN, DefaultVertexFormat.POSITION_COLOR_LIGHTMAP);
 //        Matrix4f matrix4f = matrixStack.last().pose();
 //
-//        while (points.hasRemaining() && colour.hasRemaining()) {
+//        while (points.hasRemaining() && color.hasRemaining()) {
 //            buffer.vertex(matrix4f, points.get(), points.get(), points.get())
-//                    .color(colour.get(), colour.get(), colour.get(), colour.get())
+//                    .color(color.get(), color.get(), color.get(), color.get())
 //                    .uv2(0x00F000F0)
 //                    .endVertex();
 //        }
@@ -196,7 +196,7 @@
 //
 //    void testDraw(double radius, double x, double y) {
 //        points.rewind();
-//        colour.rewind();
+//        color.rewind();
 //        GL11.glPushMatrix();
 //        GL11.glTranslated(x, y, 0);
 //        GL11.glScaled(radius / detail, radius / detail, 1.0);
@@ -205,7 +205,7 @@
 //        NuminaRenderState.arraysOnColor();
 //        NuminaRenderState.texturelessOn();
 //        NuminaRenderState.blendingOn();
-//        GL11.glColorPointer(4, GL11.GL_FLOAT, 0, colour);
+//        GL11.glColorPointer(4, GL11.GL_FLOAT, 0, color);
 //        GL11.glVertexPointer(3, GL11.GL_FLOAT,0, points);
 //        GL11.glDrawArrays(GL11.GL_TRIANGLE_FAN, 0, points.limit() / 3);
 //        NuminaRenderState.blendingOff();
@@ -221,7 +221,7 @@
 //
 //
 //        //        float ratio = (System.currentTimeMillis() % 2000) / 2000.0F;
-////        colour.rewind();
+////        color.rewind();
 ////        points.rewind();
 ////
 ////        matrixStackIn.push();
@@ -232,9 +232,9 @@
 ////        VertexConsumer vertBuffer = bufferIn.getBuffer(PLASMA_BALL);
 ////        Matrix4f matrix4f = matrixStackIn.last().pose();
 ////
-////        while (points.hasRemaining() && colour.hasRemaining()) {
+////        while (points.hasRemaining() && color.hasRemaining()) {
 ////            vertBuffer.pos(matrix4f, points.get(), points.get(), points.get())
-////                    .color(colour.get(), colour.get(), colour.get(), colour.get())
+////                    .color(color.get(), color.get(), color.get(), color.get())
 ////                    .uv2(0x00F000F0)
 ////                    .endVertex();
 ////        }
@@ -251,7 +251,7 @@
 //    public void drawSphere(PoseStack matrixStackIn, MultiBufferSource bufferIn,
 //                                  float x, float y, float z,
 //                                  float radius, int stacks, int slices) {
-//        Color colourTest = Color.MAGENTA.withAlpha(0.3F);
+//        Color colorTest = Color.MAGENTA.withAlpha(0.3F);
 //
 //        float r0, r1, alpha0, alpha1, x0, x1, y0, y1, z0, z1, beta;
 //        float stackStep = (float) (Math.PI / stacks);
@@ -284,12 +284,12 @@
 //                z1 = (float) (-r1 * Math.sin(beta));
 //
 //                vertBuffer.vertex(matrix4f, x0, y0, z0)
-//                        .color(colourTest.r, colourTest.g, colourTest.b, colourTest.a)
+//                        .color(colorTest.r, colorTest.g, colorTest.b, colorTest.a)
 //                        .uv2(0x00F000F0)
 //                        .endVertex();
 //
 //                vertBuffer.vertex(matrix4f, x1, y1, z1)
-//                        .color(colourTest.r, colourTest.g, colourTest.b, colourTest.a)
+//                        .color(colorTest.r, colorTest.g, colorTest.b, colorTest.a)
 //                        .uv2(0x00F000F0)
 //                        .endVertex();
 //

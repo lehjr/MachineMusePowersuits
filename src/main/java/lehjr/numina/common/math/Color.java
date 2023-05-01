@@ -29,15 +29,12 @@ package lehjr.numina.common.math;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import lehjr.numina.common.base.NuminaLogger;
-import net.minecraft.nbt.IntTag;
-import net.minecraftforge.common.util.INBTSerializable;
-import org.checkerframework.checker.units.qual.C;
 import org.joml.Vector4f;
 
 import java.util.Objects;
 
 /**
- * A class representing an RGBA colour and various helper functions. Mainly to
+ * A class representing an RGBA color and various helper functions. Mainly to
  * improve readability elsewhere.
  *
  * @author MachineMuse
@@ -131,7 +128,7 @@ public class Color /*implements INBTSerializable<IntTag>*/ {
     }
 
     /**
-     * Takes colours in the integer format that Minecraft uses, and converts.
+     * Takes colors in the integer format that Minecraft uses, and converts.
      */
     public Color(int c) {
         this.a = (c >> 24 & 0xFF) * div255;
@@ -179,7 +176,7 @@ public class Color /*implements INBTSerializable<IntTag>*/ {
     }
 
     /**
-     * Returns a colour with RGB set to the same getValue ie. a shade of grey.
+     * Returns a color with RGB set to the same getValue ie. a shade of grey.
      */
     public static Color getGreyscale(float value, float alpha) {
         return new Color(value, value, value, alpha);
@@ -189,7 +186,7 @@ public class Color /*implements INBTSerializable<IntTag>*/ {
      * Handles RRGGBB and RRGGBBAA hex strings
      *
      * @param hexString
-     * @return new colour based on getValue or default of white if error
+     * @return new color based on getValue or default of white if error
      */
     public static Color fromARGBHexString(String hexString) {
         try {
@@ -205,17 +202,17 @@ public class Color /*implements INBTSerializable<IntTag>*/ {
             }
             return color;
         } catch (Exception e) {
-            NuminaLogger.logException("Failed to generate colour from Hex: ", e);
+            NuminaLogger.logException("Failed to generate color from Hex: ", e);
         }
         return WHITE;
     }
 
     /**
-     * Returns this colour as an int in Minecraft's format (I think)
+     * Returns this color as an int in Minecraft's format (I think)
      * <p>
      * note: full values for RGBA will yield -1
      *
-     * @return int getValue of this colour
+     * @return int getValue of this color
      */
     public int getARGBInt() {
         int val = 0;
@@ -227,7 +224,7 @@ public class Color /*implements INBTSerializable<IntTag>*/ {
     }
 
     /**
-     * Returns a colour at interval along a linear gradient from this
+     * Returns a color at interval along a linear gradient from this
      * to target
      */
     public Color interpolate(Color target, float d) {
@@ -273,11 +270,11 @@ public class Color /*implements INBTSerializable<IntTag>*/ {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Color colour = (Color) o;
-        return Double.compare(colour.r, r) == 0 &&
-                Double.compare(colour.g, g) == 0 &&
-                Double.compare(colour.b, b) == 0 &&
-                Double.compare(colour.a, a) == 0;
+        Color color = (Color) o;
+        return Double.compare(color.r, r) == 0 &&
+                Double.compare(color.g, g) == 0 &&
+                Double.compare(color.b, b) == 0 &&
+                Double.compare(color.a, a) == 0;
     }
 
     @Override

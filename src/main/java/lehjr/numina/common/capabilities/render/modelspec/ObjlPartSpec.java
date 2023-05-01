@@ -26,27 +26,55 @@
 
 package lehjr.numina.common.capabilities.render.modelspec;
 
+import com.mojang.math.Transformation;
+import lehjr.numina.client.model.obj.OBJBakedPart;
 import net.minecraft.network.chat.Component;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 /**
- * This is just a way of mapping a possible texture combinations for a piece of PowerArmor using the default vanilla model
+ * Ported to Java by lehjr on 11/8/16.
  */
-public class TextureSpec extends SpecBase {
-    public TextureSpec(final String name, final boolean isDefault) {
-        super(name, isDefault, SpecType.ARMOR_SKIN);
+@OnlyIn(Dist.CLIENT)
+public class ObjlPartSpec extends PartSpecBase {
+    private Transformation partTransform = Transformation.identity();
+
+    public ObjlPartSpec(final ObjModelSpec objModelSpec,
+                        final SpecBinding binding,
+                        final String partName,
+                        final Integer defaultcolorindex,
+                        final Boolean defaultglow) {
+        super(objModelSpec, binding, partName, defaultcolorindex, defaultglow);
+    }
+
+    public Transformation getPartTransform() {
+        return partTransform;
+    }
+
+    public void setPartTransform(Transformation partTransform) {
+        this.partTransform = partTransform;
     }
 
     @Override
-    public Component getDisaplayName() {
-        return Component.translatable(new StringBuilder("textureSpec.")
-                .append(this.getName())
-                .append(".specName")
-                .toString());
+    String getNamePrefix() {
+        return "model.";
     }
 
-    @Override
-    public String getOwnName() {
-        String name = ModelRegistry.getInstance().getName(this);
-        return (name != null) ? name : "";
+    public OBJBakedPart getPart() {
+        return ((ObjModelSpec) (this.spec)).getModel().getPart(this.partName);
     }
+
+    //    @Override
+//    public boolean equals(Object o) {
+//        if (this == o) return true;
+//        if (o == null || getClass() != o.getClass()) return false;
+//        if (!super.equals(o)) return false;
+//        ModelPartSpec that = (ModelPartSpec) o;
+//        return defaultglow == that.defaultglow;
+//    }
+//
+//    @Override
+//    public int hashCode() {
+//        return Objects.hash(super.hashCode(), defaultglow);
+//    }
 }

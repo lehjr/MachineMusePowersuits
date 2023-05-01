@@ -38,10 +38,10 @@
 //public class DrawableSphere {
 //    final float radius = 4;
 //    protected static FloatBuffer points;
-//    Color colour;
+//    Color color;
 //
-//    public DrawableSphere(Color colour) {
-//        this.colour = colour;
+//    public DrawableSphere(Color color) {
+//        this.color = color;
 //        points = GradientAndArcCalculator.getSphereVertices(20 ,radius);
 //    }
 //
@@ -57,7 +57,7 @@
 //
 //        while (points.hasRemaining()) {
 //            vertBuffer.vertex(matrix4f, points.get(), points.get(), points.get())
-//                    .color(colour.r, colour.g, colour.b, colour.a)
+//                    .color(color.r, color.g, color.b, color.a)
 //                    .uv2(0x00F000F0)
 //                    .endVertex();
 //        }

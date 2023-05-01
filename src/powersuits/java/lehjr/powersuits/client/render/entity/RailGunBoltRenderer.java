@@ -49,7 +49,7 @@ import org.joml.Quaternionf;
 public class RailGunBoltRenderer extends net.minecraft.client.renderer.entity.EntityRenderer<RailgunBoltEntity> {
 
 
-    static final Color colour = new Color(0.631F, 0.615F, 0.58F, 1F);
+    static final Color color = new Color(0.631F, 0.615F, 0.58F, 1F);
     static final ResourceLocation modelLocation = new ResourceLocation(MPSConstants.MOD_ID, "models/entity/bolt.obj");
     // NonNullLazy doesn't init until called
     public static final NonNullLazy<OBJBakedCompositeModel> modelBolt = NonNullLazy.of(() -> ModelHelper.loadBakedModel(BlockModelRotation.X0_Y0, null, modelLocation));
@@ -85,21 +85,21 @@ public class RailGunBoltRenderer extends net.minecraft.client.renderer.entity.En
 
     public static void renderBolt(PoseStack matrixStackIn, MultiBufferSource bufferIn) {
         renderBolt(bufferIn, getBoltRenderType(), // fixme get a better render type
-                matrixStackIn, /*combinedLight*/0x00F000F0, colour);
+                matrixStackIn, /*combinedLight*/0x00F000F0, color);
     }
 
-    public static void renderBolt(MultiBufferSource bufferIn, RenderType rt, PoseStack matrixStackIn, int packedLightIn, Color colour) {
-        renderBolt(bufferIn, rt, matrixStackIn, packedLightIn, OverlayTexture.NO_OVERLAY, colour);
+    public static void renderBolt(MultiBufferSource bufferIn, RenderType rt, PoseStack matrixStackIn, int packedLightIn, Color color) {
+        renderBolt(bufferIn, rt, matrixStackIn, packedLightIn, OverlayTexture.NO_OVERLAY, color);
     }
 
-    public static void renderBolt(MultiBufferSource bufferIn, RenderType rt, PoseStack matrixStackIn, int packedLightIn, int overlay, Color colour) {
+    public static void renderBolt(MultiBufferSource bufferIn, RenderType rt, PoseStack matrixStackIn, int packedLightIn, int overlay, Color color) {
         VertexConsumer bb = bufferIn.getBuffer(rt);
         if (modelBolt.get() == null) {
             return;
         }
 
         for (BakedQuad quad : modelBolt.get().getQuads(null, null, rand)) {/*, ModelData.EMPTY)) {*/
-            bb.putBulkData(matrixStackIn.last(), quad, colour.r, colour.g, colour.b, colour.a, packedLightIn, overlay, true);
+            bb.putBulkData(matrixStackIn.last(), quad, color.r, color.g, color.b, color.a, packedLightIn, overlay, true);
         }
     }
 

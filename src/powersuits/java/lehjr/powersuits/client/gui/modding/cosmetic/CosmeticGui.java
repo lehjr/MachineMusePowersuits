@@ -33,7 +33,7 @@ import lehjr.numina.client.gui.frame.EntityRenderFrame;
 import lehjr.numina.client.gui.geometry.MusePoint2D;
 import lehjr.powersuits.client.gui.common.ModularItemSelectionFrame;
 import lehjr.powersuits.client.gui.common.TabSelectFrame;
-import lehjr.powersuits.client.gui.modding.cosmetic.colourpicker.ColourPickerFrame;
+import lehjr.powersuits.client.gui.modding.cosmetic.colorpicker.ColourPickerFrame;
 import lehjr.powersuits.client.gui.modding.cosmetic.partmanip.ModelManipFrame;
 import lehjr.powersuits.common.config.MPSSettings;
 import lehjr.powersuits.common.constants.MPSConstants;
@@ -57,7 +57,7 @@ public class CosmeticGui extends ContainerlessGui {
     Player player;
     ModularItemSelectionFrame itemSelectFrame;
     EntityRenderFrame renderframe;
-    ColourPickerFrame colourpicker;
+    ColourPickerFrame colorpicker;
     ModelManipFrame partframe;
     TabSelectFrame tabSelectFrame;
     protected boolean allowCosmeticPresetCreation;
@@ -109,12 +109,12 @@ public class CosmeticGui extends ContainerlessGui {
         renderframe.setAllowZoom(true);
         addFrame(renderframe);
 
-        /** for picking the colours ------------------------------------------------------------ */
-        colourpicker = new ColourPickerFrame(itemSelectFrame, leftPos + 220, topPos +91, leftPos + 344, topPos + 207);
-        addFrame(colourpicker);
+        /** for picking the colors ------------------------------------------------------------ */
+        colorpicker = new ColourPickerFrame(itemSelectFrame, leftPos + 220, topPos +91, leftPos + 344, topPos + 207);
+        addFrame(colorpicker);
 
         /** for manipulating part selections --------------------------------------------------- */
-        partframe = new ModelManipFrame(leftPos + 8, topPos + 14, leftPos + 211, topPos + 207, itemSelectFrame, colourpicker);
+        partframe = new ModelManipFrame(leftPos + 8, topPos + 14, leftPos + 211, topPos + 207, itemSelectFrame, colorpicker);
         addFrame(partframe);
 
         /** for selecting GUI ------------------------------------------------------------------ */
@@ -130,7 +130,7 @@ public class CosmeticGui extends ContainerlessGui {
         // TODO
 //        // if not using presets then only the reset button is displayed
 //        loadSaveResetSubFrame = new LoadSaveResetSubFrame(
-//                colourpicker,
+//                colorpicker,
 //                player,
 //                new Rect(
 //                        absX(0.18f),

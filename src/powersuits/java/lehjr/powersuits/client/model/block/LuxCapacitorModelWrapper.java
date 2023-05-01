@@ -26,10 +26,7 @@
 
 package lehjr.powersuits.client.model.block;
 
-import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexFormat;
-import com.mojang.blaze3d.vertex.VertexMultiConsumer;
 import lehjr.numina.client.model.obj.OBJBakedCompositeModel;
 import lehjr.numina.common.capabilities.NuminaCapabilities;
 import lehjr.numina.common.constants.TagConstants;
@@ -42,7 +39,6 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.ItemOverrides;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
-import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -63,8 +59,6 @@ import org.jetbrains.annotations.NotNull;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
-
-import static net.minecraft.client.renderer.RenderStateShard.*;
 
 /**
  * Only used for the item model. Not needed for the block model
@@ -166,7 +160,7 @@ public class LuxCapacitorModelWrapper extends BakedModelWrapper<OBJBakedComposit
         @Nullable
         @Override
         public BakedModel resolve(BakedModel model, ItemStack stack, @Nullable ClientLevel worldIn, @Nullable LivingEntity entityIn,  int pSeed) {
-//            Color colour;
+//            Color color;
             // this one is just for the launched item
             if (stack.hasTag() && stack.getTag().contains(TagConstants.COLOR, Tag.TAG_INT)) {
                 color = new Color( stack.getTag().getInt(TagConstants.COLOR));

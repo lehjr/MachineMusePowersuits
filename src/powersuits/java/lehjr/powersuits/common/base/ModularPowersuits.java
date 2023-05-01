@@ -27,7 +27,6 @@
 package lehjr.powersuits.common.base;
 
 import com.electronwill.nightconfig.core.file.CommentedFileConfig;
-import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.capabilities.NuminaCapabilities;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
@@ -37,9 +36,8 @@ import lehjr.numina.common.capabilities.module.toggleable.IToggleableModule;
 import lehjr.numina.common.capabilities.module.toggleable.ToggleableModule;
 import lehjr.numina.common.config.ConfigHelper;
 import lehjr.numina.common.item.ItemUtils;
-import lehjr.powersuits.client.control.KeybindKeyHandler;
+import lehjr.powersuits.client.control.KeymappingKeyHandler;
 import lehjr.powersuits.client.event.ModelBakeEventHandler;
-import lehjr.powersuits.client.event.PlayerLoginHandler;
 import lehjr.powersuits.client.event.RenderEventHandler;
 import lehjr.powersuits.client.gui.modding.module.install_salvage.InstallSalvageGui;
 import lehjr.powersuits.common.config.MPSSettings;
@@ -53,6 +51,7 @@ import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.*;
 import net.minecraft.world.entity.player.Player;
@@ -76,6 +75,7 @@ import net.minecraftforge.fml.event.config.ModConfigEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.network.NetworkHooks;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -92,15 +92,11 @@ public class ModularPowersuits {
         // Register the setup method for modloading
         modEventBus.addListener(this::setup);
 
-
         MPSItems.MPS_ITEMS.register(modEventBus);
         MPSBlocks.BLOCKS.register(modEventBus);
         MPSBlocks.BLOCKENTITY_TYPES.register(modEventBus);
         MPSEntities.ENTITY_TYPES.register(modEventBus);
         MPSMenuTypes.CONTAINER_TYPES.register(modEventBus);
-
-
-
 
         // Register the doClientStuff method for modloading
         modEventBus.addListener(this::setupClient);
@@ -147,18 +143,16 @@ public class ModularPowersuits {
     private void setupClient(final FMLClientSetupEvent event) {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
-
         modEventBus.addListener(ModelBakeEventHandler.INSTANCE::onModelBake);
+        modEventBus.addListener(ModelBakeEventHandler.INSTANCE::onAddAdditional);
         modEventBus.addListener(RenderEventHandler.INSTANCE::preTextureStitch);
 
         MinecraftForge.EVENT_BUS.register(RenderEventHandler.INSTANCE);
-        MinecraftForge.EVENT_BUS.register(new KeybindKeyHandler());
+        MinecraftForge.EVENT_BUS.register(new KeymappingKeyHandler());
         MinecraftForge.EVENT_BUS.register(new LogoutEventHandler());
 
-        MinecraftForge.EVENT_BUS.addListener(PlayerLoginHandler::onPlayerLoginClient);// just to populated keybinds -_-
-
-
         MenuScreens.register(MPSMenuTypes.INSTALL_SALVAGE_MENU_TYPE.get(), InstallSalvageGui::new);
+
     }
 
     /**
@@ -318,10 +312,8 @@ public class ModularPowersuits {
                                 return itemstack;
                             }
                         }, MPSConstants.CRAFTING_TABLE_CONTAINER_NAME);
-                        NuminaLogger.logError("FIXME: ModularPowersuits main class opening gui not yet implemented");
-
-//                        NetworkHooks.openGui((ServerPlayer) playerIn, container, buffer -> buffer.writeBlockPos(playerIn.blockPosition()));
-//                        NetworkHooks.openGui((ServerPlayer) playerIn, container);
+//                        NetworkHooks.openScreen((ServerPlayer) playerIn, container, buffer -> buffer.writeBlockPos(playerIn.blockPosition()));
+                        NetworkHooks.openScreen((ServerPlayer) playerIn, container);
                         playerIn.awardStat(Stats.INTERACT_WITH_CRAFTING_TABLE);
                         return InteractionResultHolder.consume(itemStackIn);
                     }

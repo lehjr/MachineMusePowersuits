@@ -54,7 +54,7 @@ public class InstallSalvageMenu extends AbstractContainerMenu {
 
                                 @OnlyIn(Dist.CLIENT)
                                 @Override
-                                public void drawIconAt(PoseStack matrixStack, double v, double v1, Color colour) {
+                                public void drawIconAt(PoseStack matrixStack, double v, double v1, Color color) {
 
                                 }
                             });
@@ -62,8 +62,8 @@ public class InstallSalvageMenu extends AbstractContainerMenu {
                             addSlot(new IconSlot(iItemHandler, parentSlot, modularItemInvIndex, 178 + innercol * 18, 14 + innerrow * 18) {
                                 @OnlyIn(Dist.CLIENT)
                                 @Override
-                                public void drawIconAt(PoseStack matrixStack, double posX, double posY, Color colour) {
-                                    IconUtils.getIcon().energyStorageBackground.renderIconScaledWithColour(matrixStack, posX, posY, 16, 16, Color.WHITE);
+                                public void drawIconAt(PoseStack matrixStack, double posX, double posY, Color color) {
+                                    IconUtils.getIcon().energystorage.renderIconScaledWithColor(matrixStack, posX, posY, 16, 16, Color.WHITE);
                                 }
                             });
 
@@ -71,8 +71,8 @@ public class InstallSalvageMenu extends AbstractContainerMenu {
                             addSlot(new IconSlot(iItemHandler, parentSlot, modularItemInvIndex, 178 + innercol * 18, -1000) {
                                 @OnlyIn(Dist.CLIENT)
                                 @Override
-                                public void drawIconAt(PoseStack matrixStack, double posX, double posY, Color colour) {
-                                    IconUtils.getIcon().energyGenerationBackground.renderIconScaledWithColour(matrixStack, posX, posY, 16, 16, Color.WHITE);
+                                public void drawIconAt(PoseStack matrixStack, double posX, double posY, Color color) {
+                                    IconUtils.getIcon().energygeneration.renderIconScaledWithColor(matrixStack, posX, posY, 16, 16, Color.WHITE);
                                 }
                             });
                         } else {

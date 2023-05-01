@@ -41,7 +41,7 @@
 ////    protected ClickableButton loadButton;
 ////    protected ClickableButton saveButton;
 ////    protected ClickableButton resetButton;
-////    ColourPickerFrame colourpicker;
+////    ColourPickerFrame colorpicker;
 ////    ScrollableLabel saveAsLabel;
 ////    final boolean usingCosmeticPresets;
 ////    final boolean allowCosmeticPresetCreation;
@@ -57,18 +57,18 @@
 ////
 ////    TextFieldWidget presetNameInputBox;
 ////
-////    public LoadSaveResetSubFrame(ColourPickerFrame colourpicker, Player player, Rect borderRef, Colour insideColour, Colour borderColour, ItemSelectionFrame itemSelector, boolean usingCosmeticPresetsIn, boolean allowCosmeticPresetCreationIn, PartManipAbstractContainerMenu partframe, CosmeticPresetAbstractContainerMenu cosmeticFrame) {
+////    public LoadSaveResetSubFrame(ColourPickerFrame colorpicker, Player player, Rect borderRef, Colour insideColour, Colour borderColour, ItemSelectionFrame itemSelector, boolean usingCosmeticPresetsIn, boolean allowCosmeticPresetCreationIn, PartManipAbstractContainerMenu partframe, CosmeticPresetAbstractContainerMenu cosmeticFrame) {
 ////        this.player = player;
 ////        this.border = new DrawableRect(borderRef, insideColour, borderColour);
 ////        this.originalTop = border.top();
 ////        this.originalHeight = border.height();
 ////        this.originalBottom = border.bottom();
-////        this.newHeight = (Math.abs(colourpicker.getBorder().top() - originalBottom));
+////        this.newHeight = (Math.abs(colorpicker.getBorder().top() - originalBottom));
 ////        double sizex = border.right() - border.left();
 ////        double sizey = border.bottom() - border.top();
 ////        this.itemSelector = itemSelector;
-////        this.colourpicker = colourpicker;
-////        this.saveAsLabel = new ScrollableLabel(I18n.format("gui.powersuits.saveAs"),  new RelativeRect(border.left(), colourpicker.getBorder().top() + 20, border.right(), colourpicker.getBorder().top() + 30)).setEnabled(false);
+////        this.colorpicker = colorpicker;
+////        this.saveAsLabel = new ScrollableLabel(I18n.format("gui.powersuits.saveAs"),  new RelativeRect(border.left(), colorpicker.getBorder().top() + 20, border.right(), colorpicker.getBorder().top() + 30)).setEnabled(false);
 ////        presetNameInputBox = new TextFieldWidget(0, Renderer.getFontRenderer(), (int) (border.left()) + 2, (int) (saveAsLabel.bottom() + 10), (int) border.width() - 4, 20);
 ////
 ////        this.loadButton = new ClickableButton(
@@ -109,7 +109,7 @@
 ////        saveButton.buttonOff();
 ////        loadButton.buttonOff();
 ////        showPartManipFrame();
-////        colourPickerSetOpen();
+////        colorPickerSetOpen();
 ////    }
 ////
 ////    /**
@@ -118,7 +118,7 @@
 ////    void cosmeticPresetsNormal() {
 ////        saveButton.buttonOff();
 ////        loadButton.buttonOff();
-////        colourpickerSetClosed();
+////        colorpickerSetClosed();
 ////        textInputOff();
 ////        showPresetFrame();
 ////    }
@@ -135,29 +135,29 @@
 ////            showPartManipFrame();
 ////            // save as dialog
 ////            if (presetNameInputBox.getVisible()) {
-////                colourpickerSetClosed();
+////                colorpickerSetClosed();
 ////            } else {
-////                colourPickerSetOpen();
+////                colorPickerSetOpen();
 ////            }
 ////        } else {
 ////            textInputOff();
 ////            showPresetFrame();
-////            colourpickerSetClosed();
+////            colorpickerSetClosed();
 ////            loadButton.buttonOff();
 ////            saveButton.buttonOn();
 ////            saveButton.setLable(I18n.format("gui.powersuits.new"));
 ////        }
 ////    }
 ////
-////    void colourPickerSetOpen() {
+////    void colorPickerSetOpen() {
 ////        this.border.setTop(originalTop).setHeight(originalHeight);
-////        colourpicker.frameOn();
+////        colorpicker.frameOn();
 ////        saveAsLabel.setEnabled(false);
 ////    }
 ////
-////    void colourpickerSetClosed() {
-////        this.border.setTop(colourpicker.getBorder().top()).setHeight(newHeight);
-////        colourpicker.frameOff();
+////    void colorpickerSetClosed() {
+////        this.border.setTop(colorpicker.getBorder().top()).setHeight(newHeight);
+////        colorpicker.frameOff();
 ////    }
 ////
 ////    void textInputOn () {

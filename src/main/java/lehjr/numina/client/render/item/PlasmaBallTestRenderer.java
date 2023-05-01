@@ -48,10 +48,10 @@
 //import java.util.Random;
 //
 //public class PlasmaBallTestRenderer  extends ItemStackTileEntityRenderer {
-//    static final Color colour1 = new Color(0.3F, 0.3F, 1F, 0.3F);
-//    static final Color colour2 = new Color(0.4F, 0.4F, 1F, 0.5F);
-//    static final Color colour3 = new Color(0.8F, 0.8F, 1F, 0.7F);
-//    static final Color colour4 = new Color(1F, 1F, 1F, 0.9F);
+//    static final Color color1 = new Color(0.3F, 0.3F, 1F, 0.3F);
+//    static final Color color2 = new Color(0.4F, 0.4F, 1F, 0.5F);
+//    static final Color color3 = new Color(0.8F, 0.8F, 1F, 0.7F);
+//    static final Color color4 = new Color(1F, 1F, 1F, 0.9F);
 //
 //    static final ResourceLocation modelLocation = new ResourceLocation(NuminaConstants.MOD_ID, "models/item/test/sphere.obj");
 //    // NonNullLazy doesn't init until called
@@ -117,10 +117,10 @@
 //        {
 //            int millisPerCycle = 500;
 //            double timeScale = Math.cos((System.currentTimeMillis() % millisPerCycle) * 2.0 / millisPerCycle - 1.0);
-//            renderPlasmaBall(matrixStackIn, bufferIn, 4F*scalFactor, colour1.withAlpha(0.15F));
-//            renderPlasmaBall(matrixStackIn, bufferIn, (float) (3+timeScale /2F)*scalFactor,colour2.withAlpha(0.25F));
-//            renderPlasmaBall(matrixStackIn, bufferIn, (float) (2+timeScale)*scalFactor,colour3.withAlpha(0.4F));
-//            renderPlasmaBall(matrixStackIn, bufferIn, (float) (1+timeScale)*scalFactor,colour4.withAlpha(0.75F));
+//            renderPlasmaBall(matrixStackIn, bufferIn, 4F*scalFactor, color1.withAlpha(0.15F));
+//            renderPlasmaBall(matrixStackIn, bufferIn, (float) (3+timeScale /2F)*scalFactor,color2.withAlpha(0.25F));
+//            renderPlasmaBall(matrixStackIn, bufferIn, (float) (2+timeScale)*scalFactor,color3.withAlpha(0.4F));
+//            renderPlasmaBall(matrixStackIn, bufferIn, (float) (1+timeScale)*scalFactor,color4.withAlpha(0.75F));
 //        }
 //        matrixStackIn.popPose();
 //    }
@@ -129,23 +129,23 @@
 //        return RenderType.entityTranslucentCull(NuminaConstants.TEXTURE_WHITE);
 //    }
 //
-//    void renderPlasmaBall(PoseStack matrixStackIn, MultiBufferSource bufferIn, float scale, Color colour) {
+//    void renderPlasmaBall(PoseStack matrixStackIn, MultiBufferSource bufferIn, float scale, Color color) {
 //        matrixStackIn.pushPose();
 //        matrixStackIn.translate(0.5, 0.5, 0.5);
 //        matrixStackIn.scale(scale, scale, scale);
 //        renderSphere(bufferIn, getSphereRenderType(), // fixme get a better render type
-//                matrixStackIn, /*combinedLight*/0x00F000F0, colour);
+//                matrixStackIn, /*combinedLight*/0x00F000F0, color);
 //        matrixStackIn.popPose();
 //    }
 //
-//    public void renderSphere(MultiBufferSource bufferIn, RenderType rt, PoseStack matrixStackIn, int packedLightIn, Color colour) {
-//        renderSphere(bufferIn, rt, matrixStackIn, packedLightIn, OverlayTexture.NO_OVERLAY, colour);
+//    public void renderSphere(MultiBufferSource bufferIn, RenderType rt, PoseStack matrixStackIn, int packedLightIn, Color color) {
+//        renderSphere(bufferIn, rt, matrixStackIn, packedLightIn, OverlayTexture.NO_OVERLAY, color);
 //    }
 //
-//    public void renderSphere(MultiBufferSource bufferIn, RenderType rt, PoseStack matrixStackIn, int packedLightIn, int overlay, Color colour) {
+//    public void renderSphere(MultiBufferSource bufferIn, RenderType rt, PoseStack matrixStackIn, int packedLightIn, int overlay, Color color) {
 //        VertexConsumer bb = bufferIn.getBuffer(rt);
 //        for (BakedQuad quad : modelSphere.get().getQuads(null, null, rand, ModelData.EMPTY)) {
-//            bb.putBulkData(matrixStackIn.last(), quad, colour.r, colour.g, colour.b, colour.a, packedLightIn, overlay, true);
+//            bb.putBulkData(matrixStackIn.last(), quad, color.r, color.g, color.b, color.a, packedLightIn, overlay, true);
 //        }
 //    }
 //}

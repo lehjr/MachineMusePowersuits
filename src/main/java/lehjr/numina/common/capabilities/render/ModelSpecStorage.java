@@ -27,9 +27,11 @@
 package lehjr.numina.common.capabilities.render;
 
 import lehjr.numina.common.base.NuminaLogger;
+import lehjr.numina.common.capabilities.render.modelspec.SpecBase;
 import lehjr.numina.common.capabilities.render.modelspec.SpecType;
 import lehjr.numina.common.constants.TagConstants;
 import lehjr.numina.common.tags.TagUtils;
+import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.util.INBTSerializable;
@@ -89,14 +91,6 @@ public class ModelSpecStorage implements IModelSpec, INBTSerializable<CompoundTa
     }
 
     @Override
-    public SpecType getSpecType() {
-        if (itemStack.getEquipmentSlot() == null) {
-            return SpecType.HANDHELD;
-        }
-        return SpecType.NONE;
-    }
-
-    @Override
     @Nullable
     public CompoundTag getRenderTag() {
         CompoundTag itemTag = TagUtils.getMuseItemTag(itemStack);
@@ -112,12 +106,12 @@ public class ModelSpecStorage implements IModelSpec, INBTSerializable<CompoundTa
      * When dealing with possibly multiple specs and color lists, new list needs to be created, since there is only one list per item.
      */
     @Override
-    public List<Integer> addNewColourstoList(List<Integer> colours, List<Integer> coloursToAdd) {
-        for (Integer i : coloursToAdd) {
-            if (!colours.contains(i))
-                colours.add(i);
+    public List<Integer> addNewColourstoList(List<Integer> colors, List<Integer> colorsToAdd) {
+        for (Integer i : colorsToAdd) {
+            if (!colors.contains(i))
+                colors.add(i);
         }
-        return colours;
+        return colors;
     }
 
     @Override
@@ -130,8 +124,8 @@ public class ModelSpecStorage implements IModelSpec, INBTSerializable<CompoundTa
      * new array means setting a new array index for the same getValue
      */
     @Override
-    public int getNewColourIndex(List<Integer> colours, List<Integer> oldColours, Integer index) {
-        return colours.indexOf(oldColours.get(index != null ? index : 0));
+    public int getNewColourIndex(List<Integer> colors, List<Integer> oldColours, Integer index) {
+        return colors.indexOf(oldColours.get(index != null ? index : 0));
     }
 
     @Override

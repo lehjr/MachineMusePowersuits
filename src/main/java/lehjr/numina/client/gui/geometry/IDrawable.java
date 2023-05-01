@@ -55,12 +55,12 @@ public interface IDrawable extends Renderable {
      * Common code for adding vertices to the BufferBuilder
      * @param matrix4f
      * @param vertices
-     * @param colour a Colour to draw in
+     * @param color a Colour to draw in
      */
-    default void addVerticesToBuffer(BufferBuilder bufferbuilder, Matrix4f matrix4f, FloatBuffer vertices, Color colour) {
+    default void addVerticesToBuffer(BufferBuilder bufferbuilder, Matrix4f matrix4f, FloatBuffer vertices, Color color) {
         vertices.rewind();
         while(vertices.hasRemaining()) {
-            bufferbuilder.vertex(matrix4f, vertices.get(), vertices.get(), getZLevel()).color(colour.r, colour.g, colour.b, colour.a).endVertex();
+            bufferbuilder.vertex(matrix4f, vertices.get(), vertices.get(), getZLevel()).color(color.r, color.g, color.b, color.a).endVertex();
         }
     }
 
@@ -68,15 +68,15 @@ public interface IDrawable extends Renderable {
      * Common code for adding vertices to the BufferBuilder
      * @param matrix4f
      * @param vertices
-     * @param colour a Colour to draw in
+     * @param color a Colour to draw in
      */
-    default void addVerticesToBuffer(BufferBuilder bufferbuilder, Matrix4f matrix4f, DoubleBuffer vertices, Color colour) {
+    default void addVerticesToBuffer(BufferBuilder bufferbuilder, Matrix4f matrix4f, DoubleBuffer vertices, Color color) {
         vertices.rewind();
         Vector4f vector4f = new Vector4f((float)vertices.get(), (float)vertices.get(), getZLevel(), 1.0F);
 //        vector4f.transform(matrix4f);
         matrix4f.transform(vector4f);
         while(vertices.hasRemaining()) {
-            bufferbuilder.vertex((double)vector4f.x(), (double)vector4f.y(), (double)vector4f.z()).color(colour.r, colour.g, colour.b, colour.a).endVertex();
+            bufferbuilder.vertex((double)vector4f.x(), (double)vector4f.y(), (double)vector4f.z()).color(color.r, color.g, color.b, color.a).endVertex();
         }
     }
 
@@ -84,13 +84,13 @@ public interface IDrawable extends Renderable {
      * Common code for adding vertices to the BufferBuilder
      * @param matrix4f
      * @param vertices
-     * @param colourBuffer FloatBuffer of colors
+     * @param colorBuffer FloatBuffer of colors
      */
-    default void addVerticesToBuffer(BufferBuilder bufferbuilder, Matrix4f matrix4f, FloatBuffer vertices, FloatBuffer colourBuffer) {
+    default void addVerticesToBuffer(BufferBuilder bufferbuilder, Matrix4f matrix4f, FloatBuffer vertices, FloatBuffer colorBuffer) {
         vertices.rewind();
-        colourBuffer.rewind();
-        while(vertices.hasRemaining() && colourBuffer.hasRemaining()) {
-            bufferbuilder.vertex(matrix4f, vertices.get(), vertices.get(), getZLevel()).color(colourBuffer.get(), colourBuffer.get(), colourBuffer.get(), colourBuffer.get()).endVertex();
+        colorBuffer.rewind();
+        while(vertices.hasRemaining() && colorBuffer.hasRemaining()) {
+            bufferbuilder.vertex(matrix4f, vertices.get(), vertices.get(), getZLevel()).color(colorBuffer.get(), colorBuffer.get(), colorBuffer.get(), colorBuffer.get()).endVertex();
         }
     }
     default BufferBuilder getBufferBuilder() {

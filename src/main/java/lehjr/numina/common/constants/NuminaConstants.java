@@ -33,6 +33,9 @@ public class NuminaConstants {
   // Mod
   public static final String MOD_ID = "numina";
 
+  public static final int FULL_BRIGHTNESS = 0XF000F0;
+
+
   // Tooltips
   public static final String TOOLTIP_ENERGY = "tooltip.numina.battery.energy";
 
@@ -44,7 +47,7 @@ public class NuminaConstants {
   public static final String RESOURCE_PREFIX = MOD_ID + ":";
   public static final String TEXTURE_PREFIX = RESOURCE_PREFIX + "textures/";
   public static final ResourceLocation GLASS_TEXTURE = new ResourceLocation(TEXTURE_PREFIX + "gui/glass.png");
-  public static final ResourceLocation LOCATION_NUMINA_GUI_TEXTURE_ATLAS = new ResourceLocation(RESOURCE_PREFIX +"atlas/gui.png");
+  public static final ResourceLocation LOCATION_NUMINA_GUI_TEXTURE_ATLAS = new ResourceLocation(MOD_ID, "textures/atlas/gui.png");
   public static final ResourceLocation BLANK_ARMOR_MODEL_PATH = new ResourceLocation(TEXTURE_PREFIX + "item/armor/blankarmor.png");
   public static final ResourceLocation WEAPON_SLOT_BACKGROUND = new ResourceLocation(TEXTURE_PREFIX + "gui/weapon.png");
 
@@ -92,7 +95,6 @@ public class NuminaConstants {
   public static final String COMPONENT__MAGNET__REGNAME = "component_magnet";
   public static final String COMPONENT__COMPUTER_CHIP__REGNAME = "component_computer_chip";
   public static final String COMPONENT__RUBBER_HOSE__REGNAME = "component_rubber_hose";
-
 
   public static final ResourceLocation TEXTURE_WHITE_SHORT = new ResourceLocation(NuminaConstants.MOD_ID, "models/white");
   public static final ResourceLocation TEXTURE_WHITE = new ResourceLocation(NuminaConstants.MOD_ID, "textures/models/white.png");

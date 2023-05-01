@@ -64,23 +64,23 @@ public class MPSSettings {
     /** Client ------------------------------------------------------------------------------------ */
     // HUD ---------------------------------------------------------------------------------------
     public static boolean useGraphicalMeters() {
-        return CLIENT_CONFIG != null ? CLIENT_CONFIG.HUD_USE_GRAPHICAL_METERS.get() : false;
+        return CLIENT_SPEC.isLoaded() ? CLIENT_CONFIG.HUD_USE_GRAPHICAL_METERS.get() : false;
     }
 
     public static boolean displayHud() {
-        return CLIENT_CONFIG != null ? CLIENT_CONFIG.HUD_DISPLAY_HUD.get() : false;
+        return SERVER_SPEC.isLoaded() ? CLIENT_CONFIG.HUD_DISPLAY_HUD.get() : false;
     }
 
     public static boolean use24HourClock() {
-        return CLIENT_CONFIG != null ? CLIENT_CONFIG.HUD_USE_24_HOUR_CLOCK.get() : false;
+        return SERVER_SPEC.isLoaded() ? CLIENT_CONFIG.HUD_USE_24_HOUR_CLOCK.get() : false;
     }
 
     public static float getHudKeybindX() {
-        return CLIENT_CONFIG != null ? toFloat(CLIENT_CONFIG.HUD_KEYBIND_X.get()) : 8.0F;
+        return SERVER_SPEC.isLoaded() ? toFloat(CLIENT_CONFIG.HUD_KEYBIND_X.get()) : 8.0F;
     }
 
     public static float getHudKeybindY() {
-        return CLIENT_CONFIG != null ? toFloat(CLIENT_CONFIG.HUD_KEYBIND_Y.get()) : 32.0F;
+        return SERVER_SPEC.isLoaded() ? toFloat(CLIENT_CONFIG.HUD_KEYBIND_Y.get()) : 32.0F;
     }
 
     public static IMeterConfig getHeatMeterConfig() {
@@ -176,7 +176,7 @@ public class MPSSettings {
     }
 
     public static boolean showMetersWhenPaused() {
-        return CLIENT_CONFIG != null ? CLIENT_CONFIG.SHOW_METERS_WHEN_PAUSED.get() : false;
+        return SERVER_SPEC.isLoaded() ? CLIENT_CONFIG.SHOW_METERS_WHEN_PAUSED.get() : false;
     }
 
     /**
@@ -184,44 +184,44 @@ public class MPSSettings {
      */
     // General ------------------------------------------------------------------------------------
     public static double getMaxFlyingSpeed() {
-        return SERVER_CONFIG != null ? SERVER_CONFIG.GENERAL_MAX_FLYING_SPEED.get() : 25.0;
+        return SERVER_SPEC.isLoaded() ? SERVER_CONFIG.GENERAL_MAX_FLYING_SPEED.get() : 25.0;
     }
 
     public static double getMaxHeatPowerFist() {
-        return SERVER_CONFIG != null ? SERVER_CONFIG.GENERAL_BASE_MAX_HEAT_POWERFIST.get() : 5.0D;
+        return SERVER_SPEC.isLoaded() ? SERVER_CONFIG.GENERAL_BASE_MAX_HEAT_POWERFIST.get() : 5.0D;
     }
 
     public static double getMaxHeatHelmet() {
-        return SERVER_CONFIG != null ? SERVER_CONFIG.GENERAL_BASE_MAX_HEAT_HELMET.get() : 5.0D;
+        return SERVER_SPEC.isLoaded() ? SERVER_CONFIG.GENERAL_BASE_MAX_HEAT_HELMET.get() : 5.0D;
     }
 
     public static double getMaxHeatChestplate() {
-        return SERVER_CONFIG != null ? SERVER_CONFIG.GENERAL_BASE_MAX_HEAT_CHEST.get() : 20.0D;
+        return SERVER_SPEC.isLoaded() ? SERVER_CONFIG.GENERAL_BASE_MAX_HEAT_CHEST.get() : 20.0D;
     }
 
     public static double getMaxHeatLegs() {
-        return SERVER_CONFIG != null ? SERVER_CONFIG.GENERAL_BASE_MAX_HEAT_LEGS.get() : 15.0D;
+        return SERVER_SPEC.isLoaded() ? SERVER_CONFIG.GENERAL_BASE_MAX_HEAT_LEGS.get() : 15.0D;
     }
 
     public static double getMaxHeatBoots() {
-        return SERVER_CONFIG != null ? SERVER_CONFIG.GENERAL_BASE_MAX_HEAT_FEET.get() : 15.0D;
+        return SERVER_SPEC.isLoaded() ? SERVER_CONFIG.GENERAL_BASE_MAX_HEAT_FEET.get() : 15.0D;
     }
 
     // Cosmetic -----------------------------------------------------------------------------------
     public static boolean useLegacyCosmeticSystem() {
-        return SERVER_CONFIG != null ? SERVER_CONFIG.COSMETIC_USE_LEGACY_COSMETIC_SYSTEM.get() : false;
+        return SERVER_SPEC.isLoaded() ? SERVER_CONFIG.COSMETIC_USE_LEGACY_COSMETIC_SYSTEM.get() : false;
     }
 
     public static boolean allowHighPollyArmor() {
-        return SERVER_CONFIG != null ? SERVER_CONFIG.COSMETIC_ALLOW_HIGH_POLLY_ARMOR_MODELS.get() : true;
+        return SERVER_SPEC.isLoaded() ? SERVER_CONFIG.COSMETIC_ALLOW_HIGH_POLLY_ARMOR_MODELS.get() : true;
     }
 
     public static boolean allowPowerFistCustomization() {
-        return SERVER_CONFIG != null ? SERVER_CONFIG.COSMETIC_ALLOW_POWER_FIST_CUSTOMIZATOIN.get() : true;
+        return SERVER_SPEC.isLoaded() ? SERVER_CONFIG.COSMETIC_ALLOW_POWER_FIST_CUSTOMIZATOIN.get() : true;
     }
 
     public static List<ResourceLocation> getOreList() {
-        List<String> ores = SERVER_CONFIG != null ?
+        List<String> ores = SERVER_SPEC.isLoaded() ?
                 (List<String>) SERVER_CONFIG.GENERAL_VEIN_MINER_ORE_LIST.get() : new ArrayList<>();
         List<ResourceLocation> retList = new ArrayList<>();
         ores.forEach(ore-> {
@@ -231,7 +231,9 @@ public class MPSSettings {
     }
 
     public static List<ResourceLocation> getBlockList() {
-        List<String> blocks = SERVER_CONFIG != null ?
+
+
+        List<String> blocks = SERVER_SPEC.isLoaded() ?
                 (List<String>) SERVER_CONFIG.GENERAL_VEIN_MINER_BLOCK_LIST.get() : new ArrayList<>();
         List<ResourceLocation> retList = new ArrayList<>();
         blocks.forEach(block-> {

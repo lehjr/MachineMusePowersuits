@@ -31,7 +31,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import lehjr.numina.client.gui.ContainerlessGui;
 import lehjr.numina.client.gui.geometry.MusePoint2D;
-import lehjr.powersuits.client.control.KeybindManager;
+import lehjr.powersuits.client.control.KeyMappingReaderWriter;
 import lehjr.powersuits.client.gui.common.TabSelectFrame;
 import lehjr.powersuits.common.constants.MPSConstants;
 import net.minecraft.client.Minecraft;
@@ -114,7 +114,7 @@ public class TinkerKeymapGui extends ContainerlessGui {
     public void tick() {
         super.tick();
         if (!minecraft.isWindowActive()) {
-            KeybindManager.INSTANCE.writeOutKeybindSetings();
+            KeyMappingReaderWriter.INSTANCE.writeOutKeybindSetings();
             Minecraft.getInstance().options.save(); // fixme
 //            this.player.closeAbstractContainerMenu();
         }

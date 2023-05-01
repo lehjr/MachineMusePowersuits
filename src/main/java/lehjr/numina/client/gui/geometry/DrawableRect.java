@@ -161,8 +161,8 @@ public class DrawableRect extends Rect implements IDrawableRect {
 
     }
 
-    public void drawBackground(PoseStack matrixStack, FloatBuffer vertices, FloatBuffer colours) {
-        drawBuffer(matrixStack, vertices, colours, VertexFormat.Mode.TRIANGLE_FAN);
+    public void drawBackground(PoseStack matrixStack, FloatBuffer vertices, FloatBuffer colors) {
+        drawBuffer(matrixStack, vertices, colors, VertexFormat.Mode.TRIANGLE_FAN);
     }
 
     public void drawBorder(PoseStack matrixStack, FloatBuffer vertices) {
@@ -171,17 +171,15 @@ public class DrawableRect extends Rect implements IDrawableRect {
 
     }
 
-    void drawBuffer(PoseStack matrixStack, FloatBuffer vertices, Color colour, VertexFormat.Mode glMode) {
+    void drawBuffer(PoseStack matrixStack, FloatBuffer vertices, Color color, VertexFormat.Mode glMode) {
         BufferBuilder builder = preDraw(glMode, DefaultVertexFormat.POSITION_COLOR);
-        addVerticesToBuffer(builder, matrixStack.last().pose(), vertices, colour);
-        builder.end();
+        addVerticesToBuffer(builder, matrixStack.last().pose(), vertices, color);
         postDraw(builder);
     }
 
-    void drawBuffer(PoseStack matrixStack, FloatBuffer vertices, FloatBuffer colours, VertexFormat.Mode glMode) {
+    void drawBuffer(PoseStack matrixStack, FloatBuffer vertices, FloatBuffer colors, VertexFormat.Mode glMode) {
         BufferBuilder builder = preDraw(glMode, DefaultVertexFormat.POSITION_COLOR);
-        addVerticesToBuffer(builder, matrixStack.last().pose(), vertices, colours);
-        builder.end();
+        addVerticesToBuffer(builder, matrixStack.last().pose(), vertices, colors);
         postDraw(builder);
     }
 
@@ -248,9 +246,9 @@ public class DrawableRect extends Rect implements IDrawableRect {
         FloatBuffer vertices = preDraw(0);
 
         if (backgroundColour2 != null) {
-            FloatBuffer colours = GradientAndArcCalculator.getColourGradient(backgroundColour,
+            FloatBuffer colors = GradientAndArcCalculator.getColourGradient(backgroundColour,
                     backgroundColour2, vertices.limit() * 4);
-            drawBackground(matrixStack, vertices, colours);
+            drawBackground(matrixStack, vertices, colors);
         } else {
             drawBackground(matrixStack, vertices);
         }

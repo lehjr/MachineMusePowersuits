@@ -30,10 +30,12 @@ package lehjr.numina.common.capabilities.render.modelspec;
 import lehjr.numina.common.map.NuminaRegistry;
 import lehjr.numina.common.math.Color;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.entity.EquipmentSlot;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Stream;
 
 /**
  * Author: MachineMuse (Claire Semple)
@@ -45,7 +47,7 @@ public abstract class SpecBase extends NuminaRegistry<PartSpecBase> {
     private final String name;
     private final boolean isDefault;
     private final SpecType specType;
-    private List<Integer> colours = new ArrayList() {{
+    private List<Integer> colors = new ArrayList() {{
         add(Color.WHITE.getARGBInt());
     }};
 
@@ -60,6 +62,15 @@ public abstract class SpecBase extends NuminaRegistry<PartSpecBase> {
     public Iterable<PartSpecBase> getPartSpecs() {
         return this.elems();
     }
+
+    public Stream<PartSpecBase> getPartsAsStream() {
+        return this.elemsAsStream();
+    }
+
+    public boolean hasArmorEquipmentSlot(EquipmentSlot slot) {
+        return this.elemsAsStream().map(partSpecBase -> partSpecBase.getBinding().getSlot().equals(slot) && slot.isArmor()).findFirst().isPresent();
+    }
+
 
     /**
      * returns the parent spec id
@@ -79,22 +90,22 @@ public abstract class SpecBase extends NuminaRegistry<PartSpecBase> {
     }
 
     public List<Integer> getColors() {
-        return colours;
+        return colors;
     }
 
     /**
-     * Only adds the colour if it doesn't already exist.
+     * Only adds the color if it doesn't already exist.
      *
-     * @param colour
-     * @return returns the index of the colour
+     * @param color
+     * @return returns the index of the color
      */
-    public int addColorIfNotExist(Color colour) {
-        int colourInt = colour.getARGBInt();
-        if (!colours.contains(colourInt)) {
-            colours.add(colourInt);
-            return colours.size() - 1; // index of last entry
+    public int addColorIfNotExist(Color color) {
+        int colorInt = color.getARGBInt();
+        if (!colors.contains(colorInt)) {
+            colors.add(colorInt);
+            return colors.size() - 1; // index of last entry
         } else
-            return colours.indexOf(colourInt);
+            return colors.indexOf(colorInt);
     }
 
     /**
@@ -113,11 +124,11 @@ public abstract class SpecBase extends NuminaRegistry<PartSpecBase> {
         return isDefault == specBase.isDefault &&
                 Objects.equals(name, specBase.name) &&
                 specType == specBase.specType &&
-                Objects.equals(colours, specBase.colours);
+                Objects.equals(colors, specBase.colors);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, isDefault, specType, colours);
+        return Objects.hash(name, isDefault, specType, colors);
     }
 }

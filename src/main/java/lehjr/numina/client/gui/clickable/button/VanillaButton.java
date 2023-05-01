@@ -49,8 +49,10 @@ public class VanillaButton extends Clickable {
 
     @Override
     public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTick) {
-        renderButton(matrixStack, mouseX, mouseY, partialTick);
-        renderBg(matrixStack, mouseX, mouseY, partialTick);
+        if (isVisible()) {
+            renderButton(matrixStack, mouseX, mouseY, partialTick);
+            renderBg(matrixStack, mouseX, mouseY, partialTick);
+        }
     }
 
     public static final int UNSET_FG_COLOR = -1;

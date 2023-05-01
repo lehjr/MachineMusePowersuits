@@ -27,11 +27,11 @@
 package lehjr.numina.common.capabilities.render;
 
 import lehjr.numina.common.base.NuminaLogger;
-import lehjr.numina.common.capabilities.render.modelspec.ModelRegistry;
-import lehjr.numina.common.capabilities.render.modelspec.SpecType;
-import lehjr.numina.common.capabilities.render.modelspec.TexturePartSpec;
+import lehjr.numina.common.capabilities.render.modelspec.NuminaModelRegistry;
+import lehjr.numina.common.capabilities.render.modelspec.SpecBase;
 import lehjr.numina.common.constants.TagConstants;
 import lehjr.numina.common.math.Color;
+import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
 
@@ -42,7 +42,31 @@ public interface IModelSpec {
     @Nonnull
     ItemStack getItemStack();
 
-    SpecType getSpecType();
+    @Nonnull
+    default NonNullList<SpecBase> getSpecList() {
+        CompoundTag renderTag = getRenderTag();
+        if (renderTag == null || renderTag.isEmpty()) {
+            renderTag = getDefaultRenderTag();
+        }
+        NonNullList<SpecBase> specs = NonNullList.create();
+        for (String key : renderTag.getAllKeys()) {
+            if (key.equals(TagConstants.COLORS)) {
+                continue;
+            }
+            if (renderTag.get(key) instanceof CompoundTag) {
+                SpecBase testSpec = NuminaModelRegistry.getInstance().getModel(renderTag.getCompound(key));
+                if (isSpecValid(testSpec)) {
+                    specs.add(testSpec);
+                }
+            }
+        }
+        return specs;
+    }
+
+    default boolean isSpecValid(SpecBase spec) {
+        return true;
+    }
+
 
     CompoundTag getRenderTag();
 
@@ -50,29 +74,34 @@ public interface IModelSpec {
 
     CompoundTag getDefaultRenderTag();
 
-    List<Integer> addNewColourstoList(List<Integer> colours, List<Integer> coloursToAdd);
+    List<Integer> addNewColourstoList(List<Integer> colors, List<Integer> colorsToAdd);
 
     int[] getColorArray();
 
-    int getNewColourIndex(List<Integer> colours, List<Integer> oldColours, Integer index);
+    int getNewColourIndex(List<Integer> colors, List<Integer> oldColours, Integer index);
 
     CompoundTag setColorArray(int[] colors);
 
+    /**
+     * FIXME: remove before release
+      * @return
+     */
+    @Deprecated(forRemoval=true)
     default Color getColorFromItemStack() {
         try {
             CompoundTag renderTag = getRenderTag();
             if (renderTag == null || renderTag.isEmpty()) {
                 return Color.WHITE;
             }
-            if (renderTag.contains(TagConstants.TEXTURESPEC)) {
-                TexturePartSpec partSpec = (TexturePartSpec) ModelRegistry.getInstance().getPart(renderTag.getCompound(TagConstants.TEXTURESPEC));
-                CompoundTag specTag = renderTag.getCompound(TagConstants.TEXTURESPEC);
-                int index = partSpec.getColourIndex(specTag);
-                int[] colours = getColorArray();
-                if (colours.length > index) {
-                    return new Color(colours[index]);
-                }
-            }
+//            if (renderTag.contains(TagConstants.TEXTURESPEC)) {
+//                TexturePartSpec partSpec = (TexturePartSpec) ModelRegistry.getInstance().getPart(renderTag.getCompound(TagConstants.TEXTURESPEC));
+//                CompoundTag specTag = renderTag.getCompound(TagConstants.TEXTURESPEC);
+//                int index = partSpec.getColourIndex(specTag);
+//                int[] colors = getColorArray();
+//                if (colors.length > index) {
+//                    return new Color(colors[index]);
+//                }
+//            }
         } catch (Exception e) {
             NuminaLogger.logException("something failed here: ", e);
         }

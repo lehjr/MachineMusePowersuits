@@ -55,7 +55,7 @@
   "item.numina.component_field_emitter": "Force Field Emitter",
   "item.numina.component_field_emitter.desc": "An advanced device which directly manipulates electromagnetic and gravitational fields in an area.",
   "item.numina.component_laser_emitter": "Hologram Emitter",
-  "item.numina.component_laser_emitter.desc": "A multicoloured laser array which can cheaply alter the appearance of something.",
+  "item.numina.component_laser_emitter.desc": "A multicolored laser array which can cheaply alter the appearance of something.",
   "item.numina.component_carbon_myofiber": "Carbon Myofiber",
   "item.numina.component_carbon_myofiber.desc": "A small bundle of carbon fibers, refined for use in artificial muscles.",
   "item.numina.component_control_circuit": "Control Circuit",

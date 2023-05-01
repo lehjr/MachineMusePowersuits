@@ -80,7 +80,7 @@ public interface IClickable extends IDrawableRect {
     }
 
     default boolean mouseClicked(double mouseX, double mouseY, int button) {
-        if(containsPoint(mouseX, mouseY) && this.isEnabled() && this.isVisible()) {
+        if( this.isEnabled() && this.isVisible() && containsPoint(mouseX, mouseY)) {
             InputConstants.Key mouseKey = InputConstants.Type.MOUSE.getOrCreate(button);
             boolean flag = Minecraft.getInstance().options.keyPickItem.isActiveAndMatches(mouseKey);
 

@@ -5,6 +5,7 @@ import com.mojang.math.Transformation;
 import forge.NuminaObjLoader;
 import forge.NuminaObjModel;
 import lehjr.numina.client.model.obj.OBJBakedCompositeModel;
+import lehjr.numina.client.model.obj.OBJModelConfiguration;
 import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.math.Color;
 import net.minecraft.client.Minecraft;
@@ -112,8 +113,8 @@ public class ModelHelper {
 //            // OBJBakedCompositeModel bake(IGeometryBakingContext owner, ModelBaker baker, Function<Material, TextureAtlasSprite> spriteGetter, ModelState modelState, ItemOverrides overrides, ResourceLocation modelLocation) {
 //
 //            OBJBakedCompositeModel bakedModel = model.bake(new OBJModelConfiguration(modelLocation)/*.setCombinedTransform(modelState)*/,
-//                    ForgeModelBakery.instance(),
-//                    ForgeModelBakery.defaultTextureGetter(),
+//                    ModelBakery.instance(),
+//                    ModelBakery.defaultTextureGetter(),
 //                    modelState,
 //                    overrides,
 //                    modelLocation);
@@ -138,7 +139,7 @@ public class ModelHelper {
         return quadList;
     }
 
-    public static BakedQuad colouredQuadWithGlowAndTransform(Color color, BakedQuad quad, boolean glow, Transformation transform) {
+    public static BakedQuad coloredQuadWithGlowAndTransform(Color color, BakedQuad quad, boolean glow, Transformation transform) {
         if (glow)
             QuadTransformers.settingMaxEmissivity().andThen(QuadTransformers.applyingColor(color.getARGBInt())).andThen(QuadTransformers.applying(transform)).processInPlace(quad);
         else

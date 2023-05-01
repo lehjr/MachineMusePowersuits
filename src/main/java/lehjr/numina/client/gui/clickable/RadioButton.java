@@ -8,7 +8,7 @@ import lehjr.numina.common.math.Color;
 
 public class RadioButton extends AbstractIconButton {
     public boolean isSelected = false;
-    Color colour = Color.WHITE;
+    Color color = Color.WHITE;
 
     public RadioButton(GuiIcon.DrawableGuiIcon icon, double width, double height, double leftPos, double topPos) {
         super(icon, width, height, leftPos, topPos);
@@ -19,21 +19,21 @@ public class RadioButton extends AbstractIconButton {
     }
 
 
-    public RadioButton setColour(Color colour) {
-        this.colour = colour;
+    public RadioButton setColour(Color color) {
+        this.color = color;
         return this;
     }
 
     public Color getColour() {
-        return colour;
+        return color;
     }
 
     @Override
     public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTick) {
         if (isEnabled() && isVisible()) {
-            getIcon().draw(matrixStack, this.left(), this.top(), colour);
+            getIcon().draw(matrixStack, this.left(), this.top(), color);
             if (isSelected) {
-                IconUtils.getIcon().selectedArmorOverlay.draw(matrixStack, this.left(), this.top(), Color.WHITE);
+                IconUtils.getIcon().armordisplayselect.draw(matrixStack, this.left(), this.top(), Color.WHITE);
             }
         }
     }

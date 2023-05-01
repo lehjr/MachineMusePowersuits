@@ -29,7 +29,6 @@ package lehjr.powersuits.client.render.entity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import lehjr.numina.common.constants.TagConstants;
 import lehjr.numina.common.math.Color;
-import lehjr.powersuits.common.base.MPSItems;
 import lehjr.powersuits.common.constants.MPSRegistryNames;
 import lehjr.powersuits.common.entity.LuxCapacitorEntity;
 import net.minecraft.client.Minecraft;

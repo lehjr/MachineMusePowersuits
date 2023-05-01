@@ -27,6 +27,7 @@
 package lehjr.numina.client.event;
 
 
+import lehjr.numina.client.gui.overlay.ModeChangingIconOverlay;
 import lehjr.numina.client.render.entity.NuminaArmorStandRenderer;
 import lehjr.numina.client.render.item.NuminaArmorLayer;
 import lehjr.numina.common.base.NuminaObjects;
@@ -39,15 +40,20 @@ import net.minecraft.client.renderer.entity.layers.ElytraLayer;
 import net.minecraft.client.renderer.entity.layers.HumanoidArmorLayer;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
+import net.minecraftforge.client.event.ModelEvent;
+import net.minecraftforge.client.event.RegisterGuiOverlaysEvent;
 import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 @Mod.EventBusSubscriber(modid=NuminaConstants.MOD_ID, bus=Mod.EventBusSubscriber.Bus.MOD, value=Dist.CLIENT)
@@ -58,8 +64,13 @@ public class ClientEventBusSubscriber {
     }
 
     @SubscribeEvent
-    public void registerKeyBinding(RegisterKeyMappingsEvent event) {
+    public static void registerKeyBinding(RegisterKeyMappingsEvent event) {
         event.register(FOVUpdateEventHandler.fovToggleKey.get());
+    }
+
+    @SubscribeEvent
+    public static void registerOverlay(RegisterGuiOverlaysEvent event) {
+        event.registerAboveAll("numina_mode_changing_icon", ModeChangingIconOverlay.MODE_CHANGING_ICON_OVERLAY);
     }
 
     @SubscribeEvent
@@ -109,19 +120,15 @@ public class ClientEventBusSubscriber {
         }
     }
 
+    @SubscribeEvent
+    public void onAddAdditional(ModelEvent.RegisterAdditional e) {
+        System.out.println("add additonal event");
+        modelList.stream().forEach(resourceLocation -> e.register(resourceLocation));
+    }
 
+    static List<ResourceLocation> modelList = new ArrayList<>();
 
-//    @SubscribeEvent
-//    public static void onTextureStitchPre(TextureStitchEvent.Pre event) {
-//        TextureAtlas map = event.getMap();
-//        // only adds if it doesn't already exist
-//        if (map.location() == TextureAtlas.field_110575_b) {
-//            event.addSprite(NuminaConstants.TEXTURE_WHITE_SHORT);
-//        }
-//    }
-
-//    @SubscribeEvent
-//    public static void onModelBake(ModelBakeEvent event) {
-//
-//    }
+    public static void addModelLocation(ResourceLocation modelLocation) {
+        modelList.add(modelLocation);
+    }
 }

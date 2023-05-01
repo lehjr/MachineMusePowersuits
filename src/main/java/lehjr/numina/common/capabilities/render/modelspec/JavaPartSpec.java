@@ -27,30 +27,40 @@
 package lehjr.numina.common.capabilities.render.modelspec;
 
 import com.google.common.base.Objects;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.minecraft.client.model.Model;
+import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 
 /**
  * This just provides a way to tie the armor skin for vanilla armor
  */
-public class TexturePartSpec extends PartSpecBase {
+public class JavaPartSpec extends PartSpecBase {
     final ResourceLocation textureLocation;
 
-    public TexturePartSpec(final SpecBase spec,
-                           final SpecBinding binding,
-                           final Integer enumColourIndex,
-                           final String partName,
-                           final ResourceLocation textureLocation) {
-        super(spec, binding, partName, enumColourIndex);
+    public JavaPartSpec(final SpecBase spec,
+                        final SpecBinding binding,
+                        final Integer enumColourIndex,
+                        final String partName,
+                        final ResourceLocation textureLocation) {
+        this(spec, binding, enumColourIndex, partName, textureLocation, false);
+    }
+
+    public JavaPartSpec(final SpecBase spec,
+                        final SpecBinding binding,
+                        final Integer enumColourIndex,
+                        final String partName,
+                        final ResourceLocation textureLocation,
+                        boolean glow) {
+        super(spec, binding, partName, enumColourIndex, glow);
         this.textureLocation = textureLocation;
     }
 
     @Override
-    public Component getDisaplayName() {
-        return Component.translatable(new StringBuilder("textureSpec.")
-                .append(this.binding.getSlot().getName())
-                .append(".partName")
-                .toString());
+    String getNamePrefix() {
+        return "javaModel.";
     }
 
     public ResourceLocation getTextureLocation() {
@@ -62,7 +72,7 @@ public class TexturePartSpec extends PartSpecBase {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
-        TexturePartSpec that = (TexturePartSpec) o;
+        JavaPartSpec that = (JavaPartSpec) o;
         return Objects.equal(getTextureLocation(), that.getTextureLocation());
     }
 
@@ -70,4 +80,17 @@ public class TexturePartSpec extends PartSpecBase {
     public int hashCode() {
         return Objects.hashCode(super.hashCode(), getTextureLocation());
     }
+
+//    public void render(ModelPart modelPart, PoseStack matrixStackIn, VertexConsumer bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
+//        modelPart.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+//
+//
+////        this.mainarm.visible = true;
+////        this.root.children.values().forEach(part-> {
+////            part.visible = true;
+////            part.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+////        });
+//    }
+
+
 }

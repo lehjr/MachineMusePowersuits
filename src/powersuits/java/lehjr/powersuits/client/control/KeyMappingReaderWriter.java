@@ -31,7 +31,7 @@ import com.mojang.blaze3d.platform.InputConstants;
 import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.config.ConfigHelper;
 import lehjr.numina.common.item.ItemUtils;
-import lehjr.powersuits.client.event.RenderEventHandler;
+import lehjr.powersuits.client.gui.overlay.MPSHud;
 import lehjr.powersuits.common.constants.MPSConstants;
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
@@ -40,16 +40,13 @@ import org.lwjgl.glfw.GLFW;
 
 import java.io.*;
 import java.nio.file.Files;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
  * For setting up the keybindings used in the onscreen display
  */
-public enum KeybindManager {
+public enum KeyMappingReaderWriter {
     INSTANCE;
     static final String formatVersionKey = "formatVersion";
     static final String registryNameKey = "registryName";
@@ -116,11 +113,11 @@ public enum KeybindManager {
         }
     }
 
-    public List<MPSKeyMapping> getMPSKeyBinds() {
-        return Arrays.stream(Minecraft.getInstance().options.keyMappings).filter(MPSKeyMapping.class::isInstance).map(MPSKeyMapping.class::cast).collect(Collectors.toList());
+    public Collection<MPSKeyMapping> getMPSKeyBinds() {
+        return KeymappingKeyHandler.keyMappings.values();
     }
 
-    public void readInKeybinds(boolean onLogin) {
+    public void readInKeybinds() {
         File file = getKeyBindConfig();
         if (!file.exists()) {
             readLegacyKeybinds();
@@ -150,7 +147,7 @@ public enum KeybindManager {
                         boolean showOnHud = data.get(showOnHudKey).getAsBoolean();
                         int defaultKey = data.get(defaultKeyKey).getAsInt();
                         ResourceLocation registryName = new ResourceLocation(data.get(registryNameKey).getAsString());
-                        KeybindKeyHandler.registerKeyBinding(registryName, name, defaultKey, KeybindKeyHandler.mps, showOnHud);
+                        KeymappingKeyHandler.registerKeyBinding(registryName, name, defaultKey, KeymappingKeyHandler.mps, showOnHud, true);
                     }
 
                     /** fallback if settings hasn't been converted to new format yet */
@@ -162,14 +159,8 @@ public enum KeybindManager {
                         String name1 = name
                                 .replace("keybinding.powersuits.clock", "keybinding.minecraft.clock")
                                 .replace("keybinding.powersuits.compass", "keybinding.minecraft.compass");
+                        KeymappingKeyHandler.registerKeyBinding(ItemUtils.getRegistryName(Items.AIR), name1, GLFW.GLFW_KEY_UNKNOWN, KeymappingKeyHandler.mps, value, true);
 
-                        // runs again on login
-                        if (onLogin) {
-                            getMPSKeyBinds().stream().filter(kb->kb.getName().equals(name1)).findFirst().ifPresent(kb->kb.showOnHud = value);
-                            // temporary way of registering keybinds to be replaced on login
-                        } else {
-                            KeybindKeyHandler.registerKeyBinding(ItemUtils.getRegistryName(Items.AIR), name1, GLFW.GLFW_KEY_UNKNOWN, KeybindKeyHandler.mps, value);
-                        }
                     }
                 }
             }
@@ -177,7 +168,8 @@ public enum KeybindManager {
             NuminaLogger.logger.error("Problem reading in keyconfig :(");
             e.printStackTrace();
         }
-        RenderEventHandler.INSTANCE.makeKBDisplayList();
+        MPSHud.makeKBDisplayList();
+//        RenderEventHandler.INSTANCE.makeKBDisplayList();
     }
 
     public void readLegacyKeybinds() {

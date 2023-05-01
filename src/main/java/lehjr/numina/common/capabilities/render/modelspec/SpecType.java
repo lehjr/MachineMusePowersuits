@@ -30,16 +30,16 @@ import java.util.Arrays;
 
 public enum SpecType {
     // Obj models rendered as armor
-    ARMOR_MODEL("ARMORMODEL"),
+    ARMOR_OBJ_MODEL("ARMOR_OBJ_MODEL"),
 
     // pretty much what Minecraft already uses
-    ARMOR_SKIN("ARMORSKIN"),
+    ARMOR_SKIN("ARMOR_SKIN"),
 
     // model intended to render in the hand
-    HANDHELD("HANDHELD"),
+    HANDHELD_OBJ_MODEL("HANDHELD_OBJ"),
 
     // java based model that renderes in the hand
-    HANDHELD_ENTITY("HANDHELD_ENTITY"),
+    HANDHELD_JAVA_MODEL("HANDHELD_JAVA_MODEL"),
     NONE("NONE");
 
     String name;

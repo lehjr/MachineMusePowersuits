@@ -28,12 +28,12 @@ package lehjr.powersuits.client.render.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import lehjr.numina.client.model.helper.ModelHelper;
 import lehjr.numina.client.model.obj.OBJBakedCompositeModel;
 import lehjr.numina.client.render.IconUtils;
 import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.constants.NuminaConstants;
 import lehjr.numina.common.math.Color;
+import lehjr.powersuits.client.event.ModelBakeEventHandler;
 import lehjr.powersuits.common.entity.PlasmaBallEntity;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -41,23 +41,22 @@ import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.client.resources.model.BlockModelRotation;
+import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
-import net.minecraftforge.client.model.data.ModelData;
 import net.minecraftforge.common.util.NonNullLazy;
 
-import java.util.Random;
-
 public class PlasmaBoltEntityRenderer extends EntityRenderer<PlasmaBallEntity> {
-    static final Color colour1 = new Color(0.3F, 0.3F, 1F, 0.3F);
-    static final Color colour2 = new Color(0.4F, 0.4F, 1F, 0.5F);
-    static final Color colour3 = new Color(0.8F, 0.8F, 1F, 0.7F);
-    static final Color colour4 = new Color(1F, 1F, 1F, 0.9F);
+    static final Color color1 = new Color(0.3F, 0.3F, 1F, 0.3F);
+    static final Color color2 = new Color(0.4F, 0.4F, 1F, 0.5F);
+    static final Color color3 = new Color(0.8F, 0.8F, 1F, 0.7F);
+    static final Color color4 = new Color(1F, 1F, 1F, 0.9F);
 
-    static final ResourceLocation modelLocation = new ResourceLocation(NuminaConstants.MOD_ID, "models/item/test/sphere.obj");
+
+
+
     // NonNullLazy doesn't init until called
-    public static final NonNullLazy<OBJBakedCompositeModel> modelSphere = NonNullLazy.of(() -> ModelHelper.loadBakedModel(BlockModelRotation.X0_Y0, null, modelLocation));
+//    public static final NonNullLazy<OBJBakedCompositeModel> modelSphere = NonNullLazy.of(() -> ModelHelper.loadBakedModel(BlockModelRotation.X0_Y0, null, modelLocation));
     protected static final RandomSource rand = RandomSource.create(42L);
 
     public PlasmaBoltEntityRenderer(EntityRendererProvider.Context renderManager) {
@@ -85,13 +84,6 @@ public class PlasmaBoltEntityRenderer extends EntityRenderer<PlasmaBallEntity> {
         float scalFactor = 3;
 
         float scale = (float) (size * 0.0625);
-
-//        System.out.println("scale: " + scale);
-
-
-
-
-
         /*
             max size: 50
             ----------------
@@ -104,11 +96,7 @@ public class PlasmaBoltEntityRenderer extends EntityRenderer<PlasmaBallEntity> {
             ---------------
             min scale: 0.5
             ---------------
-
          */
-
-
-
         matrixStackIn.scale(scale, scale, scale);
 
         // Lightning renderer // seems to be working?
@@ -126,20 +114,20 @@ public class PlasmaBoltEntityRenderer extends EntityRenderer<PlasmaBallEntity> {
         {
             int millisPerCycle = 500;
             double timeScale = Math.cos((System.currentTimeMillis() % millisPerCycle) * 2.0 / millisPerCycle - 1.0);
-            renderPlasmaBall(matrixStackIn, bufferIn, 4F*scalFactor, colour1.withAlpha(0.15F));
-            renderPlasmaBall(matrixStackIn, bufferIn, (float) (3+timeScale /2F)*scalFactor,colour2.withAlpha(0.25F));
-            renderPlasmaBall(matrixStackIn, bufferIn, (float) (2+timeScale)*scalFactor,colour3.withAlpha(0.4F));
-            renderPlasmaBall(matrixStackIn, bufferIn, (float) (1+timeScale)*scalFactor,colour4.withAlpha(0.75F));
+            renderPlasmaBall(matrixStackIn, bufferIn, 4F*scalFactor, color1.withAlpha(0.15F));
+            renderPlasmaBall(matrixStackIn, bufferIn, (float) (3+timeScale /2F)*scalFactor,color2.withAlpha(0.25F));
+            renderPlasmaBall(matrixStackIn, bufferIn, (float) (2+timeScale)*scalFactor,color3.withAlpha(0.4F));
+            renderPlasmaBall(matrixStackIn, bufferIn, (float) (1+timeScale)*scalFactor,color4.withAlpha(0.75F));
         }
         matrixStackIn.popPose();
     }
 
-    static void renderPlasmaBall(PoseStack matrixStackIn, MultiBufferSource bufferIn, float scale, Color colour) {
+    static void renderPlasmaBall(PoseStack matrixStackIn, MultiBufferSource bufferIn, float scale, Color color) {
         matrixStackIn.pushPose();
         matrixStackIn.translate(0.5, 0.5, 0.5);
         matrixStackIn.scale(scale, scale, scale);
-        renderSphere(bufferIn, getSphereRenderType(), // fixme get a better render type
-                matrixStackIn, /*combinedLight*/0x00F000F0, colour);
+        renderSphere(bufferIn, getSphereRenderType(),
+                matrixStackIn, /*combinedLight*/0x00F000F0, color);
         matrixStackIn.popPose();
     }
 
@@ -147,20 +135,22 @@ public class PlasmaBoltEntityRenderer extends EntityRenderer<PlasmaBallEntity> {
         return RenderType.entityTranslucentCull(NuminaConstants.TEXTURE_WHITE);
     }
 
-    public static void renderSphere(MultiBufferSource bufferIn, RenderType rt, PoseStack matrixStackIn, int packedLightIn, Color colour) {
-        renderSphere(bufferIn, rt, matrixStackIn, packedLightIn, OverlayTexture.NO_OVERLAY, colour);
+    public static void renderSphere(MultiBufferSource bufferIn, RenderType rt, PoseStack matrixStackIn, int packedLightIn, Color color) {
+        renderSphere(bufferIn, rt, matrixStackIn, packedLightIn, OverlayTexture.NO_OVERLAY, color);
     }
 
-    public static void renderSphere(MultiBufferSource bufferIn, RenderType rt, PoseStack matrixStackIn, int packedLightIn, int overlay, Color colour) {
+    public static void renderSphere(MultiBufferSource bufferIn, RenderType rt, PoseStack matrixStackIn, int packedLightIn, int overlay, Color color) {
         VertexConsumer bb = bufferIn.getBuffer(rt);
-
-        if (modelSphere.get() == null) {
+        BakedModel x = ModelBakeEventHandler.INSTANCE.test();
+        if (x == null) {
             NuminaLogger.logError("PlasmaBoltRenderer Render Spere quads not yet implemented");
             return;
+        } else {
+            System.out.println("model class: " + x.getClass() +", quads: " + x.getQuads(null, null, rand/*, ModelData.EMPTY*/).size());
         }
 
-        for (BakedQuad quad : modelSphere.get().getQuads(null, null, rand/*, ModelData.EMPTY*/)) {
-            bb.putBulkData(matrixStackIn.last(), quad, colour.r, colour.g, colour.b, colour.a, packedLightIn, overlay, true);
+        for (BakedQuad quad : x.getQuads(null, null, rand)) {
+            bb.putBulkData(matrixStackIn.last(), quad, color.r, color.g, color.b, color.a, packedLightIn, overlay, true);
         }
     }
 }

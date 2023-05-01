@@ -26,14 +26,10 @@
 
 package lehjr.numina.common.capabilities.inventory.modechanging;
 
-import com.mojang.blaze3d.platform.Window;
-import com.mojang.blaze3d.vertex.PoseStack;
-import lehjr.numina.client.render.NuminaRenderer;
 import lehjr.numina.common.capabilities.NuminaCapabilities;
 import lehjr.numina.common.capabilities.inventory.modularitem.ModularItem;
 import lehjr.numina.common.capabilities.module.rightclick.IRightClickModule;
 import lehjr.numina.common.item.ItemUtils;
-import lehjr.numina.common.math.Color;
 import lehjr.numina.common.network.NuminaPackets;
 import lehjr.numina.common.network.packets.ModeChangeRequestPacket;
 import net.minecraft.client.Minecraft;
@@ -72,33 +68,6 @@ public class ModeChangingModularItem extends ModularItem implements IModeChangin
     @Override
     public BakedModel getInventoryModel() {
         return Minecraft.getInstance().getItemRenderer().getItemModelShaper().getItemModel(getActiveModule());
-    }
-
-    @OnlyIn(Dist.CLIENT)
-    @Override
-    public void drawModeChangeIcon(Player player, int hotbarIndex, Minecraft mc) {
-        ItemStack module = getActiveModule();
-        if (!module.isEmpty()) {
-            Window screen = mc.getWindow();
-            double currX;
-            double currY;
-            int sw = screen.getGuiScaledWidth();
-            int baroffset = 22;
-            if (!player.getAbilities().instabuild) {
-                baroffset += 16;
-                int totalArmorValue = player.getArmorValue();
-                baroffset += 8 * (int) Math.ceil((double)totalArmorValue / 20); // 20 points per row @ 2 armor points per icon
-            }
-            baroffset = screen.getGuiScaledHeight() - baroffset;
-            currX = sw / 2.0 - 89.0 + 20.0 * hotbarIndex;
-            currY = baroffset - 18;
-            Color.WHITE.setShaderColor();
-            if (module.getCapability(NuminaCapabilities.POWER_MODULE).map(pm-> pm.isModuleOnline()).orElse(false)) {
-                mc.getItemRenderer().renderGuiItem(module.getCapability(NuminaCapabilities.CHAMELEON).map(iChameleon -> iChameleon.getStackToRender()).orElse(module), (int)currX, (int)currY);
-            } else {
-                NuminaRenderer.drawModuleAt(new PoseStack(), currX, currY, module.getCapability(NuminaCapabilities.CHAMELEON).map(iChameleon -> iChameleon.getStackToRender()).orElse(module), false);
-            }
-        }
     }
 
     @Override

@@ -26,8 +26,9 @@
 
 package lehjr.numina.common.capabilities.render;
 
+import lehjr.numina.common.capabilities.render.modelspec.PartSpecBase;
 import net.minecraft.resources.ResourceLocation;
 
 public interface IArmorModelSpecNBT extends IModelSpec {
-    public ResourceLocation getArmorTexture();
+    public ResourceLocation getArmorTexture(PartSpecBase part); // fixme: find texture based on part
 }

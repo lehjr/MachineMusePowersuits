@@ -29,6 +29,8 @@ package lehjr.powersuits.client.model.item;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
+import lehjr.numina.common.capabilities.render.modelspec.IJavaModelNBTParser;
+import lehjr.numina.common.capabilities.render.modelspec.MorphTarget;
 import lehjr.powersuits.common.constants.MPSConstants;
 import lehjr.powersuits.common.constants.MPSRegistryNames;
 import net.minecraft.client.model.Model;
@@ -47,6 +49,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -57,7 +60,7 @@ import java.util.Map;
  * - ZeuX
  */
 @OnlyIn(Dist.CLIENT)
-public class PowerFistModel2 extends Model {
+public class PowerFistModel2 extends Model implements IJavaModelNBTParser {
     public static final ResourceLocation TEXTURE = new ResourceLocation(MPSConstants.MOD_ID, "textures/models/powerfist.png");
 
     public int boltSize = 0;
@@ -161,18 +164,7 @@ public class PowerFistModel2 extends Model {
     }
 
     // warning no error handling
-    ModelPart getPart(String path) {
-        ModelPart part = this.root;
-        if (path.contains(".")) {
-            String[] splitPath = path.split(".");
-            for (int i = 0; i < splitPath.length; i++) {
-                part = part.getChild(splitPath[i]);
-            }
-        } else {
-            part = part.getChild(path);
-        }
-        return part;
-    }
+
 
 
     public static LayerDefinition createLayer(boolean isRightHand) {
@@ -293,13 +285,11 @@ public class PowerFistModel2 extends Model {
         setFiringPose(boltSize);
     }
 
-
     public void setFiringPose(float chargePercent) {
         // FIXME: left and right hand values
 //        setPose(1.5f, -1, 1.5f, -1, 1.5f, -1);
         setPose(0.5f + chargePercent, -1, 0.5f + chargePercent, -1, 0.5f + chargePercent, -1);
     }
-
 
     public void setNeutralPose() {
         // FIXME: left and right hand values
@@ -307,20 +297,15 @@ public class PowerFistModel2 extends Model {
         this.boltSize = 0;
     }
 
-    void test() {
-//        List<ModelPart.TexturedQuad> list = new ArrayList<>();
-//
-//        for (String key: partlMap.keySet()) {
-//            ModelPart part = partlMap.get(key);
-//            for(ModelPart.ModelBox box : part.cubeList) {
-//                for(ModelPart.TexturedQuad texturedQuad : box.quads) {
-//                    list.add(texturedQuad);
-//                }
-//            }
-//        }
+    @Override
+    public ModelPart getRoot() {
+        return root;
     }
 
-
+    @Override
+    public List<String> ignore() {
+        return List.of(MorphTarget.RightHand.name(), MorphTarget.Lefthand.name());
+    }
 
 
 //    public PowerFistModel2(Function<ResourceLocation, RenderType> renderTypeIn) {
