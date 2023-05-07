@@ -5,7 +5,7 @@
     "default": true,
     "models": [
       {
-        "file": "powersuits:models/item/armor/json/mps_helm",
+        "file": "powersuits:item/armor/json/mps_helm",
         "transformationMatrix": {
           "translation": [
             0,
@@ -28,29 +28,27 @@
           "target": "Head",
           "parts": [
             {
-              "part": {
-                "name": "helm_main"
-              },
-              "part": {
-                "name": "visor",
-                "color": "114EFF",
-                "glow": true
-              },
-              "part": {
-                "name": "helm_tubes"
-              },
-              "part": {
-                "name": "helm_tube_entry1"
-              },
-              "part": {
-                "name": "helm_tube_entry2"
-              }
+              "name": "helm_main"
+            },
+            {
+              "name": "visor",
+              "color": "114EFF",
+              "glow": true
+            },
+            {
+              "name": "helm_tubes"
+            },
+            {
+              "name": "helm_tube_entry1"
+            },
+            {
+              "name": "helm_tube_entry2"
             }
           ]
         }
       },
       {
-        "file": "powersuits:models/item/armor/json/mps_chest",
+        "file": "powersuits:item/armor/json/mps_chest",
         "texture": "powersuits:item/armor/diffuse",
         "transformationMatrix": {
           "translation": [
@@ -74,32 +72,30 @@
           "target": "Body",
           "parts": [
             {
-              "part": {
-                "name": "backpack"
-              },
-              "part": {
-                "name": "polySurface36"
-              },
-              "part": {
-                "name": "belt"
-              },
-              "part": {
-                "name": "chest_padding"
-              },
-              "part": {
-                "name": "crystal_belt",
-                "color": "114EFF",
-                "glow": true
-              },
-              "part": {
-                "name": "chest_main"
-              }
+              "name": "backpack"
+            },
+            {
+              "name": "polySurface36"
+            },
+            {
+              "name": "belt"
+            },
+            {
+              "name": "chest_padding"
+            },
+            {
+              "name": "crystal_belt",
+              "color": "114EFF",
+              "glow": true
+            },
+            {
+              "name": "chest_main"
             }
           ]
         }
       },
       {
-        "file": "powersuits:models/item/armor/json/jetpack",
+        "file": "powersuits:item/armor/json/jetpack",
         "texture": "powersuits:item/armor/jetpack",
         "transformationMatrix": {
           "translation": [
@@ -124,25 +120,23 @@
           "itemState": "jetpack",
           "parts": [
             {
-              "part": {
-                "name": "jetpack5",
-                "color": "114EFF"
-              },
-              "part": {
-                "name": "jetpack_glow",
-                "color": "114EFF",
-                "glow": true
-              }
+              "name": "jetpack5",
+              "color": "114EFF"
+            },
+            {
+              "name": "jetpack_glow",
+              "color": "114EFF",
+              "glow": true
             }
           ]
         }
       },
       {
-        "file": "powersuits:models/item/armor/json/mps_arms",
+        "file": "powersuits:item/armor/json/mps_arms",
         "texture": "powersuits:item/armor/diffuse",
         "transformationMatrix": {
-          "translation": "0,0,0",
-          "rotation": "0,0,0",
+          "translation": [ 0, 0, 0],
+          "rotation": [ 0, 0, 0 ],
           "scale": [
             1,
             1,
@@ -151,82 +145,37 @@
         },
         "bindings": [
           {
-            "binding": {
-              "itemSlot": "chest",
-              "target": "RightArm",
-              "parts": [
-                {
-                  "part": {
-                    "name": "crystal_shoulder_2",
-                    "color": "114EFF",
-                    "glow": true
-                  },
-                  "part": {
-                    "name": "arms3"
-                  }
-                }
-              ]
-            },
-            "binding": {
-              "itemSlot": "chest",
-              "target": "LeftArm",
-              "parts": [
-                {
-                  "part": {
-                    "name": "crystal_shoulder_1",
-                    "color": "114EFF",
-                    "glow": true
-                  },
-                  "part": {
-                    "name": "arms2"
-                  }
-                }
-              ]
-            }
-          }
-        ]
-      },
-      {
-        "file": "powersuits:models/item/armor/json/mps_pantaloons",
-        "texture": "powersuits:item/armor/diffuse",
-        "transformationMatrix": {
-          "translation": [
-            0,
-            0,
-            0
-          ],
-          "rotation": [
-            0,
-            0,
-            0
-          ],
-          "scale": [
-            1,
-            1,
-            1
-          ]
-        },
-        "bindings": [
-          {
-            "binding": {
-              "itemSlot": "legs",
-              "target": "LeftLeg",
-              "part": {
-                "name": "leg2"
+            "itemSlot": "chest",
+            "target": "right_arm",
+            "parts": [
+              {
+                "name": "crystal_shoulder_2",
+                "color": "114EFF",
+                "glow": true
               },
-              "binding": {
-                "itemSlot": "legs",
-                "target": "RightLeg",
-                "part": {
-                  "name": "leg1"
-                }
+              {
+                "name": "arms3"
               }
-            }
+            ]
+          },
+          {
+            "itemSlot": "chest",
+            "target": "left_arm",
+            "parts": [
+              {
+                "name": "crystal_shoulder_1",
+                "color": "114EFF",
+                "glow": true
+              },
+              {
+                "name": "arms2"
+              }
+            ]
           }
         ]
       },
       {
-        "file": "powersuits:models/item/armor/json/mps_boots",
+        "file": "powersuits:item/armor/json/mps_pantaloons",
         "texture": "powersuits:item/armor/diffuse",
         "transformationMatrix": {
           "translation": [
@@ -247,19 +196,54 @@
         },
         "bindings": [
           {
-            "binding": {
-              "itemSlot": "feet",
-              "target": "RightLeg",
-              "part": {
-                "name": "boots1"
-              }
-            },
-            "binding": {
-              "itemSlot": "feet",
-              "target": "LeftLeg",
-              "part": {
-                "name": "boots2"
-              }
+            "itemSlot": "legs",
+            "target": "left_leg",
+            "part": {
+              "name": "leg2"
+            }
+          },
+          {
+            "itemSlot": "legs",
+            "target": "right_leg",
+            "part": {
+              "name": "leg1"
+            }
+          }
+        ]
+      },
+      {
+        "file": "powersuits:item/armor/json/mps_boots",
+        "texture": "powersuits:item/armor/diffuse",
+        "transformationMatrix": {
+          "translation": [
+            0,
+            0,
+            0
+          ],
+          "rotation": [
+            0,
+            0,
+            0
+          ],
+          "scale": [
+            1,
+            1,
+            1
+          ]
+        },
+        "bindings": [
+          {
+            "itemSlot": "feet",
+            "target": "right_leg",
+            "part": {
+              "name": "boots1"
+            }
+          },
+          {
+            "itemSlot": "feet",
+            "target": "left_leg",
+            "part": {
+              "name": "boots2"
             }
           }
         ]

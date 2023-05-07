@@ -27,7 +27,7 @@
 package lehjr.numina.common.capabilities.render;
 
 import lehjr.numina.common.base.NuminaLogger;
-import lehjr.numina.common.capabilities.render.modelspec.NuminaModelRegistry;
+import lehjr.numina.common.capabilities.render.modelspec.NuminaModelSpecRegistry;
 import lehjr.numina.common.capabilities.render.modelspec.SpecBase;
 import lehjr.numina.common.constants.TagConstants;
 import lehjr.numina.common.math.Color;
@@ -54,7 +54,7 @@ public interface IModelSpec {
                 continue;
             }
             if (renderTag.get(key) instanceof CompoundTag) {
-                SpecBase testSpec = NuminaModelRegistry.getInstance().getModel(renderTag.getCompound(key));
+                SpecBase testSpec = NuminaModelSpecRegistry.getInstance().getModel(renderTag.getCompound(key));
                 if (isSpecValid(testSpec)) {
                     specs.add(testSpec);
                 }

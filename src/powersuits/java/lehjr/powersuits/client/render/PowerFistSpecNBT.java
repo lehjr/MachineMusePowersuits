@@ -67,7 +67,7 @@ public class PowerFistSpecNBT extends ModelSpecStorage implements IHandHeldEntit
 
         EquipmentSlot slot = getItemStack().getEquipmentSlot();
 
-        for (SpecBase spec : NuminaModelRegistry.getInstance().getSpecs()) {
+        for (SpecBase spec : NuminaModelSpecRegistry.getInstance().getSpecs()) {
             // Only generate NBT data from Specs marked as "default"
             if (spec.isDefault()) {
                 if (getItemStack().getItem() instanceof PowerFist && (spec.getSpecType().equals(SpecType.HANDHELD_OBJ_MODEL) || spec.getSpecType().equals(SpecType.HANDHELD_JAVA_MODEL))) {

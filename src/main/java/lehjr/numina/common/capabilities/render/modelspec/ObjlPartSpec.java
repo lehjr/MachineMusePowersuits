@@ -26,11 +26,19 @@
 
 package lehjr.numina.common.capabilities.render.modelspec;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Transformation;
+import lehjr.numina.client.model.obj.OBJBakedCompositeModel;
 import lehjr.numina.client.model.obj.OBJBakedPart;
+import lehjr.numina.common.math.Color;
 import net.minecraft.network.chat.Component;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import org.joml.Matrix3f;
+import org.joml.Matrix4f;
+import org.joml.Quaternionf;
+
+import java.util.Optional;
 
 /**
  * Ported to Java by lehjr on 11/8/16.
@@ -42,9 +50,9 @@ public class ObjlPartSpec extends PartSpecBase {
     public ObjlPartSpec(final ObjModelSpec objModelSpec,
                         final SpecBinding binding,
                         final String partName,
-                        final Integer defaultcolorindex,
+                        final Color color,
                         final Boolean defaultglow) {
-        super(objModelSpec, binding, partName, defaultcolorindex, defaultglow);
+        super(objModelSpec, binding, partName, color, defaultglow);
     }
 
     public Transformation getPartTransform() {
@@ -60,21 +68,41 @@ public class ObjlPartSpec extends PartSpecBase {
         return "model.";
     }
 
-    public OBJBakedPart getPart() {
-        return ((ObjModelSpec) (this.spec)).getModel().getPart(this.partName);
+    public Optional<OBJBakedPart> getPart() {
+        return getParent().getModel().map(objBakedCompositeModel -> objBakedCompositeModel.getPart(this.partName));
     }
 
-    //    @Override
-//    public boolean equals(Object o) {
-//        if (this == o) return true;
-//        if (o == null || getClass() != o.getClass()) return false;
-//        if (!super.equals(o)) return false;
-//        ModelPartSpec that = (ModelPartSpec) o;
-//        return defaultglow == that.defaultglow;
-//    }
-//
-//    @Override
-//    public int hashCode() {
-//        return Objects.hash(super.hashCode(), defaultglow);
-//    }
+    public void applyTransform(PoseStack poseStack) {
+        if (partTransform != Transformation.identity()) {
+            PoseStack stack = new PoseStack();
+            stack.pushTransformation(partTransform);
+            // Apply the transformation to the real matrix stack
+            Matrix4f tMat = stack.last().pose();
+            Matrix3f nMat = stack.last().normal();
+            poseStack.last().pose().mul(tMat);
+            poseStack.last().normal().mul(nMat);
+        }
+    }
+
+    ObjModelSpec getParent() {
+        return (ObjModelSpec) this.spec;
+    }
+
+    public void apply(boolean pLeftHand, PoseStack pPoseStack) {
+        if (this.partTransform != Transformation.identity()) {
+            float f = this.partTransform.getLeftRotation().x();
+            float f1 = this.partTransform.getLeftRotation().y();
+            float f2 = this.partTransform.getLeftRotation().z();
+            if (pLeftHand) {
+                f1 = -f1;
+                f2 = -f2;
+            }
+
+            int i = pLeftHand ? -1 : 1;
+            pPoseStack.translate((float)i * this.partTransform.getTranslation().x(), this.partTransform.getTranslation().y(), this.partTransform.getTranslation().z());
+            pPoseStack.mulPose((new Quaternionf()).rotationXYZ(f * ((float)Math.PI / 180F), f1 * ((float)Math.PI / 180F), f2 * ((float)Math.PI / 180F)));
+            pPoseStack.scale(this.partTransform.getScale().x(), this.partTransform.getScale().y(), this.partTransform.getScale().z());
+            pPoseStack.mulPose(net.minecraftforge.common.util.TransformationHelper.quatFromXYZ(this.partTransform.getRightRotation().x(), this.partTransform.getRightRotation().y() * (pLeftHand ? -1 : 1), this.partTransform.getRightRotation().z() * (pLeftHand ? -1 : 1), true));
+        }
+    }
 }

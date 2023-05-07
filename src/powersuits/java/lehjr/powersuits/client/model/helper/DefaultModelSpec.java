@@ -86,7 +86,7 @@ public class DefaultModelSpec {
         CompoundTag tempNBT;
 
         // here we loop through the registry looking for the default that applies to the ItemStack
-        for (SpecBase spec : NuminaModelRegistry.getInstance().getSpecs()) {
+        for (SpecBase spec : NuminaModelSpecRegistry.getInstance().getSpecs()) {
             // Only generate NBT data from Specs marked as "default"
             if (spec.isDefault()) {
 

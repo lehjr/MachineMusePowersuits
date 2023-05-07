@@ -28,6 +28,8 @@ package lehjr.numina.client.render.item;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.math.Transformation;
+import lehjr.numina.client.model.helper.ModelTransformCalibration;
 import lehjr.numina.client.model.item.armor.ArmorModelInstance;
 import lehjr.numina.client.model.item.armor.HighPolyArmor;
 import lehjr.numina.client.model.item.armor.RenderOBJPart;
@@ -39,11 +41,9 @@ import lehjr.numina.common.constants.TagConstants;
 import lehjr.numina.common.math.Color;
 import lehjr.numina.common.tags.NBTTagAccessor;
 import net.minecraft.client.model.HumanoidModel;
-import net.minecraft.client.model.Model;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.HumanoidArmorLayer;
@@ -54,14 +54,16 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ArmorItem;
-import net.minecraft.world.item.DyeableLeatherItem;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.*;
 
 public class NuminaArmorLayer<T extends LivingEntity, M extends HumanoidModel<T>, A extends HumanoidModel<T>> extends HumanoidArmorLayer<T, M, A> {
+    ModelTransformCalibration CALIBRATION;
+
     public NuminaArmorLayer(RenderLayerParent<T, M> entityRenderer, A modelLeggings, A modelArmor) {
         super(entityRenderer, modelLeggings, modelArmor);
+        this.CALIBRATION = ModelTransformCalibration.CALIBRATION;
     }
 
     Optional<IModelSpec> getRenderCapability(ItemStack itemStack) {
@@ -84,9 +86,6 @@ public class NuminaArmorLayer<T extends LivingEntity, M extends HumanoidModel<T>
     private boolean isLegSlot(EquipmentSlot slotIn) {
         return slotIn == EquipmentSlot.LEGS;
     }
-
-    // Fixme: not part specific
-
 
     @Override
     protected void setPartVisibility(A model, EquipmentSlot pSlot) {
@@ -115,7 +114,6 @@ public class NuminaArmorLayer<T extends LivingEntity, M extends HumanoidModel<T>
     @Override
     public void renderArmorPiece(PoseStack poseStack, MultiBufferSource bufferIn, T entityIn, EquipmentSlot slotIn, int packedLightIn, A model) {
         ItemStack itemstack = entityIn.getItemBySlot( slotIn);
-        boolean withGlint = itemstack.hasFoil();
         Optional<IModelSpec> renderCapabity = getRenderCapability(itemstack);
 
         if (itemstack.getItem() instanceof ArmorItem armoritem && itemstack.getCapability(NuminaCapabilities.RENDER).isPresent()) {
@@ -129,44 +127,55 @@ public class NuminaArmorLayer<T extends LivingEntity, M extends HumanoidModel<T>
                         }
 
                         for (CompoundTag tag : NBTTagAccessor.getValues(renderTag)) {
-                            PartSpecBase partSpec = NuminaModelRegistry.getInstance().getPart(tag);
-                            int partColor;
-                            int ix = partSpec.getColourIndex(tag);
-                            // checks the range of the index to avoid errors OpenGL or crashing
-                            if (ix < colors.length && ix >= 0) {
-                                partColor = colors[ix];
+                            PartSpecBase partSpec = NuminaModelSpecRegistry.getInstance().getPart(tag);
+                            if (partSpec != null) {
+//                                System.out.println("partSpec class: " + partSpec.getClass());
+
+                                int partColor;
+                                int ix = partSpec.getColourIndex(tag);
+                                // checks the range of the index to avoid errors OpenGL or crashing
+                                if (ix < colors.length && ix >= 0) {
+                                    partColor = colors[ix];
+                                } else {
+                                    partColor = -1;
+                                }
+                                Color color = new Color(partColor);
+                                boolean glow = partSpec.getGlow(tag);
+
+                                if (partSpec instanceof JavaPartSpec) {
+                                    ResourceLocation location = ((JavaPartSpec) partSpec).getTextureLocation();
+                                    this.getParentModel().copyPropertiesTo(model);
+                                    ModelPart part = partSpec.getBinding().getTarget().apply(model);
+                                    poseStack.pushPose();
+                                    if (part != null) {
+                                        part.translateAndRotate(poseStack);
+                                        VertexConsumer consumer = getVertexConsumer(bufferIn, location, glow);
+                                        part.compile(poseStack.last(), consumer,
+                                                glow ? NuminaConstants.FULL_BRIGHTNESS : packedLightIn,
+                                                OverlayTexture.NO_OVERLAY,
+                                                color.r, color.g, color.b, color.a);
+                                    }
+                                    poseStack.popPose();
+                                } else if (partSpec instanceof ObjlPartSpec) {
+
+        Transformation transform = CALIBRATION.getTransform();
+        if (transform != Transformation.identity()) {
+            poseStack.pushTransformation(transform);
+        }
+
+
+                                    HighPolyArmor highPolyArmor = ArmorModelInstance.getInstance();
+                                    highPolyArmor.copyPropertiesFrom(getParentModel());
+                                    VertexConsumer consumer = getVertexConsumer(bufferIn, TextureAtlas.LOCATION_BLOCKS, glow);
+                                    highPolyArmor.renderToBuffer((ObjlPartSpec) partSpec, tag, poseStack, consumer, glow ? NuminaConstants.FULL_BRIGHTNESS : packedLightIn, OverlayTexture.NO_OVERLAY, color);
+
+        if (transform != Transformation.identity()) {
+            poseStack.popPose();
+        }
+
+                                }
                             } else {
-                                partColor = -1;
-                            }
-                            Color color = new Color(partColor);
-                            boolean glow = partSpec.getGlow(tag);
-
-                            if (partSpec instanceof JavaPartSpec) {
-                                ResourceLocation location = ((JavaPartSpec) partSpec).getTextureLocation();
-                                this.getParentModel().copyPropertiesTo(model);
-                                ModelPart part = partSpec.getBinding().getTarget().apply(model);
-
-                                poseStack.pushPose();
-                                if (part != null) {
-                                    part.translateAndRotate(poseStack);
-//                                    VertexConsumer consumer = bufferIn.getBuffer(RenderType.entityTranslucentCull(location));
-                                    VertexConsumer consumer = ItemRenderer.getArmorFoilBuffer(bufferIn, RenderType.entityTranslucentCull(location), false, withGlint);
-
-                                    part.compile(poseStack.last(), consumer,
-                                            glow? NuminaConstants.FULL_BRIGHTNESS : packedLightIn,
-                                            OverlayTexture.NO_OVERLAY,
-                                            color.r, color.g, color.b, color.a);
-                                }
-                                poseStack.popPose();
-                            } else if (partSpec instanceof ObjlPartSpec) {
-                                ArmorModelInstance.getInstance().copyPropertiesFrom(getParentModel());
-                                ModelPart part = partSpec.getBinding().getTarget().apply(ArmorModelInstance.getInstance());
-                                if (part instanceof RenderOBJPart) {
-                                    RenderOBJPart objPart = (RenderOBJPart) part;
-
-
-
-                                }
+                                System.out.println("render tag with null partSpec: " + tag);
                             }
                         }
                     }
@@ -176,4 +185,12 @@ public class NuminaArmorLayer<T extends LivingEntity, M extends HumanoidModel<T>
             super.renderArmorPiece(poseStack, bufferIn, entityIn, slotIn, packedLightIn, model);
         }
     }
+
+    VertexConsumer getVertexConsumer(MultiBufferSource buffer, ResourceLocation location, boolean glow) {
+        if (glow) {
+            return ItemRenderer.getArmorFoilBuffer(buffer, RenderType.beaconBeam(location, true), false, glow);
+        }
+        return ItemRenderer.getArmorFoilBuffer(buffer, RenderType.entityTranslucentCull(location), false, glow);
+    }
 }
+

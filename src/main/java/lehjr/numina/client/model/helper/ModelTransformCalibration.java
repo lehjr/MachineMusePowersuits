@@ -31,74 +31,37 @@ import lehjr.numina.common.base.NuminaLogger;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.client.event.InputEvent;
+import net.minecraftforge.client.event.ScreenEvent;
 import org.lwjgl.glfw.GLFW;
 
 @OnlyIn(Dist.CLIENT)
-public class ModelTransformCalibration {
+public enum ModelTransformCalibration {
+    CALIBRATION;
     // TODO: ItemTransforms.TransformType cameraTransformType default values as starting point for item transforms
-    static float xOffest_original;
-    static float yOffest_original;
-    static float zOffest_original;
+    static float xOffest_original = 0;
+    static float yOffest_original = 0;
+    static float zOffest_original = 0;
 
-    public static float xOffest;
-    public static float yOffest;
-    public static float zOffest;
+    public static float xOffest = 0;
+    public static float yOffest = 0;
+    public static float zOffest = 0;
 
-    static float angleX_original;
-    static float angleY_original;
-    static float angleZ_original;
+    static float angleX_original = 0;
+    static float angleY_original = 0;
+    static float angleZ_original = 0;
 
-    public static float angleX;
-    public static float angleY;
-    public static float angleZ;
+    public static float angleX = 0;
+    public static float angleY = 0;
+    public static float angleZ = 0;
 
-    static float scalemodifier_original;
+    static float scalemodifier_original = 1;
 
-    public static float scalemodifier;
+    public static float scalemodifier = 1;
 
-    public static boolean tap;
+    public static boolean tap = false;
 
-
-
-
-
-
-
-
-    public ModelTransformCalibration() {
-        this(0,0,0,0,0,0,/* 0.625f */ 1);
-    }
-
-    // unreliable
-//    public ModelTransformCalibration(TRSRTransformation transform) {
-//        this(
-//                transform.getTranslation().x * 16,
-//                transform.getTranslation().y * 16,
-//                transform.getTranslation().z * 16,
-//
-//                TRSRTransformation.toYXZDegrees(transform.getLeftRot()).x,
-//                TRSRTransformation.toYXZDegrees(transform.getLeftRot()).y,
-//                TRSRTransformation.toYXZDegrees(transform.getLeftRot()).z,
-//
-//                transform.getScale().x
-//        );
-//    }
-
-    public ModelTransformCalibration(float transformX, float transformY, float transformZ, float angleX, float angleY, float angleZ, float scale) {
-        this.xOffest = this.xOffest_original = transformX;
-        this.yOffest = this.yOffest_original = transformY;
-        this.zOffest = this.zOffest_original = transformZ;
-
-        this.angleX = this.angleX_original = angleX;
-        this.angleY = this.angleY_original = angleY;
-        this.angleZ = this.angleZ_original = angleZ;
-
-        this.scalemodifier = this.scalemodifier_original = scale;
-
-        this.tap = false;
-    }
-
-    static boolean isKeyPressed(int key) {
+    boolean isKeyPressed(int key) {
         return GLFW.glfwGetKey(Minecraft.getInstance().getWindow().getWindow(), key) == GLFW.GLFW_PRESS;
     }
 
@@ -106,62 +69,74 @@ public class ModelTransformCalibration {
     /*
      * Only used for setting up scale, rotation, and relative placement coordinates
      */
-    public static void transformCalibration() {
-        int numsegments = 16;
-        if (!tap) {
+    public void transformCalibration(InputEvent.Key event) {
+        int key = event.getKey();
 
-            if (isKeyPressed(GLFW.GLFW_KEY_INSERT)) {
-                xOffest += 0.1;
-                tap = true;
-            }
-            if (isKeyPressed(GLFW.GLFW_KEY_DELETE)) {
-                xOffest -= 0.1;
-                tap = true;
-            }
+          /*
+            modifiers (there are more but these are the important ones):
+            ----------
+            0-none
+            1-shift
+            2-ctrl
+            4-alt
+         */
+        double delta = switch(event.getModifiers()) {
+            case 1 -> 10;
+            case 2 -> 0.1;
+            case 4 -> 5;
+            default -> 1;
+        };
 
-            if (isKeyPressed(GLFW.GLFW_KEY_HOME)) {
-                yOffest += 0.1;
-                tap = true;
-            }
-            if (isKeyPressed(GLFW.GLFW_KEY_END)) {
-                yOffest -= 0.1;
-                tap = true;
-            }
-
-            if (isKeyPressed(GLFW.GLFW_KEY_PAGE_UP )) {
-                zOffest += 0.1;
-                tap = true;
-            }
-            if (isKeyPressed(GLFW.GLFW_KEY_PAGE_DOWN)) {
-                zOffest -= 0.1;
-                tap = true;
+        System.out.println("keycode: " + key);
+        switch (key) {
+            case GLFW.GLFW_KEY_INSERT ->{
+                xOffest += delta;
             }
 
-            if (isKeyPressed(GLFW.GLFW_KEY_KP_4)) {
-                angleX += 1;
-                tap = true;
+            case GLFW.GLFW_KEY_DELETE ->{
+                xOffest -= delta;
             }
-            if (isKeyPressed(GLFW.GLFW_KEY_KP_5)) {
-                angleY += 1;
-                tap = true;
+
+            case GLFW.GLFW_KEY_HOME -> {
+                yOffest += delta;
             }
-            if (isKeyPressed(GLFW.GLFW_KEY_KP_6)) {
-                angleZ += 1;
-                tap = true;
+
+            case GLFW.GLFW_KEY_END -> {
+                yOffest -= delta;
             }
-            if (isKeyPressed(GLFW.GLFW_KEY_KP_1)) {
-                angleX -= 1;
-                tap = true;
+
+            case GLFW.GLFW_KEY_PAGE_UP -> {
+                zOffest += delta;
             }
-            if (isKeyPressed(GLFW.GLFW_KEY_KP_2)) {
-                angleY -= 1;
-                tap = true;
+
+            case GLFW.GLFW_KEY_PAGE_DOWN -> {
+                zOffest -= delta;
             }
-            if (isKeyPressed(GLFW.GLFW_KEY_KP_3)) {
-                angleZ -= 1;
-                tap = true;
+
+            case GLFW.GLFW_KEY_KP_4 -> {
+                angleX += delta;
             }
-            if (isKeyPressed(GLFW.GLFW_KEY_KP_8)) {
+
+            case GLFW.GLFW_KEY_KP_5 -> {
+                angleY += delta;
+            }
+            case GLFW.GLFW_KEY_KP_6 -> {
+                angleZ += delta;
+            }
+
+            case GLFW.GLFW_KEY_KP_1 -> {
+                angleX -= delta;
+            }
+
+            case GLFW.GLFW_KEY_KP_2 -> {
+                angleY -= delta;
+            }
+
+            case GLFW.GLFW_KEY_KP_3 -> {
+                angleZ -= delta;
+            }
+
+            case GLFW.GLFW_KEY_KP_8 -> {
                 xOffest = xOffest_original;
                 yOffest = yOffest_original;
                 zOffest = zOffest_original;
@@ -171,46 +146,41 @@ public class ModelTransformCalibration {
                 angleZ = angleZ_original;
 
                 scalemodifier = scalemodifier_original;
-
-                tap = true;
             }
+
             // this probably needs a bit more work, int's are too big.
-            if (isKeyPressed(GLFW.GLFW_KEY_SCROLL_LOCK)) {
-                scalemodifier += 0.01f;
-                tap = true;
-            }
-            if (isKeyPressed(GLFW.GLFW_KEY_PAUSE)) {
-                scalemodifier -= 0.01f;
-                tap = true;
+            case GLFW.GLFW_KEY_SCROLL_LOCK -> {
+                scalemodifier += delta * 0.1;
             }
 
-            if (isKeyPressed(GLFW.GLFW_KEY_KP_0)) {
-
-                NuminaLogger.logDebug("FIXME: check consistency between using every constructor");
-
-                NuminaLogger.logDebug("xOffest: " + xOffest + ", yOffest: " + yOffest + ", zOffest: " + zOffest);
-                NuminaLogger.logDebug("xrot: " + angleX + ", yrot: " + angleY + ", zrot: " + angleZ);
-                NuminaLogger.logDebug("scaleModifier: " + scalemodifier);
-
-                NuminaLogger.logDebug("MuseModelHelper.get(" + xOffest +", " + yOffest + ", " + zOffest + ", " + angleX + ", " + angleY+ ", " + angleZ + ", " + scalemodifier + ")" );
-
-
-                tap = true;
+            case GLFW.GLFW_KEY_PAUSE -> {
+                scalemodifier -= delta * 0.1;
             }
-        } else {
-            if (!isKeyPressed(GLFW.GLFW_KEY_KP_0) && !isKeyPressed(GLFW.GLFW_KEY_KP_1) && !isKeyPressed(GLFW.GLFW_KEY_KP_2)
-                    && !isKeyPressed(GLFW.GLFW_KEY_KP_3) && !isKeyPressed(GLFW.GLFW_KEY_KP_4)
-                    && !isKeyPressed(GLFW.GLFW_KEY_KP_5) && !isKeyPressed(GLFW.GLFW_KEY_KP_6)) {
-                tap = false;
-            }
-            if (isKeyPressed(GLFW.GLFW_KEY_LEFT_SHIFT)) {
-                tap = false;
+
+            case GLFW.GLFW_KEY_KP_0 -> {
+                System.out.println("print here");
+                NuminaLogger.logError("xOffest: " + xOffest + ", yOffest: " + yOffest + ", zOffest: " + zOffest);
+                NuminaLogger.logError("xrot: " + angleX + ", yrot: " + angleY + ", zrot: " + angleZ);
+                NuminaLogger.logError("scaleModifier: " + scalemodifier);
+                NuminaLogger.logError("MuseModelHelper.get(" + xOffest +", " + yOffest + ", " + zOffest + ", " + angleX + ", " + angleY+ ", " + angleZ + ", " + scalemodifier + ")" );
             }
         }
+
+//        if (!tap) {
+//        } else {
+//            if (!isKeyPressed(GLFW.GLFW_KEY_KP_0) && !isKeyPressed(GLFW.GLFW_KEY_KP_1) && !isKeyPressed(GLFW.GLFW_KEY_KP_2)
+//                    && !isKeyPressed(GLFW.GLFW_KEY_KP_3) && !isKeyPressed(GLFW.GLFW_KEY_KP_4)
+//                    && !isKeyPressed(GLFW.GLFW_KEY_KP_5) && !isKeyPressed(GLFW.GLFW_KEY_KP_6)) {
+//                tap = false;
+//            }
+//            if (isKeyPressed(GLFW.GLFW_KEY_LEFT_SHIFT)) {
+//                tap = false;
+//            }
+//        }
     }
 
     public Transformation getTransform() {
-        transformCalibration();
+//        transformCalibration();
         return ModelHelper.get(xOffest, yOffest, zOffest, angleX, angleY, angleZ, scalemodifier);
     }
 
@@ -235,7 +205,7 @@ public class ModelTransformCalibration {
      SCROLL_LOCK +scale | NUM_PAD_8 = reset     | L_SHIFT tap = false
      PAUSE - scale   | NUM_PAD_0 = print
 
-*/
+     */
 
 
 }

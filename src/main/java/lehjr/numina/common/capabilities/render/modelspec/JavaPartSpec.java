@@ -29,6 +29,7 @@ package lehjr.numina.common.capabilities.render.modelspec;
 import com.google.common.base.Objects;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import lehjr.numina.common.math.Color;
 import net.minecraft.client.model.Model;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.network.chat.Component;
@@ -42,25 +43,35 @@ public class JavaPartSpec extends PartSpecBase {
 
     public JavaPartSpec(final SpecBase spec,
                         final SpecBinding binding,
-                        final Integer enumColourIndex,
+                        final Color color,
                         final String partName,
                         final ResourceLocation textureLocation) {
-        this(spec, binding, enumColourIndex, partName, textureLocation, false);
+        this(spec, binding, color, partName, textureLocation, false);
     }
 
     public JavaPartSpec(final SpecBase spec,
                         final SpecBinding binding,
-                        final Integer enumColourIndex,
+                        final Color color,
                         final String partName,
                         final ResourceLocation textureLocation,
                         boolean glow) {
-        super(spec, binding, partName, enumColourIndex, glow);
+        super(spec, binding, partName, color, glow);
         this.textureLocation = textureLocation;
     }
 
     @Override
     String getNamePrefix() {
         return "javaModel.";
+    }
+
+    public Component getDisaplayName() {
+        if (binding.getSlot().isArmor()) {
+            return Component.translatable(new StringBuilder(getNamePrefix())
+                    .append(this.partName)
+                    .append(".partName")
+                    .toString());
+        }
+        return super.getDisaplayName();
     }
 
     public ResourceLocation getTextureLocation() {
@@ -73,6 +84,7 @@ public class JavaPartSpec extends PartSpecBase {
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
         JavaPartSpec that = (JavaPartSpec) o;
+        if(binding != that.binding) return false;
         return Objects.equal(getTextureLocation(), that.getTextureLocation());
     }
 

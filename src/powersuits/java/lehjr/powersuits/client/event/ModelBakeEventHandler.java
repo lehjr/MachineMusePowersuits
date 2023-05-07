@@ -47,6 +47,7 @@ import net.minecraftforge.client.RenderTypeGroup;
 import net.minecraftforge.client.event.ModelEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -54,26 +55,18 @@ import java.util.Map;
 
 public enum ModelBakeEventHandler {
     INSTANCE;
+    public static final ResourceLocation plasmaBall = new ResourceLocation(MPSConstants.MOD_ID, "entity/plasma");
 
 
-
-    Map<Direction, Map<DIR, List<BakedQuad>>> quadMap = new HashMap<>();
-    //
+//    Map<Direction, Map<DIR, List<BakedQuad>>> quadMap = new HashMap<>();
 //
-//
-    Map<Direction, BakedModel> luxCapacitorBlockModels = new HashMap<>();
-
-
-    public Map<DIR, List<BakedQuad>> getQuads(Direction facing) {
-        return INSTANCE.quadMap.getOrDefault(facing, new HashMap<>());
-    }
-
+//    Map<Direction, BakedModel> luxCapacitorBlockModels = new HashMap<>();
 
 
     public MPSBEWLR MPSBERINSTANCE = new MPSBEWLR();
 
-    ModelResourceLocation luxCapItemLocation = new ModelResourceLocation(MPSRegistryNames.LUX_CAPACITOR, "inventory");
-    ModelResourceLocation luxCapModuleLocation = new ModelResourceLocation(MPSRegistryNames.LUX_CAPACITOR_MODULE, "inventory");
+//    ModelResourceLocation luxCapItemLocation = new ModelResourceLocation(MPSRegistryNames.LUX_CAPACITOR, "inventory");
+//    ModelResourceLocation luxCapModuleLocation = new ModelResourceLocation(MPSRegistryNames.LUX_CAPACITOR_MODULE, "inventory");
 
     public static final ModelResourceLocation powerFistIconLocation = new ModelResourceLocation(MPSRegistryNames.POWER_FIST, "inventory");
 
@@ -90,8 +83,8 @@ public enum ModelBakeEventHandler {
                 for (DIR dir : DIR.values()) {
                     map.put(dir, model.getQuads(null, dir.direction, rand, LuxCapHelper.getBlockLensModelData(Color.WHITE.getARGBInt()), RenderTypeGroup.EMPTY.entity()));
                 }
-                INSTANCE.quadMap.put(facing, map);
-                INSTANCE.luxCapacitorBlockModels.put(facing, model);
+//                INSTANCE.quadMap.put(facing, map);
+//                INSTANCE.luxCapacitorBlockModels.put(facing, model);
             }
         }
 
@@ -119,7 +112,7 @@ public enum ModelBakeEventHandler {
             event.getModels().put(powerFistIconLocation, new PowerFistModelWrapper(powerFistIcon));
         }
 
-        ModelSpecLoader.INSTANCE.parse();
+
 
 
 //        MPSModelHelper.loadArmorModels(null, event.getModelBakery());
@@ -139,16 +132,15 @@ public enum ModelBakeEventHandler {
         }
     }
 
-    ResourceLocation plasmaBall = new ResourceLocation(MPSConstants.MOD_ID, "entity/plasma");
     @SubscribeEvent
     public void onAddAdditional(ModelEvent.RegisterAdditional e) {
         e.register(plasmaBall);
+        locations.forEach(location -> e.register(location));
     }
 
+    public static List<ResourceLocation> locations = new ArrayList<>();
 
-
-
-    public BakedModel test() {
-        return  Minecraft.getInstance().getItemRenderer().getItemModelShaper().getModelManager().getModel(plasmaBall);
+    public BakedModel getBakedItemModel(ResourceLocation location) {
+        return  Minecraft.getInstance().getItemRenderer().getItemModelShaper().getModelManager().getModel(location);
     }
 }

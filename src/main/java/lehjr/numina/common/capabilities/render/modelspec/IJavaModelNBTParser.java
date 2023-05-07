@@ -29,7 +29,11 @@ public interface IJavaModelNBTParser {
         }
 
         int partColor;
-        PartSpecBase partSpec = NuminaModelRegistry.getInstance().getPart(tag);
+        PartSpecBase partSpec = NuminaModelSpecRegistry.getInstance().getPart(tag);
+
+        if (partSpec == null) {
+            return;
+        }
 
         int ix = partSpec.getColourIndex(tag);
         // checks the range of the index to avoid errors OpenGL or crashing

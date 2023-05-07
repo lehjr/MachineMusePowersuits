@@ -3,12 +3,12 @@
     "specName": "powerfist",
     "type": "HANDHELD_JAVA_MODEL",
     "default": "true",
-    "models": [
+    "model":
       {
         "texture": "textures/models/powerfist.png",
         "binding": {
           "itemSlot": "mainhand",
-          "target": "right_hand",
+          "target": "any_hand",
           "parts": [
             {
               "name": "mainarm"
@@ -118,122 +118,6 @@
             }
           ]
         }
-      },
-      {
-        "texture": "textures/models/powerfist.png",
-        "binding": {
-          "itemSlot": "offhand",
-          "target": "left_hand",
-          "parts": [
-            {
-              "name": "mainarm"
-            },
-            {
-              "name": "armorright"
-            },
-            {
-              "name": "armorleft"
-            },
-            {
-              "name": "wristtopright"
-            },
-            {
-              "name": "wristtopleft"
-            },
-            {
-              "name": "wristbottomright"
-            },
-            {
-              "name": "wristbottomleft"
-            },
-            {
-              "name": "fingerguard"
-            },
-            {
-              "name": "crystalholder"
-            },
-            {
-              "name": "crystal",
-              "glow": true
-            },
-            {
-              "name": "supportright1"
-            },
-            {
-              "name": "supportright2"
-            },
-            {
-              "name": "supportright3"
-            },
-            {
-              "name": "supportright4"
-            },
-            {
-              "name": "supportright5"
-            },
-            {
-              "name": "supportbaseright"
-            },
-            {
-              "name": "supportrightfront"
-            },
-            {
-              "name": "supportbaseleft"
-            },
-            {
-              "name": "supportleftfront"
-            },
-            {
-              "name": "supportleft1"
-            },
-            {
-              "name": "supportleft2"
-            },
-            {
-              "name": "supportleft3"
-            },
-            {
-              "name": "supportleft4"
-            },
-            {
-              "name": "supportleft5"
-            },
-            {
-              "name": "palm"
-            },
-            {
-              "name": "index1"
-            },
-            {
-              "name": "index2"
-            },
-            {
-              "name": "middlefinger1"
-            },
-            {
-              "name": "middlefinger2"
-            },
-            {
-              "name": "ringfinger1"
-            },
-            {
-              "name": "ringfinger2"
-            },
-            {
-              "name": "pinky1"
-            },
-            {
-              "name": "pinky2"
-            },
-            {
-              "name": "thumb1"
-            },
-            {
-              "name": "thumb2"
-            }
-          ]
-        }
       }
-    ]
   }
 }

@@ -35,6 +35,7 @@ import net.minecraft.world.entity.EquipmentSlot;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
@@ -121,10 +122,7 @@ public abstract class SpecBase extends NuminaRegistry<PartSpecBase> {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         SpecBase specBase = (SpecBase) o;
-        return isDefault == specBase.isDefault &&
-                Objects.equals(name, specBase.name) &&
-                specType == specBase.specType &&
-                Objects.equals(colors, specBase.colors);
+        return Objects.equals(name, specBase.name);
     }
 
     @Override

@@ -46,7 +46,7 @@ public class JavaModelSpec extends SpecBase {
 
     @Override
     public String getOwnName() {
-        String name = NuminaModelRegistry.getInstance().getName(this);
+        String name = NuminaModelSpecRegistry.getInstance().getName(this);
         return (name != null) ? name : "";
     }
 }

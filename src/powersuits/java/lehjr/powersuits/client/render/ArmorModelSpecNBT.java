@@ -63,7 +63,7 @@ public class ArmorModelSpecNBT extends ModelSpecStorage implements IArmorModelSp
                 continue;
             }
             if (renderTag.get(key) instanceof CompoundTag) {
-                SpecBase testSpec = NuminaModelRegistry.getInstance().getModel(renderTag.getCompound(key));
+                SpecBase testSpec = NuminaModelSpecRegistry.getInstance().getModel(renderTag.getCompound(key));
                 if (testSpec instanceof ObjModelSpec || testSpec instanceof JavaModelSpec) {
                     specs.add(testSpec);
                 }
@@ -91,7 +91,7 @@ public class ArmorModelSpecNBT extends ModelSpecStorage implements IArmorModelSp
 
         EquipmentSlot slot = Mob.getEquipmentSlotForItem(getItemStack());
 
-        for (SpecBase spec : NuminaModelRegistry.getInstance().getSpecs()) {
+        for (SpecBase spec : NuminaModelSpecRegistry.getInstance().getSpecs()) {
             // Only generate NBT data from Specs marked as "default"
             if (spec.isDefault()) {
                 if (getItemStack().getItem() instanceof ArmorItem) {

@@ -27,6 +27,7 @@
 package lehjr.numina.common.capabilities.render.modelspec;
 
 import com.mojang.math.Transformation;
+import lehjr.numina.client.event.ModelBakeEventHandler;
 import lehjr.numina.client.model.obj.OBJBakedCompositeModel;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ItemTransform;
@@ -38,6 +39,7 @@ import net.minecraft.resources.ResourceLocation;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Objects;
+import java.util.Optional;
 
 /**
  * Author: MachineMuse (Claire Semple)
@@ -82,17 +84,18 @@ public class ObjModelSpec extends SpecBase {
 
     @Override
     public String getOwnName() {
-        String name = NuminaModelRegistry.getInstance().getName(this);
-        return (name != null) ? name : "";
+        String name = NuminaModelSpecRegistry.getInstance().getName(this);
+        return (name != null) ? name : getName();
     }
 
-    @Nullable
-    public OBJBakedCompositeModel getModel() {
-        BakedModel model = Minecraft.getInstance().getItemRenderer().getItemModelShaper().getModelManager().getModel(location);
+    @Nonnull
+    public Optional<OBJBakedCompositeModel> getModel() {
+        BakedModel model = ModelBakeEventHandler.INSTANCE.getBakedItemModel(location);
         if (model instanceof OBJBakedCompositeModel) {
-            return (OBJBakedCompositeModel) model;
+            return Optional.of((OBJBakedCompositeModel) model);
         }
-        return null;
+        System.out.println("model at location < " + location + " > missing");
+        return Optional.empty();
     }
 
     @Override
@@ -102,7 +105,7 @@ public class ObjModelSpec extends SpecBase {
         if (!super.equals(o)) return false;
         ObjModelSpec objModelSpec = (ObjModelSpec) o;
         return Objects.equals(location, objModelSpec.location) &&
-                Objects.equals(itemTransforms, objModelSpec.itemTransforms);
+                Objects.equals(this.getName(), objModelSpec.getName());
     }
 
     @Override

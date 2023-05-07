@@ -34,6 +34,7 @@ import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.constants.NuminaConstants;
 import lehjr.numina.common.math.Color;
 import lehjr.powersuits.client.event.ModelBakeEventHandler;
+import lehjr.powersuits.common.constants.MPSConstants;
 import lehjr.powersuits.common.entity.PlasmaBallEntity;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -51,12 +52,8 @@ public class PlasmaBoltEntityRenderer extends EntityRenderer<PlasmaBallEntity> {
     static final Color color2 = new Color(0.4F, 0.4F, 1F, 0.5F);
     static final Color color3 = new Color(0.8F, 0.8F, 1F, 0.7F);
     static final Color color4 = new Color(1F, 1F, 1F, 0.9F);
-
-
-
-
     // NonNullLazy doesn't init until called
-//    public static final NonNullLazy<OBJBakedCompositeModel> modelSphere = NonNullLazy.of(() -> ModelHelper.loadBakedModel(BlockModelRotation.X0_Y0, null, modelLocation));
+    public static final NonNullLazy<BakedModel> modelSphere = NonNullLazy.of(() -> ModelBakeEventHandler.INSTANCE.getBakedItemModel(ModelBakeEventHandler.plasmaBall));
     protected static final RandomSource rand = RandomSource.create(42L);
 
     public PlasmaBoltEntityRenderer(EntityRendererProvider.Context renderManager) {
@@ -141,15 +138,16 @@ public class PlasmaBoltEntityRenderer extends EntityRenderer<PlasmaBallEntity> {
 
     public static void renderSphere(MultiBufferSource bufferIn, RenderType rt, PoseStack matrixStackIn, int packedLightIn, int overlay, Color color) {
         VertexConsumer bb = bufferIn.getBuffer(rt);
-        BakedModel x = ModelBakeEventHandler.INSTANCE.test();
-        if (x == null) {
+        NonNullLazy<BakedModel> model = modelSphere;
+        if (model.get() == null) {
             NuminaLogger.logError("PlasmaBoltRenderer Render Spere quads not yet implemented");
             return;
-        } else {
-            System.out.println("model class: " + x.getClass() +", quads: " + x.getQuads(null, null, rand/*, ModelData.EMPTY*/).size());
         }
+//        else {
+//            System.out.println("model class: " + model.getClass() +", quads: " + model.get().getQuads(null, null, rand/*, ModelData.EMPTY*/).size());
+//        }
 
-        for (BakedQuad quad : x.getQuads(null, null, rand)) {
+        for (BakedQuad quad : model.get().getQuads(null, null, rand)) {
             bb.putBulkData(matrixStackIn.last(), quad, color.r, color.g, color.b, color.a, packedLightIn, overlay, true);
         }
     }

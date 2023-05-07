@@ -45,17 +45,17 @@ import java.util.stream.Stream;
  * <p>
  * Note: make sure to have null checks in place.
  */
-public class NuminaModelRegistry extends NuminaRegistry<SpecBase> {
-    private static volatile NuminaModelRegistry INSTANCE;
+public class NuminaModelSpecRegistry extends NuminaRegistry<SpecBase> {
+    private static volatile NuminaModelSpecRegistry INSTANCE;
 
-    private NuminaModelRegistry() {
+    private NuminaModelSpecRegistry() {
     }
 
-    public static NuminaModelRegistry getInstance() {
+    public static NuminaModelSpecRegistry getInstance() {
         if (INSTANCE == null) {
-            synchronized (NuminaModelRegistry.class) {
+            synchronized (NuminaModelSpecRegistry.class) {
                 if (INSTANCE == null) {
-                    INSTANCE = new NuminaModelRegistry();
+                    INSTANCE = new NuminaModelSpecRegistry();
                 }
             }
         }
@@ -95,12 +95,28 @@ public class NuminaModelRegistry extends NuminaRegistry<SpecBase> {
     }
 
     public PartSpecBase getPart(CompoundTag nbt, SpecBase model) {
+        if (model == null) return null;
         return model.get(nbt.getString(TagConstants.PART));
     }
 
     public PartSpecBase getPart(CompoundTag nbt) {
         return getPart(nbt, getModel(nbt));
     }
+
+    public boolean addPart(PartSpecBase part) {
+        try {
+            String baseName = part.spec.getOwnName();
+
+            System.out.println("adding part < " + part.partName +" > for model < " + baseName +" >" );
+
+            SpecBase base = get(baseName);
+            base.put(part, part.partName);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
 
     @Nullable
     public CompoundTag getSpecTag(CompoundTag renderTag, PartSpecBase spec) {

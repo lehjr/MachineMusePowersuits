@@ -4,8 +4,6 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import lehjr.numina.common.capabilities.NuminaCapabilities;
 import lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
-import lehjr.numina.common.capabilities.render.modelspec.NuminaModelRegistry;
-import lehjr.numina.common.capabilities.render.modelspec.PartSpecBase;
 import lehjr.numina.common.constants.TagConstants;
 import lehjr.numina.common.item.ItemUtils;
 import lehjr.numina.common.math.Color;

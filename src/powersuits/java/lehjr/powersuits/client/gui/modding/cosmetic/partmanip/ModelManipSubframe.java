@@ -35,8 +35,6 @@ import lehjr.numina.client.gui.geometry.Rect;
 import lehjr.numina.client.render.IconUtils;
 import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.capabilities.NuminaCapabilities;
-import lehjr.numina.common.capabilities.render.IArmorModelSpecNBT;
-import lehjr.numina.common.capabilities.render.IHandHeldModelSpecNBT;
 import lehjr.numina.common.capabilities.render.IModelSpec;
 import lehjr.numina.common.capabilities.render.modelspec.*;
 import lehjr.numina.common.math.Color;
@@ -132,7 +130,7 @@ public class ModelManipSubframe extends AbstractGuiFrame {
                 if (slot.isArmor()) {
                     model.getPartSpecs().forEach(partSpecBase -> {
                         if (partSpecBase.hasArmorEquipmentSlot(slot)) {
-                            String tagName = NuminaModelRegistry.getInstance().makeName(partSpecBase);
+                            String tagName = NuminaModelSpecRegistry.getInstance().makeName(partSpecBase);
                             parts.add(createNewFrame(partSpecBase, renderTag.getCompound(tagName)));
                         }
                     });
@@ -140,7 +138,7 @@ public class ModelManipSubframe extends AbstractGuiFrame {
                     model.getPartSpecs().forEach(partSpecBase -> {
                         SpecBinding binding = partSpecBase.getBinding();
                         if (binding.getTarget().handMatches(player, slot)) {
-                            String tagName = NuminaModelRegistry.getInstance().makeName(partSpecBase);
+                            String tagName = NuminaModelSpecRegistry.getInstance().makeName(partSpecBase);
 //                            System.out.println("PowerFist tagName: \"" + tagName +"\": ");
 
                             parts.add(createNewFrame(partSpecBase, renderTag.getCompound(tagName)));
@@ -241,7 +239,7 @@ public class ModelManipSubframe extends AbstractGuiFrame {
 
 
             if (renderTag != null) {
-                String name = NuminaModelRegistry.getInstance().makeName(partSpec);
+                String name = NuminaModelSpecRegistry.getInstance().makeName(partSpec);
                 specTag = renderTag.contains(name) ? renderTag.getCompound(name) : new CompoundTag();
 
 //                System.out.println("spec: " + specTag);
@@ -259,9 +257,17 @@ public class ModelManipSubframe extends AbstractGuiFrame {
     public CompoundTag getOrMakeSpecTag(PartSpecBase partSpec) {
         String name;
         CompoundTag nbt = getSpecTagOrEmpty(partSpec);
+        System.out.println("specTag: " + nbt);
+
+
         if (nbt.isEmpty()) {
-            name = NuminaModelRegistry.getInstance().makeName(partSpec);
+            name = NuminaModelSpecRegistry.getInstance().makeName(partSpec);
             partSpec.multiSet(nbt, null, null);
+
+
+
+
+
             System.out.println("name here: " + name);
 
 
@@ -270,12 +276,18 @@ public class ModelManipSubframe extends AbstractGuiFrame {
             if (getRenderCapability() != null) {
                 this.getRenderCapability().ifPresent(specNBT->{
                     CompoundTag renderTag  = specNBT.getRenderTag().copy();
+                    System.out.println("render tag: " + renderTag);
+
+
                     if (renderTag != null && !renderTag.isEmpty()) {
                         renderTag.put(name, nbt);
                     }
                 });
             }
         }
+
+        System.out.println("returning tag: " + nbt);
+
         return nbt;
     }
 
@@ -353,7 +365,7 @@ public class ModelManipSubframe extends AbstractGuiFrame {
         public PartManipSubFrame(PartSpecBase partSpec, double left, double top, double width, double height, CompoundTag tagdataIn) {
             super(new Rect(left, top, left + width, top + height));
             this.partSpec = partSpec;
-            this.tagname = NuminaModelRegistry.getInstance().makeName(partSpec);
+            this.tagname = NuminaModelSpecRegistry.getInstance().makeName(partSpec);
             this.tagdata = tagdataIn;
             this.buttons = new ArrayList<>();
             this.colorButtons = new ArrayList<>();
@@ -374,11 +386,11 @@ public class ModelManipSubframe extends AbstractGuiFrame {
             normal.setOnPressed(pressed -> {
 
 
-//                System.out.println("tagdata before: " + tagdata);
+                System.out.println("tagdata before: " + tagdata);
 
 
                 tagdata = getOrMakeSpecTag(partSpec);
-//                System.out.println("tagdata after: " + tagdata);
+                System.out.println("tagdata after: " + tagdata);
 
                 partSpec.setGlow(tagdata, false);
                 itemSelector.selectedType().ifPresent(slotType -> {
@@ -391,7 +403,7 @@ public class ModelManipSubframe extends AbstractGuiFrame {
             /** Glow (enables rendering of part with full brightness ) */
             glow = new RadioButton(IconUtils.getIcon().glowArmor, 8, 8, 0,0);
             glow.setOnPressed(pressed -> {
-                tagname = NuminaModelRegistry.getInstance().makeName(partSpec);
+                tagname = NuminaModelSpecRegistry.getInstance().makeName(partSpec);
                 tagdata = getOrMakeSpecTag(partSpec);
                 partSpec.setGlow(tagdata, true);
                 itemSelector.selectedType().ifPresent(slotType -> {

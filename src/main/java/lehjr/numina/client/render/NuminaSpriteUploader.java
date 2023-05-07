@@ -37,8 +37,6 @@ public class NuminaSpriteUploader extends TextureAtlasHolder {
         super(Minecraft.getInstance().getTextureManager(), NuminaConstants.LOCATION_NUMINA_GUI_TEXTURE_ATLAS, new ResourceLocation(NuminaConstants.MOD_ID, "gui"));
     }
 
-
-
     /**
      * Overridden to make it public
      */

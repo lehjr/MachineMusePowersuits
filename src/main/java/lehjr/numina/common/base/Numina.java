@@ -27,9 +27,13 @@
 package lehjr.numina.common.base;
 
 import forge.NuminaObjLoader;
+import lehjr.numina.client.event.ClientEventBusSubscriber;
 import lehjr.numina.client.event.FOVUpdateEventHandler;
+import lehjr.numina.client.event.ModelBakeEventHandler;
 import lehjr.numina.client.event.ToolTipEvent;
 import lehjr.numina.client.gui.GuiIcon;
+import lehjr.numina.client.model.helper.ModelSpecLoader;
+import lehjr.numina.client.model.helper.ModelTransformCalibration;
 import lehjr.numina.client.render.IconUtils;
 import lehjr.numina.client.render.NuminaSpriteUploader;
 import lehjr.numina.client.screen.ArmorStandScreen;
@@ -55,8 +59,10 @@ import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.client.event.ModelEvent;
 import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
+import net.minecraftforge.client.event.ScreenEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
@@ -158,6 +164,13 @@ public class Numina {
             MenuScreens.register(NuminaObjects.CHARGING_BASE_CONTAINER_TYPE.get(), ChargingBaseScreen::new);
             MenuScreens.register(NuminaObjects.ARMOR_STAND_CONTAINER_TYPE.get(), ArmorStandScreen::new);
             //        ScreenManager.func_216911_a(NuminaObjects.SCANNER_CONTAINER.get(), MPSGuiScanner::new);
+        });
+        IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
+        modEventBus.register(ClientEventBusSubscriber.class);
+        modEventBus.addListener(ModelBakeEventHandler.INSTANCE::onAddAdditional);
+
+        MinecraftForge.EVENT_BUS.addListener((InputEvent.Key e) -> {
+            ModelTransformCalibration.CALIBRATION.transformCalibration(e);
         });
     }
 

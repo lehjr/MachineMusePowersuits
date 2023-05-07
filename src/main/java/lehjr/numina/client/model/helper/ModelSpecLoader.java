@@ -25,17 +25,19 @@
  */
 package lehjr.numina.client.model.helper;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.mojang.math.Transformation;
+import lehjr.numina.client.event.ModelBakeEventHandler;
 import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.capabilities.render.modelspec.*;
 import lehjr.numina.common.constants.NuminaConstants;
 import lehjr.numina.common.math.Color;
-import lehjr.numina.common.string.StringUtils;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.block.model.ItemTransform;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.Resource;
@@ -47,6 +49,9 @@ import org.joml.Vector3f;
 
 import javax.annotation.Nullable;
 import java.io.BufferedReader;
+import java.io.InputStream;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -72,12 +77,21 @@ public enum ModelSpecLoader {
     static final String MODEL = "model";
     static final String COLOR = "color";
     static final String DISPLAY = "display";
+    static final String TRANSFORMATION_MATRIX = "transformationMatrix";
+    static final String FILE = "file";
+    static final String NAME = "name";
+    static final String BODY = "body";
+    static final String LEGS = "legs";
+    static final String TEXTURE = "texture";
 
 
+    ResourceManager getManager() {
+        return Minecraft.getInstance().getResourceManager();
+    }
 
     // call from .... maybe in model bake event?
     public void parse() {
-        ResourceManager manager = Minecraft.getInstance().getResourceManager();
+        ResourceManager manager = getManager();
         try {
             Map<ResourceLocation, Resource> modelSpecFiles = manager.listResources("modelspec", (resourceLocation) -> resourceLocation.getPath().endsWith(".json"));
             for (Map.Entry<ResourceLocation, Resource> entry : modelSpecFiles.entrySet()) {
@@ -93,9 +107,17 @@ public enum ModelSpecLoader {
         } catch (Exception e) {
             NuminaLogger.logException("failed to load ModelSpec", e);
         }
+        NuminaLogger.logDebug("Finished loading model specs");
+        getReg().getSpecs().forEach(specBase -> {
+            System.out.println("SpecName: " + specBase.getName() +", Parts: ");
+            specBase.getPartSpecs().forEach(partSpecBase -> {
+                System.out.println("partName: " + partSpecBase.getPartName() + ", slot: " + partSpecBase.getBinding().getSlot() + ", target: " + partSpecBase.getBinding().getTarget());
+            });
+        });
+
     }
 
-    static void parseFile(JsonObject json) {
+    void parseFile(JsonObject json) {
         String specName = json.getAsJsonPrimitive(SPEC_NAME).getAsString();
         String specTypeString = json.getAsJsonPrimitive(TYPE).getAsString();
         SpecType specType = SpecType.getTypeFromName(specTypeString);
@@ -110,10 +132,10 @@ public enum ModelSpecLoader {
                 NuminaLogger.logDebug("model spec loader spec type: HANDHELD_OBJ_MODEL " + json);
                 if (json.has(MODELS) && json.get(MODELS).isJsonArray()) {
                     json.getAsJsonArray(MODELS).iterator().forEachRemaining(jsonElement -> {
-                        parseObjModelSpec(jsonElement.getAsJsonObject(), SpecType.HANDHELD_OBJ_MODEL, specName, isDefault);
+                        parseObjModelSpec(jsonElement.getAsJsonObject(), SpecType.HANDHELD_OBJ_MODEL, specName, isDefault, false);
                     });
                 } else if (json.has(MODEL)) {
-                    parseObjModelSpec(json.get(MODEL).getAsJsonObject(), SpecType.HANDHELD_OBJ_MODEL, specName, isDefault);
+                    parseObjModelSpec(json.get(MODEL).getAsJsonObject(), SpecType.HANDHELD_OBJ_MODEL, specName, isDefault, true);
                 }
             }
             case ARMOR_SKIN -> {
@@ -125,14 +147,16 @@ public enum ModelSpecLoader {
                 NuminaLogger.logDebug("model spec loader spec type: ARMOR_OBJ_MODEL " + json);
                 if (json.has(MODELS) && json.get(MODELS).isJsonArray()) {
                     json.getAsJsonArray(MODELS).iterator().forEachRemaining(jsonElement -> {
-                        parseObjModelSpec(jsonElement.getAsJsonObject(), SpecType.ARMOR_OBJ_MODEL, specName, isDefault);
+                        // multiple models, a "model spec" for each
+                        parseObjModelSpec(jsonElement.getAsJsonObject(), SpecType.ARMOR_OBJ_MODEL, specName, isDefault, false);
                     });
                 } else if (json.has(MODEL)) {
-                    parseObjModelSpec(json.get(MODEL).getAsJsonObject(), SpecType.ARMOR_OBJ_MODEL, specName, isDefault);
+                    // a single model, possibly spread out among different body parts
+                    parseObjModelSpec(json.get(MODEL).getAsJsonObject(), SpecType.ARMOR_OBJ_MODEL, specName, isDefault, true);
                 }
             }
             case HANDHELD_JAVA_MODEL -> {
-                NuminaLogger.logDebug("model spec loader spec type: HANDHELD_JAVA_MODE " + json);
+                NuminaLogger.logDebug("model spec loader spec type: HANDHELD_JAVA_MODEL " + json);
                 JavaModelSpec javaModel = new JavaModelSpec(specName, isDefault);
                 parseHandHeldJavaModel(javaModel, json);
             }
@@ -145,40 +169,93 @@ public enum ModelSpecLoader {
     /**
      * Biggest difference between the ModelSpec for Armor vs PowerFistModel2 is that the armor models don't need item camera transforms
      */
-    public static void parseObjModelSpec(JsonObject modelJson, SpecType specType, String specName, boolean isDefault) {
+
+
+
+
+
+    void parseObjModelSpec(JsonObject modelJson, SpecType specType, String specName, boolean isDefault, boolean isSingle) {
+        // Load model location
+        ResourceLocation modelLocation = new ResourceLocation(modelJson.get(FILE).getAsString());
+        ModelBakeEventHandler.INSTANCE.addLocation(modelLocation);
+        if (!isSingle) {
+            System.out.println("specName before: " + specName);
+            specName = specName(modelLocation);
+
+            System.out.println("specName after: " + specName);
+        }
+
+        parseObjModelSpec(modelJson, specType, specName, isDefault, modelLocation);
+    }
+
+    void parseObjModelSpec(JsonObject modelJson, SpecType specType, String specName, boolean isDefault, ResourceLocation modelLocation) {
         Transformation modelTransform = Transformation.identity();
         ItemTransforms itemTransforms = ItemTransforms.NO_TRANSFORMS;
 
-        // Load models
-        ResourceLocation modelLocation = new ResourceLocation(modelJson.get("file").getAsString());
         // check for item camera transforms
-        if (modelJson.has(DISPLAY) && modelJson.get(DISPLAY) instanceof JsonArray) {
-
-//            JsonArray cameraTransformList = modelJson.getAsJsonArray("modelTransforms");
-//            JsonElement cameraTransformNode = cameraTransformList.get(0);
-//            modelTransform = getIModelTransform(cameraTransformNode);
+        if (modelJson.has(DISPLAY) && modelJson.get(DISPLAY) instanceof JsonObject) {
+            itemTransforms = parseItemTransforms(modelJson.getAsJsonObject(DISPLAY));
         } else {
             // Get the transform for the model and add to the registry
-            if (modelJson.has("transformationMatrix")) {
-                modelTransform = getTransform(modelJson.getAsJsonObject("transformationMatrix"));
+            if (modelJson.has(TRANSFORMATION_MATRIX)) {
+                modelTransform = getTransform(modelJson.getAsJsonObject(TRANSFORMATION_MATRIX));
             }
         }
 
         ObjModelSpec modelspec = new ObjModelSpec(modelLocation, itemTransforms, specName, isDefault, specType);
         modelspec.setModelTransform(modelTransform);
-        parseBinding(modelspec, modelJson);
-        System.out.println("model location here: " + modelLocation);
-        System.out.println("modelspec.getOwnName(): " + modelspec.getOwnName());
+        getReg().put(modelspec.getName(), modelspec);
 
-        NuminaModelRegistry.getInstance().put(StringUtils.extractName(modelLocation), modelspec);
+        if (modelJson.has(BINDINGS) && modelJson.get(BINDINGS) instanceof JsonArray) {
+            modelJson.getAsJsonArray(BINDINGS).iterator().forEachRemaining(jsonElement -> {
+                parseObjModelBinding(specName, jsonElement.getAsJsonObject());
+            });
 
-        NuminaModelRegistry.getInstance().getSpecs().forEach(specBase -> System.out.println("specs so far: " + specBase.getOwnName() +", type: " + specBase.getSpecType()));
-
+        } else if (modelJson.has(BINDING) && modelJson.get(BINDING) instanceof JsonObject) {
+            parseObjModelBinding(specName, modelJson.get(BINDING).getAsJsonObject());
+        }
     }
 
-    static void parseHandHeldJavaModel(JavaModelSpec javaModel, JsonObject json) {
-        JavaModelSpec existingspec = (JavaModelSpec) NuminaModelRegistry.getInstance().put(javaModel.getName(), javaModel);
+    static void parseObjModelBinding(String specName, JsonObject bindingJson) {
+        SpecBinding binding = getBinding(bindingJson);
+        if (bindingJson.has(PARTS) && bindingJson.get(PARTS).isJsonArray()) {
+            System.out.println("parsing parts for model: " + specName);
 
+            bindingJson.getAsJsonArray(PARTS).iterator().forEachRemaining(jsonElement -> {
+                parseObjModelPart(specName, jsonElement.getAsJsonObject(), binding);
+            });
+        } else if (bindingJson.has(PART)) {
+            System.out.println("parsing part for model: " + specName);
+
+            parseObjModelPart(specName, bindingJson.get(PART).getAsJsonObject(), binding);
+        } else {
+            System.out.println("failed to parse parts: " + bindingJson);
+        }
+    }
+
+    static void parseObjModelPart(String specName, JsonObject partJson, SpecBinding binding) {
+        ObjModelSpec objModelSpec = (ObjModelSpec) getReg().get(specName);
+
+        System.out.println("objModelSpec class: " + (objModelSpec != null ? objModelSpec.getClass() : null));
+
+
+        String name = partJson.get(NAME).getAsString();
+        boolean glow = partJson.has(GLOW) && partJson.get(GLOW).getAsBoolean();
+        Color color = partJson.has(COLOR) ? parseColor(partJson.get(COLOR).getAsString()) : Color.WHITE;
+        getReg().addPart(new ObjlPartSpec(
+                objModelSpec,
+                binding,
+                name,
+                color, glow));
+    }
+
+
+
+
+
+
+    static void parseHandHeldJavaModel(JavaModelSpec javaModel, JsonObject json) {
+        JavaModelSpec existingspec = (JavaModelSpec) getReg().put(javaModel.getName(), javaModel);
         if (json.has(MODELS) && json.get(MODELS).isJsonArray()) {
             json.getAsJsonArray(MODELS).iterator().forEachRemaining(jsonElement -> {
                 JsonObject modelObject = jsonElement.getAsJsonObject();
@@ -192,47 +269,19 @@ public enum ModelSpecLoader {
     }
 
     static void parseJavaModelPartsAndBindings(JavaModelSpec javaModel, JsonObject modelObject){
-        System.out.println("modelObject: " + modelObject);
-
         // parts with different bindings
         if (modelObject.getAsJsonObject().has(BINDINGS) && modelObject.get(BINDINGS).isJsonArray()) {
             modelObject.get(BINDINGS).getAsJsonArray().iterator().forEachRemaining(bindingElement ->
-                    parseBinding(javaModel, bindingElement.getAsJsonObject()));
+                    parseJavaModelBinding(javaModel, bindingElement.getAsJsonObject()));
         } else {
             // single binding in the model
             if (modelObject.has(BINDING)) {
-                parseBinding(javaModel, modelObject.get(BINDING).getAsJsonObject());
+                parseJavaModelBinding(javaModel, modelObject.get(BINDING).getAsJsonObject());
             }
         }
-
-        System.out.println("successfully loaded spec and parts? " + NuminaModelRegistry.getInstance().get(javaModel.getName()).getPartsAsStream().collect(Collectors.toList()).size());
     }
 
-    static void parseBinding(ObjModelSpec objModelSpec, JsonObject bindingJson) {
-        SpecBinding binding = getBinding(bindingJson);
-        if (bindingJson.has(PARTS) && bindingJson.get(PARTS).isJsonArray()) {
-            bindingJson.getAsJsonArray(PARTS).iterator().forEachRemaining(jsonElement -> {
-                parseObjModelPart(objModelSpec, jsonElement.getAsJsonObject(), binding);
-            });
-        } else if (bindingJson.has(PART)) {
-            parseObjModelPart(objModelSpec, bindingJson.get(PART).getAsJsonObject(), binding);
-        }
-    }
-
-    static void parseObjModelPart(ObjModelSpec objModelSpec, JsonObject partJson, SpecBinding binding) {
-        String name = INSTANCE.makeHandheldTexturePartSpecName(binding.getTarget(), partJson.get("name").getAsString());
-        boolean glow = partJson.has(GLOW) && partJson.get(GLOW).getAsBoolean();
-        Color color = partJson.has(COLOR) ? parseColor(partJson.get(COLOR).getAsString()) : Color.WHITE;
-        objModelSpec.put(new ObjlPartSpec(
-                objModelSpec,
-                binding,
-                name,
-                objModelSpec.addColorIfNotExist(color), glow), name);
-    }
-
-    static void parseBinding(JavaModelSpec javaModel, JsonObject bindingJson) {
-        System.out.println("bindingJson: " + bindingJson);
-
+    static void parseJavaModelBinding(JavaModelSpec javaModel, JsonObject bindingJson) {
         SpecBinding binding = getBinding(bindingJson);
         if (bindingJson.has(PARTS) && bindingJson.get(PARTS).isJsonArray()) {
             bindingJson.getAsJsonArray(PARTS).iterator().forEachRemaining(jsonElement -> {
@@ -243,17 +292,12 @@ public enum ModelSpecLoader {
         }
     }
 
-    // target added as prefix to differentiate models
-    String makeHandheldTexturePartSpecName(MorphTarget target, String name) {
-        return target.name() + "." + name;
-    }
-
     static final ResourceLocation ignored = new ResourceLocation(NuminaConstants.MOD_ID, "ignored");
     static void parseJavaModelPart(JavaModelSpec javaModel, JsonObject partJson, SpecBinding binding) {
-        String name = INSTANCE.makeHandheldTexturePartSpecName(binding.getTarget(), partJson.get("name").getAsString());
+        String name = partJson.get(NAME).getAsString();
         boolean glow = partJson.has(GLOW) && partJson.get(GLOW).getAsBoolean();
         Color color = partJson.has(COLOR) ? parseColor(partJson.get(COLOR).getAsString()) : Color.WHITE;
-        javaModel.put(new JavaPartSpec(javaModel, binding, javaModel.addColorIfNotExist(color), name,  ignored, glow), name);
+        javaModel.put(new JavaPartSpec(javaModel, binding, color, name,  ignored, glow), name);
     }
 
     /**
@@ -263,14 +307,14 @@ public enum ModelSpecLoader {
      */
     public static void parseArmorJavaModelSpec(JsonObject json, JavaModelSpec javaModelSpec) {
         // ModelBase textures are not registered or stored like baked models are.
-        JavaModelSpec existingspec = (JavaModelSpec) NuminaModelRegistry.getInstance().put(javaModelSpec.getName(), javaModelSpec);
-        JsonObject bodyJson = json.get("body").getAsJsonObject();
-        JsonObject legsJson = json.get("legs").getAsJsonObject();
+        JavaModelSpec existingspec = (JavaModelSpec) getReg().put(javaModelSpec.getName(), javaModelSpec);
+        JsonObject bodyJson = json.get(BODY).getAsJsonObject();
+        JsonObject legsJson = json.get(LEGS).getAsJsonObject();
         Color bodyColor = bodyJson.has(COLOR) ? parseColor(bodyJson.get(COLOR).getAsString()) : Color.WHITE;
         Color legsColor = legsJson.has(COLOR) ? parseColor(legsJson.get(COLOR).getAsString()) : Color.WHITE;
 
-        ResourceLocation bodyTexture = new ResourceLocation(bodyJson.get("texture").getAsString());
-        ResourceLocation legsTexture = new ResourceLocation(legsJson.get("texture").getAsString());
+        ResourceLocation bodyTexture = new ResourceLocation(bodyJson.get(TEXTURE).getAsString());
+        ResourceLocation legsTexture = new ResourceLocation(legsJson.get(TEXTURE).getAsString());
 
         putJavaModelPartSpecs(false, existingspec, bodyTexture, bodyColor);
         putJavaModelPartSpecs(true, existingspec, legsTexture, legsColor);
@@ -285,23 +329,46 @@ public enum ModelSpecLoader {
             EquipmentSlot slot = EquipmentSlot.LEGS;
             for (MorphTarget target : MorphTarget.getMorphTargetsFromEquipmentSlot(slot)) {
                 String partName = INSTANCE.makeArmorTexturePartSpecName(slot, target);
-                javaModelSpec.put(new JavaPartSpec(javaModelSpec, new SpecBinding(target, slot, "all"), javaModelSpec.addColorIfNotExist(color), partName,  textureLocation), partName);
+                javaModelSpec.put(new JavaPartSpec(javaModelSpec, new SpecBinding(target, slot, "all"), color, partName,  textureLocation), partName);
             }
         } else {
             for (EquipmentSlot slot : EquipmentSlot.values()) {
                 if (slot.equals(EquipmentSlot.LEGS) || !slot.isArmor()) continue;
                 for (MorphTarget target : MorphTarget.getMorphTargetsFromEquipmentSlot(slot)) {
                     String partName = INSTANCE.makeArmorTexturePartSpecName(slot, target);
-                    javaModelSpec.put(new JavaPartSpec(javaModelSpec, new SpecBinding(target, slot, "all"), javaModelSpec.addColorIfNotExist(color), partName,  textureLocation), partName);
+                    javaModelSpec.put(new JavaPartSpec(javaModelSpec, new SpecBinding(target, slot, "all"), color, partName,  textureLocation), partName);
                 }
             }
         }
     }
 
-//    @Nullable
-//    public static String validatePolygroup(String s, ObjModelSpec m) {
-//        return m.getModel().getPart(s) != null ? s : null;
-//    }
+    public static ItemTransforms parseItemTransforms(JsonObject jsonObject) {
+        Map<ItemTransforms.TransformType, ItemTransform> itemTransformMap = new HashMap();
+        for (ItemTransforms.TransformType type : ItemTransforms.TransformType.values()) {
+            ItemTransform transform;
+            if (jsonObject.has(type.name())) {
+                try {
+                    transform = getItemTransform(jsonObject.get(type.name()).getAsJsonObject());
+                } catch (Exception ignored) {
+                    transform = ItemTransform.NO_TRANSFORM;
+                }
+            } else {
+                transform = ItemTransform.NO_TRANSFORM;
+            }
+            itemTransformMap.put(type, transform);
+        }
+
+        return new ItemTransforms(
+                itemTransformMap.get(ItemTransforms.TransformType.THIRD_PERSON_LEFT_HAND),
+                itemTransformMap.get(ItemTransforms.TransformType.THIRD_PERSON_RIGHT_HAND),
+                itemTransformMap.get(ItemTransforms.TransformType.FIRST_PERSON_LEFT_HAND),
+                itemTransformMap.get(ItemTransforms.TransformType.FIRST_PERSON_RIGHT_HAND),
+                itemTransformMap.get(ItemTransforms.TransformType.HEAD),
+                itemTransformMap.get(ItemTransforms.TransformType.GUI),
+                itemTransformMap.get(ItemTransforms.TransformType.GROUND),
+                itemTransformMap.get(ItemTransforms.TransformType.FIXED),
+                ImmutableMap.of());
+    }
 
     /**
      * This gets the transforms for baking the models. Transformation is also used for item camera transforms to alter the
@@ -318,7 +385,6 @@ public enum ModelSpecLoader {
         Vector3f scale = parseVector(transformationJson.get("scale"), ONE);
         return ModelHelper.getTransform(translation, rotation, scale);
     }
-
     /**
      * SpecBinding is a subset if settings for the ModelPartSpec
      */
@@ -327,6 +393,13 @@ public enum ModelSpecLoader {
         return new SpecBinding(bindingJson.has("target") ? MorphTarget.getMorph(bindingJson.get("target").getAsString()) : null,
                 bindingJson.has("itemSlot") ? EquipmentSlot.byName(bindingJson.get("itemSlot").getAsString().toLowerCase()) : null,
                 bindingJson.has("itemState") ? bindingJson.get("itemState").getAsString() : "all");
+    }
+
+    static ItemTransform getItemTransform(JsonObject transformationJson) {
+        Vector3f translation = parseVector(transformationJson.get("translation"), ZERO);
+        Vector3f rotation = parseVector(transformationJson.get("rotation"), ZERO);
+        Vector3f scale = parseVector(transformationJson.get("scale"), ONE);
+        return new ItemTransform(rotation, translation, scale);
     }
 
     @Nullable
@@ -343,7 +416,20 @@ public enum ModelSpecLoader {
         }
     }
 
-    public static Color parseColor(String colorString) {
+    static Color parseColor(String colorString) {
         return Color.fromARGBHexString(colorString);
     }
+
+    static NuminaModelSpecRegistry getReg() {
+        return NuminaModelSpecRegistry.getInstance();
+    }
+
+    String specName(ResourceLocation location) {
+        String path = location.getPath();
+        if (path.contains("/")) {
+            path = location.getPath().substring(path.lastIndexOf("/") + 1);
+        }
+        return path;
+    }
+
 }

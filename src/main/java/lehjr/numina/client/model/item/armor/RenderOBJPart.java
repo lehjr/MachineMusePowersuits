@@ -30,10 +30,11 @@ import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.math.Axis;
 import com.mojang.math.Transformation;
 import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.capabilities.render.modelspec.ObjlPartSpec;
-import lehjr.numina.common.capabilities.render.modelspec.NuminaModelRegistry;
+import lehjr.numina.common.capabilities.render.modelspec.NuminaModelSpecRegistry;
 import lehjr.numina.common.capabilities.render.modelspec.ObjModelSpec;
 import lehjr.numina.common.capabilities.render.modelspec.PartSpecBase;
 import lehjr.numina.common.constants.TagConstants;
@@ -46,6 +47,7 @@ import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.Vec3i;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.RandomSource;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.util.TransformationHelper;
@@ -91,116 +93,45 @@ public class RenderOBJPart extends ModelPart {
     }
 
     @Override
-    public void render(PoseStack pPoseStack, VertexConsumer pVertexConsumer, int pPackedLight, int pPackedOverlay) {
-        this.render(pPoseStack, pVertexConsumer, pPackedLight, pPackedOverlay, 1.0F, 1.0F, 1.0F, 1.0F);
+    public void copyFrom(ModelPart pModelPart) {
+        this.xScale = pModelPart.xScale;
+        this.yScale = pModelPart.yScale;
+        this.zScale = pModelPart.zScale;
+        this.xRot = pModelPart.xRot + this.xRotOffset;
+        this.yRot = pModelPart.yRot + this.yRotOffset;
+        this.zRot = pModelPart.zRot + this.zRotOffset;
+        this.x = pModelPart.x + this.xOffset;
+        this.y = pModelPart.y + this.yOffset;
+        this.z = pModelPart.z + this.zOffset;
     }
 
-    @Override
-    public void render(PoseStack matrixStackIn, VertexConsumer bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
-        if (this.visible) {
-            this.translateAndRotate(matrixStackIn);
-            // render actual parts...
-            this.doRendering(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
-        }
+    public void render(ObjlPartSpec partSpec, CompoundTag tag, PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, Color color) {
+        partSpec.getPart().ifPresent(objBakedPart -> {
+            if (this.visible) {
+                ImmutableList.Builder<BakedQuad> builder = ImmutableList.builder();
+                RandomSource random = RandomSource.create(42L);
+                builder.addAll(objBakedPart.getQuads(null, null, random));
+
+                poseStack.pushPose();
+                translateAndRotate(poseStack);
+
+                renderQuads(poseStack.last(),
+                        buffer,
+                        builder.build(),
+                        packedLight,
+                        packedOverlay,
+                        color.getARGBInt());
+                poseStack.popPose();
+            }
+        });
     }
 
     @Override
     public void translateAndRotate(PoseStack matrixStackIn) {
-//        matrixStackIn.pushPose();
-        matrixStackIn.translate(
-                (this.xOffset + this.x) * MathUtils.DIV_16F, // left/right??
-                (this.yOffset + this.y) * MathUtils.DIV_16F, // up/down
-                (this.zOffset + this.z) * MathUtils.DIV_16F); // forward/backwards
-
-
-        if (this.xRot + xRotOffset != 0.0F || this.yRot + yRotOffset != 0.0F || this.zRot + zRotOffset != 0.0F) {
-            matrixStackIn.mulPose((new Quaternionf()).rotationZYX(this.zRot + zRotOffset, this.yRot + yRotOffset, this.xRot + xRotOffset));
-        }
-
-        if (this.xScale != 1.0F || this.yScale != 1.0F || this.zScale != 1.0F) {
-            matrixStackIn.scale(this.xScale, this.yScale, this.zScale);
-        }
+        matrixStackIn.translate(0,  - yOffset * MathUtils.DIV_16F, 0);
+        super.translateAndRotate(matrixStackIn);
         matrixStackIn.mulPose(TransformationHelper.quatFromXYZ(new Vector3f(180, 0, 0), true));
         matrixStackIn.translate(0,  - yOffset * MathUtils.DIV_16F, 0);
-    }
-
-    PoseStack getCopy(PoseStack poseStack) {
-        PoseStack stack = new PoseStack();
-        // Apply the transformation to the real matrix stack
-        Matrix4f tMat = poseStack.last().pose();
-        Matrix3f nMat = poseStack.last().normal();
-        stack.last().pose().mul(tMat);
-        stack.last().normal().mul(nMat);
-
-        return stack;
-    }
-
-    void applyTransform(PoseStack poseStack, Transformation transformation) {
-        if (transformation != Transformation.identity()) {
-            PoseStack stack = new PoseStack();
-            stack.pushTransformation(transformation);
-            // Apply the transformation to the real matrix stack
-            Matrix4f tMat = stack.last().pose();
-            Matrix3f nMat = stack.last().normal();
-            poseStack.last().pose().mul(tMat);
-            poseStack.last().normal().mul(nMat);
-        }
-    }
-
-    private void doRendering(PoseStack matrixStackIn, VertexConsumer bufferIn, int packedLightIn, int packedOverlayIn) {
-        CompoundTag renderSpec = ArmorModelInstance.getInstance().getRenderSpec(); // FIXME: Not only is all of this stupid, it's probably not even threadsafe
-        if (renderSpec != null) {
-            int[] colors = renderSpec.getIntArray(TagConstants.COLORS);
-
-            if (colors.length == 0) {
-                colors = new int[]{Color.WHITE.getARGBInt()};
-            }
-
-            int partColor;
-            for (CompoundTag nbt : NBTTagAccessor.getValues(renderSpec)) {
-                PoseStack workingStack = getCopy(matrixStackIn);
-
-                PartSpecBase part = NuminaModelRegistry.getInstance().getPart(nbt);
-                if (part /* != null && part */ instanceof ObjlPartSpec) {
-                    // TODO slim model?
-                    if (part.getBinding().getSlot() == ArmorModelInstance.getInstance().getVisibleSection()
-                            && part.getBinding().getTarget().apply(ArmorModelInstance.getInstance()) == parent) {
-                        int ix = part.getColourIndex(nbt);
-                        // checks the range of the index to avoid errors OpenGL or crashing
-                        if (ix < colors.length && ix >= 0) {
-                            partColor = colors[ix];
-                        } else {
-                            partColor = -1;
-                        }
-
-                        // special transfomration applied by model?
-                        Transformation transform = ((ObjModelSpec) part.spec).getModelTransform();
-
-                        // fixme use this?
-                        // getTransforms().getTransform(cameraTransformType).apply(applyLeftHandTransform, poseStack);
-
-
-                        applyTransform(workingStack, transform);
-
-                        ImmutableList.Builder<BakedQuad> builder = ImmutableList.builder();
-                        Random random = new Random();
-                        long i = 42L;
-                        random.setSeed(i);
-                        NuminaLogger.logError("RenderPart ... getting quads not implemented yet");
-//                        builder.addAll(((ModelPartSpec) part).getPart().getQuads(null, null, random));
-
-                        PoseStack.Pose entry = workingStack.last();
-
-                        renderQuads(entry,
-                                bufferIn,
-                                builder.build(),
-                                part.getGlow() ? FULL_BRIGHTNESS : packedLightIn,
-                                part.getGlow() ? OverlayTexture.NO_OVERLAY : packedOverlayIn,
-                                partColor);
-                    }
-                }
-            }
-        }
     }
 
     public void renderQuads(PoseStack.Pose entry,
@@ -260,5 +191,13 @@ public class RenderOBJPart extends ModelPart {
                 bufferIn.vertex(pos.x(), pos.y(), pos.z(), red, green, blue, alpha, u, v, overlayCoords, lightmapCoord, normal.x(), normal.y(), normal.z());
             }
         }
+    }
+
+    @Override
+    public void render(PoseStack pPoseStack, VertexConsumer pVertexConsumer, int pPackedLight, int pPackedOverlay) {
+    }
+
+    @Override
+    public void render(PoseStack matrixStackIn, VertexConsumer bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
     }
 }

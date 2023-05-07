@@ -30,18 +30,14 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import lehjr.numina.client.gui.clickable.slider.VanillaFrameScrollBar;
 import lehjr.numina.client.gui.frame.ScrollableFrame;
 import lehjr.numina.client.gui.geometry.Rect;
-import lehjr.numina.common.capabilities.render.modelspec.NuminaModelRegistry;
+import lehjr.numina.common.capabilities.render.modelspec.NuminaModelSpecRegistry;
 import lehjr.numina.common.capabilities.render.modelspec.SpecBase;
-import lehjr.numina.common.capabilities.render.modelspec.SpecType;
 import lehjr.numina.common.math.Color;
 import lehjr.powersuits.client.gui.common.ModularItemSelectionFrame;
 import lehjr.powersuits.client.gui.common.ModularItemTabToggleWidget;
 import lehjr.powersuits.client.gui.modding.cosmetic.colorpicker.ColourPickerFrame;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.HumanoidArm;
-import net.minecraft.world.entity.Mob;
-import net.minecraft.world.item.ArmorItem;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
 import javax.annotation.Nonnull;
@@ -114,7 +110,7 @@ public class ModelManipFrame extends ScrollableFrame {
     public void refreshModelframes() {
         this.modelframes = new ArrayList<>();
         if (!getItem().isEmpty()) {
-            NuminaModelRegistry.getInstance().getSpecsAsStream().forEach(specBase -> {
+            NuminaModelSpecRegistry.getInstance().getSpecsAsStream().forEach(specBase -> {
                 if (isSpecValid(specBase)) {
                     System.out.println("spec is valid for slot:  " + specBase.getOwnName() + ", slot: " + getSlot().get());
 
@@ -132,30 +128,6 @@ public class ModelManipFrame extends ScrollableFrame {
                 }
             });
         }
-
-
-//            Iterable<SpecBase> specCollection = NuminaModelRegistry.getInstance().getSpecs();
-//            ModelManipSubframe prev = null;
-//            ModelManipSubframe newframe;
-//
-//            for (SpecBase modelspec : specCollection) {
-//                if (isSpecValid(modelspec) ) {
-//                    System.out.println("spec is valid for item? " + modelspec.getOwnName() +", itemstack: " + getItem().getDisplayName());
-//
-//
-//                    newframe = createNewFrame(modelspec);
-//
-//                    // empty when the parts are for a different equipment slot
-//                    if (!newframe.getParts().isEmpty()) {
-//                        newframe.setBelow(prev);
-//                        prev = newframe;
-//                        modelframes.add(newframe);
-//                    }
-//                } else {
-//                    System.out.println("spec not valid for item? " + modelspec.getOwnName() +", itemstack: " + getItem().getDisplayName());
-//                }
-//            }
-//        }
     }
 
     /**
@@ -169,28 +141,17 @@ public class ModelManipFrame extends ScrollableFrame {
             EquipmentSlot slot = getSlot().get();
 
             if (slot.isArmor()) {
+                System.out.println("slot is armor and specBase.hasArmorEquipmentSlot(slot): " + specBase.hasArmorEquipmentSlot(slot));
                 return specBase.hasArmorEquipmentSlot(slot);
             } else {
                 HumanoidArm arm = slot.equals(EquipmentSlot.MAINHAND) ? getMinecraft().player.getMainArm() : getMinecraft().player.getMainArm().getOpposite();
+                System.out.println("isForHand: " + specBase.getPartsAsStream().anyMatch(partSpecBase -> partSpecBase.isForHand(arm, getMinecraft().player)));
+
                 return specBase.getPartsAsStream().anyMatch(partSpecBase -> partSpecBase.isForHand(arm, getMinecraft().player));
             }
         }
+        System.out.println("returning false ");
         return false;
-
-//        if (!getItem().isEmpty()) {
-//            Item item = getItem().getItem();
-//            EquipmentSlot slotType;
-//            if (item instanceof ArmorItem) {
-//                slotType = ((ArmorItem) item).getSlot();
-//                return specBase.getSpecType().equals(SpecType.ARMOR_OBJ_MODEL) ||
-//                        specBase.getSpecType().equals(SpecType.ARMOR_SKIN) &&
-//                                doesSpecHaveSlotType(specBase, slotType);
-//            } else {
-//                return (specBase.getSpecType().equals(SpecType.HANDHELD_OBJ_MODEL) ||specBase.getSpecType().equals(SpecType.HANDHELD_JAVA_MODEL)) &&
-//                        (doesSpecHaveSlotType(specBase, EquipmentSlot.OFFHAND) || doesSpecHaveSlotType(specBase, EquipmentSlot.MAINHAND));
-//            }
-//        }
-//        return false;
     }
 
     /**

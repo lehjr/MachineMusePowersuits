@@ -27,6 +27,7 @@
 package lehjr.numina.common.capabilities.render.modelspec;
 
 import lehjr.numina.common.constants.TagConstants;
+import lehjr.numina.common.math.Color;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -48,12 +49,17 @@ public abstract class PartSpecBase {
     public PartSpecBase(final SpecBase spec,
                         final SpecBinding binding,
                         final String partName,
-                        final Integer defaultcolorindex,
+                        final Color color,
                         final Boolean defaultglow) {
         this.spec = spec;
         this.partName = partName;
         this.binding = binding;
-        if (defaultcolorindex != null && defaultcolorindex >= 0)
+
+        SpecBase other = NuminaModelSpecRegistry.getInstance().get(spec.getName());
+
+        int defaultcolorindex = other.addColorIfNotExist(color);
+
+        if (defaultcolorindex >= 0)
             this.defaultcolorindex = defaultcolorindex;
         else
             this.defaultcolorindex = 0;
@@ -120,8 +126,8 @@ public abstract class PartSpecBase {
     }
 
     public void setModel(CompoundTag nbt, SpecBase model) {
-        String modelString = NuminaModelRegistry.getInstance().getName(model);
-        setModel(nbt, ((modelString != null) ? modelString : ""));
+        String modelString = NuminaModelSpecRegistry.getInstance().getName(model);
+        setModel(nbt, ((modelString != null) ? modelString : model.getOwnName()));
     }
 
     public void setModel(CompoundTag nbt, String modelname) {

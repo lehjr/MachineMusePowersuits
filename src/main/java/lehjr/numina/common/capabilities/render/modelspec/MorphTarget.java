@@ -60,7 +60,9 @@ public enum MorphTarget {
 
     /** these are for hand specific models, like the MPS Power Fist. The equipment slot should be ignored */
     RightHand("right_hand", EquipmentSlot.MAINHAND), // do not rely on slot alone
-    Lefthand("left_hand", EquipmentSlot.OFFHAND); // do not rely on slot alone
+    Lefthand("left_hand", EquipmentSlot.OFFHAND), // do not rely on slot alone
+    AnyHand("any_hand", EquipmentSlot.MAINHAND); // do not rely on slot alone
+
 
     String name;
     EquipmentSlot slot;
@@ -71,6 +73,8 @@ public enum MorphTarget {
     }
 
     public static MorphTarget getMorph(final String name) {
+        System.out.println("trying to get binding from: " + name);
+
         return Arrays.stream(values()).filter(morph -> name.toLowerCase().equals(morph.name)).findAny().orElseGet(null);
     }
 
@@ -90,6 +94,10 @@ public enum MorphTarget {
         if (!slot.isArmor() && !this.slot.isArmor()) {
             if (this.equals(MainHand) || this.equals(OffHand)) {
                 return slot.equals(this.slot);
+            }
+            // don't care
+            if (this.equals(AnyHand)) {
+                return true;
             }
 
             HumanoidArm arm = slot.equals(EquipmentSlot.MAINHAND) ? entity.getMainArm() : entity.getMainArm().getOpposite();
