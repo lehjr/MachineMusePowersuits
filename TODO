@@ -109,7 +109,7 @@ Shovel-> (test? )
 Binoculars-> (test? )
 NightVision-> (test? )
 -----------------------------
-BladeLauncher-> (test? ) (fix rendering angle at launch to match player view angle)
+BladeLauncher-> (test? ) (fix rendering angle at launch to match player view angle -> rotate pitch/roll before yaw (spin) )
 Lightning-> (test? )
 Melee-> (test? )
 PlasmaCannon-> (working )
