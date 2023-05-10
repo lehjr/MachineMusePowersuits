@@ -29,13 +29,13 @@ package lehjr.powersuits.client.gui.modding.module.tweak;
 
 import com.google.common.util.concurrent.AtomicDouble;
 import com.mojang.blaze3d.vertex.PoseStack;
+import lehjr.numina.client.gui.frame.ModularItemSelectionFrame;
 import lehjr.numina.client.gui.frame.ScrollableFrame;
 import lehjr.numina.client.gui.geometry.Rect;
 import lehjr.numina.common.capabilities.NuminaCapabilities;
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.string.StringUtils;
-import lehjr.powersuits.client.gui.common.ModularItemSelectionFrame;
 import lehjr.powersuits.common.constants.MPSConstants;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.EquipmentSlot;

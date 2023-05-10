@@ -32,7 +32,6 @@ import lehjr.numina.client.event.FOVUpdateEventHandler;
 import lehjr.numina.client.event.ModelBakeEventHandler;
 import lehjr.numina.client.event.ToolTipEvent;
 import lehjr.numina.client.gui.GuiIcon;
-import lehjr.numina.client.model.helper.ModelSpecLoader;
 import lehjr.numina.client.model.helper.ModelTransformCalibration;
 import lehjr.numina.client.render.IconUtils;
 import lehjr.numina.client.render.NuminaSpriteUploader;
@@ -62,7 +61,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.client.event.ModelEvent;
 import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
-import net.minecraftforge.client.event.ScreenEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
@@ -170,7 +168,7 @@ public class Numina {
         modEventBus.addListener(ModelBakeEventHandler.INSTANCE::onAddAdditional);
 
         MinecraftForge.EVENT_BUS.addListener((InputEvent.Key e) -> {
-            ModelTransformCalibration.CALIBRATION.transformCalibration(e);
+//            ModelTransformCalibration.CALIBRATION.transformCalibration(e);
         });
     }
 

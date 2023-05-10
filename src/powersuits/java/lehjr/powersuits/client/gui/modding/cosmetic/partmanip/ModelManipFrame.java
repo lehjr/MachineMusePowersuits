@@ -27,14 +27,14 @@
 package lehjr.powersuits.client.gui.modding.cosmetic.partmanip;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import lehjr.numina.client.gui.clickable.ModularItemTabToggleWidget;
 import lehjr.numina.client.gui.clickable.slider.VanillaFrameScrollBar;
+import lehjr.numina.client.gui.frame.ModularItemSelectionFrame;
 import lehjr.numina.client.gui.frame.ScrollableFrame;
 import lehjr.numina.client.gui.geometry.Rect;
 import lehjr.numina.common.capabilities.render.modelspec.NuminaModelSpecRegistry;
 import lehjr.numina.common.capabilities.render.modelspec.SpecBase;
 import lehjr.numina.common.math.Color;
-import lehjr.powersuits.client.gui.common.ModularItemSelectionFrame;
-import lehjr.powersuits.client.gui.common.ModularItemTabToggleWidget;
 import lehjr.powersuits.client.gui.modding.cosmetic.colorpicker.ColourPickerFrame;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.HumanoidArm;

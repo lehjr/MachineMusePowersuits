@@ -102,7 +102,7 @@ public class LuxCapacitorModule extends AbstractPowerModule {
                         LuxCapacitorEntity luxCapacitor = new LuxCapacitorEntity(worldIn, playerIn, new Color(red, green, blue, alpha));
                         worldIn.addFreshEntity(luxCapacitor);
                     }
-                    return InteractionResultHolder.success(itemStackIn);
+                    return InteractionResultHolder.sidedSuccess(itemStackIn, worldIn.isClientSide());
                 }
                 return InteractionResultHolder.pass(itemStackIn);
             }

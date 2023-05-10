@@ -137,6 +137,8 @@
   "item.powersuits.swim_assist.desc": "By refitting an ion thruster for underwater use, you may be able to add extra forward (or backward) thrust when underwater.",
   "item.powersuits.transparent_armor": "Transparent Armor",
   "item.powersuits.transparent_armor.desc": "Make the item transparent, so you can show off your skin without losing armor.",
+  "item.powertsuits.tunnel_bore": "Tunnel Bore",
+  "item.powertsuits.tunnel_bore.desc": "really shouldn't need an explanation",
   "item.powersuits.vein_miner": "Vein Miner",
   "item.powersuits.vein_miner.desc": "A module for mining ore veins",
   "item.powersuits.water_electrolyzer": "Water Electrolyzer",

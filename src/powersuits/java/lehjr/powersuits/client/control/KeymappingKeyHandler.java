@@ -145,16 +145,11 @@ public class KeymappingKeyHandler {
             if (markForSync) {
                 NuminaPackets.CHANNEL_INSTANCE.sendToServer(new PlayerUpdatePacket(byteOut));
             }
-
-
-            // looks weird, but if both keys are pressed it just balances
-//            byte strafeKeyState = (byte) ((minecraft.options.keyRight.isDown() ? -1 : 0) + (minecraft.options.keyLeft.isDown() ? 1 : 0));
-
         });
     }
 
     @SubscribeEvent
-    public void onKeyInput(InputEvent e) {
+    public void onKeyInput(InputEvent.Key e) {
         LocalPlayer player = minecraft.player;
         if (player == null) {
             return;

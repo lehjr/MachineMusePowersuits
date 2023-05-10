@@ -40,12 +40,11 @@ import lehjr.powersuits.client.control.KeymappingKeyHandler;
 import lehjr.powersuits.client.event.ModelBakeEventHandler;
 import lehjr.powersuits.client.event.RenderEventHandler;
 import lehjr.powersuits.client.gui.modding.module.install_salvage.InstallSalvageGui;
+import lehjr.powersuits.client.sound.MPSSoundDictionary;
 import lehjr.powersuits.common.config.MPSSettings;
 import lehjr.powersuits.common.constants.MPSConstants;
 import lehjr.powersuits.common.constants.MPSRegistryNames;
-import lehjr.powersuits.common.event.EntityDamageEvent;
-import lehjr.powersuits.common.event.HarvestEventHandler;
-import lehjr.powersuits.common.event.LogoutEventHandler;
+import lehjr.powersuits.common.event.*;
 import lehjr.powersuits.common.network.MPSPackets;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.core.Direction;
@@ -105,12 +104,12 @@ public class ModularPowersuits {
         MinecraftForge.EVENT_BUS.register(this);
         MinecraftForge.EVENT_BUS.addListener(EntityDamageEvent::handleEntityDamageEvent); // FIXME: does nothing
         MinecraftForge.EVENT_BUS.addListener(EntityDamageEvent::entityAttackEventHandler); // FIXME: does nothing
-//        MinecraftForge.EVENT_BUS.register(new PlayerUpdateHandler());
-////        MinecraftForge.EVENT_BUS.register(MovementManager.INSTANCE);
+        MinecraftForge.EVENT_BUS.register(new PlayerUpdateHandler());
+        MinecraftForge.EVENT_BUS.register(MovementManager.INSTANCE);
 ////
         MinecraftForge.EVENT_BUS.addListener(HarvestEventHandler::handleHarvestCheck);
         MinecraftForge.EVENT_BUS.addListener(HarvestEventHandler::handleBreakSpeed);
-
+        MPSSoundDictionary.MPS_SOUND_EVENTS.register(modEventBus);
 
         // handles loading and reloading event
         modEventBus.addListener((ModConfigEvent event) -> {
@@ -150,6 +149,8 @@ public class ModularPowersuits {
         MinecraftForge.EVENT_BUS.register(RenderEventHandler.INSTANCE);
         MinecraftForge.EVENT_BUS.register(new KeymappingKeyHandler());
         MinecraftForge.EVENT_BUS.register(new LogoutEventHandler());
+
+
 
         MenuScreens.register(MPSMenuTypes.INSTALL_SALVAGE_MENU_TYPE.get(), InstallSalvageGui::new);
 

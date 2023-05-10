@@ -106,6 +106,18 @@ public class ShearsModule extends AbstractPowerModule {
                 super(module, category, target, config);
             }
 
+
+
+
+
+
+
+
+
+
+
+
+
             @Override
             public boolean mineBlock(@NotNull ItemStack powerFist, Level worldIn, BlockState state, BlockPos pos, LivingEntity entityLiving, int playerEnergy) {
 //                if (entityLiving.level.isClientSide() || state.getBlock().is(BlockTags.FIRE)) {

@@ -42,7 +42,7 @@ import javax.annotation.Nonnull;
  */
 public final class PlayerUtils {
     public static void resetFloatKickTicks(Player player) {
-        if (player instanceof ServerPlayer) {
+        if (player instanceof ServerPlayer && ((ServerPlayer) player).connection != null) {
             ((ServerPlayer) player).connection.aboveGroundTickCount = 0;
         }
     }

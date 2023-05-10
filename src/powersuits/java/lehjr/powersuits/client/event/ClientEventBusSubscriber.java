@@ -3,7 +3,6 @@ package lehjr.powersuits.client.event;
 import lehjr.powersuits.client.control.KeyMappingReaderWriter;
 import lehjr.powersuits.client.control.KeymappingKeyHandler;
 import lehjr.powersuits.client.gui.overlay.MPSHud;
-//import lehjr.powersuits.client.render.blockentity.LuxCapacitorBER;
 import lehjr.powersuits.client.render.blockentity.TinkerTableBER;
 import lehjr.powersuits.client.render.entity.LuxCapacitorEntityRenderer;
 import lehjr.powersuits.client.render.entity.PlasmaBoltEntityRenderer;

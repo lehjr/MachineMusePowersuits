@@ -113,8 +113,8 @@ public class MPSItems {
             WaterElectrolyzerModule::new);
 
     // Mining Enhancements ------------------------------------------------------------------------
-    public static final RegistryObject<Item> AOE_PICK_UPGRADE_MODULE = MPS_ITEMS.register(MPSRegistryNames.AOE_PICK_UPGRADE_MODULE.getPath(),
-            AOEPickUpgradeModule::new);
+//    public static final RegistryObject<Item> AOE_PICK_UPGRADE_MODULE = MPS_ITEMS.register(MPSRegistryNames.AOE_PICK_UPGRADE_MODULE.getPath(),
+//            AOEPickUpgradeModule::new);
     public static final RegistryObject<Item> AQUA_AFFINITY_MODULE = MPS_ITEMS.register(MPSRegistryNames.AQUA_AFFINITY_MODULE.getPath(),
             AquaAffinityModule::new);
     public static final RegistryObject<Item> SILK_TOUCH_MODULE = MPS_ITEMS.register(MPSRegistryNames.SILK_TOUCH_MODULE.getPath(),
@@ -128,7 +128,7 @@ public class MPSItems {
     public static final RegistryObject<Item> TUNNEL_BORE_MODULE = MPS_ITEMS.register(MPSRegistryNames.TUNNEL_BORE_MODULE.getPath(),
             TunnelBoreModule::new);
     public static final RegistryObject<Item> AOE_PICK_UPGRADE_MODULE2 = MPS_ITEMS.register(MPSRegistryNames.AOE_PICK_UPGRADE_MODULE2.getPath(),
-        AoEpickUpgradeModule2::new);
+        AdvancedVeinMiner::new);
 
     // Movement -----------------------------------------------------------------------------------
     public static final RegistryObject<Item> BLINK_DRIVE_MODULE = MPS_ITEMS.register(MPSRegistryNames.BLINK_DRIVE_MODULE.getPath(),

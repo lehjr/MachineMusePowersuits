@@ -119,7 +119,7 @@ public class JetPackModule extends AbstractPowerModule {
                                 ElectricItemUtils.drainPlayerEnergy(player, (int) (thrust * jetEnergy * 5));
                             }
                         } else if (NuminaSettings.useSounds()) {
-                            Musique.playerSound(player, MPSSoundDictionary.JETPACK.get(), SoundSource.PLAYERS, (float) (thrust * 6.25), 1.0f, true);
+                            Musique.playerSound(player, MPSSoundDictionary.SOUND_EVENT_JETPACK.get(), SoundSource.PLAYERS, (float) (thrust * 6.25), 1.0f, true);
                         }
                     } else {
                         onPlayerTickInactive(player, torso);
@@ -129,7 +129,7 @@ public class JetPackModule extends AbstractPowerModule {
             @Override
             public void onPlayerTickInactive(Player player, ItemStack item) {
                 if (player.level.isClientSide && NuminaSettings.useSounds()) {
-                    Musique.stopPlayerSound(player, MPSSoundDictionary.JETPACK.get());
+                    Musique.stopPlayerSound(player, MPSSoundDictionary.SOUND_EVENT_JETPACK.get());
                 }
             }
         }

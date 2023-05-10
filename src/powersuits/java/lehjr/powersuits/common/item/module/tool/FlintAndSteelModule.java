@@ -32,14 +32,29 @@ import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
 import lehjr.numina.common.capabilities.module.rightclick.RightClickModule;
+import lehjr.numina.common.energy.ElectricItemUtils;
 import lehjr.powersuits.common.config.MPSSettings;
 import lehjr.powersuits.common.constants.MPSConstants;
 import lehjr.powersuits.common.item.module.AbstractPowerModule;
+import net.minecraft.advancements.CriteriaTriggers;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.BaseFireBlock;
+import net.minecraft.world.level.block.CampfireBlock;
+import net.minecraft.world.level.block.CandleBlock;
+import net.minecraft.world.level.block.CandleCakeBlock;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
@@ -53,7 +68,6 @@ import java.util.concurrent.Callable;
  * 10:48 PM 6/11/13
  */
 public class FlintAndSteelModule extends AbstractPowerModule {
-
     @Nullable
     @Override
     public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt) {
@@ -73,49 +87,49 @@ public class FlintAndSteelModule extends AbstractPowerModule {
             powerModuleHolder = LazyOptional.of(() -> rightClickie);
         }
 
-
         class RightClickie extends RightClickModule {
             public RightClickie(@Nonnull ItemStack module, ModuleCategory category, ModuleTarget target, Callable<IConfig> config) {
                 super(module, category, target, config);
             }
 
             /**
-             * Called when this item is used when targetting a Block
+             * Called when this item is used when targeting a Block. Code pretty much same as vanilla
              */
             @Override
             public InteractionResult useOn(UseOnContext context) {
-//                int energyConsumption = getEnergyUsage();
-//                Player player = context.getPlayer();
-//                if (ElectricItemUtils.getPlayerEnergy(player) < energyConsumption ) {
-//                    return InteractionResult.FAIL;
-//                }
-//
-//                Level world = context.getLevel();
-//                BlockPos blockpos = context.func_195995_a();
-//                BlockState blockstate = world.getBlockState(blockpos);
-//                if (CampfireBlock.func_241470_h_(blockstate)) {
-//                    world.func_184133_a(player, blockpos, SoundEvents.field_187649_bu, SoundSource.BLOCKS, 1.0F, field_77697_d.nextFloat() * 0.4F + 0.8F);
-//                    world.func_180501_a(blockpos, blockstate.func_206870_a(BlockStateProperties.field_208190_q, Boolean.valueOf(true)), 11);
-//                    if (player != null) {
-//                        ElectricItemUtils.drainPlayerEnergy(player, energyConsumption);
-//                    }
-//                    return InteractionResult.func_233537_a_(world.isClientSide());
-//                } else {
-//                    BlockPos blockpos1 = blockpos.func_177972_a(context.func_196000_l());
-//                    if (AbstractFireBlock.func_241465_a_(world, blockpos1, context.func_195992_f())) {
-//                        world.func_184133_a(player, blockpos1, SoundEvents.field_187649_bu, SoundSource.BLOCKS, 1.0F, field_77697_d.nextFloat() * 0.4F + 0.8F);
-//                        BlockState blockstate1 = AbstractFireBlock.func_235326_a_(world, blockpos1);
-//                        world.func_180501_a(blockpos1, blockstate1, 11);
-//                        ItemStack itemstack = context.func_195996_i();
-//                        if (player instanceof ServerPlayer) {
-//                            CriteriaTriggers.field_193137_x.func_193173_a((ServerPlayer)player, blockpos1, itemstack);
-//                            ElectricItemUtils.drainPlayerEnergy(player, energyConsumption);
-//                        }
-//                        return InteractionResult.func_233537_a_(world.isClientSide());
-//                    } else {
+                int energyConsumption = getEnergyUsage();
+                Player player = context.getPlayer();
+                if (ElectricItemUtils.getPlayerEnergy(player) < energyConsumption ) {
+                    return InteractionResult.FAIL;
+                }
+                Level level = context.getLevel();
+                BlockPos blockpos = context.getClickedPos();
+                BlockState blockstate = level.getBlockState(blockpos);
+                if (!CampfireBlock.canLight(blockstate) && !CandleBlock.canLight(blockstate) && !CandleCakeBlock.canLight(blockstate)) {
+                    BlockPos blockpos1 = blockpos.relative(context.getClickedFace());
+                    if (BaseFireBlock.canBePlacedAt(level, blockpos1, context.getHorizontalDirection())) {
+                        level.playSound(player, blockpos1, SoundEvents.FLINTANDSTEEL_USE, SoundSource.BLOCKS, 1.0F, level.getRandom().nextFloat() * 0.4F + 0.8F);
+                        BlockState blockstate1 = BaseFireBlock.getState(level, blockpos1);
+                        level.setBlock(blockpos1, blockstate1, 11);
+                        level.gameEvent(player, GameEvent.BLOCK_PLACE, blockpos);
+                        ItemStack itemstack = context.getItemInHand();
+                        if (player instanceof ServerPlayer) {
+                            CriteriaTriggers.PLACED_BLOCK.trigger((ServerPlayer)player, blockpos1, itemstack);
+                            ElectricItemUtils.drainPlayerEnergy(player, energyConsumption);
+                        }
+                        return InteractionResult.sidedSuccess(level.isClientSide());
+                    } else {
                         return InteractionResult.FAIL;
-//                    }
-//                }
+                    }
+                } else {
+                    level.playSound(player, blockpos, SoundEvents.FLINTANDSTEEL_USE, SoundSource.BLOCKS, 1.0F, level.getRandom().nextFloat() * 0.4F + 0.8F);
+                    level.setBlock(blockpos, blockstate.setValue(BlockStateProperties.LIT, Boolean.valueOf(true)), 11);
+                    level.gameEvent(player, GameEvent.BLOCK_CHANGE, blockpos);
+                    if (player != null) {
+                        ElectricItemUtils.drainPlayerEnergy(player, energyConsumption);
+                    }
+                    return InteractionResult.sidedSuccess(level.isClientSide());
+                }
             }
 
             @Override

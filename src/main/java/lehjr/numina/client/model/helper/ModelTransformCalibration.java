@@ -32,7 +32,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.InputEvent;
-import net.minecraftforge.client.event.ScreenEvent;
 import org.lwjgl.glfw.GLFW;
 
 @OnlyIn(Dist.CLIENT)
@@ -87,8 +86,7 @@ public enum ModelTransformCalibration {
             default -> 1;
         };
 
-        System.out.println("keycode: " + key);
-        switch (key) {
+         switch (key) {
             case GLFW.GLFW_KEY_INSERT ->{
                 xOffest += delta;
             }

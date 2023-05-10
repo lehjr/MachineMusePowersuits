@@ -226,7 +226,7 @@ public enum MovementManager {
                         double drain = jumper.applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION);
                         int avail = ElectricItemUtils.getPlayerEnergy(player);
                         if ((player.level.isClientSide()) && NuminaSettings.useSounds()) {
-                            Musique.playerSound(player, MPSSoundDictionary.JUMP_ASSIST.get(), SoundSource.PLAYERS, (float) (jumpAssist / 8.0), (float) 1, false);
+                            Musique.playerSound(player, MPSSoundDictionary.SOUND_EVENT_JUMP_ASSIST.get(), SoundSource.PLAYERS, (float) (jumpAssist / 8.0), (float) 1, false);
                         }
 
                         if (drain < avail) {

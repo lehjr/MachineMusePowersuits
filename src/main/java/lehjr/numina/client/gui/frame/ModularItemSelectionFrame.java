@@ -1,9 +1,9 @@
-package lehjr.powersuits.client.gui.common;
+package lehjr.numina.client.gui.frame;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import lehjr.numina.client.gui.clickable.IClickable;
+import lehjr.numina.client.gui.clickable.ModularItemTabToggleWidget;
 import lehjr.numina.client.gui.clickable.button.VanillaButton;
-import lehjr.numina.client.gui.frame.AbstractGuiFrame;
 import lehjr.numina.client.gui.geometry.DrawableTile;
 import lehjr.numina.client.gui.geometry.IRect;
 import lehjr.numina.client.gui.geometry.MusePoint2D;

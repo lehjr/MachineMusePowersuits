@@ -92,8 +92,6 @@ public class Musique {
     public static void stopPlayerSound(Player player, SoundEvent soundEvt) {
         if (NuminaSettings.useSounds()) {
             String soundID = makeSoundString(player, soundEvt);
-            System.out.println("soundId: " + soundID);
-
             MovingSoundPlayer sound = soundMap.get(soundID);
             if (sound != null) {
                 sound.stopPlaying();

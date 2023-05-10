@@ -50,9 +50,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 
 /**
- * TODO: this will become the new AoE module... similar to the vein miner but to break selected block type
+ *
  */
-public class AoEpickUpgradeModule2 extends AbstractPowerModule {
+public class AdvancedVeinMiner extends AbstractPowerModule {
 
     @Nullable
     @Override
@@ -104,13 +104,8 @@ public class AoEpickUpgradeModule2 extends AbstractPowerModule {
                 if (context.getHand().equals(InteractionHand.MAIN_HAND) && context.getLevel().isClientSide()) {
                     if (KeymappingKeyHandler.isKeyPressed(GLFW.GLFW_KEY_LEFT_SHIFT) || KeymappingKeyHandler.isKeyPressed(GLFW.GLFW_KEY_RIGHT_SHIFT)) {
                         BlockHitResult rayTraceResult = getPlayerPOVHitResult(context.getLevel(), context.getPlayer(), ClipContext.Fluid.NONE);
-//                        if (rayTraceResult.getType() == HitResult.Type.BLOCK) {
                         if (!(rayTraceResult == null)) {
-//                            System.out.println("before set: " + chameleon.getTargetBlockRegName());
-
                             chameleon.setTargetBlock(context.getLevel().getBlockState(rayTraceResult.getBlockPos()).getBlock());
-
-//                            System.out.println("after set: " + chameleon.getTargetBlockRegName());
                         }
                     }
                 }

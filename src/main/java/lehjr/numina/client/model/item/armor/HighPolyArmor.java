@@ -32,7 +32,6 @@ import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.capabilities.render.modelspec.MorphTarget;
 import lehjr.numina.common.capabilities.render.modelspec.ObjlPartSpec;
 import lehjr.numina.common.math.Color;
-import lehjr.numina.common.math.MathUtils;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.RenderType;
@@ -66,34 +65,7 @@ public class HighPolyArmor<T extends LivingEntity> extends HumanoidModel<T> {
 
     public HighPolyArmor(ModelPart root) {
         super(root, RenderType::itemEntityTranslucentCull);
-//        this.CALIBRATION = new ModelTransformCalibration();
         init();
-    }
-
-
-    public CompoundTag getRenderSpec() {
-        return this.renderSpec;
-    }
-
-    public void setRenderSpec(CompoundTag nbt) {
-        renderSpec = nbt;
-    }
-
-    public EquipmentSlot getVisibleSection() {
-        return this.visibleSection;
-    }
-
-    public void setVisibleSection(EquipmentSlot equipmentSlot) {
-        this.visibleSection = equipmentSlot;
-        this.hat.visible = false;
-
-        // This may not actually be needed
-        this.head.visible = equipmentSlot == EquipmentSlot.HEAD;
-        this.body.visible = equipmentSlot == EquipmentSlot.CHEST;
-        this.rightArm.visible = equipmentSlot == EquipmentSlot.CHEST;
-        this.leftArm.visible = equipmentSlot == EquipmentSlot.CHEST;
-        this.rightLeg.visible = equipmentSlot == EquipmentSlot.LEGS;
-        this.leftLeg.visible = equipmentSlot == EquipmentSlot.LEGS;
     }
 
     @Override
@@ -110,8 +82,6 @@ public class HighPolyArmor<T extends LivingEntity> extends HumanoidModel<T> {
         return mpToRp.get(target.apply(this));
     }
 
-
-
     public void renderToBuffer(ObjlPartSpec partSpec, CompoundTag tag, PoseStack poseStack, VertexConsumer pBuffer, int packedLight, int packedOverlay, Color color) {
         RenderOBJPart part = mpToRp.get(partSpec.getBinding().getTarget().apply(this));
         if (part != null ) {
@@ -125,45 +95,6 @@ public class HighPolyArmor<T extends LivingEntity> extends HumanoidModel<T> {
 
     @Override
     public void renderToBuffer(PoseStack poseStack, VertexConsumer pBuffer, int pPackedLight, int pPackedOverlay, float pRed, float pGreen, float pBlue, float pAlpha) {
-//        Transformation transform = CALIBRATION.getTransform();
-//        if (transform != Transformation.identity()) {
-//            transform.push(poseStack);
-//        }
-
-        try {
-            this.headParts().forEach((part) -> {
-                if (part != null) {
-                    poseStack.pushPose();
-                    float offset = ((RenderOBJPart) part).yOffset * MathUtils.DIV_16F;
-                    poseStack.translate(0,  -offset, 0);
-
-                    part.render(poseStack, pBuffer, pPackedLight, pPackedOverlay, pRed, pGreen, pBlue, pAlpha);
-
-                    poseStack.popPose();
-
-                }
-            });
-
-        } catch (Exception ignored) {
-            NuminaLogger.logException("error rendering head parts: ", ignored);
-        }
-
-        try {
-            this.bodyParts().forEach((part) -> {
-                if (part != null && part instanceof RenderOBJPart) {
-                    poseStack.pushPose();
-                    float offset = ((RenderOBJPart) part).yOffset * MathUtils.DIV_16F;
-                    poseStack.translate(0,  -offset, 0);
-                    part.render(poseStack, pBuffer, pPackedLight, pPackedOverlay, pRed, pGreen, pBlue, pAlpha);
-                    poseStack.popPose();
-                }
-            });
-        } catch (Exception ignored) {
-            NuminaLogger.logException("error rendering body parts: ", ignored);
-        }
-//        if (transform != Transformation.identity()) {
-//            poseStack.popPose();
-//        }
     }
 
     @Override

@@ -1,4 +1,4 @@
-package lehjr.powersuits.client.gui.common;
+package lehjr.numina.client.gui.frame;
 
 import lehjr.numina.client.gui.geometry.MusePoint2D;
 import lehjr.numina.client.gui.slot.IHideableSlot;

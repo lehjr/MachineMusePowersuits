@@ -63,24 +63,24 @@ public class PlayerUpdateHandler {
                 if ((player.getItemBySlot(EquipmentSlot.CHEST).getItem() instanceof PowerArmorChestplate)) {
                     double velsq2 = MathUtils.sumsq(player.getDeltaMovement().x, player.getDeltaMovement().y, player.getDeltaMovement().z) - 0.5;
                     if (player.hasImpulse && velsq2 > 0) {
-                        Musique.playerSound(player, MPSSoundDictionary.GLIDER.get(), SoundSource.PLAYERS, (float) (velsq2 / 3), 1.0f, true);
+                        Musique.playerSound(player, MPSSoundDictionary.SOUND_EVENT_GLIDER.get(), SoundSource.PLAYERS, (float) (velsq2 / 3), 1.0f, true);
                     } else {
-                        Musique.stopPlayerSound(player, MPSSoundDictionary.GLIDER.get());
+                        Musique.stopPlayerSound(player, MPSSoundDictionary.SOUND_EVENT_GLIDER.get());
                     }
                 } else {
-                    Musique.stopPlayerSound(player, MPSSoundDictionary.GLIDER.get());
+                    Musique.stopPlayerSound(player, MPSSoundDictionary.SOUND_EVENT_GLIDER.get());
                 }
 
                 if (!(player.getItemBySlot(EquipmentSlot.FEET).getItem() instanceof PowerArmorBoots)) {
-                    Musique.stopPlayerSound(player, MPSSoundDictionary.JETBOOTS.get());
+                    Musique.stopPlayerSound(player, MPSSoundDictionary.SOUND_EVENT_JETBOOTS.get());
                 }
 
                 if (!(player.getItemBySlot(EquipmentSlot.CHEST).getItem() instanceof PowerArmorChestplate)) {
-                    Musique.stopPlayerSound(player, MPSSoundDictionary.JETPACK.get());
+                    Musique.stopPlayerSound(player, MPSSoundDictionary.SOUND_EVENT_JETPACK.get());
                 }
 
                 if (!(player.getItemBySlot(EquipmentSlot.LEGS).getItem() instanceof PowerArmorLeggings)) {
-                    Musique.stopPlayerSound(player, MPSSoundDictionary.SWIM_ASSIST.get());
+                    Musique.stopPlayerSound(player, MPSSoundDictionary.SOUND_EVENT_SWIM_ASSIST.get());
                 }
             }
         }

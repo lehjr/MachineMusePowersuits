@@ -28,10 +28,8 @@ package lehjr.numina.common.capabilities.render.modelspec;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Transformation;
-import lehjr.numina.client.model.obj.OBJBakedCompositeModel;
 import lehjr.numina.client.model.obj.OBJBakedPart;
 import lehjr.numina.common.math.Color;
-import net.minecraft.network.chat.Component;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.joml.Matrix3f;

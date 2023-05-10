@@ -27,7 +27,6 @@
 package lehjr.powersuits.client.event;
 
 
-import lehjr.numina.client.model.helper.ModelSpecLoader;
 import lehjr.numina.client.model.obj.OBJBakedCompositeModel;
 import lehjr.numina.common.math.Color;
 import lehjr.powersuits.client.model.block.LuxCapacitorModelWrapper;

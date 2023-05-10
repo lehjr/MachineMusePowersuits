@@ -1,9 +1,9 @@
 package lehjr.powersuits.client.gui.modding.module.install_salvage;
 
 import lehjr.numina.client.gui.clickable.ClickableModule;
+import lehjr.numina.client.gui.frame.ModularItemSelectionFrame;
 import lehjr.numina.client.gui.geometry.Rect;
 import lehjr.numina.common.capabilities.NuminaCapabilities;
-import lehjr.powersuits.client.gui.common.ModularItemSelectionFrame;
 import lehjr.powersuits.client.gui.modding.module.tweak.ModuleSelectionFrame;
 import lehjr.powersuits.client.gui.modding.module.tweak.ModuleSelectionSubFrame;
 import net.minecraft.core.NonNullList;

@@ -29,7 +29,6 @@ package lehjr.numina.common.capabilities.render.modelspec;
 import com.mojang.math.Transformation;
 import lehjr.numina.client.event.ModelBakeEventHandler;
 import lehjr.numina.client.model.obj.OBJBakedCompositeModel;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ItemTransform;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.resources.model.BakedModel;
@@ -37,7 +36,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.Objects;
 import java.util.Optional;
 

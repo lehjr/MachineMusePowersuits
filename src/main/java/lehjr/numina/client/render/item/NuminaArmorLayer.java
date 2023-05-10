@@ -32,10 +32,12 @@ import com.mojang.math.Transformation;
 import lehjr.numina.client.model.helper.ModelTransformCalibration;
 import lehjr.numina.client.model.item.armor.ArmorModelInstance;
 import lehjr.numina.client.model.item.armor.HighPolyArmor;
-import lehjr.numina.client.model.item.armor.RenderOBJPart;
 import lehjr.numina.common.capabilities.NuminaCapabilities;
 import lehjr.numina.common.capabilities.render.IModelSpec;
-import lehjr.numina.common.capabilities.render.modelspec.*;
+import lehjr.numina.common.capabilities.render.modelspec.JavaPartSpec;
+import lehjr.numina.common.capabilities.render.modelspec.NuminaModelSpecRegistry;
+import lehjr.numina.common.capabilities.render.modelspec.ObjlPartSpec;
+import lehjr.numina.common.capabilities.render.modelspec.PartSpecBase;
 import lehjr.numina.common.constants.NuminaConstants;
 import lehjr.numina.common.constants.TagConstants;
 import lehjr.numina.common.math.Color;
@@ -44,7 +46,6 @@ import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.HumanoidArmorLayer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
@@ -56,7 +57,8 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ItemStack;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Optional;
 
 public class NuminaArmorLayer<T extends LivingEntity, M extends HumanoidModel<T>, A extends HumanoidModel<T>> extends HumanoidArmorLayer<T, M, A> {
     ModelTransformCalibration CALIBRATION;
@@ -158,10 +160,10 @@ public class NuminaArmorLayer<T extends LivingEntity, M extends HumanoidModel<T>
                                     poseStack.popPose();
                                 } else if (partSpec instanceof ObjlPartSpec) {
 
-        Transformation transform = CALIBRATION.getTransform();
-        if (transform != Transformation.identity()) {
-            poseStack.pushTransformation(transform);
-        }
+                                    Transformation transform = CALIBRATION.getTransform();
+                                    if (transform != Transformation.identity()) {
+                                        poseStack.pushTransformation(transform);
+                                    }
 
 
                                     HighPolyArmor highPolyArmor = ArmorModelInstance.getInstance();
@@ -169,9 +171,9 @@ public class NuminaArmorLayer<T extends LivingEntity, M extends HumanoidModel<T>
                                     VertexConsumer consumer = getVertexConsumer(bufferIn, TextureAtlas.LOCATION_BLOCKS, glow);
                                     highPolyArmor.renderToBuffer((ObjlPartSpec) partSpec, tag, poseStack, consumer, glow ? NuminaConstants.FULL_BRIGHTNESS : packedLightIn, OverlayTexture.NO_OVERLAY, color);
 
-        if (transform != Transformation.identity()) {
-            poseStack.popPose();
-        }
+                                    if (transform != Transformation.identity()) {
+                                        poseStack.popPose();
+                                    }
 
                                 }
                             } else {
@@ -188,9 +190,11 @@ public class NuminaArmorLayer<T extends LivingEntity, M extends HumanoidModel<T>
 
     VertexConsumer getVertexConsumer(MultiBufferSource buffer, ResourceLocation location, boolean glow) {
         if (glow) {
-            return ItemRenderer.getArmorFoilBuffer(buffer, RenderType.beaconBeam(location, true), false, glow);
+//            return ItemRenderer.getArmorFoilBuffer(buffer, RenderType.beaconBeam(location, true), false, glow);
+            return buffer.getBuffer(RenderType.beaconBeam(location, true));
         }
-        return ItemRenderer.getArmorFoilBuffer(buffer, RenderType.entityTranslucentCull(location), false, glow);
+//        return ItemRenderer.getArmorFoilBuffer(buffer, RenderType.entityTranslucentCull(location), false, glow);
+        return buffer.getBuffer(RenderType.entityTranslucentCull(location));
     }
 }
 

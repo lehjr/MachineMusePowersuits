@@ -27,11 +27,7 @@
 package lehjr.numina.common.capabilities.render.modelspec;
 
 import com.google.common.base.Objects;
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import lehjr.numina.common.math.Color;
-import net.minecraft.client.model.Model;
-import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 

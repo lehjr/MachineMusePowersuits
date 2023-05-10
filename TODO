@@ -1,19 +1,26 @@
-1.18.2 broken stuff and todo
+1.19.3 broken stuff and todo
 ----------------------------
 
 GUI
 -----------------------
-* creative install button - replace with vanilla styled button
+* creative install button - resize button - maybe install all modules qwith one click
 
 Model Spec
 ----------------------
-This stuff is completely broken (high poly armor and power fist models are both broken)
+clean up and optimize
+
+Block Breaking code ( make diamond upgrade for all )
+----------------------
+Axe
+Shovel
+PickAxe
+
 
 Capabilities
 ---------------------
 some stuff is working... module storage seems to be flawless
 revisit module code, especially block breaking
-fluid tank doesn't store water yet??
+fluid tank doesn't store water yet except for rain??
 
 Tweak Values not being saved
 ---------------------
@@ -30,9 +37,84 @@ investigate what's currently possible.
 
 Lux Capacitor
 ---------------------
-color is lost when transitioning from entity to block
+fix glow? requires different render type (low priority)
 
+PowerFist
+--------------------
+fix rendering by adjusting render type for glow
 
+BatteryModule
+--------------------
+add new energy storage device
+
+Module Check
+=============================
+BasicBattery->Passed
+AdvancedBattery->Passed
+EliteBattery->Passed
+UltimateBattery->Passed
+??(not built)
+-----------------------------
+LeatherPlating-> (test? )
+IronPlating-> (test? )
+DiamondPlating-> (test? )
+NetheritePlating-> (test? )
+EnergyShield-> (test? )
+-----------------------------
+TransparentArmorModule-> (test? )
+-----------------------------
+BasicSolarGenerator-> (test? )
+AdvancedSolarGenerator-> (test? )
+CoalGenerator->(unfinished)
+KineticGeneratorModule-> (test? )
+ThermalGeneratorModule-> (test? )
+-----------------------------
+AutoFeeder-> (test? )
+CoolingSystem-> (test? )
+FluidTank-> (test? )
+MobRepulsor-> (test? )
+WaterElectrolizer-> (test? )
+-----------------------------
+AquaAffinity-> (test? )
+Fortune-> (test? )
+SilkTouch-> (test? )
+TunnelBore-> (test? )
+VeinMiner-> (test? )
+-----------------------------
+BlinkDrive-> (test? )
+ClimbAssist-> (test? )
+DimensionalRift-> (spawns above bedrock in netherworld)
+FlightControl-> (test? )
+Glider-> (test? )
+JetBoots-> (test? )
+JumpAssist-> (test? )
+Parachute-> (test? )
+ShockAbsorber-> (test? )
+SprintAssist-> (test? )
+SwimAssist-> (test? )
+-----------------------------
+Invisibility-> (test? )
+Megnet-> (test? )
+PiglinPacification-> (test? )
+-----------------------------
+Axe-> (test? )
+DiamondPickUpgrade-> (test? )
+FlingAndSteel-> (working)
+Hoe-> (working)
+LeafBlower-> (test? )
+PickAxe-> (test? )
+Shears-> (test? )
+Shovel-> (test? )
+-----------------------------
+Binoculars-> (test? )
+NightVision-> (test? )
+-----------------------------
+BladeLauncher-> (test? ) (fix rendering angle at launch to match player view angle)
+Lightning-> (test? )
+Melee-> (test? )
+PlasmaCannon-> (working )
+Railgun-> (not working, model not rendering)
+-----------------------------
 
 
 

@@ -159,7 +159,6 @@ public enum IconUtils {
         bufferBuilder.endVertex();
 
         BufferUploader.drawWithShader(bufferBuilder.end());
-
     }
 
     /**
@@ -342,14 +341,13 @@ public enum IconUtils {
         put(EquipmentSlot.LEGS, InventoryMenu.EMPTY_ARMOR_SLOT_LEGGINGS);
         put(EquipmentSlot.FEET, InventoryMenu.EMPTY_ARMOR_SLOT_BOOTS);
         put(EquipmentSlot.OFFHAND, InventoryMenu.EMPTY_ARMOR_SLOT_SHIELD);
-        put(EquipmentSlot.MAINHAND, NuminaConstants.WEAPON_SLOT_BACKGROUND); //FIXME: broken for slot rendering, actually crashes
+        put(EquipmentSlot.MAINHAND, NuminaConstants.WEAPON_SLOT_BACKGROUND);
     }};
 
     public static final Pair<ResourceLocation, ResourceLocation> getSlotBackground(EquipmentSlot slotType) {
         switch (slotType) {
             case MAINHAND:
-                return Pair.of(NuminaConstants.LOCATION_NUMINA_GUI_TEXTURE_ATLAS, ARMOR_SLOT_TEXTURES.get(slotType)); // FIXME: broken for slot rendering, actually crashes
-//                 return Pair.of(InventoryMenu.BLOCK_ATLAS, InventoryMenu.EMPTY_ARMOR_SLOT_SHIELD);
+                return Pair.of(NuminaConstants.LOCATION_NUMINA_GUI_TEXTURE_ATLAS, ARMOR_SLOT_TEXTURES.get(slotType));
             default:
                 return Pair.of(InventoryMenu.BLOCK_ATLAS, ARMOR_SLOT_TEXTURES.get(slotType));
         }

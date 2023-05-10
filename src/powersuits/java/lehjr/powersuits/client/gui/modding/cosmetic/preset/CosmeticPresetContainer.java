@@ -30,7 +30,7 @@
 //import lehjr.numina.client.gui.gemoetry.MusePoint2D;
 //import lehjr.numina.client.gui.gemoetry.RelativeRect;
 //import lehjr.numina.common.math.Colour;
-//import lehjr.powersuits.client.gui.common.ModularItemSelectionFrame;
+//import lehjr.numina.client.gui.frame.ModularItemSelectionFrame;
 //import com.mojang.blaze3d.vertex.PoseStack;
 //import net.minecraft.world.item.ItemStack;
 //import org.lwjgl.opengl.GL11;

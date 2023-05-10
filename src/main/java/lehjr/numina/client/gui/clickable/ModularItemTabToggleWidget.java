@@ -1,9 +1,8 @@
-package lehjr.powersuits.client.gui.common;
+package lehjr.numina.client.gui.clickable;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.datafixers.util.Pair;
-import lehjr.numina.client.gui.clickable.Clickable;
 import lehjr.numina.client.render.IconUtils;
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
 import lehjr.numina.common.math.Color;
@@ -110,18 +109,14 @@ public class ModularItemTabToggleWidget extends Clickable {
         RenderSystem.disableDepthTest();
         if (this.icon.isEmpty()) {
             if (EquipmentSlot.MAINHAND.equals(type)) {
-//                ShaderInstance oldShader = RenderSystem.getShader();
                 RenderSystem.setShader(GameRenderer::getPositionTexColorShader);
                 IconUtils.getIcon().weapon.draw(matrixStack, left() + 9 + offset, top() + 5, Color.WHITE);
-//                RenderSystem.setShader(() -> oldShader);
             } else {
                 Pair<ResourceLocation, ResourceLocation> pair = IconUtils.getSlotBackground(type);
                 if (pair != null) {
-//                    ShaderInstance oldShader = RenderSystem.getShader();
                     TextureAtlasSprite textureatlassprite = getMinecraft().getTextureAtlas(pair.getFirst()).apply(pair.getSecond());
                     RenderSystem.setShaderTexture(0, textureatlassprite.atlasLocation());
                     getMinecraft().screen.blit(matrixStack, (int)left() + 10 + offset, (int)top() + 5, getMinecraft().screen.getBlitOffset(), 16, 16, textureatlassprite);
-//                    RenderSystem.setShader(() -> oldShader);
                 }
             }
             RenderSystem.enableDepthTest();

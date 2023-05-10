@@ -5,7 +5,6 @@ import com.mojang.math.Transformation;
 import forge.NuminaObjLoader;
 import forge.NuminaObjModel;
 import lehjr.numina.client.model.obj.OBJBakedCompositeModel;
-import lehjr.numina.client.model.obj.OBJModelConfiguration;
 import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.math.Color;
 import net.minecraft.client.Minecraft;

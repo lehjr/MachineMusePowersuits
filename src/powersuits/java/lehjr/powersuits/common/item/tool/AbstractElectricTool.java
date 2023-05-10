@@ -30,10 +30,12 @@ import lehjr.numina.common.string.AdditionalInfo;
 import lehjr.powersuits.common.capability.PowerFistCap;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
@@ -126,4 +128,25 @@ public class AbstractElectricTool extends DiggerItem {
     public boolean canBeDepleted() {
         return false;
     }
+
+//    @Deprecated // FORGE: Use stack sensitive variant below
+//    public boolean isCorrectToolForDrops(BlockState pBlock) {
+//        if (net.minecraftforge.common.TierSortingRegistry.isTierSorted(getTier())) {
+//            return net.minecraftforge.common.TierSortingRegistry.isCorrectTierForDrops(getTier(), pBlock) && pBlock.is(this.blocks);
+//        }
+//        int i = this.getTier().getLevel();
+//        if (i < 3 && pBlock.is(BlockTags.NEEDS_DIAMOND_TOOL)) {
+//            return false;
+//        } else if (i < 2 && pBlock.is(BlockTags.NEEDS_IRON_TOOL)) {
+//            return false;
+//        } else {
+//            return i < 1 && pBlock.is(BlockTags.NEEDS_STONE_TOOL) ? false : pBlock.is(this.blocks);
+//        }
+//    }
+//
+//    // FORGE START
+//    @Override
+//    public boolean isCorrectToolForDrops(ItemStack stack, BlockState state) {
+//        return state.is(blocks) && net.minecraftforge.common.TierSortingRegistry.isCorrectTierForDrops(getTier(), state);
+//    }
 }
