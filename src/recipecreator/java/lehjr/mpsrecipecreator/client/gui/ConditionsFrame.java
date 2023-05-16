@@ -20,8 +20,8 @@ import java.util.Map;
 public class ConditionsFrame extends ScrollableFrame {
     Map<Checkbox, JsonObject> checkBoxList = new HashMap<>();
 
-    public ConditionsFrame(DrawableTile tile) {
-        super(tile);
+    public ConditionsFrame(Rect rect) {
+        super(rect);
         loadConditions();
     }
 

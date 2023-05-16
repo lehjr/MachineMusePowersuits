@@ -7,6 +7,7 @@ import lehjr.numina.client.gui.clickable.ClickableLabel;
 import lehjr.numina.client.gui.frame.ScrollableFrame;
 import lehjr.numina.client.gui.geometry.DrawableTile;
 import lehjr.numina.client.gui.geometry.MusePoint2D;
+import lehjr.numina.client.gui.geometry.Rect;
 import lehjr.numina.client.sound.Musique;
 import lehjr.numina.common.math.Colour;
 import net.minecraft.util.SoundEvents;
@@ -34,8 +35,8 @@ public class RecipeOptionsFrame extends ScrollableFrame {
     private ClickableLabel title;
     ConditionsFrame conditionsFrame;
 
-    public RecipeOptionsFrame(DrawableTile tile, MPARCGui mparcGui) {
-        super(tile);
+    public RecipeOptionsFrame(MPARCGui mparcGui) {
+        super(new Rect(MusePoint2D.ZERO, MusePoint2D.ZERO));
         MusePoint2D starterPoint = MusePoint2D.ZERO;
         this.title = new ClickableLabel(new StringTextComponent("Recipe Options"), starterPoint);
 
@@ -73,12 +74,7 @@ public class RecipeOptionsFrame extends ScrollableFrame {
             }
         });
 
-        conditionsFrame = new ConditionsFrame(
-                new DrawableTile(MusePoint2D.ZERO, MusePoint2D.ZERO)
-                        .setBackgroundColour(Colour.PINK)
-                        .setTopBorderColour(Colour.GREEN)
-                        .setBottomBorderColour(Colour.MAGENTA)
-        );
+        conditionsFrame = new ConditionsFrame(new Rect(MusePoint2D.ZERO, MusePoint2D.ZERO));
         conditionsFrame.disable();
         conditionsFrame.hide();
 
@@ -113,8 +109,8 @@ public class RecipeOptionsFrame extends ScrollableFrame {
         mirrored.setPosition(genericRecipeCol.plus(0, nextLineRC+=12));
         conditions.setPosition(genericRecipeCol.plus(0, nextLineRC+=12));
 
-        conditionsFrame.setUL(new MusePoint2D(left() +3, conditions.centerY() + spacer * 2));
-        conditionsFrame.setWH(new MusePoint2D(conditionsFrame.left() - (right() - 3), conditionsFrame.top() - (bottom() - spacer)));
+        conditionsFrame.setUL(new MusePoint2D(left(), bottom() + 4));
+        conditionsFrame.setWH(new MusePoint2D(width(), 51));
 
         save.setPosition(new MusePoint2D(right(), top()).copy().plus(-(spacer + save.width() * 0.5F), spacer + save.height() * 0.5F));
         reset.setPosition(save.center().plus(0, 24F));

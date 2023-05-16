@@ -3,6 +3,7 @@ package lehjr.mpsrecipecreator.client.gui;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import lehjr.numina.client.gui.frame.ScrollableFrame;
+import lehjr.numina.client.gui.geometry.MusePoint2D;
 import lehjr.numina.client.gui.geometry.Rect;
 import lehjr.numina.common.string.StringUtils;
 
@@ -10,8 +11,8 @@ public class RecipeDisplayFrame extends ScrollableFrame {
     String[] recipe = new String[0];
     String title;;
 
-    public RecipeDisplayFrame(Rect rect) {
-        super(rect);
+    public RecipeDisplayFrame() {
+        super(new Rect(MusePoint2D.ZERO, MusePoint2D.ZERO));
         reset();
     }
 

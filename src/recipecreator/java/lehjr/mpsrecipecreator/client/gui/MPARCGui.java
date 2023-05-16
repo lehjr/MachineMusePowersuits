@@ -25,13 +25,12 @@ public class MPARCGui extends ExtendedContainerScreen2<MPSRCContainer> {
     static final ResourceLocation BACKGROUND = new ResourceLocation(Constants.MOD_ID, "textures/gui/mpsrc_background.png");
 
     Rect backgroundRect;
-    final int spacer = 4;
-
     private final RecipeOptionsFrame recipeOptions;
     private final RecipeDisplayFrame recipeDisplayFrame;
     // separate frame for each slot
     private final SlotOptionsFrame slotOptions;
 
+    ConditionsFrame conditionsFrame;
     // text box
     public StackTextDisplayFrame tokenTxt;
     protected final Colour gridBorderColour = Colour.LIGHT_BLUE.withAlpha(0.8F);
@@ -43,17 +42,15 @@ public class MPARCGui extends ExtendedContainerScreen2<MPSRCContainer> {
         float zLevel = getBlitOffset();
         backgroundRect = new DrawableTile(getUL(), getUL().plus(getWH()));
 
-        recipeOptions = new RecipeOptionsFrame(new DrawableTile(MusePoint2D.ZERO, MusePoint2D.ZERO)
-                .setBackgroundColour(Colour.DARKBLUE)
-                .setTopBorderColour(gridBackGound),
-                this);
+        recipeOptions = new RecipeOptionsFrame(this);
         addFrame(recipeOptions);
         recipeGen = new RecipeGen(menu, recipeOptions);
 
         // display for stack string in slot
-        tokenTxt = new StackTextDisplayFrame(new DrawableTile(MusePoint2D.ZERO, MusePoint2D.ZERO).setBackgroundColour(Colour.DARKBLUE));
+        tokenTxt = new StackTextDisplayFrame();
         addFrame(tokenTxt);
 
+        // different options for the selected slot
         slotOptions = new SlotOptionsFrame(
                 new MusePoint2D(0, 0),
                 new MusePoint2D(0, 0),
@@ -66,7 +63,8 @@ public class MPARCGui extends ExtendedContainerScreen2<MPSRCContainer> {
                 Colour.BLACK);
         addFrame(slotOptions);
 
-        recipeDisplayFrame = new RecipeDisplayFrame(new DrawableTile(MusePoint2D.ZERO, MusePoint2D.ZERO).setBackgroundColour(Colour.DARKBLUE));
+        // displays the recipe in json format
+        recipeDisplayFrame = new RecipeDisplayFrame();
         addFrame(recipeDisplayFrame);
     }
 
@@ -75,39 +73,23 @@ public class MPARCGui extends ExtendedContainerScreen2<MPSRCContainer> {
         super.init();
         backgroundRect.setUL(getUL());
         backgroundRect.setWH(getWH());
-        System.out.println("backgroundRect: " + backgroundRect.toString());
-
-
-
         this.minecraft.player.containerMenu = this.menu;
-        // left side of inventory slots
-        double inventoryWidth = 168;//(spacer * 2) + (9 * slotWidth);
-
-        double inventoryLeft = backgroundRect.right() - inventoryWidth - spacer;
-
-
-        double inventoryHeight = 192;
-        System.out.println("inventory height: " + inventoryHeight);
-
-        /** */
-        recipeOptions.setUL(new MusePoint2D(backgroundRect.left() + spacer, backgroundRect.top() + spacer));
-        recipeOptions.setWH(new MusePoint2D(recipeOptions.left() - (inventoryLeft - spacer * 2), recipeOptions.top() - (backgroundRect.top() + spacer + 150)));
+        recipeOptions.setUL(new MusePoint2D(backgroundRect.left() + 8, backgroundRect.top() + 6));
+        recipeOptions.setWH(new MusePoint2D(218, 115));
+        recipeOptions.init();
         recipeOptions.enableAndShow();
 
-        /** */
-        slotOptions.setUL(new MusePoint2D( backgroundRect.left() + spacer, backgroundRect.top() + spacer * 2 + 150));
-        slotOptions.setWH(new MusePoint2D(slotOptions.left() - (inventoryLeft - spacer * 2),  slotOptions.top() - (backgroundRect.top() + spacer + 188)));
+        slotOptions.setUL(new MusePoint2D( backgroundRect.left() + 8, backgroundRect.top() + 125));
+        slotOptions.setWH(new MusePoint2D(218,  51));
         slotOptions.enableAndShow();
         slotOptions.init();
 
-        /** */
-        tokenTxt.setUL(new MusePoint2D(backgroundRect.left() + spacer, backgroundRect.top() + spacer * 2 + 188));
-        tokenTxt.setWH(new MusePoint2D(tokenTxt.left() - (backgroundRect.right() - spacer), tokenTxt.top() - (backgroundRect.top() + spacer * 2 + 188 + 20)));
+        tokenTxt.setUL(new MusePoint2D(backgroundRect.left() + 8, backgroundRect.top() + 180));
+        tokenTxt.setWH(new MusePoint2D(384, 16));
         tokenTxt.enableAndShow();
 
-        /** displays the recipe in json format */
-        recipeDisplayFrame.setUL(new MusePoint2D(backgroundRect.left() + spacer + 1, backgroundRect.top()  + 214));
-        recipeDisplayFrame.setWH(new MusePoint2D(384, 80));
+        recipeDisplayFrame.setUL(new MusePoint2D(backgroundRect.left() + 8, backgroundRect.top()  + 200));
+        recipeDisplayFrame.setWH(new MusePoint2D(384, 94));
         recipeDisplayFrame.enableAndShow();
     }
 

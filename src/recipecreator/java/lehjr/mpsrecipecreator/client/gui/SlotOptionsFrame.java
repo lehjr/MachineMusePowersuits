@@ -9,6 +9,7 @@ import lehjr.numina.client.gui.frame.ScrollableFrame;
 import lehjr.numina.client.gui.geometry.DrawableArrow;
 import lehjr.numina.client.gui.geometry.DrawableTile;
 import lehjr.numina.client.gui.geometry.MusePoint2D;
+import lehjr.numina.client.gui.geometry.Rect;
 import lehjr.numina.common.math.Colour;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -45,7 +46,7 @@ public class SlotOptionsFrame extends ScrollableFrame {
                             Colour arrowNormalBackGound,
                             Colour arrowHighlightedBackground,
                             Colour arrowBorderColour) {
-        super(new DrawableTile(topleft, bottomright).setBackgroundColour(backgroundColour).setTopBorderColour(borderColour).setBottomBorderColour(arrowBorderColour));
+        super(new Rect(topleft, bottomright));
         this.container = container;
         this.recipeGen = recipeGenIn;
 
