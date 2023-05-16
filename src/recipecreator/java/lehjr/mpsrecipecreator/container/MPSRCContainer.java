@@ -12,7 +12,9 @@ import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IWorldPosCallable;
 
-public class MPARCContainer extends Container {
+import javax.annotation.Nullable;
+
+public class MPSRCContainer extends Container {
     /**
      * The crafting matrix inventory (3x3).
      */
@@ -22,17 +24,17 @@ public class MPARCContainer extends Container {
     private final PlayerEntity player;
     private final IWorldPosCallable posCallable;
 
-    public MPARCContainer(int windowID, PlayerInventory playerInventory) {
+    public MPSRCContainer(int windowID, PlayerInventory playerInventory) {
         this(windowID, playerInventory, IWorldPosCallable.NULL);
     }
 
-    public MPARCContainer(int windowID, PlayerInventory playerInventory, IWorldPosCallable posCallable) {
+    public MPSRCContainer(int windowID, PlayerInventory playerInventory, IWorldPosCallable posCallable) {
         super(ModObjects.RECIPE_WORKBENCH_CONTAINER_TYPE, windowID);
         this.posCallable = posCallable;
         this.player = playerInventory.player;
 
         // crafting result
-        this.addSlot(new CraftingResultSlot(playerInventory.player, this.craftMatrix, this.craftResult, 0, 124, 35) {
+        this.addSlot(new CraftingResultSlot(playerInventory.player, this.craftMatrix, this.craftResult, 0, 367, 43) {
             @Override
             public boolean mayPlace(ItemStack stack) {
                 return true;
@@ -42,20 +44,20 @@ public class MPARCContainer extends Container {
         // crafting grid
         for (int row = 0; row < 3; ++row) {
             for (int col = 0; col < 3; ++col) {
-                this.addSlot(new Slot(this.craftMatrix, col + row * 3, 30 + col * 18, 17 + row * 18));
+                this.addSlot(new Slot(this.craftMatrix, col + row * 3, 237 + col * 32, 11 + row * 32));
             }
         }
 
         // player inventory
         for (int row = 0; row < 3; ++row) {
             for (int col = 0; col < 9; ++col) {
-                this.addSlot(new Slot(playerInventory, col + row * 9 + 9, 8 + col * 18, 84 + row * 18));
+                this.addSlot(new Slot(playerInventory, col + row * 9 + 9, 232 + col * 18, 102 + row * 18));
             }
         }
 
         // player hotbar
         for (int col = 0; col < 9; ++col) {
-            this.addSlot(new Slot(playerInventory, col, 8 + col * 18, 142));
+            this.addSlot(new Slot(playerInventory, col, 232 + col * 18, 160));
         }
 
 //        this.onCraftMatrixChanged(this.craftMatrix);
@@ -78,17 +80,13 @@ public class MPARCContainer extends Container {
         return ret;
     }
 
-
-
-
-
-//    @Nullable
-//    Slot getSlotOrNull(int index) {
-//        if (index >= 0 && index <= slots.size() -1) {
-//            return this.slots.get(index);
-//        }
-//        return null;
-//    }
+    @Nullable
+    Slot getSlotOrNull(int index) {
+        if (index >= 0 && index <= slots.size() -1) {
+            return this.slots.get(index);
+        }
+        return null;
+    }
 //
 //    /**
 //     * TODO: fix so that the held itemstack isn't used up
@@ -409,6 +407,11 @@ public class MPARCContainer extends Container {
     @Override
     public ItemStack clicked(int slotIndex, int mousebtn, ClickType clickTypeIn, PlayerEntity player) {
 //        System.out.println("slot: " + slotIndex + " clicktype: " + clickTypeIn + ",  mouseButton: " + mousebtn);
+        if (slotIndex > -1) {
+            Slot slot = slots.get(slotIndex);
+
+            System.out.println("slot: " + slotIndex + " slot X,Y [ " + slot.x + ", " + slot.y + " ]");
+        }
         ItemStack stack = ItemStack.EMPTY;
 
         // handle crafting grid or result

@@ -62,6 +62,10 @@ public class PowerFist extends AbstractElectricTool {
         super(new Item.Properties().tab(MPSObjects.creativeTab).stacksTo(1).defaultDurability(0));
     }
 
+    public PowerFist(Item.Properties properties) {
+        super(properties);
+    }
+
     @Override
     public int getUseDuration(ItemStack stack) {
         return stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)

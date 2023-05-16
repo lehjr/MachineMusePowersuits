@@ -1,6 +1,6 @@
 package lehjr.mpsrecipecreator.block;
 
-import lehjr.mpsrecipecreator.container.MPARCContainer;
+import lehjr.mpsrecipecreator.container.MPSRCContainer;
 import lehjr.numina.client.sound.SoundDictionary;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -52,6 +52,6 @@ public class RecipeWorkbench extends Block {
     private static final ITextComponent title = new TranslationTextComponent("container.crafting");
     public INamedContainerProvider getMenuProvider(BlockState state, World worldIn, BlockPos pos) {
         return new SimpleNamedContainerProvider((windowID, playerInventory, playerEntity) ->
-                new MPARCContainer(windowID, playerInventory, IWorldPosCallable.create(worldIn, pos)), title);
+                new MPSRCContainer(windowID, playerInventory, IWorldPosCallable.create(worldIn, pos)), title);
     }
 }

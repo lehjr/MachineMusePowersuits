@@ -55,6 +55,9 @@ idea {
 group = group_id
 version = "${mod_version}." + (System.env.BUILD_NUMBER ?: 000)
 archivesBaseName = "ModularPowersuits"
+sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
+
+println('Java: ' + System.getProperty('java.version') + ' JVM: ' + System.getProperty('java.vm.version') + '(' + System.getProperty('java.vendor') + ') Arch: ' + System.getProperty('os.arch'))
 
 println("version: ${project.version}")
 
@@ -335,6 +338,10 @@ repositories {
         }
     }
 
+    flatDir {
+        dirs 'libs'
+    }
+
     whenObjectAdded {//ForgeGradle adds these in an afterEvaluate, so we need to catch them as they're added and exclude mod artifacts/groups
         if (it instanceof MavenArtifactRepository) {
             def url = it.url.toString()
@@ -369,6 +376,8 @@ dependencies {
         transitive = false
     }
     implementation fg.deobf("curse.maven:scannable-266784:3565727")
+
+    runtimeOnly fg.deobf("ignored:itemtransformhelper:1.0")
 
 //    implementation fg.deobf("com.mods:refinedstorage:${refinedstorage_version}")
 //    runtimeOnly fg.deobf("com.refinedmods:refinedstorage:${refinedstorage_version}")

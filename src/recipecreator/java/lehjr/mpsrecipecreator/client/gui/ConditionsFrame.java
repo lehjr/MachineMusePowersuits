@@ -7,6 +7,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import lehjr.mpsrecipecreator.basemod.ConditionsJsonLoader;
 import lehjr.numina.client.gui.clickable.Checkbox;
 import lehjr.numina.client.gui.frame.ScrollableFrame;
+import lehjr.numina.client.gui.geometry.DrawableTile;
 import lehjr.numina.client.gui.geometry.MusePoint2D;
 import lehjr.numina.client.gui.geometry.Rect;
 
@@ -19,16 +20,10 @@ import java.util.Map;
 public class ConditionsFrame extends ScrollableFrame {
     Map<Checkbox, JsonObject> checkBoxList = new HashMap<>();
 
-    public ConditionsFrame(MusePoint2D topleft, MusePoint2D bottomright) {
-        super(new Rect(topleft, bottomright));
+    public ConditionsFrame(DrawableTile tile) {
+        super(tile);
+        loadConditions();
     }
-
-//    @Override
-//    public Rect init(double left, double top, double right, double bottom) {
-//        super.init(left, top, right, bottom);
-//        loadConditions();
-//        return this;
-//    }
 
     @Override
     public void setVisible(boolean visible) {

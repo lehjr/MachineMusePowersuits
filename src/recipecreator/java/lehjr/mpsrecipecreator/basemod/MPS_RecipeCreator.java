@@ -3,7 +3,7 @@ package lehjr.mpsrecipecreator.basemod;
 import lehjr.mpsrecipecreator.basemod.config.Config;
 import lehjr.mpsrecipecreator.block.RecipeWorkbench;
 import lehjr.mpsrecipecreator.client.gui.MPARCGui;
-import lehjr.mpsrecipecreator.container.MPARCContainer;
+import lehjr.mpsrecipecreator.container.MPSRCContainer;
 import lehjr.mpsrecipecreator.network.NetHandler;
 import net.minecraft.block.Block;
 import net.minecraft.client.gui.ScreenManager;
@@ -53,7 +53,7 @@ public final class MPS_RecipeCreator {
     @SubscribeEvent
     public void registerContainerTypes(final RegistryEvent.Register<ContainerType<?>> event) {
         event.getRegistry().register(                // recipe creator gui
-                new ContainerType<>(MPARCContainer::new)
+                new ContainerType<>(MPSRCContainer::new)
                         .setRegistryName(Constants.RECIPE_WORKBENCH_TYPE__REG_NAME));
     }
 

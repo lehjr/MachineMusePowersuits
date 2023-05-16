@@ -41,8 +41,8 @@ public class MPSConstants {
     public static final String CITIZEN_JOE_ARMOR_PANTS = TEXTURE_PREFIX + "item/armor/joearmorpants.png";
     public static final String CITIZEN_JOE_ARMOR = TEXTURE_PREFIX + "item/armor/joearmor.png";
 
-    public static final ResourceLocation POWER_FIST_TEXTURE = new ResourceLocation(TEXTURE_PREFIX + "models/powerfist.png");
-
+//    public static final ResourceLocation POWER_FIST_TEXTURE = new ResourceLocation(TEXTURE_PREFIX + "models/powerfist.png");
+    public static final ResourceLocation POWER_FIST_TEXTURE = new ResourceLocation(MPSConstants.MOD_ID, "textures/models/tool.png");
     public static final TranslationTextComponent CRAFTING_TABLE_CONTAINER_NAME  = new TranslationTextComponent("container.crafting");
 
 

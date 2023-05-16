@@ -1,7 +1,7 @@
 package lehjr.mpsrecipecreator.basemod;
 
 import lehjr.mpsrecipecreator.block.RecipeWorkbench;
-import lehjr.mpsrecipecreator.container.MPARCContainer;
+import lehjr.mpsrecipecreator.container.MPSRCContainer;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraftforge.registries.ObjectHolder;
 
@@ -21,5 +21,5 @@ public enum ModObjects {
      * Container type -----------------------------------------------------------------------------
      */
     @ObjectHolder(Constants.RECIPE_WORKBENCH_TYPE__REG_NAME)
-    public static final ContainerType<MPARCContainer> RECIPE_WORKBENCH_CONTAINER_TYPE = null;
+    public static final ContainerType<MPSRCContainer> RECIPE_WORKBENCH_CONTAINER_TYPE = null;
 }

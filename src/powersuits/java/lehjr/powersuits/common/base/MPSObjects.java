@@ -27,6 +27,7 @@
 package lehjr.powersuits.common.base;
 
 
+import lehjr.powersuits.client.render.item.PowerFistRenderer;
 import lehjr.powersuits.common.block.LuxCapacitorBlock;
 import lehjr.powersuits.common.block.TinkerTable;
 import lehjr.powersuits.common.blockentity.LuxCapacitorBlockEntity;
@@ -68,6 +69,7 @@ import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntityType;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.extensions.IForgeContainerType;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
@@ -155,6 +157,10 @@ public class MPSObjects {
     /* HandHeld ----------------------------------------------------------------------------------- */
     public static final RegistryObject<Item> POWER_FIST = ITEMS.register(MPSRegistryNames.POWER_FIST.getPath(),
             () -> new PowerFist());
+
+//    public static final RegistryObject<Item> DEBUG_THING = ITEMS.register("debug_thing", () -> new PowerFist(new Item.Properties().tab(MPSObjects.creativeTab).stacksTo(1).defaultDurability(0)
+//            .setISTER(() -> PowerFistRenderer::new)));
+
 
     /* Modules ------------------------------------------------------------------------------------ */
     // Armor --------------------------------------------------------------------------------------

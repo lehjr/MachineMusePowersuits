@@ -34,7 +34,7 @@ public class ConditionsJsonLoader {
 //            conditionsList.add(
 //                    flagJsonObject(
 //                            "Vanilla Recipes Enabled",
-//                            "modularpowerarmor:flag",
+//                            "modularpowersuits:flag",
 //                            "vanilla_recipes_enabled"));
 
             conditions.add("conditions", conditionsList);

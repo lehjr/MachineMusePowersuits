@@ -29,16 +29,19 @@ package lehjr.powersuits.client.model.item;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
+import lehjr.powersuits.common.constants.MPSConstants;
 import lehjr.powersuits.common.constants.MPSRegistryNames;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.model.Model;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.items.CapabilityItemHandler;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Function;
 
 /**
  * Date: 1/13/2013 3:17:20 AM
@@ -48,6 +51,8 @@ import java.util.Map;
  * - ZeuX
  */
 public class PowerFistModel2 extends Model {
+
+
     public int boltSize = 0;
     public Map<String, ModelRenderer> partlMap = new HashMap<>();
 
@@ -395,7 +400,7 @@ public class PowerFistModel2 extends Model {
 
     @Override
     public void renderToBuffer(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
-
+        partlMap.values().forEach(part ->part.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha));
     }
     public void makeChild(ModelRenderer child, ModelRenderer parent) {
         parent.addChild(child);

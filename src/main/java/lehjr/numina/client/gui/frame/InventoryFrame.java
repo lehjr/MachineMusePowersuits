@@ -48,7 +48,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class InventoryFrame extends ScrollableFrame implements IContainerULOffSet {
+public class InventoryFrame extends ScrollableFrame implements IContainerULOffSet {
     IContainerULOffSet.ulGetter ulGetter;
     Container container;
 //    Colour gridColour;

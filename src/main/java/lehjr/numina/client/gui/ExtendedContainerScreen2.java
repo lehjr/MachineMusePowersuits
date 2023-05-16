@@ -2,6 +2,7 @@ package lehjr.numina.client.gui;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import lehjr.numina.client.gui.frame.IGuiFrame;
+import lehjr.numina.client.gui.geometry.IRect;
 import lehjr.numina.client.gui.geometry.MusePoint2D;
 import lehjr.numina.client.gui.slot.IHideableSlot;
 import lehjr.numina.client.gui.slot.IIConProvider;
@@ -20,7 +21,7 @@ import java.util.List;
  * TODO: inventory label
  * @param <T>
  */
-public class ExtendedContainerScreen2 <T extends Container> extends ContainerScreen<T> {
+public class ExtendedContainerScreen2 <T extends Container> extends ContainerScreen<T> implements IRect {
     protected long creationTime;
     private List<IGuiFrame> frames;
 
@@ -237,5 +238,127 @@ public class ExtendedContainerScreen2 <T extends Container> extends ContainerScr
     public Minecraft getMinecraft() {
         this.minecraft = Minecraft.getInstance();
         return this.minecraft;
+    }
+
+    protected IRect belowMe;
+    protected IRect aboveMe;
+    protected IRect leftOfMe;
+    protected IRect rightOfMe;
+
+    @Override
+    public double left() {
+        return leftPos;
+    }
+
+    @Override
+    public IRect setLeft(double value) {
+        leftPos = (int) value;
+        return this;
+    }
+
+    @Override
+    public double top() {
+        return topPos;
+    }
+
+    @Override
+    public IRect setTop(double value) {
+        this.topPos = (int) value;
+        return this;
+    }
+
+    @Override
+    public double right() {
+        return left() + imageWidth;
+    }
+
+    @Override
+    public IRect setRight(double value) {
+        return setLeft(value - imageWidth);
+    }
+
+    @Override
+    public double bottom() {
+        return top() + imageHeight;
+    }
+
+    @Override
+    public IRect setBottom(double value) {
+        return setTop(value - imageHeight);
+    }
+
+    @Override
+    public double width() {
+        return imageWidth;
+    }
+
+    @Override
+    public IRect setWidth(double value) {
+        this.imageWidth = (int) value;
+        return this;
+    }
+
+    @Override
+    public double height() {
+        return imageHeight;
+    }
+
+    @Override
+    public IRect setHeight(double value) {
+        this.imageHeight = (int) value;
+        return this;
+    }
+
+    @Override
+    public void setPosition(MusePoint2D positionIn) {
+        IRect.super.setPosition(positionIn);
+    }
+
+    @Override
+    public MusePoint2D getUL() {
+        return new MusePoint2D(left(), top());
+    }
+
+    @Override
+    public IRect setUL(MusePoint2D ul) {
+        setLeft(ul.x());
+        setTop(ul.y());
+        return this;
+    }
+
+    @Override
+    public MusePoint2D getWH() {
+        return new MusePoint2D(imageWidth, imageHeight);
+    }
+
+    @Override
+    public IRect setWH(MusePoint2D wh) {
+        setWidth(wh.x());
+        setHeight(wh.y());
+        return this;
+    }
+
+    @Override
+    public IRect setAbove(IRect belowMe) {
+        this.belowMe = belowMe;
+        return this;
+    }
+
+    @Override
+    public IRect setLeftOf(IRect rightOfMe) {
+        this.rightOfMe = rightOfMe;
+        return this;
+    }
+
+    @Override
+    public IRect setBelow(IRect aboveMe) {
+        this.aboveMe = aboveMe;
+        return this;
+    }
+
+    @Override
+    public IRect setRightOf(IRect leftOfMe) {
+        this.leftOfMe = leftOfMe;
+        return this;
     }
 }
