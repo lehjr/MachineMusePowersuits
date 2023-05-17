@@ -62,19 +62,19 @@ import java.util.stream.Collectors;
  * <p>
  * Ported to Java by lehjr on 11/2/16.
  */
-public class ColourPickerFrame extends ScrollableFrame {
+public class ColorPickerFrame extends ScrollableFrame {
     public ModularItemSelectionFrame itemSelector;
     protected List<IRect> rects = new ArrayList<>();
     static final List<String> slidersIds = new ArrayList<>(Arrays.asList( "red", "green", "blue", "alpha"));
-    ColourBox colorBox;
+    ColorBox colorBox;
     static final Component COLOR_PREFIX = Component.translatable("gui.powersuits.colorPrefix");
     public ClickableLabel colorLabel;
     public Optional<VanillaSlider> selectedSlider;
-    public int selectedColour;
+    public int selectedColor;
     public int decrAbove;
     VanillaFrameScrollBar scrollBar;
 
-    public ColourPickerFrame(ModularItemSelectionFrame itemSelector, double left, double top, double right, double bottom) {
+    public ColorPickerFrame(ModularItemSelectionFrame itemSelector, double left, double top, double right, double bottom) {
         super(new Rect(left, top, right, bottom));
         this.scrollBar = new VanillaFrameScrollBar(this, "slider");
         this.itemSelector = itemSelector;
@@ -85,7 +85,7 @@ public class ColourPickerFrame extends ScrollableFrame {
         }
 
         /** color selector box ( box 4 ) ------------------------------------------------------ */
-        this.colorBox = new ColourBox(left() + 2, top(), left() + width() -8);
+        this.colorBox = new ColorBox(left() + 2, top(), left() + width() -8);
         colorBox.setBelow(rects.get(rects.size() -1));
         this.totalSize += colorBox.height();
 
@@ -96,15 +96,15 @@ public class ColourPickerFrame extends ScrollableFrame {
         colorLabel.setBelow(colorBox);
 
         colorLabel.setOnPressed(pressed->{
-            if (colors().length > selectedColour) {
+            if (colors().length > selectedColor) {
                 // todo: insert chat to player??? Maybe???
-                Minecraft.getInstance().keyboardHandler.setClipboard(new Color(selectedColour).rgbaHexColour());
+                Minecraft.getInstance().keyboardHandler.setClipboard(new Color(selectedColor).rgbaHexColor());
             }
         });
         this.totalSize += colorLabel.height();
 
         this.selectedSlider = Optional.empty();
-        this.selectedColour = 0;
+        this.selectedColor = 0;
         this.decrAbove = -1;
     }
 
@@ -134,10 +134,10 @@ public class ColourPickerFrame extends ScrollableFrame {
     }
 
     public int[] colors() {
-        return (getOrCreateColourTag() != null) ? getOrCreateColourTag().getAsIntArray() : new int[0];
+        return (getOrCreateColorTag() != null) ? getOrCreateColorTag().getAsIntArray() : new int[0];
     }
 
-    public IntArrayTag getOrCreateColourTag() {
+    public IntArrayTag getOrCreateColorTag() {
         return this.itemSelector.getModularItemOrEmpty().getCapability(NuminaCapabilities.RENDER)
                 .filter(IModelSpec.class::isInstance)
                 .map(IModelSpec.class::cast)
@@ -150,7 +150,7 @@ public class ColourPickerFrame extends ScrollableFrame {
                 }).orElse(new IntArrayTag(new int[0]));
     }
 
-    public IntArrayTag setColourTagMaybe(List<Integer> intList) {
+    public IntArrayTag setColorTagMaybe(List<Integer> intList) {
         return itemSelector.getModularItemOrEmpty().getCapability(NuminaCapabilities.RENDER)
                 .filter(IModelSpec.class::isInstance)
                 .map(IModelSpec.class::cast)
@@ -174,10 +174,10 @@ public class ColourPickerFrame extends ScrollableFrame {
             if (colorLabel.mouseClicked(mouseX, y, button)) {
                 return true;
             }
-            if (colorBox.addColour(mouseX, y)) {
+            if (colorBox.addColor(mouseX, y)) {
                 return true;
             }
-            if (colorBox.removeColour(mouseX, y)) {
+            if (colorBox.removeColor(mouseX, y)) {
                 return true;
             }
 
@@ -202,7 +202,7 @@ public class ColourPickerFrame extends ScrollableFrame {
         return retVal;
     }
 
-    public void onSelectColour(int i) {
+    public void onSelectColor(int i) {
         Color c = new Color(this.colors()[i]);
         rects.stream().filter(VanillaSlider.class::isInstance).map(VanillaSlider.class::cast).forEach(slider-> {
             int index = slidersIds.indexOf(slider.id());
@@ -228,7 +228,7 @@ public class ColourPickerFrame extends ScrollableFrame {
                 }
             }
         });
-        this.selectedColour = i;
+        this.selectedColor = i;
     }
 
     @Override
@@ -238,8 +238,8 @@ public class ColourPickerFrame extends ScrollableFrame {
         scrollBar.render(matrixStack, mouseX, mouseY, partialTick);
 
         if (this.isVisible() && this.isEnabled()) {
-            if (colors().length > selectedColour) {
-                colorLabel.setLabel(Component.literal("").append(COLOR_PREFIX).append(" 0X").append(new Color(colors()[selectedColour]).rgbaHexColour()));
+            if (colors().length > selectedColor) {
+                colorLabel.setLabel(Component.literal("").append(COLOR_PREFIX).append(" 0X").append(new Color(colors()[selectedColor]).rgbaHexColor()));
             }
             super.preRender(matrixStack, mouseX, mouseY, partialTick);
             matrixStack.pushPose();
@@ -272,14 +272,14 @@ public class ColourPickerFrame extends ScrollableFrame {
             if (selectedSlider.isPresent()) {
                 this.selectedSlider.ifPresent(slider-> {
                     slider.setValueByMouse(mousex);
-                    if (colors().length > selectedColour) {
-                        colors()[selectedColour] = Color.getARGBInt((float) ((VanillaSlider)rects.get(1)).getSliderInternalValue(), (float) ((VanillaSlider)rects.get(3)).getSliderInternalValue(), (float) ((VanillaSlider)rects.get(5)).getSliderInternalValue(), (float) ((VanillaSlider)rects.get(7)).getSliderInternalValue());
+                    if (colors().length > selectedColor) {
+                        colors()[selectedColor] = Color.getARGBInt((float) ((VanillaSlider)rects.get(1)).getSliderInternalValue(), (float) ((VanillaSlider)rects.get(3)).getSliderInternalValue(), (float) ((VanillaSlider)rects.get(5)).getSliderInternalValue(), (float) ((VanillaSlider)rects.get(7)).getSliderInternalValue());
                         this.itemSelector.selectedType().ifPresent(slotType -> MPSPackets.CHANNEL_INSTANCE.sendToServer(new ColorInfoPacket(slotType, this.colors())));
                     }});
                 // this just sets up the sliders on selecting an item
             } else if (!itemSelector.getModularItemOrEmpty().isEmpty() && colors().length > 0) {
-                if (selectedColour <= colors().length - 1) {
-                    onSelectColour(selectedColour);
+                if (selectedColor <= colors().length - 1) {
+                    onSelectColor(selectedColor);
                 }
             }
         }
@@ -288,8 +288,8 @@ public class ColourPickerFrame extends ScrollableFrame {
         setCurrentScrollPixels(scrollBar.getValue());
     }
 
-    class ColourBox extends Clickable {
-        public ColourBox(double left, double top, double right) {
+    class ColorBox extends Clickable {
+        public ColorBox(double left, double top, double right) {
             super(left,top,right,top + 18);
         }
 
@@ -306,33 +306,33 @@ public class ColourPickerFrame extends ScrollableFrame {
          * @param y
          * @return
          */
-        boolean addColour(double x, double y) {
+        boolean addColor(double x, double y) {
             if (y > this.top() + 8.0 && y < this.bottom()) {
                 int colorCol = (int) (x - left() - 8.0) / 8;
                 if (colorCol >= 0 && colorCol < colors().length) {
-                    onSelectColour(colorCol);
+                    onSelectColor(colorCol);
                 } else if (colorCol == colors().length) {
                     NuminaLogger.logger.debug("Adding");
-                    List<Integer> intList = Arrays.stream(getIntArray(getOrCreateColourTag())).boxed().collect(Collectors.toList());
+                    List<Integer> intList = Arrays.stream(getIntArray(getOrCreateColorTag())).boxed().collect(Collectors.toList());
                     intList.add(Color.WHITE.getARGBInt());
-                    setColourTagMaybe(intList);
+                    setColorTagMaybe(intList);
                 }
                 return true;
             }
             return false;
         }
 
-        boolean removeColour(double x, double y) {
-            if (y > this.top() + 1.5 && y < this.top() + 7 && x > left() + 8 + selectedColour * 8 && x < left() + 16 + selectedColour * 8) {
-                IntArrayTag IntArrayTag = getOrCreateColourTag();
+        boolean removeColor(double x, double y) {
+            if (y > this.top() + 1.5 && y < this.top() + 7 && x > left() + 8 + selectedColor * 8 && x < left() + 16 + selectedColor * 8) {
+                IntArrayTag IntArrayTag = getOrCreateColorTag();
                 List<Integer> intList = Arrays.stream(getIntArray(IntArrayTag)).boxed().collect(Collectors.toList());
 
-                if (intList.size() > 1 && selectedColour <= intList.size() -1) {
-                    intList.remove(selectedColour); // with integer list, will default to index rather than getValue
-                    setColourTagMaybe(intList);
-                    decrAbove = selectedColour;
-                    if (selectedColour == getIntArray(IntArrayTag).length) {
-                        selectedColour = selectedColour - 1;
+                if (intList.size() > 1 && selectedColor <= intList.size() -1) {
+                    intList.remove(selectedColor); // with integer list, will default to index rather than getValue
+                    setColorTagMaybe(intList);
+                    decrAbove = selectedColor;
+                    if (selectedColor == getIntArray(IntArrayTag).length) {
+                        selectedColor = selectedColor - 1;
                     }
                     itemSelector.selectedType().ifPresent(slotType -> MPSPackets.CHANNEL_INSTANCE.sendToServer(new ColorInfoPacket(slotType, IntArrayTag.getAsIntArray())));
                 }
@@ -351,8 +351,8 @@ public class ColourPickerFrame extends ScrollableFrame {
             }
 
             icon.colorclicker.draw(matrixStack, this.left() + 8 + colors().length * 8, this.top() + 8, Color.WHITE);
-            icon.armordisplayselect.draw(matrixStack, this.left() + 8 + selectedColour * 8, this.top() + 8, Color.WHITE);
-            icon.minusSign.draw(matrixStack, this.left() + 8 + selectedColour * 8, this.top(), Color.RED);
+            icon.armordisplayselect.draw(matrixStack, this.left() + 8 + selectedColor * 8, this.top() + 8, Color.WHITE);
+            icon.minusSign.draw(matrixStack, this.left() + 8 + selectedColor * 8, this.top(), Color.RED);
             icon.plusSign.draw(matrixStack, this.left() + 8 + colors().length * 8, this.top() + 8, Color.GREEN);
         }
     }

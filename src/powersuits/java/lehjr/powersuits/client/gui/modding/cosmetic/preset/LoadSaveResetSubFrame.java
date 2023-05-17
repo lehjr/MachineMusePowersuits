@@ -41,7 +41,7 @@
 ////    protected ClickableButton loadButton;
 ////    protected ClickableButton saveButton;
 ////    protected ClickableButton resetButton;
-////    ColourPickerFrame colorpicker;
+////    ColorPickerFrame colorpicker;
 ////    ScrollableLabel saveAsLabel;
 ////    final boolean usingCosmeticPresets;
 ////    final boolean allowCosmeticPresetCreation;
@@ -57,9 +57,9 @@
 ////
 ////    TextFieldWidget presetNameInputBox;
 ////
-////    public LoadSaveResetSubFrame(ColourPickerFrame colorpicker, Player player, Rect borderRef, Colour insideColour, Colour borderColour, ItemSelectionFrame itemSelector, boolean usingCosmeticPresetsIn, boolean allowCosmeticPresetCreationIn, PartManipAbstractContainerMenu partframe, CosmeticPresetAbstractContainerMenu cosmeticFrame) {
+////    public LoadSaveResetSubFrame(ColorPickerFrame colorpicker, Player player, Rect borderRef, Color insideColor, Color borderColor, ItemSelectionFrame itemSelector, boolean usingCosmeticPresetsIn, boolean allowCosmeticPresetCreationIn, PartManipAbstractContainerMenu partframe, CosmeticPresetAbstractContainerMenu cosmeticFrame) {
 ////        this.player = player;
-////        this.border = new DrawableRect(borderRef, insideColour, borderColour);
+////        this.border = new DrawableRect(borderRef, insideColor, borderColor);
 ////        this.originalTop = border.top();
 ////        this.originalHeight = border.height();
 ////        this.originalBottom = border.bottom();

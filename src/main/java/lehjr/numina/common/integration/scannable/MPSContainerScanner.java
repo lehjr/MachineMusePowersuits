@@ -109,7 +109,7 @@
 //
 //                int i;
 //                Slot into;
-//                if (fromStack.func_77976_d() > 1) {
+//                if (fromStack.getMaxStackSize() > 1) {
 //                    for(i = begin; i >= 0 && i < this.slots.size(); i += step) {
 //                        into = this.slots.get(i);
 //                        if (into.field_75224_c != from.field_75224_c) {
@@ -117,12 +117,12 @@
 //                            if (!intoStack.isEmpty()) {
 //                                boolean itemsAreEqual = fromStack.sameItem(intoStack) && ItemStack.func_77970_a(fromStack, intoStack);
 //                                if (itemsAreEqual) {
-//                                    int maxSizeInSlot = Math.min(fromStack.func_77976_d(), into.func_178170_b(stack));
+//                                    int maxSizeInSlot = Math.min(fromStack.getMaxStackSize(), into.func_178170_b(stack));
 //                                    int spaceInSlot = maxSizeInSlot - intoStack.getCount();
 //                                    if (spaceInSlot > 0) {
 //                                        int itemsMoved = Math.min(spaceInSlot, fromStack.getCount());
 //                                        if (itemsMoved > 0) {
-//                                            intoStack.func_190917_f(from.func_75209_a(itemsMoved).getCount());
+//                                            intoStack.grow(from.func_75209_a(itemsMoved).getCount());
 //                                            into.setChanged();
 //                                            if (from.getItem().isEmpty()) {
 //                                                break;
@@ -138,7 +138,7 @@
 //                for(i = begin; i >= 0 && i < this.slots.size() && !from.getItem().isEmpty(); i += step) {
 //                    into = this.slots.get(i);
 //                    if (into.field_75224_c != from.field_75224_c && !into.hasItem() && into.mayPlace(fromStack)) {
-//                        int maxSizeInSlot = Math.min(fromStack.func_77976_d(), into.func_178170_b(fromStack));
+//                        int maxSizeInSlot = Math.min(fromStack.getMaxStackSize(), into.func_178170_b(fromStack));
 //                        int itemsMoved = Math.min(maxSizeInSlot, fromStack.getCount());
 //                        into.set(from.func_75209_a(itemsMoved));
 //                    }

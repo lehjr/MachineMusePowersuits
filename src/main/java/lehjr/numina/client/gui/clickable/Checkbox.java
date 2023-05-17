@@ -99,7 +99,7 @@ public class Checkbox extends Clickable {
     void makeNewTile() {
         if (tile == null) {
             MusePoint2D ul = new MusePoint2D(left() + 2, centerY() - 5);
-            this.tile = (new CheckboxTile(ul));//.setBackgroundColour(Colour.BLACK).setTopBorderColour(Colour.DARK_GREY).setBottomBorderColour(Colour.DARK_GREY);
+            this.tile = (new CheckboxTile(ul));//.setBackgroundColor(Color.BLACK).setTopBorderColor(Color.DARK_GREY).setBottomBorderColor(Color.DARK_GREY);
         } else {
             tile.setUL(new MusePoint2D(left() + 2, centerY() - 5));
         }

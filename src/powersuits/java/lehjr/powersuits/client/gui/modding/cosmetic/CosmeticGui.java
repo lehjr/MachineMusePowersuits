@@ -33,7 +33,7 @@ import lehjr.numina.client.gui.frame.EntityRenderFrame;
 import lehjr.numina.client.gui.frame.ModularItemSelectionFrame;
 import lehjr.numina.client.gui.geometry.MusePoint2D;
 import lehjr.powersuits.client.gui.common.TabSelectFrame;
-import lehjr.powersuits.client.gui.modding.cosmetic.colorpicker.ColourPickerFrame;
+import lehjr.powersuits.client.gui.modding.cosmetic.colorpicker.ColorPickerFrame;
 import lehjr.powersuits.client.gui.modding.cosmetic.partmanip.ModelManipFrame;
 import lehjr.powersuits.common.config.MPSSettings;
 import lehjr.powersuits.common.constants.MPSConstants;
@@ -57,7 +57,7 @@ public class CosmeticGui extends ContainerlessGui {
     Player player;
     ModularItemSelectionFrame itemSelectFrame;
     EntityRenderFrame renderframe;
-    ColourPickerFrame colorpicker;
+    ColorPickerFrame colorpicker;
     ModelManipFrame partframe;
     TabSelectFrame tabSelectFrame;
     protected boolean allowCosmeticPresetCreation;
@@ -110,7 +110,7 @@ public class CosmeticGui extends ContainerlessGui {
         addFrame(renderframe);
 
         /** for picking the colors ------------------------------------------------------------ */
-        colorpicker = new ColourPickerFrame(itemSelectFrame, leftPos + 220, topPos +91, leftPos + 344, topPos + 207);
+        colorpicker = new ColorPickerFrame(itemSelectFrame, leftPos + 220, topPos +91, leftPos + 344, topPos + 207);
         addFrame(colorpicker);
 
         /** for manipulating part selections --------------------------------------------------- */
@@ -137,8 +137,8 @@ public class CosmeticGui extends ContainerlessGui {
 //                        absY(-0.23f),
 //                        absX(0.95f),
 //                        absY(-0.025f)),
-//                Colour.LIGHTBLUE.withAlpha(0.8F),
-//                Colour.DARKBLUE.withAlpha(0.8F),
+//                Color.LIGHTBLUE.withAlpha(0.8F),
+//                Color.DARKBLUE.withAlpha(0.8F),
 //                itemSelect,
 //                usingCosmeticPresets,
 //                allowCosmeticPresetCreation,

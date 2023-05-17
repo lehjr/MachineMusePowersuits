@@ -79,7 +79,7 @@ public class DefaultModelSpec {
 //        // TextureSpecBase (only one texture visible at a time)
 //        CompoundTag texSpecTag = new CompoundTag();
 
-        // List of EnumColour indexes
+        // List of EnumColor indexes
         List<Integer> colors = new ArrayList<>();
 
         // temp data holder
@@ -92,25 +92,25 @@ public class DefaultModelSpec {
 
                 /** Power Fist -------------------------------------------------------------------- */
                 if (stack.getItem() instanceof PowerFist && spec.getSpecType().equals(SpecType.HANDHELD_OBJ_MODEL)) {
-                    colors = addNewColourstoList(colors, spec.getColors()); // merge new color int arrays in
+                    colors = addNewColorstoList(colors, spec.getColors()); // merge new color int arrays in
 
                     for (PartSpecBase partSpec : spec.getPartSpecs()) {
                         if (partSpec instanceof ObjlPartSpec) {
                             prefArray.add(partSpec.multiSet(new CompoundTag(),
-                                    getNewColourIndex(colors, spec.getColors(), partSpec.getDefaultColourIndex()),
+                                    getNewColorIndex(colors, spec.getColors(), partSpec.getDefaultColorIndex()),
                                     partSpec.getGlow()));
                         }
                     }
 
                     /** Power Armor ------------------------------------------------------------------- */
                 } else if (stack.getItem() instanceof AbstractElectricItemArmor) {
-                    colors = addNewColourstoList(colors, spec.getColors()); // merge new color int arrays in
+                    colors = addNewColorstoList(colors, spec.getColors()); // merge new color int arrays in
 
                     // Armor Skin
                     if (spec.getSpecType().equals(SpecType.ARMOR_SKIN) && spec.get(slot.getName()) != null) {
                         // only a single texture per equipment itemSlot can be used at a time
 //                        texSpecTag = spec.get(slot.getName()).multiSet(new CompoundTag(),
-//                                getNewColourIndex(colors, spec.getColors(), spec.get(slot.getName()).getDefaultColourIndex()));
+//                                getNewColorIndex(colors, spec.getColors(), spec.get(slot.getName()).getDefaultColorIndex()));
 
                         NuminaLogger.logError("fixme: defaultModelSpec: unfinished armor skin handler");
                     }
@@ -126,7 +126,7 @@ public class DefaultModelSpec {
                                         (partSpec.binding.getItemState().equals("jetpack") &&
                                                 ModuleManager.INSTANCE.itemHasModule(stack, MPSModuleConstants.MODULE_JETPACK__DATANAME))) { */
                                     prefArray.add(partSpec.multiSet(new CompoundTag(),
-                                            getNewColourIndex(colors, spec.getColors(), partSpec.getDefaultColourIndex()),
+                                            getNewColorIndex(colors, spec.getColors(), partSpec.getDefaultColorIndex()),
                                             partSpec.getGlow()));
                                 /*} */
                             }
@@ -152,7 +152,7 @@ public class DefaultModelSpec {
     /**
      * When dealing with possibly multiple specs and color lists, new list needs to be created, since there is only one list per item.
      */
-    static List<Integer> addNewColourstoList(List<Integer> colors, List<Integer> colorsToAdd) {
+    static List<Integer> addNewColorstoList(List<Integer> colors, List<Integer> colorsToAdd) {
         for (Integer i : colorsToAdd) {
             if (!colors.contains(i))
                 colors.add(i);
@@ -163,7 +163,7 @@ public class DefaultModelSpec {
     /**
      * new array means setting a new array index for the same getValue
      */
-    public static int getNewColourIndex(List<Integer> colors, List<Integer> oldColours, Integer index) {
-        return colors.indexOf(oldColours.get(index != null ? index : 0));
+    public static int getNewColorIndex(List<Integer> colors, List<Integer> oldColors, Integer index) {
+        return colors.indexOf(oldColors.get(index != null ? index : 0));
     }
 }

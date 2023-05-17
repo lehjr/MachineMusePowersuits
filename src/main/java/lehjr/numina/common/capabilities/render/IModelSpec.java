@@ -74,11 +74,11 @@ public interface IModelSpec {
 
     CompoundTag getDefaultRenderTag();
 
-    List<Integer> addNewColourstoList(List<Integer> colors, List<Integer> colorsToAdd);
+    List<Integer> addNewColorstoList(List<Integer> colors, List<Integer> colorsToAdd);
 
     int[] getColorArray();
 
-    int getNewColourIndex(List<Integer> colors, List<Integer> oldColours, Integer index);
+    int getNewColorIndex(List<Integer> colors, List<Integer> oldColors, Integer index);
 
     CompoundTag setColorArray(int[] colors);
 
@@ -96,7 +96,7 @@ public interface IModelSpec {
 //            if (renderTag.contains(TagConstants.TEXTURESPEC)) {
 //                TexturePartSpec partSpec = (TexturePartSpec) ModelRegistry.getInstance().getPart(renderTag.getCompound(TagConstants.TEXTURESPEC));
 //                CompoundTag specTag = renderTag.getCompound(TagConstants.TEXTURESPEC);
-//                int index = partSpec.getColourIndex(specTag);
+//                int index = partSpec.getColorIndex(specTag);
 //                int[] colors = getColorArray();
 //                if (colors.length > index) {
 //                    return new Color(colors[index]);

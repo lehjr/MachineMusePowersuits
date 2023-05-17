@@ -298,7 +298,7 @@ public class GuiIcon {
      * @param texStartY the topmost point of the texture on the sheet (usually 0 for an icon)
      * @param textureWidth the width of the texture (often 8 or 16 for icons)
      * @param textureHeight the height of the texture (often 8 or 16 for icons)
-     * @param color the Colour to apply to the texture
+     * @param color the Color to apply to the texture
      */
     public static void renderTextureWithColor(ResourceLocation location, PoseStack matrixStack,
                                               double left, double right, double top, double bottom, float zLevel, double iconWidth, double iconHeight, double texStartX, double texStartY, double textureWidth, double textureHeight, Color color) {
@@ -352,7 +352,7 @@ public class GuiIcon {
      * @param maxU the right most UV mapped position
      * @param minV the top most UV mapped position
      * @param maxV the bottom most UV mapped position
-     * @param color the Colour to apply to the texture
+     * @param color the Color to apply to the texture
      */
     private static void innerBlit(Matrix4f matrix4f, double left, double right, double top, double bottom, float zLevel, float minU, float maxU, float minV, float maxV, Color color) {
         BufferBuilder bufferbuilder = Tesselator.getInstance().getBuilder();

@@ -51,7 +51,7 @@ import java.util.List;
 public abstract class InventoryFrame extends ScrollableFrame implements IContainerULOffSet {
     IContainerULOffSet.ulGetter ulGetter;
     AbstractContainerMenu container;
-//    Colour gridColour;
+//    Color gridColor;
     public final int gridWidth;
     protected List<Integer> slotIndexes;
     List<SlotRect> tiles;

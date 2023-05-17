@@ -55,7 +55,7 @@ public interface IDrawable extends Renderable {
      * Common code for adding vertices to the BufferBuilder
      * @param matrix4f
      * @param vertices
-     * @param color a Colour to draw in
+     * @param color a Color to draw in
      */
     default void addVerticesToBuffer(BufferBuilder bufferbuilder, Matrix4f matrix4f, FloatBuffer vertices, Color color) {
         vertices.rewind();
@@ -68,7 +68,7 @@ public interface IDrawable extends Renderable {
      * Common code for adding vertices to the BufferBuilder
      * @param matrix4f
      * @param vertices
-     * @param color a Colour to draw in
+     * @param color a Color to draw in
      */
     default void addVerticesToBuffer(BufferBuilder bufferbuilder, Matrix4f matrix4f, DoubleBuffer vertices, Color color) {
         vertices.rewind();

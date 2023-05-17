@@ -73,8 +73,8 @@
 //        setTop(position.y() - radius.y());
 //        setWidth(radius.x() * 2);
 //        setHeight(radius.y() * 2);
-//        setBorderColour(enabledBorder);
-//        setBackgroundColour(enabledBackground);
+//        setBorderColor(enabledBorder);
+//        setBackgroundColor(enabledBackground);
 //        this.setEnabled(enabled);
 //    }
 //
@@ -98,8 +98,8 @@
 //        return this;
 //    }
 //
-//    void setBackgroundColour(Color backgroundColour, boolean hovered) {
-//        super.setBackgroundColour(hovered? backgroundColour.copy().lighten(0.10F) : backgroundColour);
+//    void setBackgroundColor(Color backgroundColor, boolean hovered) {
+//        super.setBackgroundColor(hovered? backgroundColor.copy().lighten(0.10F) : backgroundColor);
 //    }
 //
 //    /**
@@ -136,11 +136,11 @@
 //    public void renderButton(PoseStack matrixStack, int mouseX, int mouseY, float frameTIme) {
 //        if (isVisible) {
 //
-//            setBackgroundColour(isEnabled() ? enabledBackground : disabledBackground, containsPoint(mouseX, mouseY));
+//            setBackgroundColor(isEnabled() ? enabledBackground : disabledBackground, containsPoint(mouseX, mouseY));
 //
 //
 //
-//            this.setBorderColour(isEnabled() ? enabledBorder : disabledBorder);
+//            this.setBorderColor(isEnabled() ? enabledBorder : disabledBorder);
 //
 //
 //            super.render(matrixStack, mouseX, mouseY, frameTIme);

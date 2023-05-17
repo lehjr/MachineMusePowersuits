@@ -139,7 +139,7 @@
 //            points.put(colorPoints.get());
 //            points.flip();
 //        }
-//        colorPoints = GradientAndArcCalculator.getColourGradient(c1, c1, points.limit() / 3);
+//        colorPoints = GradientAndArcCalculator.getColorGradient(c1, c1, points.limit() / 3);
 //        color = BufferUtils.createFloatBuffer(colorPoints.limit() + 4); // space for rgba of c2
 //        color.put(c2.asArray());
 //        color.put(colorPoints);

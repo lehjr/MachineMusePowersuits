@@ -269,21 +269,21 @@ public class ModularPowersuits {
                                 return true;
                             }
 
-                            public ItemStack quickMoveStack(Player pPlayer, int p_82846_2_) {
+                            public ItemStack quickMoveStack(Player pPlayer, int index) {
                                 ItemStack itemstack = ItemStack.EMPTY;
-                                Slot slot = this.slots.get(p_82846_2_);
+                                Slot slot = this.slots.get(index);
                                 if (slot != null && slot.hasItem()) {
                                     ItemStack itemstack1 = slot.getItem();
                                     itemstack = itemstack1.copy();
-                                    if (p_82846_2_ == 0) {
+                                    if (index == 0) {
                                         if (!this.moveItemStackTo(itemstack1, 10, 46, true)) {
                                             return ItemStack.EMPTY;
                                         }
 
                                         slot.onQuickCraft(itemstack1, itemstack);
-                                    } else if (p_82846_2_ >= 10 && p_82846_2_ < 46) {
+                                    } else if (index >= 10 && index < 46) {
                                         if (!this.moveItemStackTo(itemstack1, 1, 10, false)) {
-                                            if (p_82846_2_ < 37) {
+                                            if (index < 37) {
                                                 if (!this.moveItemStackTo(itemstack1, 37, 46, false)) {
                                                     return ItemStack.EMPTY;
                                                 }
@@ -306,7 +306,7 @@ public class ModularPowersuits {
                                     }
 
                                     slot.onTake(pPlayer, itemstack1);
-                                    if (p_82846_2_ == 0) {
+                                    if (index == 0) {
                                         pPlayer.drop(itemstack1, false);
                                     }
                                 }

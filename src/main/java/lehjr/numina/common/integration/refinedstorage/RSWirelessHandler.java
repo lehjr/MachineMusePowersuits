@@ -62,7 +62,7 @@
 //                    }
 //
 //                    if (!worldIn.isClientSide && module.getItem() instanceof NetworkItem) {
-//                        ((NetworkItem)module.getItem()).applyNetwork(worldIn.func_73046_m(), module, n -> n.getNetworkItemManager().open(playerIn, module, PlayerSlot.getSlotForHand(playerIn, hand)), err -> playerIn.func_145747_a(err, playerIn.getUUID()));
+//                        ((NetworkItem)module.getItem()).applyNetwork(worldIn.func_73046_m(), module, n -> n.getNetworkItemManager().open(playerIn, module, PlayerSlot.getSlotForHand(playerIn, hand)), err -> playerIn.sendMessage(err, playerIn.getUUID()));
 //                    }
 //                    return ActionResult.func_226248_a_(itemStackIn);
 //                }

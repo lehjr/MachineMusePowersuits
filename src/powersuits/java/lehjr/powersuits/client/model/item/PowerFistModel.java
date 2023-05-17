@@ -152,7 +152,7 @@
 //                                transform = ((ModelSpec) partSpec.spec).getTransform(modelcameraTransformType);
 //                                String itemState = partSpec.getBinding().getItemState();
 //
-//                                int ix = partSpec.getColourIndex(nbt);
+//                                int ix = partSpec.getColorIndex(nbt);
 //                                if (ix < colors.length && ix >= 0) {
 //                                    partColor = new Color(colors[ix]);
 //                                } else {

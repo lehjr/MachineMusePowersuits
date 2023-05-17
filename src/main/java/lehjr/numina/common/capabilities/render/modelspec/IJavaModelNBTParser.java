@@ -35,7 +35,7 @@ public interface IJavaModelNBTParser {
             return;
         }
 
-        int ix = partSpec.getColourIndex(tag);
+        int ix = partSpec.getColorIndex(tag);
         // checks the range of the index to avoid errors OpenGL or crashing
         if (ix < colors.length && ix >= 0) {
             partColor = colors[ix];

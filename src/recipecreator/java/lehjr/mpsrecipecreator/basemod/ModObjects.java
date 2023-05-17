@@ -1,25 +1,73 @@
-//package lehjr.mpsrecipecreator.basemod;
-//
-//import lehjr.mpsrecipecreator.block.RecipeWorkbench;
-//import lehjr.mpsrecipecreator.container.MPARCAbstractContainerMenu;
-//import net.minecraft.inventory.container.MenuType;
-//import net.minecraftforge.registries.ObjectHolder;
-//
-///**
-// * @author lehjr
-// */
-//public enum ModObjects {
-//    INSTANCE;
-//
-//    /**
-//     * Block --------------------------------------------------------------------------------------
-//     */
-//    @ObjectHolder(Constants.RECIPE_WORKBENCH__REGNAME)
-//    public static final RecipeWorkbench recipeWorkBench = null;
-//
-//    /**
-//     * AbstractContainerMenu type -----------------------------------------------------------------------------
-//     */
-//    @ObjectHolder(Constants.RECIPE_WORKBENCH_TYPE__REG_NAME)
-//    public static final MenuType<MPARCAbstractContainerMenu> RECIPE_WORKBENCH_CONTAINER_TYPE = null;
-//}
+package lehjr.mpsrecipecreator.basemod;
+
+import lehjr.mpsrecipecreator.block.RecipeWorkbench;
+import lehjr.mpsrecipecreator.container.MPSRCMenu;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.inventory.ContainerLevelAccess;
+import net.minecraft.world.inventory.MenuType;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.Block;
+import net.minecraftforge.common.extensions.IForgeMenuType;
+import net.minecraftforge.event.CreativeModeTabEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
+
+/**
+ * @author lehjr
+ */
+@Mod.EventBusSubscriber(modid = Constants.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
+public enum ModObjects {
+    INSTANCE;
+
+    public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, Constants.MOD_ID);
+
+    /**
+     * Block --------------------------------------------------------------------------------------
+     */
+    public static final RegistryObject<RecipeWorkbench> RECIPE_WORKBENCH = BLOCKS.register(Constants.RECIPE_WORKBENCH__REGNAME.getPath(), RecipeWorkbench::new);
+
+    /**
+     * Item ---------------------------------------------------------------------------------------
+     */
+    public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, Constants.MOD_ID);
+    public static final RegistryObject<Item> RECIPE_WORKBENCH_ITEM = ITEMS.register(Constants.RECIPE_WORKBENCH__REGNAME.getPath(),
+            () -> new BlockItem(RECIPE_WORKBENCH.get(), new Item.Properties()));
+
+
+    /**
+     * AbstractContainerMenu type -----------------------------------------------------------------------------
+     */
+    public static final DeferredRegister<MenuType<?>> MENU_TYPES = DeferredRegister.create(ForgeRegistries.MENU_TYPES, Constants.MOD_ID);
+
+    public static final RegistryObject<MenuType<MPSRCMenu>> RECIPE_WORKBENCH_CONTAINER_TYPE = MENU_TYPES.register(Constants.RECIPE_WORKBENCH_TYPE__REG_NAME.getPath(),
+            () -> IForgeMenuType.create((windowId, inv, data) -> {
+                BlockPos pos = data.readBlockPos();
+                return new MPSRCMenu(windowId, inv, ContainerLevelAccess.create(inv.player.level, pos));
+            }));
+
+
+    public static CreativeModeTab creativeTab;
+    @SubscribeEvent
+    public static void addCreativeTab(CreativeModeTabEvent.Register event) {
+        creativeTab = event.registerCreativeModeTab(new ResourceLocation(Constants.MOD_ID, "items"),
+                builder -> builder.icon(() -> new ItemStack(RECIPE_WORKBENCH_ITEM.get())).title(Component.literal("Recipe Creator")));
+    }
+
+    @SubscribeEvent
+    public static void onPopulateTab(CreativeModeTabEvent.BuildContents event) {
+        if (event.getTab() == creativeTab) {
+            ITEMS.getEntries().forEach(item-> {
+                ItemStack stack = new ItemStack(item.get());
+                event.accept(stack);
+            });
+        }
+    }
+}

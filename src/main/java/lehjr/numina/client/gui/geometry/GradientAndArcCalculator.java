@@ -228,7 +228,7 @@ public class GradientAndArcCalculator {
      * @param numsegments
      * @return
      */
-    public static FloatBuffer getColourGradient(Color c1, Color c2, int numsegments) {
+    public static FloatBuffer getColorGradient(Color c1, Color c2, int numsegments) {
         FloatBuffer buffer = BufferUtils.createFloatBuffer(numsegments * 4);
         if (c1.equals(c2)) {
             for (double i = 0; i < numsegments; i++) {

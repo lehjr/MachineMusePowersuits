@@ -28,7 +28,7 @@
 //
 //import com.mojang.blaze3d.vertex.PoseStack;
 //import com.mojang.blaze3d.systems.RenderSystem;
-//import lehjr.numina.common.math.Colour;
+//import lehjr.numina.common.math.Color;
 //import com.mojang.blaze3d.vertex.BufferBuilder;
 //import com.mojang.blaze3d.vertex.Tesselator;
 //import com.mojang.blaze3d.vertex.DefaultVertexFormat;
@@ -40,7 +40,7 @@
 //public class DrawableRectangularGrid extends DrawableRect {
 //    public float zLevel = 0;
 //
-//    Colour gridColour;
+//    Color gridColor;
 //    int gridHeight;
 //    int gridWidth;
 //    Double horizontalSegmentSize;
@@ -48,13 +48,13 @@
 //    final Rect[] boxes;
 //
 //    public DrawableRectangularGrid(double left, double top, double right, double bottom, boolean growFromMiddle,
-//                                   Colour insideColour,
-//                                   Colour outsideColour,
-//                                   Colour gridColour,
+//                                   Color insideColor,
+//                                   Color outsideColor,
+//                                   Color gridColor,
 //                                   int gridHeight,
 //                                   int gridWidth) {
-//        super(left, top, right, bottom, growFromMiddle, insideColour, outsideColour);
-//        this.gridColour = gridColour;
+//        super(left, top, right, bottom, growFromMiddle, insideColor, outsideColor);
+//        this.gridColor = gridColor;
 //        this.gridHeight = gridHeight;
 //        this.gridWidth = gridWidth;
 //        this.boxes = new Rect[gridHeight*gridWidth];
@@ -62,13 +62,13 @@
 //    }
 //
 //    public DrawableRectangularGrid(double left, double top, double right, double bottom,
-//                                   Colour insideColour,
-//                                   Colour outsideColour,
-//                                   Colour gridColour,
+//                                   Color insideColor,
+//                                   Color outsideColor,
+//                                   Color gridColor,
 //                                   int gridHeight,
 //                                   int gridWidth) {
-//        super(left, top, right, bottom, false, insideColour, outsideColour);
-//        this.gridColour = gridColour;
+//        super(left, top, right, bottom, false, insideColor, outsideColor);
+//        this.gridColor = gridColor;
 //        this.gridHeight = gridHeight;
 //        this.gridWidth = gridWidth;
 //        this.boxes = new Rect[gridHeight*gridWidth];
@@ -76,13 +76,13 @@
 //    }
 //
 //    public DrawableRectangularGrid(MusePoint2D ul, MusePoint2D br,
-//                                   Colour insideColour,
-//                                   Colour outsideColour,
-//                                   Colour gridColour,
+//                                   Color insideColor,
+//                                   Color outsideColor,
+//                                   Color gridColor,
 //                                   int gridHeight,
 //                                   int gridWidth) {
-//        super(ul, br, insideColour, outsideColour);
-//        this.gridColour = gridColour;
+//        super(ul, br, insideColor, outsideColor);
+//        this.gridColor = gridColor;
 //        this.gridHeight = gridHeight;
 //        this.gridWidth = gridWidth;
 //        this.boxes = new Rect[gridHeight*gridWidth];
@@ -158,16 +158,16 @@
 //        // Horizontal lines
 //        if (gridHeight >1) {
 //            for (double y = (double) (verticleSegmentSize + top()); y < bottom(); y += verticleSegmentSize) {
-//                buffer.vertex(matrix4f, (float)left(), (float) y, zLevel).color(gridColour.r, gridColour.g, gridColour.b, gridColour.a).endVertex();
-//                buffer.vertex(matrix4f, (float)right(), (float) y, zLevel).color(gridColour.r, gridColour.g, gridColour.b, gridColour.a).endVertex();
+//                buffer.vertex(matrix4f, (float)left(), (float) y, zLevel).color(gridColor.r, gridColor.g, gridColor.b, gridColor.a).endVertex();
+//                buffer.vertex(matrix4f, (float)right(), (float) y, zLevel).color(gridColor.r, gridColor.g, gridColor.b, gridColor.a).endVertex();
 //            }
 //        }
 //
 //        // Vertical lines
 //        if(gridWidth > 1) {
 //            for (double x = (double) (horizontalSegmentSize + left()); x < right(); x += horizontalSegmentSize) {
-//                buffer.vertex(matrix4f, (float) x, (float) top(), zLevel).color(gridColour.r, gridColour.g, gridColour.b, gridColour.a).endVertex();
-//                buffer.vertex(matrix4f, (float) x, (float) bottom(), zLevel).color(gridColour.r, gridColour.g, gridColour.b, gridColour.a).endVertex();
+//                buffer.vertex(matrix4f, (float) x, (float) top(), zLevel).color(gridColor.r, gridColor.g, gridColor.b, gridColor.a).endVertex();
+//                buffer.vertex(matrix4f, (float) x, (float) bottom(), zLevel).color(gridColor.r, gridColor.g, gridColor.b, gridColor.a).endVertex();
 //            }
 //        }
 //

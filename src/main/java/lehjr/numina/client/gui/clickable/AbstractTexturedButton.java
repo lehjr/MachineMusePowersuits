@@ -15,14 +15,14 @@
 //    double iconHeight;
 //
 //    public AbstractTexturedButton(double left, double top, double right, double bottom, boolean growFromMiddle,
-//                                  Color backgroundColourEnabled,
-//                                  Color backgroundColourDisabled,
-//                                  Color borderColourEnabled,
-//                                  Color borderColourDisabled,
+//                                  Color backgroundColorEnabled,
+//                                  Color backgroundColorDisabled,
+//                                  Color borderColorEnabled,
+//                                  Color borderColorDisabled,
 //                                  double textureWidth,
 //                                  double textureHeight,
 //                                  ResourceLocation textureLocation) {
-//        super(left, top, right, bottom, growFromMiddle, backgroundColourEnabled, backgroundColourDisabled, borderColourEnabled, borderColourDisabled);
+//        super(left, top, right, bottom, growFromMiddle, backgroundColorEnabled, backgroundColorDisabled, borderColorEnabled, borderColorDisabled);
 //        this.textureWidth = this.iconWidth = textureWidth;
 //        this.textureHeight = this.iconHeight = textureHeight;
 //        this.textureLocation = textureLocation;
@@ -31,14 +31,14 @@
 //    }
 //
 //    public AbstractTexturedButton(double left, double top, double right, double bottom,
-//                                  Color backgroundColourEnabled,
-//                                  Color backgroundColourDisabled,
-//                                  Color borderColourEnabled,
-//                                  Color borderColourDisabled,
+//                                  Color backgroundColorEnabled,
+//                                  Color backgroundColorDisabled,
+//                                  Color borderColorEnabled,
+//                                  Color borderColorDisabled,
 //                                  double textureWidth,
 //                                  double textureHeight,
 //                                  ResourceLocation textureLocation) {
-//        super(left, top, right, bottom, backgroundColourEnabled, backgroundColourDisabled, borderColourEnabled, borderColourDisabled);
+//        super(left, top, right, bottom, backgroundColorEnabled, backgroundColorDisabled, borderColorEnabled, borderColorDisabled);
 //        this.textureWidth = textureWidth;
 //        this.textureHeight = textureHeight;
 //        this.textureLocation = textureLocation;
@@ -47,14 +47,14 @@
 //    }
 //
 //    public AbstractTexturedButton(MusePoint2D ul, MusePoint2D br,
-//                                  Color backgroundColourEnabled,
-//                                  Color backgroundColourDisabled,
-//                                  Color borderColourEnabled,
-//                                  Color borderColourDisabled,
+//                                  Color backgroundColorEnabled,
+//                                  Color backgroundColorDisabled,
+//                                  Color borderColorEnabled,
+//                                  Color borderColorDisabled,
 //                                  double textureWidth,
 //                                  double textureHeight,
 //                                  ResourceLocation textureLocation) {
-//        super(ul, br, backgroundColourEnabled, backgroundColourDisabled, borderColourEnabled, borderColourDisabled);
+//        super(ul, br, backgroundColorEnabled, backgroundColorDisabled, borderColorEnabled, borderColorDisabled);
 //        this.textureWidth = textureWidth;
 //        this.textureHeight = textureHeight;
 //        this.textureLocation = textureLocation;
@@ -63,14 +63,14 @@
 //    }
 //
 //    public AbstractTexturedButton(Rect ref,
-//                                  Color backgroundColourEnabled,
-//                                  Color backgroundColourDisabled,
-//                                  Color borderColourEnabled,
-//                                  Color borderColourDisabled,
+//                                  Color backgroundColorEnabled,
+//                                  Color backgroundColorDisabled,
+//                                  Color borderColorEnabled,
+//                                  Color borderColorDisabled,
 //                                  double textureWidth,
 //                                  double textureHeight,
 //                                  ResourceLocation textureLocation) {
-//        super(ref, backgroundColourEnabled, backgroundColourDisabled, borderColourEnabled, borderColourDisabled);
+//        super(ref, backgroundColorEnabled, backgroundColorDisabled, borderColorEnabled, borderColorDisabled);
 //        this.textureWidth = textureWidth;
 //        this.textureHeight = textureHeight;
 //        this.textureLocation = textureLocation;

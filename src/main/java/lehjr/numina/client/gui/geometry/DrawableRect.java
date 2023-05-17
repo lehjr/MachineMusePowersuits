@@ -36,41 +36,41 @@ import org.lwjgl.BufferUtils;
 import java.nio.FloatBuffer;
 
 public class DrawableRect extends Rect implements IDrawableRect {
-    Color backgroundColour;
-    Color borderColour;
-    Color backgroundColour2 = null;
+    Color backgroundColor;
+    Color borderColor;
+    Color backgroundColor2 = null;
     float cornerradius = 3;
     public float zLevel = 1;
     boolean shrinkBorder = true;
 
     public DrawableRect(double left, double top, double right, double bottom, boolean growFromMiddle,
-                        Color backgroundColour,
-                        Color borderColour) {
+                        Color backgroundColor,
+                        Color borderColor) {
         super(left, top, right, bottom, growFromMiddle);
-        this.backgroundColour = backgroundColour;
-        this.borderColour = borderColour;
+        this.backgroundColor = backgroundColor;
+        this.borderColor = borderColor;
     }
 
-    public DrawableRect(Rect ref, Color backgroundColour, Color borderColour) {
+    public DrawableRect(Rect ref, Color backgroundColor, Color borderColor) {
         super(ref.getUL(), ref.getWH());
-        this.backgroundColour = backgroundColour;
-        this.borderColour = borderColour;
+        this.backgroundColor = backgroundColor;
+        this.borderColor = borderColor;
     }
 
     public DrawableRect(double left, double top, double right, double bottom,
-                        Color backgroundColour,
-                        Color borderColour) {
+                        Color backgroundColor,
+                        Color borderColor) {
         super(left, top, right, bottom, false);
-        this.backgroundColour = backgroundColour;
-        this.borderColour = borderColour;
+        this.backgroundColor = backgroundColor;
+        this.borderColor = borderColor;
     }
 
     public DrawableRect(MusePoint2D ul, MusePoint2D br,
-                        Color backgroundColour,
-                        Color borderColour) {
+                        Color backgroundColor,
+                        Color borderColor) {
         super(ul, br);
-        this.backgroundColour = backgroundColour;
-        this.borderColour = borderColour;
+        this.backgroundColor = backgroundColor;
+        this.borderColor = borderColor;
     }
     @Override
     public float getZLevel() {
@@ -92,18 +92,18 @@ public class DrawableRect extends Rect implements IDrawableRect {
         this.shrinkBorder = shrinkBorder;
     }
 
-    public DrawableRect setBackgroundColour(Color backgroundColour) {
-        this.backgroundColour = backgroundColour;
+    public DrawableRect setBackgroundColor(Color backgroundColor) {
+        this.backgroundColor = backgroundColor;
         return this;
     }
 
-    public DrawableRect setSecondBackgroundColour(Color backgroundColour2In) {
-        backgroundColour2 = backgroundColour2In;
+    public DrawableRect setSecondBackgroundColor(Color backgroundColor2In) {
+        backgroundColor2 = backgroundColor2In;
         return this;
     }
 
-    public DrawableRect setBorderColour(Color borderColour) {
-        this.borderColour = borderColour;
+    public DrawableRect setBorderColor(Color borderColor) {
+        this.borderColor = borderColor;
         return this;
     }
 
@@ -157,7 +157,7 @@ public class DrawableRect extends Rect implements IDrawableRect {
 
     public void drawBackground(PoseStack matrixStack, FloatBuffer vertices) {
 
-        drawBuffer(matrixStack, vertices, backgroundColour, VertexFormat.Mode.TRIANGLE_FAN);
+        drawBuffer(matrixStack, vertices, backgroundColor, VertexFormat.Mode.TRIANGLE_FAN);
 
     }
 
@@ -167,7 +167,7 @@ public class DrawableRect extends Rect implements IDrawableRect {
 
     public void drawBorder(PoseStack matrixStack, FloatBuffer vertices) {
 
-        drawBuffer(matrixStack, vertices, borderColour, VertexFormat.Mode.DEBUG_LINE_STRIP); // FIXME!!!!
+        drawBuffer(matrixStack, vertices, borderColor, VertexFormat.Mode.DEBUG_LINE_STRIP); // FIXME!!!!
 
     }
 
@@ -245,9 +245,9 @@ public class DrawableRect extends Rect implements IDrawableRect {
 //        ShaderInstance oldShader = RenderSystem.getShader();
         FloatBuffer vertices = preDraw(0);
 
-        if (backgroundColour2 != null) {
-            FloatBuffer colors = GradientAndArcCalculator.getColourGradient(backgroundColour,
-                    backgroundColour2, vertices.limit() * 4);
+        if (backgroundColor2 != null) {
+            FloatBuffer colors = GradientAndArcCalculator.getColorGradient(backgroundColor,
+                    backgroundColor2, vertices.limit() * 4);
             drawBackground(matrixStack, vertices, colors);
         } else {
             drawBackground(matrixStack, vertices);
@@ -266,9 +266,9 @@ public class DrawableRect extends Rect implements IDrawableRect {
     public String toString() {
         StringBuilder stringbuilder = new StringBuilder();
         stringbuilder.append(super.toString());
-        stringbuilder.append("Background Colour: ").append(backgroundColour.toString()).append("\n");
-        stringbuilder.append("Background Colour 2: ").append(backgroundColour2 == null? "null" : backgroundColour2.toString()).append("\n");
-        stringbuilder.append("Border Colour: ").append(borderColour.toString()).append("\n");
+        stringbuilder.append("Background Color: ").append(backgroundColor.toString()).append("\n");
+        stringbuilder.append("Background Color 2: ").append(backgroundColor2 == null? "null" : backgroundColor2.toString()).append("\n");
+        stringbuilder.append("Border Color: ").append(borderColor.toString()).append("\n");
         return stringbuilder.toString();
     }
 }

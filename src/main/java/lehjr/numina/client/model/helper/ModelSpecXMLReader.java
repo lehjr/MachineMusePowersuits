@@ -329,7 +329,7 @@
 //            System.out.println("partName is NULL!!");
 //            System.out.println("ModelSpec model: " + modelSpec.getName());
 //            System.out.println("glow: " + glow);
-//            System.out.println("colour: " + colour.rgbaHexColour());
+//            System.out.println("colour: " + colour.rgbaHexColor());
 //        } else
 //            modelSpec.put(partname, new ObjlPartSpec(modelSpec,
 //                    binding,

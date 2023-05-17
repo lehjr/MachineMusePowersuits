@@ -46,7 +46,7 @@ import lehjr.numina.common.network.NuminaPackets;
 import lehjr.numina.common.network.packets.CosmeticInfoPacket;
 import lehjr.numina.common.string.StringUtils;
 import lehjr.powersuits.client.gui.modding.cosmetic.colorpicker.ColorRadioButton;
-import lehjr.powersuits.client.gui.modding.cosmetic.colorpicker.ColourPickerFrame;
+import lehjr.powersuits.client.gui.modding.cosmetic.colorpicker.ColorPickerFrame;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.nbt.CompoundTag;
@@ -68,7 +68,7 @@ public class ModelManipSubframe extends AbstractGuiFrame {
     ClickableIndicatorArrow openCloseButton;
 
     public SpecBase model;
-    public ColourPickerFrame colorframe;
+    public ColorPickerFrame colorframe;
     public ModularItemSelectionFrame itemSelector;
     public List<PartManipSubFrame> parts;
     public boolean open;
@@ -82,7 +82,7 @@ public class ModelManipSubframe extends AbstractGuiFrame {
                               double top,
                               double right,
                               double bottom,
-                              ColourPickerFrame colorframe,
+                              ColorPickerFrame colorframe,
                               ModularItemSelectionFrame itemSelector,
                               float zLevel) {
         super(new Rect(left, top, right, bottom));
@@ -425,7 +425,7 @@ public class ModelManipSubframe extends AbstractGuiFrame {
 
             for (int i=0; i < colorframe.colors().length; i++) {
                 Color color = new Color(colorframe.colors()[i]);
-                ColorRadioButton colorRadioButton = makeColourButton(color);
+                ColorRadioButton colorRadioButton = makeColorButton(color);
                 colorButtons.add(colorRadioButton);
             }
         }
@@ -438,10 +438,10 @@ public class ModelManipSubframe extends AbstractGuiFrame {
         public void decrAbove(int index) {
             this.tagdata = getOrMakeSpecTag(partSpec);
             if (tagdata != null) {
-                int oldindex = partSpec.getColourIndex(tagdata);
+                int oldindex = partSpec.getColorIndex(tagdata);
                 if (oldindex >= index && oldindex > 0) {
                     int newIndex = oldindex -1;
-                    partSpec.setColourIndex(tagdata, newIndex);
+                    partSpec.setColorIndex(tagdata, newIndex);
                     // remove extra buttons
                     while (colorButtons.size() > colorframe.colors().length) {
                         colorButtons.remove(colorButtons.size() -1);
@@ -450,7 +450,7 @@ public class ModelManipSubframe extends AbstractGuiFrame {
                     // button arrayList is quite fluid so avoid index out of bounds
                     for(int i =0; i < Math.min(colorButtons.size(), colorframe.colors().length); i++) {
                         ColorRadioButton button = colorButtons.get(i);
-                        button.setColour(new Color(colorframe.colors()[i]));
+                        button.setColor(new Color(colorframe.colors()[i]));
                         button.isSelected = i == newIndex;
                     }
 
@@ -461,17 +461,17 @@ public class ModelManipSubframe extends AbstractGuiFrame {
             }
         }
 
-        ColorRadioButton makeColourButton(Color color) {
+        ColorRadioButton makeColorButton(Color color) {
             ColorRadioButton colorRadioButton = new ColorRadioButton(0,0, color);
             colorRadioButton.setOnPressed(pressed -> {
                 int index  = colorButtons.indexOf(colorRadioButton);
-                partSpec.setColourIndex(tagdata, index);
+                partSpec.setColorIndex(tagdata, index);
                 itemSelector.selectedType().ifPresent(slotType -> {
                     NuminaPackets.CHANNEL_INSTANCE.sendToServer(new CosmeticInfoPacket(slotType, tagname, tagdata));
                 });
             });
 
-            int colorIndex = partSpec.getColourIndex(tagdata);
+            int colorIndex = partSpec.getColorIndex(tagdata);
             int i = colorButtons.size();
             colorRadioButton.isSelected = i==colorIndex;
             if (i == 0) {
@@ -516,14 +516,14 @@ public class ModelManipSubframe extends AbstractGuiFrame {
                 // add missing buttons
                 while (colorButtons.size() < colorframe.colors().length) {
                     Color color = new Color(colorframe.colors()[colorButtons.size()]); // button not added yet
-                    colorButtons.add(makeColourButton(color));
+                    colorButtons.add(makeColorButton(color));
                 }
 
                 for(int i =0; i < Math.min(colorButtons.size(), colorframe.colors().length); i++) {
                     ColorRadioButton button = colorButtons.get(i);
                     button.setPosition(pos);
-                    button.setColour(new Color(colorframe.colors()[i]));
-                    button.isSelected = i == partSpec.getColourIndex(tagdata);
+                    button.setColor(new Color(colorframe.colors()[i]));
+                    button.isSelected = i == partSpec.getColorIndex(tagdata);
                     button.render(matrixStack, mouseX, mouseY, partialTick);
                 }
 

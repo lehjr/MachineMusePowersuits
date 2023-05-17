@@ -85,7 +85,7 @@ public class MPSRegistryNames {
     public static final ResourceLocation WATER_ELECTROLYZER_MODULE = getRegName("water_electrolyzer");
 
     // Mining Enhancements ------------------------------------------------------------------------
-    public static final ResourceLocation AOE_PICK_UPGRADE_MODULE = getRegName("aoe_pick_upgrade"); // no icon
+//    public static final ResourceLocation AOE_PICK_UPGRADE_MODULE = getRegName("aoe_pick_upgrade"); // no icon
     public static final ResourceLocation SILK_TOUCH_MODULE = getRegName("silk_touch");
     public static final ResourceLocation FORTUNE_MODULE = getRegName("fortune");
     public static final ResourceLocation VEIN_MINER_MODULE = getRegName("vein_miner");

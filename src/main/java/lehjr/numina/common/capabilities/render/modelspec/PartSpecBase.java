@@ -109,15 +109,15 @@ public abstract class PartSpecBase {
         return binding;
     }
 
-    public int getDefaultColourIndex() {
+    public int getDefaultColorIndex() {
         return this.defaultcolorindex;
     }
 
-    public int getColourIndex(CompoundTag nbt) {
+    public int getColorIndex(CompoundTag nbt) {
         return nbt.contains(TagConstants.COLOUR_INDEX) ? nbt.getInt(TagConstants.COLOUR_INDEX) : this.defaultcolorindex;
     }
 
-    public void setColourIndex(CompoundTag nbt, int c) {
+    public void setColorIndex(CompoundTag nbt, int c) {
         if (c == this.defaultcolorindex) {
             nbt.remove(TagConstants.COLOUR_INDEX);
         } else {
@@ -142,7 +142,7 @@ public abstract class PartSpecBase {
         this.setGlow(nbt, (glow != null) ? glow : false);
         this.setPart(nbt);
         this.setModel(nbt, this.spec);
-        this.setColourIndex(nbt, (colorIndex != null) ? colorIndex : defaultcolorindex);
+        this.setColorIndex(nbt, (colorIndex != null) ? colorIndex : defaultcolorindex);
         return nbt;
     }
 

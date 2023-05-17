@@ -38,9 +38,9 @@ import java.nio.FloatBuffer;
 
 public class DrawableTile extends Rect implements IDrawableRect {
     final float lineWidth = 1F;
-    Color topBorderColour = new Color(0.216F, 0.216F, 0.216F, 1F);
-    Color bottomBorderColour = Color.WHITE.withAlpha(0.8F);
-    Color backgroundColour = new Color(0.545F, 0.545F, 0.545F, 1F);
+    Color topBorderColor = new Color(0.216F, 0.216F, 0.216F, 1F);
+    Color bottomBorderColor = Color.WHITE.withAlpha(0.8F);
+    Color backgroundColor = new Color(0.545F, 0.545F, 0.545F, 1F);
     float zLevel = 0;
     float shrinkBoarderBy = 0;
 
@@ -56,31 +56,31 @@ public class DrawableTile extends Rect implements IDrawableRect {
         super(ul, br);
     }
 
-    public DrawableTile setTopBorderColour(Color topBorderColour) {
-        this.topBorderColour = topBorderColour;
+    public DrawableTile setTopBorderColor(Color topBorderColor) {
+        this.topBorderColor = topBorderColor;
         return this;
     }
 
-    public Color getTopBorderColour() {
-        return this.topBorderColour;
+    public Color getTopBorderColor() {
+        return this.topBorderColor;
     }
 
-    public DrawableTile setBottomBorderColour(Color bottomBorderColour) {
-        this.bottomBorderColour = bottomBorderColour;
+    public DrawableTile setBottomBorderColor(Color bottomBorderColor) {
+        this.bottomBorderColor = bottomBorderColor;
         return this;
     }
 
-    public Color getBottomBorderColour() {
-        return this.bottomBorderColour;
+    public Color getBottomBorderColor() {
+        return this.bottomBorderColor;
     }
 
-    public DrawableTile setBackgroundColour(Color insideColour) {
-        this.backgroundColour = insideColour;
+    public DrawableTile setBackgroundColor(Color insideColor) {
+        this.backgroundColor = insideColor;
         return this;
     }
 
-    public Color getBackgroundColour() {
-        return this.backgroundColour;
+    public Color getBackgroundColor() {
+        return this.backgroundColor;
     }
 
     public DrawableTile setBorderShrinkValue(float shrinkBy) {
@@ -127,11 +127,11 @@ public class DrawableTile extends Rect implements IDrawableRect {
     }
 
     public void drawBackground(PoseStack matrixStack) {
-        internalDraw(matrixStack, backgroundColour, VertexFormat.Mode.QUADS, 0);
+        internalDraw(matrixStack, backgroundColor, VertexFormat.Mode.QUADS, 0);
     }
 
     public void drawBorder(PoseStack matrixStack, double shrinkBy) {
-        internalDraw(matrixStack, topBorderColour, VertexFormat.Mode.DEBUG_LINES, shrinkBy);
+        internalDraw(matrixStack, topBorderColor, VertexFormat.Mode.DEBUG_LINES, shrinkBy);
     }
 
     /**
@@ -139,7 +139,7 @@ public class DrawableTile extends Rect implements IDrawableRect {
      * @param matrixStack
      * @param shrinkBy
      */
-    public void drawDualColourBorder(PoseStack matrixStack, float shrinkBy) {
+    public void drawDualColorBorder(PoseStack matrixStack, float shrinkBy) {
         float halfWidth = lineWidth * 0.5F;
 
         //----------------------------------------
@@ -150,7 +150,7 @@ public class DrawableTile extends Rect implements IDrawableRect {
                 top() + shrinkBy - halfWidth,
                 right() - shrinkBy + halfWidth,
                 top() + shrinkBy + halfWidth,
-                topBorderColour,
+                topBorderColor,
                 VertexFormat.Mode.QUADS);
 
         //----------------------------------------
@@ -161,7 +161,7 @@ public class DrawableTile extends Rect implements IDrawableRect {
                 top() + shrinkBy - halfWidth,
                 left() + shrinkBy + halfWidth,
                 bottom() - shrinkBy + halfWidth,
-                topBorderColour,
+                topBorderColor,
                 VertexFormat.Mode.QUADS);
 
         //----------------------------------------
@@ -172,7 +172,7 @@ public class DrawableTile extends Rect implements IDrawableRect {
                 bottom() - shrinkBy - halfWidth,
                 right() - shrinkBy + halfWidth,
                 bottom() - shrinkBy + halfWidth,
-                bottomBorderColour,
+                bottomBorderColor,
                 VertexFormat.Mode.QUADS);
 
         //----------------------------------------
@@ -183,7 +183,7 @@ public class DrawableTile extends Rect implements IDrawableRect {
                 top() + shrinkBy - halfWidth,
                 right() - shrinkBy + halfWidth,
                 bottom() - shrinkBy + halfWidth,
-                bottomBorderColour,
+                bottomBorderColor,
                 VertexFormat.Mode.QUADS);
     }
 
@@ -191,10 +191,10 @@ public class DrawableTile extends Rect implements IDrawableRect {
     public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTick) {
 //        ShaderInstance oldShader = RenderSystem.getShader();
         drawBackground(matrixStack);
-        if (topBorderColour.equals(bottomBorderColour)) {
+        if (topBorderColor.equals(bottomBorderColor)) {
             drawBorder(matrixStack, shrinkBoarderBy);
         } else {
-            drawDualColourBorder(matrixStack, shrinkBoarderBy);
+            drawDualColorBorder(matrixStack, shrinkBoarderBy);
         }
 //        RenderSystem.setShader(() -> oldShader);
     }
@@ -213,9 +213,9 @@ public class DrawableTile extends Rect implements IDrawableRect {
     @Override
     public String toString() {
         StringBuilder stringbuilder = new StringBuilder(super.toString());
-        stringbuilder.append("Background Colour: ").append(backgroundColour).append("\n");
-        stringbuilder.append("Top Border Colour: ").append(topBorderColour).append("\n");
-        stringbuilder.append("Bottom Border Colour: ").append(bottomBorderColour).append("\n");
+        stringbuilder.append("Background Color: ").append(backgroundColor).append("\n");
+        stringbuilder.append("Top Border Color: ").append(topBorderColor).append("\n");
+        stringbuilder.append("Bottom Border Color: ").append(bottomBorderColor).append("\n");
         return stringbuilder.toString();
     }
 }

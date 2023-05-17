@@ -103,7 +103,7 @@ public class ModelSpecStorage implements IModelSpec, INBTSerializable<CompoundTa
      * When dealing with possibly multiple specs and color lists, new list needs to be created, since there is only one list per item.
      */
     @Override
-    public List<Integer> addNewColourstoList(List<Integer> colors, List<Integer> colorsToAdd) {
+    public List<Integer> addNewColorstoList(List<Integer> colors, List<Integer> colorsToAdd) {
         for (Integer i : colorsToAdd) {
             if (!colors.contains(i))
                 colors.add(i);
@@ -121,8 +121,8 @@ public class ModelSpecStorage implements IModelSpec, INBTSerializable<CompoundTa
      * new array means setting a new array index for the same getValue
      */
     @Override
-    public int getNewColourIndex(List<Integer> colors, List<Integer> oldColours, Integer index) {
-        return colors.indexOf(oldColours.get(index != null ? index : 0));
+    public int getNewColorIndex(List<Integer> colors, List<Integer> oldColors, Integer index) {
+        return colors.indexOf(oldColors.get(index != null ? index : 0));
     }
 
     @Override

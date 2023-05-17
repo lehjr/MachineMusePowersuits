@@ -29,7 +29,7 @@
 //import lehjr.numina.client.gui.frame.ScrollableFrame;
 //import lehjr.numina.client.gui.gemoetry.MusePoint2D;
 //import lehjr.numina.client.gui.gemoetry.RelativeRect;
-//import lehjr.numina.common.math.Colour;
+//import lehjr.numina.common.math.Color;
 //import lehjr.numina.client.gui.frame.ModularItemSelectionFrame;
 //import com.mojang.blaze3d.vertex.PoseStack;
 //import net.minecraft.world.item.ItemStack;
@@ -42,7 +42,7 @@
 //
 //public class CosmeticPresetAbstractContainerMenu extends ScrollableFrame {
 //    public ModularItemSelectionFrame itemSelect;
-//    public ColourPickerFrame colorSelect;
+//    public ColorPickerFrame colorSelect;
 //    public MusePoint2D topleft;
 //    public MusePoint2D bottomright;
 //    public Integer lastItemSlot;
@@ -51,13 +51,13 @@
 //    protected boolean visibile;
 //
 //    public CosmeticPresetAbstractContainerMenu(ModularItemSelectionFrame itemSelect,
-//                                   ColourPickerFrame colorSelect,
+//                                   ColorPickerFrame colorSelect,
 //                                   MusePoint2D topleft,
 //                                   MusePoint2D bottomright,
 //                                   float zLevel,
-//                                   Colour borderColour,
-//                                   Colour insideColour) {
-//        super(topleft, bottomright, zLevel, borderColour, insideColour);
+//                                   Color borderColor,
+//                                   Color insideColor) {
+//        super(topleft, bottomright, zLevel, borderColor, insideColor);
 //        this.itemSelect = itemSelect;
 //        this.colorSelect = colorSelect;
 //        this.topleft = topleft;

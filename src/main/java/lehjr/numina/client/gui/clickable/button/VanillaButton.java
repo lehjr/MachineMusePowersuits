@@ -63,6 +63,10 @@ public class VanillaButton extends Clickable {
         return this.isEnabled() ? 16777215 : 10526880; // White : Light Grey
     }
 
+    public float getAlpha() {
+        return alpha;
+    }
+
     float alpha = 1;
 
     protected int getYImage(boolean pIsHovered) {
@@ -97,7 +101,6 @@ public class VanillaButton extends Clickable {
     }
 
     protected void renderBg(PoseStack pPoseStack, int pMouseX, int pMouseY, float frameTime) {
-
     }
 
     public void setLabel(Component label) {

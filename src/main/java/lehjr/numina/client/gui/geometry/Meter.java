@@ -34,19 +34,19 @@ import lehjr.numina.common.math.MathUtils;
 import java.nio.FloatBuffer;
 
 public class Meter extends DrawableRect {
-    Color meterColour;
+    Color meterColor;
 
-    public Meter(Color meterColourIn) {
+    public Meter(Color meterColorIn) {
         super(new MusePoint2D(0, 0), new MusePoint2D(0, 0), Color.GREY.withAlpha(0.3F), Color.BLACK.withAlpha(0.8F));
         setWidth(32);
         setHeight(8);
-        setSecondBackgroundColour(Color.WHITE.withAlpha(0.3F));
+        setSecondBackgroundColor(Color.WHITE.withAlpha(0.3F));
         setShrinkBorder(true);
-        this.meterColour = meterColourIn;
+        this.meterColor = meterColorIn;
     }
 
-    public Meter setMeterColour(Color meterColourIn) {
-        this.meterColour = meterColourIn;
+    public Meter setMeterColor(Color meterColorIn) {
+        this.meterColor = meterColorIn;
         return this;
     }
 
@@ -78,12 +78,12 @@ public class Meter extends DrawableRect {
 
         // background
         FloatBuffer backgroundVertices = this.getVertices(0.0F);
-        FloatBuffer backgroundColours = GradientAndArcCalculator.getColourGradient(this.backgroundColour, this.backgroundColour2, backgroundVertices.limit() * 4);
-        this.drawBackground(matrixStack, backgroundVertices, backgroundColours);
+        FloatBuffer backgroundColors = GradientAndArcCalculator.getColorGradient(this.backgroundColor, this.backgroundColor2, backgroundVertices.limit() * 4);
+        this.drawBackground(matrixStack, backgroundVertices, backgroundColors);
 
         // meter
         FloatBuffer meterVertices = this.getMeterVertices();
-        this.drawBuffer(matrixStack, meterVertices, meterColour, VertexFormat.Mode.TRIANGLE_FAN);
+        this.drawBuffer(matrixStack, meterVertices, meterColor, VertexFormat.Mode.TRIANGLE_FAN);
 
         // frame
         if (this.shrinkBorder) {

@@ -19,12 +19,12 @@ public class RadioButton extends AbstractIconButton {
     }
 
 
-    public RadioButton setColour(Color color) {
+    public RadioButton setColor(Color color) {
         this.color = color;
         return this;
     }
 
-    public Color getColour() {
+    public Color getColor() {
         return color;
     }
 

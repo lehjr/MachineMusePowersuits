@@ -151,13 +151,13 @@
 //                    centerY() + size * 0.5);
 //        }
 //
-//        this.knobRect.setBackgroundColour(Color.LIGHT_GREY);
-//        this.knobRect.setBottomBorderColour(Color.BLACK);
-//        this.knobRect.setTopBorderColour(Color.WHITE);
+//        this.knobRect.setBackgroundColor(Color.LIGHT_GREY);
+//        this.knobRect.setBottomBorderColor(Color.BLACK);
+//        this.knobRect.setTopBorderColor(Color.WHITE);
 //
-//        this.trackRect.setBackgroundColour(Color.DARK_GREY);
-//        this.trackRect.setBottomBorderColour(Color.WHITE);
-//        this.trackRect.setTopBorderColour(Color.BLACK);
+//        this.trackRect.setBackgroundColor(Color.DARK_GREY);
+//        this.trackRect.setBottomBorderColor(Color.WHITE);
+//        this.trackRect.setTopBorderColor(Color.BLACK);
 //        super.setWH(new MusePoint2D(trackRect.width(), trackRect.height()));
 //    }
 //

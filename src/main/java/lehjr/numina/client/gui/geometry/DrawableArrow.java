@@ -36,35 +36,35 @@
 //import java.nio.FloatBuffer;
 //
 //public class DrawableArrow extends Rect implements IDrawableRect {
-//    Color backgroundColour;
-//    Color borderColour;
+//    Color backgroundColor;
+//    Color borderColor;
 //    boolean drawShaft = true;
 //    ArrowDirection facing = ArrowDirection.RIGHT;
 //    boolean shrinkBorder = true;
 //    boolean drawBorer = true;
 //
 //    public DrawableArrow(float left, float top, float right, float bottom, boolean growFromMiddle,
-//                         Color backgroundColour,
-//                         Color borderColour) {
+//                         Color backgroundColor,
+//                         Color borderColor) {
 //        super(left, top, right, bottom, growFromMiddle);
-//        this.backgroundColour = backgroundColour;
-//        this.borderColour = borderColour;
+//        this.backgroundColor = backgroundColor;
+//        this.borderColor = borderColor;
 //    }
 //
 //    public DrawableArrow(float left, float top, float right, float bottom,
-//                         Color backgroundColour,
-//                         Color borderColour) {
+//                         Color backgroundColor,
+//                         Color borderColor) {
 //        super(left, top, right, bottom, false);
-//        this.backgroundColour = backgroundColour;
-//        this.borderColour = borderColour;
+//        this.backgroundColor = backgroundColor;
+//        this.borderColor = borderColor;
 //    }
 //
 //    public DrawableArrow(MusePoint2D ul, MusePoint2D br,
-//                         Color backgroundColour,
-//                         Color borderColour) {
+//                         Color backgroundColor,
+//                         Color borderColor) {
 //        super(ul, br);
-//        this.backgroundColour = backgroundColour;
-//        this.borderColour = borderColour;
+//        this.backgroundColor = backgroundColor;
+//        this.borderColor = borderColor;
 //    }
 //
 //    /**
@@ -75,8 +75,8 @@
 //        this.shrinkBorder = shrinkBorder;
 //    }
 //
-//    public void setBackgroundColour(Color color) {
-//        this.backgroundColour = color;
+//    public void setBackgroundColor(Color color) {
+//        this.backgroundColor = color;
 //    }
 //
 //    public void setDirection(ArrowDirection facing) {
@@ -339,7 +339,7 @@
 //        getVertexG(0, vertices);
 //        vertices.flip();
 //        vertices.rewind();
-//        addVerticesToBuffer(matrix4f, vertices, backgroundColour);
+//        addVerticesToBuffer(matrix4f, vertices, backgroundColor);
 //        drawTesselator();
 //
 //        if (this.drawShaft) {
@@ -351,7 +351,7 @@
 //            getVertexF(0, vertices);
 //            vertices.flip();
 //            vertices.rewind();
-//            addVerticesToBuffer(matrix4f, vertices, backgroundColour);
+//            addVerticesToBuffer(matrix4f, vertices, backgroundColor);
 //            drawTesselator();
 //        }
 //        postDraw();
@@ -375,7 +375,7 @@
 //
 //            vertices.flip();
 //            vertices.rewind();
-//            addVerticesToBuffer(matrix4f, vertices, borderColour);
+//            addVerticesToBuffer(matrix4f, vertices, borderColor);
 //            drawTesselator();
 //
 //            postDraw();

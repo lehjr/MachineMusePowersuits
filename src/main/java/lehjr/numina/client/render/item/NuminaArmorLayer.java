@@ -134,7 +134,7 @@ public class NuminaArmorLayer<T extends LivingEntity, M extends HumanoidModel<T>
 //                                System.out.println("partSpec class: " + partSpec.getClass());
 
                                 int partColor;
-                                int ix = partSpec.getColourIndex(tag);
+                                int ix = partSpec.getColorIndex(tag);
                                 // checks the range of the index to avoid errors OpenGL or crashing
                                 if (ix < colors.length && ix >= 0) {
                                     partColor = colors[ix];

@@ -38,60 +38,60 @@
 //
 //    protected boolean isEnabled = true;
 //    protected boolean isVisible = true;
-//    Color backgroundColourEnabled;
-//    Color backgroundColourDisabled;
-//    Color borderColourEnabled;
-//    Color borderColourDisabled;
+//    Color backgroundColorEnabled;
+//    Color backgroundColorDisabled;
+//    Color borderColorEnabled;
+//    Color borderColorDisabled;
 //
 //    int highlight = 5;
 //
 //    public Button(double left, double top, double right, double bottom, boolean growFromMiddle,
-//                  Color backgroundColourEnabled,
-//                  Color backgroundColourDisabled,
-//                  Color borderColourEnabled,
-//                  Color borderColourDisabled) {
-//        super(left, top, right, bottom, growFromMiddle, backgroundColourEnabled, borderColourEnabled);
-//        this.backgroundColourEnabled = backgroundColourEnabled;
-//        this.backgroundColourDisabled = backgroundColourDisabled;
-//        this.borderColourEnabled = borderColourEnabled;
-//        this.borderColourDisabled = borderColourDisabled;
+//                  Color backgroundColorEnabled,
+//                  Color backgroundColorDisabled,
+//                  Color borderColorEnabled,
+//                  Color borderColorDisabled) {
+//        super(left, top, right, bottom, growFromMiddle, backgroundColorEnabled, borderColorEnabled);
+//        this.backgroundColorEnabled = backgroundColorEnabled;
+//        this.backgroundColorDisabled = backgroundColorDisabled;
+//        this.borderColorEnabled = borderColorEnabled;
+//        this.borderColorDisabled = borderColorDisabled;
 //    }
 //
 //    public Button(double left, double top, double right, double bottom,
-//                  Color backgroundColourEnabled,
-//                  Color backgroundColourDisabled,
-//                  Color borderColourEnabled,
-//                  Color borderColourDisabled) {
-//        super(left, top, right, bottom, backgroundColourEnabled, borderColourEnabled);
-//        this.backgroundColourEnabled = backgroundColourEnabled;
-//        this.backgroundColourDisabled = backgroundColourDisabled;
-//        this.borderColourEnabled = borderColourEnabled;
-//        this.borderColourDisabled = borderColourDisabled;
+//                  Color backgroundColorEnabled,
+//                  Color backgroundColorDisabled,
+//                  Color borderColorEnabled,
+//                  Color borderColorDisabled) {
+//        super(left, top, right, bottom, backgroundColorEnabled, borderColorEnabled);
+//        this.backgroundColorEnabled = backgroundColorEnabled;
+//        this.backgroundColorDisabled = backgroundColorDisabled;
+//        this.borderColorEnabled = borderColorEnabled;
+//        this.borderColorDisabled = borderColorDisabled;
 //    }
 //
 //    public Button(MusePoint2D ul, MusePoint2D br,
-//                  Color backgroundColourEnabled,
-//                  Color backgroundColourDisabled,
-//                  Color borderColourEnabled,
-//                  Color borderColourDisabled) {
-//        super(ul, br, backgroundColourEnabled, borderColourEnabled);
-//        this.backgroundColourEnabled = backgroundColourEnabled;
-//        this.backgroundColourDisabled = backgroundColourDisabled;
-//        this.borderColourEnabled = borderColourEnabled;
-//        this.borderColourDisabled = borderColourDisabled;
+//                  Color backgroundColorEnabled,
+//                  Color backgroundColorDisabled,
+//                  Color borderColorEnabled,
+//                  Color borderColorDisabled) {
+//        super(ul, br, backgroundColorEnabled, borderColorEnabled);
+//        this.backgroundColorEnabled = backgroundColorEnabled;
+//        this.backgroundColorDisabled = backgroundColorDisabled;
+//        this.borderColorEnabled = borderColorEnabled;
+//        this.borderColorDisabled = borderColorDisabled;
 //    }
 //
 //    public Button(Rect ref,
-//                  Color backgroundColourEnabled,
-//                  Color backgroundColourDisabled,
-//                  Color borderColourEnabled,
-//                  Color borderColourDisabled) {
-//        super(ref, backgroundColourEnabled, borderColourEnabled);
-//        this.backgroundColourEnabled = backgroundColourEnabled;
-//        this.backgroundColourDisabled = backgroundColourDisabled;
-//        this.borderColourEnabled = borderColourEnabled;
+//                  Color backgroundColorEnabled,
+//                  Color backgroundColorDisabled,
+//                  Color borderColorEnabled,
+//                  Color borderColorDisabled) {
+//        super(ref, backgroundColorEnabled, borderColorEnabled);
+//        this.backgroundColorEnabled = backgroundColorEnabled;
+//        this.backgroundColorDisabled = backgroundColorDisabled;
+//        this.borderColorEnabled = borderColorEnabled;
 //
-//        this.borderColourDisabled = borderColourDisabled;
+//        this.borderColorDisabled = borderColorDisabled;
 //    }
 //
 //    @Override
@@ -109,18 +109,18 @@
 //        if (isVisible) {
 //            if (isEnabled()) {
 //                if (containsPoint(mouseX, mouseY)) {
-//                    super.setBackgroundColour(new Color(
-//                            (byte)(this.backgroundColourEnabled.r + highlight < 255 ? this.backgroundColourEnabled.r + highlight : 255),
-//                            (byte)(this.backgroundColourEnabled.g + highlight < 255 ? this.backgroundColourEnabled.g + highlight : 255),
-//                            (byte)(this.backgroundColourEnabled.b + highlight < 255 ? this.backgroundColourEnabled.b + highlight : 255),
+//                    super.setBackgroundColor(new Color(
+//                            (byte)(this.backgroundColorEnabled.r + highlight < 255 ? this.backgroundColorEnabled.r + highlight : 255),
+//                            (byte)(this.backgroundColorEnabled.g + highlight < 255 ? this.backgroundColorEnabled.g + highlight : 255),
+//                            (byte)(this.backgroundColorEnabled.b + highlight < 255 ? this.backgroundColorEnabled.b + highlight : 255),
 //                            1));
 //                } else {
-//                    super.setBackgroundColour(this.backgroundColourEnabled);
+//                    super.setBackgroundColor(this.backgroundColorEnabled);
 //                }
-//                super.setBorderColour(this.borderColourEnabled);
+//                super.setBorderColor(this.borderColorEnabled);
 //            } else {
-//                super.setBackgroundColour(backgroundColourDisabled);
-//                super.setBorderColour(this.borderColourDisabled);
+//                super.setBackgroundColor(backgroundColorDisabled);
+//                super.setBorderColor(this.borderColorDisabled);
 //            }
 //            super.render(matrixStack, mouseX, mouseY, partialTick);
 //        }

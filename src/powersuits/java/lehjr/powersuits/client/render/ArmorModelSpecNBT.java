@@ -83,7 +83,7 @@ public class ArmorModelSpecNBT extends ModelSpecStorage implements IArmorModelSp
         // ModelPartSpecs
         ListTag specList = new ListTag();
 
-        // List of EnumColour indexes
+        // List of EnumColor indexes
         List<Integer> colors = new ArrayList<>();
 
         // temp data holder
@@ -95,14 +95,14 @@ public class ArmorModelSpecNBT extends ModelSpecStorage implements IArmorModelSp
             // Only generate NBT data from Specs marked as "default"
             if (spec.isDefault()) {
                 if (getItemStack().getItem() instanceof ArmorItem) {
-                    colors = addNewColourstoList(colors, spec.getColors()); // merge new color int arrays in
+                    colors = addNewColorstoList(colors, spec.getColors()); // merge new color int arrays in
 
                     // Armor Skin
                     if (spec.getSpecType().equals(SpecType.ARMOR_SKIN) && spec.get(slot.getName()) != null) {
                         for (PartSpecBase partSpec : spec.getPartSpecs()) {
                             if (partSpec.getBinding().getSlot() == slot) {
                                 prefArray.add(partSpec.multiSet(new CompoundTag(),
-                                        getNewColourIndex(colors, spec.getColors(), partSpec.getDefaultColourIndex()),
+                                        getNewColorIndex(colors, spec.getColors(), partSpec.getDefaultColorIndex()),
                                         partSpec.getGlow()));
                             }
                         }
@@ -118,7 +118,7 @@ public class ArmorModelSpecNBT extends ModelSpecStorage implements IArmorModelSp
                                         (partSpec.binding.getItemState().equals("jetpack") &&
                                                 ModuleManager.INSTANCE.itemHasModule(stack, MPSModuleConstants.MODULE_JETPACK__DATANAME))) { */
                                 prefArray.add(partSpec.multiSet(new CompoundTag(),
-                                        getNewColourIndex(colors, spec.getColors(), partSpec.getDefaultColourIndex()),
+                                        getNewColorIndex(colors, spec.getColors(), partSpec.getDefaultColorIndex()),
                                         partSpec.getGlow()));
                                 /*} */
                             }

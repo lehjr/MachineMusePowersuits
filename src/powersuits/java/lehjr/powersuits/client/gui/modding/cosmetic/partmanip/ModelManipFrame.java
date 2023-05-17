@@ -35,7 +35,7 @@ import lehjr.numina.client.gui.geometry.Rect;
 import lehjr.numina.common.capabilities.render.modelspec.NuminaModelSpecRegistry;
 import lehjr.numina.common.capabilities.render.modelspec.SpecBase;
 import lehjr.numina.common.math.Color;
-import lehjr.powersuits.client.gui.modding.cosmetic.colorpicker.ColourPickerFrame;
+import lehjr.powersuits.client.gui.modding.cosmetic.colorpicker.ColorPickerFrame;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.item.ItemStack;
@@ -55,23 +55,23 @@ import java.util.concurrent.atomic.AtomicBoolean;
  */
 public class ModelManipFrame extends ScrollableFrame {
     public ModularItemSelectionFrame itemSelect;
-    public ColourPickerFrame colorSelect;
+    public ColorPickerFrame colorSelect;
     public ModularItemTabToggleWidget lastItemSlot;
-    public int lastColour;
-    public int lastColourIndex;
+    public int lastColor;
+    public int lastColorIndex;
     public List<ModelManipSubframe> modelframes;
 
     VanillaFrameScrollBar scrollBar;
 
     public ModelManipFrame(double left, double top, double right, double bottom,
                            ModularItemSelectionFrame itemSelect,
-                           ColourPickerFrame colorSelect) {
+                           ColorPickerFrame colorSelect) {
         super(new Rect(left, top, right, bottom));
         this.itemSelect = itemSelect;
         this.colorSelect = colorSelect;
         this.lastItemSlot = null;
-        this.lastColour = this.getColour();
-        this.lastColourIndex = this.getColourIndex();
+        this.lastColor = this.getColor();
+        this.lastColorIndex = this.getColorIndex();
         this.enableAndShow();
         scrollBar = new VanillaFrameScrollBar(this, "scroll");
     }
@@ -88,11 +88,11 @@ public class ModelManipFrame extends ScrollableFrame {
     /**
      * @return get int value representing selected color from color picker frame or default of white
      */
-    public int getColour() {
+    public int getColor() {
         if (getItem().isEmpty()) {
             return Color.WHITE.getARGBInt();
-        } else if (colorSelect.selectedColour < colorSelect.colors().length && colorSelect.selectedColour >= 0) {
-            return colorSelect.colors()[colorSelect.selectedColour];
+        } else if (colorSelect.selectedColor < colorSelect.colors().length && colorSelect.selectedColor >= 0) {
+            return colorSelect.colors()[colorSelect.selectedColor];
         }
         return Color.WHITE.getARGBInt();
     }
@@ -100,8 +100,8 @@ public class ModelManipFrame extends ScrollableFrame {
     /**
      * @return index of color value. Color values are stored in an NBT INT array
      */
-    public int getColourIndex() {
-        return this.colorSelect.selectedColour;
+    public int getColorIndex() {
+        return this.colorSelect.selectedColor;
     }
 
     /**
@@ -215,7 +215,7 @@ public class ModelManipFrame extends ScrollableFrame {
         }
 
         if (!Objects.equals(lastItemSlot, itemSelect.getSelectedTab().get())) {
-            colorSelect.selectedColour = 0;
+            colorSelect.selectedColor = 0;
             setCurrentScrollPixels(0); // reset scroll
             lastItemSlot = itemSelect.getSelectedTab().get();
             refreshModelframes();

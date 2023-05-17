@@ -11,7 +11,7 @@
 //import lehjr.numina.common.capabilities.render.modelspec.ModelRegistry;
 //import lehjr.numina.common.capabilities.render.modelspec.ModelSpec;
 //import lehjr.numina.common.capabilities.render.modelspec.PartSpecBase;
-//import lehjr.numina.common.math.Colour;
+//import lehjr.numina.common.math.Color;
 //import lehjr.numina.common.tags.NBTTagAccessor;
 //import com.mojang.blaze3d.vertex.PoseStack;
 //import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -69,7 +69,7 @@
 //
 //                if (renderSpec != null) {
 //                    int[] colors = renderSpec.getIntArray(TagConstants.COLORS);
-//                    Colour partColor;
+//                    Color partColor;
 //                    Transformation transform;
 //
 //                    for (CompoundTag nbt : NBTTagAccessor.getValues(renderSpec)) {
@@ -90,11 +90,11 @@
 //                                transform = ((ModelSpec) partSpec.spec).getTransform(transformType);
 //                                String itemState = partSpec.getBinding().getItemState();
 //
-//                                int ix = partSpec.getColourIndex(nbt);
+//                                int ix = partSpec.getColorIndex(nbt);
 //                                if (ix < colors.length && ix >= 0) {
-//                                    partColor = new Colour(colors[ix]);
+//                                    partColor = new Color(colors[ix]);
 //                                } else {
-//                                    partColor = Colour.WHITE;
+//                                    partColor = Color.WHITE;
 //                                }
 //                                boolean glow = ((ModelPartSpec) partSpec).getGlow(nbt);
 //
@@ -114,7 +114,7 @@
 //
 //
 //
-////                                    builder.addAll(ModelHelper.getColouredQuadsWithGlowAndTransform(((ModelPartSpec) partSpec).getPart().getQuads(state, side, rand, extraData), partColor, transform, glow));
+////                                    builder.addAll(ModelHelper.getColoredQuadsWithGlowAndTransform(((ModelPartSpec) partSpec).getPart().getQuads(state, side, rand, extraData), partColor, transform, glow));
 //                                }
 //                            }
 //                        }
@@ -147,7 +147,7 @@
 ////        matrixStack.rotate(Vector3f.ZP.rotationDegrees(270F));
 ////        matrixStack.rotate(Vector3f.XP.rotationDegrees(90F));
 ////        for (String partName : powerFist.partlMap.keySet()) {
-////            powerFist.renderPart(partName, matrixStack, builder, combinedLight, combinedOverlay, Colour.WHITE.r, Colour.WHITE.g, Colour.WHITE.b, Colour.WHITE.a);
+////            powerFist.renderPart(partName, matrixStack, builder, combinedLight, combinedOverlay, Color.WHITE.r, Color.WHITE.g, Color.WHITE.b, Color.WHITE.a);
 ////        }
 //
 //

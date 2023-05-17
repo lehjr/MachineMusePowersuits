@@ -49,7 +49,7 @@ public class SwirlyMuseCircle {
             points = GradientAndArcCalculator.getArcPoints(0, (float) (Math.PI * 2 + 0.0001), detail, 0, 0);
         }
         numsegments = points.limit() / 2;
-        color = GradientAndArcCalculator.getColourGradient(c1, c2, points.limit() / 2);
+        color = GradientAndArcCalculator.getColorGradient(c1, c2, points.limit() / 2);
     }
 
     public void draw(PoseStack matrixStack, float radius, double x, double y, float zLevel) {

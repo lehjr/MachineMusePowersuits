@@ -67,7 +67,7 @@
 //
 //        @Override
 //        public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTick) {
-//            GuiIcon.renderTextureWithColour(KNOB_TEXTURE, matrixStack,
+//            GuiIcon.renderTextureWithColor(KNOB_TEXTURE, matrixStack,
 //                    left(), right(), top(), bottom(), getZLevel(),
 //                    // int uWidth, int vHeight,
 //                    12, 15,
