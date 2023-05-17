@@ -4,6 +4,7 @@ import com.google.gson.*;
 import lehjr.mpsrecipecreator.container.MPSRCMenu;
 import lehjr.numina.common.item.ItemUtils;
 import lehjr.numina.common.tags.NBT2Json;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -70,7 +71,7 @@ public class RecipeGen {
     public int setOreTagIndex(int slot, int index) {
         ItemStack stack = getStack(slot);
         if (!stack.isEmpty()) {
-            List<TagKey<Item>> ids = stack.getTags().collect(Collectors.toList());
+            List<ResourceLocation> ids = stack.getTags().map(TagKey::location).collect(Collectors.toList());
             if (!ids.isEmpty()) {
                 if (!(index < ids.size()) || index < 0) {
                     index = 0;
@@ -126,7 +127,7 @@ public class RecipeGen {
         JsonObject stackJson = new JsonObject();
 
         if (!stack.isEmpty()) {
-            List<TagKey<Item>> ids = stack.getTags().collect(Collectors.toList());
+            List<ResourceLocation> ids = stack.getTags().map(TagKey::location).collect(Collectors.toList());
             if (!ids.isEmpty()) {
                 int index = 0;
                 if (oreTagIndices.containsKey(slot)) {
@@ -170,9 +171,12 @@ public class RecipeGen {
         }
 
         String stackName = ItemUtils.getRegistryName(stack.getItem()).toString();
+//        stack.getItemHolder().unwrapKey()
+
+
         StringBuilder builder = new StringBuilder();
         if (usingOreDict) {
-            List<TagKey<Item>> ids = stack.getTags().collect(Collectors.toList());
+            List<ResourceLocation> ids = stack.getTags().map(TagKey::location).collect(Collectors.toList());
             stackName = "tag: " + ids.get(oreTagIndices.getOrDefault(slot, 0));
         }
         builder.append(stackName);
@@ -200,8 +204,6 @@ public class RecipeGen {
         if (resultStack.isEmpty()) {
             return "Recipe Invalid";
         } else {
-            resultStack.getItemHolder().unwrapKey().ifPresent(itemResourceKey -> System.out.println("resourceKey: " + itemResourceKey.location()));
-
             String resultRegName = resultStack.getDisplayName()
 //                    .getUnformattedComponentText() // broken?
                     .getString()

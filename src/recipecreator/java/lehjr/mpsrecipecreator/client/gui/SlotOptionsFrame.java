@@ -108,7 +108,7 @@ public class SlotOptionsFrame extends ScrollableFrame {
                 nextOreDictArrow.disableAndHide();
                 prevOreDictArrow.disableAndHide();
             } else {
-                final List<TagKey<Item>> ids = stack.getTags().collect(Collectors.toList());
+                final List<ResourceLocation> ids = stack.getTags().map(TagKey::location).collect(Collectors.toList());
                 if (!ids.isEmpty()) {
                     useOreDictCheckbox[activeSlotID -1].enableAndShow();
                     if (useOreDictCheckbox[activeSlotID -1].isChecked()) {
