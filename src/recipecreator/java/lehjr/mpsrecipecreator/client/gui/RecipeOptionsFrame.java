@@ -31,7 +31,7 @@ public class RecipeOptionsFrame extends ScrollableFrame {
     private ClickableLabel title;
     ConditionsFrame conditionsFrame;
 
-    public RecipeOptionsFrame(MPSRCGui mparcGui) {
+    public RecipeOptionsFrame(MPSRCGui mpsrcGui) {
         super(new Rect(MusePoint2D.ZERO, MusePoint2D.ZERO));
         MusePoint2D starterPoint = MusePoint2D.ZERO;
         this.title = new ClickableLabel(Component.literal("Recipe Options"), starterPoint);
@@ -66,13 +66,13 @@ public class RecipeOptionsFrame extends ScrollableFrame {
         save = addButton(Component.translatable("mpsrc.gui.save"));
         save.setOnPressed(pressed->{
             Musique.playClientSound(SoundEvents.UI_BUTTON_CLICK.get(),1);
-            mparcGui.save();
+            mpsrcGui.save();
         });
 
         reset = addButton(Component.translatable("mpsrc.gui.resetrecipe"));
         reset.setOnPressed(pressed-> {
             Musique.playClientSound(SoundEvents.UI_BUTTON_CLICK.get(), 1);
-            mparcGui.resetRecipes();
+            mpsrcGui.resetRecipes();
         });
     }
 

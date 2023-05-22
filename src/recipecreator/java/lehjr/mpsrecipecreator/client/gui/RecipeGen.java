@@ -292,7 +292,7 @@ public class RecipeGen {
 //            if (getStackJson(0).has("item")) {
             recipeJson.addProperty("type", "minecraft:crafting_shaped");
 //            } else {
-//                recipeJson.addProperty("type", "mpa_shaped_ore");
+//                recipeJson.addProperty("type", "mps_shaped_ore");
 //            }
 
             // only in shaped recipes

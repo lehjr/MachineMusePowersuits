@@ -47,6 +47,6 @@ public final class MPS_RecipeCreator {
     }
 
     private void setup(final FMLCommonSetupEvent event) {
-        NetHandler.registerMPALibPackets();
+        NetHandler.registerPackets();
     }
 }

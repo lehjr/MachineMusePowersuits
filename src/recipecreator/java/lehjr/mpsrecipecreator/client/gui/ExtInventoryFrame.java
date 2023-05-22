@@ -33,7 +33,7 @@ public class ExtInventoryFrame extends ScrollableFrame {
             Color backgroundColor,
             Color topBorderColor,
             Color bottomBorderColor,
-            MPSRCGui mparcGui,
+            MPSRCGui mpsrcGui,
             IContainerULOffSet.ulGetter ulGetter
     ) {
         super(new Rect(topleft, bottomright));//, backgroundColor, topBorderColor, bottomBorderColor);

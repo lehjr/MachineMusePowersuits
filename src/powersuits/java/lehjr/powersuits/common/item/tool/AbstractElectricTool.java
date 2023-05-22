@@ -49,7 +49,7 @@ public class AbstractElectricTool extends DiggerItem {
     public AbstractElectricTool(Item.Properties properties) {
         super(0.0F,
                 0.0F,
-//                MPAToolMaterial.EMPTY_TOOL,
+//                MSAToolMaterial.EMPTY_TOOL,
                 new Tier() {
                     @Override
                     public int getUses() {

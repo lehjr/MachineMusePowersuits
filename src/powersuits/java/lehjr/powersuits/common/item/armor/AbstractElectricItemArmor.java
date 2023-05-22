@@ -78,11 +78,11 @@ public abstract class AbstractElectricItemArmor extends ArmorItem {
             UUID.randomUUID()};
 
     public AbstractElectricItemArmor(EquipmentSlot slots, Properties builder) {
-        super(MPAArmorMaterial.EMPTY_ARMOR, slots, builder);
+        super(MPSArmorMaterial.EMPTY_ARMOR, slots, builder);
     }
 
     public AbstractElectricItemArmor(EquipmentSlot slots) {
-        super(MPAArmorMaterial.EMPTY_ARMOR, slots, new Item.Properties()
+        super(MPSArmorMaterial.EMPTY_ARMOR, slots, new Item.Properties()
                 .stacksTo(1)
                 .durability(0)
                 .setNoRepair());

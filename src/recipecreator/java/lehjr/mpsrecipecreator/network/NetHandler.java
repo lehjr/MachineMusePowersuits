@@ -15,7 +15,7 @@ public class NetHandler {
             PROTOCOL_VERSION::equals
     );
 
-    public static void registerMPALibPackets() {
+    public static void registerPackets() {
         int i =0;
 
         CHANNEL_INSTANCE.registerMessage(

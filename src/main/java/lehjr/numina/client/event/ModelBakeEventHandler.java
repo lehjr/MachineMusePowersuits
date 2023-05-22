@@ -17,27 +17,12 @@ public enum ModelBakeEventHandler {
     public void onAddAdditional(ModelEvent.RegisterAdditional e) {
         ModelSpecLoader.INSTANCE.parse();
 
-        System.out.println("ModelBakeEventHandler adding mdoels size " + locations.size());
-
-        /*
-            ModelBakeEventHandler model location here: powersuits:models/item/armor/json/armor2
-            ModelBakeEventHandler model location here: powersuits:models/item/armor/json/mps_helm
-            ModelBakeEventHandler model location here: powersuits:models/item/armor/json/mps_chest
-            ModelBakeEventHandler model location here: powersuits:models/item/armor/json/jetpack
-            ModelBakeEventHandler model location here: powersuits:models/item/armor/json/mps_arms
-            ModelBakeEventHandler model location here: powersuits:models/item/armor/json/mps_pantaloons
-            ModelBakeEventHandler model location here: powersuits:models/item/armor/json/mps_boots
-        */
-
         INSTANCE.locations.forEach(location -> {
-            System.out.println("ModelBakeEventHandler model location here: " + location);
             e.register(location);
         });
     }
 
     public void addLocation(ResourceLocation location) {
-        System.out.println("ModelBakeEventHandler model location here: " + location);
-
         INSTANCE.locations.add(location);
     }
 

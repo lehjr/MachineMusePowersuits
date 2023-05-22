@@ -296,7 +296,7 @@ public class ModuleConfig implements IConfig {
     }
 
     String itemTranslationKeyToConfigKey(String translationKey) {
-        // drop the prefix for MPA modules and replace "dots" with underscores
+        // drop the prefix for MPS modules and replace "dots" with underscores
         final String itemPrefix = "item." + MOD_ID + ".";
         if (translationKey.startsWith(itemPrefix )){
             translationKey = translationKey.substring(itemPrefix .length());

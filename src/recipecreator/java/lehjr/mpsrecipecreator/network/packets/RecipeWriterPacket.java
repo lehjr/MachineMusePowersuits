@@ -105,7 +105,8 @@ public class RecipeWriterPacket {
                     CommandSourceStack commandsourcestack = player.createCommandSourceStack();
                     if(commandsourcestack.hasPermission(2)) {
                         player.sendSystemMessage(Component.literal("Server reloading data :P"));
-                        server.getCommands().performPrefixedCommand(player.createCommandSourceStack(), "reload");
+                        int result = server.getCommands().performPrefixedCommand(player.createCommandSourceStack(), "reload");
+                        System.out.println("result of command: " + (result));
                     }
                 }
             }

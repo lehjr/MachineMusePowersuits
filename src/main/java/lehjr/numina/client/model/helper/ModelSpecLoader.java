@@ -105,13 +105,6 @@ public enum ModelSpecLoader {
             NuminaLogger.logException("failed to load ModelSpec", e);
         }
         NuminaLogger.logDebug("Finished loading model specs");
-        getReg().getSpecs().forEach(specBase -> {
-            System.out.println("SpecName: " + specBase.getName() +", Parts: ");
-            specBase.getPartSpecs().forEach(partSpecBase -> {
-                System.out.println("partName: " + partSpecBase.getPartName() + ", slot: " + partSpecBase.getBinding().getSlot() + ", target: " + partSpecBase.getBinding().getTarget());
-            });
-        });
-
     }
 
     void parseFile(JsonObject json) {
@@ -158,7 +151,7 @@ public enum ModelSpecLoader {
                 parseHandHeldJavaModel(javaModel, json);
             }
             case NONE -> {
-                System.out.println("model spec loader found NONE");
+                NuminaLogger.logDebug("model spec loader found NONE");
             }
         }
     }
@@ -166,20 +159,12 @@ public enum ModelSpecLoader {
     /**
      * Biggest difference between the ModelSpec for Armor vs PowerFistModel2 is that the armor models don't need item camera transforms
      */
-
-
-
-
-
     void parseObjModelSpec(JsonObject modelJson, SpecType specType, String specName, boolean isDefault, boolean isSingle) {
         // Load model location
         ResourceLocation modelLocation = new ResourceLocation(modelJson.get(FILE).getAsString());
         ModelBakeEventHandler.INSTANCE.addLocation(modelLocation);
         if (!isSingle) {
-            System.out.println("specName before: " + specName);
             specName = specName(modelLocation);
-
-            System.out.println("specName after: " + specName);
         }
 
         parseObjModelSpec(modelJson, specType, specName, isDefault, modelLocation);
@@ -216,26 +201,16 @@ public enum ModelSpecLoader {
     static void parseObjModelBinding(String specName, JsonObject bindingJson) {
         SpecBinding binding = getBinding(bindingJson);
         if (bindingJson.has(PARTS) && bindingJson.get(PARTS).isJsonArray()) {
-            System.out.println("parsing parts for model: " + specName);
-
             bindingJson.getAsJsonArray(PARTS).iterator().forEachRemaining(jsonElement -> {
                 parseObjModelPart(specName, jsonElement.getAsJsonObject(), binding);
             });
         } else if (bindingJson.has(PART)) {
-            System.out.println("parsing part for model: " + specName);
-
             parseObjModelPart(specName, bindingJson.get(PART).getAsJsonObject(), binding);
-        } else {
-            System.out.println("failed to parse parts: " + bindingJson);
         }
     }
 
     static void parseObjModelPart(String specName, JsonObject partJson, SpecBinding binding) {
         ObjModelSpec objModelSpec = (ObjModelSpec) getReg().get(specName);
-
-        System.out.println("objModelSpec class: " + (objModelSpec != null ? objModelSpec.getClass() : null));
-
-
         String name = partJson.get(NAME).getAsString();
         boolean glow = partJson.has(GLOW) && partJson.get(GLOW).getAsBoolean();
         Color color = partJson.has(COLOR) ? parseColor(partJson.get(COLOR).getAsString()) : Color.WHITE;
@@ -245,11 +220,6 @@ public enum ModelSpecLoader {
                 name,
                 color, glow));
     }
-
-
-
-
-
 
     static void parseHandHeldJavaModel(JavaModelSpec javaModel, JsonObject json) {
         JavaModelSpec existingspec = (JavaModelSpec) getReg().put(javaModel.getName(), javaModel);

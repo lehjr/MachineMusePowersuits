@@ -2,7 +2,7 @@
 //
 //import lehjr.powersuits.basemod.MPSConstants;
 //import lehjr.powersuits.client.model.item.PowerFistModel2;
-//import lehjr.powersuits.network.MPAPackets;
+//import lehjr.powersuits.network.MPSPackets;
 //import lehjr.powersuits.network.packets.CosmeticInfoPacket;
 //import lehjr.numina.basemod.NuminaConstants;
 //import lehjr.numina.common.capabilities.render.IHandHeldModelSpecNBT;
