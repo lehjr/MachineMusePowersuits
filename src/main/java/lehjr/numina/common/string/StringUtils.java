@@ -148,11 +148,11 @@ public class StringUtils {
      * @param units
      * @return
      */
-    public static String formatNumberFromUnits(double number, Component units) {
-        if (units.getContents().equals("%")) {
+    public static String formatNumberFromUnits(double number, String units) {
+        if (units.equals("%")) {
             return formatNumberPercent(number) + '%';
         } else {
-            return formatNumberShort(number) + units.getContents();
+            return formatNumberShort(number) + units;
         }
     }
 
@@ -338,7 +338,7 @@ public class StringUtils {
 
     public static List<Component> wrapComponentToLength(Component component, int length) {
         if (component == null) {
-            component = Component.literal("").append(component);
+            component = Component.empty().append(component);
         }
         return wrapStringToLength(component.getString(), length);
     }

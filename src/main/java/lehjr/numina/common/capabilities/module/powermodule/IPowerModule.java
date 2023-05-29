@@ -87,7 +87,7 @@ public interface IPowerModule {
 
     // TODO: move to somewhere else??
     @OnlyIn(Dist.CLIENT) // only used by the client for display purposes
-    default Component getUnit(@Nonnull String propertyName) {
+    default String getUnit(@Nonnull String propertyName) {
         return UnitMap.MAP.getUnit(propertyName);
     }
 

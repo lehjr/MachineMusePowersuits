@@ -19,7 +19,7 @@ public class SlotButton extends VanillaButton {
     static final ResourceLocation BACKGROUND = new ResourceLocation(Constants.MOD_ID, "textures/gui/mpsrc_background.png");
 
     public SlotButton(Slot slot, IContainerULOffSet.ulGetter ulGetter) {
-        super(MusePoint2D.ZERO, Component.literal(""), true);
+        super(MusePoint2D.ZERO, Component.empty(), true);
         super.setHeight(28);
         super.setWidth(28);
         this.ulGetter = ulGetter;

@@ -15,8 +15,8 @@ import net.minecraft.util.Mth;
  * uses vanilla texture for vanilla look and feel
  */
 public class VanillaSlider extends AbstractSlider {
-    public Component displayString = Component.literal("");
-    public Component message = Component.literal("");
+    public Component displayString = Component.empty();
+    public Component message = Component.empty();
     public String suffix = "";
     boolean showDecimal = false;
     int precision = 2;
@@ -146,7 +146,7 @@ public class VanillaSlider extends AbstractSlider {
         }
 
         if (drawString) {
-            setMessage(Component.literal("").append(displayString).append(valString).append(suffix));
+            setMessage(Component.empty().append(displayString).append(valString).append(suffix));
         }
     }
 }

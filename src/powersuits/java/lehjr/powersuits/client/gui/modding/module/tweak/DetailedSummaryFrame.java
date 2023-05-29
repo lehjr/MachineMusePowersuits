@@ -95,13 +95,13 @@ public class DetailedSummaryFrame extends ScrollableFrame {
             int nexty = (int) top() + margin + 4;
 
             // Max Energy
-            String formattedValue = StringUtils.formatNumberFromUnits(energy.get(), Component.literal("FE"));
+            String formattedValue = StringUtils.formatNumberFromUnits(energy.get(), "FE");
             StringUtils.drawShadowedString(matrixStack, energyText, left() + margin, nexty);
             StringUtils.drawRightAlignedShadowedString(matrixStack, formattedValue, right() - margin, nexty);
             nexty += 10;
 
             // Armor points
-            formattedValue = StringUtils.formatNumberFromUnits(armor.get(), Component.literal("pts"));
+            formattedValue = StringUtils.formatNumberFromUnits(armor.get(), "pts");
             StringUtils.drawShadowedString(matrixStack, armorText, left() + margin, nexty);
             StringUtils.drawRightAlignedShadowedString(matrixStack, formattedValue, right() - margin, nexty);
         }

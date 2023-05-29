@@ -43,6 +43,7 @@ import lehjr.numina.common.network.packets.TweakRequestDoublePacket;
 import lehjr.numina.common.string.StringUtils;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraftforge.common.util.LazyOptional;
 
 import java.util.HashMap;
@@ -93,9 +94,11 @@ public class ModuleTweakFrame extends ScrollableFrame {
         currentScrollPixels=0;
     }
 
-    Component getUnit(String key) {
-        return moduleTarget.getSelectedModule().map(target->target.getModule().getCapability(NuminaCapabilities.POWER_MODULE)
-                .map(pm-> pm.getUnit(key)).orElse(Component.literal(""))).orElse(Component.literal(""));
+    String getUnit(String key) {
+        return moduleTarget.getSelectedModule().map(target->target.getModule()
+                .getCapability(NuminaCapabilities.POWER_MODULE)
+                .map(pm-> pm.getUnit(key))
+                .orElse("")).orElse("");
     }
 
     @Override
@@ -114,8 +117,7 @@ public class ModuleTweakFrame extends ScrollableFrame {
             String formattedValue = StringUtils.formatNumberFromUnits(property.getValue(), getUnit(name));
             double valueWidth = StringUtils.getStringWidth(formattedValue);
             double allowedNameWidth = width() - valueWidth - margin * 2;
-            List<String> namesList = StringUtils.wrapComponentToLength(
-                    Component.translatable(TagConstants.MODULE_TRADEOFF_PREFIX + name).getString(), allowedNameWidth);
+            List<Component> namesList = StringUtils.wrapComponentToLength(Component.translatable(TagConstants.MODULE_TRADEOFF_PREFIX + name), (int)allowedNameWidth);
 
             for (int i = 0; i < namesList.size(); i++) {
                 StringUtils.drawLeftAlignedShadowedString(matrixStack, namesList.get(i), left() + margin, nexty + 9 * i);

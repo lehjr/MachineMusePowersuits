@@ -14,24 +14,21 @@ import java.util.Map;
  */
 public enum UnitMap {
     MAP;
-    static final Component EMPTY = Component.literal("");
-
-
-    protected static Map<String, Component> units = new HashMap<>();
+    protected static Map<String, String> units = new HashMap<>();
 
     public void addUnitLabel(@Nonnull String propertyName, String unit) {
         if (unit != null && !unit.isEmpty()) {
             if (!units.containsKey(propertyName)) {
                 if (unit.startsWith(TagConstants.MODULE_TRADEOFF_PREFIX)) {
-                    units.put(propertyName, Component.translatable(unit));
+                    units.put(propertyName, Component.translatable(unit).getString());
                 } else {
-                    units.put(propertyName, Component.literal(unit));
+                   units.put(propertyName, unit);
                 }
             }
         }
     }
 
-    public Component getUnit(@Nonnull String propertyName) {
-        return units.getOrDefault(propertyName, EMPTY);
+    public String getUnit(@Nonnull String propertyName) {
+        return units.getOrDefault(propertyName, "");
     }
 }

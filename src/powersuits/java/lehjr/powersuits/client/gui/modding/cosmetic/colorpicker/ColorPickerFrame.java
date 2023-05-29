@@ -120,7 +120,7 @@ public class ColorPickerFrame extends ScrollableFrame {
             @Override
             public void updateSlider() {
                 String valString = Integer.toString((int) Math.round(100 * sliderValue * (maxValue - minValue) + minValue));
-                setMessage(Component.literal("").append(displayString.getString()).append(" ").append(valString).append(suffix));
+                setMessage(Component.empty().append(displayString.getString()).append(" ").append(valString).append(suffix));
             }
         };
 
@@ -239,7 +239,7 @@ public class ColorPickerFrame extends ScrollableFrame {
 
         if (this.isVisible() && this.isEnabled()) {
             if (colors().length > selectedColor) {
-                colorLabel.setLabel(Component.literal("").append(COLOR_PREFIX).append(" 0X").append(new Color(colors()[selectedColor]).rgbaHexColor()));
+                colorLabel.setLabel(Component.empty().append(COLOR_PREFIX).append(" 0X").append(new Color(colors()[selectedColor]).rgbaHexColor()));
             }
             super.preRender(matrixStack, mouseX, mouseY, partialTick);
             matrixStack.pushPose();
