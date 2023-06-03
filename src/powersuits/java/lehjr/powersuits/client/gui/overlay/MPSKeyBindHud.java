@@ -27,7 +27,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-public class MPSHud {
+public class MPSKeyBindHud {
 
     public static final IGuiOverlay MPS_HUD = ((gui, poseStack, partialTick, screenWidth, screenHeight) -> {
 

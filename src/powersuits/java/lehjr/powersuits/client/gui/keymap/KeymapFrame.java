@@ -11,7 +11,7 @@ import lehjr.numina.client.gui.geometry.Rect;
 import lehjr.numina.client.render.NuminaRenderer;
 import lehjr.powersuits.client.control.KeyMappingReaderWriter;
 import lehjr.powersuits.client.control.MPSKeyMapping;
-import lehjr.powersuits.client.gui.overlay.MPSHud;
+import lehjr.powersuits.client.gui.overlay.MPSKeyBindHud;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
@@ -154,7 +154,7 @@ public class KeymapFrame extends ScrollableFrame {
             this.checkbox.setOnPressed(pressed ->{
                 kb.showOnHud = this.checkbox.isChecked();
                 KeyMappingReaderWriter.INSTANCE.writeOutKeybindSetings();
-                MPSHud.makeKBDisplayList();
+                MPSKeyBindHud.makeKBDisplayList();
 //                RenderEventHandler.INSTANCE.makeKBDisplayList();
             });
 

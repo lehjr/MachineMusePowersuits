@@ -24,7 +24,7 @@
  *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package lehjr.powersuits.client.event;
+package lehjr.powersuits.client.gui.overlay;
 
 import com.mojang.blaze3d.platform.Window;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -32,12 +32,14 @@ import lehjr.numina.client.gui.meter.EnergyMeter;
 import lehjr.numina.client.gui.meter.HeatMeter;
 import lehjr.numina.client.gui.meter.PlasmaChargeMeter;
 import lehjr.numina.client.gui.meter.WaterMeter;
+import lehjr.numina.client.render.NuminaRenderer;
 import lehjr.numina.common.capabilities.NuminaCapabilities;
 import lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
 import lehjr.numina.common.energy.ElectricItemUtils;
 import lehjr.numina.common.heat.HeatUtils;
 import lehjr.numina.common.item.ItemUtils;
+import lehjr.numina.common.math.Color;
 import lehjr.numina.common.math.MathUtils;
 import lehjr.numina.common.string.StringUtils;
 import lehjr.powersuits.common.config.MPSSettings;
@@ -109,7 +111,7 @@ public enum ClientOverlayHandler {
                                 String num = StringUtils.formatNumberShort(foodLevel);
                                 StringUtils.drawShadowedString(matrixStack, num, 17, yBase + (yOffsetString * index.get()));
                                 // FIXME
-//                                NuminaRenderer.drawItemAt(-1.0, yBase + (yOffsetIcon * index.get()), food);
+                                NuminaRenderer.drawItemAt(matrixStack, -1.0, yBase + (yOffsetIcon * index.get()), food, Color.WHITE);
                                 index.addAndGet(1);
                             }
                         }
@@ -149,7 +151,7 @@ public enum ClientOverlayHandler {
 
                                         StringUtils.drawShadowedString(matrixStack, hour + ampm, 17, yBase + (yOffsetString * index.get()));
                                         // FIXME
-//                                        NuminaRenderer.drawItemAt(-1.0, yBase + (yOffsetIcon * index.get()), clock);
+                                        NuminaRenderer.drawItemAt(matrixStack, -1.0, yBase + (yOffsetIcon * index.get()), clock, Color.WHITE);
 
                                         index.addAndGet(1);
                                     }
@@ -162,7 +164,7 @@ public enum ClientOverlayHandler {
                             ItemStack compass = module;
                             if (compass.getCapability(NuminaCapabilities.POWER_MODULE).map(pm -> pm.isModuleOnline()).orElse(false)) {
                                 // FIXME
-//                                NuminaRenderer.drawItemAt(-1.0, yBase + (yOffsetIcon * index.get()), compass);
+                                NuminaRenderer.drawItemAt(matrixStack, -1.0, yBase + (yOffsetIcon * index.get()), compass, Color.WHITE);
                                 index.addAndGet(1);
                             }
                         }
@@ -172,14 +174,8 @@ public enum ClientOverlayHandler {
             float sw = (float) ((double) screen.getWidth() / screen.getGuiScale());
             float sh = (float) ((double) screen.getHeight() / screen.getGuiScale());
 
-
-//            float top = (float) screen.getGuiScaledHeight() / 2.0F - 16F;
-//            float left = screen.getGuiScaledWidth() - 34;
-
             float top = sh / 2.0F - 16F;
             float left = sw - 36;
-
-
 
             // energy
             float maxEnergy = ElectricItemUtils.getMaxPlayerEnergy(player);
