@@ -1,4 +1,4 @@
-![](/src/main/resources/assets/powersuits/textures/logo.png?raw=true)
+![](/src/main/powersuits/textures/logo.png?raw=true)
 
 #MachineMuse Modular Powersuits
 

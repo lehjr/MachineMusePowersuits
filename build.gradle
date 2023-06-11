@@ -1,209 +1,682 @@
+import org.apache.tools.ant.filters.ReplaceTokens
+import groovy.json.JsonOutput
+import groovy.json.JsonSlurper
+
 buildscript {
     repositories {
         maven {
-            name = ":forge"
-            url = 'https://files.minecraftforge.net/maven'
+            name 'MixinGradle'
+            url 'https://repo.spongepowered.org/repository/maven-public'
         }
-        jcenter()
-        mavenCentral()
     }
     dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:3.+'
-    }
-}
-
-apply plugin: 'net.minecraftforge.gradle'
-// Only edit below this line, the above code adds and enables the necessary things for Forge to be setup.
-apply plugin: 'eclipse'
-apply plugin: 'maven-publish'
-
-
-def buildnumber = System.getenv("BUILD_NUMBER")
-def travisbuildnumber = (System.getenv("TRAVIS_BUILD_NUMBER") ?: -000).toInteger() + 00
-version = "${mod_version}.${buildnumber ?: travisbuildnumber}"
-group = group_id // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-archivesBaseName = "${mod_id}-${minecraft_version}"
-
-def numina_version = (System.getenv("NUMINA_VERSION") ?: "${version}")
-
-repositories {
-    //url                                                           //dependencies
-    maven { url "http://dvs1.progwml6.com/files/maven" }            //JEI
-    maven { url = "http://maven.covers1624.net/" }                  //CoFH
-    maven { url = "http://maven.ic2.player.to" }                    //IC2 Forestry
-    maven { url = "http://maven.tterrag.com" }                      //EnderIO
-    maven { url = "http://maven2.tterrag.com" }                     //EnderIO
-    maven { url = 'http://maven.mcmoddev.com' }                     //TESLA API
-    maven { url = 'https://mod-buildcraft.com/maven/' }             //BuildCraft
-    maven { url = 'http://maven.cil.li/' }                          //Scannable
-    maven { url = "https://repo.refinedmods.com" }                  //RefinedStorage
-    maven { url = 'http://maven.thiakil.com/' }                     //Mekanism
-    maven { url = "http://maven.blamejared.com" }                   //CraftTweaker - required by Mekanism
-    maven { url = 'https://minecraft.curseforge.com/api/maven/' }   //Thaumcraft
-    mavenCentral()
-}
-/*
-buildscript {
-    repositories {
-        maven {
-            url 'https://plugins.gradle.org/m2/'
-        }
-
-        maven {
-            url 'https://mvnrepository.com/artifact/org.json/json'
-        }
-
-        maven {
-            url 'https://mvnrepository.com/artifact/com.codesnippets4all/quick-json'
-        }
-
-        maven {
-            url 'https://oss.sonatype.org/content/repositories/snapshots/'
+        if (project.use_mixins.toBoolean()) {
+            classpath 'org.spongepowered:mixingradle:0.7-SNAPSHOT'
         }
     }
 }
-*/
+
+plugins {
+    id "com.matthewprenger.cursegradle" version '1.4.0'
+    id 'java'
+    id 'idea'
+    id 'maven-publish'
+    id 'net.minecraftforge.gradle' version '5.1.+'
+    id 'wtf.gofancy.fancygradle' version '1.1.+'
+}
+
+//apply from: 'classremapper.gradle'
+
+
+
+tasks.named('wrapper', Wrapper).configure {
+    //Define wrapper values here so as to not have to always do so when updating gradlew.properties
+    gradleVersion = '7.6.1'
+    distributionType = Wrapper.DistributionType.ALL
+}
+
+//apply from: 'https://raw.githubusercontent.com/SizableShrimp/Forge-Class-Remapper/main/classremapper.gradle'
+
+defaultTasks 'build'
+
+idea {
+    module {
+        //Exclude directories from being managed
+        for (String excludeDirName in ["run", "out", "logs", "gradle"]) {
+            excludeDirs.add(new File(projectDir, excludeDirName))
+        }
+        downloadJavadoc = true
+        downloadSources = true
+    }
+}
+
+group = maven_group
+version = "${mod_version}." + (System.env.BUILD_NUMBER ?: 000)
+archivesBaseName = "ModularPowersuits"
+
+println("mod_version: ${mod_version}")
+
+ext {
+    versionProperties = ["mod_version": project.version]
+    jsonPatterns = ["**/*.json", "**/*.mcmeta"]
+}
+
+// export this for the remapper since it can't seem to find it
+project.ext."MC_VERSION"=minecraft_version
+
+sourceSets {
+    main {
+        setupSourceSet(main, 'main')
+    }
+
+    powersuits {
+        setupSourceSet(powersuits, 'powersuits')
+    }
+
+    recipecreator {
+        setupSourceSet(recipecreator, 'recipecreator')
+    }
+
+    whatever {
+        setupSourceSet(whatever, 'whatever')
+    }
+}
+
+//This method sets up an additional sourceSet in src/$name and adds a reference to the corresponding
+// data gen's resource directory excluding the cache. It also adds the main numina module
+// to the dependencies of the source set we are setting up
+def setupSourceSet(SourceSet sourceSet, String name) {
+
+    // fixme: pass argument for archive base name if needed
+    if (project.use_mixins.toBoolean()) {
+        ext.refMap = 'mixins.' + archives_base_name + '.refmap.json'
+    }
+
+    sourceSet.java {
+        srcDirs = ["src/${name}/java"]
+    }
+
+    sourceSet.resources {
+        srcDirs = ["src/${name}/resources"]
+    }
+
+
+//    sourceSet.resources {
+//        //Add the generated module resources
+//        srcDirs += "src/datagen/generated/${name}"
+//        //But exclude the cache of the generated data from what gets built
+//        exclude '.cache'
+//    }
+
+    if (sourceSet != sourceSets.main) {
+        sourceSet.compileClasspath += sourceSets.main.output
+    }
+}
+
+
+configurations {
+    for (def name : ["powersuits", "recipecreator", "whatever"]) {
+        maybeCreate("${name}Implementation").extendsFrom(implementation)
+        maybeCreate("${name}CompileOnly").extendsFrom(compileOnly)
+        maybeCreate("${name}RuntimeOnly").extendsFrom(runtimeOnly)
+    }
+
+    configureEach {
+        exclude group: "net.minecraftforge", module: "mergetool"
+    }
+}
+
+//Setup the UPDATE_SOURCESET property in case we are doing any remappings
+// Note, for this to work on all source sets, all source folders must be present including those not being used (such as src/test/java)
+project.ext."UPDATE_SOURCESETS" = project.sourceSets.collect { it.name }.join(';')
+
+def mainReplaceResources = createReplaceResourcesTask("main", sourceSets.main)
+def powersuitsReplaceResources = createReplaceResourcesTask("powersuits", sourceSets.powersuits)
+def recipecreatorReplaceResources = createReplaceResourcesTask("recipecreator", sourceSets.recipecreator)
+def whateverReplaceResources = createReplaceResourcesTask("whatever", sourceSets.whatever)
+
+def createReplaceResourcesTask(String output, SourceSet sourceSet) {
+    return tasks.register("${output}ReplaceResources", Copy) {
+        it.outputs.upToDateWhen { false }
+        def modsToml = copySpec {
+            from(sourceSet.resources) {
+                include "META-INF/mods.toml"
+                expand versionProperties
+            }
+        }
+        //Copy it into the build dir
+        it.with modsToml
+        it.into "$buildDir/resources/${output}/"
+        //If IntelliJ's output dir exists, copy it there as well
+        if (new File("$rootDir/out/production/Numina.${output}/").exists()) {
+            //Note: This copies it into the correct place, but it still doesn't have the IntelliJ
+            // run work by default because of incorrect MOD_CLASSES getting generated.
+            // probably related to us setting inheritOutputDirs
+            copy {
+                with modsToml
+                into "$rootDir/out/production/Numina.${output}/"
+            }
+        }
+        //If Eclipse's output dir exists, copy it there as well
+        if (new File("$rootDir/bin/${output}/").exists()) {
+            copy {
+                with modsToml
+                into "$rootDir/bin/${output}/"
+            }
+        }
+    }
+}
+
+//Set the various variables/settings for the different process resources tasks
+processResources { setupProcessResources(processResources, mainReplaceResources) }
+processPowersuitsResources { setupProcessResources(processPowersuitsResources, powersuitsReplaceResources) }
+processRecipecreatorResources { setupProcessResources(processRecipecreatorResources, recipecreatorReplaceResources) }
+processWhateverResources { setupProcessResources(processWhateverResources, whateverReplaceResources) }
+
+def setupProcessResources(ProcessResources process, TaskProvider<Task> replaceResources) {
+    process.duplicatesStrategy(DuplicatesStrategy.FAIL)
+    process.exclude('META-INF/mods.toml')
+    process.from("${projectDir}") { include 'logo.png' }
+    process.configure { finalizedBy(replaceResources) }
+    process.doLast {
+        fileTree(dir: process.getOutputs().getFiles().getAsPath(), includes: jsonPatterns).each {
+            File file -> file.setText(JsonOutput.toJson(new JsonSlurper().parse(file)))
+        }
+    }
+}
+
+//Make the various classes tasks depend on the corresponding replaceResources tasks in addition to the default processResources tasks they depend on
+classes.configure { dependsOn(mainReplaceResources) }
+powersuitsClasses.configure { dependsOn(powersuitsReplaceResources) }
+recipecreatorClasses.configure { dependsOn(recipecreatorReplaceResources) }
+whateverClasses.configure { dependsOn(whateverReplaceResources) }
+
+
+
+println("version: ${project.version}")
+java {
+    toolchain.languageVersion = JavaLanguageVersion.of(8)
+//    withSourcesJar()
+}
 
 minecraft {
-    mappings channel: "snapshot", version: "${project.mcp_version}".toString()
-    accessTransformer = file('src/main/resources/accesstransformer.cfg')
+    mappings channel: "${mappings_channel}", version: "${mappings_version}"
 
-    // Default run configurations.
-    // These can be tweaked, removed, or duplicated as needed.
+    accessTransformers.from(
+            file('src/main/resources/META-INF/accesstransformer.cfg'),
+            file('src/powersuits/resources/META-INF/accesstransformer.cfg'),
+            file('src/recipecreator/resources/META-INF/accesstransformer.cfg'))
+
     runs {
         client {
             workingDirectory project.file('run')
-
-            // Recommended logging data for a userdev environment
-            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
-
-            // Recommended logging level for the console
+            if (project.use_coremod.toBoolean()) {
+                jvmArg '-Dfml.coreMods.load=' + coremod_plugin_class_name
+            }
+            if (project.use_mixins.toBoolean()) {
+                jvmArg '-Dmixin.hotSwap=true'
+                jvmArg '-Dmixin.checks.interfaces=true'
+                jvmArg '-Dmixin.debug=true'
+            }
+            property 'forge.logging.markers', 'REGISTRIES'
             property 'forge.logging.console.level', 'debug'
+            environment 'MC_VERSION', '1.12.2'
+
+            mods {
+                numina.sources((SourceSet) sourceSets.main)
+                modularpowersuits.source((SourceSet) sourceSets.powersuits)
+                mpsrecipecreator.source((SourceSet) sourceSets.recipecreator)
+                mpswhatever.source((SourceSet) sourceSets.whatever)
+            }
         }
-
         server {
-
-            // Recommended logging data for a userdev environment
-            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
-
-            // Recommended logging level for the console
+            workingDirectory project.file('run')
+            if (project.use_coremod.toBoolean()) {
+                jvmArg '-Dfml.coreMods.load=' + coremod_plugin_class_name
+            }
+            if (project.use_mixins.toBoolean()) {
+                jvmArg '-Dmixin.hotSwap=true'
+                jvmArg '-Dmixin.checks.interfaces=true'
+                jvmArg '-Dmixin.debug=true'
+            }
+            property 'forge.logging.markers', 'REGISTRIES'
             property 'forge.logging.console.level', 'debug'
+            environment 'MC_VERSION', '1.12.2'
+
+            mods {
+                numina.sources((SourceSet) sourceSets.main)
+                modularpowersuits.source((SourceSet) sourceSets.powersuits)
+                mpsrecipecreator.source((SourceSet) sourceSets.recipecreator)
+                mpswhatever.source((SourceSet) sourceSets.whatever)
+            }
         }
     }
 }
 
+repositories {
+    maven {
+        name = 'Cleanroom Maven'
+        url = 'https://maven.cleanroommc.com'
+    }
+    maven {
+        name = 'Sponge Maven'
+        url = 'https://repo.spongepowered.org/maven'
+    }
+    maven {
+        name = 'JEI'
+        url = 'https://dvs1.progwml6.com/files/maven/'
+        content {
+            includeGroup('mezz.jei')
+        }
+    }
+//    maven {
+//        name = "IC2"
+//        url = uri("https://maven.ic2.player.to/")
+//    }
+    maven {
+        name = 'Tesla'
+        url = 'https://maven.mcmoddev.com/'
+    }
+    maven {
+        name = 'Galacticraft'
+        url = 'https://maven.galacticraft.net/repository/legacy/'
+    }
+    maven {
+        name = 'CurseForge'
+        url = 'https://minecraft.curseforge.com/api/maven/'
+    }
+    maven {
+        name = 'CurseMaven'
+        url = 'https://cursemaven.com'
+        content {
+            includeGroup 'curse.maven'
+        }
+    }
+    maven {
+        name = 'TeamCoFH mods'
+        url = 'https://maven.covers1624.net/'
+    }
+    maven {
+        name = 'EnderIO'
+        url = 'https://maven.tterrag.com'
+    }
+//    maven {
+//        name = 'EnderIO2'
+//        url = 'https://maven2.tterrag.com'
+//    }
+    maven {
+        name = 'Buildcraft'
+        url = 'https://mod-buildcraft.com/maven/'
+    }
+    maven {
+        name = 'Scannable'
+        url = 'https://maven.cil.li/'
+    }
+    maven {
+        name = 'Mekanism'
+        url = 'https://maven.thiakil.com/'
+    }
+    maven {
+        name = 'CraftTweaker' // required by Mekanism
+        url = 'https://maven.blamejared.com'
+    }
+    maven {
+        name = 'ChickenBones'
+        url = 'https://chickenbones.net/maven/'
+    }
+
+    mavenCentral()
+    flatDir {
+        dirs 'libs'
+    }
+
+    flatDir {
+        dirs 'libs'
+    }
+}
 
 dependencies {
-    minecraft([
-            group  : "net.minecraftforge",
-            name   : "forge",
-            version: "${project.minecraft_version}-${project.forge_version}"
-    ])
+    minecraft "net.minecraftforge:forge:${project.minecraft_version}-${project.forge_version}"
 
-    compileOnly fg.deobf( "mezz.jei:jei_${minecraft_version}:${jei_version}")                             // JEI
-    compileOnly fg.deobf( "cofh:RedstoneFlux:1.12-${rf_version}:universal")                                   // RF API
+    if (project.use_mixins.toBoolean()) {
+        compileOnly 'zone.rong:mixinbooter:7.0'
+        runtimeOnly 'zone.rong:mixinbooter:7.0'
+        annotationProcessor "org.spongepowered:mixin:0.8.5:processor"
+    }
 
-    compile ("cofh:CoFHCore:${minecraft_version}-${cofhcore_version}:universal")                 //CoFH Core
-            { exclude group: 'mezz.jei' }//also using old outdated JEI reference
+    // compile against the JEI API but do not include it at runtime
+    compileOnly fg.deobf("mezz.jei:jei_${minecraft_version}:${jei_version}:api")
+    // at runtime, use the full JEI jar
+    runtimeOnly fg.deobf("mezz.jei:jei_${minecraft_version}:${jei_version}")
 
+//    // compile against the Forestry API but do not include it at runtime
+//    compileOnly fg.deobf("net.sengir.forestry:forestry_${minecraft_version}:${forestry_version}:api")
+    // at runtime, use the full Forestry jar
+    compileOnly fg.deobf("net.sengir.forestry:forestry_${minecraft_version}:${forestry_version}")
 
-//    compile "com.enderio.core:EnderCore:${minecraft_version}-${endercore_version}"              //Ender Core
-//    compileOnly "com.enderio.core:EnderCore:${minecraft_version}-${endercore_version}-core"              //Ender Core
-    compileOnly fg.deobf( "appeng:appliedenergistics2:${ae2api_version}")                                     //Applied Energetics 2
-    compileOnly fg.deobf( "net.industrial-craft:industrialcraft-2:${ic2_version}-ex112")                   //IC2 API
-    compileOnly fg.deobf( "net.sengir.forestry:forestry_${minecraft_version}:${forestry_version}")            //Forestry
+    compileOnly fg.deobf("cofh:RedstoneFlux:1.12-${rf_version}:universal")
 
-    // using compile because can't get deobf to work with Thaumcraft
-    compile "thaumcraft:Thaumcraft:1.12.2:${thaumcraft_version}"                             //Thaumcraft
+    compileOnly fg.deobf("net.darkhax.tesla:Tesla-${minecraft_version}:${tesla_version}")
 
-    compileOnly fg.deobf("refinedstorage:refinedstorage:${refinedstorage_version}") //Refined Storage
+    compileOnly fg.deobf( "net.industrial-craft:industrialcraft-2:${ic2_version}-ex112")
 
-    compile "net.darkhax.tesla:Tesla-${minecraft_version}:${tesla_version}"                         //Tesla
-    compile "com.mod-buildcraft:buildcraft:${buildcraft_version}"                                   //BuildCraft
-    compile "li.cil.scannable:Scannable:MC${minecraft_version}-${scannable_version}"                //Scannable
-
-//    compileOnly("mekanism:Mekanism:${minecraft_version}-${mekanism_version}")                           //Mekanism
-//            { exclude group: 'mezz.jei' }//Mek has implemented a duplicated and out date JEI
-
-//    compileOnly ("com.enderio:EnderIO:${minecraft_version}-${enderio_version}")
-
-//    compileOnly ("com.enderio:EnderIO:${minecraft_version}-${enderio_version}:api")                 //EnderIO API
-//            { exclude group: "deobf.com.enderio.core"}//Another duplicated and (dirty words) dependency
-
-    //in fact,if you want run with EnderIO,you had to manually add EnderCore and EnderIO to your run/mods
-    //or you can help to add some lines below that can help the "runClient" works properly while also load EnderIO
-
-    compile group: 'com.google.guava', name: 'guava', version: '22.0'
+    compileOnly fg.deobf("dev.galacticraft:galacticraft-legacy:${galacticraft_legacy_version}")
 
     //we need baubles at runtime
-    runtime "com.azanor:Baubles:${baubles_runtime_version}"
+    runtimeOnly fg.deobf("com.azanor:Baubles:${baubles_runtime_version}")
 
-    // https://mvnrepository.com/artifact/org.json/json
-    compile group: 'org.json', name: 'json', version: '20180813' // probably get rid of this
-    compile group: 'com.codesnippets4all', name: 'quick-json', version: '1.0.4'
+    // using compile because can't get to load at runtime
+    compileOnly fg.deobf("curse.maven:thaumcraft-223628:2629023")
 
-//    compile fileTree(dir: '/libs', include: 'RenderPlayerAPI-1.12.1-1.0.jar')                    //RenderPlayerAPI
-//    compile fileTree(dir: '/libs', include: 'ExtraCells-1.12.2-2.6.1a.jar')                      //ExtraCells
+    compileOnly fg.deobf("curse.maven:applied-energistics-2-223794:${ae2_version}") {
+        transitive = false
+    }
 
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compileOnly fg.deobf("com.mod-buildcraft:buildcraft:${buildcraft_version}")
+
+    compileOnly ("cofh:CoFHCore:${minecraft_version}-${cofhcore_version}:universal") {
+        exclude group: 'mezz.jei' // also using old outdated JEI reference
+    }
+
+    compileOnly fg.deobf("curse.maven:refinedstorage-243076:${refinedstorage_version}")
+
+//
+//    //    runtimeOnly fg.deobf("ignored:itemtransformhelper:1.0")
+//
+//    //    compileOnly fg.deobf("cofh:RedstoneFlux:1.12-2.0.0.1:universal")
+//
+////
+////
+//
+////
+////    compileOnly fg.deobf( "net.sengir.forestry:forestry_${minecraft_version}:${forestry_version}")
+////    // https://mvnrepository.com/artifact/org.json/json
+////    compileOnly group: 'org.json', name: 'json', version: '20180813' // probably get rid of this
+////    compileOnly group: 'com.codesnippets4all', name: 'quick-json', version: '1.0.4'
+////
+////    compileOnly group: 'com.google.guava', name: 'guava', version: '22.0'
+//////    compile "codechicken:CodeChickenLib:${minecraft_version}-${ccl_version}:deobf"
+////
+////
+//////    runtimeOnly fg.deobf("curse.maven:crafttweaker-239197:4566528")
+////
+    compileOnly fg.deobf("li.cil.scannable:Scannable:MC${minecraft_version}-${scannable_version}")
+    compileOnly fileTree(dir: 'libs', include: ['*.jar'])
 }
 
-// Example for how to get properties into the manifest for reading by the runtime..
+fancyGradle {
+    patches {
+        resources
+        coremods
+        asm
+    }
+}
+
+
+def getManifestAttributes(String title) {
+    return [
+            "Specification-Title"     : title,
+            "Specification-Vendor"    : "MachineMuse",
+            "Specification-Version"   : "${project.version}",
+            "Implementation-Title"    : title,
+            "Implementation-Version"  : "${project.version}",
+            "Implementation-Vendor"   : "MachineMuse",
+            "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
+            "Automatic-Module-Name": title.toLowerCase(Locale.ROOT)
+    ]
+}
+
 jar {
-    manifest {
-        attributes([
-            "Specification-Title": project.name,
-            "Specification-Vendor": "MachineMuse",
-            "Specification-Version": "1", // We are version 1 of ourselves
-            "Implementation-Title": project.name,
-            "Implementation-Version": "${version}",
-            "Implementation-Vendor" :"MachineMuse",
-            "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
-        ])
-    }
+    duplicatesStrategy(DuplicatesStrategy.FAIL)
+    archiveFileName.set("Numina-${minecraft_version}-${project.version}.jar")
+    from(sourceSets.main.output)
+    manifest.attributes(getManifestAttributes("Numina"))
+    afterEvaluate { finalizedBy reobfJar }
 }
 
-// Process resources on build
-processResources {
-    // this will ensure that this task is redone when the versions change.
-    inputs.property "version", project.version
-
-    // replace stuff in mcmod.info, nothing else
-    from(sourceSets.main.resources.srcDirs) {
-        include 'mcmod.info'
-        // replace version and mcversion
-        expand 'version': project.version, 'mcversion': project.minecraft_version
-    }
-
-    // Move access transformers to META-INF
-    rename '(accesstransformer.cfg)', 'META-INF/$1'
+task sourcesJar(type: Jar, dependsOn: [classes, powersuitsClasses, recipecreatorClasses, whateverClasses]) {
+    duplicatesStrategy(DuplicatesStrategy.FAIL)
+    archiveClassifier.set("sources")
+    from(sourceSets.main.allJava, sourceSets.powersuits.allJava, sourceSets.recipecreator.allJava, sourceSets.whatever.allJava)
+    manifest.attributes(getManifestAttributes("ModularPowersuits"))
 }
 
-task devJar(type: Jar) {
-    from sourceSets.main.output
-    classifier = 'dev'
+task powersuitsJar(type: Jar) {
+    duplicatesStrategy(DuplicatesStrategy.FAIL)
+    archiveFileName.set("ModularPowersuits-${minecraft_version}-${project.version}.jar")
+    archiveClassifier.set("powersuits")
+    from sourceSets.powersuits.output
+    manifest.attributes(getManifestAttributes("ModularPowersuits"))
+    afterEvaluate { finalizedBy reobfPowersuitsJar }
+}
+
+task recipecreatorJar(type: Jar) {
+    duplicatesStrategy(DuplicatesStrategy.FAIL)
+    archiveFileName.set("MPSRecipecreator-${minecraft_version}-${project.version}.jar")
+    archiveClassifier.set("recipecreator")
+    from sourceSets.recipecreator.output
+    manifest.attributes(getManifestAttributes("MPSRecipecreator"))
+    afterEvaluate { finalizedBy reobfRecipecreatorJar }
+}
+
+task whateverJar(type: Jar) {
+    duplicatesStrategy(DuplicatesStrategy.FAIL)
+    archiveFileName.set("MPSWhatever-${minecraft_version}-${project.version}.jar")
+    archiveClassifier.set("whatever")
+    from sourceSets.whatever.output
+    manifest.attributes(getManifestAttributes("MPSWhatever"))
+    afterEvaluate { finalizedBy reobfWhateverJar }
+}
+
+clean {
+    def filteredDelete = new HashSet<>()
+    for (def toDelete : getDelete()) {
+        for (def f : file(toDelete).listFiles()) {
+            if (f.getName() == "generated") {
+                for (def generated : file(f).listFiles()) {
+                    if (generated.getName() != "data" && generated.getName() != "META-INF") {
+                        filteredDelete.add(generated)
+                    }
+                }
+            } else if (f.getName() != "fg_cache") {
+                filteredDelete.add(f)
+            }
+        }
+    }
+    setDelete(filteredDelete)
+}
+
+tasks.withType(JavaCompile).configureEach({
+    options.encoding = 'UTF-8'
+    options.compilerArgs.addAll(["-Xmaxerrs", "100000"])
+})
+
+compileJava {
+//    options.getGeneratedSourceOutputDirectory().set(file("src/datagen/main/resources/"))
 }
 
 artifacts {
-    archives devJar
+    archives jar
+    archives sourcesJar
+    archives whateverJar
+    archives powersuitsJar
+    archives recipecreatorJar
 }
 
+reobf {
+    jar { classpath.from(sourceSets.main.compileClasspath) }
+    powersuitsJar { classpath.from(sourceSets.powersuits.compileClasspath) }
+    recipecreatorJar { classpath.from(sourceSets.recipecreator.compileClasspath) }
+    whateverJar { classpath.from(sourceSets.whatever.compileClasspath) }
+}
 
-// Example configuration to allow publishing using the maven-publish task
-// This is the preferred method to reobfuscate your jar file
-jar.finalizedBy('reobfJar') 
-// However if you are in a multi-project build, dev time needs unobfed jar files, so you can delay the obfuscation until publishing by doing
-//publish.dependsOn('reobfJar')
+//Minimize/optimize all png files, requires optipng on the PATH
+// Credits: BrainStone
+void minimizePNGFile(File file) {
+    long size = file.length()
+    exec {
+        executable "optipng"
+        args "-q", "-o7", "-zm1-9", "-strip", "all", file
+    }
+    long newSize = file.length()
+    if (newSize < size) {
+        System.out.format("Reduced File size of %s from %d bytes to %d bytes (reduced by %.2f%%)\n",
+                file, size, newSize, ((double) (size - newSize)) / ((double) size) * 100.0)
+    }
+}
 
-publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            artifact jar
+tasks.register('optimizePng').configure {
+    doLast {
+        def pngPatterns = ["**/*.png"]
+        //Ensure the logo is minimized (we add this file to each jar)
+        minimizePNGFile(file("${projectDir}/logo.png"))
+        //Minimize any PNGs in the source sets
+        def sourceSets = [sourceSets.main, sourceSets.recipecreator, sourceSets.powersuits, sourceSets.whatever]
+        for (def sourceSet : sourceSets) {
+            for (dir in sourceSet.resources.srcDirs) {
+                fileTree(dir: dir, includes: pngPatterns).each { minimizePNGFile(it) }
+            }
         }
     }
-    repositories {
-        maven {
-            url "file:///${project.projectDir}/mcmodsrepo"
-        }
+}
+
+tasks.withType(GenerateModuleMetadata).configureEach {
+    //Disable Gradle 7 module metadata generation as it does not play nicely with FG
+    enabled = false
+}
+
+def resolvedChangelog = null
+
+//closure to generate the changelog once, and only when needed by CurseGradle or Modrinth
+def changeLogResolver = { ->
+    if (resolvedChangelog != null) {
+        println "Using cached changelog"
+        return resolvedChangelog
     }
+    def generatedChangelog = "Unable to generate changelog :("
+    def currentCommit = System.getenv("GIT_COMMIT")
+    def prevCommit = System.getenv("GIT_PREVIOUS_SUCCESSFUL_COMMIT") ?: System.getenv("GIT_PREVIOUS_COMMIT")
+
+    if (currentCommit != null && prevCommit != null) {
+        generatedChangelog = ""
+        grgit.log {
+            range(prevCommit, currentCommit)
+        }.reverse().each { commit ->
+            //Use full message rather than short message to get any new lines, and trim it so that any trailing new lines
+            // get removed so that we don't end up with extra spaces
+            String message = commit.fullMessage.trim()
+            if (!message.startsWith("Merge branch") && !message.startsWith("Merge pull request")) {
+                //Ignore Merges and PR Merges
+                message = message.replaceAll("#(\\d+)", { match ->//turn issues/prs into links (github currently supports prs being linked as issues)
+                    return "<a href=\"https://github.com/lehjr/MachineMusePowersuits/issues/${match[1]}\">${match[0]}</a>"
+                }).replaceAll("\\n", "<br>&emsp;")//convert new lines that are part of a commit message into actual new lines and a tab
+                if (generatedChangelog != "") {
+                    //If this isn't the first commit prepend an extra newline
+                    generatedChangelog += "<br>"
+                }
+                generatedChangelog += "<a href=\"https://github.comlehjr/MachineMusePowersuits/commit/${commit.id}\">${commit.getAbbreviatedId()}</a> - ${message}"
+            }
+        }
+        println "Changelog generated"
+    }
+
+    def releaseNotesFile = project.file("docs/release_${mod_version}.html")
+    if (releaseNotesFile.exists()) {
+        //Add any version specific changelog stuff
+        def releaseNotes = releaseNotesFile.getText()
+        generatedChangelog = "$releaseNotes<br> $generatedChangelog"
+    }
+
+    if (release_type == "alpha") {
+        //Add a warning at the top about what an alpha build means
+        generatedChangelog = "Warning: Modular Powesuits is currently in alpha, and is not recommended for widespread use in modpacks. There are likely to be game breaking bugs, " +
+                "and updating from one alpha to the next may cause various powersuits blocks to disappear/void their contents. While we will try to not have this happen/keep " +
+                "it to a minimum make sure to make backups. You can read more about the alpha state of this project <a href=\"https://github.com/lehjr/MachineMusePowersuits#alpha-status\">here</a>." +
+                "<br> $generatedChangelog"
+    }
+    resolvedChangelog = generatedChangelog
+    return generatedChangelog
+}
+
+if (System.getenv("CURSEFORGE_KEY") != null || project.hasProperty('curseforgeKey')) {
+    println "Enabling Curseforge config"
+    tasks.named('curseforge').configure { dependsOn(jar, powersuitsJar, recipecreatorJar, whateverJar) }
+    curseforge {
+        apiKey = System.getenv("CURSEFORGE_KEY") ?: project.findProperty("curseforgeKey")
+
+        // Numina
+        project {
+            id = '235440'
+            changelogType = "html"
+            changelog = changeLogResolver
+            releaseType = "${release_type}"
+            mainArtifact(jar) {
+                relations {
+                    optionalDependency "applied-energistics-2"
+                    optionalDependency "scannable"
+                    optionalDependency "refinedstorage"
+                }
+            }
+            addGameVersion "Java ${java_version}"
+            addGameVersion "${minecraft_version}"
+        }
+
+        // Modular Powersuits
+        project {
+            id = '235442'
+            changelogType = "html"
+            changelog = changeLogResolver
+            releaseType = "${curse_release_type}"
+            mainArtifact(powersuitsJar) {
+                relations {
+                    requiredDependency "numina"
+                    optionalDependency "applied-energistics-2"
+                    optionalDependency "scannable"
+                    optionalDependency "refinedstorage"
+                }
+            }
+            addGameVersion "${minecraft_version}"
+        }
+
+//        // MPS Recipe Creator
+//        project {
+//            id = 'fixme'
+//            changelogType = "html"
+//            changelog = changeLogResolver
+//            releaseType = "${curse_release_type}"
+//            mainArtifact(recipecreatorJar) {
+//                relations {
+//                    requiredDependency "numina"
+//                    optionalDependency "jei"
+//                }
+//            }
+//            addGameVersion "${minecraft_version}"
+//        }
+
+//        // MPSWhatever
+//        project {
+//            id = 'fixme'
+//            changelogType = "html"
+//            changelog = changeLogResolver
+//            releaseType = "${curse_release_type}"
+//            mainArtifact(whateverJar) {
+//                relations {
+//                    requiredDependency "numina"
+//                }
+//            }
+//            addGameVersion "${minecraft_version}"
+//        }
+    }
+}
+
+task processSource(type: Sync) {
+    // fixme:
+    from sourceSets.main.java
+    inputs.property 'version', version
+    filter(ReplaceTokens, tokens: [VERSION: project.version.toString()])
+    into "$buildDir/src"
+}
+
+compileJava {
+    source = processSource.outputs
 }
