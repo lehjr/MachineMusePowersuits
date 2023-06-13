@@ -11,8 +11,8 @@ import org.apache.logging.log4j.Logger;
         version = MPSWhatever.VERSION
 )
 public class MPSWhatever {
-    public static final String MODID = "mpsrecipecreator";
-    public static final String NAME = "MPS-RecipeCreator";
+    public static final String MODID = "mpswhatever";
+    public static final String NAME = "MPS-Whatever";
     public static final String VERSION = "@VERSION@";
 
     public static final Logger LOGGER = LogManager.getLogger(MODID);

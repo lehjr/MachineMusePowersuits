@@ -4,7 +4,6 @@ import net.machinemuse.numina.item.MuseItemUtils;
 import net.machinemuse.numina.module.EnumModuleTarget;
 import net.machinemuse.powersuits.api.constants.MPSModuleConstants;
 import net.machinemuse.powersuits.client.event.MuseIcon;
-import net.machinemuse.powersuits.common.MPSItems;
 import net.machinemuse.powersuits.common.ModuleManager;
 import net.machinemuse.powersuits.item.ItemComponent;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -13,7 +12,6 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidUtil;
-import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
 import javax.annotation.Nonnull;
 

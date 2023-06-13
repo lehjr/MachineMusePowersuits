@@ -1,6 +1,4 @@
 import org.apache.tools.ant.filters.ReplaceTokens
-import groovy.json.JsonOutput
-import groovy.json.JsonSlurper
 
 buildscript {
     repositories {
@@ -20,14 +18,9 @@ plugins {
     id "com.matthewprenger.cursegradle" version '1.4.0'
     id 'java'
     id 'idea'
-    id 'maven-publish'
     id 'net.minecraftforge.gradle' version '5.1.+'
     id 'wtf.gofancy.fancygradle' version '1.1.+'
 }
-
-//apply from: 'classremapper.gradle'
-
-
 
 tasks.named('wrapper', Wrapper).configure {
     //Define wrapper values here so as to not have to always do so when updating gradlew.properties
@@ -35,20 +28,15 @@ tasks.named('wrapper', Wrapper).configure {
     distributionType = Wrapper.DistributionType.ALL
 }
 
-//apply from: 'https://raw.githubusercontent.com/SizableShrimp/Forge-Class-Remapper/main/classremapper.gradle'
-
 defaultTasks 'build'
 
 idea {
     module {
-        //Exclude directories from being managed
-        for (String excludeDirName in ["run", "out", "logs", "gradle"]) {
-            excludeDirs.add(new File(projectDir, excludeDirName))
-        }
         downloadJavadoc = true
         downloadSources = true
     }
 }
+
 
 group = maven_group
 version = "${mod_version}." + (System.env.BUILD_NUMBER ?: 000)
@@ -56,142 +44,23 @@ archivesBaseName = "ModularPowersuits"
 
 println("mod_version: ${mod_version}")
 
-ext {
-    versionProperties = ["mod_version": project.version]
-    jsonPatterns = ["**/*.json", "**/*.mcmeta"]
-}
-
 // export this for the remapper since it can't seem to find it
 project.ext."MC_VERSION"=minecraft_version
 
 sourceSets {
     main {
-        setupSourceSet(main, 'main')
-    }
-
-    powersuits {
-        setupSourceSet(powersuits, 'powersuits')
-    }
-
-    recipecreator {
-        setupSourceSet(recipecreator, 'recipecreator')
-    }
-
-    whatever {
-        setupSourceSet(whatever, 'whatever')
-    }
-}
-
-//This method sets up an additional sourceSet in src/$name and adds a reference to the corresponding
-// data gen's resource directory excluding the cache. It also adds the main numina module
-// to the dependencies of the source set we are setting up
-def setupSourceSet(SourceSet sourceSet, String name) {
-
-    // fixme: pass argument for archive base name if needed
-    if (project.use_mixins.toBoolean()) {
-        ext.refMap = 'mixins.' + archives_base_name + '.refmap.json'
-    }
-
-    sourceSet.java {
-        srcDirs = ["src/${name}/java"]
-    }
-
-    sourceSet.resources {
-        srcDirs = ["src/${name}/resources"]
-    }
-
-
-//    sourceSet.resources {
-//        //Add the generated module resources
-//        srcDirs += "src/datagen/generated/${name}"
-//        //But exclude the cache of the generated data from what gets built
-//        exclude '.cache'
-//    }
-
-    if (sourceSet != sourceSets.main) {
-        sourceSet.compileClasspath += sourceSets.main.output
-    }
-}
-
-
-configurations {
-    for (def name : ["powersuits", "recipecreator", "whatever"]) {
-        maybeCreate("${name}Implementation").extendsFrom(implementation)
-        maybeCreate("${name}CompileOnly").extendsFrom(compileOnly)
-        maybeCreate("${name}RuntimeOnly").extendsFrom(runtimeOnly)
-    }
-
-    configureEach {
-        exclude group: "net.minecraftforge", module: "mergetool"
-    }
-}
-
-//Setup the UPDATE_SOURCESET property in case we are doing any remappings
-// Note, for this to work on all source sets, all source folders must be present including those not being used (such as src/test/java)
-project.ext."UPDATE_SOURCESETS" = project.sourceSets.collect { it.name }.join(';')
-
-def mainReplaceResources = createReplaceResourcesTask("main", sourceSets.main)
-def powersuitsReplaceResources = createReplaceResourcesTask("powersuits", sourceSets.powersuits)
-def recipecreatorReplaceResources = createReplaceResourcesTask("recipecreator", sourceSets.recipecreator)
-def whateverReplaceResources = createReplaceResourcesTask("whatever", sourceSets.whatever)
-
-def createReplaceResourcesTask(String output, SourceSet sourceSet) {
-    return tasks.register("${output}ReplaceResources", Copy) {
-        it.outputs.upToDateWhen { false }
-        def modsToml = copySpec {
-            from(sourceSet.resources) {
-                include "META-INF/mods.toml"
-                expand versionProperties
-            }
+        java {
+            srcDirs = ["src/main/java"]
         }
-        //Copy it into the build dir
-        it.with modsToml
-        it.into "$buildDir/resources/${output}/"
-        //If IntelliJ's output dir exists, copy it there as well
-        if (new File("$rootDir/out/production/Numina.${output}/").exists()) {
-            //Note: This copies it into the correct place, but it still doesn't have the IntelliJ
-            // run work by default because of incorrect MOD_CLASSES getting generated.
-            // probably related to us setting inheritOutputDirs
-            copy {
-                with modsToml
-                into "$rootDir/out/production/Numina.${output}/"
-            }
-        }
-        //If Eclipse's output dir exists, copy it there as well
-        if (new File("$rootDir/bin/${output}/").exists()) {
-            copy {
-                with modsToml
-                into "$rootDir/bin/${output}/"
-            }
+        resources {
+            srcDirs = ["src/main/resources"]
         }
     }
+
+    // at compile time, put resources in same directories as classes
+    // basically, a workaround for loading resources at runtime
+    main.output.setResourcesDir(main.java.classesDirectory)
 }
-
-//Set the various variables/settings for the different process resources tasks
-processResources { setupProcessResources(processResources, mainReplaceResources) }
-processPowersuitsResources { setupProcessResources(processPowersuitsResources, powersuitsReplaceResources) }
-processRecipecreatorResources { setupProcessResources(processRecipecreatorResources, recipecreatorReplaceResources) }
-processWhateverResources { setupProcessResources(processWhateverResources, whateverReplaceResources) }
-
-def setupProcessResources(ProcessResources process, TaskProvider<Task> replaceResources) {
-    process.duplicatesStrategy(DuplicatesStrategy.FAIL)
-    process.exclude('META-INF/mods.toml')
-    process.from("${projectDir}") { include 'logo.png' }
-    process.configure { finalizedBy(replaceResources) }
-    process.doLast {
-        fileTree(dir: process.getOutputs().getFiles().getAsPath(), includes: jsonPatterns).each {
-            File file -> file.setText(JsonOutput.toJson(new JsonSlurper().parse(file)))
-        }
-    }
-}
-
-//Make the various classes tasks depend on the corresponding replaceResources tasks in addition to the default processResources tasks they depend on
-classes.configure { dependsOn(mainReplaceResources) }
-powersuitsClasses.configure { dependsOn(powersuitsReplaceResources) }
-recipecreatorClasses.configure { dependsOn(recipecreatorReplaceResources) }
-whateverClasses.configure { dependsOn(whateverReplaceResources) }
-
-
 
 println("version: ${project.version}")
 java {
@@ -203,9 +72,9 @@ minecraft {
     mappings channel: "${mappings_channel}", version: "${mappings_version}"
 
     accessTransformers.from(
-            file('src/main/resources/META-INF/accesstransformer.cfg'),
-            file('src/powersuits/resources/META-INF/accesstransformer.cfg'),
-            file('src/recipecreator/resources/META-INF/accesstransformer.cfg'))
+            file('src/main/resources/META-INF/numina_at.cfg'),
+            file('src/main/resources/META-INF/powersuits_at.cfg'),
+            file('src/main/resources/META-INF/recipecreator_at.cfg'))
 
     runs {
         client {
@@ -221,13 +90,6 @@ minecraft {
             property 'forge.logging.markers', 'REGISTRIES'
             property 'forge.logging.console.level', 'debug'
             environment 'MC_VERSION', '1.12.2'
-
-            mods {
-                numina.sources((SourceSet) sourceSets.main)
-                modularpowersuits.source((SourceSet) sourceSets.powersuits)
-                mpsrecipecreator.source((SourceSet) sourceSets.recipecreator)
-                mpswhatever.source((SourceSet) sourceSets.whatever)
-            }
         }
         server {
             workingDirectory project.file('run')
@@ -242,13 +104,6 @@ minecraft {
             property 'forge.logging.markers', 'REGISTRIES'
             property 'forge.logging.console.level', 'debug'
             environment 'MC_VERSION', '1.12.2'
-
-            mods {
-                numina.sources((SourceSet) sourceSets.main)
-                modularpowersuits.source((SourceSet) sourceSets.powersuits)
-                mpsrecipecreator.source((SourceSet) sourceSets.recipecreator)
-                mpswhatever.source((SourceSet) sourceSets.whatever)
-            }
         }
     }
 }
@@ -329,10 +184,6 @@ repositories {
     flatDir {
         dirs 'libs'
     }
-
-    flatDir {
-        dirs 'libs'
-    }
 }
 
 dependencies {
@@ -404,68 +255,116 @@ dependencies {
     compileOnly fileTree(dir: 'libs', include: ['*.jar'])
 }
 
-fancyGradle {
-    patches {
-        resources
-        coremods
-        asm
+processResources {
+    duplicatesStrategy(DuplicatesStrategy.INCLUDE)
+
+    inputs.property "version", project.version
+    inputs.property "mcversion", minecraft_version
+
+    from(sourceSets.main.resources.srcDirs) {
+        include "mcmod.info"
+
+        // replace version and mcversion
+        expand "version": project.version, "mcversion": minecraft_version
     }
-}
 
-
-def getManifestAttributes(String title) {
-    return [
-            "Specification-Title"     : title,
-            "Specification-Vendor"    : "MachineMuse",
-            "Specification-Version"   : "${project.version}",
-            "Implementation-Title"    : title,
-            "Implementation-Version"  : "${project.version}",
-            "Implementation-Vendor"   : "MachineMuse",
-            "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
-            "Automatic-Module-Name": title.toLowerCase(Locale.ROOT)
-    ]
+    // copy everything else, thats not the mcmod.info
+    from(sourceSets.main.resources.srcDirs) {
+        exclude 'mcmod.info'
+    }
 }
 
 jar {
     duplicatesStrategy(DuplicatesStrategy.FAIL)
     archiveFileName.set("Numina-${minecraft_version}-${project.version}.jar")
-    from(sourceSets.main.output)
-    manifest.attributes(getManifestAttributes("Numina"))
-    afterEvaluate { finalizedBy reobfJar }
+    archiveClassifier.set("numina")
+
+    manifest {
+        attributes 'FMLAT': 'numina_at.cfg'
+    }
+
+    from('res/numina') {
+        include '*.info'
+        expand 'version':project.version,'mcversion':minecraft_version
+    }
+
+    include 'net/machinemuse/numina/**', 'assets/numina/**', 'ic2/**', 'META-INF/numina_at.cfg'
 }
 
-task sourcesJar(type: Jar, dependsOn: [classes, powersuitsClasses, recipecreatorClasses, whateverClasses]) {
+
+task sourcesJar(type: Jar) {
     duplicatesStrategy(DuplicatesStrategy.FAIL)
     archiveClassifier.set("sources")
-    from(sourceSets.main.allJava, sourceSets.powersuits.allJava, sourceSets.recipecreator.allJava, sourceSets.whatever.allJava)
-    manifest.attributes(getManifestAttributes("ModularPowersuits"))
+    from(sourceSets.main.allJava)
 }
 
 task powersuitsJar(type: Jar) {
     duplicatesStrategy(DuplicatesStrategy.FAIL)
     archiveFileName.set("ModularPowersuits-${minecraft_version}-${project.version}.jar")
     archiveClassifier.set("powersuits")
-    from sourceSets.powersuits.output
-    manifest.attributes(getManifestAttributes("ModularPowersuits"))
-    afterEvaluate { finalizedBy reobfPowersuitsJar }
+
+    manifest {
+        attributes 'FMLAT': 'powersuits_at.cfg'
+    }
+
+    from('res/powersuits') {
+        include '*.info'
+        expand 'version':project.version,'mcversion':minecraft_version
+    }
+
+    from(sourceSets.main.output) {
+        include 'net/machinemuse/powersuits/**'
+    }
+
+    from (sourceSets.main.resources) {
+        include 'assets/powersuits/**', 'META-INF/powersuits_at.cfg'
+    }
 }
 
 task recipecreatorJar(type: Jar) {
     duplicatesStrategy(DuplicatesStrategy.FAIL)
     archiveFileName.set("MPSRecipecreator-${minecraft_version}-${project.version}.jar")
     archiveClassifier.set("recipecreator")
-    from sourceSets.recipecreator.output
-    manifest.attributes(getManifestAttributes("MPSRecipecreator"))
-    afterEvaluate { finalizedBy reobfRecipecreatorJar }
+
+    manifest {
+        attributes 'FMLAT': 'recipecreator_at.cfg'
+    }
+
+    from('res/recipecreator') {
+        include '*.info'
+        expand 'version':project.version,'mcversion':minecraft_version
+    }
+
+    from(sourceSets.main.output) {
+        include 'net/machinemuse/mpsrecipecreatpr/**'
+    }
+
+    from (sourceSets.main.resources) {
+        include 'assets/recipecreator/**', 'META-INF/recipecreator_at.cfg'
+    }
 }
 
 task whateverJar(type: Jar) {
     duplicatesStrategy(DuplicatesStrategy.FAIL)
     archiveFileName.set("MPSWhatever-${minecraft_version}-${project.version}.jar")
     archiveClassifier.set("whatever")
-    from sourceSets.whatever.output
-    manifest.attributes(getManifestAttributes("MPSWhatever"))
-    afterEvaluate { finalizedBy reobfWhateverJar }
+
+    manifest {
+        attributes 'FMLAT': 'whatever_at.cfg'
+    }
+
+    from('res/whatever') {
+        include '*.info'
+        expand 'version':project.version,'mcversion':minecraft_version
+    }
+
+    from(sourceSets.main.output) {
+        include 'net/machinemuse/mpswhatever/**'
+    }
+
+    from (sourceSets.main.resources) {
+        include 'assets/whatever/**', 'META-INF/whatever_at.cfg'
+    }
 }
 
 clean {
@@ -491,23 +390,12 @@ tasks.withType(JavaCompile).configureEach({
     options.compilerArgs.addAll(["-Xmaxerrs", "100000"])
 })
 
-compileJava {
-//    options.getGeneratedSourceOutputDirectory().set(file("src/datagen/main/resources/"))
-}
-
 artifacts {
     archives jar
     archives sourcesJar
     archives whateverJar
     archives powersuitsJar
     archives recipecreatorJar
-}
-
-reobf {
-    jar { classpath.from(sourceSets.main.compileClasspath) }
-    powersuitsJar { classpath.from(sourceSets.powersuits.compileClasspath) }
-    recipecreatorJar { classpath.from(sourceSets.recipecreator.compileClasspath) }
-    whateverJar { classpath.from(sourceSets.whatever.compileClasspath) }
 }
 
 //Minimize/optimize all png files, requires optipng on the PATH
@@ -541,7 +429,7 @@ tasks.register('optimizePng').configure {
 }
 
 tasks.withType(GenerateModuleMetadata).configureEach {
-    //Disable Gradle 7 module metadata generation as it does not play nicely with FG
+    // Disable Gradle 7 module metadata generation as it does not play nicely with FG
     enabled = false
 }
 
@@ -670,13 +558,26 @@ if (System.getenv("CURSEFORGE_KEY") != null || project.hasProperty('curseforgeKe
 }
 
 task processSource(type: Sync) {
-    // fixme:
-    from sourceSets.main.java
-    inputs.property 'version', version
-    filter(ReplaceTokens, tokens: [VERSION: project.version.toString()])
-    into "$buildDir/src"
+    for (def sourceSet : sourceSets) {
+        from sourceSet.java
+        println(sourceSet.toString())
+
+        inputs.property 'version', version
+        filter(ReplaceTokens, tokens: [VERSION: project.version.toString(), numina_version: project.version.toString()])
+        into "$buildDir/src"
+    }
 }
 
 compileJava {
     source = processSource.outputs
+}
+
+fancyGradle {
+    patches {
+        resources
+        coremods
+        codeChickenLib
+        asm
+        mergetool
+    }
 }
