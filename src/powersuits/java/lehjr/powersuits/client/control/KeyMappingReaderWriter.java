@@ -53,8 +53,6 @@ public enum KeyMappingReaderWriter {
     static final String showOnHudKey = "showOnHud";
     static final String defaultKeyKey = "defaultKey"; // :-p
 
-
-
     /**
      * For loading older keybinding configurations
      */

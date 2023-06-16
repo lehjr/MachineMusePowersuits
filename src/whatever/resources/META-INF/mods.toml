@@ -8,7 +8,7 @@ license="All rights reserved"
     displayName="MPS-Whatever"
     #updateJSONURL="http://myurl.me/"
     displayURL="https://github.com/lehjr/Numina"
-    authors="MachineMuse, lehjr"
+    authors="lehjr"
     description="A random assortment of... uh... stuff."
 
 [[dependencies.mpswhatever]]

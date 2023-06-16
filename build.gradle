@@ -268,7 +268,6 @@ minecraft {
                 mpsrecipecreator.source((SourceSet) sourceSets.recipecreator)
                 mpswhatever.source((SourceSet) sourceSets.whatever)
             }
-
         }
         server {
             workingDirectory file("run")
@@ -486,10 +485,10 @@ compileJava {
 
 artifacts {
     archives jar
-    archives recipecreatorJar
-    archives powersuitsJar
-    archives whateverJar
     archives sourcesJar
+    archives whateverJar
+    archives powersuitsJar
+    archives recipecreatorJar
 }
 
 reobf {
@@ -557,13 +556,13 @@ def changeLogResolver = { ->
             if (!message.startsWith("Merge branch") && !message.startsWith("Merge pull request")) {
                 //Ignore Merges and PR Merges
                 message = message.replaceAll("#(\\d+)", { match ->//turn issues/prs into links (github currently supports prs being linked as issues)
-                    return "<a href=\"https://github.com/mekanism/Mekanism/issues/${match[1]}\">${match[0]}</a>"
+                    return "<a href=\"https://github.com/lehjr/MachineMusePowersuits/issues/${match[1]}\">${match[0]}</a>"
                 }).replaceAll("\\n", "<br>&emsp;")//convert new lines that are part of a commit message into actual new lines and a tab
                 if (generatedChangelog != "") {
                     //If this isn't the first commit prepend an extra newline
                     generatedChangelog += "<br>"
                 }
-                generatedChangelog += "<a href=\"https://github.com/mekanism/Mekanism/commit/${commit.id}\">${commit.getAbbreviatedId()}</a> - ${message}"
+                generatedChangelog += "<a href=\"https://github.comlehjr/MachineMusePowersuits/commit/${commit.id}\">${commit.getAbbreviatedId()}</a> - ${message}"
             }
         }
         println "Changelog generated"
@@ -579,8 +578,8 @@ def changeLogResolver = { ->
     if (release_type == "alpha") {
         //Add a warning at the top about what an alpha build means
         generatedChangelog = "Warning: Mekanism is currently in alpha, and is not recommended for widespread use in modpacks. There are likely to be game breaking bugs, " +
-                "and updating from one alpha to the next may cause various mekanism blocks to disappear/void their contents. While we will try to not have this happen/keep " +
-                "it to a minimum make sure to make backups. You can read more about the alpha state of this project <a href=\"https://github.com/mekanism/Mekanism#alpha-status\">here</a>." +
+                "and updating from one alpha to the next may cause various powersuits blocks to disappear/void their contents. While we will try to not have this happen/keep " +
+                "it to a minimum make sure to make backups. You can read more about the alpha state of this project <a href=\"https://github.com/lehjr/MachineMusePowersuits#alpha-status\">here</a>." +
                 "<br> $generatedChangelog"
     }
     resolvedChangelog = generatedChangelog
