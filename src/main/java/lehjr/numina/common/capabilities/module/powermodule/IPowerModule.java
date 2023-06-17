@@ -26,9 +26,9 @@
 
 package lehjr.numina.common.capabilities.module.powermodule;
 
+import com.google.common.collect.ImmutableList;
 import lehjr.numina.common.tags.TagUtils;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -36,8 +36,9 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import javax.annotation.Nonnull;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Callable;
 
-public interface IPowerModule {
+public interface IPowerModule extends IConfigGetter {
     /**
      * Returns the enum corresponding to the EntityEquipment slot that the parent itemStack (Head, Chest... ALL.. )
      *
@@ -95,15 +96,19 @@ public interface IPowerModule {
         UnitMap.MAP.addUnitLabel(propertyName, unit);
     }
 
-    interface IPropertyModifier {
+    interface IPropertyModifier extends IConfigGetter {
         double applyModifier(CompoundTag moduleTag, double value);
     }
 
     class PropertyModifierFlatAdditive implements IPropertyModifier {
-        public double valueAdded;
+        ImmutableList<String> configKey;
+        Callable<IConfig> config;
+        double defaultVal;
 
-        public PropertyModifierFlatAdditive(double valueAdded) {
-            this.valueAdded = valueAdded;
+        public PropertyModifierFlatAdditive(ImmutableList<String> configKey, Callable<IConfig> config, double baseVal) {
+            this.configKey = configKey;
+            this.config = config;
+            this.defaultVal = baseVal;
         }
 
         /**
@@ -113,7 +118,7 @@ public interface IPowerModule {
          */
         @Override
         public double applyModifier(CompoundTag moduleTag, double value) {
-            return value + this.valueAdded;
+            return value + getConfig(config).map(config-> config.getBasePropertyDoubleOrDefault(configKey, defaultVal)).orElse(defaultVal);
         }
     }
 
@@ -121,21 +126,30 @@ public interface IPowerModule {
         protected int roundTo = 1;
         protected int offset = 0;
 
-        public PropertyModifierIntLinearAdditive(String tradeoffName, double multiplier, int roundTo, int offset) {
-            super(tradeoffName, multiplier);
+        public PropertyModifierIntLinearAdditive(
+                ImmutableList<String> configKey,
+                Callable<IConfig> config,
+                String tradeoffName,
+                double defaultMultiplier,
+                int roundTo,
+                int offset) {
+            super(configKey, config, tradeoffName, defaultMultiplier);
             this.roundTo = roundTo;
             this.offset = offset;
         }
 
         @Override
         public double applyModifier(CompoundTag moduleTag, double value) {
+            int multiplier = getConfig(config).map(config->
+                    config.getTradeoffPropertyIntegerOrDefault(configKey, (int)defaultMultiplier)).orElse((int)defaultMultiplier);
+
             long result = (long) (value + multiplier * TagUtils.getDoubleOrZero(moduleTag, tradeoffName));
             return Double.valueOf(roundWithOffset(result, roundTo, offset));
         }
 
         public double getScaledDouble(CompoundTag moduleTag, double value) {
             double scaledVal = applyModifier(moduleTag, value);
-            double ret = (scaledVal - value)/multiplier;
+            double ret = (scaledVal - value)/ defaultMultiplier;
             TagUtils.setDoubleOrRemove(moduleTag, tradeoffName, ret);
             return ret;
         }
@@ -155,15 +169,21 @@ public interface IPowerModule {
 
     class PropertyModifierLinearAdditive implements IPropertyModifier {
         public final String tradeoffName;
-        public double multiplier;
+        public double defaultMultiplier;
+        ImmutableList<String> configKey;
+        Callable<IConfig> config;
 
-        public PropertyModifierLinearAdditive(String tradeoffName, double multiplier) {
-            this.multiplier = multiplier;
+        public PropertyModifierLinearAdditive(ImmutableList<String> configKey, Callable<IConfig> config, String tradeoffName, double defaultMultiplier) {
+            this.defaultMultiplier = defaultMultiplier;
             this.tradeoffName = tradeoffName;
+            this.configKey = configKey;
+            this.config = config;
         }
 
         @Override
         public double applyModifier(CompoundTag moduleTag, double value) {
+            double multiplier = getConfig(config).map(config->
+                    config.getTradeoffPropertyDoubleOrDefault(configKey, defaultMultiplier)).orElse(defaultMultiplier);
             return value + multiplier * TagUtils.getDoubleOrZero(moduleTag, tradeoffName);
         }
 

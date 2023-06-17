@@ -26,6 +26,7 @@
 
 package lehjr.numina.common.config;
 
+import com.google.common.collect.ImmutableList;
 import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.capabilities.module.powermodule.IConfig;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
@@ -43,6 +44,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
+/**
+ * Allows a semi-dynamic config reference, also generates config entries during development
+ */
 public class ModuleConfig implements IConfig {
     Optional<ModConfig> serverConfig = Optional.empty();
     Map<String, Map<String, ArrayList<String>>> outputMap;
@@ -148,159 +152,164 @@ public class ModuleConfig implements IConfig {
         }
     }
 
+    /**
+     * @param configKey used to lookup config value
+     *     ImmutableList.of(
+     *     "Modules", // modules section of config
+     *     categoryTitle, // modules matching category (formatted without whitespace)
+     *     moduleName, // unique key derived from descriptionID
+     *     "base_" + propertyName; // specific config setting
+     * @param baseVal
+     * @return
+     */
     @Override
-    public double getBasePropertyDoubleOrDefault (
-            ModuleCategory category,
-            @Nonnull ItemStack module,
-            String propertyName, double baseVal) {
-        String moduleName = itemTranslationKeyToConfigKey(module.getItem().getDescriptionId());
-        String entry = "base_" + propertyName;
-
+    public double getBasePropertyDoubleOrDefault(ImmutableList<String> configKey, double baseVal) {
         // Add to map
         if (isInDevMode() && generateNewConfigValues) {
-            addtoMap(category.getConfigTitle().replace(" ", "_"),
-                    moduleName,
+            addtoMap(configKey.get(1), // categoryTitle
+                    configKey.get(2), // moduleName,
                     new StringBuilder("builder.defineInRange(\"")
-                            .append(entry).append("\", ")
+                            .append(configKey.get(3)).append("\", ")
                             .append(baseVal).append("D, ")
                             .append(0).append(", ")
                             .append(Double.MAX_VALUE)
                             .append(");\n").toString());
-            isModuleAllowed(category, module); // initialize the value
+
+            isModuleAllowed(getIsAllowed(configKey));// initialize the value
         }
 
         // if config is not null then look up value and add it if not present
-        return getModConfig().map(config -> {
+        return (double) getModConfig().map(config -> {
             // config data is null when logging out and back in?
             if (config.getConfigData() != null) {
-                ArrayList<String> key = new ArrayList<String>() {{
-                    add("Modules");
-                    add(category.getConfigTitle().replace(" ", "_"));
-                    add(moduleName);
-                    add(entry);
-                }};
-                // return value or baseValue
-                return config.getConfigData().getOrElse(key, baseVal);
+                Object object = config.getConfigData().getOrElse(configKey, baseVal);
+                if (object != null && object instanceof Integer) {
+                    int i = (int) object;
+                    return Double.valueOf(i);
+                } else if (object instanceof Double) {
+                    return object;
+                }
+                return baseVal;
             }
             return baseVal;
         }).orElse(baseVal);
     }
 
+    /**
+     *
+     * @param configKey provides a path for parsing the config
+     * @param multiplier default multiplier value
+     *     ImmutableList.of(
+     *     "Modules", // modules section of config
+     *     categoryTitle, // modules matching category (formatted without whitespace)
+     *     moduleName, // unique key derived from descriptionID
+     *     $entry ); // specific config setting
+     * @return
+     */
     @Override
-    public double getTradeoffPropertyDoubleOrDefault(
-            ModuleCategory category,
-            @Nonnull ItemStack module,
-            String tradeoffName,
-            String propertyName,
-            double multiplier) {
-
-        String moduleName = itemTranslationKeyToConfigKey(module.getItem().getDescriptionId());
-        String entry = propertyName + "_" + tradeoffName + "_multiplier";
-
+    public double getTradeoffPropertyDoubleOrDefault(ImmutableList<String> configKey, double multiplier) {
         if (isInDevMode() && generateNewConfigValues) {
-            addtoMap(category.getConfigTitle().replace(" ", "_"),
-                    moduleName,
+            addtoMap(configKey.get(1),
+                    configKey.get(2),
                     new StringBuilder("builder.defineInRange(\"")
-                            .append(entry).append("\", ")
+                            .append(configKey.get(3)).append("\", ")
                             .append(multiplier).append("D, ")
                             .append(0).append(", ")
                             .append(Double.MAX_VALUE)
                             .append(");\n").toString());
-            isModuleAllowed(category, module);
+            isModuleAllowed(getIsAllowed(configKey));// initialize the value
         }
 
-        return getModConfig().map(config-> {
+        return (double) getModConfig().map(config-> {
             if (config.getConfigData() != null) {
-                ArrayList<String> key = new ArrayList<String>() {{
-                    add("Modules");
-                    add(category.getConfigTitle().replace(" ", "_"));
-                    add(moduleName);
-                    add(entry);
-                }};
-
-                return config.getConfigData().getOrElse(key, multiplier);
-
-//                if (config.getConfigData().contains(key)) {
-//                    Double val = config.getConfigData().get(key);
-////                MuseLogger.logDebug("common config value: " + config.getConfigData().get(key));
-//
-//                    // FIXME: logging out and back in creates null values?
-//                    return val != null ? val : multiplier;
-//                } else if (!isInDevMode()) {
-//                    config.getConfigData().set(key, multiplier);
-//                }
+                Object object = config.getConfigData().getOrElse(configKey, multiplier);
+                if (object != null && object instanceof Integer) {
+                    int i = (int) object;
+                    return Double.valueOf(i);
+                } else if (object instanceof Double) {
+                    return object;
+                }
+                return multiplier;
             }
             return multiplier;
         }).orElse(multiplier);
     }
 
+    /**
+     *
+     * @param configKey provides a path for parsing the config
+     * @param multiplier default multiplier value
+     *     ImmutableList.of(
+     *     "Modules", // modules section of config
+     *     categoryTitle, // modules matching category (formatted without whitespace)
+     *     moduleName, // unique key derived from descriptionID
+     *     $entry ); // specific config setting
+     * @return
+     */
     @Override
-    public int getTradeoffPropertyIntegerOrDefault(ModuleCategory category, @Nonnull ItemStack module, String tradeoffName, String propertyName, int multiplier) {
-        String moduleName = itemTranslationKeyToConfigKey(module.getItem().getDescriptionId());
-        String entry = propertyName + "_" + tradeoffName + "_multiplier";
-
+    public int getTradeoffPropertyIntegerOrDefault(ImmutableList<String> configKey, int multiplier) {
         if (isInDevMode() && generateNewConfigValues) {
-            addtoMap(category.getConfigTitle().replace(" ", "_"),
-                    moduleName,
+            addtoMap(configKey.get(1),
+                    configKey.get(2),
                     new StringBuilder("builder.defineInRange(\"")
-                            .append(entry).append("\", ")
+                            .append(configKey.get(3)).append("\", ")
                             .append(multiplier).append(", ")
                             .append(0).append(", ")
                             .append(Integer.MAX_VALUE)
                             .append(");\n").toString());
-            isModuleAllowed(category, module);
+            isModuleAllowed(getIsAllowed(configKey));// initialize the value
         }
 
-        return getModConfig().map(config->{
+        return (int) getModConfig().map(config-> {
             if (config.getConfigData() != null) {
-                ArrayList<String> key = new ArrayList<String>() {{
-                    add("Modules");
-                    add(category.getConfigTitle().replace(" ", "_"));
-                    add(moduleName);
-                    add(entry);
-                }};
-
-                return config.getConfigData().getOrElse(key, multiplier);
+                Object object = config.getConfigData().getOrElse(configKey, multiplier);
+                if (object != null && object instanceof Integer) {
+                    return object;
+                } else if (object instanceof Double) {
+                    double i = (double) object;
+                    return i;
+                }
+                return multiplier;
             }
             return multiplier;
         }).orElse(multiplier);
     }
 
+    /**
+     *
+     * @param key provides a path for parsing the config
+     *
+     *     ImmutableList.of(
+     *     "Modules", // modules section of config
+     *     categoryTitle, // modules matching category (formatted without whitespace)
+     *     moduleName, // unique key derived from descriptionID
+     *     "isAllowed" ); // specific config setting
+     * @return
+     */
     @Override
-    public boolean isModuleAllowed(ModuleCategory category, @Nonnull ItemStack module) {
-        String moduleName = itemTranslationKeyToConfigKey(module.getItem().getDescriptionId());
-        String entry = "isAllowed";
-
+    public boolean isModuleAllowed(ImmutableList<String> key) {
         if (isInDevMode() && generateNewConfigValues) {
-            addtoMap(category.getConfigTitle().replace(" ", "_"),
-                    moduleName,
+            addtoMap(
+                    key.get(1), // categoryTitle
+                    key.get(2), // moduleName
                     new StringBuilder("builder.define(\"")
-                            .append(entry)
+                            .append(key.get(3)) // isAllowed
                             .append("\", true);\n").toString());
         }
 
-
         return getModConfig().map(config->{
             if (config.getConfigData() != null) {
-                ArrayList<String> key = new ArrayList<String>() {{
-                    add("Modules");
-                    add(category.getConfigTitle().replace(" ", "_"));
-                    add(moduleName);
-                    add(entry);
-                }};
-
                 return config.getConfigData().getOrElse(key, true);
             }
             return true;
         }).orElse(true);
     }
 
-    String itemTranslationKeyToConfigKey(String translationKey) {
-        // drop the prefix for MPS modules and replace "dots" with underscores
-        final String itemPrefix = "item." + MOD_ID + ".";
-        if (translationKey.startsWith(itemPrefix )){
-            translationKey = translationKey.substring(itemPrefix .length());
-        }
-        return translationKey.replace(".", "_");
+    ImmutableList<String> getIsAllowed(ImmutableList<String> configKey) {
+        return ImmutableList.of(
+                configKey.get(0),
+                configKey.get(1),
+                configKey.get(2),
+                "isAllowed");// initialize the value
     }
 }

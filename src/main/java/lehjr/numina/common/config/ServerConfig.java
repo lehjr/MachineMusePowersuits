@@ -43,36 +43,36 @@ public class ServerConfig {
                 builder.pop();
 
                 builder.push("Modules");
-                builder.push("Energy Storage");
+                builder.push("Energy_Storage");
                 {
                         builder.push("battery_basic");
-                        builder.defineInRange("base_maxEnergy", 1.0E6D, 0, 1.7976931348623157E308);
+                        builder.defineInRange("base_maxEnergy", 1.0E6D, 0, Double.MAX_VALUE);
                         builder.define("isAllowed", true);
-                        builder.defineInRange("base_maxTransfer", 1.0E6D, 0, 1.7976931348623157E308);
+                        builder.defineInRange("base_maxTransfer", 1.0E6D, 0, Double.MAX_VALUE);
                         builder.pop();
                 }
                 {
                         builder.push("battery_advanced");
-                        builder.defineInRange("base_maxEnergy", 1.0E7D, 0, 1.7976931348623157E308);
+                        builder.defineInRange("base_maxEnergy", 1.0E7D, 0, Double.MAX_VALUE);
                         builder.define("isAllowed", true);
-                        builder.defineInRange("base_maxTransfer", 1.0E7D, 0, 1.7976931348623157E308);
+                        builder.defineInRange("base_maxTransfer", 1.0E7D, 0, Double.MAX_VALUE);
                         builder.pop();
                 }
                 {
                         builder.push("battery_elite");
-                        builder.defineInRange("base_maxEnergy", 1.0E8D, 0, 1.7976931348623157E308);
+                        builder.defineInRange("base_maxEnergy", 1.0E8D, 0, Double.MAX_VALUE);
                         builder.define("isAllowed", true);
-                        builder.defineInRange("base_maxTransfer", 1.0E8D, 0, 1.7976931348623157E308);
+                        builder.defineInRange("base_maxTransfer", 1.0E8D, 0, Double.MAX_VALUE);
                         builder.pop();
                 }
                 {
                         builder.push("battery_ultimate");
-                        builder.defineInRange("base_maxEnergy", 1.0E9D, 0, 1.7976931348623157E308);
+                        builder.defineInRange("base_maxEnergy", 1.0E9D, 0, Double.MAX_VALUE);
                         builder.define("isAllowed", true);
-                        builder.defineInRange("base_maxTransfer", 1.0E9D, 0, 1.7976931348623157E308);
+                        builder.defineInRange("base_maxTransfer", 1.0E9D, 0, Double.MAX_VALUE);
                         builder.pop();
                 }
-                builder.pop();
-                builder.pop();
+                builder.pop(); // EnergyStorage
+                builder.pop(); // Modules
         }
 }

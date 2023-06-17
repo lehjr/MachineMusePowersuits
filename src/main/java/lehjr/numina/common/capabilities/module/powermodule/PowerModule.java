@@ -26,9 +26,12 @@
 
 package lehjr.numina.common.capabilities.module.powermodule;
 
+import com.google.common.collect.ImmutableList;
 import lehjr.numina.common.tags.TagUtils;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nonnull;
 import java.util.*;
@@ -40,6 +43,9 @@ public class PowerModule implements IPowerModule {
     protected final ModuleTarget target;
     protected Map<String, List<IPropertyModifier>> propertyModifiers;
     Callable<IConfig> moduleConfigGetter;
+    ImmutableList<String> isAllowedConfigKey;
+    final String moduleName;
+    final String categoryTitle;
 
     public PowerModule(@Nonnull ItemStack module, ModuleCategory category, ModuleTarget target,
                        Callable<IConfig> moduleConfigGetterIn) {
@@ -48,6 +54,9 @@ public class PowerModule implements IPowerModule {
         this.category = category;
         this.target = target;
         this.moduleConfigGetter = moduleConfigGetterIn;
+        moduleName = itemTranslationKeyToConfigKey();
+        categoryTitle = category.getConfigTitle().trim().replaceAll(" ", "_");
+        isAllowedConfigKey = getConfigKey("isAllowed");
     }
 
     @Override
@@ -65,27 +74,14 @@ public class PowerModule implements IPowerModule {
         return category;
     }
 
-    Optional<IConfig> getConfig() {
-        try {
-            return Optional.ofNullable(moduleConfigGetter.call());
-        } catch (Exception e) {
-            // not initialized yet
-            // TODO: debug message?
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-
     /** Double ------------------------------------------------------------------------------------- */
     /**
      * Adds a base key and multiplierValue to the map based on the config setting.
      */
     @Override
-    public void addTradeoffProperty(String tradeoffName, String propertyName, double multiplier) {
-        double propFromConfig = getConfig().map(config->
-                config.getTradeoffPropertyDoubleOrDefault(category, module, tradeoffName, propertyName, multiplier)).orElse(multiplier);
-        addPropertyModifier(propertyName, new PropertyModifierLinearAdditive(tradeoffName, propFromConfig));
+    public void addTradeoffProperty(String tradeoffName, String propertyName, double defaultMultiplier) {
+        ImmutableList<String> configKey = getConfigKey(new StringBuilder(propertyName).append("_").append(tradeoffName).append("_multiplier").toString());
+        addPropertyModifier(propertyName, new PropertyModifierLinearAdditive(configKey, moduleConfigGetter, tradeoffName, defaultMultiplier));
     }
 
     @Override
@@ -128,9 +124,8 @@ public class PowerModule implements IPowerModule {
      */
     @Override
     public void addBaseProperty(String propertyName, double baseVal) {
-        double propFromConfig = getConfig()
-                .map(config-> config.getBasePropertyDoubleOrDefault(category, module, propertyName, baseVal)).orElse(baseVal);
-        addPropertyModifier(propertyName, new PropertyModifierFlatAdditive(propFromConfig));
+        ImmutableList<String> configKey = getConfigKey(new StringBuilder("base_").append(propertyName).toString());
+        addPropertyModifier(propertyName, new PropertyModifierFlatAdditive(configKey, moduleConfigGetter, baseVal));
     }
 
     /**
@@ -169,17 +164,34 @@ public class PowerModule implements IPowerModule {
      * Integer -----------------------------------------------------------------------------------
      */
     // This is the only one of these that will give an integer using the double system
-    public void addIntTradeoffProperty(String tradeoffName, String propertyName, int multiplier, String unit, int roundTo, int offset) {
+    public void addIntTradeoffProperty(String tradeoffName, String propertyName, int defaultMultiplier, String unit, int roundTo, int offset) {
+        ImmutableList<String> configKey = getConfigKey(new StringBuilder(propertyName).append("_").append(tradeoffName).append("_multiplier").toString());
         addUnitLabel(propertyName, unit);
-        int propFromConfig = getConfig().map(config->
-                config.getTradeoffPropertyIntegerOrDefault(category, module, tradeoffName, propertyName, multiplier)).orElse(multiplier);
-        addPropertyModifier(propertyName, new PropertyModifierIntLinearAdditive(tradeoffName, propFromConfig, roundTo, offset));
+        addPropertyModifier(propertyName, new PropertyModifierIntLinearAdditive(
+                configKey, moduleConfigGetter, tradeoffName, defaultMultiplier, roundTo, offset));
     }
 
     @Override
     public boolean isAllowed() {
-        return getConfig().map(config-> config.isModuleAllowed(category, module)).orElse(true);
+        return getConfig(moduleConfigGetter).map(config-> config.isModuleAllowed(isAllowedConfigKey)).orElse(true);
     }
 
+    ImmutableList<String> getConfigKey(String entry) {
+        return ImmutableList.of(
+                "Modules",
+                categoryTitle,
+                moduleName,
+                entry);
+    }
 
+    String itemTranslationKeyToConfigKey() {
+        String translationKey = module.getItem().getDescriptionId();
+        ResourceLocation regName = ForgeRegistries.ITEMS.getKey(module.getItem());
+        // drop the prefix for MPS modules and replace "dots" with underscores
+        final String itemPrefix = "item." + regName.getNamespace() + ".";
+        if (translationKey.startsWith(itemPrefix )){
+            translationKey = translationKey.substring(itemPrefix .length());
+        }
+        return translationKey.replace(".", "_");
+    }
 }

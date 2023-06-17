@@ -73,17 +73,18 @@ public class Battery extends Item {
     @Nullable
     @Override
     public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt) {
+
         return new BatteryCapabilityProvider(stack, tier, maxEnergy, maxTransfer);
     }
 
     @Override
-    public boolean isBarVisible(ItemStack pStack) {
-        return true;
+    public boolean isBarVisible(ItemStack stack) {
+        return stack.getCapability(ForgeCapabilities.ENERGY).map(iEnergyStorage -> iEnergyStorage.getMaxEnergyStored() > 0).orElse(false);
     }
 
     @Override
     public int getBarWidth(ItemStack stack) {
-        return stack.getCapability(ForgeCapabilities.ENERGY).map(iEnergyStorage -> iEnergyStorage.getEnergyStored() * 13 / iEnergyStorage.getMaxEnergyStored()).orElse(0);
+        return stack.getCapability(ForgeCapabilities.ENERGY).map(iEnergyStorage -> iEnergyStorage.getEnergyStored() * 13 / iEnergyStorage.getMaxEnergyStored()).orElse(13);
     }
 
     @Override

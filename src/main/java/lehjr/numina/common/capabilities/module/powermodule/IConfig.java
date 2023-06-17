@@ -26,6 +26,7 @@
 
 package lehjr.numina.common.capabilities.module.powermodule;
 
+import com.google.common.collect.ImmutableList;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.fml.config.ModConfig;
 
@@ -34,27 +35,24 @@ import javax.annotation.Nullable;
 import java.util.Optional;
 
 public interface IConfig {
-    double getBasePropertyDoubleOrDefault(
-            ModuleCategory category,
-            @Nonnull ItemStack module,
-            String propertyName,
-            double baseVal);
+    double getBasePropertyDoubleOrDefault(ImmutableList<String> configKey, double baseVal);
 
-    double getTradeoffPropertyDoubleOrDefault(
-            ModuleCategory category,
-            @Nonnull ItemStack module,
-            String tradeoffName,
-            String propertyName,
-            double multiplier);
+    double getTradeoffPropertyDoubleOrDefault(ImmutableList<String> configKey, double multiplier);
 
-    int getTradeoffPropertyIntegerOrDefault(
-            ModuleCategory category,
-            @Nonnull ItemStack module,
-            String tradeoffName,
-            String propertyName,
-            int multiplier);
+    int getTradeoffPropertyIntegerOrDefault(ImmutableList<String> configKey, int multiplier);
 
-    boolean isModuleAllowed(ModuleCategory category, @Nonnull ItemStack module);
+    /**
+     *
+     * @param key provides a path for parsing the config
+     *
+     *     ImmutableList.of(
+     *     "Modules", // modules section of config
+     *     categoryTitle, // modules matching category (formatted without whitespace)
+     *     moduleName, // unique key derived from descriptionID
+     *     "isAllowed" ); // specific config setting
+     * @return
+     */
+    boolean isModuleAllowed(ImmutableList<String> key);
 
     void setServerConfig(@Nullable ModConfig serverConfig);
 
