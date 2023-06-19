@@ -104,7 +104,7 @@ public class SwimAssistModule extends AbstractPowerModule {
                     double swimAssistRate = applyPropertyModifiers(MPSConstants.SWIM_BOOST_AMOUNT) * 0.05 * moveRatio;
                     double swimEnergyConsumption = applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION);
 
-                    int playerEnergy = ElectricItemUtils.getPlayerEnergy(player);
+                    double playerEnergy = ElectricItemUtils.getPlayerEnergy(player);
 
                     if (swimEnergyConsumption < playerEnergy) {
                         if (player.level.isClientSide && NuminaSettings.useSounds()) {

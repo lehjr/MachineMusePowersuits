@@ -36,18 +36,27 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
+import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 public class PlayerUpdateHandler {
+
+
+
+
     @SuppressWarnings("unchecked")
     @SubscribeEvent(priority = EventPriority.NORMAL)
-    public void onPlayerUpdate(LivingEvent event) {
-        if (event.getEntity() instanceof Player) {
-            Player player = (Player) event.getEntity();
+    public void onPlayerUpdate(TickEvent.PlayerTickEvent event) {
+        // switched from LivingEvent because it fires multiple times per tick causing major issues
 
+//            LivingEvent event) {
+//        if (event.getEntity() instanceof Player) {
+//            Player player = (Player) event.getEntity();
+            if(true) {
+                Player player = event.player;
             NonNullList<ItemStack> modularItems = NonNullList.create();
             for (EquipmentSlot slot : EquipmentSlot.values()) {
                 if(player.getItemBySlot(slot).isEmpty()) {

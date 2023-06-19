@@ -259,11 +259,11 @@ public class ModularItem extends ItemStackHandler implements IModularItem, Capab
                     .filter(IPlayerTickModule.class::isInstance)
                     .map(IPlayerTickModule.class::cast)
                     .filter(IPlayerTickModule::isAllowed).ifPresent(m -> {
-                        if (m.isModuleOnline()) {
-                            m.onPlayerTickActive(player, this.getModularItemStack());
-                        } else {
-                            m.onPlayerTickInactive(player, this.getModularItemStack());
-                        }
+                            if (m.isModuleOnline()) {
+                                m.onPlayerTickActive(player, this.getModularItemStack());
+                            } else {
+                                m.onPlayerTickInactive(player, this.getModularItemStack());
+                            }
                     });
         }
     }

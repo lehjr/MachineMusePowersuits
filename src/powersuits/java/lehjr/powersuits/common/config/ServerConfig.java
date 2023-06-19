@@ -585,6 +585,7 @@ public class ServerConfig {
                 builder.push(ModuleCategory.VISION.getConfigTitle());
                 {
                     builder.push("night_vision");
+                    builder.defineInRange("base_energyCon", 100.0D, 0, 1.7976931348623157E308);
                     builder.define("isAllowed", true);
                     builder.pop();
                 }

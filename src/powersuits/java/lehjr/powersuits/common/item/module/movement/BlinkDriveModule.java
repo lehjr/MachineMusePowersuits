@@ -100,7 +100,7 @@ public class BlinkDriveModule extends AbstractPowerModule {
 
                     if (ElectricItemUtils.getPlayerEnergy(playerIn) > energyConsumption) {
                         PlayerUtils.resetFloatKickTicks(playerIn);
-                        int amountDrained = ElectricItemUtils.drainPlayerEnergy(playerIn, energyConsumption);
+                        double amountDrained = ElectricItemUtils.drainPlayerEnergy(playerIn, energyConsumption);
                         worldIn.playSound(playerIn, playerIn.blockPosition(), SoundEvents.ENDERMAN_TELEPORT, SoundSource.PLAYERS, 0.5F, 0.4F / ((float) Math.random() * 0.4F + 0.8F));
                         PlayerUtils.teleportEntity(playerIn, hitRayTrace);
                         worldIn.playSound(playerIn, playerIn.blockPosition(), SoundEvents.ENDERMAN_TELEPORT, SoundSource.PLAYERS, 0.5F, 0.4F / ((float) Math.random() * 0.4F + 0.8F));

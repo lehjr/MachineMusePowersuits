@@ -224,7 +224,7 @@ public enum MovementManager {
                     .ifPresent(iModularItem -> iModularItem.getOnlineModuleOrEmpty(MPSRegistryNames.JUMP_ASSIST_MODULE).getCapability(NuminaCapabilities.POWER_MODULE).ifPresent(jumper -> {
                         double jumpAssist = jumper.applyPropertyModifiers(MPSConstants.MULTIPLIER) * 2;
                         double drain = jumper.applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION);
-                        int avail = ElectricItemUtils.getPlayerEnergy(player);
+                        double avail = ElectricItemUtils.getPlayerEnergy(player);
                         if ((player.level.isClientSide()) && NuminaSettings.useSounds()) {
                             Musique.playerSound(player, MPSSoundDictionary.SOUND_EVENT_JUMP_ASSIST.get(), SoundSource.PLAYERS, (float) (jumpAssist / 8.0), (float) 1, false);
                         }
@@ -256,7 +256,7 @@ public enum MovementManager {
                             Musique.playerSound(player, SoundDictionary.SOUND_EVENT_GUI_INSTALL.get(), SoundSource.PLAYERS, (float) (distanceAbsorb), (float) 1, false);
                         }
                         double drain = distanceAbsorb * sa.applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION);
-                        int avail = ElectricItemUtils.getPlayerEnergy(player);
+                        double avail = ElectricItemUtils.getPlayerEnergy(player);
                         if (drain < avail) {
                             ElectricItemUtils.drainPlayerEnergy(player, (int) drain, false);
                             event.setDistance((float) (event.getDistance() - distanceAbsorb));

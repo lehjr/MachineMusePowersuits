@@ -74,7 +74,7 @@ public class HarvestEventHandler {
                         return;
                     }
 
-                    int playerEnergy = ElectricItemUtils.getPlayerEnergy(player);
+                    double playerEnergy = ElectricItemUtils.getPlayerEnergy(player);
 
                     for (ItemStack module : iItemHandler.getInstalledModulesOfType(IBlockBreakingModule.class)) {
                         if (module.getCapability(NuminaCapabilities.POWER_MODULE)
@@ -120,7 +120,7 @@ public class HarvestEventHandler {
                     if (event.getNewSpeed() < event.getOriginalSpeed()) {
                         event.setNewSpeed(event.getOriginalSpeed());
                     }
-                    int playerEnergy = ElectricItemUtils.getPlayerEnergy(player);
+                    double playerEnergy = ElectricItemUtils.getPlayerEnergy(player);
 
                     for (ItemStack module : iItemHandler.getInstalledModulesOfType(IBlockBreakingModule.class)) {
                         module.getCapability(NuminaCapabilities.POWER_MODULE)

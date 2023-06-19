@@ -91,12 +91,12 @@ public class AquaAffinityModule extends AbstractPowerModule {
             }
 
             @Override
-            public boolean canHarvestBlock(@Nonnull ItemStack stack, BlockState state, Player player, BlockPos pos, int playerEnergy) {
+            public boolean canHarvestBlock(@Nonnull ItemStack stack, BlockState state, Player player, BlockPos pos, double playerEnergy) {
                 return false;
             }
 
             @Override
-            public boolean mineBlock(@NotNull ItemStack powerFist, Level worldIn, BlockState state, BlockPos pos, LivingEntity entityLiving, int playerEnergy) {
+            public boolean mineBlock(@NotNull ItemStack powerFist, Level worldIn, BlockState state, BlockPos pos, LivingEntity entityLiving, double playerEnergy) {
                 if (this.canHarvestBlock(powerFist, state, (Player) entityLiving, pos, playerEnergy)) {
                     ElectricItemUtils.drainPlayerEnergy(entityLiving, getEnergyUsage());
                     return true;

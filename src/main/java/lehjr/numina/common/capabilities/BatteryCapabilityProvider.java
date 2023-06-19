@@ -43,8 +43,6 @@ public class BatteryCapabilityProvider implements ICapabilityProvider {
             }
 
             {
-                System.out.println("max: " + maxEnergy);
-
                 addBaseProperty(TagConstants.MAX_ENERGY, maxEnergy, "FE");
                 addBaseProperty(TagConstants.MAX_TRAMSFER, maxTransfer, "FE");
             }};

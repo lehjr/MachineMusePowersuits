@@ -94,8 +94,8 @@ public class EnergyShieldModule extends AbstractPowerModule {
 
             @Override
             public void onPlayerTickActive(Player player, @Nonnull ItemStack item) {
-                int energy = ElectricItemUtils.getPlayerEnergy(player);
-                int energyUsage = (int) applyPropertyModifiers(MPSConstants.ARMOR_ENERGY_CONSUMPTION);
+                double energy = ElectricItemUtils.getPlayerEnergy(player);
+                double energyUsage = applyPropertyModifiers(MPSConstants.ARMOR_ENERGY_CONSUMPTION);
 
                 // turn off module if energy is too low. This will fire on both sides so no need to sync
                 if (energy < energyUsage) {

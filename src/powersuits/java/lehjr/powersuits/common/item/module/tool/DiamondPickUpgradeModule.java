@@ -89,7 +89,7 @@ public class DiamondPickUpgradeModule extends AbstractPowerModule {
             }
 
             @Override
-            public boolean canHarvestBlock(@Nonnull ItemStack powerFist, BlockState state, Player player, BlockPos pos, int playerEnergy) {
+            public boolean canHarvestBlock(@Nonnull ItemStack powerFist, BlockState state, Player player, BlockPos pos, double playerEnergy) {
                 AtomicBoolean canHarvest = new AtomicBoolean(false);
                 NuminaLogger.logDebug("FIXME!!!!");
 //                powerFist.getCapability(ForgeCapabilities.ITEM_HANDLER)
@@ -117,7 +117,7 @@ public class DiamondPickUpgradeModule extends AbstractPowerModule {
             }
 
             @Override
-            public boolean mineBlock(@NotNull ItemStack powerFist, Level worldIn, BlockState state, BlockPos pos, LivingEntity entityLiving, int playerEnergy) {
+            public boolean mineBlock(@NotNull ItemStack powerFist, Level worldIn, BlockState state, BlockPos pos, LivingEntity entityLiving, double playerEnergy) {
                 if (this.canHarvestBlock(powerFist, state, (Player) entityLiving, pos, playerEnergy)) {
                     AtomicInteger energyUsage = new AtomicInteger(0);
                     powerFist.getCapability(ForgeCapabilities.ITEM_HANDLER)

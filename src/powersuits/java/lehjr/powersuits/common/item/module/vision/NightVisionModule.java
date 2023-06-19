@@ -33,10 +33,14 @@ import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
 import lehjr.numina.common.capabilities.module.tickable.PlayerTickModule;
 import lehjr.numina.common.energy.ElectricItemUtils;
+import lehjr.numina.common.item.ItemUtils;
+import lehjr.numina.common.tags.TagUtils;
 import lehjr.powersuits.common.config.MPSSettings;
+import lehjr.powersuits.common.constants.MPSConstants;
 import lehjr.powersuits.common.item.module.AbstractPowerModule;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtUtils;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -48,12 +52,10 @@ import net.minecraftforge.common.util.LazyOptional;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.math.BigDecimal;
 import java.util.concurrent.Callable;
 
 public class NightVisionModule extends AbstractPowerModule {
-    static final int powerDrain = 50;
-    private static final MobEffect nightvision = MobEffects.NIGHT_VISION;
-
     @Nullable
     @Override
     public ICapabilityProvider initCapabilities (ItemStack stack, @Nullable CompoundTag nbt){
@@ -67,7 +69,9 @@ public class NightVisionModule extends AbstractPowerModule {
 
         public CapProvider(@Nonnull ItemStack module) {
             this.module = module;
-            this.ticker = new Ticker(module, ModuleCategory.VISION, ModuleTarget.HEADONLY, MPSSettings::getModuleConfig);
+            this.ticker = new Ticker(module, ModuleCategory.VISION, ModuleTarget.HEADONLY, MPSSettings::getModuleConfig) {{
+                addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, 100, "FE");
+            }};
 
             powerModuleHolder = LazyOptional.of(() -> {
                 ticker.loadCapValues();
@@ -76,8 +80,27 @@ public class NightVisionModule extends AbstractPowerModule {
         }
 
         class Ticker extends PlayerTickModule {
+            boolean added = false;
+            boolean removed = false;
+
             public Ticker(@Nonnull ItemStack module, ModuleCategory category, ModuleTarget target, Callable<IConfig> config) {
                 super(module, category, target, config, true);
+
+                // setting to and loading these just allow values to be persistant when capability reloads
+                added = TagUtils.getModuleBooleanOrFalse(module, "added");
+                removed = TagUtils.getModuleBooleanOrFalse(module, "removed");
+            }
+
+            int tick = 0; // cooldown timer because firing too quickly will crash things and this doesn't need to fire that rapidly anyway
+
+            void setAdded(boolean added) {
+                this.added = added;
+                TagUtils.setModuleBoolean(module, "added", added);
+            }
+
+            void setRemoved(boolean removed) {
+                this.removed = removed;
+                TagUtils.setModuleBoolean(module, "removed", removed);
             }
 
             @Override
@@ -85,14 +108,20 @@ public class NightVisionModule extends AbstractPowerModule {
                 if (player.level.isClientSide) {
                     return;
                 }
+                double powerDrain = applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION);
 
                 double totalEnergy = ElectricItemUtils.getPlayerEnergy(player);
-                MobEffectInstance nightVisionEffect = player.hasEffect(nightvision) ? player.getEffect(nightvision) : null;
-
+                MobEffectInstance nightVisionEffect = player.hasEffect(MobEffects.NIGHT_VISION) ? player.getEffect(MobEffects.NIGHT_VISION) : null;
                 if (totalEnergy > powerDrain) {
-                    if (nightVisionEffect == null || nightVisionEffect.getDuration() < 250 && nightVisionEffect.getAmplifier() == -3) {
-                        player.addEffect(new MobEffectInstance(nightvision, 500, -3, false, false));
-                        ElectricItemUtils.drainPlayerEnergy(player, powerDrain);
+                    if (nightVisionEffect == null || nightVisionEffect.getDuration() < 500) {
+                        MobEffectInstance mobEffectInstance = new MobEffectInstance(MobEffects.NIGHT_VISION, 300, 0, false, false);
+                        if (player.canBeAffected(mobEffectInstance)) { // is this check needed?
+                            if (player.addEffect(mobEffectInstance)) {
+                                setAdded(true);
+                                setRemoved(false);
+                                ElectricItemUtils.drainPlayerEnergy(player, powerDrain);
+                            }
+                        }
                     }
                 } else {
                     onPlayerTickInactive(player, item);
@@ -101,12 +130,11 @@ public class NightVisionModule extends AbstractPowerModule {
 
             @Override
             public void onPlayerTickInactive(Player player, ItemStack item) {
-                MobEffectInstance nightVisionEffect = null;
-                if (player.hasEffect(nightvision)) {
-                    nightVisionEffect = player.getEffect(nightvision);
-                    if (nightVisionEffect.getAmplifier() == -3) {
-                        player.removeEffect(nightvision);
-                    }
+                // there doesn't seem to be any way to immediately remove effect.
+                if (added && !removed && player.hasEffect(MobEffects.NIGHT_VISION)) {
+                    player.removeEffect(MobEffects.NIGHT_VISION);
+                    setAdded(false);
+                    setRemoved(true);
                 }
             }
         }

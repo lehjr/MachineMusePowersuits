@@ -52,6 +52,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
 
+
 public class ChargingBaseBlockEntity extends BlockEntity {
     public ChargingBaseBlockEntity(BlockPos pWorldPosition, BlockState pBlockState) {
         super(NuminaObjects.CHARGING_BASE_BLOCK_ENTITY.get(), pWorldPosition, pBlockState);
@@ -107,7 +108,7 @@ public class ChargingBaseBlockEntity extends BlockEntity {
 
     private void sendOutPower(LivingEntity entity) {
         energyWrapper.ifPresent(wrapper-> {
-            int received = ElectricItemUtils.givePlayerEnergy(entity, wrapper.getEnergyStored(), false);
+            int received = (int)ElectricItemUtils.givePlayerEnergy(entity, wrapper.getEnergyStored(), false);
             if (received > 0) {
                 wrapper.extractEnergy(received, false);
                 setChanged();

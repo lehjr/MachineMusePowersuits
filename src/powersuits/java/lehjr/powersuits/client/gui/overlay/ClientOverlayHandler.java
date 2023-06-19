@@ -178,8 +178,8 @@ public enum ClientOverlayHandler {
             float left = sw - 36;
 
             // energy
-            float maxEnergy = ElectricItemUtils.getMaxPlayerEnergy(player);
-            float currEnergy = ElectricItemUtils.getPlayerEnergy(player);
+            double maxEnergy = ElectricItemUtils.getMaxPlayerEnergy(player);
+            double currEnergy = ElectricItemUtils.getPlayerEnergy(player);
             String currEnergyStr = StringUtils.formatNumberShort(currEnergy) + "FE";
             String maxEnergyStr = StringUtils.formatNumberShort(maxEnergy);
 
@@ -276,7 +276,7 @@ public enum ClientOverlayHandler {
                 //but including it won't hurt and this makes it easier to swap them around.
 
                 if (energyMeter != null) {
-                    energyMeter.draw(matrixStack, left, top + (totalMeters - numMeters) * 9, currEnergy / maxEnergy);
+                    energyMeter.draw(matrixStack, left, top + (totalMeters - numMeters) * 9, (float)(currEnergy / maxEnergy));
                     StringUtils.drawRightAlignedShadowedString(matrixStack, currEnergyStr, stringX, meterTextOffsetY + top);
                     numMeters--;
                 }

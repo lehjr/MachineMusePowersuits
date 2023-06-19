@@ -108,8 +108,8 @@ public class DimensionalRiftModule extends AbstractPowerModule {
 
                     if (level != null) {
                         BlockPos coords = playerIn.blockPosition();
-                        int energyConsumption = (int) applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION);
-                        int playerEnergy = ElectricItemUtils.getPlayerEnergy(playerIn);
+                        double energyConsumption = (int) applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION);
+                        double playerEnergy = ElectricItemUtils.getPlayerEnergy(playerIn);
                         if (playerEnergy >= energyConsumption) {
                             Optional<BlockPos> targetPos = findSafeLocation(coords, Direction.Axis.X, level, playerIn);
                             if (targetPos.isPresent()) {

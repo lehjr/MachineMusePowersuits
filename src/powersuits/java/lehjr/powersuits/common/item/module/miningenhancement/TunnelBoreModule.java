@@ -106,7 +106,7 @@ public class TunnelBoreModule extends AbstractPowerModule {
                                 BlockState state = player.level.getBlockState(blockPos);
                                 // find an installed module to break current block
                                 for (ItemStack blockBreakingModule : modeChanging.getInstalledModulesOfType(IBlockBreakingModule.class)) {
-                                    int playerEnergy = ElectricItemUtils.getPlayerEnergy(player);
+                                    double playerEnergy = ElectricItemUtils.getPlayerEnergy(player);
                                     if (blockBreakingModule.getCapability(NuminaCapabilities.POWER_MODULE)
                                             .filter(IBlockBreakingModule.class::isInstance)
                                             .map(IBlockBreakingModule.class::cast)

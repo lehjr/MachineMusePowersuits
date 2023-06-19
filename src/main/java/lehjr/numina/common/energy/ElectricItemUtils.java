@@ -42,8 +42,8 @@ public class ElectricItemUtils {
      *
      * Note here we filter out foreign items so the entity available/ usableenergy isn't wrong
      */
-    public static int getPlayerEnergy(LivingEntity entity) {
-        int avail = 0;
+    public static double getPlayerEnergy(LivingEntity entity) {
+        double avail = 0;
 
         for (EquipmentSlot slot : EquipmentSlot.values()) {
             avail += getItemEnergy(entity.getItemBySlot(slot));
@@ -56,8 +56,8 @@ public class ElectricItemUtils {
      *
      * Note here we filter out foreign items so the entity available/ usableenergy isn't wrong
      */
-    public static int getMaxPlayerEnergy(LivingEntity entity) {
-        int avail = 0;
+    public static double getMaxPlayerEnergy(LivingEntity entity) {
+        double avail = 0;
         for (EquipmentSlot slot : EquipmentSlot.values()) {
             avail += getMaxItemEnergy(entity.getItemBySlot(slot));
         }
@@ -65,8 +65,8 @@ public class ElectricItemUtils {
     }
 
     @Deprecated
-    public static int drainPlayerEnergy(LivingEntity entity, int drainAmount) {
-        return drainPlayerEnergy(entity, drainAmount, false);
+    public static double drainPlayerEnergy(LivingEntity entity, double drainAmount) {
+        return drainPlayerEnergy(entity, (int)drainAmount, false);
     }
 
     /**
@@ -74,8 +74,8 @@ public class ElectricItemUtils {
      *
      * Note that charging held items while in use causes issues so they are skipped
      */
-    public static int drainPlayerEnergy(LivingEntity entity, int drainAmount, boolean simulate){
-        int drainleft = drainAmount;
+    public static double drainPlayerEnergy(LivingEntity entity, double drainAmount, boolean simulate){
+        double drainleft = drainAmount;
         if (entity instanceof Player) {
             Player player = (Player) entity;
             if (player.level.isClientSide || player.getAbilities().instabuild) {
@@ -88,7 +88,7 @@ public class ElectricItemUtils {
                 }
 
                 ItemStack stack = entity.getItemBySlot(slot);
-                drainleft = drainleft - drainItem(stack, drainleft, simulate);
+                drainleft = drainleft - drainItem(stack, (int)drainleft, simulate);
             }
             if (drainAmount - drainleft > 0) {
                 player.getInventory().setChanged();
@@ -98,7 +98,7 @@ public class ElectricItemUtils {
     }
 
     @Deprecated
-    public static int givePlayerEnergy(LivingEntity entity, int rfToGive) {
+    public static double givePlayerEnergy(LivingEntity entity, int rfToGive) {
         return givePlayerEnergy(entity, rfToGive, false);
     }
 
@@ -107,15 +107,15 @@ public class ElectricItemUtils {
      *
      * Note that charging held items while in use causes issues so they are skipped
      */
-    public static int givePlayerEnergy(LivingEntity entity, int rfToGive, boolean simulate) {
-        int rfLeft = rfToGive;
+    public static double givePlayerEnergy(LivingEntity entity, double rfToGive, boolean simulate) {
+        double rfLeft = rfToGive;
         if (entity instanceof Player) {
             Player player = (Player) entity;
 
             for (EquipmentSlot slot : EquipmentSlot.values()) {
                 if (rfLeft > 0) {
                     ItemStack stack = player.getItemBySlot(slot);
-                    rfLeft = rfLeft - chargeItem(stack, rfLeft, simulate);
+                    rfLeft = rfLeft - chargeItem(stack, (int)rfLeft, simulate);
                 } else {
                     break;
                 }
@@ -124,7 +124,7 @@ public class ElectricItemUtils {
             if (rfLeft > 0 && entity instanceof Player) {
                 for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
                     if (rfLeft > 0) {
-                        rfLeft = rfLeft - chargeItem(((Player) entity).getInventory().getItem(i), rfLeft, simulate);
+                        rfLeft = rfLeft - chargeItem(((Player) entity).getInventory().getItem(i), (int)rfLeft, simulate);
                     } else {
                         break;
                     }
@@ -156,6 +156,7 @@ public class ElectricItemUtils {
 
     /**
      * returns total possible energy an itemStack can hold
+     * Note: safe to use an integer as return value since values are stored as integers anyway
      */
     public static int getMaxItemEnergy(@Nonnull ItemStack itemStack) {
         return itemStack.getCapability(ForgeCapabilities.ENERGY).filter(iEnergyStorage -> iEnergyStorage.getMaxEnergyStored() >= getMaxEnergyForComparison()).map(energyHandler -> energyHandler.getMaxEnergyStored()).orElse(0);
@@ -169,8 +170,8 @@ public class ElectricItemUtils {
      * Hacky way of determining if item is a power source.
      * @return
      */
-    static int getMaxEnergyForComparison() {
+    static double getMaxEnergyForComparison() {
 //        return 0;
-        return (int) (0.8 * new ItemStack(NuminaObjects.BASIC_BATTERY.get()).getCapability(ForgeCapabilities.ENERGY).map(energyHandler -> energyHandler.getMaxEnergyStored() ).orElse(0));
+        return (0.8 * new ItemStack(NuminaObjects.BASIC_BATTERY.get()).getCapability(ForgeCapabilities.ENERGY).map(energyHandler -> energyHandler.getMaxEnergyStored() ).orElse(0));
     }
 }

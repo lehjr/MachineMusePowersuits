@@ -136,7 +136,7 @@ public interface IModeChangingItem extends IModularItem {
     }
 
     default boolean mineBlock(ItemStack powerFist, Level worldIn, BlockState state, BlockPos pos, LivingEntity entityLiving) {
-        int playerEnergy = ElectricItemUtils.getPlayerEnergy(entityLiving);
+        double playerEnergy = ElectricItemUtils.getPlayerEnergy(entityLiving);
         return getInstalledModulesOfType(IBlockBreakingModule.class).stream().anyMatch(module ->
                 module.getCapability(NuminaCapabilities.POWER_MODULE)
                         .filter(IBlockBreakingModule.class::isInstance)

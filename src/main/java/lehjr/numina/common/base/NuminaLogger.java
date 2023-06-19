@@ -40,6 +40,7 @@ import org.apache.logging.log4j.Logger;
  */
 public final class NuminaLogger {
     public static final Logger logger = LogManager.getLogger("MachineMuse");
+//    public static final Logger logger = LogUtils.getLogger();
 
     public static void logDebug(String string) {
         boolean debugging = true;

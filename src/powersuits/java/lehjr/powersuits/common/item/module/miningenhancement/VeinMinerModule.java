@@ -133,8 +133,8 @@ public class VeinMinerModule extends AbstractPowerModule {
                     return false;
                 }
 
-                int playerEnergy = ElectricItemUtils.getPlayerEnergy(player);
-                int energyUsage = this.getEnergyUsage();
+                double playerEnergy = ElectricItemUtils.getPlayerEnergy(player);
+                double energyUsage = this.getEnergyUsage();
 
                 AtomicInteger bbModuleEnergyUsage = new AtomicInteger(0);
 
