@@ -256,7 +256,7 @@ public class ModuleSelectionFrame extends ScrollableFrame {
 //                            final ClickableModule selectedOther = sel.getSelectedModule();
 //
 //                            if (selectedModule.map(module-> module.equals(selectedOther)).orElse(false)) {
-//                                System.out.println("do something here???");
+//                                NuminaLogger.logDebug("do something here???");
 //                            }
 //                        }
                     }

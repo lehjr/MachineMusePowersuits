@@ -63,7 +63,7 @@ public class MPSModelHelper {
 
 //        ModelPowerFistHelper.INSTANCE.loadPowerFistModels(event);
 
-//        ModelRegistry.getInstance().getNames().forEach(name->System.out.println("modelregistry name: " + name));
+//        ModelRegistry.getInstance().getNames().forEach(name->NuminaLogger.logDebug("modelregistry name: " + name));
     }
 
     public static void parseSpecFile(String resourceString, @Nullable TextureStitchEvent event, ModelBakery bakery) {

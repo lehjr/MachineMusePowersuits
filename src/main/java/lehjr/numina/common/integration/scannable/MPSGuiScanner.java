@@ -92,14 +92,14 @@
 //
 //    @Override
 //    public void func_231164_f_() {
-////        System.out.println(ItemUtils.getActiveModuleOrEmpty(Minecraft.getInstance().player.getMainHandItem()).serializeNBT());
+////        NuminaLogger.logDebug(ItemUtils.getActiveModuleOrEmpty(Minecraft.getInstance().player.getMainHandItem()).serializeNBT());
 //
 //        super.func_231164_f_();
 //    }
 //
 //    @Override
 //    public void func_231175_as__() {
-////        System.out.println(ItemUtils.getActiveModuleOrEmpty(Minecraft.getInstance().player.getMainHandItem()).serializeNBT());
+////        NuminaLogger.logDebug(ItemUtils.getActiveModuleOrEmpty(Minecraft.getInstance().player.getMainHandItem()).serializeNBT());
 //
 //        super.func_231175_as__();
 //    }

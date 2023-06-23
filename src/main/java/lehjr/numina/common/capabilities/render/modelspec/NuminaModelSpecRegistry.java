@@ -26,6 +26,7 @@
 
 package lehjr.numina.common.capabilities.render.modelspec;
 
+import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.constants.TagConstants;
 import lehjr.numina.common.map.NuminaRegistry;
 import net.minecraft.core.NonNullList;
@@ -107,7 +108,7 @@ public class NuminaModelSpecRegistry extends NuminaRegistry<SpecBase> {
         try {
             String baseName = part.spec.getOwnName();
 
-            System.out.println("adding part < " + part.partName +" > for model < " + baseName +" >" );
+            NuminaLogger.logDebug("adding part < " + part.partName +" > for model < " + baseName +" >" );
 
             SpecBase base = get(baseName);
             base.put(part, part.partName);

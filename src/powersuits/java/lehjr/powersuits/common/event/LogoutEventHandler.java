@@ -42,7 +42,7 @@ public class LogoutEventHandler {
             MinecraftServer server = event.getEntity().getServer();
             if (server != null && server.isSingleplayer() || server.isSingleplayerOwner(event.getEntity().getGameProfile())) {
                 if (moduleConfig instanceof ModuleConfig) {
-//                    System.out.println("write missing values");
+//                    NuminaLogger.logDebug("write missing values");
                     ((ModuleConfig) moduleConfig).writeMissingConfigValues();
                 }
             }

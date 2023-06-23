@@ -88,19 +88,19 @@ public class BladeLauncherModule extends AbstractPowerModule {
                     if (ElectricItemUtils.getPlayerEnergy(playerIn) > applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION)) {
                         playerIn.startUsingItem(hand);
 
-                        System.out.println("use success");
+//                        NuminaLogger.logDebug("use success");
 
                         return new InteractionResultHolder(InteractionResult.SUCCESS, itemStackIn);
                     }
                 }
-                System.out.println("use pass");
+//                NuminaLogger.logDebug("use pass");
 
                 return new InteractionResultHolder(InteractionResult.PASS, itemStackIn);
             }
 
             @Override
             public void releaseUsing(ItemStack stack, Level worldIn, LivingEntity entityLiving, int timeLeft) {
-                System.out.println("release using");
+//                NuminaLogger.logDebug("release using");
 
                 if (!worldIn.isClientSide) {
                     int energyConsumption = getEnergyUsage();

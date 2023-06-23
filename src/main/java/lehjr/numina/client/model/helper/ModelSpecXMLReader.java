@@ -326,10 +326,10 @@
 //            colour = colour.withAlpha(1.0F);
 //
 //        if (partname == null) {
-//            System.out.println("partName is NULL!!");
-//            System.out.println("ModelSpec model: " + modelSpec.getName());
-//            System.out.println("glow: " + glow);
-//            System.out.println("colour: " + colour.rgbaHexColor());
+//            NuminaLogger.logDebug("partName is NULL!!");
+//            NuminaLogger.logDebug("ModelSpec model: " + modelSpec.getName());
+//            NuminaLogger.logDebug("glow: " + glow);
+//            NuminaLogger.logDebug("colour: " + colour.rgbaHexColor());
 //        } else
 //            modelSpec.put(partname, new ObjlPartSpec(modelSpec,
 //                    binding,

@@ -10,6 +10,7 @@ import com.google.common.collect.Maps;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
+import lehjr.numina.common.base.NuminaLogger;
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.Resource;
@@ -101,7 +102,7 @@ public class NuminaObjLoader implements IGeometryLoader<NuminaObjModel>, Resourc
 
     private NuminaObjModel loadModel(NuminaObjModel.ModelSettings settings, Map<String, String> deprecationWarnings) {
         return modelCache.computeIfAbsent(settings, (data) -> {
-            System.out.println("numinaOBJLoader model location: " + settings.modelLocation());
+            NuminaLogger.logDebug("numinaOBJLoader model location: " + settings.modelLocation());
             Resource resource = manager.getResource(settings.modelLocation()).orElseThrow();
             try (ObjTokenizer tokenizer = new ObjTokenizer(resource.open())) {
                 return NuminaObjModel.parse(tokenizer, settings, deprecationWarnings);

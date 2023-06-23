@@ -32,6 +32,7 @@ import lehjr.numina.client.gui.clickable.slider.VanillaFrameScrollBar;
 import lehjr.numina.client.gui.frame.ModularItemSelectionFrame;
 import lehjr.numina.client.gui.frame.ScrollableFrame;
 import lehjr.numina.client.gui.geometry.Rect;
+import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.capabilities.render.modelspec.NuminaModelSpecRegistry;
 import lehjr.numina.common.capabilities.render.modelspec.SpecBase;
 import lehjr.numina.common.math.Color;
@@ -112,7 +113,7 @@ public class ModelManipFrame extends ScrollableFrame {
         if (!getItem().isEmpty()) {
             NuminaModelSpecRegistry.getInstance().getSpecsAsStream().forEach(specBase -> {
                 if (isSpecValid(specBase)) {
-                    System.out.println("spec is valid for slot:  " + specBase.getOwnName() + ", slot: " + getSlot().get());
+//                    NuminaLogger.logDebug("spec is valid for slot:  " + specBase.getOwnName() + ", slot: " + getSlot().get());
 
                     ModelManipSubframe newframe = createNewFrame(specBase);
                     // empty when the parts are for a different equipment slot
@@ -121,10 +122,10 @@ public class ModelManipFrame extends ScrollableFrame {
                         newframe.setBelow(prev);
                         modelframes.add(newframe);
                     } else {
-                        System.out.println("newframe.getParts().isEmpty()");
+//                        NuminaLogger.logDebug("newframe.getParts().isEmpty()");
                     }
                 } else {
-                    System.out.println("spec not valid for slot:  " + specBase.getOwnName() + ", slot: " + getSlot().get());
+                    NuminaLogger.logDebug("spec not valid for slot:  " + specBase.getOwnName() + ", slot: " + getSlot().get());
                 }
             });
         }
@@ -141,16 +142,16 @@ public class ModelManipFrame extends ScrollableFrame {
             EquipmentSlot slot = getSlot().get();
 
             if (slot.isArmor()) {
-                System.out.println("slot is armor and specBase.hasArmorEquipmentSlot(slot): " + specBase.hasArmorEquipmentSlot(slot));
+//                NuminaLogger.logDebug("slot is armor and specBase.hasArmorEquipmentSlot(slot): " + specBase.hasArmorEquipmentSlot(slot));
                 return specBase.hasArmorEquipmentSlot(slot);
             } else {
                 HumanoidArm arm = slot.equals(EquipmentSlot.MAINHAND) ? getMinecraft().player.getMainArm() : getMinecraft().player.getMainArm().getOpposite();
-                System.out.println("isForHand: " + specBase.getPartsAsStream().anyMatch(partSpecBase -> partSpecBase.isForHand(arm, getMinecraft().player)));
+//                NuminaLogger.logDebug("isForHand: " + specBase.getPartsAsStream().anyMatch(partSpecBase -> partSpecBase.isForHand(arm, getMinecraft().player)));
 
                 return specBase.getPartsAsStream().anyMatch(partSpecBase -> partSpecBase.isForHand(arm, getMinecraft().player));
             }
         }
-        System.out.println("returning false ");
+//        NuminaLogger.logDebug("returning false ");
         return false;
     }
 

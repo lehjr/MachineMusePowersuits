@@ -34,7 +34,7 @@ public class ToolTipEvent {
     @SubscribeEvent
     public void onToolTipEvent(RenderTooltipEvent.Pre event) {
         // TODO: better handling based on config
-//        System.out.println("screen class: " + Minecraft.getInstance().screen.getClass());
+//        NuminaLogger.logDebug("screen class: " + Minecraft.getInstance().screen.getClass());
 //        event.setMaxWidth((int) (event.getScreenWidth() * 0.25));
         // event.setMaxWidth(Math.max(event.getMaxWidth(), settings.getMaxWidth()));
     }

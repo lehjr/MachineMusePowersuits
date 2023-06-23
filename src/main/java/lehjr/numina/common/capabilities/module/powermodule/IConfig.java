@@ -27,10 +27,8 @@
 package lehjr.numina.common.capabilities.module.powermodule;
 
 import com.google.common.collect.ImmutableList;
-import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.fml.config.ModConfig;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Optional;
 

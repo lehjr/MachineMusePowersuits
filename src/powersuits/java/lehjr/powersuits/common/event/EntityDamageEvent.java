@@ -37,7 +37,7 @@ public class EntityDamageEvent {
 
     @Subscribe
     public static void handleEntityDamageEvent(LivingDamageEvent event) {
-//        System.out.println("entity type: "  + event.getEntity().getClass());
+//        NuminaLogger.logDebug("entity type: "  + event.getEntity().getClass());
 
         // todo: control damage based on heat/max heat && whether or not player has full armor and is in lava
         // Note: can cancel here but damage animation/sound still happens. Only way to not have it is potion effects.
@@ -45,7 +45,7 @@ public class EntityDamageEvent {
 
 //        LivingEntity livingEntityy = event.getEntityLiving();
 //        if (livingEntityy instanceof Player) {
-//            System.out.println("source: " + event.getSource().getDamageType());
+//            NuminaLogger.logDebug("source: " + event.getSource().getDamageType());
 //            if (event.getSource().isFireDamage()) {
 //                event.setCanceled(true);
 //            }
@@ -58,6 +58,6 @@ public class EntityDamageEvent {
      */
     @SubscribeEvent
     public static void entityAttackEventHandler(LivingAttackEvent event) {
-//        System.out.println("entity type: "  + event.getEntity().getClass());
+//        NuminaLogger.logDebug("entity type: "  + event.getEntity().getClass());
     }
 }

@@ -182,7 +182,7 @@ public abstract class InventoryFrame extends ScrollableFrame implements IContain
 //        if (super.mouseClicked(mouseX, mouseY, button)) {
 //           for(int i =0; i < tiles.size(); i++) {
 //               if (tiles.get(i).containsPoint(mouseX, mouseY)) {
-//                   System.out.println("mouse over slot: " + i);
+//                   NuminaLogger.logDebug("mouse over slot: " + i);
 //               }
 //           }
 //        }

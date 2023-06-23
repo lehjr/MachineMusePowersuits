@@ -53,13 +53,13 @@ public class OBJBakedCompositeModel implements IDynamicBakedModel {
 
     @Override
     public @NotNull List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, @NotNull RandomSource rand) {
-//        System.out.println("OBJBakedCompositeModel getting quads and state is: " + state + ", this class: " + this.getClass());
+//        NuminaLogger.logDebug("OBJBakedCompositeModel getting quads and state is: " + state + ", this class: " + this.getClass());
         return IDynamicBakedModel.super.getQuads(state, side, rand);
     }
 
     @Override
     public @NotNull List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, @NotNull RandomSource rand, @NotNull ModelData extraData, @Nullable RenderType renderType) {
-//        System.out.println("OBJBakedCompositeModel getting quads with extraData and state is: " + state + ", this class: " + this.getClass());
+//        NuminaLogger.logDebug("OBJBakedCompositeModel getting quads with extraData and state is: " + state + ", this class: " + this.getClass());
 
         ImmutableList.Builder<BakedQuad> builder = ImmutableList.builder();
         for (Map.Entry<String, OBJBakedPart> entry : bakedParts.entrySet()) {

@@ -43,7 +43,6 @@ import lehjr.numina.common.network.packets.TweakRequestDoublePacket;
 import lehjr.numina.common.string.StringUtils;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
 import net.minecraftforge.common.util.LazyOptional;
 
 import java.util.HashMap;

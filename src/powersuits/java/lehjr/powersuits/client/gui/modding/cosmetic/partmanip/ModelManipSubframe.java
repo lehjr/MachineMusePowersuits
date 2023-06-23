@@ -45,8 +45,8 @@ import lehjr.numina.common.math.Color;
 import lehjr.numina.common.network.NuminaPackets;
 import lehjr.numina.common.network.packets.CosmeticInfoPacket;
 import lehjr.numina.common.string.StringUtils;
-import lehjr.powersuits.client.gui.modding.cosmetic.colorpicker.ColorRadioButton;
 import lehjr.powersuits.client.gui.modding.cosmetic.colorpicker.ColorPickerFrame;
+import lehjr.powersuits.client.gui.modding.cosmetic.colorpicker.ColorRadioButton;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.nbt.CompoundTag;
@@ -142,7 +142,7 @@ public class ModelManipSubframe extends AbstractGuiFrame {
                         SpecBinding binding = partSpecBase.getBinding();
                         if (binding.getTarget().handMatches(player, slot)) {
                             String tagName = NuminaModelSpecRegistry.getInstance().makeName(partSpecBase);
-//                            System.out.println("PowerFist tagName: \"" + tagName +"\": ");
+//                            NuminaLogger.logDebug("PowerFist tagName: \"" + tagName +"\": ");
 
                             parts.add(createNewFrame(partSpecBase, renderTag.getCompound(tagName)));
                         }
@@ -163,7 +163,7 @@ public class ModelManipSubframe extends AbstractGuiFrame {
 //                        if (spec.getBinding().getSlot().getType().equals(EquipmentSlot.Type.HAND)) {
 //                            String tagName = NuminaModelRegistry.getInstance().makeName(spec);
 //                            // FIXME: get rid of TEXTURESPEC tag and use
-//                            System.out.println("make name: " +  NuminaModelRegistry.getInstance().makeName(spec));
+//                            NuminaLogger.logDebug("make name: " +  NuminaModelRegistry.getInstance().makeName(spec));
 //                            parts.add(createNewFrame(spec, renderTag.getCompound(tagName)));
 //                        }
 //                    });
@@ -245,7 +245,7 @@ public class ModelManipSubframe extends AbstractGuiFrame {
                 String name = NuminaModelSpecRegistry.getInstance().makeName(partSpec);
                 specTag = renderTag.contains(name) ? renderTag.getCompound(name) : new CompoundTag();
 
-//                System.out.println("spec: " + specTag);
+//                NuminaLogger.logDebug("spec: " + specTag);
 
             }
             return specTag;
@@ -260,7 +260,7 @@ public class ModelManipSubframe extends AbstractGuiFrame {
     public CompoundTag getOrMakeSpecTag(PartSpecBase partSpec) {
         String name;
         CompoundTag nbt = getSpecTagOrEmpty(partSpec);
-        System.out.println("specTag: " + nbt);
+//        NuminaLogger.logDebug("specTag: " + nbt);
 
 
         if (nbt.isEmpty()) {
@@ -271,7 +271,7 @@ public class ModelManipSubframe extends AbstractGuiFrame {
 
 
 
-            System.out.println("name here: " + name);
+//            NuminaLogger.logDebug("name here: " + name);
 
 
 
@@ -279,7 +279,7 @@ public class ModelManipSubframe extends AbstractGuiFrame {
             if (getRenderCapability() != null) {
                 this.getRenderCapability().ifPresent(specNBT->{
                     CompoundTag renderTag  = specNBT.getRenderTag().copy();
-                    System.out.println("render tag: " + renderTag);
+//                    NuminaLogger.logDebug("render tag: " + renderTag);
 
 
                     if (renderTag != null && !renderTag.isEmpty()) {
@@ -289,7 +289,7 @@ public class ModelManipSubframe extends AbstractGuiFrame {
             }
         }
 
-        System.out.println("returning tag: " + nbt);
+//        NuminaLogger.logDebug("returning tag: " + nbt);
 
         return nbt;
     }
@@ -389,11 +389,11 @@ public class ModelManipSubframe extends AbstractGuiFrame {
             normal.setOnPressed(pressed -> {
 
 
-                System.out.println("tagdata before: " + tagdata);
+//                NuminaLogger.logDebug("tagdata before: " + tagdata);
 
 
                 tagdata = getOrMakeSpecTag(partSpec);
-                System.out.println("tagdata after: " + tagdata);
+//                NuminaLogger.logDebug("tagdata after: " + tagdata);
 
                 partSpec.setGlow(tagdata, false);
                 itemSelector.selectedType().ifPresent(slotType -> {

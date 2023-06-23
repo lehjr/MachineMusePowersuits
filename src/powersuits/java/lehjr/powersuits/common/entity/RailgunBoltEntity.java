@@ -199,7 +199,7 @@ public class RailgunBoltEntity extends ThrowableProjectile implements IEntityAdd
 
         // copied from AbstractArrow // working?
         if (this.isInWater()) {
-//            System.out.println("working?");
+//            NuminaLogger.logDebug("working?");
 
             float f2;
             // motion vector with scale applied because the bolt moves too fast to draw bubbles

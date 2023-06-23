@@ -194,7 +194,7 @@ public class ModularPowersuits {
 //
 //        if(regName.getNamespace().contains("refinedstorage") && regName.getPath().contains("wireless")) {
 //            RSWirelessHandler.attach(event, MPSSettings::getModuleConfig);
-////            System.out.println("regname" + regName);
+////            NuminaLogger.logDebug("regname" + regName);
 ////            /*
 ////            refinedstorage:wireless_grid
 ////            refinedstorage:wireless_fluid_grid

@@ -100,9 +100,9 @@ public class CosmeticPresetSaveLoad {
 
                             if (nbt != null && name != null && !name.isEmpty()) {
                             if (retmap.containsKey("id"))
-                                System.out.println("MAP ALREADY HAS KEY");
+//                                NuminaLogger.logDebug("MAP ALREADY HAS KEY");
                             if (retmap.containsValue(nbt))
-                                System.out.println("MAP ALREADY HAS VALUE");
+//                                NuminaLogger.logDebug("MAP ALREADY HAS VALUE");
                                 retmap.put(name, nbt);
                             }
                         }

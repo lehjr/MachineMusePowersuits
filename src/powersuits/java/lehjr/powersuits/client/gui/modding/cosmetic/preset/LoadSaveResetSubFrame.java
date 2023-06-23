@@ -221,7 +221,7 @@
 ////     * switching to a new tab or when exiting the GUI altogether
 ////     */
 ////    public void onGuiClosed() {
-//////        System.out.println("creator gui closed and was editing: " + isEditing);
+//////        NuminaLogger.logDebug("creator gui closed and was editing: " + isEditing);
 ////        if (allowCosmeticPresetCreation && isEditing) {
 ////            for (ClickableItem clickie : itemSelector.itemButtons) {
 ////                checkAndFixItem(clickie);
@@ -275,10 +275,10 @@
 ////
 //////                    if (itemSelector.getLastItemSlot() != -1 && itemSelector.selectedItemStack != itemSelector.getLastItemSlot()) {
 //////
-//////                        System.out.println("previous item index: " + itemSelector.getSelectedItemSlot());
-//////                        System.out.println("current item index: " + itemSelector.getSelectedItemSlot());
+//////                        NuminaLogger.logDebug("previous item index: " + itemSelector.getSelectedItemSlot());
+//////                        NuminaLogger.logDebug("current item index: " + itemSelector.getSelectedItemSlot());
 //////
-//////                        System.out.println("this is where we would save the cosmetic preset tag for the previous item:");
+//////                        NuminaLogger.logDebug("this is where we would save the cosmetic preset tag for the previous item:");
 //////                    }
 ////
 ////                    if (saveButton.hitBox(x, y)) {

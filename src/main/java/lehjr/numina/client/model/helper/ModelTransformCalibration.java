@@ -156,7 +156,6 @@ public enum ModelTransformCalibration {
             }
 
             case GLFW.GLFW_KEY_KP_0 -> {
-                System.out.println("print here");
                 NuminaLogger.logError("xOffest: " + xOffest + ", yOffest: " + yOffest + ", zOffest: " + zOffest);
                 NuminaLogger.logError("xrot: " + angleX + ", yrot: " + angleY + ", zrot: " + angleZ);
                 NuminaLogger.logError("scaleModifier: " + scalemodifier);

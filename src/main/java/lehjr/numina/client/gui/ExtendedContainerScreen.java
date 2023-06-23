@@ -4,7 +4,6 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import lehjr.numina.client.gui.frame.IGuiFrame;
 import lehjr.numina.client.gui.geometry.IRect;
 import lehjr.numina.client.gui.geometry.MusePoint2D;
-import lehjr.numina.client.gui.geometry.Rect;
 import lehjr.numina.client.gui.slot.IHideableSlot;
 import lehjr.numina.client.gui.slot.IIConProvider;
 import lehjr.numina.common.math.Color;
@@ -53,17 +52,17 @@ public class ExtendedContainerScreen<T extends AbstractContainerMenu> extends Ab
                 super.renderSlot(matrixStack, slot);
             }
 //            else {
-//                System.out.println("index: "+ menu.slots.indexOf(slot));
+//                NuminaLogger.logDebug("index: "+ menu.slots.indexOf(slot));
 //            }
         } else {
             super.renderSlot(matrixStack, slot);
 
 
-//            System.out.println("index: "+ menu.slots.indexOf(slot) +", class: " + slot.getClass());
+//            NuminaLogger.logDebug("index: "+ menu.slots.indexOf(slot) +", class: " + slot.getClass());
         }
 
         if (slot instanceof IIConProvider && slot.getItem().isEmpty() && slot.isActive() ) {
-//            System.out.println("rendering");
+//            NuminaLogger.logDebug("rendering");
 
             this.setBlitOffset(100);
             this.itemRenderer.blitOffset = 100.0F;

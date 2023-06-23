@@ -101,7 +101,7 @@
 //                                if ((!isFiring && (itemState.equals("all") || itemState.equals("normal"))) ||
 //                                        (isFiring && (itemState.equals("all") || itemState.equals("firing")))) {
 //
-//                                    System.out.println("partname: " + partName);
+//                                    NuminaLogger.logDebug("partname: " + partName);
 //                                    matrixStack.push();
 //                                    matrixStack.translate(transform.getTranslation().getX(), transform.getTranslation().getY(), transform.getTranslation().getZ());
 //                                    matrixStack.rotate(transform.getRightRot());

@@ -275,7 +275,7 @@ public enum RenderEventHandler {
 //                                }
 //                                return iItemHandler.isModuleOnline(kb.registryName);
 //                            }).orElse(false);
-////                    System.out.println(kb.getKey().getName() +", " + kb.registryName + ", active: " + active);
+////                    NuminaLogger.logDebug(kb.getKey().getName() +", " + kb.registryName + ", active: " + active);
 //
 //                    // stop at the first active instance
 //                    if(active) {

@@ -133,7 +133,7 @@ public enum IconUtils {
         double yoffsetMax = textureEndY * (maxV - minV) * icomHeightDiv;
 
         Matrix4f matrix4f = poseStack.last().pose();
-//        System.out.println("textureStartX: " + textureStartX + ", textureEndX: " + textureEndX + ", textureStartY: " + textureStartY +", textureEndY: " + textureEndY);
+//        NuminaLogger.logDebug("textureStartX: " + textureStartX + ", textureEndX: " + textureEndX + ", textureStartY: " + textureStartY +", textureEndY: " + textureEndY);
         // top left
         bufferBuilder.vertex(matrix4f, (float) (posX + textureStartX), (float)(posY + textureStartY), 0);
         bufferBuilder.uv((float) (minU + xoffsetMin), (float) (minV + yoffsetMin));

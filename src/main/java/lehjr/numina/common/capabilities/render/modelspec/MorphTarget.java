@@ -73,8 +73,6 @@ public enum MorphTarget {
     }
 
     public static MorphTarget getMorph(final String name) {
-        System.out.println("trying to get binding from: " + name);
-
         return Arrays.stream(values()).filter(morph -> name.toLowerCase().equals(morph.name)).findAny().orElseGet(null);
     }
 

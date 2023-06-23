@@ -28,6 +28,7 @@ package lehjr.powersuits.client.model.helper;
 
 import com.mojang.math.Transformation;
 import lehjr.numina.client.model.helper.ModelHelper;
+import lehjr.numina.common.base.NuminaLogger;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -178,13 +179,13 @@ public class ModelTransformCalibration {
 
             if (isKeyPressed(GLFW.GLFW_KEY_KP_0)) {
 
-                System.out.println("FIXME: check consistency between using every coinstructor");
+                NuminaLogger.logDebug("FIXME: check consistency between using every coinstructor");
 
-                System.out.println("xOffest: " + xOffest + ", yOffest: " + yOffest + ", zOffest: " + zOffest);
-                System.out.println("xrot: " + angleX + ", yrot: " + angleY + ", zrot: " + angleZ);
-                System.out.println("scaleModifier: " + scalemodifier);
+                NuminaLogger.logDebug("xOffest: " + xOffest + ", yOffest: " + yOffest + ", zOffest: " + zOffest);
+                NuminaLogger.logDebug("xrot: " + angleX + ", yrot: " + angleY + ", zrot: " + angleZ);
+                NuminaLogger.logDebug("scaleModifier: " + scalemodifier);
 
-                System.out.println("ModelHelper.get(" + xOffest +", " + yOffest + ", " + zOffest + ", " + angleX + ", " + angleY+ ", " + angleZ + ", " + scalemodifier + ")" );
+                NuminaLogger.logDebug("ModelHelper.get(" + xOffest +", " + yOffest + ", " + zOffest + ", " + angleX + ", " + angleY+ ", " + angleZ + ", " + scalemodifier + ")" );
 
 
                 tap = true;

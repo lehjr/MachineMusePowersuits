@@ -2,6 +2,7 @@ package numina.client.lang;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.constants.NuminaConstants;
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataGenerator;
@@ -42,7 +43,7 @@ public class NuminaLangProvider implements DataProvider {
     public CompletableFuture<?> run(CachedOutput cache) {
         Path src = gen.getPackOutput().getOutputFolder().getParent().getParent().getParent();
         File langFolder = new File(src.toFile(), root + "/resources/assets/" + modid + "/lang");
-        System.out.println("source folder: " +langFolder);
+        NuminaLogger.logDebug("source folder: " +langFolder);
 
         if (langFolder.exists() && langFolder.isDirectory()) {
             ArrayList<File> files = ResourceList.getResourcesFromDirectory(langFolder, Pattern.compile(".json", Pattern.CASE_INSENSITIVE));
@@ -57,11 +58,11 @@ public class NuminaLangProvider implements DataProvider {
                 langMapWrappers.add(new NuminaLangMapWrapper(file, langMapWrappers.get(0)));
             });
 
-            System.out.println("modID: " + modid + ", output folder: " + gen.getPackOutput().getOutputFolder());
+            NuminaLogger.logDebug("modID: " + modid + ", output folder: " + gen.getPackOutput().getOutputFolder());
 
             langMapWrappers.forEach(wrapper -> wrapper.savetoOutputFolder(cache, gen.getPackOutput().getOutputFolder().resolve("assets/" + modid + "/lang/")));
         } else {
-            System.out.println("lang folder not found !!!:");
+            NuminaLogger.logDebug("lang folder not found !!!:");
         }
         return null;
     }

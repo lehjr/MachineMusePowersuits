@@ -131,7 +131,7 @@ public class NuminaArmorLayer<T extends LivingEntity, M extends HumanoidModel<T>
                         for (CompoundTag tag : NBTTagAccessor.getValues(renderTag)) {
                             PartSpecBase partSpec = NuminaModelSpecRegistry.getInstance().getPart(tag);
                             if (partSpec != null) {
-//                                System.out.println("partSpec class: " + partSpec.getClass());
+//                                NuminaLogger.logDebug("partSpec class: " + partSpec.getClass());
 
                                 int partColor;
                                 int ix = partSpec.getColorIndex(tag);
@@ -176,8 +176,6 @@ public class NuminaArmorLayer<T extends LivingEntity, M extends HumanoidModel<T>
                                     }
 
                                 }
-                            } else {
-                                System.out.println("render tag with null partSpec: " + tag);
                             }
                         }
                     }

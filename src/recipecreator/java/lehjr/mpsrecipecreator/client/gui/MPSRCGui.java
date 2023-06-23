@@ -100,18 +100,18 @@ public class MPSRCGui extends ExtendedContainerScreen<MPSRCMenu> {
                 return true;
             }
         }
-//        System.out.println("event listeners size:" + getEventListeners().size());
+//        NuminaLogger.logDebug("event listeners size:" + getEventListeners().size());
 //
 //
 ////        boolean test = super.mouseClicked(x, y, button);
-////        System.out.println("test: " + test);
+////        NuminaLogger.logDebug("test: " + test);
 ////        return test;
 //
 //        // pick block = middle mouse button (2)
 //        // attack button = left mouse button (0)
 //        // place block/use item = right mounse button (1)
 //
-//        System.out.println("selected slot index: " + getSelectedSlot(x, y) == null ? null : container.inventorySlots.indexOf(getSelectedSlot(x, y)));
+//        NuminaLogger.logDebug("selected slot index: " + getSelectedSlot(x, y) == null ? null : container.inventorySlots.indexOf(getSelectedSlot(x, y)));
 
 //            InputConstants.Key mouseKey = InputConstants.Type.MOUSE.getOrMakeInput(button);
 //            boolean flag = Minecraft.getInstance().gameSettings.keyBindPickBlock.isActiveAndMatches(mouseKey);

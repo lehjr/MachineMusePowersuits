@@ -3,7 +3,6 @@ package lehjr.mpsrecipecreator.client.gui;
 import com.mojang.blaze3d.vertex.PoseStack;
 import lehjr.numina.client.gui.IContainerULOffSet;
 import lehjr.numina.client.gui.frame.IGuiFrame;
-import lehjr.numina.client.gui.frame.InventoryFrame;
 import lehjr.numina.client.gui.frame.ScrollableFrame;
 import lehjr.numina.client.gui.geometry.MusePoint2D;
 import lehjr.numina.client.gui.geometry.Rect;
@@ -12,7 +11,6 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.IntStream;
 
 /**
  * @author lehjr

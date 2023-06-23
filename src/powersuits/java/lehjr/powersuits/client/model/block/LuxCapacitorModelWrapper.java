@@ -78,7 +78,7 @@ public class LuxCapacitorModelWrapper extends BakedModelWrapper<OBJBakedComposit
         if (extraData == ModelData.EMPTY) {
             extraData = LuxCapHelper.getItemModelData(color != null ? color.getARGBInt() : Color.WHITE.getARGBInt());
         }
-//        System.out.println("color: " + color);
+//        NuminaLogger.logDebug("color: " + color);
 
         return super.getQuads(state, side, rand, extraData, renderType); // BLOCKS render at line 126 of ModelBlockRenderer.tesselateWithoutAO(net.minecraft.world.level.BlockAndTintGetter, net.minecraft.client.resources.model.BakedModel, net.minecraft.world.level.block.state.BlockState, net.minecraft.core.BlockPos, com.mojang.blaze3d.vertex.PoseStack, com.mojang.blaze3d.vertex.VertexConsumer, boolean, net.minecraft.util.RandomSource, long, int, net.minecraftforge.client.model.data.ModelData, net.minecraft.client.renderer.RenderType)
     }

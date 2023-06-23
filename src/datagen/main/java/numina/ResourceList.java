@@ -1,5 +1,7 @@
 package numina;
 
+import lehjr.numina.common.base.NuminaLogger;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -33,7 +35,7 @@ public class ResourceList {
 //    }
 
     public static ArrayList<File> getResources(final String element, final Pattern pattern) {
-        System.out.println("element: " + element);
+        NuminaLogger.logDebug("element: " + element);
         return  getResources(new File(element), pattern);
     }
 
@@ -41,16 +43,16 @@ public class ResourceList {
         final ArrayList<File> retval = new ArrayList<>();
         if (file.exists()) {
             if (file.isDirectory()) {
-                System.out.println("is directory");
+                NuminaLogger.logDebug("is directory");
                 retval.addAll(getResourcesFromDirectory(file, pattern));
             } else {
-                System.out.println("is jar");
+                NuminaLogger.logDebug("is jar");
                 retval.addAll(getResourcesFromJarFile(file, pattern));
             }
         } else {
-            System.out.println("does not exist");
+            NuminaLogger.logDebug("does not exist");
         }
-        System.out.println("found " + retval.size() + " files");
+        NuminaLogger.logDebug("found " + retval.size() + " files");
         return retval;
     }
 
@@ -93,7 +95,7 @@ public class ResourceList {
                     final File fileName = file.getCanonicalFile();
                     // changed to find if contains a string vs matching entire string
                     final boolean accept = pattern.matcher(fileName.getCanonicalPath()).find();//.matches();
-                    System.out.println("pattern matches filename <" + fileName + ">: " + accept);
+                    NuminaLogger.logDebug("pattern matches filename <" + fileName + ">: " + accept);
                     if(accept){
                         retval.add(fileName);
                     }
@@ -121,7 +123,7 @@ public class ResourceList {
 //        }
 //        final Collection<String> list = ResourceList.getResources(pattern);
 //        for(final String name : list){
-//            System.out.println(name);
+//            NuminaLogger.logDebug(name);
 //        }
 //    }
 }

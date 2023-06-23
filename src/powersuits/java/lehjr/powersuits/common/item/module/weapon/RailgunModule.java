@@ -142,7 +142,7 @@ public class RailgunModule extends AbstractPowerModule {
                             entityLiving.push(-lookVec.x * knockback, Math.abs(-lookVec.y + 0.2f) * knockback, -lookVec.z * knockback);
                         }
 //                        else {
-//                            System.out.println("bolt not added");
+//                            NuminaLogger.logDebug("bolt not added");
 //                        }
                     }
                 }

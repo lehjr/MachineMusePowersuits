@@ -2,7 +2,6 @@ package lehjr.mpsrecipecreator.block;
 
 import lehjr.mpsrecipecreator.container.MPSRCMenu;
 import lehjr.numina.client.sound.SoundDictionary;
-import lehjr.numina.common.container.ChargingBaseMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;

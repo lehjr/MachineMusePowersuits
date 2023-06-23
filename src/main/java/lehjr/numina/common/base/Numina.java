@@ -32,7 +32,6 @@ import lehjr.numina.client.event.FOVUpdateEventHandler;
 import lehjr.numina.client.event.ModelBakeEventHandler;
 import lehjr.numina.client.event.ToolTipEvent;
 import lehjr.numina.client.gui.GuiIcon;
-import lehjr.numina.client.model.helper.ModelTransformCalibration;
 import lehjr.numina.client.render.IconUtils;
 import lehjr.numina.client.render.NuminaSpriteUploader;
 import lehjr.numina.client.screen.ArmorStandScreen;

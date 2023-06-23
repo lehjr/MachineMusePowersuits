@@ -62,7 +62,7 @@ public class PlasmaBoltEntityRenderer extends EntityRenderer<PlasmaBallEntity> {
     public void render(PlasmaBallEntity entityIn, float entityYaw, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn) {
         super.render(entityIn, entityYaw, partialTicks, matrixStackIn, bufferIn, packedLightIn);
         float size = entityIn.getChargePercent();//.getActualSize();
-//        System.out.println("size: " + size);
+//        NuminaLogger.logDebug("size: " + size);
 
         if(size > 0) {
             renderPlasma(matrixStackIn, bufferIn, size);//12.5F);
@@ -142,7 +142,7 @@ public class PlasmaBoltEntityRenderer extends EntityRenderer<PlasmaBallEntity> {
             return;
         }
 //        else {
-//            System.out.println("model class: " + model.getClass() +", quads: " + model.get().getQuads(null, null, rand/*, ModelData.EMPTY*/).size());
+//            NuminaLogger.logDebug("model class: " + model.getClass() +", quads: " + model.get().getQuads(null, null, rand/*, ModelData.EMPTY*/).size());
 //        }
 
         for (BakedQuad quad : model.get().getQuads(null, null, rand)) {

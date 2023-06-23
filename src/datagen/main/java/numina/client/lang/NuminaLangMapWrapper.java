@@ -3,6 +3,7 @@ package numina.client.lang;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
+import lehjr.numina.common.base.NuminaLogger;
 import net.minecraft.data.CachedOutput;
 import org.apache.commons.io.FilenameUtils;
 
@@ -68,17 +69,17 @@ public class NuminaLangMapWrapper {
 
     public void loadAndParse(File jsonFile) {
         this.locale = FilenameUtils.getBaseName(jsonFile.getName());
-        System.out.println("parsing file: " + jsonFile.getName());
-        System.out.println("this is default: " + thisIsDefault());
+        NuminaLogger.logDebug("parsing file: " + jsonFile.getName());
+        NuminaLogger.logDebug("this is default: " + thisIsDefault());
 
         Map<String, String> map = JSonLoader.parseJsonFile(jsonFile);
-        System.out.println("map size: " + map.size());
+        NuminaLogger.logDebug("map size: " + map.size());
 
 
         map.entrySet().stream().filter(entry -> !entry.getKey().equals("_comment"))
                 .forEach(entry -> addEntryToMap(entry));
-        System.out.println("data size: " + data.size());
-        System.out.println("extra data size: " + extraData.size());
+        NuminaLogger.logDebug("data size: " + data.size());
+        NuminaLogger.logDebug("extra data size: " + extraData.size());
 
     }
 

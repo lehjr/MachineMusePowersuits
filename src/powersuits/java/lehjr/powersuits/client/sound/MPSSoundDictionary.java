@@ -26,7 +26,6 @@
 
 package lehjr.powersuits.client.sound;
 
-import lehjr.numina.common.constants.NuminaConstants;
 import lehjr.powersuits.common.constants.MPSConstants;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;

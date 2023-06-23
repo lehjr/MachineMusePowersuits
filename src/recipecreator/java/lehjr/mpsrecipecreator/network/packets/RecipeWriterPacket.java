@@ -2,6 +2,7 @@ package lehjr.mpsrecipecreator.network.packets;
 
 import lehjr.mpsrecipecreator.basemod.DataPackWriter;
 import lehjr.mpsrecipecreator.basemod.config.Config;
+import lehjr.numina.common.base.NuminaLogger;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
@@ -23,7 +24,7 @@ public class RecipeWriterPacket {
         this.recipe = recipe;
         this.fileName = fileName;
 
-        System.out.println("filename: " + fileName);
+        NuminaLogger.logDebug("filename: " + fileName);
     }
 
     public static void encode(RecipeWriterPacket msg, FriendlyByteBuf packetBuffer) {
@@ -67,14 +68,14 @@ public class RecipeWriterPacket {
                     // Fixme?
                     datapackDir = Paths.get(gameFolderURI)
                             .resolve(server.getWorldData().getLevelName()).toAbsolutePath();
-                    System.out.println("dedicated server detected with datapackDir at: " + datapackDir.toString());
+                    NuminaLogger.logDebug("dedicated server detected with datapackDir at: " + datapackDir.toString());
                 } else {
                     // Fixme?
                     datapackDir = Paths.get(gameFolderURI)
                             .resolve("saves")
                             .resolve(server.getWorldData().getLevelName())
                             .toAbsolutePath();
-                    System.out.println("multiplayer without dedicated server detected with datapackDir at: " + datapackDir.toString());
+                    NuminaLogger.logDebug("multiplayer without dedicated server detected with datapackDir at: " + datapackDir.toString());
                 }
             } else {
                 if (Config.allowOppedPlayersToCreateOnServer()) {
@@ -88,11 +89,11 @@ public class RecipeWriterPacket {
 
             if(datapackDir != null && !message.recipe.isEmpty() && !message.fileName.isEmpty()) {
 
-                System.out.println("filename: " + message.fileName);
+                NuminaLogger.logDebug("filename: " + message.fileName);
 
                 DataPackWriter.INSTANCE.setDataFolder(datapackDir.toString());
 
-                System.out.println(DataPackWriter.INSTANCE.packMetaFile.getAbsolutePath());
+                NuminaLogger.logDebug(DataPackWriter.INSTANCE.packMetaFile.getAbsolutePath());
 
                 if (!DataPackWriter.INSTANCE.packMetaFile.exists()) {
                     DataPackWriter.INSTANCE.fileWriter(DataPackWriter.INSTANCE.packMetaFile, DataPackWriter.INSTANCE.getPackMCMeta(), false);
@@ -106,7 +107,7 @@ public class RecipeWriterPacket {
                     if(commandsourcestack.hasPermission(2)) {
                         player.sendSystemMessage(Component.literal("Server reloading data :P"));
                         int result = server.getCommands().performPrefixedCommand(player.createCommandSourceStack(), "reload");
-                        System.out.println("result of command: " + (result));
+                        NuminaLogger.logDebug("result of command: " + (result));
                     }
                 }
             }

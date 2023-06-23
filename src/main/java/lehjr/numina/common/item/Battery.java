@@ -84,7 +84,9 @@ public class Battery extends Item {
 
     @Override
     public int getBarWidth(ItemStack stack) {
-        return stack.getCapability(ForgeCapabilities.ENERGY).map(iEnergyStorage -> iEnergyStorage.getEnergyStored() * 13 / iEnergyStorage.getMaxEnergyStored()).orElse(1);
+        // prevent integer overflow by using double in calculation
+        double retVal = stack.getCapability(ForgeCapabilities.ENERGY).map(iEnergyStorage -> iEnergyStorage.getEnergyStored() * 13.0D / iEnergyStorage.getMaxEnergyStored()).orElse(1D);
+        return (int)retVal;
     }
 
     @Override

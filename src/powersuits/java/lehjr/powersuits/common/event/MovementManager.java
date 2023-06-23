@@ -176,7 +176,7 @@ public enum MovementManager {
                 player.setDeltaMovement(player.getDeltaMovement().add(0, thrust, 0));
             } else {
 
-//                System.out.println("thrust: " + thrust +", thrust * root2: " + (thrust * root2) );
+//                NuminaLogger.logDebug("thrust: " + thrust +", thrust * root2: " + (thrust * root2) );
 
                 player.setDeltaMovement(player.getDeltaMovement().add(
                         desiredDirection.x * thrust * root2 * boolToVal(playerInput.forwardKey),

@@ -1,6 +1,7 @@
 package lehjr.mpsrecipecreator.basemod;
 
 import com.google.gson.*;
+import lehjr.numina.common.base.NuminaLogger;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -44,7 +45,7 @@ public class ConditionsJsonLoader {
             JsonElement je = jp.parse(conditions.toString());
             String prettyJsonString = gson.toJson(je);
 
-            System.out.println("prettyJson: " + prettyJsonString);
+            NuminaLogger.logDebug("prettyJson: " + prettyJsonString);
 
             DataPackWriter.INSTANCE.fileWriter(jsonFile, prettyJsonString, false);
         }

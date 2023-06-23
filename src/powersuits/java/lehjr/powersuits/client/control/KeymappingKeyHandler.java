@@ -26,9 +26,6 @@
 
 package lehjr.powersuits.client.control;
 
-import lehjr.numina.client.gui.clickable.button.VanillaButton;
-import lehjr.numina.client.sound.Musique;
-import lehjr.numina.client.sound.SoundDictionary;
 import lehjr.numina.common.capabilities.NuminaCapabilities;
 import lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
@@ -39,19 +36,13 @@ import lehjr.numina.common.item.ItemUtils;
 import lehjr.numina.common.math.MathUtils;
 import lehjr.numina.common.network.NuminaPackets;
 import lehjr.numina.common.network.packets.PlayerUpdatePacket;
-import lehjr.powersuits.client.gui.keymap.TinkerKeymapGui;
-import lehjr.powersuits.client.gui.modding.cosmetic.CosmeticGui;
-import lehjr.powersuits.client.gui.modding.module.tweak.ModuleTweakGui;
 import lehjr.powersuits.client.gui.modechanging.GuiModeSelector;
-import lehjr.powersuits.common.network.MPSPackets;
-import lehjr.powersuits.common.network.packets.ContainerGuiOpenPacket;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
