@@ -1,9 +1,9 @@
 package net.machinemuse.numina.client.gui.clickable;
 
-import net.machinemuse.numina.math.Colour;
-import net.machinemuse.numina.math.MuseMathUtils;
-import net.machinemuse.numina.math.geometry.DrawableMuseRect;
-import net.machinemuse.numina.math.geometry.MusePoint2D;
+import net.machinemuse.numina.common.math.Colour;
+import net.machinemuse.numina.common.math.MuseMathUtils;
+import net.machinemuse.numina.client.gui.geometry.DrawableMuseRect;
+import net.machinemuse.numina.client.gui.geometry.MusePoint2D;
 import net.machinemuse.numina.client.render.MuseRenderer;
 import net.minecraft.client.resources.I18n;
 
@@ -42,17 +42,17 @@ public class ClickableSlider extends Clickable {
     }
 
     @Override
-    public void draw() {
+    public void render(double mouseX, double mouseY, float partialTicks) {
         MuseRenderer.drawCenteredString(I18n.format(label), position.getX(), position.getY());
         this.insideRect.setRight(position.getX() + width * (getValue() - 0.5) + cornersize);
-        this.outsideRect.draw();
-        this.insideRect.draw();
+        this.outsideRect.render(mouseX, mouseY, partialTicks);
+        this.insideRect.render(mouseX, mouseY, partialTicks);
     }
 
     @Override
-    public boolean hitBox(double x, double y) {
-        return Math.abs(position.getX() - x) < width / 2 &&
-                Math.abs(position.getY() + 12 - y) < 4;
+    public boolean containsPoint(double mouseX, double mouseY) {
+        return Math.abs(position.getX() - mouseX) < width / 2 &&
+                Math.abs(position.getY() + 12 - mouseY) < 4;
     }
 
     public double getValue() {

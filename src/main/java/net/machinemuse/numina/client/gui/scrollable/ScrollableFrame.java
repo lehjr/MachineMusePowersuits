@@ -1,17 +1,17 @@
 package net.machinemuse.numina.client.gui.scrollable;
 
+import net.machinemuse.numina.client.gui.IDrawable;
 import net.machinemuse.numina.client.gui.frame.IGuiFrame;
+import net.machinemuse.numina.client.gui.geometry.IRect;
 import net.machinemuse.numina.client.render.RenderState;
-import net.machinemuse.numina.math.Colour;
-import net.machinemuse.numina.math.MuseMathUtils;
-import net.machinemuse.numina.math.geometry.DrawableMuseRect;
-import net.machinemuse.numina.math.geometry.MusePoint2D;
+import net.machinemuse.numina.common.math.Colour;
+import net.machinemuse.numina.common.math.MuseMathUtils;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
 import java.util.List;
 
-public class ScrollableFrame implements IGuiFrame {
+public class ScrollableFrame<T extends IRect> implements IGuiFrame {
     protected final int buttonsize = 5;
     protected int totalsize;
     protected int currentscrollpixels;
@@ -19,11 +19,20 @@ public class ScrollableFrame implements IGuiFrame {
     protected boolean visibile = true;
     protected boolean enabled = true;
 
-    protected DrawableMuseRect border;
+    protected T border;
 
-    public ScrollableFrame(MusePoint2D topleft, MusePoint2D bottomright,
-                           Colour borderColour, Colour insideColour) {
-        border = new DrawableMuseRect(topleft, bottomright, borderColour, insideColour);
+    public ScrollableFrame(T rect) {
+        setRect(rect);
+    }
+
+    @Override
+    public IRect getRect() {
+        return border;
+    }
+
+    @Override
+    public void setRect(IRect rect) {
+        this.border = (T)rect;
     }
 
     protected double getScrollAmount() {
@@ -31,14 +40,14 @@ public class ScrollableFrame implements IGuiFrame {
     }
 
     @Override
-    public void update(double x, double y) {
-        if (border.containsPoint(x, y)) {
+    public void update(double mouseX, double mouseY) {
+        if (border.containsPoint(mouseX, mouseY)) {
             int dscroll = (lastdWheel - Mouse.getDWheel()) / 15;
             lastdWheel = Mouse.getDWheel();
             if (Mouse.isButtonDown(0)) {
-                if ((y - border.top()) < buttonsize && currentscrollpixels > 0) {
+                if ((mouseY - border.top()) < buttonsize && currentscrollpixels > 0) {
                     dscroll -= getScrollAmount();
-                } else if ((border.bottom() - y) < buttonsize) {
+                } else if ((border.bottom() - mouseY) < buttonsize) {
                     dscroll += getScrollAmount();
                 }
             }
@@ -46,8 +55,10 @@ public class ScrollableFrame implements IGuiFrame {
         }
     }
 
-    public void preDraw() {
-        border.draw();
+    public void preDraw(double mouseX, double mouseY, float partialTicks) {
+        if (border instanceof IDrawable) {
+            ((IDrawable) border).render(mouseX, mouseY, partialTicks);
+        }
         RenderState.glowOn();
         RenderState.texturelessOn();
         GL11.glBegin(GL11.GL_TRIANGLES);
@@ -70,15 +81,15 @@ public class ScrollableFrame implements IGuiFrame {
         RenderState.scissorsOn(border.left() + 4, border.top() + 4, border.width() - 8, border.height() - 8);
     }
 
-    public void postDraw() {
+    public void postDraw(double mouseX, double mouseY, float partialTicks) {
         RenderState.scissorsOff();
         RenderState.glowOff();
     }
 
     @Override
-    public void draw() {
-        preDraw();
-        postDraw();
+    public void render(double mouseX, double mouseY, float partialTicks) {
+        preDraw(mouseX, mouseY, partialTicks);
+        postDraw(mouseX, mouseY, partialTicks);
     }
 
     public void frameOff() {
@@ -115,20 +126,12 @@ public class ScrollableFrame implements IGuiFrame {
         return this.enabled;
     }
 
-    @Override
-    public void onMouseDown(double x, double y, int button) {
-    }
-
-    @Override
-    public void onMouseUp(double x, double y, int button) {
-    }
-
     public int getMaxScrollPixels() {
         return (int) Math.max(totalsize - border.height(), 0);
     }
 
     @Override
-    public List<String> getToolTip(int x, int y) {
+    public List<String> getToolTip(double mouseX, double mouseY) {
         return null;
     }
 }

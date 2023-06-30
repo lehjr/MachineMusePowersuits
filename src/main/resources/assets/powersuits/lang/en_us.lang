@@ -267,7 +267,7 @@ module.powersuits.magnet.desc=Generates a magnetic field strong enough to attrac
 
 # Vision
 module.powersuits.binoculars.name=Binoculars
-module.powersuits.binoculars.desc=With the problems that have been plagui.powersuits.g Optifine lately, you've decided to take that Zoom ability into your own hands.
+module.powersuits.binoculars.desc=With the problems that have been plaguing Optifine lately, you've decided to take that Zoom ability into your own hands.
 module.powersuits.nightVision.name=Night Vision
 module.powersuits.nightVision.desc=A pair of augmented vision goggles to help you see at night and underwater.
 module.powersuits.aurameter.name=Aurameter
@@ -383,6 +383,14 @@ gui.powersuits.saveAs=Save as:
 gui.powersuits.new=New
 gui.powersuits.savesuccessful=Save Successful
 
+# Keybinds
+key.powersuits.cycleToolForward=Cycle Tool Forward (MPS)
+key.powersuits.cycleToolBackward=Cycle Tool Backward (MPS)
+key.powersuits.goDownKey=Go Down (MPS Flight Control)
+key.powersuits.openKeybindGui=Open MPS Keybind GUI
+key.powersuits.openCosmeticGUI=Open MPS Cosmetic GUI
+key.powersuits.openTinkerGUI=Open MPS Tinker GUI
+key.powersuits.category.moduleToggle=MPS Module Toggle
 
 # Toooltips
 tooltip.powersuits.pressShift=Press SHIFT for more information.

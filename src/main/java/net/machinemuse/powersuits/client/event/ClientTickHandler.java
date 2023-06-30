@@ -1,23 +1,21 @@
 package net.machinemuse.powersuits.client.event;
 
 import net.machinemuse.numina.client.render.MuseRenderer;
-import net.machinemuse.numina.energy.ElectricItemUtils;
-import net.machinemuse.numina.heat.MuseHeatUtils;
-import net.machinemuse.numina.item.MuseItemUtils;
-import net.machinemuse.numina.math.MuseMathUtils;
-import net.machinemuse.numina.string.MuseStringUtils;
-import net.machinemuse.powersuits.api.constants.MPSModuleConstants;
-import net.machinemuse.powersuits.common.ModuleManager;
+import net.machinemuse.numina.common.energy.ElectricItemUtils;
+import net.machinemuse.numina.common.heat.MuseHeatUtils;
+import net.machinemuse.numina.common.item.MuseItemUtils;
+import net.machinemuse.numina.common.math.MuseMathUtils;
+import net.machinemuse.numina.common.string.MuseStringUtils;
+import net.machinemuse.powersuits.client.gui.hud.*;
+import net.machinemuse.powersuits.common.base.ModuleManager;
 import net.machinemuse.powersuits.common.config.MPSConfig;
-import net.machinemuse.powersuits.control.KeybindManager;
-import net.machinemuse.powersuits.gui.hud.*;
-import net.machinemuse.powersuits.gui.tinker.clickable.ClickableKeybinding;
-import net.machinemuse.powersuits.item.armor.ItemPowerArmorChestplate;
-import net.machinemuse.powersuits.item.armor.ItemPowerArmorHelmet;
-import net.machinemuse.powersuits.item.tool.ItemPowerFist;
-import net.machinemuse.powersuits.utils.modulehelpers.AutoFeederHelper;
-import net.machinemuse.powersuits.utils.modulehelpers.FluidUtils;
-import net.machinemuse.powersuits.utils.modulehelpers.PlasmaCannonHelper;
+import net.machinemuse.powersuits.common.constants.MPSModuleConstants;
+import net.machinemuse.powersuits.common.item.armor.ItemPowerArmorChestplate;
+import net.machinemuse.powersuits.common.item.armor.ItemPowerArmorHelmet;
+import net.machinemuse.powersuits.common.item.tool.ItemPowerFist;
+import net.machinemuse.powersuits.common.utils.modulehelpers.AutoFeederHelper;
+import net.machinemuse.powersuits.common.utils.modulehelpers.FluidUtils;
+import net.machinemuse.powersuits.common.utils.modulehelpers.PlasmaCannonHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.entity.player.EntityPlayer;
@@ -53,14 +51,15 @@ public class ClientTickHandler {
     private FluidUtils waterUtils;
     private FluidUtils fluidUtils;
 
-    @SubscribeEvent
-    public void onPreClientTick(TickEvent.ClientTickEvent event) {
-        if (event.phase == TickEvent.Phase.START) {
-            for (ClickableKeybinding kb : KeybindManager.getKeybindings()) {
-                kb.doToggleTick();
-            }
-        }
-    }
+    // FIXME shouldn't be needed
+//    @SubscribeEvent
+//    public void onPreClientTick(TickEvent.ClientTickEvent event) {
+//        if (event.phase == TickEvent.Phase.START) {
+//            for (MPSKeyBinding kb : KeybindManager.getKeybindings()) {
+//                kb.doToggleTick();
+//            }
+//        }
+//    }
 
     public void findInstalledModules(EntityPlayer player) {
         if (player != null) {

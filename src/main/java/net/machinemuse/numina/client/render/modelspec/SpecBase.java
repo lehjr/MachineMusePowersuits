@@ -1,7 +1,7 @@
 package net.machinemuse.numina.client.render.modelspec;
 
-import net.machinemuse.numina.map.MuseRegistry;
-import net.machinemuse.numina.math.Colour;
+import net.machinemuse.numina.common.map.MuseRegistry;
+import net.machinemuse.numina.common.math.Colour;
 
 import java.util.ArrayList;
 import java.util.List;

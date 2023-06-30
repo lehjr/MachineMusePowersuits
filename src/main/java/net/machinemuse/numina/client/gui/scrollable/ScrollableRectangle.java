@@ -1,11 +1,10 @@
 package net.machinemuse.numina.client.gui.scrollable;
 
-import net.machinemuse.numina.math.geometry.MusePoint2D;
-import net.machinemuse.numina.math.geometry.MuseRect;
-import net.machinemuse.numina.math.geometry.MuseRelativeRect;
+import net.machinemuse.numina.client.gui.geometry.MusePoint2D;
+import net.machinemuse.numina.client.gui.geometry.MuseRect;
 
-public class ScrollableRectangle extends MuseRelativeRect {
-    public ScrollableRectangle(MuseRelativeRect relativeRect) {
+public class ScrollableRectangle extends MuseRect {
+    public ScrollableRectangle(MuseRect relativeRect) {
         super(relativeRect.left(), relativeRect.top(), relativeRect.right(), relativeRect.bottom());
     }
 
@@ -21,7 +20,7 @@ public class ScrollableRectangle extends MuseRelativeRect {
         super(ul, br);
     }
 
-    public void draw() {
+    public void render(double mouseX, double mouseY, float partialTicks) {
     }
 
     public MuseRect getBorder() {

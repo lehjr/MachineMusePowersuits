@@ -3,7 +3,7 @@ package net.machinemuse.powersuits.client.event;
 import net.machinemuse.powersuits.client.model.block.ModelLuxCapacitor;
 import net.machinemuse.powersuits.client.model.helper.ModelHelper;
 import net.machinemuse.powersuits.client.model.item.ModelPowerFist;
-import net.machinemuse.powersuits.common.MPSItems;
+import net.machinemuse.powersuits.common.base.MPSItems;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.util.EnumFacing;

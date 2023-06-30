@@ -1,19 +1,19 @@
 package net.machinemuse.numina.client.gui.scrollable;
 
 import net.machinemuse.numina.client.gui.clickable.ClickableLabel;
-import net.machinemuse.numina.math.geometry.MusePoint2D;
-import net.machinemuse.numina.math.geometry.MuseRelativeRect;
+import net.machinemuse.numina.client.gui.geometry.MusePoint2D;
+import net.machinemuse.numina.client.gui.geometry.MuseRect;
 
 public class ScrollableLabel extends ScrollableRectangle {
     ClickableLabel label;
     boolean enabled = true;
 
-    public ScrollableLabel(String text, MuseRelativeRect relativeRect) {
+    public ScrollableLabel(String text, MuseRect relativeRect) {
         super(relativeRect);
-        this.label = new ClickableLabel(text, new MusePoint2D(relativeRect.centerx(), relativeRect.centery()));
+        this.label = new ClickableLabel(text, new MusePoint2D(relativeRect.centerX(), relativeRect.centerY()));
     }
 
-    public ScrollableLabel(ClickableLabel label, MuseRelativeRect relativeRect) {
+    public ScrollableLabel(ClickableLabel label, MuseRect relativeRect) {
         super(relativeRect);
         this.label = label;
     }
@@ -48,12 +48,12 @@ public class ScrollableLabel extends ScrollableRectangle {
     }
 
     public boolean hitbox(double x, double y) {
-        return enabled && label.hitBox(x, y);
+        return enabled && label.containsPoint(x, y);
     }
 
     @Override
-    public void draw() {
+    public void render(double mouseX, double mouseY, float partialTicks) {
         if (enabled)
-            label.draw();
+            label.render(mouseX, mouseY, partialTicks);
     }
 }

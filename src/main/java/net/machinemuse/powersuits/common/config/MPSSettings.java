@@ -3,17 +3,17 @@ package net.machinemuse.powersuits.common.config;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import com.google.gson.Gson;
-import net.machinemuse.numina.basemod.MuseLogger;
-import net.machinemuse.powersuits.api.constants.MPSConfigConstants;
-import net.machinemuse.powersuits.api.constants.MPSModuleConstants;
-import net.machinemuse.powersuits.common.InstallCost;
-import net.machinemuse.powersuits.common.MPSItems;
-import net.machinemuse.powersuits.common.ModuleManager;
-import net.machinemuse.powersuits.item.armor.ItemPowerArmorBoots;
-import net.machinemuse.powersuits.item.armor.ItemPowerArmorChestplate;
-import net.machinemuse.powersuits.item.armor.ItemPowerArmorHelmet;
-import net.machinemuse.powersuits.item.armor.ItemPowerArmorLeggings;
-import net.machinemuse.powersuits.item.tool.ItemPowerFist;
+import net.machinemuse.numina.common.base.MuseLogger;
+import net.machinemuse.powersuits.common.constants.MPSConfigConstants;
+import net.machinemuse.powersuits.common.constants.MPSModuleConstants;
+import net.machinemuse.powersuits.common.base.InstallCost;
+import net.machinemuse.powersuits.common.base.MPSItems;
+import net.machinemuse.powersuits.common.base.ModuleManager;
+import net.machinemuse.powersuits.common.item.armor.ItemPowerArmorBoots;
+import net.machinemuse.powersuits.common.item.armor.ItemPowerArmorChestplate;
+import net.machinemuse.powersuits.common.item.armor.ItemPowerArmorHelmet;
+import net.machinemuse.powersuits.common.item.armor.ItemPowerArmorLeggings;
+import net.machinemuse.powersuits.common.item.tool.ItemPowerFist;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -31,7 +31,7 @@ import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
 
-import static net.machinemuse.powersuits.api.constants.MPSModConstants.MODID;
+import static net.machinemuse.powersuits.common.constants.MPSModConstants.MODID;
 
 @Config(modid = MODID, name = MPSConfigConstants.CONFIG_FILE)
 public class MPSSettings {

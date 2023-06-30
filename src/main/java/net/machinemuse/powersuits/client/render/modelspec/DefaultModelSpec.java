@@ -1,10 +1,10 @@
 package net.machinemuse.powersuits.client.render.modelspec;
 
 import net.machinemuse.numina.client.render.modelspec.*;
-import net.machinemuse.numina.constants.ModelSpecTags;
+import net.machinemuse.numina.common.constants.ModelSpecTags;
 import net.machinemuse.powersuits.common.config.MPSConfig;
-import net.machinemuse.powersuits.item.armor.ItemPowerArmor;
-import net.machinemuse.powersuits.item.tool.ItemPowerFist;
+import net.machinemuse.powersuits.common.item.armor.ItemPowerArmor;
+import net.machinemuse.powersuits.common.item.tool.ItemPowerFist;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;

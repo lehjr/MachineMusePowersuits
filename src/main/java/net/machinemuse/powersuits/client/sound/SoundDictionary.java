@@ -7,7 +7,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 
-import static net.machinemuse.powersuits.common.ModularPowersuits.MODID;
+import static net.machinemuse.powersuits.common.base.ModularPowersuits.MODID;
 
 @Mod.EventBusSubscriber(modid = MODID, value = Side.CLIENT)
 public class SoundDictionary {

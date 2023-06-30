@@ -19,7 +19,7 @@
 
 package net.machinemuse.numina.client.model.obj;
 
-import net.machinemuse.numina.basemod.MuseLogger;
+import net.machinemuse.numina.common.base.MuseLogger;
 import net.minecraft.client.resources.IResource;
 import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.util.ResourceLocation;

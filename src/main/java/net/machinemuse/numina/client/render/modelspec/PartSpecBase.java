@@ -1,6 +1,6 @@
 package net.machinemuse.numina.client.render.modelspec;
 
-import net.machinemuse.numina.constants.ModelSpecTags;
+import net.machinemuse.numina.common.constants.ModelSpecTags;
 import net.minecraft.nbt.NBTTagCompound;
 
 import java.util.Objects;

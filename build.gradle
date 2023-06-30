@@ -34,6 +34,8 @@ idea {
     module {
         downloadJavadoc = true
         downloadSources = true
+//        inheritOutputDirs = true
+//        excludeDirs -= file("$buildDir")
     }
 }
 
@@ -557,20 +559,33 @@ if (System.getenv("CURSEFORGE_KEY") != null || project.hasProperty('curseforgeKe
     }
 }
 
-task processSource(type: Sync) {
-    for (def sourceSet : sourceSets) {
-        from sourceSet.java
-        println(sourceSet.toString())
+// FIXME: find a better way? (this makes everything take several times longer than needed and makes IDE think the outputDir is the source
+//task processSource(type: Sync) {
+//    for (def sourceSet : sourceSets) {
+//        from sourceSet.java
+//        println(sourceSet.toString())
+//
+//        inputs.property 'version', version
+//        filter(ReplaceTokens, tokens: [VERSION: project.version.toString(), numina_version: project.version.toString()])
+////        into "$buildDir/src"
+//    }
+//}
 
-        inputs.property 'version', version
-        filter(ReplaceTokens, tokens: [VERSION: project.version.toString(), numina_version: project.version.toString()])
-        into "$buildDir/src"
-    }
-}
+//compileJava {
+//    for (def sourceSet : sourceSets) {
+//        from sourceSet.java
+////        println(sourceSet.toString())
+//
+////        inputs.property 'version', version
+//        filter(ReplaceTokens, tokens: [VERSION: project.version.toString(), numina_version: project.version.toString()])
+//        into "$buildDir/src"
+//    }
+//}
 
-compileJava {
-    source = processSource.outputs
-}
+//
+//compileJava {
+//    source = processSource.outputs <--- specifically this
+//}
 
 fancyGradle {
     patches {

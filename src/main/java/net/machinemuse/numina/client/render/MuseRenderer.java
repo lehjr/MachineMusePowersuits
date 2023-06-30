@@ -1,9 +1,9 @@
 package net.machinemuse.numina.client.render;
 
-import net.machinemuse.numina.client.gui.IClickable;
-import net.machinemuse.numina.math.Colour;
-import net.machinemuse.numina.math.geometry.MusePoint2D;
-import net.machinemuse.numina.math.geometry.SwirlyMuseCircle;
+import net.machinemuse.numina.client.gui.clickable.IClickable;
+import net.machinemuse.numina.common.math.Colour;
+import net.machinemuse.numina.client.gui.geometry.MusePoint2D;
+import net.machinemuse.numina.client.gui.geometry.SwirlyMuseCircle;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.model.PositionTextureVertex;
@@ -19,7 +19,7 @@ import org.lwjgl.opengl.GL11;
 
 import java.util.List;
 
-import static net.machinemuse.numina.constants.NuminaConstants.LIGHTNING_TEXTURE;
+import static net.machinemuse.numina.common.constants.NuminaConstants.LIGHTNING_TEXTURE;
 
 
 /**
@@ -86,6 +86,9 @@ public abstract class MuseRenderer {
         drawString(s, x, y);
     }
 
+    public static void drawLeftAlignedStringString(String s, double x, double y, Colour colour) {
+        drawString(s, x, y, colour);
+    }
 
     public static double getStringWidth(String s) {
         double val;

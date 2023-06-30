@@ -1,14 +1,14 @@
 package net.machinemuse.numina.client.gui.scrollable;
 
 import net.machinemuse.numina.client.gui.clickable.ClickableSlider;
-import net.machinemuse.numina.math.geometry.MusePoint2D;
-import net.machinemuse.numina.math.geometry.MuseRelativeRect;
+import net.machinemuse.numina.client.gui.geometry.MusePoint2D;
+import net.machinemuse.numina.client.gui.geometry.MuseRect;
 
 public class ScrollableSlider extends ScrollableRectangle {
     ClickableSlider slider;
 
-    public ScrollableSlider(ClickableSlider slider, MuseRelativeRect relativeRect) {
-        super(relativeRect);
+    public ScrollableSlider(ClickableSlider slider, MuseRect rect) {
+        super(rect);
         this.slider = slider;
     }
 
@@ -40,11 +40,11 @@ public class ScrollableSlider extends ScrollableRectangle {
     }
 
     public boolean hitBox(double x, double y) {
-        return slider.hitBox(x, y);
+        return slider.containsPoint(x, y);
     }
 
     @Override
-    public void draw() {
-        slider.draw();
+    public void render(double mouseX, double mouseY, float partialTicks) {
+        slider.render(mouseX, mouseY, partialTicks);
     }
 }

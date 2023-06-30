@@ -2,8 +2,8 @@ package net.machinemuse.powersuits.common.config;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
-import net.machinemuse.numina.basemod.MuseLogger;
-import net.machinemuse.powersuits.utils.nbt.MPSNBTUtils;
+import net.machinemuse.numina.common.base.MuseLogger;
+import net.machinemuse.powersuits.common.utils.nbt.MPSNBTUtils;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompressedStreamTools;

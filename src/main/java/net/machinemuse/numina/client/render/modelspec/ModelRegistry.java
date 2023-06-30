@@ -2,9 +2,9 @@ package net.machinemuse.numina.client.render.modelspec;
 
 import net.machinemuse.numina.client.model.helper.MuseModelHelper;
 import net.machinemuse.numina.client.model.obj.MuseOBJModel;
-import net.machinemuse.numina.constants.ModelSpecTags;
-import net.machinemuse.numina.map.MuseRegistry;
-import net.machinemuse.numina.string.MuseStringUtils;
+import net.machinemuse.numina.common.constants.ModelSpecTags;
+import net.machinemuse.numina.common.map.MuseRegistry;
+import net.machinemuse.numina.common.string.MuseStringUtils;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;

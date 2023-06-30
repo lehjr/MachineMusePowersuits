@@ -1,7 +1,7 @@
 package net.machinemuse.powersuits.client.event;
 
 
-import net.machinemuse.powersuits.api.constants.MPSResourceConstants;
+import net.machinemuse.powersuits.common.constants.MPSResourceConstants;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.util.ResourceLocation;

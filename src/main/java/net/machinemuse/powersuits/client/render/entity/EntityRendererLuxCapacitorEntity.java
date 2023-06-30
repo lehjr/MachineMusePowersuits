@@ -1,9 +1,9 @@
 package net.machinemuse.powersuits.client.render.entity;
 
-import net.machinemuse.numina.math.Colour;
+import net.machinemuse.numina.common.math.Colour;
 import net.machinemuse.powersuits.client.model.block.ModelLuxCapacitor;
-import net.machinemuse.powersuits.common.MPSItems;
-import net.machinemuse.powersuits.entity.EntityLuxCapacitor;
+import net.machinemuse.powersuits.common.base.MPSItems;
+import net.machinemuse.powersuits.common.entity.EntityLuxCapacitor;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
@@ -17,7 +17,7 @@ import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.common.property.IExtendedBlockState;
 import org.lwjgl.opengl.GL11;
 
-import static net.machinemuse.powersuits.block.BlockLuxCapacitor.COLOR;
+import static net.machinemuse.powersuits.common.block.BlockLuxCapacitor.COLOR;
 
 public class EntityRendererLuxCapacitorEntity extends MuseEntityRenderer<EntityLuxCapacitor> {
     ModelLuxCapacitor luxCapacitorModel = new ModelLuxCapacitor();
