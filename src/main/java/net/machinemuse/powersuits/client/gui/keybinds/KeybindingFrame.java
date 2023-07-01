@@ -176,9 +176,9 @@ public class KeybindingFrame extends ScrollableFrame {
             MuseTextureUtils.popTexture();
             checkbox.render(mouseX, mouseY, partialTicks);
             if (keybindingToRemap != null && keybindingToRemap == kb) {
-                button.label = ChatFormatting.YELLOW + "> " + ChatFormatting.WHITE + Keyboard.getKeyName(kb.getKeyCode()) + ChatFormatting.YELLOW + " <";
+                button.label = ChatFormatting.YELLOW + "> " + ChatFormatting.WHITE + kb.getDisplayName() + ChatFormatting.YELLOW + " <";
             } else {
-                button.label = (keyCodeModifierConflict() ? ChatFormatting.RED : ChatFormatting.WHITE) + Keyboard.getKeyName(kb.getKeyCode());
+                button.label = (keyCodeModifierConflict() ? ChatFormatting.RED : ChatFormatting.WHITE) + kb.getDisplayName();
             }
             button.render(mouseX, mouseY, partialTicks);
         }
