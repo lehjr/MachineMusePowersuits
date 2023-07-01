@@ -17,16 +17,20 @@ import net.machinemuse.numina.common.module.IToggleableModule;
 import net.machinemuse.powersuits.client.control.KeybindManager;
 import net.machinemuse.powersuits.client.control.MPSKeyBinding;
 import net.machinemuse.numina.client.gui.clickable.ClickableButton;
+import net.machinemuse.powersuits.client.event.RenderEventHandler;
 import net.machinemuse.powersuits.common.base.ModuleManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiControls;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.translation.I18n;
+import net.minecraftforge.client.settings.KeyModifier;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 
 import javax.annotation.Nullable;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -55,7 +59,14 @@ public class KeybindingFrame extends ScrollableFrame {
 
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
-        return super.mouseClicked(mouseX, mouseY, button);
+        if (super.mouseClicked(mouseX, mouseY, button)) {
+            for (KeyBindSubFrame subframe : keyBindSubFrames) {
+                if (subframe.mouseClicked(mouseX, mouseY + getCurrentScrollPixels(), button)) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     @Override
@@ -68,209 +79,60 @@ public class KeybindingFrame extends ScrollableFrame {
         return super.mouseScrolled(mouseX, mouseY, dWheel);
     }
 
-    public void handleKeyboard() {
-        if (selecting && keybindingToRemap != null) {
-            if (Keyboard.getEventKeyState()) {
-                int key = Keyboard.getEventKey();
-
-
-
-
-//                if (key != 0 && key < 256)
-//                {
-//                    return key < 0 ? Mouse.isButtonDown(key + 100) : Keyboard.isKeyDown(key);
-//                }
-//                else
-//                {
-//                    return false;
-//                }
-
-
-
-
-
-//               see GuiControls.keyTyped();
-
-
-////                if (KeyBinding.HASH.containsItem(key)) {
-//                if (keyBindingHelper.keyBindingHasKey(key)) {
-//                    takenTime = System.currentTimeMillis();
-//                }
-////                if (!KeyBinding.HASH.containsItem(key)) {
-//                if (!keyBindingHelper.keyBindingHasKey(key)) {
-//                    addKeybind(key, true);
-//                } else if (MPSConfig.INSTANCE.allowConflictingKeybinds()) {
-//                    addKeybind(key, false);
-//                }
-                selecting = false;
-            }
-        }
-    }
-
     public void loadConditions() {
         this.keyBindSubFrames = new ArrayList<>();
         KeybindManager.INSTANCE.getMPSKeybinds()
                 .forEach(keyBinding -> {
-                    KeyBindSubFrame prev = keyBindSubFrames.size() > 0 ? keyBindSubFrames.get(keyBindSubFrames.size() -1) : null;
+                    KeyBindSubFrame prev = keyBindSubFrames.size() > 0 ? keyBindSubFrames.get(keyBindSubFrames.size() - 1) : null;
                     KeyBindSubFrame subFrame = new KeyBindSubFrame(left(), top(), width() - 8, keyBinding, prev);
                     keyBindSubFrames.add(subFrame);
                     this.totalSize += subFrame.height();
                 });
-
-//        System.out.println("keybinding sub frames size: " + keyBindSubFrames.size());
-//        System.out.println("other keybinding sub frames size: " + KeybindManager.INSTANCE.getMPSKeybinds().collect(Collectors.toList()).size());
     }
 
-//    static boolean isKeyPressed(int key) {
-//        return GLFW.glfwGetKey(Minecraft.getInstance().getWindow().getWindow(), key) == GLFW.GLFW_PRESS;
-//    }
-//
-//    @Override
-//    public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTick) {
-//        super.render(matrixStack, mouseX, mouseY, partialTick);
-//        if (this.isEnabled() && this.isVisible()) {
-//            super.preRender(matrixStack, mouseX, mouseY, partialTick);
-//            matrixStack.pushPose();
-//            matrixStack.translate(0.0, -this.currentScrollPixels, 0.0);
-//
-//            for (KeyBindSubFrame subframe : keyBindSubFrames) {
-//                subframe.render(matrixStack, mouseX, (int) (currentScrollPixels + mouseY), partialTick);
-//            }
-//            matrixStack.popPose();
-//            super.postRender(mouseX, mouseY, partialTick);
-//            scrollBar.render(matrixStack, mouseX, mouseY, partialTick);
-//        } else {
-//            super.preRender(matrixStack, mouseX, mouseY, partialTick);
-//            super.postRender(mouseX, mouseY, partialTick);
-//        }
-//    }
-//
-//    @Override
-//    public boolean mouseClicked(double mouseX, double mouseY, int button) {
-//        if (this.isEnabled() && this.isVisible()) {
-//            super.mouseClicked(mouseX, mouseY, button);
-//            if (scrollBar.mouseClicked(mouseX, mouseY, button)) {
-//                return true;
-//            }
-//
-//            for (KeyBindSubFrame subframe : keyBindSubFrames) {
-//                if (subframe.mouseClicked(mouseX, mouseY + getCurrentScrollPixels(), button)) {
-//                    return true;
-//                }
-//            }
-//        }
-//        return false;
-//    }
-//
-//    @Override
-//    public void update(double mouseX, double mouseY) {
-//        scrollBar.setMaxValue(getMaxScrollPixels());
-//        scrollBar.setValueByMouse(mouseY);
-//        setCurrentScrollPixels(scrollBar.getValue());
-//    }
-//
-//    @Override
-//    public boolean mouseScrolled(double mouseX, double mouseY, double dWheel) {
-//        boolean retVal = super.mouseScrolled(mouseX, mouseY, dWheel);
-//        scrollBar.setValue(currentScrollPixels);
-//        return retVal;
-//    }
-//
-//    @Override
-//    public boolean mouseReleased(double mouseX, double mouseY, int button) {
-//        if (this.isEnabled()) {
-//            return scrollBar.mouseReleased(mouseX, mouseY, button);
-//        }
-//        return super.mouseReleased(mouseX, mouseY, button);
-//    }
-//
-//    @Override
-//    public List<Component> getToolTip(double mouseX, double mouseY) {
-//        if (this.isEnabled() && this.isVisible()) {
-//            // Just because you can doesn't mean you should :P
-//            return keyBindSubFrames.stream().filter(subframe -> subframe.getToolTip(mouseX, (int) (mouseY + getCurrentScrollPixels())) !=null).map(subframe -> subframe.getToolTip(mouseX, (int) (mouseY + getCurrentScrollPixels()))).findFirst().orElse(null) ;
-//        }
-//        return super.getToolTip(mouseX, mouseY);
-//    }
+    @Override
+    public void keyTyped(char typedChar, int keyCode) throws IOException {
+        if (this.keybindingToRemap != null) {
+            if (keyCode == 1) {
+                this.keybindingToRemap.setKeyModifierAndCode(KeyModifier.NONE, 0);
+                Minecraft.getMinecraft().gameSettings.setOptionKeyBinding(this.keybindingToRemap, 0);
+            } else if (keyCode != 0) {
+                this.keybindingToRemap.setKeyModifierAndCode(KeyModifier.getActiveModifier(), keyCode);
+                Minecraft.getMinecraft().gameSettings.setOptionKeyBinding(this.keybindingToRemap, keyCode);
+            } else if (typedChar > 0) {
+                this.keybindingToRemap.setKeyModifierAndCode(KeyModifier.getActiveModifier(), typedChar + 256);
+                Minecraft.getMinecraft().gameSettings.setOptionKeyBinding(this.keybindingToRemap, typedChar + 256);
+            }
 
-//    class KeyBindSubFrame extends AbstractGuiFrame {
-//        @Nonnull
-//        IPowerModule module;
-//        public GuiCheckBox checkbox;
-//        public VanillaButton button;
-//        public MPSKeyMapping kb;
-//
-//        public KeyBindSubFrame(double left, double top, double width, MPSKeyBinding kb, KeyBindSubFrame aboveThis) {
-//            super(new Rect(left, top, left + width, top + 22).setBelow(aboveThis));
-//            this.kb = kb;
-//            this.module = ModuleManager.INSTANCE.getModule(kb.dataName);
-//            this.checkbox = new Checkbox(
-//                    left() + 25, // x
-//                    top(), // y
-//                    150, // width
-//                    //20, // height
-//                    Component.translatable(kb.getName()), kb.showOnHud);
-//
-//            this.checkbox.setOnPressed(pressed ->{
-//                kb.showOnHud = this.checkbox.isChecked();
-//                KeyMappingReaderWriter.INSTANCE.writeOutKeybindSetings();
-//                MPSKeyBindHud.makeKBDisplayList();
-////                RenderEventHandler.INSTANCE.makeKBDisplayList();
-//            });
-//
-//            this.button = new VanillaButton(right() - 97, top() + 1, 95, kb.getKey().getDisplayName(), true);
-//            this.button.setOnPressed(onPressed-> keybindingToRemap = kb);
-//        }
-//
-//        @Override
-//        public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTick) {
-//            super.render(matrixStack, mouseX, mouseY, partialTick);
-//            NuminaRenderer.drawModuleAt(matrixStack, left() + 2, top() + 3, module, true);
-//            checkbox.render(matrixStack, mouseX, mouseY, partialTick);
-//            if (keybindingToRemap != null && keybindingToRemap == kb) {
-//                button.setLabel((Component.literal("> ")).append(kb.getKey().getDisplayName().copy().withStyle(ChatFormatting.YELLOW)).append(" <").withStyle(ChatFormatting.YELLOW));
-//            } else {
-//                button.setLabel(kb.getKey().getDisplayName().copy().withStyle( /* keyCodeModifierConflict ? */ ChatFormatting.WHITE /*: ChatFormatting.RED*/));
-//            }
-//            button.render(matrixStack, mouseX, mouseY, partialTick);
-//        }
-//
-//        @Override
-//        public boolean mouseClicked(double mouseX, double mouseY, int button) {
-//            if(containsPoint(mouseX, mouseY) && this.isEnabled() && this.isVisible()) {
-//                return checkbox.mouseClicked(mouseX, mouseY, button) || this.button.mouseClicked(mouseX, mouseY, button);
-//            }
-//            return false;
-//        }
-//
-//        @Override
-//        public boolean mouseReleased(double mouseX, double mouseY, int button) {
-//            return checkbox.mouseReleased(mouseX, mouseY, button) || this.button.mouseReleased(mouseX, mouseY, button);
-//        }
-//
-//        @Nullable
-//        @Override
-//        public List<String> getToolTip(int x, int y) {
-//            if (checkbox.containsPoint(x, y)) {
-//                return Arrays.asList(Component.translatable("gui.powersuits.showOnHud"));
-//            }
-//            return super.getToolTip(x, y);
-//        }
-//    }
+            if (!KeyModifier.isKeyCodeModifier(keyCode))
+                this.keybindingToRemap = null;
+//            this.time = Minecraft.getSystemTime();
+            KeyBinding.resetKeyBindingArrayAndHash();
+        } else {
+            super.keyTyped(typedChar, keyCode);
+        }
+    }
 
 
     @Override
     public void render(double mouseX, double mouseY, float partialTicks) {
         super.preRender(mouseX, mouseY, partialTicks);
         GlStateManager.pushMatrix();
-
-//        System.out.println("current scroll pixels: " + currentScrollPixels);
-
         GlStateManager.translate(0, -currentScrollPixels, 0);
         keyBindSubFrames.forEach(subframe -> subframe.render(mouseX, mouseY, partialTicks));
         GlStateManager.popMatrix();
         super.postRender(mouseX, mouseY, partialTicks);
     }
+
+    @Override
+    public List<String> getToolTip(double mouseX, double mouseY) {
+        if (this.isEnabled() && this.isVisible()) {
+            // Just because you can doesn't mean you should :P
+            return keyBindSubFrames.stream().filter(subframe -> subframe.getToolTip(mouseX, (int) (mouseY + getCurrentScrollPixels())) != null).map(subframe -> subframe.getToolTip(mouseX, (int) (mouseY + getCurrentScrollPixels()))).findFirst().orElse(null);
+        }
+        return super.getToolTip(mouseX, mouseY);
+    }
+
 
     public class KeyBindSubFrame<T extends IRect> implements IGuiFrame {
         IPowerModule module;
@@ -289,24 +151,15 @@ public class KeybindingFrame extends ScrollableFrame {
                             top() + 4), // y
                     // width
                     //20, // height
-                    I18n.translateToLocal(module.getUnlocalizedName()+".name"), kb.showOnHud);
+                    I18n.translateToLocal(module.getUnlocalizedName() + ".name"), kb.showOnHud);
             // checkbox.setWidth(150);
-            this.checkbox.setOnPressed(pressed ->{
+            this.checkbox.setOnPressed(pressed -> {
                 kb.showOnHud = this.checkbox.isChecked();
                 KeybindManager.INSTANCE.writeOutKeybinds();
-//                MPSKeyBindHud.makeKBDisplayList(); // FIXME: will still need something if this nature
-//                RenderEventHandler.INSTANCE.makeKBDisplayList();
+                RenderEventHandler.makeKBDisplayList();
             });
-
-            // FIXME: keyCode can be negative?? but is an index?? so errors when looking up name (and probably when using)
-
-            this.button = new ClickableButton2(right() - 97, top() + 1,  95, true);
-
-
-//            Keyboard.getKeyName(kb.getKeyCode()),
-
-//        this.button.setWidth(95); // FIXME
-            this.button.setOnPressed(onPressed-> keybindingToRemap = kb);
+            this.button = new ClickableButton2(right() - 97, top() + 1, 95, true);
+            this.button.setOnPressed(onPressed -> keybindingToRemap = kb);
         }
 
         @Override
@@ -316,7 +169,7 @@ public class KeybindingFrame extends ScrollableFrame {
 
         @Override
         public void setRect(IRect rect) {
-            this.border = (T)rect;
+            this.border = (T) rect;
         }
 
         @Override
@@ -344,7 +197,7 @@ public class KeybindingFrame extends ScrollableFrame {
 
         @Override
         public boolean mouseClicked(double mouseX, double mouseY, int button) {
-            if(containsPoint(mouseX, mouseY)) {
+            if (containsPoint(mouseX, mouseY)) {
                 return checkbox.mouseClicked(mouseX, mouseY, button) || this.button.mouseClicked(mouseX, mouseY, button);
             }
             return false;

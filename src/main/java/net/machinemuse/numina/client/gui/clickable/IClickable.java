@@ -41,10 +41,6 @@ public interface IClickable {
 
     List getToolTip(double mouseX, double mouseY);
 
-    default boolean mouseCLicked(double mouseX, double mouseY, int button) {
-        return this.containsPoint(mouseX, mouseY) && isEnabled() && isVisible();
-    }
-
     void setOnPressed(IPressable onPressed);
 
     void setOnReleased(IReleasable onReleased);

@@ -2,6 +2,7 @@ package net.machinemuse.numina.client.gui.frame;
 
 import net.machinemuse.numina.client.gui.geometry.IRectWrapper;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface IGuiFrame extends IRectWrapper {
@@ -51,6 +52,10 @@ public interface IGuiFrame extends IRectWrapper {
      * @param partialTick
      */
     default void render(double mouseX, double mouseY, float partialTick) {
+    }
+
+
+    default void keyTyped(char typedChar, int keyCode) throws IOException {
     }
 
     /**

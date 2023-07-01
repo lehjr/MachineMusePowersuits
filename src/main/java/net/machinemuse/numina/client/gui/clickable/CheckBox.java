@@ -4,13 +4,13 @@ import net.machinemuse.numina.client.gui.geometry.DrawableTile;
 import net.machinemuse.numina.client.gui.geometry.MusePoint2D;
 import net.machinemuse.numina.client.render.MuseRenderer;
 import net.machinemuse.numina.common.math.Colour;
+import net.minecraft.client.Minecraft;
 
 import java.util.List;
 
 public class CheckBox extends Clickable {
     protected boolean isChecked;
     protected DrawableTile tile;
-
     String label;
     final int id;
 
@@ -55,6 +55,13 @@ public class CheckBox extends Clickable {
     @Override
     public List<String> getToolTip(double mouseX, double mouseY) {
         return null;
+    }
+
+    public void onPressed() {
+        if (this.isVisible() && this.isEnabled()) {
+            this.isChecked = !this.isChecked;
+        }
+        super.onPressed();
     }
 
     public boolean isChecked() {

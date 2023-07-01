@@ -1,4 +1,4 @@
-package net.machinemuse.powersuits.client.gui.module;
+package net.machinemuse.powersuits.client.gui.module.selection;
 
 import net.machinemuse.numina.client.gui.frame.IGuiFrame;
 import net.machinemuse.numina.client.gui.geometry.IRect;

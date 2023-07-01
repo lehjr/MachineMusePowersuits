@@ -105,7 +105,7 @@ public class ModeChangingItemWrapper extends ModularItemWrapper implements IMode
             int newindex = clampMode(modes.indexOf(this.getActiveMode()) + dMode, modes.size());
             int newmode = modes.get(newindex);
             this.setActiveMode(newmode);
-            System.out.println("this is where the packet would normally update");
+//            System.out.println("this is where the packet would normally update");
 
             // fixme
 //            PacketSender.sendToServer(new MusePacketModeChangeRequest(player, newmode, player.inventory.currentItem));

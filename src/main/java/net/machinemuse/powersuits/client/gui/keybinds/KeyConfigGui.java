@@ -49,14 +49,11 @@ public class KeyConfigGui extends MuseGui {
         frames.add(tabFrame);
     }
 
+
     @Override
-    public void handleKeyboardInput() {
-        try {
-            super.handleKeyboardInput();
-            frame.handleKeyboard();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public void keyTyped(char typedChar, int keyCode) throws IOException {
+        super.keyTyped(typedChar, keyCode);
+        frame.keyTyped(typedChar, keyCode);
     }
 
     @Override

@@ -1,4 +1,4 @@
-package net.machinemuse.powersuits.client.gui.module;
+package net.machinemuse.powersuits.client.gui.module.tinker;
 
 import net.machinemuse.numina.client.gui.geometry.DrawableMuseRect;
 import net.machinemuse.numina.client.gui.scrollable.ScrollableFrame;
@@ -15,7 +15,6 @@ import net.machinemuse.numina.client.gui.clickable.ClickableItem;
 import net.machinemuse.powersuits.client.gui.common.ClickableModule;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.SoundCategory;
-import org.lwjgl.opengl.GL11;
 
 import java.util.*;
 
@@ -153,22 +152,22 @@ public class ModuleSelectionFrame extends ScrollableFrame {
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
         if (super.mouseClicked(mouseX, mouseY, button)) {
-            return true;
-        }
-        if (left() < mouseX && right() > mouseX && top() < mouseY && bottom() > mouseY) {
-            mouseY += currentScrollPixels;
-            // loadModules();
-            int i = 0;
-            for (ClickableModule module : moduleButtons) {
-                if (module.containsPoint(mouseX, mouseY)) {
-                    Musique.playClientSound(SoundDictionary.SOUND_EVENT_GUI_SELECT, SoundCategory.BLOCKS, 1, null);
-                    selectedModule = i;
-                    prevSelection = module.getModule();
-                    return true;
-                } else {
-                    i++;
+            if (left() < mouseX && right() > mouseX && top() < mouseY && bottom() > mouseY) {
+                mouseY += currentScrollPixels;
+                // loadModules();
+                int i = 0;
+                for (ClickableModule module : moduleButtons) {
+                    if (module.containsPoint(mouseX, mouseY)) {
+                        Musique.playClientSound(SoundDictionary.SOUND_EVENT_GUI_SELECT, SoundCategory.BLOCKS, 1, null);
+                        selectedModule = i;
+                        prevSelection = module.getModule();
+                        return true;
+                    } else {
+                        i++;
+                    }
                 }
             }
+            return true;
         }
         return false;
     }

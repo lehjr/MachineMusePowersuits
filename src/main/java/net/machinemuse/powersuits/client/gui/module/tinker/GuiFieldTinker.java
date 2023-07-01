@@ -1,4 +1,4 @@
-package net.machinemuse.powersuits.client.gui.module;
+package net.machinemuse.powersuits.client.gui.module.tinker;
 
 import net.machinemuse.numina.client.render.MuseRenderer;
 import net.machinemuse.numina.common.math.Colour;

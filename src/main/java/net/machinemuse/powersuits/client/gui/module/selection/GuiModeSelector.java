@@ -1,4 +1,4 @@
-package net.machinemuse.powersuits.client.gui.module;
+package net.machinemuse.powersuits.client.gui.module.selection;
 
 import net.machinemuse.numina.client.gui.geometry.MusePoint2D;
 import net.machinemuse.numina.client.gui.MuseGui;
@@ -35,7 +35,7 @@ public class GuiModeSelector extends MuseGui {
 
     @Override
     public void drawBackground(double mouseX, double mouseY, float partialTick) {
-
+        this.drawDefaultBackground(); // Shading on the world view
     }
 
     @Override

@@ -130,6 +130,10 @@ public class MuseGui extends GuiScreen {
         }
     }
 
+    @Override
+    public void keyTyped(char typedChar, int keyCode) throws IOException {
+        super.keyTyped(typedChar, keyCode);
+    }
 
     /**
      * Returns the first ID in the list that is hit by a click
@@ -237,7 +241,9 @@ public class MuseGui extends GuiScreen {
     @Override
     public void mouseClicked(int mouseX, int mouseY, int button) {
         for (IGuiFrame frame : frames) {
-            frame.mouseClicked(mouseX, mouseY, button);
+            if (frame.mouseClicked(mouseX, mouseY, button)) {
+                return;
+            }
         }
     }
 

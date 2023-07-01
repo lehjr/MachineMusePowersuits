@@ -2,9 +2,9 @@ package net.machinemuse.powersuits.common.base;
 
 import net.machinemuse.powersuits.client.gui.cosmetic.CosmeticGui;
 import net.machinemuse.powersuits.client.gui.keybinds.KeyConfigGui;
-import net.machinemuse.powersuits.client.gui.module.GuiFieldTinker;
-import net.machinemuse.powersuits.client.gui.module.GuiModeSelector;
-import net.machinemuse.powersuits.client.gui.module.GuiTinkerTable;
+import net.machinemuse.powersuits.client.gui.module.tinker.GuiFieldTinker;
+import net.machinemuse.powersuits.client.gui.module.selection.GuiModeSelector;
+import net.machinemuse.powersuits.client.gui.module.tinker.GuiTinkerTable;
 import net.machinemuse.powersuits.common.container.PortableCraftingContainer;
 import net.machinemuse.powersuits.client.gui.crafting.PortableCraftingGui;
 import net.machinemuse.powersuits.common.container.ScannerContainer;

@@ -382,6 +382,7 @@ gui.powersuits.colourPrefix=Color:
 gui.powersuits.saveAs=Save as:
 gui.powersuits.new=New
 gui.powersuits.savesuccessful=Save Successful
+gui.powersuits.showOnHud=Show On Hud
 
 # Keybinds
 key.powersuits.cycleToolForward=Cycle Tool Forward (MPS)

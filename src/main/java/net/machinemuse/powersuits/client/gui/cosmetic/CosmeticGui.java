@@ -136,7 +136,7 @@ public class CosmeticGui extends MuseGui {
     }
 
     @Override
-    protected void keyTyped(char typedChar, int keyCode) throws IOException {
+    public void keyTyped(char typedChar, int keyCode) throws IOException {
         super.keyTyped(typedChar, keyCode);
         if (loadSaveResetSubFrame != null)
             loadSaveResetSubFrame.keyTyped(typedChar, keyCode);

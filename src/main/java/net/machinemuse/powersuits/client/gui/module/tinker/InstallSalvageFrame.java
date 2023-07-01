@@ -1,4 +1,4 @@
-package net.machinemuse.powersuits.client.gui.module;
+package net.machinemuse.powersuits.client.gui.module.tinker;
 
 import net.machinemuse.numina.client.gui.geometry.DrawableMuseRect;
 import net.machinemuse.numina.client.gui.scrollable.ScrollableFrame;
