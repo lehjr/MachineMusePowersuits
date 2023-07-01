@@ -13,6 +13,7 @@ import net.machinemuse.powersuits.client.sound.SoundDictionary;
 import net.machinemuse.powersuits.common.base.ModuleManager;
 import net.machinemuse.numina.client.gui.clickable.ClickableItem;
 import net.machinemuse.powersuits.client.gui.common.ClickableModule;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.SoundCategory;
 import org.lwjgl.opengl.GL11;
 
@@ -46,26 +47,26 @@ public class ModuleSelectionFrame extends ScrollableFrame {
             if (lastItem != target.getSelectedItem()) {
                 loadModules();
             }
-            this.totalsize = 0;
+            this.totalSize = 0;
             for (ModuleSelectionSubFrame frame : categories.values()) {
-                totalsize = (int) Math.max(frame.border.bottom() - this.border.top(), totalsize);
+                totalSize = (int) Math.max(frame.border.bottom() - top(), totalSize);
             }
-            this.currentscrollpixels = Math.min(currentscrollpixels, getMaxScrollPixels());
+            this.currentScrollPixels = Math.min(currentScrollPixels, getMaxScrollPixels());
 
-            super.preDraw(mouseX, mouseY, partialTicks);
-            GL11.glPushMatrix();
-            GL11.glTranslatef(0, -currentscrollpixels, 0);
+            super.preRender(mouseX, mouseY, partialTicks);
+            GlStateManager.pushMatrix();
+            GlStateManager.translate(0, -currentScrollPixels, 0);
             drawItems();
             drawSelection();
-            GL11.glPopMatrix();
-            super.postDraw(mouseX, mouseY, partialTicks);
+            GlStateManager.popMatrix();
+            super.postRender(mouseX, mouseY, partialTicks);
         }
     }
 
     private void drawItems() {
         for (ModuleSelectionSubFrame frame : categories.values()) {
-            frame.drawPartial((int) (this.currentscrollpixels + border.top() + 4),
-                    (int) (this.currentscrollpixels + border.top() + border.height() - 4));
+            frame.drawPartial((int) (this.currentScrollPixels + top() + 4),
+                    (int) (this.currentScrollPixels + top() + height() - 4));
         }
     }
 
@@ -73,7 +74,7 @@ public class ModuleSelectionFrame extends ScrollableFrame {
         ClickableModule module = getSelectedModule();
         if (module != null) {
             MusePoint2D pos = moduleButtons.get(selectedModule).getPosition();
-            if (pos.getY() > this.currentscrollpixels + border.top() + 4 && pos.getY() < this.currentscrollpixels + border.top() + border.height() - 4) {
+            if (pos.getY() > this.currentScrollPixels + top() + 4 && pos.getY() < this.currentScrollPixels + top() + height() - 4) {
                 MuseRenderer.drawCircleAround(pos.getX(), pos.getY(), 10);
             }
         }
@@ -134,10 +135,10 @@ public class ModuleSelectionFrame extends ScrollableFrame {
             return categories.get(category);
         } else {
             MuseRect position = new MuseRect(
-                    border.left() + 4,
-                    border.top() + 4,
-                    border.right() - 4,
-                    border.top() + 32);
+                    left() + 4,
+                    top() + 4,
+                    right() - 4,
+                    top() + 32);
             position.setBelow(lastPosition);
             lastPosition = position;
             ModuleSelectionSubFrame frame = new ModuleSelectionSubFrame(
@@ -154,8 +155,8 @@ public class ModuleSelectionFrame extends ScrollableFrame {
         if (super.mouseClicked(mouseX, mouseY, button)) {
             return true;
         }
-        if (border.left() < mouseX && border.right() > mouseX && border.top() < mouseY && border.bottom() > mouseY) {
-            mouseY += currentscrollpixels;
+        if (left() < mouseX && right() > mouseX && top() < mouseY && bottom() > mouseY) {
+            mouseY += currentScrollPixels;
             // loadModules();
             int i = 0;
             for (ClickableModule module : moduleButtons) {
@@ -174,8 +175,8 @@ public class ModuleSelectionFrame extends ScrollableFrame {
 
     @Override
     public List<String> getToolTip(double mouseX, double mouseY) {
-        if (border.left() < mouseX && border.right() > mouseX && border.top() < mouseY && border.bottom() > mouseY) {
-            mouseY += currentscrollpixels;
+        if (left() < mouseX && right() > mouseX && top() < mouseY && bottom() > mouseY) {
+            mouseY += currentScrollPixels;
             if (moduleButtons != null) {
                 int moduleHover = -1;
                 int i = 0;

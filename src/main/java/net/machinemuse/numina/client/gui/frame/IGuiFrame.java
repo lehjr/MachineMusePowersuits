@@ -41,7 +41,6 @@ public interface IGuiFrame extends IRectWrapper {
      * @param mouseY
      */
     default void update(double mouseX, double mouseY) {
-
     }
 
     /**
@@ -60,4 +59,34 @@ public interface IGuiFrame extends IRectWrapper {
      * @return tooltip or null if not returning tooltip;
      */
     List<String> getToolTip(double mouseX, double mouseY);
+
+    default void show() {
+    }
+
+    default void hide() {
+    }
+
+    default boolean isVisible() {
+        return true;
+    }
+
+    default void enable(){
+    }
+
+    default void disable() {
+    }
+
+    default boolean isEnabled() {
+        return true;
+    }
+
+    default void disableAndHide() {
+        disable();
+        hide();
+    }
+
+    default void enableAndShow() {
+        enable();
+        show();
+    }
 }

@@ -22,9 +22,7 @@ public class MPSKeyBinding extends KeyBinding {
         super(keybinding.getKeyDescription(), keybinding.getKeyCode(), keybinding.getKeyCategory());
         this.dataName = dataName;
         this.showOnHud = showOnHud;
-
     }
-
 
     public MPSKeyBinding(String dataName, String description, int keyCode, String category, boolean showOnHud) {
         super(description, keyCode, category);
@@ -40,18 +38,14 @@ public class MPSKeyBinding extends KeyBinding {
     }
 
     public void setKeyModifierAndCodeInternal(KeyModifier keyModifier, int keyCode) {
-        if (keyCode >= 0) {
-            super.setKeyModifierAndCode(keyModifier, keyCode);
-        }
+        super.setKeyModifierAndCode(keyModifier, keyCode);
     }
 
     @Override
     public void setKeyModifierAndCode(KeyModifier keyModifier, int keyCode) {
-        if (keyCode >= 0) {
-            super.setKeyModifierAndCode(keyModifier, keyCode);
-            KeybindManager.INSTANCE.writeOutKeybinds();
-            RenderEventHandler.makeKBDisplayList();
-        }
+        super.setKeyModifierAndCode(keyModifier, keyCode);
+        KeybindManager.INSTANCE.writeOutKeybinds();
+        RenderEventHandler.makeKBDisplayList();
     }
 
     /**

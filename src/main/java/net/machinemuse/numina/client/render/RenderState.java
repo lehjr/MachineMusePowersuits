@@ -90,7 +90,6 @@ public final class RenderState {
         GL11.glPushAttrib(GL11.GL_ENABLE_BIT | GL11.GL_SCISSOR_BIT);
         GL11.glPushMatrix();
         Minecraft mc = Minecraft.getMinecraft();
-        int dw = mc.displayWidth;
         int dh = mc.displayHeight;
         ScaledResolution res = new ScaledResolution(mc);
         double newx = x * res.getScaleFactor();

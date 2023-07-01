@@ -45,15 +45,15 @@ public class InstallSalvageFrame extends ScrollableFrame {
         this.player = player;
         this.targetItem = targetItem;
         this.targetModule = targetModule;
-        double sizex = border.right() - border.left();
-        double sizey = border.bottom() - border.top();
+        double sizex = right() - left();
+        double sizey = bottom() - top();
 
         this.installButton = new ClickableButton(I18n.format("gui.powersuits.install"), new MusePoint2D(
-                border.right() - sizex / 2.0, border.bottom() - sizey
+                right() - sizex / 2.0, bottom() - sizey
                 / 4.0),
                 true);
         this.salvageButton = new ClickableButton(I18n.format("gui.powersuits.salvage"), new MusePoint2D(
-                border.left() + sizex / 2.0, border.top() + sizey / 4.0),
+                left() + sizex / 2.0, top() + sizey / 4.0),
                 true);
 
     }
@@ -76,13 +76,13 @@ public class InstallSalvageFrame extends ScrollableFrame {
             NonNullList<ItemStack> itemsToCheck = ModuleManager.INSTANCE.getInstallCost(module.getDataName());
             double yoffset;
             if (!ModuleManager.INSTANCE.itemHasModule(stack, module.getDataName())) {
-                yoffset = border.top() + 4;
+                yoffset = top() + 4;
             } else {
-                yoffset = border.bottom() - 20;
+                yoffset = bottom() - 20;
             }
             if (yoffset + 16 > mouseY && yoffset < mouseY) {
                 double xoffset = -8.0 * itemsToCheck.size()
-                        + (border.left() + border.right()) / 2;
+                        + (left() + right()) / 2;
                 if (xoffset + 16 * itemsToCheck.size() > mouseX && xoffset < mouseX) {
                     int index = (int) (mouseX - xoffset) / 16;
                     return itemsToCheck.get(index).getTooltip(player, ITooltipFlag.TooltipFlags.NORMAL);
@@ -112,12 +112,12 @@ public class InstallSalvageFrame extends ScrollableFrame {
         NonNullList<ItemStack> itemsToDraw = ModuleManager.INSTANCE.getInstallCost(module.getDataName());
         double yoffset;
         if (!ModuleManager.INSTANCE.itemHasModule(stack, module.getDataName())) {
-            yoffset = border.top() + 4;
+            yoffset = top() + 4;
         } else {
-            yoffset = border.bottom() - 20;
+            yoffset = bottom() - 20;
         }
         double xoffset = -8.0 * itemsToDraw.size()
-                + (border.left() + border.right()) / 2;
+                + (left() + right()) / 2;
         int i = 0;
         for (ItemStack costItem : itemsToDraw) {
             MuseRenderer.drawItemAt(

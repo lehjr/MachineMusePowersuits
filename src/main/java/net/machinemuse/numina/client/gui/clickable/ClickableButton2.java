@@ -2,6 +2,7 @@ package net.machinemuse.numina.client.gui.clickable;
 
 import net.machinemuse.numina.client.gui.geometry.DrawableMuseRect;
 import net.machinemuse.numina.client.gui.geometry.MusePoint2D;
+import net.machinemuse.numina.client.render.MuseRenderer;
 import net.machinemuse.numina.common.math.Colour;
 
 import java.util.List;
@@ -14,13 +15,23 @@ public class ClickableButton2 extends DrawableMuseRect implements IClickable {
     boolean enabled = true;
     boolean visible = true;
 
-    String label;
+    public String label;
 
     Colour labelColor = Colour.WHITE;
 
 
-    public ClickableButton2(double left, double top,double width, boolean growFromMiddle, Colour insideColour, Colour outsideColour) {
-        super(left, top, left + width, top + 20, growFromMiddle, insideColour, outsideColour);
+    public ClickableButton2(double left, double top,double width, boolean enabled) {
+        super(left, top, left + width, top + 20, new Colour(0.5F, 0.6F, 0.8F, 1), new Colour(0.3F, 0.3F, 0.3F, 1));
+        this.enabled = enabled;
+    }
+
+    public ClickableButton2(double left, double top,double width, boolean enabled, Colour insideColour, Colour outsideColour) {
+        super(left, top, left + width, top + 20, insideColour, outsideColour);
+        this.enabled = enabled;
+    }
+
+    public ClickableButton2(double left, double top, double width) {
+        super(left, top, left + width, top + 20, new Colour(0.5F, 0.6F, 0.8F, 1), new Colour(0.3F, 0.3F, 0.3F, 1));
     }
 
     public ClickableButton2(double left, double top, double width, Colour insideColour, Colour outsideColour) {
@@ -30,7 +41,21 @@ public class ClickableButton2 extends DrawableMuseRect implements IClickable {
     @Override
     public void render(double mouseX, double mouseY, float partialTicks) {
         super.render(mouseX, mouseY, partialTicks);
-
+        if (visible) {
+            Colour topcolour;
+            Colour bottomcolour;
+            if (isEnabled()) {
+                topcolour = new Colour(0.5F, 0.6F, 0.8F, 1);
+                bottomcolour = new Colour(0.3F, 0.3F, 0.3F, 1);
+            } else {
+                topcolour = new Colour(0.8F, 0.3F, 0.3F, 1);
+                bottomcolour = new Colour(0.8F, 0.6F, 0.6F, 1);
+            }
+            setOutsideColour(topcolour);
+            setInsideColour(bottomcolour);
+            super.render(mouseX, mouseY, partialTicks);
+            MuseRenderer.drawCenteredString(this.label, centerX(), centerY() - 4);
+        }
     }
 
     @Override

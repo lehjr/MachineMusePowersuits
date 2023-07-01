@@ -66,7 +66,7 @@ public class CosmeticPresetContainer extends ScrollableFrame {
     }
 
     public CosmeticPresetSelectionSubframe createNewFrame(String label, CosmeticPresetSelectionSubframe prev) {
-        MuseRect newborder = new MuseRect(this.border.left() + 8, this.border.top() + 10, this.border.right(), this.border.top() + 24);
+        MuseRect newborder = new MuseRect(left() + 8, top() + 10, right(), top() + 24);
         newborder.setBelow((prev != null) ? prev.border : null);
         return new CosmeticPresetSelectionSubframe(label, new MusePoint2D(newborder.left(), newborder.centerY()),  this.itemSelect, newborder);
     }
@@ -98,7 +98,7 @@ public class CosmeticPresetContainer extends ScrollableFrame {
 //                subframe.updateItems();
                     x += subframe.border.bottom();
                 }
-                this.totalsize = (int) x;
+                this.totalSize = (int) x;
 //        }
                 if (colourSelect.decrAbove > -1) {
 //            decrAbove(colourSelect.decrAbove);
@@ -116,7 +116,7 @@ public class CosmeticPresetContainer extends ScrollableFrame {
         visibile = true;
     }
 
-    public boolean isVisibile() {
+    public boolean isVisible() {
         return visibile;
     }
 
@@ -135,14 +135,14 @@ public class CosmeticPresetContainer extends ScrollableFrame {
     @Override
     public void render(double mouseX, double mouseY, float partialTicks) {
         if (visibile) {
-            super.preDraw(mouseX, mouseY, partialTicks);
+            super.preRender(mouseX, mouseY, partialTicks);
             GL11.glPushMatrix();
-            GL11.glTranslated(0.0, (double) (-this.currentscrollpixels), 0.0);
+            GL11.glTranslated(0.0, (double) (-this.currentScrollPixels), 0.0);
             for (CosmeticPresetSelectionSubframe f : presetFrames) {
                 f.render(mouseX, mouseY, partialTicks);
             }
             GL11.glPopMatrix();
-            super.postDraw(mouseX, mouseY, partialTicks);
+            super.postRender(mouseX, mouseY, partialTicks);
         }
     }
 }

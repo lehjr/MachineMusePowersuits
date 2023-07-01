@@ -77,23 +77,23 @@ public class ModuleTweakFrame extends ScrollableFrame {
             GL11.glPushMatrix();
             GL11.glScaled(SCALERATIO, SCALERATIO, SCALERATIO);
             super.render(mouseX, mouseY, partialTicks);
-            MuseRenderer.drawCenteredString("Tinker", (border.left() + border.right()) / 2, border.top() + 2);
+            MuseRenderer.drawCenteredString("Tinker", (left() + right()) / 2, top() + 2);
             for (ClickableTinkerSlider slider : sliders) {
                 slider.render(mouseX, mouseY, partialTicks);
             }
-            int nexty = (int) (sliders.size() * 20 + border.top() + 23);
+            int nexty = (int) (sliders.size() * 20 + top() + 23);
             for (Map.Entry<String, Double> property : propertyStrings.entrySet()) {
                 String formattedValue = MuseStringUtils.formatNumberFromUnits(property.getValue(), PowerModuleBase.getUnit(property.getKey()));
                 String name = property.getKey();
                 double valueWidth = MuseRenderer.getStringWidth(formattedValue);
-                double allowedNameWidth = border.width() - valueWidth - margin * 2;
+                double allowedNameWidth = width() - valueWidth - margin * 2;
 
                 List<String> namesList = MuseStringUtils.wrapStringToVisualLength(
                         I18n.format(MPSModuleConstants.MODULE_TRADEOFF_PREFIX + name), allowedNameWidth);
                 for (int i = 0; i < namesList.size(); i++) {
-                    MuseRenderer.drawString(namesList.get(i), border.left() + margin, nexty + 9 * i);
+                    MuseRenderer.drawString(namesList.get(i), left() + margin, nexty + 9 * i);
                 }
-                MuseRenderer.drawRightAlignedString(formattedValue, border.right() - margin, nexty + 9 * (namesList.size() - 1) / 2);
+                MuseRenderer.drawRightAlignedString(formattedValue, right() - margin, nexty + 9 * (namesList.size() - 1) / 2);
                 nexty += 9 * namesList.size() + 1;
 
             }
@@ -124,10 +124,10 @@ public class ModuleTweakFrame extends ScrollableFrame {
         int y = 0;
         for (String tweak : tweaks) {
             y += 20;
-            MusePoint2D center = new MusePoint2D((border.left() + border.right()) / 2, border.top() + y);
+            MusePoint2D center = new MusePoint2D((left() + right()) / 2, top() + y);
             ClickableTinkerSlider slider = new ClickableTinkerSlider(
                     center,
-                    border.right() - border.left() - 8,
+                    right() - left() - 8,
                     moduleTag,
                     tweak, I18n.format(MPSModuleConstants.MODULE_TRADEOFF_PREFIX + tweak));
             sliders.add(slider);

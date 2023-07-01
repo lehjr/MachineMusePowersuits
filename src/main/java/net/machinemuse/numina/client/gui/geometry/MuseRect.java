@@ -75,6 +75,7 @@ public class MuseRect implements IRect{
         return wh.x;
     }
 
+     /** Left ---------------------------------- */
     @Override
     public IRect setLeft(double value) {
         ul.setX(value);
@@ -83,27 +84,19 @@ public class MuseRect implements IRect{
 
     @Override
     public double left() {
-        if (rightOfMe != null) {
-            return rightOfMe.right();
+        if (leftOfMe != null) {
+            return leftOfMe.right();
         }
         return ul.getX();
     }
 
     @Override
-    public IRect setRight(double value) {
-        wh.setX(value - ul.x);
+    public IRect setRightOf(IRect leftOfMe) {
+        this.leftOfMe = leftOfMe;
         return this;
     }
 
-    @Override
-    public double right() {
-        if (leftOfMe != null) {
-            return leftOfMe.left();
-        }
-        return left() + wh.getX();
-    }
-
-
+    /** Top ------------------------------------- */
     @Override
     public IRect setTop(double value) {
         ul.setY(value);
@@ -112,24 +105,10 @@ public class MuseRect implements IRect{
 
     @Override
     public double top() {
-        if (belowMe != null) {
-            return belowMe.bottom();
+        if (aboveMe != null) {
+            return aboveMe.bottom();
         }
         return ul.getY();
-    }
-
-    @Override
-    public IRect setBottom(double value) {
-        wh.setY(value - ul.y);
-        return this;
-    }
-
-    @Override
-    public double bottom() {
-        if (aboveMe != null) {
-            return aboveMe.top();
-        }
-        return top() + wh.getY();
     }
 
     @Override
@@ -138,10 +117,19 @@ public class MuseRect implements IRect{
         return this;
     }
 
+    /** Right ----------------------------------- */
     @Override
-    public IRect setAbove(IRect belowMe) {
-        this.belowMe = belowMe;
+    public IRect setRight(double value) {
+        wh.setX(value - ul.x);
         return this;
+    }
+
+    @Override
+    public double right() {
+        if (rightOfMe != null) {
+            return rightOfMe.left();
+        }
+        return left() + wh.getX();
     }
 
     @Override
@@ -150,9 +138,24 @@ public class MuseRect implements IRect{
         return this;
     }
 
+    /** Bottom ---------------------------------- */
     @Override
-    public IRect setRightOf(IRect leftOfMe) {
-        this.leftOfMe = leftOfMe;
+    public IRect setBottom(double value) {
+        wh.setY(value - ul.y);
+        return this;
+    }
+
+    @Override
+    public double bottom() {
+        if (belowMe != null) {
+            return belowMe.top();
+        }
+        return top() + wh.getY();
+    }
+
+    @Override
+    public IRect setAbove(IRect belowMe) {
+        this.belowMe = belowMe;
         return this;
     }
 }

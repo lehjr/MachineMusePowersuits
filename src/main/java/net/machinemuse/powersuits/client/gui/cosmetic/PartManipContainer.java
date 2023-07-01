@@ -102,7 +102,7 @@ public class PartManipContainer extends ScrollableFrame {
         if (enabled) {
             if (button == 0) {
                 for (PartSpecManipSubFrame frame : modelframes) {
-                    if (frame.mouseClicked(mouseX, mouseY + currentscrollpixels)) {
+                    if (frame.mouseClicked(mouseX, mouseY + currentScrollPixels)) {
                         return true;
                     }
                 }
@@ -124,7 +124,7 @@ public class PartManipContainer extends ScrollableFrame {
                     subframe.updateItems();
                     x += subframe.border.bottom();
                 }
-                this.totalsize = (int) x;
+                this.totalSize = (int) x;
             }
             if (colourSelect.decrAbove > -1) {
                 decrAbove(colourSelect.decrAbove);
@@ -141,7 +141,7 @@ public class PartManipContainer extends ScrollableFrame {
         visibile = true;
     }
 
-    public boolean isVisibile() {
+    public boolean isVisible() {
         return visibile;
     }
 
@@ -164,14 +164,14 @@ public class PartManipContainer extends ScrollableFrame {
     @Override
     public void render(double mouseX, double mouseY, float partialTicks) {
         if (visibile) {
-            super.preDraw(mouseX, mouseY, partialTicks);
+            super.preRender(mouseX, mouseY, partialTicks);
             GL11.glPushMatrix();
-            GL11.glTranslated(0.0, (double) (-this.currentscrollpixels), 0.0);
+            GL11.glTranslated(0.0, (double) (-this.currentScrollPixels), 0.0);
             for (PartSpecManipSubFrame f : modelframes) {
-                f.drawPartial(currentscrollpixels + 4 + border.top(), this.currentscrollpixels + border.bottom() - 4);
+                f.drawPartial(currentScrollPixels + 4 + top(), this.currentScrollPixels + bottom() - 4);
             }
             GL11.glPopMatrix();
-            super.postDraw(mouseX, mouseY, partialTicks);
+            super.postRender(mouseX, mouseY, partialTicks);
         }
     }
 }

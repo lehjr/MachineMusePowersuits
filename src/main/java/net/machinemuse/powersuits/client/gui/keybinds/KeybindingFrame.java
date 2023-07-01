@@ -2,6 +2,7 @@ package net.machinemuse.powersuits.client.gui.keybinds;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
 import net.machinemuse.numina.client.gui.clickable.CheckBox;
+import net.machinemuse.numina.client.gui.clickable.ClickableButton2;
 import net.machinemuse.numina.client.gui.frame.IGuiFrame;
 import net.machinemuse.numina.client.gui.geometry.DrawableMuseRect;
 import net.machinemuse.numina.client.gui.geometry.IRect;
@@ -18,9 +19,12 @@ import net.machinemuse.powersuits.client.control.MPSKeyBinding;
 import net.machinemuse.numina.client.gui.clickable.ClickableButton;
 import net.machinemuse.powersuits.common.base.ModuleManager;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiControls;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.translation.I18n;
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.input.Mouse;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -37,31 +41,57 @@ public class KeybindingFrame extends ScrollableFrame {
     NonNullList<IPowerModule> iPowerModules = NonNullList.create();
     boolean selecting;
 
-    protected int totalSize = 0;
-
     //    //    Map<MPSKeyBinding, Pair<Checkbox, VanillaButton>> checkBoxList = new HashMap<>();
 //    VanillaFrameScrollBar scrollBar;
     List<KeyBindSubFrame> keyBindSubFrames;
-
-
 
     public KeybindingFrame(MusePoint2D topleft, MusePoint2D bottomright, Colour borderColour, Colour insideColour) {
         super(new DrawableMuseRect(topleft, bottomright, borderColour, insideColour));
         keybindingToRemap = null;
         iPowerModules.addAll(ModuleManager.INSTANCE.getModuleMap().values().stream().filter(IToggleableModule.class::isInstance).collect(Collectors.toList()));
-        System.out.println("registered KB size: " + KeybindManager.INSTANCE.getMPSKeybinds().collect(Collectors.toList()).size());
-
-
-
         selecting = false;
         loadConditions();
-        System.out.println("powermodule list size: " + iPowerModules.size());
+    }
+
+    @Override
+    public boolean mouseClicked(double mouseX, double mouseY, int button) {
+        return super.mouseClicked(mouseX, mouseY, button);
+    }
+
+    @Override
+    public boolean mouseReleased(double mouseX, double mouseY, int button) {
+        return super.mouseReleased(mouseX, mouseY, button);
+    }
+
+    @Override
+    public boolean mouseScrolled(double mouseX, double mouseY, double dWheel) {
+        return super.mouseScrolled(mouseX, mouseY, dWheel);
     }
 
     public void handleKeyboard() {
         if (selecting && keybindingToRemap != null) {
             if (Keyboard.getEventKeyState()) {
                 int key = Keyboard.getEventKey();
+
+
+
+
+//                if (key != 0 && key < 256)
+//                {
+//                    return key < 0 ? Mouse.isButtonDown(key + 100) : Keyboard.isKeyDown(key);
+//                }
+//                else
+//                {
+//                    return false;
+//                }
+
+
+
+
+
+//               see GuiControls.keyTyped();
+
+
 ////                if (KeyBinding.HASH.containsItem(key)) {
 //                if (keyBindingHelper.keyBindingHasKey(key)) {
 //                    takenTime = System.currentTimeMillis();
@@ -79,9 +109,7 @@ public class KeybindingFrame extends ScrollableFrame {
 
     public void loadConditions() {
         this.keyBindSubFrames = new ArrayList<>();
-        Arrays.stream(Minecraft.getMinecraft().gameSettings.keyBindings)
-                .filter(MPSKeyBinding.class::isInstance)
-                .map(MPSKeyBinding.class::cast)
+        KeybindManager.INSTANCE.getMPSKeybinds()
                 .forEach(keyBinding -> {
                     KeyBindSubFrame prev = keyBindSubFrames.size() > 0 ? keyBindSubFrames.get(keyBindSubFrames.size() -1) : null;
                     KeyBindSubFrame subFrame = new KeyBindSubFrame(left(), top(), width() - 8, keyBinding, prev);
@@ -231,24 +259,37 @@ public class KeybindingFrame extends ScrollableFrame {
 //    }
 
 
+    @Override
+    public void render(double mouseX, double mouseY, float partialTicks) {
+        super.preRender(mouseX, mouseY, partialTicks);
+        GlStateManager.pushMatrix();
+
+//        System.out.println("current scroll pixels: " + currentScrollPixels);
+
+        GlStateManager.translate(0, -currentScrollPixels, 0);
+        keyBindSubFrames.forEach(subframe -> subframe.render(mouseX, mouseY, partialTicks));
+        GlStateManager.popMatrix();
+        super.postRender(mouseX, mouseY, partialTicks);
+    }
+
     public class KeyBindSubFrame<T extends IRect> implements IGuiFrame {
         IPowerModule module;
         public CheckBox checkbox;
-        public ClickableButton button;
+        public ClickableButton2 button;
         public MPSKeyBinding kb;
         T border;
 
         public KeyBindSubFrame(double left, double top, double width, MPSKeyBinding kb, KeyBindSubFrame aboveThis) {
-            setRect(new MuseRect(left, top, left + width, top + 22));
+            setRect(new MuseRect(left, top, left + width, top + 22, false));
             setBelow(aboveThis);
             this.kb = kb;
             this.module = ModuleManager.INSTANCE.getModule(kb.dataName);
             this.checkbox = new CheckBox(-1,
-                    new MusePoint2D(left() + 25, // x
-                            top()), // y
+                    new MusePoint2D(left() + 28, // x
+                            top() + 4), // y
                     // width
                     //20, // height
-                    module.getUnlocalizedName(), kb.showOnHud);
+                    I18n.translateToLocal(module.getUnlocalizedName()+".name"), kb.showOnHud);
             // checkbox.setWidth(150);
             this.checkbox.setOnPressed(pressed ->{
                 kb.showOnHud = this.checkbox.isChecked();
@@ -259,7 +300,11 @@ public class KeybindingFrame extends ScrollableFrame {
 
             // FIXME: keyCode can be negative?? but is an index?? so errors when looking up name (and probably when using)
 
-            this.button = new ClickableButton(Keyboard.getKeyName(kb.getKeyCode()), new MusePoint2D(right() - 97, top() + 1),  true);
+            this.button = new ClickableButton2(right() - 97, top() + 1,  95, true);
+
+
+//            Keyboard.getKeyName(kb.getKeyCode()),
+
 //        this.button.setWidth(95); // FIXME
             this.button.setOnPressed(onPressed-> keybindingToRemap = kb);
         }
@@ -277,7 +322,7 @@ public class KeybindingFrame extends ScrollableFrame {
         @Override
         public void render(double mouseX, double mouseY, float partialTicks) {
             MuseTextureUtils.pushTexture(MuseTextureUtils.TEXTURE_QUILT);
-            MuseIconUtils.drawIconAt(left() + 2, top() + 3, module.getIcon(null), Colour.WHITE);
+            MuseIconUtils.drawIconAt(left() + 6, top() + 3, module.getIcon(null), Colour.WHITE);
             MuseTextureUtils.popTexture();
             checkbox.render(mouseX, mouseY, partialTicks);
             if (keybindingToRemap != null && keybindingToRemap == kb) {

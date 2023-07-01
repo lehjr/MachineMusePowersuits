@@ -7,6 +7,7 @@ import net.machinemuse.numina.common.module.IToggleableModule;
 import net.machinemuse.powersuits.client.event.RenderEventHandler;
 import net.machinemuse.powersuits.common.base.ModuleManager;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.settings.GameSettings;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraftforge.client.settings.KeyModifier;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
@@ -162,6 +163,9 @@ public enum KeybindManager {
     }
 
     public String parseName(KeyBinding keybind) {
+        // FIXME: see GameSettings.getKeyDisplayString(int key)
+
+
         if (keybind.getKeyCode() < 0) {
             return "Mouse" + (keybind.getKeyCode() + 100);
         } else {

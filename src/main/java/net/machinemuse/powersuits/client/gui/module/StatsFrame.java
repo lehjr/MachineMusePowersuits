@@ -39,8 +39,8 @@ public class StatsFrame extends ScrollableFrame {
             double propValue = MuseItemUtils.getDoubleOrZero(properties, propName);
             String propValueString = String.format("%.2f", propValue);
             double strlen = MuseRenderer.getStringWidth(propValueString);
-            MuseRenderer.drawString(propName, border.left() + xoffset, border.top() + yoffset + i * 10);
-            MuseRenderer.drawString(propValueString, border.bottom() - xoffset - strlen - 40, border.top() + yoffset + i * 10);
+            MuseRenderer.drawString(propName, left() + xoffset, top() + yoffset + i * 10);
+            MuseRenderer.drawString(propValueString, bottom() - xoffset - strlen - 40, top() + yoffset + i * 10);
             i++;
         }
         GL11.glPopMatrix();

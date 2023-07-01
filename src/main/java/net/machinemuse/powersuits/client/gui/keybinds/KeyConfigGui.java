@@ -8,6 +8,7 @@ import net.machinemuse.powersuits.client.gui.common.TabSelectFrame;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.entity.player.EntityPlayer;
+import org.lwjgl.input.Mouse;
 
 import java.io.IOException;
 

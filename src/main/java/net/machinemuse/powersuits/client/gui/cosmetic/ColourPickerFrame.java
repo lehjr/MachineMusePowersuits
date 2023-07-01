@@ -22,6 +22,7 @@ import net.machinemuse.powersuits.common.network.packets.MusePacketColourInfo;
 import net.machinemuse.powersuits.common.utils.nbt.MPSNBTUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagCompound;
@@ -52,9 +53,7 @@ public class ColourPickerFrame<T extends IRect> extends ScrollableFrame {
     public ScrollableSlider aslider;
     ScrollableColourBox colourBox;
     String COLOUR_PREFIX = I18n.format("gui.powersuits.colourPrefix");
-
     public ScrollableLabel colourLabel;
-
     public ScrollableSlider selectedSlider;
     public int selectedColour;
     public int decrAbove;
@@ -64,7 +63,7 @@ public class ColourPickerFrame<T extends IRect> extends ScrollableFrame {
         super(new DrawableMuseRect(topleft, bottomright, borderColour, insideColour));
         this.itemSelector = itemSelector;
         this.rectangles = new ScrollableRectangle[6];
-        this.totalsize = 120;
+        this.totalSize = 120;
 
         // sliders boxes 0-3
         this.rslider = getScrollableSlider("red", null, 0);
@@ -73,12 +72,12 @@ public class ColourPickerFrame<T extends IRect> extends ScrollableFrame {
         this.aslider = getScrollableSlider("alpha", bslider, 3);
 
         // box 4 is for the color icon stuff
-        this.colourBox = new ScrollableColourBox(new MuseRect(border.left(), this.aslider.bottom(), this.border.right(), this.aslider.bottom()+ 25));
+        this.colourBox = new ScrollableColourBox(new MuseRect(left(), this.aslider.bottom(), right(), this.aslider.bottom()+ 25));
         this.colourBox.setBelow(aslider);
         rectangles[4] = colourBox;
 
         // box 5 is the label
-        MuseRect colourLabelBox = new MuseRect(border.left(), this.colourBox.bottom(), this.border.right(), this.colourBox.bottom() + 20);
+        MuseRect colourLabelBox = new MuseRect(left(), this.colourBox.bottom(), right(), this.colourBox.bottom() + 20);
         this.colourLabel = new ScrollableLabel(
                 new ClickableLabel(COLOUR_PREFIX, new MusePoint2D(colourLabelBox.centerX(), colourLabelBox.centerY())), colourLabelBox);
 
@@ -92,11 +91,11 @@ public class ColourPickerFrame<T extends IRect> extends ScrollableFrame {
     }
 
     public ScrollableSlider getScrollableSlider(String id, ScrollableRectangle prev, int index) {
-        MuseRect newborder = new MuseRect(border.left(), prev != null ? prev.bottom() : this.border.top(),
-                this.border.right(), (prev != null ? prev.bottom() : this.border.top()) + 18);
-        ClickableSlider slider =
-                new ClickableSlider(new MusePoint2D(newborder.centerX(), newborder.centerY()), newborder.width() - 15, id,
-                        I18n.format(MPSModuleConstants.MODULE_TRADEOFF_PREFIX + id));
+        MuseRect newborder = new MuseRect(left(), prev != null ? prev.bottom() : top(), right(), (prev != null ? prev.bottom() : top()) + 18);
+        ClickableSlider slider = new ClickableSlider(new MusePoint2D(newborder.centerX(),
+                newborder.centerY()),
+                newborder.width() - 15, id,
+                I18n.format(MPSModuleConstants.MODULE_TRADEOFF_PREFIX + id));
         ScrollableSlider scrollableSlider = new ScrollableSlider(slider, newborder);
         scrollableSlider.setBelow((prev != null) ? prev : null);
         rectangles[index] = scrollableSlider;
@@ -189,21 +188,21 @@ public class ColourPickerFrame<T extends IRect> extends ScrollableFrame {
 
     @Override
     public void render(double mouseX, double mouseY, float partialTicks) {
-        if (this.isVisibile()) {
-            this.currentscrollpixels = Math.min(currentscrollpixels, getMaxScrollPixels());
+        if (this.isVisible()) {
+            setCurrentScrollPixels(Math.min(getCurrentScrollPixels(), getMaxScrollPixels()));
 
             if (colours().length > selectedColour) {
                 colourLabel.setText(COLOUR_PREFIX + " 0X" + new Colour(colours()[selectedColour]).hexColour());
             }
 
-            super.preDraw(mouseX, mouseY, partialTicks);
-            GL11.glPushMatrix();
-            GL11.glTranslatef(0, -currentscrollpixels, 0);
+            super.preRender(mouseX, mouseY, partialTicks);
+            GlStateManager.pushMatrix();
+            GlStateManager.translate(0, - getCurrentScrollPixels(), 0);
             for (ScrollableRectangle f : rectangles) {
                 f.render(mouseX, mouseY, partialTicks);
             }
-            GL11.glPopMatrix();
-            super.postDraw(mouseX, mouseY, partialTicks);
+            GlStateManager.popMatrix();
+            super.postRender(mouseX, mouseY, partialTicks);
         }
     }
 
@@ -225,7 +224,7 @@ public class ColourPickerFrame<T extends IRect> extends ScrollableFrame {
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
         boolean retVal = false;
         if (this.isEnabled()) {
-            mouseY = mouseY + currentscrollpixels;
+            mouseY = mouseY + getCurrentScrollPixels();
             if (this.rslider.hitBox(mouseX, mouseY)) {
                 this.selectedSlider = this.rslider;
                 retVal = true;

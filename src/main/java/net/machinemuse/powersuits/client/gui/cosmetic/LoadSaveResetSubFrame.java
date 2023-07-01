@@ -165,13 +165,13 @@ public class LoadSaveResetSubFrame<T extends IRect> implements IGuiFrame {
 
     void colourPickerSetOpen() {
         this.border.setTop(originalTop).setHeight(originalHeight);
-        colourpicker.frameOn();
+        colourpicker.enableAndShow();
         saveAsLabel.setEnabled(false);
     }
 
     void colourpickerSetClosed() {
         this.border.setTop(colourpicker.top()).setHeight(newHeight);
-        colourpicker.frameOff();
+        colourpicker.disableAndHide();
     }
 
     void textInputOn () {
@@ -189,13 +189,13 @@ public class LoadSaveResetSubFrame<T extends IRect> implements IGuiFrame {
     }
 
     void showPresetFrame() {
-        cosmeticFrame.frameOn();
-        partframe.frameOff();
+        cosmeticFrame.enableAndShow();
+        partframe.disableAndHide();
     }
 
     void showPartManipFrame() {
-        cosmeticFrame.frameOff();
-        partframe.frameOn();
+        cosmeticFrame.disableAndHide();
+        partframe.enableAndShow();
     }
 
     /**

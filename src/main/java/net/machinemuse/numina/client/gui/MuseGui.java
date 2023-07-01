@@ -2,13 +2,14 @@ package net.machinemuse.numina.client.gui;
 
 import net.machinemuse.numina.client.gui.clickable.IClickable;
 import net.machinemuse.numina.client.gui.frame.IGuiFrame;
+import net.machinemuse.numina.client.gui.geometry.DrawableMuseRect;
 import net.machinemuse.numina.client.render.MuseRenderer;
 import net.machinemuse.numina.common.math.Colour;
-import net.machinemuse.numina.client.gui.geometry.DrawableMuseRect;
 import net.minecraft.client.gui.GuiScreen;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -112,6 +113,23 @@ public class MuseGui extends GuiScreen {
             frame.update(x, y);
         }
     }
+
+    public boolean mouseScrolled(double mouseX, double mouseY, double dWheel) {
+        return frames.stream().filter(frame -> frame.mouseScrolled(mouseX, mouseY, dWheel)).findFirst().isPresent();
+    }
+
+    @Override
+    public void handleMouseInput() throws IOException {
+        super.handleMouseInput();
+        double i = Mouse.getEventX() * this.width / this.mc.displayWidth;
+        double j = this.height - Mouse.getEventY() * this.height / this.mc.displayHeight - 1;
+        int k = Mouse.getEventButton();
+        double dWheel = Integer.signum(Mouse.getEventDWheel());
+        if (dWheel != 0) {
+            mouseScrolled(i, j, dWheel);
+        }
+    }
+
 
     /**
      * Returns the first ID in the list that is hit by a click
@@ -217,9 +235,9 @@ public class MuseGui extends GuiScreen {
      * Called when the mouse is clicked.
      */
     @Override
-    protected void mouseClicked(int x, int y, int button) {
+    public void mouseClicked(int mouseX, int mouseY, int button) {
         for (IGuiFrame frame : frames) {
-            frame.mouseClicked(x, y, button);
+            frame.mouseClicked(mouseX, mouseY, button);
         }
     }
 
@@ -229,11 +247,12 @@ public class MuseGui extends GuiScreen {
      * mouseUp
      */
     @Override
-    protected void mouseReleased(int mouseX, int mouseY, int which) {
+    public void mouseReleased(int mouseX, int mouseY, int which) {
         for (IGuiFrame frame : frames) {
             frame.mouseReleased(mouseX, mouseY, which);
         }
     }
+
 
     protected void drawToolTip(double mouseX, double mouseY, float partialTick) {
         int x = Mouse.getEventX() * this.width / this.mc.displayWidth;
