@@ -1,6 +1,5 @@
 package net.machinemuse.numina.common.item;
 
-import net.machinemuse.numina.common.base.MuseLogger;
 import net.machinemuse.numina.common.math.MuseMathUtils;
 import net.machinemuse.numina.common.nbt.MuseNBTUtils;
 import net.minecraft.entity.player.EntityPlayer;

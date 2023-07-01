@@ -1,7 +1,7 @@
 package net.machinemuse.powersuits.client.gui.module.selection;
 
-import net.machinemuse.numina.client.gui.geometry.MusePoint2D;
 import net.machinemuse.numina.client.gui.MuseGui;
+import net.machinemuse.numina.client.gui.geometry.MusePoint2D;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.entity.player.EntityPlayer;

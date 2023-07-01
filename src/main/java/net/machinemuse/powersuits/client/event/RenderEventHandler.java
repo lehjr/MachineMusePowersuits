@@ -1,20 +1,20 @@
 package net.machinemuse.powersuits.client.event;
 
 import com.google.common.util.concurrent.AtomicDouble;
+import net.machinemuse.numina.client.gui.geometry.DrawableMuseRect;
 import net.machinemuse.numina.client.render.MuseIconUtils;
 import net.machinemuse.numina.client.render.MuseRenderer;
 import net.machinemuse.numina.client.render.MuseTextureUtils;
 import net.machinemuse.numina.common.item.IModularItem;
 import net.machinemuse.numina.common.math.Colour;
-import net.machinemuse.numina.client.gui.geometry.DrawableMuseRect;
 import net.machinemuse.numina.common.module.IPowerModule;
 import net.machinemuse.powersuits.client.control.KeybindManager;
 import net.machinemuse.powersuits.client.control.MPSKeyBinding;
-import net.machinemuse.powersuits.common.config.MPSSettings;
-import net.machinemuse.powersuits.common.constants.MPSModuleConstants;
 import net.machinemuse.powersuits.client.model.helper.ModelHelper;
 import net.machinemuse.powersuits.common.base.ModuleManager;
 import net.machinemuse.powersuits.common.config.MPSConfig;
+import net.machinemuse.powersuits.common.config.MPSSettings;
+import net.machinemuse.powersuits.common.constants.MPSModuleConstants;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.ScaledResolution;

@@ -1,10 +1,10 @@
 package net.machinemuse.powersuits.client.gui.cosmetic;
 
 import net.machinemuse.numina.client.gui.geometry.DrawableMuseRect;
+import net.machinemuse.numina.client.gui.geometry.MusePoint2D;
 import net.machinemuse.numina.client.gui.geometry.MuseRect;
 import net.machinemuse.numina.client.gui.scrollable.ScrollableFrame;
 import net.machinemuse.numina.common.math.Colour;
-import net.machinemuse.numina.client.gui.geometry.MusePoint2D;
 import net.machinemuse.powersuits.client.gui.common.ItemSelectionFrame;
 import net.machinemuse.powersuits.common.config.MPSConfig;
 import net.minecraft.item.ItemStack;

@@ -1,9 +1,9 @@
 package net.machinemuse.powersuits.common.item;
 
-import net.machinemuse.numina.common.base.MuseLogger;
-import net.machinemuse.numina.common.capabilities.energy.adapter.IMuseElectricItem;
 import net.machinemuse.numina.client.render.modelspec.ModelRegistry;
 import net.machinemuse.numina.client.render.modelspec.TexturePartSpec;
+import net.machinemuse.numina.common.base.MuseLogger;
+import net.machinemuse.numina.common.capabilities.energy.adapter.IMuseElectricItem;
 import net.machinemuse.numina.common.constants.ModelSpecTags;
 import net.machinemuse.numina.common.item.IModularItem;
 import net.machinemuse.numina.common.math.Colour;

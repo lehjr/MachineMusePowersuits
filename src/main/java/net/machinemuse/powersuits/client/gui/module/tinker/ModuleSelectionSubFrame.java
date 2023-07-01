@@ -1,8 +1,8 @@
 package net.machinemuse.powersuits.client.gui.module.tinker;
 
-import net.machinemuse.numina.client.render.MuseRenderer;
 import net.machinemuse.numina.client.gui.geometry.MusePoint2D;
 import net.machinemuse.numina.client.gui.geometry.MuseRect;
+import net.machinemuse.numina.client.render.MuseRenderer;
 import net.machinemuse.numina.common.module.IPowerModule;
 import net.machinemuse.powersuits.client.gui.common.ClickableModule;
 

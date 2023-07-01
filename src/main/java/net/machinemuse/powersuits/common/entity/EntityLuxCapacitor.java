@@ -2,9 +2,9 @@ package net.machinemuse.powersuits.common.entity;
 
 import io.netty.buffer.ByteBuf;
 import net.machinemuse.numina.common.math.Colour;
+import net.machinemuse.powersuits.common.base.MPSItems;
 import net.machinemuse.powersuits.common.block.BlockLuxCapacitor;
 import net.machinemuse.powersuits.common.block.TileEntityLuxCapacitor;
-import net.machinemuse.powersuits.common.base.MPSItems;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.projectile.EntityThrowable;

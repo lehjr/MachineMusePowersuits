@@ -1,8 +1,8 @@
 package net.machinemuse.powersuits.common.block;
 
-import net.machinemuse.powersuits.common.constants.MPSModConstants;
 import net.machinemuse.powersuits.common.base.ModularPowersuits;
 import net.machinemuse.powersuits.common.config.MPSConfig;
+import net.machinemuse.powersuits.common.constants.MPSModConstants;
 import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;

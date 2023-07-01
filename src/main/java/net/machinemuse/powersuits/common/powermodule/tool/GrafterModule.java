@@ -2,8 +2,8 @@ package net.machinemuse.powersuits.common.powermodule.tool;
 
 import net.machinemuse.numina.common.module.EnumModuleCategory;
 import net.machinemuse.numina.common.module.EnumModuleTarget;
-import net.machinemuse.powersuits.common.constants.MPSModuleConstants;
 import net.machinemuse.powersuits.common.base.ModuleManager;
+import net.machinemuse.powersuits.common.constants.MPSModuleConstants;
 import net.machinemuse.powersuits.common.powermodule.PowerModuleBase;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;

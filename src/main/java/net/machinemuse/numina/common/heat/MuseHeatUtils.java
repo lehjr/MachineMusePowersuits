@@ -10,7 +10,6 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.NonNullList;
 
 import javax.annotation.Nonnull;
-import java.util.List;
 
 public class MuseHeatUtils {
     public static final DamageSource overheatDamage = new OverheatDamage();

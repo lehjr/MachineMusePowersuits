@@ -1,9 +1,9 @@
 package net.machinemuse.powersuits.common.utils.modulehelpers;
 
 import net.machinemuse.numina.common.string.MuseStringUtils;
-import net.machinemuse.powersuits.common.constants.MPSModuleConstants;
-import net.machinemuse.powersuits.common.capabilities.MPSChestPlateFluidHandler;
 import net.machinemuse.powersuits.client.gui.hud.FluidMeter;
+import net.machinemuse.powersuits.common.capabilities.MPSChestPlateFluidHandler;
+import net.machinemuse.powersuits.common.constants.MPSModuleConstants;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;

@@ -4,7 +4,6 @@ import net.machinemuse.numina.client.gui.geometry.DrawableTile;
 import net.machinemuse.numina.client.gui.geometry.MusePoint2D;
 import net.machinemuse.numina.client.render.MuseRenderer;
 import net.machinemuse.numina.common.math.Colour;
-import net.minecraft.client.Minecraft;
 
 import java.util.List;
 

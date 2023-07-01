@@ -1,15 +1,15 @@
 package net.machinemuse.powersuits.client.proxy;
 
 import net.machinemuse.numina.client.model.obj.MuseOBJLoader;
+import net.machinemuse.powersuits.client.control.KeybindKeyHandler;
 import net.machinemuse.powersuits.client.control.KeybindManager;
 import net.machinemuse.powersuits.client.event.ClientTickHandler;
 import net.machinemuse.powersuits.client.event.EventRegisterRenderers;
 import net.machinemuse.powersuits.client.event.ModelBakeEventHandler;
+import net.machinemuse.powersuits.client.event.RenderEventHandler;
 import net.machinemuse.powersuits.client.sound.SoundDictionary;
 import net.machinemuse.powersuits.common.config.CosmeticPresetSaveLoad;
 import net.machinemuse.powersuits.common.config.MPSConfig;
-import net.machinemuse.powersuits.client.control.KeybindKeyHandler;
-import net.machinemuse.powersuits.client.event.RenderEventHandler;
 import net.machinemuse.powersuits.common.proxy.CommonProxy;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;

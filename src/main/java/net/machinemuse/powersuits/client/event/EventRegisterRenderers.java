@@ -1,11 +1,11 @@
 package net.machinemuse.powersuits.client.event;
 
-import net.machinemuse.powersuits.common.constants.MPSResourceConstants;
 import net.machinemuse.powersuits.client.model.block.ModelLuxCapacitor;
 import net.machinemuse.powersuits.client.render.entity.EntityRendererLuxCapacitorEntity;
 import net.machinemuse.powersuits.client.render.entity.EntityRendererPlasmaBolt;
 import net.machinemuse.powersuits.client.render.entity.EntityRendererSpinningBlade;
 import net.machinemuse.powersuits.common.base.MPSItems;
+import net.machinemuse.powersuits.common.constants.MPSResourceConstants;
 import net.machinemuse.powersuits.common.entity.EntityLuxCapacitor;
 import net.machinemuse.powersuits.common.entity.EntityPlasmaBolt;
 import net.machinemuse.powersuits.common.entity.EntitySpinningBlade;

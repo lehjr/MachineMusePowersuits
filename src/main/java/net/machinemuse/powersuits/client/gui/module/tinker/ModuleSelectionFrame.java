@@ -1,18 +1,18 @@
 package net.machinemuse.powersuits.client.gui.module.tinker;
 
+import net.machinemuse.numina.client.gui.clickable.ClickableItem;
 import net.machinemuse.numina.client.gui.geometry.DrawableMuseRect;
+import net.machinemuse.numina.client.gui.geometry.MusePoint2D;
+import net.machinemuse.numina.client.gui.geometry.MuseRect;
 import net.machinemuse.numina.client.gui.scrollable.ScrollableFrame;
 import net.machinemuse.numina.client.render.MuseRenderer;
 import net.machinemuse.numina.client.sound.Musique;
 import net.machinemuse.numina.common.math.Colour;
-import net.machinemuse.numina.client.gui.geometry.MusePoint2D;
-import net.machinemuse.numina.client.gui.geometry.MuseRect;
 import net.machinemuse.numina.common.module.IPowerModule;
+import net.machinemuse.powersuits.client.gui.common.ClickableModule;
 import net.machinemuse.powersuits.client.gui.common.ItemSelectionFrame;
 import net.machinemuse.powersuits.client.sound.SoundDictionary;
 import net.machinemuse.powersuits.common.base.ModuleManager;
-import net.machinemuse.numina.client.gui.clickable.ClickableItem;
-import net.machinemuse.powersuits.client.gui.common.ClickableModule;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.SoundCategory;
 

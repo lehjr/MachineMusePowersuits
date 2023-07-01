@@ -1,12 +1,12 @@
 package net.machinemuse.powersuits.client.gui.cosmetic;
 
+import net.machinemuse.numina.client.gui.clickable.ClickableItem;
 import net.machinemuse.numina.client.gui.clickable.ClickableLabel;
-import net.machinemuse.numina.client.gui.scrollable.ScrollableLabel;
-import net.machinemuse.numina.common.item.MuseItemUtils;
 import net.machinemuse.numina.client.gui.geometry.MusePoint2D;
 import net.machinemuse.numina.client.gui.geometry.MuseRect;
+import net.machinemuse.numina.client.gui.scrollable.ScrollableLabel;
+import net.machinemuse.numina.common.item.MuseItemUtils;
 import net.machinemuse.numina.common.nbt.MuseNBTUtils;
-import net.machinemuse.numina.client.gui.clickable.ClickableItem;
 import net.machinemuse.powersuits.client.gui.common.ItemSelectionFrame;
 import net.machinemuse.powersuits.common.item.armor.ItemPowerArmor;
 import net.machinemuse.powersuits.common.item.tool.ItemPowerFist;

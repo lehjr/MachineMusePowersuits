@@ -1,12 +1,12 @@
 package net.machinemuse.powersuits.client.gui.cosmetic;
 
-import net.machinemuse.numina.common.math.Colour;
+import net.machinemuse.numina.client.gui.MuseGui;
 import net.machinemuse.numina.client.gui.geometry.MusePoint2D;
 import net.machinemuse.numina.client.gui.geometry.MuseRect;
+import net.machinemuse.numina.common.math.Colour;
 import net.machinemuse.powersuits.client.gui.common.ItemSelectionFrame;
 import net.machinemuse.powersuits.client.gui.common.TabSelectFrame;
 import net.machinemuse.powersuits.common.config.MPSConfig;
-import net.machinemuse.numina.client.gui.MuseGui;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.entity.player.EntityPlayer;

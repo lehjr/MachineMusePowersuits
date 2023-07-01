@@ -1,8 +1,8 @@
 package net.machinemuse.powersuits.client.render.entity;
 
 import net.machinemuse.numina.client.render.MuseTextureUtils;
-import net.machinemuse.powersuits.common.constants.MPSResourceConstants;
 import net.machinemuse.powersuits.common.base.ModularPowersuits;
+import net.machinemuse.powersuits.common.constants.MPSResourceConstants;
 import net.machinemuse.powersuits.common.entity.EntitySpinningBlade;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.util.ResourceLocation;

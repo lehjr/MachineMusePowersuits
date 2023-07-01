@@ -1,7 +1,7 @@
 package net.machinemuse.powersuits.common.entity;
 
-import net.machinemuse.powersuits.common.constants.MPSModuleConstants;
 import net.machinemuse.powersuits.common.base.ModuleManager;
+import net.machinemuse.powersuits.common.constants.MPSModuleConstants;
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;

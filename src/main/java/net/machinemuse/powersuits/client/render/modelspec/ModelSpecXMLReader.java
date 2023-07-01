@@ -1,9 +1,9 @@
 package net.machinemuse.powersuits.client.render.modelspec;
 
 import com.google.common.collect.ImmutableMap;
-import net.machinemuse.numina.common.base.MuseLogger;
 import net.machinemuse.numina.client.model.obj.MuseOBJModel;
 import net.machinemuse.numina.client.render.modelspec.*;
+import net.machinemuse.numina.common.base.MuseLogger;
 import net.machinemuse.numina.common.constants.ModelSpecTags;
 import net.machinemuse.numina.common.math.Colour;
 import net.machinemuse.numina.common.string.MuseStringUtils;

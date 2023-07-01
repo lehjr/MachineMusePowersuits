@@ -1,20 +1,20 @@
 package net.machinemuse.powersuits.client.gui.module.tinker;
 
+import net.machinemuse.numina.client.gui.clickable.ClickableItem;
 import net.machinemuse.numina.client.gui.geometry.DrawableMuseRect;
+import net.machinemuse.numina.client.gui.geometry.MusePoint2D;
 import net.machinemuse.numina.client.gui.scrollable.ScrollableFrame;
 import net.machinemuse.numina.client.render.MuseRenderer;
 import net.machinemuse.numina.common.math.Colour;
-import net.machinemuse.numina.client.gui.geometry.MusePoint2D;
 import net.machinemuse.numina.common.module.IPowerModule;
 import net.machinemuse.numina.common.nbt.MuseNBTUtils;
 import net.machinemuse.numina.common.nbt.propertymodifier.IPropertyModifier;
 import net.machinemuse.numina.common.nbt.propertymodifier.PropertyModifierLinearAdditiveDouble;
 import net.machinemuse.numina.common.string.MuseStringUtils;
-import net.machinemuse.powersuits.common.constants.MPSModuleConstants;
+import net.machinemuse.powersuits.client.gui.common.ClickableTinkerSlider;
 import net.machinemuse.powersuits.client.gui.common.ItemSelectionFrame;
 import net.machinemuse.powersuits.common.base.ModuleManager;
-import net.machinemuse.numina.client.gui.clickable.ClickableItem;
-import net.machinemuse.powersuits.client.gui.common.ClickableTinkerSlider;
+import net.machinemuse.powersuits.common.constants.MPSModuleConstants;
 import net.machinemuse.powersuits.common.network.MPSPackets;
 import net.machinemuse.powersuits.common.network.packets.MusePacketTweakRequestDouble;
 import net.machinemuse.powersuits.common.powermodule.PowerModuleBase;

@@ -1,14 +1,13 @@
 package net.machinemuse.powersuits.client.gui.keybinds;
 
+import net.machinemuse.numina.client.gui.MuseGui;
 import net.machinemuse.numina.client.gui.geometry.MusePoint2D;
 import net.machinemuse.numina.common.math.Colour;
 import net.machinemuse.powersuits.client.control.KeybindManager;
-import net.machinemuse.numina.client.gui.MuseGui;
 import net.machinemuse.powersuits.client.gui.common.TabSelectFrame;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.entity.player.EntityPlayer;
-import org.lwjgl.input.Mouse;
 
 import java.io.IOException;
 

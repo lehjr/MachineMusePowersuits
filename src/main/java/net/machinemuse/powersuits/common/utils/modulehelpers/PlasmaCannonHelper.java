@@ -1,7 +1,7 @@
 package net.machinemuse.powersuits.common.utils.modulehelpers;
 
-import net.machinemuse.powersuits.common.constants.MPSModuleConstants;
 import net.machinemuse.powersuits.common.base.ModuleManager;
+import net.machinemuse.powersuits.common.constants.MPSModuleConstants;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 

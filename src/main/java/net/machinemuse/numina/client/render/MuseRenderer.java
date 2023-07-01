@@ -1,9 +1,9 @@
 package net.machinemuse.numina.client.render;
 
 import net.machinemuse.numina.client.gui.clickable.IClickable;
-import net.machinemuse.numina.common.math.Colour;
 import net.machinemuse.numina.client.gui.geometry.MusePoint2D;
 import net.machinemuse.numina.client.gui.geometry.SwirlyMuseCircle;
+import net.machinemuse.numina.common.math.Colour;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.model.PositionTextureVertex;

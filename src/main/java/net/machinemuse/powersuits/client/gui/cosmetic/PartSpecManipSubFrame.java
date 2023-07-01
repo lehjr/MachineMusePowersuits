@@ -1,18 +1,18 @@
 package net.machinemuse.powersuits.client.gui.cosmetic;
 
-import net.machinemuse.numina.common.base.MuseLogger;
+import net.machinemuse.numina.client.gui.clickable.ClickableItem;
+import net.machinemuse.numina.client.gui.geometry.MuseRect;
 import net.machinemuse.numina.client.render.MuseRenderer;
 import net.machinemuse.numina.client.render.RenderState;
 import net.machinemuse.numina.client.render.modelspec.*;
+import net.machinemuse.numina.common.base.MuseLogger;
 import net.machinemuse.numina.common.constants.ModelSpecTags;
 import net.machinemuse.numina.common.item.MuseItemUtils;
 import net.machinemuse.numina.common.math.Colour;
 import net.machinemuse.numina.common.math.MuseMathUtils;
-import net.machinemuse.numina.client.gui.geometry.MuseRect;
 import net.machinemuse.numina.common.nbt.MuseNBTUtils;
-import net.machinemuse.powersuits.client.gui.common.ItemSelectionFrame;
 import net.machinemuse.powersuits.client.gui.GuiIcons;
-import net.machinemuse.numina.client.gui.clickable.ClickableItem;
+import net.machinemuse.powersuits.client.gui.common.ItemSelectionFrame;
 import net.machinemuse.powersuits.common.item.armor.ItemPowerArmor;
 import net.machinemuse.powersuits.common.item.tool.ItemPowerFist;
 import net.machinemuse.powersuits.common.network.MPSPackets;

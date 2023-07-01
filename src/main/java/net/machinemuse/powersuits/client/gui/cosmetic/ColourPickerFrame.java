@@ -1,21 +1,21 @@
 package net.machinemuse.powersuits.client.gui.cosmetic;
 
-import net.machinemuse.numina.client.gui.geometry.IRect;
-import net.machinemuse.numina.client.gui.geometry.MuseRect;
-import net.machinemuse.numina.common.base.MuseLogger;
 import net.machinemuse.numina.client.gui.clickable.ClickableLabel;
 import net.machinemuse.numina.client.gui.clickable.ClickableSlider;
+import net.machinemuse.numina.client.gui.geometry.DrawableMuseRect;
+import net.machinemuse.numina.client.gui.geometry.IRect;
+import net.machinemuse.numina.client.gui.geometry.MusePoint2D;
+import net.machinemuse.numina.client.gui.geometry.MuseRect;
 import net.machinemuse.numina.client.gui.scrollable.ScrollableFrame;
 import net.machinemuse.numina.client.gui.scrollable.ScrollableLabel;
 import net.machinemuse.numina.client.gui.scrollable.ScrollableRectangle;
 import net.machinemuse.numina.client.gui.scrollable.ScrollableSlider;
+import net.machinemuse.numina.common.base.MuseLogger;
 import net.machinemuse.numina.common.constants.ModelSpecTags;
 import net.machinemuse.numina.common.math.Colour;
-import net.machinemuse.numina.client.gui.geometry.DrawableMuseRect;
-import net.machinemuse.numina.client.gui.geometry.MusePoint2D;
-import net.machinemuse.powersuits.common.constants.MPSModuleConstants;
-import net.machinemuse.powersuits.client.gui.common.ItemSelectionFrame;
 import net.machinemuse.powersuits.client.gui.GuiIcons;
+import net.machinemuse.powersuits.client.gui.common.ItemSelectionFrame;
+import net.machinemuse.powersuits.common.constants.MPSModuleConstants;
 import net.machinemuse.powersuits.common.item.armor.ItemPowerArmor;
 import net.machinemuse.powersuits.common.network.MPSPackets;
 import net.machinemuse.powersuits.common.network.packets.MusePacketColourInfo;
@@ -27,7 +27,6 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagIntArray;
-import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;

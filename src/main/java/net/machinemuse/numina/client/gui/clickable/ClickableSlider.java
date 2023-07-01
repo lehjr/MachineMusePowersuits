@@ -1,10 +1,10 @@
 package net.machinemuse.numina.client.gui.clickable;
 
-import net.machinemuse.numina.common.math.Colour;
-import net.machinemuse.numina.common.math.MuseMathUtils;
 import net.machinemuse.numina.client.gui.geometry.DrawableMuseRect;
 import net.machinemuse.numina.client.gui.geometry.MusePoint2D;
 import net.machinemuse.numina.client.render.MuseRenderer;
+import net.machinemuse.numina.common.math.Colour;
+import net.machinemuse.numina.common.math.MuseMathUtils;
 import net.minecraft.client.resources.I18n;
 
 /**

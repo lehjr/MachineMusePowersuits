@@ -2,8 +2,8 @@ package net.machinemuse.powersuits.common.item.armor;
 
 import forestry.api.core.IArmorNaturalist;
 import micdoodle8.mods.galacticraft.api.item.IBreathableArmor;
-import net.machinemuse.powersuits.common.constants.MPSModuleConstants;
 import net.machinemuse.powersuits.common.base.ModuleManager;
+import net.machinemuse.powersuits.common.constants.MPSModuleConstants;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;

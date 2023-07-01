@@ -1,18 +1,11 @@
 package net.machinemuse.numina.client.gui.scrollable;
 
-import net.machinemuse.numina.client.gui.IDrawable;
 import net.machinemuse.numina.client.gui.frame.AbstractGuiFrame;
-import net.machinemuse.numina.client.gui.frame.IGuiFrame;
 import net.machinemuse.numina.client.gui.frame.IScrollable;
 import net.machinemuse.numina.client.gui.geometry.IRect;
-import net.machinemuse.numina.client.render.RenderState;
-import net.machinemuse.numina.common.math.Colour;
 import net.machinemuse.numina.common.math.MuseMathUtils;
-import org.lwjgl.input.Mouse;
-import org.lwjgl.opengl.GL11;
 
 import javax.annotation.Nonnull;
-import java.util.List;
 
 public class ScrollableFrame extends AbstractGuiFrame implements IScrollable {
     protected int buttonSize = 5;

@@ -1,11 +1,11 @@
 package net.machinemuse.powersuits.client.gui.common;
 
 import net.machinemuse.numina.client.gui.clickable.Clickable;
+import net.machinemuse.numina.client.gui.geometry.MusePoint2D;
 import net.machinemuse.numina.client.render.MuseIconUtils;
 import net.machinemuse.numina.client.render.MuseRenderer;
 import net.machinemuse.numina.client.render.MuseTextureUtils;
 import net.machinemuse.numina.common.math.Colour;
-import net.machinemuse.numina.client.gui.geometry.MusePoint2D;
 import net.machinemuse.numina.common.module.IPowerModule;
 import net.machinemuse.numina.common.string.MuseStringUtils;
 import net.machinemuse.powersuits.client.gui.GuiIcons;
