@@ -6,7 +6,7 @@ import net.machinemuse.numina.common.energy.ElectricItemUtils;
 import net.machinemuse.numina.common.item.IModularItem;
 import net.machinemuse.numina.common.math.MuseMathUtils;
 import net.machinemuse.numina.common.nbt.MuseNBTUtils;
-import net.machinemuse.numina.player.NuminaPlayerUtils;
+import net.machinemuse.numina.common.player.NuminaPlayerUtils;
 import net.machinemuse.powersuits.client.control.PlayerMovementInputWrapper;
 import net.machinemuse.powersuits.client.sound.SoundDictionary;
 import net.machinemuse.powersuits.common.base.ModuleManager;

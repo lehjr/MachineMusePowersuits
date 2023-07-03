@@ -1,8 +1,3 @@
-import groovy.json.JsonOutput
-import groovy.json.JsonSlurper
-
-import java.util.function.Consumer
-
 buildscript {
     repositories {
         maven {
@@ -25,27 +20,13 @@ plugins {
     id 'wtf.gofancy.fancygradle' version '1.1.+'
 }
 
-//apply from: 'classremapper.gradle'
-
 tasks.named('wrapper', Wrapper).configure {
     //Define wrapper values here so as to not have to always do so when updating gradlew.properties
     gradleVersion = '7.6.1'
     distributionType = Wrapper.DistributionType.ALL
 }
 
-//apply from: 'https://raw.githubusercontent.com/SizableShrimp/Forge-Class-Remapper/main/classremapper.gradle'
-
 defaultTasks 'build'
-
-fancyGradle {
-    patches {
-        resources
-        coremods
-        codeChickenLib
-        asm
-        mergetool
-    }
-}
 
 idea {
     module {
@@ -58,31 +39,30 @@ group = maven_group
 version = "${mod_version}." + (System.env.BUILD_NUMBER ?: 000)
 archivesBaseName = "ModularPowersuits"
 
+println("mod_version: ${mod_version}")
+
 // export this for the remapper since it can't seem to find it
 project.ext."MC_VERSION"=minecraft_version
 
-ext {
-    versionProperties = ["mod_version": project.version,
-                         "minecraft_version": minecraft_version,
-                         "forge_version": forge_version]
-    jsonPatterns = ["**/*.json", "**/*.mcmeta"]
-}
-
 sourceSets {
     main {
+        java {
+            srcDirs = ["src/main/java"]
+        }
+        resources {
+            srcDirs = ["src/main/resources"]
+        }
     }
 
     powersuits {
-        java {
-            srcDirs = ["src/main/java"]
-            include 'net/machinemuse/powersuits/**'
-        }
-        resources {
-            exclude 'assets/numina/**', 'mcmod.info', 'pack.mcmeta'
-        }
-
-
-        compileClasspath += main.output
+//        java {
+//            srcDirs += main.allJava
+////            include 'net/machinemuse/powersuits/**'
+//        }
+//        resources {
+//            srcDirs += main.resources
+////            include 'assets/powersuits/**'
+//        }
     }
 
     // at compile time, put resources in same directories as classes
@@ -90,173 +70,52 @@ sourceSets {
     main.output.setResourcesDir(main.java.classesDirectory)
 }
 
-configurations {
-    for (def name : ["powersuits"]) {
-        maybeCreate("${name}Implementation").extendsFrom(implementation)
-        maybeCreate("${name}CompileOnly").extendsFrom(compileOnly)
-        maybeCreate("${name}RuntimeOnly").extendsFrom(runtimeOnly)
-    }
-}
-
-//Setup the UPDATE_SOURCESET property in case we are doing any remappings
-// Note, for this to work on all source sets, all source folders must be present including those not being used (such as src/test/java)
-project.ext."UPDATE_SOURCESETS" = project.sourceSets.collect { it.name }.join(';')
-
-//def mainReplaceResources = createReplaceResourcesTask("main", sourceSets.main)
-//def powersuitsReplaceResources = createReplaceResourcesTask("powersuits", sourceSets.powersuits)
-
-//def createReplaceResourcesTask(String output, SourceSet sourceSet) {
-//    return tasks.register("${output}ReplaceResources", Copy) {
-//        it.outputs.upToDateWhen { false }
-//        def modsToml = copySpec {
-//            from(sourceSet.resources) {
-//                include "mcmod.info"
-//                expand versionProperties
-//            }
-//        }
-//        //Copy it into the build dir
-//        it.with modsToml
-//        it.into "$buildDir/resources/${output}/"
-//        //If IntelliJ's output dir exists, copy it there as well
-//        if (new File("$rootDir/out/production/Numina.${output}/").exists()) {
-//            //Note: This copies it into the correct place, but it still doesn't have the IntelliJ
-//            // run work by default because of incorrect MOD_CLASSES getting generated.
-//            // probably related to us setting inheritOutputDirs
-//            copy {
-//                with modsToml
-//                into "$rootDir/out/production/Numina.${output}/"
-//            }
-//        }
-//        //If Eclipse's output dir exists, copy it there as well
-//        if (new File("$rootDir/bin/${output}/").exists()) {
-//            copy {
-//                with modsToml
-//                into "$rootDir/bin/${output}/"
-//            }
-//        }
-//    }
-//}
-//
-////Set the various variables/settings for the different process resources tasks
-//processResources { setupProcessResources(processResources, mainReplaceResources) }
-//processPowersuitsResources { setupProcessResources(processPowersuitsResources, powersuitsReplaceResources) }
-//
-//def setupProcessResources(ProcessResources process, TaskProvider<Task> replaceResources) {
-//    process.duplicatesStrategy(DuplicatesStrategy.FAIL)
-////    process.exclude('META-INF/mods.toml')
-//    process.from("${projectDir}") { include 'logo.png' }
-//    process.configure { finalizedBy(replaceResources) }
-//    process.doLast {
-//        fileTree(dir: process.getOutputs().getFiles().getAsPath(), includes: jsonPatterns).each {
-//            File file -> file.setText(JsonOutput.toJson(new JsonSlurper().parse(file)))
-//        }
-//    }
-//}
-
-//Make the various classes tasks depend on the corresponding replaceResources tasks in addition to the default processResources tasks they depend on
-//classes.configure { dependsOn(mainReplaceResources) }
-//powersuitsClasses.configure { dependsOn(powersuitsReplaceResources) }
+//sourceSets.all { it.output.resourcesDir = it.output.classesDirs.getFiles().iterator().next() }
 
 println("version: ${project.version}")
 java {
-    toolchain.languageVersion = JavaLanguageVersion.of("${java_version}")
+    toolchain.languageVersion = JavaLanguageVersion.of(8)
 //    withSourcesJar()
 }
 
 minecraft {
     mappings channel: "${mappings_channel}", version: "${mappings_version}"
 
-    accessTransformers.from(
-            file('src/main/resources/META-INF/numina_at.cfg'))
+//    accessTransformers.from(file('src/main/resources/META-INF/numina_at.cfg')) // META-INF/numina_at.cfg
 
     runs {
         client {
-            workingDirectory file("run")
-            // FIXME: is this still needed?
-            //This fixes Mixin application problems from other mods because their refMaps are SRG-based, but we're in a MCP env
-            property 'mixin.env.remapRefMap', 'true'
-            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
+            workingDirectory project.file('run')
+            if (project.use_coremod.toBoolean()) {
+                jvmArg '-Dfml.coreMods.load=' + coremod_plugin_class_name
+            }
+            if (project.use_mixins.toBoolean()) {
+                jvmArg '-Dmixin.hotSwap=true'
+                jvmArg '-Dmixin.checks.interfaces=true'
+                jvmArg '-Dmixin.debug=true'
+            }
+            property 'forge.logging.markers', 'REGISTRIES'
             property 'forge.logging.console.level', 'debug'
-
-            //The below if statements are to add args to your gradle.properties file in user home
-            // (DO NOT add them directly to the gradle.properties file for this project)
-            // Setting the below properties allows use of your normal Minecraft account in the
-            // dev environment including having your skin load. Each property also has a comment
-            // explaining what information to set the value to/format it expects
-            // One thing to note is because of the caching that goes on, after changing these
-            // variables, you need to refresh the project and rerun genIntellijRuns/genEclipseRuns
-            if (project.hasProperty('mc_uuid')) {
-                //Your uuid without any dashes in the middle
-                args '--uuid', project.getProperty('mc_uuid')
-            }
-            if (project.hasProperty('mc_username')) {
-                //Your username/display name, this is the name that shows up in chat
-                // Note: This is not your email, even if you have a Mojang account
-                args '--username', project.getProperty('mc_username')
-            }
-            if (project.hasProperty('mc_accessToken')) {
-                //Your access token, you can find it in your '.minecraft/launcher_accounts.json' file
-                args '--accessToken', project.getProperty('mc_accessToken')
-            }
-
-            mods {
-                numina.sources((SourceSet) sourceSets.main)
-                modularpowersuits.source((SourceSet) sourceSets.powersuits)
-            }
+            environment 'MC_VERSION', '1.12.2'
         }
         server {
-            workingDirectory file("run")
-//            This fixes Mixin application problems from other mods because their refMaps are SRG-based, but we're in a MCP env
-            property 'mixin.env.remapRefMap', 'true'
-            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
+            workingDirectory project.file('run')
+            if (project.use_coremod.toBoolean()) {
+                jvmArg '-Dfml.coreMods.load=' + coremod_plugin_class_name
+            }
+            if (project.use_mixins.toBoolean()) {
+                jvmArg '-Dmixin.hotSwap=true'
+                jvmArg '-Dmixin.checks.interfaces=true'
+                jvmArg '-Dmixin.debug=true'
+            }
+            property 'forge.logging.markers', 'REGISTRIES'
             property 'forge.logging.console.level', 'debug'
-
-
-            if (project.hasProperty('forge_force_ansi')) {
-                //Force ansi if declared as a gradle variable, as the auto detection doesn't detect IntelliJ properly
-                // or eclipse's plugin that adds support for ansi escape in console
-                jvmArg('-Dterminal.ansi=' + project.getProperty('forge_force_ansi'))
-            }
-
-            mods {
-                numina.sources((SourceSet) sourceSets.main)
-                modularpowersuits.source((SourceSet) sourceSets.powersuits)
-            }
+            environment 'MC_VERSION', '1.12.2'
         }
-    }
-}
-
-void exclusiveRepo(RepositoryHandler handler, String url, String... groups) {
-    exclusiveRepo(handler, url, filter -> {
-        for (def group : groups) {
-            filter.includeGroup(group)
-        }
-    })
-}
-
-//Note: This cannot be static so that fg.repository can be properly accessed
-@SuppressWarnings('GrMethodMayBeStatic')
-void exclusiveRepo(RepositoryHandler handler, String url, Consumer<InclusiveRepositoryContentDescriptor> filterSetup) {
-    handler.exclusiveContent {
-        it.forRepositories(handler.maven {
-            setUrl(url)
-        }, fg.repository)//Add FG's repo so we make sure we are able to then find the mapped deps
-        it.filter { f -> filterSetup.accept(f) }
     }
 }
 
 repositories {
-//    RepositoryHandler handler ->
-//        exclusiveRepo(handler, 'https://maven.blamejared.com', filter -> {
-//            filter.includeGroupByRegex 'com\\.blamejared.*'
-//            filter.includeGroup 'mezz.jei'
-//        })
-//        exclusiveRepo(handler, 'https://maven.theillusivec4.top/', 'top.theillusivec4.curios')
-//        exclusiveRepo(handler, 'https://maven.tterrag.com/', 'team.chisel.ctm')
-//        exclusiveRepo(handler, 'https://squiddev.cc/maven/', 'org.squiddev')
-//        exclusiveRepo(handler, 'https://www.cursemaven.com', 'curse.maven')
-//        exclusiveRepo(handler, 'https://modmaven.dev/', 'appeng', 'mcjty.theoneprobe')
-
     maven {
         name = 'Cleanroom Maven'
         url = 'https://maven.cleanroommc.com'
@@ -382,80 +241,70 @@ dependencies {
 
     compileOnly fg.deobf("li.cil.scannable:Scannable:MC${minecraft_version}-${scannable_version}")
     compileOnly fileTree(dir: 'libs', include: ['*.jar'])
-
 }
 
-def getManifestAttributes(String title) {
-    return [
-            "Specification-Title"     : title,
-            "Specification-Vendor"    : "MachineMuse",
-            "Specification-Version"   : "${project.version}",
-            "Implementation-Title"    : title,
-            "Implementation-Version"  : "${project.version}",
-            "Implementation-Vendor"   : "MachineMuse",
-            "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
-            "Automatic-Module-Name": title.toLowerCase(Locale.ROOT)
-    ]
+processResources {
+    duplicatesStrategy(DuplicatesStrategy.INCLUDE)
+
+    inputs.property "version", project.version
+    inputs.property "mcversion", minecraft_version
+
+    from(sourceSets.main.resources.srcDirs) {
+        include "mcmod.info"
+
+        // replace version and mcversion
+        expand "version": project.version, "mcversion": minecraft_version
+    }
+
+    // copy everything else, thats not the mcmod.info
+    from(sourceSets.main.resources.srcDirs) {
+        exclude 'mcmod.info'
+    }
 }
 
 jar {
     duplicatesStrategy(DuplicatesStrategy.FAIL)
     archiveFileName.set("Numina-${minecraft_version}-${project.version}.jar")
-//    from(sourceSets.main.output) {
-//        exclude 'net/machinemuse/powersuits/**'
+    archiveClassifier.set("numina")
+
+//    manifest {
+//        attributes 'FMLAT': 'numina_at.cfg'
 //    }
-////    manifest.attributes(getManifestAttributes("Numina"))
 
     from('res/numina') {
         include '*.info', 'pack.mcmeta'
         expand 'version':project.version,'mcversion':minecraft_version
     }
 
-    manifest {
-        attributes 'FMLAT': 'numina_at.cfg'
-    }
-
-
-
-//    from (sourceSets.main.resources) {
-////        include 'assets/powersuits/**', 'META-INF/powersuits_at.cfg'
-//
-//        exclude 'assets/powersuits/**',
-//                'mcmod.info', 'pack.mcmeta'
-//    }
-
     include 'net/machinemuse/numina/**', 'assets/numina/**', 'ic2/**'//, 'META-INF/numina_at.cfg'
-    exclude 'net/machinemuse/powersuits/**', 'assets/powersuits/**', 'mcmod.info', 'pack.mcmeta'
-    afterEvaluate { finalizedBy reobfJar }
 }
+jar.finalizedBy('reobfJar')
 
 task powersuitsJar(type: Jar) {
     duplicatesStrategy(DuplicatesStrategy.FAIL)
     archiveFileName.set("ModularPowersuits-${minecraft_version}-${project.version}.jar")
     archiveClassifier.set("powersuits")
+    dependsOn 'reobfJar'
+
     from('res/powersuits') {
         include '*.info', 'pack.mcmeta'
         expand 'version':project.version,'mcversion':minecraft_version
     }
-//
-////    from sourceSets.powersuits.output
-//
-//
-//
+
+    from sourceSets.powersuits.output
+
     from(sourceSets.main.output) {
 //        include 'net/machinemuse/powersuits/**'
 
-        exclude 'net/machinemuse/numina/**', 'mcmod.info', 'pack.mcmeta'
+        exclude 'net/machinemuse/numina/**'
     }
-//
-//    from (sourceSets.main.resources) {
-////        include 'assets/powersuits/**', 'META-INF/powersuits_at.cfg'
-//
-//        exclude 'assets/numina/**',
-//                'mcmod.info', 'pack.mcmeta'
-//    }
-//
-//    manifest.attributes(getManifestAttributes("ModularPowersuits"))
+
+    from (sourceSets.main.resources) {
+//        include 'assets/powersuits/**', 'META-INF/powersuits_at.cfg'
+
+        exclude 'assets/numina/**',
+                'mcmod.info'
+    }
 //    afterEvaluate { finalizedBy reobfPowersuitsJar }
 }
 
@@ -492,6 +341,7 @@ reobf {
     powersuitsJar { classpath.from(sourceSets.powersuits.compileClasspath) }
 }
 
+
 //Minimize/optimize all png files, requires optipng on the PATH
 // Credits: BrainStone
 void minimizePNGFile(File file) {
@@ -513,7 +363,7 @@ tasks.register('optimizePng').configure {
         //Ensure the logo is minimized (we add this file to each jar)
         minimizePNGFile(file("${projectDir}/logo.png"))
         //Minimize any PNGs in the source sets
-        def sourceSets = [sourceSets.main, sourceSets.powersuits]
+        def sourceSets = [sourceSets.main, sourceSets.recipecreator, sourceSets.powersuits, sourceSets.whatever]
         for (def sourceSet : sourceSets) {
             for (dir in sourceSet.resources.srcDirs) {
                 fileTree(dir: dir, includes: pngPatterns).each { minimizePNGFile(it) }
@@ -523,7 +373,7 @@ tasks.register('optimizePng').configure {
 }
 
 tasks.withType(GenerateModuleMetadata).configureEach {
-    //Disable Gradle 7 module metadata generation as it does not play nicely with FG
+    // Disable Gradle 7 module metadata generation as it does not play nicely with FG
     enabled = false
 }
 
@@ -569,11 +419,11 @@ def changeLogResolver = { ->
         generatedChangelog = "$releaseNotes<br> $generatedChangelog"
     }
 
-    if ("${curseforge_release_type}" == "alpha") {
+    if (release_type == "alpha") {
         //Add a warning at the top about what an alpha build means
-        generatedChangelog = "Warning: Modular Powersuits is currently in alpha, and is not recommended for widespread use in modpacks. There are likely to be game breaking bugs, " +
-                "and updating from one alpha to the next may cause items or modules to disappear and other various issues. While we will try to not have this happen/keep " +
-                "it to a minimum make sure to make backups." +
+        generatedChangelog = "Warning: Modular Powesuits is currently in alpha, and is not recommended for widespread use in modpacks. There are likely to be game breaking bugs, " +
+                "and updating from one alpha to the next may cause various powersuits blocks to disappear/void their contents. While we will try to not have this happen/keep " +
+                "it to a minimum make sure to make backups. You can read more about the alpha state of this project <a href=\"https://github.com/lehjr/MachineMusePowersuits#alpha-status\">here</a>." +
                 "<br> $generatedChangelog"
     }
     resolvedChangelog = generatedChangelog
@@ -582,7 +432,7 @@ def changeLogResolver = { ->
 
 if (System.getenv("CURSEFORGE_KEY") != null || project.hasProperty('curseforgeKey')) {
     println "Enabling Curseforge config"
-    tasks.named('curseforge').configure { dependsOn(jar, powersuitsJar) }
+    tasks.named('curseforge').configure { dependsOn(jar, powersuitsJar, recipecreatorJar, whateverJar) }
     curseforge {
         apiKey = System.getenv("CURSEFORGE_KEY") ?: project.findProperty("curseforgeKey")
 
@@ -591,12 +441,12 @@ if (System.getenv("CURSEFORGE_KEY") != null || project.hasProperty('curseforgeKe
             id = '235440'
             changelogType = "html"
             changelog = changeLogResolver
-            releaseType = "${curseforge_release_type}"
+            releaseType = "${release_type}"
             mainArtifact(jar) {
                 relations {
                     optionalDependency "applied-energistics-2"
                     optionalDependency "scannable"
-//                    optionalDependency "refinedstorage"
+                    optionalDependency "refinedstorage"
                 }
             }
             addGameVersion "Java ${java_version}"
@@ -608,13 +458,13 @@ if (System.getenv("CURSEFORGE_KEY") != null || project.hasProperty('curseforgeKe
             id = '235442'
             changelogType = "html"
             changelog = changeLogResolver
-            releaseType = "${curseforge_release_type}"
+            releaseType = "${curse_release_type}"
             mainArtifact(powersuitsJar) {
                 relations {
                     requiredDependency "numina"
                     optionalDependency "applied-energistics-2"
                     optionalDependency "scannable"
-//                    optionalDependency "refinedstorage"
+                    optionalDependency "refinedstorage"
                 }
             }
             addGameVersion "${minecraft_version}"
@@ -622,3 +472,12 @@ if (System.getenv("CURSEFORGE_KEY") != null || project.hasProperty('curseforgeKe
     }
 }
 
+fancyGradle {
+    patches {
+        resources
+        coremods
+        codeChickenLib
+        asm
+        mergetool
+    }
+}

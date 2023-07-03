@@ -12,7 +12,6 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import javax.annotation.Nonnull;
 
 import static net.machinemuse.powersuits.common.base.ModularPowersuits.MODID;
-import static net.machinemuse.powersuits.common.base.ModularPowersuits.VERSION;
 
 /**
  * Modular Powersuits
@@ -21,12 +20,11 @@ import static net.machinemuse.powersuits.common.base.ModularPowersuits.VERSION;
  * <p>
  * Ported to Java by lehjr on 11/14/16.
  */
-@Mod(modid = MODID, version = VERSION, dependencies = "required-after:numina")
+@Mod(modid = MODID, dependencies = "required-after:numina")
 public enum ModularPowersuits {
     INSTANCE;
 
     public static final String MODID = "powersuits";
-    public static final String VERSION = "@VERSION@";
     @SidedProxy(clientSide = "net.machinemuse.powersuits.client.proxy.ClientProxy", serverSide = "net.machinemuse.powersuits.common.proxy.CommonProxy")
     public static CommonProxy proxy;
     public static Configuration config = null;

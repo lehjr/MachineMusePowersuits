@@ -18,7 +18,7 @@ import java.io.File;
  * <p>
  * Ported to Java by lehjr on 11/15/16.
  */
-@Mod(modid = NuminaConstants.MODID, version = NuminaConstants.VERSION, name = NuminaConstants.NAME)
+@Mod(modid = NuminaConstants.MODID, name = NuminaConstants.NAME)
 public enum Numina {
     INSTANCE;
 

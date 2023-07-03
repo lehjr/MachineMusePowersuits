@@ -1,4 +1,4 @@
-package net.machinemuse.numina.player;
+package net.machinemuse.numina.common.player;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;

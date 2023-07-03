@@ -5,7 +5,7 @@ import net.machinemuse.numina.common.module.EnumModuleCategory;
 import net.machinemuse.numina.common.module.EnumModuleTarget;
 import net.machinemuse.numina.common.module.IPlayerTickModule;
 import net.machinemuse.numina.common.module.IToggleableModule;
-import net.machinemuse.numina.player.NuminaPlayerUtils;
+import net.machinemuse.numina.common.player.NuminaPlayerUtils;
 import net.machinemuse.powersuits.client.control.PlayerMovementInputWrapper;
 import net.machinemuse.powersuits.client.event.MuseIcon;
 import net.machinemuse.powersuits.common.base.ModuleManager;
