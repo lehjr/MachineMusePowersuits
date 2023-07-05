@@ -1,62 +1,19 @@
 {
-  "type": "forge:conditional",
-  "recipes": [
-    {
-      "conditions": [
-        {
-          "type": "forge:not",
-          "value": {
-            "type": "forge:tag_empty",
-            "tag": "forge:ingots/steel"
-          }
-        }
-      ],
-      "recipe": {
-        "type": "minecraft:crafting_shaped",
-        "pattern": [
-          " F ",
-          "FO ",
-          " OF"
-        ],
-        "key": {
-          "F": {
-            "tag": "forge:wiring"
-          },
-          "O": {
-            "tag": "forge:ingots/steel"
-          }
-        },
-        "result": {
-          "item": "powersuits:powerfist"
-        }
-      }
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " W ",
+    "WI ",
+    " IW"
+  ],
+  "key": {
+    "I": {
+      "tag": "forge:ingots/iron"
     },
-    {
-      "conditions": [
-        {
-          "type": "forge:tag_empty",
-          "tag": "forge:ingots/steel"
-        }
-      ],
-      "recipe": {
-        "type": "minecraft:crafting_shaped",
-        "pattern": [
-          " W ",
-          "WI ",
-          " IW"
-        ],
-        "key": {
-          "I": {
-            "tag": "forge:ingots/iron"
-          },
-          "W": {
-            "item":"numina:component_wiring"
-          }
-        },
-        "result": {
-          "item": "powersuits:powerfist"
-        }
-      }
+    "W": {
+      "item":"numina:component_wiring"
     }
-  ]
+  },
+  "result": {
+    "item": "powersuits:powerfist"
+  }
 }

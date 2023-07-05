@@ -1,64 +1,20 @@
 {
-  "type": "forge:conditional",
-  "recipes": [
-    {
-      "conditions": [
-        {
-          "type": "forge:not",
-          "value": {
-            "type": "forge:tag_empty",
-            "tag": "forge:ingots/steel"
-          }
-        }
-      ],
-      "recipe": {
-        "type": "minecraft:crafting_shaped",
-        "mirrored": true,
-        "pattern": [
-          "FF ",
-          "OF ",
-          "FF "
-        ],
-        "key": {
-          "F": {
-            "tag": "forge:ingots/steel"
-          },
-          "O": {
-            "tag": "forge:wiring"
-          }
-        },
-        "result": {
-          "item": "powersuits:plating_iron"
-        }
-      }
+  "result": {
+    "item": "powersuits:plating_iron"
+  },
+  "type": "minecraft:crafting_shaped",
+  "mirrored": true,
+  "pattern": [
+    "FF ",
+    "OF ",
+    "FF "
+  ],
+  "key": {
+    "F": {
+      "tag": "forge:ingots/iron"
     },
-    {
-      "conditions": [
-        {
-          "type": "forge:tag_empty",
-          "tag": "forge:ingots/steel"
-        }
-      ],
-      "recipe": {
-        "type": "minecraft:crafting_shaped",
-        "mirrored": true,
-        "pattern": [
-          "FF ",
-          "OF ",
-          "FF "
-        ],
-        "key": {
-          "F": {
-            "tag": "forge:ingots/iron"
-          },
-          "O": {
-            "tag": "forge:wiring"
-          }
-        },
-        "result": {
-          "item": "powersuits:plating_iron"
-        }
-      }
+    "O": {
+      "tag": "forge:wiring"
     }
-  ]
+  }
 }

@@ -26,11 +26,10 @@
 
 package lehjr.powersuits.common.item.module.tool;
 
-import com.google.common.util.concurrent.AtomicDouble;
-import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.capabilities.NuminaCapabilities;
 import lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
 import lehjr.numina.common.capabilities.module.blockbreaking.IBlockBreakingModule;
+import lehjr.numina.common.capabilities.module.blockbreaking.ToggleableBlockBreakingModule;
 import lehjr.numina.common.capabilities.module.powermodule.*;
 import lehjr.numina.common.energy.ElectricItemUtils;
 import lehjr.powersuits.common.config.MPSSettings;
@@ -75,98 +74,136 @@ public class DiamondPickUpgradeModule extends AbstractPowerModule {
         public CapProvider(@Nonnull ItemStack module) {
             this.module = module;
             this.blockBreaking = new BlockBreaker(module, ModuleCategory.TOOL, ModuleTarget.TOOLONLY, MPSSettings::getModuleConfig) {{
-                addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, 500, "FE");
+                addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, 400, "FE");
+                // more efficient block breaking due to being diamond or whatever
+                addBaseProperty(MPSConstants.HARVEST_SPEED, 1, "x");
+                addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.ENERGY_CONSUMPTION, 8000);
+                // multiplier speeds are multiplied further in event handler to be more in line with pickaxe module speeds when breaking obsidian
+                addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.HARVEST_SPEED, 149);
             }};
-//            this.blockBreaking.addBaseProperty(MPSConstants.HARVEST_SPEED, 10, "x");
-//            this.blockBreaking.addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.DIAMOND_PICK_ENERGY, 9500);
-//            this.blockBreaking.addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.HARVEST_SPEED, 52);
             powerModuleHolder = LazyOptional.of(() -> blockBreaking);
         }
 
-        class BlockBreaker extends PowerModule implements IBlockBreakingModule {
+        class BlockBreaker extends ToggleableBlockBreakingModule {
             public BlockBreaker(@Nonnull ItemStack module, ModuleCategory category, ModuleTarget target, Callable<IConfig> config) {
-                super(module, category, target, config);
+                super(module, category, target, config, true);
             }
 
+            /**
+             *  Returns true if the pickaxe module is installed but can't mine targeted block ( like obsidian )
+             * or if pickaxe module is NOT installed, basically making it an upgrade with its own settings or a standalone module
+             * @param powerFist
+             * @param state
+             * @param player
+             * @param pos
+             * @param playerEnergy
+             * @return
+             */
             @Override
             public boolean canHarvestBlock(@Nonnull ItemStack powerFist, BlockState state, Player player, BlockPos pos, double playerEnergy) {
-                AtomicBoolean canHarvest = new AtomicBoolean(false);
-                NuminaLogger.logDebug("FIXME!!!!");
-//                powerFist.getCapability(ForgeCapabilities.ITEM_HANDLER)
-//                        .filter(IModeChangingItem.class::isInstance)
-//                        .map(IModeChangingItem.class::cast)
-//                        .ifPresent(modeChanging -> {
-//                        ItemStack pickaxeModule = modeChanging.getOnlineModuleOrEmpty(MPSRegistryNames.PICKAXE_MODULE);
-//                        if (!pickaxeModule.isEmpty()) {
-//                            int energyUsage = pickaxeModule.getCapability(NuminaCapabilities.POWER_MODULE).map(m -> {
-//                                if (m instanceof IBlockBreakingModule) {
-//                                    return ((IBlockBreakingModule) m).getEnergyUsage();
-//                                }
-//                                return 0;
-//                            }).orElse(0);
-//                            canHarvest.set(pickaxeModule.getCapability(NuminaCapabilities.POWER_MODULE).map(m -> {
-//                                if (m instanceof IBlockBreakingModule) {
-//                                    return !((IBlockBreakingModule) m).canHarvestBlock(powerFist, state, player, pos, playerEnergy) &&
-//                                            playerEnergy >= energyUsage && ToolHelpers.isToolEffective(player.getCommandSenderWorld(), pos, getEmulatedTool());
-//                                }
-//                                return false;
-//                            }).orElse(false));
-//                        }
-//                });
-                return canHarvest.get();
-            }
-
-            @Override
-            public boolean mineBlock(@NotNull ItemStack powerFist, Level worldIn, BlockState state, BlockPos pos, LivingEntity entityLiving, double playerEnergy) {
-                if (this.canHarvestBlock(powerFist, state, (Player) entityLiving, pos, playerEnergy)) {
-                    AtomicInteger energyUsage = new AtomicInteger(0);
-                    powerFist.getCapability(ForgeCapabilities.ITEM_HANDLER)
-                            .filter(IModeChangingItem.class::isInstance)
-                            .map(IModeChangingItem.class::cast)
-                            .ifPresent(modeChanging -> {
-                                ItemStack pickaxeModule = modeChanging.getOnlineModuleOrEmpty(MPSRegistryNames.PICKAXE_MODULE);
-                                if (!pickaxeModule.isEmpty()) {
-                                    energyUsage.set(pickaxeModule.getCapability(NuminaCapabilities.POWER_MODULE)
-                                            .filter(IBlockBreakingModule.class::isInstance)
-                                            .map(IBlockBreakingModule.class::cast)
-                                            .map(m -> m.getEnergyUsage()).orElse(0));
-                                }
-                            });
-                    ElectricItemUtils.drainPlayerEnergy(entityLiving, energyUsage.get());
-                    return true;
-                }
-                return false;
-            }
-
-            @Override
-            public ItemStack getEmulatedTool() {
-                return new ItemStack(Items.DIAMOND_PICKAXE);
-            }
-
-            @Override
-            public void handleBreakSpeed(PlayerEvent.BreakSpeed event) {
-                Player player = event.getEntity();
-                ItemStack powerFist = player.getMainHandItem();
-                AtomicDouble newSpeed = new AtomicDouble(event.getNewSpeed());
+                AtomicBoolean canHarvest = new AtomicBoolean((isModuleOnline() && playerEnergy >= this.getEnergyUsage() && isToolEffective(player.level, pos, getEmulatedTool())));
                 powerFist.getCapability(ForgeCapabilities.ITEM_HANDLER)
                         .filter(IModeChangingItem.class::isInstance)
                         .map(IModeChangingItem.class::cast)
                         .ifPresent(modeChanging -> {
                             ItemStack pickaxeModule = modeChanging.getOnlineModuleOrEmpty(MPSRegistryNames.PICKAXE_MODULE);
                             if (!pickaxeModule.isEmpty()) {
-                                newSpeed.set(newSpeed.get() *
-                                        pickaxeModule.getCapability(NuminaCapabilities.POWER_MODULE).map(m ->
-                                                m.applyPropertyModifiers(MPSConstants.HARVEST_SPEED)).orElse(1D));
+                                int energyUsage = pickaxeModule.getCapability(NuminaCapabilities.POWER_MODULE).map(m -> {
+                                    if (m instanceof IBlockBreakingModule) {
+                                        return ((IBlockBreakingModule) m).getEnergyUsage();
+                                    }
+                                    return 0;
+                                }).orElse(0);
+                                canHarvest.set(pickaxeModule.getCapability(NuminaCapabilities.POWER_MODULE).map(m -> {
+                                    if (m instanceof IBlockBreakingModule) {
+                                        return !((IBlockBreakingModule) m).canHarvestBlock(powerFist, state, player, pos, playerEnergy) &&
+                                                playerEnergy >= energyUsage && canHarvest.get();
+                                    }
+                                    return false;
+                                }).orElse(false));
                             }
                         });
-                event.setNewSpeed((float) newSpeed.get());
+                return canHarvest.get();
             }
+
+//            @Override
+//            public boolean mineBlock(@NotNull ItemStack powerFist, Level worldIn, BlockState state, BlockPos pos, LivingEntity entityLiving, double playerEnergy) {
+//                if (this.canHarvestBlock(powerFist, state, (Player) entityLiving, pos, playerEnergy)) {
+//                    AtomicInteger energyUsage = new AtomicInteger(0);
+//                    powerFist.getCapability(ForgeCapabilities.ITEM_HANDLER)
+//                            .filter(IModeChangingItem.class::isInstance)
+//                            .map(IModeChangingItem.class::cast)
+//                            .ifPresent(modeChanging -> {
+//                                ItemStack pickaxeModule = modeChanging.getOnlineModuleOrEmpty(MPSRegistryNames.PICKAXE_MODULE);
+//                                if (!pickaxeModule.isEmpty()) {
+//                                    energyUsage.set(pickaxeModule.getCapability(NuminaCapabilities.POWER_MODULE)
+//                                            .filter(IBlockBreakingModule.class::isInstance)
+//                                            .map(IBlockBreakingModule.class::cast)
+//                                            .map(m -> m.getEnergyUsage()).orElse(0));
+//                                }
+//                            });
+//                    ElectricItemUtils.drainPlayerEnergy(entityLiving, energyUsage.get());
+//                    return true;
+//                }
+//                return false;
+//            }
+
+            @Override
+            public boolean mineBlock(@NotNull ItemStack powerFist, Level worldIn, BlockState state, BlockPos pos, LivingEntity entityLiving, double playerEnergy) {
+                if (this.canHarvestBlock(powerFist, state, (Player) entityLiving, pos, playerEnergy)) {
+                    ElectricItemUtils.drainPlayerEnergy(entityLiving, getEnergyUsage());
+                    return true;
+                }
+                return false;
+            }
+
+
+
+            @Override
+            public ItemStack getEmulatedTool() {
+                return new ItemStack(Items.DIAMOND_PICKAXE);
+            }
+//
+//            @Override
+//            public void handleBreakSpeed(PlayerEvent.BreakSpeed event) {
+//                Player player = event.getEntity();
+//                ItemStack powerFist = player.getMainHandItem();
+//                AtomicDouble newSpeed = new AtomicDouble(event.getNewSpeed());
+//                powerFist.getCapability(ForgeCapabilities.ITEM_HANDLER)
+//                        .filter(IModeChangingItem.class::isInstance)
+//                        .map(IModeChangingItem.class::cast)
+//                        .ifPresent(modeChanging -> {
+//                            ItemStack pickaxeModule = modeChanging.getOnlineModuleOrEmpty(MPSRegistryNames.PICKAXE_MODULE);
+//                            if (!pickaxeModule.isEmpty()) {
+//                                newSpeed.set(newSpeed.get() *
+//                                        pickaxeModule.getCapability(NuminaCapabilities.POWER_MODULE).map(m ->
+//                                                m.applyPropertyModifiers(MPSConstants.HARVEST_SPEED)).orElse(1D));
+//                            }
+//                        });
+//                event.setNewSpeed((float) newSpeed.get());
+//            }
+
+
+//            @Override
+//            public boolean mineBlock(@NotNull ItemStack powerFist, Level worldIn, BlockState state, BlockPos pos, LivingEntity entityLiving, double playerEnergy) {
+//                if (this.canHarvestBlock(powerFist, state, (Player) entityLiving, pos, playerEnergy)) {
+//                    ElectricItemUtils.drainPlayerEnergy(entityLiving, getEnergyUsage());
+//                    return true;
+//                }
+//                return false;
+//            }
 
             @Override
             public int getEnergyUsage() {
                 return (int) applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION);
             }
+
+            @Override
+            public void handleBreakSpeed(PlayerEvent.BreakSpeed event) {
+                event.setNewSpeed(isModuleOnline() ? (float) (10 *  event.getNewSpeed() * applyPropertyModifiers(MPSConstants.HARVEST_SPEED)) : event.getNewSpeed());
+            }
         }
+
 
         /** ICapabilityProvider ----------------------------------------------------------------------- */
         @Override

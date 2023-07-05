@@ -1,70 +1,23 @@
 {
-  "type": "forge:conditional",
-  "recipes": [
-    {
-      "conditions": [
-        {
-          "type": "forge:not",
-          "value": {
-            "type": "forge:tag_empty",
-            "tag": "forge:ingots/aluminium"
-          }
-        }
-      ],
-      "recipe": {
-        "type": "minecraft:crafting_shaped",
-        "mirrored": true,
-        "pattern": [
-          "MMM",
-          "F F",
-          "O O"
-        ],
-        "key": {
-          "F": {
-            "tag": "forge:string"
-          },
-          "M": {
-            "tag": "minecraft:wool"
-          },
-          "O": {
-            "tag": "forge:ingots/aluminium"
-          }
-        },
-        "result": {
-          "item": "numina:component_parachute"
-        }
-      }
+  "result": {
+    "item": "numina:component_parachute"
+  },
+  "type": "minecraft:crafting_shaped",
+  "mirrored": true,
+  "pattern": [
+    "MMM",
+    "F F",
+    "O O"
+  ],
+  "key": {
+    "F": {
+      "tag": "forge:string"
     },
-    {
-      "conditions": [
-        {
-          "type": "forge:tag_empty",
-          "tag": "forge:ingots/aluminium"
-        }
-      ],
-      "recipe": {
-        "type": "minecraft:crafting_shaped",
-        "mirrored": true,
-        "pattern": [
-          "WWW",
-          "S S",
-          "I I"
-        ],
-        "key": {
-          "W": {
-            "tag" : "minecraft:wool"
-          },
-          "S": {
-            "item":"minecraft:string"
-          },
-          "I": {
-            "tag": "forge:ingots/iron"
-          }
-        },
-        "result": {
-          "item": "numina:component_parachute"
-        }
-      }
+    "M": {
+      "tag": "minecraft:wool"
+    },
+    "O": {
+      "tag": "forge:ingots/iron"
     }
-  ]
+  }
 }

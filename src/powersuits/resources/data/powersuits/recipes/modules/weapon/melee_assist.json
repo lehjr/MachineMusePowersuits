@@ -1,70 +1,23 @@
 {
-  "type": "forge:conditional",
-  "recipes": [
-    {
-      "conditions": [
-        {
-          "type": "forge:not",
-          "value": {
-            "type": "forge:tag_empty",
-            "tag": "forge:ingots/steel"
-          }
-        }
-      ],
-      "recipe": {
-        "type": "minecraft:crafting_shaped",
-        "mirrored": true,
-        "pattern": [
-          " F ",
-          " C ",
-          "I I"
-        ],
-        "key": {
-          "C": {
-            "item": "numina:component_control_circuit"
-          },
-          "F": {
-            "tag": "forge:servo"
-          },
-          "I": {
-            "tag": "forge:ingots/steel"
-          }
-        },
-        "result": {
-          "item": "powersuits:melee_assist"
-        }
-      }
+  "result": {
+    "item": "powersuits:melee_assist"
+  },
+  "type": "minecraft:crafting_shaped",
+  "mirrored": true,
+  "pattern": [
+    " F ",
+    " C ",
+    "I I"
+  ],
+  "key": {
+    "C": {
+      "item": "numina:component_control_circuit"
     },
-    {
-      "conditions": [
-        {
-          "type": "forge:tag_empty",
-          "tag": "forge:ingots/steel"
-        }
-      ],
-      "recipe": {
-        "type": "minecraft:crafting_shaped",
-        "mirrored": true,
-        "pattern": [
-          " F ",
-          " C ",
-          "I I"
-        ],
-        "key": {
-          "C": {
-            "item": "numina:component_control_circuit"
-          },
-          "F": {
-            "tag": "forge:servo"
-          },
-          "I": {
-            "tag": "forge:ingots/iron"
-          }
-        },
-        "result": {
-          "item": "powersuits:melee_assist"
-        }
-      }
+    "F": {
+      "tag": "forge:servo"
+    },
+    "I": {
+      "tag": "forge:ingots/iron"
     }
-  ]
+  }
 }

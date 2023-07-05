@@ -1,64 +1,21 @@
 {
-  "type": "forge:conditional",
-  "recipes": [
-    {
-      "conditions": [
-        {
-          "type": "forge:not",
-          "value": {
-            "type": "forge:tag_empty",
-            "tag": "forge:ingots/copper"
-          }
-        }
-      ],
-      "recipe": {
-        "type": "minecraft:crafting_shaped",
-        "mirrored": true,
-        "pattern": [
-          "   ",
-          "FOF",
-          "   "
-        ],
-        "key": {
-          "F": {
-            "tag": "forge:ingots/copper"
-          },
-          "O": {
-            "tag": "forge:dusts/redstone"
-          }
-        },
-        "result": {
-          "item": "numina:component_wiring",
-          "count": 8
-        }
-      }
+  "result": {
+    "item": "numina:component_wiring",
+    "count": 8
+  },
+  "type": "minecraft:crafting_shaped",
+  "mirrored": true,
+  "pattern": [
+    "   ",
+    "FOF",
+    "   "
+  ],
+  "key": {
+    "F": {
+      "tag": "forge:ingots/copper"
     },
-    {
-      "conditions": [
-        {
-          "type": "forge:tag_empty",
-          "tag": "forge:ingots/copper"
-        }
-      ],
-      "recipe": {
-        "type": "minecraft:crafting_shaped",
-        "mirrored": true,
-        "pattern": [
-          "GRG"
-        ],
-        "key": {
-          "G": {
-            "tag": "forge:ingots/gold"
-          },
-          "R": {
-            "tag": "forge:dusts/redstone"
-          }
-        },
-        "result": {
-          "item":"numina:component_wiring",
-          "count": 8
-        }
-      }
+    "O": {
+      "tag": "forge:dusts/redstone"
     }
-  ]
+  }
 }

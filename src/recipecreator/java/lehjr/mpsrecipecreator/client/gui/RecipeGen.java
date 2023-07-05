@@ -176,7 +176,9 @@ public class RecipeGen {
         StringBuilder builder = new StringBuilder();
         if (usingOreDict) {
             List<ResourceLocation> ids = stack.getTags().map(TagKey::location).collect(Collectors.toList());
-            stackName = "tag: " + ids.get(oreTagIndices.getOrDefault(slot, 0));
+            if (!ids.isEmpty()) {
+                stackName = "tag: " + ids.get(oreTagIndices.getOrDefault(slot, 0));
+            }
         }
         builder.append(stackName);
         if (stack.getCount() > 1) {

@@ -1,64 +1,20 @@
 {
-  "type": "forge:conditional",
-  "recipes": [
-    {
-      "conditions": [
-        {
-          "type": "forge:not",
-          "value": {
-            "type": "forge:tag_empty",
-            "tag": "forge:ingots/steel"
-          }
-        }
-      ],
-      "recipe": {
-        "type": "minecraft:crafting_shaped",
-        "mirrored": true,
-        "pattern": [
-          "FFF",
-          "OOO",
-          "FFF"
-        ],
-        "key": {
-          "F": {
-            "tag": "forge:ingots/steel"
-          },
-          "O": {
-            "tag": "forge:solenoid"
-          }
-        },
-        "result": {
-          "item": "numina:component_magnet"
-        }
-      }
+  "result": {
+    "item": "numina:component_magnet"
+  },
+  "type": "minecraft:crafting_shaped",
+  "mirrored": true,
+  "pattern": [
+    "FFF",
+    "OOO",
+    "FFF"
+  ],
+  "key": {
+    "F": {
+      "tag": "forge:ingots/iron"
     },
-    {
-      "conditions": [
-        {
-          "type": "forge:tag_empty",
-          "tag": "forge:ingots/steel"
-        }
-      ],
-      "recipe": {
-        "type": "minecraft:crafting_shaped",
-        "mirrored": true,
-        "pattern": [
-          "III",
-          "SSS",
-          "III"
-        ],
-        "key": {
-          "I": {
-            "tag": "forge:ingots/iron"
-          },
-          "S": {
-            "item": "numina:component_solenoid"
-          }
-        },
-        "result": {
-          "item": "numina:component_magnet"
-        }
-      }
+    "O": {
+      "tag": "forge:solenoid"
     }
-  ]
+  }
 }

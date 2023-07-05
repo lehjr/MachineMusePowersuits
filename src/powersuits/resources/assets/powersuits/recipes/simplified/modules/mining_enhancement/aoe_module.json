@@ -2,12 +2,6 @@
   "result": {
     "item": "powersuits:aoe_pick_upgrade"
   },
-  "conditions": [
-    {
-      "type": "powersuits:flag",
-      "flag": "vanilla_recipes_enabled"
-    }
-  ],
   "type": "minecraft:crafting_shaped",
   "mirrored": true,
   "pattern": [

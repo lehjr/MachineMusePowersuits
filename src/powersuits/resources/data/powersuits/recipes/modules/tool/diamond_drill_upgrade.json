@@ -1,85 +1,32 @@
 {
-  "type": "forge:conditional",
-  "recipes": [
-    {
-      "conditions": [
-        {
-          "type": "forge:not",
-          "value": {
-            "type": "forge:tag_empty",
-            "tag": "forge:ingots/steel"
-          }
-        }
-      ],
-      "recipe": {
-        "type": "minecraft:crafting_shaped",
-        "mirrored": true,
-        "pattern": [
-          "FOF",
-          "CMC",
-          "ORO"
-        ],
-        "key": {
-          "R": {
-            "tag": "forge:solenoid"
-          },
-          "C": {
-            "item": "numina:component_wiring"
-          },
-          "F": {
-            "tag": "forge:ingots/steel"
-          },
-          "M": {
-            "item": "numina:component_control_circuit"
-          },
-          "O": {
-            "tag": "forge:gems/diamond"
-          }
-        },
-        "result": {
-          "item": "powersuits:diamond_pick_upgrade"
-        }
-      }
+  "result": {
+    "item": "powersuits:diamond_pick_upgrade"
+  },
+  "type": "minecraft:crafting_shaped",
+  "mirrored": true,
+  "pattern": [
+    "IDI",
+    "COC",
+    "#M#"
+  ],
+  "key": {
+    "C": {
+      "item": "numina:component_wiring"
     },
-    {
-      "conditions": [
-        {
-          "type": "forge:tag_empty",
-          "tag": "forge:ingots/steel"
-        }
-      ],
-      "recipe": {
-        "type": "minecraft:crafting_shaped",
-        "mirrored": true,
-        "pattern": [
-          "IDI",
-          "COC",
-          "#M#"
-        ],
-        "key": {
-          "C": {
-            "item": "numina:component_wiring"
-          },
-          "#": {
-            "item": "minecraft:diamond"
-          },
-          "D": {
-            "item": "minecraft:diamond"
-          },
-          "I": {
-            "item": "minecraft:iron_ingot"
-          },
-          "M": {
-            "item": "numina:component_solenoid"
-          },
-          "O": {
-            "item": "numina:component_control_circuit"
-          }
-        },
-        "result": {
-          "item": "powersuits:diamond_pick_upgrade"
-        }
-      }
+    "#": {
+      "item": "minecraft:diamond"
+    },
+    "D": {
+      "item": "minecraft:diamond"
+    },
+    "I": {
+      "item": "minecraft:iron_ingot"
+    },
+    "M": {
+      "item": "numina:component_solenoid"
+    },
+    "O": {
+      "item": "numina:component_control_circuit"
     }
-  ]
+  }
 }

@@ -1,15 +1,9 @@
 {
-  "conditions": [
-    {
-      "type": "powersuits:flag",
-      "flag": "vanilla_recipes_enabled"
-    }
-  ],
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    "III",
-    "W W",
-    "I I"
+    " W ",
+    "WI ",
+    " IW"
   ],
   "key": {
     "I": {
@@ -20,6 +14,6 @@
     }
   },
   "result": {
-    "item": "powersuits:powerarmor_legs"
+    "item": "powersuits:powerfist"
   }
 }

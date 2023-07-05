@@ -1,10 +1,4 @@
 {
-  "conditions": [
-    {
-      "type": "powersuits:flag",
-      "flag": "vanilla_recipes_enabled"
-    }
-  ],
   "type": "minecraft:crafting_shaped",
   "pattern": [
     "WCW",

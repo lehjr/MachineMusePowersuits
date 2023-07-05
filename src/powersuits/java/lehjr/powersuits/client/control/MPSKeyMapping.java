@@ -14,7 +14,7 @@ import net.minecraftforge.common.capabilities.ForgeCapabilities;
 public class MPSKeyMapping extends KeyMapping {
     public final ResourceLocation registryName;
     public boolean showOnHud = true;
-    public boolean toggleval = false;
+    public boolean toggleval = false; // fixme: get value on load?
 
     public MPSKeyMapping(ResourceLocation registryName, String name, int key, String category) {
         super(name, key, category);

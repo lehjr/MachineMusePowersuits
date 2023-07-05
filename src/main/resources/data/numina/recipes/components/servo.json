@@ -1,70 +1,23 @@
 {
-  "type": "forge:conditional",
-  "recipes": [
-    {
-      "conditions": [
-        {
-          "type": "forge:not",
-          "value": {
-            "type": "forge:tag_empty",
-            "tag": "forge:ingots/steel"
-          }
-        }
-      ],
-      "recipe": {
-        "type": "minecraft:crafting_shaped",
-        "mirrored": true,
-        "pattern": [
-          " C ",
-          "FSF",
-          " C "
-        ],
-        "key": {
-          "C": {
-            "item": "numina:component_solenoid"
-          },
-          "S": {
-            "tag": "forge:ingots/steel"
-          },
-          "F": {
-            "tag": "forge:wiring"
-          }
-        },
-        "result": {
-          "item": "numina:component_servo"
-        }
-      }
+  "result": {
+    "item": "numina:component_servo"
+  },
+  "type": "minecraft:crafting_shaped",
+  "mirrored": true,
+  "pattern": [
+    " F ",
+    "ORO",
+    " F "
+  ],
+  "key": {
+    "R": {
+      "tag": "forge:ingots/iron"
     },
-    {
-      "conditions": [
-        {
-          "type": "forge:tag_empty",
-          "tag": "forge:ingots/steel"
-        }
-      ],
-      "recipe": {
-        "type": "minecraft:crafting_shaped",
-        "mirrored": true,
-        "pattern": [
-          " S ",
-          "WIW",
-          " S "
-        ],
-        "key": {
-          "S": {
-            "tag": "forge:solenoid"
-          },
-          "W": {
-            "item":"numina:component_wiring"
-          },
-          "I": {
-            "tag": "forge:ingots/iron"
-          }
-        },
-        "result": {
-          "item": "numina:component_servo"
-        }
-      }
+    "F": {
+      "tag": "forge:solenoid"
+    },
+    "O": {
+      "tag": "forge:wiring"
     }
-  ]
+  }
 }

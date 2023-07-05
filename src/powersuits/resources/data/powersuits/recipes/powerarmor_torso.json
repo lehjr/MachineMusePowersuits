@@ -1,64 +1,19 @@
 {
-  "type": "forge:conditional",
-  "recipes": [
-    {
-      "conditions": [
-        {
-          "type": "forge:not",
-          "value": {
-            "type": "forge:tag_empty",
-            "tag": "forge:ingots/copper"
-          }
-        }
-      ],
-      "recipe": {
-        "type": "minecraft:crafting_shaped",
-        "mirrored": true,
-        "pattern": [
-          "F F",
-          "OFO",
-          "FFF"
-        ],
-        "key": {
-          "F": {
-            "tag": "forge:ingots/steel"
-          },
-          "O": {
-            "tag": "forge:wiring"
-          }
-        },
-        "result": {
-          "item": "powersuits:powerarmor_torso"
-        }
-      }
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "I I",
+    "WIW",
+    "III"
+  ],
+  "key": {
+    "I": {
+      "tag": "forge:ingots/iron"
     },
-    {
-      "conditions": [
-        {
-          "type": "forge:tag_empty",
-          "tag": "forge:ingots/steel"
-        }
-      ],
-      "recipe": {
-        "type": "minecraft:crafting_shaped",
-        "mirrored": true,
-        "pattern": [
-          "I I",
-          "WIW",
-          "III"
-        ],
-        "key": {
-          "I": {
-            "tag": "forge:ingots/iron"
-          },
-          "W": {
-            "item":"numina:component_wiring"
-          }
-        },
-        "result": {
-          "item": "powersuits:powerarmor_torso"
-        }
-      }
+    "W": {
+      "item":"numina:component_wiring"
     }
-  ]
+  },
+  "result": {
+    "item": "powersuits:powerarmor_torso"
+  }
 }

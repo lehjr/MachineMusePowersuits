@@ -575,11 +575,11 @@ def changeLogResolver = { ->
         generatedChangelog = "$releaseNotes<br> $generatedChangelog"
     }
 
-    if (release_type == "alpha") {
+    if ("${curseforge_release_type}" == "alpha") {
         //Add a warning at the top about what an alpha build means
-        generatedChangelog = "Warning: Mekanism is currently in alpha, and is not recommended for widespread use in modpacks. There are likely to be game breaking bugs, " +
-                "and updating from one alpha to the next may cause various powersuits blocks to disappear/void their contents. While we will try to not have this happen/keep " +
-                "it to a minimum make sure to make backups. You can read more about the alpha state of this project <a href=\"https://github.com/lehjr/MachineMusePowersuits#alpha-status\">here</a>." +
+        generatedChangelog = "Warning: Modular Powersuits is currently in alpha, and is not recommended for widespread use in modpacks. There are likely to be game breaking bugs, " +
+                "and updating from one alpha to the next may cause items or modules to disappear and other various issues. While we will try to not have this happen/keep " +
+                "it to a minimum make sure to make backups." +
                 "<br> $generatedChangelog"
     }
     resolvedChangelog = generatedChangelog
@@ -597,12 +597,12 @@ if (System.getenv("CURSEFORGE_KEY") != null || project.hasProperty('curseforgeKe
             id = '235440'
             changelogType = "html"
             changelog = changeLogResolver
-            releaseType = "${release_type}"
+            releaseType = "${curseforge_release_type}"
             mainArtifact(jar) {
                 relations {
                     optionalDependency "applied-energistics-2"
                     optionalDependency "scannable"
-                    optionalDependency "refinedstorage"
+//                    optionalDependency "refinedstorage"
                 }
             }
             addGameVersion "Java ${java_version}"
@@ -614,13 +614,13 @@ if (System.getenv("CURSEFORGE_KEY") != null || project.hasProperty('curseforgeKe
             id = '235442'
             changelogType = "html"
             changelog = changeLogResolver
-            releaseType = "${curse_release_type}"
+            releaseType = "${curseforge_release_type}"
             mainArtifact(powersuitsJar) {
                 relations {
                     requiredDependency "numina"
                     optionalDependency "applied-energistics-2"
                     optionalDependency "scannable"
-                    optionalDependency "refinedstorage"
+//                    optionalDependency "refinedstorage"
                 }
             }
             addGameVersion "${minecraft_version}"

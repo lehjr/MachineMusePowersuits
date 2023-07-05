@@ -1,0 +1,20 @@
+{
+  "result": {
+    "item": "powersuits:plating_netherite"
+  },
+  "type": "minecraft:crafting_shaped",
+  "mirrored": true,
+  "pattern": [
+    "FF ",
+    "CF ",
+    "FF "
+  ],
+  "key": {
+    "C": {
+      "item": "numina:component_wiring"
+    },
+    "F": {
+      "tag": "forge:ingots/netherite"
+    }
+  }
+}

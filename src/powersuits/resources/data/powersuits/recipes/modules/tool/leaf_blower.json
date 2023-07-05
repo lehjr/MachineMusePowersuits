@@ -1,76 +1,26 @@
 {
-  "type": "forge:conditional",
-  "recipes": [
-    {
-      "conditions": [
-        {
-          "type": "forge:not",
-          "value": {
-            "type": "forge:tag_empty",
-            "tag": "forge:ingots/steel"
-          }
-        }
-      ],
-      "recipe": {
-        "type": "minecraft:crafting_shaped",
-        "mirrored": true,
-        "pattern": [
-          "I  ",
-          "COC",
-          "IM "
-        ],
-        "key": {
-          "C": {
-            "item": "numina:component_wiring"
-          },
-          "I": {
-            "tag": "forge:ingots/steel"
-          },
-          "M": {
-            "item": "numina:component_solenoid"
-          },
-          "O": {
-            "item": "numina:component_control_circuit"
-          }
-        },
-        "result": {
-          "item": "powersuits:leaf_blower"
-        }
-      }
+  "result": {
+    "item": "powersuits:leaf_blower"
+  },
+  "type": "minecraft:crafting_shaped",
+  "mirrored": true,
+  "pattern": [
+    "I  ",
+    "COC",
+    "IM "
+  ],
+  "key": {
+    "C": {
+      "item": "numina:component_wiring"
     },
-    {
-      "conditions": [
-        {
-          "type": "forge:tag_empty",
-          "tag": "forge:ingots/steel"
-        }
-      ],
-      "recipe": {
-        "type": "minecraft:crafting_shaped",
-        "mirrored": true,
-        "pattern": [
-          "I  ",
-          "COC",
-          "IM "
-        ],
-        "key": {
-          "C": {
-            "item": "numina:component_wiring"
-          },
-          "I": {
-            "item": "minecraft:iron_ingot"
-          },
-          "M": {
-            "item": "numina:component_solenoid"
-          },
-          "O": {
-            "item": "numina:component_control_circuit"
-          }
-        },
-        "result": {
-          "item": "powersuits:leaf_blower"
-        }
-      }
+    "I": {
+      "item": "minecraft:iron_ingot"
+    },
+    "M": {
+      "item": "numina:component_solenoid"
+    },
+    "O": {
+      "item": "numina:component_control_circuit"
     }
-  ]
+  }
 }

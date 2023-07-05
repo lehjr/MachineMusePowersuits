@@ -1,19 +1,13 @@
 {
-  "conditions": [
-    {
-      "type": "powersuits:flag",
-      "flag": "vanilla_recipes_enabled"
-    }
-  ],
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    "DSD",
+    "ISI",
     "WCW",
-    "DSD"
+    "ISI"
   ],
   "key": {
-    "D": {
-      "item": "numina:component_plating_diamond"
+    "I": {
+      "item": "numina:component_plating_iron"
     },
     "W": {
       "tag": "forge:wiring"
@@ -26,6 +20,6 @@
     }
   },
   "result": {
-    "item": "powersuits:generator_thermal"
+    "item": "powersuits:generator_kinetic"
   }
 }
