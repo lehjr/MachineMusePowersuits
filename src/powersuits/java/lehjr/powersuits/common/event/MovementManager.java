@@ -108,9 +108,9 @@ public enum MovementManager {
             double forwardReverse = ((playerInput.reverseKey ? -1D : 0) + (playerInput.forwardKey ? 1D : 0));
 
             desiredDirection = new Vec3(
-                    (desiredDirection.x * forwardReverse + strafeX * strafeState),
-                    (flightVerticality * desiredDirection.y * boolToVal(playerInput.forwardKey) + boolToVal(playerInput.jumpKey) - boolToVal(playerInput.downKey)),
-                    (desiredDirection.z * forwardReverse + strafeZ * strafeState));
+                    (desiredDirection.x * Math.signum(forwardReverse) + strafeX * Math.signum(strafeState)),
+                    (flightVerticality * desiredDirection.y * Math.signum(forwardReverse) + (playerInput.jumpKey ? 1 : 0) - (playerInput.downKey ? 1 : 0)),
+                    (desiredDirection.z * Math.signum(forwardReverse) + strafeZ * Math.signum(strafeState)));
 
             desiredDirection = desiredDirection.normalize();
 
@@ -134,6 +134,8 @@ public enum MovementManager {
             }
 
             if (Math.abs(player.getDeltaMovement().x) > 0 && desiredDirection.length() == 0) {
+//                System.out.println("player.getDeltaMovement().x");
+
                 if (Math.abs(player.getDeltaMovement().x) > thrust) {
                     player.setDeltaMovement(player.getDeltaMovement().add(
                             -(Math.signum(player.getDeltaMovement().x) * thrust), 0, 0));
@@ -150,7 +152,7 @@ public enum MovementManager {
                 if (Math.abs(player.getDeltaMovement().z) > thrust) {
                     player.setDeltaMovement(
                             player.getDeltaMovement().add(
-                                    0, 0, Math.signum(player.getDeltaMovement().z) * thrust));
+                                    0, 0, -(Math.signum(player.getDeltaMovement().z) * thrust)));
                     thrustUsed += thrust;
                     thrust = 0;
                 } else {
@@ -159,6 +161,7 @@ public enum MovementManager {
                     player.setDeltaMovement(player.getDeltaMovement().x, player.getDeltaMovement().y, 0);
                 }
             }
+
             // Thrusting, finally :V
             player.setDeltaMovement(player.getDeltaMovement().add(
                     thrust * desiredDirection.x,
@@ -166,7 +169,6 @@ public enum MovementManager {
                     thrust * desiredDirection.z
             ));
             thrustUsed += thrust;
-
 
         } else {
             Vec3 desiredDirection = player.getLookAngle().normalize();
@@ -208,13 +210,11 @@ public enum MovementManager {
         return thrustUsed;
     }
 
-
-
     public static double computePlayerVelocity(Player player) {
         return MathUtils.pythag(player.getDeltaMovement().x, player.getDeltaMovement().y, player.getDeltaMovement().z);
     }
 
-   @SubscribeEvent
+    @SubscribeEvent
     public void handleLivingJumpEvent(LivingJumpEvent event) {
         if (event.getEntity() instanceof Player) {
             Player player = (Player) event.getEntity();
@@ -260,7 +260,7 @@ public enum MovementManager {
                         if (drain < avail) {
                             ElectricItemUtils.drainPlayerEnergy(player, (int) drain, false);
                             event.setDistance((float) (event.getDistance() - distanceAbsorb));
-    //                        event.getEntityLiving().sendMessage(Component.literalString("modified fall settings: [ damage : " + event.getDamageMultiplier() + " ], [ distance : " + event.getDistance() + " ]"));
+                            //                        event.getEntityLiving().sendMessage(Component.literalString("modified fall settings: [ damage : " + event.getDamageMultiplier() + " ], [ distance : " + event.getDistance() + " ]"));
                         }
                     }));
         }

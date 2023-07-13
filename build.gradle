@@ -378,6 +378,8 @@ dependencies {
 
     implementation fg.deobf("curse.maven:configured-457570:4462839")
 
+    runtimeOnly fg.deobf("curse.maven:architectury-forge-419699:4555756") // architectury-api/files/4555756
+
 
 
     // cannot even run with this. Not sure why this was ever needed, mod wasn't even that large

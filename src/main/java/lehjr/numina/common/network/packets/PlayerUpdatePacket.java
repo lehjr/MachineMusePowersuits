@@ -60,7 +60,6 @@ public class PlayerUpdatePacket {
                 playerCap.setRightStrafeKeyState(boolArray[3]);
                 playerCap.setDownKeyState(boolArray[4]);
                 playerCap.setJumpKeyState(boolArray[5]);
-
             });
         });
         ctx.get().setPacketHandled(true);

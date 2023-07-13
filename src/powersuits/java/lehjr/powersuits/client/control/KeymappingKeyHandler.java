@@ -139,7 +139,6 @@ public class KeymappingKeyHandler {
                     false,
                     false
             };
-
             byte byteOut = MathUtils.boolArrayToByte(boolArray);
 
             if (markForSync) {
