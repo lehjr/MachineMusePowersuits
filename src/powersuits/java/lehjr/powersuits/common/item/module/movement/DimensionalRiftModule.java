@@ -38,18 +38,27 @@ import lehjr.numina.common.heat.HeatUtils;
 import lehjr.powersuits.common.config.MPSSettings;
 import lehjr.powersuits.common.constants.MPSConstants;
 import lehjr.powersuits.common.item.module.AbstractPowerModule;
+import net.minecraft.BlockUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.TicketType;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.ai.village.poi.PoiManager;
+import net.minecraft.world.entity.ai.village.poi.PoiRecord;
+import net.minecraft.world.entity.ai.village.poi.PoiTypes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.NetherPortalBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.border.WorldBorder;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraftforge.common.capabilities.Capability;
@@ -60,6 +69,7 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.Comparator;
 import java.util.Optional;
 import java.util.concurrent.Callable;
 import java.util.function.Function;
@@ -111,7 +121,7 @@ public class DimensionalRiftModule extends AbstractPowerModule {
                         double energyConsumption = (int) applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION);
                         double playerEnergy = ElectricItemUtils.getPlayerEnergy(playerIn);
                         if (playerEnergy >= energyConsumption) {
-                            Optional<BlockPos> targetPos = findSafeLocation(coords, Direction.Axis.X, level, playerIn);
+                            Optional<BlockPos> targetPos = findSafeLocation(coords, Direction.Axis.X, (ServerLevel) level, playerIn);
                             if (targetPos.isPresent()) {
                                 playerIn.changeDimension((ServerLevel) level, new CommandTeleporter(targetPos.get()));
                                 ElectricItemUtils.drainPlayerEnergy(playerIn, getEnergyUsage());
@@ -166,27 +176,27 @@ public class DimensionalRiftModule extends AbstractPowerModule {
         return pos.getY() <= 0 || pos.getY() >= world.getHeight();
     }
 
-    public Optional<BlockPos> findSafeLocation(BlockPos targetPos, Direction.Axis axis, Level world, Player entity) {
+    public Optional<BlockPos> findSafeLocation(BlockPos targetPos, Direction.Axis axis, ServerLevel level, Player entity) {
         Direction direction = Direction.get(Direction.AxisDirection.POSITIVE, axis);
         double d0 = -1.0D;
         BlockPos destination = null;
         double d1 = -1.0D;
         BlockPos blockpos1 = null;
-        WorldBorder worldborder = world.getWorldBorder();
-        final int ceilingLimit = world.getHeight() - 1;
+        WorldBorder worldborder = level.getWorldBorder();
+        final int ceilingLimit = Math.min(level.getMaxBuildHeight(), level.getMinBuildHeight() + level.getLogicalHeight()) - 1;
 
         for(BlockPos.MutableBlockPos mutablePos : BlockPos.spiralAround(targetPos, 16, Direction.EAST, Direction.SOUTH)) {
-            int j = Math.min(ceilingLimit, world.getHeight(Heightmap.Types.MOTION_BLOCKING, mutablePos.getX(), mutablePos.getZ()));
+            int j = Math.min(ceilingLimit, level.getHeight(Heightmap.Types.MOTION_BLOCKING, mutablePos.getX(), mutablePos.getZ()));
             int k = 1;
             if (worldborder.isWithinBounds(mutablePos) && worldborder.isWithinBounds(mutablePos.move(direction, k))) {
                 mutablePos.move(direction.getOpposite(), k);
 
                 for(int l = j; l >= 0; --l) {
                     mutablePos.setY(l);
-                    if (world.isEmptyBlock(mutablePos)) {
+                    if (level.isEmptyBlock(mutablePos)) {
                         int i1;
                         /* what exactly is the logic behind this? */
-                        for(i1 = l; l > 0 && world.isEmptyBlock(mutablePos.move(Direction.DOWN)); --l) {
+                        for(i1 = l; l > 0 && level.isEmptyBlock(mutablePos.move(Direction.DOWN)); --l) {
                         }
 
                         if (l + 4 <= ceilingLimit) {
@@ -194,7 +204,7 @@ public class DimensionalRiftModule extends AbstractPowerModule {
                             if (j1 <= 0 || j1 >= 3) {
                                 mutablePos.setY(l);
 
-                                if(canTeleportTo(world, mutablePos, entity)) {
+                                if(canTeleportTo(level, mutablePos, entity)) {
                                     return Optional.of(mutablePos);
                                 }
                             }
@@ -210,7 +220,7 @@ public class DimensionalRiftModule extends AbstractPowerModule {
         }
 
         if (d0 == -1.0D) {
-            destination = (new BlockPos(targetPos.getX(), Mth.clamp(targetPos.getY(), 70, world.getHeight() - 10), targetPos.getZ())).immutable();
+            destination = (new BlockPos(targetPos.getX(), Mth.clamp(targetPos.getY(), 70, level.getHeight() - 10), targetPos.getZ())).immutable();
             if (!worldborder.isWithinBounds(destination)) {
                 return Optional.empty();
             }

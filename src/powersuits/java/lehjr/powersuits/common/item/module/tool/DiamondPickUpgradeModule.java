@@ -30,7 +30,10 @@ import lehjr.numina.common.capabilities.NuminaCapabilities;
 import lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
 import lehjr.numina.common.capabilities.module.blockbreaking.IBlockBreakingModule;
 import lehjr.numina.common.capabilities.module.blockbreaking.ToggleableBlockBreakingModule;
-import lehjr.numina.common.capabilities.module.powermodule.*;
+import lehjr.numina.common.capabilities.module.powermodule.IConfig;
+import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
+import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
+import lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
 import lehjr.numina.common.energy.ElectricItemUtils;
 import lehjr.powersuits.common.config.MPSSettings;
 import lehjr.powersuits.common.constants.MPSConstants;
@@ -56,7 +59,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.concurrent.Callable;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class DiamondPickUpgradeModule extends AbstractPowerModule {
 

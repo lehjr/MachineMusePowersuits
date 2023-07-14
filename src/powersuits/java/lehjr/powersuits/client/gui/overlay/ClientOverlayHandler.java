@@ -36,6 +36,7 @@ import lehjr.numina.client.render.NuminaRenderer;
 import lehjr.numina.common.capabilities.NuminaCapabilities;
 import lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
+import lehjr.numina.common.capabilities.module.hud.IHudModule;
 import lehjr.numina.common.energy.ElectricItemUtils;
 import lehjr.numina.common.heat.HeatUtils;
 import lehjr.numina.common.item.ItemUtils;
@@ -98,76 +99,77 @@ public enum ClientOverlayHandler {
             player.getItemBySlot(EquipmentSlot.HEAD).getCapability(ForgeCapabilities.ITEM_HANDLER)
                     .filter(IModularItem.class::isInstance)
                     .map(IModularItem.class::cast)
-
                     // Looping this way is far more efficient than looping for each module
                     .ifPresent(h -> h.getInstalledModules().forEach(module -> {
-                        // AutoFeeder
-                        if (ItemUtils.getRegistryName(module).equals(MPSRegistryNames.AUTO_FEEDER_MODULE)) {
-                            ItemStack autoFeeder = module;
-                            if (autoFeeder.getCapability(NuminaCapabilities.POWER_MODULE).map(pm-> {
-                                                                return pm.isModuleOnline();
-                            }).orElse(false)) {
-                                int foodLevel = (int) ((AutoFeederModule) autoFeeder.getItem()).getFoodLevel(autoFeeder);
-                                String num = StringUtils.formatNumberShort(foodLevel);
-                                StringUtils.drawShadowedString(matrixStack, num, 17, yBase + (yOffsetString * index.get()));
-                                // FIXME
-                                NuminaRenderer.drawItemAt(matrixStack, -1.0, yBase + (yOffsetIcon * index.get()), food, Color.WHITE);
-                                index.addAndGet(1);
-                            }
-                        }
+                        module.getCapability(NuminaCapabilities.POWER_MODULE).ifPresent(pm->{
+                            if (pm.isModuleOnline()) {
+                                // AutoFeeder
+                                if (ItemUtils.getRegistryName(module).equals(MPSRegistryNames.AUTO_FEEDER_MODULE)) {
+                                    ItemStack autoFeeder = module;
 
-                        // Clock
-                        if (ItemUtils.getRegistryName(module).equals(ItemUtils.getRegistryName(Items.CLOCK))) {
-                            ItemStack clock = module;
-                            if (clock.getCapability(NuminaCapabilities.POWER_MODULE).map(pm -> pm.isModuleOnline()).orElse(false)) {
-                                if (!clock.isEmpty() && clock.getCapability(NuminaCapabilities.POWER_MODULE).map(pm->pm.isModuleOnline()).orElse(false)) {
-                                    String ampm;
-                                    long time = player.level.getDayTime();
-                                    long hour = ((time % 24000) / 1000);
-                                    if (MPSSettings.use24HourClock()) {
-                                        if (hour < 19) {
-                                            hour += 6;
+                                    int foodLevel = (int) ((AutoFeederModule) autoFeeder.getItem()).getFoodLevel(autoFeeder);
+                                    String num = StringUtils.formatNumberShort(foodLevel);
+                                    StringUtils.drawShadowedString(matrixStack, num, 17, yBase + (yOffsetString * index.get()));
+                                    // FIXME
+                                    NuminaRenderer.drawItemAt(matrixStack, -1.0, yBase + (yOffsetIcon * index.get()), food, Color.WHITE);
+                                    index.addAndGet(1);
+
+                                    // Clock
+                                } else if (ItemUtils.getRegistryName(module).equals(ItemUtils.getRegistryName(Items.CLOCK))) {
+                                    ItemStack clock = module;
+                                    if (pm.isModuleOnline()) {
+
+                                        String ampm;
+                                        long time = player.level.getDayTime();
+                                        long hour = ((time % 24000) / 1000);
+                                        if (MPSSettings.use24HourClock()) {
+                                            if (hour < 19) {
+                                                hour += 6;
+                                            } else {
+                                                hour -= 18;
+                                            }
+                                            ampm = "h";
                                         } else {
-                                            hour -= 18;
-                                        }
-                                        ampm = "h";
-                                    } else {
-                                        if (hour < 6) {
-                                            hour += 6;
-                                            ampm = " AM";
-                                        } else if (hour == 6) {
-                                            hour = 12;
-                                            ampm = " PM";
-                                        } else if (hour > 6 && hour < 18) {
-                                            hour -= 6;
-                                            ampm = " PM";
-                                        } else if (hour == 18) {
-                                            hour = 12;
-                                            ampm = " AM";
-                                        } else {
-                                            hour -= 18;
-                                            ampm = " AM";
-                                        }
+                                            if (hour < 6) {
+                                                hour += 6;
+                                                ampm = " AM";
+                                            } else if (hour == 6) {
+                                                hour = 12;
+                                                ampm = " PM";
+                                            } else if (hour > 6 && hour < 18) {
+                                                hour -= 6;
+                                                ampm = " PM";
+                                            } else if (hour == 18) {
+                                                hour = 12;
+                                                ampm = " AM";
+                                            } else {
+                                                hour -= 18;
+                                                ampm = " AM";
+                                            }
 
-                                        StringUtils.drawShadowedString(matrixStack, hour + ampm, 17, yBase + (yOffsetString * index.get()));
-                                        // FIXME
-                                        NuminaRenderer.drawItemAt(matrixStack, -1.0, yBase + (yOffsetIcon * index.get()), clock, Color.WHITE);
+                                            StringUtils.drawShadowedString(matrixStack, hour + ampm, 17, yBase + (yOffsetString * index.get()));
+                                            // FIXME
+                                            NuminaRenderer.drawItemAt(matrixStack, -1.0, yBase + (yOffsetIcon * index.get()), clock, Color.WHITE);
 
-                                        index.addAndGet(1);
+                                            index.addAndGet(1);
+                                        }
                                     }
+                                    // Generic modules
+                                } else if (pm instanceof IHudModule) {
+                                    NuminaRenderer.drawItemAt(matrixStack, -1.0, yBase + (yOffsetIcon * index.get()), module, Color.WHITE);
+                                    index.addAndGet(1);
                                 }
                             }
-                        }
+                        });
 
-                        // Compass
-                        if (ItemUtils.getRegistryName(module).equals(ItemUtils.getRegistryName(Items.COMPASS))) {
-                            ItemStack compass = module;
-                            if (compass.getCapability(NuminaCapabilities.POWER_MODULE).map(pm -> pm.isModuleOnline()).orElse(false)) {
-                                // FIXME
-                                NuminaRenderer.drawItemAt(matrixStack, -1.0, yBase + (yOffsetIcon * index.get()), compass, Color.WHITE);
-                                index.addAndGet(1);
-                            }
-                        }
+
+
+
+
+
+
+
+
                     }));
 
             // Meters ---------------------------------------------------------------------------------------------

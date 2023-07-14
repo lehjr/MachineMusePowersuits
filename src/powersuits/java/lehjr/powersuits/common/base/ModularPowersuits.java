@@ -28,6 +28,8 @@ package lehjr.powersuits.common.base;
 
 import com.electronwill.nightconfig.core.file.CommentedFileConfig;
 import lehjr.numina.common.capabilities.NuminaCapabilities;
+import lehjr.numina.common.capabilities.module.hud.HudModule;
+import lehjr.numina.common.capabilities.module.hud.IHudModule;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
 import lehjr.numina.common.capabilities.module.rightclick.IRightClickModule;
@@ -75,6 +77,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.network.NetworkHooks;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -110,6 +113,8 @@ public class ModularPowersuits {
         MinecraftForge.EVENT_BUS.addListener(HarvestEventHandler::handleHarvestCheck);
         MinecraftForge.EVENT_BUS.addListener(HarvestEventHandler::handleBreakSpeed);
         MPSSoundDictionary.MPS_SOUND_EVENTS.register(modEventBus);
+
+        MinecraftForge.EVENT_BUS.register(new LoginLogoutEventHandler());
 
         // handles loading and reloading event
         modEventBus.addListener((ModConfigEvent event) -> {
@@ -148,9 +153,6 @@ public class ModularPowersuits {
 
         MinecraftForge.EVENT_BUS.register(RenderEventHandler.INSTANCE);
         MinecraftForge.EVENT_BUS.register(new KeymappingKeyHandler());
-        MinecraftForge.EVENT_BUS.register(new LogoutEventHandler());
-
-
 
         MenuScreens.register(MPSMenuTypes.INSTALL_SALVAGE_MENU_TYPE.get(), InstallSalvageGui::new);
 
@@ -207,11 +209,9 @@ public class ModularPowersuits {
 ////
 //        }
 
-
-
         // Clock
         if (!event.getCapabilities().containsKey(MPSRegistryNames.CLOCK_MODULE) && event.getObject().getItem().equals(Items.CLOCK)) {
-            IToggleableModule clock = new ToggleableModule(itemStack, ModuleCategory.SPECIAL, ModuleTarget.HEADONLY, MPSSettings::getModuleConfig, true);
+            IHudModule clock = new HudModule(itemStack, ModuleCategory.SPECIAL, ModuleTarget.HEADONLY, MPSSettings::getModuleConfig, true);
             event.addCapability(MPSRegistryNames.CLOCK_MODULE, new ICapabilityProvider() {
                 @Nonnull
                 @Override
@@ -226,7 +226,7 @@ public class ModularPowersuits {
 
         // Compass
         } else if (!event.getCapabilities().containsKey(MPSRegistryNames.COMPASS_MODULE) && event.getObject().getItem().equals(Items.COMPASS)) {
-            IToggleableModule compass = new ToggleableModule(itemStack, ModuleCategory.SPECIAL, ModuleTarget.HEADONLY, MPSSettings::getModuleConfig, true);
+            IHudModule compass = new HudModule(itemStack, ModuleCategory.SPECIAL, ModuleTarget.HEADONLY, MPSSettings::getModuleConfig, true);
 
             event.addCapability(MPSRegistryNames.COMPASS_MODULE, new ICapabilityProvider() {
                 @Nonnull
@@ -240,6 +240,35 @@ public class ModularPowersuits {
                 }
             });
 
+        // Recovery Compass
+        } else if (!event.getCapabilities().containsKey(MPSRegistryNames.RECOVERY_COMPASS) && event.getObject().getItem().equals(Items.RECOVERY_COMPASS)) {
+            IHudModule compass = new HudModule(itemStack, ModuleCategory.SPECIAL, ModuleTarget.HEADONLY, MPSSettings::getModuleConfig, true);
+            event.addCapability(MPSRegistryNames.RECOVERY_COMPASS, new ICapabilityProvider() {
+                @Nonnull
+                @Override
+                public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
+                    if (cap == NuminaCapabilities.POWER_MODULE) {
+                        compass.loadCapValues();
+                        return LazyOptional.of(()->(T)compass);
+                    }
+                    return LazyOptional.empty();
+                }
+            });
+
+        // AE2 Meteorite Compass
+        } else if (!event.getCapabilities().containsKey(MPSRegistryNames.AE2_METEOR_COMPASS) && event.getObject().getItem().equals(ForgeRegistries.ITEMS.getValue(new ResourceLocation("ae2:meteorite_compass")))) {
+            IHudModule compass = new HudModule(itemStack, ModuleCategory.SPECIAL, ModuleTarget.HEADONLY, MPSSettings::getModuleConfig, true);
+            event.addCapability(MPSRegistryNames.AE2_METEOR_COMPASS, new ICapabilityProvider() {
+                @Nonnull
+                @Override
+                public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
+                    if (cap == NuminaCapabilities.POWER_MODULE) {
+                        compass.loadCapValues();
+                        return LazyOptional.of(()->(T)compass);
+                    }
+                    return LazyOptional.empty();
+                }
+            });
         // Crafting workbench
         } else if (!event.getCapabilities().containsKey(MPSRegistryNames.PORTABLE_WORKBENCH_MODULE) && event.getObject().getItem().equals(Items.CRAFTING_TABLE)) {
             final Component CONTAINER_NAME = Component.translatable("container.crafting");

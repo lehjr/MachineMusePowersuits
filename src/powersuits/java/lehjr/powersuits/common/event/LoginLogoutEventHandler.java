@@ -28,12 +28,16 @@ package lehjr.powersuits.common.event;
 
 import lehjr.numina.common.capabilities.module.powermodule.IConfig;
 import lehjr.numina.common.config.ModuleConfig;
+import lehjr.powersuits.client.control.KeymappingKeyHandler;
 import lehjr.powersuits.common.config.MPSSettings;
+import lehjr.powersuits.common.network.MPSPackets;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.network.NetworkDirection;
 
-public class LogoutEventHandler {
+public class LoginLogoutEventHandler {
     // server side since server is null from client side
     @SubscribeEvent
     public void OnPlayerLogoutCommon(PlayerEvent.PlayerLoggedOutEvent event) {
@@ -48,4 +52,35 @@ public class LogoutEventHandler {
             }
         }
     }
+
+    // LOOKS like this only fired server side
+//    @SubscribeEvent
+//    public void onPlayerLoginClient(PlayerEvent.PlayerLoggedInEvent event) {
+//
+//        Player player = event.getEntity();
+//        if (player != null) {
+////            NonNullList<ItemStack> modules = NonNullList.create();
+////            for (Item item : ForgeRegistries.ITEMS.getValues()) {
+////                    new ItemStack(item).getCapability(NuminaCapabilities.POWER_MODULE)
+////                            .filter(IToggleableModule.class::isInstance)
+////                            .map(IToggleableModule.class::cast)
+////                            .ifPresent(pm -> {
+////                                // Tool settings are a bit odd
+////                                if (pm.getTarget() == ModuleTarget.TOOLONLY) {
+////                                    if (pm.getCategory() == ModuleCategory.MINING_ENHANCEMENT) {
+////                                        modules.add(pm.getModuleStack());
+////                                        KeybindKeyHandler.registerKeybinding(ItemUtils.getRegistryName(item), false);
+////                                    } else if (!IRightClickModule.class.isAssignableFrom(pm.getClass())) {
+////                                        modules.add(pm.getModuleStack());
+////                                        KeybindKeyHandler.registerKeybinding(ItemUtils.getRegistryName(item), false);
+////                                    }
+////                                } else {
+////                                    modules.add(pm.getModuleStack());
+////                                    KeybindKeyHandler.registerKeybinding(ItemUtils.getRegistryName(item), false);
+////                                }
+////                            });
+////                }
+////            KeybindManager.INSTANCE.readInKeybinds(true);
+//        }
+//    }
 }

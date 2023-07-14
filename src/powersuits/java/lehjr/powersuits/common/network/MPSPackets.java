@@ -31,8 +31,11 @@ import lehjr.powersuits.common.network.packets.ColorInfoPacket;
 import lehjr.powersuits.common.network.packets.ContainerGuiOpenPacket;
 import lehjr.powersuits.common.network.packets.CreativeInstallPacket;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraftforge.network.NetworkDirection;
 import net.minecraftforge.network.NetworkRegistry;
 import net.minecraftforge.network.simple.SimpleChannel;
+
+import java.util.Optional;
 
 public class MPSPackets {
     private static final String PROTOCOL_VERSION = "1";

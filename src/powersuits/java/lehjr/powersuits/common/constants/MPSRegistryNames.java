@@ -114,6 +114,12 @@ public class MPSRegistryNames {
     public static final ResourceLocation ACTIVE_CAMOUFLAGE_MODULE = getRegName("invisibility");
     public static final ResourceLocation MAGNET_MODULE = getRegName("magnet");
     public static final ResourceLocation PIGLIN_PACIFICATION_MODULE = getRegName("piglin_pacification_module");
+    public static final ResourceLocation AE2_METEOR_COMPASS = getRegName("meteorite_compass");
+    public static final ResourceLocation RECOVERY_COMPASS = getRegName("recovery_compass");
+
+
+
+
 
     // Tools --------------------------------------------------------------------------------------
     public static final ResourceLocation AQUA_AFFINITY_MODULE = getRegName("aqua_affinity");

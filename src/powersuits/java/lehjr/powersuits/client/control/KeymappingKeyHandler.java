@@ -28,6 +28,7 @@ package lehjr.powersuits.client.control;
 
 import lehjr.numina.common.capabilities.NuminaCapabilities;
 import lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
+import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
 import lehjr.numina.common.capabilities.module.rightclick.IRightClickModule;
@@ -40,17 +41,19 @@ import lehjr.powersuits.client.gui.modechanging.GuiModeSelector;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
+import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.registries.ForgeRegistries;
+import org.jetbrains.annotations.NotNull;
 import org.lwjgl.glfw.GLFW;
 
 import java.util.Arrays;
@@ -217,26 +220,26 @@ public class KeymappingKeyHandler {
     }
 
     public static void loadKeyBindings() {
-        NonNullList<ItemStack> modules = NonNullList.create();
         for (Item item : ForgeRegistries.ITEMS.getValues()) {
-            new ItemStack(item).getCapability(NuminaCapabilities.POWER_MODULE)
-                    .filter(IToggleableModule.class::isInstance)
-                    .map(IToggleableModule.class::cast)
-                    .ifPresent(pm -> {
-                        // Tool settings are a bit odd
-                        if (pm.getTarget() == ModuleTarget.TOOLONLY) {
-                            if (pm.getCategory() == ModuleCategory.MINING_ENHANCEMENT) {
-                                modules.add(pm.getModuleStack());
-                                registerKeybinding(ItemUtils.getRegistryName(item), false);
-                            } else if (!IRightClickModule.class.isAssignableFrom(pm.getClass())) {
-                                modules.add(pm.getModuleStack());
-                                registerKeybinding(ItemUtils.getRegistryName(item), false);
-                            }
-                        } else {
-                            modules.add(pm.getModuleStack());
-                            registerKeybinding(ItemUtils.getRegistryName(item), false);
-                        }
-                    });
+            ItemStack module = new ItemStack(item);
+            @NotNull LazyOptional<IPowerModule> pm = module.getCapability(NuminaCapabilities.POWER_MODULE);
+
+            if (pm.isPresent() && pm instanceof IToggleableModule) {
+                // Tool settings are a bit odd
+                if (((IToggleableModule) pm).getTarget() == ModuleTarget.TOOLONLY) {
+                    if (((IToggleableModule) pm).getCategory() == ModuleCategory.MINING_ENHANCEMENT) {
+                        registerKeybinding(ItemUtils.getRegistryName(item), false);
+                    } else if (!IRightClickModule.class.isAssignableFrom(pm.getClass())) {
+                        registerKeybinding(ItemUtils.getRegistryName(item), false);
+                    }
+                } else {
+                    registerKeybinding(ItemUtils.getRegistryName(item), false);
+                }
+            } else {
+                if (item == Items.CLOCK || item == Items.COMPASS || item == Items.RECOVERY_COMPASS || ItemUtils.getRegistryName(item).equals(new ResourceLocation("ae2:meteorite_compass"))) {
+                    registerKeybinding(ItemUtils.getRegistryName(item), false);
+                }
+            }
         }
     }
 

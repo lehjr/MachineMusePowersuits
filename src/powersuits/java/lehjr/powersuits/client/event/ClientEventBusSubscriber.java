@@ -35,9 +35,19 @@ public class ClientEventBusSubscriber {
     @SubscribeEvent
     public static void registerKeyBinding(RegisterKeyMappingsEvent event) {
         KeyMappingReaderWriter.INSTANCE.readInKeybinds(); // read existing keybindings
+
+
         KeymappingKeyHandler.loadKeyBindings(); // check for possible additional
         KeymappingKeyHandler.keyMappings.values().forEach(kb-> event.register(kb)); // register keybinds
         Arrays.stream(KeymappingKeyHandler.keybindArray).forEach(kb->event.register(kb));
+
+
+
+
+
+
+
+
         MPSKeyBindHud.makeKBDisplayList();
     }
 
