@@ -86,7 +86,7 @@ public class GuiIcon {
 
     private DrawableGuiIcon registerIcon(String name, int width, int height) {
         ResourceLocation location = new ResourceLocation(NuminaConstants.MOD_ID, name);
-//        spriteUploader.registerIcon(location);
+        spriteUploader.registerIcon(location);
         return new DrawableGuiIcon(location, width, height);
     }
 

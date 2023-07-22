@@ -41,7 +41,7 @@ public class NuminaSpriteUploader extends TextureAtlasHolder {
     private final Set<ResourceLocation> registeredSprites = new HashSet<>();
 
     public NuminaSpriteUploader() {
-        super(Minecraft.getInstance().getTextureManager(), NuminaConstants.LOCATION_NUMINA_GUI_TEXTURE_ATLAS, "gui");
+        super(Minecraft.getInstance().getTextureManager(), NuminaConstants.LOCATION_NUMINA_GUI_TEXTURE_ATLAS, "atlas/gui");
     }
 
     public void registerIcon(ResourceLocation location) {

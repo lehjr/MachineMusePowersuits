@@ -122,7 +122,7 @@ public class Numina {
         event.register( "obj", NuminaObjLoader.INSTANCE);
     }
 
-    private void onRegisterReloadListenerEvent(RegisterClientReloadListenersEvent event) {
+    public void onRegisterReloadListenerEvent(RegisterClientReloadListenersEvent event) {
         NuminaSpriteUploader iconUploader = new NuminaSpriteUploader();
         GuiIcon icons = new GuiIcon(iconUploader);
         IconUtils.INSTANCE.setIconInstance(icons);
@@ -166,9 +166,9 @@ public class Numina {
         modEventBus.register(ClientEventBusSubscriber.class);
         modEventBus.addListener(ModelBakeEventHandler.INSTANCE::onAddAdditional);
 
-        MinecraftForge.EVENT_BUS.addListener((InputEvent.Key e) -> {
-//            ModelTransformCalibration.CALIBRATION.transformCalibration(e);
-        });
+//        MinecraftForge.EVENT_BUS.addListener((InputEvent.Key e) -> {
+////            ModelTransformCalibration.CALIBRATION.transformCalibration(e);
+//        });
     }
 
     @SubscribeEvent
