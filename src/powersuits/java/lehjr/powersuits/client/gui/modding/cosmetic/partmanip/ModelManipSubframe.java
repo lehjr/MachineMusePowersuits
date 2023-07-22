@@ -261,27 +261,15 @@ public class ModelManipSubframe extends AbstractGuiFrame {
         String name;
         CompoundTag nbt = getSpecTagOrEmpty(partSpec);
 //        NuminaLogger.logDebug("specTag: " + nbt);
-
-
         if (nbt.isEmpty()) {
             name = NuminaModelSpecRegistry.getInstance().makeName(partSpec);
             partSpec.multiSet(nbt, null, null);
-
-
-
-
-
 //            NuminaLogger.logDebug("name here: " + name);
-
-
-
             // update the render tag client side. The server side update is called below.
             if (getRenderCapability() != null) {
                 this.getRenderCapability().ifPresent(specNBT->{
                     CompoundTag renderTag  = specNBT.getRenderTag().copy();
 //                    NuminaLogger.logDebug("render tag: " + renderTag);
-
-
                     if (renderTag != null && !renderTag.isEmpty()) {
                         renderTag.put(name, nbt);
                     }
@@ -387,14 +375,7 @@ public class ModelManipSubframe extends AbstractGuiFrame {
             /** Normal (enables rendering of part with normal lighting) */
             normal = new RadioButton(IconUtils.getIcon().normalArmor, 8, 8, 0,0);
             normal.setOnPressed(pressed -> {
-
-
-//                NuminaLogger.logDebug("tagdata before: " + tagdata);
-
-
                 tagdata = getOrMakeSpecTag(partSpec);
-//                NuminaLogger.logDebug("tagdata after: " + tagdata);
-
                 partSpec.setGlow(tagdata, false);
                 itemSelector.selectedType().ifPresent(slotType -> {
                     NuminaPackets.CHANNEL_INSTANCE.sendToServer(new CosmeticInfoPacket(slotType, tagname, tagdata));
@@ -533,7 +514,10 @@ public class ModelManipSubframe extends AbstractGuiFrame {
                             top() + StringUtils.getStringHeight() - iconWidth,
                             Color.WHITE);
                 } else {
-                    NuminaLogger.logError("color buttons shouldn't be empty");
+                    StringUtils.drawText(matrixStack, partSpec.getDisaplayName(),
+                            buttons.get(buttons.size() - 1).right() + 4,
+                            top() + StringUtils.getStringHeight() - iconWidth,
+                            Color.WHITE);
                 }
             }
         }
@@ -546,6 +530,8 @@ public class ModelManipSubframe extends AbstractGuiFrame {
                     for (j=0; j < buttons.size(); j++) {
                         buttons.get(j).isSelected = i==j;
                     }
+                    // fixme add white color if none exists when enabling part
+
                     return true;
                 }
             }

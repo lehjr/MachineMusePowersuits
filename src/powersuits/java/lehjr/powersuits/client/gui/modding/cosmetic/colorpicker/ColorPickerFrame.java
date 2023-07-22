@@ -144,10 +144,11 @@ public class ColorPickerFrame extends ScrollableFrame {
                 .map(spec -> {
                     CompoundTag renderSpec = spec.getRenderTag();
                     if (renderSpec != null && !renderSpec.isEmpty()) {
+                        this.itemSelector.selectedType().ifPresent(slotType -> MPSPackets.CHANNEL_INSTANCE.sendToServer(new ColorInfoPacket(slotType, new int[]{-1})));
                         return new IntArrayTag(spec.getColorArray());
                     }
-                    return new IntArrayTag(new int[0]);
-                }).orElse(new IntArrayTag(new int[0]));
+                    return new IntArrayTag(new int[]{-1});
+                }).orElse(new IntArrayTag(new int[]{-1}));
     }
 
     public IntArrayTag setColorTagMaybe(List<Integer> intList) {
@@ -159,7 +160,8 @@ public class ColorPickerFrame extends ScrollableFrame {
                     renderSpec.put(TagConstants.COLORS, new IntArrayTag(intList));
                     this.itemSelector.selectedType().ifPresent(slotType -> MPSPackets.CHANNEL_INSTANCE.sendToServer(new ColorInfoPacket(slotType, this.colors())));
                     return (IntArrayTag) renderSpec.get(TagConstants.COLORS);
-                }).orElse(new IntArrayTag(new int[0]));
+
+                }).orElse(new IntArrayTag(new int[]{-1}));
     }
 
     @Override
@@ -288,17 +290,16 @@ public class ColorPickerFrame extends ScrollableFrame {
         setCurrentScrollPixels(scrollBar.getValue());
     }
 
+    public int[] getIntArray(IntArrayTag e) {
+        if (e == null) // null when no armor item selected
+            return new int[0];
+        return e.getAsIntArray();
+    }
+
     class ColorBox extends Clickable {
         public ColorBox(double left, double top, double right) {
             super(left,top,right,top + 18);
         }
-
-        public int[] getIntArray(IntArrayTag e) {
-            if (e == null) // null when no armor item selected
-                return new int[0];
-            return e.getAsIntArray();
-        }
-
         /**
          * handles clicking on the "+" circle
          *
@@ -312,7 +313,7 @@ public class ColorPickerFrame extends ScrollableFrame {
                 if (colorCol >= 0 && colorCol < colors().length) {
                     onSelectColor(colorCol);
                 } else if (colorCol == colors().length) {
-                    NuminaLogger.logger.debug("Adding");
+                    NuminaLogger.logger.debug("Adding color");
                     List<Integer> intList = Arrays.stream(getIntArray(getOrCreateColorTag())).boxed().collect(Collectors.toList());
                     intList.add(Color.WHITE.getARGBInt());
                     setColorTagMaybe(intList);
