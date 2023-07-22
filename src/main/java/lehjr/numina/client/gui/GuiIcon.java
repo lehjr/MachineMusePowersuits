@@ -166,13 +166,13 @@ public class GuiIcon {
             float maxU = (float) (icon.getU1() - uSize * (maskRight / textureWidth));
             float maxV = (float) (icon.getV1() - vSize * (maskBottom / textureHeight));
 
-            RenderSystem.enableBlend();
-//            RenderSystem.disableAlphaTest();
-            RenderSystem.defaultBlendFunc();
+//            RenderSystem.enableBlend();
+////            RenderSystem.disableAlphaTest();
+//            RenderSystem.defaultBlendFunc();
             innerBlit(matrixStack.last().pose(), posLeft, posRight, posTop, posBottom, zLevel, minU, maxU, minV, maxV, color);
-            RenderSystem.disableBlend();
-//            RenderSystem.enableAlphaTest();
-            RenderSystem.enableDepthTest();
+//            RenderSystem.disableBlend();
+////            RenderSystem.enableAlphaTest();
+//            RenderSystem.enableDepthTest();
         }
 
         public TextureAtlasSprite getSprite() {

@@ -26,6 +26,7 @@
 
 package lehjr.numina.client.gui.clickable;
 
+import com.mojang.blaze3d.platform.Lighting;
 import com.mojang.blaze3d.vertex.PoseStack;
 import lehjr.numina.client.gui.geometry.MusePoint2D;
 import lehjr.numina.client.render.IconUtils;
@@ -55,8 +56,7 @@ import java.util.List;
  * Ported to Java by lehjr on 10/19/16.
  */
 public class ClickableModule extends Clickable {
-    final Color checkmarkcolor = new Color(0.0F, 0.667F, 0.0F, 1.0F);
-    boolean allowed = true;
+    boolean allowed;
     boolean installed = false;
     boolean isEnabled = true;
     boolean isVisible = true;
@@ -127,6 +127,7 @@ public class ClickableModule extends Clickable {
 
         if (!getModule().isEmpty()) {
             NuminaRenderer.drawModuleAt(matrixStack, left(), top(), getModule(), true);
+            Lighting.setupForFlatItems();
             if (!allowed) {
                 matrixStack.pushPose();
                 matrixStack.translate(0, 0, 250);
@@ -136,7 +137,7 @@ public class ClickableModule extends Clickable {
             } else if (installed) {
                 matrixStack.pushPose();
                 matrixStack.translate(0, 0,250);
-                IconUtils.getIcon().checkmark.draw(matrixStack, left() + 1, top() + 1, checkmarkcolor.withAlpha(0.6F));
+                IconUtils.getIcon().checkmark.draw(matrixStack, left() + 1, top() + 1, Color.LIGHT_GREEN);
                 matrixStack.popPose();
             }
         }
