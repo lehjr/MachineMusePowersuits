@@ -33,6 +33,7 @@ import lehjr.numina.common.capabilities.module.rightclick.IRightClickModule;
 import lehjr.numina.common.energy.ElectricItemUtils;
 import lehjr.powersuits.client.event.ModelBakeEventHandler;
 import lehjr.powersuits.client.render.item.MPSBEWLR;
+import lehjr.powersuits.common.base.MPSItems;
 import lehjr.powersuits.common.constants.MPSConstants;
 import lehjr.powersuits.common.constants.MPSRegistryNames;
 import net.minecraft.client.player.LocalPlayer;
@@ -60,7 +61,7 @@ import java.util.function.Consumer;
 
 public class PowerFist extends AbstractElectricTool {
     public PowerFist() {
-        super(new Item.Properties().stacksTo(1).defaultDurability(0));
+        super(new Item.Properties().stacksTo(1).defaultDurability(0).tab(MPSItems.creativeTab));
     }
 
     @Override

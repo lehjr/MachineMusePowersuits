@@ -32,7 +32,6 @@ import lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem
 import lehjr.powersuits.common.base.MPSEntities;
 import lehjr.powersuits.common.constants.MPSConstants;
 import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
@@ -200,7 +199,7 @@ public class SpinningBladeEntity extends ThrowableProjectile {
     }
 
     @Override
-    public Packet<ClientGamePacketListener> getAddEntityPacket() {
+    public Packet<?> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
 }

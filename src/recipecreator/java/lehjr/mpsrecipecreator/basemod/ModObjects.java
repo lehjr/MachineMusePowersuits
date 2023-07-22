@@ -13,7 +13,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.extensions.IForgeMenuType;
-import net.minecraftforge.event.CreativeModeTabEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.DeferredRegister;
@@ -26,7 +25,7 @@ import net.minecraftforge.registries.RegistryObject;
 @Mod.EventBusSubscriber(modid = Constants.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public enum ModObjects {
     INSTANCE;
-
+    public static CreativeTab creativeTab = new CreativeTab();
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, Constants.MOD_ID);
 
     /**
@@ -39,7 +38,7 @@ public enum ModObjects {
      */
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, Constants.MOD_ID);
     public static final RegistryObject<Item> RECIPE_WORKBENCH_ITEM = ITEMS.register(Constants.RECIPE_WORKBENCH__REGNAME.getPath(),
-            () -> new BlockItem(RECIPE_WORKBENCH.get(), new Item.Properties()));
+            () -> new BlockItem(RECIPE_WORKBENCH.get(), new Item.Properties().tab(creativeTab)));
 
 
     /**
@@ -54,20 +53,20 @@ public enum ModObjects {
             }));
 
 
-    public static CreativeModeTab creativeTab;
-    @SubscribeEvent
-    public static void addCreativeTab(CreativeModeTabEvent.Register event) {
-        creativeTab = event.registerCreativeModeTab(new ResourceLocation(Constants.MOD_ID, "items"),
-                builder -> builder.icon(() -> new ItemStack(RECIPE_WORKBENCH_ITEM.get())).title(Component.literal("Recipe Creator")));
-    }
 
-    @SubscribeEvent
-    public static void onPopulateTab(CreativeModeTabEvent.BuildContents event) {
-        if (event.getTab() == creativeTab) {
-            ITEMS.getEntries().forEach(item-> {
-                ItemStack stack = new ItemStack(item.get());
-                event.accept(stack);
-            });
-        }
-    }
+//    @SubscribeEvent
+//    public static void addCreativeTab(CreativeModeTabEvent.Register event) {
+//        creativeTab = event.registerCreativeModeTab(new ResourceLocation(Constants.MOD_ID, "items"),
+//                builder -> builder.icon(() -> new ItemStack(RECIPE_WORKBENCH_ITEM.get())).title(Component.literal("Recipe Creator")));
+//    }
+//
+//    @SubscribeEvent
+//    public static void onPopulateTab(CreativeModeTabEvent.BuildContents event) {
+//        if (event.getTab() == creativeTab) {
+//            ITEMS.getEntries().forEach(item-> {
+//                ItemStack stack = new ItemStack(item.get());
+//                event.accept(stack);
+//            });
+//        }
+//    }
 }

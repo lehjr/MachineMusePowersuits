@@ -77,7 +77,7 @@ public enum MorphTarget {
     }
 
     public HumanoidArm getHandFromEquipmentSlot(LivingEntity entity) {
-        assert !this.slot.isArmor();
+        assert this.slot.getType() != EquipmentSlot.Type.ARMOR;
         switch (this) {
             case MainHand -> {return entity.getMainArm(); }
             case OffHand -> { return entity.getMainArm().getOpposite(); }
@@ -89,7 +89,7 @@ public enum MorphTarget {
     }
 
     public boolean handMatches(LivingEntity entity, EquipmentSlot slot) {
-        if (!slot.isArmor() && !this.slot.isArmor()) {
+        if (slot.getType() != EquipmentSlot.Type.ARMOR && this.slot.getType() != EquipmentSlot.Type.ARMOR) {
             if (this.equals(MainHand) || this.equals(OffHand)) {
                 return slot.equals(this.slot);
             }

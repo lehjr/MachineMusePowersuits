@@ -73,7 +73,7 @@ public enum ModelBakeEventHandler {
 
 
     @SubscribeEvent
-    public void onModelBake(ModelEvent.ModifyBakingResult event) {
+    public void onModelBake(ModelEvent.BakingCompleted event) {
         Map<ResourceLocation, BakedModel> registry = event.getModels();
         for (Direction facing : Direction.values()) {
             BakedModel model = registry.get(new ModelResourceLocation(new ResourceLocation("powersuits:luxcapacitor"), "facing=" + facing + ",waterlogged=true"));

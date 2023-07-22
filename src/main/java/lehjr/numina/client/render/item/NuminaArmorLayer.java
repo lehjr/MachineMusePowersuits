@@ -76,7 +76,7 @@ public class NuminaArmorLayer<T extends LivingEntity, M extends HumanoidModel<T>
 
     @Override
     public void render(PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn, T entityIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-        Arrays.stream(EquipmentSlot.values()).filter(equipmentSlot -> equipmentSlot.isArmor()).forEach(slot -> {
+        Arrays.stream(EquipmentSlot.values()).filter(equipmentSlot -> equipmentSlot.getType() == EquipmentSlot.Type.ARMOR).forEach(slot -> {
             renderArmorPiece(matrixStackIn, bufferIn, entityIn, slot, packedLightIn, this.getModelFromSlot(slot));
         });
     }

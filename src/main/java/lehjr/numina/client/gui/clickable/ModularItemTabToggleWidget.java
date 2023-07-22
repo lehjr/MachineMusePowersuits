@@ -115,7 +115,7 @@ public class ModularItemTabToggleWidget extends Clickable {
                 Pair<ResourceLocation, ResourceLocation> pair = IconUtils.getSlotBackground(type);
                 if (pair != null) {
                     TextureAtlasSprite textureatlassprite = getMinecraft().getTextureAtlas(pair.getFirst()).apply(pair.getSecond());
-                    RenderSystem.setShaderTexture(0, textureatlassprite.atlasLocation());
+                    RenderSystem.setShaderTexture(0, textureatlassprite.atlas().location());
                     getMinecraft().screen.blit(matrixStack, (int)left() + 10 + offset, (int)top() + 5, getMinecraft().screen.getBlitOffset(), 16, 16, textureatlassprite);
                 }
             }

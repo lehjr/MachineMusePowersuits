@@ -34,8 +34,6 @@ import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
 import lehjr.numina.common.capabilities.module.rightclick.IRightClickModule;
 import lehjr.numina.common.capabilities.module.rightclick.RightClickModule;
-import lehjr.numina.common.capabilities.module.toggleable.IToggleableModule;
-import lehjr.numina.common.capabilities.module.toggleable.ToggleableModule;
 import lehjr.numina.common.config.ConfigHelper;
 import lehjr.numina.common.item.ItemUtils;
 import lehjr.powersuits.client.control.KeymappingKeyHandler;

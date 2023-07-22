@@ -27,14 +27,9 @@ import lehjr.powersuits.common.item.module.vision.BinocularsModule;
 import lehjr.powersuits.common.item.module.vision.NightVisionModule;
 import lehjr.powersuits.common.item.module.weapon.*;
 import lehjr.powersuits.common.item.tool.PowerFist;
-import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.event.CreativeModeTabEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -42,7 +37,7 @@ import net.minecraftforge.registries.RegistryObject;
 
 @Mod.EventBusSubscriber(modid = MPSConstants.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class MPSItems {
-
+    public static MPSCreativeTab creativeTab = new MPSCreativeTab();
     /**
      * Items -------------------------------------------------------------------------------------
      */
@@ -57,6 +52,7 @@ public class MPSItems {
             () -> new BlockItem(MPSBlocks.LUX_CAPACITOR_BLOCK.get(), new Item.Properties()
                     .stacksTo(64)
                     .defaultDurability(-1)
+                    .tab(creativeTab)
                     .setNoRepair()));
 
     /* Armor -------------------------------------------------------------------------------------- */
@@ -208,20 +204,20 @@ public class MPSItems {
     public static final RegistryObject<Item> RAILGUN_MODULE = MPS_ITEMS.register(MPSRegistryNames.RAILGUN_MODULE.getPath(),
             RailgunModule::new);
 
-    public static CreativeModeTab creativeTab;
-    @SubscribeEvent
-    public static void addCreativeTab(CreativeModeTabEvent.Register event) {
-        creativeTab = event.registerCreativeModeTab(new ResourceLocation(MPSConstants.MOD_ID, "items"),
-                builder -> builder.icon(() -> new ItemStack(ForgeRegistries.ITEMS.getValue(MPSRegistryNames.POWER_ARMOR_HELMET)))
-                        .title(Component.translatable(MPSConstants.MOD_ID)));
-    }
 
-    @SubscribeEvent
-    public static void onPopulateTab(CreativeModeTabEvent.BuildContents event)
-    {
-        if (event.getTab() == creativeTab)
-        {
-            MPS_ITEMS.getEntries().forEach(item->event.accept(new ItemStack(item.get())));
-        }
-    }
+//    @SubscribeEvent
+//    public static void addCreativeTab(CreativeModeTabEvent.Register event) {
+//        creativeTab = event.registerCreativeModeTab(new ResourceLocation(MPSConstants.MOD_ID, "items"),
+//                builder -> builder.icon(() -> new ItemStack(ForgeRegistries.ITEMS.getValue(MPSRegistryNames.POWER_ARMOR_HELMET)))
+//                        .title(Component.translatable(MPSConstants.MOD_ID)));
+//    }
+//
+//    @SubscribeEvent
+//    public static void onPopulateTab(CreativeModeTabEvent.BuildContents event)
+//    {
+//        if (event.getTab() == creativeTab)
+//        {
+//            MPS_ITEMS.getEntries().forEach(item->event.accept(new ItemStack(item.get())));
+//        }
+//    }
 }

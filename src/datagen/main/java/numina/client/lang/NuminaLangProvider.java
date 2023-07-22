@@ -11,6 +11,7 @@ import net.minecraftforge.common.data.ExistingFileHelper;
 import numina.ResourceList;
 
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.concurrent.CompletableFuture;
@@ -40,8 +41,8 @@ public class NuminaLangProvider implements DataProvider {
     }
 
     @Override
-    public CompletableFuture<?> run(CachedOutput cache) {
-        Path src = gen.getPackOutput().getOutputFolder().getParent().getParent().getParent();
+    public void run(CachedOutput cache) throws IOException {
+        Path src = gen.getOutputFolder().getParent().getParent().getParent();
         File langFolder = new File(src.toFile(), root + "/resources/assets/" + modid + "/lang");
         NuminaLogger.logDebug("source folder: " +langFolder);
 
@@ -58,13 +59,12 @@ public class NuminaLangProvider implements DataProvider {
                 langMapWrappers.add(new NuminaLangMapWrapper(file, langMapWrappers.get(0)));
             });
 
-            NuminaLogger.logDebug("modID: " + modid + ", output folder: " + gen.getPackOutput().getOutputFolder());
+            NuminaLogger.logDebug("modID: " + modid + ", output folder: " + gen.getOutputFolder());
 
-            langMapWrappers.forEach(wrapper -> wrapper.savetoOutputFolder(cache, gen.getPackOutput().getOutputFolder().resolve("assets/" + modid + "/lang/")));
+            langMapWrappers.forEach(wrapper -> wrapper.savetoOutputFolder(cache, gen.getOutputFolder().resolve("assets/" + modid + "/lang/")));
         } else {
             NuminaLogger.logDebug("lang folder not found !!!:");
         }
-        return null;
     }
 
     @Override

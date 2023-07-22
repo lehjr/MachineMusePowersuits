@@ -141,7 +141,7 @@ public class ModelManipFrame extends ScrollableFrame {
         if (getSlot().isPresent() && !getItem().isEmpty()) {
             EquipmentSlot slot = getSlot().get();
 
-            if (slot.isArmor()) {
+            if (slot.getType() == EquipmentSlot.Type.ARMOR) {
 //                NuminaLogger.logDebug("slot is armor and specBase.hasArmorEquipmentSlot(slot): " + specBase.hasArmorEquipmentSlot(slot));
                 return specBase.hasArmorEquipmentSlot(slot);
             } else {

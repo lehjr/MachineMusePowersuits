@@ -28,14 +28,10 @@ package lehjr.powersuits.common.event;
 
 import lehjr.numina.common.capabilities.module.powermodule.IConfig;
 import lehjr.numina.common.config.ModuleConfig;
-import lehjr.powersuits.client.control.KeymappingKeyHandler;
 import lehjr.powersuits.common.config.MPSSettings;
-import lehjr.powersuits.common.network.MPSPackets;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.network.NetworkDirection;
 
 public class LoginLogoutEventHandler {
     // server side since server is null from client side

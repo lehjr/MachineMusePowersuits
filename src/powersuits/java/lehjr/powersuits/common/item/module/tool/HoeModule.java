@@ -53,6 +53,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.ToolActions;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
@@ -118,7 +119,7 @@ public class HoeModule extends AbstractPowerModule {
                             if (i * i + j * j < radius * radius) {
                                 BlockPos newPos = blockPos.offset(i, 0, j);
                                 if (level.getBlockState(newPos.above()).isAir() && !level.getBlockState(newPos).isAir()) {
-                                    BlockHitResult hitResult = new BlockHitResult(newPos.getCenter(), Direction.DOWN, newPos, true);
+                                    BlockHitResult hitResult = new BlockHitResult(Vec3.atCenterOf(newPos), Direction.DOWN, newPos, true);
                                     UseOnContext ctx1 = new UseOnContext(level, player, context.getHand(), getEmulatedTool(), hitResult);
                                     toolModifiedState1 = level.getBlockState(newPos).getToolModifiedState(ctx1, ToolActions.HOE_TILL, false);
                                     Pair<Predicate<UseOnContext>, Consumer<UseOnContext>> pair1 = toolModifiedState1 == null ? null : Pair.of(ctx -> true, changeIntoState(toolModifiedState1, newPos, player));

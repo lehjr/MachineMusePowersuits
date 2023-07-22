@@ -32,9 +32,29 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.TextureAtlasHolder;
 import net.minecraft.resources.ResourceLocation;
 
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Stream;
+
 public class NuminaSpriteUploader extends TextureAtlasHolder {
+    private final Set<ResourceLocation> registeredSprites = new HashSet<>();
+
     public NuminaSpriteUploader() {
-        super(Minecraft.getInstance().getTextureManager(), NuminaConstants.LOCATION_NUMINA_GUI_TEXTURE_ATLAS, new ResourceLocation(NuminaConstants.MOD_ID, "gui"));
+        super(Minecraft.getInstance().getTextureManager(), NuminaConstants.LOCATION_NUMINA_GUI_TEXTURE_ATLAS, "gui");
+    }
+
+    public void registerIcon(ResourceLocation location) {
+        registeredSprites.add(location);
+    }
+
+    public void registerSprite(ResourceLocation location) {
+        registeredSprites.add(location);
+    }
+
+    @Override
+    protected Stream<ResourceLocation> getResourcesToLoad() {
+        return Collections.unmodifiableSet(registeredSprites).stream();
     }
 
     /**

@@ -130,7 +130,7 @@ public class ModelManipSubframe extends AbstractGuiFrame {
             CompoundTag renderTag = iModelSpecNBT.getRenderTag();
             if (startClean || parts.isEmpty()) {
                 EquipmentSlot slot = Mob.getEquipmentSlotForItem(iModelSpecNBT.getItemStack());
-                if (slot.isArmor()) {
+                if (slot.getType() == EquipmentSlot.Type.ARMOR) {
                     model.getPartSpecs().forEach(partSpecBase -> {
                         if (partSpecBase.hasArmorEquipmentSlot(slot)) {
                             String tagName = NuminaModelSpecRegistry.getInstance().makeName(partSpecBase);

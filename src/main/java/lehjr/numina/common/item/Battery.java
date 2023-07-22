@@ -26,6 +26,7 @@
 
 package lehjr.numina.common.item;
 
+import lehjr.numina.common.base.NuminaObjects;
 import lehjr.numina.common.capabilities.BatteryCapabilityProvider;
 import lehjr.numina.common.string.AdditionalInfo;
 import net.minecraft.nbt.CompoundTag;
@@ -54,7 +55,7 @@ public class Battery extends Item {
     public Battery(int maxEnergy, int maxTransfer, int tier) {
         super(new Item.Properties()
                 .stacksTo(1)
-//                .m_41491_(NuminaObjects.creativeTab)
+                .tab(NuminaObjects.creativeTab)
                 .defaultDurability(-1)
                 .setNoRepair());
         this.maxEnergy = maxEnergy;

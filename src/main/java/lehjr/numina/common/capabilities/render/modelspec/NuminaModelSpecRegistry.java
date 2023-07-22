@@ -73,7 +73,7 @@ public class NuminaModelSpecRegistry extends NuminaRegistry<SpecBase> {
 
     public NonNullList<SpecBase> getSpecsForArmorEquipmentSlot(EquipmentSlot slot) {
         NonNullList<SpecBase> ret = NonNullList.create();
-        if (slot.isArmor()) {
+        if (slot.getType() == EquipmentSlot.Type.ARMOR) {
             this.elemsAsStream().filter(specBase -> specBase.hasArmorEquipmentSlot(slot)).forEach(specBase -> ret.add(specBase));
         }
         return ret;

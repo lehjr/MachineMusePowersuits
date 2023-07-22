@@ -65,13 +65,13 @@ public class RecipeOptionsFrame extends ScrollableFrame {
 
         save = addButton(Component.translatable("mpsrc.gui.save"));
         save.setOnPressed(pressed->{
-            Musique.playClientSound(SoundEvents.UI_BUTTON_CLICK.get(),1);
+            Musique.playClientSound(SoundEvents.UI_BUTTON_CLICK,1);
             mpsrcGui.save();
         });
 
         reset = addButton(Component.translatable("mpsrc.gui.resetrecipe"));
         reset.setOnPressed(pressed-> {
-            Musique.playClientSound(SoundEvents.UI_BUTTON_CLICK.get(), 1);
+            Musique.playClientSound(SoundEvents.UI_BUTTON_CLICK, 1);
             mpsrcGui.resetRecipes();
         });
     }

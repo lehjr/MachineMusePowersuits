@@ -28,7 +28,6 @@ package lehjr.numina.common.base;
 
 import lehjr.numina.common.block.ChargingBase;
 import lehjr.numina.common.blockentity.ChargingBaseBlockEntity;
-import lehjr.numina.common.capabilities.BatteryCapabilityProvider;
 import lehjr.numina.common.constants.NuminaConstants;
 import lehjr.numina.common.container.ArmorStandMenu;
 import lehjr.numina.common.container.ChargingBaseMenu;
@@ -37,7 +36,6 @@ import lehjr.numina.common.item.Battery;
 import lehjr.numina.common.item.ComponentItem;
 import lehjr.numina.common.item.NuminaArmorStandItem;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -45,15 +43,10 @@ import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.extensions.IForgeMenuType;
-import net.minecraftforge.event.CreativeModeTabEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -61,7 +54,7 @@ import net.minecraftforge.registries.RegistryObject;
 
 @Mod.EventBusSubscriber(modid = NuminaConstants.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class NuminaObjects {
-    public static CreativeModeTab creativeTab;
+    public static final NuminaCreativeTab creativeTab = new NuminaCreativeTab();
 
     /**
      * Blocks -------------------------------------------------------------------------------------
@@ -78,52 +71,52 @@ public class NuminaObjects {
 
     // Components ---------------------------------------------------------------------------------
     public static final RegistryObject<Item> WIRING = NUMINA_ITEMS.register(NuminaConstants.COMPONENT__WIRING__REGNAME,
-            () -> new ComponentItem());
+            () -> new ComponentItem(creativeTab));
 
     public static final RegistryObject<Item> SOLENOID = NUMINA_ITEMS.register(NuminaConstants.COMPONENT__SOLENOID__REGNAME,
-            () -> new ComponentItem());
+            () -> new ComponentItem(creativeTab));
 
     public static final RegistryObject<Item> SERVO = NUMINA_ITEMS.register(NuminaConstants.COMPONENT__SERVO__REGNAME,
-            () -> new ComponentItem());
+            () -> new ComponentItem(creativeTab));
 
     public static final RegistryObject<Item> GLIDER_WING = NUMINA_ITEMS.register(NuminaConstants.COMPONENT__GLIDER_WING__REGNAME,
-            () -> new ComponentItem());
+            () -> new ComponentItem(creativeTab));
 
     public static final RegistryObject<Item> ION_THRUSTER = NUMINA_ITEMS.register(NuminaConstants.COMPONENT__ION_THRUSTER__REGNAME,
-            () -> new ComponentItem());
+            () -> new ComponentItem(creativeTab));
 
     public static final RegistryObject<Item> PARACHUTE = NUMINA_ITEMS.register(NuminaConstants.COMPONENT__PARACHUTE__REGNAME,
-            () -> new ComponentItem());
+            () -> new ComponentItem(creativeTab));
 
     public static final RegistryObject<Item> FIELD_EMITTER = NUMINA_ITEMS.register(NuminaConstants.COMPONENT__FIELD_EMITTER__REGNAME,
-            () -> new ComponentItem());
+            () -> new ComponentItem(creativeTab));
 
     public static final RegistryObject<Item> LASER_EMITTER = NUMINA_ITEMS.register(NuminaConstants.COMPONENT__LASER_EMITTER__REGNAME,
-            () -> new ComponentItem());
+            () -> new ComponentItem(creativeTab));
 
     public static final RegistryObject<Item> CARBON_MYOFIBER = NUMINA_ITEMS.register(NuminaConstants.COMPONENT__CARBON_MYOFIBER__REGNAME,
-            () -> new ComponentItem());
+            () -> new ComponentItem(creativeTab));
 
     public static final RegistryObject<Item> CONTROL_CIRCUIT = NUMINA_ITEMS.register(NuminaConstants.COMPONENT__CONTROL_CIRCUIT__REGNAME,
-            () -> new ComponentItem());
+            () -> new ComponentItem(creativeTab));
 
     public static final RegistryObject<Item> MYOFIBER_GEL = NUMINA_ITEMS.register(NuminaConstants.COMPONENT__MYOFIBER_GEL__REGNAME,
-            () -> new ComponentItem());
+            () -> new ComponentItem(creativeTab));
 
     public static final RegistryObject<Item> ARTIFICIAL_MUSCLE = NUMINA_ITEMS.register(NuminaConstants.COMPONENT__ARTIFICIAL_MUSCLE__REGNAME,
-            () -> new ComponentItem());
+            () -> new ComponentItem(creativeTab));
 
     public static final RegistryObject<Item> SOLAR_PANEL = NUMINA_ITEMS.register(NuminaConstants.COMPONENT__SOLAR_PANEL__REGNAME,
-            () -> new ComponentItem());
+            () -> new ComponentItem(creativeTab));
 
     public static final RegistryObject<Item> MAGNET = NUMINA_ITEMS.register(NuminaConstants.COMPONENT__MAGNET__REGNAME,
-            () -> new ComponentItem());
+            () -> new ComponentItem(creativeTab));
 
     public static final RegistryObject<Item> COMPUTER_CHIP = NUMINA_ITEMS.register(NuminaConstants.COMPONENT__COMPUTER_CHIP__REGNAME,
-            () -> new ComponentItem());
+            () -> new ComponentItem(creativeTab));
 
     public static final RegistryObject<Item> RUBBER_HOSE = NUMINA_ITEMS.register(NuminaConstants.COMPONENT__RUBBER_HOSE__REGNAME,
-            () -> new ComponentItem());
+            () -> new ComponentItem(creativeTab));
 
 //    // TEST ITEM TO BE REMOVED
 //    public static final RegistryObject<Item> PLASMA_BALL = ITEMS.register("plasma_ball",
@@ -147,11 +140,11 @@ public class NuminaObjects {
     // Charging base
     public static final RegistryObject<Item> CHARGING_BASE_ITEM = NUMINA_ITEMS.register(NuminaConstants.CHARGING_BASE_REGNAME,
             () -> new BlockItem(CHARGING_BASE_BLOCK.get(),
-                    new Item.Properties()));
+                    new Item.Properties().tab(creativeTab)));
 
     // Armor stand
     public static final RegistryObject<Item> ARMOR_STAND_ITEM = NUMINA_ITEMS.register(NuminaConstants.ARMORSTAND_REGNAME,
-            () -> new NuminaArmorStandItem(new Item.Properties()));//.setISTER(() -> NuminaArmorStandItemRenderer::new)));
+            () -> new NuminaArmorStandItem(new Item.Properties().tab(creativeTab)));//.setISTER(() -> NuminaArmorStandItemRenderer::new)));
 
 
     /**
@@ -197,28 +190,28 @@ public class NuminaObjects {
     // TODO!!
 //    public static final RegistryObject<MenuType<MPSAbstractContainerMenuScanner>> SCANNER_CONTAINER = MENU_TYPES.register(Constants.NAME_SCANNER, () -> IForgeMenuType.create(MPSAbstractContainerMenuScanner::createForClient));
 
-    @SubscribeEvent
-    public static void addCreativeTab(CreativeModeTabEvent.Register event) {
-        creativeTab = event.registerCreativeModeTab(new ResourceLocation(NuminaConstants.MOD_ID, "items"),
-                builder -> builder.icon(() -> new ItemStack(ARMOR_STAND_ITEM.get()))
-                        .title(Component.translatable(NuminaConstants.MOD_ID)));
-    }
-
-    @SubscribeEvent
-    public static void onPopulateTab(CreativeModeTabEvent.BuildContents event) {
-        if (event.getTab() == creativeTab) {
-            NUMINA_ITEMS.getEntries().forEach(item-> {
-                ItemStack stack = new ItemStack(item.get());
-                if (item.get() instanceof Battery) {
-                    ItemStack copy = stack.copy();
-                    event.accept(copy);
-                    ICapabilityProvider capProvider = item.get().initCapabilities(stack, null);
-                    if (capProvider instanceof BatteryCapabilityProvider) {
-                        ((BatteryCapabilityProvider) capProvider).setMaxEnergy();
-                    }
-                }
-                event.accept(stack);
-            });
-        }
-    }
+//    @SubscribeEvent
+//    public static void addCreativeTab(CreativeModeTabEvent.Register event) {
+//        creativeTab = event.registerCreativeModeTab(new ResourceLocation(NuminaConstants.MOD_ID, "items"),
+//                builder -> builder.icon(() -> new ItemStack(ARMOR_STAND_ITEM.get()))
+//                        .title(Component.translatable(NuminaConstants.MOD_ID)));
+//    }
+//
+//    @SubscribeEvent
+//    public static void onPopulateTab(CreativeModeTabEvent.BuildContents event) {
+//        if (event.getTab() == creativeTab) {
+//            NUMINA_ITEMS.getEntries().forEach(item-> {
+//                ItemStack stack = new ItemStack(item.get());
+//                if (item.get() instanceof Battery) {
+//                    ItemStack copy = stack.copy();
+//                    event.accept(copy);
+//                    ICapabilityProvider capProvider = item.get().initCapabilities(stack, null);
+//                    if (capProvider instanceof BatteryCapabilityProvider) {
+//                        ((BatteryCapabilityProvider) capProvider).setMaxEnergy();
+//                    }
+//                }
+//                event.accept(stack);
+//            });
+//        }
+//    }
 }

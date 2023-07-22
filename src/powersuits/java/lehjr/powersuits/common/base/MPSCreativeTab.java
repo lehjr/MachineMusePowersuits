@@ -24,15 +24,24 @@
  *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package lehjr.numina.common.item;
+package lehjr.powersuits.common.base;
 
+import lehjr.powersuits.common.constants.MPSConstants;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class ComponentItem extends Item {
+public class MPSCreativeTab extends CreativeModeTab {
+    public MPSCreativeTab() {
+        super(MPSConstants.MOD_ID);
+    }
 
-    // TODO? move to ingredients?
-    public ComponentItem(CreativeModeTab tab) {
-        super(new Item.Properties().tab(tab));
+    @OnlyIn(Dist.CLIENT)
+    @Override
+    public ItemStack makeIcon() {
+        Item item = MPSItems.POWER_ARMOR_HELMET.get();
+        return new ItemStack(item);
     }
 }

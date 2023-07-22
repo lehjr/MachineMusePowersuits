@@ -37,6 +37,7 @@ import lehjr.numina.common.capabilities.module.toggleable.IToggleableModule;
 import lehjr.numina.common.constants.NuminaConstants;
 import lehjr.numina.common.energy.ElectricItemUtils;
 import lehjr.numina.common.string.AdditionalInfo;
+import lehjr.powersuits.common.base.MPSItems;
 import lehjr.powersuits.common.capability.PowerArmorCap;
 import lehjr.powersuits.common.constants.MPSConstants;
 import lehjr.powersuits.common.constants.MPSRegistryNames;
@@ -77,14 +78,11 @@ public abstract class AbstractElectricItemArmor extends ArmorItem {
             UUID.randomUUID(),
             UUID.randomUUID()};
 
-    public AbstractElectricItemArmor(EquipmentSlot slots, Properties builder) {
-        super(MPSArmorMaterial.EMPTY_ARMOR, slots, builder);
-    }
-
     public AbstractElectricItemArmor(EquipmentSlot slots) {
         super(MPSArmorMaterial.EMPTY_ARMOR, slots, new Item.Properties()
                 .stacksTo(1)
                 .durability(0)
+                .tab(MPSItems.creativeTab)
                 .setNoRepair());
     }
 

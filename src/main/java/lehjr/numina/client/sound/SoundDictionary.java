@@ -42,12 +42,12 @@ public class SoundDictionary {
     }
    public static final DeferredRegister<SoundEvent> NUMINA_SOUND_EVENTS = DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, NuminaConstants.MOD_ID);
     public static final RegistryObject<SoundEvent> SOUND_EVENT_GUI_INSTALL = NUMINA_SOUND_EVENTS.register("gui_install",
-            () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(NuminaConstants.MOD_ID, "gui_install")));
+            () -> new SoundEvent(new ResourceLocation(NuminaConstants.MOD_ID, "gui_install")));
 
     public static final RegistryObject<SoundEvent> SOUND_EVENT_GUI_SELECT = NUMINA_SOUND_EVENTS.register("gui_select",
-            () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(NuminaConstants.MOD_ID, "gui_select")));
+            () -> new SoundEvent(new ResourceLocation(NuminaConstants.MOD_ID, "gui_select")));
 
 
     public static final RegistryObject<SoundEvent> SOUND_EVENT_BOOP = NUMINA_SOUND_EVENTS.register("boop",
-            () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(NuminaConstants.MOD_ID, "boop")));
+            () -> new SoundEvent(new ResourceLocation(NuminaConstants.MOD_ID, "boop")));
 }

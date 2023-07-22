@@ -27,6 +27,7 @@
 package lehjr.powersuits.client.render.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Vector3f;
 import lehjr.numina.common.constants.TagConstants;
 import lehjr.numina.common.math.Color;
 import lehjr.powersuits.common.constants.MPSRegistryNames;
@@ -45,7 +46,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.util.TransformationHelper;
 import net.minecraftforge.registries.ForgeRegistries;
-import org.joml.Vector3f;
 
 import javax.annotation.Nullable;
 import java.util.Random;

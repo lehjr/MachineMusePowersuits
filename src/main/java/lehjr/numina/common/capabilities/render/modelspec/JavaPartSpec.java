@@ -30,6 +30,7 @@ import com.google.common.base.Objects;
 import lehjr.numina.common.math.Color;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.EquipmentSlot;
 
 /**
  * This just provides a way to tie the armor skin for vanilla armor
@@ -61,7 +62,7 @@ public class JavaPartSpec extends PartSpecBase {
     }
 
     public Component getDisaplayName() {
-        if (binding.getSlot().isArmor()) {
+        if (binding.getSlot().getType() == EquipmentSlot.Type.ARMOR) {
             return Component.translatable(new StringBuilder(getNamePrefix())
                     .append(this.partName)
                     .append(".partName")

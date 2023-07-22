@@ -28,11 +28,11 @@ package lehjr.powersuits.client.render.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.math.Vector3f;
 import lehjr.numina.client.model.helper.ModelHelper;
 import lehjr.numina.client.model.obj.OBJBakedCompositeModel;
 import lehjr.numina.common.constants.NuminaConstants;
 import lehjr.numina.common.math.Color;
-import lehjr.numina.common.math.MathUtils;
 import lehjr.powersuits.common.constants.MPSConstants;
 import lehjr.powersuits.common.entity.RailgunBoltEntity;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -44,7 +44,6 @@ import net.minecraft.client.resources.model.BlockModelRotation;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
 import net.minecraftforge.common.util.NonNullLazy;
-import org.joml.Quaternionf;
 
 public class RailGunBoltRenderer extends net.minecraft.client.renderer.entity.EntityRenderer<RailgunBoltEntity> {
 
@@ -73,8 +72,8 @@ public class RailGunBoltRenderer extends net.minecraft.client.renderer.entity.En
 //        matrixStackIn.rotate(Vector3f.YP.rotationDegrees(MathHelper.lerp(partialTicks, entityIn.prevRotationYaw, entityIn.rotationYaw) - 90.0F));
 //        matrixStackIn.rotate(Vector3f.ZP.rotationDegrees(MathHelper.lerp(partialTicks, entityIn.prevRotationPitch, entityIn.rotationPitch)));
 
-        matrixStackIn.mulPose(new Quaternionf().fromAxisAngleDeg(MathUtils.XP, entityYaw  - 90.0F));
-        matrixStackIn.mulPose(new Quaternionf().fromAxisAngleDeg(MathUtils.ZP, entityIn.xRotO));
+        matrixStackIn.mulPose(Vector3f.XP.rotationDegrees(entityYaw  - 90.0F));
+        matrixStackIn.mulPose(Vector3f.ZP.rotationDegrees(entityIn.xRotO));
 
         if(size > 0)  {
             renderBolt(matrixStackIn, bufferIn);

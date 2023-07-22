@@ -28,16 +28,14 @@ package lehjr.numina.client.gui.geometry;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
+import com.mojang.math.Matrix4f;
 import lehjr.numina.common.math.Color;
-import net.minecraft.client.gui.components.Renderable;
+import net.minecraft.client.gui.components.Widget;
 import net.minecraft.client.renderer.GameRenderer;
-import org.joml.Matrix4f;
-import org.joml.Vector4f;
 
-import java.nio.DoubleBuffer;
 import java.nio.FloatBuffer;
 
-public interface IDrawable extends Renderable {
+public interface IDrawable extends Widget {
     /**
      * @param matrixStack
      * @param mouseX
@@ -70,13 +68,10 @@ public interface IDrawable extends Renderable {
      * @param vertices
      * @param color a Color to draw in
      */
-    default void addVerticesToBuffer(BufferBuilder bufferbuilder, Matrix4f matrix4f, DoubleBuffer vertices, Color color) {
+    default void addVerticesToBuffer(Matrix4f matrix4f, FloatBuffer vertices, Color color) {
         vertices.rewind();
-        Vector4f vector4f = new Vector4f((float)vertices.get(), (float)vertices.get(), getZLevel(), 1.0F);
-//        vector4f.transform(matrix4f);
-        matrix4f.transform(vector4f);
         while(vertices.hasRemaining()) {
-            bufferbuilder.vertex((double)vector4f.x(), (double)vector4f.y(), (double)vector4f.z()).color(color.r, color.g, color.b, color.a).endVertex();
+            getBufferBuilder().vertex(matrix4f, vertices.get(), vertices.get(), getZLevel()).color(color.r, color.g, color.b, color.a).endVertex();
         }
     }
 

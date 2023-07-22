@@ -33,14 +33,17 @@ import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Rotations;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ArmorStandItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -74,11 +77,10 @@ public class NuminaArmorStandItem extends ArmorStandItem {
             ItemStack itemstack = pContext.getItemInHand();
             Vec3 vec3 = Vec3.atBottomCenterOf(blockpos);
             AABB aabb = EntityType.ARMOR_STAND.getDimensions().makeBoundingBox(vec3.x(), vec3.y(), vec3.z());
-            if (level.noCollision(null, aabb) && level.getEntities(null, aabb).isEmpty()) {
-                if (level instanceof ServerLevel serverlevel) {
-                    Consumer<NuminaArmorStand> consumer = EntityType.appendCustomEntityStackConfig((p_263581_) -> {
-                    }, serverlevel, itemstack, pContext.getPlayer());
-                    NuminaArmorStand armorstand = NuminaObjects.ARMOR_STAND__ENTITY_TYPE.get().create(serverlevel, itemstack.getTag(), consumer, blockpos, MobSpawnType.SPAWN_EGG, true, true);
+            if (level.noCollision((Entity)null, aabb) && level.getEntities((Entity)null, aabb).isEmpty()) {
+                if (level instanceof ServerLevel) {
+                    ServerLevel serverlevel = (ServerLevel)level;
+                    NuminaArmorStand armorstand = NuminaObjects.ARMOR_STAND__ENTITY_TYPE.get().create(serverlevel, itemstack.getTag(), (Component)null, pContext.getPlayer(), blockpos, MobSpawnType.SPAWN_EGG, true, true);
                     if (armorstand == null) {
                         return InteractionResult.FAIL;
                     }
@@ -87,7 +89,7 @@ public class NuminaArmorStandItem extends ArmorStandItem {
                     armorstand.moveTo(armorstand.getX(), armorstand.getY(), armorstand.getZ(), f, 0.0F);
                     this.randomizePose(armorstand, level.random);
                     serverlevel.addFreshEntityWithPassengers(armorstand);
-                    level.playSound(null, armorstand.getX(), armorstand.getY(), armorstand.getZ(), SoundEvents.ARMOR_STAND_PLACE, SoundSource.BLOCKS, 0.75F, 0.8F);
+                    level.playSound((Player)null, armorstand.getX(), armorstand.getY(), armorstand.getZ(), SoundEvents.ARMOR_STAND_PLACE, SoundSource.BLOCKS, 0.75F, 0.8F);
                     armorstand.gameEvent(GameEvent.ENTITY_PLACE, pContext.getPlayer());
                 }
 

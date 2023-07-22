@@ -27,6 +27,7 @@
 package lehjr.powersuits.common.item.module;
 
 import lehjr.numina.common.string.AdditionalInfo;
+import lehjr.powersuits.common.base.MPSItems;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
@@ -49,7 +50,7 @@ public abstract class AbstractPowerModule extends Item {
     }
 
     public AbstractPowerModule() {
-        super(new Item.Properties().stacksTo(1).defaultDurability(-1).setNoRepair());
+        super(new Item.Properties().stacksTo(1).defaultDurability(-1).setNoRepair().tab(MPSItems.creativeTab));
     }
 
     public static BlockHitResult rayTrace(Level worldIn, Player player, ClipContext.Fluid fluidMode, double range) {

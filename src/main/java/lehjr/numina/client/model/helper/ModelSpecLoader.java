@@ -31,6 +31,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.mojang.math.Transformation;
+import com.mojang.math.Vector3f;
 import lehjr.numina.client.event.ModelBakeEventHandler;
 import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.capabilities.render.modelspec.*;
@@ -45,7 +46,6 @@ import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import org.joml.Vector3f;
 
 import javax.annotation.Nullable;
 import java.io.BufferedReader;
@@ -300,7 +300,7 @@ public enum ModelSpecLoader {
             }
         } else {
             for (EquipmentSlot slot : EquipmentSlot.values()) {
-                if (slot.equals(EquipmentSlot.LEGS) || !slot.isArmor()) continue;
+                if (slot.equals(EquipmentSlot.LEGS) || slot.getType() != EquipmentSlot.Type.ARMOR) continue;
                 for (MorphTarget target : MorphTarget.getMorphTargetsFromEquipmentSlot(slot)) {
                     String partName = INSTANCE.makeArmorTexturePartSpecName(slot, target);
                     javaModelSpec.put(new JavaPartSpec(javaModelSpec, new SpecBinding(target, slot, "all"), color, partName,  textureLocation), partName);

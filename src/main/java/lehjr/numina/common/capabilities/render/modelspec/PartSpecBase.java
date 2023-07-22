@@ -82,7 +82,7 @@ public abstract class PartSpecBase {
     }
 
     public boolean hasArmorEquipmentSlot(EquipmentSlot slot) {
-        return this.getBinding().getSlot().equals(slot) && slot.isArmor();
+        return this.getBinding().getSlot().equals(slot) && slot.getType() == EquipmentSlot.Type.ARMOR;
     }
 
     public boolean getGlow() {
@@ -99,7 +99,7 @@ public abstract class PartSpecBase {
     }
 
     public boolean isForHand(HumanoidArm arm, LivingEntity entity) {
-        if (binding.getSlot().isArmor()) {
+        if (binding.getSlot().getType() == EquipmentSlot.Type.ARMOR) {
             return false;
         }
         return binding.getTarget().getHandFromEquipmentSlot(entity).equals(arm);

@@ -30,7 +30,7 @@ import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.platform.Lighting;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
-import com.mojang.math.MatrixUtil;
+import com.mojang.math.Matrix4f;
 import lehjr.numina.client.gui.geometry.SwirlyMuseCircle;
 import lehjr.numina.common.math.Color;
 import lehjr.numina.common.string.StringUtils;
@@ -54,7 +54,6 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.HalfTransparentBlock;
 import net.minecraft.world.level.block.StainedGlassPaneBlock;
-import org.joml.Matrix4f;
 import org.lwjgl.opengl.GL11;
 
 import javax.annotation.Nonnull;
@@ -188,9 +187,9 @@ public class NuminaRenderer {
                             poseStack.pushPose();
                             PoseStack.Pose posestack$pose = poseStack.last();
                             if (transformType == ItemTransforms.TransformType.GUI) {
-                                MatrixUtil.mulComponentWise(posestack$pose.pose(), 0.5F);
+                                posestack$pose.pose().multiply(0.5F);
                             } else if (transformType.firstPerson()) {
-                                MatrixUtil.mulComponentWise(posestack$pose.pose(), 0.75F);
+                                posestack$pose.pose().multiply(0.75F);
                             }
 
                             if (flag1) {

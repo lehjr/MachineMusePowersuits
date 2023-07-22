@@ -43,20 +43,20 @@ public class MPSSoundDictionary {
 
     public static final DeferredRegister<SoundEvent> MPS_SOUND_EVENTS = DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, MPSConstants.MOD_ID);
     public static final RegistryObject<SoundEvent> SOUND_EVENT_GLIDER = MPS_SOUND_EVENTS.register("glider",
-            () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(MPSConstants.MOD_ID, "glider")));
+            () -> new SoundEvent(new ResourceLocation(MPSConstants.MOD_ID, "glider")));
 
     public static final RegistryObject<SoundEvent> SOUND_EVENT_JETBOOTS = MPS_SOUND_EVENTS.register("jet_boots",
-            () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(MPSConstants.MOD_ID, "jet_boots")));
+            () -> new SoundEvent(new ResourceLocation(MPSConstants.MOD_ID, "jet_boots")));
 
     public static final RegistryObject<SoundEvent> SOUND_EVENT_JETPACK = MPS_SOUND_EVENTS.register("jetpack",
-            () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(MPSConstants.MOD_ID, "jetpack")));
+            () -> new SoundEvent(new ResourceLocation(MPSConstants.MOD_ID, "jetpack")));
 
     public static final RegistryObject<SoundEvent> SOUND_EVENT_JUMP_ASSIST = MPS_SOUND_EVENTS.register("jump_assist",
-            () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(MPSConstants.MOD_ID, "jump_assist")));
+            () -> new SoundEvent(new ResourceLocation(MPSConstants.MOD_ID, "jump_assist")));
 
     public static final RegistryObject<SoundEvent> SOUND_EVENT_SWIM_ASSIST = MPS_SOUND_EVENTS.register("swim_assist",
-            () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(MPSConstants.MOD_ID, "swim_assist")));
+            () -> new SoundEvent(new ResourceLocation(MPSConstants.MOD_ID, "swim_assist")));
 
     public static final RegistryObject<SoundEvent> SOUND_EVENT_ELECTROLYZER = MPS_SOUND_EVENTS.register("water_electrolyzer",
-            () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(MPSConstants.MOD_ID, "water_electrolyzer")));
+            () -> new SoundEvent(new ResourceLocation(MPSConstants.MOD_ID, "water_electrolyzer")));
 }

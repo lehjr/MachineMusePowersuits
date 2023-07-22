@@ -6,7 +6,6 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.ShapedRecipe;
@@ -19,12 +18,12 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class ShapedEnergyRecipe extends ShapedRecipe {
 	public ShapedEnergyRecipe(ShapedRecipe shaped) {
-		this(shaped.getId(), shaped.getGroup(), shaped.category(), shaped.getWidth(), shaped.getRecipeHeight(), shaped.getIngredients(), shaped.getResultItem());
+		this(shaped.getId(), shaped.getGroup(), shaped.getWidth(), shaped.getRecipeHeight(), shaped.getIngredients(), shaped.getResultItem());
 	}
 
 	// public ShapedRecipe(ResourceLocation pId, String pGroup, CraftingBookCategory pCategory, int pWidth, int pHeight, NonNullList<Ingredient> pRecipeItems, ItemStack pResult) {
-	public ShapedEnergyRecipe(final ResourceLocation id, final String group, CraftingBookCategory category, final int recipeWidth, final int recipeHeight, final NonNullList<Ingredient> ingredients, final ItemStack recipeOutput) {
-		super(id, group, category, recipeWidth, recipeHeight, ingredients, recipeOutput);
+	public ShapedEnergyRecipe(final ResourceLocation id, final String group, final int recipeWidth, final int recipeHeight, final NonNullList<Ingredient> ingredients, final ItemStack recipeOutput) {
+		super(id, group, recipeWidth, recipeHeight, ingredients, recipeOutput);
 	}
 
 	/**

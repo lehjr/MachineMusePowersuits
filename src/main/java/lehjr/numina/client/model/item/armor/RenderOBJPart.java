@@ -30,6 +30,9 @@ import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.math.Matrix4f;
+import com.mojang.math.Vector3f;
+import com.mojang.math.Vector4f;
 import lehjr.numina.common.capabilities.render.modelspec.ObjlPartSpec;
 import lehjr.numina.common.math.Color;
 import lehjr.numina.common.math.MathUtils;
@@ -42,9 +45,6 @@ import net.minecraft.util.RandomSource;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.util.TransformationHelper;
-import org.joml.Matrix4f;
-import org.joml.Vector3f;
-import org.joml.Vector4f;
 import org.lwjgl.system.MemoryStack;
 
 import java.nio.Buffer;
@@ -152,7 +152,7 @@ public class RenderOBJPart extends ModelPart {
         Vec3i faceNormal = bakedQuad.getDirection().getNormal();
         Vector3f normal = new Vector3f((float) faceNormal.getX(), (float) faceNormal.getY(), (float) faceNormal.getZ());
         Matrix4f matrix4f = matrixEntry.pose();// same as TexturedQuad renderer
-        normal.mul(matrixEntry.normal()); // normals different here
+        normal.transform(matrixEntry.normal()); // normals different here
 
         float scale = 0.0625F;
 
@@ -178,7 +178,7 @@ public class RenderOBJPart extends ModelPart {
 
                 /** scaled like TexturedQuads, but using multiplication instead of division due to speed advantage.  */
                 Vector4f pos = new Vector4f(x * scale, y * scale, z * scale, 1.0F); // scales to 1/16 like the TexturedQuads but with multiplication (faster than division)
-                matrix4f.transform(pos);
+                pos.transform(matrix4f);
                 bufferIn.applyBakedNormals(normal, bytebuffer, matrixEntry.normal());
                 bufferIn.vertex(pos.x(), pos.y(), pos.z(), red, green, blue, alpha, u, v, overlayCoords, lightmapCoord, normal.x(), normal.y(), normal.z());
             }

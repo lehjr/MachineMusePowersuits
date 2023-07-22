@@ -68,7 +68,7 @@ public abstract class SpecBase extends NuminaRegistry<PartSpecBase> {
     }
 
     public boolean hasArmorEquipmentSlot(EquipmentSlot slot) {
-        return this.elemsAsStream().map(partSpecBase -> partSpecBase.getBinding().getSlot().equals(slot) && slot.isArmor()).findFirst().isPresent();
+        return this.elemsAsStream().map(partSpecBase -> partSpecBase.getBinding().getSlot().equals(slot) && slot.getType() == EquipmentSlot.Type.ARMOR).findFirst().isPresent();
     }
 
 

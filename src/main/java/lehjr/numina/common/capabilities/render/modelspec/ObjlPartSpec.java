@@ -27,14 +27,12 @@
 package lehjr.numina.common.capabilities.render.modelspec;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Quaternion;
 import com.mojang.math.Transformation;
 import lehjr.numina.client.model.obj.OBJBakedPart;
 import lehjr.numina.common.math.Color;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import org.joml.Matrix3f;
-import org.joml.Matrix4f;
-import org.joml.Quaternionf;
 
 import java.util.Optional;
 
@@ -70,17 +68,17 @@ public class ObjlPartSpec extends PartSpecBase {
         return getParent().getModel().map(objBakedCompositeModel -> objBakedCompositeModel.getPart(this.partName));
     }
 
-    public void applyTransform(PoseStack poseStack) {
-        if (partTransform != Transformation.identity()) {
-            PoseStack stack = new PoseStack();
-            stack.pushTransformation(partTransform);
-            // Apply the transformation to the real matrix stack
-            Matrix4f tMat = stack.last().pose();
-            Matrix3f nMat = stack.last().normal();
-            poseStack.last().pose().mul(tMat);
-            poseStack.last().normal().mul(nMat);
-        }
-    }
+//    public void applyTransform(PoseStack poseStack) {
+//        if (partTransform != Transformation.identity()) {
+//            PoseStack stack = new PoseStack();
+//            stack.pushTransformation(partTransform);
+//            // Apply the transformation to the real matrix stack
+//            Matrix4f tMat = stack.last().pose();
+//            Matrix3f nMat = stack.last().normal();
+//            poseStack.last().pose().mul(tMat);
+//            poseStack.last().normal().mul(nMat);
+//        }
+//    }
 
     ObjModelSpec getParent() {
         return (ObjModelSpec) this.spec;
@@ -88,9 +86,9 @@ public class ObjlPartSpec extends PartSpecBase {
 
     public void apply(boolean pLeftHand, PoseStack pPoseStack) {
         if (this.partTransform != Transformation.identity()) {
-            float f = this.partTransform.getLeftRotation().x();
-            float f1 = this.partTransform.getLeftRotation().y();
-            float f2 = this.partTransform.getLeftRotation().z();
+            float f = this.partTransform.getLeftRotation().i(); // x
+            float f1 = this.partTransform.getLeftRotation().j(); // y
+            float f2 = this.partTransform.getLeftRotation().k(); // z
             if (pLeftHand) {
                 f1 = -f1;
                 f2 = -f2;
@@ -98,9 +96,11 @@ public class ObjlPartSpec extends PartSpecBase {
 
             int i = pLeftHand ? -1 : 1;
             pPoseStack.translate((float)i * this.partTransform.getTranslation().x(), this.partTransform.getTranslation().y(), this.partTransform.getTranslation().z());
-            pPoseStack.mulPose((new Quaternionf()).rotationXYZ(f * ((float)Math.PI / 180F), f1 * ((float)Math.PI / 180F), f2 * ((float)Math.PI / 180F)));
+            pPoseStack.mulPose(new Quaternion(f, f1, f2, true));
             pPoseStack.scale(this.partTransform.getScale().x(), this.partTransform.getScale().y(), this.partTransform.getScale().z());
-            pPoseStack.mulPose(net.minecraftforge.common.util.TransformationHelper.quatFromXYZ(this.partTransform.getRightRotation().x(), this.partTransform.getRightRotation().y() * (pLeftHand ? -1 : 1), this.partTransform.getRightRotation().z() * (pLeftHand ? -1 : 1), true));
+//            pPoseStack.mulPose(net.minecraftforge.common.util.TransformationHelper.quatFromXYZ(this.partTransform.getRightRotation().i(), this.partTransform.getRightRotation().j() * (pLeftHand ? -1 : 1), this.partTransform.getRightRotation().k() * (pLeftHand ? -1 : 1), true));
+            pPoseStack.mulPose(new Quaternion(this.partTransform.getRightRotation().i(), this.partTransform.getRightRotation().j() * (pLeftHand ? -1 : 1), this.partTransform.getRightRotation().k() * (pLeftHand ? -1 : 1), true));
+
         }
     }
 }
