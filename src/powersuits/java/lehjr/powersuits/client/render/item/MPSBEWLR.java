@@ -97,30 +97,32 @@ public class MPSBEWLR extends BlockEntityWithoutLevelRenderer {
                 }
 
                 CompoundTag renderTag =  specNBTCap.getRenderTag();
-                if (renderTag != null) {
+                PowerFistModel2 modelToRender;
+                if (transformType == ItemTransforms.TransformType.FIRST_PERSON_LEFT_HAND || transformType == ItemTransforms.TransformType.THIRD_PERSON_LEFT_HAND) {
+                    modelToRender = powerFistModelLeft;
+                } else {
+                    modelToRender = powerFistModelRight;
+                }
+
+                if (firingPercent.get() > 0) {
+                    modelToRender.setFiringPose(firingPercent.get());
+                } else {
+                    modelToRender.setNeutralPose();
+                }
+                VertexConsumer consumer = buffer.getBuffer(RenderType.entityTranslucentCull(PowerFistModel2.TEXTURE));
+
+                if (renderTag != null && !renderTag.isEmpty()) {
                     int[] colors = renderTag.getIntArray(TagConstants.COLORS);
 
                     if (colors.length == 0) {
                         colors = new int[]{Color.WHITE.getARGBInt()};
                     }
-                    VertexConsumer consumer = buffer.getBuffer(RenderType.entityTranslucentCull(PowerFistModel2.TEXTURE));
-                    PowerFistModel2 modelToRender;
-
-                    if (transformType == ItemTransforms.TransformType.FIRST_PERSON_LEFT_HAND || transformType == ItemTransforms.TransformType.THIRD_PERSON_LEFT_HAND) {
-                        modelToRender = powerFistModelLeft;
-                    } else {
-                        modelToRender = powerFistModelRight;
-                    }
-
-                    if (firingPercent.get() > 0) {
-                        modelToRender.setFiringPose(firingPercent.get());
-                    } else {
-                        modelToRender.setNeutralPose();
-                    }
-
                     for (CompoundTag nbt : NBTTagAccessor.getValues(renderTag)) {
                         modelToRender.renderPart(nbt, colors, poseStack, consumer, packedLight, packedOverlay);
                     }
+                // default render strategy
+                } else {
+                    modelToRender.renderToBuffer(poseStack, consumer, packedLight, packedOverlay, 1, 1, 1, 1);
                 }
             });
         }
