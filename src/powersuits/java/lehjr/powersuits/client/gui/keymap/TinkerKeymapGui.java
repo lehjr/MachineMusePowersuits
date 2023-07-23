@@ -32,6 +32,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import lehjr.numina.client.gui.ContainerlessGui;
 import lehjr.numina.client.gui.geometry.MusePoint2D;
 import lehjr.powersuits.client.control.KeyMappingReaderWriter;
+import lehjr.powersuits.client.control.KeymappingKeyHandler;
 import lehjr.powersuits.client.gui.common.TabSelectFrame;
 import lehjr.powersuits.common.constants.MPSConstants;
 import net.minecraft.client.Minecraft;
@@ -57,6 +58,7 @@ public class TinkerKeymapGui extends ContainerlessGui {
         this.player = player;
         this./*xSize*/imageWidth = 352 /*340 */;
         this./*ySize*/imageHeight = 217;
+        KeymappingKeyHandler.loadKeyBindings();
     }
 
     /**
@@ -88,14 +90,14 @@ public class TinkerKeymapGui extends ContainerlessGui {
     }
 
     @Override
-    public boolean keyPressed(int p_231046_1_, int p_231046_2_, int p_231046_3_) {
+    public boolean keyPressed(int keyCode, int scanCode, int modifiers) { // int pKeyCode, int pScanCode, int pModifiers
         if (kbFrame.keybindingToRemap != null) {
-            if (p_231046_1_ == 256) {
+            if (keyCode == 256) {
                 kbFrame.keybindingToRemap.setKeyModifierAndCode(KeyModifier.getActiveModifier(), InputConstants.UNKNOWN);
                 Minecraft.getInstance().options.setKey(kbFrame.keybindingToRemap, InputConstants.UNKNOWN);
             } else {
-                kbFrame.keybindingToRemap.setKeyModifierAndCode(KeyModifier.getActiveModifier(), InputConstants.getKey(p_231046_1_, p_231046_2_));
-                Minecraft.getInstance().options.setKey(kbFrame.keybindingToRemap, InputConstants.getKey(p_231046_1_, p_231046_2_));
+                kbFrame.keybindingToRemap.setKeyModifierAndCode(KeyModifier.getActiveModifier(), InputConstants.getKey(keyCode, scanCode));
+                Minecraft.getInstance().options.setKey(kbFrame.keybindingToRemap, InputConstants.getKey(keyCode, scanCode));
             }
 
             if (!KeyModifier.isKeyCodeModifier(kbFrame.keybindingToRemap.getKey())) {
@@ -106,7 +108,7 @@ public class TinkerKeymapGui extends ContainerlessGui {
 //            KeyBinding.resetMapping();
             return true;
         } else {
-            return super.keyPressed(p_231046_1_, p_231046_2_, p_231046_3_);
+            return super.keyPressed(keyCode, scanCode, modifiers);
         }
     }
 

@@ -41,6 +41,7 @@ import lehjr.powersuits.client.gui.modechanging.GuiModeSelector;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
@@ -222,24 +223,24 @@ public class KeymappingKeyHandler {
     public static void loadKeyBindings() {
         for (Item item : ForgeRegistries.ITEMS.getValues()) {
             ItemStack module = new ItemStack(item);
-            @NotNull LazyOptional<IPowerModule> pm = module.getCapability(NuminaCapabilities.POWER_MODULE);
-
-            if (pm.isPresent() && pm instanceof IToggleableModule) {
-                // Tool settings are a bit odd
-                if (((IToggleableModule) pm).getTarget() == ModuleTarget.TOOLONLY) {
-                    if (((IToggleableModule) pm).getCategory() == ModuleCategory.MINING_ENHANCEMENT) {
-                        registerKeybinding(ItemUtils.getRegistryName(item), false);
-                    } else if (!IRightClickModule.class.isAssignableFrom(pm.getClass())) {
-                        registerKeybinding(ItemUtils.getRegistryName(item), false);
-                    }
-                } else {
-                    registerKeybinding(ItemUtils.getRegistryName(item), false);
-                }
-            } else {
-                if (item == Items.CLOCK || item == Items.COMPASS || item == Items.RECOVERY_COMPASS || ItemUtils.getRegistryName(item).equals(new ResourceLocation("ae2:meteorite_compass"))) {
-                    registerKeybinding(ItemUtils.getRegistryName(item), false);
-                }
-            }
+            module.getCapability(NuminaCapabilities.POWER_MODULE)
+                    .filter(IToggleableModule.class::isInstance)
+                    .map(IToggleableModule.class::cast).ifPresentOrElse(pm->{
+                        // Tool settings are a bit odd
+                        if (pm.getTarget() == ModuleTarget.TOOLONLY) {
+                            if (pm.getCategory() == ModuleCategory.MINING_ENHANCEMENT) {
+                                registerKeybinding(ItemUtils.getRegistryName(item), false);
+                            } else if (!IRightClickModule.class.isAssignableFrom(pm.getClass())) {
+                                registerKeybinding(ItemUtils.getRegistryName(item), false);
+                            }
+                        } else {
+                            registerKeybinding(ItemUtils.getRegistryName(item), false);
+                        }
+                    },  ()-> {
+                        if (item == Items.CLOCK || item == Items.COMPASS || item == Items.RECOVERY_COMPASS || ItemUtils.getRegistryName(item).equals(new ResourceLocation("ae2:meteorite_compass"))) {
+                            registerKeybinding(ItemUtils.getRegistryName(item), false);
+                        }
+                    });
         }
     }
 
@@ -250,7 +251,7 @@ public class KeymappingKeyHandler {
     public static Map<String, MPSKeyMapping> keyMappings = new HashMap<>();
 
     public static void registerKeybinding(ResourceLocation registryName, boolean showOnHud) {
-        String keybindingName = new StringBuilder("keybinding.").append(registryName.getNamespace()).append(".").append(registryName.getPath()).toString();
+        String keybindingName = "keybinding." + registryName.getNamespace() + "." + registryName.getPath();
         registerKeyBinding(registryName, keybindingName, GLFW.GLFW_KEY_UNKNOWN, mps, showOnHud, false);
     }
 
