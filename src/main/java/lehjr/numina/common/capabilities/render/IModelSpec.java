@@ -26,11 +26,9 @@
 
 package lehjr.numina.common.capabilities.render;
 
-import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.capabilities.render.modelspec.NuminaModelSpecRegistry;
 import lehjr.numina.common.capabilities.render.modelspec.SpecBase;
 import lehjr.numina.common.constants.TagConstants;
-import lehjr.numina.common.math.Color;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
@@ -67,7 +65,6 @@ public interface IModelSpec {
         return true;
     }
 
-
     CompoundTag getRenderTag();
 
     CompoundTag setRenderTag(CompoundTag renderDataIn, String tagName);
@@ -81,30 +78,4 @@ public interface IModelSpec {
     int getNewColorIndex(List<Integer> colors, List<Integer> oldColors, Integer index);
 
     CompoundTag setColorArray(int[] colors);
-
-    /**
-     * FIXME: remove before release
-      * @return
-     */
-    @Deprecated(forRemoval=true)
-    default Color getColorFromItemStack() {
-        try {
-            CompoundTag renderTag = getRenderTag();
-            if (renderTag == null || renderTag.isEmpty()) {
-                return Color.WHITE;
-            }
-//            if (renderTag.contains(TagConstants.TEXTURESPEC)) {
-//                TexturePartSpec partSpec = (TexturePartSpec) ModelRegistry.getInstance().getPart(renderTag.getCompound(TagConstants.TEXTURESPEC));
-//                CompoundTag specTag = renderTag.getCompound(TagConstants.TEXTURESPEC);
-//                int index = partSpec.getColorIndex(specTag);
-//                int[] colors = getColorArray();
-//                if (colors.length > index) {
-//                    return new Color(colors[index]);
-//                }
-//            }
-        } catch (Exception e) {
-            NuminaLogger.logException("something failed here: ", e);
-        }
-        return Color.WHITE;
-    }
 }

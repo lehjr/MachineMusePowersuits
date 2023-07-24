@@ -1,6 +1,5 @@
 package lehjr.powersuits.common.base;
 
-import lehjr.numina.common.base.NuminaLogger;
 import lehjr.powersuits.common.constants.MPSConstants;
 import lehjr.powersuits.common.constants.MPSRegistryNames;
 import lehjr.powersuits.common.container.InstallSalvageMenu;

@@ -24,7 +24,7 @@
  *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package lehjr.powersuits.common.network.packets;
+package lehjr.numina.common.network.packets;
 
 import lehjr.numina.common.capabilities.NuminaCapabilities;
 import net.minecraft.network.FriendlyByteBuf;

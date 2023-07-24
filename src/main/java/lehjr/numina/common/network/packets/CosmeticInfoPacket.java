@@ -27,11 +27,16 @@
 package lehjr.numina.common.network.packets;
 
 import lehjr.numina.common.capabilities.NuminaCapabilities;
+import lehjr.numina.common.network.NuminaPackets;
+import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.player.Player;
+import net.minecraftforge.network.NetworkDirection;
 import net.minecraftforge.network.NetworkEvent;
+import net.minecraftforge.network.PacketDistributor;
 
 import java.util.function.Supplier;
 
@@ -68,16 +73,34 @@ public class CosmeticInfoPacket {
                 packetBuffer.readNbt());
     }
 
+    public static void sendToClient(ServerPlayer entity, EquipmentSlot slotType, String tagName, CompoundTag tagData) {
+        NuminaPackets.CHANNEL_INSTANCE.send(PacketDistributor.PLAYER.with(() -> entity),
+                new CosmeticInfoPacket(slotType, tagName, tagData));
+    }
+
     public static void handle(CosmeticInfoPacket message, Supplier<NetworkEvent.Context> ctx) {
+        NetworkDirection direction = ctx.get().getDirection();
+
         ctx.get().enqueueWork(() -> {
-            final ServerPlayer player = ctx.get().getSender();
             EquipmentSlot slotType = message.slotType;
             String tagName = message.tagName;
             CompoundTag tagData = message.tagData;
-            player.getItemBySlot(slotType).getCapability(NuminaCapabilities.RENDER).ifPresent(render-> {
-                render.setRenderTag(tagData, tagName);
-            });
-            player.getInventory().setChanged();
+
+            Player player = null;
+            if (direction.equals(NetworkDirection.PLAY_TO_SERVER)) {
+                player = ctx.get().getSender();
+            } else if (direction.equals(NetworkDirection.PLAY_TO_CLIENT)) {
+                player = Minecraft.getInstance().player;
+            }
+            if (player != null) {
+                player.getItemBySlot(message.slotType).getCapability(NuminaCapabilities.RENDER).ifPresent(render -> {
+                    render.setRenderTag(tagData, tagName);
+                });
+
+                if (player instanceof ServerPlayer) {
+                    sendToClient((ServerPlayer) player, slotType, tagName, tagData);
+                }
+            }
         });
         ctx.get().setPacketHandled(true);
     }

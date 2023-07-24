@@ -28,7 +28,6 @@ import lehjr.powersuits.common.item.module.vision.NightVisionModule;
 import lehjr.powersuits.common.item.module.weapon.*;
 import lehjr.powersuits.common.item.tool.PowerFist;
 import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.DeferredRegister;

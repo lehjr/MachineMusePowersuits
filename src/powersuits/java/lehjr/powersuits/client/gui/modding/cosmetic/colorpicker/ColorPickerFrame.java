@@ -42,9 +42,9 @@ import lehjr.numina.common.capabilities.NuminaCapabilities;
 import lehjr.numina.common.capabilities.render.IModelSpec;
 import lehjr.numina.common.constants.TagConstants;
 import lehjr.numina.common.math.Color;
+import lehjr.numina.common.network.NuminaPackets;
+import lehjr.numina.common.network.packets.ColorInfoPacket;
 import lehjr.numina.common.string.StringUtils;
-import lehjr.powersuits.common.network.MPSPackets;
-import lehjr.powersuits.common.network.packets.ColorInfoPacket;
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.IntArrayTag;
@@ -144,7 +144,7 @@ public class ColorPickerFrame extends ScrollableFrame {
                 .map(spec -> {
                     CompoundTag renderSpec = spec.getRenderTag();
                     if (renderSpec != null && !renderSpec.isEmpty()) {
-                        this.itemSelector.selectedType().ifPresent(slotType -> MPSPackets.CHANNEL_INSTANCE.sendToServer(new ColorInfoPacket(slotType, new int[]{-1})));
+                        this.itemSelector.selectedType().ifPresent(slotType -> NuminaPackets.CHANNEL_INSTANCE.sendToServer(new ColorInfoPacket(slotType, new int[]{-1})));
                         return new IntArrayTag(spec.getColorArray());
                     }
                     return new IntArrayTag(new int[]{-1});
@@ -158,7 +158,7 @@ public class ColorPickerFrame extends ScrollableFrame {
                 .map(spec -> {
                     CompoundTag renderSpec = spec.getRenderTag();
                     renderSpec.put(TagConstants.COLORS, new IntArrayTag(intList));
-                    this.itemSelector.selectedType().ifPresent(slotType -> MPSPackets.CHANNEL_INSTANCE.sendToServer(new ColorInfoPacket(slotType, this.colors())));
+                    this.itemSelector.selectedType().ifPresent(slotType -> NuminaPackets.CHANNEL_INSTANCE.sendToServer(new ColorInfoPacket(slotType, this.colors())));
                     return (IntArrayTag) renderSpec.get(TagConstants.COLORS);
 
                 }).orElse(new IntArrayTag(new int[]{-1}));
@@ -276,7 +276,7 @@ public class ColorPickerFrame extends ScrollableFrame {
                     slider.setValueByMouse(mousex);
                     if (colors().length > selectedColor) {
                         colors()[selectedColor] = Color.getARGBInt((float) ((VanillaSlider)rects.get(1)).getSliderInternalValue(), (float) ((VanillaSlider)rects.get(3)).getSliderInternalValue(), (float) ((VanillaSlider)rects.get(5)).getSliderInternalValue(), (float) ((VanillaSlider)rects.get(7)).getSliderInternalValue());
-                        this.itemSelector.selectedType().ifPresent(slotType -> MPSPackets.CHANNEL_INSTANCE.sendToServer(new ColorInfoPacket(slotType, this.colors())));
+                        this.itemSelector.selectedType().ifPresent(slotType -> NuminaPackets.CHANNEL_INSTANCE.sendToServer(new ColorInfoPacket(slotType, this.colors())));
                     }});
                 // this just sets up the sliders on selecting an item
             } else if (!itemSelector.getModularItemOrEmpty().isEmpty() && colors().length > 0) {
@@ -290,16 +290,17 @@ public class ColorPickerFrame extends ScrollableFrame {
         setCurrentScrollPixels(scrollBar.getValue());
     }
 
-    public int[] getIntArray(IntArrayTag e) {
-        if (e == null) // null when no armor item selected
-            return new int[0];
-        return e.getAsIntArray();
-    }
-
     class ColorBox extends Clickable {
         public ColorBox(double left, double top, double right) {
             super(left,top,right,top + 18);
         }
+
+        public int[] getIntArray(IntArrayTag e) {
+            if (e == null) // null when no armor item selected
+                return new int[0];
+            return e.getAsIntArray();
+        }
+
         /**
          * handles clicking on the "+" circle
          *
@@ -335,7 +336,7 @@ public class ColorPickerFrame extends ScrollableFrame {
                     if (selectedColor == getIntArray(IntArrayTag).length) {
                         selectedColor = selectedColor - 1;
                     }
-                    itemSelector.selectedType().ifPresent(slotType -> MPSPackets.CHANNEL_INSTANCE.sendToServer(new ColorInfoPacket(slotType, IntArrayTag.getAsIntArray())));
+                    itemSelector.selectedType().ifPresent(slotType -> NuminaPackets.CHANNEL_INSTANCE.sendToServer(new ColorInfoPacket(slotType, IntArrayTag.getAsIntArray())));
                 }
                 return true;
             }

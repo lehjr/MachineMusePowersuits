@@ -98,7 +98,7 @@ public class Musique {
                 mcsound().stop(sound);
             }
             soundMap.remove(soundID);
-             NuminaLogger.logDebug("Sound stopped: " + soundEvt.getLocation());
+//             NuminaLogger.logDebug("Sound stopped: " + soundEvt.getLocation());
         }
     }
 }

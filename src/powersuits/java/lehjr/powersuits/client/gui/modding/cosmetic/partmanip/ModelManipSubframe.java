@@ -34,7 +34,6 @@ import lehjr.numina.client.gui.frame.ModularItemSelectionFrame;
 import lehjr.numina.client.gui.geometry.MusePoint2D;
 import lehjr.numina.client.gui.geometry.Rect;
 import lehjr.numina.client.render.IconUtils;
-import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.capabilities.NuminaCapabilities;
 import lehjr.numina.common.capabilities.render.IModelSpec;
 import lehjr.numina.common.capabilities.render.modelspec.NuminaModelSpecRegistry;
@@ -149,26 +148,6 @@ public class ModelManipSubframe extends AbstractGuiFrame {
                     });
                 }
 
-
-
-//                if (iModelSpecNBT instanceof IArmorModelSpecNBT) {
-//                    model.getPartSpecs().forEach(spec -> {
-//                        if (spec.getBinding().getSlot().equals(slot)) {
-//                            String tagName = NuminaModelRegistry.getInstance().makeName(spec);
-//                            parts.add(createNewFrame(spec, renderTag.getCompound(tagName)));
-//                        }
-//                    });
-//                } else if (iModelSpecNBT instanceof IHandHeldModelSpecNBT) {
-//                    model.getPartSpecs().forEach(spec -> {
-//                        if (spec.getBinding().getSlot().getType().equals(EquipmentSlot.Type.HAND)) {
-//                            String tagName = NuminaModelRegistry.getInstance().makeName(spec);
-//                            // FIXME: get rid of TEXTURESPEC tag and use
-//                            NuminaLogger.logDebug("make name: " +  NuminaModelRegistry.getInstance().makeName(spec));
-//                            parts.add(createNewFrame(spec, renderTag.getCompound(tagName)));
-//                        }
-//                    });
-//                }
-
                 parts.forEach(spec -> {
                     spec.setEnabled(this.open);
                     spec.setVisible(this.open);
@@ -236,17 +215,10 @@ public class ModelManipSubframe extends AbstractGuiFrame {
         return getRenderCapability().map(iModelSpecNBT -> {
             CompoundTag specTag = new CompoundTag();
             CompoundTag renderTag = iModelSpecNBT.getRenderTag();
-
-            // FIXME!! this is where things get interesting.... figure out how to parse java models
-
-
-
             if (renderTag != null) {
                 String name = NuminaModelSpecRegistry.getInstance().makeName(partSpec);
                 specTag = renderTag.contains(name) ? renderTag.getCompound(name) : new CompoundTag();
-
 //                NuminaLogger.logDebug("spec: " + specTag);
-
             }
             return specTag;
         }).orElse(new CompoundTag()); // this only returns empty
@@ -366,9 +338,8 @@ public class ModelManipSubframe extends AbstractGuiFrame {
             transparent.setOnPressed(pressed -> {
                 tagdata = new CompoundTag();
                 itemSelector.selectedType().ifPresent(slotType -> {
-                            NuminaPackets.CHANNEL_INSTANCE.sendToServer(new CosmeticInfoPacket(slotType, tagname, tagdata));
-                        }
-                );
+                    NuminaPackets.CHANNEL_INSTANCE.sendToServer(new CosmeticInfoPacket(slotType, tagname, tagdata));
+                });
             });
             buttons.add(transparent);
 
@@ -391,8 +362,9 @@ public class ModelManipSubframe extends AbstractGuiFrame {
                 tagdata = getOrMakeSpecTag(partSpec);
                 partSpec.setGlow(tagdata, true);
                 itemSelector.selectedType().ifPresent(slotType -> {
-                    NuminaPackets.CHANNEL_INSTANCE.sendToServer(new CosmeticInfoPacket(slotType, tagname, tagdata));
-                });
+                            NuminaPackets.CHANNEL_INSTANCE.sendToServer(new CosmeticInfoPacket(slotType, tagname, tagdata));
+                        }
+                );
             });
             glow.setEnabled(true);
             glow.setRightOf(normal);
@@ -530,8 +502,6 @@ public class ModelManipSubframe extends AbstractGuiFrame {
                     for (j=0; j < buttons.size(); j++) {
                         buttons.get(j).isSelected = i==j;
                     }
-                    // fixme add white color if none exists when enabling part
-
                     return true;
                 }
             }

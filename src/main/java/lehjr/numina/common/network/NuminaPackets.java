@@ -43,6 +43,12 @@ public class NuminaPackets {
 
     public static void registerNuminaPackets() {
         int i =0;
+        CHANNEL_INSTANCE.registerMessage(
+                i++,
+                ColorInfoPacket.class,
+                ColorInfoPacket::write,
+                ColorInfoPacket::read,
+                ColorInfoPacket::handle);
 
         CHANNEL_INSTANCE.registerMessage(
                 i++,

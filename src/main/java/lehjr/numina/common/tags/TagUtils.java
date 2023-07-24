@@ -42,7 +42,7 @@ public class TagUtils {
      * @param stack
      * @return an CompoundTag, may be newly created. If stack is empty, returns null.
      */
-    public static CompoundTag getMuseItemTag(@Nonnull ItemStack stack) {
+    public static CompoundTag getMuseModularItemTag(@Nonnull ItemStack stack) {
         if (stack.isEmpty()) {
             return new CompoundTag();
         }
@@ -82,7 +82,7 @@ public class TagUtils {
     }
 
     public static float getModularItemFloatOrZero(@Nonnull ItemStack stack, String string) {
-        return getFloatOrZero(getMuseItemTag(stack), string);
+        return getFloatOrZero(getMuseModularItemTag(stack), string);
     }
 
     public static float getFloatOrZero(CompoundTag nbt, String tagName) {
@@ -94,7 +94,7 @@ public class TagUtils {
      * would be zero.
      */
     public static void setModularItemFloatOrRemove(@Nonnull ItemStack stack, String string, float value) {
-        setFloatOrRemove(TagUtils.getMuseItemTag(stack), string, value);
+        setFloatOrRemove(TagUtils.getMuseModularItemTag(stack), string, value);
     }
 
     public static void setModuleFloatOrRemove(@Nonnull ItemStack stack, String string, float value) {
@@ -131,7 +131,7 @@ public class TagUtils {
     }
 
     public static double getModularItemDoubleOrZero(@Nonnull ItemStack stack, String string) {
-        return getDoubleOrZero(getMuseItemTag(stack), string);
+        return getDoubleOrZero(getMuseModularItemTag(stack), string);
     }
 
     public static double getDoubleOrZero(CompoundTag nbt, String tagName) {
@@ -143,7 +143,7 @@ public class TagUtils {
      * would be zero.
      */
     public static void setModularItemDoubleOrRemove(@Nonnull ItemStack stack, String string, double value) {
-        setDoubleOrRemove(TagUtils.getMuseItemTag(stack), string, value);
+        setDoubleOrRemove(TagUtils.getMuseModularItemTag(stack), string, value);
     }
 
     public static void setModuleDoubleOrRemove(@Nonnull ItemStack stack, String string, double value) {
@@ -174,7 +174,7 @@ public class TagUtils {
     }
 
     public static int getModularItemIntOrZero(@Nonnull ItemStack module, String string) {
-        return getIntOrZero(getMuseItemTag(module), string);
+        return getIntOrZero(getMuseModularItemTag(module), string);
     }
 
     static int getIntOrZero(CompoundTag nbt, String tagName) {
@@ -186,7 +186,7 @@ public class TagUtils {
     }
 
     public static void setModularItemIntOrRemove(@Nonnull ItemStack stack, String tagName, int value, boolean remove) {
-        setIntOrRemove(getMuseItemTag(stack), tagName, value, remove);
+        setIntOrRemove(getMuseModularItemTag(stack), tagName, value, remove);
     }
 
     public static void setIntOrRemove(@Nonnull CompoundTag nbt, String tagName, int value, boolean remove) {
@@ -212,7 +212,7 @@ public class TagUtils {
     }
 
     public static boolean getItemBooleanOrFalse(@Nonnull ItemStack module, String string) {
-        return getBooleanOrFalse(getMuseItemTag(module), string);
+        return getBooleanOrFalse(getMuseModularItemTag(module), string);
     }
 
     static boolean getBooleanOrFalse(CompoundTag nbt, String tagName) {
@@ -224,7 +224,7 @@ public class TagUtils {
     }
 
     public static void setModularItemBoolean(@Nonnull ItemStack module, String string, boolean value) {
-        getMuseItemTag(module).putBoolean(string, value);
+        getMuseModularItemTag(module).putBoolean(string, value);
     }
 
     // Misc -----------------------------------------------------------------------------------------------------------

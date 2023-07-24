@@ -26,7 +26,6 @@
 
 package lehjr.numina.common.capabilities.render;
 
-import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.constants.TagConstants;
 import lehjr.numina.common.tags.TagUtils;
 import net.minecraft.nbt.CompoundTag;
@@ -40,7 +39,6 @@ import java.util.Objects;
 
 public class ModelSpecStorage implements IModelSpec, INBTSerializable<CompoundTag> {
     ItemStack itemStack;
-    static final String TAG_RENDER = "render";
 
     public ModelSpecStorage(@Nonnull ItemStack itemStackIn){
         this.itemStack = itemStackIn;
@@ -54,13 +52,15 @@ public class ModelSpecStorage implements IModelSpec, INBTSerializable<CompoundTa
 
     @Override
     public CompoundTag setRenderTag(CompoundTag renderDataIn, String tagName) {
-        CompoundTag itemTag = TagUtils.getMuseItemTag(itemStack);
+        CompoundTag itemTag = TagUtils.getMuseModularItemTag(itemStack);
+//        NuminaLogger.logDebug("ItemTag before: " + itemTag);
+//        NuminaLogger.logDebug("full tag data before: " + itemStack.serializeNBT());
         if (tagName != null) {
             if (Objects.equals(tagName, TagConstants.RENDER)) {
-                NuminaLogger.logger.debug("Removing render tag");
+//                NuminaLogger.logger.debug("Removing render tag");
                 itemTag.remove(TagConstants.RENDER);
                 if (!renderDataIn.isEmpty()) {
-                    NuminaLogger.logger.debug("Adding tag " + TagConstants.RENDER + " : " + renderDataIn);
+//                    NuminaLogger.logger.debug("Adding tag " + TagConstants.RENDER + " : " + renderDataIn);
                     itemTag.put(TagConstants.RENDER, renderDataIn);
                 } else {
                     itemTag.put(TagConstants.RENDER, new CompoundTag());
@@ -70,28 +70,32 @@ public class ModelSpecStorage implements IModelSpec, INBTSerializable<CompoundTa
                 CompoundTag renderTag;
                 if (!itemTag.contains(TagConstants.RENDER)) {
                     renderTag = new CompoundTag();
-                    itemTag.put(TagConstants.RENDER, renderTag);
                 } else {
                     renderTag = itemTag.getCompound(TagConstants.RENDER);
                 }
                 if (renderDataIn.isEmpty()) {
-                    NuminaLogger.logger.debug("Removing tag " + tagName);
+//                    NuminaLogger.logger.debug("Removing tag " + tagName);
                     renderTag.remove(tagName);
                     renderTag.remove(tagName.replace(".", ""));
                 } else {
-                    NuminaLogger.logger.debug("Adding tag " + tagName + " : " + renderDataIn);
+//                    NuminaLogger.logger.debug("Adding tag " + tagName + " : " + renderDataIn);
                     renderTag.put(tagName, renderDataIn);
                 }
+
+                itemTag.put(TagConstants.RENDER, renderTag);
             }
         }
+        CompoundTag stackTag = itemStack.getTag();
+        stackTag.put(TagConstants.TAG_ITEM_PREFIX, itemTag);
+        itemStack.setTag(stackTag);
         return getRenderTag();
     }
 
     @Override
     @Nullable
     public CompoundTag getRenderTag() {
-        CompoundTag itemTag = TagUtils.getMuseItemTag(itemStack);
-        return itemTag.getCompound(TAG_RENDER);
+        CompoundTag itemTag = TagUtils.getMuseModularItemTag(itemStack);
+        return itemTag.getCompound(TagConstants.RENDER);
     }
 
     @Override
