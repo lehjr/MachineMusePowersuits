@@ -1,7 +1,7 @@
 modLoader="javafml"
 loaderVersion="${loader_version}"
 issueTrackerURL="https://github.com/lehjr/MachineMusePowersuits/issues"
-license="All rights reserved"
+license='Simplified BSD License https://opensource.org/license/bsd-2-clause/'
 
 [[mods]]
     modId="powersuits"
@@ -15,7 +15,6 @@ license="All rights reserved"
     description='''
 A mod which adds modular power armor, power tool, and a tinker table to configure them. Uses FE (Foreg Energy), EU (IndustrialCraft 2) or RF (Thermal Expansion 4).
 '''
-
 [[dependencies.powersuits]]
     modId="forge"
     mandatory=true

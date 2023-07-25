@@ -1,7 +1,7 @@
 modLoader="javafml"
 loaderVersion="${loader_version}"
 issueTrackerURL="https://github.com/lehjr/MachineMusePowersuits/issues"
-license="All rights reserved"
+license='Simplified BSD License https://opensource.org/license/bsd-2-clause/'
 [[mods]]
     modId="numina"
     version="${mod_version}"
