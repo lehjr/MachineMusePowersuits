@@ -7,7 +7,7 @@ license='Simplified BSD License https://opensource.org/license/bsd-2-clause/'
     version="${mod_version}"
     displayName="Numina"
     updateJSONURL="https://mc-curse-update-checker.herokuapp.com/235440"
-    displayURL="https://www.curseforge.com/minecraft/mc-mods/numina"
+    displayURL="https://github.com/lehjr/MachineMusePowersuits"
     authors="MachineMuse, lehjr"
     description="A common library of useful functions and utilities for dealing with Minecraft's source code."
 

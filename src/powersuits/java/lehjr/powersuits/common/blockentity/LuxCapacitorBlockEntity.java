@@ -117,7 +117,7 @@ public class LuxCapacitorBlockEntity extends BlockEntity {
     @Nonnull
     @Override
     public ModelData getModelData() {
-        return LuxCapHelper.getItemModelData(getColor().getAGBRInt());
+        return LuxCapHelper.getItemModelData(getColor().getARGBInt());
     }
 
     public Color getColor() {

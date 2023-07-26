@@ -91,9 +91,7 @@ public class LuxCapacitorModule extends AbstractPowerModule {
                 if (ElectricItemUtils.getPlayerEnergy(playerIn) > energyConsumption) {
                     if (!worldIn.isClientSide) {
                         HeatUtils.heatPlayer(playerIn, energyConsumption / 500);
-
                         ElectricItemUtils.drainPlayerEnergy(playerIn, (int) energyConsumption);
-
                         float red = (float) applyPropertyModifiers(MPSConstants.RED_HUE);
                         float green = (float) applyPropertyModifiers(MPSConstants.GREEN_HUE);
                         float blue = (float) applyPropertyModifiers(MPSConstants.BLUE_HUE);
