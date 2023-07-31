@@ -110,8 +110,13 @@ public class LuxCapacitorBlock extends DirectionalBlock implements SimpleWaterlo
         return new LuxCapacitorBlockEntity(pos, state);
     }
 
+    private boolean canAttachTo(BlockGetter blockGetter, BlockPos pos, Direction direction) {
+        BlockState blockstate = blockGetter.getBlockState(pos);
+        return blockstate.isFaceSturdy(blockGetter, pos, direction);
+    }
     @Override
-    public boolean canSurvive(BlockState pState, LevelReader pLevel, BlockPos pPos) {
-        return super.canSurvive(pState, pLevel, pPos);
+    public boolean canSurvive(BlockState state, LevelReader levelReader, BlockPos pos) {
+        Direction direction = state.getValue(FACING);
+        return this.canAttachTo(levelReader, pos.relative(direction.getOpposite()), direction);
     }
 }
