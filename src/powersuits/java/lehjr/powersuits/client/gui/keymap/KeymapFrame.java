@@ -149,7 +149,7 @@ public class KeymapFrame extends ScrollableFrame {
                     top(), // y
                     150, // width
                     //20, // height
-                    Component.translatable(kb.getName()), kb.showOnHud);
+                    Component.translatable(module.getDescriptionId()), kb.showOnHud);
 
             this.checkbox.setOnPressed(pressed ->{
                 kb.showOnHud = this.checkbox.isChecked();

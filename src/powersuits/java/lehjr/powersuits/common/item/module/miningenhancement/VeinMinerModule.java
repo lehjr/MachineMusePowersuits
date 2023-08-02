@@ -61,9 +61,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class VeinMinerModule extends AbstractPowerModule {
+    ResourceLocation ORE_TAG = new ResourceLocation("forge", "ores");
+    String STORAGE_BLOCK = "storage_blocks/raw_";
+
     @Nullable
     @Override
     public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt) {
@@ -92,19 +96,30 @@ public class VeinMinerModule extends AbstractPowerModule {
                 super(module, category, target, config);
             }
 
-            List<BlockPos> getPosList(Block block, BlockPos startPos, Level world) {
-                List<BlockPos> list = new ArrayList<BlockPos>() {{add(startPos);}};
+            List<BlockPos> getPosList(Block block, BlockPos startPos, Level world, String oreType) {
+                List<BlockPos> list = new ArrayList<>() {{
+                    add(startPos);
+                }};
                 for (Direction direction : Direction.values()) {
                     int i = 0;
                     while(i < 1000) { // prevent race condition
                         BlockPos pos2 = startPos.relative(direction, i);
 
                         // no point looking beyond world limits
-                        if (pos2.getY() >= world.getMaxBuildHeight() || pos2.getY() <= 0) {
+                        if (pos2.getY() >= world.getMaxBuildHeight() || pos2.getY() <= world.getMinBuildHeight()) {
                             break;
                         }
 
-                        if(world.getBlockState(pos2).getBlock() == block) {
+                        BlockState state = world.getBlockState(pos2);
+                        List<TagKey<Block>> tagsToTest = state.getTags().collect(Collectors.toList());
+                        String oreTypeToTest = getOreType(tagsToTest);
+                        // prioritize checking for same ore type
+                        if (!oreType.isBlank() && !oreTypeToTest.isBlank() && oreType.equals(oreTypeToTest)) {
+                            if (!list.contains(pos2)) {
+                                list.add(pos2);
+                            }
+                            i++;
+                        } else if (world.getBlockState(pos2).getBlock() == block) {
                             if (!list.contains(pos2)) {
                                 list.add(pos2);
                             }
@@ -159,8 +174,46 @@ public class VeinMinerModule extends AbstractPowerModule {
 
                 // check if block is an ore
                 List<ResourceLocation> defaultOreTags = MPSSettings.getOreList();
-                Stream<TagKey<Block>> oretags = player.level.getBlockState(posIn).getTags();
-                boolean isOre = oretags.anyMatch(tag-> defaultOreTags.contains(tag.location()));
+                List<TagKey<Block>> oretags = state.getTags().collect(Collectors.toList());
+
+                /*
+                    ------------------
+                    Iron Ore
+                    ------------------
+                    tag: TagKey[minecraft:block / minecraft:iron_ores]
+                    tag: TagKey[minecraft:block / minecraft:needs_stone_tool]
+                    tag: TagKey[minecraft:block / forge:ores_in_ground/stone]
+                    tag: TagKey[minecraft:block / minecraft:mineable/pickaxe]
+                    tag: TagKey[minecraft:block / forge:ore_rates/singular]
+                    tag: TagKey[minecraft:block / forge:ores/iron]
+                    tag: TagKey[minecraft:block / forge:ores]
+                    tag: TagKey[minecraft:block / minecraft:overworld_carver_replaceables]
+                    tag: TagKey[minecraft:block / minecraft:snaps_goat_horn]
+
+                    ------------------
+                    Block of Raw Iron
+                    ------------------
+                    tag: TagKey[minecraft:block / minecraft:mineable/pickaxe]
+                    tag: TagKey[minecraft:block / forge:storage_blocks/raw_iron]
+                    tag: TagKey[minecraft:block / minecraft:needs_stone_tool]
+                    tag: TagKey[minecraft:block / minecraft:overworld_carver_replaceables]
+                    tag: TagKey[minecraft:block / forge:storage_blocks]
+
+                    ------------------
+                    Deepslate Iron Ore
+                    ------------------
+                    tag: TagKey[minecraft:block / forge:ore_rates/singular]
+                    tag: TagKey[minecraft:block / minecraft:overworld_carver_replaceables]
+                    tag: TagKey[minecraft:block / minecraft:needs_stone_tool]
+                    tag: TagKey[minecraft:block / forge:ores/iron]
+                    tag: TagKey[minecraft:block / minecraft:mineable/pickaxe]
+                    tag: TagKey[minecraft:block / forge:ores]
+                    tag: TagKey[minecraft:block / minecraft:iron_ores]
+                    tag: TagKey[minecraft:block / forge:ores_in_ground/deepslate]
+                 */
+
+                String oreType = getOreType(oretags);
+                boolean isOre = !oreType.isBlank() || oretags.stream().anyMatch(tag-> defaultOreTags.contains(tag.location()));
 
                 if (isOre || MPSSettings.getBlockList().contains(ForgeRegistries.BLOCKS.getKey(block))) {
                     int energyRequired = this.getEnergyUsage() + bbModuleEnergyUsage.get();
@@ -170,7 +223,7 @@ public class VeinMinerModule extends AbstractPowerModule {
                         return false;
                     }
 
-                    List<BlockPos> posList = getPosList(block, posIn, player.level);
+                    List<BlockPos> posList = getPosList(block, posIn, player.level, oreType);
                     List<BlockPos> posListCopy = new ArrayList<>(posList);
 
                     int size = 0;
@@ -200,8 +253,9 @@ public class VeinMinerModule extends AbstractPowerModule {
                         while(i < 100 && size != newSize) {
                             size = posListCopy.size();
 
-                            outerLoop: for (BlockPos pos : posListCopy) {
-                                List<BlockPos> posList2 = getPosList(block, pos, player.level);
+                            outerLoop:
+                            for (BlockPos pos : posListCopy) {
+                                List<BlockPos> posList2 = getPosList(block, pos, player.level, oreType);
                                 for (BlockPos pos2 : posList2) {
                                     if(!posList.contains(pos2)) {
                                         // does player have enough energy to break initial list?
@@ -244,5 +298,18 @@ public class VeinMinerModule extends AbstractPowerModule {
             }
             return LazyOptional.empty();
         }
+    }
+
+    static String getOreType(List<TagKey<Block>> oretags) {
+        String oreType ="";
+        for (TagKey<Block> tagKey: oretags) {
+            String path = tagKey.location().getPath();
+            if (path.contains("ores/")) {
+                oreType = path.replace("ores/", "");
+            } else if (path.contains("storage_blocks/raw_")) {
+                oreType = path.replace("storage_blocks/raw_", "");
+            }
+        }
+        return oreType;
     }
 }
