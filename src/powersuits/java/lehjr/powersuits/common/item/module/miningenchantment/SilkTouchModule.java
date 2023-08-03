@@ -24,40 +24,32 @@
  *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package lehjr.powersuits.common.item.module.miningenhancement;
+package lehjr.powersuits.common.item.module.miningenchantment;
 
 import lehjr.numina.common.capabilities.NuminaCapabilities;
-import lehjr.numina.common.capabilities.module.blockbreaking.IBlockBreakingModule;
-import lehjr.numina.common.capabilities.module.miningenhancement.MiningEnhancement;
+import lehjr.numina.common.capabilities.module.enchantment.EnchantmentModule;
 import lehjr.numina.common.capabilities.module.powermodule.IConfig;
 import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
-import lehjr.numina.common.energy.ElectricItemUtils;
 import lehjr.powersuits.common.config.MPSSettings;
 import lehjr.powersuits.common.constants.MPSConstants;
 import lehjr.powersuits.common.item.module.AbstractPowerModule;
-import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.event.entity.player.PlayerEvent;
-import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.concurrent.Callable;
 
 
-// Note: tried as an enchantment, but failed to function properly due to how block breaking code works
-public class AquaAffinityModule extends AbstractPowerModule {
+public class SilkTouchModule extends AbstractPowerModule {
 
     @Nullable
     @Override
@@ -67,66 +59,34 @@ public class AquaAffinityModule extends AbstractPowerModule {
 
     public class CapProvider implements ICapabilityProvider {
         ItemStack module;
-        private final BlockBreaker miningEnhancement;
+        private final TickingEnchantment tickingEnchantment;
         private final LazyOptional<IPowerModule> powerModuleHolder;
 
         public CapProvider(@Nonnull ItemStack module) {
             this.module = module;
-            this.miningEnhancement = new BlockBreaker(module, ModuleCategory.MINING_ENHANCEMENT, ModuleTarget.TOOLONLY, MPSSettings::getModuleConfig) {{
-                addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, 0, "FE");
-                addBaseProperty(MPSConstants.AQUA_HARVEST_SPEED, 0.2F, "%");
-                addTradeoffProperty(MPSConstants.POWER, MPSConstants.ENERGY_CONSUMPTION, 1000);
-                addTradeoffProperty(MPSConstants.POWER, MPSConstants.AQUA_HARVEST_SPEED, 0.8F);
+            this.tickingEnchantment = new TickingEnchantment(module, ModuleCategory.MINING_ENCHANTMENT, ModuleTarget.TOOLONLY, MPSSettings::getModuleConfig) {{
+                addBaseProperty(MPSConstants.SILK_TOUCH_ENERGY_CONSUMPTION, 50000, "FE");
             }};
 
             powerModuleHolder = LazyOptional.of(() -> {
-                miningEnhancement.loadCapValues();
-                return miningEnhancement;
+                tickingEnchantment.loadCapValues();
+                return tickingEnchantment;
             });
         }
 
-        class BlockBreaker extends MiningEnhancement implements IBlockBreakingModule {
-            public BlockBreaker(@Nonnull ItemStack module, ModuleCategory category, ModuleTarget target, Callable<IConfig> config) {
-                super(module, category, target, config);
-            }
-
-            @Override
-            public boolean canHarvestBlock(@Nonnull ItemStack stack, BlockState state, Player player, BlockPos pos, double playerEnergy) {
-                return false;
-            }
-
-            @Override
-            public boolean mineBlock(@NotNull ItemStack powerFist, Level worldIn, BlockState state, BlockPos pos, LivingEntity entityLiving, double playerEnergy) {
-                if (this.canHarvestBlock(powerFist, state, (Player) entityLiving, pos, playerEnergy)) {
-                    ElectricItemUtils.drainPlayerEnergy(entityLiving, getEnergyUsage());
-                    return true;
-                }
-                return false;
-            }
-
-            @Override
-            public void handleBreakSpeed(PlayerEvent.BreakSpeed event) {
-                Player player = event.getEntity();
-                if (event.getNewSpeed() > 1 && (player.isUnderWater() || !player.isOnGround())
-                        && ElectricItemUtils.getPlayerEnergy(player) > getEnergyUsage()) {
-                    event.setNewSpeed((float) (event.getNewSpeed() * 5 * applyPropertyModifiers(MPSConstants.AQUA_HARVEST_SPEED)));
-                }
+        class TickingEnchantment extends EnchantmentModule {
+            public TickingEnchantment(@Nonnull ItemStack module, ModuleCategory category, ModuleTarget target, Callable<IConfig> config) {
+                super(module, category, target, config, false);
             }
 
             @Override
             public int getEnergyUsage() {
-                return (int) applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION);
-            }
-
-            @Nonnull
-            @Override
-            public ItemStack getEmulatedTool() {
-                return ItemStack.EMPTY; // FIXME?
+                return (int) (applyPropertyModifiers(MPSConstants.SILK_TOUCH_ENERGY_CONSUMPTION) * getLevel());
             }
 
             @Override
-            public boolean onBlockStartBreak(ItemStack itemstack, BlockPos pos, Player player) {
-                return false;
+            public Enchantment getEnchantment() {
+                return Enchantments.SILK_TOUCH;
             }
         }
 

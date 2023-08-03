@@ -86,6 +86,7 @@
   "numina.module.category.vision": "Vision Modules",
   "numina.module.category.environment": "Environment Modules",
   "numina.module.category.special": "Special Modules",
-  "numina.module.category.miningenhancement": "Mining Enhancement Modules"
+  "numina.module.category.miningenhancement": "Mining Enhancement Modules",
+  "numina.module.category.miningenchantment": "Mining Enchantment Modules"
 }
 

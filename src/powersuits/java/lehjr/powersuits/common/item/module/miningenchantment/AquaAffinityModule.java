@@ -24,11 +24,11 @@
  *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package lehjr.powersuits.common.item.module.miningenhancement;
-
+package lehjr.powersuits.common.item.module.miningenchantment;
 
 import lehjr.numina.common.capabilities.NuminaCapabilities;
-import lehjr.numina.common.capabilities.module.enchantment.IEnchantmentModule;
+import lehjr.numina.common.capabilities.module.blockbreaking.IBlockBreakingModule;
+import lehjr.numina.common.capabilities.module.enchantment.EnchantmentModule;
 import lehjr.numina.common.capabilities.module.miningenhancement.MiningEnhancement;
 import lehjr.numina.common.capabilities.module.powermodule.IConfig;
 import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
@@ -41,19 +41,26 @@ import lehjr.powersuits.common.item.module.AbstractPowerModule;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.event.entity.player.PlayerEvent;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.concurrent.Callable;
 
-public class FortuneModule extends AbstractPowerModule {
+
+// Note: tried as an enchantment, but failed to function properly due to how block breaking code works
+public class AquaAffinityModule extends AbstractPowerModule {
 
     @Nullable
     @Override
@@ -63,62 +70,34 @@ public class FortuneModule extends AbstractPowerModule {
 
     public class CapProvider implements ICapabilityProvider {
         ItemStack module;
-        private final Enhancement miningEnhancement;
+        private final EnchantmentModule enchantmentModule;
         private final LazyOptional<IPowerModule> powerModuleHolder;
 
         public CapProvider(@Nonnull ItemStack module) {
             this.module = module;
-            this.miningEnhancement = new Enhancement(module, ModuleCategory.MINING_ENHANCEMENT, ModuleTarget.TOOLONLY, MPSSettings::getModuleConfig) {{
-                addBaseProperty(MPSConstants.FORTUNE_ENERGY_CONSUMPTION, 500, "FE");
-                addTradeoffProperty(MPSConstants.ENCHANTMENT_LEVEL, MPSConstants.FORTUNE_ENERGY_CONSUMPTION, 9500);
-                addIntTradeoffProperty(MPSConstants.ENCHANTMENT_LEVEL, MPSConstants.FORTUNE_ENCHANTMENT_LEVEL, 3, "", 1, 1);
+            this.enchantmentModule = new TickingEnchantment(module, ModuleCategory.MINING_ENCHANTMENT, ModuleTarget.TOOLONLY, MPSSettings::getModuleConfig) {{
+                addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, 50000, "FE");
             }};
 
             powerModuleHolder = LazyOptional.of(() -> {
-                miningEnhancement.loadCapValues();
-                return miningEnhancement;
+                enchantmentModule.loadCapValues();
+                return enchantmentModule;
             });
         }
 
-        class Enhancement extends MiningEnhancement implements IEnchantmentModule {
-            public Enhancement(@Nonnull ItemStack module, ModuleCategory category, ModuleTarget target, Callable<IConfig> config) {
-                super(module, category, target, config);
-            }
-
-            /**
-             * Called before a block is broken.  Return true to prevent default block harvesting.
-             *
-             * Note: In SMP, this is called on both client and server sides!
-             *
-             * @param itemstack The current ItemStack
-             * @param pos Block's position in world
-             * @param player The Player that is wielding the item
-             * @return True to prevent harvesting, false to continue as normal
-             */
-            @Override
-            public boolean onBlockStartBreak(ItemStack itemstack, BlockPos pos, Player player) {
-                if (!player.level.isClientSide) {
-                    if (getEnergyUsage() > ElectricItemUtils.getPlayerEnergy(player))
-                        removeEnchantment(itemstack);
-                    else
-                        ElectricItemUtils.drainPlayerEnergy(player, getEnergyUsage());
-                }
-                return false;
+        class TickingEnchantment extends EnchantmentModule {
+            public TickingEnchantment(@Nonnull ItemStack module, ModuleCategory category, ModuleTarget target, Callable<IConfig> config) {
+                super(module, category, target, config, false);
             }
 
             @Override
             public int getEnergyUsage() {
-                return (int) applyPropertyModifiers(MPSConstants.FORTUNE_ENERGY_CONSUMPTION);
+                return (int) applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION);
             }
 
             @Override
             public Enchantment getEnchantment() {
-                return Enchantments.BLOCK_FORTUNE;
-            }
-
-            @Override
-            public int getLevel(@Nonnull ItemStack itemStack) {
-                return (int) applyPropertyModifiers(MPSConstants.FORTUNE_ENCHANTMENT_LEVEL);
+                return Enchantments.AQUA_AFFINITY;
             }
         }
 

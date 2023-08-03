@@ -18,11 +18,16 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ClipContext;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
@@ -34,6 +39,7 @@ import net.minecraftforge.common.util.LazyOptional;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -57,8 +63,6 @@ public class TunnelBoreModule extends AbstractPowerModule {
         public CapProvider(@Nonnull ItemStack module) {
             this.module = module;
             this.miningEnhancement = new Enhancement(module, ModuleCategory.MINING_ENHANCEMENT, ModuleTarget.TOOLONLY, MPSSettings::getModuleConfig) {{
-
-                // FIXME!!
                 addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, 500, "FE");
                 addTradeoffProperty(MPSConstants.DIAMETER, MPSConstants.ENERGY_CONSUMPTION, 9500);
                 addIntTradeoffProperty(MPSConstants.DIAMETER, MPSConstants.AOE_MINING_RADIUS, 5, "m", 2, 1);
@@ -113,8 +117,15 @@ public class TunnelBoreModule extends AbstractPowerModule {
                                             .map(b -> {
                                                 // check if module can break block
                                                 if (b.canHarvestBlock(itemStack, state, player, blockPos, playerEnergy - energyUsage)) {
-                                                    Block.updateOrDestroy(state, Blocks.AIR.defaultBlockState(), player.level, blockPos, Block.UPDATE_ALL);
-                                                    ElectricItemUtils.drainPlayerEnergy(player, b.getEnergyUsage() + energyUsage);
+                                                    if (!player.level.isClientSide()) {
+                                                        BlockEntity blockEntity = player.level.getBlockEntity(blockPos);
+                                                        // setup drops checking for enchantments
+                                                        Block.dropResources(state, player.level, blockPos, blockEntity, player, itemStack);
+                                                        // destroy block but don't drop default drops because they're already set above
+                                                        player.level.destroyBlock(blockPos, false, player, 512);
+                                                        ElectricItemUtils.drainPlayerEnergy(player, b.getEnergyUsage() + energyUsage);
+                                                    }
+
                                                     return true;
                                                 }
                                                 return false;

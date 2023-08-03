@@ -24,27 +24,24 @@
  *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package lehjr.powersuits.common.item.module.miningenhancement;
+package lehjr.powersuits.common.item.module.miningenchantment;
+
 
 import lehjr.numina.common.capabilities.NuminaCapabilities;
-import lehjr.numina.common.capabilities.module.enchantment.IEnchantmentModule;
-import lehjr.numina.common.capabilities.module.miningenhancement.MiningEnhancement;
+import lehjr.numina.common.capabilities.module.enchantment.EnchantmentModule;
 import lehjr.numina.common.capabilities.module.powermodule.IConfig;
 import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
-import lehjr.numina.common.energy.ElectricItemUtils;
+import lehjr.numina.common.tags.TagUtils;
 import lehjr.powersuits.common.config.MPSSettings;
 import lehjr.powersuits.common.constants.MPSConstants;
 import lehjr.powersuits.common.item.module.AbstractPowerModule;
-import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
-import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
@@ -53,8 +50,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.concurrent.Callable;
 
-
-public class SilkTouchModule extends AbstractPowerModule {
+public class FortuneModule extends AbstractPowerModule {
 
     @Nullable
     @Override
@@ -64,68 +60,46 @@ public class SilkTouchModule extends AbstractPowerModule {
 
     public class CapProvider implements ICapabilityProvider {
         ItemStack module;
-        private final Enhancement miningEnhancement;
+        private final EnchantmentModule enchantmentModule;
         private final LazyOptional<IPowerModule> powerModuleHolder;
 
         public CapProvider(@Nonnull ItemStack module) {
             this.module = module;
-            this.miningEnhancement = new Enhancement(module, ModuleCategory.MINING_ENHANCEMENT, ModuleTarget.TOOLONLY, MPSSettings::getModuleConfig) {{
-                addBaseProperty(MPSConstants.SILK_TOUCH_ENERGY_CONSUMPTION, 2500, "FE");
+            this.enchantmentModule = new TickingEnchantment(module, ModuleCategory.MINING_ENCHANTMENT, ModuleTarget.TOOLONLY, MPSSettings::getModuleConfig) {{
+                addBaseProperty(MPSConstants.FORTUNE_ENERGY_CONSUMPTION, 500, "FE");
+                addTradeoffProperty(MPSConstants.ENCHANTMENT_LEVEL, MPSConstants.FORTUNE_ENERGY_CONSUMPTION, 9500);
+                addIntTradeoffProperty(MPSConstants.ENCHANTMENT_LEVEL, MPSConstants.FORTUNE_ENCHANTMENT_LEVEL, 3, "", 1, 1);
             }};
 
             powerModuleHolder = LazyOptional.of(() -> {
-                miningEnhancement.loadCapValues();
-                return miningEnhancement;
+                enchantmentModule.loadCapValues();
+                return enchantmentModule;
             });
         }
 
-        class Enhancement extends MiningEnhancement implements IEnchantmentModule {
-            public Enhancement(@Nonnull ItemStack module, ModuleCategory category, ModuleTarget target, Callable<IConfig> config) {
-                super(module, category, target, config);
-            }
-
-            /**
-             * Called before a block is broken.  Return true to prevent default block harvesting.
-             *
-             * Note: In SMP, this is called on both client and server sides!
-             *
-             * @param itemstack The current ItemStack
-             * @param pos Block's position in world
-             * @param player The Player that is wielding the item
-             * @return True to prevent harvesting, false to continue as normal
-             */
-            @Override
-            public boolean onBlockStartBreak(ItemStack itemstack, BlockPos pos, Player player) {
-                if (!player.level.isClientSide) {
-                    if (getEnergyUsage() > ElectricItemUtils.getPlayerEnergy(player))
-                        removeEnchantment(itemstack);
-                    else {
-                        Block block = player.level.getBlockState(pos).getBlock();
-//                        player.level.getBlockState(pos).
-
-                        // fixme!!
-
-//                        if (block.canSilkHarvest(player.world, pos, player.world.getBlockState(pos), player)) {
-//                            ElectricItemUtils.drainPlayerEnergy(player, getEnergyUsage());
-//                        }
-                    }
-                }
-                return false;
+        class TickingEnchantment extends EnchantmentModule {
+            boolean added;
+            boolean removed;
+            public TickingEnchantment(@Nonnull ItemStack module, ModuleCategory category, ModuleTarget target, Callable<IConfig> config) {
+                super(module, category, target, config, false);
+                // setting to and loading these just allow values to be persistant when capability reloads
+                added = TagUtils.getModuleBooleanOrFalse(module, "added");
+                removed = TagUtils.getModuleBooleanOrFalse(module, "removed");
             }
 
             @Override
             public int getEnergyUsage() {
-                return (int) applyPropertyModifiers(MPSConstants.SILK_TOUCH_ENERGY_CONSUMPTION);
+                return (int) applyPropertyModifiers(MPSConstants.FORTUNE_ENERGY_CONSUMPTION);
             }
 
             @Override
             public Enchantment getEnchantment() {
-                return Enchantments.SILK_TOUCH;
+                return Enchantments.BLOCK_FORTUNE;
             }
 
             @Override
-            public int getLevel(@Nonnull ItemStack itemStack) {
-                return 1;
+            public int getLevel() {
+                return (int) applyPropertyModifiers(MPSConstants.FORTUNE_ENCHANTMENT_LEVEL);
             }
         }
 

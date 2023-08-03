@@ -58,6 +58,7 @@ import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.api.distmarker.Dist;
@@ -138,9 +139,18 @@ public class AdvancedVeinMiner extends AbstractPowerModule {
                 return super.onItemUseFirst(stack, context);
             }
 
-            void harvestBlocks(List<BlockPos> posList, Level world) {
-                for (BlockPos pos : posList) {
-                    Block.updateOrDestroy(world.getBlockState(pos), Blocks.AIR.defaultBlockState(), world, pos, Block.UPDATE_ALL);
+            void harvestBlocks(List<BlockPos> posList, Level world, Player player, ItemStack itemStack) {
+                for (BlockPos pos: posList) {
+//                    Block.updateOrDestroy(world.getBlockState(pos), Blocks.AIR.defaultBlockState(), world, pos, Block.UPDATE_ALL);
+
+                    if (!world.isClientSide()) {
+                        BlockEntity blockEntity = world.getBlockEntity(pos);
+                        // setup drops checking for enchantments
+                        Block.dropResources(world.getBlockState(pos), world, pos, blockEntity, player, itemStack);
+                        // destroy block but don't drop default drops because they're already set above
+                        player.level.destroyBlock(pos, false, player, 512);
+                    }
+
                 }
             }
 
@@ -251,7 +261,7 @@ public class AdvancedVeinMiner extends AbstractPowerModule {
                     if (!player.level.isClientSide()) {
                         ElectricItemUtils.drainPlayerEnergy(player, energyRequired * posList.size());
                     }
-                    harvestBlocks(posList, player.level);
+                    harvestBlocks(posList, player.level, player, itemStack);
                 }
                 return false;
             }

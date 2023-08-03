@@ -380,8 +380,6 @@ dependencies {
 
     runtimeOnly fg.deobf("curse.maven:architectury-forge-419699:4555749") // architectury-api/files/4555756
 
-
-
     // cannot even run with this. Not sure why this was ever needed, mod wasn't even that large
 //    runtimeOnly fg.deobf("curse.maven:architectury-api-419699:${architectury_version}")
 //    implementation fg.deobf("curse.maven:scannable-266784:4352640")

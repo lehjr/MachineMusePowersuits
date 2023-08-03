@@ -17,6 +17,9 @@ import lehjr.powersuits.common.item.module.energy_generation.BasicSolarGenerator
 import lehjr.powersuits.common.item.module.energy_generation.KineticGeneratorModule;
 import lehjr.powersuits.common.item.module.energy_generation.ThermalGeneratorModule;
 import lehjr.powersuits.common.item.module.environmental.*;
+import lehjr.powersuits.common.item.module.miningenchantment.AquaAffinityModule;
+import lehjr.powersuits.common.item.module.miningenchantment.FortuneModule;
+import lehjr.powersuits.common.item.module.miningenchantment.SilkTouchModule;
 import lehjr.powersuits.common.item.module.miningenhancement.*;
 import lehjr.powersuits.common.item.module.movement.*;
 import lehjr.powersuits.common.item.module.special.InvisibilityModule;

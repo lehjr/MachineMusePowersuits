@@ -28,10 +28,13 @@ package lehjr.numina.common.item;
 
 import lehjr.numina.common.base.NuminaObjects;
 import lehjr.numina.common.capabilities.BatteryCapabilityProvider;
+import lehjr.numina.common.constants.NuminaConstants;
 import lehjr.numina.common.string.AdditionalInfo;
+import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
+import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -74,7 +77,6 @@ public class Battery extends Item {
     @Nullable
     @Override
     public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt) {
-
         return new BatteryCapabilityProvider(stack, tier, maxEnergy, maxTransfer);
     }
 
@@ -97,5 +99,18 @@ public class Battery extends Item {
             return super.getBarColor(stack);
         }
         return Mth.hsvToRgb(Math.max(0.0F, (float) energy.getEnergyStored() / (float) energy.getMaxEnergyStored()) / 3.0F, 1.0F, 1.0F);
+    }
+
+    @Override
+    public void fillItemCategory(CreativeModeTab group, NonNullList<ItemStack> items) {
+        super.fillItemCategory(group, items);
+        if (group.equals(NuminaObjects.creativeTab)) {
+            ItemStack out = new ItemStack(this);
+            out.getCapability(ForgeCapabilities.ENERGY).ifPresent(energy->{
+                int max = energy.getMaxEnergyStored();
+                energy.receiveEnergy(max, false);
+            });
+            items.add(out);
+        }
     }
 }

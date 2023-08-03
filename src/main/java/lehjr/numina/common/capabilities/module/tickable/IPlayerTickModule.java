@@ -36,4 +36,8 @@ public interface IPlayerTickModule extends IToggleableModule {
     void onPlayerTickActive(Player player, @Nonnull ItemStack item);
 
     void onPlayerTickInactive(Player player, @Nonnull ItemStack item);
+
+    default int getEnergyUsage() {
+        return 0;
+    }
 }

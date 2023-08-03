@@ -45,7 +45,8 @@ public enum ModuleCategory {
     VISION("numina.module.category.vision", "Vision"),
     ENVIRONMENTAL("numina.module.category.environment", "Environment"),
     SPECIAL("numina.module.category.special", "Special"),
-    MINING_ENHANCEMENT("numina.module.category.miningenhancement", "Mining_Enhancement");
+    MINING_ENHANCEMENT("numina.module.category.miningenhancement", "Mining_Enhancement"),
+    MINING_ENCHANTMENT("numina.module.category.miningenchantment", "Mining_Enchantment");;
 
     private final String configTitle;
     private final Component translation;

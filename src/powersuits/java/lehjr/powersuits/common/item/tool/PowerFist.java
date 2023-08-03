@@ -72,6 +72,16 @@ public class PowerFist extends AbstractElectricTool {
                 .map(handler-> handler.getUseDuration()).orElse(72000);
     }
 
+    /**
+     * Called server side when a Block is destroyed using this Item. Return true to trigger the "Use Item" statistic.
+     *
+     * @param powerFist
+     * @param worldIn
+     * @param state
+     * @param pos
+     * @param entityLiving
+     * @return
+     */
     @Override
     public boolean mineBlock(ItemStack powerFist, Level worldIn, BlockState state, BlockPos pos, LivingEntity entityLiving) {
         return powerFist.getCapability(ForgeCapabilities.ITEM_HANDLER)
@@ -174,6 +184,7 @@ public class PowerFist extends AbstractElectricTool {
 
     /**
      * Needed for overriding behaviour with modules
+     * Note: also called by mods like TheOneProbe to display whether the required tool is equipped
      * @param itemStack
      * @param state
      * @return

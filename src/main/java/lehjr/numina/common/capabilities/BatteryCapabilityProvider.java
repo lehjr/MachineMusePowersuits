@@ -55,8 +55,6 @@ public class BatteryCapabilityProvider implements ICapabilityProvider {
                 (int) powerModule.applyPropertyModifiers(TagConstants.MAX_TRAMSFER)
         );
 
-
-
         energyStorageHolder = LazyOptional.of(() -> {
             energyStorage.loadCapValues();
             return energyStorage;

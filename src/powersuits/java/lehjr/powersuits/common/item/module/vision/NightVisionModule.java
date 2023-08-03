@@ -76,8 +76,8 @@ public class NightVisionModule extends AbstractPowerModule {
         }
 
         class Ticker extends PlayerTickModule {
-            boolean added = false;
-            boolean removed = false;
+            boolean added;
+            boolean removed;
 
             public Ticker(@Nonnull ItemStack module, ModuleCategory category, ModuleTarget target, Callable<IConfig> config) {
                 super(module, category, target, config, true);

@@ -26,6 +26,8 @@
 
 package lehjr.numina.common.capabilities.module.enchantment;
 
+import lehjr.numina.common.capabilities.module.tickable.IPlayerTickModule;
+import lehjr.numina.common.tags.TagUtils;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
@@ -33,14 +35,14 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import javax.annotation.Nonnull;
 import java.util.Map;
 
-public interface IEnchantmentModule {
+public interface IEnchantmentModule extends IPlayerTickModule {
     /**
      * enable enchantment
      */
     @Nonnull
     default ItemStack addEnchantment(@Nonnull ItemStack itemStack) {
         Map<Enchantment, Integer> enchantments = EnchantmentHelper.getEnchantments(itemStack);
-        enchantments.put(getEnchantment(), getLevel(itemStack));
+        enchantments.put(getEnchantment(), getLevel());
         EnchantmentHelper.setEnchantments(enchantments, itemStack);
         return itemStack;
     }
@@ -56,7 +58,11 @@ public interface IEnchantmentModule {
         return itemStack;
     }
 
+    void setAdded(boolean added);
+
+    void setRemoved(boolean removed);
+
     Enchantment getEnchantment();
 
-    int getLevel(@Nonnull ItemStack itemStack);
+    int getLevel();
 }
