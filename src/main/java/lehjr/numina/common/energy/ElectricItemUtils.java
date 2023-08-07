@@ -90,7 +90,7 @@ public class ElectricItemUtils {
                 ItemStack stack = entity.getItemBySlot(slot);
                 drainleft = drainleft - drainItem(stack, (int)drainleft, simulate);
             }
-            if (drainAmount - drainleft > 0) {
+            if (!simulate && drainAmount - drainleft > 0) {
                 player.getInventory().setChanged();
             }
         }

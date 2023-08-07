@@ -28,7 +28,6 @@ package lehjr.numina.common.network.packets;
 
 import lehjr.numina.common.capabilities.NuminaCapabilities;
 import lehjr.numina.common.network.NuminaPackets;
-import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
@@ -90,7 +89,7 @@ public class CosmeticInfoPacket {
             if (direction.equals(NetworkDirection.PLAY_TO_SERVER)) {
                 player = ctx.get().getSender();
             } else if (direction.equals(NetworkDirection.PLAY_TO_CLIENT)) {
-                player = Minecraft.getInstance().player;
+                player = ctx.get().getSender();
             }
             if (player != null) {
                 player.getItemBySlot(message.slotType).getCapability(NuminaCapabilities.RENDER).ifPresent(render -> {

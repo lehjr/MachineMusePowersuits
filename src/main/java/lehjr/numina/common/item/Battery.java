@@ -28,7 +28,6 @@ package lehjr.numina.common.item;
 
 import lehjr.numina.common.base.NuminaObjects;
 import lehjr.numina.common.capabilities.BatteryCapabilityProvider;
-import lehjr.numina.common.constants.NuminaConstants;
 import lehjr.numina.common.string.AdditionalInfo;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;

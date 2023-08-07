@@ -7,14 +7,14 @@
   "pattern": [
     "ENE",
     "COC",
-    "E E"
+    "EEE"
   ],
   "key": {
     "C": {
       "item": "numina:component_wiring"
     },
     "E": {
-      "item": "minecraft:experience_bottle"
+      "item": "numina:component_computer_chip"
     },
     "N": {
       "type": "forge:nbt",

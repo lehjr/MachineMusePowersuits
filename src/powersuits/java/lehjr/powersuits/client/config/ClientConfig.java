@@ -39,15 +39,46 @@ public class ClientConfig {
             HUD_USE_24_HOUR_CLOCK,
             SHOW_METERS_WHEN_PAUSED;
 
-    public ForgeConfigSpec.ConfigValue<String>
-            HEAT_METER_GLASS_COLOR,
-            HEAT_METER_BAR_COLOR,
-            ENERGY_METER_GLASS_COLOR,
-            ENERGY_METER_BAR_COLOR,
-            PLASMA_METER_GLASS_COLOR,
-            PLASMA_METER_BAR_COLOR,
-            WATER_METER_GLASS_COLOR,
-            WATER_METER_BAR_COLOR;
+    public ForgeConfigSpec.IntValue
+            // Heat Meter
+            HUD_HEAT_METER_GLASS_RED,
+            HUD_HEAT_METER_GLASS_GREEN,
+            HUD_HEAT_METER_GLASS_BLUE,
+            HUD_HEAT_METER_GLASS_ALPHA,
+            HUD_HEAT_METER_BAR_RED,
+            HUD_HEAT_METER_BAR_GREEN,
+            HUD_HEAT_METER_BAR_BLUE,
+            HUD_HEAT_METER_BAR_ALPHA,
+
+            // Energy Meter
+            HUD_ENERGY_METER_GLASS_RED,
+            HUD_ENERGY_METER_GLASS_GREEN,
+            HUD_ENERGY_METER_GLASS_BLUE,
+            HUD_ENERGY_METER_GLASS_ALPHA,
+            HUD_ENERGY_METER_BAR_RED,
+            HUD_ENERGY_METER_BAR_GREEN,
+            HUD_ENERGY_METER_BAR_BLUE,
+            HUD_ENERGY_METER_BAR_ALPHA,
+
+            // Weapon Charge Meter
+            HUD_WEAPON_CHARGE_METER_GLASS_RED,
+            HUD_WEAPON_CHARGE_METER_GLASS_GREEN,
+            HUD_WEAPON_CHARGE_METER_GLASS_BLUE,
+            HUD_WEAPON_CHARGE_METER_GLASS_ALPHA,
+            HUD_WEAPON_CHARGE_METER_BAR_RED,
+            HUD_WEAPON_CHARGE_METER_BAR_GREEN,
+            HUD_WEAPON_CHARGE_METER_BAR_BLUE,
+            HUD_WEAPON_CHARGE_METER_BAR_ALPHA,
+
+            // Water Meter
+            HUD_WATER_METER_GLASS_RED,
+            HUD_WATER_METER_GLASS_GREEN,
+            HUD_WATER_METER_GLASS_BLUE,
+            HUD_WATER_METER_GLASS_ALPHA,
+            HUD_WATER_METER_BAR_RED,
+            HUD_WATER_METER_BAR_GREEN,
+            HUD_WATER_METER_BAR_BLUE,
+            HUD_WATER_METER_BAR_ALPHA;
 
     public ForgeConfigSpec.DoubleValue
             HUD_KEYBIND_X,
@@ -112,61 +143,165 @@ public class ClientConfig {
                     .comment("value to manually set the meter at.\n Useful for trying different colors in real time")
                     .defineInRange("heatMeterDebugValue", 0, 0, 100D);
 
-            HEAT_METER_GLASS_COLOR = builder
-                    .comment("Meter bar glass in RGB or RGBA hex")
-                    .define("heatMeterGlassColor", "#FFFFFF");
+            HUD_HEAT_METER_GLASS_RED = builder
+                    .comment("hud heat meter glass red color amount (0 - 100)")
+                    .defineInRange("heatMeterGlassRedPercent", 100, 0, 100);
 
-            HEAT_METER_BAR_COLOR = builder
-                    .comment("Meter bar color in RGB or RGBA hex")
-                    .define("heatMeterBarColor", "#FFFFFF");
+            HUD_HEAT_METER_GLASS_GREEN = builder
+                    .comment("hud heat meter glass green color amount (0 - 100)")
+                    .defineInRange("heatMeterGlassGreenPercent", 100, 0, 100);
+
+            HUD_HEAT_METER_GLASS_BLUE = builder
+                    .comment("hud heat meter glass blue color amount (0 - 100)")
+                    .defineInRange("heatMeterGlassBluePercent", 100, 0, 100);
+
+            HUD_HEAT_METER_GLASS_ALPHA = builder
+                    .comment("hud heat meter glass alpha color amount (0 - 100)")
+                    .defineInRange("heatMeterGlassAlphaPercent", 85, 0, 100);
+
+
+            HUD_HEAT_METER_BAR_RED = builder
+                    .comment("hud heat meter bar red color amount (0 - 100)")
+                    .defineInRange("heatMeterBarRedPercent", 100, 0, 100);
+
+            HUD_HEAT_METER_BAR_GREEN = builder
+                    .comment("hud heat meter bar green color amount (0 - 100)")
+                    .defineInRange("heatMeterBarGreenPercent", 100, 0, 100);
+
+            HUD_HEAT_METER_BAR_BLUE = builder
+                    .comment("hud heat meter bar blue color amount (0 - 100)")
+                    .defineInRange("heatMeterBarBluePercent", 100, 0, 100);
+
+            HUD_HEAT_METER_BAR_ALPHA = builder
+                    .comment("hud heat meter bar alpha color amount (0 - 100)")
+                    .defineInRange("heatMeterBarAlphaPercent", 85, 0, 100);
         }
         builder.pop();
 
         // Energy Meter ------------------------------------------------------------------------------------------------
         builder.push("Energy Meter Settings");
+        {
+            ENERGY_METER_DEBUG_VAL = builder
+                    .comment("value to manually set the meter at.\n Useful for trying different colors in real time")
+                    .defineInRange("energyMeterDebugValue", 0, 0, 100D);
 
-        ENERGY_METER_DEBUG_VAL = builder
-                .comment("value to manually set the meter at.\n Useful for trying different colors in real time")
-                .defineInRange("heatMeterDebugValue", 0, 0, 100D);
+            HUD_ENERGY_METER_GLASS_RED = builder
+                    .comment("hud energy meter glass red color amount (0 - 100)")
+                    .defineInRange("energyMeterGlassRedPercent", 100, 0, 100);
+
+            HUD_ENERGY_METER_GLASS_GREEN = builder
+                    .comment("hud energy meter glass green color amount (0 - 100)")
+                    .defineInRange("energyMeterGlassGreenPercent", 100, 0, 100);
+
+            HUD_ENERGY_METER_GLASS_BLUE = builder
+                    .comment("hud energy meter glass blue color amount (0 - 100)")
+                    .defineInRange("energyMeterGlassBluePercent", 100, 0, 100);
+
+            HUD_ENERGY_METER_GLASS_ALPHA = builder
+                    .comment("hud energy meter glass alpha color amount (0 - 100)")
+                    .defineInRange("energyMeterGlassAlphaPercent", 85, 0, 100);
 
 
-        ENERGY_METER_GLASS_COLOR = builder
-                .comment("Meter bar glass in RGB or RGBA hex")
-                .define("energyMeterGlassColor", "#d9FFFFFF");
+            HUD_ENERGY_METER_BAR_RED = builder
+                    .comment("hud energy meter bar red color amount (0 - 100)")
+                    .defineInRange("energyMeterBarRedPercent", 0, 0, 100);
 
-        ENERGY_METER_BAR_COLOR = builder
-                .comment("Meter bar color in RGB or RGBA hex")
-                .define("energyMeterBarColor", "#d943ff64");
+            HUD_ENERGY_METER_BAR_GREEN = builder
+                    .comment("hud energy meter bar green color amount (0 - 100)")
+                    .defineInRange("energyMeterBarGreenPercent", 0, 0, 100);
+
+            HUD_ENERGY_METER_BAR_BLUE = builder
+                    .comment("hud energy meter bar blue color amount (0 - 100)")
+                    .defineInRange("energyMeterBarBluePercent", 0, 0, 100);
+
+            HUD_ENERGY_METER_BAR_ALPHA = builder
+                    .comment("hud energy meter bar alpha color amount (0 - 100)")
+                    .defineInRange("energyMeterBarAlphaPercent", 85, 0, 100);
+        }
         builder.pop();
 
         // Plasma Meter ------------------------------------------------------------------------------------------------
-        builder.push("Plasma Meter Settings");
-        PLASMA_METER_DEBUG_VAL = builder
-                .comment("value to manually set the meter at.\n Useful for trying different colors in real time")
-                .defineInRange("plasmaMeterDebugValue", 0, 0, 100D);
+        builder.push("Weapon Charge Meter Settings");
+        {
+            PLASMA_METER_DEBUG_VAL = builder
+                    .comment("value to manually set the meter at.\n Useful for trying different colors in real time")
+                    .defineInRange("weaponChargeMeterDebugValue", 0, 0, 100D);
 
-        PLASMA_METER_GLASS_COLOR = builder
-                .comment("Meter bar glass in RGB or RGBA hex")
-                .define("plasmaMeterGlassColor", "#FFFFFF");
+            HUD_WEAPON_CHARGE_METER_GLASS_RED = builder
+                    .comment("hud weapon charge meter glass red color amount (0 - 100)")
+                    .defineInRange("weaponChargeMeterGlassRedPercent", 100, 0, 100);
 
-        PLASMA_METER_BAR_COLOR = builder
-                .comment("Meter bar color in RGB or RGBA hex")
-                .define("plasmaMeterBarColor", "#FFFFFF");
+            HUD_WEAPON_CHARGE_METER_GLASS_GREEN = builder
+                    .comment("hud weapon charge meter glass green color amount (0 - 100)")
+                    .defineInRange("weaponChargeMeterGlassGreenPercent", 100, 0, 100);
+
+            HUD_WEAPON_CHARGE_METER_GLASS_BLUE = builder
+                    .comment("hud weapon charge meter glass blue color amount (0 - 100)")
+                    .defineInRange("weaponChargeMeterGlassBluePercent", 100, 0, 100);
+
+            HUD_WEAPON_CHARGE_METER_GLASS_ALPHA = builder
+                    .comment("hud weapon charge meter glass alpha color amount (0 - 100)")
+                    .defineInRange("weaponChargeMeterGlassAlphaPercent", 85, 0, 100);
+
+
+            HUD_WEAPON_CHARGE_METER_BAR_RED = builder
+                    .comment("hud weapon charge meter bar red color amount (0 - 100)")
+                    .defineInRange("weaponChargeMeterBarRedPercent", 80, 0, 100);
+
+            HUD_WEAPON_CHARGE_METER_BAR_GREEN = builder
+                    .comment("hud weapon charge meter bar green color amount (0 - 100)")
+                    .defineInRange("weaponChargeMeterBarGreenPercent", 60, 0, 100);
+
+            HUD_WEAPON_CHARGE_METER_BAR_BLUE = builder
+                    .comment("hud weapon charge meter bar blue color amount (0 - 100)")
+                    .defineInRange("weaponChargeMeterBarBluePercent", 100, 0, 100);
+
+            HUD_WEAPON_CHARGE_METER_BAR_ALPHA = builder
+                    .comment("hud weapon charge meter bar alpha color amount (0 - 100)")
+                    .defineInRange("weaponChargeMeterBarAlphaPercent", 85, 0, 100);
+        }
         builder.pop();
 
         // Water Meter ------------------------------------------------------------------------------------------------
         builder.push("Water Meter Settings");
-        WATER_METER_DEBUG_VAL = builder
-                .comment("value to manually set the meter at.\n Useful for trying different colors in real time")
-                .defineInRange("waterMeterDebugValue", 0, 0, 100D);
+        {
+            WATER_METER_DEBUG_VAL = builder
+                    .comment("value to manually set the meter at.\n Useful for trying different colors in real time")
+                    .defineInRange("waterMeterDebugValue", 0, 0, 100D);
 
-        WATER_METER_GLASS_COLOR = builder
-                .comment("Meter bar glass in RGB or RGBA hex")
-                .define("waterMeterGlassColor", "#FFFFFF");
+            HUD_WATER_METER_GLASS_RED = builder
+                    .comment("hud water meter glass red color amount (0 - 100)")
+                    .defineInRange("waterMeterGlassRedPercent", 100, 0, 100);
 
-        WATER_METER_BAR_COLOR = builder
-                .comment("Meter bar color in RGB or RGBA hex")
-                .define("waterMeterBarColor", "#FFFFFF");
+            HUD_WATER_METER_GLASS_GREEN = builder
+                    .comment("hud water meter glass green color amount (0 - 100)")
+                    .defineInRange("waterMeterGlassGreenPercent", 100, 0, 100);
+
+            HUD_WATER_METER_GLASS_BLUE = builder
+                    .comment("hud water meter glass blue color amount (0 - 100)")
+                    .defineInRange("waterMeterGlassBluePercent", 100, 0, 100);
+
+            HUD_WATER_METER_GLASS_ALPHA = builder
+                    .comment("hud water meter glass alpha color amount (0 - 100)")
+                    .defineInRange("waterMeterGlassAlphaPercent", 85, 0, 100);
+
+
+            HUD_WATER_METER_BAR_RED = builder
+                    .comment("hud water meter bar red color amount (0 - 100)")
+                    .defineInRange("waterMeterBarRedPercent", 100, 0, 100);
+
+            HUD_WATER_METER_BAR_GREEN = builder
+                    .comment("hud water meter bar green color amount (0 - 100)")
+                    .defineInRange("waterMeterBarGreenPercent", 100, 0, 100);
+
+            HUD_WATER_METER_BAR_BLUE = builder
+                    .comment("hud water meter bar blue color amount (0 - 100)")
+                    .defineInRange("waterMeterBarBluePercent", 100, 0, 100);
+
+            HUD_WATER_METER_BAR_ALPHA = builder
+                    .comment("hud water meter bar alpha color amount (0 - 100)")
+                    .defineInRange("waterMeterBarAlphaPercent", 85, 0, 100);
+        }
         builder.pop();
 
         builder.pop(); // Meter settings end

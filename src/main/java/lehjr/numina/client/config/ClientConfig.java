@@ -37,11 +37,17 @@ public class ClientConfig {
             USE_SOUNDS,
             DEBUGGING_INFO;
 
-    public ForgeConfigSpec.ConfigValue<String>
-            ENERGY_METER_GLASS_COLOR,
-            ENERGY_METER_BAR_COLOR;
+    public ForgeConfigSpec.IntValue
+            CHARGING_BASE_ENERGY_METER_GLASS_RED,
+            CHARGING_BASE_ENERGY_METER_GLASS_BLUE,
+            CHARGING_BASE_ENERGY_METER_GLASS_GREEN,
+            CHARGING_BASE_ENERGY_METER_GLASS_ALPHA,
+            CHARGING_BASE_ENERGY_METER_BAR_RED,
+            CHARGING_BASE_ENERGY_METER_BAR_BLUE,
+            CHARGING_BASE_ENERGY_METER_BAR_GREEN,
+            CHARGING_BASE_ENERGY_METER_BAR_ALPHA;
 
-    public ForgeConfigSpec.DoubleValue ENERGY_METER_DEBUG_VAL;
+    public ForgeConfigSpec.DoubleValue CHARGING_BASE_ENERGY_METER_DEBUG_VAL;
 
 
 
@@ -72,17 +78,44 @@ public class ClientConfig {
         // Energy Meter ------------------------------------------------------------------------------------------------
         builder.push("Charging Base Energy Meter Settings");
 
-        ENERGY_METER_DEBUG_VAL = builder
+        CHARGING_BASE_ENERGY_METER_DEBUG_VAL = builder
                 .comment("value to manually set the meter at.\n Useful for trying different colors in real time")
                 .defineInRange("chargingBaseEnergyMeterDebugValue", 0, 0, 100D);
 
-        ENERGY_METER_GLASS_COLOR = builder
-                .comment("Meter glass color in ARGB or RGB hex")
-                .define("chargingBaseEnergyMeterGlassColor", "d9FFFFFF");
+        CHARGING_BASE_ENERGY_METER_GLASS_RED = builder
+                .comment("charging base meter glass red color amount (0 - 100)")
+                .defineInRange("chargingBaseEnergyMeterGlassRedPercent", 100, 0, 100);
 
-        ENERGY_METER_BAR_COLOR = builder
-                .comment("Meter bar color in RGB or RGBA hex")
-                .define("chargingBaseEnergyMeterBarColor", "d943ff64");
+        CHARGING_BASE_ENERGY_METER_GLASS_BLUE = builder
+                .comment("charging base meter glass blue color amount (0 - 100)")
+                .defineInRange("chargingBaseEnergyMeterGlassBluePercent", 100, 0, 100);
+
+        CHARGING_BASE_ENERGY_METER_GLASS_GREEN = builder
+                .comment("charging base meter glass green color amount (0 - 100)")
+                .defineInRange("chargingBaseEnergyMeterGlassGreenPercent", 100, 0, 100);
+
+        CHARGING_BASE_ENERGY_METER_GLASS_ALPHA = builder
+                .comment("charging base meter glass alpha color amount (0 - 100)")
+                .defineInRange("chargingBaseEnergyMeterGlassAlphaPercent", 85, 0, 100);
+
+
+
+        CHARGING_BASE_ENERGY_METER_BAR_RED = builder
+                .comment("charging base meter bar red color amount (0 - 100)")
+                .defineInRange("chargingBaseEnergyMeterBarRedPercent", 0, 0, 100);
+
+        CHARGING_BASE_ENERGY_METER_BAR_GREEN = builder
+                .comment("charging base meter bar green color amount (0 - 100)")
+                .defineInRange("chargingBaseEnergyMeterBarGreenPercent", 100, 0, 100);
+
+        CHARGING_BASE_ENERGY_METER_BAR_BLUE = builder
+                .comment("charging base meter bar blue color amount (0 - 100)")
+                .defineInRange("chargingBaseEnergyMeterBarBluePercent", 0, 0, 100);
+
+        CHARGING_BASE_ENERGY_METER_BAR_ALPHA = builder
+                .comment("charging base meter bar alpha color amount (0 - 100)")
+                .defineInRange("chargingBaseEnergyMeterBarAlphaPercent", 85, 0, 100);
+
         builder.pop();
 
         builder.push("Development Settings");

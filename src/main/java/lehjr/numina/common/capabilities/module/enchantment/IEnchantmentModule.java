@@ -27,7 +27,6 @@
 package lehjr.numina.common.capabilities.module.enchantment;
 
 import lehjr.numina.common.capabilities.module.tickable.IPlayerTickModule;
-import lehjr.numina.common.tags.TagUtils;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;

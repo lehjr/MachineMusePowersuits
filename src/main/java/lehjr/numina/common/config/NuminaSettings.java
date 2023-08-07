@@ -88,17 +88,31 @@ public class NuminaSettings {
 
         @Override
         public float getDebugValue() {
-            return (float) (0.01 * MathUtils.clampDouble(CLIENT_CONFIG.ENERGY_METER_DEBUG_VAL.get(), 0, 100));
+            return (float) (0.01 * MathUtils.clampDouble(CLIENT_CONFIG.CHARGING_BASE_ENERGY_METER_DEBUG_VAL.get(), 0, 100));
         }
 
         @Override
         public Color getGlassColor() {
-            return Color.fromARGBHexString(CLIENT_CONFIG.ENERGY_METER_GLASS_COLOR.get());
+            float red = CLIENT_CONFIG.CHARGING_BASE_ENERGY_METER_GLASS_RED.get() * 0.01F;
+            float green = CLIENT_CONFIG.CHARGING_BASE_ENERGY_METER_GLASS_GREEN.get() * 0.01F;
+            float blue = CLIENT_CONFIG.CHARGING_BASE_ENERGY_METER_GLASS_BLUE.get() * 0.01F;
+            float alpha = CLIENT_CONFIG.CHARGING_BASE_ENERGY_METER_GLASS_ALPHA.get() * 0.01F;
+
+            //"#d9 43 ff 64" = 217, 67, 255, 100; = 85, 26, 100, 39
+
+
+
+            return new Color(red, green, blue, alpha);
         }
 
         @Override
         public Color getBarColor() {
-            return Color.fromARGBHexString(CLIENT_CONFIG.ENERGY_METER_BAR_COLOR.get());
+            float red = CLIENT_CONFIG.CHARGING_BASE_ENERGY_METER_BAR_RED.get() * 0.01F;
+            float green = CLIENT_CONFIG.CHARGING_BASE_ENERGY_METER_BAR_GREEN.get() * 0.01F;
+            float blue = CLIENT_CONFIG.CHARGING_BASE_ENERGY_METER_BAR_BLUE.get() * 0.01F;
+            float alpha = CLIENT_CONFIG.CHARGING_BASE_ENERGY_METER_BAR_ALPHA.get() * 0.01F;
+
+            return new Color(red, green, blue, alpha);
         }
     }
     /** Development ------------------------------------------------------------------------------- */

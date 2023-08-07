@@ -36,6 +36,7 @@ import lehjr.numina.common.math.Color;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.ShaderInstance;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.resources.ResourceLocation;
@@ -195,44 +196,21 @@ public class GuiIcon {
 
         public void drawLightning(MultiBufferSource bufferIn, PoseStack matrixStack, float x1, float y1, float z1, float x2, float y2, float z2, Color color) {
             TextureAtlasSprite icon = getSprite();
-//            bindTexture();
-//            MuseLogger.logDebug("toString: " + toString());
-
-            NuminaLogger.logDebug("FIXME!!!!!!");
-
-//            drawLightningTextured(bufferIn.getBuffer(NuminaRenderState.LIGHTNING_TEST()),
-//                    matrixStack.last().pose(),
-//                    x1,
-//                    y1,
-//                    z1,
-//                    x2,
-//                    y2,
-//                    z2,
-//                    color,
-//                    icon,
-//                    this.width,
-//                    this.height);
+            bindTexture();
+            drawLightningTextured(bufferIn.getBuffer(RenderType.lightning()),
+                    matrixStack.last().pose(),
+                    x1,
+                    y1,
+                    z1,
+                    x2,
+                    y2,
+                    z2,
+                    color,
+                    icon,
+                    this.width,
+                    this.height);
         }
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     /**
      *

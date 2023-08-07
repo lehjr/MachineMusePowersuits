@@ -1,20 +1,20 @@
 {
   "result": {
-    "item": "powersuits:fortune"
+    "item": "powersuits:aqua_affinity"
   },
   "type": "minecraft:crafting_shaped",
   "mirrored": true,
   "pattern": [
     "ENE",
     "COC",
-    "E E"
+    "EEE"
   ],
   "key": {
     "C": {
       "item": "numina:component_wiring"
     },
     "E": {
-      "item": "minecraft:experience_bottle"
+      "item": "numina:component_computer_chip"
     },
     "N": {
       "type": "forge:nbt",
@@ -22,8 +22,8 @@
       "nbt": {
         "StoredEnchantments": [
           {
-            "id": "minecraft:fortune",
-            "lvl": 3
+            "id": "minecraft:aqua_affinity",
+            "lvl": 1
           }
         ]
       }
