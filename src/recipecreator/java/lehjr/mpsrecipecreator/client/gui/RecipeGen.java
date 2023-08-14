@@ -100,17 +100,31 @@ public class RecipeGen {
 
             stackJson.addProperty("item", ItemUtils.getRegistryName(stack.getItem()).toString());
             if (stack.hasTag()) {
+                System.out.println("tag: " + stack.getTag());
+
                 JsonObject tagJson = NBT2Json.CompoundTag2Json(stack.getTag(), new JsonObject());
+                System.out.println("tag json here before: " + tagJson);
+
                 if (tagJson.size() > 0) {
+
+                    System.out.println("stack json here before: " + stackJson);
                     stackJson.add("nbt", tagJson);
+                    System.out.println("stack json here after: " + stackJson);
                 }
+
+                System.out.println("stack json here: " + stackJson);
             }
 
             // set the stack count
             if (stack.getCount() > 1) {
                 stackJson.addProperty("count", stack.getCount());
             }
+
+            System.out.println("stack json out: " + stackJson);
         }
+
+
+
         return stackJson;
     }
 

@@ -30,12 +30,17 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import lehjr.numina.common.base.NuminaLogger;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.NbtUtils;
 import net.minecraft.nbt.Tag;
 
 
 public class NBT2Json {
     public static JsonObject CompoundTag2Json(CompoundTag nbt, JsonObject jsonObjectIn) {
         for (String key : nbt.getAllKeys()) {
+            System.out.println("key: " + key +", type: " + nbt.getTagType(key));
+
+            // attempt to get KV pairs
             switch(nbt.getTagType(key)) {
                 // Note this is also how a bool is stored
                 case Tag.TAG_BYTE: // 1
@@ -79,8 +84,20 @@ public class NBT2Json {
                     break;
 
                 case Tag.TAG_LIST: // 9
-                    NuminaLogger.logDebug("nbt List is broken: " + key + "<>" + nbt.get(key));
-//                    jsonObjectIn.addProperty(key, nbt.getList(key, 0)); // kind of list?
+//                    NuminaLogger.logDebug("nbt List is broken: " + key + "<>" + nbt.get(key));
+                    Tag tagList = nbt.get(key);
+                    if (tagList instanceof ListTag) {
+                        JsonArray jsonArray = new JsonArray();
+                        for (int i = 0; i < ((ListTag) tagList).size(); i++) {
+                            Tag unknownTag = ((ListTag) tagList).get(i);
+                            if (unknownTag instanceof CompoundTag) {
+                                jsonArray.add(CompoundTag2Json((CompoundTag) unknownTag, new JsonObject()));
+                            }
+                        }
+                        if (!jsonArray.isEmpty()) {
+                            jsonObjectIn.add(key, jsonArray);
+                        }
+                    }
                     break;
 
                 case Tag.TAG_COMPOUND: // 10

@@ -34,5 +34,7 @@ import net.minecraftforge.registries.RegistryObject;
 
 public class RecipeSerializersRegistry {
     public static final DeferredRegister<RecipeSerializer<?>> RECIPE_SERIALIZERS = DeferredRegister.create(ForgeRegistries.RECIPE_SERIALIZERS, NuminaConstants.MOD_ID);
-    public final static RegistryObject<ShapedEnergyRecipe.EnergySerializer> TEST_RECIPE_SERIALIZER = RECIPE_SERIALIZERS.register("crafting_energy_item", () -> new ShapedEnergyRecipe.EnergySerializer());
+    public static final RegistryObject<ShapedEnergyRecipe.EnergySerializer> ENERGY_RECIPE_SERIALIZER = RECIPE_SERIALIZERS.register("crafting_energy_item", () -> new ShapedEnergyRecipe.EnergySerializer());
+    public static final RegistryObject<ShapedEnchantmentRecipe.EnchantmentSerializer> ENCHANTMENT_RECIPE_SERIALIZER = RECIPE_SERIALIZERS.register("crafting_enchantment_item", ()-> new ShapedEnchantmentRecipe.EnchantmentSerializer());
+
 }

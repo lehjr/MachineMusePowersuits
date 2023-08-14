@@ -84,7 +84,6 @@ public class ClientConfig {
             HUD_KEYBIND_X,
             HUD_KEYBIND_Y,
 
-            // Heat Meter -----------------------
             HEAT_METER_DEBUG_VAL,
             ENERGY_METER_DEBUG_VAL,
             PLASMA_METER_DEBUG_VAL,
@@ -204,15 +203,15 @@ public class ClientConfig {
 
             HUD_ENERGY_METER_BAR_RED = builder
                     .comment("hud energy meter bar red color amount (0 - 100)")
-                    .defineInRange("energyMeterBarRedPercent", 0, 0, 100);
+                    .defineInRange("energyMeterBarRedPercent", 20, 0, 100);
 
             HUD_ENERGY_METER_BAR_GREEN = builder
                     .comment("hud energy meter bar green color amount (0 - 100)")
-                    .defineInRange("energyMeterBarGreenPercent", 0, 0, 100);
+                    .defineInRange("energyMeterBarGreenPercent", 90, 0, 100);
 
             HUD_ENERGY_METER_BAR_BLUE = builder
                     .comment("hud energy meter bar blue color amount (0 - 100)")
-                    .defineInRange("energyMeterBarBluePercent", 0, 0, 100);
+                    .defineInRange("energyMeterBarBluePercent", 30, 0, 100);
 
             HUD_ENERGY_METER_BAR_ALPHA = builder
                     .comment("hud energy meter bar alpha color amount (0 - 100)")

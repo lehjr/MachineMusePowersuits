@@ -118,7 +118,6 @@ public enum ClientOverlayHandler {
                                 } else if (ItemUtils.getRegistryName(module).equals(ItemUtils.getRegistryName(Items.CLOCK))) {
                                     ItemStack clock = module;
                                     if (pm.isModuleOnline()) {
-
                                         String ampm;
                                         long time = player.level.getDayTime();
                                         long hour = ((time % 24000) / 1000);

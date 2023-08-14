@@ -2,7 +2,7 @@
   "result": {
     "item": "powersuits:aqua_affinity"
   },
-  "type": "minecraft:crafting_shaped",
+  "type": "numina:crafting_enchantment_item",
   "mirrored": true,
   "pattern": [
     "ENE",

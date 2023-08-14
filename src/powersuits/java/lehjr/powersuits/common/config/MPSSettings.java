@@ -271,8 +271,6 @@ public class MPSSettings {
     }
 
     public static List<ResourceLocation> getBlockList() {
-
-
         List<String> blocks = SERVER_SPEC.isLoaded() ?
                 (List<String>) SERVER_CONFIG.GENERAL_VEIN_MINER_BLOCK_LIST.get() : new ArrayList<>();
         List<ResourceLocation> retList = new ArrayList<>();

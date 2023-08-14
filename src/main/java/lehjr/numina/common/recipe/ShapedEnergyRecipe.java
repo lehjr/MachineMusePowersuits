@@ -51,7 +51,7 @@ public class ShapedEnergyRecipe extends ShapedRecipe {
 
 	@Override
 	public RecipeSerializer<?> getSerializer() {
-		return RecipeSerializersRegistry.TEST_RECIPE_SERIALIZER.get();
+		return RecipeSerializersRegistry.ENERGY_RECIPE_SERIALIZER.get();
 	}
 
 	public static class EnergySerializer extends Serializer {
