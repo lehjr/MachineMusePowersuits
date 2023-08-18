@@ -26,10 +26,13 @@
 
 package lehjr.numina.common.network.packets;
 
+import lehjr.numina.common.network.NuminaPackets;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.network.NetworkEvent;
+import net.minecraftforge.network.PacketDistributor;
 
 import javax.annotation.Nonnull;
 import java.util.function.Supplier;
@@ -61,12 +64,26 @@ public class CreativeInstallModuleRequestPacket {
                 packetBuffer.readItem());
     }
 
+    // Note: only doing this because it "looks" to be more efficient
+    public static void sendToClient(ServerPlayer entity, int windowIdIn, int slotIdIn, @Nonnull ItemStack itemStackIn) {
+        NuminaPackets.CHANNEL_INSTANCE.send(PacketDistributor.PLAYER.with(() -> entity),
+                new CreativeInstallModuleRequestPacket(windowIdIn, slotIdIn, itemStackIn));
+    }
+
     public static void handle(CreativeInstallModuleRequestPacket message, Supplier<NetworkEvent.Context> ctx) {
         ctx.get().enqueueWork(() -> {
-            ServerPlayer player = ctx.get().getSender();
-            if (player.containerMenu != null && player.containerMenu.containerId == message.windowId) {
-                player.getInventory().setItem(message.slotId, message.itemStack);
-                player.containerMenu.broadcastChanges();
+            Player player = ctx.get().getSender();
+            int slotId = message.slotId;
+            int windowId = message.windowId;
+            ItemStack itemStack = message.itemStack;
+
+
+            if (player.containerMenu != null && player.containerMenu.containerId == windowId) {
+                player.getInventory().setItem(slotId, itemStack);
+//                player.containerMenu.broadcastChanges();
+                if (player instanceof ServerPlayer) {
+                    sendToClient((ServerPlayer) player, windowId, slotId, itemStack);
+                }
             }
         });
         ctx.get().setPacketHandled(true);

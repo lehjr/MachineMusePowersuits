@@ -27,11 +27,14 @@
 package lehjr.numina.common.network.packets;
 
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
+import lehjr.numina.common.network.NuminaPackets;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.network.NetworkEvent;
+import net.minecraftforge.network.PacketDistributor;
 
 import java.util.function.Supplier;
 
@@ -56,8 +59,14 @@ public class ToggleRequestPacket {
         );
     }
 
+    public static void sendToClient(ServerPlayer entity, ResourceLocation registryName, boolean active) {
+        NuminaPackets.CHANNEL_INSTANCE.send(PacketDistributor.PLAYER.with(() -> entity),
+                new ToggleRequestPacket(registryName, active));
+    }
+
+
     public static void handle(ToggleRequestPacket message, Supplier<NetworkEvent.Context> ctx) {
-        final ServerPlayer player = ctx.get().getSender();
+        final Player player = ctx.get().getSender();
 
         if (player == null || player.getServer() == null)
             return;
@@ -75,7 +84,10 @@ public class ToggleRequestPacket {
                         .map(IModularItem.class::cast)
                         .ifPresent(handler -> handler.toggleModule(registryName, toggleval));
             }
-            player.getInventory().setChanged();
+
+            if (player instanceof ServerPlayer) {
+                sendToClient((ServerPlayer) player, registryName, toggleval);
+            }
         });
         ctx.get().setPacketHandled(true);
     }

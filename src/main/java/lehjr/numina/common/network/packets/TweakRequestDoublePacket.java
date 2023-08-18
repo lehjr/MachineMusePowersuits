@@ -27,12 +27,15 @@
 package lehjr.numina.common.network.packets;
 
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
+import lehjr.numina.common.network.NuminaPackets;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.network.NetworkEvent;
+import net.minecraftforge.network.PacketDistributor;
 
 import java.util.function.Supplier;
 
@@ -67,9 +70,14 @@ public class TweakRequestDoublePacket {
                 packetBuffer.readDouble());
     }
 
+    public static void sendToClient(ServerPlayer entity, EquipmentSlot type, ResourceLocation moduleRegName, String tweakName, double tweakValue) {
+        NuminaPackets.CHANNEL_INSTANCE.send(PacketDistributor.PLAYER.with(() -> entity),
+                new TweakRequestDoublePacket(type, moduleRegName, tweakName, tweakValue));
+    }
+
     public static void handle(TweakRequestDoublePacket message, Supplier<NetworkEvent.Context> ctx) {
         ctx.get().enqueueWork(() -> {
-            final ServerPlayer player = ctx.get().getSender();
+            final Player player = ctx.get().getSender();
             ResourceLocation moduleName = message.moduleName;
             String tweakName = message.tweakName;
             double tweakValue = message.tweakValue;
@@ -81,7 +89,10 @@ public class TweakRequestDoublePacket {
                         .ifPresent(iItemHandler -> {
                             iItemHandler.setModuleTweakDouble(moduleName, tweakName, tweakValue);
                         });
-                player.getInventory().setChanged();
+//                player.getInventory().setChanged();
+                if (player instanceof ServerPlayer) {
+                    sendToClient((ServerPlayer) player, type, moduleName, tweakName, tweakValue);
+                }
             }
         });
         ctx.get().setPacketHandled(true);

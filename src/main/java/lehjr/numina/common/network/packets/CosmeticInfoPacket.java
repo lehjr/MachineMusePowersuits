@@ -33,7 +33,6 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.network.NetworkDirection;
 import net.minecraftforge.network.NetworkEvent;
 import net.minecraftforge.network.PacketDistributor;
 
@@ -78,19 +77,12 @@ public class CosmeticInfoPacket {
     }
 
     public static void handle(CosmeticInfoPacket message, Supplier<NetworkEvent.Context> ctx) {
-        NetworkDirection direction = ctx.get().getDirection();
-
         ctx.get().enqueueWork(() -> {
             EquipmentSlot slotType = message.slotType;
             String tagName = message.tagName;
             CompoundTag tagData = message.tagData;
 
-            Player player = null;
-            if (direction.equals(NetworkDirection.PLAY_TO_SERVER)) {
-                player = ctx.get().getSender();
-            } else if (direction.equals(NetworkDirection.PLAY_TO_CLIENT)) {
-                player = ctx.get().getSender();
-            }
+            Player player = ctx.get().getSender();
             if (player != null) {
                 player.getItemBySlot(message.slotType).getCapability(NuminaCapabilities.RENDER).ifPresent(render -> {
                     render.setRenderTag(tagData, tagName);

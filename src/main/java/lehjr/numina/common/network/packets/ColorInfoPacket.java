@@ -27,10 +27,13 @@
 package lehjr.numina.common.network.packets;
 
 import lehjr.numina.common.capabilities.NuminaCapabilities;
+import lehjr.numina.common.network.NuminaPackets;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.network.NetworkEvent;
+import net.minecraftforge.network.PacketDistributor;
 
 import java.util.function.Supplier;
 
@@ -61,13 +64,22 @@ public class ColorInfoPacket /* implements IMusePacket<ColorInfoPacket> */{
         return new ColorInfoPacket(packetBuffer.readEnum(EquipmentSlot.class), packetBuffer.readVarIntArray());
     }
 
+    public static void sendToClient(ServerPlayer entity, EquipmentSlot slotType, int[] tagData) {
+        NuminaPackets.CHANNEL_INSTANCE.send(PacketDistributor.PLAYER.with(() -> entity),
+                new ColorInfoPacket(slotType, tagData));
+    }
+
     public static void handle(ColorInfoPacket message, Supplier<NetworkEvent.Context> ctx) {
         ctx.get().enqueueWork(() -> {
-            final ServerPlayer player = ctx.get().getSender();
+            final Player player = ctx.get().getSender();
             EquipmentSlot slotType = message.slotType;
             int[] tagData = message.tagData;
             player.getItemBySlot(slotType).getCapability(NuminaCapabilities.RENDER)
                     .ifPresent(render -> render.setColorArray(tagData));
+
+            if (player instanceof ServerPlayer) {
+                sendToClient((ServerPlayer) player, slotType, tagData);
+            }
         });
         ctx.get().setPacketHandled(true);
     }

@@ -28,6 +28,8 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class MPSKeyBindHud {
+    // TODO: come up with a way to keep KB and overlay items from overlapping
+
 
     public static final IGuiOverlay MPS_HUD = ((gui, poseStack, partialTick, screenWidth, screenHeight) -> {
 
@@ -38,7 +40,7 @@ public class MPSKeyBindHud {
         Minecraft minecraft = gui.getMinecraft();
         LocalPlayer player = minecraft.player;
 
-        if (MPSSettings.displayHud() && isModularItemEquuiiped(player)) {
+        if (MPSSettings.displayHud() && isModularItemEquipped(player)) {
             AtomicDouble top = new AtomicDouble(MPSSettings.getHudKeybindY());
             kbDisplayList.forEach(kbDisplay -> {
                 if (!kbDisplay.boundKeybinds.isEmpty()) {
@@ -64,7 +66,7 @@ public class MPSKeyBindHud {
         });
     }
 
-    static boolean isModularItemEquuiiped(LocalPlayer player) {
+    static boolean isModularItemEquipped(LocalPlayer player) {
         return Arrays.stream(EquipmentSlot.values()).filter(type ->player.getItemBySlot(type).getCapability(ForgeCapabilities.ITEM_HANDLER).filter(IModularItem.class::isInstance).isPresent()).findFirst().isPresent();
     }
 
