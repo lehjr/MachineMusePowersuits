@@ -46,6 +46,12 @@ import javax.annotation.Nullable;
 
 public class FlightControlModule extends AbstractPowerModule {
 
+    /**
+     * Legend has it that the nbt value may sometimes not be null. I have yet to witness this phenomenon for myself.
+     * @param stack The ItemStack
+     * @param nbt   NBT of this item serialized, or null.
+     * @return
+     */
     @Nullable
     @Override
     public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt) {

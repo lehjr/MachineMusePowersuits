@@ -28,10 +28,8 @@ package lehjr.numina.common.tags;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import lehjr.numina.common.base.NuminaLogger;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.NbtUtils;
 import net.minecraft.nbt.Tag;
 
 

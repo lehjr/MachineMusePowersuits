@@ -110,11 +110,35 @@ public class ModeChangingModularItem extends ModularItem implements IModeChangin
 
     @Override
     public boolean hasActiveModule(ResourceLocation regName) {
-        ItemStack module = getActiveModule();
-        if (!module.isEmpty()) {
-            return ItemUtils.getRegistryName(module).equals(regName);
+        final int activeModeIndex = getActiveMode();
+
+        ItemStack module = activeModeIndex != -1 ? getStackInSlot(activeModeIndex) : ItemStack.EMPTY;
+
+        if (regName == ItemUtils.getRegistryName(module)) {
+            return isModuleOnline(module);
+        }
+        for (int i = 0; i < getSlots(); i++) {
+            if (i != activeModeIndex) {
+                module = getStackInSlot(i);
+                if (!module.isEmpty() && ItemUtils.getRegistryName(module).equals(regName)) {
+                    return isModuleOnline(module);
+                }
+            }
         }
         return false;
+    }
+
+    @Override
+    public boolean isModuleOnline(ItemStack module) {
+        return module.getCapability(NuminaCapabilities.POWER_MODULE).map(m-> {
+            if(m.isAllowed()) {
+                if (m instanceof IRightClickModule) {
+                    return m.isModuleOnline() && m.getModuleStack().equals(getActiveModule(), false);
+                }
+                return m.isModuleOnline();
+            }
+            return false;
+        }).orElse(false);
     }
 
     @Override
@@ -182,6 +206,13 @@ public class ModeChangingModularItem extends ModularItem implements IModeChangin
 
     @Override
     public boolean isModuleActiveAndOnline(ResourceLocation moduleName) {
+
+
+
+
+
+
+
         if (hasActiveModule(moduleName)) {
             return getActiveModule().getCapability(NuminaCapabilities.POWER_MODULE).map(pm-> pm.isModuleOnline()).orElse(false);
         }

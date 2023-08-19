@@ -2,8 +2,6 @@ package lehjr.powersuits.common.network.packets;
 
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
 import lehjr.numina.common.network.NuminaPackets;
-import lehjr.numina.common.network.packets.CosmeticInfoPacket;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
