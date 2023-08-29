@@ -52,6 +52,8 @@ public interface IConfig {
      */
     boolean isModuleAllowed(ImmutableList<String> key);
 
+    boolean getGenericBooleanProperty(ImmutableList<String> key);
+
     void setServerConfig(@Nullable ModConfig serverConfig);
 
     Optional<ModConfig> getModConfig();

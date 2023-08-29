@@ -117,10 +117,10 @@ public class MPSKeyBindHud {
                             .map(IModularItem.class::cast)
                             .map(iItemHandler -> {
                                 if (iItemHandler instanceof IModeChangingItem) {
+                                    return ((IModeChangingItem) iItemHandler).hasActiveModule(kb.registryName);
 
 
-
-                                    return ((IModeChangingItem) iItemHandler).isModuleActiveAndOnline(kb.registryName);
+//                                    return ((IModeChangingItem) iItemHandler).isModuleActiveAndOnline(kb.registryName);
                                 }
                                 return iItemHandler.isModuleOnline(kb.registryName);
                             }).orElse(false);

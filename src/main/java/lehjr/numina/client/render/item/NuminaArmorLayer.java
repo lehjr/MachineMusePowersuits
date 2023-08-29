@@ -42,7 +42,7 @@ import lehjr.numina.common.constants.NuminaConstants;
 import lehjr.numina.common.constants.TagConstants;
 import lehjr.numina.common.math.Color;
 import lehjr.numina.common.network.NuminaPackets;
-import lehjr.numina.common.network.packets.CosmeticInfoPacket;
+import lehjr.numina.common.network.packets.serverbound.CosmeticInfoPacketServerBound;
 import lehjr.numina.common.tags.NBTTagAccessor;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
@@ -127,7 +127,7 @@ public class NuminaArmorLayer<T extends LivingEntity, M extends HumanoidModel<T>
                     if (renderTag == null || renderTag.isEmpty()) {
                         renderTag = renderCap.getDefaultRenderTag();
                         if (renderTag != null && !renderTag.isEmpty()) {
-                            NuminaPackets.CHANNEL_INSTANCE.sendToServer(new CosmeticInfoPacket(slotIn, TagConstants.RENDER, renderTag));
+                            NuminaPackets.CHANNEL_INSTANCE.sendToServer(new CosmeticInfoPacketServerBound(slotIn, TagConstants.RENDER, renderTag));
                         }
                     }
                     if (renderTag != null && !renderTag.isEmpty()) {

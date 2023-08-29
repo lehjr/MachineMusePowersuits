@@ -27,10 +27,14 @@
 package lehjr.numina.common.network;
 
 import lehjr.numina.common.constants.NuminaConstants;
-import lehjr.numina.common.network.packets.*;
+import lehjr.numina.common.network.packets.clientbound.*;
+import lehjr.numina.common.network.packets.serverbound.*;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraftforge.network.NetworkDirection;
 import net.minecraftforge.network.NetworkRegistry;
 import net.minecraftforge.network.simple.SimpleChannel;
+
+import java.util.Optional;
 
 public class NuminaPackets {
     private static final String PROTOCOL_VERSION = "1";
@@ -43,61 +47,115 @@ public class NuminaPackets {
 
     public static void registerNuminaPackets() {
         int i =0;
+        // -----------------------------------------------------
         CHANNEL_INSTANCE.registerMessage(
                 i++,
-                ColorInfoPacket.class,
-                ColorInfoPacket::write,
-                ColorInfoPacket::read,
-                ColorInfoPacket::handle);
+                BlockNamePacketServerBound.class,
+                BlockNamePacketServerBound::encode,
+                BlockNamePacketServerBound::decode,
+                BlockNamePacketServerBound.Handler::handle,
+                Optional.of(NetworkDirection.PLAY_TO_SERVER));
 
         CHANNEL_INSTANCE.registerMessage(
                 i++,
-                ModeChangeRequestPacket.class,
-                ModeChangeRequestPacket::encode,
-                ModeChangeRequestPacket::decode,
-                ModeChangeRequestPacket::handle);
+                BlockNamePacketClientBound.class,
+                BlockNamePacketClientBound::encode,
+                BlockNamePacketClientBound::decode,
+                BlockNamePacketClientBound.Handler::handle,
+                Optional.of(NetworkDirection.PLAY_TO_CLIENT));
+
+        // -----------------------------------------------------
+        CHANNEL_INSTANCE.registerMessage(
+                i++,
+                ColorInfoPacketServerBound.class,
+                ColorInfoPacketServerBound::encode,
+                ColorInfoPacketServerBound::decode,
+                ColorInfoPacketServerBound.Handler::handle,
+                Optional.of(NetworkDirection.PLAY_TO_SERVER));
 
         CHANNEL_INSTANCE.registerMessage(
                 i++,
-                CosmeticInfoPacket.class,
-                CosmeticInfoPacket::encode,
-                CosmeticInfoPacket::decode,
-                CosmeticInfoPacket::handle);
+                ColorInfoPacketClientBound.class,
+                ColorInfoPacketClientBound::encode,
+                ColorInfoPacketClientBound::decode,
+                ColorInfoPacketClientBound.Handler::handle,
+                Optional.of(NetworkDirection.PLAY_TO_CLIENT));
+
+        // -----------------------------------------------------
+        CHANNEL_INSTANCE.registerMessage(
+                i++,
+                CosmeticInfoPacketServerBound.class,
+                CosmeticInfoPacketServerBound::encode,
+                CosmeticInfoPacketServerBound::decode,
+                CosmeticInfoPacketServerBound.Handler::handle,
+                Optional.of(NetworkDirection.PLAY_TO_SERVER));
 
         CHANNEL_INSTANCE.registerMessage(
                 i++,
-                ToggleRequestPacket.class,
-                ToggleRequestPacket::encode,
-                ToggleRequestPacket::decode,
-                ToggleRequestPacket::handle);
+                CosmeticInfoPacketClientBound.class,
+                CosmeticInfoPacketClientBound::encode,
+                CosmeticInfoPacketClientBound::decode,
+                CosmeticInfoPacketClientBound.Handler::handle,
+                Optional.of(NetworkDirection.PLAY_TO_CLIENT));
+
+        // -----------------------------------------------------
+        CHANNEL_INSTANCE.registerMessage(
+                i++,
+                ToggleRequestPacketServerBound.class,
+                ToggleRequestPacketServerBound::encode,
+                ToggleRequestPacketServerBound::decode,
+                ToggleRequestPacketServerBound.Handler::handle,
+                Optional.of(NetworkDirection.PLAY_TO_SERVER));
 
         CHANNEL_INSTANCE.registerMessage(
                 i++,
-                CreativeInstallModuleRequestPacket.class,
-                CreativeInstallModuleRequestPacket::encode,
-                CreativeInstallModuleRequestPacket::decode,
-                CreativeInstallModuleRequestPacket::handle);
+                ToggleRequestPacketClientBound.class,
+                ToggleRequestPacketClientBound::encode,
+                ToggleRequestPacketClientBound::decode,
+                ToggleRequestPacketClientBound.Handler::handle,
+                Optional.of(NetworkDirection.PLAY_TO_CLIENT));
+
+        // -----------------------------------------------------
+        CHANNEL_INSTANCE.registerMessage(
+                i++,
+                ModeChangeRequestPacketServerBound.class,
+                ModeChangeRequestPacketServerBound::encode,
+                ModeChangeRequestPacketServerBound::decode,
+                ModeChangeRequestPacketServerBound.Handler::handle,
+                Optional.of(NetworkDirection.PLAY_TO_SERVER));
 
         CHANNEL_INSTANCE.registerMessage(
                 i++,
-                PlayerUpdatePacket.class,
-                PlayerUpdatePacket::encode,
-                PlayerUpdatePacket::decode,
-                PlayerUpdatePacket::handle);
+                ModeChangeRequestPacketClientBound.class,
+                ModeChangeRequestPacketClientBound::encode,
+                ModeChangeRequestPacketClientBound::decode,
+                ModeChangeRequestPacketClientBound.Handler::handle,
+                Optional.of(NetworkDirection.PLAY_TO_CLIENT));
+
+        // -----------------------------------------------------
+        CHANNEL_INSTANCE.registerMessage(
+                i++,
+                PlayerUpdatePacketServerBound.class,
+                PlayerUpdatePacketServerBound::encode,
+                PlayerUpdatePacketServerBound::decode,
+                PlayerUpdatePacketServerBound::handle);
+
+        // -----------------------------------------------------
+        CHANNEL_INSTANCE.registerMessage(
+                i++,
+                TweakRequestDoublePacketServerBound.class,
+                TweakRequestDoublePacketServerBound::encode,
+                TweakRequestDoublePacketServerBound::decode,
+                TweakRequestDoublePacketServerBound.Handler::handle,
+                Optional.of(NetworkDirection.PLAY_TO_SERVER));
 
         CHANNEL_INSTANCE.registerMessage(
                 i++,
-                TweakRequestDoublePacket.class,
-                TweakRequestDoublePacket::encode,
-                TweakRequestDoublePacket::decode,
-                TweakRequestDoublePacket::handle);
-
-        CHANNEL_INSTANCE.registerMessage(
-                i++,
-                BlockNamePacket.class,
-                BlockNamePacket::write,
-                BlockNamePacket::read,
-                BlockNamePacket::handle);
+                TweakRequestDoublePacketClientBound.class,
+                TweakRequestDoublePacketClientBound::encode,
+                TweakRequestDoublePacketClientBound::decode,
+                TweakRequestDoublePacketClientBound.Handler::handle,
+                Optional.of(NetworkDirection.PLAY_TO_CLIENT));
     }
 
     public SimpleChannel getWrapper() {

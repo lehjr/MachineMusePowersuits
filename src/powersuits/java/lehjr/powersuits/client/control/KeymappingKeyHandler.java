@@ -35,7 +35,7 @@ import lehjr.numina.common.capabilities.module.toggleable.IToggleableModule;
 import lehjr.numina.common.item.ItemUtils;
 import lehjr.numina.common.math.MathUtils;
 import lehjr.numina.common.network.NuminaPackets;
-import lehjr.numina.common.network.packets.PlayerUpdatePacket;
+import lehjr.numina.common.network.packets.serverbound.PlayerUpdatePacketServerBound;
 import lehjr.powersuits.client.gui.modechanging.GuiModeSelector;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
@@ -142,7 +142,7 @@ public class KeymappingKeyHandler {
             byte byteOut = MathUtils.boolArrayToByte(boolArray);
 
             if (markForSync) {
-                NuminaPackets.CHANNEL_INSTANCE.sendToServer(new PlayerUpdatePacket(byteOut));
+                NuminaPackets.CHANNEL_INSTANCE.sendToServer(new PlayerUpdatePacketServerBound(byteOut));
             }
         });
     }

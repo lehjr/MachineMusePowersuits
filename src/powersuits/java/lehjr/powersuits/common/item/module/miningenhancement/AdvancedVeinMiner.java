@@ -160,7 +160,7 @@ public class AdvancedVeinMiner extends AbstractPowerModule {
                 Block block = state.getBlock();
                 chameleon.loadCapValues();
                 // abort if block is not set
-                if (block == Blocks.AIR || block == Blocks.BEDROCK || !chameleon.getTargetBlock().filter(targetBlock -> targetBlock == block).isPresent()) {
+                if (block == Blocks.AIR || (!player.isCreative() && block == Blocks.BEDROCK) || !chameleon.getTargetBlock().filter(targetBlock -> targetBlock == block).isPresent()) {
                     return false;
                 }
 

@@ -24,7 +24,7 @@
  *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package lehjr.numina.common.network.packets;
+package lehjr.numina.common.network.packets.serverbound;
 
 import lehjr.numina.common.capabilities.NuminaCapabilities;
 import lehjr.numina.common.math.MathUtils;
@@ -34,22 +34,20 @@ import net.minecraftforge.network.NetworkEvent;
 
 import java.util.function.Supplier;
 
-public class PlayerUpdatePacket {
-    byte data;
-
-    public PlayerUpdatePacket(byte data) {
-        this.data = data;
-    }
-
-    public static void encode(PlayerUpdatePacket msg, FriendlyByteBuf packetBuffer) {
+/**
+ * This packet has no client bound counterpart because none is needed
+ * @param data
+ */
+public record PlayerUpdatePacketServerBound(byte data) {
+    public static void encode(PlayerUpdatePacketServerBound msg, FriendlyByteBuf packetBuffer) {
         packetBuffer.writeByte(msg.data);
     }
 
-    public static PlayerUpdatePacket decode(FriendlyByteBuf packetBuffer) {
-        return new PlayerUpdatePacket(packetBuffer.readByte());
+    public static PlayerUpdatePacketServerBound decode(FriendlyByteBuf packetBuffer) {
+        return new PlayerUpdatePacketServerBound(packetBuffer.readByte());
     }
 
-    public static void handle(PlayerUpdatePacket message, Supplier<NetworkEvent.Context> ctx) {
+    public static void handle(PlayerUpdatePacketServerBound message, Supplier<NetworkEvent.Context> ctx) {
         final ServerPlayer player = ctx.get().getSender();
         ctx.get().enqueueWork(() -> {
             player.getCapability(NuminaCapabilities.PLAYER_KEYSTATES).ifPresent(playerCap -> {

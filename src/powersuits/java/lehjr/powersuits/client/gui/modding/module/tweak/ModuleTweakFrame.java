@@ -39,7 +39,7 @@ import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
 import lehjr.numina.common.constants.TagConstants;
 import lehjr.numina.common.item.ItemUtils;
 import lehjr.numina.common.network.NuminaPackets;
-import lehjr.numina.common.network.packets.TweakRequestDoublePacket;
+import lehjr.numina.common.network.packets.serverbound.TweakRequestDoublePacketServerBound;
 import lehjr.numina.common.string.StringUtils;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -222,7 +222,7 @@ public class ModuleTweakFrame extends ScrollableFrame {
             selectedSlider.mouseReleased(mouseX, mouseY, button);
             itemTarget.selectedType().ifPresent(type-> moduleTarget.getModuleCap().ifPresent(pm-> {
                     NuminaPackets.CHANNEL_INSTANCE.sendToServer(
-                            new TweakRequestDoublePacket(
+                            new TweakRequestDoublePacketServerBound(
                                     type,
                                     ItemUtils.getRegistryName(pm.getModuleStack()),
                                     selectedSlider.id(),

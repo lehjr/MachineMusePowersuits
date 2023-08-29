@@ -110,7 +110,7 @@ public class TunnelBoreModule extends AbstractPowerModule {
                                             .map(IBlockBreakingModule.class::cast)
                                             .map(b -> {
                                                 // check if module can break block
-                                                if (b.canHarvestBlock(itemStack, state, player, blockPos, playerEnergy - energyUsage)) {
+                                                if (player.isCreative() || b.canHarvestBlock(itemStack, state, player, blockPos, playerEnergy - energyUsage)) {
                                                     if (!player.level.isClientSide()) {
                                                         BlockEntity blockEntity = player.level.getBlockEntity(blockPos);
                                                         // setup drops checking for enchantments

@@ -179,7 +179,7 @@ public class PowerModule implements IPowerModule {
         return getConfig(moduleConfigGetter).map(config-> config.isModuleAllowed(isAllowedConfigKey)).orElse(true);
     }
 
-    ImmutableList<String> getConfigKey(String entry) {
+    public ImmutableList<String> getConfigKey(String entry) {
         return ImmutableList.of(
                 "Modules",
                 categoryTitle,

@@ -42,7 +42,7 @@ import lehjr.numina.common.capabilities.render.modelspec.SpecBase;
 import lehjr.numina.common.capabilities.render.modelspec.SpecBinding;
 import lehjr.numina.common.math.Color;
 import lehjr.numina.common.network.NuminaPackets;
-import lehjr.numina.common.network.packets.CosmeticInfoPacket;
+import lehjr.numina.common.network.packets.serverbound.CosmeticInfoPacketServerBound;
 import lehjr.numina.common.string.StringUtils;
 import lehjr.powersuits.client.gui.modding.cosmetic.colorpicker.ColorPickerFrame;
 import lehjr.powersuits.client.gui.modding.cosmetic.colorpicker.ColorRadioButton;
@@ -254,10 +254,6 @@ public class ModelManipSubframe extends AbstractGuiFrame {
         return nbt;
     }
 
-    public boolean isOpen() {
-        return open;
-    }
-
     /**
      * Draw model display name, open/close indicator, and parts with their controls
      * Fixme: replace with a normal render loop
@@ -338,7 +334,7 @@ public class ModelManipSubframe extends AbstractGuiFrame {
             transparent.setOnPressed(pressed -> {
                 tagdata = new CompoundTag();
                 itemSelector.selectedType().ifPresent(slotType -> {
-                    NuminaPackets.CHANNEL_INSTANCE.sendToServer(new CosmeticInfoPacket(slotType, tagname, tagdata));
+                    NuminaPackets.CHANNEL_INSTANCE.sendToServer(new CosmeticInfoPacketServerBound(slotType, tagname, tagdata));
                 });
             });
             buttons.add(transparent);
@@ -349,7 +345,7 @@ public class ModelManipSubframe extends AbstractGuiFrame {
                 tagdata = getOrMakeSpecTag(partSpec);
                 partSpec.setGlow(tagdata, false);
                 itemSelector.selectedType().ifPresent(slotType -> {
-                    NuminaPackets.CHANNEL_INSTANCE.sendToServer(new CosmeticInfoPacket(slotType, tagname, tagdata));
+                    NuminaPackets.CHANNEL_INSTANCE.sendToServer(new CosmeticInfoPacketServerBound(slotType, tagname, tagdata));
                 });
             });
             normal.setRightOf(transparent);
@@ -362,7 +358,7 @@ public class ModelManipSubframe extends AbstractGuiFrame {
                 tagdata = getOrMakeSpecTag(partSpec);
                 partSpec.setGlow(tagdata, true);
                 itemSelector.selectedType().ifPresent(slotType -> {
-                            NuminaPackets.CHANNEL_INSTANCE.sendToServer(new CosmeticInfoPacket(slotType, tagname, tagdata));
+                            NuminaPackets.CHANNEL_INSTANCE.sendToServer(new CosmeticInfoPacketServerBound(slotType, tagname, tagdata));
                         }
                 );
             });
@@ -408,7 +404,7 @@ public class ModelManipSubframe extends AbstractGuiFrame {
                     }
 
                     itemSelector.selectedType().ifPresent(slotType -> {
-                        NuminaPackets.CHANNEL_INSTANCE.sendToServer(new CosmeticInfoPacket(slotType, tagname, tagdata));
+                        NuminaPackets.CHANNEL_INSTANCE.sendToServer(new CosmeticInfoPacketServerBound(slotType, tagname, tagdata));
                     });
                 }
             }
@@ -420,7 +416,7 @@ public class ModelManipSubframe extends AbstractGuiFrame {
                 int index  = colorButtons.indexOf(colorRadioButton);
                 partSpec.setColorIndex(tagdata, index);
                 itemSelector.selectedType().ifPresent(slotType -> {
-                    NuminaPackets.CHANNEL_INSTANCE.sendToServer(new CosmeticInfoPacket(slotType, tagname, tagdata));
+                    NuminaPackets.CHANNEL_INSTANCE.sendToServer(new CosmeticInfoPacketServerBound(slotType, tagname, tagdata));
                 });
             });
 

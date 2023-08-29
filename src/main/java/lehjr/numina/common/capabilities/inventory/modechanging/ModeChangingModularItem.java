@@ -31,7 +31,7 @@ import lehjr.numina.common.capabilities.inventory.modularitem.ModularItem;
 import lehjr.numina.common.capabilities.module.rightclick.IRightClickModule;
 import lehjr.numina.common.item.ItemUtils;
 import lehjr.numina.common.network.NuminaPackets;
-import lehjr.numina.common.network.packets.ModeChangeRequestPacket;
+import lehjr.numina.common.network.packets.serverbound.ModeChangeRequestPacketServerBound;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.NonNullList;
@@ -131,11 +131,11 @@ public class ModeChangingModularItem extends ModularItem implements IModeChangin
     @Override
     public boolean isModuleOnline(ItemStack module) {
         return module.getCapability(NuminaCapabilities.POWER_MODULE).map(m-> {
-            if(m.isAllowed()) {
+            if(m.isAllowed() && m.isModuleOnline()) {
                 if (m instanceof IRightClickModule) {
-                    return m.isModuleOnline() && m.getModuleStack().equals(getActiveModule(), false);
+                    return m.getModuleStack().equals(getActiveModule(), false);
                 }
-                return m.isModuleOnline();
+                return true;
             }
             return false;
         }).orElse(false);
@@ -176,7 +176,7 @@ public class ModeChangingModularItem extends ModularItem implements IModeChangin
             int newindex = clampMode(modes.indexOf(this.getActiveMode()) + dMode, modes.size());
             int newmode = modes.get(newindex);
             this.setActiveMode(newmode);
-            NuminaPackets.CHANNEL_INSTANCE.sendToServer(new ModeChangeRequestPacket(newmode, player.getInventory().selected));
+            NuminaPackets.CHANNEL_INSTANCE.sendToServer(new ModeChangeRequestPacketServerBound(newmode, player.getInventory().selected));
         }
     }
 
@@ -204,6 +204,7 @@ public class ModeChangingModularItem extends ModularItem implements IModeChangin
         return (selection > 0) ? (selection % modesSize) : ((selection + modesSize * -selection) % modesSize);
     }
 
+    @Deprecated
     @Override
     public boolean isModuleActiveAndOnline(ResourceLocation moduleName) {
 

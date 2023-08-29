@@ -79,7 +79,7 @@ public class CosmeticGui extends ContainerlessGui {
         usingCosmeticPresets = !MPSSettings.useLegacyCosmeticSystem();
         if (usingCosmeticPresets) {
             // check if player is the server owner
-            if (minecraft.hasSingleplayerServer()) {
+            if (Minecraft.getInstance().hasSingleplayerServer()) {
                 allowCosmeticPresetCreation = player.getName().equals(minecraft.getSingleplayerServer().getSingleplayerProfile().getName());
             } else {
                 // check if player is top level op
@@ -107,6 +107,9 @@ public class CosmeticGui extends ContainerlessGui {
         renderframe.setLivingEntity(getMinecraft().player);
         renderframe.setAllowDrag(true);
         renderframe.setAllowZoom(true);
+        renderframe.setGuiLeft(this.leftPos);
+        renderframe.setGuiTop(this.topPos);
+
         addFrame(renderframe);
 
         /** for picking the colors ------------------------------------------------------------ */

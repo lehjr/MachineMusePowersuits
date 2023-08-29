@@ -26,6 +26,7 @@
 
 package lehjr.powersuits.common.item.module.environmental;
 
+import com.google.common.collect.ImmutableList;
 import lehjr.numina.common.capabilities.NuminaCapabilities;
 import lehjr.numina.common.capabilities.module.powermodule.IConfig;
 import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
@@ -54,7 +55,6 @@ import java.util.concurrent.Callable;
 public class AutoFeederModule extends AbstractPowerModule {
     public static final String TAG_FOOD = "Food";
     public static final String TAG_SATURATION = "Saturation";
-
     @Nullable
     @Override
     public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt) {
@@ -98,8 +98,10 @@ public class AutoFeederModule extends AbstractPowerModule {
         }
 
         class Ticker extends PlayerTickModule {
+            ImmutableList useOldAutoFeederKey;
             public Ticker(@Nonnull ItemStack module, ModuleCategory category, ModuleTarget target, Callable<IConfig> config) {
                 super(module, category, target, config, true);
+                useOldAutoFeederKey = getConfigKey("useOldAutoFeederKey");
             }
 
             @Override
@@ -115,9 +117,7 @@ public class AutoFeederModule extends AbstractPowerModule {
                 float saturationNeeded = 20 - foodStats.getSaturationLevel();
 
                 // this consumes all food in the player's inventory and stores the stats in a buffer
-//        if (MPSSettings::getModuleConfig.useOldAutoFeeder()) { // FIXME!!!!!
-                if (true) {
-
+        if (getGenericBooleanProperty(useOldAutoFeederKey, MPSSettings::getModuleConfig, true)) { // FIXME!!!!!
                     for (int i = 0; i < inv.getContainerSize(); i++) {
                         ItemStack stack = inv.getItem(i);
                         if (stack.isEdible()) {

@@ -37,7 +37,7 @@ import lehjr.numina.client.render.NuminaRenderer;
 import lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.network.NuminaPackets;
-import lehjr.numina.common.network.packets.ModeChangeRequestPacket;
+import lehjr.numina.common.network.packets.serverbound.ModeChangeRequestPacketServerBound;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -101,7 +101,7 @@ public class RadialModeSelectionFrame extends AbstractGuiFrame {
                     .map(IModeChangingItem.class::cast)
                     .ifPresent(handler->{
                         handler.setActiveMode(getSelectedModule().getInventorySlot());
-                        NuminaPackets.CHANNEL_INSTANCE.sendToServer(new ModeChangeRequestPacket(getSelectedModule().getInventorySlot(), player.getInventory().selected));
+                        NuminaPackets.CHANNEL_INSTANCE.sendToServer(new ModeChangeRequestPacketServerBound(getSelectedModule().getInventorySlot(), player.getInventory().selected));
                     });
         }
     }

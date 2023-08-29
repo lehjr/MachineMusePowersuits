@@ -34,8 +34,8 @@ public class EntityRenderFrame extends AbstractGuiFrame implements IGuiFrame {
     double offsetx = 0;
     double offsety = -2.5;
     float zoom = 30;
-    int mouseX = 0;
-    int mouseY = 0;
+    double mouseX = 0;
+    double mouseY = 0;
     double guiLeft = 0;
     double guiTop = 0;
 
@@ -87,8 +87,7 @@ public class EntityRenderFrame extends AbstractGuiFrame implements IGuiFrame {
         if (this.mouseX != mousex) {
             this.oldMouseX = this.mouseX;
         }
-        this.mouseX = (int) mousex;
-
+        this.mouseX = mousex;
         if (this.mouseY != mousey) {
             this.oldMouseY = this.mouseY;
         }
@@ -121,20 +120,19 @@ public class EntityRenderFrame extends AbstractGuiFrame implements IGuiFrame {
     @Override
     public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTick) {
         if (isVisible) {
-            float mouse_x = (float) ((guiLeft + 51) - this.oldMouseX);
-            float mouse_y = (float) ((float) ((int) guiTop + 75 - 50) - this.oldMouseY);
             double i = (centerX() + offsetx);
             double j = (bottom() - 5 + offsety);
-            renderEntityInInventory(i, j, zoom, this.livingEntity);
+            float mouse_x = (float) (guiLeft - this.oldMouseX + 281 + offsetx); // should be close to 0 when center // 76
+            float mouse_y = (float)(guiTop - this.oldMouseY + 25F + offsety);
+            renderEntityInInventory(i, j, mouse_x, mouse_y, zoom, this.livingEntity);
         }
     }
 
     // TODO: model rotation based on a scaled value like in MPS for 1.7.10
     // coppied from player inventory
-    public void renderEntityInInventory(double posX, double posY, float scale, LivingEntity pLivingEntity) {
-        float f = (float) rotx;///(float)Math.atan(mouseX / 40.0F);
-        float f1 = (float) roty;//(float)Math.atan(mouseY / 40.0F);
-
+    public void renderEntityInInventory(double posX, double posY, float mouseX, float mouseY, float scale, LivingEntity pLivingEntity) {
+        float f = (float)Math.atan(mouseX / 40.0F);
+        float f1 = (float)Math.atan(mouseY / 40.0F);
 
         PoseStack posestack = RenderSystem.getModelViewStack();
         posestack.pushPose();
@@ -143,7 +141,7 @@ public class EntityRenderFrame extends AbstractGuiFrame implements IGuiFrame {
         RenderSystem.applyModelViewMatrix();
         PoseStack posestack1 = new PoseStack();
         posestack1.translate(0.0F, 0.0F, 1000.0F);
-        posestack1.scale((float)scale, (float)scale, (float)scale);
+        posestack1.scale(scale, scale, scale);
         Quaternion quaternion = Vector3f.ZP.rotationDegrees(180.0F);
         Quaternion quaternion1 = Vector3f.XP.rotationDegrees(f1 * 20.0F);
         quaternion.mul(quaternion1);

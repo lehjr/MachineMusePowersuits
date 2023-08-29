@@ -309,4 +309,23 @@ public class ModuleConfig implements IConfig {
                 configKey.get(2),
                 "isAllowed");// initialize the value
     }
+
+    @Override
+    public boolean getGenericBooleanProperty(ImmutableList<String> key) {
+        if (isInDevMode() && generateNewConfigValues) {
+            addtoMap(
+                    key.get(1), // categoryTitle
+                    key.get(2), // moduleName
+                    new StringBuilder("builder.define(\"")
+                            .append(key.get(3)) // isAllowed
+                            .append("\", true);\n").toString());
+        }
+
+        return getModConfig().map(config->{
+            if (config.getConfigData() != null) {
+                return config.getConfigData().getOrElse(key, true);
+            }
+            return true;
+        }).orElse(true);
+    }
 }

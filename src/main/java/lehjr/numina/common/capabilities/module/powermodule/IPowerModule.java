@@ -78,6 +78,10 @@ public interface IPowerModule extends IConfigGetter {
 
     boolean isAllowed();
 
+    default boolean getGenericBooleanProperty(ImmutableList key, Callable<IConfig> config, boolean defBool) {
+        return getConfig(config).map(iconfig-> iconfig.getGenericBooleanProperty(key)).orElse(defBool);
+    }
+
     default CompoundTag getModuleTag() {
         return TagUtils.getModuleTag(getModuleStack());
     }

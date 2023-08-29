@@ -3,7 +3,7 @@ package lehjr.powersuits.client.control;
 import com.mojang.blaze3d.platform.InputConstants;
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
 import lehjr.numina.common.network.NuminaPackets;
-import lehjr.numina.common.network.packets.ToggleRequestPacket;
+import lehjr.numina.common.network.packets.serverbound.ToggleRequestPacketServerBound;
 import lehjr.powersuits.client.gui.overlay.MPSKeyBindHud;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
@@ -52,7 +52,7 @@ public class MPSKeyMapping extends KeyMapping {
             return;
         }
 
-        NuminaPackets.CHANNEL_INSTANCE.sendToServer(new ToggleRequestPacket(registryName, toggleval));
+        NuminaPackets.CHANNEL_INSTANCE.sendToServer(new ToggleRequestPacketServerBound(registryName, toggleval));
         for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
             player.getInventory().getItem(i).getCapability(ForgeCapabilities.ITEM_HANDLER)
                     .filter(IModularItem.class::isInstance)
