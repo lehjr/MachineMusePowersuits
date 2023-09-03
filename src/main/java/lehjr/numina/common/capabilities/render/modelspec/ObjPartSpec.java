@@ -40,14 +40,14 @@ import java.util.Optional;
  * Ported to Java by lehjr on 11/8/16.
  */
 @OnlyIn(Dist.CLIENT)
-public class ObjlPartSpec extends PartSpecBase {
+public class ObjPartSpec extends PartSpecBase {
     private Transformation partTransform = Transformation.identity();
 
-    public ObjlPartSpec(final ObjModelSpec objModelSpec,
-                        final SpecBinding binding,
-                        final String partName,
-                        final Color color,
-                        final Boolean defaultglow) {
+    public ObjPartSpec(final ObjModelSpec objModelSpec,
+                       final SpecBinding binding,
+                       final String partName,
+                       final Color color,
+                       final Boolean defaultglow) {
         super(objModelSpec, binding, partName, color, defaultglow);
     }
 

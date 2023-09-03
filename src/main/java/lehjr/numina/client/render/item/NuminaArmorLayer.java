@@ -36,7 +36,7 @@ import lehjr.numina.common.capabilities.NuminaCapabilities;
 import lehjr.numina.common.capabilities.render.IModelSpec;
 import lehjr.numina.common.capabilities.render.modelspec.JavaPartSpec;
 import lehjr.numina.common.capabilities.render.modelspec.NuminaModelSpecRegistry;
-import lehjr.numina.common.capabilities.render.modelspec.ObjlPartSpec;
+import lehjr.numina.common.capabilities.render.modelspec.ObjPartSpec;
 import lehjr.numina.common.capabilities.render.modelspec.PartSpecBase;
 import lehjr.numina.common.constants.NuminaConstants;
 import lehjr.numina.common.constants.TagConstants;
@@ -123,13 +123,13 @@ public class NuminaArmorLayer<T extends LivingEntity, M extends HumanoidModel<T>
         if (itemstack.getItem() instanceof ArmorItem armoritem && itemstack.getCapability(NuminaCapabilities.RENDER).isPresent()) {
             if (armoritem.getSlot() == slotIn) {
                 renderCapabity.ifPresent(renderCap->{
-                    CompoundTag renderTag = renderCap.getRenderTag();
-                    if (renderTag == null || renderTag.isEmpty()) {
-                        renderTag = renderCap.getDefaultRenderTag();
-                        if (renderTag != null && !renderTag.isEmpty()) {
-                            NuminaPackets.CHANNEL_INSTANCE.sendToServer(new CosmeticInfoPacketServerBound(slotIn, TagConstants.RENDER, renderTag));
-                        }
-                    }
+                    CompoundTag renderTag = renderCap.getRenderTagOrDefault();
+//                    if (renderTag == null || renderTag.isEmpty()) {
+//                        renderTag = renderCap.getDefaultRenderTag();
+//                        if (renderTag != null && !renderTag.isEmpty()) {
+//                            NuminaPackets.CHANNEL_INSTANCE.sendToServer(new CosmeticInfoPacketServerBound(slotIn, TagConstants.RENDER, renderTag));
+//                        }
+//                    }
                     if (renderTag != null && !renderTag.isEmpty()) {
                         int[] colors = renderTag.getIntArray(TagConstants.COLORS);
                         if (colors.length == 0) {
@@ -166,7 +166,7 @@ public class NuminaArmorLayer<T extends LivingEntity, M extends HumanoidModel<T>
                                                 color.r, color.g, color.b, color.a);
                                     }
                                     poseStack.popPose();
-                                } else if (partSpec instanceof ObjlPartSpec) {
+                                } else if (partSpec instanceof ObjPartSpec) {
 
                                     Transformation transform = CALIBRATION.getTransform();
                                     if (transform != Transformation.identity()) {
@@ -177,7 +177,7 @@ public class NuminaArmorLayer<T extends LivingEntity, M extends HumanoidModel<T>
                                     HighPolyArmor highPolyArmor = ArmorModelInstance.getInstance();
                                     highPolyArmor.copyPropertiesFrom(getParentModel());
                                     VertexConsumer consumer = getVertexConsumer(bufferIn, TextureAtlas.LOCATION_BLOCKS, glow);
-                                    highPolyArmor.renderToBuffer((ObjlPartSpec) partSpec, tag, poseStack, consumer, glow ? NuminaConstants.FULL_BRIGHTNESS : packedLightIn, OverlayTexture.NO_OVERLAY, color);
+                                    highPolyArmor.renderToBuffer((ObjPartSpec) partSpec, tag, poseStack, consumer, glow ? NuminaConstants.FULL_BRIGHTNESS : packedLightIn, OverlayTexture.NO_OVERLAY, color);
 
                                     if (transform != Transformation.identity()) {
                                         poseStack.popPose();

@@ -30,7 +30,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.capabilities.render.modelspec.MorphTarget;
-import lehjr.numina.common.capabilities.render.modelspec.ObjlPartSpec;
+import lehjr.numina.common.capabilities.render.modelspec.ObjPartSpec;
 import lehjr.numina.common.math.Color;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
@@ -82,7 +82,7 @@ public class HighPolyArmor<T extends LivingEntity> extends HumanoidModel<T> {
         return mpToRp.get(target.apply(this));
     }
 
-    public void renderToBuffer(ObjlPartSpec partSpec, CompoundTag tag, PoseStack poseStack, VertexConsumer pBuffer, int packedLight, int packedOverlay, Color color) {
+    public void renderToBuffer(ObjPartSpec partSpec, CompoundTag tag, PoseStack poseStack, VertexConsumer pBuffer, int packedLight, int packedOverlay, Color color) {
         RenderOBJPart part = mpToRp.get(partSpec.getBinding().getTarget().apply(this));
         if (part != null ) {
             poseStack.pushPose();

@@ -69,6 +69,19 @@ public interface IModelSpec {
 
     CompoundTag setRenderTag(CompoundTag renderDataIn, String tagName);
 
+    /**
+     * Primarrily used for getting a default tag for rendering without setting anything
+     * @return
+     */
+    default CompoundTag getRenderTagOrDefault() {
+        CompoundTag renderTag;
+        renderTag = getRenderTag();
+        if (renderTag == null || renderTag.isEmpty()) {
+            renderTag = getDefaultRenderTag();
+        }
+        return renderTag;
+    }
+
     CompoundTag getDefaultRenderTag();
 
     List<Integer> addNewColorstoList(List<Integer> colors, List<Integer> colorsToAdd);

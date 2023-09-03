@@ -95,7 +95,7 @@ public class DefaultModelSpec {
                     colors = addNewColorstoList(colors, spec.getColors()); // merge new color int arrays in
 
                     for (PartSpecBase partSpec : spec.getPartSpecs()) {
-                        if (partSpec instanceof ObjlPartSpec) {
+                        if (partSpec instanceof ObjPartSpec) {
                             prefArray.add(partSpec.multiSet(new CompoundTag(),
                                     getNewColorIndex(colors, spec.getColors(), partSpec.getDefaultColorIndex()),
                                     partSpec.getGlow()));

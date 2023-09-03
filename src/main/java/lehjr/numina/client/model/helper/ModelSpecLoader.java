@@ -214,7 +214,7 @@ public enum ModelSpecLoader {
         String name = partJson.get(NAME).getAsString();
         boolean glow = partJson.has(GLOW) && partJson.get(GLOW).getAsBoolean();
         Color color = partJson.has(COLOR) ? parseColor(partJson.get(COLOR).getAsString()) : Color.WHITE;
-        getReg().addPart(new ObjlPartSpec(
+        getReg().addPart(new ObjPartSpec(
                 objModelSpec,
                 binding,
                 name,

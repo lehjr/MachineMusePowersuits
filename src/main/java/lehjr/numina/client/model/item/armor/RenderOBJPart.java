@@ -33,7 +33,7 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Matrix4f;
 import com.mojang.math.Vector3f;
 import com.mojang.math.Vector4f;
-import lehjr.numina.common.capabilities.render.modelspec.ObjlPartSpec;
+import lehjr.numina.common.capabilities.render.modelspec.ObjPartSpec;
 import lehjr.numina.common.math.Color;
 import lehjr.numina.common.math.MathUtils;
 import net.minecraft.client.model.Model;
@@ -97,7 +97,7 @@ public class RenderOBJPart extends ModelPart {
         this.z = pModelPart.z + this.zOffset;
     }
 
-    public void render(ObjlPartSpec partSpec, CompoundTag tag, PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, Color color) {
+    public void render(ObjPartSpec partSpec, CompoundTag tag, PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, Color color) {
         partSpec.getPart().ifPresent(objBakedPart -> {
             if (this.visible) {
                 ImmutableList.Builder<BakedQuad> builder = ImmutableList.builder();
