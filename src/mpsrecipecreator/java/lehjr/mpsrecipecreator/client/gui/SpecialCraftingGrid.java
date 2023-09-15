@@ -33,7 +33,7 @@ public class SpecialCraftingGrid extends DrawableRect implements IGuiFrame, ICon
     public final int slotWidth = 18;
     public final int slotHeight = 18;
     final int spacing = 14;
-    MPARCGui mparcGui;
+    MPSRCGui mparcGui;
     boolean isEnabled = true;
     boolean isVisible = true;
     float zLevel;
@@ -48,7 +48,7 @@ public class SpecialCraftingGrid extends DrawableRect implements IGuiFrame, ICon
                                float zLevel,
                                Colour backgroundColour,
                                Colour borderColour,
-                               MPARCGui mparcGui,
+                               MPSRCGui mparcGui,
                                IContainerULOffSet.ulGetter ulGetter) {
 
         // (MusePoint2D ul, MusePoint2D br, Colour backgroundColour, Colour borderColour)

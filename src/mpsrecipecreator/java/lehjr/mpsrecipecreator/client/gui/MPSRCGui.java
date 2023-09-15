@@ -21,7 +21,7 @@ import javax.annotation.Nullable;
 /**
  * @author Dries007
  */
-public class MPARCGui extends ExtendedContainerScreen2<MPSRCContainer> {
+public class MPSRCGui extends ExtendedContainerScreen2<MPSRCContainer> {
     static final ResourceLocation BACKGROUND = new ResourceLocation(Constants.MOD_ID, "textures/gui/mpsrc_background.png");
 
     Rect backgroundRect;
@@ -29,17 +29,13 @@ public class MPARCGui extends ExtendedContainerScreen2<MPSRCContainer> {
     private final RecipeDisplayFrame recipeDisplayFrame;
     // separate frame for each slot
     private final SlotOptionsFrame slotOptions;
-
-    ConditionsFrame conditionsFrame;
     // text box
     public StackTextDisplayFrame tokenTxt;
     protected final Colour gridBorderColour = Colour.LIGHT_BLUE.withAlpha(0.8F);
-    protected final Colour gridBackGound = new Colour(0.545F, 0.545F, 0.545F, 1);
     public RecipeGen recipeGen;
 
-    public MPARCGui(MPSRCContainer menu, PlayerInventory playerInventory, ITextComponent title) {
+    public MPSRCGui(MPSRCContainer menu, PlayerInventory playerInventory, ITextComponent title) {
         super(menu, playerInventory, title, 400, 300);//, false);
-        float zLevel = getBlitOffset();
         backgroundRect = new DrawableTile(getUL(), getUL().plus(getWH()));
 
         recipeOptions = new RecipeOptionsFrame(this);

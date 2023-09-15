@@ -73,14 +73,14 @@ sourceSets {
         }
     }
     powersuits { setupSourceSet(powersuits, 'powersuits') }
-    recipecreator { setupSourceSet(recipecreator, 'recipecreator') }
-    whatever { setupSourceSet(whatever, 'whatever') }
+    mpsrecipecreator { setupSourceSet(mpsrecipecreator, 'mpsrecipecreator') }
+    mpswhatever { setupSourceSet(mpswhatever, 'mpswhatever') }
 
     //Data gen modules for the different modules
     datagenmain { setupDataGenSourceSet(datagenmain, null, 'main') }
     datagenpowersuits { setupDataGenSourceSet(datagenpowersuits, powersuits, 'powersuits') }
-    datagenrecipecreator { setupDataGenSourceSet(datagenrecipecreator, recipecreator, 'recipecreator') }
-    datagenwhatever { setupDataGenSourceSet(datagenwhatever, whatever, 'whatever') }
+    datagenmpsrecipecreator { setupDataGenSourceSet(datagenmpsrecipecreator, mpsrecipecreator, 'mpsrecipecreator') }
+    datagenmpswhatever { setupDataGenSourceSet(datagenmpswhatever, mpswhatever, 'mpswhatever') }
 }
 
 //This method sets up an additional sourceSet in src/$name and adds a reference to the corresponding
@@ -124,7 +124,7 @@ configurations {
     // for those modules extend the main ones, and then by making the corresponding ones for datagen for the module extend those.
     // This way if we add a dependency/integration in a submodule instead of the main module of Numina, the datagen of the corresponding
     // module will be able to properly access the dependency
-    for (def name : ["powersuits", "recipecreator", "whatever"]) {
+    for (def name : ["powersuits", "mpsrecipecreator", "mpswhatever"]) {
         maybeCreate("datagen${name}Implementation").extendsFrom(maybeCreate("${name}Implementation").extendsFrom(implementation))
         maybeCreate("datagen${name}CompileOnly").extendsFrom(maybeCreate("${name}CompileOnly").extendsFrom(compileOnly))
         maybeCreate("datagen${name}RuntimeOnly").extendsFrom(maybeCreate("${name}RuntimeOnly").extendsFrom(runtimeOnly))
@@ -136,10 +136,6 @@ static void extendConfigurations(Configuration base, Configuration... configurat
         configuration.extendsFrom(base)
     }
 }
-
-
-
-
 
 ext {
     versionProperties = ["mod_version": project.version,
@@ -155,8 +151,8 @@ ext {
 
 def mainReplaceResources = createReplaceResourcesTask("main", sourceSets.main)
 def powersuitsReplaceResources = createReplaceResourcesTask("powersuits", sourceSets.powersuits)
-def recipecreatorReplaceResources = createReplaceResourcesTask("recipecreator", sourceSets.recipecreator)
-def whateverReplaceResources = createReplaceResourcesTask("whatever", sourceSets.whatever)
+def mpsrecipecreatorReplaceResources = createReplaceResourcesTask("mpsrecipecreator", sourceSets.mpsrecipecreator)
+def mpswhateverReplaceResources = createReplaceResourcesTask("mpswhatever", sourceSets.mpswhatever)
 
 def createReplaceResourcesTask(String output, SourceSet sourceSet) {
     return tasks.register("${output}ReplaceResources", Copy) {
@@ -196,11 +192,11 @@ minecraft {
     accessTransformers.from(
             file('src/main/resources/META-INF/accesstransformer.cfg'),
             file('src/powersuits/resources/META-INF/accesstransformer.cfg'),
-            file('src/recipecreator/resources/META-INF/accesstransformer.cfg'))
+            file('src/mpsrecipecreator/resources/META-INF/accesstransformer.cfg'))
 
     runs {
         client {
-            workingDirectory file("run")
+            workingDirectory file("run/client")
             //This fixes Mixin application problems from other mods because their refMaps are SRG-based, but we're in a MCP env
             property 'mixin.env.remapRefMap', 'true'
             property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
@@ -234,13 +230,13 @@ minecraft {
             mods {
                 numina.sources((SourceSet) sourceSets.main)
                 modularpowersuits.source((SourceSet) sourceSets.powersuits)
-                mpsrecipecreator.source((SourceSet) sourceSets.recipecreator)
-                mpswhatever.source((SourceSet) sourceSets.whatever)
+                mpsrecipecreator.source((SourceSet) sourceSets.mpsrecipecreator)
+                mpswhatever.source((SourceSet) sourceSets.mpswhatever)
             }
         }
 
         server {
-            workingDirectory file("run")
+            workingDirectory file("run/server")
             //This fixes Mixin application problems from other mods because their refMaps are SRG-based, but we're in a MCP env
             property 'mixin.env.remapRefMap', 'true'
             property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
@@ -254,13 +250,13 @@ minecraft {
             mods {
                 numina.sources((SourceSet) sourceSets.main)
                 modularpowersuits.source((SourceSet) sourceSets.powersuits)
-                mpsrecipecreator.source((SourceSet) sourceSets.recipecreator)
-                mpswhatever.source((SourceSet) sourceSets.whatever)
+                mpsrecipecreator.source((SourceSet) sourceSets.mpsrecipecreator)
+                mpswhatever.source((SourceSet) sourceSets.mpswhatever)
             }
         }
 
         data {
-            workingDirectory file("run")
+            workingDirectory file("run/data")
             environment 'target', 'fmluserdevdata'
             //This fixes Mixin application problems from other mods because their refMaps are SRG-based, but we're in a MCP env
             property 'mixin.env.remapRefMap', 'true'
@@ -275,18 +271,18 @@ minecraft {
             args '--all', '--output', file('src/datagen/generated/'),
                     '--mod', 'numina',
                     '--existing', file('src/main/resources/'),
-                    '--mod', 'modularpowersuits',
+                    '--mod', 'powersuits',
                     '--existing', file('src/powersuits/resources/'),
                     '--mod', 'mpsrecipecreator',
-                    '--existing', file('src/recipecreator/resources/'),
+                    '--existing', file('src/mpsrecipecreator/resources/'),
                     '--mod', 'mpswhatever',
-                    '--existing', file('src/whatever/resources/')
+                    '--existing', file('src/mpswhatever/resources/')
 
             mods {
                 numina.sources((SourceSet[]) [sourceSets.main, sourceSets.datagenmain])
                 modularpowersuits.sources((SourceSet[]) [sourceSets.powersuits, sourceSets.datagenpowersuits])
-                mpsrecipecreator.sources((SourceSet[]) [sourceSets.recipecreator, sourceSets.datagenrecipecreator])
-                mpswhatever.sources((SourceSet[]) [sourceSets.whatever, sourceSets.datagenwhatever])
+                mpsrecipecreator.sources((SourceSet[]) [sourceSets.mpsrecipecreator, sourceSets.datagenmpsrecipecreator])
+                mpswhatever.sources((SourceSet[]) [sourceSets.mpswhatever, sourceSets.datagenmpswhatever])
             }
         }
     }
@@ -395,12 +391,12 @@ if (project.hasProperty('UPDATE_MAPPINGS')) {
     // and also read and find the minecraft dep
     def extraSourceSets = [
             sourceSets.powersuits,
-            sourceSets.recipecreator,
-            sourceSets.whatever,
+            sourceSets.mpsrecipecreator,
+            sourceSets.mpswhatever,
             sourceSets.datagenmain,
             sourceSets.datagenpowersuits,
-            sourceSets.datagenrecipecreator,
-            sourceSets.datagenwhatever
+            sourceSets.datagenmpsrecipecreator,
+            sourceSets.datagenmpswhatever
     ]
     Set<File> allExtraDirs = new HashSet<>()
     for (def sourceSet : extraSourceSets) {
@@ -418,8 +414,8 @@ if (project.hasProperty('UPDATE_MAPPINGS')) {
 //Set the various variables/settings for the different process resources tasks
 processResources { setupProcessResources(processResources, mainReplaceResources) }
 processPowersuitsResources { setupProcessResources(processPowersuitsResources, powersuitsReplaceResources) }
-processRecipecreatorResources { setupProcessResources(processRecipecreatorResources, recipecreatorReplaceResources) }
-processWhateverResources { setupProcessResources(processWhateverResources, whateverReplaceResources) }
+processMpsrecipecreatorResources { setupProcessResources(processMpsrecipecreatorResources, mpsrecipecreatorReplaceResources) }
+processMpswhateverResources { setupProcessResources(processMpswhateverResources, mpswhateverReplaceResources) }
 processDatagenmainResources { dependsOn(compileJava) }
 
 def setupProcessResources(ProcessResources process, TaskProvider<Task> replaceResources) {
@@ -437,8 +433,8 @@ def setupProcessResources(ProcessResources process, TaskProvider<Task> replaceRe
 //Make the various classes tasks depend on the corresponding replaceResources tasks in addition to the default processResources tasks they depend on
 classes.configure { dependsOn(mainReplaceResources) }
 powersuitsClasses.configure { dependsOn(powersuitsReplaceResources) }
-recipecreatorClasses.configure { dependsOn(recipecreatorReplaceResources) }
-whateverClasses.configure { dependsOn(whateverReplaceResources) }
+mpsrecipecreatorClasses.configure { dependsOn(mpsrecipecreatorReplaceResources) }
+mpswhateverClasses.configure { dependsOn(mpswhateverReplaceResources) }
 
 def getManifestAttributes(String title) {
     return [
@@ -461,10 +457,10 @@ jar {
     afterEvaluate { finalizedBy reobfJar }
 }
 
-task sourcesJar(type: Jar, dependsOn: [classes, powersuitsClasses, recipecreatorClasses, whateverClasses]) {
+task sourcesJar(type: Jar, dependsOn: [classes, powersuitsClasses, mpsrecipecreatorClasses, mpswhateverClasses]) {
     duplicatesStrategy(DuplicatesStrategy.FAIL)
     archiveClassifier.set("sources")
-    from(sourceSets.main.allJava, sourceSets.powersuits.allJava, sourceSets.recipecreator.allJava, sourceSets.whatever.allJava)
+    from(sourceSets.main.allJava, sourceSets.powersuits.allJava, sourceSets.mpsrecipecreator.allJava, sourceSets.mpswhatever.allJava)
     manifest.attributes(getManifestAttributes("ModularPowersuits"))
 }
 
@@ -477,22 +473,22 @@ task powersuitsJar(type: Jar) {
     afterEvaluate { finalizedBy reobfPowersuitsJar }
 }
 
-task recipecreatorJar(type: Jar) {
+task mpsrecipecreatorJar(type: Jar) {
     duplicatesStrategy(DuplicatesStrategy.FAIL)
     archiveFileName.set("MPSRecipecreator-${minecraft_version}-${project.version}.jar")
-    archiveClassifier.set("recipecreator")
-    from sourceSets.recipecreator.output
+    archiveClassifier.set("mpsrecipecreator")
+    from sourceSets.mpsrecipecreator.output
     manifest.attributes(getManifestAttributes("MPSRecipecreator"))
-    afterEvaluate { finalizedBy reobfRecipecreatorJar }
+    afterEvaluate { finalizedBy reobfMpsrecipecreatorJar }
 }
 
-task whateverJar(type: Jar) {
+task mpswhateverJar(type: Jar) {
     duplicatesStrategy(DuplicatesStrategy.FAIL)
     archiveFileName.set("MPSWhatever-${minecraft_version}-${project.version}.jar")
-    archiveClassifier.set("whatever")
-    from sourceSets.whatever.output
+    archiveClassifier.set("mpswhatever")
+    from sourceSets.mpswhatever.output
     manifest.attributes(getManifestAttributes("MPSWhatever"))
-    afterEvaluate { finalizedBy reobfWhateverJar }
+    afterEvaluate { finalizedBy reobfMpswhateverJar }
 }
 
 clean {
@@ -532,16 +528,16 @@ compileJava {
 artifacts {
     archives jar
     archives powersuitsJar
-    archives recipecreatorJar
-    archives whateverJar
+    archives mpsrecipecreatorJar
+    archives mpswhateverJar
     archives sourcesJar
 }
 
 reobf {
     jar { classpath.from(sourceSets.main.compileClasspath) }
     powersuitsJar { classpath.from(sourceSets.powersuits.compileClasspath) }
-    recipecreatorJar { classpath.from(sourceSets.recipecreator.compileClasspath) }
-    whateverJar { classpath.from(sourceSets.whatever.compileClasspath) }
+    mpsrecipecreatorJar { classpath.from(sourceSets.mpsrecipecreator.compileClasspath) }
+    mpswhateverJar { classpath.from(sourceSets.mpswhatever.compileClasspath) }
 }
 
 //Minimize/optimize all png files, requires optipng on the PATH
@@ -565,7 +561,7 @@ task optimizePng {
         //Ensure the logo is minimized (we add this file to each jar)
         minimizePNGFile(file("${projectDir}/logo.png"))
         //Minimize any PNGs in the source sets
-        def sourceSets = [sourceSets.main, sourceSets.powersuits, sourceSets.recipecreator, sourceSets.whatever]
+        def sourceSets = [sourceSets.main, sourceSets.powersuits, sourceSets.mpsrecipecreator, sourceSets.mpswhatever]
         for (def sourceSet : sourceSets) {
             for (dir in sourceSet.resources.srcDirs) {
                 fileTree(dir: dir, includes: pngPatterns).each { minimizePNGFile(it) }
@@ -579,7 +575,7 @@ tasks.withType(GenerateModuleMetadata) {
     enabled = false
 }
 
-tasks.curseforge.dependsOn jar, powersuitsJar, recipecreatorJar, whateverJar
+tasks.curseforge.dependsOn jar, powersuitsJar, mpsrecipecreatorJar, mpswhateverJar
 if (System.getenv("CURSEFORGE_KEY") != null || project.hasProperty('curseforgeKey')) {
     println "Enabling Curseforge config"
     curseforge {
@@ -657,7 +653,7 @@ if (System.getenv("CURSEFORGE_KEY") != null || project.hasProperty('curseforgeKe
 //            changelogType = "html"
 //            changelog = changeLogResolver
 //            releaseType = "${curse_release_type}"
-//            mainArtifact(recipecreatorJar) {
+//            mainArtifact(mpsrecipecreatorJar) {
 //                relations {
 //                    requiredDependency "numina"
 //                    optionalDependency "jei"
@@ -672,7 +668,7 @@ if (System.getenv("CURSEFORGE_KEY") != null || project.hasProperty('curseforgeKe
 //            changelogType = "html"
 //            changelog = changeLogResolver
 //            releaseType = "${curse_release_type}"
-//            mainArtifact(whateverJar) {
+//            mainArtifact(mpswhateverJar) {
 //                relations {
 //                    requiredDependency "numina"
 //                }

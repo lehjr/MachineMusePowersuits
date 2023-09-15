@@ -5,7 +5,6 @@ import lehjr.numina.client.gui.clickable.Checkbox;
 import lehjr.numina.client.gui.clickable.ClickableButton;
 import lehjr.numina.client.gui.clickable.ClickableLabel;
 import lehjr.numina.client.gui.frame.ScrollableFrame;
-import lehjr.numina.client.gui.geometry.DrawableTile;
 import lehjr.numina.client.gui.geometry.MusePoint2D;
 import lehjr.numina.client.gui.geometry.Rect;
 import lehjr.numina.client.sound.Musique;
@@ -35,13 +34,10 @@ public class RecipeOptionsFrame extends ScrollableFrame {
     private ClickableLabel title;
     ConditionsFrame conditionsFrame;
 
-    public RecipeOptionsFrame(MPARCGui mparcGui) {
+    public RecipeOptionsFrame(MPSRCGui mparcGui) {
         super(new Rect(MusePoint2D.ZERO, MusePoint2D.ZERO));
         MusePoint2D starterPoint = MusePoint2D.ZERO;
         this.title = new ClickableLabel(new StringTextComponent("Recipe Options"), starterPoint);
-
-        System.out.println("startpoint: " + starterPoint);
-
         title.setMode(ClickableLabel.JustifyMode.LEFT);
 
 

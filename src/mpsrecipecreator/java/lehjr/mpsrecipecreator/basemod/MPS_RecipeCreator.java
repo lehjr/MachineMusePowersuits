@@ -2,7 +2,7 @@ package lehjr.mpsrecipecreator.basemod;
 
 import lehjr.mpsrecipecreator.basemod.config.Config;
 import lehjr.mpsrecipecreator.block.RecipeWorkbench;
-import lehjr.mpsrecipecreator.client.gui.MPARCGui;
+import lehjr.mpsrecipecreator.client.gui.MPSRCGui;
 import lehjr.mpsrecipecreator.container.MPSRCContainer;
 import lehjr.mpsrecipecreator.network.NetHandler;
 import net.minecraft.block.Block;
@@ -43,7 +43,7 @@ public final class MPS_RecipeCreator {
     }
 
     private void setupClient(final FMLClientSetupEvent event) {
-        ScreenManager.register(ModObjects.RECIPE_WORKBENCH_CONTAINER_TYPE, MPARCGui::new);
+        ScreenManager.register(ModObjects.RECIPE_WORKBENCH_CONTAINER_TYPE, MPSRCGui::new);
     }
 
     private void setup(final FMLCommonSetupEvent event) {

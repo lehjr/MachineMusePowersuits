@@ -68,6 +68,8 @@ public class GuiIcon {
     public final DrawableGuiIcon lightning;
     public final DrawableGuiIcon weaponSlotBackground;
     public final DrawableGuiIcon energyStorageBackground;
+
+
     public final DrawableGuiIcon energyGenerationBackground;
     public GuiIcon(NuminaSpriteUploader spriteUploader) {
         this.spriteUploader = spriteUploader;
