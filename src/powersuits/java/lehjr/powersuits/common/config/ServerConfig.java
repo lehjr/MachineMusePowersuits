@@ -288,7 +288,7 @@ public class ServerConfig {
                     builder.pop();
                 }
                 {
-                    builder.push("aoe_pick_upgrade2");
+                    builder.push("selective_miner");
                     builder.defineInRange("base_energyCon", 500.0D, 0, 1.7976931348623157E308);
                     builder.define("isAllowed", true);
                     builder.defineInRange("base_aoe2Limit", 1.0D, 0, 1.7976931348623157E308);

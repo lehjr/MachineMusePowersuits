@@ -88,6 +88,10 @@ public interface IModelSpec {
 
     int[] getColorArray();
 
+    default int[] getColorArrayOrDefault() {
+        return getRenderTagOrDefault().getIntArray(TagConstants.COLORS);
+    }
+
     int getNewColorIndex(List<Integer> colors, List<Integer> oldColors, Integer index);
 
     CompoundTag setColorArray(int[] colors);

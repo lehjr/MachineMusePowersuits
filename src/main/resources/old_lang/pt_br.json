@@ -1,0 +1,47 @@
+{
+
+
+  "_comment": "Components",
+
+
+
+
+
+
+
+
+
+
+
+
+  "block.numina.charging_base": "Charging Base",
+  "message.numina.fovfixtoggle.disabled": "FOV Fix disabled",
+  "message.numina.fovfixtoggle.disabled": "FOV Fix enabled",
+  "item.numina.armor_stand": "Armor Stand",
+  "keybind.fovfixtoggle": "Toggle FOV fix",
+  "tooltip.numina.charging_base": "Charges an entity's equipped items",
+  "module.tradeoff.maxEnergy": "Maximum Energy",
+  "module.tradeoff.maxTransfer": "Maximum Transfer per Tick",
+  "numina.energy": "Energy",
+  "numina.module.category.armor": "Armor Modules",
+  "numina.module.category.cosmetic": "Cosmetic Modules",
+  "numina.module.category.debug": "Debug Modules",
+  "numina.module.category.energygeneration": "Energy Generation Modules",
+  "numina.module.category.energystorage": "Energy Storage Modules",
+  "numina.module.category.environment": "Environment Modules",
+  "numina.module.category.miningenhancement": "Mining Enhancement Modules",
+  "numina.module.category.movement": "Movement Modules",
+  "numina.module.category.none": "None",
+  "numina.module.category.special": "Special Modules",
+  "numina.module.category.tool": "Tool Modules",
+  "numina.module.category.vision": "Vision Modules",
+  "numina.module.category.weapon": "Weapon Modules",
+  "screen.numina.charging_base": "Charging Base",
+  "tooltip.numina.battery.energy": "%d/%d FE",
+  "tooltip.numina.changeModes": "Change modes: Press and hold the number of the hotbar slot the PowerFist is in.",
+  "tooltip.numina.energy": "Energy:",
+  "tooltip.numina.installedModules": "Installed Modules:",
+  "tooltip.numina.mode": "Mode:",
+  "tooltip.numina.noModules": "No installed modules! This item is useless until you add some modules at a Tinker Table.",
+  "tooltip.numina.pressShift": "Press SHIFT for more information."
+}

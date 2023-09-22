@@ -29,24 +29,3 @@ license='Simplified BSD License https://opensource.org/license/bsd-2-clause/'
     versionRange="${jei_version}"
     ordering="AFTER"
     side="BOTH"
-
-[[dependencies.numina]]
-    modId="appliedenergistics2"
-    mandatory=false
-    versionRange="[${ae2_version},)"
-    ordering="AFTER"
-    side="BOTH"
-
-[[dependencies.numina]]
-    modId="scannable"
-    mandatory=false
-    versionRange="[${scannable_version},)"
-    ordering="AFTER"
-    side="BOTH"
-
-[[dependencies.numina]]
-    modId="refinedstorage"
-    mandatory=false
-    versionRange="${refinedstorage_version}"
-    ordering="AFTER"
-    side="BOTH"

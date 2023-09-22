@@ -44,6 +44,7 @@ import lehjr.numina.common.constants.TagConstants;
 import lehjr.numina.common.math.Color;
 import lehjr.numina.common.network.NuminaPackets;
 import lehjr.numina.common.network.packets.serverbound.ColorInfoPacketServerBound;
+import lehjr.numina.common.network.packets.serverbound.CosmeticInfoPacketServerBound;
 import lehjr.numina.common.string.StringUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
@@ -138,17 +139,31 @@ public class ColorPickerFrame extends ScrollableFrame {
     }
 
     public IntArrayTag getOrCreateColorTag() {
+        final int[] newColorArray = new int[]{-1};
+
         return this.itemSelector.getModularItemOrEmpty().getCapability(NuminaCapabilities.RENDER)
                 .filter(IModelSpec.class::isInstance)
                 .map(IModelSpec.class::cast)
                 .map(spec -> {
-                    CompoundTag renderSpec = spec.getRenderTag();
-                    if (renderSpec != null && !renderSpec.isEmpty()) {
-                        this.itemSelector.selectedType().ifPresent(slotType -> NuminaPackets.CHANNEL_INSTANCE.sendToServer(new ColorInfoPacketServerBound(slotType, new int[]{-1})));
+                    CompoundTag renderTag = spec.getRenderTag();
+
+                    // set full default render tag instead of just part of it.
+                    if (renderTag == null || renderTag.isEmpty()) {
+                        this.itemSelector.selectedType().ifPresent(slotType ->
+                                NuminaPackets.CHANNEL_INSTANCE.sendToServer(
+                                        new CosmeticInfoPacketServerBound(slotType, TagConstants.RENDER, spec.getDefaultRenderTag())));
+                    } else  {
+                        int[] colors = spec.getColorArray();
+
+                        int[] defaultColors = spec.getColorArrayOrDefault();
+                        if (colors.length == 0) {
+                            this.itemSelector.selectedType().ifPresent(slotType -> NuminaPackets.CHANNEL_INSTANCE.sendToServer(new ColorInfoPacketServerBound(slotType,
+                                    defaultColors.length > 0 ? defaultColors : newColorArray)));
+                        }
                         return new IntArrayTag(spec.getColorArray());
                     }
-                    return new IntArrayTag(new int[]{-1});
-                }).orElse(new IntArrayTag(new int[]{-1}));
+                    return new IntArrayTag(newColorArray);
+                }).orElse(new IntArrayTag(newColorArray));
     }
 
     public IntArrayTag setColorTagMaybe(List<Integer> intList) {

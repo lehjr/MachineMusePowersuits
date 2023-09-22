@@ -115,7 +115,7 @@ public class MPSItems {
     public static final RegistryObject<Item> WATER_ELECTROLYZER_MODULE = MPS_ITEMS.register(MPSRegistryNames.WATER_ELECTROLYZER_MODULE.getPath(),
             WaterElectrolyzerModule::new);
 
-    // Mining Enhancements ------------------------------------------------------------------------
+    // Mining Enchantments ------------------------------------------------------------------------
 //    public static final RegistryObject<Item> AOE_PICK_UPGRADE_MODULE = MPS_ITEMS.register(MPSRegistryNames.AOE_PICK_UPGRADE_MODULE.getPath(),
 //            AOEPickUpgradeModule::new);
     public static final RegistryObject<Item> AQUA_AFFINITY_MODULE = MPS_ITEMS.register(MPSRegistryNames.AQUA_AFFINITY_MODULE.getPath(),
@@ -124,13 +124,15 @@ public class MPSItems {
             SilkTouchModule::new);
     public static final RegistryObject<Item> FORTUNE_MODULE = MPS_ITEMS.register(MPSRegistryNames.FORTUNE_MODULE.getPath(),
             FortuneModule::new);
+
+    // Mining Enhancements ------------------------------------------------------------------------
     public static final RegistryObject<Item> VEIN_MINER_MODULE = MPS_ITEMS.register(MPSRegistryNames.VEIN_MINER_MODULE.getPath(),
             VeinMinerModule::new);
 
     // WIP
     public static final RegistryObject<Item> TUNNEL_BORE_MODULE = MPS_ITEMS.register(MPSRegistryNames.TUNNEL_BORE_MODULE.getPath(),
             TunnelBoreModule::new);
-    public static final RegistryObject<Item> AOE_PICK_UPGRADE_MODULE2 = MPS_ITEMS.register(MPSRegistryNames.AOE_PICK_UPGRADE_MODULE2.getPath(),
+    public static final RegistryObject<Item> SELECTIVE_MINER = MPS_ITEMS.register(MPSRegistryNames.AOE_PICK_UPGRADE_MODULE2.getPath(),
         AdvancedVeinMiner::new);
 
     // Movement -----------------------------------------------------------------------------------

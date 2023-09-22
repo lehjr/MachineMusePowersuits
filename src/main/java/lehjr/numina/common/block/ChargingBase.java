@@ -94,7 +94,7 @@ public class ChargingBase extends Block implements EntityBlock, SimpleWaterlogge
 
     @Override
     public void appendHoverText(ItemStack pStack, @Nullable BlockGetter pLevel, List<Component> list, TooltipFlag pFlag) {
-        list.add(Component.translatable("message.charging_base", Integer.toString(1000)));
+        list.add(Component.translatable("tooltip.numina.charging_base", Integer.toString(1000)));
     }
 
     @Override

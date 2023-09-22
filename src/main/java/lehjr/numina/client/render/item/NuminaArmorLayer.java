@@ -41,8 +41,6 @@ import lehjr.numina.common.capabilities.render.modelspec.PartSpecBase;
 import lehjr.numina.common.constants.NuminaConstants;
 import lehjr.numina.common.constants.TagConstants;
 import lehjr.numina.common.math.Color;
-import lehjr.numina.common.network.NuminaPackets;
-import lehjr.numina.common.network.packets.serverbound.CosmeticInfoPacketServerBound;
 import lehjr.numina.common.tags.NBTTagAccessor;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;

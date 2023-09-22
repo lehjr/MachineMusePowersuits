@@ -51,7 +51,4 @@ public class JSonLoader {
         }
         return data;
     }
-
-
-
 }

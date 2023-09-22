@@ -33,9 +33,11 @@ public record ColorInfoPacketServerBound(EquipmentSlot slotType, int[] tagData) 
                 EquipmentSlot slotType = message.slotType;
                 int[] tagData = message.tagData;
                 player.getItemBySlot(slotType).getCapability(NuminaCapabilities.RENDER)
-                        .ifPresent(render -> render.setColorArray(tagData));
-
-//                sendToClient(player, slotType, tagData);
+                        .ifPresent(render -> {
+                            render.setColorArray(tagData);
+                        });
+//                player.containerMenu.broadcastChanges();
+                sendToClient(player, slotType, tagData); // this seems faster than letting changes propagate through player.containerMenu mechanics
 
             });
             ctx.get().setPacketHandled(true);

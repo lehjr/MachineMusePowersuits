@@ -12,6 +12,12 @@ import net.minecraftforge.network.PacketDistributor;
 
 import java.util.function.Supplier;
 
+/**
+ * Used when changing cosmetic settings.
+ * @param slotType
+ * @param tagName
+ * @param tagData
+ */
 public record CosmeticInfoPacketServerBound(EquipmentSlot slotType, String tagName, CompoundTag tagData) {
 
     public static void encode(CosmeticInfoPacketServerBound msg, FriendlyByteBuf packetBuffer) {
@@ -41,10 +47,11 @@ public record CosmeticInfoPacketServerBound(EquipmentSlot slotType, String tagNa
 
                 ServerPlayer player = ctx.get().getSender();
                 if (player != null) {
-                    player.getItemBySlot(slotType).getCapability(NuminaCapabilities.RENDER).ifPresent(render -> {
-                        render.setRenderTag(tagData, tagName);
-                    });
 
+                    player.getItemBySlot(slotType).getCapability(
+                            NuminaCapabilities.RENDER).ifPresent(render -> render.setRenderTag(tagData, tagName));
+
+//                    player.containerMenu.broadcastChanges();
                     sendToClient(player, slotType, tagName, tagData);
                 }
             });

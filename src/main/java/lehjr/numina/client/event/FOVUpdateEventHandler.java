@@ -71,9 +71,9 @@ public class FOVUpdateEventHandler {
             if (fovToggleKey.get().consumeClick()) {
                 fovIsActive = !fovIsActive;
                 if (fovIsActive) {
-                    player.sendSystemMessage(Component.translatable("fovfixtoggle.enabled"));//, player.getUUID());
+                    player.sendSystemMessage(Component.translatable("message.numina.fovfixtoggle.disabled"));//, player.getUUID());
                 } else {
-                    player.sendSystemMessage(Component.translatable("fovfixtoggle.disabled"));//, player.getUUID());
+                    player.sendSystemMessage(Component.translatable("message.numina.fovfixtoggle.disabled"));//, player.getUUID());
                 }
             }
 

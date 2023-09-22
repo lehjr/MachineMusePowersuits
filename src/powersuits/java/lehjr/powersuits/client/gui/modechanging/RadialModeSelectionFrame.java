@@ -46,6 +46,10 @@ import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import java.util.ArrayList;
 import java.util.List;
 
+
+/*
+TODO: revamp with a set of concentric circles to sort modules by category
+ */
 public class RadialModeSelectionFrame extends AbstractGuiFrame {
     boolean visible = true;
     boolean enabled = true;

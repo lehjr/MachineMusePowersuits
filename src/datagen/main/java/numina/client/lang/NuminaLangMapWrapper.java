@@ -1,19 +1,25 @@
 package numina.client.lang;
 
+import com.google.common.hash.Hashing;
+import com.google.common.hash.HashingOutputStream;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
+import com.google.gson.stream.JsonWriter;
 import lehjr.numina.common.base.NuminaLogger;
 import net.minecraft.data.CachedOutput;
+import net.minecraft.util.GsonHelper;
 import org.apache.commons.io.FilenameUtils;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
+
+import static net.minecraft.data.DataProvider.KEY_COMPARATOR;
 
 public class NuminaLangMapWrapper {
     private static final Gson GSON = (new GsonBuilder()).setPrettyPrinting().disableHtmlEscaping().create();
@@ -120,42 +126,18 @@ public class NuminaLangMapWrapper {
         return jsonObject;
     }
 
-    private void save(CachedOutput cache, Object object, Path target, boolean overwrite) throws IOException {
-//        if (locale.startsWith("zh_")) {
-            fileWriter(cache, object, target, overwrite);
-//        } else {
-//            String data = GSON.toJson(object);
-//            data = JavaUnicodeEscaper.outsideOf(0, 0x7f).translate(data); // Escape unicode after the fact so that it's not double escaped by GSON
-//
-//            String hash = IDataProvider.SHA1.hashUnencodedChars(data).toString();
-//            if (!Objects.equals(cache.getHash(target), hash) || (!Files.exists(target) || overwrite)) {
-//                Files.createDirectories(target.getParent());
-//
-//                try (BufferedWriter bufferedwriter = Files.newBufferedWriter(target)) {
-//                    bufferedwriter.write(data);
-//                }
-//            }
-//            cache.putNew(target, hash);
-//        }
-    }
+    public void save(CachedOutput pOutput, JsonObject pJson, Path pPath, boolean overwrite) throws IOException {
+        System.out.println("json: " + pJson.toString());
 
-
-    public void fileWriter(CachedOutput cache, Object object, Path target, boolean overwrite) {
-        String dataOut = GSON.toJson(object);
-//        String hash = DataProvider..f_123918_.hashUnencodedChars(dataOut).toString();
-//        try {
-//            Files.createDirectories(target.getParent());
-//            if (overwrite || !target.toFile().exists()) {
-//                FileWriter fileWriter = new FileWriter(target.toFile());
-//                fileWriter.write(dataOut);
-//                fileWriter.flush();
-//                fileWriter.close();
-//            }
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//
-//        cache.m_123940_(target, hash);
+        ByteArrayOutputStream bytearrayoutputstream = new ByteArrayOutputStream();
+        HashingOutputStream hashingoutputstream = new HashingOutputStream(Hashing.sha1(), bytearrayoutputstream);
+        Writer writer = new OutputStreamWriter(hashingoutputstream, StandardCharsets.UTF_8);
+        JsonWriter jsonwriter = new JsonWriter(writer);
+        jsonwriter.setSerializeNulls(false);
+        jsonwriter.setIndent("  ");
+        GsonHelper.writeValue(jsonwriter, pJson, KEY_COMPARATOR);
+        jsonwriter.close();
+        pOutput.writeIfNeeded(pPath, bytearrayoutputstream.toByteArray(), hashingoutputstream.hash());
     }
 }
 

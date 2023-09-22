@@ -92,7 +92,7 @@ public class MPSRegistryNames {
 
     // WIP
     public static final ResourceLocation TUNNEL_BORE_MODULE = getRegName("tunnel_bore"); // no icon
-    public static final ResourceLocation AOE_PICK_UPGRADE_MODULE2 = getRegName("aoe_pick_upgrade2"); // no icon
+    public static final ResourceLocation AOE_PICK_UPGRADE_MODULE2 = getRegName("selective_miner"); // no icon
 
     // Movement -----------------------------------------------------------------------------------
     public static final ResourceLocation BLINK_DRIVE_MODULE = getRegName("blink_drive");
