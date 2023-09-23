@@ -37,7 +37,7 @@
   "module.tradeoff.punchEnergyCon": "空手能量消耗",
   "javaModel.powerfist_fingers_normal_left.ringfinger1.partName": "无名指 1",
   "javaModel.powerfist_fingers_firing_left.middlefinger2.partName": "中指 2",
-  "item.powersuits.water_electrolyzer": "电解水模块",
+
   "model.mps_arms.arms3.partName": "右肩护甲",
   "module.tradeoff.compensation": "补偿",
   "item.powersuits.shock_absorber": "减震器",
@@ -46,7 +46,7 @@
   "javaModel.powerfist.mainarm.partName": "主护甲",
   "module.tradeoff.opacity": "Lux Capacitor Opacity",
 
-  "item.powersuits.fluid_tank.desc": "Stores fluid to enhance the performance of the cooling system.",
+
   "model.armor2.bootmain1.partName": "右靴",
   "model.mps_helm.helm_tubes.partName": "导管",
   "javaModel.powerfist_fingers_normal_left.thumb1.partName": "拇指 1",
@@ -102,7 +102,7 @@
   "model.mps_helm.visor.partName": "面罩",
   "item.powersuits.diamond_pick_upgrade.desc": "钻石强化过的镐模块可以让你挖掘黑曜石。*需要先安装镐模块才可安装此模块*",
   "item.powersuits.jet_boots.desc": "喷射加速模块虽不如喷气背包，但它们至少可以反重力。",
-  "item.powersuits.mob_repulsor.desc": "激活时会将怪物推开，但会持续消耗能量。鉴于该模块能耗高，强烈建议将该模块绑定快捷键。",
+
   "module.tradeoff.redHue": "光能容器红色色调",
   "javaModel.powerfist_fingers_normal.pinky1.partName": "小指 1",
   "module.tradeoff.heatGeneration": "热量产出",
@@ -119,7 +119,7 @@
   "javaModel.powerfist_fingers_firing.index2.partName": "食指 2",
   "javaModel.powerfist_fingers_firing_left.index2.partName": "食指 2",
   "javaModel.citizenjoe_armorskin.specName": "Citizen Joe 的护甲皮肤",
-  "item.powersuits.aqua_affinity": "水亲和模块",
+
   "javaModel.powerfist.supportleft3.partName": "左部支架 3",
   "module.tradeoff.radius": "半径",
   "module.tradeoff.fOVMult": "FOV 倍率",
@@ -172,7 +172,7 @@
   "javaModel.powerfist_fingers_normal_left.thumb2.partName": "拇指 2",
   "model.mps_arms.crystal_shoulder_1.partName": "左肩水晶",
   "module.tradeoff.aoe2Limit": "Block Limit",
-  "item.powersuits.cooling_system.desc": "Cools down heat-producing modules quicker. Add a fluid tank module and fluid to enhance performance.",
+
   "model.mps_chest.crystal_belt.partName": "腰带水晶",
   "module.tradeoff.jetpackThrust": "喷气背包推力",
   "item.powersuits.blade_launcher.desc": "可弹射出旋转（或者，剪切一切）的死亡之刃。",
@@ -216,7 +216,7 @@
   "model.mps_helm.modelName": "MPS 头盔",
   "model.armor2.modelName": "护甲 2",
   "javaModel.powerfist_left.supportleft4.partName": "左部支架 4",
-  "item.powersuits.mob_repulsor": "排斥力场模块",
+
 
   "gui.powersuits.noModulesFound.line2": "物品栏中发现目标，我们开始吧！",
   "keybinding.powersuits.sprint_assist": "Toggle Sprint Assist",
@@ -249,17 +249,17 @@
   "item.powersuits.luxcapacitor_module": "光能容器",
   "keybinding.powersuits.cycleToolForward": "Cycle Tool Forward (MPS)",
   "javaModel.powerfist.supportright2.partName": "右部支架 2",
-  "item.powersuits.cooling_system": "基础冷却系统",
+
   "model.mps_chest.modelName": "MPS 胸甲",
   "module.tradeoff.fortuneEnCon": "时运能量消耗",
   "item.powersuits.compass": "罗盘",
   "javaModel.powerfist_fingers_normal_left.pinky2.partName": "小指 2",
-  "item.powersuits.silk_touch": "精准采集附魔",
+
   "keybinding.powersuits.generator_solar": "Toggle Solar Generator",
   "javaModel.powerfist_left.supportright2.partName": "右部支架 2",
   "gui.powersuits.reset": "Reset",
   "keybinding.powersuits.cycleToolBackward": "Cycle Tool Backward (MPS)",
-  "item.powersuits.fluid_tank": "Fluid Tank",
+
   "module.tradeoff.nightTimeEnergyGen": "夜间能量产出",
   "javaModel.powerfist.armorleft.partName": "左部护甲",
   "model.armor2.leggray1.partName": "右腿基件",
@@ -331,10 +331,10 @@
   "module.tradeoff.shearsHarvestSpeed": "剪刀采掘速度",
   "item.powersuits.vein_miner.desc": "A module for mining ore veins",
   "javaModel.powerfist_left.supportright1.partName": "右部支架 1",
-  "item.powersuits.aqua_affinity.desc": "提高你在水下使用工具的速度。",
+
   "module.tradeoff.enchLevel": "附魔等级",
   "javaModel.powerfist_fingers_firing.middlefinger1.partName": "中指 1",
-  "item.powersuits.water_electrolyzer.desc": "当你在水下断氧时，这个模块将会震荡并电解你周围的水，产生可以用来呼吸的小气泡。",
+
   "javaModel.powerfist_left.crystal.partName": "水晶",
   "javaModel.powerfist_left.modelName": "动力拳套左手",
   "javaModel.powerfist_left.fingerguard.partName": "指套",
@@ -347,7 +347,7 @@
   "keybinding.powersuits.glider": "Toggle Glider",
   "block.powersuits.tinkertable": "动力装甲改装台",
   "item.powersuits.flight_control": "飞行控制",
-  "item.powersuits.silk_touch.desc": "来自精准采集附魔的模块。",
+
   "item.powersuits.jetpack": "喷气背包",
   "module.tradeoff.jumpEnergy": "跳跃能量消耗",
   "item.powersuits.vein_miner": "Vein Miner",
@@ -365,8 +365,7 @@
   "module.tradeoff.railgunHeatEm": "磁轨炮热量散出",
   "model.mps_chest.chest_main.partName": "胸甲电镀板",
   "gui.powersuits.install.desc": "Installs the mopdule in the selected item",
-  "item.powersuits.auto_feeder.desc": "当你感到饥饿的时候，该模块会使用背包中最左下方的食物给你喂食，多余的食物会被储存起来以备不时之需。",
-  "javaModel.powerfist.supportright4.partName": "右部支架 4",
+"javaModel.powerfist.supportright4.partName": "右部支架 4",
   "gui.powersuits.salvage.desc": "Remove module from selected item and return to player",
   "item.powersuits.shovel.desc": "铲子，为沙子和泥土等松软物质而生。",
   "javaModel.powerfist.supportleft5.partName": "左部支架 5",
@@ -412,7 +411,7 @@
   "javaModel.powerfist_left.supportleft2.partName": "左部支架 2",
   "module.tradeoff.daytimeHeatGen": "白天热量产出",
   "module.tradeoff.fluidTankSize": "Tank Size",
-  "item.powersuits.auto_feeder": "自动喂食模块",
+
   "model.jetpack.default.partName": "主体",
   "keybinding.powersuits.fluid_tank": "Toggle Fluid Tank",
   "gui.powersuits.tab.keybinds": "按键",

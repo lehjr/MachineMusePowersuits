@@ -171,16 +171,11 @@ module.powersuits.apiaristArmor.name=Броня пчеловода
 module.powersuits.apiaristArmor.desc=Интегрирует костюм пчеловода модификации Forestry в Вашу броню.
 module.powersuits.hazmat.name=Защита от радиации
 module.powersuits.hazmat.desc=Защитит Вас от удара электрическим током и радиационного излучения. *Улучшение должно быть на каждой части брони для 100% защиты*
-module.powersuits.autoFeeder.name=Автоподатчик
-module.powersuits.autoFeeder.desc=Всякий раз, когда вы голодны, этот модуль будет захватывать нижний левый элемент питания из вашего инвентаря и подавать его вам, сохраняя остальное на потом.
 module.powersuits.basicCoolingSystem.name=Базовая система охлаждения
 module.powersuits.basicCoolingSystem.desc=быстрее охлаждает теплопроизводительные модули.
 module.powersuits.advancedCoolingSystem.name=Система охлаждения жидкого азота
 module.powersuits.advancedCoolingSystem.desc=охлаждает теплопроизводительные модули даже быстрее, чем стандартная система охлаждения.
-module.powersuits.mobRepulsor.name=Mob Repulsor
-module.powersuits.mobRepulsor.desc=Выталкивает мобов от вас при активации, но постоянно истощает силу. Настоятельно рекомендуется установить этот модуль на клавиатуру из-за высокой потребления FE энергии.
-module.powersuits.waterElectrolyzer.name=Электролизёр воды
-module.powersuits.waterElectrolyzer.desc=Когда у вас заканчивается воздух, этот модуль будет трясти вокруг вас водой, электролизуя небольшой пузырь, чтобы дышать.
+
 
 module.powersuits.blinkDrive.name=Мгновенный телепорт
 module.powersuits.blinkDrive.desc=Доберитесь до точки C из точки A через точку B, при том что точка B спрятана в пространстве-времени.
@@ -228,15 +223,13 @@ module.powersuits.madModule.name=Добытчик жил
 module.powersuits.madModule.desc=Добытчик жил из мода "Mekanism's Atomic Disasemmber"
 module.powersuits.fortuneModule.name=Зачарование Удача
 module.powersuits.fortuneModule.desc=Модуль обеспечивающий зачарование Удача
-module.powersuits.silk_touch.name=Зачарование Шёлковое касание
-module.powersuits.silk_touch.desc=Модуль который обеспечивает зачарование Шёлковое касание
+
 
 module.powersuits.appengECWirelessFluid.name=Терминал беспроводной связи ExtraCells
 module.powersuits.appengECWirelessFluid.desc=Терминал беспроводной связи Applied Energistics ExtraCells, встроенный в ваш электроинструмент.
 module.powersuits.appengWireless.name=беспроводной терминал AppEng
 module.powersuits.appengWireless.desc=беспроводной терминал Applied Energistics, встроенный в ваш электроинструмент.
-module.powersuits.aquaAffinity.name=Родство с водой
-module.powersuits.aquaAffinity.desc=Уменьшает понижение скорости инструмента под водой.
+
 module.powersuits.axe.name=Топор
 module.powersuits.axe.desc=Топоры в основном нужны для рубки деревьев.
 module.powersuits.chisel.name=Долото
