@@ -1,6 +1,5 @@
 package powersuits.common;
 
-import powersuits.client.lang.MPSLanguageProvider;
 import powersuits.common.loot.MPSBlockTagProvider;
 import powersuits.common.loot.MPSLootTableProvider;
 import lehjr.powersuits.common.constants.MPSConstants;
@@ -9,7 +8,6 @@ import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import numina.client.lang.NuminaLangParser;
 
 @Mod.EventBusSubscriber(modid = MPSConstants.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class PowersuitsDataGenerator {

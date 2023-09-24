@@ -126,7 +126,7 @@
   "module.tradeoff.daytimeEnergyGen": "Geração diurna de energia",
   "module.tradeoff.plasmaExplosiveness": "Explosividade no plasma",
   "keybinding.powersuits.aoe_pick_upgrade": "Toggle Obsolete AoE",
-  "model.armor2.leggray.partName": "Base da perna esquerda",
+
   "module.tradeoff.coolingPower": "Poder de resfriamento básico",
   "model.mps_pantaloons.modelName": "MPS Pantaloons",
   "module.tradeoff.diamondPickEnergy": "Energy Consumption",
@@ -181,7 +181,7 @@
   "module.tradeoff.waterElectrolyzerEnergy": "Energy Consumption",
   "module.tradeoff.energyConsumption": "Energy Consumption",
   "module.tradeoff.fieldStrength": "Força do Campo",
-  "model.armor2.legbit.partName": "Proteção de perna esquerda",
+
   "model.mps_helm.helm_tube_entry1.partName": "Entrada do Tubo Esquerdo",
   "javaModel.powerfist_fingers_firing_left.modelName": "Punho de Poder Esquerdo Fingers Firing Pose",
   "javaModel.powerfist_fingers_firing_left.thumb1.partName": "Thumb 1",
@@ -260,14 +260,14 @@
   "item.powersuits.fluid_tank": "Fluid Tank",
   "module.tradeoff.nightTimeEnergyGen": "Geração de Energia Noturna",
   "javaModel.powerfist.armorleft.partName": "Armadura Esquerda",
-  "model.armor2.leggray1.partName": "Base da perna direita",
+
   "model.armor2.helmetglow1.partName": "Tubos e viseira do capacete",
   "module.tradeoff.shovelEnergy": "Consumo de energia da pá",
   "module.tradeoff.green": "verde",
 
   "module.tradeoff.heatEmission": "Emissão de calor",
   "module.tradeoff.sprintExComp": "Compensação por Exaustão de Sprint",
-  "model.armor2.armgray1.partName": "Base do braço",
+
   "model.mps_chest.chest_padding.partName": "Padding do peito",
   "module.tradeoff.blue": "Azul",
   "keybinding.powersuits.climb_assist": "Toggle Uphill Step Assist",
@@ -293,7 +293,7 @@
   "item.powersuits.axe": "Machado",
   "model.mps_boots.boots2.partName": "Inicialização Esquerda",
 
-  "model.armor2.legglow.partName": "Luz da perna esquerda",
+
   "item.powersuits.night_vision": "Visão Noturna",
   "item.powersuits.piglin_pacification_module.desc": "Simple module to make Piglins neutral as if wearing gold armor",
   "item.powersuits.luxcapacitor_module.desc": "Lança um número virtualmente infinito de fontes de luz atraentes na parede.",
@@ -426,7 +426,7 @@
   "module.tradeoff.aquaHarvSpeed": "Velocidade de Colheita Subaquática",
   "javaModel.powerfist.supportleftfront.partName": "Suporte à Frente Esquerda",
   "keybinding.powersuits.aqua_affinity": "Toggle Aqua Affinity",
-  "model.armor2.legbit1.partName": "Proteção da perna direita",
+
   "javaModel.powerfist_left.wristbottomleft.partName": "Parte Inferior do Pulso Esquerda",
   "javaModel.powerfist.supportright1.partName": "Suporte certo 1",
   "javaModel.powerfist_fingers_firing_left.index1.partName": "Índice 1",

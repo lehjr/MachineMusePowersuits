@@ -182,7 +182,6 @@
   "module.tradeoff.waterElectrolyzerEnergy": "Energy Consumption",
   "module.tradeoff.energyConsumption": "Energy Consumption",
   "module.tradeoff.fieldStrength": "Força do Campo",
-  "model.armor2.legbit.partName": "Left Leg Protection",
   "model.mps_helm.helm_tube_entry1.partName": "Left Tube Entry",
   "javaModel.powerfist_fingers_firing_left.modelName": "Power Fist Left Fingers Firing Pose",
   "javaModel.powerfist_fingers_firing_left.thumb1.partName": "Thumb 1",
@@ -196,7 +195,7 @@
   "javaModel.powerfist_left.wristbottomright.partName": "Wrist Bottom Right",
   "block.powersuits.luxcapacitor": "Capacitor Prismático",
   "model.armor2.armglow1.partName": "Shoulder Light",
-  "model.armor2.legglow1.partName": "Right Leg Light",
+
   "item.powersuits.piglin_pacification_module": "Piglin Pacification Module",
 
   "item.powersuits.hoe.desc": "Uma forma de lavrar automatizada para criar grandes campos de plantação de uma só vez.",
@@ -295,7 +294,7 @@
   "item.powersuits.axe": "Módulo - Machado",
   "model.mps_boots.boots2.partName": "Left Boot",
 
-  "model.armor2.legglow.partName": "Left Leg Light",
+
   "item.powersuits.night_vision": "Visão Noturna",
   "item.powersuits.piglin_pacification_module.desc": "Simple module to make Piglins neutral as if wearing gold armor",
   "item.powersuits.luxcapacitor_module.desc": "Com isso, você pode lançar luzes bastante atrativas a uma superfície.",
@@ -429,7 +428,7 @@
   "module.tradeoff.aquaHarvSpeed": "Velocidade de Colheita Subaquática",
   "javaModel.powerfist.supportleftfront.partName": "Support Left Front",
   "keybinding.powersuits.aqua_affinity": "Toggle Aqua Affinity",
-  "model.armor2.legbit1.partName": "Right Leg Protection",
+
   "javaModel.powerfist_left.wristbottomleft.partName": "Wrist Bottom Left",
   "javaModel.powerfist.supportright1.partName": "Support Right 1",
   "javaModel.powerfist_fingers_firing_left.index1.partName": "Index 1",

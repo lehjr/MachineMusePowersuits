@@ -127,7 +127,7 @@
   "module.tradeoff.daytimeEnergyGen": "白天能量产出",
   "module.tradeoff.plasmaExplosiveness": "等离子爆炸",
   "keybinding.powersuits.aoe_pick_upgrade": "Toggle Obsolete AoE",
-  "model.armor2.leggray.partName": "左腿基件",
+
   "module.tradeoff.coolingPower": "基础冷却功率",
   "model.mps_pantaloons.modelName": "MPS 护腿",
   "module.tradeoff.diamondPickEnergy": "Energy Consumption",
@@ -182,7 +182,7 @@
   "module.tradeoff.waterElectrolyzerEnergy": "Energy Consumption",
   "module.tradeoff.energyConsumption": "Energy Consumption",
   "module.tradeoff.fieldStrength": "力场强度",
-  "model.armor2.legbit.partName": "左腿保护",
+
   "model.mps_helm.helm_tube_entry1.partName": "左侧导管入口",
   "javaModel.powerfist_fingers_firing_left.modelName": "动力拳套左手射击姿势",
   "javaModel.powerfist_fingers_firing_left.thumb1.partName": "拇指 1",
@@ -196,7 +196,7 @@
   "javaModel.powerfist_left.wristbottomright.partName": "右下腕部",
   "block.powersuits.luxcapacitor": "光能容器",
   "model.armor2.armglow1.partName": "肩灯",
-  "model.armor2.legglow1.partName": "右腿灯",
+
   "item.powersuits.piglin_pacification_module": "Piglin Pacification Module",
 
   "item.powersuits.hoe.desc": "一个自动翻地模块，让你瞬间犁出大片土地。",
@@ -262,14 +262,14 @@
 
   "module.tradeoff.nightTimeEnergyGen": "夜间能量产出",
   "javaModel.powerfist.armorleft.partName": "左部护甲",
-  "model.armor2.leggray1.partName": "右腿基件",
+
   "model.armor2.helmetglow1.partName": "头盔导管和面罩",
   "module.tradeoff.shovelEnergy": "铲能量消耗",
   "module.tradeoff.green": "绿",
 
   "module.tradeoff.heatEmission": "散热量",
   "module.tradeoff.sprintExComp": "冲刺饥饿消耗",
-  "model.armor2.armgray1.partName": "手臂基件",
+
   "model.mps_chest.chest_padding.partName": "胸垫",
   "module.tradeoff.blue": "蓝",
   "keybinding.powersuits.climb_assist": "Toggle Uphill Step Assist",
@@ -295,7 +295,7 @@
   "item.powersuits.axe": "斧",
   "model.mps_boots.boots2.partName": "左靴",
 
-  "model.armor2.legglow.partName": "左腿灯",
+
   "item.powersuits.night_vision": "夜视",
   "item.powersuits.piglin_pacification_module.desc": "Emulates gold armor for Piglin pacification.",
   "item.powersuits.luxcapacitor_module.desc": "在墙上释放出一个无限发光的光源。",
@@ -431,7 +431,7 @@
   "module.tradeoff.aquaHarvSpeed": "Harvest Speed",
   "javaModel.powerfist.supportleftfront.partName": "左部前支架",
   "keybinding.powersuits.aqua_affinity": "Toggle Aqua Affinity",
-  "model.armor2.legbit1.partName": "右腿保护",
+
   "javaModel.powerfist_left.wristbottomleft.partName": "左下腕部",
   "javaModel.powerfist.supportright1.partName": "右部支架 1",
   "javaModel.powerfist_fingers_firing_left.index1.partName": "食指 1",

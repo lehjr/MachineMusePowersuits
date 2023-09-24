@@ -125,7 +125,7 @@
   "module.tradeoff.daytimeEnergyGen": "Energieerzeugung tagsüber",
   "module.tradeoff.plasmaExplosiveness": "Plasma-Explosivität",
   "keybinding.powersuits.aoe_pick_upgrade": "Toggle Obsolete AoE",
-  "model.armor2.leggray.partName": "Linke Beinbasis",
+
   "module.tradeoff.coolingPower": "Grundlegende Kühlleistung",
   "model.mps_pantaloons.modelName": "MPS Pantaloons",
   "module.tradeoff.diamondPickEnergy": "Energy Consumption",
@@ -179,7 +179,7 @@
   "module.tradeoff.waterElectrolyzerEnergy": "Energy Consumption",
   "module.tradeoff.energyConsumption": "Energy Consumption",
   "module.tradeoff.fieldStrength": "Feldstärke",
-  "model.armor2.legbit.partName": "Linker Beinschutz",
+
   "model.mps_helm.helm_tube_entry1.partName": "Linke Tube-Eingabe",
   "javaModel.powerfist_fingers_firing_left.modelName": "Power Fist Linke Finger Schuss Pose",
   "javaModel.powerfist_fingers_firing_left.thumb1.partName": "Daumen 1",
@@ -193,7 +193,7 @@
   "javaModel.powerfist_left.wristbottomright.partName": "Wrist Bottom Right",
   "block.powersuits.luxcapacitor": "Luxkompensator",
   "model.armor2.armglow1.partName": "Schulterlicht",
-  "model.armor2.legglow1.partName": "Rechtes Beinlicht",
+
   "item.powersuits.piglin_pacification_module": "Piglin Pacification Module",
 
   "item.powersuits.hoe.desc": "Ein automatisches Bodenbearbeitungs-Addon, mit dem Sie problemlos große Flächen gleichzeitig bebauen können.",
@@ -258,14 +258,14 @@
   "item.powersuits.fluid_tank": "Fluid Tank",
   "module.tradeoff.nightTimeEnergyGen": "Energieerzeugung bei Nacht",
   "javaModel.powerfist.armorleft.partName": "Rüstung links",
-  "model.armor2.leggray1.partName": "Rechte Beinbasis",
+
   "model.armor2.helmetglow1.partName": "Helmtubes und Visier",
   "module.tradeoff.shovelEnergy": "Energieverbrauch der Schaufel",
   "module.tradeoff.green": "Grün",
 
   "module.tradeoff.heatEmission": "Wärmeabgabe",
   "module.tradeoff.sprintExComp": "Sprint-Ermüdungsausgleich",
-  "model.armor2.armgray1.partName": "Armbasis",
+
   "model.mps_chest.chest_padding.partName": "Brustpolsterung",
   "module.tradeoff.blue": "Blau",
   "keybinding.powersuits.climb_assist": "Toggle Uphill Step Assist",
@@ -291,7 +291,7 @@
   "item.powersuits.axe": "Axt",
   "model.mps_boots.boots2.partName": "Left Boot",
 
-  "model.armor2.legglow.partName": "Linkes Beinlicht",
+
   "item.powersuits.night_vision": "Nachtsichtgerät",
   "item.powersuits.piglin_pacification_module.desc": "Emulates gold armor for Piglin pacification.",
   "item.powersuits.luxcapacitor_module.desc": "Starte eine nahezu unendliche Anzahl attraktiver Lichtquellen an der Wand.",
@@ -325,7 +325,7 @@
   "item.powersuits.blink_drive.desc": "Erhalten Sie von Punkt A zu Punkt C über Punkt B, wo Punkt B eine Falte in Raum und Zeit ist.",
 
   "module.tradeoff.shearsHarvestSpeed": "Geschwindigkeit beim Scheren der Ernte",
-  "item.powersuits.vein_miner.desc": "A module for mining ore veins",
+
   "javaModel.powerfist_left.supportright1.partName": "Unterstützungsrecht 1",
 
   "module.tradeoff.enchLevel": "Verzauberungsstufe",
@@ -346,7 +346,7 @@
   "item.powersuits.silk_touch.desc": "A module that provides the Silk Touch enchantment",
   "item.powersuits.jetpack": "Raketenrucksack",
   "module.tradeoff.jumpEnergy": "Jump Energieverbrauch",
-  "item.powersuits.vein_miner": "Vein Miner",
+
   "keybinding.powersuits.parachute": "Toggle Parachute",
   "javaModel.powerfist_fingers_firing_left.pinky2.partName": "kleiner Finger 2",
   "module.tradeoff.heatActivationPercent": "Heat Activation Percent",
@@ -426,7 +426,7 @@
   "module.tradeoff.aquaHarvSpeed": "Unterwassererntegeschwindigkeit",
   "javaModel.powerfist.supportleftfront.partName": "Support Left Front",
   "keybinding.powersuits.aqua_affinity": "Toggle Aqua Affinity",
-  "model.armor2.legbit1.partName": "Rechter Beinschutz",
+
   "javaModel.powerfist_left.wristbottomleft.partName": "Wrist Bottom Left",
   "javaModel.powerfist.supportright1.partName": "Unterstützungsrecht 1",
   "javaModel.powerfist_fingers_firing_left.index1.partName": "Index 1",

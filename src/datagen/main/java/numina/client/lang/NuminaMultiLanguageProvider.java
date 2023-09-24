@@ -155,20 +155,10 @@ public class NuminaMultiLanguageProvider extends MulitiLanguageProvider {
     }
 
     void addToolTips() {
-        //
-        Map<Localizations, String> tmp = new HashMap<>();
-        tmp.put(Localizations.DE_DE, "%d/%d FE");
-        tmp.put(Localizations.EN_US, "%d/%d FE");
-        tmp.put(Localizations.FR_FR, "%d/%d FE");
-        tmp.put(Localizations.PT_BR, "%d/%d FE");
-        tmp.put(Localizations.PT_PT, "%d/%d FE");
-        tmp.put(Localizations.RU_RU, "%d/%d FE");
-        tmp.put(Localizations.ZH_CN, "%d/%d FE");
-        add("tooltip.numina.battery.energy", tmp);
-
+        addTranslationTopAll("tooltip.numina.battery.energy", "%d/%d FE");
 
         // Press SHIFT ---------------------------------------------------------------------------------
-        tmp = new HashMap<>();
+        Map<Localizations, String> tmp = new HashMap<>();
         tmp.put(Localizations.DE_DE, "Modus ändern: Halte die Nummer des Hotbar-Slots gedrückt, in dem sich die Power Fist befindet.");
         tmp.put(Localizations.EN_US, "Press SHIFT for more information.");
         tmp.put(Localizations.FR_FR, "Changer de mode : appuyez longuement sur le numéro de l’emplacement de la barre d’accès dans laquelle se trouve le Power Fist.");

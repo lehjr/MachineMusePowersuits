@@ -74,8 +74,6 @@ public class MulitiLanguageProvider implements DataProvider {
         }});
     }
 
-
-
     @Override
     public String getName() {
         return "MultiLanguageProvider";

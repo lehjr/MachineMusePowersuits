@@ -127,7 +127,7 @@
   "module.tradeoff.daytimeEnergyGen": "Production d'énergie diurne",
   "module.tradeoff.plasmaExplosiveness": "Explosivité au plasma",
   "keybinding.powersuits.aoe_pick_upgrade": "Toggle Obsolete AoE",
-  "model.armor2.leggray.partName": "Base de la jambe gauche",
+
   "module.tradeoff.coolingPower": "Puissance de refroidissement de base",
   "model.mps_pantaloons.modelName": "Pantalon MPS",
   "module.tradeoff.diamondPickEnergy": "Energy Consumption",
@@ -182,7 +182,7 @@
   "module.tradeoff.waterElectrolyzerEnergy": "Energy Consumption",
   "module.tradeoff.energyConsumption": "Energy Consumption",
   "module.tradeoff.fieldStrength": "Force du champ",
-  "model.armor2.legbit.partName": "Protection de la jambe gauche",
+
   "model.mps_helm.helm_tube_entry1.partName": "Entrée du tube gauche",
   "javaModel.powerfist_fingers_firing_left.modelName": "Pose de coups de poing gauche",
   "javaModel.powerfist_fingers_firing_left.thumb1.partName": "Pouce 1",
@@ -196,7 +196,7 @@
   "javaModel.powerfist_left.wristbottomright.partName": "Poignet bas droite",
   "block.powersuits.luxcapacitor": "Condensateur Lux",
   "model.armor2.armglow1.partName": "Lumière d'épaule",
-  "model.armor2.legglow1.partName": "Lumière de la jambe droite",
+
   "item.powersuits.piglin_pacification_module": "Piglin Pacification Module",
 
   "item.powersuits.hoe.desc": "Un module de laboratoire automatisé permettant de travailler rapidement de grandes portions de terre.",
@@ -262,14 +262,14 @@
   "item.powersuits.fluid_tank": "Fluid Tank",
   "module.tradeoff.nightTimeEnergyGen": "Production d'énergie nocturne",
   "javaModel.powerfist.armorleft.partName": "Armure à gauche",
-  "model.armor2.leggray1.partName": "Base de la jambe droite",
+
   "model.armor2.helmetglow1.partName": "Tubes de casque et visière",
   "module.tradeoff.shovelEnergy": "Consommation d'énergie de la pelle",
   "module.tradeoff.green": "Vert",
 
   "module.tradeoff.heatEmission": "Emission de chaleur",
   "module.tradeoff.sprintExComp": "Compensation d'épuisement de sprint",
-  "model.armor2.armgray1.partName": "Base du bras",
+
   "model.mps_chest.chest_padding.partName": "Rembourrage de la poitrine",
   "module.tradeoff.blue": "Bleu",
   "keybinding.powersuits.climb_assist": "Toggle Uphill Step Assist",
@@ -295,7 +295,7 @@
   "item.powersuits.axe": "Hache",
   "model.mps_boots.boots2.partName": "Amorçage à gauche",
 
-  "model.armor2.legglow.partName": "Lumière de la jambe gauche",
+
   "item.powersuits.night_vision": "Vision nocturne",
   "item.powersuits.piglin_pacification_module.desc": "Simple module to make Piglins neutral as if wearing gold armor",
   "item.powersuits.luxcapacitor_module.desc": "Lance une quantité virtuellement infinie de sources lumineuses attractives sur les murs.",
@@ -429,7 +429,7 @@
   "module.tradeoff.aquaHarvSpeed": "Vitesse de récupération sous l'eau",
   "javaModel.powerfist.supportleftfront.partName": "Support Left Front",
   "keybinding.powersuits.aqua_affinity": "Toggle Aqua Affinity",
-  "model.armor2.legbit1.partName": "Protection de la jambe droite",
+
   "javaModel.powerfist_left.wristbottomleft.partName": "Poignet bas gauche",
   "javaModel.powerfist.supportright1.partName": "Soutien droit 1",
   "javaModel.powerfist_fingers_firing_left.index1.partName": "Indice 1",
