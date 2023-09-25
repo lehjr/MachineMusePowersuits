@@ -13,7 +13,7 @@
   "item.powersuits.magnet": "Magnético",
   "item.powersuits.melee_assist.desc": "Um addon muito mais simples, faz com que seus golpes de powertool sejam mais duros.",
   "keybinding.powersuits.cooling_system": "Toggle Cooling System",
-  "model.armor2.chestglowfront.partName": "Cristal de Poder Frontal",
+
   "keybinding.powersuits.jump_assist": "Toggle Jump Assist",
   "javaModel.powerfist.supportright5.partName": "Suporte certo 5",
   "item.powersuits.plating_leather": "Revestimento de couro",
@@ -229,7 +229,7 @@
   "module.tradeoff.red": "Vermelho",
 
   "keybinding.powersuits.generator_solar_adv": "Toggle Advanced Solar Generator",
-  "model.armor2.chestback1.partName": "Voltar para a proteção do peito",
+
   "javaModel.powerfist_left.supportrightfront.partName": "Suporte à frente direita",
   "module.tradeoff.aoeEnergy": "Consumo de Energia AoE",
   "module.tradeoff.aquaPower": "Power",
@@ -323,7 +323,7 @@
   "javaModel.powerfist.supportleft4.partName": "Suporte Esquerda 4",
   "model.armor2.chestgray.partName": "Base do Peito",
   "javaModel.powerfist_fingers_firing_left.ringfinger1.partName": "Dedo anelar 1",
-  "model.armor2.chestglowback.partName": "Cristais de Poder Espinhal",
+
   "item.powersuits.blink_drive.desc": "Vá do ponto A ao ponto C passando pelo ponto B, onde o ponto B é uma dobra no espaço e no tempo.",
 
   "module.tradeoff.shearsHarvestSpeed": "Corta a Velocidade da Colheita",
@@ -338,7 +338,7 @@
   "item.powersuits.transparent_armor.desc": "Torne o item transparente, para que você possa mostrar sua pele sem perder a armadura.",
   "module.tradeoff.flintAndSteelEnergy": "Energy Consumption",
   "module.tradeoff.blinkDriveEnergyCon": "Consumo de Energia do Drive de Blink",
-  "model.armor2.armmain1.partName": "Proteção de braço e ombro",
+
   "module.tradeoff.railgunEnergyCost": "Custo de Energia Railgun",
   "keybinding.powersuits.glider": "Toggle Glider",
   "block.powersuits.tinkertable": "Mesa de Trabalho Power Armor",

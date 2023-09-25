@@ -376,11 +376,11 @@ model.armor2.helmetglow1.partName=Шлемы и козырьки шлема
 model.armor2.helmetmain.partName=Шлем
 model.armor2.chestgray.partName=Основа груди
 model.armor2.chestmain.partName=Защита переднего сустава
-model.armor2.chestback1.partName=Назад Защита груди
-model.armor2.chestglowfront.partName=Фронтальный Энергетический Кристал
-model.armor2.chestglowback.partName=Кристаллы позвоночной энергии
-model.armor2.armglow1.partName=Плечевой свет
-model.armor2.armmain1.partName=Защита рук и плеч
+
+
+
+
+
 
 model.armor2.armglow.partName=Плечевой свет
 model.armor2.armmain.partName=Защита рук и плеч
@@ -391,10 +391,9 @@ model.armor2.legglow.partName=Левая нога
 
 
 
-model.armor2.bootmain1.partName=Правильная загрузка
+
 model.armor2.bootglow1.partName=Правильный загрузочный свет
-model.armor2.bootmain.partName=Левая загрузка
-model.armor2.bootglow.partName=Левый ботинок
+
 
 
 textureSpec.default_armorskin.specName=По умолчанию Armor Skin

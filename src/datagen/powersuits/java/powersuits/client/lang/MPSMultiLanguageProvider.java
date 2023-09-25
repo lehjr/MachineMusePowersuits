@@ -1,6 +1,5 @@
 package powersuits.client.lang;
 
-import lehjr.numina.common.base.NuminaObjects;
 import lehjr.powersuits.common.base.MPSBlocks;
 import lehjr.powersuits.common.base.MPSItems;
 import net.minecraft.data.CachedOutput;
@@ -89,7 +88,6 @@ public class MPSMultiLanguageProvider extends MulitiLanguageProvider {
         tmp.put(Localizations.ZH_CN, "动力拳套");
         add(MPSItems.POWER_FIST.get(), tmp);
     }
-// pt pt translations
 
     void addModules() {
         // Armor =======================================================================================
@@ -440,8 +438,8 @@ public class MPSMultiLanguageProvider extends MulitiLanguageProvider {
 
         // Silk Touch Enchantment ----------------------------------------------------------------------
         tmp = new HashMap<>();
-        tmp.put(Localizations.DE_DE, "Verzauberung \"Seidenberührung\"");
-        tmp.put(Localizations.EN_US, "Silk Touch Enchantment");
+        tmp.put(Localizations.DE_DE, "Verzauberung Seidenberührung");
+        tmp.put(Localizations.EN_US, "Verzauberung \"Seidenberührung\"");
         tmp.put(Localizations.FR_FR, "Enchantement Silk Touch");
         tmp.put(Localizations.PT_BR, "Encantamento Silk Touch");
         tmp.put(Localizations.PT_PT, "Encantamento Silk Touch");
@@ -547,553 +545,552 @@ public class MPSMultiLanguageProvider extends MulitiLanguageProvider {
         // Movement ====================================================================================
         // Blink Drive ---------------------------------------------------------------------------------
         tmp = new HashMap<>();
-        tmp.put(Localizations.DE_DE, "");
+        tmp.put(Localizations.DE_DE, "Blink-Laufwerk");
         tmp.put(Localizations.EN_US, "Blink Drive");
-        tmp.put(Localizations.FR_FR, "");
-        tmp.put(Localizations.PT_BR, "");
-        tmp.put(Localizations.PT_PT, "");
-        tmp.put(Localizations.RU_RU, "");
-        tmp.put(Localizations.ZH_CN, "");
+        tmp.put(Localizations.FR_FR, "Lecteur Blink");
+        tmp.put(Localizations.PT_BR, "Unidade de piscar");
+        tmp.put(Localizations.PT_PT, "Unidade Blink");
+        tmp.put(Localizations.RU_RU, "Мигающий диск");
+        tmp.put(Localizations.ZH_CN, "闪烁驱动器");
         add(MPSItems.BLINK_DRIVE_MODULE.get(), tmp);
 
         tmp = new HashMap<>();
-        tmp.put(Localizations.DE_DE, "");
+        tmp.put(Localizations.DE_DE, "Gehen Sie von Punkt A über Punkt B zu Punkt C, wobei Punkt B eine Falte in Raum und Zeit ist.");
         tmp.put(Localizations.EN_US, "Get from point A to point C via point B, where point B is a fold in space & time.");
-        tmp.put(Localizations.FR_FR, "");
-        tmp.put(Localizations.PT_BR, "");
-        tmp.put(Localizations.PT_PT, "");
-        tmp.put(Localizations.RU_RU, "");
-        tmp.put(Localizations.ZH_CN, "");
+        tmp.put(Localizations.FR_FR, "Allez du point A au point C via le point B, où le point B est un pli dans l’espace et le temps.");
+        tmp.put(Localizations.PT_BR, "Vá do ponto A ao ponto C através do ponto B, onde o ponto B é uma dobra no espaço e no tempo.");
+        tmp.put(Localizations.PT_PT, "Vá do ponto A ao ponto C através do ponto B, onde o ponto B é uma dobra no espaço e no tempo.");
+        tmp.put(Localizations.RU_RU, "Добраться из точки А в точку С можно через точку Б, где точка Б — это складка в пространстве и времени.\n");
+        tmp.put(Localizations.ZH_CN, "通过B点从A点到C点，其中B点是空间和时间的褶皱。");
         addItemDescriptions(MPSItems.BLINK_DRIVE_MODULE.get(), tmp);
 
         // Uphill Step Assist --------------------------------------------------------------------------
         tmp = new HashMap<>();
-        tmp.put(Localizations.DE_DE, "");
+        tmp.put(Localizations.DE_DE, "Bergauf-Tritthilfe");
         tmp.put(Localizations.EN_US, "Uphill Step Assist");
-        tmp.put(Localizations.FR_FR, "");
-        tmp.put(Localizations.PT_BR, "");
-        tmp.put(Localizations.PT_PT, "");
-        tmp.put(Localizations.RU_RU, "");
-        tmp.put(Localizations.ZH_CN, "");
+        tmp.put(Localizations.FR_FR, "Assistance aux pas en montée");
+        tmp.put(Localizations.PT_BR, "Assistente de subida");
+        tmp.put(Localizations.PT_PT, "Assistência de subida");
+        tmp.put(Localizations.RU_RU, "Система помощи при подъеме в гору");
+        tmp.put(Localizations.ZH_CN, "上坡台阶辅助");
         add(MPSItems.CLIMB_ASSIST_MODULE.get(), tmp);
 
         tmp = new HashMap<>();
-        tmp.put(Localizations.DE_DE, "");
+        tmp.put(Localizations.DE_DE, "Ein Paar spezieller Servos ermöglicht es Ihnen, mühelos 1 m hohe Vorsprünge zu erklimmen.");
         tmp.put(Localizations.EN_US, "A pair of dedicated servos allow you to effortlessly step up 1m-high ledges.");
-        tmp.put(Localizations.FR_FR, "");
-        tmp.put(Localizations.PT_BR, "");
-        tmp.put(Localizations.PT_PT, "");
-        tmp.put(Localizations.RU_RU, "");
-        tmp.put(Localizations.ZH_CN, "");
+        tmp.put(Localizations.FR_FR, "Une paire de servomoteurs dédiés vous permet de monter sans effort sur des rebords de 1 m de haute.");
+        tmp.put(Localizations.PT_BR, "Um par de servos dedicados permite que você aumente sem esforço as bordas de 1 m de altura.");
+        tmp.put(Localizations.PT_PT, "Um par de servos dedicados permite-lhe subir sem esforço as bordas de 1 m de altura.");
+        tmp.put(Localizations.RU_RU, "Пара специальных сервоприводов позволяет легко подниматься по уступам высотой 1 м.");
+        tmp.put(Localizations.ZH_CN, "一对专用舵机可让您毫不费力地登上 1 米高的壁架。");
         addItemDescriptions(MPSItems.CLIMB_ASSIST_MODULE.get(), tmp);
 
         // Dimensional Tear Generator ------------------------------------------------------------------
         tmp = new HashMap<>();
-        tmp.put(Localizations.DE_DE, "");
+        tmp.put(Localizations.DE_DE, "Generator für dimensionale Risse");
         tmp.put(Localizations.EN_US, "Dimensional Tear Generator");
-        tmp.put(Localizations.FR_FR, "");
-        tmp.put(Localizations.PT_BR, "");
-        tmp.put(Localizations.PT_PT, "");
-        tmp.put(Localizations.RU_RU, "");
-        tmp.put(Localizations.ZH_CN, "");
+        tmp.put(Localizations.FR_FR, "Générateur de larmes dimensionnel");
+        tmp.put(Localizations.PT_BR, "Gerador de Rasgo Dimensional");
+        tmp.put(Localizations.PT_PT, "Gerador de lágrima dimensional");
+        tmp.put(Localizations.RU_RU, "Генератор разрыва размеров");
+        tmp.put(Localizations.ZH_CN, "尺寸撕裂发生器");
         add(MPSItems.DIMENSIONAL_RIFT_MODULE.get(), tmp);
 
         tmp = new HashMap<>();
-        tmp.put(Localizations.DE_DE, "");
+        tmp.put(Localizations.DE_DE, "Erzeuge einen Riss im Raum-Zeit-Kontinuum, der den Spieler zu seinen relativen Koordinaten in der Unter- oder Oberwelt teleportiert.");
         tmp.put(Localizations.EN_US, "Generate a tear in the space-time continuum that will teleport the player to its relative coordinates in the nether or overworld.");
-        tmp.put(Localizations.FR_FR, "");
-        tmp.put(Localizations.PT_BR, "");
-        tmp.put(Localizations.PT_PT, "");
-        tmp.put(Localizations.RU_RU, "");
-        tmp.put(Localizations.ZH_CN, "");
+        tmp.put(Localizations.FR_FR, "Générez une déchirure dans le continuum espace-temps qui téléportera le joueur à ses coordonnées relatives dans le monde inférieur ou supérieur.");
+        tmp.put(Localizations.PT_BR, "Gere uma ruptura no continuum espaço-tempo que teletransportará o jogador para suas coordenadas relativas na rede ou no sobremundo.");
+        tmp.put(Localizations.PT_PT, "Gere uma rutura no continuum espaço-tempo que teletransportará o jogador para as suas coordenadas relativas no nether ou overworld.");
+        tmp.put(Localizations.RU_RU, "Сгенерируйте разрыв в пространственно-временном континууме, который телепортирует игрока к его относительным координатам в нижнем или надземном мире.");
+        tmp.put(Localizations.ZH_CN, "在时空连续体中生成撕裂，将玩家传送到其在下界或主世界中的相对坐标。");
         addItemDescriptions(MPSItems.DIMENSIONAL_RIFT_MODULE.get(), tmp);
 
         // Flight Control ------------------------------------------------------------------------------
         tmp = new HashMap<>();
-        tmp.put(Localizations.DE_DE, "");
+        tmp.put(Localizations.DE_DE, "Flugsteuerung");
         tmp.put(Localizations.EN_US, "Flight Control");
-        tmp.put(Localizations.FR_FR, "");
-        tmp.put(Localizations.PT_BR, "");
-        tmp.put(Localizations.PT_PT, "");
-        tmp.put(Localizations.RU_RU, "");
-        tmp.put(Localizations.ZH_CN, "");
+        tmp.put(Localizations.FR_FR, "Contrôle de vol");
+        tmp.put(Localizations.PT_BR, "Controle de Voo");
+        tmp.put(Localizations.PT_PT, "Controlo de Voo");
+        tmp.put(Localizations.RU_RU, "Управление полетом");
+        tmp.put(Localizations.ZH_CN, "飞行控制");
         add(MPSItems.FLIGHT_CONTROL_MODULE.get(), tmp);
 
         tmp = new HashMap<>();
-        tmp.put(Localizations.DE_DE, "");
+        tmp.put(Localizations.DE_DE, "Eine integrierte Steuerschaltung, die Ihnen hilft, besser zu fliegen. Drücken Sie Z, um nach unten zu gehen.");
         tmp.put(Localizations.EN_US, "An integrated control circuit to help you fly better. Press Z to go down.");
-        tmp.put(Localizations.FR_FR, "");
-        tmp.put(Localizations.PT_BR, "");
-        tmp.put(Localizations.PT_PT, "");
-        tmp.put(Localizations.RU_RU, "");
-        tmp.put(Localizations.ZH_CN, "");
+        tmp.put(Localizations.FR_FR, "Un circuit de contrôle intégré pour vous aider à mieux voler. Appuyez sur Z pour descendre.");
+        tmp.put(Localizations.PT_BR, "Um circuito de controle integrado para ajudá-lo a voar melhor. Pressione Z para descer.");
+        tmp.put(Localizations.PT_PT, "Um circuito de controlo integrado para o ajudar a voar melhor. Pressione Z para descer.");
+        tmp.put(Localizations.RU_RU, "Интегрированная схема управления, которая поможет вам лучше летать. Нажмите Z, чтобы спуститься вниз.");
+        tmp.put(Localizations.ZH_CN, "集成控制电路，帮助您更好地飞行。按 Z 向下。");
         addItemDescriptions(MPSItems.FLIGHT_CONTROL_MODULE.get(), tmp);
 
         // Glider --------------------------------------------------------------------------------------
         tmp = new HashMap<>();
-        tmp.put(Localizations.DE_DE, "");
+        tmp.put(Localizations.DE_DE, "Segelflugzeug");
         tmp.put(Localizations.EN_US, "Glider");
-        tmp.put(Localizations.FR_FR, "");
-        tmp.put(Localizations.PT_BR, "");
-        tmp.put(Localizations.PT_PT, "");
-        tmp.put(Localizations.RU_RU, "");
-        tmp.put(Localizations.ZH_CN, "");
+        tmp.put(Localizations.FR_FR, "Planeur");
+        tmp.put(Localizations.PT_BR, "Planador");
+        tmp.put(Localizations.PT_PT, "Planador");
+        tmp.put(Localizations.RU_RU, "Планёр");
+        tmp.put(Localizations.ZH_CN, "滑翔机");
         add(MPSItems.GLIDER_MODULE.get(), tmp);
 
         tmp = new HashMap<>();
-        tmp.put(Localizations.DE_DE, "");
+        tmp.put(Localizations.DE_DE, "Wende ein paar Flügel an, um nach unten in Vorwärtsdynamik zu drehen. Drücke Schleichen+Vorwärts, während du fällst, um es zu aktivieren.");
         tmp.put(Localizations.EN_US, "Tack on some wings to turn downward into forward momentum. Press sneak+forward while falling to activate.");
-        tmp.put(Localizations.FR_FR, "");
-        tmp.put(Localizations.PT_BR, "");
-        tmp.put(Localizations.PT_PT, "");
-        tmp.put(Localizations.RU_RU, "");
-        tmp.put(Localizations.ZH_CN, "");
+        tmp.put(Localizations.FR_FR, "Accrochez certaines ailes pour tourner vers le bas dans un élan vers l’avant. Appuyez sur sneak + forward tout en tombant pour activer.");
+        tmp.put(Localizations.PT_BR, "Agarre em algumas asas para virar para baixo em impulso para a frente. Pressione sneak+forward enquanto cai para ativar.");
+        tmp.put(Localizations.PT_PT, "Agarre em algumas asas para virar para baixo em impulso para a frente. Pressione sneak+forward enquanto cai para ativar.");
+        tmp.put(Localizations.RU_RU, "Нажмите на несколько крыльев, чтобы повернуть вниз в передний импульс. Нажмите sneak + forward во время падения, чтобы активировать.");
+        tmp.put(Localizations.ZH_CN, "抓住一些翅膀，向下变成前进的动力。在跌落时按潜行+前进以激活。");
         addItemDescriptions(MPSItems.GLIDER_MODULE.get(), tmp);
 
         // Jet Boots -----------------------------------------------------------------------------------
         tmp = new HashMap<>();
-        tmp.put(Localizations.DE_DE, "");
+        tmp.put(Localizations.DE_DE, "Jet-Stiefel");
         tmp.put(Localizations.EN_US, "Jet Boots");
-        tmp.put(Localizations.FR_FR, "");
-        tmp.put(Localizations.PT_BR, "");
-        tmp.put(Localizations.PT_PT, "");
-        tmp.put(Localizations.RU_RU, "");
-        tmp.put(Localizations.ZH_CN, "");
+        tmp.put(Localizations.FR_FR, "Bottes de jet");
+        tmp.put(Localizations.PT_BR, "Botas a jato");
+        tmp.put(Localizations.PT_PT, "Botas Jet");
+        tmp.put(Localizations.RU_RU, "Реактивные ботинки");
+        tmp.put(Localizations.ZH_CN, "喷气靴");
         add(MPSItems.JETBOOTS_MODULE.get(), tmp);
 
         tmp = new HashMap<>();
-        tmp.put(Localizations.DE_DE, "");
+        tmp.put(Localizations.DE_DE, "Jetboots sind nicht so stark wie ein Jetpack, aber sie sollten zumindest stark genug sein, um der Schwerkraft entgegenzuwirken.");
         tmp.put(Localizations.EN_US, "Jet boots are not as strong as a jetpack, but they should at least be strong enough to counteract gravity.");
-        tmp.put(Localizations.FR_FR, "");
-        tmp.put(Localizations.PT_BR, "");
-        tmp.put(Localizations.PT_PT, "");
-        tmp.put(Localizations.RU_RU, "");
-        tmp.put(Localizations.ZH_CN, "");
+        tmp.put(Localizations.FR_FR, "Les bottes de jet ne sont pas aussi solides qu’un jetpack, mais elles devraient au moins être assez solides pour contrer la gravité.");
+        tmp.put(Localizations.PT_BR, "As botas a jato não são tão fortes quanto um jetpack, mas devem pelo menos ser fortes o suficiente para neutralizar a gravidade.");
+        tmp.put(Localizations.PT_PT, "As botas a jato não são tão fortes quanto um jetpack, mas devem pelo menos ser fortes o suficiente para neutralizar a gravidade.");
+        tmp.put(Localizations.RU_RU, "Реактивные ботинки не такие прочные, как реактивный ранец, но они, по крайней мере, должны быть достаточно прочными, чтобы противодействовать гравитации.");
+        tmp.put(Localizations.ZH_CN, "喷气靴不如喷气背包坚固，但它们至少应该足够坚固以抵消重力。");
         addItemDescriptions(MPSItems.JETBOOTS_MODULE.get(), tmp);
 
         // Jetpack -------------------------------------------------------------------------------------
         tmp = new HashMap<>();
-        tmp.put(Localizations.DE_DE, "");
+        tmp.put(Localizations.DE_DE, "Jetpack");
         tmp.put(Localizations.EN_US, "Jetpack");
-        tmp.put(Localizations.FR_FR, "");
-        tmp.put(Localizations.PT_BR, "");
-        tmp.put(Localizations.PT_PT, "");
-        tmp.put(Localizations.RU_RU, "");
-        tmp.put(Localizations.ZH_CN, "");
+        tmp.put(Localizations.FR_FR, "Jetpack");
+        tmp.put(Localizations.PT_BR, "Pacote de jato");
+        tmp.put(Localizations.PT_PT, "Jetpack");
+        tmp.put(Localizations.RU_RU, "Реактивный ранец");
+        tmp.put(Localizations.ZH_CN, "喷气背包");
         add(MPSItems.JETPACK_MODULE.get(), tmp);
 
         tmp = new HashMap<>();
-        tmp.put(Localizations.DE_DE, "");
+        tmp.put(Localizations.DE_DE, "Ein Jetpack sollte es dir ermöglichen, auf unbestimmte Zeit zu springen, oder zumindest bis dir die Kraft ausgeht.");
         tmp.put(Localizations.EN_US, "A jetpack should allow you to jump indefinitely, or at least until you run out of power.");
-        tmp.put(Localizations.FR_FR, "");
-        tmp.put(Localizations.PT_BR, "");
-        tmp.put(Localizations.PT_PT, "");
-        tmp.put(Localizations.RU_RU, "");
-        tmp.put(Localizations.ZH_CN, "");
+        tmp.put(Localizations.FR_FR, "Un jetpack devrait vous permettre de sauter indéfiniment, ou du moins jusqu’à ce que vous soyez à court de puissance.");
+        tmp.put(Localizations.PT_BR, "Um jetpack deve permitir que você pule indefinidamente, ou pelo menos até ficar sem energia.");
+        tmp.put(Localizations.PT_PT, "Um jetpack deve permitir que você salte indefinidamente, ou pelo menos até ficar sem energia.");
+        tmp.put(Localizations.RU_RU, "Реактивный ранец должен позволять вам прыгать бесконечно или, по крайней мере, до тех пор, пока у вас не закончится заряд.");
+        tmp.put(Localizations.ZH_CN, "喷气背包应该允许你无限期地跳跃，或者至少直到你耗尽动力。");
         addItemDescriptions(MPSItems.JETPACK_MODULE.get(), tmp);
 
         // Jump Assist ---------------------------------------------------------------------------------
         tmp = new HashMap<>();
-        tmp.put(Localizations.DE_DE, "");
+        tmp.put(Localizations.DE_DE, "Sprunghilfe");
         tmp.put(Localizations.EN_US, "Jump Assist");
-        tmp.put(Localizations.FR_FR, "");
-        tmp.put(Localizations.PT_BR, "");
-        tmp.put(Localizations.PT_PT, "");
-        tmp.put(Localizations.RU_RU, "");
-        tmp.put(Localizations.ZH_CN, "");
+        tmp.put(Localizations.FR_FR, "Aide au saut");
+        tmp.put(Localizations.PT_BR, "Assistência de Salto");
+        tmp.put(Localizations.PT_PT, "Assistência de salto");
+        tmp.put(Localizations.RU_RU, "Помощь при прыжке");
+        tmp.put(Localizations.ZH_CN, "跳跃辅助");
         add(MPSItems.JUMP_ASSIST_MODULE.get(), tmp);
 
         tmp = new HashMap<>();
-        tmp.put(Localizations.DE_DE, "");
+        tmp.put(Localizations.DE_DE, "Ein weiterer Satz Servomotoren, mit denen Sie höher springen können.");
         tmp.put(Localizations.EN_US, "Another set of servo motors to help you jump higher.");
-        tmp.put(Localizations.FR_FR, "");
-        tmp.put(Localizations.PT_BR, "");
-        tmp.put(Localizations.PT_PT, "");
-        tmp.put(Localizations.RU_RU, "");
-        tmp.put(Localizations.ZH_CN, "");
+        tmp.put(Localizations.FR_FR, "Un autre ensemble de servomoteurs pour vous aider à sauter plus haute.");
+        tmp.put(Localizations.PT_BR, "Outro conjunto de servomotores para ajudá-lo a saltar mais alto.");
+        tmp.put(Localizations.PT_PT, "Outro conjunto de servomotores para ajudá-lo a saltar mais alto.");
+        tmp.put(Localizations.RU_RU, "Еще один набор серводвигателей, которые помогут вам прыгнуть выше.");
+        tmp.put(Localizations.ZH_CN, "另一套伺服电机可帮助您跳得更高。");
         addItemDescriptions(MPSItems.JUMP_ASSIST_MODULE.get(), tmp);
 
         // Parachute -----------------------------------------------------------------------------------
         tmp = new HashMap<>();
-        tmp.put(Localizations.DE_DE, "");
+        tmp.put(Localizations.DE_DE, "Fallschirm");
         tmp.put(Localizations.EN_US, "Parachute");
-        tmp.put(Localizations.FR_FR, "");
-        tmp.put(Localizations.PT_BR, "");
-        tmp.put(Localizations.PT_PT, "");
-        tmp.put(Localizations.RU_RU, "");
-        tmp.put(Localizations.ZH_CN, "");
+        tmp.put(Localizations.FR_FR, "Parachute");
+        tmp.put(Localizations.PT_BR, "Pára-quedas");
+        tmp.put(Localizations.PT_PT, "Para-quedas");
+        tmp.put(Localizations.RU_RU, "Парашют");
+        tmp.put(Localizations.ZH_CN, "降落伞");
         add(MPSItems.PARACHUTE_MODULE.get(), tmp);
 
         tmp = new HashMap<>();
-        tmp.put(Localizations.DE_DE, "");
+        tmp.put(Localizations.DE_DE, "Füge einen Fallschirm hinzu, um deinen Sinkflug zu verlangsamen. Aktiviere durch Drücken von Schleichen (standardmäßig Umschalttaste) in der Luft.");
         tmp.put(Localizations.EN_US, "Add a parachute to slow your descent. Activate by pressing sneak (defaults to Shift) in midair.");
-        tmp.put(Localizations.FR_FR, "");
-        tmp.put(Localizations.PT_BR, "");
-        tmp.put(Localizations.PT_PT, "");
-        tmp.put(Localizations.RU_RU, "");
-        tmp.put(Localizations.ZH_CN, "");
+        tmp.put(Localizations.FR_FR, "Ajoutez un parachute pour ralentir votre descente. Activez en appuyant sur sneak (par défaut sur Shift) dans les airs.");
+        tmp.put(Localizations.PT_BR, "Adicione um paraquedas para retardar sua descida. Ative pressionando sneak (padrão para Shift) no ar.");
+        tmp.put(Localizations.PT_PT, "Adicione um para-quedas para abrandar a sua descida. Ative pressionando sorrateiramente (o padrão é Shift) no ar.");
+        tmp.put(Localizations.RU_RU, "Добавьте парашют, чтобы замедлить спуск. Активируйте, нажав клавишу sneak (по умолчанию Shift) в воздухе.");
+        tmp.put(Localizations.ZH_CN, "添加降落伞以减慢下降速度。通过在半空中按潜行（默认为 Shift）激活。");
         addItemDescriptions(MPSItems.PARACHUTE_MODULE.get(), tmp);
 
         // Shock Absorber ------------------------------------------------------------------------------
         tmp = new HashMap<>();
-        tmp.put(Localizations.DE_DE, "");
+        tmp.put(Localizations.DE_DE, "Stoßdämpfer");
         tmp.put(Localizations.EN_US, "Shock Absorber");
-        tmp.put(Localizations.FR_FR, "");
-        tmp.put(Localizations.PT_BR, "");
-        tmp.put(Localizations.PT_PT, "");
-        tmp.put(Localizations.RU_RU, "");
-        tmp.put(Localizations.ZH_CN, "");
+        tmp.put(Localizations.FR_FR, "Amortisseur");
+        tmp.put(Localizations.PT_BR, "Amortecedor");
+        tmp.put(Localizations.PT_PT, "Amortecedor");
+        tmp.put(Localizations.RU_RU, "Амортизатор");
+        tmp.put(Localizations.ZH_CN, "减震器");
         add(MPSItems.SHOCK_ABSORBER_MODULE.get(), tmp);
 
         tmp = new HashMap<>();
-        tmp.put(Localizations.DE_DE, "");
+        tmp.put(Localizations.DE_DE, "Avec certains servos, ressorts et rembourrages, vous devriez être en mesure d’annuler une partie des dommages causés par la chute.");
         tmp.put(Localizations.EN_US, "With some servos, springs, and padding, you should be able to negate a portion of fall damage.");
-        tmp.put(Localizations.FR_FR, "");
-        tmp.put(Localizations.PT_BR, "");
-        tmp.put(Localizations.PT_PT, "");
-        tmp.put(Localizations.RU_RU, "");
-        tmp.put(Localizations.ZH_CN, "");
+        tmp.put(Localizations.FR_FR, "Avec certains servos, ressorts et rembourrages, vous devriez être en mesure d’annuler une partie des dommages causés par la chute.");
+        tmp.put(Localizations.PT_BR, "Com alguns servos, molas e estofamento, você deve ser capaz de anular uma parte do dano de queda.");
+        tmp.put(Localizations.PT_PT, "Com alguns servos, molas e preenchimento, você deve ser capaz de negar uma parte dos danos causados pela queda.");
+        tmp.put(Localizations.RU_RU, "С некоторыми сервоприводами, пружинами и набивкой вы сможете свести на нет часть повреждений при падении.");
+        tmp.put(Localizations.ZH_CN, "使用一些舵机、弹簧和衬垫，您应该能够抵消一部分坠落损坏。");
         addItemDescriptions(MPSItems.SHOCK_ABSORBER_MODULE.get(), tmp);
 
         // Sprint Assist -------------------------------------------------------------------------------
         tmp = new HashMap<>();
-        tmp.put(Localizations.DE_DE, "");
+        tmp.put(Localizations.DE_DE, "Sprint-Assistent");
         tmp.put(Localizations.EN_US, "Sprint Assist");
-        tmp.put(Localizations.FR_FR, "");
-        tmp.put(Localizations.PT_BR, "");
-        tmp.put(Localizations.PT_PT, "");
-        tmp.put(Localizations.RU_RU, "");
-        tmp.put(Localizations.ZH_CN, "");
+        tmp.put(Localizations.FR_FR, "Assistance au sprint");
+        tmp.put(Localizations.PT_BR, "Assistência de Sprint");
+        tmp.put(Localizations.PT_PT, "Assistência Sprint");
+        tmp.put(Localizations.RU_RU, "Помощь в спринте");
+        tmp.put(Localizations.ZH_CN, "冲刺辅助");
         add(MPSItems.SPRINT_ASSIST_MODULE.get(), tmp);
 
         tmp = new HashMap<>();
-        tmp.put(Localizations.DE_DE, "");
+        tmp.put(Localizations.DE_DE, "Eine Reihe von Servomotoren, die Ihnen helfen, schneller zu sprinten (doppelt nach vorne zu tippen) und schneller zu gehen.");
         tmp.put(Localizations.EN_US, "A set of servo motors to help you sprint (double-tap forward) and walk faster.");
-        tmp.put(Localizations.FR_FR, "");
-        tmp.put(Localizations.PT_BR, "");
-        tmp.put(Localizations.PT_PT, "");
-        tmp.put(Localizations.RU_RU, "");
-        tmp.put(Localizations.ZH_CN, "");
+        tmp.put(Localizations.FR_FR, "Un ensemble de servomoteurs pour vous aider à sprinter (appuyez deux fois vers l’avant) et à marcher plus vite.");
+        tmp.put(Localizations.PT_BR, "Um conjunto de servomotores para ajudá-lo a sprint (toque duas vezes para frente) e andar mais rápido.");
+        tmp.put(Localizations.PT_PT, "Um conjunto de servomotores para ajudá-lo a sprint (toque duplo para a frente) e andar mais rápido.");
+        tmp.put(Localizations.RU_RU, "Набор серводвигателей, которые помогут вам бежать (дважды нажимать вперед) и идти быстрее.");
+        tmp.put(Localizations.ZH_CN, "一组伺服电机，可帮助您冲刺（双击前进）并走得更快。");
         addItemDescriptions(MPSItems.SPRINT_ASSIST_MODULE.get(), tmp);
 
         // Swim Boost ----------------------------------------------------------------------------------
         tmp = new HashMap<>();
-        tmp.put(Localizations.DE_DE, "");
+        tmp.put(Localizations.DE_DE, "Schwimm-Boost");
         tmp.put(Localizations.EN_US, "Swim Boost");
-        tmp.put(Localizations.FR_FR, "");
-        tmp.put(Localizations.PT_BR, "");
-        tmp.put(Localizations.PT_PT, "");
-        tmp.put(Localizations.RU_RU, "");
-        tmp.put(Localizations.ZH_CN, "");
+        tmp.put(Localizations.FR_FR, "Boost de natation");
+        tmp.put(Localizations.PT_BR, "Impulso de natação");
+        tmp.put(Localizations.PT_PT, "Impulso de natação");
+        tmp.put(Localizations.RU_RU, "Ускорение плавания");
+        tmp.put(Localizations.ZH_CN, "游泳助推");
         add(MPSItems.SWIM_BOOST_MODULE.get(), tmp);
 
         tmp = new HashMap<>();
-        tmp.put(Localizations.DE_DE, "");
+        tmp.put(Localizations.DE_DE, "Durch den Umbau eines Ionentriebwerks für den Unterwassereinsatz können Sie möglicherweise zusätzlichen Vorwärts- (oder Rückwärts-) Schub hinzufügen, wenn Sie unter Wasser sind.");
         tmp.put(Localizations.EN_US, "By refitting an ion thruster for underwater use, you may be able to add extra forward (or backward) thrust when underwater.");
-        tmp.put(Localizations.FR_FR, "");
-        tmp.put(Localizations.PT_BR, "");
-        tmp.put(Localizations.PT_PT, "");
-        tmp.put(Localizations.RU_RU, "");
-        tmp.put(Localizations.ZH_CN, "");
+        tmp.put(Localizations.FR_FR, "En rééquipant un propulseur ionique pour une utilisation sous-marine, vous pourrez peut-être ajouter une poussée supplémentaire vers l’avant (ou vers l’arrière) sous l’eau.");
+        tmp.put(Localizations.PT_BR, "Ao reajustar um propulsor de íons para uso subaquático, você pode adicionar impulso extra para frente (ou para trás) quando debaixo d'água.");
+        tmp.put(Localizations.PT_PT, "Ao reequipar um propulsor de iões para utilização subaquática, poderá adicionar impulso extra para a frente (ou para trás) quando estiver debaixo de água.");
+        tmp.put(Localizations.RU_RU, "Переоборудовав ионный двигатель для подводного использования, вы сможете добавить дополнительную тягу вперед (или назад) под водой.");
+        tmp.put(Localizations.ZH_CN, "通过改装离子推进器以供水下使用，您可以在水下增加额外的向前（或向后）推力。");
         addItemDescriptions(MPSItems.SWIM_BOOST_MODULE.get(), tmp);
 
         // Special =====================================================================================
         // Transparent Armor ---------------------------------------------------------------------------
         tmp = new HashMap<>();
-        tmp.put(Localizations.DE_DE, "");
+        tmp.put(Localizations.DE_DE, "Transparente Rüstung");
         tmp.put(Localizations.EN_US, "Transparent Armor");
-        tmp.put(Localizations.FR_FR, "");
-        tmp.put(Localizations.PT_BR, "");
-        tmp.put(Localizations.PT_PT, "");
-        tmp.put(Localizations.RU_RU, "");
-        tmp.put(Localizations.ZH_CN, "");
+        tmp.put(Localizations.FR_FR, "Armure transparente");
+        tmp.put(Localizations.PT_BR, "Armadura Transparente");
+        tmp.put(Localizations.PT_PT, "Armadura Transparente");
+        tmp.put(Localizations.RU_RU, "Прозрачная броня");
+        tmp.put(Localizations.ZH_CN, "透明装甲");
         add(MPSItems.ACTIVE_CAMOUFLAGE_MODULE.get(), tmp);
 
         tmp = new HashMap<>();
-        tmp.put(Localizations.DE_DE, "");
+        tmp.put(Localizations.DE_DE, "Machen Sie den Gegenstand transparent, damit Sie Ihre Haut zeigen können, ohne die Rüstung zu verlieren.");
         tmp.put(Localizations.EN_US, "Make the item transparent, so you can show off your skin without losing armor.");
-        tmp.put(Localizations.FR_FR, "");
-        tmp.put(Localizations.PT_BR, "");
-        tmp.put(Localizations.PT_PT, "");
-        tmp.put(Localizations.RU_RU, "");
-        tmp.put(Localizations.ZH_CN, "");
+        tmp.put(Localizations.FR_FR, "Rendez l’objet transparent, afin que vous puissiez montrer votre peau sans perdre d’armure.");
+        tmp.put(Localizations.PT_BR, "Torne o item transparente, para que você possa mostrar sua pele sem perder a armadura.");
+        tmp.put(Localizations.PT_PT, "Torne o item transparente, para que você possa mostrar sua pele sem perder a armadura.");
+        tmp.put(Localizations.RU_RU, "Сделайте предмет прозрачным, чтобы вы могли похвастаться своей кожей, не теряя брони.");
+        tmp.put(Localizations.ZH_CN, "使物品透明，这样您就可以在不失去盔甲的情况下炫耀您的皮肤。");
         addItemDescriptions(MPSItems.ACTIVE_CAMOUFLAGE_MODULE.get(), tmp);
 
         // Magnet --------------------------------------------------------------------------------------
         tmp = new HashMap<>();
-        tmp.put(Localizations.DE_DE, "");
+        tmp.put(Localizations.DE_DE, "Magnet");
         tmp.put(Localizations.EN_US, "Magnet");
-        tmp.put(Localizations.FR_FR, "");
-        tmp.put(Localizations.PT_BR, "");
-        tmp.put(Localizations.PT_PT, "");
-        tmp.put(Localizations.RU_RU, "");
-        tmp.put(Localizations.ZH_CN, "");
+        tmp.put(Localizations.FR_FR, "Aimant");
+        tmp.put(Localizations.PT_BR, "Ímã");
+        tmp.put(Localizations.PT_PT, "Íman");
+        tmp.put(Localizations.RU_RU, "Магнит");
+        tmp.put(Localizations.ZH_CN, "磁铁");
         add(MPSItems.MAGNET_MODULE.get(), tmp);
 
         tmp = new HashMap<>();
-        tmp.put(Localizations.DE_DE, "");
+        tmp.put(Localizations.DE_DE, "Erzeugt ein Magnetfeld, das stark genug ist, um Gegenstände in Richtung des Spielers zu ziehen.         WARNUNG: Dieses Modul verbraucht kontinuierlich Strom. Schalten Sie es aus, wenn es nicht benötigt wird.");
         tmp.put(Localizations.EN_US, "Generates a magnetic field strong enough to attract items towards the player.         WARNING:                   This module drains power continuously. Turn it off when not needed.");
-        tmp.put(Localizations.FR_FR, "");
-        tmp.put(Localizations.PT_BR, "");
-        tmp.put(Localizations.PT_PT, "");
-        tmp.put(Localizations.RU_RU, "");
-        tmp.put(Localizations.ZH_CN, "");
+        tmp.put(Localizations.FR_FR, "Génère un champ magnétique suffisamment puissant pour attirer les objets vers le joueur.         AVERTISSEMENT : Ce module décharge l’alimentation en continu. Éteignez-le lorsque vous n’en avez pas besoin.");
+        tmp.put(Localizations.PT_BR, "Gera um campo magnético forte o suficiente para atrair itens para o jogador.         AVISO: Este módulo drena energia continuamente. Desligue-o quando não for necessário.");
+        tmp.put(Localizations.PT_PT, "Gera um campo magnético forte o suficiente para atrair itens para o jogador.         AVISO: Este módulo drena energia continuamente. Desligue-o quando não for necessário.");
+        tmp.put(Localizations.RU_RU, "Генерирует магнитное поле, достаточно сильное, чтобы притягивать предметы к игроку.         ПРЕДУПРЕЖДЕНИЕ: Этот модуль постоянно разряжает питание. Выключайте его, когда он не нужен.");
+        tmp.put(Localizations.ZH_CN, "产生足够强的磁场，以吸引物品朝向玩家。        警告：此模块持续耗电。不需要时将其关闭。");
         addItemDescriptions(MPSItems.MAGNET_MODULE.get(), tmp);
 
         // Piglin Pacification Module ------------------------------------------------------------------
         tmp = new HashMap<>();
-        tmp.put(Localizations.DE_DE, "");
+        tmp.put(Localizations.DE_DE, "Piglin Beruhigungsmodul");
         tmp.put(Localizations.EN_US, "Piglin Pacification Module");
-        tmp.put(Localizations.FR_FR, "");
-        tmp.put(Localizations.PT_BR, "");
-        tmp.put(Localizations.PT_PT, "");
-        tmp.put(Localizations.RU_RU, "");
-        tmp.put(Localizations.ZH_CN, "");
+        tmp.put(Localizations.FR_FR, "Piglin Pacification Module");
+        tmp.put(Localizations.PT_BR, "Módulo de Pacificação Piglin");
+        tmp.put(Localizations.PT_PT, "Módulo de Pacificação Piglin");
+        tmp.put(Localizations.RU_RU, "Модуль умиротворения Пиглина");
+        tmp.put(Localizations.ZH_CN, "皮格林安抚模块");
         add(MPSItems.PIGLIN_PACIFICATION_MODULE.get(), tmp);
 
         tmp = new HashMap<>();
-        tmp.put(Localizations.DE_DE, "");
+        tmp.put(Localizations.DE_DE, "Einfaches Modul, um Piglins neutral zu machen, als ob sie eine goldene Rüstung tragen würden");
         tmp.put(Localizations.EN_US, "Simple module to make Piglins neutral as if wearing gold armor");
-        tmp.put(Localizations.FR_FR, "");
-        tmp.put(Localizations.PT_BR, "");
-        tmp.put(Localizations.PT_PT, "");
-        tmp.put(Localizations.RU_RU, "");
-        tmp.put(Localizations.ZH_CN, "");
+        tmp.put(Localizations.FR_FR, "Module simple pour rendre les Piglins neutres comme s’ils portaient une armure en or");
+        tmp.put(Localizations.PT_BR, "Módulo simples para tornar Piglins neutro como se usasse armadura dourada");
+        tmp.put(Localizations.PT_PT, "Módulo simples para tornar Piglins neutro como se usasse armadura de ouro");
+        tmp.put(Localizations.RU_RU, "Простой модуль, чтобы сделать пиглинов нейтральными, как если бы они носили золотые доспехи");
+        tmp.put(Localizations.ZH_CN, "简单的模块，让皮林斯像穿着金色盔甲一样中立");
         addItemDescriptions(MPSItems.PIGLIN_PACIFICATION_MODULE.get(), tmp);
 
         // Vision ======================================================================================
         // Binoculars ----------------------------------------------------------------------------------
         tmp = new HashMap<>();
-        tmp.put(Localizations.DE_DE, "");
+        tmp.put(Localizations.DE_DE, "Fernglas");
         tmp.put(Localizations.EN_US, "Binoculars");
-        tmp.put(Localizations.FR_FR, "");
-        tmp.put(Localizations.PT_BR, "");
-        tmp.put(Localizations.PT_PT, "");
-        tmp.put(Localizations.RU_RU, "");
-        tmp.put(Localizations.ZH_CN, "");
+        tmp.put(Localizations.FR_FR, "Jumelles");
+        tmp.put(Localizations.PT_BR, "Binóculo");
+        tmp.put(Localizations.PT_PT, "Binóculos");
+        tmp.put(Localizations.RU_RU, "Бинокль");
+        tmp.put(Localizations.ZH_CN, "望远镜");
         add(MPSItems.BINOCULARS_MODULE.get(), tmp);
 
         tmp = new HashMap<>();
-        tmp.put(Localizations.DE_DE, "");
+        tmp.put(Localizations.DE_DE, "Angesichts der Probleme, die Optifine in letzter Zeit geplagt haben, haben Sie beschlossen, diese Zoom-Fähigkeit selbst in die Hand zu nehmen.");
         tmp.put(Localizations.EN_US, "With the problems that have been plaguing Optifine lately, you've decided to take that Zoom ability into your own hands.");
-        tmp.put(Localizations.FR_FR, "");
-        tmp.put(Localizations.PT_BR, "");
-        tmp.put(Localizations.PT_PT, "");
-        tmp.put(Localizations.RU_RU, "");
-        tmp.put(Localizations.ZH_CN, "");
+        tmp.put(Localizations.FR_FR, "Avec les problèmes qui ont affligé Optifine ces derniers temps, vous avez décidé de prendre cette capacité de zoom en main.");
+        tmp.put(Localizations.PT_BR, "Com os problemas que têm assolado o Optifine ultimamente, você decidiu tomar essa habilidade do Zoom em suas próprias mãos.");
+        tmp.put(Localizations.PT_PT, "Com os problemas que têm assolado a Optifine ultimamente, você decidiu tomar essa capacidade de Zoom em suas próprias mãos.");
+        tmp.put(Localizations.RU_RU, "Из-за проблем, которые в последнее время преследуют Optifine, вы решили взять эту возможность Zoom в свои руки.");
+        tmp.put(Localizations.ZH_CN, "由于最近困扰Optifine的问题，您决定将Zoom功能掌握在自己手中。");
         addItemDescriptions(MPSItems.BINOCULARS_MODULE.get(), tmp);
 
         // Night Vision --------------------------------------------------------------------------------
         tmp = new HashMap<>();
-        tmp.put(Localizations.DE_DE, "");
+        tmp.put(Localizations.DE_DE, "Nachtsicht");
         tmp.put(Localizations.EN_US, "Night Vision");
-        tmp.put(Localizations.FR_FR, "");
-        tmp.put(Localizations.PT_BR, "");
-        tmp.put(Localizations.PT_PT, "");
-        tmp.put(Localizations.RU_RU, "");
-        tmp.put(Localizations.ZH_CN, "");
+        tmp.put(Localizations.FR_FR, "Nyctalopie");
+        tmp.put(Localizations.PT_BR, "Visão Noturna");
+        tmp.put(Localizations.PT_PT, "Visão Noturna");
+        tmp.put(Localizations.RU_RU, "Ночное видение");
+        tmp.put(Localizations.ZH_CN, "夜视");
         add(MPSItems.NIGHT_VISION_MODULE.get(), tmp);
 
         tmp = new HashMap<>();
-        tmp.put(Localizations.DE_DE, "");
+        tmp.put(Localizations.DE_DE, "Eine Augmented-Vision-Brille, die Ihnen hilft, nachts und unter Wasser zu sehen.");
         tmp.put(Localizations.EN_US, "A pair of augmented vision goggles to help you see at night and underwater.");
-        tmp.put(Localizations.FR_FR, "");
-        tmp.put(Localizations.PT_BR, "");
-        tmp.put(Localizations.PT_PT, "");
-        tmp.put(Localizations.RU_RU, "");
-        tmp.put(Localizations.ZH_CN, "");
+        tmp.put(Localizations.FR_FR, "Une paire de lunettes de vision augmentée pour vous aider à voir la nuit et sous l’eau.");
+        tmp.put(Localizations.PT_BR, "Um par de óculos de visão aumentada para ajudá-lo a ver à noite e debaixo d'água.");
+        tmp.put(Localizations.PT_PT, "Um par de óculos de visão aumentada para ajudá-lo a ver à noite e debaixo d'água.");
+        tmp.put(Localizations.RU_RU, "Пара очков с дополненным зрением, которые помогут вам видеть ночью и под водой.");
+        tmp.put(Localizations.ZH_CN, "一副增强型护目镜，可帮助您在夜间和水下看清事物。");
         addItemDescriptions(MPSItems.NIGHT_VISION_MODULE.get(), tmp);
 
         // Tools =======================================================================================
         // Axe -----------------------------------------------------------------------------------------
         tmp = new HashMap<>();
-        tmp.put(Localizations.DE_DE, "");
-        tmp.put(Localizations.EN_US,  "Axe");
-        tmp.put(Localizations.FR_FR, "");
-        tmp.put(Localizations.PT_BR, "");
-        tmp.put(Localizations.PT_PT, "");
-        tmp.put(Localizations.RU_RU, "");
-        tmp.put(Localizations.ZH_CN, "");
+        tmp.put(Localizations.DE_DE, "Axt");
+        tmp.put(Localizations.EN_US, "Axe");
+        tmp.put(Localizations.FR_FR, "Hache");
+        tmp.put(Localizations.PT_BR, "Machado");
+        tmp.put(Localizations.PT_PT, "Machado");
+        tmp.put(Localizations.RU_RU, "Топор");
+        tmp.put(Localizations.ZH_CN, "斧");
         add(MPSItems.AXE_MODULE.get(), tmp);
 
         tmp = new HashMap<>();
-        tmp.put(Localizations.DE_DE, "");
+        tmp.put(Localizations.DE_DE, "Äxte dienen hauptsächlich zum Fällen von Bäumen.");
         tmp.put(Localizations.EN_US, "Axes are mostly for chopping trees.");
-        tmp.put(Localizations.FR_FR, "");
-        tmp.put(Localizations.PT_BR, "");
-        tmp.put(Localizations.PT_PT, "");
-        tmp.put(Localizations.RU_RU, "");
-        tmp.put(Localizations.ZH_CN, "");
+        tmp.put(Localizations.FR_FR, "Les haches servent principalement à couper des arbres.");
+        tmp.put(Localizations.PT_BR, "Os machados são principalmente para cortar árvores.");
+        tmp.put(Localizations.PT_PT, "Os eixos são principalmente para cortar árvores.");
+        tmp.put(Localizations.RU_RU, "Топоры в основном предназначены для рубки деревьев.");
+        tmp.put(Localizations.ZH_CN, "斧头多用于砍树。");
         addItemDescriptions(MPSItems.AXE_MODULE.get(), tmp);
 
         // Diamond Drill Upgrade -----------------------------------------------------------------------
         tmp = new HashMap<>();
-        tmp.put(Localizations.DE_DE, "");
+        tmp.put(Localizations.DE_DE, "Diamantbohrer-Upgrade");
         tmp.put(Localizations.EN_US, "Diamond Drill Upgrade");
-        tmp.put(Localizations.FR_FR, "");
-        tmp.put(Localizations.PT_BR, "");
-        tmp.put(Localizations.PT_PT, "");
-        tmp.put(Localizations.RU_RU, "");
-        tmp.put(Localizations.ZH_CN, "");
+        tmp.put(Localizations.FR_FR, "Mise à niveau de Diamond Drill");
+        tmp.put(Localizations.PT_BR, "Atualização da broca diamantada");
+        tmp.put(Localizations.PT_PT, "Atualização do Diamond Drill");
+        tmp.put(Localizations.RU_RU, "Модернизация алмазного сверла");
+        tmp.put(Localizations.ZH_CN, "金刚石钻升级");
         add(MPSItems.DIAMOND_PICK_UPGRADE_MODULE.get(), tmp);
 
         tmp = new HashMap<>();
-        tmp.put(Localizations.DE_DE, "");
+        tmp.put(Localizations.DE_DE, "Füge Diamanten hinzu, damit dein Spitzhackenmodul Obsidian abbauen kann. *BENÖTIGT EIN SPITZHACKENMODUL, UM ZU FUNKTIONIEREN*");
         tmp.put(Localizations.EN_US, "Add diamonds to allow your pickaxe module to mine Obsidian. *REQUIRES PICKAXE MODULE TO WORK*");
-        tmp.put(Localizations.FR_FR, "");
-        tmp.put(Localizations.PT_BR, "");
-        tmp.put(Localizations.PT_PT, "");
-        tmp.put(Localizations.RU_RU, "");
-        tmp.put(Localizations.ZH_CN, "");
+        tmp.put(Localizations.FR_FR, "Ajoutez des diamants pour permettre à votre module de pioche d’extraire de l’obsidienne. * NÉCESSITE UN MODULE DE PIOCHE POUR FONCTIONNER *");
+        tmp.put(Localizations.PT_BR, "Adicione diamantes para permitir que seu módulo picareta minere Obsidian. *REQUER MÓDULO PICARETA PARA FUNCIONAR*");
+        tmp.put(Localizations.PT_PT, "Adicione diamantes para permitir que seu módulo de picareta minere Obsidian. *REQUER MÓDULO DE PICARETA PARA FUNCIONAR*");
+        tmp.put(Localizations.RU_RU, "Добавляйте алмазы, чтобы ваш модуль кирки мог добывать обсидиан. *ДЛЯ РАБОТЫ ТРЕБУЕТСЯ МОДУЛЬ КИРКИ*");
+        tmp.put(Localizations.ZH_CN, "添加钻石，让您的镐模块开采黑曜石。*需要镐模块才能工作*");
         addItemDescriptions(MPSItems.DIAMOND_PICK_UPGRADE_MODULE.get(), tmp);
 
         // Flint and Steel -----------------------------------------------------------------------------
         tmp = new HashMap<>();
-        tmp.put(Localizations.DE_DE, "");
+        tmp.put(Localizations.DE_DE, "Feuerstein und Stahl");
         tmp.put(Localizations.EN_US, "Flint and Steel");
-        tmp.put(Localizations.FR_FR, "");
-        tmp.put(Localizations.PT_BR, "");
-        tmp.put(Localizations.PT_PT, "");
-        tmp.put(Localizations.RU_RU, "");
-        tmp.put(Localizations.ZH_CN, "");
+        tmp.put(Localizations.FR_FR, "silex et acier");
+        tmp.put(Localizations.PT_BR, "Sílex e Aço");
+        tmp.put(Localizations.PT_PT, "Sílex e Aço");
+        tmp.put(Localizations.RU_RU, "Кремень и сталь");
+        tmp.put(Localizations.ZH_CN, "燧石和钢");
         add(MPSItems.FLINT_AND_STEEL_MODULE.get(), tmp);
 
         tmp = new HashMap<>();
-        tmp.put(Localizations.DE_DE, "");
+        tmp.put(Localizations.DE_DE, "Ein tragbarer Zünder, der durch die Kraft der Energie Feuer erzeugt.");
         tmp.put(Localizations.EN_US, "A portable igniter that creates fire through the power of energy.");
-        tmp.put(Localizations.FR_FR, "");
-        tmp.put(Localizations.PT_BR, "");
-        tmp.put(Localizations.PT_PT, "");
-        tmp.put(Localizations.RU_RU, "");
-        tmp.put(Localizations.ZH_CN, "");
+        tmp.put(Localizations.FR_FR, "Un allumeur portable qui crée du feu grâce à la puissance de l’énergie.");
+        tmp.put(Localizations.PT_BR, "Um ignitor portátil que cria fogo através do poder da energia.");
+        tmp.put(Localizations.PT_PT, "Um ignitor portátil que cria fogo através do poder da energia.");
+        tmp.put(Localizations.RU_RU, "Портативный воспламенитель, который создает огонь за счет силы энергии.");
+        tmp.put(Localizations.ZH_CN, "一种便携式点火器，通过能量产生火灾。");
         addItemDescriptions(MPSItems.FLINT_AND_STEEL_MODULE.get(), tmp);
 
         // Rototiller ----------------------------------------------------------------------------------
         tmp = new HashMap<>();
-        tmp.put(Localizations.DE_DE, "");
+        tmp.put(Localizations.DE_DE, "Rototiller");
         tmp.put(Localizations.EN_US, "Rototiller");
-        tmp.put(Localizations.FR_FR, "");
-        tmp.put(Localizations.PT_BR, "");
-        tmp.put(Localizations.PT_PT, "");
-        tmp.put(Localizations.RU_RU, "");
-        tmp.put(Localizations.ZH_CN, "");
+        tmp.put(Localizations.FR_FR, "Rototiller");
+        tmp.put(Localizations.PT_BR, "Rototiller");
+        tmp.put(Localizations.PT_PT, "Rototiller");
+        tmp.put(Localizations.RU_RU, "Ротационный культиватор");
+        tmp.put(Localizations.ZH_CN, "旋转耕耘机");
         add(MPSItems.HOE_MODULE.get(), tmp);
 
         tmp = new HashMap<>();
-        tmp.put(Localizations.DE_DE, "");
+        tmp.put(Localizations.DE_DE, "Ein automatisiertes Bodenbearbeitungs-Addon, das es einfach macht, große Landstriche auf einmal zu bestellen.");
         tmp.put(Localizations.EN_US, "An automated tilling addon to make it easy to till large swaths of land at once.");
-        tmp.put(Localizations.FR_FR, "");
-        tmp.put(Localizations.PT_BR, "");
-        tmp.put(Localizations.PT_PT, "");
-        tmp.put(Localizations.RU_RU, "");
-        tmp.put(Localizations.ZH_CN, "");
+        tmp.put(Localizations.FR_FR, "Un addon de labour automatisé pour faciliter la culture de grandes étendues de terre à la fois.");
+        tmp.put(Localizations.PT_BR, "Um addon de lavoura automatizado para facilitar a lavoura de grandes extensões de terra de uma só vez.");
+        tmp.put(Localizations.PT_PT, "Um addon de lavoura automatizado para facilitar o cultivo de grandes extensões de terra de uma só vez.");
+        tmp.put(Localizations.RU_RU, "Аддон для автоматической обработки почвы, упрощающий одновременную обработку больших участков земли.");
+        tmp.put(Localizations.ZH_CN, "自动耕作插件，可轻松一次耕种大片土地。");
         addItemDescriptions(MPSItems.HOE_MODULE.get(), tmp);
 
         // Leaf Blower ---------------------------------------------------------------------------------
         tmp = new HashMap<>();
-        tmp.put(Localizations.DE_DE, "");
+        tmp.put(Localizations.DE_DE, "Laubbläser");
         tmp.put(Localizations.EN_US, "Leaf Blower");
-        tmp.put(Localizations.FR_FR, "");
-        tmp.put(Localizations.PT_BR, "");
-        tmp.put(Localizations.PT_PT, "");
-        tmp.put(Localizations.RU_RU, "");
-        tmp.put(Localizations.ZH_CN, "");
+        tmp.put(Localizations.FR_FR, "Souffleur");
+        tmp.put(Localizations.PT_BR, "Soprador de Folhas");
+        tmp.put(Localizations.PT_PT, "Soprador de Folhas");
+        tmp.put(Localizations.RU_RU, "Воздуходувка для листьев");
+        tmp.put(Localizations.ZH_CN, "吹叶机");
         add(MPSItems.LEAF_BLOWER_MODULE.get(), tmp);
 
         tmp = new HashMap<>();
-        tmp.put(Localizations.DE_DE, "");
+        tmp.put(Localizations.DE_DE, "Erzeugen Sie einen Luftstrom, um Pflanzen aus dem Boden und Blätter von Bäumen zu schlagen.");
         tmp.put(Localizations.EN_US, "Create a torrent of air to knock plants out of the ground and leaves off of trees.");
-        tmp.put(Localizations.FR_FR, "");
-        tmp.put(Localizations.PT_BR, "");
-        tmp.put(Localizations.PT_PT, "");
-        tmp.put(Localizations.RU_RU, "");
-        tmp.put(Localizations.ZH_CN, "");
+        tmp.put(Localizations.FR_FR, "Créez un torrent d’air pour faire tomber les plantes du sol et les feuilles des arbres.");
+        tmp.put(Localizations.PT_BR, "Crie uma torrente de ar para derrubar plantas do chão e folhas de árvores.");
+        tmp.put(Localizations.PT_PT, "Crie uma torrente de ar para derrubar plantas do chão e folhas de árvores.");
+        tmp.put(Localizations.RU_RU, "Создайте поток воздуха, чтобы выбить растения из земли и листья с деревьев.");
+        tmp.put(Localizations.ZH_CN, "制造一股空气洪流，将植物从地下击落，将树叶从树上击落。");
         addItemDescriptions(MPSItems.LEAF_BLOWER_MODULE.get(), tmp);
 
         // Lux Capacitor -------------------------------------------------------------------------------
         tmp = new HashMap<>();
-        tmp.put(Localizations.DE_DE, "");
+        tmp.put(Localizations.DE_DE, "Lux-Kondensator");
         tmp.put(Localizations.EN_US, "Lux Capacitor");
-        tmp.put(Localizations.FR_FR, "");
-        tmp.put(Localizations.PT_BR, "");
-        tmp.put(Localizations.PT_PT, "");
-        tmp.put(Localizations.RU_RU, "");
-        tmp.put(Localizations.ZH_CN, "");
+        tmp.put(Localizations.FR_FR, "Condensateur Lux");
+        tmp.put(Localizations.PT_BR, "Lux Capacitor");
+        tmp.put(Localizations.PT_PT, "Lux Capacitor");
+        tmp.put(Localizations.RU_RU, "Конденсатор люкс");
+        tmp.put(Localizations.ZH_CN, "勒克斯电容器");
         add(MPSItems.LUX_CAPACITOR_MODULE.get(), tmp);
 
         tmp = new HashMap<>();
-        tmp.put(Localizations.DE_DE, "");
+        tmp.put(Localizations.DE_DE, "Starten Sie eine praktisch unendliche Anzahl attraktiver Lichtquellen an der Wand.");
         tmp.put(Localizations.EN_US, "Launch a virtually infinite number of attractive light sources at the wall.");
-        tmp.put(Localizations.FR_FR, "");
-        tmp.put(Localizations.PT_BR, "");
-        tmp.put(Localizations.PT_PT, "");
-        tmp.put(Localizations.RU_RU, "");
-        tmp.put(Localizations.ZH_CN, "");
+        tmp.put(Localizations.FR_FR, "Lancez un nombre pratiquement infini de sources lumineuses attrayantes sur le mur.");
+        tmp.put(Localizations.PT_BR, "Lançar um número virtualmente infinito de fontes de luz atraentes na parede.");
+        tmp.put(Localizations.PT_PT, "Lançar um número virtualmente infinito de fontes de luz atraentes na parede.");
+        tmp.put(Localizations.RU_RU, "Запускайте практически бесконечное количество привлекательных источников света на стене.");
+        tmp.put(Localizations.ZH_CN, "在墙上发射几乎无限数量的有吸引力的光源。");
         addItemDescriptions(MPSItems.LUX_CAPACITOR_MODULE.get(), tmp);
 
         // Pickaxe -------------------------------------------------------------------------------------
         tmp = new HashMap<>();
-        tmp.put(Localizations.DE_DE, "");
+        tmp.put(Localizations.DE_DE, "Spitzhacke");
         tmp.put(Localizations.EN_US, "Pickaxe");
-        tmp.put(Localizations.FR_FR, "");
-        tmp.put(Localizations.PT_BR, "");
-        tmp.put(Localizations.PT_PT, "");
-        tmp.put(Localizations.RU_RU, "");
-        tmp.put(Localizations.ZH_CN, "");
+        tmp.put(Localizations.FR_FR, "Pioche");
+        tmp.put(Localizations.PT_BR, "Picareta");
+        tmp.put(Localizations.PT_PT, "Picareta");
+        tmp.put(Localizations.RU_RU, "Кирка");
+        tmp.put(Localizations.ZH_CN, "镐头");
         add(MPSItems.PICKAXE_MODULE.get(), tmp);
 
         tmp = new HashMap<>();
-        tmp.put(Localizations.DE_DE, "");
+        tmp.put(Localizations.DE_DE, "Spitzhacken eignen sich gut für härtere Materialien wie Stein und Erz.");
         tmp.put(Localizations.EN_US, "Picks are good for harder materials like stone and ore.");
-        tmp.put(Localizations.FR_FR, "");
-        tmp.put(Localizations.PT_BR, "");
-        tmp.put(Localizations.PT_PT, "");
-        tmp.put(Localizations.RU_RU, "");
-        tmp.put(Localizations.ZH_CN, "");
+        tmp.put(Localizations.FR_FR, "Les pics sont bons pour les matériaux plus durs comme la pierre et le minerai.");
+        tmp.put(Localizations.PT_BR, "As picaretas são boas para materiais mais duros, como pedra e minério.");
+        tmp.put(Localizations.PT_PT, "As picaretas são boas para materiais mais duros, como pedra e minério.");
+        tmp.put(Localizations.RU_RU, "Кирки хороши для более твердых материалов, таких как камень и руда.");
+        tmp.put(Localizations.ZH_CN, "镐适用于较硬的材料，如石头和矿石。");
         addItemDescriptions(MPSItems.PICKAXE_MODULE.get(), tmp);
 
         // Shears --------------------------------------------------------------------------------------
         tmp = new HashMap<>();
-        tmp.put(Localizations.DE_DE, "");
+        tmp.put(Localizations.DE_DE, "Ciseaux");
         tmp.put(Localizations.EN_US, "Shears");
-        tmp.put(Localizations.FR_FR, "");
-        tmp.put(Localizations.PT_BR, "");
-        tmp.put(Localizations.PT_PT, "");
-        tmp.put(Localizations.RU_RU, "");
-        tmp.put(Localizations.ZH_CN, "");
+        tmp.put(Localizations.FR_FR, "Ciseaux");
+        tmp.put(Localizations.PT_BR, "Tesoura");
+        tmp.put(Localizations.PT_PT, "Tesouras");
+        tmp.put(Localizations.RU_RU, "Ножницы");
+        tmp.put(Localizations.ZH_CN, "剪");
         add(MPSItems.SHEARS_MODULE.get(), tmp);
 
         tmp = new HashMap<>();
-        tmp.put(Localizations.DE_DE, "");
+        tmp.put(Localizations.DE_DE, "Schneidet durch Blätter, Wolle und Schlingpflanzen gleichermaßen.");
         tmp.put(Localizations.EN_US, "Cuts through leaves, wool, and creepers alike.");
-        tmp.put(Localizations.FR_FR, "");
-        tmp.put(Localizations.PT_BR, "");
-        tmp.put(Localizations.PT_PT, "");
-        tmp.put(Localizations.RU_RU, "");
-        tmp.put(Localizations.ZH_CN, "");
+        tmp.put(Localizations.FR_FR, "Coupe à travers les feuilles, la laine et les lianes.");
+        tmp.put(Localizations.PT_BR, "Corta folhas, lã e trepadeiras.");
+        tmp.put(Localizations.PT_PT, "Corta folhas, lã e trepadeiras.");
+        tmp.put(Localizations.RU_RU, "Прорезает листья, шерсть и лианы.");
+        tmp.put(Localizations.ZH_CN, "切开树叶、羊毛和爬行者。");
         addItemDescriptions(MPSItems.SHEARS_MODULE.get(), tmp);
 
         // Shovel --------------------------------------------------------------------------------------
         tmp = new HashMap<>();
-        tmp.put(Localizations.DE_DE, "");
+        tmp.put(Localizations.DE_DE, "Schaufel");
         tmp.put(Localizations.EN_US, "Shovel");
-        tmp.put(Localizations.FR_FR, "");
-        tmp.put(Localizations.PT_BR, "");
-        tmp.put(Localizations.PT_PT, "");
-        tmp.put(Localizations.RU_RU, "");
-        tmp.put(Localizations.ZH_CN, "");
+        tmp.put(Localizations.FR_FR, "Pelle");
+        tmp.put(Localizations.PT_BR, "Pá");
+        tmp.put(Localizations.PT_PT, "Pá");
+        tmp.put(Localizations.RU_RU, "Лопата");
+        tmp.put(Localizations.ZH_CN, "铲");
         add(MPSItems.SHOVEL_MODULE.get(), tmp);
 
         tmp = new HashMap<>();
-        tmp.put(Localizations.DE_DE, "");
+        tmp.put(Localizations.DE_DE, "Schaufeln eignen sich gut für weiche Materialien wie Schmutz und Sand.");
         tmp.put(Localizations.EN_US, "Shovels are good for soft materials like dirt and sand.");
-        tmp.put(Localizations.FR_FR, "");
-        tmp.put(Localizations.PT_BR, "");
-        tmp.put(Localizations.PT_PT, "");
-        tmp.put(Localizations.RU_RU, "");
-        tmp.put(Localizations.ZH_CN, "");
+        tmp.put(Localizations.FR_FR, "Les pelles sont bonnes pour les matériaux mous comme la terre et le sable.");
+        tmp.put(Localizations.PT_BR, "As pás são boas para materiais macios como sujeira e areia.");
+        tmp.put(Localizations.PT_PT, "As pás são boas para materiais macios, como sujeira e areia.");
+        tmp.put(Localizations.RU_RU, "Лопаты хороши для мягких материалов, таких как грязь и песок.");
+        tmp.put(Localizations.ZH_CN, "铲子适用于泥土和沙子等软材料。");
         addItemDescriptions(MPSItems.SHOVEL_MODULE.get(), tmp);
-
 
         // Debug =======================================================================================
         // TODO
@@ -2584,7 +2581,15 @@ public class MPSMultiLanguageProvider extends MulitiLanguageProvider {
 
     void addKeybinds() {
         // FIXME: change this to something like "Toggle %s");
-
+        //        Map<Localizations, String> tmp = new HashMap<>();
+//        tmp.put(Localizations.DE_DE, "");
+//        tmp.put(Localizations.EN_US, "");
+//        tmp.put(Localizations.FR_FR, "");
+//        tmp.put(Localizations.PT_BR, "");
+//        tmp.put(Localizations.PT_PT, "");
+//        tmp.put(Localizations.RU_RU, "");
+//        tmp.put(Localizations.ZH_CN, "");
+//        add(, tmp);
 
         add("keybinding.minecraft.clock", "Toggle Clock");
         add("keybinding.minecraft.compass", "Toggle Compass");
@@ -2753,187 +2758,970 @@ public class MPSMultiLanguageProvider extends MulitiLanguageProvider {
 //        add(, tmp);
 
         add("javaModel.feet.RightFoot.partName", "RightFoot");
-
+        //        Map<Localizations, String> tmp = new HashMap<>();
+//        tmp.put(Localizations.DE_DE, "");
+//        tmp.put(Localizations.EN_US, "");
+//        tmp.put(Localizations.FR_FR, "");
+//        tmp.put(Localizations.PT_BR, "");
+//        tmp.put(Localizations.PT_PT, "");
+//        tmp.put(Localizations.RU_RU, "");
+//        tmp.put(Localizations.ZH_CN, "");
+//        add(, tmp);
 
 
 
         // Armor skins ---------------------------------------------------------------------------------
         add("javaModel.citizenjoe_armorskin.specName", "Citizen Joe Armor Skin");
+        //        Map<Localizations, String> tmp = new HashMap<>();
+//        tmp.put(Localizations.DE_DE, "");
+//        tmp.put(Localizations.EN_US, "");
+//        tmp.put(Localizations.FR_FR, "");
+//        tmp.put(Localizations.PT_BR, "");
+//        tmp.put(Localizations.PT_PT, "");
+//        tmp.put(Localizations.RU_RU, "");
+//        tmp.put(Localizations.ZH_CN, "");
+//        add(, tmp);
+
         add("javaModel.default_armorskin.specName", "Default Armor Skin");
+
+        //        Map<Localizations, String> tmp = new HashMap<>();
+//        tmp.put(Localizations.DE_DE, "");
+//        tmp.put(Localizations.EN_US, "");
+//        tmp.put(Localizations.FR_FR, "");
+//        tmp.put(Localizations.PT_BR, "");
+//        tmp.put(Localizations.PT_PT, "");
+//        tmp.put(Localizations.RU_RU, "");
+//        tmp.put(Localizations.ZH_CN, "");
+//        add(, tmp);
 
         // Power Fist ----------------------------------------------------------------------------------
         add("javaModel.powerfist.specName", "Power Fist");
+        //        Map<Localizations, String> tmp = new HashMap<>();
+//        tmp.put(Localizations.DE_DE, "");
+//        tmp.put(Localizations.EN_US, "");
+//        tmp.put(Localizations.FR_FR, "");
+//        tmp.put(Localizations.PT_BR, "");
+//        tmp.put(Localizations.PT_PT, "");
+//        tmp.put(Localizations.RU_RU, "");
+//        tmp.put(Localizations.ZH_CN, "");
+//        add(, tmp);
+
         add("javaModel.powerfist.mainarm.partName", "Main Arm");
+
+        //        Map<Localizations, String> tmp = new HashMap<>();
+//        tmp.put(Localizations.DE_DE, "");
+//        tmp.put(Localizations.EN_US, "");
+//        tmp.put(Localizations.FR_FR, "");
+//        tmp.put(Localizations.PT_BR, "");
+//        tmp.put(Localizations.PT_PT, "");
+//        tmp.put(Localizations.RU_RU, "");
+//        tmp.put(Localizations.ZH_CN, "");
+//        add(, tmp);
         add("javaModel.powerfist.armorright.partName", "Armor Right");
+
+
+        //        Map<Localizations, String> tmp = new HashMap<>();
+//        tmp.put(Localizations.DE_DE, "");
+//        tmp.put(Localizations.EN_US, "");
+//        tmp.put(Localizations.FR_FR, "");
+//        tmp.put(Localizations.PT_BR, "");
+//        tmp.put(Localizations.PT_PT, "");
+//        tmp.put(Localizations.RU_RU, "");
+//        tmp.put(Localizations.ZH_CN, "");
+//        add(, tmp);
         add("javaModel.powerfist.armorleft.partName", "Armor Left");
+
+        //        Map<Localizations, String> tmp = new HashMap<>();
+//        tmp.put(Localizations.DE_DE, "");
+//        tmp.put(Localizations.EN_US, "");
+//        tmp.put(Localizations.FR_FR, "");
+//        tmp.put(Localizations.PT_BR, "");
+//        tmp.put(Localizations.PT_PT, "");
+//        tmp.put(Localizations.RU_RU, "");
+//        tmp.put(Localizations.ZH_CN, "");
+//        add(, tmp);
+
         add("javaModel.powerfist.wristtopright.partName", "Wrist Top Right");
+
+        //        Map<Localizations, String> tmp = new HashMap<>();
+//        tmp.put(Localizations.DE_DE, "");
+//        tmp.put(Localizations.EN_US, "");
+//        tmp.put(Localizations.FR_FR, "");
+//        tmp.put(Localizations.PT_BR, "");
+//        tmp.put(Localizations.PT_PT, "");
+//        tmp.put(Localizations.RU_RU, "");
+//        tmp.put(Localizations.ZH_CN, "");
+//        add(, tmp);
+
         add("javaModel.powerfist.wristtopleft.partName", "Wrist Top Left");
+
+        //        Map<Localizations, String> tmp = new HashMap<>();
+//        tmp.put(Localizations.DE_DE, "");
+//        tmp.put(Localizations.EN_US, "");
+//        tmp.put(Localizations.FR_FR, "");
+//        tmp.put(Localizations.PT_BR, "");
+//        tmp.put(Localizations.PT_PT, "");
+//        tmp.put(Localizations.RU_RU, "");
+//        tmp.put(Localizations.ZH_CN, "");
+//        add(, tmp);
+
         add("javaModel.powerfist.wristbottomright.partName", "Wrist Bottom Right");
+
+        //        Map<Localizations, String> tmp = new HashMap<>();
+//        tmp.put(Localizations.DE_DE, "");
+//        tmp.put(Localizations.EN_US, "");
+//        tmp.put(Localizations.FR_FR, "");
+//        tmp.put(Localizations.PT_BR, "");
+//        tmp.put(Localizations.PT_PT, "");
+//        tmp.put(Localizations.RU_RU, "");
+//        tmp.put(Localizations.ZH_CN, "");
+//        add(, tmp);
+
         add("javaModel.powerfist.wristbottomleft.partName", "Wrist Bottom Left");
+
+        //        Map<Localizations, String> tmp = new HashMap<>();
+//        tmp.put(Localizations.DE_DE, "");
+//        tmp.put(Localizations.EN_US, "");
+//        tmp.put(Localizations.FR_FR, "");
+//        tmp.put(Localizations.PT_BR, "");
+//        tmp.put(Localizations.PT_PT, "");
+//        tmp.put(Localizations.RU_RU, "");
+//        tmp.put(Localizations.ZH_CN, "");
+//        add(, tmp);
+
         add("javaModel.powerfist.fingerguard.partName", "Finger Guard");
+
+
+        //        Map<Localizations, String> tmp = new HashMap<>();
+//        tmp.put(Localizations.DE_DE, "");
+//        tmp.put(Localizations.EN_US, "");
+//        tmp.put(Localizations.FR_FR, "");
+//        tmp.put(Localizations.PT_BR, "");
+//        tmp.put(Localizations.PT_PT, "");
+//        tmp.put(Localizations.RU_RU, "");
+//        tmp.put(Localizations.ZH_CN, "");
+//        add(, tmp);
+
         add("javaModel.powerfist.crystalholder.partName", "Crystal Holder");
+
+        //        Map<Localizations, String> tmp = new HashMap<>();
+//        tmp.put(Localizations.DE_DE, "");
+//        tmp.put(Localizations.EN_US, "");
+//        tmp.put(Localizations.FR_FR, "");
+//        tmp.put(Localizations.PT_BR, "");
+//        tmp.put(Localizations.PT_PT, "");
+//        tmp.put(Localizations.RU_RU, "");
+//        tmp.put(Localizations.ZH_CN, "");
+//        add(, tmp);
+
         add("javaModel.powerfist.crystal.partName", "Crystal");
+
+        //        Map<Localizations, String> tmp = new HashMap<>();
+//        tmp.put(Localizations.DE_DE, "");
+//        tmp.put(Localizations.EN_US, "");
+//        tmp.put(Localizations.FR_FR, "");
+//        tmp.put(Localizations.PT_BR, "");
+//        tmp.put(Localizations.PT_PT, "");
+//        tmp.put(Localizations.RU_RU, "");
+//        tmp.put(Localizations.ZH_CN, "");
+//        add(, tmp);
+
         add("javaModel.powerfist.supportright1.partName", "Support Right 1");
+
+        //        Map<Localizations, String> tmp = new HashMap<>();
+//        tmp.put(Localizations.DE_DE, "");
+//        tmp.put(Localizations.EN_US, "");
+//        tmp.put(Localizations.FR_FR, "");
+//        tmp.put(Localizations.PT_BR, "");
+//        tmp.put(Localizations.PT_PT, "");
+//        tmp.put(Localizations.RU_RU, "");
+//        tmp.put(Localizations.ZH_CN, "");
+//        add(, tmp);
+
         add("javaModel.powerfist.supportright2.partName", "Support Right 2");
+
+        //        Map<Localizations, String> tmp = new HashMap<>();
+//        tmp.put(Localizations.DE_DE, "");
+//        tmp.put(Localizations.EN_US, "");
+//        tmp.put(Localizations.FR_FR, "");
+//        tmp.put(Localizations.PT_BR, "");
+//        tmp.put(Localizations.PT_PT, "");
+//        tmp.put(Localizations.RU_RU, "");
+//        tmp.put(Localizations.ZH_CN, "");
+//        add(, tmp);
+
+
         add("javaModel.powerfist.supportright3.partName", "Support Right 3");
+
+        //        Map<Localizations, String> tmp = new HashMap<>();
+//        tmp.put(Localizations.DE_DE, "");
+//        tmp.put(Localizations.EN_US, "");
+//        tmp.put(Localizations.FR_FR, "");
+//        tmp.put(Localizations.PT_BR, "");
+//        tmp.put(Localizations.PT_PT, "");
+//        tmp.put(Localizations.RU_RU, "");
+//        tmp.put(Localizations.ZH_CN, "");
+//        add(, tmp);
+
         add("javaModel.powerfist.supportright4.partName", "Support Right 4");
+
+        //        Map<Localizations, String> tmp = new HashMap<>();
+//        tmp.put(Localizations.DE_DE, "");
+//        tmp.put(Localizations.EN_US, "");
+//        tmp.put(Localizations.FR_FR, "");
+//        tmp.put(Localizations.PT_BR, "");
+//        tmp.put(Localizations.PT_PT, "");
+//        tmp.put(Localizations.RU_RU, "");
+//        tmp.put(Localizations.ZH_CN, "");
+//        add(, tmp);
+
         add("javaModel.powerfist.supportright5.partName", "Support Right 5");
+
+        //        Map<Localizations, String> tmp = new HashMap<>();
+//        tmp.put(Localizations.DE_DE, "");
+//        tmp.put(Localizations.EN_US, "");
+//        tmp.put(Localizations.FR_FR, "");
+//        tmp.put(Localizations.PT_BR, "");
+//        tmp.put(Localizations.PT_PT, "");
+//        tmp.put(Localizations.RU_RU, "");
+//        tmp.put(Localizations.ZH_CN, "");
+//        add(, tmp);
+
         add("javaModel.powerfist.supportbaseright.partName", "Support Base Right");
+
+        //        Map<Localizations, String> tmp = new HashMap<>();
+//        tmp.put(Localizations.DE_DE, "");
+//        tmp.put(Localizations.EN_US, "");
+//        tmp.put(Localizations.FR_FR, "");
+//        tmp.put(Localizations.PT_BR, "");
+//        tmp.put(Localizations.PT_PT, "");
+//        tmp.put(Localizations.RU_RU, "");
+//        tmp.put(Localizations.ZH_CN, "");
+//        add(, tmp);
+
         add("javaModel.powerfist.supportrightfront.partName", "Support Right Front");
+
+        //        Map<Localizations, String> tmp = new HashMap<>();
+//        tmp.put(Localizations.DE_DE, "");
+//        tmp.put(Localizations.EN_US, "");
+//        tmp.put(Localizations.FR_FR, "");
+//        tmp.put(Localizations.PT_BR, "");
+//        tmp.put(Localizations.PT_PT, "");
+//        tmp.put(Localizations.RU_RU, "");
+//        tmp.put(Localizations.ZH_CN, "");
+//        add(, tmp);
+
         add("javaModel.powerfist.supportbaseleft.partName", "Support Base Left");
+
+        //        Map<Localizations, String> tmp = new HashMap<>();
+//        tmp.put(Localizations.DE_DE, "");
+//        tmp.put(Localizations.EN_US, "");
+//        tmp.put(Localizations.FR_FR, "");
+//        tmp.put(Localizations.PT_BR, "");
+//        tmp.put(Localizations.PT_PT, "");
+//        tmp.put(Localizations.RU_RU, "");
+//        tmp.put(Localizations.ZH_CN, "");
+//        add(, tmp);
+
         add("javaModel.powerfist.supportleftfront.partName", "Support Left Front");
+
+        //        Map<Localizations, String> tmp = new HashMap<>();
+//        tmp.put(Localizations.DE_DE, "");
+//        tmp.put(Localizations.EN_US, "");
+//        tmp.put(Localizations.FR_FR, "");
+//        tmp.put(Localizations.PT_BR, "");
+//        tmp.put(Localizations.PT_PT, "");
+//        tmp.put(Localizations.RU_RU, "");
+//        tmp.put(Localizations.ZH_CN, "");
+//        add(, tmp);
+
         add("javaModel.powerfist.supportleft1.partName", "Support Left 1");
+
+
+        //        Map<Localizations, String> tmp = new HashMap<>();
+//        tmp.put(Localizations.DE_DE, "");
+//        tmp.put(Localizations.EN_US, "");
+//        tmp.put(Localizations.FR_FR, "");
+//        tmp.put(Localizations.PT_BR, "");
+//        tmp.put(Localizations.PT_PT, "");
+//        tmp.put(Localizations.RU_RU, "");
+//        tmp.put(Localizations.ZH_CN, "");
+//        add(, tmp);
+
         add("javaModel.powerfist.supportleft2.partName", "Support Left 2");
+
+
+        //        Map<Localizations, String> tmp = new HashMap<>();
+//        tmp.put(Localizations.DE_DE, "");
+//        tmp.put(Localizations.EN_US, "");
+//        tmp.put(Localizations.FR_FR, "");
+//        tmp.put(Localizations.PT_BR, "");
+//        tmp.put(Localizations.PT_PT, "");
+//        tmp.put(Localizations.RU_RU, "");
+//        tmp.put(Localizations.ZH_CN, "");
+//        add(, tmp);
+
         add("javaModel.powerfist.supportleft3.partName", "Support Left 3");
+
+        //        Map<Localizations, String> tmp = new HashMap<>();
+//        tmp.put(Localizations.DE_DE, "");
+//        tmp.put(Localizations.EN_US, "");
+//        tmp.put(Localizations.FR_FR, "");
+//        tmp.put(Localizations.PT_BR, "");
+//        tmp.put(Localizations.PT_PT, "");
+//        tmp.put(Localizations.RU_RU, "");
+//        tmp.put(Localizations.ZH_CN, "");
+//        add(, tmp);
+
         add("javaModel.powerfist.supportleft4.partName", "Support Left 4");
+
+        //        Map<Localizations, String> tmp = new HashMap<>();
+//        tmp.put(Localizations.DE_DE, "");
+//        tmp.put(Localizations.EN_US, "");
+//        tmp.put(Localizations.FR_FR, "");
+//        tmp.put(Localizations.PT_BR, "");
+//        tmp.put(Localizations.PT_PT, "");
+//        tmp.put(Localizations.RU_RU, "");
+//        tmp.put(Localizations.ZH_CN, "");
+//        add(, tmp);
+
         add("javaModel.powerfist.supportleft5.partName", "Support Left 5");
+
+        //        Map<Localizations, String> tmp = new HashMap<>();
+//        tmp.put(Localizations.DE_DE, "");
+//        tmp.put(Localizations.EN_US, "");
+//        tmp.put(Localizations.FR_FR, "");
+//        tmp.put(Localizations.PT_BR, "");
+//        tmp.put(Localizations.PT_PT, "");
+//        tmp.put(Localizations.RU_RU, "");
+//        tmp.put(Localizations.ZH_CN, "");
+//        add(, tmp);
+
+
         add("javaModel.powerfist.palm.partName", "Palm");
+
+        //        Map<Localizations, String> tmp = new HashMap<>();
+//        tmp.put(Localizations.DE_DE, "");
+//        tmp.put(Localizations.EN_US, "");
+//        tmp.put(Localizations.FR_FR, "");
+//        tmp.put(Localizations.PT_BR, "");
+//        tmp.put(Localizations.PT_PT, "");
+//        tmp.put(Localizations.RU_RU, "");
+//        tmp.put(Localizations.ZH_CN, "");
+//        add(, tmp);
+
+
         add("javaModel.powerfist.palm.index1.partName", "Index 1");
+
+        //        Map<Localizations, String> tmp = new HashMap<>();
+//        tmp.put(Localizations.DE_DE, "");
+//        tmp.put(Localizations.EN_US, "");
+//        tmp.put(Localizations.FR_FR, "");
+//        tmp.put(Localizations.PT_BR, "");
+//        tmp.put(Localizations.PT_PT, "");
+//        tmp.put(Localizations.RU_RU, "");
+//        tmp.put(Localizations.ZH_CN, "");
+//        add(, tmp);
+
+
         add("javaModel.powerfist.palm.index1.index2.partName", "Index 2");
+
+        //        Map<Localizations, String> tmp = new HashMap<>();
+//        tmp.put(Localizations.DE_DE, "");
+//        tmp.put(Localizations.EN_US, "");
+//        tmp.put(Localizations.FR_FR, "");
+//        tmp.put(Localizations.PT_BR, "");
+//        tmp.put(Localizations.PT_PT, "");
+//        tmp.put(Localizations.RU_RU, "");
+//        tmp.put(Localizations.ZH_CN, "");
+//        add(, tmp);
+
         add("javaModel.powerfist.palm.middlefinger1.partName", "Middle Finger 1");
+
+        //        Map<Localizations, String> tmp = new HashMap<>();
+//        tmp.put(Localizations.DE_DE, "");
+//        tmp.put(Localizations.EN_US, "");
+//        tmp.put(Localizations.FR_FR, "");
+//        tmp.put(Localizations.PT_BR, "");
+//        tmp.put(Localizations.PT_PT, "");
+//        tmp.put(Localizations.RU_RU, "");
+//        tmp.put(Localizations.ZH_CN, "");
+//        add(, tmp);
+
         add("javaModel.powerfist.palm.middlefinger1.middlefinger2.partName", "Middle Finger 2");
+
+        //        Map<Localizations, String> tmp = new HashMap<>();
+//        tmp.put(Localizations.DE_DE, "");
+//        tmp.put(Localizations.EN_US, "");
+//        tmp.put(Localizations.FR_FR, "");
+//        tmp.put(Localizations.PT_BR, "");
+//        tmp.put(Localizations.PT_PT, "");
+//        tmp.put(Localizations.RU_RU, "");
+//        tmp.put(Localizations.ZH_CN, "");
+//        add(, tmp);
+
         add("javaModel.powerfist.palm.ringfinger1.partName", "Ring Finger 1");
+
+        //        Map<Localizations, String> tmp = new HashMap<>();
+//        tmp.put(Localizations.DE_DE, "");
+//        tmp.put(Localizations.EN_US, "");
+//        tmp.put(Localizations.FR_FR, "");
+//        tmp.put(Localizations.PT_BR, "");
+//        tmp.put(Localizations.PT_PT, "");
+//        tmp.put(Localizations.RU_RU, "");
+//        tmp.put(Localizations.ZH_CN, "");
+//        add(, tmp);
+
         add("javaModel.powerfist.palm.ringfinger1.ringfinger2.partName", "Ring Finger 2");
+
+        //        Map<Localizations, String> tmp = new HashMap<>();
+//        tmp.put(Localizations.DE_DE, "");
+//        tmp.put(Localizations.EN_US, "");
+//        tmp.put(Localizations.FR_FR, "");
+//        tmp.put(Localizations.PT_BR, "");
+//        tmp.put(Localizations.PT_PT, "");
+//        tmp.put(Localizations.RU_RU, "");
+//        tmp.put(Localizations.ZH_CN, "");
+//        add(, tmp);
+
         add("javaModel.powerfist.palm.pinky1.partName", "Pinky 1");
+
+        //        Map<Localizations, String> tmp = new HashMap<>();
+//        tmp.put(Localizations.DE_DE, "");
+//        tmp.put(Localizations.EN_US, "");
+//        tmp.put(Localizations.FR_FR, "");
+//        tmp.put(Localizations.PT_BR, "");
+//        tmp.put(Localizations.PT_PT, "");
+//        tmp.put(Localizations.RU_RU, "");
+//        tmp.put(Localizations.ZH_CN, "");
+//        add(, tmp);
+
         add("javaModel.powerfist.palm.pinky1.pinky2.partName", "Pinky 2");
+
+        //        Map<Localizations, String> tmp = new HashMap<>();
+//        tmp.put(Localizations.DE_DE, "");
+//        tmp.put(Localizations.EN_US, "");
+//        tmp.put(Localizations.FR_FR, "");
+//        tmp.put(Localizations.PT_BR, "");
+//        tmp.put(Localizations.PT_PT, "");
+//        tmp.put(Localizations.RU_RU, "");
+//        tmp.put(Localizations.ZH_CN, "");
+//        add(, tmp);
+
         add("javaModel.powerfist.palm.thumb1.partName", "Thumb 1");
+
+        //        Map<Localizations, String> tmp = new HashMap<>();
+//        tmp.put(Localizations.DE_DE, "");
+//        tmp.put(Localizations.EN_US, "");
+//        tmp.put(Localizations.FR_FR, "");
+//        tmp.put(Localizations.PT_BR, "");
+//        tmp.put(Localizations.PT_PT, "");
+//        tmp.put(Localizations.RU_RU, "");
+//        tmp.put(Localizations.ZH_CN, "");
+//        add(, tmp);
+
         add("javaModel.powerfist.palm.thumb1.thumb2.partName", "Thumb 2");
+
+
+        //        Map<Localizations, String> tmp = new HashMap<>();
+//        tmp.put(Localizations.DE_DE, "");
+//        tmp.put(Localizations.EN_US, "");
+//        tmp.put(Localizations.FR_FR, "");
+//        tmp.put(Localizations.PT_BR, "");
+//        tmp.put(Localizations.PT_PT, "");
+//        tmp.put(Localizations.RU_RU, "");
+//        tmp.put(Localizations.ZH_CN, "");
+//        add(, tmp);
 
         // MPS Armor -----------------------------------------------------------------------------------
         add("model.mps_helm.modelName", "MPS Helm");
+
+        //        Map<Localizations, String> tmp = new HashMap<>();
+//        tmp.put(Localizations.DE_DE, "");
+//        tmp.put(Localizations.EN_US, "");
+//        tmp.put(Localizations.FR_FR, "");
+//        tmp.put(Localizations.PT_BR, "");
+//        tmp.put(Localizations.PT_PT, "");
+//        tmp.put(Localizations.RU_RU, "");
+//        tmp.put(Localizations.ZH_CN, "");
+//        add(, tmp);
+
         add("model.mps_helm.helm_main.partName", "Helmet");
+
+        //        Map<Localizations, String> tmp = new HashMap<>();
+//        tmp.put(Localizations.DE_DE, "");
+//        tmp.put(Localizations.EN_US, "");
+//        tmp.put(Localizations.FR_FR, "");
+//        tmp.put(Localizations.PT_BR, "");
+//        tmp.put(Localizations.PT_PT, "");
+//        tmp.put(Localizations.RU_RU, "");
+//        tmp.put(Localizations.ZH_CN, "");
+//        add(, tmp);
         add("model.mps_helm.helm_tube_entry1.partName", "Left Tube Entry");
+
+        //        Map<Localizations, String> tmp = new HashMap<>();
+//        tmp.put(Localizations.DE_DE, "");
+//        tmp.put(Localizations.EN_US, "");
+//        tmp.put(Localizations.FR_FR, "");
+//        tmp.put(Localizations.PT_BR, "");
+//        tmp.put(Localizations.PT_PT, "");
+//        tmp.put(Localizations.RU_RU, "");
+//        tmp.put(Localizations.ZH_CN, "");
+//        add(, tmp);
         add("model.mps_helm.helm_tube_entry2.partName", "Right Tube Entry");
+
+        //        Map<Localizations, String> tmp = new HashMap<>();
+//        tmp.put(Localizations.DE_DE, "");
+//        tmp.put(Localizations.EN_US, "");
+//        tmp.put(Localizations.FR_FR, "");
+//        tmp.put(Localizations.PT_BR, "");
+//        tmp.put(Localizations.PT_PT, "");
+//        tmp.put(Localizations.RU_RU, "");
+//        tmp.put(Localizations.ZH_CN, "");
+//        add(, tmp);
         add("model.mps_helm.helm_tubes.partName", "Tubes");
+
+        //        Map<Localizations, String> tmp = new HashMap<>();
+//        tmp.put(Localizations.DE_DE, "");
+//        tmp.put(Localizations.EN_US, "");
+//        tmp.put(Localizations.FR_FR, "");
+//        tmp.put(Localizations.PT_BR, "");
+//        tmp.put(Localizations.PT_PT, "");
+//        tmp.put(Localizations.RU_RU, "");
+//        tmp.put(Localizations.ZH_CN, "");
+//        add(, tmp);
         add("model.mps_helm.visor.partName", "Visor");
+        //        Map<Localizations, String> tmp = new HashMap<>();
+//        tmp.put(Localizations.DE_DE, "");
+//        tmp.put(Localizations.EN_US, "");
+//        tmp.put(Localizations.FR_FR, "");
+//        tmp.put(Localizations.PT_BR, "");
+//        tmp.put(Localizations.PT_PT, "");
+//        tmp.put(Localizations.RU_RU, "");
+//        tmp.put(Localizations.ZH_CN, "");
+//        add(, tmp);
+
+
 
         add("model.mps_chest.modelName", "MPS Chestplate");
+
+        //        Map<Localizations, String> tmp = new HashMap<>();
+//        tmp.put(Localizations.DE_DE, "");
+//        tmp.put(Localizations.EN_US, "");
+//        tmp.put(Localizations.FR_FR, "");
+//        tmp.put(Localizations.PT_BR, "");
+//        tmp.put(Localizations.PT_PT, "");
+//        tmp.put(Localizations.RU_RU, "");
+//        tmp.put(Localizations.ZH_CN, "");
+//        add(, tmp);
         add("model.mps_chest.chest_main.partName", "Chest Plating");
+
+        //        Map<Localizations, String> tmp = new HashMap<>();
+//        tmp.put(Localizations.DE_DE, "");
+//        tmp.put(Localizations.EN_US, "");
+//        tmp.put(Localizations.FR_FR, "");
+//        tmp.put(Localizations.PT_BR, "");
+//        tmp.put(Localizations.PT_PT, "");
+//        tmp.put(Localizations.RU_RU, "");
+//        tmp.put(Localizations.ZH_CN, "");
+//        add(, tmp);
         add("model.mps_chest.chest_padding.partName", "Chest Padding");
+
+        //        Map<Localizations, String> tmp = new HashMap<>();
+//        tmp.put(Localizations.DE_DE, "");
+//        tmp.put(Localizations.EN_US, "");
+//        tmp.put(Localizations.FR_FR, "");
+//        tmp.put(Localizations.PT_BR, "");
+//        tmp.put(Localizations.PT_PT, "");
+//        tmp.put(Localizations.RU_RU, "");
+//        tmp.put(Localizations.ZH_CN, "");
+//        add(, tmp);
         add("model.mps_chest.crystal_belt.partName", "Belt Crystal");
+        //        Map<Localizations, String> tmp = new HashMap<>();
+//        tmp.put(Localizations.DE_DE, "");
+//        tmp.put(Localizations.EN_US, "");
+//        tmp.put(Localizations.FR_FR, "");
+//        tmp.put(Localizations.PT_BR, "");
+//        tmp.put(Localizations.PT_PT, "");
+//        tmp.put(Localizations.RU_RU, "");
+//        tmp.put(Localizations.ZH_CN, "");
+//        add(, tmp);
+
         add("model.mps_chest.backpack.partName", "Backpack");
+        //        Map<Localizations, String> tmp = new HashMap<>();
+//        tmp.put(Localizations.DE_DE, "");
+//        tmp.put(Localizations.EN_US, "");
+//        tmp.put(Localizations.FR_FR, "");
+//        tmp.put(Localizations.PT_BR, "");
+//        tmp.put(Localizations.PT_PT, "");
+//        tmp.put(Localizations.RU_RU, "");
+//        tmp.put(Localizations.ZH_CN, "");
+//        add(, tmp);
+
         add("model.mps_chest.belt.partName", "Belt");
+
+        //        Map<Localizations, String> tmp = new HashMap<>();
+//        tmp.put(Localizations.DE_DE, "");
+//        tmp.put(Localizations.EN_US, "");
+//        tmp.put(Localizations.FR_FR, "");
+//        tmp.put(Localizations.PT_BR, "");
+//        tmp.put(Localizations.PT_PT, "");
+//        tmp.put(Localizations.RU_RU, "");
+//        tmp.put(Localizations.ZH_CN, "");
+//        add(, tmp);
         add("model.mps_chest.polySurface36.partName", "Accessory");
 
+        //        Map<Localizations, String> tmp = new HashMap<>();
+//        tmp.put(Localizations.DE_DE, "");
+//        tmp.put(Localizations.EN_US, "");
+//        tmp.put(Localizations.FR_FR, "");
+//        tmp.put(Localizations.PT_BR, "");
+//        tmp.put(Localizations.PT_PT, "");
+//        tmp.put(Localizations.RU_RU, "");
+//        tmp.put(Localizations.ZH_CN, "");
+//        add(, tmp);
+
         add("model.mps_arms.modelName", "MPS Arms");
+
+        //        Map<Localizations, String> tmp = new HashMap<>();
+//        tmp.put(Localizations.DE_DE, "");
+//        tmp.put(Localizations.EN_US, "");
+//        tmp.put(Localizations.FR_FR, "");
+//        tmp.put(Localizations.PT_BR, "");
+//        tmp.put(Localizations.PT_PT, "");
+//        tmp.put(Localizations.RU_RU, "");
+//        tmp.put(Localizations.ZH_CN, "");
+//        add(, tmp);
+
         add("model.mps_arms.arms2.partName", "Left Arm");
+        //        Map<Localizations, String> tmp = new HashMap<>();
+//        tmp.put(Localizations.DE_DE, "");
+//        tmp.put(Localizations.EN_US, "");
+//        tmp.put(Localizations.FR_FR, "");
+//        tmp.put(Localizations.PT_BR, "");
+//        tmp.put(Localizations.PT_PT, "");
+//        tmp.put(Localizations.RU_RU, "");
+//        tmp.put(Localizations.ZH_CN, "");
+//        add(, tmp);
+
         add("model.mps_arms.arms3.partName", "Right Arm");
+        //        Map<Localizations, String> tmp = new HashMap<>();
+//        tmp.put(Localizations.DE_DE, "");
+//        tmp.put(Localizations.EN_US, "");
+//        tmp.put(Localizations.FR_FR, "");
+//        tmp.put(Localizations.PT_BR, "");
+//        tmp.put(Localizations.PT_PT, "");
+//        tmp.put(Localizations.RU_RU, "");
+//        tmp.put(Localizations.ZH_CN, "");
+//        add(, tmp);
+
         add("model.mps_arms.crystal_shoulder_1.partName", "Left Shoulder Crystal");
+        //        Map<Localizations, String> tmp = new HashMap<>();
+//        tmp.put(Localizations.DE_DE, "");
+//        tmp.put(Localizations.EN_US, "");
+//        tmp.put(Localizations.FR_FR, "");
+//        tmp.put(Localizations.PT_BR, "");
+//        tmp.put(Localizations.PT_PT, "");
+//        tmp.put(Localizations.RU_RU, "");
+//        tmp.put(Localizations.ZH_CN, "");
+//        add(, tmp);
+
         add("model.mps_arms.crystal_shoulder_2.partName", "Right Shoulder Crystal");
 
+        //        Map<Localizations, String> tmp = new HashMap<>();
+//        tmp.put(Localizations.DE_DE, "");
+//        tmp.put(Localizations.EN_US, "");
+//        tmp.put(Localizations.FR_FR, "");
+//        tmp.put(Localizations.PT_BR, "");
+//        tmp.put(Localizations.PT_PT, "");
+//        tmp.put(Localizations.RU_RU, "");
+//        tmp.put(Localizations.ZH_CN, "");
+//        add(, tmp);
+
         add("model.jetpack.modelName", "MPS Jetpack");
+        //        Map<Localizations, String> tmp = new HashMap<>();
+//        tmp.put(Localizations.DE_DE, "");
+//        tmp.put(Localizations.EN_US, "");
+//        tmp.put(Localizations.FR_FR, "");
+//        tmp.put(Localizations.PT_BR, "");
+//        tmp.put(Localizations.PT_PT, "");
+//        tmp.put(Localizations.RU_RU, "");
+//        tmp.put(Localizations.ZH_CN, "");
+//        add(, tmp);
+
         add("model.jetpack.default.partName", "Main");
+
+        //        Map<Localizations, String> tmp = new HashMap<>();
+//        tmp.put(Localizations.DE_DE, "");
+//        tmp.put(Localizations.EN_US, "");
+//        tmp.put(Localizations.FR_FR, "");
+//        tmp.put(Localizations.PT_BR, "");
+//        tmp.put(Localizations.PT_PT, "");
+//        tmp.put(Localizations.RU_RU, "");
+//        tmp.put(Localizations.ZH_CN, "");
+//        add(, tmp);
         add("model.jetpack.jetpack5.partName", "Secondary");
+
+        //        Map<Localizations, String> tmp = new HashMap<>();
+//        tmp.put(Localizations.DE_DE, "");
+//        tmp.put(Localizations.EN_US, "");
+//        tmp.put(Localizations.FR_FR, "");
+//        tmp.put(Localizations.PT_BR, "");
+//        tmp.put(Localizations.PT_PT, "");
+//        tmp.put(Localizations.RU_RU, "");
+//        tmp.put(Localizations.ZH_CN, "");
+//        add(, tmp);
+
         add("model.jetpack.jetpack_glow.partName", "Lights");
 
+
+
+        //        Map<Localizations, String> tmp = new HashMap<>();
+//        tmp.put(Localizations.DE_DE, "");
+//        tmp.put(Localizations.EN_US, "");
+//        tmp.put(Localizations.FR_FR, "");
+//        tmp.put(Localizations.PT_BR, "");
+//        tmp.put(Localizations.PT_PT, "");
+//        tmp.put(Localizations.RU_RU, "");
+//        tmp.put(Localizations.ZH_CN, "");
+//        add(, tmp);
         add("model.mps_pantaloons.modelName", "MPS Pantaloons");
+
+        //        Map<Localizations, String> tmp = new HashMap<>();
+//        tmp.put(Localizations.DE_DE, "");
+//        tmp.put(Localizations.EN_US, "");
+//        tmp.put(Localizations.FR_FR, "");
+//        tmp.put(Localizations.PT_BR, "");
+//        tmp.put(Localizations.PT_PT, "");
+//        tmp.put(Localizations.RU_RU, "");
+//        tmp.put(Localizations.ZH_CN, "");
+//        add(, tmp);
         add("model.mps_pantaloons.leg1.partName", "Right Leg");
+
+        //        Map<Localizations, String> tmp = new HashMap<>();
+//        tmp.put(Localizations.DE_DE, "");
+//        tmp.put(Localizations.EN_US, "");
+//        tmp.put(Localizations.FR_FR, "");
+//        tmp.put(Localizations.PT_BR, "");
+//        tmp.put(Localizations.PT_PT, "");
+//        tmp.put(Localizations.RU_RU, "");
+//        tmp.put(Localizations.ZH_CN, "");
+//        add(, tmp);
         add("model.mps_pantaloons.leg2.partName", "Left Leg");
 
+
+
+
+        //        Map<Localizations, String> tmp = new HashMap<>();
+//        tmp.put(Localizations.DE_DE, "");
+//        tmp.put(Localizations.EN_US, "");
+//        tmp.put(Localizations.FR_FR, "");
+//        tmp.put(Localizations.PT_BR, "");
+//        tmp.put(Localizations.PT_PT, "");
+//        tmp.put(Localizations.RU_RU, "");
+//        tmp.put(Localizations.ZH_CN, "");
+//        add(, tmp);
+
         add("model.mps_boots.modelName", "MPS Boots");
+
+        //        Map<Localizations, String> tmp = new HashMap<>();
+//        tmp.put(Localizations.DE_DE, "");
+//        tmp.put(Localizations.EN_US, "");
+//        tmp.put(Localizations.FR_FR, "");
+//        tmp.put(Localizations.PT_BR, "");
+//        tmp.put(Localizations.PT_PT, "");
+//        tmp.put(Localizations.RU_RU, "");
+//        tmp.put(Localizations.ZH_CN, "");
+//        add(, tmp);
         add("model.mps_boots.boots1.partName", "Right Boot");
+
+        //        Map<Localizations, String> tmp = new HashMap<>();
+//        tmp.put(Localizations.DE_DE, "");
+//        tmp.put(Localizations.EN_US, "");
+//        tmp.put(Localizations.FR_FR, "");
+//        tmp.put(Localizations.PT_BR, "");
+//        tmp.put(Localizations.PT_PT, "");
+//        tmp.put(Localizations.RU_RU, "");
+//        tmp.put(Localizations.ZH_CN, "");
+//        add(, tmp);
+
         add("model.mps_boots.boots2.partName", "Left Boot");
 
-        // Armor 2 -------------------------------------------------------------------------------------
-        add("model.armor2.modelName", "Armor 2");
+        // Armor 2 =====================================================================================
+        tmp = new HashMap<>();
+        tmp.put(Localizations.DE_DE, "Rüstung 2");
+        tmp.put(Localizations.EN_US, "Armor 2");
+        tmp.put(Localizations.FR_FR, "Armure 2");
+        tmp.put(Localizations.PT_BR, "Armadura 2");
+        tmp.put(Localizations.PT_PT, "Armadura 2");
+        tmp.put(Localizations.RU_RU, "Броня 2");
+        tmp.put(Localizations.ZH_CN, "护甲 2");
+        add("model.armor2.modelName", tmp);
 
-        add("model.armor2.helmetmain.partName", "Helmet");
-        add("model.armor2.helmetglow1.partName", "Helmet Tubes and Visor");
+        // Helmet --------------------------------------------------------------------------------------
+        tmp = new HashMap<>();
+        tmp.put(Localizations.DE_DE, "Helm");
+        tmp.put(Localizations.EN_US, "Helmet");
+        tmp.put(Localizations.FR_FR, "Casque");
+        tmp.put(Localizations.PT_BR, "Capacete");
+        tmp.put(Localizations.PT_PT, "Capacete");
+        tmp.put(Localizations.RU_RU, "Шлем");
+        tmp.put(Localizations.ZH_CN, "头盔");
+        add("model.armor2.helmetmain.partName", tmp);
 
-        add("model.armor2.chestmain.partName", "Front Chest Protection");
-        add("model.armor2.chestgray.partName", "Chest Base");
-        add("model.armor2.chestback1.partName", "Back Chest Protection");
-        add("model.armor2.chestglowback.partName", "Spinal Power Crystals");
-        add("model.armor2.chestglowfront.partName", "Frontal Power Crystal");
+        // Helmet Tubes and Visor ----------------------------------------------------------------------
+        tmp = new HashMap<>();
+        tmp.put(Localizations.DE_DE, "Helmschläuche und Visier");
+        tmp.put(Localizations.EN_US, "Helmet Tubes and Visor");
+        tmp.put(Localizations.FR_FR, "Tubes de casque et visière");
+        tmp.put(Localizations.PT_BR, "Tubos e Viseira para Capacete");
+        tmp.put(Localizations.PT_PT, "Tubos para capacete e viseira");
+        tmp.put(Localizations.RU_RU, "Трубки шлема и забрало");
+        tmp.put(Localizations.ZH_CN, "头盔管和遮阳板");
+        add("model.armor2.helmetglow1.partName", tmp);
 
-        add("model.armor2.armmain.partName", "Arm and Shoulder Protection");
+        // Front Chest Protection ----------------------------------------------------------------------
+        tmp = new HashMap<>();
+        tmp.put(Localizations.DE_DE, "Vorderer Brustschutz");
+        tmp.put(Localizations.EN_US, "Front Chest Protection");
+        tmp.put(Localizations.FR_FR, "Protection thoracique avant");
+        tmp.put(Localizations.PT_BR, "Proteção frontal do peito");
+        tmp.put(Localizations.PT_PT, "Proteção frontal do peito");
+        tmp.put(Localizations.RU_RU, "Передняя защита грудной клетки");
+        tmp.put(Localizations.ZH_CN, "前胸保护");
+        add("model.armor2.chestmain.partName", tmp);
 
-        //        Map<Localizations, String> tmp = new HashMap<>();
-//        tmp.put(Localizations.DE_DE, "");
-//        tmp.put(Localizations.EN_US, "");
-//        tmp.put(Localizations.FR_FR, "");
-//        tmp.put(Localizations.PT_BR, "");
-//        tmp.put(Localizations.PT_PT, "");
-//        tmp.put(Localizations.RU_RU, "");
-//        tmp.put(Localizations.ZH_CN, "");
-//        add(, tmp);
+        // Chest Base ----------------------------------------------------------------------------------
+        tmp = new HashMap<>();
+        tmp.put(Localizations.DE_DE, "Brustkorb");
+        tmp.put(Localizations.EN_US, "Chest Base");
+        tmp.put(Localizations.FR_FR, "Base de la poitrine");
+        tmp.put(Localizations.PT_BR, "Base do peito");
+        tmp.put(Localizations.PT_PT, "Base do peito");
+        tmp.put(Localizations.RU_RU, "Основание груди");
+        tmp.put(Localizations.ZH_CN, "胸部底座");
+        add("model.armor2.chestgray.partName", tmp);
 
-        add("model.armor2.armmain1.partName", "Arm and Shoulder Protection");
+        // Back Chest Protection -----------------------------------------------------------------------
+        tmp = new HashMap<>();
+        tmp.put(Localizations.DE_DE, "Rücken-Brustschutz");
+        tmp.put(Localizations.EN_US, "Back Chest Protection");
+        tmp.put(Localizations.FR_FR, "Protection thoracique arrière");
+        tmp.put(Localizations.PT_BR, "Proteção torácica nas costas");
+        tmp.put(Localizations.PT_PT, "Proteção do peito das costas");
+        tmp.put(Localizations.RU_RU, "Защита спины грудной клетки");
+        tmp.put(Localizations.ZH_CN, "背部保护");
+        add("model.armor2.chestback1.partName", tmp);
 
-        //        Map<Localizations, String> tmp = new HashMap<>();
-//        tmp.put(Localizations.DE_DE, "");
-//        tmp.put(Localizations.EN_US, "");
-//        tmp.put(Localizations.FR_FR, "");
-//        tmp.put(Localizations.PT_BR, "");
-//        tmp.put(Localizations.PT_PT, "");
-//        tmp.put(Localizations.RU_RU, "");
-//        tmp.put(Localizations.ZH_CN, "");
-//        add(, tmp);
+        // Spinal Power Crystals -----------------------------------------------------------------------
+        tmp = new HashMap<>();
+        tmp.put(Localizations.DE_DE, "Spinale Kraftkristalle");
+        tmp.put(Localizations.EN_US, "Spinal Power Crystals");
+        tmp.put(Localizations.FR_FR, "Cristaux de puissance vertébrale");
+        tmp.put(Localizations.PT_BR, "Cristais de Potência Espinhal");
+        tmp.put(Localizations.PT_PT, "Cristais de potência espinhal");
+        tmp.put(Localizations.RU_RU, "Кристаллы спинальной силы");
+        tmp.put(Localizations.ZH_CN, "脊髓力量晶体");
+        add("model.armor2.chestglowback.partName", tmp);
 
-        add("model.armor2.bootglow.partName", "Left Boot Glow");
+        // Front Power Crystal -------------------------------------------------------------------------
+        tmp = new HashMap<>();
+        tmp.put(Localizations.DE_DE, "Vorderer Power-Kristall");
+        tmp.put(Localizations.EN_US, "Front Power Crystal");
+        tmp.put(Localizations.FR_FR, "Cristal de puissance avant");
+        tmp.put(Localizations.PT_BR, "Cristal de potência frontal");
+        tmp.put(Localizations.PT_PT, "Cristal de potência frontal");
+        tmp.put(Localizations.RU_RU, "Фронтальный силовой кристалл");
+        tmp.put(Localizations.ZH_CN, "前电源晶体");
+        add("model.armor2.chestglowfront.partName", tmp);
 
-        //        Map<Localizations, String> tmp = new HashMap<>();
-//        tmp.put(Localizations.DE_DE, "");
-//        tmp.put(Localizations.EN_US, "");
-//        tmp.put(Localizations.FR_FR, "");
-//        tmp.put(Localizations.PT_BR, "");
-//        tmp.put(Localizations.PT_PT, "");
-//        tmp.put(Localizations.RU_RU, "");
-//        tmp.put(Localizations.ZH_CN, "");
-//        add(, tmp);
+        // Arm and Shoulder Protection -----------------------------------------------------------------
+        tmp = new HashMap<>();
+        tmp.put(Localizations.DE_DE, "Arm- und Schulterschutz");
+        tmp.put(Localizations.EN_US, "Arm and Shoulder Protection");
+        tmp.put(Localizations.FR_FR, "Protection des bras et des épaules");
+        tmp.put(Localizations.PT_BR, "Proteção de braço e ombro");
+        tmp.put(Localizations.PT_PT, "Proteção de braços e ombros");
+        tmp.put(Localizations.RU_RU, "Защита рук и плеч");
+        tmp.put(Localizations.ZH_CN, "手臂和肩部保护");
+        add("model.armor2.armmain.partName", tmp);
 
-        add("model.armor2.bootglow1.partName", "Right Boot Glow");
+        // Arm and Shoulder Protection 1 ---------------------------------------------------------------
+        tmp = new HashMap<>();
+        tmp.put(Localizations.DE_DE, "Arm- und Schulterschutz");
+        tmp.put(Localizations.EN_US, "Arm and Shoulder Protection");
+        tmp.put(Localizations.FR_FR, "Protection des bras et des épaules");
+        tmp.put(Localizations.PT_BR, "Proteção de braço e ombro");
+        tmp.put(Localizations.PT_PT, "Proteção de braços e ombros");
+        tmp.put(Localizations.RU_RU, "Защита рук и плеч");
+        tmp.put(Localizations.ZH_CN, "手臂和肩部保护");
+        add("model.armor2.armmain1.partName", tmp);
 
-        //        Map<Localizations, String> tmp = new HashMap<>();
-//        tmp.put(Localizations.DE_DE, "");
-//        tmp.put(Localizations.EN_US, "");
-//        tmp.put(Localizations.FR_FR, "");
-//        tmp.put(Localizations.PT_BR, "");
-//        tmp.put(Localizations.PT_PT, "");
-//        tmp.put(Localizations.RU_RU, "");
-//        tmp.put(Localizations.ZH_CN, "");
-//        add(, tmp);
+        // Lef Boot Glow -------------------------------------------------------------------------------
+        tmp = new HashMap<>();
+        tmp.put(Localizations.DE_DE, "Leuchten des linken Stiefels");
+        tmp.put(Localizations.EN_US, "Left Boot Glow");
+        tmp.put(Localizations.FR_FR, "Lueur de démarrage gauche");
+        tmp.put(Localizations.PT_BR, "Brilho da inicialização esquerda");
+        tmp.put(Localizations.PT_PT, "Brilho esquerdo da inicialização");
+        tmp.put(Localizations.RU_RU, "Свечение левого ботинка");
+        tmp.put(Localizations.ZH_CN, "左靴发光");
+        add("model.armor2.bootglow.partName", tmp);
 
-        add("model.armor2.bootmain.partName", "Left Boot");
+        // Right Boot Glow -----------------------------------------------------------------------------
+        tmp = new HashMap<>();
+        tmp.put(Localizations.DE_DE, "Rechter Stiefelglanz");
+        tmp.put(Localizations.EN_US, "Right Boot Glow");
+        tmp.put(Localizations.FR_FR, "Lueur de démarrage droite");
+        tmp.put(Localizations.PT_BR, "Brilho da inicialização direita");
+        tmp.put(Localizations.PT_PT, "Brilho de arranque direito");
+        tmp.put(Localizations.RU_RU, "«Свечение правого ботинка»");
+        tmp.put(Localizations.ZH_CN, "右靴发光");
+        add("model.armor2.bootglow1.partName", tmp);
 
-        //        Map<Localizations, String> tmp = new HashMap<>();
-//        tmp.put(Localizations.DE_DE, "");
-//        tmp.put(Localizations.EN_US, "");
-//        tmp.put(Localizations.FR_FR, "");
-//        tmp.put(Localizations.PT_BR, "");
-//        tmp.put(Localizations.PT_PT, "");
-//        tmp.put(Localizations.RU_RU, "");
-//        tmp.put(Localizations.ZH_CN, "");
-//        add(, tmp);
+        // Left Boot -----------------------------------------------------------------------------------
+        tmp = new HashMap<>();
+        tmp.put(Localizations.DE_DE, "Linker Kofferraum");
+        tmp.put(Localizations.EN_US, "Left Boot");
+        tmp.put(Localizations.FR_FR, "Démarrage gauche");
+        tmp.put(Localizations.PT_BR, "Inicialização esquerda");
+        tmp.put(Localizations.PT_PT, "Arranque esquerdo");
+        tmp.put(Localizations.RU_RU, "Левый ботинок");
+        tmp.put(Localizations.ZH_CN, "左靴");
+        add("model.armor2.bootmain.partName", tmp);
 
-        add("model.armor2.bootmain1.partName", "Right Boot");
+        // Right Boot ----------------------------------------------------------------------------------
+        tmp = new HashMap<>();
+        tmp.put(Localizations.DE_DE, "Rechter Stiefel");
+        tmp.put(Localizations.EN_US, "Right Boot");
+        tmp.put(Localizations.FR_FR, "Démarrage droit");
+        tmp.put(Localizations.PT_BR, "Inicialização Direita");
+        tmp.put(Localizations.PT_PT, "Arranque direito");
+        tmp.put(Localizations.RU_RU, "Правый ботинок");
+        tmp.put(Localizations.ZH_CN, "右靴");
+        add("model.armor2.bootmain1.partName", tmp);
 
-        //        Map<Localizations, String> tmp = new HashMap<>();
-//        tmp.put(Localizations.DE_DE, "");
-//        tmp.put(Localizations.EN_US, "");
-//        tmp.put(Localizations.FR_FR, "");
-//        tmp.put(Localizations.PT_BR, "");
-//        tmp.put(Localizations.PT_PT, "");
-//        tmp.put(Localizations.RU_RU, "");
-//        tmp.put(Localizations.ZH_CN, "");
-//        add(, tmp);
+        // Shoulder Light ------------------------------------------------------------------------------
+        tmp = new HashMap<>();
+        tmp.put(Localizations.DE_DE, "Schulterlicht");
+        tmp.put(Localizations.EN_US, "Shoulder Light");
+        tmp.put(Localizations.FR_FR, "Lumière d’épaule");
+        tmp.put(Localizations.PT_BR, "Luz de ombro");
+        tmp.put(Localizations.PT_PT, "Luz de ombro");
+        tmp.put(Localizations.RU_RU, "Плечевой свет");
+        tmp.put(Localizations.ZH_CN, "“肩光。");
+        add("model.armor2.armglow.partName", tmp);
 
-        add("model.armor2.armglow.partName", "Shoulder Light");
-
-
-
-        //        Map<Localizations, String> tmp = new HashMap<>();
-//        tmp.put(Localizations.DE_DE, "");
-//        tmp.put(Localizations.EN_US, "");
-//        tmp.put(Localizations.FR_FR, "");
-//        tmp.put(Localizations.PT_BR, "");
-//        tmp.put(Localizations.PT_PT, "");
-//        tmp.put(Localizations.RU_RU, "");
-//        tmp.put(Localizations.ZH_CN, "");
-//        add(, tmp);
-
-
-        add("model.armor2.armglow1.partName", "Shoulder Light");
+        // Shoulder Light 1 -----------------------------------------------------------------------------
+        tmp = new HashMap<>();
+        tmp.put(Localizations.DE_DE, "Schulterlicht");
+        tmp.put(Localizations.EN_US, "Shoulder Light");
+        tmp.put(Localizations.FR_FR, "Lumière d’épaule");
+        tmp.put(Localizations.PT_BR, "Luz de ombro");
+        tmp.put(Localizations.PT_PT, "Luz de ombro");
+        tmp.put(Localizations.RU_RU, "Плечевой свет");
+        tmp.put(Localizations.ZH_CN, "“肩光。");
+        add("model.armor2.armglow1.partName", tmp);
 
         // Arm Base ------------------------------------------------------------------------------------
         tmp = new HashMap<>();

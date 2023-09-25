@@ -341,7 +341,7 @@
   "item.powersuits.transparent_armor.desc": "Rend l'objet transparent, pour que vous puissiez montrer votre skin sans perdre la protection offerte par l'armure.",
   "module.tradeoff.flintAndSteelEnergy": "Energy Consumption",
   "module.tradeoff.blinkDriveEnergyCon": "Consommation d'énergie du lecteur clignotant",
-  "model.armor2.armmain1.partName": "Protection des bras et des épaules",
+
   "module.tradeoff.railgunEnergyCost": "Coût de l'énergie de Railgun",
   "keybinding.powersuits.glider": "Toggle Glider",
   "block.powersuits.tinkertable": "Table de bricolage d'Armure énergétique",

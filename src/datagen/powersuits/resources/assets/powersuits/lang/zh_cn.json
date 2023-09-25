@@ -13,7 +13,7 @@
   "item.powersuits.magnet": "磁力发生器",
   "item.powersuits.melee_assist.desc": "一个简易的模块，提升你的近战伤害。",
   "keybinding.powersuits.cooling_system": "Toggle Cooling System",
-  "model.armor2.chestglowfront.partName": "前充能水晶",
+
   "keybinding.powersuits.jump_assist": "Toggle Jump Assist",
   "javaModel.powerfist.supportright5.partName": "右部支架 5",
   "module.tradeoff.armorEnergy": "护甲（能量）",
@@ -47,7 +47,7 @@
   "module.tradeoff.opacity": "Lux Capacitor Opacity",
 
 
-  "model.armor2.bootmain1.partName": "右靴",
+
   "model.mps_helm.helm_tubes.partName": "导管",
   "javaModel.powerfist_fingers_normal_left.thumb1.partName": "拇指 1",
   "item.powersuits.hoe": "锄",
@@ -106,11 +106,11 @@
   "module.tradeoff.redHue": "光能容器红色色调",
   "javaModel.powerfist_fingers_normal.pinky1.partName": "小指 1",
   "module.tradeoff.heatGeneration": "热量产出",
-  "model.armor2.bootmain.partName": "左靴",
+
   "module.tradeoff.mobRepulsorEnergy": "锄能量消耗",
   "module.tradeoff.walkingAssist": "步行辅助",
   "model.armor2.armmain.partName": "手臂-肩部保护",
-  "model.armor2.bootglow1.partName": "发光右靴",
+
   "module.tradeoff.jetpackEnergy": "喷气背包能量消耗",
   "module.tradeoff.energyGenerated": "能量产出",
   "javaModel.powerfist_left.armorright.partName": "右部护甲",
@@ -195,7 +195,7 @@
   "module.tradeoff.nightTimeHeatGen": "夜间热量产出",
   "javaModel.powerfist_left.wristbottomright.partName": "右下腕部",
   "block.powersuits.luxcapacitor": "光能容器",
-  "model.armor2.armglow1.partName": "肩灯",
+
 
   "item.powersuits.piglin_pacification_module": "Piglin Pacification Module",
 
@@ -307,7 +307,7 @@
   "item.powersuits.railgun.desc": "一个集成模块，可将投掷物用磁场加速至超音速，后座力极大。",
   "module.tradeoff.sprintSpeedMult": "冲刺速度倍率",
   "javaModel.powerfist_fingers_firing_left.thumb2.partName": "拇指 2",
-  "model.armor2.bootglow.partName": "发光左靴",
+
   "module.tradeoff.plasmaEnergyPerTick": "每 Tick 等离子能量",
   "module.tradeoff.blinkDriveEnergy": "Energy Consumption",
   "item.powersuits.generator_coal": "煤炭发电机",
@@ -325,7 +325,7 @@
   "javaModel.powerfist.supportleft4.partName": "左部支架 4",
   "model.armor2.chestgray.partName": "胸甲基础",
   "javaModel.powerfist_fingers_firing_left.ringfinger1.partName": "无名指 1",
-  "model.armor2.chestglowback.partName": "脊髓充能水晶",
+
   "item.powersuits.blink_drive.desc": "从点 A 经由 B 到达点 C，而 B 是时间和空间的集合。",
 
   "module.tradeoff.shearsHarvestSpeed": "剪刀采掘速度",
@@ -342,7 +342,7 @@
   "item.powersuits.transparent_armor.desc": "使装甲本身透明，这样你就可以在不卸掉装甲时展示你的皮肤了。",
   "module.tradeoff.flintAndSteelEnergy": "Energy Consumption",
   "module.tradeoff.blinkDriveEnergyCon": "闪烁驱动能量消耗",
-  "model.armor2.armmain1.partName": "手臂-肩部保护",
+
   "module.tradeoff.railgunEnergyCost": "磁轨炮能量消耗",
   "keybinding.powersuits.glider": "Toggle Glider",
   "block.powersuits.tinkertable": "动力装甲改装台",

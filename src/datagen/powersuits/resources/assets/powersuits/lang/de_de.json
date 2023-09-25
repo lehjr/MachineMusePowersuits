@@ -338,7 +338,7 @@
   "item.powersuits.transparent_armor.desc": "Mache den Gegenstand transparent, damit du deine Haut zeigen kannst, ohne die Rüstung zu verlieren.",
   "module.tradeoff.flintAndSteelEnergy": "Energy Consumption",
   "module.tradeoff.blinkDriveEnergyCon": "Energieverbrauch des Blink-Treibers",
-  "model.armor2.armmain1.partName": "Arm- und Schulterschutz",
+
   "module.tradeoff.railgunEnergyCost": "Railgun-Energiekosten",
   "keybinding.powersuits.glider": "Toggle Glider",
   "block.powersuits.tinkertable": "Energierüstungsbasteltisch",
