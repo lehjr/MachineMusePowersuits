@@ -9,6 +9,7 @@ import lehjr.numina.client.gui.geometry.IRect;
 import lehjr.numina.client.gui.geometry.MusePoint2D;
 import lehjr.numina.client.gui.geometry.Rect;
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
+import lehjr.numina.common.constants.NuminaConstants;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ItemStack;
@@ -75,7 +76,7 @@ public class ModularItemSelectionFrame extends AbstractGuiFrame {
             boxes.add(widget);
             boxes.add(new Rect(ul, ul.plus(35, 3)));
         }
-        creativeInstallButton = new VanillaButton(MusePoint2D.ZERO, Component.translatable("gui.powersuits.creative.install"), false);
+        creativeInstallButton = new VanillaButton(MusePoint2D.ZERO, Component.translatable(NuminaConstants.GUI_CREATIVE_INSTALL), false);
         creativeInstallButton.setHeight(18);
         creativeInstallButton.setWidth(38);
         creativeInstallButton.disableAndHide();
@@ -85,7 +86,7 @@ public class ModularItemSelectionFrame extends AbstractGuiFrame {
 
 
 //        List<Component> toolTip =  new ArrayList<Component>() {{
-//            add(Component.translatable("gui.powersuits.creative.install.desc"));
+//            add(Component.translatable(NuminaConstants.GUI_CREATIVE_INSTALL_DESC));
 //        }};
         boxes.add(creativeInstallButton);
         refreshRects();

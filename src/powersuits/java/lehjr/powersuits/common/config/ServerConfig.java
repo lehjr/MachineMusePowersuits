@@ -258,7 +258,7 @@ public class ServerConfig {
                 }
                 {
                     builder.push("cooling_system");
-                    builder.defineInRange("coolingBonus_energyCon_multiplier", 1.0D, 0, 1.7976931348623157E308);
+                    builder.defineInRange("coolingBonen_usergyCon_multiplier", 1.0D, 0, 1.7976931348623157E308);
                     builder.define("isAllowed", true);
                     builder.defineInRange("energyCon_energyCon_multiplier", 40.0D, 0, 1.7976931348623157E308);
                     builder.pop();

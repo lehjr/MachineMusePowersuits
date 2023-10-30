@@ -24,8 +24,8 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public class InstallSalvageGui extends ExtendedContainerScreen<InstallSalvageMenu> {
-    Component modularItemInventoryLabel = Component.translatable(MPSConstants.MOD_ID + ".modularitem.inventory");
-    Component moduleSelectionFrameLabel = Component.translatable("gui.powersuits.compatible.modules");
+    Component modularItemInventoryLabel = Component.translatable(new StringBuilder("gui.").append(MPSConstants.MOD_ID).append(".modularitem.inventory").toString());
+    Component moduleSelectionFrameLabel = Component.translatable(MPSConstants.GUI_COMPATIBLE_MODULES);
     public static final ResourceLocation BACKGROUND = new ResourceLocation(MPSConstants.MOD_ID, "textures/gui/background/install_salvage.png");
     protected TabSelectFrame tabSelectFrame;
     ModularItemSelectionFrameContainered itemSelectFrame;

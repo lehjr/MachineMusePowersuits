@@ -31,8 +31,21 @@ import net.minecraft.resources.ResourceLocation;
 
 public class MPSConstants {
     public static final String MOD_ID = "powersuits";
+    public static final String MPS_ITEM_GROUP =  "itemGroup." + MOD_ID;
     public static final String RESOURCE_PREFIX = MPSConstants.MOD_ID + ":";
     public static final String TEXTURE_PREFIX = RESOURCE_PREFIX + "textures/";
+
+
+
+
+
+
+
+
+
+
+
+
     public static final String RESOURCE_DOMAIN = MOD_ID.toLowerCase();
 
     // temporary locations until model spec system up and running
@@ -120,8 +133,8 @@ public class MPSConstants {
     // Generic
     public static final String DIAMETER ="diameter";
     public static final String ENCHANTMENT_LEVEL ="enchLevel";
-    // AOE
-    public static final String AOE_MINING_RADIUS = "aoeMiningDiameter";
+    // Selective Miner
+    public static final String MINING_RADIUS = "miningRadius";
     // Aqua Affinity
     public static final String AQUA_HARVEST_SPEED = "aquaHarvSpeed";
     // Fortune
@@ -131,7 +144,7 @@ public class MPSConstants {
     public static final String SILK_TOUCH_ENERGY_CONSUMPTION = "silkTouchEnCon";
 
     // WIP Modules
-    public static final String AOE2_LIMIT = "aoe2Limit";
+    public static final String SELECTIVE_MINER_LIMIT = "selMinerLimit";
     /** Movement ------------------------------------------------------------------------------- */
     // Generic
     public static final String THRUST = "thrust";
@@ -210,4 +223,19 @@ public class MPSConstants {
     public static final String POWER = "power";
     public static final String HARVEST_SPEED = "harvestSpeed";
 
+    /** GUI --------------------------------------------------------------------------------------- */
+    public static final String GUI_INSTALL_SALVAGE = getGUI("tab.install.salvage");
+    public static final String GUI_ARMOR = getGUI("armor");
+    public static final String GUI_COLOR_PREFIX = getGUI("colorPrefix");
+    public static final String GUI_COMPATIBLE_MODULES = getGUI("compatible.modules");
+    public static final String GUI_ENERGY_STORAGE = getGUI("energyStorage");
+    public static final String GUI_EQUIPPED_TOTALS = getGUI("equippedTotals");
+    public static final String GUI_INSTALL = getGUI("install");  // FIXME: is this even used?
+    public static final String GUI_INSTALL_DESC = getGUI("install.desc");
+
+
+
+    static String getGUI(String guiString) {
+        return new StringBuilder("gui.").append(MOD_ID).append(".").toString();
+    }
 }

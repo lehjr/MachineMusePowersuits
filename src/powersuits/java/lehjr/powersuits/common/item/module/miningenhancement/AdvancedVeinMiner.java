@@ -102,8 +102,8 @@ public class AdvancedVeinMiner extends AbstractPowerModule {
             this.module = module;
             this.miningEnhancement = new Enhancement(module, ModuleCategory.MINING_ENHANCEMENT, ModuleTarget.TOOLONLY, MPSSettings::getModuleConfig) {{
                 addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, 500, "FE");
-                addBaseProperty(MPSConstants.AOE2_LIMIT, 1);
-                addIntTradeoffProperty(MPSConstants.AOE2_LIMIT, MPSConstants.AOE2_LIMIT, 59, "Blocks", 1, 0);
+                addBaseProperty(MPSConstants.SELECTIVE_MINER_LIMIT, 1);
+                addIntTradeoffProperty(MPSConstants.SELECTIVE_MINER_LIMIT, MPSConstants.SELECTIVE_MINER_LIMIT, 59, "Blocks", 1, 0);
             }};
 
             powerModuleHolder = LazyOptional.of(() -> {
@@ -229,7 +229,7 @@ public class AdvancedVeinMiner extends AbstractPowerModule {
                         // create larger list
                     } else {
                         int i = 0;
-                        while (i < 100 && size != newSize && posList.size() <= applyPropertyModifiers(MPSConstants.AOE2_LIMIT)) {
+                        while (i < 100 && size != newSize && posList.size() <= applyPropertyModifiers(MPSConstants.SELECTIVE_MINER_LIMIT)) {
                             size = posListCopy.size();
 
                             outerLoop:
@@ -294,7 +294,7 @@ public class AdvancedVeinMiner extends AbstractPowerModule {
                 int i = 1;
                 // this is really, really stupid and if you have a better way, use it.
                 outerLoop:
-                while (list.size() <= miningEnhancement.applyPropertyModifiers(MPSConstants.AOE2_LIMIT) && i < 2 /* set at 2 for performance reassons */) {
+                while (list.size() <= miningEnhancement.applyPropertyModifiers(MPSConstants.SELECTIVE_MINER_LIMIT) && i < 2 /* set at 2 for performance reassons */) {
                     for (BlockPos.MutableBlockPos mutable : BlockPos.spiralAround(startPos, i, Direction.EAST, Direction.SOUTH)) {
                         for (BlockPos.MutableBlockPos mutable2 : BlockPos.spiralAround(mutable, i, Direction.UP, Direction.NORTH)) {
                             for (BlockPos.MutableBlockPos mutable3 : BlockPos.spiralAround(mutable2, i, Direction.WEST, Direction.DOWN)) {

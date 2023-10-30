@@ -33,31 +33,35 @@ import net.minecraft.network.chat.Component;
  * The module categories
  */
 public enum ModuleCategory {
-    NONE("numina.module.category.none", "None"),
-    DEBUG("numina.module.category.debug", "Debug"),
-    ARMOR("numina.module.category.armor", "Armor"),
-    ENERGY_STORAGE("numina.module.category.energystorage", "Energy_Storage"),
-    ENERGY_GENERATION("numina.module.category.energygeneration", "Energy_Generation"),
-    TOOL("numina.module.category.tool", "Tool"),
-    WEAPON("numina.module.category.weapon", "Weapon"),
-    MOVEMENT("numina.module.category.movement", "Movement"),
-    COSMETIC("numina.module.category.cosmetic", "Cosmetic"),
-    VISION("numina.module.category.vision", "Vision"),
-    ENVIRONMENTAL("numina.module.category.environment", "Environment"),
-    SPECIAL("numina.module.category.special", "Special"),
-    MINING_ENHANCEMENT("numina.module.category.miningenhancement", "Mining_Enhancement"),
-    MINING_ENCHANTMENT("numina.module.category.miningenchantment", "Mining_Enchantment");;
+    NONE("none", "None"),
+    DEBUG("debug", "Debug"),
+    ARMOR("armor", "Armor"),
+    ENERGY_STORAGE("energystorage", "Energy_Storage"),
+    ENERGY_GENERATION("energygeneration", "Energy_Generation"),
+    TOOL("tool", "Tool"),
+    WEAPON("weapon", "Weapon"),
+    MOVEMENT("movement", "Movement"),
+    COSMETIC("cosmetic", "Cosmetic"),
+    VISION("vision", "Vision"),
+    ENVIRONMENTAL("environment", "Environment"),
+    SPECIAL("special", "Special"),
+    MINING_ENHANCEMENT("miningenhancement", "Mining_Enhancement"),
+    MINING_ENCHANTMENT("miningenchantment", "Mining_Enchantment");;
 
     private final String configTitle;
-    private final Component translation;
+    private final String translationKey;
 
     ModuleCategory(String translationString, String configTitle) {
-        this.translation = Component.translatable(translationString);
+        this.translationKey = new StringBuilder("numina.module.category.").append(translationString).toString();
         this.configTitle = configTitle;
     }
 
     public Component getTranslation() {
-        return translation;
+        return Component.translatable(translationKey);
+    }
+    
+    public String getTranslationKey() {
+        return translationKey;
     }
 
     public String getConfigTitle() {

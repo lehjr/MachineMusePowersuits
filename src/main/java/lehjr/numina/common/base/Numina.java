@@ -72,6 +72,7 @@ import net.minecraftforge.fml.event.config.ModConfigEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import org.openqa.selenium.firefox.FirefoxDriver;
 
 @Mod(NuminaConstants.MOD_ID)
 public class Numina {

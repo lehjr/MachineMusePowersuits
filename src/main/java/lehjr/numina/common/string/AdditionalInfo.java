@@ -91,12 +91,12 @@ public class AdditionalInfo {
                             // Component.translatable
                             MutableComponent localizedName = (MutableComponent) activeModule.getDisplayName();
                             currentTipList.add(
-                                    Component.translatable("tooltip.numina.mode")
+                                    Component.translatable(NuminaConstants.TOOLTIP_MODE)
 //                                        .appendString(" ")
                                             .append(Component.literal(" "))
                                             .append(localizedName.setStyle(Style.EMPTY.applyFormat(ChatFormatting.RED))));
                         } else {
-                            currentTipList.add(Component.translatable("tooltip.numina.changeModes"));
+                            currentTipList.add(Component.translatable(NuminaConstants.TOOLTIP_CHANGE_MODES));
                         }
                     }
 
@@ -132,10 +132,10 @@ public class AdditionalInfo {
                         }
 
                         if (installed.size() == 0) {
-                            Component message = Component.translatable("tooltip.numina.noModules");
+                            Component message = Component.translatable(NuminaConstants.TOOLTIP_NO_MODULES);
                             currentTipList.addAll(StringUtils.wrapComponentToLength(message, 30));
                         } else {
-                            currentTipList.add(Component.translatable("tooltip.numina.installedModules"));
+                            currentTipList.add(Component.translatable(NuminaConstants.TOOLTIP_INSTALLED_MODULES));
                             currentTipList.addAll(installed);
                         }
                     } else {
@@ -154,7 +154,7 @@ public class AdditionalInfo {
 
         stack.getCapability(ForgeCapabilities.ENERGY).ifPresent(energyCap->
                 // FIXME use Component.translatable??? !!!
-                currentTipList.add(Component.literal(I18n.get(NuminaConstants.TOOLTIP_ENERGY,
+                currentTipList.add(Component.literal(I18n.get(NuminaConstants.TOOLTIP_BATTERY_ENERGY,
                         StringUtils.formatNumberShort(energyCap.getEnergyStored()),
                         StringUtils.formatNumberShort(energyCap.getMaxEnergyStored())))
                         .setStyle(Style.EMPTY.applyFormat(ChatFormatting.AQUA).withItalic(true))));
@@ -198,7 +198,7 @@ public class AdditionalInfo {
     }
 
     public static Component additionalInfoInstructions() {
-        return Component.translatable("tooltip.numina.pressShift")
+        return Component.translatable(NuminaConstants.TOOLTIP_PRESS_SHIFT)
                 .setStyle(Style.EMPTY.applyFormat(ChatFormatting.GRAY).withItalic(true));
     }
 

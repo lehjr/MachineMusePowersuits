@@ -28,6 +28,7 @@ package lehjr.numina.common.block;
 
 import lehjr.numina.common.base.NuminaObjects;
 import lehjr.numina.common.blockentity.ChargingBaseBlockEntity;
+import lehjr.numina.common.constants.NuminaConstants;
 import lehjr.numina.common.container.ChargingBaseMenu;
 import lehjr.numina.common.entity.NuminaArmorStand;
 import net.minecraft.core.BlockPos;
@@ -94,7 +95,7 @@ public class ChargingBase extends Block implements EntityBlock, SimpleWaterlogge
 
     @Override
     public void appendHoverText(ItemStack pStack, @Nullable BlockGetter pLevel, List<Component> list, TooltipFlag pFlag) {
-        list.add(Component.translatable("tooltip.numina.charging_base", Integer.toString(1000)));
+        list.add(Component.translatable(NuminaConstants.TOOLTIP_CHARGING_BASE, Integer.toString(1000)));
     }
 
     @Override

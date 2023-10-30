@@ -33,11 +33,9 @@ public class NuminaConstants {
   // Mod
   public static final String MOD_ID = "numina";
 
+  public static final String ITEM_GROUP_TRANSLATION_KEY = "itemGroup." + MOD_ID;
+
   public static final int FULL_BRIGHTNESS = 0XF000F0;
-
-
-  // Tooltips
-  public static final String TOOLTIP_ENERGY = "tooltip.numina.battery.energy";
 
   // Energy Storage -----------------------------------------------------------------------------
   public static final String MAX_ENERGY = "maxEnergy";
@@ -79,24 +77,61 @@ public class NuminaConstants {
   /**
    * Components ---------------------------------------------------------------------------------
    */
-  public static final String COMPONENT__WIRING__REGNAME = "component_wiring";
-  public static final String COMPONENT__SOLENOID__REGNAME = "component_solenoid";
-  public static final String COMPONENT__SERVO__REGNAME = "component_servo";
-  public static final String COMPONENT__GLIDER_WING__REGNAME = "component_glider_wing";
-  public static final String COMPONENT__ION_THRUSTER__REGNAME = "component_ion_thruster";
-  public static final String COMPONENT__PARACHUTE__REGNAME = "component_parachute";
-  public static final String COMPONENT__FIELD_EMITTER__REGNAME = "component_field_emitter";
-  public static final String COMPONENT__LASER_EMITTER__REGNAME = "component_laser_emitter";
-  public static final String COMPONENT__CARBON_MYOFIBER__REGNAME = "component_carbon_myofiber";
-  public static final String COMPONENT__CONTROL_CIRCUIT__REGNAME = "component_control_circuit";
-  public static final String COMPONENT__MYOFIBER_GEL__REGNAME = "component_myofiber_gel";
-  public static final String COMPONENT__ARTIFICIAL_MUSCLE__REGNAME = "component_artificial_muscle";
-  public static final String COMPONENT__SOLAR_PANEL__REGNAME = "component_solar_panel";
-  public static final String COMPONENT__MAGNET__REGNAME = "component_magnet";
-  public static final String COMPONENT__COMPUTER_CHIP__REGNAME = "component_computer_chip";
-  public static final String COMPONENT__RUBBER_HOSE__REGNAME = "component_rubber_hose";
+  public static final String COMPONENT__WIRING__REGNAME = getComponentName("wiring");
+  public static final String COMPONENT__SOLENOID__REGNAME = getComponentName("solenoid");
+  public static final String COMPONENT__SERVO__REGNAME = getComponentName("servo");
+  public static final String COMPONENT__GLIDER_WING__REGNAME = getComponentName("glider_wing");
+  public static final String COMPONENT__ION_THRUSTER__REGNAME = getComponentName("ion_thruster");
+  public static final String COMPONENT__PARACHUTE__REGNAME = getComponentName("parachute");
+  public static final String COMPONENT__FIELD_EMITTER__REGNAME = getComponentName("field_emitter");
+  public static final String COMPONENT__LASER_EMITTER__REGNAME = getComponentName("laser_emitter");
+  public static final String COMPONENT__CARBON_MYOFIBER__REGNAME = getComponentName("carbon_myofiber");
+  public static final String COMPONENT__CONTROL_CIRCUIT__REGNAME = getComponentName("control_circuit");
+  public static final String COMPONENT__MYOFIBER_GEL__REGNAME = getComponentName("myofiber_gel");
+  public static final String COMPONENT__ARTIFICIAL_MUSCLE__REGNAME = getComponentName("artificial_muscle");
+  public static final String COMPONENT__SOLAR_PANEL__REGNAME = getComponentName("solar_panel");
+  public static final String COMPONENT__MAGNET__REGNAME = getComponentName("magnet");
+  public static final String COMPONENT__COMPUTER_CHIP__REGNAME = getComponentName("computer_chip");
+  public static final String COMPONENT__RUBBER_HOSE__REGNAME = getComponentName("rubber_hose");
+
+  /**
+   *  Tooltips -----------------------------------------------------------------------------------------
+   */
+  public static final String TOOLTIP_MODE = getTooltip("mode");
+  public static final String TOOLTIP_CHANGE_MODES = getTooltip(  "changeModes");
+  public static final String TOOLTIP_INSTALLED_MODULES = getTooltip("installedModules");
+  public static final String TOOLTIP_NO_MODULES = getTooltip("noModules");
+  public static final String TOOLTIP_CHARGING_BASE = getTooltip(CHARGING_BASE_REGNAME);
+  public static final String TOOLTIP_BATTERY_ENERGY = getTooltip("battery.energy");
+  public static final String TOOLTIP_PRESS_SHIFT = getTooltip("pressShift");
+  public static final String TOOLTIP_ENERGY = getTooltip("energy");
+
+
+
+
+  static String getTooltip(String tooltipName) {
+    return new StringBuilder("tooltip.").append(NuminaConstants.MOD_ID).append(".").append(tooltipName).toString();
+  }
+
+
 
   public static final ResourceLocation TEXTURE_WHITE_SHORT = new ResourceLocation(NuminaConstants.MOD_ID, "models/white");
   public static final ResourceLocation TEXTURE_WHITE = new ResourceLocation(NuminaConstants.MOD_ID, "textures/models/white.png");
   public static final ResourceLocation TEXTURE_ARMOR_STAND = new ResourceLocation(NuminaConstants.MOD_ID, "textures/models/armorstand2.png");
+
+
+
+
+  public static final String GUI_CREATIVE_INSTALL = getGUI("creative.install");
+  public static final String GUI_CREATIVE_INSTALL_DESC = getGUI("creative.install.desc");
+
+  static String getGUI(String guiString) {
+    return new StringBuilder("gui.").append(MOD_ID).append(".").toString();
+  }
+
+
+
+  static String getComponentName(String component) {
+    return new StringBuilder("component_").append(component).toString();
+  }
 }

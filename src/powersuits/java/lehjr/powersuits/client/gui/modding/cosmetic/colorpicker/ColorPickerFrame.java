@@ -46,6 +46,7 @@ import lehjr.numina.common.network.NuminaPackets;
 import lehjr.numina.common.network.packets.serverbound.ColorInfoPacketServerBound;
 import lehjr.numina.common.network.packets.serverbound.CosmeticInfoPacketServerBound;
 import lehjr.numina.common.string.StringUtils;
+import lehjr.powersuits.common.constants.MPSConstants;
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.IntArrayTag;
@@ -68,7 +69,7 @@ public class ColorPickerFrame extends ScrollableFrame {
     protected List<IRect> rects = new ArrayList<>();
     static final List<String> slidersIds = new ArrayList<>(Arrays.asList( "red", "green", "blue", "alpha"));
     ColorBox colorBox;
-    static final Component COLOR_PREFIX = Component.translatable("gui.powersuits.colorPrefix");
+    static final Component COLOR_PREFIX = Component.translatable(MPSConstants.GUI_COLOR_PREFIX);
     public ClickableLabel colorLabel;
     public Optional<VanillaSlider> selectedSlider;
     public int selectedColor;

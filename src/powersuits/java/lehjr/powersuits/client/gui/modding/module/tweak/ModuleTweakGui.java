@@ -51,7 +51,7 @@ import java.util.Optional;
 public class ModuleTweakGui extends ContainerlessGui {
     Component MODULE_SELECTION_LABEL = Component.translatable("gui.powersuits.installed.modules");
     Component TINKER_FRAME_LABEL = Component.translatable("gui.powersuits.tinker");
-    Component SUMMARY_FRAME_LABEL = Component.translatable("gui.powersuits.equippedTotals");
+    Component SUMMARY_FRAME_LABEL = Component.translatable(MPSConstants.GUI_EQUIPPED_TOTALS);
 
     public static final ResourceLocation BACKGROUND = new ResourceLocation(MPSConstants.MOD_ID, "textures/gui/background/module_tweak.png");
     protected ModularItemSelectionFrame itemSelectFrame;

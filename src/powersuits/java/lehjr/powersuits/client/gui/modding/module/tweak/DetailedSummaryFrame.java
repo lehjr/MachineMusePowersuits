@@ -48,8 +48,8 @@ public class DetailedSummaryFrame extends ScrollableFrame {
     protected AtomicInteger energy = new AtomicInteger(0);
     protected AtomicDouble armor = new AtomicDouble(0);
     protected ModularItemSelectionFrame itemSelectionFrame;
-    Component energyText = Component.translatable("gui.powersuits.energyStorage");
-    Component armorText = Component.translatable("gui.powersuits.armor");
+    Component energyText = Component.translatable(MPSConstants.GUI_ENERGY_STORAGE);
+    Component armorText = Component.translatable(MPSConstants.GUI_ARMOR);
 
     public DetailedSummaryFrame(Rect rect, ModularItemSelectionFrame itemSelectionFrame) {
         super(rect);

@@ -145,7 +145,7 @@ public enum KeyMappingReaderWriter {
                         boolean showOnHud = data.get(showOnHudKey).getAsBoolean();
                         int defaultKey = data.get(defaultKeyKey).getAsInt();
                         ResourceLocation registryName = new ResourceLocation(data.get(registryNameKey).getAsString());
-                        KeymappingKeyHandler.registerKeyBinding(registryName, name, defaultKey, KeymappingKeyHandler.mps, showOnHud, true);
+                        KeymappingKeyHandler.registerKeyBinding(registryName, name, defaultKey, MPSConstants.MPS_ITEM_GROUP, showOnHud, true);
                     }
 
                     /** fallback if settings hasn't been converted to new format yet */
@@ -157,7 +157,7 @@ public enum KeyMappingReaderWriter {
                         String name1 = name
                                 .replace("keybinding.powersuits.clock", "keybinding.minecraft.clock")
                                 .replace("keybinding.powersuits.compass", "keybinding.minecraft.compass");
-                        KeymappingKeyHandler.registerKeyBinding(ItemUtils.getRegistryName(Items.AIR), name1, GLFW.GLFW_KEY_UNKNOWN, KeymappingKeyHandler.mps, value, true);
+                        KeymappingKeyHandler.registerKeyBinding(ItemUtils.getRegistryName(Items.AIR), name1, GLFW.GLFW_KEY_UNKNOWN, MPSConstants.MPS_ITEM_GROUP, value, true);
 
                     }
                 }

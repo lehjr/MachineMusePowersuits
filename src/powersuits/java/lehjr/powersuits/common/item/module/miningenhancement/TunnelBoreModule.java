@@ -59,7 +59,7 @@ public class TunnelBoreModule extends AbstractPowerModule {
             this.miningEnhancement = new Enhancement(module, ModuleCategory.MINING_ENHANCEMENT, ModuleTarget.TOOLONLY, MPSSettings::getModuleConfig) {{
                 addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, 500, "FE");
                 addTradeoffProperty(MPSConstants.DIAMETER, MPSConstants.ENERGY_CONSUMPTION, 9500);
-                addIntTradeoffProperty(MPSConstants.DIAMETER, MPSConstants.AOE_MINING_RADIUS, 5, "m", 2, 1);
+                addIntTradeoffProperty(MPSConstants.DIAMETER, MPSConstants.MINING_RADIUS, 5, "m", 2, 1);
             }};
 
             powerModuleHolder = LazyOptional.of(() -> {
@@ -87,7 +87,7 @@ public class TunnelBoreModule extends AbstractPowerModule {
                 if (rayTraceResult == null || rayTraceResult.getType() != HitResult.Type.BLOCK) {
                     return false;
                 }
-                int radius = (int) (applyPropertyModifiers(MPSConstants.AOE_MINING_RADIUS) - 1) / 2;
+                int radius = (int) (applyPropertyModifiers(MPSConstants.MINING_RADIUS) - 1) / 2;
                 if (radius == 0) {
                     return false;
                 }
@@ -154,7 +154,7 @@ public class TunnelBoreModule extends AbstractPowerModule {
                     Direction side = rayTraceResult.getDirection();
                     Stream<BlockPos> posList;
 
-                    int radius = (int) (miningEnhancement.applyPropertyModifiers(MPSConstants.AOE_MINING_RADIUS) - 1) / 2;
+                    int radius = (int) (miningEnhancement.applyPropertyModifiers(MPSConstants.MINING_RADIUS) - 1) / 2;
 
                     switch (side) {
                         case UP:
