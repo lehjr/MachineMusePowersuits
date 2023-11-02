@@ -233,9 +233,7 @@ public class MPSConstants {
     public static final String GUI_INSTALL = getGUI("install");  // FIXME: is this even used?
     public static final String GUI_INSTALL_DESC = getGUI("install.desc");
 
-
-
     static String getGUI(String guiString) {
-        return new StringBuilder("gui.").append(MOD_ID).append(".").toString();
+        return new StringBuilder("gui.").append(MOD_ID).append(".").append(guiString).toString();
     }
 }
