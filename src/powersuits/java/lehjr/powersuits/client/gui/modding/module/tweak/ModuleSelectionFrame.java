@@ -117,12 +117,14 @@ public class ModuleSelectionFrame extends ScrollableFrame {
             // Occupied slots in the Modular Item
             for (int index = 0; index < iModularItem.getSlots(); index++) {
                 ItemStack module = iModularItem.getStackInSlot(index);
-                int finalIndex = index;
-                module.getCapability(NuminaCapabilities.POWER_MODULE).ifPresent(m->{
-                    if (m.isAllowed()) {
-                        getOrCreateCategory(m.getCategory()).addModule(module, finalIndex);
-                    }
-                });
+                if (!module.isEmpty()) {
+                    int finalIndex = index;
+                    module.getCapability(NuminaCapabilities.POWER_MODULE).ifPresent(m -> {
+                        if (m.isAllowed()) {
+                            getOrCreateCategory(m.getCategory()).addModule(module, finalIndex);
+                        }
+                    });
+                }
             }
         });
 
