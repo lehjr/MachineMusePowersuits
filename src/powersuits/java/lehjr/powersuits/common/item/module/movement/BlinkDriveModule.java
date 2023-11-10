@@ -94,7 +94,7 @@ public class BlinkDriveModule extends AbstractPowerModule {
                 if (hitRayTrace != null && hitRayTrace.getType() == HitResult.Type.BLOCK) {
                     double distance = hitRayTrace.getLocation().distanceTo(playerIn.position());
 
-                    // adjust energy consumption for actual distance.System.out.println("get energy usage after calculation: " + energyConsumption);
+                    // adjust energy consumption for actual distance.NuminaLogger.logDebug("get energy usage after calculation: " + energyConsumption);
                     energyConsumption = (int) (energyConsumption * (distance/range));
                     if (ElectricItemUtils.drainPlayerEnergy(playerIn, energyConsumption,  true) == energyConsumption) {
                         PlayerUtils.resetFloatKickTicks(playerIn);

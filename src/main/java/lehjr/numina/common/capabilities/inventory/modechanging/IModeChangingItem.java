@@ -31,7 +31,9 @@ import lehjr.numina.client.render.NuminaRenderer;
 import lehjr.numina.common.capabilities.NuminaCapabilities;
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
 import lehjr.numina.common.capabilities.module.blockbreaking.IBlockBreakingModule;
+import lehjr.numina.common.capabilities.module.externalitems.IOtherModItemsAsModules;
 import lehjr.numina.common.capabilities.module.miningenhancement.IMiningEnhancementModule;
+import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
 import lehjr.numina.common.capabilities.module.rightclick.IRightClickModule;
 import lehjr.numina.common.energy.ElectricItemUtils;
 import lehjr.numina.common.math.Color;
@@ -200,5 +202,12 @@ public interface IModeChangingItem extends IModularItem {
                                 .filter(IBlockBreakingModule.class::isInstance)
                                 .map(IBlockBreakingModule.class::cast)
                                 .map(pm ->pm.getEmulatedTool().isCorrectToolForDrops(state)).orElse(false));
+    }
+
+    default ItemStack getActiveExternalModule(ItemStack host) {
+        return getActiveModule().getCapability(NuminaCapabilities.POWER_MODULE)
+                .filter(IOtherModItemsAsModules.class::isInstance)
+                .map(IOtherModItemsAsModules.class::cast)
+                .map(IPowerModule::getModuleStack).orElse(host);
     }
 }

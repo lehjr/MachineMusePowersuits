@@ -97,7 +97,7 @@ public class RadialModeSelectionFrame extends AbstractGuiFrame {
             selectModule(mousex, mousey);
         }
         //Switch to selected mode if mode changed
-        if (getSelectedModule() != null && selectedModuleOriginal != selectedModuleNew) {
+        if (!stack.isEmpty() && getSelectedModule() != null && selectedModuleOriginal != selectedModuleNew) {
             // update to detect mode changes
             selectedModuleOriginal = selectedModuleNew;
             stack.getCapability(ForgeCapabilities.ITEM_HANDLER)
@@ -131,7 +131,7 @@ public class RadialModeSelectionFrame extends AbstractGuiFrame {
     }
 
     private void loadItems() {
-        if (player != null && modeButtons.isEmpty()) {
+        if (player != null && modeButtons.isEmpty() && !stack.isEmpty()) {
             stack.getCapability(ForgeCapabilities.ITEM_HANDLER)
                     .filter(IModeChangingItem.class::isInstance)
                     .map(IModeChangingItem.class::cast)

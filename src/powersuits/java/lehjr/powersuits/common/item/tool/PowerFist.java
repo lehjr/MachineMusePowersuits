@@ -64,13 +64,7 @@ public class PowerFist extends AbstractElectricTool {
         super(new Item.Properties().stacksTo(1).defaultDurability(0).tab(MPSItems.creativeTab));
     }
 
-    @Override
-    public int getUseDuration(ItemStack stack) {
-        return stack.getCapability(ForgeCapabilities.ITEM_HANDLER)
-                .filter(IModeChangingItem.class::isInstance)
-                .map(IModeChangingItem.class::cast)
-                .map(handler-> handler.getUseDuration()).orElse(72000);
-    }
+
 
     /**
      * Called server side when a Block is destroyed using this Item. Return true to trigger the "Use Item" statistic.

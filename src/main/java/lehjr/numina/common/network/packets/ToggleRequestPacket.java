@@ -81,12 +81,12 @@
 //
 //            if (player instanceof ServerPlayer) {
 //                sendToClient((ServerPlayer) player, registryName, toggleval);
-//                System.out.println("serverside send packet side handle " + registryName);
+//                NuminaLogger.logDebug("serverside send packet side handle " + registryName);
 //            } else {
-//                System.out.println("clientside send packet side handle " + registryName);
+//                NuminaLogger.logDebug("clientside send packet side handle " + registryName);
 //            }
 //            });
-//            System.out.println("setting handled");
+//            NuminaLogger.logDebug("setting handled");
 //            ctx.get().setPacketHandled(true);
 //        }
 //    }

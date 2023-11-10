@@ -1,6 +1,7 @@
 package numina.common.loot;
 
 import com.mojang.datafixers.util.Pair;
+import lehjr.numina.common.base.NuminaLogger;
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.loot.LootTableProvider;
@@ -29,15 +30,15 @@ public class NuminaLootTableProvider extends LootTableProvider {
 
     @Override
     protected List<Pair<Supplier<Consumer<BiConsumer<ResourceLocation, LootTable.Builder>>>, LootContextParamSet>> getTables() {
-        System.out.println("getting Numina tables");
+        NuminaLogger.logDebug("getting Numina tables");
         return List.of(Pair.of(NuminaBlockLoot::new, LootContextParamSets.BLOCK));
     }
 
     @Override
     protected void validate(Map<ResourceLocation, LootTable> map, ValidationContext validationtracker) {
-        System.out.println("validating Numina map size: " + map.size());
+        NuminaLogger.logDebug("validating Numina map size: " + map.size());
         map.forEach((location, lootTable) -> {
-            System.out.println("validating Numina location: " + location);
+            NuminaLogger.logDebug("validating Numina location: " + location);
             LootTables.validate(validationtracker, location, lootTable);});
         map.forEach((location, lootTable) -> LootTables.validate(validationtracker, location, lootTable));
     }

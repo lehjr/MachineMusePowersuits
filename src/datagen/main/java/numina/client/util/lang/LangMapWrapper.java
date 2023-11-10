@@ -93,7 +93,7 @@ public class LangMapWrapper {
     }
 
 //    public void save(CachedOutput pOutput, JsonObject pJson, Path pPath, boolean overwrite) throws IOException {
-//        System.out.println("json: " + pJson.toString());
+//        NuminaLogger.logDebug("json: " + pJson.toString());
 //
 //        ByteArrayOutputStream bytearrayoutputstream = new ByteArrayOutputStream();
 //        HashingOutputStream hashingoutputstream = new HashingOutputStream(Hashing.sha1(), bytearrayoutputstream);

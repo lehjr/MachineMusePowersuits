@@ -188,7 +188,7 @@ public class ShapedEnchantmentRecipe extends ShapedRecipe {
         // FIXME: is this needed?
 //        @Override
 //        public ShapedEnchantmentRecipe fromNetwork(ResourceLocation pRecipeId, FriendlyByteBuf pBuffer) {
-//            System.out.println("from network");
+//            NuminaLogger.logDebug("from network");
 //
 //
 //            int i = pBuffer.readVarInt();

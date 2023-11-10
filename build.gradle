@@ -13,6 +13,7 @@ plugins {
     id 'idea'
     id 'net.minecraftforge.gradle' version '[6.0,6.2)'
     id 'org.parchmentmc.librarian.forgegradle' version '1.+' // mappings
+    id 'org.spongepowered.mixin' version '0.7.+'
 }
 
 wrapper {
@@ -192,6 +193,15 @@ def createReplaceResourcesTask(SourceSet sourceSet) {
     }
 }
 
+mixin {
+    // MixinGradle Settings
+    add sourceSets.main, 'mixins.numina.refmap.json'
+    config 'numina.mixins.json'
+
+    debug.verbose = true
+    debug.export = true
+}
+
 minecraft {
     mappings channel: "${mappings_channel}", version: "${mappings_version}"
 
@@ -345,6 +355,8 @@ dependencies {
 //        exclude group: 'net.java.dev.jna', module: 'jna-platform'
     }
 
+    annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
+
     compileOnly(fg.deobf("mezz.jei:jei-${minecraft_version}-common-api:${jei_version}"))
     // at runtime, use the full JEI jar for Forge
     runtimeOnly(fg.deobf("mezz.jei:jei-${minecraft_version}-forge:${jei_version}"))
@@ -357,6 +369,11 @@ dependencies {
     implementation fg.deobf("curse.maven:configured-457570:4462837")
 
     runtimeOnly fg.deobf("curse.maven:architectury-forge-419699:4555749") // architectury-api/files/4555756
+
+    implementation fg.deobf("curse.maven:applied-energistics-2-223794:${ae2_version}") {
+        transitive = false
+    }
+
 
     // This is only used for automatic translation for datagen
     // safe to disable and comment out references when not in use
@@ -371,76 +388,6 @@ dependencies {
 
         exclude group: 'io.netty'//:netty-buffer:4.1.77.Final'
 
-
-        /*
-        io.netty:netty-codec-http:4.1.96.Final
-io.netty:netty-buffer:4.1.96.Final (*)
-io.netty:netty-codec:4.1.96.Final (*)
-io.netty:netty-common:4.1.96.Final
-io.netty:netty-handler:4.1.96.Final (*)
-io.netty:netty-transport:4.1.96.Final (*)
-io.netty:netty-common:4.1.96.Final
-io.netty:netty-transport-classes-epoll:4.1.96.Final (*)
-io.netty:netty-transport-classes-kqueue:4.1.96.Final
-io.netty:netty-buffer:4.1.96.Final (*)
-io.netty:netty-common:4.1.96.Final
-io.netty:netty-transport-native-unix-common:4.1.96.Final (*)
-io.netty:netty-transport:4.1.96.Final (*)
-io.netty:netty-transport-native-epoll:4.1.96.Final (*)
-io.netty:netty-transport-native-kqueue:4.1.96.Final
-io.netty:netty-buffer:4.1.96.Final (*)
-io.netty:netty-common:4.1.96.Final
-io.netty:netty-transport-classes-kqueue:4.1.96.Final (*)
-io.netty:netty-transport-native-unix-common:4.1.96.Final (*)
-io.netty:netty-transport:4.1.96.Final (*)
-io.netty:netty-transport-native-unix-common:4.1.96.Final (*)
-io.netty:netty-transport:4.1.96.Final (*)
-io.opentelemetry:opentelemetry-api:1.28.0
-io.opentelemetry:opentelemetry-context:1.28.0
-io.opentelemetry:opentelemetry-context:1.28.0
-io.opentelemetry:opentelemetry-exporter-logging:1.28.0
-io.opentelemetry:opentelemetry-sdk-extension-autoconfigure-spi:1.28.0
-io.opentelemetry:opentelemetry-sdk-logs:1.28.0 (*)
-io.opentelemetry:opentelemetry-sdk-metrics:1.28.0 (*)
-io.opentelemetry:opentelemetry-sdk:1.28.0 (*)
-io.opentelemetry:opentelemetry-sdk-common:1.28.0 (*)
-io.opentelemetry:opentelemetry-sdk-extension-autoconfigure-spi:1.28.0 (*)
-io.opentelemetry:opentelemetry-sdk-extension-autoconfigure:1.28.0
-io.opentelemetry:opentelemetry-api-events:1.28.0-alpha (*)
-io.opentelemetry:opentelemetry-sdk-extension-autoconfigure-spi:1.28.0 (*)
-io.opentelemetry:opentelemetry-sdk:1.28.0 (*)
-io.opentelemetry:opentelemetry-semconv:1.28.0-alpha (*)
-io.opentelemetry:opentelemetry-sdk-trace:1.28.0 (*)
-io.opentelemetry:opentelemetry-sdk:1.28.0 (*)
-io.opentelemetry:opentelemetry-semconv:1.28.0-alpha (*)
-net.bytebuddy:byte-buddy:1.14.5
-org.asynchttpclient:async-http-client:2.12.3
-com.sun.activation:jakarta.activation:1.2.2
-com.typesafe.netty:netty-reactive-streams:2.0.4
-io.netty:netty-codec-http:4.1.96.Final (*)
-io.netty:netty-codec-socks:4.1.60.Final
-io.netty:netty-handler-proxy:4.1.60.Final
-io.netty:netty-handler:4.1.96.Final (*)
-io.netty:netty-transport-native-epoll:4.1.96.Final (*)
-io.netty:netty-transport-native-kqueue:4.1.96.Final (*)
-org.asynchttpclient:async-http-client-netty-utils:2.12.3
-org.reactivestreams:reactive-streams:1.0.3
-org.slf4j:slf4j-api:1.8.0-beta4
-org.seleniumhq.selenium:selenium-api:4.13.0
-org.seleniumhq.selenium:selenium-http:4.13.0
-dev.failsafe:failsafe:3.3.2
-org.seleniumhq.selenium:selenium-api:4.13.0
-org.seleniumhq.selenium:selenium-json:4.13.0 (*)
-org.seleniumhq.selenium:selenium-json:4.13.0 (*)
-org.seleniumhq.selenium:selenium-manager:4.13.0
-org.seleniumhq.selenium:selenium-api:4.13.0
-org.seleniumhq.selenium:selenium-json:4.13.0 (*)
-org.seleniumhq.selenium:selenium-os:4.13.0
-org.apache.commons:commons-exec:1.3
-org.seleniumhq.selenium:selenium-api:4.13.0
-org.seleniumhq.selenium:selenium-os:4.13.0 (*)
-        */
-
     }
 
     minecraftLibrary('io.netty:netty-codec-http:4.1.77.Final') {
@@ -450,13 +397,8 @@ org.seleniumhq.selenium:selenium-os:4.13.0 (*)
         exclude group: 'io.netty', module: 'netty-buffer'
         exclude group: 'io.netty', module: 'netty-common'
     }
-//    minecraftLibrary('io.netty:netty-codec-socks:4.1.60.Final')
-////    minecraftLibrary('io.netty:netty-handler-proxy:4.1.60.Final')
-//    minecraftLibrary('io.netty:netty-transport-classes-kqueue:4.1.77.Final')
-//    minecraftLibrary('io.netty:netty-transport-native-kqueue:4.1.77.Final')
-//    minecraftLibrary()
 
-//
+
     minecraftLibrary("io.github.bonigarcia:webdrivermanager:5.5.3") {
         exclude group: 'org.apache.commons', module: 'commons-compress'  //:1.21
 //        exclude group: 'net.java.dev.jna', module: 'jna'
@@ -541,7 +483,8 @@ def getManifestAttributes(String title) {
 
 jar {
     duplicatesStrategy(DuplicatesStrategy.FAIL)
-    archiveFileName.set("Numina-${minecraft_version}-${project.version}.jar")
+//    archiveFileName.set("Numina-${minecraft_version}-${project.version}.jar")
+    archiveFileName.set("Numina-${project.version}.jar")
     from(sourceSets.main.output)
     manifest.attributes(getManifestAttributes("Numina"))
     afterEvaluate { finalizedBy reobfJar }
@@ -549,7 +492,8 @@ jar {
 
 task powersuitsJar(type: Jar) {
     duplicatesStrategy(DuplicatesStrategy.FAIL)
-    archiveFileName.set("ModularPowersuits-${minecraft_version}-${project.version}.jar")
+//    archiveFileName.set("ModularPowersuits-${minecraft_version}-${project.version}.jar")
+    archiveFileName.set("ModularPowersuits-${project.version}.jar")
     archiveClassifier.set("powersuits")
     from sourceSets.powersuits.output
     manifest.attributes(getManifestAttributes("ModularPowersuits"))
@@ -558,7 +502,8 @@ task powersuitsJar(type: Jar) {
 
 task mpsrecipecreatorJar(type: Jar) {
     duplicatesStrategy(DuplicatesStrategy.FAIL)
-    archiveFileName.set("MPSRecipecreator-${minecraft_version}-${project.version}.jar")
+//    archiveFileName.set("MPSRecipecreator-${minecraft_version}-${project.version}.jar")
+    archiveFileName.set("MPSRecipecreator-${project.version}.jar")
     archiveClassifier.set("mpsrecipecreator")
     from sourceSets.mpsrecipecreator.output
     manifest.attributes(getManifestAttributes("MPSRecipecreator"))
@@ -567,7 +512,8 @@ task mpsrecipecreatorJar(type: Jar) {
 
 task mpswhateverJar(type: Jar) {
     duplicatesStrategy(DuplicatesStrategy.FAIL)
-    archiveFileName.set("MPSWhatever-${minecraft_version}-${project.version}.jar")
+//    archiveFileName.set("MPSWhatever-${minecraft_version}-${project.version}.jar")
+    archiveFileName.set("MPSWhatever-${project.version}.jar")
     archiveClassifier.set("mpswhatever")
     from sourceSets.mpswhatever.output
     manifest.attributes(getManifestAttributes("MPSWhatever"))

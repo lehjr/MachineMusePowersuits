@@ -26,6 +26,7 @@
 
 package lehjr.powersuits.common.item.tool;
 
+import lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
 import lehjr.numina.common.string.AdditionalInfo;
 import lehjr.powersuits.common.capability.PowerFistCap;
 import net.minecraft.nbt.CompoundTag;
@@ -47,7 +48,6 @@ public class AbstractElectricTool extends DiggerItem {
     public AbstractElectricTool(Item.Properties properties) {
         super(0.0F,
                 0.0F,
-//                MSAToolMaterial.EMPTY_TOOL,
                 new Tier() {
                     @Override
                     public int getUses() {
@@ -128,24 +128,18 @@ public class AbstractElectricTool extends DiggerItem {
         return false;
     }
 
-//    @Deprecated // FORGE: Use stack sensitive variant below
-//    public boolean isCorrectToolForDrops(BlockState pBlock) {
-//        if (net.minecraftforge.common.TierSortingRegistry.isTierSorted(getTier())) {
-//            return net.minecraftforge.common.TierSortingRegistry.isCorrectTierForDrops(getTier(), pBlock) && pBlock.is(this.blocks);
-//        }
-//        int i = this.getTier().getLevel();
-//        if (i < 3 && pBlock.is(BlockTags.NEEDS_DIAMOND_TOOL)) {
-//            return false;
-//        } else if (i < 2 && pBlock.is(BlockTags.NEEDS_IRON_TOOL)) {
-//            return false;
-//        } else {
-//            return i < 1 && pBlock.is(BlockTags.NEEDS_STONE_TOOL) ? false : pBlock.is(this.blocks);
-//        }
-//    }
-//
-//    // FORGE START
-//    @Override
-//    public boolean isCorrectToolForDrops(ItemStack stack, BlockState state) {
-//        return state.is(blocks) && net.minecraftforge.common.TierSortingRegistry.isCorrectTierForDrops(getTier(), state);
-//    }
+    /**
+     * Checks module first and falls back to default value of 72000
+     * @param stack
+     * @return
+     */
+    @Override
+    public int getUseDuration(ItemStack stack) {
+        return stack.getCapability(ForgeCapabilities.ITEM_HANDLER)
+                .filter(IModeChangingItem.class::isInstance)
+                .map(IModeChangingItem.class::cast)
+                .map(handler-> handler.getUseDuration()).orElse(72000);
+    }
+
+
 }

@@ -123,7 +123,7 @@ public class MulitiLanguageProvider implements DataProvider {
                 }
             });
         });
-        System.out.println("finished translationg");
+        NuminaLogger.logDebug("finished translationg");
 
         // finally generate the output files
         languageProviderMap.forEach((locale, provider) -> {

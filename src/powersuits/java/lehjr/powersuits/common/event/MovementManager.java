@@ -134,7 +134,7 @@ public enum MovementManager {
             }
 
             if (Math.abs(player.getDeltaMovement().x) > 0 && desiredDirection.length() == 0) {
-//                System.out.println("player.getDeltaMovement().x");
+//                NuminaLogger.logDebug("player.getDeltaMovement().x");
 
                 if (Math.abs(player.getDeltaMovement().x) > thrust) {
                     player.setDeltaMovement(player.getDeltaMovement().add(

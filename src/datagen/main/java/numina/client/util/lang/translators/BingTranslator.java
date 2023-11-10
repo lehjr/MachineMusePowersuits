@@ -3,6 +3,7 @@ package numina.client.util.lang.translators;
 import lehjr.numina.common.base.NuminaLogger;
 import numina.client.config.DatagenConfig;
 import numina.client.util.lang.LanguageProviderHelper;
+import org.jetbrains.annotations.NotNull;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -27,7 +28,7 @@ public class BingTranslator implements ITranslator{
 
     String TRANSLATION_PAGE = "https://www.bing.com/translator";
 
-    public BingTranslator(DatagenConfig config) {
+    public BingTranslator(@NotNull DatagenConfig config) {
         this.config = config;
         this.defaultLang = config.getMainLanguageCode();
         translations = new HashMap();

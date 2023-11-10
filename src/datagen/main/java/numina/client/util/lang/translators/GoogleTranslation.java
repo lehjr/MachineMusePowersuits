@@ -57,8 +57,8 @@ public class GoogleTranslation implements ITranslator {
 //            config.set("translationsAvailable", translationMap);
 //
 //
-//            System.out.println("googleLangs: " + googleLangs.size());
-//            System.out.println("bingLangs: " + bingLangs.size());
+//            NuminaLogger.logDebug("googleLangs: " + googleLangs.size());
+//            NuminaLogger.logDebug("bingLangs: " + bingLangs.size());
 //
 //            Map<String, String> matches = new HashMap<>();
 //            Map<String, String> bingNotFound = new HashMap<>();
@@ -69,7 +69,7 @@ public class GoogleTranslation implements ITranslator {
 //                    if (bingLangs.get(key).equalsIgnoreCase(value)) {
 //                        matches.put(key, value);
 //                    } else {
-//                        System.out.println("langmatches " + key + ", value: " + value + "!= " + bingLangs.get(key));
+//                        NuminaLogger.logDebug("langmatches " + key + ", value: " + value + "!= " + bingLangs.get(key));
 //                    }
 //                } else {
 //                    if (bingLangs.containsValue(value)) {
@@ -88,31 +88,31 @@ public class GoogleTranslation implements ITranslator {
 //                }
 //            });
 //
-//            System.out.println("\nbing not found: " + bingNotFound.size());
+//            NuminaLogger.logDebug("\nbing not found: " + bingNotFound.size());
 //            bingNotFound.forEach((key, value) ->{
-//                System.out.println("lang: " + key + ", value: " + value);
+//                NuminaLogger.logDebug("lang: " + key + ", value: " + value);
 //            });
 //
-//            System.out.println("\ngoogle not found: " + googleNotFound.size());
+//            NuminaLogger.logDebug("\ngoogle not found: " + googleNotFound.size());
 //            googleNotFound.forEach((key, value) ->{
-//                System.out.println("lang: " + key + ", value: " + value);
+//                NuminaLogger.logDebug("lang: " + key + ", value: " + value);
 //            });
 //
 //
 //            Map<Language, Map<String, String>> mc_langs = config.getMinecraftLanguages();
 //
-//            System.out.println("mc_langs: " + mc_langs.size());
+//            NuminaLogger.logDebug("mc_langs: " + mc_langs.size());
 //
 //            List<String> mc_matches = new ArrayList<>();
 //
 //            mc_langs.forEach((key, map) ->{
 //                if (bingLangs.containsKey(key)) {
-//                    System.out.println("key found: " + key);
+//                    NuminaLogger.logDebug("key found: " + key);
 //                    mc_matches.add(key);
 //                }
 //            });
-//            System.out.println("matches found: " + mc_matches.size() +", not found: " + (mc_langs.size() - mc_matches.size()));
-//            System.out.println("matches: " + mc_matches);
+//            NuminaLogger.logDebug("matches found: " + mc_matches.size() +", not found: " + (mc_langs.size() - mc_matches.size()));
+//            NuminaLogger.logDebug("matches: " + mc_matches);
 //
 //
 //            bingLangs.forEach((key, value) -> {
@@ -157,10 +157,10 @@ public class GoogleTranslation implements ITranslator {
 
 //            List<WebElement> elements2 = webDriver.findElements(By.className("Llmcnf"));
 //
-//            System.out.println("elements2 size: " + elements2.size());
+//            NuminaLogger.logDebug("elements2 size: " + elements2.size());
 //
 //
-//            elements2.forEach(webElement -> System.out.println("name: " + webElement.getText()));
+//            elements2.forEach(webElement -> NuminaLogger.logDebug("name: " + webElement.getText()));
 
 
 
@@ -180,7 +180,7 @@ public class GoogleTranslation implements ITranslator {
 
 // Caused by: java.lang.NoSuchMethodError: 'void io.netty.handler.codec.DefaultHeadersImpl.<init>(io.netty.util.HashingStrategy, io.netty.handler.codec.ValueConverter, io.netty.handler.codec.DefaultHeaders$NameValidator, int, io.netty.handler.codec.DefaultHeaders$ValueValidator)'
             // //*[@id="yDmH0d"]/c-wiz/div/div[2]/c-wiz/div[2]/c-wiz/div[1]/div[1]/c-wiz/div[2]/c-wiz/div[1]/div/div[3]/div/div[3]/div[29]/div[2]/text()
-//            System.out.println("num elements: " + elements.size());
+//            NuminaLogger.logDebug("num elements: " + elements.size());
 ////            webDriver.wait(5000);
 //            webDriver.quit();
 

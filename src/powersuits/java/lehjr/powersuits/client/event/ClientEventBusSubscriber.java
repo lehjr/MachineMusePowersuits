@@ -34,7 +34,7 @@ public class ClientEventBusSubscriber {
 
     @SubscribeEvent
     public static void registerKeyBinding(RegisterKeyMappingsEvent event) {
-//        System.out.println("keymappingevent loaded");
+//        NuminaLogger.logDebug("keymappingevent loaded");
         KeyMappingReaderWriter.INSTANCE.readInKeybinds(); // read existing keybindings
 
 

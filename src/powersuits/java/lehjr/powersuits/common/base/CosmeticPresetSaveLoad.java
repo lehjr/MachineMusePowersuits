@@ -75,10 +75,6 @@ public class CosmeticPresetSaveLoad {
     }
 
     public static Map<String, CompoundTag> loadPresetsForItem(Item item, int count) {
-        NuminaLogger.logError("loading cosmetic presets");
-
-
-
         Map<String, CompoundTag> retmap = new HashMap<>();
         if (item == null || count > 4) {
             return HashBiMap.create(retmap);

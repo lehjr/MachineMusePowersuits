@@ -33,7 +33,6 @@ import lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
 import lehjr.numina.common.math.Color;
 import lehjr.powersuits.client.gui.overlay.ClientOverlayHandler;
-import lehjr.powersuits.client.model.helper.MPSModelHelper;
 import lehjr.powersuits.common.constants.MPSConstants;
 import lehjr.powersuits.common.constants.MPSRegistryNames;
 import net.minecraft.client.renderer.LevelRenderer;
@@ -110,7 +109,7 @@ public enum RenderEventHandler {
     @OnlyIn(Dist.CLIENT)
     @SubscribeEvent
     public void preTextureStitch(TextureStitchEvent event) {
-        MPSModelHelper.loadArmorModels(event, null);
+//        MPSModelHelper.loadArmorModels(event, null);
     }
 
     @OnlyIn(Dist.CLIENT)

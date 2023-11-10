@@ -7,6 +7,7 @@ import mezz.jei.api.recipe.transfer.IRecipeTransferInfo;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.crafting.CraftingRecipe;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.Optional;
@@ -28,7 +29,7 @@ public class TransferInfo implements IRecipeTransferInfo<MPSRCMenu, CraftingReci
     }
 
     @Override
-    public List<Slot> getInventorySlots(MPSRCMenu container, CraftingRecipe recipe) {
+    public @NotNull List<Slot> getInventorySlots(@NotNull MPSRCMenu container, @NotNull CraftingRecipe recipe) {
         return container.slots.subList(10, container.slots.size() -1);
     }
 

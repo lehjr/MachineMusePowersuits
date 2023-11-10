@@ -1,5 +1,6 @@
 package numina.client.util.lang;
 
+import lehjr.numina.common.base.NuminaLogger;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.common.data.LanguageProvider;
@@ -26,7 +27,7 @@ public class LanguageProviderHelper extends LanguageProvider {
     }
 
     public void setTranslations(Map<String, String> translations) {
-        System.out.println("setting translations with mapsize: " +translations.size());
+        NuminaLogger.logDebug("setting translations with mapsize: " +translations.size());
 
         this.translations = translations;
     }

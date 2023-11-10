@@ -2,6 +2,7 @@ package lehjr.mpsrecipecreator.client.gui;
 
 import com.google.gson.*;
 import lehjr.mpsrecipecreator.container.MPSRCMenu;
+import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.item.ItemUtils;
 import lehjr.numina.common.tags.NBT2Json;
 import net.minecraft.resources.ResourceLocation;
@@ -100,19 +101,19 @@ public class RecipeGen {
 
             stackJson.addProperty("item", ItemUtils.getRegistryName(stack.getItem()).toString());
             if (stack.hasTag()) {
-                System.out.println("tag: " + stack.getTag());
+                NuminaLogger.logDebug("tag: " + stack.getTag());
 
                 JsonObject tagJson = NBT2Json.CompoundTag2Json(stack.getTag(), new JsonObject());
-                System.out.println("tag json here before: " + tagJson);
+                NuminaLogger.logDebug("tag json here before: " + tagJson);
 
                 if (tagJson.size() > 0) {
 
-                    System.out.println("stack json here before: " + stackJson);
+                    NuminaLogger.logDebug("stack json here before: " + stackJson);
                     stackJson.add("nbt", tagJson);
-                    System.out.println("stack json here after: " + stackJson);
+                    NuminaLogger.logDebug("stack json here after: " + stackJson);
                 }
 
-                System.out.println("stack json here: " + stackJson);
+                NuminaLogger.logDebug("stack json here: " + stackJson);
             }
 
             // set the stack count
@@ -120,7 +121,7 @@ public class RecipeGen {
                 stackJson.addProperty("count", stack.getCount());
             }
 
-            System.out.println("stack json out: " + stackJson);
+            NuminaLogger.logDebug("stack json out: " + stackJson);
         }
 
 

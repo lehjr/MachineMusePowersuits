@@ -70,7 +70,7 @@ public class WebDriverProvider {
                 }
                 if (browser==null) {
                     FirefoxOptions options = new FirefoxOptions();
-//                    options.asMap().forEach((name, value) -> System.out.println("capability: " + name +", value: " + value));
+//                    options.asMap().forEach((name, value) -> NuminaLogger.logDebug("capability: " + name +", value: " + value));
 /*
 capability: acceptInsecureCerts, value: true
 capability: browserName, value: firefox

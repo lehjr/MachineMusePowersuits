@@ -28,6 +28,7 @@ package lehjr.numina.common.tags;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import lehjr.numina.common.base.NuminaLogger;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
@@ -36,7 +37,7 @@ import net.minecraft.nbt.Tag;
 public class NBT2Json {
     public static JsonObject CompoundTag2Json(CompoundTag nbt, JsonObject jsonObjectIn) {
         for (String key : nbt.getAllKeys()) {
-            System.out.println("key: " + key +", type: " + nbt.getTagType(key));
+            NuminaLogger.logDebug("key: " + key +", type: " + nbt.getTagType(key));
 
             // attempt to get KV pairs
             switch(nbt.getTagType(key)) {
