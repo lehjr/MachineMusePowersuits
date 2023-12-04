@@ -156,12 +156,10 @@ slot#: 39, stack: powersuits:powerarmor_head
 
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player playerIn, InteractionHand hand) {
-//        System.out.println("is registered: " + NuminaCapabilities.PLAYER_HAND_STORAGE.isRegistered());
-//
-//        playerIn.getCapability(NuminaCapabilities.PLAYER_HAND_STORAGE).ifPresent(cap -> {
-//            System.out.println("isClientSide: " + playerIn.level.isClientSide + " mainhand: " + cap.getMainHandStorage());
-//            System.out.println("isClientSide: " + playerIn.level.isClientSide + " offHand: " + cap.getOffHandStorage());
-//        });
+        for (int i = 0; i < playerIn.getInventory().getContainerSize(); i++) {
+            ItemStack stack = playerIn.getInventory().getItem(i);
+            System.out.println("slot#: " + i + ", stack: " + ForgeRegistries.ITEMS.getKey(stack.getItem()));
+        }
         return super.use(level, playerIn, hand);
     }
 }

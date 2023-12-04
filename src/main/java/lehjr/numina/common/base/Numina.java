@@ -137,9 +137,6 @@ public class Numina {
 
 //    @SubscribeEvent
     public void registerCapabilities(final RegisterCapabilitiesEvent event) {
-        System.out.println("register capabilities");
-
-
         event.register(IHeatStorage.class);
         event.register(IColorTag.class);
 

@@ -135,18 +135,9 @@ public class AbstractElectricTool extends DiggerItem {
      */
     @Override
     public int getUseDuration(ItemStack stack) {
-        int duration = stack.getCapability(ForgeCapabilities.ITEM_HANDLER)
-                .filter(IModeChangingItem.class::isInstance)
-                .map(IModeChangingItem.class::cast)
-                .map(IModeChangingItem::getUseDuration).orElse(72000);
-
-        System.out.println("duration: " + duration);
-
         return stack.getCapability(ForgeCapabilities.ITEM_HANDLER)
                 .filter(IModeChangingItem.class::isInstance)
                 .map(IModeChangingItem.class::cast)
                 .map(IModeChangingItem::getUseDuration).orElse(72000);
     }
-
-
 }

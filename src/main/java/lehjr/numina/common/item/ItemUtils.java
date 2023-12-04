@@ -156,10 +156,6 @@ public class ItemUtils {
         return slots;
     }
 
-
-
-
-
     public static ItemStack getActiveModuleOrEmpty(@Nonnull ItemStack itemStack) {
         return itemStack.getCapability(ForgeCapabilities.ITEM_HANDLER)
                 .filter(IModeChangingItem.class::isInstance)
@@ -196,8 +192,8 @@ public class ItemUtils {
     public static void setModeAndSwapIfNeeded(Player player, int mode) {
         int selected = player.getInventory().selected;
         ItemStack itemStack = player.getInventory().getSelected();
-        ItemStack host = ItemStack.EMPTY;
-        ItemStack newModule = ItemStack.EMPTY;
+        ItemStack host;
+        ItemStack newModule;
         ItemStack stackToSet = ItemStack.EMPTY;
 
 
@@ -211,42 +207,28 @@ public class ItemUtils {
             if(mciCap.isPresent()) {
                 int oldMode = mciCap.get().getActiveMode();
                 int testMode = mciCap.get().findInstalledModule(itemStack);
-                if (oldMode == testMode) {
-                    mciCap.get().setStackInSlot(oldMode, itemStack);
-                    mciCap.get().setActiveMode(mode);
-                    newModule = mciCap.get().getActiveModule();
-                    Optional<IOtherModItemsAsModules> foreignModuleCap1 = getForeignItemAsModuleCap(newModule);
-                    if (foreignModuleCap1.isPresent()) {
-                        foreignModuleCap1.get().storeHostStack(host.copy());
-                        stackToSet = newModule.copy();
-                    } else {
-                        stackToSet = host;
-                    }
-
-                    System.out.println("stack to set 2: " + stackToSet.serializeNBT());
+                mciCap.get().setStackInSlot(oldMode, itemStack);
+                mciCap.get().setActiveMode(mode);
+                newModule = mciCap.get().getActiveModule();
+                Optional<IOtherModItemsAsModules> foreignModuleCap1 = getForeignItemAsModuleCap(newModule);
+                if (foreignModuleCap1.isPresent()) {
+                    foreignModuleCap1.get().storeHostStack(host.copy());
+                    stackToSet = newModule.copy();
                 } else {
-                    System.out.println("oldMode != testMode");
+                    stackToSet = host;
                 }
             }
         } else if (mciCap.isPresent()) {
-            System.out.println("mciCap stack: " + mciCap.get().getModularItemStack().serializeNBT());
-
             mciCap.get().setActiveMode(mode);
             newModule = mciCap.get().getActiveModule();
             Optional<IOtherModItemsAsModules> foreignModuleCap1 = getForeignItemAsModuleCap(newModule);
             if (foreignModuleCap1.isPresent()) {
                 foreignModuleCap1.get().storeHostStack(itemStack.copy());
                 stackToSet = newModule;
-
-                System.out.println("stack to set 3: " + stackToSet.serializeNBT());
             } else {
                 stackToSet = mciCap.get().getModularItemStack();
-                System.out.println("stack to set 4: " + stackToSet.serializeNBT());
-
             }
         }
-        System.out.println("stack to set 5: " + stackToSet.serializeNBT());
-
         player.getInventory().setItem(selected, stackToSet);
         player.containerMenu.broadcastChanges();
     }
@@ -256,16 +238,6 @@ public class ItemUtils {
                 .filter( m-> m.isAllowed() && m instanceof IOtherModItemsAsModules).map(IOtherModItemsAsModules.class::cast);
     }
 
-//    @NotNull
-//    public static  LazyOptional<IPlayerHandStorage> getPlayerHandStorage(Player player) {
-//        return player.getCapability(NuminaCapabilities.PLAYER_HAND_STORAGE);
-//    }
-//
-//    @NotNull
-//    static LazyOptional<IPlayerHandStorage> getHandStorage(Player player) {
-//        return player.getCapability(NuminaCapabilities.PLAYER_HAND_STORAGE);
-//    }
-//
     public static Optional<IModeChangingItem> getModeChangingModularItemCapability(Player player) {
         ItemStack itemStack = player.getInventory().getSelected();
         Optional<IModeChangingItem> mcItemCap = getModeChangingModularItemCapability(itemStack);
@@ -283,18 +255,5 @@ public class ItemUtils {
         return  modularItem.getCapability(ForgeCapabilities.ITEM_HANDLER)
                 .filter(IModeChangingItem.class::isInstance)
                 .map(IModeChangingItem.class::cast);
-    }
-
-    public static int findInstalledModule(IModularItem modularItemCap, @Nonnull ItemStack module) {
-            ResourceLocation regName = getRegistryName(module);
-            for (int i = 0; i < modularItemCap.getSlots(); i++) {
-                ItemStack testStack = modularItemCap.getStackInSlot(i);
-                if (!testStack.isEmpty()) {
-                    if (ItemUtils.getRegistryName(testStack).equals(regName)) {
-                        return i;
-                    }
-                }
-            }
-            return -1;
     }
 }

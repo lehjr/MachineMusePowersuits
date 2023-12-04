@@ -62,7 +62,7 @@ public class ServerConfig {
         /* General --------------------------------------------------------------------------------------------------- */
         builder.comment("General settings").push("General");
         GENERAL_MOD_ITEMS_AS_TOOL_MODULES = builder.comment("Items from other mods to allow as tools in the Power Fist")
-                .defineList("externalToolItems", Collections.emptyList(), o -> o instanceof String && !((String) o).isEmpty());
+                .defineList("externalToolItems", Arrays.asList("ae2:certus_quartz_wrench", "ae2:entropy_manipulator", "scannable:scanner"), o -> o instanceof String && !((String) o).isEmpty());
 
         GENERAL_MOD_ITEMS_AS_WEAPON_MODULES = builder.comment("Items from other mods to allow as weapons in the Power Fist")
                 .defineList("externalWeaponItems", Collections.emptyList(), o -> o instanceof String && !((String) o).isEmpty());

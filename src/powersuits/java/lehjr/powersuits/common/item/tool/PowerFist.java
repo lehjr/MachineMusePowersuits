@@ -77,42 +77,16 @@ public class PowerFist extends AbstractElectricTool {
     public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level level, Player player, @NotNull InteractionHand hand) {
 
         ItemStack fist = ItemUtils.getItemFromEntityHand(player, hand);
-
-        System.out.println("fist: " + fist);
-
         final InteractionResultHolder<ItemStack> fallback = new InteractionResultHolder<>(InteractionResult.PASS, fist);
 //        if (hand != InteractionHand.MAIN_HAND) {
 //            return fallback;
 //        }
-
-        System.out.println("made it here");
-
         InteractionResultHolder<ItemStack> tmp = fist.getCapability(ForgeCapabilities.ITEM_HANDLER)
                 .filter(IModeChangingItem.class::isInstance)
                 .map(IModeChangingItem.class::cast)
                 .map(handler-> handler.use(level, player, hand, fallback)).orElse(fallback);
-
-        System.out.println("tmp result: " + tmp.getResult() + ", tmp item: " + tmp.getObject());
-        System.out.println("getItemInHand: " + player.getItemInHand(hand));
-
-
         return new InteractionResultHolder<>(tmp.getResult(), fist);
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     /**
      * Called server side when a Block is destroyed using this Item. Return true to trigger the "Use Item" statistic.
@@ -126,8 +100,6 @@ public class PowerFist extends AbstractElectricTool {
      */
     @Override
     public boolean mineBlock(ItemStack powerFist, Level worldIn, BlockState state, BlockPos pos, LivingEntity entityLiving) {
-        System.out.println("mine block");
-
         return powerFist.getCapability(ForgeCapabilities.ITEM_HANDLER)
                 .filter(IModeChangingItem.class::isInstance)
                 .map(IModeChangingItem.class::cast)
@@ -144,8 +116,6 @@ public class PowerFist extends AbstractElectricTool {
         return true;
     }
 
-
-
     @SuppressWarnings("deprecation")
     @Override
     public void onUseTick(Level level, LivingEntity entity, ItemStack itemStack, int ticksRemaining) {
@@ -155,16 +125,10 @@ public class PowerFist extends AbstractElectricTool {
                 .map(handler-> handler.onUseTick(level, entity, ticksRemaining)).orElse(false)) {
             super.onUseTick(level, entity, itemStack, ticksRemaining);
         }
-
-        System.out.println("on use tick: " + itemStack +", remaining ticks: " + ticksRemaining);
-
-
     }
 
     @Override
     public InteractionResult onItemUseFirst(ItemStack itemStack, UseOnContext context) {
-        System.out.println("on item use first");
-
         final InteractionResult fallback = InteractionResult.PASS;
 
         final InteractionHand hand = context.getHand();
@@ -180,8 +144,6 @@ public class PowerFist extends AbstractElectricTool {
 
     @Override
     public float getDestroySpeed(ItemStack pStack, BlockState pState) {
-        System.out.println("get Destroy speed");
-
         return pStack.getCapability(ForgeCapabilities.ITEM_HANDLER)
                 .filter(IModeChangingItem.class::isInstance)
                 .map(IModeChangingItem.class::cast)
@@ -190,8 +152,6 @@ public class PowerFist extends AbstractElectricTool {
 
     @Override
     public InteractionResult interactLivingEntity(ItemStack itemStackIn, Player player, LivingEntity entity, InteractionHand hand) {
-        System.out.println("interact living entity");
-
         return itemStackIn.getCapability(ForgeCapabilities.ITEM_HANDLER)
                 .filter(IModeChangingItem.class::isInstance)
                 .map(IModeChangingItem.class::cast)
@@ -206,8 +166,6 @@ public class PowerFist extends AbstractElectricTool {
 
     @Override
     public ItemStack finishUsingItem(ItemStack stack, Level worldIn, LivingEntity entity) {
-        System.out.println("finish using item");
-
         return stack.getCapability(ForgeCapabilities.ITEM_HANDLER)
                 .filter(IModeChangingItem.class::isInstance)
                 .map(IModeChangingItem.class::cast)
@@ -216,8 +174,6 @@ public class PowerFist extends AbstractElectricTool {
 
     @Override
     public void releaseUsing(ItemStack stack, Level worldIn, LivingEntity entityLiving, int timeLeft) {
-        System.out.println("relase using ");
-
         stack.getCapability(ForgeCapabilities.ITEM_HANDLER)
                 .filter(IModeChangingItem.class::isInstance)
                 .map(IModeChangingItem.class::cast)
@@ -226,8 +182,6 @@ public class PowerFist extends AbstractElectricTool {
 
     @Override
     public InteractionResult useOn(UseOnContext context) {
-        System.out.println("use on");
-
         final InteractionResult fallback = InteractionResult.PASS;
 
         final InteractionHand hand = context.getHand();
@@ -250,9 +204,6 @@ public class PowerFist extends AbstractElectricTool {
      */
     @Override
     public boolean isCorrectToolForDrops(ItemStack itemStack, BlockState state) {
-        System.out.println("is correct for drops");
-
-
         return itemStack.getCapability(ForgeCapabilities.ITEM_HANDLER)
                 .filter(IModeChangingItem.class::isInstance)
                 .map(IModeChangingItem.class::cast)
@@ -265,9 +216,6 @@ public class PowerFist extends AbstractElectricTool {
      */
     @Override
     public boolean hurtEnemy(ItemStack itemStack, LivingEntity target, LivingEntity attacker) {
-        System.out.println("hurt enemy ");
-
-
         if (attacker instanceof Player) {
             itemStack.getCapability(ForgeCapabilities.ITEM_HANDLER)
                     .filter(IModeChangingItem.class::isInstance)
@@ -303,8 +251,6 @@ public class PowerFist extends AbstractElectricTool {
      */
     @Override
     public boolean onBlockStartBreak(ItemStack itemstack, BlockPos pos, Player player) {
-        System.out.println("on block start break");
-
         return itemstack.getCapability(ForgeCapabilities.ITEM_HANDLER)
                 .filter(IModeChangingItem.class::isInstance)
                 .map(IModeChangingItem.class::cast)
@@ -313,28 +259,19 @@ public class PowerFist extends AbstractElectricTool {
 
     @Override
     public boolean shouldCauseBlockBreakReset(ItemStack oldStack, ItemStack newStack) {
-        System.out.println("should cause block break reset");
-
         return false;
     }
 
     @Override
     public boolean canContinueUsing(ItemStack oldStack, ItemStack newStack) {
-        boolean ret =
-                oldStack.getCapability(ForgeCapabilities.ITEM_HANDLER)
-                        .filter(IModeChangingItem.class::isInstance)
-                        .map(IModeChangingItem.class::cast)
-                        .map(iModeChangingItem -> iModeChangingItem.canContinueUsing(newStack)).orElse(false);
-
-        System.out.println("can continue using: (ret) " + ret +", " + oldStack.sameItem(newStack) + ", oldStack: " + oldStack +", newStack: " + newStack);
-
-        return ret;
+        return oldStack.getCapability(ForgeCapabilities.ITEM_HANDLER)
+                .filter(IModeChangingItem.class::isInstance)
+                .map(IModeChangingItem.class::cast)
+                .map(iModeChangingItem -> iModeChangingItem.canContinueUsing(newStack)).orElse(false);
     }
 
     @Override
     public UseAnim getUseAnimation(ItemStack pStack) {
-        System.out.println("get Use animation");
-
         return UseAnim.BOW;
     }
 
