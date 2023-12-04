@@ -37,6 +37,7 @@ import lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
 import lehjr.numina.common.capabilities.module.tickable.PlayerTickModule;
 import lehjr.numina.common.config.NuminaSettings;
 import lehjr.numina.common.energy.ElectricItemUtils;
+import lehjr.numina.common.item.ItemUtils;
 import lehjr.powersuits.client.sound.MPSSoundDictionary;
 import lehjr.powersuits.common.config.MPSSettings;
 import lehjr.powersuits.common.constants.MPSConstants;
@@ -99,7 +100,7 @@ public class JetPackModule extends AbstractPowerModule {
 
                 PlayerMovementInputWrapper.PlayerMovementInput playerInput = PlayerMovementInputWrapper.get(player);
 
-                ItemStack helmet = player.getItemBySlot(EquipmentSlot.HEAD);
+                ItemStack helmet = ItemUtils.getItemFromEntitySlot(player, EquipmentSlot.HEAD);
                 boolean hasFlightControl = helmet.getCapability(ForgeCapabilities.ITEM_HANDLER)
                         .filter(IModularItem.class::isInstance)
                         .map(IModularItem.class::cast)

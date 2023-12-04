@@ -7,19 +7,19 @@ import net.minecraft.data.DataProvider;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
-import net.minecraftforge.common.data.ExistingFileHelper;
 import numina.client.config.DatagenConfig;
 import numina.client.util.ResourceList;
-import numina.client.util.lang.translators.BingTranslator;
 import numina.client.util.lang.translators.ITranslator;
 import numina.client.util.lang.translators.Language;
 import org.apache.commons.io.FilenameUtils;
-import org.openqa.selenium.WebDriver;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.function.Supplier;
 import java.util.regex.Pattern;
 

@@ -28,6 +28,7 @@ package lehjr.powersuits.common.event;
 
 import lehjr.numina.client.sound.Musique;
 import lehjr.numina.common.config.NuminaSettings;
+import lehjr.numina.common.item.ItemUtils;
 import lehjr.numina.common.math.MathUtils;
 import lehjr.powersuits.client.sound.MPSSoundDictionary;
 import lehjr.powersuits.common.item.armor.PowerArmorBoots;
@@ -60,7 +61,7 @@ public class PlayerUpdateHandler {
 
             // Sound update
             if (player.level.isClientSide && NuminaSettings.useSounds()) {
-                if ((player.getItemBySlot(EquipmentSlot.CHEST).getItem() instanceof PowerArmorChestplate)) {
+                if ((ItemUtils.getItemFromEntitySlot(player,EquipmentSlot.CHEST).getItem() instanceof PowerArmorChestplate)) {
                     double velsq2 = MathUtils.sumsq(player.getDeltaMovement().x, player.getDeltaMovement().y, player.getDeltaMovement().z) - 0.5;
                     if (player.hasImpulse && velsq2 > 0) {
                         Musique.playerSound(player, MPSSoundDictionary.SOUND_EVENT_GLIDER.get(), SoundSource.PLAYERS, (float) (velsq2 / 3), 1.0f, true);
@@ -71,15 +72,15 @@ public class PlayerUpdateHandler {
                     Musique.stopPlayerSound(player, MPSSoundDictionary.SOUND_EVENT_GLIDER.get());
                 }
 
-                if (!(player.getItemBySlot(EquipmentSlot.FEET).getItem() instanceof PowerArmorBoots)) {
+                if (!(ItemUtils.getItemFromEntitySlot(player, EquipmentSlot.FEET).getItem() instanceof PowerArmorBoots)) {
                     Musique.stopPlayerSound(player, MPSSoundDictionary.SOUND_EVENT_JETBOOTS.get());
                 }
 
-                if (!(player.getItemBySlot(EquipmentSlot.CHEST).getItem() instanceof PowerArmorChestplate)) {
+                if (!(ItemUtils.getItemFromEntitySlot(player, EquipmentSlot.CHEST).getItem() instanceof PowerArmorChestplate)) {
                     Musique.stopPlayerSound(player, MPSSoundDictionary.SOUND_EVENT_JETPACK.get());
                 }
 
-                if (!(player.getItemBySlot(EquipmentSlot.LEGS).getItem() instanceof PowerArmorLeggings)) {
+                if (!(ItemUtils.getItemFromEntitySlot(player, EquipmentSlot.LEGS).getItem() instanceof PowerArmorLeggings)) {
                     Musique.stopPlayerSound(player, MPSSoundDictionary.SOUND_EVENT_SWIM_ASSIST.get());
                 }
             }

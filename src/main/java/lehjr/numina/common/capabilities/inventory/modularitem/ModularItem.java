@@ -48,6 +48,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.apache.commons.lang3.tuple.Pair;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -84,8 +85,6 @@ public class ModularItem extends ItemStackHandler implements IModularItem, Capab
         this.isTool = isTool;
     }
 
-
-
     @Override
     public void setRangedWrapperMap(Map<ModuleCategory, NuminaRangedWrapper> rangedWrappers) {
         this.rangedWrappers = rangedWrappers;
@@ -93,18 +92,17 @@ public class ModularItem extends ItemStackHandler implements IModularItem, Capab
 
     @Override
     public void toggleModule(ResourceLocation moduleName, boolean online) {
-        for (int i = 0; i < getSlots(); i++) {
-            ItemStack module = getStackInSlot(i);
-            if (!module.isEmpty() && ItemUtils.getRegistryName(module).equals(moduleName)) {
-                final int index = i;
-                module.getCapability(NuminaCapabilities.POWER_MODULE).ifPresent(m -> {
-                    if (m instanceof IToggleableModule) {
-                        ((IToggleableModule) m).toggleModule(online);
-                        // not enough to update the module, the tag for the item in the slot has to be updated too
-                        onContentsChanged(index);
-                    }
-                });
-            }
+        int slot = findInstalledModule(moduleName);
+        if (slot > -1) {
+            ItemStack module = getStackInSlot(slot);
+            module.getCapability(NuminaCapabilities.POWER_MODULE).ifPresent(m -> {
+                if (m instanceof IToggleableModule) {
+                    ((IToggleableModule) m).toggleModule(online);
+                    // not enough to update the module, the tag for the item in the slot has to be updated too
+                    onContentsChanged(slot);
+                }
+            });
+
         }
     }
 
@@ -157,15 +155,7 @@ public class ModularItem extends ItemStackHandler implements IModularItem, Capab
 
     @Override
     public boolean isModuleInstalled(ResourceLocation regName) {
-        for (int i = 0; i < getSlots(); i++) {
-            ItemStack module = getStackInSlot(i);
-            if (!module.isEmpty()) {
-                if (ItemUtils.getRegistryName(module).equals(regName)) {
-                    return true;
-                }
-            }
-        }
-        return false;
+        return findInstalledModule(regName) > -1;
     }
 
     @Override
@@ -213,19 +203,12 @@ public class ModularItem extends ItemStackHandler implements IModularItem, Capab
         }).orElse(false));
     }
 
-    @Nonnull
-    @Override
-    public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
-        return super.insertItem(slot, stack, simulate);
-    }
-
     @Override
     public boolean isModuleOnline(ResourceLocation moduleName) {
-        for (int i = 0; i < getSlots(); i++) {
-            ItemStack module = getStackInSlot(i);
-            if (!module.isEmpty() && ItemUtils.getRegistryName(module).equals(moduleName)) {
-                return isModuleOnline(module);
-            }
+        int slot = findInstalledModule(moduleName);
+        if (slot > -1) {
+            return isModuleOnline(getStackInSlot(slot));
+
         }
         return false;
     }
@@ -241,12 +224,11 @@ public class ModularItem extends ItemStackHandler implements IModularItem, Capab
     @Nonnull
     @Override
     public ItemStack getOnlineModuleOrEmpty(ResourceLocation moduleName) {
-        for (int i = 0; i < getSlots(); i++) {
-            ItemStack module = getStackInSlot(i);
-            if (!module.isEmpty() && ItemUtils.getRegistryName(module).equals(moduleName)) {
-                if (module.getCapability(NuminaCapabilities.POWER_MODULE).map(m -> m.isAllowed() && m.isModuleOnline()).orElse(false)) {
-                    return module;
-                }
+        int slot = findInstalledModule(moduleName);
+        if (slot > -1) {
+            ItemStack module = getStackInSlot(slot);
+            if (module.getCapability(NuminaCapabilities.POWER_MODULE).map(m -> m.isAllowed() && m.isModuleOnline()).orElse(false)) {
+                return module;
             }
         }
         return ItemStack.EMPTY;

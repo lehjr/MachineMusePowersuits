@@ -1,6 +1,7 @@
 package lehjr.numina.common.network.packets.clientbound;
 
 import lehjr.numina.common.capabilities.NuminaCapabilities;
+import lehjr.numina.common.item.ItemUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
@@ -34,7 +35,7 @@ public record CosmeticInfoPacketClientBound(EquipmentSlot slotType, String tagNa
 
                 Player player = Minecraft.getInstance().player;
                 if (player != null) {
-                    player.getItemBySlot(slotType).getCapability(NuminaCapabilities.RENDER).ifPresent(render -> {
+                    ItemUtils.getItemFromEntitySlot(player, slotType).getCapability(NuminaCapabilities.RENDER).ifPresent(render -> {
                         render.setRenderTag(tagData, tagName);
                     });
                 }

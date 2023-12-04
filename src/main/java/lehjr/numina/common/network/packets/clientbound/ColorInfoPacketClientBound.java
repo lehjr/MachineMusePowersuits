@@ -1,6 +1,7 @@
 package lehjr.numina.common.network.packets.clientbound;
 
 import lehjr.numina.common.capabilities.NuminaCapabilities;
+import lehjr.numina.common.item.ItemUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -26,7 +27,8 @@ public record ColorInfoPacketClientBound(EquipmentSlot slotType, int[] tagData) 
                 final Player player = Minecraft.getInstance().player;
                 EquipmentSlot slotType = message.slotType;
                 int[] tagData = message.tagData;
-                player.getItemBySlot(slotType).getCapability(NuminaCapabilities.RENDER)
+                ItemUtils.getItemFromEntitySlot(player, slotType)
+                        .getCapability(NuminaCapabilities.RENDER)
                         .ifPresent(render -> render.setColorArray(tagData));
             });
             ctx.get().setPacketHandled(true);

@@ -1,6 +1,7 @@
 package lehjr.numina.common.network.packets.clientbound;
 
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
+import lehjr.numina.common.item.ItemUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
@@ -36,7 +37,7 @@ public record TweakRequestDoublePacketClientBound(EquipmentSlot type, ResourceLo
                 double tweakValue = message.tweakValue;
                 if (moduleRegName != null && tweakName != null) {
                     EquipmentSlot type = message.type;
-                    player.getItemBySlot(type).getCapability(ForgeCapabilities.ITEM_HANDLER)
+                    ItemUtils.getItemFromEntitySlot(player, type).getCapability(ForgeCapabilities.ITEM_HANDLER)
                             .filter(IModularItem.class::isInstance)
                             .map(IModularItem.class::cast)
                             .ifPresent(iItemHandler -> {

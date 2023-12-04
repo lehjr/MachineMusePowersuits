@@ -5,16 +5,12 @@ import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.constants.NuminaConstants;
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataGenerator;
-import net.minecraftforge.common.data.ExistingFileHelper;
 import numina.client.config.DatagenConfig;
 import numina.client.util.lang.MulitiLanguageProvider;
 import numina.client.util.lang.translators.ITranslator;
 import numina.client.util.lang.translators.Language;
-import org.openqa.selenium.WebDriver;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 public class NuminaMultiLanguageProvider extends MulitiLanguageProvider {
     Language mainLanguage;

@@ -7,7 +7,7 @@
   "client": [
   ],
   "mixins": [
-    "MixinPlayer"
+    "common.item.MixinUseOnContext"
   ],
   "injectors": {
     "defaultRequire": 1

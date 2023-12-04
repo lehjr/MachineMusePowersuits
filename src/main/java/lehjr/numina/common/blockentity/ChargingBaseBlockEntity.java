@@ -58,26 +58,23 @@ public class ChargingBaseBlockEntity extends BlockEntity {
         super(NuminaObjects.CHARGING_BASE_BLOCK_ENTITY.get(), pWorldPosition, pBlockState);
     }
 
-    /**
+    /*
      * Fetch the entities within a given position
-     * @return
      */
     @Nullable
     public List<LivingEntity> getEntities() {
-        List<LivingEntity> list = level.getEntitiesOfClass(LivingEntity.class, new AABB(this.worldPosition), entity -> entity instanceof LivingEntity);
-        return list;
+        assert level != null;
+        return level.getEntitiesOfClass(LivingEntity.class, new AABB(this.worldPosition), entity -> entity instanceof LivingEntity);
     }
 
-    // testing some stuff from github.com/McJty/YouTubeModding14
-    private ItemStackHandler itemHandler = createHandler();
-    private BlockEnergyStorage energyStorage = createEnergy();
+    private final ItemStackHandler itemHandler = createHandler();
+    private final BlockEnergyStorage energyStorage = createEnergy();
 
-    // Never create lazy optionals in getCapability. Always place them as fields in the tile entity:
-    private LazyOptional<IItemHandler> handler = LazyOptional.of(() -> itemHandler);
-    private LazyOptional<IEnergyStorage> tileEnergy = LazyOptional.of(() -> energyStorage);
+    private final LazyOptional<IItemHandler> handler = LazyOptional.of(() -> itemHandler);
+    private final LazyOptional<IEnergyStorage> tileEnergy = LazyOptional.of(() -> energyStorage);
 
-    private BlockEnergyWrapper energyWrapperStorage = createWrapper();
-    private LazyOptional<IEnergyStorage> energyWrapper = LazyOptional.of(() -> energyWrapperStorage);
+    private final BlockEnergyWrapper energyWrapperStorage = createWrapper();
+    private final LazyOptional<IEnergyStorage> energyWrapper = LazyOptional.of(() -> energyWrapperStorage);
 
     @Override
     public void setRemoved() {

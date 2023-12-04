@@ -2,7 +2,6 @@ package numina.client.util.lang;
 
 import lehjr.numina.common.base.NuminaLogger;
 import net.minecraft.data.DataGenerator;
-import net.minecraft.world.item.Item;
 import net.minecraftforge.common.data.LanguageProvider;
 import numina.client.config.DatagenConfig;
 import numina.client.util.lang.translators.Language;

@@ -1,6 +1,7 @@
 package lehjr.powersuits.common.network.packets;
 
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
+import lehjr.numina.common.item.ItemUtils;
 import lehjr.numina.common.network.NuminaPackets;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
@@ -53,7 +54,7 @@ public class CreativeInstallPacket {
 
             module.getCapability(ForgeCapabilities.ENERGY).ifPresent(iEnergyStorage -> iEnergyStorage.receiveEnergy(iEnergyStorage.getMaxEnergyStored(), false));
 
-            player.getItemBySlot(slotType).getCapability(ForgeCapabilities.ITEM_HANDLER)
+            ItemUtils.getItemFromEntitySlot(player, slotType).getCapability(ForgeCapabilities.ITEM_HANDLER)
                     .filter(IModularItem.class::isInstance)
                     .map(IModularItem.class::cast)
                     .ifPresent(iModularItem -> {

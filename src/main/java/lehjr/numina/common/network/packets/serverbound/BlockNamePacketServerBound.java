@@ -2,6 +2,7 @@ package lehjr.numina.common.network.packets.serverbound;
 
 import lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
 import lehjr.numina.common.constants.TagConstants;
+import lehjr.numina.common.item.ItemUtils;
 import lehjr.numina.common.network.NuminaPackets;
 import lehjr.numina.common.network.packets.clientbound.BlockNamePacketClientBound;
 import lehjr.numina.common.tags.TagUtils;
@@ -36,7 +37,8 @@ public record BlockNamePacketServerBound(ResourceLocation regName) {
                 ResourceLocation regName = message.regName;
 
                 if (player != null && regName != null) {
-                    player.getItemBySlot(EquipmentSlot.MAINHAND).getCapability(ForgeCapabilities.ITEM_HANDLER).filter(IModeChangingItem.class::isInstance)
+                    ItemUtils.getItemFromEntitySlot(player, EquipmentSlot.MAINHAND)
+                            .getCapability(ForgeCapabilities.ITEM_HANDLER).filter(IModeChangingItem.class::isInstance)
                             .map(IModeChangingItem.class::cast)
                             .ifPresent(handler-> {
                                 TagUtils.setModuleResourceLocation(handler.getActiveModule(), TagConstants.BLOCK, regName);

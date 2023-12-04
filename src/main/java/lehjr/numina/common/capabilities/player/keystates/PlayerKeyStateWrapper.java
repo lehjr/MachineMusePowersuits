@@ -1,4 +1,4 @@
-package lehjr.numina.common.capabilities.player;
+package lehjr.numina.common.capabilities.player.keystates;
 
 import lehjr.numina.common.capabilities.NuminaCapabilities;
 import net.minecraft.core.Direction;
@@ -14,8 +14,8 @@ import javax.annotation.Nullable;
 public class PlayerKeyStateWrapper implements ICapabilitySerializable<ByteTag> {
     Player player;
 
-    private PlayerKeyStateStorage keyStateStorage;
-    private LazyOptional<IPlayerKeyStates> keyStateCap;
+    private final PlayerKeyStateStorage keyStateStorage;
+    private final LazyOptional<IPlayerKeyStates> keyStateCap;
     public PlayerKeyStateWrapper(Player player) {
         this.player = player;
         keyStateStorage = new PlayerKeyStateStorage();

@@ -26,11 +26,15 @@
 
 package lehjr.numina.common.item;
 
+import lehjr.numina.common.capabilities.NuminaCapabilities;
 import lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
+import lehjr.numina.common.capabilities.module.externalitems.IOtherModItemsAsModules;
 import net.minecraft.core.NonNullList;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -41,6 +45,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class ItemUtils {
     /**
@@ -59,14 +64,14 @@ public class ItemUtils {
                     .filter(IModularItem.class::isInstance)
                     .map(IModularItem.class::cast)
                     .ifPresent(handler-> {
-                switch(slot.getType()) {
-                    case HAND:
-                        if (handler instanceof IModeChangingItem)
-                            modulars.add(itemStack);
-                    case ARMOR:
-                            modulars.add(itemStack);
-                }
-            });
+                        switch(slot.getType()) {
+                            case HAND:
+                                if (handler instanceof IModeChangingItem)
+                                    modulars.add(itemStack);
+                            case ARMOR:
+                                modulars.add(itemStack);
+                        }
+                    });
 
         }
         return modulars;
@@ -166,7 +171,130 @@ public class ItemUtils {
         return getRegistryName(itemStack.getItem());
     }
 
+    @Nonnull
+    public static ItemStack getItemFromEntitySlot(LivingEntity entity, EquipmentSlot slot) {
+        return entity.getItemBySlot(slot);
+    }
+
+    @Nonnull
+    public static ItemStack getItemFromEntityHand(LivingEntity entity, InteractionHand hand) {
+        if (hand == InteractionHand.MAIN_HAND) {
+            return getItemFromEntitySlot(entity, EquipmentSlot.MAINHAND);
+        }
+        return getItemFromEntitySlot(entity, EquipmentSlot.OFFHAND);
+    }
+
     public static ResourceLocation getRegistryName(Item item) {
         return ForgeRegistries.ITEMS.getKey(item);
+    }
+
+
+    /**
+     * @param player player holding the mode changing modular item
+     * @param mode new mode to set
+     */
+    public static void setModeAndSwapIfNeeded(Player player, int mode) {
+        int selected = player.getInventory().selected;
+        ItemStack itemStack = player.getInventory().getSelected();
+        ItemStack host = ItemStack.EMPTY;
+        ItemStack newModule = ItemStack.EMPTY;
+        ItemStack stackToSet = ItemStack.EMPTY;
+
+
+        Optional<IOtherModItemsAsModules> foreignModuleCap = getForeignItemAsModuleCap(itemStack);
+
+        Optional<IModeChangingItem> mciCap = getModeChangingModularItemCapability(itemStack);
+
+        if (foreignModuleCap.isPresent()) {
+            host = foreignModuleCap.get().retrieveHostStack();
+            mciCap = getModeChangingModularItemCapability(host);
+            if(mciCap.isPresent()) {
+                int oldMode = mciCap.get().getActiveMode();
+                int testMode = mciCap.get().findInstalledModule(itemStack);
+                if (oldMode == testMode) {
+                    mciCap.get().setStackInSlot(oldMode, itemStack);
+                    mciCap.get().setActiveMode(mode);
+                    newModule = mciCap.get().getActiveModule();
+                    Optional<IOtherModItemsAsModules> foreignModuleCap1 = getForeignItemAsModuleCap(newModule);
+                    if (foreignModuleCap1.isPresent()) {
+                        foreignModuleCap1.get().storeHostStack(host.copy());
+                        stackToSet = newModule.copy();
+                    } else {
+                        stackToSet = host;
+                    }
+
+                    System.out.println("stack to set 2: " + stackToSet.serializeNBT());
+                } else {
+                    System.out.println("oldMode != testMode");
+                }
+            }
+        } else if (mciCap.isPresent()) {
+            System.out.println("mciCap stack: " + mciCap.get().getModularItemStack().serializeNBT());
+
+            mciCap.get().setActiveMode(mode);
+            newModule = mciCap.get().getActiveModule();
+            Optional<IOtherModItemsAsModules> foreignModuleCap1 = getForeignItemAsModuleCap(newModule);
+            if (foreignModuleCap1.isPresent()) {
+                foreignModuleCap1.get().storeHostStack(itemStack.copy());
+                stackToSet = newModule;
+
+                System.out.println("stack to set 3: " + stackToSet.serializeNBT());
+            } else {
+                stackToSet = mciCap.get().getModularItemStack();
+                System.out.println("stack to set 4: " + stackToSet.serializeNBT());
+
+            }
+        }
+        System.out.println("stack to set 5: " + stackToSet.serializeNBT());
+
+        player.getInventory().setItem(selected, stackToSet);
+        player.containerMenu.broadcastChanges();
+    }
+
+    public static Optional<IOtherModItemsAsModules> getForeignItemAsModuleCap(@Nonnull ItemStack module) {
+        return module.getCapability(NuminaCapabilities.POWER_MODULE)
+                .filter( m-> m.isAllowed() && m instanceof IOtherModItemsAsModules).map(IOtherModItemsAsModules.class::cast);
+    }
+
+//    @NotNull
+//    public static  LazyOptional<IPlayerHandStorage> getPlayerHandStorage(Player player) {
+//        return player.getCapability(NuminaCapabilities.PLAYER_HAND_STORAGE);
+//    }
+//
+//    @NotNull
+//    static LazyOptional<IPlayerHandStorage> getHandStorage(Player player) {
+//        return player.getCapability(NuminaCapabilities.PLAYER_HAND_STORAGE);
+//    }
+//
+    public static Optional<IModeChangingItem> getModeChangingModularItemCapability(Player player) {
+        ItemStack itemStack = player.getInventory().getSelected();
+        Optional<IModeChangingItem> mcItemCap = getModeChangingModularItemCapability(itemStack);
+        if (mcItemCap.isPresent()) {
+            return mcItemCap;
+        }
+        Optional<IOtherModItemsAsModules> foreignModuleCap = getForeignItemAsModuleCap(itemStack);
+        if(foreignModuleCap.isPresent()) {
+            return foreignModuleCap.get().getStoredModeChangingModuleCapInStorage();
+        }
+        return Optional.empty();
+    }
+
+    public static Optional<IModeChangingItem> getModeChangingModularItemCapability(@Nonnull ItemStack modularItem) {
+        return  modularItem.getCapability(ForgeCapabilities.ITEM_HANDLER)
+                .filter(IModeChangingItem.class::isInstance)
+                .map(IModeChangingItem.class::cast);
+    }
+
+    public static int findInstalledModule(IModularItem modularItemCap, @Nonnull ItemStack module) {
+            ResourceLocation regName = getRegistryName(module);
+            for (int i = 0; i < modularItemCap.getSlots(); i++) {
+                ItemStack testStack = modularItemCap.getStackInSlot(i);
+                if (!testStack.isEmpty()) {
+                    if (ItemUtils.getRegistryName(testStack).equals(regName)) {
+                        return i;
+                    }
+                }
+            }
+            return -1;
     }
 }

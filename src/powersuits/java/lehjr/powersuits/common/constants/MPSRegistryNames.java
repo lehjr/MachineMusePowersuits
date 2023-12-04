@@ -75,7 +75,7 @@ public class MPSRegistryNames {
 
     // todo
     // Debug --------------------------------------------------------------------------------------
-    public static final ResourceLocation DEBUG = getRegName("debug_module");
+    public static final ResourceLocation DEBUG_MODULE = getRegName("debug_module");
 
     // Environmental ------------------------------------------------------------------------------
     public static final ResourceLocation COOLING_SYSTEM_MODULE = getRegName("cooling_system");
@@ -85,12 +85,9 @@ public class MPSRegistryNames {
     public static final ResourceLocation WATER_ELECTROLYZER_MODULE = getRegName("water_electrolyzer");
 
     // Mining Enhancements ------------------------------------------------------------------------
-//    public static final ResourceLocation AOE_PICK_UPGRADE_MODULE = getRegName("aoe_pick_upgrade"); // no icon
     public static final ResourceLocation SILK_TOUCH_MODULE = getRegName("silk_touch");
     public static final ResourceLocation FORTUNE_MODULE = getRegName("fortune");
     public static final ResourceLocation VEIN_MINER_MODULE = getRegName("vein_miner");
-
-    // WIP
     public static final ResourceLocation TUNNEL_BORE_MODULE = getRegName("tunnel_bore"); // no icon
     public static final ResourceLocation AOE_PICK_UPGRADE_MODULE2 = getRegName("selective_miner"); // no icon
 

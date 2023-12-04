@@ -1,5 +1,7 @@
 package lehjr.numina.common.capabilities.module.powermodule;
 
+import lehjr.numina.common.base.NuminaLogger;
+
 import java.util.Optional;
 import java.util.concurrent.Callable;
 
@@ -8,10 +10,8 @@ public interface IConfigGetter {
         try {
             return Optional.ofNullable(moduleConfigGetter.call());
         } catch (Exception e) {
-            // not initialized yet
-            // TODO: debug message?
-            e.printStackTrace();
+            NuminaLogger.logException("Loading config too early? ", e);
         }
-        return null;
+        return Optional.empty();
     }
 }

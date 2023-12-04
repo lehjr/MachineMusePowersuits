@@ -24,7 +24,7 @@
  *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package lehjr.numina.common.capabilities.player;
+package lehjr.numina.common.capabilities.player.keystates;
 
 import lehjr.numina.common.capabilities.CapabilityUpdate;
 import lehjr.numina.common.math.MathUtils;

@@ -40,6 +40,7 @@ import lehjr.numina.common.capabilities.render.modelspec.ObjPartSpec;
 import lehjr.numina.common.capabilities.render.modelspec.PartSpecBase;
 import lehjr.numina.common.constants.NuminaConstants;
 import lehjr.numina.common.constants.TagConstants;
+import lehjr.numina.common.item.ItemUtils;
 import lehjr.numina.common.math.Color;
 import lehjr.numina.common.tags.NBTTagAccessor;
 import net.minecraft.client.model.HumanoidModel;
@@ -115,7 +116,7 @@ public class NuminaArmorLayer<T extends LivingEntity, M extends HumanoidModel<T>
 
     @Override
     public void renderArmorPiece(PoseStack poseStack, MultiBufferSource bufferIn, T entityIn, EquipmentSlot slotIn, int packedLightIn, A model) {
-        ItemStack itemstack = entityIn.getItemBySlot( slotIn);
+        ItemStack itemstack = ItemUtils.getItemFromEntitySlot(entityIn, slotIn);
         Optional<IModelSpec> renderCapabity = getRenderCapability(itemstack);
 
         if (itemstack.getItem() instanceof ArmorItem armoritem && itemstack.getCapability(NuminaCapabilities.RENDER).isPresent()) {

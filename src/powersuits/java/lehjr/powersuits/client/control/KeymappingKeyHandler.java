@@ -43,21 +43,19 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.InputEvent;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.lwjgl.glfw.GLFW;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @OnlyIn(Dist.CLIENT)
@@ -152,42 +150,37 @@ public class KeymappingKeyHandler {
             return;
         }
 
-        getMPSKeyMappings().stream().filter(kb->kb.isDown()).forEach(kb->{
-            kb.toggleModules();
-        });
+        getMPSKeyMappings().stream().filter(KeyMapping::isDown).forEach(MPSKeyMapping::toggleModules);
 
         KeyMapping[] hotbarKeys = minecraft.options.keyHotbarSlots;
         updatePlayerValues(player);
+        Inventory inventory = player.getInventory();
+
+
+
 
         // Mode changinging GUI
-        if (hotbarKeys[player.getInventory().selected].isDown() && minecraft.isWindowActive()) {
-            player.getInventory().getSelected().getCapability(ForgeCapabilities.ITEM_HANDLER)
-                    .filter(IModeChangingItem.class::isInstance)
-                    .map(IModeChangingItem.class::cast)
-                    .ifPresent(iModeChanging->{
-                        if(player.level.isClientSide) {
-                            if (!(Minecraft.getInstance().screen instanceof GuiModeSelector)) {
-                                Minecraft.getInstance().tell(() -> Minecraft.getInstance().setScreen(new GuiModeSelector(player, Component.literal("modeChanging"))));
-                            }
-                        }
-                    });
+        if (hotbarKeys[inventory.selected].isDown() && minecraft.isWindowActive()) {
+            getMCItemCap(player).ifPresent(iModeChanging->{
+                if(player.level.isClientSide) {
+                    if (!(Minecraft.getInstance().screen instanceof GuiModeSelector)) {
+                        Minecraft.getInstance().tell(() -> Minecraft.getInstance().setScreen(new GuiModeSelector(player, Component.literal("modeChanging"))));
+                    }
+                }
+            });
         }
 
         /* cycleToolBackward/cycleToolForward */
         if (cycleToolBackward.isDown()) {
+            assert minecraft.gameMode != null;
             minecraft.gameMode.tick();
-            player.getInventory().getItem(player.getInventory().selected).getCapability(ForgeCapabilities.ITEM_HANDLER)
-                    .filter(IModeChangingItem.class::isInstance)
-                    .map(IModeChangingItem.class::cast)
-                    .ifPresent(handler-> handler.cycleMode(player, 1));
+            getMCItemCap(player).map(IModeChangingItem.class::cast).ifPresent(handler-> handler.cycleMode(player, 1));
         }
 
         if (cycleToolForward.isDown()) {
+            assert minecraft.gameMode != null;
             minecraft.gameMode.tick();
-            player.getInventory().getItem(player.getInventory().selected).getCapability(ForgeCapabilities.ITEM_HANDLER)
-                    .filter(IModeChangingItem.class::isInstance)
-                    .map(IModeChangingItem.class::cast)
-                    .ifPresent(handler-> handler.cycleMode(player, -1));
+            getMCItemCap(player).ifPresent(handler-> handler.cycleMode(player, -1));
         }
 
         /**  TODO: server config option to disable these and enforce tinker table requirement */
@@ -253,5 +246,14 @@ public class KeymappingKeyHandler {
         if (overwrite || !keyMappings.containsKey(keybindingName) ) {
             keyMappings.put(keybindingName, new MPSKeyMapping(registryName, keybindingName, keyIn, category, showOnHud));
         }
+    }
+
+    static Optional<IModeChangingItem> getMCItemCap(Player player) {
+        try {
+             return ItemUtils.getModeChangingModularItemCapability(player);
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+        return Optional.empty();
     }
 }

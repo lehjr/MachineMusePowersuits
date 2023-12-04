@@ -368,11 +368,18 @@ dependencies {
 
     implementation fg.deobf("curse.maven:configured-457570:4462837")
 
-    runtimeOnly fg.deobf("curse.maven:architectury-forge-419699:4555749") // architectury-api/files/4555756
+    runtimeOnly fg.deobf("curse.maven:architectury-api-419699:${architectury_version}")// architectury-api/files/4555756
+
+    runtimeOnly fg.deobf("curse.maven:scannable-266784:${scannable_version}")
 
     implementation fg.deobf("curse.maven:applied-energistics-2-223794:${ae2_version}") {
         transitive = false
     }
+
+
+
+
+
 
 
     // This is only used for automatic translation for datagen
@@ -398,7 +405,6 @@ dependencies {
         exclude group: 'io.netty', module: 'netty-common'
     }
 
-
     minecraftLibrary("io.github.bonigarcia:webdrivermanager:5.5.3") {
         exclude group: 'org.apache.commons', module: 'commons-compress'  //:1.21
 //        exclude group: 'net.java.dev.jna', module: 'jna'
@@ -406,13 +412,6 @@ dependencies {
         exclude group: 'com.google.guava', module: 'guava' // defaultVersion: 31.0.1, newVersion: 32.1.2
 //        exclude group: 'com.google.code.gson', module: 'gson'
     }
-
-
-
-
-
-
-
 }
 
 if (project.hasProperty('UPDATE_MAPPINGS')) {

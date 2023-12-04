@@ -68,7 +68,7 @@ public class PowerFistCap implements ICapabilityProvider {
         this.itemStack = itemStackIn;
         this.targetSlot = EquipmentSlot.MAINHAND;
 
-        this.modularItem = new ModeChangingModularItem(itemStack, 40)  {{
+        this.modularItem = new ModeChangingModularItem(itemStack, 60)  {{
             Map<ModuleCategory, NuminaRangedWrapper> rangedWrapperMap = new HashMap<>();
             rangedWrapperMap.put(ModuleCategory.ENERGY_STORAGE, new NuminaRangedWrapper(this, 0, 1));
             rangedWrapperMap.put(ModuleCategory.NONE, new NuminaRangedWrapper(this, 1, this.getSlots() ));

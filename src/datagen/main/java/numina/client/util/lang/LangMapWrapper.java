@@ -4,7 +4,6 @@ import com.google.gson.*;
 import lehjr.numina.common.base.NuminaLogger;
 import numina.client.util.JSonLoader;
 import numina.client.util.lang.translators.Language;
-import org.apache.commons.io.FilenameUtils;
 
 import java.io.File;
 import java.io.FileWriter;

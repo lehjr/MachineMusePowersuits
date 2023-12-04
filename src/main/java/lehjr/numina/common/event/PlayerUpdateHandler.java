@@ -30,6 +30,7 @@ import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
 import lehjr.numina.common.heat.HeatUtils;
+import lehjr.numina.common.item.ItemUtils;
 import lehjr.numina.common.player.PlayerUtils;
 import net.minecraft.core.NonNullList;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -43,9 +44,6 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 public class PlayerUpdateHandler {
 
-
-
-
     @SuppressWarnings("unchecked")
     @SubscribeEvent(priority = EventPriority.NORMAL)
     public void onPlayerUpdate(TickEvent.PlayerTickEvent event) {
@@ -54,17 +52,17 @@ public class PlayerUpdateHandler {
 //            LivingEvent event) {
 //        if (event.getEntity() instanceof Player) {
 //            Player player = (Player) event.getEntity();
-            if(true) {
-                Player player = event.player;
+        if(true) {
+            Player player = event.player;
             NonNullList<ItemStack> modularItems = NonNullList.create();
             for (EquipmentSlot slot : EquipmentSlot.values()) {
-                if(player.getItemBySlot(slot).isEmpty()) {
+                if(ItemUtils.getItemFromEntitySlot(player, slot).isEmpty()) {
                     continue;
                 }
 
                 switch (slot.getType()) {
                     case HAND:
-                        player.getItemBySlot(slot).getCapability(ForgeCapabilities.ITEM_HANDLER)
+                        ItemUtils.getItemFromEntitySlot(player, slot).getCapability(ForgeCapabilities.ITEM_HANDLER)
                                 .filter(IModeChangingItem.class::isInstance)
                                 .map(IModeChangingItem.class::cast)
                                 .ifPresent(i-> {
@@ -74,17 +72,16 @@ public class PlayerUpdateHandler {
                         break;
 
                     case ARMOR:
-
                         try {
-                            player.getItemBySlot(slot).getCapability(ForgeCapabilities.ITEM_HANDLER)
+                            ItemUtils.getItemFromEntitySlot(player, slot).getCapability(ForgeCapabilities.ITEM_HANDLER)
                                     .filter(IModularItem.class::isInstance)
                                     .map(IModularItem.class::cast)
                                     .ifPresent(i-> {
-                                    i.tick(player);
-                                    modularItems.add(i.getModularItemStack());
+                                        i.tick(player);
+                                        modularItems.add(i.getModularItemStack());
                                     });
                         } catch (Exception exception) {
-                            NuminaLogger.logException(player.getItemBySlot(slot).toString(), exception);
+                            NuminaLogger.logException(ItemUtils.getItemFromEntitySlot(player, slot).toString(), exception);
                         }
                         break;
                 }

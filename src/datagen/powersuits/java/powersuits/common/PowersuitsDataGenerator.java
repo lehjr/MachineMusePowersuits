@@ -1,6 +1,5 @@
 package powersuits.common;
 
-import lehjr.numina.common.constants.NuminaConstants;
 import lehjr.powersuits.common.constants.MPSConstants;
 import net.minecraft.data.DataGenerator;
 import net.minecraftforge.common.data.ExistingFileHelper;

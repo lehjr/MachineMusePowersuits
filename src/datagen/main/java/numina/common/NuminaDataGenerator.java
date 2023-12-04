@@ -2,7 +2,6 @@ package numina.common;
 
 import lehjr.numina.common.constants.NuminaConstants;
 import net.minecraft.data.DataGenerator;
-import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -12,14 +11,6 @@ import numina.client.util.lang.translators.BingTranslator;
 import numina.client.util.lang.translators.ITranslator;
 import numina.common.loot.NuminaBlockTagProvider;
 import numina.common.loot.NuminaLootTableProvider;
-import org.openqa.selenium.WebDriver;
-
-import java.io.File;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Locale;
 
 @Mod.EventBusSubscriber(modid = NuminaConstants.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class NuminaDataGenerator {

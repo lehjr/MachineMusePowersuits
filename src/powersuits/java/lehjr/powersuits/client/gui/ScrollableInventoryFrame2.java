@@ -6,6 +6,7 @@ import lehjr.numina.client.gui.frame.InventoryFrame;
 import lehjr.numina.client.gui.frame.ModularItemSelectionFrameContainered;
 import lehjr.numina.client.gui.geometry.Rect;
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
+import lehjr.numina.common.item.ItemUtils;
 import lehjr.powersuits.common.network.MPSPackets;
 import lehjr.powersuits.common.network.packets.ContainerGuiOpenPacket;
 import net.minecraft.client.Minecraft;
@@ -30,7 +31,8 @@ public class ScrollableInventoryFrame2 <C extends AbstractContainerMenu> extends
                 new ArrayList<Integer>() {{
                     modularItemSelectionFrame.getSelectedTab().ifPresent(tab->{
                         EquipmentSlot type = tab.getSlotType();
-                        Minecraft.getInstance().player.getItemBySlot(type).getCapability(ForgeCapabilities.ITEM_HANDLER)
+                        ItemUtils.getItemFromEntitySlot(Minecraft.getInstance().player, type)
+                        .getCapability(ForgeCapabilities.ITEM_HANDLER)
                                 .filter(IModularItem.class::isInstance)
                                 .map(IModularItem.class::cast)
                                 .ifPresent(iItemHandler -> {

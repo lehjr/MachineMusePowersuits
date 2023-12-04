@@ -46,7 +46,7 @@ public class ElectricItemUtils {
         double avail = 0;
 
         for (EquipmentSlot slot : EquipmentSlot.values()) {
-            avail += getItemEnergy(entity.getItemBySlot(slot));
+            avail += getItemEnergy(ItemUtils.getItemFromEntitySlot(entity, slot));
         }
         return avail;
     }
@@ -59,7 +59,7 @@ public class ElectricItemUtils {
     public static double getMaxPlayerEnergy(LivingEntity entity) {
         double avail = 0;
         for (EquipmentSlot slot : EquipmentSlot.values()) {
-            avail += getMaxItemEnergy(entity.getItemBySlot(slot));
+            avail += getMaxItemEnergy(ItemUtils.getItemFromEntitySlot(entity, slot));
         }
         return avail;
     }
@@ -87,7 +87,7 @@ public class ElectricItemUtils {
                     break;
                 }
 
-                ItemStack stack = entity.getItemBySlot(slot);
+                ItemStack stack = ItemUtils.getItemFromEntitySlot(entity, slot);
                 drainleft = drainleft - drainItem(stack, (int)drainleft, simulate);
             }
             if (!simulate && drainAmount - drainleft > 0) {
@@ -110,28 +110,28 @@ public class ElectricItemUtils {
     public static double givePlayerEnergy(LivingEntity entity, double rfToGive, boolean simulate) {
         double rfLeft = rfToGive;
         if (entity instanceof Player) {
-            Player player = (Player) entity;
-
             for (EquipmentSlot slot : EquipmentSlot.values()) {
                 if (rfLeft > 0) {
-                    ItemStack stack = player.getItemBySlot(slot);
+                    ItemStack stack = ItemUtils.getItemFromEntitySlot(entity, slot);
                     rfLeft = rfLeft - chargeItem(stack, (int)rfLeft, simulate);
                 } else {
                     break;
                 }
             }
             // charge other compatible items in inventory
-            if (rfLeft > 0 && entity instanceof Player) {
-                for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
+            if (rfLeft > 0) {
+                Player player = (Player) entity;
+                for (int i = 0; i < ((Player) entity).getInventory().getContainerSize(); i++) {
                     if (rfLeft > 0) {
-                        rfLeft = rfLeft - chargeItem(((Player) entity).getInventory().getItem(i), (int)rfLeft, simulate);
+                        rfLeft = rfLeft - chargeItem(player.getInventory().getItem(i), (int) rfLeft, simulate);
                     } else {
                         break;
                     }
                 }
-            }
-            if (rfToGive - rfLeft > 0) {
-                player.getInventory().setChanged();
+
+                if (rfToGive - rfLeft > 0) {
+                    player.getInventory().setChanged();
+                }
             }
         }
         return rfToGive - rfLeft;

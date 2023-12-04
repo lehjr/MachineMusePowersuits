@@ -39,8 +39,8 @@ import lehjr.numina.client.screen.ChargingBaseScreen;
 import lehjr.numina.client.sound.SoundDictionary;
 import lehjr.numina.common.capabilities.heat.IHeatStorage;
 import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
-import lehjr.numina.common.capabilities.player.IPlayerKeyStates;
-import lehjr.numina.common.capabilities.player.PlayerKeyStateWrapper;
+import lehjr.numina.common.capabilities.player.keystates.IPlayerKeyStates;
+import lehjr.numina.common.capabilities.player.keystates.PlayerKeyStateWrapper;
 import lehjr.numina.common.capabilities.render.IModelSpec;
 import lehjr.numina.common.capabilities.render.chameleon.IChameleon;
 import lehjr.numina.common.capabilities.render.color.IColorTag;
@@ -72,7 +72,6 @@ import net.minecraftforge.fml.event.config.ModConfigEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import org.openqa.selenium.firefox.FirefoxDriver;
 
 @Mod(NuminaConstants.MOD_ID)
 public class Numina {
@@ -93,6 +92,8 @@ public class Numina {
         modEventBus.addListener(this::modelRegistry);
 
         modEventBus.addListener(this::onRegisterReloadListenerEvent);
+
+        modEventBus.addListener(this::registerCapabilities);
 
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
@@ -134,8 +135,11 @@ public class Numina {
         event.put(NuminaObjects.ARMOR_STAND__ENTITY_TYPE.get(), NuminaArmorStand.createAttributes().build());
     }
 
-    @SubscribeEvent
-    public static void initialize(final RegisterCapabilitiesEvent event) {
+//    @SubscribeEvent
+    public void registerCapabilities(final RegisterCapabilitiesEvent event) {
+        System.out.println("register capabilities");
+
+
         event.register(IHeatStorage.class);
         event.register(IColorTag.class);
 
@@ -147,6 +151,7 @@ public class Numina {
 
         // Player
         event.register(IPlayerKeyStates.class);
+//        event.register(IPlayerHandStorage.class);
     }
 
     private void setup(final FMLCommonSetupEvent event) {
@@ -173,9 +178,10 @@ public class Numina {
 
     @SubscribeEvent
     public void attachCapability(AttachCapabilitiesEvent<Entity> event) {
-        if (!(event.getObject() instanceof Player)) {
+        if (!(event.getObject() instanceof Player) || event.getObject() == null) {
             return;
         }
         event.addCapability(new ResourceLocation(NuminaConstants.MOD_ID, "player_keystates1"), new PlayerKeyStateWrapper((Player) event.getObject()));
+//        event.addCapability(new ResourceLocation(NuminaConstants.MOD_ID, "player_hand_storage"), new PlayerHandStorageWrapper((Player) event.getObject()));
     }
 }

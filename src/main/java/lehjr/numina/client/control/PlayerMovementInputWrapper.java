@@ -27,7 +27,7 @@
 package lehjr.numina.client.control;
 
 import lehjr.numina.common.capabilities.NuminaCapabilities;
-import lehjr.numina.common.capabilities.player.IPlayerKeyStates;
+import lehjr.numina.common.capabilities.player.keystates.IPlayerKeyStates;
 import net.minecraft.client.player.RemotePlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.common.util.LazyOptional;

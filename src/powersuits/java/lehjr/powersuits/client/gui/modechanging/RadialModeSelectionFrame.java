@@ -36,15 +36,18 @@ import lehjr.numina.client.gui.geometry.SpiralPointToPoint2D;
 import lehjr.numina.client.render.NuminaRenderer;
 import lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
+import lehjr.numina.common.item.ItemUtils;
 import lehjr.numina.common.network.NuminaPackets;
 import lehjr.numina.common.network.packets.serverbound.ModeChangeRequestPacketServerBound;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 
 /*
@@ -60,53 +63,32 @@ public class RadialModeSelectionFrame extends AbstractGuiFrame {
 
     protected Player player;
     protected double radius;
-    protected ItemStack stack;
     float zLevel;
 
-    public RadialModeSelectionFrame(MusePoint2D topleft, MusePoint2D bottomright, Player player, float zLevel) {
-        super(new Rect(topleft, bottomright));
+    public RadialModeSelectionFrame(MusePoint2D topLeft, MusePoint2D bottomRight, Player player, float zLevel) {
+        super(new Rect(topLeft, bottomRight));
         spawnTime = System.currentTimeMillis();
         this.player = player;
         this.radius = Math.min(width(), height());
-        this.stack = player.getInventory().getSelected();
         this.zLevel = zLevel;
         loadItems();
     }
 
     @Override
-    public boolean mouseClicked(double x, double y, int button) {
-        return false;
-    }
-
-    @Override
-    public boolean mouseScrolled(double x, double y, double scroll) {
-        return false;
-    }
-
-    @Override
-    public boolean mouseReleased(double x, double y, int button) {
-        return false;
-    }
-
-    @Override
-    public void update(double mousex, double mousey) {
+    public void update(double mouseX, double mouseY) {
         //Update items
         loadItems();
         //Determine which mode is selected
         if (System.currentTimeMillis() - spawnTime > 250) {
-            selectModule(mousex, mousey);
+            selectModule(mouseX, mouseY);
         }
+
+        Optional<IModeChangingItem> mcic = ItemUtils.getModeChangingModularItemCapability(player);
         //Switch to selected mode if mode changed
-        if (!stack.isEmpty() && getSelectedModule() != null && selectedModuleOriginal != selectedModuleNew) {
+        if (mcic.isPresent() && getSelectedModule() != null && selectedModuleOriginal != selectedModuleNew) {
             // update to detect mode changes
             selectedModuleOriginal = selectedModuleNew;
-            stack.getCapability(ForgeCapabilities.ITEM_HANDLER)
-                    .filter(IModeChangingItem.class::isInstance)
-                    .map(IModeChangingItem.class::cast)
-                    .ifPresent(handler->{
-                        handler.setActiveMode(getSelectedModule().getInventorySlot());
-                        NuminaPackets.CHANNEL_INSTANCE.sendToServer(new ModeChangeRequestPacketServerBound(getSelectedModule().getInventorySlot(), player.getInventory().selected));
-                    });
+            ItemUtils.getModeChangingModularItemCapability(player).ifPresent(handler-> NuminaPackets.CHANNEL_INSTANCE.sendToServer(new ModeChangeRequestPacketServerBound(getSelectedModule().getInventorySlot())));
         }
     }
 
@@ -131,22 +113,20 @@ public class RadialModeSelectionFrame extends AbstractGuiFrame {
     }
 
     private void loadItems() {
-        if (player != null && modeButtons.isEmpty() && !stack.isEmpty()) {
-            stack.getCapability(ForgeCapabilities.ITEM_HANDLER)
-                    .filter(IModeChangingItem.class::isInstance)
-                    .map(IModeChangingItem.class::cast)
-                    .ifPresent(handler->{
-                        List<Integer> modes = handler.getValidModes();
-                        int activeMode = handler.getActiveMode();
-                        if (activeMode > 0)
-                            selectedModuleOriginal = activeMode;
-                        int modeNum = 0;
-                        for (int mode : modes) {
-                            ClickableModule clickie = new ClickableModule(handler.getStackInSlot(mode), new SpiralPointToPoint2D(center(), radius, ((3D * Math.PI / 2) - ((2D * Math.PI * modeNum) / modes.size())), 250D), mode, ModuleCategory.NONE);
-                            modeButtons.add(clickie);
-                            modeNum ++;
-                        }
-                    });
+        if (player != null && modeButtons.isEmpty()) {
+            Optional<IModeChangingItem> mcic = ItemUtils.getModeChangingModularItemCapability(player);
+            mcic.ifPresent(handler->{
+                List<Integer> modes = handler.getValidModes();
+                int activeMode = handler.getActiveMode();
+                if (activeMode > 0)
+                    selectedModuleOriginal = activeMode;
+                int modeNum = 0;
+                for (int mode : modes) {
+                    ClickableModule clickie = new ClickableModule(handler.getStackInSlot(mode), new SpiralPointToPoint2D(center(), radius, ((3D * Math.PI / 2) - ((2D * Math.PI * modeNum) / modes.size())), 250D), mode, ModuleCategory.NONE);
+                    modeButtons.add(clickie);
+                    modeNum ++;
+                }
+            });
         }
     }
 

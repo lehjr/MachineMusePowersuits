@@ -6,6 +6,7 @@ import lehjr.numina.client.gui.slot.IIConProvider;
 import lehjr.numina.client.render.IconUtils;
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
+import lehjr.numina.common.item.ItemUtils;
 import lehjr.numina.common.math.Color;
 import lehjr.numina.common.math.MathUtils;
 import lehjr.powersuits.common.base.MPSMenuTypes;
@@ -33,7 +34,7 @@ public class InstallSalvageMenu extends AbstractContainerMenu {
         int row, col;
         int parentSlot = slotType == EquipmentSlot.MAINHAND ? playerInventory.selected : equipmentSlotToParent(slotType);
 
-        playerInventory.player.getItemBySlot(slotType).getCapability(ForgeCapabilities.ITEM_HANDLER)
+        ItemUtils.getItemFromEntitySlot(playerInventory.player, slotType).getCapability(ForgeCapabilities.ITEM_HANDLER)
                 .filter(IModularItem.class::isInstance)
                 .map(IModularItem.class::cast)
                 .ifPresent(iItemHandler -> {

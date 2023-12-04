@@ -12,6 +12,7 @@ import lehjr.powersuits.common.item.module.armor.EnergyShieldModule;
 import lehjr.powersuits.common.item.module.armor.IronPlatingModule;
 import lehjr.powersuits.common.item.module.armor.NetheritePlatingModule;
 import lehjr.powersuits.common.item.module.cosmetic.TransparentArmorModule;
+import lehjr.powersuits.common.item.module.debug.DebugModule;
 import lehjr.powersuits.common.item.module.energy_generation.AdvancedSolarGeneratorModule;
 import lehjr.powersuits.common.item.module.energy_generation.BasicSolarGeneratorModule;
 import lehjr.powersuits.common.item.module.energy_generation.KineticGeneratorModule;
@@ -116,8 +117,6 @@ public class MPSItems {
             WaterElectrolyzerModule::new);
 
     // Mining Enchantments ------------------------------------------------------------------------
-//    public static final RegistryObject<Item> AOE_PICK_UPGRADE_MODULE = MPS_ITEMS.register(MPSRegistryNames.AOE_PICK_UPGRADE_MODULE.getPath(),
-//            AOEPickUpgradeModule::new);
     public static final RegistryObject<Item> AQUA_AFFINITY_MODULE = MPS_ITEMS.register(MPSRegistryNames.AQUA_AFFINITY_MODULE.getPath(),
             AquaAffinityModule::new);
     public static final RegistryObject<Item> SILK_TOUCH_MODULE = MPS_ITEMS.register(MPSRegistryNames.SILK_TOUCH_MODULE.getPath(),
@@ -128,8 +127,6 @@ public class MPSItems {
     // Mining Enhancements ------------------------------------------------------------------------
     public static final RegistryObject<Item> VEIN_MINER_MODULE = MPS_ITEMS.register(MPSRegistryNames.VEIN_MINER_MODULE.getPath(),
             VeinMinerModule::new);
-
-    // WIP
     public static final RegistryObject<Item> TUNNEL_BORE_MODULE = MPS_ITEMS.register(MPSRegistryNames.TUNNEL_BORE_MODULE.getPath(),
             TunnelBoreModule::new);
     public static final RegistryObject<Item> SELECTIVE_MINER = MPS_ITEMS.register(MPSRegistryNames.AOE_PICK_UPGRADE_MODULE2.getPath(),
@@ -196,7 +193,7 @@ public class MPSItems {
             ShovelModule::new);
 
     // Debug --------------------------------------------------------------------------------------
-    // todo
+    public static final RegistryObject<Item> DEBUG_MODULE = MPS_ITEMS.register(MPSRegistryNames.DEBUG_MODULE.getPath(), DebugModule::new);
 
     // Weapons ------------------------------------------------------------------------------------
     public static final RegistryObject<Item> BLADE_LAUNCHER_MODULE = MPS_ITEMS.register(MPSRegistryNames.BLADE_LAUNCHER_MODULE.getPath(),

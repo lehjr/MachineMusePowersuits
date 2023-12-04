@@ -35,6 +35,7 @@ import lehjr.numina.client.gui.geometry.Rect;
 import lehjr.numina.common.capabilities.NuminaCapabilities;
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
+import lehjr.numina.common.item.ItemUtils;
 import lehjr.numina.common.string.StringUtils;
 import lehjr.powersuits.common.constants.MPSConstants;
 import net.minecraft.network.chat.Component;
@@ -62,7 +63,8 @@ public class DetailedSummaryFrame extends ScrollableFrame {
         armor.set(0);
 
         for (EquipmentSlot type : EquipmentSlot.values()) {
-            getMinecraft().player.getItemBySlot(type).getCapability(ForgeCapabilities.ITEM_HANDLER)
+            ItemUtils.getItemFromEntitySlot(getMinecraft().player, type)
+                    .getCapability(ForgeCapabilities.ITEM_HANDLER)
                     .filter(IModularItem.class::isInstance)
                     .map(IModularItem.class::cast)
                     .ifPresent(iModularItem -> {

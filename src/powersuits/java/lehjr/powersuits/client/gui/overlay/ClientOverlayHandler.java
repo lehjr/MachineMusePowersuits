@@ -96,7 +96,7 @@ public enum ClientOverlayHandler {
             AtomicInteger index = new AtomicInteger(0);
 
             // Helmet modules with overlay
-            player.getItemBySlot(EquipmentSlot.HEAD).getCapability(ForgeCapabilities.ITEM_HANDLER)
+            ItemUtils.getItemFromEntitySlot(player, EquipmentSlot.HEAD).getCapability(ForgeCapabilities.ITEM_HANDLER)
                     .filter(IModularItem.class::isInstance)
                     .map(IModularItem.class::cast)
                     // Looping this way is far more efficient than looping for each module
@@ -197,7 +197,7 @@ public enum ClientOverlayHandler {
             AtomicReference<String> currWaterStr = new AtomicReference<>("");
             AtomicReference<String> maxWaterStr = new AtomicReference<>("");
 
-            player.getItemBySlot(EquipmentSlot.CHEST).getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).ifPresent(fh -> {
+            ItemUtils.getItemFromEntitySlot(player, EquipmentSlot.CHEST).getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).ifPresent(fh -> {
                 for (int i = 0; i < fh.getTanks(); i++) {
                     maxWater.set(maxWater.get() + fh.getTankCapacity(i));
                     if (maxWater.get() > 0) {

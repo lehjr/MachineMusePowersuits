@@ -7,6 +7,7 @@ import lehjr.numina.client.gui.geometry.DrawableRect;
 import lehjr.numina.client.render.NuminaRenderer;
 import lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
+import lehjr.numina.common.item.ItemUtils;
 import lehjr.numina.common.math.Color;
 import lehjr.numina.common.string.StringUtils;
 import lehjr.powersuits.client.control.KeymappingKeyHandler;
@@ -67,7 +68,7 @@ public class MPSKeyBindHud {
     }
 
     static boolean isModularItemEquipped(LocalPlayer player) {
-        return Arrays.stream(EquipmentSlot.values()).filter(type ->player.getItemBySlot(type).getCapability(ForgeCapabilities.ITEM_HANDLER).filter(IModularItem.class::isInstance).isPresent()).findFirst().isPresent();
+        return Arrays.stream(EquipmentSlot.values()).anyMatch(type ->ItemUtils.getItemFromEntitySlot(player, type).getCapability(ForgeCapabilities.ITEM_HANDLER).filter(IModularItem.class::isInstance).isPresent());
     }
 
     static class KBDisplay extends DrawableRect {
@@ -111,7 +112,7 @@ public class MPSKeyBindHud {
                 // just using the icon
                 ItemStack module = new ItemStack(ForgeRegistries.ITEMS.getValue(kb.registryName));
                 for (EquipmentSlot slot : EquipmentSlot.values()) {
-                    ItemStack stack = getPlayer().getItemBySlot(slot);
+                    ItemStack stack = ItemUtils.getItemFromEntitySlot(getPlayer(), slot);
                     active = stack.getCapability(ForgeCapabilities.ITEM_HANDLER)
                             .filter(IModularItem.class::isInstance)
                             .map(IModularItem.class::cast)

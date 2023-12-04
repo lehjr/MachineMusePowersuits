@@ -328,7 +328,7 @@ public abstract class AbstractElectricItemArmor extends ArmorItem {
 //                    }
 //
 //                    HumanoidModel model = ArmorModelInstance.getInstance();
-//                    ItemStack chestplate = livingEntity.getItemBySlot(EquipmentSlot.CHEST);
+//                    ItemStack chestplate = ItemUtils.getItemFromEntitySlot(livingEntity, EquipmentSlot.CHEST);
 //                    if (chestplate.getCapability(ForgeCapabilities.ITEM_HANDLER)
 //                            .filter(IModularItem.class::isInstance)
 //                            .map(IModularItem.class::cast)

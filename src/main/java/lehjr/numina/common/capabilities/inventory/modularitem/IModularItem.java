@@ -90,4 +90,21 @@ public interface IModularItem extends IItemHandler, IItemHandlerModifiable {
     }
 
     boolean setModuleTweakDouble(ResourceLocation moduleName, String key, double value);
+
+    default int findInstalledModule(@Nonnull ItemStack module) {
+        ResourceLocation registryName = ItemUtils.getRegistryName(module);
+        return findInstalledModule(registryName);
+    }
+
+    default int findInstalledModule(ResourceLocation registryName) {
+        for (int i = 0; i < getSlots(); i++) {
+            ItemStack testStack = getStackInSlot(i);
+            if (!testStack.isEmpty()) {
+                if (ItemUtils.getRegistryName(testStack).equals(registryName)) {
+                    return i;
+                }
+            }
+        }
+        return -1;
+    }
 }

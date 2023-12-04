@@ -64,7 +64,7 @@ public class GuiModeSelector extends ContainerlessGui {
     @Override
     public void render(PoseStack matrixStack, int mouseX, int mouseY, float frameTime) {
         this.renderBackground(matrixStack);
-        this.update((double)mouseX, (double)mouseY);
+        this.update(mouseX, mouseY);
         matrixStack.pushPose();
         matrixStack.translate(0.0D, 0.0D, 10.0D);
         this.renderFrames(matrixStack, mouseX, mouseY, frameTime);
@@ -77,7 +77,7 @@ public class GuiModeSelector extends ContainerlessGui {
 
     @Override
     public boolean keyReleased(int keyCode, int scanCode, int modifiers) {
-        if (minecraft.options.keyHotbarSlots[player.getInventory().selected].matches(keyCode, scanCode)) {
+        if (getMinecraft().options.keyHotbarSlots[player.getInventory().selected].matches(keyCode, scanCode)) {
             this.player.closeContainer();
             return true;
         }
@@ -87,7 +87,7 @@ public class GuiModeSelector extends ContainerlessGui {
     @Override
     public void tick() {
         super.tick();
-        if (!minecraft.isWindowActive()) {
+        if (!getMinecraft().isWindowActive()) {
             this.player.closeContainer();
 //            super.onClose();
 //            container.onAbstractContainerMenuClosed(player);

@@ -37,6 +37,7 @@ import lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
 import lehjr.numina.common.capabilities.module.tickable.PlayerTickModule;
 import lehjr.numina.common.config.NuminaSettings;
 import lehjr.numina.common.energy.ElectricItemUtils;
+import lehjr.numina.common.item.ItemUtils;
 import lehjr.powersuits.client.sound.MPSSoundDictionary;
 import lehjr.powersuits.common.config.MPSSettings;
 import lehjr.powersuits.common.constants.MPSConstants;
@@ -96,7 +97,7 @@ public class JetBootsModule extends AbstractPowerModule {
                 if (player.isInWater())
                     return;
 
-                boolean hasFlightControl = player.getItemBySlot(EquipmentSlot.HEAD).getCapability(ForgeCapabilities.ITEM_HANDLER)
+                boolean hasFlightControl = ItemUtils.getItemFromEntitySlot(player, EquipmentSlot.HEAD).getCapability(ForgeCapabilities.ITEM_HANDLER)
                         .filter(IModularItem.class::isInstance)
                         .map(IModularItem.class::cast)
                         .map(m-> m.isModuleOnline(MPSRegistryNames.FLIGHT_CONTROL_MODULE)).orElse(false);

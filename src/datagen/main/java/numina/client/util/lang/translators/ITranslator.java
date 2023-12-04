@@ -1,6 +1,5 @@
 package numina.client.util.lang.translators;
 
-import numina.client.config.DatagenConfig;
 import org.openqa.selenium.WebDriver;
 
 public interface ITranslator {

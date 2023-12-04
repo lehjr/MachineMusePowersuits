@@ -33,6 +33,7 @@ import lehjr.numina.common.capabilities.NuminaCapabilities;
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
 import lehjr.numina.common.config.NuminaSettings;
 import lehjr.numina.common.energy.ElectricItemUtils;
+import lehjr.numina.common.item.ItemUtils;
 import lehjr.numina.common.math.MathUtils;
 import lehjr.numina.common.player.PlayerUtils;
 import lehjr.powersuits.client.sound.MPSSoundDictionary;
@@ -96,7 +97,7 @@ public enum MovementManager {
             double strafeX = desiredDirection.z;
             double strafeZ = -desiredDirection.x;
 
-            double flightVerticality = player.getItemBySlot(EquipmentSlot.HEAD).getCapability(ForgeCapabilities.ITEM_HANDLER)
+            double flightVerticality = ItemUtils.getItemFromEntitySlot(player, EquipmentSlot.HEAD).getCapability(ForgeCapabilities.ITEM_HANDLER)
                     .filter(IModularItem.class::isInstance)
                     .map(IModularItem.class::cast)
                     .map(iModularItem -> iModularItem
@@ -218,7 +219,7 @@ public enum MovementManager {
     public void handleLivingJumpEvent(LivingJumpEvent event) {
         if (event.getEntity() instanceof Player) {
             Player player = (Player) event.getEntity();
-            player.getItemBySlot(EquipmentSlot.LEGS).getCapability(ForgeCapabilities.ITEM_HANDLER)
+            ItemUtils.getItemFromEntitySlot(player, EquipmentSlot.LEGS).getCapability(ForgeCapabilities.ITEM_HANDLER)
                     .filter(IModularItem.class::isInstance)
                     .map(IModularItem.class::cast)
                     .ifPresent(iModularItem -> iModularItem.getOnlineModuleOrEmpty(MPSRegistryNames.JUMP_ASSIST_MODULE).getCapability(NuminaCapabilities.POWER_MODULE).ifPresent(jumper -> {
@@ -247,7 +248,7 @@ public enum MovementManager {
     public void handleFallEvent(LivingFallEvent event) {
         if (event.getEntity() instanceof Player && event.getDistance() > 3.0) {
             Player player = (Player) event.getEntity();
-            player.getItemBySlot(EquipmentSlot.FEET).getCapability(ForgeCapabilities.ITEM_HANDLER)
+            ItemUtils.getItemFromEntitySlot(player, EquipmentSlot.FEET).getCapability(ForgeCapabilities.ITEM_HANDLER)
                     .filter(IModularItem.class::isInstance)
                     .map(IModularItem.class::cast)
                     .ifPresent(iModularItem -> iModularItem.getOnlineModuleOrEmpty(MPSRegistryNames.SHOCK_ABSORBER_MODULE).getCapability(NuminaCapabilities.POWER_MODULE).ifPresent(sa -> {

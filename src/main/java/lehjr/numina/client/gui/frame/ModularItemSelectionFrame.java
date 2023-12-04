@@ -10,8 +10,11 @@ import lehjr.numina.client.gui.geometry.MusePoint2D;
 import lehjr.numina.client.gui.geometry.Rect;
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
 import lehjr.numina.common.constants.NuminaConstants;
+import lehjr.numina.common.item.ItemUtils;
+import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 
@@ -46,7 +49,7 @@ public class ModularItemSelectionFrame extends AbstractGuiFrame {
         super(new DrawableTile(ul, ul.plus(35, 200)));
         boxes = new ArrayList<>();
         // each tab is 27 tall and 35 wide
-        /** 6 widgets * 27 high each = 162 + 5 spacers at 3 each = 177 gui height is 200 so 23 to split */
+        /* 6 widgets * 27 high each = 162 + 5 spacers at 3 each = 177 gui height is 200 so 23 to split */
 
         // top spacer
         boxes.add(new Rect(ul.copy(), ul.plus(35, 11)));
@@ -130,8 +133,7 @@ public class ModularItemSelectionFrame extends AbstractGuiFrame {
 
     public boolean playerHasModularItems() {
         return equipmentSlotTypes.stream()
-                .filter(type->getModularItemCapability(type)
-                        .isPresent()).findFirst().isPresent();
+                .anyMatch(type->getModularItemCapability(type).isPresent());
     }
 
     Optional<IModularItem> getModularItemCapability (EquipmentSlot type) {
@@ -142,11 +144,12 @@ public class ModularItemSelectionFrame extends AbstractGuiFrame {
 
     @Nonnull
     ItemStack getStack(EquipmentSlot type) {
-        return getMinecraft().player.getItemBySlot(type);
+        Player player = Minecraft.getInstance().player;
+        return ItemUtils.getItemFromEntitySlot(player, type);
     }
 
     public Optional<EquipmentSlot> selectedType() {
-        return getSelectedTab().map(tab ->tab.getSlotType());
+        return getSelectedTab().map(ModularItemTabToggleWidget::getSlotType);
     }
 
 //    public boolean selectedIsSlotHovered() {
@@ -171,7 +174,7 @@ public class ModularItemSelectionFrame extends AbstractGuiFrame {
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
         if (boxes.stream().filter(IClickable.class::isInstance)
-                .map(IClickable.class::cast).filter(box->box.mouseClicked(mouseX, mouseY, button)).findFirst().isPresent()) {
+                .map(IClickable.class::cast).anyMatch(box->box.mouseClicked(mouseX, mouseY, button))) {
             return true;
         }
         return super.mouseClicked(mouseX, mouseY, button);
@@ -180,7 +183,7 @@ public class ModularItemSelectionFrame extends AbstractGuiFrame {
     @Override
     public boolean mouseReleased(double mouseX, double mouseY, int button) {
         if (boxes.stream().filter(IClickable.class::isInstance)
-                .map(IClickable.class::cast).filter(box->box.mouseReleased(mouseX, mouseY, button)).findFirst().isPresent()) {
+                .map(IClickable.class::cast).anyMatch(box->box.mouseReleased(mouseX, mouseY, button))) {
             return true;
         }
         return super.mouseReleased(mouseX, mouseY, button);

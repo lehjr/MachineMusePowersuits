@@ -35,7 +35,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class ServerConfig {
-    /** General ------------------------------------------------------------------------------------------------------- */
+    /* General ------------------------------------------------------------------------------------------------------- */
     protected ForgeConfigSpec.DoubleValue
             GENERAL_MAX_FLYING_SPEED,
             GENERAL_BASE_MAX_HEAT_POWERFIST,
@@ -45,9 +45,12 @@ public class ServerConfig {
             GENERAL_BASE_MAX_HEAT_FEET;
 
     protected ForgeConfigSpec.ConfigValue<List<? extends String>> GENERAL_VEIN_MINER_ORE_LIST;
-    protected ForgeConfigSpec.ConfigValue<List<?>> GENERAL_VEIN_MINER_BLOCK_LIST;
+    protected ForgeConfigSpec.ConfigValue<List<?>>
+            GENERAL_VEIN_MINER_BLOCK_LIST,
+            GENERAL_MOD_ITEMS_AS_TOOL_MODULES,
+            GENERAL_MOD_ITEMS_AS_WEAPON_MODULES;
 
-    /** Cosmetics ----------------------------------------------------------------------------------------------------- */
+    /* Cosmetics ----------------------------------------------------------------------------------------------------- */
 // Note: these are controlled by the server because the legacy settings can create a vast number
 //      of NBT Tags for tracking the settings for each individual model part.
     protected ForgeConfigSpec.BooleanValue
@@ -56,8 +59,14 @@ public class ServerConfig {
             COSMETIC_ALLOW_POWER_FIST_CUSTOMIZATOIN;
 
     protected ServerConfig(ForgeConfigSpec.Builder builder) {
-        /** General --------------------------------------------------------------------------------------------------- */
+        /* General --------------------------------------------------------------------------------------------------- */
         builder.comment("General settings").push("General");
+        GENERAL_MOD_ITEMS_AS_TOOL_MODULES = builder.comment("Items from other mods to allow as tools in the Power Fist")
+                .defineList("externalToolItems", Collections.emptyList(), o -> o instanceof String && !((String) o).isEmpty());
+
+        GENERAL_MOD_ITEMS_AS_WEAPON_MODULES = builder.comment("Items from other mods to allow as weapons in the Power Fist")
+                .defineList("externalWeaponItems", Collections.emptyList(), o -> o instanceof String && !((String) o).isEmpty());
+
         GENERAL_MAX_FLYING_SPEED = builder.comment("Maximum flight speed (in m/s)")
                 .translation(MPSConstants.CONFIG_GENERAL_MAX_FLYING_SPEED)
                 .defineInRange("maximumFlyingSpeedmps", 25.0, 0, Float.MAX_VALUE);
@@ -122,7 +131,7 @@ public class ServerConfig {
         builder.pop();
 
 
-        /** Cosmetics ------------------------------------------------------------------------------------------------- */
+        /* Cosmetics ------------------------------------------------------------------------------------------------- */
         builder.comment("Model cosmetic settings").push("Cosmetic");
 
         COSMETIC_USE_LEGACY_COSMETIC_SYSTEM = builder
@@ -142,7 +151,7 @@ public class ServerConfig {
                 .define("allowPowerFistCustomization", true);
         builder.pop();
 
-        /** Modules --------------------------------------------------------------------------------------------------- */
+        /* Modules --------------------------------------------------------------------------------------------------- */
         builder.push("Modules");
         {
             {

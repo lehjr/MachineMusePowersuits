@@ -15,7 +15,6 @@ import org.openqa.selenium.safari.SafariDriver;
 import org.openqa.selenium.safari.SafariOptions;
 
 import java.time.Duration;
-import java.util.concurrent.TimeUnit;
 
 public class WebDriverProvider {
     static WebDriver browser = null;

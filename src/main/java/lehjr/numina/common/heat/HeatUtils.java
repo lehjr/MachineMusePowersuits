@@ -29,6 +29,7 @@ package lehjr.numina.common.heat;
 import com.google.common.util.concurrent.AtomicDouble;
 import lehjr.numina.common.capabilities.NuminaCapabilities;
 import lehjr.numina.common.constants.NuminaConstants;
+import lehjr.numina.common.item.ItemUtils;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -49,7 +50,7 @@ public class HeatUtils {
     public static double getPlayerHeat(LivingEntity entity) {
         double heat = 0;
         for (EquipmentSlot slot : EquipmentSlot.values()) {
-            heat += getItemHeat(entity.getItemBySlot(slot));
+                heat += getItemHeat(ItemUtils.getItemFromEntitySlot(entity, slot));
         }
         return heat;
     }
@@ -61,7 +62,7 @@ public class HeatUtils {
         AtomicDouble maxHeat = new AtomicDouble(0);
 
         for (EquipmentSlot slot : EquipmentSlot.values()) {
-            ItemStack itemStack = entity.getItemBySlot(slot);
+            ItemStack itemStack = ItemUtils.getItemFromEntitySlot(entity, slot);
 
             // Armor slots can't hold tools
             if ((slot.getType().equals(EquipmentSlot.Type.ARMOR)) ||
@@ -95,7 +96,7 @@ public class HeatUtils {
         } else {
             for (EquipmentSlot slot : EquipmentSlot.values()) {
                 if (coolingLeft > 0) {
-                    coolingLeft -= coolItem(entity.getItemBySlot(slot), coolingLeft);
+                    coolingLeft -= coolItem(ItemUtils.getItemFromEntitySlot(entity, slot), coolingLeft);
                 } else {
                     break;
                 }
@@ -117,7 +118,7 @@ public class HeatUtils {
             if (heatLeftToGive == 0) {
                 break;
             }
-            heatLeftToGive = heatLeftToGive - heatItem(entity.getItemBySlot(slot), heatLeftToGive);
+            heatLeftToGive = heatLeftToGive - heatItem(ItemUtils.getItemFromEntitySlot(entity, slot), heatLeftToGive);
         }
         return heatLeftToGive;
     }
@@ -148,7 +149,7 @@ public class HeatUtils {
                     break;
                 }
                 double finalHeatLeftToGive = heatLeftToGive;
-                heatLeftToGive -= entity.getItemBySlot(slot)
+                heatLeftToGive -= ItemUtils.getItemFromEntitySlot(entity, slot)
                         .getCapability(NuminaCapabilities.HEAT).map(heat->heat.receiveHeat(finalHeatLeftToGive, false)).orElse(0D);
             }
 

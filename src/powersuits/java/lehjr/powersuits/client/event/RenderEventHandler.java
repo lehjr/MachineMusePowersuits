@@ -31,6 +31,7 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import lehjr.numina.common.capabilities.NuminaCapabilities;
 import lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
+import lehjr.numina.common.item.ItemUtils;
 import lehjr.numina.common.math.Color;
 import lehjr.powersuits.client.gui.overlay.ClientOverlayHandler;
 import lehjr.powersuits.common.constants.MPSConstants;
@@ -134,7 +135,7 @@ public enum RenderEventHandler {
             RenderEventHandler.ownFly = true;
         }
 
-        if(event.getEntity().getItemBySlot(EquipmentSlot.CHEST).getCapability(ForgeCapabilities.ITEM_HANDLER)
+        if(ItemUtils.getItemFromEntitySlot(event.getEntity(), EquipmentSlot.CHEST).getCapability(ForgeCapabilities.ITEM_HANDLER)
                 .filter(IModularItem.class::isInstance)
                 .map(IModularItem.class::cast)
                 .map(iItemHandler -> iItemHandler.isModuleOnline(MPSRegistryNames.ACTIVE_CAMOUFLAGE_MODULE)).orElse(false)) {
@@ -144,20 +145,20 @@ public enum RenderEventHandler {
 
     private boolean playerHasFlightOn(Player player) {
         return
-                player.getItemBySlot(EquipmentSlot.HEAD).getCapability(ForgeCapabilities.ITEM_HANDLER)
+                ItemUtils.getItemFromEntitySlot(player, EquipmentSlot.HEAD).getCapability(ForgeCapabilities.ITEM_HANDLER)
                         .filter(IModularItem.class::isInstance)
                         .map(IModularItem.class::cast)
                         .map(iModularItem ->
                                 iModularItem.isModuleOnline(MPSRegistryNames.FLIGHT_CONTROL_MODULE)).orElse(false) ||
 
-                        player.getItemBySlot(EquipmentSlot.CHEST).getCapability(ForgeCapabilities.ITEM_HANDLER)
+                        ItemUtils.getItemFromEntitySlot(player, EquipmentSlot.CHEST).getCapability(ForgeCapabilities.ITEM_HANDLER)
                                 .filter(IModularItem.class::isInstance)
                                 .map(IModularItem.class::cast)
                                 .map(iModularItem ->
                                         iModularItem.isModuleOnline(MPSRegistryNames.JETPACK_MODULE) ||
                                                 iModularItem.isModuleOnline(MPSRegistryNames.GLIDER_MODULE)).orElse(false) ||
 
-                        player.getItemBySlot(EquipmentSlot.FEET).getCapability(ForgeCapabilities.ITEM_HANDLER)
+                        ItemUtils.getItemFromEntitySlot(player, EquipmentSlot.FEET).getCapability(ForgeCapabilities.ITEM_HANDLER)
                                 .filter(IModularItem.class::isInstance)
                                 .map(IModularItem.class::cast)
                                 .map(iModularItem ->
@@ -174,16 +175,14 @@ public enum RenderEventHandler {
 
     @SubscribeEvent
     public void onFOVUpdate(ComputeFovModifierEvent e) {
-        e.getPlayer().getItemBySlot(EquipmentSlot.HEAD).getCapability(ForgeCapabilities.ITEM_HANDLER)
+        ItemUtils.getItemFromEntitySlot(e.getPlayer(), EquipmentSlot.HEAD).getCapability(ForgeCapabilities.ITEM_HANDLER)
                 .filter(IModularItem.class::isInstance)
                 .map(IModularItem.class::cast)
                 .ifPresent(h-> {
-                            if (h instanceof IModularItem) {
-                                ItemStack binnoculars = h.getOnlineModuleOrEmpty(MPSRegistryNames.BINOCULARS_MODULE);
-                                if (!binnoculars.isEmpty())
-                                    e.setNewFovModifier((float) (e.getFovModifier() / binnoculars.getCapability(NuminaCapabilities.POWER_MODULE)
-                                            .map(m->m.applyPropertyModifiers(MPSConstants.FOV)).orElse(1D)));
-                            }
+                            ItemStack binoculars = h.getOnlineModuleOrEmpty(MPSRegistryNames.BINOCULARS_MODULE);
+                            if (!binoculars.isEmpty())
+                                e.setNewFovModifier((float) (e.getFovModifier() / binoculars.getCapability(NuminaCapabilities.POWER_MODULE)
+                                        .map(m->m.applyPropertyModifiers(MPSConstants.FOV)).orElse(1D)));
                         }
                 );
     }

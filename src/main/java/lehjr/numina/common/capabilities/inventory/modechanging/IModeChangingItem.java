@@ -35,6 +35,7 @@ import lehjr.numina.common.capabilities.module.externalitems.IOtherModItemsAsMod
 import lehjr.numina.common.capabilities.module.miningenhancement.IMiningEnhancementModule;
 import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
 import lehjr.numina.common.capabilities.module.rightclick.IRightClickModule;
+import lehjr.numina.common.capabilities.module.toggleable.IToggleableModule;
 import lehjr.numina.common.energy.ElectricItemUtils;
 import lehjr.numina.common.math.Color;
 import net.minecraft.client.Minecraft;
@@ -55,6 +56,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.gui.overlay.ForgeGui;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Comparator;
 import java.util.List;
@@ -66,6 +68,9 @@ import java.util.List;
  * Ported to Java by lehjr on 11/1/16.
  */
 public interface IModeChangingItem extends IModularItem {
+    String TAG_MODE = "mode";
+//    String UNIQUE_ID = "unique_ID";
+
     @OnlyIn(Dist.CLIENT)
     @Nullable
     BakedModel getInventoryModel();
@@ -81,19 +86,42 @@ public interface IModeChangingItem extends IModularItem {
             if (!player.isCreative()) {
                 baroffset += 16;
                 int totalArmorValue = player.getArmorValue();
-                baroffset += 8 * (int) Math.ceil((double)totalArmorValue / 20); // 20 points per row @ 2 armor points per icon
+                baroffset += 8 * (int) Math.ceil((double) totalArmorValue / 20); // 20 points per row @ 2 armor points per icon
             }
             baroffset = screenHeight - baroffset;
             currX = screenWidth / 2.0 - 89.0 + 20.0 * hotbarIndex;
             currY = baroffset - 18;
             Color.WHITE.setShaderColor();
-            if (module.getCapability(NuminaCapabilities.POWER_MODULE).map(pm-> pm.isModuleOnline()).orElse(false)) {
-                mc.getItemRenderer().renderGuiItem(module.getCapability(NuminaCapabilities.CHAMELEON).map(iChameleon -> iChameleon.getStackToRender()).orElse(module), (int)currX, (int)currY);
+            if (module.getCapability(NuminaCapabilities.POWER_MODULE).map(pm -> pm.isModuleOnline()).orElse(false)) {
+                mc.getItemRenderer().renderGuiItem(module.getCapability(NuminaCapabilities.CHAMELEON).map(iChameleon -> iChameleon.getStackToRender()).orElse(module), (int) currX, (int) currY);
             } else {
                 NuminaRenderer.drawModuleAt(poseStack, currX, currY, module.getCapability(NuminaCapabilities.CHAMELEON).map(iChameleon -> iChameleon.getStackToRender()).orElse(module), false);
             }
         }
     }
+
+    @OnlyIn(Dist.CLIENT)
+    default void drawModeChangingModularItemIcon(LocalPlayer player, int hotbarIndex, ForgeGui gui, Minecraft mc, PoseStack poseStack, float partialTick, int screenWidth, int screenHeight) {
+        ItemStack modularItem = getModularItemStack();
+        if (!modularItem.isEmpty()) {
+            double currX;
+            double currY;
+
+            int baroffset = 22;
+            if (!player.isCreative()) {
+                baroffset += 16;
+                int totalArmorValue = player.getArmorValue();
+                baroffset += 8 * (int) Math.ceil((double) totalArmorValue / 20); // 20 points per row @ 2 armor points per icon
+            }
+            baroffset = screenHeight - baroffset;
+            currX = screenWidth / 2.0 - 89.0 + 20.0 * hotbarIndex;
+            currY = baroffset - 18;
+            Color.WHITE.setShaderColor();
+            mc.getItemRenderer().renderGuiItem(modularItem, (int) currX, (int) currY);
+        }
+    }
+
+//    String getUniqueID();
 
     List<Integer> getValidModes();
 
@@ -103,7 +131,7 @@ public interface IModeChangingItem extends IModularItem {
 
     ItemStack getActiveModule();
 
-    void setActiveMode(ResourceLocation moduleName);
+//    void setActiveMode(ResourceLocation moduleName);
 
     void setActiveMode(int newMode);
 
@@ -117,6 +145,63 @@ public interface IModeChangingItem extends IModularItem {
 
     boolean isModuleActiveAndOnline(ResourceLocation moduleName);
 
+    default InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand, InteractionResultHolder<ItemStack> fallback) {
+        ItemStack fist = player.getItemInHand(hand);
+        return getActiveModule().
+                getCapability(NuminaCapabilities.POWER_MODULE)
+                .filter(IRightClickModule.class::isInstance)
+                .map(IRightClickModule.class::cast)
+                .map(rc -> rc.use(fist, level, player, hand)).orElse(fallback);
+    }
+
+    /**
+     * @return useDuration from active module or fallback
+     */
+    default int getUseDuration() {
+        return getActiveModule().getCapability(NuminaCapabilities.POWER_MODULE)
+                .map(m -> m.getModuleStack().getUseDuration())
+                .orElse(72000);
+    }
+
+    default InteractionResult onItemUseFirst(ItemStack itemStack, UseOnContext context, InteractionResult fallback) {
+        return getActiveModule().getCapability(NuminaCapabilities.POWER_MODULE)
+                .filter(IRightClickModule.class::isInstance)
+                .map(IRightClickModule.class::cast)
+                .map(m -> m.onItemUseFirst(itemStack, context))
+                .orElse(fallback);
+    }
+
+    default InteractionResult useOn(UseOnContext context, InteractionResult fallback) {
+        return getActiveModule().getCapability(NuminaCapabilities.POWER_MODULE)
+                .filter(IRightClickModule.class::isInstance)
+                .map(IRightClickModule.class::cast)
+                .map(m -> m.useOn(context)).orElse(fallback);
+    }
+
+    default ItemStack finishUsingItem(ItemStack stack, Level worldIn, LivingEntity entity) {
+        return getActiveModule().getCapability(NuminaCapabilities.POWER_MODULE)
+                .filter(IRightClickModule.class::isInstance)
+                .map(IRightClickModule.class::cast)
+                .map(m -> m.finishUsingItem(stack, worldIn, entity))
+                .orElse(stack);
+    }
+
+    default void releaseUsing(ItemStack stack, Level worldIn, LivingEntity entityLiving, int timeLeft) {
+        getActiveModule().getCapability(NuminaCapabilities.POWER_MODULE)
+                .filter(IRightClickModule.class::isInstance)
+                .map(IRightClickModule.class::cast)
+                .ifPresent(m -> m.releaseUsing(stack, worldIn, entityLiving, timeLeft));
+    }
+
+    default boolean canContinueUsing(@Nonnull ItemStack itemStack) {
+        return itemStack.sameItem(getModularItemStack()) || itemStack.sameItem(getActiveExternalModule());
+    }
+
+    default boolean onUseTick(Level level, LivingEntity entity, int ticksRemaining) {
+        return getActiveModule().getCapability(NuminaCapabilities.POWER_MODULE)
+                .filter(IOtherModItemsAsModules.class::isInstance)
+                .map(IOtherModItemsAsModules.class::cast).map(iOtherModItemsAsModules -> iOtherModItemsAsModules.onUseTick(level, entity, ticksRemaining)).orElse(true);
+    }
 
 
     default boolean onBlockStartBreak(ItemStack itemstack, BlockPos pos, Player player) {
@@ -124,17 +209,9 @@ public interface IModeChangingItem extends IModularItem {
                 .getCapability(NuminaCapabilities.POWER_MODULE)
                 .filter(IMiningEnhancementModule.class::isInstance)
                 .map(IMiningEnhancementModule.class::cast)
-                .filter(pm ->pm.isModuleOnline())
-                .map(pm ->pm.onBlockStartBreak(itemstack, pos, player))
+                .filter(IToggleableModule::isModuleOnline)
+                .map(pm -> pm.onBlockStartBreak(itemstack, pos, player))
                 .orElse(false);
-    }
-
-    default int getUseDuration() {
-        return getActiveModule().getCapability(NuminaCapabilities.POWER_MODULE)
-                                .filter(IRightClickModule.class::isInstance)
-                                .map(IRightClickModule.class::cast)
-                                .map(m-> m.getModuleStack().getUseDuration())
-                                .orElse(72000);
     }
 
     default boolean mineBlock(ItemStack powerFist, Level worldIn, BlockState state, BlockPos pos, LivingEntity entityLiving) {
@@ -143,71 +220,34 @@ public interface IModeChangingItem extends IModularItem {
                 module.getCapability(NuminaCapabilities.POWER_MODULE)
                         .filter(IBlockBreakingModule.class::isInstance)
                         .map(IBlockBreakingModule.class::cast)
-                        .map(pm-> pm.mineBlock(powerFist, worldIn, state, pos, entityLiving, playerEnergy))
+                        .map(pm -> pm.mineBlock(powerFist, worldIn, state, pos, entityLiving, playerEnergy))
                         .orElse(false));
-    }
-
-    default InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand, InteractionResultHolder<ItemStack> fallback) {
-        ItemStack fist = player.getItemInHand(hand);
-        return getActiveModule().
-                getCapability(NuminaCapabilities.POWER_MODULE)
-                .filter(IRightClickModule.class::isInstance)
-                .map(IRightClickModule.class::cast)
-                .map(rc-> rc.use(fist, level, player, hand)).orElse(fallback);
-    }
-
-   default InteractionResult onItemUseFirst(ItemStack itemStack, UseOnContext context, InteractionResult fallback) {
-        return getActiveModule().getCapability(NuminaCapabilities.POWER_MODULE)
-                            .filter(IRightClickModule.class::isInstance)
-                            .map(IRightClickModule.class::cast)
-                            .map(m-> m.onItemUseFirst(itemStack, context))
-                            .orElse(fallback);
     }
 
     default float getDestroySpeed(ItemStack pStack, BlockState pState) {
         return getInstalledModules().stream()
                 .filter(IBlockBreakingModule.class::isInstance)
                 .map(IBlockBreakingModule.class::cast)
-                .filter(pm->pm.getEmulatedTool().getDestroySpeed(pState) > 1.0F)
-                .max(Comparator.comparing(pm->pm.getEmulatedTool().getDestroySpeed(pState)))
-                .map(pm-> pm.getEmulatedTool().getDestroySpeed(pState)).orElse(1.0F);
-    }
-
-    default ItemStack finishUsingItem(ItemStack stack, Level worldIn, LivingEntity entity) {
-        return getActiveModule().getCapability(NuminaCapabilities.POWER_MODULE)
-                                .filter(IRightClickModule.class::isInstance)
-                                .map(IRightClickModule.class::cast)
-                                .map(m-> m.finishUsingItem(stack, worldIn, entity))
-                                .orElse(stack);
-    }
-
-    default void releaseUsing(ItemStack stack, Level worldIn, LivingEntity entityLiving, int timeLeft) {
-                getActiveModule().getCapability(NuminaCapabilities.POWER_MODULE)
-                            .filter(IRightClickModule.class::isInstance)
-                            .map(IRightClickModule.class::cast)
-                            .ifPresent(m-> m.releaseUsing(stack, worldIn, entityLiving, timeLeft));
-    }
-
-    default InteractionResult useOn(UseOnContext context, InteractionResult fallback) {
-            return getActiveModule().getCapability(NuminaCapabilities.POWER_MODULE)
-                            .filter(IRightClickModule.class::isInstance)
-                            .map(IRightClickModule.class::cast)
-                            .map(m-> m.useOn(context)).orElse(fallback);
+                .filter(pm -> pm.getEmulatedTool().getDestroySpeed(pState) > 1.0F)
+                .max(Comparator.comparing(pm -> pm.getEmulatedTool().getDestroySpeed(pState)))
+                .map(pm -> pm.getEmulatedTool().getDestroySpeed(pState)).orElse(1.0F);
     }
 
     default boolean isCorrectToolForDrops(ItemStack itemStack, BlockState state) {
+        // FIXME
+
         return getInstalledModulesOfType(IBlockBreakingModule.class)
                 .stream().anyMatch(module ->
                         module.getCapability(NuminaCapabilities.POWER_MODULE)
                                 .filter(IBlockBreakingModule.class::isInstance)
                                 .map(IBlockBreakingModule.class::cast)
-                                .map(pm ->pm.getEmulatedTool().isCorrectToolForDrops(state)).orElse(false));
+                                .map(pm -> pm.getEmulatedTool().isCorrectToolForDrops(state)).orElse(false));
     }
 
-    default ItemStack getActiveExternalModule(ItemStack host) {
+    default ItemStack getActiveExternalModule() {
         return getActiveModule().getCapability(NuminaCapabilities.POWER_MODULE)
                 .filter(IOtherModItemsAsModules.class::isInstance)
                 .map(IOtherModItemsAsModules.class::cast)
-                .map(IPowerModule::getModuleStack).orElse(host);
+                .map(IPowerModule::getModuleStack).orElse(getModularItemStack());
     }
 }

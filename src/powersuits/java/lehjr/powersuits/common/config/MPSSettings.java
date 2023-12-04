@@ -33,13 +33,14 @@ import lehjr.numina.common.math.Color;
 import lehjr.numina.common.math.MathUtils;
 import lehjr.powersuits.client.config.ClientConfig;
 import lehjr.powersuits.common.constants.MPSConstants;
+import lehjr.powersuits.common.constants.MPSRegistryNames;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.util.NonNullLazy;
+import net.minecraftforge.registries.ForgeRegistries;
 import org.apache.commons.lang3.tuple.Pair;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class MPSSettings {
     public static final ClientConfig CLIENT_CONFIG;
@@ -114,6 +115,38 @@ public class MPSSettings {
 
             return new Color(red, green, blue, alpha);
         }
+    }
+
+    public static List<ResourceLocation> getExternalModItemsAsToolModuleList() {
+        List<?> externalTools = SERVER_SPEC.isLoaded() ?
+                SERVER_CONFIG.GENERAL_MOD_ITEMS_AS_TOOL_MODULES.get() : new ArrayList<>();
+        List<ResourceLocation> retList = new ArrayList<>();
+        externalTools.stream().filter(o->o instanceof String).map(Object::toString).forEach(tool-> {
+            retList.add(new ResourceLocation(tool));;
+        });
+        return retList;
+    }
+
+    public static Map<ResourceLocation, ResourceLocation> getExternalModItemsAsToolModules() {
+        Map<ResourceLocation, ResourceLocation> retMap = new HashMap<>();
+        getExternalModItemsAsToolModuleList().forEach(location -> retMap.put(location, MPSRegistryNames.getRegName(Objects.requireNonNull(ForgeRegistries.ITEMS.getValue(location)).getDescriptionId())));
+        return retMap;
+    }
+
+    public static List<ResourceLocation> getExternalModItemsAsWeaponModuleList() {
+        List<?> externalWeapons = SERVER_SPEC.isLoaded() ?
+                SERVER_CONFIG.GENERAL_MOD_ITEMS_AS_WEAPON_MODULES.get() : new ArrayList<>();
+        List<ResourceLocation> retList = new ArrayList<>();
+        externalWeapons.stream().filter(o->o instanceof String).map(Object::toString).forEach(weapon-> {
+            retList.add(new ResourceLocation(weapon));;
+        });
+        return retList;
+    }
+
+    public static Map<ResourceLocation, ResourceLocation> getExternalModItemsAsWeaponModules() {
+        Map<ResourceLocation, ResourceLocation> retMap = new HashMap<>();
+        getExternalModItemsAsWeaponModuleList().forEach(location -> retMap.put(location, MPSRegistryNames.getRegName(Objects.requireNonNull(ForgeRegistries.ITEMS.getValue(location)).getDescriptionId())));
+        return retMap;
     }
 
     public static IMeterConfig getEnergyMeterConfig() {
@@ -261,20 +294,20 @@ public class MPSSettings {
     }
 
     public static List<ResourceLocation> getOreList() {
-        List<String> ores = SERVER_SPEC.isLoaded() ?
-                (List<String>) SERVER_CONFIG.GENERAL_VEIN_MINER_ORE_LIST.get() : new ArrayList<>();
+        List<?> ores = SERVER_SPEC.isLoaded() ?
+                SERVER_CONFIG.GENERAL_VEIN_MINER_ORE_LIST.get() : new ArrayList<>();
         List<ResourceLocation> retList = new ArrayList<>();
-        ores.forEach(ore-> {
+        ores.stream().filter(o->o instanceof String).map(Object::toString).forEach(ore-> {
             retList.add(new ResourceLocation(ore));;
         });
         return retList;
     }
 
     public static List<ResourceLocation> getBlockList() {
-        List<String> blocks = SERVER_SPEC.isLoaded() ?
-                (List<String>) SERVER_CONFIG.GENERAL_VEIN_MINER_BLOCK_LIST.get() : new ArrayList<>();
+        List<?> blocks = SERVER_SPEC.isLoaded() ?
+                SERVER_CONFIG.GENERAL_VEIN_MINER_BLOCK_LIST.get() : new ArrayList<>();
         List<ResourceLocation> retList = new ArrayList<>();
-        blocks.forEach(block-> {
+        blocks.stream().filter(o->o instanceof String).map(Object::toString).forEach(block-> {
             retList.add(new ResourceLocation(block));;
         });
         return retList;

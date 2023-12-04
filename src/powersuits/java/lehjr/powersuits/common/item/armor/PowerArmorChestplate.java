@@ -27,6 +27,7 @@
 package lehjr.powersuits.common.item.armor;
 
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
+import lehjr.numina.common.item.ItemUtils;
 import lehjr.powersuits.common.constants.MPSRegistryNames;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -43,17 +44,17 @@ public class PowerArmorChestplate extends AbstractElectricItemArmor {
     public boolean canElytraFly(ItemStack stack, LivingEntity entity) {
         return
                 // Flight control module
-                entity.getItemBySlot(EquipmentSlot.HEAD).getCapability(ForgeCapabilities.ITEM_HANDLER)
+                ItemUtils.getItemFromEntitySlot(entity, EquipmentSlot.HEAD).getCapability(ForgeCapabilities.ITEM_HANDLER)
                         .filter(IModularItem.class::isInstance)
                         .map(IModularItem.class::cast)
                         .map(iModularItem -> iModularItem.isModuleOnline(MPSRegistryNames.FLIGHT_CONTROL_MODULE)).orElse(false) &&
 
-                        entity.getItemBySlot(EquipmentSlot.CHEST).getCapability(ForgeCapabilities.ITEM_HANDLER)
+                        ItemUtils.getItemFromEntitySlot(entity, EquipmentSlot.CHEST).getCapability(ForgeCapabilities.ITEM_HANDLER)
                                 .filter(IModularItem.class::isInstance)
                                 .map(IModularItem.class::cast)
                                 .map(iModularItem -> iModularItem.isModuleOnline(MPSRegistryNames.GLIDER_MODULE)).orElse(false) &&
 
-                        entity.getItemBySlot(EquipmentSlot.CHEST).getCapability(ForgeCapabilities.ITEM_HANDLER)
+                        ItemUtils.getItemFromEntitySlot(entity, EquipmentSlot.CHEST).getCapability(ForgeCapabilities.ITEM_HANDLER)
                                 .filter(IModularItem.class::isInstance)
                                 .map(IModularItem.class::cast)
                                 .map(iModularItem -> iModularItem.isModuleOnline(MPSRegistryNames.JETPACK_MODULE)).orElse(false);

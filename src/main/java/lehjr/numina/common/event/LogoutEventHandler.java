@@ -30,20 +30,88 @@ import lehjr.numina.common.capabilities.module.powermodule.IConfig;
 import lehjr.numina.common.config.ModuleConfig;
 import lehjr.numina.common.config.NuminaSettings;
 import net.minecraft.server.MinecraftServer;
+import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
+import java.util.Objects;
+
 public class LogoutEventHandler {
+    @SubscribeEvent
+    public void onPlayerLoginEvent(PlayerEvent.PlayerLoggedInEvent event) {
+//        Player player = event.getEntity();
+//        if (player != null) {
+//            player.getCapability(NuminaCapabilities.PLAYER_HAND_STORAGE).ifPresent(hs->{
+//                CompoundTag tag = hs.serialize();
+//                NuminaPackets.sendFromServerToClient(player, new PlayerHandStorageSyncResponseClientBound(tag));
+//            });
+//        }
+    }
+
+    /**
+     * Note that the inventory here is just restored before the player dies.
+     * This insures things like tombstone mods won't break.
+     *
+     * @param event
+     */
+    @SubscribeEvent(priority=EventPriority.HIGHEST)
+    public void onPlayerDeath(LivingDeathEvent event) {
+//        LivingEntity entity = event.getEntity();
+//        if (entity instanceof Player player) {
+//            player.getCapability(NuminaCapabilities.PLAYER_HAND_STORAGE).ifPresent(hs->{
+//
+//                // offhand is TODO, "mainhand storage" is where mode changing modular item is stored where
+//                // mode changing modular item is stored.
+//                if (!hs.getOffHandStorage().isEmpty() || !hs.getMainHandStorage().isEmpty()) {
+//                    ItemStack selected = player.getInventory().getSelected();
+//                    int selectedSlot = player.getInventory().selected;
+//                    ItemStack modularItemMainHand = hs.getMainHandStorage();
+//
+//                    // Should only be a mode changing modular item in secondary storage
+//                    if(!modularItemMainHand.isEmpty()) {
+//                        Optional<IModeChangingItem> modeChangingItemCap = modularItemMainHand
+//                                .getCapability(ForgeCapabilities.ITEM_HANDLER)
+//                                .filter(IModeChangingItem.class::isInstance)
+//                                .map(IModeChangingItem.class::cast);
+//
+//                        // should only be a "foreign module" in the player inventory "selected" hotbar slot
+//                        // whenever the selected slot is changed, the module should be put back into the modular item
+//                        // and the modular item should be put back into the hotbar
+//                        if (selected.getCapability(NuminaCapabilities.POWER_MODULE)
+//                                .filter(IOtherModItemsAsModules.class::isInstance)
+//                                .map(IOtherModItemsAsModules.class::cast).isPresent()) {
+//
+//                            // put the modified module back in the selected slot
+//                            modeChangingItemCap.ifPresent(mcic -> {
+//                                ItemStack modeItem = mcic.getActiveModule();
+//                                if (modeItem.getItem() == selected.getItem()) {
+//                                    mcic.setStackInSlot(mcic.getActiveMode(), selected);
+//                                }
+//                            });
+//                            player.getInventory().setItem(selectedSlot, modularItemMainHand);
+//                            player.inventoryMenu.broadcastChanges();
+//                        }
+//                    }
+//
+//
+//                    // Offhand storage
+//                    ItemStack modularItemOffHand = hs.getOffHandStorage();
+//                }
+//            });
+//        }
+    }
+
 
     // server side since server is null from client side
 
     // TODO: better way to do this since every mod using the lib has to do the same thing
     @SubscribeEvent
-    public void OnPlayerLogoutCommon(PlayerEvent.PlayerLoggedOutEvent event) {
+    public void onPlayerLogoutCommon(PlayerEvent.PlayerLoggedOutEvent event) {
         IConfig moduleConfig = NuminaSettings.getModuleConfig();
         if (event.getEntity() != null) {
             MinecraftServer server = event.getEntity().getServer();
-            if (server != null && server.isSingleplayer() || server.isSingleplayerOwner(event.getEntity().getGameProfile())) {
+            if (server != null && server.isSingleplayer() || Objects.requireNonNull(server).isSingleplayerOwner(event.getEntity().getGameProfile())) {
                 if (moduleConfig instanceof ModuleConfig) {
                     ((ModuleConfig) moduleConfig).writeMissingConfigValues();
                 }

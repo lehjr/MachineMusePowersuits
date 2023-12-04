@@ -28,6 +28,7 @@ package lehjr.numina.common.recipe;
 
 import lehjr.numina.common.constants.NuminaConstants;
 import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.SimpleRecipeSerializer;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
@@ -36,5 +37,6 @@ public class RecipeSerializersRegistry {
     public static final DeferredRegister<RecipeSerializer<?>> RECIPE_SERIALIZERS = DeferredRegister.create(ForgeRegistries.RECIPE_SERIALIZERS, NuminaConstants.MOD_ID);
     public static final RegistryObject<ShapedEnergyRecipe.EnergySerializer> ENERGY_RECIPE_SERIALIZER = RECIPE_SERIALIZERS.register("crafting_energy_item", () -> new ShapedEnergyRecipe.EnergySerializer());
     public static final RegistryObject<ShapedEnchantmentRecipe.EnchantmentSerializer> ENCHANTMENT_RECIPE_SERIALIZER = RECIPE_SERIALIZERS.register("crafting_enchantment_item", ()-> new ShapedEnchantmentRecipe.EnchantmentSerializer());
+    public static final RegistryObject<RecipeSerializer<ModuleInstallationRecipe>> ATTACHMENT = RECIPE_SERIALIZERS.register("module_install", () -> new SimpleRecipeSerializer<>(ModuleInstallationRecipe::new));
 
 }

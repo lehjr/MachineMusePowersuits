@@ -16,8 +16,8 @@ import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.IOException;
 import java.time.Duration;
-import java.util.*;
 import java.util.List;
+import java.util.*;
 
 public class BingTranslator implements ITranslator{
     DatagenConfig config;

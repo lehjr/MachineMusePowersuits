@@ -5,11 +5,13 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.datafixers.util.Pair;
 import lehjr.numina.client.render.IconUtils;
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
+import lehjr.numina.common.item.ItemUtils;
 import lehjr.numina.common.math.Color;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 
@@ -38,12 +40,13 @@ public class ModularItemTabToggleWidget extends Clickable {
         this.initTextureValues(153, 2, 35, 0, new ResourceLocation("textures/gui/recipe_book.png"));
 
         this.type = type;
-        ItemStack test = getMinecraft().player.getItemBySlot(type);
+        Player player = getMinecraft().player;
+        ItemStack test = ItemUtils.getItemFromEntitySlot(player, type);
+
         this.icon = test.getCapability(ForgeCapabilities.ITEM_HANDLER)
                 .filter(IModularItem.class::isInstance)
                 .map(IModularItem.class::cast)
                 .map(iItemHandler -> test).orElse(ItemStack.EMPTY);
-
     }
 
     public void initTextureValues(int pXTexStart, int pYTexStart, int pXDiffTex, int pYDiffTex, ResourceLocation pResourceLocation) {

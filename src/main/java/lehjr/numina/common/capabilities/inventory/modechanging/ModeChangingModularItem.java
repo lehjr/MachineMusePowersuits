@@ -28,6 +28,8 @@ package lehjr.numina.common.capabilities.inventory.modechanging;
 
 import lehjr.numina.common.capabilities.NuminaCapabilities;
 import lehjr.numina.common.capabilities.inventory.modularitem.ModularItem;
+import lehjr.numina.common.capabilities.module.externalitems.IOtherModItemsAsModules;
+import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
 import lehjr.numina.common.capabilities.module.rightclick.IRightClickModule;
 import lehjr.numina.common.item.ItemUtils;
 import lehjr.numina.common.network.NuminaPackets;
@@ -41,6 +43,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import org.apache.commons.lang3.RandomStringUtils;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -52,7 +56,9 @@ import java.util.List;
  * Note that loops starting with 1 instead of 0 are intentional to skip power storage module in the first slot
  */
 public class ModeChangingModularItem extends ModularItem implements IModeChangingItem {
-    public static final String TAG_MODE = "mode";
+
+//    public static String uniqueID = "";
+
     protected static int activeMode;
 
     public ModeChangingModularItem(@Nonnull ItemStack modularItem, int size) {
@@ -86,8 +92,12 @@ public class ModeChangingModularItem extends ModularItem implements IModeChangin
     }
 
     boolean isValidMode(@Nonnull ItemStack module) {
+        if (module.isEmpty()) {
+            return false;
+        }
+
         return module.getCapability(NuminaCapabilities.POWER_MODULE)
-                .map( m-> m.isAllowed() && m instanceof IRightClickModule).orElse(false);
+                .map( m-> m.isAllowed() && (m instanceof IRightClickModule|| m instanceof IOtherModItemsAsModules)).orElse(false);
     }
 
     @Override
@@ -104,7 +114,7 @@ public class ModeChangingModularItem extends ModularItem implements IModeChangin
     public ItemStack getActiveModule() {
         int activeModeIndex = getActiveMode();
         ItemStack module = activeModeIndex != -1 ? getStackInSlot(activeModeIndex) : ItemStack.EMPTY;
-        return module.getCapability(NuminaCapabilities.POWER_MODULE).map(m->m.isAllowed() && m instanceof IRightClickModule).orElse(false)
+        return module.getCapability(NuminaCapabilities.POWER_MODULE).map(m->m.isAllowed() && (m instanceof IRightClickModule || m instanceof IOtherModItemsAsModules)).orElse(false)
                 ? module : ItemStack.EMPTY;
     }
 
@@ -151,16 +161,30 @@ public class ModeChangingModularItem extends ModularItem implements IModeChangin
         return activeMode;
     }
 
+//    @Override
+//    public void setActiveMode(ResourceLocation moduleName) {
+//        for(int i=1; i < getSlots();  i++) {
+//            ItemStack module = getStackInSlot(i);
+//            if (!module.isEmpty() && ItemUtils.getRegistryName(module).equals(moduleName)
+//                    && module.getCapability(NuminaCapabilities.POWER_MODULE).map(m-> m instanceof IRightClickModule).orElse(false)) {
+//                setActiveMode(i, );
+//                return;
+//            }
+//        }
+//    }
+
+   @Nonnull
     @Override
-    public void setActiveMode(ResourceLocation moduleName) {
-        for(int i=1; i < getSlots();  i++) {
-            ItemStack module = getStackInSlot(i);
-            if (!module.isEmpty() && ItemUtils.getRegistryName(module).equals(moduleName)
-                    && module.getCapability(NuminaCapabilities.POWER_MODULE).map(m-> m instanceof IRightClickModule).orElse(false)) {
-                setActiveMode(i);
-                return;
-            }
+    public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
+        ItemStack retStack = super.insertItem(slot, stack, simulate);
+        if (retStack.isEmpty() && !simulate) {
+            ItemStack stackInSlot = getStackInSlot(slot);
+            CompoundTag tag = stackInSlot.getOrCreateTag();
+//            tag.putString(UNIQUE_ID, getUniqueID());
+            stackInSlot.setTag(tag);
+            super.setStackInSlot(slot, stackInSlot);
         }
+        return retStack;
     }
 
     @Override
@@ -172,18 +196,18 @@ public class ModeChangingModularItem extends ModularItem implements IModeChangin
     @Override
     public void cycleMode(Player player, int dMode) {
         List<Integer> modes = this.getValidModes();
-        if (modes.size() > 0) {
+        if (!modes.isEmpty()) {
             int newindex = clampMode(modes.indexOf(this.getActiveMode()) + dMode, modes.size());
             int newmode = modes.get(newindex);
-            this.setActiveMode(newmode);
-            NuminaPackets.CHANNEL_INSTANCE.sendToServer(new ModeChangeRequestPacketServerBound(newmode, player.getInventory().selected));
+            NuminaPackets.CHANNEL_INSTANCE.sendToServer(new ModeChangeRequestPacketServerBound(newmode));
+//            this.setActiveMode(newmode, player.getInventory());
         }
     }
 
     @Override
     public int nextMode() {
         List<Integer> modes = this.getValidModes();
-        if (modes.size() > 0) {
+        if (!modes.isEmpty()) {
             int newindex = clampMode(modes.indexOf(getActiveMode()) + 1, modes.size());
             return modes.get(newindex);
         }
@@ -193,7 +217,7 @@ public class ModeChangingModularItem extends ModularItem implements IModeChangin
     @Override
     public int prevMode() {
         List<Integer> modes = this.getValidModes();
-        if (modes.size() > 0) {
+        if (!modes.isEmpty()) {
             int newindex = clampMode(modes.indexOf(getActiveMode()) - 1, modes.size());
             return modes.get(newindex);
         }
@@ -207,32 +231,50 @@ public class ModeChangingModularItem extends ModularItem implements IModeChangin
     @Deprecated
     @Override
     public boolean isModuleActiveAndOnline(ResourceLocation moduleName) {
-
-
-
-
-
-
-
         if (hasActiveModule(moduleName)) {
-            return getActiveModule().getCapability(NuminaCapabilities.POWER_MODULE).map(pm-> pm.isModuleOnline()).orElse(false);
+            return getActiveModule().getCapability(NuminaCapabilities.POWER_MODULE).map(IPowerModule::isModuleOnline).orElse(false);
         }
         return false;
     }
 
-    @Override
-    public CompoundTag serializeNBT() {
-        CompoundTag nbt = super.serializeNBT();
-        nbt.putInt(TAG_MODE, activeMode);
-        return nbt;
-    }
+//    @Override
+//    public @NotNull ItemStack extractItem(int slot, int amount, boolean simulate) {
+//        ItemStack extracted = super.extractItem(slot, amount, simulate);
+//        if(!simulate) {
+//            CompoundTag tag = extracted.getOrCreateTag();
+////            tag.remove(UNIQUE_ID);
+//            extracted.setTag(tag);
+//        }
+//        return extracted;
+//    }
 
-    @Override
-    public void deserializeNBT(CompoundTag nbt) {
-        if (nbt.contains(TAG_MODE))
-            activeMode = nbt.getInt(TAG_MODE);
-        else
-            activeMode = -1;
-        super.deserializeNBT(nbt);
-    }
+//    @Nonnull
+//    @Override
+//    public String getUniqueID() {
+//        if (uniqueID != null && !uniqueID.isBlank()) {
+//            return uniqueID;
+//        }
+//        uniqueID = RandomStringUtils.randomAlphanumeric(20);
+//        return uniqueID;
+//    }
+
+//    @Override
+//    public CompoundTag serializeNBT() {
+//        CompoundTag nbt = super.serializeNBT();
+//        nbt.putInt(TAG_MODE, activeMode);
+//        nbt.putString(UNIQUE_ID, getUniqueID());
+//        return nbt;
+//    }
+//
+//    @Override
+//    public void deserializeNBT(CompoundTag nbt) {
+//        if (nbt.contains(TAG_MODE))
+//            activeMode = nbt.getInt(TAG_MODE);
+//        else
+//            activeMode = -1;
+//        if (nbt.contains(UNIQUE_ID)) {
+//            uniqueID = nbt.getString(UNIQUE_ID);
+//        }
+//        super.deserializeNBT(nbt);
+//    }
 }

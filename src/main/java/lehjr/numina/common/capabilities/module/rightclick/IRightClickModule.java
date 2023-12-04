@@ -36,8 +36,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 
-import javax.annotation.Nonnull;
-
 public interface IRightClickModule extends IPowerModule {
 
     /**
@@ -48,7 +46,7 @@ public interface IRightClickModule extends IPowerModule {
      * @return
      */
 
-    default InteractionResultHolder<ItemStack> use(@Nonnull ItemStack itemStackIn, Level worldIn, Player playerIn, InteractionHand hand) {
+    default InteractionResultHolder<ItemStack> use(ItemStack itemStackIn, Level worldIn, Player playerIn, InteractionHand hand) {
         return new InteractionResultHolder<>(InteractionResult.PASS, itemStackIn);
     }
 
@@ -72,15 +70,15 @@ public interface IRightClickModule extends IPowerModule {
         return InteractionResult.PASS;
     }
 
-    default void releaseUsing(@Nonnull ItemStack stack, Level worldIn, LivingEntity entityLiving, int timeLeft) {
+    default void releaseUsing(ItemStack stack, Level worldIn, LivingEntity entityLiving, int timeLeft) {
     }
 
     /**
      * Called when the player finishes using this Item (E.g. finishes eating.). Not called when the player stops using
      * the Item before the action is complete.
      */
-    default ItemStack finishUsingItem(ItemStack itemStack, Level world, LivingEntity entity) {
-        return itemStack.isEdible() ? entity.eat(world, itemStack) : itemStack;
+    default ItemStack finishUsingItem(ItemStack itemStack, Level level, LivingEntity entity) {
+        return itemStack.isEdible() ? entity.eat(level, itemStack) : itemStack;
     }
 
     default int getEnergyUsage() {
