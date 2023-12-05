@@ -1,12 +1,11 @@
 package lehjr.numina.common.network.packets.clientbound;
 
-import lehjr.numina.common.capabilities.NuminaCapabilities;
-import lehjr.numina.common.item.ItemUtils;
-import net.minecraft.client.Minecraft;
+import lehjr.numina.common.network.packets.clienthandlers.CosmeticInfoPacketClientHandler;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.player.Player;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.network.NetworkEvent;
 
 import java.util.function.Supplier;
@@ -19,6 +18,18 @@ public record CosmeticInfoPacketClientBound(EquipmentSlot slotType, String tagNa
         packetBuffer.writeNbt(msg.tagData);
     }
 
+    public EquipmentSlot getSlotType() {
+        return slotType;
+    }
+
+    public String getTagName() {
+        return tagName;
+    }
+
+    public CompoundTag getTagData() {
+        return tagData;
+    }
+
     public static CosmeticInfoPacketClientBound decode(FriendlyByteBuf packetBuffer) {
         return new CosmeticInfoPacketClientBound(
                 packetBuffer.readEnum(EquipmentSlot.class),
@@ -27,19 +38,11 @@ public record CosmeticInfoPacketClientBound(EquipmentSlot slotType, String tagNa
     }
 
     public static class Handler {
-        public static void handle(CosmeticInfoPacketClientBound message, Supplier<NetworkEvent.Context> ctx) {
-            ctx.get().enqueueWork(() -> {
-                EquipmentSlot slotType = message.slotType;
-                String tagName = message.tagName;
-                CompoundTag tagData = message.tagData;
-
-                Player player = Minecraft.getInstance().player;
-                if (player != null) {
-                    ItemUtils.getItemFromEntitySlot(player, slotType).getCapability(NuminaCapabilities.RENDER).ifPresent(render -> {
-                        render.setRenderTag(tagData, tagName);
-                    });
-                }
-            });
+        public static void handle(CosmeticInfoPacketClientBound msg, Supplier<NetworkEvent.Context> ctx) {
+            ctx.get().enqueueWork(() ->
+                    // Make sure it's only executed on the physical client
+                    DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> CosmeticInfoPacketClientHandler.handlePacket(msg, ctx))
+            );
             ctx.get().setPacketHandled(true);
         }
     }

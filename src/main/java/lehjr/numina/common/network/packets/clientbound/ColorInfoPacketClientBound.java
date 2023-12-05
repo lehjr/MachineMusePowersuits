@@ -1,11 +1,10 @@
 package lehjr.numina.common.network.packets.clientbound;
 
-import lehjr.numina.common.capabilities.NuminaCapabilities;
-import lehjr.numina.common.item.ItemUtils;
-import net.minecraft.client.Minecraft;
+import lehjr.numina.common.network.packets.clienthandlers.ColorInfoPacketClientHandler;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.player.Player;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.network.NetworkEvent;
 
 import java.util.function.Supplier;
@@ -21,16 +20,19 @@ public record ColorInfoPacketClientBound(EquipmentSlot slotType, int[] tagData) 
         return new ColorInfoPacketClientBound(packetBuffer.readEnum(EquipmentSlot.class), packetBuffer.readVarIntArray());
     }
 
+    public EquipmentSlot getSlotType() {
+        return this.slotType;
+    }
+
+    public int[] getTagData() {
+        return this.tagData;
+    }
     public static class Handler {
-        public static void handle(ColorInfoPacketClientBound message, Supplier<NetworkEvent.Context> ctx) {
-            ctx.get().enqueueWork(() -> {
-                final Player player = Minecraft.getInstance().player;
-                EquipmentSlot slotType = message.slotType;
-                int[] tagData = message.tagData;
-                ItemUtils.getItemFromEntitySlot(player, slotType)
-                        .getCapability(NuminaCapabilities.RENDER)
-                        .ifPresent(render -> render.setColorArray(tagData));
-            });
+        public static void handle(ColorInfoPacketClientBound msg, Supplier<NetworkEvent.Context> ctx) {
+            ctx.get().enqueueWork(() ->
+                    // Make sure it's only executed on the physical client
+                    DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> ColorInfoPacketClientHandler.handlePacket(msg, ctx))
+            );
             ctx.get().setPacketHandled(true);
         }
     }

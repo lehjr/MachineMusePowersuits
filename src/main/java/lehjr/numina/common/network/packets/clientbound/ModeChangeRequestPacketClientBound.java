@@ -1,9 +1,9 @@
 package lehjr.numina.common.network.packets.clientbound;
 
-import lehjr.numina.common.item.ItemUtils;
-import net.minecraft.client.Minecraft;
+import lehjr.numina.common.network.packets.clienthandlers.ModeChangeRequestPacketClientHandler;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.world.entity.player.Player;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.network.NetworkEvent;
 
 import java.util.function.Supplier;
@@ -13,6 +13,10 @@ public record ModeChangeRequestPacketClientBound(int mode) {
         packetBuffer.writeInt(msg.mode);
     }
 
+    public int getMode() {
+        return this.getMode();
+    }
+
     public static ModeChangeRequestPacketClientBound decode(FriendlyByteBuf packetBuffer) {
         return new ModeChangeRequestPacketClientBound(
                 packetBuffer.readInt()
@@ -20,14 +24,11 @@ public record ModeChangeRequestPacketClientBound(int mode) {
     }
 
     public static class Handler {
-        public static void handle(ModeChangeRequestPacketClientBound message, Supplier<NetworkEvent.Context> ctx) {
-            final Player player = Minecraft.getInstance().player;
-            ctx.get().enqueueWork(() -> {
-                int mode = message.mode;
-                if (player != null) {
-                    ItemUtils.setModeAndSwapIfNeeded(player, mode);
-                }
-            });
+        public static void handle(ModeChangeRequestPacketClientBound msg, Supplier<NetworkEvent.Context> ctx) {
+            ctx.get().enqueueWork(() ->
+                    // Make sure it's only executed on the physical client
+                    DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> ModeChangeRequestPacketClientHandler.handlePacket(msg, ctx))
+            );
             ctx.get().setPacketHandled(true);
         }
     }
