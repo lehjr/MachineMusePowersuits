@@ -35,6 +35,7 @@ import lehjr.numina.client.gui.geometry.MusePoint2D;
 import lehjr.numina.client.gui.geometry.Rect;
 import lehjr.numina.client.gui.slot.IHideableSlot;
 import lehjr.numina.client.render.IconUtils;
+import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.constants.NuminaConstants;
 import lehjr.numina.common.math.MathUtils;
 import net.minecraft.client.Minecraft;
@@ -51,7 +52,7 @@ import java.util.List;
 public abstract class InventoryFrame extends ScrollableFrame implements IContainerULOffSet {
     IContainerULOffSet.ulGetter ulGetter;
     AbstractContainerMenu container;
-//    Color gridColor;
+    //    Color gridColor;
     public final int gridWidth;
     protected List<Integer> slotIndexes;
     List<SlotRect> tiles;
@@ -130,24 +131,20 @@ public abstract class InventoryFrame extends ScrollableFrame implements IContain
         outerLoop:
         for(int row = gridRange.getLeft(); row < gridRange.getRight(); row ++) {
             for (int col = 0; col < gridWidth; col ++) {
-                if (i == slotIndexes.size()){
-                    break outerLoop;
+                if (i >= slotIndexes.size()) {
+                    return;
                 }
                 tiles.add(getNewRect(ul.plus(slot_ulShift)));//.setBorderShrinkValue(0.5F));
-
                 if (i > 0) {
                     if (col > 0) {
                         this.tiles.get(i).setRightOf(this.tiles.get(i - 1));
                     }
-
                     if (row > 0) {
                         this.tiles.get(i).setBelow(this.tiles.get(i - this.gridWidth));
                     }
                 }
-
                 MusePoint2D position = new MusePoint2D(this.tiles.get(i).left(), this.tiles.get(i).top()).minus(slot_ulShift);
                 Slot slot = container.getSlot(slotIndexes.get(i));
-
                 if (slot instanceof IHideableSlot) {
                     ((IHideableSlot) slot).setPosition(position);
                     ((IHideableSlot) slot).enable();
@@ -192,13 +189,11 @@ public abstract class InventoryFrame extends ScrollableFrame implements IContain
     }
 
     @Override
-    public boolean mouseReleased(double mouseX, double mouseY, int buton) {
-        return false;
-    }
-
-    @Override
     public boolean mouseScrolled(double mouseX, double mouseY, double dWheel) {
-        this.currentScroll = (int) MathUtils.clampDouble(currentScroll + dWheel, 0, (scrollLimit > 0 ? scrollLimit: 0));
+        if (this.containsPoint(mouseX, mouseY)) {
+            this.currentScroll = (int) MathUtils.clampDouble(currentScroll + dWheel, 0, (scrollLimit > 0 ? scrollLimit : 0));
+            return true;
+        }
         return false;
     }
 
@@ -269,10 +264,6 @@ public abstract class InventoryFrame extends ScrollableFrame implements IContain
         public IDrawable setZLevel(float zLevel) {
             this.zLevel = zLevel;
             return this;
-        }
-
-        Minecraft getMinecraft() {
-            return Minecraft.getInstance();
         }
     }
 }
