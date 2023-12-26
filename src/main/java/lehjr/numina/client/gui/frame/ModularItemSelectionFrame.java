@@ -83,6 +83,7 @@ public class ModularItemSelectionFrame extends AbstractGuiFrame {
         creativeInstallButton.setHeight(18);
         creativeInstallButton.setWidth(38);
         creativeInstallButton.disableAndHide();
+        creativeInstallButton.setToolTip(List.of(Component.translatable((NuminaConstants.GUI_CREATIVE_INSTALL_DESC))));
         creativeInstallButton.setUL(getUL().copy());
         boxes.add(creativeInstallButton);
         refreshRects();

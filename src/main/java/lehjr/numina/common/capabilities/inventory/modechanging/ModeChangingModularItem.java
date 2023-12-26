@@ -235,46 +235,5 @@ public class ModeChangingModularItem extends ModularItem implements IModeChangin
             return getActiveModule().getCapability(NuminaCapabilities.POWER_MODULE).map(IPowerModule::isModuleOnline).orElse(false);
         }
         return false;
-    }
-
-//    @Override
-//    public @NotNull ItemStack extractItem(int slot, int amount, boolean simulate) {
-//        ItemStack extracted = super.extractItem(slot, amount, simulate);
-//        if(!simulate) {
-//            CompoundTag tag = extracted.getOrCreateTag();
-////            tag.remove(UNIQUE_ID);
-//            extracted.setTag(tag);
-//        }
-//        return extracted;
-//    }
-
-//    @Nonnull
-//    @Override
-//    public String getUniqueID() {
-//        if (uniqueID != null && !uniqueID.isBlank()) {
-//            return uniqueID;
-//        }
-//        uniqueID = RandomStringUtils.randomAlphanumeric(20);
-//        return uniqueID;
-//    }
-
-//    @Override
-//    public CompoundTag serializeNBT() {
-//        CompoundTag nbt = super.serializeNBT();
-//        nbt.putInt(TAG_MODE, activeMode);
-//        nbt.putString(UNIQUE_ID, getUniqueID());
-//        return nbt;
-//    }
-//
-//    @Override
-//    public void deserializeNBT(CompoundTag nbt) {
-//        if (nbt.contains(TAG_MODE))
-//            activeMode = nbt.getInt(TAG_MODE);
-//        else
-//            activeMode = -1;
-//        if (nbt.contains(UNIQUE_ID)) {
-//            uniqueID = nbt.getString(UNIQUE_ID);
-//        }
-//        super.deserializeNBT(nbt);
-//    }
+   }
 }

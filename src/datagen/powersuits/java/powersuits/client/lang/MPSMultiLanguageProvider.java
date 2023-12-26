@@ -20,7 +20,7 @@ public class MPSMultiLanguageProvider extends MulitiLanguageProvider {
     }
 
     @Override
-    public void run(CachedOutput pOutput) throws IOException {
+    public void run(CachedOutput output) throws IOException {
         addItemGroup();
         addModularItems();
         addModules();
@@ -29,7 +29,7 @@ public class MPSMultiLanguageProvider extends MulitiLanguageProvider {
         addKeybinds();
         addModuleTradeoff();
         addModels();
-        super.run(pOutput);
+        super.run(output);
     }
 
     void addItemGroup() {

@@ -17,6 +17,7 @@ public class GoogleTranslation implements ITranslator {
     Language source_lang = null;
     Language target_lang = null;
     String translationText = "";
+    String TRANSLATION_PAGE = "https://translate.google.com/";
 
 
     public GoogleTranslation(DatagenConfig config ) {
@@ -192,7 +193,7 @@ public class GoogleTranslation implements ITranslator {
 
     @Override
     public WebDriver getWebDriver() {
-        return WebDriverProvider.getWebDriver(config);
+        return WebDriverProvider.getWebDriver(config, TRANSLATION_PAGE);
     }
 
 //    from selenium import webdriver

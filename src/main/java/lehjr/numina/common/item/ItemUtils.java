@@ -195,27 +195,23 @@ public class ItemUtils {
         ItemStack host;
         ItemStack newModule;
         ItemStack stackToSet = ItemStack.EMPTY;
-
-
         Optional<IOtherModItemsAsModules> foreignModuleCap = getForeignItemAsModuleCap(itemStack);
-
         Optional<IModeChangingItem> mciCap = getModeChangingModularItemCapability(itemStack);
-
+        // held item is item from another mod
         if (foreignModuleCap.isPresent()) {
             host = foreignModuleCap.get().retrieveHostStack();
             mciCap = getModeChangingModularItemCapability(host);
             if(mciCap.isPresent()) {
-                int oldMode = mciCap.get().getActiveMode();
-                int testMode = mciCap.get().findInstalledModule(itemStack);
-                mciCap.get().setStackInSlot(oldMode, itemStack);
-                mciCap.get().setActiveMode(mode);
-                newModule = mciCap.get().getActiveModule();
-                Optional<IOtherModItemsAsModules> foreignModuleCap1 = getForeignItemAsModuleCap(newModule);
-                if (foreignModuleCap1.isPresent()) {
-                    foreignModuleCap1.get().storeHostStack(host.copy());
-                    stackToSet = newModule.copy();
-                } else {
-                    stackToSet = host;
+                if (mciCap.get().returnForeignModuleToModularItem(itemStack)) {
+                    mciCap.get().setActiveMode(mode);
+                    newModule = mciCap.get().getActiveModule();
+                    Optional<IOtherModItemsAsModules> foreignModuleCap1 = getForeignItemAsModuleCap(newModule);
+                    if (foreignModuleCap1.isPresent()) {
+                        foreignModuleCap1.get().storeHostStack(host.copy());
+                        stackToSet = newModule.copy();
+                    } else {
+                        stackToSet = host;
+                    }
                 }
             }
         } else if (mciCap.isPresent()) {

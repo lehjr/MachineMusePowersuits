@@ -22,6 +22,8 @@ public class DatagenConfig {
     static final String TARGET_LANGUAGES = "targetLanguages";
     static final String USE_ALL_POSSIBLE_LANGUAGES = "useAllPossibleLanguages";
     static final String TRANSLATIONS_AVAILABLE = "translationsAvailable";
+    static final String USE_AUTO_WEB_TRANSLATOR = "useAutoWebTranslator";
+
 
     Map<String, Language> fastLookup = new HashMap<>();
 
@@ -40,8 +42,34 @@ public class DatagenConfig {
         this.load();
 
         // lazy way of populating when not used
+        getUseAutoWebTranslator();
+        getMainLanguageCode();
         getLanguageCodesUsed();
+        getAllPossibleLanguages();
+        getWebDriverType();
+        getMinecraftLanguages();
         getAvailableTranslations();
+    }
+
+    public boolean getUseAutoWebTranslator() {
+        if (json == null) {
+            this.json = new JsonObject();
+        }
+        if (!json.has(USE_AUTO_WEB_TRANSLATOR) || !json.getAsJsonObject(USE_AUTO_WEB_TRANSLATOR).has(VALUE)) {
+            setUseAutoWebTranslator();
+        }
+        return json.getAsJsonObject(USE_AUTO_WEB_TRANSLATOR).getAsJsonPrimitive(VALUE).getAsBoolean();
+    }
+
+    public void setUseAutoWebTranslator() {
+        if (json == null) {
+            this.json = new JsonObject();
+        }
+        json.add(USE_AUTO_WEB_TRANSLATOR, new MakeJson()
+                .add(DESCRIPTION, "use automatic web translator (may take multiple tries to complete")
+                .add(VALUE, true)
+                .getJson());
+        save();
     }
 
     /**

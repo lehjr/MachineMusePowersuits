@@ -16,6 +16,9 @@ public class LangMapWrapper {
     String filePath;
 
     public LangMapWrapper(File jsonFile) {
+        System.out.println("file: " + jsonFile.getAbsolutePath() + " exists: " + jsonFile.exists());
+
+
         loadAndParse(jsonFile);
         this.filePath = jsonFile.getAbsolutePath();
     }
@@ -48,10 +51,8 @@ public class LangMapWrapper {
         Map<String, String> map = JSonLoader.parseJsonFile(jsonFile);
         NuminaLogger.logDebug("map size: " + map.size());
 
-        map.entrySet().stream().filter(entry -> !entry.getKey().equals("_comment"))
-                .forEach(entry -> addEntryToMap(entry));
+        map.entrySet().stream().filter(entry -> !entry.getKey().equals("_comment")).forEach(this::addEntryToMap);
         NuminaLogger.logDebug("data size: " + data.size());
-
     }
 
 //    public void savetoOutputFolder(CachedOutput cache, Path outputFolder) {
@@ -84,7 +85,7 @@ public class LangMapWrapper {
 //            e.printStackTrace();
 //        }
 //    }
-//
+
     JsonObject maptoJsonObject(Map<String, String> map) {
         JsonObject jsonObject = new JsonObject();
         map.entrySet().forEach(entry -> jsonObject.addProperty(entry.getKey(), entry.getValue()));
@@ -112,7 +113,7 @@ public class LangMapWrapper {
         String prettyJsonString = gson.toJson(je);
         FileWriter writer;
         try {
-            writer = new FileWriter(new File(filePath));
+            writer = new FileWriter(filePath);
             writer.write(prettyJsonString);
             writer.flush();
             writer.close();

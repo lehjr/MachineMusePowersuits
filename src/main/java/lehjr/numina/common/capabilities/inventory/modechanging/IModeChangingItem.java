@@ -37,6 +37,7 @@ import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
 import lehjr.numina.common.capabilities.module.rightclick.IRightClickModule;
 import lehjr.numina.common.capabilities.module.toggleable.IToggleableModule;
 import lehjr.numina.common.energy.ElectricItemUtils;
+import lehjr.numina.common.item.ItemUtils;
 import lehjr.numina.common.math.Color;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
@@ -60,6 +61,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Author: MachineMuse (Claire Semple)
@@ -249,5 +251,15 @@ public interface IModeChangingItem extends IModularItem {
                 .filter(IOtherModItemsAsModules.class::isInstance)
                 .map(IOtherModItemsAsModules.class::cast)
                 .map(IPowerModule::getModuleStack).orElse(getModularItemStack());
+    }
+
+    default boolean returnForeignModuleToModularItem(@Nonnull ItemStack module) {
+        int slot = findInstalledModule(module);
+        Optional<IOtherModItemsAsModules> foreignModuleCap = ItemUtils.getForeignItemAsModuleCap(module);
+        if (slot > -1 && foreignModuleCap.isPresent()) {
+            setStackInSlot(slot, module);
+            return true;
+        }
+        return false;
     }
 }

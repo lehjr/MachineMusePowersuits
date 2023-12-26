@@ -23,13 +23,15 @@ public class WebDriverProvider {
      * Gets the webdriver, sets up if needed
      * @return webdriver
      */
-    public static WebDriver getWebDriver(DatagenConfig config) {
+    public static WebDriver getWebDriver(DatagenConfig config, String translationPage) {
         if (browser == null && config.getWebDriverType() != EnumWebDriver.VOID_DRIVER) {
             try {
                 setUp(config);
                 // Sets max loading time for a website.
                 browser.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(200));
                 browser.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+                browser.get(translationPage);
+                browser.manage().window().maximize();
             } catch (Exception e) {
                 e.printStackTrace();
             }

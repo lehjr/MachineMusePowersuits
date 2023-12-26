@@ -14,13 +14,16 @@ import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 /**
  * Vanilla styled button based on vanilla button
  */
 public class VanillaButton extends Clickable {
+    List<Component> toolTip = new ArrayList<>();
     Component label;
-
 
     /**
      * For a button with a set width
@@ -61,6 +64,10 @@ public class VanillaButton extends Clickable {
     public int getFGColor() {
         if (packedFGColor != UNSET_FG_COLOR) return packedFGColor;
         return this.isEnabled() ? 16777215 : 10526880; // White : Light Grey
+    }
+
+    public void setToolTip(List<Component> toolTip) {
+        this.toolTip = toolTip;
     }
 
     public float getAlpha() {
@@ -109,5 +116,14 @@ public class VanillaButton extends Clickable {
 
     public Component getLabel() {
         return label;
+    }
+
+
+    @Override
+    public List<Component> getToolTip(int x, int y) {
+        if (toolTip.isEmpty()) {
+            return super.getToolTip(x, y);
+        }
+        return toolTip;
     }
 }

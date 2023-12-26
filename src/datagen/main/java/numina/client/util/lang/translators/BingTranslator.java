@@ -31,22 +31,13 @@ public class BingTranslator implements ITranslator{
     public BingTranslator(@NotNull DatagenConfig config) {
         this.config = config;
         this.defaultLang = config.getMainLanguageCode();
-        translations = new HashMap();
+        translations = new HashMap<>();
         this.locales = new ArrayList<>();
-
-        try {
-            WebDriver driver = getWebDriver();
-            driver.get(TRANSLATION_PAGE);
-            driver.manage().window().maximize();
-            setInputLanguage(config.getMainLanguageCode());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     @Override
     public WebDriver getWebDriver() {
-        WebDriver driver = WebDriverProvider.getWebDriver(config);
+        WebDriver driver = WebDriverProvider.getWebDriver(config, TRANSLATION_PAGE);
         NuminaLogger.logDebug("driver: " + driver);
         if (driver != null) {
             NuminaLogger.logDebug("current url: " + driver.getCurrentUrl());
@@ -71,7 +62,9 @@ public class BingTranslator implements ITranslator{
         handleCaptcha(driver);
 
         if (driver != null) {
-            new WebDriverWait(driver, Duration.ofMinutes(30)).until(webDriver -> webDriver.findElement(By.xpath("//optgroup[@id=\"t_srcAllLang\"]/option[@value =\"" + language.bing_key() + "\"]")));
+            // ///html/body/main/div/div[1]/div[1]/div/table/tbody/tr/td[1]/div[1]/div[1]/select/optgroup[2]/option[27]
+            new WebDriverWait(driver, Duration.ofSeconds(30)).until(webDriver ->
+                    webDriver.findElement(By.id("t_srcAllLang")));
         }
         WebElement langIn = driver.findElement(By.xpath("//optgroup[@id=\"t_srcAllLang\"]/option[@value =\"" + language.bing_key() + "\"]"));
         langIn.click();

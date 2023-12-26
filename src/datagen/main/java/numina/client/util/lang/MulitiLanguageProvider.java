@@ -24,11 +24,15 @@ import java.util.function.Supplier;
 import java.util.regex.Pattern;
 
 public class MulitiLanguageProvider implements DataProvider {
+    // Stores all of the translations in a hashmap
     public TranslationMap translationMap;
+
+    Map<Language, List<String>> missingTranslationsMap;
+
     Map<Language, LanguageProviderHelper> languageProviderMap;
     DatagenConfig config;
 
-//    Map<Language, Map<String, String>> overrides = new HashMap<>();
+    //    Map<Language, Map<String, String>> overrides = new HashMap<>();
     Map<Language, LangMapWrapper> langMapWrappers = new HashMap<>();
     ITranslator translator;
 
@@ -38,6 +42,7 @@ public class MulitiLanguageProvider implements DataProvider {
     public MulitiLanguageProvider(DataGenerator gen, String modid, DatagenConfig config, String root, ITranslator translator) {
         this.config = config;
         languageProviderMap = new HashMap<>();
+        missingTranslationsMap = new HashMap<>();
         List<Language> targetLanguages = config.getLanguageCodesUsed();
         targetLanguages.forEach(locale -> languageProviderMap.put(locale, new LanguageProviderHelper(gen, modid, locale, config)));
         languageProviderMap.put(config.getMainLanguageCode(), new LanguageProviderHelper(gen, modid, config.getMainLanguageCode(), config));
@@ -81,20 +86,28 @@ public class MulitiLanguageProvider implements DataProvider {
 
     /**
      * extend this and populate translationMap first before calling this
-     * @param pOutput
+     * @param output
      * @throws IOException
      */
     @Override
-    public void run(CachedOutput pOutput) throws IOException {
+    public void run(CachedOutput output) throws IOException {
+        // FIXME: parse all translations and build a map for missing translations,
+        //  then open translator??
+
+
         Language sourceLanguage = config.getMainLanguageCode();
         Map<String, String> sourceMap = translationMap.getTranslationsForLocale(sourceLanguage);
+
+
+
+
 //        sourceMap.forEach((key, value)-> mainProvider.add(key, value));
-//        mainProvider.run(pOutput);
+//        mainProvider.run(output);
 
         // parse source map and fill in missing key,value pairs (there will be many, especially on the first run)
         List<Language> languageList = config.getLanguageCodesUsed();
         sourceMap.forEach((translationKey, value)->{
-            translator.setInputLanguage(sourceLanguage);
+
             Map<Language, String> translations = translationMap.getTranslationsForKey(translationKey);
             languageList.forEach(lang -> {
 
@@ -109,41 +122,74 @@ public class MulitiLanguageProvider implements DataProvider {
                 }
 
                 if (translatedString.isBlank()) {
-                    NuminaLogger.logDebug("translationKey: " + translationKey + ", language: " + lang.mc_label());
+                    addMissingTranslationKeyToMap(lang, translationKey);
+                }
+            });
+        });
+
+        if (config.getUseAutoWebTranslator()) {
+            parseMissingTranslationsAndAutoTranslate(sourceLanguage, sourceMap);
+        }
+
+        writeOutTranslations(sourceLanguage, sourceMap, output);
+
+        NuminaLogger.logDebug("finished translating");
+    }
+
+    void addMissingTranslationKeyToMap(Language language, String translationKey) {
+        List<String> keysForLang = missingTranslationsMap.getOrDefault(language, new ArrayList<>());
+        if (!keysForLang.contains(translationKey)) {
+            NuminaLogger.logDebug("adding missing translationKey to map: " + translationKey + ", language: " + language.mc_label());
+            keysForLang.add(translationKey);
+            missingTranslationsMap.put(language, keysForLang);
+        }
+    }
+
+    public void parseMissingTranslationsAndAutoTranslate(Language sourceLanguage, Map<String, String> sourceMap) {
+        if (!missingTranslationsMap.isEmpty()) {
+            translator.setInputLanguage(sourceLanguage);
+            missingTranslationsMap.forEach((language, keyList) -> {
+                translator.setOutputLanguage(language);
+                keyList.forEach(translationKey->{
+                    // add parse code here
                     String inputString = sourceMap.getOrDefault(translationKey, "");
                     NuminaLogger.logDebug("inputString: " + inputString);
                     if (!inputString.isBlank()) {
                         translator.setInputString(inputString);
-                        translator.setOutputLanguage(lang);
-                        translatedString = translator.getOutputText();
-                        if (langMapWrappers.containsKey(lang)) {
-                            langMapWrappers.get(lang).addTranslation(translationKey, translatedString);
+                        translator.setOutputLanguage(language);
+                        String translatedString = translator.getOutputText();
+                        if (langMapWrappers.containsKey(language)) {
+                            langMapWrappers.get(language).addTranslation(translationKey, translatedString);
                         }
                     }
-                }
+                });
             });
-        });
-        NuminaLogger.logDebug("finished translationg");
+        }
+    }
 
+    void writeOutTranslations(Language sourceLanguage, Map<String, String> sourceMap, CachedOutput output) {
         // finally generate the output files
         languageProviderMap.forEach((locale, provider) -> {
-                try {
-                    if (locale != sourceLanguage) {
-                        NuminaLogger.logDebug("locale: " + locale.mc_label());
-                        provider.setTranslations(translationMap.getTranslationsForLocale(locale));
-                        if (langMapWrappers.containsKey(locale)) {
-                            Map<String, String> langMapTmp = langMapWrappers.get(locale).getData();
-                            Map<String, String> langMap = new HashMap<>();
-                            sourceMap.keySet().stream().filter(langKey -> !langMapTmp.getOrDefault(langKey, "").isBlank()).toList().forEach(langKey -> langMap.put(langKey, langMap.get(langKey)));
-                            provider.setTranslations(langMap);
-                        }
-                    } else {
-                        provider.setTranslations(sourceMap);
+            try {
+                if (locale != sourceLanguage) {
+                    NuminaLogger.logDebug("locale: " + locale.mc_label());
+                    provider.setTranslations(translationMap.getTranslationsForLocale(locale));
+                    if (langMapWrappers.containsKey(locale)) {
+                        Map<String, String> langMapTmp = langMapWrappers.get(locale).getData();
+                        Map<String, String> langMap = new HashMap<>();
+                        sourceMap.keySet().stream().filter(langKey -> !langMapTmp.getOrDefault(langKey, "").isBlank()).toList().forEach(langKey -> langMap.put(langKey, langMapTmp.get(langKey)));
+                        System.out.println("langMap size: " +langMap.size());
+                        langMap.forEach((langKey,translation)->System.out.println("key: " + langKey + ", value: " + translation));
+
+                        provider.setTranslations(langMap);
                     }
-                    provider.run(pOutput);
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
+                } else {
+                    provider.setTranslations(sourceMap);
                 }
+                provider.run(output);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
         });
     }
 
