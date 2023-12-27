@@ -40,10 +40,7 @@ import lehjr.numina.common.item.ItemUtils;
 import lehjr.numina.common.network.NuminaPackets;
 import lehjr.numina.common.network.packets.serverbound.ModeChangeRequestPacketServerBound;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
 
 import java.util.ArrayList;
 import java.util.List;

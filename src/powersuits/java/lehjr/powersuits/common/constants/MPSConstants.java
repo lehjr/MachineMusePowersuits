@@ -230,7 +230,7 @@ public class MPSConstants {
     public static final String GUI_COMPATIBLE_MODULES = getGUI("compatible.modules");
     public static final String GUI_ENERGY_STORAGE = getGUI("energyStorage");
     public static final String GUI_EQUIPPED_TOTALS = getGUI("equippedTotals");
-    public static final String GUI_INSTALL = getGUI("install");  // FIXME: is this even used?
+    public static final String GUI_INSTALL = getGUI("install");
     public static final String GUI_INSTALL_DESC = getGUI("install.desc");
 
     static String getGUI(String guiString) {

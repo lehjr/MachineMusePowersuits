@@ -139,6 +139,7 @@ public class ModularItemSelectionFrame extends AbstractGuiFrame {
     @Nonnull
     ItemStack getStack(EquipmentSlot type) {
         Player player = Minecraft.getInstance().player;
+        assert player != null; // doubt a null player can open gui
         return ItemUtils.getItemFromEntitySlot(player, type);
     }
 

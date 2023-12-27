@@ -9,6 +9,7 @@ import lehjr.numina.client.render.IconUtils;
 import lehjr.numina.common.string.StringUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
@@ -104,7 +105,7 @@ public class VanillaButton extends Clickable {
         IconUtils.INSTANCE.blit(matrixStack, this.left() + this.width() / 2, this.top(), 200 - this.width() / 2, 46 + i * 20, this.width() / 2, this.height());
         this.renderBg(matrixStack, mouseX, mouseY, partialTicks);
         int j = getFGColor();
-        getMinecraft().screen.drawCenteredString(matrixStack, fontrenderer, this.getLabel(), (int) (this.left() + this.width() / 2), (int) (this.top() + (this.height() - 8) / 2), j | Mth.ceil(this.alpha * 255.0F) << 24);
+        GuiComponent.drawCenteredString(matrixStack, fontrenderer, this.getLabel(), (int) (this.left() + this.width() / 2), (int) (this.top() + (this.height() - 8) / 2), j | Mth.ceil(this.alpha * 255.0F) << 24);
     }
 
     protected void renderBg(PoseStack pPoseStack, int pMouseX, int pMouseY, float frameTime) {
@@ -121,9 +122,12 @@ public class VanillaButton extends Clickable {
 
     @Override
     public List<Component> getToolTip(int x, int y) {
-        if (toolTip.isEmpty()) {
-            return super.getToolTip(x, y);
+        if (this.containsPoint(x, y)) {
+            if (toolTip.isEmpty()) {
+                return super.getToolTip(x, y);
+            }
+            return toolTip;
         }
-        return toolTip;
+        return null;
     }
 }
