@@ -33,6 +33,7 @@ import lehjr.numina.client.model.helper.ModelTransformCalibration;
 import lehjr.numina.client.model.item.armor.ArmorModelInstance;
 import lehjr.numina.client.model.item.armor.HighPolyArmor;
 import lehjr.numina.common.capabilities.NuminaCapabilities;
+import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
 import lehjr.numina.common.capabilities.render.IModelSpec;
 import lehjr.numina.common.capabilities.render.modelspec.JavaPartSpec;
 import lehjr.numina.common.capabilities.render.modelspec.NuminaModelSpecRegistry;
@@ -57,7 +58,9 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 
+import javax.annotation.Nonnull;
 import java.util.Arrays;
 import java.util.Optional;
 
@@ -118,9 +121,12 @@ public class NuminaArmorLayer<T extends LivingEntity, M extends HumanoidModel<T>
     public void renderArmorPiece(PoseStack poseStack, MultiBufferSource bufferIn, T entityIn, EquipmentSlot slotIn, int packedLightIn, A model) {
         ItemStack itemstack = ItemUtils.getItemFromEntitySlot(entityIn, slotIn);
         Optional<IModelSpec> renderCapabity = getRenderCapability(itemstack);
-
         if (itemstack.getItem() instanceof ArmorItem armoritem && itemstack.getCapability(NuminaCapabilities.RENDER).isPresent()) {
             if (armoritem.getSlot() == slotIn) {
+                if (doesBypassRender(itemstack)) {
+                    return;
+                }
+
                 renderCapabity.ifPresent(renderCap->{
                     CompoundTag renderTag = renderCap.getRenderTagOrDefault();
 //                    if (renderTag == null || renderTag.isEmpty()) {
@@ -129,6 +135,7 @@ public class NuminaArmorLayer<T extends LivingEntity, M extends HumanoidModel<T>
 //                            NuminaPackets.CHANNEL_INSTANCE.sendToServer(new CosmeticInfoPacketServerBound(slotIn, TagConstants.RENDER, renderTag));
 //                        }
 //                    }
+
                     if (renderTag != null && !renderTag.isEmpty()) {
                         int[] colors = renderTag.getIntArray(TagConstants.COLORS);
                         if (colors.length == 0) {
@@ -192,6 +199,18 @@ public class NuminaArmorLayer<T extends LivingEntity, M extends HumanoidModel<T>
             super.renderArmorPiece(poseStack, bufferIn, entityIn, slotIn, packedLightIn, model);
         }
     }
+
+    final ResourceLocation powersuitsTransparentArmor = new ResourceLocation("powersuits", "transparent_armor");
+
+    boolean doesBypassRender(@Nonnull ItemStack itemStack) {
+        return itemStack.getCapability(ForgeCapabilities.ITEM_HANDLER)
+                .filter(IModularItem.class::isInstance)
+                .map(IModularItem.class::cast)
+                .map(handler -> handler.isModuleOnline(powersuitsTransparentArmor))
+                .orElse(false);
+    }
+
+
 
     VertexConsumer getVertexConsumer(MultiBufferSource buffer, ResourceLocation location, boolean glow) {
         if (glow) {

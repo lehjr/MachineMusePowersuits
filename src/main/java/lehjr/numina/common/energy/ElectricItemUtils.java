@@ -140,11 +140,11 @@ public class ElectricItemUtils {
     /**
      * returns the energy an itemStack has
      */
-    public static int drainItem(@Nonnull ItemStack itemStack, int drainAmount, boolean simulate) {
+    public static int drainItem(@Nonnull ItemStack itemStack, double drainAmount, boolean simulate) {
         if (BlackList.blacklistModIds.contains(ItemUtils.getRegistryName(itemStack).getNamespace())) {
             return 0;
         }
-        return itemStack.getCapability(ForgeCapabilities.ENERGY).filter(iEnergyStorage -> iEnergyStorage.getMaxEnergyStored() >= getMaxEnergyForComparison()).map(energyHandler -> energyHandler.extractEnergy(drainAmount, simulate)).orElse(0);
+        return itemStack.getCapability(ForgeCapabilities.ENERGY).filter(iEnergyStorage -> iEnergyStorage.getMaxEnergyStored() >= getMaxEnergyForComparison()).map(energyHandler -> energyHandler.extractEnergy((int)drainAmount, simulate)).orElse(0);
     }
 
     /**
@@ -162,8 +162,8 @@ public class ElectricItemUtils {
         return itemStack.getCapability(ForgeCapabilities.ENERGY).filter(iEnergyStorage -> iEnergyStorage.getMaxEnergyStored() >= getMaxEnergyForComparison()).map(energyHandler -> energyHandler.getMaxEnergyStored()).orElse(0);
     }
 
-    public static int chargeItem(@Nonnull ItemStack itemStack, int chargeAmount, boolean simulate) {
-        return itemStack.getCapability(ForgeCapabilities.ENERGY).map(energyHandler -> energyHandler.receiveEnergy(chargeAmount, simulate)).orElse(0);
+    public static int chargeItem(@Nonnull ItemStack itemStack, double chargeAmount, boolean simulate) {
+        return itemStack.getCapability(ForgeCapabilities.ENERGY).map(energyHandler -> energyHandler.receiveEnergy((int)chargeAmount, simulate)).orElse(0);
     }
 
     /**

@@ -165,4 +165,106 @@ public class RailgunModule extends AbstractPowerModule {
             return LazyOptional.empty();
         }
     }
+
+// OLD code below... or at least the relavant part
+//        public RailgunModule(List<IModularItem> validItems) {
+//            super(validItems);
+//            // particles = Arrays.asList("smoke", "snowballpoof", "portal",
+//            // "splash", "bubble", "townaura",
+//            // "hugeexplosion", "flame", "heart", "crit", "magicCrit", "note",
+//            // "enchantmenttable", "lava", "footstep", "reddust", "dripWater",
+//            // "dripLava", "slime");
+//            // iterator = particles.iterator();
+//            addInstallCost(MuseItemUtils.copyAndResize(ItemComponent.solenoid, 6));
+//            addInstallCost(MuseItemUtils.copyAndResize(ItemComponent.hvcapacitor, 1));
+//            addBaseProperty(IMPULSE, 500, "Ns");
+//            addBaseProperty(ENERGY, 500, "J");
+//            addBaseProperty(HEAT, 2, "");
+//            addTradeoffProperty("Voltage", IMPULSE, 2500);
+//            addTradeoffProperty("Voltage", ENERGY, 2500);
+//            addTradeoffProperty("Voltage", HEAT, 10);
+//        }
+
+//        public void drawParticleStreamTo(Player source, Level world, double x, double y, double z) {
+//            Vec3d direction = source.getLookVec().normalize();
+//            double scale = 1.0;
+//            double xoffset = 1.3f;
+//            double yoffset = -.2;
+//            double zoffset = 0.3f;
+//            Vec3d horzdir = direction.normalize();
+//            horzdir = new Vec3d(horzdir.xCoord, 0, horzdir.zCoord);
+//            horzdir = horzdir.normalize();
+//            double cx = source.posX + direction.xCoord * xoffset - direction.yCoord * horzdir.xCoord * yoffset - horzdir.zCoord * zoffset;
+//            double cy = source.posY + source.getEyeHeight() + direction.yCoord * xoffset + (1 - Math.abs(direction.yCoord)) * yoffset;
+//            double cz = source.posZ + direction.zCoord * xoffset - direction.yCoord * horzdir.zCoord * yoffset + horzdir.xCoord * zoffset;
+//            double dx = x - cx;
+//            double dy = y - cy;
+//            double dz = z - cz;
+//            double ratio = Math.sqrt(dx * dx + dy * dy + dz * dz);
+//
+//            while (Math.abs(cx - x) > Math.abs(dx / ratio)) {
+//                world.spawnParticle(EnumParticleTypes.TOWN_AURA, cx, cy, cz, 0.0D, 0.0D, 0.0D);
+//                cx += dx * 0.1 / ratio;
+//                cy += dy * 0.1 / ratio;
+//                cz += dz * 0.1 / ratio;
+//            }
+//        }
+//
+//        @Override
+//        public ActionResult onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn, EnumHand hand) {
+//            if (hand == EnumHand.MAIN_HAND) {
+//                double range = 64;
+//                double timer = MuseItemUtils.getDoubleOrZero(itemStackIn, TIMER);
+//                double energyConsumption = ModuleManager.computeModularProperty(itemStackIn, ENERGY);
+//                if (ElectricItemUtils.getPlayerEnergy(playerIn) > energyConsumption && timer == 0) {
+//                    ElectricItemUtils.drainPlayerEnergy(playerIn, energyConsumption);
+//                    MuseItemUtils.setDoubleOrRemove(itemStackIn, TIMER, 10);
+//                    MuseHeatUtils.heatPlayer(playerIn, ModuleManager.computeModularProperty(itemStackIn, HEAT));
+//                    RayTraceResult hitMOP = MusePlayerUtils.doCustomRayTrace(playerIn.worldObj, playerIn, true, range);
+//                    // TODO: actual railgun sound
+//                    worldIn.playSound(playerIn, playerIn.getPosition(), SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.PLAYERS, 0.5F, 0.4F / ((float) Math.random() * 0.4F + 0.8F));
+//                    double damage = ModuleManager.computeModularProperty(itemStackIn, IMPULSE) / 100.0;
+//                    double knockback = damage / 20.0;
+//                    Vec3d lookVec = playerIn.getLookVec();
+//                    if (hitMOP != null) {
+//                        switch (hitMOP.typeOfHit) {
+//                            case ENTITY:
+//                                drawParticleStreamTo(playerIn, worldIn, hitMOP.hitVec.xCoord, hitMOP.hitVec.yCoord, hitMOP.hitVec.zCoord);
+//                                DamageSource damageSource = DamageSource.causePlayerDamage(playerIn);
+//                                if (hitMOP.entityHit.attackEntityFrom(damageSource, (int) damage)) {
+//                                    hitMOP.entityHit.addVelocity(lookVec.xCoord * knockback, Math.abs(lookVec.yCoord + 0.2f) * knockback, lookVec.zCoord
+//                                            * knockback);
+//                                }
+//                                break;
+//                            case BLOCK:
+//                                drawParticleStreamTo(playerIn, worldIn, hitMOP.hitVec.xCoord, hitMOP.hitVec.yCoord, hitMOP.hitVec.zCoord);
+//                                break;
+//                            default:
+//                                break;
+//                        }
+//                        playerIn.addVelocity(-lookVec.xCoord * knockback, Math.abs(-lookVec.yCoord + 0.2f) * knockback, -lookVec.zCoord * knockback);
+//
+//                        worldIn.playSound(playerIn, playerIn.getPosition(), SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.PLAYERS, 0.5F, 0.4F / ((float) Math.random() * 0.4F + 0.8F));
+//                    }
+//                    playerIn.setActiveHand(hand);
+//                    return new ActionResult(EnumActionResult.SUCCESS, itemStackIn);
+//                }
+//            }
+//            return new ActionResult(EnumActionResult.PASS, itemStackIn);
+//        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }

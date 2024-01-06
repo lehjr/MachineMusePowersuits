@@ -376,7 +376,9 @@ dependencies {
         transitive = false
     }
 
-
+//    implementation fg.deobf("curse.maven:ic2-classic-242942:4879119") {
+//        transitive = false
+//    }
 
 
 

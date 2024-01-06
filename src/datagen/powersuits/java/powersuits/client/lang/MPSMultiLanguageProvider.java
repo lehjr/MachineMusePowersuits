@@ -76,10 +76,9 @@ public class MPSMultiLanguageProvider extends MulitiLanguageProvider {
         addItemDescriptions(MPSItems.ENERGY_SHIELD_MODULE.get(), mainLanguage, "Energy shields are much lighter than plating, but consume energy.");
 
         // Cosmetic ====================================================================================
-        // Active Camouflage ---------------------------------------------------------------------------
-        add(MPSItems.TRANSPARENT_ARMOR_MODULE.get(), mainLanguage, "Active Camouflage");
-
-        addItemDescriptions(MPSItems.TRANSPARENT_ARMOR_MODULE.get(), mainLanguage, "Emit a hologram of your surroundings to make yourself almost imperceptible.");
+        // Transparent Armor ---------------------------------------------------------------------------
+        add(MPSItems.TRANSPARENT_ARMOR_MODULE.get(), mainLanguage, "Transparent Armor");
+        addItemDescriptions(MPSItems.TRANSPARENT_ARMOR_MODULE.get(), mainLanguage, "Make the item transparent, so you can show off your skin without losing armor.");
 
         // Energy Generation ===========================================================================
         // Coal Generator ------------------------------------------------------------------------------
@@ -228,10 +227,9 @@ public class MPSMultiLanguageProvider extends MulitiLanguageProvider {
         addItemDescriptions(MPSItems.SWIM_BOOST_MODULE.get(), mainLanguage, "By refitting an ion thruster for underwater use, you may be able to add extra forward (or backward) thrust when underwater.");
 
         // Special =====================================================================================
-        // Transparent Armor ---------------------------------------------------------------------------
-        add(MPSItems.ACTIVE_CAMOUFLAGE_MODULE.get(), mainLanguage, "Transparent Armor");
-
-        addItemDescriptions(MPSItems.ACTIVE_CAMOUFLAGE_MODULE.get(), mainLanguage, "Make the item transparent, so you can show off your skin without losing armor.");
+        // Active Camouflage ---------------------------------------------------------------------------
+        add(MPSItems.ACTIVE_CAMOUFLAGE_MODULE.get(), mainLanguage, "Active Camouflage");
+        addItemDescriptions(MPSItems.ACTIVE_CAMOUFLAGE_MODULE.get(), mainLanguage, "Emit a hologram of your surroundings to make yourself almost imperceptible.");
 
         // Magnet --------------------------------------------------------------------------------------
         add(MPSItems.MAGNET_MODULE.get(), mainLanguage, "Magnet");
