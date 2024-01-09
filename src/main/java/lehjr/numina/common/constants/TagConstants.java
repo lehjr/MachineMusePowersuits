@@ -4,8 +4,9 @@ public class TagConstants {
     public static final String TAG_ITEM_PREFIX = "MMModItem";// Machine Muse Mod
     public static final String TAG_MODULE_PREFIX = "MMModModule";// Machine Muse Mod Module
     public static final String MODULE_TRADEOFF_PREFIX = "module.tradeoff.";
-    public static final String TAG_MODULES = "Modules"; // ModularItemHandler tag
     public static final String TAG_MODULE_SETTINGS = "Module Settings";
+    public static final String MODE = "Mode";
+
     public static final String BLOCK = "block";
 
     // Toggleable ---------------------------------------------------------------------------------

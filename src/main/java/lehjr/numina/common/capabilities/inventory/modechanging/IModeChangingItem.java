@@ -180,13 +180,13 @@ public interface IModeChangingItem extends IModularItem {
                 .map(m -> m.useOn(context)).orElse(fallback);
     }
 
-    default ItemStack finishUsingItem(ItemStack stack, Level worldIn, LivingEntity entity) {
-        return getActiveModule().getCapability(NuminaCapabilities.POWER_MODULE)
-                .filter(IRightClickModule.class::isInstance)
-                .map(IRightClickModule.class::cast)
-                .map(m -> m.finishUsingItem(stack, worldIn, entity))
-                .orElse(stack);
-    }
+//    default ItemStack finishUsingItem(ItemStack stack, Level worldIn, LivingEntity entity) {
+//        return getActiveModule().getCapability(NuminaCapabilities.POWER_MODULE)
+//                .filter(IRightClickModule.class::isInstance)
+//                .map(IRightClickModule.class::cast)
+//                .map(m -> m.finishUsingItem(stack, worldIn, entity))
+//                .orElse(stack);
+//    }
 
     default void releaseUsing(ItemStack stack, Level worldIn, LivingEntity entityLiving, int timeLeft) {
         getActiveModule().getCapability(NuminaCapabilities.POWER_MODULE)

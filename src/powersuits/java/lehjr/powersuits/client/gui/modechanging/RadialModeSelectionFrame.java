@@ -129,13 +129,11 @@ public class RadialModeSelectionFrame extends AbstractGuiFrame {
 
     private void selectModule(double x, double y) {
         if (modeButtons != null) {
-            int i = 0;
-            for (ClickableModule module : modeButtons) {
-                if (module.containsPoint(x, y)) {
+            for(int i =0; i<modeButtons.size(); i++ ) {
+                if (modeButtons.get(i).containsPoint(x, y)) {
                     selectedModuleNew = i;
                     break;
                 }
-                i++;
             }
         }
     }

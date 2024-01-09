@@ -16,9 +16,6 @@ public class LangMapWrapper {
     String filePath;
 
     public LangMapWrapper(File jsonFile) {
-        System.out.println("file: " + jsonFile.getAbsolutePath() + " exists: " + jsonFile.exists());
-
-
         loadAndParse(jsonFile);
         this.filePath = jsonFile.getAbsolutePath();
     }

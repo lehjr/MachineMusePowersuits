@@ -97,6 +97,9 @@ public class RailgunModule extends AbstractPowerModule {
             });
         }
 
+        /**
+         * using a ticking module to provide a timeout mechanic
+         */
         class Ticker extends PlayerTickModule implements IRightClickModule {
             public Ticker(@Nonnull ItemStack module, ModuleCategory category, ModuleTarget target, Callable<IConfig> config) {
                 super(module, category, target, config, true);
@@ -111,17 +114,16 @@ public class RailgunModule extends AbstractPowerModule {
             }
 
             @Override
-            public InteractionResultHolder<ItemStack>  use(ItemStack itemStack, Level level, Player player, InteractionHand hand) {
+            public InteractionResultHolder<ItemStack> use(ItemStack itemStack, Level level, Player player, InteractionHand hand) {
                 if (hand == InteractionHand.MAIN_HAND) {
                     double range = 200;
                     double timer = TagUtils.getModularItemDoubleOrZero(itemStack, MPSConstants.TIMER);
                     double energyConsumption = getEnergyUsage();
                     if (ElectricItemUtils.getPlayerEnergy(player) > energyConsumption && timer == 0) {
                         ElectricItemUtils.drainPlayerEnergy(player, (int) energyConsumption, false);
-                        TagUtils.setModularItemDoubleOrRemove(itemStack, MPSConstants.TIMER, 10);
+                        TagUtils.setModularItemDoubleOrRemove(itemStack, MPSConstants.TIMER, 15);
                         HeatUtils.heatPlayer(player, applyPropertyModifiers(MPSConstants.RAILGUN_HEAT_EMISSION));
                         HitResult hitResult = rayTrace(player, range);
-
                         if (hitResult != null) {
                             float damage = (float) (applyPropertyModifiers(MPSConstants.RAILGUN_TOTAL_IMPULSE) / 100.0);
                             double knockback = damage / 20.0;
@@ -159,6 +161,11 @@ public class RailgunModule extends AbstractPowerModule {
                     return InteractionResultHolder.success(itemStack);
                 }
                 return InteractionResultHolder.pass(itemStack);
+            }
+
+            @Override
+            public void releaseUsing(ItemStack stack, Level worldIn, LivingEntity entityLiving, int timeLeft) {
+                IRightClickModule.super.releaseUsing(stack, worldIn, entityLiving, timeLeft);
             }
 
             @Override
@@ -215,9 +222,6 @@ public class RailgunModule extends AbstractPowerModule {
     }
 
     public void drawParticleStreamTo(Player source, Level level, double x, double y, double z) {
-        System.out.println("draw particles");
-
-
         Vec3 direction = source.getLookAngle().normalize();
         double xoffset = 1.3f;
         double yoffset = -.2;
@@ -239,5 +243,10 @@ public class RailgunModule extends AbstractPowerModule {
             cy += dy * 0.1 / ratio;
             cz += dz * 0.1 / ratio;
         }
+    }
+
+    @Override
+    public int getUseDuration(ItemStack pStack) {
+        return 25;
     }
 }

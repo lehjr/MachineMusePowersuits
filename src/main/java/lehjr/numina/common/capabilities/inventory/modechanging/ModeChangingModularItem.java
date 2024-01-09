@@ -31,13 +31,16 @@ import lehjr.numina.common.capabilities.inventory.modularitem.ModularItem;
 import lehjr.numina.common.capabilities.module.externalitems.IOtherModItemsAsModules;
 import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
 import lehjr.numina.common.capabilities.module.rightclick.IRightClickModule;
+import lehjr.numina.common.constants.TagConstants;
 import lehjr.numina.common.item.ItemUtils;
 import lehjr.numina.common.network.NuminaPackets;
 import lehjr.numina.common.network.packets.serverbound.ModeChangeRequestPacketServerBound;
+import lehjr.numina.common.tags.TagUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -57,7 +60,7 @@ public class ModeChangingModularItem extends ModularItem implements IModeChangin
 
 //    public static String uniqueID = "";
 
-    protected static int activeMode;
+    protected static int activeMode = -1;
 
     public ModeChangingModularItem(@Nonnull ItemStack modularItem, int size) {
         this(modularItem, NonNullList.withSize(size, ItemStack.EMPTY));
@@ -234,4 +237,22 @@ public class ModeChangingModularItem extends ModularItem implements IModeChangin
         }
         return false;
    }
+
+    @Override
+    public CompoundTag serializeNBT() {
+        CompoundTag tag =  super.serializeNBT();
+        int mode = getActiveMode();
+        if (mode != -1) {
+            tag.putInt(TagConstants.MODE, mode);
+        }
+        return tag;
+    }
+
+    @Override
+    public void deserializeNBT(CompoundTag nbt) {
+        if (nbt.contains(TagConstants.MODE, Tag.TAG_INT)) {
+            activeMode = nbt.getInt(TagConstants.MODE);
+        }
+        super.deserializeNBT(nbt);
+    }
 }

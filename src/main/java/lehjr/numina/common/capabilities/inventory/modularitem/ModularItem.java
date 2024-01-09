@@ -39,6 +39,7 @@ import lehjr.numina.common.tags.TagUtils;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
+import net.minecraft.network.chat.contents.NbtContents;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.Mob;
@@ -51,10 +52,7 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class ModularItem extends ItemStackHandler implements IModularItem, CapabilityUpdate {
     final boolean isTool;
@@ -310,14 +308,19 @@ public class ModularItem extends ItemStackHandler implements IModularItem, Capab
     @Override
     protected void onContentsChanged(final int slot) {
         super.onContentsChanged(slot);
-        modularItem.addTagElement(TagConstants.TAG_MODULE_SETTINGS, serializeNBT());
+//        modularItem.addTagElement(TagConstants.TAG_MODULE_SETTINGS, serializeNBT());
+        modularItem.addTagElement(TagConstants.TAG_ITEM_PREFIX, serializeNBT());
     }
 
     @Override
     public void loadCapValues() {
         final CompoundTag nbt = getModularItemStack().getOrCreateTag();
         if (nbt.contains(TagConstants.TAG_MODULE_SETTINGS, Tag.TAG_COMPOUND)) {
-            deserializeNBT((CompoundTag) nbt.get(TagConstants.TAG_MODULE_SETTINGS));
+            nbt.put(TagConstants.TAG_ITEM_PREFIX, Objects.requireNonNull(nbt.get(TagConstants.TAG_MODULE_SETTINGS)));
+            nbt.remove(TagConstants.TAG_MODULE_SETTINGS);
+        }
+        if(nbt.contains(TagConstants.TAG_ITEM_PREFIX)) {
+            deserializeNBT((CompoundTag) nbt.get(TagConstants.TAG_ITEM_PREFIX));
         }
     }
 

@@ -164,13 +164,13 @@ public class PowerFist extends AbstractElectricTool {
                 ).orElse(super.interactLivingEntity(itemStackIn, player, entity, hand));
     }
 
-    @Override
-    public ItemStack finishUsingItem(ItemStack stack, Level worldIn, LivingEntity entity) {
-        return stack.getCapability(ForgeCapabilities.ITEM_HANDLER)
-                .filter(IModeChangingItem.class::isInstance)
-                .map(IModeChangingItem.class::cast)
-                .map(handler-> finishUsingItem(stack, worldIn, entity)).orElse(stack);
-    }
+//    @Override
+//    public ItemStack finishUsingItem(ItemStack stack, Level worldIn, LivingEntity entity) {
+//        return stack.getCapability(ForgeCapabilities.ITEM_HANDLER)
+//                .filter(IModeChangingItem.class::isInstance)
+//                .map(IModeChangingItem.class::cast)
+//                .map(handler-> finishUsingItem(stack, worldIn, entity)).orElse(stack);
+//    }
 
     @Override
     public void releaseUsing(ItemStack stack, Level worldIn, LivingEntity entityLiving, int timeLeft) {
