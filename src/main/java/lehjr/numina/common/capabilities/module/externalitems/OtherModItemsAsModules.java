@@ -14,6 +14,10 @@ public class OtherModItemsAsModules extends RightClickModule implements IOtherMo
         super(module, category, ModuleTarget.TOOLONLY, moduleConfigGetterIn);
     }
 
+    public OtherModItemsAsModules(@NotNull ItemStack module, ModuleTarget target, ModuleCategory category, Callable<IConfig> moduleConfigGetterIn) {
+        super(module, category, target, moduleConfigGetterIn);
+    }
+
     @Override
     public void setModuleStack(@NotNull ItemStack stack) {
         super.module = stack;

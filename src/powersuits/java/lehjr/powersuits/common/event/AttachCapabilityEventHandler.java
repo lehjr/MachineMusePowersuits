@@ -210,9 +210,10 @@ public class AttachCapabilityEventHandler {
         }
     }
 
-    static void addCapabilityToItem(AttachCapabilitiesEvent<ItemStack> event, ResourceLocation capName, @Nonnull ItemStack module, ModuleCategory category) {
+
+    static void addCapabilityToItem(AttachCapabilitiesEvent<ItemStack> event, ModuleTarget target, ResourceLocation capName, @Nonnull ItemStack module, ModuleCategory category) {
         event.addCapability(capName, new ICapabilityProvider() {
-            final OtherModItemsAsModules powerModule = new OtherModItemsAsModules(module, category, MPSSettings::getModuleConfig) {
+            final OtherModItemsAsModules powerModule = new OtherModItemsAsModules(module, target, category, MPSSettings::getModuleConfig) {
                 @Override
                 public boolean isAllowed() {
                     return true;
@@ -230,5 +231,9 @@ public class AttachCapabilityEventHandler {
                 return LazyOptional.empty();
             }
         });
+    }
+
+    static void addCapabilityToItem(AttachCapabilitiesEvent<ItemStack> event, ResourceLocation capName, @Nonnull ItemStack module, ModuleCategory category) {
+        addCapabilityToItem(event, ModuleTarget.TOOLONLY, capName, module, category);
     }
 }

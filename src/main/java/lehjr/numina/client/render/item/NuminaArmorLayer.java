@@ -210,8 +210,6 @@ public class NuminaArmorLayer<T extends LivingEntity, M extends HumanoidModel<T>
                 .orElse(false);
     }
 
-
-
     VertexConsumer getVertexConsumer(MultiBufferSource buffer, ResourceLocation location, boolean glow) {
         if (glow) {
 //            return ItemRenderer.getArmorFoilBuffer(buffer, RenderType.beaconBeam(location, true), false, glow);

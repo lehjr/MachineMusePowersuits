@@ -52,6 +52,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 public class PowerArmorCap implements ICapabilityProvider {
     final ItemStack itemStack;
@@ -187,6 +188,15 @@ public class PowerArmorCap implements ICapabilityProvider {
             return fluidCapability;
         }
 
+        // Try this and see if it works
+        for (int i=0; i < modularItem.getSlots(); i++) {
+            ItemStack module = modularItem.getStackInSlot(i);
+            if (!module.isEmpty()) {
+                if (module.getCapability(cap).isPresent()) {
+                    return module.getCapability(cap);
+                }
+            }
+        }
         return LazyOptional.empty();
     }
 
