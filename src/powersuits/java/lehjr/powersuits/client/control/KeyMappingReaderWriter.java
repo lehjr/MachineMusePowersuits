@@ -220,7 +220,7 @@ public enum KeyMappingReaderWriter {
                         if (finalId != null) {
                             kb.setKeyInternal(finalId);
                         }
-                        kb.toggleval = finalToggleval; // Not saved or loaded in new system
+                        kb.toggleVal = finalToggleval; // Not saved or loaded in new system
                     });
                 }
             }

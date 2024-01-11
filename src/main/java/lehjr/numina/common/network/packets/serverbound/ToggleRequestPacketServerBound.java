@@ -42,10 +42,6 @@ public record ToggleRequestPacketServerBound(ResourceLocation registryName, bool
                 ResourceLocation registryName = message.registryName;
                 boolean toggleval = message.toggleval;
 
-                if (player == null) {
-                    return;
-                }
-
                 for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
                     player.getInventory().getItem(i).getCapability(ForgeCapabilities.ITEM_HANDLER)
                             .filter(IModularItem.class::isInstance)

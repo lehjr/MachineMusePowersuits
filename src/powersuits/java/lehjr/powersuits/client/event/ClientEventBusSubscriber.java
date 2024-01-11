@@ -54,7 +54,7 @@ public class ClientEventBusSubscriber {
 
     @SubscribeEvent
     public static void registerOverlay(RegisterGuiOverlaysEvent event) {
-        event.registerAboveAll("mps_keybinds", MPSKeyBindHud.KEYMAPING_HUD);
+        event.registerAboveAll("mps_keybinds", MPSKeyBindHud.MPS_KEYBIND_OVERLAY);
         event.registerAboveAll("mps_hud", MPSKeyBindHud.MPS_HUD);
     }
 }

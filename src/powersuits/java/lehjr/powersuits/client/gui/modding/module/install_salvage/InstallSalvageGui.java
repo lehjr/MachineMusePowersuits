@@ -13,7 +13,8 @@ import lehjr.powersuits.client.gui.common.TabSelectFrame;
 import lehjr.powersuits.common.constants.MPSConstants;
 import lehjr.powersuits.common.container.InstallSalvageMenu;
 import lehjr.powersuits.common.network.MPSPackets;
-import lehjr.powersuits.common.network.packets.CreativeInstallPacket;
+import lehjr.powersuits.common.network.packets.clientbound.CreativeInstallPacketClientBound;
+import lehjr.powersuits.common.network.packets.serverbound.CreativeInstallPacketServerBound;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
@@ -64,7 +65,7 @@ public class InstallSalvageGui extends ExtendedContainerScreen<InstallSalvageMen
         itemSelectFrame.getCreativeInstallButton().setOnPressed(pressed -> {
             itemSelectFrame.getCreativeInstallButton().playDownSound(Minecraft.getInstance().getSoundManager());
             moduleSelectFrame.getSelectedModule().ifPresent(clickie -> {
-                MPSPackets.CHANNEL_INSTANCE.sendToServer(new CreativeInstallPacket(itemSelectFrame.selectedType().get(), ItemUtils.getRegistryName(clickie.getModule())));
+                MPSPackets.CHANNEL_INSTANCE.sendToServer(new CreativeInstallPacketServerBound(itemSelectFrame.selectedType().get(), ItemUtils.getRegistryName(clickie.getModule())));
             });
         });
 

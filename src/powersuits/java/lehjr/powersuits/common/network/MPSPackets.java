@@ -28,7 +28,8 @@ package lehjr.powersuits.common.network;
 
 import lehjr.powersuits.common.constants.MPSConstants;
 import lehjr.powersuits.common.network.packets.ContainerGuiOpenPacket;
-import lehjr.powersuits.common.network.packets.CreativeInstallPacket;
+import lehjr.powersuits.common.network.packets.clientbound.CreativeInstallPacketClientBound;
+import lehjr.powersuits.common.network.packets.serverbound.CreativeInstallPacketServerBound;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.network.NetworkRegistry;
 import net.minecraftforge.network.simple.SimpleChannel;
@@ -48,10 +49,17 @@ public class MPSPackets {
 
         CHANNEL_INSTANCE.registerMessage(
                 i++,
-                CreativeInstallPacket.class,
-                CreativeInstallPacket::write,
-                CreativeInstallPacket::read,
-                CreativeInstallPacket::handle);
+                CreativeInstallPacketClientBound.class,
+                CreativeInstallPacketClientBound::write,
+                CreativeInstallPacketClientBound::read,
+                CreativeInstallPacketClientBound::handle);
+
+        CHANNEL_INSTANCE.registerMessage(
+                i++,
+                CreativeInstallPacketServerBound.class,
+                CreativeInstallPacketServerBound::write,
+                CreativeInstallPacketServerBound::read,
+                CreativeInstallPacketServerBound.Handler::handle);
 
 //        CHANNEL_INSTANCE.registerMessage(
 //                i++,

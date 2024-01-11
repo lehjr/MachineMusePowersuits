@@ -26,10 +26,15 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class MPSKeyBindHud {
     // TODO: come up with a way to keep KB and overlay items from overlapping
+
+    public static final IGuiOverlay MPS_METER_OVERLAY = ((gui, poseStack, partialTick, screenWidth, screenHeight) -> {
+
+    });
+
 
 
     public static final IGuiOverlay MPS_HUD = ((gui, poseStack, partialTick, screenWidth, screenHeight) -> {
@@ -37,7 +42,7 @@ public class MPSKeyBindHud {
     });
 
     static List<KBDisplay> kbDisplayList = new ArrayList<>();
-    public static final IGuiOverlay KEYMAPING_HUD = ((gui, poseStack, partialTick, screenWidth, screenHeight) -> {
+    public static final IGuiOverlay MPS_KEYBIND_OVERLAY = ((gui, poseStack, partialTick, screenWidth, screenHeight) -> {
         Minecraft minecraft = gui.getMinecraft();
         LocalPlayer player = minecraft.player;
 
@@ -97,16 +102,10 @@ public class MPSKeyBindHud {
         @Override
         public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTick) {
             float stringwidth = (float) StringUtils.getFontRenderer().width(getLabel());
-            setWidth(stringwidth + 8 + boundKeybinds.stream().filter(kb->kb.showOnHud).collect(Collectors.toList()).size() * 18);
+            setWidth(stringwidth + 8 + boundKeybinds.stream().filter(kb->kb.showOnHud).toList().size() * 18);
             super.render(matrixStack, 0, 0, partialTick);
-            matrixStack.pushPose();
-            matrixStack.translate(0,0,100);
-            boolean kbToggleVal = boundKeybinds.stream().filter(kb->kb.toggleval).findFirst().isPresent();
-
-            StringUtils.drawLeftAlignedText(matrixStack, getLabel(), (float) left() + 4, (float) top() + 9, (kbToggleVal) ? Color.RED : Color.GREEN);
-            matrixStack.popPose();
+            AtomicBoolean kbToggleVal = new AtomicBoolean(false);
             AtomicDouble x = new AtomicDouble(left() + stringwidth + 8);
-
             boundKeybinds.stream().filter(kb ->kb.showOnHud).forEach(kb ->{
                 boolean active = false;
                 // just using the icon
@@ -119,20 +118,23 @@ public class MPSKeyBindHud {
                             .map(iItemHandler -> {
                                 if (iItemHandler instanceof IModeChangingItem) {
                                     return ((IModeChangingItem) iItemHandler).hasActiveModule(kb.registryName);
-
-
 //                                    return ((IModeChangingItem) iItemHandler).isModuleActiveAndOnline(kb.registryName);
                                 }
                                 return iItemHandler.isModuleOnline(kb.registryName);
                             }).orElse(false);
                     // stop at the first active instance
                     if(active) {
+                        kbToggleVal.set(true);
                         break;
                     }
                 }
                 NuminaRenderer.drawModuleAt(matrixStack, x.get(), top(), module, active);
                 x.getAndAdd(16);
             });
+            matrixStack.pushPose();
+            matrixStack.translate(0,0,100);
+            StringUtils.drawLeftAlignedText(matrixStack, getLabel(), (float) left() + 4, (float) top() + 9, (kbToggleVal.get()) ? Color.GREEN : Color.RED);
+            matrixStack.popPose();
         }
     }
 }

@@ -1,4 +1,4 @@
-package lehjr.powersuits.common.network.packets;
+package lehjr.powersuits.common.network.packets.clientbound;
 
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
 import lehjr.numina.common.item.ItemUtils;
@@ -17,34 +17,17 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.function.Supplier;
 
-public class CreativeInstallPacket {
-    protected EquipmentSlot slotType;
-    protected ResourceLocation regName;
-
-    public CreativeInstallPacket() {
-    }
-
-    public CreativeInstallPacket(EquipmentSlot slotType, ResourceLocation regName) {
-        this.slotType = slotType;
-        this.regName = regName;
-    }
-
-    public static void write(CreativeInstallPacket msg, FriendlyByteBuf packetBuffer) {
+public record CreativeInstallPacketClientBound (EquipmentSlot slotType, ResourceLocation regName) {
+    public static void write(CreativeInstallPacketClientBound msg, FriendlyByteBuf packetBuffer) {
         packetBuffer.writeEnum(msg.slotType);
         packetBuffer.writeResourceLocation(msg.regName);
     }
 
-    public static CreativeInstallPacket read(FriendlyByteBuf packetBuffer) {
-        return new CreativeInstallPacket(packetBuffer.readEnum(EquipmentSlot.class), packetBuffer.readResourceLocation());
+    public static CreativeInstallPacketClientBound read(FriendlyByteBuf packetBuffer) {
+        return new CreativeInstallPacketClientBound(packetBuffer.readEnum(EquipmentSlot.class), packetBuffer.readResourceLocation());
     }
 
-    public static void sendToClient(ServerPlayer entity, EquipmentSlot slotType, ResourceLocation regName) {
-        NuminaPackets.CHANNEL_INSTANCE.send(PacketDistributor.PLAYER.with(() -> entity),
-                new CreativeInstallPacket(slotType, regName));
-    }
-
-
-    public static void handle(CreativeInstallPacket message, Supplier<NetworkEvent.Context> ctx) {
+    public static void handle(CreativeInstallPacketClientBound message, Supplier<NetworkEvent.Context> ctx) {
         ctx.get().enqueueWork(() -> {
             final Player player = ctx.get().getSender();
             EquipmentSlot slotType = message.slotType;
@@ -66,10 +49,6 @@ public class CreativeInstallPacket {
                             }
                         }
                     });
-
-            if (player instanceof ServerPlayer) {
-                sendToClient((ServerPlayer) player, slotType, regName);
-            }
         });
         ctx.get().setPacketHandled(true);
     }

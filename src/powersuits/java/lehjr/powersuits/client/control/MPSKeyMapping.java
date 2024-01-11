@@ -9,22 +9,26 @@ import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 
 public class MPSKeyMapping extends KeyMapping {
     public final ResourceLocation registryName;
     public boolean showOnHud = true;
-    public boolean toggleval = false; // fixme: get value on load?
+    public boolean toggleVal = false; // fixme: get value on load?
 
     public MPSKeyMapping(ResourceLocation registryName, String name, int key, String category) {
         super(name, key, category);
         this.registryName = registryName;
+        this.showOnHud = false;
+        initToggleVal();
     }
 
     public MPSKeyMapping(ResourceLocation registryName, String name, int key, String category, boolean showOnHud) {
         super(name, key, category);
         this.registryName = registryName;
         this.showOnHud = showOnHud;
+        initToggleVal();
     }
 
     /**
@@ -45,6 +49,20 @@ public class MPSKeyMapping extends KeyMapping {
         super.setKey(key);
     }
 
+    void initToggleVal() {
+        if (Minecraft.getInstance().player != null) {
+            Player player = Minecraft.getInstance().player;
+            for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
+                if (player.getInventory().getItem(i).getCapability(ForgeCapabilities.ITEM_HANDLER)
+                        .filter(IModularItem.class::isInstance)
+                        .map(IModularItem.class::cast)
+                        .map(handler -> handler.isModuleOnline(registryName)).orElse(false)) {
+                        toggleVal = true;
+                        break;
+                }
+            }
+        }
+    }
 
     public void toggleModules() {
         LocalPlayer player = Minecraft.getInstance().player;
@@ -52,13 +70,13 @@ public class MPSKeyMapping extends KeyMapping {
             return;
         }
 
-        NuminaPackets.CHANNEL_INSTANCE.sendToServer(new ToggleRequestPacketServerBound(registryName, toggleval));
+        NuminaPackets.CHANNEL_INSTANCE.sendToServer(new ToggleRequestPacketServerBound(registryName, toggleVal));
         for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
             player.getInventory().getItem(i).getCapability(ForgeCapabilities.ITEM_HANDLER)
                     .filter(IModularItem.class::isInstance)
                     .map(IModularItem.class::cast)
-                    .ifPresent(handler -> handler.toggleModule(registryName, toggleval));
+                    .ifPresent(handler -> handler.toggleModule(registryName, toggleVal));
         }
-        toggleval = !toggleval;
+        toggleVal = !toggleVal;
     }
 }
