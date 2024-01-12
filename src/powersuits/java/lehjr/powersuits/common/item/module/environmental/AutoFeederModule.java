@@ -77,7 +77,7 @@ public class AutoFeederModule extends AbstractPowerModule {
         TagUtils.setModuleFloatOrRemove(stack, TAG_SATURATION, saturation);
     }
 
-    public class CapProvider implements ICapabilityProvider {
+    public static class CapProvider implements ICapabilityProvider {
         ItemStack module;
         private final Ticker ticker;
         private final LazyOptional<IPowerModule> powerModuleHolder;
@@ -97,7 +97,7 @@ public class AutoFeederModule extends AbstractPowerModule {
             });
         }
 
-        class Ticker extends PlayerTickModule {
+        static class Ticker extends PlayerTickModule {
             ImmutableList useOldAutoFeederKey;
             public Ticker(@Nonnull ItemStack module, ModuleCategory category, ModuleTarget target, Callable<IConfig> config) {
                 super(module, category, target, config, true);
@@ -105,7 +105,7 @@ public class AutoFeederModule extends AbstractPowerModule {
             }
 
             @Override
-            public void onPlayerTickActive(Player player, ItemStack itemX) {
+            public void onPlayerTickActive(Player player, @Nonnull ItemStack itemX) {
                 float foodLevel = getFoodLevel(module);
                 float saturationLevel = getSaturationLevel(module);
                 Inventory inv = player.getInventory();
@@ -182,7 +182,7 @@ public class AutoFeederModule extends AbstractPowerModule {
                         // update getValue stored in buffer
                         setFoodLevel(module, getFoodLevel(module) - foodUsed);
                         // split the cost between using food and using saturation
-                        ElectricItemUtils.drainPlayerEnergy(player, (int) (eatingEnergyConsumption * 0.5 * foodUsed));
+                        ElectricItemUtils.drainPlayerEnergy(player, (int) (eatingEnergyConsumption * 0.5 * foodUsed), false);
 
                         if (saturationNeeded >= 1.0D) {
                             // using int for better precision
@@ -207,7 +207,7 @@ public class AutoFeederModule extends AbstractPowerModule {
                                 // update getValue stored in buffer
                                 setSaturationLevel(module, getSaturationLevel(module) - saturationUsed);
                                 // split the cost between using food and using saturation
-                                ElectricItemUtils.drainPlayerEnergy(player, (int) (eatingEnergyConsumption * 0.5 * saturationUsed));
+                                ElectricItemUtils.drainPlayerEnergy(player, (int) (eatingEnergyConsumption * 0.5 * saturationUsed), false);
                             }
                         }
                     }

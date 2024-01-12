@@ -31,7 +31,7 @@ import com.mojang.blaze3d.platform.InputConstants;
 import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.config.ConfigHelper;
 import lehjr.numina.common.item.ItemUtils;
-import lehjr.powersuits.client.gui.overlay.MPSKeyBindHud;
+import lehjr.powersuits.client.gui.overlay.MPSOverlay;
 import lehjr.powersuits.common.constants.MPSConstants;
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
@@ -166,7 +166,7 @@ public enum KeyMappingReaderWriter {
             NuminaLogger.logger.error("Problem reading in keyconfig :(");
             e.printStackTrace();
         }
-        MPSKeyBindHud.makeKBDisplayList();
+        MPSOverlay.makeKBDisplayList();
 //        RenderEventHandler.INSTANCE.makeKBDisplayList();
     }
 

@@ -2,7 +2,7 @@ package lehjr.powersuits.client.event;
 
 import lehjr.powersuits.client.control.KeyMappingReaderWriter;
 import lehjr.powersuits.client.control.KeymappingKeyHandler;
-import lehjr.powersuits.client.gui.overlay.MPSKeyBindHud;
+import lehjr.powersuits.client.gui.overlay.MPSOverlay;
 import lehjr.powersuits.client.render.blockentity.TinkerTableBER;
 import lehjr.powersuits.client.render.entity.LuxCapacitorEntityRenderer;
 import lehjr.powersuits.client.render.entity.PlasmaBoltEntityRenderer;
@@ -49,13 +49,13 @@ public class ClientEventBusSubscriber {
 
 
 
-        MPSKeyBindHud.makeKBDisplayList();
+        MPSOverlay.makeKBDisplayList();
     }
 
     @SubscribeEvent
     public static void registerOverlay(RegisterGuiOverlaysEvent event) {
-        event.registerAboveAll("mps_keybinds", MPSKeyBindHud.MPS_KEYBIND_OVERLAY);
-        event.registerAboveAll("mps_hud", MPSKeyBindHud.MPS_HUD);
+        event.registerAboveAll("mps_keybinds", MPSOverlay.MPS_KEYBIND_OVERLAY);
+//        event.registerAboveAll("mps_hud", MPSOverlay.MPS_HUD);
     }
 }
 

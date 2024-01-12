@@ -62,253 +62,253 @@ import java.util.concurrent.atomic.AtomicReference;
 public enum ClientOverlayHandler {
     INSTANCE;
 
-    private HeatMeter heatMeter = null;
-    private HeatMeter energyMeter = null;
-    private WaterMeter waterMeter = null;
-    private PlasmaChargeMeter plasmaMeter = null;
-
-    static final ItemStack food = new ItemStack(Items.COOKED_BEEF);
-    final double meterTextOffsetY = 0;
+//    private HeatMeter heatMeter = null;
+//    private HeatMeter energyMeter = null;
+//    private WaterMeter waterMeter = null;
+//    private PlasmaChargeMeter plasmaMeter = null;
+//
+//    static final ItemStack food = new ItemStack(Items.COOKED_BEEF);
+//    final double meterTextOffsetY = 0;
 
     public void render(RenderGuiOverlayEvent.Pre e) {
-        PoseStack matrixStack = e.getPoseStack();
-
-        Minecraft minecraft = Minecraft.getInstance();
-        Player player;
-        if (minecraft.player == null) {
-            return;
-        }
-        player = minecraft.player;
-
-        int yOffsetString = 18;
-        float yOffsetIcon = 16.0F;
-        float yBase;
-        if (MPSSettings.useGraphicalMeters()) {
-            yBase = 150;
-        } else {
-            yBase = 26.0F;
-        }
-
-        if (player != null && (MPSSettings.showMetersWhenPaused() || (Minecraft.renderNames() && minecraft.screen == null))) {
-            Window screen = e.getWindow();
-
-            // Misc Overlay Items ---------------------------------------------------------------------------------
-            AtomicInteger index = new AtomicInteger(0);
-
-            // Helmet modules with overlay
-            ItemUtils.getItemFromEntitySlot(player, EquipmentSlot.HEAD).getCapability(ForgeCapabilities.ITEM_HANDLER)
-                    .filter(IModularItem.class::isInstance)
-                    .map(IModularItem.class::cast)
-                    // Looping this way is far more efficient than looping for each module
-                    .ifPresent(h -> h.getInstalledModules().forEach(module -> {
-                        module.getCapability(NuminaCapabilities.POWER_MODULE).ifPresent(pm->{
-                            if (pm.isModuleOnline()) {
-                                // AutoFeeder
-                                if (ItemUtils.getRegistryName(module).equals(MPSRegistryNames.AUTO_FEEDER_MODULE)) {
-                                    ItemStack autoFeeder = module;
-
-                                    int foodLevel = (int) ((AutoFeederModule) autoFeeder.getItem()).getFoodLevel(autoFeeder);
-                                    String num = StringUtils.formatNumberShort(foodLevel);
-                                    StringUtils.drawShadowedString(matrixStack, num, 17, yBase + (yOffsetString * index.get()));
-                                    // FIXME
-                                    NuminaRenderer.drawItemAt(matrixStack, -1.0, yBase + (yOffsetIcon * index.get()), food, Color.WHITE);
-                                    index.addAndGet(1);
-
-                                    // Clock
-                                } else if (ItemUtils.getRegistryName(module).equals(ItemUtils.getRegistryName(Items.CLOCK))) {
-                                    ItemStack clock = module;
-                                    if (pm.isModuleOnline()) {
-                                        String ampm;
-                                        long time = player.level.getDayTime();
-                                        long hour = ((time % 24000) / 1000);
-                                        if (MPSSettings.use24HourClock()) {
-                                            if (hour < 19) {
-                                                hour += 6;
-                                            } else {
-                                                hour -= 18;
-                                            }
-                                            ampm = "h";
-                                        } else {
-                                            if (hour < 6) {
-                                                hour += 6;
-                                                ampm = " AM";
-                                            } else if (hour == 6) {
-                                                hour = 12;
-                                                ampm = " PM";
-                                            } else if (hour > 6 && hour < 18) {
-                                                hour -= 6;
-                                                ampm = " PM";
-                                            } else if (hour == 18) {
-                                                hour = 12;
-                                                ampm = " AM";
-                                            } else {
-                                                hour -= 18;
-                                                ampm = " AM";
-                                            }
-
-                                            StringUtils.drawShadowedString(matrixStack, hour + ampm, 17, yBase + (yOffsetString * index.get()));
-                                            // FIXME
-                                            NuminaRenderer.drawItemAt(matrixStack, -1.0, yBase + (yOffsetIcon * index.get()), clock, Color.WHITE);
-
-                                            index.addAndGet(1);
-                                        }
-                                    }
-                                    // Generic modules
-                                } else if (pm instanceof IHudModule) {
-                                    NuminaRenderer.drawItemAt(matrixStack, -1.0, yBase + (yOffsetIcon * index.get()), module, Color.WHITE);
-                                    index.addAndGet(1);
-                                }
-                            }
-                        });
-                    }));
-
-            // Meters ---------------------------------------------------------------------------------------------
-            float sw = (float) ((double) screen.getWidth() / screen.getGuiScale());
-            float sh = (float) ((double) screen.getHeight() / screen.getGuiScale());
-
-            float top = sh / 2.0F - 16F;
-            float left = sw - 36;
-
-            // energy
-            double maxEnergy = ElectricItemUtils.getMaxPlayerEnergy(player);
-            double currEnergy = ElectricItemUtils.getPlayerEnergy(player);
-            String currEnergyStr = StringUtils.formatNumberShort(currEnergy) + "FE";
-            String maxEnergyStr = StringUtils.formatNumberShort(maxEnergy);
-
-            // heat
-            float maxHeat = (float) HeatUtils.getPlayerMaxHeat(player);
-            float currHeat = (float) HeatUtils.getPlayerHeat(player);
-
-            String currHeatStr = StringUtils.formatNumberShort(currHeat);
-            String maxHeatStr = StringUtils.formatNumberShort(maxHeat);
-
-            // Water
-            AtomicReference<Float> currWater = new AtomicReference<Float>(0F);
-            AtomicReference<Float> maxWater = new AtomicReference<Float>(0F);
-            AtomicReference<String> currWaterStr = new AtomicReference<>("");
-            AtomicReference<String> maxWaterStr = new AtomicReference<>("");
-
-            ItemUtils.getItemFromEntitySlot(player, EquipmentSlot.CHEST).getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).ifPresent(fh -> {
-                for (int i = 0; i < fh.getTanks(); i++) {
-                    maxWater.set(maxWater.get() + fh.getTankCapacity(i));
-                    if (maxWater.get() > 0) {
-                        FluidStack fluidStack = fh.getFluidInTank(i);
-                        currWater.set(currWater.get() + fluidStack.getAmount());
-                        waterMeter = new WaterMeter(MPSSettings::getWaterMeterConfig);
-                        currWaterStr.set(StringUtils.formatNumberShort(currWater.get()));
-                        maxWaterStr.set(StringUtils.formatNumberShort(maxWater.get()));
-                    }
-                }
-            });
-
-            // Plasma
-            AtomicReference<Float> currentPlasma = new AtomicReference<Float>(0F);
-            AtomicReference<Float> maxPlasma = new AtomicReference<Float>(0F);
-            if (player.isUsingItem()) {
-                player.getItemInHand(player.getUsedItemHand()).getCapability(ForgeCapabilities.ITEM_HANDLER)
-                        .filter(IModeChangingItem.class::isInstance)
-                        .map(IModeChangingItem.class::cast)
-                        .ifPresent(modechanging -> {
-                            ItemStack module = modechanging.getActiveModule();
-                            int actualCount = 0;
-
-                            int maxDuration = modechanging.getModularItemStack().getUseDuration();
-                            if (!module.isEmpty()) {
-                                // Plasma Cannon
-                                if (ItemUtils.getRegistryName(module).equals(MPSRegistryNames.PLASMA_CANNON_MODULE)) {
-                                    actualCount = (maxDuration - player.getUseItemRemainingTicks());
-                                    currentPlasma.set(currentPlasma.get() + (actualCount > 50 ? 50 : actualCount) * 2);
-                                    maxPlasma.set(maxPlasma.get() + 100F);
-
-                                    // Ore Scanner or whatever
-                                } else {
-                                    actualCount = (maxDuration - player.getUseItemRemainingTicks());
-                                    currentPlasma.set(currentPlasma.get() + (actualCount > 40 ? 40 : actualCount) * 2.5F);
-                                    maxPlasma.set(maxPlasma.get() + 100F);
-                                }
-                            }
-                        });
-            }
-
-            float val = currentPlasma.get();
-            String currPlasmaStr = StringUtils.formatNumberShort((int)val) + "%";
-            String maxPlasmaStr = StringUtils.formatNumberShort(maxPlasma.get());
-
-            if (MPSSettings.useGraphicalMeters()) {
-                int numMeters = 0;
-
-                if (maxEnergy > 0) {
-                    numMeters++;
-                    if (energyMeter == null) {
-                        energyMeter = new EnergyMeter(MPSSettings::getEnergyMeterConfig);
-                    }
-                } else energyMeter = null;
-
-                if (maxHeat > 0) {
-                    numMeters++;
-                    if (heatMeter == null) {
-                        heatMeter = new HeatMeter(MPSSettings::getHeatMeterConfig);
-                    }
-                } else heatMeter = null;
-
-                if (maxWater.get() > 0 && waterMeter != null) {
-                    numMeters++;
-                }
-
-                if (maxPlasma.get() > 0 /* && drawPlasmaMeter */) {
-                    numMeters++;
-                    if (plasmaMeter == null) {
-                        plasmaMeter = new PlasmaChargeMeter(MPSSettings::getPlasmaMeterConfig);
-                    }
-                } else plasmaMeter = null;
-
-                double stringX = left - 2;
-                final int totalMeters = numMeters;
-                //"(totalMeters-numMeters) * 8" = 0 for whichever of these is first,
-                //but including it won't hurt and this makes it easier to swap them around.
-
-                if (energyMeter != null) {
-                    energyMeter.draw(matrixStack, left, top + (totalMeters - numMeters) * 9, (float)(currEnergy / maxEnergy));
-                    StringUtils.drawRightAlignedShadowedString(matrixStack, currEnergyStr, stringX, meterTextOffsetY + top);
-                    numMeters--;
-                }
-
-                if (heatMeter != null) {
-                    heatMeter.draw(matrixStack, left, top + (totalMeters - numMeters) * 9, MathUtils.clampFloat(currHeat, 0, maxHeat) / maxHeat);
-                    StringUtils.drawRightAlignedShadowedString(matrixStack, currHeatStr, stringX, meterTextOffsetY + top + (totalMeters - numMeters) * 9);
-                    numMeters--;
-                }
-
-                if (waterMeter != null) {
-                    waterMeter.draw(matrixStack, left, top + (totalMeters - numMeters) * 9, MathUtils.clampFloat(currWater.get(), 0, maxWater.get()) / maxWater.get());
-                    StringUtils.drawRightAlignedShadowedString(matrixStack, currWaterStr.get(), stringX, meterTextOffsetY + top + (totalMeters - numMeters) * 9);
-                    numMeters--;
-                }
-
-                if (plasmaMeter != null) {
-                    plasmaMeter.draw(matrixStack, left, top + (totalMeters - numMeters) * 9, currentPlasma.get() / maxPlasma.get());
-                    StringUtils.drawRightAlignedShadowedString(matrixStack, currPlasmaStr, stringX, meterTextOffsetY + top + (totalMeters - numMeters) * 9);
-                }
-
-            } else {
-                int numReadouts = 0;
-                if (maxEnergy > 0) {
-                    StringUtils.drawShadowedString(matrixStack, currEnergyStr + '/' + maxEnergyStr + " \u1D60", 2, 2);
-                    numReadouts += 1;
-                }
-
-                StringUtils.drawShadowedString(matrixStack, currHeatStr + '/' + maxHeatStr + " C", 2, 2 + (numReadouts * 9));
-                numReadouts += 1;
-
-                if (maxWater.get() > 0) {
-                    StringUtils.drawShadowedString(matrixStack, currWaterStr.get() + '/' + maxWaterStr.get() + " buckets", 2, 2 + (numReadouts * 9));
-                    numReadouts += 1;
-                }
-
-                if (maxPlasma.get() > 0 /* && drawPlasmaMeter */) {
-                    StringUtils.drawShadowedString(matrixStack, currPlasmaStr + '/' + maxPlasmaStr + "%", 2, 2 + (numReadouts * 9));
-                }
-            }
-        }
+//        PoseStack matrixStack = e.getPoseStack();
+//
+//        Minecraft minecraft = Minecraft.getInstance();
+//        Player player;
+//        if (minecraft.player == null) {
+//            return;
+//        }
+//        player = minecraft.player;
+//
+//        int yOffsetString = 18;
+//        float yOffsetIcon = 16.0F;
+//        float yBase;
+//        if (MPSSettings.useGraphicalMeters()) {
+//            yBase = 150;
+//        } else {
+//            yBase = 26.0F;
+//        }
+//
+//        if (player != null && (MPSSettings.showMetersWhenPaused() || (Minecraft.renderNames() && minecraft.screen == null))) {
+//            Window screen = e.getWindow();
+//
+//            // Misc Overlay Items ---------------------------------------------------------------------------------
+//            AtomicInteger index = new AtomicInteger(0);
+//
+//            // Helmet modules with overlay
+//            ItemUtils.getItemFromEntitySlot(player, EquipmentSlot.HEAD).getCapability(ForgeCapabilities.ITEM_HANDLER)
+//                    .filter(IModularItem.class::isInstance)
+//                    .map(IModularItem.class::cast)
+//                    // Looping this way is far more efficient than looping for each module
+//                    .ifPresent(h -> h.getInstalledModules().forEach(module -> {
+//                        module.getCapability(NuminaCapabilities.POWER_MODULE).ifPresent(pm->{
+//                            if (pm.isModuleOnline()) {
+//                                // AutoFeeder
+//                                if (ItemUtils.getRegistryName(module).equals(MPSRegistryNames.AUTO_FEEDER_MODULE)) {
+//                                    ItemStack autoFeeder = module;
+//
+//                                    int foodLevel = (int) ((AutoFeederModule) autoFeeder.getItem()).getFoodLevel(autoFeeder);
+//                                    String num = StringUtils.formatNumberShort(foodLevel);
+//                                    StringUtils.drawShadowedString(matrixStack, num, 17, yBase + (yOffsetString * index.get()));
+//                                    // FIXME
+//                                    NuminaRenderer.drawItemAt(matrixStack, -1.0, yBase + (yOffsetIcon * index.get()), food, Color.WHITE);
+//                                    index.addAndGet(1);
+//
+//                                    // Clock
+//                                } else if (ItemUtils.getRegistryName(module).equals(ItemUtils.getRegistryName(Items.CLOCK))) {
+//                                    ItemStack clock = module;
+//                                    if (pm.isModuleOnline()) {
+//                                        String ampm;
+//                                        long time = player.level.getDayTime();
+//                                        long hour = ((time % 24000) / 1000);
+//                                        if (MPSSettings.use24HourClock()) {
+//                                            if (hour < 19) {
+//                                                hour += 6;
+//                                            } else {
+//                                                hour -= 18;
+//                                            }
+//                                            ampm = "h";
+//                                        } else {
+//                                            if (hour < 6) {
+//                                                hour += 6;
+//                                                ampm = " AM";
+//                                            } else if (hour == 6) {
+//                                                hour = 12;
+//                                                ampm = " PM";
+//                                            } else if (hour > 6 && hour < 18) {
+//                                                hour -= 6;
+//                                                ampm = " PM";
+//                                            } else if (hour == 18) {
+//                                                hour = 12;
+//                                                ampm = " AM";
+//                                            } else {
+//                                                hour -= 18;
+//                                                ampm = " AM";
+//                                            }
+//
+//                                            StringUtils.drawShadowedString(matrixStack, hour + ampm, 17, yBase + (yOffsetString * index.get()));
+//                                            // FIXME
+//                                            NuminaRenderer.drawItemAt(matrixStack, -1.0, yBase + (yOffsetIcon * index.get()), clock, Color.WHITE);
+//
+//                                            index.addAndGet(1);
+//                                        }
+//                                    }
+//                                    // Generic modules
+//                                } else if (pm instanceof IHudModule) {
+//                                    NuminaRenderer.drawItemAt(matrixStack, -1.0, yBase + (yOffsetIcon * index.get()), module, Color.WHITE);
+//                                    index.addAndGet(1);
+//                                }
+//                            }
+//                        });
+//                    }));
+//
+//            // Meters ---------------------------------------------------------------------------------------------
+//            float sw = (float) ((double) screen.getWidth() / screen.getGuiScale());
+//            float sh = (float) ((double) screen.getHeight() / screen.getGuiScale());
+//
+//            float top = sh / 2.0F - 16F;
+//            float left = sw - 36;
+//
+//            // energy
+//            double maxEnergy = ElectricItemUtils.getMaxPlayerEnergy(player);
+//            double currEnergy = ElectricItemUtils.getPlayerEnergy(player);
+//            String currEnergyStr = StringUtils.formatNumberShort(currEnergy) + "FE";
+//            String maxEnergyStr = StringUtils.formatNumberShort(maxEnergy);
+//
+//            // heat
+//            float maxHeat = (float) HeatUtils.getPlayerMaxHeat(player);
+//            float currHeat = (float) HeatUtils.getPlayerHeat(player);
+//
+//            String currHeatStr = StringUtils.formatNumberShort(currHeat);
+//            String maxHeatStr = StringUtils.formatNumberShort(maxHeat);
+//
+//            // Water
+//            AtomicReference<Float> currWater = new AtomicReference<Float>(0F);
+//            AtomicReference<Float> maxWater = new AtomicReference<Float>(0F);
+//            AtomicReference<String> currWaterStr = new AtomicReference<>("");
+//            AtomicReference<String> maxWaterStr = new AtomicReference<>("");
+//
+//            ItemUtils.getItemFromEntitySlot(player, EquipmentSlot.CHEST).getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).ifPresent(fh -> {
+//                for (int i = 0; i < fh.getTanks(); i++) {
+//                    maxWater.set(maxWater.get() + fh.getTankCapacity(i));
+//                    if (maxWater.get() > 0) {
+//                        FluidStack fluidStack = fh.getFluidInTank(i);
+//                        currWater.set(currWater.get() + fluidStack.getAmount());
+//                        waterMeter = new WaterMeter(MPSSettings::getWaterMeterConfig);
+//                        currWaterStr.set(StringUtils.formatNumberShort(currWater.get()));
+//                        maxWaterStr.set(StringUtils.formatNumberShort(maxWater.get()));
+//                    }
+//                }
+//            });
+//
+//            // Plasma
+//            AtomicReference<Float> currentPlasma = new AtomicReference<Float>(0F);
+//            AtomicReference<Float> maxPlasma = new AtomicReference<Float>(0F);
+//            if (player.isUsingItem()) {
+//                player.getItemInHand(player.getUsedItemHand()).getCapability(ForgeCapabilities.ITEM_HANDLER)
+//                        .filter(IModeChangingItem.class::isInstance)
+//                        .map(IModeChangingItem.class::cast)
+//                        .ifPresent(modechanging -> {
+//                            ItemStack module = modechanging.getActiveModule();
+//                            int actualCount = 0;
+//
+//                            int maxDuration = modechanging.getModularItemStack().getUseDuration();
+//                            if (!module.isEmpty()) {
+//                                // Plasma Cannon
+//                                if (ItemUtils.getRegistryName(module).equals(MPSRegistryNames.PLASMA_CANNON_MODULE)) {
+//                                    actualCount = (maxDuration - player.getUseItemRemainingTicks());
+//                                    currentPlasma.set(currentPlasma.get() + (actualCount > 50 ? 50 : actualCount) * 2);
+//                                    maxPlasma.set(maxPlasma.get() + 100F);
+//
+//                                    // Ore Scanner or whatever
+//                                } else {
+//                                    actualCount = (maxDuration - player.getUseItemRemainingTicks());
+//                                    currentPlasma.set(currentPlasma.get() + (actualCount > 40 ? 40 : actualCount) * 2.5F);
+//                                    maxPlasma.set(maxPlasma.get() + 100F);
+//                                }
+//                            }
+//                        });
+//            }
+//
+//            float val = currentPlasma.get();
+//            String currPlasmaStr = StringUtils.formatNumberShort((int)val) + "%";
+//            String maxPlasmaStr = StringUtils.formatNumberShort(maxPlasma.get());
+//
+//            if (MPSSettings.useGraphicalMeters()) {
+//                int numMeters = 0;
+//
+//                if (maxEnergy > 0) {
+//                    numMeters++;
+//                    if (energyMeter == null) {
+//                        energyMeter = new EnergyMeter(MPSSettings::getEnergyMeterConfig);
+//                    }
+//                } else energyMeter = null;
+//
+//                if (maxHeat > 0) {
+//                    numMeters++;
+//                    if (heatMeter == null) {
+//                        heatMeter = new HeatMeter(MPSSettings::getHeatMeterConfig);
+//                    }
+//                } else heatMeter = null;
+//
+//                if (maxWater.get() > 0 && waterMeter != null) {
+//                    numMeters++;
+//                }
+//
+//                if (maxPlasma.get() > 0 /* && drawPlasmaMeter */) {
+//                    numMeters++;
+//                    if (plasmaMeter == null) {
+//                        plasmaMeter = new PlasmaChargeMeter(MPSSettings::getPlasmaMeterConfig);
+//                    }
+//                } else plasmaMeter = null;
+//
+//                double stringX = left - 2;
+//                final int totalMeters = numMeters;
+//                //"(totalMeters-numMeters) * 8" = 0 for whichever of these is first,
+//                //but including it won't hurt and this makes it easier to swap them around.
+//
+//                if (energyMeter != null) {
+//                    energyMeter.draw(matrixStack, left, top + (totalMeters - numMeters) * 9, (float)(currEnergy / maxEnergy));
+//                    StringUtils.drawRightAlignedShadowedString(matrixStack, currEnergyStr, stringX, meterTextOffsetY + top);
+//                    numMeters--;
+//                }
+//
+//                if (heatMeter != null) {
+//                    heatMeter.draw(matrixStack, left, top + (totalMeters - numMeters) * 9, MathUtils.clampFloat(currHeat, 0, maxHeat) / maxHeat);
+//                    StringUtils.drawRightAlignedShadowedString(matrixStack, currHeatStr, stringX, meterTextOffsetY + top + (totalMeters - numMeters) * 9);
+//                    numMeters--;
+//                }
+//
+//                if (waterMeter != null) {
+//                    waterMeter.draw(matrixStack, left, top + (totalMeters - numMeters) * 9, MathUtils.clampFloat(currWater.get(), 0, maxWater.get()) / maxWater.get());
+//                    StringUtils.drawRightAlignedShadowedString(matrixStack, currWaterStr.get(), stringX, meterTextOffsetY + top + (totalMeters - numMeters) * 9);
+//                    numMeters--;
+//                }
+//
+//                if (plasmaMeter != null) {
+//                    plasmaMeter.draw(matrixStack, left, top + (totalMeters - numMeters) * 9, currentPlasma.get() / maxPlasma.get());
+//                    StringUtils.drawRightAlignedShadowedString(matrixStack, currPlasmaStr, stringX, meterTextOffsetY + top + (totalMeters - numMeters) * 9);
+//                }
+//
+//            } else {
+//                int numReadouts = 0;
+//                if (maxEnergy > 0) {
+//                    StringUtils.drawShadowedString(matrixStack, currEnergyStr + '/' + maxEnergyStr + " \u1D60", 2, 2);
+//                    numReadouts += 1;
+//                }
+//
+//                StringUtils.drawShadowedString(matrixStack, currHeatStr + '/' + maxHeatStr + " C", 2, 2 + (numReadouts * 9));
+//                numReadouts += 1;
+//
+//                if (maxWater.get() > 0) {
+//                    StringUtils.drawShadowedString(matrixStack, currWaterStr.get() + '/' + maxWaterStr.get() + " buckets", 2, 2 + (numReadouts * 9));
+//                    numReadouts += 1;
+//                }
+//
+//                if (maxPlasma.get() > 0 /* && drawPlasmaMeter */) {
+//                    StringUtils.drawShadowedString(matrixStack, currPlasmaStr + '/' + maxPlasmaStr + "%", 2, 2 + (numReadouts * 9));
+//                }
+//            }
+//        }
     }
 }
