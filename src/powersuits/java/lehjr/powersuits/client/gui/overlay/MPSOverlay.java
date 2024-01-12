@@ -30,26 +30,6 @@ import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class MPSOverlay {
-    // TODO: come up with a way to keep KB and overlay items from overlapping
-
-
-
-//    public static final IGuiOverlay MPS_METER_OVERLAY = ((gui, poseStack, partialTick, screenWidth, screenHeight) -> {
-//
-//    });
-//
-//    public static final IGuiOverlay MPS_KEYBIND_OVERLAY = ((gui, poseStack, partialTick, screenWidth, screenHeight) -> {
-//
-//    });
-//
-//    public static final IGuiOverlay MPS_MISC_OVERLAY = ((gui, poseStack, partialTick, screenWidth, screenHeight) -> {
-//
-//    });
-
-
-
-
-
     static List<KBDisplay> kbDisplayList = new ArrayList<>();
     public static final IGuiOverlay MPS_KEYBIND_OVERLAY = ((gui, poseStack, partialTick, screenWidth, screenHeight) -> {
         Minecraft mc = gui.getMinecraft();
