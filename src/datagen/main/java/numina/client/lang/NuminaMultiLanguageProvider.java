@@ -54,10 +54,16 @@ public class NuminaMultiLanguageProvider extends MulitiLanguageProvider {
         add("message.numina.fovfixtoggle.disabled", mainLanguage, "Field of view fix disabled");
 
         // Install (creative) --------------------------------------------------------------------------
-        add(NuminaConstants.GUI_CREATIVE_INSTALL,  mainLanguage, "Install");
+        add(NuminaConstants.GUI_CREATIVE_INSTALL, mainLanguage, "Install");
 
         // Install (creative, description) -------------------------------------------------------------
-        add(NuminaConstants.GUI_CREATIVE_INSTALL_DESC,   mainLanguage, "Installs module into selected modular item while player is in creative mode");
+        add(NuminaConstants.GUI_CREATIVE_INSTALL_DESC, mainLanguage, "Installs module into selected modular item while player is in creative mode");
+
+        // Install All (creative) ----------------------------------------------------------------------
+        add(NuminaConstants.GUI_CREATIVE_INSTALL_ALL, mainLanguage, "Install All");
+
+        // Install All (creative, description) ---------------------------------------------------------
+        add(NuminaConstants.GUI_CREATIVE_INSTALL_ALL_DESC, mainLanguage, "Installs all top tier compatible modules into selected modular item while player is in creative mode");
     }
 
     void addArmorStand() {

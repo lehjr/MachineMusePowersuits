@@ -113,17 +113,15 @@ public class NuminaConstants {
     return new StringBuilder("tooltip.").append(NuminaConstants.MOD_ID).append(".").append(tooltipName).toString();
   }
 
-
-
   public static final ResourceLocation TEXTURE_WHITE_SHORT = new ResourceLocation(NuminaConstants.MOD_ID, "models/white");
   public static final ResourceLocation TEXTURE_WHITE = new ResourceLocation(NuminaConstants.MOD_ID, "textures/models/white.png");
   public static final ResourceLocation TEXTURE_ARMOR_STAND = new ResourceLocation(NuminaConstants.MOD_ID, "textures/models/armorstand2.png");
 
-
-
-
   public static final String GUI_CREATIVE_INSTALL = getGUI("creative.install");
   public static final String GUI_CREATIVE_INSTALL_DESC = getGUI("creative.install.desc");
+
+  public static final String GUI_CREATIVE_INSTALL_ALL = getGUI("creative.install.all");
+  public static final String GUI_CREATIVE_INSTALL_ALL_DESC = getGUI("creative.install.all.desc");
 
   static String getGUI(String guiString) {
     return new StringBuilder("gui.").append(MOD_ID).append(".").append(guiString).toString();

@@ -15,8 +15,14 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class CompatibleModuleDisplayFrame extends ModuleSelectionFrame {
+    NonNullList<ItemStack> possibleItems = NonNullList.create();
+
     public CompatibleModuleDisplayFrame(ModularItemSelectionFrame itemSelectFrameIn, Rect rect) {
         super(itemSelectFrameIn, rect);
+    }
+
+    public NonNullList<ItemStack> getPossibleItems() {
+        return possibleItems;
     }
 
     @Override
@@ -39,7 +45,7 @@ public class CompatibleModuleDisplayFrame extends ModuleSelectionFrame {
     public void loadModules(boolean preserveSelected) {
         this.lastPosition = null;
 
-        NonNullList<ItemStack> possibleItems = NonNullList.create();
+        possibleItems = NonNullList.create();
 
         // temp holder
         AtomicReference<Optional<ClickableModule>> selCopy = new AtomicReference<>(getSelectedModule());

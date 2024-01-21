@@ -14,11 +14,6 @@ public class ModularItemSelectionFrameContainered<C extends AbstractContainerMen
         this.container = container;
     }
 
-    public ModularItemSelectionFrameContainered(C container, MusePoint2D ul) {
-        super(ul);
-        this.container = container;
-    }
-
     @Override
     void disableAbstractContainerMenuSlots() {
         for (Slot slot : container.slots) {

@@ -40,7 +40,7 @@ public class NetheritePlatingModule extends AbstractPowerModule {
             powerModule = new PowerModule(module, ModuleCategory.ARMOR, ModuleTarget.ARMORONLY, MPSSettings::getModuleConfig) {
                 @Override
                 public int getTier() {
-                    return 2;
+                    return 3;
                 }
 
                 @Override

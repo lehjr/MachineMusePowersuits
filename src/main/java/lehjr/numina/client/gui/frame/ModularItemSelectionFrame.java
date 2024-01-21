@@ -11,6 +11,7 @@ import lehjr.numina.client.gui.geometry.Rect;
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
 import lehjr.numina.common.constants.NuminaConstants;
 import lehjr.numina.common.item.ItemUtils;
+import lehjr.numina.common.string.StringUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -28,6 +29,7 @@ import java.util.Optional;
 public class ModularItemSelectionFrame extends AbstractGuiFrame {
     public ModularItemTabToggleWidget selectedTab = null;
     public VanillaButton creativeInstallButton;
+    public VanillaButton creativeInstallAllButton;
 
     IChanged changed;
 
@@ -79,6 +81,7 @@ public class ModularItemSelectionFrame extends AbstractGuiFrame {
             boxes.add(widget);
             boxes.add(new Rect(ul, ul.plus(35, 3)));
         }
+
         creativeInstallButton = new VanillaButton(MusePoint2D.ZERO, Component.translatable(NuminaConstants.GUI_CREATIVE_INSTALL), false);
         creativeInstallButton.setHeight(18);
         creativeInstallButton.setWidth(38);
@@ -86,7 +89,18 @@ public class ModularItemSelectionFrame extends AbstractGuiFrame {
         creativeInstallButton.setToolTip(List.of(Component.translatable((NuminaConstants.GUI_CREATIVE_INSTALL_DESC))));
         creativeInstallButton.setUL(getUL().copy());
         boxes.add(creativeInstallButton);
+
+        creativeInstallAllButton = new VanillaButton(MusePoint2D.ZERO, Component.translatable(NuminaConstants.GUI_CREATIVE_INSTALL_ALL), false);
+        creativeInstallAllButton.setHeight(18);
+        creativeInstallAllButton.setWidth(StringUtils.getStringWidth(creativeInstallAllButton.getLabel()) + 6);
+        creativeInstallAllButton.disableAndHide();
+        creativeInstallAllButton.setToolTip(List.of(Component.translatable((NuminaConstants.GUI_CREATIVE_INSTALL_ALL_DESC))));
+        creativeInstallAllButton.setUL(getUL().copy());
+        boxes.add(creativeInstallAllButton);
         refreshRects();
+        // TODO: creative install button that will install all modules compatible with modular item... as easy as this sounds, it won't be trivial... \
+        //  will require generating a list of all compatible top tier modules, then sending/recieving a packet for each item installed
+
     }
 
     public void refreshRects() {
@@ -103,10 +117,16 @@ public class ModularItemSelectionFrame extends AbstractGuiFrame {
         }
         setHeight(finalHeight);
         creativeInstallButton.setLeft(left() -7);
+        // messy but it works
+        creativeInstallAllButton.setLeft(creativeInstallButton.left() + creativeInstallButton.width() - creativeInstallAllButton.width());
     }
 
     public VanillaButton getCreativeInstallButton() {
         return creativeInstallButton;
+    }
+
+    public VanillaButton getCreativeInstallAllButton() {
+        return creativeInstallAllButton;
     }
 
     void disableAbstractContainerMenuSlots() {
@@ -186,12 +206,9 @@ public class ModularItemSelectionFrame extends AbstractGuiFrame {
 
     @Override
     public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTick) {
-//        renderBackgroundRect(matrixStack, mouseX, mouseY, partialTick);
         boxes.stream().filter(IClickable.class::isInstance)
                 .map(IClickable.class::cast)
-                .forEach(box-> {
-                    box.render(matrixStack, mouseX, mouseY, partialTick);
-                });
+                .forEach(box-> box.render(matrixStack, mouseX, mouseY, partialTick));
     }
 
     @Nullable
@@ -207,8 +224,6 @@ public class ModularItemSelectionFrame extends AbstractGuiFrame {
         super.update(mouseX, mouseY);
         getSelectedTab();
     }
-
-
 
     public void setOnChanged(IChanged changed) {
         this.changed = changed;

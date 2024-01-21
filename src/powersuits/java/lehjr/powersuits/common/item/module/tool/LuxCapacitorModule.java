@@ -63,7 +63,7 @@ public class LuxCapacitorModule extends AbstractPowerModule {
         return new CapProvider(stack);
     }
 
-    public class CapProvider implements ICapabilityProvider {
+    public static class CapProvider implements ICapabilityProvider {
         ItemStack module;
         private final RightClickie rightClickie;
         private final LazyOptional<IPowerModule> powerModuleHolder;
@@ -80,7 +80,7 @@ public class LuxCapacitorModule extends AbstractPowerModule {
             powerModuleHolder = LazyOptional.of(() -> rightClickie);
         }
 
-        class RightClickie extends RightClickModule {
+        static class RightClickie extends RightClickModule {
             public RightClickie(@Nonnull ItemStack module, ModuleCategory category, ModuleTarget target, Callable<IConfig> config) {
                 super(module, category, target, config);
             }
@@ -91,7 +91,7 @@ public class LuxCapacitorModule extends AbstractPowerModule {
                 if (ElectricItemUtils.getPlayerEnergy(playerIn) > energyConsumption) {
                     if (!worldIn.isClientSide) {
                         HeatUtils.heatPlayer(playerIn, energyConsumption / 500);
-                        ElectricItemUtils.drainPlayerEnergy(playerIn, (int) energyConsumption);
+                        ElectricItemUtils.drainPlayerEnergy(playerIn, (int) energyConsumption, false);
                         float red = (float) applyPropertyModifiers(MPSConstants.RED_HUE);
                         float green = (float) applyPropertyModifiers(MPSConstants.GREEN_HUE);
                         float blue = (float) applyPropertyModifiers(MPSConstants.BLUE_HUE);

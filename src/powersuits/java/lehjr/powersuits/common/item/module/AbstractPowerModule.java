@@ -41,6 +41,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
 
@@ -72,7 +73,7 @@ public abstract class AbstractPowerModule extends Item {
     public abstract ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt);
 
     @Override
-    public void appendHoverText(ItemStack itemStack, @Nullable Level worldIn, List<Component> tooltips, TooltipFlag flagIn) {
+    public void appendHoverText(@Nonnull ItemStack itemStack, @Nullable Level worldIn, @Nonnull List<Component> tooltips, @Nonnull TooltipFlag flagIn) {
         if (worldIn != null) {
             AdditionalInfo.appendHoverText(itemStack, worldIn, tooltips, flagIn);
         }

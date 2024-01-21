@@ -66,7 +66,7 @@ public class EnergyShieldModule extends AbstractPowerModule {
             ticker = new Ticker(module, ModuleCategory.ARMOR, ModuleTarget.ARMORONLY, MPSSettings::getModuleConfig, true) {
                 @Override
                 public int getTier() {
-                    return 3;
+                    return 4;
                 }
 
                 @Override

@@ -54,7 +54,7 @@ public class ModuleSelectionFrame extends ScrollableFrame {
     protected ModularItemSelectionFrame target;
     protected Map<ModuleCategory, ModuleSelectionSubFrame> categories = new LinkedHashMap<>();
     protected Rect lastPosition;
-    Optional<ClickableModule> selectedModule = Optional.ofNullable(null);
+    Optional<ClickableModule> selectedModule = Optional.empty();
     LazyOptional<IPowerModule> moduleCap = LazyOptional.empty();
     VanillaFrameScrollBar scrollBar;
 
@@ -84,7 +84,7 @@ public class ModuleSelectionFrame extends ScrollableFrame {
             categories.put(category, frame);
             frame.setDoOnNewSelect(thing-> {
                 selectedModule = Optional.of(thing.getSelectedModule());
-                moduleCap = selectedModule.map(clickableModule -> clickableModule.getModule()).orElse(ItemStack.EMPTY).getCapability(NuminaCapabilities.POWER_MODULE);
+                moduleCap = selectedModule.map(ClickableModule::getModule).orElse(ItemStack.EMPTY).getCapability(NuminaCapabilities.POWER_MODULE);
             });
             return frame;
         }
@@ -150,9 +150,7 @@ public class ModuleSelectionFrame extends ScrollableFrame {
 
         Optional<IModularItem> iModularItem = target.getModularItemCapability();
 
-        categories.values().forEach(frame ->{
-            frame.refreshButtonPositions();
-        });
+        categories.values().forEach(ModuleSelectionSubFrame::refreshButtonPositions);
 
         if (iModularItem.isPresent()) {
             int totalHeight=0;
@@ -183,6 +181,7 @@ public class ModuleSelectionFrame extends ScrollableFrame {
     }
 
     float getzLevel() {
+        assert Minecraft.getInstance().screen != null;
         return Minecraft.getInstance().screen.getBlitOffset();
     }
 
@@ -205,7 +204,7 @@ public class ModuleSelectionFrame extends ScrollableFrame {
 
     public LazyOptional<IPowerModule> getModuleCap() {
         return getSelectedModule()
-                .map(clickableModule -> clickableModule.getModule()).orElse(ItemStack.EMPTY).getCapability(NuminaCapabilities.POWER_MODULE);
+                .map(ClickableModule::getModule).orElse(ItemStack.EMPTY).getCapability(NuminaCapabilities.POWER_MODULE);
 //        return moduleCap;
     }
 

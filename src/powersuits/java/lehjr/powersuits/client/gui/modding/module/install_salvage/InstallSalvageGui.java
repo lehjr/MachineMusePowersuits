@@ -7,6 +7,10 @@ import lehjr.numina.client.gui.clickable.button.VanillaButton;
 import lehjr.numina.client.gui.frame.ModularItemSelectionFrameContainered;
 import lehjr.numina.client.gui.geometry.MusePoint2D;
 import lehjr.numina.client.gui.geometry.Rect;
+import lehjr.numina.common.capabilities.NuminaCapabilities;
+import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
+import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
+import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.item.ItemUtils;
 import lehjr.powersuits.client.gui.ScrollableInventoryFrame2;
 import lehjr.powersuits.client.gui.common.TabSelectFrame;
@@ -17,21 +21,30 @@ import lehjr.powersuits.common.network.packets.clientbound.CreativeInstallPacket
 import lehjr.powersuits.common.network.packets.serverbound.CreativeInstallPacketServerBound;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import org.jetbrains.annotations.NotNull;
+
+import javax.annotation.Nonnull;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
 
 @OnlyIn(Dist.CLIENT)
 public class InstallSalvageGui extends ExtendedContainerScreen<InstallSalvageMenu> {
-    Component modularItemInventoryLabel = Component.translatable(new StringBuilder("gui.").append(MPSConstants.MOD_ID).append(".modularitem.inventory").toString());
+    Component modularItemInventoryLabel = Component.translatable("gui." + MPSConstants.MOD_ID + ".modularitem.inventory");
     Component moduleSelectionFrameLabel = Component.translatable(MPSConstants.GUI_COMPATIBLE_MODULES);
     public static final ResourceLocation BACKGROUND = new ResourceLocation(MPSConstants.MOD_ID, "textures/gui/background/install_salvage.png");
     protected TabSelectFrame tabSelectFrame;
-    ModularItemSelectionFrameContainered itemSelectFrame;
+    ModularItemSelectionFrameContainered<InstallSalvageMenu> itemSelectFrame;
 
-    ScrollableInventoryFrame2 modularItemInventory;
+    ScrollableInventoryFrame2<InstallSalvageMenu> modularItemInventory;
     protected CompatibleModuleDisplayFrame moduleSelectFrame;
     VanillaButton button;
 
@@ -57,27 +70,40 @@ public class InstallSalvageGui extends ExtendedContainerScreen<InstallSalvageMen
         addFrame(tabSelectFrame);
 
         /** the buttons that select the equipped modular item if any --------------------------------------------------- */
-        itemSelectFrame = new ModularItemSelectionFrameContainered(menu, new MusePoint2D(leftPos - 30, topPos), menu.getEquipmentSlot());
+        itemSelectFrame = new ModularItemSelectionFrameContainered<>(menu, new MusePoint2D(leftPos - 30, topPos), menu.getEquipmentSlot());
         addFrame(itemSelectFrame);
 
         /** frame to display and allow selecting of installed modules -------------------------------------------------- */
         moduleSelectFrame = new CompatibleModuleDisplayFrame(itemSelectFrame, new Rect(leftPos + 8, topPos + 13, leftPos + 172, topPos + 208));
         itemSelectFrame.getCreativeInstallButton().setOnPressed(pressed -> {
             itemSelectFrame.getCreativeInstallButton().playDownSound(Minecraft.getInstance().getSoundManager());
-            moduleSelectFrame.getSelectedModule().ifPresent(clickie -> {
-                MPSPackets.CHANNEL_INSTANCE.sendToServer(new CreativeInstallPacketServerBound(itemSelectFrame.selectedType().get(), ItemUtils.getRegistryName(clickie.getModule())));
-            });
+            moduleSelectFrame.getSelectedModule().ifPresent(clickie -> MPSPackets.CHANNEL_INSTANCE.sendToServer(new CreativeInstallPacketServerBound(itemSelectFrame.selectedType().get(), ItemUtils.getRegistryName(clickie.getModule()))));
         });
 
-        itemSelectFrame.getCreativeInstallButton().setOnReleased(pressed -> {
-
-//            ((VanillaButton)pressed).setEnabledBackground(Color.LIGHT_GRAY);
+        // not perfect but better than nothing, I think
+        itemSelectFrame.getCreativeInstallAllButton().setOnPressed(pressed->{
+            Optional<IModularItem> modularItemCap = itemSelectFrame.getModularItemCapability();
+            if (modularItemCap.isPresent()) {
+                itemSelectFrame.getCreativeInstallButton().playDownSound(Minecraft.getInstance().getSoundManager());
+                NonNullList<ItemStack> compatibleModules = getCompatibleModuleList();
+                for(ItemStack module : compatibleModules) {
+                    Optional<IPowerModule> powerModule = module.getCapability(NuminaCapabilities.POWER_MODULE).resolve();
+                    if (powerModule.isPresent()) {
+                        ModuleCategory category = powerModule.map(IPowerModule::getCategory).orElse(ModuleCategory.NONE);
+                        int tier = powerModule.map(IPowerModule::getTier).orElse(0);
+                        if(tier == -1 || (tier >= 4 &&(category == ModuleCategory.ARMOR || category == ModuleCategory.ENERGY_STORAGE))) {
+                            MPSPackets.CHANNEL_INSTANCE.sendToServer(new CreativeInstallPacketServerBound(itemSelectFrame.selectedType().get(), ItemUtils.getRegistryName(module)));
+                        }
+                    }
+                }
+            }
         });
+
         addFrame(moduleSelectFrame);
 
         /** inventory frame for the modular item inventory. Changes with different selected modular items */
         boolean keepOnReload = moduleSelectFrame != null;
-        modularItemInventory = new ScrollableInventoryFrame2(menu, new Rect(178,14,353,118), itemSelectFrame, this.ulGetter());
+        modularItemInventory = new ScrollableInventoryFrame2<>(menu, new Rect(178,14,353,118), itemSelectFrame, this.ulGetter());
         moduleSelectFrame.loadModules(keepOnReload);
         addFrame(modularItemInventory);
     }
@@ -86,14 +112,21 @@ public class InstallSalvageGui extends ExtendedContainerScreen<InstallSalvageMen
     protected void containerTick() {
         super.containerTick();
         // FIXME: replace button with something more native
-        if(getMinecraft().player.isCreative()) {
+        if(Objects.requireNonNull(getMinecraft().player).isCreative()) {
             itemSelectFrame.getCreativeInstallButton().enableAndShow();
+            itemSelectFrame.getCreativeInstallAllButton().enableAndShow();
         } else {
             itemSelectFrame.getCreativeInstallButton().disableAndHide();
+            itemSelectFrame.getCreativeInstallAllButton().disableAndHide();
         }
     }
+
+    NonNullList<ItemStack> getCompatibleModuleList() {
+        return moduleSelectFrame.getPossibleItems();
+    }
+
     @Override
-    public void render(PoseStack matrixStack, int mouseX, int mouseY, float frameTime) {
+    public void render(@Nonnull PoseStack matrixStack, int mouseX, int mouseY, float frameTime) {
         this.renderBackground(matrixStack);
         super.render(matrixStack, mouseX, mouseY, frameTime);
         this.renderTooltip(matrixStack, mouseX, mouseY);
@@ -116,13 +149,13 @@ public class InstallSalvageGui extends ExtendedContainerScreen<InstallSalvageMen
     }
 
     @Override
-    public void renderBackground(PoseStack matrixStack) {
+    public void renderBackground(@Nonnull PoseStack matrixStack) {
         super.renderBackground(matrixStack);
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         RenderSystem.setShaderTexture(0, BACKGROUND);
         int i = this.leftPos;
         int j = this.topPos;
-        this.blit(matrixStack, i, j, this.getBlitOffset(), 0, 0, imageWidth, imageHeight, 512, 512);
+        blit(matrixStack, i, j, this.getBlitOffset(), 0, 0, imageWidth, imageHeight, 512, 512);
     }
 }
