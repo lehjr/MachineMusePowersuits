@@ -50,16 +50,19 @@ java {
 println("version: ${project.version}")
 
 ext {
-    versionProperties = ["mod_version": project.version,
-                         "minecraft_version": minecraft_version_range,
-                         "forge_version": forge_version_range,
-                         "loader_version": loader_version_range,
-                         "jei_version": jei_version_range]
+    versionProperties = [
+            "mod_version": project.version,
+            "minecraft_version": minecraft_version_range,
+            "forge_version": forge_version_range,
+            "loader_version": loader_version_range,
+            "jei_version": jei_version_range
+    ]
     //Fallback pack format is the larger of the resource and data pack formats
-    packProperties = ["pack_format": Math.max(Integer.parseInt(resource_pack_format),
-            Integer.parseInt(data_pack_format)),
-                      "resource_pack_format": resource_pack_format,
-                      "data_pack_format": data_pack_format]
+    packProperties = [
+            "pack_format": Math.max(Integer.parseInt(resource_pack_format), Integer.parseInt(data_pack_format)),
+            "resource_pack_format": resource_pack_format,
+            "data_pack_format": data_pack_format
+    ]
     jsonPatterns = ["**/*.json", "**/*.mcmeta"]
 }
 
@@ -376,13 +379,16 @@ dependencies {
         transitive = false
     }
 
+    runtimeOnly fg.deobf("curse.maven:titanium-287342:4786622")
+
+    runtimeOnly fg.deobf("curse.maven:industrial-foregoing-266515:5047821")
+
+
 //    implementation fg.deobf("curse.maven:ic2-classic-242942:4879119") {
 //        transitive = false
 //    }
 
-
-
-
+//    implementation fg.deobf("curse.maven:weapon-master-782886:4978496")
 
     // This is only used for automatic translation for datagen
     // safe to disable and comment out references when not in use
@@ -675,35 +681,6 @@ if (System.getenv("CURSEFORGE_KEY") != null || project.hasProperty('curseforgeKe
             }
             addGameVersion "${minecraft_version}"
         }
-//
-//        // MPS Recipe Creator
-//        project {
-//            id = 'fixme'
-//            changelogType = "html"
-//            changelog = changeLogResolver
-//            releaseType = "${curse_release_type}"
-//            mainArtifact(mpsrecipecreatorJar) {
-//                relations {
-//                    requiredDependency "numina"
-//                    optionalDependency "jei"
-//                }
-//            }
-//            addGameVersion "${minecraft_version}"
-//        }
-//
-//        // MPSWhatever
-//        project {
-//            id = 'fixme'
-//            changelogType = "html"
-//            changelog = changeLogResolver
-//            releaseType = "${curse_release_type}"
-//            mainArtifact(mpswhateverJar) {
-//                relations {
-//                    requiredDependency "numina"
-//                }
-//            }
-//            addGameVersion "${minecraft_version}"
-//        }
 
         // Modular Powersuits
         project {

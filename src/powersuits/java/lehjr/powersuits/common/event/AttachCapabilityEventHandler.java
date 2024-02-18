@@ -202,14 +202,13 @@ public class AttachCapabilityEventHandler {
             });
         }
 
-        ResourceLocation capName = MPSRegistryNames.getRegName(itemStack.getDescriptionId());
+        ResourceLocation capName = MPSRegistryNames.getRegName(ItemUtils.getRegistryName(itemStack).getPath());
         if (externalTools.containsKey(regName) && !event.getCapabilities().containsKey(capName)) {
             addCapabilityToItem(event, capName, itemStack, ModuleCategory.TOOL);
         } else if (externalWeapons.containsKey(regName) && !event.getCapabilities().containsKey(capName)) {
             addCapabilityToItem(event, capName, itemStack, ModuleCategory.WEAPON);
         }
     }
-
 
     static void addCapabilityToItem(AttachCapabilitiesEvent<ItemStack> event, ModuleTarget target, ResourceLocation capName, @Nonnull ItemStack module, ModuleCategory category) {
         event.addCapability(capName, new ICapabilityProvider() {
