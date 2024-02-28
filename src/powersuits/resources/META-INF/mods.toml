@@ -5,7 +5,7 @@ license='Simplified BSD License https://opensource.org/license/bsd-2-clause/'
 
 [[mods]]
     modId="powersuits"
-    version="${mod_version}"
+    version="${version}"
     displayName="MachineMuse's Modular Powersuits"
     updateJSONURL="https://mc-curse-update-checker.herokuapp.com/235442"
     displayURL="https://github.com/lehjr/MachineMusePowersuits"
@@ -18,7 +18,7 @@ A mod which adds modular power armor, power tool, and a tinker table to configur
 [[dependencies.powersuits]]
     modId="forge"
     mandatory=true
-    versionRange="${forge_version}"
+    versionRange="${neo_version}"
     side="BOTH"
 
 [[dependencies.powersuits]]
@@ -30,6 +30,6 @@ A mod which adds modular power armor, power tool, and a tinker table to configur
 [[dependencies.powersuits]]
     modId="numina"
     mandatory=true
-    versionRange="[${mod_version},)"
+    versionRange="[${version},)"
     ordering="AFTER"
     side="BOTH"

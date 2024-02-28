@@ -28,7 +28,6 @@ package lehjr.powersuits.client.gui.modding.module.tweak;
 
 
 import com.google.common.util.concurrent.AtomicDouble;
-import com.mojang.blaze3d.vertex.PoseStack;
 import lehjr.numina.client.gui.frame.ModularItemSelectionFrame;
 import lehjr.numina.client.gui.frame.ScrollableFrame;
 import lehjr.numina.client.gui.geometry.Rect;
@@ -38,6 +37,7 @@ import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.item.ItemUtils;
 import lehjr.numina.common.string.StringUtils;
 import lehjr.powersuits.common.constants.MPSConstants;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
@@ -90,22 +90,22 @@ public class DetailedSummaryFrame extends ScrollableFrame {
 
 
     @Override
-    public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTick)  {
+    public void render(GuiGraphics gfx, int mouseX, int mouseY, float partialTick)  {
         if (getMinecraft().player != null) {
-            super.render(matrixStack, mouseX, mouseY, partialTick);
+            super.render(gfx, mouseX, mouseY, partialTick);
             int margin = 4;
             int nexty = (int) top() + margin + 4;
 
             // Max Energy
             String formattedValue = StringUtils.formatNumberFromUnits(energy.get(), "FE");
-            StringUtils.drawShadowedString(matrixStack, energyText, left() + margin, nexty);
-            StringUtils.drawRightAlignedShadowedString(matrixStack, formattedValue, right() - margin, nexty);
+            StringUtils.drawShadowedString(gfx, energyText, left() + margin, nexty);
+            StringUtils.drawRightAlignedShadowedString(gfx, formattedValue, right() - margin, nexty);
             nexty += 10;
 
             // Armor points
             formattedValue = StringUtils.formatNumberFromUnits(armor.get(), "pts");
-            StringUtils.drawShadowedString(matrixStack, armorText, left() + margin, nexty);
-            StringUtils.drawRightAlignedShadowedString(matrixStack, formattedValue, right() - margin, nexty);
+            StringUtils.drawShadowedString(gfx, armorText, left() + margin, nexty);
+            StringUtils.drawRightAlignedShadowedString(gfx, formattedValue, right() - margin, nexty);
         }
     }
 }

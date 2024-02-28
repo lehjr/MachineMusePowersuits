@@ -30,10 +30,13 @@ import lehjr.powersuits.common.base.MPSEntities;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageSources;
+import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.ThrowableProjectile;
@@ -109,7 +112,7 @@ public class PlasmaBallEntity extends ThrowableProjectile implements IEntityAddi
         if (this.isInWater()) {
             this.remove(RemovalReason.DISCARDED);
             for (int i = 0; i <  getChargePercent() * 50F; ++i) {
-                this.level.addParticle(ParticleTypes.FLAME,
+                this.level().addParticle(ParticleTypes.FLAME,
                         this.getX() + Math.random() * 1,
                         this.getY() + Math.random() * 1,
                         this.getZ() + Math.random() * 0.1,
@@ -147,7 +150,7 @@ public class PlasmaBallEntity extends ThrowableProjectile implements IEntityAddi
             case ENTITY:
                 EntityHitResult rayTraceResult = (EntityHitResult)result;
                 if (rayTraceResult.getEntity() != null && rayTraceResult.getEntity() != getOwner()) {
-                    rayTraceResult.getEntity().hurt(DamageSource.thrown(this, getOwner()), this.entityData.get(DAMAGINESS));
+                    rayTraceResult.getEntity().hurt(this.damageSources().thrown(this, getOwner()), this.entityData.get(DAMAGINESS));
                 }
                 break;
             case BLOCK:
@@ -155,19 +158,19 @@ public class PlasmaBallEntity extends ThrowableProjectile implements IEntityAddi
             default:
                 break;
         }
-        if (!this.level.isClientSide) { // Dist.SERVER
-            boolean flag = this.level.getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING);
+        if (!this.level().isClientSide) { // Dist.SERVER
+            boolean flag = this.level().getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING);
             // FIXME: this is probably all wrong
-            this.level.explode(this, this.getX(), this.getY(), this.getZ(), 3 * this.entityData.get(EXPLOSIVENESS), flag ? Explosion.BlockInteraction.DESTROY : Explosion.BlockInteraction.NONE);
+            this.level().explode(this, this.getX(), this.getY(), this.getZ(), 3 * this.entityData.get(EXPLOSIVENESS), flag ? Level.ExplosionInteraction.TNT : Level.ExplosionInteraction.NONE);
         }
         for (int var3 = 0; var3 < 8; ++var3) {
-            this.level.addParticle(ParticleTypes.FLAME,
+            this.level().addParticle(ParticleTypes.FLAME,
                     this.getX() + Math.random() * 0.1,
                     this.getY() + Math.random() * 0.1,
                     this.getZ() + Math.random() * 0.1,
                     0.0D, 0.0D, 0.0D);
         }
-        if (!this.level.isClientSide) {
+        if (!this.level().isClientSide) {
             this.remove(RemovalReason.DISCARDED);
         }
     }
@@ -206,7 +209,7 @@ public class PlasmaBallEntity extends ThrowableProjectile implements IEntityAddi
     }
 
     @Override
-    public Packet<?> getAddEntityPacket() {
+    public Packet<ClientGamePacketListener> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
 }

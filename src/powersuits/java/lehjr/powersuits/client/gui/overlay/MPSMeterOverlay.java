@@ -1,6 +1,5 @@
 package lehjr.powersuits.client.gui.overlay;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import lehjr.numina.client.gui.meter.EnergyMeter;
 import lehjr.numina.client.gui.meter.HeatMeter;
 import lehjr.numina.client.gui.meter.PlasmaChargeMeter;
@@ -13,6 +12,7 @@ import lehjr.numina.common.math.MathUtils;
 import lehjr.numina.common.string.StringUtils;
 import lehjr.powersuits.common.config.MPSSettings;
 import lehjr.powersuits.common.constants.MPSRegistryNames;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -28,7 +28,7 @@ public class MPSMeterOverlay {
     private static PlasmaChargeMeter plasmaMeter = null;
     final static double meterTextOffsetY = 0;
 
-    public static void render(Player player, PoseStack poseStack, float partialTick, float scaledWidth, float scaledHeight) {
+    public static void render(Player player, GuiGraphics poseStack, float partialTick, float scaledWidth, float scaledHeight) {
         float top = scaledHeight / 2.0F - 16F;
         float left = scaledWidth - 36;
         double stringX = left - 2;

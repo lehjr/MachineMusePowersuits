@@ -32,7 +32,7 @@ import net.minecraft.world.item.Item;
 public class ComponentItem extends Item {
 
     // TODO? move to ingredients?
-    public ComponentItem(CreativeModeTab tab) {
-        super(new Item.Properties().tab(tab));
+    public ComponentItem() {
+        super(new Item.Properties());
     }
 }

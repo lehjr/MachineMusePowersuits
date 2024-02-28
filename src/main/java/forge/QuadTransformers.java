@@ -6,12 +6,12 @@ package forge;
 
 import com.google.common.base.Preconditions;
 import com.mojang.math.Transformation;
-import com.mojang.math.Vector3f;
-import com.mojang.math.Vector4f;
 import net.minecraft.Util;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraftforge.client.model.IQuadTransformer;
+import org.joml.Vector3f;
+import org.joml.Vector4f;
 
 import java.util.Arrays;
 
@@ -40,8 +40,7 @@ public final class QuadTransformers {
     /**
      * {@return a new {@link BakedQuad} transformer that applies the specified {@link Transformation}}
      */
-    public static IQuadTransformer applying(Transformation transform)
-    {
+    public static IQuadTransformer applying(Transformation transform) {
         if (transform.isIdentity())
             return empty();
         return quad -> {

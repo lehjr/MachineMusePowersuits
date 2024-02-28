@@ -162,7 +162,7 @@ public class KeymappingKeyHandler {
         // Mode changinging GUI
         if (hotbarKeys[inventory.selected].isDown() && minecraft.isWindowActive()) {
             getMCItemCap(player).ifPresent(iModeChanging->{
-                if(player.level.isClientSide) {
+                if(player.level().isClientSide) {
                     if (!(Minecraft.getInstance().screen instanceof GuiModeSelector)) {
                         Minecraft.getInstance().tell(() -> Minecraft.getInstance().setScreen(new GuiModeSelector(player, Component.literal("modeChanging"))));
                     }

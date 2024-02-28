@@ -202,8 +202,8 @@
 //                        // Get the transform for the model and add to the registry
 //                        NodeList transformNodeList = modelElement.getElementsByTagName("Transformation");
 //                        if (transformNodeList.getLength() > 0) {
-//                            ImmutableMap.Builder<ItemTransforms.TransformType, Transformation> builder = ImmutableMap.builder();
-//                            builder.put(ItemTransforms.TransformType.NONE, getTransform(transformNodeList.item(0)));
+//                            ImmutableMap.Builder<ItemDisplayContext, Transformation> builder = ImmutableMap.builder();
+//                            builder.put(ItemDisplayContext.NONE, getTransform(transformNodeList.item(0)));
 //                            modelTransform =  new SimpleModelState(builder.build());
 //                            // TODO... check and see how this works.. not sure about this
 //                            //modelTransform = new SimpleModelState(getTransform(transformNodeList.item(0)));
@@ -350,12 +350,12 @@
 //     * @return
 //     */
 //    public static ModelState getIModelTransform(Node itemCameraTransformsNode) {
-//        ImmutableMap.Builder<ItemTransforms.TransformType, Transformation> builder = ImmutableMap.builder();
+//        ImmutableMap.Builder<ItemDisplayContext, Transformation> builder = ImmutableMap.builder();
 //        NodeList transformationList = ((Element) itemCameraTransformsNode).getElementsByTagName("Transformation");
 //        for (int i = 0; i < transformationList.getLength(); i++) {
 //            Node transformationNode = transformationList.item(i);
-//            ItemTransforms.TransformType transformType =
-//                    ItemTransforms.TransformType.valueOf(((Element) transformationNode).getAttribute("type").toUpperCase());
+//            ItemDisplayContext transformType =
+//                    ItemDisplayContext.valueOf(((Element) transformationNode).getAttribute("type").toUpperCase());
 //            Transformation trsrTransformation = getTransform(transformationNode);
 //            builder.put(transformType, trsrTransformation);
 //        }

@@ -36,6 +36,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -100,7 +101,7 @@ public class LuxCapacitorEntity extends ThrowableProjectile implements IEntityAd
 
     @Override
     protected void onHit(HitResult hitResult) {
-        if (level.isClientSide()) {
+        if (level().isClientSide()) {
             return;
         }
 
@@ -117,7 +118,7 @@ public class LuxCapacitorEntity extends ThrowableProjectile implements IEntityAd
 
             BlockPlaceContext context = getUseContext(blockPos, blockRayTrace.getDirection(), blockRayTrace);
             // in some cases in newer versions, the y coordinate can be less than 0
-            if (/*y > 0 && */ level.getBlockState(blockPos).canBeReplaced(context) /* level.getBlockState(blockPos).getMaterial().isReplaceable()*/) {
+            if (/*y > 0 && */ level().getBlockState(blockPos).canBeReplaced(context) /* level.getBlockState(blockPos).getMaterial().isReplaceable()*/) {
                 BlockState blockState = MPSBlocks.LUX_CAPACITOR_BLOCK.get().getStateForPlacement(getUseContext(blockPos, blockRayTrace.getDirection(), blockRayTrace));
                 if (!placedBlock(blockState, blockPos, blockRayTrace.getDirection())) {
                     for (Direction facing : context.getNearestLookingDirections()) {
@@ -138,14 +139,14 @@ public class LuxCapacitorEntity extends ThrowableProjectile implements IEntityAd
      * @return True if block was placed
      */
     boolean placedBlock(BlockState state, BlockPos pos, Direction facing) {
-        if (state.canSurvive(level, pos)) {
+        if (state.canSurvive(level(), pos)) {
             if (state.hasProperty(LuxCapacitorBlock.FACING)) {
                 BlockPos posToCheck = pos.relative(facing.getOpposite());
-                BlockState stateToCheck = level.getBlockState(posToCheck);
-                if (stateToCheck.isFaceSturdy(level, posToCheck, facing, SupportType.CENTER)) {
-                    level.setBlockAndUpdate(pos, state);
-                    level.setBlockEntity(new LuxCapacitorBlockEntity(pos, state));
-                    BlockEntity blockEntity = level.getBlockEntity(pos);
+                BlockState stateToCheck = level().getBlockState(posToCheck);
+                if (stateToCheck.isFaceSturdy(level(), posToCheck, facing, SupportType.CENTER)) {
+                    level().setBlockAndUpdate(pos, state);
+                    level().setBlockEntity(new LuxCapacitorBlockEntity(pos, state));
+                    BlockEntity blockEntity = level().getBlockEntity(pos);
                     if (blockEntity instanceof LuxCapacitorBlockEntity) {
                         ((LuxCapacitorBlockEntity) blockEntity).setColor(color);
                         return true;
@@ -170,7 +171,7 @@ public class LuxCapacitorEntity extends ThrowableProjectile implements IEntityAd
     }
 
     @Override
-    public Packet<?> getAddEntityPacket() {
+    public Packet<ClientGamePacketListener> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
 

@@ -1,12 +1,12 @@
 package lehjr.mpsrecipecreator.client.gui;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import lehjr.mpsrecipecreator.container.MPSRCMenu;
 import lehjr.numina.client.gui.clickable.Checkbox;
 import lehjr.numina.client.gui.clickable.ClickableLabel;
 import lehjr.numina.client.gui.frame.ScrollableFrame;
 import lehjr.numina.client.gui.geometry.MusePoint2D;
 import lehjr.numina.client.gui.geometry.Rect;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
@@ -140,15 +140,15 @@ public class SlotOptionsFrame extends ScrollableFrame {
     }
 
     @Override
-    public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTicks) {
-        super.render(matrixStack, mouseX, mouseY, partialTicks);
+    public void render(GuiGraphics gfx, int mouseX, int mouseY, float partialTicks) {
+        super.render(gfx, mouseX, mouseY, partialTicks);
         if (isVisible()) {
-            title.render(matrixStack, mouseX, mouseY, partialTicks);
+            title.render(gfx, mouseX, mouseY, partialTicks);
             for (int i =0; i < 9; i++) {
-                useOreDictCheckbox[i].render(matrixStack, mouseX, mouseY, partialTicks);
+                useOreDictCheckbox[i].render(gfx, mouseX, mouseY, partialTicks);
             }
-            nextOreDictArrow.render(matrixStack, mouseX, mouseY, partialTicks);
-            prevOreDictArrow.render(matrixStack, mouseX, mouseY, partialTicks);
+            nextOreDictArrow.render(gfx, mouseX, mouseY, partialTicks);
+            prevOreDictArrow.render(gfx, mouseX, mouseY, partialTicks);
         }
     }
 

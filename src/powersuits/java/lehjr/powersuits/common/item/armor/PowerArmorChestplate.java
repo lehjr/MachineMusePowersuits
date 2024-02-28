@@ -36,7 +36,7 @@ import net.minecraftforge.common.capabilities.ForgeCapabilities;
 
 public class PowerArmorChestplate extends AbstractElectricItemArmor {
     public PowerArmorChestplate() {
-        super(EquipmentSlot.CHEST);
+        super(Type.CHESTPLATE);
     }
 
 

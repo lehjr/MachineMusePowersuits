@@ -75,14 +75,16 @@ public class ClimbAssistModule extends AbstractPowerModule {
 
             @Override
             public void onPlayerTickActive(Player player, ItemStack item) {
-                player.maxUpStep = 1.001F;
+////                ForgeMod#STEP_HEIGHT
+//                player.getAttribute()
+//                player.setMaxUpStep().maxUpStep = 1.001F;
             }
 
             @Override
             public void onPlayerTickInactive(Player player, ItemStack item) {
-                if (player.maxUpStep == 1.001F) {
-                    player.maxUpStep = 0.5001F;
-                }
+//                if (player.maxUpStep == 1.001F) {
+//                    player.maxUpStep = 0.5001F;
+//                }
             }
         }
 

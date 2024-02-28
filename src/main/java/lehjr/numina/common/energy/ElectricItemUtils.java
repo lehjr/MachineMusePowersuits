@@ -78,7 +78,7 @@ public class ElectricItemUtils {
         double drainleft = drainAmount;
         if (entity instanceof Player) {
             Player player = (Player) entity;
-            if (player.level.isClientSide || player.getAbilities().instabuild) {
+            if (player.level().isClientSide || player.getAbilities().instabuild) {
                 return drainAmount;
             }
 

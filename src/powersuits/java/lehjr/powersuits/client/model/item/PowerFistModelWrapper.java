@@ -3,6 +3,7 @@ package lehjr.powersuits.client.model.item;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraftforge.client.model.BakedModelWrapper;
 
 /**
@@ -14,8 +15,8 @@ public class PowerFistModelWrapper extends BakedModelWrapper {
     }
 
     @Override
-    public BakedModel applyTransform(ItemTransforms.TransformType cameraTransformType, PoseStack poseStack, boolean applyLeftHandTransform) {
-        if (cameraTransformType == ItemTransforms.TransformType.GUI) {
+    public BakedModel applyTransform(ItemDisplayContext cameraTransformType, PoseStack poseStack, boolean applyLeftHandTransform) {
+        if (cameraTransformType == ItemDisplayContext.GUI) {
             return originalModel.applyTransform(cameraTransformType, poseStack, applyLeftHandTransform);
         }
         originalModel.getTransforms().getTransform(cameraTransformType).apply(applyLeftHandTransform, poseStack);

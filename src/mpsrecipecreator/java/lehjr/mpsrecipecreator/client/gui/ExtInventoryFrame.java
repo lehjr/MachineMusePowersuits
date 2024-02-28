@@ -1,12 +1,12 @@
 package lehjr.mpsrecipecreator.client.gui;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import lehjr.numina.client.gui.IContainerULOffSet;
 import lehjr.numina.client.gui.frame.IGuiFrame;
 import lehjr.numina.client.gui.frame.ScrollableFrame;
 import lehjr.numina.client.gui.geometry.MusePoint2D;
 import lehjr.numina.client.gui.geometry.Rect;
 import lehjr.numina.common.math.Color;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 
 import java.util.ArrayList;
@@ -64,11 +64,11 @@ public class ExtInventoryFrame extends ScrollableFrame {
 //    }
 
     @Override
-    public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTicks) {
-        super.render(matrixStack, mouseX, mouseY, partialTicks);
+    public void render(GuiGraphics gfx, int mouseX, int mouseY, float partialTicks) {
+        super.render(gfx, mouseX, mouseY, partialTicks);
         if (this.isVisible()) {
             for (IGuiFrame frame : frames) {
-                frame.render(matrixStack, mouseX, mouseY, partialTicks);
+                frame.render(gfx, mouseX, mouseY, partialTicks);
             }
         }
     }

@@ -35,6 +35,7 @@ import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemDisplayContext;
 
 import javax.annotation.Nonnull;
 import java.util.Objects;
@@ -61,7 +62,7 @@ public class ObjModelSpec extends SpecBase {
         this.location = location;
     }
 
-    public ItemTransform getTransform(ItemTransforms.TransformType transformType) {
+    public ItemTransform getTransform(ItemDisplayContext transformType) {
         return itemTransforms.getTransform(transformType);
     }
 

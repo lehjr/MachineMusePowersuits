@@ -4,7 +4,8 @@ import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.platform.Lighting;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
-import com.mojang.math.Matrix4f;
+import net.minecraft.client.gui.GuiGraphics;
+import org.joml.Matrix4f;
 import lehjr.numina.client.gui.geometry.IDrawableRect;
 import lehjr.numina.common.math.Color;
 import lehjr.numina.common.math.MathUtils;
@@ -65,11 +66,11 @@ public interface IScrollable extends IGuiFrame, IDrawableRect {
 
 
     @Override
-    default void preRender(PoseStack matrixStack, int mouseX, int mouseY, float frameTIme) {
+    default void preRender(GuiGraphics gfx, int mouseX, int mouseY, float frameTIme) {
         if (isVisible()) {
 //            ShaderInstance oldShader = RenderSystem.getShader();
             RenderSystem.setShader(GameRenderer::getPositionColorShader);
-            RenderSystem.disableTexture();
+//            RenderSystem.disableTexture();
             RenderSystem.enableBlend();
             Lighting.setupForEntityInInventory();
             RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
@@ -77,7 +78,7 @@ public interface IScrollable extends IGuiFrame, IDrawableRect {
             Tesselator tessellator = Tesselator.getInstance();
             BufferBuilder buffer = tessellator.getBuilder();
             buffer.begin(VertexFormat.Mode.TRIANGLES, DefaultVertexFormat.POSITION_COLOR_LIGHTMAP);
-            Matrix4f matrix4f = matrixStack.last().pose();
+            Matrix4f matrix4f = gfx.pose().last().pose();
 
             // Can scroll down
             if (getCurrentScrollPixels() + height() < getTotalSize()) {
@@ -115,7 +116,7 @@ public interface IScrollable extends IGuiFrame, IDrawableRect {
             tessellator.end();
 
             RenderSystem.disableBlend();
-            RenderSystem.enableTexture();
+//            RenderSystem.enableTexture();
 //            RenderSystem.setShader(() -> oldShader);
 
             enableScissor((int)left(), (int)top(), (int)width(), (int)height()); // get rid of margins
@@ -135,7 +136,7 @@ public interface IScrollable extends IGuiFrame, IDrawableRect {
     }
 
     @Override
-    default void postRender(int mouseX, int mouseY, float partialTicks) {
+    default void postRender(GuiGraphics gfx, int mouseX, int mouseY, float partialTicks) {
         if (isVisible()) {
             RenderSystem.disableScissor();
 //            NuminaRenderState.glowOff();

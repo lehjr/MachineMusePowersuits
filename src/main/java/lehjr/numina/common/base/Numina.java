@@ -99,6 +99,10 @@ public class Numina {
         MinecraftForge.EVENT_BUS.register(this);
         SoundDictionary.NUMINA_SOUND_EVENTS.register(modEventBus);
         NuminaObjects.NUMINA_ITEMS.register(modEventBus);
+
+        // item group
+        NuminaObjects.register(modEventBus);
+
         NuminaObjects.NUMINA_BLOCKS.register(modEventBus);
         NuminaObjects.TILE_TYPES.register(modEventBus);
         NuminaObjects.ENTITY_TYPES.register(modEventBus);

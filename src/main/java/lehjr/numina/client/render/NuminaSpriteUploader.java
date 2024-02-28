@@ -38,10 +38,11 @@ import java.util.Set;
 import java.util.stream.Stream;
 
 public class NuminaSpriteUploader extends TextureAtlasHolder {
+    static final ResourceLocation GUI_ATLAS = new ResourceLocation(NuminaConstants.MOD_ID,"atlas/gui");
     private final Set<ResourceLocation> registeredSprites = new HashSet<>();
 
     public NuminaSpriteUploader() {
-        super(Minecraft.getInstance().getTextureManager(), NuminaConstants.LOCATION_NUMINA_GUI_TEXTURE_ATLAS, "atlas/gui");
+        super(Minecraft.getInstance().getTextureManager(), NuminaConstants.LOCATION_NUMINA_GUI_TEXTURE_ATLAS, GUI_ATLAS);
     }
 
     public void registerIcon(ResourceLocation location) {
@@ -51,11 +52,13 @@ public class NuminaSpriteUploader extends TextureAtlasHolder {
     public void registerSprite(ResourceLocation location) {
         registeredSprites.add(location);
     }
-
-    @Override
-    protected Stream<ResourceLocation> getResourcesToLoad() {
-        return Collections.unmodifiableSet(registeredSprites).stream();
-    }
+//
+//
+//
+//    @Override
+//    protected Stream<ResourceLocation> getResourcesToLoad() {
+//        return Collections.unmodifiableSet(registeredSprites).stream();
+//    }
 
     /**
      * Overridden to make it public

@@ -27,7 +27,6 @@
 package lehjr.numina.client.gui.clickable;
 
 import com.mojang.blaze3d.platform.Lighting;
-import com.mojang.blaze3d.vertex.PoseStack;
 import lehjr.numina.client.gui.geometry.MusePoint2D;
 import lehjr.numina.client.render.IconUtils;
 import lehjr.numina.client.render.NuminaRenderer;
@@ -37,6 +36,7 @@ import lehjr.numina.common.math.Color;
 import lehjr.numina.common.string.AdditionalInfo;
 import lehjr.numina.common.string.StringUtils;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
@@ -122,23 +122,23 @@ public class ClickableModule extends Clickable {
     }
 
     @Override
-    public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTick) {
+    public void render(GuiGraphics gfx, int mouseX, int mouseY, float partialTick) {
         // TODO: extra text and options to disable if player doesn't have the module available
 
         if (!getModule().isEmpty()) {
-            NuminaRenderer.drawModuleAt(matrixStack, left(), top(), getModule(), true);
+            NuminaRenderer.drawModuleAt(gfx, left(), top(), getModule(), true);
             Lighting.setupForFlatItems();
             if (!allowed) {
-                matrixStack.pushPose();
-                matrixStack.translate(0, 0, 250);
+                gfx.pose().pushPose();
+                gfx.pose().translate(0, 0, 250);
                 String string = StringUtils.wrapMultipleFormatTags("X", StringUtils.FormatCodes.Bold, StringUtils.FormatCodes.DarkRed);
-                StringUtils.drawShadowedString(matrixStack, string, centerX() + 3, centerY() + 1);
-                matrixStack.popPose();
+                StringUtils.drawShadowedString(gfx, string, centerX() + 3, centerY() + 1);
+                gfx.pose().popPose();
             } else if (installed) {
-                matrixStack.pushPose();
-                matrixStack.translate(0, 0,250);
-                IconUtils.getIcon().checkmark.draw(matrixStack, left() + 1, top() + 1, Color.LIGHT_GREEN);
-                matrixStack.popPose();
+                gfx.pose().pushPose();
+                gfx.pose().translate(0, 0,250);
+                IconUtils.getIcon().checkmark.draw(gfx.pose(), left() + 1, top() + 1, Color.LIGHT_GREEN);
+                gfx.pose().popPose();
             }
         }
     }

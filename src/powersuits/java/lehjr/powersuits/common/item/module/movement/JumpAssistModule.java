@@ -90,7 +90,7 @@ public class JumpAssistModule extends AbstractPowerModule {
                         player.setDeltaMovement(player.getDeltaMovement().add(0, 0.15 * Math.min(multiplier, 1), 0));
                         MovementManager.INSTANCE.setPlayerJumpTicks(player, multiplier - 1);
                     }
-                    player.flyingSpeed = player.getSpeed() * .2f;
+                    player.getAbilities().setFlyingSpeed(player.getSpeed() * .2f);
                 } else {
                     MovementManager.INSTANCE.setPlayerJumpTicks(player, 0);
                 }

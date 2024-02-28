@@ -27,10 +27,10 @@
 package lehjr.powersuits.client.gui.modechanging;
 
 import com.mojang.blaze3d.platform.Window;
-import com.mojang.blaze3d.vertex.PoseStack;
 import lehjr.numina.client.gui.ContainerlessGui;
 import lehjr.numina.client.gui.geometry.MusePoint2D;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
 
@@ -57,22 +57,22 @@ public class GuiModeSelector extends ContainerlessGui {
         radialSelect = new RadialModeSelectionFrame(
                 new MusePoint2D(absX(-0.5), absY(-0.5)),
                 new MusePoint2D(absX(0.5), absY(0.5)),
-                player, this.getBlitOffset());
+                player, 0);
         addFrame(radialSelect);
     }
 
     @Override
-    public void render(PoseStack matrixStack, int mouseX, int mouseY, float frameTime) {
-        this.renderBackground(matrixStack);
+    public void render(GuiGraphics gfx, int mouseX, int mouseY, float frameTime) {
+        this.renderBackground(gfx);
         this.update(mouseX, mouseY);
-        matrixStack.pushPose();
-        matrixStack.translate(0.0D, 0.0D, 10.0D);
-        this.renderFrames(matrixStack, mouseX, mouseY, frameTime);
-        matrixStack.translate(0.0D, 0.0D, 10.0D);
-        matrixStack.translate(0.0D, 0.0D, 100.0D);
-        this.renderLabels(matrixStack, mouseX, mouseY);
-        matrixStack.popPose();
-        renderTooltip(matrixStack, mouseX, mouseY);
+        gfx.pose().pushPose();
+        gfx.pose().translate(0.0D, 0.0D, 10.0D);
+        this.renderFrames(gfx, mouseX, mouseY, frameTime);
+        gfx.pose().translate(0.0D, 0.0D, 10.0D);
+        gfx.pose().translate(0.0D, 0.0D, 100.0D);
+        this.renderLabels(gfx, mouseX, mouseY);
+        gfx.pose().popPose();
+        renderTooltip(gfx, mouseX, mouseY);
     }
 
     @Override

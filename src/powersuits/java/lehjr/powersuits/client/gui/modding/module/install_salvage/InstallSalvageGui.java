@@ -1,7 +1,6 @@
 package lehjr.powersuits.client.gui.modding.module.install_salvage;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 import lehjr.numina.client.gui.ExtendedContainerScreen;
 import lehjr.numina.client.gui.clickable.button.VanillaButton;
 import lehjr.numina.client.gui.frame.ModularItemSelectionFrameContainered;
@@ -12,14 +11,16 @@ import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
 import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.item.ItemUtils;
+import lehjr.numina.common.math.Color;
+import lehjr.numina.common.string.StringUtils;
 import lehjr.powersuits.client.gui.ScrollableInventoryFrame2;
 import lehjr.powersuits.client.gui.common.TabSelectFrame;
 import lehjr.powersuits.common.constants.MPSConstants;
 import lehjr.powersuits.common.container.InstallSalvageMenu;
 import lehjr.powersuits.common.network.MPSPackets;
-import lehjr.powersuits.common.network.packets.clientbound.CreativeInstallPacketClientBound;
 import lehjr.powersuits.common.network.packets.serverbound.CreativeInstallPacketServerBound;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
@@ -28,11 +29,8 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -126,36 +124,36 @@ public class InstallSalvageGui extends ExtendedContainerScreen<InstallSalvageMen
     }
 
     @Override
-    public void render(@Nonnull PoseStack matrixStack, int mouseX, int mouseY, float frameTime) {
-        this.renderBackground(matrixStack);
-        super.render(matrixStack, mouseX, mouseY, frameTime);
-        this.renderTooltip(matrixStack, mouseX, mouseY);
+    public void render(@Nonnull GuiGraphics gfx, int mouseX, int mouseY, float frameTime) {
+        this.renderBackground(gfx);
+        super.render(gfx, mouseX, mouseY, frameTime);
+        this.renderTooltip(gfx, mouseX, mouseY);
     }
 
     @Override
-    public void renderLabels(PoseStack matrixStack, int mouseX, int mouseY) {
-        this.font.draw(matrixStack, this.moduleSelectionFrameLabel,
+    public void renderLabels(GuiGraphics gfx, int mouseX, int mouseY) {
+        StringUtils.drawShadowedString(gfx, this.moduleSelectionFrameLabel,
                 titleLabelX,
-                (float)this.titleLabelY, 4210752);
+                (float)this.titleLabelY, new Color(4210752));
 
-        this.font.draw(matrixStack, this.modularItemInventoryLabel,
+        StringUtils.drawShadowedString(gfx, this.modularItemInventoryLabel,
                 (float)(titleLabelX + 173),
-                (float)this.titleLabelY, 4210752);
+                (float)this.titleLabelY, new Color(4210752));
 
-        this.font.draw(matrixStack, this.playerInventory.getDisplayName(),
+        StringUtils.drawShadowedString(gfx, this.playerInventory.getDisplayName(),
                 (float)(this.inventoryLabelX),
                 (float)(inventoryLabelY),
-                4210752);
+                new Color(4210752));
     }
 
     @Override
-    public void renderBackground(@Nonnull PoseStack matrixStack) {
-        super.renderBackground(matrixStack);
+    public void renderBackground(@Nonnull GuiGraphics gfx) {
+        super.renderBackground(gfx);
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-        RenderSystem.setShaderTexture(0, BACKGROUND);
+//        RenderSystem.setShaderTexture(0, BACKGROUND);
         int i = this.leftPos;
         int j = this.topPos;
-        blit(matrixStack, i, j, this.getBlitOffset(), 0, 0, imageWidth, imageHeight, 512, 512);
+        gfx.blit(BACKGROUND, i, j, 0, 0, imageWidth, imageHeight, 512, 512);
     }
 }

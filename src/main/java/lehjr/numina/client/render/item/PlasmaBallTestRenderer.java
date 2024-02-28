@@ -65,15 +65,15 @@
 //
 //    @Override
 //    public void renderByItem(ItemStack stack,
-//                               ItemTransforms.TransformType transformType,
+//                               ItemDisplayContext transformType,
 //                               PoseStack matrixStackIn, MultiBufferSource bufferIn, int combinedLight, int combinedOverlay) {
 //        renderAsItem(matrixStackIn, bufferIn, size, transformType);
 //    }
 //
-//    public void renderAsItem(PoseStack matrixStackIn, MultiBufferSource bufferIn, float boltSizeIn, ItemTransforms.TransformType cameraTransformTypeIn) {
+//    public void renderAsItem(PoseStack matrixStackIn, MultiBufferSource bufferIn, float boltSizeIn, ItemDisplayContext cameraTransformTypeIn) {
 //        if (boltSizeIn != 0) {
 //            matrixStackIn.pushPose();
-//            if (cameraTransformTypeIn == ItemTransforms.TransformType.FIRST_PERSON_RIGHT_HAND || cameraTransformTypeIn == ItemTransforms.TransformType.FIRST_PERSON_LEFT_HAND) {
+//            if (cameraTransformTypeIn == ItemDisplayContext.FIRST_PERSON_RIGHT_HAND || cameraTransformTypeIn == ItemDisplayContext.FIRST_PERSON_LEFT_HAND) {
 //                matrixStackIn.scale(0.0625f, 0.0625f, 0.0625f); // negative scale mirrors the model
 //                matrixStackIn.mulPose(Vector3f.XP.rotationDegrees(-182));
 //            } else {

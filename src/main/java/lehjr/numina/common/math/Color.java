@@ -28,8 +28,8 @@ package lehjr.numina.common.math;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Vector4f;
 import lehjr.numina.common.base.NuminaLogger;
+import org.joml.Vector4f;
 
 import java.util.Objects;
 

@@ -41,7 +41,6 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
@@ -58,7 +57,7 @@ public class LuxCapacitorBlock extends DirectionalBlock implements SimpleWaterlo
     protected static final VoxelShape DOWN_AABB = Block.box(1, 12, 1, 15, 16.0, 15);
 
     public LuxCapacitorBlock() {
-        super(Block.Properties.of(Material.METAL)
+        super(Block.Properties.of()
                 .strength(0.05F, 10.0F)
                 .sound(SoundType.METAL)
                 .dynamicShape()

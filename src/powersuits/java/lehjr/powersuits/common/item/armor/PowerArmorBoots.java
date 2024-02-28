@@ -26,10 +26,8 @@
 
 package lehjr.powersuits.common.item.armor;
 
-import net.minecraft.world.entity.EquipmentSlot;
-
 public class PowerArmorBoots extends AbstractElectricItemArmor {
     public PowerArmorBoots() {
-        super(EquipmentSlot.FEET);
+        super(Type.BOOTS);
     }
 }

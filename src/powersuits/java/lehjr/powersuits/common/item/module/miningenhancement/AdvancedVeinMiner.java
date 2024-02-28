@@ -148,7 +148,7 @@ public class AdvancedVeinMiner extends AbstractPowerModule {
                         // setup drops checking for enchantments
                         Block.dropResources(world.getBlockState(pos), world, pos, blockEntity, player, itemStack);
                         // destroy block but don't drop default drops because they're already set above
-                        player.level.destroyBlock(pos, false, player, 512);
+                        player.level().destroyBlock(pos, false, player, 512);
                     }
 
                 }
@@ -156,7 +156,7 @@ public class AdvancedVeinMiner extends AbstractPowerModule {
 
             @Override
             public boolean onBlockStartBreak(ItemStack itemStack, BlockPos posIn, Player player) {
-                BlockState state = player.level.getBlockState(posIn);
+                BlockState state = player.level().getBlockState(posIn);
                 Block block = state.getBlock();
                 chameleon.loadCapValues();
                 // abort if block is not set
@@ -198,7 +198,7 @@ public class AdvancedVeinMiner extends AbstractPowerModule {
                         return false;
                     }
 
-                    NonNullList<BlockPos> posList = getPosList(block, posIn, player.level);
+                    NonNullList<BlockPos> posList = getPosList(block, posIn, player.level());
                     NonNullList<BlockPos> posListCopy = NonNullList.create();
                     for (BlockPos pos : posList) {
                         posListCopy.add(pos);
@@ -234,7 +234,7 @@ public class AdvancedVeinMiner extends AbstractPowerModule {
 
                             outerLoop:
                             for (BlockPos pos : posListCopy) {
-                                NonNullList<BlockPos> posList2 = getPosList(block, pos, player.level);
+                                NonNullList<BlockPos> posList2 = getPosList(block, pos, player.level());
                                 for (BlockPos pos2 : posList2) {
                                     if (!posList.contains(pos2)) {
                                         // does player have enough energy to break initial list?
@@ -258,10 +258,10 @@ public class AdvancedVeinMiner extends AbstractPowerModule {
 
                     // All blocks are the same, otherwise this would have to be calculated on the fly
 
-                    if (!player.level.isClientSide()) {
+                    if (!player.level().isClientSide()) {
                         ElectricItemUtils.drainPlayerEnergy(player, energyRequired * posList.size());
                     }
-                    harvestBlocks(posList, player.level, player, itemStack);
+                    harvestBlocks(posList, player.level(), player, itemStack);
                 }
                 return false;
             }
@@ -277,7 +277,7 @@ public class AdvancedVeinMiner extends AbstractPowerModule {
             @OnlyIn(Dist.CLIENT)
             NonNullList<BlockPos> findBlockPositionsClient(BlockPos targetPos) {
                 chameleon.loadCapValues();
-                return chameleon.getTargetBlock().map(targetBlock -> getPosList(targetBlock, targetPos, Minecraft.getInstance().player.level)).orElse(NonNullList.create());
+                return chameleon.getTargetBlock().map(targetBlock -> getPosList(targetBlock, targetPos, Minecraft.getInstance().player.level())).orElse(NonNullList.create());
             }
 
             @Override

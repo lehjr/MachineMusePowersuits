@@ -28,7 +28,7 @@ package lehjr.numina.client.gui;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
-import com.mojang.math.Matrix4f;
+import org.joml.Matrix4f;
 import lehjr.numina.client.render.NuminaSpriteUploader;
 import lehjr.numina.common.constants.NuminaConstants;
 import lehjr.numina.common.math.Color;
@@ -127,7 +127,7 @@ public class GuiIcon {
 
         public void renderIconScaledWithColor(PoseStack matrixStack,
                                               double posLeft, double posTop, double width, double height, Color color) {
-            renderIconScaledWithColor(matrixStack, posLeft, posTop, width, height, getMinecraft().screen.getBlitOffset(), color);
+            renderIconScaledWithColor(matrixStack, posLeft, posTop, width, height, 0, color);
         }
 
         public void renderIconScaledWithColor(PoseStack matrixStack,
@@ -143,13 +143,13 @@ public class GuiIcon {
         }
 
 
-        public void draw(PoseStack matrixStack, double xOffset, double yOffset, double maskTop, double maskBottom, double maskLeft, double maskRight, Color color) {
+        public void draw(PoseStack poseStack, double xOffset, double yOffset, double maskTop, double maskBottom, double maskLeft, double maskRight, Color color) {
             double textureWidth = this.width;
             double textureHeight = this.height;
 
             bindTexture();
             TextureAtlasSprite icon = spriteUploader.getSprite(location);
-            float zLevel = getMinecraft().screen.getBlitOffset();
+            float zLevel = 0;
 
             double posLeft = xOffset + maskLeft;
             double posTop = yOffset + maskTop;
@@ -169,7 +169,7 @@ public class GuiIcon {
 //            RenderSystem.enableBlend();
 ////            RenderSystem.disableAlphaTest();
 //            RenderSystem.defaultBlendFunc();
-            innerBlit(matrixStack.last().pose(), posLeft, posRight, posTop, posBottom, zLevel, minU, maxU, minV, maxV, color);
+            innerBlit(poseStack.last().pose(), posLeft, posRight, posTop, posBottom, zLevel, minU, maxU, minV, maxV, color);
 //            RenderSystem.disableBlend();
 ////            RenderSystem.enableAlphaTest();
 //            RenderSystem.enableDepthTest();

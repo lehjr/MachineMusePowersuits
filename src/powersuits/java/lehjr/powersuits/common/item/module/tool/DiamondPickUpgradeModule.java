@@ -103,7 +103,7 @@ public class DiamondPickUpgradeModule extends AbstractPowerModule {
              */
             @Override
             public boolean canHarvestBlock(@Nonnull ItemStack powerFist, BlockState state, Player player, BlockPos pos, double playerEnergy) {
-                AtomicBoolean canHarvest = new AtomicBoolean((isModuleOnline() && playerEnergy >= this.getEnergyUsage() && isToolEffective(player.level, pos, getEmulatedTool())));
+                AtomicBoolean canHarvest = new AtomicBoolean((isModuleOnline() && playerEnergy >= this.getEnergyUsage() && isToolEffective(player.level(), pos, getEmulatedTool())));
                 powerFist.getCapability(ForgeCapabilities.ITEM_HANDLER)
                         .filter(IModeChangingItem.class::isInstance)
                         .map(IModeChangingItem.class::cast)

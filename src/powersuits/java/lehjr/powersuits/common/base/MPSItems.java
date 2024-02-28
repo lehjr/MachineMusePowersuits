@@ -1,5 +1,7 @@
 package lehjr.powersuits.common.base;
 
+import lehjr.numina.common.base.NuminaObjects;
+import lehjr.numina.common.constants.NuminaConstants;
 import lehjr.powersuits.common.constants.MPSConstants;
 import lehjr.powersuits.common.constants.MPSRegistryNames;
 import lehjr.powersuits.common.item.armor.PowerArmorBoots;
@@ -33,8 +35,13 @@ import lehjr.powersuits.common.item.module.vision.BinocularsModule;
 import lehjr.powersuits.common.item.module.vision.NightVisionModule;
 import lehjr.powersuits.common.item.module.weapon.*;
 import lehjr.powersuits.common.item.tool.PowerFist;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -42,7 +49,6 @@ import net.minecraftforge.registries.RegistryObject;
 
 @Mod.EventBusSubscriber(modid = MPSConstants.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class MPSItems {
-    public static MPSCreativeTab creativeTab = new MPSCreativeTab();
     /**
      * Items -------------------------------------------------------------------------------------
      */
@@ -57,7 +63,6 @@ public class MPSItems {
             () -> new BlockItem(MPSBlocks.LUX_CAPACITOR_BLOCK.get(), new Item.Properties()
                     .stacksTo(64)
                     .defaultDurability(-1)
-                    .tab(creativeTab)
                     .setNoRepair()));
 
     /* Armor -------------------------------------------------------------------------------------- */
@@ -208,19 +213,15 @@ public class MPSItems {
             RailgunModule::new);
 
 
-//    @SubscribeEvent
-//    public static void addCreativeTab(CreativeModeTabEvent.Register event) {
-//        creativeTab = event.registerCreativeModeTab(new ResourceLocation(MPSConstants.MOD_ID, "items"),
-//                builder -> builder.icon(() -> new ItemStack(ForgeRegistries.ITEMS.getValue(MPSRegistryNames.POWER_ARMOR_HELMET)))
-//                        .title(Component.translatable(MPSConstants.MOD_ID)));
-//    }
-//
-//    @SubscribeEvent
-//    public static void onPopulateTab(CreativeModeTabEvent.BuildContents event)
-//    {
-//        if (event.getTab() == creativeTab)
-//        {
-//            MPS_ITEMS.getEntries().forEach(item->event.accept(new ItemStack(item.get())));
-//        }
-//    }
+    public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS =
+            DeferredRegister.create(Registries.CREATIVE_MODE_TAB, MPSConstants.MOD_ID);
+    public static final RegistryObject<CreativeModeTab> MPS_TAB = CREATIVE_MODE_TABS.register("creative.mode.tab",
+            ()-> CreativeModeTab.builder().icon(()->new ItemStack(NuminaObjects.ARMOR_STAND_ITEM.get()))
+                    .title(Component.translatable(NuminaConstants.CREATIVE_TAB_TRANSLATION_KEY))
+                    .displayItems((parameters, output) -> MPS_ITEMS.getEntries().forEach(item -> output.accept(item.get())))
+                    .build());
+
+    public static void register(IEventBus eventBus){
+        CREATIVE_MODE_TABS.register(eventBus);
+    }
 }

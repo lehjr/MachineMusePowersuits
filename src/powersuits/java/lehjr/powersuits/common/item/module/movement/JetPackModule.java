@@ -115,8 +115,8 @@ public class JetPackModule extends AbstractPowerModule {
                         ((hasFlightControl && thrust > 0) || (playerInput.jumpKey))) {
                         thrust = MovementManager.INSTANCE.thrust(player, thrust, hasFlightControl);
 
-                        if(!player.level.isClientSide()) {
-                            if ((player.level.getGameTime() % 5) == 0) {
+                        if(!player.level().isClientSide()) {
+                            if ((player.level().getGameTime() % 5) == 0) {
                                 ElectricItemUtils.drainPlayerEnergy(player, (int) (thrust * jetEnergy * 5));
                             }
                         } else if (NuminaSettings.useSounds()) {
@@ -129,7 +129,7 @@ public class JetPackModule extends AbstractPowerModule {
 
             @Override
             public void onPlayerTickInactive(Player player, ItemStack item) {
-                if (player.level.isClientSide && NuminaSettings.useSounds()) {
+                if (player.level().isClientSide && NuminaSettings.useSounds()) {
                     Musique.stopPlayerSound(player, MPSSoundDictionary.SOUND_EVENT_JETPACK.get());
                 }
             }

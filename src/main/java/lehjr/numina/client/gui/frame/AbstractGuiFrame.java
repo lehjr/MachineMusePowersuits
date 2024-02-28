@@ -1,7 +1,7 @@
 package lehjr.numina.client.gui.frame;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import lehjr.numina.client.gui.geometry.*;
+import net.minecraft.client.gui.GuiGraphics;
 
 import javax.annotation.Nonnull;
 
@@ -15,9 +15,9 @@ public class AbstractGuiFrame<T extends Rect> implements IGuiFrame {
         this.backgrountRect = backgrountRect;
     }
 
-    public void renderBackgroundRect(PoseStack matrixStack, int mouseX, int mouseY, float partialTicks) {
+    public void renderBackgroundRect(GuiGraphics gfx, int mouseX, int mouseY, float partialTicks) {
         if (backgrountRect instanceof IDrawableRect) {
-            ((IDrawableRect) backgrountRect).render(matrixStack, mouseX, mouseY, partialTicks);
+            ((IDrawableRect) backgrountRect).render(gfx, mouseX, mouseY, partialTicks);
         }
     }
 

@@ -27,7 +27,8 @@
 package lehjr.powersuits.client.render.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
+import net.minecraft.world.item.ItemDisplayContext;
+import org.joml.Vector3f;
 import lehjr.numina.common.constants.TagConstants;
 import lehjr.numina.common.math.Color;
 import lehjr.powersuits.common.constants.MPSRegistryNames;
@@ -76,14 +77,14 @@ public class LuxCapacitorEntityRenderer extends EntityRenderer<LuxCapacitorEntit
         ItemStack itemstack = getStack(entityIn.color);
         int i = itemstack.isEmpty() ? 187 : Item.getId(itemstack.getItem()) + itemstack.getDamageValue();
         this.random.setSeed((long) i);
-        BakedModel ibakedmodel = Minecraft.getInstance().getItemRenderer().getModel(itemstack, entityIn.level, (LivingEntity) null, entityIn.getId());
+        BakedModel ibakedmodel = Minecraft.getInstance().getItemRenderer().getModel(itemstack, entityIn.level(), (LivingEntity) null, entityIn.getId());
         int time = (int) System.currentTimeMillis() % 360;
         matrixStackIn.mulPose(TransformationHelper.quatFromXYZ(new Vector3f(0, time / 2, 0), true));
         matrixStackIn.scale(1.8F, 1.8F, 1.8F);
 
         boolean flag = ibakedmodel.isGui3d();
         matrixStackIn.pushPose();
-        Minecraft.getInstance().getItemRenderer().render(itemstack, ItemTransforms.TransformType.GROUND, false, matrixStackIn, bufferIn, packedLightIn, OverlayTexture.NO_OVERLAY, ibakedmodel);
+        Minecraft.getInstance().getItemRenderer().render(itemstack, ItemDisplayContext.GROUND, false, matrixStackIn, bufferIn, packedLightIn, OverlayTexture.NO_OVERLAY, ibakedmodel);
         matrixStackIn.popPose();
 
         // fixme ???? what is this for?

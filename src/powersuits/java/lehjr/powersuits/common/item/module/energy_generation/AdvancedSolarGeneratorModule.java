@@ -99,10 +99,10 @@ public class AdvancedSolarGeneratorModule extends AbstractPowerModule {
 
             @Override
             public void onPlayerTickActive(Player player, ItemStack itemStack) {
-                Level world = player.level;
+                Level world = player.level();
                 boolean isRaining, canRain = true;
                 if (world.getGameTime() % 20 == 0) {
-                    canRain = world.getBiome(player.blockPosition()).value().getPrecipitation() !=  Biome.Precipitation.NONE;
+                    canRain = world.getBiome(player.blockPosition()).value().hasPrecipitation();
                 }
                 isRaining = canRain && (world.isRaining() || world.isThundering());
                 boolean sunVisible = world.isDay() && !isRaining && world.canSeeSkyFromBelowWater(player.blockPosition().above());

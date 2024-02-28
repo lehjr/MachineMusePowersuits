@@ -27,7 +27,8 @@
 package lehjr.powersuits.client.render.blockentity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
+import org.joml.Vector3f;
 import lehjr.powersuits.client.model.block.TinkerTableModel;
 import lehjr.powersuits.common.block.TinkerTable;
 import lehjr.powersuits.common.blockentity.TinkerTableBlockEntity;
@@ -52,16 +53,16 @@ public class TinkerTableBER implements BlockEntityRenderer<TinkerTableBlockEntit
 //                    poseStack.mulPose(Vector3f.YP.rotationDegrees(0f));
                     break;
                 case EAST:
-                    poseStack.mulPose(Vector3f.YP.rotationDegrees(180f));
+                    poseStack.mulPose(Axis.YP.rotationDegrees(180f));
                     poseStack.translate(-1, 0, -1);
                     break;
                 case SOUTH:
 //                    poseStack.mulPose(Vector3f.YP.rotationDegrees(90f));
-                    poseStack.mulPose(Vector3f.YP.rotationDegrees( 90));
+                    poseStack.mulPose(Axis.YP.rotationDegrees( 90));
                     poseStack.translate(-1, 0, 0);
                     break;
                 case NORTH:
-                    poseStack.mulPose(Vector3f.YP.rotationDegrees(270f));
+                    poseStack.mulPose(Axis.YP.rotationDegrees(270f));
                     poseStack.translate(0, 0, -1);
                 default:
                     break;

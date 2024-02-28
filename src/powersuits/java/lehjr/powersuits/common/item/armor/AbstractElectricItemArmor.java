@@ -37,7 +37,6 @@ import lehjr.numina.common.capabilities.module.toggleable.IToggleableModule;
 import lehjr.numina.common.constants.NuminaConstants;
 import lehjr.numina.common.energy.ElectricItemUtils;
 import lehjr.numina.common.string.AdditionalInfo;
-import lehjr.powersuits.common.base.MPSItems;
 import lehjr.powersuits.common.capability.PowerArmorCap;
 import lehjr.powersuits.common.constants.MPSConstants;
 import lehjr.powersuits.common.constants.MPSRegistryNames;
@@ -69,6 +68,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
 public abstract class AbstractElectricItemArmor extends ArmorItem {
@@ -78,11 +78,10 @@ public abstract class AbstractElectricItemArmor extends ArmorItem {
             UUID.randomUUID(),
             UUID.randomUUID()};
 
-    public AbstractElectricItemArmor(EquipmentSlot slots) {
-        super(MPSArmorMaterial.EMPTY_ARMOR, slots, new Item.Properties()
+    public AbstractElectricItemArmor(ArmorItem.Type type) {
+        super(MPSArmorMaterial.EMPTY_ARMOR, type, new Item.Properties()
                 .stacksTo(1)
                 .durability(0)
-                .tab(MPSItems.creativeTab)
                 .setNoRepair());
     }
 
@@ -139,7 +138,9 @@ public abstract class AbstractElectricItemArmor extends ArmorItem {
         AtomicDouble knockbackResistance = new AtomicDouble(0);
         AtomicDouble speed = new AtomicDouble(0);
         AtomicDouble movementResistance = new AtomicDouble(0);
+
         AtomicDouble swimBoost = new AtomicDouble(0);
+        AtomicReference<Float> stepHeight = new AtomicReference<>(0.5001F);
 
         stack.getCapability(ForgeCapabilities.ITEM_HANDLER)
                 .filter(IModularItem.class::isInstance)
@@ -189,6 +190,9 @@ public abstract class AbstractElectricItemArmor extends ArmorItem {
                                         iPowerModule.getModuleStack().getAttributeModifiers(slotType).get(ForgeMod.SWIM_SPEED.get()).forEach(attributeModifier -> {
                                             swimBoost.getAndAdd(attributeModifier.getAmount());
                                         });
+                                        if (!iPowerModule.getModuleStack().getAttributeModifiers(slotType).get(ForgeMod.STEP_HEIGHT.get()).isEmpty()) {
+                                            stepHeight.set(0.5F);
+                                        }
                                     });
                         }
                     }
@@ -211,6 +215,11 @@ public abstract class AbstractElectricItemArmor extends ArmorItem {
         if (toughnessVal.get() > 0) {
             builder.put(Attributes.ARMOR_TOUGHNESS, new AttributeModifier(ARMOR_MODIFIERS[slot.getIndex()], "Armor toughness", toughnessVal.get(), AttributeModifier.Operation.ADDITION));
         }
+
+        if(stepHeight.get() > 0.5001F) {
+            builder.put(ForgeMod.STEP_HEIGHT.get(), new AttributeModifier(ARMOR_MODIFIERS[slot.getIndex()], ForgeMod.STEP_HEIGHT.getId().getNamespace(), stepHeight.get(), AttributeModifier.Operation.ADDITION));
+        }
+
 
         if (speed.get() != 0 || movementResistance.get() != 0) {
             /*
@@ -359,7 +368,7 @@ public abstract class AbstractElectricItemArmor extends ArmorItem {
     @Override
     public ICapabilityProvider initCapabilities(@Nonnull ItemStack stack, @Nullable CompoundTag nbt) {
         assert stack != null;
-        return new PowerArmorCap(stack, this.slot);
+        return new PowerArmorCap(stack, this.type);
     }
 
     @Override

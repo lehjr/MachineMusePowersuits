@@ -2,11 +2,12 @@ package lehjr.numina.client.gui.clickable.slider;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
-import com.mojang.math.Matrix4f;
 import lehjr.numina.client.gui.clickable.Clickable;
 import lehjr.numina.client.gui.geometry.MusePoint2D;
 import lehjr.numina.common.math.Color;
 import lehjr.numina.common.math.MathUtils;
+import net.minecraft.client.gui.GuiGraphics;
+import org.joml.Matrix4f;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,28 +67,22 @@ public abstract class AbstractSlider extends Clickable {
         return vals;
     }
 
-    /**
-     * Knob is just used for rendering coordinates and click checking.
-     * @return
-     */
-//    public abstract Rect createKnobRect();
-
     @Override
-    public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTick) {
+    public void render(GuiGraphics gfx, int mouseX, int mouseY, float partialTick) {
         if (this.isVisible() && this.isEnabled()) {
-            this.renderBg(matrixStack, mouseX, mouseY, partialTick);
+            this.renderBg(gfx, mouseX, mouseY, partialTick);
             if (showTickLines && tickVal != 0) {
                 for (double val : calculateTickCoordinates()) {
-                    drawSingleLine(matrixStack, val, top(), val, bottom(), Color.WHITE);
+                    drawSingleLine(gfx, val, top(), val, bottom(), Color.WHITE);
                 }
             }
-            this.renderKnob(matrixStack, mouseX, mouseY, partialTick);
+            this.renderKnob(gfx, mouseX, mouseY, partialTick);
         }
     }
 
-    public abstract void renderBg(PoseStack matrixStack, int mouseX, int mouseY, float frameTime);
+    public abstract void renderBg(GuiGraphics gfx, int mouseX, int mouseY, float frameTime);
 
-    public abstract void renderKnob(PoseStack matrixStack, int mouseX, int mouseY, float frameTime);
+    public abstract void renderKnob(GuiGraphics gfx, int mouseX, int mouseY, float frameTime);
 
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
@@ -219,10 +214,11 @@ public abstract class AbstractSlider extends Clickable {
         return this;
     }
 
-    void drawSingleLine(PoseStack matrixStack, double xStart, double yStart, double xEnd, double yEnd, Color color) {
+    void drawSingleLine(GuiGraphics gfx, double xStart, double yStart, double xEnd, double yEnd, Color color) {
+        PoseStack poseStack = gfx.pose();
         Tesselator tessellator = Tesselator.getInstance();
         BufferBuilder builder = tessellator.getBuilder();
-        Matrix4f matrix4f = matrixStack.last().pose();
+        Matrix4f matrix4f = poseStack.last().pose();
 
         preDraw(VertexFormat.Mode.DEBUG_LINES, DefaultVertexFormat.POSITION_COLOR);
         RenderSystem.lineWidth(1);

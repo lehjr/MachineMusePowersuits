@@ -26,13 +26,11 @@
 
 package lehjr.numina.client.gui.geometry;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import lehjr.numina.common.math.Color;
-import net.minecraft.client.renderer.ShaderInstance;
+import net.minecraft.client.gui.GuiGraphics;
 import org.lwjgl.BufferUtils;
 
 import java.nio.FloatBuffer;
@@ -157,31 +155,27 @@ public class DrawableRect extends Rect implements IDrawableRect {
         return vertices;
     }
 
-    public void drawBackground(PoseStack matrixStack, FloatBuffer vertices) {
-
-        drawBuffer(matrixStack, vertices, backgroundColor, VertexFormat.Mode.TRIANGLE_FAN);
-
+    public void drawBackground(GuiGraphics gfx, FloatBuffer vertices) {
+        drawBuffer(gfx, vertices, backgroundColor, VertexFormat.Mode.TRIANGLE_FAN);
     }
 
-    public void drawBackground(PoseStack matrixStack, FloatBuffer vertices, FloatBuffer colors) {
-        drawBuffer(matrixStack, vertices, colors, VertexFormat.Mode.TRIANGLE_FAN);
+    public void drawBackground(GuiGraphics gfx, FloatBuffer vertices, FloatBuffer colors) {
+        drawBuffer(gfx, vertices, colors, VertexFormat.Mode.TRIANGLE_FAN);
     }
 
-    public void drawBorder(PoseStack matrixStack, FloatBuffer vertices) {
-
-        drawBuffer(matrixStack, vertices, borderColor, VertexFormat.Mode.DEBUG_LINE_STRIP); // FIXME!!!!
-
+    public void drawBorder(GuiGraphics gfx, FloatBuffer vertices) {
+        drawBuffer(gfx, vertices, borderColor, VertexFormat.Mode.DEBUG_LINE_STRIP); // FIXME!!!!
     }
 
-    void drawBuffer(PoseStack matrixStack, FloatBuffer vertices, Color color, VertexFormat.Mode glMode) {
+    void drawBuffer(GuiGraphics gfx, FloatBuffer vertices, Color color, VertexFormat.Mode glMode) {
         BufferBuilder builder = preDraw(glMode, DefaultVertexFormat.POSITION_COLOR);
-        addVerticesToBuffer(builder, matrixStack.last().pose(), vertices, color);
+        addVerticesToBuffer(builder, gfx.pose().last().pose(), vertices, color);
         postDraw(builder);
     }
 
-    void drawBuffer(PoseStack matrixStack, FloatBuffer vertices, FloatBuffer colors, VertexFormat.Mode glMode) {
+    void drawBuffer(GuiGraphics gfx, FloatBuffer vertices, FloatBuffer colors, VertexFormat.Mode glMode) {
         BufferBuilder builder = preDraw(glMode, DefaultVertexFormat.POSITION_COLOR);
-        addVerticesToBuffer(builder, matrixStack.last().pose(), vertices, colors);
+        addVerticesToBuffer(builder, gfx.pose().last().pose(), vertices, colors);
         postDraw(builder);
     }
 
@@ -243,16 +237,21 @@ public class DrawableRect extends Rect implements IDrawableRect {
     }
 
     @Override
-    public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTick) {
+    public void preRender(GuiGraphics gfx, int mouseX, int mouseY, float frameTIme) {
+        IDrawableRect.super.preRender(gfx, mouseX, mouseY, frameTIme);
+    }
+
+    @Override
+    public void render(GuiGraphics gfx, int mouseX, int mouseY, float partialTick) {
 //        ShaderInstance oldShader = RenderSystem.getShader();
         FloatBuffer vertices = preDraw(0);
 
         if (backgroundColor2 != null) {
             FloatBuffer colors = GradientAndArcCalculator.getColorGradient(backgroundColor,
                     backgroundColor2, vertices.limit() * 4);
-            drawBackground(matrixStack, vertices, colors);
+            drawBackground(gfx, vertices, colors);
         } else {
-            drawBackground(matrixStack, vertices);
+            drawBackground(gfx, vertices);
         }
 
         if (shrinkBorder) {
@@ -260,7 +259,7 @@ public class DrawableRect extends Rect implements IDrawableRect {
         } else {
             vertices.rewind();
         }
-        drawBorder(matrixStack, vertices);
+        drawBorder(gfx, vertices);
 //        RenderSystem.setShader(() -> oldShader);
     }
 

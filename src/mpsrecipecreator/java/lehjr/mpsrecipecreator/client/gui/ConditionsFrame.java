@@ -2,12 +2,12 @@ package lehjr.mpsrecipecreator.client.gui;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import com.mojang.blaze3d.vertex.PoseStack;
 import lehjr.mpsrecipecreator.basemod.ConditionsJsonLoader;
 import lehjr.numina.client.gui.clickable.Checkbox;
 import lehjr.numina.client.gui.frame.ScrollableFrame;
 import lehjr.numina.client.gui.geometry.MusePoint2D;
 import lehjr.numina.client.gui.geometry.Rect;
+import net.minecraft.client.gui.GuiGraphics;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -75,17 +75,17 @@ public class ConditionsFrame extends ScrollableFrame {
     }
 
     @Override
-    public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTick) {
+    public void render(GuiGraphics gfx, int mouseX, int mouseY, float partialTick) {
         if (this.isEnabled() && this.isVisible()) {
             this.setCurrentScrollPixels(Math.min(getCurrentScrollPixels(), getMaxScrollPixels()));
-            super.preRender(poseStack, mouseX, mouseY, partialTick);
-            poseStack.pushPose();
-            poseStack.translate(0, (float) -getCurrentScrollPixels(), 0);
+            super.preRender(gfx, mouseX, mouseY, partialTick);
+            gfx.pose().pushPose();
+            gfx.pose().translate(0, (float) -getCurrentScrollPixels(), 0);
             for (Checkbox checkBox : checkBoxList.keySet()) {
-                checkBox.render(poseStack, mouseX, mouseY, partialTick);
+                checkBox.render(gfx, mouseX, mouseY, partialTick);
             }
-            poseStack.popPose();
-            super.postRender(mouseX, mouseY, partialTick);
+            gfx.pose().popPose();
+            super.postRender(gfx, mouseX, mouseY, partialTick);
         }
     }
 

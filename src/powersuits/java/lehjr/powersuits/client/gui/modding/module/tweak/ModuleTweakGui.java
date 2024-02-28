@@ -27,14 +27,17 @@
 package lehjr.powersuits.client.gui.modding.module.tweak;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 import lehjr.numina.client.gui.ContainerlessGui;
 import lehjr.numina.client.gui.frame.ModularItemSelectionFrame;
 import lehjr.numina.client.gui.geometry.MusePoint2D;
 import lehjr.numina.client.gui.geometry.Rect;
+import lehjr.numina.common.math.Color;
+import lehjr.numina.common.string.StringUtils;
 import lehjr.powersuits.client.gui.common.TabSelectFrame;
 import lehjr.powersuits.common.constants.MPSConstants;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
@@ -113,36 +116,38 @@ public class ModuleTweakGui extends ContainerlessGui {
    }
 
     @Override
-    public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTicks) {
-        super.render(matrixStack, mouseX, mouseY, partialTicks);
-        renderTooltip(matrixStack, mouseX, mouseY);
+    public void render(GuiGraphics gfx, int mouseX, int mouseY, float partialTicks) {
+        super.render(gfx, mouseX, mouseY, partialTicks);
+        renderTooltip(gfx, mouseX, mouseY);
     }
 
     @Override
-    public void renderBackground(PoseStack matrixStack) {
-        super.renderBackground(matrixStack);
+    public void renderBackground(GuiGraphics gfx) {
+        super.renderBackground(gfx);
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-        RenderSystem.setShaderTexture(0, BACKGROUND);
+//        RenderSystem.setShaderTexture(0, BACKGROUND);
         int i = this.leftPos;
         int j = this.topPos;
-        this.blit(matrixStack, i, j, this.getBlitOffset(), 0, 0, imageWidth, imageHeight, 512, 512);
+        gfx.blit(BACKGROUND, i, j, 0, 0, imageWidth, imageHeight, 512, 512);
     }
 
     @Override
-    public void renderLabels(PoseStack matrixStack, int mouseX, int mouseY) {
-        this.font.draw(matrixStack, this.MODULE_SELECTION_LABEL,
+    public void renderLabels(GuiGraphics gfx, int mouseX, int mouseY) {
+        Font font = Minecraft.getInstance().font;
+
+        gfx.drawString(font, this.MODULE_SELECTION_LABEL,
                 leftPos + 12,
                 topPos + 5, 4210752);
 
-        this.font.draw(matrixStack, this.TINKER_FRAME_LABEL,
+        StringUtils.drawShadowedString(gfx, this.TINKER_FRAME_LABEL,
                 (float)(leftPos + 184),
                 (float)(topPos + 49),
-                4210752);
+                new Color(4210752));
 
-        this.font.draw(matrixStack, this.SUMMARY_FRAME_LABEL,
+        StringUtils.drawShadowedString(gfx, this.SUMMARY_FRAME_LABEL,
                 (float)(leftPos + 184),
                 (float)(topPos + 5),
-                4210752);
+                new Color(4210752));
     }
 }

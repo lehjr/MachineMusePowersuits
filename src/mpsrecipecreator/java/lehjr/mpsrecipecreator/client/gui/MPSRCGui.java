@@ -1,13 +1,13 @@
 package lehjr.mpsrecipecreator.client.gui;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 import lehjr.mpsrecipecreator.basemod.DataPackWriter;
 import lehjr.mpsrecipecreator.basemod.MPSRCConstants;
 import lehjr.mpsrecipecreator.container.MPSRCMenu;
 import lehjr.numina.client.gui.ExtendedContainerScreen;
 import lehjr.numina.client.gui.geometry.MusePoint2D;
 import lehjr.numina.common.string.StringUtils;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -144,7 +144,7 @@ public class MPSRCGui extends ExtendedContainerScreen<MPSRCMenu> {
     }
 
     @Override
-    public void renderLabels(PoseStack matrixStack, int x, int y) {
+    public void renderLabels(GuiGraphics gfx, int x, int y) {
 //        super.renderLabels(matrixStack, x, y);
     }
 
@@ -171,9 +171,6 @@ public class MPSRCGui extends ExtendedContainerScreen<MPSRCMenu> {
 
         recipeDisplayFrame.setFileName(recipeGen.getFileName());
         recipeDisplayFrame.setRecipe(recipeGen.getRecipeJson());
-
-
-
     }
 
     public void selectSlot(int index) {
@@ -182,27 +179,29 @@ public class MPSRCGui extends ExtendedContainerScreen<MPSRCMenu> {
     }
 
     @Override
-    public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTicks) {
-        super.render(poseStack, mouseX, mouseY, partialTicks);
-        super.renderFrames(poseStack, mouseX, mouseY, partialTicks);
-        super.renderFrameLabels(poseStack, mouseX, mouseY);
+    public void render(GuiGraphics gfx, int mouseX, int mouseY, float partialTicks) {
+        super.render(gfx, mouseX, mouseY, partialTicks);
+        super.renderFrames(gfx, mouseX, mouseY, partialTicks);
+        super.renderFrameLabels(gfx, mouseX, mouseY);
 
         // Title
-        StringUtils.drawShadowedStringCentered(poseStack, "MPS-RecipeCreator", centerX(), topPos - 20);
-        renderTooltip(poseStack, mouseX, mouseY);
-        poseStack.popPose();
-        Arrays.stream(slotButtons).forEach(button -> button.render(poseStack, mouseX, mouseY, partialTicks));
+        StringUtils.drawShadowedStringCentered(gfx, "MPS-RecipeCreator", centerX(), topPos - 20);
+        renderTooltip(gfx, mouseX, mouseY);
+        gfx.pose().popPose();
+        Arrays.stream(slotButtons).forEach(button -> button.render(gfx, mouseX, mouseY, partialTicks));
     }
 
     @Override
-    public void renderBg(PoseStack poseStack, float frameTime, int mouseX, int mouseY) {
-        super.renderBg(poseStack, frameTime, mouseX, mouseY);
+    public void renderBg(GuiGraphics gfx, float frameTime, int mouseX, int mouseY) {
+        super.renderBg(gfx, frameTime, mouseX, mouseY);
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-        RenderSystem.setShaderTexture(0, BACKGROUND);
+//        RenderSystem.setShaderTexture(0, BACKGROUND);
         int i = this.leftPos;
         int j = this.topPos;
-        this.blit(poseStack, i, j, this.getBlitOffset(), 0, 0, imageWidth, imageHeight, 512, 512);
+        gfx.blit(BACKGROUND, i, j, 0, 0, imageWidth, imageHeight, 512, 512);
+
+//        this.blit(gfx, i, j, 0, 0, 0, imageWidth, imageHeight, 512, 512);
     }
 
     @Override

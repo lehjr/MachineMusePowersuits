@@ -5,9 +5,11 @@ import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
 import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.CustomRecipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.Level;
@@ -19,8 +21,8 @@ import java.util.Optional;
 
 public class ModuleInstallationRecipe extends CustomRecipe {
 
-    public ModuleInstallationRecipe(ResourceLocation idIn) {
-        super(idIn);
+    public ModuleInstallationRecipe(ResourceLocation idIn, CraftingBookCategory categoryIn) {
+        super(idIn, categoryIn);
     }
 
     @Override
@@ -106,9 +108,8 @@ public class ModuleInstallationRecipe extends CustomRecipe {
         }).orElse(false) && !modularItem.isEmpty() && !modules.isEmpty();
     }
 
-    // The itemstacks here should already have been validated
     @Override
-    public ItemStack assemble(CraftingContainer container) {
+    public ItemStack assemble(CraftingContainer container, RegistryAccess registryAccess) {
         ItemStack modularItem = ItemStack.EMPTY;
         NonNullList<ItemStack> modules = NonNullList.create();
 
@@ -144,7 +145,7 @@ public class ModuleInstallationRecipe extends CustomRecipe {
             return false;
         }
         for(int i=0; i < stackList.size(); i++){
-            if (test.sameItem(stackList.get(i))){
+            if (ItemStack.isSameItemSameTags(test, stackList.get(i))){
                 return true;
             }
         }
@@ -185,7 +186,7 @@ public class ModuleInstallationRecipe extends CustomRecipe {
     }
 
     @Override
-    public ItemStack getResultItem() {
+    public ItemStack getResultItem(RegistryAccess pRegistryAccess) {
         return ItemStack.EMPTY;
     }
 

@@ -1,10 +1,10 @@
 package lehjr.numina.client.gui.clickable.slider;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 import lehjr.numina.client.gui.frame.ScrollableFrame;
 import lehjr.numina.client.render.IconUtils;
 import lehjr.numina.common.constants.NuminaConstants;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.resources.ResourceLocation;
 
@@ -26,7 +26,7 @@ public class VanillaFrameScrollBar extends AbstractSlider {
     }
 
     @Override
-    public void renderBg(PoseStack matrixStack, int mouseX, int mouseY, float frameTime) {
+    public void renderBg(GuiGraphics gfx, int mouseX, int mouseY, float frameTime) {
         if (parent.getMaxScrollPixels() > 0) {
             RenderSystem.setShader(GameRenderer::getPositionTexShader);
             RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
@@ -39,7 +39,7 @@ public class VanillaFrameScrollBar extends AbstractSlider {
             RenderSystem.enableBlend();
             RenderSystem.defaultBlendFunc();
             RenderSystem.enableDepthTest();
-            IconUtils.INSTANCE.blit(matrixStack,
+            IconUtils.INSTANCE.blit(gfx.pose(),
                     this.left(),  // left
                     this.top(),   // top
                     0,                  // texture start x
@@ -47,7 +47,7 @@ public class VanillaFrameScrollBar extends AbstractSlider {
                     (this.width()), // texture uWidth
                     (this.height() * 0.5)); // texture vHeight
 
-            IconUtils.INSTANCE.blit(matrixStack,
+            IconUtils.INSTANCE.blit(gfx.pose(),
                     this.left(), //  left
                     centerY(), // top
                     0, // texture startX
@@ -58,7 +58,7 @@ public class VanillaFrameScrollBar extends AbstractSlider {
     }
 
     @Override
-    public void renderKnob(PoseStack matrixStack, int mouseX, int mouseY, float frameTime) {
+    public void renderKnob(GuiGraphics gfx, int mouseX, int mouseY, float frameTime) {
         if (getKnobSize() > 0) {
             RenderSystem.setShader(GameRenderer::getPositionTexShader);
             RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
@@ -67,7 +67,7 @@ public class VanillaFrameScrollBar extends AbstractSlider {
             double knobTop = (this.top() + (this.sliderValue * (this.height() - getKnobSize())));
             double halfKnobSize = getKnobSize() * 0.5;
 
-            IconUtils.INSTANCE.blit(matrixStack,
+            IconUtils.INSTANCE.blit(gfx.pose(),
                     // left pos
                     left(),
                     // top pos
@@ -81,7 +81,7 @@ public class VanillaFrameScrollBar extends AbstractSlider {
                     // texture end y
                     halfKnobSize);
 
-            IconUtils.INSTANCE.blit(matrixStack,
+            IconUtils.INSTANCE.blit(gfx.pose(),
                     // left pos
                     this.left(),
                     // top pos

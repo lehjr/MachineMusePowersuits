@@ -105,7 +105,7 @@ public class LightningModule extends AbstractPowerModule {
 
                             HitResult raytraceResult = rayTrace(level, playerIn, ClipContext.Fluid.SOURCE_ONLY, range);
                             if (raytraceResult != null && raytraceResult.getType() != HitResult.Type.MISS) {
-                                BlockPos targetPos = new BlockPos(raytraceResult.getLocation().x, raytraceResult.getLocation().y, raytraceResult.getLocation().z);
+                                BlockPos targetPos = new BlockPos((int)raytraceResult.getLocation().x, (int)raytraceResult.getLocation().y, (int)raytraceResult.getLocation().z);
                                 if (level.canSeeSky(targetPos)) {
                                     ElectricItemUtils.drainPlayerEnergy(playerIn, energyConsumption);
                                     HeatUtils.heatPlayer(playerIn, applyPropertyModifiers(MPSConstants.HEAT_EMISSION));

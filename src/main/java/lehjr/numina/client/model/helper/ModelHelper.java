@@ -2,7 +2,7 @@ package lehjr.numina.client.model.helper;
 
 import com.google.common.collect.ImmutableList;
 import com.mojang.math.Transformation;
-import com.mojang.math.Vector3f;
+import org.joml.Vector3f;
 import forge.NuminaObjLoader;
 import forge.NuminaObjModel;
 import forge.QuadTransformers;

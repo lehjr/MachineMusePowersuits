@@ -32,6 +32,7 @@ import lehjr.numina.client.gui.geometry.MusePoint2D;
 import lehjr.numina.client.gui.geometry.Rect;
 import lehjr.numina.common.math.Color;
 import lehjr.numina.common.string.StringUtils;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 
 
@@ -85,43 +86,41 @@ public class ClickableLabel extends Clickable {
         this.label = label;
     }
 
-    // fixme: this isn't actually working as intended
     @Override
-    public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTick) {
-        super.render(matrixStack, mouseX, mouseY, partialTick);
-
-        matrixStack.pushPose();
-        matrixStack.translate(0,0,100);
+    public void render(GuiGraphics gfx, int mouseX, int mouseY, float partialTick) {
+        super.render(gfx, mouseX, mouseY, partialTick);
+        gfx.pose().pushPose();
+        gfx.pose().translate(0,0,100);
         if (shadowed) {
             switch (mode) {
                 case LEFT:
-                    StringUtils.drawLeftAlignedShadowedString(matrixStack, this.label, centerX(), centerY(), color);
+                    StringUtils.drawLeftAlignedShadowedString(gfx, this.label, centerX(), centerY(), color);
                     break;
 
                 case CENTERED:
-                    StringUtils.drawShadowedStringCentered(matrixStack, this.label, centerX(), centerY(), color);
+                    StringUtils.drawShadowedStringCentered(gfx, this.label, centerX(), centerY(), color);
                     break;
 
                 case RIGHT:
-                    StringUtils.drawRightAlignedShadowedString(matrixStack, this.label, centerX(), centerY(), color);
+                    StringUtils.drawRightAlignedShadowedString(gfx, this.label, centerX(), centerY(), color);
                     break;
             }
         } else {
             switch (mode) {
                 case LEFT:
-                    StringUtils.drawLeftAlignedText(matrixStack, this.label, centerX(), centerY(), color);
+                    StringUtils.drawLeftAlignedText(gfx, this.label, centerX(), centerY(), color);
                     break;
 
                 case CENTERED:
-                    StringUtils.drawCenteredText(matrixStack, this.label, centerX(), centerY(), color);
+                    StringUtils.drawCenteredText(gfx, this.label, centerX(), centerY(), color);
                     break;
 
                 case RIGHT:
-                    StringUtils.drawRightAlignedText(matrixStack, this.label, centerX(), centerY(), color);
+                    StringUtils.drawRightAlignedText(gfx, this.label, centerX(), centerY(), color);
                     break;
             }
         }
-        matrixStack.popPose();
+        gfx.pose().popPose();
     }
 
     @Override

@@ -53,7 +53,7 @@ public record CreativeInstallPacketServerBound(EquipmentSlot slotType, ResourceL
                         .ifPresent(iModularItem -> {
                             if (!iModularItem.getInstalledModuleNames().contains(regName)) {
                                 for (int index = 0; index < iModularItem.getSlots(); index++) {
-                                    if (iModularItem.insertItem(index, module, false).sameItem(ItemStack.EMPTY)) {
+                                    if (iModularItem.insertItem(index, module, false).isEmpty()) {
                                         break;
                                     }
                                 }

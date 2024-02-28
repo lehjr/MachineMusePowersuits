@@ -26,7 +26,6 @@
 
 package lehjr.powersuits.client.gui.modding.cosmetic.colorpicker;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import lehjr.numina.client.gui.GuiIcon;
 import lehjr.numina.client.gui.clickable.Clickable;
 import lehjr.numina.client.gui.clickable.ClickableLabel;
@@ -48,6 +47,7 @@ import lehjr.numina.common.network.packets.serverbound.CosmeticInfoPacketServerB
 import lehjr.numina.common.string.StringUtils;
 import lehjr.powersuits.common.constants.MPSConstants;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.IntArrayTag;
 import net.minecraft.network.chat.Component;
@@ -250,28 +250,28 @@ public class ColorPickerFrame extends ScrollableFrame {
     }
 
     @Override
-    public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTick) {
+    public void render(GuiGraphics gfx, int mouseX, int mouseY, float partialTick) {
         double scrolledY = mouseY + currentScrollPixels;
-        super.render(matrixStack, mouseX, mouseY, partialTick);
-        scrollBar.render(matrixStack, mouseX, mouseY, partialTick);
+        super.render(gfx, mouseX, mouseY, partialTick);
+        scrollBar.render(gfx, mouseX, mouseY, partialTick);
 
         if (this.isVisible() && this.isEnabled()) {
             if (colors().length > selectedColor) {
                 colorLabel.setLabel(Component.empty().append(COLOR_PREFIX).append(" 0X").append(new Color(colors()[selectedColor]).rgbaHexColor()));
             }
-            super.preRender(matrixStack, mouseX, mouseY, partialTick);
-            matrixStack.pushPose();
-            matrixStack.translate(0.0, -this.currentScrollPixels, 0.0);
+            super.preRender(gfx, mouseX, mouseY, partialTick);
+            gfx.pose().pushPose();
+            gfx.pose().translate(0.0, -this.currentScrollPixels, 0.0);
 
             rects.stream().filter(VanillaSlider.class::isInstance).map(VanillaSlider.class::cast).forEach(slider->
-                    slider.render(matrixStack, mouseX, (int) scrolledY, partialTick));
-            this.colorBox.render(matrixStack, mouseX, (int) scrolledY, partialTick);
-            this.colorLabel.render(matrixStack, mouseX, (int) scrolledY, partialTick);
-            matrixStack.popPose();
-            super.postRender(mouseX, mouseY, partialTick);
+                    slider.render(gfx, mouseX, (int) scrolledY, partialTick));
+            this.colorBox.render(gfx, mouseX, (int) scrolledY, partialTick);
+            this.colorLabel.render(gfx, mouseX, (int) scrolledY, partialTick);
+            gfx.pose().popPose();
+            super.postRender(gfx, mouseX, mouseY, partialTick);
         } else {
-            super.preRender(matrixStack, mouseX, mouseY, partialTick);
-            super.postRender(mouseX, mouseY, partialTick);
+            super.preRender(gfx, mouseX, mouseY, partialTick);
+            super.postRender(gfx, mouseX, mouseY, partialTick);
         }
     }
 
@@ -286,7 +286,7 @@ public class ColorPickerFrame extends ScrollableFrame {
         }
 
         if (this.isEnabled()) {
-//            sliders.forEach(slider->slider.update(mousex, mousey)); // enabling makes all sliders act as if they are dragging
+//            sliders.forEach(slider->slider.update(mousex, mousey)); // enabling makes all sliders anew CraftingContainer(this, 3, 3);ct as if they are dragging
             if (selectedSlider.isPresent()) {
                 this.selectedSlider.ifPresent(slider-> {
                     slider.setValueByMouse(mousex);
@@ -360,18 +360,18 @@ public class ColorPickerFrame extends ScrollableFrame {
         }
 
         @Override
-        public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTick) {
+        public void render(GuiGraphics gfx, int mouseX, int mouseY, float partialTick) {
             GuiIcon icon = IconUtils.getIcon();
 
             // colors
             for (int i=0; i < colors().length; i++) {
-                icon.colorclicker.draw(matrixStack, this.left() + 8 + i * 8, this.top() + 8 , new Color(colors()[i]));
+                icon.colorclicker.draw(gfx.pose(), this.left() + 8 + i * 8, this.top() + 8 , new Color(colors()[i]));
             }
 
-            icon.colorclicker.draw(matrixStack, this.left() + 8 + colors().length * 8, this.top() + 8, Color.WHITE);
-            icon.armordisplayselect.draw(matrixStack, this.left() + 8 + selectedColor * 8, this.top() + 8, Color.WHITE);
-            icon.minusSign.draw(matrixStack, this.left() + 8 + selectedColor * 8, this.top(), Color.RED);
-            icon.plusSign.draw(matrixStack, this.left() + 8 + colors().length * 8, this.top() + 8, Color.GREEN);
+            icon.colorclicker.draw(gfx.pose(), this.left() + 8 + colors().length * 8, this.top() + 8, Color.WHITE);
+            icon.armordisplayselect.draw(gfx.pose(), this.left() + 8 + selectedColor * 8, this.top() + 8, Color.WHITE);
+            icon.minusSign.draw(gfx.pose(), this.left() + 8 + selectedColor * 8, this.top(), Color.RED);
+            icon.plusSign.draw(gfx.pose(), this.left() + 8 + colors().length * 8, this.top() + 8, Color.GREEN);
         }
     }
 }

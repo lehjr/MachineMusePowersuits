@@ -27,12 +27,16 @@
 package lehjr.numina.client.screen;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 import lehjr.numina.client.gui.meter.EnergyMeter;
+import lehjr.numina.client.render.NuminaRenderer;
 import lehjr.numina.common.config.NuminaSettings;
 import lehjr.numina.common.constants.NuminaConstants;
 import lehjr.numina.common.container.ChargingBaseMenu;
+import lehjr.numina.common.map.NuminaRegistry;
+import lehjr.numina.common.math.Color;
 import lehjr.numina.common.string.StringUtils;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
@@ -50,39 +54,39 @@ public class ChargingBaseScreen extends AbstractContainerScreen<ChargingBaseMenu
     }
 
     @Override
-    public void render(PoseStack poseStack, int pMouseX, int pMouseY, float pPartialTick) {
-        renderBackground(poseStack);
-        super.render(poseStack, pMouseX, pMouseY, pPartialTick);
-        this.renderTooltip(poseStack, pMouseX, pMouseY);
-        energyMeter.draw(poseStack, 71 + leftPos, 58 + topPos, menu.getEnergyForMeter());
+    public void render(GuiGraphics gfx, int pMouseX, int pMouseY, float pPartialTick) {
+        renderBackground(gfx);
+        super.render(gfx, pMouseX, pMouseY, pPartialTick);
+        this.renderTooltip(gfx, pMouseX, pMouseY);
+        energyMeter.draw(gfx, 71 + leftPos, 58 + topPos, menu.getEnergyForMeter());
     }
 
     @Override
-    protected void renderBg(PoseStack pPoseStack, float pPartialTick, int pMouseX, int pMouseY) {
+    protected void renderBg(GuiGraphics gfx, float pPartialTick, int pMouseX, int pMouseY) {
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         RenderSystem.setShaderTexture(0, BACKGROUND);
         int i = this.leftPos;
         int j = this.topPos;
-        this.blit(pPoseStack, i, j, 0, 0, this.imageWidth, this.imageHeight);
+        gfx.blit(BACKGROUND, i, j, 0, 0, this.imageWidth, this.imageHeight);
     }
 
     @Override
-    public void renderLabels(PoseStack matrixStack, int mouseX, int mouseY) {
-        super.renderLabels(matrixStack, mouseX, mouseY);
-        this.font.draw(matrixStack, ENERGYSTRING,
+    public void renderLabels(GuiGraphics gfx, int mouseX, int mouseY) {
+        super.renderLabels(gfx, mouseX, mouseY);
+        StringUtils.drawShadowedString(gfx, ENERGYSTRING,
                 (float)(imageWidth - 102 - font.width(ENERGYSTRING)),
                 (float)(this.imageHeight - 108.0),
-                4210752);
+                new Color(4210752));
 
         String energyString = new StringBuilder()
                 .append(StringUtils.formatNumberShort(menu.getEnergy()))
                 .append(" FE").toString();
 
-        this.font.draw(matrixStack,
+        StringUtils.drawShadowedString(gfx,
                 Component.literal(energyString),
                 (float)(imageWidth -71),
                 (float)(this.imageHeight - 108.0),
-                4210752);
+                new Color(4210752));
     }
 }

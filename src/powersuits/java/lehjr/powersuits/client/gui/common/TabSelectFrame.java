@@ -26,7 +26,6 @@
 
 package lehjr.powersuits.client.gui.common;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import lehjr.numina.client.gui.clickable.button.VanillaButton;
 import lehjr.numina.client.gui.frame.AbstractGuiFrame;
 import lehjr.numina.client.gui.geometry.MusePoint2D;
@@ -39,6 +38,7 @@ import lehjr.powersuits.client.gui.modding.module.tweak.ModuleTweakGui;
 import lehjr.powersuits.common.network.MPSPackets;
 import lehjr.powersuits.common.network.packets.ContainerGuiOpenPacket;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
@@ -122,7 +122,7 @@ public class TabSelectFrame extends AbstractGuiFrame {
     }
 
     @Override
-    public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTick) {
-        buttons.stream().forEach(b->b.render(matrixStack, mouseX, mouseY, partialTick));
+    public void render(GuiGraphics gfx, int mouseX, int mouseY, float partialTick) {
+        buttons.stream().forEach(b->b.render(gfx, mouseX, mouseY, partialTick));
     }
 }

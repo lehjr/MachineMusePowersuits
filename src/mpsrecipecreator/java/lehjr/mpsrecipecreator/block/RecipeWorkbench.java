@@ -15,7 +15,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.network.NetworkHooks;
 
@@ -24,7 +23,7 @@ import net.minecraftforge.network.NetworkHooks;
  */
 public class RecipeWorkbench extends Block {
     public RecipeWorkbench() {
-        super(Block.Properties.of(Material.WOOD)
+        super(Block.Properties.of()
                 .strength(1.5F, 1000.0F)
                 .sound(SoundType.METAL)
                 .dynamicShape()

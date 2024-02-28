@@ -60,7 +60,7 @@ public class DefaultModelSpec {
     public static CompoundTag makeModelPrefs(@Nonnull ItemStack stack) {
         if (!stack.isEmpty()) {
             if (stack.getItem() instanceof AbstractElectricItemArmor)
-                return makeModelPrefs(stack, ((AbstractElectricItemArmor) stack.getItem()).getSlot());
+                return makeModelPrefs(stack, ((AbstractElectricItemArmor) stack.getItem()).getType().getSlot());
             if (stack.getItem() instanceof PowerFist)
                 return makeModelPrefs(stack, EquipmentSlot.MAINHAND);
         }

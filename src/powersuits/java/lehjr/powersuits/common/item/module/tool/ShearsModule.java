@@ -51,7 +51,6 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.Material;
 import net.minecraftforge.common.IForgeShearable;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
@@ -68,17 +67,17 @@ import java.util.concurrent.Callable;
 
 // FIXME IForgeShearable ?? pretty much a dead thing now?
 public class ShearsModule extends AbstractPowerModule {
-    static final ArrayList<Material> materials =
-            new ArrayList<Material>() {{
-                add(Material.PLANT);
-                add(Material.WATER_PLANT);
-                add(Material.REPLACEABLE_PLANT);
-                add(Material.REPLACEABLE_WATER_PLANT);
-                add(Material.WEB);
-                add(Material.WOOL);
-                add(Material.LEAVES);
-
-            }};
+//    static final ArrayList<Material> materials =
+//            new ArrayList<Material>() {{
+//                add(Material.PLANT);
+//                add(Material.WATER_PLANT);
+//                add(Material.REPLACEABLE_PLANT);
+//                add(Material.REPLACEABLE_WATER_PLANT);
+//                add(Material.WEB);
+//                add(Material.WOOL);
+//                add(Material.LEAVES);
+//
+//            }};
 
     @Nullable
     @Override
@@ -158,14 +157,14 @@ public class ShearsModule extends AbstractPowerModule {
 
             @Override
             public InteractionResultHolder<ItemStack> interactLivingEntity(ItemStack itemStackIn, Player playerIn, LivingEntity entity, InteractionHand hand) {
-                if (playerIn.level.isClientSide) {
+                if (playerIn.level().isClientSide) {
                     return InteractionResultHolder.pass(itemStackIn);
                 }
                 if (entity instanceof IForgeShearable && ElectricItemUtils.getPlayerEnergy(playerIn) > getEnergyUsage()) {
                     IForgeShearable target = (IForgeShearable)entity;
-                    BlockPos pos = new BlockPos(entity.getX(), entity.getY(), entity.getZ());
-                    if (target.isShearable(itemStackIn, entity.level, pos)) {
-                        List<ItemStack> drops = target.onSheared(playerIn, itemStackIn, entity.level, pos,
+                    BlockPos pos = entity.blockPosition();
+                    if (target.isShearable(itemStackIn, entity.level(), pos)) {
+                        List<ItemStack> drops = target.onSheared(playerIn, itemStackIn, entity.level(), pos,
                                 EnchantmentHelper.getItemEnchantmentLevel(Enchantments.BLOCK_FORTUNE, itemStackIn));
                         Random rand = new Random();
                         drops.forEach(d -> {

@@ -30,8 +30,9 @@ import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.platform.Lighting;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
-import com.mojang.math.Matrix4f;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
+import org.joml.Matrix4f;
+import org.joml.Vector3f;
 import lehjr.numina.common.math.Color;
 import net.minecraft.client.renderer.GameRenderer;
 
@@ -59,10 +60,10 @@ public class SwirlyMuseCircle {
         matrixStack.translate(x, y, 0);
         matrixStack.scale(radius / detail, radius / detail, 1.0F);
 //        RenderSystem.rotatef((float) (-ratio * 360.0), 0, 0, 1);
-        matrixStack.mulPose(Vector3f.ZP.rotationDegrees(-ratio * 360.0F));
+        matrixStack.mulPose(Axis.ZP.rotationDegrees(-ratio * 360.0F));
 //        ShaderInstance oldShader = RenderSystem.getShader();
         RenderSystem.setShader(GameRenderer::getPositionColorShader);
-        RenderSystem.disableTexture();
+//        RenderSystem.disableTexture();
         RenderSystem.enableBlend();
         Lighting.setupForEntityInInventory();
         RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
@@ -79,7 +80,7 @@ public class SwirlyMuseCircle {
         matrixStack.popPose();
 
         RenderSystem.disableBlend();
-        RenderSystem.enableTexture();
+//        RenderSystem.enableTexture();
 //        RenderSystem.setShader(() -> oldShader);
     }
 }

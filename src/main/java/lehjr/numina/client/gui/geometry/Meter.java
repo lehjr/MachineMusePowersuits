@@ -26,10 +26,10 @@
 
 package lehjr.numina.client.gui.geometry;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import lehjr.numina.common.math.Color;
 import lehjr.numina.common.math.MathUtils;
+import net.minecraft.client.gui.GuiGraphics;
 
 import java.nio.FloatBuffer;
 
@@ -62,10 +62,10 @@ public class Meter extends DrawableRect {
 
     double value = 0;
 
-    public void draw(PoseStack matrixStack, double x, double y, float zLevel, double valueIn) {
+    public void draw(GuiGraphics gfx, double x, double y, float zLevel, double valueIn) {
         this.setUL(x, y);
         this.value = MathUtils.clampDouble(valueIn, 0, 1);
-        this.draw(matrixStack, zLevel);
+        this.draw(gfx, zLevel);
     }
 
     FloatBuffer getMeterVertices() {
@@ -73,17 +73,17 @@ public class Meter extends DrawableRect {
         return getVertices(this.left() +1, this.top() + 1, right, this.bottom() -1);
     }
 
-    public void draw(PoseStack matrixStack,float zLevel) {
+    public void draw(GuiGraphics gfx, float zLevel) {
         this.zLevel = zLevel;
 
         // background
         FloatBuffer backgroundVertices = this.getVertices(0.0F);
         FloatBuffer backgroundColors = GradientAndArcCalculator.getColorGradient(this.backgroundColor, this.backgroundColor2, backgroundVertices.limit() * 4);
-        this.drawBackground(matrixStack, backgroundVertices, backgroundColors);
+        this.drawBackground(gfx, backgroundVertices, backgroundColors);
 
         // meter
         FloatBuffer meterVertices = this.getMeterVertices();
-        this.drawBuffer(matrixStack, meterVertices, meterColor, VertexFormat.Mode.TRIANGLE_FAN);
+        this.drawBuffer(gfx, meterVertices, meterColor, VertexFormat.Mode.TRIANGLE_FAN);
 
         // frame
         if (this.shrinkBorder) {
@@ -92,6 +92,6 @@ public class Meter extends DrawableRect {
             backgroundVertices.rewind();
         }
 
-        this.drawBorder(matrixStack, backgroundVertices);
+        this.drawBorder(gfx, backgroundVertices);
     }
 }

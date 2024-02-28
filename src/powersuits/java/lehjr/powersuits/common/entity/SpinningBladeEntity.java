@@ -32,6 +32,7 @@ import lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem
 import lehjr.powersuits.common.base.MPSEntities;
 import lehjr.powersuits.common.constants.MPSConstants;
 import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
@@ -121,7 +122,7 @@ public class SpinningBladeEntity extends ThrowableProjectile {
     @Override
     protected void onHit(HitResult hitResult) {
         if (hitResult.getType() == HitResult.Type.BLOCK) {
-            Level world = this.level;
+            Level world = this.level();
             if (world == null) {
                 return;
             }
@@ -159,8 +160,8 @@ public class SpinningBladeEntity extends ThrowableProjectile {
             if (result.getEntity() instanceof IForgeShearable) {
                 IForgeShearable target = (IForgeShearable) result.getEntity();
                 Entity entity = result.getEntity();
-                if (target.isShearable(this.shootingItem, entity.level, entity.blockPosition()) && this.getOwner() instanceof Player) {
-                    List<ItemStack> drops = target.onSheared((Player) getOwner(), this.shootingItem, entity.level,
+                if (target.isShearable(this.shootingItem, entity.level(), entity.blockPosition()) && this.getOwner() instanceof Player) {
+                    List<ItemStack> drops = target.onSheared((Player) getOwner(), this.shootingItem, entity.level(),
                             entity.blockPosition(),
                             EnchantmentHelper.getItemEnchantmentLevel(ForgeRegistries.ENCHANTMENTS.getValue(new ResourceLocation("fortune")), this.shootingItem));
 
@@ -176,7 +177,7 @@ public class SpinningBladeEntity extends ThrowableProjectile {
                     }
                 }
             } else {
-                result.getEntity().hurt(DamageSource.thrown(this, getOwner()), (int) damage);
+                result.getEntity().hurt(this.damageSources().thrown(this, getOwner()), (int) damage);
             }
         }
     }
@@ -199,7 +200,7 @@ public class SpinningBladeEntity extends ThrowableProjectile {
     }
 
     @Override
-    public Packet<?> getAddEntityPacket() {
+    public Packet<ClientGamePacketListener> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
 }

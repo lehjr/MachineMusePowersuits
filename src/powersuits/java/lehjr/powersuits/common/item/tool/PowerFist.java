@@ -44,6 +44,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageSources;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -63,7 +64,7 @@ import java.util.function.Consumer;
 
 public class PowerFist extends AbstractElectricTool {
     public PowerFist() {
-        super(new Item.Properties().stacksTo(1).defaultDurability(0).tab(MPSItems.creativeTab));
+        super(new Item.Properties().stacksTo(1).defaultDurability(0));
     }
 
     /**
@@ -228,7 +229,7 @@ public class PowerFist extends AbstractElectricTool {
                                     ElectricItemUtils.drainPlayerEnergy(player, (int) drain);
                                     double damage = pm.applyPropertyModifiers(MPSConstants.PUNCH_DAMAGE);
                                     double knockback = pm.applyPropertyModifiers(MPSConstants.PUNCH_KNOCKBACK);
-                                    DamageSource damageSource = DamageSource.playerAttack(player);
+                                    DamageSource damageSource = attacker.damageSources().playerAttack(player);
                                     if (target.hurt(damageSource, (float) (int) damage)) {
                                         Vec3 lookVec = player.getLookAngle();
                                         target.push(lookVec.x * knockback, Math.abs(lookVec.y + 0.2f) * knockback, lookVec.z * knockback);

@@ -28,22 +28,24 @@ package lehjr.numina.client.gui.geometry;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
-import com.mojang.math.Matrix4f;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.Renderable;
+import org.joml.Matrix4f;
 import lehjr.numina.common.math.Color;
-import net.minecraft.client.gui.components.Widget;
+import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.renderer.GameRenderer;
 
 import java.nio.FloatBuffer;
 
-public interface IDrawable extends Widget {
+public interface IDrawable extends Renderable {
     /**
-     * @param matrixStack
+     * @param gfx
      * @param mouseX
      * @param mouseY
      * @param partialTick
      */
     @Override
-    void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTick);
+    void render(GuiGraphics gfx, int mouseX, int mouseY, float partialTick);
 
     float getZLevel();
 
@@ -98,7 +100,7 @@ public interface IDrawable extends Widget {
 //        RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
 //
         RenderSystem.enableBlend();
-        RenderSystem.disableTexture();
+//        RenderSystem.disableTexture();
         RenderSystem.defaultBlendFunc();
         RenderSystem.setShader(GameRenderer::getPositionColorShader);
         BufferBuilder builder = getBufferBuilder();
@@ -112,7 +114,7 @@ public interface IDrawable extends Widget {
 //        RenderSystem.enableTexture();
 
         BufferUploader.drawWithShader(builder.end());
-        RenderSystem.enableTexture();
+//        RenderSystem.enableTexture();
         RenderSystem.disableBlend();
     }
 }

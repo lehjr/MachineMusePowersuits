@@ -51,7 +51,7 @@ public abstract class AbstractPowerModule extends Item {
     }
 
     public AbstractPowerModule() {
-        super(new Item.Properties().stacksTo(1).defaultDurability(-1).setNoRepair().tab(MPSItems.creativeTab));
+        super(new Item.Properties().stacksTo(1).defaultDurability(-1).setNoRepair());
     }
 
     public static BlockHitResult rayTrace(Level worldIn, Player player, ClipContext.Fluid fluidMode, double range) {

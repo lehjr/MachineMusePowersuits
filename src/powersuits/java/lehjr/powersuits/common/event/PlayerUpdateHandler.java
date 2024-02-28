@@ -60,7 +60,7 @@ public class PlayerUpdateHandler {
             }
 
             // Sound update
-            if (player.level.isClientSide && NuminaSettings.useSounds()) {
+            if (player.level().isClientSide && NuminaSettings.useSounds()) {
                 if ((ItemUtils.getItemFromEntitySlot(player,EquipmentSlot.CHEST).getItem() instanceof PowerArmorChestplate)) {
                     double velsq2 = MathUtils.sumsq(player.getDeltaMovement().x, player.getDeltaMovement().y, player.getDeltaMovement().z) - 0.5;
                     if (player.hasImpulse && velsq2 > 0) {

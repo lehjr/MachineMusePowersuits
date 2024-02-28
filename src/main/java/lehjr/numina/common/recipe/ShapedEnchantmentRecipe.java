@@ -5,6 +5,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
@@ -12,6 +13,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.ShapedRecipe;
@@ -24,17 +26,18 @@ import javax.annotation.Nullable;
 import java.util.Map;
 
 public class ShapedEnchantmentRecipe extends ShapedRecipe {
-    public ShapedEnchantmentRecipe(ShapedRecipe shaped) {
-        this(shaped.getId(), shaped.getGroup(), shaped.getWidth(), shaped.getRecipeHeight(), shaped.getIngredients(), shaped.getResultItem());
+
+    public ShapedEnchantmentRecipe(ResourceLocation pId, String pGroup, CraftingBookCategory pCategory, int pWidth, int pHeight, NonNullList<Ingredient> pRecipeItems, ItemStack pResult) {
+        super(pId, pGroup, pCategory, pWidth, pHeight, pRecipeItems, pResult, true);
     }
 
-    public ShapedEnchantmentRecipe(ResourceLocation pId, String pGroup, int pWidth, int pHeight, NonNullList<Ingredient> pRecipeItems, ItemStack pResult) {
-        super(pId, pGroup, pWidth, pHeight, pRecipeItems, pResult);
+    public ShapedEnchantmentRecipe(ShapedRecipe shaped) {
+        super(shaped.getId(), shaped.getGroup(), shaped.category(), shaped.getWidth(), shaped.getRecipeHeight(), shaped.getIngredients(), shaped.getResultItem(null), shaped.showNotification());
     }
 
     @Override
-    public ItemStack assemble(CraftingContainer pInv) {
-        return super.assemble(pInv);
+    public ItemStack assemble(CraftingContainer container, RegistryAccess registryAccess) {
+        return super.assemble(container, registryAccess);
     }
 
     @Override
@@ -97,7 +100,7 @@ public class ShapedEnchantmentRecipe extends ShapedRecipe {
         if (testStack == null) {
             return false;
         } else {
-            ingredient.dissolve();
+//            ingredient.dissolve(); // fixme?
             if (ingredient.getItems().length == 0) {
                 return testStack.isEmpty();
             } else {
@@ -107,12 +110,12 @@ public class ShapedEnchantmentRecipe extends ShapedRecipe {
                     Map<Enchantment, Integer> ingredientStackEnchantments = EnchantmentHelper.getEnchantments(itemstack);
                     if (ingredientStackEnchantments.size() > 0 && testStackEnchantments.size() > 0) {
                         boolean match = true;
-                            // as long as the test stack has the required ingredients at the required level then allow it
-                            for (Enchantment enchantment : ingredientStackEnchantments.keySet()) {
-                                if (ingredientStackEnchantments.getOrDefault(enchantment, 1) > testStackEnchantments.getOrDefault(enchantment, 0)) {
-                                    match = false;
-                                }
+                        // as long as the test stack has the required ingredients at the required level then allow it
+                        for (Enchantment enchantment : ingredientStackEnchantments.keySet()) {
+                            if (ingredientStackEnchantments.getOrDefault(enchantment, 1) > testStackEnchantments.getOrDefault(enchantment, 0)) {
+                                match = false;
                             }
+                        }
                         return match;
                     } else if (itemstack.is(testStack.getItem())) {
                         return true;
@@ -160,15 +163,22 @@ public class ShapedEnchantmentRecipe extends ShapedRecipe {
 
 
         @Override
-        public ShapedEnchantmentRecipe fromJson(ResourceLocation pRecipeId, JsonObject pJson) {
-            String s = GsonHelper.getAsString(pJson, "group", "");
+        public ShapedEnchantmentRecipe fromJson(ResourceLocation id, JsonObject pJson) {
+            String group = GsonHelper.getAsString(pJson, "group", "");
             Map<String, Ingredient> map = keyFromJson(GsonHelper.getAsJsonObject(pJson, "key"));
             String[] astring = ShapedRecipe.shrink(ShapedRecipe.patternFromJson(GsonHelper.getAsJsonArray(pJson, "pattern")));
-            int i = astring[0].length();
-            int j = astring.length;
-            NonNullList<Ingredient> nonnulllist = ShapedRecipe.dissolvePattern(astring, map, i, j);
-            ItemStack itemstack = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(pJson, "result"));
-            return new ShapedEnchantmentRecipe(pRecipeId, s, i, j, nonnulllist, itemstack);
+            int width = astring[0].length();
+            int height = astring.length;
+            NonNullList<Ingredient> ingredients = ShapedRecipe.dissolvePattern(astring, map, width, height);
+            ItemStack result = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(pJson, "result"));
+            return new ShapedEnchantmentRecipe(
+                    id,
+                    group,
+                    CraftingBookCategory.EQUIPMENT, // fixme: using as a place holder until working
+                    width,
+                    height,
+                    ingredients,
+                    result);
         }
 
 

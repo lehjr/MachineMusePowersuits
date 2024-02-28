@@ -33,6 +33,7 @@ import lehjr.numina.common.heat.HeatUtils;
 import lehjr.numina.common.item.ItemUtils;
 import lehjr.numina.common.player.PlayerUtils;
 import net.minecraft.core.NonNullList;
+import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -43,8 +44,6 @@ import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 public class PlayerUpdateHandler {
-
-    @SuppressWarnings("unchecked")
     @SubscribeEvent(priority = EventPriority.NORMAL)
     public void onPlayerUpdate(TickEvent.PlayerTickEvent event) {
         // switched from LivingEvent because it fires multiple times per tick causing major issues
@@ -89,11 +88,11 @@ public class PlayerUpdateHandler {
 
             //  Done this way so players can let their stuff cool in their inventory without having to equip it,
             // allowing it to cool off enough to not take damage
-            if (modularItems.size() > 0) {
+            if (!modularItems.isEmpty()) {
                 // Heat update
                 double currHeat = HeatUtils.getPlayerHeat(player);
 
-                if (currHeat >= 0 && !player.level.isClientSide) { // only apply serverside so change is not applied twice
+                if (currHeat >= 0 && !player.level().isClientSide) { // only apply serverside so change is not applied twice
 
                     // cooling value adjustment. Too much or too little cooling makes the heat system useless.
                     double coolPlayerAmount = (PlayerUtils.getPlayerCoolingBasedOnMaterial(player) * 0.55);  // cooling value adjustment. Too much or too little cooling makes the heat system useless.
@@ -116,15 +115,14 @@ public class PlayerUpdateHandler {
      * Use this instead of the above method.
      * * @param event
      */
-    @SuppressWarnings("unchecked")
     @SubscribeEvent(priority = EventPriority.NORMAL)
     public void entityAttackEventHandler(LivingAttackEvent event) {
         // if damage is from overheat damage, just let it happen
-        if (event.getSource() == HeatUtils.overheatDamage) {
-            return;
-        }
+//        if (event.getSource() == HeatUtils.overheatDamage) { // FIXME?
+//            return;
+//        }
 
-        if (event.getSource().isFire()) {
+        if (event.getSource().is(DamageTypeTags.IS_FIRE)) {
             HeatUtils.heatEntity(event);
         }
     }

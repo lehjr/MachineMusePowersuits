@@ -37,7 +37,7 @@ public class CreativeInstallPacketClientHandler {
                     .ifPresent(iModularItem -> {
                         if (!iModularItem.getInstalledModuleNames().contains(regName)) {
                             for (int index = 0; index < iModularItem.getSlots(); index++) {
-                                if (iModularItem.insertItem(index, module, false).sameItem(ItemStack.EMPTY)) {
+                                if (ItemStack.isSameItem(iModularItem.insertItem(index, module, false), ItemStack.EMPTY)) {
                                     break;
                                 }
                             }

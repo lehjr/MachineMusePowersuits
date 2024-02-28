@@ -1,7 +1,8 @@
 package numina.common.loot;
 
 import lehjr.numina.common.base.NuminaObjects;
-import net.minecraft.data.loot.BlockLoot;
+import lehjr.numina.common.constants.NuminaConstants;
+import net.minecraft.data.loot.packs.VanillaBlockLoot;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
@@ -11,21 +12,18 @@ import net.minecraft.world.level.storage.loot.functions.CopyNbtFunction;
 import net.minecraft.world.level.storage.loot.functions.SetContainerContents;
 import net.minecraft.world.level.storage.loot.providers.nbt.ContextNbtProvider;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
-import net.minecraftforge.registries.RegistryObject;
+import net.minecraftforge.registries.ForgeRegistries;
 
-public class NuminaBlockLoot extends BlockLoot {
+import java.util.Map;
+import java.util.stream.Collectors;
 
+public class NuminaBockLoot extends VanillaBlockLoot {
     @Override
-    protected void addTables() {
-        this.add(NuminaObjects.CHARGING_BASE_BLOCK.get(), NuminaBlockLoot::createChargedInventoryLoot);
+    protected void generate() {
+        this.add(NuminaObjects.CHARGING_BASE_BLOCK.get(), createChargedInventoryLoot(NuminaObjects.CHARGING_BASE_BLOCK.get()));
     }
 
-    @Override
-    protected Iterable<Block> getKnownBlocks() {
-        return NuminaObjects.NUMINA_BLOCKS.getEntries().stream().map(RegistryObject::get)::iterator;
-    }
-
-    protected static LootTable.Builder createChargedInventoryLoot(Block block) {
+    protected LootTable.Builder createChargedInventoryLoot(Block block) {
         return LootTable.lootTable().withPool(
                 applyExplosionCondition(block, LootPool.lootPool()
                         .setRolls(ConstantValue.exactly(1.0F))
@@ -38,5 +36,11 @@ public class NuminaBlockLoot extends BlockLoot {
 //                                        .withEntry(DynamicLoot.dynamicEntry(ShulkerBoxBlock.CONTENTS))))));
     }
 
-
+    @Override
+    protected Iterable<Block> getKnownBlocks() {
+        return ForgeRegistries.BLOCKS.getEntries().stream()
+                .filter(e -> e.getKey().location().getNamespace().equals(NuminaConstants.MOD_ID))
+                .map(Map.Entry::getValue)
+                .collect(Collectors.toList());
+    }
 }

@@ -1,16 +1,16 @@
 package lehjr.numina.client.gui.geometry;
 
-import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 
 import java.util.List;
 
 public interface IDrawableRect extends IRect, IDrawable {
-    default void preRender(PoseStack matrixStack, int mouseX, int mouseY, float frameTIme) {
+    default void preRender(GuiGraphics gfx, int mouseX, int mouseY, float frameTIme) {
 
     }
 
-    default void postRender(int mouseX, int mouseY, float partialTicks) {
+    default void postRender(GuiGraphics gfx, int mouseX, int mouseY, float partialTicks) {
 
     }
 

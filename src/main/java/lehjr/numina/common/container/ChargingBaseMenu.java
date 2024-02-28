@@ -56,7 +56,7 @@ public class ChargingBaseMenu extends AbstractContainerMenu {
     public ChargingBaseMenu(int windowID, BlockPos pos, Inventory playerInventory) { // (int windowId, Level world, BlockPos pos, Inventory playerInventory, Player player)
         super(NuminaObjects.CHARGING_BASE_CONTAINER_TYPE.get(), windowID);
         this.player = playerInventory.player;
-        this.blockEntity = player.level.getBlockEntity(pos);
+        this.blockEntity = player.level().getBlockEntity(pos);
 
         this.playerInventory = new InvWrapper(playerInventory);
 

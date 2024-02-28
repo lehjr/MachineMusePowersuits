@@ -84,7 +84,7 @@ public class WaterElectrolyzerModule extends AbstractPowerModule {
                 double energy = ElectricItemUtils.getPlayerEnergy(player);
                 double energyConsumption = Math.round(applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION));
                 if (energy > energyConsumption && player.getAirSupply() < 10) {
-                    if ((player.level.isClientSide()) && NuminaSettings.useSounds()) {
+                    if ((player.level().isClientSide()) && NuminaSettings.useSounds()) {
                         player.playSound(MPSSoundDictionary.SOUND_EVENT_ELECTROLYZER.get(), 1.0f, 1.0f);
                     }
                     ElectricItemUtils.drainPlayerEnergy(player, energyConsumption);

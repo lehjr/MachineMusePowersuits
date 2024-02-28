@@ -43,6 +43,8 @@ import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
+import net.minecraftforge.common.ForgeMod;
+
 public class HarvestEventHandler {
     @SubscribeEvent
     public static void handleHarvestCheck(PlayerEvent.HarvestCheck event) {
@@ -65,11 +67,13 @@ public class HarvestEventHandler {
                         return;
                     }
 
-                    HitResult rayTraceResult = rayTrace(player.level, player, ClipContext.Fluid.SOURCE_ONLY);
+                    HitResult rayTraceResult = rayTrace(player.level(), player, ClipContext.Fluid.SOURCE_ONLY);
                     if (rayTraceResult == null || rayTraceResult.getType() != HitResult.Type.BLOCK)
                         return;
 
-                    BlockPos pos = new BlockPos(rayTraceResult.getLocation());
+                    Vec3 resultLocation = rayTraceResult.getLocation();
+
+                    BlockPos pos = new BlockPos((int)resultLocation.x(), (int)resultLocation.y(), (int)resultLocation.z());
                     if (pos == null) {
                         return;
                     }
@@ -100,7 +104,7 @@ public class HarvestEventHandler {
         float f5 = Mth.sin(-pitch * ((float)Math.PI / 180F));
         float f6 = f3 * f4;
         float f7 = f2 * f4;
-        double d0 = player.getAttribute(net.minecraftforge.common.ForgeMod.REACH_DISTANCE.get()).getValue();
+        double d0 = player.getAttribute(ForgeMod.ENTITY_REACH.get()).getValue();
         Vec3 vec3d1 = vec3d.add((double)f6 * d0, (double)f5 * d0, (double)f7 * d0);
         return worldIn.clip(new ClipContext(vec3d, vec3d1, ClipContext.Block.OUTLINE, fluidMode, player));
     }

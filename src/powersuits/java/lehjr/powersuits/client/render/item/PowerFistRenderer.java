@@ -29,7 +29,7 @@
 //    boolean isFiring = false;
 //
 //    @Override
-//    public void renderByItem/*render*/(ItemStack stack, ItemTransforms.TransformType transformType, PoseStack matrixStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay) {
+//    public void renderByItem/*render*/(ItemStack stack, ItemDisplayContext transformType, PoseStack matrixStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay) {
 //
 //
 //        VertexConsumer builder = buffer.getBuffer(powerFist.getRenderType(MPSConstants.POWER_FIST_TEXTURE));
@@ -45,8 +45,8 @@
 //                    // first person transform type insures THIS client's player is the one holding the item rather than this
 //                    // client's player seeing another player holding it
 //                    if (renderSpec != null && !renderSpec.isEmpty() &&
-//                            (transformType == ItemTransforms.TransformType.FIRST_PERSON_LEFT_HAND ||
-//                                    (transformType == ItemTransforms.TransformType.FIRST_PERSON_RIGHT_HAND))) {
+//                            (transformType == ItemDisplayContext.FIRST_PERSON_LEFT_HAND ||
+//                                    (transformType == ItemDisplayContext.FIRST_PERSON_RIGHT_HAND))) {
 //                        Player player = Minecraft.getInstance().player;
 //                        int slot = -1;
 //                        if (player.getHeldItemMainhand().equals(stack)) {
@@ -83,8 +83,8 @@
 //
 //                            // only process this part if it's for the correct hand
 //                            if (partSpec.getBinding().getTarget().name().toUpperCase().equals(
-//                                    transformType.equals(ItemTransforms.TransformType.FIRST_PERSON_LEFT_HAND) ||
-//                                            transformType.equals(ItemTransforms.TransformType.THIRD_PERSON_LEFT_HAND) ?
+//                                    transformType.equals(ItemDisplayContext.FIRST_PERSON_LEFT_HAND) ||
+//                                            transformType.equals(ItemDisplayContext.THIRD_PERSON_LEFT_HAND) ?
 //                                            "LEFTHAND" : "RIGHTHAND")) {
 //
 //                                transform = ((ModelSpec) partSpec.spec).getTransform(transformType);
@@ -153,7 +153,7 @@
 //
 //    }
 //
-//    String getPrefixString(ItemTransforms.TransformType transformType) {
+//    String getPrefixString(ItemDisplayContext transformType) {
 //        switch ((transformType)) {
 //            case FIRST_PERSON_LEFT_HAND:
 //            case THIRD_PERSON_LEFT_HAND: {

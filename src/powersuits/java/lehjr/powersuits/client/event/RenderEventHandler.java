@@ -36,6 +36,7 @@ import lehjr.numina.common.math.Color;
 import lehjr.powersuits.client.gui.overlay.ClientOverlayHandler;
 import lehjr.powersuits.common.constants.MPSConstants;
 import lehjr.powersuits.common.constants.MPSRegistryNames;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -123,14 +124,14 @@ public enum RenderEventHandler {
     public void onPostRenderGameOverlayEvent(RenderGuiOverlayEvent.Pre /*CustomizeGuiOverlayEvent*/ e) {
 //        if (Re.getType() == RenderGameOverlayEvent.ElementType.LAYER) { // opaque rendering, completely ignores alpha setting
         if (e.getOverlay().id().equals(VanillaGuiOverlay.TITLE_TEXT.id())) { // this one allows translucent rendering
-            this.drawKeybindToggles(e.getPoseStack());
+            this.drawKeybindToggles(e.getGuiGraphics());
             ClientOverlayHandler.INSTANCE.render(e);
         }
     }
 
     @SubscribeEvent
     public void onPreRenderPlayer(RenderPlayerEvent.Pre event) {
-        if (!event.getEntity().getAbilities().flying && !event.getEntity().isOnGround() && this.playerHasFlightOn(event.getEntity())) {
+        if (!event.getEntity().getAbilities().flying && !event.getEntity().onGround() && this.playerHasFlightOn(event.getEntity())) {
             event.getEntity().getAbilities().flying = true;
             RenderEventHandler.ownFly = true;
         }
@@ -206,7 +207,7 @@ public enum RenderEventHandler {
 //    }
 
     @OnlyIn(Dist.CLIENT)
-    public void drawKeybindToggles(PoseStack matrixStack) {
+    public void drawKeybindToggles(GuiGraphics gfx) {
 //        if (MPSSettings.displayHud() && isModularItemEquuiiped()) {
 //            Minecraft minecraft = Minecraft.getInstance();
 //            AtomicDouble top = new AtomicDouble(MPSSettings.getHudKeybindY());

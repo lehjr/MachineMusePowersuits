@@ -101,7 +101,7 @@ public class NightVisionModule extends AbstractPowerModule {
 
             @Override
             public void onPlayerTickActive(Player player, ItemStack item) {
-                if (player.level.isClientSide) {
+                if (player.level().isClientSide) {
                     return;
                 }
                 double powerDrain = applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION);

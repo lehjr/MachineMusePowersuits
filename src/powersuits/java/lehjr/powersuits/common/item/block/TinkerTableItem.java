@@ -67,7 +67,6 @@ public class TinkerTableItem extends BlockItem {
         super(blockIn, new Item.Properties()
                 .stacksTo(1)
                 .defaultDurability(-1)
-                .tab(MPSItems.creativeTab)
                 .setNoRepair());
     }
 

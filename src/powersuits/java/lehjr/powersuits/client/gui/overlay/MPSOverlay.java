@@ -3,7 +3,6 @@ package lehjr.powersuits.client.gui.overlay;
 import com.google.common.util.concurrent.AtomicDouble;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.platform.Window;
-import com.mojang.blaze3d.vertex.PoseStack;
 import lehjr.numina.client.gui.geometry.DrawableRect;
 import lehjr.numina.client.render.NuminaRenderer;
 import lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
@@ -15,6 +14,7 @@ import lehjr.powersuits.client.control.KeymappingKeyHandler;
 import lehjr.powersuits.client.control.MPSKeyMapping;
 import lehjr.powersuits.common.config.MPSSettings;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -31,14 +31,14 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class MPSOverlay {
     static List<KBDisplay> kbDisplayList = new ArrayList<>();
-    public static final IGuiOverlay MPS_KEYBIND_OVERLAY = ((gui, poseStack, partialTick, screenWidth, screenHeight) -> {
+    public static final IGuiOverlay MPS_KEYBIND_OVERLAY = ((gui, gfx, partialTick, screenWidth, screenHeight) -> {
         Minecraft mc = gui.getMinecraft();
         LocalPlayer player = mc.player;
         Window screen = mc.getWindow();
         float guiScale = (float) screen.getGuiScale();
         float scaledWidth = screen.getWidth()/guiScale;
         float scaledHeight = screen.getHeight()/guiScale;
-        MPSMeterOverlay.render(player, poseStack, partialTick, scaledWidth, scaledHeight);
+        MPSMeterOverlay.render(player, gfx, partialTick, scaledWidth, scaledHeight);
 
 
         AtomicDouble top = new AtomicDouble(MPSSettings.getHudKeybindY());
@@ -48,13 +48,13 @@ public class MPSOverlay {
                     kbDisplay.setLeft(MPSSettings.getHudKeybindX());
                     kbDisplay.setTop(top.get());
                     kbDisplay.setBottom(top.get() + 16);
-                    kbDisplay.render(poseStack, 0, 0, mc.getFrameTime());
+                    kbDisplay.render(gfx, 0, 0, mc.getFrameTime());
                     top.getAndAdd(16);
                 }
             });
         }
         top.getAndAdd(4);
-        MPSHUD.render(player, poseStack, (float)top.get(), MPSSettings.getHudKeybindX());
+        MPSHUD.render(player, gfx, (float)top.get(), MPSSettings.getHudKeybindX());
     });
 
     public static void makeKBDisplayList() {
@@ -97,10 +97,10 @@ public class MPSOverlay {
         }
 
         @Override
-        public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTick) {
+        public void render(GuiGraphics gfx, int mouseX, int mouseY, float partialTick) {
             float stringwidth = (float) StringUtils.getFontRenderer().width(getLabel());
             setWidth(stringwidth + 8 + boundKeybinds.stream().filter(kb->kb.showOnHud).toList().size() * 18);
-            super.render(matrixStack, 0, 0, partialTick);
+            super.render(gfx, 0, 0, partialTick);
             AtomicBoolean kbToggleVal = new AtomicBoolean(false);
             AtomicDouble x = new AtomicDouble(left() + stringwidth + 8);
             boundKeybinds.stream().filter(kb ->kb.showOnHud).forEach(kb ->{
@@ -125,13 +125,13 @@ public class MPSOverlay {
                         break;
                     }
                 }
-                NuminaRenderer.drawModuleAt(matrixStack, x.get(), top(), module, active);
+                NuminaRenderer.drawModuleAt(gfx, x.get(), top(), module, active);
                 x.getAndAdd(16);
             });
-            matrixStack.pushPose();
-            matrixStack.translate(0,0,100);
-            StringUtils.drawLeftAlignedText(matrixStack, getLabel(), (float) left() + 4, (float) top() + 9, (kbToggleVal.get()) ? Color.GREEN : Color.RED);
-            matrixStack.popPose();
+            gfx.pose().pushPose();
+            gfx.pose().translate(0,0,100);
+            StringUtils.drawLeftAlignedText(gfx, getLabel(), (float) left() + 4, (float) top() + 9, (kbToggleVal.get()) ? Color.GREEN : Color.RED);
+            gfx.pose().popPose();
         }
     }
 }

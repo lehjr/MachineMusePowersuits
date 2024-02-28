@@ -4,7 +4,7 @@ issueTrackerURL="https://github.com/lehjr/MachineMusePowersuits/issues"
 license="All rights reserved"
 [[mods]]
     modId="mpsrecipecreator"
-    version="${mod_version}"
+    version="${version}"
     displayName="MPS-RecipeCreator"
     #updateJSONURL="?"
     displayURL="https://github.com/lehjr/MachineMusePowersuits"
@@ -14,7 +14,7 @@ license="All rights reserved"
 [[dependencies.mpsrecipecreator]]
     modId="forge"
     mandatory=true
-    versionRange="${forge_version}"
+    versionRange="${neo_version}"
     side="BOTH"
 
 [[dependencies.mpsrecipecreator]]
@@ -26,6 +26,6 @@ license="All rights reserved"
 [[dependencies.mpsrecipecreator]]
     modId="numina"
     mandatory=true
-    versionRange="[${mod_version},)"
+    versionRange="[${version},)"
     ordering="AFTER"
     side="BOTH"

@@ -78,12 +78,12 @@ public class TunnelBoreModule extends AbstractPowerModule {
 
             @Override
             public boolean onBlockStartBreak(ItemStack itemStack, BlockPos posIn, Player player) {
-                if (player.level.isClientSide) {
+                if (player.level().isClientSide) {
                     return false; // fixme : check?
                 }
 
                 AtomicBoolean harvested = new AtomicBoolean(false);
-                HitResult rayTraceResult = getPlayerPOVHitResult(player.level, player, ClipContext.Fluid.SOURCE_ONLY);
+                HitResult rayTraceResult = getPlayerPOVHitResult(player.level(), player, ClipContext.Fluid.SOURCE_ONLY);
                 if (rayTraceResult == null || rayTraceResult.getType() != HitResult.Type.BLOCK) {
                     return false;
                 }
@@ -101,7 +101,7 @@ public class TunnelBoreModule extends AbstractPowerModule {
                         .map(IModeChangingItem.class::cast)
                         .ifPresent(modeChanging -> {
                             posList.forEach(blockPos-> {
-                                BlockState state = player.level.getBlockState(blockPos);
+                                BlockState state = player.level().getBlockState(blockPos);
                                 // find an installed module to break current block
                                 for (ItemStack blockBreakingModule : modeChanging.getInstalledModulesOfType(IBlockBreakingModule.class)) {
                                     double playerEnergy = ElectricItemUtils.getPlayerEnergy(player);
@@ -111,12 +111,12 @@ public class TunnelBoreModule extends AbstractPowerModule {
                                             .map(b -> {
                                                 // check if module can break block
                                                 if (player.isCreative() || b.canHarvestBlock(itemStack, state, player, blockPos, playerEnergy - energyUsage)) {
-                                                    if (!player.level.isClientSide()) {
-                                                        BlockEntity blockEntity = player.level.getBlockEntity(blockPos);
+                                                    if (!player.level().isClientSide()) {
+                                                        BlockEntity blockEntity = player.level().getBlockEntity(blockPos);
                                                         // setup drops checking for enchantments
-                                                        Block.dropResources(state, player.level, blockPos, blockEntity, player, itemStack);
+                                                        Block.dropResources(state, player.level(), blockPos, blockEntity, player, itemStack);
                                                         // destroy block but don't drop default drops because they're already set above
-                                                        player.level.destroyBlock(blockPos, false, player, 512);
+                                                        player.level().destroyBlock(blockPos, false, player, 512);
                                                         ElectricItemUtils.drainPlayerEnergy(player, b.getEnergyUsage() + energyUsage);
                                                     }
 

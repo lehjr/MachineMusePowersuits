@@ -30,7 +30,13 @@ import com.google.common.util.concurrent.AtomicDouble;
 import lehjr.numina.common.capabilities.NuminaCapabilities;
 import lehjr.numina.common.constants.NuminaConstants;
 import lehjr.numina.common.item.ItemUtils;
+import net.minecraft.core.Registry;
+import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -45,12 +51,11 @@ import javax.annotation.Nonnull;
  * Note: values can be read on either logical side, but should only be set server side
  */
 public class HeatUtils {
-    public static final DamageSource overheatDamage = new OverheatDamage();
 
     public static double getPlayerHeat(LivingEntity entity) {
         double heat = 0;
         for (EquipmentSlot slot : EquipmentSlot.values()) {
-                heat += getItemHeat(ItemUtils.getItemFromEntitySlot(entity, slot));
+            heat += getItemHeat(ItemUtils.getItemFromEntitySlot(entity, slot));
         }
         return heat;
     }
@@ -75,7 +80,7 @@ public class HeatUtils {
     }
 
     public static double coolPlayer(LivingEntity entity, double coolJoules) {
-        if (entity.level.isClientSide /*|| entity.abilities.instabuild */) {
+        if (entity.level().isClientSide /*|| entity.abilities.instabuild */) {
             return 0;
         }
 
@@ -109,7 +114,7 @@ public class HeatUtils {
      * Should only be called server side
      */
     public static double heatPlayer(LivingEntity entity, double heatJoules) {
-        if (entity.level.isClientSide /*|| entity.abilities.instabuild */) {
+        if (entity.level().isClientSide /*|| entity.abilities.instabuild */) {
             return 0;
         }
 
@@ -129,7 +134,7 @@ public class HeatUtils {
      * @param event
      */
     public static void heatEntity(LivingAttackEvent event) {
-        if (event.getSource().isFire()) {
+        if (event.getSource().is(DamageTypeTags.IS_FIRE)) {
             // round amount due do float values being weird
             double heatLeftToGive = Math.round(event.getAmount());
             final double originalHeatToGive = heatLeftToGive;
@@ -159,7 +164,7 @@ public class HeatUtils {
                     event.setCanceled(true);
                 }
                 if (heatLeftToGive > 0) {
-                    entity.hurt(new OverheatDamage(), (float) heatLeftToGive);
+                    entity.hurt(new OverheatDamage(entity.level().registryAccess()).overheat(), (float) heatLeftToGive);
                 }
             }
         }
@@ -181,15 +186,26 @@ public class HeatUtils {
         return stack.getCapability(NuminaCapabilities.HEAT, null).map(h->h.extractHeat(value, false)).orElse(0D);
     }
 
-    protected static final class OverheatDamage extends DamageSource {
-        public OverheatDamage() {
-            super(NuminaConstants.OVERHEAT_DAMAGE);
-            this.setIsFire();
-            this.bypassArmor();
+    static final ResourceKey<DamageType> OVERHEAT_DAMAGE = ResourceKey.create(Registries.DAMAGE_TYPE,
+            NuminaConstants.OVERHEAT_DAMAGE_REGANAME
+    );
+
+    public static class OverheatDamage {
+        private final DamageSource overheat;
+
+        private final Registry<DamageType> damageTypes;
+
+        public OverheatDamage(RegistryAccess registry) {
+            this.damageTypes = registry.registryOrThrow(Registries.DAMAGE_TYPE);
+            this.overheat = this.source();
         }
 
-        public boolean equals(DamageSource other) {
-            return other.msgId.equals(this.msgId);
+        private DamageSource source() {
+            return new DamageSource(this.damageTypes.getHolderOrThrow(HeatUtils.OVERHEAT_DAMAGE));
+        }
+
+        public DamageSource overheat() {
+            return this.overheat;
         }
     }
 }

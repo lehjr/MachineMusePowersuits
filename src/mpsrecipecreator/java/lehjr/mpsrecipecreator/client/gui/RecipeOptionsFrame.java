@@ -1,6 +1,5 @@
 package lehjr.mpsrecipecreator.client.gui;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import lehjr.numina.client.gui.clickable.Checkbox;
 import lehjr.numina.client.gui.clickable.ClickableLabel;
 import lehjr.numina.client.gui.clickable.button.VanillaButton;
@@ -8,6 +7,7 @@ import lehjr.numina.client.gui.frame.ScrollableFrame;
 import lehjr.numina.client.gui.geometry.MusePoint2D;
 import lehjr.numina.client.gui.geometry.Rect;
 import lehjr.numina.client.sound.Musique;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
 
@@ -65,13 +65,13 @@ public class RecipeOptionsFrame extends ScrollableFrame {
 
         save = addButton(Component.translatable("mpsrc.gui.save"));
         save.setOnPressed(pressed->{
-            Musique.playClientSound(SoundEvents.UI_BUTTON_CLICK,1);
+            Musique.playClientSound(SoundEvents.UI_BUTTON_CLICK.get(),1);
             mpsrcGui.save();
         });
 
         reset = addButton(Component.translatable("mpsrc.gui.resetrecipe"));
         reset.setOnPressed(pressed-> {
-            Musique.playClientSound(SoundEvents.UI_BUTTON_CLICK, 1);
+            Musique.playClientSound(SoundEvents.UI_BUTTON_CLICK.get(), 1);
             mpsrcGui.resetRecipes();
         });
     }
@@ -100,20 +100,20 @@ public class RecipeOptionsFrame extends ScrollableFrame {
     }
 
     @Override
-    public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTicks) {
+    public void render(GuiGraphics gfx, int mouseX, int mouseY, float partialTicks) {
         if (isVisible()) {
-            super.render(matrixStack, mouseX, mouseY, partialTicks);
-            title.render(matrixStack, mouseX, mouseY, partialTicks);
+            super.render(gfx, mouseX, mouseY, partialTicks);
+            title.render(gfx, mouseX, mouseY, partialTicks);
 
             for (Checkbox checkBox : checkBoxes) {
-                checkBox.render(matrixStack, mouseX, mouseY, partialTicks);
+                checkBox.render(gfx, mouseX, mouseY, partialTicks);
             }
 
             for (VanillaButton button : buttons) {
-                button.render(matrixStack, mouseX, mouseY, partialTicks);
+                button.render(gfx, mouseX, mouseY, partialTicks);
             }
 
-            conditionsFrame.render(matrixStack, mouseX, mouseY, partialTicks);
+            conditionsFrame.render(gfx, mouseX, mouseY, partialTicks);
         }
     }
 

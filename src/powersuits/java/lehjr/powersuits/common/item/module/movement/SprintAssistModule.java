@@ -111,22 +111,22 @@ public class SprintAssistModule extends AbstractPowerModule {
                         if (sprintCost < totalEnergy) {
                             double sprintMultiplier = applyPropertyModifiers(MPSConstants.SPRINT_SPEED_MULTIPLIER);
                             double exhaustionComp = applyPropertyModifiers(MPSConstants.FOOD_COMPENSATION);
-                            if (!player.level.isClientSide &&
+                            if (!player.level().isClientSide &&
                                     // every 20 ticks
-                                    (player.level.getGameTime() % 20) == 0) {
+                                    (player.level().getGameTime() % 20) == 0) {
                                 ElectricItemUtils.drainPlayerEnergy(player, (int) (sprintCost * horzMovement) * 20);
                             }
                             setMovementModifier(getModuleStack(), sprintMultiplier * 0.13 * 0.5, Attributes.MOVEMENT_SPEED, Attributes.MOVEMENT_SPEED.getDescriptionId());
                             player.getFoodData().addExhaustion((float) (-0.01 * exhaustion * exhaustionComp));
-                            player.flyingSpeed = player.getSpeed() * 0.2f;
+                            player.getAbilities().setFlyingSpeed(player.getSpeed() * 0.2f);
                         }
                     } else {
                         double walkCost = applyPropertyModifiers(MPSConstants.WALKING_ENERGY_CONSUMPTION);
                         if (walkCost < totalEnergy) {
                             double walkMultiplier = applyPropertyModifiers(MPSConstants.WALKING_SPEED_MULTIPLIER);
-                            if (!player.level.isClientSide &&
+                            if (!player.level().isClientSide &&
                                     // every 20 ticks
-                                    (player.level.getGameTime() % 20) == 0) {
+                                    (player.level().getGameTime() % 20) == 0) {
                                 ElectricItemUtils.drainPlayerEnergy(player, (int) (walkCost * horzMovement));
 
 
@@ -134,7 +134,7 @@ public class SprintAssistModule extends AbstractPowerModule {
 
                             }
                             setMovementModifier(getModuleStack(), walkMultiplier * 0.1, Attributes.MOVEMENT_SPEED, Attributes.MOVEMENT_SPEED.getDescriptionId());
-                            player.flyingSpeed = player.getSpeed() * 0.2f;
+                            player.getAbilities().setFlyingSpeed(player.getSpeed() * 0.2f);
                         }
                     }
                 }

@@ -30,7 +30,7 @@ import com.google.common.base.Preconditions;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import com.mojang.datafixers.util.Pair;
-import com.mojang.math.Matrix4f;
+import org.joml.Matrix4f;
 import lehjr.numina.client.gui.GuiIcon;
 import lehjr.numina.common.constants.NuminaConstants;
 import lehjr.numina.common.math.Color;
@@ -92,14 +92,14 @@ public enum IconUtils {
      * @param color
      */
     public static void drawIconAt(PoseStack poseStack, double x, double y, @Nonnull TextureAtlasSprite icon, Color color) {
-        drawIconPartial(poseStack, x, y, icon, color, 0, 0, icon.getWidth(), icon.getHeight());
+        drawIconPartial(poseStack, x, y, icon, color, 0, 0, icon.contents().width(), icon.contents().height());
     }
 
     public static void drawIconPartialOccluded(double x, double y, @Nonnull TextureAtlasSprite icon, Color color, double textureStarX, double textureStartY, double textureEndX, double textureEndY) {
-        double xmin = MathUtils.clampDouble(textureStarX - x, 0, icon.getWidth());
-        double ymin = MathUtils.clampDouble(textureStartY - y, 0, icon.getHeight());
-        double xmax = MathUtils.clampDouble(textureEndX - x, 0, icon.getWidth());
-        double ymax = MathUtils.clampDouble(textureEndY - y, 0, icon.getHeight());
+        double xmin = MathUtils.clampDouble(textureStarX - x, 0, icon.contents().width());
+        double ymin = MathUtils.clampDouble(textureStartY - y, 0, icon.contents().height());
+        double xmax = MathUtils.clampDouble(textureEndX - x, 0, icon.contents().width());
+        double ymax = MathUtils.clampDouble(textureEndY - y, 0, icon.contents().height());
         drawIconPartial(x, y, icon, color, xmin, ymin, xmax, ymax);
     }
 
@@ -115,7 +115,7 @@ public enum IconUtils {
         if (icon == null) {
             icon = getMissingIcon();
         }
-        RenderSystem.setShaderTexture(0, icon.atlas().location());
+        RenderSystem.setShaderTexture(0, icon.atlasLocation());
         Tesselator tess = Tesselator.getInstance();
         BufferBuilder bufferBuilder = tess.getBuilder();
         bufferBuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
@@ -124,8 +124,8 @@ public enum IconUtils {
         float minV = icon.getV0();
         float maxV = icon.getV1();
 
-        float iconWidthDiv = 1F/icon.getWidth();
-        float icomHeightDiv = 1F/icon.getHeight();
+        float iconWidthDiv = 1F/icon.contents().width();
+        float icomHeightDiv = 1F/icon.contents().height();
 
         double xoffsetMin = textureStartX * (maxU - minU) * iconWidthDiv; // 0
         double xoffsetMax = textureEndX * (maxU - minU) * iconWidthDiv;
@@ -174,7 +174,7 @@ public enum IconUtils {
             icon = getMissingIcon();
         }
 
-        RenderSystem.setShaderTexture(0, icon.atlas().location());
+        RenderSystem.setShaderTexture(0, icon.atlasLocation());
         Tesselator tess = Tesselator.getInstance();
         BufferBuilder bufferBuilder = tess.getBuilder();
         bufferBuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
@@ -327,7 +327,7 @@ public enum IconUtils {
     }
 
     double getBlitOffset() {
-        return getMinecraft().screen.getBlitOffset();
+        return 0;
     }
 
     Minecraft getMinecraft() {

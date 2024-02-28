@@ -37,7 +37,7 @@ import org.lwjgl.glfw.GLFW;
 @OnlyIn(Dist.CLIENT)
 public enum ModelTransformCalibration {
     CALIBRATION;
-    // TODO: ItemTransforms.TransformType cameraTransformType default values as starting point for item transforms
+    // TODO: ItemDisplayContext cameraTransformType default values as starting point for item transforms
     static float xOffest_original = 0;
     static float yOffest_original = 0;
     static float zOffest_original = 0;

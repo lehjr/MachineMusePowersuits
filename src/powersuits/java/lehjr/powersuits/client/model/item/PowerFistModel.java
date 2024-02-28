@@ -74,7 +74,7 @@
 // */
 //@OnlyIn(Dist.CLIENT)
 //public class PowerFistModel extends BakedModelWrapper {
-//    static ItemTransforms.TransformType modelcameraTransformType;
+//    static ItemDisplayContext modelcameraTransformType;
 //    static ItemStack itemStack;
 //    static boolean isFiring = false;
 //    Player player;
@@ -122,8 +122,8 @@
 //                    // first person transform type insures THIS client's player is the one holding the item rather than this
 //                    // client's player seeing another player holding it
 //                    if (renderSpec != null && !renderSpec.isEmpty() &&
-//                            (modelcameraTransformType == ItemTransforms.TransformType.FIRST_PERSON_LEFT_HAND ||
-//                                    (modelcameraTransformType == ItemTransforms.TransformType.FIRST_PERSON_RIGHT_HAND))) {
+//                            (modelcameraTransformType == ItemDisplayContext.FIRST_PERSON_LEFT_HAND ||
+//                                    (modelcameraTransformType == ItemDisplayContext.FIRST_PERSON_RIGHT_HAND))) {
 //                        Player player = Minecraft.getInstance().player;
 //                        EquipmentSlot slotType = EquipmentSlot.OFFHAND;
 //                        if (player.getMainHandItem().equals(itemStack)) {
@@ -145,8 +145,8 @@
 //
 //                            // only process this part if it's for the correct hand
 //                            if (partSpec.getBinding().getTarget().name().toUpperCase().equals(
-//                                    modelcameraTransformType.equals(ItemTransforms.TransformType.FIRST_PERSON_LEFT_HAND) ||
-//                                            modelcameraTransformType.equals(ItemTransforms.TransformType.THIRD_PERSON_LEFT_HAND) ?
+//                                    modelcameraTransformType.equals(ItemDisplayContext.FIRST_PERSON_LEFT_HAND) ||
+//                                            modelcameraTransformType.equals(ItemDisplayContext.THIRD_PERSON_LEFT_HAND) ?
 //                                            "LEFTHAND" : "RIGHTHAND")) {
 //
 //                                transform = ((ModelSpec) partSpec.spec).getTransform(modelcameraTransformType);
@@ -174,7 +174,7 @@
 //    }
 //
 //    @Override
-//    public BakedModel applyTransform(ItemTransforms.TransformType cameraTransformType, PoseStack poseStack, boolean applyLeftHandTransform) {
+//    public BakedModel applyTransform(ItemDisplayContext cameraTransformType, PoseStack poseStack, boolean applyLeftHandTransform) {
 //        modelcameraTransformType = cameraTransformType;
 //
 //        // TODO? Probably not... switching to other model

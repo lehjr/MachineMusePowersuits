@@ -36,6 +36,7 @@ import lehjr.numina.client.gui.geometry.Rect;
 import lehjr.numina.common.math.Color;
 import lehjr.numina.common.string.StringUtils;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.network.chat.Component;
@@ -84,14 +85,15 @@ public class Checkbox extends Clickable {
         this.setWidth(width);
     }
 
-    public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTick) {
-        super.render(matrixStack, mouseX, mouseY, partialTick);
+    @Override
+    public void render(GuiGraphics gfx, int mouseX, int mouseY, float partialTick) {
+        super.render(gfx, mouseX, mouseY, partialTick);
 
         if (this.isVisible()) {
             makeNewTile();
-            this.tile.render(matrixStack, mouseX, mouseY, partialTick);
+            this.tile.render(gfx, mouseX, mouseY, partialTick);
             if (showLabel) {
-                StringUtils.drawShadowedString(matrixStack, this.label, this.tile.centerX() + 10.0D, this.tile.centerY() - 4.0D, Color.WHITE);
+                StringUtils.drawShadowedString(gfx, this.label, this.tile.centerX() + 10.0D, this.tile.centerY() - 4.0D, Color.WHITE);
             }
         }
     }
@@ -139,11 +141,11 @@ public class Checkbox extends Clickable {
         }
 
         @Override
-        public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTick) {
+        public void render(GuiGraphics gfx, int mouseX, int mouseY, float partialTick) {
 //            ShaderInstance oldShader = RenderSystem.getShader();
             RenderSystem.setShader(GameRenderer::getPositionTexColorShader);
             RenderSystem.enableBlend();
-            GuiIcon.renderTextureWithColor(TEXTURE, matrixStack,
+            GuiIcon.renderTextureWithColor(TEXTURE, gfx.pose(),
                     left(), right(), top(), bottom(), getZLevel(),
                     // int uWidth, int vHeight,
                     20, 20,

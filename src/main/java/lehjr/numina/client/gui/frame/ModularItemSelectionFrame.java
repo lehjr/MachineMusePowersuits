@@ -1,6 +1,5 @@
 package lehjr.numina.client.gui.frame;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import lehjr.numina.client.gui.clickable.IClickable;
 import lehjr.numina.client.gui.clickable.ModularItemTabToggleWidget;
 import lehjr.numina.client.gui.clickable.button.VanillaButton;
@@ -13,6 +12,7 @@ import lehjr.numina.common.constants.NuminaConstants;
 import lehjr.numina.common.item.ItemUtils;
 import lehjr.numina.common.string.StringUtils;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
@@ -205,10 +205,10 @@ public class ModularItemSelectionFrame extends AbstractGuiFrame {
     }
 
     @Override
-    public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTick) {
+    public void render(GuiGraphics gfx, int mouseX, int mouseY, float partialTick) {
         boxes.stream().filter(IClickable.class::isInstance)
                 .map(IClickable.class::cast)
-                .forEach(box-> box.render(matrixStack, mouseX, mouseY, partialTick));
+                .forEach(box-> box.render(gfx, mouseX, mouseY, partialTick));
     }
 
     @Nullable

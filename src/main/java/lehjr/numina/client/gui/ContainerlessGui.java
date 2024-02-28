@@ -1,15 +1,16 @@
 package lehjr.numina.client.gui;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import lehjr.numina.client.gui.frame.IGuiFrame;
 import lehjr.numina.client.gui.geometry.IRect;
 import lehjr.numina.client.gui.geometry.MusePoint2D;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ContainerlessGui extends Screen implements IRect {
     /** The X size of the inventory window in pixels. */
@@ -51,18 +52,18 @@ public class ContainerlessGui extends Screen implements IRect {
     }
 
     @Override
-    public void render(PoseStack matrixStack, int mouseX, int mouseY, float frameTime) {
-        this.renderBackground(matrixStack);
+    public void render(GuiGraphics gfx, int mouseX, int mouseY, float frameTime) {
+        this.renderBackground(gfx);
         update(mouseX, mouseY);
-        matrixStack.pushPose();
-        matrixStack.translate(0, 0, 10);
-        renderFrames(matrixStack, mouseX, mouseY, frameTime);
-        matrixStack.translate(0, 0, 10);
-        super.render(matrixStack, mouseX, mouseY, frameTime);
-        matrixStack.translate(0, 0, 100);
-        renderLabels(matrixStack, mouseX, mouseY);
-        matrixStack.popPose();
-        this.renderTooltip(matrixStack, mouseX, mouseY);
+        gfx.pose().pushPose();
+        gfx.pose().translate(0, 0, 10);
+        renderFrames(gfx, mouseX, mouseY, frameTime);
+        gfx.pose().translate(0, 0, 10);
+        super.render(gfx, mouseX, mouseY, frameTime);
+        gfx.pose().translate(0, 0, 100);
+        renderLabels(gfx, mouseX, mouseY);
+        gfx.pose().popPose();
+        this.renderTooltip(gfx, mouseX, mouseY);
     }
 
     public void update(double x, double y) {
@@ -71,18 +72,18 @@ public class ContainerlessGui extends Screen implements IRect {
         }
     }
 
-    public void renderFrames(PoseStack matrixStack, int mouseX, int mouseY, float partialTicks) {
+    public void renderFrames(GuiGraphics gfx, int mouseX, int mouseY, float partialTicks) {
         for (IGuiFrame frame : frames) {
-            frame.render(matrixStack, mouseX, mouseY, partialTicks);
+            frame.render(gfx, mouseX, mouseY, partialTicks);
         }
     }
 
-    public void renderLabels(PoseStack matrixStack, int mouseX, int mouseY) {
-        renderFrameLabels(matrixStack, mouseX, mouseY);
+    public void renderLabels(GuiGraphics gfx, int mouseX, int mouseY) {
+        renderFrameLabels(gfx, mouseX, mouseY);
     }
 
-    public void renderFrameLabels(PoseStack matrixStack, int mouseX, int mouseY) {
-        frames.forEach(frame -> frame.renderLabels(matrixStack, mouseX, mouseY));
+    public void renderFrameLabels(GuiGraphics gfx, int mouseX, int mouseY) {
+        frames.forEach(frame -> frame.renderLabels(gfx, mouseX, mouseY));
     }
 
     /**
@@ -131,10 +132,11 @@ public class ContainerlessGui extends Screen implements IRect {
         return false;
     }
 
-    public void renderTooltip(PoseStack matrixStack, int mouseX, int mouseY) {
+    public void renderTooltip(GuiGraphics gfx, int mouseX, int mouseY) {
         List<Component> tooltip = getToolTip(mouseX, mouseY);
         if (tooltip != null) {
-            renderComponentTooltip(matrixStack,tooltip, mouseX,mouseY);
+            // TODO: test this and if it doesn't work use the GuiGraphics version
+            setTooltipForNextRenderPass(tooltip.stream().map(Component::getVisualOrderText).collect(Collectors.toList()));
         }
     }
 

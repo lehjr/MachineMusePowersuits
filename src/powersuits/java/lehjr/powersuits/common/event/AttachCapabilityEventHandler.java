@@ -121,14 +121,14 @@ public class AttachCapabilityEventHandler {
                         SimpleMenuProvider container = new SimpleMenuProvider((id, inven, player) -> new CraftingMenu(id, inven, ContainerLevelAccess.NULL) {
                             @Override
                             public void slotsChanged(Container inventory) {
-                                slotChangedCraftingGrid(this, player.level, this.player, this.craftSlots, this.resultSlots);
+                                slotChangedCraftingGrid(this, player.level(), this.player, this.craftSlots, this.resultSlots);
                             }
 
                             @Override
                             public void removed(Player player) {
                                 super.removed(player);
                                 this.resultSlots.clearContent();
-                                if (!player.level.isClientSide) {
+                                if (!player.level().isClientSide) {
                                     this.clearContainer(player, this.craftSlots);
                                 }
                             }

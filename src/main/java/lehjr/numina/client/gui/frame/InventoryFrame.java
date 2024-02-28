@@ -27,7 +27,6 @@
 package lehjr.numina.client.gui.frame;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 import lehjr.numina.client.gui.IContainerULOffSet;
 import lehjr.numina.client.gui.geometry.IDrawable;
 import lehjr.numina.client.gui.geometry.IDrawableRect;
@@ -37,6 +36,7 @@ import lehjr.numina.client.gui.slot.IHideableSlot;
 import lehjr.numina.client.render.IconUtils;
 import lehjr.numina.common.constants.NuminaConstants;
 import lehjr.numina.common.math.MathUtils;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -202,11 +202,11 @@ public abstract class InventoryFrame extends ScrollableFrame implements IContain
     }
 
     @Override
-    public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTick) {
+    public void render(GuiGraphics gfx, int mouseX, int mouseY, float partialTick) {
         if (this.tiles != null && !this.tiles.isEmpty()) {
             for (SlotRect tile : tiles) {
                 // add slight offset so the lines show up (this is why the param was added)
-                tile.render(matrixStack, mouseX, mouseY, partialTick);
+                tile.render(gfx, mouseX, mouseY, partialTick);
             }
         }
     }
@@ -246,11 +246,11 @@ public abstract class InventoryFrame extends ScrollableFrame implements IContain
         }
 
         @Override
-        public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTick) {
+        public void render(GuiGraphics gfx, int mouseX, int mouseY, float partialTick) {
             RenderSystem.setShader(GameRenderer::getPositionTexShader);
             RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
             RenderSystem.setShaderTexture(0, BACKGROUND);
-            IconUtils.INSTANCE.blit(matrixStack, left(), top(), this.getZLevel(), 0, 0, width(), height(), 18, 18);
+            IconUtils.INSTANCE.blit(gfx.pose(), left(), top(), this.getZLevel(), 0, 0, width(), height(), 18, 18);
         }
 
         @Override

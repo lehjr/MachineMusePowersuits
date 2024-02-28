@@ -45,6 +45,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.nbt.Tag;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.block.state.BlockState;
@@ -121,7 +122,7 @@ public class LuxCapacitorModelWrapper extends BakedModelWrapper<OBJBakedComposit
      * @return
      */
     @Override
-    public BakedModel applyTransform(ItemTransforms.TransformType cameraTransformType, PoseStack poseStack, boolean applyLeftHandTransform) {
+    public BakedModel applyTransform(ItemDisplayContext cameraTransformType, PoseStack poseStack, boolean applyLeftHandTransform) {
         getTransforms().getTransform(cameraTransformType).apply(applyLeftHandTransform, poseStack);
         return this;
     }

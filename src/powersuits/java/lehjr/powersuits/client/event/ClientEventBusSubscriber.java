@@ -6,7 +6,6 @@ import lehjr.powersuits.client.gui.overlay.MPSOverlay;
 import lehjr.powersuits.client.render.blockentity.TinkerTableBER;
 import lehjr.powersuits.client.render.entity.LuxCapacitorEntityRenderer;
 import lehjr.powersuits.client.render.entity.PlasmaBoltEntityRenderer;
-import lehjr.powersuits.client.render.entity.RailGunBoltRenderer;
 import lehjr.powersuits.client.render.entity.SpinningBladeEntityRenderer;
 import lehjr.powersuits.common.base.MPSBlocks;
 import lehjr.powersuits.common.base.MPSEntities;
@@ -25,7 +24,7 @@ public class ClientEventBusSubscriber {
 
     @SubscribeEvent
     public static void onRegisterRenderers(final EntityRenderersEvent.RegisterRenderers event) {
-        event.registerEntityRenderer(MPSEntities.RAILGUN_BOLT_ENTITY_TYPE.get(), RailGunBoltRenderer::new);
+//        event.registerEntityRenderer(MPSEntities.RAILGUN_BOLT_ENTITY_TYPE.get(), RailGunBoltRenderer::new);
         event.registerEntityRenderer(MPSEntities.LUX_CAPACITOR_ENTITY_TYPE.get(), LuxCapacitorEntityRenderer::new);
         event.registerEntityRenderer(MPSEntities.PLASMA_BALL_ENTITY_TYPE.get(), PlasmaBoltEntityRenderer::new);
         event.registerEntityRenderer(MPSEntities.SPINNING_BLADE_ENTITY_TYPE.get(), SpinningBladeEntityRenderer::new);

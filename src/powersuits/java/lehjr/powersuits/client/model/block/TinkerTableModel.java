@@ -28,7 +28,9 @@ package lehjr.powersuits.client.model.block;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
+import org.joml.Quaternionf;
+import org.joml.Vector3f;
 import lehjr.powersuits.common.constants.MPSConstants;
 import net.minecraft.client.model.Model;
 import net.minecraft.client.model.geom.ModelPart;
@@ -99,12 +101,38 @@ public class TinkerTableModel extends Model {
         double angle = timestep * Math.PI / 5000.0;
         matrixStackIn.translate(0.5f, 1.05f, 0.5f);
         matrixStackIn.translate(0, 0.02f * Math.sin(angle * 3), 0);
-        matrixStackIn.mulPose(Vector3f.YP.rotationDegrees((float) (angle * 57.2957795131)));
-        matrixStackIn.mulPose(Vector3f.XP.rotationDegrees(45f));
+        matrixStackIn.mulPose(Axis.YP.rotationDegrees((float) (angle * 57.2957795131)));
+        matrixStackIn.mulPose(Axis.XP.rotationDegrees(45f));
         // arctangent of 0.5.
-        matrixStackIn.mulPose(new Vector3f(0,1,1).rotationDegrees(35.2643897f));
+//        matrixStackIn.mulPose(new Vector3f(0,1,1).rotationDegrees(35.2643897f));// <- FIXME!!!
+
+//        new Quaternionf().rotationZ(35.2643897f)
+
+
         matrixStackIn.scale(0.5f, 0.5f, 0.5f);
         root.children.get("cube").render(matrixStackIn, bufferIn, LightTexture.FULL_BRIGHT, packedOverlayIn, 1, 1, 1, 0.8F);
         matrixStackIn.popPose();
+    }
+
+
+    // FIXME!! remove when done figurign out
+    @FunctionalInterface
+    public interface Axis1 {
+        Axis1 XN = (xrot) -> (new Quaternionf()).rotationX(-xrot);
+        Axis1 XP = (xrot) -> (new Quaternionf()).rotationX(xrot);
+        Axis1 YN = (yrot) -> (new Quaternionf()).rotationY(-yrot);
+        Axis1 YP = (yrot) -> (new Quaternionf()).rotationY(yrot);
+        Axis1 ZN = (zrot) -> (new Quaternionf()).rotationZ(-zrot);
+        Axis1 ZP = (zrot) -> (new Quaternionf()).rotationZ(zrot);
+
+        static Axis1 of(Vector3f pAxis) {
+            return (rot) -> (new Quaternionf()).rotationAxis(rot, pAxis);
+        }
+
+        Quaternionf rotation(float pRadians);
+
+        default Quaternionf rotationDegrees(float pDegrees) {
+            return this.rotation(pDegrees * ((float)Math.PI / 180F));
+        }
     }
 }

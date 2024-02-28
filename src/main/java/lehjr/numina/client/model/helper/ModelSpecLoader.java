@@ -31,7 +31,6 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.mojang.math.Transformation;
-import com.mojang.math.Vector3f;
 import lehjr.numina.client.event.ModelBakeEventHandler;
 import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.capabilities.render.modelspec.*;
@@ -44,8 +43,10 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import org.joml.Vector3f;
 
 import javax.annotation.Nullable;
 import java.io.BufferedReader;
@@ -310,8 +311,8 @@ public enum ModelSpecLoader {
     }
 
     public static ItemTransforms parseItemTransforms(JsonObject jsonObject) {
-        Map<ItemTransforms.TransformType, ItemTransform> itemTransformMap = new HashMap();
-        for (ItemTransforms.TransformType type : ItemTransforms.TransformType.values()) {
+        Map<ItemDisplayContext, ItemTransform> itemTransformMap = new HashMap();
+        for (ItemDisplayContext type : ItemDisplayContext.values()) {
             ItemTransform transform;
             if (jsonObject.has(type.name())) {
                 try {
@@ -326,14 +327,14 @@ public enum ModelSpecLoader {
         }
 
         return new ItemTransforms(
-                itemTransformMap.get(ItemTransforms.TransformType.THIRD_PERSON_LEFT_HAND),
-                itemTransformMap.get(ItemTransforms.TransformType.THIRD_PERSON_RIGHT_HAND),
-                itemTransformMap.get(ItemTransforms.TransformType.FIRST_PERSON_LEFT_HAND),
-                itemTransformMap.get(ItemTransforms.TransformType.FIRST_PERSON_RIGHT_HAND),
-                itemTransformMap.get(ItemTransforms.TransformType.HEAD),
-                itemTransformMap.get(ItemTransforms.TransformType.GUI),
-                itemTransformMap.get(ItemTransforms.TransformType.GROUND),
-                itemTransformMap.get(ItemTransforms.TransformType.FIXED),
+                itemTransformMap.get(ItemDisplayContext.THIRD_PERSON_LEFT_HAND),
+                itemTransformMap.get(ItemDisplayContext.THIRD_PERSON_RIGHT_HAND),
+                itemTransformMap.get(ItemDisplayContext.FIRST_PERSON_LEFT_HAND),
+                itemTransformMap.get(ItemDisplayContext.FIRST_PERSON_RIGHT_HAND),
+                itemTransformMap.get(ItemDisplayContext.HEAD),
+                itemTransformMap.get(ItemDisplayContext.GUI),
+                itemTransformMap.get(ItemDisplayContext.GROUND),
+                itemTransformMap.get(ItemDisplayContext.FIXED),
                 ImmutableMap.of());
     }
 

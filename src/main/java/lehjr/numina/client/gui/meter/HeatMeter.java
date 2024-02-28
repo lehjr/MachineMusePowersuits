@@ -2,7 +2,8 @@ package lehjr.numina.client.gui.meter;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
-import com.mojang.math.Matrix4f;
+import net.minecraft.client.gui.GuiGraphics;
+import org.joml.Matrix4f;
 import lehjr.numina.client.config.IMeterConfig;
 import lehjr.numina.client.render.IconUtils;
 import lehjr.numina.common.constants.NuminaConstants;
@@ -46,36 +47,36 @@ public class HeatMeter {
         return new IMeterConfig() {};
     }
 
-    public void draw(PoseStack poseStack, float xpos, float ypos, float value) {
+    public void draw(GuiGraphics gfx, float xpos, float ypos, float value) {
         value = Mth.clamp(value + getConfig().getDebugValue(), 0F, 1F);
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
         RenderSystem.setShader(GameRenderer::getPositionTexColorShader);
-        drawFluid(poseStack,xpos, ypos, value, getTexture());
-        drawGlass(poseStack, xpos, ypos);
+        drawFluid(gfx,xpos, ypos, value, getTexture());
+        drawGlass(gfx, xpos, ypos);
         RenderSystem.disableBlend();
     }
 
-    public void drawFluid(PoseStack poseStack, float xpos, float ypos, float value, TextureAtlasSprite icon) {
+    public void drawFluid(GuiGraphics gfx, float xpos, float ypos, float value, TextureAtlasSprite icon) {
         value = Math.min(value, 1F);
-        poseStack.pushPose();
-        poseStack.scale(0.5F, 0.5F, 0.5F);
+        gfx.pose().pushPose();
+        gfx.pose().scale(0.5F, 0.5F, 0.5F);
         // New: Horizontal, fill from left.
         meterStart = xpos;
         meterLevel = (xpos + xsize * value);
         while (meterStart + 8 < meterLevel) {
-            IconUtils.drawIconAt(poseStack, meterStart * 2, ypos * 2, icon, getConfig().getBarColor());
+            IconUtils.drawIconAt(gfx.pose(), meterStart * 2, ypos * 2, icon, getConfig().getBarColor());
             meterStart += 8;
         }
-        IconUtils.drawIconPartial(poseStack, meterStart * 2, ypos * 2, icon, getConfig().getBarColor(),
+        IconUtils.drawIconPartial(gfx.pose(), meterStart * 2, ypos * 2, icon, getConfig().getBarColor(),
                 0, 0, (meterLevel - meterStart) * 2, 16);
-        poseStack.popPose();
+        gfx.pose().popPose();
     }
 
     /**
      *
      */
-    public void drawGlass(PoseStack poseStack, float xpos, float ypos) {
+    public void drawGlass(GuiGraphics gfx, float xpos, float ypos) {
         float minU = 0F;
         float maxU = 1F;
         float minV = 0F;
@@ -91,7 +92,7 @@ public class HeatMeter {
         BufferBuilder bufferbuilder = tesselator.getBuilder();
         RenderSystem.setShaderTexture(0, NuminaConstants.GLASS_TEXTURE);
         bufferbuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
-        Matrix4f matrix4f = poseStack.last().pose();
+        Matrix4f matrix4f = gfx.pose().last().pose();
 
         // bottom left
         bufferbuilder.vertex(matrix4f, left, bottom, blitOffset)

@@ -68,6 +68,8 @@ public class ModularPowersuits {
         MPSBlocks.BLOCKENTITY_TYPES.register(modEventBus);
         MPSEntities.ENTITY_TYPES.register(modEventBus);
         MPSMenuTypes.CONTAINER_TYPES.register(modEventBus);
+        MPSItems.register(modEventBus);
+
 
         // Register the doClientStuff method for modloading
         modEventBus.addListener(this::setupClient);

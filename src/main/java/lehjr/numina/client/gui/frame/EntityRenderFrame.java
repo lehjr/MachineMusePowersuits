@@ -3,8 +3,10 @@ package lehjr.numina.client.gui.frame;
 import com.mojang.blaze3d.platform.Lighting;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Quaternion;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
+import net.minecraft.client.gui.GuiGraphics;
+import org.joml.Quaternionf;
+import org.joml.Vector3f;
 import lehjr.numina.client.gui.geometry.IDrawable;
 import lehjr.numina.client.gui.geometry.Rect;
 import lehjr.numina.common.math.MathUtils;
@@ -117,8 +119,9 @@ public class EntityRenderFrame extends AbstractGuiFrame implements IGuiFrame {
         }
     }
 
+
     @Override
-    public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTick) {
+    public void render(GuiGraphics gfx, int mouseX, int mouseY, float partialTick) {
         if (isVisible) {
             double i = (centerX() + offsetx);
             double j = (bottom() - 5 + offsety);
@@ -142,8 +145,8 @@ public class EntityRenderFrame extends AbstractGuiFrame implements IGuiFrame {
         PoseStack posestack1 = new PoseStack();
         posestack1.translate(0.0F, 0.0F, 1000.0F);
         posestack1.scale(scale, scale, scale);
-        Quaternion quaternion = Vector3f.ZP.rotationDegrees(180.0F);
-        Quaternion quaternion1 = Vector3f.XP.rotationDegrees(f1 * 20.0F);
+        Quaternionf quaternion = Axis.ZP.rotationDegrees(180.0F);
+        Quaternionf quaternion1 = Axis.XP.rotationDegrees(f1 * 20.0F);
         quaternion.mul(quaternion1);
         posestack1.mulPose(quaternion);
         float yBodyRot = pLivingEntity.yBodyRot;
@@ -158,7 +161,7 @@ public class EntityRenderFrame extends AbstractGuiFrame implements IGuiFrame {
         pLivingEntity.yHeadRotO = pLivingEntity.getYRot();
         Lighting.setupForEntityInInventory();
         EntityRenderDispatcher entityrenderdispatcher = Minecraft.getInstance().getEntityRenderDispatcher();
-        quaternion1.conj();
+        quaternion1.conjugate();
         entityrenderdispatcher.overrideCameraOrientation(quaternion1);
         entityrenderdispatcher.setRenderShadow(false);
         MultiBufferSource.BufferSource multibuffersource$buffersource = Minecraft.getInstance().renderBuffers().bufferSource();

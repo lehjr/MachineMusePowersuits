@@ -9,7 +9,7 @@ import lehjr.numina.client.render.IconUtils;
 import lehjr.numina.common.string.StringUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiComponent;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
@@ -52,10 +52,10 @@ public class VanillaButton extends Clickable {
     }
 
     @Override
-    public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTick) {
+    public void render(GuiGraphics gfx, int mouseX, int mouseY, float partialTick) {
         if (isVisible()) {
-            renderButton(matrixStack, mouseX, mouseY, partialTick);
-            renderBg(matrixStack, mouseX, mouseY, partialTick);
+            renderButton(gfx, mouseX, mouseY, partialTick);
+            renderBg(gfx, mouseX, mouseY, partialTick);
         }
     }
 
@@ -88,7 +88,7 @@ public class VanillaButton extends Clickable {
         return i;
     }
 
-    public void renderButton(PoseStack matrixStack, int mouseX, int mouseY, float partialTicks) {
+    public void renderButton(GuiGraphics gfx, int mouseX, int mouseY, float partialTicks) {
         Minecraft minecraft = Minecraft.getInstance();
         Font fontrenderer = minecraft.font;
 
@@ -101,14 +101,14 @@ public class VanillaButton extends Clickable {
         RenderSystem.enableDepthTest();
 
         // FIXME: still needed or able to use screen version?
-        IconUtils.INSTANCE.blit(matrixStack, this.left(), this.top(), 0, 46 + i * 20, this.width() / 2, this.height());
-        IconUtils.INSTANCE.blit(matrixStack, this.left() + this.width() / 2, this.top(), 200 - this.width() / 2, 46 + i * 20, this.width() / 2, this.height());
-        this.renderBg(matrixStack, mouseX, mouseY, partialTicks);
+        IconUtils.INSTANCE.blit(gfx.pose(), this.left(), this.top(), 0, 46 + i * 20, this.width() / 2, this.height());
+        IconUtils.INSTANCE.blit(gfx.pose(), this.left() + this.width() / 2, this.top(), 200 - this.width() / 2, 46 + i * 20, this.width() / 2, this.height());
+        this.renderBg(gfx, mouseX, mouseY, partialTicks);
         int j = getFGColor();
-        GuiComponent.drawCenteredString(matrixStack, fontrenderer, this.getLabel(), (int) (this.left() + this.width() / 2), (int) (this.top() + (this.height() - 8) / 2), j | Mth.ceil(this.alpha * 255.0F) << 24);
+        gfx.drawCenteredString(fontrenderer, this.getLabel(), (int) (this.left() + this.width() / 2), (int) (this.top() + (this.height() - 8) / 2), j | Mth.ceil(this.alpha * 255.0F) << 24);
     }
 
-    protected void renderBg(PoseStack pPoseStack, int pMouseX, int pMouseY, float frameTime) {
+    protected void renderBg(GuiGraphics gfx, int pMouseX, int pMouseY, float frameTime) {
     }
 
     public void setLabel(Component label) {

@@ -28,6 +28,7 @@ package lehjr.numina.client.gui.clickable;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import lehjr.numina.client.gui.geometry.*;
+import net.minecraft.client.gui.GuiGraphics;
 
 /**
  * Defines a generic clickable itemStack for a MuseGui.
@@ -92,12 +93,11 @@ public abstract class Clickable<T extends IRect> implements IClickable, IRectWra
 //    }
 
     @Override
-    public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTick) {
+    public void render(GuiGraphics gfx, int mouseX, int mouseY, float partialTick) {
         if (rect instanceof IDrawableRect) {
-            ((IDrawableRect) rect).render(matrixStack, mouseX, mouseY, partialTick);
+            ((IDrawableRect) rect).render(gfx, mouseX, mouseY, partialTick);
         }
     }
-
 
     @Override
     public boolean isEnabled() {

@@ -30,7 +30,12 @@ import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.platform.Lighting;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
-import com.mojang.math.Matrix4f;
+import com.mojang.math.MatrixUtil;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.world.item.ItemDisplayContext;
+import net.minecraftforge.client.ForgeHooksClient;
+import net.minecraftforge.client.extensions.common.IClientItemExtensions;
+import org.joml.Matrix4f;
 import lehjr.numina.client.gui.geometry.SwirlyMuseCircle;
 import lehjr.numina.common.math.Color;
 import lehjr.numina.common.string.StringUtils;
@@ -39,7 +44,6 @@ import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.ItemModelShaper;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.block.model.BakedQuad;
-import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.texture.TextureAtlas;
@@ -109,10 +113,10 @@ public class NuminaRenderer {
 //        }
 //    }
 //
-    public static void drawItemAt(PoseStack matrixStack, double x, double y, @Nonnull ItemStack itemStack, Color color) {
+    public static void drawItemAt(GuiGraphics gfx, double x, double y, @Nonnull ItemStack itemStack, Color color) {
         if (!itemStack.isEmpty()) {
-            Minecraft.getInstance().getItemRenderer().renderAndDecorateItem(itemStack, (int) x, (int) y);
-            Minecraft.getInstance().getItemRenderer().renderGuiItemDecorations(StringUtils.getFontRenderer(), itemStack, (int) x, (int) y, null);
+            gfx.renderItem(itemStack, (int) x, (int) y);
+            gfx.renderItemDecorations(StringUtils.getFontRenderer(), itemStack, (int) x, (int) y, null);
         }
     }
 
@@ -120,10 +124,10 @@ public class NuminaRenderer {
         return getItemRenderer().getModel(itemStack, null, null, 0);
     }
 
-    public static void drawModuleAt(PoseStack poseStack, double x, double y, @Nonnull ItemStack itemStack, boolean active) {
+    public static void drawModuleAt(GuiGraphics gfx, double x, double y, @Nonnull ItemStack itemStack, boolean active) {
         if (!itemStack.isEmpty()) {
             BakedModel model = getModel(itemStack);
-            renderGuiItem(itemStack, poseStack, (float)x, (float) y, model, active? Color.WHITE : Color.DARK_GRAY.withAlpha(0.5F));
+            renderGuiItem(itemStack, gfx.pose(), (float)x, (float) y, model, active? Color.WHITE : Color.DARK_GRAY.withAlpha(0.5F));
         }
     }
 
@@ -135,7 +139,7 @@ public class NuminaRenderer {
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 //        PoseStack poseStack = RenderSystem.getModelViewStack();
         poseStack.pushPose();
-        poseStack.translate(posX, posY, 100.0F + getItemRenderer().blitOffset);
+        poseStack.translate(posX, posY, 100.0F + 0);
         poseStack.translate(8.0F, 8.0F, 0.0F);
         poseStack.scale(1.0F, -1.0F, 1.0F);
         poseStack.scale(16.0F, 16.0F, 16.0F);
@@ -147,7 +151,7 @@ public class NuminaRenderer {
             Lighting.setupForFlatItems();
         }
 
-        render(itemStack, ItemTransforms.TransformType.GUI, false, poseStack, bufferSource, 15728880, OverlayTexture.NO_OVERLAY, bakedModel, color);
+        render(itemStack, ItemDisplayContext.GUI, false, poseStack, bufferSource, 15728880, OverlayTexture.NO_OVERLAY, bakedModel, color);
         bufferSource.endBatch();
         RenderSystem.enableDepthTest();
         if (flag) {
@@ -158,10 +162,10 @@ public class NuminaRenderer {
         RenderSystem.applyModelViewMatrix();
     }
 
-    public static void render(ItemStack itemStack, ItemTransforms.TransformType transformType, boolean leftHand, PoseStack poseStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay, BakedModel modelIn, Color color) {
+    public static void render(ItemStack itemStack, ItemDisplayContext transformType, boolean leftHand, PoseStack poseStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay, BakedModel modelIn, Color color) {
         if (!itemStack.isEmpty()) {
             poseStack.pushPose();
-            boolean flag = transformType == ItemTransforms.TransformType.GUI || transformType == ItemTransforms.TransformType.GROUND || transformType == ItemTransforms.TransformType.FIXED;
+            boolean flag = transformType == ItemDisplayContext .GUI || transformType == ItemDisplayContext.GROUND || transformType == ItemDisplayContext.FIXED;
 //            if (flag) {
 //                if (itemStack.is(Items.TRIDENT)) {
 //                    modelIn = getItemModelShaper().getModelManager().getModel(getItemRenderer().TRIDENT_MODEL);
@@ -170,11 +174,11 @@ public class NuminaRenderer {
 //                }
 //            }
 
-            modelIn = net.minecraftforge.client.ForgeHooksClient.handleCameraTransforms(poseStack, modelIn, transformType, leftHand);
+            modelIn = ForgeHooksClient.handleCameraTransforms(poseStack, modelIn, transformType, leftHand);
             poseStack.translate(-0.5F, -0.5F, -0.5F);
             if (!modelIn.isCustomRenderer() && (!itemStack.is(Items.TRIDENT) || flag)) {
                 boolean flag1;
-                if (transformType != ItemTransforms.TransformType.GUI && !transformType.firstPerson() && itemStack.getItem() instanceof BlockItem) {
+                if (transformType != ItemDisplayContext.GUI && !transformType.firstPerson() && itemStack.getItem() instanceof BlockItem) {
                     Block block = ((BlockItem)itemStack.getItem()).getBlock();
                     flag1 = !(block instanceof HalfTransparentBlock) && !(block instanceof StainedGlassPaneBlock);
                 } else {
@@ -186,10 +190,10 @@ public class NuminaRenderer {
                         if (itemStack.is(ItemTags.COMPASSES) && itemStack.hasFoil()) {
                             poseStack.pushPose();
                             PoseStack.Pose posestack$pose = poseStack.last();
-                            if (transformType == ItemTransforms.TransformType.GUI) {
-                                posestack$pose.pose().multiply(0.5F);
+                            if (transformType == ItemDisplayContext.GUI) {
+                                MatrixUtil.mulComponentWise(posestack$pose.pose(), 0.5F);
                             } else if (transformType.firstPerson()) {
-                                posestack$pose.pose().multiply(0.75F);
+                                MatrixUtil.mulComponentWise(posestack$pose.pose(), 0.75F);
                             }
 
                             if (flag1) {
@@ -209,7 +213,7 @@ public class NuminaRenderer {
                     }
                 }
             } else {
-                net.minecraftforge.client.extensions.common.IClientItemExtensions.of(itemStack).getCustomRenderer().renderByItem(itemStack, transformType, poseStack, buffer, combinedLight, combinedOverlay);
+                IClientItemExtensions.of(itemStack).getCustomRenderer().renderByItem(itemStack, transformType, poseStack, buffer, combinedLight, combinedOverlay);
             }
 
             poseStack.popPose();
@@ -241,10 +245,10 @@ public class NuminaRenderer {
     }
 
 //
-//    public static void renderItem(ItemStack itemStack, ItemTransforms.TransformType transformType, boolean leftHand, PoseStack matrixStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay, BakedModel model, Color color) {
+//    public static void renderItem(ItemStack itemStack, ItemDisplayContext transformType, boolean leftHand, PoseStack matrixStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay, BakedModel model, Color color) {
 //        if (!itemStack.isEmpty()) {
 //            matrixStack.pushPose();
-//            boolean flag = transformType == ItemTransforms.TransformType.GUI || transformType == ItemTransforms.TransformType.GROUND || transformType == ItemTransforms.TransformType.FIXED;
+//            boolean flag = transformType == ItemDisplayContext.GUI || transformType == ItemDisplayContext.GROUND || transformType == ItemDisplayContext.FIXED;
 //            if (flag) {
 //                if (itemStack.is(Items.TRIDENT)) {
 //                    model = getItemModelShaper().getModelManager().getModel(new ModelResourceLocation("minecraft:trident#inventory"));
@@ -257,7 +261,7 @@ public class NuminaRenderer {
 //            matrixStack.translate(-0.5D, -0.5D, -0.5D);
 //            if (!model.isCustomRenderer() && (!itemStack.is(Items.TRIDENT) || flag)) {
 //                boolean flag1;
-//                if (transformType != ItemTransforms.TransformType.GUI && !transformType.firstPerson() && itemStack.getItem() instanceof BlockItem) {
+//                if (transformType != ItemDisplayContext.GUI && !transformType.firstPerson() && itemStack.getItem() instanceof BlockItem) {
 //                    Block block = ((BlockItem)itemStack.getItem()).getBlock();
 //                    flag1 = !(block instanceof HalfTransparentBlock) && !(block instanceof StainedGlassPaneBlock);
 //                } else {
@@ -270,7 +274,7 @@ public class NuminaRenderer {
 //                    if (itemStack.is(Items.COMPASS) && itemStack.hasFoil()) {
 //                        matrixStack.pushPose();
 //                        PoseStack.Pose posestack$pose = matrixStack.last();
-//                        if (transformType == ItemTransforms.TransformType.GUI) {
+//                        if (transformType == ItemDisplayContext.GUI) {
 //                            posestack$pose.pose().m_27630_(0.5F);
 //                        } else if (transformType.firstPerson()) {
 //                            posestack$pose.pose().m_27630_(0.75F);
@@ -323,6 +327,9 @@ public class NuminaRenderer {
         drawLightningTextured(x1, y1, z1, x2, y2, z2, color);
     }
 
+    public static void drawMPDLightning(GuiGraphics gfx, float x1, float y1, float z1, float x2, float y2, float z2, Color color, double displacement, double detail) {
+        drawMPDLightning(gfx.pose(), x1, y1, z1, x2, y2, z2, color, displacement, detail);
+    }
 
     public static void drawMPDLightning(PoseStack poseStack, float x1, float y1, float z1, float x2, float y2, float z2, Color color, double displacement,
                                         double detail) {
@@ -344,7 +351,7 @@ public class NuminaRenderer {
                                         double displacement,
                                         double detail) {
         if (displacement < detail) {
-            RenderSystem.disableTexture();
+//            RenderSystem.disableTexture();
             RenderSystem.disableDepthTest();
             RenderSystem.depthMask(false);
 
@@ -366,7 +373,7 @@ public class NuminaRenderer {
             tesselator.end();
 
             RenderSystem.enableDepthTest();
-            RenderSystem.enableTexture();
+//            RenderSystem.enableTexture();
             RenderSystem.depthMask(true);
         } else {
             float mid_x = (x1 + x2)  * 0.5F;

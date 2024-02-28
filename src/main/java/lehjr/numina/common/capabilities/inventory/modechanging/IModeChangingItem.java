@@ -26,7 +26,6 @@
 
 package lehjr.numina.common.capabilities.inventory.modechanging;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import lehjr.numina.client.render.NuminaRenderer;
 import lehjr.numina.common.capabilities.NuminaCapabilities;
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
@@ -40,6 +39,7 @@ import lehjr.numina.common.energy.ElectricItemUtils;
 import lehjr.numina.common.item.ItemUtils;
 import lehjr.numina.common.math.Color;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.BlockPos;
@@ -78,7 +78,7 @@ public interface IModeChangingItem extends IModularItem {
     BakedModel getInventoryModel();
 
     @OnlyIn(Dist.CLIENT)
-    default void drawModeChangeIcon(LocalPlayer player, int hotbarIndex, ForgeGui gui, Minecraft mc, PoseStack poseStack, float partialTick, int screenWidth, int screenHeight) {
+    default void drawModeChangeIcon(LocalPlayer player, int hotbarIndex, ForgeGui gui, Minecraft mc, GuiGraphics gfx, float partialTick, int screenWidth, int screenHeight) {
         ItemStack module = getActiveModule();
         if (!module.isEmpty()) {
             double currX;
@@ -95,15 +95,15 @@ public interface IModeChangingItem extends IModularItem {
             currY = baroffset - 18;
             Color.WHITE.setShaderColor();
             if (module.getCapability(NuminaCapabilities.POWER_MODULE).map(pm -> pm.isModuleOnline()).orElse(false)) {
-                mc.getItemRenderer().renderGuiItem(module.getCapability(NuminaCapabilities.CHAMELEON).map(iChameleon -> iChameleon.getStackToRender()).orElse(module), (int) currX, (int) currY);
+                gfx.renderItem(module.getCapability(NuminaCapabilities.CHAMELEON).map(iChameleon -> iChameleon.getStackToRender()).orElse(module), (int) currX, (int) currY);
             } else {
-                NuminaRenderer.drawModuleAt(poseStack, currX, currY, module.getCapability(NuminaCapabilities.CHAMELEON).map(iChameleon -> iChameleon.getStackToRender()).orElse(module), false);
+                NuminaRenderer.drawModuleAt(gfx, currX, currY, module.getCapability(NuminaCapabilities.CHAMELEON).map(iChameleon -> iChameleon.getStackToRender()).orElse(module), false);
             }
         }
     }
 
     @OnlyIn(Dist.CLIENT)
-    default void drawModeChangingModularItemIcon(LocalPlayer player, int hotbarIndex, ForgeGui gui, Minecraft mc, PoseStack poseStack, float partialTick, int screenWidth, int screenHeight) {
+    default void drawModeChangingModularItemIcon(LocalPlayer player, int hotbarIndex, ForgeGui gui, Minecraft mc, GuiGraphics gfx, float partialTick, int screenWidth, int screenHeight) {
         ItemStack modularItem = getModularItemStack();
         if (!modularItem.isEmpty()) {
             double currX;
@@ -119,7 +119,7 @@ public interface IModeChangingItem extends IModularItem {
             currX = screenWidth / 2.0 - 89.0 + 20.0 * hotbarIndex;
             currY = baroffset - 18;
             Color.WHITE.setShaderColor();
-            mc.getItemRenderer().renderGuiItem(modularItem, (int) currX, (int) currY);
+            gfx.renderItem(modularItem, (int) currX, (int) currY);
         }
     }
 
@@ -196,7 +196,7 @@ public interface IModeChangingItem extends IModularItem {
     }
 
     default boolean canContinueUsing(@Nonnull ItemStack itemStack) {
-        return itemStack.sameItem(getModularItemStack()) || itemStack.sameItem(getActiveExternalModule());
+        return ItemStack.isSameItemSameTags(itemStack, getModularItemStack()) || ItemStack.isSameItemSameTags(itemStack, getActiveExternalModule());
     }
 
     default boolean onUseTick(Level level, LivingEntity entity, int ticksRemaining) {

@@ -29,7 +29,7 @@ public abstract class EnchantmentModule extends PlayerTickModule implements IEnc
 
     @Override
     public void onPlayerTickActive(Player player, @NotNull ItemStack item) {
-        if (player.level.isClientSide()) {
+        if (player.level().isClientSide()) {
             return;
         }
 

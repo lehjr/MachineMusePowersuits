@@ -10,8 +10,6 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.mojang.math.Transformation;
-import com.mojang.math.Vector3f;
-import com.mojang.math.Vector4f;
 import joptsimple.internal.Strings;
 import lehjr.numina.client.model.obj.OBJBakedCompositeModel;
 import lehjr.numina.client.model.obj.OBJBakedPart;
@@ -39,6 +37,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.joml.Vector3f;
+import org.joml.Vector4f;
 
 import java.io.IOException;
 import java.util.*;
@@ -306,7 +306,7 @@ public class NuminaObjModel extends SimpleUnbakedGeometry<NuminaObjModel> {
     }
 
     @Override
-    public BakedModel bake(IGeometryBakingContext context, ModelBakery bakery, Function<Material, TextureAtlasSprite> spriteGetter, ModelState modelState, ItemOverrides overrides, ResourceLocation modelLocation) {
+    public BakedModel bake(IGeometryBakingContext context, ModelBaker baker, Function<Material, TextureAtlasSprite> spriteGetter, ModelState modelState, ItemOverrides overrides, ResourceLocation modelLocation) {
         TextureAtlasSprite particle = spriteGetter.apply(context.getMaterial("particle"));
         var renderTypeHint = context.getRenderTypeHint();
         var renderTypes = renderTypeHint != null ? context.getRenderType(renderTypeHint) : RenderTypeGroup.EMPTY;
@@ -315,7 +315,7 @@ public class NuminaObjModel extends SimpleUnbakedGeometry<NuminaObjModel> {
         parts.values().stream().forEach(part -> {
             IModelBuilder<?> builder = IModelBuilder.of(context.useAmbientOcclusion(), context.useBlockLight(), context.isGui3d(), context.getTransforms(), overrides, particle, renderTypes);
 
-            part.addQuads(context, builder, bakery, spriteGetter, modelState, modelLocation);
+            part.addQuads(context, builder, baker, spriteGetter, modelState, modelLocation);
             bakedParts.put(part.name(), new OBJBakedPart(builder.build()));
         });
 
@@ -330,7 +330,7 @@ public class NuminaObjModel extends SimpleUnbakedGeometry<NuminaObjModel> {
     }
 
     @Override
-    protected void addQuads(IGeometryBakingContext owner, IModelBuilder<?> modelBuilder, ModelBakery baker, Function<Material, TextureAtlasSprite> spriteGetter, ModelState modelTransform, ResourceLocation modelLocation) {
+    protected void addQuads(IGeometryBakingContext owner, IModelBuilder<?> modelBuilder, ModelBaker baker, Function<Material, TextureAtlasSprite> spriteGetter, ModelState modelTransform, ResourceLocation modelLocation) {
         for (var entry : deprecationWarnings.entrySet())
             LOGGER.warn("Model \"" + modelLocation + "\" is using the deprecated \"" + entry.getKey() + "\" field in its OBJ model instead of \"" + entry.getValue() + "\". This field will be removed in 1.20.");
 
@@ -338,13 +338,13 @@ public class NuminaObjModel extends SimpleUnbakedGeometry<NuminaObjModel> {
                 .forEach(part -> part.addQuads(owner, modelBuilder, baker, spriteGetter, modelTransform, modelLocation));
     }
 
-    @Override
-    public Collection<Material> getMaterials(IGeometryBakingContext context, Function<ResourceLocation, UnbakedModel> modelGetter, Set<com.mojang.datafixers.util.Pair<String, String>> missingTextureErrors) {
-        Set<Material> combined = Sets.newHashSet();
-        for (ModelGroup part : parts.values())
-            combined.addAll(part.getTextures(context, modelGetter, missingTextureErrors));
-        return combined;
-    }
+//    @Override
+//    public Collection<Material> getMaterials(IGeometryBakingContext context, Function<ResourceLocation, UnbakedModel> modelGetter, Set<com.mojang.datafixers.util.Pair<String, String>> missingTextureErrors) {
+//        Set<Material> combined = Sets.newHashSet();
+//        for (ModelGroup part : parts.values())
+//            combined.addAll(part.getTextures(context, modelGetter, missingTextureErrors));
+//        return combined;
+//    }
 
     public Set<String> getRootComponentNames() {
         return rootComponentNames;
@@ -370,9 +370,9 @@ public class NuminaObjModel extends SimpleUnbakedGeometry<NuminaObjModel> {
             Vector3f a = positions.get(indices[0][0]);
             Vector3f ab = positions.get(indices[1][0]);
             Vector3f ac = positions.get(indices[2][0]);
-            Vector3f abs = ab.copy();
+            Vector3f abs = new Vector3f(ab);
             abs.sub(a);
-            Vector3f acs = ac.copy();
+            Vector3f acs = new Vector3f(ac);
             acs.sub(a);
             abs.cross(acs);
             abs.normalize();
@@ -402,13 +402,13 @@ public class NuminaObjModel extends SimpleUnbakedGeometry<NuminaObjModel> {
 
         for (int i = 0; i < 4; i++) {
             int[] index = indices[Math.min(i, indices.length - 1)];
-            Vector4f position = new Vector4f(positions.get(index[0]));
+            Vector4f position = new Vector4f(positions.get(index[0]), 1);
             Vec2 texCoord = index.length >= 2 && texCoords.size() > 0 ? texCoords.get(index[1]) : DEFAULT_COORDS[i];
             Vector3f norm0 = !needsNormalRecalculation && index.length >= 3 && normals.size() > 0 ? normals.get(index[2]) : faceNormal;
             Vector3f normal = norm0;
             Vector4f color = index.length >= 4 && colors.size() > 0 ? colors.get(index[3]) : COLOR_WHITE;
             if (hasTransform) {
-                normal = norm0.copy();
+                normal = new Vector3f(norm0);
                 transformation.transformPosition(position);
                 transformation.transformNormal(normal);
             }
@@ -508,7 +508,7 @@ public class NuminaObjModel extends SimpleUnbakedGeometry<NuminaObjModel> {
             return name;
         }
 
-        public void addQuads(IGeometryBakingContext owner, IModelBuilder<?> modelBuilder, ModelBakery baker, Function<Material, TextureAtlasSprite> spriteGetter, ModelState modelTransform, ResourceLocation modelLocation) {
+        public void addQuads(IGeometryBakingContext owner, IModelBuilder<?> modelBuilder, ModelBaker baker, Function<Material, TextureAtlasSprite> spriteGetter, ModelState modelTransform, ResourceLocation modelLocation) {
             for (ModelMesh mesh : meshes) {
                 mesh.addQuads(owner, modelBuilder, spriteGetter, modelTransform);
             }
@@ -541,7 +541,7 @@ public class NuminaObjModel extends SimpleUnbakedGeometry<NuminaObjModel> {
         }
 
         @Override
-        public void addQuads(IGeometryBakingContext owner, IModelBuilder<?> modelBuilder, ModelBakery baker, Function<Material, TextureAtlasSprite> spriteGetter, ModelState modelTransform, ResourceLocation modelLocation) {
+        public void addQuads(IGeometryBakingContext owner, IModelBuilder<?> modelBuilder, ModelBaker baker, Function<Material, TextureAtlasSprite> spriteGetter, ModelState modelTransform, ResourceLocation modelLocation) {
             super.addQuads(owner, modelBuilder, baker, spriteGetter, modelTransform, modelLocation);
 
             parts.values().stream().filter(part -> owner.isComponentVisible(part.name(), true))

@@ -58,7 +58,7 @@ public class PlayerMovementInputWrapper {
     }
 
     public static PlayerMovementInput get(Player player) {
-        if (player.level.isClientSide) {
+        if (player.level().isClientSide) {
             if (player instanceof RemotePlayer) { // multiplayer not dedicated server
                 return fromServer(player);
             }

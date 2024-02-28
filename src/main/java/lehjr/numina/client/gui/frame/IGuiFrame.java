@@ -26,9 +26,9 @@
 
 package lehjr.numina.client.gui.frame;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import lehjr.numina.client.gui.geometry.IDrawableRect;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 
 import javax.annotation.Nullable;
@@ -77,12 +77,12 @@ public interface IGuiFrame extends IDrawableRect {
     /**
      * Render elements of this frame. Ordering is important.
      *
-     * @param matrixStack
+     * @param gfx
      * @param mouseX
      * @param mouseY
      * @param partialTick
      */
-    default void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTick) {
+    default void render(GuiGraphics gfx, int mouseX, int mouseY, float partialTick) {
     }
 
     /**
@@ -129,7 +129,7 @@ public interface IGuiFrame extends IDrawableRect {
         hide();
     }
 
-    default void renderLabels(PoseStack matrixStack, int mouseX, int mouseY) {
+    default void renderLabels(GuiGraphics gfx, int mouseX, int mouseY) {
 
     }
 

@@ -1,6 +1,5 @@
 package lehjr.powersuits.client.gui.keymap;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import lehjr.numina.client.gui.clickable.Checkbox;
 import lehjr.numina.client.gui.clickable.button.VanillaButton;
 import lehjr.numina.client.gui.clickable.slider.VanillaFrameScrollBar;
@@ -14,6 +13,7 @@ import lehjr.powersuits.client.control.MPSKeyMapping;
 import lehjr.powersuits.client.gui.overlay.MPSOverlay;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -66,22 +66,22 @@ public class KeymapFrame extends ScrollableFrame {
     }
 
     @Override
-    public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTick) {
-        super.render(matrixStack, mouseX, mouseY, partialTick);
+    public void render(GuiGraphics gfx, int mouseX, int mouseY, float partialTick) {
+        super.render(gfx, mouseX, mouseY, partialTick);
         if (this.isEnabled() && this.isVisible()) {
-            super.preRender(matrixStack, mouseX, mouseY, partialTick);
-            matrixStack.pushPose();
-            matrixStack.translate(0.0, -this.currentScrollPixels, 0.0);
+            super.preRender(gfx, mouseX, mouseY, partialTick);
+            gfx.pose().pushPose();
+            gfx.pose().translate(0.0, -this.currentScrollPixels, 0.0);
 
             for (KeyBindSubFrame subframe : keyBindSubFrames) {
-                subframe.render(matrixStack, mouseX, (int) (currentScrollPixels + mouseY), partialTick);
+                subframe.render(gfx, mouseX, (int) (currentScrollPixels + mouseY), partialTick);
             }
-            matrixStack.popPose();
-            super.postRender(mouseX, mouseY, partialTick);
-            scrollBar.render(matrixStack, mouseX, mouseY, partialTick);
+            gfx.pose().popPose();
+            super.postRender(gfx, mouseX, mouseY, partialTick);
+            scrollBar.render(gfx, mouseX, mouseY, partialTick);
         } else {
-            super.preRender(matrixStack, mouseX, mouseY, partialTick);
-            super.postRender(mouseX, mouseY, partialTick);
+            super.preRender(gfx, mouseX, mouseY, partialTick);
+            super.postRender(gfx, mouseX, mouseY, partialTick);
         }
     }
 
@@ -163,16 +163,16 @@ public class KeymapFrame extends ScrollableFrame {
         }
 
         @Override
-        public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTick) {
-            super.render(matrixStack, mouseX, mouseY, partialTick);
-            NuminaRenderer.drawModuleAt(matrixStack, left() + 2, top() + 3, module, true);
-            checkbox.render(matrixStack, mouseX, mouseY, partialTick);
+        public void render(GuiGraphics gfx, int mouseX, int mouseY, float partialTick) {
+            super.render(gfx, mouseX, mouseY, partialTick);
+            NuminaRenderer.drawModuleAt(gfx, left() + 2, top() + 3, module, true);
+            checkbox.render(gfx, mouseX, mouseY, partialTick);
             if (keybindingToRemap != null && keybindingToRemap == kb) {
                 button.setLabel((Component.literal("> ")).append(kb.getKey().getDisplayName().copy().withStyle(ChatFormatting.YELLOW)).append(" <").withStyle(ChatFormatting.YELLOW));
             } else {
                 button.setLabel(kb.getKey().getDisplayName().copy().withStyle( /* keyCodeModifierConflict ? */ ChatFormatting.WHITE /*: ChatFormatting.RED*/));
             }
-            button.render(matrixStack, mouseX, mouseY, partialTick);
+            button.render(gfx, mouseX, mouseY, partialTick);
         }
 
         @Override

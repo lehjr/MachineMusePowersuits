@@ -1,6 +1,5 @@
 package lehjr.numina.client.gui;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import lehjr.numina.client.gui.frame.IGuiFrame;
 import lehjr.numina.client.gui.geometry.IRect;
 import lehjr.numina.client.gui.geometry.MusePoint2D;
@@ -8,6 +7,7 @@ import lehjr.numina.client.gui.slot.IHideableSlot;
 import lehjr.numina.client.gui.slot.IIConProvider;
 import lehjr.numina.common.math.Color;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
@@ -16,6 +16,7 @@ import net.minecraft.world.inventory.Slot;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * TODO: inventory label
@@ -45,17 +46,16 @@ public class ExtendedContainerScreen<T extends AbstractContainerMenu> extends Ab
         return () -> getUlOffset();
     }
 
-    @Override
-    public void renderSlot(PoseStack matrixStack, Slot slot) {
+    public void renderSlot(GuiGraphics gfx, Slot slot) {
         if (slot!= null && slot instanceof IHideableSlot) {
             if (slot.isActive()) {
-                super.renderSlot(matrixStack, slot);
+                super.renderSlot(gfx, slot);
             }
 //            else {
 //                NuminaLogger.logDebug("index: "+ menu.slots.indexOf(slot));
 //            }
         } else {
-            super.renderSlot(matrixStack, slot);
+            super.renderSlot(gfx, slot);
 
 
 //            NuminaLogger.logDebug("index: "+ menu.slots.indexOf(slot) +", class: " + slot.getClass());
@@ -63,12 +63,10 @@ public class ExtendedContainerScreen<T extends AbstractContainerMenu> extends Ab
 
         if (slot instanceof IIConProvider && slot.getItem().isEmpty() && slot.isActive() ) {
 //            NuminaLogger.logDebug("rendering");
-
-            this.setBlitOffset(100);
-            this.itemRenderer.blitOffset = 100.0F;
-            ((IIConProvider) slot).drawIconAt(matrixStack, slot.x, slot.y, Color.WHITE);
-            this.itemRenderer.blitOffset = 0.0F;
-            this.setBlitOffset(0);
+            gfx.pose().pushPose();
+            gfx.pose().translate(0,0,100);
+            ((IIConProvider) slot).drawIconAt(gfx.pose(), slot.x, slot.y, Color.WHITE);
+            gfx.pose().popPose();
         }
     }
 
@@ -79,6 +77,8 @@ public class ExtendedContainerScreen<T extends AbstractContainerMenu> extends Ab
 //        minecraft.keyboardHandler.m_90926_(true);
         creationTime = System.currentTimeMillis();
     }
+
+
 
     /**
      * Adds a frame to this gui's draw list.
@@ -91,33 +91,33 @@ public class ExtendedContainerScreen<T extends AbstractContainerMenu> extends Ab
 
     /**
      * inherited from AbstractContainerMenuScreen..
-     * @param matrixStack
-     * @param frameTime
+     * @param gfx
+     * @param partialTick
      * @param mouseX
      * @param mouseY
      */
     @Override
-    public void renderBg(PoseStack matrixStack, float frameTime, int mouseX, int mouseY) {
+    protected void renderBg(GuiGraphics gfx, float partialTick, int mouseX, int mouseY) {
         update(mouseX, mouseY);
-        renderFrames(matrixStack, mouseX, mouseY, frameTime);
+        renderFrames(gfx, mouseX, mouseY, partialTick);
     }
 
     public void update(double x, double y) {
         frames.forEach(frame->frame.update(x, y));
     }
 
-    public void renderFrames(PoseStack matrixStack, int mouseX, int mouseY, float partialTicks) {
-        frames.forEach(frame->frame.render(matrixStack, mouseX, mouseY, partialTicks));
+    public void renderFrames(GuiGraphics gfx, int mouseX, int mouseY, float partialTicks) {
+        frames.forEach(frame->frame.render(gfx, mouseX, mouseY, partialTicks));
     }
 
     @Override
-    public void renderLabels(PoseStack matrixStack, int mouseX, int mouseY) {
-        super.renderLabels(matrixStack, mouseX, mouseY);
-        renderFrameLabels(matrixStack, mouseX, mouseY);
+    public void renderLabels(GuiGraphics gfx, int mouseX, int mouseY) {
+        super.renderLabels(gfx, mouseX, mouseY);
+        renderFrameLabels(gfx, mouseX, mouseY);
     }
 
-    public void renderFrameLabels(PoseStack matrixStack, int mouseX, int mouseY) {
-        frames.forEach(frame -> frame.renderLabels(matrixStack, mouseX, mouseY));
+    public void renderFrameLabels(GuiGraphics gfx, int mouseX, int mouseY) {
+        frames.forEach(frame -> frame.renderLabels(gfx, mouseX, mouseY));
     }
 
     @Override
@@ -158,10 +158,10 @@ public class ExtendedContainerScreen<T extends AbstractContainerMenu> extends Ab
     }
 
     @Override
-    public void renderTooltip(PoseStack matrixStack, int mouseX, int mouseY) {
+    public void renderTooltip(GuiGraphics gfx, int mouseX, int mouseY) {
         List<Component> tooltip = getToolTip(mouseX, mouseY);
         if (tooltip != null) {
-            renderComponentTooltip(matrixStack,tooltip, mouseX,mouseY);
+            gfx.renderTooltip(Minecraft.getInstance().font, tooltip.stream().map(Component::getVisualOrderText).collect(Collectors.toList()), mouseX, mouseY);
         }
     }
 

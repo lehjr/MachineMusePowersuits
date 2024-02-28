@@ -1,10 +1,10 @@
 package lehjr.numina.client.gui.clickable.slider;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 import lehjr.numina.client.gui.geometry.MusePoint2D;
 import lehjr.numina.client.render.IconUtils;
 import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
@@ -42,7 +42,7 @@ public class VanillaSlider extends AbstractSlider {
 
 
     @Override
-    public void renderBg(PoseStack matrixStack, int mouseX, int mouseY, float frameTime) {
+    public void renderBg(GuiGraphics gfx, int mouseX, int mouseY, float frameTime) {
         Font fontrenderer = getMinecraft().font;
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
@@ -52,7 +52,7 @@ public class VanillaSlider extends AbstractSlider {
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
         RenderSystem.enableDepthTest();
-        IconUtils.INSTANCE.blit(matrixStack,
+        IconUtils.INSTANCE.blit(gfx.pose(),
                 this.left(), // left
                 this.top(), // top
                 0,                  // texture startx
@@ -60,7 +60,7 @@ public class VanillaSlider extends AbstractSlider {
                 (this.width() * 0.5),
                 this.height());
 
-        IconUtils.INSTANCE.blit(matrixStack,
+        IconUtils.INSTANCE.blit(gfx.pose(),
                 centerX(),
                 this.top(),
                 200 - this.width() * 0.5,
@@ -69,7 +69,7 @@ public class VanillaSlider extends AbstractSlider {
                 this.height());
 //            this.renderBg(matrixStack, mouseX, mouseY);
         int j = getFGColor();
-        getMinecraft().screen.drawCenteredString(matrixStack, fontrenderer, this.getMessage(), (int) (this.left() + this.width() / 2), (int) (this.top() + (this.height() - 8) / 2), j | Mth.ceil(255.0F) << 24);
+        gfx.drawCenteredString(fontrenderer, this.getMessage(), (int) (this.left() + this.width() / 2), (int) (this.top() + (this.height() - 8) / 2), j | Mth.ceil(255.0F) << 24);
     }
 
     Component getMessage() {
@@ -77,19 +77,19 @@ public class VanillaSlider extends AbstractSlider {
     }
 
     @Override
-    public void renderKnob(PoseStack matrixStack, int mouseX, int mouseY, float frameTime) {
+    public void renderKnob(GuiGraphics gfx, int mouseX, int mouseY, float frameTime) {
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         RenderSystem.setShaderTexture(0, AbstractWidget.WIDGETS_LOCATION);
         int i = (this.containsPoint(mouseX, mouseY) ? 2 : 1) * 20;
-        IconUtils.INSTANCE.blit(matrixStack,
+        IconUtils.INSTANCE.blit(gfx.pose(),
                 (this.left() + (this.sliderValue * (this.width() - 8))),
                 this.top(),
                 0,
                 46 + i,
                 4,
                 20);
-        IconUtils.INSTANCE.blit(matrixStack,
+        IconUtils.INSTANCE.blit(gfx.pose(),
                 (this.left() + (this.sliderValue * (this.width() - 8)) + 4),
                 this.top(),
                 196,

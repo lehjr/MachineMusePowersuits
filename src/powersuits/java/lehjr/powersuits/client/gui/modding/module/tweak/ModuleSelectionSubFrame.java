@@ -26,7 +26,6 @@
 
 package lehjr.powersuits.client.gui.modding.module.tweak;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import lehjr.numina.client.gui.clickable.ClickableModule;
 import lehjr.numina.client.gui.geometry.IDrawableRect;
 import lehjr.numina.client.gui.geometry.MusePoint2D;
@@ -36,6 +35,7 @@ import lehjr.numina.client.sound.SoundDictionary;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.math.Color;
 import lehjr.numina.common.string.StringUtils;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 
@@ -67,15 +67,15 @@ public class ModuleSelectionSubFrame {
         return clickie;
     }
 
-    public void drawPartial(PoseStack matrixStack, int min, int max, float partialTicks) {
+    public void drawPartial(GuiGraphics gfx, int min, int max, float partialTicks) {
         if (border instanceof IDrawableRect) {
-            ((IDrawableRect) border).render(matrixStack, min, max, partialTicks);
+            ((IDrawableRect) border).render(gfx, min, max, partialTicks);
         }
 
         refreshButtonPositions();
-        StringUtils.drawShadowedString(matrixStack, this.category.getTranslation().getString(), border.left(), border.top(), Color.WHITE);
+        StringUtils.drawShadowedString(gfx, this.category.getTranslation().getString(), border.left(), border.top(), Color.WHITE);
         for (ClickableModule clickie : moduleButtons) {
-            clickie.render(matrixStack, min, max, partialTicks);
+            clickie.render(gfx, min, max, partialTicks);
         }
     }
 

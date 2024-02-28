@@ -1,24 +1,30 @@
+import com.modrinth.minotaur.TaskModrinthUpload
+import com.modrinth.minotaur.dependencies.ModDependency
+import com.modrinth.minotaur.dependencies.VersionDependency
 import groovy.json.JsonOutput
 import groovy.json.JsonSlurper
+import net.darkhax.curseforgegradle.TaskPublishCurseForge
+import net.darkhax.curseforgegradle.UploadArtifact
+import net.minecraftforge.gradle.common.util.RunConfig
+import net.minecraftforge.gradle.userdev.tasks.RenameJarInPlace
 
 import java.util.function.Consumer
 
 plugins {
-    id 'org.ajoberstar.grgit.service' version '5.2.0' // groovy
-//    id 'net.darkhax.curseforgegradle' version '1.0.14' // curseforge uploader
-    id "com.matthewprenger.cursegradle" version '1.4.0' // curseforge uploader
-//    id "com.modrinth.minotaur" version "2.+" // not yet
+    id 'org.ajoberstar.grgit.service' version '5.2.0'
+    id 'net.darkhax.curseforgegradle' version '1.1.16'
+    id "com.modrinth.minotaur" version "2.+"
     id 'java'
     id 'eclipse'
     id 'idea'
-    id 'net.minecraftforge.gradle' version '[6.0,6.2)'
-    id 'org.parchmentmc.librarian.forgegradle' version '1.+' // mappings
-    id 'org.spongepowered.mixin' version '0.7.+'
+    id 'maven-publish'
+    id 'net.neoforged.gradle' version '[6.0.18,6.2)'
+    id 'org.parchmentmc.librarian.forgegradle' version '1.+'
 }
 
-wrapper {
+tasks.named('wrapper', Wrapper).configure {
     //Define wrapper values here so as to not have to always do so when updating gradlew.properties
-    gradleVersion = '8.1.1'
+    gradleVersion = '8.4'
     distributionType = Wrapper.DistributionType.ALL
 }
 
@@ -26,8 +32,6 @@ defaultTasks 'build'
 
 idea {
     module {
-        // For some reason this is necessary for IDEA 2014 workspaces to recognize assets
-        inheritOutputDirs = true
         //Exclude directories from being managed
         for (String excludeDirName in ["run", "out", "logs", "gradle"]) {
             excludeDirs.add(new File(projectDir, excludeDirName))
@@ -40,116 +44,106 @@ def basicVersion = "${mod_version}." + (System.env.BUILD_NUMBER ?: 000)
 version = "${minecraft_version}-${basicVersion}"
 archivesBaseName = "Numina"
 
-java {
-    toolchain.languageVersion = JavaLanguageVersion.of("${java_version}")
-}
-
-// IDE settings can override this, so really this is irrelevant
-//println('Java: ' + System.getProperty('java.version') + ' JVM: ' + System.getProperty('java.vm.version') + '(' + System.getProperty('java.vendor') + ') Arch: ' + System.getProperty('os.arch'))
-
-println("version: ${project.version}")
-
 ext {
     versionProperties = [
-            "mod_version": project.version,
+            "version": project.version,
             "minecraft_version": minecraft_version_range,
-            "forge_version": forge_version_range,
+            "neo_version": neo_version_range,
             "loader_version": loader_version_range,
-            "jei_version": jei_version_range
-    ]
-    //Fallback pack format is the larger of the resource and data pack formats
-    packProperties = [
-            "pack_format": Math.max(Integer.parseInt(resource_pack_format), Integer.parseInt(data_pack_format)),
-            "resource_pack_format": resource_pack_format,
-            "data_pack_format": data_pack_format
-    ]
+            "jei_version": jei_version_range]
     jsonPatterns = ["**/*.json", "**/*.mcmeta"]
+    secondaryModules = ['powersuits', 'mpsrecipecreator', 'mpswhatever']
+    extraTypes = ['datagen']
 }
 
 sourceSets {
-    // Numina
     main {
         resources {
             include '**/**'
             //Add the generated main module resources
-            srcDirs += 'src/datagen/generated/numina'
+            srcDirs += ['src/datagen/generated/numina']
             //But exclude the cache of the generated data from what gets built
             exclude '.cache'
         }
     }
-    powersuits {
-        setupSourceSet(powersuits)
-    }
-    mpsrecipecreator {
-        setupSourceSet(mpsrecipecreator)
-    }
-    mpswhatever {
-        setupSourceSet(mpswhatever)
-    }
-
-    //Data gen modules for the different modules
-    datagenmain {
-        setupDataGenSourceSet(datagenmain, main)
-    }
-    datagenpowersuits {
-        setupDataGenSourceSet(datagenpowersuits, powersuits)
-    }
-    datagenmpsrecipecreator {
-        setupDataGenSourceSet(datagenmpsrecipecreator, mpsrecipecreator)
-    }
-    datagenmpswhatever {
-        setupDataGenSourceSet(datagenmpswhatever, mpswhatever)
-    }
 }
 
-//This method sets up an additional sourceSet in src/$name and adds a reference to the corresponding
-// data gen's resource directory excluding the cache. It also adds the main Numina module
-// to the dependencies of the source set we are setting up
-def setupSourceSet(SourceSet sourceSet) {
-    String name = sourceSet.name
-    sourceSet.resources {
-        //Add the generated module resources
-        srcDirs += "src/datagen/generated/${name}"
-        //But exclude the cache of the generated data from what gets built
-        exclude '.cache'
-    }
-    sourceSet.compileClasspath += sourceSets.main.output
+configurations {
+    datagenNonMod
 }
 
-//This method sets up a source set in datagen/$name and adds the main numina module and an optional
-// base module to the dependencies of the data generators source set that we are setting up
-def setupDataGenSourceSet(SourceSet datagenSourceSet, SourceSet baseSourceSet) {
-    String name = baseSourceSet.name
-    datagenSourceSet.java.srcDirs = ["src/datagen/${name}/java"]
-    datagenSourceSet.compileClasspath += project.sourceSets.main.output
-    if (baseSourceSet == sourceSets.main) {
-        //Base source set has resources that we put files that our annotation processor generates for consumption by our datagen
-        datagenSourceSet.resources.srcDirs = ["src/datagen/${name}/resources"]
-    } else {
-        //Data gen sourceSets outside of the main one have no resources
-        datagenSourceSet.resources.srcDirs = []
-        //Only case it is null is when we are doing datagenmain so other cases also add access to the stuff
-        // in datagenmain so we can add helper classes
-        datagenSourceSet.compileClasspath += project.sourceSets.datagenmain.output
-        datagenSourceSet.compileClasspath += baseSourceSet.output
-    }
-}
+//Add all extra source sets that the main sourceSet should have
+setupExtraSourceSets(sourceSets.main)
 
 configurations {
     //Make sure all our sub source set stuff extends the proper base methods so that
     // they can see all the dependencies we have in dependencies including forge
-    extendConfigurations(implementation, datagenmainImplementation)
-    extendConfigurations(compileOnly, datagenmainCompileOnly)
-    extendConfigurations(runtimeOnly, datagenmainRuntimeOnly)
-    //Extend configurations for alternate modules. First by making the implementation, compileOnly, runtimeOnly equivalents
-    // for those modules extend the main ones, and then by making the corresponding ones for datagen for the module extend those.
-    // This way if we add a dependency/integration in a submodule instead of the main module of Numina, the datagen of the corresponding
-    // module will be able to properly access the dependency
-    for (def name : ["powersuits", "mpsrecipecreator", "mpswhatever"]) {
-        maybeCreate("datagen${name}Implementation").extendsFrom(maybeCreate("${name}Implementation").extendsFrom(implementation))
-        maybeCreate("datagen${name}CompileOnly").extendsFrom(maybeCreate("${name}CompileOnly").extendsFrom(compileOnly))
-        maybeCreate("datagen${name}RuntimeOnly").extendsFrom(maybeCreate("${name}RuntimeOnly").extendsFrom(runtimeOnly))
+    extendConfigurations(implementation)
+    extendConfigurations(compileOnly)
+    extendConfigurations(runtimeOnly)
+}
+
+//Create sourceSets and configurations for each of the additional modules in src/$name and adds a reference to
+// the corresponding data gen's resource directory excluding the cache. It also adds the main numina module to
+// the dependencies of the source set we are setting up, and sets up all extra source sets that are
+// based on the primary added source set
+for (String name : secondaryModules) {
+    def sourceSet = sourceSets.create(name)
+    sourceSet.resources {
+        //Add the generated module resources
+        srcDirs += ["src/datagen/generated/${name}"]
+        //But exclude the cache of the generated data from what gets built
+        exclude '.cache'
     }
+    sourceSet.compileClasspath += sourceSets.main.output
+    //Create all secondary sourceSets for this module
+    setupExtraSourceSets(sourceSet)
+}
+
+//Setup the UPDATE_SOURCESET property in case we are doing any remappings
+project.ext."UPDATE_SOURCESETS" = project.sourceSets.collect { it.name }.join(';')
+
+def setupExtraSourceSets(SourceSet base) {
+    //Setup and extend configurations for alternate modules. First by making the implementation, compileOnly, runtimeOnly equivalents
+    // for those modules extend the main ones
+    def baseImplementation = project.configurations.maybeCreate(base.getTaskName(null, "implementation"))
+    def baseCompileOnly = project.configurations.maybeCreate(base.getTaskName(null, "compileOnly"))
+    def baseRuntimeOnly = project.configurations.maybeCreate(base.getTaskName(null, "runtimeOnly"))
+    if (base != project.sourceSets.main) {
+        // If this is a secondary module then make the base tasks extend the builtin ones
+        baseImplementation.extendsFrom(project.configurations.getByName("implementation"))
+        baseCompileOnly.extendsFrom(project.configurations.getByName("compileOnly"))
+        baseRuntimeOnly.extendsFrom(project.configurations.getByName("runtimeOnly"))
+    }
+    //And then setup and have all the extra sourceSets have their configurations extend the ones for the base module so that they can
+    // properly access the dependency
+    for (String extraType : extraTypes) {
+        //Setup a source set in extraType/$name
+        def extraSourceSet = setupExtraSourceSet(base, extraType)
+        //And then setup the configurations for it
+        def implExtends = [baseImplementation]
+        if (extraType == 'datagen'){
+            implExtends.add(project.configurations.getByName("datagenNonMod"))
+        }
+        project.configurations.maybeCreate(extraSourceSet.getTaskName(null, "implementation")).extendsFrom(*implExtends)
+        project.configurations.maybeCreate(extraSourceSet.getTaskName(null, "compileOnly")).extendsFrom(baseCompileOnly)
+        project.configurations.maybeCreate(extraSourceSet.getTaskName(null, "runtimeOnly")).extendsFrom(baseRuntimeOnly)
+    }
+}
+
+SourceSet setupExtraSourceSet(SourceSet baseSourceSet, String extra) {
+    def name = baseSourceSet.getName()
+    def extraSourceSet = sourceSets.create(baseSourceSet.getTaskName(extra, null))
+    extraSourceSet.java.srcDirs = ["src/${extra}/${name}/java"]
+    //Resources folder for if we have anything get created by our annotation processors or in the case of game tests, for any nbt presets
+    extraSourceSet.resources.srcDirs = ["src/${extra}/${name}/resources"]
+    extraSourceSet.compileClasspath += project.sourceSets.main.output
+    if (baseSourceSet != project.sourceSets.main) {
+        //If the base sourceSet is main it already is the extra source set and has a reference to the base one from before this if statement
+        extraSourceSet.compileClasspath += getExtraSourceSet(project.sourceSets.main, extra).output
+        extraSourceSet.compileClasspath += baseSourceSet.output
+    }
+    return extraSourceSet
 }
 
 static void extendConfigurations(Configuration base, Configuration... configurations) {
@@ -158,15 +152,25 @@ static void extendConfigurations(Configuration base, Configuration... configurat
     }
 }
 
-def mainReplaceResources = createReplaceResourcesTask(sourceSets.main)
-def powersuitsReplaceResources = createReplaceResourcesTask(sourceSets.powersuits)
-def mpsrecipecreatorReplaceResources = createReplaceResourcesTask(sourceSets.mpsrecipecreator)
-def mpswhateverReplaceResources = createReplaceResourcesTask(sourceSets.mpswhatever)
+SourceSet getExtraSourceSet(String base, String name) {
+    return getExtraSourceSet(project.sourceSets.getByName(base), name)
+}
 
-def createReplaceResourcesTask(SourceSet sourceSet) {
-    String output = sourceSet.name;
-    return tasks.register("${output}ReplaceResources", Copy) {
-        it.outputs.upToDateWhen { false }
+SourceSet getExtraSourceSet(SourceSet base, String name) {
+    return project.sourceSets.getByName(base.getTaskName(name, null))
+}
+
+setupTasks(sourceSets.main)
+for (String name : secondaryModules) {
+    setupTasks(sourceSets.getByName(name))
+}
+
+def setupTasks(SourceSet sourceSet) {
+    def output = sourceSet.name
+    def compileTask = tasks.named(sourceSet.getCompileJavaTaskName(), JavaCompile)
+    def replaceResourceTask = tasks.register(sourceSet.getTaskName("replace", "resources"), Copy, {
+        setGroup("replace resources")
+        outputs.upToDateWhen { false }
         def modsToml = copySpec {
             from(sourceSet.resources) {
                 include "META-INF/mods.toml"
@@ -174,39 +178,79 @@ def createReplaceResourcesTask(SourceSet sourceSet) {
             }
         }
         //Copy it into the build dir
-        it.with modsToml
-        it.into "$buildDir/resources/${output}/"
+        with(modsToml)
+        into "$buildDir/resources/${output}/"
         //If IntelliJ's output dir exists, copy it there as well
-        if (new File("$rootDir/out/production/Numina.${output}/").exists()) {
-            //Note: This copies it into the correct place, but it still doesn't have the IntelliJ
-            // run work by default because of incorrect MOD_CLASSES getting generated.
-            // probably related to us setting inheritOutputDirs
+        def intellijPath = sourceSet == project.sourceSets.main ? "production" : output
+        if (new File("$rootDir/out/${intellijPath}/resources/").exists()) {
             copy {
-                with modsToml
-                into "$rootDir/out/production/Numina.${output}/"
+                with(modsToml)
+                into "$rootDir/out/${intellijPath}/resources/"
             }
         }
         //If Eclipse's output dir exists, copy it there as well
         if (new File("$rootDir/bin/${output}/").exists()) {
             copy {
-                with modsToml
+                with(modsToml)
                 into "$rootDir/bin/${output}/"
             }
         }
+    })
+    //Set the various variables/settings for the different process resources tasks
+    tasks.named(sourceSet.getProcessResourcesTaskName(), ProcessResources).configure {
+        setGroup("process resources")
+        duplicatesStrategy(DuplicatesStrategy.FAIL)
+        exclude('META-INF/mods.toml')
+        from("${projectDir}") { include 'logo.png' }
+        //Depend on the compile task so that we can map the computer methods as needed
+        dependsOn(compileTask)
+        finalizedBy(replaceResourceTask)
+        doLast {
+            fileTree(dir: getOutputs().getFiles().getAsPath(), includes: jsonPatterns).each {
+                File file -> file.setText(JsonOutput.toJson(new JsonSlurper().parse(file)))
+            }
+        }
+    }
+    tasks.named(sourceSet.getCompileJavaTaskName(), JavaCompile).configure { setGroup("compile") }
+    for (String extraType : extraTypes) {
+        def extraSourceSet = getExtraSourceSet(sourceSet, extraType)
+        tasks.named(extraSourceSet.getProcessResourcesTaskName(), ProcessResources).configure {
+            setGroup("process resources")
+            dependsOn(compileTask)
+        }
+        tasks.named(extraSourceSet.getCompileJavaTaskName(), JavaCompile).configure { setGroup("compile") }
+    }
+    //Make the various classes tasks depend on the corresponding replaceResources tasks in addition to the default processResources tasks they depend on
+    tasks.named(sourceSet.getClassesTaskName()).configure { dependsOn(replaceResourceTask) }
+    //Configure specific compile tasks to have the proper annotation processor info
+    compileTask.configure {
+        setGroup("compile")
     }
 }
 
-mixin {
-    // MixinGradle Settings
-    add sourceSets.main, 'mixins.numina.refmap.json'
-    config 'numina.mixins.json'
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of("${java_version}"))
+        vendor.set(JvmVendorSpec.JETBRAINS)
+    }
+}
 
-    debug.verbose = true
-    debug.export = true
+//nb this exists here so that IDEA can resolve `project`
+def datagenExtraClasspath = {
+    def paths = new HashSet<String>()
+    project.configurations.datagenNonMod.copyRecursive().resolve()
+            .collect { it.absolutePath.toString() }
+            .findAll { (!it.contains("datafixerupper")) }//avoid adding datafixerupper twice as modlauncher will die
+            .each { path -> paths.add(path) }
+    return paths.join(File.pathSeparator)
 }
 
 minecraft {
-    mappings channel: "${mappings_channel}", version: "${mappings_version}"
+    if (mappings_channel == "parchment_previous") {
+        mappings channel: 'parchment', version: "${previous_minecraft_version}-${mappings_version}"
+    } else {
+        mappings channel: "${mappings_channel}", version: "${mappings_version}"
+    }
 
     accessTransformers.from(
             file('src/main/resources/META-INF/accesstransformer.cfg'),
@@ -215,11 +259,7 @@ minecraft {
 
     runs {
         client {
-            workingDirectory file("run/client")
-            //This fixes Mixin application problems from other mods because their refMaps are SRG-based, but we're in a MCP env
-            property 'mixin.env.remapRefMap', 'true'
-            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
-
+            setupRunConfig(it, "run/client")
             //The below if statements are to add args to your gradle.properties file in user home
             // (DO NOT add them directly to the gradle.properties file for this project)
             // Setting the below properties allows use of your normal Minecraft account in the
@@ -240,53 +280,14 @@ minecraft {
                 //Your access token, you can find it in your '.minecraft/launcher_accounts.json' file
                 args '--accessToken', project.getProperty('mc_accessToken')
             }
-            if (project.hasProperty('forge_force_ansi')) {
-                //Force ansi if declared as a gradle variable, as the auto detection doesn't detect IntelliJ properly
-                // or eclipse's plugin that adds support for ansi escape in console
-                jvmArg('-Dterminal.ansi=' + project.getProperty('forge_force_ansi'))
-            }
-
-            mods {
-                numina.sources((SourceSet) sourceSets.main)
-                modularpowersuits.source((SourceSet) sourceSets.powersuits)
-                mpsrecipecreator.source((SourceSet) sourceSets.mpsrecipecreator)
-                mpswhatever.source((SourceSet) sourceSets.mpswhatever)
-            }
         }
-
-        server {
-            workingDirectory file("run/server")
-            //This fixes Mixin application problems from other mods because their refMaps are SRG-based, but we're in a MCP env
-            property 'mixin.env.remapRefMap', 'true'
-            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
-
-            if (project.hasProperty('forge_force_ansi')) {
-                //Force ansi if declared as a gradle variable, as the auto detection doesn't detect IntelliJ properly
-                // or eclipse's plugin that adds support for ansi escape in console
-                jvmArg('-Dterminal.ansi=' + project.getProperty('forge_force_ansi'))
-            }
-
-            mods {
-                numina.sources((SourceSet) sourceSets.main)
-                modularpowersuits.source((SourceSet) sourceSets.powersuits)
-                mpsrecipecreator.source((SourceSet) sourceSets.mpsrecipecreator)
-                mpswhatever.source((SourceSet) sourceSets.mpswhatever)
-            }
-        }
-
+        server { setupRunConfig(it, "run/server") }
         data {
-            workingDirectory file("run/data")
+            setupRunConfig(it, "run/data")
             environment 'target', 'fmluserdevdata'
-            //This fixes Mixin application problems from other mods because their refMaps are SRG-based, but we're in a MCP env
-            property 'mixin.env.remapRefMap', 'true'
-            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
-            property 'forge.logging.markers', 'REGISTRIES'
-            property 'forge.logging.console.level', 'debug'
 
-            if (project.hasProperty('forge_force_ansi')) {
-                //Force ansi if declared as a gradle variable, as the auto detection doesn't detect IntelliJ properly
-                // or eclipse's plugin that adds support for ansi escape in console
-                jvmArg('-Dterminal.ansi=' + project.getProperty('forge_force_ansi'))
+            dependencies {
+
             }
 
             // needed for selenium for the automatic translator
@@ -295,25 +296,56 @@ minecraft {
             jvmArg('--add-opens=java.base/java.lang.reflect=ALL-UNNAMED')
 
             args '--all', '--output', file('src/datagen/generated/'),
-                    '--mod', 'numina',
-                    '--existing', file('src/main/resources/'),
+                    '--mod', 'numina', '--existing', file('src/main/resources/')
 
-                    '--mod', 'powersuits',
-                    '--existing', file('src/powersuits/resources/'),
+            mods.named("numina").configure {
+                source((SourceSet) sourceSets.datagenMain)
+            }
+            for (String name : secondaryModules) {
+                def modName = "${name}"
+                def extra = getExtraSourceSet(name, 'datagen')
+                mods.named(modName).configure {
+                    source(extra)
+                }
+                args '--mod', modName, '--existing', file("src/${name}/resources/")
+            }
 
-                    '--mod', 'mpsrecipecreator',
-                    '--existing', file('src/mpsrecipecreator/resources/'),
-
-                    '--mod', 'mpswhatever',
-                    '--existing', file('src/mpswhatever/resources/')
-
-            mods {
-                numina.sources((SourceSet[]) [sourceSets.main, sourceSets.datagenmain])
-                modularpowersuits.sources((SourceSet[]) [sourceSets.powersuits, sourceSets.datagenpowersuits])
-                mpsrecipecreator.sources((SourceSet[]) [sourceSets.mpsrecipecreator, sourceSets.datagenmpsrecipecreator])
-                mpswhatever.sources((SourceSet[]) [sourceSets.mpswhatever, sourceSets.datagenmpswhatever])
+            project.afterEvaluate {
+                //After the project has been evaluated so our dependencies has been populated,
+                // add all the extra non-mod files to runData's minecraft classpath so that they can be
+                // access from the game module layer at runtime
+                lazyToken("minecraft_classpath", datagenExtraClasspath)
             }
         }
+    }
+}
+
+def setupRunConfig(RunConfig runConfig, String directory) {
+    runConfig.workingDirectory(file(directory))
+    //This fixes Mixin application problems from other mods because their refMaps are SRG-based, but we're in a MCP env
+    runConfig.property 'mixin.env.remapRefMap', 'true'
+    runConfig.property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
+
+    if (project.hasProperty('forge_force_ansi')) {
+        //Force ansi if declared as a gradle variable, as the auto detection doesn't detect IntelliJ properly
+        // or eclipse's plugin that adds support for ansi escape in console
+        runConfig.jvmArg("-Dterminal.ansi=${project.getProperty('forge_force_ansi')}")
+    }
+
+    runConfig.mods.register("numina").configure {
+        sources((SourceSet[]) [sourceSets.main])
+    }
+    for (String name : secondaryModules) {
+        def base = sourceSets.getByName(name)
+        def extra = null
+        runConfig.mods.register("${name}").configure {
+            source(base)
+        }
+    }
+
+    //if the selected toolchain is a JBR, enable DCEVM
+    if(project.javaToolchains.launcherFor(java.toolchain).map{it.metadata.vendor }.getOrElse("").contains("JetBrains")) {
+        runConfig.jvmArg("-XX:+AllowEnhancedClassRedefinition")
     }
 }
 
@@ -340,140 +372,38 @@ repositories { RepositoryHandler handler ->
     exclusiveRepo(handler, 'https://maven.blamejared.com', filter -> {
         filter.includeGroupByRegex 'com\\.blamejared.*'
         filter.includeGroup 'mezz.jei'
+        filter.includeGroup 'org.openzen.zencode'
     })
     exclusiveRepo(handler, 'https://maven.theillusivec4.top/', 'top.theillusivec4.curios')
     exclusiveRepo(handler, 'https://maven.tterrag.com/', 'team.chisel.ctm')
-    exclusiveRepo(handler, 'https://squiddev.cc/maven/', 'org.squiddev')
+    exclusiveRepo(handler, 'https://squiddev.cc/maven/', 'cc.tweaked', 'org.squiddev')
+    exclusiveRepo(handler, 'https://dogforce-games.com/maven/', 'dev.gigaherz.jsonthings')
+    exclusiveRepo(handler, 'https://maven2.bai.lol', 'lol.bai', 'mcp.mobius.waila')//WTHIT
     exclusiveRepo(handler, 'https://www.cursemaven.com', 'curse.maven')
     exclusiveRepo(handler, 'https://modmaven.dev/', 'appeng', 'mcjty.theoneprobe')
-
-    jcenter()
-//    flatDir {
-//        dirs 'libs'
-//    }
+    exclusiveRepo(handler, 'https://maven.thiakil.com', 'com.thiakil')
+    exclusiveRepo(handler, 'https://maven.parchmentmc.org/', 'org.parchmentmc.data')
 }
 
 dependencies {
-    minecraft("net.minecraftforge:forge:${minecraft_version}-${forge_version}") {
-//        exclude group: 'net.java.dev.jna', module: 'jna-platform'
-    }
+    minecraft "net.neoforged:forge:${minecraft_version}-${neo_version}"
 
-    annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
+    compileOnly fg.deobf("mezz.jei:jei-${minecraft_version}-common-api:${jei_version}")
+    compileOnly fg.deobf("mezz.jei:jei-${minecraft_version}-forge-api:${jei_version}")
+    runtimeOnly fg.deobf("mezz.jei:jei-${minecraft_version}-forge:${jei_version}")
 
-    compileOnly(fg.deobf("mezz.jei:jei-${minecraft_version}-common-api:${jei_version}"))
-    // at runtime, use the full JEI jar for Forge
-    runtimeOnly(fg.deobf("mezz.jei:jei-${minecraft_version}-forge:${jei_version}"))
+    //TODO - 1.19: Re-enable once https://github.com/Chisel-Team/ConnectedTexturesMod/pull/204 is merged
+    //runtimeOnly fg.deobf("team.chisel.ctm:CTM:${minecraft_version}-${ctm_version}")
 
-    // Only used as a convenience during testing
-    runtimeOnly fg.deobf("curse.maven:theoneprobe-245211:${top_version}"){ // FIXME!!!
-        transitive = false
-    }
-
-    implementation fg.deobf("curse.maven:configured-457570:4462837")
-
-    runtimeOnly fg.deobf("curse.maven:architectury-api-419699:${architectury_version}")// architectury-api/files/4555756
-
-    runtimeOnly fg.deobf("curse.maven:scannable-266784:${scannable_version}")
-
-    implementation fg.deobf("curse.maven:applied-energistics-2-223794:${ae2_version}") {
-        transitive = false
-    }
-
-    runtimeOnly fg.deobf("curse.maven:titanium-287342:4786622")
-
-    runtimeOnly fg.deobf("curse.maven:industrial-foregoing-266515:5047821")
-
-
-//    implementation fg.deobf("curse.maven:ic2-classic-242942:4879119") {
+    //TODO: Remove having to specify these as non transitive once https://github.com/McJtyMods/TheOneProbe/issues/548 is fixed
+//    compileOnly fg.deobf("mcjty.theoneprobe:theoneprobe:${top_version}:api") {
 //        transitive = false
 //    }
-
-//    implementation fg.deobf("curse.maven:weapon-master-782886:4978496")
-
-    // This is only used for automatic translation for datagen
-    // safe to disable and comment out references when not in use
-    minecraftLibrary("org.seleniumhq.selenium:selenium-java:4.13.0") {
-        // doing anything with this ends up with a duplicate
-        exclude group: 'com.google.guava', module: 'guava' // defaultVersion: 31.0.1, newVersion: 32.1.2
-//        exclude group: 'net.java.dev.jna', module: 'jna'
-//        exclude group: 'com.google.code.gson', module: 'gson'
-
-        // com.google.auto.service:auto-service-annotations:1.1.1
-        // net.bytebuddy:byte-buddy:1.14.5
-
-        exclude group: 'io.netty'//:netty-buffer:4.1.77.Final'
-
-    }
-
-    minecraftLibrary('io.netty:netty-codec-http:4.1.77.Final') {
-        exclude group: 'io.netty', module: 'netty-handler'
-        exclude group: 'io.netty', module: 'netty-codec'
-        exclude group: 'io.netty', module: 'netty-transport'
-        exclude group: 'io.netty', module: 'netty-buffer'
-        exclude group: 'io.netty', module: 'netty-common'
-    }
-
-    minecraftLibrary("io.github.bonigarcia:webdrivermanager:5.5.3") {
-        exclude group: 'org.apache.commons', module: 'commons-compress'  //:1.21
-//        exclude group: 'net.java.dev.jna', module: 'jna'
-        // doing anything with this ends up with a duplicate
-        exclude group: 'com.google.guava', module: 'guava' // defaultVersion: 31.0.1, newVersion: 32.1.2
-//        exclude group: 'com.google.code.gson', module: 'gson'
-    }
+//    runtimeOnly fg.deobf("mcjty.theoneprobe:theoneprobe:${top_version}") {
+//        transitive = false
+//    }
+//    compileOnly fg.deobf("curse.maven:female-gender-forge-481655:${wildfire_gender_mod_id}")
 }
-
-if (project.hasProperty('UPDATE_MAPPINGS')) {
-    //If the project has the update mappings property, configure it to be able to target all our extra sourceSets as well
-    // so that whenever we need to update mappings it is quick and easy to do so.
-    // Note: This needs to be below the dependencies and minecraft blocks so that it can properly read the mappings value
-    // and also read and find the minecraft dep
-    def extraSourceSets = [
-            sourceSets.powersuits,
-            sourceSets.mpsrecipecreator,
-            sourceSets.mpswhatever,
-            sourceSets.datagenmain,
-
-            sourceSets.datagenpowersuits,
-            sourceSets.datagenmpsrecipecreator,
-            sourceSets.datagenmpswhatever
-    ]
-    Set<File> allExtraDirs = new HashSet<>()
-    for (def sourceSet : extraSourceSets) {
-        allExtraDirs.addAll(sourceSet.java.srcDirs)
-    }
-    extractRangeMap {
-        sources.from(allExtraDirs)
-    }
-    applyRangeMap {
-        sources.from(allExtraDirs)
-    }
-    allExtraDirs.each { extractMappedNew.addTarget it }
-}
-
-//Set the various variables/settings for the different process resources tasks
-processResources { setupProcessResources(processResources, mainReplaceResources) }
-processPowersuitsResources { setupProcessResources(processPowersuitsResources, powersuitsReplaceResources) }
-processMpsrecipecreatorResources { setupProcessResources(processMpsrecipecreatorResources, mpsrecipecreatorReplaceResources) }
-processMpswhateverResources { setupProcessResources(processMpswhateverResources, mpswhateverReplaceResources) }
-processDatagenmainResources { dependsOn(compileJava) }
-
-def setupProcessResources(ProcessResources process, TaskProvider<Task> replaceResources) {
-    process.duplicatesStrategy(DuplicatesStrategy.FAIL)
-    process.exclude('META-INF/mods.toml')
-    process.from("${projectDir}") { include 'logo.png' }
-    process.configure { finalizedBy(replaceResources) }
-    process.doLast {
-        fileTree(dir: process.getOutputs().getFiles().getAsPath(), includes: jsonPatterns).each {
-            File file -> file.setText(JsonOutput.toJson(new JsonSlurper().parse(file)))
-        }
-    }
-}
-
-//Make the various classes tasks depend on the corresponding replaceResources tasks in addition to the default processResources tasks they depend on
-classes.configure { dependsOn(mainReplaceResources) }
-powersuitsClasses.configure { dependsOn(powersuitsReplaceResources) }
-mpsrecipecreatorClasses.configure { dependsOn(mpsrecipecreatorReplaceResources) }
-mpswhateverClasses.configure { dependsOn(mpswhateverReplaceResources) }
 
 def getManifestAttributes(String title) {
     return [
@@ -488,44 +418,27 @@ def getManifestAttributes(String title) {
     ]
 }
 
-jar {
+tasks.named('jar', Jar).configure {
     duplicatesStrategy(DuplicatesStrategy.FAIL)
-//    archiveFileName.set("Numina-${minecraft_version}-${project.version}.jar")
-    archiveFileName.set("Numina-${project.version}.jar")
-    from(sourceSets.main.output)
+    from([sourceSets.main.output])
     manifest.attributes(getManifestAttributes("Numina"))
-    afterEvaluate { finalizedBy reobfJar }
 }
 
-task powersuitsJar(type: Jar) {
-    duplicatesStrategy(DuplicatesStrategy.FAIL)
-//    archiveFileName.set("ModularPowersuits-${minecraft_version}-${project.version}.jar")
-    archiveFileName.set("ModularPowersuits-${project.version}.jar")
-    archiveClassifier.set("powersuits")
-    from sourceSets.powersuits.output
-    manifest.attributes(getManifestAttributes("ModularPowersuits"))
-    afterEvaluate { finalizedBy reobfPowersuitsJar }
+def secondaryJar(SourceSet sourceSet, String title) {
+    return tasks.register(sourceSet.getJarTaskName(), Jar, {
+        duplicatesStrategy(DuplicatesStrategy.FAIL)
+        archiveClassifier.set(sourceSet.name)
+        from sourceSet.output
+        if (!title.isEmpty()) {
+            archiveFileName.set("${title}-${project.version}.jar")
+        }
+        manifest.attributes(getManifestAttributes(title.isEmpty() ? "Numina" : title))
+    })
 }
 
-task mpsrecipecreatorJar(type: Jar) {
-    duplicatesStrategy(DuplicatesStrategy.FAIL)
-//    archiveFileName.set("MPSRecipecreator-${minecraft_version}-${project.version}.jar")
-    archiveFileName.set("MPSRecipecreator-${project.version}.jar")
-    archiveClassifier.set("mpsrecipecreator")
-    from sourceSets.mpsrecipecreator.output
-    manifest.attributes(getManifestAttributes("MPSRecipecreator"))
-    afterEvaluate { finalizedBy reobfMpsrecipecreatorJar }
-}
-
-task mpswhateverJar(type: Jar) {
-    duplicatesStrategy(DuplicatesStrategy.FAIL)
-//    archiveFileName.set("MPSWhatever-${minecraft_version}-${project.version}.jar")
-    archiveFileName.set("MPSWhatever-${project.version}.jar")
-    archiveClassifier.set("mpswhatever")
-    from sourceSets.mpswhatever.output
-    manifest.attributes(getManifestAttributes("MPSWhatever"))
-    afterEvaluate { finalizedBy reobfMpswhateverJar }
-}
+def powersuitsJar = secondaryJar(sourceSets.powersuits, 'ModularPowersuits')
+def mpsrecipecreatorJar = secondaryJar(sourceSets.mpsrecipecreator, 'MPSRecipeCreator')
+def mpswhateverJar = secondaryJar(sourceSets.mpswhatever, 'MPSWhatever')
 
 clean {
     //TODO: Try to come up with a slightly better solution to this that deletes more,
@@ -537,15 +450,7 @@ clean {
     for (def toDelete : getDelete()) {
         for (def f : file(toDelete).listFiles()) {
             if (f.getName() != "fg_cache") {
-                if (f.getName() == "generated") {
-                    for (def generated : file(f).listFiles()) {
-                        if (generated.getName() != "data" && generated.getName() != "META-INF") {
-                            filteredDelete.add(generated)
-                        }
-                    }
-                } else {
-                    filteredDelete.add(f)
-                }
+                filteredDelete.add(f)
             }
         }
     }
@@ -553,13 +458,17 @@ clean {
 }
 
 tasks.withType(JavaCompile).configureEach({
-    it.options.encoding = 'UTF-8'
-    it.options.compilerArgs << "-Xmaxerrs" << "100000"
+    options.encoding = 'UTF-8'
+    options.compilerArgs.addAll(["-Xmaxerrs", "100000"])
 })
 
-compileJava {
-    options.getGeneratedSourceOutputDirectory().set(file("src/datagen/main/resources/"))
-}
+tasks.withType(Javadoc).configureEach({
+    options.tags = [
+            'apiNote:a:<em>API Note:</em>',
+            'implSpec:a:<em>Implementation Requirements:</em>',
+            'implNote:a:<em>Implementation Note:</em>'
+    ]
+})
 
 artifacts {
     archives jar
@@ -568,11 +477,25 @@ artifacts {
     archives mpswhateverJar
 }
 
-reobf {
-    jar { classpath.from(sourceSets.main.compileClasspath) }
-    powersuitsJar { classpath.from(sourceSets.powersuits.compileClasspath) }
-    mpsrecipecreatorJar { classpath.from(sourceSets.mpsrecipecreator.compileClasspath) }
-    mpswhateverJar { classpath.from(sourceSets.mpswhatever.compileClasspath) }
+//createReobf(sourceSets.api)
+for (String name : secondaryModules) {
+    createReobf(sourceSets.getByName(name))
+}
+
+def createReobf(SourceSet sourceSet) {
+    def reobfTask = createReobf(sourceSet.getJarTaskName())
+    reobfTask.configure { libraries.from(sourceSet.compileClasspath) }
+    tasks.named(sourceSet.getJarTaskName()).configure(task -> task.finalizedBy(reobfTask))
+    return reobfTask
+}
+
+def createReobf(String name) {
+    def reobfExtension = (NamedDomainObjectContainer<RenameJarInPlace>) extensions.getByName("reobf")
+    return reobfExtension.register(name)
+}
+
+afterEvaluate {
+    tasks.named('jar', Jar).configure { finalizedBy(tasks.named('reobfJar', RenameJarInPlace)) }
 }
 
 //Minimize/optimize all png files, requires optipng on the PATH
@@ -590,9 +513,9 @@ void minimizePNGFile(File file) {
     }
 }
 
-task optimizePng {
-    def pngPatterns = ["**/*.png"]
+tasks.register('optimizePng').configure {
     doLast {
+        def pngPatterns = ["**/*.png"]
         //Ensure the logo is minimized (we add this file to each jar)
         minimizePNGFile(file("${projectDir}/logo.png"))
         //Minimize any PNGs in the source sets
@@ -605,96 +528,183 @@ task optimizePng {
     }
 }
 
-tasks.withType(GenerateModuleMetadata) {
+tasks.withType(GenerateModuleMetadata).configureEach {
     //Disable Gradle 7 module metadata generation as it does not play nicely with FG
     enabled = false
 }
 
-tasks.curseforge.dependsOn jar, powersuitsJar, mpsrecipecreatorJar, mpswhateverJar
+def resolvedChangelog = null
+
+//closure to generate the changelog once, and only when needed by CurseGradle or Modrinth
+def changeLogResolver = { ->
+    if (resolvedChangelog != null) {
+        println "Using cached changelog"
+        return resolvedChangelog
+    }
+    def generatedChangelog = "Unable to generate changelog :("
+    def currentCommit = System.getenv("GIT_COMMIT")
+    def prevCommit = System.getenv("GIT_PREVIOUS_SUCCESSFUL_COMMIT") ?: System.getenv("GIT_PREVIOUS_COMMIT")
+
+    if (currentCommit != null && prevCommit != null) {
+        generatedChangelog = ""
+        //Use the service to avoid eagerly instantiating the grgit instance, and only do so when we actually need it
+        // for usage in generating the changelog for either CF or Modrinth
+        grgitService.service.get().grgit.log {
+            range(prevCommit, currentCommit)
+        }.reverse().each { commit ->
+            //Use full message rather than short message to get any new lines, and trim it so that any trailing new lines
+            // get removed so that we don't end up with extra spaces
+            String message = commit.fullMessage.trim()
+            if (!message.startsWith("Merge branch") && !message.startsWith("Merge pull request") && !message.contains("[no-changelog]")) {
+                //Ignore Merges and PR Merges
+                message = message.replaceAll("#(\\d+)", { match ->//turn issues/prs into links (github currently supports prs being linked as issues)
+                    return "<a href=\"https://github.com/lehjr/MachineMusePowersuits/issues/${match[1]}\">${match[0]}</a>"
+                }).replaceAll("\\n", "<br>&emsp;")//convert new lines that are part of a commit message into actual new lines and a tab
+                if (generatedChangelog != "") {
+                    //If this isn't the first commit prepend an extra newline
+                    generatedChangelog += "<br>"
+                }
+                generatedChangelog += "<a href=\"https://github.com/lehjr/MachineMusePowersuits/commit/${commit.id}\">${commit.getAbbreviatedId()}</a> - ${message}"
+            }
+        }
+        println "Changelog generated"
+    }
+
+    def releaseNotesFile = project.file("docs/release_${mod_version}.html")
+    if (releaseNotesFile.exists()) {
+        //Add any version specific changelog stuff
+        def releaseNotes = releaseNotesFile.getText()
+        generatedChangelog = "$releaseNotes<br> $generatedChangelog"
+    }
+
+    if (curse_release_type == "alpha") {
+        //Add a warning at the top about what an alpha build means
+        generatedChangelog = "Warning: ModularPowersuits is currently in alpha, and is not recommended for widespread use in modpacks. There are likely to be game breaking bugs, " +
+                "and updating from one alpha to the next may cause various issues. While we will try to not have this happen/keep it to a minimum make sure " +
+                "to make backups." + "<br> $generatedChangelog"
+    }
+    resolvedChangelog = generatedChangelog
+    return generatedChangelog
+}
+
+tasks.register('outputChangelog') {
+    doLast {
+        project.file("build/changelog.html").text = changeLogResolver.call()
+    }
+}
+
+def mainCfUpload, powersuitsCfUpload, mpswhateverCfUpload, mpsrecipecreatprCfUpload;
+
 if (System.getenv("CURSEFORGE_KEY") != null || project.hasProperty('curseforgeKey')) {
     println "Enabling Curseforge config"
-    curseforge {
-        apiKey = System.getenv("CURSEFORGE_KEY") ?: project.findProperty("curseforgeKey")
+    tasks.register("curseforge", TaskPublishCurseForge, { task ->
+        setGroup("publishing")
+        setDescription("Upload Numina to CurseForge")
 
-        def resolvedChangelog = null
+        apiToken = System.getenv("CURSEFORGE_KEY") ?: project.findProperty("curseforgeKey")
 
-        //closure to generate the changelog once, and only when needed by CurseGradle
-        def changeLogResolver = { ->
-            if (resolvedChangelog != null) {
-                return resolvedChangelog
-            }
-            def generatedChangelog = "Unable to generate changelog :("
-            def currentCommit = System.getenv("GIT_COMMIT")
-            def prevCommit = System.getenv("GIT_PREVIOUS_SUCCESSFUL_COMMIT") ?: System.getenv("GIT_PREVIOUS_COMMIT")
+        def changelog = changeLogResolver.call()
 
-            if (currentCommit != null && prevCommit != null) {
-                generatedChangelog = ""
-                grgit.log {
-                    range(prevCommit, currentCommit)
-                }.reverse().each { commit ->
-                    //Use full message rather than short message to get any new lines, and trim it so that any trailing new lines
-                    // get removed so that we don't end up with extra spaces
-                    String message = commit.fullMessage.trim()
-                    if (!message.startsWith("Merge branch") && !message.startsWith("Merge pull request")) {
-                        //Ignore Merges and PR Merges
-                        message = message.replaceAll("#(\\d+)", { match ->//turn issues/prs into links (github currently supports prs being linked as issues)
-                            return "<a href=\"https://github.com/lehjr/MachineMusePowersuits/issues/${match[1]}\">${match[0]}</a>"
-                        }).replaceAll("\\n", "<br>&emsp;")//convert new lines that are part of a commit message into actual new lines and a tab
-                        if (generatedChangelog != "") {
-                            //If this isn't the first commit prepend an extra newline
-                            generatedChangelog += "<br>"
-                        }
-                        generatedChangelog += "<a href=\"https://github.com/lehjr/MachineMusePowersuits/commit/${commit.id}\">${commit.getAbbreviatedId()}</a> - ${message}"
-                    }
-                }
-                println "Changelog generated"
-            }
-
-            def releaseNotesFile = project.file("docs/release_${project.version}.html")
-            if (releaseNotesFile.exists()) {
-                //Add any version specific changelog stuff
-                def releaseNotes = releaseNotesFile.getText()
-                generatedChangelog = "$releaseNotes<br> $generatedChangelog"
-            }
-
-            if (curse_release_type == "alpha") {
-                //Add a warning at the top about what an alpha build means
-                generatedChangelog = "Warning: ModularPowersuits is currently in alpha, and is not recommended for widespread use in modpacks. There are likely to be game breaking bugs, " +
-                        "and updating from one alpha to the next may cause various issues. While we will try to not have this happen/keep it to a minimum make sure " +
-                        "to make backups." + "<br> $generatedChangelog"
-            }
-            resolvedChangelog = generatedChangelog
-            return generatedChangelog
+        //Main Numina Project
+        mainCfUpload = task.upload(235440, jar) { main ->
+            setGenericCurseArtifactData(main, changelog)
+            //Include the API jar as a secondary file to the main file
+            //Add optional deps
+            addOptional(
+                    'scannable',
+                    'applied-energistics-2',
+                    'jei'
+            )
         }
 
-        // Numina
-        project {
-            id = '235440'
-            changelogType = "html"
-            changelog = changeLogResolver
-            // A file can also be set using: changelog = file('changelog.txt')
-            releaseType = "${curse_release_type}"
-            mainArtifact(jar) {
-                relations {
-                    optionalDependency "applied-energistics-2"
-                }
-            }
-            addGameVersion "${minecraft_version}"
-        }
+        //Secondary modules/projects
+        powersuitsCfUpload = uploadSecondaryCurseProject(task, 235442, changelog, powersuitsJar)
+//        mpsrecipecreatorCfUpload = uploadSecondaryCurseProject(task, 0, changelog, mpsrecipecreatorJar)
+//        mpswhateverCfUpload = uploadSecondaryCurseProject(task, 0, changelog, mpswhateverJar)
 
-        // Modular Powersuits
-        project {
-            id = '235442'
-            changelogType = "html"
-            changelog = changeLogResolver
-            releaseType = "${curse_release_type}"
-            mainArtifact(powersuitsJar) {
-                relations {
-                    requiredDependency "numina"
-                    optionalDependency "applied-energistics-2"
-                }
-            }
-            addGameVersion "${minecraft_version}"
+        doLast {
+            println("https://www.curseforge.com/minecraft/mc-mods/numina/files/${mainCfUpload.curseFileId}")
+            println("https://www.curseforge.com/minecraft/mc-mods/modular-powersuits/files/${powersuitsCfUpload.curseFileId}")
+//            println("https://www.curseforge.com/minecraft/mc-mods/mpswhatever/files/${mpswhateverCfUpload.curseFileId}")
+//            println("https://www.curseforge.com/minecraft/mc-mods/mpsrecipecreator/files/${mpsrecipecreatorCfUpload.curseFileId}")
         }
+    })
+}
+
+void setGenericCurseArtifactData(UploadArtifact artifact, String changelog) {
+    artifact.changelog = changelog
+    artifact.changelogType = 'html'
+    artifact.releaseType = "${release_type}"
+    //Add that we support forge for now as we currently support both Forge and NeoForge. NeoForge is detected automatically from the gradle plugin
+    artifact.addModLoader("NeoForged")
+}
+
+UploadArtifact uploadSecondaryCurseProject(TaskPublishCurseForge task, long projectId, String changelog, TaskProvider<Jar> sourceSetJar) {
+    return task.upload(projectId, sourceSetJar) { artifact ->
+        setGenericCurseArtifactData(artifact, changelog)
+        addRequirement('numina')
     }
+}
+
+if (System.getenv("MODRINTH_TOKEN") != null || project.hasProperty('modrinthToken')) {
+    println "Enabling Modrinth config"
+    def powersuitsModrinth = createSecondaryModrinthUpload("powersuits", "mBO0J08x", powersuitsJar)
+//    def mpsrecipecreatorModrinth = createSecondaryModrinthUpload("mpsrecipecreator", "", mpsrecipecreatorJar)
+//    def mpswhateverModrinth = createSecondaryModrinthUpload("mpswhatever", "", mpswhateverJar)
+    tasks.named('modrinth').configure {
+        dependsOn(jar)
+        finalizedBy(powersuitsModrinth, mpsrecipecreatorModrinth, mpswhateverModrinth)
+    }
+
+    modrinth {
+        if (System.getenv("MODRINTH_TOKEN") == null) {
+            //Defaults to MODRINTH_TOKEN so we only have to check for a token via gradle properties if there isn't a system property
+            getToken().value((String) project.findProperty("modrinthToken"))
+        } else {
+            token = System.getenv("MODRINTH_TOKEN")
+        }
+        projectId = "MRNzikxs"
+        //Use the full "basic" version number rather than just mod version number so that if multiple releases end up happening due to bugs
+        // then we don't run into conflicts in uploading
+        //Note: The versionName is set to the versionNumber automatically
+        versionNumber = "${basicVersion}"
+        versionType = "${release_type}"
+        changelog = changeLogResolver.call()
+        uploadFile = jar
+        //Add that we support forge for now as we currently support both Forge and NeoForge
+        // Note: Once we no longer support forge we can just remove the line as NeoForge will be able to be detected automatically
+        // Currently we can't as Minotaur only detects loaders if none are set
+        loaders.addAll("forge", "neoforge")
+
+        //Note: Can't use nested dependency configuration as we have no way to clear it for the secondary uploads
+        getDependencies().value([
+                new ModDependency("XxWD5pD3", "optional"),//AE2
+        ])
+    }
+
+}
+
+def createSecondaryModrinthUpload(String output, String targetProjectId, TaskProvider<Jar> sourceSetJar) {
+    return tasks.register("${output}Modrinth", TaskModrinthUpload, {
+        setGroup("publishing")
+        setDescription("Upload Numina ${output} to Modrinth")
+        dependsOn(tasks.named("modrinth"), sourceSetJar)
+        doFirst {
+            //Run in do first to change the configured extension values before it starts applying
+            modrinth {
+                projectId = targetProjectId
+                uploadFile = sourceSetJar.get()
+                //Clear additional upload files as this is a modification of what things are set to from before
+                getAdditionalFiles().empty()
+                //Mark that the addon requires the build of Numina that we just uploaded (and override it to clear all optional dependencies)
+                if (tasks.modrinth.newVersion == null || tasks.modrinth.newVersion.getId() == null) {
+                    //If we failed to find the upload version just set it to Numina in general
+                    getDependencies().value([new ModDependency("MRNzikxs", "required")])
+                } else {
+                    getDependencies().value([new VersionDependency(tasks.modrinth.newVersion.getId(), "required")])
+                }
+            }
+            println "Updated Modrinth extension"
+        }
+    })
 }

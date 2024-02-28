@@ -26,7 +26,6 @@
 
 package lehjr.powersuits.client.gui.modding.module.tweak;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import lehjr.numina.client.gui.clickable.ClickableModule;
 import lehjr.numina.client.gui.clickable.slider.VanillaFrameScrollBar;
 import lehjr.numina.client.gui.frame.ModularItemSelectionFrame;
@@ -38,7 +37,7 @@ import lehjr.numina.common.capabilities.NuminaCapabilities;
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
 import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
-import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.util.LazyOptional;
@@ -133,7 +132,7 @@ public class ModuleSelectionFrame extends ScrollableFrame {
             // actually preserve the module selection during call to init due to it being called on gui resize
             if(preserveSelected && selCopy.get().isPresent() && frame.category == selCopy.get().get().category) {
                 for (ClickableModule button : frame.moduleButtons) {
-                    if (button.getModule().sameItem(selCopy.get().get().getModule())) {
+                    if (ItemStack.isSameItem(button.getModule(), selCopy.get().get().getModule())) {
                         frame.selectedModule = frame.moduleButtons.indexOf(button);
                         preserveSelected = false; // just to skip checking the rest
                         break;
@@ -144,9 +143,9 @@ public class ModuleSelectionFrame extends ScrollableFrame {
     }
 
     @Override
-    public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTick) {
-        super.render(matrixStack, mouseX, mouseY, partialTick);
-        this.scrollBar.render(matrixStack, mouseX, mouseY, partialTick);
+    public void render(GuiGraphics gfx, int mouseX, int mouseY, float partialTick) {
+        super.render(gfx, mouseX, mouseY, partialTick);
+        this.scrollBar.render(gfx, mouseX, mouseY, partialTick);
 
         Optional<IModularItem> iModularItem = target.getModularItemCapability();
 
@@ -161,35 +160,34 @@ public class ModuleSelectionFrame extends ScrollableFrame {
             }
             setTotalSize(totalHeight);
 
-            super.preRender(matrixStack, mouseX, mouseY, partialTick);
-            matrixStack.pushPose();
-            matrixStack.translate(0, (float)-currentScrollPixels, 0);
-            drawItems(matrixStack, partialTick);
-            drawSelection(matrixStack);
-            matrixStack.popPose();
-            super.postRender(mouseX, mouseY, partialTick);
+            super.preRender(gfx, mouseX, mouseY, partialTick);
+            gfx.pose().pushPose();
+            gfx.pose().translate(0, (float)-currentScrollPixels, 0);
+            drawItems(gfx, partialTick);
+            drawSelection(gfx);
+            gfx.pose().popPose();
+            super.postRender(gfx, mouseX, mouseY, partialTick);
         } else {
-            super.render(matrixStack, mouseX, mouseY, partialTick);
+            super.render(gfx, mouseX, mouseY, partialTick);
         }
     }
 
-    private void drawItems(PoseStack matrixStack, float partialTicks) {
+    private void drawItems(GuiGraphics gfx, float partialTicks) {
         for (ModuleSelectionSubFrame frame : categories.values()) {
-            frame.drawPartial(matrixStack, (int) (this.currentScrollPixels + top() + 4),
+            frame.drawPartial(gfx, (int) (this.currentScrollPixels + top() + 4),
                     (int) (this.currentScrollPixels + top() + height() - 4), partialTicks);
         }
     }
 
     float getzLevel() {
-        assert Minecraft.getInstance().screen != null;
-        return Minecraft.getInstance().screen.getBlitOffset();
+        return 0;
     }
 
-    private void drawSelection(PoseStack matrixStack) {
+    private void drawSelection(GuiGraphics gfx) {
         getSelectedModule().ifPresent(module ->{
             MusePoint2D pos = module.center();
             if (pos.y() > this.currentScrollPixels + top() + 4 && pos.y() < this.currentScrollPixels + top() + height() - 4) {
-                NuminaRenderer.drawCircleAround(matrixStack, pos.x(), pos.y(), 10, getzLevel());
+                NuminaRenderer.drawCircleAround(gfx.pose(), pos.x(), pos.y(), 10, getzLevel());
             }
         });
     }

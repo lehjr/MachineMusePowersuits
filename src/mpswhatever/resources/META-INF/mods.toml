@@ -4,7 +4,7 @@ issueTrackerURL="https://github.com/lehjr/MachineMusePowersuits/issues"
 license="All rights reserved"
 [[mods]]
     modId="mpswhatever"
-    version="${mod_version}"
+    version="${version}"
     displayName="MPS-Whatever"
     #updateJSONURL="http://myurl.me/"
     displayURL="https://github.com/lehjr/Numina"
@@ -14,7 +14,7 @@ license="All rights reserved"
 [[dependencies.mpswhatever]]
     modId="forge"
     mandatory=true
-    versionRange="${forge_version}"
+    versionRange="${neo_version}"
     side="BOTH"
 
 [[dependencies.mpswhatever]]
@@ -26,11 +26,11 @@ license="All rights reserved"
 [[dependencies.mpswhatever]]
     modId="powersuits"
     mandatory=true
-    versionRange="[${mod_version},)"
+    versionRange="[${version},)"
     side="BOTH"
 
 [[dependencies.mpswhatever]]
     modId="numina"
     mandatory=true
-    versionRange="[${mod_version},)"
+    versionRange="[${version},)"
     side="BOTH"

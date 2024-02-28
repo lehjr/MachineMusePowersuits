@@ -106,7 +106,8 @@ public class GliderModule extends AbstractPowerModule {
                         ));
 
                         // sprinting speed
-                        player.flyingSpeed += 0.03f;
+                        float flySpeed = player.getAbilities().getFlyingSpeed() + 0.03f;
+                        player.getAbilities().setFlyingSpeed(flySpeed);
                     }
                 }
             }

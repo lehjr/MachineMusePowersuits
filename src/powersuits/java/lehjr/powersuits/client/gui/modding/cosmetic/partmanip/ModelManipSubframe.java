@@ -26,7 +26,6 @@
 
 package lehjr.powersuits.client.gui.modding.cosmetic.partmanip;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import lehjr.numina.client.gui.clickable.ClickableIndicatorArrow;
 import lehjr.numina.client.gui.clickable.RadioButton;
 import lehjr.numina.client.gui.frame.AbstractGuiFrame;
@@ -47,6 +46,7 @@ import lehjr.numina.common.string.StringUtils;
 import lehjr.powersuits.client.gui.modding.cosmetic.colorpicker.ColorPickerFrame;
 import lehjr.powersuits.client.gui.modding.cosmetic.colorpicker.ColorRadioButton;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -258,18 +258,18 @@ public class ModelManipSubframe extends AbstractGuiFrame {
      * Draw model display name, open/close indicator, and parts with their controls
      * Fixme: replace with a normal render loop
      *
-     * @param matrixStack
+     * @param gfx
      */
     @Override
-    public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTick) {
+    public void render(GuiGraphics gfx, int mouseX, int mouseY, float partialTick) {
         if (!parts.isEmpty()) {
-            StringUtils.drawShadowedString(matrixStack, model.getDisaplayName(), left() + iconWidth, top() + StringUtils.getStringHeight() - iconWidth);
+            StringUtils.drawShadowedString(gfx, model.getDisaplayName(), left() + iconWidth, top() + StringUtils.getStringHeight() - iconWidth);
             openCloseButton.setPosition(new MusePoint2D(this.left() + 2, this.top() + iconWidth * 0.5));
             openCloseButton.setDirection(open? ClickableIndicatorArrow.ArrowDirection.DOWN : ClickableIndicatorArrow.ArrowDirection.RIGHT);
-            openCloseButton.render(matrixStack, mouseX, mouseY, partialTick);
+            openCloseButton.render(gfx, mouseX, mouseY, partialTick);
             if (open) {
                 for (PartManipSubFrame partFrame : parts) {
-                    partFrame.render(matrixStack, mouseX, mouseY, partialTick);
+                    partFrame.render(gfx, mouseX, mouseY, partialTick);
                 }
             }
         }
@@ -432,7 +432,7 @@ public class ModelManipSubframe extends AbstractGuiFrame {
         }
 
         @Override
-        public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTick) {
+        public void render(GuiGraphics gfx, int mouseX, int mouseY, float partialTick) {
             if( this.isEnabled() && this.isVisible()) {
                 if(tagdata == null || tagdata.isEmpty()) {
                     transparent.isSelected = true;
@@ -452,7 +452,7 @@ public class ModelManipSubframe extends AbstractGuiFrame {
                 for(int i = 0; i < buttons.size(); i++) {
                     RadioButton button = buttons.get(i);
                     button.setPosition(pos);
-                    button.render(matrixStack, mouseX, mouseY, partialTick);
+                    button.render(gfx, mouseX, mouseY, partialTick);
                 }
 
                 spacerRect.setPosition(pos);
@@ -473,16 +473,16 @@ public class ModelManipSubframe extends AbstractGuiFrame {
                     button.setPosition(pos);
                     button.setColor(new Color(colorframe.colors()[i]));
                     button.isSelected = i == partSpec.getColorIndex(tagdata);
-                    button.render(matrixStack, mouseX, mouseY, partialTick);
+                    button.render(gfx, mouseX, mouseY, partialTick);
                 }
 
                 if (!colorButtons.isEmpty()) {
-                    StringUtils.drawText(matrixStack, partSpec.getDisaplayName(),
+                    StringUtils.drawText(gfx, partSpec.getDisaplayName(),
                             colorButtons.get(colorButtons.size() - 1).right() + 4,
                             top() + StringUtils.getStringHeight() - iconWidth,
                             Color.WHITE);
                 } else {
-                    StringUtils.drawText(matrixStack, partSpec.getDisaplayName(),
+                    StringUtils.drawText(gfx, partSpec.getDisaplayName(),
                             buttons.get(buttons.size() - 1).right() + 4,
                             top() + StringUtils.getStringHeight() - iconWidth,
                             Color.WHITE);

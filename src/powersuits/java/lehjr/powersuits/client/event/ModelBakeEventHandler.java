@@ -88,10 +88,11 @@ public enum ModelBakeEventHandler {
         }
 
         event.getModels().keySet().stream().filter(resourceLocation -> resourceLocation.toString().contains("powersuits:luxcapacitor")).forEach(resourceLocation -> {
-            BakedModel model = event.getModels().get(resourceLocation);
-            if (model instanceof OBJBakedCompositeModel) {
-                event.getModels().put(resourceLocation, new LuxCapacitorModelWrapper((OBJBakedCompositeModel)model));
-            }
+        System.out.println("fixme model bake event mps");
+            //            BakedModel model = event.getModels().get(resourceLocation);
+//            if (model instanceof OBJBakedCompositeModel) {
+//                event.getModels().put(resourceLocation, new LuxCapacitorModelWrapper((OBJBakedCompositeModel)model));
+//            }
         });
 
 //        event.getModels().keySet().stream().filter(resourceLocation -> resourceLocation.toString().contains("powersuits:powerfist")).forEach(resourceLocation -> NuminaLogger.logError("modelLocation: " + resourceLocation));
@@ -106,10 +107,10 @@ public enum ModelBakeEventHandler {
 
 
 
-        BakedModel powerFistIcon = event.getModels().get(powerFistIconLocation);
-        if (!OBJBakedCompositeModel.class.isInstance(powerFistIcon)) {
-            event.getModels().put(powerFistIconLocation, new PowerFistModelWrapper(powerFistIcon));
-        }
+//        BakedModel powerFistIcon = event.getModels().get(powerFistIconLocation);
+//        if (!OBJBakedCompositeModel.class.isInstance(powerFistIcon)) {
+//            event.getModels().put(powerFistIconLocation, new PowerFistModelWrapper(powerFistIcon));
+//        }
 
 
 

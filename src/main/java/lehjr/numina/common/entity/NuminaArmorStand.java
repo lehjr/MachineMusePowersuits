@@ -71,7 +71,7 @@ public class NuminaArmorStand extends ArmorStand {
 
     @Override
     public void brokenByPlayer(DamageSource source) {
-        Block.popResource(this.level, this.blockPosition(), new ItemStack(NuminaObjects.ARMOR_STAND_ITEM.get()));
+        Block.popResource(this.level(), this.blockPosition(), new ItemStack(NuminaObjects.ARMOR_STAND_ITEM.get()));
         this.brokenByAnything(source);
     }
 
@@ -81,7 +81,7 @@ public class NuminaArmorStand extends ArmorStand {
         if (!this.isMarker() && itemstack.getItem() != Items.NAME_TAG) {
             if (player.isSpectator()) {
                 return InteractionResult.SUCCESS;
-            } else if (player.level.isClientSide) {
+            } else if (player.level().isClientSide) {
                 return InteractionResult.SUCCESS;
             } else {
                 player.playSound(SoundDictionary.SOUND_EVENT_GUI_SELECT.get(), 16.0F, 1.0F);

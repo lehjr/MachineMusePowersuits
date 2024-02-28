@@ -28,7 +28,6 @@ package lehjr.powersuits.client.gui.keymap;
 
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 import lehjr.numina.client.gui.ContainerlessGui;
 import lehjr.numina.client.gui.geometry.MusePoint2D;
 import lehjr.powersuits.client.control.KeyMappingReaderWriter;
@@ -36,6 +35,7 @@ import lehjr.powersuits.client.control.KeymappingKeyHandler;
 import lehjr.powersuits.client.gui.common.TabSelectFrame;
 import lehjr.powersuits.common.constants.MPSConstants;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -79,14 +79,14 @@ public class TinkerKeymapGui extends ContainerlessGui {
     }
 
     @Override
-    public void renderBackground(PoseStack matrixStack) {
-        super.renderBackground(matrixStack);
+    public void renderBackground(GuiGraphics gfx) {
+        super.renderBackground(gfx);
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-        RenderSystem.setShaderTexture(0, BACKGROUND);
+//        RenderSystem.setShaderTexture(0, BACKGROUND);
         int i = this.leftPos;
         int j = this.topPos;
-        this.blit(matrixStack, i, j, this.getBlitOffset(), 0, 0, imageWidth, imageHeight, 512, 512);
+        gfx.blit(BACKGROUND, i, j, 0, 0, imageWidth, imageHeight, 512, 512);
     }
 
     @Override

@@ -96,11 +96,11 @@ public class DimensionalRiftModule extends AbstractPowerModule {
 
             @Override
             public InteractionResultHolder<ItemStack> use(@NotNull ItemStack itemStackIn, Level worldIn, Player playerIn, InteractionHand hand) {
-                if (!playerIn.isPassenger() && !playerIn.isVehicle() && playerIn.canChangeDimensions() && !playerIn.level.isClientSide()) {
+                if (!playerIn.isPassenger() && !playerIn.isVehicle() && playerIn.canChangeDimensions() && !playerIn.level().isClientSide()) {
                     Level level ;
-                    if (playerIn.level.dimension().location().equals(Level.NETHER.location())) {
+                    if (playerIn.level().dimension().location().equals(Level.NETHER.location())) {
                         level = playerIn.getServer().getLevel(Level.OVERWORLD);
-                    } else if (playerIn.level.dimension().location().equals(Level.OVERWORLD.location())) {
+                    } else if (playerIn.level().dimension().location().equals(Level.OVERWORLD.location())) {
                         level = playerIn.getServer().getLevel(Level.NETHER);
                     } else {
                         level = null;
@@ -222,7 +222,7 @@ public class DimensionalRiftModule extends AbstractPowerModule {
         if (!isOutsideWorldBounds(world, pos)) {
             BlockState state = world.getBlockState(pos.below());
             BlockPos blockpos = pos.subtract(playerEntity.blockPosition());
-            return state.getMaterial().blocksMotion() && state.isSolidRender(world, pos.below()) && world.noCollision(playerEntity, playerEntity.getBoundingBox().move(blockpos));
+            return state.blocksMotion() && state.isSolidRender(world, pos.below()) && world.noCollision(playerEntity, playerEntity.getBoundingBox().move(blockpos));
         }
         return false;
     }

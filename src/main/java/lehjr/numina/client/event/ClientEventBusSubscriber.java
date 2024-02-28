@@ -63,11 +63,12 @@ public class ClientEventBusSubscriber {
     }
 
     @SubscribeEvent
-    public static void onTextureStitchPre(TextureStitchEvent.Pre event) {
+    public static void onTextureStitchPre(TextureStitchEvent event) {
         TextureAtlas map = event.getAtlas();
         // only adds if it doesn't already exist
         if (map.location() == TextureAtlas.LOCATION_BLOCKS) {
-            event.addSprite(NuminaConstants.TEXTURE_WHITE_SHORT);
+            System.out.println("fixme, sprite upload not fixed yet!!!!");
+//            event.addSprite(NuminaConstants.TEXTURE_WHITE_SHORT);
         }
     }
 
@@ -124,7 +125,7 @@ public class ClientEventBusSubscriber {
             }
         }
         if (bipedArmorLayer != null) {
-            renderer.addLayer(new NuminaArmorLayer<>(renderer, bipedArmorLayer.innerModel, bipedArmorLayer.outerModel));
+            renderer.addLayer(new NuminaArmorLayer<>(renderer, bipedArmorLayer.innerModel, bipedArmorLayer.outerModel, Minecraft.getInstance().getModelManager()));
         }
     }
 

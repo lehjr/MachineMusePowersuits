@@ -105,17 +105,17 @@ public final class PlayerUtils {
             cool += 0.5;
 
         // If nighttime and in the desert, increase cooling
-        if (!player.level.isDay() && getBiome(player).coldEnoughToSnow(player.blockPosition()) /*.getBiomeCategory().equals(Biomes.DESERT) FIXME*/) {
+        if (!player.level().isDay() && getBiome(player).coldEnoughToSnow(player.blockPosition()) /*.getBiomeCategory().equals(Biomes.DESERT) FIXME*/) {
             cool += 0.8;
         }
 
         // check for rain and if player is in the rain
         // check if rain can happen in the biome the player is in
-        if (getBiome(player).getPrecipitation() != Biome.Precipitation.NONE
+        if (getBiome(player).hasPrecipitation()
                 // check if raining in the world
-                && player.level.isRaining()
+                && player.level().isRaining()
                 // check if the player can see the sky
-                && player.level.canSeeSky(player.blockPosition().offset(0, 1, 0))) {
+                && player.level().canSeeSky(player.blockPosition().offset(0, 1, 0))) {
             cool += 0.2;
         }
 
@@ -123,6 +123,6 @@ public final class PlayerUtils {
     }
 
     public static Biome getBiome(Player player) {
-        return player.level.getBiome(player.blockPosition()).value();
+        return player.level().getBiome(player.blockPosition()).value();
     }
 }

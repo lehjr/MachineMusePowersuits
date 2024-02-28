@@ -40,6 +40,7 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.util.Lazy;
 
@@ -52,7 +53,7 @@ public class NuminaArmorStandItemRenderer extends BlockEntityWithoutLevelRendere
     }
 
     @Override
-    public void renderByItem(ItemStack itemStack, ItemTransforms.TransformType transformType, PoseStack matrixStack, MultiBufferSource renderTypeBuffer, int packedLightIn, int packedOverlayIn) {
+    public void renderByItem(ItemStack itemStack, ItemDisplayContext transformType, PoseStack matrixStack, MultiBufferSource renderTypeBuffer, int packedLightIn, int packedOverlayIn) {
         matrixStack.pushPose();
         matrixStack.scale(1.0F, -1.0F, -1.0F);
         VertexConsumer ivertexbuilder1 = ItemRenderer.getFoilBufferDirect(renderTypeBuffer,  NuminaArmorStandModel.INSTANCE.renderType(/*ArmorStandRenderer.DEFAULT_SKIN_LOCATION*/ NuminaConstants.TEXTURE_ARMOR_STAND), false, itemStack.hasFoil());

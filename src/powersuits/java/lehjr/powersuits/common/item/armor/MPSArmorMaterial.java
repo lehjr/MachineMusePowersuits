@@ -30,6 +30,7 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.LazyLoadedValue;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -39,7 +40,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import java.util.function.Supplier;
 
 public enum MPSArmorMaterial implements ArmorMaterial {
-    EMPTY_ARMOR("nothing", 5, new int[]{0, 0, 0, 0}, 15, SoundEvents.ARMOR_EQUIP_LEATHER, 0.0F, () -> {
+    EMPTY_ARMOR("nothing", 5, new int[]{0, 0, 0, 0}, 15, SoundEvents.ARMOR_EQUIP_CHAIN, 0.0F, () -> {
         return Ingredient.of(Items.AIR);
     });
 
@@ -72,12 +73,14 @@ public enum MPSArmorMaterial implements ArmorMaterial {
         this.repairMaterial = new LazyLoadedValue<Ingredient>(repairMaterial);
     }
 
-    public int getDurabilityForSlot(EquipmentSlot slotIn) {
-        return MAX_DAMAGE_ARRAY[slotIn.getIndex()] * this.maxDamageFactor;
+    @Override
+    public int getDurabilityForType(ArmorItem.Type type) {
+        return MAX_DAMAGE_ARRAY[type.getSlot().getIndex()] * this.maxDamageFactor;
     }
 
-    public int getDefenseForSlot(EquipmentSlot slotIn) {
-        return this.damageReductionAmountArray[slotIn.getIndex()];
+    @Override
+    public int getDefenseForType(ArmorItem.Type type) {
+        return this.damageReductionAmountArray[type.getSlot().getIndex()];
     }
 
     public int getEnchantmentValue() {

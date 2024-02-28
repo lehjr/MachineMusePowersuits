@@ -75,7 +75,7 @@ public class CompatibleModuleDisplayFrame extends ModuleSelectionFrame {
             if(preserveSelected && selCopy.get().isPresent() && frame.category == selCopy.get().get().category) {
 
                 for (ClickableModule button : frame.moduleButtons) {
-                    if (button.getModule().sameItem(selCopy.get().get().getModule())) {
+                    if (ItemStack.isSameItem(button.getModule(), selCopy.get().get().getModule())) {
                         frame.selectedModule = frame.moduleButtons.indexOf(button);
                         preserveSelected = false; // just to skip checking the rest
                         break;

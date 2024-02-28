@@ -27,7 +27,8 @@
 package lehjr.powersuits.client.render.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
+import net.minecraft.world.item.ItemDisplayContext;
+import org.joml.Vector3f;
 import lehjr.powersuits.common.constants.MPSConstants;
 import lehjr.powersuits.common.constants.MPSRegistryNames;
 import lehjr.powersuits.common.entity.SpinningBladeEntity;
@@ -69,7 +70,7 @@ public class SpinningBladeEntityRenderer extends net.minecraft.client.renderer.e
         ItemStack itemstack = new ItemStack(ForgeRegistries.ITEMS.getValue(MPSRegistryNames.BLADE_LAUNCHER_MODULE));
         int i = itemstack.isEmpty() ? 187 : Item.getId(itemstack.getItem()) + itemstack.getDamageValue();
         this.random.setSeed(i);
-        BakedModel ibakedmodel = Minecraft.getInstance().getItemRenderer().getModel(itemstack, entityIn.level, null, entityIn.getId());
+        BakedModel ibakedmodel = Minecraft.getInstance().getItemRenderer().getModel(itemstack, entityIn.level(), null, entityIn.getId());
         //  FIXME... figure out how to rotate blades to correspond with path
 
         matrixStackIn.mulPose(TransformationHelper.quatFromXYZ(new Vector3f(90, 0, 0), true));
@@ -79,7 +80,7 @@ public class SpinningBladeEntityRenderer extends net.minecraft.client.renderer.e
 
         boolean flag = ibakedmodel.isGui3d();
         matrixStackIn.pushPose();
-        Minecraft.getInstance().getItemRenderer().render(itemstack, ItemTransforms.TransformType.NONE, false, matrixStackIn, bufferIn, packedLightIn, OverlayTexture.NO_OVERLAY, ibakedmodel);
+        Minecraft.getInstance().getItemRenderer().render(itemstack, ItemDisplayContext.NONE, false, matrixStackIn, bufferIn, packedLightIn, OverlayTexture.NO_OVERLAY, ibakedmodel);
         matrixStackIn.popPose();
         if (flag) {
             matrixStackIn.translate(0.0, 0.0, 0.09375F);

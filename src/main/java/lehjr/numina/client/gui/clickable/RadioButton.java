@@ -1,10 +1,10 @@
 package lehjr.numina.client.gui.clickable;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import lehjr.numina.client.gui.GuiIcon;
 import lehjr.numina.client.gui.geometry.MusePoint2D;
 import lehjr.numina.client.render.IconUtils;
 import lehjr.numina.common.math.Color;
+import net.minecraft.client.gui.GuiGraphics;
 
 public class RadioButton extends AbstractIconButton {
     public boolean isSelected = false;
@@ -29,11 +29,11 @@ public class RadioButton extends AbstractIconButton {
     }
 
     @Override
-    public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTick) {
+    public void render(GuiGraphics gfx, int mouseX, int mouseY, float partialTick) {
         if (isEnabled() && isVisible()) {
-            getIcon().draw(matrixStack, this.left(), this.top(), color);
+            getIcon().draw(gfx.pose(), this.left(), this.top(), color);
             if (isSelected) {
-                IconUtils.getIcon().armordisplayselect.draw(matrixStack, this.left(), this.top(), Color.WHITE);
+                IconUtils.getIcon().armordisplayselect.draw(gfx.pose(), this.left(), this.top(), Color.WHITE);
             }
         }
     }

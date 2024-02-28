@@ -2,9 +2,11 @@ modLoader="javafml"
 loaderVersion="${loader_version}"
 issueTrackerURL="https://github.com/lehjr/MachineMusePowersuits/issues"
 license='Simplified BSD License https://opensource.org/license/bsd-2-clause/'
+[[accessTransformers]]
+    file="META-INF/accesstransformer.cfg"
 [[mods]]
     modId="numina"
-    version="${mod_version}"
+    version="${version}"
     displayName="Numina"
     updateJSONURL="https://mc-curse-update-checker.herokuapp.com/235440"
     displayURL="https://github.com/lehjr/MachineMusePowersuits"
@@ -14,7 +16,7 @@ license='Simplified BSD License https://opensource.org/license/bsd-2-clause/'
 [[dependencies.numina]]
     modId="forge"
     mandatory=true
-    versionRange="${forge_version}"
+    versionRange="${neo_version}"
     side="BOTH"
 
 [[dependencies.numina]]

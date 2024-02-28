@@ -1,8 +1,8 @@
 package lehjr.numina.client.gui.frame;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import lehjr.numina.client.gui.geometry.Rect;
 import lehjr.numina.common.math.MathUtils;
+import net.minecraft.client.gui.GuiGraphics;
 
 import javax.annotation.Nonnull;
 
@@ -17,12 +17,12 @@ public class ScrollableFrame extends AbstractGuiFrame implements IScrollable {
     }
 
     @Override
-    public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTick) {
+    public void render(GuiGraphics gfx, int mouseX, int mouseY, float partialTick) {
         if (isVisible()) {
-            renderBackgroundRect(matrixStack, mouseX, mouseY, partialTick);
-            super.render(matrixStack, mouseX, mouseY, partialTick);
-            preRender(matrixStack, mouseX, mouseY, partialTick);
-            postRender(mouseX, mouseY, partialTick);
+            renderBackgroundRect(gfx, mouseX, mouseY, partialTick);
+            super.render(gfx, mouseX, mouseY, partialTick);
+            preRender(gfx, mouseX, mouseY, partialTick);
+            postRender(gfx, mouseX, mouseY, partialTick);
         }
     }
 

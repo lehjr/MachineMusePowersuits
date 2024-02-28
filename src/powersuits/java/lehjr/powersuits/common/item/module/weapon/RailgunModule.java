@@ -145,7 +145,7 @@ public class RailgunModule extends AbstractPowerModule {
                                     if(hitResult instanceof EntityHitResult entityHitResult) {
                                         Entity entity = entityHitResult.getEntity();
                                         if (entity instanceof LivingEntity livingEntity) {
-                                            DamageSource damageSource = DamageSource.playerAttack(player);
+                                            DamageSource damageSource = player.damageSources().playerAttack(player);
                                             if (livingEntity.hurt(damageSource, (int) damage)) {
                                                 livingEntity.push(lookVec.x * knockback, Math.abs(lookVec.y + 0.2f) * knockback, lookVec.z * knockback);
                                             }

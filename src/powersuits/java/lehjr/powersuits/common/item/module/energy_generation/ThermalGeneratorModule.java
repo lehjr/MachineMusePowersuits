@@ -87,7 +87,7 @@ public class ThermalGeneratorModule extends AbstractPowerModule {
             public void onPlayerTickActive(Player player, ItemStack item) {
                 double currentHeat = HeatUtils.getPlayerHeat(player);
                 double maxHeat = HeatUtils.getPlayerMaxHeat(player);
-                if (player.level.getGameTime() % 20 == 0) {
+                if (player.level().getGameTime() % 20 == 0) {
                     if (player.isOnFire()) {
                         ElectricItemUtils.givePlayerEnergy(player, (int) (4 * applyPropertyModifiers(MPSConstants.ENERGY_GENERATION)));
                     } else if (currentHeat >= 200) {

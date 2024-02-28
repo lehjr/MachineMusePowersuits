@@ -1,10 +1,10 @@
 package lehjr.powersuits.client.gui.modding.cosmetic.colorpicker;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import lehjr.numina.client.gui.clickable.RadioButton;
 import lehjr.numina.client.gui.geometry.MusePoint2D;
 import lehjr.numina.client.render.IconUtils;
 import lehjr.numina.common.math.Color;
+import net.minecraft.client.gui.GuiGraphics;
 
 public class PlusButton extends RadioButton {
     public PlusButton(double leftPos, double topPos) {
@@ -16,7 +16,7 @@ public class PlusButton extends RadioButton {
     }
 
     @Override
-    public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTick) {
-        getIcon().draw(matrixStack, this.left(), this.top(), Color.GREEN);
+    public void render(GuiGraphics gfx, int mouseX, int mouseY, float partialTick) {
+        getIcon().draw(gfx.pose(), this.left(), this.top(), Color.GREEN);
     }
 }

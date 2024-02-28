@@ -39,6 +39,7 @@ import lehjr.powersuits.common.config.MPSSettings;
 import lehjr.powersuits.common.constants.MPSRegistryNames;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
@@ -52,11 +53,10 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
 public class PowerArmorCap implements ICapabilityProvider {
     final ItemStack itemStack;
-    final EquipmentSlot targetSlot;
+    final ArmorItem.Type targetType;
     final ModularItem modularItem;
     final LazyOptional<IItemHandler> modularItemHolder;
 
@@ -69,12 +69,12 @@ public class PowerArmorCap implements ICapabilityProvider {
 
     double maxHeat;
 
-    public PowerArmorCap(@Nonnull ItemStack itemStackIn, EquipmentSlot slot) {
+    public PowerArmorCap(@Nonnull ItemStack itemStackIn, ArmorItem.Type type) {
         this.itemStack = itemStackIn;
-        this.targetSlot = slot;
+        this.targetType = type;
         Map<ModuleCategory, NuminaRangedWrapper> rangedWrapperMap = new HashMap<>();
-        switch(targetSlot) {
-            case HEAD: {
+        switch(targetType) {
+            case HELMET: {
                 this.modularItem = new ModularItem(itemStack, 18) {{
                     rangedWrapperMap.put(ModuleCategory.ARMOR,new NuminaRangedWrapper(this, 0, 1));
                     rangedWrapperMap.put(ModuleCategory.ENERGY_STORAGE,new NuminaRangedWrapper(this, 1, 2));
@@ -87,7 +87,7 @@ public class PowerArmorCap implements ICapabilityProvider {
                 break;
             }
 
-            case CHEST: {
+            case CHESTPLATE: {
                 this.modularItem = new ModularItem(itemStack, 18) {{
                     rangedWrapperMap.put(ModuleCategory.ARMOR,new NuminaRangedWrapper(this, 0, 1));
                     rangedWrapperMap.put(ModuleCategory.ENERGY_STORAGE,new NuminaRangedWrapper(this, 1, 2));
@@ -99,7 +99,7 @@ public class PowerArmorCap implements ICapabilityProvider {
                 break;
             }
 
-            case LEGS: {
+            case LEGGINGS: {
                 this.modularItem = new ModularItem(itemStackIn, 10) {{
                     rangedWrapperMap.put(ModuleCategory.ARMOR,new NuminaRangedWrapper(this, 0, 1));
                     rangedWrapperMap.put(ModuleCategory.ENERGY_STORAGE,new NuminaRangedWrapper(this, 1, 2));
@@ -111,7 +111,7 @@ public class PowerArmorCap implements ICapabilityProvider {
                 break;
             }
 
-            case FEET: {
+            case BOOTS: {
                 this.modularItem = new ModularItem(itemStack, 8) {{
                     rangedWrapperMap.put(ModuleCategory.ARMOR,new NuminaRangedWrapper(this, 0, 1));
                     rangedWrapperMap.put(ModuleCategory.ENERGY_STORAGE,new NuminaRangedWrapper(this, 1, 2));
@@ -145,7 +145,7 @@ public class PowerArmorCap implements ICapabilityProvider {
         });
 
         this.fluidHolder = LazyOptional.of(()-> {
-            if (targetSlot == EquipmentSlot.CHEST ) {
+            if (targetType == ArmorItem.Type.CHESTPLATE) {
                 modularItem.loadCapValues();
                 return modularItem.getOnlineModuleOrEmpty(MPSRegistryNames.FLUID_TANK_MODULE).getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).orElse(new EmptyFluidHandler());
             } else {

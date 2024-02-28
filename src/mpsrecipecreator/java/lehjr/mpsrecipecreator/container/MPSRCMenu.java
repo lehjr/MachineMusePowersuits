@@ -10,7 +10,7 @@ public class MPSRCMenu extends AbstractContainerMenu {
     /**
      * The crafting matrix inventory (3x3).
      */
-    public CraftingContainer craftMatrix = new CraftingContainer(this, 3, 3);
+    public CraftingContainer craftMatrix = new TransientCraftingContainer(this, 3, 3);
     public ResultContainer craftResult = new ResultContainer();
     /** Position of the workbench */
     public MPSRCMenu(int windowID, Inventory playerInventory) {
@@ -111,7 +111,7 @@ public class MPSRCMenu extends AbstractContainerMenu {
     }
 
     public static boolean consideredTheSameItem(ItemStack pStack1, ItemStack pStack2) {
-        return pStack1.getItem() == pStack2.getItem() && ItemStack.tagMatches(pStack1, pStack2);
+        return pStack1.getItem() == pStack2.getItem() && ItemStack.isSameItemSameTags(pStack1, pStack2);
     }
 
     @Override

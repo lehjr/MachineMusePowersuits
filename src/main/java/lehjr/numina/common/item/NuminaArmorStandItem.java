@@ -43,6 +43,7 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ArmorStandItem;
 import net.minecraft.world.item.Item;
@@ -80,11 +81,11 @@ public class NuminaArmorStandItem extends ArmorStandItem {
             if (level.noCollision((Entity)null, aabb) && level.getEntities((Entity)null, aabb).isEmpty()) {
                 if (level instanceof ServerLevel) {
                     ServerLevel serverlevel = (ServerLevel)level;
-                    NuminaArmorStand armorstand = NuminaObjects.ARMOR_STAND__ENTITY_TYPE.get().create(serverlevel, itemstack.getTag(), (Component)null, pContext.getPlayer(), blockpos, MobSpawnType.SPAWN_EGG, true, true);
+                    Consumer<NuminaArmorStand> consumer = EntityType.createDefaultStackConfig(serverlevel, itemstack, pContext.getPlayer());
+                    NuminaArmorStand armorstand = NuminaObjects.ARMOR_STAND__ENTITY_TYPE.get().create(serverlevel, itemstack.getTag(), consumer, blockpos, MobSpawnType.SPAWN_EGG, true, true);
                     if (armorstand == null) {
                         return InteractionResult.FAIL;
                     }
-
                     float f = (float)Mth.floor((Mth.wrapDegrees(pContext.getRotation() - 180.0F) + 22.5F) / 45.0F) * 45.0F;
                     armorstand.moveTo(armorstand.getX(), armorstand.getY(), armorstand.getZ(), f, 0.0F);
                     this.randomizePose(armorstand, level.random);

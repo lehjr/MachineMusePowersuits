@@ -52,6 +52,7 @@ import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.HumanoidArmorLayer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.texture.TextureAtlas;
+import net.minecraft.client.resources.model.ModelManager;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -67,8 +68,8 @@ import java.util.Optional;
 public class NuminaArmorLayer<T extends LivingEntity, M extends HumanoidModel<T>, A extends HumanoidModel<T>> extends HumanoidArmorLayer<T, M, A> {
     ModelTransformCalibration CALIBRATION;
 
-    public NuminaArmorLayer(RenderLayerParent<T, M> entityRenderer, A modelLeggings, A modelArmor) {
-        super(entityRenderer, modelLeggings, modelArmor);
+    public NuminaArmorLayer(RenderLayerParent<T, M> entityRenderer, A modelLeggings, A modelArmor, ModelManager modelManager) {
+        super(entityRenderer, modelLeggings, modelArmor, modelManager);
         this.CALIBRATION = ModelTransformCalibration.CALIBRATION;
     }
 
@@ -122,7 +123,7 @@ public class NuminaArmorLayer<T extends LivingEntity, M extends HumanoidModel<T>
         ItemStack itemstack = ItemUtils.getItemFromEntitySlot(entityIn, slotIn);
         Optional<IModelSpec> renderCapabity = getRenderCapability(itemstack);
         if (itemstack.getItem() instanceof ArmorItem armoritem && itemstack.getCapability(NuminaCapabilities.RENDER).isPresent()) {
-            if (armoritem.getSlot() == slotIn) {
+            if (armoritem.getType().getSlot() == slotIn) {
                 if (doesBypassRender(itemstack)) {
                     return;
                 }

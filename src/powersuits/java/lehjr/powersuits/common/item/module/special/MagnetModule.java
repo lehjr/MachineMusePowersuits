@@ -95,13 +95,13 @@ public class MagnetModule extends AbstractPowerModule {
             public void onPlayerTickActive(Player player, ItemStack stack) {
                 int energyUSage = (int) applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION);
                 if (ElectricItemUtils.getPlayerEnergy(player) > energyUSage) {
-                    boolean isServerSide = !player.level.isClientSide;
+                    boolean isServerSide = !player.level().isClientSide;
 
-                    if ((player.level.getGameTime() % 20) == 0 && isServerSide) {
+                    if ((player.level().getGameTime() % 20) == 0 && isServerSide) {
                         ElectricItemUtils.drainPlayerEnergy(player, energyUSage);
                     }
                     int range = (int) applyPropertyModifiers(MPSConstants.RADIUS);
-                    Level world = player.level;
+                    Level world = player.level();
                     AABB bounds = player.getBoundingBox().inflate(range);
 
                     if (isServerSide) {

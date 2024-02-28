@@ -1,12 +1,13 @@
 package lehjr.numina.client.gui.clickable;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.datafixers.util.Pair;
 import lehjr.numina.client.render.IconUtils;
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
 import lehjr.numina.common.item.ItemUtils;
 import lehjr.numina.common.math.Color;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.resources.ResourceLocation;
@@ -66,13 +67,13 @@ public class ModularItemTabToggleWidget extends Clickable {
     }
 
     @Override
-    public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTick) {
+    public void render(GuiGraphics gfx, int mouseX, int mouseY, float partialTick) {
         if (this.animationTime > 0.0F) {
             float f = 1.0F + 0.1F * (float)Math.sin((double)(this.animationTime / 15.0F * (float)Math.PI));
-            matrixStack.pushPose();
-            matrixStack.translate((float)(this.left() + 8), (float)(this.top() + 12), 0.0F);
-            matrixStack.scale(1.0F, f, 1.0F);
-            matrixStack.translate((float)(-(this.left() + 8)), (float)(-(this.top() + 12)), 0.0F);
+            gfx.pose().pushPose();
+            gfx.pose().translate((float)(this.left() + 8), (float)(this.top() + 12), 0.0F);
+            gfx.pose().scale(1.0F, f, 1.0F);
+            gfx.pose().translate((float)(-(this.left() + 8)), (float)(-(this.top() + 12)), 0.0F);
         }
 
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
@@ -95,11 +96,11 @@ public class ModularItemTabToggleWidget extends Clickable {
             k -= 2;
         }
 
-        IconUtils.INSTANCE.blit(matrixStack, k, (float)this.top(), i, j, (float) this.width(), (float) this.height());
+        IconUtils.INSTANCE.blit(gfx.pose(), k, (float)this.top(), i, j, (float) this.width(), (float) this.height());
         RenderSystem.enableDepthTest();
-        this.renderIcon(matrixStack);
+        this.renderIcon(gfx);
         if (this.animationTime > 0.0F) {
-            matrixStack.popPose();
+            gfx.pose().popPose();
             this.animationTime -= partialTick;
         }
     }
@@ -107,24 +108,25 @@ public class ModularItemTabToggleWidget extends Clickable {
     /**
      * Renders the item icons for the tabs. Some tabs have 2 icons, some just one.
      */
-    private void renderIcon(PoseStack matrixStack) {
+    private void renderIcon(GuiGraphics gfx) {
         int offset = this.isStateActive? -2 : -2;
         RenderSystem.disableDepthTest();
         if (this.icon.isEmpty()) {
             if (EquipmentSlot.MAINHAND.equals(type)) {
                 RenderSystem.setShader(GameRenderer::getPositionTexColorShader);
-                IconUtils.getIcon().weapon.draw(matrixStack, left() + 9 + offset, top() + 5, Color.WHITE);
+                IconUtils.getIcon().weapon.draw(gfx.pose(), left() + 9 + offset, top() + 5, Color.WHITE);
             } else {
                 Pair<ResourceLocation, ResourceLocation> pair = IconUtils.getSlotBackground(type);
                 if (pair != null) {
                     TextureAtlasSprite textureatlassprite = getMinecraft().getTextureAtlas(pair.getFirst()).apply(pair.getSecond());
-                    RenderSystem.setShaderTexture(0, textureatlassprite.atlas().location());
-                    getMinecraft().screen.blit(matrixStack, (int)left() + 10 + offset, (int)top() + 5, getMinecraft().screen.getBlitOffset(), 16, 16, textureatlassprite);
+                    RenderSystem.setShaderTexture(0, textureatlassprite.atlasLocation());
+                    gfx.blit((int)left() + 10 + offset, (int)top() + 5, 0, 16, 16, textureatlassprite);
                 }
             }
             RenderSystem.enableDepthTest();
         } else {
-            getMinecraft().getItemRenderer().renderAndDecorateItem(icon, (int)left() + 9 + offset, (int)top() + 6);
+            gfx.renderItem(icon, (int)left() + 9 + offset, (int)top() + 6);
+            gfx.renderItemDecorations(Minecraft.getInstance().font, icon, (int)left() + 9 + offset, (int)top() + 6);
         }
     }
 }

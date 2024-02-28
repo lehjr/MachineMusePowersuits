@@ -28,10 +28,10 @@ package lehjr.numina.common.string;
 
 import com.mojang.blaze3d.platform.Lighting;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 import lehjr.numina.common.math.Color;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.FormattedText;
 import net.minecraft.resources.ResourceLocation;
@@ -420,165 +420,165 @@ public class StringUtils {
         }
     }
 
-    public static void drawLeftAlignedText(PoseStack matrixStack, Component text, double x, double y, Color color) {
-        drawText(matrixStack, text, x, y - (getStringHeight() * 0.5), color);
+    public static void drawLeftAlignedText(GuiGraphics gfx, Component text, double x, double y, Color color) {
+        drawText(gfx, text, x, y - (getStringHeight() * 0.5), color);
     }
 
-    public static void drawLeftAlignedText(PoseStack matrixStack, String s, double x, double y, Color color) {
-        drawText(matrixStack, s, x, y - (getStringHeight() * 0.5), color);
+    public static void drawLeftAlignedText(GuiGraphics gfx, String s, double x, double y, Color color) {
+        drawText(gfx, s, x, y - (getStringHeight() * 0.5), color);
     }
 
-    public static void drawRightAlignedText(PoseStack matrixStack, Component text, double x, double y, Color color) {
-        drawText(matrixStack, text, x - getStringWidth(text), y - (getStringHeight() * 0.5), color);
+    public static void drawRightAlignedText(GuiGraphics gfx, Component text, double x, double y, Color color) {
+        drawText(gfx, text, x - getStringWidth(text), y - (getStringHeight() * 0.5), color);
     }
 
-    public static void drawRightAlignedText(PoseStack matrixStack, String s, double x, double y, Color color) {
-        drawText(matrixStack, s, x - getStringWidth(s), y - (getStringHeight() * 0.5), color);
+    public static void drawRightAlignedText(GuiGraphics gfx, String s, double x, double y, Color color) {
+        drawText(gfx, s, x - getStringWidth(s), y - (getStringHeight() * 0.5), color);
     }
 
-    public static void drawCenteredText(PoseStack matrixStack, Component component, double x, double y, Color color) {
-        drawCenteredText(matrixStack, component, (float) x, (float) y, color);
+    public static void drawCenteredText(GuiGraphics gfx, Component component, double x, double y, Color color) {
+        drawCenteredText(gfx, component, (float) x, (float) y, color);
     }
 
-    public static void drawCenteredText(PoseStack matrixStack, Component component, float x, float y, Color color) {
-        drawText(matrixStack, component, ((x - getFontRenderer().width(component) / 2)), (y - (getStringHeight() * 0.5F)), color);
+    public static void drawCenteredText(GuiGraphics gfx, Component component, float x, float y, Color color) {
+        drawText(gfx, component, ((x - getFontRenderer().width(component) / 2)), (y - (getStringHeight() * 0.5F)), color);
     }
 
-    public static void drawCenteredText(PoseStack matrixStack, String s, double x, double y, Color color) {
-        drawText(matrixStack, s, ((x - getFontRenderer().width(s) / 2)), (y - (getStringHeight() * 0.5F)), color);
+    public static void drawCenteredText(GuiGraphics gfx, String s, double x, double y, Color color) {
+        drawText(gfx, s, ((x - getFontRenderer().width(s) / 2)), (y - (getStringHeight() * 0.5F)), color);
     }
 
-    public static void drawCenteredText(PoseStack matrixStack, String s, float x, float y, Color color) {
-        drawText(matrixStack, s, ((x - getFontRenderer().width(s) / 2)), (y - (getStringHeight() * 0.5F)), color);
+    public static void drawCenteredText(GuiGraphics gfx, String s, float x, float y, Color color) {
+        drawText(gfx, s, ((x - getFontRenderer().width(s) / 2)), (y - (getStringHeight() * 0.5F)), color);
     }
 
-    public static void drawText(PoseStack matrixStack, Component component, double x, double y, Color color) {
-        getFontRenderer().draw(matrixStack, component,  (float) x, (float) y, color.getARGBInt());
+    public static void drawText(GuiGraphics gfx, Component component, double x, double y, Color color) {
+        gfx.drawString(getFontRenderer(), component.getVisualOrderText(), (float) x, (float) y, color.getARGBInt(), false);
     }
 
-    public static void drawText(PoseStack matrixStack, String s, double x, double y, Color color) {
-        getFontRenderer().draw(matrixStack, s,  (float) x, (float) y, color.getARGBInt());
-    }
-
-    /**
-     * Does the necessary openGL calls and calls the Minecraft font renderer to draw a string such that the xcoord is halfway through the string
-     */
-    public static void drawShadowedStringCentered(PoseStack matrixStack, Component text, double x, double y, Color color) {
-        drawShadowedString(matrixStack, text, x - getStringWidth(text) / 2, y - (getStringHeight() * 0.5), color);
+    public static void drawText(GuiGraphics gfx, String s, double x, double y, Color color) {
+        gfx.drawString(getFontRenderer(), s, (float) x, (float) y, color.getARGBInt(), false);
     }
 
     /**
      * Does the necessary openGL calls and calls the Minecraft font renderer to draw a string such that the xcoord is halfway through the string
      */
-    public static void drawShadowedStringCentered(PoseStack matrixStack, Component text, double x, double y) {
-        drawShadowedString(matrixStack, text, x - getStringWidth(text) / 2, y - (getStringHeight() * 0.5));
+    public static void drawShadowedStringCentered(GuiGraphics gfx, Component text, double x, double y, Color color) {
+        drawShadowedString(gfx, text, x - getStringWidth(text) / 2, y - (getStringHeight() * 0.5), color);
     }
 
     /**
      * Does the necessary openGL calls and calls the Minecraft font renderer to draw a string such that the xcoord is halfway through the string
      */
-    public static void drawShadowedStringCentered(PoseStack matrixStack, String s, double x, double y, Color color) {
-        drawShadowedString(matrixStack, s, x - getStringWidth(s) / 2, y - (getStringHeight() * 0.5), color);
+    public static void drawShadowedStringCentered(GuiGraphics gfx, Component text, double x, double y) {
+        drawShadowedString(gfx, text, x - getStringWidth(text) / 2, y - (getStringHeight() * 0.5));
     }
 
     /**
      * Does the necessary openGL calls and calls the Minecraft font renderer to draw a string such that the xcoord is halfway through the string
      */
-    public static void drawShadowedStringCentered(PoseStack matrixStack, String s, double x, double y) {
-        drawShadowedString(matrixStack, s, x - getStringWidth(s) / 2, y - (getStringHeight() * 0.5));
+    public static void drawShadowedStringCentered(GuiGraphics gfx, String s, double x, double y, Color color) {
+        drawShadowedString(gfx, s, x - getStringWidth(s) / 2, y - (getStringHeight() * 0.5), color);
     }
 
     /**
      * Does the necessary openGL calls and calls the Minecraft font renderer to draw a string such that the xcoord is halfway through the string
      */
-    public static void drawRightAlignedShadowedString(PoseStack matrixStack, Component text, double x, double y) {
-        drawShadowedString(matrixStack, text, x - getStringWidth(text), y - (getStringHeight() * 0.5));
+    public static void drawShadowedStringCentered(GuiGraphics gfx, String s, double x, double y) {
+        drawShadowedString(gfx, s, x - getStringWidth(s) / 2, y - (getStringHeight() * 0.5));
     }
 
     /**
      * Does the necessary openGL calls and calls the Minecraft font renderer to draw a string such that the xcoord is halfway through the string
      */
-    public static void drawRightAlignedShadowedString(PoseStack matrixStack, Component s, double x, double y, Color color) {
-        drawShadowedString(matrixStack, s, x - getStringWidth(s), y - (getStringHeight() * 0.5), color);
+    public static void drawRightAlignedShadowedString(GuiGraphics gfx, Component text, double x, double y) {
+        drawShadowedString(gfx, text, x - getStringWidth(text), y - (getStringHeight() * 0.5));
+    }
+
+    /**
+     * Does the necessary openGL calls and calls the Minecraft font renderer to draw a string such that the xcoord is halfway through the string
+     */
+    public static void drawRightAlignedShadowedString(GuiGraphics gfx, Component s, double x, double y, Color color) {
+        drawShadowedString(gfx, s, x - getStringWidth(s), y - (getStringHeight() * 0.5), color);
     }
 
 
     /**
      * Does the necessary openGL calls and calls the Minecraft font renderer to draw a string such that the xcoord is halfway through the string
      */
-    public static void drawRightAlignedShadowedString(PoseStack matrixStack, String s, double x, double y, Color color) {
-        drawShadowedString(matrixStack, s, x - getStringWidth(s), y - (getStringHeight() * 0.5), color);
+    public static void drawRightAlignedShadowedString(GuiGraphics gfx, String s, double x, double y, Color color) {
+        drawShadowedString(gfx, s, x - getStringWidth(s), y - (getStringHeight() * 0.5), color);
     }
 
     /**
      * Does the necessary openGL calls and calls the Minecraft font renderer to draw a string such that the xcoord is halfway through the string
      */
-    public static void drawRightAlignedShadowedString(PoseStack matrixStack, String s, double x, double y) {
-        drawShadowedString(matrixStack, s, x - getStringWidth(s), y /*- (getStringHeight() * 0.5)*/);
+    public static void drawRightAlignedShadowedString(GuiGraphics gfx, String s, double x, double y) {
+        drawShadowedString(gfx, s, x - getStringWidth(s), y /*- (getStringHeight() * 0.5)*/);
     }
 
-    public static void drawLeftAlignedShadowedString(PoseStack matrixStack, Component text, double x, double y) {
-        drawShadowedString(matrixStack, text, x, y - (getStringHeight() * 0.5));
+    public static void drawLeftAlignedShadowedString(GuiGraphics gfx, Component text, double x, double y) {
+        drawShadowedString(gfx, text, x, y - (getStringHeight() * 0.5));
     }
 
-    public static void drawLeftAlignedShadowedString(PoseStack matrixStack, Component text, double x, double y, Color color) {
-        drawShadowedString(matrixStack, text, x, y - (getStringHeight() * 0.5), color);
+    public static void drawLeftAlignedShadowedString(GuiGraphics gfx, Component text, double x, double y, Color color) {
+        drawShadowedString(gfx, text, x, y - (getStringHeight() * 0.5), color);
     }
 
-    public static void drawLeftAlignedShadowedString(PoseStack matrixStack, String s, double x, double y) {
-        drawShadowedString(matrixStack, s, x, y - (getStringHeight() * 0.5));
+    public static void drawLeftAlignedShadowedString(GuiGraphics gfx, String s, double x, double y) {
+        drawShadowedString(gfx, s, x, y - (getStringHeight() * 0.5));
     }
 
-    public static void drawLeftAlignedShadowedString(PoseStack matrixStack, String s, double x, double y, final Color color) {
-        drawShadowedString(matrixStack, s, x, y - (getStringHeight() * 0.5), color);
+    public static void drawLeftAlignedShadowedString(GuiGraphics gfx, String s, double x, double y, final Color color) {
+        drawShadowedString(gfx, s, x, y - (getStringHeight() * 0.5), color);
     }
 
-    public static void drawShadowedString(PoseStack matrixStack, Component s, double x, double y) {
-        drawShadowedString(matrixStack, s, x, y, Color.WHITE);
+    public static void drawShadowedString(GuiGraphics gfx, Component s, double x, double y) {
+        drawShadowedString(gfx, s, x, y, Color.WHITE);
     }
 
-    public static void drawShadowedString(PoseStack matrixStack, String s, double x, double y) {
-        drawShadowedString(matrixStack, s, x, y, Color.WHITE);
+    public static void drawShadowedString(GuiGraphics gfx, String s, double x, double y) {
+        drawShadowedString(gfx, s, x, y, Color.WHITE);
     }
 
     /**
      * Does the necessary openGL calls and calls the Minecraft font renderer to draw a string at the specified coords
      */
-    public static void drawShadowedString(PoseStack matrixStack, Component s, double x, double y, final Color color) {
-        matrixStack.pushPose();
-        matrixStack.translate(0.0F, 0.0F, 32.0F);
+    public static void drawShadowedString(GuiGraphics gfx, Component s, double x, double y, final Color color) {
+        gfx.pose().pushPose();
+        gfx.pose().translate(0.0F, 0.0F, 32.0F);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         Lighting.setupFor3DItems();
         RenderSystem.disableDepthTest();
         RenderSystem.disableBlend();
-        getFontRenderer().drawShadow(matrixStack, s.getVisualOrderText(), (float)x, (float)y, color.getARGBInt());
+        gfx.drawString(getFontRenderer(), s.getVisualOrderText(), (float)x, (float)y, color.getARGBInt()/*16777215*/, true);
         RenderSystem.enableDepthTest();
         RenderSystem.enableBlend();
-        matrixStack.popPose();
+        gfx.pose().popPose();
     }
 
     /**
      * Does the necessary openGL calls and calls the Minecraft font renderer to draw a string at the specified coords
      */
     public static void drawShadowedString(
-            PoseStack matrixStack,
+            GuiGraphics gfx,
             String txt,
             double x,
             double y,
             Color color) {
-        matrixStack.pushPose();
-        matrixStack.translate(0.0F, 0.0F, 32.0F);
+        gfx.pose().pushPose();
+        gfx.pose().translate(0.0F, 0.0F, 32.0F);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         Lighting.setupFor3DItems();
         RenderSystem.disableDepthTest();
         RenderSystem.disableBlend();
-        getFontRenderer().drawShadow(matrixStack, txt, (float)x, (float)y, color.getARGBInt()/*16777215*/);
+        gfx.drawString(getFontRenderer(), txt, (float)x, (float)y, color.getARGBInt()/*16777215*/, true);
         RenderSystem.enableDepthTest();
         RenderSystem.enableBlend();
-        matrixStack.popPose();
+        gfx.pose().popPose();
     }
 
-    public static void drawShadowedStringsJustified(PoseStack matrixStack, List<String> words, double x1, double x2, double y) {
+    public static void drawShadowedStringsJustified(GuiGraphics gfx, List<String> words, double x1, double x2, double y) {
         int totalwidth = 0;
         for (String word : words) {
             totalwidth += getStringWidth(word);
@@ -588,7 +588,7 @@ public class StringUtils {
 
         double currentwidth = 0;
         for (String word : words) {
-            drawShadowedString(matrixStack, word, x1 + currentwidth, y);
+            drawShadowedString(gfx, word, x1 + currentwidth, y);
             currentwidth += getStringWidth(word) + spacing;
         }
     }

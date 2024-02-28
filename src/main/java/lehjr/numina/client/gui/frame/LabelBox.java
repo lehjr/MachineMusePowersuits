@@ -1,10 +1,10 @@
 package lehjr.numina.client.gui.frame;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import lehjr.numina.client.gui.geometry.MusePoint2D;
 import lehjr.numina.client.gui.geometry.Rect;
 import lehjr.numina.common.math.Color;
 import lehjr.numina.common.string.StringUtils;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 
 
@@ -23,8 +23,8 @@ public class LabelBox extends Rect {
         this.color = color;
     }
 
-    public void renderLabel(PoseStack matrixStack, float offsetX, float offsetY) {
-        StringUtils.drawCenteredText(matrixStack, translationTextComponent, centerX() + offsetX, centerY() +  offsetY, color);
+    public void renderLabel(GuiGraphics gfx, float offsetX, float offsetY) {
+        StringUtils.drawCenteredText(gfx, translationTextComponent, centerX() + offsetX, centerY() +  offsetY, color);
     }
 
     public void setLabel(Component translationTextComponent) {

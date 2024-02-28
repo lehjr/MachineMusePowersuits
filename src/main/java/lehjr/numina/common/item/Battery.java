@@ -57,7 +57,6 @@ public class Battery extends Item {
     public Battery(int maxEnergy, int maxTransfer, int tier) {
         super(new Item.Properties()
                 .stacksTo(1)
-                .tab(NuminaObjects.creativeTab)
                 .defaultDurability(-1)
                 .setNoRepair());
         this.maxEnergy = maxEnergy;
@@ -98,18 +97,5 @@ public class Battery extends Item {
             return super.getBarColor(stack);
         }
         return Mth.hsvToRgb(Math.max(0.0F, (float) energy.getEnergyStored() / (float) energy.getMaxEnergyStored()) / 3.0F, 1.0F, 1.0F);
-    }
-
-    @Override
-    public void fillItemCategory(CreativeModeTab group, NonNullList<ItemStack> items) {
-        super.fillItemCategory(group, items);
-        if (group.equals(NuminaObjects.creativeTab)) {
-            ItemStack out = new ItemStack(this);
-            out.getCapability(ForgeCapabilities.ENERGY).ifPresent(energy->{
-                int max = energy.getMaxEnergyStored();
-                energy.receiveEnergy(max, false);
-            });
-            items.add(out);
-        }
     }
 }

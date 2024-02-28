@@ -43,7 +43,7 @@ import javax.annotation.Nonnull;
 
 public interface IBlockBreakingModule extends IPowerModule {
     default boolean canHarvestBlock(@Nonnull ItemStack stack, BlockState state, Player player, BlockPos pos, double playerEnergy) {
-        return (playerEnergy >= this.getEnergyUsage() && isToolEffective(player.level, pos, getEmulatedTool()));
+        return (playerEnergy >= this.getEnergyUsage() && isToolEffective(player.level(), pos, getEmulatedTool()));
     }
 
     boolean mineBlock(@Nonnull ItemStack powerFist, Level worldIn, BlockState state, BlockPos pos, LivingEntity entityLiving, double playerEnergy);

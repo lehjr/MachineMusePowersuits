@@ -12,7 +12,9 @@ import net.minecraftforge.client.gui.overlay.IGuiOverlay;
 import java.util.Optional;
 
 public class ModeChangingIconOverlay {
-    public static final IGuiOverlay MODE_CHANGING_ICON_OVERLAY = ((gui, poseStack, partialTick, screenWidth, screenHeight) -> {
+
+    //void render(ForgeGui gui, GuiGraphics guiGraphics, float partialTick, int screenWidth, int screenHeight);
+    public static final IGuiOverlay MODE_CHANGING_ICON_OVERLAY = ((gui, gfx, partialTick, screenWidth, screenHeight) -> {
         Minecraft mc = gui.getMinecraft();
         LocalPlayer player = mc.player;
 
@@ -21,14 +23,14 @@ public class ModeChangingIconOverlay {
             ItemStack itemStack = player.getInventory().getItem(i);
             Optional<IModeChangingItem> modeChangingItemCap = ItemUtils.getModeChangingModularItemCapability(itemStack);
             int finalI = i;
-            modeChangingItemCap.ifPresent(handler-> handler.drawModeChangeIcon(player, finalI, gui, mc, poseStack, partialTick, screenWidth, screenHeight));
+            modeChangingItemCap.ifPresent(handler-> handler.drawModeChangeIcon(player, finalI, gui, mc, gfx, partialTick, screenWidth, screenHeight));
 
             if (modeChangingItemCap.isEmpty()) {
                 Optional<IOtherModItemsAsModules> foreignModuleCap = ItemUtils.getForeignItemAsModuleCap(itemStack);
                 foreignModuleCap.ifPresent(fmc->{
                     Optional<IModeChangingItem> storedMCIC = fmc.getStoredModeChangingModuleCapInStorage();
                     storedMCIC.ifPresent(cap->{
-                        cap.drawModeChangingModularItemIcon(player, finalI, gui, mc, poseStack, partialTick, screenWidth, screenHeight);
+                        cap.drawModeChangingModularItemIcon(player, finalI, gui, mc, gfx, partialTick, screenWidth, screenHeight);
                     });
                 });
             }

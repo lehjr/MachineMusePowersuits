@@ -58,7 +58,6 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -84,7 +83,7 @@ public class ChargingBase extends Block implements EntityBlock, SimpleWaterlogge
             16.0D); // South
 
     public ChargingBase() {
-        super(Block.Properties.of(Material.METAL)
+        super(Block.Properties.of()
                 .strength(0.5F, 4.0F)
                 .sound(SoundType.ANVIL)
 //                .harvestLevel(0)

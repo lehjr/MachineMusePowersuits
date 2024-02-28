@@ -24,6 +24,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 
@@ -45,7 +46,7 @@ public class MPSBEWLR extends BlockEntityWithoutLevelRenderer {
     }
 
     @Override
-    public void renderByItem(ItemStack itemStack, ItemTransforms.TransformType transformType, PoseStack poseStack, MultiBufferSource buffer, int packedLight, int packedOverlay) {
+    public void renderByItem(ItemStack itemStack, ItemDisplayContext transformType, PoseStack poseStack, MultiBufferSource buffer, int packedLight, int packedOverlay) {
         Item item = itemStack.getItem();
         /** Important: the render types used here are not the same for each transform due to issues each one has in different perspectives (rendering issues with the screens) */
         if (item.equals(MPSItems.TINKER_TABLE_ITEM.get())) {
@@ -62,10 +63,10 @@ public class MPSBEWLR extends BlockEntityWithoutLevelRenderer {
         }
 
         if (ItemUtils.getRegistryName(item).equals(MPSRegistryNames.POWER_FIST)) {
-            AtomicReference<Float> firingPercent = new AtomicReference(0F);
+            AtomicReference<Float> firingPercent = new AtomicReference<>(0F);
             itemStack.getCapability(NuminaCapabilities.RENDER).ifPresent(specNBTCap -> {
 
-                if (firingData != null && ItemStack.isSame(itemStack, firingData.itemInHand()) && firingData.player().isUsingItem()) {
+                if (firingData != null && ItemStack.isSameItemSameTags(itemStack, firingData.itemInHand()) && firingData.player().isUsingItem()) {
                     LocalPlayer player = firingData.player();
                     firingPercent.set(firingData.itemInHand().getCapability(ForgeCapabilities.ITEM_HANDLER)
                             .filter(IModeChangingItem.class::isInstance)
@@ -98,7 +99,7 @@ public class MPSBEWLR extends BlockEntityWithoutLevelRenderer {
 
                 CompoundTag renderTag =  specNBTCap.getRenderTag();
                 PowerFistModel2 modelToRender;
-                if (transformType == ItemTransforms.TransformType.FIRST_PERSON_LEFT_HAND || transformType == ItemTransforms.TransformType.THIRD_PERSON_LEFT_HAND) {
+                if (transformType == ItemDisplayContext.FIRST_PERSON_LEFT_HAND || transformType == ItemDisplayContext.THIRD_PERSON_LEFT_HAND) {
                     modelToRender = powerFistModelLeft;
                 } else {
                     modelToRender = powerFistModelRight;

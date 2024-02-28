@@ -26,7 +26,6 @@
 
 package lehjr.powersuits.client.gui.modding.cosmetic.partmanip;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import lehjr.numina.client.gui.clickable.ModularItemTabToggleWidget;
 import lehjr.numina.client.gui.clickable.slider.VanillaFrameScrollBar;
 import lehjr.numina.client.gui.frame.ModularItemSelectionFrame;
@@ -37,6 +36,7 @@ import lehjr.numina.common.capabilities.render.modelspec.NuminaModelSpecRegistry
 import lehjr.numina.common.capabilities.render.modelspec.SpecBase;
 import lehjr.numina.common.math.Color;
 import lehjr.powersuits.client.gui.modding.cosmetic.colorpicker.ColorPickerFrame;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.item.ItemStack;
@@ -259,22 +259,22 @@ public class ModelManipFrame extends ScrollableFrame {
     }
 
     @Override
-    public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTick) {
-        super.render(matrixStack, mouseX, mouseY, partialTick);
-        scrollBar.render(matrixStack, mouseX, mouseY, partialTick);
+    public void render(GuiGraphics gfx, int mouseX, int mouseY, float partialTick) {
+        super.render(gfx, mouseX, mouseY, partialTick);
+        scrollBar.render(gfx, mouseX, mouseY, partialTick);
 
         if (this.isVisible() && !modelframes.isEmpty()) {
-            super.preRender(matrixStack, mouseX, mouseY, partialTick);
-            matrixStack.pushPose();
-            matrixStack.translate(0.0, -this.currentScrollPixels, 0.0);
+            super.preRender(gfx, mouseX, mouseY, partialTick);
+            gfx.pose().pushPose();
+            gfx.pose().translate(0.0, -this.currentScrollPixels, 0.0);
             for (ModelManipSubframe f : modelframes) {
-                f.render(matrixStack, mouseX, (int)(this.currentScrollPixels + mouseY), partialTick);
+                f.render(gfx, mouseX, (int)(this.currentScrollPixels + mouseY), partialTick);
             }
-            matrixStack.popPose();
-            super.postRender(mouseX, mouseY, partialTick);
+            gfx.pose().popPose();
+            super.postRender(gfx, mouseX, mouseY, partialTick);
         } else {
-            super.preRender(matrixStack, mouseX, mouseY, partialTick);
-            super.postRender(mouseX, mouseY, partialTick);
+            super.preRender(gfx, mouseX, mouseY, partialTick);
+            super.postRender(gfx, mouseX, mouseY, partialTick);
         }
     }
 }

@@ -4,7 +4,8 @@ import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.platform.Lighting;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
-import com.mojang.math.Matrix4f;
+import net.minecraft.client.gui.GuiGraphics;
+import org.joml.Matrix4f;
 import lehjr.numina.client.gui.geometry.MusePoint2D;
 import lehjr.numina.common.math.Color;
 import net.minecraft.client.renderer.GameRenderer;
@@ -22,10 +23,10 @@ public class ClickableIndicatorArrow extends Clickable {
     }
 
     @Override
-    public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTick) {
+    public void render(GuiGraphics gfx, int mouseX, int mouseY, float partialTick) {
 //        ShaderInstance oldShader = RenderSystem.getShader();
         RenderSystem.setShader(GameRenderer::getPositionColorShader);
-        RenderSystem.disableTexture();
+//        RenderSystem.disableTexture();
         RenderSystem.enableBlend();
         Lighting.setupForEntityInInventory();
         RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
@@ -33,7 +34,7 @@ public class ClickableIndicatorArrow extends Clickable {
         Tesselator tessellator = Tesselator.getInstance();
         BufferBuilder buffer = tessellator.getBuilder();
         buffer.begin(VertexFormat.Mode.TRIANGLES, DefaultVertexFormat.POSITION_COLOR_LIGHTMAP);
-        Matrix4f matrix4f = matrixStack.last().pose();
+        Matrix4f matrix4f = gfx.pose().last().pose();
 
         // DOWN
         switch (arrowDirection) {
@@ -126,7 +127,7 @@ public class ClickableIndicatorArrow extends Clickable {
         }
         tessellator.end();
         RenderSystem.disableBlend();
-        RenderSystem.enableTexture();
+//        RenderSystem.enableTexture();
 //        RenderSystem.setShader(() -> oldShader);
     }
 

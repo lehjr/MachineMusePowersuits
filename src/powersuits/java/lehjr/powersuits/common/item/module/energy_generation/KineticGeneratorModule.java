@@ -82,17 +82,17 @@ public class KineticGeneratorModule extends AbstractPowerModule {
 
             @Override
             public void onPlayerTickActive(Player player, @Nonnull ItemStack itemStackIn) {
-                if (player.getAbilities().flying || player.isPassenger() || player.isFallFlying() || !player.isOnGround())
+                if (player.getAbilities().flying || player.isPassenger() || player.isFallFlying() || !player.onGround())
                     onPlayerTickInactive(player, itemStackIn);
 
                 // really hate running this check on every tick but needed for player speed adjustments
                 if (ElectricItemUtils.getPlayerEnergy(player) < ElectricItemUtils.getMaxPlayerEnergy(player)) {
                     // server side
-                    if (!player.level.isClientSide &&
+                    if (!player.level().isClientSide &&
                             // every 20 ticks
-                            (player.level.getGameTime() % 20) == 0 &&
+                            (player.level().getGameTime() % 20) == 0 &&
                             // player not jumping, flying, or riding
-                            player.isOnGround()) {
+                            player.onGround()) {
                         double distance = player.walkDist - player.walkDistO;
                         ElectricItemUtils.givePlayerEnergy(player, (int) (distance * 20 * applyPropertyModifiers(MPSConstants.ENERGY_GENERATION)));
                     }

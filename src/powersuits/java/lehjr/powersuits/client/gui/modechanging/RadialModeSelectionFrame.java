@@ -26,7 +26,6 @@
 
 package lehjr.powersuits.client.gui.modechanging;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import lehjr.numina.client.gui.clickable.ClickableModule;
 import lehjr.numina.client.gui.frame.AbstractGuiFrame;
 import lehjr.numina.client.gui.geometry.IDrawable;
@@ -39,6 +38,7 @@ import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.item.ItemUtils;
 import lehjr.numina.common.network.NuminaPackets;
 import lehjr.numina.common.network.packets.serverbound.ModeChangeRequestPacketServerBound;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
 
@@ -90,7 +90,7 @@ public class RadialModeSelectionFrame extends AbstractGuiFrame {
     }
 
     @Override
-    public void render(PoseStack matrixStackIn, int mouseX, int mouseY, float partialTick) {
+    public void render(GuiGraphics matrixStackIn, int mouseX, int mouseY, float partialTick) {
         //Draw the installed power fist modes
         for (ClickableModule mode : modeButtons) {
             mode.render(matrixStackIn, mouseX, mouseY, partialTick);
@@ -146,11 +146,11 @@ public class RadialModeSelectionFrame extends AbstractGuiFrame {
         }
     }
 
-    public void drawSelection(PoseStack matrixStackIn) {
+    public void drawSelection(GuiGraphics gfx) {
         ClickableModule module = getSelectedModule();
         if (module != null) {
             MusePoint2D pos = module.center();
-            NuminaRenderer.drawCircleAround(matrixStackIn, pos.x(), pos.y(), 10, zLevel);
+            NuminaRenderer.drawCircleAround(gfx.pose(), pos.x(), pos.y(), 10, zLevel);
         }
     }
 

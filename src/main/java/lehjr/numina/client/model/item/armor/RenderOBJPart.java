@@ -30,9 +30,9 @@ import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Matrix4f;
-import com.mojang.math.Vector3f;
-import com.mojang.math.Vector4f;
+import org.joml.Matrix4f;
+import org.joml.Vector3f;
+import org.joml.Vector4f;
 import lehjr.numina.common.capabilities.render.modelspec.ObjPartSpec;
 import lehjr.numina.common.math.Color;
 import lehjr.numina.common.math.MathUtils;
@@ -150,9 +150,8 @@ public class RenderOBJPart extends ModelPart {
                        int overlayCoords, float red, float green, float blue, float alpha) {
         int[] aint = bakedQuad.getVertices();
         Vec3i faceNormal = bakedQuad.getDirection().getNormal();
-        Vector3f normal = new Vector3f((float) faceNormal.getX(), (float) faceNormal.getY(), (float) faceNormal.getZ());
-        Matrix4f matrix4f = matrixEntry.pose();// same as TexturedQuad renderer
-        normal.transform(matrixEntry.normal()); // normals different here
+        Matrix4f matrix4f = matrixEntry.pose();
+        Vector3f normal = matrixEntry.normal().transform(new Vector3f((float)faceNormal.getX(), (float)faceNormal.getY(), (float)faceNormal.getZ()));
 
         float scale = 0.0625F;
 
@@ -163,7 +162,6 @@ public class RenderOBJPart extends ModelPart {
 
         try (MemoryStack memorystack = MemoryStack.stackPush()) {
             ByteBuffer bytebuffer = memorystack.malloc(DefaultVertexFormat.BLOCK.getVertexSize());
-//            ByteBuffer bytebuffer = memorystack.malloc(DefaultVertexFormat.POSITION_COLOR_TEX_LIGHTMAP.getVertexSize());
             IntBuffer intbuffer = bytebuffer.asIntBuffer();
 
             for (int vert = 0; vert < vertexCount; ++vert) {
@@ -173,12 +171,12 @@ public class RenderOBJPart extends ModelPart {
                 float y = bytebuffer.getFloat(4);
                 float z = bytebuffer.getFloat(8);
                 int lightmapCoord = bufferIn.applyBakedLighting(lightmapCoordIn, bytebuffer);
+//                int lightmapCoord = applyBakedLighting(pCombinedLights[k], bytebuffer);
                 float u = bytebuffer.getFloat(16);
                 float v = bytebuffer.getFloat(20);
 
                 /** scaled like TexturedQuads, but using multiplication instead of division due to speed advantage.  */
-                Vector4f pos = new Vector4f(x * scale, y * scale, z * scale, 1.0F); // scales to 1/16 like the TexturedQuads but with multiplication (faster than division)
-                pos.transform(matrix4f);
+                Vector4f pos = matrix4f.transform(new Vector4f(x * scale, y * scale, z * scale, 1.0F));
                 bufferIn.applyBakedNormals(normal, bytebuffer, matrixEntry.normal());
                 bufferIn.vertex(pos.x(), pos.y(), pos.z(), red, green, blue, alpha, u, v, overlayCoords, lightmapCoord, normal.x(), normal.y(), normal.z());
             }

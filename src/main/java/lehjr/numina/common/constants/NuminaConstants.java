@@ -32,8 +32,7 @@ import net.minecraft.resources.ResourceLocation;
 public class NuminaConstants {
   // Mod
   public static final String MOD_ID = "numina";
-
-  public static final String ITEM_GROUP_TRANSLATION_KEY = "itemGroup." + MOD_ID;
+  public static final String CREATIVE_TAB_TRANSLATION_KEY = ".creative.tab" + MOD_ID;
 
   public static final int FULL_BRIGHTNESS = 0XF000F0;
 
@@ -59,9 +58,7 @@ public class NuminaConstants {
   public static final String CONFIG_PREFIX_RECIPES = CONFIG_PREFIX + "recipes.";
   public static final String CONFIG_RECIPES_USE_VANILLA = CONFIG_PREFIX_RECIPES + "useVanilla";
 
-
-  // String for overheat damage
-  public static final String OVERHEAT_DAMAGE = "Overheat";
+  public static final ResourceLocation OVERHEAT_DAMAGE_REGANAME = new ResourceLocation(MOD_ID, "overheat");
 
   // RegistryNames
   public static final String CHARGING_BASE_REGNAME = "charging_base";

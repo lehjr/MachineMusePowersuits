@@ -8,6 +8,7 @@ import lehjr.numina.client.render.IconUtils;
 import lehjr.numina.common.constants.NuminaConstants;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -28,7 +29,7 @@ public class ClickableArrow extends VanillaButton {
     }
 
     @Override
-    public void renderButton(PoseStack matrixStack, int mouseX, int mouseY, float partialTicks) {
+    public void renderButton(GuiGraphics gfx, int mouseX, int mouseY, float partialTicks) {
         Minecraft minecraft = Minecraft.getInstance();
         Font fontrenderer = minecraft.font;
 
@@ -41,11 +42,11 @@ public class ClickableArrow extends VanillaButton {
         RenderSystem.enableDepthTest();
 
         // FIXME: still needed or able to use screen version?
-        IconUtils.INSTANCE.blit(matrixStack, this.left(), this.top(), 0, i * 15, this.width(), this.height());
+        IconUtils.INSTANCE.blit(gfx.pose(), this.left(), this.top(), 0, i * 15, this.width(), this.height());
 //        IconUtils.INSTANCE.blit(matrixStack, this.left() + this.width() / 2, this.top(), 200 - this.width() / 2, 46 + i * 20, this.width() / 2, this.height());
-        this.renderBg(matrixStack, mouseX, mouseY, partialTicks);
+        this.renderBg(gfx, mouseX, mouseY, partialTicks);
         int j = getFGColor();
-        getMinecraft().screen.drawCenteredString(matrixStack, fontrenderer, this.getLabel(), (int) (this.left() + this.width() / 2), (int) (this.top() + (this.height() - 8) / 2), j | Mth.ceil(this.getAlpha() * 255.0F) << 24);
+        gfx.drawCenteredString(fontrenderer, this.getLabel(), (int) (this.left() + this.width() / 2), (int) (this.top() + (this.height() - 8) / 2), j | Mth.ceil(this.getAlpha() * 255.0F) << 24);
     }
 
     @Override

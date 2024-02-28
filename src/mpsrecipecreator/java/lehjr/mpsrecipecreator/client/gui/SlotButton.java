@@ -1,12 +1,12 @@
 package lehjr.mpsrecipecreator.client.gui;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 import lehjr.mpsrecipecreator.basemod.MPSRCConstants;
 import lehjr.numina.client.gui.IContainerULOffSet;
 import lehjr.numina.client.gui.clickable.button.VanillaButton;
 import lehjr.numina.client.gui.geometry.MusePoint2D;
 import lehjr.numina.client.render.IconUtils;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -41,7 +41,7 @@ public class SlotButton extends VanillaButton {
     }
 
     @Override
-    public void renderButton(PoseStack poseStack, int mouseX, int mouseY, float partialTicks) {
+    public void renderButton(GuiGraphics gfx, int mouseX, int mouseY, float partialTicks) {
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         RenderSystem.setShaderTexture(0, BACKGROUND);
@@ -51,7 +51,7 @@ public class SlotButton extends VanillaButton {
         RenderSystem.defaultBlendFunc();
         RenderSystem.enableDepthTest();
 //        IconUtils.INSTANCE.blit(poseStack, this.left(), this.top(), x, y, this.width(), this.height());
-        IconUtils.INSTANCE.blit(poseStack, left(), top(), 0, x, y, width(), height(), 512, 512);
-        this.renderBg(poseStack, mouseX, mouseY, partialTicks);
+        IconUtils.INSTANCE.blit(gfx.pose(), left(), top(), 0, x, y, width(), height(), 512, 512);
+        this.renderBg(gfx, mouseX, mouseY, partialTicks);
     }
 }

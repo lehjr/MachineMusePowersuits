@@ -141,7 +141,7 @@ public class VeinMinerModule extends AbstractPowerModule {
                         // setup drops checking for enchantments
                         Block.dropResources(world.getBlockState(pos), world, pos, blockEntity, player, itemStack);
                         // destroy block but don't drop default drops because they're already set above
-                        player.level.destroyBlock(pos, false, player, 512);
+                        player.level().destroyBlock(pos, false, player, 512);
                     }
 
                 }
@@ -149,7 +149,7 @@ public class VeinMinerModule extends AbstractPowerModule {
 
             @Override
             public boolean onBlockStartBreak(ItemStack itemStack, BlockPos posIn, Player player) {
-                BlockState state = player.level.getBlockState(posIn);
+                BlockState state = player.level().getBlockState(posIn);
                 Block block = state.getBlock();
 
                 // filter out stone
@@ -232,7 +232,7 @@ public class VeinMinerModule extends AbstractPowerModule {
                         return false;
                     }
 
-                    List<BlockPos> posList = getPosList(block, posIn, player.level, oreType);
+                    List<BlockPos> posList = getPosList(block, posIn, player.level(), oreType);
                     List<BlockPos> posListCopy = new ArrayList<>(posList);
 
                     int size = 0;
@@ -264,7 +264,7 @@ public class VeinMinerModule extends AbstractPowerModule {
 
                             outerLoop:
                             for (BlockPos pos : posListCopy) {
-                                List<BlockPos> posList2 = getPosList(block, pos, player.level, oreType);
+                                List<BlockPos> posList2 = getPosList(block, pos, player.level(), oreType);
                                 for (BlockPos pos2 : posList2) {
                                     if(!posList.contains(pos2)) {
                                         // does player have enough energy to break initial list?
@@ -283,10 +283,10 @@ public class VeinMinerModule extends AbstractPowerModule {
                         }
                     }
 
-                    if (!player.level.isClientSide()) {
+                    if (!player.level().isClientSide()) {
                         ElectricItemUtils.drainPlayerEnergy(player, energyRequired * posList.size());
                     }
-                    harvestBlocks(posList, player.level, player, itemStack);
+                    harvestBlocks(posList, player.level(), player, itemStack);
                 }
                 return false;
             }

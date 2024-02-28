@@ -1,11 +1,11 @@
 package lehjr.mpsrecipecreator.client.gui;
 
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import lehjr.numina.client.gui.frame.ScrollableFrame;
 import lehjr.numina.client.gui.geometry.MusePoint2D;
 import lehjr.numina.client.gui.geometry.Rect;
 import lehjr.numina.common.string.StringUtils;
+import net.minecraft.client.gui.GuiGraphics;
 
 public class StackTextDisplayFrame extends ScrollableFrame {
     String label = "";
@@ -24,9 +24,9 @@ public class StackTextDisplayFrame extends ScrollableFrame {
     }
 
     @Override
-    public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTick) {
-        super.render(matrixStack, mouseX, mouseY, partialTick);
-        StringUtils.drawLeftAlignedShadowedString(matrixStack, slot != -1 ? "Slot " + slot + ": " +
+    public void render(GuiGraphics gfx, int mouseX, int mouseY, float partialTick) {
+        super.render(gfx, mouseX, mouseY, partialTick);
+        StringUtils.drawLeftAlignedShadowedString(gfx, slot != -1 ? "Slot " + slot + ": " +
                 this.label : "No slot selected", left() + 4, centerY());
     }
 }

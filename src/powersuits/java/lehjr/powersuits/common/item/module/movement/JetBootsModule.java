@@ -110,23 +110,23 @@ public class JetBootsModule extends AbstractPowerModule {
                 if (jetEnergy < ElectricItemUtils.getPlayerEnergy(player)) {
                     if (hasFlightControl && thrust > 0) {
                         thrust = MovementManager.INSTANCE.thrust(player, thrust, true);
-                        if ((player.level.isClientSide) && NuminaSettings.useSounds()) {
+                        if ((player.level().isClientSide) && NuminaSettings.useSounds()) {
                             Musique.playerSound(player, MPSSoundDictionary.SOUND_EVENT_JETBOOTS.get(), SoundSource.PLAYERS, (float) (thrust * 12.5), 1.0f, true);
                         }
                         ElectricItemUtils.drainPlayerEnergy(player, (int) (thrust * jetEnergy));
                     } else if (playerInput.jumpKey && player.getDeltaMovement().y < 0.5) {
                         thrust = MovementManager.INSTANCE.thrust(player, thrust, false);
-                        if ((player.level.isClientSide) && NuminaSettings.useSounds()) {
+                        if ((player.level().isClientSide) && NuminaSettings.useSounds()) {
                             Musique.playerSound(player, MPSSoundDictionary.SOUND_EVENT_JETBOOTS.get(), SoundSource.PLAYERS, (float) (thrust * 12.5), 1.0f, true);
                         }
                         ElectricItemUtils.drainPlayerEnergy(player, (int) (thrust * jetEnergy));
                     } else {
-                        if ((player.level.isClientSide) && NuminaSettings.useSounds()) {
+                        if ((player.level().isClientSide) && NuminaSettings.useSounds()) {
                             Musique.stopPlayerSound(player, MPSSoundDictionary.SOUND_EVENT_JETBOOTS.get());
                         }
                     }
                 } else {
-                    if (player.level.isClientSide && NuminaSettings.useSounds()) {
+                    if (player.level().isClientSide && NuminaSettings.useSounds()) {
                         Musique.stopPlayerSound(player, MPSSoundDictionary.SOUND_EVENT_JETBOOTS.get());
                     }
                 }
@@ -134,7 +134,7 @@ public class JetBootsModule extends AbstractPowerModule {
 
             @Override
             public void onPlayerTickInactive(Player player, ItemStack item) {
-                if (player.level.isClientSide && NuminaSettings.useSounds()) {
+                if (player.level().isClientSide && NuminaSettings.useSounds()) {
                     Musique.stopPlayerSound(player, MPSSoundDictionary.SOUND_EVENT_JETBOOTS.get());
                 }
             }

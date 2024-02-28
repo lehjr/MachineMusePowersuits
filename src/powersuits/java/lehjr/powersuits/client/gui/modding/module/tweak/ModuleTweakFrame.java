@@ -26,7 +26,6 @@
 
 package lehjr.powersuits.client.gui.modding.module.tweak;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import lehjr.numina.client.gui.clickable.slider.VanillaFrameScrollBar;
 import lehjr.numina.client.gui.clickable.slider.VanillaTinkerIntSlider;
 import lehjr.numina.client.gui.clickable.slider.VanillaTinkerSlider;
@@ -41,6 +40,7 @@ import lehjr.numina.common.item.ItemUtils;
 import lehjr.numina.common.network.NuminaPackets;
 import lehjr.numina.common.network.packets.serverbound.TweakRequestDoublePacketServerBound;
 import lehjr.numina.common.string.StringUtils;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraftforge.common.util.LazyOptional;
@@ -101,14 +101,14 @@ public class ModuleTweakFrame extends ScrollableFrame {
     }
 
     @Override
-    public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTick) {
+    public void render(GuiGraphics gfx, int mouseX, int mouseY, float partialTick) {
         double scrolledY = mouseY + currentScrollPixels;
-        super.render(matrixStack, mouseX, mouseY, partialTick);
-        scrollBar.render(matrixStack, mouseX, mouseY, partialTick);
-        super.preRender(matrixStack, mouseX, mouseY, partialTick);
-        matrixStack.pushPose();
-        matrixStack.translate(0, (float) -currentScrollPixels, 0);
-        sliders.forEach(slider->  slider.render(matrixStack, mouseX, (int)scrolledY, partialTick));
+        super.render(gfx, mouseX, mouseY, partialTick);
+        scrollBar.render(gfx, mouseX, mouseY, partialTick);
+        super.preRender(gfx, mouseX, mouseY, partialTick);
+        gfx.pose().pushPose();
+        gfx.pose().translate(0, (float) -currentScrollPixels, 0);
+        sliders.forEach(slider->  slider.render(gfx, mouseX, (int)scrolledY, partialTick));
         int nexty = sliders.size() > 0 ? (int) sliders.get(sliders.size() - 1).bottom() + 9 : 4;
 
         for (Map.Entry<String, Double> property : propertyStrings.entrySet()) {
@@ -119,13 +119,13 @@ public class ModuleTweakFrame extends ScrollableFrame {
             List<Component> namesList = StringUtils.wrapComponentToLength(Component.translatable(TagConstants.MODULE_TRADEOFF_PREFIX + name), (int)allowedNameWidth);
 
             for (int i = 0; i < namesList.size(); i++) {
-                StringUtils.drawLeftAlignedShadowedString(matrixStack, namesList.get(i), left() + margin, nexty + 9 * i);
+                StringUtils.drawLeftAlignedShadowedString(gfx, namesList.get(i), left() + margin, nexty + 9 * i);
             }
-            StringUtils.drawRightAlignedShadowedString(matrixStack, formattedValue, right() - margin, -5 + nexty + 9 * (namesList.size() - 1) / 2);            nexty += 9 * namesList.size() + 1;
+            StringUtils.drawRightAlignedShadowedString(gfx, formattedValue, right() - margin, -5 + nexty + 9 * (namesList.size() - 1) / 2);            nexty += 9 * namesList.size() + 1;
         }
 
-        matrixStack.popPose();
-        super.postRender(mouseX, mouseY, partialTick);
+        gfx.pose().popPose();
+        super.postRender(gfx, mouseX, mouseY, partialTick);
     }
 
     /**

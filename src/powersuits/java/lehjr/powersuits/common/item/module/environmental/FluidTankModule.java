@@ -114,12 +114,12 @@ public class FluidTankModule extends AbstractPowerModule {
                     // fill the tank
                     if (currentFluid < maxFluid) {
                         BlockPos pos = player.blockPosition();
-                        BlockState blockstate = player.level.getBlockState(pos);
+                        BlockState blockstate = player.level().getBlockState(pos);
 
                         // fill by being in water
-                        if (player.isInWater() && player.level.getBlockState(pos).getBlock() != Blocks.BUBBLE_COLUMN) {
+                        if (player.isInWater() && player.level().getBlockState(pos).getBlock() != Blocks.BUBBLE_COLUMN) {
                             if (blockstate.getBlock() instanceof BucketPickup && blockstate.getFluidState().getType() == Fluids.WATER) {
-                                FluidActionResult pickup = FluidUtil.tryPickUpFluid(module, player, player.level, pos, null); // fixme?
+                                FluidActionResult pickup = FluidUtil.tryPickUpFluid(module, player, player.level(), pos, null); // fixme?
                                 if(pickup.isSuccess()) {
                                     FluidStack water = new FluidStack(Fluids.WATER, 1000);
                                     if (fluidHandler.fill(water, IFluidHandler.FluidAction.EXECUTE) > 0) {
@@ -147,14 +147,14 @@ public class FluidTankModule extends AbstractPowerModule {
                                     // adjust so cooling does not exceed cooling needed
                                     (int) Math.min(1000, currentHeat/coolingFactor),
                                     // only execute on server, simulate on client
-                                    player.level.isClientSide ? IFluidHandler.FluidAction.SIMULATE : IFluidHandler.FluidAction.EXECUTE)
+                                    player.level().isClientSide ? IFluidHandler.FluidAction.SIMULATE : IFluidHandler.FluidAction.EXECUTE)
                             .getAmount() * coolingFactor;
 
                     HeatUtils.coolPlayer(player, coolAmount);
                     if (coolAmount > 0) {
-                        player.level.playSound(player, player.blockPosition(), SoundEvents.GENERIC_EXTINGUISH_FIRE, SoundSource.MASTER, 1.0F, 1.0F);
+                        player.level().playSound(player, player.blockPosition(), SoundEvents.GENERIC_EXTINGUISH_FIRE, SoundSource.MASTER, 1.0F, 1.0F);
                         for (int i = 0; i < 4; i++) {
-                            player.level.addAlwaysVisibleParticle(ParticleTypes.SMOKE, player.getX(), player.getY() + 0.5, player.getZ(), 0.0D, 0.0D, 0.0D);
+                            player.level().addAlwaysVisibleParticle(ParticleTypes.SMOKE, player.getX(), player.getY() + 0.5, player.getZ(), 0.0D, 0.0D, 0.0D);
                         }
                     }
                 }

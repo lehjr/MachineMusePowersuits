@@ -27,7 +27,6 @@
 package lehjr.powersuits.client.gui.modding.cosmetic;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 import lehjr.numina.client.gui.ContainerlessGui;
 import lehjr.numina.client.gui.frame.EntityRenderFrame;
 import lehjr.numina.client.gui.frame.ModularItemSelectionFrame;
@@ -38,6 +37,7 @@ import lehjr.powersuits.client.gui.modding.cosmetic.partmanip.ModelManipFrame;
 import lehjr.powersuits.common.config.MPSSettings;
 import lehjr.powersuits.common.constants.MPSConstants;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -152,20 +152,20 @@ public class CosmeticGui extends ContainerlessGui {
     }
 
     @Override
-    public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTicks) {
-        super.render(matrixStack, mouseX, mouseY, partialTicks);
-        renderTooltip(matrixStack, mouseX, mouseY);
+    public void render(GuiGraphics gfx, int mouseX, int mouseY, float partialTicks) {
+        super.render(gfx, mouseX, mouseY, partialTicks);
+        renderTooltip(gfx, mouseX, mouseY);
     }
 
     @Override
-    public void renderBackground(PoseStack matrixStack) {
-        super.renderBackground(matrixStack);
+    public void renderBackground(GuiGraphics gfx) {
+        super.renderBackground(gfx);
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-        RenderSystem.setShaderTexture(0, BACKGROUND);
+//        RenderSystem.setShaderTexture(0, BACKGROUND);
         int i = this.leftPos;
         int j = this.topPos;
-        this.blit(matrixStack, i, j, 0, 0, this.imageWidth, this.imageHeight, 512, 512);
+        gfx.blit(BACKGROUND, i, j, 0, 0, this.imageWidth, this.imageHeight, 512, 512);
     }
 
     @Override

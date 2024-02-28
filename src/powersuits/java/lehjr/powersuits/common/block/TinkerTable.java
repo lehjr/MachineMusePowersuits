@@ -48,7 +48,6 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
@@ -69,7 +68,7 @@ public class TinkerTable extends HorizontalDirectionalBlock implements SimpleWat
 //            16.0D); // South
 
     public TinkerTable() {
-        super(Block.Properties.of(Material.WOOD)
+        super(Block.Properties.of()
                 .strength(1.5F, 1000.0F)
                 .sound(SoundType.WOOD)
                 .dynamicShape()

@@ -4,7 +4,6 @@ import lehjr.powersuits.common.constants.MPSConstants;
 import lehjr.powersuits.common.constants.MPSRegistryNames;
 import lehjr.powersuits.common.entity.LuxCapacitorEntity;
 import lehjr.powersuits.common.entity.PlasmaBallEntity;
-import lehjr.powersuits.common.entity.RailgunBoltEntity;
 import lehjr.powersuits.common.entity.SpinningBladeEntity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
@@ -33,8 +32,8 @@ public class MPSEntities {
 //                    .size(0.25F, 0.25F)
                     .build(MPSRegistryNames.PLASMA_BALL.toString()));
 
-    public static final RegistryObject<EntityType<RailgunBoltEntity>> RAILGUN_BOLT_ENTITY_TYPE = ENTITY_TYPES.register(MPSRegistryNames.RAILGUN_BOLT.getPath(),
-            ()-> EntityType.Builder.<RailgunBoltEntity>of(RailgunBoltEntity::new, MobCategory.MISC)
-                    .sized(0.25F, 0.25F)
-                    .build(MPSRegistryNames.RAILGUN_BOLT.toString()));
+//    public static final RegistryObject<EntityType<RailgunBoltEntity>> RAILGUN_BOLT_ENTITY_TYPE = ENTITY_TYPES.register(MPSRegistryNames.RAILGUN_BOLT.getPath(),
+//            ()-> EntityType.Builder.<RailgunBoltEntity>of(RailgunBoltEntity::new, MobCategory.MISC)
+//                    .sized(0.25F, 0.25F)
+//                    .build(MPSRegistryNames.RAILGUN_BOLT.toString()));
 }

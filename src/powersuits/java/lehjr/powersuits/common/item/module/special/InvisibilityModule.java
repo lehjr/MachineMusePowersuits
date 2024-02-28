@@ -108,7 +108,7 @@ public class InvisibilityModule extends AbstractPowerModule {
                     invis = player.getEffect(invisibility);
                 }
                 if (invis != null && invis.getAmplifier() == -3) {
-                    if (player.level.isClientSide) {
+                    if (player.level().isClientSide) {
                         player.removeEffectNoUpdate(invisibility);
                     } else {
                         player.removeEffect(invisibility);
