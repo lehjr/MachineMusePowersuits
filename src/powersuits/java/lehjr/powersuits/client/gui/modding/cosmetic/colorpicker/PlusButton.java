@@ -8,11 +8,11 @@ import net.minecraft.client.gui.GuiGraphics;
 
 public class PlusButton extends RadioButton {
     public PlusButton(double leftPos, double topPos) {
-        super(IconUtils.getIcon().plusSign, 8, 8, leftPos, topPos);
+        super(IconUtils.INSTANCE.getIcon().plusSign, 8, 8, leftPos, topPos);
     }
 
     public PlusButton(MusePoint2D ul) {
-        super(IconUtils.getIcon().plusSign, new MusePoint2D(8,8), ul);
+        super(IconUtils.INSTANCE.getIcon().plusSign, new MusePoint2D(8,8), ul);
     }
 
     @Override

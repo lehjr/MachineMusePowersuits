@@ -48,8 +48,8 @@ public class ChargingBaseScreen extends AbstractContainerScreen<ChargingBaseMenu
     static final Component ENERGYSTRING = Component.translatable("numina.energy").append(": ");
     EnergyMeter energyMeter;
 
-    public ChargingBaseScreen(ChargingBaseMenu pMenu, Inventory pInventory, Component pTitle) {
-        super(pMenu, pInventory, pTitle);
+    public ChargingBaseScreen(ChargingBaseMenu menu, Inventory inventory, Component title) {
+        super(menu, inventory, title);
         energyMeter = new EnergyMeter(NuminaSettings::getEnergyMeterConfig);
     }
 
@@ -74,19 +74,20 @@ public class ChargingBaseScreen extends AbstractContainerScreen<ChargingBaseMenu
     @Override
     public void renderLabels(GuiGraphics gfx, int mouseX, int mouseY) {
         super.renderLabels(gfx, mouseX, mouseY);
-        StringUtils.drawShadowedString(gfx, ENERGYSTRING,
-                (float)(imageWidth - 102 - font.width(ENERGYSTRING)),
-                (float)(this.imageHeight - 108.0),
-                new Color(4210752));
+        gfx.drawString(this.font,
+                ENERGYSTRING,
+                (imageWidth - 102 - font.width(ENERGYSTRING)),
+                this.imageHeight - 108,
+                4210752, false);
 
         String energyString = new StringBuilder()
                 .append(StringUtils.formatNumberShort(menu.getEnergy()))
                 .append(" FE").toString();
 
-        StringUtils.drawShadowedString(gfx,
+        gfx.drawString(this.font,
                 Component.literal(energyString),
-                (float)(imageWidth -71),
-                (float)(this.imageHeight - 108.0),
-                new Color(4210752));
+                imageWidth -71,
+                this.imageHeight - 108,
+                4210752, false);
     }
 }

@@ -49,12 +49,12 @@ public class ArmorStandScreen extends AbstractContainerScreen<ArmorStandMenu> {
     /** The old y position of the mouse pointer */
     private float yMouse;
 
-    public ArmorStandScreen(ArmorStandMenu pMenu, Inventory pInventory, Component pTitle) {
-        super(pMenu, pInventory, pTitle);
+    public ArmorStandScreen(ArmorStandMenu menu, Inventory inventory, Component title) {
+        super(menu, inventory, title);
     }
 
     @Override
-    protected void renderBg(GuiGraphics gfx, float pPartialTick, int pMouseX, int pMouseY) {
+    protected void renderBg(GuiGraphics gfx, float partialTick, int mouseX, int mouseY) {
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         int i = this.leftPos;

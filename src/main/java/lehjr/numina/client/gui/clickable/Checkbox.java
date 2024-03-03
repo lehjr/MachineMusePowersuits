@@ -27,8 +27,7 @@
 package lehjr.numina.client.gui.clickable;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
-import lehjr.numina.client.gui.GuiIcon;
+import lehjr.numina.client.gui.NuminaIcons;
 import lehjr.numina.client.gui.geometry.IDrawable;
 import lehjr.numina.client.gui.geometry.IDrawableRect;
 import lehjr.numina.client.gui.geometry.MusePoint2D;
@@ -145,7 +144,7 @@ public class Checkbox extends Clickable {
 //            ShaderInstance oldShader = RenderSystem.getShader();
             RenderSystem.setShader(GameRenderer::getPositionTexColorShader);
             RenderSystem.enableBlend();
-            GuiIcon.renderTextureWithColor(TEXTURE, gfx.pose(),
+            NuminaIcons.renderTextureWithColor(TEXTURE, gfx.pose(),
                     left(), right(), top(), bottom(), getZLevel(),
                     // int uWidth, int vHeight,
                     20, 20,

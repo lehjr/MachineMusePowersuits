@@ -28,7 +28,9 @@ package lehjr.numina.client.render;
 
 import lehjr.numina.common.constants.NuminaConstants;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.resources.TextureAtlasHolder;
 import net.minecraft.resources.ResourceLocation;
 
@@ -38,27 +40,13 @@ import java.util.Set;
 import java.util.stream.Stream;
 
 public class NuminaSpriteUploader extends TextureAtlasHolder {
-    static final ResourceLocation GUI_ATLAS = new ResourceLocation(NuminaConstants.MOD_ID,"atlas/gui");
-    private final Set<ResourceLocation> registeredSprites = new HashSet<>();
 
-    public NuminaSpriteUploader() {
-        super(Minecraft.getInstance().getTextureManager(), NuminaConstants.LOCATION_NUMINA_GUI_TEXTURE_ATLAS, GUI_ATLAS);
-    }
 
-    public void registerIcon(ResourceLocation location) {
-        registeredSprites.add(location);
-    }
+    static final ResourceLocation GUI_ATLAS = new ResourceLocation(NuminaConstants.MOD_ID,"gui");
 
-    public void registerSprite(ResourceLocation location) {
-        registeredSprites.add(location);
+    public NuminaSpriteUploader(TextureManager textureManager) {
+        super(textureManager, NuminaConstants.LOCATION_NUMINA_GUI_TEXTURE_ATLAS, GUI_ATLAS);
     }
-//
-//
-//
-//    @Override
-//    protected Stream<ResourceLocation> getResourcesToLoad() {
-//        return Collections.unmodifiableSet(registeredSprites).stream();
-//    }
 
     /**
      * Overridden to make it public
@@ -66,5 +54,9 @@ public class NuminaSpriteUploader extends TextureAtlasHolder {
     @Override
     public TextureAtlasSprite getSprite(ResourceLocation location) {
         return super.getSprite(location);
+    }
+
+    public TextureAtlas getAtlas() {
+        return super.textureAtlas;
     }
 }

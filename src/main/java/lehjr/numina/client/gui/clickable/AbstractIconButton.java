@@ -1,23 +1,23 @@
 package lehjr.numina.client.gui.clickable;
 
-import lehjr.numina.client.gui.GuiIcon;
+import lehjr.numina.client.gui.NuminaIcons;
 import lehjr.numina.client.gui.geometry.MusePoint2D;
 
 public abstract class AbstractIconButton extends Clickable {
-    GuiIcon.DrawableGuiIcon icon;
+    NuminaIcons.DrawableIcon icon;
 
-    public AbstractIconButton(GuiIcon.DrawableGuiIcon icon, double width, double height, double leftPos, double topPos) {
+    public AbstractIconButton(NuminaIcons.DrawableIcon icon, double width, double height, double leftPos, double topPos) {
         this(icon, new MusePoint2D(width, height), new MusePoint2D(leftPos, topPos));
     }
 
-    public AbstractIconButton(GuiIcon.DrawableGuiIcon icon, MusePoint2D wh, MusePoint2D ul) {
+    public AbstractIconButton(NuminaIcons.DrawableIcon icon, MusePoint2D wh, MusePoint2D ul) {
         super(ul, wh);
         this.icon = icon;
         super.setWH(wh);
         super.setUL(ul);
     }
 
-    public GuiIcon.DrawableGuiIcon getIcon() {
+    public NuminaIcons.DrawableIcon getIcon() {
         return icon;
     }
 }

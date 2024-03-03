@@ -99,7 +99,7 @@ public class PlasmaBoltEntityRenderer extends EntityRenderer<PlasmaBallEntity> {
             double angle1 = (Math.random() * 2 * Math.PI);
             double angle2 = (Math.random() * 2 * Math.PI);
             double angle3 = (Math.random() * 2 * Math.PI);
-            IconUtils.getIcon().lightning.drawLightning(bufferIn, matrixStackIn,
+            IconUtils.INSTANCE.getIcon().lightning.drawLightning(bufferIn, matrixStackIn,
                     (float)(Math.cos(angle1) * 0.5), (float)(Math.sin(angle1) * 0.5), (float)(Math.cos(angle3) * 0.5),
                     (float) (Math.cos(angle2) * 5), (float)(Math.sin(angle2) * 5), (float)(Math.sin(angle3) * 5),
                     new Color(1F, 1F, 1F, 0.9F));

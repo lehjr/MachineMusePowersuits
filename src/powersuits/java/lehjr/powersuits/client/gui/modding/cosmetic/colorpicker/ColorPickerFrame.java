@@ -26,7 +26,7 @@
 
 package lehjr.powersuits.client.gui.modding.cosmetic.colorpicker;
 
-import lehjr.numina.client.gui.GuiIcon;
+import lehjr.numina.client.gui.NuminaIcons;
 import lehjr.numina.client.gui.clickable.Clickable;
 import lehjr.numina.client.gui.clickable.ClickableLabel;
 import lehjr.numina.client.gui.clickable.slider.VanillaFrameScrollBar;
@@ -361,7 +361,7 @@ public class ColorPickerFrame extends ScrollableFrame {
 
         @Override
         public void render(GuiGraphics gfx, int mouseX, int mouseY, float partialTick) {
-            GuiIcon icon = IconUtils.getIcon();
+            NuminaIcons icon = IconUtils.INSTANCE.getIcon();
 
             // colors
             for (int i=0; i < colors().length; i++) {

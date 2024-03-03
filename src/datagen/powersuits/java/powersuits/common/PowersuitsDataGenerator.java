@@ -10,9 +10,7 @@ import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import numina.client.util.lang.translators.BingTranslator;
-import numina.client.util.lang.translators.ITranslator;
-import powersuits.client.lang.MPSMultiLanguageProvider;
+import powersuits.client.lang.MPSLanguageProvider;
 import powersuits.common.loot.MPSBlockLoot;
 import powersuits.common.loot.MPSBlockTagProvider;
 
@@ -32,9 +30,7 @@ public class PowersuitsDataGenerator {
         ExistingFileHelper helper = event.getExistingFileHelper();
 
         //Client side data generators
-        DatagenConfig config = new DatagenConfig(MPSConstants.MOD_ID);
-        ITranslator translator = new BingTranslator(config);
-        generator.addProvider(event.includeClient(), new MPSMultiLanguageProvider(generator, MPSConstants.MOD_ID, config, translator));
+        generator.addProvider(event.includeClient(), new MPSLanguageProvider(output, "en_us"));
 //        translator.quit();
 
         //Server side data generators
@@ -43,6 +39,5 @@ public class PowersuitsDataGenerator {
 
         generator.addProvider(event.includeServer(), new LootTableProvider(output, Collections.emptySet(),
                 List.of(new LootTableProvider.SubProviderEntry(MPSBlockLoot::new, LootContextParamSets.BLOCK))));
-
     }
 }

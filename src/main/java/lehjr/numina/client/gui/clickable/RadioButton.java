@@ -1,6 +1,6 @@
 package lehjr.numina.client.gui.clickable;
 
-import lehjr.numina.client.gui.GuiIcon;
+import lehjr.numina.client.gui.NuminaIcons;
 import lehjr.numina.client.gui.geometry.MusePoint2D;
 import lehjr.numina.client.render.IconUtils;
 import lehjr.numina.common.math.Color;
@@ -10,11 +10,11 @@ public class RadioButton extends AbstractIconButton {
     public boolean isSelected = false;
     Color color = Color.WHITE;
 
-    public RadioButton(GuiIcon.DrawableGuiIcon icon, double width, double height, double leftPos, double topPos) {
+    public RadioButton(NuminaIcons.DrawableIcon icon, double width, double height, double leftPos, double topPos) {
         super(icon, width, height, leftPos, topPos);
     }
 
-    public RadioButton(GuiIcon.DrawableGuiIcon icon, MusePoint2D wh, MusePoint2D ul) {
+    public RadioButton(NuminaIcons.DrawableIcon icon, MusePoint2D wh, MusePoint2D ul) {
         super(icon, wh, ul);
     }
 
@@ -33,7 +33,7 @@ public class RadioButton extends AbstractIconButton {
         if (isEnabled() && isVisible()) {
             getIcon().draw(gfx.pose(), this.left(), this.top(), color);
             if (isSelected) {
-                IconUtils.getIcon().armordisplayselect.draw(gfx.pose(), this.left(), this.top(), Color.WHITE);
+                IconUtils.INSTANCE.getIcon().armordisplayselect.draw(gfx.pose(), this.left(), this.top(), Color.WHITE);
             }
         }
     }

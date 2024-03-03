@@ -136,18 +136,25 @@ public class ModuleTweakGui extends ContainerlessGui {
     public void renderLabels(GuiGraphics gfx, int mouseX, int mouseY) {
         Font font = Minecraft.getInstance().font;
 
-        gfx.drawString(font, this.MODULE_SELECTION_LABEL,
+        gfx.drawString(font,
+                this.MODULE_SELECTION_LABEL,
                 leftPos + 12,
-                topPos + 5, 4210752);
+                topPos + 5,
+                4210752,
+                false);
 
-        StringUtils.drawShadowedString(gfx, this.TINKER_FRAME_LABEL,
-                (float)(leftPos + 184),
-                (float)(topPos + 49),
-                new Color(4210752));
+        gfx.drawString(font,
+                this.TINKER_FRAME_LABEL,
+                leftPos + 184,
+                topPos + 49,
+                4210752,
+                false);
 
-        StringUtils.drawShadowedString(gfx, this.SUMMARY_FRAME_LABEL,
-                (float)(leftPos + 184),
-                (float)(topPos + 5),
-                new Color(4210752));
+        gfx.drawString(font,
+                this.SUMMARY_FRAME_LABEL,
+                leftPos + 184,
+                topPos + 5,
+                4210752,
+                false);
     }
 }

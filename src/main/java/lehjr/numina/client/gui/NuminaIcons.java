@@ -46,63 +46,59 @@ import net.minecraft.resources.ResourceLocation;
  * <p>
  * Ported to Java by lehjr on 10/19/16.
  */
-public class GuiIcon {
-    private static final String iconPrefix = "gui";
+public class NuminaIcons {
     private final NuminaSpriteUploader spriteUploader;
+    private static final String iconPrefix = "gui";
+    public final DrawableIcon armordisplayselect;
+    public final DrawableIcon checkmark;
+    public final DrawableIcon colorclicker;
+    public final DrawableIcon energygeneration;
+    public final DrawableIcon energystorage;
+    public final DrawableIcon glowArmor;
 
-    public final DrawableGuiIcon armordisplayselect;
-    public final DrawableGuiIcon checkmark;
-    public final DrawableGuiIcon colorclicker;
-    public final DrawableGuiIcon energygeneration;
-    public final DrawableGuiIcon energystorage;
-    public final DrawableGuiIcon glowArmor;
+    public final DrawableIcon lightning;
+    public final DrawableIcon lightning2;
+    public final DrawableIcon lightningmedium;
+    public final DrawableIcon minusSign;
+    public final DrawableIcon normalArmor;
+    public final DrawableIcon plusSign;
+    public final DrawableIcon transparentArmor;
+    public final DrawableIcon weapon;
 
-    public final DrawableGuiIcon lightning;
-    public final DrawableGuiIcon lightning2;
-    public final DrawableGuiIcon lightningmedium;
-    public final DrawableGuiIcon minusSign;
-    public final DrawableGuiIcon normalArmor;
-    public final DrawableGuiIcon plusSign;
-    public final DrawableGuiIcon transparentArmor;
-    public final DrawableGuiIcon weapon;
-
-    public GuiIcon(NuminaSpriteUploader spriteUploader) {
+    public NuminaIcons(NuminaSpriteUploader spriteUploader) {
         this.spriteUploader = spriteUploader;
-        armordisplayselect = registerIcon("armordisplayselect", 8, 8);
-        checkmark = registerIcon("checkmark", 16, 16);
-        colorclicker = registerIcon("colorclicker", 8, 8);
-        energygeneration = registerIcon("energygeneration",32, 32);
-        energystorage = registerIcon("energystorage",32, 32);
-        glowArmor= registerIcon("glowarmor", 8, 8);
-        lightning = registerIcon("lightning", 800, 62);
-        lightning2 = registerIcon("lightning2", 800, 62);
-        lightningmedium = registerIcon("lightningmedium", 800, 62);
-        minusSign = registerIcon("minussign", 8, 8);
-        normalArmor = registerIcon("normalarmor", 8, 8);
-        plusSign= registerIcon("plussign", 8, 8);
-        transparentArmor = registerIcon("transparentarmor", 8, 8);
-        weapon = registerIcon("weapon", 16, 16);
+        this.armordisplayselect = registerIcon("armordisplayselect", 8, 8);
+        this.checkmark = registerIcon("checkmark", 16, 16);
+        this.colorclicker = registerIcon("colorclicker", 8, 8);
+        this.energygeneration = registerIcon("energygeneration",32, 32);
+        this.energystorage = registerIcon("energystorage",32, 32);
+        this.glowArmor= registerIcon("glowarmor", 8, 8);
+        this.lightning = registerIcon("lightning", 800, 62);
+        this.lightning2 = registerIcon("lightning2", 800, 62);
+        this.lightningmedium = registerIcon("lightningmedium", 800, 62);
+        this.minusSign = registerIcon("minussign", 8, 8);
+        this.normalArmor = registerIcon("normalarmor", 8, 8);
+        this.plusSign= registerIcon("plussign", 8, 8);
+        this.transparentArmor = registerIcon("transparentarmor", 8, 8);
+        this.weapon = registerIcon("weapon", 16, 16);
     }
 
-    private DrawableGuiIcon registerIcon(String name, int width, int height) {
+    private DrawableIcon registerIcon(String name, int width, int height) {
         ResourceLocation location = new ResourceLocation(NuminaConstants.MOD_ID, name);
-        spriteUploader.registerIcon(location);
-        return new DrawableGuiIcon(location, width, height);
+        return new DrawableIcon(location, width, height);
     }
 
-    // Todo?
-//    private DrawableGuiIcon registerSprite(String name, int width, int height, String prefix) {
-//        ResourceLocation location = new ResourceLocation(NuminaConstants.MOD_ID, name);
-//        spriteUploader.registerIcon(location);
-//        return new DrawableGuiIcon(location, width, height, prefix);
-//    }
+    public NuminaSpriteUploader  getSpriteUploader() {
+        return spriteUploader;
+    }
 
-    public class DrawableGuiIcon {
+    public class DrawableIcon {
+
         final ResourceLocation location;
         private final int width;
         private final int height;
 
-        protected DrawableGuiIcon(ResourceLocation locationIn, int width, int height) {
+        protected DrawableIcon(ResourceLocation locationIn, int width, int height) {
             this.location = locationIn;
             this.width = width;
             this.height = height;
@@ -131,8 +127,9 @@ public class GuiIcon {
         }
 
         public void renderIconScaledWithColor(PoseStack matrixStack,
-                                              double posLeft, double posTop, double width, double height, float zLevel, Color color) {            bindTexture();
-            TextureAtlasSprite icon = spriteUploader.getSprite(location);
+                                              double posLeft, double posTop, double width, double height, float zLevel, Color color) {
+            bindTexture();
+            TextureAtlasSprite icon = getSprite();
             RenderSystem.enableBlend();
 //            RenderSystem.disableAlphaTest();
             RenderSystem.defaultBlendFunc();
@@ -148,7 +145,7 @@ public class GuiIcon {
             double textureHeight = this.height;
 
             bindTexture();
-            TextureAtlasSprite icon = spriteUploader.getSprite(location);
+            TextureAtlasSprite icon = getSprite();
             float zLevel = 0;
 
             double posLeft = xOffset + maskLeft;

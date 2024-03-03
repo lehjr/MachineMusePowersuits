@@ -132,18 +132,23 @@ public class InstallSalvageGui extends ExtendedContainerScreen<InstallSalvageMen
 
     @Override
     public void renderLabels(GuiGraphics gfx, int mouseX, int mouseY) {
-        StringUtils.drawShadowedString(gfx, this.moduleSelectionFrameLabel,
-                titleLabelX,
-                (float)this.titleLabelY, new Color(4210752));
+        gfx.drawString(this.font,
+                this.moduleSelectionFrameLabel,
+                this.titleLabelX,
+                this.titleLabelY,
+                4210752, false);
 
-        StringUtils.drawShadowedString(gfx, this.modularItemInventoryLabel,
-                (float)(titleLabelX + 173),
-                (float)this.titleLabelY, new Color(4210752));
+        gfx.drawString(this.font,
+                this.modularItemInventoryLabel,
+                this.titleLabelX + 173,
+                this.titleLabelY, 4210752, false);
 
-        StringUtils.drawShadowedString(gfx, this.playerInventory.getDisplayName(),
-                (float)(this.inventoryLabelX),
-                (float)(inventoryLabelY),
-                new Color(4210752));
+        gfx.drawString(this.font,
+                this.playerInventory.getDisplayName(),
+                this.inventoryLabelX,
+                inventoryLabelY,
+                4210752,
+                false);
     }
 
     @Override

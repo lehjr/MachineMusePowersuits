@@ -66,7 +66,7 @@ public class ChargingBaseMenu extends AbstractContainerMenu {
                 addSlot(new IconSlotItemHandler(h, 0, 79, 35) {
                     @Override
                     public void drawIconAt(PoseStack matrixStack, double posX, double posY, Color color) {
-                        IconUtils.getIcon().energystorage.renderIconScaledWithColor(matrixStack, posX, posY, 16, 16, Color.WHITE);
+                        IconUtils.INSTANCE.getIcon().energystorage.renderIconScaledWithColor(matrixStack, posX, posY, 16, 16, Color.WHITE);
                     }
                 });
             });

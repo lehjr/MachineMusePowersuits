@@ -216,7 +216,7 @@ public class MPSItems {
     public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS =
             DeferredRegister.create(Registries.CREATIVE_MODE_TAB, MPSConstants.MOD_ID);
     public static final RegistryObject<CreativeModeTab> MPS_TAB = CREATIVE_MODE_TABS.register("creative.mode.tab",
-            ()-> CreativeModeTab.builder().icon(()->new ItemStack(NuminaObjects.ARMOR_STAND_ITEM.get()))
+            ()-> CreativeModeTab.builder().icon(()->new ItemStack(POWER_ARMOR_HELMET.get()))
                     .title(Component.translatable(NuminaConstants.CREATIVE_TAB_TRANSLATION_KEY))
                     .displayItems((parameters, output) -> MPS_ITEMS.getEntries().forEach(item -> output.accept(item.get())))
                     .build());

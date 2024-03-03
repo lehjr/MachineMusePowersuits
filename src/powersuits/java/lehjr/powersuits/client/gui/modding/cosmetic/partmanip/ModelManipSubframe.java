@@ -330,7 +330,7 @@ public class ModelManipSubframe extends AbstractGuiFrame {
             this.colorButtons = new ArrayList<>();
 
             /** Transparent (turns rendering off for part) */
-            transparent = new RadioButton(IconUtils.getIcon().transparentArmor, 8, 8, 0,0);
+            transparent = new RadioButton(IconUtils.INSTANCE.getIcon().transparentArmor, 8, 8, 0,0);
             transparent.setOnPressed(pressed -> {
                 tagdata = new CompoundTag();
                 itemSelector.selectedType().ifPresent(slotType -> {
@@ -340,7 +340,7 @@ public class ModelManipSubframe extends AbstractGuiFrame {
             buttons.add(transparent);
 
             /** Normal (enables rendering of part with normal lighting) */
-            normal = new RadioButton(IconUtils.getIcon().normalArmor, 8, 8, 0,0);
+            normal = new RadioButton(IconUtils.INSTANCE.getIcon().normalArmor, 8, 8, 0,0);
             normal.setOnPressed(pressed -> {
                 tagdata = getOrMakeSpecTag(partSpec);
                 partSpec.setGlow(tagdata, false);
@@ -352,7 +352,7 @@ public class ModelManipSubframe extends AbstractGuiFrame {
             buttons.add(normal);
 
             /** Glow (enables rendering of part with full brightness ) */
-            glow = new RadioButton(IconUtils.getIcon().glowArmor, 8, 8, 0,0);
+            glow = new RadioButton(IconUtils.INSTANCE.getIcon().glowArmor, 8, 8, 0,0);
             glow.setOnPressed(pressed -> {
                 tagname = NuminaModelSpecRegistry.getInstance().makeName(partSpec);
                 tagdata = getOrMakeSpecTag(partSpec);

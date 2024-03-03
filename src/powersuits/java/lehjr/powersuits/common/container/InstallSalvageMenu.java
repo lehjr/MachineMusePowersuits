@@ -64,7 +64,7 @@ public class InstallSalvageMenu extends AbstractContainerMenu {
                                 @OnlyIn(Dist.CLIENT)
                                 @Override
                                 public void drawIconAt(PoseStack matrixStack, double posX, double posY, Color color) {
-                                    IconUtils.getIcon().energystorage.renderIconScaledWithColor(matrixStack, posX, posY, 16, 16, Color.WHITE);
+                                    IconUtils.INSTANCE.getIcon().energystorage.renderIconScaledWithColor(matrixStack, posX, posY, 16, 16, Color.WHITE);
                                 }
                             });
 
@@ -73,7 +73,7 @@ public class InstallSalvageMenu extends AbstractContainerMenu {
                                 @OnlyIn(Dist.CLIENT)
                                 @Override
                                 public void drawIconAt(PoseStack matrixStack, double posX, double posY, Color color) {
-                                    IconUtils.getIcon().energygeneration.renderIconScaledWithColor(matrixStack, posX, posY, 16, 16, Color.WHITE);
+                                    IconUtils.INSTANCE.getIcon().energygeneration.renderIconScaledWithColor(matrixStack, posX, posY, 16, 16, Color.WHITE);
                                 }
                             });
                         } else {

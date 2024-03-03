@@ -73,7 +73,7 @@ public enum ModelBakeEventHandler {
 
 
     @SubscribeEvent
-    public void onModelBake(ModelEvent.BakingCompleted event) {
+    public void onModelBake(ModelEvent.ModifyBakingResult event) {
         Map<ResourceLocation, BakedModel> registry = event.getModels();
         for (Direction facing : Direction.values()) {
             BakedModel model = registry.get(new ModelResourceLocation(new ResourceLocation("powersuits:luxcapacitor"), "facing=" + facing + ",waterlogged=true"));
@@ -82,40 +82,21 @@ public enum ModelBakeEventHandler {
                 for (DIR dir : DIR.values()) {
                     map.put(dir, model.getQuads(null, dir.direction, rand, LuxCapHelper.getBlockLensModelData(Color.WHITE.getARGBInt()), RenderTypeGroup.EMPTY.entity()));
                 }
-//                INSTANCE.quadMap.put(facing, map);
-//                INSTANCE.luxCapacitorBlockModels.put(facing, model);
             }
         }
 
         event.getModels().keySet().stream().filter(resourceLocation -> resourceLocation.toString().contains("powersuits:luxcapacitor")).forEach(resourceLocation -> {
-        System.out.println("fixme model bake event mps");
-            //            BakedModel model = event.getModels().get(resourceLocation);
-//            if (model instanceof OBJBakedCompositeModel) {
-//                event.getModels().put(resourceLocation, new LuxCapacitorModelWrapper((OBJBakedCompositeModel)model));
-//            }
+            System.out.println("fixme model bake event mps");
+            BakedModel model = event.getModels().get(resourceLocation);
+            if (model instanceof OBJBakedCompositeModel) {
+                event.getModels().put(resourceLocation, new LuxCapacitorModelWrapper((OBJBakedCompositeModel)model));
+            }
         });
 
-//        event.getModels().keySet().stream().filter(resourceLocation -> resourceLocation.toString().contains("powersuits:powerfist")).forEach(resourceLocation -> NuminaLogger.logError("modelLocation: " + resourceLocation));
-
-
-//        event.getModels().keySet().stream().filter(resourceLocation -> resourceLocation.toString().contains("powersuits:luxcapacitor")).forEach(resourceLocation -> {
-//            event.getModels().put(resourceLocation, new LuxCapModelWrapper2(event.getModels().get(resourceLocation)));
-//        });
-
-//        event.getModels().keySet().stream().filter(resourceLocation -> resourceLocation.toString().contains("powersuits:powerfist")).forEach(resourceLocation -> NuminaLogger.logError("modelLocation: " + resourceLocation));
-//
-
-
-
-//        BakedModel powerFistIcon = event.getModels().get(powerFistIconLocation);
-//        if (!OBJBakedCompositeModel.class.isInstance(powerFistIcon)) {
-//            event.getModels().put(powerFistIconLocation, new PowerFistModelWrapper(powerFistIcon));
-//        }
-
-
-
-
-//        MPSModelHelper.loadArmorModels(null, event.getModelBakery());
+        BakedModel powerFistIcon = event.getModels().get(powerFistIconLocation);
+        if (!OBJBakedCompositeModel.class.isInstance(powerFistIcon)) {
+            event.getModels().put(powerFistIconLocation, new PowerFistModelWrapper(powerFistIcon));
+        }
     }
 
     public enum DIR {

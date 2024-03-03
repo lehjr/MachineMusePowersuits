@@ -27,13 +27,20 @@
 package lehjr.numina.client.event;
 
 
+import forge.NuminaObjLoader;
+import lehjr.numina.client.gui.NuminaIcons;
 import lehjr.numina.client.gui.overlay.ModeChangingIconOverlay;
+import lehjr.numina.client.render.IconUtils;
+import lehjr.numina.client.render.NuminaSpriteUploader;
 import lehjr.numina.client.render.entity.NuminaArmorStandRenderer;
 import lehjr.numina.client.render.item.NuminaArmorLayer;
+import lehjr.numina.client.screen.ArmorStandScreen;
+import lehjr.numina.client.screen.ChargingBaseScreen;
 import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.base.NuminaObjects;
 import lehjr.numina.common.constants.NuminaConstants;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
@@ -42,18 +49,25 @@ import net.minecraft.client.renderer.entity.layers.HumanoidArmorLayer;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.client.renderer.texture.TextureAtlas;
+import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.*;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 import javax.annotation.Nullable;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 @Mod.EventBusSubscriber(modid=NuminaConstants.MOD_ID, bus=Mod.EventBusSubscriber.Bus.MOD, value=Dist.CLIENT)
 public class ClientEventBusSubscriber {
@@ -69,6 +83,8 @@ public class ClientEventBusSubscriber {
         if (map.location() == TextureAtlas.LOCATION_BLOCKS) {
             System.out.println("fixme, sprite upload not fixed yet!!!!");
 //            event.addSprite(NuminaConstants.TEXTURE_WHITE_SHORT);
+
+
         }
     }
 
@@ -139,5 +155,32 @@ public class ClientEventBusSubscriber {
 
     public static void addModelLocation(ResourceLocation modelLocation) {
         modelList.add(modelLocation);
+    }
+
+    public static void onRegisterReloadListenerEvent(RegisterClientReloadListenersEvent event) {
+        NuminaIcons icon = IconUtils.INSTANCE.getIcon();
+        System.out.println("reload listener " + Objects.isNull(icon.getSpriteUploader()));
+        event.registerReloadListener(icon.getSpriteUploader());
+    }
+
+    public static void doClientStuff(final FMLClientSetupEvent event) {
+        MinecraftForge.EVENT_BUS.register(new FOVUpdateEventHandler());
+        MinecraftForge.EVENT_BUS.register(new ToolTipEvent());
+        event.enqueueWork(() -> {
+            MenuScreens.register(NuminaObjects.CHARGING_BASE_CONTAINER_TYPE.get(), ChargingBaseScreen::new);
+            MenuScreens.register(NuminaObjects.ARMOR_STAND_CONTAINER_TYPE.get(), ArmorStandScreen::new);
+            //        ScreenManager.func_216911_a(NuminaObjects.SCANNER_CONTAINER.get(), MPSGuiScanner::new);
+        });
+        IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
+        modEventBus.register(ClientEventBusSubscriber.class);
+        modEventBus.addListener(ModelBakeEventHandler.INSTANCE::onAddAdditional);
+
+//        MinecraftForge.EVENT_BUS.addListener((InputEvent.Key e) -> {
+////            ModelTransformCalibration.CALIBRATION.transformCalibration(e);
+//        });
+    }
+
+    public static void modelRegistry(ModelEvent.RegisterGeometryLoaders event) {
+        event.register( "obj", NuminaObjLoader.INSTANCE);
     }
 }

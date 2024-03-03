@@ -30,8 +30,9 @@ import com.google.common.base.Preconditions;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import com.mojang.datafixers.util.Pair;
+import net.minecraft.client.renderer.texture.TextureManager;
 import org.joml.Matrix4f;
-import lehjr.numina.client.gui.GuiIcon;
+import lehjr.numina.client.gui.NuminaIcons;
 import lehjr.numina.common.constants.NuminaConstants;
 import lehjr.numina.common.math.Color;
 import lehjr.numina.common.math.MathUtils;
@@ -57,15 +58,27 @@ import java.util.Map;
 @OnlyIn(Dist.CLIENT)
 public enum IconUtils {
     INSTANCE;
-    public static GuiIcon getIcon() {
-        Preconditions.checkState(icon != null, "Calling icons too early.");
-        return icon;
+    private NuminaIcons icon;
+    public NuminaIcons getIcon() {
+        if (INSTANCE.icon == null) {
+            Minecraft minecraft = Minecraft.getInstance();
+            TextureManager textureManager = minecraft.getTextureManager();
+            NuminaSpriteUploader spriteUploader = new NuminaSpriteUploader(textureManager);
+            INSTANCE.icon = new NuminaIcons(spriteUploader);
+        }
+        return INSTANCE.icon;
     }
 
-    private static GuiIcon icon;
-    public static void setIconInstance(GuiIcon iconIn) {
-        icon = iconIn;
-    }
+
+//    public static NuminaIcons getIcon() {
+//        Preconditions.checkState(icon != null, "Calling icons too early.");
+//        return icon;
+//    }
+//
+//
+//    public static void setIconInstance(NuminaIcons iconIn) {
+//        icon = iconIn;
+//    }
 
     static TextureAtlasSprite getMissingIcon() {
         return Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(MissingTextureAtlasSprite.getLocation());

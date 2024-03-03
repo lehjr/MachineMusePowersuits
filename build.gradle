@@ -92,6 +92,11 @@ for (String name : secondaryModules) {
     sourceSet.resources {
         //Add the generated module resources
         srcDirs += ["src/datagen/generated/${name}"]
+        println("sourceDirs for ${name}")
+        srcDirs.forEach {
+            x -> println(x)
+        }
+
         //But exclude the cache of the generated data from what gets built
         exclude '.cache'
     }
@@ -285,16 +290,6 @@ minecraft {
         data {
             setupRunConfig(it, "run/data")
             environment 'target', 'fmluserdevdata'
-
-            dependencies {
-
-            }
-
-            // needed for selenium for the automatic translator
-            jvmArg('--add-opens=java.base/java.lang=ALL-UNNAMED')
-            jvmArg('--add-opens=java.base/java.util=ALL-UNNAMED')
-            jvmArg('--add-opens=java.base/java.lang.reflect=ALL-UNNAMED')
-
             args '--all', '--output', file('src/datagen/generated/'),
                     '--mod', 'numina', '--existing', file('src/main/resources/')
 
@@ -302,11 +297,18 @@ minecraft {
                 source((SourceSet) sourceSets.datagenMain)
             }
             for (String name : secondaryModules) {
+
+
                 def modName = "${name}"
+
+
                 def extra = getExtraSourceSet(name, 'datagen')
                 mods.named(modName).configure {
                     source(extra)
                 }
+                println("modName: ${modName}, name: ${name}")
+
+
                 args '--mod', modName, '--existing', file("src/${name}/resources/")
             }
 

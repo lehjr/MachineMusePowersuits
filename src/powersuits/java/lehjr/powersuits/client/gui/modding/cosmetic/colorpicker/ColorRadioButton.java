@@ -9,11 +9,11 @@ import net.minecraft.client.gui.GuiGraphics;
 public class ColorRadioButton extends RadioButton {
     public int index = 0;
     public ColorRadioButton(double leftPos, double topPos, Color color) {
-        super(IconUtils.getIcon().colorclicker, 8, 8, leftPos, topPos);
+        super(IconUtils.INSTANCE.getIcon().colorclicker, 8, 8, leftPos, topPos);
     }
 
     public ColorRadioButton(MusePoint2D pos, Color color) {
-        super(IconUtils.getIcon().colorclicker, new MusePoint2D(8,8), pos);
+        super(IconUtils.INSTANCE.getIcon().colorclicker, new MusePoint2D(8,8), pos);
     }
 
     @Override

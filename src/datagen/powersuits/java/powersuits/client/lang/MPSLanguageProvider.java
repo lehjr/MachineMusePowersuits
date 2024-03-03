@@ -11,8 +11,8 @@ import net.minecraftforge.common.data.LanguageProvider;
 import java.util.concurrent.CompletableFuture;
 
 public class MPSLanguageProvider extends LanguageProvider {
-    public MPSLanguageProvider(PackOutput output, String modid, String locale) {
-        super(output, modid, locale);
+    public MPSLanguageProvider(PackOutput output, String locale) {
+        super(output, MPSConstants.MOD_ID, locale);
     }
 
     @Override
@@ -410,247 +410,247 @@ public class MPSLanguageProvider extends LanguageProvider {
 
     void addModuleTradeoff() {
         // Activation Percent --------------------------------------------------------------------------
-        add("module.tradeoff.activationPercent", "Activation Percent");
+        addTradeoff(MPSConstants.ACTIVATION_PERCENT, "Activation Percent");
 
         // Alpha ---------------------------------------------------------------------------------------
-        add("module.tradeoff.alpha", "Alpha");
+        addTradeoff(MPSConstants.ALPHA, "Alpha");
 
         // Amperage ------------------------------------------------------------------------------------
-        add("module.tradeoff.amperage", "Amperage");
+        addTradeoff(MPSConstants.AMPERAGE, "Amperage");
 
         // Block Limit ---------------------------------------------------------------------------------
-        add("module.tradeoff.selMinerLimit", "Block Limit");
+        addTradeoff(MPSConstants.SELECTIVE_MINER_LIMIT, "Block Limit");
 
-        // Mining Diameter -----------------------------------------------------------------------------
-        add("module.tradeoff.miningDiameter", "Mining Diameter");
+//        // Mining Diameter -----------------------------------------------------------------------------
+//        addTradeoff(miningDiameter", "Mining Diameter");
 
         // Harvest Speed -------------------------------------------------------------------------------
-        add("module.tradeoff.aquaHarvSpeed", "Harvest Speed");
+        addTradeoff(MPSConstants.AQUA_HARVEST_SPEED, "Harvest Speed");
 
         // Armor (Energy) ------------------------------------------------------------------------------
-        add("module.tradeoff.armorEnergy", "Armor (Energy)");
+        addTradeoff(MPSConstants.ARMOR_VALUE_ENERGY, "Armor (Energy)");
 
         // Energy Per Damage ---------------------------------------------------------------------------
-        add("module.tradeoff.armorEnergyPerDamage", "Energy Per Damage");
+        addTradeoff(MPSConstants.ARMOR_ENERGY_CONSUMPTION, "Energy Per Damage");
 
         // Armor (Physical) ----------------------------------------------------------------------------
-        add("module.tradeoff.armorPhysical", "Armor (Physical)");
+        addTradeoff(MPSConstants.ARMOR_VALUE_PHYSICAL, "Armor (Physical)");
 
         // pts -----------------------------------------------------------------------------------------
-        add("module.tradeoff.armorPoints", "pts");
+        addTradeoff(MPSConstants.ARMOR_POINTS, "pts");
 
         // Auto-Feeder Efficiency ----------------------------------------------------------------------
-        add("module.tradeoff.armorPoints", "Auto-Feeder Efficiency");
+        addTradeoff(MPSConstants.EATING_EFFICIENCY, "Auto-Feeder Efficiency");
 
         // Range ---------------------------------------------------------------------------------------
-        add("module.tradeoff.blinkDriveRange", "Range");
+        addTradeoff(MPSConstants.BLINK_DRIVE_RANGE, "Range");
 
         // Blue ----------------------------------------------------------------------------------------
-        add("module.tradeoff.blue", "Blue");
+        addTradeoff(MPSConstants.BLUE, "Blue");
 
         // Lux Capacitor Blue Hue ----------------------------------------------------------------------
-        add("module.tradeoff.blueHue", "Lux Capacitor Blue Hue");
+        addTradeoff(MPSConstants.BLUE_HUE, "Lux Capacitor Blue Hue");
 
         // Carry-through -------------------------------------------------------------------------------
-        add("module.tradeoff.carryThrough", "Carry-through");
+        addTradeoff(MPSConstants.CARRY_THROUGH, "Carry-through");
 
         // Compensation --------------------------------------------------------------------------------
-        add("module.tradeoff.compensation", "Compensation");
+        addTradeoff(MPSConstants.COMPENSATION, "Compensation");
 
         // Cooling Bonus -------------------------------------------------------------------------------
-        add("module.tradeoff.coolingBonus", "Cooling Bonus");
+        addTradeoff(MPSConstants.COOLING_BONUS, "Cooling Bonus");
 
         // Daytime Energy Generation -------------------------------------------------------------------
-        add("module.tradeoff.daytimeEnergyGen", "Daytime Energy Generation");
+        addTradeoff(MPSConstants.ENERGY_GENERATION_DAY, "Daytime Energy Generation");
 
         // Daytime Heat Generation ---------------------------------------------------------------------
-        add("module.tradeoff.daytimeHeatGen", "Daytime Heat Generation");
+        addTradeoff(MPSConstants.HEAT_GENERATION_DAY, "Daytime Heat Generation");
 
         // Diameter ------------------------------------------------------------------------------------
-        add("module.tradeoff.diameter", "Diameter");
+        addTradeoff(MPSConstants.DIAMETER, "Diameter");
 
         // Efficiency ----------------------------------------------------------------------------------
-        add("module.tradeoff.efficiency", "Efficiency");
+        addTradeoff(MPSConstants.EFFICIENCY, "Efficiency");
 
         // Enchantment Level ---------------------------------------------------------------------------
-        add("module.tradeoff.enchLevel", "Enchantment Level");
+        addTradeoff(MPSConstants.ENCHANTMENT_LEVEL, "Enchantment Level");
 
         // Energy Consumption --------------------------------------------------------------------------
-        add("module.tradeoff.energyCon", "Energy Consumption");
+        addTradeoff(MPSConstants.ENERGY_CONSUMPTION, "Energy Consumption");
 
         // Energy Generated ----------------------------------------------------------------------------
-        add("module.tradeoff.energyGenerated", "Energy Generated");
+        addTradeoff(MPSConstants.ENERGY_GENERATED, "Energy Generated");
 
         // Energy Per Block Per Second -----------------------------------------------------------------
-        add("module.tradeoff.energyPerBlock", "Energy Per Block Per Second");
+        addTradeoff(MPSConstants.ENERGY_GENERATION, "Energy Per Block Per Second");
 
         // FOV multiplier ------------------------------------------------------------------------------
-        add("module.tradeoff.fOVMult", "FOV multiplier");
+        addTradeoff(MPSConstants.FIELD_OF_VIEW, "FOV multiplier");
 
         // Field of View -------------------------------------------------------------------------------
-        add("module.tradeoff.fieldOfView", "Field of View");
+        addTradeoff(MPSConstants.FOV, "Field of View");
 
         // Field Strength ------------------------------------------------------------------------------
-        add("module.tradeoff.fieldOfView", "Field Strength");
+        addTradeoff(MPSConstants.MODULE_FIELD_STRENGTH, "Field Strength");
 
         // Tank Size -----------------------------------------------------------------------------------
-        add("module.tradeoff.fluidTankSize", "Tank Size");
+        addTradeoff(MPSConstants.FLUID_TANK_SIZE, "Tank Size");
 
         // Fortune Energy Consumption ------------------------------------------------------------------
-        add("module.tradeoff.fortuneEnCon", "Fortune Energy Consumption");
+        addTradeoff(MPSConstants.FORTUNE_ENERGY_CONSUMPTION, "Fortune Energy Consumption");
 
         // Fortune Level -------------------------------------------------------------------------------
-        add("module.tradeoff.fortuneLevel", "Fortune Level");
+        addTradeoff(MPSConstants.FORTUNE_ENCHANTMENT_LEVEL, "Fortune Level");
 
         // Green ---------------------------------------------------------------------------------------
-        add("module.tradeoff.green", "Green");
+        addTradeoff(MPSConstants.GREEN, "Green");
 
         // Lux Capacitor Green Hue ---------------------------------------------------------------------
-        add("module.tradeoff.greenHue", "Lux Capacitor Green Hue");
+        addTradeoff(MPSConstants.GREEN_HUE, "Lux Capacitor Green Hue");
+
+//        // Harvest Speed -------------------------------------------------------------------------------
+//        addTradeoff(harvSpeed", "Harvest Speed");
 
         // Harvest Speed -------------------------------------------------------------------------------
-        add("module.tradeoff.harvSpeed", "Harvest Speed");
-
-        // Harvest Speed -------------------------------------------------------------------------------
-        add("module.tradeoff.harvestSpeed", "Harvest Speed");
+        addTradeoff(MPSConstants.HARVEST_SPEED, "Harvest Speed");
 
         // Heat Activation Percent ---------------------------------------------------------------------
-        add("module.tradeoff.heatActivationPercent", "Heat Activation Percent");
+        addTradeoff(MPSConstants.HEAT_ACTIVATION_PERCENT, "Heat Activation Percent");
 
         // Heat Emission -------------------------------------------------------------------------------
-        add("module.tradeoff.heatEmission", "Heat Emission");
+        addTradeoff(MPSConstants.HEAT_EMISSION, "Heat Emission");
 
         // Heat Generation -----------------------------------------------------------------------------
-        add("module.tradeoff.heatGen", "Heat Generation");
+        addTradeoff(MPSConstants.HEAT_GENERATION, "Heat Generation");
 
-        // Heat Generation -----------------------------------------------------------------------------
-        add("module.tradeoff.heatGeneration", "Heat Generation");
+//        // Heat Generation -----------------------------------------------------------------------------
+//        addTradeoff(heatGeneration", "Heat Generation");
 
         // Impact --------------------------------------------------------------------------------------
-        add("module.tradeoff.impact", "Impact");
+        addTradeoff(MPSConstants.IMPACT, "Impact");
 
         // Jetboots Thrust -----------------------------------------------------------------------------
-        add("module.tradeoff.jetbootsThrust", "Jetboots Thrust");
+        addTradeoff(MPSConstants.JETBOOTS_THRUST, "Jetboots Thrust");
 
         // Jetpack Thrust ------------------------------------------------------------------------------
-        add("module.tradeoff.jetpackThrust", "Jetpack Thrust");
+        addTradeoff(MPSConstants.JETPACK_THRUST, "Jetpack Thrust");
 
         // Knockback Resistance ------------------------------------------------------------------------
-        add("module.tradeoff.knockbackResistance", "Knockback Resistance");
+        addTradeoff(MPSConstants.KNOCKBACK_RESISTANCE, "Knockback Resistance");
 
-        // Maximum Heat --------------------------------------------------------------------------------
-        add("module.tradeoff.maxHeat", "Maximum Heat");
+//        // Maximum Heat --------------------------------------------------------------------------------
+//        addTradeoff(maxHeat", "Maximum Heat");
 
         // Melee Damage --------------------------------------------------------------------------------
-        add("module.tradeoff.meleeDamage", "Melee Damage");
+        addTradeoff(MPSConstants.PUNCH_DAMAGE, "Melee Damage");
 
         // Melee Knockback -----------------------------------------------------------------------------
-        add("module.tradeoff.meleeKnockback", "Melee Knockback");
+        addTradeoff(MPSConstants.PUNCH_KNOCKBACK, "Melee Knockback");
 
         // Movement Resistance -------------------------------------------------------------------------
-        add("module.tradeoff.movementResistance", "Movement Resistance");
+        addTradeoff(MPSConstants.MOVEMENT_RESISTANCE, "Movement Resistance");
 
         // Multiplier ----------------------------------------------------------------------------------
-        add("module.tradeoff.multiplier", "Multiplier");
+        addTradeoff(MPSConstants.MULTIPLIER, "Multiplier");
 
         // Nighttime Energy Generation -----------------------------------------------------------------
-        add("module.tradeoff.nightTimeEnergyGen", "Nighttime Energy Generation");
+        addTradeoff(MPSConstants.ENERGY_GENERATION_NIGHT, "Nighttime Energy Generation");
 
         // Nighttime Heat Generation -------------------------------------------------------------------
-        add("module.tradeoff.nightTimeHeatGen", "Nighttime Heat Generation");
+        addTradeoff(MPSConstants.HEAT_GENERATION_NIGHT, "Nighttime Heat Generation");
 
         // Lux Capacitor Opacity -----------------------------------------------------------------------
-        add("module.tradeoff.opacity", "Lux Capacitor Opacity");
+        addTradeoff(MPSConstants.OPACITY, "Lux Capacitor Opacity");
 
         // Overclock -----------------------------------------------------------------------------------
-        add("module.tradeoff.overclock", "Overclock");
+        addTradeoff(MPSConstants.OVERCLOCK, "Overclock");
 
         // Plasma Damage At Full Charge ----------------------------------------------------------------
-        add("module.tradeoff.plasmaDamage", "Plasma Damage At Full Charge");
+        addTradeoff(MPSConstants.PLASMA_CANNON_DAMAGE_AT_FULL_CHARGE, "Plasma Damage At Full Charge");
 
         // Plasma Energy Per Tick ----------------------------------------------------------------------
-        add("module.tradeoff.plasmaEnergyPerTick", "Plasma Energy Per Tick");
+        addTradeoff(MPSConstants.PLASMA_CANNON_ENERGY_PER_TICK, "Plasma Energy Per Tick");
 
         // Plasma Explosiveness ------------------------------------------------------------------------
-        add("module.tradeoff.plasmaExplosiveness", "Plasma Explosiveness");
+        addTradeoff(MPSConstants.PLASMA_CANNON_EXPLOSIVENESS, "Plasma Explosiveness");
 
         // Power ---------------------------------------------------------------------------------------
-        add("module.tradeoff.power", "Power");
+        addTradeoff(MPSConstants.POWER, "Power");
 
         // Radius --------------------------------------------------------------------------------------
-        add("module.tradeoff.radius", "Radius");
+        addTradeoff(MPSConstants.RADIUS, "Radius");
 
         // Railgun Energy Cost -------------------------------------------------------------------------
-        add("module.tradeoff.railgunEnergyCost", "Railgun Energy Cost");
+        addTradeoff(MPSConstants.RAILGUN_ENERGY_COST, "Railgun Energy Cost");
 
         // Railgun Heat Emission -----------------------------------------------------------------------
-        add("module.tradeoff.railgunHeatEm", "Railgun Heat Emission");
+        addTradeoff(MPSConstants.RAILGUN_HEAT_EMISSION, "Railgun Heat Emission");
 
         // Railgun Total Impulse -----------------------------------------------------------------------
-        add("module.tradeoff.railgunTotalImpulse", "Railgun Total Impulse");
+        addTradeoff(MPSConstants.RAILGUN_TOTAL_IMPULSE, "Railgun Total Impulse");
 
         // Range ---------------------------------------------------------------------------------------
-        add("module.tradeoff.range", "Range");
+        addTradeoff(MPSConstants.RANGE, "Range");
 
         // Red -----------------------------------------------------------------------------------------
-        add("module.tradeoff.red", "Red");
+        addTradeoff(MPSConstants.RED, "Red");
 
         // Lux Capacitor Red Hue -----------------------------------------------------------------------
-        add("module.tradeoff.redHue", "Lux Capacitor Red Hue");
+        addTradeoff(MPSConstants.RED_HUE, "Lux Capacitor Red Hue");
 
         // Silk Touch Energy Consumption ---------------------------------------------------------------
-        add("module.tradeoff.silkTouchEnCon", "Silk Touch Energy Consumption");
+        addTradeoff(MPSConstants.SILK_TOUCH_ENERGY_CONSUMPTION, "Silk Touch Energy Consumption");
 
         // Spinning Blade Damage -----------------------------------------------------------------------
-        add("module.tradeoff.spinBladeDam", "Spinning Blade Damage");
+        addTradeoff(MPSConstants.BLADE_DAMAGE, "Spinning Blade Damage");
 
         // Sprint Assist -------------------------------------------------------------------------------
-        add("module.tradeoff.sprintAssist", "Sprint Assist");
+        addTradeoff(MPSConstants.SPRINT_ASSIST, "Sprint Assist");
 
         // Sprint Energy Consumption -------------------------------------------------------------------
-        add("module.tradeoff.sprintEnergyCon", "Sprint Energy Consumption");
+        addTradeoff(MPSConstants.SPRINT_ENERGY_CONSUMPTION, "Sprint Energy Consumption");
 
         // Sprint Exhaustion Compensation --------------------------------------------------------------
-        add("module.tradeoff.sprintExComp", "Sprint Exhaustion Compensation");
+        addTradeoff(MPSConstants.FOOD_COMPENSATION, "Sprint Exhaustion Compensation");
 
         // Sprint Speed Multiplier ---------------------------------------------------------------------
-        add("module.tradeoff.sprintSpeedMult", "Sprint Speed Multiplier");
+        addTradeoff(MPSConstants.SPRINT_SPEED_MULTIPLIER, "Sprint Speed Multiplier");
 
-        // Energy Generation ---------------------------------------------------------------------------
-        add("module.tradeoff.thermalEnergyGen", "Energy Generation");
+//        // Energy Generation ---------------------------------------------------------------------------
+//        addTradeoff(thermalEnergyGen", "Energy Generation");
 
         // Thrust --------------------------------------------------------------------------------------
-        add("module.tradeoff.thrust", "Thrust");
+        addTradeoff(MPSConstants.THRUST, "Thrust");
 
         // Underwater Movement Boost -------------------------------------------------------------------
-        add("module.tradeoff.underwaterMovBoost", "Underwater Movement Boost");
+        addTradeoff(MPSConstants.SWIM_BOOST_AMOUNT, "Underwater Movement Boost");
 
         // Verticality ---------------------------------------------------------------------------------
-        add("module.tradeoff.vertically", "Verticality");
+        addTradeoff(MPSConstants.VERTICALITY, "Verticality");
 
         // Voltage -------------------------------------------------------------------------------------
-        add("module.tradeoff.voltage", "Voltage");
+        addTradeoff(MPSConstants.VOLTAGE, "Voltage");
 
         // Walking Assist ------------------------------------------------------------------------------
-        add("module.tradeoff.walkingAssist", "Walking Assist");
+        addTradeoff(MPSConstants.WALKING_ASSISTANCE, "Walking Assist");
 
         // Walking Energy Consumption ------------------------------------------------------------------
-        add("module.tradeoff.walkingEnergyCon", "Walking Energy Consumption");
+        addTradeoff(MPSConstants.WALKING_ENERGY_CONSUMPTION, "Walking Energy Consumption");
 
         // Walking Speed Multiplier --------------------------------------------------------------------
-        add("module.tradeoff.walkingSpeedMult", "Walking Speed Multiplier");
+        addTradeoff(MPSConstants.WALKING_SPEED_MULTIPLIER, "Walking Speed Multiplier");
 
         // Y-look ratio --------------------------------------------------------------------------------
-        add("module.tradeoff.yLookRatio", "Y-look ratio");
+        addTradeoff(MPSConstants.FLIGHT_VERTICALITY, "Y-look ratio");
     }
 
 
     void addKeybinds() {
         // Cycle Tool Backward (MPS) -------------------------------------------------------------------
-        add("keybinding.powersuits.cycleToolBackward", "Cycle Tool Backward (MPS)");
+        add("keybinding." + MPSConstants.MOD_ID + ".cycleToolBackward", "Cycle Tool Backward (MPS)");
 
         // Cycle Tool Forward (MPS) --------------------------------------------------------------------
-        add("keybinding.powersuits.cycleToolForward", "Cycle Tool Forward (MPS)");
+        add("keybinding." + MPSConstants.MOD_ID + ".cycleToolForward", "Cycle Tool Forward (MPS)");
 
         // Toggle Module -------------------------------------------------------------------------------
         add("keybinding." + MPSConstants.MOD_ID + ".toggleModule", "Toggle %s");
@@ -701,109 +701,109 @@ public class MPSLanguageProvider extends LanguageProvider {
         add("javaModel.powerfist.specName", "Power Fist");
 
         // Main Arm ------------------------------------------------------------------------------------
-        add("javaModel.powerfist.mainarm.partName", "Main Arm");
+        addPowerfistPart("mainarm", "Main Arm");
 
         // Armor Right ---------------------------------------------------------------------------------
-        add("javaModel.powerfist.armorright.partName", "Armor Right");
+        addPowerfistPart("armorright", "Armor Right");
 
         // Armor Left ----------------------------------------------------------------------------------
-        add("javaModel.powerfist.armorleft.partName", "Armor Left");
+        addPowerfistPart("armorleft", "Armor Left");
 
         // Wrist Top Right -----------------------------------------------------------------------------
-        add("javaModel.powerfist.wristtopright.partName", "Wrist Top Right");
+        addPowerfistPart("wristtopright", "Wrist Top Right");
 
         // Wrist Top Left ------------------------------------------------------------------------------
-        add("javaModel.powerfist.wristtopleft.partName", "Wrist Top Left");
+        addPowerfistPart("wristtopleft", "Wrist Top Left");
 
         // Wrist Bottom Right --------------------------------------------------------------------------
-        add("javaModel.powerfist.wristbottomright.partName", "Wrist Bottom Right");
+        addPowerfistPart("wristbottomright", "Wrist Bottom Right");
 
         // Wrist Bottom Left ---------------------------------------------------------------------------
-        add("javaModel.powerfist.wristbottomleft.partName", "Wrist Bottom Left");
+        addPowerfistPart("wristbottomleft", "Wrist Bottom Left");
 
         // Finger Guard --------------------------------------------------------------------------------
-        add("javaModel.powerfist.fingerguard.partName", "Finger Guard");
+        addPowerfistPart("fingerguard", "Finger Guard");
 
         // Crystal Holder ------------------------------------------------------------------------------
-        add("javaModel.powerfist.crystalholder.partName", "Crystal Holder");
+        addPowerfistPart("crystalholder", "Crystal Holder");
 
         // Crystal -------------------------------------------------------------------------------------
-        add("javaModel.powerfist.crystal.partName", "Crystal");
+        addPowerfistPart("crystal", "Crystal");
 
         // Support Right 1 -----------------------------------------------------------------------------
-        add("javaModel.powerfist.supportright1.partName", "Support Right 1");
+        addPowerfistPart("supportright1", "Support Right 1");
 
         // Support Right 2 -----------------------------------------------------------------------------
-        add("javaModel.powerfist.supportright2.partName", "Support Right 2");
+        addPowerfistPart("supportright2", "Support Right 2");
 
         // Support Right 3 -----------------------------------------------------------------------------
-        add("javaModel.powerfist.supportright3.partName", "Support Right 3");
+        addPowerfistPart("supportright3", "Support Right 3");
 
         // Support Right 4 -----------------------------------------------------------------------------
-        add("javaModel.powerfist.supportright4.partName", "Support Right 4");
+        addPowerfistPart("supportright4", "Support Right 4");
 
         // Support Right 5 -----------------------------------------------------------------------------
-        add("javaModel.powerfist.supportright5.partName", "Support Right 5");
+        addPowerfistPart("supportright5", "Support Right 5");
 
         // Support Base Right --------------------------------------------------------------------------
-        add("javaModel.powerfist.supportbaseright.partName", "Support Base Right");
+        addPowerfistPart("supportbaseright", "Support Base Right");
 
         // Support Right Front -------------------------------------------------------------------------
-        add("javaModel.powerfist.supportrightfront.partName", "Support Right Front");
+        addPowerfistPart("supportrightfront", "Support Right Front");
 
         // Support Base Left ---------------------------------------------------------------------------
-        add("javaModel.powerfist.supportbaseleft.partName", "Support Base Left");
+        addPowerfistPart("supportbaseleft", "Support Base Left");
 
         // Support Left Front --------------------------------------------------------------------------
-        add("javaModel.powerfist.supportleftfront.partName", "Support Left Front");
+        addPowerfistPart("supportleftfront", "Support Left Front");
 
         // Support Left 1 ------------------------------------------------------------------------------
-        add("javaModel.powerfist.supportleft1.partName", "Support Left 1");
+        addPowerfistPart("supportleft1", "Support Left 1");
 
         // Support Left 2 ------------------------------------------------------------------------------
-        add("javaModel.powerfist.supportleft2.partName", "Support Left 2");
+        addPowerfistPart("supportleft2", "Support Left 2");
 
         // Support Left 3 ------------------------------------------------------------------------------
-        add("javaModel.powerfist.supportleft3.partName", "Support Left 3");
+        addPowerfistPart("supportleft3", "Support Left 3");
 
         // Support Left 4 ------------------------------------------------------------------------------
-        add("javaModel.powerfist.supportleft4.partName", "Support Left 4");
+        addPowerfistPart("supportleft4", "Support Left 4");
 
         // Support Left 5 ------------------------------------------------------------------------------
-        add("javaModel.powerfist.supportleft5.partName", "Support Left 5");
+        addPowerfistPart("supportleft5", "Support Left 5");
 
         // Palm ----------------------------------------------------------------------------------------
-        add("javaModel.powerfist.palm.partName", "Palm");
+        addPowerfistPart("palm", "Palm");
 
         // Index 1 -------------------------------------------------------------------------------------
-        add("javaModel.powerfist.palm.index1.partName", "Index 1");
+        addPowerfistPart("palm.index1", "Index 1");
 
         // Index 2 -------------------------------------------------------------------------------------
-        add("javaModel.powerfist.palm.index1.index2.partName", "Index 2");
+        addPowerfistPart("palm.index1.index2", "Index 2");
 
         // Middle Finger 1 -----------------------------------------------------------------------------
-        add("javaModel.powerfist.palm.middlefinger1.partName", "Middle Finger 1");
+        addPowerfistPart("palm.middlefinger1", "Middle Finger 1");
 
         // Middle Finger 2 -----------------------------------------------------------------------------
-        add("javaModel.powerfist.palm.middlefinger1.middlefinger2.partName", "Middle Finger 2");
+        addPowerfistPart("palm.middlefinger1.middlefinger2", "Middle Finger 2");
 
         // Ring Finger 1 -------------------------------------------------------------------------------
-        add("javaModel.powerfist.palm.ringfinger1.partName", "Ring Finger 1");
+        addPowerfistPart("palm.ringfinger1", "Ring Finger 1");
 
         // Ring Finger 2 -------------------------------------------------------------------------------
-        add("javaModel.powerfist.palm.ringfinger1.ringfinger2.partName", "Ring Finger 2");
+        addPowerfistPart("palm.ringfinger1.ringfinger2", "Ring Finger 2");
 
         // Pinky 1 -------------------------------------------------------------------------------------
-        add("javaModel.powerfist.palm.pinky1.partName", "Pinky 1");
+        addPowerfistPart("palm.pinky1", "Pinky 1");
 
         // Pinky 2 -------------------------------------------------------------------------------------
-        add("javaModel.powerfist.palm.pinky1.pinky2.partName", "Pinky 2");
+        addPowerfistPart("palm.pinky1.pinky2", "Pinky 2");
 
         // Thumb 1 -------------------------------------------------------------------------------------
-        add("javaModel.powerfist.palm.thumb1.partName", "Thumb 1");
+        addPowerfistPart("palm.thumb1", "Thumb 1");
 
         // Thumb 2 -------------------------------------------------------------------------------------
-        add("javaModel.powerfist.palm.thumb1.thumb2.partName", "Thumb 2");
+        addPowerfistPart("palm.thumb1.thumb2", "Thumb 2");
 
         // MPS Armor ===================================================================================
         // Helm ----------------------------------------------------------------------------------------
@@ -894,74 +894,88 @@ public class MPSLanguageProvider extends LanguageProvider {
         add("model.armor2.modelName", "Armor 2");
 
         // Helmet --------------------------------------------------------------------------------------
-        add("model.armor2.helmetmain.partName", "Helmet");
+        addModel2Part("helmetmain", "Helmet");
 
         // Helmet Tubes and Visor ----------------------------------------------------------------------
-        add("model.armor2.helmetglow1.partName", "Helmet Tubes and Visor");
+        addModel2Part("helmetglow1", "Helmet Tubes and Visor");
 
         // Front Chest Protection ----------------------------------------------------------------------
-        add("model.armor2.chestmain.partName", "Front Chest Protection");
+        addModel2Part("chestmain", "Front Chest Protection");
 
         // Chest Base ----------------------------------------------------------------------------------
-        add("model.armor2.chestgray.partName", "Chest Base");
+        addModel2Part("chestgray", "Chest Base");
 
         // Back Chest Protection -----------------------------------------------------------------------
-        add("model.armor2.chestback1.partName", "Back Chest Protection");
+        addModel2Part("chestback1", "Back Chest Protection");
 
         // Spinal Power Crystals -----------------------------------------------------------------------
-        add("model.armor2.chestglowback.partName", "Spinal Power Crystals");
+        addModel2Part("chestglowback", "Spinal Power Crystals");
 
         // Front Power Crystal -------------------------------------------------------------------------
-        add("model.armor2.chestglowfront.partName", "Front Power Crystal");
+        addModel2Part("chestglowfront", "Front Power Crystal");
 
         // Arm and Shoulder Protection -----------------------------------------------------------------
-        add("model.armor2.armmain.partName", "Arm and Shoulder Protection");
+        addModel2Part("armmain", "Arm and Shoulder Protection");
 
         // Arm and Shoulder Protection 1 ---------------------------------------------------------------
-        add("model.armor2.armmain1.partName", "Arm and Shoulder Protection");
+        addModel2Part("armmain1", "Arm and Shoulder Protection");
 
         // Lef Boot Glow -------------------------------------------------------------------------------
-        add("model.armor2.bootglow.partName", "Left Boot Glow");
+        addModel2Part("bootglow", "Left Boot Glow");
 
         // Right Boot Glow -----------------------------------------------------------------------------
-        add("model.armor2.bootglow1.partName", "Right Boot Glow");
+        addModel2Part("bootglow1", "Right Boot Glow");
 
         // Left Boot -----------------------------------------------------------------------------------
-        add("model.armor2.bootmain.partName", "Left Boot");
+        addModel2Part("bootmain", "Left Boot");
 
         // Right Boot ----------------------------------------------------------------------------------
-        add("model.armor2.bootmain1.partName", "Right Boot");
+        addModel2Part("bootmain1", "Right Boot");
 
         // Shoulder Light ------------------------------------------------------------------------------
-        add("model.armor2.armglow.partName", "Shoulder Light");
+        addModel2Part("armglow", "Shoulder Light");
 
         // Shoulder Light 1 -----------------------------------------------------------------------------
-        add("model.armor2.armglow1.partName", "Shoulder Light");
+        addModel2Part("armglow1", "Shoulder Light");
 
         // Arm Base ------------------------------------------------------------------------------------
-        add("model.armor2.armgray.partName",  "Arm Base");
+        addModel2Part("armgray",  "Arm Base");
 
         // Arm Base 1 ----------------------------------------------------------------------------------
-        add("model.armor2.armgray1.partName", "Arm Base");
+        addModel2Part("armgray1", "Arm Base");
 
         // Left Leg Base -------------------------------------------------------------------------------
-        add("model.armor2.leggray.partName", "Left Leg Base");
+        addModel2Part("leggray", "Left Leg Base");
 
         // Right Leg Base ------------------------------------------------------------------------------
-        add("model.armor2.leggray1.partName", "Right Leg Base");
+        addModel2Part("leggray1", "Right Leg Base");
 
         // Left Leg Protection -------------------------------------------------------------------------
-        add("model.armor2.legbit.partName", "Left Leg Protection");
+        addModel2Part("legbit", "Left Leg Protection");
 
         // Right Leg Protection ------------------------------------------------------------------------
-        add("model.armor2.legbit1.partName", "Right Leg Protection");
+        addModel2Part("legbit1", "Right Leg Protection");
 
         // Left Leg Light ------------------------------------------------------------------------------
-        add("model.armor2.legglow.partName", "Left Leg Light");
+        addModel2Part("legglow", "Left Leg Light");
 
         // Right Leg Light -----------------------------------------------------------------------------
-        add("model.armor2.legglow1.partName", "Right Leg Light");
+        addModel2Part("legglow1", "Right Leg Light");
     }
+
+
+    void addPowerfistPart(String part, String translation) {
+        add("javaModel.powerfist." + part + ".partName", translation);
+    }
+
+    void addTradeoff(String tradeoff, String translation) {
+        add("module.tradeoff." + tradeoff, translation);
+    }
+
+    void addModel2Part(String part, String translation) {
+        add("model.armor2." + part + ".partName", translation);
+    }
+
 
     void addItemDescriptions(Item key, String description) {
         add(key.getDescriptionId() + ".desc", description);

@@ -11,9 +11,6 @@ import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import numina.client.lang.NuminaLanguageProvider;
-import numina.client.lang.NuminaMultiLanguageProvider;
-import numina.client.util.lang.translators.BingTranslator;
-import numina.client.util.lang.translators.ITranslator;
 import numina.common.loot.NuminaBlockTagProvider;
 import numina.common.loot.NuminaBockLoot;
 
@@ -32,9 +29,7 @@ public class NuminaDataGenerator {
         ExistingFileHelper helper = event.getExistingFileHelper();
 
         //Client side data generators
-        DatagenConfig config = new DatagenConfig(NuminaConstants.MOD_ID);
-        ITranslator translator = new BingTranslator(config);
-        generator.addProvider(event.includeServer(), new NuminaLanguageProvider(output, NuminaConstants.MOD_ID, config, translator));
+        generator.addProvider(event.includeServer(), new NuminaLanguageProvider(output, "en_us"));
 //        translator.quit();
 
         //Server side data generators
