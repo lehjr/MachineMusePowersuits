@@ -384,9 +384,9 @@ dependencies {
     runtimeOnly fg.deobf("curse.maven:industrial-foregoing-266515:5047821")
 
 
-//    implementation fg.deobf("curse.maven:ic2-classic-242942:4879119") {
-//        transitive = false
-//    }
+    implementation fg.deobf("curse.maven:ic2-classic-242942:5152384") {
+        transitive = false
+    }
 
 //    implementation fg.deobf("curse.maven:weapon-master-782886:4978496")
 

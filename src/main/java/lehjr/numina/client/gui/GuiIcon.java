@@ -59,7 +59,7 @@ public class GuiIcon {
 
     public final DrawableGuiIcon lightning;
     public final DrawableGuiIcon lightning2;
-    public final DrawableGuiIcon lightningmedium;
+//    public final DrawableGuiIcon lightningmedium;
     public final DrawableGuiIcon minusSign;
     public final DrawableGuiIcon normalArmor;
     public final DrawableGuiIcon plusSign;
@@ -76,7 +76,7 @@ public class GuiIcon {
         glowArmor= registerIcon("glowarmor", 8, 8);
         lightning = registerIcon("lightning", 800, 62);
         lightning2 = registerIcon("lightning2", 800, 62);
-        lightningmedium = registerIcon("lightningmedium", 800, 62);
+//        lightningmedium = registerIcon("lightningmedium", 800, 62);
         minusSign = registerIcon("minussign", 8, 8);
         normalArmor = registerIcon("normalarmor", 8, 8);
         plusSign= registerIcon("plussign", 8, 8);

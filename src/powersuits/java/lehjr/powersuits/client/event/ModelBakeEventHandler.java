@@ -133,6 +133,8 @@ public enum ModelBakeEventHandler {
 
     @SubscribeEvent
     public void onAddAdditional(ModelEvent.RegisterAdditional e) {
+        System.out.println("on additional");
+
         e.register(plasmaBall);
         locations.forEach(location -> e.register(location));
     }

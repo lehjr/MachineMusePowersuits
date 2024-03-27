@@ -85,11 +85,11 @@ public class Numina {
         modEventBus.addListener(this::setup);
 
         // Register the doClientStuff method for modloading
-        modEventBus.addListener(this::doClientStuff);
+        modEventBus.addListener(ClientEventBusSubscriber::doClientStuff);
 
         modEventBus.addListener(this::addEntityAttributes);
 
-        modEventBus.addListener(this::modelRegistry);
+        modEventBus.addListener(ClientEventBusSubscriber::modelRegistry);
 
         modEventBus.addListener(this::onRegisterReloadListenerEvent);
 
@@ -117,10 +117,6 @@ public class Numina {
                 NuminaSettings.getModuleConfig().setServerConfig(config);
             }
         });
-    }
-
-    public void modelRegistry(ModelEvent.RegisterGeometryLoaders event) {
-        event.register( "obj", NuminaObjLoader.INSTANCE);
     }
 
     public void onRegisterReloadListenerEvent(RegisterClientReloadListenersEvent event) {
@@ -156,22 +152,7 @@ public class Numina {
         MinecraftForge.EVENT_BUS.register(new PlayerUpdateHandler());
     }
 
-    private void doClientStuff(final FMLClientSetupEvent event) {
-        MinecraftForge.EVENT_BUS.register(new FOVUpdateEventHandler());
-        MinecraftForge.EVENT_BUS.register(new ToolTipEvent());
-        event.enqueueWork(() -> {
-            MenuScreens.register(NuminaObjects.CHARGING_BASE_CONTAINER_TYPE.get(), ChargingBaseScreen::new);
-            MenuScreens.register(NuminaObjects.ARMOR_STAND_CONTAINER_TYPE.get(), ArmorStandScreen::new);
-            //        ScreenManager.func_216911_a(NuminaObjects.SCANNER_CONTAINER.get(), MPSGuiScanner::new);
-        });
-        IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
-        modEventBus.register(ClientEventBusSubscriber.class);
-        modEventBus.addListener(ModelBakeEventHandler.INSTANCE::onAddAdditional);
 
-//        MinecraftForge.EVENT_BUS.addListener((InputEvent.Key e) -> {
-////            ModelTransformCalibration.CALIBRATION.transformCalibration(e);
-//        });
-    }
 
     @SubscribeEvent
     public void attachCapability(AttachCapabilitiesEvent<Entity> event) {

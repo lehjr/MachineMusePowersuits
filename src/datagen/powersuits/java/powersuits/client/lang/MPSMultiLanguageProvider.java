@@ -269,7 +269,7 @@ public class MPSMultiLanguageProvider extends MulitiLanguageProvider {
         addItemDescriptions(MPSItems.FLINT_AND_STEEL_MODULE.get(), mainLanguage, "A portable igniter that creates fire through the power of energy.");
 
         // Rototiller ----------------------------------------------------------------------------------
-        add(MPSItems.HOE_MODULE.get(), mcCodeToLang("ru_ru"), "Ротационный культиватор");
+        add(MPSItems.HOE_MODULE.get(), mainLanguage, "Rototiller");
 
         addItemDescriptions(MPSItems.HOE_MODULE.get(), mainLanguage, "An automated tilling addon to make it easy to till large swaths of land at once.");
 

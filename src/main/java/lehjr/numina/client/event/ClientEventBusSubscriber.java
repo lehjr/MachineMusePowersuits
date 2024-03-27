@@ -27,13 +27,17 @@
 package lehjr.numina.client.event;
 
 
+import forge.NuminaObjLoader;
 import lehjr.numina.client.gui.overlay.ModeChangingIconOverlay;
 import lehjr.numina.client.render.entity.NuminaArmorStandRenderer;
 import lehjr.numina.client.render.item.NuminaArmorLayer;
+import lehjr.numina.client.screen.ArmorStandScreen;
+import lehjr.numina.client.screen.ChargingBaseScreen;
 import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.base.NuminaObjects;
 import lehjr.numina.common.constants.NuminaConstants;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
@@ -45,10 +49,16 @@ import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.*;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.eventbus.api.EventPriority;
+import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -66,7 +76,7 @@ public class ClientEventBusSubscriber {
     public static void onTextureStitchPre(TextureStitchEvent.Pre event) {
         TextureAtlas map = event.getAtlas();
         // only adds if it doesn't already exist
-        if (map.location() == TextureAtlas.LOCATION_BLOCKS) {
+        if (map.location() == InventoryMenu.BLOCK_ATLAS) {
             event.addSprite(NuminaConstants.TEXTURE_WHITE_SHORT);
         }
     }
@@ -129,14 +139,27 @@ public class ClientEventBusSubscriber {
     }
 
     @SubscribeEvent
-    public void onAddAdditional(ModelEvent.RegisterAdditional e) {
+    public static void onAddAdditional(ModelEvent.RegisterAdditional e) {
         NuminaLogger.logDebug("adding additional models");
-        modelList.stream().forEach(resourceLocation -> e.register(resourceLocation));
+        ModelBakeEventHandler.INSTANCE.onAddAdditional(e);
     }
 
-    static List<ResourceLocation> modelList = new ArrayList<>();
+    public static void doClientStuff(final FMLClientSetupEvent event) {
+        MinecraftForge.EVENT_BUS.register(new FOVUpdateEventHandler());
+        MinecraftForge.EVENT_BUS.register(new ToolTipEvent());
+        event.enqueueWork(() -> {
+            MenuScreens.register(NuminaObjects.CHARGING_BASE_CONTAINER_TYPE.get(), ChargingBaseScreen::new);
+            MenuScreens.register(NuminaObjects.ARMOR_STAND_CONTAINER_TYPE.get(), ArmorStandScreen::new);
+            //        ScreenManager.func_216911_a(NuminaObjects.SCANNER_CONTAINER.get(), MPSGuiScanner::new);
+        });
+        IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
+        modEventBus.register(ClientEventBusSubscriber.class);
+//        MinecraftForge.EVENT_BUS.addListener((InputEvent.Key e) -> {
+////            ModelTransformCalibration.CALIBRATION.transformCalibration(e);
+//        });
+    }
 
-    public static void addModelLocation(ResourceLocation modelLocation) {
-        modelList.add(modelLocation);
+    public static void modelRegistry(ModelEvent.RegisterGeometryLoaders event) {
+        event.register( "obj", NuminaObjLoader.INSTANCE);
     }
 }

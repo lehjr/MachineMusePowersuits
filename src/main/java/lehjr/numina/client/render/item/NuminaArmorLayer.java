@@ -56,12 +56,14 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 
 import javax.annotation.Nonnull;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 public class NuminaArmorLayer<T extends LivingEntity, M extends HumanoidModel<T>, A extends HumanoidModel<T>> extends HumanoidArmorLayer<T, M, A> {
@@ -141,7 +143,6 @@ public class NuminaArmorLayer<T extends LivingEntity, M extends HumanoidModel<T>
                         if (colors.length == 0) {
                             colors = new int[]{Color.WHITE.getARGBInt()};
                         }
-
                         for (CompoundTag tag : NBTTagAccessor.getValues(renderTag)) {
                             PartSpecBase partSpec = NuminaModelSpecRegistry.getInstance().getPart(tag);
                             if (partSpec != null) {
