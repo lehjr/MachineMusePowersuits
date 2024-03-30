@@ -13,7 +13,6 @@ import java.util.List;
 public enum ModelBakeEventHandler {
     INSTANCE;
 
-    @SubscribeEvent
     public void onAddAdditional(ModelEvent.RegisterAdditional e) {
         ModelSpecLoader.INSTANCE.parse();
 

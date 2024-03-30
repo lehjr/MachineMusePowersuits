@@ -56,16 +56,7 @@ public enum ModelBakeEventHandler {
     INSTANCE;
     public static final ResourceLocation plasmaBall = new ResourceLocation(MPSConstants.MOD_ID, "entity/plasma");
 
-
-//    Map<Direction, Map<DIR, List<BakedQuad>>> quadMap = new HashMap<>();
-//
-//    Map<Direction, BakedModel> luxCapacitorBlockModels = new HashMap<>();
-
-
     public MPSBEWLR MPSBERINSTANCE = new MPSBEWLR();
-
-//    ModelResourceLocation luxCapItemLocation = new ModelResourceLocation(MPSRegistryNames.LUX_CAPACITOR, "inventory");
-//    ModelResourceLocation luxCapModuleLocation = new ModelResourceLocation(MPSRegistryNames.LUX_CAPACITOR_MODULE, "inventory");
 
     public static final ModelResourceLocation powerFistIconLocation = new ModelResourceLocation(MPSRegistryNames.POWER_FIST, "inventory");
 

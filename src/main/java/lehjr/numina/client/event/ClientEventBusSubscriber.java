@@ -53,6 +53,7 @@ import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.*;
 import net.minecraftforge.common.MinecraftForge;
@@ -80,7 +81,7 @@ public class ClientEventBusSubscriber {
     public static void onTextureStitchPre(TextureStitchEvent event) {
         TextureAtlas map = event.getAtlas();
         // only adds if it doesn't already exist
-        if (map.location() == TextureAtlas.LOCATION_BLOCKS) {
+        if (map.location() == InventoryMenu.BLOCK_ATLAS) {
             System.out.println("fixme, sprite upload not fixed yet!!!!");
 //            event.addSprite(NuminaConstants.TEXTURE_WHITE_SHORT);
 
@@ -146,15 +147,9 @@ public class ClientEventBusSubscriber {
     }
 
     @SubscribeEvent
-    public void onAddAdditional(ModelEvent.RegisterAdditional e) {
+    public static void onAddAdditional(ModelEvent.RegisterAdditional e) {
         NuminaLogger.logDebug("adding additional models");
-        modelList.stream().forEach(resourceLocation -> e.register(resourceLocation));
-    }
-
-    static List<ResourceLocation> modelList = new ArrayList<>();
-
-    public static void addModelLocation(ResourceLocation modelLocation) {
-        modelList.add(modelLocation);
+        ModelBakeEventHandler.INSTANCE.onAddAdditional(e);
     }
 
     public static void onRegisterReloadListenerEvent(RegisterClientReloadListenersEvent event) {
@@ -184,3 +179,4 @@ public class ClientEventBusSubscriber {
         event.register( "obj", NuminaObjLoader.INSTANCE);
     }
 }
+
