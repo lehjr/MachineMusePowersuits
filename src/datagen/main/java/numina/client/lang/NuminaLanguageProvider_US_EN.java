@@ -5,11 +5,10 @@ import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.constants.NuminaConstants;
 import net.minecraft.data.PackOutput;
 import net.minecraft.world.item.Item;
-import net.minecraftforge.common.data.LanguageProvider;
 
-public class NuminaLanguageProvider extends LanguageProvider {
-    public NuminaLanguageProvider(PackOutput output, String locale) {
-        super(output, NuminaConstants.MOD_ID, locale);
+public class NuminaLanguageProvider_US_EN extends AbstractLanguageProviderNumina {
+    public NuminaLanguageProvider_US_EN(PackOutput output) {
+        super(output, NuminaConstants.MOD_ID, "us_en");
     }
 
     @Override
@@ -25,11 +24,13 @@ public class NuminaLanguageProvider extends LanguageProvider {
         addModuleCategories();
     }
 
-    void addItemGroup() {
+    @Override
+    public void addItemGroup() {
         add(NuminaConstants.CREATIVE_TAB_TRANSLATION_KEY, "Numina");
     }
 
-    void addGui() {
+    @Override
+    public void addGui() {
         add("gui.numina.chargingbase", "Charging Base");
         add(NuminaConstants.TOOLTIP_CHARGING_BASE, "Charges an entity's equipped items");
 
@@ -58,22 +59,26 @@ public class NuminaLanguageProvider extends LanguageProvider {
         add(NuminaConstants.GUI_CREATIVE_INSTALL_ALL_DESC, "Installs all top tier compatible modules into selected modular item while player is in creative mode");
     }
 
-    void addArmorStand() {
+    @Override
+    public void addArmorStand() {
         add(NuminaObjects.ARMOR_STAND_ITEM.get(), "Armor Stand");
         add(NuminaObjects.ARMOR_STAND__ENTITY_TYPE.get(),  "Armor Stand");
     }
 
-    void addModuleTradeoffs() {
+    @Override
+    public void addModuleTradeoffs() {
         add("module.tradeoff.maxEnergy",  "Maximum Energy");
 
         add("module.tradeoff.maxTransfer", "Maximum Transfer per Tick");
     }
 
-    void addChargingBase() {
+    @Override
+    public void addChargingBase() {
         add(NuminaObjects.CHARGING_BASE_BLOCK.get(), "Charging Base");
     }
 
-    void addToolTips() {
+    @Override
+    public void addToolTips() {
         add(NuminaConstants.TOOLTIP_BATTERY_ENERGY, "%d/%d FE");
 
         // Press SHIFT ---------------------------------------------------------------------------------
@@ -95,7 +100,8 @@ public class NuminaLanguageProvider extends LanguageProvider {
         add(NuminaConstants.TOOLTIP_MODE, "Mode: ");
     }
 
-    void addBatteries() {
+    @Override
+    public void addBatteries() {
         // Basic Battery -------------------------------------------------------------------------------
         add(NuminaObjects.BASIC_BATTERY.get(), "Basic Battery");
 
@@ -117,7 +123,8 @@ public class NuminaLanguageProvider extends LanguageProvider {
         addItemDescriptions(NuminaObjects.ULTIMATE_BATTERY.get(), "Experimental high end power storage device, now with almost no chance of exploding (we think). Despite nasty rumors, it is not based on stolen alien technology.");
     }
 
-    void addComponents() {
+    @Override
+    public void addComponents() {
         // Artificial Muscle ---------------------------------------------------------------------------
         add(NuminaObjects.ARTIFICIAL_MUSCLE.get(), "Artificial Muscle");
 
@@ -199,7 +206,8 @@ public class NuminaLanguageProvider extends LanguageProvider {
         addItemDescriptions(NuminaObjects.WIRING.get(), "A special type of wiring with high voltaic capacity and precision, necessary for the sensitive electronics in power armor.");
     }
 
-    void addModuleCategories() {
+    @Override
+    public void addModuleCategories() {
         // None ----------------------------------------------------------------------------------------
         add(ModuleCategory.NONE.getTranslationKey(), "None");
 
@@ -243,7 +251,8 @@ public class NuminaLanguageProvider extends LanguageProvider {
         add(ModuleCategory.MINING_ENCHANTMENT.getTranslationKey(), "Mining Enchantment");
     }
 
-    void addItemDescriptions(Item key, String description) {
+    @Override
+    public void addItemDescriptions(Item key, String description) {
         add(key.getDescriptionId() + ".desc", description);
     }
 }

@@ -10,7 +10,7 @@ import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import numina.client.lang.NuminaLanguageProvider;
+import numina.client.lang.NuminaLanguageProvider_US_EN;
 import numina.common.loot.NuminaBlockTagProvider;
 import numina.common.loot.NuminaBockLoot;
 
@@ -29,7 +29,7 @@ public class NuminaDataGenerator {
         ExistingFileHelper helper = event.getExistingFileHelper();
 
         //Client side data generators
-        generator.addProvider(event.includeServer(), new NuminaLanguageProvider(output, "en_us"));
+        generator.addProvider(event.includeServer(), new NuminaLanguageProvider_US_EN(output));
 //        translator.quit();
 
         //Server side data generators
