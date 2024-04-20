@@ -28,7 +28,6 @@ package lehjr.powersuits.client.render.blockentity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
-import org.joml.Vector3f;
 import lehjr.powersuits.client.model.block.TinkerTableModel;
 import lehjr.powersuits.common.block.TinkerTable;
 import lehjr.powersuits.common.blockentity.TinkerTableBlockEntity;

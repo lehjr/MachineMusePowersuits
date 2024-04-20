@@ -33,7 +33,6 @@ import lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
 import lehjr.numina.common.capabilities.module.rightclick.IRightClickModule;
 import lehjr.numina.common.capabilities.module.rightclick.RightClickModule;
 import lehjr.powersuits.client.event.ModelBakeEventHandler;
-import lehjr.powersuits.common.base.MPSItems;
 import lehjr.powersuits.common.config.MPSSettings;
 import lehjr.powersuits.common.container.InstallSalvageMenu;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;

@@ -11,8 +11,6 @@ import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
 import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.item.ItemUtils;
-import lehjr.numina.common.math.Color;
-import lehjr.numina.common.string.StringUtils;
 import lehjr.powersuits.client.gui.ScrollableInventoryFrame2;
 import lehjr.powersuits.client.gui.common.TabSelectFrame;
 import lehjr.powersuits.common.constants.MPSConstants;

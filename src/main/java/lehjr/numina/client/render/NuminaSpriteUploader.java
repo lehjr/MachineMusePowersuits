@@ -27,17 +27,11 @@
 package lehjr.numina.client.render;
 
 import lehjr.numina.common.constants.NuminaConstants;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.resources.TextureAtlasHolder;
 import net.minecraft.resources.ResourceLocation;
-
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.stream.Stream;
 
 public class NuminaSpriteUploader extends TextureAtlasHolder {
 

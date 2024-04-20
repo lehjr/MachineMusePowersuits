@@ -27,15 +27,12 @@
 package lehjr.powersuits.client.render.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import net.minecraft.world.item.ItemDisplayContext;
-import org.joml.Vector3f;
 import lehjr.numina.common.constants.TagConstants;
 import lehjr.numina.common.math.Color;
 import lehjr.powersuits.common.constants.MPSRegistryNames;
 import lehjr.powersuits.common.entity.LuxCapacitorEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
@@ -44,9 +41,11 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.util.TransformationHelper;
 import net.minecraftforge.registries.ForgeRegistries;
+import org.joml.Vector3f;
 
 import javax.annotation.Nullable;
 import java.util.Random;

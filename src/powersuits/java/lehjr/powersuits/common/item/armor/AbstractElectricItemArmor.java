@@ -190,7 +190,7 @@ public abstract class AbstractElectricItemArmor extends ArmorItem {
                                         iPowerModule.getModuleStack().getAttributeModifiers(slotType).get(ForgeMod.SWIM_SPEED.get()).forEach(attributeModifier -> {
                                             swimBoost.getAndAdd(attributeModifier.getAmount());
                                         });
-                                        if (!iPowerModule.getModuleStack().getAttributeModifiers(slotType).get(ForgeMod.STEP_HEIGHT.get()).isEmpty()) {
+                                        if (!iPowerModule.getModuleStack().getAttributeModifiers(slotType).get(ForgeMod.STEP_HEIGHT_ADDITION.get()).isEmpty()) {
                                             stepHeight.set(0.5F);
                                         }
                                     });
@@ -217,7 +217,7 @@ public abstract class AbstractElectricItemArmor extends ArmorItem {
         }
 
         if(stepHeight.get() > 0.5001F) {
-            builder.put(ForgeMod.STEP_HEIGHT.get(), new AttributeModifier(ARMOR_MODIFIERS[slot.getIndex()], ForgeMod.STEP_HEIGHT.getId().getNamespace(), stepHeight.get(), AttributeModifier.Operation.ADDITION));
+            builder.put(ForgeMod.STEP_HEIGHT_ADDITION.get(), new AttributeModifier(ARMOR_MODIFIERS[slot.getIndex()], ForgeMod.STEP_HEIGHT_ADDITION.getId().getNamespace(), stepHeight.get(), AttributeModifier.Operation.ADDITION));
         }
 
 

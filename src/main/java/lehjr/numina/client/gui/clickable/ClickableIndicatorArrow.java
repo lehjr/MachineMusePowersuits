@@ -3,12 +3,15 @@ package lehjr.numina.client.gui.clickable;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.platform.Lighting;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.*;
-import net.minecraft.client.gui.GuiGraphics;
-import org.joml.Matrix4f;
+import com.mojang.blaze3d.vertex.BufferBuilder;
+import com.mojang.blaze3d.vertex.DefaultVertexFormat;
+import com.mojang.blaze3d.vertex.Tesselator;
+import com.mojang.blaze3d.vertex.VertexFormat;
 import lehjr.numina.client.gui.geometry.MusePoint2D;
 import lehjr.numina.common.math.Color;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.GameRenderer;
+import org.joml.Matrix4f;
 
 public class ClickableIndicatorArrow extends Clickable {
     public float zLevel = 0;

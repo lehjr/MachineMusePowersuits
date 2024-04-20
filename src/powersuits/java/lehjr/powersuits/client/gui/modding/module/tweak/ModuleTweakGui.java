@@ -31,8 +31,6 @@ import lehjr.numina.client.gui.ContainerlessGui;
 import lehjr.numina.client.gui.frame.ModularItemSelectionFrame;
 import lehjr.numina.client.gui.geometry.MusePoint2D;
 import lehjr.numina.client.gui.geometry.Rect;
-import lehjr.numina.common.math.Color;
-import lehjr.numina.common.string.StringUtils;
 import lehjr.powersuits.client.gui.common.TabSelectFrame;
 import lehjr.powersuits.common.constants.MPSConstants;
 import net.minecraft.client.Minecraft;

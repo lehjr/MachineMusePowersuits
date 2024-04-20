@@ -14,7 +14,7 @@ license="All rights reserved"
 [[dependencies.mpswhatever]]
     modId="forge"
     mandatory=true
-    versionRange="${neo_version}"
+    versionRange="${forge_version}"
     side="BOTH"
 
 [[dependencies.mpswhatever]]

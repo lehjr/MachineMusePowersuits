@@ -26,7 +26,6 @@
 
 package lehjr.numina.client.gui.clickable;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import lehjr.numina.client.gui.geometry.IDrawable;
 import lehjr.numina.client.gui.geometry.MusePoint2D;
 import lehjr.numina.client.gui.geometry.Rect;

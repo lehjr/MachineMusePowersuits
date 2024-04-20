@@ -26,12 +26,9 @@
 
 package lehjr.numina.client.render;
 
-import com.google.common.base.Preconditions;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import com.mojang.datafixers.util.Pair;
-import net.minecraft.client.renderer.texture.TextureManager;
-import org.joml.Matrix4f;
 import lehjr.numina.client.gui.NuminaIcons;
 import lehjr.numina.common.constants.NuminaConstants;
 import lehjr.numina.common.math.Color;
@@ -39,11 +36,13 @@ import lehjr.numina.common.math.MathUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.MissingTextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import org.joml.Matrix4f;
 
 import javax.annotation.Nonnull;
 import java.util.HashMap;

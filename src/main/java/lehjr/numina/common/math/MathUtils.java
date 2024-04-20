@@ -26,8 +26,8 @@
 
 package lehjr.numina.common.math;
 
-import org.joml.Vector3f;
 import org.apache.commons.lang3.tuple.Pair;
+import org.joml.Vector3f;
 
 import java.util.Random;
 

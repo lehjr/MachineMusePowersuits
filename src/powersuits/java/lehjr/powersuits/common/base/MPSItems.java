@@ -1,6 +1,5 @@
 package lehjr.powersuits.common.base;
 
-import lehjr.numina.common.base.NuminaObjects;
 import lehjr.numina.common.constants.NuminaConstants;
 import lehjr.powersuits.common.constants.MPSConstants;
 import lehjr.powersuits.common.constants.MPSRegistryNames;

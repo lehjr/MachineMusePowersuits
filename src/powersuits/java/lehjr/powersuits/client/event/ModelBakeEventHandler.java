@@ -77,7 +77,6 @@ public enum ModelBakeEventHandler {
         }
 
         event.getModels().keySet().stream().filter(resourceLocation -> resourceLocation.toString().contains("powersuits:luxcapacitor")).forEach(resourceLocation -> {
-            System.out.println("fixme model bake event mps");
             BakedModel model = event.getModels().get(resourceLocation);
             if (model instanceof OBJBakedCompositeModel) {
                 event.getModels().put(resourceLocation, new LuxCapacitorModelWrapper((OBJBakedCompositeModel)model));

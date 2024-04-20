@@ -2,7 +2,6 @@ package lehjr.numina.client.model.helper;
 
 import com.google.common.collect.ImmutableList;
 import com.mojang.math.Transformation;
-import org.joml.Vector3f;
 import forge.NuminaObjLoader;
 import forge.NuminaObjModel;
 import forge.QuadTransformers;
@@ -16,6 +15,7 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.ModelState;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.util.TransformationHelper;
+import org.joml.Vector3f;
 
 import javax.annotation.Nullable;
 import java.util.List;

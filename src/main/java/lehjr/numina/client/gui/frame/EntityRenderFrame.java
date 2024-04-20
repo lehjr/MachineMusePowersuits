@@ -4,17 +4,16 @@ import com.mojang.blaze3d.platform.Lighting;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
-import net.minecraft.client.gui.GuiGraphics;
-import org.joml.Quaternionf;
-import org.joml.Vector3f;
 import lehjr.numina.client.gui.geometry.IDrawable;
 import lehjr.numina.client.gui.geometry.Rect;
 import lehjr.numina.common.math.MathUtils;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.LivingEntity;
+import org.joml.Quaternionf;
 
 import java.util.List;
 

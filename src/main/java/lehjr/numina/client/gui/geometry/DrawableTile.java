@@ -29,9 +29,9 @@ package lehjr.numina.client.gui.geometry;
 import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.VertexFormat;
+import lehjr.numina.common.math.Color;
 import net.minecraft.client.gui.GuiGraphics;
 import org.joml.Matrix4f;
-import lehjr.numina.common.math.Color;
 import org.lwjgl.BufferUtils;
 
 import java.nio.FloatBuffer;

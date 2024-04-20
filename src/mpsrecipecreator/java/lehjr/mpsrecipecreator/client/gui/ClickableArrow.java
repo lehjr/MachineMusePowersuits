@@ -1,7 +1,6 @@
 package lehjr.mpsrecipecreator.client.gui;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 import lehjr.numina.client.gui.clickable.button.VanillaButton;
 import lehjr.numina.client.gui.geometry.MusePoint2D;
 import lehjr.numina.client.render.IconUtils;

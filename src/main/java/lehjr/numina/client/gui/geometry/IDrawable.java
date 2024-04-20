@@ -27,13 +27,15 @@
 package lehjr.numina.client.gui.geometry;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.*;
+import com.mojang.blaze3d.vertex.BufferBuilder;
+import com.mojang.blaze3d.vertex.BufferUploader;
+import com.mojang.blaze3d.vertex.Tesselator;
+import com.mojang.blaze3d.vertex.VertexFormat;
+import lehjr.numina.common.math.Color;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Renderable;
-import org.joml.Matrix4f;
-import lehjr.numina.common.math.Color;
-import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.renderer.GameRenderer;
+import org.joml.Matrix4f;
 
 import java.nio.FloatBuffer;
 

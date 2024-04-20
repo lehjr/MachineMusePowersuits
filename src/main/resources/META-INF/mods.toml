@@ -16,7 +16,7 @@ license='Simplified BSD License https://opensource.org/license/bsd-2-clause/'
 [[dependencies.numina]]
     modId="forge"
     mandatory=true
-    versionRange="${neo_version}"
+    versionRange="${forge_version}"
     side="BOTH"
 
 [[dependencies.numina]]

@@ -169,6 +169,9 @@ public class ItemUtils {
 
     @Nonnull
     public static ItemStack getItemFromEntitySlot(LivingEntity entity, EquipmentSlot slot) {
+        if (entity == null) {
+            return ItemStack.EMPTY;
+        }
         return entity.getItemBySlot(slot);
     }
 

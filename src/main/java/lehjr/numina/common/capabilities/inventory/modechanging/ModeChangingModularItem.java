@@ -35,7 +35,6 @@ import lehjr.numina.common.constants.TagConstants;
 import lehjr.numina.common.item.ItemUtils;
 import lehjr.numina.common.network.NuminaPackets;
 import lehjr.numina.common.network.packets.serverbound.ModeChangeRequestPacketServerBound;
-import lehjr.numina.common.tags.TagUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.NonNullList;

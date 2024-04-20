@@ -18,7 +18,7 @@ A mod which adds modular power armor, power tool, and a tinker table to configur
 [[dependencies.powersuits]]
     modId="forge"
     mandatory=true
-    versionRange="${neo_version}"
+    versionRange="${forge_version}"
     side="BOTH"
 
 [[dependencies.powersuits]]

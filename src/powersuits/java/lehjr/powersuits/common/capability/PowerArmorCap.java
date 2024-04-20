@@ -38,7 +38,6 @@ import lehjr.powersuits.client.render.ArmorModelSpecNBT;
 import lehjr.powersuits.common.config.MPSSettings;
 import lehjr.powersuits.common.constants.MPSRegistryNames;
 import net.minecraft.core.Direction;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.capabilities.Capability;

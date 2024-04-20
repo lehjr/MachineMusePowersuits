@@ -26,7 +26,6 @@
 
 package lehjr.numina.common.item;
 
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 
 public class ComponentItem extends Item {

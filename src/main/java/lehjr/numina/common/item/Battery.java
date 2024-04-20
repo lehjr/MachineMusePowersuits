@@ -26,14 +26,11 @@
 
 package lehjr.numina.common.item;
 
-import lehjr.numina.common.base.NuminaObjects;
 import lehjr.numina.common.capabilities.BatteryCapabilityProvider;
 import lehjr.numina.common.string.AdditionalInfo;
-import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;

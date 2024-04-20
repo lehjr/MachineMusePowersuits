@@ -27,7 +27,6 @@
 package lehjr.numina.client.screen;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 import lehjr.numina.common.constants.NuminaConstants;
 import lehjr.numina.common.container.ArmorStandMenu;
 import net.minecraft.client.gui.GuiGraphics;
@@ -36,10 +35,7 @@ import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Inventory;
-
-import javax.annotation.Nullable;
 
 public class ArmorStandScreen extends AbstractContainerScreen<ArmorStandMenu> {
     public static final ResourceLocation BACKGROUND = new ResourceLocation(NuminaConstants.MOD_ID, "textures/gui/container/armorstand.png");

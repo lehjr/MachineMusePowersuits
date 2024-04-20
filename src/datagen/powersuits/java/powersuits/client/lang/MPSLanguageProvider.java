@@ -3,12 +3,9 @@ package powersuits.client.lang;
 import lehjr.powersuits.common.base.MPSBlocks;
 import lehjr.powersuits.common.base.MPSItems;
 import lehjr.powersuits.common.constants.MPSConstants;
-import net.minecraft.data.CachedOutput;
 import net.minecraft.data.PackOutput;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.common.data.LanguageProvider;
-
-import java.util.concurrent.CompletableFuture;
 
 public class MPSLanguageProvider extends LanguageProvider {
     public MPSLanguageProvider(PackOutput output, String locale) {

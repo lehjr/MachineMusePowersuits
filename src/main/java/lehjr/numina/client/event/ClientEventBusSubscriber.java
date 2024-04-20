@@ -31,7 +31,6 @@ import forge.NuminaObjLoader;
 import lehjr.numina.client.gui.NuminaIcons;
 import lehjr.numina.client.gui.overlay.ModeChangingIconOverlay;
 import lehjr.numina.client.render.IconUtils;
-import lehjr.numina.client.render.NuminaSpriteUploader;
 import lehjr.numina.client.render.entity.NuminaArmorStandRenderer;
 import lehjr.numina.client.render.item.NuminaArmorLayer;
 import lehjr.numina.client.screen.ArmorStandScreen;
@@ -49,8 +48,6 @@ import net.minecraft.client.renderer.entity.layers.HumanoidArmorLayer;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.client.renderer.texture.TextureAtlas;
-import net.minecraft.client.renderer.texture.TextureManager;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.inventory.InventoryMenu;
@@ -64,9 +61,6 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 import javax.annotation.Nullable;
-import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 

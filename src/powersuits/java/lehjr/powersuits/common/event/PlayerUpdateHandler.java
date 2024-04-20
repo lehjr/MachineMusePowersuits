@@ -27,6 +27,7 @@
 package lehjr.powersuits.common.event;
 
 import lehjr.numina.client.sound.Musique;
+import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.config.NuminaSettings;
 import lehjr.numina.common.item.ItemUtils;
 import lehjr.numina.common.math.MathUtils;
@@ -50,6 +51,11 @@ public class PlayerUpdateHandler {
     @SuppressWarnings("unchecked")
     @SubscribeEvent(priority = EventPriority.NORMAL)
     public void onPlayerUpdate(LivingEvent event) {
+        if (event.getEntity() == null) {
+            return;
+        }
+
+
         if (event.getEntity() instanceof Player) {
             Player player = (Player) event.getEntity();
 
@@ -57,6 +63,11 @@ public class PlayerUpdateHandler {
             float fallDistance = (float) MovementManager.INSTANCE.computeFallHeightFromVelocity(MathUtils.clampDouble(player.getDeltaMovement().y, -1000.0, 0.0));
             if (fallDistance < player.fallDistance) {
                 player.fallDistance = fallDistance;
+            }
+
+            if(player.getInventory() == null) {
+                NuminaLogger.logDebug("player inventory is NULL");
+                return;
             }
 
             // Sound update

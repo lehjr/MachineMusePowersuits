@@ -2,7 +2,6 @@ package lehjr.mpsrecipecreator.basemod;
 
 import lehjr.mpsrecipecreator.block.RecipeWorkbench;
 import lehjr.mpsrecipecreator.container.MPSRCMenu;
-import lehjr.numina.common.base.NuminaObjects;
 import lehjr.numina.common.constants.NuminaConstants;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
