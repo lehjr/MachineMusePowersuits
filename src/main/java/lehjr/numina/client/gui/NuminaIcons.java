@@ -128,17 +128,25 @@ public class NuminaIcons {
 
         public void renderIconScaledWithColor(PoseStack matrixStack,
                                               double posLeft, double posTop, double width, double height, float zLevel, Color color) {
+//            bindTexture();
+//            TextureAtlasSprite icon = getSprite();
+//            RenderSystem.enableBlend();
+////            RenderSystem.disableAlphaTest();
+//            RenderSystem.defaultBlendFunc();
+//            innerBlit(matrixStack.last().pose(), posLeft, posLeft + width, posTop, posTop + height, zLevel, icon.getU0(), icon.getU1(), icon.getV0(), icon.getV1(), color);
+//            RenderSystem.disableBlend();
+////            RenderSystem.enableAlphaTest();
+//            RenderSystem.enableDepthTest();
+
             bindTexture();
             TextureAtlasSprite icon = getSprite();
+            ShaderInstance oldShader = RenderSystem.getShader();
+            RenderSystem.setShader(GameRenderer::getPositionTexColorShader);
             RenderSystem.enableBlend();
-//            RenderSystem.disableAlphaTest();
-            RenderSystem.defaultBlendFunc();
             innerBlit(matrixStack.last().pose(), posLeft, posLeft + width, posTop, posTop + height, zLevel, icon.getU0(), icon.getU1(), icon.getV0(), icon.getV1(), color);
             RenderSystem.disableBlend();
-//            RenderSystem.enableAlphaTest();
-            RenderSystem.enableDepthTest();
+            RenderSystem.setShader(() -> oldShader);
         }
-
 
         public void draw(PoseStack poseStack, double xOffset, double yOffset, double maskTop, double maskBottom, double maskLeft, double maskRight, Color color) {
             double textureWidth = this.width;

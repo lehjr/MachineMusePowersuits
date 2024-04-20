@@ -32,7 +32,7 @@ import net.minecraft.resources.ResourceLocation;
 public class NuminaConstants {
   // Mod
   public static final String MOD_ID = "numina";
-  public static final String CREATIVE_TAB_TRANSLATION_KEY = ".creative.tab" + MOD_ID;
+  public static final String CREATIVE_TAB_TRANSLATION_KEY = MOD_ID + ".creative.tab";
 
   public static final int FULL_BRIGHTNESS = 0XF000F0;
 
