@@ -10,7 +10,7 @@ import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import powersuits.client.lang.MPSLanguageProvider;
+import powersuits.client.lang.MPSLanguageProvider__EN_US;
 import powersuits.common.loot.MPSBlockLoot;
 import powersuits.common.loot.MPSBlockTagProvider;
 
@@ -30,7 +30,7 @@ public class PowersuitsDataGenerator {
         ExistingFileHelper helper = event.getExistingFileHelper();
 
         //Client side data generators
-        generator.addProvider(event.includeClient(), new MPSLanguageProvider(output, "en_us"));
+        generator.addProvider(event.includeClient(), new MPSLanguageProvider__EN_US(output));
 //        translator.quit();
 
         //Server side data generators

@@ -5,11 +5,10 @@ import lehjr.powersuits.common.base.MPSItems;
 import lehjr.powersuits.common.constants.MPSConstants;
 import net.minecraft.data.PackOutput;
 import net.minecraft.world.item.Item;
-import net.minecraftforge.common.data.LanguageProvider;
 
-public class MPSLanguageProvider extends LanguageProvider {
-    public MPSLanguageProvider(PackOutput output, String locale) {
-        super(output, MPSConstants.MOD_ID, locale);
+public class MPSLanguageProvider__EN_US extends AbstractLangageProviderMPS {
+    public MPSLanguageProvider__EN_US(PackOutput output) {
+        super(output, MPSConstants.MOD_ID, "en_us");
     }
 
     @Override
@@ -24,11 +23,13 @@ public class MPSLanguageProvider extends LanguageProvider {
         addModels();
     }
 
-    void addItemGroup() {
+    @Override
+    public void addItemGroup() {
         add("itemGroup." + MPSConstants.MOD_ID, "Modular Powersuits");
     }
 
-    void addModularItems() {
+    @Override
+    public void addModularItems() {
         // Helmet --------------------------------------------------------------------------------------
         add(MPSItems.POWER_ARMOR_HELMET.get(), "Power Armor Helmet");
 
@@ -45,7 +46,8 @@ public class MPSLanguageProvider extends LanguageProvider {
         add(MPSItems.POWER_FIST.get(), "Power Fist");
     }
 
-    void addModules() {
+    @Override
+    public void addModules() {
         // Armor =======================================================================================
         // Iron Plating --------------------------------------------------------------------------------
         add(MPSItems.IRON_PLATING_MODULE.get(), "Iron Plating");
@@ -320,7 +322,8 @@ public class MPSLanguageProvider extends LanguageProvider {
         addItemDescriptions(MPSItems.RAILGUN_MODULE.get(), "An assembly which accelerates a projectile to supersonic speeds using magnetic force. Heavy recoil.");
     }
 
-    void addBlocks() {
+    @Override
+    public void addBlocks() {
         // Lux Capacitor -------------------------------------------------------------------------------
         add(MPSBlocks.LUX_CAPACITOR_BLOCK.get(), "Lux Capacitor");
 
@@ -328,7 +331,8 @@ public class MPSLanguageProvider extends LanguageProvider {
         add(MPSBlocks.TINKER_TABLE_BLOCK.get(), "Power Armor Tinker Table");
     }
 
-    void addGui() {
+    @Override
+    public void addGui() {
         // Armor ---------------------------------------------------------------------------------------
         add(MPSConstants.GUI_ARMOR, "Armor");
 
@@ -405,7 +409,8 @@ public class MPSLanguageProvider extends LanguageProvider {
         add("gui." + MPSConstants.MOD_ID + ".modularitem.inventory", "Modular Item Inventory");
     }
 
-    void addModuleTradeoff() {
+    @Override
+    public void addModuleTradeoff() {
         // Activation Percent --------------------------------------------------------------------------
         addTradeoff(MPSConstants.ACTIVATION_PERCENT, "Activation Percent");
 
@@ -641,8 +646,8 @@ public class MPSLanguageProvider extends LanguageProvider {
         addTradeoff(MPSConstants.FLIGHT_VERTICALITY, "Y-look ratio");
     }
 
-
-    void addKeybinds() {
+    @Override
+    public void addKeybinds() {
         // Cycle Tool Backward (MPS) -------------------------------------------------------------------
         add("keybinding." + MPSConstants.MOD_ID + ".cycleToolBackward", "Cycle Tool Backward (MPS)");
 
@@ -653,7 +658,8 @@ public class MPSLanguageProvider extends LanguageProvider {
         add("keybinding." + MPSConstants.MOD_ID + ".toggleModule", "Toggle %s");
     }
 
-    void addModels() {
+    @Override
+    public void addModels() {
         // Generic armor model parts ===================================================================
         // Head ----------------------------------------------------------------------------------------
         add("javaModel.head.Head.partName", "Head");
@@ -960,21 +966,23 @@ public class MPSLanguageProvider extends LanguageProvider {
         addModel2Part("legglow1", "Right Leg Light");
     }
 
-
-    void addPowerfistPart(String part, String translation) {
+    @Override
+    public void addPowerfistPart(String part, String translation) {
         add("javaModel.powerfist." + part + ".partName", translation);
     }
 
-    void addTradeoff(String tradeoff, String translation) {
+    @Override
+    public void addTradeoff(String tradeoff, String translation) {
         add("module.tradeoff." + tradeoff, translation);
     }
 
-    void addModel2Part(String part, String translation) {
+    @Override
+    public void addModel2Part(String part, String translation) {
         add("model.armor2." + part + ".partName", translation);
     }
 
-
-    void addItemDescriptions(Item key, String description) {
+    @Override
+    public void addItemDescriptions(Item key, String description) {
         add(key.getDescriptionId() + ".desc", description);
     }
 }
