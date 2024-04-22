@@ -40,9 +40,8 @@ idea {
 }
 
 group = group_id
-def basicVersion = "${mod_version}." + (System.env.BUILD_NUMBER ?: 000)
-version = "${minecraft_version}-${basicVersion}"
-archivesBaseName = "Numina"
+version = "${mod_version}." + (System.env.BUILD_NUMBER ?: 000)
+archivesBaseName = "Numina-Forge-${minecraft_version}"
 
 ext {
     versionProperties = [
@@ -432,7 +431,7 @@ def secondaryJar(SourceSet sourceSet, String title) {
         archiveClassifier.set(sourceSet.name)
         from sourceSet.output
         if (!title.isEmpty()) {
-            archiveFileName.set("${title}-${project.version}.jar")
+            archiveFileName.set("${title}-Forge-${minecraft_version}-${project.version}.jar")
         }
         manifest.attributes(getManifestAttributes(title.isEmpty() ? "Numina" : title))
     })

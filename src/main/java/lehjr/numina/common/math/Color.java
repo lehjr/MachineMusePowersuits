@@ -29,6 +29,7 @@ package lehjr.numina.common.math;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import lehjr.numina.common.base.NuminaLogger;
+import net.minecraft.client.gui.GuiGraphics;
 import org.joml.Vector4f;
 
 import java.util.Objects;
@@ -111,6 +112,10 @@ public class Color /*implements INBTSerializable<IntTag>*/ {
         this.a = 1F;
     }
 
+    public void setGuiGraphicsColor(GuiGraphics gfx) {
+        gfx.setColor(r, g, b, a);
+    }
+
 //    public Color fromRGBAHex() {
 //
 //    }
@@ -169,8 +174,8 @@ public class Color /*implements INBTSerializable<IntTag>*/ {
         val = val | ((int) (r * 255));
         return val;
     }
-    
-    
+
+
     public void setShaderColor() {
         RenderSystem.setShaderColor(r, g, b, a);
     }
