@@ -26,6 +26,7 @@
 
 package lehjr.powersuits.client.gui.modding.cosmetic.partmanip;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import lehjr.numina.client.gui.clickable.ClickableIndicatorArrow;
 import lehjr.numina.client.gui.clickable.RadioButton;
 import lehjr.numina.client.gui.frame.AbstractGuiFrame;
@@ -33,6 +34,7 @@ import lehjr.numina.client.gui.frame.ModularItemSelectionFrame;
 import lehjr.numina.client.gui.geometry.MusePoint2D;
 import lehjr.numina.client.gui.geometry.Rect;
 import lehjr.numina.client.render.IconUtils;
+import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.capabilities.NuminaCapabilities;
 import lehjr.numina.common.capabilities.render.IModelSpec;
 import lehjr.numina.common.capabilities.render.modelspec.NuminaModelSpecRegistry;
@@ -476,16 +478,17 @@ public class ModelManipSubframe extends AbstractGuiFrame {
                     button.render(gfx, mouseX, mouseY, partialTick);
                 }
 
+                Color.WHITE.setGuiGraphicsColor(gfx);
+
                 if (!colorButtons.isEmpty()) {
                     StringUtils.drawText(gfx, partSpec.getDisaplayName(),
                             colorButtons.get(colorButtons.size() - 1).right() + 4,
                             top() + StringUtils.getStringHeight() - iconWidth,
                             Color.WHITE);
                 } else {
-                    StringUtils.drawText(gfx, partSpec.getDisaplayName(),
+                    StringUtils.drawShadowedString(gfx, partSpec.getDisaplayName(),
                             buttons.get(buttons.size() - 1).right() + 4,
-                            top() + StringUtils.getStringHeight() - iconWidth,
-                            Color.WHITE);
+                            top() + StringUtils.getStringHeight() - iconWidth);
                 }
             }
         }

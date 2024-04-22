@@ -21,6 +21,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class MPSHUD {
     static final ItemStack food = new ItemStack(Items.COOKED_BEEF);
+
     public static void render(Player player, GuiGraphics gfx, float top , float left) {
         int yOffsetString = 18;
         float yOffsetIcon = 16.0F;

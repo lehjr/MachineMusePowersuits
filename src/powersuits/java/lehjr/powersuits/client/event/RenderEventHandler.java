@@ -33,10 +33,8 @@ import lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem
 import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
 import lehjr.numina.common.item.ItemUtils;
 import lehjr.numina.common.math.Color;
-import lehjr.powersuits.client.gui.overlay.ClientOverlayHandler;
 import lehjr.powersuits.common.constants.MPSConstants;
 import lehjr.powersuits.common.constants.MPSRegistryNames;
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -50,8 +48,10 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.event.*;
-import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
+import net.minecraftforge.client.event.ComputeFovModifierEvent;
+import net.minecraftforge.client.event.RenderHighlightEvent;
+import net.minecraftforge.client.event.RenderPlayerEvent;
+import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
@@ -59,7 +59,6 @@ public enum RenderEventHandler {
     INSTANCE;
     private static boolean ownFly = false;
 //    private final DrawableRect frame = new DrawableRect(MPSSettings.getHudKeybindX(), MPSSettings.getHudKeybindY(), MPSSettings.getHudKeybindX() + (float) 16, MPSSettings.getHudKeybindY() +  16, true, Color.DARK_GREEN.withAlpha(0.2F), Color.GREEN.withAlpha(0.2F));
-//
 
     /**
      * Just for a couple modules that can break multiple blocks at once
@@ -119,15 +118,15 @@ public enum RenderEventHandler {
     public void onTextureStitch(TextureStitchEvent.Post event) {
     }
 
-    @OnlyIn(Dist.CLIENT)
-    @SubscribeEvent
-    public void onPostRenderGameOverlayEvent(RenderGuiOverlayEvent.Pre /*CustomizeGuiOverlayEvent*/ e) {
-//        if (Re.getType() == RenderGameOverlayEvent.ElementType.LAYER) { // opaque rendering, completely ignores alpha setting
-        if (e.getOverlay().id().equals(VanillaGuiOverlay.TITLE_TEXT.id())) { // this one allows translucent rendering
-            this.drawKeybindToggles(e.getGuiGraphics());
-            ClientOverlayHandler.INSTANCE.render(e);
-        }
-    }
+//    @OnlyIn(Dist.CLIENT)
+//    @SubscribeEvent
+//    public void onPostRenderGameOverlayEvent(RenderGuiOverlayEvent.Pre /*CustomizeGuiOverlayEvent*/ e) {
+////        if (Re.getType() == RenderGameOverlayEvent.ElementType.LAYER) { // opaque rendering, completely ignores alpha setting
+//        if (e.getOverlay().id().equals(VanillaGuiOverlay.TITLE_TEXT.id())) { // this one allows translucent rendering
+//            this.drawKeybindToggles(e.getGuiGraphics());
+////            ClientOverlayHandler.INSTANCE.render(e);
+//        }
+//    }
 
     @SubscribeEvent
     public void onPreRenderPlayer(RenderPlayerEvent.Pre event) {
@@ -187,103 +186,4 @@ public enum RenderEventHandler {
                         }
                 );
     }
-
-//    final List<KBDisplay> kbDisplayList = new ArrayList<>();
-//    public void makeKBDisplayList() {
-//        kbDisplayList.clear();
-//        KeymappingKeyHandler.getMPSKeyMappings().stream().filter(kb->!kb.isUnbound()).filter(kb->kb.showOnHud).forEach(kb->{
-//            Optional<KBDisplay> kbDisplay = kbDisplayList.stream().filter(kbd->kbd.finalId.equals(kb.getKey())).findFirst();
-//            if (kbDisplay.isPresent()) {
-//                kbDisplay.map(kbd->kbd.boundKeybinds.add(kb));
-//            } else {
-//                kbDisplayList.add(new KBDisplay(kb, MPSSettings.getHudKeybindX(), MPSSettings.getHudKeybindY(), MPSSettings.getHudKeybindX() + (float) 16));
-//            }
-//        });
-//    }
-
-//    boolean isModularItemEquuiiped() {
-//        Player player = Minecraft.getInstance().player;
-//        return Arrays.stream(EquipmentSlot.values()).filter(type ->player.getItemBySlot(type).getCapability(ForgeCapabilities.ITEM_HANDLER).filter(IModularItem.class::isInstance).isPresent()).findFirst().isPresent();
-//    }
-
-    @OnlyIn(Dist.CLIENT)
-    public void drawKeybindToggles(GuiGraphics gfx) {
-//        if (MPSSettings.displayHud() && isModularItemEquuiiped()) {
-//            Minecraft minecraft = Minecraft.getInstance();
-//            AtomicDouble top = new AtomicDouble(MPSSettings.getHudKeybindY());
-//            kbDisplayList.forEach(kbDisplay -> {
-//                if (!kbDisplay.boundKeybinds.isEmpty()) {
-//                    kbDisplay.setLeft(MPSSettings.getHudKeybindX());
-//                    kbDisplay.setTop(top.get());
-//                    kbDisplay.setBottom(top.get() + 16);
-//                    kbDisplay.render(matrixStack, 0, 0, minecraft.getFrameTime());
-//                    top.getAndAdd(16);
-//                }
-//            });
-//        }
-    }
-
-//    class KBDisplay extends DrawableRect {
-//        List<MPSKeyMapping> boundKeybinds = new ArrayList<>();
-//        final InputConstants.Key finalId;
-//        public KBDisplay(MPSKeyMapping kb, double left, double top, double right) {
-//            super(left, top, right, top + 16, true, Color.DARK_GREEN.withAlpha(0.2F), Color.GREEN.withAlpha(0.2F));
-//            this.finalId = kb.getKey();
-//            boundKeybinds.add(kb);
-//        }
-//
-//        public Component getLabel() {
-//            return finalId.getDisplayName();
-//        }
-//
-//        public void addKeyBind(MPSKeyMapping kb) {
-//            if (!boundKeybinds.contains(kb)){
-//                boundKeybinds.add(kb);
-//            }
-//        }
-//
-//        LocalPlayer getPlayer() {
-//            return Minecraft.getInstance().player;
-//        }
-//
-//        @Override
-//        public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTick) {
-//            float stringwidth = (float) StringUtils.getFontRenderer().width(getLabel());
-//            setWidth(stringwidth + 8 + boundKeybinds.stream().filter(kb->kb.showOnHud).collect(Collectors.toList()).size() * 18);
-//            super.render(matrixStack, 0, 0, partialTick);
-//            matrixStack.pushPose();
-//            matrixStack.translate(0,0,100);
-//            boolean kbToggleVal = boundKeybinds.stream().filter(kb->kb.toggleval).findFirst().isPresent();
-//
-//            StringUtils.drawLeftAlignedText(matrixStack, getLabel(), (float) left() + 4, (float) top() + 9, (kbToggleVal) ? Color.RED : Color.GREEN);
-//            matrixStack.popPose();
-//            AtomicDouble x = new AtomicDouble(left() + stringwidth + 8);
-//
-//            boundKeybinds.stream().filter(kb ->kb.showOnHud).forEach(kb ->{
-//                boolean active = false;
-//                // just using the icon
-//                ItemStack module = new ItemStack(ForgeRegistries.ITEMS.getValue(kb.registryName));
-//                for (EquipmentSlot slot : EquipmentSlot.values()) {
-//                    ItemStack stack = getPlayer().getItemBySlot(slot);
-//                    active = stack.getCapability(ForgeCapabilities.ITEM_HANDLER)
-//                            .filter(IModularItem.class::isInstance)
-//                            .map(IModularItem.class::cast)
-//                            .map(iItemHandler -> {
-//                                if (iItemHandler instanceof IModeChangingItem) {
-//                                    return ((IModeChangingItem) iItemHandler).isModuleActiveAndOnline(kb.registryName);
-//                                }
-//                                return iItemHandler.isModuleOnline(kb.registryName);
-//                            }).orElse(false);
-////                    NuminaLogger.logDebug(kb.getKey().getName() +", " + kb.registryName + ", active: " + active);
-//
-//                    // stop at the first active instance
-//                    if(active) {
-//                        break;
-//                    }
-//                }
-//                NuminaRenderer.drawModuleAt(matrixStack, x.get(), top(), module, active);
-//                x.getAndAdd(16);
-//            });
-//        }
-//    }
 }

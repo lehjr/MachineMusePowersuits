@@ -23,14 +23,13 @@ import net.minecraftforge.client.gui.overlay.IGuiOverlay;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.registries.ForgeRegistries;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class MPSOverlay {
     static List<KBDisplay> kbDisplayList = new ArrayList<>();
+
+
     public static final IGuiOverlay MPS_KEYBIND_OVERLAY = ((gui, gfx, partialTick, screenWidth, screenHeight) -> {
         Minecraft mc = gui.getMinecraft();
         LocalPlayer player = mc.player;
@@ -39,7 +38,6 @@ public class MPSOverlay {
         float scaledWidth = screen.getWidth()/guiScale;
         float scaledHeight = screen.getHeight()/guiScale;
         MPSMeterOverlay.render(player, gfx, partialTick, scaledWidth, scaledHeight);
-
 
         AtomicDouble top = new AtomicDouble(MPSSettings.getHudKeybindY());
         if (MPSSettings.displayHud() && isModularItemEquipped(player)) {
@@ -106,7 +104,7 @@ public class MPSOverlay {
             boundKeybinds.stream().filter(kb ->kb.showOnHud).forEach(kb ->{
                 boolean active = false;
                 // just using the icon
-                ItemStack module = new ItemStack(ForgeRegistries.ITEMS.getValue(kb.registryName));
+                ItemStack module = new ItemStack(Objects.requireNonNull(ForgeRegistries.ITEMS.getValue(kb.registryName)));
                 for (EquipmentSlot slot : EquipmentSlot.values()) {
                     ItemStack stack = ItemUtils.getItemFromEntitySlot(getPlayer(), slot);
                     active = stack.getCapability(ForgeCapabilities.ITEM_HANDLER)

@@ -40,9 +40,8 @@ idea {
 }
 
 group = group_id
-def basicVersion = "${mod_version}." + (System.env.BUILD_NUMBER ?: 000)
-version = "${minecraft_version}-${basicVersion}"
-archivesBaseName = "Numina"
+version = "${mod_version}." + (System.env.BUILD_NUMBER ?: 000)
+archivesBaseName = "Numina-NeoForged-${minecraft_version}"
 
 ext {
     versionProperties = [
@@ -432,7 +431,7 @@ def secondaryJar(SourceSet sourceSet, String title) {
         archiveClassifier.set(sourceSet.name)
         from sourceSet.output
         if (!title.isEmpty()) {
-            archiveFileName.set("${title}-${project.version}.jar")
+            archiveFileName.set("${title}-NeoForged-${minecraft_version}-${project.version}.jar")
         }
         manifest.attributes(getManifestAttributes(title.isEmpty() ? "Numina" : title))
     })
@@ -676,7 +675,7 @@ if (System.getenv("MODRINTH_TOKEN") != null || project.hasProperty('modrinthToke
         //Add that we support forge for now as we currently support both Forge and NeoForge
         // Note: Once we no longer support forge we can just remove the line as NeoForge will be able to be detected automatically
         // Currently we can't as Minotaur only detects loaders if none are set
-        loaders.addAll("forge", "neoforge")
+        loaders.addAll("neoforge")
 
         //Note: Can't use nested dependency configuration as we have no way to clear it for the secondary uploads
         getDependencies().value([
