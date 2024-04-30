@@ -146,12 +146,14 @@ public class ClientEventBusSubscriber {
         ModelBakeEventHandler.INSTANCE.onAddAdditional(e);
     }
 
+    @SubscribeEvent
     public static void onRegisterReloadListenerEvent(RegisterClientReloadListenersEvent event) {
         NuminaIcons icon = IconUtils.INSTANCE.getIcon();
         System.out.println("reload listener " + Objects.isNull(icon.getSpriteUploader()));
         event.registerReloadListener(icon.getSpriteUploader());
     }
 
+    @SubscribeEvent
     public static void doClientStuff(final FMLClientSetupEvent event) {
         MinecraftForge.EVENT_BUS.register(new FOVUpdateEventHandler());
         MinecraftForge.EVENT_BUS.register(new ToolTipEvent());
@@ -168,7 +170,7 @@ public class ClientEventBusSubscriber {
 ////            ModelTransformCalibration.CALIBRATION.transformCalibration(e);
 //        });
     }
-
+    @SubscribeEvent
     public static void modelRegistry(ModelEvent.RegisterGeometryLoaders event) {
         event.register( "obj", NuminaObjLoader.INSTANCE);
     }
