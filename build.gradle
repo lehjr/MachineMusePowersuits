@@ -578,7 +578,7 @@ def changeLogResolver = { ->
         generatedChangelog = "$releaseNotes<br> $generatedChangelog"
     }
 
-    if (curse_release_type == "alpha") {
+    if (release_type == "alpha") {
         //Add a warning at the top about what an alpha build means
         generatedChangelog = "Warning: ModularPowersuits is currently in alpha, and is not recommended for widespread use in modpacks. There are likely to be game breaking bugs, " +
                 "and updating from one alpha to the next may cause various issues. While we will try to not have this happen/keep it to a minimum make sure " +
@@ -637,7 +637,7 @@ void setGenericCurseArtifactData(UploadArtifact artifact, String changelog) {
     artifact.changelogType = 'html'
     artifact.releaseType = "${release_type}"
     //Add that we support forge for now as we currently support both Forge and NeoForge. NeoForge is detected automatically from the gradle plugin
-    artifact.addModLoader("NeoForged")
+    artifact.addModLoader("NeoForge")
 }
 
 UploadArtifact uploadSecondaryCurseProject(TaskPublishCurseForge task, long projectId, String changelog, TaskProvider<Jar> sourceSetJar) {
@@ -668,7 +668,7 @@ if (System.getenv("MODRINTH_TOKEN") != null || project.hasProperty('modrinthToke
         //Use the full "basic" version number rather than just mod version number so that if multiple releases end up happening due to bugs
         // then we don't run into conflicts in uploading
         //Note: The versionName is set to the versionNumber automatically
-        versionNumber = "${basicVersion}"
+        versionNumber = "${project.version}"
         versionType = "${release_type}"
         changelog = changeLogResolver.call()
         uploadFile = jar
