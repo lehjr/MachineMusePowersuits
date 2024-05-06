@@ -144,6 +144,7 @@ public class ClientEventBusSubscriber {
         ModelBakeEventHandler.INSTANCE.onAddAdditional(e);
     }
 
+    @SubscribeEvent
     public static void doClientStuff(final FMLClientSetupEvent event) {
         MinecraftForge.EVENT_BUS.register(new FOVUpdateEventHandler());
         MinecraftForge.EVENT_BUS.register(new ToolTipEvent());
@@ -159,6 +160,7 @@ public class ClientEventBusSubscriber {
 //        });
     }
 
+    @SubscribeEvent
     public static void modelRegistry(ModelEvent.RegisterGeometryLoaders event) {
         event.register( "obj", NuminaObjLoader.INSTANCE);
     }

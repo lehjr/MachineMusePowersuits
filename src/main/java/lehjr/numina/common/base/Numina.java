@@ -84,13 +84,8 @@ public class Numina {
         // Register the setup method for modloading
         modEventBus.addListener(this::setup);
 
-        // Register the doClientStuff method for modloading
-        modEventBus.addListener(ClientEventBusSubscriber::doClientStuff);
-
         modEventBus.addListener(this::addEntityAttributes);
-
-        modEventBus.addListener(ClientEventBusSubscriber::modelRegistry);
-
+A
         modEventBus.addListener(this::onRegisterReloadListenerEvent);
 
         modEventBus.addListener(this::registerCapabilities);

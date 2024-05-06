@@ -222,7 +222,7 @@ public class ModuleConfig implements IConfig {
                 Object object = config.getConfigData().getOrElse(configKey, multiplier);
                 if (object != null && object instanceof Integer) {
                     int i = (int) object;
-                    return Double.valueOf(i);
+                    return (double) i;
                 } else if (object instanceof Double) {
                     return object;
                 }
