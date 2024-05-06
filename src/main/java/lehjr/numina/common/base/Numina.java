@@ -85,7 +85,7 @@ public class Numina {
         modEventBus.addListener(this::setup);
 
         modEventBus.addListener(this::addEntityAttributes);
-A
+
         modEventBus.addListener(this::onRegisterReloadListenerEvent);
 
         modEventBus.addListener(this::registerCapabilities);
