@@ -34,12 +34,14 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
+import javax.annotation.Nonnull;
+
 /**
  * Ported to Java by lehjr on 10/22/16.
  */
 @OnlyIn(Dist.CLIENT)
 public class MovingSoundPlayer extends AbstractTickableSoundInstance {
-    private static Player player;
+    private final Player player;
 
     /*
      * Important porting note:
@@ -61,18 +63,14 @@ public class MovingSoundPlayer extends AbstractTickableSoundInstance {
 
     @Override
     public void tick() {
-        this.x = (float) this.player().getX();
-        this.y = (float) this.player().getY();
-        this.z = (float) this.player().getZ();
+        this.x = (float) this.player.getX();
+        this.y = (float) this.player.getY();
+        this.z = (float) this.player.getZ();
     }
 
     @Override
     public boolean canStartSilent() {
         return false;
-    }
-
-    public Player player() {
-        return this.player;
     }
 
     public MovingSoundPlayer updatePitch(float newPitch) {
@@ -90,6 +88,7 @@ public class MovingSoundPlayer extends AbstractTickableSoundInstance {
         return this;
     }
 
+    @Nonnull
     @Override
     public Attenuation getAttenuation() {
         return Attenuation.LINEAR;

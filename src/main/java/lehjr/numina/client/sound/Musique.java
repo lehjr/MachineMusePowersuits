@@ -63,8 +63,8 @@ public class Musique {
         return makeSoundString(player, soundEvt.getLocation());
     }
 
-    public static String makeSoundString(Player player, ResourceLocation soundname) {
-        return player.getUUID().toString() + soundname;
+    public static String makeSoundString(Player player, ResourceLocation soundName) {
+        return player.getUUID().toString() + soundName;
     }
 
     public static void playerSound(Player player, SoundEvent soundEvt, SoundSource categoryIn, float volume, Float pitch, Boolean continuous) {
@@ -75,23 +75,24 @@ public class Musique {
             MovingSoundPlayer sound = soundMap.get(soundID);
 
             if (sound != null && (sound.isStopped() || !sound.isLooping())) {
-                stopPlayerSound(player, soundEvt);
+//                NuminaLogger.logDebug("stopping sound: " + soundEvt.getLocation() + " for player " + player.getName());
+                stopSound(soundID);
                 sound = null;
             }
             if (sound != null) {
+//                NuminaLogger.logDebug("updating sound: " + soundEvt.getLocation() + " for player " + player.getName());
                 sound.updateVolume(volume).updatePitch(pitch).updateRepeat(continuous);
             } else {
-                NuminaLogger.logDebug("New sound: " + soundEvt.getLocation());
+//                NuminaLogger.logDebug("new sound: " + soundEvt.getLocation() + " for player " + player.getName());
                 MovingSoundPlayer newsound = new MovingSoundPlayer(soundEvt, categoryIn, player, volume * 2.0f, pitch, continuous);
                 mcsound().play(newsound);
                 soundMap.put(soundID, newsound);
             }
         }
     }
-
-    public static void stopPlayerSound(Player player, SoundEvent soundEvt) {
+    
+    static void stopSound(String soundID) {
         if (NuminaSettings.useSounds()) {
-            String soundID = makeSoundString(player, soundEvt);
             MovingSoundPlayer sound = soundMap.get(soundID);
             if (sound != null) {
                 sound.stopPlaying();
@@ -99,6 +100,13 @@ public class Musique {
             }
             soundMap.remove(soundID);
 //             NuminaLogger.logDebug("Sound stopped: " + soundEvt.getLocation());
+        }
+    }
+
+    public static void stopPlayerSound(Player player, SoundEvent soundEvt) {
+        if (NuminaSettings.useSounds()) {
+            String soundID = makeSoundString(player, soundEvt);
+            stopSound(soundID);
         }
     }
 }

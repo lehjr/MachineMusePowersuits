@@ -114,6 +114,7 @@ public class JetBootsModule extends AbstractPowerModule {
                             Musique.playerSound(player, MPSSoundDictionary.SOUND_EVENT_JETBOOTS.get(), SoundSource.PLAYERS, (float) (thrust * 12.5), 1.0f, true);
                         }
                         ElectricItemUtils.drainPlayerEnergy(player, (int) (thrust * jetEnergy));
+                    // FIXME: sound issues only in this ??
                     } else if (playerInput.jumpKey && player.getDeltaMovement().y < 0.5) {
                         thrust = MovementManager.INSTANCE.thrust(player, thrust, false);
                         if ((player.level.isClientSide) && NuminaSettings.useSounds()) {

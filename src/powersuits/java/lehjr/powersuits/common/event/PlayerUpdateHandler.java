@@ -53,11 +53,14 @@ public class PlayerUpdateHandler {
         if (event.getEntity() instanceof Player) {
             Player player = (Player) event.getEntity();
 
-            // pretty sure the whole point of this was to reduce fall distance, not increase it.
-            float fallDistance = (float) MovementManager.INSTANCE.computeFallHeightFromVelocity(MathUtils.clampDouble(player.getDeltaMovement().y, -1000.0, 0.0));
-            if (fallDistance < player.fallDistance) {
-                player.fallDistance = fallDistance;
-            }
+//            // pretty sure the whole point of this was to reduce fall distance, not increase it.
+            // This was originally used as a quick and dirty fix for fall damage "mysteriously" manifested even when player had only fell one block high (suspect bad/incompatible fall calculations in vanilla code)
+
+//            float fallDistance = (float) MovementManager.INSTANCE.computeFallHeightFromVelocity(MathUtils.clampDouble(player.getDeltaMovement().y, -1000.0, 0.0));
+//            System.out.println("fallDistance: " + fallDistance +", player falldistance: " + player.fallDistance);
+//            if (fallDistance < player.fallDistance) {
+//                player.fallDistance = fallDistance;
+//            }
 
             // Sound update
             if (player.level.isClientSide && NuminaSettings.useSounds()) {
