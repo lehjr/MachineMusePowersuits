@@ -1,0 +1,41 @@
+modLoader="javafml"
+loaderVersion="${loader_version}"
+issueTrackerURL="https://github.com/lehjr/MachineMusePowersuits/issues"
+license="All rights reserved"
+[[mods]]
+    modId="mpsrecipecreator"
+    version="${version}"
+    displayName="MPS-RecipeCreator"
+    #updateJSONURL="?"
+    displayURL="https://github.com/lehjr/MachineMusePowersuits"
+    authors="lehjr"
+    description="A really bad mod for creating recipes for Modular Powersuits"
+
+# The [[mixins]] block allows you to declare your mixin config to FML so that it gets loaded.
+#[[mixins]]
+#config="powersuits.mixins.json"
+
+# The [[accessTransformers]] block allows you to declare where your AT file is.
+# If this block is omitted, a fallback attempt will be made to load an AT from META-INF/accesstransformer.cfg
+[[accessTransformers]]
+    file="META-INF/accesstransformer.cfg"
+
+
+[[dependencies.mpsrecipecreator]]
+    modId="neoforge"
+    type="required"
+    versionRange="${neo_version}"
+    side="BOTH"
+
+[[dependencies.mpsrecipecreator]]
+    modId="minecraft"
+    type="required"
+    versionRange="${minecraft_version}"
+    side="BOTH"
+
+[[dependencies.mpsrecipecreator]]
+    modId="numina"
+    type="required"
+    versionRange="[${version},)"
+    ordering="AFTER"
+    side="BOTH"

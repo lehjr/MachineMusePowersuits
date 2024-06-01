@@ -1,0 +1,44 @@
+modLoader="javafml"
+loaderVersion="${loader_version}"
+issueTrackerURL="https://github.com/lehjr/MachineMusePowersuits/issues"
+license='Simplified BSD License https://opensource.org/license/bsd-2-clause/'
+
+[[mods]]
+    modId="powersuits"
+    version="${version}"
+    displayName="MachineMuse's Modular Powersuits"
+    updateJSONURL="https://mc-curse-update-checker.herokuapp.com/235442"
+    displayURL="https://github.com/lehjr/MachineMusePowersuits"
+    authors="MachineMuse, lehjr"
+    credits="Icons by WaterCandle, Modeling by SebK, Special thanks to TextureTurtle"
+    logoFile="logo.png"
+    description='''
+    A mod which adds modular power armor, power tool, and a tinker table to configure them. Uses FE (Foreg Energy), EU (IndustrialCraft 2) or RF (Thermal Expansion 4).
+    '''
+
+# The [[mixins]] block allows you to declare your mixin config to FML so that it gets loaded.
+#[[mixins]]
+#config="powersuits.mixins.json"
+
+[[accessTransformers]]
+    file="META-INF/accesstransformer.cfg"
+
+[[dependencies.powersuits]]
+    modId="neoforge"
+    type="required"
+    versionRange="${neo_version}"
+    side="BOTH"
+
+[[dependencies.powersuits]]
+    modId="minecraft"
+    type="required"
+    versionRange="${minecraft_version}"
+    side="BOTH"
+
+[[dependencies.powersuits]]
+    modId="numina"
+    type="required"
+    versionRange="[${version},)"
+    ordering="AFTER"
+    side="BOTH"
+    modLoader="javafml" #mandatory

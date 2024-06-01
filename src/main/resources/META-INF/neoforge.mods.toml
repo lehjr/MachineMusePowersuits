@@ -1,0 +1,41 @@
+modLoader="javafml"
+loaderVersion="${loader_version}"
+issueTrackerURL="https://github.com/lehjr/MachineMusePowersuits/issues"
+license='Simplified BSD License https://opensource.org/license/bsd-2-clause/'
+
+[[mods]]
+    modId="numina"
+    version="${version}"
+    displayName="Numina"
+    updateJSONURL="https://mc-curse-update-checker.herokuapp.com/235440"
+    displayURL="https://github.com/lehjr/MachineMusePowersuits"
+    authors="MachineMuse, lehjr"
+    description="A common library of useful functions and utilities for dealing with Minecraft's source code."
+
+# The [[mixins]] block allows you to declare your mixin config to FML so that it gets loaded.
+#[[mixins]]
+#config="numina.mixins.json"
+
+[[accessTransformers]]
+    file="META-INF/accesstransformer.cfg"
+
+[[dependencies.numina]]
+    modId="minecraft"
+    type="required"
+    versionRange="${minecraft_version}"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.numina]]
+    modId="neoforge"
+    type="required"
+    versionRange="${neo_version}"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.numina]]
+    modId="jei"
+    type="optional"
+    versionRange="${jei_version}"
+    ordering="AFTER"
+    side="BOTH"
