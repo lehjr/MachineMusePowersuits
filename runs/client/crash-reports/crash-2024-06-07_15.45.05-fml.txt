@@ -1,0 +1,125 @@
+---- Minecraft Crash Report ----
+// Why is it breaking :(
+
+Time: 2024-06-07 15:45:05
+Description: Mod loading error has occurred
+
+java.lang.Exception: Mod Loading has failed
+	at TRANSFORMER/neoforge@20.6.111-beta/net.neoforged.neoforge.logging.CrashReportExtender.dumpModLoadingCrashReport(CrashReportExtender.java:56) ~[neoforge-20.6.111-beta.jar%23194!/:?] {re:classloading}
+	at TRANSFORMER/neoforge@20.6.111-beta/net.neoforged.neoforge.client.loading.ClientModLoader.completeModLoading(ClientModLoader.java:127) ~[neoforge-20.6.111-beta.jar%23194!/:?] {re:classloading,pl:runtimedistcleaner:A}
+	at TRANSFORMER/minecraft@1.20.6/net.minecraft.client.Minecraft.buildInitialScreens(Minecraft.java:684) ~[neoforge-20.6.111-beta.jar%23193!/:?] {re:classloading,pl:accesstransformer:B,pl:runtimedistcleaner:A}
+	at TRANSFORMER/minecraft@1.20.6/net.minecraft.client.Minecraft.onGameLoadFinished(Minecraft.java:657) ~[neoforge-20.6.111-beta.jar%23193!/:?] {re:classloading,pl:accesstransformer:B,pl:runtimedistcleaner:A}
+	at TRANSFORMER/minecraft@1.20.6/net.minecraft.client.Minecraft.onResourceLoadFinished(Minecraft.java:652) ~[neoforge-20.6.111-beta.jar%23193!/:?] {re:classloading,pl:accesstransformer:B,pl:runtimedistcleaner:A}
+	at TRANSFORMER/minecraft@1.20.6/net.minecraft.client.Minecraft.lambda$new$6(Minecraft.java:640) ~[neoforge-20.6.111-beta.jar%23193!/:?] {re:classloading,pl:accesstransformer:B,pl:runtimedistcleaner:A}
+	at TRANSFORMER/minecraft@1.20.6/net.minecraft.Util.ifElse(Util.java:478) ~[neoforge-20.6.111-beta.jar%23193!/:?] {re:classloading}
+	at TRANSFORMER/minecraft@1.20.6/net.minecraft.client.Minecraft.lambda$new$7(Minecraft.java:634) ~[neoforge-20.6.111-beta.jar%23193!/:?] {re:classloading,pl:accesstransformer:B,pl:runtimedistcleaner:A}
+	at TRANSFORMER/neoforge@20.6.111-beta/net.neoforged.neoforge.client.loading.NeoForgeLoadingOverlay.render(NeoForgeLoadingOverlay.java:146) ~[neoforge-20.6.111-beta.jar%23194!/:?] {re:classloading}
+	at TRANSFORMER/minecraft@1.20.6/net.minecraft.client.renderer.GameRenderer.render(GameRenderer.java:1104) ~[neoforge-20.6.111-beta.jar%23193!/:?] {re:classloading,pl:accesstransformer:B,pl:runtimedistcleaner:A}
+	at TRANSFORMER/minecraft@1.20.6/net.minecraft.client.Minecraft.runTick(Minecraft.java:1263) ~[neoforge-20.6.111-beta.jar%23193!/:?] {re:classloading,pl:accesstransformer:B,pl:runtimedistcleaner:A}
+	at TRANSFORMER/minecraft@1.20.6/net.minecraft.client.Minecraft.run(Minecraft.java:821) ~[neoforge-20.6.111-beta.jar%23193!/:?] {re:classloading,pl:accesstransformer:B,pl:runtimedistcleaner:A}
+	at TRANSFORMER/minecraft@1.20.6/net.minecraft.client.main.Main.main(Main.java:244) ~[neoforge-20.6.111-beta.jar%23193!/:?] {re:classloading,pl:runtimedistcleaner:A}
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[?:?] {}
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[?:?] {}
+	at MC-BOOTSTRAP/fml_loader@3.0.45/net.neoforged.fml.loading.targets.CommonLaunchHandler.runTarget(CommonLaunchHandler.java:136) ~[loader-3.0.45.jar%23143!/:3.0] {}
+	at MC-BOOTSTRAP/fml_loader@3.0.45/net.neoforged.fml.loading.targets.CommonLaunchHandler.clientService(CommonLaunchHandler.java:124) ~[loader-3.0.45.jar%23143!/:3.0] {}
+	at MC-BOOTSTRAP/fml_loader@3.0.45/net.neoforged.fml.loading.targets.NeoForgeClientUserdevLaunchHandler.runService(NeoForgeClientUserdevLaunchHandler.java:23) ~[loader-3.0.45.jar%23143!/:3.0] {}
+	at MC-BOOTSTRAP/fml_loader@3.0.45/net.neoforged.fml.loading.targets.CommonLaunchHandler.lambda$launchService$4(CommonLaunchHandler.java:118) ~[loader-3.0.45.jar%23143!/:3.0] {}
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.2/cpw.mods.modlauncher.LaunchServiceHandlerDecorator.launch(LaunchServiceHandlerDecorator.java:30) [modlauncher-11.0.2.jar%23122!/:?] {}
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.2/cpw.mods.modlauncher.LaunchServiceHandler.launch(LaunchServiceHandler.java:53) [modlauncher-11.0.2.jar%23122!/:?] {}
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.2/cpw.mods.modlauncher.LaunchServiceHandler.launch(LaunchServiceHandler.java:71) [modlauncher-11.0.2.jar%23122!/:?] {}
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.2/cpw.mods.modlauncher.Launcher.run(Launcher.java:103) [modlauncher-11.0.2.jar%23122!/:?] {}
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.2/cpw.mods.modlauncher.Launcher.main(Launcher.java:74) [modlauncher-11.0.2.jar%23122!/:?] {}
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.2/cpw.mods.modlauncher.BootstrapLaunchConsumer.accept(BootstrapLaunchConsumer.java:26) [modlauncher-11.0.2.jar%23122!/:?] {}
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.2/cpw.mods.modlauncher.BootstrapLaunchConsumer.accept(BootstrapLaunchConsumer.java:23) [modlauncher-11.0.2.jar%23122!/:?] {}
+	at cpw.mods.bootstraplauncher@2.0.2/cpw.mods.bootstraplauncher.BootstrapLauncher.run(BootstrapLauncher.java:210) [bootstraplauncher-2.0.2.jar:?] {}
+	at cpw.mods.bootstraplauncher@2.0.2/cpw.mods.bootstraplauncher.BootstrapLauncher.main(BootstrapLauncher.java:69) [bootstraplauncher-2.0.2.jar:?] {}
+
+
+A detailed walkthrough of the error, its code path and all known details is as follows:
+---------------------------------------------------------------------------------------
+
+-- Head --
+Thread: Render thread
+Stacktrace:
+	at MC-BOOTSTRAP/net.neoforged.bus/net.neoforged.bus.EventBus.register(EventBus.java:115) ~[bus-8.0.1.jar%23147!/:?] {}
+-- MOD powersuits --
+Details:
+	Mod File: /home/lehjr/Development/Minecraft/1.20.6/MPS-NeoForge/build/resources/powersuits/
+	Failure message: fml.modloading.failedtoloadmod
+	Mod Version: 2.4
+	Mod Issue URL: https://github.com/lehjr/MachineMusePowersuits/issues
+	Exception message: java.lang.IllegalArgumentException: class lehjr.powersuits.common.registration.MPSItems has no @SubscribeEvent methods, but register was called anyway.
+The event bus only recognizes listener methods that have the @SubscribeEvent annotation.
+
+Stacktrace:
+	at MC-BOOTSTRAP/net.neoforged.bus/net.neoforged.bus.EventBus.register(EventBus.java:115) ~[bus-8.0.1.jar%23147!/:?] {}
+	at MC-BOOTSTRAP/fml_loader@3.0.45/net.neoforged.fml.javafmlmod.AutomaticEventSubscriber.lambda$inject$4(AutomaticEventSubscriber.java:60) ~[loader-3.0.45.jar%23143!/:3.0] {}
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596) ~[?:?] {}
+	at MC-BOOTSTRAP/fml_loader@3.0.45/net.neoforged.fml.javafmlmod.AutomaticEventSubscriber.inject(AutomaticEventSubscriber.java:44) ~[loader-3.0.45.jar%23143!/:3.0] {}
+	at MC-BOOTSTRAP/fml_loader@3.0.45/net.neoforged.fml.javafmlmod.FMLModContainer.constructMod(FMLModContainer.java:120) ~[loader-3.0.45.jar%23143!/:3.0] {}
+	at MC-BOOTSTRAP/fml_loader@3.0.45/net.neoforged.fml.ModLoader.lambda$constructMods$3(ModLoader.java:157) ~[loader-3.0.45.jar%23143!/:3.0] {}
+	at MC-BOOTSTRAP/fml_loader@3.0.45/net.neoforged.fml.ModLoader.lambda$dispatchParallelTask$7(ModLoader.java:235) ~[loader-3.0.45.jar%23143!/:3.0] {}
+	at java.base/java.util.concurrent.CompletableFuture.uniHandle(CompletableFuture.java:934) ~[?:?] {}
+	at java.base/java.util.concurrent.CompletableFuture$UniHandle.tryFire(CompletableFuture.java:911) ~[?:?] {}
+	at java.base/java.util.concurrent.CompletableFuture$Completion.exec(CompletableFuture.java:483) ~[?:?] {}
+	at java.base/java.util.concurrent.ForkJoinTask.doExec(ForkJoinTask.java:507) ~[?:?] {}
+	at java.base/java.util.concurrent.ForkJoinPool$WorkQueue.topLevelExec(ForkJoinPool.java:1491) ~[?:?] {}
+	at java.base/java.util.concurrent.ForkJoinPool.scan(ForkJoinPool.java:2073) ~[?:?] {}
+	at java.base/java.util.concurrent.ForkJoinPool.runWorker(ForkJoinPool.java:2035) ~[?:?] {}
+	at java.base/java.util.concurrent.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:187) ~[?:?] {}
+
+
+-- System Details --
+Details:
+	Minecraft Version: 1.20.6
+	Minecraft Version ID: 1.20.6
+	Operating System: Linux (amd64) version 6.9.3-1-liquorix-amd64
+	Java Version: 21.0.3, JetBrains s.r.o.
+	Java VM Version: OpenJDK 64-Bit Server VM (mixed mode, sharing), JetBrains s.r.o.
+	Memory: 433261560 bytes (413 MiB) / 956301312 bytes (912 MiB) up to 4175429632 bytes (3982 MiB)
+	CPUs: 12
+	Processor Vendor: AuthenticAMD
+	Processor Name: AMD Ryzen 5 3600 6-Core Processor
+	Identifier: AuthenticAMD Family 23 Model 113 Stepping 0
+	Microarchitecture: Zen 2
+	Frequency (GHz): 4.21
+	Number of physical packages: 1
+	Number of physical CPUs: 6
+	Number of logical CPUs: 12
+	Graphics card #0 name: GP104 [GeForce GTX 1070 Ti]
+	Graphics card #0 vendor: NVIDIA Corporation (0x10de)
+	Graphics card #0 VRAM (MB): 288.00
+	Graphics card #0 deviceId: 0x1b82
+	Graphics card #0 versionInfo: unknown
+	Virtual memory max (MB): 27979.95
+	Virtual memory used (MB): 15542.37
+	Swap memory total (MB): 20018.49
+	Swap memory used (MB): 2518.95
+	JVM Flags: 1 total; -XX:+AllowEnhancedClassRedefinition
+	ModLauncher: 11.0.2+main.4612c65f
+	ModLauncher launch target: forgeclientuserdev
+	ModLauncher services: 
+		sponge-mixin-0.13.4+mixin.0.8.5.jar mixin PLUGINSERVICE 
+		loader-3.0.45.jar slf4jfixer PLUGINSERVICE 
+		loader-3.0.45.jar runtime_enum_extender PLUGINSERVICE 
+		at-modlauncher-10.0.1.jar accesstransformer PLUGINSERVICE 
+		loader-3.0.45.jar runtimedistcleaner PLUGINSERVICE 
+		modlauncher-11.0.2.jar mixin TRANSFORMATIONSERVICE 
+		modlauncher-11.0.2.jar mixin-synthetic-package TRANSFORMATIONSERVICE 
+		modlauncher-11.0.2.jar fml TRANSFORMATIONSERVICE 
+	FML Language Providers: 
+		javafml@3.0
+		lowcodefml@3.0
+		minecraft@3.0
+	Mod List: 
+		tutpower-1.0.0.jar                                |Tutorial Power                |tutpower                      |1.0.0               |Manifest: NOSIGNATURE
+		neoforge-20.6.111-beta.jar                        |Minecraft                     |minecraft                     |1.20.6              |Manifest: a1:d4:5e:04:4f:d3:d6:e0:7b:37:97:cf:77:b0:de:ad:4a:47:ce:8c:96:49:5f:0a:cf:8c:ae:b2:6d:4b:8a:3f
+		theoneprobe-1.20.5_neo-11.1.1-2.jar               |The One Probe                 |theoneprobe                   |1.20.5_neo-11.1.1-2 |Manifest: NOSIGNATURE
+		mpswhatever                                       |MPS-Whatever                  |mpswhatever                   |2.4                 |Manifest: NOSIGNATURE
+		neoforge-20.6.111-beta.jar                        |NeoForge                      |neoforge                      |20.6.111-beta       |Manifest: NOSIGNATURE
+		main                                              |Numina                        |numina                        |2.4                 |Manifest: NOSIGNATURE
+		powersuits                                        |MachineMuse's Modular Powersui|powersuits                    |2.4                 |Manifest: NOSIGNATURE
+		mpsrecipecreator                                  |MPS-RecipeCreator             |mpsrecipecreator              |2.4                 |Manifest: NOSIGNATURE
+	Crash Report UUID: 3ae76b80-56f9-42f5-875d-c9e30f56b0a5
+	FML: 3.0.45
+	NeoForge: 20.6.111-beta

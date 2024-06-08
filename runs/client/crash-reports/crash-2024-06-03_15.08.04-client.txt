@@ -1,0 +1,140 @@
+---- Minecraft Crash Report ----
+// I just don't know what went wrong :(
+
+Time: 2024-06-03 15:08:04
+Description: Initializing game
+
+net.neoforged.fml.ModLoadingException: Loading errors encountered: [
+	fml.modloading.errorduringevent
+]
+	at MC-BOOTSTRAP/fml_loader@3.0.37/net.neoforged.fml.ModContainer.acceptEvent(ModContainer.java:187) ~[loader-3.0.37.jar%23102!/:3.0] {}
+	at MC-BOOTSTRAP/fml_loader@3.0.37/net.neoforged.fml.ModLoader.lambda$postEvent$13(ModLoader.java:362) ~[loader-3.0.37.jar%23102!/:3.0] {}
+	at java.base/java.lang.Iterable.forEach(Iterable.java:75) ~[?:?] {re:computing_frames}
+	at MC-BOOTSTRAP/fml_loader@3.0.37/net.neoforged.fml.ModList.forEachModInOrder(ModList.java:164) ~[loader-3.0.37.jar%23102!/:3.0] {}
+	at MC-BOOTSTRAP/fml_loader@3.0.37/net.neoforged.fml.ModLoader.postEvent(ModLoader.java:362) ~[loader-3.0.37.jar%23102!/:3.0] {}
+	at TRANSFORMER/neoforge@20.6.100-beta/net.neoforged.neoforge.client.ClientHooks.onRegisterKeyMappings(ClientHooks.java:717) ~[neoforge-20.6.100-beta.jar%23194!/:?] {re:classloading}
+	at TRANSFORMER/neoforge@20.6.100-beta/net.neoforged.neoforge.client.ClientHooks.initClientHooks(ClientHooks.java:1004) ~[neoforge-20.6.100-beta.jar%23194!/:?] {re:classloading}
+	at TRANSFORMER/minecraft@1.20.6/net.minecraft.client.Minecraft.<init>(Minecraft.java:612) ~[neoforge-20.6.100-beta.jar%23193!/:?] {re:mixin,pl:accesstransformer:B,pl:runtimedistcleaner:A,re:classloading,pl:accesstransformer:B,pl:mixin:A,pl:runtimedistcleaner:A}
+	at TRANSFORMER/minecraft@1.20.6/net.minecraft.client.main.Main.main(Main.java:206) ~[neoforge-20.6.100-beta.jar%23193!/:?] {re:classloading,pl:runtimedistcleaner:A}
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[?:?] {}
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[?:?] {}
+	at MC-BOOTSTRAP/fml_loader@3.0.37/net.neoforged.fml.loading.targets.CommonLaunchHandler.runTarget(CommonLaunchHandler.java:136) ~[loader-3.0.37.jar%23102!/:3.0] {}
+	at MC-BOOTSTRAP/fml_loader@3.0.37/net.neoforged.fml.loading.targets.CommonLaunchHandler.clientService(CommonLaunchHandler.java:124) ~[loader-3.0.37.jar%23102!/:3.0] {}
+	at MC-BOOTSTRAP/fml_loader@3.0.37/net.neoforged.fml.loading.targets.NeoForgeClientUserdevLaunchHandler.runService(NeoForgeClientUserdevLaunchHandler.java:23) ~[loader-3.0.37.jar%23102!/:3.0] {}
+	at MC-BOOTSTRAP/fml_loader@3.0.37/net.neoforged.fml.loading.targets.CommonLaunchHandler.lambda$launchService$4(CommonLaunchHandler.java:118) ~[loader-3.0.37.jar%23102!/:3.0] {}
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.2/cpw.mods.modlauncher.LaunchServiceHandlerDecorator.launch(LaunchServiceHandlerDecorator.java:30) [modlauncher-11.0.2.jar%23104!/:?] {}
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.2/cpw.mods.modlauncher.LaunchServiceHandler.launch(LaunchServiceHandler.java:53) [modlauncher-11.0.2.jar%23104!/:?] {}
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.2/cpw.mods.modlauncher.LaunchServiceHandler.launch(LaunchServiceHandler.java:71) [modlauncher-11.0.2.jar%23104!/:?] {}
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.2/cpw.mods.modlauncher.Launcher.run(Launcher.java:103) [modlauncher-11.0.2.jar%23104!/:?] {}
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.2/cpw.mods.modlauncher.Launcher.main(Launcher.java:74) [modlauncher-11.0.2.jar%23104!/:?] {}
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.2/cpw.mods.modlauncher.BootstrapLaunchConsumer.accept(BootstrapLaunchConsumer.java:26) [modlauncher-11.0.2.jar%23104!/:?] {}
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.2/cpw.mods.modlauncher.BootstrapLaunchConsumer.accept(BootstrapLaunchConsumer.java:23) [modlauncher-11.0.2.jar%23104!/:?] {}
+	at cpw.mods.bootstraplauncher@2.0.0/cpw.mods.bootstraplauncher.BootstrapLauncher.run(BootstrapLauncher.java:176) [bootstraplauncher-2.0.0.jar:?] {}
+	at cpw.mods.bootstraplauncher@2.0.0/cpw.mods.bootstraplauncher.BootstrapLauncher.main(BootstrapLauncher.java:65) [bootstraplauncher-2.0.0.jar:?] {}
+
+
+A detailed walkthrough of the error, its code path and all known details is as follows:
+---------------------------------------------------------------------------------------
+
+-- Head --
+Thread: Render thread
+Stacktrace:
+	at MC-BOOTSTRAP/fml_loader@3.0.37/net.neoforged.fml.ModContainer.acceptEvent(ModContainer.java:187) ~[loader-3.0.37.jar%23102!/:3.0] {}
+	at MC-BOOTSTRAP/fml_loader@3.0.37/net.neoforged.fml.ModLoader.lambda$postEvent$13(ModLoader.java:362) ~[loader-3.0.37.jar%23102!/:3.0] {}
+	at java.base/java.lang.Iterable.forEach(Iterable.java:75) ~[?:?] {re:computing_frames}
+	at MC-BOOTSTRAP/fml_loader@3.0.37/net.neoforged.fml.ModList.forEachModInOrder(ModList.java:164) ~[loader-3.0.37.jar%23102!/:3.0] {}
+	at MC-BOOTSTRAP/fml_loader@3.0.37/net.neoforged.fml.ModLoader.postEvent(ModLoader.java:362) ~[loader-3.0.37.jar%23102!/:3.0] {}
+	at TRANSFORMER/neoforge@20.6.100-beta/net.neoforged.neoforge.client.ClientHooks.onRegisterKeyMappings(ClientHooks.java:717) ~[neoforge-20.6.100-beta.jar%23194!/:?] {re:classloading}
+	at TRANSFORMER/neoforge@20.6.100-beta/net.neoforged.neoforge.client.ClientHooks.initClientHooks(ClientHooks.java:1004) ~[neoforge-20.6.100-beta.jar%23194!/:?] {re:classloading}
+	at TRANSFORMER/minecraft@1.20.6/net.minecraft.client.Minecraft.<init>(Minecraft.java:612) ~[neoforge-20.6.100-beta.jar%23193!/:?] {re:mixin,pl:accesstransformer:B,pl:runtimedistcleaner:A,re:classloading,pl:accesstransformer:B,pl:mixin:A,pl:runtimedistcleaner:A}
+-- Initialization --
+Details:
+	Modules: 
+Stacktrace:
+	at TRANSFORMER/minecraft@1.20.6/net.minecraft.client.main.Main.main(Main.java:206) ~[neoforge-20.6.100-beta.jar%23193!/:?] {re:classloading,pl:runtimedistcleaner:A}
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[?:?] {}
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[?:?] {}
+	at MC-BOOTSTRAP/fml_loader@3.0.37/net.neoforged.fml.loading.targets.CommonLaunchHandler.runTarget(CommonLaunchHandler.java:136) ~[loader-3.0.37.jar%23102!/:3.0] {}
+	at MC-BOOTSTRAP/fml_loader@3.0.37/net.neoforged.fml.loading.targets.CommonLaunchHandler.clientService(CommonLaunchHandler.java:124) ~[loader-3.0.37.jar%23102!/:3.0] {}
+	at MC-BOOTSTRAP/fml_loader@3.0.37/net.neoforged.fml.loading.targets.NeoForgeClientUserdevLaunchHandler.runService(NeoForgeClientUserdevLaunchHandler.java:23) ~[loader-3.0.37.jar%23102!/:3.0] {}
+	at MC-BOOTSTRAP/fml_loader@3.0.37/net.neoforged.fml.loading.targets.CommonLaunchHandler.lambda$launchService$4(CommonLaunchHandler.java:118) ~[loader-3.0.37.jar%23102!/:3.0] {}
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.2/cpw.mods.modlauncher.LaunchServiceHandlerDecorator.launch(LaunchServiceHandlerDecorator.java:30) [modlauncher-11.0.2.jar%23104!/:?] {}
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.2/cpw.mods.modlauncher.LaunchServiceHandler.launch(LaunchServiceHandler.java:53) [modlauncher-11.0.2.jar%23104!/:?] {}
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.2/cpw.mods.modlauncher.LaunchServiceHandler.launch(LaunchServiceHandler.java:71) [modlauncher-11.0.2.jar%23104!/:?] {}
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.2/cpw.mods.modlauncher.Launcher.run(Launcher.java:103) [modlauncher-11.0.2.jar%23104!/:?] {}
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.2/cpw.mods.modlauncher.Launcher.main(Launcher.java:74) [modlauncher-11.0.2.jar%23104!/:?] {}
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.2/cpw.mods.modlauncher.BootstrapLaunchConsumer.accept(BootstrapLaunchConsumer.java:26) [modlauncher-11.0.2.jar%23104!/:?] {}
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.2/cpw.mods.modlauncher.BootstrapLaunchConsumer.accept(BootstrapLaunchConsumer.java:23) [modlauncher-11.0.2.jar%23104!/:?] {}
+	at cpw.mods.bootstraplauncher@2.0.0/cpw.mods.bootstraplauncher.BootstrapLauncher.run(BootstrapLauncher.java:176) [bootstraplauncher-2.0.0.jar:?] {}
+	at cpw.mods.bootstraplauncher@2.0.0/cpw.mods.bootstraplauncher.BootstrapLauncher.main(BootstrapLauncher.java:65) [bootstraplauncher-2.0.0.jar:?] {}
+
+
+-- System Details --
+Details:
+	Minecraft Version: 1.20.6
+	Minecraft Version ID: 1.20.6
+	Operating System: Linux (amd64) version 6.9.3-1-liquorix-amd64
+	Java Version: 21.0.2, JetBrains s.r.o.
+	Java VM Version: OpenJDK 64-Bit Server VM (mixed mode), JetBrains s.r.o.
+	Memory: 234500104 bytes (223 MiB) / 553648128 bytes (528 MiB) up to 4175429632 bytes (3982 MiB)
+	CPUs: 12
+	Processor Vendor: AuthenticAMD
+	Processor Name: AMD Ryzen 5 3600 6-Core Processor
+	Identifier: AuthenticAMD Family 23 Model 113 Stepping 0
+	Microarchitecture: Zen 2
+	Frequency (GHz): 4.21
+	Number of physical packages: 1
+	Number of physical CPUs: 6
+	Number of logical CPUs: 12
+	Graphics card #0 name: GP104 [GeForce GTX 1070 Ti]
+	Graphics card #0 vendor: NVIDIA Corporation (0x10de)
+	Graphics card #0 VRAM (MB): 288.00
+	Graphics card #0 deviceId: 0x1b82
+	Graphics card #0 versionInfo: unknown
+	Virtual memory max (MB): 27979.95
+	Virtual memory used (MB): 14669.89
+	Swap memory total (MB): 20018.49
+	Swap memory used (MB): 1807.75
+	JVM Flags: 1 total; -XX:+AllowEnhancedClassRedefinition
+	Launched Version: 20.6.100-beta
+	Backend library: LWJGL version 3.3.3+5
+	Backend API: NVIDIA GeForce GTX 1070 Ti/PCIe/SSE2 GL version 4.6.0 NVIDIA 550.67, NVIDIA Corporation
+	Window size: <not initialized>
+	GL Caps: Using framebuffer using OpenGL 3.2
+	GL debug messages: 
+	Using VBOs: Yes
+	Is Modded: Definitely; Client brand changed to 'neoforge'
+	Universe: 404
+	Type: Client (map_client.txt)
+	Locale: en_US
+	CPU: 12x AMD Ryzen 5 3600 6-Core Processor
+	ModLauncher: 11.0.2+main.4612c65f
+	ModLauncher launch target: forgeclientuserdev
+	ModLauncher services: 
+		sponge-mixin-0.13.4+mixin.0.8.5.jar mixin PLUGINSERVICE 
+		loader-3.0.37.jar slf4jfixer PLUGINSERVICE 
+		loader-3.0.37.jar runtime_enum_extender PLUGINSERVICE 
+		at-modlauncher-10.0.1.jar accesstransformer PLUGINSERVICE 
+		loader-3.0.37.jar runtimedistcleaner PLUGINSERVICE 
+		modlauncher-11.0.2.jar mixin TRANSFORMATIONSERVICE 
+		modlauncher-11.0.2.jar mixin-synthetic-package TRANSFORMATIONSERVICE 
+		modlauncher-11.0.2.jar fml TRANSFORMATIONSERVICE 
+	FML Language Providers: 
+		javafml@3.0
+		lowcodefml@3.0
+		minecraft@3.0
+	Mod List: 
+		tutpower-1.0.0.jar                                |Tutorial Power                |tutpower                      |1.0.0               |Manifest: NOSIGNATURE
+		neoforge-20.6.100-beta.jar                        |Minecraft                     |minecraft                     |1.20.6              |Manifest: a1:d4:5e:04:4f:d3:d6:e0:7b:37:97:cf:77:b0:de:ad:4a:47:ce:8c:96:49:5f:0a:cf:8c:ae:b2:6d:4b:8a:3f
+		RoughlyEnoughItems-15.0.728-neoforge.jar          |Roughly Enough Items (REI)    |roughlyenoughitems            |15.0.728            |Manifest: NOSIGNATURE
+		theoneprobe-1.20.5_neo-11.1.1-2.jar               |The One Probe                 |theoneprobe                   |1.20.5_neo-11.1.1-2 |Manifest: NOSIGNATURE
+		cloth-config-14.0.126-neoforge.jar                |Cloth Config v14 API          |cloth_config                  |14.0.126            |Manifest: NOSIGNATURE
+		mpswhatever                                       |MPS-Whatever                  |mpswhatever                   |2.4                 |Manifest: NOSIGNATURE
+		architectury-12.1.3-neoforge.jar                  |Architectury                  |architectury                  |12.1.3              |Manifest: NOSIGNATURE
+		neoforge-20.6.100-beta.jar                        |NeoForge                      |neoforge                      |20.6.100-beta       |Manifest: NOSIGNATURE
+		main                                              |Numina                        |numina                        |2.4                 |Manifest: NOSIGNATURE
+		powersuits                                        |MachineMuse's Modular Powersui|powersuits                    |2.4                 |Manifest: NOSIGNATURE
+		mpsrecipecreator                                  |MPS-RecipeCreator             |mpsrecipecreator              |2.4                 |Manifest: NOSIGNATURE
+	Crash Report UUID: c9460e84-1911-4a30-9f0b-60907e49d64e
+	FML: 3.0.37
+	NeoForge: 20.6.100-beta

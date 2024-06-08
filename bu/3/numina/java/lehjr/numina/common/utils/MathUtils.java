@@ -6,26 +6,9 @@ import org.joml.Vector3f;
 import java.util.Random;
 
 public class MathUtils {
-    public static byte boolArrayToByte(boolean[] boolArray) {
-        byte keysOut = 0;
-        for(int i = 0; i < 8; i++ ) {
-            if (boolArray.length > i) {
-                keysOut = (byte) (keysOut | (byte) (((boolArray[i] ? 1 : 0) <<  i)));
-            }
-        }
-        return keysOut;
-    }
 
-    public static boolean[] byteToBooleanArray(byte byteVal) {
-        boolean[] boolArray = new boolean[8];
-        for (int i=0; i< 8; i++) {
-            boolArray[i] = byteVal >> i > 0;
-        }
-        return boolArray;
-    }
 
-    public static final float DIV_16F = 0.0625F;
-    public static final double DIV_16D = 0.0625D;
+
 
     /* Copied from Minecraft 1.18.2 */
     public static Vector3f XN = new Vector3f(-1.0F, 0.0F, 0.0F);
@@ -46,9 +29,7 @@ public class MathUtils {
         return random().nextDouble();
     }
 
-    public static double clampDouble(double value, double min, double max) {
-        return value < min ? min : (value > max ? max : value);
-    }
+
 
     public static float clampFloat(float value, float min, float max) {
         /**

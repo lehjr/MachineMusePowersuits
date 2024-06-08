@@ -1,0 +1,16 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "lehjr.numina.mixin",
+  "refmap": "mixins.tinyinv.refmap.json",
+  "compatibilityLevel": "JAVA_21",
+  "client": [
+  ],
+  "mixins": [
+    "common.item.MixinUseOnContext",
+    "common.item.MixinRangedWrapper"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

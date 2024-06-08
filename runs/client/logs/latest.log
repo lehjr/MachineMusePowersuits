@@ -1,0 +1,165 @@
+[07Jun2024 21:32:54.624] [main/INFO] [cpw.mods.modlauncher.Launcher/MODLAUNCHER]: ModLauncher running: args [--launchTarget, forgeclientuserdev, --version, 20.6.111-beta, --assetIndex, asset-index, --assetsDir, /home/lehjr/.gradle/caches/minecraft/assets/1.20.6, --gameDir, ., --fml.neoForgeVersion, 20.6.111-beta, --fml.fmlVersion, 3.0.45, --fml.mcVersion, 1.20.6, --fml.neoFormVersion, 20240429.153634]
+[07Jun2024 21:32:54.625] [main/INFO] [cpw.mods.modlauncher.Launcher/MODLAUNCHER]: JVM identified as JetBrains s.r.o. OpenJDK 64-Bit Server VM 21.0.3+13-b465.3
+[07Jun2024 21:32:54.626] [main/INFO] [cpw.mods.modlauncher.Launcher/MODLAUNCHER]: ModLauncher 11.0.2+main.4612c65f starting: java version 21.0.3 by JetBrains s.r.o.; OS Linux arch amd64 version 6.9.3-1-liquorix-amd64
+[07Jun2024 21:32:54.698] [main/INFO] [net.neoforged.fml.loading.ImmediateWindowHandler/]: Loading ImmediateWindowProvider fmlearlywindow
+[07Jun2024 21:32:54.799] [main/INFO] [EARLYDISPLAY/]: Trying GL version 4.6
+[07Jun2024 21:32:54.872] [main/INFO] [EARLYDISPLAY/]: Requested GL version 4.6 got version 4.6
+[07Jun2024 21:32:54.941] [main/INFO] [mixin/]: SpongePowered MIXIN Subsystem Version=0.8.5 Source=union:/home/lehjr/.gradle/caches/modules-2/files-2.1/net.fabricmc/sponge-mixin/0.13.4+mixin.0.8.5/8adf0cff1795a169141b9e16ad7b9f6e2527a990/sponge-mixin-0.13.4+mixin.0.8.5.jar%23134!/ Service=ModLauncher Env=CLIENT
+[07Jun2024 21:32:55.095] [pool-2-thread-1/INFO] [EARLYDISPLAY/]: GL info: NVIDIA GeForce GTX 1070 Ti/PCIe/SSE2 GL version 4.6.0 NVIDIA 550.67, NVIDIA Corporation
+[07Jun2024 21:32:55.195] [main/INFO] [net.neoforged.fml.loading.moddiscovery.ModDiscoverer/SCAN]: Found mod file "neoforge-20.6.111-beta.jar" [locator: neoforge devenv provider ([/home/lehjr/Development/Minecraft/1.20.6/MPS-NeoForge/.gradle/repositories/ng_dummy_ng/net/neoforged/neoforge/20.6.111-beta/neoforge-20.6.111-beta.jar])]
+[07Jun2024 21:32:55.205] [main/INFO] [net.neoforged.fml.loading.moddiscovery.ModDiscoverer/SCAN]: Found mod file "neoforge-20.6.111-beta.jar" [locator: neoforge devenv provider ([/home/lehjr/Development/Minecraft/1.20.6/MPS-NeoForge/.gradle/repositories/ng_dummy_ng/net/neoforged/neoforge/20.6.111-beta/neoforge-20.6.111-beta.jar])]
+[07Jun2024 21:32:55.212] [main/INFO] [net.neoforged.fml.loading.moddiscovery.ModDiscoverer/SCAN]: Found mod file "powersuits" [locator: userdev mods and services, reader: mod manifest]
+[07Jun2024 21:32:55.213] [main/INFO] [net.neoforged.fml.loading.moddiscovery.ModDiscoverer/SCAN]: Found mod file "mpswhatever" [locator: userdev mods and services, reader: mod manifest]
+[07Jun2024 21:32:55.215] [main/INFO] [net.neoforged.fml.loading.moddiscovery.ModDiscoverer/SCAN]: Found mod file "main" [locator: userdev mods and services, reader: mod manifest]
+[07Jun2024 21:32:55.216] [main/INFO] [net.neoforged.fml.loading.moddiscovery.ModDiscoverer/SCAN]: Found mod file "mpsrecipecreator" [locator: userdev mods and services, reader: mod manifest]
+[07Jun2024 21:32:55.227] [main/INFO] [net.neoforged.fml.loading.moddiscovery.ModDiscoverer/SCAN]: Found mod file "neoforge-20.6.111-beta.jar" [locator: userdev mods and services, reader: mod manifest]
+[07Jun2024 21:32:55.228] [main/INFO] [net.neoforged.fml.loading.moddiscovery.ModDiscoverer/SCAN]: Found mod file "tutpower-1.0.0.jar" [locator: userdev mods and services, reader: mod manifest]
+[07Jun2024 21:32:55.233] [main/INFO] [net.neoforged.fml.loading.moddiscovery.ModDiscoverer/SCAN]: Found mod file "theoneprobe-1.20.5_neo-11.1.1-2.jar" [locator: userdev mods and services, reader: mod manifest]
+[07Jun2024 21:32:55.241] [main/INFO] [net.neoforged.fml.loading.moddiscovery.ModDiscoverer/SCAN]: Found gamelibrary file "mixinextras-neoforge-0.3.5.jar" [locator: userdev mods and services, reader: mod manifest]
+[07Jun2024 21:32:55.302] [main/WARN] [net.neoforged.jarjar.selection.JarSelector/]: Attempted to select a dependency jar for JarJar which was passed in as source: mixinextras-neoforge-0.3.5.jar. Using Mod File: /home/lehjr/.gradle/caches/modules-2/files-2.1/io.github.llamalad7/mixinextras-neoforge/0.3.5/ef3ffcf309dae656517b2f120189b1c9b21737dd/mixinextras-neoforge-0.3.5.jar
+[07Jun2024 21:32:55.302] [main/INFO] [net.neoforged.fml.loading.moddiscovery.locators.JarInJarDependencyLocator/]: No dependencies to load found. Skipping!
+[07Jun2024 21:32:55.431] [main/INFO] [net.neoforged.fml.loading.FMLServiceProvider/CORE]: Loading coremod script-engine for [neoforge]
+[07Jun2024 21:32:55.944] [main/INFO] [cpw.mods.modlauncher.LaunchServiceHandler/MODLAUNCHER]: Launching target 'forgeclientuserdev' with arguments [--version, 20.6.111-beta, --gameDir, ., --assetsDir, /home/lehjr/.gradle/caches/minecraft/assets/1.20.6, --assetIndex, asset-index]
+[07Jun2024 21:32:59.022] [Datafixer Bootstrap/INFO] [com.mojang.datafixers.DataFixerBuilder/]: 225 Datafixer optimizations took 188 milliseconds
+[07Jun2024 21:33:00.446] [main/WARN] [net.minecraft.commands.Commands/]: Ambiguity between arguments [teleport, location] and [teleport, destination] with inputs: [0.1 -0.5 .9, 0 0 0]
+[07Jun2024 21:33:00.447] [main/WARN] [net.minecraft.commands.Commands/]: Ambiguity between arguments [teleport, location] and [teleport, targets] with inputs: [0.1 -0.5 .9, 0 0 0]
+[07Jun2024 21:33:00.448] [main/WARN] [net.minecraft.commands.Commands/]: Ambiguity between arguments [teleport, destination] and [teleport, targets] with inputs: [Player, 0123, @e, dd12be42-52a9-4a91-a8a1-11c01849e498]
+[07Jun2024 21:33:00.449] [main/WARN] [net.minecraft.commands.Commands/]: Ambiguity between arguments [teleport, targets] and [teleport, destination] with inputs: [Player, 0123, dd12be42-52a9-4a91-a8a1-11c01849e498]
+[07Jun2024 21:33:00.450] [main/WARN] [net.minecraft.commands.Commands/]: Ambiguity between arguments [teleport, targets, location] and [teleport, targets, destination] with inputs: [0.1 -0.5 .9, 0 0 0]
+[07Jun2024 21:33:00.526] [Render thread/WARN] [net.minecraft.server.packs.VanillaPackResourcesBuilder/]: Assets URL 'union:/home/lehjr/Development/Minecraft/1.20.6/MPS-NeoForge/.gradle/repositories/ng_dummy_ng/net/neoforged/neoforge/20.6.111-beta/neoforge-20.6.111-beta.jar%23193!/assets/.mcassetsroot' uses unexpected schema
+[07Jun2024 21:33:00.526] [Render thread/WARN] [net.minecraft.server.packs.VanillaPackResourcesBuilder/]: Assets URL 'union:/home/lehjr/Development/Minecraft/1.20.6/MPS-NeoForge/.gradle/repositories/ng_dummy_ng/net/neoforged/neoforge/20.6.111-beta/neoforge-20.6.111-beta.jar%23193!/data/.mcassetsroot' uses unexpected schema
+[07Jun2024 21:33:00.539] [Render thread/INFO] [com.mojang.authlib.yggdrasil.YggdrasilAuthenticationService/]: Environment: Environment[sessionHost=https://sessionserver.mojang.com, servicesHost=https://api.minecraftservices.com, name=PROD]
+[07Jun2024 21:33:00.544] [Render thread/INFO] [net.minecraft.client.Minecraft/]: Setting user: Dev
+[07Jun2024 21:33:00.591] [Render thread/INFO] [net.minecraft.client.Minecraft/]: Backend library: LWJGL version 3.3.3+5
+[07Jun2024 21:33:00.893] [modloading-worker-0/INFO] [net.neoforged.neoforge.common.NeoForgeMod/NEOFORGE-MOD]: NeoForge mod loading, version 20.6.111-beta, for MC 1.20.6
+[07Jun2024 21:33:01.566] [Render thread/INFO] [net.neoforged.neoforge.gametest.GameTestHooks/]: Enabled Gametest Namespaces: []
+[07Jun2024 21:33:01.723] [Render thread/INFO] [net.minecraft.server.packs.resources.ReloadableResourceManager/]: Reloading ResourceManager: vanilla, mod_resources, mod/tutpower, mod/theoneprobe, mod/mpswhatever, mod/neoforge, mod/numina, mod/powersuits, mod/mpsrecipecreator
+[07Jun2024 21:33:01.803] [Worker-Main-4/INFO] [net.minecraft.client.gui.font.providers.UnihexProvider/]: Found unifont_all_no_pua-15.1.04.hex, loading
+[07Jun2024 21:33:01.812] [Thread-4/FATAL] [mcjty.theoneprobe.TheOneProbe/CORE]: theoneprobe config just got changed on the file system!
+[07Jun2024 21:33:01.813] [Thread-4/FATAL] [mcjty.theoneprobe.TheOneProbe/CORE]: theoneprobe config just got changed on the file system!
+[07Jun2024 21:33:01.953] [Worker-Main-7/WARN] [net.minecraft.client.sounds.SoundManager/]: File powersuits:sounds/glider.ogg does not exist, cannot add it to event powersuits:glider
+[07Jun2024 21:33:01.953] [Worker-Main-7/WARN] [net.minecraft.client.sounds.SoundManager/]: File powersuits:sounds/jet_boots.ogg does not exist, cannot add it to event powersuits:jet_boots
+[07Jun2024 21:33:01.953] [Worker-Main-7/WARN] [net.minecraft.client.sounds.SoundManager/]: File powersuits:sounds/jetpack.ogg does not exist, cannot add it to event powersuits:jetpack
+[07Jun2024 21:33:01.954] [Worker-Main-7/WARN] [net.minecraft.client.sounds.SoundManager/]: File powersuits:sounds/jump_assist.ogg does not exist, cannot add it to event powersuits:jump_assist
+[07Jun2024 21:33:01.954] [Worker-Main-7/WARN] [net.minecraft.client.sounds.SoundManager/]: File powersuits:sounds/swim_assist.ogg does not exist, cannot add it to event powersuits:swim_assist
+[07Jun2024 21:33:01.954] [Worker-Main-7/WARN] [net.minecraft.client.sounds.SoundManager/]: File powersuits:sounds/water_electrolyzer.ogg does not exist, cannot add it to event powersuits:water_electrolyzer
+[07Jun2024 21:33:01.974] [Worker-Main-11/INFO] [lehjr.mpswhatever.common.MPSWhatever/]: HELLO FROM COMMON SETUP
+[07Jun2024 21:33:01.974] [Worker-Main-11/INFO] [lehjr.mpswhatever.common.MPSWhatever/]: DIRT BLOCK >> minecraft:dirt
+[07Jun2024 21:33:01.974] [Worker-Main-11/INFO] [lehjr.mpswhatever.common.MPSWhatever/]: The magic number is... 42
+[07Jun2024 21:33:01.975] [Worker-Main-11/INFO] [lehjr.mpswhatever.common.MPSWhatever/]: ITEM >> minecraft:iron_ingot
+[07Jun2024 21:33:01.983] [Worker-Main-11/INFO] [lehjr.mpsrecipecreator.common.MPSRecipeCreator/]: HELLO FROM COMMON SETUP
+[07Jun2024 21:33:01.983] [Worker-Main-11/INFO] [lehjr.mpsrecipecreator.common.MPSRecipeCreator/]: DIRT BLOCK >> minecraft:dirt
+[07Jun2024 21:33:01.983] [Worker-Main-11/INFO] [lehjr.mpsrecipecreator.common.MPSRecipeCreator/]: The magic number is... 42
+[07Jun2024 21:33:01.983] [Worker-Main-11/INFO] [lehjr.mpsrecipecreator.common.MPSRecipeCreator/]: ITEM >> minecraft:iron_ingot
+[07Jun2024 21:33:01.984] [Worker-Main-11/INFO] [lehjr.powersuits.common.base.ModularPowersuits/]: HELLO FROM COMMON SETUP
+[07Jun2024 21:33:01.987] [Worker-Main-1/INFO] [net.minecraft.client.gui.font.providers.UnihexProvider/]: Found unifont_jp_patch-15.1.04.hex, loading
+[07Jun2024 21:33:02.012] [Worker-Main-11/INFO] [lehjr.mpswhatever.common.MPSWhatever/]: HELLO FROM CLIENT SETUP
+[07Jun2024 21:33:02.012] [Worker-Main-11/INFO] [lehjr.mpswhatever.common.MPSWhatever/]: MINECRAFT NAME >> Dev
+[07Jun2024 21:33:02.012] [Worker-Main-10/INFO] [lehjr.numina.common.base.NuminaLogger/]: HELLO FROM CLIENT SETUP
+[07Jun2024 21:33:02.012] [Worker-Main-10/INFO] [lehjr.numina.common.base.NuminaLogger/]: MINECRAFT NAME >> Dev
+[07Jun2024 21:33:02.013] [Worker-Main-10/INFO] [lehjr.mpsrecipecreator.common.MPSRecipeCreator/]: HELLO FROM CLIENT SETUP
+[07Jun2024 21:33:02.013] [Worker-Main-10/INFO] [lehjr.mpsrecipecreator.common.MPSRecipeCreator/]: MINECRAFT NAME >> Dev
+[07Jun2024 21:33:02.013] [Worker-Main-10/INFO] [lehjr.powersuits.common.base.ModularPowersuits/]: HELLO FROM CLIENT SETUP
+[07Jun2024 21:33:02.013] [Worker-Main-10/INFO] [lehjr.powersuits.common.base.ModularPowersuits/]: MINECRAFT NAME >> Dev
+[07Jun2024 21:33:02.031] [Forge Version Check/INFO] [net.neoforged.fml.VersionChecker/]: [numina] Starting version check at https://mc-curse-update-checker.herokuapp.com/235440
+[07Jun2024 21:33:02.453] [Worker-Main-8/WARN] [net.minecraft.client.resources.model.ModelBakery/]: Exception loading blockstate definition: 'mpswhatever:blockstates/example_block.json' missing model for variant: 'mpswhatever:example_block#'
+[07Jun2024 21:33:02.453] [Worker-Main-8/WARN] [net.minecraft.client.resources.model.ModelBakery/]: Exception loading blockstate definition: 'mpsrecipecreator:blockstates/example_block.json' missing model for variant: 'mpsrecipecreator:example_block#'
+[07Jun2024 21:33:02.454] [Worker-Main-8/WARN] [net.minecraft.client.resources.model.ModelBakery/]: Unable to load model: 'mpsrecipecreator:example_item#inventory' referenced from: mpsrecipecreator:example_item#inventory: java.io.FileNotFoundException: mpsrecipecreator:models/item/example_item.json
+[07Jun2024 21:33:02.456] [Worker-Main-8/WARN] [net.minecraft.client.resources.model.ModelBakery/]: Unable to load model: 'mpswhatever:example_block#inventory' referenced from: mpswhatever:example_block#inventory: java.io.FileNotFoundException: mpswhatever:models/item/example_block.json
+[07Jun2024 21:33:02.457] [Worker-Main-8/WARN] [net.minecraft.client.resources.model.ModelBakery/]: Unable to load model: 'mpsrecipecreator:example_block#inventory' referenced from: mpsrecipecreator:example_block#inventory: java.io.FileNotFoundException: mpsrecipecreator:models/item/example_block.json
+[07Jun2024 21:33:02.458] [Worker-Main-8/WARN] [net.minecraft.client.resources.model.ModelBakery/]: Unable to load model: 'mpswhatever:example_item#inventory' referenced from: mpswhatever:example_item#inventory: java.io.FileNotFoundException: mpswhatever:models/item/example_item.json
+[07Jun2024 21:33:02.459] [Worker-Main-8/INFO] [lehjr.numina.common.base.NuminaLogger/]: adding additional models
+[07Jun2024 21:33:02.463] [Worker-Main-8/INFO] [lehjr.numina.common.base.NuminaLogger/]: Finished loading model specs
+[07Jun2024 21:33:02.850] [Forge Version Check/WARN] [net.neoforged.fml.VersionChecker/]: Failed to process update information
+com.google.gson.JsonSyntaxException: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+	at MC-BOOTSTRAP/com.google.gson@2.10/com.google.gson.Gson.fromJson(Gson.java:1226) ~[gson-2.10.1.jar%23104!/:?]
+	at MC-BOOTSTRAP/com.google.gson@2.10/com.google.gson.Gson.fromJson(Gson.java:1124) ~[gson-2.10.1.jar%23104!/:?]
+	at MC-BOOTSTRAP/com.google.gson@2.10/com.google.gson.Gson.fromJson(Gson.java:1034) ~[gson-2.10.1.jar%23104!/:?]
+	at MC-BOOTSTRAP/com.google.gson@2.10/com.google.gson.Gson.fromJson(Gson.java:969) ~[gson-2.10.1.jar%23104!/:?]
+	at MC-BOOTSTRAP/fml_loader@3.0.45/net.neoforged.fml.VersionChecker$1.process(VersionChecker.java:167) ~[loader-3.0.45.jar%23143!/:3.0]
+	at java.base/java.lang.Iterable.forEach(Iterable.java:75) [?:?]
+	at MC-BOOTSTRAP/fml_loader@3.0.45/net.neoforged.fml.VersionChecker$1.run(VersionChecker.java:105) [loader-3.0.45.jar%23143!/:3.0]
+Caused by: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+	at MC-BOOTSTRAP/com.google.gson@2.10/com.google.gson.stream.JsonReader.beginObject(JsonReader.java:393) ~[gson-2.10.1.jar%23104!/:?]
+	at MC-BOOTSTRAP/com.google.gson@2.10/com.google.gson.internal.bind.MapTypeAdapterFactory$Adapter.read(MapTypeAdapterFactory.java:182) ~[gson-2.10.1.jar%23104!/:?]
+	at MC-BOOTSTRAP/com.google.gson@2.10/com.google.gson.internal.bind.MapTypeAdapterFactory$Adapter.read(MapTypeAdapterFactory.java:144) ~[gson-2.10.1.jar%23104!/:?]
+	at MC-BOOTSTRAP/com.google.gson@2.10/com.google.gson.Gson.fromJson(Gson.java:1214) ~[gson-2.10.1.jar%23104!/:?]
+	... 6 more
+[07Jun2024 21:33:02.851] [Forge Version Check/INFO] [net.neoforged.fml.VersionChecker/]: [powersuits] Starting version check at https://mc-curse-update-checker.herokuapp.com/235442
+[07Jun2024 21:33:02.992] [Worker-Main-8/INFO] [com.mcjty.tutpower.TutorialPower/]: Enabled support for The One Probe
+[07Jun2024 21:33:03.132] [Render thread/WARN] [net.minecraft.client.sounds.SoundEngine/]: Missing sound for event: minecraft:item.goat_horn.play
+[07Jun2024 21:33:03.132] [Render thread/WARN] [net.minecraft.client.sounds.SoundEngine/]: Missing sound for event: minecraft:entity.goat.screaming.horn_break
+[07Jun2024 21:33:03.171] [Render thread/INFO] [com.mojang.blaze3d.audio.Library/]: OpenAL initialized on device USB-BH209A Analog Stereo
+[07Jun2024 21:33:03.172] [Render thread/INFO] [net.minecraft.client.sounds.SoundEngine/SOUNDS]: Sound engine started
+[07Jun2024 21:33:03.268] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 1024x512x4 minecraft:textures/atlas/blocks.png-atlas
+[07Jun2024 21:33:03.275] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 256x256x4 minecraft:textures/atlas/signs.png-atlas
+[07Jun2024 21:33:03.276] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 512x512x4 minecraft:textures/atlas/banner_patterns.png-atlas
+[07Jun2024 21:33:03.276] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 512x512x4 minecraft:textures/atlas/shield_patterns.png-atlas
+[07Jun2024 21:33:03.277] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 1024x1024x4 minecraft:textures/atlas/armor_trims.png-atlas
+[07Jun2024 21:33:03.280] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 128x64x4 minecraft:textures/atlas/decorated_pot.png-atlas
+[07Jun2024 21:33:03.280] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 256x256x4 minecraft:textures/atlas/chest.png-atlas
+[07Jun2024 21:33:03.281] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 512x256x4 minecraft:textures/atlas/shulker_boxes.png-atlas
+[07Jun2024 21:33:03.281] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 512x256x4 minecraft:textures/atlas/beds.png-atlas
+[07Jun2024 21:33:03.349] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 512x256x0 minecraft:textures/atlas/particles.png-atlas
+[07Jun2024 21:33:03.350] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 256x256x0 minecraft:textures/atlas/paintings.png-atlas
+[07Jun2024 21:33:03.351] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 256x128x0 minecraft:textures/atlas/mob_effects.png-atlas
+[07Jun2024 21:33:03.351] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 64x64x0 minecraft:textures/atlas/map_decorations.png-atlas
+[07Jun2024 21:33:03.351] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 1024x512x0 minecraft:textures/atlas/gui.png-atlas
+[07Jun2024 21:33:03.371] [Render thread/WARN] [net.minecraft.client.renderer.ShaderInstance/]: Shader rendertype_entity_translucent_emissive could not find sampler named Sampler2 in the specified shader program.
+[07Jun2024 21:33:03.421] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 1024x256x0 numina:textures/atlas/gui.png-atlas
+[07Jun2024 21:33:03.437] [Forge Version Check/WARN] [net.neoforged.fml.VersionChecker/]: Failed to process update information
+com.google.gson.JsonSyntaxException: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+	at MC-BOOTSTRAP/com.google.gson@2.10/com.google.gson.Gson.fromJson(Gson.java:1226) ~[gson-2.10.1.jar%23104!/:?]
+	at MC-BOOTSTRAP/com.google.gson@2.10/com.google.gson.Gson.fromJson(Gson.java:1124) ~[gson-2.10.1.jar%23104!/:?]
+	at MC-BOOTSTRAP/com.google.gson@2.10/com.google.gson.Gson.fromJson(Gson.java:1034) ~[gson-2.10.1.jar%23104!/:?]
+	at MC-BOOTSTRAP/com.google.gson@2.10/com.google.gson.Gson.fromJson(Gson.java:969) ~[gson-2.10.1.jar%23104!/:?]
+	at MC-BOOTSTRAP/fml_loader@3.0.45/net.neoforged.fml.VersionChecker$1.process(VersionChecker.java:167) ~[loader-3.0.45.jar%23143!/:3.0]
+	at java.base/java.lang.Iterable.forEach(Iterable.java:75) [?:?]
+	at MC-BOOTSTRAP/fml_loader@3.0.45/net.neoforged.fml.VersionChecker$1.run(VersionChecker.java:105) [loader-3.0.45.jar%23143!/:3.0]
+Caused by: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+	at MC-BOOTSTRAP/com.google.gson@2.10/com.google.gson.stream.JsonReader.beginObject(JsonReader.java:393) ~[gson-2.10.1.jar%23104!/:?]
+	at MC-BOOTSTRAP/com.google.gson@2.10/com.google.gson.internal.bind.MapTypeAdapterFactory$Adapter.read(MapTypeAdapterFactory.java:182) ~[gson-2.10.1.jar%23104!/:?]
+	at MC-BOOTSTRAP/com.google.gson@2.10/com.google.gson.internal.bind.MapTypeAdapterFactory$Adapter.read(MapTypeAdapterFactory.java:144) ~[gson-2.10.1.jar%23104!/:?]
+	at MC-BOOTSTRAP/com.google.gson@2.10/com.google.gson.Gson.fromJson(Gson.java:1214) ~[gson-2.10.1.jar%23104!/:?]
+	... 6 more
+[07Jun2024 21:35:36.397] [Render thread/INFO] [net.minecraft.world.item.crafting.RecipeManager/]: Loaded 1313 recipes
+[07Jun2024 21:35:36.508] [Render thread/INFO] [net.minecraft.advancements.AdvancementTree/]: Loaded 1417 advancements
+[07Jun2024 21:35:36.938] [Server thread/INFO] [net.minecraft.client.server.IntegratedServer/]: Starting integrated minecraft server version 1.20.6
+[07Jun2024 21:35:36.939] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Generating keypair
+[07Jun2024 21:35:37.875] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Preparing start region for dimension minecraft:overworld
+[07Jun2024 21:35:38.564] [progressListener/INFO] [net.minecraft.server.level.progress.LoggerChunkProgressListener/]: Preparing spawn area: 0%
+[07Jun2024 21:35:38.565] [progressListener/INFO] [net.minecraft.server.level.progress.LoggerChunkProgressListener/]: Preparing spawn area: 0%
+[07Jun2024 21:35:38.897] [progressListener/INFO] [net.minecraft.server.level.progress.LoggerChunkProgressListener/]: Preparing spawn area: 51%
+[07Jun2024 21:35:38.906] [Server thread/INFO] [net.neoforged.neoforge.server.permission.PermissionAPI/]: Successfully initialized permission handler neoforge:default_handler
+[07Jun2024 21:35:38.906] [Server thread/INFO] [lehjr.mpswhatever.common.MPSWhatever/]: HELLO from server starting
+[07Jun2024 21:35:38.906] [Server thread/INFO] [lehjr.numina.common.base.NuminaLogger/]: HELLO from server starting
+[07Jun2024 21:35:38.906] [Server thread/INFO] [lehjr.mpsrecipecreator.common.MPSRecipeCreator/]: HELLO from server starting
+[07Jun2024 21:35:38.906] [Server thread/INFO] [lehjr.powersuits.common.base.ModularPowersuits/]: HELLO from server starting
+[07Jun2024 21:35:38.915] [progressListener/INFO] [net.minecraft.server.level.progress.LoggerChunkProgressListener/]: Time elapsed: 1025 ms
+[07Jun2024 21:35:38.990] [Server thread/INFO] [net.minecraft.client.server.IntegratedServer/]: Changing view distance to 12, from 10
+[07Jun2024 21:35:38.991] [Server thread/INFO] [net.minecraft.client.server.IntegratedServer/]: Changing simulation distance to 12, from 0
+[07Jun2024 21:35:39.575] [Server thread/INFO] [net.minecraft.server.players.PlayerList/]: Dev[local:E:f916b204] logged in with entity id 84 at (827.212923683572, 83.0, 682.6999999880791)
+[07Jun2024 21:35:39.614] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Dev joined the game
+[07Jun2024 21:35:39.860] [Render thread/INFO] [net.minecraft.advancements.AdvancementTree/]: Loaded 141 advancements
+[07Jun2024 21:35:56.157] [Server thread/INFO] [net.minecraft.client.server.IntegratedServer/]: Saving and pausing game...
+[07Jun2024 21:35:56.173] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[TestWorld 1]'/minecraft:overworld
+[07Jun2024 21:35:56.189] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[TestWorld 1]'/minecraft:the_nether
+[07Jun2024 21:35:56.192] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[TestWorld 1]'/minecraft:the_end
+[07Jun2024 21:35:57.307] [Server thread/INFO] [net.minecraft.client.server.IntegratedServer/]: Saving and pausing game...
+[07Jun2024 21:35:57.318] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[TestWorld 1]'/minecraft:overworld
+[07Jun2024 21:35:57.326] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[TestWorld 1]'/minecraft:the_nether
+[07Jun2024 21:35:57.327] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[TestWorld 1]'/minecraft:the_end
+[07Jun2024 21:35:58.671] [Render thread/INFO] [net.minecraft.client.Minecraft/]: Stopping!
+[07Jun2024 21:35:58.712] [Server thread/INFO] [net.minecraft.server.network.ServerGamePacketListenerImpl/]: Dev lost connection: Disconnected
+[07Jun2024 21:35:58.712] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Dev left the game
+[07Jun2024 21:35:58.725] [Server thread/INFO] [net.minecraft.server.network.ServerCommonPacketListenerImpl/]: Stopping singleplayer server as player logged out
+[07Jun2024 21:35:58.757] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Stopping server
+[07Jun2024 21:35:58.758] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving players
+[07Jun2024 21:35:58.758] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving worlds
+[07Jun2024 21:35:59.228] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[TestWorld 1]'/minecraft:overworld
+[07Jun2024 21:35:59.261] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[TestWorld 1]'/minecraft:the_nether
+[07Jun2024 21:35:59.263] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[TestWorld 1]'/minecraft:the_end
+[07Jun2024 21:35:59.266] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (TestWorld 1): All chunks are saved
+[07Jun2024 21:35:59.266] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (DIM-1): All chunks are saved
+[07Jun2024 21:35:59.266] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (DIM1): All chunks are saved
+[07Jun2024 21:35:59.266] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage: All dimensions are saved

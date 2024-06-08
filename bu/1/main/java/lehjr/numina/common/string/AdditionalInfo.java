@@ -197,10 +197,7 @@ public class AdditionalInfo {
         }
     }
 
-    public static Component additionalInfoInstructions() {
-        return Component.translatable(NuminaConstants.TOOLTIP_PRESS_SHIFT)
-                .setStyle(Style.EMPTY.applyFormat(ChatFormatting.GRAY).withItalic(true));
-    }
+
 
 //    public static List<Component> getItemInstalledModules(@Nonnull ItemStack stack) {
 //        return NuminaCapabilities.getCapability(stack, Capabilities.ItemHandler.ITEM)

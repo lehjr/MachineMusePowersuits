@@ -35,14 +35,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class ServerConfig {
-    /* General ------------------------------------------------------------------------------------------------------- */
-    protected ForgeConfigSpec.DoubleValue
-            GENERAL_MAX_FLYING_SPEED,
-            GENERAL_BASE_MAX_HEAT_POWERFIST,
-            GENERAL_BASE_MAX_HEAT_HELMET,
-            GENERAL_BASE_MAX_HEAT_CHEST,
-            GENERAL_BASE_MAX_HEAT_LEGS,
-            GENERAL_BASE_MAX_HEAT_FEET;
+
 
     protected ForgeConfigSpec.ConfigValue<List<? extends String>> GENERAL_VEIN_MINER_ORE_LIST;
     protected ForgeConfigSpec.ConfigValue<List<?>>
@@ -113,9 +106,7 @@ public class ServerConfig {
         GENERAL_MOD_ITEMS_AS_WEAPON_MODULES = builder.comment("Items from other mods to allow as weapons in the Power Fist")
                 .defineList("externalWeaponItems", Collections.emptyList(), o -> o instanceof String && !((String) o).isEmpty());
 
-        GENERAL_MAX_FLYING_SPEED = builder.comment("Maximum flight speed (in m/s)")
-                .translation(MPSConstants.CONFIG_GENERAL_MAX_FLYING_SPEED)
-                .defineInRange("maximumFlyingSpeedmps", 25.0, 0, Float.MAX_VALUE);
+
 
         GENERAL_BASE_MAX_HEAT_POWERFIST = builder.comment("PowerFistModel2 Base Heat Cap")
                 .translation(MPSConstants.CONFIG_GENERAL_BASE_MAX_HEAT_POWERFIST)

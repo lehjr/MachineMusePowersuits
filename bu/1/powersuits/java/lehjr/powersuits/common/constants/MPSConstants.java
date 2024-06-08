@@ -30,10 +30,11 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 
 public class MPSConstants {
-    public static final String MOD_ID = "powersuits";
+
     public static final String MPS_ITEM_GROUP =  "itemGroup." + MOD_ID;
     public static final String RESOURCE_PREFIX = MPSConstants.MOD_ID + ":";
     public static final String TEXTURE_PREFIX = RESOURCE_PREFIX + "textures/";
+    .CREATIVE_TAB_TRANSLATION_KEY
 
     public static final String RESOURCE_DOMAIN = MOD_ID.toLowerCase();
 
@@ -52,25 +53,16 @@ public class MPSConstants {
     /**
      * Config -------------------------------------------------------------------------------------
      */
-    public static final String CONFIG_PREFIX = "config." + MOD_ID + ".";
 
-    /** HUD ---------------------------------------------------------------------------------------- */
-    public static final String CONFIG_PREFIX_HUD = CONFIG_PREFIX + "hud.";
-    public static final String CONFIG_HUD_TOGGLE_MODULE_SPAM = CONFIG_PREFIX_HUD + "enableModuleSpam";
-    public static final String CONFIG_HUD_DISPLAY_HUD = CONFIG_PREFIX_HUD + "DisplayHUD";
-    public static final String CONFIG_HUD_KEYBIND_HUD_X = CONFIG_PREFIX_HUD + "Xposition";
-    public static final String CONFIG_HUD_KEYBIND_HUD_Y = CONFIG_PREFIX_HUD + "Yposition";
-    public static final String CONFIG_HUD_USE_GRAPHICAL_METERS = CONFIG_PREFIX_HUD + "useGraphicalMeters";
-    public static final String CONFIG_HUD_USE_24_HOUR_CLOCK = CONFIG_PREFIX_HUD + "use24HrClock";
+
 
     /** Recipes ------------------------------------------------------------------------------------- */
     public static final String CONFIG_PREFIX_RECIPES = CONFIG_PREFIX + "recipes.";
     public static final String CONFIG_RECIPES_USE_VANILLA = CONFIG_PREFIX_RECIPES + "useVanilla";
 
-    /** General ------------------------------------------------------------------------------------ */
-    public static final String CONFIG_PREFIX_GENERAL = CONFIG_PREFIX + "general.";
+
     public static final String CONFIG_GENERAL_ALLOW_CONFLICTING_KEYBINDS = CONFIG_PREFIX_GENERAL + "allowConflictingKeybinds";
-    public static final String CONFIG_GENERAL_MAX_FLYING_SPEED = CONFIG_PREFIX_GENERAL + "maxFlyingSpeed";
+
     public static final String CONFIG_GENERAL_BASE_MAX_HEAT_HELMET = CONFIG_PREFIX_GENERAL + "maxHeatBaseHelmet";
     public static final String CONFIG_GENERAL_BASE_MAX_HEAT_CHESTPLATE = CONFIG_PREFIX_GENERAL + "maxHeatBaseChestplate";
     public static final String CONFIG_GENERAL_BASE_MAX_HEAT_LEGGINGS = CONFIG_PREFIX_GENERAL +  "maxHeatBaseLeggings";
@@ -86,18 +78,7 @@ public class MPSConstants {
     public static final String CONFIG_COSMETIC_ALLOW_POWER_FIST_CUSTOMIZATOIN = CONFIG_PREFIX_COSMETIC + "allowPowerFistCustomization";
 
 
-    /**
-     * Modules ------------------------------------------------------------------------------------
-     */
 
-    /** Armor ---------------------------------------------------------------------------------- */
-    public static final String ARMOR_POINTS = "armorPoints";
-    public static final String ARMOR_VALUE_PHYSICAL = "armorPhysical";
-    public static final String ARMOR_VALUE_ENERGY = "armorEnergy";
-    public static final String ARMOR_ENERGY_CONSUMPTION = "armorEnergyPerDamage";
-    public static final String KNOCKBACK_RESISTANCE = "knockbackResistance";
-    public static final String ARMOR_TOUGHNESS = "armorToughness";
-    public static final String MODULE_FIELD_STRENGTH = "fieldStrength";
 
     /** Energy Generation ---------------------------------------------------------------------- */
     public static final String ENERGY_GENERATION = "energyPerBlock";

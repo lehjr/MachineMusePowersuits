@@ -59,10 +59,7 @@ public class MPSRegistryNames {
      */
     // Armor --------------------------------------------------------------------------------------
     public static final ResourceLocation LEATHER_PLATING_MODULE = getRegName("plating_leather");
-    public static final ResourceLocation IRON_PLATING_MODULE = getRegName("plating_iron");
-    public static final ResourceLocation DIAMOND_PLATING_MODULE = getRegName("plating_diamond");
-    public static final ResourceLocation NETHERITE_PLATING_MODULE = getRegName("plating_netherite");
-    public static final ResourceLocation ENERGY_SHIELD_MODULE = getRegName("energy_shield");
+
 
     // Cosmetic -----------------------------------------------------------------------------------
     public static final ResourceLocation TRANSPARENT_ARMOR_MODULE = getRegName("transparent_armor");
@@ -154,7 +151,5 @@ public class MPSRegistryNames {
     public static final String INSTALL_SALVAGE_CONTAINER_TYPE = "install_salvage_container_type";
     public static final String MODULE_TWEAK_CONTAINER_TYPE = "module_tweak_container_type";
 
-    public static ResourceLocation getRegName(String regNameString) {
-        return new ResourceLocation(MPSConstants.MOD_ID, regNameString);
-    }
+
 }

@@ -80,10 +80,7 @@ public class MPSItems {
 
     /* Modules ------------------------------------------------------------------------------------ */
     // Armor --------------------------------------------------------------------------------------
-//    public static final RegistryObject<Item> LEATHER_PLATING_MODULE = MPS_ITEMS.register(MPSRegistryNames.LEATHER_PLATING_MODULE.getPath(),
-//            LeatherPlatingModule::new);
-    public static final RegistryObject<Item> IRON_PLATING_MODULE = MPS_ITEMS.register(MPSRegistryNames.IRON_PLATING_MODULE.getPath(),
-            IronPlatingModule::new);
+
     public static final RegistryObject<Item> DIAMOND_PLATING_MODULE = MPS_ITEMS.register(MPSRegistryNames.DIAMOND_PLATING_MODULE.getPath(),
             DiamondPlatingModule::new);
     public static final RegistryObject<Item> NETHERITE_PLATING_MODULE = MPS_ITEMS.register(MPSRegistryNames.NETHERITE_PLATING_MODULE.getPath(),

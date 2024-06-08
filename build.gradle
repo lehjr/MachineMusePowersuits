@@ -17,7 +17,8 @@ plugins {
     id 'eclipse'
     id 'idea'
     id 'maven-publish'
-    id 'net.neoforged.gradle.userdev' version '7.0.119'//https://projects.neoforged.net/neoforged/neogradle
+    id 'net.neoforged.gradle.userdev' version '7.0.139'
+//    id 'net.neoforged.gradle.userdev' version '7.0.+'
 }
 
 tasks.named('wrapper', Wrapper).configure {
@@ -372,6 +373,10 @@ dependencies {
     runtimeOnly("mcjty.theoneprobe:theoneprobe:${top_version}") {
         transitive = false
     }
+
+//    runtimeOnly("ignored:architectury-12.1.3-neoforge")
+//    runtimeOnly("ignored:cloth-config-14.0.126-neoforge")
+//    runtimeOnly("ignored:RoughlyEnoughItems-15.0.728-neoforge")
 }
 
 def getManifestAttributes(String title) {

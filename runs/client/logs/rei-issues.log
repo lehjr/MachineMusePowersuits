@@ -1,0 +1,32 @@
+[10:56:01] [REI-ReloadPlugins/ERROR] [REI] DefaultClientPluginImpl of DefaultClientPluginImpl [roughlyenoughitems] plugin failed to reloadable-plugin/EntryRegistryImpl/!
+java.lang.RuntimeException: java.lang.reflect.InvocationTargetException
+	at TRANSFORMER/roughlyenoughitems@15.0.728/me.shedaniel.rei.plugin.client.DefaultClientPlugin.collectTabs(DefaultClientPlugin.java:195)
+	at TRANSFORMER/roughlyenoughitems@15.0.728/me.shedaniel.rei.plugin.client.DefaultClientPlugin.registerEntries(DefaultClientPlugin.java:154)
+	at TRANSFORMER/roughlyenoughitems@15.0.728/me.shedaniel.rei.impl.common.entry.type.EntryRegistryImpl.acceptPlugin(EntryRegistryImpl.java:69)
+	at TRANSFORMER/roughlyenoughitems@15.0.728/me.shedaniel.rei.impl.common.entry.type.EntryRegistryImpl.acceptPlugin(EntryRegistryImpl.java:51)
+	at TRANSFORMER/roughlyenoughitems@15.0.728/me.shedaniel.rei.api.common.registry.Reloadable.acceptPlugin(Reloadable.java:78)
+	at TRANSFORMER/roughlyenoughitems@15.0.728/me.shedaniel.rei.impl.common.plugins.PluginManagerImpl.lambda$startReload$9(PluginManagerImpl.java:417)
+	at TRANSFORMER/roughlyenoughitems@15.0.728/me.shedaniel.rei.impl.common.plugins.PluginManagerImpl.lambda$pluginSection$4(PluginManagerImpl.java:199)
+	at TRANSFORMER/roughlyenoughitems@15.0.728/me.shedaniel.rei.impl.common.plugins.PluginManagerImpl.lambda$startReload$10(PluginManagerImpl.java:407)
+	at TRANSFORMER/roughlyenoughitems@15.0.728/me.shedaniel.rei.impl.common.plugins.PluginManagerImpl.pluginSection(PluginManagerImpl.java:197)
+	at TRANSFORMER/roughlyenoughitems@15.0.728/me.shedaniel.rei.impl.common.plugins.PluginManagerImpl.startReload(PluginManagerImpl.java:405)
+	at TRANSFORMER/roughlyenoughitems@15.0.728/me.shedaniel.rei.RoughlyEnoughItemsCore._reloadPlugins(RoughlyEnoughItemsCore.java:162)
+	at TRANSFORMER/roughlyenoughitems@15.0.728/me.shedaniel.rei.RoughlyEnoughItemsCoreClient.lambda$reloadPlugins$25(RoughlyEnoughItemsCoreClient.java:483)
+	at java.base/java.util.concurrent.CompletableFuture$AsyncRun.run(CompletableFuture.java:1804)
+	at java.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:572)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:317)
+	at java.base/java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:304)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+Caused by: java.lang.reflect.InvocationTargetException
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:115)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at TRANSFORMER/roughlyenoughitems@15.0.728/me.shedaniel.rei.plugin.client.DefaultClientPlugin.collectTabs(DefaultClientPlugin.java:193)
+	... 18 more
+Caused by: java.lang.NullPointerException: Cannot invoke "net.minecraft.client.player.LocalPlayer.level()" because "dev.architectury.utils.GameInstance.getClient().player" is null
+	at TRANSFORMER/roughlyenoughitems@15.0.728/me.shedaniel.rei.api.common.display.basic.BasicDisplay.lambda$static$0(BasicDisplay.java:49)
+	at TRANSFORMER/roughlyenoughitems@15.0.728/me.shedaniel.rei.api.common.display.basic.BasicDisplay.registryAccess(BasicDisplay.java:67)
+	at TRANSFORMER/roughlyenoughitems@15.0.728/me.shedaniel.rei.impl.client.forge.CreativeModeTabCollectorImpl.collectTabs(CreativeModeTabCollectorImpl.java:48)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	... 20 more
