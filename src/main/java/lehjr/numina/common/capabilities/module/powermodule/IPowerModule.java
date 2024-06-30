@@ -58,15 +58,15 @@ public interface IPowerModule extends IConfigGetter {
         return "";
     }
 
-    void addTradeoffProperty(String tradeoffName, String propertyName, double multiplier);
+    void addBaseProperty(String propertyName, double defaultValue);
+
+    void addBaseProperty(String propertyName, double defaultValue, String unit);
+
+    void addTradeoffProperty(String tradeoffName, String propertyName, double defaultMultiplier);
+
+    void addTradeoffProperty(String tradeoffName, String propertyName, double defaultMultiplier, String unit);
 
     void addPropertyModifier(String propertyName, IPropertyModifier modifier);
-
-    void addTradeoffProperty(String tradeoffName, String propertyName, double multiplier, String unit);
-
-    void addBaseProperty(String propertyName, double baseVal);
-
-    void addBaseProperty(String propertyName, double baseVal, String unit);
 
     double applyPropertyModifiers(String propertyName);
 
@@ -74,7 +74,7 @@ public interface IPowerModule extends IConfigGetter {
 
     Map<String, List<IPropertyModifier>> getPropertyModifiers();
 
-    void addIntTradeoffProperty(String tradeoffName, String propertyName, int multiplier, String unit, int roundTo, int offset);
+    void addIntTradeoffProperty(String tradeoffName, String propertyName, int defaultMultiplier, String unit, int roundTo, int offset);
 
     boolean isAllowed();
 
@@ -109,10 +109,10 @@ public interface IPowerModule extends IConfigGetter {
         Callable<IConfig> config;
         double defaultVal;
 
-        public PropertyModifierFlatAdditive(ImmutableList<String> configKey, Callable<IConfig> config, double baseVal) {
+        public PropertyModifierFlatAdditive(ImmutableList<String> configKey, Callable<IConfig> config, double defaultValue) {
             this.configKey = configKey;
             this.config = config;
-            this.defaultVal = baseVal;
+            this.defaultVal = defaultValue;
         }
 
         /**

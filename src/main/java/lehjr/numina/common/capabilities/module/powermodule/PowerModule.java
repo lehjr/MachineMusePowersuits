@@ -50,7 +50,9 @@ public class PowerModule implements IPowerModule {
     final String moduleName;
     final String categoryTitle;
 
-    public PowerModule(@Nonnull ItemStack module, ModuleCategory category, ModuleTarget target,
+    public PowerModule(@Nonnull ItemStack module,
+                       ModuleCategory category,
+                       ModuleTarget target,
                        Callable<IConfig> moduleConfigGetterIn) {
         propertyModifiers = new HashMap<>();
         this.module = module;
@@ -78,6 +80,36 @@ public class PowerModule implements IPowerModule {
     }
 
     /** Double ------------------------------------------------------------------------------------- */
+
+    /**
+     * Adds a base key and getValue to the map based on the config setting.
+     */
+    @Override
+    public void addBaseProperty(String propertyName, double defaultValue) {
+        ImmutableList<String> configKey = getConfigKey(new StringBuilder("base_").append(propertyName).toString());
+        addPropertyModifier(propertyName, new PropertyModifierFlatAdditive(configKey, moduleConfigGetter, defaultValue));
+    }
+
+    /**
+     * Adds a base key and getValue to the map based on the config setting.
+     * Also adds a [ propertyName, unitOfMeasureLabel ] k-v pair to a map used for displyaing a label
+     */
+    @Override
+    public void addBaseProperty(String propertyName, double defaultValue, String unit) {
+        addUnitLabel(propertyName, unit);
+        addBaseProperty(propertyName, defaultValue);
+    }
+
+    /**
+     * Adds a base key and getValue to the map based on the config setting.
+     * Also adds a [ propertyName, unitOfMeasureLabel ] k-v pair to a map used for displyaing a label
+     */
+    @Override
+    public void addTradeoffProperty(String tradeoffName, String propertyName, double defaultMultiplier, String unit) {
+        addUnitLabel(propertyName, unit);
+        addTradeoffProperty(tradeoffName, propertyName, defaultMultiplier);
+    }
+
     /**
      * Adds a base key and multiplierValue to the map based on the config setting.
      */
@@ -86,6 +118,16 @@ public class PowerModule implements IPowerModule {
         ImmutableList<String> configKey = getConfigKey(new StringBuilder(propertyName).append("_").append(tradeoffName).append("_multiplier").toString());
         addPropertyModifier(propertyName, new PropertyModifierLinearAdditive(configKey, moduleConfigGetter, tradeoffName, defaultMultiplier));
     }
+
+
+
+
+
+
+
+
+
+
 
     @Override
     public void addPropertyModifier(String propertyName, IPropertyModifier modifier) {
@@ -97,15 +139,7 @@ public class PowerModule implements IPowerModule {
         propertyModifiers.put(propertyName, modifiers);
     }
 
-    /**
-     * Adds a base key and getValue to the map based on the config setting.
-     * Also adds a [ propertyName, unitOfMeasureLabel ] k-v pair to a map used for displyaing a label
-     */
-    @Override
-    public void addTradeoffProperty(String tradeoffName, String propertyName, double multiplier, String unit) {
-        addUnitLabel(propertyName, unit);
-        addTradeoffProperty(tradeoffName, propertyName, multiplier);
-    }
+
 
     public void addSimpleTradeoff(String tradeoffName,
                                   String firstPropertyName,
@@ -122,24 +156,7 @@ public class PowerModule implements IPowerModule {
         this.addTradeoffProperty(tradeoffName, secondPropertyName, secondPropertyMultiplier);
     }
 
-    /**
-     * Adds a base key and getValue to the map based on the config setting.
-     */
-    @Override
-    public void addBaseProperty(String propertyName, double baseVal) {
-        ImmutableList<String> configKey = getConfigKey(new StringBuilder("base_").append(propertyName).toString());
-        addPropertyModifier(propertyName, new PropertyModifierFlatAdditive(configKey, moduleConfigGetter, baseVal));
-    }
 
-    /**
-     * Adds a base key and getValue to the map based on the config setting.
-     * Also adds a [ propertyName, unitOfMeasureLabel ] k-v pair to a map used for displyaing a label
-     */
-    @Override
-    public void addBaseProperty(String propertyName, double baseVal, String unit) {
-        addUnitLabel(propertyName, unit);
-        addBaseProperty(propertyName, baseVal);
-    }
 
     @Override
     public double applyPropertyModifiers(String propertyName) {

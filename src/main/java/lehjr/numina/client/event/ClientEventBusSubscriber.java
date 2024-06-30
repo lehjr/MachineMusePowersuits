@@ -140,7 +140,6 @@ public class ClientEventBusSubscriber {
 
     @SubscribeEvent
     public static void onAddAdditional(ModelEvent.RegisterAdditional e) {
-        NuminaLogger.logDebug("adding additional models");
         ModelBakeEventHandler.INSTANCE.onAddAdditional(e);
     }
 

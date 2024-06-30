@@ -11,14 +11,14 @@ plugins {
     id 'java'
     id 'eclipse'
     id 'idea'
-    id 'net.minecraftforge.gradle' version '[6.0,6.2)'
+    id 'net.minecraftforge.gradle' version '6.+'
     id 'org.parchmentmc.librarian.forgegradle' version '1.+' // mappings
     id 'org.spongepowered.mixin' version '0.7.+'
 }
 
 wrapper {
     //Define wrapper values here so as to not have to always do so when updating gradlew.properties
-    gradleVersion = '8.1.1'
+    gradleVersion = '8.3'
     distributionType = Wrapper.DistributionType.ALL
 }
 
@@ -41,7 +41,11 @@ version = "${minecraft_version}-${basicVersion}"
 archivesBaseName = "Numina"
 
 java {
-    toolchain.languageVersion = JavaLanguageVersion.of("${java_version}")
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of("${java_version}"))
+        vendor.set(JvmVendorSpec.JETBRAINS)
+//                vendor.set(JvmVendorSpec.AMAZON)
+    }
 }
 
 // IDE settings can override this, so really this is irrelevant
@@ -289,11 +293,6 @@ minecraft {
                 jvmArg('-Dterminal.ansi=' + project.getProperty('forge_force_ansi'))
             }
 
-            // needed for selenium for the automatic translator
-            jvmArg('--add-opens=java.base/java.lang=ALL-UNNAMED')
-            jvmArg('--add-opens=java.base/java.util=ALL-UNNAMED')
-            jvmArg('--add-opens=java.base/java.lang.reflect=ALL-UNNAMED')
-
             args '--all', '--output', file('src/datagen/generated/'),
                     '--mod', 'numina',
                     '--existing', file('src/main/resources/'),
@@ -386,39 +385,6 @@ dependencies {
 
     implementation fg.deobf("curse.maven:ic2-classic-242942:5152384") {
         transitive = false
-    }
-
-//    implementation fg.deobf("curse.maven:weapon-master-782886:4978496")
-
-    // This is only used for automatic translation for datagen
-    // safe to disable and comment out references when not in use
-    minecraftLibrary("org.seleniumhq.selenium:selenium-java:4.13.0") {
-        // doing anything with this ends up with a duplicate
-        exclude group: 'com.google.guava', module: 'guava' // defaultVersion: 31.0.1, newVersion: 32.1.2
-//        exclude group: 'net.java.dev.jna', module: 'jna'
-//        exclude group: 'com.google.code.gson', module: 'gson'
-
-        // com.google.auto.service:auto-service-annotations:1.1.1
-        // net.bytebuddy:byte-buddy:1.14.5
-
-        exclude group: 'io.netty'//:netty-buffer:4.1.77.Final'
-
-    }
-
-    minecraftLibrary('io.netty:netty-codec-http:4.1.77.Final') {
-        exclude group: 'io.netty', module: 'netty-handler'
-        exclude group: 'io.netty', module: 'netty-codec'
-        exclude group: 'io.netty', module: 'netty-transport'
-        exclude group: 'io.netty', module: 'netty-buffer'
-        exclude group: 'io.netty', module: 'netty-common'
-    }
-
-    minecraftLibrary("io.github.bonigarcia:webdrivermanager:5.5.3") {
-        exclude group: 'org.apache.commons', module: 'commons-compress'  //:1.21
-//        exclude group: 'net.java.dev.jna', module: 'jna'
-        // doing anything with this ends up with a duplicate
-        exclude group: 'com.google.guava', module: 'guava' // defaultVersion: 31.0.1, newVersion: 32.1.2
-//        exclude group: 'com.google.code.gson', module: 'gson'
     }
 }
 
