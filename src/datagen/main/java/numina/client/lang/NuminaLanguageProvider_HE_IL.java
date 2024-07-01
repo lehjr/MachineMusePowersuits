@@ -28,81 +28,51 @@ public class NuminaLanguageProvider_HE_IL extends AbstractLanguageProviderNumina
         add(NuminaConstants.ITEM_GROUP_TRANSLATION_KEY, "Numina");
     }
 
-
-    /*
-    {add(NuminaObjects.CHARGING_BASE_BLOCK.get(), "בסיס טעינה");
-add(NuminaObjects.ARMOR_STAND__ENTITY_TYPE.get(), "מעמד שריון");
-add("gui.numina.chargingbase", "בסיס טעינה");
-add(NuminaConstants.GUI_CREATIVE_INSTALL", "התקין");
-add(NuminaConstants.GUI_CREATIVE_INSTALL_ALL, "התקן הכל");
-add(NuminaConstants.GUI_CREATIVE_INSTALL_ALL_DESC, "מתקין את כל המודולים התואמים ברמה העליונה לפריט מודולרי שנבחר בזמן שהשחקן נמצא במצב יצירתי");
-add(NuminaConstants.GUI_CREATIVE_INSTALL_DESC, "מתקין מודול בפריט מודולרי שנבחר בזמן שהנגן במצב יצירתי");
-add(NuminaObjects.ARMOR_STAND_ITEM.get(), "מעמד שריון");
-
-
-
-add("key.numina.fovfixtoggle", "החלפת מצב של תיקון שדה תצוגה");
-add("message.numina.fovfixtoggle.disabled", "תיקון שדה ראייה מושבת");
-add("message.numina.fovfixtoggle.enabled", "תיקון שדה הראייה זמין");
-add("module.tradeoff.maxEnergy",  "מקסימום אנרגיה");
-add("module.tradeoff.maxTransfer", "העברה מקסימלית לכל טיק");
-add("numina.energy", "אנרגיה");
-
-add(NuminaConstants.TOOLTIP_CHANGE_MODES, "שינוי מצבים: לחץ/י והחזק/י את מספר חריץ הפס החם שבו נמצא Power Fist.");
-add(NuminaConstants.TOOLTIP_CHARGING_BASE, "חיוב פריטים מצוידים של ישות");
-add(NuminaConstants.TOOLTIP_ENERGY, "אנרגיה: ");
-add(NuminaConstants.TOOLTIP_INSTALLED_MODULES,  "מודולים מותקנים:");
-add(NuminaConstants.TOOLTIP_MODE, "מצב: ");
-add(NuminaConstants.TOOLTIP_NO_MODULES, "אין מודולים מותקנים! פריט זה חסר תועלת עד להוספת מודולים מסוימים בטבלת Tinker.");
-add(NuminaConstants.TOOLTIP_PRESS_SHIFT, "הקש SHIFT לקבלת מידע נוסף.");
-
-     */
     @Override
     public void addGui() {
-        add("gui.numina.chargingbase", "Charging Base");
-        add(NuminaConstants.TOOLTIP_CHARGING_BASE, "Charges an entity's equipped items");
+        add("gui.numina.chargingbase", "בסיס טעינה");
+        add(NuminaConstants.TOOLTIP_CHARGING_BASE, "חיוב פריטים מצוידים של ישות");
 
         // Energy --------------------------------------------------------------------------------------
-        add("numina.energy", "Energy");
+        add("numina.energy", "אנרגיה");
 
         // FOV Fix Toggle ------------------------------------------------------------------------------
-        add("key.numina.fovfixtoggle", "Toggle field of view fix");
+        add("key.numina.fovfixtoggle", "החלפת מצב של תיקון שדה תצוגה");
 
         // FOV fix enabled -----------------------------------------------------------------------------
-        add("message.numina.fovfixtoggle.enabled", "Field of view fix enabled");
+        add("message.numina.fovfixtoggle.enabled", "תיקון שדה הראייה זמין");
 
         // FOV fix disabled ----------------------------------------------------------------------------
-        add("message.numina.fovfixtoggle.disabled", "Field of view fix disabled");
+        add("message.numina.fovfixtoggle.disabled", "תיקון שדה ראייה מושבת");
 
         // Install (creative) --------------------------------------------------------------------------
-        add(NuminaConstants.GUI_CREATIVE_INSTALL, "Install");
+        add(NuminaConstants.GUI_CREATIVE_INSTALL, "התקין");
 
         // Install (creative, description) -------------------------------------------------------------
-        add(NuminaConstants.GUI_CREATIVE_INSTALL_DESC, "Installs module into selected modular item while player is in creative mode");
+        add(NuminaConstants.GUI_CREATIVE_INSTALL_DESC, "מתקין מודול בפריט מודולרי שנבחר בזמן שהנגן במצב יצירתי");
 
         // Install All (creative) ----------------------------------------------------------------------
-        add(NuminaConstants.GUI_CREATIVE_INSTALL_ALL, "Install All");
+        add(NuminaConstants.GUI_CREATIVE_INSTALL_ALL, "התקן הכל");
 
         // Install All (creative, description) ---------------------------------------------------------
-        add(NuminaConstants.GUI_CREATIVE_INSTALL_ALL_DESC, "Installs all top tier compatible modules into selected modular item while player is in creative mode");
+        add(NuminaConstants.GUI_CREATIVE_INSTALL_ALL_DESC, "מתקין את כל המודולים התואמים ברמה העליונה לפריט מודולרי שנבחר בזמן שהשחקן נמצא במצב יצירתי");
     }
 
     @Override
     public void addArmorStand() {
-        add(NuminaObjects.ARMOR_STAND_ITEM.get(), "Armor Stand");
-        add(NuminaObjects.ARMOR_STAND__ENTITY_TYPE.get(),  "Armor Stand");
+        add(NuminaObjects.ARMOR_STAND_ITEM.get(), "מעמד שריון");
+        add(NuminaObjects.ARMOR_STAND__ENTITY_TYPE.get(), "מעמד שריון");
     }
 
     @Override
     public void addModuleTradeoffs() {
-        add("module.tradeoff.maxEnergy",  "Maximum Energy");
-
-        add("module.tradeoff.maxTransfer", "Maximum Transfer per Tick");
+        add("module.tradeoff.maxEnergy",  "מקסימום אנרגיה");
+        add("module.tradeoff.maxTransfer", "העברה מקסימלית לכל טיק");
     }
 
     @Override
     public void addBlocks() {
-        add(NuminaObjects.CHARGING_BASE_BLOCK.get(), "Charging Base");
+        add(NuminaObjects.CHARGING_BASE_BLOCK.get(), "בסיס טעינה");
     }
 
     @Override
@@ -110,22 +80,22 @@ add(NuminaConstants.TOOLTIP_PRESS_SHIFT, "הקש SHIFT לקבלת מידע נו�
         add(NuminaConstants.TOOLTIP_BATTERY_ENERGY, "%d/%d FE");
 
         // Press SHIFT ---------------------------------------------------------------------------------
-        add(NuminaConstants.TOOLTIP_PRESS_SHIFT, "Press SHIFT for more information.");
+        add(NuminaConstants.TOOLTIP_PRESS_SHIFT, "הקש SHIFT לקבלת מידע נוסף.");
 
         // Mode Change ---------------------------------------------------------------------------------
-        add(NuminaConstants.TOOLTIP_CHANGE_MODES, "Change modes: Press and hold the number of the hotbar slot the Power Fist is in.");
+        add(NuminaConstants.TOOLTIP_CHANGE_MODES, "שינוי מצבים: לחץ/י והחזק/י את מספר חריץ הפס החם שבו נמצא Power Fist.");
 
         // Energy --------------------------------------------------------------------------------------
-        add(NuminaConstants.TOOLTIP_ENERGY, "Energy: ");
+        add(NuminaConstants.TOOLTIP_ENERGY, "אנרגיה: ");
 
         // No Modules Installed ------------------------------------------------------------------------
-        add(NuminaConstants.TOOLTIP_NO_MODULES, "No installed modules! This item is useless until you add some modules at a Tinker Table.");
+        add(NuminaConstants.TOOLTIP_NO_MODULES, "אין מודולים מותקנים! פריט זה חסר תועלת עד להוספת מודולים מסוימים בטבלת Tinker.");
 
         // Installed Modules: --------------------------------------------------------------------------
-        add(NuminaConstants.TOOLTIP_INSTALLED_MODULES, "Installed Modules:");
+        add(NuminaConstants.TOOLTIP_INSTALLED_MODULES,  "מודולים מותקנים:");
 
         // Mode: ---------------------------------------------------------------------------------------
-        add(NuminaConstants.TOOLTIP_MODE, "Mode: ");
+        add(NuminaConstants.TOOLTIP_MODE, "מצב: ");
     }
 
     @Override
