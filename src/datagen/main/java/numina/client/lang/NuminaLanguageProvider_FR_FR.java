@@ -4,7 +4,6 @@ import lehjr.numina.common.base.NuminaObjects;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.constants.NuminaConstants;
 import net.minecraft.data.DataGenerator;
-import net.minecraft.world.item.Item;
 
 public class NuminaLanguageProvider_FR_FR extends AbstractLanguageProviderNumina {
     public NuminaLanguageProvider_FR_FR(DataGenerator gen) {
@@ -32,42 +31,42 @@ public class NuminaLanguageProvider_FR_FR extends AbstractLanguageProviderNumina
     @Override
     public void addGui() {
         add("gui.numina.chargingbase", "Base de chargement");
-        add(NuminaConstants.TOOLTIP_CHARGING_BASE, "Charge les objets \u00e9quip\u00e9s d\u2019une entit\u00e9");
+        add(NuminaConstants.TOOLTIP_CHARGING_BASE, "Charge les objets équipés d’une entité");
 
         // Energy --------------------------------------------------------------------------------------
-        add("numina.energy", "\u00c9nergie");
+        add("numina.energy", "Énergie");
 
         // FOV Fix Toggle ------------------------------------------------------------------------------
         add("key.numina.fovfixtoggle", "Basculer le champ de vision fixe");
 
         // FOV fix enabled -----------------------------------------------------------------------------
-        add("message.numina.fovfixtoggle.enabled", "Correction du champ de vision activ\u00e9e");
+        add("message.numina.fovfixtoggle.enabled", "Correction du champ de vision activée");
 
         // FOV fix disabled ----------------------------------------------------------------------------
-        add("message.numina.fovfixtoggle.disabled", "Correction du champ de vision d\u00e9sactiv\u00e9e");
+        add("message.numina.fovfixtoggle.disabled", "Correction du champ de vision désactivée");
 
         // Install (creative) --------------------------------------------------------------------------
         add(NuminaConstants.GUI_CREATIVE_INSTALL, "Installer");
 
         // Install (creative, description) -------------------------------------------------------------
-        add(NuminaConstants.GUI_CREATIVE_INSTALL_DESC, "Installe le module dans l\u2019\u00e9l\u00e9ment modulaire s\u00e9lectionn\u00e9 lorsque la joueuse est en mode cr\u00e9atif");
+        add(NuminaConstants.GUI_CREATIVE_INSTALL_DESC, "Installe le module dans l’élément modulaire sélectionné lorsque la joueuse est en mode créatif");
 
         // Install All (creative) ----------------------------------------------------------------------
         add(NuminaConstants.GUI_CREATIVE_INSTALL_ALL, "Tout installer");
 
         // Install All (creative, description) ---------------------------------------------------------
-        add(NuminaConstants.GUI_CREATIVE_INSTALL_ALL_DESC, "Installe tous les modules compatibles de niveau sup\u00e9rieur dans l\u2019objet modulaire s\u00e9lectionn\u00e9 lorsque le joueur est en mode cr\u00e9atif");
+        add(NuminaConstants.GUI_CREATIVE_INSTALL_ALL_DESC, "Installe tous les modules compatibles de niveau supérieur dans l’objet modulaire sélectionné lorsque le joueur est en mode créatif");
     }
 
     @Override
     public void addArmorStand() {
-        add(NuminaObjects.ARMOR_STAND_ITEM.get(), "Support d\u2019armure");
-        add(NuminaObjects.ARMOR_STAND__ENTITY_TYPE.get(), "Support d\u2019armure");
+        add(NuminaObjects.ARMOR_STAND_ITEM.get(), "Support d’armure");
+        add(NuminaObjects.ARMOR_STAND__ENTITY_TYPE.get(), "Support d’armure");
     }
 
     @Override
     public void addModuleTradeoffs() {
-        add("module.tradeoff.maxEnergy",  "\u00c9nergie maximale");
+        add("module.tradeoff.maxEnergy",  "Énergie maximale");
         add("module.tradeoff.maxTransfer", "Transfert maximum par tick");
     }
 
@@ -81,16 +80,16 @@ public class NuminaLanguageProvider_FR_FR extends AbstractLanguageProviderNumina
         add(NuminaConstants.TOOLTIP_BATTERY_ENERGY, "%d/%d FE");
 
         // Press SHIFT ---------------------------------------------------------------------------------
-        add(NuminaConstants.TOOLTIP_PRESS_SHIFT, "Appuyez sur MAJ pour plus d\u2019informations.");
+        add(NuminaConstants.TOOLTIP_PRESS_SHIFT, "Appuyez sur MAJ pour plus d’informations.");
 
         // Mode Change ---------------------------------------------------------------------------------
-        add(NuminaConstants.TOOLTIP_CHANGE_MODES, "Changer de mode : Appuyez longuement sur le num\u00e9ro de l\u2019emplacement de la barre de raccourcis dans lequel se trouve le Power Fist.");
+        add(NuminaConstants.TOOLTIP_CHANGE_MODES, "Changer de mode : Appuyez longuement sur le numéro de l’emplacement de la barre de raccourcis dans lequel se trouve le Power Fist.");
 
         // Energy --------------------------------------------------------------------------------------
-        add(NuminaConstants.TOOLTIP_ENERGY, "\u00c9nergie: ");
+        add(NuminaConstants.TOOLTIP_ENERGY, "Énergie: ");
 
         // No Modules Installed ------------------------------------------------------------------------
-        add(NuminaConstants.TOOLTIP_NO_MODULES, "Aucun module install\u00e9 ! Cet objet est inutile tant que vous n\u2019avez pas ajout\u00e9 des modules \u00e0 une table de bricolage.");
+        add(NuminaConstants.TOOLTIP_NO_MODULES, "Aucun module installé ! Cet objet est inutile tant que vous n’avez pas ajouté des modules à une table de bricolage.");
 
         // Installed Modules: --------------------------------------------------------------------------
         add(NuminaConstants.TOOLTIP_INSTALLED_MODULES, "Modules installés: ");
@@ -103,104 +102,104 @@ public class NuminaLanguageProvider_FR_FR extends AbstractLanguageProviderNumina
     public void addBatteries() {
         // Basic Battery -------------------------------------------------------------------------------
         add(NuminaObjects.BASIC_BATTERY.get(), "Batterie de base");
-        addItemDescriptions(NuminaObjects.BASIC_BATTERY.get(), "Int\u00e9grez une batterie pour permettre \u00e0 l\u2019article de stocker de l\u2019\u00e9nergie.");
+        addItemDescriptions(NuminaObjects.BASIC_BATTERY.get(), "Intégrez une batterie pour permettre à l’article de stocker de l’énergie.");
 
         // Advanced Battery ----------------------------------------------------------------------------
-        add(NuminaObjects.ADVANCED_BATTERY.get(), "Batterie avanc\u00e9e");
-        addItemDescriptions(NuminaObjects.ADVANCED_BATTERY.get(), "Int\u00e9grez une batterie pour permettre \u00e0 l\u2019article de stocker de l\u2019\u00e9nergie.");
+        add(NuminaObjects.ADVANCED_BATTERY.get(), "Batterie avancée");
+        addItemDescriptions(NuminaObjects.ADVANCED_BATTERY.get(), "Intégrez une batterie pour permettre à l’article de stocker de l’énergie.");
 
         // Elite Battery -------------------------------------------------------------------------------
         add(NuminaObjects.ELITE_BATTERY.get(), "Batterie Elite");
-        addItemDescriptions(NuminaObjects.ELITE_BATTERY.get(), "Int\u00e9grez une batterie la plus avanc\u00e9e pour stocker une grande quantit\u00e9 d\u2019\u00e9nergie.");
+        addItemDescriptions(NuminaObjects.ELITE_BATTERY.get(), "Intégrez une batterie la plus avancée pour stocker une grande quantité d’énergie.");
 
         // Ultimate Battery  ---------------------------------------------------------------------------
         add(NuminaObjects.ULTIMATE_BATTERY.get(), "Batterie ultime");
-        addItemDescriptions(NuminaObjects.ULTIMATE_BATTERY.get(), "Dispositif exp\u00e9rimental de stockage d\u2019\u00e9nergie haut de gamme, maintenant presque aucune chance d\u2019exploser (nous pensons). Malgr\u00e9 les mauvaises rumeurs, il n\u2019est pas bas\u00e9 sur une technologie extraterrestre vol\u00e9e.");
+        addItemDescriptions(NuminaObjects.ULTIMATE_BATTERY.get(), "Dispositif expérimental de stockage d’énergie haut de gamme, maintenant presque aucune chance d’exploser (nous pensons). Malgré les mauvaises rumeurs, il n’est pas basé sur une technologie extraterrestre volée.");
     }
 
     @Override
     public void addComponents() {
         // Artificial Muscle ---------------------------------------------------------------------------
         add(NuminaObjects.ARTIFICIAL_MUSCLE.get(), "Muscle artificiel");
-        addItemDescriptions(NuminaObjects.ARTIFICIAL_MUSCLE.get(), "Un muscle \u00e9lectrique artificiel, avec moins d\u2019amplitude de mouvement que le muscle humain, mais beaucoup plus de force.");
+        addItemDescriptions(NuminaObjects.ARTIFICIAL_MUSCLE.get(), "Un muscle électrique artificiel, avec moins d’amplitude de mouvement que le muscle humain, mais beaucoup plus de force.");
 
         // Carbon Myofiber -----------------------------------------------------------------------------
         add(NuminaObjects.CARBON_MYOFIBER.get(), "Myofibre de carbone");
-        addItemDescriptions(NuminaObjects.CARBON_MYOFIBER.get(), "Un petit faisceau de fibres de carbone, raffin\u00e9 pour \u00eatre utilis\u00e9 dans les muscles artificiels.");
+        addItemDescriptions(NuminaObjects.CARBON_MYOFIBER.get(), "Un petit faisceau de fibres de carbone, raffiné pour être utilisé dans les muscles artificiels.");
 
         // Computer Chip -------------------------------------------------------------------------------
-        add(NuminaObjects.COMPUTER_CHIP.get(), "Puce d\u2019ordinateur");
-        addItemDescriptions(NuminaObjects.COMPUTER_CHIP.get(), "Un circuit de contr\u00f4le am\u00e9lior\u00e9 qui contient un processeur capable d\u2019effectuer des calculs plus avanc\u00e9s.");
+        add(NuminaObjects.COMPUTER_CHIP.get(), "Puce d’ordinateur");
+        addItemDescriptions(NuminaObjects.COMPUTER_CHIP.get(), "Un circuit de contrôle amélioré qui contient un processeur capable d’effectuer des calculs plus avancés.");
 
         // Control Circuit -----------------------------------------------------------------------------
-        add(NuminaObjects.CONTROL_CIRCUIT.get(), "Circuit de contr\u00f4le");
-        addItemDescriptions(NuminaObjects.CONTROL_CIRCUIT.get(), "Un microcontr\u00f4leur simple pouvant \u00eatre mis en r\u00e9seau pour la coordination d\u2019un composant individuel.");
+        add(NuminaObjects.CONTROL_CIRCUIT.get(), "Circuit de contrôle");
+        addItemDescriptions(NuminaObjects.CONTROL_CIRCUIT.get(), "Un microcontrôleur simple pouvant être mis en réseau pour la coordination d’un composant individuel.");
 
         // Force Field Emitter -------------------------------------------------------------------------
-        add(NuminaObjects.FIELD_EMITTER.get(), "\u00c9mettrice de champ de force");
-        addItemDescriptions(NuminaObjects.FIELD_EMITTER.get(), "Un appareil avanc\u00e9 qui manipule directement les champs \u00e9lectromagn\u00e9tiques et gravitationnels dans une zone.");
+        add(NuminaObjects.FIELD_EMITTER.get(), "Émettrice de champ de force");
+        addItemDescriptions(NuminaObjects.FIELD_EMITTER.get(), "Un appareil avancé qui manipule directement les champs électromagnétiques et gravitationnels dans une zone.");
 
         // Glider Wing ---------------------------------------------------------------------------------
         add(NuminaObjects.GLIDER_WING.get(), "Aile de planeur");
-        addItemDescriptions(NuminaObjects.GLIDER_WING.get(), "Une aile a\u00e9rodynamique l\u00e9g\u00e8re avec un \u00e9lectroaimant pour un d\u00e9ploiement et une r\u00e9traction rapides.");
+        addItemDescriptions(NuminaObjects.GLIDER_WING.get(), "Une aile aérodynamique légère avec un électroaimant pour un déploiement et une rétraction rapides.");
 
         // Ion Thruster --------------------------------------------------------------------------------
         add(NuminaObjects.ION_THRUSTER.get(), "Ionique Thuster");
         addItemDescriptions(NuminaObjects.ION_THRUSTER.get(), "Essentiellement un accélérateur de particules miniature. Accélère les ions à une vitesse proche de celle de la lumière pour produire une poussée.");
 
         // Laser Emitter -------------------------------------------------------------------------------
-        add(NuminaObjects.LASER_EMITTER.get(), "\u00c9metteur d\u2019hologramme");
-        addItemDescriptions(NuminaObjects.LASER_EMITTER.get(), "Un r\u00e9seau laser multicolore qui peut modifier \u00e0 moindre co\u00fbt l\u2019apparence de quelque chose.");
+        add(NuminaObjects.LASER_EMITTER.get(), "Émetteur d’hologramme");
+        addItemDescriptions(NuminaObjects.LASER_EMITTER.get(), "Un réseau laser multicolore qui peut modifier à moindre coût l’apparence de quelque chose.");
 
         // Magnet --------------------------------------------------------------------------------------
         add(NuminaObjects.MAGNET.get(), "Aimant");
-        addItemDescriptions(NuminaObjects.MAGNET.get(), "Un dispositif m\u00e9tallique qui g\u00e9n\u00e8re un champ magn\u00e9tique qui attire les objets vers la joueuse.");
+        addItemDescriptions(NuminaObjects.MAGNET.get(), "Un dispositif métallique qui génère un champ magnétique qui attire les objets vers la joueuse.");
 
         // Myofiber Gel --------------------------------------------------------------------------------
         add(NuminaObjects.MYOFIBER_GEL.get(), "Gel de myofibre");
-        addItemDescriptions(NuminaObjects.MYOFIBER_GEL.get(), "Une p\u00e2te \u00e9paisse et conductrice, parfaite pour s\u2019ins\u00e9rer entre les myofibres d\u2019un muscle artificiel.");
+        addItemDescriptions(NuminaObjects.MYOFIBER_GEL.get(), "Une pâte épaisse et conductrice, parfaite pour s’insérer entre les myofibres d’un muscle artificiel.");
 
         // Parachute -----------------------------------------------------------------------------------
         add(NuminaObjects.PARACHUTE.get(), "Parachute");
-        addItemDescriptions(NuminaObjects.PARACHUTE.get(), "Un simple parachute r\u00e9utilisable qui peut \u00eatre d\u00e9ploy\u00e9 et r\u00e9cup\u00e9r\u00e9 dans les airs.");
+        addItemDescriptions(NuminaObjects.PARACHUTE.get(), "Un simple parachute réutilisable qui peut être déployé et récupéré dans les airs.");
 
         // Rubber Hose ---------------------------------------------------------------------------------
-        add(NuminaObjects.RUBBER_HOSE.get(), "Tuyau en caoutchouc isol\u00e9");
-        addItemDescriptions(NuminaObjects.RUBBER_HOSE.get(), "Un tuyau en caoutchouc fortement isol\u00e9 capable de r\u00e9sister \u00e0 une chaleur ou \u00e0 un froid extr\u00eame");
+        add(NuminaObjects.RUBBER_HOSE.get(), "Tuyau en caoutchouc isolé");
+        addItemDescriptions(NuminaObjects.RUBBER_HOSE.get(), "Un tuyau en caoutchouc fortement isolé capable de résister à une chaleur ou à un froid extrême");
 
         // Servo Motor ---------------------------------------------------------------------------------
         add(NuminaObjects.SERVO.get(), "Servomoteur");
-        addItemDescriptions(NuminaObjects.SERVO.get(), "Un type sp\u00e9cial de moteur qui utilise un signal modul\u00e9 par impulsions pour effectuer des mouvements tr\u00e8s pr\u00e9cis.");
+        addItemDescriptions(NuminaObjects.SERVO.get(), "Un type spécial de moteur qui utilise un signal modulé par impulsions pour effectuer des mouvements très précis.");
 
         // Solar Panel ---------------------------------------------------------------------------------
         add(NuminaObjects.SOLAR_PANEL.get(), "Panneau solaire");
-        addItemDescriptions(NuminaObjects.SOLAR_PANEL.get(),"Un appareil sensible \u00e0 la lumi\u00e8re qui produira de l\u2019\u00e9lectricit\u00e9 \u00e0 partir du soleil.");
+        addItemDescriptions(NuminaObjects.SOLAR_PANEL.get(),"Un appareil sensible à la lumière qui produira de l’électricité à partir du soleil.");
 
         // Solenoid ------------------------------------------------------------------------------------
-        add(NuminaObjects.SOLENOID.get(), "Sol\u00e9no\u00efde");
-        addItemDescriptions(NuminaObjects.SOLENOID.get(), "Des fils enroul\u00e9s autour d\u2019un noyau ferromagn\u00e9tique produisent un \u00e9lectroaimant de base.");
+        add(NuminaObjects.SOLENOID.get(), "Solénoïde");
+        addItemDescriptions(NuminaObjects.SOLENOID.get(), "Des fils enroulés autour d’un noyau ferromagnétique produisent un électroaimant de base.");
 
         // Wiring --------------------------------------------------------------------------------------
-        add(NuminaObjects.WIRING.get(), "C\u00e2blage");
-        addItemDescriptions(NuminaObjects.WIRING.get(), "Un type sp\u00e9cial de c\u00e2blage avec une capacit\u00e9 volta\u00efque et une pr\u00e9cision \u00e9lev\u00e9es, n\u00e9cessaire pour l\u2019\u00e9lectronique sensible dans l\u2019armure assist\u00e9e.");
+        add(NuminaObjects.WIRING.get(), "Câblage");
+        addItemDescriptions(NuminaObjects.WIRING.get(), "Un type spécial de câblage avec une capacité voltaïque et une précision élevées, nécessaire pour l’électronique sensible dans l’armure assistée.");
     }
 
     @Override
     public void addModuleCategories() {
         // Armor Modules -------------------------------------------------------------------------------
-        add(ModuleCategory.ARMOR.getTranslationKey(), "Modules d\u2019armure");
+        add(ModuleCategory.ARMOR.getTranslationKey(), "Modules d’armure");
 
         // Cosmetic ------------------------------------------------------------------------------------
-        add(ModuleCategory.COSMETIC.getTranslationKey(), "Cosm\u00e9tique");
+        add(ModuleCategory.COSMETIC.getTranslationKey(), "Cosmétique");
 
         // Debug Modules -------------------------------------------------------------------------------
-        add(ModuleCategory.DEBUG.getTranslationKey(), "Modules de d\u00e9bogage");
+        add(ModuleCategory.DEBUG.getTranslationKey(), "Modules de débogage");
 
         // Energy Generation ---------------------------------------------------------------------------
-        add(ModuleCategory.ENERGY_GENERATION.getTranslationKey(), "Production d\u2019\u00e9nergie");
+        add(ModuleCategory.ENERGY_GENERATION.getTranslationKey(), "Production d’énergie");
 
         // Energy Storage ------------------------------------------------------------------------------
-        add(ModuleCategory.ENERGY_STORAGE.getTranslationKey(), "Stockage de l\u2019\u00e9nergie");
+        add(ModuleCategory.ENERGY_STORAGE.getTranslationKey(), "Stockage de l’énergie");
 
         // Environment ---------------------------------------------------------------------------------
         add(ModuleCategory.ENVIRONMENTAL.getTranslationKey(), "Environnement");
@@ -209,7 +208,7 @@ public class NuminaLanguageProvider_FR_FR extends AbstractLanguageProviderNumina
         add(ModuleCategory.MINING_ENCHANTMENT.getTranslationKey(), "Enchantement minier");
 
         // Mining Enhancement --------------------------------------------------------------------------
-        add(ModuleCategory.MINING_ENHANCEMENT.getTranslationKey(), "Am\u00e9lioration de l\u2019exploitation mini\u00e8re");
+        add(ModuleCategory.MINING_ENHANCEMENT.getTranslationKey(), "Amélioration de l’exploitation minière");
 
         // Movement ------------------------------------------------------------------------------------
         add(ModuleCategory.MOVEMENT.getTranslationKey(), "Mouvement");
@@ -218,7 +217,7 @@ public class NuminaLanguageProvider_FR_FR extends AbstractLanguageProviderNumina
         add(ModuleCategory.NONE.getTranslationKey(), "Aucune");
 
         // Special -------------------------------------------------------------------------------------
-        add(ModuleCategory.SPECIAL.getTranslationKey(), "Sp\u00e9ciale");
+        add(ModuleCategory.SPECIAL.getTranslationKey(), "Spéciale");
 
         // Tool ----------------------------------------------------------------------------------------
         add(ModuleCategory.TOOL.getTranslationKey(), "Outil");
@@ -228,10 +227,5 @@ public class NuminaLanguageProvider_FR_FR extends AbstractLanguageProviderNumina
 
         // Weapon --------------------------------------------------------------------------------------
         add(ModuleCategory.WEAPON.getTranslationKey(), "Arme");
-    }
-
-    @Override
-    public void addItemDescriptions(Item key, String description) {
-        add(key.getDescriptionId() + ".desc", description);
     }
 }

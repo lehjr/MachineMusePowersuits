@@ -4,7 +4,6 @@ import lehjr.numina.common.base.NuminaObjects;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.constants.NuminaConstants;
 import net.minecraft.data.DataGenerator;
-import net.minecraft.world.item.Item;
 
 public class NuminaLanguageProvider_ZH_CN extends AbstractLanguageProviderNumina {
     public NuminaLanguageProvider_ZH_CN(DataGenerator gen) {
@@ -322,10 +321,5 @@ add(NuminaConstants.TOOLTIP_PRESS_SHIFT, "\u6309 SHIFT \u952e\u4e86\u89e3\u66f4\
 
         // Mining Enchantment --------------------------------------------------------------------------
         add(ModuleCategory.MINING_ENCHANTMENT.getTranslationKey(), "Mining Enchantment");
-    }
-
-    @Override
-    public void addItemDescriptions(Item key, String description) {
-        add(key.getDescriptionId() + ".desc", description);
     }
 }

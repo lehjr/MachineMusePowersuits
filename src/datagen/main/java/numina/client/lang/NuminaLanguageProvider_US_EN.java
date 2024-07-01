@@ -4,7 +4,6 @@ import lehjr.numina.common.base.NuminaObjects;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.constants.NuminaConstants;
 import net.minecraft.data.DataGenerator;
-import net.minecraft.world.item.Item;
 
 public class NuminaLanguageProvider_US_EN extends AbstractLanguageProviderNumina {
     public NuminaLanguageProvider_US_EN(DataGenerator gen) {
@@ -248,10 +247,5 @@ public class NuminaLanguageProvider_US_EN extends AbstractLanguageProviderNumina
 
         // Mining Enchantment --------------------------------------------------------------------------
         add(ModuleCategory.MINING_ENCHANTMENT.getTranslationKey(), "Mining Enchantment");
-    }
-
-    @Override
-    public void addItemDescriptions(Item key, String description) {
-        add(key.getDescriptionId() + ".desc", description);
     }
 }

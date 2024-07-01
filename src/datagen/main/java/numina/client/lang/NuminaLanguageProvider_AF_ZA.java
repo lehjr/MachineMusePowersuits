@@ -4,7 +4,6 @@ import lehjr.numina.common.base.NuminaObjects;
 import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.constants.NuminaConstants;
 import net.minecraft.data.DataGenerator;
-import net.minecraft.world.item.Item;
 
 public class NuminaLanguageProvider_AF_ZA extends AbstractLanguageProviderNumina {
     public NuminaLanguageProvider_AF_ZA(DataGenerator gen) {
@@ -50,13 +49,13 @@ public class NuminaLanguageProvider_AF_ZA extends AbstractLanguageProviderNumina
         add(NuminaConstants.GUI_CREATIVE_INSTALL, "Installeer");
 
         // Install (creative, description) -------------------------------------------------------------
-        add(NuminaConstants.GUI_CREATIVE_INSTALL_DESC,"Installeer module in geselekteerde modul\u00eare item terwyl speler in kreatiewe modus is");
+        add(NuminaConstants.GUI_CREATIVE_INSTALL_DESC, "Installeer module in geselekteerde modulêre item terwyl speler in kreatiewe modus is");
 
         // Install All (creative) ----------------------------------------------------------------------
         add(NuminaConstants.GUI_CREATIVE_INSTALL_ALL, "Installeer alles");
 
         // Install All (creative, description) ---------------------------------------------------------
-        add(NuminaConstants.GUI_CREATIVE_INSTALL_ALL_DESC, "Installeer alle topvlakversoenbare modules in geselekteerde modul\u00eare item terwyl speler in kreatiewe modus is");
+        add(NuminaConstants.GUI_CREATIVE_INSTALL_ALL_DESC, "Installeer alle topvlakversoenbare modules in geselekteerde modulêre item terwyl speler in kreatiewe modus is");
     }
 
     @Override
@@ -90,10 +89,10 @@ public class NuminaLanguageProvider_AF_ZA extends AbstractLanguageProviderNumina
         add(NuminaConstants.TOOLTIP_ENERGY, "Energie: ");
 
         // No Modules Installed ------------------------------------------------------------------------
-        add(NuminaConstants.TOOLTIP_NO_MODULES, "Geen ge\u00efnstalleerde modules nie! Hierdie item is nutteloos totdat u 'n paar modules by 'n Tinker Table voeg.");
+        add(NuminaConstants.TOOLTIP_NO_MODULES, "Geen geïnstalleerde modules nie! Hierdie item is nutteloos totdat u 'n paar modules by 'n Tinker Table voeg.");
 
         // Installed Modules: --------------------------------------------------------------------------
-        add(NuminaConstants.TOOLTIP_INSTALLED_MODULES,  "Ge\u00efnstalleerde modules:");
+        add(NuminaConstants.TOOLTIP_INSTALLED_MODULES, "Geïnstalleerde modules:");
 
         // Mode: ---------------------------------------------------------------------------------------
         add(NuminaConstants.TOOLTIP_MODE, "Modus: ");
@@ -115,7 +114,7 @@ public class NuminaLanguageProvider_AF_ZA extends AbstractLanguageProviderNumina
 
         // Ultimate Battery  ---------------------------------------------------------------------------
         add(NuminaObjects.ULTIMATE_BATTERY.get(), "Uiteindelike battery");
-        addItemDescriptions(NuminaObjects.ULTIMATE_BATTERY.get(), "Eksperimentele ho\u00eb-end kragbergingstoestel, nou met byna geen kans om te ontplof nie (dink ons). Ondanks nare gerugte is dit nie gebaseer op gesteelde uitheemse tegnologie nie.");
+        addItemDescriptions(NuminaObjects.ULTIMATE_BATTERY.get(), "Eksperimentele hoë-end kragbergingstoestel, nou met byna geen kans om te ontplof nie (dink ons). Ondanks nare gerugte is dit nie gebaseer op gesteelde uitheemse tegnologie nie.");
     }
 
     @Override
@@ -134,7 +133,7 @@ public class NuminaLanguageProvider_AF_ZA extends AbstractLanguageProviderNumina
 
         // Control Circuit -----------------------------------------------------------------------------
         add(NuminaObjects.CONTROL_CIRCUIT.get(), "Beheer stroombaan");
-        addItemDescriptions(NuminaObjects.CONTROL_CIRCUIT.get(), "'N Eenvoudige netwerkbare mikrobeheerder vir die ko\u00f6rdinering van 'n individuele komponent.");
+        addItemDescriptions(NuminaObjects.CONTROL_CIRCUIT.get(), "'N Eenvoudige netwerkbare mikrobeheerder vir die koördinering van 'n individuele komponent.");
 
         // Force Field Emitter -------------------------------------------------------------------------
         add(NuminaObjects.FIELD_EMITTER.get(), "Force Field Emitter");
@@ -142,7 +141,7 @@ public class NuminaLanguageProvider_AF_ZA extends AbstractLanguageProviderNumina
 
         // Glider Wing ---------------------------------------------------------------------------------
         add(NuminaObjects.GLIDER_WING.get(), "Sweefvleuel");
-        addItemDescriptions(NuminaObjects.GLIDER_WING.get(), "'N Liggewig a\u00ebrodinamiese vleuel met 'n elektromagneet vir vinnige ontplooiing en terugtrekking.");
+        addItemDescriptions(NuminaObjects.GLIDER_WING.get(), "'N Liggewig aërodinamiese vleuel met 'n elektromagneet vir vinnige ontplooiing en terugtrekking.");
 
         // Ion Thruster --------------------------------------------------------------------------------
         add(NuminaObjects.ION_THRUSTER.get(), "Ioon stoot");
@@ -165,8 +164,8 @@ public class NuminaLanguageProvider_AF_ZA extends AbstractLanguageProviderNumina
         addItemDescriptions(NuminaObjects.PARACHUTE.get(), "'N Eenvoudige herbruikbare valskerm wat in die lug ontplooi en herwin kan word.");
 
         // Rubber Hose ---------------------------------------------------------------------------------
-        add(NuminaObjects.RUBBER_HOSE.get(), "Ge\u00efsoleerde rubberslang");
-        addItemDescriptions(NuminaObjects.RUBBER_HOSE.get(), "'N Swaar ge\u00efsoleerde rubberslang wat uiterste hitte of koue kan weerstaan");
+        add(NuminaObjects.RUBBER_HOSE.get(), "Geïsoleerde rubberslang");
+        addItemDescriptions(NuminaObjects.RUBBER_HOSE.get(), "'N Swaar geïsoleerde rubberslang wat uiterste hitte of koue kan weerstaan");
 
         // Servo Motor ---------------------------------------------------------------------------------
         add(NuminaObjects.SERVO.get(), "Servo Motor");
@@ -177,12 +176,12 @@ public class NuminaLanguageProvider_AF_ZA extends AbstractLanguageProviderNumina
         addItemDescriptions(NuminaObjects.SOLAR_PANEL.get(), "'n Ligsensitiewe toestel wat elektrisiteit van die son sal opwek.");
 
         // Solenoid ------------------------------------------------------------------------------------
-        add(NuminaObjects.SOLENOID.get(), "Soleno\u00efde");
+        add(NuminaObjects.SOLENOID.get(), "Solenoïde");
         addItemDescriptions(NuminaObjects.SOLENOID.get(), "Drade wat om 'n ferromagnetiese kern gewikkel is, produseer 'n basiese elektromagneet.");
 
         // Wiring --------------------------------------------------------------------------------------
         add(NuminaObjects.WIRING.get(), "Bedrading");
-        addItemDescriptions(NuminaObjects.WIRING.get(), "'N Spesiale soort bedrading met 'n ho\u00eb volta\u00efese kapasiteit en presisie, wat nodig is vir die sensitiewe elektronika in kragpantser.");
+        addItemDescriptions(NuminaObjects.WIRING.get(), "'N Spesiale soort bedrading met 'n hoë voltaïese kapasiteit en presisie, wat nodig is vir die sensitiewe elektronika in kragpantser.");
     }
 
     @Override
@@ -228,10 +227,5 @@ public class NuminaLanguageProvider_AF_ZA extends AbstractLanguageProviderNumina
 
         // Weapon --------------------------------------------------------------------------------------
         add(ModuleCategory.WEAPON.getTranslationKey(), "Wapen");
-    }
-
-    @Override
-    public void addItemDescriptions(Item key, String description) {
-        add(key.getDescriptionId() + ".desc", description);
     }
 }
