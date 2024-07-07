@@ -17,8 +17,8 @@ plugins {
     id 'eclipse'
     id 'idea'
     id 'maven-publish'
-    id 'net.neoforged.gradle.userdev' version '7.0.139'
-//    id 'net.neoforged.gradle.userdev' version '7.0.+'
+    id 'net.neoforged.gradle.userdev' version '7.0.142'
+    id 'net.neoforged.gradle.mixin' version '7.0.142'
 }
 
 tasks.named('wrapper', Wrapper).configure {
@@ -31,6 +31,8 @@ defaultTasks 'build'
 
 idea {
     module {
+        // For some reason this is necessary for IDEA 2014 workspaces to recognize assets
+        inheritOutputDirs = true
         //Exclude directories from being managed
         for (String excludeDirName in ["runs", "out", "logs", "gradle"]) {
             excludeDirs.add(new File(projectDir, excludeDirName))
@@ -142,6 +144,7 @@ SourceSet setupExtraSourceSet(SourceSet baseSourceSet, String extra) {
     extraSourceSet.java.srcDirs = ["src/${extra}/${name}/java"]
     //Resources folder for if we have anything get created by our annotation processors or in the case of game tests, for any nbt presets
     extraSourceSet.resources.srcDirs = ["src/${extra}/${name}/resources"]
+    extraSourceSet.compileClasspath += project.sourceSets.main.output
     if (baseSourceSet != project.sourceSets.main) {
         //If the base sourceSet is main it already is the extra source set and has a reference to the base one from before this if statement
         extraSourceSet.compileClasspath += getExtraSourceSet(project.sourceSets.main, extra).output
@@ -233,12 +236,13 @@ def setupTasks(SourceSet sourceSet) {
 
 group = group_id
 version = "${mod_version}." + (System.env.BUILD_NUMBER ?: 0)
-archivesBaseName = "Numina-NeoForged-${minecraft_version}"
+archivesBaseName = "Numina-NeoForge-${minecraft_version}"
 
 java {
     toolchain {
         languageVersion.set(JavaLanguageVersion.of("${java_version}"))
-        vendor.set(JvmVendorSpec.JETBRAINS)
+//        vendor.set(JvmVendorSpec.JETBRAINS)
+        vendor.set(JvmVendorSpec.AMAZON)
     }
 }
 
@@ -363,9 +367,9 @@ repositories { RepositoryHandler handler ->
 dependencies {
     implementation "net.neoforged:neoforge:${neo_version}"
 
-//    compileOnly("mezz.jei:jei-${minecraft_version}-common-api:${jei_version}")
-//    compileOnly("mezz.jei:jei-${minecraft_version}-neoforge-api:${jei_version}")
-//    runtimeOnly("mezz.jei:jei-${minecraft_version}-neoforge:${jei_version}")
+    compileOnly("mezz.jei:jei-${minecraft_version}-common-api:${jei_version}")
+    compileOnly("mezz.jei:jei-${minecraft_version}-neoforge-api:${jei_version}")
+    runtimeOnly("mezz.jei:jei-${minecraft_version}-neoforge:${jei_version}")
 
 //    runtimeOnly fg.deobf("curse.maven:titanium-287342:4786622")
 
@@ -377,6 +381,9 @@ dependencies {
 //    runtimeOnly("ignored:architectury-12.1.3-neoforge")
 //    runtimeOnly("ignored:cloth-config-14.0.126-neoforge")
 //    runtimeOnly("ignored:RoughlyEnoughItems-15.0.728-neoforge")
+
+    runtimeOnly("ignored:FallingTree-1.20.6-1.20.6.6")
+    runtimeOnly("ignored:journeymap-1.20.6-5.9.30-neoforge")
 }
 
 def getManifestAttributes(String title) {
@@ -404,7 +411,7 @@ def secondaryJar(SourceSet sourceSet, String title) {
         archiveClassifier.set(sourceSet.name)
         from sourceSet.output
         if (!title.isEmpty()) {
-            archiveFileName.set("${title}-NeoForged-${minecraft_version}-${project.version}.jar")
+            archiveFileName.set("${title}-NeoForge-${minecraft_version}-${project.version}.jar")
         }
         manifest.attributes(getManifestAttributes(title.isEmpty() ? "Numina" : title))
     })

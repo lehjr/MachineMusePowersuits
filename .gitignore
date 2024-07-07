@@ -1,7 +1,7 @@
 # ForgeGradle
 /.gradle
 /build
-/run
+/runs
 /libs
 
 #Backup files
