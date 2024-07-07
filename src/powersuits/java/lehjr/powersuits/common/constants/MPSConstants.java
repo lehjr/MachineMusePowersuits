@@ -26,8 +26,10 @@
 
 package lehjr.powersuits.common.constants;
 
+import net.minecraft.client.KeyMapping;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import org.lwjgl.glfw.GLFW;
 
 public class MPSConstants {
     public static final String MOD_ID = "powersuits";
@@ -67,20 +69,14 @@ public class MPSConstants {
 
     /** HUD ---------------------------------------------------------------------------------------- */
     public static final String CONFIG_PREFIX_HUD = CONFIG_PREFIX + "hud.";
-    public static final String CONFIG_HUD_TOGGLE_MODULE_SPAM = CONFIG_PREFIX_HUD + "enableModuleSpam";
     public static final String CONFIG_HUD_DISPLAY_HUD = CONFIG_PREFIX_HUD + "DisplayHUD";
     public static final String CONFIG_HUD_KEYBIND_HUD_X = CONFIG_PREFIX_HUD + "Xposition";
     public static final String CONFIG_HUD_KEYBIND_HUD_Y = CONFIG_PREFIX_HUD + "Yposition";
     public static final String CONFIG_HUD_USE_GRAPHICAL_METERS = CONFIG_PREFIX_HUD + "useGraphicalMeters";
     public static final String CONFIG_HUD_USE_24_HOUR_CLOCK = CONFIG_PREFIX_HUD + "use24HrClock";
 
-    /** Recipes ------------------------------------------------------------------------------------- */
-    public static final String CONFIG_PREFIX_RECIPES = CONFIG_PREFIX + "recipes.";
-    public static final String CONFIG_RECIPES_USE_VANILLA = CONFIG_PREFIX_RECIPES + "useVanilla";
-
     /** General ------------------------------------------------------------------------------------ */
     public static final String CONFIG_PREFIX_GENERAL = CONFIG_PREFIX + "general.";
-    public static final String CONFIG_GENERAL_ALLOW_CONFLICTING_KEYBINDS = CONFIG_PREFIX_GENERAL + "allowConflictingKeybinds";
     public static final String CONFIG_GENERAL_MAX_FLYING_SPEED = CONFIG_PREFIX_GENERAL + "maxFlyingSpeed";
     public static final String CONFIG_GENERAL_BASE_MAX_HEAT_HELMET = CONFIG_PREFIX_GENERAL + "maxHeatBaseHelmet";
     public static final String CONFIG_GENERAL_BASE_MAX_HEAT_CHESTPLATE = CONFIG_PREFIX_GENERAL + "maxHeatBaseChestplate";
@@ -135,8 +131,6 @@ public class MPSConstants {
     public static final String ENCHANTMENT_LEVEL ="enchLevel";
     // Selective Miner
     public static final String MINING_RADIUS = "miningRadius";
-    // Aqua Affinity
-    public static final String AQUA_HARVEST_SPEED = "aquaHarvSpeed";
     // Fortune
     public static final String FORTUNE_ENCHANTMENT_LEVEL ="fortuneLevel";
     public static final String FORTUNE_ENERGY_CONSUMPTION = "fortuneEnCon";
@@ -226,14 +220,33 @@ public class MPSConstants {
     /** GUI --------------------------------------------------------------------------------------- */
     public static final String GUI_INSTALL_SALVAGE = getGUI("tab.install.salvage");
     public static final String GUI_ARMOR = getGUI("armor");
+    public static final String GUI_INSTALLED_MODULES = getGUI("installed.modules");
     public static final String GUI_COLOR_PREFIX = getGUI("colorPrefix");
     public static final String GUI_COMPATIBLE_MODULES = getGUI("compatible.modules");
     public static final String GUI_ENERGY_STORAGE = getGUI("energyStorage");
     public static final String GUI_EQUIPPED_TOTALS = getGUI("equippedTotals");
-    public static final String GUI_INSTALL = getGUI("install");
-    public static final String GUI_INSTALL_DESC = getGUI("install.desc");
+    public static final String GUI_MODULAR_ITEM_INVENTORY = getGUI("modularitem.inventory");
+    public static final String GUI_SHOW_ON_HUD = getGUI("showOnHud");
+    public static final String GUI_TINKER_TABLE = getGUI("tinker");
+    public static final String GUI_VISUAL = getGUI("visual");
+    public static final String GUI_MODULE_TWEAK = getGUI("tab.module.tweak");
+    public static final String GUI_KEYBINDS = getGUI("tab.keybinds");
 
     static String getGUI(String guiString) {
         return new StringBuilder("gui.").append(MOD_ID).append(".").append(guiString).toString();
+    }
+
+    /* Keybinds ------------------------------------------------------------------------------------- */
+    public static String GO_DOWN_KEY =  getMPSKeybind("goDownKey");
+    public static String CYCLE_TOOL_BACKWARD = getMPSKeybind("cycleToolBackward");
+    public static String CYCLE_TOOL_FORWARD = getMPSKeybind("cycleToolForward");
+    public static String OPEN_KEYBIND_GUI = getMPSKeybind("openKeybindGui");
+    public static String OPEN_COSMETIC_GUI = getMPSKeybind("openCosmeticGUI");
+    public static String OPEN_MODULE_TWEAK_GUI = getMPSKeybind("openModuleTweakGUI");
+    public static String OPEN_INSTALL_SALVAGE_GUI = getMPSKeybind("openInstallSalvageGUI");
+    public static String TOGGLE_MODULE = getMPSKeybind("toggleModule");
+
+    static String getMPSKeybind(String name) {
+        return "keybinding." + MOD_ID + "." + name;
     }
 }

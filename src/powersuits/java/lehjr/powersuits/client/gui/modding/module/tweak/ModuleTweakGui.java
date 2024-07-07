@@ -49,8 +49,8 @@ import java.util.Optional;
  *
  */
 public class ModuleTweakGui extends ContainerlessGui {
-    Component MODULE_SELECTION_LABEL = Component.translatable("gui.powersuits.installed.modules");
-    Component TINKER_FRAME_LABEL = Component.translatable("gui.powersuits.tinker");
+    Component MODULE_SELECTION_LABEL = Component.translatable(MPSConstants.GUI_INSTALLED_MODULES);
+    Component TINKER_FRAME_LABEL = Component.translatable(MPSConstants.GUI_TINKER_TABLE);
     Component SUMMARY_FRAME_LABEL = Component.translatable(MPSConstants.GUI_EQUIPPED_TOTALS);
 
     public static final ResourceLocation BACKGROUND = new ResourceLocation(MPSConstants.MOD_ID, "textures/gui/background/module_tweak.png");
@@ -126,7 +126,7 @@ public class ModuleTweakGui extends ContainerlessGui {
         RenderSystem.setShaderTexture(0, BACKGROUND);
         int i = this.leftPos;
         int j = this.topPos;
-        this.blit(matrixStack, i, j, this.getBlitOffset(), 0, 0, imageWidth, imageHeight, 512, 512);
+        blit(matrixStack, i, j, this.getBlitOffset(), 0, 0, imageWidth, imageHeight, 512, 512);
     }
 
     @Override

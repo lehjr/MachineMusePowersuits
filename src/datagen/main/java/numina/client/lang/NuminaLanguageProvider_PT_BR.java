@@ -28,78 +28,51 @@ public class NuminaLanguageProvider_PT_BR extends AbstractLanguageProviderNumina
         add(NuminaConstants.ITEM_GROUP_TRANSLATION_KEY, "Numina");
     }
 
-    /*
-    {add(NuminaObjects.CHARGING_BASE_BLOCK.get(), "Base de Carregamento");
-add(NuminaObjects.ARMOR_STAND__ENTITY_TYPE.get(), "Suporte de Blindagem");
-add("gui.numina.chargingbase", "Base de Carregamento");
-add(NuminaConstants.GUI_CREATIVE_INSTALL"Instalar");
-add(NuminaConstants.GUI_CREATIVE_INSTALL_ALL, "Instalar tudo");
-add(NuminaConstants.GUI_CREATIVE_INSTALL_ALL_DESC, "Instala todos os módulos compat\u00edveis de n\u00edvel superior no item modular selecionado enquanto o jogador est\u00e1 no modo criativo");
-add(NuminaConstants.GUI_CREATIVE_INSTALL_DESC,"Instala o m\u00f3dulo no item modular selecionado enquanto o jogador est\u00e1 no modo criativo");
-add(NuminaObjects.ARMOR_STAND_ITEM.get(), "Suporte de Blindagem");
-
-
-
-add("key.numina.fovfixtoggle", "Alternar corre\u00e7\u00e3o de campo de vis\u00e3o", add("message.numina.fovfixtoggle.disabled", "Corre\u00e7\u00e3o de campo de vis\u00e3o desabilitada");
-add("message.numina.fovfixtoggle.enabled", "Corre\u00e7\u00e3o de campo de vis\u00e3o habilitada");
-add("module.tradeoff.maxEnergy",  "Energia M\u00e1xima");
-add("module.tradeoff.maxTransfer", :"Transfer\u00eancia m\u00e1xima por tick");
-add("numina.energy", "Energia");
-
-add(NuminaConstants.TOOLTIP_CHANGE_MODES, "Alterar modos: Pressione e mantenha pressionado o n\u00famero do slot da barra de atalho em que o Power Fist est\u00e1.");
-add(NuminaConstants.TOOLTIP_CHARGING_BASE, "Cobra os itens equipados de uma entidade");
-add(NuminaConstants.TOOLTIP_ENERGY, "Energia: ");
-add(NuminaConstants.TOOLTIP_INSTALLED_MODULES,  "M\u00f3dulos instalados:", add(NuminaConstants.TOOLTIP_MODE, "Modo: ");
-add(NuminaConstants.TOOLTIP_NO_MODULES, "Nenhum m\u00f3dulo instalado! Este item \u00e9 in\u00fatil at\u00e9 que voc\u00ea adicione alguns m\u00f3dulos em uma tabela Tinker.");
-add(NuminaConstants.TOOLTIP_PRESS_SHIFT, "Pressione SHIFT para obter mais informa\u00e7\u00f5es."}
-     */
-
     @Override
     public void addGui() {
-        add("gui.numina.chargingbase", "Charging Base");
-        add(NuminaConstants.TOOLTIP_CHARGING_BASE, "Charges an entity's equipped items");
+        add("gui.numina.chargingbase", "Base de Carregamento");
+        add(NuminaConstants.TOOLTIP_CHARGING_BASE, "Cobra os itens equipados de uma entidade");
 
         // Energy --------------------------------------------------------------------------------------
-        add("numina.energy", "Energy");
+        add("numina.energy", "Energia");
 
         // FOV Fix Toggle ------------------------------------------------------------------------------
-        add("key.numina.fovfixtoggle", "Toggle field of view fix");
+        add("key.numina.fovfixtoggle", "Alternar correção de campo de visão");
 
         // FOV fix enabled -----------------------------------------------------------------------------
-        add("message.numina.fovfixtoggle.enabled", "Field of view fix enabled");
+        add("message.numina.fovfixtoggle.enabled", "Correção de campo de visão habilitada");
 
         // FOV fix disabled ----------------------------------------------------------------------------
-        add("message.numina.fovfixtoggle.disabled", "Field of view fix disabled");
+        add("message.numina.fovfixtoggle.disabled", "Correção de campo de visão desabilitada");
 
         // Install (creative) --------------------------------------------------------------------------
-        add(NuminaConstants.GUI_CREATIVE_INSTALL, "Install");
+        add(NuminaConstants.GUI_CREATIVE_INSTALL, "Instalar");
 
         // Install (creative, description) -------------------------------------------------------------
-        add(NuminaConstants.GUI_CREATIVE_INSTALL_DESC, "Installs module into selected modular item while player is in creative mode");
+        add(NuminaConstants.GUI_CREATIVE_INSTALL_DESC,"Instala o módulo no item modular selecionado enquanto o jogador está no modo criativo");
 
         // Install All (creative) ----------------------------------------------------------------------
-        add(NuminaConstants.GUI_CREATIVE_INSTALL_ALL, "Install All");
+        add(NuminaConstants.GUI_CREATIVE_INSTALL_ALL, "Instalar tudo");
 
         // Install All (creative, description) ---------------------------------------------------------
-        add(NuminaConstants.GUI_CREATIVE_INSTALL_ALL_DESC, "Installs all top tier compatible modules into selected modular item while player is in creative mode");
+        add(NuminaConstants.GUI_CREATIVE_INSTALL_ALL_DESC, "Instala todos os módulos compatíveis de nível superior no item modular selecionado enquanto o jogador está no modo criativo");
     }
 
     @Override
     public void addArmorStand() {
-        add(NuminaObjects.ARMOR_STAND_ITEM.get(), "Armor Stand");
-        add(NuminaObjects.ARMOR_STAND__ENTITY_TYPE.get(),  "Armor Stand");
+        add(NuminaObjects.ARMOR_STAND_ITEM.get(), "Suporte de Blindagem");
+        add(NuminaObjects.ARMOR_STAND__ENTITY_TYPE.get(), "Suporte de Blindagem");
     }
 
     @Override
     public void addModuleTradeoffs() {
-        add("module.tradeoff.maxEnergy",  "Maximum Energy");
-
-        add("module.tradeoff.maxTransfer", "Maximum Transfer per Tick");
+        add("module.tradeoff.maxEnergy",  "Energia Máxima");
+        add("module.tradeoff.maxTransfer", "Transferência máxima por tick");
     }
 
     @Override
     public void addBlocks() {
-        add(NuminaObjects.CHARGING_BASE_BLOCK.get(), "Charging Base");
+        add(NuminaObjects.CHARGING_BASE_BLOCK.get(), "Base de Carregamento");
     }
 
     @Override
@@ -107,102 +80,66 @@ add(NuminaConstants.TOOLTIP_PRESS_SHIFT, "Pressione SHIFT para obter mais inform
         add(NuminaConstants.TOOLTIP_BATTERY_ENERGY, "%d/%d FE");
 
         // Press SHIFT ---------------------------------------------------------------------------------
-        add(NuminaConstants.TOOLTIP_PRESS_SHIFT, "Press SHIFT for more information.");
+        add(NuminaConstants.TOOLTIP_PRESS_SHIFT, "Pressione SHIFT para obter mais informações.");
 
         // Mode Change ---------------------------------------------------------------------------------
-        add(NuminaConstants.TOOLTIP_CHANGE_MODES, "Change modes: Press and hold the number of the hotbar slot the Power Fist is in.");
+        add(NuminaConstants.TOOLTIP_CHANGE_MODES, "Alterar modos: Pressione e mantenha pressionado o número do slot da barra de atalho em que o Power Fist está.");
 
         // Energy --------------------------------------------------------------------------------------
-        add(NuminaConstants.TOOLTIP_ENERGY, "Energy: ");
+        add(NuminaConstants.TOOLTIP_ENERGY, "Energia: ");
 
         // No Modules Installed ------------------------------------------------------------------------
-        add(NuminaConstants.TOOLTIP_NO_MODULES, "No installed modules! This item is useless until you add some modules at a Tinker Table.");
+        add(NuminaConstants.TOOLTIP_NO_MODULES, "Nenhum módulo instalado! Este item é inútil até que você adicione alguns módulos em uma tabela Tinker.");
 
         // Installed Modules: --------------------------------------------------------------------------
-        add(NuminaConstants.TOOLTIP_INSTALLED_MODULES, "Installed Modules:");
+        add(NuminaConstants.TOOLTIP_INSTALLED_MODULES,  "Módulos instalados:");
 
         // Mode: ---------------------------------------------------------------------------------------
-        add(NuminaConstants.TOOLTIP_MODE, "Mode: ");
+        add(NuminaConstants.TOOLTIP_MODE, "Modo: ");
     }
 
     @Override
     public void addBatteries() {
         // Basic Battery -------------------------------------------------------------------------------
-        add(NuminaObjects.BASIC_BATTERY.get(), "Basic Battery");
-
-        addItemDescriptions(NuminaObjects.BASIC_BATTERY.get(), "Integrate a battery to allow the item to store energy.");
+        add(NuminaObjects.BASIC_BATTERY.get(), "Bateria Básica");
+        addItemDescriptions(NuminaObjects.BASIC_BATTERY.get(), "Integre uma bateria para permitir que o item armazene energia.");
 
         // Advanced Battery ----------------------------------------------------------------------------
-        add(NuminaObjects.ADVANCED_BATTERY.get(), "Advanced Battery");
-
-        addItemDescriptions(NuminaObjects.ADVANCED_BATTERY.get(), "Integrate a battery to allow the item to store energy.");
+        add(NuminaObjects.ADVANCED_BATTERY.get(), "Bateria avançada");
+        addItemDescriptions(NuminaObjects.ADVANCED_BATTERY.get(), "Integre uma bateria para permitir que o item armazene energia.");
 
         // Elite Battery -------------------------------------------------------------------------------
-        add(NuminaObjects.ELITE_BATTERY.get(), "Elite Battery");
-
-        addItemDescriptions(NuminaObjects.ELITE_BATTERY.get(), "Integrate a the most advanced battery to store an extensive amount of energy.");
+        add(NuminaObjects.ELITE_BATTERY.get(), "Bateria Elite");
+        addItemDescriptions(NuminaObjects.ELITE_BATTERY.get(), "Integre uma bateria a mais avançada para armazenar uma grande quantidade de energia.");
 
         // Ultimate Battery  ---------------------------------------------------------------------------
-        add(NuminaObjects.ULTIMATE_BATTERY.get(), "Ultimate Battery");
+        add(NuminaObjects.ULTIMATE_BATTERY.get(), "Bateria definitiva");
+        addItemDescriptions(NuminaObjects.ULTIMATE_BATTERY.get(), "Dispositivo experimental de armazenamento de energia de ponta, agora com quase nenhuma chance de explodir (pensamos). Apesar dos rumores desagradáveis, ele não é baseado em tecnologia alienígena roubada.");
 
-        addItemDescriptions(NuminaObjects.ULTIMATE_BATTERY.get(), "Experimental high end power storage device, now with almost no chance of exploding (we think). Despite nasty rumors, it is not based on stolen alien technology.");
     }
 
     @Override
     public void addComponents() {
         // Artificial Muscle ---------------------------------------------------------------------------
-        add(NuminaObjects.ARTIFICIAL_MUSCLE.get(), "Artificial Muscle");
-
-        addItemDescriptions(NuminaObjects.ARTIFICIAL_MUSCLE.get(), "An electrical, artificial muscle, with less range of movement than human muscle but orders of magnitude more strength.");
-
-
-
-
+        add(NuminaObjects.ARTIFICIAL_MUSCLE.get(), "Músculo Artificial");
+        addItemDescriptions(NuminaObjects.ARTIFICIAL_MUSCLE.get(), "Um músculo elétrico, artificial, com menos amplitude de movimento que o músculo humano, mas ordens de grandeza mais força.");
 
         // Carbon Myofiber -----------------------------------------------------------------------------
-        add(NuminaObjects.CARBON_MYOFIBER.get(), "Carbon Myofiber");
-
-        addItemDescriptions(NuminaObjects.CARBON_MYOFIBER.get(), "A small bundle of carbon fibers, refined for use in artificial muscles.");
+        add(NuminaObjects.CARBON_MYOFIBER.get(), "Miófibra de Carbono");
+        addItemDescriptions(NuminaObjects.CARBON_MYOFIBER.get(), "Um pequeno feixe de fibras de carbono, refinado para uso em músculos artificiais.");
 
         // Computer Chip -------------------------------------------------------------------------------
-        add(NuminaObjects.COMPUTER_CHIP.get(), "Computer Chip");
-
-        addItemDescriptions(NuminaObjects.COMPUTER_CHIP.get(), "An upgraded control circuit that contains a CPU which is capable of more advanced calculations.");
+        add(NuminaObjects.COMPUTER_CHIP.get(), "Chip de Computador");
+        addItemDescriptions(NuminaObjects.COMPUTER_CHIP.get(), "Um circuito de controle atualizado que contém uma CPU que é capaz de cálculos mais avançados.");
 
         // Control Circuit -----------------------------------------------------------------------------
-        add(NuminaObjects.CONTROL_CIRCUIT.get(),  "Control Circuit");
-
-        addItemDescriptions(NuminaObjects.CONTROL_CIRCUIT.get(), "A simple networkable microcontroller for coordinating an individual component.");
+        add(NuminaObjects.CONTROL_CIRCUIT.get(), "Circuito de Controle");
+        addItemDescriptions(NuminaObjects.CONTROL_CIRCUIT.get(), "Um microcontrolador simples em rede para coordenar um componente individual.");
 
         // Force Field Emitter -------------------------------------------------------------------------
-        add(NuminaObjects.FIELD_EMITTER.get(), "Force Field Emitter");
+        add(NuminaObjects.FIELD_EMITTER.get(), "Emissor de Campo de Força");
+        addItemDescriptions(NuminaObjects.FIELD_EMITTER.get(), "Um dispositivo avançado que manipula diretamente campos eletromagnéticos e gravitacionais em uma área.");
 
-        addItemDescriptions(NuminaObjects.FIELD_EMITTER.get(), "An advanced device which directly manipulates electromagnetic and gravitational fields in an area.");
-
-
-
-
-        /*
-    add(NuminaObjects.ADVANCED_BATTERY.get(), Bateria avan\u00e7ada");
-addItemDescriptions(NuminaObjects.ADVANCED_BATTERY.get(), "Integre uma bateria para permitir que o item armazene energia.");
-add(NuminaObjects.BASIC_BATTERY.get(), "Bateria B\u00e1sica");
-addItemDescriptions(NuminaObjects.BASIC_BATTERY.get(), "Integre uma bateria para permitir que o item armazene energia.");
-add(NuminaObjects.ELITE_BATTERY.get(), "Bateria Elite");
-addItemDescriptions(NuminaObjects.ELITE_BATTERY.get(), "Integre uma bateria a mais avan\u00e7ada para armazenar uma grande quantidade de energia.");
-add(NuminaObjects.ULTIMATE_BATTERY.get(), "Bateria definitiva");
-addItemDescriptions(NuminaObjects.ULTIMATE_BATTERY.get(), "Dispositivo experimental de armazenamento de energia de ponta, agora com quase nenhuma chance de explodir (pensamos). Apesar dos rumores desagrad\u00e1veis, ele n\u00e3o \u00e9 baseado em tecnologia alien\u00edgena roubada.");
-
-
-add(NuminaObjects.ARTIFICIAL_MUSCLE.get(), "Músculo Artificial");
-addItemDescriptions(NuminaObjects.ARTIFICIAL_MUSCLE.get(), "Um m\u00fasculo el\u00e9trico, artificial, com menos amplitude de movimento que o m\u00fasculo humano, mas ordens de grandeza mais for\u00e7a.");
-add(NuminaObjects.CARBON_MYOFIBER.get(), "Mi\u00f3fibra de Carbono");
-addItemDescriptions(NuminaObjects.CARBON_MYOFIBER.get(), "Um pequeno feixe de fibras de carbono, refinado para uso em m\u00fasculos artificiais.");
-add(NuminaObjects.COMPUTER_CHIP.get(), "Chip de Computador","item.numina.component_computer_chip.desc":"Um circuito de controle atualizado que cont\u00e9m uma CPU que \u00e9 capaz de c\u00e1lculos mais avan\u00e7ados.");
-add(NuminaObjects.CONTROL_CIRCUIT.get(), "Circuito de Controle");
-addItemDescriptions(NuminaObjects.CONTROL_CIRCUIT.get(), Um microcontrolador simples em rede para coordenar um componente individual.","item.numina.component_field_emitter":"Emissor de Campo de For\u00e7a");
-addItemDescriptions(NuminaObjects.FIELD_EMITTER.get(), "Um dispositivo avan\u00e7ado que manipula diretamente campos eletromagn\u00e9ticos e gravitacionais em uma \u00e1rea.");
-
- */
         // Glider Wing ---------------------------------------------------------------------------------
         add(NuminaObjects.GLIDER_WING.get(), "Asa de planador");
         addItemDescriptions(NuminaObjects.GLIDER_WING.get(), "Uma asa aerodinâmica leve com um eletroímã para rápida implantação e retração.");

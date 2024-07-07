@@ -58,7 +58,6 @@ public class MPSRegistryNames {
      * Modules ------------------------------------------------------------------------------------
      */
     // Armor --------------------------------------------------------------------------------------
-    public static final ResourceLocation LEATHER_PLATING_MODULE = getRegName("plating_leather");
     public static final ResourceLocation IRON_PLATING_MODULE = getRegName("plating_iron");
     public static final ResourceLocation DIAMOND_PLATING_MODULE = getRegName("plating_diamond");
     public static final ResourceLocation NETHERITE_PLATING_MODULE = getRegName("plating_netherite");
@@ -127,7 +126,6 @@ public class MPSRegistryNames {
     public static final ResourceLocation HOE_MODULE = getRegName("hoe");
     public static final ResourceLocation LEAF_BLOWER_MODULE = getRegName("leaf_blower");
     public static final ResourceLocation LUX_CAPACITOR_MODULE = getRegName("luxcapacitor_module");
-    public static final ResourceLocation PORTABLE_CRAFTING_MODULE = getRegName("portable_crafting_table");
     public static final ResourceLocation PICKAXE_MODULE = getRegName("pickaxe");
     public static final ResourceLocation SHEARS_MODULE = getRegName("shears");
     public static final ResourceLocation SHOVEL_MODULE = getRegName("shovel");
@@ -147,12 +145,7 @@ public class MPSRegistryNames {
     /**
      * AbstractContainerMenu ----------------------------------------------------------------------------------
      */
-    public static final String MPS_CRAFTING_CONTAINER_TYPE = "mps_crafting_container";
-    public static final String TINKERTABLE_CONTAINER_TYPE = "tinkertable_container_type";
-
-    public static final String INSTALL_SALVAGE_CRAFT_CONTAINER_TYPE = "install_salvage_craft_container_type";
     public static final String INSTALL_SALVAGE_CONTAINER_TYPE = "install_salvage_container_type";
-    public static final String MODULE_TWEAK_CONTAINER_TYPE = "module_tweak_container_type";
 
     public static ResourceLocation getRegName(String regNameString) {
         return new ResourceLocation(MPSConstants.MOD_ID, regNameString);

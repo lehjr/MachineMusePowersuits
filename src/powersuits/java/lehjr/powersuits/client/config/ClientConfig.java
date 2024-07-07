@@ -34,7 +34,6 @@ public class ClientConfig {
     /** HUD ---------------------------------------------------------------------------------------*/
     public ForgeConfigSpec.BooleanValue
             HUD_USE_GRAPHICAL_METERS,
-            HUD_TOGGLE_MODULE_SPAM,
             HUD_DISPLAY_HUD,
             HUD_USE_24_HOUR_CLOCK,
             SHOW_METERS_WHEN_PAUSED;
@@ -89,11 +88,6 @@ public class ClientConfig {
             PLASMA_METER_DEBUG_VAL,
             WATER_METER_DEBUG_VAL;
 
-
-    /** General ----------------------------------------------------------------------------------- */
-    public ForgeConfigSpec.BooleanValue
-            GENERAL_ALLOW_CONFLICTING_KEYBINDS;
-
     public ClientConfig(ForgeConfigSpec.Builder builder) {
         // HUD ------------------------------------------------------------------------------------
         builder.comment("HUD settings").push("HUD");
@@ -101,11 +95,6 @@ public class ClientConfig {
                 .comment("Use Graphical Meters")
                 .translation(MPSConstants.CONFIG_HUD_USE_GRAPHICAL_METERS)
                 .define("useGraphicalMeters", true);
-
-        HUD_TOGGLE_MODULE_SPAM = builder
-                .comment("Chat message when toggling module")
-                .translation(MPSConstants.CONFIG_HUD_TOGGLE_MODULE_SPAM)
-                .define("toggleModuleSpam", false);
 
         HUD_DISPLAY_HUD = builder
                 .comment("Display HUD")

@@ -61,13 +61,13 @@ import java.util.stream.Collectors;
 @OnlyIn(Dist.CLIENT)
 public class KeymappingKeyHandler {
     Minecraft minecraft;
-    public static final KeyMapping goDownKey = new KeyMapping(Component.translatable("keybinding.powersuits.goDownKey").getString(), GLFW.GLFW_KEY_Z, MPSConstants.MPS_ITEM_GROUP);
-    public static final KeyMapping cycleToolBackward = new KeyMapping(Component.translatable("keybinding.powersuits.cycleToolBackward").getString(), GLFW.GLFW_KEY_UNKNOWN, MPSConstants.MPS_ITEM_GROUP);
-    public static final KeyMapping cycleToolForward = new KeyMapping(Component.translatable("keybinding.powersuits.cycleToolForward").getString(), GLFW.GLFW_KEY_UNKNOWN, MPSConstants.MPS_ITEM_GROUP);
-    public static final KeyMapping openKeybindGUI = new KeyMapping(Component.translatable("keybinding.powersuits.openKeybindGui").getString()/*"Open MPS Keybind GUI"*/, GLFW.GLFW_KEY_UNKNOWN, MPSConstants.MPS_ITEM_GROUP);
-    public static final KeyMapping openCosmeticGUI = new KeyMapping(Component.translatable("keybinding.powersuits.openCosmeticGUI").getString() /*Cosmetic GUI (MPS)"*/, GLFW.GLFW_KEY_UNKNOWN, MPSConstants.MPS_ITEM_GROUP);
-    public static final KeyMapping openModuleTweakGUI = new KeyMapping(Component.translatable("keybinding.powersuits.openModuleTweakGUI").getString() /*Open MPS Keybind GUI"*/, GLFW.GLFW_KEY_UNKNOWN, MPSConstants.MPS_ITEM_GROUP);
-    public static final KeyMapping openInstallSalvageGUI = new KeyMapping(Component.translatable("keybinding.powersuits.openInstallSalvageGUI").getString() /*Cosmetic GUI (MPS)"*/, GLFW.GLFW_KEY_UNKNOWN, MPSConstants.MPS_ITEM_GROUP);
+    public static final KeyMapping goDownKey = new KeyMapping(Component.translatable(MPSConstants.GO_DOWN_KEY).getString(), GLFW.GLFW_KEY_Z, MPSConstants.MPS_ITEM_GROUP);
+    public static final KeyMapping cycleToolBackward = new KeyMapping(Component.translatable(MPSConstants.CYCLE_TOOL_BACKWARD).getString(), GLFW.GLFW_KEY_UNKNOWN, MPSConstants.MPS_ITEM_GROUP);
+    public static final KeyMapping cycleToolForward = new KeyMapping(Component.translatable(MPSConstants.CYCLE_TOOL_FORWARD).getString(), GLFW.GLFW_KEY_UNKNOWN, MPSConstants.MPS_ITEM_GROUP);
+    public static final KeyMapping openKeybindGUI = new KeyMapping(Component.translatable(MPSConstants.OPEN_KEYBIND_GUI).getString()/*"Open MPS Keybind GUI"*/, GLFW.GLFW_KEY_UNKNOWN, MPSConstants.MPS_ITEM_GROUP);
+    public static final KeyMapping openCosmeticGUI = new KeyMapping(Component.translatable(MPSConstants.OPEN_COSMETIC_GUI).getString() /*Cosmetic GUI (MPS)"*/, GLFW.GLFW_KEY_UNKNOWN, MPSConstants.MPS_ITEM_GROUP);
+    public static final KeyMapping openModuleTweakGUI = new KeyMapping(Component.translatable(MPSConstants.OPEN_MODULE_TWEAK_GUI).getString() /*Open MPS Keybind GUI"*/, GLFW.GLFW_KEY_UNKNOWN, MPSConstants.MPS_ITEM_GROUP);
+    public static final KeyMapping openInstallSalvageGUI = new KeyMapping(Component.translatable(MPSConstants.OPEN_INSTALL_SALVAGE_GUI).getString() /*Cosmetic GUI (MPS)"*/, GLFW.GLFW_KEY_UNKNOWN, MPSConstants.MPS_ITEM_GROUP);
     public static final KeyMapping[] keybindArray = new KeyMapping[]{goDownKey, cycleToolBackward, cycleToolForward, openKeybindGUI, openCosmeticGUI, openModuleTweakGUI, openInstallSalvageGUI};
 
     public static boolean isKeyPressed(int key) {

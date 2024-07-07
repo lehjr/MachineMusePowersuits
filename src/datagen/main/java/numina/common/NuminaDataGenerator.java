@@ -24,7 +24,7 @@ public class NuminaDataGenerator {
         gen.addProvider(event.includeClient(), new NuminaLanguageProvider_PT_BR(gen));
         gen.addProvider(event.includeClient(), new NuminaLanguageProvider_PT_PT(gen));
         gen.addProvider(event.includeClient(), new NuminaLanguageProvider_RU_RU(gen));
-        gen.addProvider(event.includeClient(), new NuminaLanguageProvider_US_EN(gen));
+        gen.addProvider(event.includeClient(), new NuminaLanguageProvider_EN_US(gen));
         gen.addProvider(event.includeClient(), new NuminaLanguageProvider_ZH_CN(gen));
         gen.addProvider(event.includeClient(), new NuminaLanguageProvider_ZH_TW(gen));
 

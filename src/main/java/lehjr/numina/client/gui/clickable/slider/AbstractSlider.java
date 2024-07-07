@@ -66,12 +66,6 @@ public abstract class AbstractSlider extends Clickable {
         return vals;
     }
 
-    /**
-     * Knob is just used for rendering coordinates and click checking.
-     * @return
-     */
-//    public abstract Rect createKnobRect();
-
     @Override
     public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTick) {
         if (this.isVisible() && this.isEnabled()) {

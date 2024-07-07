@@ -56,8 +56,6 @@ public class NuminaConstants {
   public static final String CONFIG_FOV_FIX_DEAULT_STATE = CONFIG_PREFIX + "FOVFixDefaultState";
   public static final String CONFIG_USE_SOUNDS = CONFIG_PREFIX + "useSounds";
   public static final String CONFIG_DEBUGGING_INFO = CONFIG_PREFIX + "useDebuggingInfo";
-  public static final String CONFIG_PREFIX_RECIPES = CONFIG_PREFIX + "recipes.";
-  public static final String CONFIG_RECIPES_USE_VANILLA = CONFIG_PREFIX_RECIPES + "useVanilla";
 
 
   // String for overheat damage
@@ -110,7 +108,7 @@ public class NuminaConstants {
 
 
   static String getTooltip(String tooltipName) {
-    return new StringBuilder("tooltip.").append(NuminaConstants.MOD_ID).append(".").append(tooltipName).toString();
+    return "tooltip." + NuminaConstants.MOD_ID + "." + tooltipName;
   }
 
   public static final ResourceLocation TEXTURE_WHITE_SHORT = new ResourceLocation(NuminaConstants.MOD_ID, "models/white");
@@ -124,10 +122,10 @@ public class NuminaConstants {
   public static final String GUI_CREATIVE_INSTALL_ALL_DESC = getGUI("creative.install.all.desc");
 
   static String getGUI(String guiString) {
-    return new StringBuilder("gui.").append(MOD_ID).append(".").append(guiString).toString();
+    return "gui." + MOD_ID + "." + guiString;
   }
 
   static String getComponentName(String component) {
-    return new StringBuilder("component_").append(component).toString();
+    return "component_" + component;
   }
 }

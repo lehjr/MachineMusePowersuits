@@ -135,7 +135,7 @@ public class ModuleTweakFrame extends ScrollableFrame {
      * @param cap
      */
     private void loadTweaks(LazyOptional<IPowerModule> cap) {
-        propertyStrings = new HashMap();
+        propertyStrings = new HashMap<>();
         sliders = new LinkedList<>();
         Map<String, IPowerModule.PropertyModifierLinearAdditive> tweaks = new HashMap<>();
 
@@ -162,7 +162,6 @@ public class ModuleTweakFrame extends ScrollableFrame {
                             tweaks.put(modifierName, (IPowerModule.PropertyModifierLinearAdditive) modifier);
                             totalSize += 9;
                         }
-
                     }
                 }
                 propertyStrings.put(property.getKey(), currValue);
@@ -184,7 +183,7 @@ public class ModuleTweakFrame extends ScrollableFrame {
                             Component.translatable(TagConstants.MODULE_TRADEOFF_PREFIX + tweak),
                             (IPowerModule.PropertyModifierIntLinearAdditive) tweaks.get(tweak));
                     sliders.add(slider);
-                    totalSize += slider.height();
+                    totalSize += (int) slider.height();
                 } else {
                     VanillaTinkerSlider slider = new VanillaTinkerSlider(
                             ul,
@@ -193,7 +192,7 @@ public class ModuleTweakFrame extends ScrollableFrame {
                             tweak,
                             Component.translatable(TagConstants.MODULE_TRADEOFF_PREFIX + tweak));
                     sliders.add(slider);
-                    totalSize += slider.height();
+                    totalSize += (int) slider.height();
                 }
                 y += 22;
             }

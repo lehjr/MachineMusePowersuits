@@ -30,6 +30,7 @@ import lehjr.numina.client.sound.Musique;
 import lehjr.numina.client.sound.SoundDictionary;
 import lehjr.powersuits.client.gui.modding.module.tweak.ModuleTweakGui;
 import lehjr.powersuits.common.blockentity.TinkerTableBlockEntity;
+import lehjr.powersuits.common.constants.MPSConstants;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -91,7 +92,7 @@ public class TinkerTable extends HorizontalDirectionalBlock implements SimpleWat
     public void openGui(Level world) {
         if (world.isClientSide) {
             Musique.playClientSound(SoundDictionary.SOUND_EVENT_GUI_SELECT.get(), 1);
-            Minecraft.getInstance().tell(() -> Minecraft.getInstance().setScreen(new ModuleTweakGui(Component.translatable("gui.tinkertable"))));
+            Minecraft.getInstance().tell(() -> Minecraft.getInstance().setScreen(new ModuleTweakGui(Component.translatable(MPSConstants.GUI_TINKER_TABLE))));
         }
     }
 

@@ -12,6 +12,7 @@ import lehjr.numina.client.render.NuminaRenderer;
 import lehjr.powersuits.client.control.KeyMappingReaderWriter;
 import lehjr.powersuits.client.control.MPSKeyMapping;
 import lehjr.powersuits.client.gui.overlay.MPSOverlay;
+import lehjr.powersuits.common.constants.MPSConstants;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
@@ -192,7 +193,7 @@ public class KeymapFrame extends ScrollableFrame {
         @Override
         public List<Component> getToolTip(int x, int y) {
             if (checkbox.containsPoint(x, y)) {
-                return Arrays.asList(Component.translatable("gui.powersuits.showOnHud"));
+                return Arrays.asList(Component.translatable(MPSConstants.GUI_SHOW_ON_HUD));
             }
             return super.getToolTip(x, y);
         }

@@ -38,7 +38,7 @@ import java.util.Optional;
 
 @OnlyIn(Dist.CLIENT)
 public class InstallSalvageGui extends ExtendedContainerScreen<InstallSalvageMenu> {
-    Component modularItemInventoryLabel = Component.translatable("gui." + MPSConstants.MOD_ID + ".modularitem.inventory");
+    Component modularItemInventoryLabel = Component.translatable(MPSConstants.GUI_MODULAR_ITEM_INVENTORY);
     Component moduleSelectionFrameLabel = Component.translatable(MPSConstants.GUI_COMPATIBLE_MODULES);
     public static final ResourceLocation BACKGROUND = new ResourceLocation(MPSConstants.MOD_ID, "textures/gui/background/install_salvage.png");
     protected TabSelectFrame tabSelectFrame;

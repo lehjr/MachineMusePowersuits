@@ -5,9 +5,9 @@ import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.numina.common.constants.NuminaConstants;
 import net.minecraft.data.DataGenerator;
 
-public class NuminaLanguageProvider_US_EN extends AbstractLanguageProviderNumina {
-    public NuminaLanguageProvider_US_EN(DataGenerator gen) {
-        super(gen, NuminaConstants.MOD_ID, "us_en");
+public class NuminaLanguageProvider_EN_US extends AbstractLanguageProviderNumina {
+    public NuminaLanguageProvider_EN_US(DataGenerator gen) {
+        super(gen, NuminaConstants.MOD_ID, "en_us");
     }
 
     @Override
