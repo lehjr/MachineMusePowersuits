@@ -32,7 +32,7 @@
 //import net.minecraft.world.IBlockReader;
 //import net.minecraft.world.entity.player.Player;
 //import net.minecraft.world.item.ItemStack;
-//import net.minecraftforge.common.IForgeShearable;
+//import net.minecraftforge.common.IShearable;
 //import net.minecraftforge.common.ToolType;
 //
 //import javax.annotation.Nonnull;
@@ -77,7 +77,7 @@
 //
 //        if (block == null || world.isEmptyBlock(pos) || block == Blocks.BEDROCK)
 //            return false;
-//        if ((block instanceof IForgeShearable || block instanceof FlowerBlock || block instanceof BushBlock || block instanceof LeavesBlock)
+//        if ((block instanceof IShearable || block instanceof FlowerBlock || block instanceof BushBlock || block instanceof LeavesBlock)
 //                && block.canHarvestBlock(state, world, pos, player) || block == Blocks.field_150433_aE || block == Blocks.field_196604_cC) {
 //            block.func_180657_a(world, player, pos, state, world.getBlockEntity(pos), new ItemStack(Items.field_151037_a));
 //            world.func_217377_a(pos, false);

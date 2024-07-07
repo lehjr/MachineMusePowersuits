@@ -26,10 +26,10 @@
 
 package lehjr.numina.common.item;
 
-import lehjr.numina.common.capabilities.NuminaCapabilities;
-import lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
-import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
-import lehjr.numina.common.capabilities.module.externalitems.IOtherModItemsAsModules;
+import lehjr.numina.common.capability.NuminaCapabilities;
+import lehjr.numina.common.capability.inventory.modechanging.IModeChangingItem;
+import lehjr.numina.common.capability.inventory.modularitem.IModularItem;
+import lehjr.numina.common.capability.module.externalitems.IOtherModItemsAsModules;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
@@ -172,26 +172,5 @@ public class ItemUtils {
 
 
 
-    public static Optional<IOtherModItemsAsModules> getForeignItemAsModuleCap(@Nonnull ItemStack module) {
-        return getCapability(module, NuminaCapabilities.POWER_MODULE)
-                .filter( m-> m.isAllowed() && m instanceof IOtherModItemsAsModules).map(IOtherModItemsAsModules.class::cast);
-    }
 
-    public static Optional<IModeChangingItem> getModeChangingModularItemCapability(Player player) {
-        ItemStack itemStack = player.getInventory().getSelected();
-        Optional<IModeChangingItem> mcItemCap = getModeChangingModularItemCapability(itemStack);
-        if (mcItemCap.isPresent()) {
-            return mcItemCap;
-        }
-        Optional<IOtherModItemsAsModules> foreignModuleCap = getForeignItemAsModuleCap(itemStack);
-        if(foreignModuleCap.isPresent()) {
-            return foreignModuleCap.get().getStoredModeChangingModuleCapInStorage();
-        }
-        return Optional.empty();
-    }
-
-    public static Optional<IModeChangingItem> getModeChangingModularItemCapability(@Nonnull ItemStack modularItem) {
-        return getCapability(modularItem, NuminaCapabilities.MODE_CHANGING_MODULAR_ITEM)
-                .map(IModeChangingItem.class::cast);
-    }
 }

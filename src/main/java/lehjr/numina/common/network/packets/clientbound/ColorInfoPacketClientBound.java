@@ -13,7 +13,7 @@ import net.neoforged.neoforge.network.handling.IPayloadContext;
 import org.jetbrains.annotations.NotNull;
 
 public record ColorInfoPacketClientBound(EquipmentSlot slotType, int[] tagData) implements CustomPacketPayload {
-    public static final Type<ColorInfoPacketClientBound> ID = new Type<>(new ResourceLocation(NuminaConstants.MOD_ID, "ColorInfoClient"));
+    public static final Type<ColorInfoPacketClientBound> ID = new Type<>(new ResourceLocation(NuminaConstants.MOD_ID, "color_info_to_client"));
 
     @Override
     @NotNull

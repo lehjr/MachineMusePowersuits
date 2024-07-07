@@ -13,7 +13,7 @@ import net.neoforged.neoforge.network.handling.IPayloadContext;
 import org.jetbrains.annotations.NotNull;
 
 public record TweakRequestDoublePacketClientBound(EquipmentSlot slotType, ResourceLocation moduleRegName, String tweakName, double tweakValue) implements CustomPacketPayload {
-    public static final Type<TweakRequestDoublePacketClientBound> ID = new Type<>(new ResourceLocation(NuminaConstants.MOD_ID, "TweakRequestDoubleClient"));
+    public static final Type<TweakRequestDoublePacketClientBound> ID = new Type<>(new ResourceLocation(NuminaConstants.MOD_ID, "tweak_request_double_to_client"));
 
     @Override
     @NotNull

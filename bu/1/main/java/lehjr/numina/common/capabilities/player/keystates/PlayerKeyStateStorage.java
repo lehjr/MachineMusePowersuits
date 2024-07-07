@@ -24,9 +24,9 @@
  *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package lehjr.numina.common.capabilities.player.keystates;
+package lehjr.numina.common.capability.player.keystates;
 
-import lehjr.numina.common.capabilities.CapabilityUpdate;
+import lehjr.numina.common.capability.CapabilityUpdate;
 import lehjr.numina.common.math.MathUtils;
 import net.minecraft.nbt.ByteTag;
 import net.neoforged.neoforge.common.util.INBTSerializable;

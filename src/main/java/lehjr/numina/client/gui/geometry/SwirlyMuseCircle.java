@@ -7,6 +7,7 @@ import com.mojang.blaze3d.vertex.*;
 import com.mojang.math.Axis;
 import lehjr.numina.common.math.Color;
 import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.client.renderer.ShaderInstance;
 import org.joml.Matrix4f;
 
 import java.nio.FloatBuffer;
@@ -16,10 +17,12 @@ public class SwirlyMuseCircle {
     protected FloatBuffer points;
     protected FloatBuffer color;
     int numsegments;
-    static final Color c1 = new Color(0.0f, 1.0f, 0.0f, 0.0f);
-    static final Color c2 = new Color(0.8f, 1.0f, 0.8f, 1.0f);
 
     public SwirlyMuseCircle() {
+        this(new Color(0.0f, 1.0f, 0.0f, 0.0f), new Color(0.8f, 1.0f, 0.8f, 1.0f));
+    }
+
+    public SwirlyMuseCircle(Color c1, Color c2) {
         if (points == null) {
             points = GradientAndArcCalculator.getArcPoints(0, (float) (Math.PI * 2 + 0.0001), detail, 0, 0);
         }
@@ -32,11 +35,11 @@ public class SwirlyMuseCircle {
         color.rewind();
         points.rewind();
         matrixStack.pushPose();
-        matrixStack.translate(x, y, 0);
+        matrixStack.translate(x, y, zLevel);
         matrixStack.scale(radius / detail, radius / detail, 1.0F);
 //        RenderSystem.rotatef((float) (-ratio * 360.0), 0, 0, 1);
         matrixStack.mulPose(Axis.ZP.rotationDegrees(-ratio * 360.0F));
-//        ShaderInstance oldShader = RenderSystem.getShader();
+        ShaderInstance oldShader = RenderSystem.getShader();
         RenderSystem.setShader(GameRenderer::getPositionColorShader);
 //        RenderSystem.disableTexture();
         RenderSystem.enableBlend();
@@ -56,6 +59,6 @@ public class SwirlyMuseCircle {
 
         RenderSystem.disableBlend();
 //        RenderSystem.enableTexture();
-//        RenderSystem.setShader(() -> oldShader);
+        RenderSystem.setShader(() -> oldShader);
     }
 }

@@ -1,13 +1,14 @@
 package lehjr.numina.mixin.common.item;
 
+import com.mojang.datafixers.util.Pair;
+import lehjr.numina.imixin.common.item.IMixinRangedWrapper;
 import net.neoforged.neoforge.items.wrapper.RangedWrapper;
-import org.apache.commons.lang3.tuple.Pair;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
 @Mixin(RangedWrapper.class)
-public class MixinRangedWrapper {
+public class MixinRangedWrapper implements IMixinRangedWrapper {
     @Final
     @Shadow
     private int minSlot;
@@ -16,13 +17,13 @@ public class MixinRangedWrapper {
     @Shadow
     private int maxSlot;
 
-    public boolean contains(int slot) {
-        return slot >= this.minSlot && slot < maxSlot;
+    @Override
+    public boolean numina$contains(int slot) {
+        return slot >= minSlot && slot < maxSlot;
     }
 
-    public Pair<Integer, Integer> getRange() {
+    @Override
+    public Pair<Integer, Integer> numina$getRange() {
         return Pair.of(minSlot, maxSlot);
     }
-
-
 }

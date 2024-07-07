@@ -12,7 +12,7 @@ import net.neoforged.neoforge.network.handling.IPayloadContext;
 import org.jetbrains.annotations.NotNull;
 
 public record ToggleRequestPacketClientBound(ResourceLocation registryName, boolean toggleval) implements CustomPacketPayload {
-    public static final Type<ToggleRequestPacketClientBound> ID = new Type<>(new ResourceLocation(NuminaConstants.MOD_ID, "ToggleRequestClient"));
+    public static final Type<ToggleRequestPacketClientBound> ID = new Type<>(new ResourceLocation(NuminaConstants.MOD_ID, "toggle_request_client"));
 
     @Override
     @NotNull

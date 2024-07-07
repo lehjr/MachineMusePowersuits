@@ -1,6 +1,6 @@
 package lehjr.numina.common.network.packets.serverbound;
 
-import lehjr.numina.common.capabilities.NuminaCapabilities;
+import lehjr.numina.common.capability.NuminaCapabilities;
 import lehjr.numina.common.constants.NuminaConstants;
 import lehjr.numina.common.network.NuminaPackets;
 import lehjr.numina.common.network.packets.clientbound.BlockNamePacketClientBound;
@@ -17,7 +17,7 @@ import net.neoforged.neoforge.network.handling.IPayloadContext;
 import org.jetbrains.annotations.NotNull;
 
 public record BlockNamePacketServerBound(ResourceLocation regName) implements CustomPacketPayload {
-    public static final Type<BlockNamePacketServerBound> ID = new Type<>(new ResourceLocation(NuminaConstants.MOD_ID, "BlockNameToSever"));
+    public static final Type<BlockNamePacketServerBound> ID = new Type<>(new ResourceLocation(NuminaConstants.MOD_ID, "block_name_to_sever"));
 
     @Override
     @NotNull

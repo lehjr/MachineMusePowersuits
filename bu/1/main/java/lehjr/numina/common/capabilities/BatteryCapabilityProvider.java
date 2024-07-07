@@ -1,9 +1,9 @@
-package lehjr.numina.common.capabilities;
+package lehjr.numina.common.capability;
 
-import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
-import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
-import lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
-import lehjr.numina.common.capabilities.module.powermodule.PowerModule;
+import lehjr.numina.common.capability.module.powermodule.IPowerModule;
+import lehjr.numina.common.capability.module.powermodule.ModuleCategory;
+import lehjr.numina.common.capability.module.powermodule.ModuleTarget;
+import lehjr.numina.common.capability.module.powermodule.PowerModule;
 import lehjr.numina.common.config.NuminaSettings;
 import lehjr.numina.common.constants.NuminaConstants;
 import lehjr.numina.common.tags.TagUtils;

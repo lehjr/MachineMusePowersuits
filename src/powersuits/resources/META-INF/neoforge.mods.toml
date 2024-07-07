@@ -7,7 +7,6 @@ license='Simplified BSD License https://opensource.org/license/bsd-2-clause/'
     modId="powersuits"
     version="${version}"
     displayName="MachineMuse's Modular Powersuits"
-    updateJSONURL="https://mc-curse-update-checker.herokuapp.com/235442"
     displayURL="https://github.com/lehjr/MachineMusePowersuits"
     authors="MachineMuse, lehjr"
     credits="Icons by WaterCandle, Modeling by SebK, Special thanks to TextureTurtle"

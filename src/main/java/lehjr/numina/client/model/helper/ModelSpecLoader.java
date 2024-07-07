@@ -33,7 +33,7 @@ import com.google.gson.JsonParser;
 import com.mojang.math.Transformation;
 import lehjr.numina.client.event.ModelBakeEventHandler;
 import lehjr.numina.common.base.NuminaLogger;
-import lehjr.numina.common.capabilities.render.modelspec.*;
+import lehjr.numina.common.capability.render.modelspec.*;
 import lehjr.numina.common.constants.NuminaConstants;
 import lehjr.numina.common.math.Color;
 import net.minecraft.client.Minecraft;

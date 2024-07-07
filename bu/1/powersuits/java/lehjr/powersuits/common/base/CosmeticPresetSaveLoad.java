@@ -28,7 +28,7 @@ package lehjr.powersuits.common.base;
 
 import com.google.common.collect.HashBiMap;
 import lehjr.numina.common.base.NuminaLogger;
-import lehjr.numina.common.capabilities.NuminaCapabilities;
+import lehjr.numina.common.capability.NuminaCapabilities;
 import lehjr.numina.common.config.ConfigHelper;
 import lehjr.numina.common.utils.ItemUtils;
 import lehjr.powersuits.common.constants.MPSConstants;

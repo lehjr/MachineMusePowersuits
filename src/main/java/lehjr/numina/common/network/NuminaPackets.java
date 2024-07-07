@@ -36,10 +36,7 @@ import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 
-import java.util.Optional;
-
 public class NuminaPackets {
-
 
     @SubscribeEvent
     public static void register(final RegisterPayloadHandlersEvent event) {

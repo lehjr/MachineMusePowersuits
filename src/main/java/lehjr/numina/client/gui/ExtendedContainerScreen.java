@@ -46,6 +46,7 @@ public class ExtendedContainerScreen<T extends AbstractContainerMenu> extends Ab
         return () -> getUlOffset();
     }
 
+    @Override
     public void renderSlot(GuiGraphics gfx, Slot slot) {
         if (slot!= null && slot instanceof IHideableSlot) {
             if (slot.isActive()) {
@@ -122,7 +123,7 @@ public class ExtendedContainerScreen<T extends AbstractContainerMenu> extends Ab
 
     @Override
     public boolean mouseScrolled(double mouseX, double mouseY, double scrollX, double scrollY) {
-        if (frames.stream().anyMatch(frame->frame.mouseScrolled(mouseX, mouseY, scrollX))) {
+        if (frames.stream().anyMatch(frame->frame.mouseScrolled(mouseX, mouseY, scrollY))) {
             return true;
         }
         return super.mouseScrolled(mouseX, mouseY, scrollX, scrollY);

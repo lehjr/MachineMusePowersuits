@@ -27,7 +27,7 @@
 package lehjr.powersuits.client.model.helper;
 
 import lehjr.numina.common.base.NuminaLogger;
-import lehjr.numina.common.capabilities.render.modelspec.*;
+import lehjr.numina.common.capability.render.modelspec.*;
 import lehjr.numina.common.constants.NuminaConstants;
 import lehjr.powersuits.common.config.MPSSettings;
 import lehjr.powersuits.common.item.armor.AbstractElectricItemArmor;

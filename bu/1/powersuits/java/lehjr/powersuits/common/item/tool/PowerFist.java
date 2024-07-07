@@ -27,9 +27,9 @@
 package lehjr.powersuits.common.item.tool;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import lehjr.numina.common.capabilities.NuminaCapabilities;
-import lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
-import lehjr.numina.common.capabilities.module.rightclick.IRightClickModule;
+import lehjr.numina.common.capability.NuminaCapabilities;
+import lehjr.numina.common.capability.inventory.modechanging.IModeChangingItem;
+import lehjr.numina.common.capability.module.rightclick.IRightClickModule;
 import lehjr.numina.common.energy.ElectricItemUtils;
 import lehjr.numina.common.utils.ItemUtils;
 import lehjr.powersuits.client.event.ModelBakeEventHandler;

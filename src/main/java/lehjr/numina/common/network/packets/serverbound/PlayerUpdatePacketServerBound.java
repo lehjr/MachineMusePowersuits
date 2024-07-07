@@ -26,7 +26,7 @@
 
 package lehjr.numina.common.network.packets.serverbound;
 
-import lehjr.numina.common.capabilities.NuminaCapabilities;
+import lehjr.numina.common.capability.NuminaCapabilities;
 import lehjr.numina.common.constants.NuminaConstants;
 import lehjr.numina.common.utils.MathUtils;
 import net.minecraft.network.FriendlyByteBuf;
@@ -44,7 +44,7 @@ import java.util.Optional;
  * @param keyData
  */
 public record PlayerUpdatePacketServerBound(byte keyData) implements CustomPacketPayload {
-    public static final Type<PlayerUpdatePacketServerBound> ID = new Type<>(new ResourceLocation(NuminaConstants.MOD_ID, "PlayerUpdateServer"));
+    public static final Type<PlayerUpdatePacketServerBound> ID = new Type<>(new ResourceLocation(NuminaConstants.MOD_ID, "player_update_to_server"));
 
     @Override
     @NotNull

@@ -1,30 +1,43 @@
 package lehjr.powersuits.common.item.electric.tool;
 
-import lehjr.numina.common.capabilities.NuminaCapabilities;
-import lehjr.numina.common.capabilities.module.rightclick.IRightClickModule;
+import com.mojang.blaze3d.vertex.PoseStack;
+import lehjr.numina.common.base.NuminaLogger;
+import lehjr.numina.common.capability.NuminaCapabilities;
+import lehjr.numina.common.capability.module.rightclick.IRightClickModule;
 import lehjr.numina.common.utils.ElectricItemUtils;
 import lehjr.numina.common.utils.ItemUtils;
+import lehjr.powersuits.client.event.ModelBakeEventHandler;
+import lehjr.powersuits.client.render.item.MPSBEWLR;
+import lehjr.powersuits.common.constants.MPSConstants;
+import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.core.BlockPos;
-import net.minecraft.tags.TagKey;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Tier;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
+import net.neoforged.neoforge.common.SimpleTier;
+import net.neoforged.neoforge.common.ToolAction;
+
+import java.util.function.Consumer;
 
 public class PowerFist extends AbstractElectricTool {
-    protected PowerFist(Tier pTier, TagKey<Block> pBlocks, Properties pProperties) {
-        super(pTier, pBlocks, pProperties);
+    public PowerFist() {
+        super(new SimpleTier(BlockTags.BUTTONS, 0,0,0, 0, () -> Ingredient.of(Items.AIR)), BlockTags.BUTTONS, new Properties().setNoRepair().stacksTo(1));
     }
 
     /**
@@ -59,7 +72,7 @@ public class PowerFist extends AbstractElectricTool {
      */
     @Override
     public boolean mineBlock(ItemStack powerFist, Level worldIn, BlockState state, BlockPos pos, LivingEntity entityLiving) {
-        return NuminaCapabilities.getCapability(powerFist, NuminaCapabilities.Inventory.MODE_CHANGING_MODULAR_ITEM)
+        return NuminaCapabilities.getModeChangingModularItemCapability(powerFist)
                 .map(iItemHandler -> iItemHandler.mineBlock(powerFist, worldIn, state, pos, entityLiving)).orElse(false);
     }
 
@@ -76,7 +89,7 @@ public class PowerFist extends AbstractElectricTool {
     @SuppressWarnings("deprecation")
     @Override
     public void onUseTick(Level level, LivingEntity entity, ItemStack itemStack, int ticksRemaining) {
-        if(NuminaCapabilities.getCapability(itemStack, NuminaCapabilities.Inventory.MODE_CHANGING_MODULAR_ITEM)
+        if(NuminaCapabilities.getModeChangingModularItemCapability(itemStack)
                 .map(handler-> handler.onUseTick(level, entity, ticksRemaining)).orElse(false)) {
             super.onUseTick(level, entity, itemStack, ticksRemaining);
         }
@@ -91,20 +104,20 @@ public class PowerFist extends AbstractElectricTool {
             return fallback;
         }
 
-        return NuminaCapabilities.getCapability(context.getItemInHand(), NuminaCapabilities.Inventory.MODE_CHANGING_MODULAR_ITEM)
+        return NuminaCapabilities.getModeChangingModularItemCapability(context.getItemInHand())
                 .map(handler-> handler.onItemUseFirst(itemStack, context, fallback)).orElse(fallback);
     }
 
     @Override
-    public float getDestroySpeed(ItemStack stack, BlockState pState) {
-        return NuminaCapabilities.getCapability(stack, NuminaCapabilities.Inventory.MODE_CHANGING_MODULAR_ITEM)
-                .map(handler-> handler.getDestroySpeed(stack, pState)).orElse(1.0F);
+    public float getDestroySpeed(ItemStack stack, BlockState state) {
+        return NuminaCapabilities.getModeChangingModularItemCapability(stack)
+                .map(handler-> handler.getDestroySpeed(stack, state)).orElse(1.0F);
     }
 
     @Override
     public InteractionResult interactLivingEntity(ItemStack itemStackIn, Player player, LivingEntity entity, InteractionHand hand) {
-        return NuminaCapabilities.getCapability(itemStackIn, NuminaCapabilities.Inventory.MODE_CHANGING_MODULAR_ITEM)
-                .map(handler-> NuminaCapabilities.getCapability(handler.getActiveModule(), NuminaCapabilities.PowerModule.POWER_MODULE)
+        return NuminaCapabilities.getModeChangingModularItemCapability(itemStackIn)
+                .map(handler-> NuminaCapabilities.getCapability(handler.getActiveModule(), NuminaCapabilities.Module.POWER_MODULE)
                                 .filter(IRightClickModule.class::isInstance)
                                 .map(IRightClickModule.class::cast)
                                 .map(m-> m.interactLivingEntity(itemStackIn, player, entity, hand).getResult())
@@ -114,7 +127,7 @@ public class PowerFist extends AbstractElectricTool {
 
     @Override
     public void releaseUsing(ItemStack stack, Level worldIn, LivingEntity entityLiving, int timeLeft) {
-        NuminaCapabilities.getCapability(stack, NuminaCapabilities.Inventory.MODE_CHANGING_MODULAR_ITEM)
+        NuminaCapabilities.getModeChangingModularItemCapability(stack)
                 .ifPresent(handler-> handler.releaseUsing(stack, worldIn, entityLiving, timeLeft));
     }
 
@@ -144,36 +157,33 @@ public class PowerFist extends AbstractElectricTool {
                 .map(iItemHandler -> iItemHandler.isCorrectToolForDrops(itemStack, state)).orElse(false);
     }
 
-//    /**
-//     * Current implementations of this method in child classes do not use the
-//     * entry argument beside stack. They just raise the damage on the stack.
-//     */
-//    @Override
-//    public boolean hurtEnemy(ItemStack itemStack, LivingEntity target, LivingEntity attacker) {
-//        if (attacker instanceof Player) {
-//            NuminaCapabilities.getCapability(itemStack, NuminaCapabilities.Inventory.MODE_CHANGING_MODULAR_ITEM)
-//                    .ifPresent(iItemHandler ->
-//                            NuminaCapabilities.getCapability(
-//                                    iItemHandler.getOnlineModuleOrEmpty(MPSRegistryNames.MELEE_ASSIST_MODULE),
-//                                            NuminaCapabilities.PowerModule.POWER_MODULE)
-//
-//                            .getCapability().ifPresent(pm->{
-//                                Player player = (Player) attacker;
-//                                double drain = pm.applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION);
-//                                if (ElectricItemUtils.getPlayerEnergy(player) > drain) {
-//                                    ElectricItemUtils.drainPlayerEnergy(player, (int) drain, false);
-//                                    double damage = pm.applyPropertyModifiers(MPSConstants.PUNCH_DAMAGE);
-//                                    double knockback = pm.applyPropertyModifiers(MPSConstants.PUNCH_KNOCKBACK);
-//                                    DamageSource damageSource = attacker.damageSources().playerAttack(player);
-//                                    if (target.hurt(damageSource, (float) (int) damage)) {
-//                                        Vec3 lookVec = player.getLookAngle();
-//                                        target.push(lookVec.x * knockback, Math.abs(lookVec.y + 0.2f) * knockback, lookVec.z * knockback);
-//                                    }
-//                                }
-//                            }));
-//        }
-//        return true;
-//    }
+    /**
+     * Current implementations of this method in child classes do not use the
+     * entry argument beside stack. They just raise the damage on the stack.
+     */
+    @Override
+    public boolean hurtEnemy(ItemStack itemStack, LivingEntity target, LivingEntity attacker) {
+        if (attacker instanceof Player) {
+            NuminaCapabilities.getModeChangingModularItemCapability(itemStack)
+                    .ifPresent(iItemHandler ->
+                            NuminaCapabilities.getPowerModuleCapability(
+                                    iItemHandler.getOnlineModuleOrEmpty(MPSConstants.MELEE_ASSIST_MODULE)).ifPresent(pm->{
+                                Player player = (Player) attacker;
+                                double drain = pm.applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION);
+                                if (ElectricItemUtils.getPlayerEnergy(player) > drain) {
+                                    ElectricItemUtils.drainPlayerEnergy(player, (int) drain, false);
+                                    double damage = pm.applyPropertyModifiers(MPSConstants.PUNCH_DAMAGE);
+                                    double knockback = pm.applyPropertyModifiers(MPSConstants.PUNCH_KNOCKBACK);
+                                    DamageSource damageSource = attacker.damageSources().playerAttack(player);
+                                    if (target.hurt(damageSource, (float) (int) damage)) {
+                                        Vec3 lookVec = player.getLookAngle();
+                                        target.push(lookVec.x * knockback, Math.abs(lookVec.y + 0.2f) * knockback, lookVec.z * knockback);
+                                    }
+                                }
+                            }));
+        }
+        return true;
+    }
 
 //    /**
 //     * Called before a block is broken.  Return true to prevent default block harvesting.
@@ -192,6 +202,20 @@ public class PowerFist extends AbstractElectricTool {
 //    }
 
 
+//    @Override
+//    public boolean canAttackBlock(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer) {
+//        NuminaLogger.logDebug("can attack Block :" +super.canAttackBlock(pState, pLevel, pPos, pPlayer) );
+//
+//        return super.canAttackBlock(pState, pLevel, pPos, pPlayer);
+//    }
+
+
+    @Override
+    public boolean canPerformAction(ItemStack stack, ToolAction toolAction) {
+        NuminaLogger.logDebug("toolAction: " + toolAction);
+
+        return super.canPerformAction(stack, toolAction);
+    }
 
     @Override
     public boolean shouldCauseBlockBreakReset(ItemStack oldStack, ItemStack newStack) {
@@ -207,5 +231,30 @@ public class PowerFist extends AbstractElectricTool {
     @Override
     public UseAnim getUseAnimation(ItemStack pStack) {
         return UseAnim.BOW;
+    }
+
+    @Override
+    public void initializeClient(Consumer<IClientItemExtensions> consumer) {
+        consumer.accept(new IClientItemExtensions() {
+            private final BlockEntityWithoutLevelRenderer renderer = ModelBakeEventHandler.INSTANCE.MPSBERINSTANCE;
+
+            @Override
+            public BlockEntityWithoutLevelRenderer getCustomRenderer() {
+                return renderer;
+            }
+
+            @Override
+            public boolean applyForgeHandTransform(PoseStack poseStack, LocalPlayer player, HumanoidArm arm, ItemStack itemInHand, float partialTick, float equipProcess, float swingProcess) {
+                ((MPSBEWLR)renderer).setFiringData(new MPSBEWLR.FiringData(player, arm, itemInHand));
+                return IClientItemExtensions.super.applyForgeHandTransform(poseStack, player, arm, itemInHand, partialTick, equipProcess, swingProcess);
+            }
+
+//            @Nullable
+//            @Override
+//            public HumanoidModel.ArmPose getArmPose(LivingEntity entityLiving, InteractionHand hand, ItemStack itemStack) {
+//                return HumanoidModel.ArmPose.BOW_AND_ARROW;
+////                return IClientItemExtensions.super.getArmPose(entityLiving, hand, itemStack);
+//            }
+        });
     }
 }

@@ -44,8 +44,8 @@ public class NuminaConstants {
      */
     public static final String MODULE_TRADEOFF_PREFIX = "module.tradeoff.";
 
-    public static final String TAG_ITEM_PREFIX = "MMModItem";// Machine Muse Mod
-    public static final String TAG_MODULE_PREFIX = "MMModModule";// Machine Muse Mod Module
+    public static final String MODULAR_ITEM_TAG = "MMModItem";// Machine Muse Mod
+    public static final String MODULE_TAG = "MMModModule";// Machine Muse Mod Module
 
     public static final String TAG_MODULE_SETTINGS = "Module Settings";
     public static final String MODE = "Mode";
@@ -61,6 +61,7 @@ public class NuminaConstants {
 
     // Inventory ----------------------------------------------------------------------------------
     public static final String ITEMS_TAG = "Inventory";
+    public static final String MODULES_TAG ="Modules";
 
     // Misc ---------------------------------------------------------------------------------------
     public static final String BLOCK = "block";
@@ -70,7 +71,7 @@ public class NuminaConstants {
 
     // Model Stuff --------------------------------------------------------------------------------
     public static final int FULL_BRIGHTNESS = 0XF000F0;
-    public static final String RENDER = "render";
+    public static final String RENDER_TAG = "render";
     public static final String SPECLIST = "specList";
     public static final String COSMETIC_PRESET = "cosmeticPreset";
     public static final String COLOR = "color"; // single color, like LuxCapacitor
@@ -113,10 +114,10 @@ public class NuminaConstants {
     public static final String COMPONENT__FIELD_EMITTER__REGNAME = getComponentName("field_emitter");
     public static final String COMPONENT__LASER_EMITTER__REGNAME = getComponentName("laser_emitter");
     public static final String COMPONENT__CARBON_MYOFIBER__REGNAME = getComponentName("carbon_myofiber");
-    public static final String COMPONENT__CONTROL_CIRCUIT_BASIC__REGNAME = getComponentName("control_circuit_basic");
-    public static final String COMPONENT__CONTROL_CIRCUIT_ADVANCED__REGNAME = getComponentName("control_circuit_advanced");
-    public static final String COMPONENT__CONTROL_CIRCUIT_ELITE__REGNAME = getComponentName("control_circuit_elite");
-    public static final String COMPONENT__CONTROL_CIRCUIT_ULTIMATE__REGNAME = getComponentName("control_circuit_ultimate");
+    public static final String COMPONENT__CONTROL_CIRCUIT_1__REGNAME = getComponentName("control_circuit_basic");
+    public static final String COMPONENT__CONTROL_CIRCUIT_2__REGNAME = getComponentName("control_circuit_advanced");
+    public static final String COMPONENT__CONTROL_CIRCUIT_3__REGNAME = getComponentName("control_circuit_elite");
+    public static final String COMPONENT__CONTROL_CIRCUIT_4__REGNAME = getComponentName("control_circuit_ultimate");
     public static final String COMPONENT__MYOFIBER_GEL__REGNAME = getComponentName("myofiber_gel");
     public static final String COMPONENT__ARTIFICIAL_MUSCLE__REGNAME = getComponentName("artificial_muscle");
     public static final String COMPONENT__SOLAR_PANEL__REGNAME = getComponentName("solar_panel");
@@ -143,4 +144,18 @@ public class NuminaConstants {
     static String getTooltip(String tooltipName) {
         return new StringBuilder("tooltip.").append(NuminaConstants.MOD_ID).append(".").append(tooltipName).toString();
     }
+
+    /**
+     * GUI ------------------------------------------------------------------------------------------------------------
+     */
+    public static final String GUI_CREATIVE_INSTALL = getGUI("creative.install");
+    public static final String GUI_CREATIVE_INSTALL_DESC = getGUI("creative.install.desc");
+
+    public static final String GUI_CREATIVE_INSTALL_ALL = getGUI("creative.install.all");
+    public static final String GUI_CREATIVE_INSTALL_ALL_DESC = getGUI("creative.install.all.desc");
+
+    static String getGUI(String guiString) {
+        return new StringBuilder("gui.").append(MOD_ID).append(".").append(guiString).toString();
+    }
+
 }

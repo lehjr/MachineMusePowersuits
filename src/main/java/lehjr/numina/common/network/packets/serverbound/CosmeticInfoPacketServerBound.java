@@ -1,6 +1,6 @@
 package lehjr.numina.common.network.packets.serverbound;
 
-import lehjr.numina.common.capabilities.NuminaCapabilities;
+import lehjr.numina.common.capability.NuminaCapabilities;
 import lehjr.numina.common.constants.NuminaConstants;
 import lehjr.numina.common.network.NuminaPackets;
 import lehjr.numina.common.utils.ItemUtils;
@@ -22,7 +22,7 @@ import org.jetbrains.annotations.NotNull;
  * @param tagData
  */
 public record CosmeticInfoPacketServerBound(EquipmentSlot slotType, String tagName, CompoundTag tagData) implements CustomPacketPayload {
-    public static final Type<CosmeticInfoPacketServerBound> ID = new Type<>(new ResourceLocation(NuminaConstants.MOD_ID, " CosmeticInfoServer"));
+    public static final Type<CosmeticInfoPacketServerBound> ID = new Type<>(new ResourceLocation(NuminaConstants.MOD_ID, "cosmetic_info_to_server"));
 
     @Override
     @NotNull

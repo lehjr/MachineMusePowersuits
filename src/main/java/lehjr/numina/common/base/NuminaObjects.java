@@ -3,11 +3,8 @@ package lehjr.numina.common.base;
 import com.mojang.serialization.Codec;
 import lehjr.numina.common.block.ChargingBase;
 import lehjr.numina.common.blockentity.ChargingBaseBlockEntity;
-import lehjr.numina.common.capabilities.NuminaCapabilities;
-import lehjr.numina.common.capabilities.energy.BatteryCapabilityProvider;
-import lehjr.numina.common.capabilities.energy.BatteryEnergyStorage;
-import lehjr.numina.common.capabilities.module.powermodule.BatteryPowerModule;
-import lehjr.numina.common.capabilities.player.keystates.PlayerKeyStateStorage;
+import lehjr.numina.common.capability.NuminaCapabilities;
+import lehjr.numina.common.capability.player.keystates.PlayerKeyStateStorage;
 import lehjr.numina.common.constants.NuminaConstants;
 import lehjr.numina.common.container.ArmorStandMenu;
 import lehjr.numina.common.container.ChargingBaseMenu;
@@ -19,6 +16,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.resources.ResourceLocation;
@@ -28,7 +26,10 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraft.world.inventory.MenuType;
-import net.minecraft.world.item.*;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.neoforged.neoforge.attachment.AttachmentType;
@@ -40,6 +41,7 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
+import java.util.function.Consumer;
 import java.util.function.Supplier;
 import java.util.function.UnaryOperator;
 
@@ -96,13 +98,13 @@ public class NuminaObjects {
             ComponentItem::new);
     public static final DeferredHolder<Item, ComponentItem> COMPUTER_CHIP = NUMINA_ITEMS.register(NuminaConstants.COMPONENT__COMPUTER_CHIP__REGNAME,
             ComponentItem::new);
-    public static final DeferredHolder<Item, ComponentItem> CONTROL_CIRCUIT_BASIC = NUMINA_ITEMS.register(NuminaConstants.COMPONENT__CONTROL_CIRCUIT_BASIC__REGNAME,
+    public static final DeferredHolder<Item, ComponentItem> CONTROL_CIRCUIT1 = NUMINA_ITEMS.register(NuminaConstants.COMPONENT__CONTROL_CIRCUIT_1__REGNAME,
             ComponentItem::new);
-    public static final DeferredHolder<Item, ComponentItem> CONTROL_CIRCUIT_ADVANCED = NUMINA_ITEMS.register(NuminaConstants.COMPONENT__CONTROL_CIRCUIT_ADVANCED__REGNAME,
+    public static final DeferredHolder<Item, ComponentItem> CONTROL_CIRCUIT2 = NUMINA_ITEMS.register(NuminaConstants.COMPONENT__CONTROL_CIRCUIT_2__REGNAME,
             ComponentItem::new);
-    public static final DeferredHolder<Item, ComponentItem> CONTROL_CIRCUIT_ELITE = NUMINA_ITEMS.register(NuminaConstants.COMPONENT__CONTROL_CIRCUIT_ELITE__REGNAME,
+    public static final DeferredHolder<Item, ComponentItem> CONTROL_CIRCUIT3 = NUMINA_ITEMS.register(NuminaConstants.COMPONENT__CONTROL_CIRCUIT_3__REGNAME,
             ComponentItem::new);
-    public static final DeferredHolder<Item, ComponentItem> CONTROL_CIRCUIT_ULTIMATE = NUMINA_ITEMS.register(NuminaConstants.COMPONENT__CONTROL_CIRCUIT_ULTIMATE__REGNAME,
+    public static final DeferredHolder<Item, ComponentItem> CONTROL_CIRCUIT4 = NUMINA_ITEMS.register(NuminaConstants.COMPONENT__CONTROL_CIRCUIT_4__REGNAME,
             ComponentItem::new);
     public static final DeferredHolder<Item, ComponentItem> FIELD_EMITTER = NUMINA_ITEMS.register(NuminaConstants.COMPONENT__FIELD_EMITTER__REGNAME,
             ComponentItem::new);
@@ -164,13 +166,34 @@ public class NuminaObjects {
     // DataComponentType
     public static final DeferredRegister<DataComponentType<?>> DATA_COMPONENT_TYPES = DeferredRegister.create(Registries.DATA_COMPONENT_TYPE, NuminaConstants.MOD_ID);
 
-    public static final DeferredHolder<DataComponentType<?>, DataComponentType<Integer>> ENERGY =
-            registerDataComponentType("energy", () -> builder ->
+    public static final DataComponentType<Integer> ENERGY = register("energy", builder ->
                     builder.persistent(ExtraCodecs.NON_NEGATIVE_INT).networkSynchronized(ByteBufCodecs.VAR_INT));
 
-    public static final DeferredHolder<DataComponentType<?>, DataComponentType<Byte>> KEY_STATES =
-            registerDataComponentType("key_states", () -> builder ->
-                    builder.persistent(Codec.BYTE).networkSynchronized(ByteBufCodecs.BYTE));
+    public static final DataComponentType<Integer> COLOR = register("color", builder ->
+                    builder.persistent(ExtraCodecs.NON_NEGATIVE_INT).networkSynchronized(ByteBufCodecs.VAR_INT));
+
+    public static final DataComponentType<Double> HEAT = register("heat",
+            builder -> builder.persistent(Codec.DOUBLE).networkSynchronized(ByteBufCodecs.DOUBLE));
+
+    public static final DataComponentType<CompoundTag> MODULAR_ITEM_CODEC =
+            register("modular_item", builder ->builder.persistent(CompoundTag.CODEC).networkSynchronized(ByteBufCodecs.COMPOUND_TAG));
+
+    public static final DataComponentType<CompoundTag> POWERMODULE_ITEM_CODEC =
+            register("power_module", builder ->builder.persistent(CompoundTag.CODEC).networkSynchronized(ByteBufCodecs.COMPOUND_TAG));
+
+    public static final DataComponentType<CompoundTag> MODEL_SPEC_ITEM_CODEC =
+            register("model_spec", builder ->builder.persistent(CompoundTag.CODEC).networkSynchronized(ByteBufCodecs.COMPOUND_TAG));
+
+    public static final DataComponentType<Byte> KEY_STATES = register("key_states", builder ->
+            builder.persistent(Codec.BYTE).networkSynchronized(ByteBufCodecs.BYTE));
+
+    private static <T> DataComponentType<T> register(String name, Consumer<DataComponentType.Builder<T>> customizer) {
+        var builder = DataComponentType.<T>builder();
+        customizer.accept(builder);
+        var componentType = builder.build();
+        DATA_COMPONENT_TYPES.register(name, () -> componentType);
+        return componentType;
+    }
 
     // Create the DeferredRegister for attachment types
     public static final DeferredRegister<AttachmentType<?>> ATTACHMENT_TYPES = DeferredRegister.create(NeoForgeRegistries.Keys.ATTACHMENT_TYPES, NuminaConstants.MOD_ID);
@@ -179,9 +202,16 @@ public class NuminaObjects {
     private static final Supplier<AttachmentType<PlayerKeyStateStorage>> KEYSTATE_HANDLER = ATTACHMENT_TYPES.register(
             "keystate", () -> AttachmentType.serializable(() -> new PlayerKeyStateStorage()).build());
 
-    public static final DeferredHolder<DataComponentType<?>, DataComponentType<Double>> HEAT =
-            registerDataComponentType("heat", () -> builder ->
-                    builder.persistent(Codec.DOUBLE).networkSynchronized(ByteBufCodecs.DOUBLE));
+
+
+
+
+
+
+
+
+
+
 
 //    public static final Codec<Double> POSITIVE_DOUBLE = doubleRangeMinExclusiveWithMessage(
 //            0.0F, Double.MAX_VALUE, p_339597_ -> "Value must be positive: " + p_339597_
@@ -210,26 +240,23 @@ public class NuminaObjects {
 
 
     public static void registerCapabilities(RegisterCapabilitiesEvent event) {
-        event.registerItem(Capabilities.EnergyStorage.ITEM, (stack, ctx) -> new BatteryCapabilityProvider(stack, new BatteryEnergyStorage(1)), NuminaObjects.BASIC_BATTERY.get());
-        event.registerItem(NuminaCapabilities.PowerModule.POWER_MODULE, (stack, ctx) -> new BatteryPowerModule(stack, 1), NuminaObjects.BASIC_BATTERY.get());
+        // Batteries --------------------------------------------------------------------------------------------------
+        event.registerItem(Capabilities.EnergyStorage.ITEM, (stack, ctx) -> new Battery.BatteryEnergyStorage(stack, ENERGY, 1), NuminaObjects.BASIC_BATTERY.get());
+        event.registerItem(Capabilities.EnergyStorage.ITEM, (stack, ctx) -> new Battery.BatteryEnergyStorage(stack, ENERGY, 2), NuminaObjects.ADVANCED_BATTERY.get());
+        event.registerItem(Capabilities.EnergyStorage.ITEM, (stack, ctx) -> new Battery.BatteryEnergyStorage(stack, ENERGY, 3), NuminaObjects.ELITE_BATTERY.get());
+        event.registerItem(Capabilities.EnergyStorage.ITEM, (stack, ctx) -> new Battery.BatteryEnergyStorage(stack, ENERGY, 4), NuminaObjects.ULTIMATE_BATTERY.get());
 
-        event.registerItem(Capabilities.EnergyStorage.ITEM, (stack, ctx) -> new BatteryCapabilityProvider(stack, new BatteryEnergyStorage(2)), NuminaObjects.ADVANCED_BATTERY.get());
-        event.registerItem(NuminaCapabilities.PowerModule.POWER_MODULE, (stack, ctx) -> new BatteryPowerModule(stack, 2), NuminaObjects.ADVANCED_BATTERY.get());
+        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new Battery.BatteryPowerModule(stack, 1), NuminaObjects.BASIC_BATTERY.get());
+        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new Battery.BatteryPowerModule(stack, 2), NuminaObjects.ADVANCED_BATTERY.get());
+        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new Battery.BatteryPowerModule(stack, 3), NuminaObjects.ELITE_BATTERY.get());
+        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new Battery.BatteryPowerModule(stack, 4), NuminaObjects.ULTIMATE_BATTERY.get());
 
-        event.registerItem(Capabilities.EnergyStorage.ITEM, (stack, ctx) -> new BatteryCapabilityProvider(stack, new BatteryEnergyStorage(3)), NuminaObjects.ELITE_BATTERY.get());
-        event.registerItem(NuminaCapabilities.PowerModule.POWER_MODULE, (stack, ctx) -> new BatteryPowerModule(stack, 3), NuminaObjects.ELITE_BATTERY.get());
-
-        event.registerItem(Capabilities.EnergyStorage.ITEM, (stack, ctx) -> new BatteryCapabilityProvider(stack, new BatteryEnergyStorage(4)), NuminaObjects.ULTIMATE_BATTERY.get());
-        event.registerItem(NuminaCapabilities.PowerModule.POWER_MODULE, (stack, ctx) -> new BatteryPowerModule(stack, 4), NuminaObjects.ULTIMATE_BATTERY.get());
-
-
-
+        // Blocks -----------------------------------------------------------------------------------------------------
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, CHARGING_BASE_BLOCK_ENTITY.get(), (o, direction) -> o.getItemHandler());
         event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, CHARGING_BASE_BLOCK_ENTITY.get(), (o, direction) -> o.getEnergyHandler());
 
+        // Entities ---------------------------------------------------------------------------------------------------
         event.registerEntity(NuminaCapabilities.PLAYER_KEYSTATES, EntityType.PLAYER, (player, context)-> player.getData(KEYSTATE_HANDLER));
-
-
     }
 
 
@@ -254,10 +281,10 @@ public class NuminaObjects {
                         output.accept(ARTIFICIAL_MUSCLE.get());
                         output.accept(CARBON_MYOFIBER.get());
                         output.accept(COMPUTER_CHIP.get());
-                        output.accept(CONTROL_CIRCUIT_BASIC.get());
-                        output.accept(CONTROL_CIRCUIT_ADVANCED.get());
-                        output.accept(CONTROL_CIRCUIT_ELITE.get());
-                        output.accept(CONTROL_CIRCUIT_ULTIMATE.get());
+                        output.accept(CONTROL_CIRCUIT1.get());
+                        output.accept(CONTROL_CIRCUIT2.get());
+                        output.accept(CONTROL_CIRCUIT3.get());
+                        output.accept(CONTROL_CIRCUIT4.get());
                         output.accept(FIELD_EMITTER.get());
                         output.accept(GLIDER_WING.get());
                         output.accept(ION_THRUSTER.get());

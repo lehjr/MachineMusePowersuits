@@ -50,16 +50,7 @@ public class MPSItems {
      */
     public static final DeferredRegister<Item> MPS_ITEMS = DeferredRegister.createItems(MPSConstants.MOD_ID);
 
-    /* BlockItems --------------------------------------------------------------------------------- */
-    // use directly as a module
-    public static final RegistryObject<Item> TINKER_TABLE_ITEM = MPS_ITEMS.register(MPSRegistryNames.TINKER_TABLE.getPath(),
-            () -> new TinkerTableItem(MPSBlocks.TINKER_TABLE_BLOCK.get()));
 
-    public static final RegistryObject<Item> LUX_CAPACITOR_ITEM = MPS_ITEMS.register(MPSRegistryNames.LUX_CAPACITOR.getPath(),
-            () -> new BlockItem(MPSBlocks.LUX_CAPACITOR_BLOCK.get(), new Item.Properties()
-                    .stacksTo(64)
-                    .defaultDurability(-1)
-                    .setNoRepair()));
 
     /* Armor -------------------------------------------------------------------------------------- */
     public static final RegistryObject<Item> POWER_ARMOR_HELMET = MPS_ITEMS.register(MPSRegistryNames.POWER_ARMOR_HELMET.getPath(),

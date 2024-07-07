@@ -1,10 +1,10 @@
-package lehjr.numina.common.capabilities.inventory.modechanging;
+package lehjr.numina.common.capability.inventory.modechanging;
 
-import lehjr.numina.common.capabilities.NuminaCapabilities;
-import lehjr.numina.common.capabilities.inventory.modularitem.ModularItem;
-import lehjr.numina.common.capabilities.module.externalitems.IOtherModItemsAsModules;
-import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
-import lehjr.numina.common.capabilities.module.rightclick.IRightClickModule;
+import lehjr.numina.common.capability.NuminaCapabilities;
+import lehjr.numina.common.capability.inventory.modularitem.ModularItem;
+import lehjr.numina.common.capability.module.externalitems.IOtherModItemsAsModules;
+import lehjr.numina.common.capability.module.powermodule.IPowerModule;
+import lehjr.numina.common.capability.module.rightclick.IRightClickModule;
 import lehjr.numina.common.constants.NuminaConstants;
 import lehjr.numina.common.utils.ItemUtils;
 import lehjr.numina.common.network.NuminaPackets;
@@ -125,15 +125,6 @@ public class ModeChangingModularItem extends ModularItem implements IModeChangin
         }).orElse(false);
     }
 
-    @Override
-    public int getActiveMode() {
-        if (activeMode == -1) {
-            List<Integer> validModes = getValidModes();
-            if (!validModes.isEmpty())
-                activeMode = validModes.get(0);
-        }
-        return activeMode;
-    }
 
 //    @Override
 //    public void setActiveMode(ResourceLocation moduleName) {

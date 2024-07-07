@@ -1,15 +1,21 @@
 package lehjr.powersuits.common.item.electric.tool;
 
-import lehjr.numina.common.capabilities.NuminaCapabilities;
-import lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
+import lehjr.numina.common.capability.NuminaCapabilities;
+import lehjr.numina.common.capability.inventory.modechanging.IModeChangingItem;
+import lehjr.numina.common.utils.AdditionalInfo;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.network.chat.Component;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.DiggerItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Tier;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.energy.IEnergyStorage;
+
+import java.util.List;
 
 public class AbstractElectricTool extends DiggerItem {
     protected AbstractElectricTool(Tier pTier, TagKey<Block> pBlocks, Properties pProperties) {
@@ -27,6 +33,12 @@ public class AbstractElectricTool extends DiggerItem {
 //    public boolean canBeDepleted() {
 //        return false;
 //    }
+
+    @Override
+    public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> components, TooltipFlag flag) {
+        super.appendHoverText(stack, context, components, flag);
+        AdditionalInfo.appendHoverText(stack, context, components, flag, Screen.hasShiftDown());
+    }
 
     /**
      * Checks module first and falls back to default value of 72000

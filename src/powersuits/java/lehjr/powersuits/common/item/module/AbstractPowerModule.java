@@ -1,8 +1,6 @@
 package lehjr.powersuits.common.item.module;
 
-import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
 import lehjr.numina.common.utils.AdditionalInfo;
-import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
@@ -16,7 +14,6 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.List;
-import java.util.function.Supplier;
 
 public abstract class AbstractPowerModule extends Item {
     public AbstractPowerModule() {
@@ -40,11 +37,7 @@ public abstract class AbstractPowerModule extends Item {
     @Override
     public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> components, TooltipFlag flag) {
         super.appendHoverText(stack, context, components, flag);
-        if(Screen.hasShiftDown()) {
-            AdditionalInfo.appendHoverText(stack, context, components, flag, true);
-        }else {
-            AdditionalInfo.appendHoverText(stack, context, components, flag, false);
-        }
+        AdditionalInfo.appendHoverText(stack, context, components, flag, Screen.hasShiftDown());
     }
 
     @Override

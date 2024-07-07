@@ -31,7 +31,7 @@ import lehjr.numina.common.config.ConfigHelper;
 import lehjr.powersuits.client.control.KeymappingKeyHandler;
 import lehjr.powersuits.client.event.ModelBakeEventHandler;
 import lehjr.powersuits.client.event.RenderEventHandler;
-import lehjr.powersuits.client.gui.modding.module.install_salvage.InstallSalvageGui;
+import lehjr.powersuits.client.gui.module.module.install_salvage.InstallSalvageGui;
 import lehjr.powersuits.client.sound.MPSSoundDictionary;
 import lehjr.powersuits.common.config.MPSSettings;
 import lehjr.powersuits.common.constants.MPSConstants;

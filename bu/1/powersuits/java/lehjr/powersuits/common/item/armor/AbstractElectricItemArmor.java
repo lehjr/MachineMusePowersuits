@@ -29,11 +29,11 @@ package lehjr.powersuits.common.item.armor;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import com.google.common.util.concurrent.AtomicDouble;
-import lehjr.numina.common.capabilities.NuminaCapabilities;
-import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
-import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
-import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
-import lehjr.numina.common.capabilities.module.toggleable.IToggleableModule;
+import lehjr.numina.common.capability.NuminaCapabilities;
+import lehjr.numina.common.capability.inventory.modularitem.IModularItem;
+import lehjr.numina.common.capability.module.powermodule.IPowerModule;
+import lehjr.numina.common.capability.module.powermodule.ModuleCategory;
+import lehjr.numina.common.capability.module.toggleable.IToggleableModule;
 import lehjr.numina.common.constants.NuminaConstants;
 import lehjr.numina.common.energy.ElectricItemUtils;
 import lehjr.numina.common.string.AdditionalInfo;
@@ -72,11 +72,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
 public abstract class AbstractElectricItemArmor extends ArmorItem {
-    public static final UUID[] ARMOR_MODIFIERS = new UUID[]{
-            UUID.randomUUID(),
-            UUID.randomUUID(),
-            UUID.randomUUID(),
-            UUID.randomUUID()};
+
 
     public AbstractElectricItemArmor(ArmorItem.Type type) {
         super(MPSArmorMaterial.EMPTY_ARMOR, type, new Item.Properties()
@@ -85,42 +81,8 @@ public abstract class AbstractElectricItemArmor extends ArmorItem {
                 .setNoRepair());
     }
 
-    @Override
-    public boolean makesPiglinsNeutral(ItemStack stack, LivingEntity wearer) {
-        return stack.getCapability(ForgeCapabilities.ITEM_HANDLER)
-                .filter(IModularItem.class::isInstance)
-                .map(IModularItem.class::cast)
-                .map(iModularItem -> iModularItem.isModuleOnline(MPSRegistryNames.PIGLIN_PACIFICATION_MODULE)).orElse(false);
-    }
 
-    //    /*
-//        returning a value higher than 0 is applied damage to the armor, even if the armor is not setup to take damage.
-//        TODO: does this even work???? Is this even needed?
-//
-//      */
-    @Override
-    public <T extends LivingEntity> int damageItem(ItemStack stack, int amount, T entity, Consumer<T> onBroken) {
-        // FIXME: this should probably factor in the damage value
 
-        int enerConsum = (int) Math.round(stack.getCapability(ForgeCapabilities.ITEM_HANDLER)
-                .filter(IModularItem.class::isInstance)
-                .map(IModularItem.class::cast)
-                .map(iItemHandler -> {
-                    Pair<Integer, Integer> range = iItemHandler.getRangeForCategory(ModuleCategory.ARMOR);
-                    double energyUsed = 0;
-                    for (int x = range.getKey(); x < range.getRight(); x++) {
-                        energyUsed += iItemHandler.getStackInSlot(x).getCapability(NuminaCapabilities.POWER_MODULE)
-                                .map(pm -> pm.applyPropertyModifiers(MPSConstants.ARMOR_ENERGY_CONSUMPTION)).orElse(0D);
-                    }
-                    return energyUsed;
-                }).orElse(0D));
-
-        // protects as long as there is energy to drain I guess
-        if (enerConsum > 0 && entity instanceof LivingEntity) {
-            ElectricItemUtils.drainPlayerEnergy(entity, enerConsum);
-        }
-        return 0;
-    }
 
     @Override
     public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlot slot, ItemStack stack) {
@@ -371,24 +333,13 @@ public abstract class AbstractElectricItemArmor extends ArmorItem {
         return new PowerArmorCap(stack, this.type);
     }
 
-    @Override
-    public boolean isBarVisible(ItemStack stack) {
-        return stack.getCapability(ForgeCapabilities.ENERGY).map(iEnergyStorage -> iEnergyStorage.getMaxEnergyStored() > 1).orElse(false);
-    }
 
-    @Override
-    public int getBarWidth(ItemStack stack) {
-        double retVal = stack.getCapability(ForgeCapabilities.ENERGY).map(iEnergyStorage -> iEnergyStorage.getEnergyStored() * 13D / iEnergyStorage.getMaxEnergyStored()).orElse(1D);
-        return (int) retVal;
-    }
+
+
 
     @Override
     public int getBarColor(ItemStack stack) {
-        IEnergyStorage energy = stack.getCapability(ForgeCapabilities.ENERGY).orElse(null);
-        if (energy == null) {
-            return super.getBarColor(stack);
-        }
-        return Mth.hsvToRgb(Math.max(0.0F, (float) energy.getEnergyStored() / (float) energy.getMaxEnergyStored()) / 3.0F, 1.0F, 1.0F);
+
     }
 
     @Override

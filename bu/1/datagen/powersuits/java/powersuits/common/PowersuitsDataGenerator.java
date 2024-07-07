@@ -23,21 +23,6 @@ public class PowersuitsDataGenerator {
 
     @SubscribeEvent
     public static void gatherData(GatherDataEvent event) {
-        DataGenerator generator = event.getGenerator();
-        PackOutput output = generator.getPackOutput();
-        CompletableFuture<HolderLookup.Provider> lookupProvider = event.getLookupProvider();
 
-        ExistingFileHelper helper = event.getExistingFileHelper();
-
-        //Client side data generators
-        generator.addProvider(event.includeClient(), new MPSLanguageProvider__EN_US(output));
-//        translator.quit();
-
-        //Server side data generators
-//        generator.addProvider(event.includeServer(), new MPSLootTableProvider(generator));
-        generator.addProvider(event.includeServer(), new MPSBlockTagProvider(output, lookupProvider, helper));
-
-        generator.addProvider(event.includeServer(), new LootTableProvider(output, Collections.emptySet(),
-                List.of(new LootTableProvider.SubProviderEntry(MPSBlockLoot::new, LootContextParamSets.BLOCK))));
     }
 }

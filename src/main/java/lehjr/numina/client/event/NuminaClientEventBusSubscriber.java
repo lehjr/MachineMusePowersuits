@@ -11,8 +11,6 @@ import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.base.NuminaObjects;
 import lehjr.numina.common.constants.NuminaConstants;
 import lehjr.numina.common.utils.IconUtils;
-import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.LayeredDraw;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
@@ -160,7 +158,6 @@ public class NuminaClientEventBusSubscriber {
 
     @SubscribeEvent
     public static void onAddAdditional(ModelEvent.RegisterAdditional e) {
-        NuminaLogger.logDebug("adding additional models");
         ModelBakeEventHandler.onAddAdditional(e);
     }
 

@@ -1,0 +1,104 @@
+package lehjr.numina.client.gui.clickable;
+
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.datafixers.util.Pair;
+import lehjr.numina.common.capability.NuminaCapabilities;
+import lehjr.numina.common.math.Color;
+import lehjr.numina.common.utils.IconUtils;
+import lehjr.numina.common.utils.ItemUtils;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+
+/**
+ * A left hand toggleable tab widget based on Minecraft's "RecipeBookTabButton"
+ */
+public class ModularItemTabToggleWidget extends Clickable {
+    static final ResourceLocation TAB = new ResourceLocation("recipe_book/tab");
+    static final ResourceLocation SELECTED_TAB = new ResourceLocation("recipe_book/tab_selected");
+    protected boolean isStateActive;
+    private static final float ANIMATION_TIME = 15.0F;
+    private float animationTime;
+
+    ItemStack icon;
+    EquipmentSlot type;
+
+    public ModularItemTabToggleWidget(EquipmentSlot type) {
+        super(0, 0, 35, 27, false);
+        this.isStateActive = false;
+        this.type = type;
+        Player player = getMinecraft().player;
+        assert player != null;
+        ItemStack test = ItemUtils.getItemFromEntitySlot(player, type);
+        switch (type.getType()) {
+            case HAND -> this.icon = NuminaCapabilities.getCapability(test, NuminaCapabilities.Inventory.MODE_CHANGING_MODULAR_ITEM)
+                    .map(modularItem -> test).orElse(ItemStack.EMPTY);
+            case ARMOR -> this.icon = NuminaCapabilities.getCapability(test, NuminaCapabilities.Inventory.MODULAR_ITEM)
+                    .map(modularItem -> test).orElse(ItemStack.EMPTY);
+        }
+    }
+
+    float scale = 1F;
+    @Override
+    public void render(GuiGraphics gfx, int mouseX, int mouseY, float partialTick) {
+        if (this.containsPoint(mouseX, mouseY)) {
+            this.animationTime = 15.0F;
+        }
+
+        if (this.animationTime > 0.0F) {
+            scale = 1.0F + 0.1F * (float)Math.sin(this.animationTime / 15.0F * (float) Math.PI);
+            gfx.pose().pushPose();
+            gfx.pose().translate((float)(this.left() + 8), (float)(this.top() + 12), 0.0F);
+            gfx.pose().scale(1.0F, scale, 1.0F);
+            gfx.pose().translate((float)(-(this.left() + 8)), (float)(-(this.top() + 12)), 0.0F);
+        }
+
+        RenderSystem.disableDepthTest();
+        int i = (int) this.left();
+        if (this.isStateActive) {
+            i -= 2;
+        }
+
+        gfx.blitSprite(isStateActive? SELECTED_TAB: TAB, i, (int)this.top(), (int)this.width(), (int)this.height());
+        RenderSystem.enableDepthTest();
+        this.renderIcon(gfx);
+        if (this.animationTime > 0.0F) {
+            gfx.pose().popPose();
+            this.animationTime -= partialTick;
+        }
+    }
+
+    public void setStateActive(boolean active) {
+        this.isStateActive = active;
+    }
+
+    public EquipmentSlot getSlotType() {
+        return type;
+    }
+
+    /**
+     * Renders the item icons for the tabs. Some tabs have 2 icons, some just one.
+     */
+    private void renderIcon(GuiGraphics gfx) {
+        int offset = -2;
+        RenderSystem.disableDepthTest();
+        if (this.icon.isEmpty()) {
+            if (EquipmentSlot.MAINHAND.equals(type)) {
+                IconUtils.getIcon().weapon.draw(gfx.pose(), left() + 9 + offset, top() + 5, Color.WHITE);
+            } else {
+                Pair<ResourceLocation, ResourceLocation> pair = IconUtils.getSlotBackground(type);
+                TextureAtlasSprite textureatlassprite = getMinecraft().getTextureAtlas(pair.getFirst()).apply(pair.getSecond());
+                RenderSystem.setShaderTexture(0, textureatlassprite.atlasLocation());
+                gfx.blit((int)left() + 10 + offset, (int)top() + 5, 0, 16, 16, textureatlassprite);
+            }
+            RenderSystem.enableDepthTest();
+        } else {
+            gfx.renderItem(icon, (int)left() + 9 + offset, (int)top() + 6);
+            gfx.renderItemDecorations(Minecraft.getInstance().font, icon, (int)left() + 9 + offset, (int)top() + 6);
+        }
+    }
+}

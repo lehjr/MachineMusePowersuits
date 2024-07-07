@@ -14,7 +14,7 @@ import net.neoforged.neoforge.network.handling.IPayloadContext;
 import org.jetbrains.annotations.NotNull;
 
 public record ModeChangeRequestPacketServerBound(int mode) implements CustomPacketPayload {
-    public static final Type<ModeChangeRequestPacketServerBound> ID = new Type<>(new ResourceLocation(NuminaConstants.MOD_ID, "ModeChangeRequestServer"));
+    public static final Type<ModeChangeRequestPacketServerBound> ID = new Type<>(new ResourceLocation(NuminaConstants.MOD_ID, "mode_change_request_to_server"));
 
     @Override
     @NotNull

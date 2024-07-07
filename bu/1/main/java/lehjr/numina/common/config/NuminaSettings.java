@@ -28,7 +28,7 @@ package lehjr.numina.common.config;
 
 import lehjr.numina.client.config.ClientConfig;
 import lehjr.numina.client.config.IMeterConfig;
-import lehjr.numina.common.capabilities.module.powermodule.IConfig;
+import lehjr.numina.common.capability.module.powermodule.IConfig;
 import lehjr.numina.common.constants.NuminaConstants;
 import lehjr.numina.common.math.Color;
 import lehjr.numina.common.math.MathUtils;

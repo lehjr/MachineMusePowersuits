@@ -1,9 +1,9 @@
 package lehjr.numina.client.overlay;
 
 import lehjr.numina.common.base.NuminaLogger;
-import lehjr.numina.common.capabilities.NuminaCapabilities;
-import lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
-import lehjr.numina.common.capabilities.module.externalitems.IOtherModItemsAsModules;
+import lehjr.numina.common.capability.NuminaCapabilities;
+import lehjr.numina.common.capability.inventory.modechanging.IModeChangingItem;
+import lehjr.numina.common.capability.module.externalitems.IOtherModItemsAsModules;
 import lehjr.numina.common.utils.TagUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.LayeredDraw;
@@ -27,9 +27,9 @@ public class ModeChangingIconOverlay {
                         modeChangingItemCap.ifPresent(handler -> handler.drawModeChangeIcon(player, finalI, mc, gfx, partialTick, gfx.guiWidth(), gfx.guiHeight()));
 
                         if (modeChangingItemCap.isEmpty()) {
-                            Optional<IOtherModItemsAsModules> foreignModuleCap = NuminaCapabilities.getCapability(itemStack, NuminaCapabilities.PowerModule.EXTERNAL_MOD_ITEMS_AS_MODULES);
+                            Optional<IOtherModItemsAsModules> foreignModuleCap = NuminaCapabilities.getCapability(itemStack, NuminaCapabilities.Module.EXTERNAL_MOD_ITEMS_AS_MODULES);
                             foreignModuleCap.ifPresent(fmc -> {
-                                Optional<IModeChangingItem> storedMCIC = fmc.getStoredModeChangingModuleCapInStorage(TagUtils.getProvider(level));
+                                Optional<IModeChangingItem> storedMCIC = fmc.getStoredModeChangingModuleCapInStorage(NuminaCapabilities.getProvider(level));
                                 storedMCIC.ifPresent(cap -> {
                                     cap.drawModeChangingModularItemIcon(player, finalI, mc, gfx, partialTick, gfx.guiWidth(), gfx.guiHeight());
                                 });

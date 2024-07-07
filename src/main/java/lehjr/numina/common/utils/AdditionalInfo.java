@@ -1,7 +1,7 @@
 package lehjr.numina.common.utils;
 
-import lehjr.numina.common.capabilities.NuminaCapabilities;
-import lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
+import lehjr.numina.common.capability.NuminaCapabilities;
+import lehjr.numina.common.capability.inventory.modechanging.IModeChangingItem;
 import lehjr.numina.common.constants.NuminaConstants;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.resources.language.I18n;
@@ -59,7 +59,7 @@ public class AdditionalInfo {
                             }
                             int capacity = fluidHandler.getTankCapacity(i);
 
-                            Component fluidName = fluidHandler.getFluidInTank(i).getDisplayName();
+                            Component fluidName = fluidHandler.getFluidInTank(i).getHoverName();
                             FluidInfo fluidInfo = fluids.getOrDefault(fluidName, new FluidInfo(fluidName)).addAmmount(fluidStack.getAmount()).addMax(capacity);
                             fluids.put(fluidName, fluidInfo);
                         }
@@ -84,7 +84,7 @@ public class AdditionalInfo {
             }
         });
 
-        NuminaCapabilities.getCapability(stack, NuminaCapabilities.PowerModule.POWER_MODULE).ifPresent(iPowerModule -> {
+        NuminaCapabilities.getCapability(stack, NuminaCapabilities.Module.POWER_MODULE).ifPresent(iPowerModule -> {
             if (doAdditionalInfo) {
                 Component description = Component.translatable( stack.getItem().getDescriptionId() + ".desc");
                 components.addAll(StringUtils.wrapComponentToLength(description, 30));

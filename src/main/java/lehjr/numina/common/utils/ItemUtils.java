@@ -1,14 +1,16 @@
 package lehjr.numina.common.utils;
 
-import lehjr.numina.common.capabilities.NuminaCapabilities;
-import lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
-import lehjr.numina.common.capabilities.module.externalitems.IOtherModItemsAsModules;
+import lehjr.numina.common.capability.NuminaCapabilities;
+import lehjr.numina.common.capability.inventory.modechanging.IModeChangingItem;
+import lehjr.numina.common.capability.module.externalitems.IOtherModItemsAsModules;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -16,7 +18,6 @@ import net.minecraft.world.level.Level;
 import javax.annotation.Nonnull;
 import java.util.Optional;
 
-@Deprecated // see note below
 public class ItemUtils {
     /**
      * ItemStacks are now more like items with a single instance for all. Data storage is now a separate concept
@@ -54,19 +55,19 @@ public class ItemUtils {
             ItemStack host;
             ItemStack newModule;
             ItemStack stackToSet = ItemStack.EMPTY;
-            Optional<IOtherModItemsAsModules> foreignModuleCap = NuminaCapabilities.getCapability(itemStack, NuminaCapabilities.PowerModule.EXTERNAL_MOD_ITEMS_AS_MODULES);
+            Optional<IOtherModItemsAsModules> foreignModuleCap = NuminaCapabilities.getCapability(itemStack, NuminaCapabilities.Module.EXTERNAL_MOD_ITEMS_AS_MODULES);
             Optional<IModeChangingItem> mciCap = NuminaCapabilities.getCapability(itemStack, NuminaCapabilities.Inventory.MODE_CHANGING_MODULAR_ITEM);
             // held item is item from another mod
             if (foreignModuleCap.isPresent()) {
-                host = foreignModuleCap.get().retrieveHostStack(TagUtils.getProvider(level));
+                host = foreignModuleCap.get().retrieveHostStack(NuminaCapabilities.getProvider(level));
                 mciCap = NuminaCapabilities.getCapability(host, NuminaCapabilities.Inventory.MODE_CHANGING_MODULAR_ITEM);
                 if (mciCap.isPresent()) {
                     if (mciCap.get().returnForeignModuleToModularItem(itemStack)) {
                         mciCap.get().setActiveMode(mode);
                         newModule = mciCap.get().getActiveModule();
-                        Optional<IOtherModItemsAsModules> foreignModuleCap1 = NuminaCapabilities.getCapability(newModule, NuminaCapabilities.PowerModule.EXTERNAL_MOD_ITEMS_AS_MODULES);
+                        Optional<IOtherModItemsAsModules> foreignModuleCap1 = NuminaCapabilities.getCapability(newModule, NuminaCapabilities.Module.EXTERNAL_MOD_ITEMS_AS_MODULES);
                         if (foreignModuleCap1.isPresent()) {
-                            foreignModuleCap1.get().storeHostStack(TagUtils.getProvider(level), host.copy());
+                            foreignModuleCap1.get().storeHostStack(NuminaCapabilities.getProvider(level), host.copy());
                             stackToSet = newModule.copy();
                         } else {
                             stackToSet = host;
@@ -76,9 +77,9 @@ public class ItemUtils {
             } else if (mciCap.isPresent()) {
                 mciCap.get().setActiveMode(mode);
                 newModule = mciCap.get().getActiveModule();
-                Optional<IOtherModItemsAsModules> foreignModuleCap1 = NuminaCapabilities.getCapability(newModule, NuminaCapabilities.PowerModule.EXTERNAL_MOD_ITEMS_AS_MODULES);
+                Optional<IOtherModItemsAsModules> foreignModuleCap1 = NuminaCapabilities.getCapability(newModule, NuminaCapabilities.Module.EXTERNAL_MOD_ITEMS_AS_MODULES);
                 if (foreignModuleCap1.isPresent()) {
-                    foreignModuleCap1.get().storeHostStack(TagUtils.getProvider(level), itemStack.copy());
+                    foreignModuleCap1.get().storeHostStack(NuminaCapabilities.getProvider(level), itemStack.copy());
                     stackToSet = newModule;
                 } else {
                     stackToSet = mciCap.get().getModularItemStack();
@@ -89,5 +90,29 @@ public class ItemUtils {
         } catch (Exception ignored) {
 
         }
+    }
+
+    public static ArmorItem.Type getArmorType(ItemStack stack) {
+        EquipmentSlot slot = Mob.getEquipmentSlotForItem(stack);
+        if (slot.isArmor()) {
+            switch (slot) {
+                case HEAD -> {
+                    return ArmorItem.Type.HELMET;
+                }
+
+                case CHEST -> {
+                    return ArmorItem.Type.BODY;
+                }
+
+                case LEGS -> {
+                    return ArmorItem.Type.LEGGINGS;
+                }
+
+                case FEET -> {
+                    return ArmorItem.Type.BOOTS;
+                }
+            }
+        }
+        throw new RuntimeException("Invalid ItemStack for armor capability");
     }
 }

@@ -1,6 +1,6 @@
 package lehjr.numina.common.utils;
 
-import lehjr.numina.common.capabilities.NuminaCapabilities;
+import lehjr.numina.common.capability.NuminaCapabilities;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -113,7 +113,7 @@ public class ElectricItemUtils {
      * returns the energy an itemStack has
      */
     public static int drainItem(@Nonnull ItemStack itemStack, double drainAmount, boolean simulate) {
-//        if (BlackList.blacklistModIds.contains(ItemUtils.getRegistryName(itemStack).getNamespace())) {
+//        if (BlackList.blacklistModIds.machineMusePowersuits$contains(ItemUtils.getRegistryName(itemStack).getNamespace())) {
 //            return 0;
 //        }
         return NuminaCapabilities.getCapability(itemStack, Capabilities.EnergyStorage.ITEM).filter(iEnergyStorage -> iEnergyStorage.getMaxEnergyStored() >= getMaxEnergyForComparison()).map(energyHandler -> energyHandler.extractEnergy((int)drainAmount, simulate)).orElse(0);

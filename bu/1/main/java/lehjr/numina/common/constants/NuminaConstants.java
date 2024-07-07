@@ -62,15 +62,6 @@ public class NuminaConstants {
 
 
 
-  public static final String GUI_CREATIVE_INSTALL = getGUI("creative.install");
-  public static final String GUI_CREATIVE_INSTALL_DESC = getGUI("creative.install.desc");
-
-  public static final String GUI_CREATIVE_INSTALL_ALL = getGUI("creative.install.all");
-  public static final String GUI_CREATIVE_INSTALL_ALL_DESC = getGUI("creative.install.all.desc");
-
-  static String getGUI(String guiString) {
-    return new StringBuilder("gui.").append(MOD_ID).append(".").append(guiString).toString();
-  }
 
 
 }

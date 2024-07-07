@@ -12,7 +12,7 @@ import net.neoforged.neoforge.network.handling.IPayloadContext;
 import org.jetbrains.annotations.NotNull;
 
 public record BlockNamePacketClientBound(ResourceLocation regName) implements CustomPacketPayload {
-    public static final Type<BlockNamePacketClientBound> ID = new Type<>(new ResourceLocation(NuminaConstants.MOD_ID, "BlockNameToClient"));
+    public static final Type<BlockNamePacketClientBound> ID = new Type<>(new ResourceLocation(NuminaConstants.MOD_ID, "block_name_to_client"));
 
     @Override
     @NotNull

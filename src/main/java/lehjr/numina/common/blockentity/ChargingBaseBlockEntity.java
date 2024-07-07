@@ -1,8 +1,8 @@
 package lehjr.numina.common.blockentity;
 
 import lehjr.numina.common.base.NuminaObjects;
-import lehjr.numina.common.capabilities.energy.BlockEnergyWrapper;
-import lehjr.numina.common.capabilities.energy.ExtendedEnergyStorage;
+import lehjr.numina.common.capability.energy.BlockEnergyWrapper;
+import lehjr.numina.common.capability.energy.ExtendedEnergyStorage;
 import lehjr.numina.common.config.NuminaCommonConfig;
 import lehjr.numina.common.constants.NuminaConstants;
 import lehjr.numina.common.utils.ElectricItemUtils;

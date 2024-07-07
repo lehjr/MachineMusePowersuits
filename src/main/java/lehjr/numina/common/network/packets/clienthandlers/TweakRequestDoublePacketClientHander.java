@@ -1,6 +1,6 @@
 package lehjr.numina.common.network.packets.clienthandlers;
 
-import lehjr.numina.common.capabilities.NuminaCapabilities;
+import lehjr.numina.common.capability.NuminaCapabilities;
 import lehjr.numina.common.utils.ItemUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;

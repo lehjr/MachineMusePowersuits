@@ -123,9 +123,6 @@ public class NuminaIcons {
 
             bindTexture();
             TextureAtlasSprite icon = getSprite();
-            NuminaLogger.logDebug("icon: " + icon);
-
-
             float zLevel = 0;
 
             double posLeft = xOffset + maskLeft;

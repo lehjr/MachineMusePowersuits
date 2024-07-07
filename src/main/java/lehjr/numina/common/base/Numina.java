@@ -7,6 +7,8 @@ import lehjr.numina.common.config.ConfigHelper;
 import lehjr.numina.common.config.NuminaCommonConfig;
 import lehjr.numina.common.constants.NuminaConstants;
 import lehjr.numina.common.entity.NuminaArmorStand;
+import lehjr.numina.common.event.PlayerUpdateHandler;
+import lehjr.numina.common.network.NuminaPackets;
 import net.minecraft.client.Minecraft;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
@@ -43,11 +45,14 @@ public class Numina {
         NuminaObjects.ATTACHMENT_TYPES.register(modEventBus);
 
         modEventBus.addListener(this::addEntityAttributes);
+        modEventBus.addListener(NuminaPackets::register);
+
+        NeoForge.EVENT_BUS.addListener(PlayerUpdateHandler::onPlayerUpdate);
 
         SoundDictionary.NUMINA_SOUND_EVENTS.register(modEventBus);
 
         modEventBus.addListener(NuminaClientEventBusSubscriber::onRegisterReloadListenerEvent);
-
+        modEventBus.addListener(NuminaClientEventBusSubscriber::modelRegistry);
 
 
         modEventBus.addListener(NuminaObjects::registerCapabilities);

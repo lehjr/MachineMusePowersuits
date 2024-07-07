@@ -26,7 +26,7 @@
 
 package lehjr.powersuits.common.event;
 
-import lehjr.numina.common.capabilities.module.powermodule.IConfig;
+import lehjr.numina.common.capability.module.powermodule.IConfig;
 import lehjr.numina.common.config.ModuleConfig;
 import lehjr.powersuits.common.config.MPSSettings;
 import net.minecraft.server.MinecraftServer;

@@ -26,7 +26,7 @@
 
 package lehjr.powersuits.common.config;
 
-import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
+import lehjr.numina.common.capability.module.powermodule.ModuleCategory;
 import lehjr.powersuits.common.constants.MPSConstants;
 import net.minecraftforge.common.ForgeConfigSpec;
 

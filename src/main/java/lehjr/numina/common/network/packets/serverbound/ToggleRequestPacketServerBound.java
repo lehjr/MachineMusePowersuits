@@ -1,6 +1,6 @@
 package lehjr.numina.common.network.packets.serverbound;
 
-import lehjr.numina.common.capabilities.NuminaCapabilities;
+import lehjr.numina.common.capability.NuminaCapabilities;
 import lehjr.numina.common.constants.NuminaConstants;
 import lehjr.numina.common.network.NuminaPackets;
 import lehjr.numina.common.network.packets.clientbound.ToggleRequestPacketClientBound;
@@ -14,7 +14,7 @@ import net.neoforged.neoforge.network.handling.IPayloadContext;
 import org.jetbrains.annotations.NotNull;
 
 public record ToggleRequestPacketServerBound(ResourceLocation registryName, boolean toggleval) implements CustomPacketPayload {
-    public static final Type<ToggleRequestPacketServerBound> ID = new Type<>(new ResourceLocation(NuminaConstants.MOD_ID, "ToggleRequestServer"));
+    public static final Type<ToggleRequestPacketServerBound> ID = new Type<>(new ResourceLocation(NuminaConstants.MOD_ID, "toggle_request_to_server"));
 
     @Override
     @NotNull

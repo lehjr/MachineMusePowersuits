@@ -12,21 +12,4 @@ import net.minecraftforge.registries.RegistryObject;
 
 public class MPSMenuTypes {
 
-    /**
-     * AbstractContainerMenu Types ----------------------------------------------------------------------------
-     */
-    public static final DeferredRegister<MenuType<?>> CONTAINER_TYPES = DeferredRegister.create(ForgeRegistries.MENU_TYPES, MPSConstants.MOD_ID);
-
-//    // Module crafting/install/salvage GUI
-//    public static final RegistryObject<MenuType<InstallSalvageCraftAbstractContainerMenu>> SALVAGE_CRAFT_CONTAINER_TYPE =
-//            CONTAINER_TYPES.register(MPSRegistryNames.INSTALL_SALVAGE_CRAFT_CONTAINER_TYPE,
-//                    () -> IMenuTypeExtension.create((windowId, inv, data) -> new InstallSalvageCraftAbstractContainerMenu(windowId, inv)));
-
-    public static final RegistryObject<MenuType<InstallSalvageMenu>> INSTALL_SALVAGE_MENU_TYPE =
-            CONTAINER_TYPES.register(MPSRegistryNames.INSTALL_SALVAGE_CONTAINER_TYPE,
-                    () -> IMenuTypeExtension.create((windowId, inv, data) -> {
-//                        NuminaLogger.logError("doing something with install/salvage");
-
-                        return new InstallSalvageMenu(windowId, inv, data.readEnum(EquipmentSlot.class));
-                    }));
 }

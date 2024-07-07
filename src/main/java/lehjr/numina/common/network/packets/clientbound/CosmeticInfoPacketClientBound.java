@@ -14,7 +14,7 @@ import net.neoforged.neoforge.network.handling.IPayloadContext;
 import org.jetbrains.annotations.NotNull;
 
 public record CosmeticInfoPacketClientBound(EquipmentSlot slotType, String tagName, CompoundTag tagData) implements CustomPacketPayload {
-    public static final Type<CosmeticInfoPacketClientBound> ID = new Type<>(new ResourceLocation(NuminaConstants.MOD_ID, "CosmeticInfoClient"));
+    public static final Type<CosmeticInfoPacketClientBound> ID = new Type<>(new ResourceLocation(NuminaConstants.MOD_ID, "cosmetic_info_to_client"));
 
     @Override
     @NotNull

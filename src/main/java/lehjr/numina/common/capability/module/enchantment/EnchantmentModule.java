@@ -1,0 +1,68 @@
+package lehjr.numina.common.capability.module.enchantment;
+
+import lehjr.numina.common.capability.module.powermodule.ModuleCategory;
+import lehjr.numina.common.capability.module.powermodule.ModuleTarget;
+import lehjr.numina.common.capability.module.tickable.PlayerTickModule;
+import lehjr.numina.common.utils.ElectricItemUtils;
+import lehjr.numina.common.utils.TagUtils;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import org.jetbrains.annotations.NotNull;
+
+/**
+ * Uses player tick to apply/update enchantment while applying appropriate energy drain or remove enchantment when tuned off
+ */
+public abstract class EnchantmentModule extends PlayerTickModule implements IEnchantmentModule {
+    boolean added;
+    boolean removed;
+
+    public EnchantmentModule(ItemStack module, ModuleCategory category, ModuleTarget target) {
+        super(module, category, target);
+//         setting to and loading these just allow values to be persistant when capability reloads
+        added = TagUtils.getModuleBoolean(module, "added");
+        removed = TagUtils.getModuleBoolean(module, "removed");
+    }
+
+    @Override
+    public void onPlayerTickActive(Player player, @NotNull ItemStack item) {
+        if (player.level().isClientSide()) {
+            return;
+        }
+
+        double playerEnergy = ElectricItemUtils.getPlayerEnergy(player);
+        int energyUsage = getEnergyUsage();
+
+        if (playerEnergy > energyUsage) {
+            addEnchantment(item);
+            ElectricItemUtils.drainPlayerEnergy(player, energyUsage, false);
+            setAdded(true);
+            setRemoved(false);
+        }
+    }
+
+    @Override
+    public void onPlayerTickInactive(Player player, @NotNull ItemStack item) {
+        if (added && !removed) {
+            removeEnchantment(item);
+            setAdded(false);
+            setRemoved(true);
+        }
+    }
+
+    @Override
+    public void setAdded(boolean added) {
+        TagUtils.setModuleBoolean(getModule(), "added", added);
+        this.added = added;
+    }
+
+    @Override
+    public void setRemoved(boolean removed) {
+        TagUtils.setModuleBoolean(getModule(), "removed", removed);
+        this.removed = removed;
+    }
+
+    @Override
+    public int getLevel() {
+        return 1;
+    }
+}

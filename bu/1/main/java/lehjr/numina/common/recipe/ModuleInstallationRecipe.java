@@ -1,9 +1,9 @@
 package lehjr.numina.common.recipe;
 
-import lehjr.numina.common.capabilities.NuminaCapabilities;
-import lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
-import lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
-import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
+import lehjr.numina.common.capability.NuminaCapabilities;
+import lehjr.numina.common.capability.inventory.modularitem.IModularItem;
+import lehjr.numina.common.capability.module.powermodule.IPowerModule;
+import lehjr.numina.common.capability.module.powermodule.ModuleCategory;
 import lehjr.numina.common.utils.ItemUtils;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.RegistryAccess;
