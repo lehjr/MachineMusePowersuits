@@ -29,7 +29,6 @@ import net.neoforged.neoforge.items.IItemHandler;
 
 public class InstallSalvageMenu extends AbstractContainerMenu {
     EquipmentSlot slotType;
-    //    ModularItemContainer container;
     int mainInventoryStart = 0;
     int hotbarInventoryStart = 0;
     double mouseX;
@@ -105,6 +104,7 @@ public class InstallSalvageMenu extends AbstractContainerMenu {
             int finalModularItemInvIndex = modularItemInvIndex;
 
             if (MathUtils.isIntInRange(cap.getRangeForCategory(ModuleCategory.ARMOR), modularItemInvIndex)) {
+                // OFFHAND
                 addSlot(new IconSlotItemHandler(cap, parentSlot, modularItemInvIndex, 178 + innercol * 18, 14 + innerrow * 18) {
 
                     @OnlyIn(Dist.CLIENT)
@@ -121,7 +121,7 @@ public class InstallSalvageMenu extends AbstractContainerMenu {
 
                     @Override
                     public boolean mayPlace(ItemStack stack) {
-                        NuminaLogger.logDebug("may place <" + stack +"> " + cap.isItemValid(finalModularItemInvIndex, stack));
+                        NuminaLogger.logDebug("may place <" + stack +"> " + cap.isModuleValidForPlacement(finalModularItemInvIndex, stack));
 
                         return cap.isModuleValidForPlacement(finalModularItemInvIndex, stack);
                     }
@@ -129,7 +129,7 @@ public class InstallSalvageMenu extends AbstractContainerMenu {
 
                 });
             } else if (MathUtils.isIntInRange(cap.getRangeForCategory(ModuleCategory.ENERGY_STORAGE), modularItemInvIndex)) {
-
+                // ENERGY_STORAGE
                 addSlot(new IconSlotItemHandler(cap, parentSlot, finalModularItemInvIndex, 178 + innercol * 18, 14 + innerrow * 18) {
                     @OnlyIn(Dist.CLIENT)
                     @Override
@@ -139,13 +139,14 @@ public class InstallSalvageMenu extends AbstractContainerMenu {
 
                     @Override
                     public boolean mayPlace(ItemStack stack) {
-                        NuminaLogger.logDebug("may place <" + stack +"> " + cap.isItemValid(finalModularItemInvIndex, stack));
+                        NuminaLogger.logDebug("may place <" + stack +"> " + cap.isModuleValidForPlacement(finalModularItemInvIndex, stack));
 
                         return cap.isModuleValidForPlacement(finalModularItemInvIndex, stack);
                     }
                 });
 
             } else if (MathUtils.isIntInRange(cap.getRangeForCategory(ModuleCategory.ENERGY_GENERATION), modularItemInvIndex)) {
+                // ENERGY_GENERATION
                 addSlot(new IconSlotItemHandler(cap, parentSlot, modularItemInvIndex, 178 + innercol * 18, -1000) {
                     @OnlyIn(Dist.CLIENT)
                     @Override
@@ -155,17 +156,17 @@ public class InstallSalvageMenu extends AbstractContainerMenu {
 
                     @Override
                     public boolean mayPlace(ItemStack stack) {
-                        NuminaLogger.logDebug("may place <" + stack +"> " + cap.isItemValid(finalModularItemInvIndex, stack));
-
+                        NuminaLogger.logDebug("may place <" + stack +"> " + cap.isModuleValidForPlacement(finalModularItemInvIndex, stack));
                         return cap.isModuleValidForPlacement(finalModularItemInvIndex, stack);
                     }
                 });
             } else {
+                // Generic slot (Category NONE)
                 addSlot(new HideableSlotItemHandler(cap, parentSlot, modularItemInvIndex, 178 + innercol * 18, 14 + innerrow * 18) {
                     @Override
                     public boolean mayPlace(ItemStack stack) {
-                        NuminaLogger.logDebug("may place <" + stack +"> " + cap.isItemValid(finalModularItemInvIndex, stack));
-                        return super.mayPlace(stack);
+                        NuminaLogger.logDebug("may place <" + stack +"> " + cap.isModuleValidForPlacement(finalModularItemInvIndex, stack));
+                        return cap.isModuleValidForPlacement(finalModularItemInvIndex, stack);
                     }
                 });
             }
@@ -241,10 +242,12 @@ public class InstallSalvageMenu extends AbstractContainerMenu {
         if (slot != null && slot.hasItem()) {
             ItemStack itemStack1 = slot.getItem();
             itemStack = itemStack1.copy();
+            // hotbar
             if (index < mainInventoryStart) {
                 if (!this.moveItemStackTo(itemStack1, mainInventoryStart, this.slots.size(), true)) {
                     return ItemStack.EMPTY;
                 }
+
             } else if (!this.moveItemStackTo(itemStack1, 0, mainInventoryStart, false)) {
                 return ItemStack.EMPTY;
             }

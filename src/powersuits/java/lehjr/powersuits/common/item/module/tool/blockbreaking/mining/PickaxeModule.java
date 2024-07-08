@@ -30,28 +30,28 @@ public class PickaxeModule extends AbstractPowerModule {
 
             switch(tier) {
                 case 1: {
-                    addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, ()-> ()->MPSCommonConfig.stonePickAxeModuleEnergyConsumptionBase, "FE");
-                    addBaseProperty(MPSConstants.HARVEST_SPEED, ()-> ()->MPSCommonConfig.stonePickAxeModuleHarvestSpeedBase, "x");
-                    addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.ENERGY_CONSUMPTION, ()-> ()->MPSCommonConfig.stonePickAxeModuleEnergyConsumptionOverclockMultiplier);
-                    addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.HARVEST_SPEED, ()-> ()->MPSCommonConfig.stonePickAxeModuleHarvestSpeedOverclockMultiplier);
+                    addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, MPSCommonConfig.stonePickAxeModuleEnergyConsumptionBase, "FE");
+                    addBaseProperty(MPSConstants.HARVEST_SPEED, MPSCommonConfig.stonePickAxeModuleHarvestSpeedBase, "x");
+                    addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.ENERGY_CONSUMPTION, MPSCommonConfig.stonePickAxeModuleEnergyConsumptionOverclockMultiplier);
+                    addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.HARVEST_SPEED, MPSCommonConfig.stonePickAxeModuleHarvestSpeedOverclockMultiplier);
                 }
                 case 2: {
-                    addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, ()-> ()->MPSCommonConfig.ironPickAxeModuleEnergyConsumptionBase, "FE");
-                    addBaseProperty(MPSConstants.HARVEST_SPEED, ()-> ()->MPSCommonConfig.ironPickAxeModuleHarvestSpeedBase, "x");
-                    addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.ENERGY_CONSUMPTION, ()-> ()->MPSCommonConfig.ironPickAxeModuleEnergyConsumptionOverclockMultiplier);
-                    addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.HARVEST_SPEED, ()-> ()->MPSCommonConfig.ironPickAxeModuleHarvestSpeedOverclockMultiplier);
+                    addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, MPSCommonConfig.ironPickAxeModuleEnergyConsumptionBase, "FE");
+                    addBaseProperty(MPSConstants.HARVEST_SPEED, MPSCommonConfig.ironPickAxeModuleHarvestSpeedBase, "x");
+                    addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.ENERGY_CONSUMPTION, MPSCommonConfig.ironPickAxeModuleEnergyConsumptionOverclockMultiplier);
+                    addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.HARVEST_SPEED, MPSCommonConfig.ironPickAxeModuleHarvestSpeedOverclockMultiplier);
                 }
                 case 3: {
-                    addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, ()-> ()->MPSCommonConfig.diamondPickAxeModuleEnergyConsumptionBase, "FE");
-                    addBaseProperty(MPSConstants.HARVEST_SPEED, ()-> ()->MPSCommonConfig.diamondPickAxeModuleHarvestSpeedBase, "x");
-                    addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.ENERGY_CONSUMPTION, ()-> ()->MPSCommonConfig.diamondPickAxeModuleEnergyConsumptionOverclockMultiplier);
-                    addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.HARVEST_SPEED, ()-> ()->MPSCommonConfig.diamondPickAxeModuleHarvestSpeedOverclockMultiplier);
+                    addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, MPSCommonConfig.diamondPickAxeModuleEnergyConsumptionBase, "FE");
+                    addBaseProperty(MPSConstants.HARVEST_SPEED, MPSCommonConfig.diamondPickAxeModuleHarvestSpeedBase, "x");
+                    addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.ENERGY_CONSUMPTION, MPSCommonConfig.diamondPickAxeModuleEnergyConsumptionOverclockMultiplier);
+                    addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.HARVEST_SPEED, MPSCommonConfig.diamondPickAxeModuleHarvestSpeedOverclockMultiplier);
                 }
                 case 4: {
-                    addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, ()-> ()->MPSCommonConfig.netheritePickAxeModuleEnergyConsumptionBase, "FE");
-                    addBaseProperty(MPSConstants.HARVEST_SPEED, ()-> ()->MPSCommonConfig.netheritePickAxeModuleHarvestSpeedBase, "x");
-                    addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.ENERGY_CONSUMPTION, ()-> ()->MPSCommonConfig.netheritePickAxeModuleEnergyConsumptionOverclockMultiplier);
-                    addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.HARVEST_SPEED, ()-> ()->MPSCommonConfig.netheritePickAxeModuleHarvestSpeedOverclockMultiplier);
+                    addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, MPSCommonConfig.netheritePickAxeModuleEnergyConsumptionBase, "FE");
+                    addBaseProperty(MPSConstants.HARVEST_SPEED, MPSCommonConfig.netheritePickAxeModuleHarvestSpeedBase, "x");
+                    addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.ENERGY_CONSUMPTION, MPSCommonConfig.netheritePickAxeModuleEnergyConsumptionOverclockMultiplier);
+                    addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.HARVEST_SPEED, MPSCommonConfig.netheritePickAxeModuleHarvestSpeedOverclockMultiplier);
                 }
             }
         }

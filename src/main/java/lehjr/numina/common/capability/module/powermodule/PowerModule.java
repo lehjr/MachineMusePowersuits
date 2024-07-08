@@ -55,25 +55,25 @@ public class PowerModule implements IPowerModule {
     }
 
     @Override
-    public void addBaseProperty(String propertyName, Callable<IConfigDoubleGetter> configValGetter) {
-        addPropertyModifier(propertyName, new PropertyModifierFlatAdditive(configValGetter));
+    public void addBaseProperty(String propertyName, double configValue) {
+        addPropertyModifier(propertyName, new PropertyModifierFlatAdditive(configValue));
     }
 
     @Override
-    public void addBaseProperty(String propertyName, Callable<IConfigDoubleGetter> configBase, String unit) {
+    public void addBaseProperty(String propertyName, double configValue, String unit) {
         UnitMap.addUnitLabel(propertyName, unit);
-        addPropertyModifier(propertyName, new PropertyModifierFlatAdditive(configBase));
+        addPropertyModifier(propertyName, new PropertyModifierFlatAdditive(configValue));
     }
 
     @Override
-    public void addTradeoffProperty(String tradeoffName, String propertyName, Callable<IConfigDoubleGetter> configMultiplier) {
-        addPropertyModifier(propertyName, new PropertyModifierLinearDoubleAdditive(configMultiplier, tradeoffName));
+    public void addTradeoffProperty(String tradeoffName, String propertyName, double multiplierConfigValue) {
+        addPropertyModifier(propertyName, new PropertyModifierLinearAdditive(multiplierConfigValue, tradeoffName));
     }
 
     @Override
-    public void addTradeoffProperty(String tradeoffName, String propertyName, Callable<IConfigDoubleGetter> configMultiplier, String unit) {
+    public void addTradeoffProperty(String tradeoffName, String propertyName, double mulitiplierConfigValue, String unit) {
         addUnitLabel(propertyName, unit);
-        addTradeoffProperty(tradeoffName, propertyName, configMultiplier);
+        addTradeoffProperty(tradeoffName, propertyName, mulitiplierConfigValue);
     }
 
     @Override
@@ -87,9 +87,9 @@ public class PowerModule implements IPowerModule {
     }
 
     @Override
-    public void addIntTradeoffProperty(Callable<IConfigIntGetter> config, String tradeoffName, String propertyName, String unit, int roundTo, int offset) {
+    public void addIntTradeoffProperty(int mulitiplierConfigValue, String tradeoffName, String propertyName, String unit, int roundTo, int offset) {
         addUnitLabel(propertyName, unit);
-        addPropertyModifier(propertyName, new PropertyModifierIntLinearAdditive(config, tradeoffName, roundTo, offset));
+        addPropertyModifier(propertyName, new PropertyModifierIntLinearAdditive(mulitiplierConfigValue, tradeoffName, roundTo, offset));
     }
 }
 

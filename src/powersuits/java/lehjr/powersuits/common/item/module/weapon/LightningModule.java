@@ -32,8 +32,8 @@ public class LightningModule extends AbstractPowerModule {
 
         public RightClickie(ItemStack module) {
             super(module, ModuleCategory.WEAPON, ModuleTarget.TOOLONLY);
-            addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, ()-> ()-> MPSCommonConfig.lightningSummonerEnergyConsumption, "FE");
-            addBaseProperty(MPSConstants.HEAT_EMISSION, ()-> ()-> MPSCommonConfig.lightningSummonerHeatEmission, "");
+            addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, MPSCommonConfig.lightningSummonerEnergyConsumption, "FE");
+            addBaseProperty(MPSConstants.HEAT_EMISSION, MPSCommonConfig.lightningSummonerHeatEmission, "");
         }
 
         @Override

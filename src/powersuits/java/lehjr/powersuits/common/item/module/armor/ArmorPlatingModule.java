@@ -19,22 +19,22 @@ public class ArmorPlatingModule extends AbstractPowerModule {
             this.tier = tier;
             switch (tier) {
                 case 1: {
-                    addBaseProperty(MPSConstants.ARMOR_VALUE_PHYSICAL, () -> () -> MPSCommonConfig.ironPlatingArmorPhysical, NuminaConstants.MODULE_TRADEOFF_PREFIX + MPSConstants.ARMOR_POINTS);
-                    addBaseProperty(NuminaConstants.MAXIMUM_HEAT, () -> () -> MPSCommonConfig.ironPlatingMaxHeat);
-                    addBaseProperty(MPSConstants.KNOCKBACK_RESISTANCE, () -> () -> MPSCommonConfig.ironPlatingKnockBackResistance);
-                    addBaseProperty(MPSConstants.ARMOR_TOUGHNESS, () -> () -> MPSCommonConfig.ironPlatingArmorToughness);
+                    addBaseProperty(MPSConstants.ARMOR_VALUE_PHYSICAL, MPSCommonConfig.ironPlatingArmorPhysical, NuminaConstants.MODULE_TRADEOFF_PREFIX + MPSConstants.ARMOR_POINTS);
+                    addBaseProperty(NuminaConstants.MAXIMUM_HEAT, MPSCommonConfig.ironPlatingMaxHeat);
+                    addBaseProperty(MPSConstants.KNOCKBACK_RESISTANCE, MPSCommonConfig.ironPlatingKnockBackResistance);
+                    addBaseProperty(MPSConstants.ARMOR_TOUGHNESS, MPSCommonConfig.ironPlatingArmorToughness);
                 }
                 case 2: {
-                    addBaseProperty(MPSConstants.ARMOR_VALUE_PHYSICAL, ()-> () -> MPSCommonConfig.diamondPlatingArmorPhysical, NuminaConstants.MODULE_TRADEOFF_PREFIX + MPSConstants.ARMOR_POINTS);
-                    addBaseProperty(NuminaConstants.MAXIMUM_HEAT, ()-> () -> MPSCommonConfig.diamondPlatingMaxHeat);
-                    addBaseProperty(MPSConstants.KNOCKBACK_RESISTANCE, ()-> () -> MPSCommonConfig.diamondPlatingKnockBackResistance);
-                    addBaseProperty(MPSConstants.ARMOR_TOUGHNESS, ()-> () -> MPSCommonConfig.diamondPlatingArmorToughness);
+                    addBaseProperty(MPSConstants.ARMOR_VALUE_PHYSICAL,  MPSCommonConfig.diamondPlatingArmorPhysical, NuminaConstants.MODULE_TRADEOFF_PREFIX + MPSConstants.ARMOR_POINTS);
+                    addBaseProperty(NuminaConstants.MAXIMUM_HEAT,  MPSCommonConfig.diamondPlatingMaxHeat);
+                    addBaseProperty(MPSConstants.KNOCKBACK_RESISTANCE,  MPSCommonConfig.diamondPlatingKnockBackResistance);
+                    addBaseProperty(MPSConstants.ARMOR_TOUGHNESS,  MPSCommonConfig.diamondPlatingArmorToughness);
                 }
                 case 3: {
-                    addBaseProperty(MPSConstants.ARMOR_VALUE_PHYSICAL, () -> () -> MPSCommonConfig.netheritePlatingArmorPhysical, NuminaConstants.MODULE_TRADEOFF_PREFIX + MPSConstants.ARMOR_POINTS);
-                    addBaseProperty(NuminaConstants.MAXIMUM_HEAT, () -> () -> MPSCommonConfig.netheritePlatingMaxHeat);
-                    addBaseProperty(MPSConstants.KNOCKBACK_RESISTANCE, () -> () -> MPSCommonConfig.netheritePlatingKnockBackResistance);
-                    addBaseProperty(MPSConstants.ARMOR_TOUGHNESS, () -> () -> MPSCommonConfig.netheritePlatingArmorToughness);
+                    addBaseProperty(MPSConstants.ARMOR_VALUE_PHYSICAL, MPSCommonConfig.netheritePlatingArmorPhysical, NuminaConstants.MODULE_TRADEOFF_PREFIX + MPSConstants.ARMOR_POINTS);
+                    addBaseProperty(NuminaConstants.MAXIMUM_HEAT, MPSCommonConfig.netheritePlatingMaxHeat);
+                    addBaseProperty(MPSConstants.KNOCKBACK_RESISTANCE, MPSCommonConfig.netheritePlatingKnockBackResistance);
+                    addBaseProperty(MPSConstants.ARMOR_TOUGHNESS, MPSCommonConfig.netheritePlatingArmorToughness);
                 }
             }
         }

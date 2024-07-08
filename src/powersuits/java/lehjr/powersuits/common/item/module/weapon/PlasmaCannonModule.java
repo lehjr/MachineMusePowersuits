@@ -49,12 +49,12 @@ public class PlasmaCannonModule extends AbstractPowerModule {
     public static class RightClickie extends RightClickModule {
         public RightClickie(ItemStack module) {
             super(module, ModuleCategory.WEAPON, ModuleTarget.TOOLONLY);
-            addBaseProperty(MPSConstants.ENERGY_PER_TICK, ()-> ()->MPSCommonConfig.plasmaCannonEnergyPerTickBase, "FE");
-            addBaseProperty(MPSConstants.PLASMA_CANNON_DAMAGE_AT_FULL_CHARGE, ()->()-> MPSCommonConfig.plasmaCannonDamageAtFullChargeBase, "pt");
-            addTradeoffProperty(MPSConstants.AMPERAGE, MPSConstants.ENERGY_PER_TICK, ()-> ()->MPSCommonConfig.plasmaCannonEnergyPerTickAmperageMultiplier, "FE");
-            addTradeoffProperty(MPSConstants.AMPERAGE, MPSConstants.PLASMA_CANNON_DAMAGE_AT_FULL_CHARGE, ()->()-> MPSCommonConfig.plasmaCannonDamageAtFullChargeAmperageMultiplier, "pt");
-            addTradeoffProperty(MPSConstants.VOLTAGE, MPSConstants.ENERGY_PER_TICK, ()-> ()->MPSCommonConfig.plasmaCannonEnergyPerTickVoltageMultiplier, "FE");
-            addTradeoffProperty(MPSConstants.VOLTAGE, MPSConstants.PLASMA_CANNON_EXPLOSIVENESS, ()->()-> MPSCommonConfig.plasmaCannonExplosivenessVoltageMultiplier, MPSConstants.CREEPER);
+            addBaseProperty(MPSConstants.ENERGY_PER_TICK, MPSCommonConfig.plasmaCannonEnergyPerTickBase, "FE");
+            addBaseProperty(MPSConstants.PLASMA_CANNON_DAMAGE_AT_FULL_CHARGE, MPSCommonConfig.plasmaCannonDamageAtFullChargeBase, "pt");
+            addTradeoffProperty(MPSConstants.AMPERAGE, MPSConstants.ENERGY_PER_TICK, MPSCommonConfig.plasmaCannonEnergyPerTickAmperageMultiplier, "FE");
+            addTradeoffProperty(MPSConstants.AMPERAGE, MPSConstants.PLASMA_CANNON_DAMAGE_AT_FULL_CHARGE, MPSCommonConfig.plasmaCannonDamageAtFullChargeAmperageMultiplier, "pt");
+            addTradeoffProperty(MPSConstants.VOLTAGE, MPSConstants.ENERGY_PER_TICK, MPSCommonConfig.plasmaCannonEnergyPerTickVoltageMultiplier, "FE");
+            addTradeoffProperty(MPSConstants.VOLTAGE, MPSConstants.PLASMA_CANNON_EXPLOSIVENESS, MPSCommonConfig.plasmaCannonExplosivenessVoltageMultiplier, MPSConstants.CREEPER);
         }
 
         @Override

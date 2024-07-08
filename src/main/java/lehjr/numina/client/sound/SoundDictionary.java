@@ -34,12 +34,7 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 
 import java.util.function.Supplier;
 
-//@Mod.EventBusSubscriber(modid = NuminaConstants.MOD_ID, value = Dist.CLIENT)
 public class SoundDictionary {
-    static {
-        new SoundDictionary();
-    }
-
    public static final DeferredRegister<SoundEvent> NUMINA_SOUND_EVENTS = DeferredRegister.create(BuiltInRegistries.SOUND_EVENT, NuminaConstants.MOD_ID);
     public static final Supplier<SoundEvent> SOUND_EVENT_GUI_INSTALL = NUMINA_SOUND_EVENTS.register("gui_install",
             () -> SoundEvent.createFixedRangeEvent(new ResourceLocation(NuminaConstants.MOD_ID, "gui_install"), 10));

@@ -10,6 +10,7 @@ import lehjr.powersuits.common.capabilities.item.tool.PowerFistHeatWrapper;
 import lehjr.powersuits.common.capabilities.item.tool.PowerFistModeChangingWrapper;
 import lehjr.powersuits.common.capabilities.item.tool.PowerFistRenderWrapper;
 import lehjr.powersuits.common.item.module.armor.ArmorPlatingModule;
+import lehjr.powersuits.common.item.module.armor.EnergyShieldModule;
 import lehjr.powersuits.common.item.module.tool.blockbreaking.chopping.AxeModule;
 import lehjr.powersuits.common.item.module.tool.blockbreaking.digging.ShovelModule;
 import lehjr.powersuits.common.item.module.tool.blockbreaking.mining.PickaxeModule;
@@ -102,6 +103,10 @@ public class MPSCapabilities {
                 MPSItems.POWER_ARMOR_LEGGINGS_4.get(),
                 MPSItems.POWER_ARMOR_BOOTS_4.get());
 
+        // Fluid
+        // Todo: chestplate wrappers
+
+
         // Render
         event.registerItem(NuminaCapabilities.RENDER, (stack, ctx) -> new PowerArmorRenderWrapper(stack),
                 MPSItems.POWER_ARMOR_HELMET_1.get(),
@@ -178,7 +183,7 @@ public class MPSCapabilities {
         event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new ArmorPlatingModule.ArmorPlatingCapabilityWrapper(stack, 1), MPSItems.IRON_PLATING_MODULE.get());
         event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new ArmorPlatingModule.ArmorPlatingCapabilityWrapper(stack, 2), MPSItems.DIAMOND_PLATING_MODULE.get());
         event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new ArmorPlatingModule.ArmorPlatingCapabilityWrapper(stack, 3), MPSItems.NETHERITE_PLATING_MODULE.get());
-
+        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new EnergyShieldModule.EnergyShieldCapabilityWrapper(stack), MPSItems.ENERGY_SHIELD_MODULE.get());
 
         // Cosmetic
 
@@ -221,7 +226,7 @@ public class MPSCapabilities {
         event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new ShovelModule.BlockBreaker(stack, 3), MPSItems.DIAMOND_SHOVEL_MODULE.get());
         event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new ShovelModule.BlockBreaker(stack, 4), MPSItems.NETHERITE_SHOVEL_MODULE.get());
 
-
+        // Misc
         event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new FlintAndSteelModule.RightClickie(stack), MPSItems.LEAF_BLOWER_MODULE.get());
         event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new LeafBlowerModule.RightClickie(stack), MPSItems.LEAF_BLOWER_MODULE.get());
         event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new LuxCapacitorModule.RightClickie(stack), MPSItems.LUX_CAPACITOR_MODULE.get());

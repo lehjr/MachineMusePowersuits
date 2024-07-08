@@ -101,7 +101,7 @@ public class ItemUtils {
                 }
 
                 case CHEST -> {
-                    return ArmorItem.Type.BODY;
+                    return ArmorItem.Type.CHESTPLATE;
                 }
 
                 case LEGS -> {

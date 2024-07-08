@@ -18,13 +18,13 @@ public class EnergyShieldModule extends AbstractPowerModule {
         public EnergyShieldCapabilityWrapper(ItemStack module) {
             super(module, ModuleCategory.ARMOR, ModuleTarget.ARMORONLY);
             addTradeoffProperty(MPSConstants.MODULE_FIELD_STRENGTH, MPSConstants.ARMOR_VALUE_ENERGY,
-                    ()->()->MPSCommonConfig.energyShieldFieldStrengthMultiplier, NuminaConstants.MODULE_TRADEOFF_PREFIX + MPSConstants.ARMOR_POINTS);
+                    MPSCommonConfig.energyShieldFieldStrengthMultiplier, NuminaConstants.MODULE_TRADEOFF_PREFIX + MPSConstants.ARMOR_POINTS);
             addTradeoffProperty(MPSConstants.MODULE_FIELD_STRENGTH, MPSConstants.ARMOR_ENERGY_CONSUMPTION,
-                    ()->()->MPSCommonConfig.energyShieldEnergyConsumptionMultiplier, "FE");
+                    MPSCommonConfig.energyShieldEnergyConsumptionMultiplier, "FE");
             addTradeoffProperty(MPSConstants.MODULE_FIELD_STRENGTH, NuminaConstants.MAXIMUM_HEAT,
-                    ()->()-> MPSCommonConfig.energyShieldMaxHeatMultiplier);
+                     MPSCommonConfig.energyShieldMaxHeatMultiplier);
             addBaseProperty(MPSConstants.KNOCKBACK_RESISTANCE,
-                    ()-> ()-> MPSCommonConfig.energyShieldKnockBackResistanceMultiplier);
+                    MPSCommonConfig.energyShieldKnockBackResistanceMultiplier);
         }
 
         @Override

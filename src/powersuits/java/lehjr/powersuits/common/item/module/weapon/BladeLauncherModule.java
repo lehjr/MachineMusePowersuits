@@ -23,8 +23,8 @@ public class BladeLauncherModule extends AbstractPowerModule {
 
         public RightClickie(ItemStack module) {
             super(module, ModuleCategory.WEAPON, ModuleTarget.TOOLONLY);
-            addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, ()-> ()-> MPSCommonConfig.bladeLauncherEnergyConsumption, "FE");
-            addBaseProperty(MPSConstants.BLADE_DAMAGE, ()-> ()-> MPSCommonConfig.bladeLauncherSpinningBladeDamage, "pt");
+            addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, MPSCommonConfig.bladeLauncherEnergyConsumption, "FE");
+            addBaseProperty(MPSConstants.BLADE_DAMAGE, MPSCommonConfig.bladeLauncherSpinningBladeDamage, "pt");
         }
 
         @Override

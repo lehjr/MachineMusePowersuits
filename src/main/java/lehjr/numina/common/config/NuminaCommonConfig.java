@@ -36,19 +36,19 @@ public class NuminaCommonConfig {
 
     // Advanced
     private static final ModConfigSpec.Builder BATTERIES_BUILDER2 = BATTERIES_BUILDER1.pop().push(NuminaConstants.MODULE_BATTERY_ADVANCED__REGNAME);
-    private static final ModConfigSpec.IntValue BATTERY_ADVANCED__MAX_ENERGY = BATTERIES_BUILDER2.defineInRange(NuminaConstants.CONFIG_MAX_ENERGY, 1000000, 0, Integer.MAX_VALUE);
+    private static final ModConfigSpec.IntValue BATTERY_ADVANCED__MAX_ENERGY = BATTERIES_BUILDER2.defineInRange(NuminaConstants.CONFIG_MAX_ENERGY, 10000000, 0, Integer.MAX_VALUE);
     private static final ModConfigSpec.IntValue BATTERY_ADVANCED__MAX_TRANSFER = BATTERIES_BUILDER2.defineInRange(NuminaConstants.CONFIG_MAX_TRANSFER, 1250000, 0, Integer.MAX_VALUE);
     private static final ModConfigSpec.BooleanValue BATTERY_ADVANCED__IS_ALLOWED = BATTERIES_BUILDER2.define(NuminaConstants.CONFIG_IS_ALLOWED, true);
 
     // Elite
     private static final ModConfigSpec.Builder BATTERIES_BUILDER3 = BATTERIES_BUILDER2.pop().push(NuminaConstants.MODULE_BATTERY_ELITE__REGNAME);
-    private static final ModConfigSpec.IntValue BATTERY_ELITE__MAX_ENERGY = BATTERIES_BUILDER3.defineInRange(NuminaConstants.CONFIG_MAX_ENERGY, 1000000, 0, Integer.MAX_VALUE);
+    private static final ModConfigSpec.IntValue BATTERY_ELITE__MAX_ENERGY = BATTERIES_BUILDER3.defineInRange(NuminaConstants.CONFIG_MAX_ENERGY, 100000000, 0, Integer.MAX_VALUE);
     private static final ModConfigSpec.IntValue BATTERY_ELITE__MAX_TRANSFER = BATTERIES_BUILDER3.defineInRange(NuminaConstants.CONFIG_MAX_TRANSFER, 1250000, 0, Integer.MAX_VALUE);
     private static final ModConfigSpec.BooleanValue BATTERY_ELITE__IS_ALLOWED = BATTERIES_BUILDER3.define(NuminaConstants.CONFIG_IS_ALLOWED, true);
 
     // Ultimate
     private static final ModConfigSpec.Builder BATTERIES_BUILDER4 = BATTERIES_BUILDER3.pop().push(NuminaConstants.MODULE_BATTERY_ULTIMATE__REGNAME);
-    private static final ModConfigSpec.IntValue BATTERY_ULTIMATE__MAX_ENERGY = BATTERIES_BUILDER4.defineInRange(NuminaConstants.CONFIG_MAX_ENERGY, 1000000, 0, Integer.MAX_VALUE);
+    private static final ModConfigSpec.IntValue BATTERY_ULTIMATE__MAX_ENERGY = BATTERIES_BUILDER4.defineInRange(NuminaConstants.CONFIG_MAX_ENERGY, 1000000000, 0, Integer.MAX_VALUE);
     private static final ModConfigSpec.IntValue BATTERY_ULTIMATE__MAX_TRANSFER = BATTERIES_BUILDER4.defineInRange(NuminaConstants.CONFIG_MAX_TRANSFER, 1250000, 0, Integer.MAX_VALUE);
     private static final ModConfigSpec.BooleanValue BATTERY_ULTIMATE__IS_ALLOWED = BATTERIES_BUILDER4.define(NuminaConstants.CONFIG_IS_ALLOWED, true);
 

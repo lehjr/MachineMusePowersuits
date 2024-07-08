@@ -49,11 +49,11 @@ public class LuxCapacitorModule extends AbstractPowerModule {
     public static class RightClickie extends RightClickModule {
         public RightClickie(@Nonnull ItemStack module) {
             super(module, ModuleCategory.TOOL, ModuleTarget.TOOLONLY);
-            addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, ()->()-> MPSCommonConfig.luxCapacitorEnergyConsumptionBase, "FE");
-            addTradeoffProperty(MPSConstants.RED, MPSConstants.RED_HUE, ()->()-> MPSCommonConfig.getLuxCapacitorRedHueMultiplier, "%");
-            addTradeoffProperty(MPSConstants.GREEN, MPSConstants.GREEN_HUE, ()->()-> MPSCommonConfig.getLuxCapacitorGreenHueMultiplier, "%");
-            addTradeoffProperty(MPSConstants.BLUE, MPSConstants.BLUE_HUE, ()->()-> MPSCommonConfig.getLuxCapacitorBlueHueMultiplier, "%");
-            addTradeoffProperty(MPSConstants.ALPHA, MPSConstants.OPACITY, ()->()-> MPSCommonConfig.getLuxCapacitorOpacityMultiplier, "%");
+            addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, MPSCommonConfig.luxCapacitorEnergyConsumptionBase, "FE");
+            addTradeoffProperty(MPSConstants.RED, MPSConstants.RED_HUE, 1.0, "%");
+            addTradeoffProperty(MPSConstants.GREEN, MPSConstants.GREEN_HUE, 1.0, "%");
+            addTradeoffProperty(MPSConstants.BLUE, MPSConstants.BLUE_HUE, 1.0, "%");
+            addTradeoffProperty(MPSConstants.ALPHA, MPSConstants.OPACITY, 1.0, "%");
         }
 
         @Override

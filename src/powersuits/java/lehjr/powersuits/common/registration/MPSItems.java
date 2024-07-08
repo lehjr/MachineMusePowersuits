@@ -6,8 +6,19 @@ import lehjr.powersuits.common.item.debug.MPSDebugItem;
 import lehjr.powersuits.common.item.electric.armor.AbstractElectricArmor;
 import lehjr.powersuits.common.item.electric.tool.PowerFist;
 import lehjr.powersuits.common.item.module.armor.ArmorPlatingModule;
+import lehjr.powersuits.common.item.module.armor.EnergyShieldModule;
 import lehjr.powersuits.common.item.module.cosmetic.TransparentArmorModule;
 import lehjr.powersuits.common.item.module.debug.DebugModule;
+import lehjr.powersuits.common.item.module.miningenchantment.AquaAffinityModule;
+import lehjr.powersuits.common.item.module.miningenchantment.FortuneModule;
+import lehjr.powersuits.common.item.module.miningenchantment.SilkTouchModule;
+import lehjr.powersuits.common.item.module.miningenhancement.AdvancedVeinMiner;
+import lehjr.powersuits.common.item.module.miningenhancement.TunnelBoreModule;
+import lehjr.powersuits.common.item.module.miningenhancement.VeinMinerModule;
+import lehjr.powersuits.common.item.module.movement.*;
+import lehjr.powersuits.common.item.module.special.InvisibilityModule;
+import lehjr.powersuits.common.item.module.special.MagnetModule;
+import lehjr.powersuits.common.item.module.special.PiglinPacificationModule;
 import lehjr.powersuits.common.item.module.tool.blockbreaking.chopping.AxeModule;
 import lehjr.powersuits.common.item.module.tool.blockbreaking.digging.ShovelModule;
 import lehjr.powersuits.common.item.module.tool.blockbreaking.mining.PickaxeModule;
@@ -19,6 +30,7 @@ import lehjr.powersuits.common.item.module.vision.NightVisionModule;
 import lehjr.powersuits.common.item.module.weapon.*;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.entity.animal.Pig;
 import net.minecraft.world.item.*;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -118,8 +130,8 @@ public class MPSItems {
             ArmorPlatingModule::new);
     public static final DeferredHolder<Item, ArmorPlatingModule> NETHERITE_PLATING_MODULE = MPS_ITEMS.register(MPSConstants.NETHERITE_PLATING_MODULE.getPath(),
             ArmorPlatingModule::new);
-    public static final DeferredHolder<Item, ArmorPlatingModule> ENERGY_SHIELD_MODULE = MPS_ITEMS.register(MPSConstants.ENERGY_SHIELD_MODULE.getPath(),
-            ArmorPlatingModule::new);
+    public static final DeferredHolder<Item, EnergyShieldModule> ENERGY_SHIELD_MODULE = MPS_ITEMS.register(MPSConstants.ENERGY_SHIELD_MODULE.getPath(),
+            EnergyShieldModule::new);
 
     // Cosmetic -----------------------------------------------------------------------------------
     public static final DeferredHolder<Item, TransparentArmorModule> TRANSPARENT_ARMOR_MODULE = MPS_ITEMS.register(MPSConstants.TRANSPARENT_ARMOR_MODULE.getPath(),
@@ -224,22 +236,22 @@ public class MPSItems {
 
                         // Armor ------------------------------------------------------------------
                         output.accept(POWER_ARMOR_HELMET_1.get());
+                        output.accept(POWER_ARMOR_CHESTPLATE_1.get());
+                        output.accept(POWER_ARMOR_LEGGINGS_1.get());
+                        output.accept(POWER_ARMOR_BOOTS_1.get());
+
                         output.accept(POWER_ARMOR_HELMET_2.get());
+                        output.accept(POWER_ARMOR_CHESTPLATE_2.get());
+                        output.accept(POWER_ARMOR_LEGGINGS_2.get());
+                        output.accept(POWER_ARMOR_BOOTS_2.get());
+
                         output.accept(POWER_ARMOR_HELMET_3.get());
+                        output.accept(POWER_ARMOR_CHESTPLATE_3.get());
+                        output.accept(POWER_ARMOR_LEGGINGS_3.get());
                         output.accept(POWER_ARMOR_HELMET_4.get());
 
-                        output.accept(POWER_ARMOR_CHESTPLATE_1.get());
-                        output.accept(POWER_ARMOR_CHESTPLATE_2.get());
-                        output.accept(POWER_ARMOR_CHESTPLATE_3.get());
                         output.accept(POWER_ARMOR_CHESTPLATE_4.get());
-
-                        output.accept(POWER_ARMOR_LEGGINGS_1.get());
-                        output.accept(POWER_ARMOR_LEGGINGS_2.get());
-                        output.accept(POWER_ARMOR_LEGGINGS_3.get());
                         output.accept(POWER_ARMOR_LEGGINGS_4.get());
-
-                        output.accept(POWER_ARMOR_BOOTS_1.get());
-                        output.accept(POWER_ARMOR_BOOTS_2.get());
                         output.accept(POWER_ARMOR_BOOTS_3.get());
                         output.accept(POWER_ARMOR_BOOTS_4.get());
 
@@ -255,23 +267,65 @@ public class MPSItems {
                         // Debug
                         output.accept(DEBUG_MODULE.get());
 
-                        //Axe
+                        // Energy Generation
+
+                        // Environmental
+                        // cooling system prototype (bucket with a string?)
+                        // cooling system prototype Mk2
+                        // cooling system Mk3
+                        // Cooling system Mk4
+
+                        // Mining Enchantment
+//                        AquaAffinityModule
+//                        FortuneModule
+//                        SilkTouchModule
+
+                        // Mining Enhancement
+//                        AdvancedVeinMiner
+//                        TunnelBoreModule
+//                        VeinMinerModule
+
+                        // Movement
+//                        BlinkDriveModule
+//                        ClimbAssistModule
+//                        DimensionalRiftModule
+//                        FlightControlModule
+//                        GliderModule
+//                        JetBootsModule
+//                        JumpAssistModule
+//                        ParachuteModule
+//                        ShockAbsorberModule
+//                        SprintAssistModule
+//                        SwimAssistModule
+
+                        // Special
+//                        InvisibilityModule
+//                        MagnetModule
+//                        PiglinPacificationModule
+
+                        // Axe
                         output.accept(STONE_AXE_MODULE.get());
                         output.accept(IRON_AXE_MODULE.get());
                         output.accept(DIAMOND_AXE_MODULE.get());
                         output.accept(NETHERITE_AXE_MODULE.get());
-
-                        // PickAxe
-                        output.accept(STONE_PICKAXE_MODULE.get());
-                        output.accept(IRON_PICKAXE_MODULE.get());
-                        output.accept(DIAMOND_PICKAXE_MODULE.get());
-                        output.accept(NETHERITE_PICKAXE_MODULE.get());
 
                         // Shovel
                         output.accept(STONE_SHOVEL_MODULE.get());
                         output.accept(IRON_SHOVEL_MODULE.get());
                         output.accept(DIAMOND_SHOVEL_MODULE.get());
                         output.accept(NETHERITE_SHOVEL_MODULE.get());
+
+
+
+                        // Farming
+                        // hoe/rototiller
+                        // shears
+
+                        // PickAxe
+                        output.accept(STONE_PICKAXE_MODULE.get());
+                        output.accept(IRON_PICKAXE_MODULE.get());
+                        output.accept(DIAMOND_PICKAXE_MODULE.get());
+                        output.accept(NETHERITE_PICKAXE_MODULE.get());
 
                         // Misc
                         output.accept(FLINT_AND_STEAL_MODULE.get());

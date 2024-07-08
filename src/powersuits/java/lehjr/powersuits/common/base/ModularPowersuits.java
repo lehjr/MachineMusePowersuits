@@ -3,15 +3,21 @@ package lehjr.powersuits.common.base;
 import lehjr.numina.common.config.ConfigHelper;
 import lehjr.numina.common.event.HarvestEventHandler;
 import lehjr.powersuits.client.config.MPSClientConfig;
+import lehjr.powersuits.client.event.ClientEventBusSubscriber;
+import lehjr.powersuits.client.sound.MPSSoundDictionary;
 import lehjr.powersuits.common.config.MPSCommonConfig;
 import lehjr.powersuits.common.constants.MPSConstants;
 import lehjr.powersuits.common.network.MPSPackets;
 import lehjr.powersuits.common.registration.*;
+import net.minecraft.client.Minecraft;
+import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModContainer;
+import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
+import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
@@ -34,13 +40,8 @@ public class ModularPowersuits {
         NeoForge.EVENT_BUS.addListener(HarvestEventHandler::handleHarvestCheck);
         NeoForge.EVENT_BUS.addListener(HarvestEventHandler::handleBreakSpeed);
 
+        MPSSoundDictionary.MPS_SOUND_EVENTS.register(modEventBus);
 
-//        // Register the Deferred Register to the mod event bus so blocks get registered
-//        BLOCKS.register(modEventBus);
-//        // Register the Deferred Register to the mod event bus so items get registered
-//        ITEMS.register(modEventBus);
-//        // Register the Deferred Register to the mod event bus so tabs get registered
-//        CREATIVE_MODE_TABS.register(modEventBus);
 
         // Register ourselves for server and other game events we are interested in.
         // Note that this is necessary if and only if we want *this* class (ExampleMod) to respond directly to events.
@@ -51,7 +52,9 @@ public class ModularPowersuits {
 
 
         modEventBus.addListener(MPSCapabilities::registerCapabilities);
-
+        // not valid for this bus
+//        modEventBus.addListener(ClientEventBusSubscriber::renderBlockHighlight); // not valid for this bus, biut
+//        NeoForge.EVENT_BUS.addListener(ClientEventBusSubscriber::renderBlockHighlight);
 
 
 
@@ -83,13 +86,16 @@ public class ModularPowersuits {
     }
 
 //    // You can use EventBusSubscriber to automatically register all static methods in the class annotated with @SubscribeEvent
-//    @EventBusSubscriber(modid = MODID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
+//    @EventBusSubscriber(modid = MPSConstants.MOD_ID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 //    public static class ClientModEvents {
 //        @SubscribeEvent
 //        public static void onClientSetup(FMLClientSetupEvent event) {
-//            // Some client setup code
-//            LOGGER.info("HELLO FROM CLIENT SETUP");
-//            LOGGER.info("MINECRAFT NAME >> {}", Minecraft.getInstance().getUser().getName());
+////            // Some client setup code
+////            LOGGER.info("HELLO FROM CLIENT SETUP");
+////            LOGGER.info("MINECRAFT NAME >> {}", Minecraft.getInstance().getUser().getName());
+//
+//
+//
 //        }
 //    }
 }

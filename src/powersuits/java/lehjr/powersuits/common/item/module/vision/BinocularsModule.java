@@ -19,8 +19,8 @@ public class BinocularsModule extends AbstractPowerModule {
 
         public BinocularCap(ItemStack module) {
             super(module, ModuleCategory.VISION, ModuleTarget.HEADONLY);
-            addBaseProperty(MPSConstants.FOV, ()-> ()-> MPSCommonConfig.binocularsModuleFOVBase);
-            addTradeoffProperty(MPSConstants.FIELD_OF_VIEW, MPSConstants.FOV, ()-> ()-> MPSCommonConfig.binocularsModuleFOVFieldOfViewMultiplier, "%");
+            addBaseProperty(MPSConstants.FOV, MPSCommonConfig.binocularsModuleFOVBase);
+            addTradeoffProperty(MPSConstants.FIELD_OF_VIEW, MPSConstants.FOV, MPSCommonConfig.binocularsModuleFOVFieldOfViewMultiplier, "%");
         }
 
         @Override

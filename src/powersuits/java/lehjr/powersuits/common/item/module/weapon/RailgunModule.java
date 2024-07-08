@@ -63,12 +63,12 @@ public class RailgunModule extends AbstractPowerModule {
 
         public Ticker(ItemStack module) {
             super(module, ModuleCategory.WEAPON, ModuleTarget.TOOLONLY);
-            addBaseProperty(MPSConstants.TOTAL_IMPULSE, ()->()->MPSCommonConfig.railgunTotalImpulseBase, "Ns");
-            addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, ()->()->MPSCommonConfig.railgunEnergyConsumptionBase, "FE");
-            addBaseProperty(MPSConstants.HEAT_EMISSION, ()->()-> MPSCommonConfig.railgunHeatEmissionBase, "");
-            addTradeoffProperty(MPSConstants.VOLTAGE, MPSConstants.TOTAL_IMPULSE, ()->()-> MPSCommonConfig.railgunTotalImpulseVoltageMultiplier);
-            addTradeoffProperty(MPSConstants.VOLTAGE, MPSConstants.ENERGY_CONSUMPTION, ()->()-> MPSCommonConfig.railgunEnergyConsumptionVoltageMultiplier);
-            addTradeoffProperty(MPSConstants.VOLTAGE, MPSConstants.HEAT_EMISSION, ()->()-> MPSCommonConfig.railgunHeatEmissionVoltageMultiplier);
+            addBaseProperty(MPSConstants.TOTAL_IMPULSE, MPSCommonConfig.railgunTotalImpulseBase, "Ns");
+            addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, MPSCommonConfig.railgunEnergyConsumptionBase, "FE");
+            addBaseProperty(MPSConstants.HEAT_EMISSION, MPSCommonConfig.railgunHeatEmissionBase, "");
+            addTradeoffProperty(MPSConstants.VOLTAGE, MPSConstants.TOTAL_IMPULSE, MPSCommonConfig.railgunTotalImpulseVoltageMultiplier);
+            addTradeoffProperty(MPSConstants.VOLTAGE, MPSConstants.ENERGY_CONSUMPTION, MPSCommonConfig.railgunEnergyConsumptionVoltageMultiplier);
+            addTradeoffProperty(MPSConstants.VOLTAGE, MPSConstants.HEAT_EMISSION, MPSCommonConfig.railgunHeatEmissionVoltageMultiplier);
         }
 
         @Override

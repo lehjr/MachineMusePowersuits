@@ -137,7 +137,7 @@ public class ModuleTweakFrame extends ScrollableFrame {
                     currValue = modifier.applyModifier(moduleTag, currValue);
                     NuminaLogger.logDebug("current value after apply modifier: " + currValue);
 
-                    if (modifier instanceof IPowerModule.PropertyModifierLinearDoubleAdditive modifierLinearAdditive) {
+                    if (modifier instanceof IPowerModule.PropertyModifierLinearAdditive modifierLinearAdditive) {
                         String modifierName = modifierLinearAdditive.getTradeoffName();
                         // overwriting PropertyModifierIntLinearAdditive messes up rounding to int
                         if (!(tweaks.get(modifierName) instanceof IPowerModule.PropertyModifierIntLinearAdditive)) {

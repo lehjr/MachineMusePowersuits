@@ -14,12 +14,12 @@ public class MeleeAssistModule extends AbstractPowerModule {
 
         public PMCap(ItemStack module) {
             super(module, ModuleCategory.WEAPON, ModuleTarget.TOOLONLY);
-            addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, ()->()->MPSCommonConfig.meleeAssistEnergyConsumptionBase, "FE");
-            addBaseProperty(MPSConstants.PUNCH_DAMAGE, ()->()->MPSCommonConfig.meleeAssistPunchDamageBase, "pt");
-            addTradeoffProperty(MPSConstants.IMPACT, MPSConstants.ENERGY_CONSUMPTION, ()->()->MPSCommonConfig.meleeAssistEnergyConsumptionImpactMultiplier, "FE");
-            addTradeoffProperty(MPSConstants.IMPACT, MPSConstants.PUNCH_DAMAGE, ()->()->MPSCommonConfig.meleeAssistPunchDamageImpactMultiplier, "pt");
-            addTradeoffProperty(MPSConstants.CARRY_THROUGH, MPSConstants.ENERGY_CONSUMPTION, ()->()->MPSCommonConfig.meleeAssistEnergyConsumptionCarryThroughMultiplier, "FE");
-            addTradeoffProperty(MPSConstants.CARRY_THROUGH, MPSConstants.PUNCH_KNOCKBACK, ()->()-> MPSCommonConfig.meleeAssistPunchKnockBackCarryThroughMultiplier, "P");
+            addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, MPSCommonConfig.meleeAssistEnergyConsumptionBase, "FE");
+            addBaseProperty(MPSConstants.PUNCH_DAMAGE, MPSCommonConfig.meleeAssistPunchDamageBase, "pt");
+            addTradeoffProperty(MPSConstants.IMPACT, MPSConstants.ENERGY_CONSUMPTION, MPSCommonConfig.meleeAssistEnergyConsumptionImpactMultiplier, "FE");
+            addTradeoffProperty(MPSConstants.IMPACT, MPSConstants.PUNCH_DAMAGE, MPSCommonConfig.meleeAssistPunchDamageImpactMultiplier, "pt");
+            addTradeoffProperty(MPSConstants.CARRY_THROUGH, MPSConstants.ENERGY_CONSUMPTION, MPSCommonConfig.meleeAssistEnergyConsumptionCarryThroughMultiplier, "FE");
+            addTradeoffProperty(MPSConstants.CARRY_THROUGH, MPSConstants.PUNCH_KNOCKBACK,  MPSCommonConfig.meleeAssistPunchKnockBackCarryThroughMultiplier, "P");
         }
 
         @Override

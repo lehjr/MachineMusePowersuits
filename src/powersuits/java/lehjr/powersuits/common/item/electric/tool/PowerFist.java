@@ -213,6 +213,7 @@ public class PowerFist extends AbstractElectricTool {
     @Override
     public boolean canPerformAction(ItemStack stack, ToolAction toolAction) {
         NuminaLogger.logDebug("toolAction: " + toolAction);
+        // ToolAction[axe_dig] when using pickaxe?1?!?!
 
         return super.canPerformAction(stack, toolAction);
     }

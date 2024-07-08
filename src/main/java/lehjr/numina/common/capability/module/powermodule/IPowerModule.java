@@ -60,15 +60,15 @@ public interface IPowerModule {
         return 0;
     }
 
-    void addBaseProperty(String propertyName, Callable<IConfigDoubleGetter> configValGetter);
+    void addBaseProperty(String propertyName, double configValue);
 
-    void addBaseProperty(String propertyName, Callable<IConfigDoubleGetter> config, String unit);
+    void addBaseProperty(String propertyName, double configValue, String unit);
 
-    void addTradeoffProperty(String tradeoffName, String propertyName, Callable<IConfigDoubleGetter> configMultiplier);
+    void addTradeoffProperty(String tradeoffName, String propertyName, double multiplierConfigValue);
 
-    void addTradeoffProperty(String tradeoffName, String propertyName, Callable<IConfigDoubleGetter> configMultiplier, String unit);
+    void addTradeoffProperty(String tradeoffName, String propertyName, double mulitiplierConfigValue, String unit);
 
-    void addIntTradeoffProperty(Callable<IConfigIntGetter> config, String tradeoffName, String propertyName, String unit, int roundTo, int offset);
+    void addIntTradeoffProperty(int mulitiplierConfigValue, String tradeoffName, String propertyName, String unit, int roundTo, int offset);
 
     void addPropertyModifier(String propertyName, IPropertyModifier modifier);
 
@@ -92,10 +92,10 @@ public interface IPowerModule {
     }
 
     class PropertyModifierFlatAdditive implements IPropertyModifier {
-        Callable<IConfigDoubleGetter> config;
+        double configValue;
 
-        public PropertyModifierFlatAdditive(Callable<IConfigDoubleGetter> config) {
-            this.config = config;
+        public PropertyModifierFlatAdditive(double configValue) {
+            this.configValue = configValue;
         }
 
         /**
@@ -105,20 +105,16 @@ public interface IPowerModule {
          */
         @Override
         public double applyModifier(CompoundTag ignoredTag, double value) {
-            try {
-                return value + config.call().getValue();
-            } catch (Exception ignored) {
-            }
-            return value;
+            return value + configValue;
         }
     }
 
-    class PropertyModifierIntLinearAdditive extends PropertyModifierLinearAdditive<Integer, IConfigIntGetter> {
+    class PropertyModifierIntLinearAdditive extends PropertyModifierLinearAdditive {
         protected int roundTo = 1;
         protected int offset = 0;
 
         public PropertyModifierIntLinearAdditive(
-                Callable<IConfigIntGetter> config,
+                double config,
                 String tradeoffName,
                 int roundTo,
                 int offset) {
@@ -128,11 +124,7 @@ public interface IPowerModule {
         }
 
         int getMultiplier() {
-            try {
-                return config.call().getValue();
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
+            return (int) multiplier;
         }
 
         @Override
@@ -153,56 +145,22 @@ public interface IPowerModule {
         }
     }
 
-    class PropertyModifierLinearDoubleAdditive extends PropertyModifierLinearAdditive<Double, IConfigDoubleGetter> {
-        public PropertyModifierLinearDoubleAdditive(Callable<IConfigDoubleGetter> config, String tradeoffName) {
-            super(config, tradeoffName);
+    class PropertyModifierLinearAdditive implements IPropertyModifier {
+        public final String tradeoffName;
+        double multiplier;
+
+        public PropertyModifierLinearAdditive(double config, String tradeoffName) {
+            this.tradeoffName = tradeoffName;
+            this.multiplier = config;
         }
 
         @Override
         public double applyModifier(CompoundTag moduleTag, double value) {
-            double multiplier = 0;
-            try {
-                multiplier = config.call().getValue();
-            } catch (Exception ignored) {
-            }
             return value + multiplier * TagUtils.getDoubleOrZero(moduleTag, tradeoffName);
         }
-    }
-
-    abstract class PropertyModifierLinearAdditive<I extends Number, T extends IConfigValueGetter<I>> implements IPropertyModifier {
-        public final String tradeoffName;
-        Callable<T> config;
-
-        public PropertyModifierLinearAdditive(Callable<T> config, String tradeoffName) {
-            this.tradeoffName = tradeoffName;
-            this.config = config;
-        }
-
-        @Override
-        public abstract double applyModifier(CompoundTag moduleTag, double value);
 
         public String getTradeoffName() {
             return tradeoffName;
         }
-    }
-
-
-    interface IConfigValueGetter<T> {
-        T getValue();
-    }
-
-    interface IConfigIntGetter extends IConfigValueGetter<Integer> {
-        @Override
-        Integer getValue();
-    }
-
-    interface IConfigDoubleGetter extends IConfigValueGetter<Double> {
-        @Override
-        Double getValue();
-    }
-
-    interface IConfigBoolGetter extends IConfigValueGetter<Boolean> {
-        @Override
-        Boolean getValue();
     }
 }
