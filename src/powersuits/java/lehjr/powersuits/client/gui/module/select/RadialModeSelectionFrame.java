@@ -3,6 +3,7 @@ package lehjr.powersuits.client.gui.module.select;
 import lehjr.numina.client.gui.clickable.ClickableModule;
 import lehjr.numina.client.gui.frame.AbstractGuiFrame;
 import lehjr.numina.client.gui.geometry.*;
+import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.capability.NuminaCapabilities;
 import lehjr.numina.common.capability.inventory.modechanging.IModeChangingItem;
 import lehjr.numina.common.capability.module.powermodule.ModuleCategory;
@@ -21,7 +22,7 @@ import java.util.Optional;
 /*
 TODO: revamp with a set of concentric circles to sort modules by category
  */
-public class RadialModeSelectionFrame extends AbstractGuiFrame {
+public class RadialModeSelectionFrame extends AbstractGuiFrame<DrawableTile> {
     boolean visible = true;
     boolean enabled = true;
     protected final long spawnTime;
@@ -33,13 +34,15 @@ public class RadialModeSelectionFrame extends AbstractGuiFrame {
     protected double radius;
     float zLevel;
     SwirlyMuseCircle circle;
+    IModeChangingItem mcmi;
 
     public RadialModeSelectionFrame(MusePoint2D topLeft, MusePoint2D bottomRight, Player player, float zLevel) {
-        super(new Rect(topLeft, bottomRight));
+        super(new DrawableTile(topLeft, bottomRight));
         spawnTime = System.currentTimeMillis();
         this.player = player;
         this.radius = Math.min(width(), height());
         this.zLevel = zLevel;
+        mcmi = player.getMainHandItem().getCapability(NuminaCapabilities.Inventory.MODE_CHANGING_MODULAR_ITEM);
         loadItems();
         circle = new SwirlyMuseCircle();
     }
@@ -53,9 +56,8 @@ public class RadialModeSelectionFrame extends AbstractGuiFrame {
             selectModule(mouseX, mouseY);
         }
 
-        Optional<IModeChangingItem> mcic = NuminaCapabilities.getModeChangingModularItemCapability(player);
         //Switch to selected mode if mode changed
-        if (mcic.isPresent() && getSelectedModule() != null && selectedModuleOriginal != selectedModuleNew) {
+        if (mcmi != null && getSelectedModule() != null && selectedModuleOriginal != selectedModuleNew) {
             // update to detect mode changes
             selectedModuleOriginal = selectedModuleNew;
             NuminaCapabilities.getModeChangingModularItemCapability(player).ifPresent(handler-> NuminaPackets.sendToServer(new ModeChangeRequestPacketServerBound(getSelectedModule().getInventorySlot())));
@@ -64,8 +66,11 @@ public class RadialModeSelectionFrame extends AbstractGuiFrame {
 
     @Override
     public void render(GuiGraphics matrixStackIn, int mouseX, int mouseY, float partialTick) {
+        NuminaLogger.logDebug("module list size: " + modeButtons);
+
         //Draw the installed power fist modes
         for (ClickableModule mode : modeButtons) {
+            NuminaLogger.logDebug("rendering mode: " + mode.getModule());
             mode.render(matrixStackIn, mouseX, mouseY, partialTick);
         }
         //Draw the selected mode indicator
@@ -84,19 +89,20 @@ public class RadialModeSelectionFrame extends AbstractGuiFrame {
 
     private void loadItems() {
         if (player != null && modeButtons.isEmpty()) {
-            Optional<IModeChangingItem> mcic = NuminaCapabilities.getModeChangingModularItemCapability(player);
-            mcic.ifPresent(handler->{
-                List<Integer> modes = handler.getValidModes();
-                int activeMode = handler.getActiveMode();
+            if (mcmi != null) {
+                List<Integer> modes = mcmi.getValidModes();
+                int activeMode = mcmi.getActiveMode();
                 if (activeMode > 0)
                     selectedModuleOriginal = activeMode;
                 int modeNum = 0;
                 for (int mode : modes) {
-                    ClickableModule clickie = new ClickableModule(handler.getStackInSlot(mode), new SpiralPointToPoint2D(center(), radius, ((3D * Math.PI / 2) - ((2D * Math.PI * modeNum) / modes.size())), 250D), mode, ModuleCategory.NONE);
+                    ClickableModule clickie = new ClickableModule(mcmi.getStackInSlot(mode), new SpiralPointToPoint2D(center(), radius, ((3D * Math.PI / 2) - ((2D * Math.PI * modeNum) / modes.size())), 250D), mode, ModuleCategory.NONE);
+                    NuminaLogger.logDebug("makign new clickie, " + clickie.getModule());
+
                     modeButtons.add(clickie);
                     modeNum ++;
                 }
-            });
+            }
         }
     }
 

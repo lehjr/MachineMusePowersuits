@@ -8,6 +8,7 @@ import lehjr.numina.common.capability.module.rightclick.IRightClickModule;
 import lehjr.numina.common.network.NuminaPackets;
 import lehjr.numina.common.network.packets.serverbound.ModeChangeRequestPacketServerBound;
 import lehjr.numina.common.utils.ItemUtils;
+import lehjr.numina.common.utils.TagUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.resources.ResourceLocation;
@@ -18,6 +19,7 @@ import net.neoforged.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ModeChangingModularItem extends ModularItem implements IModeChangingItem {
@@ -25,6 +27,7 @@ public class ModeChangingModularItem extends ModularItem implements IModeChangin
 
     public ModeChangingModularItem(@NotNull ItemStack modularItem, int tier, int size) {
         super(modularItem, tier, size, true);
+        activeMode = TagUtils.getModularItemIntOrDefault(modularItem, TAG_MODE, -1);
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -36,7 +39,16 @@ public class ModeChangingModularItem extends ModularItem implements IModeChangin
 
     @Override
     public List<Integer> getValidModes() {
-        return List.of();
+        List<Integer>moduleIndexes = new ArrayList<>();
+
+        // note: starting at 1 skips the power storage there
+        for(int i=1; i < getSlots();  i++) {
+            ItemStack module = getStackInSlot(i);
+            if (isValidMode(module)) {
+                moduleIndexes.add(i);
+            }
+        }
+        return moduleIndexes;
     }
 
     @Override
@@ -93,10 +105,12 @@ public class ModeChangingModularItem extends ModularItem implements IModeChangin
     public void cycleMode(Player player, int dMode) {
         List<Integer> modes = this.getValidModes();
         if (!modes.isEmpty()) {
-            int newindex = clampMode(modes.indexOf(this.getActiveMode()) + dMode, modes.size());
-            int newmode = modes.get(newindex);
-            NuminaPackets.sendToServer(new ModeChangeRequestPacketServerBound(newmode));
-//            this.setActiveMode(newmode, player.getInventory());
+            int newIndex = clampMode(modes.indexOf(this.getActiveMode()) + dMode, modes.size());
+            int newMode = modes.get(newIndex);
+            if(player.level().isClientSide()) {
+                NuminaPackets.sendToServer(new ModeChangeRequestPacketServerBound(newMode));
+            }
+//            this.setActiveMode(newMode, player.getInventory());
         }
     }
 

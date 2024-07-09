@@ -65,7 +65,7 @@ public class AxeModule extends AbstractPowerModule {
         @Override
         public boolean mineBlock(@NotNull ItemStack powerFist, Level worldIn, BlockState state, BlockPos pos, LivingEntity entityLiving, double playerEnergy) {
             if (this.canHarvestBlock(powerFist, state, (Player) entityLiving, pos, playerEnergy)) {
-                ElectricItemUtils.drainPlayerEnergy((Player) entityLiving, getEnergyUsage());
+                ElectricItemUtils.drainPlayerEnergy((Player) entityLiving, getEnergyUsage(), false);
                 return true;
             }
             return false;

@@ -36,7 +36,7 @@ public class ColorStorage implements IColorTag, INBTSerializable<Tag> {
     Color color;
 
     public ColorStorage() {
-        color = Color.WHITE;
+        color = Color.LIGHT_BLUE;
     }
 
     public ColorStorage(Color colorIn) {

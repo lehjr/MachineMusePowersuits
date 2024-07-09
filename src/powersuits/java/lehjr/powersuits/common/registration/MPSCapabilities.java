@@ -1,11 +1,10 @@
 package lehjr.powersuits.common.registration;
 
 import lehjr.numina.common.capability.NuminaCapabilities;
-import lehjr.powersuits.common.capabilities.item.armor.PowerArmorEnergyWrapper;
+import lehjr.numina.common.capability.energy.ModularItemEnergyWrapper;
 import lehjr.powersuits.common.capabilities.item.armor.PowerArmorHeatWrapper;
 import lehjr.powersuits.common.capabilities.item.armor.PowerArmorModularItemWrapper;
 import lehjr.powersuits.common.capabilities.item.armor.PowerArmorRenderWrapper;
-import lehjr.powersuits.common.capabilities.item.tool.PowerFistEnergyWrapper;
 import lehjr.powersuits.common.capabilities.item.tool.PowerFistHeatWrapper;
 import lehjr.powersuits.common.capabilities.item.tool.PowerFistModeChangingWrapper;
 import lehjr.powersuits.common.capabilities.item.tool.PowerFistRenderWrapper;
@@ -30,6 +29,9 @@ public class MPSCapabilities {
      * @param event
      */
     public static void registerCapabilities(RegisterCapabilitiesEvent event) {
+        // Block Entity
+
+
 
         // Armor ----------------------------------------------------------------------------------
         event.registerItem(NuminaCapabilities.Inventory.MODULAR_ITEM, (stack, ctx)-> new PowerArmorModularItemWrapper(stack, 1),
@@ -57,7 +59,7 @@ public class MPSCapabilities {
                 MPSItems.POWER_ARMOR_BOOTS_4.get());
 
         // Energy
-        event.registerItem(Capabilities.EnergyStorage.ITEM, (stack, ctx) -> new PowerArmorEnergyWrapper(stack),
+        event.registerItem(Capabilities.EnergyStorage.ITEM, (stack, ctx) -> new ModularItemEnergyWrapper(stack),
                 MPSItems.POWER_ARMOR_HELMET_1.get(),
                 MPSItems.POWER_ARMOR_CHESTPLATE_1.get(),
                 MPSItems.POWER_ARMOR_LEGGINGS_1.get(),
@@ -144,7 +146,7 @@ public class MPSCapabilities {
                 new PowerFistModeChangingWrapper(stack, 4), MPSItems.POWER_FIST_4.get());
 
         // Energy
-        event.registerItem(Capabilities.EnergyStorage.ITEM, (stack, context) -> new PowerFistEnergyWrapper(stack),
+        event.registerItem(Capabilities.EnergyStorage.ITEM, (stack, context) -> new ModularItemEnergyWrapper(stack),
                 MPSItems.POWER_FIST_1.get(),
                 MPSItems.POWER_FIST_2.get(),
                 MPSItems.POWER_FIST_3.get(),

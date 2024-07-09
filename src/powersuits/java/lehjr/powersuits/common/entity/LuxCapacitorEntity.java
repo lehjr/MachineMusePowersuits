@@ -1,6 +1,8 @@
 package lehjr.powersuits.common.entity;
 
 import lehjr.numina.common.base.NuminaLogger;
+import lehjr.numina.common.capability.NuminaCapabilities;
+import lehjr.numina.common.capability.render.color.IColorTag;
 import lehjr.numina.common.math.Color;
 import lehjr.powersuits.common.block.LuxCapacitorBlock;
 import lehjr.powersuits.common.blockentity.LuxCapacitorBlockEntity;
@@ -28,6 +30,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.entity.IEntityWithComplexSpawn;
+import org.jetbrains.annotations.Nullable;
 
 public class LuxCapacitorEntity extends ThrowableProjectile implements IEntityWithComplexSpawn {
     public Color color = LuxCapacitorBlock.defaultColor;
@@ -39,6 +42,10 @@ public class LuxCapacitorEntity extends ThrowableProjectile implements IEntityWi
             color = LuxCapacitorBlock.defaultColor;
         }
         setNoGravity(true);
+    }
+
+    public void setColor(Color color) {
+        this.color = color;
     }
 
     public LuxCapacitorEntity(Level world, LivingEntity shootingEntity, Color color) {
@@ -79,6 +86,10 @@ public class LuxCapacitorEntity extends ThrowableProjectile implements IEntityWi
     protected void onHit(HitResult hitResult) {
         if (level().isClientSide()) {
             return;
+        }
+
+        if (this.getOwner() == null) {
+            this.kill();
         }
 
         if (color == null) {
@@ -124,6 +135,11 @@ public class LuxCapacitorEntity extends ThrowableProjectile implements IEntityWi
                     level().setBlockEntity(new LuxCapacitorBlockEntity(pos, state));
                     BlockEntity blockEntity = level().getBlockEntity(pos);
                     if (blockEntity instanceof LuxCapacitorBlockEntity) {
+                        @Nullable IColorTag cap = level().getCapability(NuminaCapabilities.ColorCap.COLOR_BLOCK, pos, null);
+                        if (cap != null) {
+                            cap.setColor(color);
+                        }
+
                         ((LuxCapacitorBlockEntity) blockEntity).setColor(color);
                         return true;
                     }

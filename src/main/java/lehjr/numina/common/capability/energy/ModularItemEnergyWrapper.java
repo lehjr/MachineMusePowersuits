@@ -1,32 +1,33 @@
 package lehjr.numina.common.capability.energy;
 
+import com.mojang.datafixers.util.Pair;
 import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.capability.NuminaCapabilities;
-import lehjr.numina.common.capability.inventory.modechanging.IModeChangingItem;
 import lehjr.numina.common.capability.inventory.modularitem.IModularItem;
-import net.minecraft.world.item.ArmorItem;
+import lehjr.numina.common.capability.module.powermodule.ModuleCategory;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.energy.IEnergyStorage;
 
+import javax.annotation.Nullable;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 
-public abstract class AbstractModularItemEnergyWrapper implements IEnergyStorage {
+public class ModularItemEnergyWrapper implements IEnergyStorage {
     protected ItemStack itemStack;
-    public AbstractModularItemEnergyWrapper(ItemStack itemStack) {
+    public ModularItemEnergyWrapper(ItemStack itemStack) {
         this.itemStack = itemStack;
     }
 
     @Override
     public int receiveEnergy(int toReceive, boolean simulate) {
-        return getModularItemCap().map(cap->{
+        IModularItem cap = getModularItemCap();
+        if (cap != null) {
             int remaining = toReceive;
             for (int i = 0; i < cap.getSlots(); i++ ) {
 
                 int recieved = 0;
-                ItemStack module = cap.getStackInSlot(i).copy();
+                ItemStack module = cap.getStackInSlot(i);
                 IEnergyStorage storage = module.getCapability(Capabilities.EnergyStorage.ITEM);
                 if (storage != null && storage.canReceive()) {
                     recieved = storage.receiveEnergy(remaining, simulate);
@@ -38,29 +39,31 @@ public abstract class AbstractModularItemEnergyWrapper implements IEnergyStorage
                 }
             }
             return toReceive - remaining;
-        }).orElse(toReceive);
+        }
+        return toReceive;
     }
 
     @Override
     public int extractEnergy(int toExtract, boolean simulate) {
-        return getModularItemCap().map(cap->{
+        IModularItem cap = getModularItemCap();
+        if (cap != null) {
             int remaining = toExtract;
             for (int i = 0; i < cap.getSlots(); i++ ) {
 
                 int extracted = 0;
-                ItemStack module = cap.getStackInSlot(i).copy();
+                ItemStack module = cap.getStackInSlot(i);
                 IEnergyStorage storage = module.getCapability(Capabilities.EnergyStorage.ITEM);
                 if (storage != null && storage.canExtract()) {
                     extracted = storage.extractEnergy(remaining, simulate);
                 }
-
                 if (extracted > 0) {
                     remaining -= extracted;
                     cap.updateModuleInSlot(i, module);
                 }
             }
             return toExtract - remaining;
-        }).orElse(toExtract);
+        }
+        return toExtract;
     }
 
     @Override
@@ -83,17 +86,30 @@ public abstract class AbstractModularItemEnergyWrapper implements IEnergyStorage
         return getInternalEnergyStorage().stream().anyMatch(IEnergyStorage::canReceive);
     }
 
-    public Optional<IModularItem> getModularItemCap() {
-        Optional<IModularItem> modularItemCap = NuminaCapabilities.getModularItemCapability(itemStack);
-        if (modularItemCap.isPresent()) {
+    @Nullable
+    public IModularItem getModularItemCap() {
+        IModularItem modularItemCap = itemStack.getCapability(NuminaCapabilities.Inventory.MODULAR_ITEM);
+        if (modularItemCap != null) {
             return modularItemCap;
         }
-        Optional<IModeChangingItem> modeChangingCap = NuminaCapabilities.getModeChangingModularItemCapability(itemStack);
-        if (modeChangingCap.isPresent()) {
-            return modularItemCap;
-        }
-        return Optional.empty();
+        return itemStack.getCapability(NuminaCapabilities.Inventory.MODE_CHANGING_MODULAR_ITEM);
     }
 
-    public abstract List<IEnergyStorage> getInternalEnergyStorage();
+    public List<IEnergyStorage> getInternalEnergyStorage() {
+        IModularItem cap = getModularItemCap();
+        List<IEnergyStorage> ret = new ArrayList<>();
+        if (cap != null) {
+            Pair<Integer, Integer> range = cap.getRangeForCategory(ModuleCategory.ENERGY_STORAGE);
+            if(range != null) {
+                for (int j = range.getFirst(); j < range.getSecond(); j++) {
+                    ItemStack module = cap.getStackInSlot(j);
+                    IEnergyStorage energyStorage = module.getCapability(Capabilities.EnergyStorage.ITEM);
+                    if (energyStorage != null) {
+                        ret.add(energyStorage);
+                    }
+                }
+            }
+        }
+        return ret;
+    }
 }

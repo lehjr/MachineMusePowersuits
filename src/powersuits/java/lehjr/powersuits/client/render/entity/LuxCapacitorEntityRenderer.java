@@ -29,6 +29,7 @@ package lehjr.powersuits.client.render.entity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.math.Color;
+import lehjr.numina.common.utils.TagUtils;
 import lehjr.powersuits.common.constants.MPSConstants;
 import lehjr.powersuits.common.entity.LuxCapacitorEntity;
 import net.minecraft.client.Minecraft;
@@ -64,10 +65,7 @@ public class LuxCapacitorEntityRenderer extends EntityRenderer<LuxCapacitorEntit
 
     ItemStack getStack(Color color) {
         ItemStack stack = new ItemStack(BuiltInRegistries.ITEM.get(MPSConstants.LUX_CAPACITOR));
-        NuminaLogger.logDebug("fixme: implement color capability on lux capacitor item and entity");
-//        CompoundTag nbt = stack.getOrCreateTag();
-//        nbt.putInt(NuminaConstants.COLOR, color.getARGBInt());
-        return stack;
+        return TagUtils.setColor(stack, color);
     }
 
     @Override

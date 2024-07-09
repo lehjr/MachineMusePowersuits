@@ -8,6 +8,7 @@ import lehjr.numina.common.capability.module.externalitems.IOtherModItemsAsModul
 import lehjr.numina.common.capability.module.powermodule.IPowerModule;
 import lehjr.numina.common.capability.module.rightclick.IRightClickModule;
 import lehjr.numina.common.capability.module.toggleable.IToggleableModule;
+import lehjr.numina.common.capability.render.chameleon.IChameleon;
 import lehjr.numina.common.math.Color;
 import lehjr.numina.common.utils.ElectricItemUtils;
 import lehjr.numina.common.utils.IconUtils;
@@ -60,10 +61,10 @@ public interface IModeChangingItem extends IModularItem {
             currX = screenWidth / 2.0 - 89.0 + 20.0 * hotbarIndex;
             currY = baroffset - 18;
             Color.WHITE.setShaderColor();
-            if (NuminaCapabilities.getCapability(module, NuminaCapabilities.Module.POWER_MODULE).map(pm -> pm.isModuleOnline()).orElse(false)) {
-                gfx.renderItem(NuminaCapabilities.getCapability(module, NuminaCapabilities.CHAMELEON).map(iChameleon -> iChameleon.getStackToRender()).orElse(module), (int) currX, (int) currY);
+            if (NuminaCapabilities.getCapability(module, NuminaCapabilities.Module.POWER_MODULE).map(IPowerModule::isModuleOnline).orElse(false)) {
+                gfx.renderItem(NuminaCapabilities.getCapability(module, NuminaCapabilities.CHAMELEON).map(IChameleon::getStackToRender).orElse(module), (int) currX, (int) currY);
             } else {
-                IconUtils.drawModuleAt(gfx, currX, currY, NuminaCapabilities.getCapability(module, NuminaCapabilities.CHAMELEON).map(iChameleon -> iChameleon.getStackToRender()).orElse(module), false);
+                IconUtils.drawModuleAt(gfx, currX, currY, NuminaCapabilities.getCapability(module, NuminaCapabilities.CHAMELEON).map(IChameleon::getStackToRender).orElse(module), false);
             }
         }
     }
@@ -94,6 +95,15 @@ public interface IModeChangingItem extends IModularItem {
     List<Integer> getValidModes();
 
     boolean isValidMode(ResourceLocation mode);
+
+    default boolean isValidMode(@Nonnull ItemStack module) {
+        if (module.isEmpty()) {
+            return false;
+        }
+
+        return NuminaCapabilities.getCapability(module, NuminaCapabilities.Module.POWER_MODULE)
+                .map( m-> m.isAllowed() && (m instanceof IRightClickModule|| m instanceof IOtherModItemsAsModules)).orElse(false);
+    }
 
     int getActiveMode();
 

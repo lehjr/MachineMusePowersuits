@@ -138,6 +138,10 @@ public class TagUtils {
         return setModularItemTag(stack, tag);
     }
 
+    public static int getModularItemIntOrDefault(@Nonnull ItemStack stack, String tagName, int defVal) {
+        return getIntOrDefault(getModularItemTag(stack), tagName, defVal);
+    }
+
     public static int getModularItemInt(@Nonnull ItemStack stack, String tagName) {
         return getIntOrZero(getModularItemTag(stack), tagName);
     }
@@ -212,11 +216,15 @@ public class TagUtils {
     }
 
     // Integer --------------------------------------------------------------------------------------------------------
-    public static int getIntOrZero(CompoundTag nbt, String tagName) {
+    public static int getIntOrDefault(CompoundTag nbt, String tagName, int defVal) {
         if(nbt != null && nbt.contains(tagName, Tag.TAG_INT)) {
             return nbt.getInt(tagName);
         }
-        return 0;
+        return defVal;
+    }
+
+    public static int getIntOrZero(CompoundTag nbt, String tagName) {
+        return getIntOrDefault(nbt, tagName, 0);
     }
 
     public static CompoundTag setInt(CompoundTag nbt, String tagName, int value) {

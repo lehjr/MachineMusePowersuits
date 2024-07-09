@@ -53,7 +53,7 @@ public class LuxCapHelper {
         builder.put(LIGHT_BASE_UPPER, OBJPartData.makeOBJPartData(false, false, Color.WHITE.getARGBInt()));
         return ModelData.builder().with(OBJPartData.SUBMODEL_DATA, new OBJPartData(builder.build())).build();
     }
-//
+
 //    public static IModelData getLensModelData(int color) {
 //        ImmutableMap.Builder<String, IModelData> builder = ImmutableMap.builder();
 //        builder.put(LIGHT_LENS, OBJPartData.makeOBJPartData(true, true, color));

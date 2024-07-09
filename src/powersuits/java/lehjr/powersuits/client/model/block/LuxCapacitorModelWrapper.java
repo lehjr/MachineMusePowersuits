@@ -30,7 +30,11 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import lehjr.numina.client.model.helper.LuxCapHelper;
 import lehjr.numina.client.model.obj.OBJBakedCompositeModel;
 import lehjr.numina.common.capability.NuminaCapabilities;
+import lehjr.numina.common.capability.module.powermodule.IPowerModule;
+import lehjr.numina.common.constants.NuminaConstants;
 import lehjr.numina.common.math.Color;
+import lehjr.numina.common.utils.ItemUtils;
+import lehjr.numina.common.utils.TagUtils;
 import lehjr.powersuits.common.block.LuxCapacitorBlock;
 import lehjr.powersuits.common.constants.MPSConstants;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -64,7 +68,7 @@ import java.util.List;
 @OnlyIn(Dist.CLIENT)
 public class LuxCapacitorModelWrapper extends BakedModelWrapper<OBJBakedCompositeModel> {
     Color color;
-    private LuxCapacitorItemOverrides overrides;
+    private final LuxCapacitorItemOverrides overrides;
 
     public LuxCapacitorModelWrapper(OBJBakedCompositeModel original) {
         super(original);
@@ -144,11 +148,6 @@ public class LuxCapacitorModelWrapper extends BakedModelWrapper<OBJBakedComposit
     }
 
     private class LuxCapacitorItemOverrides extends ItemOverrides {
-
-        // FIXME!!!!! item renderer still not getting quads from this
-
-
-
         LuxCapacitorModelWrapper itemModel;
         public LuxCapacitorItemOverrides(LuxCapacitorModelWrapper model) {
             super();
@@ -158,21 +157,16 @@ public class LuxCapacitorModelWrapper extends BakedModelWrapper<OBJBakedComposit
         @Nullable
         @Override
         public BakedModel resolve(BakedModel model, ItemStack stack, @Nullable ClientLevel worldIn, @Nullable LivingEntity entityIn,  int pSeed) {
-            // FIXME:
-//            Color color;
-            // this one is just for the launched item
-//            if (stack.hasTag() && stack.getTag().contains(NuminaConstants.COLOR, Tag.TAG_INT)) {
-//                color = new Color( stack.getTag().getInt(NuminaConstants.COLOR));
-//                // this is for the active icon
-//            } else {
-                color = NuminaCapabilities.getPowerModuleCapability(stack).map(pm -> {
-                    float red = (float) pm.applyPropertyModifiers(MPSConstants.RED_HUE);
-                    float green = (float) pm.applyPropertyModifiers(MPSConstants.GREEN_HUE);
-                    float blue = (float) pm.applyPropertyModifiers(MPSConstants.BLUE_HUE);
-                    float alpha = (float) pm.applyPropertyModifiers(MPSConstants.OPACITY);
-                    return new Color(red, green, blue, alpha);
-                }).orElse(LuxCapacitorBlock.defaultColor);
-//            }
+            IPowerModule pm = stack.getCapability(NuminaCapabilities.Module.POWER_MODULE);
+            if (pm != null) {
+                float red = (float) pm.applyPropertyModifiers(MPSConstants.RED_HUE);
+                float green = (float) pm.applyPropertyModifiers(MPSConstants.GREEN_HUE);
+                float blue = (float) pm.applyPropertyModifiers(MPSConstants.BLUE_HUE);
+                float alpha = (float) pm.applyPropertyModifiers(MPSConstants.OPACITY);
+                color = new Color(red, green, blue, alpha);
+            } else {
+                color = TagUtils.getColorOrDefault(stack, LuxCapacitorBlock.defaultColor);
+            }
 
             itemModel.color = color;
             return itemModel;

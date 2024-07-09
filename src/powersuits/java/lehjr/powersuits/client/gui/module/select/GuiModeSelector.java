@@ -63,16 +63,18 @@ public class GuiModeSelector extends ContainerlessGui {
 
     @Override
     public void render(GuiGraphics gfx, int mouseX, int mouseY, float partialTick) {
-        this.renderBackground(gfx, mouseX, mouseY, partialTick);
-        this.update(mouseX, mouseY);
-        gfx.pose().pushPose();
-        gfx.pose().translate(0.0D, 0.0D, 10.0D);
-//        this.renderFrames(gfx, mouseX, mouseY, partialTick);
-        gfx.pose().translate(0.0D, 0.0D, 10.0D);
-        gfx.pose().translate(0.0D, 0.0D, 100.0D);
-        this.renderLabels(gfx, mouseX, mouseY);
-        gfx.pose().popPose();
-        renderTooltip(gfx, mouseX, mouseY);
+        super.render(gfx, mouseX, mouseY, partialTick);
+//        this.renderBackground(gfx, mouseX, mouseY, partialTick);
+//        this.update(mouseX, mouseY);
+//        gfx.pose().pushPose();
+//        gfx.pose().translate(0.0D, 0.0D, 10.0D);
+//
+////        this.radialSelect.render(gfx, mouseX, mouseY, partialTick);
+//        gfx.pose().translate(0.0D, 0.0D, 10.0D);
+//        gfx.pose().translate(0.0D, 0.0D, 100.0D);
+//        this.renderLabels(gfx, mouseX, mouseY);
+//        gfx.pose().popPose();
+//        renderTooltip(gfx, mouseX, mouseY);
     }
 
     @Override

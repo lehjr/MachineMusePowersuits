@@ -50,6 +50,7 @@ public class ClientEventBusSubscriber {
     public static void onClientSetup(FMLClientSetupEvent event) {
         NeoForge.EVENT_BUS.addListener(ClientEventBusSubscriber::onFOVUpdate);
         NeoForge.EVENT_BUS.addListener(ClientEventBusSubscriber::renderBlockHighlight);
+        NeoForge.EVENT_BUS.register(new KeymappingKeyHandler());
     }
 
 

@@ -77,7 +77,7 @@ public class HoeModule extends AbstractPowerModule {
                                         if (!level.isClientSide) {
                                             consumer1.accept(context);
                                             if (player != null) {
-                                                ElectricItemUtils.drainPlayerEnergy(player, energyConsumed);
+                                                ElectricItemUtils.drainPlayerEnergy(player, energyConsumed, false);
                                             }
                                         }
                                         if(ret == InteractionResult.FAIL || ret == InteractionResult.PASS) {

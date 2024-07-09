@@ -1233,22 +1233,6 @@ public class MPSCommonConfig {
             LUX_CAPACITOR_MODULE__SETTINGS_BUILDER
                     .defineInRange(MPSConstants.ENERGY_CONSUMPTION_BASE, 1000, 0, 100000.0D);
 
-    private static final ModConfigSpec.DoubleValue LUX_CAPACITOR_MODULE__RED_HUE_MULTIPLIER =
-            LUX_CAPACITOR_MODULE__SETTINGS_BUILDER
-                    .defineInRange(MPSConstants.RED_HUE_MULTIPLIER, 1, 0, 1.0D);
-
-    private static final ModConfigSpec.DoubleValue LUX_CAPACITOR_MODULE__GREEN_HUE_MULTIPLIER =
-            LUX_CAPACITOR_MODULE__SETTINGS_BUILDER
-                    .defineInRange(MPSConstants.GREEN_HUE_MULTIPLIER, 1, 0, 1.0D);
-
-    private static final ModConfigSpec.DoubleValue LUX_CAPACITOR_MODULE__BLUE_HUE_MULTIPLIER =
-            LUX_CAPACITOR_MODULE__SETTINGS_BUILDER
-                    .defineInRange(MPSConstants.BLUE_HUE_MULTIPLIER, 1, 0, 1.0D);
-
-    private static final ModConfigSpec.DoubleValue LUX_CAPACITOR_MODULE__OPACITY_MULTIPLIER =
-            LUX_CAPACITOR_MODULE__SETTINGS_BUILDER
-                    .defineInRange(MPSConstants.OPACITY_MULTIPLIER, 1, 0, 1.0D);
-
     // Vision ---------------------------------------------------------------------------------------------------------
     private static final ModConfigSpec.Builder VISION_MODULE__SETTINGS_BUILDER = LUX_CAPACITOR_MODULE__SETTINGS_BUILDER
             .pop() // Lux Capacitor
@@ -1623,10 +1607,6 @@ public class MPSCommonConfig {
     // Lux Capacitor
     public static boolean luxCapacitorModuleIsAllowed;
     public static double luxCapacitorEnergyConsumptionBase;
-    public static double getLuxCapacitorRedHueMultiplier;
-    public static double getLuxCapacitorGreenHueMultiplier;
-    public static double getLuxCapacitorBlueHueMultiplier;
-    public static double getLuxCapacitorOpacityMultiplier;
 
     // WEAPON -----------------------------------------------------------------
     // Blade Launcher
@@ -1869,10 +1849,6 @@ public class MPSCommonConfig {
             // Lux Capacitor
             luxCapacitorModuleIsAllowed = LUX_CAPACITOR_MODULE__IS_ALLOWED.get();
             luxCapacitorEnergyConsumptionBase = LUX_CAPACITOR_MODULE__ENERGY_CONSUMPTION_BASE.get();
-            getLuxCapacitorRedHueMultiplier = LUX_CAPACITOR_MODULE__RED_HUE_MULTIPLIER.get();
-            getLuxCapacitorGreenHueMultiplier = LUX_CAPACITOR_MODULE__GREEN_HUE_MULTIPLIER.get();
-            getLuxCapacitorBlueHueMultiplier = LUX_CAPACITOR_MODULE__BLUE_HUE_MULTIPLIER.get();
-            getLuxCapacitorOpacityMultiplier = LUX_CAPACITOR_MODULE__OPACITY_MULTIPLIER.get();
 
             // VISION ---------------------------------------------------------
             // Binoculars

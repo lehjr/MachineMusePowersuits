@@ -38,11 +38,6 @@ public class ElectricItemUtils {
         return avail;
     }
 
-    @Deprecated
-    public static double drainPlayerEnergy(LivingEntity entity, double drainAmount) {
-        return drainPlayerEnergy(entity, (int)drainAmount, false);
-    }
-
     /**
      * returns the total amount of energy drained from the entity's equipped items
      *
@@ -66,7 +61,6 @@ public class ElectricItemUtils {
         if (!simulate && drainAmount - drainleft > 0 && entity instanceof Player player) {
             player.getInventory().setChanged();
         }
-
         return drainAmount - drainleft;
     }
 
