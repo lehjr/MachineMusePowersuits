@@ -49,7 +49,7 @@ public class PowerFist extends AbstractElectricTool {
      */
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
-
+        NuminaLogger.logDebug("use()... ");
         ItemStack fist = ItemUtils.getItemFromEntityHand(player, hand);
         final InteractionResultHolder<ItemStack> fallback = new InteractionResultHolder<>(InteractionResult.PASS, fist);
 //        if (hand != InteractionHand.MAIN_HAND) {
@@ -90,12 +90,15 @@ public class PowerFist extends AbstractElectricTool {
     public void onUseTick(Level level, LivingEntity entity, ItemStack itemStack, int ticksRemaining) {
         if(NuminaCapabilities.getModeChangingModularItemCapability(itemStack)
                 .map(handler-> handler.onUseTick(level, entity, ticksRemaining)).orElse(false)) {
+            NuminaLogger.logDebug("onUseTick remaining: " + ticksRemaining);
             super.onUseTick(level, entity, itemStack, ticksRemaining);
         }
     }
 
     @Override
     public InteractionResult onItemUseFirst(ItemStack itemStack, UseOnContext context) {
+        NuminaLogger.logDebug("onItemUseFirst");
+
         final InteractionResult fallback = InteractionResult.PASS;
 
         final InteractionHand hand = context.getHand();
@@ -132,6 +135,8 @@ public class PowerFist extends AbstractElectricTool {
 
     @Override
     public InteractionResult useOn(UseOnContext context) {
+        NuminaLogger.logDebug("useOn");
+
         final InteractionResult fallback = InteractionResult.PASS;
 
         final InteractionHand hand = context.getHand();
@@ -226,6 +231,13 @@ public class PowerFist extends AbstractElectricTool {
     public boolean canContinueUsing(ItemStack oldStack, ItemStack newStack) {
         return NuminaCapabilities.getCapability(oldStack, NuminaCapabilities.Inventory.MODE_CHANGING_MODULAR_ITEM)
                 .map(iModeChangingItem -> iModeChangingItem.canContinueUsing(newStack)).orElse(false);
+    }
+
+    @Override
+    public int getUseDuration(ItemStack stack) {
+        NuminaLogger.logDebug("use duration: " + super.getUseDuration(stack));
+
+        return super.getUseDuration(stack);
     }
 
     @Override

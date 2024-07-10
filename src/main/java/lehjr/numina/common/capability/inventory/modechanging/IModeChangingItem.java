@@ -1,5 +1,6 @@
 package lehjr.numina.common.capability.inventory.modechanging;
 
+import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.capability.NuminaCapabilities;
 import lehjr.numina.common.capability.inventory.modularitem.IModularItem;
 import lehjr.numina.common.capability.module.blockbreaking.IBlockBreakingModule;
@@ -164,6 +165,7 @@ public interface IModeChangingItem extends IModularItem {
 //    }
 
     default void releaseUsing(ItemStack stack, Level worldIn, LivingEntity entityLiving, int timeLeft) {
+        NuminaLogger.logDebug("release using");
         NuminaCapabilities.getCapability(getActiveModule(), NuminaCapabilities.Module.POWER_MODULE)
                 .filter(IRightClickModule.class::isInstance)
                 .map(IRightClickModule.class::cast)

@@ -80,6 +80,7 @@ public class ClientEventBusSubscriber {
 //        event.registerEntityRenderer(MPSEntities.RAILGUN_BOLT_ENTITY_TYPE.get(), RailGunBoltRenderer::new);
         event.registerEntityRenderer(MPSEntities.LUX_CAPACITOR_ENTITY_TYPE.get(), LuxCapacitorEntityRenderer::new);
         event.registerEntityRenderer(MPSEntities.PLASMA_BALL_ENTITY_TYPE.get(), PlasmaBoltEntityRenderer::new);
+//        event.registerEntityRenderer(MPSEntities.PLASMA_BALL_ENTITY_TYPE.get(), PlasmaBallEntityRenderer2::new);
         event.registerEntityRenderer(MPSEntities.SPINNING_BLADE_ENTITY_TYPE.get(), SpinningBladeEntityRenderer::new);
         event.registerBlockEntityRenderer(MPSBlocks.TINKER_TABLE_BLOCKENTITY_TYPE.get(), TinkerTableBER::new);
     }
@@ -100,6 +101,12 @@ public class ClientEventBusSubscriber {
     public static void onModifyBakingResult(ModelEvent.ModifyBakingResult event) {
         ModelBakeEventHandler.INSTANCE.onModifyBakingResult(event);
     }
+
+    @SubscribeEvent
+    public static void onAddAdditional(ModelEvent.RegisterAdditional e) {
+        lehjr.powersuits.client.event.ModelBakeEventHandler.onAddAdditional(e);
+    }
+
 
     @OnlyIn(Dist.CLIENT)
 //    @SubscribeEvent

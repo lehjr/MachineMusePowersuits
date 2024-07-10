@@ -226,7 +226,7 @@ public class MPSCommonConfig {
 
     private static final ModConfigSpec.IntValue POWER_FIST_2__INVENTORY_SLOTS =
             TIER_2_POWER_FIST__SETTINGS_BUILDER
-                    .defineInRange(MPSConstants.CONFIG_INVENTORY_SLOTS, 4, 0, 10);
+                    .defineInRange(MPSConstants.CONFIG_INVENTORY_SLOTS, 12, 0, 60);
 
     private static final ModConfigSpec.DoubleValue POWER_FIST_2__MAX_HEAT =
             TIER_2_POWER_FIST__SETTINGS_BUILDER
@@ -239,7 +239,7 @@ public class MPSCommonConfig {
 
     private static final ModConfigSpec.IntValue POWER_FIST_3__INVENTORY_SLOTS =
             TIER_3_POWER_FIST__SETTINGS_BUILDER
-                    .defineInRange(MPSConstants.CONFIG_INVENTORY_SLOTS, 4, 0, 10);
+                    .defineInRange(MPSConstants.CONFIG_INVENTORY_SLOTS, 30, 0, 100);
 
     private static final ModConfigSpec.DoubleValue POWER_FIST_TIER_3__MAX_HEAT =
             TIER_3_POWER_FIST__SETTINGS_BUILDER
@@ -252,7 +252,7 @@ public class MPSCommonConfig {
 
     private static final ModConfigSpec.IntValue POWER_FIST_4__INVENTORY_SLOTS =
             TIER_4_POWER_FIST__SETTINGS_BUILDER
-                    .defineInRange(MPSConstants.CONFIG_INVENTORY_SLOTS, 4, 0, 10);
+                    .defineInRange(MPSConstants.CONFIG_INVENTORY_SLOTS, 60, 0, 180);
 
     private static final ModConfigSpec.DoubleValue POWER_FIST_4__MAX_HEAT =
             TIER_4_POWER_FIST__SETTINGS_BUILDER

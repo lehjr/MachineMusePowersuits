@@ -35,9 +35,7 @@ public class PlasmaBoltEntityRenderer extends EntityRenderer<PlasmaBallEntity> {
     @Override
     public void render(PlasmaBallEntity entityIn, float entityYaw, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn) {
         super.render(entityIn, entityYaw, partialTicks, matrixStackIn, bufferIn, packedLightIn);
-        float size = entityIn.getChargePercent();//.getActualSize();
-//        NuminaLogger.logDebug("size: " + size);
-
+        float size = entityIn.getChargePercent();
         if(size > 0) {
             renderPlasma(matrixStackIn, bufferIn, size);//12.5F);
         }
@@ -58,8 +56,6 @@ public class PlasmaBoltEntityRenderer extends EntityRenderer<PlasmaBallEntity> {
             ----------------
             max scale: 2.5
             --------------
-
-
 
             min size: 10
             ---------------
@@ -112,12 +108,9 @@ public class PlasmaBoltEntityRenderer extends EntityRenderer<PlasmaBallEntity> {
         VertexConsumer bb = bufferIn.getBuffer(rt);
         Lazy<BakedModel> model = modelSphere;
         if (model.get() == null) {
-            NuminaLogger.logError("PlasmaBoltRenderer Render Spere quads not yet implemented");
+            NuminaLogger.logError("PlasmaBoltRenderer Render Sphere quads not yet implemented");
             return;
         }
-//        else {
-//            NuminaLogger.logDebug("model class: " + model.getClass() +", quads: " + model.get().getQuads(null, null, rand/*, ModelData.EMPTY*/).size());
-//        }
 
         for (BakedQuad quad : model.get().getQuads(null, null, rand)) {
             bb.putBulkData(matrixStackIn.last(), quad, color.r, color.g, color.b, color.a, packedLightIn, overlay, true);

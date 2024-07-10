@@ -26,6 +26,7 @@
 
 package lehjr.powersuits.common.item.module.weapon;
 
+import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.capability.module.powermodule.ModuleCategory;
 import lehjr.numina.common.capability.module.powermodule.ModuleTarget;
 import lehjr.numina.common.capability.module.rightclick.RightClickModule;
@@ -59,16 +60,21 @@ public class PlasmaCannonModule extends AbstractPowerModule {
 
         @Override
         public InteractionResultHolder<ItemStack> use(@NotNull ItemStack itemStackIn, Level worldIn, Player playerIn, InteractionHand hand) {
+            NuminaLogger.logDebug("use here() ");
+
             if (hand == InteractionHand.MAIN_HAND && ElectricItemUtils.getPlayerEnergy(playerIn) > getEnergyUsage()) {
                 playerIn.startUsingItem(hand);
-                return InteractionResultHolder.success(itemStackIn);
+                return InteractionResultHolder.consume(itemStackIn);
             }
-            return InteractionResultHolder.pass(itemStackIn);
+            return InteractionResultHolder.fail(itemStackIn);
         }
 
         @Override
         public void releaseUsing(@NotNull ItemStack stack, Level worldIn, LivingEntity entityLiving, int timeLeft) {
             int chargeTicks = (int) MathUtils.clampDouble(stack.getUseDuration() - timeLeft, 10, 50);
+
+            NuminaLogger.logDebug("release using with charge ticks " + chargeTicks);
+
             if (!worldIn.isClientSide && entityLiving instanceof Player) {
                 double chargePercent = chargeTicks * 0.02; // chargeticks/50
                 double energyConsumption = getEnergyUsage() * chargePercent;

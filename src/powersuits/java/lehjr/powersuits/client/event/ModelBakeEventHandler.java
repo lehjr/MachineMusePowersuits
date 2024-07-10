@@ -31,7 +31,10 @@ public enum ModelBakeEventHandler {
 
     public MPSBEWLR MPSBERINSTANCE = new MPSBEWLR();
 
-    public static final ModelResourceLocation powerFistIconLocation = new ModelResourceLocation(MPSConstants.POWER_FIST_1, "inventory");
+    public static final ModelResourceLocation powerFistIconLocation1 = new ModelResourceLocation(MPSConstants.POWER_FIST_1, "inventory");
+    public static final ModelResourceLocation powerFistIconLocation2 = new ModelResourceLocation(MPSConstants.POWER_FIST_2, "inventory");
+    public static final ModelResourceLocation powerFistIconLocation3 = new ModelResourceLocation(MPSConstants.POWER_FIST_3, "inventory");
+    public static final ModelResourceLocation powerFistIconLocation4 = new ModelResourceLocation(MPSConstants.POWER_FIST_4, "inventory");
 
     RandomSource rand = RandomSource.create();
 
@@ -57,9 +60,16 @@ public enum ModelBakeEventHandler {
             }
         });
 
-        BakedModel powerFistIcon = event.getModels().get(powerFistIconLocation);
-        if (!OBJBakedCompositeModel.class.isInstance(powerFistIcon)) {
-            event.getModels().put(powerFistIconLocation, new PowerFistModelWrapper(powerFistIcon));
+        BakedModel powerFistIcon1 = event.getModels().get(powerFistIconLocation1);
+        BakedModel powerFistIcon2 = event.getModels().get(powerFistIconLocation2);
+        BakedModel powerFistIcon3 = event.getModels().get(powerFistIconLocation3);
+        BakedModel powerFistIcon4 = event.getModels().get(powerFistIconLocation4);
+
+        if (!OBJBakedCompositeModel.class.isInstance(powerFistIcon1)) {
+            event.getModels().put(powerFistIconLocation1, new PowerFistModelWrapper(powerFistIcon1));
+            event.getModels().put(powerFistIconLocation2, new PowerFistModelWrapper(powerFistIcon2));
+            event.getModels().put(powerFistIconLocation3, new PowerFistModelWrapper(powerFistIcon3));
+            event.getModels().put(powerFistIconLocation4, new PowerFistModelWrapper(powerFistIcon4));
         }
     }
 
@@ -78,7 +88,7 @@ public enum ModelBakeEventHandler {
     }
 
     @SubscribeEvent
-    public void onAddAdditional(ModelEvent.RegisterAdditional e) {
+    public static void onAddAdditional(ModelEvent.RegisterAdditional e) {
         e.register(plasmaBall);
         locations.forEach(location -> e.register(location));
     }

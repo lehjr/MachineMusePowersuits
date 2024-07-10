@@ -112,6 +112,10 @@ public class Color /*implements INBTSerializable<IntTag>*/ {
         this.a = 1F;
     }
 
+    public float[] asArray() {
+        return new float[]{r,g,b,a};
+    }
+
     public void setGuiGraphicsColor(GuiGraphics gfx) {
         gfx.setColor(r, g, b, a);
     }

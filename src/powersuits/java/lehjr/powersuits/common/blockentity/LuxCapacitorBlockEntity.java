@@ -38,7 +38,9 @@ public class LuxCapacitorBlockEntity extends BlockEntity {
     public void setColor(Color color) {
         if(this.level != null) {
             colorHolder.get().setColor(color);
-            this.setChanged();
+            if(!this.level.isClientSide) {
+                this.setChanged();
+            }
         }
     }
 

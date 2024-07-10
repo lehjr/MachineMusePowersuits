@@ -33,8 +33,6 @@ import net.neoforged.neoforge.client.model.pipeline.QuadBakingVertexConsumer;
 import net.neoforged.neoforge.client.model.renderable.CompositeRenderable;
 import net.neoforged.neoforge.client.textures.UnitTextureAtlasSprite;
 import org.apache.commons.lang3.tuple.Pair;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
@@ -54,8 +52,6 @@ import java.util.stream.Stream;
  * Note: Slightly modified from Forge to produce separate models for each part
  */
 public class NuminaObjModel extends SimpleUnbakedGeometry<NuminaObjModel> {
-    private static final Logger LOGGER = LogManager.getLogger();
-
     private static final Vector4f COLOR_WHITE = new Vector4f(1, 1, 1, 1);
     private static final Vec2[] DEFAULT_COORDS = {
             new Vec2(0, 0),
