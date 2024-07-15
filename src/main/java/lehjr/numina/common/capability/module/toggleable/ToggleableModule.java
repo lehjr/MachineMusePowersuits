@@ -1,5 +1,6 @@
 package lehjr.numina.common.capability.module.toggleable;
 
+import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.capability.module.powermodule.ModuleCategory;
 import lehjr.numina.common.capability.module.powermodule.ModuleTarget;
 import lehjr.numina.common.capability.module.powermodule.PowerModule;
@@ -13,13 +14,18 @@ public class ToggleableModule extends PowerModule implements IToggleableModule {
 
     public ToggleableModule(ItemStack module, ModuleCategory category, ModuleTarget target) {
         super(module, category, target);
-        load(getModuleTag());
+        load();
+    }
+
+    public ToggleableModule(ItemStack module, ModuleCategory category, ModuleTarget target, boolean isAllowed) {
+        super(module, category, target, isAllowed);
+        load();
     }
 
     @Override
-    public void toggleModule(boolean online) {
+    public ItemStack toggleModule(boolean online) {
         this.online = online;
-        save();
+        return save();
     }
 
     @Override
@@ -28,12 +34,12 @@ public class ToggleableModule extends PowerModule implements IToggleableModule {
     }
 
     @Override
-    public void save() {
-        TagUtils.setModuleBoolean(getModule(), NuminaConstants.TAG_ONLINE, online);
+    public ItemStack save() {
+        return TagUtils.setModuleIsOnline(getModule(), online);
     }
 
     @Override
-    public void load(CompoundTag nbt) {
-        this.online = TagUtils.getModuleBoolean(getModule(), NuminaConstants.TAG_ONLINE);
+    public void load() {
+        this.online = TagUtils.getModuleIsOnline(getModule());
     }
 }

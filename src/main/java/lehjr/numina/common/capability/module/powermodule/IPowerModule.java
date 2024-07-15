@@ -6,7 +6,6 @@ import net.minecraft.world.item.ItemStack;
 
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.Callable;
 
 public interface IPowerModule {
 
@@ -42,13 +41,9 @@ public interface IPowerModule {
         return true;
     }
 
-    default void load(CompoundTag nbt) {
+    void load();
 
-    }
-
-    default void save() {
-
-    }
+    ItemStack save();
 
     default void addUnitLabel(String propertyName, String unit) {
         UnitMap.addUnitLabel(propertyName, unit);
@@ -68,7 +63,7 @@ public interface IPowerModule {
 
     void addTradeoffProperty(String tradeoffName, String propertyName, double mulitiplierConfigValue, String unit);
 
-    void addIntTradeoffProperty(int mulitiplierConfigValue, String tradeoffName, String propertyName, String unit, int roundTo, int offset);
+    void addIntTradeoffProperty(String tradeoffName, String propertyName, int mulitiplierConfigValue, String unit, int roundTo, int offset);
 
     void addPropertyModifier(String propertyName, IPropertyModifier modifier);
 

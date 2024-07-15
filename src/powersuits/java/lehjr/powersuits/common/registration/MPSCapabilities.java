@@ -2,6 +2,10 @@ package lehjr.powersuits.common.registration;
 
 import lehjr.numina.common.capability.NuminaCapabilities;
 import lehjr.numina.common.capability.energy.ModularItemEnergyWrapper;
+import lehjr.numina.common.capability.module.powermodule.ModuleCategory;
+import lehjr.numina.common.capability.module.powermodule.ModuleTarget;
+import lehjr.numina.common.capability.module.toggleable.ToggleableModule;
+import lehjr.numina.common.capability.render.hud.HudModule;
 import lehjr.powersuits.common.capabilities.item.armor.PowerArmorHeatWrapper;
 import lehjr.powersuits.common.capabilities.item.armor.PowerArmorModularItemWrapper;
 import lehjr.powersuits.common.capabilities.item.armor.PowerArmorRenderWrapper;
@@ -10,6 +14,14 @@ import lehjr.powersuits.common.capabilities.item.tool.PowerFistModeChangingWrapp
 import lehjr.powersuits.common.capabilities.item.tool.PowerFistRenderWrapper;
 import lehjr.powersuits.common.item.module.armor.ArmorPlatingModule;
 import lehjr.powersuits.common.item.module.armor.EnergyShieldModule;
+import lehjr.powersuits.common.item.module.cosmetic.TransparentArmorModule;
+import lehjr.powersuits.common.item.module.environmental.AutoFeederModule;
+import lehjr.powersuits.common.item.module.environmental.MobRepulsorModule;
+import lehjr.powersuits.common.item.module.environmental.WaterElectrolyzerModule;
+import lehjr.powersuits.common.item.module.miningenchantment.AquaAffinityModule;
+import lehjr.powersuits.common.item.module.miningenchantment.FortuneModule;
+import lehjr.powersuits.common.item.module.miningenchantment.SilkTouchModule;
+import lehjr.powersuits.common.item.module.miningenhancement.TunnelBoreModule;
 import lehjr.powersuits.common.item.module.tool.blockbreaking.chopping.AxeModule;
 import lehjr.powersuits.common.item.module.tool.blockbreaking.digging.ShovelModule;
 import lehjr.powersuits.common.item.module.tool.blockbreaking.mining.PickaxeModule;
@@ -19,6 +31,7 @@ import lehjr.powersuits.common.item.module.tool.misc.LuxCapacitorModule;
 import lehjr.powersuits.common.item.module.vision.BinocularsModule;
 import lehjr.powersuits.common.item.module.vision.NightVisionModule;
 import lehjr.powersuits.common.item.module.weapon.*;
+import net.minecraft.world.item.Items;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 
@@ -29,11 +42,10 @@ public class MPSCapabilities {
      * @param event
      */
     public static void registerCapabilities(RegisterCapabilitiesEvent event) {
-        // Block Entity
+        // Block Entity ===============================================================================================
+        // Todo?
 
-
-
-        // Armor ----------------------------------------------------------------------------------
+        // Armor ======================================================================================================
         event.registerItem(NuminaCapabilities.Inventory.MODULAR_ITEM, (stack, ctx)-> new PowerArmorModularItemWrapper(stack, 1),
                 MPSItems.POWER_ARMOR_HELMET_1.get(),
                 MPSItems.POWER_ARMOR_CHESTPLATE_1.get(),
@@ -131,7 +143,7 @@ public class MPSCapabilities {
                 MPSItems.POWER_ARMOR_LEGGINGS_4.get(),
                 MPSItems.POWER_ARMOR_BOOTS_4.get());
 
-        // Power Fist -------------------------------------------------------------------------------------------------
+        // Power Fist =================================================================================================
         // Mode Changing
         event.registerItem(NuminaCapabilities.Inventory.MODE_CHANGING_MODULAR_ITEM, (stack, context) ->
                         new PowerFistModeChangingWrapper(stack, 1), MPSItems.POWER_FIST_1.get());
@@ -172,20 +184,47 @@ public class MPSCapabilities {
                 MPSItems.POWER_FIST_3.get(),
                 MPSItems.POWER_FIST_4.get());
 
-
-
-
-
-
-
-
-
-        // Modules --------------------------------------------------------------------------------
-        // Armor
+        // Modules ====================================================================================================
+        // Armor ------------------------------------------------------------------------------------------------------
         event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new ArmorPlatingModule.ArmorPlatingCapabilityWrapper(stack, 1), MPSItems.IRON_PLATING_MODULE.get());
         event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new ArmorPlatingModule.ArmorPlatingCapabilityWrapper(stack, 2), MPSItems.DIAMOND_PLATING_MODULE.get());
         event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new ArmorPlatingModule.ArmorPlatingCapabilityWrapper(stack, 3), MPSItems.NETHERITE_PLATING_MODULE.get());
         event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new EnergyShieldModule.EnergyShieldCapabilityWrapper(stack), MPSItems.ENERGY_SHIELD_MODULE.get());
+
+        //Cosmetic ----------------------------------------------------------------------------------------------------
+        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new TransparentArmorModule.TransParentArmorCap(stack), MPSItems.TRANSPARENT_ARMOR_MODULE.get());
+
+        // Debug ------------------------------------------------------------------------------------------------------
+        // TODO
+
+        // Energy Generation ------------------------------------------------------------------------------------------
+        // TODO
+
+        // Environmental ----------------------------------------------------------------------------------------------
+        // TODO: COOLING
+        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new AutoFeederModule.Ticker(stack), MPSItems.AUTO_FEEDER_MODULE.get());
+        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new MobRepulsorModule.Ticker(stack), MPSItems.MOB_REPULSOR_MODULE.get());
+        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new WaterElectrolyzerModule.Ticker(stack), MPSItems.WATER_ELECTROLYZER_MODULE.get());
+
+        // Mining Enchantment -----------------------------------------------------------------------------------------
+        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new AquaAffinityModule.TickingEnchantment(stack), MPSItems.AQUA_AFFINITY_MODULE.get());
+        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new FortuneModule.TickingEnchantment(stack), MPSItems.FORTUNE_MODULE.get());
+        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new SilkTouchModule.TickingEnchantment(stack), MPSItems.SILK_TOUCH_MODULE.get());
+
+        // Mining Enhancement -----------------------------------------------------------------------------------------
+        // Selective Miner
+        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new TunnelBoreModule.Enhancement(stack), MPSItems.TUNNEL_BORE_MODULE.get());
+        // Vein Miner
+
+
+
+        // Special
+        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new HudModule(stack, ModuleCategory.SPECIAL, ModuleTarget.HEADONLY, true), Items.CLOCK);
+        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new HudModule(stack, ModuleCategory.SPECIAL, ModuleTarget.HEADONLY, true), Items.COMPASS);
+        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new HudModule(stack, ModuleCategory.SPECIAL, ModuleTarget.HEADONLY, true), Items.RECOVERY_COMPASS);
+
+
+
 
         // Cosmetic
 

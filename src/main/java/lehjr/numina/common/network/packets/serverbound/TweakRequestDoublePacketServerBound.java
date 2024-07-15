@@ -17,11 +17,13 @@ import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.Nonnull;
+
 public record TweakRequestDoublePacketServerBound(EquipmentSlot slotType, ResourceLocation moduleRegName, String tweakName, double tweakValue) implements CustomPacketPayload {
     public static final Type<TweakRequestDoublePacketServerBound> ID = new Type<>(new ResourceLocation(NuminaConstants.MOD_ID, "tweak_request_to_server"));
 
     @Override
-    @NotNull
+    @Nonnull
     public Type<? extends CustomPacketPayload> type() {
         return ID;
     }
@@ -44,9 +46,11 @@ public record TweakRequestDoublePacketServerBound(EquipmentSlot slotType, Resour
                 packetBuffer.readDouble());
     }
 
-    public static void sendToClient(ServerPlayer entity, EquipmentSlot type, ResourceLocation moduleRegName, String tweakName, double tweakValue) {
-        NuminaPackets.sendToPlayer(new TweakRequestDoublePacketClientBound(type, moduleRegName, tweakName, tweakValue), entity);
-    }
+    // Don't use this, Let data handlers actually handle sync
+
+//    public static void sendToClient(ServerPlayer entity, EquipmentSlot type, ResourceLocation moduleRegName, String tweakName, double tweakValue) {
+//        NuminaPackets.sendToPlayer(new TweakRequestDoublePacketClientBound(type, moduleRegName, tweakName, tweakValue), entity);
+//    }
 
     public static void handle(TweakRequestDoublePacketServerBound data, IPayloadContext ctx) {
         ctx.enqueueWork(() -> {
@@ -57,7 +61,7 @@ public record TweakRequestDoublePacketServerBound(EquipmentSlot slotType, Resour
                 NuminaCapabilities.getModularItemOrModeChangingCapability(stack)
                         .ifPresent(iItemHandler -> {
                             NuminaLogger.logDebug("setting module tweak name: " + data.tweakName + ", tweak value: " + data.tweakValue);
-                            iItemHandler.setModuleTweakDouble(data.moduleRegName, data.tweakName, data.tweakValue);
+                            iItemHandler.setModuleDouble(data.moduleRegName, data.tweakName, data.tweakValue);
 
                             ItemStack module = ItemStack.EMPTY;
                             for (int i = 0; i < iItemHandler.getSlots(); i++) {
@@ -73,7 +77,7 @@ public record TweakRequestDoublePacketServerBound(EquipmentSlot slotType, Resour
                             NuminaCapabilities.getPowerModuleCapability(module).ifPresent(pm->System.out.println("checking tweak value: " + pm.getModuleTag().get(data.tweakName)));
                         });
 
-                sendToClient((ServerPlayer) player, data.slotType, data.moduleRegName, data.tweakName, data.tweakValue);
+//                sendToClient((ServerPlayer) player, data.slotType, data.moduleRegName, data.tweakName, data.tweakValue);
             }
         });
     }

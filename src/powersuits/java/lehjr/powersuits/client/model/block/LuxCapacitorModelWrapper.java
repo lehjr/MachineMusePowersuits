@@ -58,6 +58,7 @@ import net.neoforged.neoforge.client.model.BakedModelWrapper;
 import net.neoforged.neoforge.client.model.data.ModelData;
 import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
@@ -76,7 +77,7 @@ public class LuxCapacitorModelWrapper extends BakedModelWrapper<OBJBakedComposit
     }
 
     @Override
-    public @NotNull List<BakedQuad> getQuads(@org.jetbrains.annotations.Nullable BlockState state, @org.jetbrains.annotations.Nullable Direction side, @NotNull RandomSource rand, @NotNull ModelData extraData, @org.jetbrains.annotations.Nullable RenderType renderType) {
+    public @Nonnull List<BakedQuad> getQuads(@org.jetbrains.annotations.Nullable BlockState state, @org.jetbrains.annotations.Nullable Direction side, @Nonnull RandomSource rand, @Nonnull ModelData extraData, @org.jetbrains.annotations.Nullable RenderType renderType) {
         if (extraData == ModelData.EMPTY) {
             extraData = LuxCapHelper.getItemModelData(color != null ? color.getARGBInt() : Color.WHITE.getARGBInt());
         }
@@ -105,12 +106,12 @@ public class LuxCapacitorModelWrapper extends BakedModelWrapper<OBJBakedComposit
 
 
     @Override
-    public @NotNull ModelData getModelData(@NotNull BlockAndTintGetter level, @NotNull BlockPos pos, @NotNull BlockState state, @NotNull ModelData modelData) {
+    public @Nonnull ModelData getModelData(@Nonnull BlockAndTintGetter level, @Nonnull BlockPos pos, @Nonnull BlockState state, @Nonnull ModelData modelData) {
         return super.getModelData(level, pos, state, modelData);
     }
 
     @Override
-    public ChunkRenderTypeSet getRenderTypes(@NotNull BlockState state, @NotNull RandomSource rand, @NotNull ModelData data) {
+    public ChunkRenderTypeSet getRenderTypes(@Nonnull BlockState state, @Nonnull RandomSource rand, @Nonnull ModelData data) {
         return ChunkRenderTypeSet.of(RenderType.translucent());// super.getRenderTypes(state, rand, data);
 //        return ChunkRenderTypeSet.of(RenderType.entityTranslucentCull(TextureAtlas.LOCATION_BLOCKS));
     }

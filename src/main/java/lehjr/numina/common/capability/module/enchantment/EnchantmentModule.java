@@ -9,6 +9,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.Nonnull;
+
 /**
  * Uses player tick to apply/update enchantment while applying appropriate energy drain or remove enchantment when tuned off
  */
@@ -24,7 +26,7 @@ public abstract class EnchantmentModule extends PlayerTickModule implements IEnc
     }
 
     @Override
-    public void onPlayerTickActive(Player player, @NotNull ItemStack item) {
+    public void onPlayerTickActive(Player player, @Nonnull ItemStack item) {
         if (player.level().isClientSide()) {
             return;
         }
@@ -41,7 +43,7 @@ public abstract class EnchantmentModule extends PlayerTickModule implements IEnc
     }
 
     @Override
-    public void onPlayerTickInactive(Player player, @NotNull ItemStack item) {
+    public void onPlayerTickInactive(Player player, @Nonnull ItemStack item) {
         if (added && !removed) {
             removeEnchantment(item);
             setAdded(false);

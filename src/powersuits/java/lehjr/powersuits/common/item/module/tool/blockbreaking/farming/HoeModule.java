@@ -37,13 +37,13 @@ public class HoeModule extends AbstractPowerModule {
         public RightClickie(@Nonnull ItemStack module, ModuleCategory category, ModuleTarget target) {
             super(module, category, target);
 
-//                addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, 500, "FE");
-//                addTradeoffProperty(MPSConstants.RADIUS, MPSConstants.ENERGY_CONSUMPTION, 9500);
-//                addIntTradeoffProperty(MPSConstants.RADIUS, MPSConstants.RADIUS, 8, "m", 1, 0);
-//
-//                addBaseProperty(MPSConstants.HARVEST_SPEED, 8, "x");
-//                addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.ENERGY_CONSUMPTION, 9500);
-//                addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.HARVEST_SPEED, 22);
+                addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, 500, "FE");
+                addTradeoffProperty(MPSConstants.RADIUS, MPSConstants.ENERGY_CONSUMPTION, 9500);
+                addIntTradeoffProperty(MPSConstants.RADIUS, MPSConstants.RADIUS,8,  "m", 1, 0);
+
+                addBaseProperty(MPSConstants.HARVEST_SPEED, 8, "x");
+                addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.ENERGY_CONSUMPTION, 9500);
+                addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.HARVEST_SPEED, 22);
         }
 
         @Override
@@ -56,6 +56,7 @@ public class HoeModule extends AbstractPowerModule {
             ItemStack itemStack = context.getItemInHand();
             BlockState toolModifiedState1;
             InteractionResult ret = InteractionResult.PASS;
+            assert player != null;
             if (!player.mayUseItemAt(blockPos, facing, itemStack) || ElectricItemUtils.getPlayerEnergy(player) < energyConsumed) {
                 return InteractionResult.PASS;
             } else {
@@ -101,7 +102,7 @@ public class HoeModule extends AbstractPowerModule {
         }
 
         @Override
-        public boolean mineBlock(@NotNull ItemStack powerFist, Level worldIn, BlockState state, BlockPos pos, LivingEntity entityLiving, double playerEnergy) {
+        public boolean mineBlock(@Nonnull ItemStack powerFist, Level worldIn, BlockState state, BlockPos pos, LivingEntity entityLiving, double playerEnergy) {
             if (this.canHarvestBlock(powerFist, state, (Player) entityLiving, pos, playerEnergy)) {
                 ElectricItemUtils.drainPlayerEnergy(entityLiving, getEnergyUsage(), false);
                 return true;

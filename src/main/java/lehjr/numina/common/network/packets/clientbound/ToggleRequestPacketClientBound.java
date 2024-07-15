@@ -11,11 +11,13 @@ import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.Nonnull;
+
 public record ToggleRequestPacketClientBound(ResourceLocation registryName, boolean toggleval) implements CustomPacketPayload {
     public static final Type<ToggleRequestPacketClientBound> ID = new Type<>(new ResourceLocation(NuminaConstants.MOD_ID, "toggle_request_client"));
 
     @Override
-    @NotNull
+    @Nonnull
     public Type<? extends CustomPacketPayload> type() {
         return ID;
     }

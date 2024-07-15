@@ -7,8 +7,10 @@ import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.Nonnull;
+
 public class PowerArmorHeatWrapper extends AbstractModularItemHeatWrapper {
-    public PowerArmorHeatWrapper(@NotNull ItemStack itemStack, int tier) {
+    public PowerArmorHeatWrapper(@Nonnull ItemStack itemStack, int tier) {
         super(itemStack, tier);
     }
 

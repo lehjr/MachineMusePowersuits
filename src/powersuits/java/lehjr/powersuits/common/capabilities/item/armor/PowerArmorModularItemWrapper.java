@@ -17,7 +17,7 @@ import java.util.Map;
 public class PowerArmorModularItemWrapper extends ModularItem {
     ArmorItem.Type type;
 
-    public PowerArmorModularItemWrapper(@NotNull ItemStack modularItem, int tier) {
+    public PowerArmorModularItemWrapper(@Nonnull ItemStack modularItem, int tier) {
         this(modularItem, tier, getActualSize(modularItem, tier));
     }
 

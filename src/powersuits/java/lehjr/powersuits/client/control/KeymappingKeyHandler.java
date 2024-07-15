@@ -3,6 +3,7 @@ package lehjr.powersuits.client.control;
 import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.capability.NuminaCapabilities;
 import lehjr.numina.common.capability.inventory.modechanging.IModeChangingItem;
+import lehjr.numina.common.capability.module.powermodule.IPowerModule;
 import lehjr.numina.common.capability.module.powermodule.ModuleCategory;
 import lehjr.numina.common.capability.module.powermodule.ModuleTarget;
 import lehjr.numina.common.capability.module.rightclick.IRightClickModule;
@@ -131,9 +132,6 @@ public class KeymappingKeyHandler {
         updatePlayerValues(player);
         Inventory inventory = player.getInventory();
 
-
-
-
         // Mode changinging GUI
         if (hotbarKeys[inventory.selected].isDown() && minecraft.isWindowActive()) {
             getMCItemCap(player).ifPresent(iModeChanging->{
@@ -185,24 +183,39 @@ public class KeymappingKeyHandler {
     public static void loadKeyBindings() {
         for (Item item : BuiltInRegistries.ITEM.stream().toList()) {
             ItemStack module = new ItemStack(item);
-            NuminaCapabilities.getCapability(module, NuminaCapabilities.Module.POWER_MODULE)
-                    .filter(IToggleableModule.class::isInstance)
-                    .map(IToggleableModule.class::cast).ifPresentOrElse(pm->{
-                        // Tool settings are a bit odd
-                        if (pm.getTarget() == ModuleTarget.TOOLONLY) {
-                            if (pm.getCategory() == ModuleCategory.MINING_ENHANCEMENT) {
-                                registerKeybinding(ItemUtils.getRegistryName(item), false);
-                            } else if (!IRightClickModule.class.isAssignableFrom(pm.getClass())) {
-                                registerKeybinding(ItemUtils.getRegistryName(item), false);
-                            }
-                        } else {
-                            registerKeybinding(ItemUtils.getRegistryName(item), false);
-                        }
-                    },  ()-> {
-                        if (item == Items.CLOCK || item == Items.COMPASS || item == Items.RECOVERY_COMPASS || ItemUtils.getRegistryName(item).equals(new ResourceLocation("ae2:meteorite_compass"))) {
-                            registerKeybinding(ItemUtils.getRegistryName(item), false);
-                        }
-                    });
+            IPowerModule pm = module.getCapability(NuminaCapabilities.Module.POWER_MODULE);
+            if(pm != null) {
+                NuminaLogger.logDebug("power module cap found for : " + module + ", pm class: " + pm.getClass());
+                NuminaLogger.logDebug("is instanceof IToggleableModule: " + (pm instanceof IToggleableModule));
+
+            }
+
+            if(pm instanceof IToggleableModule) {
+                // Tool settings are a bit odd
+                if (pm.getTarget() == ModuleTarget.TOOLONLY) {
+                    NuminaLogger.logDebug("moduleName " + ItemUtils.getRegistryName(item));
+
+                    // Mining Enhancement
+                    if (pm.getCategory() == ModuleCategory.MINING_ENHANCEMENT) {
+                        NuminaLogger.logDebug("registering kb for mining enhancement: " + ItemUtils.getRegistryName(item));
+                        registerKeybinding(ItemUtils.getRegistryName(item), false);
+                    } else if(pm.getCategory() == ModuleCategory.MINING_ENCHANTMENT) {
+                        NuminaLogger.logDebug("registering kb for mining enchantment: " + ItemUtils.getRegistryName(item));
+                        registerKeybinding(ItemUtils.getRegistryName(item), false);
+                    } else if (!IRightClickModule.class.isAssignableFrom(pm.getClass())) {
+                        registerKeybinding(ItemUtils.getRegistryName(item), false);
+                        NuminaLogger.logDebug("registering kb for some other module: " + ItemUtils.getRegistryName(item));
+                    }
+                } else {
+                    NuminaLogger.logDebug("registering kb for armor module: " + ItemUtils.getRegistryName(item));
+                    registerKeybinding(ItemUtils.getRegistryName(item), false);
+                }
+            } else {
+                if (item == Items.CLOCK ||
+                        item == Items.COMPASS || item == Items.RECOVERY_COMPASS || ItemUtils.getRegistryName(item).equals(new ResourceLocation("ae2:meteorite_compass"))) {
+                    registerKeybinding(ItemUtils.getRegistryName(item), false);
+                }
+            }
         }
     }
 
@@ -213,13 +226,17 @@ public class KeymappingKeyHandler {
     public static Map<String, MPSKeyMapping> keyMappings = new HashMap<>();
 
     public static void registerKeybinding(ResourceLocation registryName, boolean showOnHud) {
+        NuminaLogger.logDebug("trying to register kb for : " + registryName);
         String keybindingName = "keybinding." + registryName.getNamespace() + "." + registryName.getPath();
         registerKeyBinding(registryName, keybindingName, GLFW.GLFW_KEY_UNKNOWN, MPSConstants.MPS_ITEM_GROUP, showOnHud, false);
     }
 
     public static void registerKeyBinding(ResourceLocation registryName, String  keybindingName, int keyIn, String category, boolean showOnHud, boolean overwrite) {
         if (overwrite || !keyMappings.containsKey(keybindingName) ) {
+            NuminaLogger.logDebug("actually registering kb for : " + registryName);
             keyMappings.put(keybindingName, new MPSKeyMapping(registryName, keybindingName, keyIn, category, showOnHud));
+        } else {
+            NuminaLogger.logDebug("keymap handler did not register kb for " + registryName);
         }
     }
 

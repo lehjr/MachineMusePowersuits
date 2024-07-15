@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.Callable;
 
 public class PowerModule implements IPowerModule {
     final ItemStack module;
@@ -14,15 +13,23 @@ public class PowerModule implements IPowerModule {
     final ModuleTarget target;
     final String categoryTitle; // TODO: replace with translation key?
     Map<String, List<IPropertyModifier>> propertyModifiers;
+    boolean isAllowed;
 
     public PowerModule(ItemStack module,
                        ModuleCategory category,
                        ModuleTarget target) {
+        this(module, category, target, false);
+    }
+
+    public PowerModule(ItemStack module,
+                       ModuleCategory category,
+                       ModuleTarget target, boolean isAllowed) {
         this.module = module;
         this.category = category;
         this.target = target;
         this.categoryTitle = category.getConfigTitle().trim().replaceAll(" ", "_");
         this.propertyModifiers = new HashMap<>();
+        this.isAllowed = isAllowed;
     }
 
     @Override
@@ -46,7 +53,7 @@ public class PowerModule implements IPowerModule {
      */
     @Override
     public boolean isAllowed() {
-        return false;
+        return isAllowed;
     }
 
     @Override
@@ -87,7 +94,17 @@ public class PowerModule implements IPowerModule {
     }
 
     @Override
-    public void addIntTradeoffProperty(int mulitiplierConfigValue, String tradeoffName, String propertyName, String unit, int roundTo, int offset) {
+    public ItemStack save() {
+        return getModule();
+    }
+
+    @Override
+    public void load() {
+
+    }
+
+    @Override
+    public void addIntTradeoffProperty(String tradeoffName, String propertyName, int mulitiplierConfigValue, String unit, int roundTo, int offset) {
         addUnitLabel(propertyName, unit);
         addPropertyModifier(propertyName, new PropertyModifierIntLinearAdditive(mulitiplierConfigValue, tradeoffName, roundTo, offset));
     }

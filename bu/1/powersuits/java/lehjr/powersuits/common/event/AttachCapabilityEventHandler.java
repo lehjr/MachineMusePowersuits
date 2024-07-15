@@ -222,7 +222,7 @@ public class AttachCapabilityEventHandler {
             final LazyOptional<IPowerModule> powerModuleHolder = LazyOptional.of(() -> powerModule);
 
             @Override
-            public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> capability, @org.jetbrains.annotations.Nullable Direction side) {
+            public @Nonnull <T> LazyOptional<T> getCapability(@Nonnull Capability<T> capability, @org.jetbrains.annotations.Nullable Direction side) {
                 final LazyOptional<T> powerModuleCapability = NuminaCapabilities.POWER_MODULE.orEmpty(capability, powerModuleHolder);
                 if (powerModuleCapability.isPresent()) {
                     return powerModuleCapability;

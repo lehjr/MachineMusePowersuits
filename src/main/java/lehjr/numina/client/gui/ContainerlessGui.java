@@ -129,11 +129,9 @@ public class ContainerlessGui extends Screen implements IRect {
      */
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
-        NuminaLogger.logDebug("renderables size: " + renderables.size());
         for (Renderable renderable : renderables) {
             if (renderable instanceof IGuiFrame frame) {
                 if (frame.mouseClicked(mouseX, mouseY, button)) {
-                    NuminaLogger.logDebug("click consumed by " + frame.getClass());
                     return true;
                 }
             }

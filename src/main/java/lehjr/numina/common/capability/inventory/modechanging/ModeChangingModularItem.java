@@ -19,13 +19,14 @@ import net.neoforged.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ModeChangingModularItem extends ModularItem implements IModeChangingItem {
     protected static int activeMode = -1;
 
-    public ModeChangingModularItem(@NotNull ItemStack modularItem, int tier, int size) {
+    public ModeChangingModularItem(@Nonnull ItemStack modularItem, int tier, int size) {
         super(modularItem, tier, size, true);
         activeMode = TagUtils.getModularItemIntOrDefault(modularItem, TAG_MODE, -1);
     }
@@ -41,8 +42,7 @@ public class ModeChangingModularItem extends ModularItem implements IModeChangin
     public List<Integer> getValidModes() {
         List<Integer>moduleIndexes = new ArrayList<>();
 
-        // note: starting at 1 skips the power storage there
-        for(int i=1; i < getSlots();  i++) {
+        for(int i=0; i < getSlots();  i++) {
             ItemStack module = getStackInSlot(i);
             if (isValidMode(module)) {
                 moduleIndexes.add(i);
@@ -78,6 +78,7 @@ public class ModeChangingModularItem extends ModularItem implements IModeChangin
     @Override
     public void setActiveMode(int newMode) {
         activeMode = newMode;
+        TagUtils.setModularItemInt(getModularItemStack(), TAG_MODE, newMode);
 //        onContentsChanged(newMode);// FIXME!!!
     }
 

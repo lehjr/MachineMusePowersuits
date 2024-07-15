@@ -40,7 +40,9 @@ public class MPSOverlay {
         AtomicDouble top = new AtomicDouble(MPSClientConfig.hud_keybind_y);
         if (MPSClientConfig.hud_display_keybindings_hud && isModularItemEquipped(player)) {
             kbDisplayList.forEach(kbDisplay -> {
-                if (!kbDisplay.boundKeybinds.isEmpty()) {
+                kbDisplay.refreshKBList();
+
+                if (!kbDisplay.keybindsToRender.isEmpty()) {
                     kbDisplay.setLeft(MPSClientConfig.hud_keybind_x);
                     kbDisplay.setTop(top.get());
                     kbDisplay.setBottom(top.get() + 16);
@@ -66,11 +68,13 @@ public class MPSOverlay {
     }
 
     static boolean isModularItemEquipped(LocalPlayer player) {
-        return Arrays.stream(EquipmentSlot.values()).anyMatch(type ->NuminaCapabilities.getCapability(ItemUtils.getItemFromEntitySlot(player, type), NuminaCapabilities.Inventory.MODULAR_ITEM).isPresent());
+        return Arrays.stream(EquipmentSlot.values()).anyMatch(type ->NuminaCapabilities.getModularItemOrModeChangingCapability(ItemUtils.getItemFromEntitySlot(player, type)).isPresent());
     }
 
     static class KBDisplay extends DrawableRect {
         List<MPSKeyMapping> boundKeybinds = new ArrayList<>();
+        Map<MPSKeyMapping, Boolean> keybindsToRender = new HashMap<>();
+
         final InputConstants.Key finalId;
         public KBDisplay(MPSKeyMapping kb, double left, double top, double right) {
             super(left, top, right, top + 16, true, Color.DARK_GREEN.withAlpha(0.2F), Color.GREEN.withAlpha(0.2F));
@@ -88,48 +92,63 @@ public class MPSOverlay {
             }
         }
 
+        void refreshKBList() {
+            boundKeybinds.stream().filter(kb ->kb.showOnHud).forEach(kb ->{
+                AtomicBoolean installed = new AtomicBoolean(false);
+                AtomicBoolean active = new AtomicBoolean( false);
+                // just using the icon
+                ItemStack module = new ItemStack(Objects.requireNonNull(BuiltInRegistries.ITEM.get(kb.registryName)));
+
+                for (EquipmentSlot slot : EquipmentSlot.values()) {
+                    ItemStack stack = ItemUtils.getItemFromEntitySlot(getPlayer(), slot);
+                    NuminaCapabilities.getModularItemOrModeChangingCapability(stack).ifPresent(iModularItem -> {
+                        if(iModularItem.isModuleInstalled(module)) {
+                            installed.set(true);
+                            if (iModularItem instanceof IModeChangingItem mci && mci.hasActiveModule(kb.registryName)) {
+                                active.set(true); ;
+                            } else if (slot.isArmor() && iModularItem.isModuleOnline(kb.registryName)) {
+                                active.set(true);
+                            }
+                        }
+                    });
+
+                    // stop at the first active instance
+                    if(active.get()) {
+                        break;
+                    }
+                }
+                if (installed.get()) {
+                    keybindsToRender.put(kb, active.get());
+                }
+            });
+        }
+
         LocalPlayer getPlayer() {
             return Minecraft.getInstance().player;
         }
 
         @Override
         public void render(GuiGraphics gfx, int mouseX, int mouseY, float partialTick) {
+            if(keybindsToRender.isEmpty()) {
+                return;
+            }
             float stringwidth = (float) StringUtils.getFontRenderer().width(getLabel());
-            setWidth(stringwidth + 8 + boundKeybinds.stream().filter(kb->kb.showOnHud).toList().size() * 18);
+            setWidth(stringwidth + 8 + keybindsToRender.keySet().stream().toList().size() * 18);
             super.render(gfx, 0, 0, partialTick);
             AtomicBoolean kbToggleVal = new AtomicBoolean(false);
             AtomicDouble x = new AtomicDouble(left() + stringwidth + 8);
-            boundKeybinds.stream().filter(kb ->kb.showOnHud).forEach(kb ->{
-                boolean active = false;
+
+            keybindsToRender.forEach((kb, active)-> {
                 // just using the icon
                 ItemStack module = new ItemStack(Objects.requireNonNull(BuiltInRegistries.ITEM.get(kb.registryName)));
-
-                for (EquipmentSlot slot : EquipmentSlot.values()) {
-                    ItemStack stack = ItemUtils.getItemFromEntitySlot(getPlayer(), slot);
-                    if(slot.isArmor()) {
-                        active = NuminaCapabilities.getCapability(stack, NuminaCapabilities.Inventory.MODULAR_ITEM)
-                                .map(iItemHandler -> {
-                                    return iItemHandler.isModuleOnline(kb.registryName);
-                                }).orElse(false);
-                    } else {
-                        active = NuminaCapabilities.getCapability(stack, NuminaCapabilities.Inventory.MODE_CHANGING_MODULAR_ITEM)
-                                .map(iItemHandler -> {
-
-                                        return ((IModeChangingItem) iItemHandler).hasActiveModule(kb.registryName);
-//                                    return ((IModeChangingItem) iItemHandler).isModuleActiveAndOnline(kb.registryName);
-                                }).orElse(false);
-                    }
-
-
-                    // stop at the first active instance
-                    if(active) {
-                        kbToggleVal.set(true);
-                        break;
-                    }
+                if(active) {
+                    kbToggleVal.set(true);
                 }
+
                 IconUtils.drawModuleAt(gfx, x.get(), top(), module, active);
                 x.getAndAdd(16);
             });
+
             gfx.pose().pushPose();
             gfx.pose().translate(0,0,100);
             StringUtils.drawLeftAlignedText(gfx, getLabel(), (float) left() + 4, (float) top() + 9, (kbToggleVal.get()) ? Color.GREEN : Color.RED);

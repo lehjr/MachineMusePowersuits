@@ -76,6 +76,18 @@ public enum KeyMappingReaderWriter {
             }
             JsonObject kbSettings = new JsonObject();
             kbSettings.addProperty(formatVersionKey, 2);
+
+            // add these first to ensure all kb get saved
+            getMPSKeyBinds().forEach(keyBinding->{
+                JsonObject jsonKBSetting = new JsonObject();
+                jsonKBSetting.addProperty(registryNameKey, keyBinding.registryName.toString());
+                jsonKBSetting.addProperty(showOnHudKey, keyBinding.showOnHud);
+                jsonKBSetting.addProperty(defaultKeyKey, keyBinding.getKey().getValue());
+                kbSettings.add(keyBinding.getName(), jsonKBSetting);
+            });
+
+            // then add these which will overwrite keybinds already saved
+            // (adding these by themselves won't save new keybinds)
             Arrays.stream(Minecraft.getInstance().options.keyMappings)
                     .filter(MPSKeyMapping.class::isInstance)
                     .map(MPSKeyMapping.class::cast)
@@ -92,8 +104,8 @@ public enum KeyMappingReaderWriter {
             String prettyJsonString = gson.toJson(je);
             fileWriter(file, prettyJsonString, true);
         } catch (Exception e) {
-            NuminaLogger.logger.error("Problem writing out keyconfig :(");
-            e.printStackTrace();
+            NuminaLogger.logException("Problem writing out keyconfig :(", e);
+
         }
     }
 

@@ -1,23 +1,17 @@
 package lehjr.powersuits.common.base;
 
 import lehjr.numina.common.config.ConfigHelper;
-import lehjr.numina.common.event.HarvestEventHandler;
 import lehjr.powersuits.client.config.MPSClientConfig;
-import lehjr.powersuits.client.event.ClientEventBusSubscriber;
 import lehjr.powersuits.client.sound.MPSSoundDictionary;
 import lehjr.powersuits.common.config.MPSCommonConfig;
 import lehjr.powersuits.common.constants.MPSConstants;
 import lehjr.powersuits.common.network.MPSPackets;
 import lehjr.powersuits.common.registration.*;
-import net.minecraft.client.Minecraft;
-import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModContainer;
-import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
-import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
@@ -37,8 +31,7 @@ public class ModularPowersuits {
         MPSBlocks.MPS_BLOCKENTITY_TYPES.register(modEventBus);
         MPSArmorMaterial.ARMOR_MATERIALS.register(modEventBus);
 
-        NeoForge.EVENT_BUS.addListener(HarvestEventHandler::handleHarvestCheck);
-        NeoForge.EVENT_BUS.addListener(HarvestEventHandler::handleBreakSpeed);
+
 
         MPSSoundDictionary.MPS_SOUND_EVENTS.register(modEventBus);
 

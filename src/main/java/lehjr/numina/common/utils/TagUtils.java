@@ -34,7 +34,7 @@ public class TagUtils {
     }
 
     static ItemStack setTag(@Nonnull ItemStack stack, DataComponentType<CompoundTag> dataComponent, String tagKey, @Nonnull CompoundTag nbt) {
-        CompoundTag tagCompound = new CompoundTag();
+        CompoundTag tagCompound = getTag(stack, dataComponent, tagKey);
         tagCompound.put(tagKey, nbt);
         stack.set(dataComponent, tagCompound);
         return stack;
@@ -49,10 +49,25 @@ public class TagUtils {
         return setTag(module, NuminaObjects.POWERMODULE_ITEM_CODEC, NuminaConstants.MODULES_TAG, nbt);
     }
 
+    public static String getModuleString(@Nonnull ItemStack module, String tagName) {
+        return getString(getModuleTag(module), tagName);
+    }
+
+    public static ItemStack setModuleString(@Nonnull ItemStack module, String tagName, String value) {
+        return setModuleTag(module, setString(getModuleTag(module), tagName, value));
+    }
+
+    public static float getModuleFloat(@Nonnull ItemStack module, String tagName) {
+        return getFloatOrZero(getModuleTag(module), tagName);
+    }
+
+    public static ItemStack setModuleFloat(@Nonnull ItemStack module, String tagName, float value) {
+        return setModuleTag(module, setFloat(getModuleTag(module), tagName, value));
+    }
+
     public static ItemStack setModuleDouble(@Nonnull ItemStack module, String tagName, double value) {
         CompoundTag tag = getModuleTag(module);
-        tag = setDouble(tag, tagName, value);
-        return setModuleTag(module, tag);
+        return setModuleTag(module, setDouble(tag, tagName, value));
     }
 
     public static double getModuleDouble(@Nonnull ItemStack module, String tagName) {
@@ -61,8 +76,7 @@ public class TagUtils {
 
     public static ItemStack setModuleInt(@Nonnull ItemStack module, String tagName, int value) {
         CompoundTag tag = getModuleTag(module);
-        tag = setInt(tag, tagName, value);
-        return setModuleTag(module, tag);
+        return setModuleTag(module, setInt(tag, tagName, value));
     }
 
     public static int getModuleInt(@Nonnull ItemStack module, String tagName) {
@@ -71,8 +85,20 @@ public class TagUtils {
 
     public static ItemStack setModuleBoolean(@Nonnull ItemStack module, String tagName, boolean value) {
         CompoundTag tag = getModuleTag(module);
-        tag = setBool(tag, tagName, value);
-        return setModuleTag(module, tag);
+        return setModuleTag(module, setBool(tag, tagName, value));
+    }
+
+    public static boolean getModuleIsOnline(@Nonnull ItemStack module) {
+        var tmp =  module.getOrDefault(NuminaObjects.ONLINE, false);
+        if (tmp instanceof Boolean ret) {
+            return ret;
+        }
+        return false;
+    }
+
+    public static ItemStack setModuleIsOnline(@Nonnull ItemStack module, boolean isOnline) {
+        module.set(NuminaObjects.ONLINE, isOnline);
+        return module;
     }
 
     public static boolean getModuleBoolean(@Nonnull ItemStack module, String tagName) {
@@ -122,28 +148,35 @@ public class TagUtils {
         return setTag(stack, NuminaObjects.MODULAR_ITEM_CODEC, NuminaConstants.MODULAR_ITEM_TAG, nbt);
     }
 
-    public static ItemStack setModularItemDouble(@Nonnull ItemStack stack, String tagName, double value) {
+    public static float getModularItemFloat(@Nonnull ItemStack stack, String tagName) {
+        return getFloatOrZero(getModularItemTag(stack), tagName);
+    }
+
+    public static ItemStack setModularItemFloat(@Nonnull ItemStack stack, String tagName, float value) {
         CompoundTag tag = getModularItemTag(stack);
-        tag = setDouble(tag, tagName, value);
-        return setModularItemTag(stack, tag);
+        return setModularItemTag(stack, setFloat(tag, tagName, value));
     }
 
     public static double getModularItemDouble(@Nonnull ItemStack stack, String tagName) {
         return getDoubleOrZero(getModularItemTag(stack), tagName);
     }
 
-    public static ItemStack setModularItemInt(@Nonnull ItemStack stack, String tagName, int value) {
+    public static ItemStack setModularItemDouble(@Nonnull ItemStack stack, String tagName, double value) {
         CompoundTag tag = getModularItemTag(stack);
-        tag = setInt(tag, tagName, value);
-        return setModularItemTag(stack, tag);
-    }
-
-    public static int getModularItemIntOrDefault(@Nonnull ItemStack stack, String tagName, int defVal) {
-        return getIntOrDefault(getModularItemTag(stack), tagName, defVal);
+        return setModularItemTag(stack, setDouble(tag, tagName, value));
     }
 
     public static int getModularItemInt(@Nonnull ItemStack stack, String tagName) {
         return getIntOrZero(getModularItemTag(stack), tagName);
+    }
+
+    public static ItemStack setModularItemInt(@Nonnull ItemStack stack, String tagName, int value) {
+        CompoundTag tag = getModularItemTag(stack);
+        return setModularItemTag(stack, setInt(tag, tagName, value));
+    }
+
+    public static int getModularItemIntOrDefault(@Nonnull ItemStack stack, String tagName, int defVal) {
+        return getIntOrDefault(getModularItemTag(stack), tagName, defVal);
     }
 
     public static ItemStack setModularItemBoolean(@Nonnull ItemStack stack, String tagName, boolean value) {
@@ -200,52 +233,72 @@ public class TagUtils {
         return itemStack;
     }
 
+    // String --------------------------------------------------------------------------------------------------------
+    public static String getString(@Nonnull CompoundTag nbt, String tagName) {
+        if(nbt.contains(tagName, Tag.TAG_STRING)) {
+            return nbt.getString(tagName);
+        }
+        return "";
+    }
+
+    public static CompoundTag setString(@Nonnull CompoundTag nbt, String tagName, String value) {
+        nbt.putString(tagName, value);
+        return nbt;
+    }
+
+    // Float ---------------------------------------------------------------------------------------------------------
+    public static float getFloatOrZero(@Nonnull CompoundTag nbt, String tagName) {
+        if(nbt.contains(tagName, Tag.TAG_FLOAT)) {
+            return nbt.getFloat(tagName);
+        }
+        return 0;
+    }
+
+    public static CompoundTag setFloat(@Nonnull CompoundTag nbt, String tagName, float value) {
+        nbt.putFloat(tagName, value);
+        return nbt;
+    }
+
     // Double ---------------------------------------------------------------------------------------------------------
-    public static double getDoubleOrZero(CompoundTag nbt, String tagName) {
-        if(nbt != null && nbt.contains(tagName, Tag.TAG_DOUBLE)) {
+    public static double getDoubleOrZero(@Nonnull CompoundTag nbt, String tagName) {
+        if(nbt.contains(tagName, Tag.TAG_DOUBLE)) {
             return nbt.getDouble(tagName);
         }
         return 0;
     }
 
-    public static CompoundTag setDouble(CompoundTag nbt, String tagName, double value) {
-        if(nbt != null) {
-            nbt.putDouble(tagName, value);
-        }
+    public static CompoundTag setDouble(@Nonnull CompoundTag nbt, String tagName, double value) {
+        nbt.putDouble(tagName, value);
         return nbt;
     }
 
     // Integer --------------------------------------------------------------------------------------------------------
-    public static int getIntOrDefault(CompoundTag nbt, String tagName, int defVal) {
-        if(nbt != null && nbt.contains(tagName, Tag.TAG_INT)) {
+    public static int getIntOrDefault(@Nonnull CompoundTag nbt, String tagName, int defVal) {
+        if(nbt.contains(tagName, Tag.TAG_INT)) {
             return nbt.getInt(tagName);
         }
         return defVal;
     }
 
-    public static int getIntOrZero(CompoundTag nbt, String tagName) {
+    public static int getIntOrZero(@Nonnull CompoundTag nbt, String tagName) {
         return getIntOrDefault(nbt, tagName, 0);
     }
 
-    public static CompoundTag setInt(CompoundTag nbt, String tagName, int value) {
-        if(nbt != null) {
-            nbt.putInt(tagName, value);
-        }
+    public static CompoundTag setInt(@Nonnull CompoundTag nbt, String tagName, int value) {
+        nbt.putInt(tagName, value);
         return nbt;
     }
 
     // Boolean --------------------------------------------------------------------------------------------------------
-    public static boolean getBool(CompoundTag nbt, String tagName) {
-        if(nbt != null && nbt.contains(tagName, Tag.TAG_BYTE)) {
+    public static boolean getBool(@Nonnull CompoundTag nbt, String tagName) {
+        if(nbt.contains(tagName, Tag.TAG_BYTE)) {
             return nbt.getBoolean(tagName);
         }
         return false;
     }
 
-    public static CompoundTag setBool(CompoundTag nbt, String tagName, boolean value) {
-        if(nbt != null) {
-            nbt.putBoolean(tagName, value);
-        }
+    public static CompoundTag setBool(@Nonnull CompoundTag nbt, String tagName, boolean value) {
+        nbt.putBoolean(tagName, value);
         return nbt;
     }
 }

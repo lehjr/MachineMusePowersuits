@@ -45,6 +45,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.Nonnull;
+
 public class PlasmaCannonModule extends AbstractPowerModule {
 
     public static class RightClickie extends RightClickModule {
@@ -59,7 +61,7 @@ public class PlasmaCannonModule extends AbstractPowerModule {
         }
 
         @Override
-        public InteractionResultHolder<ItemStack> use(@NotNull ItemStack itemStackIn, Level worldIn, Player playerIn, InteractionHand hand) {
+        public InteractionResultHolder<ItemStack> use(@Nonnull ItemStack itemStackIn, Level worldIn, Player playerIn, InteractionHand hand) {
             NuminaLogger.logDebug("use here() ");
 
             if (hand == InteractionHand.MAIN_HAND && ElectricItemUtils.getPlayerEnergy(playerIn) > getEnergyUsage()) {
@@ -70,7 +72,7 @@ public class PlasmaCannonModule extends AbstractPowerModule {
         }
 
         @Override
-        public void releaseUsing(@NotNull ItemStack stack, Level worldIn, LivingEntity entityLiving, int timeLeft) {
+        public void releaseUsing(@Nonnull ItemStack stack, Level worldIn, LivingEntity entityLiving, int timeLeft) {
             int chargeTicks = (int) MathUtils.clampDouble(stack.getUseDuration() - timeLeft, 10, 50);
 
             NuminaLogger.logDebug("release using with charge ticks " + chargeTicks);

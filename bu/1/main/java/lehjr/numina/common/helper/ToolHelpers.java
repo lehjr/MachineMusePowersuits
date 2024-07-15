@@ -71,18 +71,5 @@
 //        return false;
 //    }
 //
-//    public static boolean blockCheckAndHarvest(Player player, Level world, BlockPos pos) {
-//        BlockState state = world.getBlockState(pos);
-//        Block block = state.getBlock();
-//
-//        if (block == null || world.isEmptyBlock(pos) || block == Blocks.BEDROCK)
-//            return false;
-//        if ((block instanceof IShearable || block instanceof FlowerBlock || block instanceof BushBlock || block instanceof LeavesBlock)
-//                && block.canHarvestBlock(state, world, pos, player) || block == Blocks.field_150433_aE || block == Blocks.field_196604_cC) {
-//            block.func_180657_a(world, player, pos, state, world.getBlockEntity(pos), new ItemStack(Items.field_151037_a));
-//            world.func_217377_a(pos, false);
-//            return true;
-//        }
-//        return false;
-//    }
+
 //}

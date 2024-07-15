@@ -5,8 +5,10 @@ import lehjr.powersuits.common.config.MPSCommonConfig;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.Nonnull;
+
 public class PowerFistHeatWrapper extends AbstractModularItemHeatWrapper {
-    public PowerFistHeatWrapper(@NotNull ItemStack itemStack, int tier) {
+    public PowerFistHeatWrapper(@Nonnull ItemStack itemStack, int tier) {
         super(itemStack, tier);
     }
 

@@ -34,6 +34,13 @@ public class MPSConstants {
 
     public static final String DIAMETER ="diameter";
 
+
+    // Environmental --------------------------------------------------------------------------------------------------
+    public static final String TAG_FOOD = "food";
+    public static final String TAG_SATURATION = "saturation";
+    public static final String EATING_EFFICIENCY = "autoFeederEfficiency";
+    public static final String EFFICIENCY = "efficiency";
+
     // Mining Enchantments --------------------------------------------------------------------------------------------
     public static final String ENCHANTMENT_LEVEL ="enchLevel";
     // Aqua Affinity
@@ -319,7 +326,7 @@ public class MPSConstants {
     // Mining Enhancements ------------------------------------------------------------------------
     public static final ResourceLocation VEIN_MINER_MODULE = getRegName("vein_miner");
     public static final ResourceLocation TUNNEL_BORE_MODULE = getRegName("tunnel_bore"); // no icon
-    public static final ResourceLocation SELECTIVE_MINER = getRegName("selective_miner"); // no icon
+    public static final ResourceLocation SELECTIVE_MINER_MODULE = getRegName("selective_miner"); // no icon
 
     // Mining Enchantments ------------------------------------------------------------------------
     public static final ResourceLocation AQUA_AFFINITY_MODULE = getRegName("aqua_affinity");

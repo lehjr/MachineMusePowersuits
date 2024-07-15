@@ -18,6 +18,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.Nonnull;
+
 public class ShovelModule extends AbstractPowerModule {
     public static class BlockBreaker extends PowerModule implements IBlockBreakingModule {
         int tier;
@@ -55,7 +57,7 @@ public class ShovelModule extends AbstractPowerModule {
         }
 
         @Override
-        public boolean mineBlock(@NotNull ItemStack powerFist, Level worldIn, BlockState state, BlockPos pos, LivingEntity entityLiving, double playerEnergy) {
+        public boolean mineBlock(@Nonnull ItemStack powerFist, Level worldIn, BlockState state, BlockPos pos, LivingEntity entityLiving, double playerEnergy) {
             if (this.canHarvestBlock(powerFist, state, (Player) entityLiving, pos, playerEnergy)) {
                 ElectricItemUtils.drainPlayerEnergy((Player) entityLiving, getEnergyUsage(), false);
                 return true;
@@ -64,7 +66,7 @@ public class ShovelModule extends AbstractPowerModule {
         }
 
         @Override
-        public ItemStack getEmulatedTool() {
+        public @Nonnull ItemStack getEmulatedTool() {
             return switch (tier) {
                 case 1 -> new ItemStack(Items.STONE_SHOVEL);
                 case 2 -> new ItemStack(Items.IRON_SHOVEL);

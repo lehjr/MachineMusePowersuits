@@ -32,7 +32,7 @@ public class ShapedEnergyRecipe extends ShapedRecipe {
 	}
 
 	@Override
-	public @NotNull ItemStack assemble(CraftingContainer container, RegistryAccess registryAccess) {
+	public @Nonnull ItemStack assemble(CraftingContainer container, RegistryAccess registryAccess) {
 		final ItemStack output = super.assemble(container, registryAccess).copy(); // Get the default output
 		AtomicInteger energy = new AtomicInteger(0);
 		for(int i = 0; i < container.getContainerSize(); ++i) {

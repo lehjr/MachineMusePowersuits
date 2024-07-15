@@ -4,20 +4,32 @@ import lehjr.numina.common.capability.module.blockbreaking.IBlockBreakingModule;
 import lehjr.numina.common.capability.module.powermodule.ModuleCategory;
 import lehjr.numina.common.capability.module.powermodule.ModuleTarget;
 import lehjr.numina.common.capability.module.rightclick.RightClickModule;
+import lehjr.numina.common.utils.ElectricItemUtils;
+import lehjr.powersuits.common.constants.MPSConstants;
 import lehjr.powersuits.common.item.module.AbstractPowerModule;
 import net.minecraft.core.BlockPos;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.gameevent.GameEvent;
+import net.neoforged.neoforge.common.IShearable;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
+import java.util.List;
+import java.util.Random;
 
 // FIXME IShearable ?? pretty much a dead thing now?
 public class ShearsModule extends AbstractPowerModule {
@@ -37,69 +49,58 @@ public class ShearsModule extends AbstractPowerModule {
     class BlockBreaker extends RightClickModule implements IBlockBreakingModule {
         public BlockBreaker(@Nonnull ItemStack module, ModuleCategory category, ModuleTarget target) {
             super(module, category, target);
-//            addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, 1000, "FE");
-//            addBaseProperty(MPSConstants.HARVEST_SPEED , 8, "x");
+            addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, 1000, "FE");
+            addBaseProperty(MPSConstants.HARVEST_SPEED , 8, "x");
         }
 
         @Override
-        public boolean mineBlock(@NotNull ItemStack powerFist, Level worldIn, BlockState state, BlockPos pos, LivingEntity entityLiving, double playerEnergy) {
-//                if (entityLiving.level.isClientSide() || state.getBlock().is(BlockTags.FIRE)) {
-//                    return false;
-//                }
-//                Block block = state.getBlock();
-//
-//                if (block instanceof IShearable && ElectricItemUtils.getPlayerEnergy(entityLiving) > getEnergyUsage()) {
-//                    IShearable target = (IShearable) block;
-//                    if (target.isShearable(powerFist, entityLiving.level, pos)) {
-//                        List<ItemStack> drops = target.onSheared((Player)entityLiving, powerFist, entityLiving.level, pos, EnchantmentHelper.getItemEnchantmentLevel(Enchantments.BLOCK_FORTUNE, powerFist));
-//                        Random rand = new Random();
-//                        drops.forEach(d -> {
-//                            ItemEntity ent = entityLiving.spawnAtLocation(d, 1.0F);
-//                            ent.setDeltaMovement(ent.getDeltaMovement().add((rand.nextFloat() - rand.nextFloat()) * 0.1F, rand.nextFloat() * 0.05F, (rand.nextFloat() - rand.nextFloat()) * 0.1F));
-//                        });
-//                        ElectricItemUtils.drainPlayerEnergy(entityLiving, getEnergyUsage());
-//                    }
-//                    return true;
-//                }
+        public boolean mineBlock(@Nonnull ItemStack powerFist, Level level, BlockState state, BlockPos pos, LivingEntity entityLiving, double playerEnergy) {
+            if (level.isClientSide() || state.is(BlockTags.FIRE)) {
+                return false;
+            }
+
+            if(ElectricItemUtils.getPlayerEnergy(entityLiving) > getEnergyUsage() && getEmulatedTool().isCorrectToolForDrops(state)) {
+                getEmulatedTool().mineBlock(level, state, pos, (Player)entityLiving);
+                ElectricItemUtils.drainPlayerEnergy(entityLiving, getEnergyUsage(), false);
+                return true;
+            }
             return false;
         }
 
         @Override
-        public ItemStack getEmulatedTool() {
+        public @Nonnull ItemStack getEmulatedTool() {
             return new ItemStack(Items.SHEARS);
         }
 
         @Override
         public int getEnergyUsage() {
-//            return (int) applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION);
-            return 0;
+            return (int) applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION);
         }
 
         @Override
         public void handleBreakSpeed(PlayerEvent.BreakSpeed event) {
-//            event.setNewSpeed((float) (event.getNewSpeed() * applyPropertyModifiers(MPSConstants.HARVEST_SPEED )));
+            event.setNewSpeed((float) (event.getNewSpeed() * applyPropertyModifiers(MPSConstants.HARVEST_SPEED )));
         }
 
         @Override
-        public InteractionResultHolder<ItemStack> interactLivingEntity(ItemStack itemStackIn, Player playerIn, LivingEntity entity, InteractionHand hand) {
-            if (playerIn.level().isClientSide) {
-                return InteractionResultHolder.pass(itemStackIn);
+        public InteractionResultHolder<ItemStack> interactLivingEntity(ItemStack itemStackIn, Player player, LivingEntity entity, InteractionHand hand) {
+            if (entity instanceof IShearable target && ElectricItemUtils.getPlayerEnergy(player) > getEnergyUsage()) {
+                BlockPos pos = entity.blockPosition();
+                if (target.isShearable(player, getEmulatedTool(), entity.level(), pos)) {
+                    Level level = entity.level();
+                    if (level.isClientSide) {
+                        return InteractionResultHolder.success(itemStackIn);
+                    }
+                    for (ItemStack drop : target.onSheared(player, getEmulatedTool(), level, pos)) {
+                        target.spawnShearedDrop(level, pos, drop);
+                    }
+                    entity.gameEvent(GameEvent.SHEAR, player);
+                    ElectricItemUtils.drainPlayerEnergy(player, getEnergyUsage(), false);
+                    return InteractionResultHolder.consume(itemStackIn);
+                }
+
             }
-//            if (entity instanceof IShearable && ElectricItemUtils.getPlayerEnergy(playerIn) > getEnergyUsage()) {
-//                IShearable target = (IShearable)entity;
-//                BlockPos pos = entity.blockPosition();
-//                if (target.isShearable(itemStackIn, entity.level(), pos)) {
-//                    List<ItemStack> drops = target.onSheared(playerIn, itemStackIn, entity.level(), pos,
-//                            EnchantmentHelper.getItemEnchantmentLevel(Enchantments.BLOCK_FORTUNE, itemStackIn));
-//                    Random rand = new Random();
-//                    drops.forEach(d -> {
-//                        ItemEntity ent = entity.spawnAtLocation(d, 1.0F);
-//                        ent.setDeltaMovement(ent.getDeltaMovement().add((rand.nextFloat() - rand.nextFloat()) * 0.1F, rand.nextFloat() * 0.05F, (rand.nextFloat() - rand.nextFloat()) * 0.1F));
-//                    });
-//                    ElectricItemUtils.drainPlayerEnergy(playerIn, getEnergyUsage());
-//                }
-//                return InteractionResultHolder.success(itemStackIn);
-//            }
+
             return InteractionResultHolder.pass(itemStackIn);
         }
     }

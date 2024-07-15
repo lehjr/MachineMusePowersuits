@@ -34,7 +34,7 @@ public class FlintAndSteelModule extends AbstractPowerModule {
     public static class RightClickie extends RightClickModule {
         public RightClickie(@Nonnull ItemStack module) {
             super(module, ModuleCategory.TOOL, ModuleTarget.TOOLONLY);
-//                addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, 10000, "FE");
+                addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, 10000, "FE");
         }
 
         /**
@@ -44,6 +44,11 @@ public class FlintAndSteelModule extends AbstractPowerModule {
         public InteractionResult useOn(UseOnContext context) {
             int energyConsumption = getEnergyUsage();
             Player player = context.getPlayer();
+
+            if (player == null) {
+                return InteractionResult.FAIL;
+            }
+
             if (ElectricItemUtils.getPlayerEnergy(player) < energyConsumption) {
                 return InteractionResult.FAIL;
             }
@@ -68,11 +73,9 @@ public class FlintAndSteelModule extends AbstractPowerModule {
                 }
             } else {
                 level.playSound(player, blockpos, SoundEvents.FLINTANDSTEEL_USE, SoundSource.BLOCKS, 1.0F, level.getRandom().nextFloat() * 0.4F + 0.8F);
-                level.setBlock(blockpos, blockstate.setValue(BlockStateProperties.LIT, Boolean.valueOf(true)), 11);
+                level.setBlock(blockpos, blockstate.setValue(BlockStateProperties.LIT, true), 11);
                 level.gameEvent(player, GameEvent.BLOCK_CHANGE, blockpos);
-                if (player != null) {
-                    ElectricItemUtils.drainPlayerEnergy(player, energyConsumption, false);
-                }
+                ElectricItemUtils.drainPlayerEnergy(player, energyConsumption, false);
                 return InteractionResult.sidedSuccess(level.isClientSide());
             }
         }

@@ -5,7 +5,6 @@ import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.capability.NuminaCapabilities;
 import lehjr.numina.common.capability.module.powermodule.IPowerModule;
 import lehjr.numina.common.capability.module.powermodule.ModuleCategory;
-import lehjr.numina.common.capability.module.tickable.IPlayerTickModule;
 import lehjr.numina.common.capability.module.toggleable.IToggleableModule;
 import lehjr.numina.common.utils.ItemUtils;
 import lehjr.numina.common.utils.StringUtils;
@@ -19,6 +18,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.IItemHandlerModifiable;
 import net.neoforged.neoforge.items.wrapper.RangedWrapper;
@@ -84,7 +84,7 @@ public interface IModularItem extends IItemHandlerModifiable, IItemHandler {
                 case HANDHELD:
                     return isHandHeld();
                 case TOOLONLY:
-//                        NuminaLogger.logDebug("isTool: " + isTool());
+                        NuminaLogger.logDebug("isTool: " + isTool());
                     return isTool();
                 case ARMORONLY:
                     return getModularItemStack().getItem() instanceof ArmorItem;
@@ -242,18 +242,11 @@ public interface IModularItem extends IItemHandlerModifiable, IItemHandler {
         int slot = findInstalledModule(moduleName);
         if (slot > -1) {
             ItemStack module = getStackInSlot(slot);
-
-            NuminaCapabilities.getCapability(module, NuminaCapabilities.Module.POWER_MODULE).ifPresent(m -> {
-                m.getModule();
-
-                if (m instanceof IToggleableModule) {
-                    ((IToggleableModule) m).toggleModule(online);
-                    // WIP: may move this code back to the class if onContentsChanged is needed
-                    // not enough to update the module, the tag for the item in the slot has to be updated too
-//                    onContentsChanged(slot, module, m.getModule());
-                    updateModuleInSlot(slot, module);
-                }
-            });
+            IPowerModule pm = getModuleCapability(module);
+            if (pm instanceof IToggleableModule tm) {
+                ItemStack newModule = tm.toggleModule(online);
+                updateModuleInSlot(slot, newModule);
+            }
         }
     }
 
@@ -264,32 +257,92 @@ public interface IModularItem extends IItemHandlerModifiable, IItemHandler {
      * @param value
      * @return
      */
-    default void setModuleTweakDouble(ResourceLocation moduleName, String key, double value) {
-        boolean handled = false;
+    default void setModuleDouble(ResourceLocation moduleName, String key, double value) {
         for (int i = 0; i < getSlots(); i++) {
             ItemStack module = getStackInSlot(i);
             if (!module.isEmpty() && ItemUtils.getRegistryName(module).equals(moduleName)) {
-                int finalI = i;
-                if (NuminaCapabilities.getCapability(module, NuminaCapabilities.Module.POWER_MODULE).map(m -> {
+                if (!module.isEmpty() && ItemUtils.getRegistryName(module).equals(moduleName)) {
+                    IPowerModule pm = getModuleCapability(module);
+                    if (pm != null) {
+                        NuminaLogger.logDebug("Setting module tweak " + key + ": " + value);
+                        NuminaLogger.logDebug("module value before: " + (TagUtils.getModuleDouble(module, key)));
+
+                        ItemStack module1 = TagUtils.setModuleDouble(module, key, value);
+
+                        NuminaLogger.logDebug("module value after: " + (TagUtils.getModuleDouble(module, key)));
+                        NuminaLogger.logDebug("module1 value before " + (TagUtils.getModuleDouble(module1, key)));
+
+                        updateModuleInSlot(i, module);
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+    default void setModuleFloat(ResourceLocation moduleName, String key, float value) {
+        for (int i = 0; i < getSlots(); i++) {
+            ItemStack module = getStackInSlot(i);
+            if (!module.isEmpty() && ItemUtils.getRegistryName(module).equals(moduleName)) {
+                IPowerModule pm = getModuleCapability(module);
+                if (pm != null) {
                     NuminaLogger.logDebug("Setting module tweak " + key + ": " + value);
-                    NuminaLogger.logDebug("module value before: " + (TagUtils.getModuleDouble(module, key)));
+                    NuminaLogger.logDebug("module value before: " + (TagUtils.getModuleFloat(module, key)));
 
-                    ItemStack module1 = TagUtils.setModuleDouble(module, key, value);
+                    ItemStack module1 = TagUtils.setModuleFloat(module, key, value);
 
-                    NuminaLogger.logDebug("module value after: " + (TagUtils.getModuleDouble(module, key)));
-                    NuminaLogger.logDebug("module1 value before " + (TagUtils.getModuleDouble(module1, key)));
-
-                    updateModuleInSlot(finalI, module);
-                    return true;
-                }).orElse(false)) {
+                    NuminaLogger.logDebug("module value after: " + (TagUtils.getModuleFloat(module, key)));
+                    NuminaLogger.logDebug("module1 value before " + (TagUtils.getModuleFloat(module1, key)));
+                    updateModuleInSlot(i, module);
                     break;
                 }
             }
         }
-//        return handled;
     }
 
-     default List<ResourceLocation> getInstalledModuleNames() {
+    default void setModuleString(ResourceLocation moduleName, String key, String value) {
+        for (int i = 0; i < getSlots(); i++) {
+            ItemStack module = getStackInSlot(i);
+            if (!module.isEmpty() && ItemUtils.getRegistryName(module).equals(moduleName)) {
+                IPowerModule pm = getModuleCapability(module);
+                if (pm != null) {
+                    NuminaLogger.logDebug("Setting module tweak " + key + ": " + value);
+                    NuminaLogger.logDebug("module value before: " + (TagUtils.getModuleString(module, key)));
+
+                    ItemStack module1 = TagUtils.setModuleString(module, key, value);
+
+                    NuminaLogger.logDebug("module value after: " + (TagUtils.getModuleString(module, key)));
+                    NuminaLogger.logDebug("module1 value before " + (TagUtils.getModuleString(module1, key)));
+                    updateModuleInSlot(i, module);
+                    break;
+                }
+            }
+        }
+    }
+
+    default void setModuleBlockState(ResourceLocation moduleName, BlockState state) {
+        for (int i = 0; i < getSlots(); i++) {
+            ItemStack module = getStackInSlot(i);
+            if (!module.isEmpty() && ItemUtils.getRegistryName(module).equals(moduleName)) {
+                IPowerModule pm = getModuleCapability(module);
+                if (pm != null) {
+                    NuminaLogger.logDebug("Setting module state " + state.toString());
+                    NuminaLogger.logDebug("module value before: " + (TagUtils.getModuleBlockState(module)));
+
+                    ItemStack module1 = TagUtils.setModuleBlockState(module,state);
+
+                    NuminaLogger.logDebug("module value after: " + (TagUtils.getModuleBlockState(module)));
+                    NuminaLogger.logDebug("module1 value before " + (TagUtils.getModuleBlockState(module1)));
+                    updateModuleInSlot(i, module);
+                    break;
+                }
+            }
+        }
+    }
+
+
+
+    default List<ResourceLocation> getInstalledModuleNames() {
         List<ResourceLocation> locations = new ArrayList<>();
 
         for (int i = 0; i < getSlots(); i++) {

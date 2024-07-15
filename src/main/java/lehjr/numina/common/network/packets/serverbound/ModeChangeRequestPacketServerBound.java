@@ -1,10 +1,12 @@
 package lehjr.numina.common.network.packets.serverbound;
 
+import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.constants.NuminaConstants;
 import lehjr.numina.common.network.NuminaPackets;
 import lehjr.numina.common.network.packets.clientbound.ModeChangeRequestPacketClientBound;
 import lehjr.numina.common.utils.ItemUtils;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
@@ -13,11 +15,13 @@ import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.Nonnull;
+
 public record ModeChangeRequestPacketServerBound(int mode) implements CustomPacketPayload {
     public static final Type<ModeChangeRequestPacketServerBound> ID = new Type<>(new ResourceLocation(NuminaConstants.MOD_ID, "mode_change_request_to_server"));
 
     @Override
-    @NotNull
+    @Nonnull
     public Type<? extends CustomPacketPayload> type() {
         return ID;
     }
@@ -30,21 +34,28 @@ public record ModeChangeRequestPacketServerBound(int mode) implements CustomPack
     }
 
     public ModeChangeRequestPacketServerBound(FriendlyByteBuf packetBuffer) {
-            this(packetBuffer.readInt());
+        this(packetBuffer.readInt());
     }
 
-    public static void sendToClient(ServerPlayer entity, int mode) {
-        NuminaPackets.sendToPlayer(new ModeChangeRequestPacketClientBound(mode), entity);
-    }
+    // So far does not appear to be needed
+//    public static void sendToClient(ServerPlayer entity, int mode) {
+//        NuminaPackets.sendToPlayer(new ModeChangeRequestPacketClientBound(mode), entity);
+//    }
 
-    public static void handle(ModeChangeRequestPacketServerBound data, IPayloadContext ctx) {
+    public static void handle(ModeChangeRequestPacketServerBound data, @Nonnull IPayloadContext ctx) {
         ctx.enqueueWork(() -> {
-            Player player  = ctx.player();;
-                ItemUtils.setModeAndSwapIfNeeded(player, data.mode);
-                if (player instanceof ServerPlayer) {
-                    sendToClient((ServerPlayer) player, data.mode);
-                }
-        });
+                    Player player  = ctx.player();;
+                    boolean handled = ItemUtils.setModeAndSwapIfNeeded(player, data.mode);
+                    // Hold off on this for now, causes server hangs... and really shouldn't need it if data sync works correctly
+//                if (player instanceof ServerPlayer) {
+//                    sendToClient((ServerPlayer) player, data.mode);
+//                }
+                })
+                .exceptionally(e -> {
+                    // Handle exception
+                    ctx.disconnect(Component.translatable(NuminaConstants.MOD_ID + ".networking.failed", e.getMessage()));
+                    return null;
+                });
     }
 }
 

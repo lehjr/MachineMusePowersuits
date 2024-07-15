@@ -1,158 +1,179 @@
 package lehjr.powersuits.common.item.module.miningenhancement;
 
+import com.google.common.util.concurrent.AtomicDouble;
+import lehjr.numina.common.base.NuminaLogger;
+import lehjr.numina.common.capability.NuminaCapabilities;
+import lehjr.numina.common.capability.inventory.modechanging.IModeChangingItem;
+import lehjr.numina.common.capability.module.blockbreaking.IBlockBreakingModule;
+import lehjr.numina.common.capability.module.enhancement.MiningEnhancement;
+import lehjr.numina.common.capability.module.powermodule.IPowerModule;
+import lehjr.numina.common.capability.module.powermodule.ModuleCategory;
+import lehjr.numina.common.capability.module.powermodule.ModuleTarget;
+import lehjr.numina.common.capability.render.highlight.IHighlight;
+import lehjr.numina.common.utils.ElectricItemUtils;
+import lehjr.powersuits.common.constants.MPSConstants;
 import lehjr.powersuits.common.item.module.AbstractPowerModule;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.NonNullList;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.BlockHitResult;
+import net.neoforged.neoforge.event.entity.player.PlayerEvent;
+
+import javax.annotation.Nonnull;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Stream;
 
 public class TunnelBoreModule extends AbstractPowerModule {
-//    /** TODO: Add cooldown timer */
-//    public class CapProvider implements ICapabilityProvider {
-//        ItemStack module;
-//        private final Enhancement miningEnhancement;
-//        private final LazyOptional<IPowerModule> powerModuleHolder;
-//        private final Highlighter highlight;
-//        private final LazyOptional<IHighlight> highlightHolder;
-//
-//        public CapProvider(@Nonnull ItemStack module) {
-//            this.module = module;
-//            this.miningEnhancement = new Enhancement(module, ModuleCategory.MINING_ENHANCEMENT, ModuleTarget.TOOLONLY, MPSSettings::getModuleConfig) {{
-//                addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, 500, "FE");
-//                addTradeoffProperty(MPSConstants.DIAMETER, MPSConstants.ENERGY_CONSUMPTION, 9500);
-//                addIntTradeoffProperty(MPSConstants.DIAMETER, MPSConstants.MINING_RADIUS, 5, "m", 2, 1);
-//            }};
-//
-//            powerModuleHolder = LazyOptional.of(() -> {
-//                miningEnhancement.loadCapValues();
-//                return miningEnhancement;
-//            });
-//
-//            this.highlight = new Highlighter();
-//            highlightHolder = LazyOptional.of(() -> highlight);
-//        }
-//
-//        class Enhancement extends MiningEnhancement {
-//            public Enhancement(@Nonnull ItemStack module, ModuleCategory category, ModuleTarget target, Callable<IConfig> config) {
-//                super(module, category, target, config);
-//            }
-//
-//            @Override
-//            public boolean onBlockStartBreak(ItemStack itemStack, BlockPos posIn, Player player) {
-//                if (player.level().isClientSide) {
-//                    return false; // fixme : check?
-//                }
-//
-//                AtomicBoolean harvested = new AtomicBoolean(false);
-//                HitResult rayTraceResult = getPlayerPOVHitResult(player.level(), player, ClipContext.Fluid.SOURCE_ONLY);
-//                if (rayTraceResult == null || rayTraceResult.getType() != HitResult.Type.BLOCK) {
-//                    return false;
-//                }
-//                int radius = (int) (applyPropertyModifiers(MPSConstants.MINING_RADIUS) - 1) / 2;
-//                if (radius == 0) {
-//                    return false;
-//                }
-//
-//                NonNullList<BlockPos> posList = highlight.getBlockPositions((BlockHitResult) rayTraceResult);
-//                int energyUsage = this.getEnergyUsage();
-//
-//                AtomicInteger blocksBroken = new AtomicInteger(0);
-//                itemStack.getCapability(ForgeCapabilities.ITEM_HANDLER)
-//                        .filter(IModeChangingItem.class::isInstance)
-//                        .map(IModeChangingItem.class::cast)
-//                        .ifPresent(modeChanging -> {
-//                            posList.forEach(blockPos-> {
-//                                BlockState state = player.level().getBlockState(blockPos);
-//                                // find an installed module to break current block
-//                                for (ItemStack blockBreakingModule : modeChanging.getInstalledModulesOfType(IBlockBreakingModule.class)) {
-//                                    double playerEnergy = ElectricItemUtils.getPlayerEnergy(player);
-//                                    if (blockBreakingModule.getCapability(NuminaCapabilities.POWER_MODULE)
-//                                            .filter(IBlockBreakingModule.class::isInstance)
-//                                            .map(IBlockBreakingModule.class::cast)
-//                                            .map(b -> {
-//                                                // check if module can break block
-//                                                if (player.isCreative() || b.canHarvestBlock(itemStack, state, player, blockPos, playerEnergy - energyUsage)) {
-//                                                    if (!player.level().isClientSide()) {
-//                                                        BlockEntity blockEntity = player.level().getBlockEntity(blockPos);
-//                                                        // setup drops checking for enchantments
-//                                                        Block.dropResources(state, player.level(), blockPos, blockEntity, player, itemStack);
-//                                                        // destroy block but don't drop default drops because they're already set above
-//                                                        player.level().destroyBlock(blockPos, false, player, 512);
-//                                                        ElectricItemUtils.drainPlayerEnergy(player, b.getEnergyUsage() + energyUsage);
-//                                                    }
-//
-//                                                    return true;
-//                                                }
-//                                                return false;
-//                                            }).orElse(false)) {
-//                                        if (posIn == blockPos) { // center block
-//                                            harvested.set(true);
-//                                        }
-//                                        blocksBroken.getAndAdd(1);
-//                                        break;
-//                                    }
-//                                }
-//                            });
-//                        });
-//                return harvested.get();
-//            }
-//
-//            @Override
-//            public int getEnergyUsage() {
-//                return (int) applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION);
-//            }
-//        }
-//
-//        // TODO?? : check if can break these blocks before adding to list? (not very efficient)
-//        class Highlighter extends Highlight {
-//
-//            @Override
-//            public NonNullList<BlockPos> getBlockPositions(BlockHitResult rayTraceResult) {
-//                NonNullList retList = NonNullList.create();
-//
-//                if(miningEnhancement.isModuleOnline()) {
-//                    BlockPos pos = rayTraceResult.getBlockPos();
-//                    Direction side = rayTraceResult.getDirection();
-//                    Stream<BlockPos> posList;
-//
-//                    int radius = (int) (miningEnhancement.applyPropertyModifiers(MPSConstants.MINING_RADIUS) - 1) / 2;
-//
-//                    switch (side) {
-//                        case UP:
-//                        case DOWN:
-//                            posList = BlockPos.betweenClosedStream(pos.north(radius).west(radius), pos.south(radius).east(radius));
-//                            break;
-//
-//                        case EAST:
-//                        case WEST:
-//                            posList = BlockPos.betweenClosedStream(pos.above(radius).north(radius), pos.below(radius).south(radius));
-//                            break;
-//
-//                        case NORTH:
-//                        case SOUTH:
-//                            posList = BlockPos.betweenClosedStream(pos.above(radius).west(radius), pos.below(radius).east(radius));
-//                            break;
-//
-//                        default:
-//                            posList = new ArrayList<BlockPos>().stream();
-//                    }
-//
-//                    posList.forEach(blockPos -> {
-//                        retList.add(blockPos.immutable());
-//                    });
-//                }
-//                return retList;
-//            }
-//        }
-//        /** ICapabilityProvider ----------------------------------------------------------------------- */
-//        @Override
-//        @Nonnull
-//        public <T> LazyOptional<T> getCapability(@Nonnull final Capability<T> capability, final @Nullable Direction side) {
-//            final LazyOptional<T> powerModuleCapability = NuminaCapabilities.POWER_MODULE.orEmpty(capability, powerModuleHolder);
-//            if (powerModuleCapability.isPresent()) {
-//                return powerModuleCapability;
-//            }
-//            final LazyOptional<T> highlightCapability = NuminaCapabilities.HIGHLIGHT.orEmpty(capability, highlightHolder);
-//            if (highlightCapability.isPresent()) {
-//                return highlightCapability;
-//            }
-//            return LazyOptional.empty();
-//        }
-//    }
+    public static class Enhancement extends MiningEnhancement implements IHighlight {
+        public Enhancement(@Nonnull ItemStack module) {
+            super(module, ModuleCategory.MINING_ENHANCEMENT, ModuleTarget.TOOLONLY);
+            addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, 500, "FE");
+            addTradeoffProperty(MPSConstants.DIAMETER, MPSConstants.ENERGY_CONSUMPTION, 9500);
+            // FIXME: mix of radius and diameter??? Just pick one!!!
+            addIntTradeoffProperty(MPSConstants.DIAMETER, MPSConstants.MINING_RADIUS, 5, "m", 2, 1);
+        }
+
+        @Override
+        public int getTier() {
+            return 1;
+        }
+
+        @Override
+        public boolean isAllowed() {
+            // FIXME
+            return true;
+        }
+
+
+        /**
+         * @param itemStack
+         * @param hitResult
+         * @param player
+         * @param level
+         * @return true to cancel, false to not
+         */
+        @Override
+        public boolean onBlockStartBreak(ItemStack itemStack, BlockHitResult hitResult, Player player, Level level) {
+            // Don't cancel if this isn't online...
+            if (!isModuleOnline()) {
+                return false;
+            }
+
+            // Shouldn't happen
+            if (player.level().isClientSide) {
+                return false; // fixme : check?
+            }
+
+            // Fixme!!! figure out if this should be radius or diameter. Looks like diameter to me
+            int radius = (int) (applyPropertyModifiers(MPSConstants.MINING_RADIUS) - 1) / 2;
+            if (radius == 0) {
+                return false;
+            }
+
+            double playerEnergy = ElectricItemUtils.getPlayerEnergy(player);
+
+            if (getEnergyUsage() > playerEnergy) {
+                return false;
+            }
+            playerEnergy -= getEnergyUsage();
+
+            // TODO: check if stats are added to player blocks broken
+            AtomicInteger blocksBroken = new AtomicInteger(0);
+
+            IModeChangingItem mci = itemStack.getCapability(NuminaCapabilities.Inventory.MODE_CHANGING_MODULAR_ITEM);
+            if (mci != null) {
+                NonNullList<IBlockBreakingModule> modules = NonNullList.create();
+
+                for (int i = 0; i < mci.getSlots(); i++) {
+                    ItemStack module = mci.getStackInSlot(i);
+                    IPowerModule pm = mci.getModuleCapability(module);
+                    if (pm instanceof IBlockBreakingModule bm) {
+                        modules.add(bm);
+                    }
+                }
+
+                NonNullList<BlockPostions> posList = getBlockPositions(itemStack, hitResult, player, level, modules, playerEnergy);
+
+                double energyUsage = getEnergyUsage();
+                for (BlockPostions postionsRecord : posList) {
+                    if (postionsRecord.canHarvest()) {
+                        BlockPos blockPos = postionsRecord.pos().immutable();
+                        BlockState state = level.getBlockState(blockPos);
+                        BlockEntity blockEntity = level.getBlockEntity(blockPos);
+                        // setup drops checking for enchantments
+                        Block.dropResources(state, player.level(), blockPos, blockEntity, player, itemStack);
+                        // destroy block but don't drop default drops because they're already set above
+                        level.destroyBlock(blockPos, false, player, 512);
+
+                        // if creative then bbm will be null
+                        if (!player.isCreative() && state.requiresCorrectToolForDrops() && postionsRecord.bbm() != null) {
+                            IBlockBreakingModule bbm = postionsRecord.bbm();
+                            energyUsage += bbm.getEnergyUsage();
+                        }
+                    }
+                }
+                ElectricItemUtils.drainPlayerEnergy(player, energyUsage, false);
+            }
+            return false;
+        }
+
+        @Override
+        public int getEnergyUsage() {
+            return (int) applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION);
+        }
+
+        @Override
+        public NonNullList<BlockPostions> getBlockPositions(@Nonnull ItemStack tool, @Nonnull BlockHitResult result, @Nonnull Player player, @Nonnull Level level, NonNullList<IBlockBreakingModule> modules, double playerEnergy) {
+            NonNullList<BlockPostions> retList = NonNullList.create();
+            BlockPos pos = result.getBlockPos();
+            Direction side = result.getDirection();
+            Stream<BlockPos> posList;
+
+            int radius = (int) (applyPropertyModifiers(MPSConstants.MINING_RADIUS) - 1) / 2; // Block position +/- half diameter
+            AtomicDouble energyRemaining = new AtomicDouble(playerEnergy);
+
+            posList = switch (side) {
+                // z axis
+                case UP, DOWN -> BlockPos.betweenClosedStream(pos.north(radius).west(radius), pos.south(radius).east(radius));
+
+                // x axis
+                case EAST, WEST -> BlockPos.betweenClosedStream(pos.above(radius).north(radius), pos.below(radius).south(radius));
+
+                // z axis
+                case NORTH, SOUTH -> BlockPos.betweenClosedStream(pos.above(radius).west(radius), pos.below(radius).east(radius));
+            };
+
+            posList.forEach(blockPos->{
+                // Super important to use immutable, otherwise you will only end up with copies of the last value
+                BlockPos immutablePos = blockPos.immutable();
+                BlockState state = level.getBlockState(immutablePos);
+                if(!state.isAir()) {
+                    for (IBlockBreakingModule bbm : modules) {
+                        if (player.isCreative()) {
+                            if(retList.isEmpty() || retList.stream().noneMatch(p->p.pos()==immutablePos)) {
+                                retList.add(new BlockPostions(immutablePos, true, null));
+                                break;
+                            }
+                        } else if(bbm.canHarvestBlock(tool, state, player, immutablePos, energyRemaining.get())) {
+                            if(retList.isEmpty() || retList.stream().noneMatch(p->p.pos()==immutablePos)) {
+                                retList.add(new BlockPostions(immutablePos, true, bbm));
+                                energyRemaining.getAndAdd(-bbm.getEnergyUsage());
+                                break;
+                            }
+                        }
+                    }
+                    if(retList.isEmpty() ||retList.stream().noneMatch(p->p.pos()==immutablePos)) {
+                        retList.add(new BlockPostions(immutablePos, false, null));
+                    }
+                }
+            });
+            return retList;
+        }
+    }
 }

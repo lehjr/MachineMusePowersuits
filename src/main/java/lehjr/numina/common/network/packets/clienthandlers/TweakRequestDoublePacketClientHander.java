@@ -12,11 +12,11 @@ public class TweakRequestDoublePacketClientHander {
             final Player player = Minecraft.getInstance().player;
             if (moduleRegName != null && tweakName != null) {
                 NuminaCapabilities.getCapability(ItemUtils.getItemFromEntitySlot(player, type), NuminaCapabilities.Inventory.MODULAR_ITEM)
-                        .ifPresent(iItemHandler -> iItemHandler.setModuleTweakDouble(moduleRegName, tweakName, tweakValue));
+                        .ifPresent(iItemHandler -> iItemHandler.setModuleDouble(moduleRegName, tweakName, tweakValue));
 
 
                 NuminaCapabilities.getCapability(ItemUtils.getItemFromEntitySlot(player, type), NuminaCapabilities.Inventory.MODE_CHANGING_MODULAR_ITEM)
-                        .ifPresent(iItemHandler -> iItemHandler.setModuleTweakDouble(moduleRegName, tweakName, tweakValue));
+                        .ifPresent(iItemHandler -> iItemHandler.setModuleDouble(moduleRegName, tweakName, tweakValue));
             }
     }
 }

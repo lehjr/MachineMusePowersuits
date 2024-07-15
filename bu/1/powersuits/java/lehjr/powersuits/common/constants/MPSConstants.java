@@ -63,8 +63,7 @@ public class MPSConstants {
     public static final String ENERGY_GENERATION_NIGHT = "nightTimeEnergyGen";
     /** Environmental -------------------------------------------------------------------------- */
     // Auto Feeder
-    public static final String EATING_EFFICIENCY = "autoFeederEfficiency";
-    public static final String EFFICIENCY = "efficiency";
+
     // Cooling System
     public static final String COOLING_BONUS = "coolingBonus";
     // Fluid Tank

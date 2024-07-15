@@ -10,13 +10,14 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
-import org.jetbrains.annotations.NotNull;
+
+import javax.annotation.Nonnull;
 
 public record ColorInfoPacketClientBound(EquipmentSlot slotType, int[] tagData) implements CustomPacketPayload {
     public static final Type<ColorInfoPacketClientBound> ID = new Type<>(new ResourceLocation(NuminaConstants.MOD_ID, "color_info_to_client"));
 
     @Override
-    @NotNull
+    @Nonnull
     public Type<? extends CustomPacketPayload> type() {
         return ID;
     }

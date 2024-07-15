@@ -21,12 +21,12 @@ public class DebugModule extends AbstractPowerModule {
 //        }
 //
 //        class RightClickie extends RightClickModule {
-//            public RightClickie(@NotNull ItemStack module, ModuleCategory category, ModuleTarget target, Callable<IConfig> moduleConfigGetterIn) {
+//            public RightClickie(@Nonnull ItemStack module, ModuleCategory category, ModuleTarget target, Callable<IConfig> moduleConfigGetterIn) {
 //                super(module, category, target, moduleConfigGetterIn);
 //            }
 //
 //            @Override
-//            public InteractionResultHolder<ItemStack> use(@NotNull ItemStack itemStackIn, Level worldIn, Player playerIn, InteractionHand hand) {
+//            public InteractionResultHolder<ItemStack> use(@Nonnull ItemStack itemStackIn, Level worldIn, Player playerIn, InteractionHand hand) {
 ////                playerIn.getCapability(NuminaCapabilities.PLAYER_HAND_STORAGE).ifPresent(cap -> {
 ////                    System.out.println("mainhand: " + cap.getMainHandStorage());
 ////                    System.out.println("offHand: " + cap.getOffHandStorage());
@@ -102,7 +102,7 @@ public class DebugModule extends AbstractPowerModule {
 //            }
 //
 //            @Override
-//            public void releaseUsing(@NotNull ItemStack stack, Level worldIn, LivingEntity entityLiving, int timeLeft) {
+//            public void releaseUsing(@Nonnull ItemStack stack, Level worldIn, LivingEntity entityLiving, int timeLeft) {
 //                System.out.println("releaseUsing");
 //                super.releaseUsing(stack, worldIn, entityLiving, timeLeft);
 //            }

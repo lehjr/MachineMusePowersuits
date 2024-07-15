@@ -3,6 +3,23 @@ package lehjr.powersuits.common.item.module.weapon;
 import lehjr.powersuits.common.item.module.AbstractPowerModule;
 
 public class SonicWeaponModule extends AbstractPowerModule {
+
+
+
+
+    // base render code on guardian renderer for the beam
+    // net.minecraft.client.renderer.entity.GuardianRenderer.render
+
+
+
+
+
+
+
+
+
+
+
     //package lehjr.powersuits.item.module.weapon;
 //
 //import lehjr.powersuits.basemod.MPSConstants;

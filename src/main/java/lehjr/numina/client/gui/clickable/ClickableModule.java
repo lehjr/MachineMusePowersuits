@@ -114,7 +114,7 @@ public class ClickableModule extends Clickable {
             } else if (installed) {
                 gfx.pose().pushPose();
                 gfx.pose().translate(0, 0,250);
-                IconUtils.INSTANCE.getIcon().checkmark.draw(gfx.pose(), left() + 1, top() + 1, Color.LIGHT_GREEN);
+                IconUtils.getIcon().checkmark.draw(gfx.pose(), left() + 1, top() + 1, Color.LIGHT_GREEN);
                 gfx.pose().popPose();
             }
         }

@@ -49,11 +49,6 @@ public class AxeModule extends AbstractPowerModule {
                     addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.HARVEST_SPEED, MPSCommonConfig.diamondAxeModuleHarvestSpeedOverclockMultiplier);
                 }
                 case 4: {
-//            addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, 500, "FE");
-//            addBaseProperty(MPSConstants.HARVEST_SPEED, 8, "x");
-//            addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.ENERGY_CONSUMPTION, 9500);
-//            addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.HARVEST_SPEED, 22);
-
                     addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, MPSCommonConfig.netheriteAxeModuleEnergyConsumptionBase, "FE");
                     addBaseProperty(MPSConstants.HARVEST_SPEED, MPSCommonConfig.netheriteAxeModuleHarvestSpeedBase, "x");
                     addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.ENERGY_CONSUMPTION, MPSCommonConfig.netheriteAxeModuleEnergyConsumptionOverclockMultiplier);
@@ -63,7 +58,7 @@ public class AxeModule extends AbstractPowerModule {
         }
 
         @Override
-        public boolean mineBlock(@NotNull ItemStack powerFist, Level worldIn, BlockState state, BlockPos pos, LivingEntity entityLiving, double playerEnergy) {
+        public boolean mineBlock(@Nonnull ItemStack powerFist, Level worldIn, BlockState state, BlockPos pos, LivingEntity entityLiving, double playerEnergy) {
             if (this.canHarvestBlock(powerFist, state, (Player) entityLiving, pos, playerEnergy)) {
                 ElectricItemUtils.drainPlayerEnergy((Player) entityLiving, getEnergyUsage(), false);
                 return true;
@@ -71,7 +66,7 @@ public class AxeModule extends AbstractPowerModule {
             return false;
         }
 
-        @NotNull
+        @Nonnull
         @Override
         public ItemStack getEmulatedTool() {
             return switch (tier) {

@@ -13,11 +13,13 @@ import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.Nonnull;
+
 public record CosmeticInfoPacketClientBound(EquipmentSlot slotType, String tagName, CompoundTag tagData) implements CustomPacketPayload {
     public static final Type<CosmeticInfoPacketClientBound> ID = new Type<>(new ResourceLocation(NuminaConstants.MOD_ID, "cosmetic_info_to_client"));
 
     @Override
-    @NotNull
+    @Nonnull
     public Type<? extends CustomPacketPayload> type() {
         return ID;
     }

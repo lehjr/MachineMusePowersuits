@@ -7,6 +7,7 @@ import lehjr.numina.common.config.ConfigHelper;
 import lehjr.numina.common.config.NuminaCommonConfig;
 import lehjr.numina.common.constants.NuminaConstants;
 import lehjr.numina.common.entity.NuminaArmorStand;
+import lehjr.numina.common.event.HarvestEventHandler;
 import lehjr.numina.common.event.PlayerUpdateHandler;
 import lehjr.numina.common.network.NuminaPackets;
 import net.minecraft.client.Minecraft;
@@ -43,6 +44,10 @@ public class Numina {
         NuminaObjects.NUMINA_CREATIVE_MODE_TAB.register(modEventBus);
         NuminaObjects.DATA_COMPONENT_TYPES.register(modEventBus);
         NuminaObjects.ATTACHMENT_TYPES.register(modEventBus);
+
+        NeoForge.EVENT_BUS.addListener(HarvestEventHandler::handleHarvestCheck);
+        NeoForge.EVENT_BUS.addListener(HarvestEventHandler::handleBreakSpeed);
+        NeoForge.EVENT_BUS.addListener(HarvestEventHandler::onBlockBreak);
 
         modEventBus.addListener(this::addEntityAttributes);
         modEventBus.addListener(NuminaPackets::register);

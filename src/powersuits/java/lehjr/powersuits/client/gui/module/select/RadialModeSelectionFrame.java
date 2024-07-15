@@ -16,7 +16,6 @@ import net.minecraft.world.entity.player.Player;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 
 /*
@@ -27,8 +26,8 @@ public class RadialModeSelectionFrame extends AbstractGuiFrame<DrawableTile> {
     boolean enabled = true;
     protected final long spawnTime;
     protected List<ClickableModule> modeButtons = new ArrayList<>();
-    protected int selectedModuleOriginal = -1;
-    protected int selectedModuleNew = -1;
+    ClickableModule selectedModule = null;
+    ClickableModule selectedModuleNew = null;
 
     protected Player player;
     protected double radius;
@@ -57,20 +56,19 @@ public class RadialModeSelectionFrame extends AbstractGuiFrame<DrawableTile> {
         }
 
         //Switch to selected mode if mode changed
-        if (mcmi != null && getSelectedModule() != null && selectedModuleOriginal != selectedModuleNew) {
+        if (mcmi != null && selectedModuleNew != null) {
             // update to detect mode changes
-            selectedModuleOriginal = selectedModuleNew;
-            NuminaCapabilities.getModeChangingModularItemCapability(player).ifPresent(handler-> NuminaPackets.sendToServer(new ModeChangeRequestPacketServerBound(getSelectedModule().getInventorySlot())));
+            selectedModule = selectedModuleNew;
+            NuminaLogger.logDebug("should be setting new mode: " + getSelectedModule().getInventorySlot());
+            NuminaPackets.sendToServer(new ModeChangeRequestPacketServerBound(getSelectedModule().getInventorySlot()));
+            selectedModuleNew = null;
         }
     }
 
     @Override
     public void render(GuiGraphics matrixStackIn, int mouseX, int mouseY, float partialTick) {
-        NuminaLogger.logDebug("module list size: " + modeButtons);
-
         //Draw the installed power fist modes
         for (ClickableModule mode : modeButtons) {
-            NuminaLogger.logDebug("rendering mode: " + mode.getModule());
             mode.render(matrixStackIn, mouseX, mouseY, partialTick);
         }
         //Draw the selected mode indicator
@@ -90,16 +88,17 @@ public class RadialModeSelectionFrame extends AbstractGuiFrame<DrawableTile> {
     private void loadItems() {
         if (player != null && modeButtons.isEmpty()) {
             if (mcmi != null) {
-                List<Integer> modes = mcmi.getValidModes();
                 int activeMode = mcmi.getActiveMode();
-                if (activeMode > 0)
-                    selectedModuleOriginal = activeMode;
+
+                List<Integer> modes = mcmi.getValidModes();
+
                 int modeNum = 0;
                 for (int mode : modes) {
                     ClickableModule clickie = new ClickableModule(mcmi.getStackInSlot(mode), new SpiralPointToPoint2D(center(), radius, ((3D * Math.PI / 2) - ((2D * Math.PI * modeNum) / modes.size())), 250D), mode, ModuleCategory.NONE);
-                    NuminaLogger.logDebug("makign new clickie, " + clickie.getModule());
-
                     modeButtons.add(clickie);
+                    if (mode == activeMode) {
+                        selectedModule = clickie;
+                    }
                     modeNum ++;
                 }
             }
@@ -108,9 +107,9 @@ public class RadialModeSelectionFrame extends AbstractGuiFrame<DrawableTile> {
 
     private void selectModule(double x, double y) {
         if (modeButtons != null) {
-            for(int i =0; i<modeButtons.size(); i++ ) {
-                if (modeButtons.get(i).containsPoint(x, y)) {
-                    selectedModuleNew = i;
+            for (ClickableModule clickie: modeButtons) {
+                if(clickie.containsPoint(x, y) && clickie != selectedModule) {
+                    selectedModuleNew = clickie;
                     break;
                 }
             }
@@ -118,11 +117,7 @@ public class RadialModeSelectionFrame extends AbstractGuiFrame<DrawableTile> {
     }
 
     public ClickableModule getSelectedModule() {
-        if (modeButtons.size() > selectedModuleNew && selectedModuleNew != -1) {
-            return modeButtons.get(selectedModuleNew);
-        } else {
-            return null;
-        }
+        return selectedModule;
     }
 
     public void drawSelection(GuiGraphics gfx) {

@@ -17,7 +17,15 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 
 public class Checkbox extends Clickable {
-    private static final ResourceLocation TEXTURE = new ResourceLocation("textures/gui/checkbox.png");
+    // From Minecraft's own Checkbox
+    private static final ResourceLocation CHECKBOX_SELECTED_HIGHLIGHTED_SPRITE = new ResourceLocation("textures/gui/sprites/widget/checkbox_selected_highlighted.png");
+
+//    /gui/sprites/widget/checkbox.png
+
+    private static final ResourceLocation CHECKBOX_SELECTED_SPRITE = new ResourceLocation("textures/gui/sprites/widget/checkbox_selected.png");
+    private static final ResourceLocation CHECKBOX_HIGHLIGHTED_SPRITE = new ResourceLocation("textures/gui/sprites/widget/checkbox_highlighted.png");
+    private static final ResourceLocation CHECKBOX_SPRITE = new ResourceLocation("textures/gui/sprites/widget/checkbox.png");
+
     private final boolean showLabel;
     protected boolean isChecked;
     protected CheckboxTile tile;
@@ -118,16 +126,31 @@ public class Checkbox extends Clickable {
 //            ShaderInstance oldShader = RenderSystem.getShader();
             RenderSystem.setShader(GameRenderer::getPositionTexColorShader);
             RenderSystem.enableBlend();
-            NuminaIcons.renderTextureWithColor(TEXTURE, gfx.pose(),
+            ResourceLocation texture;
+            if (Checkbox.this.containsPoint(mouseX, mouseY)) {
+                texture = isChecked? CHECKBOX_SELECTED_HIGHLIGHTED_SPRITE : CHECKBOX_HIGHLIGHTED_SPRITE;
+            } else {
+                texture = isChecked? CHECKBOX_SELECTED_SPRITE : CHECKBOX_SPRITE;
+            }
+
+//            gfx.blitSprite(texture, (int)this.left(), (int)this.top(), 17, 17);
+            NuminaIcons.renderTextureWithColor(texture,
+                    gfx.pose(),
                     left(), right(), top(), bottom(), getZLevel(),
-                    // int uWidth, int vHeight,
-                    20, 20,
-                    // image start x (xOffset)
-                    Checkbox.this.containsPoint(mouseX, mouseY) ? 20 : 0.0F,
-                    // image start y (yOffset)
-                    isChecked() ? 20 : 0.0F,
-                    // textureWidth, textureHeight
-                    64, 64,
+                    // int uWidth,
+                    17,
+                    // int vHeight,
+                    17,
+                    0,
+                    0,
+//                    // image start x (xOffset)
+//                    Checkbox.this.containsPoint(mouseX, mouseY) ? 20 : 0.0F,
+//                    // image start y (yOffset)
+//                    isChecked() ? 20 : 0.0F,
+//                    // textureWidth, textureHeight
+//                    64, 64,
+                    17,
+                    17,
                     Color.WHITE);
             RenderSystem.disableBlend();
 //            RenderSystem.setShader(() -> oldShader);

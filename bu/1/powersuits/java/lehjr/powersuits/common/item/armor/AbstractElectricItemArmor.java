@@ -280,7 +280,7 @@ public abstract class AbstractElectricItemArmor extends ArmorItem {
 //    public void initializeClient(Consumer<IClientItemExtensions> consumer) {
 //        consumer.accept(new IClientItemExtensions() {
 //            @Override
-//            public @NotNull HumanoidModel<?> getHumanoidArmorModel(LivingEntity livingEntity, ItemStack itemStack, EquipmentSlot armorSlot, HumanoidModel<?> _default) {
+//            public @Nonnull HumanoidModel<?> getHumanoidArmorModel(LivingEntity livingEntity, ItemStack itemStack, EquipmentSlot armorSlot, HumanoidModel<?> _default) {
 //                return itemStack.getCapability(NuminaCapabilities.RENDER).map(spec -> {
 //                    CompoundTag renderTag = spec.getRenderTag();
 //                    EquipmentSlot slot = Mob.getEquipmentSlotForItem(itemStack);

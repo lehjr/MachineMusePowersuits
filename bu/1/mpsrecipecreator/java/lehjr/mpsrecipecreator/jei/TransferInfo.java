@@ -29,7 +29,7 @@ public class TransferInfo implements IRecipeTransferInfo<MPSRCMenu, CraftingReci
     }
 
     @Override
-    public @NotNull List<Slot> getInventorySlots(@NotNull MPSRCMenu container, @NotNull CraftingRecipe recipe) {
+    public @Nonnull List<Slot> getInventorySlots(@Nonnull MPSRCMenu container, @Nonnull CraftingRecipe recipe) {
         return container.slots.subList(10, container.slots.size() -1);
     }
 

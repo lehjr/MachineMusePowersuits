@@ -1,8 +1,12 @@
 package lehjr.numina.common.capability.inventory.modularitem;
 
+import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.capability.NuminaCapabilities;
+import lehjr.numina.common.capability.module.externalitems.IOtherModItemsAsModules;
+import lehjr.numina.common.capability.module.powermodule.IPowerModule;
 import lehjr.numina.common.capability.module.powermodule.ModuleCategory;
 import lehjr.numina.common.capability.module.powermodule.ModuleTarget;
+import lehjr.numina.common.capability.module.rightclick.IRightClickModule;
 import lehjr.numina.common.capability.module.tickable.IPlayerTickModule;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.entity.player.Player;
@@ -61,6 +65,25 @@ public class ModularItem extends ComponentItemHandler implements IModularItem {
      */
     @Override
     public boolean isModuleValidForPlacement(int slot, @Nonnull ItemStack module) {
+        NuminaLogger.logDebug("is ItemValid: " + isItemValid(slot, module));
+        NuminaLogger.logDebug("isModuleValid: " + isModuleValid(module));
+
+        if (!isModuleValid(module)) {
+            IPowerModule cap = getModuleCapability(module);
+            NuminaLogger.logDebug("capability null: " + (cap == null));
+            if (cap == null) {
+                return false;
+            }
+            NuminaLogger.logDebug("isAllowed: " + cap.isAllowed());
+            NuminaLogger.logDebug("category: " + cap.getCategory());
+            NuminaLogger.logDebug("cap tier: " + cap.getTier());
+            NuminaLogger.logDebug("host tier: " + getTier());
+            NuminaLogger.logDebug("cap target: " + cap.getTarget());
+            NuminaLogger.logDebug("cap instance of IRightClick: " + (cap instanceof IRightClickModule));
+            NuminaLogger.logDebug("cap instanceof IOtherModItemsAsModules: " + (cap  instanceof IOtherModItemsAsModules));
+            NuminaLogger.logDebug("cap online: " + cap.isModuleOnline());
+        }
+
         return isItemValid(slot, module) && isModuleValid(module);
     }
 
@@ -81,7 +104,7 @@ public class ModularItem extends ComponentItemHandler implements IModularItem {
     }
 
     @Override
-    public void updateModuleInSlot(int slot, @NotNull ItemStack module) {
+    public void updateModuleInSlot(int slot, @Nonnull ItemStack module) {
         this.updateContents(getContents(), module, slot);
     }
 }

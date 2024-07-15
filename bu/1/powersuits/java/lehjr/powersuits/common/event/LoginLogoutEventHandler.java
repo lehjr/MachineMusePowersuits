@@ -49,34 +49,5 @@ public class LoginLogoutEventHandler {
         }
     }
 
-    // LOOKS like this only fired server side
-//    @SubscribeEvent
-//    public void onPlayerLoginClient(PlayerEvent.PlayerLoggedInEvent event) {
-//
-//        Player player = event.getEntity();
-//        if (player != null) {
-////            NonNullList<ItemStack> modules = NonNullList.create();
-////            for (Item item : ForgeRegistries.ITEMS.getValues()) {
-////                    new ItemStack(item).getCapability(NuminaCapabilities.POWER_MODULE)
-////                            .filter(IToggleableModule.class::isInstance)
-////                            .map(IToggleableModule.class::cast)
-////                            .ifPresent(pm -> {
-////                                // Tool settings are a bit odd
-////                                if (pm.getTarget() == ModuleTarget.TOOLONLY) {
-////                                    if (pm.getCategory() == ModuleCategory.MINING_ENHANCEMENT) {
-////                                        modules.add(pm.getModule());
-////                                        KeybindKeyHandler.registerKeybinding(ItemUtils.getRegistryName(item), false);
-////                                    } else if (!IRightClickModule.class.isAssignableFrom(pm.getClass())) {
-////                                        modules.add(pm.getModule());
-////                                        KeybindKeyHandler.registerKeybinding(ItemUtils.getRegistryName(item), false);
-////                                    }
-////                                } else {
-////                                    modules.add(pm.getModule());
-////                                    KeybindKeyHandler.registerKeybinding(ItemUtils.getRegistryName(item), false);
-////                                }
-////                            });
-////                }
-////            KeybindManager.INSTANCE.readInKeybinds(true);
-//        }
-//    }
+
 }

@@ -13,7 +13,7 @@ import java.util.Map;
 
 public class PowerFistModeChangingWrapper extends ModeChangingModularItem {
 
-    public PowerFistModeChangingWrapper(@NotNull ItemStack modularItem, int tier) {
+    public PowerFistModeChangingWrapper(@Nonnull ItemStack modularItem, int tier) {
         this(modularItem, tier, getActualSize(tier));
     }
 

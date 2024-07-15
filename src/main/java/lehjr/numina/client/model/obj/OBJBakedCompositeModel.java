@@ -18,6 +18,7 @@ import net.neoforged.neoforge.client.model.data.ModelData;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import javax.annotation.Nonnull;
 import java.util.List;
 import java.util.Map;
 
@@ -53,13 +54,13 @@ public class OBJBakedCompositeModel implements IDynamicBakedModel {
     }
 
     @Override
-    public @NotNull List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, @NotNull RandomSource rand) {
+    public @Nonnull List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, @Nonnull RandomSource rand) {
 //        NuminaLogger.logDebug("OBJBakedCompositeModel getting quads and state is: " + state + ", this class: " + this.getClass());
         return IDynamicBakedModel.super.getQuads(state, side, rand);
     }
 
     @Override
-    public @NotNull List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, @NotNull RandomSource rand, @NotNull ModelData extraData, @Nullable RenderType renderType) {
+    public @Nonnull List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, @Nonnull RandomSource rand, @Nonnull ModelData extraData, @Nullable RenderType renderType) {
 //        NuminaLogger.logDebug("OBJBakedCompositeModel getting quads with extraData and state is: " + state + ", this class: " + this.getClass());
 
         ImmutableList.Builder<BakedQuad> builder = ImmutableList.builder();

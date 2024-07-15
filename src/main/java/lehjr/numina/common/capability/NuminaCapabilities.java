@@ -53,12 +53,8 @@ public class NuminaCapabilities {
         public static final BlockCapability<IColorTag, Void> COLOR_BLOCK = BlockCapability.createVoid(create("color"), IColorTag.class);
     }
 
-
-
-
-    public static final ItemCapability<IHighlight, Void> HIGHLIGHT = ItemCapability.createVoid(create("highlight"), IHighlight.class);
-
-    public static final ItemCapability<IChameleon, Void> CHAMELEON = ItemCapability.createVoid(create("chameleon"), IChameleon.class);
+//    public static final ItemCapability<IHighlight, Void> HIGHLIGHT = ItemCapability.createVoid(create("highlight"), IHighlight.class);
+//    public static final ItemCapability<IChameleon, Void> CHAMELEON = ItemCapability.createVoid(create("chameleon"), IChameleon.class);
 
 
     // Note: path can only be lower case or underscore

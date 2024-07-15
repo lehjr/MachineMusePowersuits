@@ -6,6 +6,8 @@ import lehjr.numina.common.capability.module.rightclick.RightClickModule;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.Nonnull;
+
 public class OtherModItemsAsModules extends RightClickModule implements IOtherModItemsAsModules {
     public OtherModItemsAsModules(ItemStack module, ModuleCategory category) {
         super(module, category, ModuleTarget.TOOLONLY);
@@ -16,7 +18,7 @@ public class OtherModItemsAsModules extends RightClickModule implements IOtherMo
     }
 
     @Override
-    public void setModuleStack(@NotNull ItemStack stack) {
+    public void setModuleStack(@Nonnull ItemStack stack) {
 
     }
 }

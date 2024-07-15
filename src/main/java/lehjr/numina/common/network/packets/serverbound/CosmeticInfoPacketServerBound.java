@@ -15,6 +15,8 @@ import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.Nonnull;
+
 /**
  * Used when changing cosmetic settings.
  * @param slotType
@@ -25,7 +27,7 @@ public record CosmeticInfoPacketServerBound(EquipmentSlot slotType, String tagNa
     public static final Type<CosmeticInfoPacketServerBound> ID = new Type<>(new ResourceLocation(NuminaConstants.MOD_ID, "cosmetic_info_to_server"));
 
     @Override
-    @NotNull
+    @Nonnull
     public Type<? extends CustomPacketPayload> type() {
         return ID;
     }
@@ -46,9 +48,9 @@ public record CosmeticInfoPacketServerBound(EquipmentSlot slotType, String tagNa
         packetBuffer.writeNbt(tagData);
     }
 
-    public static void sendToClient(ServerPlayer entity, EquipmentSlot slotType, String tagName, CompoundTag tagData) {
-        NuminaPackets.sendToPlayer(new CosmeticInfoPacketServerBound(slotType, tagName, tagData), entity);
-    }
+//    public static void sendToClient(ServerPlayer entity, EquipmentSlot slotType, String tagName, CompoundTag tagData) {
+//        NuminaPackets.sendToPlayer(new CosmeticInfoPacketServerBound(slotType, tagName, tagData), entity);
+//    }
 
     public static void handle(CosmeticInfoPacketServerBound data, IPayloadContext ctx) {
         ctx.enqueueWork(() -> {
@@ -56,7 +58,7 @@ public record CosmeticInfoPacketServerBound(EquipmentSlot slotType, String tagNa
             NuminaCapabilities.getCapability(ItemUtils.getItemFromEntitySlot(player, data.slotType),
                     NuminaCapabilities.RENDER).ifPresent(render -> render.setRenderTag(data.tagData, data.tagName));
 //                    player.containerMenu.broadcastChanges();
-            sendToClient((ServerPlayer) player, data.slotType, data.tagName, data.tagData);
+//            sendToClient((ServerPlayer) player, data.slotType, data.tagName, data.tagData);
         });
     }
 }

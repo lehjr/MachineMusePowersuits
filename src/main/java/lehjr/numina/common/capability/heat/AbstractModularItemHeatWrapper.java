@@ -31,6 +31,7 @@ public abstract class AbstractModularItemHeatWrapper implements IHeatStorage {
         double heatReceived = Math.min(getMaxHeatStored() - getHeatStored(), Math.min(getMaxHeatTransfer(), maxReceive));
         if (!simulate && heatReceived !=0) {
             heat += heatReceived;
+            TagUtils.setHeat(itemStack, heat);
         }
         return heatReceived;
     }
@@ -44,6 +45,7 @@ public abstract class AbstractModularItemHeatWrapper implements IHeatStorage {
         double heatExtracted = Math.min(heat, maxExtract);
         if (!simulate && heatExtracted != 0) {
             heat -= heatExtracted;
+            TagUtils.setHeat(itemStack, heat);
         }
         return heatExtracted;
     }

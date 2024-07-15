@@ -67,7 +67,7 @@ public class NuminaConstants {
     public static final String BLOCK = "block";
 
     // Toggleable ---------------------------------------------------------------------------------
-    public static final String TAG_ONLINE = "Active";
+    public static final String TAG_ONLINE = "online";
 
     // Model Stuff --------------------------------------------------------------------------------
     public static final int FULL_BRIGHTNESS = 0XF000F0;

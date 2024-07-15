@@ -37,6 +37,7 @@ public class SpinningBladeEntity extends ThrowableProjectile {
     public SpinningBladeEntity(Level worldIn, LivingEntity shootingEntity) {
         super(MPSEntities.SPINNING_BLADE_ENTITY_TYPE.get(), shootingEntity, worldIn);
         this.setOwner(shootingEntity);
+        this.setNoGravity(true);
         if (shootingEntity instanceof Player) {
             AtomicDouble atomicDamage = new AtomicDouble(0);
 

@@ -32,7 +32,7 @@ public class BlinkDriveModule extends AbstractPowerModule {
 //            }
 //
 //            @Override
-//            public InteractionResultHolder<ItemStack> use(@NotNull ItemStack itemStackIn, Level worldIn, Player playerIn, InteractionHand hand) {
+//            public InteractionResultHolder<ItemStack> use(@Nonnull ItemStack itemStackIn, Level worldIn, Player playerIn, InteractionHand hand) {
 //                int range = (int) applyPropertyModifiers(MPSConstants.BLINK_DRIVE_RANGE);
 //                int energyConsumption = getEnergyUsage();
 //                HitResult hitRayTrace = rayTrace(worldIn, playerIn, ClipContext.Fluid.SOURCE_ONLY, range);

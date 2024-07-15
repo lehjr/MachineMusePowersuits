@@ -11,11 +11,13 @@ import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.Nonnull;
+
 public record BlockNamePacketClientBound(ResourceLocation regName) implements CustomPacketPayload {
     public static final Type<BlockNamePacketClientBound> ID = new Type<>(new ResourceLocation(NuminaConstants.MOD_ID, "block_name_to_client"));
 
     @Override
-    @NotNull
+    @Nonnull
     public Type<? extends CustomPacketPayload> type() {
         return ID;
     }

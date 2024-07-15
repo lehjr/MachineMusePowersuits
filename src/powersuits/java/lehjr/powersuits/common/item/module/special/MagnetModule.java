@@ -4,6 +4,7 @@ import lehjr.numina.common.capability.module.powermodule.ModuleCategory;
 import lehjr.numina.common.capability.module.powermodule.ModuleTarget;
 import lehjr.numina.common.capability.module.tickable.PlayerTickModule;
 import lehjr.numina.common.utils.ElectricItemUtils;
+import lehjr.powersuits.common.constants.MPSConstants;
 import lehjr.powersuits.common.item.module.AbstractPowerModule;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -24,10 +25,10 @@ public class MagnetModule extends AbstractPowerModule {
     class Ticker extends PlayerTickModule {
         public Ticker(@Nonnull ItemStack module, ModuleCategory category, ModuleTarget target) {
             super(module, category, target);
-//                addBaseProperty(MPSConstants.RADIUS, 1, "m");
-//                addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, 5, "FE");
-//                addTradeoffProperty(MPSConstants.RADIUS, MPSConstants.ENERGY_CONSUMPTION, 2000);
-//                addIntTradeoffProperty(MPSConstants.RADIUS, MPSConstants.RADIUS, 9, "m", 1, 0);
+                addBaseProperty(MPSConstants.RADIUS, 1, "m");
+                addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, 5, "FE");
+                addTradeoffProperty(MPSConstants.RADIUS, MPSConstants.ENERGY_CONSUMPTION, 2000);
+                addIntTradeoffProperty(MPSConstants.RADIUS, MPSConstants.RADIUS, 9, "m", 1, 0);
         }
 
         @Override

@@ -22,7 +22,7 @@ import java.util.Map;
 
 public class AdditionalInfo {
     public static void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> components, TooltipFlag flag, boolean doAdditionalInfo) {
-        NuminaCapabilities.getCapability(stack, NuminaCapabilities.Inventory.MODULAR_ITEM).ifPresent(iModularItem -> {
+        NuminaCapabilities.getModularItemOrModeChangingCapability(stack).ifPresent(iModularItem -> {
             // Mode changing item such as power fist
             if (iModularItem instanceof IModeChangingItem) {
                 ItemStack activeModule = ((IModeChangingItem) iModularItem).getActiveModule();
@@ -66,13 +66,13 @@ public class AdditionalInfo {
                     });
                 }
 
-                if (fluids.size() > 0) {
+                if (!fluids.isEmpty()) {
                     for(FluidInfo info : fluids.values()) {
                         components.add(info.getOutput());
                     }
                 }
 
-                if (installed.size() == 0) {
+                if (installed.isEmpty()) {
                     Component message = Component.translatable(NuminaConstants.TOOLTIP_NO_MODULES);
                     components.addAll(StringUtils.wrapComponentToLength(message, 30));
                 } else {
@@ -133,7 +133,7 @@ public class AdditionalInfo {
         }
 
         public Component getOutput() {
-            return displayName.copy().append(Component.literal(": ")).append(Component.literal(new StringBuilder(currentAmount).append("/").append(maxAmount).toString()))
+            return displayName.copy().append(Component.literal(": ")).append(Component.literal("/" + maxAmount))
                     .setStyle(Style.EMPTY.applyFormat(ChatFormatting.DARK_AQUA).withItalic(true));
         }
     }

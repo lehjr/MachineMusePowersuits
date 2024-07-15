@@ -13,11 +13,13 @@ import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.Nonnull;
+
 public record ToggleRequestPacketServerBound(ResourceLocation registryName, boolean toggleval) implements CustomPacketPayload {
     public static final Type<ToggleRequestPacketServerBound> ID = new Type<>(new ResourceLocation(NuminaConstants.MOD_ID, "toggle_request_to_server"));
 
     @Override
-    @NotNull
+    @Nonnull
     public Type<? extends CustomPacketPayload> type() {
         return ID;
     }
@@ -35,21 +37,13 @@ public record ToggleRequestPacketServerBound(ResourceLocation registryName, bool
         );
     }
 
-    public static void sendToClient(ServerPlayer entity, ResourceLocation registryName, boolean active) {
-        NuminaPackets.sendToPlayer(new ToggleRequestPacketClientBound(registryName, active), entity);
-    }
-
     public static void handle(ToggleRequestPacketServerBound data, IPayloadContext ctx) {
         ctx.enqueueWork(() -> {
             Player player = ctx.player();
                 for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
-                    NuminaCapabilities.getCapability(player.getInventory().getItem(i), NuminaCapabilities.Inventory.MODULAR_ITEM)
+                    NuminaCapabilities.getModularItemOrModeChangingCapability(player.getInventory().getItem(i))
                             .ifPresent(handler -> handler.toggleModule(data.registryName, data.toggleval));
-                        // fixme:?
-//                    NuminaCapabilities.getCapability(player.getInventory().getItem(i), NuminaCapabilities.MODE_CHANGING_MODULAR_ITEM)
-//                            .ifPresent(handler -> handler.toggleModule(registryName, toggleval));
                 }
-                sendToClient((ServerPlayer) player, data.registryName, data.toggleval);
         });
     }
 }

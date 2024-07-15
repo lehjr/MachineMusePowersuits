@@ -205,21 +205,19 @@ public class PowerFist extends AbstractElectricTool {
 //                .map(iItemHandler -> iItemHandler.onBlockStartBreak(itemstack, pos, player)).orElse(false);
 //    }
 
+    @Override
+    public boolean canAttackBlock(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer) {
+        NuminaLogger.logDebug("can attack Block :" +super.canAttackBlock(pState, pLevel, pPos, pPlayer) );
 
-//    @Override
-//    public boolean canAttackBlock(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer) {
-//        NuminaLogger.logDebug("can attack Block :" +super.canAttackBlock(pState, pLevel, pPos, pPlayer) );
-//
-//        return super.canAttackBlock(pState, pLevel, pPos, pPlayer);
-//    }
+        return super.canAttackBlock(pState, pLevel, pPos, pPlayer);
+    }
+
 
 
     @Override
     public boolean canPerformAction(ItemStack stack, ToolAction toolAction) {
-//        NuminaLogger.logDebug("toolAction: " + toolAction);
-        // ToolAction[axe_dig] when using pickaxe?1?!?!
-
-        return super.canPerformAction(stack, toolAction);
+        return NuminaCapabilities.getCapability(stack, NuminaCapabilities.Inventory.MODE_CHANGING_MODULAR_ITEM)
+                .map(handler-> handler.canPerformAction(toolAction)).orElse(false);
     }
 
     @Override

@@ -15,11 +15,13 @@ import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.Nonnull;
+
 public record ColorInfoPacketServerBound(EquipmentSlot slotType, int[] tagData) implements CustomPacketPayload {
     public static final Type<ColorInfoPacketServerBound> ID = new Type<>(new ResourceLocation(NuminaConstants.MOD_ID, "color_info_to_server"));
 
     @Override
-    @NotNull
+    @Nonnull
     public Type<? extends CustomPacketPayload> type() {
         return ID;
     }
@@ -48,7 +50,7 @@ public record ColorInfoPacketServerBound(EquipmentSlot slotType, int[] tagData) 
                             render.setColorArray(data.tagData);
                         });
 //                player.containerMenu.broadcastChanges();
-                sendToClient((ServerPlayer) player, data.slotType, data.tagData); // this seems faster than letting changes propagate through player.containerMenu mechanics
+//                sendToClient((ServerPlayer) player, data.slotType, data.tagData); // this seems faster than letting changes propagate through player.containerMenu mechanics
         });
     }
 }

@@ -34,7 +34,7 @@ public class DimensionalRiftModule extends AbstractPowerModule {
 //            }
 //
 //            @Override
-//            public InteractionResultHolder<ItemStack> use(@NotNull ItemStack itemStackIn, Level worldIn, Player playerIn, InteractionHand hand) {
+//            public InteractionResultHolder<ItemStack> use(@Nonnull ItemStack itemStackIn, Level worldIn, Player playerIn, InteractionHand hand) {
 //                if (!playerIn.isPassenger() && !playerIn.isVehicle() && playerIn.canChangeDimensions() && !playerIn.level().isClientSide()) {
 //                    Level level ;
 //                    if (playerIn.level().dimension().location().equals(Level.NETHER.location())) {

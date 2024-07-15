@@ -37,6 +37,7 @@ import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.Nonnull;
 import java.util.Optional;
 
 /**
@@ -47,7 +48,7 @@ public record PlayerUpdatePacketServerBound(byte keyData) implements CustomPacke
     public static final Type<PlayerUpdatePacketServerBound> ID = new Type<>(new ResourceLocation(NuminaConstants.MOD_ID, "player_update_to_server"));
 
     @Override
-    @NotNull
+    @Nonnull
     public Type<? extends CustomPacketPayload> type() {
         return ID;
     }

@@ -12,6 +12,7 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.stream.IntStream;
 
@@ -21,7 +22,7 @@ public class ScrollableInventoryFrame2 <C extends AbstractContainerMenu> extends
 
     public ScrollableInventoryFrame2(C containerIn,
                                      Rect rect,
-                                     @NotNull ModularItemSelectionFrameContainered<InstallSalvageMenu> modularItemSelectionFrame,
+                                     @Nonnull ModularItemSelectionFrameContainered<InstallSalvageMenu> modularItemSelectionFrame,
                                      IContainerULOffSet.ulGetter ulgetter) {
         super(rect,
                 containerIn,
