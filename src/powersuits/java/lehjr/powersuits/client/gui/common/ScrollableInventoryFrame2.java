@@ -8,12 +8,14 @@ import lehjr.numina.client.gui.geometry.Rect;
 import lehjr.powersuits.common.container.InstallSalvageMenu;
 import lehjr.powersuits.common.network.MPSPackets;
 import lehjr.powersuits.common.network.packets.serverbound.ContainerGuiOpenPacket;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.IntStream;
 
 public class ScrollableInventoryFrame2 <C extends AbstractContainerMenu> extends InventoryFrame implements IContainerULOffSet {
@@ -70,5 +72,10 @@ public class ScrollableInventoryFrame2 <C extends AbstractContainerMenu> extends
             }
         });
         super.update(mouseX, mouseY);
+    }
+
+    @Override
+    public List<Component> getToolTip(int i, int i1) {
+        return super.getToolTip(i, i1);
     }
 }

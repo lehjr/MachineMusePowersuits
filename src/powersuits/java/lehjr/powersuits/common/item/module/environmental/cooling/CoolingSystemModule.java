@@ -1,16 +1,6 @@
 package lehjr.powersuits.common.item.module.environmental.cooling;
 
-import lehjr.numina.common.capability.module.powermodule.ModuleCategory;
-import lehjr.numina.common.capability.module.powermodule.ModuleTarget;
-import lehjr.numina.common.capability.module.tickable.PlayerTickModule;
-import lehjr.numina.common.utils.ElectricItemUtils;
-import lehjr.numina.common.utils.HeatUtils;
-import lehjr.powersuits.common.constants.MPSConstants;
 import lehjr.powersuits.common.item.module.AbstractPowerModule;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
-
-import javax.annotation.Nonnull;
 
 /**
  * Created by Eximius88 on 1/17/14.

@@ -2,12 +2,10 @@ package lehjr.numina.client.gui.clickable;
 
 import com.mojang.blaze3d.platform.Lighting;
 import lehjr.numina.client.gui.geometry.MusePoint2D;
-import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.capability.NuminaCapabilities;
 import lehjr.numina.common.capability.module.powermodule.IPowerModule;
 import lehjr.numina.common.capability.module.powermodule.ModuleCategory;
 import lehjr.numina.common.math.Color;
-import lehjr.numina.common.utils.AdditionalInfo;
 import lehjr.numina.common.utils.IconUtils;
 import lehjr.numina.common.utils.StringUtils;
 import net.minecraft.client.Minecraft;
@@ -118,6 +116,10 @@ public class ClickableModule extends Clickable {
                 gfx.pose().popPose();
             }
         }
+    }
+
+    public void setModule(@Nonnull ItemStack module) {
+        this.module = module;
     }
 
     @Nonnull

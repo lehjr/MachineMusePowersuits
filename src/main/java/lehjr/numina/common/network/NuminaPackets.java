@@ -50,11 +50,10 @@ public class NuminaPackets {
                 BlockPositionPacketServerBound.STREAM_CODEC,
                 BlockPositionPacketServerBound::handle);
 
-
-        registrar.playToClient(
-                BlockNamePacketClientBound.ID,
-                BlockNamePacketClientBound.STREAM_CODEC,
-                BlockNamePacketClientBound::handle);
+        registrar.playToServer(
+                BlockStateClearPacketServerBound.ID,
+                BlockStateClearPacketServerBound.STREAM_CODEC,
+                BlockStateClearPacketServerBound::handle);
 
         // -----------------------------------------------------
         registrar.playToServer(

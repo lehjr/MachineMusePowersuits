@@ -45,11 +45,14 @@ public class VanillaSlider extends AbstractSlider {
 
     @Override
     public void renderBg(GuiGraphics gfx, int mouseX, int mouseY, float frameTime) {
-            gfx.setColor(1.0F, 1.0F, 1.0F, this.alpha);
-            RenderSystem.enableBlend();
-            RenderSystem.defaultBlendFunc();
-            RenderSystem.enableDepthTest();
-            gfx.blitSprite(this.containsPoint(mouseX, mouseY) ? HIGHLIGHTED_SPRITE : SLIDER_SPRITE, (int)this.left(), (int)this.top(), (int)this.width(), (int)this.height());
+        gfx.setColor(1.0F, 1.0F, 1.0F, this.alpha);
+        RenderSystem.enableBlend();
+        RenderSystem.defaultBlendFunc();
+        RenderSystem.enableDepthTest();
+        gfx.blitSprite(this.containsPoint(mouseX, mouseY) ? HIGHLIGHTED_SPRITE : SLIDER_SPRITE, (int)this.left(), (int)this.top(), (int)this.width(), (int)this.height());
+        Font fontrenderer = getMinecraft().font;
+        int j = getFGColor();
+        gfx.drawCenteredString(fontrenderer, this.getMessage(), (int) (this.left() + this.width() / 2), (int) (this.top() + (this.height() - 8) / 2), j | Mth.ceil(255.0F) << 24);
     }
 
     Component getMessage() {
@@ -60,9 +63,6 @@ public class VanillaSlider extends AbstractSlider {
     public void renderKnob(GuiGraphics gfx, int mouseX, int mouseY, float frameTime) {
         gfx.blitSprite(this.containsPoint(mouseX, mouseY) ? SLIDER_HANDLE_HIGHLIGHTED_SPRITE : SLIDER_HANDLE_SPRITE, (int)this.left() + (int)(this.sliderValue * (this.width()- 8)), (int)this.top(), 8, (int)this.height());
         gfx.setColor(1.0F, 1.0F, 1.0F, 1.0F);
-        Font fontrenderer = getMinecraft().font;
-        int j = getFGColor();
-        gfx.drawCenteredString(fontrenderer, this.getMessage(), (int) (this.left() + this.width() / 2), (int) (this.top() + (this.height() - 8) / 2), j | Mth.ceil(255.0F) << 24);
         updateSlider();
     }
 

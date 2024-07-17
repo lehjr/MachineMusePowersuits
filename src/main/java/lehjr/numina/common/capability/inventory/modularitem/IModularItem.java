@@ -79,29 +79,37 @@ public interface IModularItem extends IItemHandlerModifiable, IItemHandler {
         if(pm.isAllowed() && pm.getTier() <= getTier()) {
             // check module target against item stack type
             switch (pm.getTarget()) {
-                case ALLITEMS:
+                case ALLITEMS-> {
                     return true;
-                case HANDHELD:
+                }
+                case HANDHELD -> {
                     return isHandHeld();
-                case TOOLONLY:
-                        NuminaLogger.logDebug("isTool: " + isTool());
+                }
+                case TOOLONLY-> {
                     return isTool();
-                case ARMORONLY:
+                }
+                case ARMORONLY-> {
                     return getModularItemStack().getItem() instanceof ArmorItem;
-                case HEADONLY:
+                }
+                case HEADONLY-> {
                     return getModularItemStack().getItem() instanceof ArmorItem
                             && Mob.getEquipmentSlotForItem(getModularItemStack()) == EquipmentSlot.HEAD;
-                case TORSOONLY:
+                }
+                case TORSOONLY-> {
                     return getModularItemStack().getItem() instanceof ArmorItem
                             && Mob.getEquipmentSlotForItem(getModularItemStack()) == EquipmentSlot.CHEST;
-                case LEGSONLY:
+                }
+                case LEGSONLY-> {
                     return getModularItemStack().getItem() instanceof ArmorItem
                             && Mob.getEquipmentSlotForItem(getModularItemStack()) == EquipmentSlot.LEGS;
-                case FEETONLY:
+                }
+                case FEETONLY-> {
                     return getModularItemStack().getItem() instanceof ArmorItem
                             && Mob.getEquipmentSlotForItem(getModularItemStack()) == EquipmentSlot.FEET;
-                default:
+                }
+                default-> {
                     return false;
+                }
             }
         }
         return false;
@@ -328,8 +336,12 @@ public interface IModularItem extends IItemHandlerModifiable, IItemHandler {
                 if (pm != null) {
                     NuminaLogger.logDebug("Setting module state " + state.toString());
                     NuminaLogger.logDebug("module value before: " + (TagUtils.getModuleBlockState(module)));
+                    NuminaLogger.logDebug("module tag before: " + TagUtils.getModuleTag(module));
 
                     ItemStack module1 = TagUtils.setModuleBlockState(module,state);
+
+                    NuminaLogger.logDebug("module tag after: " + TagUtils.getModuleTag(module));
+                    NuminaLogger.logDebug("module1 tag after: " + TagUtils.getModuleTag(module1));
 
                     NuminaLogger.logDebug("module value after: " + (TagUtils.getModuleBlockState(module)));
                     NuminaLogger.logDebug("module1 value before " + (TagUtils.getModuleBlockState(module1)));

@@ -28,7 +28,7 @@ public class BladeLauncherModule extends AbstractPowerModule {
         }
 
         @Override
-        public InteractionResultHolder<ItemStack> use(@Nonnull ItemStack itemStackIn, Level worldIn, Player playerIn, InteractionHand hand) {
+        public InteractionResultHolder<ItemStack> use(@Nonnull ItemStack itemStackIn, Level level, Player playerIn, InteractionHand hand) {
             if (hand == InteractionHand.MAIN_HAND) {
                 if (ElectricItemUtils.getPlayerEnergy(playerIn) > applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION)) {
                     playerIn.startUsingItem(hand);

@@ -109,7 +109,7 @@ public class TagUtils {
         CompoundTag tagCompound = getModuleTag(stack);
         CompoundTag nbt = NbtUtils.writeBlockState(mimicBlock);
         tagCompound.put("blockState", nbt);
-        return setModuleTag(stack, nbt);
+        return setModuleTag(stack, tagCompound);
     }
 
     public static BlockState getModuleBlockState(@Nonnull ItemStack stack) {

@@ -41,7 +41,6 @@ import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
 
@@ -57,10 +56,10 @@ public class LuxCapacitorModule extends AbstractPowerModule {
         }
 
         @Override
-        public InteractionResultHolder<ItemStack> use(@Nonnull ItemStack itemStackIn, Level worldIn, Player playerIn, InteractionHand hand) {
+        public InteractionResultHolder<ItemStack> use(@Nonnull ItemStack itemStackIn, Level level, Player playerIn, InteractionHand hand) {
             float energyConsumption = getEnergyUsage();
             if (ElectricItemUtils.getPlayerEnergy(playerIn) > energyConsumption) {
-                if (!worldIn.isClientSide) {
+                if (!level.isClientSide) {
                     HeatUtils.heatPlayer(playerIn, energyConsumption / 500);
                     ElectricItemUtils.drainPlayerEnergy(playerIn, (int) energyConsumption, false);
                     float red = (float) applyPropertyModifiers(MPSConstants.RED_HUE);
@@ -68,10 +67,10 @@ public class LuxCapacitorModule extends AbstractPowerModule {
                     float blue = (float) applyPropertyModifiers(MPSConstants.BLUE_HUE);
                     float alpha = (float) applyPropertyModifiers(MPSConstants.OPACITY);
 
-                    LuxCapacitorEntity luxCapacitor = new LuxCapacitorEntity(worldIn, playerIn, new Color(red, green, blue, alpha));
-                    worldIn.addFreshEntity(luxCapacitor);
+                    LuxCapacitorEntity luxCapacitor = new LuxCapacitorEntity(level, playerIn, new Color(red, green, blue, alpha));
+                    level.addFreshEntity(luxCapacitor);
                 }
-                return InteractionResultHolder.sidedSuccess(itemStackIn, worldIn.isClientSide());
+                return InteractionResultHolder.sidedSuccess(itemStackIn, level.isClientSide());
             }
             return InteractionResultHolder.pass(itemStackIn);
         }

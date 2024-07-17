@@ -1,5 +1,6 @@
 package lehjr.powersuits.common.item.module.tool.blockbreaking.mining;
 
+import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.capability.module.blockbreaking.IBlockBreakingModule;
 import lehjr.numina.common.capability.module.powermodule.ModuleCategory;
 import lehjr.numina.common.capability.module.powermodule.ModuleTarget;
@@ -36,34 +37,42 @@ public class PickaxeModule extends AbstractPowerModule {
                     addBaseProperty(MPSConstants.HARVEST_SPEED, MPSCommonConfig.stonePickAxeModuleHarvestSpeedBase, "x");
                     addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.ENERGY_CONSUMPTION, MPSCommonConfig.stonePickAxeModuleEnergyConsumptionOverclockMultiplier);
                     addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.HARVEST_SPEED, MPSCommonConfig.stonePickAxeModuleHarvestSpeedOverclockMultiplier);
+                    break;
                 }
                 case 2: {
                     addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, MPSCommonConfig.ironPickAxeModuleEnergyConsumptionBase, "FE");
                     addBaseProperty(MPSConstants.HARVEST_SPEED, MPSCommonConfig.ironPickAxeModuleHarvestSpeedBase, "x");
                     addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.ENERGY_CONSUMPTION, MPSCommonConfig.ironPickAxeModuleEnergyConsumptionOverclockMultiplier);
                     addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.HARVEST_SPEED, MPSCommonConfig.ironPickAxeModuleHarvestSpeedOverclockMultiplier);
+                    break;
                 }
                 case 3: {
                     addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, MPSCommonConfig.diamondPickAxeModuleEnergyConsumptionBase, "FE");
                     addBaseProperty(MPSConstants.HARVEST_SPEED, MPSCommonConfig.diamondPickAxeModuleHarvestSpeedBase, "x");
                     addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.ENERGY_CONSUMPTION, MPSCommonConfig.diamondPickAxeModuleEnergyConsumptionOverclockMultiplier);
                     addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.HARVEST_SPEED, MPSCommonConfig.diamondPickAxeModuleHarvestSpeedOverclockMultiplier);
+                    break;
                 }
                 case 4: {
                     addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, MPSCommonConfig.netheritePickAxeModuleEnergyConsumptionBase, "FE");
                     addBaseProperty(MPSConstants.HARVEST_SPEED, MPSCommonConfig.netheritePickAxeModuleHarvestSpeedBase, "x");
                     addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.ENERGY_CONSUMPTION, MPSCommonConfig.netheritePickAxeModuleEnergyConsumptionOverclockMultiplier);
                     addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.HARVEST_SPEED, MPSCommonConfig.netheritePickAxeModuleHarvestSpeedOverclockMultiplier);
+                    break;
                 }
             }
         }
 
         @Override
         public boolean mineBlock(@Nonnull ItemStack powerFist, Level worldIn, BlockState state, BlockPos pos, LivingEntity entityLiving, double playerEnergy) {
+            NuminaLogger.logDebug("energy usage: " + getEnergyUsage() +", player energy: " + playerEnergy);
+
             if (this.canHarvestBlock(powerFist, state, (Player) entityLiving, pos, playerEnergy)) {
                 ElectricItemUtils.drainPlayerEnergy(entityLiving, getEnergyUsage(), false);
+                NuminaLogger.logDebug("returning true");
                 return true;
             }
+            NuminaLogger.logDebug("returning false");
             return false;
         }
 

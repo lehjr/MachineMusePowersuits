@@ -29,25 +29,25 @@ public class ShovelModule extends AbstractPowerModule {
             this.tier = tier;
 
             switch(tier) {
-                case 1: {
+                case 1 -> {
                     addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, MPSCommonConfig.stoneShovelModuleEnergyConsumptionBase, "FE");
                     addBaseProperty(MPSConstants.HARVEST_SPEED, MPSCommonConfig.stoneShovelModuleHarvestSpeedBase, "x");
                     addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.ENERGY_CONSUMPTION, MPSCommonConfig.stoneShovelModuleEnergyConsumptionOverclockMultiplier);
                     addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.HARVEST_SPEED, MPSCommonConfig.stoneShovelModuleHarvestSpeedOverclockMultiplier);
                 }
-                case 2: {
+                case 2-> {
                     addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, MPSCommonConfig.ironShovelModuleEnergyConsumptionBase, "FE");
                     addBaseProperty(MPSConstants.HARVEST_SPEED, MPSCommonConfig.ironShovelModuleHarvestSpeedBase, "x");
                     addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.ENERGY_CONSUMPTION, MPSCommonConfig.ironShovelModuleEnergyConsumptionOverclockMultiplier);
                     addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.HARVEST_SPEED, MPSCommonConfig.ironShovelModuleHarvestSpeedOverclockMultiplier);
                 }
-                case 3: {
+                case 3-> {
                     addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, MPSCommonConfig.diamondShovelModuleEnergyConsumptionBase, "FE");
                     addBaseProperty(MPSConstants.HARVEST_SPEED, MPSCommonConfig.diamondShovelModuleHarvestSpeedBase, "x");
                     addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.ENERGY_CONSUMPTION, MPSCommonConfig.diamondShovelModuleEnergyConsumptionOverclockMultiplier);
                     addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.HARVEST_SPEED, MPSCommonConfig.diamondShovelModuleHarvestSpeedOverclockMultiplier);
                 }
-                case 4: {
+                case 4-> {
                     addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, MPSCommonConfig.netheriteShovelModuleEnergyConsumptionBase, "FE");
                     addBaseProperty(MPSConstants.HARVEST_SPEED, MPSCommonConfig.netheriteShovelModuleHarvestSpeedBase, "x");
                     addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.ENERGY_CONSUMPTION, MPSCommonConfig.netheriteShovelModuleEnergyConsumptionOverclockMultiplier);

@@ -61,6 +61,7 @@ public class PowerModule implements IPowerModule {
         return propertyModifiers;
     }
 
+
     @Override
     public void addBaseProperty(String propertyName, double configValue) {
         addPropertyModifier(propertyName, new PropertyModifierFlatAdditive(configValue));

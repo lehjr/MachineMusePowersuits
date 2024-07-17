@@ -30,7 +30,6 @@ public class ModuleSelectionFrame extends ScrollableFrame {
     protected Map<ModuleCategory, ModuleSelectionSubFrame> categories = new LinkedHashMap<>();
     protected Rect lastPosition;
     ClickableModule selectedModule = null;
-    IPowerModule moduleCap = null;
     VanillaFrameScrollBar scrollBar;
     SwirlyMuseCircle circle;
 
@@ -60,10 +59,24 @@ public class ModuleSelectionFrame extends ScrollableFrame {
             categories.put(category, frame);
             frame.setDoOnNewSelect(thing-> {
                 this.selectedModule = thing.getSelectedModule();
-                this.moduleCap = selectedModule.getModule().getCapability(NuminaCapabilities.Module.POWER_MODULE);
                 this.onSelected();
             });
             return frame;
+        }
+    }
+
+    /**
+     * This is required for the new ItemStack data setup in order for changes to propagate through the GUI code
+     */
+    public void refreshModule() {
+        if(selectedModule != null) {
+            target.getModularItemCapability().ifPresent(iModularItem -> {
+                final int selected = selectedModule.getInventorySlot();
+                ItemStack otherModule = iModularItem.getStackInSlot(selected);
+                if(selectedModule.getModule().is(otherModule.getItem())) {
+                    selectedModule.setModule(otherModule);
+                }
+            });
         }
     }
 
@@ -86,7 +99,7 @@ public class ModuleSelectionFrame extends ScrollableFrame {
             if (!preserve.get()) {
                 selCopy.set(null);
             } else if(selectedModule != null) {
-                    selCopy.set(new ClickableModule(selectedModule.getModule(), new MusePoint2D(0, 0), -1, selectedModule.category));
+                selCopy.set(new ClickableModule(selectedModule.getModule(), new MusePoint2D(0, 0), -1, selectedModule.category));
             }
 
             // Occupied slots in the Modular Item
@@ -131,7 +144,7 @@ public class ModuleSelectionFrame extends ScrollableFrame {
             int totalHeight=0;
 
             for (ModuleSelectionSubFrame frame : categories.values()) {
-//                totalSize = (int) Math.max(frame.border.bottom() - this.top(), totalSize);
+                //                totalSize = (int) Math.max(frame.border.bottom() - this.top(), totalSize);
                 totalHeight += (int)frame.border.height();
             }
             setTotalSize(totalHeight);
@@ -171,7 +184,10 @@ public class ModuleSelectionFrame extends ScrollableFrame {
 
     @Nullable
     public IPowerModule getModuleCap() {
-        return moduleCap;
+        if (selectedModule != null) {
+            return selectedModule.getModule().getCapability(NuminaCapabilities.Module.POWER_MODULE);
+        }
+        return null;
     }
 
     @Override
@@ -183,6 +199,7 @@ public class ModuleSelectionFrame extends ScrollableFrame {
 
     @Override
     public void update(double mouseX, double mouseY) {
+        refreshModule();
         scrollBar.setMaxValue(getMaxScrollPixels());
         scrollBar.setValueByMouse(mouseY);
         setCurrentScrollPixels(scrollBar.getValue());
@@ -205,35 +222,34 @@ public class ModuleSelectionFrame extends ScrollableFrame {
 
         if (super.mouseClicked(mouseX, mouseY, button)) {
             ModuleSelectionSubFrame sel = null;
-                mouseY += currentScrollPixels;
-                for (ModuleSelectionSubFrame frame : categories.values()) {
-                    if (frame.mouseClicked(mouseX, mouseY, button)) {
-                        sel = frame;
-                    }
+            mouseY += currentScrollPixels;
+            for (ModuleSelectionSubFrame frame : categories.values()) {
+                if (frame.mouseClicked(mouseX, mouseY, button)) {
+                    sel = frame;
                 }
+            }
 
-                if (sel != null && sel.getSelectedModule() != null) {
-                    for (ModuleSelectionSubFrame frame : categories.values()) {
-                        if (frame != sel) {
-                            frame.resetSelection();
-                        }
-                        else {
-                            final ClickableModule selectedOther = sel.getSelectedModule();
-                            if(selectedModule!= selectedOther) {
-                                NuminaLogger.logDebug("do something here???");
-                                selectedModule = selectedOther;
-                                moduleCap = selectedModule.getModule().getCapability(NuminaCapabilities.Module.POWER_MODULE);
-                                onSelected();
-                            } else {
-                                NuminaLogger.logDebug("not updating here either, selectedOther: "
-                                        + (selectedOther == null ? "NULL" : selectedOther.getModule() +
-                                        ", selectedModule: ") + (selectedModule == null ? "NULL": selectedOther.getModule()));
-                            }
+            if (sel != null && sel.getSelectedModule() != null) {
+                for (ModuleSelectionSubFrame frame : categories.values()) {
+                    if (frame != sel) {
+                        frame.resetSelection();
+                    }
+                    else {
+                        final ClickableModule selectedOther = sel.getSelectedModule();
+                        if(selectedModule!= selectedOther) {
+                            NuminaLogger.logDebug("do something here???");
+                            selectedModule = selectedOther;
+                            onSelected();
+                        } else {
+                            NuminaLogger.logDebug("not updating here either, selectedOther: "
+                                    + (selectedOther == null ? "NULL" : selectedOther.getModule() +
+                                    ", selectedModule: ") + (selectedModule == null ? "NULL": selectedOther.getModule()));
                         }
                     }
-                } else {
-                    NuminaLogger.logDebug("not updating ");
                 }
+            } else {
+                NuminaLogger.logDebug("not updating ");
+            }
 
 
             return sel != null;

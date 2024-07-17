@@ -19,7 +19,6 @@ import net.minecraft.world.level.block.BushBlock;
 import net.minecraft.world.level.block.LeavesBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.common.IShearable;
-import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
 
@@ -38,9 +37,9 @@ public class LeafBlowerModule extends AbstractPowerModule {
         }
 
         @Override
-        public InteractionResultHolder<ItemStack> use(@Nonnull ItemStack itemStackIn, Level worldIn, Player playerIn, InteractionHand hand) {
+        public InteractionResultHolder<ItemStack> use(@Nonnull ItemStack itemStackIn, Level level, Player playerIn, InteractionHand hand) {
             int radius = (int) applyPropertyModifiers(MPSConstants.RADIUS);
-            if (useBlower(radius, playerIn, worldIn, playerIn.blockPosition()))
+            if (useBlower(radius, playerIn, level, playerIn.blockPosition()))
                 return InteractionResultHolder.success(itemStackIn);
             return InteractionResultHolder.pass(itemStackIn);
         }

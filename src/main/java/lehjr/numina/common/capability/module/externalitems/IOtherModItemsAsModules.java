@@ -15,7 +15,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
-import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
 import java.util.Objects;
@@ -26,15 +25,16 @@ public interface IOtherModItemsAsModules extends IRightClickModule {
 
     /**
      * Note: returning the itemStackIn wrapped in the InteractionResult because external code will set the held item to that
+     *
      * @param itemStackIn
-     * @param worldIn
+     * @param level
      * @param playerIn
      * @param hand
      * @return
      */
     @Override
-    default InteractionResultHolder<ItemStack> use(@Nonnull ItemStack itemStackIn, Level worldIn, Player playerIn, InteractionHand hand) {
-        InteractionResultHolder<ItemStack> tmp = getModule().use(worldIn, playerIn, hand);
+    default InteractionResultHolder<ItemStack> use(@Nonnull ItemStack itemStackIn, Level level, Player playerIn, InteractionHand hand) {
+        InteractionResultHolder<ItemStack> tmp = getModule().use(level, playerIn, hand);
         return new InteractionResultHolder<>(tmp.getResult(), itemStackIn);
     }
 

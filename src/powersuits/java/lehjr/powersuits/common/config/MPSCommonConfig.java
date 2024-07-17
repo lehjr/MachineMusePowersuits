@@ -990,11 +990,11 @@ public class MPSCommonConfig {
 
     private static final ModConfigSpec.DoubleValue STONE_PICKAXE_MODULE__HARVEST_SPEED_BASE =
             STONE_PICKAXE_MODULE_BUILDER
-                    .defineInRange(MPSConstants.HARVEST_SPEED_BASE, 6, 0, 100.0D);
+                    .defineInRange(MPSConstants.HARVEST_SPEED_BASE, 1, 0, 100.0D);
 
     private static final ModConfigSpec.DoubleValue STONE_PICKAXE_MODULE__HARVEST_SPEED_OVERCLOCK_MULTIPLIER =
             STONE_PICKAXE_MODULE_BUILDER
-                    .defineInRange(MPSConstants.HARVEST_SPEED_OVERCLOCK_MULTIPLIER, 40, 0, 100.0D);
+                    .defineInRange(MPSConstants.HARVEST_SPEED_OVERCLOCK_MULTIPLIER, 4, 0, 100.0D);
 
     // Iron
     private static final ModConfigSpec.Builder IRON_PICKAXE_MODULE_BUILDER = STONE_PICKAXE_MODULE_BUILDER
@@ -1408,6 +1408,8 @@ public class MPSCommonConfig {
 
     public static final ModConfigSpec COMMON_SPEC = RAILGUN_MODULE__SETTINGS_BUILDER.build();
 
+    /* General ---------------------------------------------------------------- */
+    public static double maxFlyingSpeed;
 
     /* Armor ------------------------------------------------------------------ */
     public static int armorHelmInventorySlots1;
@@ -1649,6 +1651,11 @@ public class MPSCommonConfig {
     @SubscribeEvent
     static void onLoad(final ModConfigEvent event) {
         if (event.getConfig().getSpec() == COMMON_SPEC) {
+            // General --------------------------------------------------------
+            maxFlyingSpeed = GENERAL_MAX_FLYING_SPEED.get();
+
+
+
             // ARMOR ----------------------------------------------------------
             // Tier1
             armorHelmInventorySlots1 = ARMOR_HELM_1_INVENTORY_SLOTS.get();

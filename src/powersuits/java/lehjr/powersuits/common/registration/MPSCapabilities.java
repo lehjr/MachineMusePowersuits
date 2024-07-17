@@ -21,7 +21,9 @@ import lehjr.powersuits.common.item.module.environmental.WaterElectrolyzerModule
 import lehjr.powersuits.common.item.module.miningenchantment.AquaAffinityModule;
 import lehjr.powersuits.common.item.module.miningenchantment.FortuneModule;
 import lehjr.powersuits.common.item.module.miningenchantment.SilkTouchModule;
+import lehjr.powersuits.common.item.module.miningenhancement.SelectiveMiner;
 import lehjr.powersuits.common.item.module.miningenhancement.TunnelBoreModule;
+import lehjr.powersuits.common.item.module.miningenhancement.VeinMinerModule;
 import lehjr.powersuits.common.item.module.tool.blockbreaking.chopping.AxeModule;
 import lehjr.powersuits.common.item.module.tool.blockbreaking.digging.ShovelModule;
 import lehjr.powersuits.common.item.module.tool.blockbreaking.mining.PickaxeModule;
@@ -195,7 +197,7 @@ public class MPSCapabilities {
         event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new TransparentArmorModule.TransParentArmorCap(stack), MPSItems.TRANSPARENT_ARMOR_MODULE.get());
 
         // Debug ------------------------------------------------------------------------------------------------------
-        // TODO
+
 
         // Energy Generation ------------------------------------------------------------------------------------------
         // TODO
@@ -212,7 +214,7 @@ public class MPSCapabilities {
         event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new SilkTouchModule.TickingEnchantment(stack), MPSItems.SILK_TOUCH_MODULE.get());
 
         // Mining Enhancement -----------------------------------------------------------------------------------------
-        // Selective Miner
+        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new SelectiveMiner.Enhancement(stack), MPSItems.SELECTIVE_MINER_MODULE.get());
         event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new TunnelBoreModule.Enhancement(stack), MPSItems.TUNNEL_BORE_MODULE.get());
         // Vein Miner
 

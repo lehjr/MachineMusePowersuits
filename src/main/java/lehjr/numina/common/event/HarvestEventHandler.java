@@ -77,7 +77,7 @@ public class HarvestEventHandler {
             double playerEnergy = ElectricItemUtils.getPlayerEnergy(player);
             for (int i = 0; i < mci.getSlots(); i++) {
                 IPowerModule pm = mci.getModuleCapability(mci.getStackInSlot(i));
-                if(pm instanceof IBlockBreakingModule bbm && bbm.canHarvestBlock(mci.getModularItemStack(), state, player, pos, playerEnergy)) {
+                if (pm instanceof IBlockBreakingModule bbm && bbm.canHarvestBlock(mci.getModularItemStack(), state, player, pos, playerEnergy)) {
                     event.setCanHarvest(true);
                     return;
                 }
@@ -93,8 +93,8 @@ public class HarvestEventHandler {
         if (mci != null) {
             HitResult rayTraceResult = pick(player, 1F);
 //                    rayTrace(player.level(), player, ClipContext.Fluid.SOURCE_ONLY);
-            HitResult rayTraceResult2 = rayTrace(player.level(), player, ClipContext.Fluid.SOURCE_ONLY);
-            if(rayTraceResult instanceof BlockHitResult blockHitResult) {
+//            HitResult rayTraceResult2 = rayTrace(player.level(), player, ClipContext.Fluid.SOURCE_ONLY);
+            if (rayTraceResult instanceof BlockHitResult blockHitResult) {
                 event.setCanceled(mci.onBlockStartBreak(tool, blockHitResult, player, player.level()));
             }
         }
@@ -105,17 +105,18 @@ public class HarvestEventHandler {
         float pitch = player.xRotO;
         float yaw = player.getYRot();
         Vec3 vec3d = player.getEyePosition(1.0F);
-        float f2 = Mth.cos(-yaw * ((float)Math.PI / 180F) - (float)Math.PI);
-        float f3 = Mth.sin(-yaw * ((float)Math.PI / 180F) - (float)Math.PI);
-        float f4 = -Mth.cos(-pitch * ((float)Math.PI / 180F));
-        float f5 = Mth.sin(-pitch * ((float)Math.PI / 180F));
+        float f2 = Mth.cos(-yaw * ((float) Math.PI / 180F) - (float) Math.PI);
+        float f3 = Mth.sin(-yaw * ((float) Math.PI / 180F) - (float) Math.PI);
+        float f4 = -Mth.cos(-pitch * ((float) Math.PI / 180F));
+        float f5 = Mth.sin(-pitch * ((float) Math.PI / 180F));
         float f6 = f3 * f4;
         float f7 = f2 * f4;
         double d0 = player.blockInteractionRange();//.getAttribute(NeoForgeMod.ENTITY_REACH.get()).getValue();
-        Vec3 vec3d1 = vec3d.add((double)f6 * d0, (double)f5 * d0, (double)f7 * d0);
+        Vec3 vec3d1 = vec3d.add((double) f6 * d0, (double) f5 * d0, (double) f7 * d0);
         return level.clip(new ClipContext(vec3d, vec3d1, ClipContext.Block.OUTLINE, fluidMode, player));
     }
 
+    // Adapted from Minecraft's level renderer so that the highlighted block display matches what's actually being harvested
     private static HitResult pick(Player player, float pPartialTick) {
         double blockInteractionRange = player.blockInteractionRange();
         double entityInteractionRange = player.entityInteractionRange();
@@ -153,6 +154,14 @@ public class HarvestEventHandler {
         }
     }
 
+    /**
+     * checks if a mining enhancement module is being used and does a speed adjustment based on a rough average for each
+     * if no mining enhancement is used, then the speed adjustment falls back on the module that will break the block
+     * <p>
+     * TODO: overclock for mining enhancements?
+     *
+     * @param event
+     */
     @SubscribeEvent
     public static void handleBreakSpeed(PlayerEvent.BreakSpeed event) {
         // Note: here we can actually get the position if needed. we can't easily om the harvest check.
@@ -195,8 +204,8 @@ public class HarvestEventHandler {
                         Map<IBlockBreakingModule, List<BlockPos>> speedMap = new HashMap<>();
 
                         for (IHighlight.BlockPostions blockPostions : blockPositionsList) {
-                            if(blockPostions.bbm() != null) {
-                                if(blockPostions.canHarvest()) {
+                            if (blockPostions.bbm() != null) {
+                                if (blockPostions.canHarvest()) {
                                     List<BlockPos> tmpList = speedMap.getOrDefault(blockPostions.bbm(), new ArrayList<>());
                                     tmpList.add(blockPostions.pos());
                                     speedMap.put(blockPostions.bbm(), tmpList);
@@ -211,7 +220,7 @@ public class HarvestEventHandler {
                             List<BlockPos> posList = entry.getValue();
                             // FIXME: move tag key to Numina Constants
                             double speed = entry.getKey().applyPropertyModifiers("harvestSpeed");
-                            speed = speed/posList.size();
+                            speed = speed / posList.size();
                             correctedSpeeds.add(speed);
                         }
                         double finalSpeed = (correctedSpeeds.stream().mapToDouble(Double::doubleValue).average().orElse(1.0) * 1.2); // slight boost
@@ -220,18 +229,24 @@ public class HarvestEventHandler {
                     }
                 }
 
-                // wait... what is this again? Looks like resetting speed
-                if (event.getNewSpeed() < event.getOriginalSpeed()) {
-                    event.setNewSpeed(event.getOriginalSpeed());
-                }
-
+                boolean handled = false;
+                // FIME: Pickaxe setting speed way too high
                 for (IBlockBreakingModule bbm : modules) {
-                    if(state.requiresCorrectToolForDrops() && bbm.canHarvestBlock(tool, state, player, pos, playerEnergy)) {
+                    // should require this check?
+                    if (bbm.canHarvestBlock(tool, state, player, pos, playerEnergy)) {
                         if (event.getNewSpeed() == 0) {
                             event.setNewSpeed(1);
                         }
+                        handled = true;
                         bbm.handleBreakSpeed(event);
-                        NuminaLogger.logDebug("eventNewSpeed: " + event.getNewSpeed());
+                        break;
+                    }
+                }
+                if (!handled) {
+                    if (state.requiresCorrectToolForDrops()) {
+                        event.setNewSpeed(0);
+                    } else {
+                        event.setNewSpeed(1.0F);
                     }
                 }
             }

@@ -15,13 +15,13 @@ public interface IRightClickModule extends IPowerModule {
 
     /**
      * @param itemStackIn
-     * @param worldIn
+     * @param level
      * @param playerIn
      * @param hand
      * @return
      */
 
-    default InteractionResultHolder<ItemStack> use(ItemStack itemStackIn, Level worldIn, Player playerIn, InteractionHand hand) {
+    default InteractionResultHolder<ItemStack> use(ItemStack itemStackIn, Level level, Player playerIn, InteractionHand hand) {
         return new InteractionResultHolder<>(InteractionResult.PASS, itemStackIn);
     }
 

@@ -1,5 +1,6 @@
 package lehjr.numina.common.capability.module.powermodule;
 
+import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.utils.TagUtils;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
@@ -53,6 +54,21 @@ public interface IPowerModule {
 
     default int getEnergyUsage() {
         return 0;
+    }
+
+    default void addSimpleTradeoff(String tradeoffName,
+                                   String firstPropertyName,
+                                   String firstUnits,
+                                   double firstPropertyBase,
+                                   double firstPropertyMultiplier,
+                                   String secondPropertyName,
+                                   String secondUnits,
+                                   double secondPropertyBase,
+                                   double secondPropertyMultiplier) {
+        addBaseProperty(firstPropertyName, firstPropertyBase, firstUnits);
+        addTradeoffProperty(tradeoffName, firstPropertyName, firstPropertyMultiplier);
+        addBaseProperty(secondPropertyName, secondPropertyBase, secondUnits);
+        addTradeoffProperty(tradeoffName, secondPropertyName, secondPropertyMultiplier);
     }
 
     void addBaseProperty(String propertyName, double configValue);
@@ -144,9 +160,9 @@ public interface IPowerModule {
         public final String tradeoffName;
         double multiplier;
 
-        public PropertyModifierLinearAdditive(double config, String tradeoffName) {
+        public PropertyModifierLinearAdditive(double multiplier, String tradeoffName) {
             this.tradeoffName = tradeoffName;
-            this.multiplier = config;
+            this.multiplier = multiplier;
         }
 
         @Override

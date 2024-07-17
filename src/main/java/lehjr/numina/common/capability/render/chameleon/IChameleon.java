@@ -2,6 +2,7 @@ package lehjr.numina.common.capability.render.chameleon;
 
 import lehjr.numina.common.network.NuminaPackets;
 import lehjr.numina.common.network.packets.serverbound.BlockPositionPacketServerBound;
+import lehjr.numina.common.network.packets.serverbound.BlockStateClearPacketServerBound;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
@@ -24,5 +25,9 @@ public interface IChameleon {
 
     default void setTargetBlockStateByPos(BlockPos pos) {
         NuminaPackets.sendToServer(new BlockPositionPacketServerBound(pos));
+    }
+
+    default void setClearTargetBlockState() {
+        NuminaPackets.sendToServer(new BlockStateClearPacketServerBound());
     }
 }

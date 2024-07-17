@@ -8,11 +8,17 @@ import lehjr.numina.common.utils.IconUtils;
 import lehjr.numina.common.utils.ItemUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+
+import java.util.List;
 
 /**
  * A left hand toggleable tab widget based on Minecraft's "RecipeBookTabButton"
@@ -100,5 +106,14 @@ public class ModularItemTabToggleWidget extends Clickable {
             gfx.renderItem(icon, (int)left() + 9 + offset, (int)top() + 6);
             gfx.renderItemDecorations(Minecraft.getInstance().font, icon, (int)left() + 9 + offset, (int)top() + 6);
         }
+    }
+
+    @Override
+    public List<Component> getToolTip(int x, int y) {
+        assert Minecraft.getInstance().player != null;
+        return ItemUtils.getItemFromEntitySlot(Minecraft.getInstance().player, type).getTooltipLines(Item.TooltipContext.of(Minecraft.getInstance().level),
+                Minecraft.getInstance().player, Screen.hasShiftDown() ?
+                        TooltipFlag.Default.ADVANCED :
+                        TooltipFlag.Default.NORMAL);
     }
 }

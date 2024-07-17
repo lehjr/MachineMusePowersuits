@@ -1,9 +1,12 @@
 package lehjr.powersuits.common.item.module.environmental;
 
+import lehjr.numina.common.capability.NuminaCapabilities;
+import lehjr.numina.common.capability.inventory.modechanging.IModeChangingItem;
 import lehjr.numina.common.capability.module.powermodule.ModuleCategory;
 import lehjr.numina.common.capability.module.powermodule.ModuleTarget;
 import lehjr.numina.common.capability.module.tickable.PlayerTickModule;
 import lehjr.numina.common.utils.ElectricItemUtils;
+import lehjr.numina.common.utils.ItemUtils;
 import lehjr.numina.common.utils.TagUtils;
 import lehjr.powersuits.common.constants.MPSConstants;
 import lehjr.powersuits.common.item.module.AbstractPowerModule;
@@ -13,29 +16,12 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.food.FoodData;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 public class AutoFeederModule extends AbstractPowerModule {
-    // Fixme: setters should probably include side checks
-
-    // Note: data being set on the host ItemStack instead of the module to avoid sync issues
-    public static float getFoodLevel(@Nonnull ItemStack stack) {
-        return TagUtils.getModularItemFloat(stack, MPSConstants.TAG_FOOD);
-    }
-
-    public static void setFoodLevel(@Nonnull ItemStack stack, float saturation) {
-        TagUtils.setModularItemFloat(stack,MPSConstants.TAG_FOOD, saturation);
-    }
-
-    public static float getSaturationLevel(@Nonnull ItemStack stack) {
-        return TagUtils.getModularItemFloat(stack, MPSConstants.TAG_SATURATION);
-    }
-
-    public static void setSaturationLevel(@Nonnull ItemStack stack, float saturation) {
-        TagUtils.setModularItemFloat(stack, MPSConstants.TAG_SATURATION, saturation);
-    }
-
     public static class Ticker extends PlayerTickModule {
         boolean useOldAutoFeeder;
         public Ticker(@Nonnull ItemStack module) {
@@ -49,8 +35,10 @@ public class AutoFeederModule extends AbstractPowerModule {
 
         @Override
         public void onPlayerTickActive(Player player, @Nonnull ItemStack modularItemStack) {
-            float foodLevel = getFoodLevel(modularItemStack);
-            float saturationLevel = getSaturationLevel(modularItemStack);
+            Level level = player.level();
+
+            float foodLevel = getFoodLevel(getModule());
+            float saturationLevel = getSaturationLevel(getModule());
             Inventory inv = player.getInventory();
             double eatingEnergyConsumption = applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION);
             double efficiency = applyPropertyModifiers(MPSConstants.EATING_EFFICIENCY);
@@ -73,8 +61,8 @@ public class AutoFeederModule extends AbstractPowerModule {
                         player.getInventory().setItem(i, ItemStack.EMPTY);
                     }
                 }
-                setFoodLevel(modularItemStack, foodLevel);
-                setSaturationLevel(modularItemStack, saturationLevel);
+                setFoodLevel(modularItemStack, foodLevel, level);
+                setSaturationLevel(modularItemStack, saturationLevel, level);
             } else {
                 for (int i = 0; i < inv.getContainerSize(); i++) {
                     if (foodNeeded < foodLevel)
@@ -98,8 +86,8 @@ public class AutoFeederModule extends AbstractPowerModule {
                         }
                     }
                 }
-                setFoodLevel(modularItemStack, foodLevel);
-                setSaturationLevel(modularItemStack, saturationLevel);
+                setFoodLevel(modularItemStack, foodLevel, level);
+                setSaturationLevel(modularItemStack, saturationLevel, level);
             }
 
             CompoundTag foodStatNBT = new CompoundTag();
@@ -125,7 +113,7 @@ public class AutoFeederModule extends AbstractPowerModule {
                     // put the values back into foodstats
                     foodStats.readAdditionalSaveData(foodStatNBT);
                     // update getValue stored in buffer
-                    setFoodLevel(modularItemStack, getFoodLevel(modularItemStack) - foodUsed);
+                    setFoodLevel(modularItemStack, getFoodLevel(modularItemStack) - foodUsed, level);
                     // split the cost between using food and using saturation
                     ElectricItemUtils.drainPlayerEnergy(player, (int) (eatingEnergyConsumption * 0.5 * foodUsed), false);
 
@@ -150,7 +138,7 @@ public class AutoFeederModule extends AbstractPowerModule {
                             // put the values back into foodstats
                             foodStats.readAdditionalSaveData(foodStatNBT);
                             // update getValue stored in buffer
-                            setSaturationLevel(modularItemStack, getSaturationLevel(modularItemStack) - saturationUsed);
+                            setSaturationLevel(modularItemStack, getSaturationLevel(modularItemStack) - saturationUsed, level);
                             // split the cost between using food and using saturation
                             ElectricItemUtils.drainPlayerEnergy(player, (int) (eatingEnergyConsumption * 0.5 * saturationUsed), false);
                         }
@@ -158,5 +146,38 @@ public class AutoFeederModule extends AbstractPowerModule {
                 }
             }
         }
+
+        // All of these should be called server side only -------------------------------------------------------------
+        public float getFoodLevel(@Nonnull ItemStack stack) {
+            return TagUtils.getModuleFloat(stack, MPSConstants.TAG_FOOD);
+        }
+
+        // Call serverside only
+        public void setFoodLevel(@Nonnull ItemStack stack, float food, Level level) {
+            if(!level.isClientSide()) {
+                IModeChangingItem mci = getMci(stack);
+                if (mci != null) {
+                    mci.setModuleFloat(ItemUtils.getRegistryName(getModule()), MPSConstants.TAG_FOOD, food);
+                }
+            }
+        }
+
+        public float getSaturationLevel(@Nonnull ItemStack stack) {
+            return TagUtils.getModuleFloat(stack, MPSConstants.TAG_SATURATION);
+        }
+
+        public void setSaturationLevel(@Nonnull ItemStack stack, float saturation, Level level) {
+            if (!level.isClientSide()) {
+                IModeChangingItem mci = getMci(stack);
+                if (mci != null) {
+                    mci.setModuleFloat(ItemUtils.getRegistryName(getModule()), MPSConstants.TAG_SATURATION, saturation);
+                }
+            }
+        }
+    }
+
+    @Nullable
+    static IModeChangingItem getMci(@Nonnull ItemStack modularItemStack) {
+        return modularItemStack.getCapability(NuminaCapabilities.Inventory.MODE_CHANGING_MODULAR_ITEM);
     }
 }

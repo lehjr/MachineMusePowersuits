@@ -110,10 +110,13 @@ public class PowerFist extends AbstractElectricTool {
                 .map(handler-> handler.onItemUseFirst(itemStack, context, fallback)).orElse(fallback);
     }
 
+
+    // sets a base block breaking speed based on the module's emulated tool
+    // FIXME:
     @Override
     public float getDestroySpeed(ItemStack stack, BlockState state) {
         return NuminaCapabilities.getModeChangingModularItemCapability(stack)
-                .map(handler-> handler.getDestroySpeed(stack, state)).orElse(1.0F);
+                .map(handler-> handler.getDestroySpeed(stack, state)).orElse(1F);
     }
 
     @Override

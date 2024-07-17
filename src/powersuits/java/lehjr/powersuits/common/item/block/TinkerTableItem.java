@@ -62,13 +62,13 @@ public class TinkerTableItem extends BlockItem {
         }
 
         @Override
-        public InteractionResultHolder<ItemStack> use(@Nonnull ItemStack itemStackIn, Level worldIn, Player playerIn, InteractionHand hand) {
-            if (!worldIn.isClientSide()) {
+        public InteractionResultHolder<ItemStack> use(@Nonnull ItemStack itemStackIn, Level level, Player playerIn, InteractionHand hand) {
+            if (!level.isClientSide()) {
                 SimpleMenuProvider container = new SimpleMenuProvider((id, inventory, player) -> new InstallSalvageMenu(id, inventory, EquipmentSlot.MAINHAND), Component.translatable("gui.powersuits.tab.install.salvage"));
 //                NetworkHooks.openScreen((ServerPlayer) playerIn, container, buffer -> buffer.writeEnum(EquipmentSlot.MAINHAND));
                 NuminaLogger.logDebug("FIXME: missing code to open gui");
             }
-            return super.use(itemStackIn, worldIn, playerIn, hand);
+            return super.use(itemStackIn, level, playerIn, hand);
         }
     }
 

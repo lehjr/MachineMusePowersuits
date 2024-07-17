@@ -48,9 +48,9 @@ public record TweakRequestDoublePacketServerBound(EquipmentSlot slotType, Resour
 
     // Don't use this, Let data handlers actually handle sync
 
-//    public static void sendToClient(ServerPlayer entity, EquipmentSlot type, ResourceLocation moduleRegName, String tweakName, double tweakValue) {
-//        NuminaPackets.sendToPlayer(new TweakRequestDoublePacketClientBound(type, moduleRegName, tweakName, tweakValue), entity);
-//    }
+    public static void sendToClient(ServerPlayer entity, EquipmentSlot type, ResourceLocation moduleRegName, String tweakName, double tweakValue) {
+        NuminaPackets.sendToPlayer(new TweakRequestDoublePacketClientBound(type, moduleRegName, tweakName, tweakValue), entity);
+    }
 
     public static void handle(TweakRequestDoublePacketServerBound data, IPayloadContext ctx) {
         ctx.enqueueWork(() -> {
@@ -77,7 +77,7 @@ public record TweakRequestDoublePacketServerBound(EquipmentSlot slotType, Resour
                             NuminaCapabilities.getPowerModuleCapability(module).ifPresent(pm->System.out.println("checking tweak value: " + pm.getModuleTag().get(data.tweakName)));
                         });
 
-//                sendToClient((ServerPlayer) player, data.slotType, data.moduleRegName, data.tweakName, data.tweakValue);
+                sendToClient((ServerPlayer) player, data.slotType, data.moduleRegName, data.tweakName, data.tweakValue);
             }
         });
     }

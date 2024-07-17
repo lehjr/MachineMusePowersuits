@@ -158,6 +158,11 @@ public class ModularItemSelectionFrame extends AbstractGuiFrame<DrawableTile> {
         return modularItemCap;
     }
 
+    /**
+     * get fresh copy of ItemStack in case it has been modified in some way
+     * @param type
+     * @return
+     */
     @Nonnull
     ItemStack getStack(EquipmentSlot type) {
         Player player = Minecraft.getInstance().player;
