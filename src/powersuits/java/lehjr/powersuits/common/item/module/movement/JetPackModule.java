@@ -18,6 +18,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 
 import javax.annotation.Nonnull;
 
@@ -32,7 +33,7 @@ public class JetPackModule extends AbstractPowerModule {
         }
 
         @Override
-        public void onPlayerTickActive(Player player, ItemStack torso) {
+        public void onPlayerTickActive(Player player, Level level, ItemStack torso) {
             if (player.isInWater()) {
                 return;
             }
@@ -54,21 +55,21 @@ public class JetPackModule extends AbstractPowerModule {
                     ((hasFlightControl && thrust > 0) || (playerInput.jumpKey))) {
                 thrust = MovementManager.thrust(player, thrust, hasFlightControl);
 
-                if(!player.level().isClientSide()) {
-                    if ((player.level().getGameTime() % 5) == 0) {
+                if(!level.isClientSide()) {
+                    if ((level.getGameTime() % 5) == 0) {
                         ElectricItemUtils.drainPlayerEnergy(player, (int) (thrust * jetEnergy * 5), false);
                     }
                 } else if (NuminaClientConfig.useSounds) {
                     Musique.playerSound(player, MPSSoundDictionary.SOUND_EVENT_JETPACK.get(), SoundSource.PLAYERS, (float) (thrust * 6.25), 1.0f, true);
                 }
             } else {
-                onPlayerTickInactive(player, torso);
+                onPlayerTickInactive(player, level, torso);
             }
         }
 
         @Override
-        public void onPlayerTickInactive(Player player, ItemStack item) {
-            if (player.level().isClientSide && NuminaClientConfig.useSounds) {
+        public void onPlayerTickInactive(Player player, Level level, ItemStack item) {
+            if (level.isClientSide && NuminaClientConfig.useSounds) {
                 Musique.stopPlayerSound(player, MPSSoundDictionary.SOUND_EVENT_JETPACK.get());
             }
         }

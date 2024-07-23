@@ -1,19 +1,14 @@
 package lehjr.numina.common.network.packets.serverbound;
 
-import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.constants.NuminaConstants;
-import lehjr.numina.common.network.NuminaPackets;
-import lehjr.numina.common.network.packets.clientbound.ModeChangeRequestPacketClientBound;
 import lehjr.numina.common.utils.ItemUtils;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
-import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
 

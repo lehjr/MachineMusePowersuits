@@ -47,8 +47,11 @@ public class AbstractElectricTool extends DiggerItem {
      */
     @Override
     public int getUseDuration(ItemStack stack) {
-        return NuminaCapabilities.getCapability(stack, NuminaCapabilities.Inventory.MODE_CHANGING_MODULAR_ITEM)
-                .map(IModeChangingItem::getUseDuration).orElse(72000);
+        IModeChangingItem mci = stack.getCapability(NuminaCapabilities.Inventory.MODE_CHANGING_MODULAR_ITEM);
+        if(mci != null) {
+            return Math.min(mci.getUseDuration(), 7200);
+        }
+        return 7200;
     }
 
     /** Durability bar for showing energy level ------------------------------------------------------------------ */

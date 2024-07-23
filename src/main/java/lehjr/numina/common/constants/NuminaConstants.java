@@ -98,32 +98,53 @@ public class NuminaConstants {
     public static final String CHARGING_BASE_REGNAME = "charging_base";
 
     // Batteries ----------------------------------------------------------------------------------
-    public static final String MODULE_BATTERY_BASIC__REGNAME = "battery_basic";
-    public static final String MODULE_BATTERY_ADVANCED__REGNAME = "battery_advanced";
-    public static final String MODULE_BATTERY_ELITE__REGNAME = "battery_elite";
-    public static final String MODULE_BATTERY_ULTIMATE__REGNAME = "battery_ultimate";
+    public static final String MODULE_BATTERY_1__REGNAME = "battery_1";
+    public static final String MODULE_BATTERY_2__REGNAME = "battery_2";
+    public static final String MODULE_BATTERY_3__REGNAME = "battery_3";
+    public static final String MODULE_BATTERY_4__REGNAME = "battery_4";
 
 
     // Components ---------------------------------------------------------------------------------
-    public static final String COMPONENT__WIRING__REGNAME = getComponentName("wiring");
-    public static final String COMPONENT__SOLENOID__REGNAME = getComponentName("solenoid");
-    public static final String COMPONENT__SERVO__REGNAME = getComponentName("servo");
+    public static final String COMPONENT__ARTIFICIAL_MUSCLE__REGNAME = getComponentName("artificial_muscle");
+
+
+    public static final String COMPONENT__WIRING_COPPER__REGNAME = getComponentName("wiring_copper");
+    public static final String COMPONENT__WIRING_GOLD__REGNAME = getComponentName("wiring_gold");
+    public static final String COMPONENT__CAPACAITOR_1__REGNAME = getComponentName("capacitor_1");
+    public static final String COMPONENT__CAPACAITOR_2__REGNAME = getComponentName("capacitor_2");
+    public static final String COMPONENT__CAPACAITOR_3__REGNAME = getComponentName("capacitor_3");
+    public static final String COMPONENT__CAPACAITOR_4__REGNAME = getComponentName("capacitor_4");
+    public static final String COMPONENT__CARBON_MYOFIBER__REGNAME = getComponentName("carbon_myofiber");
+    public static final String COMPONENT__COMPUTER_CHIP__REGNAME = getComponentName("computer_chip");
+    public static final String COMPONENT__CONTROL_CIRCUIT_1__REGNAME = getComponentName("control_circuit_1");
+    public static final String COMPONENT__CONTROL_CIRCUIT_2__REGNAME = getComponentName("control_circuit_2");
+    public static final String COMPONENT__CONTROL_CIRCUIT_3__REGNAME = getComponentName("control_circuit_3");
+    public static final String COMPONENT__CONTROL_CIRCUIT_4__REGNAME = getComponentName("control_circuit_4");
+    public static final String COMPONENT__FIELD_EMITTER__REGNAME = getComponentName("field_emitter");
     public static final String COMPONENT__GLIDER_WING__REGNAME = getComponentName("glider_wing");
     public static final String COMPONENT__ION_THRUSTER__REGNAME = getComponentName("ion_thruster");
-    public static final String COMPONENT__PARACHUTE__REGNAME = getComponentName("parachute");
-    public static final String COMPONENT__FIELD_EMITTER__REGNAME = getComponentName("field_emitter");
     public static final String COMPONENT__LASER_EMITTER__REGNAME = getComponentName("laser_emitter");
-    public static final String COMPONENT__CARBON_MYOFIBER__REGNAME = getComponentName("carbon_myofiber");
-    public static final String COMPONENT__CONTROL_CIRCUIT_1__REGNAME = getComponentName("control_circuit_basic");
-    public static final String COMPONENT__CONTROL_CIRCUIT_2__REGNAME = getComponentName("control_circuit_advanced");
-    public static final String COMPONENT__CONTROL_CIRCUIT_3__REGNAME = getComponentName("control_circuit_elite");
-    public static final String COMPONENT__CONTROL_CIRCUIT_4__REGNAME = getComponentName("control_circuit_ultimate");
-    public static final String COMPONENT__MYOFIBER_GEL__REGNAME = getComponentName("myofiber_gel");
-    public static final String COMPONENT__ARTIFICIAL_MUSCLE__REGNAME = getComponentName("artificial_muscle");
-    public static final String COMPONENT__SOLAR_PANEL__REGNAME = getComponentName("solar_panel");
     public static final String COMPONENT__MAGNET__REGNAME = getComponentName("magnet");
-    public static final String COMPONENT__COMPUTER_CHIP__REGNAME = getComponentName("computer_chip");
+    public static final String COMPONENT__MYOFIBER_GEL__REGNAME = getComponentName("myofiber_gel");
+    public static final String COMPONENT__PARACHUTE__REGNAME = getComponentName("parachute");
+    public static final String COMPONENT__PLATING_IRON__REGNAME = getComponentName("plating_iron");
+    public static final String COMPONENT__PLATING_DIAMOND__REGNAME = getComponentName("plating_diamond");
     public static final String COMPONENT__RUBBER_HOSE__REGNAME = getComponentName("rubber_hose");
+    public static final String COMPONENT__SERVO__REGNAME = getComponentName("servo");
+    public static final String COMPONENT__SOLAR_PANEL__REGNAME = getComponentName("solar_panel");
+    public static final String COMPONENT__SOLENOID__REGNAME = getComponentName("solenoid");
+
+
+
+
+
+
+
+
+
+
+
+
 
     static String getComponentName(String component) {
         return new StringBuilder("component_").append(component).toString();

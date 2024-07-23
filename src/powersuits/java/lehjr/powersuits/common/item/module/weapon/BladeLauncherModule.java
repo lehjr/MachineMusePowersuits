@@ -4,7 +4,7 @@ import lehjr.numina.common.capability.module.powermodule.ModuleCategory;
 import lehjr.numina.common.capability.module.powermodule.ModuleTarget;
 import lehjr.numina.common.capability.module.rightclick.RightClickModule;
 import lehjr.numina.common.utils.ElectricItemUtils;
-import lehjr.powersuits.common.config.MPSCommonConfig;
+import lehjr.powersuits.common.config.WeaponModuleConfig;
 import lehjr.powersuits.common.constants.MPSConstants;
 import lehjr.powersuits.common.entity.SpinningBladeEntity;
 import lehjr.powersuits.common.item.module.AbstractPowerModule;
@@ -23,8 +23,8 @@ public class BladeLauncherModule extends AbstractPowerModule {
 
         public RightClickie(ItemStack module) {
             super(module, ModuleCategory.WEAPON, ModuleTarget.TOOLONLY);
-            addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, MPSCommonConfig.bladeLauncherEnergyConsumption, "FE");
-            addBaseProperty(MPSConstants.BLADE_DAMAGE, MPSCommonConfig.bladeLauncherSpinningBladeDamage, "pt");
+            addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, WeaponModuleConfig.bladeLauncherEnergyConsumption, "FE");
+            addBaseProperty(MPSConstants.BLADE_DAMAGE, WeaponModuleConfig.bladeLauncherSpinningBladeDamage, "pt");
         }
 
         @Override
@@ -53,7 +53,7 @@ public class BladeLauncherModule extends AbstractPowerModule {
 
         @Override
         public boolean isAllowed() {
-            return MPSCommonConfig.bladeLauncherIsAllowed;
+            return WeaponModuleConfig.bladeLauncherIsAllowed;
         }
 
         @Override

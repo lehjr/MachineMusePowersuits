@@ -1,6 +1,5 @@
 package lehjr.numina.common.capability.module.powermodule;
 
-import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.utils.TagUtils;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;

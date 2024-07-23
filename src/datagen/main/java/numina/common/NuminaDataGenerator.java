@@ -13,6 +13,7 @@ import net.neoforged.neoforge.data.event.GatherDataEvent;
 import numina.client.lang.NuminaLanguageProvider_EN_US;
 import numina.common.loot.NuminaBlockLoot;
 import numina.common.loot.NuminaBlockTagProvider;
+import numina.common.recipes.NuminaRecipeGenerator;
 
 import java.util.Collections;
 import java.util.List;
@@ -49,5 +50,6 @@ public class NuminaDataGenerator {
                 lookupProvider,
                 helper));
 
+        generator.addProvider(event.includeServer(), new NuminaRecipeGenerator(output, lookupProvider));
     }
 }

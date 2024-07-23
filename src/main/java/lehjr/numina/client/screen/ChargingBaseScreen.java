@@ -33,9 +33,6 @@ public class ChargingBaseScreen extends AbstractContainerScreen<ChargingBaseMenu
 
     @Override
     protected void renderBg(GuiGraphics gfx, float pPartialTick, int pMouseX, int pMouseY) {
-        RenderSystem.setShader(GameRenderer::getPositionTexShader);
-        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-        RenderSystem.setShaderTexture(0, BACKGROUND);
         int i = this.leftPos;
         int j = this.topPos;
         gfx.blit(BACKGROUND, i, j, 0, 0, this.imageWidth, this.imageHeight);

@@ -103,24 +103,24 @@ public class NuminaLanguageProvider_EN_US extends AbstractLanguageProviderNumina
     @Override
     public void addBatteries() {
         // Basic Battery -------------------------------------------------------------------------------
-        add(NuminaObjects.BASIC_BATTERY.get(), "Basic Battery");
+        add(NuminaObjects.BATTERY_1.get(), "Basic Battery");
 
-        addItemDescriptions(NuminaObjects.BASIC_BATTERY.get(), "Integrate a battery to allow the item to store energy.");
+        addItemDescriptions(NuminaObjects.BATTERY_1.get(), "Integrate a battery to allow the item to store energy.");
 
         // Advanced Battery ----------------------------------------------------------------------------
-        add(NuminaObjects.ADVANCED_BATTERY.get(), "Advanced Battery");
+        add(NuminaObjects.BATTERY_2.get(), "Advanced Battery");
 
-        addItemDescriptions(NuminaObjects.ADVANCED_BATTERY.get(), "Integrate a battery to allow the item to store energy.");
+        addItemDescriptions(NuminaObjects.BATTERY_2.get(), "Integrate a battery to allow the item to store energy.");
 
         // Elite Battery -------------------------------------------------------------------------------
-        add(NuminaObjects.ELITE_BATTERY.get(), "Elite Battery");
+        add(NuminaObjects.BATTERY_3.get(), "Elite Battery");
 
-        addItemDescriptions(NuminaObjects.ELITE_BATTERY.get(), "Integrate a the most advanced battery to store an extensive amount of energy.");
+        addItemDescriptions(NuminaObjects.BATTERY_3.get(), "Integrate a the most advanced battery to store an extensive amount of energy.");
 
         // Ultimate Battery  ---------------------------------------------------------------------------
-        add(NuminaObjects.ULTIMATE_BATTERY.get(), "Ultimate Battery");
+        add(NuminaObjects.BATTERY_4.get(), "Ultimate Battery");
 
-        addItemDescriptions(NuminaObjects.ULTIMATE_BATTERY.get(), "Experimental high end power storage device, now with almost no chance of exploding (we think). Despite nasty rumors, it is not based on stolen alien technology.");
+        addItemDescriptions(NuminaObjects.BATTERY_4.get(), "Experimental high end power storage device, now with almost no chance of exploding (we think). Despite nasty rumors, it is not based on stolen alien technology.");
     }
 
     @Override
@@ -141,17 +141,17 @@ public class NuminaLanguageProvider_EN_US extends AbstractLanguageProviderNumina
         addItemDescriptions(NuminaObjects.COMPUTER_CHIP.get(), "An upgraded control circuit that contains a CPU which is capable of more advanced calculations.");
 
         // Control Circuit -----------------------------------------------------------------------------
-        add(NuminaObjects.CONTROL_CIRCUIT1.get(),  "Primitive Control Circuit");
-        addItemDescriptions(NuminaObjects.CONTROL_CIRCUIT1.get(), "Are you sure this thing will actually work? Is it supposed to smoke like that?");
+        add(NuminaObjects.CONTROL_CIRCUIT_1.get(),  "Primitive Control Circuit");
+        addItemDescriptions(NuminaObjects.CONTROL_CIRCUIT_1.get(), "Are you sure this thing will actually work? Is it supposed to smoke like that?");
 
-        add(NuminaObjects.CONTROL_CIRCUIT2.get(),  "Prototype Control Circuit");
-        addItemDescriptions(NuminaObjects.CONTROL_CIRCUIT2.get(), "Oh, look. It kind of works now.");
+        add(NuminaObjects.CONTROL_CIRCUIT_2.get(),  "Prototype Control Circuit");
+        addItemDescriptions(NuminaObjects.CONTROL_CIRCUIT_2.get(), "Oh, look. It kind of works now.");
 
-        add(NuminaObjects.CONTROL_CIRCUIT3.get(),  "Prototype Control Circuit Mk2");
-        addItemDescriptions(NuminaObjects.CONTROL_CIRCUIT3.get(), "A simple networkable microcontroller for coordinating an individual component.");
+        add(NuminaObjects.CONTROL_CIRCUIT_3.get(),  "Prototype Control Circuit Mk2");
+        addItemDescriptions(NuminaObjects.CONTROL_CIRCUIT_3.get(), "A simple networkable microcontroller for coordinating an individual component.");
 
-        add(NuminaObjects.CONTROL_CIRCUIT4.get(),  "Control Circuit");
-        addItemDescriptions(NuminaObjects.CONTROL_CIRCUIT4.get(),  "A highly advanced networkable microcontroller.");
+        add(NuminaObjects.CONTROL_CIRCUIT_4.get(),  "Control Circuit");
+        addItemDescriptions(NuminaObjects.CONTROL_CIRCUIT_4.get(),  "A highly advanced networkable microcontroller.");
 
         // Force Field Emitter -------------------------------------------------------------------------
         add(NuminaObjects.FIELD_EMITTER.get(), "Force Field Emitter");
@@ -209,9 +209,9 @@ public class NuminaLanguageProvider_EN_US extends AbstractLanguageProviderNumina
         addItemDescriptions(NuminaObjects.SOLENOID.get(), "Wires wound around a ferromagnetic core produces a basic electromagnet.");
 
         // Wiring --------------------------------------------------------------------------------------
-        add(NuminaObjects.WIRING.get(), "Wiring");
+        add(NuminaObjects.WIRING_COPPER.get(), "Wiring");
 
-        addItemDescriptions(NuminaObjects.WIRING.get(), "A special type of wiring with high voltaic capacity and precision, necessary for the sensitive electronics in power armor.");
+        addItemDescriptions(NuminaObjects.WIRING_COPPER.get(), "A special type of wiring with high voltaic capacity and precision, necessary for the sensitive electronics in power armor.");
     }
 
     @Override

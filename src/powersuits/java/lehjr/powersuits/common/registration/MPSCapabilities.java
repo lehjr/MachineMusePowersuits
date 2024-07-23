@@ -4,7 +4,6 @@ import lehjr.numina.common.capability.NuminaCapabilities;
 import lehjr.numina.common.capability.energy.ModularItemEnergyWrapper;
 import lehjr.numina.common.capability.module.powermodule.ModuleCategory;
 import lehjr.numina.common.capability.module.powermodule.ModuleTarget;
-import lehjr.numina.common.capability.module.toggleable.ToggleableModule;
 import lehjr.numina.common.capability.render.hud.HudModule;
 import lehjr.powersuits.common.capabilities.item.armor.PowerArmorHeatWrapper;
 import lehjr.powersuits.common.capabilities.item.armor.PowerArmorModularItemWrapper;
@@ -12,6 +11,7 @@ import lehjr.powersuits.common.capabilities.item.armor.PowerArmorRenderWrapper;
 import lehjr.powersuits.common.capabilities.item.tool.PowerFistHeatWrapper;
 import lehjr.powersuits.common.capabilities.item.tool.PowerFistModeChangingWrapper;
 import lehjr.powersuits.common.capabilities.item.tool.PowerFistRenderWrapper;
+import lehjr.powersuits.common.config.PowerFistConfig;
 import lehjr.powersuits.common.item.module.armor.ArmorPlatingModule;
 import lehjr.powersuits.common.item.module.armor.EnergyShieldModule;
 import lehjr.powersuits.common.item.module.cosmetic.TransparentArmorModule;
@@ -147,37 +147,34 @@ public class MPSCapabilities {
 
         // Power Fist =================================================================================================
         // Mode Changing
-        event.registerItem(NuminaCapabilities.Inventory.MODE_CHANGING_MODULAR_ITEM, (stack, context) ->
-                        new PowerFistModeChangingWrapper(stack, 1), MPSItems.POWER_FIST_1.get());
+        if(PowerFistConfig.MPS_POWER_FIST_CONFIG_SPEC.isLoaded()) {
+            event.registerItem(NuminaCapabilities.Inventory.MODE_CHANGING_MODULAR_ITEM, (stack, context) -> new PowerFistModeChangingWrapper(stack, 1, PowerFistConfig.powerFistInventorySlots1), MPSItems.POWER_FIST_1.get());
+            event.registerItem(NuminaCapabilities.Inventory.MODE_CHANGING_MODULAR_ITEM, (stack, context) -> new PowerFistModeChangingWrapper(stack, 2, PowerFistConfig.powerFistInventorySlots2), MPSItems.POWER_FIST_2.get());
+            event.registerItem(NuminaCapabilities.Inventory.MODE_CHANGING_MODULAR_ITEM, (stack, context) -> new PowerFistModeChangingWrapper(stack, 3, PowerFistConfig.powerFistInventorySlots3), MPSItems.POWER_FIST_3.get());
+            event.registerItem(NuminaCapabilities.Inventory.MODE_CHANGING_MODULAR_ITEM, (stack, context) -> new PowerFistModeChangingWrapper(stack, 4, PowerFistConfig.powerFistInventorySlots4), MPSItems.POWER_FIST_4.get());
 
-        event.registerItem(NuminaCapabilities.Inventory.MODE_CHANGING_MODULAR_ITEM, (stack, context) ->
-                new PowerFistModeChangingWrapper(stack, 2), MPSItems.POWER_FIST_2.get());
+            // Energy
+            event.registerItem(Capabilities.EnergyStorage.ITEM, (stack, context) -> new ModularItemEnergyWrapper(stack),
+                    MPSItems.POWER_FIST_1.get(),
+                    MPSItems.POWER_FIST_2.get(),
+                    MPSItems.POWER_FIST_3.get(),
+                    MPSItems.POWER_FIST_4.get());
 
-        event.registerItem(NuminaCapabilities.Inventory.MODE_CHANGING_MODULAR_ITEM, (stack, context) ->
-                new PowerFistModeChangingWrapper(stack, 3), MPSItems.POWER_FIST_3.get());
+            // Heat
+            event.registerItem(NuminaCapabilities.HEAT, (stack, context) ->
+                    new PowerFistHeatWrapper(stack, 1), MPSItems.POWER_FIST_1.get());
 
-        event.registerItem(NuminaCapabilities.Inventory.MODE_CHANGING_MODULAR_ITEM, (stack, context) ->
-                new PowerFistModeChangingWrapper(stack, 4), MPSItems.POWER_FIST_4.get());
+            event.registerItem(NuminaCapabilities.HEAT, (stack, context) ->
+                    new PowerFistHeatWrapper(stack, 2), MPSItems.POWER_FIST_2.get());
 
-        // Energy
-        event.registerItem(Capabilities.EnergyStorage.ITEM, (stack, context) -> new ModularItemEnergyWrapper(stack),
-                MPSItems.POWER_FIST_1.get(),
-                MPSItems.POWER_FIST_2.get(),
-                MPSItems.POWER_FIST_3.get(),
-                MPSItems.POWER_FIST_4.get());
+            event.registerItem(NuminaCapabilities.HEAT, (stack, context) ->
+                    new PowerFistHeatWrapper(stack, 3), MPSItems.POWER_FIST_3.get());
 
-        // Heat
-        event.registerItem(NuminaCapabilities.HEAT, (stack, context) ->
-                new PowerFistHeatWrapper(stack, 1), MPSItems.POWER_FIST_1.get());
+            event.registerItem(NuminaCapabilities.HEAT, (stack, context) ->
+                    new PowerFistHeatWrapper(stack, 4), MPSItems.POWER_FIST_4.get());
+        }
 
-        event.registerItem(NuminaCapabilities.HEAT, (stack, context) ->
-                new PowerFistHeatWrapper(stack, 2), MPSItems.POWER_FIST_2.get());
 
-        event.registerItem(NuminaCapabilities.HEAT, (stack, context) ->
-                new PowerFistHeatWrapper(stack, 3), MPSItems.POWER_FIST_3.get());
-
-        event.registerItem(NuminaCapabilities.HEAT, (stack, context) ->
-                new PowerFistHeatWrapper(stack, 4), MPSItems.POWER_FIST_4.get());
 
         // Render
         event.registerItem(NuminaCapabilities.RENDER, (stack, context) -> new PowerFistRenderWrapper(stack),
@@ -216,6 +213,8 @@ public class MPSCapabilities {
         // Mining Enhancement -----------------------------------------------------------------------------------------
         event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new SelectiveMiner.Enhancement(stack), MPSItems.SELECTIVE_MINER_MODULE.get());
         event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new TunnelBoreModule.Enhancement(stack), MPSItems.TUNNEL_BORE_MODULE.get());
+//        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new VeinMinerModule.Enhancement(stack), MPSItems.TUNNEL_BORE_MODULE.get());
+
         // Vein Miner
 
 

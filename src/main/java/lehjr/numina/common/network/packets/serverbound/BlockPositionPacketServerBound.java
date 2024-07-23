@@ -17,6 +17,10 @@ import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 import javax.annotation.Nonnull;
 
+/**
+ * Sets the state for which a specific module will search for when block breaking
+ * @param pos
+ */
 public record BlockPositionPacketServerBound(BlockPos pos) implements CustomPacketPayload {
     public static final Type<BlockPositionPacketServerBound> ID = new Type<>(new ResourceLocation(NuminaConstants.MOD_ID, "block_pos_to_sever"));
 

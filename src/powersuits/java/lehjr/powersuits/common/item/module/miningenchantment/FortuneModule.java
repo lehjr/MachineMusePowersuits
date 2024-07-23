@@ -42,5 +42,10 @@ public class FortuneModule extends AbstractPowerModule {
         public int getLevel() {
             return (int) applyPropertyModifiers(MPSConstants.FORTUNE_ENCHANTMENT_LEVEL);
         }
+
+        @Override
+        public boolean isAllowed() {
+            return true;
+        }
     }
 }

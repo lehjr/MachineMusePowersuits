@@ -25,13 +25,12 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.common.ToolActions;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
-import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
-public class HoeModule extends AbstractPowerModule {
+public class RototillerModule extends AbstractPowerModule {
     //    protected static final Map<Block, BlockState> HOE_LOOKUP = Maps.newHashMap(ImmutableMap.of(Blocks.field_196658_i, Blocks.field_150458_ak.defaultBlockState(), Blocks.field_185774_da, Blocks.field_150458_ak.defaultBlockState(), Blocks.field_150346_d, Blocks.field_150458_ak.defaultBlockState(), Blocks.field_196660_k, Blocks.field_150346_d.defaultBlockState()));
     public static class RightClickie extends RightClickModule implements IBlockBreakingModule {
         public RightClickie(@Nonnull ItemStack module, ModuleCategory category, ModuleTarget target) {

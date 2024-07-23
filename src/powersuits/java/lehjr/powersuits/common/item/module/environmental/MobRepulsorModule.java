@@ -33,13 +33,13 @@ public class MobRepulsorModule extends AbstractPowerModule {
         }
 
         @Override
-        public void onPlayerTickActive(Player player, @Nonnull ItemStack item) {
+        public void onPlayerTickActive(Player player, Level level, @Nonnull ItemStack item) {
             int energyConsumption = (int) applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION);
             if (ElectricItemUtils.getPlayerEnergy(player) > energyConsumption) {
-                if (player.level().getGameTime() % 20 == 0) {
+                if (level.getGameTime() % 20 == 0) {
                     ElectricItemUtils.drainPlayerEnergy(player, energyConsumption, false);
                 }
-                repulse(player.level(), player.blockPosition());
+                repulse(level, player.blockPosition());
             }
         }
 

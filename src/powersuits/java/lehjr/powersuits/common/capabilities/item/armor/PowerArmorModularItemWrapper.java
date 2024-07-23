@@ -1,14 +1,12 @@
 package lehjr.powersuits.common.capabilities.item.armor;
 
-import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.capability.inventory.modularitem.ModularItem;
 import lehjr.numina.common.capability.module.powermodule.ModuleCategory;
 import lehjr.numina.common.utils.ItemUtils;
-import lehjr.powersuits.common.config.MPSCommonConfig;
+import lehjr.powersuits.common.config.ArmorConfig;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.items.wrapper.RangedWrapper;
-import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
 import java.util.HashMap;
@@ -88,70 +86,70 @@ public class PowerArmorModularItemWrapper extends ModularItem {
     }
 
     public static int getActualSize(ItemStack modularItem, int tier) {
-        if (MPSCommonConfig.COMMON_SPEC.isLoaded()) {
+        if (ArmorConfig.MPS_ARMOR_CONFIG_SPEC.isLoaded()) {
             ArmorItem.Type type = ItemUtils.getArmorType(modularItem);
             switch (type) {
                 case HELMET -> {
                     switch (tier) {
                         case 1 -> {
-                            return MPSCommonConfig.armorHelmInventorySlots1;
+                            return ArmorConfig.armorHelmInventorySlots1;
                         }
                         case 2 -> {
-                            return MPSCommonConfig.armorHelmInventorySlots2;
+                            return ArmorConfig.armorHelmInventorySlots2;
                         }
                         case 3 -> {
-                            return MPSCommonConfig.armorHelmInventorySlots3;
+                            return ArmorConfig.armorHelmInventorySlots3;
                         }
                         case 4 -> {
-                            return MPSCommonConfig.armorHelmInventorySlots4;
+                            return ArmorConfig.armorHelmInventorySlots4;
                         }
                     }
                 }
                 case CHESTPLATE -> {
                     switch (tier) {
                         case 1 -> {
-                            return MPSCommonConfig.armorChestPlateInventorySlots1;
+                            return ArmorConfig.armorChestPlateInventorySlots1;
                         }
                         case 2 -> {
-                            return MPSCommonConfig.armorChestPlateInventorySlots2;
+                            return ArmorConfig.armorChestPlateInventorySlots2;
                         }
                         case 3 -> {
-                            return MPSCommonConfig.armorChestPlateInventorySlots3;
+                            return ArmorConfig.armorChestPlateInventorySlots3;
                         }
                         case 4 -> {
-                            return MPSCommonConfig.armorChestPlateInventorySlots4;
+                            return ArmorConfig.armorChestPlateInventorySlots4;
                         }
                     }
                 }
                 case LEGGINGS -> {
                     switch (tier) {
                         case 1 -> {
-                            return MPSCommonConfig.armorLeggingsInventorySlots1;
+                            return ArmorConfig.armorLeggingsInventorySlots1;
                         }
                         case 2 -> {
-                            return MPSCommonConfig.armorLeggingsInventorySlots2;
+                            return ArmorConfig.armorLeggingsInventorySlots2;
                         }
                         case 3 -> {
-                            return MPSCommonConfig.armorLeggingsInventorySlots3;
+                            return ArmorConfig.armorLeggingsInventorySlots3;
                         }
                         case 4 -> {
-                            return MPSCommonConfig.armorLeggingsInventorySlots4;
+                            return ArmorConfig.armorLeggingsInventorySlots4;
                         }
                     }
                 }
                 case BOOTS -> {
                     switch (tier) {
                         case 1 -> {
-                            return MPSCommonConfig.armorBootsInventorySlots1;
+                            return ArmorConfig.armorBootsInventorySlots1;
                         }
                         case 2 -> {
-                            return MPSCommonConfig.armorBootsInventorySlots2;
+                            return ArmorConfig.armorBootsInventorySlots2;
                         }
                         case 3 -> {
-                            return MPSCommonConfig.armorBootsInventorySlots3;
+                            return ArmorConfig.armorBootsInventorySlots3;
                         }
                         case 4 -> {
-                            return MPSCommonConfig.armorBootsInventorySlots4;
+                            return ArmorConfig.armorBootsInventorySlots4;
                         }
                     }
                 }

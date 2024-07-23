@@ -11,6 +11,7 @@ import lehjr.powersuits.common.constants.MPSConstants;
 import lehjr.powersuits.common.item.module.AbstractPowerModule;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
 import javax.annotation.Nonnull;
@@ -22,7 +23,7 @@ public class GliderModule extends AbstractPowerModule {
             }
 
             @Override
-            public void onPlayerTickActive(Player player, ItemStack chestPlate) {
+            public void onPlayerTickActive(Player player, Level level, ItemStack chestPlate) {
                 Vec3 playerHorzFacing = player.getLookAngle();
                 playerHorzFacing = new Vec3(playerHorzFacing.x, 0, playerHorzFacing.z);
                 playerHorzFacing.normalize();

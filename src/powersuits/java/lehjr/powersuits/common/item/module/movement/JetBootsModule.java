@@ -18,6 +18,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 
 import javax.annotation.Nonnull;
 
@@ -32,7 +33,7 @@ public class JetBootsModule extends AbstractPowerModule {
         }
 
         @Override
-        public void onPlayerTickActive(Player player, ItemStack item) {
+        public void onPlayerTickActive(Player player, Level level, ItemStack item) {
             if (player.isInWater())
                 return;
 
@@ -50,31 +51,31 @@ public class JetBootsModule extends AbstractPowerModule {
             if (jetEnergy < ElectricItemUtils.getPlayerEnergy(player)) {
                 if (hasFlightControl && thrust > 0) {
                     thrust = MovementManager.thrust(player, thrust, true);
-                    if ((player.level().isClientSide) && NuminaClientConfig.useSounds) {
+                    if ((level.isClientSide) && NuminaClientConfig.useSounds) {
                         Musique.playerSound(player, MPSSoundDictionary.SOUND_EVENT_JETBOOTS.get(), SoundSource.PLAYERS, (float) (thrust * 12.5), 1.0f, true);
                     }
                     ElectricItemUtils.drainPlayerEnergy(player, (int) (thrust * jetEnergy), false);
                 } else if (playerInput.jumpKey && player.getDeltaMovement().y < 0.5) {
                     thrust = MovementManager.thrust(player, thrust, false);
-                    if ((player.level().isClientSide) && NuminaClientConfig.useSounds) {
+                    if ((level.isClientSide) && NuminaClientConfig.useSounds) {
                         Musique.playerSound(player, MPSSoundDictionary.SOUND_EVENT_JETBOOTS.get(), SoundSource.PLAYERS, (float) (thrust * 12.5), 1.0f, true);
                     }
                     ElectricItemUtils.drainPlayerEnergy(player, (int) (thrust * jetEnergy), false);
                 } else {
-                    if ((player.level().isClientSide) && NuminaClientConfig.useSounds) {
+                    if ((level.isClientSide) && NuminaClientConfig.useSounds) {
                         Musique.stopPlayerSound(player, MPSSoundDictionary.SOUND_EVENT_JETBOOTS.get());
                     }
                 }
             } else {
-                if (player.level().isClientSide && NuminaClientConfig.useSounds) {
+                if (level.isClientSide && NuminaClientConfig.useSounds) {
                     Musique.stopPlayerSound(player, MPSSoundDictionary.SOUND_EVENT_JETBOOTS.get());
                 }
             }
         }
 
         @Override
-        public void onPlayerTickInactive(Player player, ItemStack item) {
-            if (player.level().isClientSide && NuminaClientConfig.useSounds) {
+        public void onPlayerTickInactive(Player player, Level level, ItemStack item) {
+            if (level.isClientSide && NuminaClientConfig.useSounds) {
                 Musique.stopPlayerSound(player, MPSSoundDictionary.SOUND_EVENT_JETBOOTS.get());
             }
         }

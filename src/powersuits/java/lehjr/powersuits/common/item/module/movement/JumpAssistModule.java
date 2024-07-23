@@ -10,6 +10,7 @@ import lehjr.powersuits.common.event.MovementManager;
 import lehjr.powersuits.common.item.module.AbstractPowerModule;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 
 import javax.annotation.Nonnull;
 
@@ -23,7 +24,7 @@ public class JumpAssistModule extends AbstractPowerModule {
         }
 
         @Override
-        public void onPlayerTickActive(Player player, ItemStack item) {
+        public void onPlayerTickActive(Player player, Level level, ItemStack item) {
             PlayerMovementInputWrapper.PlayerMovementInput playerInput = PlayerMovementInputWrapper.get(player);
             if (playerInput.jumpKey) {
                 double multiplier = MovementManager.INSTANCE.getPlayerJumpMultiplier(player);

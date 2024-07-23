@@ -64,12 +64,7 @@ public class MPSConstants {
     /** Environmental -------------------------------------------------------------------------- */
     // Auto Feeder
 
-    // Cooling System
-    public static final String COOLING_BONUS = "coolingBonus";
-    // Fluid Tank
-    public static final String FLUID_TANK_SIZE = "fluidTankSize";
-    public static final String HEAT_ACTIVATION_PERCENT = "heatActivationPercent";//Heat Activation Percent";
-    public static final String ACTIVATION_PERCENT = "activationPercent";//"Activation Percent"
+
     // Water Electrolyzer
     /** Mining Enhancement --------------------------------------------------------------------- */
     // Generic

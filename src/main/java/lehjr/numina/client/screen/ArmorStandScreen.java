@@ -31,21 +31,9 @@ public class ArmorStandScreen extends ExtendedContainerScreen<ArmorStandMenu> {
 
     @Override
     protected void renderBg(GuiGraphics gfx, float partialTick, int mouseX, int mouseY) {
-        RenderSystem.setShader(GameRenderer::getPositionTexShader);
-        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         int i = this.leftPos;
         int j = this.topPos;
         gfx.blit(BACKGROUND, i, j, 0, 0, this.imageWidth, this.imageHeight);
-        //         GuiGraphics pGuiGraphics,
-        //        int pX1,
-        //        int pY1,
-        //        int pX2,
-        //        int pY2,
-        //        int pScale,
-        //        float pYOffset,
-        //        float pMouseX,
-        //        float pMouseY,
-        //        LivingEntity pEntity
         if (this.minecraft != null && this.minecraft.player != null) {
             InventoryScreen
                     .renderEntityInInventoryFollowsMouse(

@@ -36,6 +36,7 @@ import net.neoforged.neoforge.attachment.AttachmentType;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.common.extensions.IMenuTypeExtension;
+import net.neoforged.neoforge.fluids.SimpleFluidContent;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
@@ -46,25 +47,16 @@ import java.util.function.Supplier;
 import java.util.function.UnaryOperator;
 
 public class NuminaObjects {
-    /**
-     * Blocks -------------------------------------------------------------------------------------
-     */
+    // Blocks =========================================================================================================
     public static final DeferredRegister<Block> NUMINA_BLOCKS = DeferredRegister.createBlocks(NuminaConstants.MOD_ID);
-    public static final DeferredHolder<Block, ChargingBase> CHARGING_BASE_BLOCK = NUMINA_BLOCKS.register(NuminaConstants.CHARGING_BASE_REGNAME,
-            ChargingBase::new);
+    public static final DeferredHolder<Block, ChargingBase> CHARGING_BASE_BLOCK = NUMINA_BLOCKS.register(NuminaConstants.CHARGING_BASE_REGNAME, ChargingBase::new);
 
-    /**
-     * Block Entity Types --------------------------------------------------------------------------
-     */
+    // Block Entity Types =============================================================================================
     public static final DeferredRegister<BlockEntityType<?>> BLOCKENTITY_TYPES = DeferredRegister.create(BuiltInRegistries.BLOCK_ENTITY_TYPE, NuminaConstants.MOD_ID);
-
-
     public static final Supplier<BlockEntityType<ChargingBaseBlockEntity>> CHARGING_BASE_BLOCK_ENTITY = BLOCKENTITY_TYPES.register(NuminaConstants.CHARGING_BASE_REGNAME,
             () -> BlockEntityType.Builder.of(ChargingBaseBlockEntity::new, CHARGING_BASE_BLOCK.get()).build(null));
 
-    /**
-     * Items --------------------------------------------------------------------------------------
-     */
+    // Items ==========================================================================================================
     public static final DeferredRegister.Items NUMINA_ITEMS = DeferredRegister.createItems(NuminaConstants.MOD_ID);
 
     // Block Items --------------------------------------------------------------------------------
@@ -79,61 +71,41 @@ public class NuminaObjects {
 
     // Modules ------------------------------------------------------------------------------------
     // Energy Storage
-    public static final DeferredHolder<Item, Battery> BASIC_BATTERY = NUMINA_ITEMS.register(NuminaConstants.MODULE_BATTERY_BASIC__REGNAME,
-            () -> new Battery(1));
-
-    public static final DeferredHolder<Item, Battery> ADVANCED_BATTERY = NUMINA_ITEMS.register(NuminaConstants.MODULE_BATTERY_ADVANCED__REGNAME,
-            () -> new Battery(2));
-
-    public static final DeferredHolder<Item, Battery> ELITE_BATTERY = NUMINA_ITEMS.register(NuminaConstants.MODULE_BATTERY_ELITE__REGNAME,
-            () -> new Battery(3));
-
-    public static final DeferredHolder<Item, Battery> ULTIMATE_BATTERY = NUMINA_ITEMS.register(NuminaConstants.MODULE_BATTERY_ULTIMATE__REGNAME,
-            () -> new Battery(4));
+    public static final DeferredHolder<Item, Battery> BATTERY_1 = registerBattery(NuminaConstants.MODULE_BATTERY_1__REGNAME, 1);
+    public static final DeferredHolder<Item, Battery> BATTERY_2 = registerBattery(NuminaConstants.MODULE_BATTERY_2__REGNAME, 2);
+    public static final DeferredHolder<Item, Battery> BATTERY_3 = registerBattery(NuminaConstants.MODULE_BATTERY_3__REGNAME, 3);
+    public static final DeferredHolder<Item, Battery> BATTERY_4 = registerBattery(NuminaConstants.MODULE_BATTERY_4__REGNAME, 4);
 
     // Components ---------------------------------------------------------------------------------
-    public static final DeferredHolder<Item, ComponentItem> ARTIFICIAL_MUSCLE = NUMINA_ITEMS.register(NuminaConstants.COMPONENT__ARTIFICIAL_MUSCLE__REGNAME,
-            ComponentItem::new);
-    public static final DeferredHolder<Item, ComponentItem> CARBON_MYOFIBER = NUMINA_ITEMS.register(NuminaConstants.COMPONENT__CARBON_MYOFIBER__REGNAME,
-            ComponentItem::new);
-    public static final DeferredHolder<Item, ComponentItem> COMPUTER_CHIP = NUMINA_ITEMS.register(NuminaConstants.COMPONENT__COMPUTER_CHIP__REGNAME,
-            ComponentItem::new);
-    public static final DeferredHolder<Item, ComponentItem> CONTROL_CIRCUIT1 = NUMINA_ITEMS.register(NuminaConstants.COMPONENT__CONTROL_CIRCUIT_1__REGNAME,
-            ComponentItem::new);
-    public static final DeferredHolder<Item, ComponentItem> CONTROL_CIRCUIT2 = NUMINA_ITEMS.register(NuminaConstants.COMPONENT__CONTROL_CIRCUIT_2__REGNAME,
-            ComponentItem::new);
-    public static final DeferredHolder<Item, ComponentItem> CONTROL_CIRCUIT3 = NUMINA_ITEMS.register(NuminaConstants.COMPONENT__CONTROL_CIRCUIT_3__REGNAME,
-            ComponentItem::new);
-    public static final DeferredHolder<Item, ComponentItem> CONTROL_CIRCUIT4 = NUMINA_ITEMS.register(NuminaConstants.COMPONENT__CONTROL_CIRCUIT_4__REGNAME,
-            ComponentItem::new);
-    public static final DeferredHolder<Item, ComponentItem> FIELD_EMITTER = NUMINA_ITEMS.register(NuminaConstants.COMPONENT__FIELD_EMITTER__REGNAME,
-            ComponentItem::new);
-    public static final DeferredHolder<Item, ComponentItem> GLIDER_WING = NUMINA_ITEMS.register(NuminaConstants.COMPONENT__GLIDER_WING__REGNAME,
-            ComponentItem::new);
-    public static final DeferredHolder<Item, ComponentItem> ION_THRUSTER = NUMINA_ITEMS.register(NuminaConstants.COMPONENT__ION_THRUSTER__REGNAME,
-            ComponentItem::new);
-    public static final DeferredHolder<Item, ComponentItem> LASER_EMITTER = NUMINA_ITEMS.register(NuminaConstants.COMPONENT__LASER_EMITTER__REGNAME,
-            ComponentItem::new);
-    public static final DeferredHolder<Item, ComponentItem> MAGNET = NUMINA_ITEMS.register(NuminaConstants.COMPONENT__MAGNET__REGNAME,
-            ComponentItem::new);
-    public static final DeferredHolder<Item, ComponentItem> MYOFIBER_GEL = NUMINA_ITEMS.register(NuminaConstants.COMPONENT__MYOFIBER_GEL__REGNAME,
-            ComponentItem::new);
-    public static final DeferredHolder<Item, ComponentItem> PARACHUTE = NUMINA_ITEMS.register(NuminaConstants.COMPONENT__PARACHUTE__REGNAME,
-            ComponentItem::new);
-    public static final DeferredHolder<Item, ComponentItem> RUBBER_HOSE = NUMINA_ITEMS.register(NuminaConstants.COMPONENT__RUBBER_HOSE__REGNAME,
-            ComponentItem::new);
-    public static final DeferredHolder<Item, ComponentItem> SERVO = NUMINA_ITEMS.register(NuminaConstants.COMPONENT__SERVO__REGNAME,
-            ComponentItem::new);
-    public static final DeferredHolder<Item, ComponentItem> SOLAR_PANEL = NUMINA_ITEMS.register(NuminaConstants.COMPONENT__SOLAR_PANEL__REGNAME,
-            ComponentItem::new);
-    public static final DeferredHolder<Item, ComponentItem> SOLENOID = NUMINA_ITEMS.register(NuminaConstants.COMPONENT__SOLENOID__REGNAME,
-            ComponentItem::new);
-    public static final DeferredHolder<Item, ComponentItem> WIRING = NUMINA_ITEMS.register(NuminaConstants.COMPONENT__WIRING__REGNAME,
-            ComponentItem::new);
+    public static final DeferredHolder<Item, ComponentItem> ARTIFICIAL_MUSCLE = registerComponent(NuminaConstants.COMPONENT__ARTIFICIAL_MUSCLE__REGNAME);
+    public static final DeferredHolder<Item, ComponentItem> CARBON_MYOFIBER = registerComponent(NuminaConstants.COMPONENT__CARBON_MYOFIBER__REGNAME);
+    public static final DeferredHolder<Item, ComponentItem> CAPACITOR_1 = registerComponent(NuminaConstants.COMPONENT__CAPACAITOR_1__REGNAME);
+    public static final DeferredHolder<Item, ComponentItem> CAPACITOR_2 = registerComponent(NuminaConstants.COMPONENT__CAPACAITOR_2__REGNAME);
+    public static final DeferredHolder<Item, ComponentItem> CAPACITOR_3 = registerComponent(NuminaConstants.COMPONENT__CAPACAITOR_3__REGNAME);
+    public static final DeferredHolder<Item, ComponentItem> CAPACITOR_4 = registerComponent(NuminaConstants.COMPONENT__CAPACAITOR_4__REGNAME);
+    public static final DeferredHolder<Item, ComponentItem> COMPUTER_CHIP = registerComponent(NuminaConstants.COMPONENT__COMPUTER_CHIP__REGNAME);
+    public static final DeferredHolder<Item, ComponentItem> CONTROL_CIRCUIT_1 = registerComponent(NuminaConstants.COMPONENT__CONTROL_CIRCUIT_1__REGNAME);
+    public static final DeferredHolder<Item, ComponentItem> CONTROL_CIRCUIT_2 = registerComponent(NuminaConstants.COMPONENT__CONTROL_CIRCUIT_2__REGNAME);
+    public static final DeferredHolder<Item, ComponentItem> CONTROL_CIRCUIT_3 = registerComponent(NuminaConstants.COMPONENT__CONTROL_CIRCUIT_3__REGNAME);
+    public static final DeferredHolder<Item, ComponentItem> CONTROL_CIRCUIT_4 = registerComponent(NuminaConstants.COMPONENT__CONTROL_CIRCUIT_4__REGNAME);
+    public static final DeferredHolder<Item, ComponentItem> FIELD_EMITTER = registerComponent(NuminaConstants.COMPONENT__FIELD_EMITTER__REGNAME);
+    public static final DeferredHolder<Item, ComponentItem> GLIDER_WING = registerComponent(NuminaConstants.COMPONENT__GLIDER_WING__REGNAME);
+    public static final DeferredHolder<Item, ComponentItem> ION_THRUSTER = registerComponent(NuminaConstants.COMPONENT__ION_THRUSTER__REGNAME);
+    public static final DeferredHolder<Item, ComponentItem> LASER_EMITTER = registerComponent(NuminaConstants.COMPONENT__LASER_EMITTER__REGNAME);
+    public static final DeferredHolder<Item, ComponentItem> MAGNET = registerComponent(NuminaConstants.COMPONENT__MAGNET__REGNAME);
+    public static final DeferredHolder<Item, ComponentItem> MYOFIBER_GEL = registerComponent(NuminaConstants.COMPONENT__MYOFIBER_GEL__REGNAME);
+    public static final DeferredHolder<Item, ComponentItem> PARACHUTE = registerComponent(NuminaConstants.COMPONENT__PARACHUTE__REGNAME);
+    public static final DeferredHolder<Item, ComponentItem> PLATING_IRON = registerComponent(NuminaConstants.COMPONENT__PLATING_IRON__REGNAME);
+    public static final DeferredHolder<Item, ComponentItem> PLATING_DIAMOND = registerComponent(NuminaConstants.COMPONENT__PLATING_DIAMOND__REGNAME);
+    public static final DeferredHolder<Item, ComponentItem> RUBBER_HOSE = registerComponent(NuminaConstants.COMPONENT__RUBBER_HOSE__REGNAME);
+    public static final DeferredHolder<Item, ComponentItem> SERVO = registerComponent(NuminaConstants.COMPONENT__SERVO__REGNAME);
+    public static final DeferredHolder<Item, ComponentItem> SOLAR_PANEL = registerComponent(NuminaConstants.COMPONENT__SOLAR_PANEL__REGNAME);
+    public static final DeferredHolder<Item, ComponentItem> SOLENOID = registerComponent(NuminaConstants.COMPONENT__SOLENOID__REGNAME);
+    public static final DeferredHolder<Item, ComponentItem> WIRING_COPPER = registerComponent(NuminaConstants.COMPONENT__WIRING_COPPER__REGNAME);
+    public static final DeferredHolder<Item, ComponentItem> WIRING_GOLD = registerComponent(NuminaConstants.COMPONENT__WIRING_GOLD__REGNAME);
 
-    /**
-     * Entity Types -------------------------------------------------------------------------------
-     */
+
+    // Entity Types ===================================================================================================
     public static final DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(BuiltInRegistries.ENTITY_TYPE, NuminaConstants.MOD_ID);
 
     public static final Supplier<EntityType<NuminaArmorStand>> ARMOR_STAND__ENTITY_TYPE = ENTITY_TYPES.register(NuminaConstants.ARMOR_STAND__ENTITY_TYPE_REGNAME,
@@ -141,9 +113,12 @@ public class NuminaObjects {
                     .sized(0.5F, 1.975F) // Hitbox Size
                     .build(new ResourceLocation(NuminaConstants.MOD_ID, NuminaConstants.ARMOR_STAND__ENTITY_TYPE_REGNAME).toString()));
 
-    /**
-     * AbstractContainerMenu Types ----------------------------------------------------------------------------
-     */
+
+
+
+
+
+    // Menu Types =====================================================================================================
     public static final DeferredRegister<MenuType<?>> MENU_TYPES = DeferredRegister.create(BuiltInRegistries.MENU, NuminaConstants.MOD_ID);
 
     public static final Supplier<MenuType<ArmorStandMenu>> ARMOR_STAND_CONTAINER_TYPE = MENU_TYPES.register("armorstand_modding_container",
@@ -162,8 +137,10 @@ public class NuminaObjects {
                 return new ChargingBaseMenu(windowId, inv.player, pos);
             }));
 
+    // Fluid Types ====================================================================================================
+    // TODO
 
-    // DataComponentType
+    // DataComponentTypes =============================================================================================
     public static final DeferredRegister<DataComponentType<?>> DATA_COMPONENT_TYPES = DeferredRegister.create(Registries.DATA_COMPONENT_TYPE, NuminaConstants.MOD_ID);
 
     public static final DataComponentType<Integer> ENERGY = register("energy", builder ->
@@ -189,6 +166,10 @@ public class NuminaObjects {
 
     public static final DataComponentType<Byte> KEY_STATES = register("key_states", builder ->
             builder.persistent(Codec.BYTE).networkSynchronized(ByteBufCodecs.BYTE));
+
+    public static DataComponentType<SimpleFluidContent> ITEM_FLUID_CODEC = register("item_fluid",
+            builder -> builder.persistent(SimpleFluidContent.CODEC).networkSynchronized(SimpleFluidContent.STREAM_CODEC));
+
 
     private static <T> DataComponentType<T> register(String name, Consumer<DataComponentType.Builder<T>> customizer) {
         var builder = DataComponentType.<T>builder();
@@ -244,15 +225,15 @@ public class NuminaObjects {
 
     public static void registerCapabilities(RegisterCapabilitiesEvent event) {
         // Batteries --------------------------------------------------------------------------------------------------
-        event.registerItem(Capabilities.EnergyStorage.ITEM, (stack, ctx) -> new Battery.BatteryEnergyStorage(stack, ENERGY, 1), NuminaObjects.BASIC_BATTERY.get());
-        event.registerItem(Capabilities.EnergyStorage.ITEM, (stack, ctx) -> new Battery.BatteryEnergyStorage(stack, ENERGY, 2), NuminaObjects.ADVANCED_BATTERY.get());
-        event.registerItem(Capabilities.EnergyStorage.ITEM, (stack, ctx) -> new Battery.BatteryEnergyStorage(stack, ENERGY, 3), NuminaObjects.ELITE_BATTERY.get());
-        event.registerItem(Capabilities.EnergyStorage.ITEM, (stack, ctx) -> new Battery.BatteryEnergyStorage(stack, ENERGY, 4), NuminaObjects.ULTIMATE_BATTERY.get());
+        event.registerItem(Capabilities.EnergyStorage.ITEM, (stack, ctx) -> new Battery.BatteryEnergyStorage(stack, ENERGY, 1), NuminaObjects.BATTERY_1.get());
+        event.registerItem(Capabilities.EnergyStorage.ITEM, (stack, ctx) -> new Battery.BatteryEnergyStorage(stack, ENERGY, 2), NuminaObjects.BATTERY_2.get());
+        event.registerItem(Capabilities.EnergyStorage.ITEM, (stack, ctx) -> new Battery.BatteryEnergyStorage(stack, ENERGY, 3), NuminaObjects.BATTERY_3.get());
+        event.registerItem(Capabilities.EnergyStorage.ITEM, (stack, ctx) -> new Battery.BatteryEnergyStorage(stack, ENERGY, 4), NuminaObjects.BATTERY_4.get());
 
-        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new Battery.BatteryPowerModule(stack, 1), NuminaObjects.BASIC_BATTERY.get());
-        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new Battery.BatteryPowerModule(stack, 2), NuminaObjects.ADVANCED_BATTERY.get());
-        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new Battery.BatteryPowerModule(stack, 3), NuminaObjects.ELITE_BATTERY.get());
-        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new Battery.BatteryPowerModule(stack, 4), NuminaObjects.ULTIMATE_BATTERY.get());
+        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new Battery.BatteryPowerModule(stack, 1), NuminaObjects.BATTERY_1.get());
+        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new Battery.BatteryPowerModule(stack, 2), NuminaObjects.BATTERY_2.get());
+        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new Battery.BatteryPowerModule(stack, 3), NuminaObjects.BATTERY_3.get());
+        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new Battery.BatteryPowerModule(stack, 4), NuminaObjects.BATTERY_4.get());
 
         // Blocks -----------------------------------------------------------------------------------------------------
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, CHARGING_BASE_BLOCK_ENTITY.get(), (o, direction) -> o.getItemHandler());
@@ -283,11 +264,15 @@ public class NuminaObjects {
                         // Components ------------------------------------------------------------------
                         output.accept(ARTIFICIAL_MUSCLE.get());
                         output.accept(CARBON_MYOFIBER.get());
+                        output.accept(CAPACITOR_1.get());
+                        output.accept(CAPACITOR_2.get());
+                        output.accept(CAPACITOR_3.get());
+                        output.accept(CAPACITOR_4.get());
                         output.accept(COMPUTER_CHIP.get());
-                        output.accept(CONTROL_CIRCUIT1.get());
-                        output.accept(CONTROL_CIRCUIT2.get());
-                        output.accept(CONTROL_CIRCUIT3.get());
-                        output.accept(CONTROL_CIRCUIT4.get());
+                        output.accept(CONTROL_CIRCUIT_1.get());
+                        output.accept(CONTROL_CIRCUIT_2.get());
+                        output.accept(CONTROL_CIRCUIT_3.get());
+                        output.accept(CONTROL_CIRCUIT_4.get());
                         output.accept(FIELD_EMITTER.get());
                         output.accept(GLIDER_WING.get());
                         output.accept(ION_THRUSTER.get());
@@ -295,25 +280,28 @@ public class NuminaObjects {
                         output.accept(MAGNET.get());
                         output.accept(MYOFIBER_GEL.get());
                         output.accept(PARACHUTE.get());
+                        output.accept(PLATING_IRON.get());
+                        output.accept(PLATING_DIAMOND.get());
                         output.accept(RUBBER_HOSE.get());
                         output.accept(SERVO.get());
                         output.accept(SOLAR_PANEL.get());
                         output.accept(SOLENOID.get());
-                        output.accept(WIRING.get());
+                        output.accept(WIRING_COPPER.get());
+                        output.accept(WIRING_GOLD.get());
 
                         // Modules ------------------------------------------------------------------------------------
                         // Energy Storage
-                        output.accept(BASIC_BATTERY.get());
-                        output.accept(getBattery(BASIC_BATTERY.get()));
+                        output.accept(BATTERY_1.get());
+                        output.accept(getBattery(BATTERY_1.get()));
 
-                        output.accept(ADVANCED_BATTERY.get());
-                        output.accept(getBattery(ADVANCED_BATTERY.get()));
+                        output.accept(BATTERY_2.get());
+                        output.accept(getBattery(BATTERY_2.get()));
 
-                        output.accept(ELITE_BATTERY.get());
-                        output.accept(getBattery(ELITE_BATTERY.get()));
+                        output.accept(BATTERY_3.get());
+                        output.accept(getBattery(BATTERY_3.get()));
 
-                        output.accept(ULTIMATE_BATTERY.get());
-                        output.accept(getBattery(ULTIMATE_BATTERY.get()));
+                        output.accept(BATTERY_4.get());
+                        output.accept(getBattery(BATTERY_4.get()));
 
                         // Armor Stand --------------------------------------------------------------------------------
                         output.accept(ARMOR_STAND_ITEM.get());
@@ -329,9 +317,18 @@ public class NuminaObjects {
         ItemStack out = new ItemStack(item);
         NuminaCapabilities.getCapability(out, Capabilities.EnergyStorage.ITEM).ifPresent(energy->{
             int max = energy.getMaxEnergyStored();
-            energy.receiveEnergy(max, false);
+            while (energy.getEnergyStored() < energy.getMaxEnergyStored()) {
+                energy.receiveEnergy(max, false);
+            }
         });
         return out;
     }
 
+    static DeferredHolder<Item, ComponentItem> registerComponent(String name) {
+        return NUMINA_ITEMS.register(name, ComponentItem::new);
+    }
+
+    static DeferredHolder<Item, Battery> registerBattery(String name, int tier) {
+        return NUMINA_ITEMS.register(name, () -> new Battery(tier));
+    }
 }

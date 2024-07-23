@@ -14,6 +14,7 @@ import lehjr.powersuits.common.item.module.AbstractPowerModule;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.common.NeoForgeMod;
 
 import javax.annotation.Nonnull;
@@ -28,7 +29,7 @@ public class SwimAssistModule extends AbstractPowerModule {
         }
 
         @Override
-        public void onPlayerTickActive(Player player, ItemStack itemStack) {
+        public void onPlayerTickActive(Player player, Level level, @Nonnull ItemStack itemStack) {
 //                if (player.isSwimming()) { // doesn't work when strafing without "swimming"
             PlayerMovementInputWrapper.PlayerMovementInput playerInput = PlayerMovementInputWrapper.get(player);
             if((player.isInWater() && !player.isPassenger()) && (playerInput.strafeLeftKey || playerInput.strafeRightKey || playerInput.forwardKey || playerInput.reverseKey || playerInput.jumpKey || player.isCrouching())) {
@@ -48,26 +49,26 @@ public class SwimAssistModule extends AbstractPowerModule {
                 double playerEnergy = ElectricItemUtils.getPlayerEnergy(player);
 
                 if (swimEnergyConsumption < playerEnergy) {
-                    if (player.level().isClientSide && NuminaClientConfig.useSounds) {
+                    if (level.isClientSide && NuminaClientConfig.useSounds) {
                         Musique.playerSound(player, MPSSoundDictionary.SOUND_EVENT_SWIM_ASSIST.get(), SoundSource.PLAYERS, 1.0f, 1.0f, true);
                     } else if (
                         // every 20 ticks
-                            (player.level().getGameTime() % 5) == 0) {
+                            (level.getGameTime() % 5) == 0) {
                         ElectricItemUtils.drainPlayerEnergy(player, (int) (swimEnergyConsumption) * 5, false);
                     }
                     MovementManager.thrust(player, swimAssistRate, true);
 //                            setMovementModifier(getModule(), swimAssistRate * 100000, ForgeMod.SWIM_SPEED.get(), ForgeMod.SWIM_SPEED.get().getDescriptionId());
                 } else {
-                    onPlayerTickInactive(player, itemStack);
+                    onPlayerTickInactive(player, level, itemStack);
                 }
             } else {
-                onPlayerTickInactive(player, itemStack);
+                onPlayerTickInactive(player, level, itemStack);
             }
         }
 
         @Override
-        public void onPlayerTickInactive(Player player, @Nonnull ItemStack itemStack) {
-            if (player.level().isClientSide && NuminaClientConfig.useSounds) {
+        public void onPlayerTickInactive(Player player, Level level, @Nonnull ItemStack itemStack) {
+            if (level.isClientSide && NuminaClientConfig.useSounds) {
                 Musique.stopPlayerSound(player, MPSSoundDictionary.SOUND_EVENT_SWIM_ASSIST.get());
             }
             SprintAssistModule.setMovementModifier(getModule(), 0, NeoForgeMod.SWIM_SPEED.value(), NeoForgeMod.SWIM_SPEED.value().getDescriptionId());

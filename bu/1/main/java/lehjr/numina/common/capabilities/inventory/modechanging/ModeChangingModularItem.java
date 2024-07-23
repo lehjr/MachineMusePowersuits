@@ -1,3 +1,4 @@
+
 package lehjr.numina.common.capability.inventory.modechanging;
 
 import lehjr.numina.common.capability.NuminaCapabilities;
@@ -201,22 +202,4 @@ public class ModeChangingModularItem extends ModularItem implements IModeChangin
         }
         return false;
    }
-
-    @Override
-    public CompoundTag serializeNBT() {
-        CompoundTag tag =  super.serializeNBT();
-        int mode = getActiveMode();
-        if (mode != -1) {
-            tag.putInt(NuminaConstants.MODE, mode);
-        }
-        return tag;
-    }
-
-    @Override
-    public void deserializeNBT(CompoundTag nbt) {
-        if (nbt.contains(NuminaConstants.MODE, Tag.TAG_INT)) {
-            activeMode = nbt.getInt(NuminaConstants.MODE);
-        }
-        super.deserializeNBT(nbt);
-    }
 }

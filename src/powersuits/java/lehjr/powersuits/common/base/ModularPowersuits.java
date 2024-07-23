@@ -1,9 +1,12 @@
 package lehjr.powersuits.common.base;
 
+import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.config.ConfigHelper;
 import lehjr.powersuits.client.config.MPSClientConfig;
 import lehjr.powersuits.client.sound.MPSSoundDictionary;
-import lehjr.powersuits.common.config.MPSCommonConfig;
+import lehjr.powersuits.common.config.*;
+import lehjr.powersuits.common.config.ArmorConfig;
+import lehjr.powersuits.common.config.PowerFistConfig;
 import lehjr.powersuits.common.constants.MPSConstants;
 import lehjr.powersuits.common.network.MPSPackets;
 import lehjr.powersuits.common.registration.*;
@@ -12,6 +15,7 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
+import net.neoforged.fml.event.config.ModConfigEvent;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
@@ -56,9 +60,23 @@ public class ModularPowersuits {
 
         // Register our mod's ModConfigSpec so that FML can create and load the config file for us
         modContainer.registerConfig(ModConfig.Type.CLIENT, MPSClientConfig.CLIENT_SPEC, ConfigHelper.setupConfigFile("powersuits-client-only.toml", MPSConstants.MOD_ID).getAbsolutePath());
-        modContainer.registerConfig(ModConfig.Type.COMMON, MPSCommonConfig.COMMON_SPEC, ConfigHelper.setupConfigFile("powersuits-common.toml", MPSConstants.MOD_ID).getAbsolutePath());
+//        modContainer.registerConfig(ModConfig.Type.COMMON, MPSCommonConfig.COMMON_SPEC, ConfigHelper.setupConfigFile("powersuits-common.toml", MPSConstants.MOD_ID).getAbsolutePath());
+//        modContainer.registerConfig(ModConfig.Type.COMMON, MPSCommonSettings.COMMON_SPEC, ConfigHelper.setupConfigFile("powersuits-common.toml", MPSConstants.MOD_ID).getAbsolutePath());
 
+        // loads first so probably overrides the others
+        modContainer.registerConfig(ModConfig.Type.COMMON, MPSCommonConfig.MPS_GENERAL_SPEC, ConfigHelper.setupConfigFile("common/general.toml", MPSConstants.MOD_ID).getAbsolutePath());
+
+        modContainer.registerConfig(ModConfig.Type.COMMON, ArmorConfig.MPS_ARMOR_CONFIG_SPEC, ConfigHelper.setupConfigFile("common/items/armor.toml", MPSConstants.MOD_ID).getAbsolutePath());
+        modContainer.registerConfig(ModConfig.Type.COMMON, PowerFistConfig.MPS_POWER_FIST_CONFIG_SPEC, ConfigHelper.setupConfigFile("common/items/powerfist.toml", MPSConstants.MOD_ID).getAbsolutePath());
+        // Modules
+        modContainer.registerConfig(ModConfig.Type.COMMON, ArmorModuleConfig.MPS_ARMOR_MODULE_CONFIG_SPEC, ConfigHelper.setupConfigFile("common/items/modules/armor-modules.toml", MPSConstants.MOD_ID).getAbsolutePath());
+        modContainer.registerConfig(ModConfig.Type.COMMON, CosmeticModuleConfig.MPS_COSMETIC_MODULE_CONFIG_SPEC, ConfigHelper.setupConfigFile("common/items/modules/cosmetic-modules.toml", MPSConstants.MOD_ID).getAbsolutePath());
+
+        modContainer.registerConfig(ModConfig.Type.COMMON, ToolModuleConfig.MPS_TOOL_MODULE_SPEC, ConfigHelper.setupConfigFile("common/items/modules/tool-modules.toml", MPSConstants.MOD_ID).getAbsolutePath());
+        modContainer.registerConfig(ModConfig.Type.COMMON, VisionModuleConfig.MPS_VISION_MODULE_SPEC, ConfigHelper.setupConfigFile("common/items/modules/vision-modules.toml", MPSConstants.MOD_ID).getAbsolutePath());
+        modContainer.registerConfig(ModConfig.Type.COMMON, WeaponModuleConfig.MPS_WEAPON_MODULE_SPEC, ConfigHelper.setupConfigFile("common/items/modules/weapon-modules.toml", MPSConstants.MOD_ID).getAbsolutePath());
     }
+
 
     private void commonSetup(final FMLCommonSetupEvent event) {
         // Some common setup code

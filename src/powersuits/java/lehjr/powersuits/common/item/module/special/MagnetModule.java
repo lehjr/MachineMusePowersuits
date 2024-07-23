@@ -22,7 +22,7 @@ import javax.annotation.Nonnull;
 import java.util.List;
 
 public class MagnetModule extends AbstractPowerModule {
-    class Ticker extends PlayerTickModule {
+    public static class Ticker extends PlayerTickModule {
         public Ticker(@Nonnull ItemStack module, ModuleCategory category, ModuleTarget target) {
             super(module, category, target);
                 addBaseProperty(MPSConstants.RADIUS, 1, "m");
@@ -32,33 +32,32 @@ public class MagnetModule extends AbstractPowerModule {
         }
 
         @Override
-        public void onPlayerTickActive(Player player, ItemStack stack) {
-            int energyUSage = 0;//(int) applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION);
+        public void onPlayerTickActive(Player player, Level level, @Nonnull ItemStack stack) {
+            int energyUSage = (int) applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION);
             if (ElectricItemUtils.getPlayerEnergy(player) > energyUSage) {
-                boolean isServerSide = !player.level().isClientSide;
+                boolean isServerSide = !level.isClientSide;
 
-                if ((player.level().getGameTime() % 20) == 0 && isServerSide) {
+                if ((level.getGameTime() % 20) == 0 && isServerSide) {
                     ElectricItemUtils.drainPlayerEnergy(player, energyUSage, false);
                 }
-                int range = 0;//(int) applyPropertyModifiers(MPSConstants.RADIUS);
-                Level world = player.level();
+                int range = (int) applyPropertyModifiers(MPSConstants.RADIUS);
                 AABB bounds = player.getBoundingBox().inflate(range);
 
                 if (isServerSide) {
                     bounds.expandTowards(0.2000000029802322D, 0.2000000029802322D, 0.2000000029802322D);
                     if (stack.getDamageValue() >> 1 >= 7) {
-                        List<Arrow> arrows = world.getEntitiesOfClass(Arrow.class, bounds);
+                        List<Arrow> arrows = level.getEntitiesOfClass(Arrow.class, bounds);
                         for (Arrow arrow : arrows) {
-                            if ((arrow.pickup == AbstractArrow.Pickup.ALLOWED) && (world.random.nextInt(6) == 0)) {
-                                ItemEntity replacement = new ItemEntity(world, arrow.getX(), arrow.getY(), arrow.getZ(), new ItemStack(Items.ARROW));
-                                world.addFreshEntity(replacement);
+                            if ((arrow.pickup == AbstractArrow.Pickup.ALLOWED) && (level.random.nextInt(6) == 0)) {
+                                ItemEntity replacement = new ItemEntity(level, arrow.getX(), arrow.getY(), arrow.getZ(), new ItemStack(Items.ARROW));
+                                level.addFreshEntity(replacement);
                             }
                             arrow.remove(Entity.RemovalReason.DISCARDED);
                         }
                     }
                 }
 
-                for (ItemEntity e : world.getEntitiesOfClass(ItemEntity.class, bounds)) {
+                for (ItemEntity e : level.getEntitiesOfClass(ItemEntity.class, bounds)) {
                     if (e.isAlive() && !e.getItem().isEmpty() && !e.hasPickUpDelay()) {
                         if (isServerSide) {
                             double x = player.getX() - e.getX();
@@ -77,9 +76,9 @@ public class MagnetModule extends AbstractPowerModule {
                             if (e.horizontalCollision) {
                                 e.setDeltaMovement(e.getDeltaMovement().add(0, 1, 0));
                             }
-                        } else if (world.random.nextInt(20) == 0) {
-                            float pitch = 0.85F - world.random.nextFloat() * 3.0F / 10.0F;
-                            world.playLocalSound(e.getX(), e.getY(), e.getZ(), SoundEvents.ENDERMAN_TELEPORT, SoundSource.PLAYERS, 0.6F, pitch, true);
+                        } else if (level.random.nextInt(20) == 0) {
+                            float pitch = 0.85F - level.random.nextFloat() * 3.0F / 10.0F;
+                            level.playLocalSound(e.getX(), e.getY(), e.getZ(), SoundEvents.ENDERMAN_TELEPORT, SoundSource.PLAYERS, 0.6F, pitch, true);
                         }
                     }
                 }

@@ -135,10 +135,8 @@ public class KeymappingKeyHandler {
         // Mode changinging GUI
         if (hotbarKeys[inventory.selected].isDown() && minecraft.isWindowActive()) {
             getMCItemCap(player).ifPresent(iModeChanging->{
-                if(player.level().isClientSide) {
-                    if (!(Minecraft.getInstance().screen instanceof GuiModeSelector)) {
-                        Minecraft.getInstance().tell(() -> Minecraft.getInstance().setScreen(new GuiModeSelector(player, Component.literal("modeChanging"))));
-                    }
+                if (!(Minecraft.getInstance().screen instanceof GuiModeSelector)) {
+                    Minecraft.getInstance().tell(() -> Minecraft.getInstance().setScreen(new GuiModeSelector(player, Component.literal("modeChanging"))));
                 }
             });
         }
@@ -191,25 +189,27 @@ public class KeymappingKeyHandler {
             }
 
             if(pm instanceof IToggleableModule) {
-                // Tool settings are a bit odd
-                if (pm.getTarget() == ModuleTarget.TOOLONLY) {
-                    NuminaLogger.logDebug("moduleName " + ItemUtils.getRegistryName(item));
-
-                    // Mining Enhancement
-                    if (pm.getCategory() == ModuleCategory.MINING_ENHANCEMENT) {
-                        NuminaLogger.logDebug("registering kb for mining enhancement: " + ItemUtils.getRegistryName(item));
-                        registerKeybinding(ItemUtils.getRegistryName(item), false);
-                    } else if(pm.getCategory() == ModuleCategory.MINING_ENCHANTMENT) {
-                        NuminaLogger.logDebug("registering kb for mining enchantment: " + ItemUtils.getRegistryName(item));
-                        registerKeybinding(ItemUtils.getRegistryName(item), false);
-                    } else if (!IRightClickModule.class.isAssignableFrom(pm.getClass())) {
-                        registerKeybinding(ItemUtils.getRegistryName(item), false);
-                        NuminaLogger.logDebug("registering kb for some other module: " + ItemUtils.getRegistryName(item));
-                    }
-                } else {
+//                // Tool settings are a bit odd
+//                if (pm.getTarget() == ModuleTarget.TOOLONLY) {
+//                    NuminaLogger.logDebug("moduleName " + ItemUtils.getRegistryName(item));
+//
+//                    // Mining Enhancement
+//                    if (pm.getCategory() == ModuleCategory.MINING_ENHANCEMENT) {
+//                        NuminaLogger.logDebug("registering kb for mining enhancement: " + ItemUtils.getRegistryName(item));
+//                        registerKeybinding(ItemUtils.getRegistryName(item), false);
+//                    } else if(pm.getCategory() == ModuleCategory.MINING_ENCHANTMENT) {
+//                        NuminaLogger.logDebug("registering kb for mining enchantment: " + ItemUtils.getRegistryName(item));
+//                        registerKeybinding(ItemUtils.getRegistryName(item), false);
+//                    } else if (!IRightClickModule.class.isAssignableFrom(pm.getClass())) {
+//                        registerKeybinding(ItemUtils.getRegistryName(item), false);
+//                        NuminaLogger.logDebug("registering kb for some other module: " + ItemUtils.getRegistryName(item));
+//                    } else {
+//                        NuminaLogger.logDebug("NOT registering kb for module: " + ItemUtils.getRegistryName(item));
+//                    }
+//                } else {
                     NuminaLogger.logDebug("registering kb for armor module: " + ItemUtils.getRegistryName(item));
                     registerKeybinding(ItemUtils.getRegistryName(item), false);
-                }
+//                }
             } else {
                 if (item == Items.CLOCK ||
                         item == Items.COMPASS || item == Items.RECOVERY_COMPASS || ItemUtils.getRegistryName(item).equals(new ResourceLocation("ae2:meteorite_compass"))) {
@@ -236,13 +236,13 @@ public class KeymappingKeyHandler {
             NuminaLogger.logDebug("actually registering kb for : " + registryName);
             keyMappings.put(keybindingName, new MPSKeyMapping(registryName, keybindingName, keyIn, category, showOnHud));
         } else {
-            NuminaLogger.logDebug("keymap handler did not register kb for " + registryName);
+            NuminaLogger.logDebug("keymap handler did not register kb for " + registryName + ", overwrite: " + overwrite + "keymapping already registered: " + keyMappings.containsKey(keybindingName));
         }
     }
 
     static Optional<IModeChangingItem> getMCItemCap(Player player) {
         try {
-             return NuminaCapabilities.getModeChangingModularItemCapability(player);
+            return NuminaCapabilities.getModeChangingModularItemCapability(player);
         } catch(Exception e) {
             NuminaLogger.logException("failed to get ModularItem capability: ", e);
         }

@@ -1,7 +1,6 @@
 package lehjr.numina.common.capability.energy;
 
 import com.mojang.datafixers.util.Pair;
-import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.capability.NuminaCapabilities;
 import lehjr.numina.common.capability.inventory.modularitem.IModularItem;
 import lehjr.numina.common.capability.module.powermodule.ModuleCategory;

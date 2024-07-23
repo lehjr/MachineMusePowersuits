@@ -24,8 +24,8 @@ import lehjr.powersuits.common.item.module.special.MagnetModule;
 import lehjr.powersuits.common.item.module.special.PiglinPacificationModule;
 import lehjr.powersuits.common.item.module.tool.blockbreaking.chopping.AxeModule;
 import lehjr.powersuits.common.item.module.tool.blockbreaking.digging.ShovelModule;
-import lehjr.powersuits.common.item.module.tool.blockbreaking.farming.HoeModule;
-import lehjr.powersuits.common.item.module.tool.blockbreaking.farming.ShearsModule;
+import lehjr.powersuits.common.item.module.tool.blockbreaking.farming.RototillerModule;
+import lehjr.powersuits.common.item.module.tool.misc.ShearsModule;
 import lehjr.powersuits.common.item.module.tool.blockbreaking.mining.PickaxeModule;
 import lehjr.powersuits.common.item.module.tool.misc.FlintAndSteelModule;
 import lehjr.powersuits.common.item.module.tool.misc.LeafBlowerModule;
@@ -213,7 +213,7 @@ public class MPSItems {
             ShovelModule::new);
 
     // Farming
-    public static final DeferredHolder<Item, HoeModule> ROTOTILLER_MODULE = MPS_ITEMS.register(MPSConstants.HOE_MODULE.getPath(), HoeModule::new);
+    public static final DeferredHolder<Item, RototillerModule> ROTOTILLER_MODULE = MPS_ITEMS.register(MPSConstants.ROTOTILLER_MODULE.getPath(), RototillerModule::new);
     // TODO?
 //    public static final DeferredHolder<Item, HoeModule> ROTOTILLER_MODULE2 = MPS_ITEMS.register(MPSConstants.HOE_MODULE.getPath(), HoeModule::new);
 //    public static final DeferredHolder<Item, HoeModule> ROTOTILLER_MODULE3 = MPS_ITEMS.register(MPSConstants.HOE_MODULE.getPath(), HoeModule::new);
@@ -222,7 +222,7 @@ public class MPSItems {
     public static final DeferredHolder<Item, ShearsModule> SHEARS_MODULE = MPS_ITEMS.register(MPSConstants.SHEARS_MODULE.getPath(), ShearsModule::new);
 
     // Misc
-    public static final DeferredHolder<Item, FlintAndSteelModule> FLINT_AND_STEAL_MODULE = MPS_ITEMS.register(MPSConstants.FLINT_AND_STEEL_MODULE.getPath(),
+    public static final DeferredHolder<Item, FlintAndSteelModule> FLINT_AND_STEEL_MODULE = MPS_ITEMS.register(MPSConstants.FLINT_AND_STEEL_MODULE.getPath(),
             FlintAndSteelModule::new);
     public static final DeferredHolder<Item, LeafBlowerModule> LEAF_BLOWER_MODULE = MPS_ITEMS.register(MPSConstants.LEAF_BLOWER_MODULE.getPath(),
             LeafBlowerModule::new);
@@ -378,7 +378,7 @@ public class MPSItems {
                         output.accept(NETHERITE_PICKAXE_MODULE.get());
 
                         // Misc -----------------------------------------------
-                        output.accept(FLINT_AND_STEAL_MODULE.get());
+                        output.accept(FLINT_AND_STEEL_MODULE.get());
                         output.accept(LEAF_BLOWER_MODULE.get());
                         output.accept(LUX_CAPACITOR_MODULE.get());
 

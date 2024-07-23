@@ -33,7 +33,7 @@ import lehjr.numina.common.capability.module.tickable.PlayerTickModule;
 import lehjr.numina.common.utils.ElectricItemUtils;
 import lehjr.numina.common.utils.HeatUtils;
 import lehjr.numina.common.utils.TagUtils;
-import lehjr.powersuits.common.config.MPSCommonConfig;
+import lehjr.powersuits.common.config.WeaponModuleConfig;
 import lehjr.powersuits.common.constants.MPSConstants;
 import lehjr.powersuits.common.item.module.AbstractPowerModule;
 import net.minecraft.core.particles.ParticleTypes;
@@ -63,16 +63,16 @@ public class RailgunModule extends AbstractPowerModule {
 
         public Ticker(ItemStack module) {
             super(module, ModuleCategory.WEAPON, ModuleTarget.TOOLONLY);
-            addBaseProperty(MPSConstants.TOTAL_IMPULSE, MPSCommonConfig.railgunTotalImpulseBase, "Ns");
-            addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, MPSCommonConfig.railgunEnergyConsumptionBase, "FE");
-            addBaseProperty(MPSConstants.HEAT_EMISSION, MPSCommonConfig.railgunHeatEmissionBase, "");
-            addTradeoffProperty(MPSConstants.VOLTAGE, MPSConstants.TOTAL_IMPULSE, MPSCommonConfig.railgunTotalImpulseVoltageMultiplier);
-            addTradeoffProperty(MPSConstants.VOLTAGE, MPSConstants.ENERGY_CONSUMPTION, MPSCommonConfig.railgunEnergyConsumptionVoltageMultiplier);
-            addTradeoffProperty(MPSConstants.VOLTAGE, MPSConstants.HEAT_EMISSION, MPSCommonConfig.railgunHeatEmissionVoltageMultiplier);
+            addBaseProperty(MPSConstants.TOTAL_IMPULSE, WeaponModuleConfig.railgunTotalImpulseBase, "Ns");
+            addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, WeaponModuleConfig.railgunEnergyConsumptionBase, "FE");
+            addBaseProperty(MPSConstants.HEAT_EMISSION, WeaponModuleConfig.railgunHeatEmissionBase, "");
+            addTradeoffProperty(MPSConstants.VOLTAGE, MPSConstants.TOTAL_IMPULSE, WeaponModuleConfig.railgunTotalImpulseVoltageMultiplier);
+            addTradeoffProperty(MPSConstants.VOLTAGE, MPSConstants.ENERGY_CONSUMPTION, WeaponModuleConfig.railgunEnergyConsumptionVoltageMultiplier);
+            addTradeoffProperty(MPSConstants.VOLTAGE, MPSConstants.HEAT_EMISSION, WeaponModuleConfig.railgunHeatEmissionVoltageMultiplier);
         }
 
         @Override
-        public void onPlayerTickActive(Player player, @Nonnull ItemStack itemStackIn) {
+        public void onPlayerTickActive(Player player, Level level, @Nonnull ItemStack itemStackIn) {
             double timer = TagUtils.getModularItemDouble(itemStackIn, MPSConstants.COOLDOWN_TIMER);
             if (timer > 0) {
                 TagUtils.setModularItemDouble(itemStackIn, MPSConstants.COOLDOWN_TIMER, timer - 1 > 0 ? timer - 1 : 0);
@@ -131,7 +131,7 @@ public class RailgunModule extends AbstractPowerModule {
 
         @Override
         public boolean isAllowed() {
-            return MPSCommonConfig.railgunIsAllowed;
+            return WeaponModuleConfig.railgunIsAllowed;
         }
 
         @Override

@@ -3,19 +3,15 @@ package lehjr.numina.common.network.packets.serverbound;
 import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.capability.NuminaCapabilities;
 import lehjr.numina.common.constants.NuminaConstants;
-import lehjr.numina.common.network.NuminaPackets;
-import lehjr.numina.common.network.packets.clientbound.TweakRequestDoublePacketClientBound;
 import lehjr.numina.common.utils.ItemUtils;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
-import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
 
@@ -48,9 +44,9 @@ public record TweakRequestDoublePacketServerBound(EquipmentSlot slotType, Resour
 
     // Don't use this, Let data handlers actually handle sync
 
-    public static void sendToClient(ServerPlayer entity, EquipmentSlot type, ResourceLocation moduleRegName, String tweakName, double tweakValue) {
-        NuminaPackets.sendToPlayer(new TweakRequestDoublePacketClientBound(type, moduleRegName, tweakName, tweakValue), entity);
-    }
+//    public static void sendToClient(ServerPlayer entity, EquipmentSlot type, ResourceLocation moduleRegName, String tweakName, double tweakValue) {
+//        NuminaPackets.sendToPlayer(new TweakRequestDoublePacketClientBound(type, moduleRegName, tweakName, tweakValue), entity);
+//    }
 
     public static void handle(TweakRequestDoublePacketServerBound data, IPayloadContext ctx) {
         ctx.enqueueWork(() -> {
@@ -77,7 +73,7 @@ public record TweakRequestDoublePacketServerBound(EquipmentSlot slotType, Resour
                             NuminaCapabilities.getPowerModuleCapability(module).ifPresent(pm->System.out.println("checking tweak value: " + pm.getModuleTag().get(data.tweakName)));
                         });
 
-                sendToClient((ServerPlayer) player, data.slotType, data.moduleRegName, data.tweakName, data.tweakValue);
+//                sendToClient((ServerPlayer) player, data.slotType, data.moduleRegName, data.tweakName, data.tweakValue);
             }
         });
     }

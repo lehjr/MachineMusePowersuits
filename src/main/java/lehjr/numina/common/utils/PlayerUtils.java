@@ -3,6 +3,7 @@ package lehjr.numina.common.utils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
@@ -17,8 +18,7 @@ public class PlayerUtils {
     }
 
     public static void teleportEntity(Player Player, HitResult rayTraceResult) {
-        if (rayTraceResult != null && Player instanceof ServerPlayer) {
-            ServerPlayer player = (ServerPlayer) Player;
+        if (Player instanceof ServerPlayer player) {
             if (player.connection.connection.isConnected()) {
                 switch (rayTraceResult.getType()) {
                     case ENTITY:
@@ -60,38 +60,38 @@ public class PlayerUtils {
     }
 
     public static float getPlayerCoolingBasedOnMaterial(@Nonnull Player player) {
+        Level level = player.level();
         if (player.isInLava()) {
             return 0;
         }
 
-        float cool = ((2.0F - getBiome(player).getTemperature(new BlockPos((int) player.getX(), (int) player.getY(), (int) player.getZ())) / 2)); // Algorithm that returns a getValue from 0.0 -> 1.0. Biome temperature is from 0.0 -> 2.0
+        float cool = ((2.0F - getBiome(player, level).getTemperature(new BlockPos((int) player.getX(), (int) player.getY(), (int) player.getZ())) / 2)); // Algorithm that returns a getValue from 0.0 -> 1.0. Biome temperature is from 0.0 -> 2.0
 
         if (player.isInWater())
-            cool += 0.5;
+            cool += 0.5F;
 
         // If high in the air, increase cooling
         if ((int) player.getY() > 128)
-            cool += 0.5;
+            cool += 0.5F;
 
         // If nighttime and in the desert, increase cooling
-        if (!player.level().isDay() && getBiome(player).coldEnoughToSnow(player.blockPosition()) /*.getBiomeCategory().equals(Biomes.DESERT) FIXME*/) {
-            cool += 0.8;
+        if (!level.isDay() && getBiome(player, level).coldEnoughToSnow(player.blockPosition()) /*.getBiomeCategory().equals(Biomes.DESERT) FIXME*/) {
+            cool += 0.8F;
         }
 
         // check for rain and if player is in the rain
         // check if rain can happen in the biome the player is in
-        if (getBiome(player).hasPrecipitation()
+        if (getBiome(player, level).hasPrecipitation()
                 // check if raining in the world
-                && player.level().isRaining()
+                && level.isRaining()
                 // check if the player can see the sky
-                && player.level().canSeeSky(player.blockPosition().offset(0, 1, 0))) {
+                && level.canSeeSky(player.blockPosition().offset(0, 1, 0))) {
             cool += 0.2;
         }
-
         return cool;
     }
 
-    public static Biome getBiome(Player player) {
-        return player.level().getBiome(player.blockPosition()).value();
+    public static Biome getBiome(Player player, Level level) {
+        return level.getBiome(player.blockPosition()).value();
     }
 }

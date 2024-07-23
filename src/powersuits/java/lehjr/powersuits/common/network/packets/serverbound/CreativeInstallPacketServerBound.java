@@ -38,9 +38,9 @@ public record CreativeInstallPacketServerBound(EquipmentSlot slotType, ResourceL
         this(packetBuffer.readEnum(EquipmentSlot.class), packetBuffer.readResourceLocation());
     }
 
-    public static void sendToClient(ServerPlayer entity, EquipmentSlot slotType, ResourceLocation regName) {
-        MPSPackets.sendToPlayer(new CreativeInstallPacketClientBound(slotType, regName), entity);
-    }
+//    public static void sendToClient(ServerPlayer entity, EquipmentSlot slotType, ResourceLocation regName) {
+//        MPSPackets.sendToPlayer(new CreativeInstallPacketClientBound(slotType, regName), entity);
+//    }
 
     public static void handle(CreativeInstallPacketServerBound data, IPayloadContext ctx) {
         ctx.enqueueWork(() -> {
@@ -50,7 +50,12 @@ public record CreativeInstallPacketServerBound(EquipmentSlot slotType, ResourceL
             Item item = BuiltInRegistries.ITEM.get(regName);
             ItemStack module = new ItemStack(item, 1);
 
-            NuminaCapabilities.getCapability(module, Capabilities.EnergyStorage.ITEM).ifPresent(iEnergyStorage -> iEnergyStorage.receiveEnergy(iEnergyStorage.getMaxEnergyStored(), false));
+            NuminaCapabilities.getCapability(module, Capabilities.EnergyStorage.ITEM).ifPresent(iEnergyStorage -> {
+                while (iEnergyStorage.getEnergyStored() < iEnergyStorage.getMaxEnergyStored()) {
+                    iEnergyStorage.receiveEnergy(iEnergyStorage.getMaxEnergyStored(), false);
+                }
+                iEnergyStorage.receiveEnergy(iEnergyStorage.getMaxEnergyStored(), false);
+            });
 
             NuminaCapabilities.getModularItemOrModeChangingCapability(ItemUtils.getItemFromEntitySlot(player, slotType))
                     .ifPresent(iModularItem -> {
@@ -63,9 +68,9 @@ public record CreativeInstallPacketServerBound(EquipmentSlot slotType, ResourceL
                         }
                     });
 
-            if (player instanceof ServerPlayer) {
-                sendToClient((ServerPlayer) player, slotType, regName);
-            }
+//            if (player instanceof ServerPlayer) {
+//                sendToClient((ServerPlayer) player, slotType, regName);
+//            }
         });
     }
 }

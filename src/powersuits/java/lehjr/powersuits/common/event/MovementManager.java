@@ -19,6 +19,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.event.entity.living.LivingEvent;
@@ -195,8 +196,8 @@ public enum MovementManager {
 
     @SubscribeEvent
     public void handleLivingJumpEvent(LivingEvent.LivingJumpEvent event) {
-        if (event.getEntity() instanceof Player) {
-            Player player = (Player) event.getEntity();
+        if (event.getEntity() instanceof Player player) {
+            Level level = player.level();
             IModularItem iModularItem = ItemUtils.getItemFromEntitySlot(player, EquipmentSlot.LEGS).getCapability(NuminaCapabilities.Inventory.MODULAR_ITEM);
             if (iModularItem != null) {
                 IPowerModule jumper = iModularItem.getOnlineModuleOrEmpty(MPSConstants.JUMP_ASSIST_MODULE).getCapability(NuminaCapabilities.Module.POWER_MODULE);
@@ -204,7 +205,7 @@ public enum MovementManager {
                     double jumpAssist = jumper.applyPropertyModifiers(MPSConstants.MULTIPLIER) * 2;
                     double drain = jumper.applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION);
                     double avail = ElectricItemUtils.getPlayerEnergy(player);
-                    if ((player.level().isClientSide()) && NuminaClientConfig.useSounds) {
+                    if ((level.isClientSide()) && NuminaClientConfig.useSounds) {
                         Musique.playerSound(player, MPSSoundDictionary.SOUND_EVENT_JUMP_ASSIST.get(), SoundSource.PLAYERS, (float) (jumpAssist / 8.0), (float) 1, false);
                     }
 
@@ -225,15 +226,15 @@ public enum MovementManager {
 
     @SubscribeEvent
     public void handleFallEvent(LivingFallEvent event) {
-        if (event.getEntity() instanceof Player && event.getDistance() > 3.0) {
-            Player player = (Player) event.getEntity();
+        if (event.getEntity() instanceof Player player && event.getDistance() > 3.0) {
+            Level level = player.level();
             IModularItem iModularItem = ItemUtils.getItemFromEntitySlot(player, EquipmentSlot.FEET).getCapability(NuminaCapabilities.Inventory.MODULAR_ITEM);
             if (iModularItem != null) {
                 ItemStack shockAbsorbers = iModularItem.getOnlineModuleOrEmpty(MPSConstants.SHOCK_ABSORBER_MODULE);
                 IPowerModule sa = shockAbsorbers.getCapability(NuminaCapabilities.Module.POWER_MODULE);
                 if (sa != null) {
                     double distanceAbsorb = event.getDistance() * sa.applyPropertyModifiers(MPSConstants.MULTIPLIER);
-                    if (player.level().isClientSide && NuminaClientConfig.useSounds) {
+                    if (level.isClientSide && NuminaClientConfig.useSounds) {
                         Musique.playerSound(player, SoundDictionary.SOUND_EVENT_GUI_INSTALL.get(), SoundSource.PLAYERS, (float) (distanceAbsorb), (float) 1, false);
                     }
                     double drain = distanceAbsorb * sa.applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION);

@@ -1,18 +1,12 @@
 package lehjr.numina.common.capability.inventory.modechanging;
 
-import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.capability.NuminaCapabilities;
 import lehjr.numina.common.capability.inventory.modularitem.IModularItem;
-import lehjr.numina.common.capability.module.blockbreaking.IBlockBreakingModule;
-import lehjr.numina.common.capability.module.enhancement.IMiningEnhancementModule;
 import lehjr.numina.common.capability.module.externalitems.IOtherModItemsAsModules;
 import lehjr.numina.common.capability.module.powermodule.IPowerModule;
-import lehjr.numina.common.capability.module.rightclick.IRightClickModule;
 import lehjr.numina.common.capability.render.chameleon.IChameleon;
 import lehjr.numina.common.math.Color;
-import lehjr.numina.common.utils.ElectricItemUtils;
 import lehjr.numina.common.utils.IconUtils;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.resources.model.BakedModel;
@@ -45,7 +39,7 @@ public interface IModeChangingItem extends IModularItem {
     BakedModel getInventoryModel();
 
     @OnlyIn(Dist.CLIENT)
-    default void drawModeChangeIcon(LocalPlayer player, int hotbarIndex, Minecraft mc, GuiGraphics gfx, float partialTick, int screenWidth, int screenHeight) {
+    default void drawModeChangeIcon(LocalPlayer player, int hotbarIndex, GuiGraphics gfx, int screenWidth, int screenHeight) {
         ItemStack module = getActiveModule();
         if (!module.isEmpty()) {
             double currX;
@@ -83,7 +77,7 @@ public interface IModeChangingItem extends IModularItem {
     }
 
     @OnlyIn(Dist.CLIENT)
-    default void drawModeChangingModularItemIcon(LocalPlayer player, int hotbarIndex, Minecraft mc, GuiGraphics gfx, float partialTick, int screenWidth, int screenHeight) {
+    default void drawModeChangingModularItemIcon(LocalPlayer player, int hotbarIndex, GuiGraphics gfx, int screenWidth, int screenHeight) {
         ItemStack modularItem = getModularItemStack();
         if (!modularItem.isEmpty()) {
             double currX;
@@ -103,26 +97,15 @@ public interface IModeChangingItem extends IModularItem {
         }
     }
 
-//    String getUniqueID();
-
     List<Integer> getValidModes();
 
     boolean isValidMode(ResourceLocation mode);
 
-    default boolean isValidMode(@Nonnull ItemStack module) {
-        if (module.isEmpty()) {
-            return false;
-        }
-
-        IPowerModule pm = getModuleCapability(module);
-        return (pm instanceof IRightClickModule || pm instanceof IOtherModItemsAsModules) && pm.isAllowed();// Allow selecting offline module? && pm.isModuleOnline();
-    }
+    boolean isValidMode(@Nonnull ItemStack module);
 
     int getActiveMode();
 
     ItemStack getActiveModule();
-
-//    void setActiveMode(ResourceLocation moduleName);
 
     void setActiveMode(int newMode);
 
@@ -136,14 +119,7 @@ public interface IModeChangingItem extends IModularItem {
 
     boolean isModuleActiveAndOnline(ResourceLocation moduleName);
 
-    default InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand, InteractionResultHolder<ItemStack> fallback) {
-        IPowerModule pm = getModuleCapability(getActiveModule());
-        ItemStack fist = player.getItemInHand(hand);
-        if(pm instanceof IRightClickModule clickie) {
-            return clickie.use(fist, level, player, hand);
-        }
-        return fallback;
-    }
+    InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand, InteractionResultHolder<ItemStack> fallback);
 
     /**
      * @return useDuration from active module or fallback
@@ -152,21 +128,9 @@ public interface IModeChangingItem extends IModularItem {
         return getActiveModule().getUseDuration();
     }
 
-    default InteractionResult onItemUseFirst(ItemStack itemStack, UseOnContext context, InteractionResult fallback) {
-        IPowerModule pm = getModuleCapability(getActiveModule());
-        if(pm instanceof IRightClickModule clickie) {
-            return clickie.onItemUseFirst(itemStack, context);
-        }
-        return fallback;
-    }
+    InteractionResult onItemUseFirst(ItemStack itemStack, UseOnContext context, InteractionResult fallback);
 
-    default InteractionResult useOn(UseOnContext context, InteractionResult fallback) {
-        IPowerModule pm = getModuleCapability(getActiveModule());
-        if(pm instanceof IRightClickModule clickie) {
-            return clickie.useOn(context);
-        }
-        return fallback;
-    }
+    InteractionResult useOn(UseOnContext context, InteractionResult fallback);
 
 //    default ItemStack finishUsingItem(ItemStack stack, Level worldIn, LivingEntity entity) {
 //        return getActiveModule().getCapability(NuminaCapabilities.POWER_MODULE)
@@ -176,13 +140,7 @@ public interface IModeChangingItem extends IModularItem {
 //                .orElse(stack);
 //    }
 
-    default void releaseUsing(ItemStack stack, Level level, LivingEntity entityLiving, int timeLeft) {
-        NuminaLogger.logDebug("release using");
-        IPowerModule pm = getModuleCapability(getActiveModule());
-        if (pm instanceof IRightClickModule clickie) {
-            clickie.releaseUsing(stack, level, entityLiving, timeLeft);
-        }
-    }
+    void releaseUsing(ItemStack stack, Level level, LivingEntity entityLiving, int timeLeft);
 
     default boolean canContinueUsing(@Nonnull ItemStack itemStack) {
 //        return ItemStack.isSameItemSameTags(itemStack, getModularItemStack()) || ItemStack.isSameItemSameTags(itemStack, getActiveExternalModule());
@@ -190,70 +148,33 @@ public interface IModeChangingItem extends IModularItem {
         return true;
     }
 
-    default boolean onUseTick(Level level, LivingEntity entity, int ticksRemaining) {
-        return NuminaCapabilities.getCapability(getActiveModule(), NuminaCapabilities.Module.POWER_MODULE)
-                .filter(IOtherModItemsAsModules.class::isInstance)
-                .map(IOtherModItemsAsModules.class::cast).map(iOtherModItemsAsModules -> iOtherModItemsAsModules.onUseTick(level, entity, ticksRemaining)).orElse(true);
-    }
+//    /**
+//     * Not entirely sure this does what was intended. It was supposed to be for using other mod's items as modules, but probably was a failed experiment
+//     * @param level
+//     * @param entity
+//     * @param ticksRemaining
+//     * @return
+//     */
+//    @Deprecated(forRemoval = true)
+//    boolean onUseTick(Level level, LivingEntity entity, int ticksRemaining);
 
-    default boolean onBlockStartBreak(ItemStack itemstack, BlockHitResult hitResult, Player player, Level level) {
-        IPowerModule pm = getModuleCapability(getActiveModule());
-        if(pm instanceof IMiningEnhancementModule me) {
-            return me.onBlockStartBreak(itemstack, hitResult,player, level);
-        }
-        return false;
-    }
+    boolean onBlockStartBreak(ItemStack itemstack, BlockHitResult hitResult, Player player, Level level);
 
-    default boolean mineBlock(ItemStack powerFist, Level worldIn, BlockState state, BlockPos pos, LivingEntity entityLiving) {
-        double playerEnergy = ElectricItemUtils.getPlayerEnergy(entityLiving);
-        for(int i = 0;i < getSlots(); i++) {
-            IPowerModule pm = getModuleCapability(getStackInSlot(i));
-            if (pm instanceof IBlockBreakingModule bb && bb.mineBlock(powerFist, worldIn, state, pos, entityLiving, playerEnergy)) {
-                return true;
-            }
-        }
-        return false;
-    }
+    boolean mineBlock(ItemStack powerFist, Level worldIn, BlockState state, BlockPos pos, LivingEntity entityLiving);
 
-    default float getDestroySpeed(ItemStack pStack, BlockState state) {
-        float highest = 1.0F;
-        for(int i = 0;i < getSlots(); i++) {
-            IPowerModule pm = getModuleCapability(getStackInSlot(i));
-            if (pm instanceof IBlockBreakingModule bb) {
-                float speed = bb.getEmulatedTool().getDestroySpeed(state);
-                if(speed > highest) {
-                    highest = speed;
-                }
-            }
-        }
-        return highest;
-    }
 
-    default boolean canPerformAction(ToolAction toolAction) {
-        for (int i = 0; i < getSlots(); i++) {
-            ItemStack module = getStackInSlot(i);
-            IPowerModule pm = module.getCapability(NuminaCapabilities.Module.POWER_MODULE);
-            if (pm != null && pm.isAllowed() && pm.isModuleOnline() && pm instanceof IBlockBreakingModule blockBreakingModule) {
-                if (blockBreakingModule.canPerformAction(toolAction)){
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
 
-    default boolean isCorrectToolForDrops(ItemStack itemStack, BlockState state) {
-        for (int i = 0; i < getSlots(); i++) {
-            ItemStack module = getStackInSlot(i);
-            IPowerModule pm = module.getCapability(NuminaCapabilities.Module.POWER_MODULE);
-            if (pm != null && pm.isAllowed() && pm.isModuleOnline() && pm instanceof IBlockBreakingModule blockBreakingModule) {
-                if (blockBreakingModule.getEmulatedTool().isCorrectToolForDrops(state)){
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
+    /**
+     * Get the base block breaking speed for and from the emulated tool
+     * @param pStack
+     * @param state
+     * @return
+     */
+    float getDestroySpeed(ItemStack pStack, BlockState state);
+
+    boolean canPerformAction(ToolAction toolAction);
+
+    boolean isCorrectToolForDrops(ItemStack itemStack, BlockState state);
 
     default ItemStack getActiveExternalModule() {
         return NuminaCapabilities.getCapability(getActiveModule(), NuminaCapabilities.Module.POWER_MODULE)
@@ -262,13 +183,6 @@ public interface IModeChangingItem extends IModularItem {
                 .map(IPowerModule::getModule).orElse(getModularItemStack());
     }
 
-    default boolean returnForeignModuleToModularItem(@Nonnull ItemStack module) {
-        int slot = findInstalledModule(module);
-        IOtherModItemsAsModules foreignModuleCap = module.getCapability(NuminaCapabilities.Module.EXTERNAL_MOD_ITEMS_AS_MODULES);
-        if (slot > -1 && foreignModuleCap != null) {
-            updateModuleInSlot(slot, module);
-            return true;
-        }
-        return false;
-    }
+
+    boolean returnForeignModuleToModularItem(@Nonnull ItemStack module);
 }

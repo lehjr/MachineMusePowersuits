@@ -32,7 +32,7 @@ import lehjr.numina.common.capability.module.rightclick.RightClickModule;
 import lehjr.numina.common.math.Color;
 import lehjr.numina.common.utils.ElectricItemUtils;
 import lehjr.numina.common.utils.HeatUtils;
-import lehjr.powersuits.common.config.MPSCommonConfig;
+import lehjr.powersuits.common.config.ToolModuleConfig;
 import lehjr.powersuits.common.constants.MPSConstants;
 import lehjr.powersuits.common.entity.LuxCapacitorEntity;
 import lehjr.powersuits.common.item.module.AbstractPowerModule;
@@ -48,7 +48,7 @@ public class LuxCapacitorModule extends AbstractPowerModule {
     public static class RightClickie extends RightClickModule {
         public RightClickie(@Nonnull ItemStack module) {
             super(module, ModuleCategory.TOOL, ModuleTarget.TOOLONLY);
-            addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, MPSCommonConfig.luxCapacitorEnergyConsumptionBase, "FE");
+            addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, ToolModuleConfig.luxCapacitorEnergyConsumptionBase, "FE");
             addTradeoffProperty(MPSConstants.RED, MPSConstants.RED_HUE, 1.0, "%");
             addTradeoffProperty(MPSConstants.GREEN, MPSConstants.GREEN_HUE, 1.0, "%");
             addTradeoffProperty(MPSConstants.BLUE, MPSConstants.BLUE_HUE, 1.0, "%");
@@ -82,7 +82,7 @@ public class LuxCapacitorModule extends AbstractPowerModule {
 
         @Override
         public boolean isAllowed() {
-            return MPSCommonConfig.luxCapacitorModuleIsAllowed;
+            return ToolModuleConfig.luxCapacitorModuleIsAllowed;
         }
     }
 }

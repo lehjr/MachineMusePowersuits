@@ -128,7 +128,7 @@ public class SelectiveMiner extends AbstractPowerModule {
                         BlockPos blockPos = postionsRecord.pos().immutable();
                         BlockEntity blockEntity = level.getBlockEntity(blockPos);
                         // setup drops checking for enchantments
-                        Block.dropResources(state, player.level(), blockPos, blockEntity, player, itemStack);
+                        Block.dropResources(state, level, blockPos, blockEntity, player, itemStack);
                         // destroy block but don't drop default drops because they're already set above
                         level.destroyBlock(blockPos, false, player, 512);
 

@@ -2,8 +2,11 @@ package lehjr.numina.client.control;
 
 import lehjr.numina.common.capability.NuminaCapabilities;
 import lehjr.numina.common.capability.player.keystates.IPlayerKeyStates;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.player.RemotePlayer;
 import net.minecraft.world.entity.player.Player;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.fml.loading.FMLEnvironment;
 
 import java.util.Optional;
 
@@ -32,12 +35,16 @@ public class PlayerMovementInputWrapper {
         }
     }
 
+    // TODO: actually check ALL of this stuff... is it even needed? Maybe better way through Mixin?
     public static PlayerMovementInput get(Player player) {
-        if (player.level().isClientSide) {
+        if (FMLEnvironment.dist == Dist.CLIENT) {
+            if (player instanceof LocalPlayer) {
+                return fromClient(player);
+            }
+
             if (player instanceof RemotePlayer) { // multiplayer not dedicated server
                 return fromServer(player);
             }
-            return fromClient(player);
         }
         return fromServer(player);
     }

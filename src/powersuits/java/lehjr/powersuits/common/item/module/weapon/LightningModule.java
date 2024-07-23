@@ -6,7 +6,7 @@ import lehjr.numina.common.capability.module.powermodule.ModuleTarget;
 import lehjr.numina.common.capability.module.rightclick.RightClickModule;
 import lehjr.numina.common.utils.ElectricItemUtils;
 import lehjr.numina.common.utils.HeatUtils;
-import lehjr.powersuits.common.config.MPSCommonConfig;
+import lehjr.powersuits.common.config.WeaponModuleConfig;
 import lehjr.powersuits.common.constants.MPSConstants;
 import lehjr.powersuits.common.item.module.AbstractPowerModule;
 import net.minecraft.core.BlockPos;
@@ -32,8 +32,8 @@ public class LightningModule extends AbstractPowerModule {
 
         public RightClickie(ItemStack module) {
             super(module, ModuleCategory.WEAPON, ModuleTarget.TOOLONLY);
-            addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, MPSCommonConfig.lightningSummonerEnergyConsumption, "FE");
-            addBaseProperty(MPSConstants.HEAT_EMISSION, MPSCommonConfig.lightningSummonerHeatEmission, "");
+            addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, WeaponModuleConfig.lightningSummonerEnergyConsumption, "FE");
+            addBaseProperty(MPSConstants.HEAT_EMISSION, WeaponModuleConfig.lightningSummonerHeatEmission, "");
         }
 
         @Override
@@ -69,7 +69,7 @@ public class LightningModule extends AbstractPowerModule {
 
         @Override
         public boolean isAllowed() {
-            return MPSCommonConfig.lightningSummonerIsAllowed;
+            return WeaponModuleConfig.lightningSummonerIsAllowed;
         }
 
         @Override

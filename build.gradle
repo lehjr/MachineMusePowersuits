@@ -382,7 +382,7 @@ dependencies {
 //    runtimeOnly("ignored:cloth-config-14.0.126-neoforge")
 //    runtimeOnly("ignored:RoughlyEnoughItems-15.0.728-neoforge")
 
-    runtimeOnly("ignored:FallingTree-1.20.6-1.20.6.6")
+    runtimeOnly("ignored:FallingTree-1.20.6-1.20.6.67")
     runtimeOnly("ignored:journeymap-1.20.6-5.9.30-neoforge")
 }
 

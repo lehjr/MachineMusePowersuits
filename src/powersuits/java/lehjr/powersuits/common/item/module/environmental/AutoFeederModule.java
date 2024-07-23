@@ -34,9 +34,7 @@ public class AutoFeederModule extends AbstractPowerModule {
         }
 
         @Override
-        public void onPlayerTickActive(Player player, @Nonnull ItemStack modularItemStack) {
-            Level level = player.level();
-
+        public void onPlayerTickActive(Player player, Level level, @Nonnull ItemStack modularItemStack) {
             float foodLevel = getFoodLevel(getModule());
             float saturationLevel = getSaturationLevel(getModule());
             Inventory inv = player.getInventory();
@@ -147,12 +145,7 @@ public class AutoFeederModule extends AbstractPowerModule {
             }
         }
 
-        // All of these should be called server side only -------------------------------------------------------------
-        public float getFoodLevel(@Nonnull ItemStack stack) {
-            return TagUtils.getModuleFloat(stack, MPSConstants.TAG_FOOD);
-        }
-
-        // Call serverside only
+        // these setters should be called server side only -------------------------------------------------------------
         public void setFoodLevel(@Nonnull ItemStack stack, float food, Level level) {
             if(!level.isClientSide()) {
                 IModeChangingItem mci = getMci(stack);
@@ -160,10 +153,6 @@ public class AutoFeederModule extends AbstractPowerModule {
                     mci.setModuleFloat(ItemUtils.getRegistryName(getModule()), MPSConstants.TAG_FOOD, food);
                 }
             }
-        }
-
-        public float getSaturationLevel(@Nonnull ItemStack stack) {
-            return TagUtils.getModuleFloat(stack, MPSConstants.TAG_SATURATION);
         }
 
         public void setSaturationLevel(@Nonnull ItemStack stack, float saturation, Level level) {
@@ -174,6 +163,14 @@ public class AutoFeederModule extends AbstractPowerModule {
                 }
             }
         }
+    }
+
+    public static float getFoodLevel(@Nonnull ItemStack stack) {
+        return TagUtils.getModuleFloat(stack, MPSConstants.TAG_FOOD);
+    }
+
+    public static float getSaturationLevel(@Nonnull ItemStack stack) {
+        return TagUtils.getModuleFloat(stack, MPSConstants.TAG_SATURATION);
     }
 
     @Nullable

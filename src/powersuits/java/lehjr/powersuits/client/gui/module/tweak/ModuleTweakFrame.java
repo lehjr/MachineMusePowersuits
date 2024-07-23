@@ -269,9 +269,8 @@ public class ModuleTweakFrame extends ScrollableFrame {
 
     // Needs updating on modular item change, module change, even value change
     IPowerModule pm = null;
-    // This only needs to be fetched when nbt data is set server side or when modular item or module value changes
+    // Just a local copy that makes sliders work. Actual tag updated on server side.
     CompoundTag moduleTag = new CompoundTag();
-    // use to designate when data has changed and selected ClickableModule needs to have item refreshed to reflect changes since these don't propagate automatically ... wait.. a callable getter?  hmm
     boolean needsUpdating = false;
 
     public ModuleTweakFrame(Rect rect, ModularItemSelectionFrame itemTarget, ModuleSelectionFrame moduleTarget) {
@@ -281,17 +280,13 @@ public class ModuleTweakFrame extends ScrollableFrame {
         this.scrollBar = new VanillaFrameScrollBar(this, "scrolbar");
     }
 
-
-
+    public void setRefresh() {
+        this.needsUpdating = true;
+    }
 
     @Override
     public void update(double mousex, double mousey) {
-        if (pm == null || pm != moduleTarget.getModuleCap()){
-            NuminaLogger.logDebug("pm==null: " +(pm==null) +", pm != moduleTarget.getModuleCap(): " +(pm != moduleTarget.getModuleCap()));
-
-
-//            moduleTarget.refreshModule();
-
+        if (needsUpdating || pm == null){
             pm = moduleTarget.getModuleCap();
             if (pm != null) {
                 loadTweaks(pm);
@@ -303,8 +298,8 @@ public class ModuleTweakFrame extends ScrollableFrame {
                 this.propertyStrings.clear();
                 this.selectedSlider = null;
             }
+            needsUpdating = false;
         } else {
-            NuminaLogger.logDebug("using refresh loop");
             updateTweaks(pm);
         }
         for (VanillaTinkerSlider slider : sliders) {
@@ -348,7 +343,7 @@ public class ModuleTweakFrame extends ScrollableFrame {
             for (int i = 0; i < namesList.size(); i++) {
                 StringUtils.drawLeftAlignedShadowedString(gfx, namesList.get(i), left() + margin, nexty + 9 * i);
             }
-            StringUtils.drawRightAlignedShadowedString(gfx, formattedValue, right() - margin, -5 + nexty + 9 * (namesList.size() - 1) / 2);            nexty += 9 * namesList.size() + 1;
+            StringUtils.drawRightAlignedShadowedString(gfx, formattedValue, right() - margin, -5 + nexty + (double) (9 * (namesList.size() - 1)) / 2);            nexty += 9 * namesList.size() + 1;
         }
 
         gfx.pose().popPose();
@@ -361,8 +356,6 @@ public class ModuleTweakFrame extends ScrollableFrame {
             for (Map.Entry<String, List<IPowerModule.IPropertyModifier>> property : propertyModifiers.entrySet()) {
                 double currValue = 0;
                 for (IPowerModule.IPropertyModifier modifier : property.getValue()) {
-                    NuminaLogger.logDebug("module tag: " + moduleTag);
-
                     currValue = modifier.applyModifier(moduleTag, currValue);
                     if (modifier instanceof IPowerModule.PropertyModifierLinearAdditive) {
                         String modifierName = ((IPowerModule.PropertyModifierLinearAdditive) modifier).getTradeoffName();
@@ -372,15 +365,10 @@ public class ModuleTweakFrame extends ScrollableFrame {
                         }
                     }
                 }
-                NuminaLogger.logDebug("currentKey: " + property.getKey() + "current value: " + currValue);
-
                 propertyStrings.put(property.getKey(), currValue);
             }
-
         }
     }
-
-
 
     /**
      * Loads values that can be adjusted through the sliders
@@ -389,8 +377,6 @@ public class ModuleTweakFrame extends ScrollableFrame {
      * @param pm
      */
     private void loadTweaks(IPowerModule pm) {
-        NuminaLogger.logDebug("loading tweaks");
-
         propertyStrings = new HashMap<>();
         sliders = new LinkedList<>();
         this.tweaks = new HashMap<>();
@@ -471,8 +457,6 @@ public class ModuleTweakFrame extends ScrollableFrame {
     public boolean mouseReleased(double mouseX, double mouseY, int button) {
         if (selectedSlider != null) {
             selectedSlider.mouseReleased(mouseX, mouseY, button);
-            NuminaLogger.logDebug("mouseReleased");
-
             itemTarget.selectedType().ifPresent(type-> {
                 IPowerModule pm = moduleTarget.getModuleCap();
                 if (pm != null) {

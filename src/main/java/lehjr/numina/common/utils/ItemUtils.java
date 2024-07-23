@@ -1,6 +1,5 @@
 package lehjr.numina.common.utils;
 
-import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.capability.NuminaCapabilities;
 import lehjr.numina.common.capability.inventory.modechanging.IModeChangingItem;
 import lehjr.numina.common.capability.module.externalitems.IOtherModItemsAsModules;
@@ -18,7 +17,6 @@ import net.minecraft.world.level.Level;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.Optional;
 
 public class ItemUtils {
     /**
@@ -52,53 +50,50 @@ public class ItemUtils {
      */
     public static boolean setModeAndSwapIfNeeded(Player player, int mode) {
         boolean updated = false;
-        if (player.level() != null) {
-            int selected = player.getInventory().selected;
-            Level level = player.level();
+        Level level = player.level();
+        int selected = player.getInventory().selected;
+        ItemStack itemStack = player.getInventory().getSelected();
+        ItemStack host;
+        ItemStack newModule;
+        ItemStack stackToSet = ItemStack.EMPTY;
 
-            ItemStack itemStack = player.getInventory().getSelected();
-            ItemStack host;
-            ItemStack newModule;
-            ItemStack stackToSet = ItemStack.EMPTY;
+        @Nullable
+        IOtherModItemsAsModules foreignModuleCap = itemStack.getCapability(NuminaCapabilities.Module.EXTERNAL_MOD_ITEMS_AS_MODULES);
+        IModeChangingItem mcmi = itemStack.getCapability(NuminaCapabilities.Inventory.MODE_CHANGING_MODULAR_ITEM);
+        // held item is item from another mod
 
-            @Nullable
-            IOtherModItemsAsModules foreignModuleCap = itemStack.getCapability(NuminaCapabilities.Module.EXTERNAL_MOD_ITEMS_AS_MODULES);
-            IModeChangingItem mcmi = itemStack.getCapability(NuminaCapabilities.Inventory.MODE_CHANGING_MODULAR_ITEM);
-            // held item is item from another mod
-
-            if (foreignModuleCap != null) {
-                host = foreignModuleCap.retrieveHostStack(NuminaCapabilities.getProvider(level));
-                mcmi = host.getCapability(NuminaCapabilities.Inventory.MODE_CHANGING_MODULAR_ITEM);
-                if (mcmi != null) {
-                    if (mcmi.returnForeignModuleToModularItem(itemStack)) {
-                        mcmi.setActiveMode(mode);
-                        newModule = mcmi.getActiveModule();
-                        IOtherModItemsAsModules foreignModuleCap1 = newModule.getCapability(NuminaCapabilities.Module.EXTERNAL_MOD_ITEMS_AS_MODULES);
-                        if (foreignModuleCap1 != null) {
-                            foreignModuleCap1.storeHostStack(NuminaCapabilities.getProvider(level), host.copy());
-                            stackToSet = newModule.copy();
-                        } else {
-                            stackToSet = host;
-                        }
-                        updated = true;
+        if (foreignModuleCap != null) {
+            host = foreignModuleCap.retrieveHostStack(NuminaCapabilities.getProvider(level));
+            mcmi = host.getCapability(NuminaCapabilities.Inventory.MODE_CHANGING_MODULAR_ITEM);
+            if (mcmi != null) {
+                if (mcmi.returnForeignModuleToModularItem(itemStack)) {
+                    mcmi.setActiveMode(mode);
+                    newModule = mcmi.getActiveModule();
+                    IOtherModItemsAsModules foreignModuleCap1 = newModule.getCapability(NuminaCapabilities.Module.EXTERNAL_MOD_ITEMS_AS_MODULES);
+                    if (foreignModuleCap1 != null) {
+                        foreignModuleCap1.storeHostStack(NuminaCapabilities.getProvider(level), host.copy());
+                        stackToSet = newModule.copy();
+                    } else {
+                        stackToSet = host;
                     }
+                    updated = true;
                 }
-            } else if (mcmi != null) {
-                mcmi.setActiveMode(mode);
-                newModule = mcmi.getActiveModule();
-                IOtherModItemsAsModules foreignModuleCap1 = newModule.getCapability(NuminaCapabilities.Module.EXTERNAL_MOD_ITEMS_AS_MODULES);
-                if (foreignModuleCap1 != null) {
-                    foreignModuleCap1.storeHostStack(NuminaCapabilities.getProvider(level), itemStack.copy());
-                    stackToSet = newModule;
-                } else {
-                    stackToSet = mcmi.getModularItemStack();
-                }
-                updated = true;
             }
-            if (updated && !level.isClientSide) {
-                player.getInventory().setItem(selected, stackToSet);
-                player.containerMenu.broadcastChanges();
+        } else if (mcmi != null) {
+            mcmi.setActiveMode(mode);
+            newModule = mcmi.getActiveModule();
+            IOtherModItemsAsModules foreignModuleCap1 = newModule.getCapability(NuminaCapabilities.Module.EXTERNAL_MOD_ITEMS_AS_MODULES);
+            if (foreignModuleCap1 != null) {
+                foreignModuleCap1.storeHostStack(NuminaCapabilities.getProvider(level), itemStack.copy());
+                stackToSet = newModule;
+            } else {
+                stackToSet = mcmi.getModularItemStack();
             }
+            updated = true;
+        }
+        if (updated && !level.isClientSide) {
+            player.getInventory().setItem(selected, stackToSet);
+            player.containerMenu.broadcastChanges();
         }
         return updated;
     }

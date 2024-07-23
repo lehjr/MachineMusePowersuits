@@ -54,58 +54,62 @@ public class PlayerUpdateHandler {
 //            Player player = (Player) event.getEntity();
         if(true) {
             Player player = event.player;
-            NonNullList<ItemStack> modularItems = NonNullList.create();
-            for (EquipmentSlot slot : EquipmentSlot.values()) {
-                if(ItemUtils.getItemFromEntitySlot(player, slot).isEmpty()) {
-                    continue;
-                }
+           Level level = player.getLevel();
+                NonNullList<ItemStack> modularItems = NonNullList.create();
+                for (EquipmentSlot slot : EquipmentSlot.values()) {
+                    if(ItemUtils.getItemFromEntitySlot(player, slot).isEmpty()) {
+                        continue;
+                    }
 
-                switch (slot.getType()) {
-                    case HAND:
-                        NuminaCapabilities.getCapability(ItemUtils.getItemFromEntitySlot(player, slot), NuminaCapabilities.MODE_CHANGING_MODULAR_ITEM)
-                                .ifPresent(i-> {
-                                    i.tick(player);
-                                    modularItems.add(i.getModularItemStack());
-                                });
-                        break;
-
-                    case ARMOR:
-                        try {
-                            NuminaCapabilities.getCapability(ItemUtils.getItemFromEntitySlot(player, slot), NuminaCapabilities.MODULAR_ITEM)
+                    switch (slot.getType()) {
+                        case HAND:
+                            NuminaCapabilities.getCapability(ItemUtils.getItemFromEntitySlot(player, slot), NuminaCapabilities.MODE_CHANGING_MODULAR_ITEM)
                                     .ifPresent(i-> {
                                         i.tick(player);
                                         modularItems.add(i.getModularItemStack());
                                     });
-                        } catch (Exception exception) {
-                            NuminaLogger.logException(ItemUtils.getItemFromEntitySlot(player, slot).toString(), exception);
+                            break;
+
+                        case ARMOR:
+                            try {
+                                NuminaCapabilities.getCapability(ItemUtils.getItemFromEntitySlot(player, slot), NuminaCapabilities.MODULAR_ITEM)
+                                        .ifPresent(i-> {
+                                            i.tick(player);
+                                            modularItems.add(i.getModularItemStack());
+                                        });
+                            } catch (Exception exception) {
+                                NuminaLogger.logException(ItemUtils.getItemFromEntitySlot(player, slot).toString(), exception);
+                            }
+                            break;
+                    }
+                }
+
+                //  Done this way so players can let their stuff cool in their inventory without having to equip it,
+                // allowing it to cool off enough to not take damage
+                if (!modularItems.isEmpty()) {
+                    // Heat update
+                    double currHeat = HeatUtils.getPlayerHeat(player);
+
+                    if (currHeat >= 0 && !level.isClientSide) { // only apply serverside so change is not applied twice
+
+                        // cooling value adjustment. Too much or too little cooling makes the heat system useless.
+                        double coolPlayerAmount = (PlayerUtils.getPlayerCoolingBasedOnMaterial(player) * 0.55);  // cooling value adjustment. Too much or too little cooling makes the heat system useless.
+
+                        if (coolPlayerAmount > 0) {
+                            HeatUtils.coolPlayer(player, coolPlayerAmount);
                         }
-                        break;
-                }
-            }
 
-            //  Done this way so players can let their stuff cool in their inventory without having to equip it,
-            // allowing it to cool off enough to not take damage
-            if (!modularItems.isEmpty()) {
-                // Heat update
-                double currHeat = HeatUtils.getPlayerHeat(player);
+                        double maxHeat = HeatUtils.getPlayerMaxHeat(player);
 
-                if (currHeat >= 0 && !player.level().isClientSide) { // only apply serverside so change is not applied twice
-
-                    // cooling value adjustment. Too much or too little cooling makes the heat system useless.
-                    double coolPlayerAmount = (PlayerUtils.getPlayerCoolingBasedOnMaterial(player) * 0.55);  // cooling value adjustment. Too much or too little cooling makes the heat system useless.
-
-                    if (coolPlayerAmount > 0) {
-                        HeatUtils.coolPlayer(player, coolPlayerAmount);
-                    }
-
-                    double maxHeat = HeatUtils.getPlayerMaxHeat(player);
-
-                    if (currHeat < maxHeat * 0.95) {
-                        player.clearFire();
+                        if (currHeat < maxHeat * 0.95) {
+                            player.clearFire();
+                        }
                     }
                 }
             }
-        }
+            } catch (Exception e) {
+
+            }
     }
 
     /**

@@ -3,7 +3,7 @@ package lehjr.powersuits.common.item.module.vision;
 import lehjr.numina.common.capability.module.powermodule.ModuleCategory;
 import lehjr.numina.common.capability.module.powermodule.ModuleTarget;
 import lehjr.numina.common.capability.module.toggleable.ToggleableModule;
-import lehjr.powersuits.common.config.MPSCommonConfig;
+import lehjr.powersuits.common.config.VisionModuleConfig;
 import lehjr.powersuits.common.constants.MPSConstants;
 import lehjr.powersuits.common.item.module.AbstractPowerModule;
 import net.minecraft.world.item.ItemStack;
@@ -19,13 +19,13 @@ public class BinocularsModule extends AbstractPowerModule {
 
         public BinocularCap(ItemStack module) {
             super(module, ModuleCategory.VISION, ModuleTarget.HEADONLY);
-            addBaseProperty(MPSConstants.FOV, MPSCommonConfig.binocularsModuleFOVBase);
-            addTradeoffProperty(MPSConstants.FIELD_OF_VIEW, MPSConstants.FOV, MPSCommonConfig.binocularsModuleFOVFieldOfViewMultiplier, "%");
+            addBaseProperty(MPSConstants.FOV, VisionModuleConfig.binocularsModuleFOVBase);
+            addTradeoffProperty(MPSConstants.FIELD_OF_VIEW, MPSConstants.FOV, VisionModuleConfig.binocularsModuleFOVFieldOfViewMultiplier, "%");
         }
 
         @Override
         public boolean isAllowed() {
-            return MPSCommonConfig.binocularsModuleIsAllowed;
+            return VisionModuleConfig.binocularsModuleIsAllowed;
         }
 
         @Override

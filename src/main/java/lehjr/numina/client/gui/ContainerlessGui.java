@@ -73,11 +73,13 @@ public class ContainerlessGui extends Screen implements IRect {
     }
 
     public void renderBg(GuiGraphics gfx, int mouseX, int mouseY, float partialTick) {
+
     }
 
     @Override
     public void renderBackground(GuiGraphics gfx, int mouseX, int mouseY, float partialTick) {
         super.renderBackground(gfx, mouseX, mouseY, partialTick);
+        super.renderTransparentBackground(gfx);
         renderBg(gfx, mouseX, mouseY, partialTick);
     }
 

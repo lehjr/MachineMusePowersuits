@@ -5,11 +5,9 @@ import lehjr.numina.common.network.packets.serverbound.BlockPositionPacketServer
 import lehjr.numina.common.network.packets.serverbound.BlockStateClearPacketServerBound;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 
 import javax.annotation.Nonnull;
-import java.util.Optional;
 
 /**
  * Just a module that renders different based on the block it's set to break

@@ -31,8 +31,6 @@ public record ContainerGuiOpenPacket(EquipmentSlot slotType, boolean preserve, d
                 packetBuffer.readBoolean(),
                 packetBuffer.readDouble(),
                 packetBuffer.readDouble());
-
-
     }
 
     public void write(RegistryFriendlyByteBuf packetBuffer) {
@@ -43,6 +41,7 @@ public record ContainerGuiOpenPacket(EquipmentSlot slotType, boolean preserve, d
         NuminaLogger.logDebug("WRITING: reserve: " + preserve + ", mouseX: " + mouseX + ", mouseY: " + mouseY);
     }
 
+    // FIXME ... cleanup failed attempt at setting mouse coordinates
     public static void handle(ContainerGuiOpenPacket data, IPayloadContext ctx) {
         ctx.enqueueWork(() -> {
             SimpleMenuProvider container;

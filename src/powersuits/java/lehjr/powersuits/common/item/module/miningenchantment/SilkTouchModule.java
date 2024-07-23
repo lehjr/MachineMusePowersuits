@@ -28,5 +28,10 @@ public class SilkTouchModule extends AbstractPowerModule {
         public Enchantment getEnchantment() {
             return Enchantments.SILK_TOUCH;
         }
+
+        @Override
+        public boolean isAllowed() {
+            return true;
+        }
     }
 }

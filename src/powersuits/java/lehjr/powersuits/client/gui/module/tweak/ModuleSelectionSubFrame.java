@@ -127,7 +127,6 @@ public class ModuleSelectionSubFrame {
         return false;
     }
 
-    // TODO: better tooltips? Fix clickable module tooltips at source instead of this workaround?
     public List<Component> getToolTip(int x, int y) {
         if (border.containsPoint(x, y)) {
             if (moduleButtons != null) {

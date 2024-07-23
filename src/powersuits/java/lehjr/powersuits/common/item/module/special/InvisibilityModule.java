@@ -11,20 +11,21 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 
 import javax.annotation.Nonnull;
 
 public class InvisibilityModule extends AbstractPowerModule {
-    private final Holder<MobEffect> invisibility = MobEffects.INVISIBILITY;
+    private static final Holder<MobEffect> invisibility = MobEffects.INVISIBILITY;
 
-    class Ticker extends PlayerTickModule {
+    public static class Ticker extends PlayerTickModule {
         public Ticker(@Nonnull ItemStack module, ModuleCategory category, ModuleTarget target) {
             super(module, category, target);
 //            addBaseProperty(MPSConstants.ACTIVE_CAMOUFLAGE_ENERGY, 100, "FE");
         }
 
         @Override
-        public void onPlayerTickActive(Player player, ItemStack item) {
+        public void onPlayerTickActive(Player player, Level level, ItemStack item) {
             double totalEnergy = ElectricItemUtils.getPlayerEnergy(player);
             MobEffectInstance invis = null;
             if (player.hasEffect(invisibility)) {
@@ -36,18 +37,18 @@ public class InvisibilityModule extends AbstractPowerModule {
                     ElectricItemUtils.drainPlayerEnergy(player, 50, false);
                 }
             } else {
-                onPlayerTickInactive(player, item);
+                onPlayerTickInactive(player, level, item);
             }
         }
 
         @Override
-        public void onPlayerTickInactive(Player player, ItemStack item) {
+        public void onPlayerTickInactive(Player player, Level level, ItemStack item) {
             MobEffectInstance invis = null;
             if (player.hasEffect(invisibility)) {
                 invis = player.getEffect(invisibility);
             }
             if (invis != null && invis.getAmplifier() == -3) {
-                if (player.level().isClientSide) {
+                if (level.isClientSide) {
                     player.removeEffectNoUpdate(invisibility);
                 } else {
                     player.removeEffect(invisibility);

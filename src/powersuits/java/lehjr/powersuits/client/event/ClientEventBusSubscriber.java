@@ -2,7 +2,6 @@ package lehjr.powersuits.client.event;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.capability.NuminaCapabilities;
 import lehjr.numina.common.capability.inventory.modechanging.IModeChangingItem;
 import lehjr.numina.common.capability.inventory.modularitem.IModularItem;
@@ -28,18 +27,16 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
-import net.minecraft.world.phys.Vec3;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -48,7 +45,6 @@ import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.*;
 import net.neoforged.neoforge.common.NeoForge;
 
-import javax.annotation.Nonnull;
 import java.util.Arrays;
 
 @EventBusSubscriber(modid = MPSConstants.MOD_ID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
@@ -133,8 +129,9 @@ public class ClientEventBusSubscriber {
 //    @SubscribeEvent
     public static void renderBlockHighlight(RenderHighlightEvent.Block event) {
         Color.WHITE.setShaderColor();
+        Level level = Minecraft.getInstance().level;
 
-        if (event.getTarget().getType() != HitResult.Type.BLOCK || !(event.getCamera().getEntity() instanceof Player player)) {
+        if (event.getTarget().getType() != HitResult.Type.BLOCK || !(event.getCamera().getEntity() instanceof Player player) || level == null) {
             return;
         }
 
@@ -161,7 +158,7 @@ public class ClientEventBusSubscriber {
                                 heldItem,
                                 result,
                                 player,
-                                player.level(),
+                                level,
                                 modules,
                                 playerEnergy
                         );

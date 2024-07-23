@@ -1,12 +1,9 @@
 package lehjr.numina.common.capability.module.toggleable;
 
-import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.capability.module.powermodule.ModuleCategory;
 import lehjr.numina.common.capability.module.powermodule.ModuleTarget;
 import lehjr.numina.common.capability.module.powermodule.PowerModule;
-import lehjr.numina.common.constants.NuminaConstants;
 import lehjr.numina.common.utils.TagUtils;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
 
 public class ToggleableModule extends PowerModule implements IToggleableModule {

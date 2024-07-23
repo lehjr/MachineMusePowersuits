@@ -17,6 +17,9 @@ import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 import javax.annotation.Nonnull;
 
+/**
+ * Clears the state for which a certain module would be searching for
+ */
 public class BlockStateClearPacketServerBound implements CustomPacketPayload {
     public BlockStateClearPacketServerBound() {
     }

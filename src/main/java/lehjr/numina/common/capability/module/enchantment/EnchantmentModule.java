@@ -7,7 +7,7 @@ import lehjr.numina.common.utils.ElectricItemUtils;
 import lehjr.numina.common.utils.TagUtils;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import org.jetbrains.annotations.NotNull;
+import net.minecraft.world.level.Level;
 
 import javax.annotation.Nonnull;
 
@@ -26,8 +26,8 @@ public abstract class EnchantmentModule extends PlayerTickModule implements IEnc
     }
 
     @Override
-    public void onPlayerTickActive(Player player, @Nonnull ItemStack item) {
-        if (player.level().isClientSide()) {
+    public void onPlayerTickActive(Player player, Level level, @Nonnull ItemStack item) {
+        if (level.isClientSide()) {
             return;
         }
 
@@ -39,11 +39,13 @@ public abstract class EnchantmentModule extends PlayerTickModule implements IEnc
             ElectricItemUtils.drainPlayerEnergy(player, energyUsage, false);
             setAdded(true);
             setRemoved(false);
+        } else {
+            toggleModule(false);
         }
     }
 
     @Override
-    public void onPlayerTickInactive(Player player, @Nonnull ItemStack item) {
+    public void onPlayerTickInactive(Player player, Level level, @Nonnull ItemStack item) {
         if (added && !removed) {
             removeEnchantment(item);
             setAdded(false);

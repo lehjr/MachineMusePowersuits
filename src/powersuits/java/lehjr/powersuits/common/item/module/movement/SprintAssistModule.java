@@ -7,19 +7,13 @@ import lehjr.numina.common.capability.module.tickable.PlayerTickModule;
 import lehjr.numina.common.utils.ElectricItemUtils;
 import lehjr.powersuits.common.constants.MPSConstants;
 import lehjr.powersuits.common.item.module.AbstractPowerModule;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.Tag;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.attributes.Attribute;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 
 import javax.annotation.Nonnull;
-import java.util.ArrayList;
-import java.util.Collections;
 
 /**
  * Ported by leon on 10/18/16.
@@ -37,9 +31,9 @@ public class SprintAssistModule extends AbstractPowerModule {
         }
 
         @Override
-        public void onPlayerTickActive(Player player, @Nonnull ItemStack itemStack) {
+        public void onPlayerTickActive(Player player, Level level, @Nonnull ItemStack itemStack) {
             if (player.getAbilities().flying || player.isPassenger() || player.isFallFlying()) {
-                onPlayerTickInactive(player, itemStack);
+                onPlayerTickInactive(player, level, itemStack);
                 return;
             }
 
@@ -53,9 +47,9 @@ public class SprintAssistModule extends AbstractPowerModule {
                     if (sprintCost < totalEnergy) {
                         double sprintMultiplier = applyPropertyModifiers(MPSConstants.SPRINT_SPEED_MULTIPLIER);
                         double exhaustionComp = applyPropertyModifiers(MPSConstants.FOOD_COMPENSATION);
-                        if (!player.level().isClientSide &&
+                        if (!level.isClientSide &&
                                 // every 20 ticks
-                                (player.level().getGameTime() % 20) == 0) {
+                                (level.getGameTime() % 20) == 0) {
                             ElectricItemUtils.drainPlayerEnergy(player, (int) (sprintCost * horzMovement) * 20, false);
                         }
                         setMovementModifier(getModule(), sprintMultiplier * 0.13 * 0.5, Attributes.MOVEMENT_SPEED.value(), Attributes.MOVEMENT_SPEED.getRegisteredName());
@@ -66,9 +60,9 @@ public class SprintAssistModule extends AbstractPowerModule {
                     double walkCost = applyPropertyModifiers(MPSConstants.WALKING_ENERGY_CONSUMPTION);
                     if (walkCost < totalEnergy) {
                         double walkMultiplier = applyPropertyModifiers(MPSConstants.WALKING_SPEED_MULTIPLIER);
-                        if (!player.level().isClientSide &&
+                        if (!level.isClientSide &&
                                 // every 20 ticks
-                                (player.level().getGameTime() % 20) == 0) {
+                                (level.getGameTime() % 20) == 0) {
                             ElectricItemUtils.drainPlayerEnergy(player, (int) (walkCost * horzMovement), false);
 
 
@@ -78,11 +72,11 @@ public class SprintAssistModule extends AbstractPowerModule {
                     }
                 }
             }
-            onPlayerTickInactive(player, itemStack);
+            onPlayerTickInactive(player, level, itemStack);
         }
 
         @Override
-        public void onPlayerTickInactive(Player player, @Nonnull ItemStack itemStack) {
+        public void onPlayerTickInactive(Player player, Level level, @Nonnull ItemStack itemStack) {
 //                itemStack.removeTagKey("AttributeModifiers");
             setMovementModifier(getModule(), 0, Attributes.MOVEMENT_SPEED.value(), Attributes.MOVEMENT_SPEED.getRegisteredName());
         }

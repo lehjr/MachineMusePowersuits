@@ -83,14 +83,13 @@ public class TinkerKeymapGui extends ContainerlessGui {
         super.renderBackground(gfx, mouseX, mouseY, partialTick);
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-//        RenderSystem.setShaderTexture(0, BACKGROUND);
         int i = this.leftPos;
         int j = this.topPos;
         gfx.blit(BACKGROUND, i, j, 0, 0, imageWidth, imageHeight, 512, 512);
     }
 
     @Override
-    public boolean keyPressed(int keyCode, int scanCode, int modifiers) { // int pKeyCode, int pScanCode, int pModifiers
+    public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
         if (kbFrame.keybindingToRemap != null) {
             if (keyCode == 256) {
                 kbFrame.keybindingToRemap.setKeyModifierAndCode(KeyModifier.getActiveModifier(), InputConstants.UNKNOWN);

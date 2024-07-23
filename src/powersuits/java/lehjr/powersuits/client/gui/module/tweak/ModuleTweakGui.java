@@ -113,10 +113,10 @@ public class ModuleTweakGui extends ContainerlessGui {
         moduleSelectFrame);
         addFrame(tweakFrame);
 
-//        moduleSelectFrame.setDoOnNewSelect(doThis -> {
+        moduleSelectFrame.setDoOnNewSelect(doThis -> {
 //            NuminaLogger.logDebug("module cap: " + moduleSelectFrame.getModuleCap());
-//            tweakFrame.loadTweaks(moduleSelectFrame.getModuleCap());
-//        });
+            tweakFrame.setRefresh();//loadTweaks(moduleSelectFrame.getModuleCap());
+        });
    }
 
     @Override

@@ -36,6 +36,14 @@ public class MPSConstants {
 
 
     // Environmental --------------------------------------------------------------------------------------------------
+    // Cooling System
+    public static final String COOLING_BONUS = "coolingBonus";
+    // Fluid Tank
+    public static final String FLUID_TANK_SIZE = "fluidTankSize";
+    public static final String HEAT_ACTIVATION_PERCENT = "heatActivationPercent";//Heat Activation Percent";
+    public static final String ACTIVATION_PERCENT = "activationPercent";//"Activation Percent"
+
+    // AutoFeeder
     public static final String TAG_FOOD = "food";
     public static final String TAG_SATURATION = "saturation";
     public static final String EATING_EFFICIENCY = "autoFeederEfficiency";
@@ -374,7 +382,7 @@ public class MPSConstants {
     public static final ResourceLocation DIAMOND_SHOVEL_MODULE = getRegName("shovel3");
     public static final ResourceLocation NETHERITE_SHOVEL_MODULE = getRegName("shovel4");
 
-    public static final ResourceLocation HOE_MODULE = getRegName("hoe"); // Todo:  tiered for Nether stuff
+    public static final ResourceLocation ROTOTILLER_MODULE = getRegName("hoe"); // Todo:  tiered for Nether stuff
 
     public static final ResourceLocation SHEARS_MODULE = getRegName("shears");
     public static final ResourceLocation PORTABLE_WORKBENCH_MODULE = getRegName("portable_tinkertable");

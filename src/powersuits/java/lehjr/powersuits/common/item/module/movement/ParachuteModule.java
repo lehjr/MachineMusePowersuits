@@ -8,6 +8,7 @@ import lehjr.numina.common.utils.PlayerUtils;
 import lehjr.powersuits.common.item.module.AbstractPowerModule;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
 import javax.annotation.Nonnull;
@@ -19,7 +20,7 @@ public class ParachuteModule extends AbstractPowerModule {
         }
 
         @Override
-        public void onPlayerTickActive (Player player, ItemStack itemStack){
+        public void onPlayerTickActive (Player player, Level level, ItemStack itemStack){
             PlayerMovementInputWrapper.PlayerMovementInput playerInput = PlayerMovementInputWrapper.get(player);
             boolean hasGlider = false;
             PlayerUtils.resetFloatKickTicks(player);

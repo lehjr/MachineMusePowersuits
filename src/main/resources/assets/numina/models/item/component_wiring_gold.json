@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "numina:item/component/hvcapacitor"
+    "layer0": "numina:item/component/wiring_gold"
   }
 }

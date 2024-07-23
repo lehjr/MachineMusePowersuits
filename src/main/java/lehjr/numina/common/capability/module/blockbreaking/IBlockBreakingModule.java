@@ -15,7 +15,6 @@ import net.minecraft.world.level.block.LeavesBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.common.IShearable;
 import net.neoforged.neoforge.common.ToolAction;
-import net.neoforged.neoforge.common.ToolActions;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 
 import javax.annotation.Nonnull;

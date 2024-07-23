@@ -28,12 +28,8 @@ package lehjr.numina.common.capability.render.modelspec;
 
 import lehjr.numina.common.constants.NuminaConstants;
 import lehjr.numina.common.utils.TagUtils;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.common.util.INBTSerializable;
-import org.jetbrains.annotations.UnknownNullability;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;

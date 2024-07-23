@@ -1,6 +1,5 @@
 package lehjr.numina.common.item;
 
-import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.capability.NuminaCapabilities;
 import lehjr.numina.common.capability.energy.IEnergyExtended;
 import lehjr.numina.common.capability.module.powermodule.ModuleCategory;

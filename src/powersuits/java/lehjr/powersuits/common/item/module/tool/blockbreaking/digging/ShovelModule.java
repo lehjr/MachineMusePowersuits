@@ -5,7 +5,7 @@ import lehjr.numina.common.capability.module.powermodule.ModuleCategory;
 import lehjr.numina.common.capability.module.powermodule.ModuleTarget;
 import lehjr.numina.common.capability.module.powermodule.PowerModule;
 import lehjr.numina.common.utils.ElectricItemUtils;
-import lehjr.powersuits.common.config.MPSCommonConfig;
+import lehjr.powersuits.common.config.ToolModuleConfig;
 import lehjr.powersuits.common.constants.MPSConstants;
 import lehjr.powersuits.common.item.module.AbstractPowerModule;
 import net.minecraft.core.BlockPos;
@@ -16,7 +16,6 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
-import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
 
@@ -30,28 +29,28 @@ public class ShovelModule extends AbstractPowerModule {
 
             switch(tier) {
                 case 1 -> {
-                    addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, MPSCommonConfig.stoneShovelModuleEnergyConsumptionBase, "FE");
-                    addBaseProperty(MPSConstants.HARVEST_SPEED, MPSCommonConfig.stoneShovelModuleHarvestSpeedBase, "x");
-                    addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.ENERGY_CONSUMPTION, MPSCommonConfig.stoneShovelModuleEnergyConsumptionOverclockMultiplier);
-                    addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.HARVEST_SPEED, MPSCommonConfig.stoneShovelModuleHarvestSpeedOverclockMultiplier);
+                    addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, ToolModuleConfig.stoneShovelModuleEnergyConsumptionBase, "FE");
+                    addBaseProperty(MPSConstants.HARVEST_SPEED, ToolModuleConfig.stoneShovelModuleHarvestSpeedBase, "x");
+                    addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.ENERGY_CONSUMPTION, ToolModuleConfig.stoneShovelModuleEnergyConsumptionOverclockMultiplier);
+                    addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.HARVEST_SPEED, ToolModuleConfig.stoneShovelModuleHarvestSpeedOverclockMultiplier);
                 }
                 case 2-> {
-                    addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, MPSCommonConfig.ironShovelModuleEnergyConsumptionBase, "FE");
-                    addBaseProperty(MPSConstants.HARVEST_SPEED, MPSCommonConfig.ironShovelModuleHarvestSpeedBase, "x");
-                    addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.ENERGY_CONSUMPTION, MPSCommonConfig.ironShovelModuleEnergyConsumptionOverclockMultiplier);
-                    addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.HARVEST_SPEED, MPSCommonConfig.ironShovelModuleHarvestSpeedOverclockMultiplier);
+                    addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, ToolModuleConfig.ironShovelModuleEnergyConsumptionBase, "FE");
+                    addBaseProperty(MPSConstants.HARVEST_SPEED, ToolModuleConfig.ironShovelModuleHarvestSpeedBase, "x");
+                    addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.ENERGY_CONSUMPTION, ToolModuleConfig.ironShovelModuleEnergyConsumptionOverclockMultiplier);
+                    addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.HARVEST_SPEED, ToolModuleConfig.ironShovelModuleHarvestSpeedOverclockMultiplier);
                 }
                 case 3-> {
-                    addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, MPSCommonConfig.diamondShovelModuleEnergyConsumptionBase, "FE");
-                    addBaseProperty(MPSConstants.HARVEST_SPEED, MPSCommonConfig.diamondShovelModuleHarvestSpeedBase, "x");
-                    addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.ENERGY_CONSUMPTION, MPSCommonConfig.diamondShovelModuleEnergyConsumptionOverclockMultiplier);
-                    addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.HARVEST_SPEED, MPSCommonConfig.diamondShovelModuleHarvestSpeedOverclockMultiplier);
+                    addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, ToolModuleConfig.diamondShovelModuleEnergyConsumptionBase, "FE");
+                    addBaseProperty(MPSConstants.HARVEST_SPEED, ToolModuleConfig.diamondShovelModuleHarvestSpeedBase, "x");
+                    addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.ENERGY_CONSUMPTION, ToolModuleConfig.diamondShovelModuleEnergyConsumptionOverclockMultiplier);
+                    addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.HARVEST_SPEED, ToolModuleConfig.diamondShovelModuleHarvestSpeedOverclockMultiplier);
                 }
                 case 4-> {
-                    addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, MPSCommonConfig.netheriteShovelModuleEnergyConsumptionBase, "FE");
-                    addBaseProperty(MPSConstants.HARVEST_SPEED, MPSCommonConfig.netheriteShovelModuleHarvestSpeedBase, "x");
-                    addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.ENERGY_CONSUMPTION, MPSCommonConfig.netheriteShovelModuleEnergyConsumptionOverclockMultiplier);
-                    addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.HARVEST_SPEED, MPSCommonConfig.netheriteShovelModuleHarvestSpeedOverclockMultiplier);
+                    addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, ToolModuleConfig.netheriteShovelModuleEnergyConsumptionBase, "FE");
+                    addBaseProperty(MPSConstants.HARVEST_SPEED, ToolModuleConfig.netheriteShovelModuleHarvestSpeedBase, "x");
+                    addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.ENERGY_CONSUMPTION, ToolModuleConfig.netheriteShovelModuleEnergyConsumptionOverclockMultiplier);
+                    addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.HARVEST_SPEED, ToolModuleConfig.netheriteShovelModuleHarvestSpeedOverclockMultiplier);
                 }
             }
         }
@@ -63,6 +62,16 @@ public class ShovelModule extends AbstractPowerModule {
                 return true;
             }
             return false;
+        }
+
+        @Override
+        public int getTier() {
+            return tier;
+        }
+
+        @Override
+        public String getModuleGroup() {
+            return "Shovel";
         }
 
         @Override
@@ -79,10 +88,10 @@ public class ShovelModule extends AbstractPowerModule {
         @Override
         public boolean isAllowed() {
             return switch (tier) {
-                case 1 -> MPSCommonConfig.stoneShovelModuleIsAllowed;
-                case 2 -> MPSCommonConfig.ironShovelModuleIsAllowed;
-                case 3 -> MPSCommonConfig.diamondShovelModuleIsAllowed;
-                case 4 -> MPSCommonConfig.netheriteShovelModuleIsAllowed;
+                case 1 -> ToolModuleConfig.stoneShovelModuleIsAllowed;
+                case 2 -> ToolModuleConfig.ironShovelModuleIsAllowed;
+                case 3 -> ToolModuleConfig.diamondShovelModuleIsAllowed;
+                case 4 -> ToolModuleConfig.netheriteShovelModuleIsAllowed;
                 default -> false;
             };
         }

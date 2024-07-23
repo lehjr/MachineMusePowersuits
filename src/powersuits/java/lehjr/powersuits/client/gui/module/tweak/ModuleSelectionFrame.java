@@ -71,10 +71,15 @@ public class ModuleSelectionFrame extends ScrollableFrame {
     public void refreshModule() {
         if(selectedModule != null) {
             target.getModularItemCapability().ifPresent(iModularItem -> {
-                final int selected = selectedModule.getInventorySlot();
-                ItemStack otherModule = iModularItem.getStackInSlot(selected);
-                if(selectedModule.getModule().is(otherModule.getItem())) {
-                    selectedModule.setModule(otherModule);
+                if(selectedModule.isInstalled()) {
+                    final int selected = selectedModule.getInventorySlot();
+                    // -1 indicates module is not installed, just a precaution
+                    if (selected >= 0 && selected < iModularItem.getSlots()) {
+                        ItemStack otherModule = iModularItem.getStackInSlot(selected);
+                        if (selectedModule.getModule().is(otherModule.getItem())) {
+                            selectedModule.setModule(otherModule);
+                        }
+                    }
                 }
             });
         }

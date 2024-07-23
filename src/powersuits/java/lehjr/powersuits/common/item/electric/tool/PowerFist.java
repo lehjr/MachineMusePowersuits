@@ -86,19 +86,17 @@ public class PowerFist extends AbstractElectricTool {
         return true;
     }
 
-    @Override
-    public void onUseTick(Level level, LivingEntity entity, ItemStack itemStack, int ticksRemaining) {
-        if(NuminaCapabilities.getModeChangingModularItemCapability(itemStack)
-                .map(handler-> handler.onUseTick(level, entity, ticksRemaining)).orElse(false)) {
-            NuminaLogger.logDebug("onUseTick remaining: " + ticksRemaining);
-            super.onUseTick(level, entity, itemStack, ticksRemaining);
-        }
-    }
+//    @Override
+//    public void onUseTick(Level level, LivingEntity entity, ItemStack itemStack, int ticksRemaining) {
+//        if(NuminaCapabilities.getModeChangingModularItemCapability(itemStack)
+//                .map(handler-> handler.onUseTick(level, entity, ticksRemaining)).orElse(false)) {
+//            NuminaLogger.logDebug("onUseTick remaining: " + ticksRemaining);
+//            super.onUseTick(level, entity, itemStack, ticksRemaining);
+//        }
+//    }
 
     @Override
     public InteractionResult onItemUseFirst(ItemStack itemStack, UseOnContext context) {
-        NuminaLogger.logDebug("onItemUseFirst");
-
         final InteractionResult fallback = InteractionResult.PASS;
 
         final InteractionHand hand = context.getHand();
@@ -208,12 +206,12 @@ public class PowerFist extends AbstractElectricTool {
 //                .map(iItemHandler -> iItemHandler.onBlockStartBreak(itemstack, pos, player)).orElse(false);
 //    }
 
-    @Override
-    public boolean canAttackBlock(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer) {
-        NuminaLogger.logDebug("can attack Block :" +super.canAttackBlock(pState, pLevel, pPos, pPlayer) );
-
-        return super.canAttackBlock(pState, pLevel, pPos, pPlayer);
-    }
+//    @Override
+//    public boolean canAttackBlock(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer) {
+//        NuminaLogger.logDebug("can attack Block :" +super.canAttackBlock(pState, pLevel, pPos, pPlayer) );
+//
+//        return super.canAttackBlock(pState, pLevel, pPos, pPlayer);
+//    }
 
 
 
@@ -236,6 +234,8 @@ public class PowerFist extends AbstractElectricTool {
 
     @Override
     public int getUseDuration(ItemStack stack) {
+
+
         NuminaLogger.logDebug("use duration: " + super.getUseDuration(stack));
 
         return super.getUseDuration(stack);

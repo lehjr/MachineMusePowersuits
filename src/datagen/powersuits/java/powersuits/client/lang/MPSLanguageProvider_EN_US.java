@@ -272,15 +272,13 @@ public class MPSLanguageProvider_EN_US extends AbstractLangageProviderMPS {
         add(MPSItems.NETHERITE_AXE_MODULE.get(), "Netherite Axe Module");
         addItemDescriptions(MPSItems.NETHERITE_AXE_MODULE.get(), "As good as it gets.");
 
-//        // Flint and Steel -----------------------------------------------------------------------------
-//        add(MPSItems.FLINT_AND_STEEL_MODULE.get(), "Flint and Steel");
-//
-//        addItemDescriptions(MPSItems.FLINT_AND_STEEL_MODULE.get(), "A portable igniter that creates fire through the power of energy.");
-//
-//        // Rototiller ----------------------------------------------------------------------------------
-//        add(MPSItems.HOE_MODULE.get(), "Rototiller");
-//
-//        addItemDescriptions(MPSItems.HOE_MODULE.get(), "An automated tilling addon to make it easy to till large swaths of land at once.");
+        // Flint and Steel -----------------------------------------------------------------------------
+        add(MPSItems.FLINT_AND_STEEL_MODULE.get(), "Flint and Steel");
+        addItemDescriptions(MPSItems.FLINT_AND_STEEL_MODULE.get(), "A portable igniter that creates fire through the power of energy.");
+
+        // Rototiller ----------------------------------------------------------------------------------
+        add(MPSItems.ROTOTILLER_MODULE.get(), "Rototiller");
+        addItemDescriptions(MPSItems.ROTOTILLER_MODULE.get(), "An automated tilling addon to make it easy to till large swaths of land at once.");
 
         // Leaf Blower ---------------------------------------------------------------------------------
         add(MPSItems.LEAF_BLOWER_MODULE.get(), "Leaf Blower");
@@ -296,20 +294,19 @@ public class MPSLanguageProvider_EN_US extends AbstractLangageProviderMPS {
         add(MPSItems.STONE_PICKAXE_MODULE.get(), "Stone Pickaxe Module");
         addItemDescriptions(MPSItems.STONE_PICKAXE_MODULE.get(), "The most basic mining module you can make.");
 
-        add(MPSItems.IRON_PICKAXE_MODULE.get(), "Pickaxe");
+        add(MPSItems.IRON_PICKAXE_MODULE.get(), "Iron Pickaxe Module");
         addItemDescriptions(MPSItems.IRON_PICKAXE_MODULE.get(), "Picks are good for harder materials like stone and ore.");
 
-        add(MPSItems.DIAMOND_PICKAXE_MODULE.get(), "Pickaxe");
+        add(MPSItems.DIAMOND_PICKAXE_MODULE.get(), "Iron Pickaxe Module");
         addItemDescriptions(MPSItems.DIAMOND_PICKAXE_MODULE.get(), "Picks are good for harder materials like stone and ore.");
 
-        add(MPSItems.NETHERITE_PICKAXE_MODULE.get(), "Pickaxe");
+        add(MPSItems.NETHERITE_PICKAXE_MODULE.get(), "Iron Pickaxe Module");
         addItemDescriptions(MPSItems.NETHERITE_PICKAXE_MODULE.get(), "Picks are good for harder materials like stone and ore.");
 
-//        // Shears --------------------------------------------------------------------------------------
-//        add(MPSItems.SHEARS_MODULE.get(), "Shears");
-//
-//        addItemDescriptions(MPSItems.SHEARS_MODULE.get(), "Cuts through leaves, wool, and creepers alike.");
-//
+        // Shears --------------------------------------------------------------------------------------
+        add(MPSItems.SHEARS_MODULE.get(), "Shears");
+        addItemDescriptions(MPSItems.SHEARS_MODULE.get(), "Cuts through leaves, wool, and creepers alike.");
+
         // Shovel --------------------------------------------------------------------------------------
         // Stone
         add(MPSItems.STONE_SHOVEL_MODULE.get(), "Stone Shovel Module");

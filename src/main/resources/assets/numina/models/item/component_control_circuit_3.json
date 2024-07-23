@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "numina:item/component/mvcapacitor"
+    "layer0": "numina:item/component/controlcircuit_3"
   }
 }

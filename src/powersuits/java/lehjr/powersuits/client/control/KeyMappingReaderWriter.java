@@ -40,8 +40,10 @@ import org.lwjgl.glfw.GLFW;
 
 import java.io.*;
 import java.nio.file.Files;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * For setting up the keybindings used in the onscreen display
@@ -72,7 +74,9 @@ public enum KeyMappingReaderWriter {
             File file = getKeyBindConfig();
             if (!file.exists()) {
                 Files.createDirectories(file.toPath().getParent());
-                file.createNewFile();
+                if(file.createNewFile()) {
+                    NuminaLogger.logDebug("created new keybinding file");
+                }
             }
             JsonObject kbSettings = new JsonObject();
             kbSettings.addProperty(formatVersionKey, 2);
@@ -81,6 +85,8 @@ public enum KeyMappingReaderWriter {
             getMPSKeyBinds().forEach(keyBinding->{
                 JsonObject jsonKBSetting = new JsonObject();
                 jsonKBSetting.addProperty(registryNameKey, keyBinding.registryName.toString());
+                NuminaLogger.logDebug("KeyBinding name: " + keyBinding.registryName);
+
                 jsonKBSetting.addProperty(showOnHudKey, keyBinding.showOnHud);
                 jsonKBSetting.addProperty(defaultKeyKey, keyBinding.getKey().getValue());
                 kbSettings.add(keyBinding.getName(), jsonKBSetting);
@@ -99,9 +105,8 @@ public enum KeyMappingReaderWriter {
                         kbSettings.add(keyBinding.getName(), jsonKBSetting);
                     });
             Gson gson = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
-            JsonParser jp = new JsonParser();
-            JsonElement je = jp.parse(kbSettings.toString());
-            String prettyJsonString = gson.toJson(je);
+            JsonObject jsonObject = JsonParser.parseString(kbSettings.toString()).getAsJsonObject();
+            String prettyJsonString = gson.toJson(jsonObject);
             fileWriter(file, prettyJsonString, true);
         } catch (Exception e) {
             NuminaLogger.logException("Problem writing out keyconfig :(", e);
@@ -119,7 +124,7 @@ public enum KeyMappingReaderWriter {
                 fileWriter.close();
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            NuminaLogger.logException("failed to write keybinds: ", e);
         }
     }
 
@@ -134,49 +139,44 @@ public enum KeyMappingReaderWriter {
             return;
         }
 
-        JsonParser jsonParser = new JsonParser();
         try (FileReader reader = new FileReader(getKeyBindConfig())) {
-            Object object = jsonParser.parse(reader);
-            if (object instanceof JsonObject) {
-                JsonObject jsonObject = (JsonObject) object;
-                Set<Map.Entry<String, JsonElement>> elements = jsonObject.entrySet();
+            JsonObject jsonObject = JsonParser.parseReader(reader).getAsJsonObject();
+            Set<Map.Entry<String, JsonElement>> elements = jsonObject.entrySet();
 
-                /** check for new format and load keybinds accordingly */
-                if (jsonObject.has(formatVersionKey) && jsonObject.get(formatVersionKey).getAsInt() == 2) {
-                    List<String> keybindNames = Arrays.stream(Minecraft.getInstance().options.keyMappings).map(keyBinding -> keyBinding.getName()).collect(Collectors.toList());
+            // check for new format and load keybinds accordingly
+            if (jsonObject.has(formatVersionKey) && jsonObject.get(formatVersionKey).getAsInt() == 2) {
+//                    List<String> keybindNames = Arrays.stream(Minecraft.getInstance().options.keyMappings).map(KeyMapping::getName).toList();
 
-                    NuminaLogger.logDebug("loading keybind format 2.0");
+                NuminaLogger.logDebug("loading keybind format 2.0");
 
-                    for (Map.Entry entry : elements) {
-                        String name = (String) entry.getKey();
+                for (Map.Entry<String, JsonElement> entry : elements) {
+                    String name = entry.getKey();
 
-                        if(!(entry.getValue() instanceof JsonObject)) {
-                            continue;
-                        }
-                        JsonObject data = ((JsonObject) entry.getValue()).getAsJsonObject();
-                        boolean showOnHud = data.get(showOnHudKey).getAsBoolean();
-                        int defaultKey = data.get(defaultKeyKey).getAsInt();
-                        ResourceLocation registryName = new ResourceLocation(data.get(registryNameKey).getAsString());
-                        KeymappingKeyHandler.registerKeyBinding(registryName, name, defaultKey, MPSConstants.MPS_ITEM_GROUP, showOnHud, true);
+                    if(!(entry.getValue() instanceof JsonObject)) {
+                        continue;
                     }
+                    JsonObject data = entry.getValue().getAsJsonObject();
+                    boolean showOnHud = data.get(showOnHudKey).getAsBoolean();
+                    int defaultKey = data.get(defaultKeyKey).getAsInt();
+                    ResourceLocation registryName = new ResourceLocation(data.get(registryNameKey).getAsString());
+                    KeymappingKeyHandler.registerKeyBinding(registryName, name, defaultKey, MPSConstants.MPS_ITEM_GROUP, showOnHud, true);
+                }
 
-                    /** fallback if settings hasn't been converted to new format yet */
-                } else {
-                    NuminaLogger.logDebug("loading keybind format 1.2");
-                    for (Map.Entry entry : elements) {
-                        String name = ((String) entry.getKey());
-                        boolean value = jsonObject.get(name).getAsBoolean();
-                        String name1 = name
-                                .replace("keybinding.powersuits.clock", "keybinding.minecraft.clock")
-                                .replace("keybinding.powersuits.compass", "keybinding.minecraft.compass");
-                        KeymappingKeyHandler.registerKeyBinding(ItemUtils.getRegistryName(Items.AIR), name1, GLFW.GLFW_KEY_UNKNOWN, MPSConstants.MPS_ITEM_GROUP, value, true);
+                // fallback if settings hasn't been converted to new format yet
+            } else {
+                NuminaLogger.logDebug("loading keybind format 1.2");
+                for (Map.Entry<String, JsonElement> entry : elements) {
+                    String name = entry.getKey();
+                    boolean value = jsonObject.get(name).getAsBoolean();
+                    String name1 = name
+                            .replace("keybinding.powersuits.clock", "keybinding.minecraft.clock")
+                            .replace("keybinding.powersuits.compass", "keybinding.minecraft.compass");
+                    KeymappingKeyHandler.registerKeyBinding(ItemUtils.getRegistryName(Items.AIR), name1, GLFW.GLFW_KEY_UNKNOWN, MPSConstants.MPS_ITEM_GROUP, value, true);
 
-                    }
                 }
             }
         } catch (Exception e) {
-            NuminaLogger.logger.error("Problem reading in keyconfig :(");
-            e.printStackTrace();
+            NuminaLogger.logException("Problem reading in keyconfig :(", e);
         }
         MPSOverlay.makeKBDisplayList();
 //        RenderEventHandler.INSTANCE.makeKBDisplayList();
@@ -199,7 +199,7 @@ public enum KeyMappingReaderWriter {
 
             while (reader.ready()) {
                 String line = reader.readLine();
-                /** get keybinding settings */
+                // get keybinding settings
                 // This is supposed to have the keybinding in one line followed by one or more lines of bound modules
 
                 if (line.contains(":")) {
@@ -220,26 +220,25 @@ public enum KeyMappingReaderWriter {
                         id = null;
                     }
 
-                    /** bind modules to it */
+                    // bind modules to it
                 } else if (line.contains("~") && id != null) {
                     String[] exploded = line.split("~");
                     ResourceLocation regName = new ResourceLocation(MPSConstants.MOD_ID, exploded[0]);
                     boolean finalDisplayOnHUD = displayOnHUD;
                     InputConstants.Key finalId = id;
-                    boolean finalToggleval = toggleval;
+                    boolean finalToggleVal = toggleval;
                     getMPSKeyBinds().stream().filter(kb ->kb.registryName.equals(regName)).findFirst().ifPresent(kb -> {
                         kb.showOnHud = finalDisplayOnHUD;
                         if (finalId != null) {
                             kb.setKeyInternal(finalId);
                         }
-                        kb.toggleVal = finalToggleval; // Not saved or loaded in new system
+                        kb.toggleVal = finalToggleVal; // Not saved or loaded in new system
                     });
                 }
             }
             reader.close();
         } catch (Exception e) {
-            NuminaLogger.logger.error("Problem reading in keyconfig :(");
-            e.printStackTrace();
+            NuminaLogger.logException("Problem reading in keyconfig :(", e);
         }
     }
 

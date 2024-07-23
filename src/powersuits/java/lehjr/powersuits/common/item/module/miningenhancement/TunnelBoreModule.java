@@ -66,7 +66,7 @@ public class TunnelBoreModule extends AbstractPowerModule {
             }
 
             // Shouldn't happen
-            if (player.level().isClientSide) {
+            if (level.isClientSide) {
                 return false; // fixme : check?
             }
 
@@ -107,7 +107,7 @@ public class TunnelBoreModule extends AbstractPowerModule {
                         BlockState state = level.getBlockState(blockPos);
                         BlockEntity blockEntity = level.getBlockEntity(blockPos);
                         // setup drops checking for enchantments
-                        Block.dropResources(state, player.level(), blockPos, blockEntity, player, itemStack);
+                        Block.dropResources(state, level, blockPos, blockEntity, player, itemStack);
                         // destroy block but don't drop default drops because they're already set above
                         level.destroyBlock(blockPos, false, player, 512);
 

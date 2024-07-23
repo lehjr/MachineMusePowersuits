@@ -29,5 +29,10 @@ public class AquaAffinityModule extends AbstractPowerModule {
         public Enchantment getEnchantment() {
             return Enchantments.AQUA_AFFINITY;
         }
+
+        @Override
+        public boolean isAllowed() {
+            return true;
+        }
     }
 }

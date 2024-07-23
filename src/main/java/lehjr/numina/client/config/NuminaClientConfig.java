@@ -17,22 +17,22 @@ public class NuminaClientConfig {
     private static final ModConfigSpec.Builder GENERAL_SETTINGS_BUILDER =
             new ModConfigSpec.Builder().push("General Settings");
 
-    private static ModConfigSpec.BooleanValue USE_FOV_FIX = GENERAL_SETTINGS_BUILDER
+    private static final ModConfigSpec.BooleanValue USE_FOV_FIX = GENERAL_SETTINGS_BUILDER
             .comment("Ignore speed boosts for field of view")
             .translation(NuminaConstants.CONFIG_USE_FOV_FIX)
             .define("useFOVFix", true);
 
-    private static ModConfigSpec.BooleanValue USE_FOV_NORMALIZE = GENERAL_SETTINGS_BUILDER
+    private static final ModConfigSpec.BooleanValue USE_FOV_NORMALIZE = GENERAL_SETTINGS_BUILDER
             .comment("Use FOV Fix to normalize FOV changes")
             .translation(NuminaConstants.CONFIG_USE_FOV_NORMALIZE)
             .define("useFOVNormalize", true);
 
-    private static ModConfigSpec.BooleanValue FOV_FIX_DEAULT_STATE = GENERAL_SETTINGS_BUILDER
+    private static final ModConfigSpec.BooleanValue FOV_FIX_DEAULT_STATE = GENERAL_SETTINGS_BUILDER
             .comment("Default state of FOVfix on login (enabled = true, disabled = false)")
             .translation(NuminaConstants.CONFIG_FOV_FIX_DEAULT_STATE)
             .define("fovFixDefaultState", true);
 
-    private static ModConfigSpec.BooleanValue USE_SOUNDS = GENERAL_SETTINGS_BUILDER
+    private static final ModConfigSpec.BooleanValue USE_SOUNDS = GENERAL_SETTINGS_BUILDER
             .comment("Use sounds")
             .translation(NuminaConstants.CONFIG_USE_SOUNDS)
             .define("useSounds", true);
@@ -43,48 +43,48 @@ public class NuminaClientConfig {
     // Glass Color ----------------------------------------------------------------------------------------------------
     private static final ModConfigSpec.Builder ENERGY_METER_GLASS_COLOR_SETTINGS_BUILDER = GENERAL_SETTINGS_BUILDER.pop().push("Energy Meter Settings").push("Glass Color");
 
-    private static ModConfigSpec.DoubleValue CHARGING_BASE_ENERGY_METER_DEBUG_VAL = ENERGY_METER_GLASS_COLOR_SETTINGS_BUILDER
+    private static final ModConfigSpec.DoubleValue CHARGING_BASE_ENERGY_METER_DEBUG_VAL = ENERGY_METER_GLASS_COLOR_SETTINGS_BUILDER
             .comment("value to manually set the meter at.\n Useful for trying different colors in real time")
             .defineInRange("chargingBaseEnergyMeterDebugValue", 0, 0, 100D);
 
-    private static ModConfigSpec.IntValue CHARGING_BASE_ENERGY_METER_GLASS_RED = ENERGY_METER_GLASS_COLOR_SETTINGS_BUILDER
+    private static final ModConfigSpec.IntValue CHARGING_BASE_ENERGY_METER_GLASS_RED = ENERGY_METER_GLASS_COLOR_SETTINGS_BUILDER
             .comment("charging base meter glass red color amount (0 - 100)")
             .defineInRange("chargingBaseEnergyMeterGlassRedPercent", 100, 0, 100);
 
-    private static ModConfigSpec.IntValue CHARGING_BASE_ENERGY_METER_GLASS_GREEN = ENERGY_METER_GLASS_COLOR_SETTINGS_BUILDER
+    private static final ModConfigSpec.IntValue CHARGING_BASE_ENERGY_METER_GLASS_GREEN = ENERGY_METER_GLASS_COLOR_SETTINGS_BUILDER
             .comment("charging base meter glass green color amount (0 - 100)")
             .defineInRange("chargingBaseEnergyMeterGlassGreenPercent", 100, 0, 100);
 
-    private static ModConfigSpec.IntValue CHARGING_BASE_ENERGY_METER_GLASS_BLUE = ENERGY_METER_GLASS_COLOR_SETTINGS_BUILDER
+    private static final ModConfigSpec.IntValue CHARGING_BASE_ENERGY_METER_GLASS_BLUE = ENERGY_METER_GLASS_COLOR_SETTINGS_BUILDER
             .comment("charging base meter glass blue color amount (0 - 100)")
             .defineInRange("chargingBaseEnergyMeterGlassBluePercent", 100, 0, 100);
 
-    private static ModConfigSpec.IntValue CHARGING_BASE_ENERGY_METER_GLASS_ALPHA = ENERGY_METER_GLASS_COLOR_SETTINGS_BUILDER
+    private static final ModConfigSpec.IntValue CHARGING_BASE_ENERGY_METER_GLASS_ALPHA = ENERGY_METER_GLASS_COLOR_SETTINGS_BUILDER
             .comment("charging base meter glass alpha color amount (0 - 100)")
             .defineInRange("chargingBaseEnergyMeterGlassAlphaPercent", 85, 0, 100);
 
     // Bar Color ------------------------------------------------------------------------------------------------------
     private static final ModConfigSpec.Builder ENERGY_METER_BAR_COLOR_SETTINGS_BUILDER = ENERGY_METER_GLASS_COLOR_SETTINGS_BUILDER.pop().push("Bar Color");
 
-    private static ModConfigSpec.IntValue CHARGING_BASE_ENERGY_METER_BAR_RED = ENERGY_METER_BAR_COLOR_SETTINGS_BUILDER
+    private static final ModConfigSpec.IntValue CHARGING_BASE_ENERGY_METER_BAR_RED = ENERGY_METER_BAR_COLOR_SETTINGS_BUILDER
             .comment("charging base meter bar red color amount (0 - 100)")
             .defineInRange("chargingBaseEnergyMeterBarRedPercent", 0, 0, 100);
 
-    private static ModConfigSpec.IntValue CHARGING_BASE_ENERGY_METER_BAR_GREEN = ENERGY_METER_BAR_COLOR_SETTINGS_BUILDER
+    private static final ModConfigSpec.IntValue CHARGING_BASE_ENERGY_METER_BAR_GREEN = ENERGY_METER_BAR_COLOR_SETTINGS_BUILDER
             .comment("charging base meter bar green color amount (0 - 100)")
             .defineInRange("chargingBaseEnergyMeterBarGreenPercent", 100, 0, 100);
 
-    private static ModConfigSpec.IntValue CHARGING_BASE_ENERGY_METER_BAR_BLUE = ENERGY_METER_BAR_COLOR_SETTINGS_BUILDER
+    private static final ModConfigSpec.IntValue CHARGING_BASE_ENERGY_METER_BAR_BLUE = ENERGY_METER_BAR_COLOR_SETTINGS_BUILDER
             .comment("charging base meter bar blue color amount (0 - 100)")
             .defineInRange("chargingBaseEnergyMeterBarBluePercent", 0, 0, 100);
 
-    private static ModConfigSpec.IntValue CHARGING_BASE_ENERGY_METER_BAR_ALPHA = ENERGY_METER_BAR_COLOR_SETTINGS_BUILDER
+    private static final ModConfigSpec.IntValue CHARGING_BASE_ENERGY_METER_BAR_ALPHA = ENERGY_METER_BAR_COLOR_SETTINGS_BUILDER
             .comment("charging base meter bar alpha color amount (0 - 100)")
             .defineInRange("chargingBaseEnergyMeterBarAlphaPercent", 85, 0, 100);
 
     private static final ModConfigSpec.Builder DEVELOPMENT_SETTINGS_BUILDER = ENERGY_METER_BAR_COLOR_SETTINGS_BUILDER.pop(2).push("Development Settings");
 
-    private static ModConfigSpec.BooleanValue DEBUGGING_INFO = DEVELOPMENT_SETTINGS_BUILDER
+    private static final ModConfigSpec.BooleanValue DEBUGGING_INFO = DEVELOPMENT_SETTINGS_BUILDER
             .comment("Enable debugging info")
             .translation(NuminaConstants.CONFIG_DEBUGGING_INFO)
             .define("enableDebugging", false);
@@ -96,9 +96,6 @@ public class NuminaClientConfig {
     public static boolean useFovNormalize;
     public static boolean fovFixDefaultState;
     public static boolean useSounds;
-
-
-
 
     @SubscribeEvent
     static void onLoad(final ModConfigEvent event) {
