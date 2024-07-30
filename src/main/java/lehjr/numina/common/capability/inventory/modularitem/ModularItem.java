@@ -171,7 +171,6 @@ public class ModularItem extends ComponentItemHandler implements IModularItem {
                 return wrapper.getStackInSlot(slot).isEmpty() ? 1: 0;
             }
         }
-        NuminaLogger.logDebug("module here 9: " + module);
         return 0;
     }
 
@@ -189,7 +188,12 @@ public class ModularItem extends ComponentItemHandler implements IModularItem {
                 return false;
             }
         }
-        return isItemValid(slot, module) && isModuleValid(module);
+        NuminaLogger.logDebug("isValidForPlacement: <slot, module: <"+slot +", " +module +">"  );
+        NuminaLogger.logDebug("isSlotEmpty: " + getStackInSlot(slot).isEmpty());
+        NuminaLogger.logDebug("slotLimit: " + getStackLimit(slot, module));
+        NuminaLogger.logDebug("isItemValid: " + isItemValid(slot, module));
+
+        return getStackInSlot(slot).isEmpty() && getStackLimit(slot, module) != 0 && isItemValid(slot, module);
     }
 
     @Override

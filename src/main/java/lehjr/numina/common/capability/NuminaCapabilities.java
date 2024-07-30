@@ -15,14 +15,12 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.neoforge.capabilities.BlockCapability;
 import net.neoforged.neoforge.capabilities.EntityCapability;
 import net.neoforged.neoforge.capabilities.ItemCapability;
-import net.neoforged.neoforge.server.ServerLifecycleHooks;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.Optional;
 
 
@@ -99,12 +97,21 @@ public class NuminaCapabilities {
                 .map(IModularItem.class::cast);
     }
 
-    public static Optional<IModularItem> getModularItemOrModeChangingCapability(ItemStack modularItem) {
+    public static Optional<IModularItem> getOptionalModularItemOrModeChangingCapability(ItemStack modularItem) {
         Optional<IModularItem> cap = getModularItemCapability(modularItem);
         if (cap.isPresent()) {
             return cap;
         }
         return getModeChangingModularItemCapability(modularItem).map(IModularItem.class::cast);
+    }
+
+    @Nullable
+    public static IModularItem getModularItemOrModeChangingCapability(ItemStack modularItem) {
+        IModularItem cap = modularItem.getCapability(Inventory.MODE_CHANGING_MODULAR_ITEM);
+        if (cap != null) {
+            return cap;
+        }
+        return modularItem.getCapability(Inventory.MODULAR_ITEM);
     }
 
 
@@ -121,17 +128,17 @@ public class NuminaCapabilities {
         return getCapability(module, RENDER).map(IModelSpec.class::cast);
     }
 
-    /**
-     * Yeah, not sure if this will fail or not
-     * @return
-     */
-    public static HolderLookup.Provider getProvider() {
-        if (FMLEnvironment.dist == Dist.CLIENT) {
-            return SomeRandomClassName.provider();
-        }
-        assert ServerLifecycleHooks.getCurrentServer() != null;
-        return ServerLifecycleHooks.getCurrentServer().registryAccess();
-    }
+//    /**
+//     * Yeah, not sure if this will fail or not
+//     * @return
+//     */
+//    public static HolderLookup.Provider getProvider() {
+//        if (FMLEnvironment.dist == Dist.CLIENT) {
+//            return SomeRandomClassName.provider();
+//        }
+//        assert ServerLifecycleHooks.getCurrentServer() != null;
+//        return ServerLifecycleHooks.getCurrentServer().registryAccess();
+//    }
 
     public static HolderLookup.Provider getProvider(@Nonnull Level level) {
         return level.registryAccess();

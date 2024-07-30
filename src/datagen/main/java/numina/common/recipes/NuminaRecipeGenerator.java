@@ -40,7 +40,8 @@ public class NuminaRecipeGenerator extends RecipeProvider {
         // Modules ------------------------------------------------------------------------------------
         // Energy Storage
 
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, NuminaObjects.BATTERY_1.get())
+        // Batteries derived from capacitors
+       ShapedEnergyRecipeBuilder.shaped(RecipeCategory.MISC, NuminaObjects.BATTERY_1.get())
                 .pattern("WIW")
                 .pattern("ICI")
                 .pattern("IWI")
@@ -50,7 +51,7 @@ public class NuminaRecipeGenerator extends RecipeProvider {
                 .unlockedBy(getHasName(NuminaObjects.CAPACITOR_1.get()), has(NuminaObjects.CAPACITOR_1.get()))
                 .save(recipeOutput);
 
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, NuminaObjects.BATTERY_2.get())
+       ShapedEnergyRecipeBuilder.shaped(RecipeCategory.MISC, NuminaObjects.BATTERY_2.get())
                 .pattern("WIW")
                 .pattern("ICI")
                 .pattern("IWI")
@@ -60,7 +61,7 @@ public class NuminaRecipeGenerator extends RecipeProvider {
                 .unlockedBy(getHasName(NuminaObjects.CAPACITOR_2.get()), has(NuminaObjects.CAPACITOR_2.get()))
                 .save(recipeOutput);
 
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, NuminaObjects.BATTERY_3.get())
+       ShapedEnergyRecipeBuilder.shaped(RecipeCategory.MISC, NuminaObjects.BATTERY_3.get())
                 .pattern("WGW")
                 .pattern("GCG")
                 .pattern("GWG")
@@ -70,7 +71,7 @@ public class NuminaRecipeGenerator extends RecipeProvider {
                 .unlockedBy(getHasName(NuminaObjects.CAPACITOR_3.get()), has(NuminaObjects.CAPACITOR_3.get()))
                 .save(recipeOutput);
 
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, NuminaObjects.BATTERY_4.get())
+       ShapedEnergyRecipeBuilder.shaped(RecipeCategory.MISC, NuminaObjects.BATTERY_4.get())
                 .pattern("WGW")
                 .pattern("GCG")
                 .pattern("GWG")
@@ -79,6 +80,23 @@ public class NuminaRecipeGenerator extends RecipeProvider {
                 .define('C', NuminaObjects.CAPACITOR_4.get())
                 .unlockedBy(getHasName(NuminaObjects.CAPACITOR_4.get()), has(NuminaObjects.CAPACITOR_4.get()))
                 .save(recipeOutput);
+
+
+
+/*
+        // Old recipes
+        ShapedEnergyRecipeBuilder.shaped(RecipeCategory.MISC, NuminaObjects.BATTERY_1.get())
+                .pattern("WIW")
+                .pattern("ICI")
+                .pattern("IWI")
+                .define('W', NuminaObjects.WIRING_COPPER.get())
+                .define('I', Tags.Items.INGOTS_IRON)
+                .define('C', NuminaObjects.CAPACITOR_1.get())
+                .unlockedBy(getHasName(NuminaObjects.CAPACITOR_1.get()), has(NuminaObjects.CAPACITOR_1.get()))
+                .save(recipeOutput);
+
+ */
+
 
 // Components ---------------------------------------------------------------------------------
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, NuminaObjects.ARTIFICIAL_MUSCLE.get())
@@ -266,12 +284,32 @@ public class NuminaRecipeGenerator extends RecipeProvider {
                 .unlockedBy(getHasName(Items.WHITE_WOOL), has(Items.WHITE_WOOL))
                 .save(recipeOutput);
 
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, NuminaObjects.PLATING_IRON.get())
+                .pattern("II")
+                .pattern("WI")
+                .pattern("II")
+                .define('W', NuminaObjects.WIRING_COPPER.get())
+                .define('I', Tags.Items.INGOTS_IRON)
+                .unlockedBy(getHasName(NuminaObjects.WIRING_COPPER.get()), has(NuminaObjects.WIRING_COPPER.get()))
+                .save(recipeOutput);
 
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, NuminaObjects.PLATING_DIAMOND.get())
+                .pattern("DD")
+                .pattern("WD")
+                .pattern("DD")
+                .define('W', NuminaObjects.WIRING_COPPER.get())
+                .define('D', Tags.Items.GEMS_DIAMOND)
+                .unlockedBy(getHasName(Items.DIAMOND), has(Items.DIAMOND))
+                .save(recipeOutput);
 
- /*
-    public static final DeferredHolder<Item, ComponentItem> PLATING_IRON = registerComponent(NuminaConstants.COMPONENT__PLATING_IRON__REGNAME);
-    public static final DeferredHolder<Item, ComponentItem> PLATING_DIAMOND = registerComponent(NuminaConstants.COMPONENT__PLATING_DIAMOND__REGNAME);
- */
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, NuminaObjects.PLATING_NETHERITE.get())
+                .pattern("NN")
+                .pattern("WN")
+                .pattern("NN")
+                .define('W', NuminaObjects.WIRING_COPPER.get())
+                .define('N', Tags.Items.INGOTS_NETHERITE)
+                .unlockedBy(getHasName(Items.NETHERITE_INGOT), has(Items.NETHERITE_INGOT));
+
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, NuminaObjects.RUBBER_HOSE.get())
                 .pattern("WWW")
                 .pattern("G G")
@@ -311,18 +349,18 @@ public class NuminaRecipeGenerator extends RecipeProvider {
                 .unlockedBy(getHasName(NuminaObjects.WIRING_COPPER.get()), has(NuminaObjects.WIRING_COPPER.get()))
                 .save(recipeOutput);
 
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, NuminaObjects.WIRING_COPPER.get())
-                .pattern("CRC")
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, NuminaObjects.WIRING_COPPER.get(), 8)
+                .pattern("CCC")
                 .define('C', Tags.Items.INGOTS_COPPER)
-                .define('R', Tags.Items.DUSTS_REDSTONE)
-                .unlockedBy("has_redstone", has(Tags.Items.DUSTS_REDSTONE))
+//                .define('R', Tags.Items.DUSTS_REDSTONE)
+                .unlockedBy(getHasName(Items.COPPER_INGOT), has(Tags.Items.DUSTS_REDSTONE))
                 .save(recipeOutput);
 
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, NuminaObjects.WIRING_GOLD.get())
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, NuminaObjects.WIRING_GOLD.get(), 8)
                 .pattern("GRG")
                 .define('G', Tags.Items.INGOTS_GOLD)
                 .define('R', Tags.Items.DUSTS_REDSTONE)
-                .unlockedBy("has_redstone", has(Tags.Items.INGOTS_GOLD))
+                .unlockedBy(getHasName(Items.GOLD_INGOT), has(Tags.Items.INGOTS_GOLD))
                 .save(recipeOutput);
     }
 }

@@ -13,6 +13,7 @@ import net.neoforged.neoforge.data.event.GatherDataEvent;
 import powersuits.client.lang.MPSLanguageProvider_EN_US;
 import powersuits.common.loot.MPSBlockLoot;
 import powersuits.common.loot.MPSBlockTagProvider;
+import powersuits.common.recipes.MPSRecipeGenerator;
 
 import java.util.Collections;
 import java.util.List;
@@ -43,6 +44,7 @@ public class PowersuitsDataGenerator {
                 List.of(new LootTableProvider.SubProviderEntry(MPSBlockLoot::new, LootContextParamSets.BLOCK)),
                 lookupProvider));
 
+        generator.addProvider(event.includeServer(), new MPSRecipeGenerator(output, lookupProvider));
 
     }
 }

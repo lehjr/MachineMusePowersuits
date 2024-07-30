@@ -129,6 +129,7 @@ public class NuminaConstants {
     public static final String COMPONENT__PARACHUTE__REGNAME = getComponentName("parachute");
     public static final String COMPONENT__PLATING_IRON__REGNAME = getComponentName("plating_iron");
     public static final String COMPONENT__PLATING_DIAMOND__REGNAME = getComponentName("plating_diamond");
+    public static final String COMPONENT__PLATING_NETHERITE__REGNAME = getComponentName("plating_netherite");
     public static final String COMPONENT__RUBBER_HOSE__REGNAME = getComponentName("rubber_hose");
     public static final String COMPONENT__SERVO__REGNAME = getComponentName("servo");
     public static final String COMPONENT__SOLAR_PANEL__REGNAME = getComponentName("solar_panel");

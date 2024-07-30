@@ -139,7 +139,7 @@ public class ModularItemSelectionFrame extends AbstractGuiFrame<DrawableTile> {
     }
 
     public Optional<IModularItem> getModularItemCapability () {
-        return NuminaCapabilities.getModularItemOrModeChangingCapability(getModularItemOrEmpty());
+        return NuminaCapabilities.getOptionalModularItemOrModeChangingCapability(getModularItemOrEmpty());
     }
 
     public boolean playerHasModularItems() {

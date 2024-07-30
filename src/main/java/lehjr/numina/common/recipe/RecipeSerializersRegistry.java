@@ -35,8 +35,10 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 
 public class RecipeSerializersRegistry {
     public static final DeferredRegister<RecipeSerializer<?>> RECIPE_SERIALIZERS = DeferredRegister.create(BuiltInRegistries.RECIPE_SERIALIZER, NuminaConstants.MOD_ID);
-    public static final DeferredHolder<RecipeSerializer<?>, ShapedEnergyRecipe.EnergySerializer> ENERGY_RECIPE_SERIALIZER = RECIPE_SERIALIZERS.register("crafting_energy_item", () -> new ShapedEnergyRecipe.EnergySerializer());
-    public static final DeferredHolder<RecipeSerializer<?>, ShapedEnchantmentRecipe.EnchantmentSerializer> ENCHANTMENT_RECIPE_SERIALIZER = RECIPE_SERIALIZERS.register("crafting_enchantment_item", ()-> new ShapedEnchantmentRecipe.EnchantmentSerializer());
+    public static final DeferredHolder<RecipeSerializer<?>, ShapedEnergyRecipe.EnergySerializer> ENERGY_RECIPE_SERIALIZER = RECIPE_SERIALIZERS.register("crafting_energy_item", ShapedEnergyRecipe.EnergySerializer::new);
+    public static final DeferredHolder<RecipeSerializer<?>, ShapedEnchantmentRecipe.EnchantmentSerializer> ENCHANTMENT_RECIPE_SERIALIZER = RECIPE_SERIALIZERS.register("crafting_enchantment_item", ShapedEnchantmentRecipe.EnchantmentSerializer::new);
+
+
     public static final DeferredHolder<RecipeSerializer<?>, SimpleCraftingRecipeSerializer<ModuleInstallationRecipe>> ATTACHMENT = RECIPE_SERIALIZERS.register("module_install", () -> new SimpleCraftingRecipeSerializer<>(ModuleInstallationRecipe::new));
 
 }

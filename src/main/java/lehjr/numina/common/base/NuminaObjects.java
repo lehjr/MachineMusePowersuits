@@ -12,6 +12,7 @@ import lehjr.numina.common.entity.NuminaArmorStand;
 import lehjr.numina.common.item.Battery;
 import lehjr.numina.common.item.ComponentItem;
 import lehjr.numina.common.item.NuminaArmorStandItem;
+import lehjr.numina.common.recipe.ingredients.MinEnchantedIngredient;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -35,6 +36,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.neoforged.neoforge.attachment.AttachmentType;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
+import net.neoforged.neoforge.common.crafting.IngredientType;
 import net.neoforged.neoforge.common.extensions.IMenuTypeExtension;
 import net.neoforged.neoforge.fluids.SimpleFluidContent;
 import net.neoforged.neoforge.registries.DeferredHolder;
@@ -97,6 +99,7 @@ public class NuminaObjects {
     public static final DeferredHolder<Item, ComponentItem> PARACHUTE = registerComponent(NuminaConstants.COMPONENT__PARACHUTE__REGNAME);
     public static final DeferredHolder<Item, ComponentItem> PLATING_IRON = registerComponent(NuminaConstants.COMPONENT__PLATING_IRON__REGNAME);
     public static final DeferredHolder<Item, ComponentItem> PLATING_DIAMOND = registerComponent(NuminaConstants.COMPONENT__PLATING_DIAMOND__REGNAME);
+    public static final DeferredHolder<Item, ComponentItem> PLATING_NETHERITE = registerComponent(NuminaConstants.COMPONENT__PLATING_NETHERITE__REGNAME);
     public static final DeferredHolder<Item, ComponentItem> RUBBER_HOSE = registerComponent(NuminaConstants.COMPONENT__RUBBER_HOSE__REGNAME);
     public static final DeferredHolder<Item, ComponentItem> SERVO = registerComponent(NuminaConstants.COMPONENT__SERVO__REGNAME);
     public static final DeferredHolder<Item, ComponentItem> SOLAR_PANEL = registerComponent(NuminaConstants.COMPONENT__SOLAR_PANEL__REGNAME);
@@ -112,11 +115,6 @@ public class NuminaObjects {
             () -> EntityType.Builder.<NuminaArmorStand>of(NuminaArmorStand::new, MobCategory.CREATURE)
                     .sized(0.5F, 1.975F) // Hitbox Size
                     .build(new ResourceLocation(NuminaConstants.MOD_ID, NuminaConstants.ARMOR_STAND__ENTITY_TYPE_REGNAME).toString()));
-
-
-
-
-
 
     // Menu Types =====================================================================================================
     public static final DeferredRegister<MenuType<?>> MENU_TYPES = DeferredRegister.create(BuiltInRegistries.MENU, NuminaConstants.MOD_ID);
@@ -282,6 +280,7 @@ public class NuminaObjects {
                         output.accept(PARACHUTE.get());
                         output.accept(PLATING_IRON.get());
                         output.accept(PLATING_DIAMOND.get());
+                        output.accept(PLATING_NETHERITE.get());
                         output.accept(RUBBER_HOSE.get());
                         output.accept(SERVO.get());
                         output.accept(SOLAR_PANEL.get());
@@ -331,4 +330,14 @@ public class NuminaObjects {
     static DeferredHolder<Item, Battery> registerBattery(String name, int tier) {
         return NUMINA_ITEMS.register(name, () -> new Battery(tier));
     }
+
+    public static final DeferredRegister<IngredientType<?>> INGREDIENT_TYPES =
+            DeferredRegister.create(NeoForgeRegistries.Keys.INGREDIENT_TYPES, NuminaConstants.MOD_ID);
+
+    public static final Supplier<IngredientType<MinEnchantedIngredient>> MIN_ENCHANTED =
+            INGREDIENT_TYPES.register("min_enchanted",
+                    // The stream codec parameter is optional, a stream codec will be created from the codec
+                    // using ByteBufCodecs#fromCodec or #fromCodecWithRegistries if the stream codec isn't specified.
+                    () -> new IngredientType<>(MinEnchantedIngredient.CODEC, MinEnchantedIngredient.STREAM_CODEC));
 }
+

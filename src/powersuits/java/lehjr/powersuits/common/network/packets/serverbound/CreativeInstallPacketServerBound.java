@@ -3,14 +3,11 @@ package lehjr.powersuits.common.network.packets.serverbound;
 import lehjr.numina.common.capability.NuminaCapabilities;
 import lehjr.numina.common.utils.ItemUtils;
 import lehjr.powersuits.common.constants.MPSConstants;
-import lehjr.powersuits.common.network.MPSPackets;
-import lehjr.powersuits.common.network.packets.clientbound.CreativeInstallPacketClientBound;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -57,7 +54,7 @@ public record CreativeInstallPacketServerBound(EquipmentSlot slotType, ResourceL
                 iEnergyStorage.receiveEnergy(iEnergyStorage.getMaxEnergyStored(), false);
             });
 
-            NuminaCapabilities.getModularItemOrModeChangingCapability(ItemUtils.getItemFromEntitySlot(player, slotType))
+            NuminaCapabilities.getOptionalModularItemOrModeChangingCapability(ItemUtils.getItemFromEntitySlot(player, slotType))
                     .ifPresent(iModularItem -> {
                         if (!iModularItem.getInstalledModuleNames().contains(regName)) {
                             for (int index = 0; index < iModularItem.getSlots(); index++) {

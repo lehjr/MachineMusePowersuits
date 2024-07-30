@@ -37,7 +37,7 @@ public record ToggleRequestPacketServerBound(ResourceLocation registryName, bool
         ctx.enqueueWork(() -> {
             Player player = ctx.player();
                 for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
-                    NuminaCapabilities.getModularItemOrModeChangingCapability(player.getInventory().getItem(i))
+                    NuminaCapabilities.getOptionalModularItemOrModeChangingCapability(player.getInventory().getItem(i))
                             .ifPresent(handler -> handler.toggleModule(data.registryName, data.toggleval));
                 }
         });

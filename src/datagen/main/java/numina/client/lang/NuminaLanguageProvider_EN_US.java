@@ -127,17 +127,27 @@ public class NuminaLanguageProvider_EN_US extends AbstractLanguageProviderNumina
     public void addComponents() {
         // Artificial Muscle ---------------------------------------------------------------------------
         add(NuminaObjects.ARTIFICIAL_MUSCLE.get(), "Artificial Muscle");
-
         addItemDescriptions(NuminaObjects.ARTIFICIAL_MUSCLE.get(), "An electrical, artificial muscle, with less range of movement than human muscle but orders of magnitude more strength.");
 
         // Carbon Myofiber -----------------------------------------------------------------------------
         add(NuminaObjects.CARBON_MYOFIBER.get(), "Carbon Myofiber");
-
         addItemDescriptions(NuminaObjects.CARBON_MYOFIBER.get(), "A small bundle of carbon fibers, refined for use in artificial muscles.");
+
+        // Capacitor -----------------------------------------------------------------------------------
+        add(NuminaObjects.CAPACITOR_1.get(), "Capacitor Mk1");
+        addItemDescriptions(NuminaObjects.CAPACITOR_1.get(), "A very basic capacitor.");
+
+        add(NuminaObjects.CAPACITOR_2.get(), "Capacitor Mk2");
+        addItemDescriptions(NuminaObjects.CAPACITOR_2.get(), "A slightly improved capacitor.");
+
+        add(NuminaObjects.CAPACITOR_3.get(), "Capacitor Mk3");
+        addItemDescriptions(NuminaObjects.CAPACITOR_3.get(), "A drastically improved capacitor.");
+
+        add(NuminaObjects.CAPACITOR_4.get(), "Capacitor Mk4");
+        addItemDescriptions(NuminaObjects.CAPACITOR_4.get(), "A drastically improved, overly powerful capacitor.");
 
         // Computer Chip -------------------------------------------------------------------------------
         add(NuminaObjects.COMPUTER_CHIP.get(), "Computer Chip");
-
         addItemDescriptions(NuminaObjects.COMPUTER_CHIP.get(), "An upgraded control circuit that contains a CPU which is capable of more advanced calculations.");
 
         // Control Circuit -----------------------------------------------------------------------------

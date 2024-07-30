@@ -22,7 +22,7 @@ import java.util.Map;
 
 public class AdditionalInfo {
     public static void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> components, TooltipFlag flag, boolean doAdditionalInfo) {
-        NuminaCapabilities.getModularItemOrModeChangingCapability(stack).ifPresent(iModularItem -> {
+        NuminaCapabilities.getOptionalModularItemOrModeChangingCapability(stack).ifPresent(iModularItem -> {
             // Mode changing item such as power fist
             if (iModularItem instanceof IModeChangingItem) {
                 ItemStack activeModule = ((IModeChangingItem) iModularItem).getActiveModule();

@@ -68,7 +68,7 @@ public class MPSOverlay {
     }
 
     static boolean isModularItemEquipped(LocalPlayer player) {
-        return Arrays.stream(EquipmentSlot.values()).anyMatch(type ->NuminaCapabilities.getModularItemOrModeChangingCapability(ItemUtils.getItemFromEntitySlot(player, type)).isPresent());
+        return Arrays.stream(EquipmentSlot.values()).anyMatch(type ->NuminaCapabilities.getOptionalModularItemOrModeChangingCapability(ItemUtils.getItemFromEntitySlot(player, type)).isPresent());
     }
 
     static class KBDisplay extends DrawableRect {
@@ -101,7 +101,7 @@ public class MPSOverlay {
 
                 for (EquipmentSlot slot : EquipmentSlot.values()) {
                     ItemStack stack = ItemUtils.getItemFromEntitySlot(getPlayer(), slot);
-                    NuminaCapabilities.getModularItemOrModeChangingCapability(stack).ifPresent(iModularItem -> {
+                    NuminaCapabilities.getOptionalModularItemOrModeChangingCapability(stack).ifPresent(iModularItem -> {
                         if(iModularItem.isModuleInstalled(module)) {
                             installed.set(true);
                             if (iModularItem instanceof IModeChangingItem mci && mci.hasActiveModule(kb.registryName)) {

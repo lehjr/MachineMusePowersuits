@@ -54,7 +54,7 @@ public record TweakRequestDoublePacketServerBound(EquipmentSlot slotType, Resour
             if (data.moduleRegName != null && data.tweakName != null) {
                 ItemStack stack = ItemUtils.getItemFromEntitySlot(player, data.slotType);
 
-                NuminaCapabilities.getModularItemOrModeChangingCapability(stack)
+                NuminaCapabilities.getOptionalModularItemOrModeChangingCapability(stack)
                         .ifPresent(iItemHandler -> {
                             NuminaLogger.logDebug("setting module tweak name: " + data.tweakName + ", tweak value: " + data.tweakValue);
                             iItemHandler.setModuleDouble(data.moduleRegName, data.tweakName, data.tweakValue);
