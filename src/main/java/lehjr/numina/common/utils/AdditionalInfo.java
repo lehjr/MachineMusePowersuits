@@ -2,7 +2,9 @@ package lehjr.numina.common.utils;
 
 import lehjr.numina.common.capability.NuminaCapabilities;
 import lehjr.numina.common.capability.inventory.modechanging.IModeChangingItem;
+import lehjr.numina.common.capability.module.powermodule.IPowerModule;
 import lehjr.numina.common.constants.NuminaConstants;
+import lehjr.numina.common.item.ComponentItem;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.Component;
@@ -84,14 +86,10 @@ public class AdditionalInfo {
             }
         });
 
-        NuminaCapabilities.getCapability(stack, NuminaCapabilities.Module.POWER_MODULE).ifPresent(iPowerModule -> {
-            if (doAdditionalInfo) {
-                Component description = Component.translatable( stack.getItem().getDescriptionId() + ".desc");
-                components.addAll(StringUtils.wrapComponentToLength(description, 30));
-            } else {
-                components.add(additionalInfoInstructions());
-            }
-        });
+        IPowerModule pm = stack.getCapability(NuminaCapabilities.Module.POWER_MODULE);
+        if(pm != null || stack.getItem() instanceof ComponentItem) {
+            addDesc(stack, components, doAdditionalInfo);
+        }
 
         NuminaCapabilities.getCapability(stack, Capabilities.EnergyStorage.ITEM).ifPresent(energyCap->
                 // FIXME use Component.translatable??? !!!
@@ -99,6 +97,15 @@ public class AdditionalInfo {
                                 StringUtils.formatNumberShort(energyCap.getEnergyStored()),
                                 StringUtils.formatNumberShort(energyCap.getMaxEnergyStored())))
                         .setStyle(Style.EMPTY.applyFormat(ChatFormatting.AQUA).withItalic(true))));
+    }
+
+    public static void addDesc(ItemStack stack, List<Component> components, boolean doAdditionalInfo) {
+        if (doAdditionalInfo) {
+            Component description = Component.translatable( stack.getItem().getDescriptionId() + ".desc");
+            components.addAll(StringUtils.wrapComponentToLength(description, 30));
+        } else {
+            components.add(additionalInfoInstructions());
+        }
     }
 
     static class FluidInfo {

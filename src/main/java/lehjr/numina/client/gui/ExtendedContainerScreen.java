@@ -13,6 +13,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.ItemStack;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -163,6 +164,15 @@ public class ExtendedContainerScreen<T extends AbstractContainerMenu> extends Ab
         List<Component> tooltip = getToolTip(mouseX, mouseY);
         if (tooltip != null) {
             gfx.renderTooltip(Minecraft.getInstance().font, tooltip.stream().map(Component::getVisualOrderText).collect(Collectors.toList()), mouseX, mouseY);
+        }
+    }
+
+    // FIXME: Temporary method for rendering tooltips for slots until I fix the GUI's using workarounds, or until I forget
+    public void superRenderTooltip(GuiGraphics gfx, int mouseX, int mouseY) {
+            if (this.menu.getCarried().isEmpty() && this.hoveredSlot != null && this.hoveredSlot.hasItem()) {
+                ItemStack itemstack = this.hoveredSlot.getItem();
+                gfx.renderTooltip(this.font, this.getTooltipFromContainerItem(itemstack), itemstack.getTooltipImage(), itemstack, mouseX, mouseY);
+
         }
     }
 

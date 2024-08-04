@@ -30,6 +30,12 @@ public class ArmorStandScreen extends ExtendedContainerScreen<ArmorStandMenu> {
     }
 
     @Override
+    public void renderTooltip(GuiGraphics gfx, int mouseX, int mouseY) {
+        super.renderTooltip(gfx, mouseX, mouseY);
+        super.superRenderTooltip(gfx, mouseX, mouseY);
+    }
+
+    @Override
     protected void renderBg(GuiGraphics gfx, float partialTick, int mouseX, int mouseY) {
         int i = this.leftPos;
         int j = this.topPos;

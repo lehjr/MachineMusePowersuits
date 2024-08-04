@@ -235,7 +235,7 @@ def setupTasks(SourceSet sourceSet) {
 }
 
 group = group_id
-version = "${mod_version}." + (System.env.BUILD_NUMBER ?: 0)
+version = "${mod_version}"
 archivesBaseName = "Numina-NeoForge-${minecraft_version}"
 
 java {

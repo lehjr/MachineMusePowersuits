@@ -40,7 +40,7 @@ public class NuminaRecipeGenerator extends RecipeProvider {
         // Modules ------------------------------------------------------------------------------------
         // Energy Storage
 
-        // Batteries derived from capacitors
+        // First tier battery derived from capacitor to avoid redstone usage
        ShapedEnergyRecipeBuilder.shaped(RecipeCategory.MISC, NuminaObjects.BATTERY_1.get())
                 .pattern("WIW")
                 .pattern("ICI")
@@ -51,51 +51,79 @@ public class NuminaRecipeGenerator extends RecipeProvider {
                 .unlockedBy(getHasName(NuminaObjects.CAPACITOR_1.get()), has(NuminaObjects.CAPACITOR_1.get()))
                 .save(recipeOutput);
 
-       ShapedEnergyRecipeBuilder.shaped(RecipeCategory.MISC, NuminaObjects.BATTERY_2.get())
-                .pattern("WIW")
-                .pattern("ICI")
-                .pattern("IWI")
+        // Above tier 1, player should have access to redstone
+        ShapedEnergyRecipeBuilder.shaped(RecipeCategory.MISC, NuminaObjects.BATTERY_2.get())
+                .pattern("WBW")
+                .pattern("BCB")
+                .pattern("BWB")
                 .define('W', NuminaObjects.WIRING_COPPER.get())
-                .define('I', Tags.Items.INGOTS_IRON)
-                .define('C', NuminaObjects.CAPACITOR_2.get())
-                .unlockedBy(getHasName(NuminaObjects.CAPACITOR_2.get()), has(NuminaObjects.CAPACITOR_2.get()))
+                .define('C', NuminaObjects.CONTROL_CIRCUIT_2.get())
+                .define('B', NuminaObjects.BATTERY_1.get())
+                .unlockedBy(getHasName(NuminaObjects.BATTERY_1.get()), has(NuminaObjects.BATTERY_1.get()))
                 .save(recipeOutput);
 
-       ShapedEnergyRecipeBuilder.shaped(RecipeCategory.MISC, NuminaObjects.BATTERY_3.get())
-                .pattern("WGW")
-                .pattern("GCG")
-                .pattern("GWG")
+        // Above tier 2, player should have access to gold
+        ShapedEnergyRecipeBuilder.shaped(RecipeCategory.MISC, NuminaObjects.BATTERY_3.get())
+                .pattern("WBW")
+                .pattern("BCB")
+                .pattern("BWB")
                 .define('W', NuminaObjects.WIRING_GOLD.get())
-                .define('G', Tags.Items.GLASS_PANES)
-                .define('C', NuminaObjects.CAPACITOR_3.get())
-                .unlockedBy(getHasName(NuminaObjects.CAPACITOR_3.get()), has(NuminaObjects.CAPACITOR_3.get()))
+                .define('C', NuminaObjects.CONTROL_CIRCUIT_3.get())
+                .define('B', NuminaObjects.BATTERY_2.get())
+                .unlockedBy(getHasName(NuminaObjects.BATTERY_2.get()), has(NuminaObjects.BATTERY_2.get()))
                 .save(recipeOutput);
 
-       ShapedEnergyRecipeBuilder.shaped(RecipeCategory.MISC, NuminaObjects.BATTERY_4.get())
-                .pattern("WGW")
-                .pattern("GCG")
-                .pattern("GWG")
+        ShapedEnergyRecipeBuilder.shaped(RecipeCategory.MISC, NuminaObjects.BATTERY_4.get())
+                .pattern("WBW")
+                .pattern("BCB")
+                .pattern("BWB")
                 .define('W', NuminaObjects.WIRING_GOLD.get())
-                .define('G', Tags.Items.GLASS_PANES)
-                .define('C', NuminaObjects.CAPACITOR_4.get())
-                .unlockedBy(getHasName(NuminaObjects.CAPACITOR_4.get()), has(NuminaObjects.CAPACITOR_4.get()))
+                .define('C', NuminaObjects.CONTROL_CIRCUIT_4.get())
+                .define('B', NuminaObjects.BATTERY_3.get())
+                .unlockedBy(getHasName(NuminaObjects.BATTERY_3.get()), has(NuminaObjects.BATTERY_3.get()))
                 .save(recipeOutput);
 
 
-
-/*
-        // Old recipes
-        ShapedEnergyRecipeBuilder.shaped(RecipeCategory.MISC, NuminaObjects.BATTERY_1.get())
-                .pattern("WIW")
-                .pattern("ICI")
-                .pattern("IWI")
-                .define('W', NuminaObjects.WIRING_COPPER.get())
-                .define('I', Tags.Items.INGOTS_IRON)
-                .define('C', NuminaObjects.CAPACITOR_1.get())
-                .unlockedBy(getHasName(NuminaObjects.CAPACITOR_1.get()), has(NuminaObjects.CAPACITOR_1.get()))
-                .save(recipeOutput);
-
- */
+//        // Old recipes
+//        ShapedEnergyRecipeBuilder.shaped(RecipeCategory.MISC, NuminaObjects.BATTERY_1.get())
+//                .pattern("WIW")
+//                .pattern("ICI")
+//                .pattern("IWI")
+//                .define('W', NuminaObjects.WIRING_COPPER.get())
+//                .define('I', Tags.Items.INGOTS_IRON)
+//                .define('C', NuminaObjects.CAPACITOR_1.get())
+//                .unlockedBy(getHasName(NuminaObjects.CAPACITOR_1.get()), has(NuminaObjects.CAPACITOR_1.get()))
+//                .save(recipeOutput);
+//
+//        ShapedEnergyRecipeBuilder.shaped(RecipeCategory.MISC, NuminaObjects.BATTERY_2.get())
+//                .pattern("WIW")
+//                .pattern("ICI")
+//                .pattern("IWI")
+//                .define('W', NuminaObjects.WIRING_COPPER.get())
+//                .define('I', Tags.Items.INGOTS_IRON)
+//                .define('C', NuminaObjects.CAPACITOR_2.get())
+//                .unlockedBy(getHasName(NuminaObjects.CAPACITOR_2.get()), has(NuminaObjects.CAPACITOR_2.get()))
+//                .save(recipeOutput);
+//
+//        ShapedEnergyRecipeBuilder.shaped(RecipeCategory.MISC, NuminaObjects.BATTERY_3.get())
+//                .pattern("WGW")
+//                .pattern("GCG")
+//                .pattern("GWG")
+//                .define('W', NuminaObjects.WIRING_GOLD.get())
+//                .define('G', Tags.Items.GLASS_PANES)
+//                .define('C', NuminaObjects.CAPACITOR_3.get())
+//                .unlockedBy(getHasName(NuminaObjects.CAPACITOR_3.get()), has(NuminaObjects.CAPACITOR_3.get()))
+//                .save(recipeOutput);
+//
+//       ShapedEnergyRecipeBuilder.shaped(RecipeCategory.MISC, NuminaObjects.BATTERY_4.get())
+//                .pattern("WGW")
+//                .pattern("GCG")
+//                .pattern("GWG")
+//                .define('W', NuminaObjects.WIRING_GOLD.get())
+//                .define('G', Tags.Items.GLASS_PANES)
+//                .define('C', NuminaObjects.CAPACITOR_4.get())
+//                .unlockedBy(getHasName(NuminaObjects.CAPACITOR_4.get()), has(NuminaObjects.CAPACITOR_4.get()))
+//                .save(recipeOutput);
 
 
 // Components ---------------------------------------------------------------------------------

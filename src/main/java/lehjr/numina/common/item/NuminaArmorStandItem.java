@@ -3,10 +3,13 @@ package lehjr.numina.common.item;
 import lehjr.numina.client.render.item.NuminaArmorStandItemRenderer;
 import lehjr.numina.common.base.NuminaObjects;
 import lehjr.numina.common.entity.NuminaArmorStand;
+import lehjr.numina.common.utils.AdditionalInfo;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Rotations;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -18,6 +21,7 @@ import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.item.ArmorStandItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
@@ -26,6 +30,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 
+import java.util.List;
 import java.util.function.Consumer;
 
 public class NuminaArmorStandItem extends ArmorStandItem {
@@ -93,5 +98,11 @@ public class NuminaArmorStandItem extends ArmorStandItem {
                 return renderer;
             }
         });
+    }
+
+    @Override
+    public void appendHoverText(ItemStack itemStack, TooltipContext context, List<Component> toolTips, TooltipFlag flags) {
+        super.appendHoverText(itemStack, context, toolTips, flags);
+        AdditionalInfo.addDesc(itemStack, toolTips, Screen.hasShiftDown());
     }
 }
