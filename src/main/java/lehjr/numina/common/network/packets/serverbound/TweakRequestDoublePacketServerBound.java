@@ -42,12 +42,6 @@ public record TweakRequestDoublePacketServerBound(EquipmentSlot slotType, Resour
                 packetBuffer.readDouble());
     }
 
-    // Don't use this, Let data handlers actually handle sync
-
-//    public static void sendToClient(ServerPlayer entity, EquipmentSlot type, ResourceLocation moduleRegName, String tweakName, double tweakValue) {
-//        NuminaPackets.sendToPlayer(new TweakRequestDoublePacketClientBound(type, moduleRegName, tweakName, tweakValue), entity);
-//    }
-
     public static void handle(TweakRequestDoublePacketServerBound data, IPayloadContext ctx) {
         ctx.enqueueWork(() -> {
             Player player = ctx.player();
@@ -55,25 +49,7 @@ public record TweakRequestDoublePacketServerBound(EquipmentSlot slotType, Resour
                 ItemStack stack = ItemUtils.getItemFromEntitySlot(player, data.slotType);
 
                 NuminaCapabilities.getOptionalModularItemOrModeChangingCapability(stack)
-                        .ifPresent(iItemHandler -> {
-                            NuminaLogger.logDebug("setting module tweak name: " + data.tweakName + ", tweak value: " + data.tweakValue);
-                            iItemHandler.setModuleDouble(data.moduleRegName, data.tweakName, data.tweakValue);
-
-                            ItemStack module = ItemStack.EMPTY;
-                            for (int i = 0; i < iItemHandler.getSlots(); i++) {
-                                ItemStack testStack = iItemHandler.getStackInSlot(i);
-                                if (ItemUtils.getRegistryName(testStack).equals(data.moduleRegName)) {
-                                    module = testStack;
-                                    NuminaLogger.logDebug("found: " + module);
-
-                                    break;
-                                }
-                            }
-
-                            NuminaCapabilities.getPowerModuleCapability(module).ifPresent(pm->System.out.println("checking tweak value: " + pm.getModuleTag().get(data.tweakName)));
-                        });
-
-//                sendToClient((ServerPlayer) player, data.slotType, data.moduleRegName, data.tweakName, data.tweakValue);
+                        .ifPresent(iItemHandler -> iItemHandler.setModuleDouble(data.moduleRegName, data.tweakName, data.tweakValue));
             }
         });
     }

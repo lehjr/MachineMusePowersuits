@@ -541,10 +541,11 @@ public class MPSRecipeGenerator extends RecipeProvider {
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, MPSItems.STONE_AXE_MODULE.get())
                 .pattern("SSW")
                 .pattern("SCW")
-                .pattern(" C ")
+                .pattern(" X ")
                 .define('S', Tags.Items.COBBLESTONES)
                 .define('C', NuminaObjects.CONTROL_CIRCUIT_1.get())
                 .define('W', Tags.Items.STRINGS)
+                .define('X', Items.STICK)
                 .unlockedBy(getHasName(NuminaObjects.CONTROL_CIRCUIT_1.get()), has(NuminaObjects.CONTROL_CIRCUIT_1.get()))
                 .save(output);
 
@@ -585,10 +586,11 @@ public class MPSRecipeGenerator extends RecipeProvider {
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, MPSItems.STONE_PICKAXE_MODULE.get())
                 .pattern("SSS")
                 .pattern("WCW")
-                .pattern(" C ")
+                .pattern(" X ")
                 .define('S', Tags.Items.COBBLESTONES)
                 .define('C', NuminaObjects.CONTROL_CIRCUIT_1.get())
                 .define('W', Tags.Items.STRINGS)
+                .define('X', Items.STICK)
                 .unlockedBy(getHasName(NuminaObjects.CONTROL_CIRCUIT_1.get()), has(NuminaObjects.CONTROL_CIRCUIT_1.get()))
                 .save(output);
 
@@ -629,10 +631,11 @@ public class MPSRecipeGenerator extends RecipeProvider {
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, MPSItems.STONE_SHOVEL_MODULE.get())
                 .pattern(" S ")
                 .pattern("WCW")
-                .pattern(" C ")
+                .pattern(" X ")
                 .define('S', Tags.Items.COBBLESTONES)
                 .define('C', NuminaObjects.CONTROL_CIRCUIT_1.get())
                 .define('W', Tags.Items.STRINGS)
+                .define('X', Items.STICK)
                 .unlockedBy(getHasName(NuminaObjects.CONTROL_CIRCUIT_1.get()), has(NuminaObjects.CONTROL_CIRCUIT_1.get()))
                 .save(output);
 

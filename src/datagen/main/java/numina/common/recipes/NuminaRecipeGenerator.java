@@ -207,16 +207,6 @@ public class NuminaRecipeGenerator extends RecipeProvider {
                 .save(recipeOutput);
 
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, NuminaObjects.CONTROL_CIRCUIT_2.get())
-                .pattern("BSB")
-                .pattern("SCS")
-                .pattern("BSB")
-                .define('B', Items.STONE_BUTTON)
-                .define('C', Tags.Items.STONES)
-                .define('S', Items.LEVER)
-                .unlockedBy(getHasName(Items.STONE), has(Items.STONE))
-                .save(recipeOutput);
-
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, NuminaObjects.CONTROL_CIRCUIT_3.get())
                 .pattern("WOW")
                 .pattern("RGO")
                 .pattern("ERW")
@@ -228,7 +218,7 @@ public class NuminaRecipeGenerator extends RecipeProvider {
                 .unlockedBy(getHasName(NuminaObjects.WIRING_COPPER.get()), has(NuminaObjects.WIRING_COPPER.get()))
                 .save(recipeOutput);
 
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, NuminaObjects.CONTROL_CIRCUIT_4.get())
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, NuminaObjects.CONTROL_CIRCUIT_3.get())
                 .pattern("WOW")
                 .pattern("RGO")
                 .pattern("ERW")
@@ -236,6 +226,18 @@ public class NuminaRecipeGenerator extends RecipeProvider {
                 .define('E', Tags.Items.INGOTS_GOLD)
                 .define('W', NuminaObjects.WIRING_GOLD.get())
                 .define('G', Tags.Items.DUSTS_GLOWSTONE)
+                .define('O', Tags.Items.DYES)
+                .unlockedBy(getHasName(NuminaObjects.WIRING_GOLD.get()), has(NuminaObjects.WIRING_GOLD.get()))
+                .save(recipeOutput);
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, NuminaObjects.CONTROL_CIRCUIT_4.get())
+                .pattern("WOW")
+                .pattern("RGO")
+                .pattern("ERW")
+                .define('R', Tags.Items.DUSTS_REDSTONE)
+                .define('E', Tags.Items.INGOTS_GOLD)
+                .define('W', NuminaObjects.WIRING_GOLD.get())
+                .define('G', Tags.Items.ENDER_PEARLS)
                 .define('O', Tags.Items.DYES)
                 .unlockedBy(getHasName(NuminaObjects.WIRING_GOLD.get()), has(NuminaObjects.WIRING_GOLD.get()))
                 .save(recipeOutput);

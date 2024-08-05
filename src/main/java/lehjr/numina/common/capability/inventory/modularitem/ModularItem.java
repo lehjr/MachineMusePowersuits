@@ -282,12 +282,12 @@ public class ModularItem extends ComponentItemHandler implements IModularItem {
     @Override
     public void setModuleDouble(ResourceLocation moduleName, String key, double value) {
         int i = findInstalledModule(moduleName);
-        if(i < -1) {
+        if(i > -1) {
             ItemStack module = getStackInSlot(i);
             IPowerModule pm = getModuleCapability(module);
             if (pm != null) {
-                TagUtils.setModuleDouble(module, key, value);
-                updateModuleInSlot(i, module);
+                ItemStack newModule = TagUtils.setModuleDouble(module, key, value);
+                updateModuleInSlot(i, newModule);
             }
         }
     }
