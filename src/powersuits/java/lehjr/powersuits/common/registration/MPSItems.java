@@ -136,6 +136,8 @@ public class MPSItems {
 
     // Energy Generation --------------------------------------------------------------------------
     // TODO
+    // Trying to come up with ideas that make sense and fit, not just with this mod, but other mods
+
 
     // Environmental ------------------------------------------------------------------------------
     // TODO: Cooling system 1, 2, 3, 4

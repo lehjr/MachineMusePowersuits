@@ -9,10 +9,7 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.CraftingBookCategory;
-import net.minecraft.world.item.crafting.RecipeSerializer;
-import net.minecraft.world.item.crafting.ShapedRecipe;
-import net.minecraft.world.item.crafting.ShapedRecipePattern;
+import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.energy.IEnergyStorage;
@@ -33,14 +30,61 @@ public class ShapedEnergyRecipe extends ShapedRecipe {
 	}
 
 	@Override
-	public boolean matches(CraftingContainer pInv, Level pLevel) {
-		return super.matches(pInv, pLevel);
+	public boolean matches(CraftingContainer inv, Level level) {
+		return matches(inv);
+	}
+
+	public boolean matches(CraftingContainer pContainer) {
+		for (int i = 0; i <= pContainer.getWidth() - this.pattern.width(); i++) {
+			for (int j = 0; j <= pContainer.getHeight() - this.pattern.height(); j++) {
+				if (this.matches(pContainer, i, j, true)) {
+					return true;
+				}
+
+				if (this.matches(pContainer, i, j, false)) {
+					return true;
+				}
+			}
+		}
+
+		return false;
+	}
+
+	private boolean matches(CraftingContainer container, int startX, int startY, boolean reverse) {
+		for (int col = 0; col < container.getWidth(); col++) {
+			for (int row = 0; row < container.getHeight(); row++) {
+				int k = col - startX;
+				int l = row - startY;
+				Ingredient ingredient = Ingredient.EMPTY;
+				if (k >= 0 && l >= 0 && k < this.pattern.width() && l < this.pattern.height()) {
+					if (reverse) {
+						ingredient = this.pattern.ingredients().get(this.pattern.width() - k - 1 + l * this.pattern.width());
+					} else {
+						ingredient = this.pattern.ingredients().get(k + l * this.pattern.width());
+					}
+				}
+
+				// batteries can't be stacked so check if ingredient is the same
+				if(ingredient.getItems().length == 1) {
+					ItemStack gridItem = container.getItem(col + row * container.getWidth());
+					ItemStack ingredientStack = ingredient.getItems()[0];
+					if(!ingredientStack.is(gridItem.getItemHolder())) {
+						return false;
+					}
+				}
+
+				if (!ingredient.test(container.getItem(col + row * container.getWidth()))) {
+					return false;
+				}
+			}
+		}
+		return true;
 	}
 
 	@Override
 	public ItemStack assemble(CraftingContainer container, HolderLookup.Provider provider) {
 		int energyDevices = 0;
-		final ItemStack output = super.assemble(container, provider).copy(); // Get the default output
+		final ItemStack output = result.copy(); // Get the default output
 		int energy = 0;
 		for(int i = 0; i < container.getContainerSize(); ++i) {
 			ItemStack itemstack = container.getItem(i);
@@ -55,13 +99,17 @@ public class ShapedEnergyRecipe extends ShapedRecipe {
 		if (energyStorage != null) {
 			int testEnergy;
 			if (energyDevices > 0) {
-				testEnergy = energyStorage.receiveEnergy(energy, true);
+				testEnergy = energy;
 			} else {
 				testEnergy = energyStorage.getMaxEnergyStored();
 			}
 
 			while (testEnergy > 0 || energyStorage.getEnergyStored() != energyStorage.getMaxEnergyStored()) {
 				testEnergy -= energyStorage.receiveEnergy(testEnergy, false);
+
+				if(testEnergy == 0 || energyStorage.getEnergyStored() == energyStorage.getMaxEnergyStored()) {
+					break;
+				}
 			}
 		}
 		return output.copy();
@@ -75,14 +123,15 @@ public class ShapedEnergyRecipe extends ShapedRecipe {
 	public static class EnergySerializer implements RecipeSerializer<ShapedEnergyRecipe> {
 		public static final MapCodec<ShapedEnergyRecipe> CODEC = RecordCodecBuilder.mapCodec(
 				recipeInstance -> recipeInstance.group(
-								Codec.STRING.optionalFieldOf("group", "").forGetter(ShapedRecipe::getGroup),
-								CraftingBookCategory.CODEC.fieldOf("category").orElse(CraftingBookCategory.MISC).forGetter(ShapedRecipe::category),
+								Codec.STRING.optionalFieldOf("group", "").forGetter(ShapedEnergyRecipe::getGroup),
+								CraftingBookCategory.CODEC.fieldOf("category").orElse(CraftingBookCategory.MISC).forGetter(ShapedEnergyRecipe::category),
 								ShapedRecipePattern.MAP_CODEC.forGetter(shapedRecipe -> shapedRecipe.pattern),
 								ItemStack.STRICT_CODEC.fieldOf("result").forGetter(shapedRecipe -> shapedRecipe.result),
-								Codec.BOOL.optionalFieldOf("show_notification", Boolean.valueOf(true)).forGetter(ShapedRecipe::showNotification)
+								Codec.BOOL.optionalFieldOf("show_notification", Boolean.valueOf(true)).forGetter(ShapedEnergyRecipe::showNotification)
 						)
 						.apply(recipeInstance, ShapedEnergyRecipe::new)
 		);
+
 		public static final StreamCodec<RegistryFriendlyByteBuf, ShapedEnergyRecipe> STREAM_CODEC = StreamCodec.of(EnergySerializer::toNetwork, EnergySerializer::fromNetwork);
 
 		@Override

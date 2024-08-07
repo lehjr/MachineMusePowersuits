@@ -1,6 +1,5 @@
 package lehjr.numina.common.recipe.ingredients;
 
-import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -16,12 +15,12 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.enchantment.Enchantment;
-import net.minecraft.world.level.ItemLike;
 import net.neoforged.neoforge.common.crafting.ICustomIngredient;
 import net.neoforged.neoforge.common.crafting.IngredientType;
-import net.neoforged.neoforge.common.util.NeoForgeExtraCodecs;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Stream;
 
 /**
@@ -39,7 +38,6 @@ public class MinEnchantedIngredient implements ICustomIngredient {
                     .forGetter(e -> e.enchantments)
     ).apply(instance, MinEnchantedIngredient::new));
 
-
     // Create a stream codec from the regular codec. In some cases, it might make sense to define
     // a new stream codec from scratch.
     public static final StreamCodec<RegistryFriendlyByteBuf, MinEnchantedIngredient> STREAM_CODEC =
@@ -55,42 +53,11 @@ public class MinEnchantedIngredient implements ICustomIngredient {
         this(tag, new HashMap<>());
     }
 
-
     // Make this chainable for easy use.
     public MinEnchantedIngredient with(Holder<Enchantment> enchantment, int level) {
         enchantments.put(enchantment, level);
         return this;
     }
-
-//    public static MinEnchantedIngredient of(ItemLike... pItems) {
-//        return of(Arrays.stream(pItems).map(ItemStack::new));
-//    }
-//
-//    public static MinEnchantedIngredient of(ItemStack... pStacks) {
-//        return of(Arrays.stream(pStacks));
-//    }
-
-//    public static MinEnchantedIngredient of(Stream<ItemStack> pStacks) {
-//        return fromValues(pStacks.filter(p_43944_ -> !p_43944_.isEmpty()).map(Ingredient.ItemValue::new));
-//    }
-
-//    public static MinEnchantedIngredient of(TagKey<Item> pTag) {
-//        return fromValues(Stream.of(new Ingredient.TagValue(pTag)));
-//    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     // Check if the passed ItemStack matches our ingredient by verifying the item is in the tag
     // and by testing for presence of all required enchantments with at least the required level.
@@ -143,23 +110,4 @@ public class MinEnchantedIngredient implements ICustomIngredient {
         // Return stream variant of the list.
         return stacks.stream();
     }
-
-
-
-//    // Neo: Do not extend this interface. For custom ingredient behaviors see ICustomIngredient.
-//    public interface Value {
-//        MapCodec<Ingredient.Value> MAP_CODEC = NeoForgeExtraCodecs.xor(Ingredient.ItemValue.MAP_CODEC, Ingredient.TagValue.MAP_CODEC)
-//                .xmap(either -> either.map(itemValue -> itemValue, tagValue -> tagValue), value -> {
-//                    if (value instanceof Ingredient.TagValue ingredient$tagvalue) {
-//                        return Either.right(ingredient$tagvalue);
-//                    } else if (value instanceof Ingredient.ItemValue ingredient$itemvalue) {
-//                        return Either.left(ingredient$itemvalue);
-//                    } else {
-//                        throw new UnsupportedOperationException("This is neither an item value nor a tag value.");
-//                    }
-//                });
-//        Codec<Ingredient.Value> CODEC = MAP_CODEC.codec();
-//
-//        Collection<ItemStack> getItems();
-//    }
 }

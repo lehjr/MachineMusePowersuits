@@ -355,7 +355,7 @@ public class NuminaRecipeGenerator extends RecipeProvider {
                 .pattern(" S ")
                 .define('W', NuminaObjects.WIRING_COPPER.get())
                 .define('S', NuminaObjects.SOLENOID.get())
-                .define('C', NuminaObjects.CONTROL_CIRCUIT_1.get())
+                .define('C', NuminaObjects.CONTROL_CIRCUIT_2.get())
                 .unlockedBy(getHasName(NuminaObjects.SOLENOID.get()), has(NuminaObjects.SOLENOID.get()))
                 .save(recipeOutput);
 

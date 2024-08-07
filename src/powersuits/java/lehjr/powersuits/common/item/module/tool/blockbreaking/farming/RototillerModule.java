@@ -55,13 +55,15 @@ public class RototillerModule extends AbstractPowerModule {
             ItemStack itemStack = context.getItemInHand();
             BlockState toolModifiedState1;
             InteractionResult ret = InteractionResult.PASS;
-            assert player != null;
+            if(player == null) {
+                return ret;
+            }
             if (!player.mayUseItemAt(blockPos, facing, itemStack) || ElectricItemUtils.getPlayerEnergy(player) < energyConsumed) {
                 return InteractionResult.PASS;
             } else {
                 int radius = (int)applyPropertyModifiers(MPSConstants.RADIUS);
-                for (int i = (int) Math.floor(-radius); i < radius; i++) {
-                    for (int j = (int) Math.floor(-radius); j < radius; j++) {
+                for (int i = Math.abs(radius); i < radius; i++) {
+                    for (int j = Math.abs(radius); j < radius; j++) {
                         if (i * i + j * j < radius * radius) {
                             BlockPos newPos = blockPos.offset(i, 0, j);
                             if (level.getBlockState(newPos.above()).isAir() && !level.getBlockState(newPos).isAir()) {
@@ -76,9 +78,7 @@ public class RototillerModule extends AbstractPowerModule {
                                         level.playSound(player, blockPos, SoundEvents.HOE_TILL, SoundSource.BLOCKS, 1.0F, 1.0F);
                                         if (!level.isClientSide) {
                                             consumer1.accept(context);
-                                            if (player != null) {
-                                                ElectricItemUtils.drainPlayerEnergy(player, energyConsumed, false);
-                                            }
+                                            ElectricItemUtils.drainPlayerEnergy(player, energyConsumed, false);
                                         }
                                         if(ret == InteractionResult.FAIL || ret == InteractionResult.PASS) {
                                             ret = InteractionResult.sidedSuccess(level.isClientSide);

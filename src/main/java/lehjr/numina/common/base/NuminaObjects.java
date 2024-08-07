@@ -188,39 +188,6 @@ public class NuminaObjects {
 
 
 
-
-
-
-
-
-
-
-//    public static final Codec<Double> POSITIVE_DOUBLE = doubleRangeMinExclusiveWithMessage(
-//            0.0F, Double.MAX_VALUE, p_339597_ -> "Value must be positive: " + p_339597_
-//    );
-
-
-
-
-//    private static Codec<Double> doubleRangeMinExclusiveWithMessage(double min, double max, Function<Double, String> pErrorMessage) {
-//        return Codec.DOUBLE
-//                .validate(
-//                        aDouble -> aDouble.compareTo(min) > 0 && aDouble.compareTo(max) <= 0
-//                                ? DataResult.success(aDouble)
-//                                : DataResult.error(() -> pErrorMessage.apply(aDouble))
-//                );
-
-
-//    // Serialization via INBTSerializable
-//    private static final Supplier<AttachmentType<ItemStackHandler>> HANDLER = ATTACHMENT_TYPES.register(
-//            "handler", () -> AttachmentType.serializable(() -> new ItemStackHandler(1)).build());
-//    // Serialization via codec
-//    private static final Supplier<AttachmentType<Byte>> MANA = ATTACHMENT_TYPES.register(
-//            "mana", () -> AttachmentType.builder(() -> 0).serialize(Codec.BYTE).build());
-
-
-
-
     public static void registerCapabilities(RegisterCapabilitiesEvent event) {
         // Batteries --------------------------------------------------------------------------------------------------
         event.registerItem(Capabilities.EnergyStorage.ITEM, (stack, ctx) -> new Battery.BatteryEnergyStorage(stack, ENERGY, 1), NuminaObjects.BATTERY_1.get());
