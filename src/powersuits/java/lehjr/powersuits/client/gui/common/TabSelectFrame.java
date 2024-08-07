@@ -38,7 +38,7 @@ public class TabSelectFrame extends AbstractGuiFrame {
         button = new VanillaButton(left(), top(), Component.translatable("gui.powersuits.tab.install.salvage"), active != 0);
         button.setOnPressed(onPressed->{
             Musique.playClientSound(SoundDictionary.SOUND_EVENT_GUI_SELECT.get(), 1);
-            MPSPackets.sendToServer(new ContainerGuiOpenPacket(EquipmentSlot.HEAD, false, 0, 0));
+            MPSPackets.sendToServer(new ContainerGuiOpenPacket(EquipmentSlot.HEAD));
         });
         buttons.add(button);
 

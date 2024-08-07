@@ -15,7 +15,7 @@ import net.neoforged.neoforge.network.handling.IPayloadContext;
 /**
  * A packet for sending a containerGui open request from the client side.
  */
-public record ContainerGuiOpenPacket(EquipmentSlot slotType, boolean preserve, double mouseX, double mouseY) implements CustomPacketPayload {
+public record ContainerGuiOpenPacket(EquipmentSlot slotType) implements CustomPacketPayload {
     public static final Type<ContainerGuiOpenPacket> ID = new Type<>(new ResourceLocation(MPSConstants.MOD_ID, "container_gui_open_to_server"));
 
     @Override
@@ -27,48 +27,23 @@ public record ContainerGuiOpenPacket(EquipmentSlot slotType, boolean preserve, d
             StreamCodec.ofMember(ContainerGuiOpenPacket::write, ContainerGuiOpenPacket::new);
 
     public ContainerGuiOpenPacket(RegistryFriendlyByteBuf packetBuffer) {
-        this(packetBuffer.readEnum(EquipmentSlot.class),
-                packetBuffer.readBoolean(),
-                packetBuffer.readDouble(),
-                packetBuffer.readDouble());
+        this(packetBuffer.readEnum(EquipmentSlot.class));
     }
 
     public void write(RegistryFriendlyByteBuf packetBuffer) {
         packetBuffer.writeEnum(slotType);
-        packetBuffer.writeBoolean(preserve);
-        packetBuffer.writeDouble(mouseX);
-        packetBuffer.writeDouble(mouseY);
-        NuminaLogger.logDebug("WRITING: reserve: " + preserve + ", mouseX: " + mouseX + ", mouseY: " + mouseY);
     }
 
-    // FIXME ... cleanup failed attempt at setting mouse coordinates
     public static void handle(ContainerGuiOpenPacket data, IPayloadContext ctx) {
         ctx.enqueueWork(() -> {
             SimpleMenuProvider container;
-            NuminaLogger.logDebug("HANDLING: reserve: " + data.preserve + ", mouseX: " + data.mouseX + ", mouseY: " + data.mouseY);
 
-            if(data.preserve()) {
-                NuminaLogger.logDebug("preserving mouse");
-                container = new SimpleMenuProvider((id, inventory, player) ->
-                        new InstallSalvageMenu(id, inventory,
-                                data.slotType,
-                                data.preserve,
-                                data.mouseX,
-                                data.mouseY),
-                        Component.translatable(MPSConstants.GUI_INSTALL_SALVAGE));
-            } else {
                 NuminaLogger.logDebug("not preserving mouse");
                 container = new SimpleMenuProvider((id, inventory, player) ->
                         new InstallSalvageMenu(id, inventory, data.slotType),
                         Component.translatable(MPSConstants.GUI_INSTALL_SALVAGE));
-            }
 
-            ctx.player().openMenu(container, buf -> {
-                buf.writeEnum(data.slotType);
-                buf.writeBoolean(data.preserve);
-                buf.writeDouble(data.mouseX);
-                buf.writeDouble(data.mouseY);
-            });
+            ctx.player().openMenu(container, buf -> buf.writeEnum(data.slotType));
         });
     }
 }

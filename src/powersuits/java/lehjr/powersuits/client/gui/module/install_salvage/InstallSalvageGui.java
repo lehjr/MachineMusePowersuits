@@ -48,19 +48,6 @@ public class InstallSalvageGui extends ExtendedContainerScreen<InstallSalvageMen
     public InstallSalvageGui(InstallSalvageMenu container, Inventory playerInventory, Component title) {
         super(container, playerInventory, title, 352, 217);
         this.playerInventory = playerInventory;
-
-        if(container.preserveMouse()) {
-            long window = Minecraft.getInstance().getWindow().getWindow();
-
-            GLFW.glfwSetInputMode(window, GLFW.GLFW_CURSOR, GLFW.GLFW_CURSOR_NORMAL);
-            GLFW.glfwSetCursorPos(window, container.getMouseX(), container.getMouseY());
-
-
-            Minecraft.getInstance().mouseHandler.xpos = container.getMouseX();
-            Minecraft.getInstance().mouseHandler.ypos = container.getMouseY();
-            NuminaLogger.logDebug("after mouseHandler.xpos: " + Minecraft.getInstance().mouseHandler.xpos);
-            NuminaLogger.logDebug("after mouseHandler.ypos: " + Minecraft.getInstance().mouseHandler.ypos);
-        }
     }
 
     @Override

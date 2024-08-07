@@ -149,6 +149,7 @@ public class ModularItem extends ComponentItemHandler implements IModularItem {
             // on loading to check if the module is valid for the given slot.
             int isInstalled = findInstalledModule(module);
             if (isInstalled != -1 && isInstalled != slot) {
+                NuminaLogger.logDebug("module already installed in slot: " + isInstalled);
                 return 0;
             }
 
@@ -164,11 +165,12 @@ public class ModularItem extends ComponentItemHandler implements IModularItem {
                 wrapper = getRangedWrappers().get(ModuleCategory.NONE);
             }
 
+            // Note, not using the actual wrapper mechanics, just slot ranges
             if (wrapper != null && ((IMixinRangedWrapper)wrapper).numina$contains(slot)) {
-                if (wrapper.getStackInSlot(slot).is(module.getItem())) {
+                if (getStackInSlot(slot).is(module.getItem())) {
                     return 1;
                 }
-                return wrapper.getStackInSlot(slot).isEmpty() ? 1: 0;
+                return getStackInSlot(slot).isEmpty() ? 1: 0;
             }
         }
         return 0;
@@ -188,11 +190,12 @@ public class ModularItem extends ComponentItemHandler implements IModularItem {
                 return false;
             }
         }
-        NuminaLogger.logDebug("isValidForPlacement: <slot, module: <"+slot +", " +module +">"  );
+        NuminaLogger.logDebug("==================================================================");
+        NuminaLogger.logDebug("isValidForPlacement: <slot, module: <" + slot +", " +module +">"  );
         NuminaLogger.logDebug("isSlotEmpty: " + getStackInSlot(slot).isEmpty());
         NuminaLogger.logDebug("slotLimit: " + getStackLimit(slot, module));
         NuminaLogger.logDebug("isItemValid: " + isItemValid(slot, module));
-
+        NuminaLogger.logDebug("------------------------------------------------------------------");
         return getStackInSlot(slot).isEmpty() && getStackLimit(slot, module) != 0 && isItemValid(slot, module);
     }
 
