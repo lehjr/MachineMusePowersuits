@@ -1,4 +1,4 @@
-package lehjr.powersuits.common.item.module.special;
+package lehjr.powersuits.common.item.module.environmental;
 
 import lehjr.numina.common.capability.module.powermodule.ModuleCategory;
 import lehjr.numina.common.capability.module.powermodule.ModuleTarget;

@@ -4,9 +4,6 @@ import lehjr.numina.common.base.NuminaLogger;
 import lehjr.numina.common.capability.NuminaCapabilities;
 import lehjr.numina.common.capability.inventory.modechanging.IModeChangingItem;
 import lehjr.numina.common.capability.module.powermodule.IPowerModule;
-import lehjr.numina.common.capability.module.powermodule.ModuleCategory;
-import lehjr.numina.common.capability.module.powermodule.ModuleTarget;
-import lehjr.numina.common.capability.module.rightclick.IRightClickModule;
 import lehjr.numina.common.capability.module.toggleable.IToggleableModule;
 import lehjr.numina.common.network.NuminaPackets;
 import lehjr.numina.common.network.packets.serverbound.PlayerUpdatePacketServerBound;
@@ -178,7 +175,52 @@ public class KeymappingKeyHandler {
         */
     }
 
-    public static void loadKeyBindings() {
+    // FIXME: move away from dynamic loading, just create a static list and be done with it.
+
+    public static void loadKeyModuleBindings() {
+        // Armor ----------------------------------------------------------------------------------
+        registerKeybinding(MPSConstants.ENERGY_SHIELD_MODULE, false);
+
+        // Cosmetic -------------------------------------------------------------------------------
+        registerKeybinding(MPSConstants.TRANSPARENT_ARMOR_MODULE, false);
+
+        // Energy Generation ----------------------------------------------------------------------
+        // TODO/FIXME
+
+        // Environmental --------------------------------------------------------------------------
+        // FIXME/TODO cooling modules
+
+        registerKeybinding(MPSConstants.AUTO_FEEDER_MODULE, false);
+        registerKeybinding(MPSConstants.MOB_REPULSOR_MODULE, false);
+        registerKeybinding(MPSConstants.WATER_ELECTROLYZER_MODULE, false);
+
+        // Mining Enchantment ---------------------------------------------------------------------
+        registerKeybinding(MPSConstants.AQUA_AFFINITY_MODULE, false);
+        registerKeybinding(MPSConstants.FORTUNE_MODULE, false);
+        registerKeybinding(MPSConstants.SILK_TOUCH_MODULE, false);
+
+        // Mining Enhancement ---------------------------------------------------------------------
+        registerKeybinding(MPSConstants.SELECTIVE_MINER_MODULE, false);
+        registerKeybinding(MPSConstants.TUNNEL_BORE_MODULE, false);
+        registerKeybinding(MPSConstants.VEIN_MINER_MODULE, false);
+
+        // Movement -------------------------------------------------------------------------------
+        registerKeybinding(MPSConstants.CLIMB_ASSIST_MODULE, false);
+        registerKeybinding(MPSConstants.FLIGHT_CONTROL_MODULE, false);
+        registerKeybinding(MPSConstants.GLIDER_MODULE, false);
+        registerKeybinding(MPSConstants.JETBOOTS_MODULE, false);
+        registerKeybinding(MPSConstants.JETPACK_MODULE, false);
+        registerKeybinding(MPSConstants.PARACHUTE_MODULE, false);
+        registerKeybinding(MPSConstants.SHOCK_ABSORBER_MODULE, false);
+        registerKeybinding(MPSConstants.SPRINT_ASSIST_MODULE, false);
+        registerKeybinding(MPSConstants.SWIM_BOOST_MODULE, false);
+
+        // TODO!!! FINISH!!!
+
+
+
+
+
         for (Item item : BuiltInRegistries.ITEM.stream().toList()) {
             ItemStack module = new ItemStack(item);
             IPowerModule pm = module.getCapability(NuminaCapabilities.Module.POWER_MODULE);
@@ -186,6 +228,8 @@ public class KeymappingKeyHandler {
                 NuminaLogger.logDebug("power module cap found for : " + module + ", pm class: " + pm.getClass());
                 NuminaLogger.logDebug("is instanceof IToggleableModule: " + (pm instanceof IToggleableModule));
 
+            } else {
+                NuminaLogger.logDebug("not a valid module: " + module +", pm: " + pm);
             }
 
             if(pm instanceof IToggleableModule) {

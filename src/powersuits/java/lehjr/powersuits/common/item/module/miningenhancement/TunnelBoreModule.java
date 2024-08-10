@@ -36,7 +36,11 @@ public class TunnelBoreModule extends AbstractPowerModule {
             addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, 500, "FE");
             addTradeoffProperty(MPSConstants.DIAMETER, MPSConstants.ENERGY_CONSUMPTION, 9500);
             // FIXME: mix of radius and diameter??? Just pick one!!!
+
             addIntTradeoffProperty(MPSConstants.DIAMETER, MPSConstants.MINING_RADIUS, 5, "m", 2, 1);
+            // TODO: overclock overrides for block breaking modules or recheck breaking speed?
+
+
         }
 
         @Override

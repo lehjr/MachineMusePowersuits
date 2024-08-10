@@ -295,13 +295,13 @@ public class MPSLanguageProvider_EN_US extends AbstractLangageProviderMPS {
         addItemDescriptions(MPSItems.STONE_PICKAXE_MODULE.get(), "The most basic mining module you can make.");
 
         add(MPSItems.IRON_PICKAXE_MODULE.get(), "Iron Pickaxe Module");
-        addItemDescriptions(MPSItems.IRON_PICKAXE_MODULE.get(), "Picks are good for harder materials like stone and ore.");
+        addItemDescriptions(MPSItems.IRON_PICKAXE_MODULE.get(), "Slightly more advanced mining module.");
 
-        add(MPSItems.DIAMOND_PICKAXE_MODULE.get(), "Iron Pickaxe Module");
-        addItemDescriptions(MPSItems.DIAMOND_PICKAXE_MODULE.get(), "Picks are good for harder materials like stone and ore.");
+        add(MPSItems.DIAMOND_PICKAXE_MODULE.get(), "Diamond Pickaxe Module");
+        addItemDescriptions(MPSItems.DIAMOND_PICKAXE_MODULE.get(), "Very advanced mining module.");
 
-        add(MPSItems.NETHERITE_PICKAXE_MODULE.get(), "Iron Pickaxe Module");
-        addItemDescriptions(MPSItems.NETHERITE_PICKAXE_MODULE.get(), "Picks are good for harder materials like stone and ore.");
+        add(MPSItems.NETHERITE_PICKAXE_MODULE.get(), "Netherite Pickaxe Module");
+        addItemDescriptions(MPSItems.NETHERITE_PICKAXE_MODULE.get(), "Top tier mining module.");
 
         // Shears --------------------------------------------------------------------------------------
         add(MPSItems.SHEARS_MODULE.get(), "Shears");

@@ -64,7 +64,7 @@ public class ClientEventBusSubscriber {
         KeyMappingReaderWriter.INSTANCE.readInKeybinds(); // read existing keybindings
 
 
-        KeymappingKeyHandler.loadKeyBindings(); // check for possible additional
+        KeymappingKeyHandler.loadKeyModuleBindings(); // check for possible additional
         KeymappingKeyHandler.keyMappings.values().forEach(event::register); // register keybinds
         Arrays.stream(KeymappingKeyHandler.keybindArray).forEach(event::register);
 

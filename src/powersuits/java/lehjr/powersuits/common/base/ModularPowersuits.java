@@ -8,6 +8,7 @@ import lehjr.powersuits.common.config.*;
 import lehjr.powersuits.common.config.ArmorConfig;
 import lehjr.powersuits.common.config.PowerFistConfig;
 import lehjr.powersuits.common.constants.MPSConstants;
+import lehjr.powersuits.common.event.PlayerEventHandler;
 import lehjr.powersuits.common.network.MPSPackets;
 import lehjr.powersuits.common.registration.*;
 import net.neoforged.bus.api.IEventBus;
@@ -18,6 +19,7 @@ import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.event.config.ModConfigEvent;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
 
 // The value here should match an entry in the META-INF/neoforge.mods.toml file
@@ -38,6 +40,9 @@ public class ModularPowersuits {
 
 
         MPSSoundDictionary.MPS_SOUND_EVENTS.register(modEventBus);
+
+        NeoForge.EVENT_BUS.register(PlayerEventHandler.class);
+
 
 
         // Register ourselves for server and other game events we are interested in.
@@ -76,6 +81,13 @@ public class ModularPowersuits {
         modContainer.registerConfig(ModConfig.Type.COMMON, VisionModuleConfig.MPS_VISION_MODULE_SPEC, ConfigHelper.setupConfigFile("common/items/modules/vision-modules.toml", MPSConstants.MOD_ID).getAbsolutePath());
         modContainer.registerConfig(ModConfig.Type.COMMON, WeaponModuleConfig.MPS_WEAPON_MODULE_SPEC, ConfigHelper.setupConfigFile("common/items/modules/weapon-modules.toml", MPSConstants.MOD_ID).getAbsolutePath());
     }
+
+//    @SubscribeEvent
+//    public void onPlayerLogin(PlayerEvent.PlayerLoggedInEvent event) {
+//        NuminaLogger.logDebug("firing player login event");
+//        PlayerEventHandler.onPlayerLogin(event);
+//    }
+
 
 
     private void commonSetup(final FMLCommonSetupEvent event) {

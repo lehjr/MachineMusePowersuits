@@ -1,6 +1,7 @@
 package lehjr.numina.common.network.packets.serverbound;
 
 import lehjr.numina.common.capability.NuminaCapabilities;
+import lehjr.numina.common.capability.inventory.modularitem.IModularItem;
 import lehjr.numina.common.constants.NuminaConstants;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
@@ -37,8 +38,10 @@ public record ToggleRequestPacketServerBound(ResourceLocation registryName, bool
         ctx.enqueueWork(() -> {
             Player player = ctx.player();
                 for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
-                    NuminaCapabilities.getOptionalModularItemOrModeChangingCapability(player.getInventory().getItem(i))
-                            .ifPresent(handler -> handler.toggleModule(data.registryName, data.toggleval));
+                    IModularItem modularItem = NuminaCapabilities.getModularItemOrModeChangingCapability(player.getInventory().getItem(i));
+                    if(modularItem != null) {
+                        modularItem.toggleModule(data.registryName, data.toggleval);
+                    }
                 }
         });
     }

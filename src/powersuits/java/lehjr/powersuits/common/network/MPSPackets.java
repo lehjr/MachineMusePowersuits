@@ -1,6 +1,7 @@
 package lehjr.powersuits.common.network;
 
 import lehjr.powersuits.common.network.packets.clientbound.CreativeInstallPacketClientBound;
+import lehjr.powersuits.common.network.packets.clientbound.ToggleableModuleListClientBound;
 import lehjr.powersuits.common.network.packets.serverbound.ContainerGuiOpenPacket;
 import lehjr.powersuits.common.network.packets.serverbound.CreativeInstallPacketServerBound;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
@@ -71,6 +72,9 @@ public class MPSPackets {
 //                ContainerGuiOpenPacket::handle);
 
 
+        registrar.playToClient(ToggleableModuleListClientBound.ID,
+                ToggleableModuleListClientBound.STREAM_CODEC,
+                ToggleableModuleListClientBound::handle);
     }
 
     public static void sendToServer(CustomPacketPayload message) {

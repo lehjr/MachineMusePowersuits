@@ -30,26 +30,6 @@ public class ScrollableInventoryFrame2 <C extends AbstractContainerMenu> extends
                 containerIn,
                 9,
                 new ArrayList<>() {{
-//                    modularItemSelectionFrame.getSelectedTab().ifPresent(tab -> {
-//                        modularItemSelectionFrame.getModularItemCapability()
-//
-//
-//                        EquipmentSlot type = tab.getSlotType();
-//                        NuminaCapabilities.getCapability(
-//                                        ItemUtils.getItemFromEntitySlot(Minecraft.getInstance().player, type),
-//                                        NuminaCapabilities.Inventory.MODULAR_ITEM)
-//                                .ifPresent(iItemHandler -> {
-//                                    if(iItemHandler.getSlots() > 0) {
-//                                        IntStream.range(0, iItemHandler.getSlots()).forEach(this::add);
-//                                    }
-//                                });
-//
-//                    });
-//                }},
-                    //                        EquipmentSlot type = tab.getSlotType();
-                    //                        NuminaCapabilities.getCapability(
-                    //                                        ItemUtils.getItemFromEntitySlot(Minecraft.getInstance().player, type),
-                    //                                        NuminaCapabilities.Inventory.MODULAR_ITEM)
                     modularItemSelectionFrame.getSelectedTab().flatMap(tab ->
                             modularItemSelectionFrame.getModularItemCapability()).ifPresent(iItemHandler -> {
                         if (iItemHandler.getSlots() > 0) {

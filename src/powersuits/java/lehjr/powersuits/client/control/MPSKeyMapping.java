@@ -2,6 +2,7 @@ package lehjr.powersuits.client.control;
 
 import com.mojang.blaze3d.platform.InputConstants;
 import lehjr.numina.common.capability.NuminaCapabilities;
+import lehjr.numina.common.capability.inventory.modularitem.IModularItem;
 import lehjr.numina.common.network.NuminaPackets;
 import lehjr.numina.common.network.packets.serverbound.ToggleRequestPacketServerBound;
 import lehjr.powersuits.client.overlay.MPSOverlay;
@@ -15,13 +16,6 @@ public class MPSKeyMapping extends KeyMapping {
     public final ResourceLocation registryName;
     public boolean showOnHud = true;
     public boolean toggleVal = false; // fixme: get value on load?
-
-    public MPSKeyMapping(ResourceLocation registryName, String name, int key, String category) {
-        super(name, key, category);
-        this.registryName = registryName;
-        this.showOnHud = false;
-        initToggleVal();
-    }
 
     public MPSKeyMapping(ResourceLocation registryName, String name, int key, String category, boolean showOnHud) {
         super(name, key, category);
@@ -70,8 +64,10 @@ public class MPSKeyMapping extends KeyMapping {
 
         NuminaPackets.sendToServer(new ToggleRequestPacketServerBound(registryName, toggleVal));
         for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
-            NuminaCapabilities.getCapability(player.getInventory().getItem(i), NuminaCapabilities.Inventory.MODULAR_ITEM)
-                    .ifPresent(handler -> handler.toggleModule(registryName, toggleVal));
+            IModularItem modularItem = NuminaCapabilities.getModularItemOrModeChangingCapability(player.getInventory().getItem(i));
+            if (modularItem != null) {
+                modularItem.toggleModule(registryName, toggleVal);
+            }
         }
         toggleVal = !toggleVal;
     }

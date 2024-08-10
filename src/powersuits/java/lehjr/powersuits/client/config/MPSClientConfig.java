@@ -307,7 +307,7 @@ public class MPSClientConfig {
             heat_meter_bar_red = HEAT_METER_BAR_RED.get();
             heat_meter_bar_green = HEAT_METER_BAR_GREEN.get();
             heat_meter_bar_blue = HEAT_METER_BAR_BLUE.get();
-            heat_meter_bar_alpha = HEAT_METER_GLASS_ALPHA.get();
+            heat_meter_bar_alpha = HEAT_METER_BAR_ALPHA.get();
 
             // Energy
             energy_meter_debug_val = ENERGY_METER_DEBUG_VAL.get();

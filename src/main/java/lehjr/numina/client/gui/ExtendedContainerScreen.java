@@ -161,6 +161,7 @@ public class ExtendedContainerScreen<T extends AbstractContainerMenu> extends Ab
 
     @Override
     public void renderTooltip(GuiGraphics gfx, int mouseX, int mouseY) {
+        super.renderTooltip(gfx, mouseX, mouseY);
         List<Component> tooltip = getToolTip(mouseX, mouseY);
         if (tooltip != null) {
             gfx.renderTooltip(Minecraft.getInstance().font, tooltip.stream().map(Component::getVisualOrderText).collect(Collectors.toList()), mouseX, mouseY);

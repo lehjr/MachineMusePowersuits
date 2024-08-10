@@ -1,15 +1,15 @@
-1.19.3 broken stuff and todo
+1.20.6 broken stuff and todo
 ----------------------------
 
 GUI
 -----------------------
-* creative install button - resize button - maybe install all modules qwith one click
+* creative install button - fix install all button so only valid for tier items get installed
 
 Model Spec
 ----------------------
-clean up and optimize
+implement
 
-Block Breaking code ( make diamond upgrade for all )
+Block Breaking Modules:
 ----------------------
 Axe
 Shovel
