@@ -1,9 +1,9 @@
 package lehjr.mpsrecipecreator.client.gui;
 
-import lehjr.numina.client.gui.frame.ScrollableFrame;
-import lehjr.numina.client.gui.geometry.MusePoint2D;
-import lehjr.numina.client.gui.geometry.Rect;
-import lehjr.numina.common.string.StringUtils;
+import com.lehjr.numina.client.gui.frame.ScrollableFrame;
+import com.lehjr.numina.client.gui.geometry.MusePoint2D;
+import com.lehjr.numina.client.gui.geometry.Rect;
+import com.lehjr.numina.common.string.StringUtils;
 import net.minecraft.client.gui.GuiGraphics;
 
 public class RecipeDisplayFrame extends ScrollableFrame {

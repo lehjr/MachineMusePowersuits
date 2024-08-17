@@ -1,4 +1,4 @@
-//package lehjr.numina.common.integration.scannable;
+//package com.lehjr.numina.common.integration.scannable;
 //
 //import com.mojang.blaze3d.systems.RenderSystem;
 //import com.mojang.blaze3d.vertex.BufferBuilder;
@@ -22,7 +22,7 @@
 //public enum MPSOverlayRenderer {
 //    INSTANCE;
 //
-//    private static final ResourceLocation PROGRESS = new ResourceLocation("scannable", "textures/gui/overlay/scanner_progress.png");
+//    private static final ResourceLocation PROGRESS = ResourceLocation.fromNamespaceAndPath("scannable", "textures/gui/overlay/scanner_progress.png");
 //
 //    @SubscribeEvent
 //    public void onOverlayRender(final RenderGameOverlayEvent.Post event) {
@@ -75,55 +75,55 @@
 //        final float tx = MathHelper.func_76126_a(angle);
 //        final float ty = MathHelper.func_76134_b(angle);
 //
-//        buffer.vertex(midX, top, 0).uv(0.5f, 1).endVertex();
+//        buffer.addVertex(midX, top, 0).uv(0.5f, 1);
 //        if (progress < 0.125) { // Top right.
-//            buffer.vertex(midX, midY, 0).uv(0.5f, 0.5f).endVertex();
+//            buffer.addVertex(midX, midY, 0).uv(0.5f, 0.5f);
 //
 //            final float x = tx / ty * 0.5f;
-//            buffer.vertex(midX + x * width, top, 0).uv(0.5f + x, 1).endVertex();
+//            buffer.addVertex(midX + x * width, top, 0).uv(0.5f + x, 1);
 //        } else {
-//            buffer.vertex(midX, midY, 0).uv(0.5f, 0.5f).endVertex();
-//            buffer.vertex(right, top, 0).uv(1, 1).endVertex();
+//            buffer.addVertex(midX, midY, 0).uv(0.5f, 0.5f);
+//            buffer.addVertex(right, top, 0).uv(1, 1);
 //
-//            buffer.vertex(right, top, 0).uv(1, 1).endVertex();
+//            buffer.addVertex(right, top, 0).uv(1, 1);
 //            if (progress < 0.375) { // Right.
-//                buffer.vertex(midX, midY, 0).uv(0.5f, 0.5f).endVertex();
+//                buffer.addVertex(midX, midY, 0).uv(0.5f, 0.5f);
 //
 //                final float y = Math.abs(ty / tx - 1) * 0.5f;
-//                buffer.vertex(right, top + y * height, 0).uv(1, 1 - y).endVertex();
+//                buffer.addVertex(right, top + y * height, 0).uv(1, 1 - y);
 //            } else {
-//                buffer.vertex(midX, midY, 0).uv(0.5f, 0.5f).endVertex();
-//                buffer.vertex(right, bottom, 0).uv(1, 0).endVertex();
+//                buffer.addVertex(midX, midY, 0).uv(0.5f, 0.5f);
+//                buffer.addVertex(right, bottom, 0).uv(1, 0);
 //
-//                buffer.vertex(right, bottom, 0).uv(1, 0).endVertex();
+//                buffer.addVertex(right, bottom, 0).uv(1, 0);
 //                if (progress < 0.625) { // Bottom.
-//                    buffer.vertex(midX, midY, 0).uv(0.5f, 0.5f).endVertex();
+//                    buffer.addVertex(midX, midY, 0).uv(0.5f, 0.5f);
 //
 //                    final float x = Math.abs(tx / ty - 1) * 0.5f;
-//                    buffer.vertex(left + x * width, bottom, 0).uv(x, 0).endVertex();
+//                    buffer.addVertex(left + x * width, bottom, 0).uv(x, 0);
 //                } else {
-//                    buffer.vertex(midX, midY, 0).uv(0.5f, 0.5f).endVertex();
-//                    buffer.vertex(left, bottom, 0).uv(0, 0).endVertex();
+//                    buffer.addVertex(midX, midY, 0).uv(0.5f, 0.5f);
+//                    buffer.addVertex(left, bottom, 0).uv(0, 0);
 //
-//                    buffer.vertex(left, bottom, 0).uv(0, 0).endVertex();
+//                    buffer.addVertex(left, bottom, 0).uv(0, 0);
 //                    if (progress < 0.875) { // Left.
-//                        buffer.vertex(midX, midY, 0).uv(0.5f, 0.5f).endVertex();
+//                        buffer.addVertex(midX, midY, 0).uv(0.5f, 0.5f);
 //
 //                        final float y = (ty / tx + 1) * 0.5f;
-//                        buffer.vertex(left, top + y * height, 0).uv(0, 1 - y).endVertex();
+//                        buffer.addVertex(left, top + y * height, 0).uv(0, 1 - y);
 //                    } else {
-//                        buffer.vertex(midX, midY, 0).uv(0.5f, 0.5f).endVertex();
-//                        buffer.vertex(left, top, 0).uv(0, 1).endVertex();
+//                        buffer.addVertex(midX, midY, 0).uv(0.5f, 0.5f);
+//                        buffer.addVertex(left, top, 0).uv(0, 1);
 //
-//                        buffer.vertex(left, top, 0).uv(0, 1).endVertex();
+//                        buffer.addVertex(left, top, 0).uv(0, 1);
 //                        if (progress < 1) { // Top left.
-//                            buffer.vertex(midX, midY, 0).uv(0.5f, 0.5f).endVertex();
+//                            buffer.addVertex(midX, midY, 0).uv(0.5f, 0.5f);
 //
 //                            final float x = Math.abs(tx / ty) * 0.5f;
-//                            buffer.vertex(midX - x * width, top, 0).uv(0.5f - x, 1).endVertex();
+//                            buffer.addVertex(midX - x * width, top, 0).uv(0.5f - x, 1);
 //                        } else {
-//                            buffer.vertex(midX, midY, 0).uv(0.5f, 0.5f).endVertex();
-//                            buffer.vertex(midX, top, 0).uv(0.5f, 1).endVertex();
+//                            buffer.addVertex(midX, midY, 0).uv(0.5f, 0.5f);
+//                            buffer.addVertex(midX, top, 0).uv(0.5f, 1);
 //                        }
 //                    }
 //                }

@@ -1,4 +1,4 @@
-//package lehjr.numina.common.integration.scannable;
+//package com.lehjr.numina.common.integration.scannable;
 //
 //import com.mojang.blaze3d.systems.RenderSystem;
 //import com.mojang.blaze3d.vertex.PoseStack;
@@ -20,7 +20,7 @@
 // * Basically, just a copy of Scannable's GuiScanner simply because of the container
 // */
 //public class MPSGuiScanner extends AbstractContainerScreen<MPSAbstractContainerMenuScanner> {
-//    private static final ResourceLocation BACKGROUND = new ResourceLocation(API.MOD_ID, "textures/gui/container/scanner.png");
+//    private static final ResourceLocation BACKGROUND = ResourceLocation.fromNamespaceAndPath(API.MOD_ID, "textures/gui/container/scanner.png");
 //    private static final Component.translatable SCANNER_MODULES_TEXT = Component.translatable(Constants.GUI_SCANNER_MODULES);
 //    private static final Component.translatable SCANNER_MODULES_TOOLTIP = Component.translatable(Constants.GUI_SCANNER_MODULES_TOOLTIP);
 //    private static final Component.translatable SCANNER_MODULES_INACTIVE_TEXT = Component.translatable(Constants.GUI_SCANNER_MODULES_INACTIVE);

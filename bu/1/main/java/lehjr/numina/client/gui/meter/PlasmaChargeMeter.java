@@ -1,6 +1,6 @@
-package lehjr.numina.client.gui.meter;
+package com.lehjr.numina.client.gui.meter;
 
-import lehjr.numina.client.config.IMeterConfig;
+import com.lehjr.numina.client.config.IMeterConfig;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;

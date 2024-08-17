@@ -1,6 +1,6 @@
-package lehjr.numina.common.capability.player.keystates;
+package com.lehjr.numina.common.capabilities.player.keystates;
 
-import lehjr.numina.common.capability.NuminaCapabilities;
+import com.lehjr.numina.common.capabilities.NuminaCapabilities;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.ByteTag;
 import net.minecraft.world.entity.player.Player;

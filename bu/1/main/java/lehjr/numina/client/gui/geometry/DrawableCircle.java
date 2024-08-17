@@ -24,7 +24,7 @@
 // *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 // */
 //
-//package lehjr.numina.client.gui.geometry;
+//package com.lehjr.numina.client.gui.geometry;
 //
 //import com.mojang.blaze3d.platform.GlStateManager;
 //import com.mojang.blaze3d.systems.RenderSystem;
@@ -32,9 +32,9 @@
 //import com.mojang.blaze3d.vertex.PoseStack;
 //import com.mojang.blaze3d.vertex.VertexConsumer;
 //import org.joml.Matrix4f;
-//import lehjr.numina.client.render.NuminaRenderState;
-//import lehjr.numina.common.base.NuminaLogger;
-//import lehjr.numina.common.math.Color;
+//import com.lehjr.numina.client.render.NuminaRenderState;
+//import com.lehjr.numina.common.base.NuminaLogger;
+//import com.lehjr.numina.common.math.Color;
 //import net.minecraft.client.renderer.RenderType;
 //import org.lwjgl.BufferUtils;
 //import org.lwjgl.opengl.GL11;
@@ -166,10 +166,10 @@
 //        Matrix4f matrix4f = matrixStack.last().pose();
 //
 //        while (points.hasRemaining() && color.hasRemaining()) {
-//            buffer.vertex(matrix4f, points.get(), points.get(), points.get())
+//            buffer.addVertex(matrix4f, points.get(), points.get(), points.get())
 //                    .color(color.get(), color.get(), color.get(), color.get())
 //                    .uv2(0x00F000F0)
-//                    .endVertex();
+//                    ;
 //        }
 //        tessellator.end();
 //
@@ -236,7 +236,7 @@
 ////            vertBuffer.pos(matrix4f, points.get(), points.get(), points.get())
 ////                    .color(color.get(), color.get(), color.get(), color.get())
 ////                    .uv2(0x00F000F0)
-////                    .endVertex();
+////                    ;
 ////        }
 ////        matrixStackIn.pop();
 //    }
@@ -283,15 +283,15 @@
 //                z0 = (float) (-r0 * Math.sin(beta));
 //                z1 = (float) (-r1 * Math.sin(beta));
 //
-//                vertBuffer.vertex(matrix4f, x0, y0, z0)
+//                vertBuffer.addVertex(matrix4f, x0, y0, z0)
 //                        .color(colorTest.r, colorTest.g, colorTest.b, colorTest.a)
 //                        .uv2(0x00F000F0)
-//                        .endVertex();
+//                        ;
 //
-//                vertBuffer.vertex(matrix4f, x1, y1, z1)
+//                vertBuffer.addVertex(matrix4f, x1, y1, z1)
 //                        .color(colorTest.r, colorTest.g, colorTest.b, colorTest.a)
 //                        .uv2(0x00F000F0)
-//                        .endVertex();
+//                        ;
 //
 //                vertices +=6;
 //

@@ -24,13 +24,13 @@
 // *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 // */
 //
-//package lehjr.numina.client.gui.clickable;
+//package com.lehjr.numina.client.gui.clickable;
 //
 //import com.mojang.blaze3d.vertex.PoseStack;
-//import lehjr.numina.client.gui.geometry.DrawableRect;
-//import lehjr.numina.client.gui.geometry.MusePoint2D;
-//import lehjr.numina.client.gui.geometry.Rect;
-//import lehjr.numina.common.math.Color;
+//import com.lehjr.numina.client.gui.geometry.DrawableRect;
+//import com.lehjr.numina.client.gui.geometry.MusePoint2D;
+//import com.lehjr.numina.client.gui.geometry.Rect;
+//import com.lehjr.numina.common.math.Color;
 //
 //public class Button extends DrawableRect implements IClickable {
 //    protected IPressable onPressed;

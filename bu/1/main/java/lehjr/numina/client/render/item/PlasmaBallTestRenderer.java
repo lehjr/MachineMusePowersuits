@@ -24,16 +24,16 @@
 // *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 // */
 //
-//package lehjr.numina.client.render.item;
+//package com.lehjr.numina.client.render.item;
 //
 //import com.mojang.blaze3d.vertex.PoseStack;
 //import com.mojang.blaze3d.vertex.VertexConsumer;
 //import org.joml.Vector3f;
-//import lehjr.numina.client.model.helper.ModelHelper;
-//import lehjr.numina.client.model.obj.OBJBakedCompositeModel;
-//import lehjr.numina.client.render.IconUtils;
-//import lehjr.numina.common.constants.NuminaConstants;
-//import lehjr.numina.common.math.Color;
+//import com.lehjr.numina.client.model.helper.ModelHelper;
+//import com.lehjr.numina.client.model.obj.OBJBakedCompositeModel;
+//import com.lehjr.numina.client.render.IconUtils;
+//import com.lehjr.numina.common.constants.NuminaConstants;
+//import com.lehjr.numina.common.math.Color;
 //import net.minecraft.client.renderer.MultiBufferSource;
 //import net.minecraft.client.renderer.RenderType;
 //import net.minecraft.client.renderer.block.model.BakedQuad;
@@ -53,7 +53,7 @@
 //    static final Color color3 = new Color(0.8F, 0.8F, 1F, 0.7F);
 //    static final Color color4 = new Color(1F, 1F, 1F, 0.9F);
 //
-//    static final ResourceLocation modelLocation = new ResourceLocation(NuminaConstants.MOD_ID, "models/item/test/sphere.obj");
+//    static final ResourceLocation modelLocation = ResourceLocation.fromNamespaceAndPath(NuminaConstants.MOD_ID, "models/item/test/sphere.obj");
 //    // NonNullLazy doesn't init until called
 //    public static final NonNullLazy<OBJBakedCompositeModel> modelSphere = NonNullLazy.of(() -> ModelHelper.loadBakedModel(BlockModelRotation.X0_Y0, null, modelLocation));
 //    protected final Random rand = new Random();

@@ -52,7 +52,7 @@
 ////    public static CreativeModeTab creativeTab;
 ////    @SubscribeEvent
 ////    public static void addCreativeTab(CreativeModeTabEvent.Register event) {
-////        creativeTab = event.registerCreativeModeTab(new ResourceLocation(MPSConstants.MOD_ID, "items"),
+////        creativeTab = event.registerCreativeModeTab(ResourceLocation.fromNamespaceAndPath(MPSConstants.MOD_ID, "items"),
 ////                builder -> builder.icon(() -> new ItemStack(POWER_ARMOR_HELMET.get()))
 ////                        .title(Component.translatable(MPSConstants.MOD_ID)));
 ////    }

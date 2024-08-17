@@ -1,10 +1,10 @@
 package lehjr.mpsrecipecreator.client.gui;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import lehjr.numina.client.gui.clickable.button.VanillaButton;
-import lehjr.numina.client.gui.geometry.MusePoint2D;
-import lehjr.numina.client.render.IconUtils;
-import lehjr.numina.common.constants.NuminaConstants;
+import com.lehjr.numina.client.gui.clickable.button.VanillaButton;
+import com.lehjr.numina.client.gui.geometry.MusePoint2D;
+import com.lehjr.numina.client.render.IconUtils;
+import com.lehjr.numina.common.constants.NuminaConstants;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
@@ -14,7 +14,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 
 public class ClickableArrow extends VanillaButton {
-    ResourceLocation BACKGROUND = new ResourceLocation(NuminaConstants.MOD_ID, "textures/gui/crafting_arrows.png");
+    ResourceLocation BACKGROUND = ResourceLocation.fromNamespaceAndPath(NuminaConstants.MOD_ID, "textures/gui/crafting_arrows.png");
 
     public ClickableArrow(double left, double top, Component label, boolean enabled) {
         super(left, top, 22, label, enabled);

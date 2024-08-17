@@ -1,15 +1,15 @@
 package lehjr.powersuits.common.event;
 
-import lehjr.numina.common.capability.NuminaCapabilities;
-import lehjr.numina.common.capability.module.externalitems.OtherModItemsAsModules;
-import lehjr.numina.common.capability.module.hud.HudModule;
-import lehjr.numina.common.capability.module.hud.IHudModule;
-import lehjr.numina.common.capability.module.powermodule.IPowerModule;
-import lehjr.numina.common.capability.module.powermodule.ModuleCategory;
-import lehjr.numina.common.capability.module.powermodule.ModuleTarget;
-import lehjr.numina.common.capability.module.rightclick.IRightClickModule;
-import lehjr.numina.common.capability.module.rightclick.RightClickModule;
-import lehjr.numina.common.utils.ItemUtils;
+import com.lehjr.numina.common.capabilities.NuminaCapabilities;
+import com.lehjr.numina.common.capabilities.module.externalitems.OtherModItemsAsModules;
+import com.lehjr.numina.common.capabilities.module.hud.HudModule;
+import com.lehjr.numina.common.capabilities.module.hud.IHudModule;
+import com.lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
+import com.lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
+import com.lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
+import com.lehjr.numina.common.capabilities.module.rightclick.IRightClickModule;
+import com.lehjr.numina.common.capabilities.module.rightclick.RightClickModule;
+import com.lehjr.numina.common.utils.ItemUtils;
 import lehjr.powersuits.common.config.MPSSettings;
 import lehjr.powersuits.common.constants.MPSConstants;
 import lehjr.powersuits.common.constants.MPSRegistryNames;
@@ -95,7 +95,7 @@ public class AttachCapabilityEventHandler {
             });
 
             // AE2 Meteorite Compass (WIP only handheld model shows needle direction)
-        } else if (!event.getCapabilities().containsKey(MPSRegistryNames.AE2_METEOR_COMPASS) && event.getObject().getItem().equals(ForgeRegistries.ITEMS.getValue(new ResourceLocation("ae2:meteorite_compass")))) {
+        } else if (!event.getCapabilities().containsKey(MPSRegistryNames.AE2_METEOR_COMPASS) && event.getObject().getItem().equals(ForgeRegistries.ITEMS.getValue(ResourceLocation.fromNamespaceAndPath("ae2:meteorite_compass")))) {
             IHudModule compass = new HudModule(itemStack, ModuleCategory.SPECIAL, ModuleTarget.HEADONLY, MPSSettings::getModuleConfig, true);
             event.addCapability(MPSRegistryNames.AE2_METEOR_COMPASS, new ICapabilityProvider() {
                 @Nonnull

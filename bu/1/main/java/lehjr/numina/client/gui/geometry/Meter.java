@@ -24,11 +24,11 @@
  *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package lehjr.numina.client.gui.geometry;
+package com.lehjr.numina.client.gui.geometry;
 
 import com.mojang.blaze3d.vertex.VertexFormat;
-import lehjr.numina.common.math.Color;
-import lehjr.numina.common.math.MathUtils;
+import com.lehjr.numina.common.math.Color;
+import com.lehjr.numina.common.math.MathUtils;
 import net.minecraft.client.gui.GuiGraphics;
 
 import java.nio.FloatBuffer;

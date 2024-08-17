@@ -1,0 +1,37 @@
+package lehjr.powersuits.common.item.module.miningenchantment;
+
+import com.lehjr.numina.common.capabilities.module.enchantment.EnchantmentModule;
+import com.lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
+import com.lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
+import lehjr.powersuits.common.constants.MPSConstants;
+import lehjr.powersuits.common.item.module.AbstractPowerModule;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.Enchantments;
+
+import javax.annotation.Nonnull;
+
+
+public class SilkTouchModule extends AbstractPowerModule {
+    public static class TickingEnchantment extends EnchantmentModule {
+        public TickingEnchantment(@Nonnull ItemStack module) {
+            super(module, ModuleCategory.MINING_ENCHANTMENT, ModuleTarget.TOOLONLY);
+            addBaseProperty(MPSConstants.SILK_TOUCH_ENERGY_CONSUMPTION, 50000, "FE");
+        }
+
+        @Override
+        public int getEnergyUsage() {
+            return (int) (applyPropertyModifiers(MPSConstants.SILK_TOUCH_ENERGY_CONSUMPTION) * getLevel());
+        }
+
+        @Override
+        public Enchantment getEnchantment() {
+            return Enchantments.SILK_TOUCH;
+        }
+
+        @Override
+        public boolean isAllowed() {
+            return true;
+        }
+    }
+}

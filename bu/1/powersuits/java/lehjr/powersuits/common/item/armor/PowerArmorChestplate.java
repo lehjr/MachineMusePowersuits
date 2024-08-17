@@ -26,8 +26,8 @@
 
 package lehjr.powersuits.common.item.armor;
 
-import lehjr.numina.common.capability.inventory.modularitem.IModularItem;
-import lehjr.numina.common.utils.ItemUtils;
+import com.lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
+import com.lehjr.numina.common.utils.ItemUtils;
 import lehjr.powersuits.common.constants.MPSRegistryNames;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;

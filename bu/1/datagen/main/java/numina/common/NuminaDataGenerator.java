@@ -1,6 +1,6 @@
 package numina.common;
 
-import lehjr.numina.common.constants.NuminaConstants;
+import com.lehjr.numina.common.constants.NuminaConstants;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;

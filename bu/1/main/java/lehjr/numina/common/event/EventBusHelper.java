@@ -24,7 +24,7 @@
  *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package lehjr.numina.common.event;
+package com.lehjr.numina.common.event;
 
 import net.neoforged.bus.api.Event;
 import net.neoforged.bus.api.EventPriority;

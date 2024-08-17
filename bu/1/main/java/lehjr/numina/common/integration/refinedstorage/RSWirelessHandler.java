@@ -1,17 +1,17 @@
-//package lehjr.numina.common.integration.refinedstorage;
+//package com.lehjr.numina.common.integration.refinedstorage;
 //
 //import com.refinedmods.refinedstorage.api.network.INetwork;
 //import com.refinedmods.refinedstorage.inventory.player.PlayerSlot;
 //import com.refinedmods.refinedstorage.item.NetworkItem;
 //import com.refinedmods.refinedstorage.util.NetworkUtils;
-//import lehjr.numina.common.capabilities.module.powermodule.IConfig;
-//import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
-//import lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
-//import lehjr.numina.common.capabilities.module.powermodule.PowerModuleCapability;
-//import lehjr.numina.common.capabilities.module.rightclick.IRightClickModule;
-//import lehjr.numina.common.capabilities.module.rightclick.RightClickModule;
-//import lehjr.numina.common.energy.ElectricItemUtils;
-//import lehjr.numina.common.utils.ItemUtils;
+//import com.lehjr.numina.common.capabilities.module.powermodule.IConfig;
+//import com.lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
+//import com.lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
+//import com.lehjr.numina.common.capabilities.module.powermodule.PowerModuleCapability;
+//import com.lehjr.numina.common.capabilities.module.rightclick.IRightClickModule;
+//import com.lehjr.numina.common.capabilities.module.rightclick.RightClickModule;
+//import com.lehjr.numina.common.energy.ElectricItemUtils;
+//import com.lehjr.numina.common.utils.ItemUtils;
 //import net.minecraft.core.Direction;
 //import net.minecraft.world.item.context.UseOnContext;
 //import net.minecraft.nbt.CompoundTag;
@@ -38,8 +38,8 @@
 //    public static void attach(AttachCapabilitiesEvent<ItemStack> event, Callable<IConfig> moduleConfigGetterIn) {
 //        final ItemStack itemStack = event.getObject();
 //        final ResourceLocation regName = itemStack.getItem().getRegistryName();
-//        final ResourceLocation wireless_grid = new ResourceLocation("refinedstorage:wireless_grid");
-//        final ResourceLocation wireless_fluid_grid = new ResourceLocation("refinedstorage:wireless_fluid_grid");
+//        final ResourceLocation wireless_grid = ResourceLocation.fromNamespaceAndPath("refinedstorage:wireless_grid");
+//        final ResourceLocation wireless_fluid_grid = ResourceLocation.fromNamespaceAndPath("refinedstorage:wireless_fluid_grid");
 //            /*
 //            known possibilities
 //            --------------------

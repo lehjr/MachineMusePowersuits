@@ -24,10 +24,10 @@
  *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package lehjr.numina.client.gui.old_meters;
+package com.lehjr.numina.client.gui.old_meters;
 
 
-import lehjr.numina.common.math.Color;
+import com.lehjr.numina.common.math.Color;
 
 public class EnergyMeter extends HeatMeter {
     public EnergyMeter() {

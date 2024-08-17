@@ -1,7 +1,7 @@
 package lehjr.powersuits.common.item.tool;
 
-import lehjr.numina.common.capability.inventory.modechanging.IModeChangingItem;
-import lehjr.numina.common.string.AdditionalInfo;
+import com.lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
+import com.lehjr.numina.common.string.AdditionalInfo;
 import lehjr.powersuits.common.capability.PowerFistCap;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;

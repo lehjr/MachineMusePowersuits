@@ -2,11 +2,11 @@ package lehjr.powersuits.client.event;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import lehjr.numina.common.capability.NuminaCapabilities;
-import lehjr.numina.common.capability.inventory.modechanging.IModeChangingItem;
-import lehjr.numina.common.capability.inventory.modularitem.IModularItem;
-import lehjr.numina.common.utils.ItemUtils;
-import lehjr.numina.common.math.Color;
+import com.lehjr.numina.common.capabilities.NuminaCapabilities;
+import com.lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
+import com.lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
+import com.lehjr.numina.common.utils.ItemUtils;
+import com.lehjr.numina.common.math.Color;
 import lehjr.powersuits.common.constants.MPSConstants;
 import lehjr.powersuits.common.constants.MPSRegistryNames;
 import net.minecraft.client.renderer.LevelRenderer;

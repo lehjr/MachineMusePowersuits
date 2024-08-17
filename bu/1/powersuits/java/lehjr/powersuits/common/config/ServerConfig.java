@@ -26,7 +26,7 @@
 
 package lehjr.powersuits.common.config;
 
-import lehjr.numina.common.capability.module.powermodule.ModuleCategory;
+import com.lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import lehjr.powersuits.common.constants.MPSConstants;
 import net.minecraftforge.common.ForgeConfigSpec;
 
@@ -54,7 +54,7 @@ public class ServerConfig {
                 SERVER_CONFIG.GENERAL_MOD_ITEMS_AS_TOOL_MODULES.get() : new ArrayList<>();
         List<ResourceLocation> retList = new ArrayList<>();
         externalTools.stream().filter(o->o instanceof String).map(Object::toString).forEach(tool-> {
-            retList.add(new ResourceLocation(tool));;
+            retList.add(ResourceLocation.fromNamespaceAndPath(tool));;
         });
         return retList;
     }
@@ -70,7 +70,7 @@ public class ServerConfig {
                 SERVER_CONFIG.GENERAL_MOD_ITEMS_AS_WEAPON_MODULES.get() : new ArrayList<>();
         List<ResourceLocation> retList = new ArrayList<>();
         externalWeapons.stream().filter(o->o instanceof String).map(Object::toString).forEach(weapon-> {
-            retList.add(new ResourceLocation(weapon));;
+            retList.add(ResourceLocation.fromNamespaceAndPath(weapon));;
         });
         return retList;
     }
@@ -134,29 +134,29 @@ public class ServerConfig {
                 .worldRestart()
                 .defineList("veinMinerOres", Arrays.asList(
                         // metals
-                        "forge:ores/iron",
-                        "forge:ores/copper",
-                        "forge:ores/tin",
-                        "forge:ores/lead",
-                        "forge:ores/aluminum",
-                        "forge:ores/aluminium",
-                        "forge:ores/silver",
-                        "forge:ores/gold",
-                        "forge:ores/cinnabar",
-                        "forge:ores/zinc",
-                        "forge:ores/uranium",
-                        "forge:ores/platinum",
-                        "forge:ores/bismuth",
-                        "forge:ores/osmium",
+                        "net.forge:ores/iron",
+                        "net.forge:ores/copper",
+                        "net.forge:ores/tin",
+                        "net.forge:ores/lead",
+                        "net.forge:ores/aluminum",
+                        "net.forge:ores/aluminium",
+                        "net.forge:ores/silver",
+                        "net.forge:ores/gold",
+                        "net.forge:ores/cinnabar",
+                        "net.forge:ores/zinc",
+                        "net.forge:ores/uranium",
+                        "net.forge:ores/platinum",
+                        "net.forge:ores/bismuth",
+                        "net.forge:ores/osmium",
 
                         // non-metal
-                        "forge:ores/coal",
-                        "forge:ores/redstone",
+                        "net.forge:ores/coal",
+                        "net.forge:ores/redstone",
                         "minecraft:glowstone",
-                        "forge:ores/diamond",
-                        "forge:ores/lapis",
-                        "forge:ores/quartz",
-                        "forge:ores/fluorite"
+                        "net.forge:ores/diamond",
+                        "net.forge:ores/lapis",
+                        "net.forge:ores/quartz",
+                        "net.forge:ores/fluorite"
                 ), o -> o instanceof String && !((String) o).isEmpty());
 
         GENERAL_VEIN_MINER_BLOCK_LIST = builder

@@ -2,7 +2,7 @@
  * Copyright (c) Forge Development LLC and contributors
  * SPDX-License-Identifier: LGPL-2.1-only
  */
-package forge.client;
+package net.forge.client;
 
 import com.google.common.base.Preconditions;
 import com.mojang.math.Transformation;
@@ -20,7 +20,7 @@ import java.util.Arrays;
  *
  * @see IQuadTransformer
  *
- * copied from forge for 1.19.3
+ * copied from net.forge for 1.19.3
  */
 public final class QuadTransformers {
 

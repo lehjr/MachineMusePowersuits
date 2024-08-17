@@ -29,11 +29,11 @@
 //// *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //// */
 ////
-////package lehjr.numina.client.render;
+////package com.lehjr.numina.client.render;
 ////
 ////import com.mojang.blaze3d.platform.GlStateManager;
 ////import com.mojang.blaze3d.systems.RenderSystem;
-////import lehjr.numina.common.constants.NuminaConstants;
+////import com.lehjr.numina.common.constants.NuminaConstants;
 ////import net.minecraft.client.Minecraft;
 ////import net.minecraft.client.renderer.RenderType;
 ////import com.mojang.blaze3d.vertex.DefaultVertexFormat;

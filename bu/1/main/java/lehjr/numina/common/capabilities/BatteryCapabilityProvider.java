@@ -1,12 +1,12 @@
-package lehjr.numina.common.capability;
+package com.lehjr.numina.common.capabilities;
 
-import lehjr.numina.common.capability.module.powermodule.IPowerModule;
-import lehjr.numina.common.capability.module.powermodule.ModuleCategory;
-import lehjr.numina.common.capability.module.powermodule.ModuleTarget;
-import lehjr.numina.common.capability.module.powermodule.PowerModule;
-import lehjr.numina.common.config.NuminaSettings;
-import lehjr.numina.common.constants.NuminaConstants;
-import lehjr.numina.common.tags.TagUtils;
+import com.lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
+import com.lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
+import com.lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
+import com.lehjr.numina.common.capabilities.module.powermodule.PowerModule;
+import com.lehjr.numina.common.config.NuminaSettings;
+import com.lehjr.numina.common.constants.NuminaConstants;
+import com.lehjr.numina.common.tags.TagUtils;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.IntTag;
 import net.minecraft.nbt.Tag;

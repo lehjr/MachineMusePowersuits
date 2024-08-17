@@ -1,7 +1,7 @@
-//package lehjr.numina.common.integration.scannable;
+//package com.lehjr.numina.common.integration.scannable;
 //
-//import lehjr.numina.common.capabilities.module.powermodule.*;
-//import lehjr.numina.common.utils.ItemUtils;
+//import com.lehjr.numina.common.capabilities.module.powermodule.*;
+//import com.lehjr.numina.common.utils.ItemUtils;
 //import li.cil.scannable.common.item.ItemScanner;
 //import net.minecraft.core.Direction;
 //import net.minecraft.resources.ResourceLocation;
@@ -25,7 +25,7 @@
 //        final TickingScanner scanner = new TickingScanner(itemStack, ModuleCategory.TOOL, ModuleTarget.TOOLONLY, moduleConfigGetterIn);
 //        final LazyOptional<IPowerModule> scannerHolder = LazyOptional.of(()-> scanner);
 //
-//        event.addCapability(new ResourceLocation("scannable:scanner"), new ICapabilityProvider() {
+//        event.addCapability(ResourceLocation.fromNamespaceAndPath("scannable:scanner"), new ICapabilityProvider() {
 //            @Nonnull
 //            @Override
 //            public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {

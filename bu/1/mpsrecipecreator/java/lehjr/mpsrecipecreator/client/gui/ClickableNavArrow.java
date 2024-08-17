@@ -1,9 +1,9 @@
 package lehjr.mpsrecipecreator.client.gui;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import lehjr.numina.client.gui.clickable.button.VanillaButton;
-import lehjr.numina.client.gui.geometry.MusePoint2D;
-import lehjr.numina.client.render.IconUtils;
+import com.lehjr.numina.client.gui.clickable.button.VanillaButton;
+import com.lehjr.numina.client.gui.geometry.MusePoint2D;
+import com.lehjr.numina.client.render.IconUtils;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
@@ -11,7 +11,7 @@ import net.minecraft.resources.ResourceLocation;
 
 public class ClickableNavArrow extends VanillaButton {
     final ArrowDirection direction;
-    ResourceLocation BACKGROUND = new ResourceLocation("textures/gui/recipe_book.png");
+    ResourceLocation BACKGROUND = ResourceLocation.fromNamespaceAndPath("textures/gui/recipe_book.png");
 
     public ClickableNavArrow(double left, double top, boolean enabled, ArrowDirection direction) {
         super(left, top, Component.empty(), enabled);

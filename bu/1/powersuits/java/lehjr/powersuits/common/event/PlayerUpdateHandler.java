@@ -26,10 +26,10 @@
 
 package lehjr.powersuits.common.event;
 
-import lehjr.numina.client.sound.Musique;
-import lehjr.numina.common.config.NuminaSettings;
-import lehjr.numina.common.utils.ItemUtils;
-import lehjr.numina.common.math.MathUtils;
+import com.lehjr.numina.client.sound.Musique;
+import com.lehjr.numina.common.config.NuminaSettings;
+import com.lehjr.numina.common.utils.ItemUtils;
+import com.lehjr.numina.common.math.MathUtils;
 import lehjr.powersuits.client.sound.MPSSoundDictionary;
 import lehjr.powersuits.common.item.armor.PowerArmorBoots;
 import lehjr.powersuits.common.item.armor.PowerArmorChestplate;

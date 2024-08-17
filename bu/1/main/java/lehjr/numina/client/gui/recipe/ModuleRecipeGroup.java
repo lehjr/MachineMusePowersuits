@@ -1,4 +1,4 @@
-//package lehjr.numina.client.gui.recipe;
+//package com.lehjr.numina.client.gui.recipe;
 //
 //import net.neoforged.api.distmarker.Dist;
 //import net.neoforged.api.distmarker.OnlyIn;

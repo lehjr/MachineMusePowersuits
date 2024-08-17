@@ -1,12 +1,12 @@
-//package lehjr.numina.common.integration.appeneng2;
+//package com.lehjr.numina.common.integration.appeneng2;
 //
 //import appeng.api.config.*;
 //import appeng.api.features.IWirelessTermHandler;
 //import appeng.api.util.IConfigManager;
 //import appeng.core.AELog;
 //import appeng.core.Api;
-//import lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
-//import lehjr.numina.common.energy.ElectricItemUtils;
+//import com.lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
+//import com.lehjr.numina.common.energy.ElectricItemUtils;
 //import net.minecraft.nbt.CompoundTag;
 //import net.minecraft.resources.ResourceLocation;
 //import net.minecraft.world.entity.player.Player;
@@ -22,7 +22,7 @@
 // * Created by Eximius88 on 1/13/14.
 // */
 //public class TerminalHandler implements IWirelessTermHandler {//}, IWirelessFluidTermHandler {
-//    public static final ResourceLocation WIRELESS_TERMINAL_REG = new ResourceLocation("appliedenergistics2:wireless_terminal");
+//    public static final ResourceLocation WIRELESS_TERMINAL_REG = ResourceLocation.fromNamespaceAndPath("appliedenergistics2:wireless_terminal");
 //
 //    private static final String TAG_ENCRYPTION_KEY = "encryptionKey";
 //    @Override

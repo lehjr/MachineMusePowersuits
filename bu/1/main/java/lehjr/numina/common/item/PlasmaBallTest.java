@@ -1,7 +1,7 @@
-//package lehjr.numina.item;
+//package com.lehjr.numina.item;
 //
-//import lehjr.numina.common.base.NuminaObjects;
-//import lehjr.numina.client.render.item.PlasmaBallTestRenderer;
+//import com.lehjr.numina.common.base.NuminaObjects;
+//import com.lehjr.numina.client.render.item.PlasmaBallTestRenderer;
 //import net.minecraft.world.item.Item;
 //
 //public class PlasmaBallTest extends Item {

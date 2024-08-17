@@ -24,7 +24,7 @@
 // *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 // */
 //
-//package lehjr.numina.common.helper;
+//package com.lehjr.numina.common.helper;
 //
 //import net.minecraft.block.*;
 //import net.minecraft.core.BlockPos;

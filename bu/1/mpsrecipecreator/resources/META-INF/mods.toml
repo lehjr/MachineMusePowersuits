@@ -12,7 +12,7 @@ license="All rights reserved"
     description="A really bad mod for creating recipes for Modular Powersuits"
 
 [[dependencies.mpsrecipecreator]]
-    modId="forge"
+    modId="net.forge"
     mandatory=true
     versionRange="${neo_version}"
     side="BOTH"

@@ -24,7 +24,7 @@
  *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package lehjr.numina.common.energy;
+package com.lehjr.numina.common.energy;
 
 import java.util.ArrayList;
 import java.util.List;

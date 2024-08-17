@@ -26,11 +26,11 @@
 
 package lehjr.powersuits.common.config;
 
-import lehjr.numina.client.config.IMeterConfig;
-import lehjr.numina.common.capability.module.powermodule.IConfig;
-import lehjr.numina.common.config.ModuleConfig;
-import lehjr.numina.common.math.Color;
-import lehjr.numina.common.math.MathUtils;
+import com.lehjr.numina.client.config.IMeterConfig;
+import com.lehjr.numina.common.capabilities.module.powermodule.IConfig;
+import com.lehjr.numina.common.config.ModuleConfig;
+import com.lehjr.numina.common.math.Color;
+import com.lehjr.numina.common.math.MathUtils;
 import lehjr.powersuits.client.config.ClientConfig;
 import lehjr.powersuits.common.constants.MPSConstants;
 import lehjr.powersuits.common.constants.MPSRegistryNames;
@@ -110,7 +110,7 @@ public class MPSSettings {
                 SERVER_CONFIG.GENERAL_VEIN_MINER_ORE_LIST.get() : new ArrayList<>();
         List<ResourceLocation> retList = new ArrayList<>();
         ores.stream().filter(o->o instanceof String).map(Object::toString).forEach(ore-> {
-            retList.add(new ResourceLocation(ore));;
+            retList.add(ResourceLocation.fromNamespaceAndPath(ore));;
         });
         return retList;
     }
@@ -120,7 +120,7 @@ public class MPSSettings {
                 SERVER_CONFIG.GENERAL_VEIN_MINER_BLOCK_LIST.get() : new ArrayList<>();
         List<ResourceLocation> retList = new ArrayList<>();
         blocks.stream().filter(o->o instanceof String).map(Object::toString).forEach(block-> {
-            retList.add(new ResourceLocation(block));;
+            retList.add(ResourceLocation.fromNamespaceAndPath(block));;
         });
         return retList;
     }

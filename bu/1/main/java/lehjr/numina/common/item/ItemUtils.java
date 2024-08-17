@@ -24,12 +24,12 @@
  *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package lehjr.numina.common.item;
+package com.lehjr.numina.common.item;
 
-import lehjr.numina.common.capability.NuminaCapabilities;
-import lehjr.numina.common.capability.inventory.modechanging.IModeChangingItem;
-import lehjr.numina.common.capability.inventory.modularitem.IModularItem;
-import lehjr.numina.common.capability.module.externalitems.IOtherModItemsAsModules;
+import com.lehjr.numina.common.capabilities.NuminaCapabilities;
+import com.lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
+import com.lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
+import com.lehjr.numina.common.capabilities.module.externalitems.IOtherModItemsAsModules;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;

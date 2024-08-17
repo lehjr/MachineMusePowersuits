@@ -1,7 +1,7 @@
 package lehjr.mpsrecipecreator.basemod;
 
 import com.google.gson.*;
-import lehjr.numina.common.base.NuminaLogger;
+import com.lehjr.numina.common.base.NuminaLogger;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -78,7 +78,7 @@ public class ConditionsJsonLoader {
 
     static JsonObject forgeModLoadedJsonObject(String displayName, String modId) {
         JsonObject json = new JsonObject();
-        json.addProperty("type", "forge:mod_loaded");
+        json.addProperty("type", "net.forge:mod_loaded");
         json.addProperty("display_name", displayName);
         json.addProperty("modid", modId);
         return json;

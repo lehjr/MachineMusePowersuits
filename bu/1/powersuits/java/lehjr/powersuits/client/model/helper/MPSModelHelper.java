@@ -26,7 +26,7 @@
 //
 //package lehjr.powersuits.client.model.helper;
 //
-//import lehjr.numina.common.base.NuminaLogger;
+//import com.lehjr.numina.common.base.NuminaLogger;
 //import net.minecraft.client.resources.model.ModelBakery;
 //import net.minecraftforge.client.event.TextureStitchEvent;
 //

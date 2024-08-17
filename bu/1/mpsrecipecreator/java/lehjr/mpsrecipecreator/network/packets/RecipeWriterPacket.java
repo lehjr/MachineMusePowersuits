@@ -2,7 +2,7 @@ package lehjr.mpsrecipecreator.network.packets;
 
 import lehjr.mpsrecipecreator.basemod.DataPackWriter;
 import lehjr.mpsrecipecreator.basemod.config.Config;
-import lehjr.numina.common.base.NuminaLogger;
+import com.lehjr.numina.common.base.NuminaLogger;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;

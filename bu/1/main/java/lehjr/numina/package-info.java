@@ -1,6 +1,6 @@
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
-package lehjr.numina;
+package com.lehjr.numina;
 
 import net.minecraft.MethodsReturnNonnullByDefault;
 

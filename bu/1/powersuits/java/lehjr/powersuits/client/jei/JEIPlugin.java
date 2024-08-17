@@ -8,7 +8,7 @@
 //
 //@JeiPlugin
 //public class JEIPlugin implements IModPlugin {
-//    private static final ResourceLocation UID = new ResourceLocation(MPSConstants.MOD_ID, "main");
+//    private static final ResourceLocation UID = ResourceLocation.fromNamespaceAndPath(MPSConstants.MOD_ID, "main");
 //    @Override
 //    public ResourceLocation getPluginUid() {
 //        return UID;

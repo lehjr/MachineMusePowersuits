@@ -2,9 +2,9 @@ package lehjr.mpsrecipecreator.client.gui;
 
 import com.google.gson.*;
 import lehjr.mpsrecipecreator.container.MPSRCMenu;
-import lehjr.numina.common.base.NuminaLogger;
-import lehjr.numina.common.utils.ItemUtils;
-import lehjr.numina.common.tags.NBT2Json;
+import com.lehjr.numina.common.base.NuminaLogger;
+import com.lehjr.numina.common.utils.ItemUtils;
+import com.lehjr.numina.common.tags.NBT2Json;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.ItemStack;
@@ -243,7 +243,7 @@ public class RecipeGen {
 
         if (conditions.size() > 1) {
             JsonObject forgeAnd = new JsonObject();
-            forgeAnd.addProperty("type", "forge:and");
+            forgeAnd.addProperty("type", "net.forge:and");
             forgeAnd.add("values", conditions);
             JsonArray array = new JsonArray();
             array.add(forgeAnd);

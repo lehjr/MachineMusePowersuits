@@ -1,1 +1,1 @@
-package lehjr.numina.imixin.common.entity.player;
+package com.lehjr.numina.imixin.common.entity.player;

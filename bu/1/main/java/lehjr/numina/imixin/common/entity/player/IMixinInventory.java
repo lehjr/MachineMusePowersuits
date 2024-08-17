@@ -1,4 +1,4 @@
-//package lehjr.numina.imixin.common.entity.player;
+//package com.lehjr.numina.imixin.common.entity.player;
 //
 //import net.minecraft.world.InteractionHand;
 //import net.minecraft.world.item.ItemStack;

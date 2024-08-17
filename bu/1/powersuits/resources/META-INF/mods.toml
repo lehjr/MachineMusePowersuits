@@ -15,7 +15,7 @@ license='Simplified BSD License https://opensource.org/license/bsd-2-clause/'
 A mod which adds modular power armor, power tool, and a tinker table to configure them. Uses FE (Foreg Energy), EU (IndustrialCraft 2) or RF (Thermal Expansion 4).
 '''
 [[dependencies.powersuits]]
-    modId="forge"
+    modId="net.forge"
     mandatory=true
     versionRange="${neo_version}"
     side="BOTH"

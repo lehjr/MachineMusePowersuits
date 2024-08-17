@@ -1,15 +1,15 @@
 
-package lehjr.numina.common.capability.inventory.modechanging;
+package com.lehjr.numina.common.capabilities.inventory.modechanging;
 
-import lehjr.numina.common.capability.NuminaCapabilities;
-import lehjr.numina.common.capability.inventory.modularitem.ModularItem;
-import lehjr.numina.common.capability.module.externalitems.IOtherModItemsAsModules;
-import lehjr.numina.common.capability.module.powermodule.IPowerModule;
-import lehjr.numina.common.capability.module.rightclick.IRightClickModule;
-import lehjr.numina.common.constants.NuminaConstants;
-import lehjr.numina.common.utils.ItemUtils;
-import lehjr.numina.common.network.NuminaPackets;
-import lehjr.numina.common.network.packets.serverbound.ModeChangeRequestPacketServerBound;
+import com.lehjr.numina.common.capabilities.NuminaCapabilities;
+import com.lehjr.numina.common.capabilities.inventory.modularitem.ModularItem;
+import com.lehjr.numina.common.capabilities.module.externalitems.IOtherModItemsAsModules;
+import com.lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
+import com.lehjr.numina.common.capabilities.module.rightclick.IRightClickModule;
+import com.lehjr.numina.common.constants.NuminaConstants;
+import com.lehjr.numina.common.utils.ItemUtils;
+import com.lehjr.numina.common.network.NuminaPackets;
+import com.lehjr.numina.common.network.packets.serverbound.ModeChangeRequestPacketServerBound;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.NonNullList;

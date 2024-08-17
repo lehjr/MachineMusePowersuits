@@ -27,7 +27,7 @@
 package lehjr.powersuits.common.base;
 
 import com.electronwill.nightconfig.core.file.CommentedFileConfig;
-import lehjr.numina.common.config.ConfigHelper;
+import com.lehjr.numina.common.config.ConfigHelper;
 import lehjr.powersuits.client.control.KeymappingKeyHandler;
 import lehjr.powersuits.client.event.ModelBakeEventHandler;
 import lehjr.powersuits.client.event.RenderEventHandler;
@@ -70,7 +70,7 @@ public class ModularPowersuits {
 //        // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
         MinecraftForge.EVENT_BUS.addListener(EntityDamageEvent::handleEntityDamageEvent); // FIXME: does nothing
-        MinecraftForge.EVENT_BUS.addListener(EntityDamageEvent::entityAttackEventHandler); // FIXME: does nothing
+        MinecraftForge.EVENT_BUS.addListener(EntityDamagaqc eEvent::entityAttackEventHandler); // FIXME: does nothing
         MinecraftForge.EVENT_BUS.register(new PlayerUpdateHandler());
         MinecraftForge.EVENT_BUS.register(MovementManager.INSTANCE);
 ////

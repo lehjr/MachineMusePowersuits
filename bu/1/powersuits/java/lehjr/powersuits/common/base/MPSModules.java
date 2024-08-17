@@ -26,7 +26,7 @@
 //
 //package lehjr.powersuits.common.base;
 //
-//import lehjr.numina.common.constants.NuminaConstants;
+//import com.lehjr.numina.common.constants.NuminaConstants;
 //import lehjr.powersuits.common.constants.MPSRegistryNames;
 //import net.minecraft.resources.ResourceLocation;
 //
@@ -41,15 +41,15 @@
 //    INSTANCE;
 //
 //    protected List<ResourceLocation> moduleRegNames = new ArrayList<ResourceLocation>() {{
-//        add(new ResourceLocation(NuminaConstants.MOD_ID, NuminaConstants.MODULE_BATTERY_BASIC__REGNAME));
-//        add(new ResourceLocation(NuminaConstants.MOD_ID, NuminaConstants.MODULE_BATTERY_ADVANCED__REGNAME));
-//        add(new ResourceLocation(NuminaConstants.MOD_ID, NuminaConstants.MODULE_BATTERY_ELITE__REGNAME));
-//        add(new ResourceLocation(NuminaConstants.MOD_ID, NuminaConstants.MODULE_BATTERY_ULTIMATE__REGNAME));
+//        add(ResourceLocation.fromNamespaceAndPath(NuminaConstants.MOD_ID, NuminaConstants.MODULE_BATTERY_BASIC__REGNAME));
+//        add(ResourceLocation.fromNamespaceAndPath(NuminaConstants.MOD_ID, NuminaConstants.MODULE_BATTERY_ADVANCED__REGNAME));
+//        add(ResourceLocation.fromNamespaceAndPath(NuminaConstants.MOD_ID, NuminaConstants.MODULE_BATTERY_ELITE__REGNAME));
+//        add(ResourceLocation.fromNamespaceAndPath(NuminaConstants.MOD_ID, NuminaConstants.MODULE_BATTERY_ULTIMATE__REGNAME));
 //        add(MPSRegistryNames.TINKER_TABLE);
 //
-//        add(new ResourceLocation("clock"));
-//        add(new ResourceLocation("compass"));
-//        add(new ResourceLocation("crafting_table"));
+//        add(ResourceLocation.fromNamespaceAndPath("clock"));
+//        add(ResourceLocation.fromNamespaceAndPath("compass"));
+//        add(ResourceLocation.fromNamespaceAndPath("crafting_table"));
 //    }};
 //
 //    public void addModule(ResourceLocation regName) {

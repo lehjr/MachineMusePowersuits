@@ -30,10 +30,10 @@
 //import com.mojang.blaze3d.vertex.VertexConsumer;
 //import com.mojang.math.Axis;
 //import org.joml.Vector3f;
-//import lehjr.numina.client.model.helper.ModelHelper;
-//import lehjr.numina.client.model.obj.OBJBakedCompositeModel;
-//import lehjr.numina.common.constants.NuminaConstants;
-//import lehjr.numina.common.math.Color;
+//import com.lehjr.numina.client.model.helper.ModelHelper;
+//import com.lehjr.numina.client.model.obj.OBJBakedCompositeModel;
+//import com.lehjr.numina.common.constants.NuminaConstants;
+//import com.lehjr.numina.common.math.Color;
 //import lehjr.powersuits.common.constants.MPSConstants;
 //import lehjr.powersuits.common.entity.RailgunBoltEntity;
 //import net.minecraft.client.renderer.MultiBufferSource;
@@ -50,7 +50,7 @@
 //
 //
 //    static final Color color = new Color(0.631F, 0.615F, 0.58F, 1F);
-//    static final ResourceLocation modelLocation = new ResourceLocation(MPSConstants.MOD_ID, "models/entity/bolt.obj");
+//    static final ResourceLocation modelLocation = ResourceLocation.fromNamespaceAndPath(MPSConstants.MOD_ID, "models/entity/bolt.obj");
 //    // NonNullLazy doesn't init until called
 //    public static final NonNullLazy<OBJBakedCompositeModel> modelBolt = NonNullLazy.of(() -> ModelHelper.loadBakedModel(BlockModelRotation.X0_Y0, null, modelLocation));
 //    protected static final RandomSource rand = RandomSource.create();

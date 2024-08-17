@@ -1,4 +1,4 @@
-//package lehjr.numina.client.gui.clickable;
+//package com.lehjr.numina.client.gui.clickable;
 //
 //import com.mojang.blaze3d.systems.RenderSystem;
 //import com.mojang.blaze3d.vertex.BufferBuilder;
@@ -6,13 +6,13 @@
 //import com.mojang.blaze3d.vertex.PoseStack;
 //import com.mojang.blaze3d.vertex.Tesselator;
 //import org.joml.Matrix4f;
-//import lehjr.numina.client.gui.geometry.DrawableTile;
-//import lehjr.numina.client.gui.geometry.IDrawable;
-//import lehjr.numina.client.gui.geometry.MusePoint2D;
-//import lehjr.numina.client.gui.geometry.Rect;
-//import lehjr.numina.common.math.Color;
-//import lehjr.numina.common.math.MathUtils;
-//import lehjr.numina.common.string.StringUtils;
+//import com.lehjr.numina.client.gui.geometry.DrawableTile;
+//import com.lehjr.numina.client.gui.geometry.IDrawable;
+//import com.lehjr.numina.client.gui.geometry.MusePoint2D;
+//import com.lehjr.numina.client.gui.geometry.Rect;
+//import com.lehjr.numina.common.math.Color;
+//import com.lehjr.numina.common.math.MathUtils;
+//import com.lehjr.numina.common.string.StringUtils;
 //import net.minecraft.network.chat.Component;
 //import org.lwjgl.opengl.GL11;
 //
@@ -309,8 +309,8 @@
 //
 //        preDraw(GL11.GL_LINES, DefaultVertexFormat.POSITION_COLOR);
 //        RenderSystem.lineWidth(1);
-//        builder.vertex(matrix4f, (float) xStart, (float) yStart, getZLevel()).color(color.r, color.g, color.b, color.a).endVertex();
-//        builder.vertex(matrix4f, (float) xEnd, (float) yEnd, getZLevel()).color(color.r, color.g, color.b, color.a).endVertex();
+//        builder.addVertex(matrix4f, (float) xStart, (float) yStart, getZLevel()).setColor(color.r, color.g, color.b, color.a);
+//        builder.addVertex(matrix4f, (float) xEnd, (float) yEnd, getZLevel()).setColor(color.r, color.g, color.b, color.a);
 //        drawTesselator();
 //        postDraw();
 //    }

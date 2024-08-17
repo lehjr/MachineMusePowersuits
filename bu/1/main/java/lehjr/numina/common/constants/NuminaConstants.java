@@ -24,7 +24,7 @@
  *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package lehjr.numina.common.constants;
+package com.lehjr.numina.common.constants;
 
 
 import net.minecraft.resources.ResourceLocation;

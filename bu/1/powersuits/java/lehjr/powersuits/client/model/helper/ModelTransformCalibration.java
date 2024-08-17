@@ -27,8 +27,8 @@
 package lehjr.powersuits.client.model.helper;
 
 import com.mojang.math.Transformation;
-import lehjr.numina.client.model.helper.ModelHelper;
-import lehjr.numina.common.base.NuminaLogger;
+import com.lehjr.numina.client.model.helper.ModelHelper;
+import com.lehjr.numina.common.base.NuminaLogger;
 import net.minecraft.client.Minecraft;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;

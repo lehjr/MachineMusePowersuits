@@ -1,0 +1,35 @@
+["ChargingBase settings"]
+	#Max base power for charging base
+	#Range: 100 ~ 10000000
+	chargingBaseMaxEnergy = 1000000
+	#Max power transfer for charging base
+	#Range: 10 ~ 1000000
+	chargingBaseMaxTransfer = 10000
+
+	[Batteries.battery_1]
+		#Range: > 0
+		maxEnergy = 1000000
+		#Range: > 0
+		maxEnergyTransfer = 1250000
+		isAllowed = true
+
+	[Batteries.battery_2]
+		#Range: > 0
+		maxEnergy = 10000000
+		#Range: > 0
+		maxEnergyTransfer = 1250000
+		isAllowed = true
+
+	[Batteries.battery_3]
+		#Range: > 0
+		maxEnergy = 100000000
+		#Range: > 0
+		maxEnergyTransfer = 1250000
+		isAllowed = true
+
+	[Batteries.battery_4]
+		#Range: > 0
+		maxEnergy = 1000000000
+		#Range: > 0
+		maxEnergyTransfer = 1250000
+		isAllowed = true

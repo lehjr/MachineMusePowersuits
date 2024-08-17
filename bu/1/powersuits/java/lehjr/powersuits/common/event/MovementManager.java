@@ -26,16 +26,16 @@
 
 package lehjr.powersuits.common.event;
 
-import lehjr.numina.client.control.PlayerMovementInputWrapper;
-import lehjr.numina.client.sound.Musique;
-import lehjr.numina.client.sound.SoundDictionary;
-import lehjr.numina.common.capability.NuminaCapabilities;
-import lehjr.numina.common.capability.inventory.modularitem.IModularItem;
-import lehjr.numina.common.config.NuminaSettings;
-import lehjr.numina.common.energy.ElectricItemUtils;
-import lehjr.numina.common.utils.ItemUtils;
-import lehjr.numina.common.math.MathUtils;
-import lehjr.numina.common.player.PlayerUtils;
+import com.lehjr.numina.client.control.PlayerMovementInputWrapper;
+import com.lehjr.numina.client.sound.Musique;
+import com.lehjr.numina.client.sound.SoundDictionary;
+import com.lehjr.numina.common.capabilities.NuminaCapabilities;
+import com.lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
+import com.lehjr.numina.common.config.NuminaSettings;
+import com.lehjr.numina.common.energy.ElectricItemUtils;
+import com.lehjr.numina.common.utils.ItemUtils;
+import com.lehjr.numina.common.math.MathUtils;
+import com.lehjr.numina.common.player.PlayerUtils;
 import lehjr.powersuits.client.sound.MPSSoundDictionary;
 import lehjr.powersuits.common.config.MPSSettings;
 import lehjr.powersuits.common.constants.MPSConstants;

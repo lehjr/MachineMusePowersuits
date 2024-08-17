@@ -24,11 +24,11 @@
 // *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 // */
 //
-//package lehjr.numina.client.gui.geometry;
+//package com.lehjr.numina.client.gui.geometry;
 //
 //import com.mojang.blaze3d.vertex.PoseStack;
 //import org.joml.Matrix4f;
-//import lehjr.numina.common.math.Color;
+//import com.lehjr.numina.common.math.Color;
 //import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 //import org.lwjgl.BufferUtils;
 //import org.lwjgl.opengl.GL11;

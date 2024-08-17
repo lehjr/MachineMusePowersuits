@@ -1,11 +1,11 @@
-//package lehjr.numina.client.gui.clickable.slider;
+//package com.lehjr.numina.client.gui.clickable.slider;
 //
 //import com.mojang.blaze3d.vertex.PoseStack;
-//import lehjr.numina.client.gui.GuiIcon;
-//import lehjr.numina.client.gui.clickable.Slider;
-//import lehjr.numina.client.gui.geometry.DrawableTile;
-//import lehjr.numina.client.gui.geometry.MusePoint2D;
-//import lehjr.numina.common.math.Color;
+//import com.lehjr.numina.client.gui.GuiIcon;
+//import com.lehjr.numina.client.gui.clickable.Slider;
+//import com.lehjr.numina.client.gui.geometry.DrawableTile;
+//import com.lehjr.numina.client.gui.geometry.MusePoint2D;
+//import com.lehjr.numina.common.math.Color;
 //import net.minecraft.resources.ResourceLocation;
 //
 //import javax.annotation.Nullable;
@@ -32,7 +32,7 @@
 //
 //
 //     */
-//    private static final ResourceLocation KNOB_TEXTURE = new ResourceLocation("textures/gui/container/creative_inventory/tabs.png");
+//    private static final ResourceLocation KNOB_TEXTURE = ResourceLocation.fromNamespaceAndPath("textures/gui/container/creative_inventory/tabs.png");
 //
 //    public VanillaInventoryScrollBar(MusePoint2D position, double height, String id) {
 //        this(position, height, id, 0);

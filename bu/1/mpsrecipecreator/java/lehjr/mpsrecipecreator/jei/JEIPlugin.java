@@ -8,7 +8,7 @@ import net.minecraft.resources.ResourceLocation;
 
 @JeiPlugin
 public class JEIPlugin implements IModPlugin {
-	private static final ResourceLocation UID = new ResourceLocation(MPSRCConstants.MOD_ID, "main");
+	private static final ResourceLocation UID = ResourceLocation.fromNamespaceAndPath(MPSRCConstants.MOD_ID, "main");
 	@Override
 	public ResourceLocation getPluginUid() {
 		return UID;

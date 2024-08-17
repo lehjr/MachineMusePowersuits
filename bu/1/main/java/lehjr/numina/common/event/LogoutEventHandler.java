@@ -24,11 +24,11 @@
  *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package lehjr.numina.common.event;
+package com.lehjr.numina.common.event;
 
-import lehjr.numina.common.capability.module.powermodule.IConfig;
-import lehjr.numina.common.config.ModuleConfig;
-import lehjr.numina.common.config.NuminaSettings;
+import com.lehjr.numina.common.capabilities.module.powermodule.IConfig;
+import com.lehjr.numina.common.config.ModuleConfig;
+import com.lehjr.numina.common.config.NuminaSettings;
 import net.minecraft.server.MinecraftServer;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;

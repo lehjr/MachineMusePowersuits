@@ -2,10 +2,10 @@ package lehjr.mpsrecipecreator.client.gui;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import lehjr.mpsrecipecreator.basemod.MPSRCConstants;
-import lehjr.numina.client.gui.IContainerULOffSet;
-import lehjr.numina.client.gui.clickable.button.VanillaButton;
-import lehjr.numina.client.gui.geometry.MusePoint2D;
-import lehjr.numina.client.render.IconUtils;
+import com.lehjr.numina.client.gui.IContainerULOffSet;
+import com.lehjr.numina.client.gui.clickable.button.VanillaButton;
+import com.lehjr.numina.client.gui.geometry.MusePoint2D;
+import com.lehjr.numina.client.render.IconUtils;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
@@ -16,7 +16,7 @@ public class SlotButton extends VanillaButton {
     IContainerULOffSet.ulGetter ulGetter;
     boolean active = false;
     public Slot slot;
-    static final ResourceLocation BACKGROUND = new ResourceLocation(MPSRCConstants.MOD_ID, "textures/gui/mpsrc_background.png");
+    static final ResourceLocation BACKGROUND = ResourceLocation.fromNamespaceAndPath(MPSRCConstants.MOD_ID, "textures/gui/mpsrc_background.png");
 
     public SlotButton(Slot slot, IContainerULOffSet.ulGetter ulGetter) {
         super(MusePoint2D.ZERO, Component.empty(), true);

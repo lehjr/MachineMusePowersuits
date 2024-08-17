@@ -24,13 +24,13 @@
 // *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 // */
 //
-//package lehjr.numina.client.gui.geometry;
+//package com.lehjr.numina.client.gui.geometry;
 //
 //
 //import com.mojang.blaze3d.vertex.PoseStack;
 //import com.mojang.blaze3d.vertex.VertexConsumer;
 //import org.joml.Matrix4f;
-//import lehjr.numina.common.math.Color;
+//import com.lehjr.numina.common.math.Color;
 //import net.minecraft.client.renderer.MultiBufferSource;
 //
 //import java.nio.FloatBuffer;
@@ -56,10 +56,10 @@
 //        Matrix4f matrix4f = matrixStackIn.last().pose();
 //
 //        while (points.hasRemaining()) {
-//            vertBuffer.vertex(matrix4f, points.get(), points.get(), points.get())
+//            vertBuffer.addVertex(matrix4f, points.get(), points.get(), points.get())
 //                    .color(color.r, color.g, color.b, color.a)
 //                    .uv2(0x00F000F0)
-//                    .endVertex();
+//                    ;
 //        }
 //        matrixStackIn.popPose();
 //    }

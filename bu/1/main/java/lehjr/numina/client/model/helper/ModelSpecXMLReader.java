@@ -23,16 +23,16 @@
 // *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 // *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 // */
-//package lehjr.numina.client.model.helper;
+//package com.lehjr.numina.client.model.helper;
 //
 //import com.google.common.collect.ImmutableMap;
 //import com.mojang.math.Transformation;
-//import lehjr.numina.client.model.obj.OBJBakedCompositeModel;
-//import lehjr.numina.common.base.NuminaLogger;
-//import lehjr.numina.common.capabilities.render.modelspec.*;
-//import lehjr.numina.common.constants.NuminaConstants;
-//import lehjr.numina.common.math.Color;
-//import lehjr.numina.common.string.StringUtils;
+//import com.lehjr.numina.client.model.obj.OBJBakedCompositeModel;
+//import com.lehjr.numina.common.base.NuminaLogger;
+//import com.lehjr.numina.common.capabilities.render.modelspec.*;
+//import com.lehjr.numina.common.constants.NuminaConstants;
+//import com.lehjr.numina.common.math.Color;
+//import com.lehjr.numina.common.string.StringUtils;
 //import net.minecraft.client.renderer.block.model.ItemOverrides;
 //import net.minecraft.client.renderer.block.model.ItemTransforms;
 //import net.minecraft.client.renderer.texture.TextureAtlas;
@@ -227,7 +227,7 @@
 //                    ItemTransforms getCameraTransforms();
 //
 //                    / **
-//                     * @return The combined transformation state including vanilla and forge transforms data.
+//                     * @return The combined transformation state including vanilla and net.forge transforms data.
 //                     * /
 //                    IModelTransform getCombinedTransform();
 //
@@ -257,7 +257,7 @@
 //                            ModelHelper.loadBakedModel(
 //                                    modelTransform,
 //                                    ItemOverrides.EMPTY,
-//                                    new ResourceLocation(modelLocation));
+//                                    ResourceLocation.fromNamespaceAndPath(modelLocation));
 //
 //                    // ModelSpec stuff
 //                    if (bakedModel != null && bakedModel instanceof OBJBakedCompositeModel) {
@@ -289,7 +289,7 @@
 //            // this is the atlas used
 //            if (event.getAtlas().location() == TextureAtlas.LOCATION_BLOCKS) {
 //                for (String texture : textures) {
-//                    event.addSprite(new ResourceLocation(texture));
+//                    event.addSprite(ResourceLocation.fromNamespaceAndPath(texture));
 //                }
 //            }
 //        }
@@ -308,7 +308,7 @@
 //            textureSpec.put(slot.getName(),
 //                    new JavaPartSpec(textureSpec,
 //                            new SpecBinding(null, slot, "all"),
-//                            textureSpec.addColorIfNotExist(color), slot.getName(), new ResourceLocation(fileLocation)));
+//                            textureSpec.addColorIfNotExist(color), slot.getName(), ResourceLocation.fromNamespaceAndPath(fileLocation)));
 //        }
 //    }
 //

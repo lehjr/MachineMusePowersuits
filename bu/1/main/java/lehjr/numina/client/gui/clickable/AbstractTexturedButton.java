@@ -1,8 +1,8 @@
-//package lehjr.numina.client.gui.clickable;
+//package com.lehjr.numina.client.gui.clickable;
 //
-//import lehjr.numina.client.gui.geometry.MusePoint2D;
-//import lehjr.numina.client.gui.geometry.Rect;
-//import lehjr.numina.common.math.Color;
+//import com.lehjr.numina.client.gui.geometry.MusePoint2D;
+//import com.lehjr.numina.client.gui.geometry.Rect;
+//import com.lehjr.numina.common.math.Color;
 //import net.minecraft.resources.ResourceLocation;
 //
 //public class AbstractTexturedButton extends Button {

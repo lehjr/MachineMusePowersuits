@@ -1,12 +1,12 @@
-//package lehjr.numina.common.integration.scannable;
+//package com.lehjr.numina.common.integration.scannable;
 //
-//import lehjr.numina.common.capabilities.module.powermodule.IConfig;
-//import lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
-//import lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
-//import lehjr.numina.common.capabilities.module.rightclick.IRightClickModule;
-//import lehjr.numina.common.capabilities.module.tickable.PlayerTickModule;
-//import lehjr.numina.common.energy.ElectricItemUtils;
-//import lehjr.numina.common.utils.ItemUtils;
+//import com.lehjr.numina.common.capabilities.module.powermodule.IConfig;
+//import com.lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
+//import com.lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
+//import com.lehjr.numina.common.capabilities.module.rightclick.IRightClickModule;
+//import com.lehjr.numina.common.capabilities.module.tickable.PlayerTickModule;
+//import com.lehjr.numina.common.energy.ElectricItemUtils;
+//import com.lehjr.numina.common.utils.ItemUtils;
 //import li.cil.scannable.api.scanning.ScannerModule;
 //import li.cil.scannable.client.ScanManager;
 //import li.cil.scannable.client.audio.SoundManager;

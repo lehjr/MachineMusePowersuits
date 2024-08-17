@@ -3,13 +3,13 @@
  * SPDX-License-Identifier: LGPL-2.1-only
  */
 
-package forge.client;
+package net.forge.client;
 
 import com.google.common.collect.Maps;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
-import lehjr.numina.common.base.NuminaLogger;
+import com.lehjr.numina.common.base.NuminaLogger;
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.Resource;
@@ -56,7 +56,7 @@ public class NuminaObjLoader implements IGeometryLoader<NuminaObjModel>, Resourc
         boolean emissiveAmbient = GsonHelper.getAsBoolean(jsonObject, "emissive_ambient", true);
         String mtlOverride = GsonHelper.getAsString(jsonObject, "mtl_override", null);
 
-        return loadModel(new NuminaObjModel.ModelSettings(new ResourceLocation(modelLocation), automaticCulling, shadeQuads, flipV, emissiveAmbient, mtlOverride));
+        return loadModel(new NuminaObjModel.ModelSettings(ResourceLocation.fromNamespaceAndPath(modelLocation), automaticCulling, shadeQuads, flipV, emissiveAmbient, mtlOverride));
     }
 
     public NuminaObjModel loadModel(NuminaObjModel.ModelSettings settings) {

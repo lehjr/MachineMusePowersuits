@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: LGPL-2.1-only
  */
 
-package forge.client;
+package net.forge.client;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
@@ -11,8 +11,8 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.mojang.math.Transformation;
 import joptsimple.internal.Strings;
-import lehjr.numina.client.model.obj.OBJBakedCompositeModel;
-import lehjr.numina.client.model.obj.OBJBakedPart;
+import com.lehjr.numina.client.model.obj.OBJBakedCompositeModel;
+import com.lehjr.numina.client.model.obj.OBJBakedPart;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.ItemOverrides;
@@ -117,9 +117,9 @@ public class NuminaObjModel extends SimpleUnbakedGeometry<NuminaObjModel> {
         if (materialLibraryOverrideLocation != null) {
             String lib = materialLibraryOverrideLocation;
             if (lib.contains(":"))
-                mtllib = NuminaObjLoader.INSTANCE.loadMaterialLibrary(new ResourceLocation(lib));
+                mtllib = NuminaObjLoader.INSTANCE.loadMaterialLibrary(ResourceLocation.fromNamespaceAndPath(lib));
             else
-                mtllib = NuminaObjLoader.INSTANCE.loadMaterialLibrary(new ResourceLocation(modelDomain, modelPath + lib));
+                mtllib = NuminaObjLoader.INSTANCE.loadMaterialLibrary(ResourceLocation.fromNamespaceAndPath(modelDomain, modelPath + lib));
         }
 
         String[] line;
@@ -132,9 +132,9 @@ public class NuminaObjModel extends SimpleUnbakedGeometry<NuminaObjModel> {
 
                     String lib = line[1];
                     if (lib.contains(":"))
-                        mtllib = NuminaObjLoader.INSTANCE.loadMaterialLibrary(new ResourceLocation(lib));
+                        mtllib = NuminaObjLoader.INSTANCE.loadMaterialLibrary(ResourceLocation.fromNamespaceAndPath(lib));
                     else
-                        mtllib = NuminaObjLoader.INSTANCE.loadMaterialLibrary(new ResourceLocation(modelDomain, modelPath + lib));
+                        mtllib = NuminaObjLoader.INSTANCE.loadMaterialLibrary(ResourceLocation.fromNamespaceAndPath(modelDomain, modelPath + lib));
                     break;
                 }
 
@@ -396,7 +396,7 @@ public class NuminaObjModel extends SimpleUnbakedGeometry<NuminaObjModel> {
                     color.y() * colorTint.y(),
                     color.z() * colorTint.z(),
                     color.w() * colorTint.w());
-            quadBaker.vertex(position.x(), position.y(), position.z());
+            quadBaker.addVertex(position.x(), position.y(), position.z());
             quadBaker.color(tintedColor.x(), tintedColor.y(), tintedColor.z(), tintedColor.w());
             quadBaker.uv(
                     texture.getU(texCoord.x),
@@ -407,7 +407,7 @@ public class NuminaObjModel extends SimpleUnbakedGeometry<NuminaObjModel> {
             if (i == 0) {
                 quadBaker.setDirection(Direction.getNearest(normal.x(), normal.y(), normal.z()));
             }
-            quadBaker.endVertex();
+            quadBaker;
             pos[i] = position;
             norm[i] = normal;
         }
@@ -600,7 +600,7 @@ public class NuminaObjModel extends SimpleUnbakedGeometry<NuminaObjModel> {
             }
 
             ResourceLocation textureLocation = UnbakedGeometryHelper.resolveDirtyMaterial(mat.diffuseColorMap, configuration).texture();
-            ResourceLocation texturePath = new ResourceLocation(textureLocation.getNamespace(), "textures/" + textureLocation.getPath() + ".png");
+            ResourceLocation texturePath = ResourceLocation.fromNamespaceAndPath(textureLocation.getNamespace(), "textures/" + textureLocation.getPath() + ".png");
 
             builder.addMesh(texturePath, quads);
         }

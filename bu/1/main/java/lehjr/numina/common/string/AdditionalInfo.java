@@ -24,14 +24,14 @@
  *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package lehjr.numina.common.string;
+package com.lehjr.numina.common.string;
 
 import com.mojang.blaze3d.platform.InputConstants;
-import lehjr.numina.common.capability.NuminaCapabilities;
-import lehjr.numina.common.capability.inventory.modechanging.IModeChangingItem;
-import lehjr.numina.common.capability.inventory.modularitem.IModularItem;
-import lehjr.numina.common.constants.NuminaConstants;
-import lehjr.numina.common.utils.ItemUtils;
+import com.lehjr.numina.common.capabilities.NuminaCapabilities;
+import com.lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
+import com.lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
+import com.lehjr.numina.common.constants.NuminaConstants;
+import com.lehjr.numina.common.utils.ItemUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.language.I18n;

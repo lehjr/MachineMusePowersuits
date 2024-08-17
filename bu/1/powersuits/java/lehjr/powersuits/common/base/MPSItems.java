@@ -1,6 +1,6 @@
 package lehjr.powersuits.common.base;
 
-import lehjr.numina.common.constants.NuminaConstants;
+import com.lehjr.numina.common.constants.NuminaConstants;
 import lehjr.powersuits.common.constants.MPSConstants;
 import lehjr.powersuits.common.constants.MPSRegistryNames;
 import lehjr.powersuits.common.item.armor.PowerArmorBoots;

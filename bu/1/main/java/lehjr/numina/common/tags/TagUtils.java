@@ -24,9 +24,9 @@
  *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package lehjr.numina.common.tags;
+package com.lehjr.numina.common.tags;
 
-import lehjr.numina.common.constants.NuminaConstants;
+import com.lehjr.numina.common.constants.NuminaConstants;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;

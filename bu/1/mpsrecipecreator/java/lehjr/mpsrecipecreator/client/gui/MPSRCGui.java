@@ -4,9 +4,9 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import lehjr.mpsrecipecreator.basemod.DataPackWriter;
 import lehjr.mpsrecipecreator.basemod.MPSRCConstants;
 import lehjr.mpsrecipecreator.container.MPSRCMenu;
-import lehjr.numina.client.gui.ExtendedContainerScreen;
-import lehjr.numina.client.gui.geometry.MusePoint2D;
-import lehjr.numina.common.string.StringUtils;
+import com.lehjr.numina.client.gui.ExtendedContainerScreen;
+import com.lehjr.numina.client.gui.geometry.MusePoint2D;
+import com.lehjr.numina.common.string.StringUtils;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
@@ -18,7 +18,7 @@ import javax.annotation.Nullable;
 import java.util.Arrays;
 
 public class MPSRCGui extends ExtendedContainerScreen<MPSRCMenu> {
-    static final ResourceLocation BACKGROUND = new ResourceLocation(MPSRCConstants.MOD_ID, "textures/gui/mpsrc_background.png");
+    static final ResourceLocation BACKGROUND = ResourceLocation.fromNamespaceAndPath(MPSRCConstants.MOD_ID, "textures/gui/mpsrc_background.png");
     private final RecipeOptionsFrame recipeOptions;
     private final RecipeDisplayFrame recipeDisplayFrame;
     private final SlotOptionsFrame slotOptions;

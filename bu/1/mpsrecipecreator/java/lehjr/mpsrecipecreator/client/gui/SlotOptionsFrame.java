@@ -1,11 +1,11 @@
 package lehjr.mpsrecipecreator.client.gui;
 
 import lehjr.mpsrecipecreator.container.MPSRCMenu;
-import lehjr.numina.client.gui.clickable.Checkbox;
-import lehjr.numina.client.gui.clickable.ClickableLabel;
-import lehjr.numina.client.gui.frame.ScrollableFrame;
-import lehjr.numina.client.gui.geometry.MusePoint2D;
-import lehjr.numina.client.gui.geometry.Rect;
+import com.lehjr.numina.client.gui.clickable.Checkbox;
+import com.lehjr.numina.client.gui.clickable.ClickableLabel;
+import com.lehjr.numina.client.gui.frame.ScrollableFrame;
+import com.lehjr.numina.client.gui.geometry.MusePoint2D;
+import com.lehjr.numina.client.gui.geometry.Rect;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;

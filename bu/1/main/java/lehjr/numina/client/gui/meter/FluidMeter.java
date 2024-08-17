@@ -1,4 +1,4 @@
-//package lehjr.numina.client.gui.meter;
+//package com.lehjr.numina.client.gui.meter;
 //
 //import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 //import net.minecraft.world.level.material.Fluid;

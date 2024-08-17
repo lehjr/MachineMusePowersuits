@@ -13,7 +13,7 @@ license='Simplified BSD License https://opensource.org/license/bsd-2-clause/'
     description="A common library of useful functions and utilities for dealing with Minecraft's source code."
 
 [[dependencies.numina]]
-    modId="forge"
+    modId="net.forge"
     mandatory=true
     versionRange="${neo_version}"
     side="BOTH"

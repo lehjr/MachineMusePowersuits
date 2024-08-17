@@ -24,14 +24,14 @@
 // *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 // */
 //
-//package lehjr.numina.client.gui.clickable;
+//package com.lehjr.numina.client.gui.clickable;
 //
 //import com.mojang.blaze3d.vertex.PoseStack;
-//import lehjr.numina.client.gui.geometry.DrawableRect;
-//import lehjr.numina.client.gui.geometry.IDrawable;
-//import lehjr.numina.client.gui.geometry.MusePoint2D;
-//import lehjr.numina.common.math.Color;
-//import lehjr.numina.common.string.StringUtils;
+//import com.lehjr.numina.client.gui.geometry.DrawableRect;
+//import com.lehjr.numina.client.gui.geometry.IDrawable;
+//import com.lehjr.numina.client.gui.geometry.MusePoint2D;
+//import com.lehjr.numina.common.math.Color;
+//import com.lehjr.numina.common.string.StringUtils;
 //import net.minecraft.network.chat.Component;
 //
 ///**

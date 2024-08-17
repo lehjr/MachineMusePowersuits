@@ -24,9 +24,9 @@
  *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package lehjr.numina.common.item;
+package com.lehjr.numina.common.item;
 
-import lehjr.numina.common.string.AdditionalInfo;
+import com.lehjr.numina.common.string.AdditionalInfo;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.Item;

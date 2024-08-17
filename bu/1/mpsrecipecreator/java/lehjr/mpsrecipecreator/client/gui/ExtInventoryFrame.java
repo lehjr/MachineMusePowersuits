@@ -1,11 +1,11 @@
 package lehjr.mpsrecipecreator.client.gui;
 
-import lehjr.numina.client.gui.IContainerULOffSet;
-import lehjr.numina.client.gui.frame.IGuiFrame;
-import lehjr.numina.client.gui.frame.ScrollableFrame;
-import lehjr.numina.client.gui.geometry.MusePoint2D;
-import lehjr.numina.client.gui.geometry.Rect;
-import lehjr.numina.common.math.Color;
+import com.lehjr.numina.client.gui.IContainerULOffSet;
+import com.lehjr.numina.client.gui.frame.IGuiFrame;
+import com.lehjr.numina.client.gui.frame.ScrollableFrame;
+import com.lehjr.numina.client.gui.geometry.MusePoint2D;
+import com.lehjr.numina.client.gui.geometry.Rect;
+import com.lehjr.numina.common.math.Color;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 

@@ -26,7 +26,7 @@
 
 package lehjr.powersuits.common.item.module;
 
-import lehjr.numina.common.string.AdditionalInfo;
+import com.lehjr.numina.common.string.AdditionalInfo;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;

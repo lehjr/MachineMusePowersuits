@@ -1,0 +1,144 @@
+group = "com.lehjr"
+
+repositories {
+    maven {
+        name = "Rover656 Maven"
+        url = "https://maven.rover656.dev/releases"
+        content {
+            includeGroup "com.enderio"
+        }
+    }
+
+    maven {
+        name = "ModMaven"
+        url = "https://modmaven.dev"
+        content {
+            includeGroup "mezz.jei"
+            includeGroup "mcjty.theoneprobe"
+            includeGroup "appeng"
+            includeGroup "mekanism"
+        }
+    }
+
+    maven {
+        name = "Dogforce Games Maven"
+        url = "https://dogforce-games.com/maven"
+        content {
+            includeGroup "dev.gigaherz.graph"
+        }
+    }
+
+    maven {
+        name = "SquidDev Maven"
+        url = "https://maven.squiddev.cc"
+        content {
+            includeGroup "cc.tweaked"
+        }
+    }
+
+    maven {
+        name = "Jared's Maven"
+        url = "https://maven.blamejared.com"
+        content {
+            includeGroup "vazkii.patchouli"
+            includeGroup "net.darkhax.bookshelf"
+            includeGroup "net.darkhax.enchdesc"
+            includeGroup "com.almostreliable.mods"
+        }
+    }
+
+    maven {
+        name = "Curse Maven"
+        url = "https://cursemaven.com"
+        content {
+            includeGroup "curse.maven"
+        }
+    }
+
+    maven {
+        name = "Modrinth Maven"
+        url = "https://api.modrinth.com/maven"
+        content {
+            includeGroup "maven.modrinth"
+        }
+    }
+
+    mavenLocal {
+        content {
+            includeGroup "com.enderio"
+            includeGroup "net.neoforged"
+        }
+    }
+}
+
+dependencies {
+    // TODO: Once EnderCore moves out, put common mods that we test alongside in here?
+    compileOnly "org.jetbrains:annotations:23.0.0"
+}
+
+version = getVersionString()
+
+ext {
+    minecraftVersionRange = project.property('minecraftVersionRange')
+    neoForgeVersionRange = project.property('neoForgeVersionRange')
+    loaderVersionRange = project.property('loaderVersionRange')
+}
+
+def replaceProperties = [
+        'mod_version': project.version,
+'mcversion': minecraftVersionRange,
+'neo_version': neoForgeVersionRange,
+'loader_version_range': loaderVersionRange
+]
+
+processResources {
+    inputs.properties replaceProperties
+
+            filesMatching('META-INF/neoforge.mods.toml') {
+                expand replaceProperties
+                        expand project: project
+            }
+}
+
+// ============
+// Utilities
+// ============
+
+def shellRunAndRead(command) {
+    def process = new ProcessBuilder(command.split(" "))
+            .directory(rootProject.projectDir)
+            .start()
+    return process.inputStream.text
+}
+
+def getVersionString() {
+    if (System.env.BUILD_VERSION) {
+        def buildVersion = System.env.BUILD_VERSION
+                if (buildVersion.startsWith("v")) {
+                    buildVersion = buildVersion.substring(1)
+                }
+        return buildVersion
+    }
+
+    def versionSeries = project.property('versionSeries')
+
+    // If this is not a release, we're going to get the last tag, add the ci build number, then append -dev+<commit_hash>
+    def commitHash = shellRunAndRead("git rev-parse --short HEAD").trim()
+    def previousTagVersion = shellRunAndRead("git describe --tags --abbrev=0").trim()
+
+    // Extract the numeric component of the last version.
+    def versionRegex = /\d+(\.\d+)+/
+    def currentVersion = (previousTagVersion =~ versionRegex)[0]
+    if (!currentVersion) {
+        // Fallback to version series if we're unable to discover the previous version.
+        currentVersion = "${versionSeries}.0"
+    }
+
+    if (System.env.BUILD_NUMBER) {
+        def buildNumber = System.env.BUILD_NUMBER
+                return "${currentVersion}.${buildNumber}-nightly+${commitHash}"
+    }
+
+    return "${versionSeries}-dev+${commitHash}"
+}
+

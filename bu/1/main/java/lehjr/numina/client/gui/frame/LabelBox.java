@@ -1,9 +1,9 @@
-package lehjr.numina.client.gui.frame;
+package com.lehjr.numina.client.gui.frame;
 
-import lehjr.numina.client.gui.geometry.MusePoint2D;
-import lehjr.numina.client.gui.geometry.Rect;
-import lehjr.numina.common.math.Color;
-import lehjr.numina.common.string.StringUtils;
+import com.lehjr.numina.client.gui.geometry.MusePoint2D;
+import com.lehjr.numina.client.gui.geometry.Rect;
+import com.lehjr.numina.common.math.Color;
+import com.lehjr.numina.common.string.StringUtils;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 

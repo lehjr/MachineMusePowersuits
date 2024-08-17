@@ -24,11 +24,11 @@
  *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package lehjr.numina.client.gui.clickable;
+package com.lehjr.numina.client.gui.clickable;
 
 import com.mojang.blaze3d.platform.InputConstants;
-import lehjr.numina.client.gui.geometry.IDrawableRect;
-import lehjr.numina.client.gui.geometry.MusePoint2D;
+import com.lehjr.numina.client.gui.geometry.IDrawableRect;
+import com.lehjr.numina.client.gui.geometry.MusePoint2D;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.client.sounds.SoundManager;

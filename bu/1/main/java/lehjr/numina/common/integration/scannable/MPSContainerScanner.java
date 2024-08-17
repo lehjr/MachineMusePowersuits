@@ -1,7 +1,7 @@
-//package lehjr.numina.common.integration.scannable;
+//package com.lehjr.numina.common.integration.scannable;
 //
-//import lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
-//import lehjr.numina.common.utils.ItemUtils;
+//import com.lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
+//import com.lehjr.numina.common.utils.ItemUtils;
 //import li.cil.scannable.common.Scannable;
 //import li.cil.scannable.common.inventory.ItemHandlerScanner;
 //import net.minecraft.inventory.container.AbstractContainerMenu;

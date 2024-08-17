@@ -24,11 +24,11 @@
 // *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 // */
 //
-//package lehjr.numina.client.gui.gemoetry;
+//package com.lehjr.numina.client.gui.gemoetry;
 //
 //import com.mojang.blaze3d.vertex.PoseStack;
 //import com.mojang.blaze3d.systems.RenderSystem;
-//import lehjr.numina.common.math.Color;
+//import com.lehjr.numina.common.math.Color;
 //import com.mojang.blaze3d.vertex.BufferBuilder;
 //import com.mojang.blaze3d.vertex.Tesselator;
 //import com.mojang.blaze3d.vertex.DefaultVertexFormat;
@@ -158,16 +158,16 @@
 //        // Horizontal lines
 //        if (gridHeight >1) {
 //            for (double y = (double) (verticleSegmentSize + top()); y < bottom(); y += verticleSegmentSize) {
-//                buffer.vertex(matrix4f, (float)left(), (float) y, zLevel).color(gridColor.r, gridColor.g, gridColor.b, gridColor.a).endVertex();
-//                buffer.vertex(matrix4f, (float)right(), (float) y, zLevel).color(gridColor.r, gridColor.g, gridColor.b, gridColor.a).endVertex();
+//                buffer.addVertex(matrix4f, (float)left(), (float) y, zLevel).setColor(gridColor.r, gridColor.g, gridColor.b, gridColor.a);
+//                buffer.addVertex(matrix4f, (float)right(), (float) y, zLevel).setColor(gridColor.r, gridColor.g, gridColor.b, gridColor.a);
 //            }
 //        }
 //
 //        // Vertical lines
 //        if(gridWidth > 1) {
 //            for (double x = (double) (horizontalSegmentSize + left()); x < right(); x += horizontalSegmentSize) {
-//                buffer.vertex(matrix4f, (float) x, (float) top(), zLevel).color(gridColor.r, gridColor.g, gridColor.b, gridColor.a).endVertex();
-//                buffer.vertex(matrix4f, (float) x, (float) bottom(), zLevel).color(gridColor.r, gridColor.g, gridColor.b, gridColor.a).endVertex();
+//                buffer.addVertex(matrix4f, (float) x, (float) top(), zLevel).setColor(gridColor.r, gridColor.g, gridColor.b, gridColor.a);
+//                buffer.addVertex(matrix4f, (float) x, (float) bottom(), zLevel).setColor(gridColor.r, gridColor.g, gridColor.b, gridColor.a);
 //            }
 //        }
 //
