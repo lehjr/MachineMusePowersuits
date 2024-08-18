@@ -85,10 +85,10 @@ ext {
 }
 
 def replaceProperties = [
-        'mod_version': project.version,
-'mcversion': minecraftVersionRange,
-'neo_version': neoForgeVersionRange,
-'loader_version_range': loaderVersionRange
+    'mod_version': project.version,
+    'mcversion': minecraftVersionRange,
+    'neo_version': neoForgeVersionRange,
+    'loader_version_range': loaderVersionRange
 ]
 
 processResources {
