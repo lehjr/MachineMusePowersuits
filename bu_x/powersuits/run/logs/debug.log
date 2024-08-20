@@ -1,0 +1,13 @@
+[19Aug2024 19:57:55.065] [Datafixer Bootstrap/INFO] [com.mojang.datafixers.DataFixerBuilder/]: 229 Datafixer optimizations took 251 milliseconds
+[19Aug2024 19:57:55.435] [main/WARN] [net.minecraft.SystemReport/]: Failed to get system info for GL Caps
+java.lang.IllegalStateException: Rendersystem called from wrong thread
+	at com.mojang.blaze3d.systems.RenderSystem.constructThreadException(RenderSystem.java:124) ~[neoforge-21.1.4-minecraft-merged.jar:?]
+	at com.mojang.blaze3d.systems.RenderSystem.assertOnRenderThread(RenderSystem.java:119) ~[neoforge-21.1.4-minecraft-merged.jar:?]
+	at com.mojang.blaze3d.systems.RenderSystem.getCapsString(RenderSystem.java:497) ~[neoforge-21.1.4-minecraft-merged.jar:?]
+	at net.minecraft.SystemReport.setDetail(SystemReport.java:72) [neoforge-21.1.4-minecraft-merged.jar:?]
+	at net.minecraft.client.Minecraft.fillSystemReport(Minecraft.java:2451) [neoforge-21.1.4-minecraft-merged.jar:?]
+	at net.minecraft.client.Minecraft.fillReport(Minecraft.java:2424) [neoforge-21.1.4-minecraft-merged.jar:?]
+	at net.minecraft.client.main.Main.main(Main.java:189) [neoforge-21.1.4-minecraft-merged.jar:?]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[?:?]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[?:?]
+	at net.neoforged.devlaunch.Main.main(Main.java:55) [DevLaunch-1.0.1.jar:?]

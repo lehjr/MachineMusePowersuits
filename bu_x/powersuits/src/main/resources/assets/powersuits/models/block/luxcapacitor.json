@@ -1,0 +1,9 @@
+{
+  "parent": "block/block",
+  "loader": "numina:obj",
+  "model": "powersuits:models/block/luxcapacitor/luxcapacitor.obj",
+  "flip_v": true,
+  "textures": {
+    "particle": "neoforge:white"
+  }
+}

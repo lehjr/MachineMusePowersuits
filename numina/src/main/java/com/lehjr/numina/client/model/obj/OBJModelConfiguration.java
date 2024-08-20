@@ -1,4 +1,4 @@
-///*
+package com.lehjr.numina.client.model.obj;///*
 // * Copyright (c) 2021. MachineMuse, Lehjr
 // *  All rights reserved.
 // *

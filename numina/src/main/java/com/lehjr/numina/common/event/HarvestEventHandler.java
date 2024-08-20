@@ -18,7 +18,11 @@ import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.*;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.level.BlockEvent;
@@ -34,7 +38,7 @@ public class HarvestEventHandler {
         Player player = event.getEntity();
         BlockState state = event.getTargetBlock();
 
-        IModeChangingItem mci = player.getInventory().getSelected().getCapability(NuminaCapabilities.Inventory.MODE_CHANGING_MODULAR_ITEM);
+        IModeChangingItem mci = NuminaCapabilities.getModeChangingModularItem(player.getMainHandItem());
         if (mci != null) {
             if (!state.requiresCorrectToolForDrops()) {
                 event.setCanHarvest(true);
@@ -61,7 +65,7 @@ public class HarvestEventHandler {
     public static void onBlockBreak(BlockEvent.BreakEvent event) {
         Player player = event.getPlayer();
         ItemStack tool = player.getMainHandItem();
-        IModeChangingItem mci = tool.getCapability(NuminaCapabilities.Inventory.MODE_CHANGING_MODULAR_ITEM);
+        IModeChangingItem mci = NuminaCapabilities.getModeChangingModularItem(tool);
         if (mci != null) {
             HitResult rayTraceResult = pick(player, 1F);
             if (rayTraceResult instanceof BlockHitResult blockHitResult) {
@@ -138,7 +142,7 @@ public class HarvestEventHandler {
         Player player = event.getEntity();
         Level level = player.level();
         ItemStack tool = player.getInventory().getSelected();
-        IModeChangingItem mci = tool.getCapability(NuminaCapabilities.Inventory.MODE_CHANGING_MODULAR_ITEM);
+        IModeChangingItem mci = NuminaCapabilities.getModeChangingModularItem(tool);
         double playerEnergy = ElectricItemUtils.getPlayerEnergy(player);
         NonNullList<IBlockBreakingModule> modules = NonNullList.create();
 

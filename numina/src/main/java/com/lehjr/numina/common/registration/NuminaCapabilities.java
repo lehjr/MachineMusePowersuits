@@ -48,8 +48,18 @@ public class NuminaCapabilities {
     }
 
     @Nullable
+    public static IModeChangingItem getModeChangingModularItem(ItemStack modularItem) {
+        return modularItem.getCapability(Inventory.MODE_CHANGING_MODULAR_ITEM);
+    }
+
+    @Nullable
+    public static IModularItem getModularItem(ItemStack modularItem) {
+        return modularItem.getCapability(Inventory.MODULAR_ITEM);
+    }
+
+    @Nullable
     public static IModularItem getModularItemOrModeChangingCapability(ItemStack modularItem) {
-        IModularItem cap = modularItem.getCapability(Inventory.MODE_CHANGING_MODULAR_ITEM);
+        IModularItem cap = getModeChangingModularItem(modularItem);
         if (cap != null) {
             return cap;
         }
@@ -72,10 +82,10 @@ public class NuminaCapabilities {
         event.registerItem(Capabilities.EnergyStorage.ITEM, (stack, ctx) -> new ComponentEnergyStorage(stack, NuminaCodecs.ENERGY, NuminaCommonConfig.batteryMaxEnergy3, NuminaCommonConfig.batteryMaxTransfer3), NuminaItems.BATTERY_3.get());
         event.registerItem(Capabilities.EnergyStorage.ITEM, (stack, ctx) -> new ComponentEnergyStorage(stack, NuminaCodecs.ENERGY, NuminaCommonConfig.batteryMaxEnergy4, NuminaCommonConfig.batteryMaxTransfer4), NuminaItems.BATTERY_4.get());
 
-        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new Battery.BatteryPowerModule(stack, 1), NuminaItems.BATTERY_1.get());
-        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new Battery.BatteryPowerModule(stack, 2), NuminaItems.BATTERY_2.get());
-        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new Battery.BatteryPowerModule(stack, 3), NuminaItems.BATTERY_3.get());
-        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new Battery.BatteryPowerModule(stack, 4), NuminaItems.BATTERY_4.get());
+        event.registerItem(Module.POWER_MODULE, (stack, ctx) -> new Battery.BatteryPowerModule(stack, 1), NuminaItems.BATTERY_1.get());
+        event.registerItem(Module.POWER_MODULE, (stack, ctx) -> new Battery.BatteryPowerModule(stack, 2), NuminaItems.BATTERY_2.get());
+        event.registerItem(Module.POWER_MODULE, (stack, ctx) -> new Battery.BatteryPowerModule(stack, 3), NuminaItems.BATTERY_3.get());
+        event.registerItem(Module.POWER_MODULE, (stack, ctx) -> new Battery.BatteryPowerModule(stack, 4), NuminaItems.BATTERY_4.get());
 
         // Blocks -----------------------------------------------------------------------------------------------------
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, NuminaBlockEntities.CHARGING_BASE_BLOCK_ENTITY.get(), (o, direction) -> o.getItemHandler());

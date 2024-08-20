@@ -1,0 +1,15 @@
+plugins {
+    id 'multi-mod'
+}
+
+final thisProject = project
+
+neoForge {
+    rootProject.subprojects { proj ->
+        if (proj !== thisProject) {
+            mods.create(proj.name) {
+                sourceSet(proj.sourceSets.main)
+            }
+        }
+    }
+}

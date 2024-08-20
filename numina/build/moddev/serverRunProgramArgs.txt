@@ -3,11 +3,17 @@ cpw.mods.bootstraplauncher.BootstrapLauncher
 
 # NeoForge Run-Type Program Arguments
 --launchTarget
-forgeserveruserdev
+forgeclientuserdev
+--version
+21.1.22
+--assetIndex
+17
+--assetsDir
+/home/leon/.gradle/caches/neoformruntime/assets
 --gameDir
 .
 --fml.neoForgeVersion
-21.1.4
+21.1.22
 --fml.fmlVersion
 4.0.24
 --fml.mcVersion
@@ -16,4 +22,3 @@ forgeserveruserdev
 20240808.144430
 
 # User Supplied Program Arguments
---nogui

@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "facing=west": { "model": "powersuits:block/luxcapacitor", "y": 90 },
+    "facing=east": { "model": "powersuits:block/luxcapacitor", "y": 270 },
+    "facing=north": { "model": "powersuits:block/luxcapacitor", "y": 180 },
+    "facing=south": { "model": "powersuits:block/luxcapacitor", "y": 0 },
+    "facing=up" : { "model": "powersuits:block/luxcapacitor", "x": 90 },
+    "facing=down" : { "model": "powersuits:block/luxcapacitor", "x": 270}
+  }
+}

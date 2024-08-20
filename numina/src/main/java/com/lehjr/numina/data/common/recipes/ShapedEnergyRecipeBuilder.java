@@ -34,7 +34,7 @@ public class ShapedEnergyRecipeBuilder implements RecipeBuilder {
     private final Map<Character, Ingredient> key = Maps.newLinkedHashMap();
     private final Map<String, Criterion<?>> criteria = new LinkedHashMap<>();
 
-    @javax.annotation.Nullable
+    @Nullable
     private String group;
     private boolean showNotification = true;
 

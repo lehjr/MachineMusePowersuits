@@ -87,11 +87,7 @@ public class ModularItemEnergyWrapper implements IEnergyStorage {
 
     @Nullable
     public IModularItem getModularItemCap() {
-        IModularItem modularItemCap = itemStack.getCapability(NuminaCapabilities.Inventory.MODULAR_ITEM);
-        if (modularItemCap != null) {
-            return modularItemCap;
-        }
-        return itemStack.getCapability(NuminaCapabilities.Inventory.MODE_CHANGING_MODULAR_ITEM);
+        return NuminaCapabilities.getModularItemOrModeChangingCapability(itemStack);
     }
 
     public List<IEnergyStorage> getInternalEnergyStorage() {

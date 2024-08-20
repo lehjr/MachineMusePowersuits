@@ -35,7 +35,7 @@ public abstract class EnchantmentModule extends PlayerTickModule implements IEnc
         int energyUsage = getEnergyUsage();
 
         if (playerEnergy > energyUsage) {
-            addEnchantment(item);
+            addEnchantment(item, level);
             ElectricItemUtils.drainPlayerEnergy(player, energyUsage, false);
             setAdded(true);
             setRemoved(false);
@@ -47,7 +47,7 @@ public abstract class EnchantmentModule extends PlayerTickModule implements IEnc
     @Override
     public void onPlayerTickInactive(Player player, Level level, @Nonnull ItemStack item) {
         if (added && !removed) {
-            removeEnchantment(item);
+            removeEnchantment(item, level);
             setAdded(false);
             setRemoved(true);
         }

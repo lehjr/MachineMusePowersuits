@@ -94,7 +94,7 @@ public class ShapedEnchantmentRecipe extends ShapedRecipe {
         );
 
         public static final StreamCodec<RegistryFriendlyByteBuf, ShapedEnchantmentRecipe> STREAM_CODEC = StreamCodec.of(
-                ShapedEnchantmentRecipe.EnchantmentSerializer::toNetwork, ShapedEnchantmentRecipe.EnchantmentSerializer::fromNetwork
+                EnchantmentSerializer::toNetwork, EnchantmentSerializer::fromNetwork
         );
 
         @Override

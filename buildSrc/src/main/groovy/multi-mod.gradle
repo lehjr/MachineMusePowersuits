@@ -1,0 +1,63 @@
+plugins {
+    id 'net.neoforged.moddev'
+}
+
+neoForge {
+    version = "${neo_forge_version}"
+
+    validateAccessTransformers = true
+
+    runs {
+
+        def mod_run_configs = project.findProperty('mod_run_configuration')?.split(',')
+        if (mod_run_configs) {
+            mod_run_configs.each { mod_run_config ->
+                def elements = mod_run_config.split(':')
+                if (elements.length == 2) {
+                    String runType = elements[0]
+                    String taskName = elements[1]
+                    println "Creating task for runType: $runType with task name: $taskName"
+                    String fullTaskName = nameTask(taskName, project.name)
+                    switch (runType) {
+                        case 'client':
+                            client {
+                                client()
+                                ideName = fullTaskName
+                            }
+                            break
+                        case 'server':
+                            server {
+                                client()
+                                ideName = fullTaskName
+                            }
+                            break
+                        case 'data':
+                            data {
+                                client()
+                                ideName = fullTaskName
+                            }
+                            break
+//                        case 'test':
+//                            data {
+//                                type = "gameTestServer"
+//                                ideName = fullTaskName
+//                            }
+//                            break
+                    }
+                } else {
+                    println "Invalid format for spec: $mod_run_config. Expected format: runType:taskName"
+                }
+            }
+        }
+
+        if (project.name != 'runenv') {
+            mods.create(project.name) {
+                sourceSet(project.sourceSets.main)
+            }
+        }
+    }
+}
+
+static String nameTask(String taskName, String prefix) {
+    return prefix + ' ' + taskName
+}

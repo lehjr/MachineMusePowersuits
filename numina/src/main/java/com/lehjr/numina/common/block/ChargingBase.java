@@ -55,7 +55,7 @@ public class ChargingBase extends Block implements EntityBlock, SimpleWaterlogge
             16.0D);
 
     public ChargingBase() {
-        super(Block.Properties.of()
+        super(Properties.of()
                 .strength(0.5F, 4.0F)
                 .sound(SoundType.ANVIL)
                 .requiresCorrectToolForDrops());

@@ -1,4 +1,4 @@
-//package com.lehjr.numina.common.capability.fluid;
+package com.lehjr.numina.common.capabilities.fluid;//package com.lehjr.numina.common.capability.fluid;
 //
 //import com.lehjr.numina.common.capability.NuminaCapabilities;
 //import com.lehjr.numina.common.capability.module.powermodule.IPowerModule;

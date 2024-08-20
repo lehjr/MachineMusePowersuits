@@ -103,7 +103,7 @@ public interface IOtherModItemsAsModules extends IRightClickModule {
             CompoundTag stackTag = tag.getCompound(MODE_CHANGING_MODULAR_ITEM);
             Optional<ItemStack> optionalStack = ItemStack.parse(provider, stackTag);
             if (optionalStack.isPresent()) {
-                return optionalStack.get().getCapability(NuminaCapabilities.Inventory.MODE_CHANGING_MODULAR_ITEM);
+                return NuminaCapabilities.getModeChangingModularItem(optionalStack.get());
             }
         }
         return null;

@@ -1,71 +1,7 @@
+import groovy.json.*
+
 plugins {
-    id 'maven-publish'
-    //id 'com.modrinth.minotaur' version '2.+'
-    id 'net.neoforged.moddev' version '1.0.14' apply false
-    //id 'com.hypherionmc.modutils.modpublisher' version '2.+'
-    //id 'checkstyle'
     id 'idea'
+    id 'net.neoforged.moddev' version "${mdg_version}" apply false
 }
 
-tasks.named('wrapper', Wrapper).configure {
-    // Define wrapper values here so as to not have to always do so when updating gradlew.properties.
-    // Switching this to Wrapper.DistributionType.ALL will download the full gradle sources that comes with
-    // documentation attached on cursor hover of gradle classes and methods. However, this comes with increased
-    // file size for Gradle. If you do switch this to ALL, run the Gradle wrapper task twice afterwards.
-    // (Verify by checking gradle/wrapper/gradle-wrapper.properties to see if distributionUrl now points to `-all`)
-    distributionType = Wrapper.DistributionType.BIN
-}
-
-idea {
-    module {
-        downloadJavadoc = true
-        downloadSources = true
-    }
-}
-
-allprojects {
-    gradle.projectsEvaluated {
-        tasks.withType(JavaCompile).configureEach {
-            options.encoding = 'UTF-8' // Use the UTF-8 charset for Java compilation
-            options.compilerArgs.addAll(['-Xmaxerrs', "100000"])
-        }
-    }
-}
-
-// Normally we'd do this in the shared buildSrc file
-// However, we need this context before loading subprojects or stuff explodes.
-subprojects {
-    if (project.name != 'ensure_plugin') {
-        apply plugin: 'net.neoforged.moddev'
-    }
-}
-
-//Minimize/optimize all png files, requires optipng on the PATH
-// Credits: BrainStone
-void minimizePNGFile(File file) {
-    long size = file.length()
-    exec {
-        executable "optipng"
-        args "-q", "-o7", "-zm1-9", "-strip", "all", file
-    }
-    long newSize = file.length()
-    if (newSize < size) {
-        System.out.format("Reduced File size of %s from %d bytes to %d bytes (reduced by %.2f%%)\n",
-                file, size, newSize, ((double) (size - newSize)) / ((double) size) * 100.0)
-    }
-}
-
-tasks.register('optimizePng').configure {
-    doLast {
-        def pngPatterns = ["**/*.png"]
-        //Ensure the logo is minimized (we add this file to each jar)
-        minimizePNGFile(file("${projectDir}/logo.png"))
-        //Minimize any PNGs in the source sets
-        def sourceSets = [sourceSets.main, sourceSets.mpsrecipecreator, sourceSets.mpswhatever, sourceSets.powersuits]
-        for (def sourceSet : sourceSets) {
-            for (dir in sourceSet.resources.srcDirs) {
-                fileTree(dir: dir, includes: pngPatterns).each { minimizePNGFile(it) }
-            }
-        }
-    }
-}

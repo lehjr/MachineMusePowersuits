@@ -11,7 +11,6 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
@@ -24,11 +23,11 @@ import javax.annotation.Nonnull;
 public class BlockStateClearPacketServerBound implements CustomPacketPayload {
     public BlockStateClearPacketServerBound() {
     }
-    public static final CustomPacketPayload.Type<BlockStateClearPacketServerBound> ID = new CustomPacketPayload.Type<>(ResourceLocation.fromNamespaceAndPath(NuminaConstants.MOD_ID, "block_state_clear_to_sever"));
+    public static final Type<BlockStateClearPacketServerBound> ID = new Type<>(ResourceLocation.fromNamespaceAndPath(NuminaConstants.MOD_ID, "block_state_clear_to_sever"));
 
     @Override
     @Nonnull
-    public CustomPacketPayload.Type<? extends CustomPacketPayload> type() {
+    public Type<? extends CustomPacketPayload> type() {
         return ID;
     }
 
@@ -47,7 +46,7 @@ public class BlockStateClearPacketServerBound implements CustomPacketPayload {
             Player player = ctx.player();
             if (player instanceof ServerPlayer) {
                 try {
-                    IModeChangingItem mci = ItemUtils.getItemFromEntitySlot(player, EquipmentSlot.MAINHAND).getCapability(NuminaCapabilities.Inventory.MODE_CHANGING_MODULAR_ITEM);
+                    IModeChangingItem mci = NuminaCapabilities.getModeChangingModularItem(player.getMainHandItem());
                     if(mci != null) {
                         mci.setModuleBlockState(ItemUtils.getRegistryName(mci.getActiveModule()), Blocks.AIR.defaultBlockState());
                     }

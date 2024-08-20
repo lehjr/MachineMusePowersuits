@@ -6,6 +6,7 @@ import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.ItemEnchantments;
+import net.minecraft.world.level.Level;
 
 import javax.annotation.Nonnull;
 
@@ -14,11 +15,11 @@ public interface IEnchantmentModule extends IPlayerTickModule {
      * enable enchantment
      */
     @Nonnull
-    default ItemStack addEnchantment(@Nonnull ItemStack itemStack) {
+    default ItemStack addEnchantment(@Nonnull ItemStack itemStack, Level level) {
         // get stored enchantments (NonNull)
         ItemEnchantments itemenchantments = itemStack.getOrDefault(DataComponents.ENCHANTMENTS, ItemEnchantments.EMPTY);
         ItemEnchantments.Mutable mutable = new ItemEnchantments.Mutable(itemenchantments);
-        mutable.set(getEnchantment(), getLevel());
+        mutable.set(getEnchantment(level), getLevel());
         ItemEnchantments itemenchantments1 = mutable.toImmutable();
         itemStack.set(DataComponents.ENCHANTMENTS, itemenchantments1);
         return itemStack;
@@ -28,10 +29,10 @@ public interface IEnchantmentModule extends IPlayerTickModule {
      * disable enchantment
      */
     @Nonnull
-    default ItemStack removeEnchantment(@Nonnull ItemStack itemStack) {
+    default ItemStack removeEnchantment(@Nonnull ItemStack itemStack, Level level) {
         ItemEnchantments itemenchantments = itemStack.getOrDefault(DataComponents.ENCHANTMENTS, ItemEnchantments.EMPTY);
         ItemEnchantments.Mutable mutable = new ItemEnchantments.Mutable(itemenchantments);
-        mutable.set(getEnchantment(), -1);
+        mutable.set(getEnchantment(level), -1);
         ItemEnchantments itemenchantments1 = mutable.toImmutable();
         itemStack.set(DataComponents.ENCHANTMENTS, itemenchantments1);
         return itemStack;
@@ -41,7 +42,7 @@ public interface IEnchantmentModule extends IPlayerTickModule {
 
     void setRemoved(boolean removed);
 
-    Holder<Enchantment> getEnchantment();
+    Holder<Enchantment> getEnchantment(Level level);
 
     int getLevel();
 }

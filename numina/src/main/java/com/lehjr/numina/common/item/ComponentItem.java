@@ -11,7 +11,7 @@ import java.util.List;
 
 public class ComponentItem extends Item {
     public ComponentItem() {
-        super(new Item.Properties());
+        super(new Properties());
     }
 
     @Override

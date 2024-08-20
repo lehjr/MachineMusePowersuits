@@ -1,0 +1,32 @@
+modLoader="javafml"
+loaderVersion="[4,)"
+issueTrackerURL="https://github.com/lehjr/MachineMusePowersuits/issues"
+license="'Simplified BSD License https://opensource.org/license/bsd-2-clause/'"
+
+[[mods]]
+    modId="'Simplified BSD License https://opensource.org/license/bsd-2-clause/'"
+    version="3.0.0"
+    displayName="Numina"
+    displayURL="https://github.com/lehjr/MachineMusePowersuits"
+    authors="MachineMuse, Lehjr"
+    description='''A common library of useful functions and utilities for dealing with Minecraft's source code.'''
+
+[[accessTransformers]]
+    file="META-INF/accesstransformer.cfg"
+
+[[mixins]]
+    config="numina.mixins.json"
+
+[[dependencies.numina]]
+    modId="minecraft"
+    type="required"
+    versionRange="[1.21,1.21.1)"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.numina]]
+    modId="neoforge"
+    type="required"
+    versionRange="[21.1.4,)"
+    ordering="NONE"
+    side="BOTH"

@@ -28,21 +28,9 @@ public class PlayerUpdateHandler {
                 continue;
             }
 
-            switch(slot.getType()) {
-                case HAND -> {
-                    IModeChangingItem mci = modularItem.getCapability(NuminaCapabilities.Inventory.MODE_CHANGING_MODULAR_ITEM);
-                    if (mci != null) {
-                        mci.tick(player, level, modularItem);
-                        modularItems.add(modularItem);
-                    }
-                }
-                case HUMANOID_ARMOR -> {
-                    IModularItem mi = modularItem.getCapability(NuminaCapabilities.Inventory.MODULAR_ITEM);
-                    if (mi != null) {
-                        mi.tick(player, level, modularItem);
-                        modularItems.add(modularItem);
-                    }
-                }
+            IModularItem iModularItemCap = NuminaCapabilities.getModularItemOrModeChangingCapability(modularItem);
+            if(iModularItemCap != null) {
+                modularItems.add(modularItem);
             }
         }
         //  Done this way so players can let their stuff cool in their inventory without having to equip it,

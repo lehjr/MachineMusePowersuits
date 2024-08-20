@@ -19,7 +19,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
 
-public record ShapedEnergyRecipePattern (int width, int height, NonNullList<Ingredient> ingredients, Optional<ShapedEnergyRecipePattern.Data> data) {
+public record ShapedEnergyRecipePattern (int width, int height, NonNullList<Ingredient> ingredients, Optional<Data> data) {
     /** @deprecated Neo: use {@link #getMaxWidth} and {@link #getMaxHeight} */ @Deprecated
     private static final int MAX_SIZE = 3;
     static int maxWidth = 3;
@@ -44,7 +44,7 @@ public record ShapedEnergyRecipePattern (int width, int height, NonNullList<Ingr
         if (maxHeight < height) maxHeight = height;
     }
 
-    public static final MapCodec<ShapedEnergyRecipePattern> MAP_CODEC = ShapedEnergyRecipePattern.Data.MAP_CODEC
+    public static final MapCodec<ShapedEnergyRecipePattern> MAP_CODEC = Data.MAP_CODEC
             .flatXmap(
                     ShapedEnergyRecipePattern::unpack,
                     recipePattern -> recipePattern.data().map(DataResult::success).orElseGet(() -> DataResult.error(() -> "Cannot encode unpacked recipe"))
@@ -58,11 +58,11 @@ public record ShapedEnergyRecipePattern (int width, int height, NonNullList<Ingr
     }
 
     public static ShapedEnergyRecipePattern of(Map<Character, Ingredient> pKey, List<String> pPattern) {
-        ShapedEnergyRecipePattern.Data ShapedEnergyRecipePattern$data = new ShapedEnergyRecipePattern.Data(pKey, pPattern);
+        Data ShapedEnergyRecipePattern$data = new Data(pKey, pPattern);
         return unpack(ShapedEnergyRecipePattern$data).getOrThrow();
     }
 
-    private static DataResult<ShapedEnergyRecipePattern> unpack(ShapedEnergyRecipePattern.Data data) {
+    private static DataResult<ShapedEnergyRecipePattern> unpack(Data data) {
         String[] astring = shrink(data.pattern);
         int i = astring[0].length();
         int j = astring.length;
@@ -232,10 +232,10 @@ public record ShapedEnergyRecipePattern (int width, int height, NonNullList<Ingr
             }
         }, String::valueOf);
 
-        public static final MapCodec<ShapedEnergyRecipePattern.Data> MAP_CODEC = RecordCodecBuilder.mapCodec(instance ->
+        public static final MapCodec<Data> MAP_CODEC = RecordCodecBuilder.mapCodec(instance ->
                 instance.group(
                                 ExtraCodecs.strictUnboundedMap(SYMBOL_CODEC, Ingredient.CODEC_NONEMPTY).fieldOf("key").forGetter(data -> data.key),
                                 PATTERN_CODEC.fieldOf("pattern").forGetter(data -> data.pattern)
-                        ).apply(instance, ShapedEnergyRecipePattern.Data::new));
+                        ).apply(instance, Data::new));
     }
 }

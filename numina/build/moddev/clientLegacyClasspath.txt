@@ -91,4 +91,4 @@
 /home/leon/.gradle/caches/modules-2/files-2.1/org.ow2.asm/asm-util/9.5/64b5a1fc8c1b15ed2efd6a063e976bc8d3dc5ffe/asm-util-9.5.jar
 /home/leon/.gradle/caches/modules-2/files-2.1/org.ow2.asm/asm/9.5/dc6ea1875f4d64fbc85e1691c95b96a3d8569c90/asm-9.5.jar
 /home/leon/.gradle/caches/modules-2/files-2.1/org.slf4j/slf4j-api/2.0.9/7cf2726fdcfbc8610f9a71fb3ed639871f315340/slf4j-api-2.0.9.jar
-/home/leon/Development/Minecraft/1.21.1/MachineMusePowersuits/numina/build/moddev/artifacts/neoforge-21.1.4-minecraft-resources-aka-client-extra.jar
+/home/leon/Development/Minecraft/1.21.1/MachineMusePowersuits/numina/build/moddev/artifacts/neoforge-21.1.22-minecraft-resources-aka-client-extra.jar

@@ -1,27 +1,8 @@
-pluginManagement {
-    repositories {
-        gradlePluginPortal()
-        mavenCentral()
-
-        maven {
-            url = "https://maven.parchmentmc.org"
-        }
-        maven {
-            name = "NeoForged"
-            url = "https://maven.neoforged.net/releases"
-        }
-    }
-}
-
 plugins {
-    id("org.gradle.toolchains.foojay-resolver-convention") version "0.8.0"
+    id 'org.gradle.toolchains.foojay-resolver-convention' version '0.8.0'
 }
 
-rootProject.name = "ModularPowersuits"
-
-include("numina")
-//include("powersuits")
-//include("mpswhatever")
-
-// Combined project
-include("mps")
+include(':numina')
+include(':powersuits')
+include(':mpswhatever')
+include(':runenv')

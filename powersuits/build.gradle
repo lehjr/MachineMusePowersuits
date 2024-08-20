@@ -1,0 +1,15 @@
+plugins {
+    id 'multi-mod'
+}
+
+neoForge {
+    mods {
+        mod1 {
+            sourceSet(project(':numina').sourceSets.main)
+        }
+    }
+}
+
+dependencies {
+    compileOnly(project(':numina'))
+}

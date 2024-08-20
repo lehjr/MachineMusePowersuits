@@ -77,12 +77,12 @@ public class ItemUtils {
 
         @Nullable
         IOtherModItemsAsModules foreignModuleCap = itemStack.getCapability(NuminaCapabilities.Module.EXTERNAL_MOD_ITEMS_AS_MODULES);
-        IModeChangingItem mcmi = itemStack.getCapability(NuminaCapabilities.Inventory.MODE_CHANGING_MODULAR_ITEM);
+        IModeChangingItem mcmi = NuminaCapabilities.getModeChangingModularItem(itemStack);
         // held item is item from another mod
 
         if (foreignModuleCap != null) {
             host = foreignModuleCap.retrieveHostStack(NuminaCapabilities.getProvider(level));
-            mcmi = host.getCapability(NuminaCapabilities.Inventory.MODE_CHANGING_MODULAR_ITEM);
+            mcmi = NuminaCapabilities.getModeChangingModularItem(host);
             if (mcmi != null) {
                 if (mcmi.returnForeignModuleToModularItem(itemStack)) {
                     mcmi.setActiveMode(mode);
@@ -116,8 +116,8 @@ public class ItemUtils {
         return updated;
     }
 
-    public static ArmorItem.Type getArmorType(ItemStack stack, Player player) {
-        EquipmentSlot slot = player.getEquipmentSlotForItem(stack);
+    public static ArmorItem.Type getArmorType(ItemStack stack) {
+        EquipmentSlot slot = getEquipmentSlotForItem(stack);
         if (slot.isArmor()) {
             switch (slot) {
                 case HEAD -> {

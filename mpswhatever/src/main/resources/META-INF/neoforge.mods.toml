@@ -1,0 +1,7 @@
+modLoader="javafml"
+loaderVersion="[3,]"
+license="LGPL v3"
+
+[[mods]]
+modId="mpswhatever"
+version="1.0"

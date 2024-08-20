@@ -1,0 +1,19 @@
+--------------------------------------------------------------------------------
+
+Command-Line:
+ - /usr/lib/jvm/java-21-amazon-corretto/bin/java
+ - -jar
+ - /home/leon/.gradle/caches/modules-2/files-2.1/net.neoforged.jst/jst-cli-bundle/1.0.58/fbc680cb83b60dc0622d53a918a0292ca35940fb/jst-cli-bundle-1.0.58.jar
+ - --libraries-list
+ - /home/leon/.gradle/caches/neoformruntime/intermediate_results/listLibraries_c38debd02436d93cbc6dca70ffc33879a3fe9731_output.txt
+ - --in-format
+ - ARCHIVE
+ - --out-format
+ - ARCHIVE
+ - --enable-accesstransformers
+ - --access-transformer
+ - /home/leon/Development/Minecraft/1.21.1/MachineMusePowersuits/powersuits/src/main/resources/META-INF/accesstransformer.cfg
+ - /home/leon/.gradle/caches/neoformruntime/intermediate_results/patch_9f4beda518c525221ed3d37e19ec2b27bc7583f3_output.zip
+ - ./output.zip
+--------------------------------------------------------------------------------
+

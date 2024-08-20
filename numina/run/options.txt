@@ -1,7 +1,7 @@
 version:3955
 ao:true
 biomeBlendRadius:2
-enableVsync:false
+enableVsync:true
 entityDistanceScaling:1.0
 entityShadows:true
 forceUnicodeFont:false
@@ -15,7 +15,7 @@ prioritizeChunkUpdates:0
 fullscreen:false
 gamma:0.5
 graphicsMode:1
-guiScale:2
+guiScale:0
 maxFps:120
 mipmapLevels:4
 narrator:0

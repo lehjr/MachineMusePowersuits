@@ -3,7 +3,9 @@ cpw.mods.bootstraplauncher.BootstrapLauncher
 
 # NeoForge Run-Type Program Arguments
 --launchTarget
-forgedatauserdev
+forgeclientuserdev
+--version
+21.1.22
 --assetIndex
 17
 --assetsDir
@@ -11,7 +13,7 @@ forgedatauserdev
 --gameDir
 .
 --fml.neoForgeVersion
-21.1.4
+21.1.22
 --fml.fmlVersion
 4.0.24
 --fml.mcVersion
@@ -20,10 +22,3 @@ forgedatauserdev
 20240808.144430
 
 # User Supplied Program Arguments
---mod
-numina
---all
---output
-/home/leon/Development/Minecraft/1.21.1/MachineMusePowersuits/numina/src/generated/resources
---existing
-/home/leon/Development/Minecraft/1.21.1/MachineMusePowersuits/numina/src/main/resources

@@ -18,7 +18,7 @@ import java.util.List;
 
 public class Battery extends Item {
     public Battery() {
-        super(new Item.Properties().stacksTo(1));
+        super(new Properties().stacksTo(1));
     }
 
     public static class BatteryPowerModule extends PowerModule {

@@ -18,7 +18,7 @@ public class ModeChangingIconOverlay {
             for (int i = 0; i < net.minecraft.world.entity.player.Inventory.getSelectionSize(); i++) {
                 ItemStack itemStack = player.getInventory().getItem(i);
                 if (!itemStack.isEmpty()) {
-                    IModeChangingItem modeChangingItemCap = itemStack.getCapability(NuminaCapabilities.Inventory.MODE_CHANGING_MODULAR_ITEM);
+                    IModeChangingItem modeChangingItemCap = NuminaCapabilities.getModeChangingModularItem(itemStack);
                     int finalI = i;
                     if(modeChangingItemCap != null) {
                         modeChangingItemCap.drawModeChangeIcon(player, finalI, gfx, gfx.guiWidth(), gfx.guiHeight());
