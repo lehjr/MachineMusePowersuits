@@ -1,0 +1,27 @@
+{
+  "type": "numina:crafting_enchantment_item",
+  "category": "misc",
+  "key": {
+    "C": {
+      "item": "numina:component_control_circuit_4"
+    },
+    "E": {
+      "item": "numina:component_computer_chip"
+    },
+    "N": {
+      "type": "numina:min_enchanted"
+    },
+    "W": {
+      "item": "numina:component_wiring_gold"
+    }
+  },
+  "pattern": [
+    "ENE",
+    "WCW",
+    "EEE"
+  ],
+  "result": {
+    "count": 1,
+    "id": "powersuits:silk_touch"
+  }
+}

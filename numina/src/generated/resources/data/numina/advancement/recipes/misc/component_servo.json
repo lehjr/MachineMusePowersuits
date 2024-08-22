@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_component_solenoid": {
+      "conditions": {
+        "items": [
+          {
+            "items": "numina:component_solenoid"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "numina:component_servo"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_component_solenoid"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "numina:component_servo"
+    ]
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "F": {
+      "item": "numina:component_field_emitter"
+    },
+    "G": {
+      "tag": "c:dusts/glowstone"
+    },
+    "I": {
+      "tag": "c:ingots/iron"
+    },
+    "S": {
+      "item": "numina:component_solenoid"
+    },
+    "W": {
+      "item": "numina:component_wiring_copper"
+    }
+  },
+  "pattern": [
+    " FS",
+    " IG",
+    "WFS"
+  ],
+  "result": {
+    "count": 1,
+    "id": "numina:component_ion_thruster"
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_component_control_circuit_1": {
+      "conditions": {
+        "items": [
+          {
+            "items": "numina:component_control_circuit_1"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "powersuits:pickaxe1"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_component_control_circuit_1"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "powersuits:pickaxe1"
+    ]
+  }
+}

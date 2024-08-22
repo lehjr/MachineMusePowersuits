@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "B": {
+      "item": "minecraft:oak_button"
+    },
+    "C": {
+      "item": "minecraft:oak_planks"
+    },
+    "S": {
+      "item": "minecraft:lever"
+    }
+  },
+  "pattern": [
+    "BSB",
+    "SCS",
+    "BSB"
+  ],
+  "result": {
+    "count": 1,
+    "id": "numina:component_control_circuit_1"
+  }
+}

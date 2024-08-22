@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "C": {
+      "item": "numina:component_control_circuit_3"
+    },
+    "I": {
+      "tag": "c:ingots/iron"
+    },
+    "W": {
+      "item": "numina:component_wiring_gold"
+    }
+  },
+  "pattern": [
+    "ICI",
+    "WIW",
+    "III"
+  ],
+  "result": {
+    "count": 1,
+    "id": "powersuits:powerarmor_torso3"
+  }
+}

@@ -1,21 +1,16 @@
-# ForgeGradle
+# Gradle
 /.gradle
 /build
+/*/build
 /runs
+/*/run
 /libs
-
-#Backup files
-/BU
 
 # Eclipse
 .classpath
 .project
 /.settings
 /bin
-
-# Numina while porting
-#/src/main/java/net/machinemuse/numina
-#/src/main/scala/net/machinemuse/numina
 
 # IntelliJ
 /.idea
@@ -27,6 +22,3 @@
 # Mac Stuff
 .DS_Store
 *.command
-
-# Generated code
-/numina/datagen/generated

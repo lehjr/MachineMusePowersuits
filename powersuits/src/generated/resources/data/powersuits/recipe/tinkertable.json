@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "B": {
+      "tag": "c:dyes/blue"
+    },
+    "C": {
+      "item": "minecraft:crafting_table"
+    },
+    "G": {
+      "tag": "c:ingots/gold"
+    },
+    "I": {
+      "tag": "c:ingots/iron"
+    }
+  },
+  "pattern": [
+    "IBI",
+    "BCB",
+    "GBG"
+  ],
+  "result": {
+    "count": 1,
+    "id": "powersuits:tinkertable"
+  }
+}

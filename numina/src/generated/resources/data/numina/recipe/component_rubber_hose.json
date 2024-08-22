@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "G": {
+      "tag": "c:glass_blocks"
+    },
+    "W": {
+      "item": "minecraft:white_wool"
+    }
+  },
+  "pattern": [
+    "WWW",
+    "G G",
+    "WWW"
+  ],
+  "result": {
+    "count": 1,
+    "id": "numina:component_rubber_hose"
+  }
+}

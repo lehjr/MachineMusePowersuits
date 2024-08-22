@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "C": {
+      "item": "numina:component_control_circuit_1"
+    },
+    "I": {
+      "tag": "c:ingots/gold"
+    },
+    "S": {
+      "item": "numina:component_servo"
+    }
+  },
+  "pattern": [
+    " S ",
+    " C ",
+    "I I"
+  ],
+  "result": {
+    "count": 1,
+    "id": "powersuits:melee_assist"
+  }
+}

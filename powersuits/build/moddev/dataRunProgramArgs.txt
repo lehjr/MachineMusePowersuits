@@ -3,9 +3,7 @@ cpw.mods.bootstraplauncher.BootstrapLauncher
 
 # NeoForge Run-Type Program Arguments
 --launchTarget
-forgeclientuserdev
---version
-21.1.22
+forgedatauserdev
 --assetIndex
 17
 --assetsDir
@@ -22,3 +20,10 @@ forgeclientuserdev
 20240808.144430
 
 # User Supplied Program Arguments
+--mod
+powersuits
+--all
+--output
+/home/leon/Development/Minecraft/1.21.1/MachineMusePowersuits/powersuits/src/generated/resources
+--existing
+/home/leon/Development/Minecraft/1.21.1/MachineMusePowersuits/powersuits/src/main/resources

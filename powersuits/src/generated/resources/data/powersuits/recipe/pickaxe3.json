@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C": {
+      "item": "numina:component_control_circuit_3"
+    },
+    "D": {
+      "tag": "c:gems/diamond"
+    },
+    "S": {
+      "item": "numina:component_servo"
+    },
+    "W": {
+      "item": "numina:component_wiring_gold"
+    }
+  },
+  "pattern": [
+    "DDD",
+    "WCW",
+    " S "
+  ],
+  "result": {
+    "count": 1,
+    "id": "powersuits:pickaxe3"
+  }
+}

@@ -1,1 +1,0 @@
--Dlog4j2.configurationFile=/home/leon/Development/Minecraft/1.21.1/MachineMusePowersuits/powersuits/build/moddev/dataLog4j2.xml

@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_component_carbon_myofiber": {
+      "conditions": {
+        "items": [
+          {
+            "items": "numina:component_carbon_myofiber"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "numina:component_artificial_muscle"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_component_carbon_myofiber"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "numina:component_artificial_muscle"
+    ]
+  }
+}

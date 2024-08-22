@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C": {
+      "item": "minecraft:charcoal"
+    },
+    "I": {
+      "tag": "c:ingots/iron"
+    },
+    "P": {
+      "item": "minecraft:paper"
+    },
+    "W": {
+      "item": "numina:component_wiring_copper"
+    }
+  },
+  "pattern": [
+    "WPI",
+    "WCW"
+  ],
+  "result": {
+    "count": 1,
+    "id": "numina:component_capacitor_1"
+  }
+}

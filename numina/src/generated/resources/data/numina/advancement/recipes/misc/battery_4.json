@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_battery_3": {
+      "conditions": {
+        "items": [
+          {
+            "items": "numina:battery_3"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "numina:battery_4"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_battery_3"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "numina:battery_4"
+    ]
+  }
+}

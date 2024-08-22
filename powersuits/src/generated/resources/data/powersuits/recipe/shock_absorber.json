@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C": {
+      "item": "numina:component_control_circuit_1"
+    },
+    "S": {
+      "item": "numina:component_solenoid"
+    },
+    "W": {
+      "item": "minecraft:white_wool"
+    }
+  },
+  "pattern": [
+    "S S",
+    "SCS",
+    "W W"
+  ],
+  "result": {
+    "count": 1,
+    "id": "powersuits:shock_absorber"
+  }
+}

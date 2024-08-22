@@ -1,0 +1,33 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "!": {
+      "tag": "c:dyes/green"
+    },
+    "#": {
+      "tag": "c:dusts/glowstone"
+    },
+    "&": {
+      "tag": "c:dyes/red"
+    },
+    "@": {
+      "tag": "c:dyes/blue"
+    },
+    "G": {
+      "tag": "c:glass_blocks"
+    },
+    "W": {
+      "item": "numina:component_wiring_copper"
+    }
+  },
+  "pattern": [
+    "#G!",
+    "GWG",
+    "@G&"
+  ],
+  "result": {
+    "count": 1,
+    "id": "numina:component_laser_emitter"
+  }
+}

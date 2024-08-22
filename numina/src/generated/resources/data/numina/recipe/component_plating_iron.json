@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "I": {
+      "tag": "c:ingots/iron"
+    },
+    "W": {
+      "item": "numina:component_wiring_copper"
+    }
+  },
+  "pattern": [
+    "II",
+    "WI",
+    "II"
+  ],
+  "result": {
+    "count": 1,
+    "id": "numina:component_plating_iron"
+  }
+}

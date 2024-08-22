@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "C": {
+      "item": "numina:component_computer_chip"
+    },
+    "G": {
+      "tag": "c:ingots/gold"
+    },
+    "M": {
+      "item": "numina:component_control_circuit_3"
+    },
+    "S": {
+      "item": "numina:component_solenoid"
+    }
+  },
+  "pattern": [
+    "SGC",
+    "SMC",
+    "SGC"
+  ],
+  "result": {
+    "count": 1,
+    "id": "powersuits:plasma_cannon"
+  }
+}

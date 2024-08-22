@@ -2,9 +2,28 @@ plugins {
     id 'multi-mod'
 }
 
+// Local properties file for info specific to Numina
+def localProps = new Properties()
+file("gradle.properties").absoluteFile.withInputStream { localProps.load(it) }
+
+var mod_id = localProps.getProperty("mod_id")
+var mod_name = localProps.getProperty("mod_name")
+var mod_authors = localProps.getProperty("mod_authors")
+var mod_description = localProps.getProperty("mod_description")
+var file_prefix = localProps.getProperty("file_prefix")
+
+base {
+    archivesName = "${file_prefix}-NeoForge-${minecraft_version}-${mod_version}"
+}
+
+sourceSets.main.resources {
+    srcDir 'src/generated/resources'
+    exclude '.cache'
+}
+
 neoForge {
     mods {
-        mod1 {
+        numina {
             sourceSet(project(':numina').sourceSets.main)
         }
     }
@@ -13,3 +32,30 @@ neoForge {
 dependencies {
     compileOnly(project(':numina'))
 }
+
+// This block of code expands all declared replace properties in the specified resource targets.
+// A missing property will result in an error. Properties are expanded using ${} Groovy notation.
+var generateModMetadata = tasks.register("generateModMetadata", ProcessResources) {
+    var replaceProperties = [
+            minecraft_version      : minecraft_version,
+            minecraft_version_range: minecraft_version_range,
+            neo_version            : neo_forge_version,
+            neo_version_range      : neo_version_range,
+            loader_version_range   : loader_version_range,
+            mod_version            : mod_version,
+            mod_id                 : mod_id,
+            mod_name               : mod_name,
+            mod_license            : mod_license,
+            mod_authors            : mod_authors,
+            mod_description        : mod_description
+    ]
+    inputs.properties replaceProperties
+    expand replaceProperties
+    from "src/main/templates"
+    into "build/generated/sources/modMetadata"
+}
+// Include the output of "generateModMetadata" as an input directory for the build
+// this works with both building through Gradle and the IDE.
+sourceSets.main.resources.srcDir generateModMetadata
+// To avoid having to run "generateModMetadata" manually, make it run on every project reload
+neoForge.ideSyncTask generateModMetadata

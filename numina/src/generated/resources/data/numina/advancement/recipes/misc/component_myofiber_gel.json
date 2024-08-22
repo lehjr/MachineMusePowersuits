@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_magma_cream": {
+      "conditions": {
+        "items": [
+          {
+            "items": "minecraft:magma_cream"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "numina:component_myofiber_gel"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_magma_cream"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "numina:component_myofiber_gel"
+    ]
+  }
+}

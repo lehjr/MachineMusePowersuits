@@ -1,0 +1,37 @@
+modLoader="javafml"
+loaderVersion="${loader_version_range}"
+issueTrackerURL="https://github.com/lehjr/MachineMusePowersuits/issues"
+license="${mod_license}"
+
+[[mods]]
+    modId="${mod_id}"
+    version="${mod_version}"
+    displayName="${mod_name}"
+    displayURL="https://github.com/lehjr/MachineMusePowersuits"
+    authors="${mod_authors}"
+    description='''${mod_description}'''
+    credits="Icons by WaterCandle, Modeling by SebK, Special thanks to TextureTurtle"
+    logoFile="logo.png"
+
+[[accessTransformers]]
+    file="META-INF/accesstransformer.cfg"
+
+[[dependencies.${mod_id}]]
+    modId="neoforge"
+    type="required"
+    versionRange="${neo_version}"
+    side="BOTH"
+
+[[dependencies.${mod_id}]]
+    modId="minecraft"
+    type="required"
+    versionRange="${minecraft_version}"
+    side="BOTH"
+
+[[dependencies.${mod_id}]]
+    modId="numina"
+    type="required"
+    versionRange="[${mod_version},)"
+    ordering="AFTER"
+    side="BOTH"
+    modLoader="javafml" #mandatory

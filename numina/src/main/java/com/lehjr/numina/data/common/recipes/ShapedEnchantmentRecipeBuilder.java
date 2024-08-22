@@ -2,6 +2,7 @@ package com.lehjr.numina.data.common.recipes;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.lehjr.numina.common.base.NuminaLogger;
 import com.lehjr.numina.common.recipe.ShapedEnchantmentRecipe;
 import com.lehjr.numina.common.recipe.ingredients.MinEnchantedIngredient;
 import net.minecraft.advancements.Advancement;
@@ -13,6 +14,7 @@ import net.minecraft.core.Holder;
 import net.minecraft.data.recipes.RecipeBuilder;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeOutput;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
@@ -20,6 +22,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.ShapedRecipePattern;
 import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.ItemLike;
 
 import javax.annotation.Nullable;
@@ -29,6 +32,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class ShapedEnchantmentRecipeBuilder implements RecipeBuilder {
@@ -85,23 +89,32 @@ public class ShapedEnchantmentRecipeBuilder implements RecipeBuilder {
         return this.define(character, Ingredient.of(tag));
     }
 
+
     /**
      * Adds a key to the recipe pattern.
      */
-    public ShapedEnchantmentRecipeBuilder define(Character character, TagKey<Item> tag, Enchantment enchantment, int level) {
+    public ShapedEnchantmentRecipeBuilder define(Character character, Holder<Enchantment> enchantment, int enchLevel) {
+        NuminaLogger.logError("Trying to define enchanted ingredient with exclusive tag");
+
         Map<Holder<Enchantment>, Integer> enchantments = getNewEnchantmentsMap();
-        ArrayList<Holder<Enchantment>> list = enchantment.exclusiveSet().stream().collect(Collectors.toCollection(ArrayList::new));
-        for(Holder<Enchantment> holder: list) {
-            if (holder.value() == enchantment) {
-                enchantments.put(holder, level);
-                break;
+
+        if (!enchantments.isEmpty()) {
+            for(Map.Entry<Holder<Enchantment>, Integer> entry: enchantments.entrySet()) {
+                // FIXME!!
+                if(entry.getKey().is(enchantment)) {
+                    if(entry.getValue() < enchLevel) {
+                        enchantments.replace(enchantment, enchLevel);
+                    }
+                }
             }
+        } else {
+            enchantments.put(enchantment, enchLevel);
         }
 
-        MinEnchantedIngredient ingredient = new MinEnchantedIngredient(tag, enchantments);
-
+        MinEnchantedIngredient ingredient = new MinEnchantedIngredient(enchantments);
         return this.define(character, ingredient.toVanilla());
     }
+
 
     /**
      * Adds a key to the recipe pattern.
@@ -110,24 +123,9 @@ public class ShapedEnchantmentRecipeBuilder implements RecipeBuilder {
         return this.define(character, Ingredient.of(item));
     }
 
-//    /**
-//     * Adds a key to the recipe pattern.
-//     */
-//    public ShapedEnchantmentRecipeBuilder define(Character character, ItemLike item, Enchantment enchantment, int level) {
-//
-//
-//
-////        MinEnchantedIngredient ingredient = new MinEnchantedIngredient(item, enchantment, level);
-//
-////        this.enchantedIngredient = new EnchantedIngredient(character, enchantment, level);
-//        return this.define(character, Ingredient.of(item));
-//    }
-
     public static HashMap<Holder<Enchantment>, Integer> getNewEnchantmentsMap() {
         return new HashMap<>();
     }
-
-
 
     /**
      * Adds a key to the recipe pattern.
@@ -178,21 +176,18 @@ public class ShapedEnchantmentRecipeBuilder implements RecipeBuilder {
     @Override
     public void save(RecipeOutput recipeOutput, ResourceLocation location) {
         ShapedRecipePattern shapedrecipepattern = this.ensureValid(location);
-
-
-
         Advancement.Builder advancement$builder = recipeOutput.advancement()
-                .addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(location))
-                .rewards(AdvancementRewards.Builder.recipe(location))
-                .requirements(AdvancementRequirements.Strategy.OR);
+            .addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(location))
+            .rewards(AdvancementRewards.Builder.recipe(location))
+            .requirements(AdvancementRequirements.Strategy.OR);
 
         this.criteria.forEach(advancement$builder::addCriterion);
         ShapedEnchantmentRecipe shapedrecipe = new ShapedEnchantmentRecipe(
-                Objects.requireNonNullElse(this.group, ""),
-                RecipeBuilder.determineBookCategory(this.category),
-                shapedrecipepattern,
-                this.resultStack,
-                this.showNotification
+            Objects.requireNonNullElse(this.group, ""),
+            RecipeBuilder.determineBookCategory(this.category),
+            shapedrecipepattern,
+            this.resultStack,
+            this.showNotification
         );
         recipeOutput.accept(location, shapedrecipe, advancement$builder.build(location.withPrefix("recipes/" + this.category.getFolderName() + "/")));
     }

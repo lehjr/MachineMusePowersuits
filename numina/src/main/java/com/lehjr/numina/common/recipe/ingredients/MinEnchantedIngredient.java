@@ -1,5 +1,6 @@
 package com.lehjr.numina.common.recipe.ingredients;
 
+import com.lehjr.numina.common.base.NuminaLogger;
 import com.lehjr.numina.common.registration.NuminaIngredientTypes;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
@@ -13,29 +14,35 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.neoforged.neoforge.common.crafting.ICustomIngredient;
 import net.neoforged.neoforge.common.crafting.IngredientType;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
 /**
- * Neoforge enchanted ingredient example
+ * Neoforge enchanted ingredient example, but with ItemStack since ItemStack is ignored anyway
  */
 public class MinEnchantedIngredient implements ICustomIngredient {
-    private final TagKey<Item> tag;
+    final ItemStack item = new ItemStack(Items.ENCHANTED_BOOK);
     private final Map<Holder<Enchantment>, Integer> enchantments;
     // The codec for serializing the ingredient.
-    public static final MapCodec<MinEnchantedIngredient> CODEC = RecordCodecBuilder.mapCodec(inst -> inst.group(
-            TagKey.codec(Registries.ITEM).fieldOf("tag").forGetter(e -> e.tag),
-            Codec.unboundedMap(Enchantment.CODEC, Codec.INT)
-                    .optionalFieldOf("enchantments", Map.of())
-                    .forGetter(e -> e.enchantments)
-    ).apply(inst, MinEnchantedIngredient::new));
+    public static final MapCodec<MinEnchantedIngredient> CODEC = RecordCodecBuilder.mapCodec(
+        instance -> instance.group(
+//            ItemStack.SIMPLE_ITEM_CODEC.fieldOf("item").forGetter(itemValue -> itemValue.item),
+            Codec.unboundedMap(Enchantment.CODEC, Codec.INT).optionalFieldOf("enchantments", Map.of()).forGetter(enchantedIngredient -> enchantedIngredient.enchantments)
+//            Codec.unboundedMap(Enchantment.CODEC, Codec.INT).optionalFieldOf("exclusive_set/mining", Map.of()).forGetter(enchantedIngredient -> enchantedIngredient.enchantments)
+        ).apply(instance, MinEnchantedIngredient::new));
+
+    // EnchantmentTags.MINING_EXCLUSIVE) = "exclusive_set/mining"
 
     // Create a stream codec from the regular codec. In some cases, it might make sense to define
     // a new stream codec from scratch.
@@ -43,19 +50,10 @@ public class MinEnchantedIngredient implements ICustomIngredient {
             ByteBufCodecs.fromCodecWithRegistries(CODEC.codec());
 
     // Allow passing in a pre-existing map of enchantments to levels.
-    public MinEnchantedIngredient(TagKey<Item> tag, Map<Holder<Enchantment>, Integer> enchantments) {
-        this.tag = tag;
+    public MinEnchantedIngredient(Map<Holder<Enchantment>, Integer> enchantments) {
+        NuminaLogger.logError("enchantments size init: " + enchantments.size());
+
         this.enchantments = enchantments;
-    }
-
-    public MinEnchantedIngredient(TagKey<Item> tag) {
-        this(tag, new HashMap<>());
-    }
-
-    // Make this chainable for easy use.
-    public MinEnchantedIngredient with(Holder<Enchantment> enchantment, int level) {
-        enchantments.put(enchantment, level);
-        return this;
     }
 
     // Check if the passed ItemStack matches our ingredient by verifying the item is in the tag
@@ -96,12 +94,9 @@ public class MinEnchantedIngredient implements ICustomIngredient {
     // In our case, we use all items in the tag, each with the required enchantments.
     @Override
     public Stream<ItemStack> getItems() {
-        // Get a list of item stacks, one stack per item in the tag.
-        List<ItemStack> stacks = BuiltInRegistries.ITEM
-                .getOrCreateTag(tag)
-                .stream()
-                .map(ItemStack::new)
-                .toList();
+        List<ItemStack> stacks = new ArrayList<>();
+        stacks.add(item);
+
         // Enchant all stacks with all enchantments.
         for (ItemStack stack : stacks) {
             enchantments.keySet().forEach(ench -> stack.enchant(ench, enchantments.get(ench)));

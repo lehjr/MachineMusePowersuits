@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C": {
+      "item": "numina:component_control_circuit_3"
+    },
+    "H": {
+      "item": "numina:component_rubber_hose"
+    },
+    "S": {
+      "item": "numina:component_servo"
+    },
+    "W": {
+      "item": "numina:component_wiring_gold"
+    }
+  },
+  "pattern": [
+    "SHS",
+    "WCW",
+    "HSH"
+  ],
+  "result": {
+    "count": 1,
+    "id": "powersuits:swim_assist"
+  }
+}

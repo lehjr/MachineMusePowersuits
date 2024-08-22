@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "E": {
+      "tag": "c:ingots/copper"
+    },
+    "G": {
+      "tag": "c:dusts/glowstone"
+    },
+    "O": {
+      "tag": "c:dyes"
+    },
+    "R": {
+      "tag": "c:dusts/redstone"
+    },
+    "W": {
+      "item": "numina:component_wiring_copper"
+    }
+  },
+  "pattern": [
+    "WOW",
+    "RGO",
+    "ERW"
+  ],
+  "result": {
+    "count": 1,
+    "id": "numina:component_control_circuit_2"
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C": {
+      "item": "numina:component_control_circuit_2"
+    },
+    "L": {
+      "item": "numina:component_capacitor_1"
+    },
+    "O": {
+      "item": "numina:component_solenoid"
+    },
+    "R": {
+      "item": "numina:component_rubber_hose"
+    },
+    "W": {
+      "item": "numina:component_wiring_gold"
+    }
+  },
+  "pattern": [
+    "WLW",
+    "OCO",
+    "WRW"
+  ],
+  "result": {
+    "count": 1,
+    "id": "powersuits:water_electrolyzer"
+  }
+}

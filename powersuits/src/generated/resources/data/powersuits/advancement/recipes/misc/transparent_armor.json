@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_component_field_emitter": {
+      "conditions": {
+        "items": [
+          {
+            "items": "numina:component_field_emitter"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "powersuits:transparent_armor"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_component_field_emitter"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "powersuits:transparent_armor"
+    ]
+  }
+}

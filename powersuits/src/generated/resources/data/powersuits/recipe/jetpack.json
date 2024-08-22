@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C": {
+      "item": "numina:component_control_circuit_3"
+    },
+    "I": {
+      "item": "numina:component_ion_thruster"
+    },
+    "S": {
+      "item": "numina:component_servo"
+    },
+    "W": {
+      "item": "numina:component_computer_chip"
+    }
+  },
+  "pattern": [
+    "ISI",
+    "WCW",
+    "ISI"
+  ],
+  "result": {
+    "count": 1,
+    "id": "powersuits:jetpack"
+  }
+}

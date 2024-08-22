@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C": {
+      "item": "numina:component_control_circuit_1"
+    },
+    "I": {
+      "tag": "c:ingots/iron"
+    },
+    "W": {
+      "item": "minecraft:string"
+    }
+  },
+  "pattern": [
+    " W ",
+    "WIC",
+    " IW"
+  ],
+  "result": {
+    "count": 1,
+    "id": "powersuits:powerfist1"
+  }
+}

@@ -8,7 +8,7 @@ neoForge {
     validateAccessTransformers = true
 
     runs {
-
+        def mod_id = project.findProperty("mod_id")
         def mod_run_configs = project.findProperty('mod_run_configuration')?.split(',')
         if (mod_run_configs) {
             mod_run_configs.each { mod_run_config ->
@@ -23,18 +23,27 @@ neoForge {
                             client {
                                 client()
                                 ideName = fullTaskName
+                                logLevel = org.slf4j.event.Level.DEBUG
                             }
                             break
                         case 'server':
                             server {
-                                client()
+                                server()
                                 ideName = fullTaskName
+                                logLevel = org.slf4j.event.Level.DEBUG
                             }
                             break
                         case 'data':
                             data {
-                                client()
+                                data()
+                                logLevel = org.slf4j.event.Level.DEBUG
                                 ideName = fullTaskName
+
+                                if(mod_id) {
+                                    programArguments.addAll '--mod', mod_id.toString(), '--all', '--output', file('src/generated/resources').getAbsolutePath(), '--existing', file('src/main/resources/').getAbsolutePath()
+                                } else {
+                                    programArguments.addAll '--mod', project.name, '--all', '--output', file('src/generated/resources').getAbsolutePath(), '--existing', file('src/main/resources/').getAbsolutePath()
+                                }
                             }
                             break
 //                        case 'test':

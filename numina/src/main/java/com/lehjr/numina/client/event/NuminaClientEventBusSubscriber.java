@@ -67,16 +67,16 @@ public class NuminaClientEventBusSubscriber {
     public static void modelRegistry(ModelEvent.RegisterGeometryLoaders event) {
         event.register(ResourceLocation.fromNamespaceAndPath(NuminaConstants.MOD_ID, "obj"), NuminaObjLoader.INSTANCE);
     }
-//
-//    @SubscribeEvent
-//    public static void renderLayer(RenderGuiLayerEvent event) {
-//        LayeredDraw.Layer layer = event.getLayer();
-//        GuiGraphics gfx = event.getGuiGraphics();
-//        ResourceLocation name = event.getName();
-//        float partialTick = event.getPartialTick();
-//
-//
-//    }
+    //
+    //    @SubscribeEvent
+    //    public static void renderLayer(RenderGuiLayerEvent event) {
+    //        LayeredDraw.Layer layer = event.getLayer();
+    //        GuiGraphics gfx = event.getGuiGraphics();
+    //        ResourceLocation name = event.getName();
+    //        float partialTick = event.getPartialTick();
+    //
+    //
+    //    }
 
     @SubscribeEvent
     public static void registerOverlay(RegisterGuiLayersEvent event) {
@@ -94,18 +94,18 @@ public class NuminaClientEventBusSubscriber {
             }
         }
 
-//        //Add our own custom armor and elytra layer to everything that has an armor layer
-//        //Note: This includes any modded mobs that have vanilla's HumanoidArmorLayer or ElytraLayer added to them
-//        for (EntityType<?> entityType : event.getEntityTypes()) {
-//            if (event.getRenderer(entityType) instanceof LivingEntityRenderer<?, ?> renderer) {
-//                addCustomLayers(entityType, renderer, event.getContext());
-//            }
-//        }
+        //        //Add our own custom armor and elytra layer to everything that has an armor layer
+        //        //Note: This includes any modded mobs that have vanilla's HumanoidArmorLayer or ElytraLayer added to them
+        //        for (EntityType<?> entityType : event.getEntityTypes()) {
+        //            if (event.getRenderer(entityType) instanceof LivingEntityRenderer<?, ?> renderer) {
+        //                addCustomLayers(entityType, renderer, event.getContext());
+        //            }
+        //        }
     }
 
     private static <T extends LivingEntity, M extends EntityModel<T>> void addCustomLayers(@Nonnull EntityType<?> type,
-                                                                                           @Nonnull LivingEntityRenderer<T, M> renderer,
-                                                                                           @Nonnull EntityRendererProvider.Context context) {
+        @Nonnull LivingEntityRenderer<T, M> renderer,
+        @Nonnull EntityRendererProvider.Context context) {
         int layerTypes = 2;
         Map<String, RenderLayer<T, M>> layersToAdd = new HashMap<>(layerTypes);
         for (RenderLayer<T, M> layerRenderer : renderer.layers) {
@@ -121,12 +121,12 @@ public class NuminaClientEventBusSubscriber {
                         break;
                     }
                 }
-//                else if (layerClass == ElytraLayer.class) {
-//                    layersToAdd.put("Elytra", new NuminaElytraLayer<>(renderer, context.getModelSet()));
-//                    if (layersToAdd.size() == layerTypes) {
-//                        break;
-//                    }
-//                }
+                //                else if (layerClass == ElytraLayer.class) {
+                //                    layersToAdd.put("Elytra", new NuminaElytraLayer<>(renderer, context.getModelSet()));
+                //                    if (layersToAdd.size() == layerTypes) {
+                //                        break;
+                //                    }
+                //                }
             }
         }
         if (!layersToAdd.isEmpty()) {
@@ -145,25 +145,25 @@ public class NuminaClientEventBusSubscriber {
 
 
 
-//    public static void doClientStuff(final FMLClientSetupEvent event) {
-////        NeoForge.EVENT_BUS.register(new NuminaFOVUpdateEventHandler());
-////        NeoForge.EVENT_BUS.register(new ToolTipEvent());
-////        event.enqueueWork(() -> {
-////            MenuScreens.register(NuminaObjects.CHARGING_BASE_CONTAINER_TYPE.get(), ChargingBaseScreen::new);
-////            MenuScreens.register(NuminaObjects.ARMOR_STAND_CONTAINER_TYPE.get(), ArmorStandScreen::new);
-////            //        ScreenManager.func_216911_a(NuminaObjects.SCANNER_CONTAINER.get(), MPSGuiScanner::new);
-////        });
-//
-////        MinecraftForge.EVENT_BUS.addListener((InputEvent.Key e) -> {
-//////            ModelTransformCalibration.CALIBRATION.transformCalibration(e);
-////        });
-//    }
+    //    public static void doClientStuff(final FMLClientSetupEvent event) {
+    ////        NeoForge.EVENT_BUS.register(new NuminaFOVUpdateEventHandler());
+    ////        NeoForge.EVENT_BUS.register(new ToolTipEvent());
+    ////        event.enqueueWork(() -> {
+    ////            MenuScreens.register(NuminaObjects.CHARGING_BASE_CONTAINER_TYPE.get(), ChargingBaseScreen::new);
+    ////            MenuScreens.register(NuminaObjects.ARMOR_STAND_CONTAINER_TYPE.get(), ArmorStandScreen::new);
+    ////            //        ScreenManager.func_216911_a(NuminaObjects.SCANNER_CONTAINER.get(), MPSGuiScanner::new);
+    ////        });
+    //
+    ////        MinecraftForge.EVENT_BUS.addListener((InputEvent.Key e) -> {
+    //////            ModelTransformCalibration.CALIBRATION.transformCalibration(e);
+    ////        });
+    //    }
 
 
     @SubscribeEvent
     public static void clientExtensionEvent(RegisterClientExtensionsEvent event) {
         event.registerItem(new IClientItemExtensions() {
-            private final BlockEntityWithoutLevelRenderer renderer = new NuminaArmorStandItemRenderer();
+                               private final BlockEntityWithoutLevelRenderer renderer = new NuminaArmorStandItemRenderer();
                                @Override
                                public BlockEntityWithoutLevelRenderer getCustomRenderer() {
                                    return renderer;

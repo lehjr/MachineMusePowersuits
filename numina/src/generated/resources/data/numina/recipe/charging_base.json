@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "B": {
+      "item": "numina:component_capacitor_1"
+    },
+    "C": {
+      "item": "numina:component_control_circuit_1"
+    },
+    "P": {
+      "item": "minecraft:oak_pressure_plate"
+    },
+    "W": {
+      "item": "numina:component_wiring_copper"
+    }
+  },
+  "pattern": [
+    "WBW",
+    "WCW",
+    "PPP"
+  ],
+  "result": {
+    "count": 1,
+    "id": "numina:charging_base"
+  }
+}

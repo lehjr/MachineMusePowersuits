@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_component_control_circuit_4": {
+      "conditions": {
+        "items": [
+          {
+            "items": "numina:component_control_circuit_4"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "powersuits:glider"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_component_control_circuit_4"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "powersuits:glider"
+    ]
+  }
+}

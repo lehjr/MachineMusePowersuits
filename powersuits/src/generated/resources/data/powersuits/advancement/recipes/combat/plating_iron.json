@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_component_plating_iron": {
+      "conditions": {
+        "items": [
+          {
+            "items": "numina:component_plating_iron"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "powersuits:plating_iron"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_component_plating_iron"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "powersuits:plating_iron"
+    ]
+  }
+}

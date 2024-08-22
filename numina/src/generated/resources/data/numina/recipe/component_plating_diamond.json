@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "D": {
+      "tag": "c:gems/diamond"
+    },
+    "W": {
+      "item": "numina:component_wiring_copper"
+    }
+  },
+  "pattern": [
+    "DD",
+    "WD",
+    "DD"
+  ],
+  "result": {
+    "count": 1,
+    "id": "numina:component_plating_diamond"
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "!": {
+      "item": "numina:component_computer_chip"
+    },
+    "C": {
+      "item": "numina:component_capacitor_3"
+    },
+    "W": {
+      "item": "numina:component_wiring_gold"
+    }
+  },
+  "pattern": [
+    "WCW",
+    "W!W",
+    "WCW"
+  ],
+  "result": {
+    "count": 1,
+    "id": "numina:component_capacitor_4"
+  }
+}

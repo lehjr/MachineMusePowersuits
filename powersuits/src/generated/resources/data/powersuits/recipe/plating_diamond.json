@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "equipment",
+  "ingredients": [
+    {
+      "item": "numina:component_plating_diamond"
+    },
+    {
+      "item": "numina:component_plating_diamond"
+    },
+    {
+      "item": "numina:component_plating_diamond"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "powersuits:plating_diamond"
+  }
+}

@@ -12,7 +12,7 @@ var mod_authors = localProps.getProperty("mod_authors")
 var mod_description = localProps.getProperty("mod_description")
 
 base {
-    archivesName = "${mod_name}-NeoForge-${minecraft_version}"
+    archivesName = "${mod_name}-NeoForge-${minecraft_version}-${mod_version}"
 }
 
 idea {
@@ -20,6 +20,11 @@ idea {
         downloadJavadoc = true
         downloadSources = true
     }
+}
+
+sourceSets.main.resources {
+    srcDir 'src/generated/resources'
+    exclude '.cache'
 }
 
 // This block of code expands all declared replace properties in the specified resource targets.
@@ -31,7 +36,6 @@ var generateModMetadata = tasks.register("generateModMetadata", ProcessResources
             neo_version            : neo_forge_version,
             neo_version_range      : neo_version_range,
             loader_version_range   : loader_version_range,
-
             mod_version            : mod_version,
             mod_id                 : mod_id,
             mod_name               : mod_name,

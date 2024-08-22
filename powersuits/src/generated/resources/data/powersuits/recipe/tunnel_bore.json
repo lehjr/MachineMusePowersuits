@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C": {
+      "item": "numina:component_control_circuit_2"
+    },
+    "E": {
+      "item": "numina:component_solenoid"
+    },
+    "S": {
+      "item": "numina:component_servo"
+    }
+  },
+  "pattern": [
+    "SES",
+    "ECE",
+    "SES"
+  ],
+  "result": {
+    "count": 1,
+    "id": "powersuits:tunnel_bore"
+  }
+}

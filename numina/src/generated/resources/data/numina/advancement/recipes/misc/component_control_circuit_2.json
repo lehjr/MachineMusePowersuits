@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_component_wiring_copper": {
+      "conditions": {
+        "items": [
+          {
+            "items": "numina:component_wiring_copper"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "numina:component_control_circuit_2"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_component_wiring_copper"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "numina:component_control_circuit_2"
+    ]
+  }
+}

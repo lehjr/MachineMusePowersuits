@@ -1,5 +1,6 @@
 package com.lehjr.numina.data.common;
 
+import com.lehjr.numina.common.base.NuminaLogger;
 import com.lehjr.numina.common.constants.NuminaConstants;
 import com.lehjr.numina.data.client.NuminaLanguageProvider_EN_US;
 import com.lehjr.numina.data.common.loot.NuminaBlockLoot;
@@ -23,6 +24,7 @@ import java.util.concurrent.CompletableFuture;
 public class NuminaDataGenerator {
     @SubscribeEvent
     public static void gatherData(GatherDataEvent event) {
+        NuminaLogger.logError("Hello from Numina Data generator");
         DataGenerator generator = event.getGenerator();
         PackOutput output = generator.getPackOutput();
         CompletableFuture<HolderLookup.Provider> lookupProvider = event.getLookupProvider();
@@ -49,6 +51,8 @@ public class NuminaDataGenerator {
                 generator,
                 lookupProvider,
                 helper));
+
+        NuminaLogger.logError("output: " + output.getOutputFolder().toAbsolutePath());
 
         generator.addProvider(event.includeServer(), new NuminaRecipeGenerator(output, lookupProvider));
     }

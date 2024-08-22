@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C": {
+      "item": "numina:component_control_circuit_1"
+    },
+    "S": {
+      "tag": "c:cobblestones"
+    },
+    "W": {
+      "tag": "c:strings"
+    },
+    "X": {
+      "item": "minecraft:stick"
+    }
+  },
+  "pattern": [
+    "SSW",
+    "SCW",
+    " X "
+  ],
+  "result": {
+    "count": 1,
+    "id": "powersuits:axe1"
+  }
+}

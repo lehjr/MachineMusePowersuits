@@ -1,0 +1,24 @@
+{
+  "type": "numina:crafting_energy_item",
+  "category": "misc",
+  "key": {
+    "C": {
+      "item": "numina:component_capacitor_1"
+    },
+    "I": {
+      "tag": "c:ingots/iron"
+    },
+    "W": {
+      "item": "numina:component_wiring_copper"
+    }
+  },
+  "pattern": [
+    "WIW",
+    "ICI",
+    "IWI"
+  ],
+  "result": {
+    "count": 1,
+    "id": "numina:battery_1"
+  }
+}

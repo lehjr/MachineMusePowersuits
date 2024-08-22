@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C": {
+      "item": "minecraft:comparator"
+    },
+    "D": {
+      "tag": "c:gems/diamond"
+    },
+    "L": {
+      "item": "numina:component_laser_emitter"
+    },
+    "R": {
+      "tag": "c:dusts/redstone"
+    },
+    "S": {
+      "item": "minecraft:daylight_detector"
+    }
+  },
+  "pattern": [
+    "RSR",
+    "CDC",
+    "RLR"
+  ],
+  "result": {
+    "count": 1,
+    "id": "numina:component_computer_chip"
+  }
+}

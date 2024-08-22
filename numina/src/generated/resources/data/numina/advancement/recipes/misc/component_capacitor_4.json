@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_component_capacitor_3": {
+      "conditions": {
+        "items": [
+          {
+            "items": "numina:component_capacitor_3"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "numina:component_capacitor_4"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_component_capacitor_3"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "numina:component_capacitor_4"
+    ]
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "F": {
+      "item": "numina:component_field_emitter"
+    },
+    "H": {
+      "item": "numina:component_capacitor_4"
+    },
+    "S": {
+      "item": "numina:component_solenoid"
+    },
+    "W": {
+      "item": "numina:component_wiring_gold"
+    }
+  },
+  "pattern": [
+    "WHW",
+    "WFW",
+    "WSW"
+  ],
+  "result": {
+    "count": 1,
+    "id": "powersuits:lightning_summoner"
+  }
+}

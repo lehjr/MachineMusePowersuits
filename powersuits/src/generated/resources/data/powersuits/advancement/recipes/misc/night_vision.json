@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_component_laser_emitter": {
+      "conditions": {
+        "items": [
+          {
+            "items": "numina:component_laser_emitter"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "powersuits:night_vision"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_component_laser_emitter"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "powersuits:night_vision"
+    ]
+  }
+}

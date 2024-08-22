@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "equipment",
+  "ingredients": [
+    {
+      "item": "numina:component_plating_netherite"
+    },
+    {
+      "item": "numina:component_plating_netherite"
+    },
+    {
+      "item": "numina:component_plating_netherite"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "powersuits:plating_netherite"
+  }
+}

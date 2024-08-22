@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "I": {
+      "tag": "c:ingots/iron"
+    },
+    "M": {
+      "item": "minecraft:magma_cream"
+    }
+  },
+  "pattern": [
+    " M ",
+    "IMI",
+    "IMI"
+  ],
+  "result": {
+    "count": 1,
+    "id": "numina:component_myofiber_gel"
+  }
+}
