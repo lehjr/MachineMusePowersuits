@@ -23,16 +23,15 @@ public class EnergyMeter extends HeatMeter {
         return Minecraft.getInstance().getTextureAtlas(TextureAtlas.LOCATION_BLOCKS).apply(TEXTURE_LOCATION);
     }
 
-    public void draw(GuiGraphics gfx, float xpos, float ypos, float value) {
-        super.draw(gfx, xpos, ypos, value);
-        value = Mth.clamp(value + getConfig().getDebugValue(), 0F, 1F);
+    @Override
+    public void drawAdditional(GuiGraphics gfx, float xpos, float ypos, float value) {
         if (value > 0) {
             IconUtils.drawMPDLightning(gfx,
-                    xpos + xsize * value, (float) (ypos + ysize * (Math.random() / 2F + 0.25)),
-                    1F,
-                    xpos, (float) (ypos + ysize * (Math.random() / 2 + 0.25)),
-                    1F, Color.WHITE,
-                    4, 1);
+                xpos + xsize * value, (float) (ypos + ysize * (Math.random() / 2F + 0.25)),
+                1F,
+                xpos, (float) (ypos + ysize * (Math.random() / 2 + 0.25)),
+                1F, Color.WHITE,
+                4, 1);
         }
     }
 }
