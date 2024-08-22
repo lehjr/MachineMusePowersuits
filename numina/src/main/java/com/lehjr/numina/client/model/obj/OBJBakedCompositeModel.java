@@ -10,6 +10,7 @@ import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.client.model.IDynamicBakedModel;
@@ -70,7 +71,7 @@ public class OBJBakedCompositeModel implements IDynamicBakedModel {
 
     @Override
     public List<RenderType> getRenderTypes(ItemStack itemStack, boolean fabulous) {
-        return List.of(RenderType.entityTranslucentCull(TextureAtlas.LOCATION_BLOCKS));
+        return List.of(RenderType.entityTranslucentCull(InventoryMenu.BLOCK_ATLAS));
     }
 
     @Override

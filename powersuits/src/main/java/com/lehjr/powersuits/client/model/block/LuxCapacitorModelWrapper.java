@@ -110,7 +110,7 @@ public class LuxCapacitorModelWrapper extends BakedModelWrapper<OBJBakedComposit
     @Override
     public ChunkRenderTypeSet getRenderTypes(@Nonnull BlockState state, @Nonnull RandomSource rand, @Nonnull ModelData data) {
         return ChunkRenderTypeSet.of(RenderType.translucent());// super.getRenderTypes(state, rand, data);
-//        return ChunkRenderTypeSet.of(RenderType.entityTranslucentCull(TextureAtlas.LOCATION_BLOCKS));
+//        return ChunkRenderTypeSet.of(RenderType.entityTranslucentCull(InventoryMenu.BLOCK_ATLAS));
     }
 
     /**

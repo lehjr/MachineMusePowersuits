@@ -71,11 +71,11 @@ package com.lehjr.numina.client.model.obj;///*
 //
 //    @Override
 //    public Material getMaterial(String name) {
-//        return new Material(TextureAtlas.LOCATION_BLOCKS, NuminaConstants.TEXTURE_WHITE_SHORT); // FIXME???
+//        return new Material(InventoryMenu.BLOCK_ATLAS, NuminaConstants.TEXTURE_WHITE_SHORT); // FIXME???
 //    }
 //    //    @Override
 ////    public Material resolveTexture(String name) {
-////        return new Material(TextureAtlas.LOCATION_BLOCKS, NuminaConstants.TEXTURE_WHITE_SHORT);
+////        return new Material(InventoryMenu.BLOCK_ATLAS, NuminaConstants.TEXTURE_WHITE_SHORT);
 ////    }
 //
 //

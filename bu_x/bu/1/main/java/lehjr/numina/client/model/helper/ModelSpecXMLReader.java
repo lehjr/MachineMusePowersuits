@@ -287,7 +287,7 @@
 //        // Register textures
 //        if (event != null) {
 //            // this is the atlas used
-//            if (event.getAtlas().location() == TextureAtlas.LOCATION_BLOCKS) {
+//            if (event.getAtlas().location() == InventoryMenu.BLOCK_ATLAS) {
 //                for (String texture : textures) {
 //                    event.addSprite(ResourceLocation.fromNamespaceAndPath(texture));
 //                }

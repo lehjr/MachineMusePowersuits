@@ -26,6 +26,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ItemStack;
 
@@ -143,7 +144,7 @@ public class NuminaArmorLayer<T extends LivingEntity, M extends HumanoidModel<T>
 
                                     HighPolyArmor highPolyArmor = ArmorModelInstance.getInstance();
                                     highPolyArmor.copyPropertiesFrom(getParentModel());
-                                    VertexConsumer consumer = getVertexConsumer(bufferIn, TextureAtlas.LOCATION_BLOCKS, glow);
+                                    VertexConsumer consumer = getVertexConsumer(bufferIn, InventoryMenu.BLOCK_ATLAS, glow);
                                     highPolyArmor.renderToBuffer((ObjPartSpec) partSpec, tag, poseStack, consumer, glow ? NuminaConstants.FULL_BRIGHTNESS : packedLightIn, OverlayTexture.NO_OVERLAY, color);
 
                                     if (transform != Transformation.identity()) {

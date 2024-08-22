@@ -273,7 +273,7 @@ public abstract class AbstractElectricItemArmor extends ArmorItem {
 //                    }
 //                    return spec.getArmorTexture().toString();
 //                })
-//                .orElse(TextureAtlas.LOCATION_BLOCKS.toString());
+//                .orElse(InventoryMenu.BLOCK_ATLAS.toString());
 //    }
 
 //    @Override

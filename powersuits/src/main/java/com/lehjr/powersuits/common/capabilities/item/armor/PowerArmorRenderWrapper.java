@@ -11,6 +11,7 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.Mob;
+import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ItemStack;
 
@@ -118,6 +119,6 @@ public class PowerArmorRenderWrapper extends ModelSpecStorage implements IArmorM
             return ((JavaPartSpec) part).getTextureLocation();
         }
         // TODO: eventually, maybe put armor textures in their own atlas?
-        return TextureAtlas.LOCATION_BLOCKS;
+        return InventoryMenu.BLOCK_ATLAS;
     }
 }
