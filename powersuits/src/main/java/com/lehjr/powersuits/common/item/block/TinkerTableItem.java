@@ -30,9 +30,7 @@ import com.lehjr.numina.common.base.NuminaLogger;
 import com.lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import com.lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
 import com.lehjr.numina.common.capabilities.module.rightclick.RightClickModule;
-import com.lehjr.powersuits.client.event.ModelBakeEventHandler;
 import com.lehjr.powersuits.common.container.InstallSalvageMenu;
-import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -44,10 +42,8 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 
 import javax.annotation.Nonnull;
-import java.util.function.Consumer;
 
 public class TinkerTableItem extends BlockItem {
     public TinkerTableItem(Block blockIn) {

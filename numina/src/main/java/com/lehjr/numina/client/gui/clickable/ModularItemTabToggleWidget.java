@@ -25,8 +25,8 @@ import java.util.List;
  * A left hand toggleable tab widget based on Minecraft's "RecipeBookTabButton"
  */
 public class ModularItemTabToggleWidget extends Clickable {
-    static final ResourceLocation TAB = ResourceLocation.fromNamespaceAndPath("minecraft", "recipe_book/tab");
-    static final ResourceLocation SELECTED_TAB = ResourceLocation.fromNamespaceAndPath("minecraft", "recipe_book/tab_selected");
+    static final ResourceLocation TAB = ResourceLocation.withDefaultNamespace( "recipe_book/tab");
+    static final ResourceLocation SELECTED_TAB = ResourceLocation.withDefaultNamespace("recipe_book/tab_selected");
     protected boolean isStateActive;
     private static final float ANIMATION_TIME = 15.0F;
     private float animationTime;

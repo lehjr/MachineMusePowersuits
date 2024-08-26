@@ -7,19 +7,13 @@ import com.lehjr.numina.common.capabilities.module.rightclick.IRightClickModule;
 import com.lehjr.numina.common.registration.NuminaCapabilities;
 import com.lehjr.numina.common.utils.ElectricItemUtils;
 import com.lehjr.numina.common.utils.ItemUtils;
-import com.lehjr.powersuits.client.event.ModelBakeEventHandler;
-import com.lehjr.powersuits.client.render.item.MPSBEWLR;
 import com.lehjr.powersuits.common.constants.MPSConstants;
-import com.mojang.blaze3d.vertex.PoseStack;
-import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -31,11 +25,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 import net.neoforged.neoforge.common.ItemAbility;
 import net.neoforged.neoforge.common.SimpleTier;
-
-import java.util.function.Consumer;
 
 public class PowerFist extends AbstractElectricTool {
     public PowerFist() {
@@ -160,6 +151,7 @@ public class PowerFist extends AbstractElectricTool {
         if (hand != InteractionHand.MAIN_HAND) {
             return fallback;
         }
+
         IModeChangingItem mci = NuminaCapabilities.getModeChangingModularItem(context.getItemInHand());
         if(mci != null) {
             return mci.useOn(context, fallback);

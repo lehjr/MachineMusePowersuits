@@ -1,6 +1,5 @@
 package com.lehjr.numina.common.event;
 
-import com.lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
 import com.lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
 import com.lehjr.numina.common.registration.NuminaCapabilities;
 import com.lehjr.numina.common.utils.HeatUtils;

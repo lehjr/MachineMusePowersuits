@@ -4,7 +4,12 @@ import com.lehjr.numina.common.math.Color;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.platform.Lighting;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.*;
+import com.mojang.blaze3d.vertex.BufferBuilder;
+import com.mojang.blaze3d.vertex.BufferUploader;
+import com.mojang.blaze3d.vertex.DefaultVertexFormat;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.Tesselator;
+import com.mojang.blaze3d.vertex.VertexFormat;
 import com.mojang.math.Axis;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.ShaderInstance;
@@ -45,16 +50,15 @@ public class SwirlyMuseCircle {
         RenderSystem.enableBlend();
         Lighting.setupForEntityInInventory();
         RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
-
-        Tesselator tessellator = Tesselator.getInstance();
-        BufferBuilder buffer = tessellator.begin(VertexFormat.Mode.DEBUG_LINE_STRIP, DefaultVertexFormat.POSITION_COLOR);
+        BufferBuilder buffer = Tesselator.getInstance().begin(VertexFormat.Mode.DEBUG_LINE_STRIP, DefaultVertexFormat.POSITION_COLOR);
         Matrix4f matrix4f = matrixStack.last().pose();
 
         while (points.hasRemaining() && color.hasRemaining()) {
             buffer.addVertex(matrix4f, points.get(), points.get(), zLevel).setColor(color.get(), color.get(), color.get(), color.get());
         }
-        matrixStack.popPose();
 
+        BufferUploader.drawWithShader(buffer.buildOrThrow());
+        matrixStack.popPose();
         RenderSystem.disableBlend();
 //        RenderSystem.enableTexture();
         RenderSystem.setShader(() -> oldShader);

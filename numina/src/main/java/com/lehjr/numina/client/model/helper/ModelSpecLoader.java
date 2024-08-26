@@ -32,7 +32,14 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.lehjr.numina.client.event.ModelBakeEventHandler;
 import com.lehjr.numina.common.base.NuminaLogger;
-import com.lehjr.numina.common.capabilities.render.modelspec.*;
+import com.lehjr.numina.common.capabilities.render.modelspec.JavaModelSpec;
+import com.lehjr.numina.common.capabilities.render.modelspec.JavaPartSpec;
+import com.lehjr.numina.common.capabilities.render.modelspec.MorphTarget;
+import com.lehjr.numina.common.capabilities.render.modelspec.NuminaModelSpecRegistry;
+import com.lehjr.numina.common.capabilities.render.modelspec.ObjModelSpec;
+import com.lehjr.numina.common.capabilities.render.modelspec.ObjPartSpec;
+import com.lehjr.numina.common.capabilities.render.modelspec.SpecBinding;
+import com.lehjr.numina.common.capabilities.render.modelspec.SpecType;
 import com.lehjr.numina.common.constants.NuminaConstants;
 import com.lehjr.numina.common.math.Color;
 import com.mojang.math.Transformation;
@@ -164,7 +171,7 @@ public enum ModelSpecLoader {
     void parseObjModelSpec(JsonObject modelJson, SpecType specType, String specName, boolean isDefault, boolean isSingle) {
         // Load model location
         ResourceLocation modelLocation = ResourceLocation.parse(modelJson.get(FILE).getAsString());
-        ModelResourceLocation modelResourceLocation = new ModelResourceLocation(modelLocation, "");
+        ModelResourceLocation modelResourceLocation = new ModelResourceLocation(modelLocation, "standalone");
 
         ModelBakeEventHandler.addLocation(modelResourceLocation);
         if (!isSingle) {

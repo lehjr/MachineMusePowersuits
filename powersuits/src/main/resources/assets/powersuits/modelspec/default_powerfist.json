@@ -1,0 +1,123 @@
+{
+  "modelSpec": {
+    "specName": "powerfist",
+    "type": "HANDHELD_JAVA_MODEL",
+    "default": "true",
+    "model":
+      {
+        "texture": "textures/models/powerfist.png",
+        "binding": {
+          "itemSlot": "mainhand",
+          "target": "any_hand",
+          "parts": [
+            {
+              "name": "mainarm"
+            },
+            {
+              "name": "armorright"
+            },
+            {
+              "name": "armorleft"
+            },
+            {
+              "name": "wristtopright"
+            },
+            {
+              "name": "wristtopleft"
+            },
+            {
+              "name": "wristbottomright"
+            },
+            {
+              "name": "wristbottomleft"
+            },
+            {
+              "name": "fingerguard"
+            },
+            {
+              "name": "crystalholder"
+            },
+            {
+              "name": "crystal",
+              "glow": true
+            },
+            {
+              "name": "supportright1"
+            },
+            {
+              "name": "supportright2"
+            },
+            {
+              "name": "supportright3"
+            },
+            {
+              "name": "supportright4"
+            },
+            {
+              "name": "supportright5"
+            },
+            {
+              "name": "supportbaseright"
+            },
+            {
+              "name": "supportrightfront"
+            },
+            {
+              "name": "supportbaseleft"
+            },
+            {
+              "name": "supportleftfront"
+            },
+            {
+              "name": "supportleft1"
+            },
+            {
+              "name": "supportleft2"
+            },
+            {
+              "name": "supportleft3"
+            },
+            {
+              "name": "supportleft4"
+            },
+            {
+              "name": "supportleft5"
+            },
+            {
+              "name": "palm"
+            },
+            {
+              "name": "palm.index1"
+            },
+            {
+              "name": "palm.index1.index2"
+            },
+            {
+              "name": "palm.middlefinger1"
+            },
+            {
+              "name": "palm.middlefinger1.middlefinger2"
+            },
+            {
+              "name": "palm.ringfinger1"
+            },
+            {
+              "name": "palm.ringfinger1.ringfinger2"
+            },
+            {
+              "name": "palm.pinky1"
+            },
+            {
+              "name": "palm.pinky1.pinky2"
+            },
+            {
+              "name": "palm.thumb1"
+            },
+            {
+              "name": "palm.thumb1.thumb2"
+            }
+          ]
+        }
+      }
+  }
+}

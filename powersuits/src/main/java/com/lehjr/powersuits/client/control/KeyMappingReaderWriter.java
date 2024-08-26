@@ -26,7 +26,11 @@
 
 package com.lehjr.powersuits.client.control;
 
-import com.google.gson.*;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.lehjr.numina.common.base.NuminaLogger;
 import com.lehjr.numina.common.config.ConfigHelper;
 import com.lehjr.numina.common.utils.ItemUtils;
@@ -38,7 +42,11 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Items;
 import org.lwjgl.glfw.GLFW;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.Collection;

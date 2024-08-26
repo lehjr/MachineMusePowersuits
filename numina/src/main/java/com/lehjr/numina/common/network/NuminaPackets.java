@@ -1,8 +1,19 @@
 package com.lehjr.numina.common.network;
 
 import com.lehjr.numina.common.constants.NuminaConstants;
-import com.lehjr.numina.common.network.packets.clientbound.*;
-import com.lehjr.numina.common.network.packets.serverbound.*;
+import com.lehjr.numina.common.network.packets.clientbound.ColorInfoPacketClientBound;
+import com.lehjr.numina.common.network.packets.clientbound.CosmeticInfoPacketClientBound;
+import com.lehjr.numina.common.network.packets.clientbound.ModeChangeRequestPacketClientBound;
+import com.lehjr.numina.common.network.packets.clientbound.ToggleRequestPacketClientBound;
+import com.lehjr.numina.common.network.packets.clientbound.TweakRequestDoublePacketClientBound;
+import com.lehjr.numina.common.network.packets.serverbound.BlockPositionPacketServerBound;
+import com.lehjr.numina.common.network.packets.serverbound.BlockStateClearPacketServerBound;
+import com.lehjr.numina.common.network.packets.serverbound.ColorInfoPacketServerBound;
+import com.lehjr.numina.common.network.packets.serverbound.CosmeticInfoPacketServerBound;
+import com.lehjr.numina.common.network.packets.serverbound.ModeChangeRequestPacketServerBound;
+import com.lehjr.numina.common.network.packets.serverbound.PlayerUpdatePacketServerBound;
+import com.lehjr.numina.common.network.packets.serverbound.ToggleRequestPacketServerBound;
+import com.lehjr.numina.common.network.packets.serverbound.TweakRequestDoublePacketServerBound;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.server.level.ServerPlayer;
 import net.neoforged.bus.api.SubscribeEvent;

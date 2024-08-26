@@ -1,10 +1,8 @@
 package com.lehjr.powersuits.common.item.electric.armor;
 
-import com.google.common.util.concurrent.AtomicDouble;
 import com.lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
 import com.lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
 import com.lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
-import com.lehjr.numina.common.capabilities.module.toggleable.IToggleableModule;
 import com.lehjr.numina.common.registration.NuminaCapabilities;
 import com.lehjr.numina.common.utils.AdditionalInfo;
 import com.lehjr.numina.common.utils.ElectricItemUtils;
@@ -15,12 +13,10 @@ import com.mojang.datafixers.util.Pair;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ArmorItem;
@@ -35,8 +31,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
 public class AbstractElectricArmor extends ArmorItem {
@@ -54,6 +48,12 @@ public class AbstractElectricArmor extends ArmorItem {
 //    protected void addReachModifier(Map<Attribute, AttributeModifier> attributeModifiers, double reach) {
 //        attributeModifiers.put((Attribute) Attributes.ENTITY_INTERACTION_RANGE, new AttributeModifier(ATTACK_REACH_MODIFIER, "Weapon modifier", reach, AttributeModifier.Operation.ADD_VALUE));
 //    }
+
+//    @Override
+//    public @Nullable ResourceLocation getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, ArmorMaterial.Layer layer, boolean innerModel) {
+//        return super.getArmorTexture(stack, entity, slot, layer, innerModel);
+//    }
+
 
 
     @Override
@@ -230,12 +230,14 @@ public class AbstractElectricArmor extends ArmorItem {
         return 0;
     }
 
-// FIXME: re-enable when module is ported
-//    @Override
-//    public boolean makesPiglinsNeutral(ItemStack stack, LivingEntity wearer) {
-//        return NuminaCapabilities.getCapability(stack, NuminaCapabilities.Inventory.MODULAR_ITEM)
-//                .map(iModularItem -> iModularItem.isModuleOnline(MPSConstants.PIGLIN_PACIFICATION_MODULE)).orElse(false);
-//    }
+    @Override
+    public boolean makesPiglinsNeutral(ItemStack stack, LivingEntity wearer) {
+        IModularItem iModularItem = stack.getCapability(NuminaCapabilities.Inventory.MODULAR_ITEM);
+        if(iModularItem != null) {
+            return iModularItem.isModuleOnline(MPSConstants.PIGLIN_PACIFICATION_MODULE);
+        }
+        return false;
+    }
 
     @Override
     public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> components, TooltipFlag flag) {

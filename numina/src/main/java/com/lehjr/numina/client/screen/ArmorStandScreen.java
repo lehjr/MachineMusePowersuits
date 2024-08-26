@@ -1,7 +1,6 @@
 package com.lehjr.numina.client.screen;
 
 import com.lehjr.numina.client.gui.ExtendedContainerScreen;
-import com.lehjr.numina.common.base.NuminaLogger;
 import com.lehjr.numina.common.constants.NuminaConstants;
 import com.lehjr.numina.common.container.ArmorStandMenu;
 import net.minecraft.client.gui.GuiGraphics;
@@ -17,15 +16,6 @@ public class ArmorStandScreen extends ExtendedContainerScreen<ArmorStandMenu> {
         super(menu, inventory, title);
     }
 
-    double scroll = 0;
-
-    @Override
-    public boolean mouseScrolled(double mouseX, double mouseY, double scrollX, double scrollY) {
-        scroll += scrollY;
-        NuminaLogger.logDebug("scroll: " + scroll + ", total: " + ((this.leftPos + 103 + mouseX -240 + scroll)));
-        return super.mouseScrolled(mouseX, mouseY, scrollX, scrollY);
-
-    }
 
     @Override
     public void renderTooltip(GuiGraphics gfx, int mouseX, int mouseY) {
@@ -37,6 +27,7 @@ public class ArmorStandScreen extends ExtendedContainerScreen<ArmorStandMenu> {
     protected void renderBg(GuiGraphics gfx, float partialTick, int mouseX, int mouseY) {
         int i = this.leftPos;
         int j = this.topPos;
+
         gfx.blit(BACKGROUND, i, j, 0, 0, this.imageWidth, this.imageHeight);
         if (this.minecraft != null && this.minecraft.player != null) {
             InventoryScreen
@@ -63,7 +54,7 @@ public class ArmorStandScreen extends ExtendedContainerScreen<ArmorStandMenu> {
                         j + 7 + 70,// + (int)(scroll),
                         30,
                         0.0625F, // y offset
-                        (float) (i + 103 + mouseX - 240 + scroll),
+                        (float) (i + 103 + mouseX - 257),
                         (float) (j + 7 + mouseY - 60),
                         this.menu.getArmorStand());
     }

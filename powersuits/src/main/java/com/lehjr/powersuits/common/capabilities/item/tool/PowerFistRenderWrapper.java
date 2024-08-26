@@ -1,6 +1,11 @@
 package com.lehjr.powersuits.common.capabilities.item.tool;
 
-import com.lehjr.numina.common.capabilities.render.modelspec.*;
+import com.lehjr.numina.common.capabilities.render.modelspec.IHandHeldEntitySpecNBT;
+import com.lehjr.numina.common.capabilities.render.modelspec.ModelSpecStorage;
+import com.lehjr.numina.common.capabilities.render.modelspec.NuminaModelSpecRegistry;
+import com.lehjr.numina.common.capabilities.render.modelspec.PartSpecBase;
+import com.lehjr.numina.common.capabilities.render.modelspec.SpecBase;
+import com.lehjr.numina.common.capabilities.render.modelspec.SpecType;
 import com.lehjr.numina.common.constants.NuminaConstants;
 import com.lehjr.powersuits.common.item.electric.tool.PowerFist;
 import net.minecraft.nbt.CompoundTag;

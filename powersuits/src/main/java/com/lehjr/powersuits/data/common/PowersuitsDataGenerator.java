@@ -1,6 +1,5 @@
 package com.lehjr.powersuits.data.common;
 
-import com.lehjr.numina.data.common.loot.NuminaBlockLoot;
 import com.lehjr.powersuits.common.constants.MPSConstants;
 import com.lehjr.powersuits.data.client.lang.MPSLanguageProvider_EN_US;
 import com.lehjr.powersuits.data.common.loot.MPSBlockLoot;

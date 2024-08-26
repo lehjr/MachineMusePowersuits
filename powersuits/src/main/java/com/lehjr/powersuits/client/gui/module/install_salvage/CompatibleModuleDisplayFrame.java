@@ -5,7 +5,6 @@ import com.lehjr.numina.client.gui.frame.ModularItemSelectionFrame;
 import com.lehjr.numina.client.gui.geometry.Rect;
 import com.lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
 import com.lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
-import com.lehjr.numina.common.registration.NuminaCapabilities;
 import com.lehjr.powersuits.client.gui.module.tweak.ModuleSelectionFrame;
 import com.lehjr.powersuits.client.gui.module.tweak.ModuleSelectionSubFrame;
 import net.minecraft.core.NonNullList;

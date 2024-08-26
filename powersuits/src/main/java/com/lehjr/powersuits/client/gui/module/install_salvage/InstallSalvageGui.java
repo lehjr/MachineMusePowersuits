@@ -7,7 +7,6 @@ import com.lehjr.numina.client.gui.geometry.Rect;
 import com.lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
 import com.lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
 import com.lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
-import com.lehjr.numina.common.registration.NuminaCapabilities;
 import com.lehjr.numina.common.utils.ItemUtils;
 import com.lehjr.powersuits.client.gui.common.ScrollableInventoryFrame2;
 import com.lehjr.powersuits.client.gui.common.TabSelectFrame;
@@ -28,7 +27,6 @@ import net.neoforged.api.distmarker.OnlyIn;
 
 import javax.annotation.Nonnull;
 import java.util.Objects;
-import java.util.Optional;
 
 @OnlyIn(Dist.CLIENT)
 public class InstallSalvageGui extends ExtendedContainerScreen<InstallSalvageMenu> {

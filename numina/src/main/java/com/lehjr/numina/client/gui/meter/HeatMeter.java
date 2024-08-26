@@ -1,10 +1,7 @@
 package com.lehjr.numina.client.gui.meter;
 
 import com.lehjr.numina.client.config.IMeterConfig;
-import com.lehjr.numina.common.base.Numina;
-import com.lehjr.numina.common.base.NuminaLogger;
 import com.lehjr.numina.common.constants.NuminaConstants;
-import com.lehjr.numina.common.math.Color;
 import com.lehjr.numina.common.utils.IconUtils;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.BufferBuilder;
@@ -16,12 +13,9 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.ShaderInstance;
-import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.FastColor;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.InventoryMenu;
 import org.joml.Matrix4f;
 

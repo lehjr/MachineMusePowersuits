@@ -1,6 +1,11 @@
 package com.lehjr.numina.client.gui.clickable;
 
-import com.lehjr.numina.client.gui.geometry.*;
+import com.lehjr.numina.client.gui.geometry.IDrawable;
+import com.lehjr.numina.client.gui.geometry.IDrawableRect;
+import com.lehjr.numina.client.gui.geometry.IRect;
+import com.lehjr.numina.client.gui.geometry.IRectWrapper;
+import com.lehjr.numina.client.gui.geometry.MusePoint2D;
+import com.lehjr.numina.client.gui.geometry.Rect;
 import net.minecraft.client.gui.GuiGraphics;
 
 /**

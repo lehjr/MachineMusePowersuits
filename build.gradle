@@ -6,3 +6,31 @@ plugins {
 }
 
 
+allprojects {
+    gradle.projectsEvaluated {
+        tasks.withType(JavaCompile).configureEach {
+            options.compilerArgs << "-Xmaxerrs" << "1000"
+        }
+    }
+
+    repositories {
+        mavenLocal()
+        flatDir {
+            dirs("${project.rootDir}/libs")
+        }
+    }
+
+    configurations {
+        runtimeClasspath.extendsFrom localRuntime
+    }
+
+    dependencies {
+        localRuntime "blank:appliedenergistics2-19.0.20-beta"
+        localRuntime "blank:FallingTree-1.21.1-1.21.1.1"
+
+        localRuntime "blank:jei-${minecraft_version}-neoforge-19.8.5.118"
+        localRuntime "blank:theoneprobe-1.21_neo-12.0.3" // try it?
+
+        localRuntime "blank:journeymap-neoforge-1.21-6.0.0-beta.20"
+    }
+}

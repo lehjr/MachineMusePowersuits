@@ -1,5 +1,6 @@
 package com.lehjr.numina.common.capabilities.inventory.modularitem;
 
+import com.lehjr.numina.common.base.Numina;
 import com.lehjr.numina.common.base.NuminaLogger;
 import com.lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
 import com.lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
@@ -296,12 +297,12 @@ public class ModularItem extends ComponentItemHandler implements IModularItem {
     @Override
     public void setModuleFloat(ResourceLocation moduleName, String key, float value) {
         int i = findInstalledModule(moduleName);
-        if(i < -1) {
+        if(i > -1) {
             ItemStack module = getStackInSlot(i);
             IPowerModule pm = getModuleCapability(module);
             if (pm != null) {
-                TagUtils.setModuleFloat(module, key, value);
-                updateModuleInSlot(i, module);
+                ItemStack newModule = TagUtils.setModuleFloat(module, key, value);
+                updateModuleInSlot(i, newModule);
             }
         }
     }
@@ -309,13 +310,18 @@ public class ModularItem extends ComponentItemHandler implements IModularItem {
     @Override
     public void setModuleBlockState(ResourceLocation moduleName, BlockState state) {
         int i = findInstalledModule(moduleName);
-        if(i < -1) {
+        NuminaLogger.logDebug("installedModule: " + i +", is i <= -1: " + (i <= -1));
+
+        if(i > -1) {
             ItemStack module = getStackInSlot(i);
             IPowerModule pm = getModuleCapability(module);
             if (pm != null) {
-                TagUtils.setModuleBlockState(module,state);
-                updateModuleInSlot(i, module);
+                ItemStack newModule = TagUtils.setModuleBlockState(module,state);
+                updateModuleInSlot(i, newModule);
+                NuminaLogger.logDebug("updated stack in slot to state: " + state);
             }
+        } else {
+            NuminaLogger.logDebug("failed to update Module: " + moduleName +", index: " + i);
         }
     }
 
@@ -326,8 +332,8 @@ public class ModularItem extends ComponentItemHandler implements IModularItem {
             ItemStack module = getStackInSlot(i);
             IPowerModule pm = getModuleCapability(module);
             if (pm != null) {
-                TagUtils.setModuleString(module, key, value);
-                updateModuleInSlot(i, module);
+                ItemStack newModule = TagUtils.setModuleString(module, key, value);
+                updateModuleInSlot(i, newModule);
             }
         }
     }
@@ -337,7 +343,9 @@ public class ModularItem extends ComponentItemHandler implements IModularItem {
         for (int i = 0; i < getSlots(); i++) {
             ItemStack testStack = getStackInSlot(i);
             if (!testStack.isEmpty()) {
-                if (ItemUtils.getRegistryName(testStack).equals(registryName)) {
+                ResourceLocation registryNameOther = ItemUtils.getRegistryName(testStack);
+                if (registryNameOther.getNamespace().equals(registryName.getNamespace())
+                    && registryNameOther.getPath().equals(registryName.getPath())) {
                     return i;
                 }
             }

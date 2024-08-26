@@ -7,12 +7,14 @@ import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.platform.Lighting;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.BufferBuilder;
+import com.mojang.blaze3d.vertex.BufferUploader;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.client.renderer.ShaderInstance;
 import org.joml.Matrix4f;
 
 public interface IScrollable extends IGuiFrame, IDrawableRect {
@@ -67,13 +69,10 @@ public interface IScrollable extends IGuiFrame, IDrawableRect {
         return false;
     }
 
-
-    @Override
-    default void preRender(GuiGraphics gfx, int mouseX, int mouseY, float frameTIme) {
-        if (isVisible()) {
-//            ShaderInstance oldShader = RenderSystem.getShader();
+    default void canScrollDown(GuiGraphics gfx, int mouseX, int mouseY, float frameTIme) {
+        if (getCurrentScrollPixels() + height() < getTotalSize()) {
+            ShaderInstance oldShader = RenderSystem.getShader();
             RenderSystem.setShader(GameRenderer::getPositionColorShader);
-//            RenderSystem.disableTexture();
             RenderSystem.enableBlend();
             Lighting.setupForEntityInInventory();
             RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
@@ -83,41 +82,62 @@ public interface IScrollable extends IGuiFrame, IDrawableRect {
             Matrix4f matrix4f = gfx.pose().last().pose();
 
             // Can scroll down
-            if (getCurrentScrollPixels() + height() < getTotalSize()) {
-                buffer.addVertex(matrix4f, (float) (left() + width() / 2F), (float) bottom(), getZLevel())
-                        .setColor(Color.LIGHT_BLUE.r, Color.LIGHT_BLUE.b, Color.LIGHT_BLUE.b, Color.LIGHT_BLUE.a)
-                        .setLight(0x00F000F0);
 
-                buffer.addVertex(matrix4f, (float) (left() + width() / 2 + 2), (float) bottom() - 4, getZLevel())
-                        .setColor(Color.LIGHT_BLUE.r, Color.LIGHT_BLUE.b, Color.LIGHT_BLUE.b, Color.LIGHT_BLUE.a)
-                        .setLight(0x00F000F0);
+            buffer.addVertex(matrix4f, (float) (left() + width() / 2F), (float) bottom(), getZLevel())
+                .setColor(Color.LIGHT_BLUE.r, Color.LIGHT_BLUE.b, Color.LIGHT_BLUE.b, Color.LIGHT_BLUE.a)
+                .setLight(0x00F000F0);
 
-                buffer.addVertex(matrix4f, (float) (left() + width() / 2 - 2), (float) bottom() - 4, getZLevel())
-                        .setColor(Color.LIGHT_BLUE.r, Color.LIGHT_BLUE.b, Color.LIGHT_BLUE.b, Color.LIGHT_BLUE.a)
-                        .setLight(0x00F000F0);
-            }
+            buffer.addVertex(matrix4f, (float) (left() + width() / 2 + 2), (float) bottom() - 4, getZLevel())
+                .setColor(Color.LIGHT_BLUE.r, Color.LIGHT_BLUE.b, Color.LIGHT_BLUE.b, Color.LIGHT_BLUE.a)
+                .setLight(0x00F000F0);
 
-            // Can scroll up
-            if (getCurrentScrollPixels() > 0) {
-                buffer.addVertex(matrix4f, (float) (left() + width() / 2), (float) top(), getZLevel())
-                        .setColor(Color.LIGHT_BLUE.r, Color.LIGHT_BLUE.b, Color.LIGHT_BLUE.b, Color.LIGHT_BLUE.a)
-                        .setLight(0x00F000F0);
-                buffer.addVertex(matrix4f, (float) (left() + width() / 2 - 2), (float) top() + 4, getZLevel())
-                        .setColor(Color.LIGHT_BLUE.r, Color.LIGHT_BLUE.b, Color.LIGHT_BLUE.b, Color.LIGHT_BLUE.a)
-                        .setLight(0x00F000F0);
-                buffer.addVertex(matrix4f, (float) (left() + width() / 2 + 2), (float) top() + 4, getZLevel())
-                        .setColor(Color.LIGHT_BLUE.r, Color.LIGHT_BLUE.b, Color.LIGHT_BLUE.b, Color.LIGHT_BLUE.a)
-                        .setLight(0x00F000F0);
-            }
+            buffer.addVertex(matrix4f, (float) (left() + width() / 2 - 2), (float) bottom() - 4, getZLevel())
+                .setColor(Color.LIGHT_BLUE.r, Color.LIGHT_BLUE.b, Color.LIGHT_BLUE.b, Color.LIGHT_BLUE.a)
+                .setLight(0x00F000F0);
 
+            BufferUploader.drawWithShader(buffer.buildOrThrow());
             RenderSystem.disableBlend();
-//            RenderSystem.enableTexture();
-//            RenderSystem.setShader(() -> oldShader);
-
-            enableScissor((int)left(), (int)top(), (int)width(), (int)height()); // get rid of margins
+            RenderSystem.setShader(() -> oldShader);
         }
     }
 
+    default void canScrollUp(GuiGraphics gfx, int mouseX, int mouseY, float frameTIme) {
+        if (getCurrentScrollPixels() > 0) {
+            ShaderInstance oldShader = RenderSystem.getShader();
+            RenderSystem.setShader(GameRenderer::getPositionColorShader);
+            RenderSystem.enableBlend();
+            Lighting.setupForEntityInInventory();
+            RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
+
+            Tesselator tessellator = Tesselator.getInstance();
+            BufferBuilder buffer = tessellator.begin(VertexFormat.Mode.TRIANGLES, DefaultVertexFormat.POSITION_COLOR_LIGHTMAP);
+            Matrix4f matrix4f = gfx.pose().last().pose();
+
+            buffer.addVertex(matrix4f, (float) (left() + width() / 2), (float) top(), getZLevel())
+                .setColor(Color.LIGHT_BLUE.r, Color.LIGHT_BLUE.b, Color.LIGHT_BLUE.b, Color.LIGHT_BLUE.a)
+                .setLight(0x00F000F0);
+            buffer.addVertex(matrix4f, (float) (left() + width() / 2 - 2), (float) top() + 4, getZLevel())
+                .setColor(Color.LIGHT_BLUE.r, Color.LIGHT_BLUE.b, Color.LIGHT_BLUE.b, Color.LIGHT_BLUE.a)
+                .setLight(0x00F000F0);
+            buffer.addVertex(matrix4f, (float) (left() + width() / 2 + 2), (float) top() + 4, getZLevel())
+                .setColor(Color.LIGHT_BLUE.r, Color.LIGHT_BLUE.b, Color.LIGHT_BLUE.b, Color.LIGHT_BLUE.a)
+                .setLight(0x00F000F0);
+
+            BufferUploader.drawWithShader(buffer.buildOrThrow());
+            RenderSystem.disableBlend();
+            RenderSystem.setShader(() -> oldShader);
+        }
+    }
+
+
+    @Override
+    default void preRender(GuiGraphics gfx, int mouseX, int mouseY, float frameTIme) {
+        if (isVisible()) {
+            canScrollDown(gfx, mouseX, mouseY, frameTIme);
+            canScrollUp(gfx, mouseX, mouseY, frameTIme);
+            enableScissor((int)left(), (int)top(), (int)width(), (int)height()); // get rid of margins
+        }
+    }
 
     static void enableScissor(double x, double y, double w, double h) {
         Minecraft mc = Minecraft.getInstance();
@@ -134,7 +154,6 @@ public interface IScrollable extends IGuiFrame, IDrawableRect {
     default void postRender(GuiGraphics gfx, int mouseX, int mouseY, float partialTicks) {
         if (isVisible()) {
             RenderSystem.disableScissor();
-//            NuminaRenderState.glowOff();
         }
     }
 }

@@ -1,16 +1,22 @@
 package com.lehjr.powersuits.common.capabilities.item.armor;
 
-import com.lehjr.numina.common.capabilities.render.modelspec.*;
+import com.lehjr.numina.common.capabilities.render.modelspec.IArmorModelSpecNBT;
+import com.lehjr.numina.common.capabilities.render.modelspec.JavaModelSpec;
+import com.lehjr.numina.common.capabilities.render.modelspec.JavaPartSpec;
+import com.lehjr.numina.common.capabilities.render.modelspec.ModelSpecStorage;
+import com.lehjr.numina.common.capabilities.render.modelspec.NuminaModelSpecRegistry;
+import com.lehjr.numina.common.capabilities.render.modelspec.ObjModelSpec;
+import com.lehjr.numina.common.capabilities.render.modelspec.PartSpecBase;
+import com.lehjr.numina.common.capabilities.render.modelspec.SpecBase;
+import com.lehjr.numina.common.capabilities.render.modelspec.SpecType;
 import com.lehjr.numina.common.constants.NuminaConstants;
 import com.lehjr.numina.common.utils.ItemUtils;
-import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.IntArrayTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.Mob;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ItemStack;

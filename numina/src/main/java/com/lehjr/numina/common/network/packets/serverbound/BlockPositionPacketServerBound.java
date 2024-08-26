@@ -42,12 +42,15 @@ public record BlockPositionPacketServerBound(BlockPos pos) implements CustomPack
     }
 
     public static void handle(BlockPositionPacketServerBound data, IPayloadContext ctx) {
+        NuminaLogger.logDebug("trying to set blockstate pt1");
+
         ctx.enqueueWork(() -> {
             Player player = ctx.player();
             if (player instanceof ServerPlayer && data.pos != null) {
                 try {
                     IModeChangingItem mci = NuminaCapabilities.getModeChangingModularItem(player.getMainHandItem());
                     if(mci != null) {
+                        NuminaLogger.logDebug("trying to set blockstate");
                         mci.setModuleBlockState(ItemUtils.getRegistryName(mci.getActiveModule()), player.level().getBlockState(data.pos));
                     }
                 } catch (Exception e) {

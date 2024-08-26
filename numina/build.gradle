@@ -22,20 +22,20 @@ idea {
     }
 }
 
-repositories {
-    mavenLocal()
-    flatDir { dirs '../libs' }
-}
-
-configurations {
-    runtimeClasspath.extendsFrom localRuntime
-}
-
-dependencies {
-    localRuntime "blank:jei-${minecraft_version}-neoforge-19.8.5.118"
-
-
-}
+//repositories {
+//    mavenLocal()
+//    flatDir { dirs '../libs' }
+//}
+//
+//configurations {
+//    runtimeClasspath.extendsFrom localRuntime
+//}
+//
+//dependencies {
+//    localRuntime "blank:jei-${minecraft_version}-neoforge-19.8.5.118"
+//    localRuntime "blank:theoneprobe-1.21_neo-12.0.3" // try it?
+//
+//}
 
 
 

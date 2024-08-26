@@ -6,11 +6,13 @@ import com.lehjr.numina.common.base.NuminaLogger;
 import com.lehjr.numina.common.math.Color;
 import com.lehjr.numina.common.utils.MathUtils;
 import net.minecraft.client.gui.GuiGraphics;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class AbstractSlider extends Clickable {
+public abstract class AbstractSlider extends Clickable implements ISlider {
     /** keep knob completely inside the track/slot/frame/whatever */
     public boolean keepKnobWithinBounds=true;
     /** useful for differentiating sliders */
@@ -232,5 +234,22 @@ public abstract class AbstractSlider extends Clickable {
 //        builder.addVertex(matrix4f, (float) xEnd, (float) yEnd, getZLevel()).setColor(color.r, color.g, color.b, color.a);
 //        builder.end();
 //        postDraw(builder);
+    }
+
+
+
+
+    public IUpdated updated;
+
+    @Override
+    public void setOnUpdated(IUpdated updated) {
+        this.updated = updated;
+    }
+
+    @Override
+    public void onUpdated() {
+        if (this.isVisible() && this.isEnabled() && this.updated != null) {
+            this.updated.onUpdated();
+        }
     }
 }

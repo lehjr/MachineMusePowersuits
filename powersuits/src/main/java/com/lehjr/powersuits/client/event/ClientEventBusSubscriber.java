@@ -7,7 +7,6 @@ import com.lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
 import com.lehjr.numina.common.capabilities.render.highlight.IHighlight;
 import com.lehjr.numina.common.math.Color;
 import com.lehjr.numina.common.registration.NuminaCapabilities;
-import com.lehjr.numina.common.registration.NuminaItems;
 import com.lehjr.numina.common.utils.ElectricItemUtils;
 import com.lehjr.numina.common.utils.ItemUtils;
 import com.lehjr.powersuits.client.control.KeyMappingReaderWriter;
@@ -48,13 +47,18 @@ import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
-import net.neoforged.neoforge.client.event.*;
+import net.neoforged.neoforge.client.event.ComputeFovModifierEvent;
+import net.neoforged.neoforge.client.event.EntityRenderersEvent;
+import net.neoforged.neoforge.client.event.ModelEvent;
+import net.neoforged.neoforge.client.event.RegisterGuiLayersEvent;
+import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
+import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
+import net.neoforged.neoforge.client.event.RenderHighlightEvent;
 import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
 import net.neoforged.neoforge.common.NeoForge;
 
 import java.util.Arrays;
-import java.util.function.Consumer;
 
 @EventBusSubscriber(modid = MPSConstants.MOD_ID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class ClientEventBusSubscriber {

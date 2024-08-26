@@ -26,8 +26,6 @@
 
 package com.lehjr.powersuits.client.gui.module.tweak;
 
-
-import com.google.common.util.concurrent.AtomicDouble;
 import com.lehjr.numina.client.gui.frame.ModularItemSelectionFrame;
 import com.lehjr.numina.client.gui.frame.ScrollableFrame;
 import com.lehjr.numina.client.gui.geometry.Rect;
@@ -46,7 +44,6 @@ import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.energy.IEnergyStorage;
 
 import java.util.Objects;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class DetailedSummaryFrame extends ScrollableFrame {
     protected int energy = 0;

@@ -65,7 +65,7 @@ public class ObjModelSpec extends SpecBase {
 
     @Nonnull
     public Optional<OBJBakedCompositeModel> getModel() {
-        BakedModel model = ModelBakeEventHandler.getBakedItemModel(new ModelResourceLocation(location, ""));
+        BakedModel model = ModelBakeEventHandler.getBakedItemModel(new ModelResourceLocation(location, "standalone"));
         if (model instanceof OBJBakedCompositeModel) {
             return Optional.of((OBJBakedCompositeModel) model);
         }

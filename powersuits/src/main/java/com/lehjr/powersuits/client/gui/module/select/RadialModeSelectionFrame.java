@@ -2,7 +2,11 @@ package com.lehjr.powersuits.client.gui.module.select;
 
 import com.lehjr.numina.client.gui.clickable.ClickableModule;
 import com.lehjr.numina.client.gui.frame.AbstractGuiFrame;
-import com.lehjr.numina.client.gui.geometry.*;
+import com.lehjr.numina.client.gui.geometry.DrawableTile;
+import com.lehjr.numina.client.gui.geometry.IDrawable;
+import com.lehjr.numina.client.gui.geometry.MusePoint2D;
+import com.lehjr.numina.client.gui.geometry.SpiralPointToPoint2D;
+import com.lehjr.numina.client.gui.geometry.SwirlyMuseCircle;
 import com.lehjr.numina.common.base.NuminaLogger;
 import com.lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
 import com.lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;

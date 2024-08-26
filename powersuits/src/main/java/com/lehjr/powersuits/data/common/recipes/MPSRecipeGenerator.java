@@ -1,27 +1,22 @@
 package com.lehjr.powersuits.data.common.recipes;
 
 import com.lehjr.numina.common.base.NuminaLogger;
-import com.lehjr.numina.common.recipe.ingredients.MinEnchantedIngredient;
 import com.lehjr.numina.common.registration.NuminaItems;
 import com.lehjr.numina.data.common.recipes.ShapedEnchantmentRecipeBuilder;
 import com.lehjr.powersuits.common.registration.MPSItems;
-import com.mojang.serialization.Codec;
-import com.mojang.serialization.MapCodec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
-import net.minecraft.data.recipes.*;
-import net.minecraft.tags.TagKey;
+import net.minecraft.data.recipes.RecipeCategory;
+import net.minecraft.data.recipes.RecipeOutput;
+import net.minecraft.data.recipes.RecipeProvider;
+import net.minecraft.data.recipes.ShapedRecipeBuilder;
+import net.minecraft.data.recipes.ShapelessRecipeBuilder;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.neoforged.neoforge.common.Tags;
 
 import javax.annotation.Nonnull;
-import java.util.Map;
-import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
 public class MPSRecipeGenerator extends RecipeProvider {

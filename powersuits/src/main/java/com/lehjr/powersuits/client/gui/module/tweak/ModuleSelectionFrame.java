@@ -13,15 +13,16 @@ import com.lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
 import com.lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import com.lehjr.numina.common.registration.NuminaCapabilities;
 import com.lehjr.numina.common.utils.IconUtils;
+import com.lehjr.numina.common.utils.ItemUtils;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 
 import javax.annotation.Nullable;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -193,7 +194,12 @@ public class ModuleSelectionFrame extends ScrollableFrame {
     @Nullable
     public IPowerModule getModuleCap() {
         if (selectedModule != null) {
-            return selectedModule.getModule().getCapability(NuminaCapabilities.Module.POWER_MODULE);
+            IModularItem iModularItem = target.getModularItemCapability();
+            if(iModularItem != null) {
+                ItemStack module = iModularItem.getStackInSlot(selectedModule.getInventorySlot());
+                selectedModule.setModule(module);
+                return iModularItem.getModuleCapability(module);
+            }
         }
         return null;
     }

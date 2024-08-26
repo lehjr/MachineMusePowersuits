@@ -1,8 +1,23 @@
-1.20.6 broken stuff and todo
+1.21.1 broken stuff and todo
 ----------------------------
 
 GUI
 -----------------------
+* preserve modular item selection tab when switching between GUI's
+* preserve cursor position when switching between modular item tabs
+* recheck creative install, some items not installing in correct slot
+* -> recheck ranged wrapper code.. maybe replace with something simpler..
+* -> modular item selection subframe rendering seems a bit inconsistant... check rendering code
+* -> revisit module tweak GUI... maybe recode the sliders to sync... or use container to sync
+* -> revisit cosmetic gui... something very wrong there
+
+
+
+
+
+
+
+
 * creative install button - fix install all button so only valid for tier items get installed
 
 Model Spec
