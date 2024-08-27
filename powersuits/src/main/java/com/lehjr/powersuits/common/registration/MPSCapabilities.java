@@ -23,12 +23,26 @@ import com.lehjr.powersuits.common.item.module.miningenchantment.FortuneModule;
 import com.lehjr.powersuits.common.item.module.miningenchantment.SilkTouchModule;
 import com.lehjr.powersuits.common.item.module.miningenhancement.SelectiveMiner;
 import com.lehjr.powersuits.common.item.module.miningenhancement.TunnelBoreModule;
+import com.lehjr.powersuits.common.item.module.movement.BlinkDriveModule;
+import com.lehjr.powersuits.common.item.module.movement.ClimbAssistModule;
+import com.lehjr.powersuits.common.item.module.movement.DimensionalRiftModule;
+import com.lehjr.powersuits.common.item.module.movement.FlightControlModule;
+import com.lehjr.powersuits.common.item.module.movement.GliderModule;
+import com.lehjr.powersuits.common.item.module.movement.JetBootsModule;
+import com.lehjr.powersuits.common.item.module.movement.JetPackModule;
+import com.lehjr.powersuits.common.item.module.movement.JumpAssistModule;
+import com.lehjr.powersuits.common.item.module.movement.ParachuteModule;
+import com.lehjr.powersuits.common.item.module.movement.ShockAbsorberModule;
+import com.lehjr.powersuits.common.item.module.movement.SprintAssistModule;
+import com.lehjr.powersuits.common.item.module.movement.SwimAssistModule;
 import com.lehjr.powersuits.common.item.module.tool.blockbreaking.chopping.AxeModule;
 import com.lehjr.powersuits.common.item.module.tool.blockbreaking.digging.ShovelModule;
+import com.lehjr.powersuits.common.item.module.tool.blockbreaking.farming.RototillerModule;
 import com.lehjr.powersuits.common.item.module.tool.blockbreaking.mining.PickaxeModule;
 import com.lehjr.powersuits.common.item.module.tool.misc.FlintAndSteelModule;
 import com.lehjr.powersuits.common.item.module.tool.misc.LeafBlowerModule;
 import com.lehjr.powersuits.common.item.module.tool.misc.LuxCapacitorModule;
+import com.lehjr.powersuits.common.item.module.tool.misc.ShearsModule;
 import com.lehjr.powersuits.common.item.module.vision.BinocularsModule;
 import com.lehjr.powersuits.common.item.module.vision.NightVisionModule;
 import com.lehjr.powersuits.common.item.module.weapon.BladeLauncherModule;
@@ -253,6 +267,28 @@ public class MPSCapabilities {
 //            return null;
 //        }, MPSItems.DEBUG_ITEM.get());
 
+
+
+
+
+        // Movement -------------------------------------------------------------------------------
+        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new BlinkDriveModule.RightClickie(stack), MPSItems.BLINK_DRIVE_MODULE.get());
+        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new ClimbAssistModule.Ticker(stack), MPSItems.CLIMB_ASSIST_MODULE.get());
+        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new DimensionalRiftModule.RightClickie(stack), MPSItems.DIMENSIONAL_RIFT_MODULE.get());
+        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new FlightControlModule.Toggler(stack), MPSItems.FLIGHT_CONTROL_MODULE.get());
+        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new GliderModule.Ticker(stack), MPSItems.GLIDER_MODULE.get());
+        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new JetBootsModule.Ticker(stack), MPSItems.JET_BOOTS_MODULE.get());
+        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new JetPackModule.Ticker(stack), MPSItems.JETPACK_MODULE.get());
+        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new JumpAssistModule.Ticker(stack), MPSItems.JUMP_ASSIST_MODULE.get());
+        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new ParachuteModule.Ticker(stack), MPSItems.PARACHUTE_MODULE.get());
+        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new ShockAbsorberModule.Toggler(stack), MPSItems.SHOCK_ABSORBER_MODULE.get());
+        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new SprintAssistModule.Ticker(stack), MPSItems.SPRINT_ASSIST_MODULE.get());
+        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new SwimAssistModule.Ticker(stack), MPSItems.SWIM_ASSIST_MODULE.get());
+
+        // Tools ----------------------------------------------------------------------------------
+        // Rototiller // TODO: Does this need other tiers?
+        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new RototillerModule.RightClickie(stack), MPSItems.ROTOTILLER_MODULE.get());
+
         // Axe
         event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new AxeModule.BlockBreaker(stack, 1), MPSItems.STONE_AXE_MODULE.get());
         event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new AxeModule.BlockBreaker(stack, 2), MPSItems.IRON_AXE_MODULE.get());
@@ -272,15 +308,16 @@ public class MPSCapabilities {
         event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new ShovelModule.BlockBreaker(stack, 4), MPSItems.NETHERITE_SHOVEL_MODULE.get());
 
         // Misc
-        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new FlintAndSteelModule.RightClickie(stack), MPSItems.LEAF_BLOWER_MODULE.get());
+        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new FlintAndSteelModule.RightClickie(stack), MPSItems.FLINT_AND_STEEL_MODULE.get());
         event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new LeafBlowerModule.RightClickie(stack), MPSItems.LEAF_BLOWER_MODULE.get());
         event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new LuxCapacitorModule.RightClickie(stack), MPSItems.LUX_CAPACITOR_MODULE.get());
+        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new ShearsModule.BlockBreaker(stack), MPSItems.LUX_CAPACITOR_MODULE.get());
 
-        // Vision
+        // Vision ---------------------------------------------------------------------------------
         event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new BinocularsModule.BinocularCap(stack), MPSItems.BINOCULARS_MODULE.get());
-        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new NightVisionModule.Ticker(stack), MPSItems.BINOCULARS_MODULE.get());
+        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new NightVisionModule.Ticker(stack), MPSItems.NIGHTVISION_MODULE.get());
 
-        // Weapons
+        // Weapons --------------------------------------------------------------------------------
         event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new BladeLauncherModule.RightClickie(stack), MPSItems.BLADE_LAUNCHER_MODULE.get());
         event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new LightningModule.RightClickie(stack), MPSItems.LIGHTNING_SUMMONER_MODULE.get());
         event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new MeleeAssistModule.PMCap(stack), MPSItems.MELEE_ASSIST_MODULE.get());

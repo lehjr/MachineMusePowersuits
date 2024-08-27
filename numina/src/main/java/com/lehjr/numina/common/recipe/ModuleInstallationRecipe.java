@@ -52,10 +52,6 @@ public class ModuleInstallationRecipe extends CustomRecipe {
             return false;
         }
 
-//        if (modularItemSlots.size() != 1 || moduleSlots.size() != 1) {
-//            return false;
-//        }
-
         ItemStack modularItem = container.getItem(modularItemSlots.getFirst());
         IModularItem iModularItem = NuminaCapabilities.getModularItemOrModeChangingCapability(modularItem);
         if(iModularItem != null) {

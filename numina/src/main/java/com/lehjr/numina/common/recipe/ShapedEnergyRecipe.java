@@ -39,7 +39,7 @@ public class ShapedEnergyRecipe extends ShapedRecipe {
 		for (int i = 0; i <= input.width() - this.pattern.width(); i++) {
 			for (int j = 0; j <= input.height() - this.pattern.height(); j++) {
 				if (this.matches(input, i, j, true)) {
-					return true;
+                    return true;
 				}
 
 				if (this.matches(input, i, j, false)) {
@@ -47,7 +47,6 @@ public class ShapedEnergyRecipe extends ShapedRecipe {
 				}
 			}
 		}
-
 		return false;
 	}
 

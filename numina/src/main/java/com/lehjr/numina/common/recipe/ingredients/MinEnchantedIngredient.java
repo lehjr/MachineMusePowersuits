@@ -1,6 +1,5 @@
 package com.lehjr.numina.common.recipe.ingredients;
 
-import com.lehjr.numina.common.base.NuminaLogger;
 import com.lehjr.numina.common.registration.NuminaIngredientTypes;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
@@ -44,8 +43,6 @@ public class MinEnchantedIngredient implements ICustomIngredient {
 
     // Allow passing in a pre-existing map of enchantments to levels.
     public MinEnchantedIngredient(Map<Holder<Enchantment>, Integer> enchantments) {
-        NuminaLogger.logError("enchantments size init: " + enchantments.size());
-
         this.enchantments = enchantments;
     }
 
