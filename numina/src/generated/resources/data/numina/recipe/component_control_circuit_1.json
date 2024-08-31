@@ -2,20 +2,29 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "B": {
-      "item": "minecraft:oak_button"
-    },
     "C": {
-      "item": "minecraft:oak_planks"
+      "item": "numina:component_capacitor_1"
     },
-    "S": {
-      "item": "minecraft:lever"
+    "E": {
+      "tag": "c:ingots/copper"
+    },
+    "G": {
+      "item": "minecraft:blue_dye"
+    },
+    "O": {
+      "item": "minecraft:yellow_dye"
+    },
+    "R": {
+      "tag": "c:dusts/redstone"
+    },
+    "W": {
+      "item": "numina:component_wiring_copper"
     }
   },
   "pattern": [
-    "BSB",
-    "SCS",
-    "BSB"
+    "WCW",
+    "RGO",
+    "ERW"
   ],
   "result": {
     "count": 1,

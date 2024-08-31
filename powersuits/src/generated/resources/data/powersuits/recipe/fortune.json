@@ -9,7 +9,10 @@
       "item": "numina:component_computer_chip"
     },
     "N": {
-      "type": "numina:min_enchanted"
+      "type": "numina:min_enchanted",
+      "enchantments": {
+        "minecraft:fortune": 3
+      }
     },
     "W": {
       "item": "numina:component_wiring_gold"

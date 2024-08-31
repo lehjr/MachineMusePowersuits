@@ -2,6 +2,9 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
+    "C": {
+      "item": "numina:component_capacitor_2"
+    },
     "E": {
       "tag": "c:ingots/copper"
     },
@@ -9,7 +12,7 @@
       "tag": "c:dusts/glowstone"
     },
     "O": {
-      "tag": "c:dyes"
+      "item": "minecraft:red_dye"
     },
     "R": {
       "tag": "c:dusts/redstone"
@@ -19,7 +22,7 @@
     }
   },
   "pattern": [
-    "WOW",
+    "WCW",
     "RGO",
     "ERW"
   ],

@@ -1,4 +1,4 @@
-// 1.21.1	2024-08-22T06:45:20.419027416	Recipes
+// 1.21.1	2024-08-30T15:13:21.700282878	Recipes
 e6ed1a1452d223bad6ddca05e1eda41f805e20cd data/powersuits/advancement/recipes/combat/blade_launcher.json
 461b586b4f4f512431a173f130d7e83c02b002cb data/powersuits/advancement/recipes/combat/energy_shield.json
 58cc314341a1784c6b18d5849b867be69a363ac9 data/powersuits/advancement/recipes/combat/invisibility.json
@@ -71,7 +71,7 @@ cefcd0fdedfba193154f3b3ba372bff702c4b5db data/powersuits/advancement/recipes/mis
 fad9e2a04712ea0523bf93ed68892fb75a66f25d data/powersuits/advancement/recipes/misc/tunnel_bore.json
 e441f0ffdecea509e294923c5f4fa979322198f6 data/powersuits/advancement/recipes/misc/vein_miner.json
 4460291c1c7f6acf34f3f972141063f3e24894b3 data/powersuits/advancement/recipes/misc/water_electrolyzer.json
-515f5bc96ab65861e050c9fc89e8b3e356688afe data/powersuits/recipe/aqua_affinity.json
+021321ffb6254ebacda1c49042f341acf3a61eb7 data/powersuits/recipe/aqua_affinity.json
 60570537a32258b412cf28f60992edd6858f1b6f data/powersuits/recipe/auto_feeder.json
 38541c8f2bfd6a8ceb3c49faa1a173f98c7a082a data/powersuits/recipe/axe1.json
 2cf5e4d5e7eb9bd1892ad9d2da54fb2c83eef462 data/powersuits/recipe/axe2.json
@@ -84,7 +84,7 @@ f4af9dadd3fdd8d836c64cd7399ac687c99b63a4 data/powersuits/recipe/axe4.json
 b40876c8ce6fc474b2f363f358f91cfcf5ab5d80 data/powersuits/recipe/dim_rift_gen.json
 3bde0ed9d3c9961e4644c2a2b1cd24141edadc5e data/powersuits/recipe/energy_shield.json
 a5331fc34fdfb23d22321a6963aaefc35d4a53da data/powersuits/recipe/flight_control.json
-3297320f6052cd9f43ed7448a894fdb33ff90ac9 data/powersuits/recipe/fortune.json
+def874fd66c8b9777db39b9f3ded1327cd7244aa data/powersuits/recipe/fortune.json
 4208949e73d9ee1bbb7ba29df6adc3bbf8249b1f data/powersuits/recipe/glider.json
 3f12eb19729ef152a61298251481c38e79ef6493 data/powersuits/recipe/invisibility.json
 5648e6bd818750ecde94c35474db6f4937c5964b data/powersuits/recipe/jet_boots.json
@@ -135,7 +135,7 @@ e8494492e8599bf7fdb89ad07dbd6de0ab754442 data/powersuits/recipe/powerfist2.json
 bcc78b04a7b4fa7874e41b2e9ea4ee23b1be4eea data/powersuits/recipe/shovel2.json
 ab69312fdbc3941d61f7e8aeb75946f31045f2f6 data/powersuits/recipe/shovel3.json
 4af55beb73f3f62414224a9b97a24de522ec809b data/powersuits/recipe/shovel4.json
-ff67731fdab9f68fcf9727571973fa04e6d8b85d data/powersuits/recipe/silk_touch.json
+f462e99b3694c05e5cb006cd483eecd38eefd318 data/powersuits/recipe/silk_touch.json
 6c613ade1cc87d4fa56278282e4d406bc03bd956 data/powersuits/recipe/sprint_assist.json
 c4ddae6198a815b998bb371e78dfc6b846d7be64 data/powersuits/recipe/swim_assist.json
 e56b6d46599be1bc0fa485c1979f469341b7ac77 data/powersuits/recipe/tinkertable.json

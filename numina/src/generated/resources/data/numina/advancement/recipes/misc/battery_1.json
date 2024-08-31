@@ -1,11 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_component_capacitor_1": {
+    "has_component_control_circuit_1": {
       "conditions": {
         "items": [
           {
-            "items": "numina:component_capacitor_1"
+            "items": "numina:component_control_circuit_1"
           }
         ]
       },
@@ -21,7 +21,7 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_component_capacitor_1"
+      "has_component_control_circuit_1"
     ]
   ],
   "rewards": {

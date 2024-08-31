@@ -1,11 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_battery_2": {
+    "has_component_control_circuit_3": {
       "conditions": {
         "items": [
           {
-            "items": "numina:battery_2"
+            "items": "numina:component_control_circuit_3"
           }
         ]
       },
@@ -21,7 +21,7 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_battery_2"
+      "has_component_control_circuit_3"
     ]
   ],
   "rewards": {

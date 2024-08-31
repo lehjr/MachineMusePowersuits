@@ -3,17 +3,20 @@
   "category": "misc",
   "key": {
     "C": {
-      "item": "numina:component_capacitor_1"
+      "item": "numina:component_control_circuit_1"
     },
     "I": {
       "tag": "c:ingots/iron"
+    },
+    "R": {
+      "tag": "c:dusts/redstone"
     },
     "W": {
       "item": "numina:component_wiring_copper"
     }
   },
   "pattern": [
-    "WIW",
+    "WRW",
     "ICI",
     "IWI"
   ],

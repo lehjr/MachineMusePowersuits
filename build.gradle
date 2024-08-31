@@ -25,12 +25,16 @@ allprojects {
     }
 
     dependencies {
+        // these are setup using libs dir at the root of the project rather than through maven. This will probably get fixed later
+
         localRuntime "blank:appliedenergistics2-19.0.20-beta"
         localRuntime "blank:FallingTree-1.21.1-1.21.1.1"
 
-        localRuntime "blank:jei-${minecraft_version}-neoforge-19.8.5.118"
+        localRuntime "blank:jei-${minecraft_version}-neoforge-19.14.1.143"
         localRuntime "blank:theoneprobe-1.21_neo-12.0.3" // try it?
 
         localRuntime "blank:journeymap-neoforge-1.21-6.0.0-beta.20"
+
+        localRuntime "blank:energizedpower-1.21.1-2.12.2-neoforge"
     }
 }
