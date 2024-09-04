@@ -24,7 +24,7 @@ public class ShovelModule extends AbstractPowerModule {
         int tier;
 
         public BlockBreaker(ItemStack module, int tier) {
-            super(module, ModuleCategory.TOOL, ModuleTarget.TOOLONLY);
+            super(module, ModuleCategory.SHOVEL, ModuleTarget.TOOLONLY);
             this.tier = tier;
 
             switch(tier) {

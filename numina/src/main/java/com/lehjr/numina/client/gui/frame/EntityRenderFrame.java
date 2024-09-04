@@ -2,6 +2,7 @@ package com.lehjr.numina.client.gui.frame;
 
 import com.lehjr.numina.client.gui.geometry.IDrawable;
 import com.lehjr.numina.client.gui.geometry.Rect;
+import com.lehjr.numina.common.base.NuminaLogger;
 import com.lehjr.numina.common.utils.MathUtils;
 import com.mojang.blaze3d.platform.Lighting;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -9,6 +10,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.network.chat.Component;
@@ -122,60 +124,14 @@ public class EntityRenderFrame extends AbstractGuiFrame implements IGuiFrame {
     @Override
     public void render(GuiGraphics gfx, int mouseX, int mouseY, float partialTick) {
         if (isVisible) {
-            double i = (centerX() + offsetx);
-            double j = (bottom() - 5 + offsety);
-            float mouse_x = (float) (guiLeft - this.oldMouseX + 281 + offsetx); // should be close to 0 when center // 76
-            float mouse_y = (float)(guiTop - this.oldMouseY + 25F + offsety);
-            renderEntityInInventory(gfx, i, j, mouse_x, mouse_y, zoom, this.livingEntity);
+            double i = (left() + offsetx);
+            double j = (top() - 5 + offsety);
+            renderEntityInInventory(gfx, i, j, zoom, this.livingEntity);
         }
     }
 
-    // TODO: model rotation based on a scaled value like in MPS for 1.7.10
-    // coppied from player inventory
-    public void renderEntityInInventory(GuiGraphics gfx, double posX, double posY, float mouseX, float mouseY, float scale, LivingEntity pLivingEntity) {
-        float f = (float)Math.atan(mouseX / 40.0F);
-        float f1 = (float)Math.atan(mouseY / 40.0F);
-
-        gfx.pose().pushPose();
-        gfx.pose().translate((float)posX, (float)posY, 1050.0F);
-        gfx.pose().scale(1.0F, 1.0F, -1.0F);
-        RenderSystem.applyModelViewMatrix();
-        PoseStack posestack1 = new PoseStack();
-        posestack1.translate(0.0F, 0.0F, 1000.0F);
-        posestack1.scale(scale, scale, scale);
-        Quaternionf quaternion = Axis.ZP.rotationDegrees(180.0F);
-        Quaternionf quaternion1 = Axis.XP.rotationDegrees(f1 * 20.0F);
-        quaternion.mul(quaternion1);
-        posestack1.mulPose(quaternion);
-        float yBodyRot = pLivingEntity.yBodyRot;
-        float yRot = pLivingEntity.getYRot();
-        float xRot = pLivingEntity.getXRot();
-        float yHeadRotO = pLivingEntity.yHeadRotO;
-        float yHeadRot = pLivingEntity.yHeadRot;
-        pLivingEntity.yBodyRot = 180.0F + f * 20.0F;
-        pLivingEntity.setYRot(180.0F + f * 40.0F);
-        pLivingEntity.setXRot(-f1 * 20.0F);
-        pLivingEntity.yHeadRot = pLivingEntity.getYRot();
-        pLivingEntity.yHeadRotO = pLivingEntity.getYRot();
-        Lighting.setupForEntityInInventory();
-        EntityRenderDispatcher entityrenderdispatcher = Minecraft.getInstance().getEntityRenderDispatcher();
-        quaternion1.conjugate();
-        entityrenderdispatcher.overrideCameraOrientation(quaternion1);
-        entityrenderdispatcher.setRenderShadow(false);
-        MultiBufferSource.BufferSource multibuffersource$buffersource = Minecraft.getInstance().renderBuffers().bufferSource();
-        RenderSystem.runAsFancy(() -> {
-            entityrenderdispatcher.render(pLivingEntity, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F, posestack1, multibuffersource$buffersource, 15728880);
-        });
-        multibuffersource$buffersource.endBatch();
-        entityrenderdispatcher.setRenderShadow(true);
-        pLivingEntity.yBodyRot = yBodyRot;
-        pLivingEntity.setYRot(yRot);
-        pLivingEntity.setXRot(xRot);
-        pLivingEntity.yHeadRotO = yHeadRotO;
-        pLivingEntity.yHeadRot = yHeadRot;
-        gfx.pose().popPose();
-        RenderSystem.applyModelViewMatrix();
-        Lighting.setupFor3DItems();
+    public void renderEntityInInventory(GuiGraphics gfx, double posX, double posY, float scale, LivingEntity entity) {
+        InventoryScreen.renderEntityInInventoryFollowsAngle(gfx, (int)posX, (int)posY, (int)(posX + width()), (int)(posY + height()), (int)scale, 0.0625F, (int)rotx, (int)roty, entity);
     }
 
     @Override

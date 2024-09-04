@@ -7,6 +7,7 @@ import com.lehjr.numina.client.gui.slot.IIConProvider;
 import com.lehjr.numina.common.base.NuminaLogger;
 import com.lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
 import com.lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
+import com.lehjr.numina.common.constants.NuminaConstants;
 import com.lehjr.numina.common.math.Color;
 import com.lehjr.numina.common.registration.NuminaCapabilities;
 import com.lehjr.numina.common.utils.IconUtils;
@@ -25,6 +26,7 @@ import net.minecraft.world.item.ItemStack;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.neoforge.items.IItemHandler;
+import org.jetbrains.annotations.Nullable;
 
 public class InstallSalvageMenu extends AbstractContainerMenu {
     EquipmentSlot slotType;
@@ -118,51 +120,65 @@ public class InstallSalvageMenu extends AbstractContainerMenu {
 
                         return cap.isModuleValidForPlacement(finalModularItemInvIndex, stack);
                     }
-
-
-                });
-            } else if (MathUtils.isIntInRange(cap.getRangeForCategory(ModuleCategory.ENERGY_STORAGE), modularItemInvIndex)) {
-                // ENERGY_STORAGE
-                addSlot(new IconSlotItemHandler(cap, parentSlot, finalModularItemInvIndex, 178 + innercol * 18, 14 + innerrow * 18) {
-                    @OnlyIn(Dist.CLIENT)
-                    @Override
-                    public void drawIconAt(PoseStack matrixStack, double posX, double posY, Color color) {
-                        IconUtils.getIcon().energystorage.renderIconScaledWithColor(matrixStack, posX, posY, 16, 16, Color.WHITE);
-                    }
-
-                    @Override
-                    public boolean mayPlace(ItemStack stack) {
-                        NuminaLogger.logDebug("may place <" + stack +"> " + cap.isModuleValidForPlacement(finalModularItemInvIndex, stack));
-
-                        return cap.isModuleValidForPlacement(finalModularItemInvIndex, stack);
-                    }
                 });
 
-            } else if (MathUtils.isIntInRange(cap.getRangeForCategory(ModuleCategory.ENERGY_GENERATION), modularItemInvIndex)) {
-                // ENERGY_GENERATION
-                addSlot(new IconSlotItemHandler(cap, parentSlot, modularItemInvIndex, 178 + innercol * 18, -1000) {
-                    @OnlyIn(Dist.CLIENT)
-                    @Override
-                    public void drawIconAt(PoseStack matrixStack, double posX, double posY, Color color) {
-                        IconUtils.getIcon().energygeneration.renderIconScaledWithColor(matrixStack, posX, posY, 16, 16, Color.WHITE);
-                    }
-
-                    @Override
-                    public boolean mayPlace(ItemStack stack) {
-                        NuminaLogger.logDebug("may place <" + stack +"> " + cap.isModuleValidForPlacement(finalModularItemInvIndex, stack));
-                        return cap.isModuleValidForPlacement(finalModularItemInvIndex, stack);
-                    }
-                });
             } else {
-                // Generic slot (Category NONE)
-                addSlot(new HideableSlotItemHandler(cap, parentSlot, modularItemInvIndex, 178 + innercol * 18, 14 + innerrow * 18) {
-                    @Override
-                    public boolean mayPlace(ItemStack stack) {
-                        NuminaLogger.logDebug("may place <" + stack +"> " + cap.isModuleValidForPlacement(finalModularItemInvIndex, stack));
-                        return cap.isModuleValidForPlacement(finalModularItemInvIndex, stack);
+                for (ModuleCategory category: ModuleCategory.values()) {
+                    if((MathUtils.isIntInRange(cap.getRangeForCategory(category), modularItemInvIndex))) {
+                        NuminaLogger.logDebug("category " + category +" is in range for slot: " + modularItemInvIndex);
+
+                        Pair<ResourceLocation, ResourceLocation> iconPair = IconUtils.getIconForCategory(category);
+                        if(iconPair != null){ if(iconPair.getFirst().getPath().equals(NuminaConstants.LOCATION_NUMINA_GUI_TEXTURE_ATLAS.getPath())) {
+                            addSlot(new IconSlotItemHandler(cap, parentSlot, finalModularItemInvIndex, 178 + innercol * 18, 14 + innerrow * 18) {
+                                @OnlyIn(Dist.CLIENT)
+                                @Override
+                                public void drawIconAt(PoseStack matrixStack, double posX, double posY, Color color) {
+                                    // FIXME: fix icon
+
+                                    IconUtils.getIcon().energystorage.renderIconScaledWithColor(matrixStack, posX, posY, 16, 16, Color.WHITE);
+                                }
+
+                                @Override
+                                public boolean mayPlace(ItemStack stack) {
+                                    NuminaLogger.logDebug("may place <" + stack + "> " + cap.isModuleValidForPlacement(finalModularItemInvIndex, stack));
+
+                                    return cap.isModuleValidForPlacement(finalModularItemInvIndex, stack);
+                                }
+                            });
+                        } else {
+                            addSlot(new HideableSlotItemHandler(cap, parentSlot, modularItemInvIndex, 178 + innercol * 18, 14 + innerrow * 18) {
+                                @Override
+                                @Nullable
+                                public Pair<ResourceLocation, ResourceLocation> getNoItemIcon() {
+                                    return iconPair;
+                                }
+
+                                @Override
+                                public boolean mayPlace(ItemStack stack) {
+                                    NuminaLogger.logDebug("may place <" + stack +"> " + cap.isModuleValidForPlacement(finalModularItemInvIndex, stack));
+                                    return cap.isModuleValidForPlacement(finalModularItemInvIndex, stack);
+                                }
+                            });
+                        }
+
+
+
+
+
+                        } else {
+                            // Generic slot (Category NONE)
+                            addSlot(new HideableSlotItemHandler(cap, parentSlot, modularItemInvIndex, 178 + innercol * 18, 14 + innerrow * 18) {
+                                @Override
+                                public boolean mayPlace(ItemStack stack) {
+                                    NuminaLogger.logDebug("may place <" + stack +"> " + cap.isModuleValidForPlacement(finalModularItemInvIndex, stack));
+                                    return cap.isModuleValidForPlacement(finalModularItemInvIndex, stack);
+                                }
+                            });
+                        }
                     }
-                });
+                }
             }
+
         }
     }
 
@@ -184,18 +200,18 @@ public class InstallSalvageMenu extends AbstractContainerMenu {
 
     int equipmentSlotToParent(EquipmentSlot slotType) {
         switch (slotType) {
-            case HEAD:
-                return 39;
-            case CHEST:
-                return 38;
-            case LEGS:
-                return 37;
-            case FEET:
-                return 36;
-            case OFFHAND:
-                return 40;
-            default:
-                return  -1;
+        case HEAD:
+            return 39;
+        case CHEST:
+            return 38;
+        case LEGS:
+            return 37;
+        case FEET:
+            return 36;
+        case OFFHAND:
+            return 40;
+        default:
+            return  -1;
         }
     }
 
@@ -218,7 +234,7 @@ public class InstallSalvageMenu extends AbstractContainerMenu {
     @Override
     public boolean stillValid(Player player) {
         return true;
-//        return this.container.stillValid(player);
+        //        return this.container.stillValid(player);
     }
 
 

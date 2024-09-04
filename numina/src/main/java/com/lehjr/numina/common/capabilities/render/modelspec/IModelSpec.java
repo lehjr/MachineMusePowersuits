@@ -42,7 +42,7 @@ public interface IModelSpec {
         return TagUtils.getRenderTag(getItemStack());
     }
 
-    CompoundTag setRenderTag(CompoundTag renderDataIn, String tagName);
+    ItemStack setRenderTag(CompoundTag renderDataIn, String tagName);
 
     /**
      * Primarrily used for getting a default tag for rendering without setting anything
@@ -69,5 +69,5 @@ public interface IModelSpec {
 
     int getNewColorIndex(List<Integer> colors, List<Integer> oldColors, Integer index);
 
-    CompoundTag setColorArray(int[] colors);
+    ItemStack setColorArray(int[] colors);
 }

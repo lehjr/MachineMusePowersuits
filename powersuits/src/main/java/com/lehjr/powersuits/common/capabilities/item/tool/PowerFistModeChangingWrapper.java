@@ -17,7 +17,19 @@ public class PowerFistModeChangingWrapper extends ModeChangingModularItem {
         if (size > 0) {
             rangedWrapperMap.put(ModuleCategory.ENERGY_STORAGE, new RangedWrapper(this, 0, 1));
             if (size > 1) {
-                rangedWrapperMap.put(ModuleCategory.NONE, new RangedWrapper(this, 1, this.getSlots()));
+                rangedWrapperMap.put(ModuleCategory.PICKAXE, new RangedWrapper(this, 1, 2));
+            }
+            if (size > 2) {
+                rangedWrapperMap.put(ModuleCategory.SHOVEL, new RangedWrapper(this, 2, 3));
+            }
+            if (size > 3) {
+                rangedWrapperMap.put(ModuleCategory.AXE, new RangedWrapper(this, 3, 4));
+            }
+            if (size > 4) {
+                rangedWrapperMap.put(ModuleCategory.HOE, new RangedWrapper(this, 4, 5));
+            }
+            if (size > 5) {
+                rangedWrapperMap.put(ModuleCategory.NONE, new RangedWrapper(this, 5, this.getSlots()));
             }
         }
         this.setRangedWrapperMap(rangedWrapperMap);

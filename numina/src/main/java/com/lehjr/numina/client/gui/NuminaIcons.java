@@ -81,6 +81,10 @@ public class NuminaIcons {
             return spriteUploader.getSprite(location);
         }
 
+        public ResourceLocation getLocation() {
+            return location;
+        }
+
         public int getWidth() {
             return width;
         }

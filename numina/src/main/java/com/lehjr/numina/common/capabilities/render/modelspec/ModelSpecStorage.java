@@ -26,13 +26,14 @@
 
 package com.lehjr.numina.common.capabilities.render.modelspec;
 
+import com.lehjr.numina.common.base.NuminaLogger;
 import com.lehjr.numina.common.constants.NuminaConstants;
+import com.lehjr.numina.common.utils.ItemUtils;
 import com.lehjr.numina.common.utils.TagUtils;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Objects;
 
@@ -50,51 +51,46 @@ public class ModelSpecStorage implements IModelSpec {
     }
 
     @Override
-    public CompoundTag setRenderTag(CompoundTag renderDataIn, String tagName) {
-        CompoundTag itemTag = TagUtils.getRenderTag(itemStack);
-//        NuminaLogger.logDebug("ItemTag before: " + itemTag);
-//        NuminaLogger.logDebug("full tag data before: " + itemStack.serializeNBT());
+    public ItemStack setRenderTag(CompoundTag renderDataIn, String tagName) {
+        CompoundTag renderTag = getRenderTag();
+        NuminaLogger.logDebug("RenderTag start: " + renderTag);
+
         if (tagName != null) {
+            // set up clean render tag
             if (Objects.equals(tagName, NuminaConstants.RENDER_TAG)) {
-//                NuminaLogger.logger.debug("Removing render tag");
-                itemTag.remove(NuminaConstants.RENDER_TAG);
+                NuminaLogger.logger.debug("Removing render tag");
+
                 if (!renderDataIn.isEmpty()) {
-//                    NuminaLogger.logger.debug("Adding tag " + NuminaConstants.RENDER + " : " + renderDataIn);
-                    itemTag.put(NuminaConstants.RENDER_TAG, renderDataIn);
+                    NuminaLogger.logger.debug("Setting tag render : " + renderDataIn);
+                    renderTag = renderDataIn;
                 } else {
-                    itemTag.put(NuminaConstants.RENDER_TAG, new CompoundTag());
-                    setColorArray(new int[]{-1});
-                }
-            } else {
-                CompoundTag renderTag;
-                if (!itemTag.contains(NuminaConstants.RENDER_TAG)) {
                     renderTag = new CompoundTag();
-                } else {
-                    renderTag = itemTag.getCompound(NuminaConstants.RENDER_TAG);
                 }
+                // setup new colors
+                if(!renderTag.contains(NuminaConstants.COLORS)) {
+                    renderTag.putIntArray(NuminaConstants.COLORS, new int[]{-1});
+                }
+                return TagUtils.setRenderTag(itemStack, renderTag);
+
+            } else {
                 if (renderDataIn.isEmpty()) {
-//                    NuminaLogger.logger.debug("Removing tag " + tagName);
+                    NuminaLogger.logger.debug("Removing tag " + tagName);
                     renderTag.remove(tagName);
                     renderTag.remove(tagName.replace(".", ""));
                 } else {
-//                    NuminaLogger.logger.debug("Adding tag " + tagName + " : " + renderDataIn);
+                    NuminaLogger.logger.debug("Adding tag " + tagName + " : " + renderDataIn);
                     renderTag.put(tagName, renderDataIn);
                 }
 
-                itemTag.put(NuminaConstants.RENDER_TAG, renderTag);
+                return TagUtils.setRenderTag(itemStack, renderTag);
             }
         }
-        CompoundTag stackTag = TagUtils.getRenderTag(itemStack);
-        stackTag.put(NuminaConstants.MODULAR_ITEM_TAG, itemTag);
-        TagUtils.setRenderTag(itemStack, stackTag);
-        return getRenderTag();
+        return itemStack;
     }
 
     @Override
-    @Nullable
     public CompoundTag getRenderTag() {
-        CompoundTag itemTag = TagUtils.getRenderTag(itemStack);
-        return itemTag.getCompound(NuminaConstants.RENDER_TAG);
+        return TagUtils.getRenderTag(itemStack);
     }
 
     @Override
@@ -128,8 +124,7 @@ public class ModelSpecStorage implements IModelSpec {
     }
 
     @Override
-    public CompoundTag setColorArray(int[] colors) {
-        getRenderTag().putIntArray(NuminaConstants.COLORS, colors);
-        return getRenderTag();
+    public ItemStack setColorArray(int[] colors) {
+        return TagUtils.setColorArray(itemStack, colors);
     }
 }

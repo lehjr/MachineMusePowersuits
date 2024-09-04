@@ -40,14 +40,12 @@ public enum ModuleCategory {
     ENERGY_GENERATION("energygeneration", "Energy_Generation"),
     TOOL("tool", "Tool"),
 
-
     // FIXME/TODO finish:
     PICKAXE("pickaxe", "PickAxe"),
     SHOVEL("shovel", "Shovel"),
     AXE("axe", "Axe"),
     HOE("hoe", "Hoe"),
-    SHEARS("shears", "Shears"),
-
+//    SHEARS("shears", "Shears"), // maybe?
 
     WEAPON("weapon", "Weapon"),
     MOVEMENT("movement", "Movement"),

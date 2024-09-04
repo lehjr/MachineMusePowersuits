@@ -3,6 +3,7 @@ package com.lehjr.numina.client.render.item;
 import com.lehjr.numina.client.model.helper.ModelTransformCalibration;
 import com.lehjr.numina.client.model.item.armor.ArmorModelInstance;
 import com.lehjr.numina.client.model.item.armor.HighPolyArmor;
+import com.lehjr.numina.common.base.NuminaLogger;
 import com.lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
 import com.lehjr.numina.common.capabilities.render.modelspec.IModelSpec;
 import com.lehjr.numina.common.capabilities.render.modelspec.JavaPartSpec;
@@ -104,6 +105,9 @@ public class NuminaArmorLayer<T extends LivingEntity, M extends HumanoidModel<T>
 //                    }
 
                     if (renderTag != null && !renderTag.isEmpty()) {
+                        NuminaLogger.logDebug("render tag  here: " + renderTag);
+
+
                         int[] colors = renderTag.getIntArray(NuminaConstants.COLORS);
                         if (colors.length == 0) {
                             colors = new int[]{Color.WHITE.getARGBInt()};
@@ -153,7 +157,11 @@ public class NuminaArmorLayer<T extends LivingEntity, M extends HumanoidModel<T>
                                     if (transform != Transformation.identity()) {
                                         poseStack.popPose();
                                     }
+                                } else {
+                                    NuminaLogger.logDebug("partSpec: " + partSpec);
                                 }
+                            } else {
+                                NuminaLogger.logDebug("spec is null");
                             }
                         }
                     }

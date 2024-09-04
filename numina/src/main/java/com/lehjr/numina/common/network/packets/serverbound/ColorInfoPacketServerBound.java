@@ -10,6 +10,7 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 import javax.annotation.Nonnull;
@@ -44,7 +45,8 @@ public record ColorInfoPacketServerBound(EquipmentSlot slotType, int[] tagData) 
             Player player  = ctx.player();
             IModelSpec spec = ItemUtils.getItemFromEntitySlot(player, data.slotType).getCapability(NuminaCapabilities.RENDER);
             if(spec != null) {
-                spec.setColorArray(data.tagData);
+                ItemStack newStack = spec.setColorArray(data.tagData);
+                player.setItemSlot(data.slotType, newStack);
             }
 //                player.containerMenu.broadcastChanges();
 //                sendToClient((ServerPlayer) player, data.slotType, data.tagData); // this seems faster than letting changes propagate through player.containerMenu mechanics

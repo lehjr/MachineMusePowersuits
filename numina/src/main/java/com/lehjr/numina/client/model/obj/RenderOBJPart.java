@@ -27,6 +27,7 @@
 package com.lehjr.numina.client.model.obj;
 
 import com.google.common.collect.ImmutableList;
+import com.lehjr.numina.common.base.NuminaLogger;
 import com.lehjr.numina.common.capabilities.render.modelspec.ObjPartSpec;
 import com.lehjr.numina.common.math.Color;
 import com.lehjr.numina.common.utils.MathUtils;
@@ -82,8 +83,6 @@ public class RenderOBJPart extends ModelPart {
     public RenderOBJPart(Model base, ModelPart parent) {
         super(new ArrayList<>(), new HashMap<>());
         this.parent = parent;
-
-
         // FIXME: for code refinement see net.minecraft.client.model.geom.ModelPart
     }
 
@@ -143,21 +142,27 @@ public class RenderOBJPart extends ModelPart {
 
     // Copy of addQuad with alpha support
     void addVertexData(VertexConsumer bufferIn,
-                       PoseStack.Pose matrixEntry,
+                       PoseStack.Pose pose,
                        BakedQuad bakedQuad,
                        int lightmapCoordIn,
                        int packedOverlay, int color) {
-        int[] aint = bakedQuad.getVertices();
+        int[] vertices = bakedQuad.getVertices();
         Vec3i faceNormal = bakedQuad.getDirection().getNormal();
-        Matrix4f matrix4f = matrixEntry.pose();
-        Vector3f normal = matrixEntry.normal().transform(new Vector3f((float)faceNormal.getX(), (float)faceNormal.getY(), (float)faceNormal.getZ()));
+        Matrix4f matrix4f = pose.pose();
+//        Vector3f normal = pose.normal().transform(new Vector3f((float)faceNormal.getX(), (float)faceNormal.getY(), (float)faceNormal.getZ()));
+        Vector3f normal = pose.transformNormal((float)faceNormal.getX(), (float)faceNormal.getY(), (float)faceNormal.getZ(), new Vector3f());
+        // atlasLocation: minecraft:textures/atlas/blocks.png
+        NuminaLogger.logDebug("atlasLocation: " + bakedQuad.getSprite().atlasLocation() +", spriteContents: " + bakedQuad.getSprite().contents());
+
 
         float scale = 0.0625F;
 
         int intSize = DefaultVertexFormat.BLOCK.getVertexSize();
 //        int intSize = DefaultVertexFormat.POSITION_COLOR_TEX_LIGHTMAP.getIntegerSize();
+//        int vertexCount = vertices.length / intSize;
+        int vertexCount = (int) (vertices.length * 0.125);
 
-        int vertexCount = aint.length / intSize;
+        NuminaLogger.logDebug("int size: " + intSize +", vertexCount: " + vertexCount);
 
         try (MemoryStack memorystack = MemoryStack.stackPush()) {
             ByteBuffer bytebuffer = memorystack.malloc(DefaultVertexFormat.BLOCK.getVertexSize());
@@ -165,7 +170,7 @@ public class RenderOBJPart extends ModelPart {
 
             for (int vert = 0; vert < vertexCount; ++vert) {
                 ((Buffer) intbuffer).clear();
-                intbuffer.put(aint, vert * 8, 8);
+                intbuffer.put(vertices, vert * 8, 8);
                 float x = bytebuffer.getFloat(0);
                 float y = bytebuffer.getFloat(4);
                 float z = bytebuffer.getFloat(8);
@@ -176,7 +181,7 @@ public class RenderOBJPart extends ModelPart {
 
                 /** scaled like TexturedQuads, but using multiplication instead of division due to speed advantage.  */
                 Vector4f pos = matrix4f.transform(new Vector4f(x * scale, y * scale, z * scale, 1.0F));
-                bufferIn.applyBakedNormals(normal, bytebuffer, matrixEntry.normal());
+                bufferIn.applyBakedNormals(normal, bytebuffer, pose.normal());
                 bufferIn.addVertex(pos.x(), pos.y(), pos.z(), color, u, v, packedOverlay, packedLight, normal.x(), normal.y(), normal.z());
             }
         }

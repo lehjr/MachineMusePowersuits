@@ -37,7 +37,6 @@ public enum ModelBakeEventHandler {
 
     RandomSource rand = RandomSource.create();
 
-
     @SubscribeEvent
     public void onModifyBakingResult(ModelEvent.ModifyBakingResult event) {
         Map<ModelResourceLocation, BakedModel> registry = event.getModels();

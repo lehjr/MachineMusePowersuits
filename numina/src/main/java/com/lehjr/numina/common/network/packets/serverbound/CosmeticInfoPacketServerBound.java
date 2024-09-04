@@ -11,6 +11,7 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 import javax.annotation.Nonnull;
@@ -55,7 +56,8 @@ public record CosmeticInfoPacketServerBound(EquipmentSlot slotType, String tagNa
             Player player = ctx.player();
             IModelSpec iModelSpec = ItemUtils.getItemFromEntitySlot(player, data.slotType).getCapability(NuminaCapabilities.RENDER);
             if(iModelSpec != null) {
-                iModelSpec.setRenderTag(data.tagData, data.tagName);
+                ItemStack newStack = iModelSpec.setRenderTag(data.tagData, data.tagName);
+                player.setItemSlot(data.slotType, newStack);
             }
         });
     }

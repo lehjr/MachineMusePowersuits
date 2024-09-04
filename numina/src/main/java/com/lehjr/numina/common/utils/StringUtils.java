@@ -11,6 +11,7 @@ import net.minecraft.network.chat.FormattedText;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FormattedCharSequence;
 
+import javax.annotation.Nullable;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -571,6 +572,18 @@ yocto	y	0.000 000 000 000 000 000 000 001
             drawShadowedString(gfx, word, x1 + currentwidth, y);
             currentwidth += getStringWidth(word) + spacing;
         }
+    }
+
+    public static boolean resourceLocationsMatch(@Nullable ResourceLocation location1, @Nullable ResourceLocation location2) {
+        if(location1 == null && location2 == null) {
+            return true;
+        }
+
+        if(location1 == null || location2 == null) {
+            return false;
+        }
+
+        return location1.getNamespace().equals(location2.getNamespace()) && location1.getPath().equals(location2.getPath());
     }
 
     public static Font getFontRenderer() {

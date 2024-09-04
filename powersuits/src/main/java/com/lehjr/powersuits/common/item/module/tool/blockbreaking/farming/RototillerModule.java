@@ -34,7 +34,7 @@ public class RototillerModule extends AbstractPowerModule {
     //    protected static final Map<Block, BlockState> HOE_LOOKUP = Maps.newHashMap(ImmutableMap.of(Blocks.field_196658_i, Blocks.field_150458_ak.defaultBlockState(), Blocks.field_185774_da, Blocks.field_150458_ak.defaultBlockState(), Blocks.field_150346_d, Blocks.field_150458_ak.defaultBlockState(), Blocks.field_196660_k, Blocks.field_150346_d.defaultBlockState()));
     public static class RightClickie extends RightClickModule implements IBlockBreakingModule {
         public RightClickie(@Nonnull ItemStack module) {
-            super(module, ModuleCategory.TOOL, ModuleTarget.TOOLONLY);
+            super(module, ModuleCategory.HOE, ModuleTarget.TOOLONLY);
 
                 addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, 500, "FE");
                 addTradeoffProperty(MPSConstants.RADIUS, MPSConstants.ENERGY_CONSUMPTION, 9500);

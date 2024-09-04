@@ -6,6 +6,7 @@ import com.lehjr.numina.common.registration.NuminaCodecs;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.IntArrayTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
@@ -197,6 +198,24 @@ public class TagUtils {
     public static ItemStack setRenderTag(@Nonnull ItemStack stack, @Nonnull CompoundTag nbt) {
         return setTag(stack, NuminaCodecs.MODEL_SPEC_ITEM_CODEC, NuminaConstants.RENDER_TAG, nbt);
     }
+
+    public static int[] getColors(@Nonnull ItemStack stack) {
+        CompoundTag renderTag = getRenderTag(stack);
+        if(renderTag.contains(NuminaConstants.COLORS)) {
+            return renderTag.getIntArray(NuminaConstants.COLORS);
+        }
+        int[] colors = new int[]{-1};
+
+        setColorArray(stack, colors);
+        return colors;
+    }
+
+    public static ItemStack setColorArray(@Nonnull ItemStack stack, int[] colors) {
+        CompoundTag renderTag = getRenderTag(stack);
+        renderTag.putIntArray(NuminaConstants.COLORS, colors);
+        return setRenderTag(stack, renderTag);
+    }
+
 
     // Color ---------------------------------------------------------------------------------------------------------
     public static Color getColorOrDefault(@Nonnull ItemStack itemStack, Color color) {

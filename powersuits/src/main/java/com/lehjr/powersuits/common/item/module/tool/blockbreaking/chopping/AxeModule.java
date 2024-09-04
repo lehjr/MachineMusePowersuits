@@ -38,7 +38,7 @@ public class AxeModule extends AbstractPowerModule {
     public static class BlockBreaker extends PowerModule implements IBlockBreakingModule, IRightClickModule {
         int tier;
         public BlockBreaker(@Nonnull ItemStack module, int tier) {
-            super(module, ModuleCategory.TOOL, ModuleTarget.TOOLONLY);
+            super(module, ModuleCategory.AXE, ModuleTarget.TOOLONLY);
             this.tier = tier;
 
             switch(tier) {

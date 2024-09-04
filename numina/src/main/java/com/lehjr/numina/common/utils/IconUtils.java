@@ -3,6 +3,7 @@ package com.lehjr.numina.common.utils;
 import com.lehjr.numina.client.gui.NuminaIcons;
 import com.lehjr.numina.client.gui.NuminaSpriteUploader;
 import com.lehjr.numina.client.gui.geometry.SwirlyMuseCircle;
+import com.lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import com.lehjr.numina.common.constants.NuminaConstants;
 import com.lehjr.numina.common.math.Color;
 import com.mojang.blaze3d.platform.GlStateManager;
@@ -49,6 +50,7 @@ import org.joml.Matrix4f;
 import org.lwjgl.opengl.GL11;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -91,9 +93,25 @@ public enum IconUtils {
         return Pair.of(InventoryMenu.BLOCK_ATLAS, ARMOR_SLOT_TEXTURES.get(slotType));
     }
 
+    static final Map<ModuleCategory, Pair<ResourceLocation, ResourceLocation>> slotBackgrounds = new HashMap<>(){{
+        put(ModuleCategory.PICKAXE, Pair.of(InventoryMenu.BLOCK_ATLAS, EMPTY_SLOT_PICKAXE));
+        put(ModuleCategory.SHOVEL, Pair.of(InventoryMenu.BLOCK_ATLAS, EMPTY_SLOT_SHOVEL));
+        put(ModuleCategory.AXE, Pair.of(InventoryMenu.BLOCK_ATLAS, EMPTY_SLOT_AXE));
+        put(ModuleCategory.HOE, Pair.of(InventoryMenu.BLOCK_ATLAS, EMPTY_SLOT_HOE));
 
+        put(ModuleCategory.ARMOR, Pair.of(InventoryMenu.BLOCK_ATLAS, InventoryMenu.EMPTY_ARMOR_SLOT_SHIELD));
 
+        put(ModuleCategory.ENERGY_STORAGE, Pair.of(NuminaConstants.LOCATION_NUMINA_GUI_TEXTURE_ATLAS, getIcon().energystorage.getLocation()));
+        put(ModuleCategory.ENERGY_GENERATION, Pair.of(NuminaConstants.LOCATION_NUMINA_GUI_TEXTURE_ATLAS, getIcon().energygeneration.getLocation()));
+    }};
 
+    @Nullable
+    public static Pair<ResourceLocation, ResourceLocation> getIconForCategory(ModuleCategory category) {
+        if(slotBackgrounds.containsKey(category)) {
+            return slotBackgrounds.get(category);
+        }
+        return null;
+    }
 
 
 

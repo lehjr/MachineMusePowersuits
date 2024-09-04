@@ -26,7 +26,7 @@ public class PickaxeModule extends AbstractPowerModule {
         int tier;
 
         public BlockBreaker(ItemStack module, int tier) {
-            super(module, ModuleCategory.TOOL, ModuleTarget.TOOLONLY);
+            super(module, ModuleCategory.PICKAXE, ModuleTarget.TOOLONLY);
             this.tier = tier;
 //            NuminaLogger.logDebug("module: " + module + ", tier: " + tier + ", isAllowed: " + isAllowed());
 
