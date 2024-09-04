@@ -59,12 +59,9 @@ public class HeatMeter {
     public void draw(GuiGraphics gfx, float xpos, float ypos, float value) {
         value = Mth.clamp(value + getConfig().getDebugValue(), 0F, 1F);
         ShaderInstance oldShader = RenderSystem.getShader();
-        RenderSystem.enableBlend();
-        RenderSystem.defaultBlendFunc();
         drawFluid(gfx,xpos, ypos, value, getTexture());
         drawAdditional(gfx, xpos, ypos, value);
         drawGlass(gfx, xpos, ypos);
-        RenderSystem.disableBlend();
         RenderSystem.setShader(()->oldShader);
     }
 
@@ -72,6 +69,8 @@ public class HeatMeter {
     }
 
     public void drawFluid(GuiGraphics gfx, float xpos, float ypos, float value, TextureAtlasSprite icon) {
+        RenderSystem.enableBlend();
+        RenderSystem.defaultBlendFunc();
         int argbColor = getConfig().getBarColor().getARGBInt();
         if(frames.isEmpty()) {
             icon.contents().getUniqueFrames().forEach(frame -> frames.add(frame));
@@ -90,12 +89,15 @@ public class HeatMeter {
         IconUtils.drawIconPartial(gfx.pose(), meterStart * 2, ypos * 2, icon, argbColor,
             0, 0, (meterLevel - meterStart) * 2, 16);
         gfx.pose().popPose();
+        RenderSystem.disableBlend();
     }
 
     /**
      *
      */
     public void drawGlass(GuiGraphics gfx, float xpos, float ypos) {
+        RenderSystem.enableBlend();
+        RenderSystem.defaultBlendFunc();
         int glassColor = getConfig().getGlassColor().getARGBInt();
         float minU = 0F;
         float maxU = 1F;
@@ -134,5 +136,6 @@ public class HeatMeter {
             .setColor(glassColor);
 
         BufferUploader.drawWithShader(bufferbuilder.buildOrThrow());
+        RenderSystem.disableBlend();
     }
 }

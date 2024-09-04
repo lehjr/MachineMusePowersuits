@@ -39,6 +39,16 @@ public enum ModuleCategory {
     ENERGY_STORAGE("energystorage", "Energy_Storage"),
     ENERGY_GENERATION("energygeneration", "Energy_Generation"),
     TOOL("tool", "Tool"),
+
+
+    // FIXME/TODO finish:
+    PICKAXE("pickaxe", "PickAxe"),
+    SHOVEL("shovel", "Shovel"),
+    AXE("axe", "Axe"),
+    HOE("hoe", "Hoe"),
+    SHEARS("shears", "Shears"),
+
+
     WEAPON("weapon", "Weapon"),
     MOVEMENT("movement", "Movement"),
     COSMETIC("cosmetic", "Cosmetic"),

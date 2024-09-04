@@ -268,7 +268,7 @@ public abstract class InventoryFrame extends ScrollableFrame implements IContain
             RenderSystem.setShader(GameRenderer::getPositionTexShader);
             RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
             RenderSystem.setShaderTexture(0, BACKGROUND);
-            IconUtils.blit(gfx.pose(), left(), top(), this.getZLevel(), 0, 0, width(), height(), 18, 18);
+            IconUtils.blit(gfx.pose(), (float)left(), (float)top(), this.getZLevel(), 0, 0, (float)width(), (float)height(), 18, 18);
         }
 
         @Override

@@ -136,19 +136,13 @@ public class Checkbox extends Clickable {
 //            gfx.blitSprite(texture, (int)this.left(), (int)this.top(), 17, 17);
             NuminaIcons.renderTextureWithColor(texture,
                     gfx.pose(),
-                    left(), right(), top(), bottom(), getZLevel(),
+                (float)left(), (float)right(), (float)top(), (float)bottom(), getZLevel(),
                     // int uWidth,
                     17,
                     // int vHeight,
                     17,
                     0,
                     0,
-//                    // image start x (xOffset)
-//                    Checkbox.this.containsPoint(mouseX, mouseY) ? 20 : 0.0F,
-//                    // image start y (yOffset)
-//                    isChecked() ? 20 : 0.0F,
-//                    // textureWidth, textureHeight
-//                    64, 64,
                     17,
                     17,
                     Color.WHITE);

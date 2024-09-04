@@ -90,14 +90,11 @@ public class ModularItemTabToggleWidget extends Clickable {
         int offset = -2;
         RenderSystem.disableDepthTest();
         if (this.icon.isEmpty()) {
-            if (EquipmentSlot.MAINHAND.equals(type)) {
-                IconUtils.getIcon().weapon.draw(gfx.pose(), left() + 9 + offset, top() + 5, Color.WHITE);
-            } else {
-                Pair<ResourceLocation, ResourceLocation> pair = IconUtils.getSlotBackground(type);
-                TextureAtlasSprite textureatlassprite = getMinecraft().getTextureAtlas(pair.getFirst()).apply(pair.getSecond());
-                RenderSystem.setShaderTexture(0, textureatlassprite.atlasLocation());
-                gfx.blit((int)left() + 10 + offset, (int)top() + 5, 0, 16, 16, textureatlassprite);
-            }
+            Pair<ResourceLocation, ResourceLocation> pair = IconUtils.getSlotBackground(type);
+            TextureAtlasSprite textureatlassprite = getMinecraft().getTextureAtlas(pair.getFirst()).apply(pair.getSecond());
+            RenderSystem.setShaderTexture(0, textureatlassprite.atlasLocation());
+            gfx.blit((int)left() + 10 + offset, (int)top() + 5, 0, 16, 16, textureatlassprite);
+
             RenderSystem.enableDepthTest();
         } else {
             gfx.renderItem(icon, (int)left() + 9 + offset, (int)top() + 6);
@@ -109,8 +106,8 @@ public class ModularItemTabToggleWidget extends Clickable {
     public List<Component> getToolTip(int x, int y) {
         assert Minecraft.getInstance().player != null;
         return ItemUtils.getItemFromEntitySlot(Minecraft.getInstance().player, type).getTooltipLines(Item.TooltipContext.of(Minecraft.getInstance().level),
-                Minecraft.getInstance().player, Screen.hasShiftDown() ?
-                        TooltipFlag.Default.ADVANCED :
-                        TooltipFlag.Default.NORMAL);
+            Minecraft.getInstance().player, Screen.hasShiftDown() ?
+                TooltipFlag.Default.ADVANCED :
+                TooltipFlag.Default.NORMAL);
     }
 }

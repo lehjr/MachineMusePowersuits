@@ -1,6 +1,7 @@
 package com.lehjr.numina.client.gui.meter;
 
 import com.lehjr.numina.client.config.IMeterConfig;
+import com.lehjr.numina.client.gui.NuminaIcons;
 import com.lehjr.numina.common.math.Color;
 import com.lehjr.numina.common.utils.IconUtils;
 import net.minecraft.client.Minecraft;

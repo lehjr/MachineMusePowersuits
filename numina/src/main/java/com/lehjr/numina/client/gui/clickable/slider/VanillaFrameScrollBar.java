@@ -32,28 +32,25 @@ public class VanillaFrameScrollBar extends AbstractSlider {
             RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
             RenderSystem.setShaderTexture(0, SCROLL_TEXTURE);
 
-
-
-
-
             RenderSystem.enableBlend();
             RenderSystem.defaultBlendFunc();
             RenderSystem.enableDepthTest();
             IconUtils.INSTANCE.blit(gfx.pose(),
-                    this.left(),  // left
-                    this.top(),   // top
-                    0,                  // texture start x
-                    0,                  // texture start y
-                    (this.width()), // texture uWidth
-                    (this.height() * 0.5)); // texture vHeight
+                (float)this.left(),  // left
+                (float)this.top(),   // top
+                (float)0,                  // texture start x
+                (float)0,                  // texture start y
+                (float)(this.width()), // texture uWidth
+                (float)(this.height() * 0.5)); // texture vHeight
 
-            IconUtils.INSTANCE.blit(gfx.pose(),
-                    this.left(), //  left
-                    centerY(), // top
-                    0, // texture startX
-                    256 - (this.height() * 0.5),  // texture startY
-                    this.width(), // uWidth
-                    (this.height() * 0.5)); // vHeight
+            IconUtils.INSTANCE.blit(
+                gfx.pose(),
+                (float)this.left(), //  left
+                (float)centerY(), // top
+                (float) 0, // texture startX
+                (float) (256 - (this.height() * 0.5)),  // texture startY
+                (float)this.width(), // uWidth
+                (float)(this.height() * 0.5)); // vHeight
         }
     }
 
@@ -68,32 +65,32 @@ public class VanillaFrameScrollBar extends AbstractSlider {
             double halfKnobSize = getKnobSize() * 0.5;
 
             IconUtils.INSTANCE.blit(gfx.pose(),
-                    // left pos
-                    left(),
-                    // top pos
-                    knobTop,
-                    // texture start x
-                    textureLeft,
-                    // texture start y
-                    0,
-                    // texture end x
-                    width(),
-                    // texture end y
-                    halfKnobSize);
+                // left pos
+                (float)left(),
+                // top pos
+                (float)knobTop,
+                // texture start x
+                (float)textureLeft,
+                // texture start y
+                0,
+                // texture end x
+                (float)width(),
+                // texture end y
+                (float)halfKnobSize);
 
             IconUtils.INSTANCE.blit(gfx.pose(),
-                    // left pos
-                    this.left(),
-                    // top pos
-                    (knobTop + halfKnobSize),
-                    // texture start x
-                    textureLeft,
-                    // texture start y
-                    (256 - halfKnobSize),
-                    // texture end x
-                    this.width(),
-                    // texture end y
-                    halfKnobSize);
+                // left pos
+                (float) this.left(),
+                // top pos
+                (float) (knobTop + halfKnobSize),
+                // texture start x
+                (float)textureLeft,
+                // texture start y
+                (float)(256 - halfKnobSize),
+                // texture end x
+                (float)this.width(),
+                // texture end y
+                (float)halfKnobSize);
         }
     }
 }
