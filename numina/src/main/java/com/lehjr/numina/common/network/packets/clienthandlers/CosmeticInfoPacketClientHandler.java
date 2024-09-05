@@ -7,6 +7,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 
 public class CosmeticInfoPacketClientHandler {
     public static void handlePacket(EquipmentSlot slotType, String tagName, CompoundTag tagData) {
@@ -14,7 +15,7 @@ public class CosmeticInfoPacketClientHandler {
         if (player != null) {
             IModelSpec spec = ItemUtils.getItemFromEntitySlot(player, slotType).getCapability(NuminaCapabilities.RENDER);
             if(spec != null) {
-                spec.setRenderTag(tagData, tagName);
+                ItemStack newStack = spec.setRenderTag(tagData, tagName);
             }
         }
     }

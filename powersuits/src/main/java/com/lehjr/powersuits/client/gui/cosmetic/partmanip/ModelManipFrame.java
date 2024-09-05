@@ -32,16 +32,20 @@ import com.lehjr.numina.client.gui.frame.ModularItemSelectionFrame;
 import com.lehjr.numina.client.gui.frame.ScrollableFrame;
 import com.lehjr.numina.client.gui.geometry.Rect;
 import com.lehjr.numina.common.base.NuminaLogger;
+import com.lehjr.numina.common.capabilities.render.modelspec.IModelSpec;
 import com.lehjr.numina.common.capabilities.render.modelspec.NuminaModelSpecRegistry;
 import com.lehjr.numina.common.capabilities.render.modelspec.SpecBase;
 import com.lehjr.numina.common.math.Color;
+import com.lehjr.numina.common.registration.NuminaCapabilities;
 import com.lehjr.powersuits.client.gui.cosmetic.colorpicker.ColorPickerFrame;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.item.ItemStack;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -61,6 +65,7 @@ public class ModelManipFrame extends ScrollableFrame {
     public int lastColor;
     public int lastColorIndex;
     public List<ModelManipSubframe> modelframes;
+    CompoundTag oldTag;
 
     VanillaFrameScrollBar scrollBar;
 
@@ -85,6 +90,18 @@ public class ModelManipFrame extends ScrollableFrame {
     public Optional<EquipmentSlot> getSlot() {
         return itemSelect.selectedType();
     }
+
+    @Nullable
+    public IModelSpec getRenderCapability() {
+        return itemSelect.getModularItemOrEmpty().getCapability(NuminaCapabilities.RENDER);
+    }
+
+    @Nonnull
+    public CompoundTag getRenderTag() {
+        IModelSpec iModelSpec = getRenderCapability();
+        return iModelSpec != null ? iModelSpec.getRenderTag() : new CompoundTag();
+    }
+
 
     /**
      * @return get int value representing selected color from color picker frame or default of white
@@ -117,7 +134,7 @@ public class ModelManipFrame extends ScrollableFrame {
 
                     ModelManipSubframe newframe = createNewFrame(specBase);
                     // empty when the parts are for a different equipment slot
-                    if (!newframe.getParts().isEmpty()) {
+                    if (!newframe.getPartFrames().isEmpty()) {
                         ModelManipSubframe prev = modelframes.size() > 0 ? modelframes.get(modelframes.size() - 1) : null;
                         newframe.setBelow(prev);
                         modelframes.add(newframe);
@@ -142,7 +159,7 @@ public class ModelManipFrame extends ScrollableFrame {
             EquipmentSlot slot = getSlot().get();
 
             if (slot.getType() == EquipmentSlot.Type.HUMANOID_ARMOR) {
-//                NuminaLogger.logDebug("slot is armor and specBase.hasArmorEquipmentSlot(slot): " + specBase.hasArmorEquipmentSlot(slot));
+                NuminaLogger.logDebug("slot is armor and specBase.hasArmorEquipmentSlot(slot): " + specBase.hasArmorEquipmentSlot(slot));
                 return specBase.hasArmorEquipmentSlot(slot);
             } else {
                 HumanoidArm arm = slot.equals(EquipmentSlot.MAINHAND) ? getMinecraft().player.getMainArm() : getMinecraft().player.getMainArm().getOpposite();
@@ -151,7 +168,7 @@ public class ModelManipFrame extends ScrollableFrame {
                 return specBase.getPartsAsStream().anyMatch(partSpecBase -> partSpecBase.isForHand(arm, getMinecraft().player));
             }
         }
-//        NuminaLogger.logDebug("returning false ");
+        NuminaLogger.logDebug("returning false ");
         return false;
     }
 
@@ -215,12 +232,24 @@ public class ModelManipFrame extends ScrollableFrame {
             return;
         }
 
+        CompoundTag testTag = getRenderTag();
+        if (!Objects.equals(testTag, oldTag)) {
+            NuminaLogger.logDebug("need to update controls for render tag: " + testTag);
+            oldTag = testTag;
+        }
+
+
+
+
         if (!Objects.equals(lastItemSlot, itemSelect.getSelectedTab().get())) {
             colorSelect.selectedColor = 0;
             setCurrentScrollPixels(0); // reset scroll
             lastItemSlot = itemSelect.getSelectedTab().get();
             refreshModelframes();
         }
+
+
+
 
         if(!itemSelect.getModularItemOrEmpty().isEmpty()) {
             if (colorSelect.decrAbove > -1) {

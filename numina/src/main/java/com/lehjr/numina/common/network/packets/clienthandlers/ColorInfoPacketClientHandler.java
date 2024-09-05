@@ -9,10 +9,11 @@ import net.minecraft.world.entity.player.Player;
 
 public class ColorInfoPacketClientHandler {
     public static void handlePacket(EquipmentSlot slotType, int[] tagData) {
-            final Player player = Minecraft.getInstance().player;
-            IModelSpec iModelSpec = ItemUtils.getItemFromEntitySlot(player, slotType).getCapability(NuminaCapabilities.RENDER);
-            if(iModelSpec != null) {
-                iModelSpec.setColorArray(tagData);
-            }
+        final Player player = Minecraft.getInstance().player;
+        assert player != null;
+        IModelSpec iModelSpec = ItemUtils.getItemFromEntitySlot(player, slotType).getCapability(NuminaCapabilities.RENDER);
+        if(iModelSpec != null) {
+            iModelSpec.setColorArray(tagData);
+        }
     }
 }

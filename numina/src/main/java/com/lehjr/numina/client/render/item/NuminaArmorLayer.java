@@ -105,7 +105,7 @@ public class NuminaArmorLayer<T extends LivingEntity, M extends HumanoidModel<T>
 //                    }
 
                     if (renderTag != null && !renderTag.isEmpty()) {
-                        NuminaLogger.logDebug("render tag  here: " + renderTag);
+//                        NuminaLogger.logDebug("render tag  here: " + renderTag);
 
 
                         int[] colors = renderTag.getIntArray(NuminaConstants.COLORS);
@@ -161,7 +161,8 @@ public class NuminaArmorLayer<T extends LivingEntity, M extends HumanoidModel<T>
                                     NuminaLogger.logDebug("partSpec: " + partSpec);
                                 }
                             } else {
-                                NuminaLogger.logDebug("spec is null");
+                                // colorindex ends up here
+//                                NuminaLogger.logDebug("spec is null, tag: " + tag);
                             }
                         }
                     }

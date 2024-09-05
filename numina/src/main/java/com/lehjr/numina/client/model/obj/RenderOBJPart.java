@@ -151,19 +151,12 @@ public class RenderOBJPart extends ModelPart {
         Matrix4f matrix4f = pose.pose();
 //        Vector3f normal = pose.normal().transform(new Vector3f((float)faceNormal.getX(), (float)faceNormal.getY(), (float)faceNormal.getZ()));
         Vector3f normal = pose.transformNormal((float)faceNormal.getX(), (float)faceNormal.getY(), (float)faceNormal.getZ(), new Vector3f());
-        // atlasLocation: minecraft:textures/atlas/blocks.png
-        NuminaLogger.logDebug("atlasLocation: " + bakedQuad.getSprite().atlasLocation() +", spriteContents: " + bakedQuad.getSprite().contents());
-
-
         float scale = 0.0625F;
 
         int intSize = DefaultVertexFormat.BLOCK.getVertexSize();
 //        int intSize = DefaultVertexFormat.POSITION_COLOR_TEX_LIGHTMAP.getIntegerSize();
 //        int vertexCount = vertices.length / intSize;
         int vertexCount = (int) (vertices.length * 0.125);
-
-        NuminaLogger.logDebug("int size: " + intSize +", vertexCount: " + vertexCount);
-
         try (MemoryStack memorystack = MemoryStack.stackPush()) {
             ByteBuffer bytebuffer = memorystack.malloc(DefaultVertexFormat.BLOCK.getVertexSize());
             IntBuffer intbuffer = bytebuffer.asIntBuffer();

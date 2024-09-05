@@ -6,6 +6,7 @@ import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.platform.Lighting;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.BufferBuilder;
+import com.mojang.blaze3d.vertex.BufferUploader;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexFormat;
@@ -115,6 +116,8 @@ public class ClickableIndicatorArrow extends Clickable {
                         .setLight(0x00F000F0);
             }
         }
+        BufferUploader.drawWithShader(buffer.buildOrThrow());
+
         RenderSystem.disableBlend();
 //        RenderSystem.enableTexture();
 //        RenderSystem.setShader(() -> oldShader);

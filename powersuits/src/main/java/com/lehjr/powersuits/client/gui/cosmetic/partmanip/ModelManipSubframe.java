@@ -32,6 +32,7 @@ import com.lehjr.numina.client.gui.frame.AbstractGuiFrame;
 import com.lehjr.numina.client.gui.frame.ModularItemSelectionFrame;
 import com.lehjr.numina.client.gui.geometry.MusePoint2D;
 import com.lehjr.numina.client.gui.geometry.Rect;
+import com.lehjr.numina.common.base.NuminaLogger;
 import com.lehjr.numina.common.capabilities.render.modelspec.IModelSpec;
 import com.lehjr.numina.common.capabilities.render.modelspec.NuminaModelSpecRegistry;
 import com.lehjr.numina.common.capabilities.render.modelspec.PartSpecBase;
@@ -52,6 +53,7 @@ import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.EquipmentSlot;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
@@ -68,7 +70,7 @@ public class ModelManipSubframe extends AbstractGuiFrame {
     public SpecBase model;
     public ColorPickerFrame colorframe;
     public ModularItemSelectionFrame itemSelector;
-    public List<PartManipSubFrame> parts;
+    public List<PartManipSubFrame> partFrames;
     public boolean open;
     Minecraft minecraft;
     float zLevel;
@@ -76,13 +78,13 @@ public class ModelManipSubframe extends AbstractGuiFrame {
     final double iconWidth = 8;
 
     public ModelManipSubframe(SpecBase model,
-                              double left,
-                              double top,
-                              double right,
-                              double bottom,
-                              ColorPickerFrame colorframe,
-                              ModularItemSelectionFrame itemSelector,
-                              float zLevel) {
+        double left,
+        double top,
+        double right,
+        double bottom,
+        ColorPickerFrame colorframe,
+        ModularItemSelectionFrame itemSelector,
+        float zLevel) {
         super(new Rect(left, top, right, bottom));
         this.model = model;
         this.colorframe = colorframe;
@@ -95,8 +97,8 @@ public class ModelManipSubframe extends AbstractGuiFrame {
         this.refreshPartSpecs(true);
     }
 
-    public List<PartManipSubFrame> getParts() {
-        return parts;
+    public List<PartManipSubFrame> getPartFrames() {
+        return partFrames;
     }
 
     public IModelSpec getRenderCapability() {
@@ -105,8 +107,8 @@ public class ModelManipSubframe extends AbstractGuiFrame {
 
     @Override
     public double bottom() {
-        if (parts != null && !parts.isEmpty() && open) {
-            return parts.get(parts.size()-1).bottom();
+        if (partFrames != null && !partFrames.isEmpty() && open) {
+            return partFrames.get(partFrames.size()-1).bottom();
         }
         return super.bottom();
     }
@@ -120,19 +122,20 @@ public class ModelManipSubframe extends AbstractGuiFrame {
      * @return
      */
     public void refreshPartSpecs(boolean startClean) {
-        this.parts = new ArrayList<>();
+        this.partFrames = new ArrayList<>();
         LocalPlayer player = minecraft.player;
         IModelSpec iModelSpecNBT = getRenderCapability();
 
         if(iModelSpecNBT != null) {
             CompoundTag renderTag = iModelSpecNBT.getRenderTag();
-            if (startClean || parts.isEmpty()) {
+            if (startClean || partFrames.isEmpty()) {
+                // this ensures the ItemStack is actually equipped and not just being held (like armor in hand vs a tool)
                 EquipmentSlot slot = ItemUtils.getEquipmentSlotForItem(iModelSpecNBT.getItemStack());
                 if (slot.getType() == EquipmentSlot.Type.HUMANOID_ARMOR) {
                     model.getPartSpecs().forEach(partSpecBase -> {
                         if (partSpecBase.hasArmorEquipmentSlot(slot)) {
                             String tagName = NuminaModelSpecRegistry.getInstance().makeName(partSpecBase);
-                            parts.add(createNewFrame(partSpecBase, renderTag.getCompound(tagName)));
+                            partFrames.add(createNewFrame(partSpecBase, renderTag.getCompound(tagName)));
                         }
                     });
                 } else {
@@ -140,14 +143,14 @@ public class ModelManipSubframe extends AbstractGuiFrame {
                         SpecBinding binding = partSpecBase.getBinding();
                         if (binding.getTarget().handMatches(player, slot)) {
                             String tagName = NuminaModelSpecRegistry.getInstance().makeName(partSpecBase);
-//                            NuminaLogger.logDebug("PowerFist tagName: \"" + tagName +"\": ");
+                            //                            NuminaLogger.logDebug("PowerFist tagName: \"" + tagName +"\": ");
 
-                            parts.add(createNewFrame(partSpecBase, renderTag.getCompound(tagName)));
+                            partFrames.add(createNewFrame(partSpecBase, renderTag.getCompound(tagName)));
                         }
                     });
                 }
 
-                parts.forEach(spec -> {
+                partFrames.forEach(spec -> {
                     spec.setEnabled(this.open);
                     spec.setVisible(this.open);
                     spec.setTop(this.top() + specHeight);
@@ -161,10 +164,10 @@ public class ModelManipSubframe extends AbstractGuiFrame {
             }
         }
 
-        if (!parts.isEmpty()) {
+        if (!partFrames.isEmpty()) {
             if (this.open) {
                 // name line plus all spec lines
-                this.setHeight(specHeight + specHeight * parts.size());
+                this.setHeight(specHeight + specHeight * partFrames.size());
             } else {
                 // name line only
                 this.setHeight(specHeight);
@@ -181,15 +184,15 @@ public class ModelManipSubframe extends AbstractGuiFrame {
      */
     public PartManipSubFrame createNewFrame(PartSpecBase partSpec, CompoundTag tagdata) {
         PartManipSubFrame newFrame = new PartManipSubFrame(
-                partSpec,
-                this.left(),
-                this.top() + specHeight,
-                this.width(),
-                specHeight,
-                tagdata);
+            partSpec,
+            this.left(),
+            this.top() + specHeight,
+            this.width(),
+            specHeight,
+            tagdata);
 
-        if (parts.size() > 0) {
-            newFrame.setBelow(parts.get(parts.size() -1));
+        if (partFrames.size() > 0) {
+            newFrame.setBelow(partFrames.get(partFrames.size() -1));
         }
         return newFrame;
     }
@@ -199,7 +202,7 @@ public class ModelManipSubframe extends AbstractGuiFrame {
      * @param index
      */
     public void decrAbove(int index) {
-        for (PartManipSubFrame subFrame : parts) {
+        for (PartManipSubFrame subFrame : partFrames) {
             subFrame.decrAbove(index);
         }
     }
@@ -209,18 +212,14 @@ public class ModelManipSubframe extends AbstractGuiFrame {
      * @param partSpec
      * @return
      */
-    @Nullable
+    @Nonnull
     public CompoundTag getSpecTagOrEmpty(PartSpecBase partSpec) {
         IModelSpec iModelSpecNBT = getRenderCapability();
         if(iModelSpecNBT != null) {
-            CompoundTag specTag = new CompoundTag();
             CompoundTag renderTag = iModelSpecNBT.getRenderTag();
-            if (renderTag != null) {
-                String name = NuminaModelSpecRegistry.getInstance().makeName(partSpec);
-                specTag = renderTag.contains(name) ? renderTag.getCompound(name) : new CompoundTag();
-//                NuminaLogger.logDebug("spec: " + specTag);
-            }
-            return specTag;
+            String name = NuminaModelSpecRegistry.getInstance().makeName(partSpec);
+            return renderTag.contains(name) ? renderTag.getCompound(name) : new CompoundTag();
+            //                NuminaLogger.logDebug("spec: " + specTag);
         }
         return new CompoundTag(); // this only returns empty
     }
@@ -231,26 +230,24 @@ public class ModelManipSubframe extends AbstractGuiFrame {
      * @return
      */
     public CompoundTag getOrMakeSpecTag(PartSpecBase partSpec) {
-        String name;
         CompoundTag nbt = getSpecTagOrEmpty(partSpec);
-//        NuminaLogger.logDebug("specTag: " + nbt);
+        //        NuminaLogger.logDebug("specTag: " + nbt);
         if (nbt.isEmpty()) {
-            name = NuminaModelSpecRegistry.getInstance().makeName(partSpec);
+            String name = NuminaModelSpecRegistry.getInstance().makeName(partSpec);
             partSpec.multiSet(nbt, null, null);
-//            NuminaLogger.logDebug("name here: " + name);
+            //            NuminaLogger.logDebug("name here: " + name);
             // update the render tag client side. The server side update is called below.
             IModelSpec specNBT = getRenderCapability();
             if (specNBT != null) {
                 CompoundTag renderTag  = specNBT.getRenderTag().copy();
-//                    NuminaLogger.logDebug("render tag: " + renderTag);
-                if (renderTag != null && !renderTag.isEmpty()) {
+                //                    NuminaLogger.logDebug("render tag: " + renderTag);
+                if (!renderTag.isEmpty()) {
                     renderTag.put(name, nbt);
                 }
-
             }
         }
 
-//        NuminaLogger.logDebug("returning tag: " + nbt);
+        //        NuminaLogger.logDebug("returning tag: " + nbt);
 
         return nbt;
     }
@@ -263,13 +260,13 @@ public class ModelManipSubframe extends AbstractGuiFrame {
      */
     @Override
     public void render(GuiGraphics gfx, int mouseX, int mouseY, float partialTick) {
-        if (!parts.isEmpty()) {
+        if (!partFrames.isEmpty()) {
             StringUtils.drawShadowedString(gfx, model.getDisaplayName(), left() + iconWidth, top() + StringUtils.getStringHeight() - iconWidth);
             openCloseButton.setPosition(new MusePoint2D(this.left() + 2, this.top() + iconWidth * 0.5));
             openCloseButton.setDirection(open? ClickableIndicatorArrow.ArrowDirection.DOWN : ClickableIndicatorArrow.ArrowDirection.RIGHT);
             openCloseButton.render(gfx, mouseX, mouseY, partialTick);
             if (open) {
-                for (PartManipSubFrame partFrame : parts) {
+                for (PartManipSubFrame partFrame : partFrames) {
                     partFrame.render(gfx, mouseX, mouseY, partialTick);
                 }
             }
@@ -299,7 +296,7 @@ public class ModelManipSubframe extends AbstractGuiFrame {
             return true;
         }
 
-        for (PartManipSubFrame partFrame: parts) {
+        for (PartManipSubFrame partFrame: partFrames) {
             if (partFrame.mouseClicked(x, y, button)) {
                 return true;
             }
@@ -359,8 +356,8 @@ public class ModelManipSubframe extends AbstractGuiFrame {
                 tagdata = getOrMakeSpecTag(partSpec);
                 partSpec.setGlow(tagdata, true);
                 itemSelector.selectedType().ifPresent(slotType -> {
-                            NuminaPackets.sendToServer(new CosmeticInfoPacketServerBound(slotType, tagname, tagdata));
-                        }
+                        NuminaPackets.sendToServer(new CosmeticInfoPacketServerBound(slotType, tagname, tagdata));
+                    }
                 );
             });
             glow.setEnabled(true);
@@ -405,6 +402,8 @@ public class ModelManipSubframe extends AbstractGuiFrame {
                     }
 
                     itemSelector.selectedType().ifPresent(slotType -> {
+                        NuminaLogger.logDebug("itemSelecter decAbove");
+
                         NuminaPackets.sendToServer(new CosmeticInfoPacketServerBound(slotType, tagname, tagdata));
                     });
                 }
@@ -417,6 +416,8 @@ public class ModelManipSubframe extends AbstractGuiFrame {
                 int index  = colorButtons.indexOf(colorRadioButton);
                 partSpec.setColorIndex(tagdata, index);
                 itemSelector.selectedType().ifPresent(slotType -> {
+                    NuminaLogger.logDebug("color button tagName: " + tagname +", tagData " + tagdata);
+
                     NuminaPackets.sendToServer(new CosmeticInfoPacketServerBound(slotType, tagname, tagdata));
                 });
             });
@@ -481,13 +482,13 @@ public class ModelManipSubframe extends AbstractGuiFrame {
 
                 if (!colorButtons.isEmpty()) {
                     StringUtils.drawText(gfx, partSpec.getDisaplayName(),
-                            colorButtons.get(colorButtons.size() - 1).right() + 4,
-                            top() + StringUtils.getStringHeight() - iconWidth,
-                            Color.WHITE);
+                        colorButtons.get(colorButtons.size() - 1).right() + 4,
+                        top() + StringUtils.getStringHeight() - iconWidth,
+                        Color.WHITE);
                 } else {
                     StringUtils.drawShadowedString(gfx, partSpec.getDisaplayName(),
-                            buttons.get(buttons.size() - 1).right() + 4,
-                            top() + StringUtils.getStringHeight() - iconWidth);
+                        buttons.get(buttons.size() - 1).right() + 4,
+                        top() + StringUtils.getStringHeight() - iconWidth);
                 }
             }
         }

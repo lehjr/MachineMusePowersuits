@@ -136,7 +136,8 @@ public class ColorPickerFrame extends ScrollableFrame {
     }
 
     public int[] colors() {
-        return (getOrCreateColorTag() != null) ? getOrCreateColorTag().getAsIntArray() : new int[0];
+        IntArrayTag colorTag = getOrCreateColorTag();
+        return (colorTag != null) ? colorTag.getAsIntArray() : new int[0];
     }
 
     public IntArrayTag getOrCreateColorTag() {
@@ -167,10 +168,14 @@ public class ColorPickerFrame extends ScrollableFrame {
     public IntArrayTag setColorTagMaybe(List<Integer> intList) {
         IModelSpec spec = this.itemSelector.getModularItemOrEmpty().getCapability(NuminaCapabilities.RENDER);
         if(spec != null) {
-            CompoundTag renderSpec = spec.getRenderTag();
-            renderSpec.put(NuminaConstants.COLORS, new IntArrayTag(intList));
-            this.itemSelector.selectedType().ifPresent(slotType -> NuminaPackets.sendToServer(new ColorInfoPacketServerBound(slotType, this.colors())));
-            return (IntArrayTag) renderSpec.get(NuminaConstants.COLORS);
+            CompoundTag renderTag = spec.getRenderTag();
+            int[] array = new int[intList.size()];
+            for(int i =0; i < intList.size(); i++) {
+                array[i] = intList.get(i);
+            }
+            this.itemSelector.selectedType().ifPresent(slotType -> NuminaPackets.sendToServer(new ColorInfoPacketServerBound(slotType, array)));
+            renderTag.put(NuminaConstants.COLORS, new IntArrayTag(intList));
+            return (IntArrayTag) renderTag.get(NuminaConstants.COLORS);
         }
         return new IntArrayTag(new int[]{-1});
     }

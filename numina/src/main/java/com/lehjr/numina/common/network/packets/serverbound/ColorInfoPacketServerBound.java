@@ -2,12 +2,15 @@ package com.lehjr.numina.common.network.packets.serverbound;
 
 import com.lehjr.numina.common.capabilities.render.modelspec.IModelSpec;
 import com.lehjr.numina.common.constants.NuminaConstants;
+import com.lehjr.numina.common.network.NuminaPackets;
+import com.lehjr.numina.common.network.packets.clientbound.ColorInfoPacketClientBound;
 import com.lehjr.numina.common.registration.NuminaCapabilities;
 import com.lehjr.numina.common.utils.ItemUtils;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -36,9 +39,9 @@ public record ColorInfoPacketServerBound(EquipmentSlot slotType, int[] tagData) 
         packetBuffer.writeVarIntArray(tagData);
     }
 
-//    public static void sendToClient(ServerPlayer entity, EquipmentSlot slotType, int[] tagData) {
-//        NuminaPackets.sendToPlayer(new ColorInfoPacketClientBound(slotType, tagData), entity);
-//    }
+    public static void sendToClient(ServerPlayer entity, EquipmentSlot slotType, int[] tagData) {
+        NuminaPackets.sendToPlayer(new ColorInfoPacketClientBound(slotType, tagData), entity);
+    }
 
     public static void handle(ColorInfoPacketServerBound data, IPayloadContext ctx) {
         ctx.enqueueWork(() -> {
@@ -49,7 +52,7 @@ public record ColorInfoPacketServerBound(EquipmentSlot slotType, int[] tagData) 
                 player.setItemSlot(data.slotType, newStack);
             }
 //                player.containerMenu.broadcastChanges();
-//                sendToClient((ServerPlayer) player, data.slotType, data.tagData); // this seems faster than letting changes propagate through player.containerMenu mechanics
+                sendToClient((ServerPlayer) player, data.slotType, data.tagData); // this seems faster than letting changes propagate through player.containerMenu mechanics
         });
     }
 }
