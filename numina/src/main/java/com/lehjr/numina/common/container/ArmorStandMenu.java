@@ -1,10 +1,7 @@
 package com.lehjr.numina.common.container;
 
-import com.lehjr.numina.client.gui.slot.IconSlot;
-import com.lehjr.numina.common.math.Color;
 import com.lehjr.numina.common.registration.NuminaMenus;
 import com.lehjr.numina.common.utils.IconUtils;
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.resources.ResourceLocation;

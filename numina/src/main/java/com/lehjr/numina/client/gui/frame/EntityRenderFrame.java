@@ -2,20 +2,11 @@ package com.lehjr.numina.client.gui.frame;
 
 import com.lehjr.numina.client.gui.geometry.IDrawable;
 import com.lehjr.numina.client.gui.geometry.Rect;
-import com.lehjr.numina.common.base.NuminaLogger;
 import com.lehjr.numina.common.utils.MathUtils;
-import com.mojang.blaze3d.platform.Lighting;
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Axis;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
-import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.LivingEntity;
-import org.joml.Quaternionf;
 
 import java.util.List;
 

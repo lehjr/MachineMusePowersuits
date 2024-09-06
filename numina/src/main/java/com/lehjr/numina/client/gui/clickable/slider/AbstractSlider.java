@@ -6,8 +6,6 @@ import com.lehjr.numina.common.base.NuminaLogger;
 import com.lehjr.numina.common.math.Color;
 import com.lehjr.numina.common.utils.MathUtils;
 import net.minecraft.client.gui.GuiGraphics;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 
 import java.util.ArrayList;
 import java.util.List;

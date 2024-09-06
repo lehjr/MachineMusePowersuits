@@ -1,14 +1,13 @@
 package com.lehjr.powersuits.client.gui.module.tweak;
 
-import com.lehjr.numina.client.gui.clickable.slider.TinkerDoubleSlider;
-import com.lehjr.numina.client.gui.clickable.slider.VanillaFrameScrollBar;
-import com.lehjr.numina.client.gui.clickable.slider.TinkerIntSlider;
 import com.lehjr.numina.client.gui.clickable.slider.AbstractTinkerSlider;
+import com.lehjr.numina.client.gui.clickable.slider.TinkerDoubleSlider;
+import com.lehjr.numina.client.gui.clickable.slider.TinkerIntSlider;
+import com.lehjr.numina.client.gui.clickable.slider.VanillaFrameScrollBar;
 import com.lehjr.numina.client.gui.frame.ModularItemSelectionFrame;
 import com.lehjr.numina.client.gui.frame.ScrollableFrame;
 import com.lehjr.numina.client.gui.geometry.MusePoint2D;
 import com.lehjr.numina.client.gui.geometry.Rect;
-import com.lehjr.numina.common.base.NuminaLogger;
 import com.lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
 import com.lehjr.numina.common.capabilities.module.powermodule.UnitMap;
 import com.lehjr.numina.common.constants.NuminaConstants;

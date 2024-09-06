@@ -1,7 +1,6 @@
 package com.lehjr.numina.client.gui.clickable;
 
 import com.lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
-import com.lehjr.numina.common.math.Color;
 import com.lehjr.numina.common.registration.NuminaCapabilities;
 import com.lehjr.numina.common.utils.IconUtils;
 import com.lehjr.numina.common.utils.ItemUtils;

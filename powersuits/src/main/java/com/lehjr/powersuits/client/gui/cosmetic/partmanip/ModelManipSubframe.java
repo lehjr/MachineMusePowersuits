@@ -54,7 +54,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.EquipmentSlot;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -370,8 +369,8 @@ public class ModelManipSubframe extends AbstractGuiFrame {
             spacerRect = new Rect(MusePoint2D.ZERO, new MusePoint2D(4, height)).setRightOf(glow);
             //----------------------------
 
-            for (int i=0; i < colorframe.colors().length; i++) {
-                Color color = new Color(colorframe.colors()[i]);
+            for (int i=0; i < colorframe.colors.size(); i++) {
+                Color color = new Color(colorframe.colors.get(i));
                 ColorRadioButton colorRadioButton = makeColorButton(color);
                 colorButtons.add(colorRadioButton);
             }
@@ -390,14 +389,14 @@ public class ModelManipSubframe extends AbstractGuiFrame {
                     int newIndex = oldindex -1;
                     partSpec.setColorIndex(tagdata, newIndex);
                     // remove extra buttons
-                    while (colorButtons.size() > colorframe.colors().length) {
+                    while (colorButtons.size() > colorframe.colors.size()) {
                         colorButtons.remove(colorButtons.size() -1);
                     }
 
                     // button arrayList is quite fluid so avoid index out of bounds
-                    for(int i =0; i < Math.min(colorButtons.size(), colorframe.colors().length); i++) {
+                    for(int i =0; i < Math.min(colorButtons.size(), colorframe.colors.size()); i++) {
                         ColorRadioButton button = colorButtons.get(i);
-                        button.setColor(new Color(colorframe.colors()[i]));
+                        button.setColor(new Color(colorframe.colors.get(i)));
                         button.isSelected = i == newIndex;
                     }
 
@@ -460,20 +459,20 @@ public class ModelManipSubframe extends AbstractGuiFrame {
                 spacerRect.setPosition(pos);
 
                 // remove extra buttons
-                while (colorButtons.size() > colorframe.colors().length) {
+                while (colorButtons.size() > colorframe.colors.size()) {
                     colorButtons.remove(colorButtons.size() -1);
                 }
 
                 // add missing buttons
-                while (colorButtons.size() < colorframe.colors().length) {
-                    Color color = new Color(colorframe.colors()[colorButtons.size()]); // button not added yet
+                while (colorButtons.size() < colorframe.colors.size()) {
+                    Color color = new Color(colorframe.colors.get(colorButtons.size())); // button not added yet
                     colorButtons.add(makeColorButton(color));
                 }
 
-                for(int i =0; i < Math.min(colorButtons.size(), colorframe.colors().length); i++) {
+                for(int i =0; i < Math.min(colorButtons.size(), colorframe.colors.size()); i++) {
                     ColorRadioButton button = colorButtons.get(i);
                     button.setPosition(pos);
-                    button.setColor(new Color(colorframe.colors()[i]));
+                    button.setColor(new Color(colorframe.colors.get(i)));
                     button.isSelected = i == partSpec.getColorIndex(tagdata);
                     button.render(gfx, mouseX, mouseY, partialTick);
                 }

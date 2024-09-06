@@ -1,6 +1,5 @@
 package com.lehjr.numina.common.capabilities.inventory.modularitem;
 
-import com.lehjr.numina.common.base.Numina;
 import com.lehjr.numina.common.base.NuminaLogger;
 import com.lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
 import com.lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;

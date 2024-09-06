@@ -109,8 +109,8 @@ public class ModelManipFrame extends ScrollableFrame {
     public int getColor() {
         if (getItem().isEmpty()) {
             return Color.WHITE.getARGBInt();
-        } else if (colorSelect.selectedColor < colorSelect.colors().length && colorSelect.selectedColor >= 0) {
-            return colorSelect.colors()[colorSelect.selectedColor];
+        } else if (colorSelect.selectedColor < colorSelect.colors.size() && colorSelect.selectedColor >= 0) {
+            return colorSelect.colors.get(colorSelect.selectedColor);
         }
         return Color.WHITE.getARGBInt();
     }

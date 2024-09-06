@@ -27,7 +27,6 @@
 package com.lehjr.numina.client.model.obj;
 
 import com.google.common.collect.ImmutableList;
-import com.lehjr.numina.common.base.NuminaLogger;
 import com.lehjr.numina.common.capabilities.render.modelspec.ObjPartSpec;
 import com.lehjr.numina.common.math.Color;
 import com.lehjr.numina.common.utils.MathUtils;

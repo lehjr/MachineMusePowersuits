@@ -28,7 +28,6 @@ package com.lehjr.numina.common.capabilities.render.modelspec;
 
 import com.lehjr.numina.common.base.NuminaLogger;
 import com.lehjr.numina.common.constants.NuminaConstants;
-import com.lehjr.numina.common.utils.ItemUtils;
 import com.lehjr.numina.common.utils.TagUtils;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;

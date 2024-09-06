@@ -3,6 +3,7 @@ package com.lehjr.powersuits.common.item.electric.armor;
 import com.lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
 import com.lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
 import com.lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
+import com.lehjr.numina.common.constants.NuminaConstants;
 import com.lehjr.numina.common.registration.NuminaCapabilities;
 import com.lehjr.numina.common.utils.AdditionalInfo;
 import com.lehjr.numina.common.utils.ElectricItemUtils;
@@ -13,13 +14,16 @@ import com.mojang.datafixers.util.Pair;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ArmorItem;
+import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -34,12 +38,6 @@ import java.util.List;
 import java.util.function.Consumer;
 
 public class AbstractElectricArmor extends ArmorItem {
-//    public static final UUID[] ARMOR_MODIFIERS = new UUID[]{
-//            UUID.randomUUID(),
-//            UUID.randomUUID(),
-//            UUID.randomUUID(),
-//            UUID.randomUUID()};
-
     public AbstractElectricArmor(Type pType) {
         super(MPSArmorMaterial.NOTHING, pType, new Properties().setNoRepair());
     }
@@ -54,7 +52,10 @@ public class AbstractElectricArmor extends ArmorItem {
 //        return super.getArmorTexture(stack, entity, slot, layer, innerModel);
 //    }
 
-
+    @Override
+    public @Nullable ResourceLocation getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, ArmorMaterial.Layer layer, boolean innerModel) {
+        return NuminaConstants.BLANK_ARMOR_MODEL_PATH;
+    }
 
     @Override
     public ItemAttributeModifiers getDefaultAttributeModifiers(ItemStack stack) {
