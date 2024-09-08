@@ -1,11 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_component_wiring_gold": {
+    "has_powerfist2": {
       "conditions": {
         "items": [
           {
-            "items": "numina:component_wiring_gold"
+            "items": "powersuits:powerfist2"
           }
         ]
       },
@@ -21,7 +21,7 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_component_wiring_gold"
+      "has_powerfist2"
     ]
   ],
   "rewards": {

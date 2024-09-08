@@ -1,5 +1,5 @@
 {
-  "type": "minecraft:crafting_shaped",
+  "type": "numina:crafting_modular_item",
   "category": "equipment",
   "key": {
     "C": {
@@ -10,11 +10,14 @@
     },
     "W": {
       "item": "numina:component_wiring_gold"
+    },
+    "X": {
+      "item": "powersuits:powerarmor_torso2"
     }
   },
   "pattern": [
     "ICI",
-    "WIW",
+    "WXW",
     "III"
   ],
   "result": {

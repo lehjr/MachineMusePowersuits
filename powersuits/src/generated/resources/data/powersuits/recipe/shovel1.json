@@ -12,7 +12,7 @@
       "tag": "c:strings"
     },
     "X": {
-      "item": "minecraft:stick"
+      "item": "numina:component_solenoid"
     }
   },
   "pattern": [

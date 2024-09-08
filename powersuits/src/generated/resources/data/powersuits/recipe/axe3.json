@@ -5,7 +5,7 @@
     "C": {
       "item": "numina:component_control_circuit_3"
     },
-    "D": {
+    "I": {
       "tag": "c:gems/diamond"
     },
     "S": {
@@ -13,12 +13,15 @@
     },
     "W": {
       "item": "numina:component_wiring_gold"
+    },
+    "X": {
+      "item": "powersuits:axe2"
     }
   },
   "pattern": [
-    "DDW",
-    "DCW",
-    " S "
+    "IIW",
+    "ICW",
+    "SXS"
   ],
   "result": {
     "count": 1,

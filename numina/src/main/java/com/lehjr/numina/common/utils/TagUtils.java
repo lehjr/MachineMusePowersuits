@@ -18,6 +18,7 @@ import javax.annotation.Nullable;
 import java.util.Optional;
 
 public class TagUtils {
+    @Nonnull
     static CompoundTag getTag(ItemStack stack, DataComponentType<CompoundTag> dataComponent, String tagKey) {
         if (stack.isEmpty()) {
             return new CompoundTag();

@@ -5,7 +5,7 @@
     "C": {
       "item": "numina:component_control_circuit_4"
     },
-    "N": {
+    "I": {
       "tag": "c:ingots/netherite"
     },
     "S": {
@@ -13,12 +13,15 @@
     },
     "W": {
       "item": "numina:component_wiring_gold"
+    },
+    "X": {
+      "item": "powersuits:shovel3"
     }
   },
   "pattern": [
-    " N ",
+    " I ",
     "WCW",
-    " S "
+    "SXS"
   ],
   "result": {
     "count": 1,

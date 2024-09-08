@@ -42,7 +42,10 @@ public class AbstractElectricArmor extends ArmorItem {
         super(MPSArmorMaterial.NOTHING, pType, new Properties().setNoRepair());
     }
 
-
+    @Override
+    public boolean isDamageable(ItemStack stack) {
+        return false;
+    }
 //    protected void addReachModifier(Map<Attribute, AttributeModifier> attributeModifiers, double reach) {
 //        attributeModifiers.put((Attribute) Attributes.ENTITY_INTERACTION_RANGE, new AttributeModifier(ATTACK_REACH_MODIFIER, "Weapon modifier", reach, AttributeModifier.Operation.ADD_VALUE));
 //    }

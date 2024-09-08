@@ -1,5 +1,5 @@
 {
-  "type": "minecraft:crafting_shaped",
+  "type": "numina:crafting_modular_item",
   "category": "equipment",
   "key": {
     "C": {
@@ -10,11 +10,14 @@
     },
     "W": {
       "item": "numina:component_wiring_copper"
+    },
+    "X": {
+      "item": "powersuits:powerarmor_feet1"
     }
   },
   "pattern": [
     "ICI",
-    "W W"
+    "WXW"
   ],
   "result": {
     "count": 1,

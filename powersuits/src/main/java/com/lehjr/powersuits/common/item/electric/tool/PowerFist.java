@@ -33,6 +33,11 @@ public class PowerFist extends AbstractElectricTool {
         super(new SimpleTier(BlockTags.BUTTONS, 0,0,0, 0, () -> Ingredient.of(Items.AIR)), BlockTags.BUTTONS, new Properties().setNoRepair().stacksTo(1));
     }
 
+    @Override
+    public boolean isDamageable(ItemStack stack) {
+        return false;
+    }
+
     /**
      * Note ItemStack returned in the InteractionResultHolder becomes the held item
      * @param level

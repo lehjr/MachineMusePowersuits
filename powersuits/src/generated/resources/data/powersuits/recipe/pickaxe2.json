@@ -13,12 +13,15 @@
     },
     "W": {
       "item": "numina:component_wiring_copper"
+    },
+    "X": {
+      "item": "powersuits:pickaxe1"
     }
   },
   "pattern": [
     "III",
     "WCW",
-    " S "
+    "SXS"
   ],
   "result": {
     "count": 1,

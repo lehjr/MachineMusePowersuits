@@ -1,11 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_component_wiring_copper": {
+    "has_powerarmor_feet1": {
       "conditions": {
         "items": [
           {
-            "items": "numina:component_wiring_copper"
+            "items": "powersuits:powerarmor_feet1"
           }
         ]
       },
@@ -21,7 +21,7 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_component_wiring_copper"
+      "has_powerarmor_feet1"
     ]
   ],
   "rewards": {

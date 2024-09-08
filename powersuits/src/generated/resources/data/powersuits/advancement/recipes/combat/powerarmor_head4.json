@@ -1,11 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_component_wiring_gold": {
+    "has_powerarmor_head3": {
       "conditions": {
         "items": [
           {
-            "items": "numina:component_wiring_gold"
+            "items": "powersuits:powerarmor_head3"
           }
         ]
       },
@@ -21,7 +21,7 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_component_wiring_gold"
+      "has_powerarmor_head3"
     ]
   ],
   "rewards": {

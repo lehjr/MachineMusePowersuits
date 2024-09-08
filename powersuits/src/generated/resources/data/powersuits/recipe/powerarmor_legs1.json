@@ -9,7 +9,7 @@
       "tag": "c:ingots/iron"
     },
     "W": {
-      "item": "minecraft:string"
+      "item": "numina:component_wiring_copper"
     }
   },
   "pattern": [

@@ -5,7 +5,7 @@
     "C": {
       "item": "numina:component_control_circuit_3"
     },
-    "D": {
+    "I": {
       "tag": "c:gems/diamond"
     },
     "S": {
@@ -13,15 +13,18 @@
     },
     "W": {
       "item": "numina:component_wiring_gold"
+    },
+    "X": {
+      "item": "powersuits:pickaxe2"
     }
   },
   "pattern": [
-    "DDD",
+    "III",
     "WCW",
-    " S "
+    "SXS"
   ],
   "result": {
     "count": 1,
-    "id": "powersuits:pickaxe3"
+    "id": "powersuits:pickaxe3.json"
   }
 }

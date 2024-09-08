@@ -13,12 +13,15 @@
     },
     "W": {
       "item": "numina:component_wiring_copper"
+    },
+    "X": {
+      "item": "powersuits:axe1"
     }
   },
   "pattern": [
     "IIW",
     "ICW",
-    " S "
+    "SXS"
   ],
   "result": {
     "count": 1,

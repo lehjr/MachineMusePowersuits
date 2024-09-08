@@ -385,7 +385,7 @@ public class MPSConstants {
     // Pickaxe
     public static final ResourceLocation STONE_PICKAXE_MODULE = getRegName("pickaxe1");
     public static final ResourceLocation IRON_PICKAXE_MODULE = getRegName("pickaxe2");
-    public static final ResourceLocation DIAMOND_PICKAXE_MODULE = getRegName("pickaxe3");
+    public static final ResourceLocation DIAMOND_PICKAXE_MODULE = getRegName("pickaxe3.json");
     public static final ResourceLocation NETHERITE_PICKAXE_MODULE = getRegName("pickaxe4");
     // Shovel
     public static final ResourceLocation STONE_SHOVEL_MODULE = getRegName("shovel1");

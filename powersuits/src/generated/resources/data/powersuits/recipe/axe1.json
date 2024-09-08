@@ -5,19 +5,19 @@
     "C": {
       "item": "numina:component_control_circuit_1"
     },
-    "S": {
+    "I": {
       "tag": "c:cobblestones"
     },
     "W": {
       "tag": "c:strings"
     },
     "X": {
-      "item": "minecraft:stick"
+      "item": "numina:component_solenoid"
     }
   },
   "pattern": [
-    "SSW",
-    "SCW",
+    "IIW",
+    "ICW",
     " X "
   ],
   "result": {

@@ -16,7 +16,7 @@ public interface IModelSpec {
     @Nonnull
     default NonNullList<SpecBase> getSpecList() {
         CompoundTag renderTag = getRenderTag();
-        if (renderTag == null || renderTag.isEmpty()) {
+        if (renderTag.isEmpty()) {
             renderTag = getDefaultRenderTag();
         }
         NonNullList<SpecBase> specs = NonNullList.create();
@@ -49,9 +49,8 @@ public interface IModelSpec {
      * @return
      */
     default CompoundTag getRenderTagOrDefault() {
-        CompoundTag renderTag;
-        renderTag = getRenderTag();
-        if (renderTag == null || renderTag.isEmpty()) {
+        CompoundTag renderTag = getRenderTag();
+        if (renderTag.isEmpty()) {
             renderTag = getDefaultRenderTag();
         }
         return renderTag;
