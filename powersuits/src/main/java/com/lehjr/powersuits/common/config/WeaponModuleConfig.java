@@ -97,7 +97,7 @@ public class WeaponModuleConfig {
     public static double railgunHeatEmissionVoltageMultiplier;
 
     @SubscribeEvent
-    static void onLoad(final ModConfigEvent event) {
+    public static void onLoad(final ModConfigEvent event) {
         if (event.getConfig().getSpec() == MPS_WEAPON_MODULE_SPEC) {
             // Blade Launcher
             bladeLauncherIsAllowed = BLADE_LAUNCHER_MODULE__IS_ALLOWED.get();

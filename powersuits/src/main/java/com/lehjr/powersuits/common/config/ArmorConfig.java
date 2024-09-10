@@ -150,7 +150,7 @@ public class ArmorConfig {
 
 
     @SubscribeEvent
-    static void onLoad(final ModConfigEvent event) {
+    public static void onLoad(final ModConfigEvent event) {
 
 //        ModConfig config = event.getConfig();
 //        //Make sure it is for the same modid as us

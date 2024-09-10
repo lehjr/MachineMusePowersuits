@@ -109,6 +109,8 @@ public class MPSConstants {
     // Generic
     public static final String OVERCLOCK = "overclock";
     public static final String RADIUS = "radius";
+    public static final String ENERGY_CONSUMPTION_RADIUS_MULTIPLIER = ENERGY_CONSUMPTION + "_" + RADIUS + "_" + MULTIPLIER;
+    public static final String RADIUS_MULTIPLIER = RADIUS + "_" + MULTIPLIER;
 
     // Lux Capacitor
     public static final String RED = "red";
@@ -385,15 +387,18 @@ public class MPSConstants {
     // Pickaxe
     public static final ResourceLocation STONE_PICKAXE_MODULE = getRegName("pickaxe1");
     public static final ResourceLocation IRON_PICKAXE_MODULE = getRegName("pickaxe2");
-    public static final ResourceLocation DIAMOND_PICKAXE_MODULE = getRegName("pickaxe3.json");
+    public static final ResourceLocation DIAMOND_PICKAXE_MODULE = getRegName("pickaxe3");
     public static final ResourceLocation NETHERITE_PICKAXE_MODULE = getRegName("pickaxe4");
     // Shovel
     public static final ResourceLocation STONE_SHOVEL_MODULE = getRegName("shovel1");
     public static final ResourceLocation IRON_SHOVEL_MODULE = getRegName("shovel2");
     public static final ResourceLocation DIAMOND_SHOVEL_MODULE = getRegName("shovel3");
     public static final ResourceLocation NETHERITE_SHOVEL_MODULE = getRegName("shovel4");
-
-    public static final ResourceLocation ROTOTILLER_MODULE = getRegName("hoe"); // Todo:  tiered for Nether stuff
+    // Rototiller
+    public static final ResourceLocation ROTOTILLER_MODULE_1 = getRegName("rototiller1");
+    public static final ResourceLocation ROTOTILLER_MODULE_2 = getRegName("rototiller2");
+    public static final ResourceLocation ROTOTILLER_MODULE_3 = getRegName("rototiller3");
+    public static final ResourceLocation ROTOTILLER_MODULE_4 = getRegName("rototiller4");
 
     public static final ResourceLocation SHEARS_MODULE = getRegName("shears");
     public static final ResourceLocation PORTABLE_WORKBENCH_MODULE = getRegName("portable_tinkertable");

@@ -17,6 +17,7 @@ import com.lehjr.powersuits.common.network.MPSPackets;
 import com.lehjr.powersuits.common.registration.MPSArmorMaterial;
 import com.lehjr.powersuits.common.registration.MPSBlocks;
 import com.lehjr.powersuits.common.registration.MPSCapabilities;
+import com.lehjr.powersuits.common.registration.MPSConfigurations;
 import com.lehjr.powersuits.common.registration.MPSEntities;
 import com.lehjr.powersuits.common.registration.MPSItems;
 import com.lehjr.powersuits.common.registration.MPSMenuTypes;
@@ -70,23 +71,10 @@ public class ModularPowersuits {
         // Register the item to a creative tab
 //        modEventBus.addListener(this::addCreative);
 
-        // Register our mod's ModConfigSpec so that FML can create and load the config file for us
-        modContainer.registerConfig(ModConfig.Type.CLIENT, MPSClientConfig.CLIENT_SPEC, ConfigHelper.setupConfigFile("powersuits-client-only.toml", MPSConstants.MOD_ID).getAbsolutePath());
-//        modContainer.registerConfig(ModConfig.Type.COMMON, MPSCommonConfig.COMMON_SPEC, ConfigHelper.setupConfigFile("powersuits-common.toml", MPSConstants.MOD_ID).getAbsolutePath());
-//        modContainer.registerConfig(ModConfig.Type.COMMON, MPSCommonSettings.COMMON_SPEC, ConfigHelper.setupConfigFile("powersuits-common.toml", MPSConstants.MOD_ID).getAbsolutePath());
+        // Register all the configuration files
+        MPSConfigurations.setup(modContainer);
 
-        // loads first so probably overrides the others
-        modContainer.registerConfig(ModConfig.Type.COMMON, MPSCommonConfig.MPS_GENERAL_SPEC, ConfigHelper.setupConfigFile("common/general.toml", MPSConstants.MOD_ID).getAbsolutePath());
 
-        modContainer.registerConfig(ModConfig.Type.COMMON, ArmorConfig.MPS_ARMOR_CONFIG_SPEC, ConfigHelper.setupConfigFile("common/items/armor.toml", MPSConstants.MOD_ID).getAbsolutePath());
-        modContainer.registerConfig(ModConfig.Type.COMMON, PowerFistConfig.MPS_POWER_FIST_CONFIG_SPEC, ConfigHelper.setupConfigFile("common/items/powerfist.toml", MPSConstants.MOD_ID).getAbsolutePath());
-        // Modules
-        modContainer.registerConfig(ModConfig.Type.COMMON, ArmorModuleConfig.MPS_ARMOR_MODULE_CONFIG_SPEC, ConfigHelper.setupConfigFile("common/items/modules/armor-modules.toml", MPSConstants.MOD_ID).getAbsolutePath());
-        modContainer.registerConfig(ModConfig.Type.COMMON, CosmeticModuleConfig.MPS_COSMETIC_MODULE_CONFIG_SPEC, ConfigHelper.setupConfigFile("common/items/modules/cosmetic-modules.toml", MPSConstants.MOD_ID).getAbsolutePath());
-
-        modContainer.registerConfig(ModConfig.Type.COMMON, ToolModuleConfig.MPS_TOOL_MODULE_SPEC, ConfigHelper.setupConfigFile("common/items/modules/tool-modules.toml", MPSConstants.MOD_ID).getAbsolutePath());
-        modContainer.registerConfig(ModConfig.Type.COMMON, VisionModuleConfig.MPS_VISION_MODULE_SPEC, ConfigHelper.setupConfigFile("common/items/modules/vision-modules.toml", MPSConstants.MOD_ID).getAbsolutePath());
-        modContainer.registerConfig(ModConfig.Type.COMMON, WeaponModuleConfig.MPS_WEAPON_MODULE_SPEC, ConfigHelper.setupConfigFile("common/items/modules/weapon-modules.toml", MPSConstants.MOD_ID).getAbsolutePath());
     }
 
 //    @SubscribeEvent

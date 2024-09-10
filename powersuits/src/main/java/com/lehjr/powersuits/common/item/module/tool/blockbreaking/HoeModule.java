@@ -1,10 +1,11 @@
-package com.lehjr.powersuits.common.item.module.tool.blockbreaking.farming;
+package com.lehjr.powersuits.common.item.module.tool.blockbreaking;
 
 import com.lehjr.numina.common.capabilities.module.blockbreaking.IBlockBreakingModule;
 import com.lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import com.lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
 import com.lehjr.numina.common.capabilities.module.rightclick.RightClickModule;
 import com.lehjr.numina.common.utils.ElectricItemUtils;
+import com.lehjr.powersuits.common.config.module.tool.blockbreaking.HoeModuleConfig;
 import com.lehjr.powersuits.common.constants.MPSConstants;
 import com.lehjr.powersuits.common.item.module.AbstractPowerModule;
 import com.mojang.datafixers.util.Pair;
@@ -30,19 +31,55 @@ import javax.annotation.Nonnull;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
-public class RototillerModule extends AbstractPowerModule {
+public class HoeModule extends AbstractPowerModule {
     //    protected static final Map<Block, BlockState> HOE_LOOKUP = Maps.newHashMap(ImmutableMap.of(Blocks.field_196658_i, Blocks.field_150458_ak.defaultBlockState(), Blocks.field_185774_da, Blocks.field_150458_ak.defaultBlockState(), Blocks.field_150346_d, Blocks.field_150458_ak.defaultBlockState(), Blocks.field_196660_k, Blocks.field_150346_d.defaultBlockState()));
     public static class RightClickie extends RightClickModule implements IBlockBreakingModule {
-        public RightClickie(@Nonnull ItemStack module) {
+        int tier;
+        public RightClickie(@Nonnull ItemStack module, int tier) {
             super(module, ModuleCategory.HOE, ModuleTarget.TOOLONLY);
+            this.tier = tier;
 
-                addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, 500, "FE");
-                addTradeoffProperty(MPSConstants.RADIUS, MPSConstants.ENERGY_CONSUMPTION, 9500);
-                addIntTradeoffProperty(MPSConstants.RADIUS, MPSConstants.RADIUS,8,  "m", 1, 0);
+            switch (tier) {
+            case 1:{
+                addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, HoeModuleConfig.stoneRototillerModuleEnergyConsumptionBase, "FE"); // 500
+                addTradeoffProperty(MPSConstants.RADIUS, MPSConstants.ENERGY_CONSUMPTION, HoeModuleConfig.stoneRototillerModuleEnergyConsumptionRadiusMultiplier); // 9500
+                addIntTradeoffProperty(MPSConstants.RADIUS, MPSConstants.RADIUS, HoeModuleConfig.stoneRototillerModuleRadiusMultiplier,  "m", 1, 0); // 4
+                addBaseProperty(MPSConstants.HARVEST_SPEED, HoeModuleConfig.stoneRototillerModuleHarvestSpeedBase, "x"); // 4, 8 , who knows :P
+                addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.ENERGY_CONSUMPTION, HoeModuleConfig.stoneRototillerModuleEnergyConsumptionOverclockMultiplier); // 9500
+                addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.HARVEST_SPEED, HoeModuleConfig.stoneRototillerModuleHarvestSpeedOverclockMultiplier); // 22
+                break;
+            }
 
-                addBaseProperty(MPSConstants.HARVEST_SPEED, 8, "x");
-                addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.ENERGY_CONSUMPTION, 9500);
-                addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.HARVEST_SPEED, 22);
+            case 2: {
+                addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, HoeModuleConfig.ironRototillerModuleEnergyConsumptionBase, "FE"); // 500
+                addTradeoffProperty(MPSConstants.RADIUS, MPSConstants.ENERGY_CONSUMPTION, HoeModuleConfig.ironRototillerModuleEnergyConsumptionRadiusMultiplier); // 9500
+                addIntTradeoffProperty(MPSConstants.RADIUS, MPSConstants.RADIUS, HoeModuleConfig.ironRototillerModuleRadiusMultiplier,  "m", 1, 0); // 4
+                addBaseProperty(MPSConstants.HARVEST_SPEED, HoeModuleConfig.ironRototillerModuleHarvestSpeedBase, "x"); // 4, 8 , who knows :P
+                addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.ENERGY_CONSUMPTION, HoeModuleConfig.ironRototillerModuleEnergyConsumptionOverclockMultiplier); // 9500
+                addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.HARVEST_SPEED, HoeModuleConfig.ironRototillerModuleHarvestSpeedOverclockMultiplier); // 22
+                break;
+            }
+
+            case 3: {
+                addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, HoeModuleConfig.diamondRototillerModuleEnergyConsumptionBase, "FE"); // 500
+                addTradeoffProperty(MPSConstants.RADIUS, MPSConstants.ENERGY_CONSUMPTION, HoeModuleConfig.diamondRototillerModuleEnergyConsumptionRadiusMultiplier); // 9500
+                addIntTradeoffProperty(MPSConstants.RADIUS, MPSConstants.RADIUS, HoeModuleConfig.diamondRototillerModuleRadiusMultiplier,  "m", 1, 0); // 4
+                addBaseProperty(MPSConstants.HARVEST_SPEED, HoeModuleConfig.diamondRototillerModuleHarvestSpeedBase, "x"); // 4, 8 , who knows :P
+                addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.ENERGY_CONSUMPTION, HoeModuleConfig.diamondRototillerModuleEnergyConsumptionOverclockMultiplier); // 9500
+                addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.HARVEST_SPEED, HoeModuleConfig.diamondRototillerModuleHarvestSpeedOverclockMultiplier); // 22
+                break;
+            }
+
+            case 4: {
+                addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, HoeModuleConfig.netheriteRototillerModuleEnergyConsumptionBase, "FE"); // 500
+                addTradeoffProperty(MPSConstants.RADIUS, MPSConstants.ENERGY_CONSUMPTION, HoeModuleConfig.netheriteRototillerModuleEnergyConsumptionRadiusMultiplier); // 9500
+                addIntTradeoffProperty(MPSConstants.RADIUS, MPSConstants.RADIUS, HoeModuleConfig.netheriteRototillerModuleRadiusMultiplier,  "m", 1, 0); // 4
+                addBaseProperty(MPSConstants.HARVEST_SPEED, HoeModuleConfig.netheriteRototillerModuleHarvestSpeedBase, "x"); // 4, 8 , who knows :P
+                addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.ENERGY_CONSUMPTION, HoeModuleConfig.netheriteRototillerModuleEnergyConsumptionOverclockMultiplier); // 9500
+                addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.HARVEST_SPEED, HoeModuleConfig.netheriteRototillerModuleHarvestSpeedOverclockMultiplier); // 22
+                break;
+            }
+            }
         }
 
         @Override
@@ -93,10 +130,10 @@ public class RototillerModule extends AbstractPowerModule {
             return ret;
         }
 
-        public static Consumer<UseOnContext> changeIntoState(BlockState pState, BlockPos pos, Player player) {
+        public static Consumer<UseOnContext> changeIntoState(BlockState state, BlockPos pos, Player player) {
             return (context) -> {
-                context.getLevel().setBlock(pos, pState, 11);
-                context.getLevel().gameEvent(GameEvent.BLOCK_CHANGE, pos, GameEvent.Context.of(player, pState));
+                context.getLevel().setBlock(pos, state, 11);
+                context.getLevel().gameEvent(GameEvent.BLOCK_CHANGE, pos, GameEvent.Context.of(player, state));
             };
         }
 
@@ -119,10 +156,27 @@ public class RototillerModule extends AbstractPowerModule {
             return (int) applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION);
         }
 
+        @Override
+        public boolean isAllowed() {
+            return switch (tier) {
+                case 1 -> HoeModuleConfig.stoneRototillerModuleIsAllowed;
+                case 2 -> HoeModuleConfig.ironRototillerModuleIsAllowed;
+                case 3 -> HoeModuleConfig.diamondRototillerModuleIsAllowed;
+                case 4 -> HoeModuleConfig.netheriteRototillerModuleIsAllowed;
+                default -> false;
+            };
+        }
+
         @Nonnull
         @Override
         public ItemStack getEmulatedTool() {
-            return new ItemStack(Items.IRON_HOE);
+            return switch (tier) {
+                case 1 -> new ItemStack(Items.STONE_HOE);
+                case 2 -> new ItemStack(Items.IRON_HOE);
+                case 3 -> new ItemStack(Items.DIAMOND_HOE);
+                case 4 -> new ItemStack(Items.NETHERITE_HOE);
+                default -> new ItemStack(Items.STICK);
+            };
         }
     }
 }

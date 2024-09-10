@@ -35,10 +35,10 @@ import com.lehjr.powersuits.common.item.module.movement.ParachuteModule;
 import com.lehjr.powersuits.common.item.module.movement.ShockAbsorberModule;
 import com.lehjr.powersuits.common.item.module.movement.SprintAssistModule;
 import com.lehjr.powersuits.common.item.module.movement.SwimAssistModule;
-import com.lehjr.powersuits.common.item.module.tool.blockbreaking.chopping.AxeModule;
-import com.lehjr.powersuits.common.item.module.tool.blockbreaking.digging.ShovelModule;
-import com.lehjr.powersuits.common.item.module.tool.blockbreaking.farming.RototillerModule;
-import com.lehjr.powersuits.common.item.module.tool.blockbreaking.mining.PickaxeModule;
+import com.lehjr.powersuits.common.item.module.tool.blockbreaking.AxeModule;
+import com.lehjr.powersuits.common.item.module.tool.blockbreaking.ShovelModule;
+import com.lehjr.powersuits.common.item.module.tool.blockbreaking.HoeModule;
+import com.lehjr.powersuits.common.item.module.tool.blockbreaking.PickaxeModule;
 import com.lehjr.powersuits.common.item.module.tool.misc.FlintAndSteelModule;
 import com.lehjr.powersuits.common.item.module.tool.misc.LeafBlowerModule;
 import com.lehjr.powersuits.common.item.module.tool.misc.LuxCapacitorModule;
@@ -286,9 +286,6 @@ public class MPSCapabilities {
         event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new SwimAssistModule.Ticker(stack), MPSItems.SWIM_ASSIST_MODULE.get());
 
         // Tools ----------------------------------------------------------------------------------
-        // Rototiller // TODO: Does this need other tiers?
-        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new RototillerModule.RightClickie(stack), MPSItems.ROTOTILLER_MODULE.get());
-
         // Axe
         event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new AxeModule.BlockBreaker(stack, 1), MPSItems.STONE_AXE_MODULE.get());
         event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new AxeModule.BlockBreaker(stack, 2), MPSItems.IRON_AXE_MODULE.get());
@@ -301,11 +298,20 @@ public class MPSCapabilities {
         event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new PickaxeModule.BlockBreaker(stack, 3), MPSItems.DIAMOND_PICKAXE_MODULE.get());
         event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new PickaxeModule.BlockBreaker(stack, 4), MPSItems.NETHERITE_PICKAXE_MODULE.get());
 
+        // Rototiller
+        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new HoeModule.RightClickie(stack, 1), MPSItems.STONE_HOE_MODULE.get());
+        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new HoeModule.RightClickie(stack, 2), MPSItems.IRON_HOE_MODULE.get());
+        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new HoeModule.RightClickie(stack, 3), MPSItems.DIAMOND_HOE_MODULE.get());
+        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new HoeModule.RightClickie(stack, 4), MPSItems.NETHERITE_HOE_MODULE.get());
+
         //Shovel
         event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new ShovelModule.BlockBreaker(stack, 1), MPSItems.STONE_SHOVEL_MODULE.get());
         event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new ShovelModule.BlockBreaker(stack, 2), MPSItems.IRON_SHOVEL_MODULE.get());
         event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new ShovelModule.BlockBreaker(stack, 3), MPSItems.DIAMOND_SHOVEL_MODULE.get());
         event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new ShovelModule.BlockBreaker(stack, 4), MPSItems.NETHERITE_SHOVEL_MODULE.get());
+
+
+
 
         // Misc
         event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new FlintAndSteelModule.RightClickie(stack), MPSItems.FLINT_AND_STEEL_MODULE.get());

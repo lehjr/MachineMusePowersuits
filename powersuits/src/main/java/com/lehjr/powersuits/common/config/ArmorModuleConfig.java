@@ -79,7 +79,7 @@ public class ArmorModuleConfig {
 
 
     @SubscribeEvent
-    static void onLoad(final ModConfigEvent event) {
+    public static void onLoad(final ModConfigEvent event) {
         if (event.getConfig().getSpec() == MPS_ARMOR_MODULE_CONFIG_SPEC) {
             // Armor Modules --------------------------------------------------------
             // Iron

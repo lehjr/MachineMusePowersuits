@@ -141,6 +141,8 @@ public class ModularItem extends ComponentItemHandler implements IModularItem {
             return 1;
         }
 
+        NuminaLogger.logDebug("checking stack limit 1");
+
         if (isModuleValid(module)) {
             //  Check if the module is already in this slot instead of just blindly
             // checking if module is already installed somewhere. This is because this method will be called
@@ -157,10 +159,12 @@ public class ModularItem extends ComponentItemHandler implements IModularItem {
 
             // Specfic module type for limited modules
             RangedWrapper wrapper = getRangedWrappers().get(category);
-
+            NuminaLogger.logDebug("wrapper: " + wrapper);
             // fallback on generic type if null
             if (wrapper == null) {
                 wrapper = getRangedWrappers().get(ModuleCategory.NONE);
+
+
             }
 
             // Note, not using the actual wrapper mechanics, just slot ranges
@@ -170,6 +174,7 @@ public class ModularItem extends ComponentItemHandler implements IModularItem {
                 }
                 return getStackInSlot(slot).isEmpty() ? 1: 0;
             }
+            NuminaLogger.logDebug("checking stack limit 2");
         }
         return 0;
     }

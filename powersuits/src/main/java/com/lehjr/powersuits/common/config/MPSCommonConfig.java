@@ -17,7 +17,7 @@ public class MPSCommonConfig {
     public static double maxFlyingSpeed;
 
     @SubscribeEvent
-    static void onLoad(final ModConfigEvent event) {
+    public static void onLoad(final ModConfigEvent event) {
         if (event.getConfig().getSpec() instanceof ModConfigSpec SPEC) {
             // this
             if (SPEC == MPS_GENERAL_SPEC) {

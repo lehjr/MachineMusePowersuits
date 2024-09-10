@@ -32,7 +32,7 @@ public class VisionModuleConfig {
     public static double nightVisionEnergyConsumption;
 
     @SubscribeEvent
-    static void onLoad(final ModConfigEvent event) {
+    public static void onLoad(final ModConfigEvent event) {
         if (event.getConfig().getSpec() == MPS_VISION_MODULE_SPEC) {
             // Binoculars
             binocularsModuleIsAllowed = BINOCULARS_MODULE__IS_ALLOWED.get();

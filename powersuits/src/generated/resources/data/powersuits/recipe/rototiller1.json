@@ -5,23 +5,23 @@
     "C": {
       "item": "numina:component_control_circuit_1"
     },
-    "I": {
+    "S": {
       "tag": "c:cobblestones"
     },
     "W": {
-      "item": "numina:component_wiring_copper"
+      "tag": "c:strings"
     },
     "X": {
       "item": "numina:component_solenoid"
     }
   },
   "pattern": [
-    "IIW",
-    "ICW",
+    "SS ",
+    "WCW",
     " X "
   ],
   "result": {
     "count": 1,
-    "id": "powersuits:axe1"
+    "id": "powersuits:rototiller1"
   }
 }

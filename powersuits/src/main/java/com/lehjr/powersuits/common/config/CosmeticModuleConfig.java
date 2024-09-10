@@ -17,7 +17,7 @@ public class CosmeticModuleConfig {
     public static boolean isTransparentArmorAllowed;
 
     @SubscribeEvent
-    static void onLoad(final ModConfigEvent event) {
+    public static void onLoad(final ModConfigEvent event) {
         if (event.getConfig().getSpec() == MPS_COSMETIC_MODULE_CONFIG_SPEC) {
             // Transparent Armor
             isTransparentArmorAllowed = TRANSPARENT_ARMOR_MODULE__IS_ALLOWED.get();

@@ -44,7 +44,7 @@ public class PowerFistConfig {
     public static final ModConfigSpec MPS_POWER_FIST_CONFIG_SPEC = POWER_FIST_4__SETTINGS_BUILDER.build();
 
     @SubscribeEvent
-    static void onLoad(final ModConfigEvent event) {
+    public static void onLoad(final ModConfigEvent event) {
         if (event.getConfig().getSpec() == MPS_POWER_FIST_CONFIG_SPEC) {
             NuminaLogger.logDebug("power fist config onLoad: " + event.getConfig() + ", " + event.getConfig().getFileName());
 

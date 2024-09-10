@@ -1,4 +1,4 @@
-package com.lehjr.powersuits.common.item.module.tool.blockbreaking.chopping;
+package com.lehjr.powersuits.common.item.module.tool.blockbreaking;
 
 import com.lehjr.numina.common.capabilities.module.blockbreaking.IBlockBreakingModule;
 import com.lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
@@ -7,7 +7,7 @@ import com.lehjr.numina.common.capabilities.module.powermodule.PowerModule;
 import com.lehjr.numina.common.capabilities.module.rightclick.IRightClickModule;
 import com.lehjr.numina.common.utils.ElectricItemUtils;
 import com.lehjr.numina.imixin.common.item.IUseOnContextMixn;
-import com.lehjr.powersuits.common.config.ToolModuleConfig;
+import com.lehjr.powersuits.common.config.module.tool.blockbreaking.AxeModuleConfig;
 import com.lehjr.powersuits.common.constants.MPSConstants;
 import com.lehjr.powersuits.common.item.module.AbstractPowerModule;
 import net.minecraft.advancements.CriteriaTriggers;
@@ -43,28 +43,28 @@ public class AxeModule extends AbstractPowerModule {
 
             switch(tier) {
                 case 1 -> {
-                    addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, ToolModuleConfig.stoneAxeModuleEnergyConsumptionBase, "FE");
-                    addBaseProperty(MPSConstants.HARVEST_SPEED, ToolModuleConfig.stoneAxeModuleHarvestSpeedBase, "x");
-                    addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.ENERGY_CONSUMPTION, ToolModuleConfig.stoneAxeModuleEnergyConsumptionOverclockMultiplier);
-                    addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.HARVEST_SPEED, ToolModuleConfig.stoneAxeModuleHarvestSpeedOverclockMultiplier);
+                    addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, AxeModuleConfig.stoneAxeModuleEnergyConsumptionBase, "FE");
+                    addBaseProperty(MPSConstants.HARVEST_SPEED, AxeModuleConfig.stoneAxeModuleHarvestSpeedBase, "x");
+                    addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.ENERGY_CONSUMPTION, AxeModuleConfig.stoneAxeModuleEnergyConsumptionOverclockMultiplier);
+                    addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.HARVEST_SPEED, AxeModuleConfig.stoneAxeModuleHarvestSpeedOverclockMultiplier);
                 }
                 case 2 -> {
-                    addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, ToolModuleConfig.ironAxeModuleEnergyConsumptionBase, "FE");
-                    addBaseProperty(MPSConstants.HARVEST_SPEED, ToolModuleConfig.ironAxeModuleHarvestSpeedBase, "x");
-                    addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.ENERGY_CONSUMPTION, ToolModuleConfig.ironAxeModuleEnergyConsumptionOverclockMultiplier);
-                    addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.HARVEST_SPEED, ToolModuleConfig.ironAxeModuleHarvestSpeedOverclockMultiplier);
+                    addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, AxeModuleConfig.ironAxeModuleEnergyConsumptionBase, "FE");
+                    addBaseProperty(MPSConstants.HARVEST_SPEED, AxeModuleConfig.ironAxeModuleHarvestSpeedBase, "x");
+                    addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.ENERGY_CONSUMPTION, AxeModuleConfig.ironAxeModuleEnergyConsumptionOverclockMultiplier);
+                    addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.HARVEST_SPEED, AxeModuleConfig.ironAxeModuleHarvestSpeedOverclockMultiplier);
                 }
                 case 3 -> {
-                    addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, ToolModuleConfig.diamondAxeModuleEnergyConsumptionBase, "FE");
-                    addBaseProperty(MPSConstants.HARVEST_SPEED, ToolModuleConfig.diamondAxeModuleHarvestSpeedBase, "x");
-                    addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.ENERGY_CONSUMPTION, ToolModuleConfig.diamondAxeModuleEnergyConsumptionOverclockMultiplier);
-                    addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.HARVEST_SPEED, ToolModuleConfig.diamondAxeModuleHarvestSpeedOverclockMultiplier);
+                    addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, AxeModuleConfig.diamondAxeModuleEnergyConsumptionBase, "FE");
+                    addBaseProperty(MPSConstants.HARVEST_SPEED, AxeModuleConfig.diamondAxeModuleHarvestSpeedBase, "x");
+                    addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.ENERGY_CONSUMPTION, AxeModuleConfig.diamondAxeModuleEnergyConsumptionOverclockMultiplier);
+                    addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.HARVEST_SPEED, AxeModuleConfig.diamondAxeModuleHarvestSpeedOverclockMultiplier);
                 }
                 case 4 -> {
-                    addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, ToolModuleConfig.netheriteAxeModuleEnergyConsumptionBase, "FE");
-                    addBaseProperty(MPSConstants.HARVEST_SPEED, ToolModuleConfig.netheriteAxeModuleHarvestSpeedBase, "x");
-                    addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.ENERGY_CONSUMPTION, ToolModuleConfig.netheriteAxeModuleEnergyConsumptionOverclockMultiplier);
-                    addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.HARVEST_SPEED, ToolModuleConfig.netheriteAxeModuleHarvestSpeedOverclockMultiplier);
+                    addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, AxeModuleConfig.netheriteAxeModuleEnergyConsumptionBase, "FE");
+                    addBaseProperty(MPSConstants.HARVEST_SPEED, AxeModuleConfig.netheriteAxeModuleHarvestSpeedBase, "x");
+                    addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.ENERGY_CONSUMPTION, AxeModuleConfig.netheriteAxeModuleEnergyConsumptionOverclockMultiplier);
+                    addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.HARVEST_SPEED, AxeModuleConfig.netheriteAxeModuleHarvestSpeedOverclockMultiplier);
                 }
             }
         }
@@ -152,10 +152,10 @@ public class AxeModule extends AbstractPowerModule {
         @Override
         public boolean isAllowed() {
             return switch (tier) {
-                case 1 -> ToolModuleConfig.stoneAxeModuleIsAllowed;
-                case 2 -> ToolModuleConfig.ironAxeModuleIsAllowed;
-                case 3 -> ToolModuleConfig.diamondAxeModuleIsAllowed;
-                case 4 -> ToolModuleConfig.netheriteAxeModuleIsAllowed;
+                case 1 -> AxeModuleConfig.stoneAxeModuleIsAllowed;
+                case 2 -> AxeModuleConfig.ironAxeModuleIsAllowed;
+                case 3 -> AxeModuleConfig.diamondAxeModuleIsAllowed;
+                case 4 -> AxeModuleConfig.netheriteAxeModuleIsAllowed;
                 default -> false;
             };
         }

@@ -33,10 +33,10 @@ import com.lehjr.powersuits.common.item.module.movement.ParachuteModule;
 import com.lehjr.powersuits.common.item.module.movement.ShockAbsorberModule;
 import com.lehjr.powersuits.common.item.module.movement.SprintAssistModule;
 import com.lehjr.powersuits.common.item.module.movement.SwimAssistModule;
-import com.lehjr.powersuits.common.item.module.tool.blockbreaking.chopping.AxeModule;
-import com.lehjr.powersuits.common.item.module.tool.blockbreaking.digging.ShovelModule;
-import com.lehjr.powersuits.common.item.module.tool.blockbreaking.farming.RototillerModule;
-import com.lehjr.powersuits.common.item.module.tool.blockbreaking.mining.PickaxeModule;
+import com.lehjr.powersuits.common.item.module.tool.blockbreaking.AxeModule;
+import com.lehjr.powersuits.common.item.module.tool.blockbreaking.ShovelModule;
+import com.lehjr.powersuits.common.item.module.tool.blockbreaking.HoeModule;
+import com.lehjr.powersuits.common.item.module.tool.blockbreaking.PickaxeModule;
 import com.lehjr.powersuits.common.item.module.tool.misc.FlintAndSteelModule;
 import com.lehjr.powersuits.common.item.module.tool.misc.LeafBlowerModule;
 import com.lehjr.powersuits.common.item.module.tool.misc.LuxCapacitorModule;
@@ -235,11 +235,10 @@ public class MPSItems {
             ShovelModule::new);
 
     // Farming
-    public static final DeferredHolder<Item, RototillerModule> ROTOTILLER_MODULE = MPS_ITEMS.register(MPSConstants.ROTOTILLER_MODULE.getPath(), RototillerModule::new);
-    // TODO?
-//    public static final DeferredHolder<Item, HoeModule> ROTOTILLER_MODULE2 = MPS_ITEMS.register(MPSConstants.HOE_MODULE.getPath(), HoeModule::new);
-//    public static final DeferredHolder<Item, HoeModule> ROTOTILLER_MODULE3 = MPS_ITEMS.register(MPSConstants.HOE_MODULE.getPath(), HoeModule::new);
-//    public static final DeferredHolder<Item, HoeModule> ROTOTILLER_MODULE4 = MPS_ITEMS.register(MPSConstants.HOE_MODULE.getPath(), HoeModule::new);
+    public static final DeferredHolder<Item, HoeModule> STONE_HOE_MODULE = MPS_ITEMS.register(MPSConstants.ROTOTILLER_MODULE_1.getPath(), HoeModule::new);
+    public static final DeferredHolder<Item, HoeModule> IRON_HOE_MODULE = MPS_ITEMS.register(MPSConstants.ROTOTILLER_MODULE_2.getPath(), HoeModule::new);
+    public static final DeferredHolder<Item, HoeModule> DIAMOND_HOE_MODULE = MPS_ITEMS.register(MPSConstants.ROTOTILLER_MODULE_3.getPath(), HoeModule::new);
+    public static final DeferredHolder<Item, HoeModule> NETHERITE_HOE_MODULE = MPS_ITEMS.register(MPSConstants.ROTOTILLER_MODULE_4.getPath(), HoeModule::new);
 
     public static final DeferredHolder<Item, ShearsModule> SHEARS_MODULE = MPS_ITEMS.register(MPSConstants.SHEARS_MODULE.getPath(), ShearsModule::new);
 
@@ -383,15 +382,13 @@ public class MPSItems {
                         output.accept(NETHERITE_SHOVEL_MODULE.get());
 
                         // Farming --------------------------------------------
-                        output.accept(ROTOTILLER_MODULE.get());
-//                        output.accept(ROTOTILLER_MODULE2.get());
-//                        output.accept(ROTOTILLER_MODULE3.get());
-//                        output.accept(ROTOTILLER_MODULE4.get());
+                        output.accept(STONE_HOE_MODULE.get());
+                        output.accept(IRON_HOE_MODULE.get());
+                        output.accept(DIAMOND_HOE_MODULE.get());
+                        output.accept(NETHERITE_HOE_MODULE.get());
 
-                        output.accept(SHEARS_MODULE.get());
-
-                        // hoe/rototiller
                         // shears
+                        output.accept(SHEARS_MODULE.get());
 
                         // PickAxe --------------------------------------------
                         output.accept(STONE_PICKAXE_MODULE.get());

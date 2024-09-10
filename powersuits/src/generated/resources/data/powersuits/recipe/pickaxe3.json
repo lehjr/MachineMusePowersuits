@@ -3,10 +3,10 @@
   "category": "misc",
   "key": {
     "C": {
-      "item": "numina:component_control_circuit_4"
+      "item": "numina:component_control_circuit_3"
     },
     "I": {
-      "tag": "c:ingots/netherite"
+      "tag": "c:gems/diamond"
     },
     "S": {
       "item": "numina:component_servo"
@@ -15,7 +15,7 @@
       "item": "numina:component_wiring_gold"
     },
     "X": {
-      "item": "powersuits:pickaxe3"
+      "item": "powersuits:pickaxe2"
     }
   },
   "pattern": [
@@ -25,6 +25,6 @@
   ],
   "result": {
     "count": 1,
-    "id": "powersuits:pickaxe4"
+    "id": "powersuits:pickaxe3"
   }
 }
