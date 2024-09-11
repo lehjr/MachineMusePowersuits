@@ -1,5 +1,6 @@
 package com.lehjr.numina.common.capabilities.inventory.modechanging;
 
+import com.lehjr.numina.common.base.NuminaLogger;
 import com.lehjr.numina.common.capabilities.inventory.modularitem.ModularItem;
 import com.lehjr.numina.common.capabilities.module.blockbreaking.IBlockBreakingModule;
 import com.lehjr.numina.common.capabilities.module.enhancement.IMiningEnhancementModule;
@@ -197,6 +198,8 @@ public class ModeChangingModularItem extends ModularItem implements IModeChangin
         IPowerModule pm = getModuleCapability(getActiveModule());
         if(pm instanceof IRightClickModule clickie) {
             return clickie.useOn(context);
+        } else {
+            NuminaLogger.logDebug("not right click item? ");
         }
         return fallback;
     }

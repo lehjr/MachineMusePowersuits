@@ -8,7 +8,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.item.DiggerItem;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.TooltipFlag;
@@ -18,10 +18,14 @@ import net.neoforged.neoforge.energy.IEnergyStorage;
 
 import java.util.List;
 
-public class AbstractElectricTool extends DiggerItem {
-    protected AbstractElectricTool(Tier pTier, TagKey<Block> pBlocks, Properties pProperties) {
-        super(pTier, pBlocks, pProperties);
-    }
+//public class AbstractElectricTool extends DiggerItem {
+//    protected AbstractElectricTool(Tier pTier, TagKey<Block> pBlocks, Properties pProperties) {
+//        super(pTier, pBlocks, pProperties);
+//    }
+    public class AbstractElectricTool extends Item {
+        protected AbstractElectricTool(Tier pTier, TagKey<Block> pBlocks, Properties pProperties) {
+            super(pProperties);
+        }
 
 
     @Override

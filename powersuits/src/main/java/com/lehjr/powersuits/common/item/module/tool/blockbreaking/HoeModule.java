@@ -1,5 +1,6 @@
 package com.lehjr.powersuits.common.item.module.tool.blockbreaking;
 
+import com.lehjr.numina.common.base.NuminaLogger;
 import com.lehjr.numina.common.capabilities.module.blockbreaking.IBlockBreakingModule;
 import com.lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import com.lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
@@ -99,8 +100,8 @@ public class HoeModule extends AbstractPowerModule {
                 return InteractionResult.PASS;
             } else {
                 int radius = (int)applyPropertyModifiers(MPSConstants.RADIUS);
-                for (int i = Math.abs(radius); i < radius; i++) {
-                    for (int j = Math.abs(radius); j < radius; j++) {
+                for (int i = -Math.abs(radius); i < radius; i++) {
+                    for (int j = -Math.abs(radius); j < radius; j++) {
                         if (i * i + j * j < radius * radius) {
                             BlockPos newPos = blockPos.offset(i, 0, j);
                             if (level.getBlockState(newPos.above()).isAir() && !level.getBlockState(newPos).isAir()) {
