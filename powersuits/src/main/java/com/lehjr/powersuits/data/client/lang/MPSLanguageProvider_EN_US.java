@@ -277,17 +277,17 @@ public class MPSLanguageProvider_EN_US extends AbstractLangageProviderMPS {
         addItemDescriptions(MPSItems.FLINT_AND_STEEL_MODULE.get(), "A portable igniter that creates fire through the power of energy.");
 
         // Rototiller ----------------------------------------------------------------------------------
-        add(MPSItems.STONE_HOE_MODULE.get(), "Stone Hoe Module");
-        addItemDescriptions(MPSItems.STONE_HOE_MODULE.get(), "An automated tilling addon to make it easy to till large swaths of land at once.");
+        add(MPSItems.STONE_ROTOTILLER_MODULE.get(), "Stone Hoe Module");
+        addItemDescriptions(MPSItems.STONE_ROTOTILLER_MODULE.get(), "An automated tilling addon to make it easy to till large swaths of land at once.");
 
-        add(MPSItems.IRON_HOE_MODULE.get(), "Iron Hoe Module");
-        addItemDescriptions(MPSItems.IRON_HOE_MODULE.get(), "An automated tilling addon to make it easy to till large swaths of land at once.");
+        add(MPSItems.IRON_ROTOTILLER_MODULE.get(), "Iron Hoe Module");
+        addItemDescriptions(MPSItems.IRON_ROTOTILLER_MODULE.get(), "An automated tilling addon to make it easy to till large swaths of land at once.");
 
-        add(MPSItems.DIAMOND_HOE_MODULE.get(), "Diamond Hoe Module");
-        addItemDescriptions(MPSItems.DIAMOND_HOE_MODULE.get(), "An automated tilling addon to make it easy to till large swaths of land at once.");
+        add(MPSItems.DIAMOND_ROTOTILLER_MODULE.get(), "Diamond Hoe Module");
+        addItemDescriptions(MPSItems.DIAMOND_ROTOTILLER_MODULE.get(), "An automated tilling addon to make it easy to till large swaths of land at once.");
 
-        add(MPSItems.NETHERITE_HOE_MODULE.get(), "Netherite Hoe Module");
-        addItemDescriptions(MPSItems.NETHERITE_HOE_MODULE.get(), "An automated tilling addon to make it easy to till large swaths of land at once.");
+        add(MPSItems.NETHERITE_ROTOTILLER_MODULE.get(), "Netherite Hoe Module");
+        addItemDescriptions(MPSItems.NETHERITE_ROTOTILLER_MODULE.get(), "An automated tilling addon to make it easy to till large swaths of land at once.");
 
         // Leaf Blower ---------------------------------------------------------------------------------
         add(MPSItems.LEAF_BLOWER_MODULE.get(), "Leaf Blower");

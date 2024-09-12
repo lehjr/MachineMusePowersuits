@@ -1,7 +1,6 @@
 package com.lehjr.powersuits.data.common.recipes;
 
 import com.lehjr.numina.common.base.NuminaLogger;
-import com.lehjr.numina.common.recipe.ShapedModularItemUpgradeRecipe;
 import com.lehjr.numina.common.registration.NuminaItems;
 import com.lehjr.numina.data.common.recipes.ShapedEnchantmentRecipeBuilder;
 import com.lehjr.numina.data.common.recipes.ShapedModularItemUpgradeRecipeBuilder;
@@ -676,7 +675,7 @@ public class MPSRecipeGenerator extends RecipeProvider {
             .save(output);
 
         // Rototillers --------------------------------------------------------------------------------
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, MPSItems.STONE_HOE_MODULE.get())
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, MPSItems.STONE_ROTOTILLER_MODULE.get())
             .pattern("SS ")
             .pattern("WCW")
             .pattern(" X ")
@@ -687,7 +686,7 @@ public class MPSRecipeGenerator extends RecipeProvider {
             .unlockedBy(getHasName(NuminaItems.CONTROL_CIRCUIT_1.get()), has(NuminaItems.CONTROL_CIRCUIT_1.get()))
             .save(output);
 
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, MPSItems.IRON_HOE_MODULE.get())
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, MPSItems.IRON_ROTOTILLER_MODULE.get())
             .pattern("II ")
             .pattern("WCW")
             .pattern("SXS")
@@ -695,12 +694,12 @@ public class MPSRecipeGenerator extends RecipeProvider {
             .define('S', NuminaItems.SERVO.get())
             .define('C', NuminaItems.CONTROL_CIRCUIT_2.get())
             .define('W', NuminaItems.WIRING_COPPER.get())
-            .define('X', MPSItems.STONE_HOE_MODULE.get())
+            .define('X', MPSItems.STONE_ROTOTILLER_MODULE.get())
 
             .unlockedBy(getHasName(NuminaItems.CONTROL_CIRCUIT_2.get()), has(NuminaItems.CONTROL_CIRCUIT_2.get()))
             .save(output);
 
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, MPSItems.DIAMOND_HOE_MODULE.get())
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, MPSItems.DIAMOND_ROTOTILLER_MODULE.get())
             .pattern("II ")
             .pattern("WCW")
             .pattern("SXS")
@@ -708,11 +707,11 @@ public class MPSRecipeGenerator extends RecipeProvider {
             .define('S', NuminaItems.SERVO.get())
             .define('C', NuminaItems.CONTROL_CIRCUIT_3.get())
             .define('W', NuminaItems.WIRING_GOLD.get())
-            .define('X', MPSItems.IRON_HOE_MODULE.get())
+            .define('X', MPSItems.IRON_ROTOTILLER_MODULE.get())
             .unlockedBy(getHasName(NuminaItems.CONTROL_CIRCUIT_3.get()), has(NuminaItems.CONTROL_CIRCUIT_3.get()))
             .save(output);
 
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, MPSItems.NETHERITE_HOE_MODULE.get())
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, MPSItems.NETHERITE_ROTOTILLER_MODULE.get())
             .pattern("II ")
             .pattern("WCW")
             .pattern("SXS")
@@ -720,7 +719,7 @@ public class MPSRecipeGenerator extends RecipeProvider {
             .define('S', NuminaItems.SERVO.get())
             .define('C', NuminaItems.CONTROL_CIRCUIT_4.get())
             .define('W', NuminaItems.WIRING_GOLD.get())
-            .define('X', MPSItems.DIAMOND_HOE_MODULE.get())
+            .define('X', MPSItems.DIAMOND_ROTOTILLER_MODULE.get())
             .unlockedBy(getHasName(NuminaItems.CONTROL_CIRCUIT_4.get()), has(NuminaItems.CONTROL_CIRCUIT_4.get()))
             .save(output);
 

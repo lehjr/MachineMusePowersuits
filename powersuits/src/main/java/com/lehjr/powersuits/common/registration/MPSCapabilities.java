@@ -37,7 +37,7 @@ import com.lehjr.powersuits.common.item.module.movement.SprintAssistModule;
 import com.lehjr.powersuits.common.item.module.movement.SwimAssistModule;
 import com.lehjr.powersuits.common.item.module.tool.blockbreaking.AxeModule;
 import com.lehjr.powersuits.common.item.module.tool.blockbreaking.ShovelModule;
-import com.lehjr.powersuits.common.item.module.tool.blockbreaking.HoeModule;
+import com.lehjr.powersuits.common.item.module.tool.blockbreaking.RototillerModule;
 import com.lehjr.powersuits.common.item.module.tool.blockbreaking.PickaxeModule;
 import com.lehjr.powersuits.common.item.module.tool.misc.FlintAndSteelModule;
 import com.lehjr.powersuits.common.item.module.tool.misc.LeafBlowerModule;
@@ -299,10 +299,10 @@ public class MPSCapabilities {
         event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new PickaxeModule.BlockBreaker(stack, 4), MPSItems.NETHERITE_PICKAXE_MODULE.get());
 
         // Rototiller
-        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new HoeModule.RightClickie(stack, 1), MPSItems.STONE_HOE_MODULE.get());
-        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new HoeModule.RightClickie(stack, 2), MPSItems.IRON_HOE_MODULE.get());
-        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new HoeModule.RightClickie(stack, 3), MPSItems.DIAMOND_HOE_MODULE.get());
-        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new HoeModule.RightClickie(stack, 4), MPSItems.NETHERITE_HOE_MODULE.get());
+        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new RototillerModule.RightClickie(stack, 1), MPSItems.STONE_ROTOTILLER_MODULE.get());
+        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new RototillerModule.RightClickie(stack, 2), MPSItems.IRON_ROTOTILLER_MODULE.get());
+        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new RototillerModule.RightClickie(stack, 3), MPSItems.DIAMOND_ROTOTILLER_MODULE.get());
+        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new RototillerModule.RightClickie(stack, 4), MPSItems.NETHERITE_ROTOTILLER_MODULE.get());
 
         //Shovel
         event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new ShovelModule.BlockBreaker(stack, 1), MPSItems.STONE_SHOVEL_MODULE.get());
