@@ -1,4 +1,4 @@
-package com.lehjr.powersuits.common.config.module.tool.blockbreaking;
+package com.lehjr.powersuits.common.config.module;
 
 import com.lehjr.numina.common.constants.NuminaConstants;
 import com.lehjr.powersuits.common.constants.MPSConstants;

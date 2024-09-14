@@ -12,6 +12,9 @@ import net.minecraft.client.renderer.ShaderInstance;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.resources.ResourceLocation;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class NuminaIcons {
     private final NuminaSpriteUploader spriteUploader;
     private static final String iconPrefix = "gui";
@@ -30,6 +33,8 @@ public class NuminaIcons {
     public final DrawableIcon normalArmor;
     public final DrawableIcon plusSign;
     public final DrawableIcon transparentArmor;
+    public static final Map<ResourceLocation, DrawableIcon> iconMap = new HashMap<>();
+
 
     public NuminaIcons(NuminaSpriteUploader spriteUploader) {
         this.spriteUploader = spriteUploader;
@@ -50,7 +55,13 @@ public class NuminaIcons {
 
     private DrawableIcon registerIcon(String name, int width, int height) {
         ResourceLocation location = ResourceLocation.fromNamespaceAndPath(NuminaConstants.MOD_ID, name);
-        return new DrawableIcon(location, width, height);
+        DrawableIcon icon = new DrawableIcon(location, width, height);
+        iconMap.put(location, icon);
+        return icon;
+    }
+
+    public static DrawableIcon getIcon(ResourceLocation location) {
+        return iconMap.get(location);
     }
 
     public NuminaSpriteUploader  getSpriteUploader() {

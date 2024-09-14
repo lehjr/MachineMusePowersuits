@@ -3,7 +3,7 @@ package com.lehjr.powersuits.common.item.module.cosmetic;
 import com.lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import com.lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
 import com.lehjr.numina.common.capabilities.module.toggleable.ToggleableModule;
-import com.lehjr.powersuits.common.config.CosmeticModuleConfig;
+import com.lehjr.powersuits.common.config.module.CosmeticModuleConfig;
 import com.lehjr.powersuits.common.item.module.AbstractPowerModule;
 import net.minecraft.world.item.ItemStack;
 

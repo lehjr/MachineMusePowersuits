@@ -7,7 +7,7 @@ import com.lehjr.numina.common.capabilities.module.rightclick.RightClickModule;
 import com.lehjr.numina.common.utils.ElectricItemUtils;
 import com.lehjr.numina.common.utils.HeatUtils;
 import com.lehjr.numina.common.utils.MathUtils;
-import com.lehjr.powersuits.common.config.WeaponModuleConfig;
+import com.lehjr.powersuits.common.config.module.WeaponModuleConfig;
 import com.lehjr.powersuits.common.constants.MPSConstants;
 import com.lehjr.powersuits.common.entity.PlasmaBallEntity;
 import com.lehjr.powersuits.common.item.module.AbstractPowerModule;

@@ -7,7 +7,7 @@ import com.lehjr.numina.common.capabilities.module.powermodule.PowerModule;
 import com.lehjr.numina.common.capabilities.module.rightclick.IRightClickModule;
 import com.lehjr.numina.common.utils.ElectricItemUtils;
 import com.lehjr.numina.imixin.common.item.IUseOnContextMixn;
-import com.lehjr.powersuits.common.config.module.tool.blockbreaking.AxeModuleConfig;
+import com.lehjr.powersuits.common.config.module.AxeModuleConfig;
 import com.lehjr.powersuits.common.constants.MPSConstants;
 import com.lehjr.powersuits.common.item.module.AbstractPowerModule;
 import net.minecraft.advancements.CriteriaTriggers;

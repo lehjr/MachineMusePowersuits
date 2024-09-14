@@ -4,7 +4,7 @@ import com.lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import com.lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
 import com.lehjr.numina.common.capabilities.module.powermodule.PowerModule;
 import com.lehjr.numina.common.constants.NuminaConstants;
-import com.lehjr.powersuits.common.config.ArmorModuleConfig;
+import com.lehjr.powersuits.common.config.module.ArmorModuleConfig;
 import com.lehjr.powersuits.common.constants.MPSConstants;
 import com.lehjr.powersuits.common.item.module.AbstractPowerModule;
 import net.minecraft.world.item.ItemStack;

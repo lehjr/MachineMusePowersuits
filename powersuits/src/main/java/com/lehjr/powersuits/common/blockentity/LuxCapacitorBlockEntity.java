@@ -31,13 +31,16 @@ public class LuxCapacitorBlockEntity extends BlockEntity {
         colorHolder = Lazy.of(()-> colorStorage);
     }
 
-    public void setColor(Color color) {
+    public LuxCapacitorBlockEntity setColor(Color color) {
         if(this.level != null) {
             colorHolder.get().setColor(color);
             if(!this.level.isClientSide) {
                 this.setChanged();
+                // Added to make block sync on creation when launched from power fist
+                level.blockUpdated(getBlockPos(), level.getBlockState(getBlockPos()).getBlock());
             }
         }
+        return this;
     }
 
     @Override

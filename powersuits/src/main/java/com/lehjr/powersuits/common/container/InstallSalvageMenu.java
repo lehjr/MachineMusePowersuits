@@ -1,5 +1,6 @@
 package com.lehjr.powersuits.common.container;
 
+import com.lehjr.numina.client.gui.NuminaIcons;
 import com.lehjr.numina.client.gui.slot.HideableSlot;
 import com.lehjr.numina.client.gui.slot.HideableSlotItemHandler;
 import com.lehjr.numina.client.gui.slot.IHideableSlot;
@@ -127,44 +128,43 @@ public class InstallSalvageMenu extends AbstractContainerMenu {
                     if((MathUtils.isIntInRange(cap.getRangeForCategory(category), modularItemInvIndex))) {
                         NuminaLogger.logDebug("category " + category +" is in range for slot: " + modularItemInvIndex);
 
-                        Pair<ResourceLocation, ResourceLocation> iconPair = IconUtils.getIconForCategory(category);
-                        if(iconPair != null){ if(iconPair.getFirst().getPath().equals(NuminaConstants.LOCATION_NUMINA_GUI_TEXTURE_ATLAS.getPath())) {
-                            addSlot(new IconSlotItemHandler(cap, parentSlot, finalModularItemInvIndex, 178 + innercol * 18, 14 + innerrow * 18) {
-                                @OnlyIn(Dist.CLIENT)
-                                @Override
-                                public void drawIconAt(PoseStack matrixStack, double posX, double posY, Color color) {
-                                    // FIXME: fix icon
+                        Pair<ResourceLocation, ResourceLocation> iconPair = IconUtils.getIconLocationPairForCategory(category);
+                        if(iconPair != null){
+                            // FIXME: is "drawIconAt" really necessary??
+                            if(iconPair.getFirst().getPath().equals(NuminaConstants.LOCATION_NUMINA_GUI_TEXTURE_ATLAS.getPath())) {
+                                addSlot(new IconSlotItemHandler(cap, parentSlot, finalModularItemInvIndex, 178 + innercol * 18, 14 + innerrow * 18) {
+                                    @OnlyIn(Dist.CLIENT)
+                                    @Override
+                                    public void drawIconAt(PoseStack matrixStack, double posX, double posY, Color color) {
+                                        NuminaIcons.DrawableIcon icon = NuminaIcons.getIcon(iconPair.getSecond());
+                                        if(icon != null) {
+                                            icon.renderIconScaledWithColor(matrixStack, posX, posY, 16, 16, Color.WHITE);
+                                        }
+                                    }
 
-                                    IconUtils.getIcon().energystorage.renderIconScaledWithColor(matrixStack, posX, posY, 16, 16, Color.WHITE);
-                                }
+                                    @Override
+                                    public boolean mayPlace(ItemStack stack) {
+                                        NuminaLogger.logDebug("may place <" + stack + "> " + cap.isModuleValidForPlacement(finalModularItemInvIndex, stack));
 
-                                @Override
-                                public boolean mayPlace(ItemStack stack) {
-                                    NuminaLogger.logDebug("may place <" + stack + "> " + cap.isModuleValidForPlacement(finalModularItemInvIndex, stack));
+                                        return cap.isModuleValidForPlacement(finalModularItemInvIndex, stack);
+                                    }
+                                });
+                            }
+                            else {
+                                addSlot(new HideableSlotItemHandler(cap, parentSlot, modularItemInvIndex, 178 + innercol * 18, 14 + innerrow * 18) {
+                                    @Override
+                                    @Nullable
+                                    public Pair<ResourceLocation, ResourceLocation> getNoItemIcon() {
+                                        return iconPair;
+                                    }
 
-                                    return cap.isModuleValidForPlacement(finalModularItemInvIndex, stack);
-                                }
-                            });
-                        } else {
-                            addSlot(new HideableSlotItemHandler(cap, parentSlot, modularItemInvIndex, 178 + innercol * 18, 14 + innerrow * 18) {
-                                @Override
-                                @Nullable
-                                public Pair<ResourceLocation, ResourceLocation> getNoItemIcon() {
-                                    return iconPair;
-                                }
-
-                                @Override
-                                public boolean mayPlace(ItemStack stack) {
-                                    NuminaLogger.logDebug("may place <" + stack +"> " + cap.isModuleValidForPlacement(finalModularItemInvIndex, stack));
-                                    return cap.isModuleValidForPlacement(finalModularItemInvIndex, stack);
-                                }
-                            });
-                        }
-
-
-
-
-
+                                    @Override
+                                    public boolean mayPlace(ItemStack stack) {
+                                        NuminaLogger.logDebug("may place <" + stack +"> " + cap.isModuleValidForPlacement(finalModularItemInvIndex, stack));
+                                        return cap.isModuleValidForPlacement(finalModularItemInvIndex, stack);
+                                    }
+                                });
+                            }
                         } else {
                             // Generic slot (Category NONE)
                             addSlot(new HideableSlotItemHandler(cap, parentSlot, modularItemInvIndex, 178 + innercol * 18, 14 + innerrow * 18) {

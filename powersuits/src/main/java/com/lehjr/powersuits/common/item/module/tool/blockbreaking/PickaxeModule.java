@@ -6,7 +6,7 @@ import com.lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import com.lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
 import com.lehjr.numina.common.capabilities.module.powermodule.PowerModule;
 import com.lehjr.numina.common.utils.ElectricItemUtils;
-import com.lehjr.powersuits.common.config.module.tool.blockbreaking.PickaxeModuleConfig;
+import com.lehjr.powersuits.common.config.module.PickaxeModuleConfig;
 import com.lehjr.powersuits.common.constants.MPSConstants;
 import com.lehjr.powersuits.common.item.module.AbstractPowerModule;
 import net.minecraft.core.BlockPos;

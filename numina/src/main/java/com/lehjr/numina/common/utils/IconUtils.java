@@ -105,14 +105,12 @@ public enum IconUtils {
     }};
 
     @Nullable
-    public static Pair<ResourceLocation, ResourceLocation> getIconForCategory(ModuleCategory category) {
+    public static Pair<ResourceLocation, ResourceLocation> getIconLocationPairForCategory(ModuleCategory category) {
         if(slotBackgrounds.containsKey(category)) {
             return slotBackgrounds.get(category);
         }
         return null;
     }
-
-
 
     /**
      * Does the rotating green circle around the selection, e.g. in GUI.

@@ -4,7 +4,7 @@ import com.lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import com.lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
 import com.lehjr.numina.common.capabilities.module.rightclick.RightClickModule;
 import com.lehjr.numina.common.utils.ElectricItemUtils;
-import com.lehjr.powersuits.common.config.WeaponModuleConfig;
+import com.lehjr.powersuits.common.config.module.WeaponModuleConfig;
 import com.lehjr.powersuits.common.constants.MPSConstants;
 import com.lehjr.powersuits.common.entity.SpinningBladeEntity;
 import com.lehjr.powersuits.common.item.module.AbstractPowerModule;

@@ -3,7 +3,7 @@ package com.lehjr.powersuits.common.item.module.vision;
 import com.lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import com.lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
 import com.lehjr.numina.common.capabilities.module.toggleable.ToggleableModule;
-import com.lehjr.powersuits.common.config.VisionModuleConfig;
+import com.lehjr.powersuits.common.config.module.VisionModuleConfig;
 import com.lehjr.powersuits.common.constants.MPSConstants;
 import com.lehjr.powersuits.common.item.module.AbstractPowerModule;
 import net.minecraft.world.item.ItemStack;

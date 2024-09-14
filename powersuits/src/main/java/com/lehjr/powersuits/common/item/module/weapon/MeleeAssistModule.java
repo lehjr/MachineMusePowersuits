@@ -3,7 +3,7 @@ package com.lehjr.powersuits.common.item.module.weapon;
 import com.lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import com.lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
 import com.lehjr.numina.common.capabilities.module.powermodule.PowerModule;
-import com.lehjr.powersuits.common.config.WeaponModuleConfig;
+import com.lehjr.powersuits.common.config.module.WeaponModuleConfig;
 import com.lehjr.powersuits.common.constants.MPSConstants;
 import com.lehjr.powersuits.common.item.module.AbstractPowerModule;
 import net.minecraft.world.item.ItemStack;

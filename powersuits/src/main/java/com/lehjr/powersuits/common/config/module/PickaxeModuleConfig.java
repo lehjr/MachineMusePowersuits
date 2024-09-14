@@ -1,4 +1,4 @@
-package com.lehjr.powersuits.common.config.module.tool.blockbreaking;
+package com.lehjr.powersuits.common.config.module;
 
 import com.lehjr.numina.common.constants.NuminaConstants;
 import com.lehjr.powersuits.common.constants.MPSConstants;
@@ -20,8 +20,8 @@ public class PickaxeModuleConfig {
     private static final ModConfigSpec.BooleanValue IRON_PICKAXE_MODULE__IS_ALLOWED = IRON_PICKAXE_MODULE_BUILDER.define(NuminaConstants.CONFIG_IS_ALLOWED, true);
     private static final ModConfigSpec.DoubleValue IRON_PICKAXE_MODULE__ENERGY_CONSUMPTION_BASE = IRON_PICKAXE_MODULE_BUILDER.defineInRange(MPSConstants.ENERGY_CONSUMPTION_BASE, 600, 0, 100000.0D);
     private static final ModConfigSpec.DoubleValue IRON_PICKAXE_MODULE__ENERGY_CONSUMPTION_OVERCLOCK_MULTIPLIER = IRON_PICKAXE_MODULE_BUILDER.defineInRange(MPSConstants.ENERGY_CONSUMPTION__OVERCLOCK_MULTIPLIER, 1000, 0, 100000.0D);
-    private static final ModConfigSpec.DoubleValue IRON_PICKAXE_MODULE__HARVEST_SPEED_BASE = IRON_PICKAXE_MODULE_BUILDER.defineInRange(MPSConstants.HARVEST_SPEED_BASE, 6, 0, 100.0D);
-    private static final ModConfigSpec.DoubleValue IRON_PICKAXE_MODULE__HARVEST_SPEED_OVERCLOCK_MULTIPLIER = IRON_PICKAXE_MODULE_BUILDER.defineInRange(MPSConstants.HARVEST_SPEED_OVERCLOCK_MULTIPLIER, 40, 0, 100.0D);
+    private static final ModConfigSpec.DoubleValue IRON_PICKAXE_MODULE__HARVEST_SPEED_BASE = IRON_PICKAXE_MODULE_BUILDER.defineInRange(MPSConstants.HARVEST_SPEED_BASE, 3, 0, 100.0D);
+    private static final ModConfigSpec.DoubleValue IRON_PICKAXE_MODULE__HARVEST_SPEED_OVERCLOCK_MULTIPLIER = IRON_PICKAXE_MODULE_BUILDER.defineInRange(MPSConstants.HARVEST_SPEED_OVERCLOCK_MULTIPLIER, 12, 0, 100.0D);
 
     // Diamond Pickaxe --------------------------------------------------------
     private static final ModConfigSpec.Builder DIAMOND_PICKAXE_MODULE_BUILDER = IRON_PICKAXE_MODULE_BUILDER.pop().push("Diamond_Pickaxe_Module");
@@ -29,7 +29,7 @@ public class PickaxeModuleConfig {
     private static final ModConfigSpec.DoubleValue DIAMOND_PICKAXE_MODULE__ENERGY_CONSUMPTION_BASE = DIAMOND_PICKAXE_MODULE_BUILDER.defineInRange(MPSConstants.ENERGY_CONSUMPTION_BASE, 600, 0, 100000.0D);
     private static final ModConfigSpec.DoubleValue DIAMOND_PICKAXE_MODULE__ENERGY_CONSUMPTION_OVERCLOCK_MULTIPLIER = DIAMOND_PICKAXE_MODULE_BUILDER.defineInRange(MPSConstants.ENERGY_CONSUMPTION__OVERCLOCK_MULTIPLIER, 1000, 0, 100000.0D);
     private static final ModConfigSpec.DoubleValue DIAMOND_PICKAXE_MODULE__HARVEST_SPEED_BASE = DIAMOND_PICKAXE_MODULE_BUILDER.defineInRange(MPSConstants.HARVEST_SPEED_BASE, 6, 0, 100.0D);
-    private static final ModConfigSpec.DoubleValue DIAMOND_PICKAXE_MODULE__HARVEST_SPEED_OVERCLOCK_MULTIPLIER = DIAMOND_PICKAXE_MODULE_BUILDER.defineInRange(MPSConstants.HARVEST_SPEED_OVERCLOCK_MULTIPLIER, 40, 0, 100.0D);
+    private static final ModConfigSpec.DoubleValue DIAMOND_PICKAXE_MODULE__HARVEST_SPEED_OVERCLOCK_MULTIPLIER = DIAMOND_PICKAXE_MODULE_BUILDER.defineInRange(MPSConstants.HARVEST_SPEED_OVERCLOCK_MULTIPLIER, 24, 0, 100.0D);
 
     // Netherite Pickaxe ------------------------------------------------------
     private static final ModConfigSpec.Builder NETHERITE_PICKAXE_MODULE_BUILDER = DIAMOND_PICKAXE_MODULE_BUILDER.pop().push("Netherite Pickaxe");

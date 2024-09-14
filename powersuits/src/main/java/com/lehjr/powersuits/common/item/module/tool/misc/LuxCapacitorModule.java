@@ -32,7 +32,7 @@ import com.lehjr.numina.common.capabilities.module.rightclick.RightClickModule;
 import com.lehjr.numina.common.math.Color;
 import com.lehjr.numina.common.utils.ElectricItemUtils;
 import com.lehjr.numina.common.utils.HeatUtils;
-import com.lehjr.powersuits.common.config.ToolModuleConfig;
+import com.lehjr.powersuits.common.config.module.ToolModuleConfig;
 import com.lehjr.powersuits.common.constants.MPSConstants;
 import com.lehjr.powersuits.common.entity.LuxCapacitorEntity;
 import com.lehjr.powersuits.common.item.module.AbstractPowerModule;

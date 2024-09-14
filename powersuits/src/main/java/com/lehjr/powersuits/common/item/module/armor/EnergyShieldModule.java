@@ -7,7 +7,7 @@ import com.lehjr.numina.common.capabilities.module.tickable.PlayerTickModule;
 import com.lehjr.numina.common.constants.NuminaConstants;
 import com.lehjr.numina.common.registration.NuminaCapabilities;
 import com.lehjr.numina.common.utils.ElectricItemUtils;
-import com.lehjr.powersuits.common.config.ArmorModuleConfig;
+import com.lehjr.powersuits.common.config.module.ArmorModuleConfig;
 import com.lehjr.powersuits.common.constants.MPSConstants;
 import com.lehjr.powersuits.common.item.module.AbstractPowerModule;
 import net.minecraft.world.entity.player.Player;

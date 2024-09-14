@@ -1,16 +1,6 @@
 package com.lehjr.powersuits.common.base;
 
-import com.lehjr.numina.common.config.ConfigHelper;
-import com.lehjr.powersuits.client.config.MPSClientConfig;
 import com.lehjr.powersuits.client.sound.MPSSoundDictionary;
-import com.lehjr.powersuits.common.config.ArmorConfig;
-import com.lehjr.powersuits.common.config.ArmorModuleConfig;
-import com.lehjr.powersuits.common.config.CosmeticModuleConfig;
-import com.lehjr.powersuits.common.config.MPSCommonConfig;
-import com.lehjr.powersuits.common.config.PowerFistConfig;
-import com.lehjr.powersuits.common.config.ToolModuleConfig;
-import com.lehjr.powersuits.common.config.VisionModuleConfig;
-import com.lehjr.powersuits.common.config.WeaponModuleConfig;
 import com.lehjr.powersuits.common.constants.MPSConstants;
 import com.lehjr.powersuits.common.event.PlayerEventHandler;
 import com.lehjr.powersuits.common.network.MPSPackets;
@@ -25,7 +15,6 @@ import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
-import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;

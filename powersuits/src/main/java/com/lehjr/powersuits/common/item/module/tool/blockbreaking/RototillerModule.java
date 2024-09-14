@@ -5,7 +5,7 @@ import com.lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import com.lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
 import com.lehjr.numina.common.capabilities.module.rightclick.RightClickModule;
 import com.lehjr.numina.common.utils.ElectricItemUtils;
-import com.lehjr.powersuits.common.config.module.tool.blockbreaking.HoeModuleConfig;
+import com.lehjr.powersuits.common.config.module.HoeModuleConfig;
 import com.lehjr.powersuits.common.constants.MPSConstants;
 import com.lehjr.powersuits.common.item.module.AbstractPowerModule;
 import com.mojang.datafixers.util.Pair;

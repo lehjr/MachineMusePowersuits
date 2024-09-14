@@ -1,5 +1,10 @@
 package com.lehjr.powersuits.common.config;
 
+import com.lehjr.powersuits.common.config.module.ArmorModuleConfig;
+import com.lehjr.powersuits.common.config.module.CosmeticModuleConfig;
+import com.lehjr.powersuits.common.config.module.ToolModuleConfig;
+import com.lehjr.powersuits.common.config.module.VisionModuleConfig;
+import com.lehjr.powersuits.common.config.module.WeaponModuleConfig;
 import com.lehjr.powersuits.common.constants.MPSConstants;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
