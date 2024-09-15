@@ -49,6 +49,7 @@ public class NuminaCapabilities {
     public static final class ColorCap {
         public static final ItemCapability<IColorTag, Void> COLOR_ITEM = ItemCapability.createVoid(create("color"), IColorTag.class);
         public static final BlockCapability<IColorTag, Void> COLOR_BLOCK = BlockCapability.createVoid(create("color"), IColorTag.class);
+        public static final EntityCapability<IColorTag, Void> COLOR_ENTITY = EntityCapability.createVoid(create("color"), IColorTag.class);
     }
 
     @Nullable

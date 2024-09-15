@@ -39,10 +39,10 @@ public class MPSConfigurations {
 
         // Modules ----------------------------------------------------------------------------------------------------
         // Armor
-        registerCommon(modContainer, ArmorModuleConfig.MPS_ARMOR_MODULE_CONFIG_SPEC, "common/items/modules/armor-modules.toml");
+        registerCommon(modContainer, ArmorModuleConfig.MPS_ARMOR_MODULE_CONFIG_SPEC, "common/items/modules/armor.toml");
 
         // Cosmetic
-        registerCommon(modContainer, CosmeticModuleConfig.MPS_COSMETIC_MODULE_CONFIG_SPEC, "common/items/modules/cosmetic-modules.toml");
+        registerCommon(modContainer, CosmeticModuleConfig.MPS_COSMETIC_MODULE_CONFIG_SPEC, "common/items/modules/cosmetic.toml");
         // Energy Generation
         // TODO!!
         // Environmental
@@ -54,19 +54,19 @@ public class MPSConfigurations {
         // Movement
         // TODO!!
         // Tool - Axe
-        registerCommon(modContainer, AxeModuleConfig.MPS_AXE_MODULE_SPEC, "common/items/modules/tool/block_breaking/axes.toml");
+        registerCommon(modContainer, AxeModuleConfig.MPS_AXE_MODULE_SPEC, "common/items/modules/tool_axe.toml");
         // Tool - Pickaxe
-        registerCommon(modContainer, PickaxeModuleConfig.MPS_PICKAXE_MODULE_SPEC, "common/items/modules/tool/block_breaking/pickaxes.toml");
+        registerCommon(modContainer, PickaxeModuleConfig.MPS_PICKAXE_MODULE_SPEC, "common/items/modules/tool_pickaxe.toml");
         // Tool - Hoe
-        registerCommon(modContainer, HoeModuleConfig.MPS_HOE_MODULE_SPEC, "common/items/modules/tool/block_breaking/rototillers.toml");
+        registerCommon(modContainer, HoeModuleConfig.MPS_HOE_MODULE_SPEC, "common/items/modules/tool_rototiller.toml");
         // Tool - Shovel
-        registerCommon(modContainer, ShovelModuleConfig.MPS_SHOVEL_MODULE_SPEC, "common/items/modules/tool/block_breaking/shovels.toml");
+        registerCommon(modContainer, ShovelModuleConfig.MPS_SHOVEL_MODULE_SPEC, "common/items/modules/tool_shovels.toml");
         // Tool -Misc
-        registerCommon(modContainer, ToolModuleConfig.MPS_TOOL_MODULE_SPEC, "common/items/modules/tool-modules.toml");
+        registerCommon(modContainer, ToolModuleConfig.MPS_TOOL_MODULE_SPEC, "common/items/modules/tool.toml");
         // Vision
-        registerCommon(modContainer, VisionModuleConfig.MPS_VISION_MODULE_SPEC, "common/items/modules/vision-modules.toml");
+        registerCommon(modContainer, VisionModuleConfig.MPS_VISION_MODULE_SPEC, "common/items/modules/vision.toml");
         // Weapon
-        registerCommon(modContainer, WeaponModuleConfig.MPS_WEAPON_MODULE_SPEC, "common/items/modules/weapon-modules.toml");
+        registerCommon(modContainer, WeaponModuleConfig.MPS_WEAPON_MODULE_SPEC, "common/items/modules/weapon.toml");
     }
 
     static void registerClient(ModContainer modContainer, ModConfigSpec spec, String path) {

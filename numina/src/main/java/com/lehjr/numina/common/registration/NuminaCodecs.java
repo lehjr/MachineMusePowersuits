@@ -61,6 +61,19 @@ public class NuminaCodecs {
     // Create the DeferredRegister for attachment types
     public static final DeferredRegister<AttachmentType<?>> ATTACHMENT_TYPES = DeferredRegister.create(NeoForgeRegistries.Keys.ATTACHMENT_TYPES, NuminaConstants.MOD_ID);
 
+    public static final Supplier<AttachmentType<Integer>> COLOR_ATTACHMENT = ATTACHMENT_TYPES.register(
+        // ID of the attachment type
+        "color",
+        () -> AttachmentType
+            // A supplier for your default value, e.g. zero
+            .builder(() -> 0)
+            // A codec for serialization, this can be omitted if you don't want to serialize anything
+            .serialize(Codec.INT)
+            // Build the builder
+            .build()
+    );
+
+
     // Serialization via INBTSerializable
     public static final Supplier<AttachmentType<PlayerKeyStateStorage>> KEYSTATE_HANDLER = ATTACHMENT_TYPES.register(
             "keystate", () -> AttachmentType.serializable(() -> new PlayerKeyStateStorage()).build());

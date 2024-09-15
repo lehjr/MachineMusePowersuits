@@ -18,63 +18,24 @@ public class MPSPackets {
         PayloadRegistrar registrar = event.registrar("1.2.3");
 
         registrar.playToServer(
-                CreativeInstallPacketServerBound.ID,
-                CreativeInstallPacketServerBound.STREAM_CODEC,
-                CreativeInstallPacketServerBound::handle);
+            CreativeInstallPacketServerBound.ID,
+            CreativeInstallPacketServerBound.STREAM_CODEC,
+            CreativeInstallPacketServerBound::handle);
 
         registrar.playToClient(
-                CreativeInstallPacketClientBound.ID,
-                CreativeInstallPacketClientBound.STREAM_CODEC,
-                CreativeInstallPacketClientBound::handle);
-//
-//        //        CHANNEL_INSTANCE.registerMessage(
-////                i++,
-////                CPlaceRecipePacket.class,
-////                CPlaceRecipePacket::encode,
-////                CPlaceRecipePacket::decode,
-////                CPlaceRecipePacket::handle);
-////
-////        CHANNEL_INSTANCE.registerMessage(
-////                i++,
-////                SPlaceGhostRecipePacket.class,
-////                SPlaceGhostRecipePacket::encode,
-////                SPlaceGhostRecipePacket::decode,
-////                SPlaceGhostRecipePacket::handle);
-//
-        registrar.playToServer(
-                        ContainerGuiOpenPacket.ID,
-                        ContainerGuiOpenPacket.STREAM_CODEC,
-                        ContainerGuiOpenPacket::handle);
-//
-//
-//
-//
-////        CHANNEL_INSTANCE.registerMessage(
-////                i++,
-////                MusePacketCosmeticPreset.class,
-////                MusePacketCosmeticPreset::encode,
-////                MusePacketCosmeticPreset::decode,
-////                MusePacketCosmeticPreset::handle);
-//
-////        CHANNEL_INSTANCE.registerMessage(
-////                i++,
-////                MusePacketCosmeticPresetUpdate.class,
-////                MusePacketCosmeticPresetUpdate::encode,
-////                MusePacketCosmeticPresetUpdate::decode,
-////                MusePacketCosmeticPresetUpdate::handle);
-//
-//
-//        CHANNEL_INSTANCE.registerMessage(
-//                i++,
-//                ContainerGuiOpenPacket.class,
-//                ContainerGuiOpenPacket::write,
-//                ContainerGuiOpenPacket::read,
-//                ContainerGuiOpenPacket::handle);
+            CreativeInstallPacketClientBound.ID,
+            CreativeInstallPacketClientBound.STREAM_CODEC,
+            CreativeInstallPacketClientBound::handle);
 
+
+        registrar.playToServer(
+            ContainerGuiOpenPacket.ID,
+            ContainerGuiOpenPacket.STREAM_CODEC,
+            ContainerGuiOpenPacket::handle);
 
         registrar.playToClient(ToggleableModuleListClientBound.ID,
-                ToggleableModuleListClientBound.STREAM_CODEC,
-                ToggleableModuleListClientBound::handle);
+            ToggleableModuleListClientBound.STREAM_CODEC,
+            ToggleableModuleListClientBound::handle);
     }
 
     public static void sendToServer(CustomPacketPayload message) {

@@ -1,6 +1,7 @@
 package com.lehjr.powersuits.common.blockentity;
 
-import com.lehjr.numina.common.capabilities.render.color.ColorStorage;
+import com.lehjr.numina.common.base.NuminaLogger;
+import com.lehjr.numina.common.capabilities.render.color.ColorAttachmentStorage;
 import com.lehjr.numina.common.capabilities.render.color.IColorTag;
 import com.lehjr.numina.common.constants.NuminaConstants;
 import com.lehjr.numina.common.math.Color;
@@ -17,30 +18,22 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.client.model.data.ModelData;
 import net.neoforged.neoforge.common.util.Lazy;
-import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.Objects;
 
 public class LuxCapacitorBlockEntity extends BlockEntity {
-    final ColorStorage colorStorage = new ColorStorage();
-    final Lazy<IColorTag> colorHolder;
+    private final ColorAttachmentStorage colorStorage = createColorStorage();
 
     public LuxCapacitorBlockEntity(BlockPos pPos, BlockState pBlockState) {
         super(MPSBlocks.LUX_CAP_BLOCK_ENTITY_TYPE.get(), pPos, pBlockState);
-        colorHolder = Lazy.of(()-> colorStorage);
     }
 
-    public LuxCapacitorBlockEntity setColor(Color color) {
-        if(this.level != null) {
-            colorHolder.get().setColor(color);
-            if(!this.level.isClientSide) {
-                this.setChanged();
-                // Added to make block sync on creation when launched from power fist
-                level.blockUpdated(getBlockPos(), level.getBlockState(getBlockPos()).getBlock());
-            }
-        }
-        return this;
+    private final Lazy<IColorTag> colorHandler = Lazy.of(() -> colorStorage);
+
+    public Color getStoredColor() {
+        return getColorHandler().getColor();
     }
 
     @Override
@@ -60,11 +53,7 @@ public class LuxCapacitorBlockEntity extends BlockEntity {
     @Nonnull
     @Override
     public ModelData getModelData() {
-        return LuxCapHelper.getItemModelData(getColor().getARGBInt());
-    }
-
-    public Color getColor() {
-        return colorHolder.get().getColor();
+        return LuxCapHelper.getItemModelData(getStoredColor().getARGBInt());
     }
 
     @Override
@@ -76,7 +65,6 @@ public class LuxCapacitorBlockEntity extends BlockEntity {
     public CompoundTag getUpdateTag(HolderLookup.Provider pRegistries) {
         CompoundTag tag = super.getUpdateTag(pRegistries);
         saveAdditional(tag, pRegistries);
-
         return tag;
     }
 
@@ -84,7 +72,6 @@ public class LuxCapacitorBlockEntity extends BlockEntity {
     public void handleUpdateTag(CompoundTag tag, HolderLookup.Provider lookupProvider) {
         super.handleUpdateTag(tag, lookupProvider);
     }
-
 
     @Override
     public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt, HolderLookup.Provider lookupProvider) {
@@ -96,5 +83,19 @@ public class LuxCapacitorBlockEntity extends BlockEntity {
     public Packet<ClientGamePacketListener> getUpdatePacket() {
         return ClientboundBlockEntityDataPacket.create(this);
     }
-}
 
+    @Nonnull
+    private ColorAttachmentStorage createColorStorage() {
+        return new ColorAttachmentStorage(this) {
+            @Override
+            public void setColor(Color color) {
+                super.setColor(color);
+                requestModelDataUpdate(); // update the color data when created
+            }
+        };
+    }
+
+    public IColorTag getColorHandler() {
+        return colorHandler.get();
+    }
+}

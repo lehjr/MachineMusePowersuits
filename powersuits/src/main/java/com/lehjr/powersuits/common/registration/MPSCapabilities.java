@@ -3,6 +3,7 @@ package com.lehjr.powersuits.common.registration;
 import com.lehjr.numina.common.capabilities.energy.ModularItemEnergyWrapper;
 import com.lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import com.lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
+import com.lehjr.numina.common.capabilities.render.color.ColorAttachmentStorage;
 import com.lehjr.numina.common.capabilities.render.hud.HudModule;
 import com.lehjr.numina.common.registration.NuminaCapabilities;
 import com.lehjr.powersuits.common.capabilities.item.armor.PowerArmorHeatWrapper;
@@ -62,6 +63,22 @@ public class MPSCapabilities {
      */
     public static void registerCapabilities(RegisterCapabilitiesEvent event) {
         // Block Entity ===============================================================================================
+        event.registerBlockEntity(NuminaCapabilities.ColorCap.COLOR_BLOCK, MPSBlocks.LUX_CAP_BLOCK_ENTITY_TYPE.get(), (o, direction)-> new ColorAttachmentStorage(o));
+
+
+        //         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, NuminaBlockEntities.CHARGING_BASE_BLOCK_ENTITY.get(), (o, direction) -> o.getItemHandler());
+        //        event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, NuminaBlockEntities.CHARGING_BASE_BLOCK_ENTITY.get(), (o, direction) -> o.getEnergyHandler());
+
+
+
+//        event.registerEntity(NuminaCapabilities.PLAYER_KEYSTATES, EntityType.PLAYER, (player, context)-> player.getData(NuminaCodecs.KEYSTATE_HANDLER));
+
+
+
+
+
+
+
         // Todo?
 
         // Armor ======================================================================================================

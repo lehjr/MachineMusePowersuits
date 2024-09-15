@@ -26,17 +26,4 @@ public class ColorStorage implements IColorTag, INBTSerializable<Tag> {
     public void setColor(Color color) {
         this.color = color;
     }
-
-    @Override
-    public Tag serializeNBT(HolderLookup.Provider provider) {
-        return IntTag.valueOf(color.getARGBInt());
-    }
-
-    @Override
-    public void deserializeNBT(HolderLookup.Provider provider, Tag nbt) {
-        if (!(nbt instanceof IntTag intNbt)) {
-            throw new IllegalArgumentException("Can not deserialize to an instance that isn't the default implementation");
-        }
-        this.color = new Color(intNbt.getAsInt());
-    }
 }

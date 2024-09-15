@@ -131,13 +131,13 @@ public class LuxCapacitorEntity extends ThrowableProjectile implements IEntityWi
                     level().setBlockAndUpdate(pos, state);
                     level().setBlockEntity(new LuxCapacitorBlockEntity(pos, state));
                     BlockEntity blockEntity = level().getBlockEntity(pos);
+//
                     if (blockEntity instanceof LuxCapacitorBlockEntity) {
                         @Nullable IColorTag cap = level().getCapability(NuminaCapabilities.ColorCap.COLOR_BLOCK, pos, null);
                         if (cap != null) {
                             cap.setColor(color);
                         }
-
-                        ((LuxCapacitorBlockEntity) blockEntity).setColor(color);
+                        level().sendBlockUpdated(pos, level().getBlockState(pos), level().getBlockState(pos), LuxCapacitorBlock.UPDATE_CLIENTS);
                         return true;
                     }
                     NuminaLogger.logError("failed to spawn block entity?");
@@ -147,13 +147,8 @@ public class LuxCapacitorEntity extends ThrowableProjectile implements IEntityWi
         return false;
     }
 
-//    @Override
-//    protected void defineSynchedData() {
-//    }
-
-
     @Override
-    protected void defineSynchedData(SynchedEntityData.Builder pBuilder) {
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
 
     }
 
