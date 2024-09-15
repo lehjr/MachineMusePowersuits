@@ -5,6 +5,7 @@ import com.lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import com.lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
 import com.lehjr.numina.common.capabilities.module.rightclick.RightClickModule;
 import com.lehjr.numina.common.utils.ElectricItemUtils;
+import com.lehjr.powersuits.common.config.module.ToolModuleConfig;
 import com.lehjr.powersuits.common.constants.MPSConstants;
 import com.lehjr.powersuits.common.item.module.AbstractPowerModule;
 import net.minecraft.core.BlockPos;
@@ -43,6 +44,16 @@ public class ShearsModule extends AbstractPowerModule {
             super(module, ModuleCategory.TOOL, ModuleTarget.TOOLONLY);
             addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, 1000, "FE");
             addBaseProperty(MPSConstants.HARVEST_SPEED , 8, "x");
+        }
+
+        @Override
+        public boolean isAllowed() {
+            return ToolModuleConfig.shearsModuleIsAllowed;
+        }
+
+        @Override
+        public int getTier() {
+            return super.getTier();
         }
 
         @Override

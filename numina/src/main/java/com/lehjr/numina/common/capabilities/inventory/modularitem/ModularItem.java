@@ -190,6 +190,7 @@ public class ModularItem extends ComponentItemHandler implements IModularItem {
         if (!isModuleValid(module)) {
             IPowerModule cap = getModuleCapability(module);
             if (cap == null) {
+                NuminaLogger.logDebug("no capability for module");
                 return false;
             }
         }

@@ -18,10 +18,17 @@ public class ToolModuleConfig {
     private static final ModConfigSpec.BooleanValue LEAF_BLOWER_MODULE__IS_ALLOWED = LEAF_BLOWER_MODULE__SETTINGS_BUILDER.define(NuminaConstants.CONFIG_IS_ALLOWED, true);
 
     // Lux Capacitor
-    private static final ModConfigSpec.Builder LUX_CAPACITOR_MODULE__SETTINGS_BUILDER = LEAF_BLOWER_MODULE__SETTINGS_BUILDER.pop().push("Lux Capacitor Module");
+    private static final ModConfigSpec.Builder LUX_CAPACITOR_MODULE__SETTINGS_BUILDER = LEAF_BLOWER_MODULE__SETTINGS_BUILDER.pop().push("Lux_Capacitor_Module");
     private static final ModConfigSpec.BooleanValue LUX_CAPACITOR_MODULE__IS_ALLOWED = LUX_CAPACITOR_MODULE__SETTINGS_BUILDER.define(NuminaConstants.CONFIG_IS_ALLOWED, true);
     private static final ModConfigSpec.DoubleValue LUX_CAPACITOR_MODULE__ENERGY_CONSUMPTION_BASE = LUX_CAPACITOR_MODULE__SETTINGS_BUILDER.defineInRange(MPSConstants.ENERGY_CONSUMPTION_BASE, 1000, 0, 100000.0D);
-    public static final ModConfigSpec MPS_TOOL_MODULE_SPEC = LUX_CAPACITOR_MODULE__SETTINGS_BUILDER.build();
+
+    // Shears
+    private static final ModConfigSpec.Builder SHEARS_MODULE__SETTINGS_BUILDER = LUX_CAPACITOR_MODULE__SETTINGS_BUILDER.pop().push("Shears_Module");
+    private static final ModConfigSpec.BooleanValue SHEARS_MODULE__IS_ALLOWED = SHEARS_MODULE__SETTINGS_BUILDER.define(NuminaConstants.CONFIG_IS_ALLOWED, true);
+    private static final ModConfigSpec.DoubleValue SHEARS_MODULE__ENERGY_CONSUMPTION_BASE = SHEARS_MODULE__SETTINGS_BUILDER.defineInRange(MPSConstants.ENERGY_CONSUMPTION_BASE, 1000, 0, 100000.0D);
+    private static final ModConfigSpec.DoubleValue SHEARS_MODULE__HARVEST_SPEED_BASE = SHEARS_MODULE__SETTINGS_BUILDER.defineInRange(MPSConstants.HARVEST_SPEED_BASE, 4, 0, 100.0D);
+
+    public static final ModConfigSpec MPS_TOOL_MODULE_SPEC = SHEARS_MODULE__SETTINGS_BUILDER.build();
 
     // Flint and Steel
     public static boolean flintAndSteelModuleIsAllowed;
@@ -34,6 +41,10 @@ public class ToolModuleConfig {
     public static boolean luxCapacitorModuleIsAllowed;
     public static double luxCapacitorEnergyConsumptionBase;
 
+    // Shears
+    public static boolean shearsModuleIsAllowed;
+    public static double shearsModuleEnergyConsumptionBase;
+    public static double shearsModuleEnergyHarvestSpeedBase;
 
     public static void onLoad(final ModConfigEvent event) {
         if (event.getConfig().getSpec() == MPS_TOOL_MODULE_SPEC) {
@@ -48,6 +59,11 @@ public class ToolModuleConfig {
             // Lux Capacitor
             luxCapacitorModuleIsAllowed = LUX_CAPACITOR_MODULE__IS_ALLOWED.get();
             luxCapacitorEnergyConsumptionBase = LUX_CAPACITOR_MODULE__ENERGY_CONSUMPTION_BASE.get();
+
+            // Shears
+            shearsModuleIsAllowed = SHEARS_MODULE__IS_ALLOWED.get();
+            shearsModuleEnergyConsumptionBase = SHEARS_MODULE__ENERGY_CONSUMPTION_BASE.get();
+            shearsModuleEnergyHarvestSpeedBase = SHEARS_MODULE__HARVEST_SPEED_BASE.get();
         }
     }
 }
