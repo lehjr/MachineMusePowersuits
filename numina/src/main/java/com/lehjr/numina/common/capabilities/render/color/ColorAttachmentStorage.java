@@ -1,6 +1,5 @@
 package com.lehjr.numina.common.capabilities.render.color;
 
-import com.lehjr.numina.common.base.NuminaLogger;
 import com.lehjr.numina.common.math.Color;
 import com.lehjr.numina.common.registration.NuminaCodecs;
 import net.neoforged.neoforge.attachment.AttachmentHolder;
