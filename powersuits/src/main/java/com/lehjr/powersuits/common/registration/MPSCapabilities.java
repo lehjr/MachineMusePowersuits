@@ -9,6 +9,7 @@ import com.lehjr.numina.common.registration.NuminaCapabilities;
 import com.lehjr.powersuits.common.capabilities.item.armor.PowerArmorHeatWrapper;
 import com.lehjr.powersuits.common.capabilities.item.armor.PowerArmorModularItemWrapper;
 import com.lehjr.powersuits.common.capabilities.item.armor.PowerArmorRenderWrapper;
+import com.lehjr.powersuits.common.capabilities.item.module.PortableCraftingCapability;
 import com.lehjr.powersuits.common.capabilities.item.tool.PowerFistHeatWrapper;
 import com.lehjr.powersuits.common.capabilities.item.tool.PowerFistModeChangingWrapper;
 import com.lehjr.powersuits.common.capabilities.item.tool.PowerFistRenderWrapper;
@@ -326,6 +327,9 @@ public class MPSCapabilities {
         event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new ShovelModule.BlockBreaker(stack, 2), MPSItems.IRON_SHOVEL_MODULE.get());
         event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new ShovelModule.BlockBreaker(stack, 3), MPSItems.DIAMOND_SHOVEL_MODULE.get());
         event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new ShovelModule.BlockBreaker(stack, 4), MPSItems.NETHERITE_SHOVEL_MODULE.get());
+
+        // portable crafting table
+        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new PortableCraftingCapability.RightClickie(stack), Items.CRAFTING_TABLE);
 
 
 

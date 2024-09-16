@@ -28,7 +28,11 @@ public class ToolModuleConfig {
     private static final ModConfigSpec.DoubleValue SHEARS_MODULE__ENERGY_CONSUMPTION_BASE = SHEARS_MODULE__SETTINGS_BUILDER.defineInRange(MPSConstants.ENERGY_CONSUMPTION_BASE, 1000, 0, 100000.0D);
     private static final ModConfigSpec.DoubleValue SHEARS_MODULE__HARVEST_SPEED_BASE = SHEARS_MODULE__SETTINGS_BUILDER.defineInRange(MPSConstants.HARVEST_SPEED_BASE, 4, 0, 100.0D);
 
-    public static final ModConfigSpec MPS_TOOL_MODULE_SPEC = SHEARS_MODULE__SETTINGS_BUILDER.build();
+    // Crafting Table
+    private static final ModConfigSpec.Builder CRAFTING_TABLE_AS_A_MODULE__SETTINGS_BUILDER = SHEARS_MODULE__SETTINGS_BUILDER.pop().push("Crafting_Table_As_Module");
+    private static final ModConfigSpec.BooleanValue CRAFTING_TABLE_AS_A_MODULE__IS_ALLOWED = SHEARS_MODULE__SETTINGS_BUILDER.define(NuminaConstants.CONFIG_IS_ALLOWED, true);
+
+    public static final ModConfigSpec MPS_TOOL_MODULE_SPEC = CRAFTING_TABLE_AS_A_MODULE__SETTINGS_BUILDER.build();
 
     // Flint and Steel
     public static boolean flintAndSteelModuleIsAllowed;
@@ -45,6 +49,9 @@ public class ToolModuleConfig {
     public static boolean shearsModuleIsAllowed;
     public static double shearsModuleEnergyConsumptionBase;
     public static double shearsModuleEnergyHarvestSpeedBase;
+
+    // Crafting Table
+    public static boolean craftingTableIsAllowed;
 
     public static void onLoad(final ModConfigEvent event) {
         if (event.getConfig().getSpec() == MPS_TOOL_MODULE_SPEC) {
@@ -64,6 +71,9 @@ public class ToolModuleConfig {
             shearsModuleIsAllowed = SHEARS_MODULE__IS_ALLOWED.get();
             shearsModuleEnergyConsumptionBase = SHEARS_MODULE__ENERGY_CONSUMPTION_BASE.get();
             shearsModuleEnergyHarvestSpeedBase = SHEARS_MODULE__HARVEST_SPEED_BASE.get();
+
+            // Crafting Table
+            craftingTableIsAllowed = CRAFTING_TABLE_AS_A_MODULE__IS_ALLOWED.get();
         }
     }
 }
