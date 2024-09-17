@@ -9,208 +9,183 @@ import net.neoforged.neoforge.common.ModConfigSpec;
 
 @EventBusSubscriber(modid = MPSConstants.MOD_ID, bus = EventBusSubscriber.Bus.MOD)
 public class ArmorConfig {
-    // Prototype Armor ------------------------------------------------------------------------------------------------
-    // Helm
-    private static final ModConfigSpec.Builder ARMOR_HELM_1__SETTINGS_BUILDER = new ModConfigSpec.Builder().push("Armor").push("Tier_1").push("Helm");
-    private static final ModConfigSpec.IntValue ARMOR_HELM_1_INVENTORY_SLOTS = ARMOR_HELM_1__SETTINGS_BUILDER.defineInRange(MPSConstants.CONFIG_INVENTORY_SLOTS, 4, 0, 10);
-    private static final ModConfigSpec.DoubleValue ARMOR_HELM_1__MAX_HEAT = ARMOR_HELM_1__SETTINGS_BUILDER.defineInRange(NuminaConstants.MAXIMUM_HEAT, 1.0, 0, 1000.0D);
+    // Helm -----------------------------------------------------------------------------------------------------------
+    private static final ModConfigSpec.Builder HELM_1__SETTINGS_BUILDER = new ModConfigSpec.Builder().push("Armor").push("Helm").push("Tier_1");
+    private static final ModConfigSpec.IntValue HELM_1_INVENTORY_SLOTS = HELM_1__SETTINGS_BUILDER.defineInRange(MPSConstants.CONFIG_INVENTORY_SLOTS, 4, 0, 10);
+    private static final ModConfigSpec.DoubleValue HELM_1__MAX_HEAT = HELM_1__SETTINGS_BUILDER.defineInRange(NuminaConstants.MAXIMUM_HEAT, 1.0, 0, 1000.0D);
 
-    // ChestPlate
-    private static final ModConfigSpec.Builder ARMOR_CHESTPLATE_1__SETTINGS_BUILDER = ARMOR_HELM_1__SETTINGS_BUILDER.pop().push("ChestPlate");
-    private static final ModConfigSpec.IntValue ARMOR_CHESTPLATE_1__INVENTORY_SLOTS = ARMOR_CHESTPLATE_1__SETTINGS_BUILDER.defineInRange(MPSConstants.CONFIG_INVENTORY_SLOTS, 6, 0, 10);
-    private static final ModConfigSpec.DoubleValue ARMOR_CHESTPLATE_1__MAX_HEAT = ARMOR_CHESTPLATE_1__SETTINGS_BUILDER.defineInRange(NuminaConstants.MAXIMUM_HEAT, 4.0, 0, 1000.0D);
+    private static final ModConfigSpec.Builder HELM_2__SETTINGS_BUILDER = HELM_1__SETTINGS_BUILDER.pop().push("Tier_2");
+    private static final ModConfigSpec.IntValue HELM_2__INVENTORY_SLOTS = HELM_2__SETTINGS_BUILDER.defineInRange(MPSConstants.CONFIG_INVENTORY_SLOTS, 4, 0, 10);
+    private static final ModConfigSpec.DoubleValue HELM_2__MAX_HEAT = HELM_2__SETTINGS_BUILDER.defineInRange(NuminaConstants.MAXIMUM_HEAT, 50.0, 0, 1000.0D);
 
-    // Leggins
-    private static final ModConfigSpec.Builder ARMOR_LEGGINGS_1__SETTINGS_BUILDER = ARMOR_CHESTPLATE_1__SETTINGS_BUILDER.pop().push("Leggings");
-    private static final ModConfigSpec.IntValue ARMOR_LEGGINGS_1__INVENTORY_SLOTS = ARMOR_LEGGINGS_1__SETTINGS_BUILDER.defineInRange(MPSConstants.CONFIG_INVENTORY_SLOTS, 4, 0, 10);
-    private static final ModConfigSpec.DoubleValue ARMOR_LEGGINGS_1__MAX_HEAT = ARMOR_LEGGINGS_1__SETTINGS_BUILDER.defineInRange(NuminaConstants.MAXIMUM_HEAT, 3.0, 0, 1000.0D);
+    private static final ModConfigSpec.Builder HELM_3__SETTINGS_BUILDER = HELM_2__SETTINGS_BUILDER.pop().push("Tier_3");
+    private static final ModConfigSpec.IntValue HELM_3__INVENTORY_SLOTS = HELM_3__SETTINGS_BUILDER.defineInRange(MPSConstants.CONFIG_INVENTORY_SLOTS, 4, 0, 10);
+    private static final ModConfigSpec.DoubleValue HELM_3__MAX_HEAT = HELM_3__SETTINGS_BUILDER.defineInRange(NuminaConstants.MAXIMUM_HEAT, 50.0, 0, 1000.0D);
 
-    // Boots
-    private static final ModConfigSpec.Builder ARMOR_BOOTS_1__SETTINGS_BUILDER = ARMOR_LEGGINGS_1__SETTINGS_BUILDER.pop().push("Boots");
-    private static final ModConfigSpec.IntValue ARMOR_BOOTS_1__INVENTORY_SLOTS = ARMOR_BOOTS_1__SETTINGS_BUILDER.defineInRange(MPSConstants.CONFIG_INVENTORY_SLOTS, 4, 0, 10);
-    private static final ModConfigSpec.DoubleValue ARMOR_BOOTS_1__MAX_HEAT = ARMOR_BOOTS_1__SETTINGS_BUILDER.defineInRange(NuminaConstants.MAXIMUM_HEAT, 1.0, 0, 1000.0D);
+    private static final ModConfigSpec.Builder HELM_4__SETTINGS_BUILDER = HELM_3__SETTINGS_BUILDER.pop().push("Tier_4");
+    private static final ModConfigSpec.IntValue HELM_4__INVENTORY_SLOTS = HELM_4__SETTINGS_BUILDER.defineInRange(MPSConstants.CONFIG_INVENTORY_SLOTS, 4, 0, 10);
+    private static final ModConfigSpec.DoubleValue HELMET_4__MAX_HEAT = HELM_4__SETTINGS_BUILDER.defineInRange(NuminaConstants.MAXIMUM_HEAT, 50.0, 0, 1000.0D);
 
-    // Prototype Armor Mk2 --------------------------------------------------------------------------------------------
-    // Helm
-    private static final ModConfigSpec.Builder ARMOR_HELM_2__SETTINGS_BUILDER = ARMOR_BOOTS_1__SETTINGS_BUILDER.pop().pop().push("Tier_2").push("Helm");
-    private static final ModConfigSpec.IntValue ARMOR_HELM_2__INVENTORY_SLOTS = ARMOR_HELM_2__SETTINGS_BUILDER.defineInRange(MPSConstants.CONFIG_INVENTORY_SLOTS, 4, 0, 10);
-    private static final ModConfigSpec.DoubleValue ARMOR_HELM_2__MAX_HEAT = ARMOR_HELM_2__SETTINGS_BUILDER.defineInRange(NuminaConstants.MAXIMUM_HEAT, 50.0, 0, 1000.0D);
+    // ChestPlate -----------------------------------------------------------------------------------------------------
+    private static final ModConfigSpec.Builder CHESTPLATE_1__SETTINGS_BUILDER = HELM_4__SETTINGS_BUILDER.pop().pop().push("ChestPlate").push("Tier_1");
+    private static final ModConfigSpec.IntValue CHESTPLATE_1__INVENTORY_SLOTS = CHESTPLATE_1__SETTINGS_BUILDER.defineInRange(MPSConstants.CONFIG_INVENTORY_SLOTS, 6, 0, 10);
+    private static final ModConfigSpec.DoubleValue CHESTPLATE_1__MAX_HEAT = CHESTPLATE_1__SETTINGS_BUILDER.defineInRange(NuminaConstants.MAXIMUM_HEAT, 4.0, 0, 1000.0D);
 
-    // ChestPlate
-    private static final ModConfigSpec.Builder ARMOR_CHESTPLATE_2__SETTINGS_BUILDER = ARMOR_HELM_2__SETTINGS_BUILDER.pop().push("ChestPlate");
-    private static final ModConfigSpec.IntValue ARMOR_CHESTPLATE_2__INVENTORY_SLOTS = ARMOR_CHESTPLATE_2__SETTINGS_BUILDER.defineInRange(MPSConstants.CONFIG_INVENTORY_SLOTS, 4, 0, 10);
-    private static final ModConfigSpec.DoubleValue ARMOR_CHESTPLATE_2__MAX_HEAT = ARMOR_CHESTPLATE_2__SETTINGS_BUILDER.defineInRange(NuminaConstants.MAXIMUM_HEAT, 50.0, 0, 1000.0D);
+    private static final ModConfigSpec.Builder CHESTPLATE_2__SETTINGS_BUILDER = CHESTPLATE_1__SETTINGS_BUILDER.pop().push("Tier_2");
+    private static final ModConfigSpec.IntValue CHESTPLATE_2__INVENTORY_SLOTS = CHESTPLATE_2__SETTINGS_BUILDER.defineInRange(MPSConstants.CONFIG_INVENTORY_SLOTS, 4, 0, 10);
+    private static final ModConfigSpec.DoubleValue CHESTPLATE_2__MAX_HEAT = CHESTPLATE_2__SETTINGS_BUILDER.defineInRange(NuminaConstants.MAXIMUM_HEAT, 50.0, 0, 1000.0D);
 
-    // Leggins
-    private static final ModConfigSpec.Builder TIER_2_ARMOR_LEGGINGS__SETTINGS_BUILDER = ARMOR_CHESTPLATE_2__SETTINGS_BUILDER.pop().push("Leggings");
-    private static final ModConfigSpec.IntValue ARMOR_LEGGINGS_2__INVENTORY_SLOTS = TIER_2_ARMOR_LEGGINGS__SETTINGS_BUILDER.defineInRange(MPSConstants.CONFIG_INVENTORY_SLOTS, 4, 0, 10);
-    private static final ModConfigSpec.DoubleValue ARMOR_LEGGINGS_2__MAX_HEAT = TIER_2_ARMOR_LEGGINGS__SETTINGS_BUILDER.defineInRange(NuminaConstants.MAXIMUM_HEAT, 50.0, 0, 1000.0D);
+    private static final ModConfigSpec.Builder CHESTPLATE_3__SETTINGS_BUILDER = CHESTPLATE_2__SETTINGS_BUILDER.pop().push("Tier_3");
+    private static final ModConfigSpec.IntValue CHESTPLATE_3__INVENTORY_SLOTS = CHESTPLATE_3__SETTINGS_BUILDER.defineInRange(MPSConstants.CONFIG_INVENTORY_SLOTS, 4, 0, 10);
+    private static final ModConfigSpec.DoubleValue CHESTPLATE_3__MAX_HEAT = CHESTPLATE_3__SETTINGS_BUILDER.defineInRange(NuminaConstants.MAXIMUM_HEAT, 50.0, 0, 1000.0D);
 
-    // Boots
-    private static final ModConfigSpec.Builder TIER_2_ARMOR_BOOTS__SETTINGS_BUILDER = TIER_2_ARMOR_LEGGINGS__SETTINGS_BUILDER.pop().push("Boots");
-    private static final ModConfigSpec.IntValue ARMOR_BOOTS_2__INVENTORY_SLOTS = TIER_2_ARMOR_BOOTS__SETTINGS_BUILDER.defineInRange(MPSConstants.CONFIG_INVENTORY_SLOTS, 4, 0, 10);
-    private static final ModConfigSpec.DoubleValue ARMOR_BOOTS_2__MAX_HEAT = TIER_2_ARMOR_BOOTS__SETTINGS_BUILDER.defineInRange(NuminaConstants.MAXIMUM_HEAT, 50.0, 0, 1000.0D);
+    private static final ModConfigSpec.Builder CHESTPLATE_4__SETTINGS_BUILDER = CHESTPLATE_3__SETTINGS_BUILDER.pop().push("Tier_4");
+    private static final ModConfigSpec.IntValue CHESTPLATE_4__INVENTORY_SLOTS = CHESTPLATE_4__SETTINGS_BUILDER.defineInRange(MPSConstants.CONFIG_INVENTORY_SLOTS, 4, 0, 10);
+    private static final ModConfigSpec.DoubleValue CHESTPLATE_4__MAX_HEAT = CHESTPLATE_4__SETTINGS_BUILDER.defineInRange(NuminaConstants.MAXIMUM_HEAT, 50.0, 0, 1000.0D);
 
-    // Armor Mk3 ------------------------------------------------------------------------------------------------------
-    // Helm
-    private static final ModConfigSpec.Builder TIER_3_ARMOR_HELM__SETTINGS_BUILDER = TIER_2_ARMOR_BOOTS__SETTINGS_BUILDER.pop().pop().push("Tier_3").push("Helm");
-    private static final ModConfigSpec.IntValue ARMOR_HELM_3__INVENTORY_SLOTS = TIER_3_ARMOR_HELM__SETTINGS_BUILDER.defineInRange(MPSConstants.CONFIG_INVENTORY_SLOTS, 4, 0, 10);
-    private static final ModConfigSpec.DoubleValue ARMOR_HELM_3__MAX_HEAT = TIER_3_ARMOR_HELM__SETTINGS_BUILDER.defineInRange(NuminaConstants.MAXIMUM_HEAT, 50.0, 0, 1000.0D);
+    // Leggins --------------------------------------------------------------------------------------------------------
+    private static final ModConfigSpec.Builder LEGGINGS_1__SETTINGS_BUILDER = CHESTPLATE_4__SETTINGS_BUILDER.pop().pop().push("Leggings").push("Tier_1");
+    private static final ModConfigSpec.IntValue LEGGINGS_1__INVENTORY_SLOTS = LEGGINGS_1__SETTINGS_BUILDER.defineInRange(MPSConstants.CONFIG_INVENTORY_SLOTS, 4, 0, 10);
+    private static final ModConfigSpec.DoubleValue LEGGINGS_1__MAX_HEAT = LEGGINGS_1__SETTINGS_BUILDER.defineInRange(NuminaConstants.MAXIMUM_HEAT, 3.0, 0, 1000.0D);
 
-    // ChestPlate
-    private static final ModConfigSpec.Builder TIER_3_ARMOR_CHESTPLATE__SETTINGS_BUILDER = TIER_3_ARMOR_HELM__SETTINGS_BUILDER.pop().push("ChestPlate");
-    private static final ModConfigSpec.IntValue ARMOR_CHESTPLATE_3__INVENTORY_SLOTS = TIER_3_ARMOR_CHESTPLATE__SETTINGS_BUILDER.defineInRange(MPSConstants.CONFIG_INVENTORY_SLOTS, 4, 0, 10);
-    private static final ModConfigSpec.DoubleValue ARMOR_CHESTPLATE_3__MAX_HEAT = TIER_3_ARMOR_CHESTPLATE__SETTINGS_BUILDER.defineInRange(NuminaConstants.MAXIMUM_HEAT, 50.0, 0, 1000.0D);
+    private static final ModConfigSpec.Builder LEGGINGS_2__SETTINGS_BUILDER = LEGGINGS_1__SETTINGS_BUILDER.pop().push("Tier_2");
+    private static final ModConfigSpec.IntValue LEGGINGS_2__INVENTORY_SLOTS = LEGGINGS_2__SETTINGS_BUILDER.defineInRange(MPSConstants.CONFIG_INVENTORY_SLOTS, 4, 0, 10);
+    private static final ModConfigSpec.DoubleValue LEGGINGS_2__MAX_HEAT = LEGGINGS_2__SETTINGS_BUILDER.defineInRange(NuminaConstants.MAXIMUM_HEAT, 50.0, 0, 1000.0D);
 
-    // Leggins
-    private static final ModConfigSpec.Builder TIER_3_ARMOR_LEGGINGS__SETTINGS_BUILDER = TIER_3_ARMOR_CHESTPLATE__SETTINGS_BUILDER.pop().push("Armor Leggings");
-    private static final ModConfigSpec.IntValue ARMOR_LEGGINGS_3__INVENTORY_SLOTS = TIER_3_ARMOR_LEGGINGS__SETTINGS_BUILDER.defineInRange(MPSConstants.CONFIG_INVENTORY_SLOTS, 4, 0, 10);
-    private static final ModConfigSpec.DoubleValue ARMOR_LEGGINGS_3__MAX_HEAT = TIER_3_ARMOR_LEGGINGS__SETTINGS_BUILDER.defineInRange(NuminaConstants.MAXIMUM_HEAT, 50.0, 0, 1000.0D);
+    private static final ModConfigSpec.Builder LEGGINGS_3__SETTINGS_BUILDER = LEGGINGS_2__SETTINGS_BUILDER.pop().push("Tier_3");
+    private static final ModConfigSpec.IntValue LEGGINGS_3__INVENTORY_SLOTS = LEGGINGS_3__SETTINGS_BUILDER.defineInRange(MPSConstants.CONFIG_INVENTORY_SLOTS, 4, 0, 10);
+    private static final ModConfigSpec.DoubleValue LEGGINGS_3__MAX_HEAT = LEGGINGS_3__SETTINGS_BUILDER.defineInRange(NuminaConstants.MAXIMUM_HEAT, 50.0, 0, 1000.0D);
 
-    // Boots
-    private static final ModConfigSpec.Builder TIER_3_ARMOR_BOOTS__SETTINGS_BUILDER = TIER_3_ARMOR_LEGGINGS__SETTINGS_BUILDER.pop().push("Tier 3 Armor Boots");
-    private static final ModConfigSpec.IntValue ARMOR_BOOTS_3__INVENTORY_SLOTS = TIER_3_ARMOR_BOOTS__SETTINGS_BUILDER.defineInRange(MPSConstants.CONFIG_INVENTORY_SLOTS, 4, 0, 10);
-    private static final ModConfigSpec.DoubleValue ARMOR_BOOTS_3__MAX_HEAT = TIER_3_ARMOR_BOOTS__SETTINGS_BUILDER.defineInRange(NuminaConstants.MAXIMUM_HEAT, 50.0, 0, 1000.0D);
+    private static final ModConfigSpec.Builder LEGGINGS_4__SETTINGS_BUILDER = LEGGINGS_3__SETTINGS_BUILDER.pop().push("Tier_4");
+    private static final ModConfigSpec.IntValue LEGGINGS_4__INVENTORY_SLOTS = LEGGINGS_4__SETTINGS_BUILDER.defineInRange(MPSConstants.CONFIG_INVENTORY_SLOTS, 4, 0, 10);
+    private static final ModConfigSpec.DoubleValue LEGGINGS_4__MAX_HEAT = LEGGINGS_4__SETTINGS_BUILDER.defineInRange(NuminaConstants.MAXIMUM_HEAT, 50.0, 0, 1000.0D);
 
-    // Armor Mk4 ------------------------------------------------------------------------------------------------------
-    // Helm
-    private static final ModConfigSpec.Builder TIER_4_ARMOR_HELM__SETTINGS_BUILDER = TIER_3_ARMOR_BOOTS__SETTINGS_BUILDER.pop().pop().push("Tier_4").push("Helm");
-    private static final ModConfigSpec.IntValue ARMOR_HELM_4__INVENTORY_SLOTS = TIER_4_ARMOR_HELM__SETTINGS_BUILDER.defineInRange(MPSConstants.CONFIG_INVENTORY_SLOTS, 4, 0, 10);
-    private static final ModConfigSpec.DoubleValue ARMOR_HELMET_4__MAX_HEAT = TIER_4_ARMOR_HELM__SETTINGS_BUILDER.defineInRange(NuminaConstants.MAXIMUM_HEAT, 50.0, 0, 1000.0D);
+    // Boots ----------------------------------------------------------------------------------------------------------
+    private static final ModConfigSpec.Builder BOOTS_1__SETTINGS_BUILDER = LEGGINGS_4__SETTINGS_BUILDER.pop().pop().push("Boots").push("Tier_1");
+    private static final ModConfigSpec.IntValue BOOTS_1__INVENTORY_SLOTS = BOOTS_1__SETTINGS_BUILDER.defineInRange(MPSConstants.CONFIG_INVENTORY_SLOTS, 4, 0, 10);
+    private static final ModConfigSpec.DoubleValue BOOTS_1__MAX_HEAT = BOOTS_1__SETTINGS_BUILDER.defineInRange(NuminaConstants.MAXIMUM_HEAT, 1.0, 0, 1000.0D);
 
-    // ChestPlate
-    private static final ModConfigSpec.Builder TIER_4_ARMOR_CHESTPLATE__SETTINGS_BUILDER = TIER_4_ARMOR_HELM__SETTINGS_BUILDER.pop().push("ChestPlate");
-    private static final ModConfigSpec.IntValue ARMOR_CHESTPLATE_4__INVENTORY_SLOTS = TIER_4_ARMOR_CHESTPLATE__SETTINGS_BUILDER.defineInRange(MPSConstants.CONFIG_INVENTORY_SLOTS, 4, 0, 10);
-    private static final ModConfigSpec.DoubleValue ARMOR_CHESTPLATE_4__MAX_HEAT = TIER_4_ARMOR_CHESTPLATE__SETTINGS_BUILDER.defineInRange(NuminaConstants.MAXIMUM_HEAT, 50.0, 0, 1000.0D);
+    private static final ModConfigSpec.Builder BOOTS_2__SETTINGS_BUILDER = BOOTS_1__SETTINGS_BUILDER.pop().push("Tier_2");
+    private static final ModConfigSpec.IntValue BOOTS_2__INVENTORY_SLOTS = BOOTS_2__SETTINGS_BUILDER.defineInRange(MPSConstants.CONFIG_INVENTORY_SLOTS, 4, 0, 10);
+    private static final ModConfigSpec.DoubleValue BOOTS_2__MAX_HEAT = BOOTS_2__SETTINGS_BUILDER.defineInRange(NuminaConstants.MAXIMUM_HEAT, 50.0, 0, 1000.0D);
 
-    // Leggins
-    private static final ModConfigSpec.Builder TIER_4_ARMOR_LEGGINGS__SETTINGS_BUILDER = TIER_4_ARMOR_CHESTPLATE__SETTINGS_BUILDER.pop().push("Leggings");
-    private static final ModConfigSpec.IntValue ARMOR_LEGGINGS_4__INVENTORY_SLOTS = TIER_4_ARMOR_LEGGINGS__SETTINGS_BUILDER.defineInRange(MPSConstants.CONFIG_INVENTORY_SLOTS, 4, 0, 10);
-    private static final ModConfigSpec.DoubleValue ARMOR_LEGGINGS_4__MAX_HEAT = TIER_4_ARMOR_LEGGINGS__SETTINGS_BUILDER.defineInRange(NuminaConstants.MAXIMUM_HEAT, 50.0, 0, 1000.0D);
+    private static final ModConfigSpec.Builder BOOTS_3__SETTINGS_BUILDER = BOOTS_2__SETTINGS_BUILDER.pop().push("Tier_3");
+    private static final ModConfigSpec.IntValue BOOTS_3__INVENTORY_SLOTS = BOOTS_3__SETTINGS_BUILDER.defineInRange(MPSConstants.CONFIG_INVENTORY_SLOTS, 4, 0, 10);
+    private static final ModConfigSpec.DoubleValue BOOTS_3__MAX_HEAT = BOOTS_3__SETTINGS_BUILDER.defineInRange(NuminaConstants.MAXIMUM_HEAT, 50.0, 0, 1000.0D);
 
-    // Boots
-    private static final ModConfigSpec.Builder TIER_4_ARMOR_BOOTS__SETTINGS_BUILDER = TIER_4_ARMOR_LEGGINGS__SETTINGS_BUILDER.pop().push("Boots");
-    private static final ModConfigSpec.IntValue ARMOR_BOOTS_4__INVENTORY_SLOTS = TIER_4_ARMOR_BOOTS__SETTINGS_BUILDER.defineInRange(MPSConstants.CONFIG_INVENTORY_SLOTS, 4, 0, 10);
-    private static final ModConfigSpec.DoubleValue ARMOR_BOOTS_4__MAX_HEAT = TIER_4_ARMOR_BOOTS__SETTINGS_BUILDER.defineInRange(NuminaConstants.MAXIMUM_HEAT, 50.0, 0, 1000.0D);
+    private static final ModConfigSpec.Builder BOOTS_4__SETTINGS_BUILDER = BOOTS_3__SETTINGS_BUILDER.pop().push("Tier_4");
+    private static final ModConfigSpec.IntValue BOOTS_4__INVENTORY_SLOTS = BOOTS_4__SETTINGS_BUILDER.defineInRange(MPSConstants.CONFIG_INVENTORY_SLOTS, 4, 0, 10);
+    private static final ModConfigSpec.DoubleValue BOOTS_4__MAX_HEAT = BOOTS_4__SETTINGS_BUILDER.defineInRange(NuminaConstants.MAXIMUM_HEAT, 50.0, 0, 1000.0D);
 
-    public static final ModConfigSpec MPS_ARMOR_CONFIG_SPEC = TIER_4_ARMOR_BOOTS__SETTINGS_BUILDER.build();
+    public static final ModConfigSpec ARMOR_CONFIG_SPEC = BOOTS_4__SETTINGS_BUILDER.build();
 
-    // Tier 1 -----------------------------------------------------------------
-    public static int armorHelmInventorySlots1;
-    public static double armorHelmMaxHeat1;
+    // Helm ---------------------------------------------------------------------------------------
+    public static int helmInventorySlots1;
+    public static double helmMaxHeat1;
 
-    public static int armorChestPlateInventorySlots1;
-    public static Double armorChestPlateMaxHeat1;
+    public static int helmInventorySlots2;
+    public static Double helmMaxHeat2;
 
-    public static int armorLeggingsInventorySlots1;
-    public static Double armorLeggingsMaxHeat1;
+    public static int helmInventorySlots3;
+    public static Double helmMaxHeat3;
 
-    public static int armorBootsInventorySlots1;
-    public static Double armorBootsMaxHeat1;
+    public static int helmInventorySlots4;
+    public static Double helmMaxHeat4;
 
-    // Tier 2 -----------------------------------------------------------------
-    public static int armorHelmInventorySlots2;
-    public static Double armorHelmMaxHeat2;
+    // Chestplate ---------------------------------------------------------------------------------
+    public static int chestPlateInventorySlots1;
+    public static Double chestPlateMaxHeat1;
 
-    public static int armorChestPlateInventorySlots2;
-    public static Double armorChestPlateMaxHeat2;
+    public static int chestPlateInventorySlots2;
+    public static Double chestPlateMaxHeat2;
 
-    public static int armorLeggingsInventorySlots2;
-    public static Double armorLeggingsMaxHeat2;
+    public static int chestPlateInventorySlots3;
+    public static Double chestPlateMaxHeat3;
 
-    public static int armorBootsInventorySlots2;
-    public static Double armorBootsMaxHeat2;
+    public static int chestPlateInventorySlots4;
+    public static Double chestPlateMaxHeat4;
 
-    // Tier 3 -----------------------------------------------------------------
-    public static int armorHelmInventorySlots3;
-    public static Double armorHelmMaxHeat3;
+    // Leggings -----------------------------------------------------------------------------------
+    public static int leggingsInventorySlots1;
+    public static Double leggingsMaxHeat1;
 
-    public static int armorChestPlateInventorySlots3;
-    public static Double armorChestPlateMaxHeat3;
+    public static int leggingsInventorySlots2;
+    public static Double leggingsMaxHeat2;
 
-    public static int armorLeggingsInventorySlots3;
-    public static Double armorLeggingsMaxHeat3;
+    public static int leggingsInventorySlots3;
+    public static Double leggingsMaxHeat3;
 
-    public static int armorBootsInventorySlots3;
-    public static Double armorBootsMaxHeat3;
+    public static int leggingsInventorySlots4;
+    public static Double leggingsMaxHeat4;
 
-    // Tier 4 -----------------------------------------------------------------
-    public static int armorHelmInventorySlots4;
-    public static Double armorHelmMaxHeat4;
+    // Boots --------------------------------------------------------------------------------------
+    public static int bootsInventorySlots1;
+    public static Double bootsMaxHeat1;
 
-    public static int armorChestPlateInventorySlots4;
-    public static Double armorChestPlateMaxHeat4;
+    public static int bootsInventorySlots2;
+    public static Double bootsMaxHeat2;
 
-    public static int armorLeggingsInventorySlots4;
-    public static Double armorLeggingsMaxHeat4;
+    public static int bootsInventorySlots3;
+    public static Double bootsMaxHeat3;
 
-    public static int armorBootsInventorySlots4;
-    public static Double armorBootsMaxHeat4;
-
-
+    public static int bootsInventorySlots4;
+    public static Double bootsMaxHeat4;
 
     @SubscribeEvent
     public static void onLoad(final ModConfigEvent event) {
+        if (event.getConfig().getSpec() == ARMOR_CONFIG_SPEC) {
+            // Helm
+            helmInventorySlots1 = HELM_1_INVENTORY_SLOTS.get();
+            helmMaxHeat1 = HELM_1__MAX_HEAT.get();
 
-//        ModConfig config = event.getConfig();
-//        //Make sure it is for the same modid as us
-//        if (config.getModId().equals(MPSConstants.MOD_ID) && config instanceof ArmorConfig peConfig) {
-//            peConfig.clearCache(configEvent);
-//        }
+            helmInventorySlots2 = HELM_2__INVENTORY_SLOTS.get();
+            helmMaxHeat2 = HELM_2__MAX_HEAT.get();
+
+            helmInventorySlots3 = HELM_3__INVENTORY_SLOTS.get();
+            helmMaxHeat3 = HELM_3__MAX_HEAT.get();
+
+            helmInventorySlots4 = HELM_4__INVENTORY_SLOTS.get();
+            helmMaxHeat4 = HELMET_4__MAX_HEAT.get();
+
+            // Chestplate
+            chestPlateInventorySlots1 = CHESTPLATE_1__INVENTORY_SLOTS.get();
+            chestPlateMaxHeat1 = CHESTPLATE_1__MAX_HEAT.get();
+
+            chestPlateInventorySlots2 = CHESTPLATE_2__INVENTORY_SLOTS.get();
+            chestPlateMaxHeat2 = CHESTPLATE_2__MAX_HEAT.get();
+
+            chestPlateInventorySlots3 = CHESTPLATE_3__INVENTORY_SLOTS.get();
+            chestPlateMaxHeat3 = CHESTPLATE_3__MAX_HEAT.get();
+
+            chestPlateInventorySlots4 = CHESTPLATE_4__INVENTORY_SLOTS.get();
+            chestPlateMaxHeat4 = CHESTPLATE_4__MAX_HEAT.get();
+
+            // Leggings
+            leggingsInventorySlots1 = LEGGINGS_1__INVENTORY_SLOTS.get();
+            leggingsMaxHeat1 = LEGGINGS_1__MAX_HEAT.get();
+
+            leggingsInventorySlots2 = LEGGINGS_2__INVENTORY_SLOTS.get();
+            leggingsMaxHeat2 = LEGGINGS_2__MAX_HEAT.get();
+
+            leggingsInventorySlots3 = LEGGINGS_3__INVENTORY_SLOTS.get();
+            leggingsMaxHeat3 = LEGGINGS_3__MAX_HEAT.get();
+
+            leggingsInventorySlots4 = LEGGINGS_4__INVENTORY_SLOTS.get();
+            leggingsMaxHeat4 = LEGGINGS_4__MAX_HEAT.get();
 
 
-        if (event.getConfig().getSpec() == MPS_ARMOR_CONFIG_SPEC) {
-            // Tier1
-            armorHelmInventorySlots1 = ARMOR_HELM_1_INVENTORY_SLOTS.get();
-            armorHelmMaxHeat1 = ARMOR_HELM_1__MAX_HEAT.get();
+            // Boots
+            bootsInventorySlots1 = BOOTS_1__INVENTORY_SLOTS.get();
+            bootsMaxHeat1 = BOOTS_1__MAX_HEAT.get();
 
-            armorChestPlateInventorySlots1 = ARMOR_CHESTPLATE_1__INVENTORY_SLOTS.get();
-            armorChestPlateMaxHeat1 = ARMOR_CHESTPLATE_1__MAX_HEAT.get();
+            bootsInventorySlots2 = BOOTS_2__INVENTORY_SLOTS.get();
+            bootsMaxHeat2 = BOOTS_2__MAX_HEAT.get();
 
-            armorLeggingsInventorySlots1 = ARMOR_LEGGINGS_1__INVENTORY_SLOTS.get();
-            armorLeggingsMaxHeat1 = ARMOR_LEGGINGS_1__MAX_HEAT.get();
+            bootsInventorySlots3 = BOOTS_3__INVENTORY_SLOTS.get();
+            bootsMaxHeat3 = BOOTS_3__MAX_HEAT.get();
 
-            armorBootsInventorySlots1 = ARMOR_BOOTS_1__INVENTORY_SLOTS.get();
-            armorBootsMaxHeat1 = ARMOR_BOOTS_1__MAX_HEAT.get();
-
-            // Tier 2
-            armorHelmInventorySlots2 = ARMOR_HELM_2__INVENTORY_SLOTS.get();
-            armorHelmMaxHeat2 = ARMOR_HELM_2__MAX_HEAT.get();
-
-            armorChestPlateInventorySlots2 = ARMOR_CHESTPLATE_2__INVENTORY_SLOTS.get();
-            armorChestPlateMaxHeat2 = ARMOR_CHESTPLATE_2__MAX_HEAT.get();
-
-            armorLeggingsInventorySlots2 = ARMOR_LEGGINGS_2__INVENTORY_SLOTS.get();
-            armorLeggingsMaxHeat2 = ARMOR_LEGGINGS_2__MAX_HEAT.get();
-
-            armorBootsInventorySlots2 = ARMOR_BOOTS_2__INVENTORY_SLOTS.get();
-            armorBootsMaxHeat2 = ARMOR_BOOTS_2__MAX_HEAT.get();
-
-            // Tier 3
-            armorHelmInventorySlots3 = ARMOR_HELM_3__INVENTORY_SLOTS.get();
-            armorHelmMaxHeat3 = ARMOR_HELM_3__MAX_HEAT.get();
-
-            armorChestPlateInventorySlots3 = ARMOR_CHESTPLATE_3__INVENTORY_SLOTS.get();
-            armorChestPlateMaxHeat3 = ARMOR_CHESTPLATE_3__MAX_HEAT.get();
-
-            armorLeggingsInventorySlots3 = ARMOR_LEGGINGS_3__INVENTORY_SLOTS.get();
-            armorLeggingsMaxHeat3 = ARMOR_LEGGINGS_3__MAX_HEAT.get();
-
-            armorBootsInventorySlots3 = ARMOR_BOOTS_3__INVENTORY_SLOTS.get();
-            armorBootsMaxHeat3 = ARMOR_BOOTS_3__MAX_HEAT.get();
-
-            // Tier 4
-            armorHelmInventorySlots4 = ARMOR_HELM_4__INVENTORY_SLOTS.get();
-            armorHelmMaxHeat4 = ARMOR_HELMET_4__MAX_HEAT.get();
-
-            armorChestPlateInventorySlots4 = ARMOR_CHESTPLATE_4__INVENTORY_SLOTS.get();
-            armorChestPlateMaxHeat4 = ARMOR_CHESTPLATE_4__MAX_HEAT.get();
-
-            armorLeggingsInventorySlots4 = ARMOR_LEGGINGS_4__INVENTORY_SLOTS.get();
-            armorLeggingsMaxHeat4 = ARMOR_LEGGINGS_4__MAX_HEAT.get();
-
-            armorBootsInventorySlots4 = ARMOR_BOOTS_4__INVENTORY_SLOTS.get();
-            armorBootsMaxHeat4 = ARMOR_BOOTS_4__MAX_HEAT.get();
+            bootsInventorySlots4 = BOOTS_4__INVENTORY_SLOTS.get();
+            bootsMaxHeat4 = BOOTS_4__MAX_HEAT.get();
         }
     }
 }

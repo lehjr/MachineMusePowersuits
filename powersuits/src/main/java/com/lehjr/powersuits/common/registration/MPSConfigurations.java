@@ -32,7 +32,7 @@ public class MPSConfigurations {
         registerCommon(modContainer, MPSCommonConfig.MPS_GENERAL_SPEC, "common/general.toml");
 
         // Armor ------------------------------------------------------------------------------------------------------
-        registerCommon(modContainer, ArmorConfig.MPS_ARMOR_CONFIG_SPEC, "common/items/armor.toml");
+        registerCommon(modContainer, ArmorConfig.ARMOR_CONFIG_SPEC, "common/items/armor.toml");
 
         // PowerFist --------------------------------------------------------------------------------------------------
         registerCommon(modContainer, PowerFistConfig.MPS_POWER_FIST_CONFIG_SPEC, "common/items/powerfist.toml");

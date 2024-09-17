@@ -86,70 +86,70 @@ public class PowerArmorModularItemWrapper extends ModularItem {
     }
 
     public static int getActualSize(ItemStack modularItem, int tier) {
-        if (ArmorConfig.MPS_ARMOR_CONFIG_SPEC.isLoaded()) {
+        if (ArmorConfig.ARMOR_CONFIG_SPEC.isLoaded()) {
             ArmorItem.Type type = ItemUtils.getArmorType(modularItem);
             switch (type) {
                 case HELMET -> {
                     switch (tier) {
                         case 1 -> {
-                            return ArmorConfig.armorHelmInventorySlots1;
+                            return ArmorConfig.helmInventorySlots1;
                         }
                         case 2 -> {
-                            return ArmorConfig.armorHelmInventorySlots2;
+                            return ArmorConfig.helmInventorySlots2;
                         }
                         case 3 -> {
-                            return ArmorConfig.armorHelmInventorySlots3;
+                            return ArmorConfig.helmInventorySlots3;
                         }
                         case 4 -> {
-                            return ArmorConfig.armorHelmInventorySlots4;
+                            return ArmorConfig.helmInventorySlots4;
                         }
                     }
                 }
                 case CHESTPLATE -> {
                     switch (tier) {
                         case 1 -> {
-                            return ArmorConfig.armorChestPlateInventorySlots1;
+                            return ArmorConfig.chestPlateInventorySlots1;
                         }
                         case 2 -> {
-                            return ArmorConfig.armorChestPlateInventorySlots2;
+                            return ArmorConfig.chestPlateInventorySlots2;
                         }
                         case 3 -> {
-                            return ArmorConfig.armorChestPlateInventorySlots3;
+                            return ArmorConfig.chestPlateInventorySlots3;
                         }
                         case 4 -> {
-                            return ArmorConfig.armorChestPlateInventorySlots4;
+                            return ArmorConfig.chestPlateInventorySlots4;
                         }
                     }
                 }
                 case LEGGINGS -> {
                     switch (tier) {
                         case 1 -> {
-                            return ArmorConfig.armorLeggingsInventorySlots1;
+                            return ArmorConfig.leggingsInventorySlots1;
                         }
                         case 2 -> {
-                            return ArmorConfig.armorLeggingsInventorySlots2;
+                            return ArmorConfig.leggingsInventorySlots2;
                         }
                         case 3 -> {
-                            return ArmorConfig.armorLeggingsInventorySlots3;
+                            return ArmorConfig.leggingsInventorySlots3;
                         }
                         case 4 -> {
-                            return ArmorConfig.armorLeggingsInventorySlots4;
+                            return ArmorConfig.leggingsInventorySlots4;
                         }
                     }
                 }
                 case BOOTS -> {
                     switch (tier) {
                         case 1 -> {
-                            return ArmorConfig.armorBootsInventorySlots1;
+                            return ArmorConfig.bootsInventorySlots1;
                         }
                         case 2 -> {
-                            return ArmorConfig.armorBootsInventorySlots2;
+                            return ArmorConfig.bootsInventorySlots2;
                         }
                         case 3 -> {
-                            return ArmorConfig.armorBootsInventorySlots3;
+                            return ArmorConfig.bootsInventorySlots3;
                         }
                         case 4 -> {
-                            return ArmorConfig.armorBootsInventorySlots4;
+                            return ArmorConfig.bootsInventorySlots4;
                         }
                     }
                 }

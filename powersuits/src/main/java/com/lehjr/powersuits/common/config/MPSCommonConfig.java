@@ -29,7 +29,7 @@ public class MPSCommonConfig {
                 maxFlyingSpeed = GENERAL_MAX_FLYING_SPEED.get();
 
             // Since only this common config event gets called, manually update the others
-            } else if (SPEC == ArmorConfig.MPS_ARMOR_CONFIG_SPEC) {
+            } else if (SPEC == ArmorConfig.ARMOR_CONFIG_SPEC) {
                 ArmorConfig.onLoad(event);
             } else if (SPEC == PowerFistConfig.MPS_POWER_FIST_CONFIG_SPEC){
                 PowerFistConfig.onLoad(event);

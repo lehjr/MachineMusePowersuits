@@ -62,19 +62,15 @@ public class AbstractElectricArmor extends ArmorItem {
 
     @Override
     public ItemAttributeModifiers getDefaultAttributeModifiers(ItemStack stack) {
-        List<ItemAttributeModifiers.Entry> entries = new ArrayList<>();
-
+        EquipmentSlot slot = type.getSlot();
+        ItemAttributeModifiers.Builder builder = ItemAttributeModifiers.builder();
         ItemAttributeModifiers modifiers = super.getDefaultAttributeModifiers(stack);
-        EquipmentSlot slot = ItemUtils.getEquipmentSlotForItem(stack);
+        EquipmentSlotGroup equipmentslotgroup = EquipmentSlotGroup.bySlot(slot);
+        ResourceLocation resourcelocation = ResourceLocation.withDefaultNamespace("armor." + type.getName());
 
-//            // PropertyModifier tags applied directly to armor will disable the ItemStack sensitive version
-//            stack.removeTagKey("AttributeModifiers");
-//
-//            Multimap<Attribute, AttributeModifier> multimap = super.getAttributeModifiers(slot, stack);
-//
-//            if (slot != slot) {
-//                return multimap;
-//            }
+        for (ItemAttributeModifiers.Entry entry : modifiers.modifiers()) {
+            builder.add(entry.attribute(), entry.modifier(), equipmentslotgroup);
+        }
 
         double armorVal = 0;
         double toughnessVal = 0;
@@ -104,7 +100,7 @@ public class AbstractElectricArmor extends ArmorItem {
                 }
             }
 
-            if (slot == EquipmentSlot.LEGS) {
+            if (type.getSlot() == EquipmentSlot.LEGS) {
                 for (int i = 0; i < iModularItem.getSlots(); i++) {
                     /** Note: attribute should already be removed when module is offline */
                     IPowerModule iPowerModule = iModularItem.getModuleCapability(iModularItem.getStackInSlot(i));
@@ -128,37 +124,20 @@ public class AbstractElectricArmor extends ArmorItem {
             }
         }
 
-
-        for (ItemAttributeModifiers.Entry entry : modifiers.modifiers()) {
-            entries.add(new ItemAttributeModifiers.Entry(entry.attribute(), entry.modifier(), EquipmentSlotGroup.bySlot(slot)));
-        }
-
         if (armorVal > 0) {
-            entries.add(new ItemAttributeModifiers.Entry(Attributes.ARMOR,
-                    new AttributeModifier(BuiltInRegistries.ATTRIBUTE.getKey(Attributes.ARMOR.value()),
-                            armorVal, AttributeModifier.Operation.ADD_VALUE),
-                    EquipmentSlotGroup.bySlot(slot)));
+            builder.add(Attributes.ARMOR, new AttributeModifier(resourcelocation, armorVal, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.bySlot(slot));
         }
 
         if (knockbackResistance > 0) {
-            entries.add(new ItemAttributeModifiers.Entry(Attributes.KNOCKBACK_RESISTANCE,
-                    new AttributeModifier(BuiltInRegistries.ATTRIBUTE.getKey(Attributes.KNOCKBACK_RESISTANCE.value()),
-                            knockbackResistance, AttributeModifier.Operation.ADD_VALUE),
-                    EquipmentSlotGroup.bySlot(slot)));
+            builder.add(Attributes.KNOCKBACK_RESISTANCE, new AttributeModifier(resourcelocation, knockbackResistance, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.bySlot(slot));
         }
 
         if (toughnessVal > 0) {
-            entries.add(new ItemAttributeModifiers.Entry(Attributes.ARMOR_TOUGHNESS,
-                    new AttributeModifier(BuiltInRegistries.ATTRIBUTE.getKey(Attributes.ARMOR_TOUGHNESS.value()),
-                            toughnessVal, AttributeModifier.Operation.ADD_VALUE),
-                    EquipmentSlotGroup.bySlot(slot)));;
+            builder.add(Attributes.ARMOR_TOUGHNESS, new AttributeModifier(resourcelocation, toughnessVal, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.bySlot(slot));;
         }
 
         if (stepHeight > 0.5001F) {
-            entries.add(new ItemAttributeModifiers.Entry(Attributes.STEP_HEIGHT,
-                    new AttributeModifier(BuiltInRegistries.ATTRIBUTE.getKey(Attributes.STEP_HEIGHT.value()),
-                            stepHeight, AttributeModifier.Operation.ADD_VALUE),
-                    EquipmentSlotGroup.bySlot(slot)));;
+            builder.add(Attributes.STEP_HEIGHT, new AttributeModifier(resourcelocation, stepHeight, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.bySlot(slot));
         }
 
         if (speed != 0 || movementResistance != 0) {
@@ -185,26 +164,16 @@ public class AbstractElectricArmor extends ArmorItem {
                 resistance should be up to about 80% of walking speed or 0.08
              */
 
-            entries.add(
-                    new ItemAttributeModifiers.Entry(Attributes.MOVEMENT_SPEED,
-                            new AttributeModifier(BuiltInRegistries.ATTRIBUTE.getKey(Attributes.MOVEMENT_SPEED.value()),
-                                    (speed - movementResistance * 0.16),
-                                    // up to 80% walking speed restriction
-                                    AttributeModifier.Operation.ADD_VALUE),
-                            EquipmentSlotGroup.bySlot(slot)));
+            // up to 80% walking speed restriction
+            builder.add(Attributes.MOVEMENT_SPEED, new AttributeModifier(resourcelocation, (speed - movementResistance * 0.16), AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.bySlot(slot));
         }
 
         if (swimBoost > 0) {
-            entries.add(new ItemAttributeModifiers.Entry(NeoForgeMod.SWIM_SPEED,
-                    new AttributeModifier(
-                            BuiltInRegistries.ATTRIBUTE.getKey(NeoForgeMod.SWIM_SPEED.value()),
-                            swimBoost,
-                            AttributeModifier.Operation.ADD_VALUE),
-                    EquipmentSlotGroup.bySlot(slot)));
+            builder.add(NeoForgeMod.SWIM_SPEED, new AttributeModifier(resourcelocation, swimBoost, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.bySlot(slot));
         }
 
         // Create and return ItemAttributeModifiers instance with the list of entries
-        return new ItemAttributeModifiers(entries, true);
+        return builder.build();
     }
 
     /*

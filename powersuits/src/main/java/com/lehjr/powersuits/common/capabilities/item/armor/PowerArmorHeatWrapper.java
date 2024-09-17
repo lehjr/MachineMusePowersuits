@@ -15,70 +15,70 @@ public class PowerArmorHeatWrapper extends AbstractModularItemHeatWrapper {
 
     @Override
     public double getBaseMaxHeat(ItemStack modularItem, int tier) {
-        if (ArmorConfig.MPS_ARMOR_CONFIG_SPEC.isLoaded()) {
+        if (ArmorConfig.ARMOR_CONFIG_SPEC.isLoaded()) {
             ArmorItem.Type type = ItemUtils.getArmorType(modularItem);
             switch (type) {
                 case HELMET -> {
                     switch (tier) {
                         case 1 -> {
-                            return ArmorConfig.armorHelmMaxHeat1;
+                            return ArmorConfig.helmMaxHeat1;
                         }
                         case 2 -> {
-                            return ArmorConfig.armorHelmMaxHeat2;
+                            return ArmorConfig.helmMaxHeat2;
                         }
                         case 3 -> {
-                            return ArmorConfig.armorHelmMaxHeat3;
+                            return ArmorConfig.helmMaxHeat3;
                         }
                         case 4 -> {
-                            return ArmorConfig.armorHelmMaxHeat4;
+                            return ArmorConfig.helmMaxHeat4;
                         }
                     }
                 }
                 case CHESTPLATE -> {
                     switch (tier) {
                         case 1 -> {
-                            return ArmorConfig.armorChestPlateMaxHeat1;
+                            return ArmorConfig.chestPlateMaxHeat1;
                         }
                         case 2 -> {
-                            return ArmorConfig.armorChestPlateMaxHeat2;
+                            return ArmorConfig.chestPlateMaxHeat2;
                         }
                         case 3 -> {
-                            return ArmorConfig.armorChestPlateMaxHeat3;
+                            return ArmorConfig.chestPlateMaxHeat3;
                         }
                         case 4 -> {
-                            return ArmorConfig.armorChestPlateMaxHeat4;
+                            return ArmorConfig.chestPlateMaxHeat4;
                         }
                     }
                 }
                 case LEGGINGS -> {
                     switch (tier) {
                         case 1 -> {
-                            return ArmorConfig.armorLeggingsMaxHeat1;
+                            return ArmorConfig.leggingsMaxHeat1;
                         }
                         case 2 -> {
-                            return ArmorConfig.armorLeggingsMaxHeat2;
+                            return ArmorConfig.leggingsMaxHeat2;
                         }
                         case 3 -> {
-                            return ArmorConfig.armorLeggingsMaxHeat3;
+                            return ArmorConfig.leggingsMaxHeat3;
                         }
                         case 4 -> {
-                            return ArmorConfig.armorLeggingsMaxHeat4;
+                            return ArmorConfig.leggingsMaxHeat4;
                         }
                     }
                 }
                 case BOOTS -> {
                     switch (tier) {
                         case 1 -> {
-                            return ArmorConfig.armorBootsMaxHeat1;
+                            return ArmorConfig.bootsMaxHeat1;
                         }
                         case 2 -> {
-                            return ArmorConfig.armorBootsMaxHeat2;
+                            return ArmorConfig.bootsMaxHeat2;
                         }
                         case 3 -> {
-                            return ArmorConfig.armorBootsMaxHeat3;
+                            return ArmorConfig.bootsMaxHeat3;
                         }
                         case 4 -> {
-                            return ArmorConfig.armorBootsMaxHeat4;
+                            return ArmorConfig.bootsMaxHeat4;
                         }
                     }
                 }
