@@ -10,7 +10,7 @@ import net.neoforged.neoforge.common.ModConfigSpec;
 @EventBusSubscriber(modid = MPSConstants.MOD_ID, bus = EventBusSubscriber.Bus.MOD)
 public class ArmorConfig {
     // Helm -----------------------------------------------------------------------------------------------------------
-    private static final ModConfigSpec.Builder HELM_1__SETTINGS_BUILDER = new ModConfigSpec.Builder().push("Armor").push("Helm").push("Tier_1");
+    private static final ModConfigSpec.Builder HELM_1__SETTINGS_BUILDER = new ModConfigSpec.Builder().push("Helm").push("Tier_1");
     private static final ModConfigSpec.IntValue HELM_1_INVENTORY_SLOTS = HELM_1__SETTINGS_BUILDER.defineInRange(MPSConstants.CONFIG_INVENTORY_SLOTS, 4, 0, 10);
     private static final ModConfigSpec.DoubleValue HELM_1__MAX_HEAT = HELM_1__SETTINGS_BUILDER.defineInRange(NuminaConstants.MAXIMUM_HEAT, 1.0, 0, 1000.0D);
 
