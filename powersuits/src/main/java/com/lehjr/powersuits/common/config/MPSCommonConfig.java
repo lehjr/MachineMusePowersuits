@@ -2,6 +2,7 @@ package com.lehjr.powersuits.common.config;
 
 import com.lehjr.powersuits.common.config.module.ArmorModuleConfig;
 import com.lehjr.powersuits.common.config.module.CosmeticModuleConfig;
+import com.lehjr.powersuits.common.config.module.EnvironmentalModuleConfig;
 import com.lehjr.powersuits.common.config.module.ToolModuleConfig;
 import com.lehjr.powersuits.common.config.module.VisionModuleConfig;
 import com.lehjr.powersuits.common.config.module.WeaponModuleConfig;
@@ -31,15 +32,16 @@ public class MPSCommonConfig {
             // Since only this common config event gets called, manually update the others
             } else if (SPEC == ArmorConfig.ARMOR_CONFIG_SPEC) {
                 ArmorConfig.onLoad(event);
-            } else if (SPEC == PowerFistConfig.MPS_POWER_FIST_CONFIG_SPEC){
+            } else if (SPEC == PowerFistConfig.POWER_FIST_CONFIG_SPEC){
                 PowerFistConfig.onLoad(event);
-            } else if (SPEC == ArmorModuleConfig.MPS_ARMOR_MODULE_CONFIG_SPEC){
+            } else if (SPEC == ArmorModuleConfig.ARMOR_MODULE_CONFIG_SPEC){
                 ArmorModuleConfig.onLoad(event);
-            } else if (SPEC == CosmeticModuleConfig.MPS_COSMETIC_MODULE_CONFIG_SPEC){
+            } else if (SPEC == CosmeticModuleConfig.COSMETIC_MODULE_CONFIG_SPEC) {
                 CosmeticModuleConfig.onLoad(event);
-            // TODO: fill in missing module configs
+                // TODO: fill in missing module configs
 
-
+            } else if(SPEC == EnvironmentalModuleConfig.ENVIRONMENTAL_MODULE_SPEC) {
+                EnvironmentalModuleConfig.onLoad(event);
 
             } else if (SPEC == ToolModuleConfig.MPS_TOOL_MODULE_SPEC){
                 ToolModuleConfig.onLoad(event);

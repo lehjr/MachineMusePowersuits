@@ -182,7 +182,7 @@ public class MPSCapabilities {
 
         // Power Fist =================================================================================================
         // Mode Changing
-        if(PowerFistConfig.MPS_POWER_FIST_CONFIG_SPEC.isLoaded()) {
+        if(PowerFistConfig.POWER_FIST_CONFIG_SPEC.isLoaded()) {
             event.registerItem(NuminaCapabilities.Inventory.MODE_CHANGING_MODULAR_ITEM, (stack, context) -> new PowerFistModeChangingWrapper(stack, 1, PowerFistConfig.powerFistInventorySlots1), MPSItems.POWER_FIST_1.get());
             event.registerItem(NuminaCapabilities.Inventory.MODE_CHANGING_MODULAR_ITEM, (stack, context) -> new PowerFistModeChangingWrapper(stack, 2, PowerFistConfig.powerFistInventorySlots2), MPSItems.POWER_FIST_2.get());
             event.registerItem(NuminaCapabilities.Inventory.MODE_CHANGING_MODULAR_ITEM, (stack, context) -> new PowerFistModeChangingWrapper(stack, 3, PowerFistConfig.powerFistInventorySlots3), MPSItems.POWER_FIST_3.get());

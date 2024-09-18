@@ -7,6 +7,7 @@ import com.lehjr.powersuits.common.config.module.ArmorModuleConfig;
 import com.lehjr.powersuits.common.config.module.CosmeticModuleConfig;
 import com.lehjr.powersuits.common.config.MPSCommonConfig;
 import com.lehjr.powersuits.common.config.PowerFistConfig;
+import com.lehjr.powersuits.common.config.module.EnvironmentalModuleConfig;
 import com.lehjr.powersuits.common.config.module.ToolModuleConfig;
 import com.lehjr.powersuits.common.config.module.VisionModuleConfig;
 import com.lehjr.powersuits.common.config.module.WeaponModuleConfig;
@@ -35,17 +36,20 @@ public class MPSConfigurations {
         registerCommon(modContainer, ArmorConfig.ARMOR_CONFIG_SPEC, "common/items/armor.toml");
 
         // PowerFist --------------------------------------------------------------------------------------------------
-        registerCommon(modContainer, PowerFistConfig.MPS_POWER_FIST_CONFIG_SPEC, "common/items/powerfist.toml");
+        registerCommon(modContainer, PowerFistConfig.POWER_FIST_CONFIG_SPEC, "common/items/powerfist.toml");
 
         // Modules ----------------------------------------------------------------------------------------------------
         // Armor
-        registerCommon(modContainer, ArmorModuleConfig.MPS_ARMOR_MODULE_CONFIG_SPEC, "common/items/modules/armor.toml");
+        registerCommon(modContainer, ArmorModuleConfig.ARMOR_MODULE_CONFIG_SPEC, "common/items/modules/armor.toml");
 
         // Cosmetic
-        registerCommon(modContainer, CosmeticModuleConfig.MPS_COSMETIC_MODULE_CONFIG_SPEC, "common/items/modules/cosmetic.toml");
+        registerCommon(modContainer, CosmeticModuleConfig.COSMETIC_MODULE_CONFIG_SPEC, "common/items/modules/cosmetic.toml");
         // Energy Generation
         // TODO!!
         // Environmental
+        registerCommon(modContainer, EnvironmentalModuleConfig.ENVIRONMENTAL_MODULE_SPEC, "common/items/modules/environmental.toml");
+
+
         // TODO!!
         // Mining Enchantment
         // TODO!!

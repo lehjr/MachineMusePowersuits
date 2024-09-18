@@ -44,7 +44,7 @@ public class ArmorModuleConfig {
     private static final ModConfigSpec.DoubleValue ENERGY_SHIELD_MODULE__ARMOR_TOUGHNESS = ENERGY_SHIELD_MODULE__SETTINGS_BUILDER.defineInRange(MPSConstants.ARMOR_TOUGHNESS +"Multiplier", 4.5, 0, 100.0D);
     private static final ModConfigSpec.DoubleValue ENERGY_SHIELD_MODULE__KNOCKBACK_RESISTANCE = ENERGY_SHIELD_MODULE__SETTINGS_BUILDER.defineInRange(NuminaConstants.MAXIMUM_HEAT +"Multiplier", 900, 0, 1000.0D);
 
-    public static final ModConfigSpec MPS_ARMOR_MODULE_CONFIG_SPEC = ENERGY_SHIELD_MODULE__SETTINGS_BUILDER.build();
+    public static final ModConfigSpec ARMOR_MODULE_CONFIG_SPEC = ENERGY_SHIELD_MODULE__SETTINGS_BUILDER.build();
 
 
     // Armor ------------------------------------------------------------------
@@ -80,7 +80,7 @@ public class ArmorModuleConfig {
 
     @SubscribeEvent
     public static void onLoad(final ModConfigEvent event) {
-        if (event.getConfig().getSpec() == MPS_ARMOR_MODULE_CONFIG_SPEC) {
+        if (event.getConfig().getSpec() == ARMOR_MODULE_CONFIG_SPEC) {
             // Armor Modules --------------------------------------------------------
             // Iron
             ironPlatingIsAllowed = IRON_PLATING_MODULE__IS_ALLOWED.get();

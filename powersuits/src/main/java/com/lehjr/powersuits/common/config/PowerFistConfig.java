@@ -41,11 +41,11 @@ public class PowerFistConfig {
     public static int powerFistInventorySlots4;
     public static double powerFistMaxHeat4;
 
-    public static final ModConfigSpec MPS_POWER_FIST_CONFIG_SPEC = POWER_FIST_4__SETTINGS_BUILDER.build();
+    public static final ModConfigSpec POWER_FIST_CONFIG_SPEC = POWER_FIST_4__SETTINGS_BUILDER.build();
 
     @SubscribeEvent
     public static void onLoad(final ModConfigEvent event) {
-        if (event.getConfig().getSpec() == MPS_POWER_FIST_CONFIG_SPEC) {
+        if (event.getConfig().getSpec() == POWER_FIST_CONFIG_SPEC) {
             NuminaLogger.logDebug("power fist config onLoad: " + event.getConfig() + ", " + event.getConfig().getFileName());
 
             // Tier 1

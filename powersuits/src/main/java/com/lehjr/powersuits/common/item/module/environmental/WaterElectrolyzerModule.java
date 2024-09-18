@@ -6,6 +6,7 @@ import com.lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
 import com.lehjr.numina.common.capabilities.module.tickable.PlayerTickModule;
 import com.lehjr.numina.common.utils.ElectricItemUtils;
 import com.lehjr.powersuits.client.sound.MPSSoundDictionary;
+import com.lehjr.powersuits.common.config.module.EnvironmentalModuleConfig;
 import com.lehjr.powersuits.common.constants.MPSConstants;
 import com.lehjr.powersuits.common.item.module.AbstractPowerModule;
 import net.minecraft.world.entity.player.Player;
@@ -20,12 +21,12 @@ public class WaterElectrolyzerModule extends AbstractPowerModule {
 
         public Ticker(ItemStack module) {
             super(module, ModuleCategory.ENVIRONMENTAL, ModuleTarget.HEADONLY);
-            addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, 10000, "FE");
+            addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, EnvironmentalModuleConfig.waterElectrolyzerEnergyConsumptionBase, "FE");
         }
 
         @Override
         public boolean isAllowed() {
-            return super.isAllowed();
+            return EnvironmentalModuleConfig.waterElectrolyzerIsAllowed;
         }
 
         @Override

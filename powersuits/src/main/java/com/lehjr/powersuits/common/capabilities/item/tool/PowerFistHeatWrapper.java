@@ -13,7 +13,7 @@ public class PowerFistHeatWrapper extends AbstractModularItemHeatWrapper {
 
     @Override
     public double getBaseMaxHeat(ItemStack itemStack, int tier) {
-        if (PowerFistConfig.MPS_POWER_FIST_CONFIG_SPEC.isLoaded()) {
+        if (PowerFistConfig.POWER_FIST_CONFIG_SPEC.isLoaded()) {
             switch (tier) {
                 case 1 -> {
                     return PowerFistConfig.powerFistMaxHeat1;
