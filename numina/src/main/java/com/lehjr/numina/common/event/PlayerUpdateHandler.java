@@ -1,5 +1,6 @@
 package com.lehjr.numina.common.event;
 
+import com.lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
 import com.lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
 import com.lehjr.numina.common.registration.NuminaCapabilities;
 import com.lehjr.numina.common.utils.HeatUtils;
@@ -30,6 +31,9 @@ public class PlayerUpdateHandler {
             IModularItem iModularItemCap = NuminaCapabilities.getModularItemOrModeChangingCapability(modularItem);
             if(iModularItemCap != null) {
                 modularItems.add(modularItem);
+                if(slot.isArmor() || iModularItemCap instanceof IModeChangingItem) {
+                    iModularItemCap.tick(player, level, modularItem);
+                }
             }
         }
         //  Done this way so players can let their stuff cool in their inventory without having to equip it,
