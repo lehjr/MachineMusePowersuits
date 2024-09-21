@@ -41,10 +41,6 @@ public interface IPowerModule {
         return true;
     }
 
-    void load();
-
-    ItemStack save();
-
     default void addUnitLabel(String propertyName, String unit) {
         UnitMap.addUnitLabel(propertyName, unit);
     }

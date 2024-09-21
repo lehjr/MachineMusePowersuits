@@ -11,32 +11,9 @@ public class ToggleableModule extends PowerModule implements IToggleableModule {
 
     public ToggleableModule(ItemStack module, ModuleCategory category, ModuleTarget target) {
         super(module, category, target);
-        load();
     }
 
     public ToggleableModule(ItemStack module, ModuleCategory category, ModuleTarget target, boolean isAllowed) {
         super(module, category, target, isAllowed);
-        load();
-    }
-
-    @Override
-    public ItemStack toggleModule(boolean online) {
-        this.online = online;
-        return save();
-    }
-
-    @Override
-    public boolean isModuleOnline() {
-        return online;
-    }
-
-    @Override
-    public ItemStack save() {
-        return TagUtils.setModuleIsOnline(getModule(), online);
-    }
-
-    @Override
-    public void load() {
-        this.online = TagUtils.getModuleIsOnline(getModule());
     }
 }

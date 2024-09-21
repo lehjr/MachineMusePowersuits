@@ -19,6 +19,7 @@ import com.lehjr.powersuits.common.item.module.armor.EnergyShieldModule;
 import com.lehjr.powersuits.common.item.module.cosmetic.TransparentArmorModule;
 import com.lehjr.powersuits.common.item.module.environmental.AutoFeederModule;
 import com.lehjr.powersuits.common.item.module.environmental.MobRepulsorModule;
+import com.lehjr.powersuits.common.item.module.environmental.PiglinPacificationModule;
 import com.lehjr.powersuits.common.item.module.environmental.WaterElectrolyzerModule;
 import com.lehjr.powersuits.common.item.module.miningenchantment.AquaAffinityModule;
 import com.lehjr.powersuits.common.item.module.miningenchantment.FortuneModule;
@@ -238,11 +239,15 @@ public class MPSCapabilities {
         // TODO: COOLING
         event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new AutoFeederModule.Ticker(stack), MPSItems.AUTO_FEEDER_MODULE.get());
         event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new MobRepulsorModule.Ticker(stack), MPSItems.MOB_REPULSOR_MODULE.get());
+
+
+        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)->new PiglinPacificationModule.PiglinPacificationCap(stack), MPSItems.PIGLIN_PACIFICATION_MODULE.get());
         event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new WaterElectrolyzerModule.Ticker(stack), MPSItems.WATER_ELECTROLYZER_MODULE.get());
 
         // Mining Enchantment -----------------------------------------------------------------------------------------
         event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new AquaAffinityModule.TickingEnchantment(stack), MPSItems.AQUA_AFFINITY_MODULE.get());
         event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new FortuneModule.TickingEnchantment(stack), MPSItems.FORTUNE_MODULE.get());
+
         event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new SilkTouchModule.TickingEnchantment(stack), MPSItems.SILK_TOUCH_MODULE.get());
 
         // Mining Enhancement -----------------------------------------------------------------------------------------

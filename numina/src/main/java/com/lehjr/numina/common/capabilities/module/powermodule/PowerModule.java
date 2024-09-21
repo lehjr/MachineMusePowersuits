@@ -95,16 +95,6 @@ public class PowerModule implements IPowerModule {
     }
 
     @Override
-    public ItemStack save() {
-        return getModule();
-    }
-
-    @Override
-    public void load() {
-
-    }
-
-    @Override
     public void addIntTradeoffProperty(String tradeoffName, String propertyName, int mulitiplierConfigValue, String unit, int roundTo, int offset) {
         addUnitLabel(propertyName, unit);
         addPropertyModifier(propertyName, new PropertyModifierIntLinearAdditive(mulitiplierConfigValue, tradeoffName, roundTo, offset));
