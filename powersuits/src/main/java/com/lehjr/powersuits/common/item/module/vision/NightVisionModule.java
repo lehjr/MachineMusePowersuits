@@ -83,4 +83,6 @@ public class NightVisionModule extends AbstractPowerModule {
             }
         }
     }
+
+
 }

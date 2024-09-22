@@ -4,6 +4,7 @@ import com.lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import com.lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
 import com.lehjr.numina.common.capabilities.module.tickable.PlayerTickModule;
 import com.lehjr.numina.common.utils.ElectricItemUtils;
+import com.lehjr.powersuits.common.config.module.EnvironmentalModuleConfig;
 import com.lehjr.powersuits.common.constants.MPSConstants;
 import com.lehjr.powersuits.common.item.module.AbstractPowerModule;
 import net.minecraft.core.BlockPos;
@@ -29,7 +30,12 @@ public class MobRepulsorModule extends AbstractPowerModule {
     public static class Ticker extends PlayerTickModule {
         public Ticker(@Nonnull ItemStack module) {
             super(module, ModuleCategory.ENVIRONMENTAL, ModuleTarget.HEADONLY);
-            addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, 2500, "FE");
+            addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, EnvironmentalModuleConfig.mobReulsorModuleEnergyConsumptionBase, "FE");
+        }
+
+        @Override
+        public boolean isAllowed() {
+            return EnvironmentalModuleConfig.mobRepulsorModuleIsAllowed;
         }
 
         @Override

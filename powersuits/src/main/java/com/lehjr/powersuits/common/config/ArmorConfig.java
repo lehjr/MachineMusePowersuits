@@ -15,15 +15,15 @@ public class ArmorConfig {
     private static final ModConfigSpec.DoubleValue HELM_1__MAX_HEAT = HELM_1__SETTINGS_BUILDER.defineInRange(NuminaConstants.MAXIMUM_HEAT, 1.0, 0, 1000.0D);
 
     private static final ModConfigSpec.Builder HELM_2__SETTINGS_BUILDER = HELM_1__SETTINGS_BUILDER.pop().push("Tier_2");
-    private static final ModConfigSpec.IntValue HELM_2__INVENTORY_SLOTS = HELM_2__SETTINGS_BUILDER.defineInRange(MPSConstants.CONFIG_INVENTORY_SLOTS, 4, 0, 10);
+    private static final ModConfigSpec.IntValue HELM_2__INVENTORY_SLOTS = HELM_2__SETTINGS_BUILDER.defineInRange(MPSConstants.CONFIG_INVENTORY_SLOTS, 6, 0, 10);
     private static final ModConfigSpec.DoubleValue HELM_2__MAX_HEAT = HELM_2__SETTINGS_BUILDER.defineInRange(NuminaConstants.MAXIMUM_HEAT, 50.0, 0, 1000.0D);
 
     private static final ModConfigSpec.Builder HELM_3__SETTINGS_BUILDER = HELM_2__SETTINGS_BUILDER.pop().push("Tier_3");
-    private static final ModConfigSpec.IntValue HELM_3__INVENTORY_SLOTS = HELM_3__SETTINGS_BUILDER.defineInRange(MPSConstants.CONFIG_INVENTORY_SLOTS, 4, 0, 10);
+    private static final ModConfigSpec.IntValue HELM_3__INVENTORY_SLOTS = HELM_3__SETTINGS_BUILDER.defineInRange(MPSConstants.CONFIG_INVENTORY_SLOTS, 8, 0, 10);
     private static final ModConfigSpec.DoubleValue HELM_3__MAX_HEAT = HELM_3__SETTINGS_BUILDER.defineInRange(NuminaConstants.MAXIMUM_HEAT, 50.0, 0, 1000.0D);
 
     private static final ModConfigSpec.Builder HELM_4__SETTINGS_BUILDER = HELM_3__SETTINGS_BUILDER.pop().push("Tier_4");
-    private static final ModConfigSpec.IntValue HELM_4__INVENTORY_SLOTS = HELM_4__SETTINGS_BUILDER.defineInRange(MPSConstants.CONFIG_INVENTORY_SLOTS, 4, 0, 10);
+    private static final ModConfigSpec.IntValue HELM_4__INVENTORY_SLOTS = HELM_4__SETTINGS_BUILDER.defineInRange(MPSConstants.CONFIG_INVENTORY_SLOTS, 12, 0, 10);
     private static final ModConfigSpec.DoubleValue HELMET_4__MAX_HEAT = HELM_4__SETTINGS_BUILDER.defineInRange(NuminaConstants.MAXIMUM_HEAT, 50.0, 0, 1000.0D);
 
     // ChestPlate -----------------------------------------------------------------------------------------------------

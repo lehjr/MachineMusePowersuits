@@ -4,6 +4,7 @@ import com.lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import com.lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
 import com.lehjr.numina.common.capabilities.module.tickable.PlayerTickModule;
 import com.lehjr.numina.common.utils.ElectricItemUtils;
+import com.lehjr.powersuits.common.config.module.EnvironmentalModuleConfig;
 import com.lehjr.powersuits.common.constants.MPSConstants;
 import com.lehjr.powersuits.common.item.module.AbstractPowerModule;
 import net.minecraft.sounds.SoundEvents;
@@ -23,17 +24,22 @@ import java.util.List;
 
 public class MagnetModule extends AbstractPowerModule {
     public static class Ticker extends PlayerTickModule {
-        public Ticker(@Nonnull ItemStack module, ModuleCategory category, ModuleTarget target) {
-            super(module, category, target);
-                addBaseProperty(MPSConstants.RADIUS, 1, "m");
-                addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, 5, "FE");
-                addTradeoffProperty(MPSConstants.RADIUS, MPSConstants.ENERGY_CONSUMPTION, 2000);
-                addIntTradeoffProperty(MPSConstants.RADIUS, MPSConstants.RADIUS, 9, "m", 1, 0);
+        public Ticker(@Nonnull ItemStack module) {
+            super(module, ModuleCategory.ENVIRONMENTAL, ModuleTarget.TOOLONLY);
+                addBaseProperty(MPSConstants.RADIUS, EnvironmentalModuleConfig.magnetModuleRadiusBase, "m");
+                addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, EnvironmentalModuleConfig.magnetModuleEnergyConsumptionBase, "FE");
+                addTradeoffProperty(MPSConstants.RADIUS, MPSConstants.ENERGY_CONSUMPTION, EnvironmentalModuleConfig.magnetModuleEnergyConsumptionRadiusMultiplier);
+                addIntTradeoffProperty(MPSConstants.RADIUS, MPSConstants.RADIUS, EnvironmentalModuleConfig.magnetModuleRadiusMultiplier, "m", 1, 0);
+        }
+
+        @Override
+        public boolean isAllowed() {
+            return EnvironmentalModuleConfig.magnetModuleIsAllowed;
         }
 
         @Override
         public void onPlayerTickActive(Player player, Level level, @Nonnull ItemStack stack) {
-            int energyUSage = (int) applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION);
+            int energyUSage = getEnergyUsage();
             if (ElectricItemUtils.getPlayerEnergy(player) > energyUSage) {
                 boolean isServerSide = !level.isClientSide;
 
@@ -83,6 +89,11 @@ public class MagnetModule extends AbstractPowerModule {
                     }
                 }
             }
+        }
+
+        @Override
+        public int getEnergyUsage() {
+            return (int)applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION);
         }
     }
 }

@@ -18,6 +18,8 @@ import com.lehjr.powersuits.common.item.module.armor.ArmorPlatingModule;
 import com.lehjr.powersuits.common.item.module.armor.EnergyShieldModule;
 import com.lehjr.powersuits.common.item.module.cosmetic.TransparentArmorModule;
 import com.lehjr.powersuits.common.item.module.environmental.AutoFeederModule;
+import com.lehjr.powersuits.common.item.module.environmental.InvisibilityModule;
+import com.lehjr.powersuits.common.item.module.environmental.MagnetModule;
 import com.lehjr.powersuits.common.item.module.environmental.MobRepulsorModule;
 import com.lehjr.powersuits.common.item.module.environmental.PiglinPacificationModule;
 import com.lehjr.powersuits.common.item.module.environmental.WaterElectrolyzerModule;
@@ -238,9 +240,9 @@ public class MPSCapabilities {
         // Environmental ----------------------------------------------------------------------------------------------
         // TODO: COOLING
         event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new AutoFeederModule.Ticker(stack), MPSItems.AUTO_FEEDER_MODULE.get());
+        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new InvisibilityModule.Ticker(stack), MPSItems.ACTIVE_CAMOUFLAGE_MODULE.get());
+        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new MagnetModule.Ticker(stack), MPSItems.MAGNET_MODULE.get());
         event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new MobRepulsorModule.Ticker(stack), MPSItems.MOB_REPULSOR_MODULE.get());
-
-
         event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)->new PiglinPacificationModule.PiglinPacificationCap(stack), MPSItems.PIGLIN_PACIFICATION_MODULE.get());
         event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new WaterElectrolyzerModule.Ticker(stack), MPSItems.WATER_ELECTROLYZER_MODULE.get());
 
