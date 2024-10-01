@@ -1,5 +1,6 @@
 package com.lehjr.powersuits.common.constants;
 
+import com.lehjr.numina.common.utils.StringUtils;
 import net.minecraft.resources.ResourceLocation;
 
 public class MPSConstants {
@@ -79,8 +80,10 @@ public class MPSConstants {
     // Generic
     public static final String THRUST = "thrust";
     // Blink Drive
-    public static final String BLINK_DRIVE_RANGE = "blinkDriveRange";
     public static final String RANGE = "range";
+    public static final String RANGE_BASE = RANGE + BASE;
+    public static final String RANGE_MULTIPLIER = RANGE + MULTIPLIER;
+    public static final String ENERGY_CONSUMPTION_RANGE_MULTIPLIER = ENERGY_CONSUMPTION + StringUtils.capitalize(RANGE) + MULTIPLIER;
     // Dimensional Rift
     public static final String HEAT_GENERATION = "heatGen";
     // Flight Control

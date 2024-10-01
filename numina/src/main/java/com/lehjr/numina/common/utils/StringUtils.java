@@ -366,6 +366,11 @@ yocto	y	0.000 000 000 000 000 000 000 001
         return strlist;
     }
 
+    public static String capitalize(String str) {
+        if(str == null || str.length()<=1) return str;
+        return str.substring(0, 1).toUpperCase() + str.substring(1);
+    }
+
     /**
      * Enum of format codes used by the vanilla Minecraft font renderer
      *

@@ -259,6 +259,7 @@ public class MPSCapabilities {
 
         // Vein Miner
 
+        // Movement
 
 
         // Special

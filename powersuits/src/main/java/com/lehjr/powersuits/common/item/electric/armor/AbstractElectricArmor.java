@@ -140,6 +140,8 @@ public class AbstractElectricArmor extends ArmorItem {
             builder.add(Attributes.STEP_HEIGHT, new AttributeModifier(resourcelocation, stepHeight, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.bySlot(slot));
         }
 
+
+
         if (speed != 0 || movementResistance != 0) {
             /*
                 --------------------------

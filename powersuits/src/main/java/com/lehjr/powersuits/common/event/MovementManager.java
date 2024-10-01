@@ -225,7 +225,7 @@ public enum MovementManager {
     }
 
     @SubscribeEvent
-    public void handleFallEvent(LivingFallEvent event) {
+    public static void handleFallEvent(LivingFallEvent event) {
         if (event.getEntity() instanceof Player player && event.getDistance() > 3.0) {
             Level level = player.level();
             IModularItem iModularItem = ItemUtils.getItemFromEntitySlot(player, EquipmentSlot.FEET).getCapability(NuminaCapabilities.Inventory.MODULAR_ITEM);
@@ -233,11 +233,11 @@ public enum MovementManager {
                 ItemStack shockAbsorbers = iModularItem.getOnlineModuleOrEmpty(MPSConstants.SHOCK_ABSORBER_MODULE);
                 IPowerModule sa = shockAbsorbers.getCapability(NuminaCapabilities.Module.POWER_MODULE);
                 if (sa != null) {
-                    double distanceAbsorb = event.getDistance() * sa.applyPropertyModifiers(MPSConstants.MULTIPLIER);
+                    double distanceAbsorb = Math.abs(event.getDistance() * sa.applyPropertyModifiers(MPSConstants.MULTIPLIER));
                     if (level.isClientSide && NuminaClientConfig.useSounds) {
                         Musique.playerSound(player, SoundDictionary.SOUND_EVENT_GUI_INSTALL.get(), SoundSource.PLAYERS, (float) (distanceAbsorb), (float) 1, false);
                     }
-                    double drain = distanceAbsorb * sa.applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION);
+                    double drain = distanceAbsorb * sa.getEnergyUsage();
                     double avail = ElectricItemUtils.getPlayerEnergy(player);
                     if (drain < avail) {
                         ElectricItemUtils.drainPlayerEnergy(player, (int) drain, false);

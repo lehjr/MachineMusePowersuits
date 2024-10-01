@@ -5,6 +5,7 @@ import com.lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
 import com.lehjr.numina.common.capabilities.module.rightclick.RightClickModule;
 import com.lehjr.numina.common.utils.ElectricItemUtils;
 import com.lehjr.numina.common.utils.PlayerUtils;
+import com.lehjr.powersuits.common.config.module.MovementModuleConfig;
 import com.lehjr.powersuits.common.constants.MPSConstants;
 import com.lehjr.powersuits.common.item.module.AbstractPowerModule;
 import net.minecraft.sounds.SoundEvents;
@@ -23,15 +24,15 @@ public class BlinkDriveModule extends AbstractPowerModule {
     public static class RightClickie extends RightClickModule {
         public RightClickie(@Nonnull ItemStack module) {
             super(module, ModuleCategory.MOVEMENT, ModuleTarget.TOOLONLY);
-            addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, 10000, "FE");
-            addBaseProperty(MPSConstants.BLINK_DRIVE_RANGE, 5, "m");
-            addTradeoffProperty(MPSConstants.RANGE, MPSConstants.ENERGY_CONSUMPTION, 140000);
-            addTradeoffProperty(MPSConstants.RANGE, MPSConstants.BLINK_DRIVE_RANGE, 95);
+            addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, MovementModuleConfig.blinkDriveModuleRangeBase, "FE");
+            addBaseProperty(MPSConstants.RANGE, MovementModuleConfig.blinkDriveModuleRangeBase, "m");
+            addTradeoffProperty(MPSConstants.RANGE, MPSConstants.ENERGY_CONSUMPTION, MovementModuleConfig.blinkDriveModuleEnergyConsumptionRangeMultiplier);
+            addTradeoffProperty(MPSConstants.RANGE, MPSConstants.RANGE, MovementModuleConfig.blinkDriveModuleRangeMultiplier);
         }
 
         @Override
         public InteractionResultHolder<ItemStack> use(@Nonnull ItemStack itemStackIn, Level worldIn, Player playerIn, InteractionHand hand) {
-            int range = (int) applyPropertyModifiers(MPSConstants.BLINK_DRIVE_RANGE);
+            int range = (int) applyPropertyModifiers(MPSConstants.RANGE);
             int energyConsumption = getEnergyUsage();
             HitResult hitRayTrace = rayTrace(worldIn, playerIn, ClipContext.Fluid.SOURCE_ONLY, range);
             if (hitRayTrace != null && hitRayTrace.getType() == HitResult.Type.BLOCK) {
@@ -52,7 +53,7 @@ public class BlinkDriveModule extends AbstractPowerModule {
 
         @Override
         public boolean isAllowed() {
-            return true;
+            return MovementModuleConfig.blinkDriveModuleIsAllowed;
         }
 
         @Override

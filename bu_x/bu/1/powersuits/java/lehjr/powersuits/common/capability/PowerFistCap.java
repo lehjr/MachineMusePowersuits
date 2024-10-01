@@ -91,10 +91,6 @@ public class PowerFistCap implements ICapabilityProvider {
     @Nullable
     @Override
     public Object getCapability(Object object, Object context) {
-
-
-
-
         if (cap == null) {
             return LazyOptional.empty();
         }

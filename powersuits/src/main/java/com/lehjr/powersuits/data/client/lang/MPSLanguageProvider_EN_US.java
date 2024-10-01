@@ -459,7 +459,7 @@ public class MPSLanguageProvider_EN_US extends AbstractLangageProviderMPS {
 //        addTradeoff(MPSConstants.EATING_EFFICIENCY, "Auto-Feeder Efficiency");
 
         // Range ---------------------------------------------------------------------------------------
-        addTradeoff(MPSConstants.BLINK_DRIVE_RANGE, "Range");
+//        addTradeoff(MPSConstants.BLINK_DRIVE_RANGE, "Range");
 
         // Blue ----------------------------------------------------------------------------------------
         addTradeoff(MPSConstants.BLUE, "Blue");
