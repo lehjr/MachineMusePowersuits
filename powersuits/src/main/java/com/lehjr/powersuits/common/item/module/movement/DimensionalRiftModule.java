@@ -1,21 +1,26 @@
 package com.lehjr.powersuits.common.item.module.movement;
 
-
 import com.lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import com.lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
 import com.lehjr.numina.common.capabilities.module.rightclick.RightClickModule;
+import com.lehjr.numina.common.utils.ElectricItemUtils;
+import com.lehjr.numina.common.utils.HeatUtils;
 import com.lehjr.powersuits.common.constants.MPSConstants;
 import com.lehjr.powersuits.common.item.module.AbstractPowerModule;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.border.WorldBorder;
 import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.level.portal.DimensionTransition;
+import net.minecraft.world.phys.Vec3;
 
 import javax.annotation.Nonnull;
 import java.util.Optional;
@@ -31,58 +36,56 @@ public class DimensionalRiftModule extends AbstractPowerModule {
             addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, 200000);
         }
 
-//        @Override
-//        public InteractionResultHolder<ItemStack> use(@Nonnull ItemStack itemStackIn, Level worldIn, Player playerIn, InteractionHand hand) {
-//            if (!playerIn.isPassenger() && !playerIn.isVehicle() && playerIn.canChangeDimensions() && !playerIn.level().isClientSide()) {
-//                Level level ;
-//                if (playerIn.level().dimension().location().equals(Level.NETHER.location())) {
-//                    level = playerIn.getServer().getLevel(Level.OVERWORLD);
-//                } else if (playerIn.level().dimension().location().equals(Level.OVERWORLD.location())) {
-//                    level = playerIn.getServer().getLevel(Level.NETHER);
-//                } else {
-//                    level = null;
-//                }
-//
-//                if (level != null) {
-//                    BlockPos coords = playerIn.blockPosition();
-//                    double energyConsumption = (int) applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION);
-//                    double playerEnergy = ElectricItemUtils.getPlayerEnergy(playerIn);
-//                    if (playerEnergy >= energyConsumption) {
-//                        Optional<BlockPos> targetPos = findSafeLocation(coords, Direction.Axis.X, (ServerLevel) level, playerIn);
-//                        if (targetPos.isPresent()) {
-//                            playerIn.changeDimension((ServerLevel) level, new CommandTeleporter(targetPos.get()));
-//                            ElectricItemUtils.drainPlayerEnergy(playerIn, getEnergyUsage(), false);
-//                            HeatUtils.heatPlayer(playerIn, applyPropertyModifiers(MPSConstants.HEAT_GENERATION));
-//                            return InteractionResultHolder.success(itemStackIn);
-//                        }
-//                    }
-//                }
-//                return InteractionResultHolder.fail(itemStackIn);
-//            }
-//            return InteractionResultHolder.pass(itemStackIn);
-//        }
+        @Override
+        public boolean isAllowed() {
+            return true;
+        }
 
+        @Override
+        public InteractionResultHolder<ItemStack> use(@Nonnull ItemStack itemStackIn, Level worldIn, Player playerIn, InteractionHand hand) {
+            if (!playerIn.isPassenger() && !playerIn.isVehicle() && playerIn.canChangeDimensions(worldIn, worldIn) && !playerIn.level().isClientSide()) {
+                Level level ;
+                if (playerIn.level().dimension().location().equals(Level.NETHER.location())) {
+                    level = playerIn.getServer().getLevel(Level.OVERWORLD);
+                } else if (playerIn.level().dimension().location().equals(Level.OVERWORLD.location())) {
+                    level = playerIn.getServer().getLevel(Level.NETHER);
+                } else {
+                    level = null;
+                }
+
+                if (level != null) {
+                    BlockPos coords = playerIn.blockPosition();
+                    double energyConsumption = (int) applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION);
+                    double playerEnergy = ElectricItemUtils.getPlayerEnergy(playerIn);
+                    if (playerEnergy >= energyConsumption) {
+                        Optional<BlockPos> targetPos = findSafeLocation(coords, Direction.Axis.X, (ServerLevel) level, playerIn);
+                        if (targetPos.isPresent()) {
+
+                            DimensionTransition transition = new DimensionTransition((ServerLevel) level,
+                                targetPos.get().getBottomCenter(),
+                                Vec3.ZERO,
+                                playerIn.yRotO,
+                                playerIn.xRotO,
+                                false,
+                                DimensionTransition.PLAY_PORTAL_SOUND);
+
+                            playerIn.changeDimension(transition);
+                            ElectricItemUtils.drainPlayerEnergy(playerIn, getEnergyUsage(), false);
+                            HeatUtils.heatPlayer(playerIn, applyPropertyModifiers(MPSConstants.HEAT_GENERATION));
+                            return InteractionResultHolder.success(itemStackIn);
+                        }
+                    }
+                }
+                return InteractionResultHolder.fail(itemStackIn);
+            }
+            return InteractionResultHolder.pass(itemStackIn);
+        }
 
         @Override
         public int getEnergyUsage() {
             return (int) applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION);
         }
     }
-
-//    private static class CommandTeleporter implements ITeleporter {
-//        private final BlockPos targetPos;
-//
-//        private CommandTeleporter(BlockPos targetPos) {
-//            this.targetPos = targetPos;
-//        }
-//
-//        @Override
-//        public Entity placeEntity(Entity entity, ServerLevel currentWorld, ServerLevel destWorld, float yaw, Function<Boolean, Entity> repositionEntity) {
-//            entity = repositionEntity.apply(false);
-//            entity.teleportTo(targetPos.getX(), targetPos.getY(), targetPos.getZ());
-//            return entity;
-//        }
-//    }
 
     static boolean isOutsideWorldBounds(Level world, BlockPos pos) {
         if (world == null || pos == null) {
@@ -100,7 +103,7 @@ public class DimensionalRiftModule extends AbstractPowerModule {
         WorldBorder worldborder = level.getWorldBorder();
         final int ceilingLimit = Math.min(level.getMaxBuildHeight(), level.getMinBuildHeight() + level.getLogicalHeight()) - 1;
 
-        for(BlockPos.MutableBlockPos mutablePos : BlockPos.spiralAround(targetPos, 16, Direction.EAST, Direction.SOUTH)) {
+        for(BlockPos.MutableBlockPos mutablePos : BlockPos.spiralAround(targetPos, 500, Direction.EAST, Direction.SOUTH)) {
             int j = Math.min(ceilingLimit, level.getHeight(Heightmap.Types.MOTION_BLOCKING, mutablePos.getX(), mutablePos.getZ()));
             int k = 1;
             if (worldborder.isWithinBounds(mutablePos) && worldborder.isWithinBounds(mutablePos.move(direction, k))) {
@@ -143,11 +146,11 @@ public class DimensionalRiftModule extends AbstractPowerModule {
         return Optional.of(destination);
     }
 
-    private static boolean canTeleportTo(Level world, BlockPos pos, Player playerEntity) {
-        if (!isOutsideWorldBounds(world, pos)) {
-            BlockState state = world.getBlockState(pos.below());
+    private static boolean canTeleportTo(Level level, BlockPos pos, Player playerEntity) {
+        if (!isOutsideWorldBounds(level, pos)) {
+            BlockState state = level.getBlockState(pos.below());
             BlockPos blockpos = pos.subtract(playerEntity.blockPosition());
-            return state.blocksMotion() && state.isSolidRender(world, pos.below()) && world.noCollision(playerEntity, playerEntity.getBoundingBox().move(blockpos));
+            return state.blocksMotion() && state.isSolidRender(level, pos.below()) && level.noCollision(playerEntity, playerEntity.getBoundingBox().move(blockpos));
         }
         return false;
     }
