@@ -30,9 +30,14 @@ public class ToolModuleConfig {
 
     // Crafting Table
     private static final ModConfigSpec.Builder CRAFTING_TABLE_AS_A_MODULE__SETTINGS_BUILDER = SHEARS_MODULE__SETTINGS_BUILDER.pop().push("Crafting_Table_As_Module");
-    private static final ModConfigSpec.BooleanValue CRAFTING_TABLE_AS_A_MODULE__IS_ALLOWED = SHEARS_MODULE__SETTINGS_BUILDER.define(NuminaConstants.CONFIG_IS_ALLOWED, true);
+    private static final ModConfigSpec.BooleanValue CRAFTING_TABLE_AS_A_MODULE__IS_ALLOWED = CRAFTING_TABLE_AS_A_MODULE__SETTINGS_BUILDER.define(NuminaConstants.CONFIG_IS_ALLOWED, true);
 
-    public static final ModConfigSpec MPS_TOOL_MODULE_SPEC = CRAFTING_TABLE_AS_A_MODULE__SETTINGS_BUILDER.build();
+    private static final ModConfigSpec.Builder TINKER_TABLE_AS_A_MODULE__SETTINGS_BUILDER = CRAFTING_TABLE_AS_A_MODULE__SETTINGS_BUILDER.pop().push("Crafting_Table_As_Module");
+    private static final ModConfigSpec.BooleanValue TINKER_TABLE_AS_A_MODULE__IS_ALLOWED = TINKER_TABLE_AS_A_MODULE__SETTINGS_BUILDER.define(NuminaConstants.CONFIG_IS_ALLOWED, true);
+
+
+
+    public static final ModConfigSpec MPS_TOOL_MODULE_SPEC = TINKER_TABLE_AS_A_MODULE__SETTINGS_BUILDER.build();
 
     // Flint and Steel
     public static boolean flintAndSteelModuleIsAllowed;
@@ -52,6 +57,9 @@ public class ToolModuleConfig {
 
     // Crafting Table
     public static boolean craftingTableIsAllowed;
+
+    // Tinker Table
+    public static boolean tinkerTableIsAllowed;
 
     public static void onLoad(final ModConfigEvent event) {
         if (event.getConfig().getSpec() == MPS_TOOL_MODULE_SPEC) {
@@ -74,6 +82,9 @@ public class ToolModuleConfig {
 
             // Crafting Table
             craftingTableIsAllowed = CRAFTING_TABLE_AS_A_MODULE__IS_ALLOWED.get();
+
+            // Tinker Table
+            tinkerTableIsAllowed = TINKER_TABLE_AS_A_MODULE__IS_ALLOWED.get();
         }
     }
 }

@@ -72,6 +72,9 @@ public class NuminaLanguageProvider_EN_US extends AbstractLanguageProviderNumina
         add("module.tradeoff.maxEnergy",  "Maximum Energy");
 
         add("module.tradeoff.maxTransfer", "Maximum Transfer per Tick");
+
+        // Harvest Speed -------------------------------------------------------------------------------
+        add(NuminaConstants.HARVEST_SPEED, "Harvest Speed");
     }
 
     @Override

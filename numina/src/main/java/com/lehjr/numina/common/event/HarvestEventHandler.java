@@ -1,10 +1,12 @@
 package com.lehjr.numina.common.event;
 
+import com.lehjr.numina.common.base.NuminaLogger;
 import com.lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
 import com.lehjr.numina.common.capabilities.module.blockbreaking.IBlockBreakingModule;
 import com.lehjr.numina.common.capabilities.module.enhancement.IMiningEnhancementModule;
 import com.lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
 import com.lehjr.numina.common.capabilities.render.highlight.IHighlight;
+import com.lehjr.numina.common.constants.NuminaConstants;
 import com.lehjr.numina.common.registration.NuminaCapabilities;
 import com.lehjr.numina.common.utils.ElectricItemUtils;
 import net.minecraft.core.BlockPos;
@@ -145,6 +147,7 @@ public class HarvestEventHandler {
         IModeChangingItem mci = NuminaCapabilities.getModeChangingModularItem(tool);
         double playerEnergy = ElectricItemUtils.getPlayerEnergy(player);
         NonNullList<IBlockBreakingModule> modules = NonNullList.create();
+        float newSpeed = event.getNewSpeed();
 
         if (mci != null) {
             HitResult rayTraceResult = rayTrace(level, player, ClipContext.Fluid.SOURCE_ONLY);
@@ -193,11 +196,16 @@ public class HarvestEventHandler {
                             IBlockBreakingModule bbm = entry.getKey();
                             List<BlockPos> posList = entry.getValue();
                             // FIXME: move tag key to Numina Constants
-                            double speed = entry.getKey().applyPropertyModifiers("harvestSpeed");
+                            double speed = newSpeed * bbm.applyPropertyModifiers(NuminaConstants.HARVEST_SPEED);
+                            NuminaLogger.logDebug("speed here: " + speed);
                             speed = speed / posList.size();
                             correctedSpeeds.add(speed);
                         }
+
+
                         double finalSpeed = (correctedSpeeds.stream().mapToDouble(Double::doubleValue).average().orElse(1.0) * 1.2); // slight boost
+                        NuminaLogger.logDebug("event old speed: " + event.getOriginalSpeed() +", newSpeed: " + event.getNewSpeed() +", speed to set: " + finalSpeed +", finalSpeeds: " + correctedSpeeds);
+
                         event.setNewSpeed((float) finalSpeed);
                         return;
                     }

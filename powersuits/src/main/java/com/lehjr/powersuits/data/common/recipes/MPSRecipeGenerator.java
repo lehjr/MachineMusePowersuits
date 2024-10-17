@@ -823,6 +823,18 @@ public class MPSRecipeGenerator extends RecipeProvider {
             .unlockedBy(getHasName(NuminaItems.CONTROL_CIRCUIT_2.get()), has(NuminaItems.CONTROL_CIRCUIT_2.get()))
             .save(output);
 
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, MPSItems.FLINT_AND_STEEL_MODULE.get())
+            .pattern(" F ")
+            .pattern("WCW")
+            .pattern("ISI")
+            .define('F', Items.FLINT)
+            .define('I', Tags.Items.INGOTS_IRON)
+            .define('W', NuminaItems.WIRING_COPPER.get())
+            .define('S', NuminaItems.SOLENOID.get())
+            .define('C', NuminaItems.CONTROL_CIRCUIT_1.get())
+            .unlockedBy(getHasName(NuminaItems.CONTROL_CIRCUIT_1.get()), has(NuminaItems.CONTROL_CIRCUIT_1.get()))
+            .save(output);
+
         // Vision ------------------------------------------------------------------------------------
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, MPSItems.BINOCULARS_MODULE.get())
             .pattern("WWW")

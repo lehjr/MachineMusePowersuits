@@ -64,6 +64,7 @@ public class NuminaConstants {
 
     // Misc ---------------------------------------------------------------------------------------
     public static final String BLOCK = "block";
+    public static final String HARVEST_SPEED = "harvestSpeed";
 
     // Toggleable ---------------------------------------------------------------------------------
     public static final String TAG_ONLINE = "online";

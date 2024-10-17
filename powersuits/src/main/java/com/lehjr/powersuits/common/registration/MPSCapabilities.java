@@ -3,6 +3,8 @@ package com.lehjr.powersuits.common.registration;
 import com.lehjr.numina.common.capabilities.energy.ModularItemEnergyWrapper;
 import com.lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import com.lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
+import com.lehjr.numina.common.capabilities.module.powermodule.PowerModule;
+import com.lehjr.numina.common.capabilities.module.rightclick.RightClickModule;
 import com.lehjr.numina.common.capabilities.render.color.ColorAttachmentStorage;
 import com.lehjr.numina.common.capabilities.render.hud.HudModule;
 import com.lehjr.numina.common.registration.NuminaCapabilities;
@@ -10,6 +12,7 @@ import com.lehjr.powersuits.common.capabilities.item.armor.PowerArmorHeatWrapper
 import com.lehjr.powersuits.common.capabilities.item.armor.PowerArmorModularItemWrapper;
 import com.lehjr.powersuits.common.capabilities.item.armor.PowerArmorRenderWrapper;
 import com.lehjr.powersuits.common.capabilities.item.module.PortableCraftingCapability;
+import com.lehjr.powersuits.common.capabilities.item.module.TinkerTableCap;
 import com.lehjr.powersuits.common.capabilities.item.tool.PowerFistHeatWrapper;
 import com.lehjr.powersuits.common.capabilities.item.tool.PowerFistModeChangingWrapper;
 import com.lehjr.powersuits.common.capabilities.item.tool.PowerFistRenderWrapper;
@@ -312,6 +315,8 @@ public class MPSCapabilities {
         event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new SwimAssistModule.Ticker(stack), MPSItems.SWIM_ASSIST_MODULE.get());
 
         // Tools ----------------------------------------------------------------------------------
+        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new TinkerTableCap(stack), MPSItems.TINKER_TABLE_ITEM.get());
+
         // Axe
         event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new AxeModule.BlockBreaker(stack, 1), MPSItems.STONE_AXE_MODULE.get());
         event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new AxeModule.BlockBreaker(stack, 2), MPSItems.IRON_AXE_MODULE.get());

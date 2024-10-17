@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C": {
+      "item": "numina:component_control_circuit_1"
+    },
+    "F": {
+      "item": "minecraft:flint"
+    },
+    "I": {
+      "tag": "c:ingots/iron"
+    },
+    "S": {
+      "item": "numina:component_solenoid"
+    },
+    "W": {
+      "item": "numina:component_wiring_copper"
+    }
+  },
+  "pattern": [
+    " F ",
+    "WCW",
+    "ISI"
+  ],
+  "result": {
+    "count": 1,
+    "id": "powersuits:flint_and_steel"
+  }
+}

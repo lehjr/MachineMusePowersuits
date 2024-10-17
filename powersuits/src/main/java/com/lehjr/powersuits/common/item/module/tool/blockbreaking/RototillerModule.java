@@ -4,6 +4,7 @@ import com.lehjr.numina.common.capabilities.module.blockbreaking.IBlockBreakingM
 import com.lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import com.lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
 import com.lehjr.numina.common.capabilities.module.rightclick.RightClickModule;
+import com.lehjr.numina.common.constants.NuminaConstants;
 import com.lehjr.numina.common.utils.ElectricItemUtils;
 import com.lehjr.powersuits.common.config.module.HoeModuleConfig;
 import com.lehjr.powersuits.common.constants.MPSConstants;
@@ -44,9 +45,9 @@ public class RototillerModule extends AbstractPowerModule {
                 addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, HoeModuleConfig.stoneRototillerModuleEnergyConsumptionBase, "FE"); // 500
                 addTradeoffProperty(MPSConstants.RADIUS, MPSConstants.ENERGY_CONSUMPTION, HoeModuleConfig.stoneRototillerModuleEnergyConsumptionRadiusMultiplier); // 9500
                 addIntTradeoffProperty(MPSConstants.RADIUS, MPSConstants.RADIUS, HoeModuleConfig.stoneRototillerModuleRadiusMultiplier,  "m", 1, 0); // 4
-                addBaseProperty(MPSConstants.HARVEST_SPEED, HoeModuleConfig.stoneRototillerModuleHarvestSpeedBase, "x"); // 4, 8 , who knows :P
+                addBaseProperty(NuminaConstants.HARVEST_SPEED, HoeModuleConfig.stoneRototillerModuleHarvestSpeedBase, "x"); // 4, 8 , who knows :P
                 addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.ENERGY_CONSUMPTION, HoeModuleConfig.stoneRototillerModuleEnergyConsumptionOverclockMultiplier); // 9500
-                addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.HARVEST_SPEED, HoeModuleConfig.stoneRototillerModuleHarvestSpeedOverclockMultiplier); // 22
+                addTradeoffProperty(MPSConstants.OVERCLOCK, NuminaConstants.HARVEST_SPEED, HoeModuleConfig.stoneRototillerModuleHarvestSpeedOverclockMultiplier); // 22
                 break;
             }
 
@@ -54,9 +55,9 @@ public class RototillerModule extends AbstractPowerModule {
                 addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, HoeModuleConfig.ironRototillerModuleEnergyConsumptionBase, "FE"); // 500
                 addTradeoffProperty(MPSConstants.RADIUS, MPSConstants.ENERGY_CONSUMPTION, HoeModuleConfig.ironRototillerModuleEnergyConsumptionRadiusMultiplier); // 9500
                 addIntTradeoffProperty(MPSConstants.RADIUS, MPSConstants.RADIUS, HoeModuleConfig.ironRototillerModuleRadiusMultiplier,  "m", 1, 0); // 4
-                addBaseProperty(MPSConstants.HARVEST_SPEED, HoeModuleConfig.ironRototillerModuleHarvestSpeedBase, "x"); // 4, 8 , who knows :P
+                addBaseProperty(NuminaConstants.HARVEST_SPEED, HoeModuleConfig.ironRototillerModuleHarvestSpeedBase, "x"); // 4, 8 , who knows :P
                 addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.ENERGY_CONSUMPTION, HoeModuleConfig.ironRototillerModuleEnergyConsumptionOverclockMultiplier); // 9500
-                addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.HARVEST_SPEED, HoeModuleConfig.ironRototillerModuleHarvestSpeedOverclockMultiplier); // 22
+                addTradeoffProperty(MPSConstants.OVERCLOCK, NuminaConstants.HARVEST_SPEED, HoeModuleConfig.ironRototillerModuleHarvestSpeedOverclockMultiplier); // 22
                 break;
             }
 
@@ -64,9 +65,9 @@ public class RototillerModule extends AbstractPowerModule {
                 addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, HoeModuleConfig.diamondRototillerModuleEnergyConsumptionBase, "FE"); // 500
                 addTradeoffProperty(MPSConstants.RADIUS, MPSConstants.ENERGY_CONSUMPTION, HoeModuleConfig.diamondRototillerModuleEnergyConsumptionRadiusMultiplier); // 9500
                 addIntTradeoffProperty(MPSConstants.RADIUS, MPSConstants.RADIUS, HoeModuleConfig.diamondRototillerModuleRadiusMultiplier,  "m", 1, 0); // 4
-                addBaseProperty(MPSConstants.HARVEST_SPEED, HoeModuleConfig.diamondRototillerModuleHarvestSpeedBase, "x"); // 4, 8 , who knows :P
+                addBaseProperty(NuminaConstants.HARVEST_SPEED, HoeModuleConfig.diamondRototillerModuleHarvestSpeedBase, "x"); // 4, 8 , who knows :P
                 addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.ENERGY_CONSUMPTION, HoeModuleConfig.diamondRototillerModuleEnergyConsumptionOverclockMultiplier); // 9500
-                addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.HARVEST_SPEED, HoeModuleConfig.diamondRototillerModuleHarvestSpeedOverclockMultiplier); // 22
+                addTradeoffProperty(MPSConstants.OVERCLOCK, NuminaConstants.HARVEST_SPEED, HoeModuleConfig.diamondRototillerModuleHarvestSpeedOverclockMultiplier); // 22
                 break;
             }
 
@@ -74,9 +75,9 @@ public class RototillerModule extends AbstractPowerModule {
                 addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, HoeModuleConfig.netheriteRototillerModuleEnergyConsumptionBase, "FE"); // 500
                 addTradeoffProperty(MPSConstants.RADIUS, MPSConstants.ENERGY_CONSUMPTION, HoeModuleConfig.netheriteRototillerModuleEnergyConsumptionRadiusMultiplier); // 9500
                 addIntTradeoffProperty(MPSConstants.RADIUS, MPSConstants.RADIUS, HoeModuleConfig.netheriteRototillerModuleRadiusMultiplier,  "m", 1, 0); // 4
-                addBaseProperty(MPSConstants.HARVEST_SPEED, HoeModuleConfig.netheriteRototillerModuleHarvestSpeedBase, "x"); // 4, 8 , who knows :P
+                addBaseProperty(NuminaConstants.HARVEST_SPEED, HoeModuleConfig.netheriteRototillerModuleHarvestSpeedBase, "x"); // 4, 8 , who knows :P
                 addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.ENERGY_CONSUMPTION, HoeModuleConfig.netheriteRototillerModuleEnergyConsumptionOverclockMultiplier); // 9500
-                addTradeoffProperty(MPSConstants.OVERCLOCK, MPSConstants.HARVEST_SPEED, HoeModuleConfig.netheriteRototillerModuleHarvestSpeedOverclockMultiplier); // 22
+                addTradeoffProperty(MPSConstants.OVERCLOCK, NuminaConstants.HARVEST_SPEED, HoeModuleConfig.netheriteRototillerModuleHarvestSpeedOverclockMultiplier); // 22
                 break;
             }
             }
@@ -148,7 +149,7 @@ public class RototillerModule extends AbstractPowerModule {
 
         @Override
         public void handleBreakSpeed(PlayerEvent.BreakSpeed event) {
-            event.setNewSpeed((float) (event.getNewSpeed() * applyPropertyModifiers(MPSConstants.HARVEST_SPEED)));
+            event.setNewSpeed((float) (event.getNewSpeed() * applyPropertyModifiers(NuminaConstants.HARVEST_SPEED)));
         }
 
         @Override

@@ -4,6 +4,7 @@ import com.lehjr.numina.common.capabilities.module.blockbreaking.IBlockBreakingM
 import com.lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import com.lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
 import com.lehjr.numina.common.capabilities.module.rightclick.RightClickModule;
+import com.lehjr.numina.common.constants.NuminaConstants;
 import com.lehjr.numina.common.utils.ElectricItemUtils;
 import com.lehjr.powersuits.common.config.module.ToolModuleConfig;
 import com.lehjr.powersuits.common.constants.MPSConstants;
@@ -43,7 +44,7 @@ public class ShearsModule extends AbstractPowerModule {
         public BlockBreaker(@Nonnull ItemStack module) {
             super(module, ModuleCategory.TOOL, ModuleTarget.TOOLONLY);
             addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, 1000, "FE");
-            addBaseProperty(MPSConstants.HARVEST_SPEED , 8, "x");
+            addBaseProperty(NuminaConstants.HARVEST_SPEED , 8, "x");
         }
 
         @Override
@@ -82,7 +83,7 @@ public class ShearsModule extends AbstractPowerModule {
 
         @Override
         public void handleBreakSpeed(PlayerEvent.BreakSpeed event) {
-            event.setNewSpeed((float) (event.getNewSpeed() * applyPropertyModifiers(MPSConstants.HARVEST_SPEED )));
+            event.setNewSpeed((float) (event.getNewSpeed() * applyPropertyModifiers(NuminaConstants.HARVEST_SPEED )));
         }
 
         @Override

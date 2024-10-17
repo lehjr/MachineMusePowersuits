@@ -1,5 +1,6 @@
 package com.lehjr.powersuits.common.constants;
 
+import com.lehjr.numina.common.constants.NuminaConstants;
 import com.lehjr.numina.common.utils.StringUtils;
 import net.minecraft.resources.ResourceLocation;
 
@@ -29,9 +30,8 @@ public class MPSConstants {
     public static final String ENERGY_CONSUMPTION_MULTIPLIER = ENERGY_CONSUMPTION + MULTIPLIER;
 
     public static final String POWER = "power";
-    public static final String HARVEST_SPEED = "harvestSpeed";
-    public static final String HARVEST_SPEED_BASE = HARVEST_SPEED + BASE;
-    public static final String HARVEST_SPEED_OVERCLOCK_MULTIPLIER = HARVEST_SPEED + OVERCLOCK_MULTIPLIER;
+    public static final String HARVEST_SPEED_BASE = NuminaConstants.HARVEST_SPEED + BASE;
+    public static final String HARVEST_SPEED_OVERCLOCK_MULTIPLIER = NuminaConstants.HARVEST_SPEED + OVERCLOCK_MULTIPLIER;
 
     public static final String DIAMETER ="diameter";
 

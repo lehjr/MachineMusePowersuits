@@ -1,4 +1,4 @@
-// 1.21.1	2024-09-10T10:57:39.495491583	Recipes
+// 1.21.1	2024-10-16T20:00:10.984761757	Recipes
 e6ed1a1452d223bad6ddca05e1eda41f805e20cd data/powersuits/advancement/recipes/combat/blade_launcher.json
 461b586b4f4f512431a173f130d7e83c02b002cb data/powersuits/advancement/recipes/combat/energy_shield.json
 58cc314341a1784c6b18d5849b867be69a363ac9 data/powersuits/advancement/recipes/combat/invisibility.json
@@ -38,6 +38,7 @@ b0e7b454a7505c57f81550fd36e29b2cd60f5330 data/powersuits/advancement/recipes/mis
 a98be2ec8bbabba823019130cb6b4c735543350d data/powersuits/advancement/recipes/misc/climb_assist.json
 089e9056fd94753192be4ebb6377a89d599a7651 data/powersuits/advancement/recipes/misc/dim_rift_gen.json
 7969b66ded38d3110cbd6d5478b44e921163ec47 data/powersuits/advancement/recipes/misc/flight_control.json
+59c5ab39ba15048d81863cf42dfd5f16b416693b data/powersuits/advancement/recipes/misc/flint_and_steel.json
 8c053ccf02018689f5f6f6cdcb8f0c8491399376 data/powersuits/advancement/recipes/misc/fortune.json
 e507ce179ed5a54de1248fe866b39d7307c647f3 data/powersuits/advancement/recipes/misc/glider.json
 cacdaf8fd9cc4d70719fadb484a3e83fde88da09 data/powersuits/advancement/recipes/misc/jet_boots.json
@@ -88,6 +89,7 @@ f389697523e42624d76a67a008713b20f1a5605d data/powersuits/recipe/axe4.json
 b40876c8ce6fc474b2f363f358f91cfcf5ab5d80 data/powersuits/recipe/dim_rift_gen.json
 3bde0ed9d3c9961e4644c2a2b1cd24141edadc5e data/powersuits/recipe/energy_shield.json
 a5331fc34fdfb23d22321a6963aaefc35d4a53da data/powersuits/recipe/flight_control.json
+4bc3267e732fda36cde71c6615df2002aaa2aba2 data/powersuits/recipe/flint_and_steel.json
 def874fd66c8b9777db39b9f3ded1327cd7244aa data/powersuits/recipe/fortune.json
 4208949e73d9ee1bbb7ba29df6adc3bbf8249b1f data/powersuits/recipe/glider.json
 3f12eb19729ef152a61298251481c38e79ef6493 data/powersuits/recipe/invisibility.json

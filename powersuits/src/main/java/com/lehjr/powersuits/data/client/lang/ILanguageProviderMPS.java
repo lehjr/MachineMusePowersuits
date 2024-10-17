@@ -494,7 +494,7 @@ public interface ILanguageProviderMPS {
 ////        addTradeoff(harvSpeed", "Harvest Speed");
 //
 //    // Harvest Speed -------------------------------------------------------------------------------
-//    addTradeoff(MPSConstants.HARVEST_SPEED, "Harvest Speed");
+//    addTradeoff(NuminaConstants.HARVEST_SPEED, "Harvest Speed");
 //
 //    // Heat Activation Percent ---------------------------------------------------------------------
 //    addTradeoff(MPSConstants.HEAT_ACTIVATION_PERCENT, "Heat Activation Percent");

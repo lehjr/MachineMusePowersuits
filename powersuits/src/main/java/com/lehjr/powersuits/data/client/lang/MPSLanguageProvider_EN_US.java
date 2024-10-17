@@ -1,5 +1,6 @@
 package com.lehjr.powersuits.data.client.lang;
 
+import com.lehjr.numina.common.constants.NuminaConstants;
 import com.lehjr.powersuits.common.constants.MPSConstants;
 import com.lehjr.powersuits.common.registration.MPSBlocks;
 import com.lehjr.powersuits.common.registration.MPSItems;
@@ -523,9 +524,6 @@ public class MPSLanguageProvider_EN_US extends AbstractLangageProviderMPS {
 
         // Lux Capacitor Green Hue ---------------------------------------------------------------------
         addTradeoff(MPSConstants.GREEN_HUE, "Lux Capacitor Green Hue");
-
-        // Harvest Speed -------------------------------------------------------------------------------
-        addTradeoff(MPSConstants.HARVEST_SPEED, "Harvest Speed");
 
         // Heat Activation Percent ---------------------------------------------------------------------
 //        addTradeoff(MPSConstants.HEAT_ACTIVATION_PERCENT, "Heat Activation Percent");
