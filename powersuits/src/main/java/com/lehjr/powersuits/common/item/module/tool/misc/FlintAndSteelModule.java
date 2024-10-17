@@ -4,6 +4,7 @@ import com.lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import com.lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
 import com.lehjr.numina.common.capabilities.module.rightclick.RightClickModule;
 import com.lehjr.numina.common.utils.ElectricItemUtils;
+import com.lehjr.powersuits.common.config.module.ToolModuleConfig;
 import com.lehjr.powersuits.common.constants.MPSConstants;
 import com.lehjr.powersuits.common.item.module.AbstractPowerModule;
 import net.minecraft.advancements.CriteriaTriggers;
@@ -34,7 +35,12 @@ public class FlintAndSteelModule extends AbstractPowerModule {
     public static class RightClickie extends RightClickModule {
         public RightClickie(@Nonnull ItemStack module) {
             super(module, ModuleCategory.TOOL, ModuleTarget.TOOLONLY);
-                addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, 10000, "FE");
+                addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, ToolModuleConfig.flintAndSteelEnergyConsumption, "FE");
+        }
+
+        @Override
+        public boolean isAllowed() {
+            return ToolModuleConfig.flintAndSteelModuleIsAllowed;
         }
 
         /**
