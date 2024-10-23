@@ -1,5 +1,6 @@
 package com.lehjr.powersuits.common.item.electric.armor;
 
+import com.lehjr.numina.common.base.NuminaLogger;
 import com.lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
 import com.lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
 import com.lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
@@ -125,6 +126,9 @@ public class AbstractElectricArmor extends ArmorItem {
         }
 
         if (armorVal > 0) {
+            NuminaLogger.logDebug("adding armor value of + " + armorVal + "for slot: " + slot);
+
+
             builder.add(Attributes.ARMOR, new AttributeModifier(resourcelocation, armorVal, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.bySlot(slot));
         }
 
@@ -139,8 +143,6 @@ public class AbstractElectricArmor extends ArmorItem {
         if (stepHeight > 0.5001F) {
             builder.add(Attributes.STEP_HEIGHT, new AttributeModifier(resourcelocation, stepHeight, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.bySlot(slot));
         }
-
-
 
         if (speed != 0 || movementResistance != 0) {
             /*
