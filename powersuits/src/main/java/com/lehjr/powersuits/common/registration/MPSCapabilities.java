@@ -3,8 +3,6 @@ package com.lehjr.powersuits.common.registration;
 import com.lehjr.numina.common.capabilities.energy.ModularItemEnergyWrapper;
 import com.lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import com.lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
-import com.lehjr.numina.common.capabilities.module.powermodule.PowerModule;
-import com.lehjr.numina.common.capabilities.module.rightclick.RightClickModule;
 import com.lehjr.numina.common.capabilities.render.color.ColorAttachmentStorage;
 import com.lehjr.numina.common.capabilities.render.hud.HudModule;
 import com.lehjr.numina.common.registration.NuminaCapabilities;
@@ -21,7 +19,7 @@ import com.lehjr.powersuits.common.item.module.armor.ArmorPlatingModule;
 import com.lehjr.powersuits.common.item.module.armor.EnergyShieldModule;
 import com.lehjr.powersuits.common.item.module.cosmetic.TransparentArmorModule;
 import com.lehjr.powersuits.common.item.module.environmental.AutoFeederModule;
-import com.lehjr.powersuits.common.item.module.environmental.InvisibilityModule;
+import com.lehjr.powersuits.common.item.module.environmental.ActiveCamouflageModule;
 import com.lehjr.powersuits.common.item.module.environmental.MagnetModule;
 import com.lehjr.powersuits.common.item.module.environmental.MobRepulsorModule;
 import com.lehjr.powersuits.common.item.module.environmental.PiglinPacificationModule;
@@ -32,7 +30,7 @@ import com.lehjr.powersuits.common.item.module.miningenchantment.SilkTouchModule
 import com.lehjr.powersuits.common.item.module.miningenhancement.SelectiveMiner;
 import com.lehjr.powersuits.common.item.module.miningenhancement.TunnelBoreModule;
 import com.lehjr.powersuits.common.item.module.movement.BlinkDriveModule;
-import com.lehjr.powersuits.common.item.module.movement.ClimbAssistModule;
+import com.lehjr.powersuits.common.item.module.movement.StepAssistModule;
 import com.lehjr.powersuits.common.item.module.movement.DimensionalRiftModule;
 import com.lehjr.powersuits.common.item.module.movement.FlightControlModule;
 import com.lehjr.powersuits.common.item.module.movement.GliderModule;
@@ -243,7 +241,7 @@ public class MPSCapabilities {
         // Environmental ----------------------------------------------------------------------------------------------
         // TODO: COOLING
         event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new AutoFeederModule.Ticker(stack), MPSItems.AUTO_FEEDER_MODULE.get());
-        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new InvisibilityModule.Ticker(stack), MPSItems.ACTIVE_CAMOUFLAGE_MODULE.get());
+        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new ActiveCamouflageModule.Ticker(stack), MPSItems.ACTIVE_CAMOUFLAGE_MODULE.get());
         event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new MagnetModule.Ticker(stack), MPSItems.MAGNET_MODULE.get());
         event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new MobRepulsorModule.Ticker(stack), MPSItems.MOB_REPULSOR_MODULE.get());
         event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)->new PiglinPacificationModule.PiglinPacificationCap(stack), MPSItems.PIGLIN_PACIFICATION_MODULE.get());
@@ -302,7 +300,7 @@ public class MPSCapabilities {
 
         // Movement -------------------------------------------------------------------------------
         event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new BlinkDriveModule.RightClickie(stack), MPSItems.BLINK_DRIVE_MODULE.get());
-        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new ClimbAssistModule.Ticker(stack), MPSItems.CLIMB_ASSIST_MODULE.get());
+        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new StepAssistModule.ClimbAssistCap(stack), MPSItems.CLIMB_ASSIST_MODULE.get());
         event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new DimensionalRiftModule.RightClickie(stack), MPSItems.DIMENSIONAL_RIFT_MODULE.get());
         event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new FlightControlModule.Toggler(stack), MPSItems.FLIGHT_CONTROL_MODULE.get());
         event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new GliderModule.Ticker(stack), MPSItems.GLIDER_MODULE.get());

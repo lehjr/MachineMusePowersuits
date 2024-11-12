@@ -229,7 +229,9 @@ public class MPSConstants {
     public static final String ARMOR_TOUGHNESS = "armorToughness";
     public static final String MODULE_FIELD_STRENGTH = "fieldStrength";
 
-
+    // Environmental
+    // Auto Feeder
+    public static final String USE_OLD_AUTO_FEEDER = "useOldAutoFeeder";
 
 
     /**

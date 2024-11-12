@@ -13,6 +13,28 @@ public class MovementModuleConfig {
     private static final ModConfigSpec.DoubleValue BLINK_DRIVE_MODULE__ENERGY_CONSUMPTION_RANGE_MULTIPLIER = BLINK_DRIVE_MODULE__SETTINGS_BUILDER.defineInRange(MPSConstants.ENERGY_CONSUMPTION_RANGE_MULTIPLIER, 140000, 0, 1000000.0D);
     private static final ModConfigSpec.DoubleValue BLINK_DRIVE_MODULE__RANGE_MULTIPLIER = BLINK_DRIVE_MODULE__SETTINGS_BUILDER.defineInRange(MPSConstants.RANGE_MULTIPLIER, 95, 0, 10000.0D);
 
+    // Dimensional Rift
+    // ---------------------
+    // Flight Control
+    // -> isAllowed
+    // --------------------
+    // Glider
+    // -> isAllowed
+    // --------------------
+    // JetBootsModule
+    // --------------------
+    // JetPackModule
+    // --------------------
+    // JumpAssistModule
+    // --------------------
+    // ParachuteModule
+    // --------------------
+    // ShockAbsorberModule
+    // --------------------
+    // SprintAssistModule
+    // --------------------
+    // SwimAssistModule
+
     public static boolean blinkDriveModuleIsAllowed;
     public static double blinkDriveModuleEnergyConsumptionBase;
     public static double blinkDriveModuleRangeBase;

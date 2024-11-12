@@ -8,6 +8,7 @@ import com.lehjr.numina.common.registration.NuminaCapabilities;
 import com.lehjr.numina.common.utils.ElectricItemUtils;
 import com.lehjr.numina.common.utils.ItemUtils;
 import com.lehjr.numina.common.utils.TagUtils;
+import com.lehjr.powersuits.common.config.module.EnvironmentalModuleConfig;
 import com.lehjr.powersuits.common.constants.MPSConstants;
 import com.lehjr.powersuits.common.item.module.AbstractPowerModule;
 import net.minecraft.nbt.CompoundTag;
@@ -22,14 +23,17 @@ import javax.annotation.Nonnull;
 
 public class AutoFeederModule extends AbstractPowerModule {
     public static class Ticker extends PlayerTickModule {
-        boolean useOldAutoFeeder;
         public Ticker(@Nonnull ItemStack module) {
             super(module, ModuleCategory.ENVIRONMENTAL, ModuleTarget.HEADONLY);
-            useOldAutoFeeder =  true; //MPSCommonConfig.
-            addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, 100);
-            addBaseProperty(MPSConstants.EATING_EFFICIENCY, 50);
-            addTradeoffProperty(MPSConstants.EFFICIENCY, MPSConstants.ENERGY_CONSUMPTION, 1000, "FE");
-            addTradeoffProperty(MPSConstants.EFFICIENCY, MPSConstants.EATING_EFFICIENCY, 50);
+            addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, EnvironmentalModuleConfig.autoFeederModuleEnergyConsumptionBase);
+            addBaseProperty(MPSConstants.EATING_EFFICIENCY, EnvironmentalModuleConfig.autoFeederModuleEatingEfficiencyBase);
+            addTradeoffProperty(MPSConstants.EFFICIENCY, MPSConstants.ENERGY_CONSUMPTION, EnvironmentalModuleConfig.magnetModuleEnergyConsumptionRadiusMultiplier, "FE");
+            addTradeoffProperty(MPSConstants.EFFICIENCY, MPSConstants.EATING_EFFICIENCY, EnvironmentalModuleConfig.autoFeederModuleEfficiencyEatingEfficiencyMultiplier);
+        }
+
+        @Override
+        public boolean isAllowed() {
+            return EnvironmentalModuleConfig.autoFeederModuleIsAllowed;
         }
 
         @Override
@@ -45,7 +49,7 @@ public class AutoFeederModule extends AbstractPowerModule {
             float saturationNeeded = 20 - foodStats.getSaturationLevel();
 
             // this consumes all food in the player's inventory and stores the stats in a buffer
-            if (useOldAutoFeeder) { // FIXME!!!!!
+            if (EnvironmentalModuleConfig.autoFeederModuleUseOldAutoFeeder) {
                 for (int i = 0; i < inv.getContainerSize(); i++) {
                     ItemStack stack = inv.getItem(i);
                     FoodProperties foodProperties = stack.getFoodProperties(player);

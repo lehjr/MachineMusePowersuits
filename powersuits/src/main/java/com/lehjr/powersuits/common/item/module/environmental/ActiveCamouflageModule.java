@@ -17,7 +17,7 @@ import net.minecraft.world.level.Level;
 
 import javax.annotation.Nonnull;
 
-public class InvisibilityModule extends AbstractPowerModule {
+public class ActiveCamouflageModule extends AbstractPowerModule {
     private static final Holder<MobEffect> invisibility = MobEffects.INVISIBILITY;
 
     public static class Ticker extends PlayerTickModule {

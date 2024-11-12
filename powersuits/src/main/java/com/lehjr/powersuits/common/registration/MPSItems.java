@@ -10,7 +10,7 @@ import com.lehjr.powersuits.common.item.module.armor.EnergyShieldModule;
 import com.lehjr.powersuits.common.item.module.cosmetic.TransparentArmorModule;
 import com.lehjr.powersuits.common.item.module.debug.DebugModule;
 import com.lehjr.powersuits.common.item.module.environmental.AutoFeederModule;
-import com.lehjr.powersuits.common.item.module.environmental.InvisibilityModule;
+import com.lehjr.powersuits.common.item.module.environmental.ActiveCamouflageModule;
 import com.lehjr.powersuits.common.item.module.environmental.MagnetModule;
 import com.lehjr.powersuits.common.item.module.environmental.MobRepulsorModule;
 import com.lehjr.powersuits.common.item.module.environmental.PiglinPacificationModule;
@@ -22,7 +22,7 @@ import com.lehjr.powersuits.common.item.module.miningenhancement.SelectiveMiner;
 import com.lehjr.powersuits.common.item.module.miningenhancement.TunnelBoreModule;
 import com.lehjr.powersuits.common.item.module.miningenhancement.VeinMinerModule;
 import com.lehjr.powersuits.common.item.module.movement.BlinkDriveModule;
-import com.lehjr.powersuits.common.item.module.movement.ClimbAssistModule;
+import com.lehjr.powersuits.common.item.module.movement.StepAssistModule;
 import com.lehjr.powersuits.common.item.module.movement.DimensionalRiftModule;
 import com.lehjr.powersuits.common.item.module.movement.FlightControlModule;
 import com.lehjr.powersuits.common.item.module.movement.GliderModule;
@@ -177,7 +177,7 @@ public class MPSItems {
 
     // Movement -----------------------------------------------------------------------------------
     public static DeferredHolder<Item, BlinkDriveModule> BLINK_DRIVE_MODULE = MPS_ITEMS.register(MPSConstants.BLINK_DRIVE_MODULE.getPath(), BlinkDriveModule::new);
-    public static DeferredHolder<Item, ClimbAssistModule> CLIMB_ASSIST_MODULE = MPS_ITEMS.register(MPSConstants.CLIMB_ASSIST_MODULE.getPath(), ClimbAssistModule::new);
+    public static DeferredHolder<Item, StepAssistModule> CLIMB_ASSIST_MODULE = MPS_ITEMS.register(MPSConstants.CLIMB_ASSIST_MODULE.getPath(), StepAssistModule::new);
     public static DeferredHolder<Item, DimensionalRiftModule> DIMENSIONAL_RIFT_MODULE = MPS_ITEMS.register(MPSConstants.DIMENSIONAL_RIFT_MODULE.getPath(), DimensionalRiftModule::new);
     public static DeferredHolder<Item, FlightControlModule> FLIGHT_CONTROL_MODULE = MPS_ITEMS.register(MPSConstants.FLIGHT_CONTROL_MODULE.getPath(), FlightControlModule::new);
     public static DeferredHolder<Item, GliderModule> GLIDER_MODULE = MPS_ITEMS.register(MPSConstants.GLIDER_MODULE.getPath(), GliderModule::new);
@@ -190,7 +190,7 @@ public class MPSItems {
     public static DeferredHolder<Item, SwimAssistModule> SWIM_ASSIST_MODULE = MPS_ITEMS.register(MPSConstants.SWIM_BOOST_MODULE.getPath(), SwimAssistModule::new);
 
     // Special ------------------------------------------------------------------------------------
-    public static DeferredHolder<Item, InvisibilityModule> ACTIVE_CAMOUFLAGE_MODULE = MPS_ITEMS.register(MPSConstants.ACTIVE_CAMOUFLAGE_MODULE.getPath(), InvisibilityModule::new);
+    public static DeferredHolder<Item, ActiveCamouflageModule> ACTIVE_CAMOUFLAGE_MODULE = MPS_ITEMS.register(MPSConstants.ACTIVE_CAMOUFLAGE_MODULE.getPath(), ActiveCamouflageModule::new);
     public static DeferredHolder<Item, MagnetModule> MAGNET_MODULE = MPS_ITEMS.register(MPSConstants.MAGNET_MODULE.getPath(), MagnetModule::new);
     public static DeferredHolder<Item, PiglinPacificationModule> PIGLIN_PACIFICATION_MODULE = MPS_ITEMS.register(MPSConstants.PIGLIN_PACIFICATION_MODULE.getPath(), PiglinPacificationModule::new);
 

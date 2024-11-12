@@ -9,12 +9,22 @@ import net.neoforged.neoforge.common.ModConfigSpec;
 public class EnvironmentalModuleConfig {
     private static final ModConfigSpec.Builder ENVIRONMENTAL_MODULE_BUILDER = new ModConfigSpec.Builder().push("Environmental");
 
-    private static final ModConfigSpec.Builder ACTIVE_CAMOUFLAGE_MODULE_BUILDER = ENVIRONMENTAL_MODULE_BUILDER.push("Active Camouflage");
+    // Active Camouflage
+    private static final ModConfigSpec.Builder ACTIVE_CAMOUFLAGE_MODULE_BUILDER = ENVIRONMENTAL_MODULE_BUILDER.push("Active_Camouflage");
     private static final ModConfigSpec.BooleanValue ACTIVE_CAMOUFLAGE_MODULE__IS_ALLOWED = ACTIVE_CAMOUFLAGE_MODULE_BUILDER.define(NuminaConstants.CONFIG_IS_ALLOWED, true);
     private static final ModConfigSpec.IntValue ACTIVE_CAMOUFLAGE_MODULE__ENERGY_CONSUMPTION_BASE = ACTIVE_CAMOUFLAGE_MODULE_BUILDER.defineInRange(MPSConstants.ENERGY_CONSUMPTION_BASE, 5, 0, 100);
 
+    // Auto Feeder
+    private static final ModConfigSpec.Builder AUTO_FEEDER_MODULE_BUILDER = ACTIVE_CAMOUFLAGE_MODULE_BUILDER.pop().push("Auto_Feeder");
+    private static final ModConfigSpec.BooleanValue AUTO_FEEDER_MODULE__IS_ALLOWED = AUTO_FEEDER_MODULE_BUILDER.define(NuminaConstants.CONFIG_IS_ALLOWED, true);
+    private static final ModConfigSpec.BooleanValue AUTO_FEEDER_MODULE__USE_OLD_AUTO_FEEDER = AUTO_FEEDER_MODULE_BUILDER.define(MPSConstants.USE_OLD_AUTO_FEEDER, false);
+    private static final ModConfigSpec.DoubleValue AUTO_FEEDER_MODULE__ENERGY_CONSUMPTION_BASE = AUTO_FEEDER_MODULE_BUILDER.defineInRange(MPSConstants.ENERGY_CONSUMPTION_BASE, 100, 0, 1000000D);
+    private static final ModConfigSpec.DoubleValue AUTO_FEEDER_MODULE__EATING_EFFICIENCY_BASE = AUTO_FEEDER_MODULE_BUILDER.defineInRange(MPSConstants.EATING_EFFICIENCY + MPSConstants.BASE, 50, 0, 1000000D);
+    private static final ModConfigSpec.DoubleValue AUTO_FEEDER_MODULE__EFFICIENCY_ENERGY__CONSUMPTION_MULTIPLIER = AUTO_FEEDER_MODULE_BUILDER.defineInRange(MPSConstants.EFFICIENCY + MPSConstants.ENERGY_CONSUMPTION + MPSConstants.MULTIPLIER, 1000, 0, 1000000D);
+    private static final ModConfigSpec.DoubleValue AUTO_FEEDER_MODULE__EFFICIENCY_EATING_EFFICIENCY_MULTIPLIER = AUTO_FEEDER_MODULE_BUILDER.defineInRange(MPSConstants.EFFICIENCY + MPSConstants.EATING_EFFICIENCY + MPSConstants.MULTIPLIER, 50, 0, 1000000D);
+
     // Magnet
-    private static final ModConfigSpec.Builder MAGNET_MODULE_BUILDER = ACTIVE_CAMOUFLAGE_MODULE_BUILDER.pop().push("Magnet");
+    private static final ModConfigSpec.Builder MAGNET_MODULE_BUILDER = AUTO_FEEDER_MODULE_BUILDER.pop().push("Magnet");
     private static final ModConfigSpec.BooleanValue MAGNET_MODULE__IS_ALLOWED = MAGNET_MODULE_BUILDER.define(NuminaConstants.CONFIG_IS_ALLOWED, true);
     private static final ModConfigSpec.IntValue MAGNET_MODULE__RADIUS_BASE = MAGNET_MODULE_BUILDER.defineInRange(MPSConstants.RADIUS, 1, 0, 100);
     private static final ModConfigSpec.IntValue MAGNET_MODULE__RADIUS_MULTIPLIER = MAGNET_MODULE_BUILDER.defineInRange(MPSConstants.RADIUS_MULTIPLIER, 9, 0, 100);
@@ -41,6 +51,14 @@ public class EnvironmentalModuleConfig {
     public static boolean activeCamouflageModuleIsAllowed;
     public static int activeCamouflageModuleEnergyConsumptionBase;
 
+    // Auto Feeder
+    public static boolean autoFeederModuleIsAllowed;
+    public static boolean autoFeederModuleUseOldAutoFeeder;
+    public static double autoFeederModuleEnergyConsumptionBase;
+    public static double autoFeederModuleEatingEfficiencyBase;
+    public static double autoFeederModuleEfficiencyEnergyConsumptionMultiplier;
+    public static double autoFeederModuleEfficiencyEatingEfficiencyMultiplier;
+
     // Magnet
     public static boolean magnetModuleIsAllowed;
     public static int magnetModuleRadiusBase;
@@ -65,6 +83,15 @@ public class EnvironmentalModuleConfig {
             // Active Camouflage
             activeCamouflageModuleIsAllowed = ACTIVE_CAMOUFLAGE_MODULE__IS_ALLOWED.get();
             activeCamouflageModuleEnergyConsumptionBase = ACTIVE_CAMOUFLAGE_MODULE__ENERGY_CONSUMPTION_BASE.get();
+
+            // Auto Feeder
+            autoFeederModuleIsAllowed = AUTO_FEEDER_MODULE__IS_ALLOWED.get();
+            autoFeederModuleUseOldAutoFeeder = AUTO_FEEDER_MODULE__USE_OLD_AUTO_FEEDER.get();
+            autoFeederModuleEnergyConsumptionBase = AUTO_FEEDER_MODULE__ENERGY_CONSUMPTION_BASE.get();
+            autoFeederModuleEatingEfficiencyBase = AUTO_FEEDER_MODULE__EATING_EFFICIENCY_BASE.get();
+            autoFeederModuleEfficiencyEnergyConsumptionMultiplier = AUTO_FEEDER_MODULE__EFFICIENCY_ENERGY__CONSUMPTION_MULTIPLIER.get();
+            autoFeederModuleEfficiencyEatingEfficiencyMultiplier = AUTO_FEEDER_MODULE__EFFICIENCY_EATING_EFFICIENCY_MULTIPLIER.get();
+
 
             // Magnet
             magnetModuleIsAllowed = MAGNET_MODULE__IS_ALLOWED.get();

@@ -47,14 +47,14 @@ public class AbstractElectricArmor extends ArmorItem {
     public boolean isDamageable(ItemStack stack) {
         return false;
     }
-//    protected void addReachModifier(Map<Attribute, AttributeModifier> attributeModifiers, double reach) {
-//        attributeModifiers.put((Attribute) Attributes.ENTITY_INTERACTION_RANGE, new AttributeModifier(ATTACK_REACH_MODIFIER, "Weapon modifier", reach, AttributeModifier.Operation.ADD_VALUE));
-//    }
+    //    protected void addReachModifier(Map<Attribute, AttributeModifier> attributeModifiers, double reach) {
+    //        attributeModifiers.put((Attribute) Attributes.ENTITY_INTERACTION_RANGE, new AttributeModifier(ATTACK_REACH_MODIFIER, "Weapon modifier", reach, AttributeModifier.Operation.ADD_VALUE));
+    //    }
 
-//    @Override
-//    public @Nullable ResourceLocation getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, ArmorMaterial.Layer layer, boolean innerModel) {
-//        return super.getArmorTexture(stack, entity, slot, layer, innerModel);
-//    }
+    //    @Override
+    //    public @Nullable ResourceLocation getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, ArmorMaterial.Layer layer, boolean innerModel) {
+    //        return super.getArmorTexture(stack, entity, slot, layer, innerModel);
+    //    }
 
     @Override
     public @Nullable ResourceLocation getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, ArmorMaterial.Layer layer, boolean innerModel) {
@@ -126,9 +126,6 @@ public class AbstractElectricArmor extends ArmorItem {
         }
 
         if (armorVal > 0) {
-            NuminaLogger.logDebug("adding armor value of + " + armorVal + "for slot: " + slot);
-
-
             builder.add(Attributes.ARMOR, new AttributeModifier(resourcelocation, armorVal, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.bySlot(slot));
         }
 
@@ -248,7 +245,7 @@ public class AbstractElectricArmor extends ArmorItem {
 
     @Override
     public void setDamage(ItemStack stack, int damage) {
-//        super.setDamage(stack, damage);
+        //        super.setDamage(stack, damage);
     }
 
     @Override
