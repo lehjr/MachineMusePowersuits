@@ -46,6 +46,11 @@ public class Battery extends Item {
     }
 
     @Override
+    public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
+        return !ItemStack.isSameItem(oldStack, newStack);
+    }
+
+    @Override
     public boolean isBarVisible(ItemStack stack) {
         IEnergyStorage iEnergyStorage = stack.getCapability(Capabilities.EnergyStorage.ITEM);
         if(iEnergyStorage != null) {

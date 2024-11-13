@@ -25,7 +25,7 @@ import java.util.List;
 public class MagnetModule extends AbstractPowerModule {
     public static class Ticker extends PlayerTickModule {
         public Ticker(@Nonnull ItemStack module) {
-            super(module, ModuleCategory.ENVIRONMENTAL, ModuleTarget.TOOLONLY);
+            super(module, ModuleCategory.ENVIRONMENTAL, ModuleTarget.TORSOONLY);
                 addBaseProperty(MPSConstants.RADIUS, EnvironmentalModuleConfig.magnetModuleRadiusBase, "m");
                 addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, EnvironmentalModuleConfig.magnetModuleEnergyConsumptionBase, "FE");
                 addTradeoffProperty(MPSConstants.RADIUS, MPSConstants.ENERGY_CONSUMPTION, EnvironmentalModuleConfig.magnetModuleEnergyConsumptionRadiusMultiplier);
