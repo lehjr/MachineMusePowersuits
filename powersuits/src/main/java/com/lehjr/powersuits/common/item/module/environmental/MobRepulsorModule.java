@@ -29,7 +29,7 @@ import javax.annotation.Nonnull;
 public class MobRepulsorModule extends AbstractPowerModule {
     public static class Ticker extends PlayerTickModule {
         public Ticker(@Nonnull ItemStack module) {
-            super(module, ModuleCategory.ENVIRONMENTAL, ModuleTarget.HEADONLY);
+            super(module, ModuleCategory.ENVIRONMENTAL, ModuleTarget.TORSOONLY);
             addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, EnvironmentalModuleConfig.mobReulsorModuleEnergyConsumptionBase, "FE");
         }
 
