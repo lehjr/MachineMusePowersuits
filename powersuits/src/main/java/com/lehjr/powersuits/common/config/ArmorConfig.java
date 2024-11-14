@@ -32,15 +32,15 @@ public class ArmorConfig {
     private static final ModConfigSpec.DoubleValue CHESTPLATE_1__MAX_HEAT = CHESTPLATE_1__SETTINGS_BUILDER.defineInRange(NuminaConstants.MAXIMUM_HEAT, 4.0, 0, 1000.0D);
 
     private static final ModConfigSpec.Builder CHESTPLATE_2__SETTINGS_BUILDER = CHESTPLATE_1__SETTINGS_BUILDER.pop().push("Tier_2");
-    private static final ModConfigSpec.IntValue CHESTPLATE_2__INVENTORY_SLOTS = CHESTPLATE_2__SETTINGS_BUILDER.defineInRange(MPSConstants.CONFIG_INVENTORY_SLOTS, 4, 0, 10);
+    private static final ModConfigSpec.IntValue CHESTPLATE_2__INVENTORY_SLOTS = CHESTPLATE_2__SETTINGS_BUILDER.defineInRange(MPSConstants.CONFIG_INVENTORY_SLOTS, 8, 0, 20);
     private static final ModConfigSpec.DoubleValue CHESTPLATE_2__MAX_HEAT = CHESTPLATE_2__SETTINGS_BUILDER.defineInRange(NuminaConstants.MAXIMUM_HEAT, 50.0, 0, 1000.0D);
 
     private static final ModConfigSpec.Builder CHESTPLATE_3__SETTINGS_BUILDER = CHESTPLATE_2__SETTINGS_BUILDER.pop().push("Tier_3");
-    private static final ModConfigSpec.IntValue CHESTPLATE_3__INVENTORY_SLOTS = CHESTPLATE_3__SETTINGS_BUILDER.defineInRange(MPSConstants.CONFIG_INVENTORY_SLOTS, 4, 0, 10);
+    private static final ModConfigSpec.IntValue CHESTPLATE_3__INVENTORY_SLOTS = CHESTPLATE_3__SETTINGS_BUILDER.defineInRange(MPSConstants.CONFIG_INVENTORY_SLOTS, 12, 0, 40);
     private static final ModConfigSpec.DoubleValue CHESTPLATE_3__MAX_HEAT = CHESTPLATE_3__SETTINGS_BUILDER.defineInRange(NuminaConstants.MAXIMUM_HEAT, 50.0, 0, 1000.0D);
 
     private static final ModConfigSpec.Builder CHESTPLATE_4__SETTINGS_BUILDER = CHESTPLATE_3__SETTINGS_BUILDER.pop().push("Tier_4");
-    private static final ModConfigSpec.IntValue CHESTPLATE_4__INVENTORY_SLOTS = CHESTPLATE_4__SETTINGS_BUILDER.defineInRange(MPSConstants.CONFIG_INVENTORY_SLOTS, 4, 0, 10);
+    private static final ModConfigSpec.IntValue CHESTPLATE_4__INVENTORY_SLOTS = CHESTPLATE_4__SETTINGS_BUILDER.defineInRange(MPSConstants.CONFIG_INVENTORY_SLOTS, 16, 0, 50);
     private static final ModConfigSpec.DoubleValue CHESTPLATE_4__MAX_HEAT = CHESTPLATE_4__SETTINGS_BUILDER.defineInRange(NuminaConstants.MAXIMUM_HEAT, 50.0, 0, 1000.0D);
 
     // Leggins --------------------------------------------------------------------------------------------------------
