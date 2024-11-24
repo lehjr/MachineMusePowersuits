@@ -6,6 +6,7 @@
   "gui.numina.creative.install.all": "Install All",
   "gui.numina.creative.install.all.desc": "Installs all top tier compatible modules into selected modular item while player is in creative mode",
   "gui.numina.creative.install.desc": "Installs module into selected modular item while player is in creative mode",
+  "harvestSpeed": "Harvest Speed",
   "item.numina.armor_stand": "Armor Stand",
   "item.numina.battery_1": "Basic Battery",
   "item.numina.battery_1.desc": "Integrate a battery to allow the item to store energy.",

@@ -3,6 +3,7 @@ package com.lehjr.powersuits.common.item.module.movement;
 import com.lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import com.lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
 import com.lehjr.numina.common.capabilities.module.toggleable.ToggleableModule;
+import com.lehjr.powersuits.common.config.module.MovementModuleConfig;
 import com.lehjr.powersuits.common.constants.MPSConstants;
 import com.lehjr.powersuits.common.item.module.AbstractPowerModule;
 import net.minecraft.world.item.ItemStack;
@@ -18,7 +19,7 @@ public class FlightControlModule extends AbstractPowerModule {
 
         @Override
         public boolean isAllowed() {
-            return true;
+            return MovementModuleConfig.flightControlModuleIsAllowed;
         }
     }
 }

@@ -7,6 +7,7 @@ import com.lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
 import com.lehjr.numina.common.capabilities.module.tickable.PlayerTickModule;
 import com.lehjr.numina.common.registration.NuminaCapabilities;
 import com.lehjr.numina.common.utils.PlayerUtils;
+import com.lehjr.powersuits.common.config.module.MovementModuleConfig;
 import com.lehjr.powersuits.common.constants.MPSConstants;
 import com.lehjr.powersuits.common.item.module.AbstractPowerModule;
 import net.minecraft.world.entity.player.Player;
@@ -53,5 +54,12 @@ public class GliderModule extends AbstractPowerModule {
                     }
                 }
             }
+
+            @Override
+            public boolean isAllowed() {
+                return MovementModuleConfig.gliderModuleIsAllowed;
+            }
         }
+
+
 }

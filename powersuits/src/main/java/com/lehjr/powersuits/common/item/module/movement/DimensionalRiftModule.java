@@ -5,6 +5,7 @@ import com.lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
 import com.lehjr.numina.common.capabilities.module.rightclick.RightClickModule;
 import com.lehjr.numina.common.utils.ElectricItemUtils;
 import com.lehjr.numina.common.utils.HeatUtils;
+import com.lehjr.powersuits.common.config.module.MovementModuleConfig;
 import com.lehjr.powersuits.common.constants.MPSConstants;
 import com.lehjr.powersuits.common.item.module.AbstractPowerModule;
 import net.minecraft.core.BlockPos;
@@ -32,13 +33,13 @@ public class DimensionalRiftModule extends AbstractPowerModule {
     public static class RightClickie extends RightClickModule {
         public RightClickie(@Nonnull ItemStack module) {
             super(module, ModuleCategory.MOVEMENT, ModuleTarget.TOOLONLY);
-            addBaseProperty(MPSConstants.HEAT_GENERATION, 55);
-            addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, 200000);
+            addBaseProperty(MPSConstants.HEAT_GENERATION, MovementModuleConfig.dimensionalRiftModuleHeatGenerationBase);
+            addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, MovementModuleConfig.dimensionalRiftModuleEnergyConsumptionBase);
         }
 
         @Override
         public boolean isAllowed() {
-            return true;
+            return MovementModuleConfig.dimensionalRiftModuleIsAllowed;
         }
 
         @Override

@@ -26,6 +26,7 @@
 
 package com.lehjr.powersuits.common.item.module.weapon;
 
+import com.lehjr.numina.common.base.NuminaLogger;
 import com.lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import com.lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
 import com.lehjr.numina.common.capabilities.module.rightclick.IRightClickModule;
@@ -52,6 +53,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -72,10 +74,19 @@ public class RailgunModule extends AbstractPowerModule {
 
         @Override
         public void onPlayerTickActive(Player player, Level level, @Nonnull ItemStack itemStackIn) {
+            NuminaLogger.logDebug("isOnline: " + isModuleOnline());
+
+
             double timer = TagUtils.getModularItemDouble(itemStackIn, MPSConstants.COOLDOWN_TIMER);
             if (timer > 0) {
                 TagUtils.setModularItemDouble(itemStackIn, MPSConstants.COOLDOWN_TIMER, timer - 1 > 0 ? timer - 1 : 0);
             }
+        }
+
+        @Override
+        public void onPlayerTickInactive(Player player, Level level, @NotNull ItemStack item) {
+            super.onPlayerTickInactive(player, level, item);
+            NuminaLogger.logDebug("inactive isOnline: " + isModuleOnline());
         }
 
         @Override
