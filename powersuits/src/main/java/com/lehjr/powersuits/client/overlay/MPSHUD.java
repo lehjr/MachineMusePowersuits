@@ -18,6 +18,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class MPSHUD {
@@ -49,7 +50,7 @@ public class MPSHUD {
                             index.addAndGet(1);
 
                             // Clock
-                        } else if (ItemUtils.getRegistryName(module).equals(ItemUtils.getRegistryName(Items.CLOCK))) {
+                        } else if (Objects.equals(ItemUtils.getRegistryName(module), ItemUtils.getRegistryName(Items.CLOCK))) {
                             if (pm.isModuleOnline()) {
                                 String ampm;
                                 long time = level.getDayTime();

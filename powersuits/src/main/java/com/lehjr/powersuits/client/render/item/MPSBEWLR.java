@@ -82,7 +82,7 @@ public class MPSBEWLR extends BlockEntityWithoutLevelRenderer {
                             actualCount = (maxDuration - player.getUseItemRemainingTicks());
 
                             // Plasma Cannon
-                            if (ItemUtils.getRegistryName(module).equals(MPSConstants.PLASMA_CANNON_MODULE)) {
+                            if (Objects.equals(ItemUtils.getRegistryName(module), MPSConstants.PLASMA_CANNON_MODULE)) {
                                 currentPlasma = (actualCount > 50F ? 50F : actualCount) * 2F;
 
                                 // Ore Scanner or whatever

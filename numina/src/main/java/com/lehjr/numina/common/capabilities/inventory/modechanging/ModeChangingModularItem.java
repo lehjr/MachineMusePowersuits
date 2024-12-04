@@ -12,6 +12,7 @@ import com.lehjr.numina.common.network.packets.serverbound.ModeChangeRequestPack
 import com.lehjr.numina.common.registration.NuminaCapabilities;
 import com.lehjr.numina.common.utils.ElectricItemUtils;
 import com.lehjr.numina.common.utils.ItemUtils;
+import com.lehjr.numina.common.utils.StringUtils;
 import com.lehjr.numina.common.utils.TagUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.model.BakedModel;
@@ -35,6 +36,7 @@ import org.jetbrains.annotations.Nullable;
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class ModeChangingModularItem extends ModularItem implements IModeChangingItem {
     protected static int activeMode = -1;
@@ -104,15 +106,19 @@ public class ModeChangingModularItem extends ModularItem implements IModeChangin
         final int activeModeIndex = getActiveMode();
 
         ItemStack module = activeModeIndex != -1 ? getStackInSlot(activeModeIndex) : ItemStack.EMPTY;
-
-        if (regName == ItemUtils.getRegistryName(module)) {
+        if (Objects.equals(regName, ItemUtils.getRegistryName(module))) {
             return isModuleOnline(module);
         }
+
         for (int i = 0; i < getSlots(); i++) {
             if (i != activeModeIndex) {
                 module = getStackInSlot(i);
-                if (!module.isEmpty() && ItemUtils.getRegistryName(module).equals(regName)) {
+                if (!module.isEmpty() && Objects.equals(ItemUtils.getRegistryName(module), regName)) {
                     return isModuleOnline(module);
+                } else {
+                    if(module.isEmpty()) {
+                        continue;
+                    }
                 }
             }
         }
@@ -212,12 +218,12 @@ public class ModeChangingModularItem extends ModularItem implements IModeChangin
         }
     }
 
-//    @Override
-//    public boolean onUseTick(Level level, LivingEntity entity, int ticksRemaining) {
-//        return NuminaCapabilities.getCapability(getActiveModule(), NuminaCapabilities.Module.POWER_MODULE)
-//                .filter(IOtherModItemsAsModules.class::isInstance)
-//                .map(IOtherModItemsAsModules.class::cast).map(iOtherModItemsAsModules -> iOtherModItemsAsModules.onUseTick(level, entity, ticksRemaining)).orElse(true);
-//    }
+    //    @Override
+    //    public boolean onUseTick(Level level, LivingEntity entity, int ticksRemaining) {
+    //        return NuminaCapabilities.getCapability(getActiveModule(), NuminaCapabilities.Module.POWER_MODULE)
+    //                .filter(IOtherModItemsAsModules.class::isInstance)
+    //                .map(IOtherModItemsAsModules.class::cast).map(iOtherModItemsAsModules -> iOtherModItemsAsModules.onUseTick(level, entity, ticksRemaining)).orElse(true);
+    //    }
 
     @Override
     public boolean onBlockStartBreak(ItemStack itemstack, BlockHitResult hitResult, Player player, Level level) {
@@ -273,7 +279,7 @@ public class ModeChangingModularItem extends ModularItem implements IModeChangin
     public void setModuleFloat(ResourceLocation moduleName, String key, float value) {
         for (int i = 0; i < getSlots(); i++) {
             ItemStack module = getStackInSlot(i);
-            if (!module.isEmpty() && ItemUtils.getRegistryName(module).equals(moduleName)) {
+            if (!module.isEmpty() && Objects.equals(ItemUtils.getRegistryName(module), moduleName)) {
                 IPowerModule pm = getModuleCapability(module);
                 if (pm != null) {
                     TagUtils.setModuleFloat(module, key, value);

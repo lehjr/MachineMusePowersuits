@@ -11,6 +11,7 @@ import com.lehjr.numina.common.registration.NuminaCapabilities;
 import com.lehjr.numina.common.utils.ElectricItemUtils;
 import com.lehjr.numina.common.utils.ItemUtils;
 import com.lehjr.powersuits.client.sound.MPSSoundDictionary;
+import com.lehjr.powersuits.common.config.module.MovementModuleConfig;
 import com.lehjr.powersuits.common.constants.MPSConstants;
 import com.lehjr.powersuits.common.event.MovementManager;
 import com.lehjr.powersuits.common.item.module.AbstractPowerModule;
@@ -26,10 +27,15 @@ public class JetPackModule extends AbstractPowerModule {
     public static class Ticker extends PlayerTickModule {
         public Ticker(@Nonnull ItemStack module) {
             super(module, ModuleCategory.MOVEMENT, ModuleTarget.TORSOONLY);
-            addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, 0, "RF/t");
-            addBaseProperty(MPSConstants.JETPACK_THRUST, 0, "N");
-            addTradeoffProperty(MPSConstants.THRUST, MPSConstants.ENERGY_CONSUMPTION, 15000);
-            addTradeoffProperty(MPSConstants.THRUST, MPSConstants.JETPACK_THRUST, 0.16F);
+            addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, MovementModuleConfig.jetPackModuleEnergyConsumptionBase, "RF/t");
+            addBaseProperty(MPSConstants.JETPACK_THRUST, MovementModuleConfig.jetPackThrustBase, "N");
+            addTradeoffProperty(MPSConstants.THRUST, MPSConstants.ENERGY_CONSUMPTION, MovementModuleConfig.jetPackEnergyConsumptionThrustMultiplier, "FE");
+            addTradeoffProperty(MPSConstants.THRUST, MPSConstants.JETPACK_THRUST, MovementModuleConfig.jetPackThrustMultiplier);
+        }
+
+        @Override
+        public boolean isAllowed() {
+            return MovementModuleConfig.jetPackModuleIsAllowed;
         }
 
         @Override

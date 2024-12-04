@@ -238,6 +238,7 @@ public class ModularItem extends ComponentItemHandler implements IModularItem {
         if(pm != null) {
             return pm.isModuleOnline() && pm.isAllowed();
         }
+        NuminaLogger.logDebug("pm cap is null for " + module);
         return false;
     }
 

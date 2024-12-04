@@ -22,6 +22,7 @@ import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
 
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class MPSMeterOverlay {
@@ -81,7 +82,7 @@ public class MPSMeterOverlay {
                 int maxDuration = modeChanging.getModularItemStack().getUseDuration(player);
                 if (!module.isEmpty()) {
                     // Plasma Cannon
-                    if (ItemUtils.getRegistryName(module).equals(MPSConstants.PLASMA_CANNON_MODULE)) {
+                    if (Objects.equals(ItemUtils.getRegistryName(module), MPSConstants.PLASMA_CANNON_MODULE)) {
                         actualCount = (maxDuration - player.getUseItemRemainingTicks());
                         currentPlasma.set(currentPlasma.get() + (Math.min(actualCount, 50)) * 2);
                         maxPlasma.set(maxPlasma.get() + 100F);

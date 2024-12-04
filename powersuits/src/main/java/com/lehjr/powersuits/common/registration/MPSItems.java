@@ -22,7 +22,7 @@ import com.lehjr.powersuits.common.item.module.miningenhancement.SelectiveMiner;
 import com.lehjr.powersuits.common.item.module.miningenhancement.TunnelBoreModule;
 import com.lehjr.powersuits.common.item.module.miningenhancement.VeinMinerModule;
 import com.lehjr.powersuits.common.item.module.movement.BlinkDriveModule;
-import com.lehjr.powersuits.common.item.module.movement.StepAssistModule;
+import com.lehjr.powersuits.common.item.module.movement.ClimbAssistModule;
 import com.lehjr.powersuits.common.item.module.movement.DimensionalRiftModule;
 import com.lehjr.powersuits.common.item.module.movement.FlightControlModule;
 import com.lehjr.powersuits.common.item.module.movement.GliderModule;
@@ -177,7 +177,7 @@ public class MPSItems {
 
     // Movement -----------------------------------------------------------------------------------
     public static DeferredHolder<Item, BlinkDriveModule> BLINK_DRIVE_MODULE = MPS_ITEMS.register(MPSConstants.BLINK_DRIVE_MODULE.getPath(), BlinkDriveModule::new);
-    public static DeferredHolder<Item, StepAssistModule> CLIMB_ASSIST_MODULE = MPS_ITEMS.register(MPSConstants.CLIMB_ASSIST_MODULE.getPath(), StepAssistModule::new);
+    public static DeferredHolder<Item, ClimbAssistModule> CLIMB_ASSIST_MODULE = MPS_ITEMS.register(MPSConstants.CLIMB_ASSIST_MODULE.getPath(), ClimbAssistModule::new);
     public static DeferredHolder<Item, DimensionalRiftModule> DIMENSIONAL_RIFT_MODULE = MPS_ITEMS.register(MPSConstants.DIMENSIONAL_RIFT_MODULE.getPath(), DimensionalRiftModule::new);
     public static DeferredHolder<Item, FlightControlModule> FLIGHT_CONTROL_MODULE = MPS_ITEMS.register(MPSConstants.FLIGHT_CONTROL_MODULE.getPath(), FlightControlModule::new);
     public static DeferredHolder<Item, GliderModule> GLIDER_MODULE = MPS_ITEMS.register(MPSConstants.GLIDER_MODULE.getPath(), GliderModule::new);

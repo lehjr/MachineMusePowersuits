@@ -8,6 +8,7 @@ import com.lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
 import com.lehjr.numina.common.capabilities.module.tickable.PlayerTickModule;
 import com.lehjr.numina.common.utils.ElectricItemUtils;
 import com.lehjr.powersuits.client.sound.MPSSoundDictionary;
+import com.lehjr.powersuits.common.config.module.MovementModuleConfig;
 import com.lehjr.powersuits.common.constants.MPSConstants;
 import com.lehjr.powersuits.common.event.MovementManager;
 import com.lehjr.powersuits.common.item.module.AbstractPowerModule;
@@ -23,9 +24,14 @@ public class SwimAssistModule extends AbstractPowerModule {
     public static class Ticker extends PlayerTickModule {
         public Ticker(@Nonnull ItemStack module) {
             super(module, ModuleCategory.MOVEMENT, ModuleTarget.LEGSONLY);
-            addTradeoffProperty(MPSConstants.THRUST, MPSConstants.ENERGY_CONSUMPTION, 1000, "FE");
-            addTradeoffProperty(MPSConstants.THRUST, MPSConstants.SWIM_BOOST_AMOUNT, 1, "m/s");
+            addTradeoffProperty(MPSConstants.THRUST, MPSConstants.ENERGY_CONSUMPTION, MovementModuleConfig.swimAssistModuleEnergyConsumptionThrustMultiplier, "FE");
+            addTradeoffProperty(MPSConstants.THRUST, MPSConstants.SWIM_BOOST_AMOUNT, MovementModuleConfig.swimAssistModuleThrustBoostMultiplier, "m/s");
 
+        }
+
+        @Override
+        public boolean isAllowed() {
+            return MovementModuleConfig.swimAssistModuleIsAllowed;
         }
 
         @Override

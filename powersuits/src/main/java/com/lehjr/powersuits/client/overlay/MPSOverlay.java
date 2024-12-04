@@ -2,8 +2,10 @@ package com.lehjr.powersuits.client.overlay;
 
 import com.google.common.util.concurrent.AtomicDouble;
 import com.lehjr.numina.client.gui.geometry.DrawableRect;
+import com.lehjr.numina.common.base.NuminaLogger;
 import com.lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
 import com.lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
+import com.lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
 import com.lehjr.numina.common.math.Color;
 import com.lehjr.numina.common.registration.NuminaCapabilities;
 import com.lehjr.numina.common.utils.IconUtils;
@@ -116,8 +118,12 @@ public class MPSOverlay {
                     IModularItem iModularItem = NuminaCapabilities.getModularItemOrModeChangingCapability(stack);
                     if(iModularItem != null && iModularItem.isModuleInstalled(module)) {
                         installed = true;
-                        if (iModularItem instanceof IModeChangingItem mci && mci.hasActiveModule(kb.registryName)) {
-                            active = true;
+                        if (iModularItem instanceof IModeChangingItem mci) {
+                            if(mci.hasActiveModule(kb.registryName)) {
+                                active = true;
+                            } else {
+
+                            }
                         } else if (slot.isArmor() && iModularItem.isModuleOnline(kb.registryName)) {
                             active = true;
                         }

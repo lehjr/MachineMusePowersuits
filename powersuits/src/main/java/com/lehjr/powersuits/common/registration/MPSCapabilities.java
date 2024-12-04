@@ -30,7 +30,7 @@ import com.lehjr.powersuits.common.item.module.miningenchantment.SilkTouchModule
 import com.lehjr.powersuits.common.item.module.miningenhancement.SelectiveMiner;
 import com.lehjr.powersuits.common.item.module.miningenhancement.TunnelBoreModule;
 import com.lehjr.powersuits.common.item.module.movement.BlinkDriveModule;
-import com.lehjr.powersuits.common.item.module.movement.StepAssistModule;
+import com.lehjr.powersuits.common.item.module.movement.ClimbAssistModule;
 import com.lehjr.powersuits.common.item.module.movement.DimensionalRiftModule;
 import com.lehjr.powersuits.common.item.module.movement.FlightControlModule;
 import com.lehjr.powersuits.common.item.module.movement.GliderModule;
@@ -300,7 +300,7 @@ public class MPSCapabilities {
 
         // Movement -------------------------------------------------------------------------------
         event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new BlinkDriveModule.RightClickie(stack), MPSItems.BLINK_DRIVE_MODULE.get());
-        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new StepAssistModule.ClimbAssistCap(stack), MPSItems.CLIMB_ASSIST_MODULE.get());
+        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new ClimbAssistModule.ClimbAssistCap(stack), MPSItems.CLIMB_ASSIST_MODULE.get());
         event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new DimensionalRiftModule.RightClickie(stack), MPSItems.DIMENSIONAL_RIFT_MODULE.get());
         event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new FlightControlModule.Toggler(stack), MPSItems.FLIGHT_CONTROL_MODULE.get());
         event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new GliderModule.Ticker(stack), MPSItems.GLIDER_MODULE.get());

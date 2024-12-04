@@ -21,6 +21,7 @@ public class MPSConstants {
      * Tags -----------------------------------------------------------------------------------------------------------
      */
     // Generic
+    public static final String COMPENSATION = "compensation";
     public static final String ENERGY_CONSUMPTION = "energyCon";
     public static final String ENERGY_CONSUMPTION_BASE = ENERGY_CONSUMPTION + BASE;
     public static final String ENERGY_CONSUMPTION__OVERCLOCK_MULTIPLIER = ENERGY_CONSUMPTION + OVERCLOCK_MULTIPLIER;
@@ -32,6 +33,11 @@ public class MPSConstants {
     public static final String POWER = "power";
     public static final String HARVEST_SPEED_BASE = NuminaConstants.HARVEST_SPEED + BASE;
     public static final String HARVEST_SPEED_OVERCLOCK_MULTIPLIER = NuminaConstants.HARVEST_SPEED + OVERCLOCK_MULTIPLIER;
+
+    public static final String ENERGY_CONSUMPTION_POWER_BASE = ENERGY_CONSUMPTION + StringUtils.capitalize(POWER) + BASE;
+    public static final String ENERGY_CONSUMPTION_POWER_MULTIPLIER = ENERGY_CONSUMPTION + StringUtils.capitalize(POWER) + MULTIPLIER;
+    public static final String ENERGY_CONSUMPTION_COMPENSATION_BASE = ENERGY_CONSUMPTION + StringUtils.capitalize(COMPENSATION) + BASE;
+    public static final String ENERGY_CONSUMPTION_COMPENSATION_MULTIPLIER = ENERGY_CONSUMPTION + StringUtils.capitalize(COMPENSATION) + MULTIPLIER;
 
     public static final String DIAMETER ="diameter";
 
@@ -79,6 +85,9 @@ public class MPSConstants {
     // Movement -------------------------------------------------------------------------------------------------------
     // Generic
     public static final String THRUST = "thrust";
+    public static final String THRUST_MULTIPLIER = THRUST + MULTIPLIER;
+    public static final String ENERGY_CONSUMPTION_THRUST_MULTIPLIER = ENERGY_CONSUMPTION + StringUtils.capitalize(THRUST) + MULTIPLIER;
+
     // Blink Drive
     public static final String RANGE = "range";
     public static final String RANGE_BASE = RANGE + BASE;
@@ -98,7 +107,7 @@ public class MPSConstants {
     public static final String SPRINT_SPEED_MULTIPLIER = "sprintSpeedMult";
     public static final String SPRINT_ASSIST = "sprintAssist";
     public static final String FOOD_COMPENSATION = "sprintExComp";
-    public static final String COMPENSATION = "compensation";
+
     public static final String WALKING_ENERGY_CONSUMPTION = "walkingEnergyCon";
     public static final String WALKING_SPEED_MULTIPLIER = "walkingSpeedMult";
     public static final String WALKING_ASSISTANCE = "walkingAssist";
