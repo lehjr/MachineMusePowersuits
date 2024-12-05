@@ -2,12 +2,15 @@ package com.lehjr.numina.common.network.packets.serverbound;
 
 import com.lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
 import com.lehjr.numina.common.constants.NuminaConstants;
+import com.lehjr.numina.common.network.NuminaPackets;
+import com.lehjr.numina.common.network.packets.clientbound.TweakRequestDoublePacketClientBound;
 import com.lehjr.numina.common.registration.NuminaCapabilities;
 import com.lehjr.numina.common.utils.ItemUtils;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -18,14 +21,13 @@ import javax.annotation.Nonnull;
 public record TweakRequestDoublePacketServerBound(EquipmentSlot slotType, ResourceLocation moduleRegName, String tweakName, double tweakValue) implements CustomPacketPayload {
     public static final Type<TweakRequestDoublePacketServerBound> ID = new Type<>(ResourceLocation.fromNamespaceAndPath(NuminaConstants.MOD_ID, "tweak_request_to_server"));
 
-    @Override
     @Nonnull
     public Type<? extends CustomPacketPayload> type() {
         return ID;
     }
 
     public static final StreamCodec<FriendlyByteBuf, TweakRequestDoublePacketServerBound> STREAM_CODEC =
-            StreamCodec.ofMember(TweakRequestDoublePacketServerBound::write, TweakRequestDoublePacketServerBound::new);
+        StreamCodec.ofMember(TweakRequestDoublePacketServerBound::write, TweakRequestDoublePacketServerBound::new);
 
     public void write(FriendlyByteBuf packetBuffer) {
         packetBuffer.writeEnum(slotType);
@@ -36,10 +38,14 @@ public record TweakRequestDoublePacketServerBound(EquipmentSlot slotType, Resour
 
     public TweakRequestDoublePacketServerBound(FriendlyByteBuf packetBuffer) {
         this(
-                packetBuffer.readEnum(EquipmentSlot.class),
-                packetBuffer.readResourceLocation(),
-                packetBuffer.readUtf(500),
-                packetBuffer.readDouble());
+            packetBuffer.readEnum(EquipmentSlot.class),
+            packetBuffer.readResourceLocation(),
+            packetBuffer.readUtf(500),
+            packetBuffer.readDouble());
+    }
+
+    public static void sendToClient(ServerPlayer entity, EquipmentSlot slotType, ResourceLocation moduleRegName, String tweakName, double tweakValue) {
+        NuminaPackets.sendToPlayer(new TweakRequestDoublePacketClientBound(slotType, moduleRegName, tweakName, tweakValue), entity);
     }
 
     public static void handle(TweakRequestDoublePacketServerBound data, IPayloadContext ctx) {
@@ -50,6 +56,7 @@ public record TweakRequestDoublePacketServerBound(EquipmentSlot slotType, Resour
                 IModularItem iModularItem = NuminaCapabilities.getModularItemOrModeChangingCapability(stack);
                 if (iModularItem != null) {
                     iModularItem.setModuleDouble(data.moduleRegName, data.tweakName, data.tweakValue);
+                    sendToClient((ServerPlayer) player, data.slotType, data.moduleRegName, data.tweakName, data.tweakValue);
                 }
             }
         });

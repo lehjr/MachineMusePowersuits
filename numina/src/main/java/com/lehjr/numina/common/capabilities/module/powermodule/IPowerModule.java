@@ -113,6 +113,12 @@ public interface IPowerModule {
         public double applyModifier(CompoundTag ignoredTag, double value) {
             return value + configValue;
         }
+
+        @Override
+        public String toString() {
+            return "Class: " + getClass() + "\n"
+                + "configValue: " + configValue;
+        }
     }
 
     class PropertyModifierIntLinearAdditive extends PropertyModifierLinearAdditive {
@@ -120,11 +126,11 @@ public interface IPowerModule {
         protected int offset = 0;
 
         public PropertyModifierIntLinearAdditive(
-                double config,
+                double multiplier,
                 String tradeoffName,
                 int roundTo,
                 int offset) {
-            super(config, tradeoffName);
+            super(multiplier, tradeoffName);
             this.roundTo = roundTo;
             this.offset = offset;
         }
@@ -149,6 +155,15 @@ public interface IPowerModule {
         public long roundWithOffset(double input) {
             return Math.round((input + offset) / roundTo) * roundTo - offset;
         }
+
+        @Override
+        public String toString() {
+            return "Class: " + getClass() + "\n"
+                + "roundTo: " + roundTo +"\n"
+                + "offset: " + offset  +"\n"
+                + "multiplier: " + multiplier  +"\n"
+                + "tradeoffName: " + tradeoffName;
+        }
     }
 
     class PropertyModifierLinearAdditive implements IPropertyModifier {
@@ -167,6 +182,13 @@ public interface IPowerModule {
 
         public String getTradeoffName() {
             return tradeoffName;
+        }
+
+        @Override
+        public String toString() {
+            return "Class: " + getClass() + "\n"
+                + "multiplier: " + multiplier  +"\n"
+                + "tradeoffName: " + tradeoffName;
         }
     }
 }

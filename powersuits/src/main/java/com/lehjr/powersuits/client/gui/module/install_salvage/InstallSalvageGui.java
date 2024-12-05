@@ -68,7 +68,7 @@ public class InstallSalvageGui extends ExtendedContainerScreen<InstallSalvageMen
         moduleSelectFrame = new CompatibleModuleDisplayFrame(itemSelectFrame, new Rect(leftPos + 8, topPos + 13, leftPos + 172, topPos + 208));
         itemSelectFrame.getCreativeInstallButton().setOnPressed(pressed -> {
             itemSelectFrame.getCreativeInstallButton().playDownSound(Minecraft.getInstance().getSoundManager());
-            if (moduleSelectFrame.getSelectedModule() != null) {
+            if (moduleSelectFrame.getSelectedModule() != null && itemSelectFrame.selectedType().isPresent()) {
                 MPSPackets.sendToServer(new CreativeInstallPacketServerBound(itemSelectFrame.selectedType().get(), ItemUtils.getRegistryName(moduleSelectFrame.getSelectedModule().getModule())));
             }
         });

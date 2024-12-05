@@ -76,6 +76,7 @@ public class ModuleSelectionFrame extends ScrollableFrame {
                     if (selected >= 0 && selected < iModularItem.getSlots()) {
                         ItemStack otherModule = iModularItem.getStackInSlot(selected);
                         if (selectedModule.getModule().is(otherModule.getItem())) {
+                            NuminaLogger.logDebug("updating module in slot " + selected);
                             selectedModule.setModule(otherModule);
                         }
                     }
@@ -248,20 +249,12 @@ public class ModuleSelectionFrame extends ScrollableFrame {
                     else {
                         final ClickableModule selectedOther = sel.getSelectedModule();
                         if(selectedModule!= selectedOther) {
-                            NuminaLogger.logDebug("do something here???");
                             selectedModule = selectedOther;
                             onSelected();
-                        } else {
-                            NuminaLogger.logDebug("not updating here either, selectedOther: "
-                                    + (selectedOther == null ? "NULL" : selectedOther.getModule() +
-                                    ", selectedModule: ") + (selectedModule == null ? "NULL": selectedOther.getModule()));
                         }
                     }
                 }
-            } else {
-                NuminaLogger.logDebug("not updating ");
             }
-
 
             return sel != null;
         }

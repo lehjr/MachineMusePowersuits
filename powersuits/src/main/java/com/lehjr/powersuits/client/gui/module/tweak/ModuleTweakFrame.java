@@ -8,6 +8,8 @@ import com.lehjr.numina.client.gui.frame.ModularItemSelectionFrame;
 import com.lehjr.numina.client.gui.frame.ScrollableFrame;
 import com.lehjr.numina.client.gui.geometry.MusePoint2D;
 import com.lehjr.numina.client.gui.geometry.Rect;
+import com.lehjr.numina.common.base.NuminaLogger;
+import com.lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
 import com.lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
 import com.lehjr.numina.common.capabilities.module.powermodule.UnitMap;
 import com.lehjr.numina.common.constants.NuminaConstants;
@@ -25,6 +27,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Note: This has become quite a mess due to changes in how NBT data. Originally it behaved more like pointers
+ */
 public class ModuleTweakFrame extends ScrollableFrame {
     protected static int margin = 4;
     protected ModularItemSelectionFrame itemTarget;
@@ -43,10 +48,6 @@ public class ModuleTweakFrame extends ScrollableFrame {
     // This needs updating whenever a slider value changes just to make the value changes display, easier to just do it on every render loop
     Map<String, IPowerModule.PropertyModifierLinearAdditive> tweaks = new HashMap<>();
 
-    // Needs updating on modular item change, module change, even value change
-    IPowerModule pm = null;
-    // Just a local copy that makes sliders work. Actual tag updated on server side.
-    CompoundTag moduleTag = new CompoundTag();
     boolean needsUpdating = false;
 
     public ModuleTweakFrame(Rect rect, ModularItemSelectionFrame itemTarget, ModuleSelectionFrame moduleTarget) {
@@ -60,23 +61,27 @@ public class ModuleTweakFrame extends ScrollableFrame {
         this.needsUpdating = true;
     }
 
+
+    IPowerModule getModuleCap() {
+        return moduleTarget.getModuleCap();
+    }
+
     @Override
     public void update(double mousex, double mousey) {
-        pm = moduleTarget.getModuleCap();
+        IPowerModule pm = getModuleCap();
         if (needsUpdating || pm == null){
             if (pm != null) {
-                loadTweaks(pm);
+                loadTweaks();
             } else {
                 propertyModifiers.clear();
                 tweaks.clear();
-                moduleTag = new CompoundTag();
                 this.sliders.clear();
                 this.propertyStrings.clear();
                 this.selectedSlider = null;
             }
             needsUpdating = false;
         } else {
-            updateTweaks(pm);
+            updateTweaks();
         }
         sliders.forEach(slider->slider.update(mousex, mousey));
 
@@ -110,6 +115,8 @@ public class ModuleTweakFrame extends ScrollableFrame {
         for (Map.Entry<String, Double> property : propertyStrings.entrySet()) {
             String name = property.getKey();
             String formattedValue = StringUtils.formatNumberFromUnits(property.getValue(), getUnit(name));
+            //            NuminaLogger.logDebug("propertyName: " + name + ", value: " + property.getValue());
+
             double valueWidth = StringUtils.getStringWidth(formattedValue);
             double allowedNameWidth = width() - valueWidth - margin * 2;
             List<Component> namesList = StringUtils.wrapComponentToLength(Component.translatable(NuminaConstants.MODULE_TRADEOFF_PREFIX + name), (int)allowedNameWidth);
@@ -124,13 +131,18 @@ public class ModuleTweakFrame extends ScrollableFrame {
         super.postRender(gfx, mouseX, mouseY, partialTick);
     }
 
-    private void updateTweaks(IPowerModule pm) {
+    private void updateTweaks() {
+        IPowerModule pm = getModuleCap();
         if(pm != null) {
-            moduleTag = pm.getModuleTag();
+            CompoundTag moduleTag = pm.getModuleTag();
             for (Map.Entry<String, List<IPowerModule.IPropertyModifier>> property : propertyModifiers.entrySet()) {
                 double currValue = 0;
                 for (IPowerModule.IPropertyModifier modifier : property.getValue()) {
                     currValue = modifier.applyModifier(moduleTag, currValue);
+
+                    // This is not updating because the reference is not updating or is it a sync issue??
+                    // The module in the packet handler shows the module being updated server side
+
                     if (modifier instanceof IPowerModule.PropertyModifierLinearAdditive) {
                         String modifierName = ((IPowerModule.PropertyModifierLinearAdditive) modifier).getTradeoffName();
                         // overwriting PropertyModifierIntLinearAdditive messes up rounding to int
@@ -148,16 +160,16 @@ public class ModuleTweakFrame extends ScrollableFrame {
      * Loads values that can be adjusted through the sliders
      * Also loads permanently set values for display
      *
-     * @param pm
      */
-    private void loadTweaks(IPowerModule pm) {
+    private void loadTweaks() {
+        IPowerModule pm = getModuleCap();
         propertyStrings = new HashMap<>();
         sliders = new LinkedList<>();
         this.tweaks = new HashMap<>();
 
         this.totalSize = 0;
         if(pm != null) {
-            moduleTag = pm.getModuleTag();
+            CompoundTag moduleTag = pm.getModuleTag();
             this.propertyModifiers = new HashMap<>();
             pm.getPropertyModifiers().entrySet().stream()
                 .sorted(Map.Entry.comparingByKey())
