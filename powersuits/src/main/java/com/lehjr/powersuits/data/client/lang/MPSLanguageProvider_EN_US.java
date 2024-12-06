@@ -114,9 +114,9 @@ public class MPSLanguageProvider_EN_US extends AbstractLangageProviderMPS {
 
         // Environmental ===============================================================================
         // Auto Feeder ---------------------------------------------------------------------------------
-//        add(MPSItems.AUTO_FEEDER_MODULE.get(), "Auto-Feeder");
-//
-//        addItemDescriptions(MPSItems.AUTO_FEEDER_MODULE.get(), "Whenever you're hungry, this module will grab the bottom-left-most food item from your inventory and feed it to you, storing the rest for later.");
+        add(MPSItems.AUTO_FEEDER_MODULE.get(), "Auto-Feeder");
+
+        addItemDescriptions(MPSItems.AUTO_FEEDER_MODULE.get(), "Whenever you're hungry, this module will grab the bottom-left-most food item from your inventory and feed it to you, storing the rest for later.");
 
         // Cooling System ------------------------------------------------------------------------------
 //        add(MPSItems.COOLING_SYSTEM_MODULE.get(), "Cooling System");
@@ -129,134 +129,134 @@ public class MPSLanguageProvider_EN_US extends AbstractLangageProviderMPS {
 //        addItemDescriptions(MPSItems.FLUID_TANK_MODULE.get(), "Stores fluid to enhance the performance of the cooling system.");
 
         // Mob Repulsor --------------------------------------------------------------------------------
-//        add(MPSItems.MOB_REPULSOR_MODULE.get(), "Mob Repulsor");
-//
-//        addItemDescriptions(MPSItems.MOB_REPULSOR_MODULE.get(), "Pushes mobs away from you when activated, but constantly drains power. It is highly recommended that you set this module to a keybind because of the high energy draw.");
+        add(MPSItems.MOB_REPULSOR_MODULE.get(), "Mob Repulsor");
+
+        addItemDescriptions(MPSItems.MOB_REPULSOR_MODULE.get(), "Pushes mobs away from you when activated, but constantly drains power. It is highly recommended that you set this module to a keybind because of the high energy draw.");
 
         // Water Electrolyzer --------------------------------------------------------------------------
-//        add(MPSItems.WATER_ELECTROLYZER_MODULE.get(), "Water Electrolyzer");
-//
-//        addItemDescriptions(MPSItems.WATER_ELECTROLYZER_MODULE.get(), "When you run out of air, this module will jolt the water around you, electrolyzing a small bubble to breathe from.");
+        add(MPSItems.WATER_ELECTROLYZER_MODULE.get(), "Water Electrolyzer");
+
+        addItemDescriptions(MPSItems.WATER_ELECTROLYZER_MODULE.get(), "When you run out of air, this module will jolt the water around you, electrolyzing a small bubble to breathe from.");
 
         // Mining Enchantments =========================================================================
         // Aqua Affinity -------------------------------------------------------------------------------
-//        add(MPSItems.AQUA_AFFINITY_MODULE.get(), "Aqua Affinity");
-//
-//        addItemDescriptions(MPSItems.AQUA_AFFINITY_MODULE.get(), "Reduces the speed penalty for using your tool underwater.");
+        add(MPSItems.AQUA_AFFINITY_MODULE.get(), "Aqua Affinity");
+
+        addItemDescriptions(MPSItems.AQUA_AFFINITY_MODULE.get(), "Reduces the speed penalty for using your tool underwater.");
 
         // Silk Touch Enchantment ----------------------------------------------------------------------
-//        add(MPSItems.SILK_TOUCH_MODULE.get(), "Silk Touch Enchantment");
-//
-//        addItemDescriptions(MPSItems.SILK_TOUCH_MODULE.get(), "A module that provides the Silk Touch enchantment");
+        add(MPSItems.SILK_TOUCH_MODULE.get(), "Silk Touch Enchantment");
+
+        addItemDescriptions(MPSItems.SILK_TOUCH_MODULE.get(), "A module that provides the Silk Touch enchantment");
 
         // Fortune Enchantment -------------------------------------------------------------------------
-//        add(MPSItems.FORTUNE_MODULE.get(), "Fortune Enchantment");
-//
-//        addItemDescriptions(MPSItems.FORTUNE_MODULE.get(), "A module that provides the fortune enchantment.");
-//
-//        // Mining Enhancements =========================================================================
-//        // Vein Miner ----------------------------------------------------------------------------------
-//        add(MPSItems.VEIN_MINER_MODULE.get(), "Vein Miner");
-//
-//        addItemDescriptions(MPSItems.VEIN_MINER_MODULE.get(), "A module for mining ore veins");
-//
-//        // Tunnel Bore ---------------------------------------------------------------------------------
-//        add(MPSItems.TUNNEL_BORE_MODULE.get(), "Tunnel Bore");
-//
-//        addItemDescriptions(MPSItems.TUNNEL_BORE_MODULE.get(), "A module that enables the pickaxe module to mine 5x5 range blocks simultaneously.");
-//
-//        // Selective Miner -----------------------------------------------------------------------------
-//        add(MPSItems.SELECTIVE_MINER.get(), "Selective Miner");
-//
-//        addItemDescriptions(MPSItems.SELECTIVE_MINER.get(), "Breaks blocks similar to the vein miner, but selectively. Shift and click to select block type.");
-//
-//        // Movement ====================================================================================
-//        // Blink Drive ---------------------------------------------------------------------------------
-//        add(MPSItems.BLINK_DRIVE_MODULE.get(), "Blink Drive");
-//
-//        addItemDescriptions(MPSItems.BLINK_DRIVE_MODULE.get(), "Get from point A to point C via point B, where point B is a fold in space & time.");
-//
-//        // Uphill Step Assist --------------------------------------------------------------------------
-//        add(MPSItems.CLIMB_ASSIST_MODULE.get(), "Uphill Step Assist");
-//
-//        addItemDescriptions(MPSItems.CLIMB_ASSIST_MODULE.get(), "A pair of dedicated servos allow you to effortlessly step up 1m-high ledges.");
-//
-//        // Dimensional Tear Generator ------------------------------------------------------------------
-//        add(MPSItems.DIMENSIONAL_RIFT_MODULE.get(), "Dimensional Tear Generator");
-//
-//        addItemDescriptions(MPSItems.DIMENSIONAL_RIFT_MODULE.get(), "Generate a tear in the space-time continuum that will teleport the player to its relative coordinates in the nether or overworld.");
-//
-//        // Flight Control ------------------------------------------------------------------------------
-//        add(MPSItems.FLIGHT_CONTROL_MODULE.get(), "Flight Control");
-//
-//        addItemDescriptions(MPSItems.FLIGHT_CONTROL_MODULE.get(), "An integrated control circuit to help you fly better. Press Z to go down.");
-//
-//        // Glider --------------------------------------------------------------------------------------
-//        add(MPSItems.GLIDER_MODULE.get(), "Glider");
-//
-//        addItemDescriptions(MPSItems.GLIDER_MODULE.get(),"Tack on some wings to turn downward into forward momentum. Press sneak+forward while falling to activate.");
-//
-//        // Jet Boots -----------------------------------------------------------------------------------
-//        add(MPSItems.JETBOOTS_MODULE.get(), "Jet Boots");
-//
-//        addItemDescriptions(MPSItems.JETBOOTS_MODULE.get(), "Jet boots are not as strong as a jetpack, but they should at least be strong enough to counteract gravity.");
-//
-//        // Jetpack -------------------------------------------------------------------------------------
-//        add(MPSItems.JETPACK_MODULE.get(), "Jetpack");
-//
-//        addItemDescriptions(MPSItems.JETPACK_MODULE.get(), "A jetpack should allow you to jump indefinitely, or at least until you run out of power.");
-//
-//        // Jump Assist ---------------------------------------------------------------------------------
-//        add(MPSItems.JUMP_ASSIST_MODULE.get(), "Jump Assist");
-//
-//        addItemDescriptions(MPSItems.JUMP_ASSIST_MODULE.get(), "Another set of servo motors to help you jump higher.");
-//
-//        // Parachute -----------------------------------------------------------------------------------
-//        add(MPSItems.PARACHUTE_MODULE.get(), "Parachute");
-//
-//        addItemDescriptions(MPSItems.PARACHUTE_MODULE.get(), "Add a parachute to slow your descent. Activate by pressing sneak (defaults to Shift) in midair.");
-//
-//        // Shock Absorber ------------------------------------------------------------------------------
-//        add(MPSItems.SHOCK_ABSORBER_MODULE.get(), "Shock Absorber");
-//
-//        addItemDescriptions(MPSItems.SHOCK_ABSORBER_MODULE.get(),"With some servos, springs, and padding, you should be able to negate a portion of fall damage.");
-//
-//        // Sprint Assist -------------------------------------------------------------------------------
-//        add(MPSItems.SPRINT_ASSIST_MODULE.get(), "Sprint Assist");
-//
-//        addItemDescriptions(MPSItems.SPRINT_ASSIST_MODULE.get(), "A set of servo motors to help you sprint (double-tap forward) and walk faster.");
-//
-//        // Swim Boost ----------------------------------------------------------------------------------
-//        add(MPSItems.SWIM_BOOST_MODULE.get(), "Swim Boost");
-//
-//        addItemDescriptions(MPSItems.SWIM_BOOST_MODULE.get(), "By refitting an ion thruster for underwater use, you may be able to add extra forward (or backward) thrust when underwater.");
-//
-//        // Special =====================================================================================
-//        // Active Camouflage ---------------------------------------------------------------------------
-//        add(MPSItems.ACTIVE_CAMOUFLAGE_MODULE.get(), "Active Camouflage");
-//        addItemDescriptions(MPSItems.ACTIVE_CAMOUFLAGE_MODULE.get(), "Emit a hologram of your surroundings to make yourself almost imperceptible.");
-//
-//        // Magnet --------------------------------------------------------------------------------------
-//        add(MPSItems.MAGNET_MODULE.get(), "Magnet");
-//
-//        addItemDescriptions(MPSItems.MAGNET_MODULE.get(), "Generates a magnetic field strong enough to attract items towards the player.         WARNING:                   This module drains power continuously. Turn it off when not needed.");
-//
-//        // Piglin Pacification Module ------------------------------------------------------------------
-//        add(MPSItems.PIGLIN_PACIFICATION_MODULE.get(), "Piglin Pacification Module");
-//
-//        addItemDescriptions(MPSItems.PIGLIN_PACIFICATION_MODULE.get(), "Simple module to make Piglins neutral as if wearing gold armor");
-//
-//        // Vision ======================================================================================
-//        // Binoculars ----------------------------------------------------------------------------------
-//        add(MPSItems.BINOCULARS_MODULE.get(), "Binoculars");
-//
-//        addItemDescriptions(MPSItems.BINOCULARS_MODULE.get(), "With the problems that have been plaguing Optifine lately, you've decided to take that Zoom ability into your own hands.");
-//
-//        // Night Vision --------------------------------------------------------------------------------
-//        add(MPSItems.NIGHT_VISION_MODULE.get(), "Night Vision");
-//
-//        addItemDescriptions(MPSItems.NIGHT_VISION_MODULE.get(), "A pair of augmented vision goggles to help you see at night and underwater.");
-//
+        add(MPSItems.FORTUNE_MODULE.get(), "Fortune Enchantment");
+
+        addItemDescriptions(MPSItems.FORTUNE_MODULE.get(), "A module that provides the fortune enchantment.");
+
+        // Mining Enhancements =========================================================================
+        // Vein Miner ----------------------------------------------------------------------------------
+        add(MPSItems.VEIN_MINER_MODULE.get(), "Vein Miner");
+
+        addItemDescriptions(MPSItems.VEIN_MINER_MODULE.get(), "A module for mining ore veins");
+
+        // Tunnel Bore ---------------------------------------------------------------------------------
+        add(MPSItems.TUNNEL_BORE_MODULE.get(), "Tunnel Bore");
+
+        addItemDescriptions(MPSItems.TUNNEL_BORE_MODULE.get(), "A module that enables the pickaxe module to mine 5x5 range blocks simultaneously.");
+
+        // Selective Miner -----------------------------------------------------------------------------
+        add(MPSItems.SELECTIVE_MINER_MODULE.get(), "Selective Miner");
+
+        addItemDescriptions(MPSItems.SELECTIVE_MINER_MODULE.get(), "Breaks blocks similar to the vein miner, but selectively. Shift and click to select block type.");
+
+        // Movement ====================================================================================
+        // Blink Drive ---------------------------------------------------------------------------------
+        add(MPSItems.BLINK_DRIVE_MODULE.get(), "Blink Drive");
+
+        addItemDescriptions(MPSItems.BLINK_DRIVE_MODULE.get(), "Get from point A to point C via point B, where point B is a fold in space & time.");
+
+        // Uphill Step Assist --------------------------------------------------------------------------
+        add(MPSItems.CLIMB_ASSIST_MODULE.get(), "Uphill Step Assist");
+
+        addItemDescriptions(MPSItems.CLIMB_ASSIST_MODULE.get(), "A pair of dedicated servos allow you to effortlessly step up 1m-high ledges.");
+
+        // Dimensional Tear Generator ------------------------------------------------------------------
+        add(MPSItems.DIMENSIONAL_RIFT_MODULE.get(), "Dimensional Tear Generator");
+
+        addItemDescriptions(MPSItems.DIMENSIONAL_RIFT_MODULE.get(), "Generate a tear in the space-time continuum that will teleport the player to its relative coordinates in the nether or overworld.");
+
+        // Flight Control ------------------------------------------------------------------------------
+        add(MPSItems.FLIGHT_CONTROL_MODULE.get(), "Flight Control");
+
+        addItemDescriptions(MPSItems.FLIGHT_CONTROL_MODULE.get(), "An integrated control circuit to help you fly better. Press Z to go down.");
+
+        // Glider --------------------------------------------------------------------------------------
+        add(MPSItems.GLIDER_MODULE.get(), "Glider");
+
+        addItemDescriptions(MPSItems.GLIDER_MODULE.get(),"Tack on some wings to turn downward into forward momentum. Press sneak+forward while falling to activate.");
+
+        // Jet Boots -----------------------------------------------------------------------------------
+        add(MPSItems.JET_BOOTS_MODULE.get(), "Jet Boots");
+
+        addItemDescriptions(MPSItems.JET_BOOTS_MODULE.get(), "Jet boots are not as strong as a jetpack, but they should at least be strong enough to counteract gravity.");
+
+        // Jetpack -------------------------------------------------------------------------------------
+        add(MPSItems.JETPACK_MODULE.get(), "Jetpack");
+
+        addItemDescriptions(MPSItems.JETPACK_MODULE.get(), "A jetpack should allow you to jump indefinitely, or at least until you run out of power.");
+
+        // Jump Assist ---------------------------------------------------------------------------------
+        add(MPSItems.JUMP_ASSIST_MODULE.get(), "Jump Assist");
+
+        addItemDescriptions(MPSItems.JUMP_ASSIST_MODULE.get(), "Another set of servo motors to help you jump higher.");
+
+        // Parachute -----------------------------------------------------------------------------------
+        add(MPSItems.PARACHUTE_MODULE.get(), "Parachute");
+
+        addItemDescriptions(MPSItems.PARACHUTE_MODULE.get(), "Add a parachute to slow your descent. Activate by pressing sneak (defaults to Shift) in midair.");
+
+        // Shock Absorber ------------------------------------------------------------------------------
+        add(MPSItems.SHOCK_ABSORBER_MODULE.get(), "Shock Absorber");
+
+        addItemDescriptions(MPSItems.SHOCK_ABSORBER_MODULE.get(),"With some servos, springs, and padding, you should be able to negate a portion of fall damage.");
+
+        // Sprint Assist -------------------------------------------------------------------------------
+        add(MPSItems.SPRINT_ASSIST_MODULE.get(), "Sprint Assist");
+
+        addItemDescriptions(MPSItems.SPRINT_ASSIST_MODULE.get(), "A set of servo motors to help you sprint (double-tap forward) and walk faster.");
+
+        // Swim Boost ----------------------------------------------------------------------------------
+        add(MPSItems.SWIM_ASSIST_MODULE.get(), "Swim Boost");
+
+        addItemDescriptions(MPSItems.SWIM_ASSIST_MODULE.get(), "By refitting an ion thruster for underwater use, you may be able to add extra forward (or backward) thrust when underwater.");
+
+        // Special =====================================================================================
+        // Active Camouflage ---------------------------------------------------------------------------
+        add(MPSItems.ACTIVE_CAMOUFLAGE_MODULE.get(), "Active Camouflage");
+        addItemDescriptions(MPSItems.ACTIVE_CAMOUFLAGE_MODULE.get(), "Emit a hologram of your surroundings to make yourself almost imperceptible.");
+
+        // Magnet --------------------------------------------------------------------------------------
+        add(MPSItems.MAGNET_MODULE.get(), "Magnet");
+
+        addItemDescriptions(MPSItems.MAGNET_MODULE.get(), "Generates a magnetic field strong enough to attract items towards the player.         WARNING:                   This module drains power continuously. Turn it off when not needed.");
+
+        // Piglin Pacification Module ------------------------------------------------------------------
+        add(MPSItems.PIGLIN_PACIFICATION_MODULE.get(), "Piglin Pacification Module");
+
+        addItemDescriptions(MPSItems.PIGLIN_PACIFICATION_MODULE.get(), "Simple module to make Piglins neutral as if wearing gold armor");
+
+        // Vision ======================================================================================
+        // Binoculars ----------------------------------------------------------------------------------
+        add(MPSItems.BINOCULARS_MODULE.get(), "Binoculars");
+
+        addItemDescriptions(MPSItems.BINOCULARS_MODULE.get(), "With the problems that have been plaguing Optifine lately, you've decided to take that Zoom ability into your own hands.");
+
+        // Night Vision --------------------------------------------------------------------------------
+        add(MPSItems.NIGHTVISION_MODULE.get(), "Night Vision");
+
+        addItemDescriptions(MPSItems.NIGHTVISION_MODULE.get(), "A pair of augmented vision goggles to help you see at night and underwater.");
+
         // Tools =======================================================================================
         // Axe -----------------------------------------------------------------------------------------
         // Stone
