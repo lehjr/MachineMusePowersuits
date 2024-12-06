@@ -52,10 +52,13 @@ public class MovementModuleConfig {
     // Jump Assist
     private static final ModConfigSpec.Builder JUMP_ASSIST_MODULE__SETTINGS_BUILDER = JETPACK_MODULE__SETTINGS_BUILDER.pop().push("Jump_Assist");
     private static final ModConfigSpec.BooleanValue JUMP_ASSIST_MODULE__IS_ALLOWED = JUMP_ASSIST_MODULE__SETTINGS_BUILDER.define(NuminaConstants.CONFIG_IS_ALLOWED, true);
-    private static final ModConfigSpec.DoubleValue JUMP_ASSIST_MODULE__ENERGY_CONSUMPTION_POWER_BASE = JUMP_ASSIST_MODULE__SETTINGS_BUILDER.defineInRange(MPSConstants.ENERGY_CONSUMPTION_POWER_BASE, 0, 0, 10000000.0D);
+    private static final ModConfigSpec.DoubleValue JUMP_ASSIST_MODULE__ENERGY_CONSUMPTION_BASE = JUMP_ASSIST_MODULE__SETTINGS_BUILDER.defineInRange(MPSConstants.ENERGY_CONSUMPTION_BASE, 0, 0, 10000000.0D);
     private static final ModConfigSpec.DoubleValue JUMP_ASSIST_MODULE__ENERGY_CONSUMPTION_POWER_MULTIPLIER = JUMP_ASSIST_MODULE__SETTINGS_BUILDER.defineInRange(MPSConstants.ENERGY_CONSUMPTION_POWER_MULTIPLIER, 250, 0, 10000000.0D);
-    private static final ModConfigSpec.DoubleValue JUMP_ASSIST_MODULE__ENERGY_CONSUMPTION_COMPENSATION_BASE = JUMP_ASSIST_MODULE__SETTINGS_BUILDER.defineInRange(MPSConstants.ENERGY_CONSUMPTION_COMPENSATION_BASE, 1, 0, 10000000.0D);
-    private static final ModConfigSpec.DoubleValue JUMP_ASSIST_MODULE__ENERGY_CONSUMPTION_COMPENSATION_MULTIPLIER = JUMP_ASSIST_MODULE__SETTINGS_BUILDER.defineInRange(MPSConstants.ENERGY_CONSUMPTION_COMPENSATION_MULTIPLIER, 4, 0, 10000000.0D);
+    private static final ModConfigSpec.DoubleValue JUMP_ASSIST_MODULE__JUMP_BOOST_BASE = JUMP_ASSIST_MODULE__SETTINGS_BUILDER.defineInRange(MPSConstants.JUMP_BOOST_BASE, 0, 0, 10000000.0D);
+    private static final ModConfigSpec.DoubleValue JUMP_ASSIST_MODULE__JUMP_BOOST_POWER_MULTIPLIER = JUMP_ASSIST_MODULE__SETTINGS_BUILDER.defineInRange(MPSConstants.JUMP_BOOST + StringUtils.capitalize(MPSConstants.POWER) + MPSConstants.MULTIPLIER, 4, 0, 10000000.0D);
+    private static final ModConfigSpec.DoubleValue JUMP_ASSIST_MODULE__ENERGY_CONSUMPTION_COMPENSATION_MULTIPLIER = JUMP_ASSIST_MODULE__SETTINGS_BUILDER.defineInRange(MPSConstants.ENERGY_CONSUMPTION_COMPENSATION_MULTIPLIER, 50, 0, 10000000.0D);
+    private static final ModConfigSpec.DoubleValue JUMP_ASSIST_MODULE__EXHAUSTION_COMPENSATION_BASE = JUMP_ASSIST_MODULE__SETTINGS_BUILDER.defineInRange(MPSConstants.EXAUSTION_COMPENSATION + MPSConstants.BASE, 0, 0, 10000000.0D);
+    private static final ModConfigSpec.DoubleValue JUMP_ASSIST_MODULE__EXHAUSTION_COMPENSATION_COMPENSATION_MULTIPLIER = JUMP_ASSIST_MODULE__SETTINGS_BUILDER.defineInRange(MPSConstants.EXAUSTION_COMPENSATION + StringUtils.capitalize(MPSConstants.COMPENSATION) + MPSConstants.MULTIPLIER, 1, 0, 10000000.0D);
 
     // Pararachute
 
@@ -126,12 +129,13 @@ public class MovementModuleConfig {
 
     // Jump Assist
     public static boolean jumpAssistModuleIsAllowed;
-    public static double jumpAssistModuleEnergyConsumptionPowerBase;
+    public static double jumpAssistModuleEnergyConsumptionBase;
     public static double jumpAssistModuleEnergyConsumptionPowerMultiplier;
-    public static double jumpAssistModuleEnergyConsumptionCompensationBase;
+    public static double jumpAssistModuleJumpBoostBase;
+    public static double jumpAssistModuleJumpBoostPowerMultiplier;
     public static double jumpAssistModuleEnergyConsumptionCompensationMultiplier;
-
-
+    public static double jumpAssistModuleExhaustionCompensationBase;
+    public static double jumpAssistModuleExhaustionCompensationCompensationMultiplier;
 
     // Swim Assist
     public static boolean swimAssistModuleIsAllowed;
@@ -178,15 +182,13 @@ public class MovementModuleConfig {
 
             // Jump Assist
             jumpAssistModuleIsAllowed = JUMP_ASSIST_MODULE__IS_ALLOWED.get();
-            jumpAssistModuleEnergyConsumptionPowerBase = JUMP_ASSIST_MODULE__ENERGY_CONSUMPTION_POWER_BASE.get();
+            jumpAssistModuleEnergyConsumptionBase = JUMP_ASSIST_MODULE__ENERGY_CONSUMPTION_BASE.get();
             jumpAssistModuleEnergyConsumptionPowerMultiplier = JUMP_ASSIST_MODULE__ENERGY_CONSUMPTION_POWER_MULTIPLIER.get();
-            jumpAssistModuleEnergyConsumptionCompensationBase = JUMP_ASSIST_MODULE__ENERGY_CONSUMPTION_COMPENSATION_BASE.get();
+            jumpAssistModuleJumpBoostBase = JUMP_ASSIST_MODULE__JUMP_BOOST_BASE.get();
+            jumpAssistModuleJumpBoostPowerMultiplier = JUMP_ASSIST_MODULE__JUMP_BOOST_POWER_MULTIPLIER.get();
             jumpAssistModuleEnergyConsumptionCompensationMultiplier = JUMP_ASSIST_MODULE__ENERGY_CONSUMPTION_COMPENSATION_MULTIPLIER.get();
-
-
-
-
-
+            jumpAssistModuleExhaustionCompensationBase = JUMP_ASSIST_MODULE__EXHAUSTION_COMPENSATION_BASE.get();
+            jumpAssistModuleExhaustionCompensationCompensationMultiplier = JUMP_ASSIST_MODULE__EXHAUSTION_COMPENSATION_COMPENSATION_MULTIPLIER.get();
 
             // Swim Assist
             swimAssistModuleIsAllowed = SWIM_ASSIST_MODULE__IS_ALLOWED.get();

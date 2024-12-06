@@ -25,8 +25,8 @@ public class MPSConstants {
     public static final String ENERGY_CONSUMPTION = "energyCon";
     public static final String ENERGY_CONSUMPTION_BASE = ENERGY_CONSUMPTION + BASE;
     public static final String ENERGY_CONSUMPTION__OVERCLOCK_MULTIPLIER = ENERGY_CONSUMPTION + OVERCLOCK_MULTIPLIER;
-
-
+    public static final String JUMP_BOOST = "jumpBoost";
+    public static final String JUMP_BOOST_BASE = JUMP_BOOST + BASE;
 
     public static final String ENERGY_CONSUMPTION_MULTIPLIER = ENERGY_CONSUMPTION + MULTIPLIER;
 
@@ -106,7 +106,7 @@ public class MPSConstants {
     public static final String SPRINT_ENERGY_CONSUMPTION = "sprintEnergyCon";
     public static final String SPRINT_SPEED_MULTIPLIER = "sprintSpeedMult";
     public static final String SPRINT_ASSIST = "sprintAssist";
-    public static final String FOOD_COMPENSATION = "sprintExComp";
+    public static final String EXAUSTION_COMPENSATION = "exhaustionComp";
 
     public static final String WALKING_ENERGY_CONSUMPTION = "walkingEnergyCon";
     public static final String WALKING_SPEED_MULTIPLIER = "walkingSpeedMult";

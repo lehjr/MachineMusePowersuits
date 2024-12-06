@@ -202,7 +202,7 @@ public enum MovementManager {
             if (iModularItem != null) {
                 IPowerModule jumper = iModularItem.getOnlineModuleOrEmpty(MPSConstants.JUMP_ASSIST_MODULE).getCapability(NuminaCapabilities.Module.POWER_MODULE);
                 if (jumper != null) {
-                    double jumpAssist = jumper.applyPropertyModifiers(MPSConstants.MULTIPLIER) * 2;
+                    double jumpAssist = jumper.applyPropertyModifiers(MPSConstants.JUMP_BOOST) * 2;
                     double drain = jumper.applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION);
                     double avail = ElectricItemUtils.getPlayerEnergy(player);
                     if ((level.isClientSide()) && NuminaClientConfig.useSounds) {
@@ -212,7 +212,7 @@ public enum MovementManager {
                     if (drain < avail) {
                         ElectricItemUtils.drainPlayerEnergy(player, (int) drain, false);
                         setPlayerJumpTicks(player, jumpAssist);
-                        double jumpCompensationRatio = jumper.applyPropertyModifiers(MPSConstants.FOOD_COMPENSATION);
+                        double jumpCompensationRatio = jumper.applyPropertyModifiers(MPSConstants.EXAUSTION_COMPENSATION);
                         if (player.isSprinting()) {
                             player.getFoodData().addExhaustion((float) (-0.2F * jumpCompensationRatio));
                         } else {
@@ -225,7 +225,7 @@ public enum MovementManager {
     }
 
     @SubscribeEvent
-    public static void handleFallEvent(LivingFallEvent event) {
+    public void handleFallEvent(LivingFallEvent event) {
         if (event.getEntity() instanceof Player player && event.getDistance() > 3.0) {
             Level level = player.level();
             IModularItem iModularItem = ItemUtils.getItemFromEntitySlot(player, EquipmentSlot.FEET).getCapability(NuminaCapabilities.Inventory.MODULAR_ITEM);

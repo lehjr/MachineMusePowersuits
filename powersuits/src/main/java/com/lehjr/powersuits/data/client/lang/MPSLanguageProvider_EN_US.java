@@ -1,6 +1,5 @@
 package com.lehjr.powersuits.data.client.lang;
 
-import com.lehjr.numina.common.constants.NuminaConstants;
 import com.lehjr.powersuits.common.constants.MPSConstants;
 import com.lehjr.powersuits.common.registration.MPSBlocks;
 import com.lehjr.powersuits.common.registration.MPSItems;
@@ -622,7 +621,7 @@ public class MPSLanguageProvider_EN_US extends AbstractLangageProviderMPS {
         addTradeoff(MPSConstants.SPRINT_ENERGY_CONSUMPTION, "Sprint Energy Consumption");
 
         // Sprint Exhaustion Compensation --------------------------------------------------------------
-        addTradeoff(MPSConstants.FOOD_COMPENSATION, "Sprint Exhaustion Compensation");
+        addTradeoff(MPSConstants.EXAUSTION_COMPENSATION, "Exhaustion Compensation");
 
         // Sprint Speed Multiplier ---------------------------------------------------------------------
         addTradeoff(MPSConstants.SPRINT_SPEED_MULTIPLIER, "Sprint Speed Multiplier");

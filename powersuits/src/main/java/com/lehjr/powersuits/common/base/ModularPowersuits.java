@@ -2,6 +2,7 @@ package com.lehjr.powersuits.common.base;
 
 import com.lehjr.powersuits.client.sound.MPSSoundDictionary;
 import com.lehjr.powersuits.common.constants.MPSConstants;
+import com.lehjr.powersuits.common.event.MovementManager;
 import com.lehjr.powersuits.common.event.PlayerEventHandler;
 import com.lehjr.powersuits.common.network.MPSPackets;
 import com.lehjr.powersuits.common.registration.MPSArmorMaterial;
@@ -34,7 +35,7 @@ public class ModularPowersuits {
         MPSBlocks.MPS_BLOCKENTITY_TYPES.register(modEventBus);
         MPSArmorMaterial.ARMOR_MATERIALS.register(modEventBus);
 
-
+        NeoForge.EVENT_BUS.register(MovementManager.INSTANCE);
 
         MPSSoundDictionary.MPS_SOUND_EVENTS.register(modEventBus);
 

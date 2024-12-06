@@ -25,7 +25,7 @@ public class SprintAssistModule extends AbstractPowerModule {
             // Sprinting
             addSimpleTradeoff(MPSConstants.SPRINT_ASSIST, MPSConstants.SPRINT_ENERGY_CONSUMPTION, "RF", 0, 5000, MPSConstants.SPRINT_SPEED_MULTIPLIER, "%", 0.1, 2.49);
             // Sprinting Food Compensation
-            addSimpleTradeoff(MPSConstants.COMPENSATION, MPSConstants.SPRINT_ENERGY_CONSUMPTION, "RF", 0, 2000, MPSConstants.FOOD_COMPENSATION, "%", 0, 1);
+            addSimpleTradeoff(MPSConstants.COMPENSATION, MPSConstants.SPRINT_ENERGY_CONSUMPTION, "RF", 0, 2000, MPSConstants.EXAUSTION_COMPENSATION, "%", 0, 1);
             // Walking
             addSimpleTradeoff(MPSConstants.WALKING_ASSISTANCE, MPSConstants.WALKING_ENERGY_CONSUMPTION, "RF", 0, 5000, MPSConstants.WALKING_SPEED_MULTIPLIER, "%", 0.01, 1.99);
         }
@@ -46,7 +46,7 @@ public class SprintAssistModule extends AbstractPowerModule {
                     double sprintCost = applyPropertyModifiers(MPSConstants.SPRINT_ENERGY_CONSUMPTION);
                     if (sprintCost < totalEnergy) {
                         double sprintMultiplier = applyPropertyModifiers(MPSConstants.SPRINT_SPEED_MULTIPLIER);
-                        double exhaustionComp = applyPropertyModifiers(MPSConstants.FOOD_COMPENSATION);
+                        double exhaustionComp = applyPropertyModifiers(MPSConstants.EXAUSTION_COMPENSATION);
                         if (!level.isClientSide &&
                                 // every 20 ticks
                                 (level.getGameTime() % 20) == 0) {
