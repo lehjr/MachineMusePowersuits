@@ -233,7 +233,7 @@ public enum MovementManager {
                 ItemStack shockAbsorbers = iModularItem.getOnlineModuleOrEmpty(MPSConstants.SHOCK_ABSORBER_MODULE);
                 IPowerModule sa = shockAbsorbers.getCapability(NuminaCapabilities.Module.POWER_MODULE);
                 if (sa != null) {
-                    double distanceAbsorb = Math.abs(event.getDistance() * sa.applyPropertyModifiers(MPSConstants.MULTIPLIER));
+                    double distanceAbsorb = Math.abs(event.getDistance() * sa.applyPropertyModifiers(MPSConstants.DISTANCE_REDUCTION));
                     if (level.isClientSide && NuminaClientConfig.useSounds) {
                         Musique.playerSound(player, SoundDictionary.SOUND_EVENT_GUI_INSTALL.get(), SoundSource.PLAYERS, (float) (distanceAbsorb), (float) 1, false);
                     }

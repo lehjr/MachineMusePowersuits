@@ -42,14 +42,12 @@ public class JumpAssistModule extends AbstractPowerModule {
             PlayerMovementInputWrapper.PlayerMovementInput playerInput = PlayerMovementInputWrapper.get(player);
             if (playerInput.jumpKey) {
                 double multiplier = MovementManager.INSTANCE.getPlayerJumpMultiplier(player);
-                NuminaLogger.logDebug("jump multiplier: " + multiplier);
-
                 if (multiplier > 0) {
                     player.setDeltaMovement(player.getDeltaMovement().add(0, 0.15 * Math.min(multiplier, 1), 0));
                     MovementManager.INSTANCE.setPlayerJumpTicks(player, multiplier - 1);
                 }
                 PlayerUtils.resetFloatKickTicks(player);
-//                player.getAbilities().setFlyingSpeed(player.getSpeed() * .2f);
+//                player.getAbilities().setFlyingSpeed(player.getSpeed() * .2f); // FixMe? What was this for?
             } else {
                 MovementManager.INSTANCE.setPlayerJumpTicks(player, 0);
             }

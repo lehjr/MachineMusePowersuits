@@ -31,34 +31,34 @@ public class MPSLanguageProvider_EN_US extends AbstractLangageProviderMPS {
     @Override
     public void addModularItems() {
         // Helmet --------------------------------------------------------------------------------------
-        add(MPSItems.POWER_ARMOR_HELMET_1.get(), "Prototype Power Armor Helmet");
-        add(MPSItems.POWER_ARMOR_HELMET_2.get(), "Prototype Power Armor Helmet Mk2");
-        add(MPSItems.POWER_ARMOR_HELMET_3.get(), "Prototype Power Armor Helmet Mk3");
-        add(MPSItems.POWER_ARMOR_HELMET_4.get(), "Power Armor Helmet");
+        add(MPSItems.POWER_ARMOR_HELMET_1.get(), "Power Armor Helmet 1");
+        add(MPSItems.POWER_ARMOR_HELMET_2.get(), "Power Armor Helmet 2");
+        add(MPSItems.POWER_ARMOR_HELMET_3.get(), "Power Armor Helmet 3");
+        add(MPSItems.POWER_ARMOR_HELMET_4.get(), "Power Armor Helmet 4");
 
         // Chestplate ----------------------------------------------------------------------------------
-        add(MPSItems.POWER_ARMOR_CHESTPLATE_1.get(), "Prototype Power Armor Chestplate");
-        add(MPSItems.POWER_ARMOR_CHESTPLATE_2.get(), "Prototype Power Armor Chestplate Mk2");
-        add(MPSItems.POWER_ARMOR_CHESTPLATE_3.get(), "Prototype Power Armor Chestplate Mk3");
-        add(MPSItems.POWER_ARMOR_CHESTPLATE_4.get(), "Power Armor Chestplate");
+        add(MPSItems.POWER_ARMOR_CHESTPLATE_1.get(), "Power Armor Chestplate 1");
+        add(MPSItems.POWER_ARMOR_CHESTPLATE_2.get(), "Power Armor Chestplate 2");
+        add(MPSItems.POWER_ARMOR_CHESTPLATE_3.get(), "Power Armor Chestplate 3");
+        add(MPSItems.POWER_ARMOR_CHESTPLATE_4.get(), "Power Armor Chestplate 4");
 
         // Leggings ------------------------------------------------------------------------------------
-        add(MPSItems.POWER_ARMOR_LEGGINGS_1.get(), "Prototype Power Armor Leggings");
-        add(MPSItems.POWER_ARMOR_LEGGINGS_2.get(), "Prototype Power Armor Leggings Mk2");
-        add(MPSItems.POWER_ARMOR_LEGGINGS_3.get(), "Prototype Mk2 Power Armor Leggings Mk3");
-        add(MPSItems.POWER_ARMOR_LEGGINGS_4.get(), "Power Armor Leggings");
+        add(MPSItems.POWER_ARMOR_LEGGINGS_1.get(), "Power Armor Leggings 1");
+        add(MPSItems.POWER_ARMOR_LEGGINGS_2.get(), "Power Armor Leggings 2");
+        add(MPSItems.POWER_ARMOR_LEGGINGS_3.get(), "Power Armor Leggings 3");
+        add(MPSItems.POWER_ARMOR_LEGGINGS_4.get(), "Power Armor Leggings 4");
 
         // Boots ---------------------------------------------------------------------------------------
-        add(MPSItems.POWER_ARMOR_BOOTS_1.get(), "Prototype Power Armor Boots");
-        add(MPSItems.POWER_ARMOR_BOOTS_2.get(), "Prototype Power Armor Boots Mk2");
-        add(MPSItems.POWER_ARMOR_BOOTS_3.get(), "Prototype Power Armor Boots Mk3");
-        add(MPSItems.POWER_ARMOR_BOOTS_4.get(), "Power Armor Boots");
+        add(MPSItems.POWER_ARMOR_BOOTS_1.get(), "Power Armor Boots");
+        add(MPSItems.POWER_ARMOR_BOOTS_2.get(), "Power Armor Boots 2");
+        add(MPSItems.POWER_ARMOR_BOOTS_3.get(), "Power Armor Boots 3");
+        add(MPSItems.POWER_ARMOR_BOOTS_4.get(), "Power Armor Boots 4");
 
         // Power Fist ----------------------------------------------------------------------------------
-        add(MPSItems.POWER_FIST_1.get(), "Prototype Power Fist");
-        add(MPSItems.POWER_FIST_2.get(), "Prototype Power Fist Mk2");
-        add(MPSItems.POWER_FIST_3.get(), "Prototype Power Fist Mk3");
-        add(MPSItems.POWER_FIST_4.get(), "Power Fist");
+        add(MPSItems.POWER_FIST_1.get(), "Power Fist 1");
+        add(MPSItems.POWER_FIST_2.get(), "Power Fist 2");
+        add(MPSItems.POWER_FIST_3.get(), "Power Fist 3");
+        add(MPSItems.POWER_FIST_4.get(), "Power Fist 4");
     }
 
     @Override

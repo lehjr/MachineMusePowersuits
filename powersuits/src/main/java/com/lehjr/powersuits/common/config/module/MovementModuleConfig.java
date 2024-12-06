@@ -61,13 +61,21 @@ public class MovementModuleConfig {
     private static final ModConfigSpec.DoubleValue JUMP_ASSIST_MODULE__EXHAUSTION_COMPENSATION_COMPENSATION_MULTIPLIER = JUMP_ASSIST_MODULE__SETTINGS_BUILDER.defineInRange(MPSConstants.EXAUSTION_COMPENSATION + StringUtils.capitalize(MPSConstants.COMPENSATION) + MPSConstants.MULTIPLIER, 1, 0, 10000000.0D);
 
     // Pararachute
-
-
-
-
     private static final ModConfigSpec.Builder PARACHUTE_MODULE__SETTINGS_BUILDER = JUMP_ASSIST_MODULE__SETTINGS_BUILDER.pop().push("Parachute");
 
+    // Shock Absorber
     private static final ModConfigSpec.Builder SHOCK_ABSORBER_MODULE__SETTINGS_BUILDER = PARACHUTE_MODULE__SETTINGS_BUILDER.pop().push("Shock_Absorber");
+    private static final ModConfigSpec.BooleanValue SHOCK_ABSORBER_MODULE__IS_ALLOWED = PARACHUTE_MODULE__SETTINGS_BUILDER.define(NuminaConstants.CONFIG_IS_ALLOWED, true);
+    private static final ModConfigSpec.DoubleValue SHOCK_ABSORBER_MODULE__ENERGY_CONSUMPTION_BASE = PARACHUTE_MODULE__SETTINGS_BUILDER.defineInRange(MPSConstants.ENERGY_CONSUMPTION + MPSConstants.BASE, 0, 0, 10000000.0D);
+    private static final ModConfigSpec.DoubleValue SHOCK_ABSORBER_MODULE__ENERGY_CONSUMPTION_POWER_MULTIPLIER = PARACHUTE_MODULE__SETTINGS_BUILDER.defineInRange(MPSConstants.ENERGY_CONSUMPTION_POWER_MULTIPLIER, 100, 0, 10000000.0D);
+    private static final ModConfigSpec.DoubleValue SHOCK_ABSORBER_MODULE__DISTANCE_REDUCTION_BASE = PARACHUTE_MODULE__SETTINGS_BUILDER.defineInRange(MPSConstants.DISTANCE_REDUCTION + MPSConstants.BASE, 0, 0, 10000000.0D);
+    private static final ModConfigSpec.DoubleValue SHOCK_ABSORBER_MODULE__DISTANCE_REDUCTION_POWER_MULTIPLIER = PARACHUTE_MODULE__SETTINGS_BUILDER.defineInRange(MPSConstants.DISTANCE_REDUCTION + StringUtils.capitalize(MPSConstants.POWER) + MPSConstants.MULTIPLIER, 10, 0, 10000000.0D);
+
+
+
+
+
+
 
     private static final ModConfigSpec.Builder SPRINT_ASSIST_MODULE__SETTINGS_BUILDER = SHOCK_ABSORBER_MODULE__SETTINGS_BUILDER.pop().push("Sprint_Assist");
 
@@ -136,6 +144,15 @@ public class MovementModuleConfig {
     public static double jumpAssistModuleEnergyConsumptionCompensationMultiplier;
     public static double jumpAssistModuleExhaustionCompensationBase;
     public static double jumpAssistModuleExhaustionCompensationCompensationMultiplier;
+
+    // Shock Absorber
+    public static boolean shockAbsorberModuleIsAllowed;
+    public static double shockAbsorberEnergyConsumptionBase;
+    public static double shockAbsorberEnergyConsumptionPowerMultiplier;
+    public static double shockAbsorberDistanceReductionBase;
+    public static double shockAbsorberDistanceReductionPowerMultiplier;
+
+
 
     // Swim Assist
     public static boolean swimAssistModuleIsAllowed;

@@ -123,6 +123,8 @@ public class MPSConstants {
     public static final String RADIUS = "radius";
     public static final String ENERGY_CONSUMPTION_RADIUS_MULTIPLIER = ENERGY_CONSUMPTION + "_" + RADIUS + "_" + MULTIPLIER;
     public static final String RADIUS_MULTIPLIER = RADIUS + "_" + MULTIPLIER;
+    public static final String DISTANCE_REDUCTION = "distanceReduction";
+
 
     // Lux Capacitor
     public static final String RED = "red";
