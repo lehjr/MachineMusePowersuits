@@ -57,8 +57,10 @@ public class MovementModuleConfig {
     private static final ModConfigSpec.DoubleValue JUMP_ASSIST_MODULE__JUMP_BOOST_BASE = JUMP_ASSIST_MODULE__SETTINGS_BUILDER.defineInRange(MPSConstants.JUMP_BOOST_BASE, 0, 0, 10000000.0D);
     private static final ModConfigSpec.DoubleValue JUMP_ASSIST_MODULE__JUMP_BOOST_POWER_MULTIPLIER = JUMP_ASSIST_MODULE__SETTINGS_BUILDER.defineInRange(MPSConstants.JUMP_BOOST + StringUtils.capitalize(MPSConstants.POWER) + MPSConstants.MULTIPLIER, 4, 0, 10000000.0D);
     private static final ModConfigSpec.DoubleValue JUMP_ASSIST_MODULE__ENERGY_CONSUMPTION_COMPENSATION_MULTIPLIER = JUMP_ASSIST_MODULE__SETTINGS_BUILDER.defineInRange(MPSConstants.ENERGY_CONSUMPTION_COMPENSATION_MULTIPLIER, 50, 0, 10000000.0D);
-    private static final ModConfigSpec.DoubleValue JUMP_ASSIST_MODULE__EXHAUSTION_COMPENSATION_BASE = JUMP_ASSIST_MODULE__SETTINGS_BUILDER.defineInRange(MPSConstants.EXAUSTION_COMPENSATION + MPSConstants.BASE, 0, 0, 10000000.0D);
-    private static final ModConfigSpec.DoubleValue JUMP_ASSIST_MODULE__EXHAUSTION_COMPENSATION_COMPENSATION_MULTIPLIER = JUMP_ASSIST_MODULE__SETTINGS_BUILDER.defineInRange(MPSConstants.EXAUSTION_COMPENSATION + StringUtils.capitalize(MPSConstants.COMPENSATION) + MPSConstants.MULTIPLIER, 1, 0, 10000000.0D);
+    private static final ModConfigSpec.DoubleValue JUMP_ASSIST_MODULE__EXHAUSTION_COMPENSATION_BASE = JUMP_ASSIST_MODULE__SETTINGS_BUILDER.defineInRange(MPSConstants.EXHAUSTION_COMPENSATION
+        + MPSConstants.BASE, 0, 0, 10000000.0D);
+    private static final ModConfigSpec.DoubleValue JUMP_ASSIST_MODULE__EXHAUSTION_COMPENSATION_COMPENSATION_MULTIPLIER = JUMP_ASSIST_MODULE__SETTINGS_BUILDER.defineInRange(MPSConstants.EXHAUSTION_COMPENSATION
+        + StringUtils.capitalize(MPSConstants.COMPENSATION) + MPSConstants.MULTIPLIER, 1, 0, 10000000.0D);
 
     // Pararachute
     private static final ModConfigSpec.Builder PARACHUTE_MODULE__SETTINGS_BUILDER = JUMP_ASSIST_MODULE__SETTINGS_BUILDER.pop().push("Parachute");
@@ -71,13 +73,49 @@ public class MovementModuleConfig {
     private static final ModConfigSpec.DoubleValue SHOCK_ABSORBER_MODULE__DISTANCE_REDUCTION_BASE = PARACHUTE_MODULE__SETTINGS_BUILDER.defineInRange(MPSConstants.DISTANCE_REDUCTION + MPSConstants.BASE, 0, 0, 10000000.0D);
     private static final ModConfigSpec.DoubleValue SHOCK_ABSORBER_MODULE__DISTANCE_REDUCTION_POWER_MULTIPLIER = PARACHUTE_MODULE__SETTINGS_BUILDER.defineInRange(MPSConstants.DISTANCE_REDUCTION + StringUtils.capitalize(MPSConstants.POWER) + MPSConstants.MULTIPLIER, 10, 0, 10000000.0D);
 
-
-
-
-
-
-
+    // Sprint Assist
     private static final ModConfigSpec.Builder SPRINT_ASSIST_MODULE__SETTINGS_BUILDER = SHOCK_ABSORBER_MODULE__SETTINGS_BUILDER.pop().push("Sprint_Assist");
+    private static final ModConfigSpec.BooleanValue SPRINT_ASSIST_MODULE__IS_ALLOWED = SPRINT_ASSIST_MODULE__SETTINGS_BUILDER.define(NuminaConstants.CONFIG_IS_ALLOWED, true);
+    private static final ModConfigSpec.DoubleValue SPRINT_ASSIST_MODULE__SPRINT_ENERGY_CONSUMPTION_BASE = SPRINT_ASSIST_MODULE__SETTINGS_BUILDER.defineInRange(MPSConstants.SPRINT_ENERGY_CONSUMPTION + MPSConstants.BASE, 0, 0, 10000000.0D);
+    private static final ModConfigSpec.DoubleValue SPRINT_ASSIST_MODULE__SPRINT_ENERGY_CONSUMPTION_ASSIST_MULTIPLIER = SPRINT_ASSIST_MODULE__SETTINGS_BUILDER.defineInRange(MPSConstants.SPRINT_ENERGY_CONSUMPTION + MPSConstants.SPRINT_ASSIST + MPSConstants.MULTIPLIER, 100, 0, 10000000.0D);
+    private static final ModConfigSpec.DoubleValue SPRINT_ASSIST_MODULE__SPRINT_SPEED_BASE = SPRINT_ASSIST_MODULE__SETTINGS_BUILDER.defineInRange(MPSConstants.SPRINT_SPEED_MULTIPLIER + MPSConstants.BASE, 0.01, 0, 100.0D);
+    private static final ModConfigSpec.DoubleValue SPRINT_ASSIST_MODULE__SPRINT_SPEED_ASSIST_MULTIPLIER = SPRINT_ASSIST_MODULE__SETTINGS_BUILDER.defineInRange(MPSConstants.SPRINT_SPEED_MULTIPLIER + MPSConstants.SPRINT_ASSIST + MPSConstants.MULTIPLIER, 2.49, 0, 10000.0D);
+    private static final ModConfigSpec.DoubleValue SPRINT_ASSIST_MODULE__EXHAUSTION_COMPENSATION_BASE = SPRINT_ASSIST_MODULE__SETTINGS_BUILDER.defineInRange(MPSConstants.EXHAUSTION_COMPENSATION + MPSConstants.BASE, 0, 0, 10000000.0D);
+    private static final ModConfigSpec.DoubleValue SPRINT_ASSIST_MODULE__EXHAUSTION_COMPENSATION_ENERGY_CONSUMPTION_MULTIPLIER = SPRINT_ASSIST_MODULE__SETTINGS_BUILDER.defineInRange(MPSConstants.EXHAUSTION_COMPENSATION + MPSConstants.ENERGY_CONSUMPTION + MPSConstants.MULTIPLIER, 20, 0, 100000.0D);
+    private static final ModConfigSpec.DoubleValue SPRINT_ASSIST_MODULE__EXHAUSTION_COMPENSATION_COMPENSATION_MULTIPLIER = SPRINT_ASSIST_MODULE__SETTINGS_BUILDER.defineInRange(MPSConstants.EXHAUSTION_COMPENSATION + StringUtils.capitalize(MPSConstants.COMPENSATION) + MPSConstants.MULTIPLIER, 1, 0, 10000.0D);
+    private static final ModConfigSpec.DoubleValue SPRINT_ASSIST_MODULE__WALKING_ENERGY_CONSUMPTION_BASE = SPRINT_ASSIST_MODULE__SETTINGS_BUILDER.defineInRange(MPSConstants.WALKING_ENERGY_CONSUMPTION + MPSConstants.BASE, 0, 0, 10000.0D);
+    private static final ModConfigSpec.DoubleValue SPRINT_ASSIST_MODULE__WALKING_ENERGY_CONSUMPTION_WALKING_ASSISTANCE_MULTIPLIER = SPRINT_ASSIST_MODULE__SETTINGS_BUILDER.defineInRange(MPSConstants.WALKING_ENERGY_CONSUMPTION + MPSConstants.WALKING_ASSISTANCE + MPSConstants.MULTIPLIER, 100, 0, 10000000.0D);
+    private static final ModConfigSpec.DoubleValue SPRINT_ASSIST_MODULE__WALKING_SPEED_MULTIPLIER_BASE = SPRINT_ASSIST_MODULE__SETTINGS_BUILDER.defineInRange(MPSConstants.WALKING_SPEED_MULTIPLIER + MPSConstants.BASE, 0.01, 0, 100000.0D);
+    private static final ModConfigSpec.DoubleValue SPRINT_ASSIST_MODULE__WALKING_SPEED_MULTIPLIER_WALKING_ASSISTANCE_MULTIPLIER = SPRINT_ASSIST_MODULE__SETTINGS_BUILDER.defineInRange(MPSConstants.WALKING_SPEED_MULTIPLIER + MPSConstants.WALKING_ASSISTANCE + MPSConstants.MULTIPLIER, 1.99, 0, 10000.0D);
+
+
+
+
+
+
+
+
+    // Walking --------------------------------------------------------------------------------------------------------------------
+
+    // put( "sprintAssist.walkingEnergyCon.base", 0.0D );
+
+//    public static double sprintAssistModuleWalkingEnergyBase;
+
+
+
+
+
+
+
+
+
+
+
+
+    // put( "sprintAssist.walkingSpeedMult.base", 0.01D );
+
+
+    // put( "sprintAssist.walkingSpeedMult.walkingAssist.multiplier", 1.99D );
 
 
     private static final ModConfigSpec.Builder SWIM_ASSIST_MODULE__SETTINGS_BUILDER = SPRINT_ASSIST_MODULE__SETTINGS_BUILDER.pop().push("Swim_Assist");
@@ -152,7 +190,19 @@ public class MovementModuleConfig {
     public static double shockAbsorberDistanceReductionBase;
     public static double shockAbsorberDistanceReductionPowerMultiplier;
 
-
+    // Sprint Assist
+    public static boolean sprintAssistModuleIsAllowed;
+    public static double sprintAssistModuleSprintEnergyConsumptionBase;
+    public static double sprintAssistModuleSprintEnergyConsumptionAssistMultiplier;
+    public static double sprintAssistModuleSprintSpeedBase;
+    public static double sprintAssistModuleSprintSpeedAssistMultiplier;
+    public static double sprintAssistModuleExhaustionCompensationBase;
+    public static double sprintAssistExhaustionCompensationEnergyConsumptionMultiplier;
+    public static double sprintAssistExhaustionCompensationCompensationMultiplier;
+    public static double sprintAssistModuleWalkingEnergyBase;
+    public static double sprintAssistModuleWalkingEnergyWalkingAssistanceMultiplier;
+    public static double sprintAssistModuleWalkingSpeedMultiplierBase;
+    public static double sprintAssistModuleWalkingSpeedMultiplierWalkingAssistMultiplier;
 
     // Swim Assist
     public static boolean swimAssistModuleIsAllowed;
@@ -206,6 +256,28 @@ public class MovementModuleConfig {
             jumpAssistModuleEnergyConsumptionCompensationMultiplier = JUMP_ASSIST_MODULE__ENERGY_CONSUMPTION_COMPENSATION_MULTIPLIER.get();
             jumpAssistModuleExhaustionCompensationBase = JUMP_ASSIST_MODULE__EXHAUSTION_COMPENSATION_BASE.get();
             jumpAssistModuleExhaustionCompensationCompensationMultiplier = JUMP_ASSIST_MODULE__EXHAUSTION_COMPENSATION_COMPENSATION_MULTIPLIER.get();
+            sprintAssistModuleWalkingSpeedMultiplierBase = SPRINT_ASSIST_MODULE__WALKING_SPEED_MULTIPLIER_BASE.get();
+            sprintAssistModuleWalkingSpeedMultiplierWalkingAssistMultiplier = SPRINT_ASSIST_MODULE__WALKING_SPEED_MULTIPLIER_WALKING_ASSISTANCE_MULTIPLIER.get();
+
+            // Shock Absorber
+            shockAbsorberModuleIsAllowed = SHOCK_ABSORBER_MODULE__IS_ALLOWED.get();
+            shockAbsorberEnergyConsumptionBase = SHOCK_ABSORBER_MODULE__ENERGY_CONSUMPTION_BASE.get();
+            shockAbsorberEnergyConsumptionPowerMultiplier = SHOCK_ABSORBER_MODULE__ENERGY_CONSUMPTION_POWER_MULTIPLIER.get();
+            shockAbsorberDistanceReductionBase = SHOCK_ABSORBER_MODULE__DISTANCE_REDUCTION_BASE.get();
+            shockAbsorberDistanceReductionPowerMultiplier = SHOCK_ABSORBER_MODULE__DISTANCE_REDUCTION_POWER_MULTIPLIER.get();
+
+            // Sprint Assist
+            sprintAssistModuleIsAllowed = SPRINT_ASSIST_MODULE__IS_ALLOWED.get();
+            sprintAssistModuleSprintEnergyConsumptionBase = SPRINT_ASSIST_MODULE__SPRINT_ENERGY_CONSUMPTION_BASE.get();
+            sprintAssistModuleSprintEnergyConsumptionAssistMultiplier = SPRINT_ASSIST_MODULE__SPRINT_ENERGY_CONSUMPTION_ASSIST_MULTIPLIER.get();
+            sprintAssistModuleSprintSpeedBase = SPRINT_ASSIST_MODULE__SPRINT_SPEED_BASE.get();
+            sprintAssistModuleSprintSpeedAssistMultiplier = SPRINT_ASSIST_MODULE__SPRINT_SPEED_ASSIST_MULTIPLIER.get();
+            sprintAssistModuleExhaustionCompensationBase = SPRINT_ASSIST_MODULE__EXHAUSTION_COMPENSATION_BASE.get();
+            sprintAssistExhaustionCompensationEnergyConsumptionMultiplier = SPRINT_ASSIST_MODULE__EXHAUSTION_COMPENSATION_ENERGY_CONSUMPTION_MULTIPLIER.get();
+            sprintAssistExhaustionCompensationCompensationMultiplier = SPRINT_ASSIST_MODULE__EXHAUSTION_COMPENSATION_COMPENSATION_MULTIPLIER.get();
+            sprintAssistModuleWalkingEnergyBase = SPRINT_ASSIST_MODULE__WALKING_ENERGY_CONSUMPTION_BASE.get();
+            sprintAssistModuleWalkingEnergyWalkingAssistanceMultiplier = SPRINT_ASSIST_MODULE__WALKING_ENERGY_CONSUMPTION_WALKING_ASSISTANCE_MULTIPLIER.get();
+
 
             // Swim Assist
             swimAssistModuleIsAllowed = SWIM_ASSIST_MODULE__IS_ALLOWED.get();

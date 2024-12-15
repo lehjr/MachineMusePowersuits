@@ -1,6 +1,7 @@
 package com.lehjr.numina.common.utils;
 
 import com.mojang.datafixers.util.Pair;
+import net.minecraft.world.phys.Vec3;
 import org.joml.Vector3f;
 
 import javax.annotation.Nullable;
@@ -44,6 +45,12 @@ public class MathUtils {
     public static double pythag(double x, double y, double z) {
         return Math.sqrt(x * x + y * y + z * z);
     }
+
+    public static double horizontalMovement(Vec3 movementVec) {
+        return Math.sqrt(movementVec.x * movementVec.x + movementVec.z + movementVec.z);
+    }
+
+
 
     public static boolean isIntInRange(@Nullable Pair<Integer, Integer> range, int val) {
         if (range != null) {

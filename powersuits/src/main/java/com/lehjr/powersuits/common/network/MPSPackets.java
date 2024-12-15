@@ -1,9 +1,11 @@
 package com.lehjr.powersuits.common.network;
 
 import com.lehjr.powersuits.common.network.packets.clientbound.CreativeInstallPacketClientBound;
+import com.lehjr.powersuits.common.network.packets.clientbound.SetSprintAssistDoubleClientBound;
 import com.lehjr.powersuits.common.network.packets.clientbound.ToggleableModuleListClientBound;
 import com.lehjr.powersuits.common.network.packets.serverbound.ContainerGuiOpenPacket;
 import com.lehjr.powersuits.common.network.packets.serverbound.CreativeInstallPacketServerBound;
+import com.lehjr.powersuits.common.network.packets.serverbound.SetSprintAssistDoubleAndDrainServerBound;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.server.level.ServerPlayer;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -36,6 +38,15 @@ public class MPSPackets {
         registrar.playToClient(ToggleableModuleListClientBound.ID,
             ToggleableModuleListClientBound.STREAM_CODEC,
             ToggleableModuleListClientBound::handle);
+
+
+        registrar.playToServer(SetSprintAssistDoubleAndDrainServerBound.ID,
+            SetSprintAssistDoubleAndDrainServerBound.STREAM_CODEC,
+            SetSprintAssistDoubleAndDrainServerBound::handle);
+
+        registrar.playToClient(SetSprintAssistDoubleClientBound.ID,
+            SetSprintAssistDoubleClientBound.STREAM_CODEC,
+            SetSprintAssistDoubleClientBound::handle);
     }
 
     public static void sendToServer(CustomPacketPayload message) {

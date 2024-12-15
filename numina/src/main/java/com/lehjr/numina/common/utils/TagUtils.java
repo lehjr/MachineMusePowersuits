@@ -4,12 +4,14 @@ import com.lehjr.numina.common.constants.NuminaConstants;
 import com.lehjr.numina.common.math.Color;
 import com.lehjr.numina.common.registration.NuminaCodecs;
 import net.minecraft.core.component.DataComponentType;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -148,6 +150,17 @@ public class TagUtils {
     public static ItemStack setModularItemTag(@Nonnull ItemStack stack, @Nonnull CompoundTag nbt) {
         return setTag(stack, NuminaCodecs.MODULAR_ITEM_CODEC, NuminaConstants.MODULAR_ITEM_TAG, nbt);
     }
+
+    public static ItemStack setAttributes(@Nonnull ItemStack stack, ItemAttributeModifiers modifiers) {
+        stack.set(DataComponents.ATTRIBUTE_MODIFIERS, modifiers);
+        return stack;
+    }
+
+
+
+
+
+
 
     public static float getModularItemFloat(@Nonnull ItemStack stack, String tagName) {
         return getFloatOrZero(getModularItemTag(stack), tagName);

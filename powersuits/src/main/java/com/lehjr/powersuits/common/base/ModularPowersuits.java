@@ -2,6 +2,7 @@ package com.lehjr.powersuits.common.base;
 
 import com.lehjr.powersuits.client.sound.MPSSoundDictionary;
 import com.lehjr.powersuits.common.constants.MPSConstants;
+import com.lehjr.powersuits.common.event.ItemEvent;
 import com.lehjr.powersuits.common.event.MovementManager;
 import com.lehjr.powersuits.common.event.PlayerEventHandler;
 import com.lehjr.powersuits.common.network.MPSPackets;
@@ -40,8 +41,7 @@ public class ModularPowersuits {
         MPSSoundDictionary.MPS_SOUND_EVENTS.register(modEventBus);
 
         NeoForge.EVENT_BUS.register(PlayerEventHandler.class);
-
-
+//        NeoForge.EVENT_BUS.register(ItemEvent::onAttributeEvent);
 
         // Register ourselves for server and other game events we are interested in.
         // Note that this is necessary if and only if we want *this* class (ExampleMod) to respond directly to events.

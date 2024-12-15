@@ -12,16 +12,29 @@ import com.lehjr.numina.common.utils.ElectricItemUtils;
 import com.lehjr.numina.common.utils.ItemUtils;
 import com.lehjr.numina.common.utils.MathUtils;
 import com.lehjr.numina.common.utils.PlayerUtils;
+import com.lehjr.numina.common.utils.TagUtils;
 import com.lehjr.powersuits.client.sound.MPSSoundDictionary;
 import com.lehjr.powersuits.common.config.MPSCommonConfig;
 import com.lehjr.powersuits.common.constants.MPSConstants;
+import net.minecraft.core.Holder;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.EquipmentSlotGroup;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.neoforge.common.NeoForgeMod;
 import net.neoforged.neoforge.event.entity.living.LivingEvent;
 import net.neoforged.neoforge.event.entity.living.LivingFallEvent;
 
@@ -56,10 +69,131 @@ public enum MovementManager {
         return -0.5 * DEFAULT_GRAVITY * ticks * ticks;
     }
 
-    public static void removeModifiers(@Nonnull ItemStack itemStack) {
-        NuminaLogger.logDebug("fixme: removeModifiers");
+    public double getMovementResistance(Player player) {
+        double movementResistance = 0;
+        for (EquipmentSlot slot : EquipmentSlot.values()) {
+            ItemStack equippedItem = ItemUtils.getItemFromEntitySlot(player, slot);
+            IModularItem modularItem = NuminaCapabilities.getModularItem(equippedItem);
+            if(modularItem != null) {
+                movementResistance += modularItem.getMovementResistance();
+            }
+        }
+        return movementResistance;
+    }
 
-//        itemStack.removeTagKey("AttributeModifiers");
+    // moved here so it is still accessible if sprint assist module isn't installed.
+    public void setMovementModifier(ItemStack itemStack, double multiplier, Player player, Holder<Attribute> attribute) {
+        // reduce player speed according to Kinetic Energy Generator setting
+        double movementResistance = getMovementResistance(player);
+        multiplier -= movementResistance;
+        // player walking speed: 0.1
+        // player sprint speed: 0.13
+        // negative addative will make player slower
+        double additive;
+
+        NuminaLogger.logDebug("multiplier: " + multiplier);
+
+        if(player.isSprinting()) {
+            additive = multiplier * 0.13;
+        }else {
+            additive = multiplier * 0.1;
+        }
+        additive = additive * 0.5;
+
+        if(additive > 0) {
+            if(player.isSprinting()) {
+                //            additive = multiplier * 0.13;
+                additive = 10;
+            }else {
+                //            additive = multiplier * 0.1;
+                additive = 5;
+            }
+        }
+
+//        removeModifiers(itemStack);
+
+        ItemAttributeModifiers modifiers = itemStack.getOrDefault(DataComponents.ATTRIBUTE_MODIFIERS, ItemAttributeModifiers.EMPTY);
+        NuminaLogger.logDebug("compute before: " + modifiers.compute(player.getAttributeBaseValue(Attributes.MOVEMENT_SPEED), EquipmentSlot.LEGS));
+
+        ItemAttributeModifiers.Builder builder = ItemAttributeModifiers.builder();
+
+        NuminaLogger.logDebug("setting speed as: " + additive);
+
+//        builder.add(Attributes.MOVEMENT_SPEED, new AttributeModifier(getArmorAttributeResourceLocationBySlot(EquipmentSlot.LEGS), additive, AttributeModifier.Operation.ADD_VALUE),
+//            EquipmentSlotGroup.bySlot(EquipmentSlot.LEGS));
+//        TagUtils.setAttributes(itemStack, builder.build());
+
+        //        ItemStack testStack = ItemUtils.getItemFromEntitySlot(player, EquipmentSlot.LEGS);
+        //
+        //        ItemAttributeModifiers test = testStack.get(DataComponents.ATTRIBUTE_MODIFIERS);
+
+        //
+        //
+        //
+        //        //        +        // Neo: Convert Movement Speed to percent-based for more appropriate display using IAttributeExtension. Use a scale factor of 1000 since movement speed has 0.001 units.
+        //        //            +        "generic.movement_speed", new PercentageAttribute("attribute.name.generic.movement_speed", 0.7, 0.0, 1024.0, 1000).setSyncable(true));
+        //        //
+        //        modifiers = testStack.getOrDefault(DataComponents.ATTRIBUTE_MODIFIERS, ItemAttributeModifiers.EMPTY);
+        //
+        ////                AttributeInstance attributeinstance = modifiers..modifiers().getInstance(attribute);
+        ////                    this.getAttribute(Attributes.MOVEMENT_SPEED);
+        ////                if (attributeinstance != null && attributeinstance.getModifier(SPEED_MODIFIER_POWDER_SNOW_ID) != null) {
+        ////                    attributeinstance.removeModifier(SPEED_MODIFIER_POWDER_SNOW_ID);
+        ////                }
+        //
+        //        NuminaLogger.logDebug("test stack compute after: " + modifiers.compute(player.getAttributeBaseValue(Attributes.MOVEMENT_SPEED), EquipmentSlot.LEGS));
+        //        if (test != null) {
+        //
+        //            NuminaLogger.logDebug("test here: " + MobEffects.MOVEMENT_SPEED.value());
+        //
+        //
+        //        }
+        //
+        //        modifiers = itemStack.getOrDefault(DataComponents.ATTRIBUTE_MODIFIERS, ItemAttributeModifiers.EMPTY);
+        //
+        //        //                AttributeInstance attributeinstance = modifiers..modifiers().getInstance(attribute);
+        //        //                    this.getAttribute(Attributes.MOVEMENT_SPEED);
+        //        //                if (attributeinstance != null && attributeinstance.getModifier(SPEED_MODIFIER_POWDER_SNOW_ID) != null) {
+        //        //                    attributeinstance.removeModifier(SPEED_MODIFIER_POWDER_SNOW_ID);
+        //        //                }
+        //        test = testStack.get(DataComponents.ATTRIBUTE_MODIFIERS);
+        //        NuminaLogger.logDebug("itemStack compute after: " + modifiers.compute(player.getAttributeBaseValue(Attributes.MOVEMENT_SPEED), EquipmentSlot.LEGS));
+        //        if (test != null) {
+        //
+        //            NuminaLogger.logDebug("itemStack here: " + MobEffects.MOVEMENT_SPEED.value());
+        //
+        //
+        //        }
+        //
+        //
+        //
+        //        NuminaLogger.logDebug("equal?: " + ItemStack.matches(itemStack, testStack));
+
+
+        //        if(additive > 0) {
+        //            MobEffectInstance effect = new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 100, 10);
+        ////            MobEffectInstance effectTest = player.getEffect(MobEffects.MOVEMENT_SPEED);
+        ////
+        ////            if(effectTest == null || effectTest.getDuration() < 90) {
+        //                player.addEffect(effect);
+        //
+        //                //            NeoForgeMod.SWIM_SPEED
+        ////            } else {
+        ////                NuminaLogger.logDebug("player already has effect");
+        ////            }
+        //        } else {
+        //            NuminaLogger.logDebug("removing effect");
+        //
+        //            player.removeEffect(MobEffects.MOVEMENT_SPEED);
+        //        }
+    }
+
+    public static ResourceLocation getArmorAttributeResourceLocationBySlot(EquipmentSlot slot) {
+        return ResourceLocation.fromNamespaceAndPath(MPSConstants.MOD_ID, "armor." + slot.getName());
+    }
+
+    public static void removeModifiers(@Nonnull ItemStack itemStack) {
+        TagUtils.setAttributes(itemStack, ItemAttributeModifiers.EMPTY);
     }
 
     static double boolToVal(boolean boolIn) {
@@ -88,9 +222,9 @@ public enum MovementManager {
             double forwardReverse = ((playerInput.reverseKey ? -1D : 0) + (playerInput.forwardKey ? 1D : 0));
 
             desiredDirection = new Vec3(
-                    (desiredDirection.x * Math.signum(forwardReverse) + strafeX * Math.signum(strafeState)),
-                    (flightVerticality * desiredDirection.y * Math.signum(forwardReverse) + (playerInput.jumpKey ? 1 : 0) - (playerInput.downKey ? 1 : 0)),
-                    (desiredDirection.z * Math.signum(forwardReverse) + strafeZ * Math.signum(strafeState)));
+                (desiredDirection.x * Math.signum(forwardReverse) + strafeX * Math.signum(strafeState)),
+                (flightVerticality * desiredDirection.y * Math.signum(forwardReverse) + (playerInput.jumpKey ? 1 : 0) - (playerInput.downKey ? 1 : 0)),
+                (desiredDirection.z * Math.signum(forwardReverse) + strafeZ * Math.signum(strafeState)));
 
             desiredDirection = desiredDirection.normalize();
 
@@ -114,11 +248,11 @@ public enum MovementManager {
             }
 
             if (Math.abs(player.getDeltaMovement().x) > 0 && desiredDirection.length() == 0) {
-//                NuminaLogger.logDebug("player.getDeltaMovement().x");
+                //                NuminaLogger.logDebug("player.getDeltaMovement().x");
 
                 if (Math.abs(player.getDeltaMovement().x) > thrust) {
                     player.setDeltaMovement(player.getDeltaMovement().add(
-                            -(Math.signum(player.getDeltaMovement().x) * thrust), 0, 0));
+                        -(Math.signum(player.getDeltaMovement().x) * thrust), 0, 0));
                     thrustUsed += thrust;
                     thrust = 0;
                 } else {
@@ -131,8 +265,8 @@ public enum MovementManager {
             if (Math.abs(player.getDeltaMovement().z) > 0 && desiredDirection.length() == 0) {
                 if (Math.abs(player.getDeltaMovement().z) > thrust) {
                     player.setDeltaMovement(
-                            player.getDeltaMovement().add(
-                                    0, 0, -(Math.signum(player.getDeltaMovement().z) * thrust)));
+                        player.getDeltaMovement().add(
+                            0, 0, -(Math.signum(player.getDeltaMovement().z) * thrust)));
                     thrustUsed += thrust;
                     thrust = 0;
                 } else {
@@ -144,9 +278,9 @@ public enum MovementManager {
 
             // Thrusting, finally :V
             player.setDeltaMovement(player.getDeltaMovement().add(
-                    thrust * desiredDirection.x,
-                    thrust * desiredDirection.y,
-                    thrust * desiredDirection.z
+                thrust * desiredDirection.x,
+                thrust * desiredDirection.y,
+                thrust * desiredDirection.z
             ));
             thrustUsed += thrust;
 
@@ -158,12 +292,12 @@ public enum MovementManager {
                 player.setDeltaMovement(player.getDeltaMovement().add(0, thrust, 0));
             } else {
 
-//                NuminaLogger.logDebug("thrust: " + thrust +", thrust * root2: " + (thrust * root2) );
+                //                NuminaLogger.logDebug("thrust: " + thrust +", thrust * root2: " + (thrust * root2) );
 
                 player.setDeltaMovement(player.getDeltaMovement().add(
-                        desiredDirection.x * thrust * root2 * boolToVal(playerInput.forwardKey),
-                        thrust * root2,
-                        desiredDirection.z * thrust * root2// * Math.signum(playerInput.forwardKey)
+                    desiredDirection.x * thrust * root2 * boolToVal(playerInput.forwardKey),
+                    thrust * root2,
+                    desiredDirection.z * thrust * root2// * Math.signum(playerInput.forwardKey)
                 ));
             }
             thrustUsed += thrust;
@@ -181,9 +315,9 @@ public enum MovementManager {
         if (horzm2 > horizontalLimit) {
             double ratio = Math.sqrt(horizontalLimit / horzm2);
             player.setDeltaMovement(
-                    player.getDeltaMovement().x * ratio,
-                    player.getDeltaMovement().y,
-                    player.getDeltaMovement().z * ratio);
+                player.getDeltaMovement().x * ratio,
+                player.getDeltaMovement().y,
+                player.getDeltaMovement().z * ratio);
         }
 
         PlayerUtils.resetFloatKickTicks(player);
@@ -212,7 +346,7 @@ public enum MovementManager {
                     if (drain < avail) {
                         ElectricItemUtils.drainPlayerEnergy(player, (int) drain, false);
                         setPlayerJumpTicks(player, jumpAssist);
-                        double jumpCompensationRatio = jumper.applyPropertyModifiers(MPSConstants.EXAUSTION_COMPENSATION);
+                        double jumpCompensationRatio = jumper.applyPropertyModifiers(MPSConstants.EXHAUSTION_COMPENSATION);
                         if (player.isSprinting()) {
                             player.getFoodData().addExhaustion((float) (-0.2F * jumpCompensationRatio));
                         } else {

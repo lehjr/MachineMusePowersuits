@@ -45,7 +45,6 @@ public class NuminaConstants {
 
     public static final String MODULAR_ITEM_TAG = "MMModItem";// Machine Muse Mod
     public static final String MODULE_TAG = "MMModModule";// Machine Muse Mod Module
-
     public static final String TAG_MODULE_SETTINGS = "Module Settings";
     public static final String MODE = "Mode";
 
@@ -65,6 +64,7 @@ public class NuminaConstants {
     // Misc ---------------------------------------------------------------------------------------
     public static final String BLOCK = "block";
     public static final String HARVEST_SPEED = "harvestSpeed";
+    public static final String MOVEMENT_RESISTANCE = "movementResistance";
 
     // Toggleable ---------------------------------------------------------------------------------
     public static final String TAG_ONLINE = "online";

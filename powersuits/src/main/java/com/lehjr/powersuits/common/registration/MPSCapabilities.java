@@ -244,7 +244,7 @@ public class MPSCapabilities {
         event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new ActiveCamouflageModule.Ticker(stack), MPSItems.ACTIVE_CAMOUFLAGE_MODULE.get());
         event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new MagnetModule.Ticker(stack), MPSItems.MAGNET_MODULE.get());
         event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new MobRepulsorModule.Ticker(stack), MPSItems.MOB_REPULSOR_MODULE.get());
-        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)->new PiglinPacificationModule.PiglinPacificationCap(stack), MPSItems.PIGLIN_PACIFICATION_MODULE.get());
+        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new PiglinPacificationModule.PiglinPacificationCap(stack), MPSItems.PIGLIN_PACIFICATION_MODULE.get());
         event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new WaterElectrolyzerModule.Ticker(stack), MPSItems.WATER_ELECTROLYZER_MODULE.get());
 
         // Mining Enchantment -----------------------------------------------------------------------------------------
@@ -259,8 +259,6 @@ public class MPSCapabilities {
 //        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new VeinMinerModule.Enhancement(stack), MPSItems.TUNNEL_BORE_MODULE.get());
 
         // Vein Miner
-
-        // Movement
 
 
         // Special

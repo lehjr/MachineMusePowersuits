@@ -1,12 +1,10 @@
 package com.lehjr.powersuits.common.item.module.movement;
 
 import com.lehjr.numina.client.control.PlayerMovementInputWrapper;
-import com.lehjr.numina.common.base.NuminaLogger;
 import com.lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import com.lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
 import com.lehjr.numina.common.capabilities.module.tickable.PlayerTickModule;
 import com.lehjr.numina.common.utils.PlayerUtils;
-import com.lehjr.numina.common.utils.StringUtils;
 import com.lehjr.powersuits.common.config.module.MovementModuleConfig;
 import com.lehjr.powersuits.common.constants.MPSConstants;
 import com.lehjr.powersuits.common.event.MovementManager;
@@ -14,7 +12,6 @@ import com.lehjr.powersuits.common.item.module.AbstractPowerModule;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.neoforged.neoforge.common.ModConfigSpec;
 
 import javax.annotation.Nonnull;
 
@@ -28,8 +25,8 @@ public class JumpAssistModule extends AbstractPowerModule {
             addBaseProperty(MPSConstants.JUMP_BOOST, MovementModuleConfig.jumpAssistModuleJumpBoostBase, "%");
             addTradeoffProperty(MPSConstants.POWER, MPSConstants.JUMP_BOOST, MovementModuleConfig.jumpAssistModuleJumpBoostPowerMultiplier);
             addTradeoffProperty(MPSConstants.COMPENSATION, MPSConstants.ENERGY_CONSUMPTION, MovementModuleConfig.jumpAssistModuleEnergyConsumptionCompensationMultiplier);
-            addBaseProperty(MPSConstants.EXAUSTION_COMPENSATION, MovementModuleConfig.jumpAssistModuleExhaustionCompensationBase, "%");
-            addTradeoffProperty(MPSConstants.COMPENSATION, MPSConstants.EXAUSTION_COMPENSATION, MovementModuleConfig.jumpAssistModuleExhaustionCompensationCompensationMultiplier);
+            addBaseProperty(MPSConstants.EXHAUSTION_COMPENSATION, MovementModuleConfig.jumpAssistModuleExhaustionCompensationBase, "%");
+            addTradeoffProperty(MPSConstants.COMPENSATION, MPSConstants.EXHAUSTION_COMPENSATION, MovementModuleConfig.jumpAssistModuleExhaustionCompensationCompensationMultiplier);
         }
 
         @Override

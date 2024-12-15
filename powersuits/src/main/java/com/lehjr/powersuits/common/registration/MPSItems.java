@@ -280,7 +280,7 @@ public class MPSItems {
     public static final DeferredRegister<CreativeModeTab> MPS_CREATIVE_MODE_TAB = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, MPSConstants.MOD_ID);
 
     public static final Supplier<CreativeModeTab> MPS_TAB = MPS_CREATIVE_MODE_TAB.register("creative.mode.tab",
-            ()-> CreativeModeTab.builder().icon(()->new ItemStack(IRON_PLATING_MODULE.get()))
+            ()-> CreativeModeTab.builder().icon(()->new ItemStack(POWER_ARMOR_HELMET_1.get()))
                     .title(Component.translatable(MPSConstants.CREATIVE_TAB_TRANSLATION_KEY))
                     .displayItems((parameters, output) -> {
                         output.accept(DEBUG_ITEM.get());

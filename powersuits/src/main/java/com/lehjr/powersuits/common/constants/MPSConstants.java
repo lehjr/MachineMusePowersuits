@@ -58,7 +58,6 @@ public class MPSConstants {
 
     // Energy Gemeration ----------------------------------------------------------------------------------------------
     public static final String ENERGY_GENERATION = "energyPerBlock";
-    public static final String MOVEMENT_RESISTANCE = "movementResistance";
     public static final String ENERGY_GENERATED = "energyGenerated";
     public static final String HEAT_GENERATION_DAY = "daytimeHeatGen";
     public static final String HEAT_GENERATION_NIGHT = "nightTimeHeatGen";
@@ -87,6 +86,9 @@ public class MPSConstants {
     public static final String THRUST = "thrust";
     public static final String THRUST_MULTIPLIER = THRUST + MULTIPLIER;
     public static final String ENERGY_CONSUMPTION_THRUST_MULTIPLIER = ENERGY_CONSUMPTION + StringUtils.capitalize(THRUST) + MULTIPLIER;
+    public static final String MOVEMENT_SPEED = "movement_speed";
+    public static final String SWIM_SPEED = "swim_speed";
+
 
     // Blink Drive
     public static final String RANGE = "range";
@@ -106,7 +108,7 @@ public class MPSConstants {
     public static final String SPRINT_ENERGY_CONSUMPTION = "sprintEnergyCon";
     public static final String SPRINT_SPEED_MULTIPLIER = "sprintSpeedMult";
     public static final String SPRINT_ASSIST = "sprintAssist";
-    public static final String EXAUSTION_COMPENSATION = "exhaustionComp";
+    public static final String EXHAUSTION_COMPENSATION = "exhaustionComp";
 
     public static final String WALKING_ENERGY_CONSUMPTION = "walkingEnergyCon";
     public static final String WALKING_SPEED_MULTIPLIER = "walkingSpeedMult";

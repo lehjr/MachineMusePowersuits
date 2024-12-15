@@ -3,6 +3,7 @@ package com.lehjr.powersuits.common.item.module.movement;
 import com.lehjr.numina.client.config.NuminaClientConfig;
 import com.lehjr.numina.client.control.PlayerMovementInputWrapper;
 import com.lehjr.numina.client.sound.Musique;
+import com.lehjr.numina.common.base.NuminaLogger;
 import com.lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import com.lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
 import com.lehjr.numina.common.capabilities.module.tickable.PlayerTickModule;
@@ -20,7 +21,12 @@ import net.neoforged.neoforge.common.NeoForgeMod;
 
 import javax.annotation.Nonnull;
 
+
+// FixMe
 public class SwimAssistModule extends AbstractPowerModule {
+    // NeoForgeMod.SWIM_SPEED
+
+
     public static class Ticker extends PlayerTickModule {
         public Ticker(@Nonnull ItemStack module) {
             super(module, ModuleCategory.MOVEMENT, ModuleTarget.LEGSONLY);
@@ -57,13 +63,12 @@ public class SwimAssistModule extends AbstractPowerModule {
                 if (swimEnergyConsumption < playerEnergy) {
                     if (level.isClientSide && NuminaClientConfig.useSounds) {
                         Musique.playerSound(player, MPSSoundDictionary.SOUND_EVENT_SWIM_ASSIST.get(), SoundSource.PLAYERS, 1.0f, 1.0f, true);
-                    } else if (
                         // every 20 ticks
-                            (level.getGameTime() % 5) == 0) {
+                    } else if ((level.getGameTime() % 5) == 0) {
                         ElectricItemUtils.drainPlayerEnergy(player, (int) (swimEnergyConsumption) * 5, false);
                     }
                     MovementManager.thrust(player, swimAssistRate, true);
-//                            setMovementModifier(getModule(), swimAssistRate * 100000, ForgeMod.SWIM_SPEED.get(), ForgeMod.SWIM_SPEED.get().getDescriptionId());
+//                    SprintAssistModule.setMovementModifier(itemStack, getModule(), swimAssistRate * 100000, MPSConstants.SWIM_SPEED);
                 } else {
                     onPlayerTickInactive(player, level, itemStack);
                 }
@@ -77,7 +82,7 @@ public class SwimAssistModule extends AbstractPowerModule {
             if (level.isClientSide && NuminaClientConfig.useSounds) {
                 Musique.stopPlayerSound(player, MPSSoundDictionary.SOUND_EVENT_SWIM_ASSIST.get());
             }
-            SprintAssistModule.setMovementModifier(getModule(), 0, NeoForgeMod.SWIM_SPEED.value(), NeoForgeMod.SWIM_SPEED.value().getDescriptionId());
+//            SprintAssistModule.setMovementModifier(itemStack, getModule(), 0, MPSConstants.SWIM_SPEED);
         }
     }
 }

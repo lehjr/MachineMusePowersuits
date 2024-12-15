@@ -113,12 +113,19 @@ public interface IModularItem extends IItemHandlerModifiable, IItemHandler {
 
     /**
      * TODO: WIP!! Still assessing what changes actually need to be made for things to work
+     *
      * @param moduleName
      * @param key
      * @param value
      * @return
      */
-    void setModuleDouble(ResourceLocation moduleName, String key, double value);
+    boolean setModuleDouble(ResourceLocation moduleName, String key, double value);
+
+    boolean setModuleDouble(int index, String key, double value);
+
+    double getModuleDouble(ResourceLocation moduleName, String key);
+
+    double getModuleDouble(int index, String key);
 
     void setModuleFloat(ResourceLocation moduleName, String key, float value);
 
@@ -149,6 +156,14 @@ public interface IModularItem extends IItemHandlerModifiable, IItemHandler {
         }
         return modules;
     }
+
+    /**
+     * Can be used as port of a movement restrictive system like weight.
+     *
+     * @return total movement resistance of all online modules installed in this modular item
+     */
+    double getMovementResistance();
+
 
     void tick(Player player, Level level, @Nonnull ItemStack itemStack);
 

@@ -35,7 +35,7 @@ public class NightVisionModule extends AbstractPowerModule {
             removed = TagUtils.getModuleBoolean(module, REMOVED);
         }
 
-        int tick = 0; // cooldown timer because firing too quickly will crash things and this doesn't need to fire that rapidly anyway
+//        int tick = 0; // cooldown timer because firing too quickly will crash things and this doesn't need to fire that rapidly anyway
 
         @Override
         public boolean isAllowed() {
@@ -83,6 +83,4 @@ public class NightVisionModule extends AbstractPowerModule {
             }
         }
     }
-
-
 }

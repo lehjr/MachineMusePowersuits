@@ -5,6 +5,7 @@ import com.lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
 import com.lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import com.lehjr.numina.common.capabilities.module.tickable.IPlayerTickModule;
 import com.lehjr.numina.common.capabilities.module.toggleable.IToggleableModule;
+import com.lehjr.numina.common.constants.NuminaConstants;
 import com.lehjr.numina.common.utils.ItemUtils;
 import com.lehjr.numina.common.utils.TagUtils;
 import com.lehjr.numina.imixin.common.item.IMixinRangedWrapper;
@@ -280,24 +281,49 @@ public class ModularItem extends ComponentItemHandler implements IModularItem {
         }
     }
 
+    @Override
+    public boolean setModuleDouble(int index, String key, double value) {
+        if(index > 0 && index < getSlots()) {
+            ItemStack module = getStackInSlot(index);
+            IPowerModule pm = getModuleCapability(module);
+            if (pm != null) {
+                double testValue = TagUtils.getModuleDouble(module, key);
+                if(value != testValue) {
+                    ItemStack newModule = TagUtils.setModuleDouble(module, key, value);
+                    updateModuleInSlot(index, newModule);
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     /**
      * TODO: WIP!! Still assessing what changes actually need to be made for things to work
+     *
      * @param moduleName
      * @param key
      * @param value
      * @return
      */
     @Override
-    public void setModuleDouble(ResourceLocation moduleName, String key, double value) {
-        int i = findInstalledModule(moduleName);
-        if(i > -1) {
-            ItemStack module = getStackInSlot(i);
-            IPowerModule pm = getModuleCapability(module);
-            if (pm != null) {
-                ItemStack newModule = TagUtils.setModuleDouble(module, key, value);
-                updateModuleInSlot(i, newModule);
-            }
+    public boolean setModuleDouble(ResourceLocation moduleName, String key, double value) {
+        return setModuleDouble(findInstalledModule(moduleName), key, value);
+    }
+
+    @Override
+    public double getModuleDouble(int index, String key) {
+        ItemStack module = getStackInSlot(index);
+        IPowerModule pm = getModuleCapability(module);
+        if (pm != null) {
+            return TagUtils.getModuleDouble(module, key);
         }
+        return 0;
+    }
+
+    @Override
+    public double getModuleDouble(ResourceLocation moduleName, String key) {
+        return getModuleDouble(findInstalledModule(moduleName), key);
     }
 
     @Override
@@ -377,5 +403,17 @@ public class ModularItem extends ComponentItemHandler implements IModularItem {
     @Override
     public void updateModuleInSlot(int slot, @Nonnull ItemStack module) {
         this.updateContents(getContents(), module, slot);
+    }
+
+    @Override
+    public double getMovementResistance() {
+        double movementResistance = 0;
+        for(int i = 0; i < getSlots(); i++) {
+            IPowerModule pm = getModuleCapability(getStackInSlot(i));
+            if(pm != null && pm.isAllowed() && pm.isModuleOnline()) {
+                movementResistance += pm.applyPropertyModifiers(NuminaConstants.MOVEMENT_RESISTANCE);
+            }
+        }
+        return movementResistance;
     }
 }

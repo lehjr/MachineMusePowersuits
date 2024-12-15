@@ -621,7 +621,7 @@ public class MPSLanguageProvider_EN_US extends AbstractLangageProviderMPS {
         addTradeoff(MPSConstants.SPRINT_ENERGY_CONSUMPTION, "Sprint Energy Consumption");
 
         // Sprint Exhaustion Compensation --------------------------------------------------------------
-        addTradeoff(MPSConstants.EXAUSTION_COMPENSATION, "Exhaustion Compensation");
+        addTradeoff(MPSConstants.EXHAUSTION_COMPENSATION, "Exhaustion Compensation");
 
         // Sprint Speed Multiplier ---------------------------------------------------------------------
         addTradeoff(MPSConstants.SPRINT_SPEED_MULTIPLIER, "Sprint Speed Multiplier");
