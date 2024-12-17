@@ -57,7 +57,6 @@ public class Musique {
             if (sound != null) {
                 sound.updateVolume(volume).updatePitch(pitch).updateRepeat(continuous);
             } else {
-                NuminaLogger.logDebug("New sound: " + soundEvt.getLocation());
                 MovingSoundPlayer newsound = new MovingSoundPlayer(soundEvt, categoryIn, player, volume * 2.0f, pitch, continuous);
                 mcsound().play(newsound);
                 soundMap.put(soundID, newsound);

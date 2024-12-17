@@ -1,5 +1,6 @@
 package com.lehjr.powersuits.common.network.packets.serverbound;
 
+import com.lehjr.numina.common.base.NuminaLogger;
 import com.lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
 import com.lehjr.numina.common.registration.NuminaCapabilities;
 import com.lehjr.numina.common.utils.ElectricItemUtils;
@@ -56,15 +57,21 @@ public record SetSprintAssistDoubleAndDrainServerBound(double boost, int drainAm
             Level level = player.level();
             double valueToSet = data.boost();
             int drainAmount = data.drainAmount();
+            if(((ServerPlayer) player).connection.clientIsFloating) {
+                valueToSet = 0;
+            }
+            if (player.getAbilities().flying || player.isPassenger() || player.isFallFlying()  || player.isInWaterOrBubble()) {
+                valueToSet = 0;
+            }
 
             IModularItem iModularItem = NuminaCapabilities.getModularItem(ItemUtils.getItemFromEntitySlot(player, EquipmentSlot.LEGS));
             if(iModularItem != null) {
                 // every 20 ticks
-                if ((level.getGameTime() % 20) == 0) {
+                if ((!(valueToSet == 0) && (level.getGameTime() % 20) == 0)){
                     ElectricItemUtils.drainPlayerEnergy(player, drainAmount, false);
                 }
                 if (iModularItem.setModuleDouble(MPSConstants.SPRINT_ASSIST_MODULE, MPSConstants.MOVEMENT_SPEED, valueToSet)) {
-
+//                    NuminaLogger.logDebug("changed sprint assist speed value to: " + valueToSet);
                 }
             }
         });

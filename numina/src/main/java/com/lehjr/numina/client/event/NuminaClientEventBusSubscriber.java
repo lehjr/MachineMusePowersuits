@@ -28,6 +28,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.event.ModelEvent;
 import net.neoforged.neoforge.client.event.RegisterClientReloadListenersEvent;
@@ -36,6 +37,7 @@ import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
+import net.neoforged.neoforge.common.NeoForge;
 
 import javax.annotation.Nonnull;
 import java.util.HashMap;
@@ -143,10 +145,12 @@ public class NuminaClientEventBusSubscriber {
         ModelBakeEventHandler.onAddAdditional(e);
     }
 
+    @SubscribeEvent
+    public static void doClientStuff(final FMLClientSetupEvent event) {
+        NeoForge.EVENT_BUS.register(NuminaFOVUpdateEventHandler.class);
+    }
 
-
-    //    public static void doClientStuff(final FMLClientSetupEvent event) {
-    ////        NeoForge.EVENT_BUS.register(new NuminaFOVUpdateEventHandler());
+    //
     ////        NeoForge.EVENT_BUS.register(new ToolTipEvent());
     ////        event.enqueueWork(() -> {
     ////            MenuScreens.register(NuminaObjects.CHARGING_BASE_CONTAINER_TYPE.get(), ChargingBaseScreen::new);

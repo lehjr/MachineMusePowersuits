@@ -1,5 +1,6 @@
 package com.lehjr.numina.common.utils;
 
+import com.lehjr.numina.common.base.NuminaLogger;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;

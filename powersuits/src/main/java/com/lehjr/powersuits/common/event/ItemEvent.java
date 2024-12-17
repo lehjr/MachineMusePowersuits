@@ -156,7 +156,7 @@ public class ItemEvent {
 
 //                        swimBoost += TagUtils.getModuleDouble(module, MPSConstants.SWIM_SPEED);
                         speed += iModularItem.getModuleDouble(i, MPSConstants.MOVEMENT_SPEED);
-                        NuminaLogger.logDebug("speed here: " + speed +", modular item: " + module);
+//                        NuminaLogger.logDebug("speed here: " + speed +", modular item: " + module);
 
                         //                        if(speed > 0) {
 //                        NuminaLogger.logDebug("speed: " + speed + ", module: " + module);
@@ -169,9 +169,10 @@ public class ItemEvent {
                         }
                     }
                 }
-            } else {
-                NuminaLogger.logDebug("slot: " + slot);
             }
+//            else {
+//                NuminaLogger.logDebug("slot: " + slot);
+//            }
         } else {
             NuminaLogger.logDebug("IModularItem Cap is broken");
         }
@@ -235,10 +236,10 @@ public class ItemEvent {
             builder.add(Attributes.MOVEMENT_SPEED, new AttributeModifier(resourcelocation, (speed - movementResistance * 0.16), AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.bySlot(slot));
         }
 
-        if (swimBoost > 0) {
-            builder.add(NeoForgeMod.SWIM_SPEED, new AttributeModifier(resourcelocation, swimBoost, AttributeModifier.Operation.ADD_VALUE),
-                EquipmentSlotGroup.bySlot(slot));
-        }
+//        if (swimBoost > 0) {
+//            builder.add(NeoForgeMod.SWIM_SPEED, new AttributeModifier(resourcelocation, swimBoost, AttributeModifier.Operation.ADD_VALUE),
+//                EquipmentSlotGroup.bySlot(slot));
+//        }
 
         // Create and return ItemAttributeModifiers instance with the list of entries
         return builder.build();

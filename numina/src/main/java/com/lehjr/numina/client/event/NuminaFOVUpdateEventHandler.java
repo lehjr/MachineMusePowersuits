@@ -1,6 +1,7 @@
 package com.lehjr.numina.client.event;
 
 import com.lehjr.numina.client.config.NuminaClientConfig;
+import com.lehjr.numina.common.base.NuminaLogger;
 import com.lehjr.numina.common.constants.NuminaConstants;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
@@ -12,6 +13,7 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.client.event.ComputeFovModifierEvent;
+import net.neoforged.neoforge.common.NeoForgeMod;
 import net.neoforged.neoforge.common.util.Lazy;
 import org.lwjgl.glfw.GLFW;
 
@@ -39,10 +41,10 @@ public class NuminaFOVUpdateEventHandler {
             }
 
             if (fovIsActive) {
-                AttributeInstance attributeinstance = e.getPlayer().getAttribute(Attributes.MOVEMENT_SPEED);
+                AttributeInstance attributeinstance = player.getAttribute(Attributes.MOVEMENT_SPEED);
                 assert attributeinstance != null;
-                e.setNewFovModifier((float) (e.getNewFovModifier() / ((attributeinstance.getValue() / e.getPlayer().getAbilities().getWalkingSpeed() + 1.0) / 2.0)));if (NuminaClientConfig.useFovNormalize) {
-                    if (e.getPlayer().isSprinting()) {
+                e.setNewFovModifier((float) (e.getNewFovModifier() / ((attributeinstance.getValue() / player.getAbilities().getWalkingSpeed() + 1.0) / 2.0)));if (NuminaClientConfig.useFovNormalize) {
+                    if (player.isSprinting() && !player.isInWaterOrBubble()) {
                         e.setNewFovModifier(e.getNewFovModifier() + 0.15F);
                     }
                 }
@@ -50,3 +52,7 @@ public class NuminaFOVUpdateEventHandler {
         }
     }
 }
+
+
+
+

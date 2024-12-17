@@ -126,7 +126,7 @@ public class ClientEventBusSubscriber {
         if(cap != null) {
             ItemStack binoculars = cap.getOnlineModuleOrEmpty(MPSConstants.BINOCULARS_MODULE);
             if (!binoculars.isEmpty()) {
-                IPowerModule pm = binoculars.getCapability(NuminaCapabilities.Module.POWER_MODULE);
+                IPowerModule pm = cap.getModuleCapability(binoculars);
                 if (pm != null) {
                     e.setNewFovModifier((float) (e.getFovModifier() / pm.applyPropertyModifiers(MPSConstants.FOV)));
                 }

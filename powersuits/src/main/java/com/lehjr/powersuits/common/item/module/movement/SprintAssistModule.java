@@ -17,7 +17,10 @@ import com.lehjr.powersuits.common.item.module.AbstractPowerModule;
 import com.lehjr.powersuits.common.network.MPSPackets;
 import com.lehjr.powersuits.common.network.packets.serverbound.SetSprintAssistDoubleAndDrainServerBound;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -69,17 +72,8 @@ public class SprintAssistModule extends AbstractPowerModule {
             // ----------------------------------------
             // player speed .1 walking, .13 sprinting
             // ----------------------------------------
-            //  1x Boost:
-            // ----------------------------------------
-            // 1.2 walking, .156 with
-            // ----------------------------------------
-            //  2x Boost:
-            // ----------------------------------------
-            // 0.14 walking, 0.182 sprinting
-            //            NuminaLogger.logDebug("speed: " + player.getSpeed());
-            //
-            if (player.getAbilities().flying || player.isPassenger() || player.isFallFlying()  || player.isSwimming()) {
-                onPlayerTickInactive(player, level, armorLegs);
+            if (player.getAbilities().flying || player.isPassenger() || player.isFallFlying()  || player.isInWaterOrBubble()) {
+                setPlayerSpeed(0, 0);
                 return;
             }
 
