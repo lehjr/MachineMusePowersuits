@@ -1,8 +1,14 @@
 package com.lehjr.powersuits.common.config;
 
 import com.lehjr.powersuits.common.config.module.ArmorModuleConfig;
+import com.lehjr.powersuits.common.config.module.AxeModuleConfig;
 import com.lehjr.powersuits.common.config.module.CosmeticModuleConfig;
 import com.lehjr.powersuits.common.config.module.EnvironmentalModuleConfig;
+import com.lehjr.powersuits.common.config.module.HoeModuleConfig;
+import com.lehjr.powersuits.common.config.module.MiningEnchantmentModuleConfig;
+import com.lehjr.powersuits.common.config.module.MovementModuleConfig;
+import com.lehjr.powersuits.common.config.module.PickaxeModuleConfig;
+import com.lehjr.powersuits.common.config.module.ShovelModuleConfig;
 import com.lehjr.powersuits.common.config.module.ToolModuleConfig;
 import com.lehjr.powersuits.common.config.module.VisionModuleConfig;
 import com.lehjr.powersuits.common.config.module.WeaponModuleConfig;
@@ -34,15 +40,29 @@ public class MPSCommonConfig {
                 ArmorConfig.onLoad(event);
             } else if (SPEC == PowerFistConfig.POWER_FIST_CONFIG_SPEC){
                 PowerFistConfig.onLoad(event);
-            } else if (SPEC == ArmorModuleConfig.ARMOR_MODULE_CONFIG_SPEC){
+           // Modules -------------------------------------------------------------------
+            } else if (SPEC == ArmorModuleConfig.ARMOR_MODULE_CONFIG_SPEC) {
                 ArmorModuleConfig.onLoad(event);
+            } else if (SPEC == AxeModuleConfig.MPS_AXE_MODULE_SPEC) {
+                AxeModuleConfig.onLoad(event);
             } else if (SPEC == CosmeticModuleConfig.COSMETIC_MODULE_CONFIG_SPEC) {
                 CosmeticModuleConfig.onLoad(event);
-                // TODO: fill in missing module configs
-
+                // TODO: Energy modules
             } else if(SPEC == EnvironmentalModuleConfig.ENVIRONMENTAL_MODULE_SPEC) {
                 EnvironmentalModuleConfig.onLoad(event);
+            } else if(SPEC == HoeModuleConfig.MPS_HOE_MODULE_SPEC) {
+                HoeModuleConfig.onLoad(event);
+            } else if (SPEC == MiningEnchantmentModuleConfig.MINING_ENCHANTMENT_MODULE_CONFIG_SPEC) {
+                MiningEnchantmentModuleConfig.onLoad(event);
 
+
+            // TODO: mining enhancement
+            } else if (SPEC == MovementModuleConfig.MPS_MOVEMENGT_MODULE_SPEC){
+                MovementModuleConfig.onLoad(event);
+            } else if (SPEC == PickaxeModuleConfig.MPS_PICKAXE_MODULE_SPEC){
+                PickaxeModuleConfig.onLoad(event);
+            } else if (SPEC == ShovelModuleConfig.MPS_SHOVEL_MODULE_SPEC){
+                ShovelModuleConfig.onLoad(event);
             } else if (SPEC == ToolModuleConfig.MPS_TOOL_MODULE_SPEC){
                 ToolModuleConfig.onLoad(event);
             } else if (SPEC == VisionModuleConfig.MPS_VISION_MODULE_SPEC){

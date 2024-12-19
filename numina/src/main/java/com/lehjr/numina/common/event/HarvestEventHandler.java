@@ -1,6 +1,5 @@
 package com.lehjr.numina.common.event;
 
-import com.lehjr.numina.common.base.NuminaLogger;
 import com.lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
 import com.lehjr.numina.common.capabilities.module.blockbreaking.IBlockBreakingModule;
 import com.lehjr.numina.common.capabilities.module.enhancement.IMiningEnhancementModule;
@@ -197,14 +196,13 @@ public class HarvestEventHandler {
                             List<BlockPos> posList = entry.getValue();
                             // FIXME: move tag key to Numina Constants
                             double speed = newSpeed * bbm.applyPropertyModifiers(NuminaConstants.HARVEST_SPEED);
-                            NuminaLogger.logDebug("speed here: " + speed);
+//                            NuminaLogger.logDebug("speed here: " + speed);
                             speed = speed / posList.size();
                             correctedSpeeds.add(speed);
                         }
 
-
                         double finalSpeed = (correctedSpeeds.stream().mapToDouble(Double::doubleValue).average().orElse(1.0) * 1.2); // slight boost
-                        NuminaLogger.logDebug("event old speed: " + event.getOriginalSpeed() +", newSpeed: " + event.getNewSpeed() +", speed to set: " + finalSpeed +", finalSpeeds: " + correctedSpeeds);
+//                        NuminaLogger.logDebug("event old speed: " + event.getOriginalSpeed() +", newSpeed: " + event.getNewSpeed() +", speed to set: " + finalSpeed +", finalSpeeds: " + correctedSpeeds);
 
                         event.setNewSpeed((float) finalSpeed);
                         return;

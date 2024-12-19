@@ -8,8 +8,6 @@ import com.lehjr.numina.client.gui.frame.ModularItemSelectionFrame;
 import com.lehjr.numina.client.gui.frame.ScrollableFrame;
 import com.lehjr.numina.client.gui.geometry.MusePoint2D;
 import com.lehjr.numina.client.gui.geometry.Rect;
-import com.lehjr.numina.common.base.NuminaLogger;
-import com.lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
 import com.lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
 import com.lehjr.numina.common.capabilities.module.powermodule.UnitMap;
 import com.lehjr.numina.common.constants.NuminaConstants;

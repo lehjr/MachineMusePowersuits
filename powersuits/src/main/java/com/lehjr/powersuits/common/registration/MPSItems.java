@@ -9,8 +9,8 @@ import com.lehjr.powersuits.common.item.module.armor.ArmorPlatingModule;
 import com.lehjr.powersuits.common.item.module.armor.EnergyShieldModule;
 import com.lehjr.powersuits.common.item.module.cosmetic.TransparentArmorModule;
 import com.lehjr.powersuits.common.item.module.debug.DebugModule;
-import com.lehjr.powersuits.common.item.module.environmental.AutoFeederModule;
 import com.lehjr.powersuits.common.item.module.environmental.ActiveCamouflageModule;
+import com.lehjr.powersuits.common.item.module.environmental.AutoFeederModule;
 import com.lehjr.powersuits.common.item.module.environmental.MagnetModule;
 import com.lehjr.powersuits.common.item.module.environmental.MobRepulsorModule;
 import com.lehjr.powersuits.common.item.module.environmental.PiglinPacificationModule;
@@ -34,9 +34,9 @@ import com.lehjr.powersuits.common.item.module.movement.ShockAbsorberModule;
 import com.lehjr.powersuits.common.item.module.movement.SprintAssistModule;
 import com.lehjr.powersuits.common.item.module.movement.SwimAssistModule;
 import com.lehjr.powersuits.common.item.module.tool.blockbreaking.AxeModule;
-import com.lehjr.powersuits.common.item.module.tool.blockbreaking.ShovelModule;
-import com.lehjr.powersuits.common.item.module.tool.blockbreaking.RototillerModule;
 import com.lehjr.powersuits.common.item.module.tool.blockbreaking.PickaxeModule;
+import com.lehjr.powersuits.common.item.module.tool.blockbreaking.RototillerModule;
+import com.lehjr.powersuits.common.item.module.tool.blockbreaking.ShovelModule;
 import com.lehjr.powersuits.common.item.module.tool.misc.FlintAndSteelModule;
 import com.lehjr.powersuits.common.item.module.tool.misc.LeafBlowerModule;
 import com.lehjr.powersuits.common.item.module.tool.misc.LuxCapacitorModule;
@@ -48,7 +48,6 @@ import com.lehjr.powersuits.common.item.module.weapon.LightningModule;
 import com.lehjr.powersuits.common.item.module.weapon.MeleeAssistModule;
 import com.lehjr.powersuits.common.item.module.weapon.PlasmaCannonModule;
 import com.lehjr.powersuits.common.item.module.weapon.RailgunModule;
-import com.lehjr.powersuits.common.item.module.weapon.SonicWeaponModule;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ArmorItem;
@@ -273,8 +272,8 @@ public class MPSItems {
     public static final DeferredHolder<Item, RailgunModule> RAILGUN_MODULE = MPS_ITEMS.register(MPSConstants.RAILGUN_MODULE.getPath(),
             RailgunModule::new);
 
-    public static final DeferredHolder<Item, SonicWeaponModule> SONIC_WEAPON_MODULE = MPS_ITEMS.register(MPSConstants.SONIC_WEAPON_MODULE.getPath(),
-            SonicWeaponModule::new);
+//    public static final DeferredHolder<Item, SonicWeaponModule> SONIC_WEAPON_MODULE = MPS_ITEMS.register(MPSConstants.SONIC_WEAPON_MODULE.getPath(),
+//            SonicWeaponModule::new);
 
     // Creative Mode Tab --------------------------------------------------------------------------
     public static final DeferredRegister<CreativeModeTab> MPS_CREATIVE_MODE_TAB = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, MPSConstants.MOD_ID);
@@ -411,7 +410,7 @@ public class MPSItems {
                         output.accept(MELEE_ASSIST_MODULE.get());
                         output.accept(PLASMA_CANNON_MODULE.get());
                         output.accept(RAILGUN_MODULE.get());
-                        output.accept(SONIC_WEAPON_MODULE.get());
+//                        output.accept(SONIC_WEAPON_MODULE.get());
                     })
                     .build());
 

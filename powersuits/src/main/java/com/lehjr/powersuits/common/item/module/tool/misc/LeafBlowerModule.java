@@ -4,6 +4,7 @@ import com.lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import com.lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
 import com.lehjr.numina.common.capabilities.module.rightclick.RightClickModule;
 import com.lehjr.numina.common.utils.ElectricItemUtils;
+import com.lehjr.powersuits.common.config.module.ToolModuleConfig;
 import com.lehjr.powersuits.common.constants.MPSConstants;
 import com.lehjr.powersuits.common.item.module.AbstractPowerModule;
 import net.minecraft.core.BlockPos;
@@ -30,10 +31,14 @@ public class LeafBlowerModule extends AbstractPowerModule {
     public static class RightClickie extends RightClickModule {
         public RightClickie(@Nonnull ItemStack module) {
             super(module, ModuleCategory.TOOL, ModuleTarget.TOOLONLY);
-            addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, 500, "FE");
-            addTradeoffProperty(MPSConstants.RADIUS, MPSConstants.ENERGY_CONSUMPTION, 9500);
+            addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, ToolModuleConfig.leafBlowerModuleEnergyConsumptionBase, "FE");
+            addTradeoffProperty(MPSConstants.RADIUS, MPSConstants.ENERGY_CONSUMPTION, ToolModuleConfig.leafBlowerModuleEnergyConsumptionRadiusMultipler);
+
+
+
+
             addBaseProperty(MPSConstants.RADIUS, 1, "m");
-            addTradeoffProperty(MPSConstants.RADIUS, MPSConstants.RADIUS, 15);
+            addTradeoffProperty(MPSConstants.RADIUS, MPSConstants.RADIUS, ToolModuleConfig.leafBlowerModuleRadiusMax);
         }
 
         @Override
@@ -42,6 +47,11 @@ public class LeafBlowerModule extends AbstractPowerModule {
             if (useBlower(radius, playerIn, level, playerIn.blockPosition()))
                 return InteractionResultHolder.success(itemStackIn);
             return InteractionResultHolder.pass(itemStackIn);
+        }
+
+        @Override
+        public boolean isAllowed() {
+            return ToolModuleConfig.leafBlowerModuleIsAllowed;
         }
 
         private boolean useBlower(int radius,Player player, Level world, BlockPos pos) {
@@ -71,8 +81,9 @@ public class LeafBlowerModule extends AbstractPowerModule {
         BlockState state = world.getBlockState(pos);
         Block block = state.getBlock();
 
-        if (block == null || world.isEmptyBlock(pos) || block == Blocks.BEDROCK)
+        if (world.isEmptyBlock(pos) || block == Blocks.BEDROCK) {
             return false;
+        }
         if ((block instanceof IShearable || block instanceof BushBlock || block instanceof LeavesBlock)
                 && block.canHarvestBlock(state, world, pos, player) || block == Blocks.SNOW || block == Blocks.SNOW_BLOCK) {
             block.playerDestroy(world, player, pos, state, world.getBlockEntity(pos), new ItemStack(Items.IRON_SHOVEL));

@@ -210,6 +210,7 @@ public class MovementModuleConfig {
     public static double swimAssistModuleThrustBoostMultiplier;
 
     public static final ModConfigSpec MPS_MOVEMENGT_MODULE_SPEC = SWIM_ASSIST_MODULE__SETTINGS_BUILDER.build();
+
     public static void onLoad(final ModConfigEvent event) {
         if (event.getConfig().getSpec() == MPS_MOVEMENGT_MODULE_SPEC) {
             // Blink Drive

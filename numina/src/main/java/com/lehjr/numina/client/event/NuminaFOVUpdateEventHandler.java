@@ -1,7 +1,6 @@
 package com.lehjr.numina.client.event;
 
 import com.lehjr.numina.client.config.NuminaClientConfig;
-import com.lehjr.numina.common.base.NuminaLogger;
 import com.lehjr.numina.common.constants.NuminaConstants;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
@@ -13,7 +12,6 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.client.event.ComputeFovModifierEvent;
-import net.neoforged.neoforge.common.NeoForgeMod;
 import net.neoforged.neoforge.common.util.Lazy;
 import org.lwjgl.glfw.GLFW;
 

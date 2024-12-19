@@ -7,7 +7,6 @@ import com.lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import com.lehjr.numina.common.constants.NuminaConstants;
 import com.lehjr.numina.common.registration.NuminaCapabilities;
 import com.lehjr.numina.common.utils.ItemUtils;
-import com.lehjr.numina.common.utils.TagUtils;
 import com.lehjr.powersuits.common.constants.MPSConstants;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.resources.ResourceLocation;
@@ -20,7 +19,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.common.NeoForgeMod;
 import net.neoforged.neoforge.event.ItemAttributeModifierEvent;
 
 @EventBusSubscriber(modid= MPSConstants.MOD_ID)
@@ -223,7 +221,7 @@ public class ItemEvent {
                 resistance should be up to about 80% of walking speed or 0.08
              */
 
-            NuminaLogger.logDebug("setting speed attribute as: " + (speed - movementResistance * 0.16));
+//            NuminaLogger.logDebug("setting speed attribute as: " + (speed - movementResistance * 0.16));
 
             /*
             // Neo: Convert Movement Speed to percent-based for more appropriate display using IAttributeExtension. Use a scale factor of 1000 since movement speed has 0.001 units.

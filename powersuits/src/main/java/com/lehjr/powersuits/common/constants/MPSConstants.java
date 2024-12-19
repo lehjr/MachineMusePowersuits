@@ -123,6 +123,7 @@ public class MPSConstants {
     // Generic
     public static final String OVERCLOCK = "overclock";
     public static final String RADIUS = "radius";
+    public static final String RADIUS_MAX = "radiusMax";
     public static final String ENERGY_CONSUMPTION_RADIUS_MULTIPLIER = ENERGY_CONSUMPTION + "_" + RADIUS + "_" + MULTIPLIER;
     public static final String RADIUS_MULTIPLIER = RADIUS + "_" + MULTIPLIER;
     public static final String DISTANCE_REDUCTION = "distanceReduction";

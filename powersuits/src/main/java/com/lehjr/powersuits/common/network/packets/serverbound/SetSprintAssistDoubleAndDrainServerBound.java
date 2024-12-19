@@ -1,6 +1,5 @@
 package com.lehjr.powersuits.common.network.packets.serverbound;
 
-import com.lehjr.numina.common.base.NuminaLogger;
 import com.lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
 import com.lehjr.numina.common.registration.NuminaCapabilities;
 import com.lehjr.numina.common.utils.ElectricItemUtils;

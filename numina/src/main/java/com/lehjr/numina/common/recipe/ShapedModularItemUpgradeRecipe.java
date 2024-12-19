@@ -1,6 +1,5 @@
 package com.lehjr.numina.common.recipe;
 
-import com.lehjr.numina.common.base.NuminaLogger;
 import com.lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
 import com.lehjr.numina.common.capabilities.render.modelspec.IModelSpec;
 import com.lehjr.numina.common.constants.NuminaConstants;

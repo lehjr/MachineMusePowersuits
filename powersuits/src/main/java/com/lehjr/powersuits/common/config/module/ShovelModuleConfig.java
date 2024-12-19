@@ -2,7 +2,6 @@ package com.lehjr.powersuits.common.config.module;
 
 import com.lehjr.numina.common.constants.NuminaConstants;
 import com.lehjr.powersuits.common.constants.MPSConstants;
-import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.event.config.ModConfigEvent;
 import net.neoforged.neoforge.common.ModConfigSpec;
 
@@ -68,7 +67,6 @@ public class ShovelModuleConfig {
     public static double netheriteShovelModuleHarvestSpeedBase;
     public static double netheriteShovelModuleHarvestSpeedOverclockMultiplier;
 
-    @SubscribeEvent
     public static void onLoad(final ModConfigEvent event) {
         if (event.getConfig().getSpec() == MPS_SHOVEL_MODULE_SPEC) {
             // Stone Shovel

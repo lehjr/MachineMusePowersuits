@@ -3,6 +3,7 @@ package com.lehjr.powersuits.common.item.module.miningenchantment;
 import com.lehjr.numina.common.capabilities.module.enchantment.EnchantmentModule;
 import com.lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import com.lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
+import com.lehjr.powersuits.common.config.module.MiningEnchantmentModuleConfig;
 import com.lehjr.powersuits.common.constants.MPSConstants;
 import com.lehjr.powersuits.common.item.module.AbstractPowerModule;
 import net.minecraft.core.Holder;
@@ -19,7 +20,7 @@ public class AquaAffinityModule extends AbstractPowerModule {
     public static class TickingEnchantment extends EnchantmentModule {
         public TickingEnchantment(@Nonnull ItemStack module) {
             super(module, ModuleCategory.MINING_ENCHANTMENT, ModuleTarget.TOOLONLY);
-            addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, 50000, "FE");
+            addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, MiningEnchantmentModuleConfig.aquaAffinityModuleEnergyConsumptionBase, "FE");
         }
 
         @Override
@@ -34,7 +35,7 @@ public class AquaAffinityModule extends AbstractPowerModule {
 
         @Override
         public boolean isAllowed() {
-            return true;
+            return MiningEnchantmentModuleConfig.aquaAffinityModuleIsAllowed;
         }
     }
 }

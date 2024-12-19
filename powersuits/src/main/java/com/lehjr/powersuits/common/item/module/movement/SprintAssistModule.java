@@ -1,35 +1,19 @@
 package com.lehjr.powersuits.common.item.module.movement;
 
-import com.lehjr.numina.common.base.Numina;
-import com.lehjr.numina.common.base.NuminaLogger;
-import com.lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
 import com.lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import com.lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
 import com.lehjr.numina.common.capabilities.module.tickable.PlayerTickModule;
-import com.lehjr.numina.common.registration.NuminaCapabilities;
 import com.lehjr.numina.common.utils.ElectricItemUtils;
-import com.lehjr.numina.common.utils.MathUtils;
-import com.lehjr.numina.common.utils.TagUtils;
 import com.lehjr.powersuits.common.config.module.MovementModuleConfig;
 import com.lehjr.powersuits.common.constants.MPSConstants;
-import com.lehjr.powersuits.common.event.MovementManager;
 import com.lehjr.powersuits.common.item.module.AbstractPowerModule;
 import com.lehjr.powersuits.common.network.MPSPackets;
 import com.lehjr.powersuits.common.network.packets.serverbound.SetSprintAssistDoubleAndDrainServerBound;
-import net.minecraft.core.component.DataComponents;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.util.Mth;
-import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.Vec3;
 
 import javax.annotation.Nonnull;
-import java.math.MathContext;
 
 /**
  * Ported by leon on 10/18/16.

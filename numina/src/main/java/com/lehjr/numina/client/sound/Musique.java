@@ -3,7 +3,6 @@
 package com.lehjr.numina.client.sound;
 
 import com.lehjr.numina.client.config.NuminaClientConfig;
-import com.lehjr.numina.common.base.NuminaLogger;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.client.sounds.SoundManager;

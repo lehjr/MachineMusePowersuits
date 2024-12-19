@@ -43,8 +43,8 @@ public class ShearsModule extends AbstractPowerModule {
     public static class BlockBreaker extends RightClickModule implements IBlockBreakingModule {
         public BlockBreaker(@Nonnull ItemStack module) {
             super(module, ModuleCategory.TOOL, ModuleTarget.TOOLONLY);
-            addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, 1000, "FE");
-            addBaseProperty(NuminaConstants.HARVEST_SPEED , 8, "x");
+            addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, ToolModuleConfig.shearsModuleEnergyConsumptionBase, "FE");
+            addBaseProperty(NuminaConstants.HARVEST_SPEED , ToolModuleConfig.shearsModuleEnergyHarvestSpeedBase, "x");
         }
 
         @Override

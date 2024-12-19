@@ -61,7 +61,7 @@ public class NuminaObjLoader implements IGeometryLoader<NuminaObjModel>, Resourc
 
     public NuminaObjModel loadModel(NuminaObjModel.ModelSettings settings) {
         return modelCache.computeIfAbsent(settings, (data) -> {
-            NuminaLogger.logDebug("numinaOBJLoader model location: " + settings.modelLocation());
+//            NuminaLogger.logDebug("numinaOBJLoader model location: " + settings.modelLocation());
             Resource resource = manager.getResource(settings.modelLocation()).orElseThrow();
             try (ObjTokenizer tokenizer = new ObjTokenizer(resource.open())) {
                 return NuminaObjModel.parse(tokenizer, settings);

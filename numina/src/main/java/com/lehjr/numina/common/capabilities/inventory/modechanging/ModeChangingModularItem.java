@@ -12,7 +12,6 @@ import com.lehjr.numina.common.network.packets.serverbound.ModeChangeRequestPack
 import com.lehjr.numina.common.registration.NuminaCapabilities;
 import com.lehjr.numina.common.utils.ElectricItemUtils;
 import com.lehjr.numina.common.utils.ItemUtils;
-import com.lehjr.numina.common.utils.StringUtils;
 import com.lehjr.numina.common.utils.TagUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.model.BakedModel;

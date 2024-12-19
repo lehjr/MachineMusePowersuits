@@ -73,6 +73,7 @@ public class MPSBEWLR extends BlockEntityWithoutLevelRenderer {
                     IModeChangingItem modeChanging = NuminaCapabilities.getModeChangingModularItem(firingData.itemInHand);
                     if(modeChanging != null) {
                         ItemStack module = modeChanging.getActiveModule();
+
                         int actualCount = 0;
                         float maxPlasma = 0.01F;
                         float currentPlasma = 0F;

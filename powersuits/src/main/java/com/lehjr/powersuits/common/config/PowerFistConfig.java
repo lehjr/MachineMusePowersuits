@@ -1,9 +1,7 @@
 package com.lehjr.powersuits.common.config;
 
-import com.lehjr.numina.common.base.NuminaLogger;
 import com.lehjr.numina.common.constants.NuminaConstants;
 import com.lehjr.powersuits.common.constants.MPSConstants;
-import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.event.config.ModConfigEvent;
 import net.neoforged.neoforge.common.ModConfigSpec;
 
@@ -43,10 +41,8 @@ public class PowerFistConfig {
 
     public static final ModConfigSpec POWER_FIST_CONFIG_SPEC = POWER_FIST_4__SETTINGS_BUILDER.build();
 
-    @SubscribeEvent
     public static void onLoad(final ModConfigEvent event) {
         if (event.getConfig().getSpec() == POWER_FIST_CONFIG_SPEC) {
-            NuminaLogger.logDebug("power fist config onLoad: " + event.getConfig() + ", " + event.getConfig().getFileName());
 
             // Tier 1
             powerFistInventorySlots1 = POWER_FIST_1__INVENTORY_SLOTS.get();
@@ -60,11 +56,6 @@ public class PowerFistConfig {
             // Tier 1
             powerFistInventorySlots4 = POWER_FIST_4__INVENTORY_SLOTS.get();
             powerFistMaxHeat4 = POWER_FIST_4__MAX_HEAT.get();
-
-            NuminaLogger.logDebug("powerFistInventorySlots1: " + powerFistInventorySlots1);
-            NuminaLogger.logDebug("powerFistInventorySlots2: " + powerFistInventorySlots2);
-            NuminaLogger.logDebug("powerFistInventorySlots3: " + powerFistInventorySlots3);
-            NuminaLogger.logDebug("powerFistInventorySlots4: " + powerFistInventorySlots4);
         }
     }
 }

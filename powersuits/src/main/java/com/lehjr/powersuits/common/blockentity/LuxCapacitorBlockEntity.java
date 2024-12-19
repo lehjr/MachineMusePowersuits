@@ -1,6 +1,5 @@
 package com.lehjr.powersuits.common.blockentity;
 
-import com.lehjr.numina.common.base.NuminaLogger;
 import com.lehjr.numina.common.capabilities.render.color.ColorAttachmentStorage;
 import com.lehjr.numina.common.capabilities.render.color.IColorTag;
 import com.lehjr.numina.common.constants.NuminaConstants;

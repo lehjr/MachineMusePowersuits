@@ -3,6 +3,7 @@ package com.lehjr.powersuits.common.item.module.miningenchantment;
 import com.lehjr.numina.common.capabilities.module.enchantment.EnchantmentModule;
 import com.lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import com.lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
+import com.lehjr.powersuits.common.config.module.MiningEnchantmentModuleConfig;
 import com.lehjr.powersuits.common.constants.MPSConstants;
 import com.lehjr.powersuits.common.item.module.AbstractPowerModule;
 import net.minecraft.core.Holder;
@@ -18,7 +19,7 @@ public class SilkTouchModule extends AbstractPowerModule {
     public static class TickingEnchantment extends EnchantmentModule {
         public TickingEnchantment(@Nonnull ItemStack module) {
             super(module, ModuleCategory.MINING_ENCHANTMENT, ModuleTarget.TOOLONLY);
-            addBaseProperty(MPSConstants.SILK_TOUCH_ENERGY_CONSUMPTION, 50000, "FE");
+            addBaseProperty(MPSConstants.SILK_TOUCH_ENERGY_CONSUMPTION, MiningEnchantmentModuleConfig.silkTouchModuleEnergyConsumptionBase, "FE");
         }
 
         @Override
@@ -33,7 +34,7 @@ public class SilkTouchModule extends AbstractPowerModule {
 
         @Override
         public boolean isAllowed() {
-            return true;
+            return MiningEnchantmentModuleConfig.silkTouchModuleIsAllowed;
         }
     }
 }

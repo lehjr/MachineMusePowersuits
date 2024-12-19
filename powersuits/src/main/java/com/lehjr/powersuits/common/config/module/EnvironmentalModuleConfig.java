@@ -2,7 +2,6 @@ package com.lehjr.powersuits.common.config.module;
 
 import com.lehjr.numina.common.constants.NuminaConstants;
 import com.lehjr.powersuits.common.constants.MPSConstants;
-import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.event.config.ModConfigEvent;
 import net.neoforged.neoforge.common.ModConfigSpec;
 
@@ -77,7 +76,6 @@ public class EnvironmentalModuleConfig {
     public static boolean waterElectrolyzerIsAllowed;
     public static double waterElectrolyzerEnergyConsumptionBase;
 
-    @SubscribeEvent
     public static void onLoad(final ModConfigEvent event) {
         if (event.getConfig().getSpec() == ENVIRONMENTAL_MODULE_SPEC) {
             // Active Camouflage

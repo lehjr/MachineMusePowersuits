@@ -2,7 +2,6 @@ package com.lehjr.powersuits.common.base;
 
 import com.lehjr.powersuits.client.sound.MPSSoundDictionary;
 import com.lehjr.powersuits.common.constants.MPSConstants;
-import com.lehjr.powersuits.common.event.ItemEvent;
 import com.lehjr.powersuits.common.event.MovementManager;
 import com.lehjr.powersuits.common.event.PlayerEventHandler;
 import com.lehjr.powersuits.common.network.MPSPackets;

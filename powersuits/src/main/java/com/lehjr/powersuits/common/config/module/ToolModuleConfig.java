@@ -5,7 +5,6 @@ import com.lehjr.powersuits.common.constants.MPSConstants;
 import net.neoforged.fml.event.config.ModConfigEvent;
 import net.neoforged.neoforge.common.ModConfigSpec;
 
-
 public class ToolModuleConfig {
     // Miscellaneous Modules ------------------------------------------------------------------------------------------
     // Flint and Steel -------------------------------------------------------
@@ -16,6 +15,14 @@ public class ToolModuleConfig {
     // Leaf Blower
     private static final ModConfigSpec.Builder LEAF_BLOWER_MODULE__SETTINGS_BUILDER = FLINT_AND_STEEL_MODULE__SETTINGS_BUILDER.pop().push("Leaf_Blower_Module");
     private static final ModConfigSpec.BooleanValue LEAF_BLOWER_MODULE__IS_ALLOWED = LEAF_BLOWER_MODULE__SETTINGS_BUILDER.define(NuminaConstants.CONFIG_IS_ALLOWED, true);
+    private static final ModConfigSpec.DoubleValue LEAF_BLOWER_MODULE__RADIUS_MAX = LEAF_BLOWER_MODULE__SETTINGS_BUILDER.defineInRange(MPSConstants.RADIUS_MAX, 1D, 0, 1000);
+    private static final ModConfigSpec.DoubleValue LEAF_BLOWER_MODULE__ENERGY_CONSUMPTION_BASE = LEAF_BLOWER_MODULE__SETTINGS_BUILDER.defineInRange(MPSConstants.ENERGY_CONSUMPTION_BASE, 500, 0, 10000000.0D);
+    private static final ModConfigSpec.DoubleValue LEAF_BLOWER_MODULE__ENERGY_CONSUMPTION_RADIUS_MULTIPLIER = LEAF_BLOWER_MODULE__SETTINGS_BUILDER.defineInRange(MPSConstants.ENERGY_CONSUMPTION + MPSConstants.RADIUS_MULTIPLIER  , 9500, 0, 10000000.0D);
+
+
+
+
+
 
     // Lux Capacitor
     private static final ModConfigSpec.Builder LUX_CAPACITOR_MODULE__SETTINGS_BUILDER = LEAF_BLOWER_MODULE__SETTINGS_BUILDER.pop().push("Lux_Capacitor_Module");
@@ -45,6 +52,9 @@ public class ToolModuleConfig {
 
     // Leaf Blower
     public static boolean leafBlowerModuleIsAllowed;
+    public static double leafBlowerModuleRadiusMax;
+    public static double leafBlowerModuleEnergyConsumptionBase;
+    public static double leafBlowerModuleEnergyConsumptionRadiusMultipler;
 
     // Lux Capacitor
     public static boolean luxCapacitorModuleIsAllowed;
@@ -70,6 +80,9 @@ public class ToolModuleConfig {
 
             // Leaf Blower
             leafBlowerModuleIsAllowed = LEAF_BLOWER_MODULE__IS_ALLOWED.get();
+            leafBlowerModuleRadiusMax = LEAF_BLOWER_MODULE__RADIUS_MAX.get();
+            leafBlowerModuleEnergyConsumptionBase = LEAF_BLOWER_MODULE__ENERGY_CONSUMPTION_BASE.get();
+            leafBlowerModuleEnergyConsumptionRadiusMultipler = LEAF_BLOWER_MODULE__ENERGY_CONSUMPTION_RADIUS_MULTIPLIER.get();
 
             // Lux Capacitor
             luxCapacitorModuleIsAllowed = LUX_CAPACITOR_MODULE__IS_ALLOWED.get();

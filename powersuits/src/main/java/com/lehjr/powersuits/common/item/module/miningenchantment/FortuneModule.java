@@ -5,6 +5,7 @@ import com.lehjr.numina.common.capabilities.module.enchantment.EnchantmentModule
 import com.lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import com.lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
 import com.lehjr.numina.common.utils.TagUtils;
+import com.lehjr.powersuits.common.config.module.MiningEnchantmentModuleConfig;
 import com.lehjr.powersuits.common.constants.MPSConstants;
 import com.lehjr.powersuits.common.item.module.AbstractPowerModule;
 import net.minecraft.core.Holder;
@@ -21,8 +22,8 @@ public class FortuneModule extends AbstractPowerModule {
         boolean removed;
         public TickingEnchantment(@Nonnull ItemStack module) {
             super(module, ModuleCategory.MINING_ENCHANTMENT, ModuleTarget.TOOLONLY);
-            addBaseProperty(MPSConstants.FORTUNE_ENERGY_CONSUMPTION, 500, "FE");
-            addTradeoffProperty(MPSConstants.ENCHANTMENT_LEVEL, MPSConstants.FORTUNE_ENERGY_CONSUMPTION, 9500);
+            addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, 500, "FE");
+            addTradeoffProperty(MPSConstants.ENCHANTMENT_LEVEL, MPSConstants.ENERGY_CONSUMPTION, MiningEnchantmentModuleConfig.fortuneModuleEnergyConsumptionEnchantmentMultiplier);
             addIntTradeoffProperty(MPSConstants.ENCHANTMENT_LEVEL, MPSConstants.FORTUNE_ENCHANTMENT_LEVEL, 3, "", 1, 1);
 
             // setting to and loading these just allow values to be persistant when capability reloads
@@ -32,7 +33,7 @@ public class FortuneModule extends AbstractPowerModule {
 
         @Override
         public int getEnergyUsage() {
-            return (int) applyPropertyModifiers(MPSConstants.FORTUNE_ENERGY_CONSUMPTION);
+            return (int) applyPropertyModifiers(MPSConstants.ENERGY_CONSUMPTION);
         }
 
         @Override
@@ -47,7 +48,7 @@ public class FortuneModule extends AbstractPowerModule {
 
         @Override
         public boolean isAllowed() {
-            return true;
+            return MiningEnchantmentModuleConfig.fortuneModuleIsAllowed;
         }
     }
 }

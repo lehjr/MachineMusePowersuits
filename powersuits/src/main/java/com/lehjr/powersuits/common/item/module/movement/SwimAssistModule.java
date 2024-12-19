@@ -3,7 +3,6 @@ package com.lehjr.powersuits.common.item.module.movement;
 import com.lehjr.numina.client.config.NuminaClientConfig;
 import com.lehjr.numina.client.control.PlayerMovementInputWrapper;
 import com.lehjr.numina.client.sound.Musique;
-import com.lehjr.numina.common.base.NuminaLogger;
 import com.lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import com.lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
 import com.lehjr.numina.common.capabilities.module.tickable.PlayerTickModule;
@@ -17,7 +16,6 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.neoforged.neoforge.common.NeoForgeMod;
 
 import javax.annotation.Nonnull;
 

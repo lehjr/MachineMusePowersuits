@@ -2,10 +2,8 @@ package com.lehjr.powersuits.client.overlay;
 
 import com.google.common.util.concurrent.AtomicDouble;
 import com.lehjr.numina.client.gui.geometry.DrawableRect;
-import com.lehjr.numina.common.base.NuminaLogger;
 import com.lehjr.numina.common.capabilities.inventory.modechanging.IModeChangingItem;
 import com.lehjr.numina.common.capabilities.inventory.modularitem.IModularItem;
-import com.lehjr.numina.common.capabilities.module.powermodule.IPowerModule;
 import com.lehjr.numina.common.math.Color;
 import com.lehjr.numina.common.registration.NuminaCapabilities;
 import com.lehjr.numina.common.utils.IconUtils;

@@ -2,12 +2,9 @@ package com.lehjr.powersuits.common.config;
 
 import com.lehjr.numina.common.constants.NuminaConstants;
 import com.lehjr.powersuits.common.constants.MPSConstants;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.event.config.ModConfigEvent;
 import net.neoforged.neoforge.common.ModConfigSpec;
 
-@EventBusSubscriber(modid = MPSConstants.MOD_ID, bus = EventBusSubscriber.Bus.MOD)
 public class ArmorConfig {
     // Helm -----------------------------------------------------------------------------------------------------------
     private static final ModConfigSpec.Builder HELM_1__SETTINGS_BUILDER = new ModConfigSpec.Builder().push("Helm").push("Tier_1");
@@ -131,7 +128,6 @@ public class ArmorConfig {
     public static int bootsInventorySlots4;
     public static Double bootsMaxHeat4;
 
-    @SubscribeEvent
     public static void onLoad(final ModConfigEvent event) {
         if (event.getConfig().getSpec() == ARMOR_CONFIG_SPEC) {
             // Helm
