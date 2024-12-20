@@ -21,7 +21,7 @@ plugins {
     id "com.matthewprenger.cursegradle" version '1.4.0'
     id 'java'
     id 'idea'
-    id 'net.minecraftforge.gradle' version '5.1.+'
+    id 'net.minecraftforge.gradle' version '6.+'
     id 'wtf.gofancy.fancygradle' version '1.1.+'
 }
 
@@ -102,56 +102,6 @@ configurations {
 // Note, for this to work on all source sets, all source folders must be present including those not being used (such as src/test/java)
 project.ext."UPDATE_SOURCESETS" = project.sourceSets.collect { it.name }.join(';')
 
-//def mainReplaceResources = createReplaceResourcesTask("main", sourceSets.main)
-//def powersuitsReplaceResources = createReplaceResourcesTask("powersuits", sourceSets.powersuits)
-
-//def createReplaceResourcesTask(String output, SourceSet sourceSet) {
-//    return tasks.register("${output}ReplaceResources", Copy) {
-//        it.outputs.upToDateWhen { false }
-//        def modsToml = copySpec {
-//            from(sourceSet.resources) {
-//                include "mcmod.info"
-//                expand versionProperties
-//            }
-//        }
-//        //Copy it into the build dir
-//        it.with modsToml
-//        it.into "$buildDir/resources/${output}/"
-//        //If IntelliJ's output dir exists, copy it there as well
-//        if (new File("$rootDir/out/production/Numina.${output}/").exists()) {
-//            //Note: This copies it into the correct place, but it still doesn't have the IntelliJ
-//            // run work by default because of incorrect MOD_CLASSES getting generated.
-//            // probably related to us setting inheritOutputDirs
-//            copy {
-//                with modsToml
-//                into "$rootDir/out/production/Numina.${output}/"
-//            }
-//        }
-//        //If Eclipse's output dir exists, copy it there as well
-//        if (new File("$rootDir/bin/${output}/").exists()) {
-//            copy {
-//                with modsToml
-//                into "$rootDir/bin/${output}/"
-//            }
-//        }
-//    }
-//}
-//
-////Set the various variables/settings for the different process resources tasks
-//processResources { setupProcessResources(processResources, mainReplaceResources) }
-//processPowersuitsResources { setupProcessResources(processPowersuitsResources, powersuitsReplaceResources) }
-//
-//def setupProcessResources(ProcessResources process, TaskProvider<Task> replaceResources) {
-//    process.duplicatesStrategy(DuplicatesStrategy.FAIL)
-////    process.exclude('META-INF/mods.toml')
-//    process.from("${projectDir}") { include 'logo.png' }
-//    process.configure { finalizedBy(replaceResources) }
-//    process.doLast {
-//        fileTree(dir: process.getOutputs().getFiles().getAsPath(), includes: jsonPatterns).each {
-//            File file -> file.setText(JsonOutput.toJson(new JsonSlurper().parse(file)))
-//        }
-//    }
-//}
 
 //Make the various classes tasks depend on the corresponding replaceResources tasks in addition to the default processResources tasks they depend on
 //classes.configure { dependsOn(mainReplaceResources) }
@@ -246,17 +196,6 @@ void exclusiveRepo(RepositoryHandler handler, String url, Consumer<InclusiveRepo
 }
 
 repositories {
-//    RepositoryHandler handler ->
-//        exclusiveRepo(handler, 'https://maven.blamejared.com', filter -> {
-//            filter.includeGroupByRegex 'com\\.blamejared.*'
-//            filter.includeGroup 'mezz.jei'
-//        })
-//        exclusiveRepo(handler, 'https://maven.theillusivec4.top/', 'top.theillusivec4.curios')
-//        exclusiveRepo(handler, 'https://maven.tterrag.com/', 'team.chisel.ctm')
-//        exclusiveRepo(handler, 'https://squiddev.cc/maven/', 'org.squiddev')
-//        exclusiveRepo(handler, 'https://www.cursemaven.com', 'curse.maven')
-//        exclusiveRepo(handler, 'https://modmaven.dev/', 'appeng', 'mcjty.theoneprobe')
-
     maven {
         name = 'Cleanroom Maven'
         url = 'https://maven.cleanroommc.com'
@@ -277,14 +216,14 @@ repositories {
 //        name = "IC2"
 //        url = uri("https://maven.ic2.player.to/")
 //    }
-    maven {
-        name = 'Tesla'
-        url = 'https://maven.mcmoddev.com/'
-    }
-    maven {
-        name = 'Galacticraft'
-        url = 'https://maven.galacticraft.net/repository/legacy/'
-    }
+//    maven {
+//        name = 'Tesla'
+//        url = 'https://maven.mcmoddev.com/'
+//    }
+//    maven {
+//        name = 'Galacticraft'
+//        url = 'https://maven.galacticraft.net/repository/legacy/'
+//    }
     maven {
         name = 'CurseForge'
         url = 'https://minecraft.curseforge.com/api/maven/'
@@ -360,10 +299,12 @@ dependencies {
 
     compileOnly fg.deobf( "net.industrial-craft:industrialcraft-2:${ic2_version}-ex112")
 
-    compileOnly fg.deobf("dev.galacticraft:galacticraft-legacy:${galacticraft_legacy_version}")
+    compileOnly fg.deobf("curse.maven:galacticraft-legacy-564236:${galacticraft_legacy_version}")
+
+
 
     //we need baubles at runtime
-    runtimeOnly fg.deobf("com.azanor:Baubles:${baubles_runtime_version}")
+    runtimeOnly fg.deobf("curse.maven:baubles-227083:${baubles_runtime_version}")
 
     // using compile because can't get to load at runtime
     compileOnly fg.deobf("curse.maven:thaumcraft-223628:2629023")
