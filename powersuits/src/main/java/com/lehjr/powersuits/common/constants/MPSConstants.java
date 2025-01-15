@@ -354,12 +354,14 @@ public class MPSConstants {
     public static final ResourceLocation DEBUG_MODULE = getRegName("debug_module");
 
     // Environmental ------------------------------------------------------------------------------
-    // Cooling System
-    public static final ResourceLocation FLUID_TANK_MODULE_1 = getRegName("fluid_tank1");
-    public static final ResourceLocation FLUID_TANK_MODULE_2 = getRegName("fluid_tank2");
+    public static final ResourceLocation ACTIVE_CAMOUFLAGE_MODULE = getRegName("invisibility");
+    public static final ResourceLocation AUTO_FEEDER_MODULE = getRegName("auto_feeder");
+    public static final ResourceLocation COOLING_SYSTEM_MODULE_1 = getRegName("cooling_system1");
+    public static final ResourceLocation COOLING_SYSTEM_MODULE_2 = getRegName("cooling_system2");
     public static final ResourceLocation COOLING_SYSTEM_MODULE_3 = getRegName("cooling_system3");
     public static final ResourceLocation COOLING_SYSTEM_MODULE_4 = getRegName("cooling_system4");
-    public static final ResourceLocation AUTO_FEEDER_MODULE = getRegName("auto_feeder");
+    public static final ResourceLocation MAGNET_MODULE = getRegName("magnet");
+    public static final ResourceLocation PIGLIN_PACIFICATION_MODULE = getRegName("piglin_pacification_module");
     public static final ResourceLocation MOB_REPULSOR_MODULE = getRegName("mob_repulsor");
     public static final ResourceLocation WATER_ELECTROLYZER_MODULE = getRegName("water_electrolyzer");
 
@@ -388,11 +390,8 @@ public class MPSConstants {
     public static final ResourceLocation SWIM_BOOST_MODULE = getRegName("swim_assist");
 
     // Special ------------------------------------------------------------------------------------
-    public static final ResourceLocation CLOCK_MODULE = getRegName("clock"); // using vanilla item as module (this is for capability name)
-    public static final ResourceLocation COMPASS_MODULE = getRegName("compass"); // using vanilla item as module (this is for capability name)
-    public static final ResourceLocation ACTIVE_CAMOUFLAGE_MODULE = getRegName("invisibility");
-    public static final ResourceLocation MAGNET_MODULE = getRegName("magnet");
-    public static final ResourceLocation PIGLIN_PACIFICATION_MODULE = getRegName("piglin_pacification_module");
+
+
     // TODO?
     //    public static final ResourceLocation AE2_METEOR_COMPASS = getRegName("meteorite_compass");
 //    public static final ResourceLocation RECOVERY_COMPASS = getRegName("recovery_compass");

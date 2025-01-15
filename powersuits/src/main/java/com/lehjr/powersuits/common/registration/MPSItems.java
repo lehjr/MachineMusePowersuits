@@ -11,6 +11,7 @@ import com.lehjr.powersuits.common.item.module.cosmetic.TransparentArmorModule;
 import com.lehjr.powersuits.common.item.module.debug.DebugModule;
 import com.lehjr.powersuits.common.item.module.environmental.ActiveCamouflageModule;
 import com.lehjr.powersuits.common.item.module.environmental.AutoFeederModule;
+import com.lehjr.powersuits.common.item.module.environmental.CoolingSystemModule;
 import com.lehjr.powersuits.common.item.module.environmental.MagnetModule;
 import com.lehjr.powersuits.common.item.module.environmental.MobRepulsorModule;
 import com.lehjr.powersuits.common.item.module.environmental.PiglinPacificationModule;
@@ -159,9 +160,15 @@ public class MPSItems {
 
 
     // Environmental ------------------------------------------------------------------------------
-    // TODO: Cooling system 1, 2, 3, 4
+    public static DeferredHolder<Item, ActiveCamouflageModule> ACTIVE_CAMOUFLAGE_MODULE = MPS_ITEMS.register(MPSConstants.ACTIVE_CAMOUFLAGE_MODULE.getPath(), ActiveCamouflageModule::new);
     public static DeferredHolder<Item, AutoFeederModule> AUTO_FEEDER_MODULE = MPS_ITEMS.register(MPSConstants.AUTO_FEEDER_MODULE.getPath(), AutoFeederModule::new);
+    public static DeferredHolder<Item, CoolingSystemModule> COOLING_MODULE_1 = MPS_ITEMS.register(MPSConstants.COOLING_SYSTEM_MODULE_1.getPath(), CoolingSystemModule::new);
+    public static DeferredHolder<Item, CoolingSystemModule> COOLING_MODULE_2 = MPS_ITEMS.register(MPSConstants.COOLING_SYSTEM_MODULE_2.getPath(), CoolingSystemModule::new);
+    public static DeferredHolder<Item, CoolingSystemModule> COOLING_MODULE_3 = MPS_ITEMS.register(MPSConstants.COOLING_SYSTEM_MODULE_3.getPath(), CoolingSystemModule::new);
+    public static DeferredHolder<Item, CoolingSystemModule> COOLING_MODULE_4 = MPS_ITEMS.register(MPSConstants.COOLING_SYSTEM_MODULE_4.getPath(), CoolingSystemModule::new);
+    public static DeferredHolder<Item, MagnetModule> MAGNET_MODULE = MPS_ITEMS.register(MPSConstants.MAGNET_MODULE.getPath(), MagnetModule::new);
     public static DeferredHolder<Item, MobRepulsorModule> MOB_REPULSOR_MODULE = MPS_ITEMS.register(MPSConstants.MOB_REPULSOR_MODULE.getPath(), MobRepulsorModule::new);
+    public static DeferredHolder<Item, PiglinPacificationModule> PIGLIN_PACIFICATION_MODULE = MPS_ITEMS.register(MPSConstants.PIGLIN_PACIFICATION_MODULE.getPath(), PiglinPacificationModule::new);
     public static DeferredHolder<Item, WaterElectrolyzerModule> WATER_ELECTROLYZER_MODULE = MPS_ITEMS.register(MPSConstants.WATER_ELECTROLYZER_MODULE.getPath(), WaterElectrolyzerModule::new);
 
     // Mining Enchantments ------------------------------------------------------------------------
@@ -187,11 +194,6 @@ public class MPSItems {
     public static DeferredHolder<Item, ShockAbsorberModule> SHOCK_ABSORBER_MODULE = MPS_ITEMS.register(MPSConstants.SHOCK_ABSORBER_MODULE.getPath(), ShockAbsorberModule::new);
     public static DeferredHolder<Item, SprintAssistModule> SPRINT_ASSIST_MODULE = MPS_ITEMS.register(MPSConstants.SPRINT_ASSIST_MODULE.getPath(), SprintAssistModule::new);
     public static DeferredHolder<Item, SwimAssistModule> SWIM_ASSIST_MODULE = MPS_ITEMS.register(MPSConstants.SWIM_BOOST_MODULE.getPath(), SwimAssistModule::new);
-
-    // Special ------------------------------------------------------------------------------------
-    public static DeferredHolder<Item, ActiveCamouflageModule> ACTIVE_CAMOUFLAGE_MODULE = MPS_ITEMS.register(MPSConstants.ACTIVE_CAMOUFLAGE_MODULE.getPath(), ActiveCamouflageModule::new);
-    public static DeferredHolder<Item, MagnetModule> MAGNET_MODULE = MPS_ITEMS.register(MPSConstants.MAGNET_MODULE.getPath(), MagnetModule::new);
-    public static DeferredHolder<Item, PiglinPacificationModule> PIGLIN_PACIFICATION_MODULE = MPS_ITEMS.register(MPSConstants.PIGLIN_PACIFICATION_MODULE.getPath(), PiglinPacificationModule::new);
 
     // Tools --------------------------------------------------------------------------------------
     // Axe
@@ -330,12 +332,15 @@ public class MPSItems {
                         // Energy Generation ----------------------------------
 
                         // Environmental --------------------------------------
-                        // cooling system prototype (bucket with a string?)
-                        // cooling system prototype Mk2
-                        // cooling system Mk3
-                        // Cooling system Mk4
+                        output.accept(ACTIVE_CAMOUFLAGE_MODULE.get());
                         output.accept(AUTO_FEEDER_MODULE.get());
+                        output.accept(COOLING_MODULE_1.get());
+                        output.accept(COOLING_MODULE_2.get());
+                        output.accept(COOLING_MODULE_3.get());
+                        output.accept(COOLING_MODULE_4.get());
+                        output.accept(MAGNET_MODULE.get());
                         output.accept(MOB_REPULSOR_MODULE.get());
+                        output.accept(PIGLIN_PACIFICATION_MODULE.get());
                         output.accept(WATER_ELECTROLYZER_MODULE.get());
 
                         // Mining Enchantment ---------------------------------
@@ -362,10 +367,6 @@ public class MPSItems {
                         output.accept(SPRINT_ASSIST_MODULE.get());
                         output.accept(SWIM_ASSIST_MODULE.get());
 
-                        // Special --------------------------------------------
-                        output.accept(ACTIVE_CAMOUFLAGE_MODULE.get());
-                        output.accept(MAGNET_MODULE.get());
-                        output.accept(PIGLIN_PACIFICATION_MODULE.get());
 
                         // Tools ----------------------------------------------
                         // Axe

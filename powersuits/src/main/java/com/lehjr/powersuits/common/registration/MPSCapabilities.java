@@ -20,6 +20,7 @@ import com.lehjr.powersuits.common.item.module.armor.EnergyShieldModule;
 import com.lehjr.powersuits.common.item.module.cosmetic.TransparentArmorModule;
 import com.lehjr.powersuits.common.item.module.environmental.ActiveCamouflageModule;
 import com.lehjr.powersuits.common.item.module.environmental.AutoFeederModule;
+import com.lehjr.powersuits.common.item.module.environmental.CoolingSystemModule;
 import com.lehjr.powersuits.common.item.module.environmental.MagnetModule;
 import com.lehjr.powersuits.common.item.module.environmental.MobRepulsorModule;
 import com.lehjr.powersuits.common.item.module.environmental.PiglinPacificationModule;
@@ -59,6 +60,7 @@ import com.lehjr.powersuits.common.item.module.weapon.RailgunModule;
 import net.minecraft.world.item.Items;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
+import net.neoforged.neoforge.fluids.capability.templates.FluidHandlerItemStack;
 
 public class MPSCapabilities {
 
@@ -76,7 +78,7 @@ public class MPSCapabilities {
 
 
 
-//        event.registerEntity(NuminaCapabilities.PLAYER_KEYSTATES, EntityType.PLAYER, (player, context)-> player.getData(NuminaCodecs.KEYSTATE_HANDLER));
+        //        event.registerEntity(NuminaCapabilities.PLAYER_KEYSTATES, EntityType.PLAYER, (player, context)-> player.getData(NuminaCodecs.KEYSTATE_HANDLER));
 
 
 
@@ -88,75 +90,75 @@ public class MPSCapabilities {
 
         // Armor ======================================================================================================
         event.registerItem(NuminaCapabilities.Inventory.MODULAR_ITEM, (stack, ctx)-> new PowerArmorModularItemWrapper(stack, 1),
-                MPSItems.POWER_ARMOR_HELMET_1.get(),
-                MPSItems.POWER_ARMOR_CHESTPLATE_1.get(),
-                MPSItems.POWER_ARMOR_LEGGINGS_1.get(),
-                MPSItems.POWER_ARMOR_BOOTS_1.get());
+            MPSItems.POWER_ARMOR_HELMET_1.get(),
+            MPSItems.POWER_ARMOR_CHESTPLATE_1.get(),
+            MPSItems.POWER_ARMOR_LEGGINGS_1.get(),
+            MPSItems.POWER_ARMOR_BOOTS_1.get());
 
         event.registerItem(NuminaCapabilities.Inventory.MODULAR_ITEM, (stack, ctx)-> new PowerArmorModularItemWrapper(stack, 2),
-                MPSItems.POWER_ARMOR_HELMET_2.get(),
-                MPSItems.POWER_ARMOR_CHESTPLATE_2.get(),
-                MPSItems.POWER_ARMOR_LEGGINGS_2.get(),
-                MPSItems.POWER_ARMOR_BOOTS_2.get());
+            MPSItems.POWER_ARMOR_HELMET_2.get(),
+            MPSItems.POWER_ARMOR_CHESTPLATE_2.get(),
+            MPSItems.POWER_ARMOR_LEGGINGS_2.get(),
+            MPSItems.POWER_ARMOR_BOOTS_2.get());
 
         event.registerItem(NuminaCapabilities.Inventory.MODULAR_ITEM, (stack, ctx)-> new PowerArmorModularItemWrapper(stack, 3),
-                MPSItems.POWER_ARMOR_HELMET_3.get(),
-                MPSItems.POWER_ARMOR_CHESTPLATE_3.get(),
-                MPSItems.POWER_ARMOR_LEGGINGS_3.get(),
-                MPSItems.POWER_ARMOR_BOOTS_3.get());
+            MPSItems.POWER_ARMOR_HELMET_3.get(),
+            MPSItems.POWER_ARMOR_CHESTPLATE_3.get(),
+            MPSItems.POWER_ARMOR_LEGGINGS_3.get(),
+            MPSItems.POWER_ARMOR_BOOTS_3.get());
 
         event.registerItem(NuminaCapabilities.Inventory.MODULAR_ITEM, (stack, ctx)-> new PowerArmorModularItemWrapper(stack, 4),
-                MPSItems.POWER_ARMOR_HELMET_4.get(),
-                MPSItems.POWER_ARMOR_CHESTPLATE_4.get(),
-                MPSItems.POWER_ARMOR_LEGGINGS_4.get(),
-                MPSItems.POWER_ARMOR_BOOTS_4.get());
+            MPSItems.POWER_ARMOR_HELMET_4.get(),
+            MPSItems.POWER_ARMOR_CHESTPLATE_4.get(),
+            MPSItems.POWER_ARMOR_LEGGINGS_4.get(),
+            MPSItems.POWER_ARMOR_BOOTS_4.get());
 
         // Energy
         event.registerItem(Capabilities.EnergyStorage.ITEM, (stack, ctx) -> new ModularItemEnergyWrapper(stack),
-                MPSItems.POWER_ARMOR_HELMET_1.get(),
-                MPSItems.POWER_ARMOR_CHESTPLATE_1.get(),
-                MPSItems.POWER_ARMOR_LEGGINGS_1.get(),
-                MPSItems.POWER_ARMOR_BOOTS_1.get(),
+            MPSItems.POWER_ARMOR_HELMET_1.get(),
+            MPSItems.POWER_ARMOR_CHESTPLATE_1.get(),
+            MPSItems.POWER_ARMOR_LEGGINGS_1.get(),
+            MPSItems.POWER_ARMOR_BOOTS_1.get(),
 
-                MPSItems.POWER_ARMOR_HELMET_2.get(),
-                MPSItems.POWER_ARMOR_CHESTPLATE_2.get(),
-                MPSItems.POWER_ARMOR_LEGGINGS_2.get(),
-                MPSItems.POWER_ARMOR_BOOTS_2.get(),
+            MPSItems.POWER_ARMOR_HELMET_2.get(),
+            MPSItems.POWER_ARMOR_CHESTPLATE_2.get(),
+            MPSItems.POWER_ARMOR_LEGGINGS_2.get(),
+            MPSItems.POWER_ARMOR_BOOTS_2.get(),
 
-                MPSItems.POWER_ARMOR_HELMET_3.get(),
-                MPSItems.POWER_ARMOR_CHESTPLATE_3.get(),
-                MPSItems.POWER_ARMOR_LEGGINGS_3.get(),
-                MPSItems.POWER_ARMOR_BOOTS_3.get(),
+            MPSItems.POWER_ARMOR_HELMET_3.get(),
+            MPSItems.POWER_ARMOR_CHESTPLATE_3.get(),
+            MPSItems.POWER_ARMOR_LEGGINGS_3.get(),
+            MPSItems.POWER_ARMOR_BOOTS_3.get(),
 
-                MPSItems.POWER_ARMOR_HELMET_4.get(),
-                MPSItems.POWER_ARMOR_CHESTPLATE_4.get(),
-                MPSItems.POWER_ARMOR_LEGGINGS_4.get(),
-                MPSItems.POWER_ARMOR_BOOTS_4.get());
+            MPSItems.POWER_ARMOR_HELMET_4.get(),
+            MPSItems.POWER_ARMOR_CHESTPLATE_4.get(),
+            MPSItems.POWER_ARMOR_LEGGINGS_4.get(),
+            MPSItems.POWER_ARMOR_BOOTS_4.get());
 
         // Heat
         event.registerItem(NuminaCapabilities.HEAT, (stack, context)-> new PowerArmorHeatWrapper(stack, 1),
-                MPSItems.POWER_ARMOR_HELMET_1.get(),
-                MPSItems.POWER_ARMOR_CHESTPLATE_1.get(),
-                MPSItems.POWER_ARMOR_LEGGINGS_1.get(),
-                MPSItems.POWER_ARMOR_BOOTS_1.get());
+            MPSItems.POWER_ARMOR_HELMET_1.get(),
+            MPSItems.POWER_ARMOR_CHESTPLATE_1.get(),
+            MPSItems.POWER_ARMOR_LEGGINGS_1.get(),
+            MPSItems.POWER_ARMOR_BOOTS_1.get());
 
         event.registerItem(NuminaCapabilities.HEAT, (stack, context)-> new PowerArmorHeatWrapper(stack, 2),
-                MPSItems.POWER_ARMOR_HELMET_2.get(),
-                MPSItems.POWER_ARMOR_CHESTPLATE_2.get(),
-                MPSItems.POWER_ARMOR_LEGGINGS_2.get(),
-                MPSItems.POWER_ARMOR_BOOTS_2.get());
+            MPSItems.POWER_ARMOR_HELMET_2.get(),
+            MPSItems.POWER_ARMOR_CHESTPLATE_2.get(),
+            MPSItems.POWER_ARMOR_LEGGINGS_2.get(),
+            MPSItems.POWER_ARMOR_BOOTS_2.get());
 
         event.registerItem(NuminaCapabilities.HEAT, (stack, context)-> new PowerArmorHeatWrapper(stack, 3),
-                MPSItems.POWER_ARMOR_HELMET_3.get(),
-                MPSItems.POWER_ARMOR_CHESTPLATE_3.get(),
-                MPSItems.POWER_ARMOR_LEGGINGS_3.get(),
-                MPSItems.POWER_ARMOR_BOOTS_3.get());
+            MPSItems.POWER_ARMOR_HELMET_3.get(),
+            MPSItems.POWER_ARMOR_CHESTPLATE_3.get(),
+            MPSItems.POWER_ARMOR_LEGGINGS_3.get(),
+            MPSItems.POWER_ARMOR_BOOTS_3.get());
 
         event.registerItem(NuminaCapabilities.HEAT, (stack, context)-> new PowerArmorHeatWrapper(stack, 4),
-                MPSItems.POWER_ARMOR_HELMET_4.get(),
-                MPSItems.POWER_ARMOR_CHESTPLATE_4.get(),
-                MPSItems.POWER_ARMOR_LEGGINGS_4.get(),
-                MPSItems.POWER_ARMOR_BOOTS_4.get());
+            MPSItems.POWER_ARMOR_HELMET_4.get(),
+            MPSItems.POWER_ARMOR_CHESTPLATE_4.get(),
+            MPSItems.POWER_ARMOR_LEGGINGS_4.get(),
+            MPSItems.POWER_ARMOR_BOOTS_4.get());
 
         // Fluid
         // Todo: chestplate wrappers
@@ -164,25 +166,25 @@ public class MPSCapabilities {
 
         // Render
         event.registerItem(NuminaCapabilities.RENDER, (stack, ctx) -> new PowerArmorRenderWrapper(stack),
-                MPSItems.POWER_ARMOR_HELMET_1.get(),
-                MPSItems.POWER_ARMOR_CHESTPLATE_1.get(),
-                MPSItems.POWER_ARMOR_LEGGINGS_1.get(),
-                MPSItems.POWER_ARMOR_BOOTS_1.get(),
+            MPSItems.POWER_ARMOR_HELMET_1.get(),
+            MPSItems.POWER_ARMOR_CHESTPLATE_1.get(),
+            MPSItems.POWER_ARMOR_LEGGINGS_1.get(),
+            MPSItems.POWER_ARMOR_BOOTS_1.get(),
 
-                MPSItems.POWER_ARMOR_HELMET_2.get(),
-                MPSItems.POWER_ARMOR_CHESTPLATE_2.get(),
-                MPSItems.POWER_ARMOR_LEGGINGS_2.get(),
-                MPSItems.POWER_ARMOR_BOOTS_2.get(),
+            MPSItems.POWER_ARMOR_HELMET_2.get(),
+            MPSItems.POWER_ARMOR_CHESTPLATE_2.get(),
+            MPSItems.POWER_ARMOR_LEGGINGS_2.get(),
+            MPSItems.POWER_ARMOR_BOOTS_2.get(),
 
-                MPSItems.POWER_ARMOR_HELMET_3.get(),
-                MPSItems.POWER_ARMOR_CHESTPLATE_3.get(),
-                MPSItems.POWER_ARMOR_LEGGINGS_3.get(),
-                MPSItems.POWER_ARMOR_BOOTS_3.get(),
+            MPSItems.POWER_ARMOR_HELMET_3.get(),
+            MPSItems.POWER_ARMOR_CHESTPLATE_3.get(),
+            MPSItems.POWER_ARMOR_LEGGINGS_3.get(),
+            MPSItems.POWER_ARMOR_BOOTS_3.get(),
 
-                MPSItems.POWER_ARMOR_HELMET_4.get(),
-                MPSItems.POWER_ARMOR_CHESTPLATE_4.get(),
-                MPSItems.POWER_ARMOR_LEGGINGS_4.get(),
-                MPSItems.POWER_ARMOR_BOOTS_4.get());
+            MPSItems.POWER_ARMOR_HELMET_4.get(),
+            MPSItems.POWER_ARMOR_CHESTPLATE_4.get(),
+            MPSItems.POWER_ARMOR_LEGGINGS_4.get(),
+            MPSItems.POWER_ARMOR_BOOTS_4.get());
 
         // Power Fist =================================================================================================
         // Mode Changing
@@ -194,33 +196,33 @@ public class MPSCapabilities {
 
             // Energy
             event.registerItem(Capabilities.EnergyStorage.ITEM, (stack, context) -> new ModularItemEnergyWrapper(stack),
-                    MPSItems.POWER_FIST_1.get(),
-                    MPSItems.POWER_FIST_2.get(),
-                    MPSItems.POWER_FIST_3.get(),
-                    MPSItems.POWER_FIST_4.get());
+                MPSItems.POWER_FIST_1.get(),
+                MPSItems.POWER_FIST_2.get(),
+                MPSItems.POWER_FIST_3.get(),
+                MPSItems.POWER_FIST_4.get());
 
             // Heat
             event.registerItem(NuminaCapabilities.HEAT, (stack, context) ->
-                    new PowerFistHeatWrapper(stack, 1), MPSItems.POWER_FIST_1.get());
+                new PowerFistHeatWrapper(stack, 1), MPSItems.POWER_FIST_1.get());
 
             event.registerItem(NuminaCapabilities.HEAT, (stack, context) ->
-                    new PowerFistHeatWrapper(stack, 2), MPSItems.POWER_FIST_2.get());
+                new PowerFistHeatWrapper(stack, 2), MPSItems.POWER_FIST_2.get());
 
             event.registerItem(NuminaCapabilities.HEAT, (stack, context) ->
-                    new PowerFistHeatWrapper(stack, 3), MPSItems.POWER_FIST_3.get());
+                new PowerFistHeatWrapper(stack, 3), MPSItems.POWER_FIST_3.get());
 
             event.registerItem(NuminaCapabilities.HEAT, (stack, context) ->
-                    new PowerFistHeatWrapper(stack, 4), MPSItems.POWER_FIST_4.get());
+                new PowerFistHeatWrapper(stack, 4), MPSItems.POWER_FIST_4.get());
         }
 
 
 
         // Render
         event.registerItem(NuminaCapabilities.RENDER, (stack, context) -> new PowerFistRenderWrapper(stack),
-                MPSItems.POWER_FIST_1.get(),
-                MPSItems.POWER_FIST_2.get(),
-                MPSItems.POWER_FIST_3.get(),
-                MPSItems.POWER_FIST_4.get());
+            MPSItems.POWER_FIST_1.get(),
+            MPSItems.POWER_FIST_2.get(),
+            MPSItems.POWER_FIST_3.get(),
+            MPSItems.POWER_FIST_4.get());
 
         // Modules ====================================================================================================
         // Armor ------------------------------------------------------------------------------------------------------
@@ -242,6 +244,14 @@ public class MPSCapabilities {
         // TODO: COOLING
         event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new AutoFeederModule.Ticker(stack), MPSItems.AUTO_FEEDER_MODULE.get());
         event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new ActiveCamouflageModule.Ticker(stack), MPSItems.ACTIVE_CAMOUFLAGE_MODULE.get());
+        event.registerItem(Capabilities.FluidHandler.ITEM, (stack, ctx)-> new CoolingSystemModule.FluidHandlerItemStackMPS(stack, 1), MPSItems.COOLING_MODULE_1.get());
+        event.registerItem(Capabilities.FluidHandler.ITEM, (stack, ctx)-> new CoolingSystemModule.FluidHandlerItemStackMPS(stack, 2), MPSItems.COOLING_MODULE_2.get());
+        event.registerItem(Capabilities.FluidHandler.ITEM, (stack, ctx)-> new CoolingSystemModule.FluidHandlerItemStackMPS(stack, 3), MPSItems.COOLING_MODULE_3.get());
+        event.registerItem(Capabilities.FluidHandler.ITEM, (stack, ctx)-> new CoolingSystemModule.FluidHandlerItemStackMPS(stack, 4), MPSItems.COOLING_MODULE_4.get());
+        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new CoolingSystemModule.Ticker(stack, 1), MPSItems.COOLING_MODULE_1.get());
+        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new CoolingSystemModule.Ticker(stack, 2), MPSItems.COOLING_MODULE_2.get());
+        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new CoolingSystemModule.Ticker(stack, 3), MPSItems.COOLING_MODULE_2.get());
+        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new CoolingSystemModule.Ticker(stack, 4), MPSItems.COOLING_MODULE_4.get());
         event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new MagnetModule.Ticker(stack), MPSItems.MAGNET_MODULE.get());
         event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new MobRepulsorModule.Ticker(stack), MPSItems.MOB_REPULSOR_MODULE.get());
         event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new PiglinPacificationModule.PiglinPacificationCap(stack), MPSItems.PIGLIN_PACIFICATION_MODULE.get());
@@ -256,7 +266,7 @@ public class MPSCapabilities {
         // Mining Enhancement -----------------------------------------------------------------------------------------
         event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new SelectiveMiner.Enhancement(stack), MPSItems.SELECTIVE_MINER_MODULE.get());
         event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new TunnelBoreModule.Enhancement(stack), MPSItems.TUNNEL_BORE_MODULE.get());
-//        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new VeinMinerModule.Enhancement(stack), MPSItems.TUNNEL_BORE_MODULE.get());
+        //        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx)-> new VeinMinerModule.Enhancement(stack), MPSItems.TUNNEL_BORE_MODULE.get());
 
         // Vein Miner
 
@@ -271,26 +281,26 @@ public class MPSCapabilities {
 
         // Cosmetic
 
-//        // Debug (LOL)         // Test successful!!
-//        event.registerItem(Capabilities.ItemHandler.ITEM, (stack, ctx)-> {
-//            if (stack.is(MPSItems.DEBUG_ITEM.value())) {
-////                var contents = stack.getOrDefault(DataComponents.CONTAINER, ItemContainerContents.EMPTY);
-//
-//
-//
-////                int size = ModularItemArmorWrapper.getActualSize(stack, 1);
-////                if(size == 0) {
-////                    size = contents.getSlots();
-////                }
-////                //
-////                var items = NonNullList.withSize(size, new ItemStack(NuminaObjects.ULTIMATE_BATTERY.get()));
-////                NuminaLogger.logDebug("modularItem items size: " + items.size());
-////                contents.copyInto(items);
-////                return new ModularItemArmorWrapper(stack, 1, items);
-//                return new ModularItem2(stack, 27);
-////            }
-//            return null;
-//        }, MPSItems.DEBUG_ITEM.get());
+        //        // Debug (LOL)         // Test successful!!
+        //        event.registerItem(Capabilities.ItemHandler.ITEM, (stack, ctx)-> {
+        //            if (stack.is(MPSItems.DEBUG_ITEM.value())) {
+        ////                var contents = stack.getOrDefault(DataComponents.CONTAINER, ItemContainerContents.EMPTY);
+        //
+        //
+        //
+        ////                int size = ModularItemArmorWrapper.getActualSize(stack, 1);
+        ////                if(size == 0) {
+        ////                    size = contents.getSlots();
+        ////                }
+        ////                //
+        ////                var items = NonNullList.withSize(size, new ItemStack(NuminaObjects.ULTIMATE_BATTERY.get()));
+        ////                NuminaLogger.logDebug("modularItem items size: " + items.size());
+        ////                contents.copyInto(items);
+        ////                return new ModularItemArmorWrapper(stack, 1, items);
+        //                return new ModularItem2(stack, 27);
+        ////            }
+        //            return null;
+        //        }, MPSItems.DEBUG_ITEM.get());
 
 
 

@@ -1,4 +1,4 @@
-package com.lehjr.powersuits.common.item.module.environmental.cooling;
+package com.lehjr.powersuits.common.item.module.environmental;
 
 import com.lehjr.numina.common.capabilities.module.powermodule.ModuleCategory;
 import com.lehjr.numina.common.capabilities.module.powermodule.ModuleTarget;
@@ -48,10 +48,10 @@ public class CoolingSystemModule extends AbstractPowerModule {
         static int getCapacity(int tier) {
             return switch (tier) {
                 // FIXME: set up proper config values
-                case 1 -> 1;
-                case 2 -> 2;
-                case 3 -> 3;
-                case 4 -> 4;
+                case 1 -> 1000;
+                case 2 -> 2000;
+                case 3 -> 3000;
+                case 4 -> 4000;
                 default -> 0;
             };
         }
