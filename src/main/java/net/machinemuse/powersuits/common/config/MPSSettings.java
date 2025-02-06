@@ -205,7 +205,7 @@ public class MPSSettings {
             put(MPSModuleConstants.MODULE_APPENG_EC_WIRELESS_FLUID__DATANAME, true);
             put(MPSModuleConstants.MODULE_APPENG_WIRELESS__DATANAME, true);
             put(MPSModuleConstants.MODULE_AXE__DATANAME, true);
-            put(MPSModuleConstants.MODULE_CHISEL__DATANAME, false);
+            put(MPSModuleConstants.MODULE_CHISEL__DATANAME, true);
             put(MPSModuleConstants.MODULE_DIAMOND_PICK_UPGRADE__DATANAME, true);
             put(MPSModuleConstants.MODULE_DIMENSIONAL_RIFT__DATANAME, true);
             put(MPSModuleConstants.MODULE_FIELD_TINKER__DATANAME, true);
@@ -231,7 +231,7 @@ public class MPSSettings {
             // Mining Enhancements ------------------------------------------------------------------------
             put(MPSModuleConstants.MODULE_AOE_PICK_UPGRADE__DATANAME, true);
             put(MPSModuleConstants.MODULE_AQUA_AFFINITY__DATANAME, true);
-            put(MPSModuleConstants.MODULE_FORTUNE_DATANAME, false);
+            put(MPSModuleConstants.MODULE_FORTUNE_DATANAME, true);
             put(MPSModuleConstants.MODULE_MAD__DATANAME, true);
             put(MPSModuleConstants.MODULE_SILK_TOUCH__DATANAME, true);
 
@@ -537,7 +537,7 @@ public class MPSSettings {
         public boolean allowHighPollyArmorModuels = true;
 
         @Config.Comment("Allow PowerFist model to be customized")
-        public boolean allowPowerFistCustomization=false;
+        public boolean allowPowerFistCustomization=true;
 
         public void updateCosmeticInfo(ResourceLocation location, String name, NBTTagCompound cosmeticInfo) {
             Item item = Item.REGISTRY.getObject(location);
