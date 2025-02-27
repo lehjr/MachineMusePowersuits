@@ -15,7 +15,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class SolarGeneratorModule extends AbstractPowerModule {
 
-    public class SolarGeneratorTickingCapability extends PlayerTickModule {
+    public static class SolarGeneratorTickingCapability extends PlayerTickModule {
         int tier;
         public SolarGeneratorTickingCapability(ItemStack module, int tier) {
             super(module, ModuleCategory.ENERGY_GENERATION, ModuleTarget.HEADONLY);
