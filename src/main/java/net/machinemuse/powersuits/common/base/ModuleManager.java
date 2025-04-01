@@ -13,7 +13,7 @@ import net.minecraft.util.NonNullList;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.Map;
 
 public enum ModuleManager implements IModuleManager {
@@ -21,7 +21,7 @@ public enum ModuleManager implements IModuleManager {
 
     protected static final Map<String, NonNullList<ItemStack>> installCosts = new HashMap<>();
     protected static Map<String, NonNullList<ItemStack>> customInstallCosts = new HashMap<>();
-    protected static final Map<String, IPowerModule> moduleMap = new LinkedHashMap<>();
+    protected static final Map<String, IPowerModule> moduleMap = new ConcurrentHashMap<>();
 
     @Override
     public void addModule(IPowerModule module) {
