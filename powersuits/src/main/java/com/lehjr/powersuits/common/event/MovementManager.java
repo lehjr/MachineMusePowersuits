@@ -367,9 +367,10 @@ public enum MovementManager {
                     }
                     double drain = distanceAbsorb * sa.getEnergyUsage();
                     double avail = ElectricItemUtils.getPlayerEnergy(player);
-                    if (drain < avail) {
+                    if (drain <= avail) {
                         ElectricItemUtils.drainPlayerEnergy(player, (int) drain, false);
-                        event.setDistance((float) (event.getDistance() - distanceAbsorb));
+                        double fallDistance = Math.max(0, (event.getDistance() - distanceAbsorb));
+                        event.setDistance((float) fallDistance);
                         //                        event.getEntityLiving().sendMessage(Component.literalString("modified fall settings: [ damage : " + event.getDamageMultiplier() + " ], [ distance : " + event.getDistance() + " ]"));
                     }
                 }

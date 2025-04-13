@@ -1,157 +1,16 @@
-1.21.1 broken stuff and todo
-----------------------------
-Recipes
----------------------------
-* revisit battery recipes... restore battery recipe from 1.16.5... use capacitors in control circuit recipes
-*
+1.21.1 Todo List
+-----------------
+# Mining Enhancement Modules:
+* Finish Mining Enhancement Modules
+* Finish Mining Enhancement module config
 
+# Mining Enchantment Modules:
+* Finish Mining Enchantment Modules
+* Finish Mining Enchantment module config
 
-
-
-
-GUI
------------------------
-* preserve modular item selection tab when switching between GUI's
-* preserve cursor position when switching between modular item tabs
-* recheck creative install, some items not installing in correct slot
-* -> recheck ranged wrapper code.. maybe replace with something simpler..
-* -> modular item selection subframe rendering seems a bit inconsistant... check rendering code
-* -> revisit module tweak GUI... maybe recode the sliders to sync... or use container to sync
-* -> revisit cosmetic gui... something very wrong there
-
-
-
-
-
-
-
-
-* creative install button - fix install all button so only valid for tier items get installed
-
-Model Spec
-----------------------
-implement
-
-Block Breaking Modules:
-----------------------
-Axe
-Shovel
-PickAxe
-
-
-Capabilities
----------------------
-some stuff is working... module storage seems to be flawless
-revisit module code, especially block breaking
-fluid tank doesn't store water yet except for rain??
-
-Tweak Values not being saved
----------------------
-(FIXED)module tweak values currently are not being saved (packet issue or path issue? both?)
-
-Recipes
----------------------
-revisit recipes especially given the new availability of resources
-armor modules should use the next lowest tier module to craft
-
-mod integration
----------------------
-investigate what's currently possible.
-
-Lux Capacitor
----------------------
-fix glow? requires different render type (low priority)
-
-PowerFist
---------------------
-fix rendering by adjusting render type for glow
-
-BatteryModule
---------------------
-add new energy storage device
-
-Module Check
-=============================
-BasicBattery->Passed
-AdvancedBattery->Passed
-EliteBattery->Passed
-UltimateBattery->Passed
-??(not built)
------------------------------
-LeatherPlating-> (test? )
-IronPlating-> (test? )
-DiamondPlating-> (test? )
-NetheritePlating-> (test? )
-EnergyShield-> (test? )
------------------------------
-TransparentArmorModule-> (test? )
------------------------------
-BasicSolarGenerator-> (test? )
-AdvancedSolarGenerator-> (test? )
-CoalGenerator->(unfinished)
-KineticGeneratorModule-> (test? )
-ThermalGeneratorModule-> (test? )
------------------------------
-AutoFeeder-> (test? )
-CoolingSystem-> (test? )
-FluidTank-> (test? )
-MobRepulsor-> (test? )
-WaterElectrolizer-> (test? )
------------------------------
-AquaAffinity-> (test? )
-Fortune-> (test? )
-SilkTouch-> (test? )
-TunnelBore-> (test? )
-VeinMiner-> (test? )
------------------------------
-BlinkDrive-> (test? )
-ClimbAssist-> (test? )
-DimensionalRift-> (spawns above bedrock in netherworld)
-FlightControl-> (test? )
-Glider-> (test? )
-JetBoots-> (test? )
-JumpAssist-> (test? )
-Parachute-> (test? )
-ShockAbsorber-> (test? )
-SprintAssist-> (test? )
-SwimAssist-> (test? )
------------------------------
-Invisibility-> (test? )
-Megnet-> (test? )
-PiglinPacification-> (test? )
------------------------------
-Axe-> (test? )
-DiamondPickUpgrade-> (test? )
-FlingAndSteel-> (working)
-Hoe-> (working)
-LeafBlower-> (test? )
-PickAxe-> (test? )
-Shears-> (test? )
-Shovel-> (test? )
------------------------------
-Binoculars-> (test? )
-NightVision-> (test? )
------------------------------
-BladeLauncher-> (test? ) (fix rendering angle at launch to match player view angle -> rotate pitch/roll before yaw (spin) )
-Lightning-> (test? )
-Melee-> (test? )
-PlasmaCannon-> (working )
-Railgun-> (not working, model not rendering)
------------------------------
-
-
-
-FIXME?
------------------------------
-shears should break wool blocks?
-
-
-
-
-
-
-
-
+# Energy Generation Modules:
+* Finish energy generation modules
+* Finish energy generation module config
 
 
 

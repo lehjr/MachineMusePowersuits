@@ -88,55 +88,11 @@ public class MovementModuleConfig {
     private static final ModConfigSpec.DoubleValue SPRINT_ASSIST_MODULE__WALKING_SPEED_MULTIPLIER_BASE = SPRINT_ASSIST_MODULE__SETTINGS_BUILDER.defineInRange(MPSConstants.WALKING_SPEED_MULTIPLIER + MPSConstants.BASE, 0.01, 0, 100000.0D);
     private static final ModConfigSpec.DoubleValue SPRINT_ASSIST_MODULE__WALKING_SPEED_MULTIPLIER_WALKING_ASSISTANCE_MULTIPLIER = SPRINT_ASSIST_MODULE__SETTINGS_BUILDER.defineInRange(MPSConstants.WALKING_SPEED_MULTIPLIER + MPSConstants.WALKING_ASSISTANCE + MPSConstants.MULTIPLIER, 1.99, 0, 10000.0D);
 
-
-
-
-
-
-
-
-    // Walking --------------------------------------------------------------------------------------------------------------------
-
-    // put( "sprintAssist.walkingEnergyCon.base", 0.0D );
-
-//    public static double sprintAssistModuleWalkingEnergyBase;
-
-
-
-
-
-
-
-
-
-
-
-
-    // put( "sprintAssist.walkingSpeedMult.base", 0.01D );
-
-
-    // put( "sprintAssist.walkingSpeedMult.walkingAssist.multiplier", 1.99D );
-
-
+    // Swim Assist
     private static final ModConfigSpec.Builder SWIM_ASSIST_MODULE__SETTINGS_BUILDER = SPRINT_ASSIST_MODULE__SETTINGS_BUILDER.pop().push("Swim_Assist");
     private static final ModConfigSpec.BooleanValue SWIM_ASSIST_MODULE__IS_ALLOWED = SWIM_ASSIST_MODULE__SETTINGS_BUILDER.define(NuminaConstants.CONFIG_IS_ALLOWED, true);
     private static final ModConfigSpec.DoubleValue SWIM_ASSIST_MODULE__ENERGY_CONSUMPTION_RANGE_MULTIPLIER = SWIM_ASSIST_MODULE__SETTINGS_BUILDER.defineInRange(MPSConstants.ENERGY_CONSUMPTION_THRUST_MULTIPLIER, 1000, 0, 1000000.0D);
     private static final ModConfigSpec.DoubleValue SWIM_ASSIST_MODULE__THRUST_BOOST_MULTIPLIER = SWIM_ASSIST_MODULE__SETTINGS_BUILDER.defineInRange(MPSConstants.THRUST.toUpperCase() + MPSConstants.SWIM_BOOST_AMOUNT + MPSConstants.MULTIPLIER, 1, 0, 100.0D);
-
-
-
-
-
-
-
-    // --------------------
-    // ParachuteModule
-    // --------------------
-    // ShockAbsorberModule
-    // --------------------
-    // SprintAssistModule
-    // --------------------
-    // SwimAssistModule
 
     // Bink Drive
     public static boolean blinkDriveModuleIsAllowed;
@@ -278,7 +234,6 @@ public class MovementModuleConfig {
             sprintAssistExhaustionCompensationCompensationMultiplier = SPRINT_ASSIST_MODULE__EXHAUSTION_COMPENSATION_COMPENSATION_MULTIPLIER.get();
             sprintAssistModuleWalkingEnergyBase = SPRINT_ASSIST_MODULE__WALKING_ENERGY_CONSUMPTION_BASE.get();
             sprintAssistModuleWalkingEnergyWalkingAssistanceMultiplier = SPRINT_ASSIST_MODULE__WALKING_ENERGY_CONSUMPTION_WALKING_ASSISTANCE_MULTIPLIER.get();
-
 
             // Swim Assist
             swimAssistModuleIsAllowed = SWIM_ASSIST_MODULE__IS_ALLOWED.get();

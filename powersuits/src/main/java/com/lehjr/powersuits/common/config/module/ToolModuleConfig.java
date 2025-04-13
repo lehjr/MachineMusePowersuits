@@ -20,10 +20,6 @@ public class ToolModuleConfig {
     private static final ModConfigSpec.DoubleValue LEAF_BLOWER_MODULE__ENERGY_CONSUMPTION_RADIUS_MULTIPLIER = LEAF_BLOWER_MODULE__SETTINGS_BUILDER.defineInRange(MPSConstants.ENERGY_CONSUMPTION + MPSConstants.RADIUS_MULTIPLIER  , 9500, 0, 10000000.0D);
 
 
-
-
-
-
     // Lux Capacitor
     private static final ModConfigSpec.Builder LUX_CAPACITOR_MODULE__SETTINGS_BUILDER = LEAF_BLOWER_MODULE__SETTINGS_BUILDER.pop().push("Lux_Capacitor_Module");
     private static final ModConfigSpec.BooleanValue LUX_CAPACITOR_MODULE__IS_ALLOWED = LUX_CAPACITOR_MODULE__SETTINGS_BUILDER.define(NuminaConstants.CONFIG_IS_ALLOWED, true);

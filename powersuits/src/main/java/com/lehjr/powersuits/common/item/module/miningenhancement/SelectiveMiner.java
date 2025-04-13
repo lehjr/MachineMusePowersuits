@@ -42,6 +42,7 @@ public class SelectiveMiner extends AbstractPowerModule {
             super(module, ModuleCategory.MINING_ENHANCEMENT, ModuleTarget.TOOLONLY);
             addBaseProperty(MPSConstants.ENERGY_CONSUMPTION, 500, "FE");
             addBaseProperty(MPSConstants.SELECTIVE_MINER_LIMIT, 1);
+            // FIXME: add overclock
             addIntTradeoffProperty(MPSConstants.SELECTIVE_MINER_LIMIT, MPSConstants.SELECTIVE_MINER_LIMIT, 59, "Blocks", 1, 0);
         }
 
