@@ -18,6 +18,7 @@ import com.lehjr.powersuits.common.config.PowerFistConfig;
 import com.lehjr.powersuits.common.item.module.armor.ArmorPlatingModule;
 import com.lehjr.powersuits.common.item.module.armor.EnergyShieldModule;
 import com.lehjr.powersuits.common.item.module.cosmetic.TransparentArmorModule;
+import com.lehjr.powersuits.common.item.module.energy.generation.solar.SolarGeneratorModule;
 import com.lehjr.powersuits.common.item.module.environmental.ActiveCamouflageModule;
 import com.lehjr.powersuits.common.item.module.environmental.AutoFeederModule;
 import com.lehjr.powersuits.common.item.module.environmental.CoolingSystemModule;
@@ -238,7 +239,12 @@ public class MPSCapabilities {
 
 
         // Energy Generation ------------------------------------------------------------------------------------------
-        // TODO
+        // Solar
+        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new SolarGeneratorModule.SolarGeneratorTickingCapability(stack, 1), MPSItems.SOLAR_GENERATOR_MODULE_1.get());
+        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new SolarGeneratorModule.SolarGeneratorTickingCapability(stack, 2), MPSItems.SOLAR_GENERATOR_MODULE_2.get());
+        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new SolarGeneratorModule.SolarGeneratorTickingCapability(stack, 3), MPSItems.SOLAR_GENERATOR_MODULE_3.get());
+        event.registerItem(NuminaCapabilities.Module.POWER_MODULE, (stack, ctx) -> new SolarGeneratorModule.SolarGeneratorTickingCapability(stack, 4), MPSItems.SOLAR_GENERATOR_MODULE_4.get());
+
 
         // Environmental ----------------------------------------------------------------------------------------------
         // TODO: COOLING

@@ -9,6 +9,7 @@ import com.lehjr.powersuits.common.item.module.armor.ArmorPlatingModule;
 import com.lehjr.powersuits.common.item.module.armor.EnergyShieldModule;
 import com.lehjr.powersuits.common.item.module.cosmetic.TransparentArmorModule;
 import com.lehjr.powersuits.common.item.module.debug.DebugModule;
+import com.lehjr.powersuits.common.item.module.energy.generation.solar.SolarGeneratorModule;
 import com.lehjr.powersuits.common.item.module.environmental.ActiveCamouflageModule;
 import com.lehjr.powersuits.common.item.module.environmental.AutoFeederModule;
 import com.lehjr.powersuits.common.item.module.environmental.CoolingSystemModule;
@@ -155,6 +156,16 @@ public class MPSItems {
 
 
     // Energy Generation --------------------------------------------------------------------------
+
+    // Solar
+    public static DeferredHolder<Item, SolarGeneratorModule> SOLAR_GENERATOR_MODULE_1 = MPS_ITEMS.register(MPSConstants.SOLAR_GENERATOR_MODULE_1.getPath(), SolarGeneratorModule::new);
+    public static DeferredHolder<Item, SolarGeneratorModule> SOLAR_GENERATOR_MODULE_2 = MPS_ITEMS.register(MPSConstants.SOLAR_GENERATOR_MODULE_2.getPath(), SolarGeneratorModule::new);
+    public static DeferredHolder<Item, SolarGeneratorModule> SOLAR_GENERATOR_MODULE_3 = MPS_ITEMS.register(MPSConstants.SOLAR_GENERATOR_MODULE_3.getPath(), SolarGeneratorModule::new);
+    public static DeferredHolder<Item, SolarGeneratorModule> SOLAR_GENERATOR_MODULE_4 = MPS_ITEMS.register(MPSConstants.SOLAR_GENERATOR_MODULE_4.getPath(), SolarGeneratorModule::new);
+
+
+
+
     // TODO
     // Trying to come up with ideas that make sense and fit, not just with this mod, but other mods
 
@@ -330,6 +341,16 @@ public class MPSItems {
                         output.accept(DEBUG_MODULE.get());
 
                         // Energy Generation ----------------------------------
+                        // Energy Generation --------------------------------------------------------------------------
+
+                        // Solar
+                        output.accept(SOLAR_GENERATOR_MODULE_1.get());
+                        output.accept(SOLAR_GENERATOR_MODULE_2.get());
+                        output.accept(SOLAR_GENERATOR_MODULE_3.get());
+                        output.accept(SOLAR_GENERATOR_MODULE_4.get());
+
+
+
 
                         // Environmental --------------------------------------
                         output.accept(ACTIVE_CAMOUFLAGE_MODULE.get());

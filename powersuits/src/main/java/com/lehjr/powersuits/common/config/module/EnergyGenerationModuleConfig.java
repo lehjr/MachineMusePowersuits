@@ -1,6 +1,7 @@
 package com.lehjr.powersuits.common.config.module;
 
 import com.lehjr.numina.common.constants.NuminaConstants;
+import com.lehjr.powersuits.common.constants.MPSConstants;
 import net.neoforged.fml.event.config.ModConfigEvent;
 import net.neoforged.neoforge.common.ModConfigSpec;
 
@@ -30,15 +31,36 @@ public class EnergyGenerationModuleConfig {
     // Solar Generators ---------------------------------------------------------------------------
     private static final ModConfigSpec.Builder SOLAR_ENERGY_GENERATOR_MODULE_1__BUILDER = KINETIC_ENERGY_GENERATOR_MODULE_2__BUILDER.pop().pop().push("Solar_Generators").push("Solar_Energy_Generator_Module_1");
     private static final ModConfigSpec.BooleanValue SOLAR_ENERGY_GENERATOR_MODULE_1__IS_ALLOWED = SOLAR_ENERGY_GENERATOR_MODULE_1__BUILDER.define(NuminaConstants.CONFIG_IS_ALLOWED, true);
+    private static final ModConfigSpec.DoubleValue SOLAR_ENERGY_GENERATOR_MODULE_1__ENERGY_GENERATION_DAY_BASE = SOLAR_ENERGY_GENERATOR_MODULE_1__BUILDER.defineInRange(MPSConstants.ENERGY_GENERATION_DAY_BASE, 15000, 0, 100000.0D);
+    private static final ModConfigSpec.DoubleValue SOLAR_ENERGY_GENERATOR_MODULE_1__ENERGY_GENERATION_NIGHT_BASE = SOLAR_ENERGY_GENERATOR_MODULE_1__BUILDER.defineInRange(MPSConstants.ENERGY_GENERATION_NIGHT_BASE, 1500, 0, 100000.0D);
+    private static final ModConfigSpec.DoubleValue SOLAR_ENERGY_GENERATOR_MODULE_1__HEAT_GENERATION_DAY_BASE = SOLAR_ENERGY_GENERATOR_MODULE_1__BUILDER.defineInRange(MPSConstants.HEAT_GENERATION_DAY_BASE, 15, 0, 100000.0D);
+    private static final ModConfigSpec.DoubleValue SOLAR_ENERGY_GENERATOR_MODULE_1__HEAT_GENERATION_NIGHT_BASE = SOLAR_ENERGY_GENERATOR_MODULE_1__BUILDER.defineInRange(MPSConstants.HEAT_GENERATION_NIGHT_BASE, 5, 0, 100000.0D);
+
 
     private static final ModConfigSpec.Builder SOLAR_ENERGY_GENERATOR_MODULE_2__BUILDER = SOLAR_ENERGY_GENERATOR_MODULE_1__BUILDER.pop().push("Solar_Energy_Generator_Module_2");
     private static final ModConfigSpec.BooleanValue SOLAR_ENERGY_GENERATOR_MODULE_2__IS_ALLOWED = SOLAR_ENERGY_GENERATOR_MODULE_2__BUILDER.define(NuminaConstants.CONFIG_IS_ALLOWED, true);
+    private static final ModConfigSpec.DoubleValue SOLAR_ENERGY_GENERATOR_MODULE_2__ENERGY_GENERATION_DAY_BASE = SOLAR_ENERGY_GENERATOR_MODULE_2__BUILDER.defineInRange(MPSConstants.ENERGY_GENERATION_DAY_BASE, 15000, 0, 100000.0D);
+    private static final ModConfigSpec.DoubleValue SOLAR_ENERGY_GENERATOR_MODULE_2__ENERGY_GENERATION_NIGHT_BASE = SOLAR_ENERGY_GENERATOR_MODULE_2__BUILDER.defineInRange(MPSConstants.ENERGY_GENERATION_NIGHT_BASE, 1500, 0, 100000.0D);
+    private static final ModConfigSpec.DoubleValue SOLAR_ENERGY_GENERATOR_MODULE_2__HEAT_GENERATION_DAY_BASE = SOLAR_ENERGY_GENERATOR_MODULE_2__BUILDER.defineInRange(MPSConstants.HEAT_GENERATION_DAY_BASE, 15, 0, 100000.0D);
+    private static final ModConfigSpec.DoubleValue SOLAR_ENERGY_GENERATOR_MODULE_2__HEAT_GENERATION_NIGHT_BASE = SOLAR_ENERGY_GENERATOR_MODULE_2__BUILDER.defineInRange(MPSConstants.HEAT_GENERATION_NIGHT_BASE, 5, 0, 100000.0D);
 
-    private static final ModConfigSpec.Builder SOLAR_ENERGY_GENERATOR_MODULE_3__BUILDER = SOLAR_ENERGY_GENERATOR_MODULE_2__BUILDER.pop().pop().push("Solar_Energy_Generator_Module_3");
-    private static final ModConfigSpec.BooleanValue SOLAR_ENERGY_GENERATOR_MODULE_3__IS_ALLOWED = SOLAR_ENERGY_GENERATOR_MODULE_3__BUILDER.define(NuminaConstants.CONFIG_IS_ALLOWED, true);
+    private static final ModConfigSpec.Builder SOLAR_ENERGY_GENERATOR_MODULE_3__BUILDER = SOLAR_ENERGY_GENERATOR_MODULE_2__BUILDER.pop().push("Solar_Energy_Generator_Module_3");
+    private static final ModConfigSpec.BooleanValue SOLAR_ENERGY_GENERATOR_MODULE_3__IS_ALLOWED = SOLAR_ENERGY_GENERATOR_MODULE_2__BUILDER.define(NuminaConstants.CONFIG_IS_ALLOWED, true);
+    private static final ModConfigSpec.DoubleValue SOLAR_ENERGY_GENERATOR_MODULE_3__ENERGY_GENERATION_DAY_BASE = SOLAR_ENERGY_GENERATOR_MODULE_2__BUILDER.defineInRange(MPSConstants.ENERGY_GENERATION_DAY_BASE, 15000, 0, 100000.0D);
+    private static final ModConfigSpec.DoubleValue SOLAR_ENERGY_GENERATOR_MODULE_3__ENERGY_GENERATION_NIGHT_BASE = SOLAR_ENERGY_GENERATOR_MODULE_2__BUILDER.defineInRange(MPSConstants.ENERGY_GENERATION_NIGHT_BASE, 1500, 0, 100000.0D);
+    private static final ModConfigSpec.DoubleValue SOLAR_ENERGY_GENERATOR_MODULE_3__HEAT_GENERATION_DAY_BASE = SOLAR_ENERGY_GENERATOR_MODULE_2__BUILDER.defineInRange(MPSConstants.HEAT_GENERATION_DAY_BASE, 15, 0, 100000.0D);
+    private static final ModConfigSpec.DoubleValue SOLAR_ENERGY_GENERATOR_MODULE_3__HEAT_GENERATION_NIGHT_BASE = SOLAR_ENERGY_GENERATOR_MODULE_2__BUILDER.defineInRange(MPSConstants.HEAT_GENERATION_NIGHT_BASE, 5, 0, 100000.0D);
 
     private static final ModConfigSpec.Builder SOLAR_ENERGY_GENERATOR_MODULE_4__BUILDER = SOLAR_ENERGY_GENERATOR_MODULE_3__BUILDER.pop().push("Solar_Energy_Generator_Module_4");
-    private static final ModConfigSpec.BooleanValue SOLAR_ENERGY_GENERATOR_MODULE_4__IS_ALLOWED = SOLAR_ENERGY_GENERATOR_MODULE_4__BUILDER.define(NuminaConstants.CONFIG_IS_ALLOWED, true);
+    private static final ModConfigSpec.BooleanValue SOLAR_ENERGY_GENERATOR_MODULE_4__IS_ALLOWED = SOLAR_ENERGY_GENERATOR_MODULE_2__BUILDER.define(NuminaConstants.CONFIG_IS_ALLOWED, true);
+    private static final ModConfigSpec.DoubleValue SOLAR_ENERGY_GENERATOR_MODULE_4__ENERGY_GENERATION_DAY_BASE = SOLAR_ENERGY_GENERATOR_MODULE_2__BUILDER.defineInRange(MPSConstants.ENERGY_GENERATION_DAY_BASE, 15000, 0, 100000.0D);
+    private static final ModConfigSpec.DoubleValue SOLAR_ENERGY_GENERATOR_MODULE_4__ENERGY_GENERATION_NIGHT_BASE = SOLAR_ENERGY_GENERATOR_MODULE_2__BUILDER.defineInRange(MPSConstants.ENERGY_GENERATION_NIGHT_BASE, 1500, 0, 100000.0D);
+    private static final ModConfigSpec.DoubleValue SOLAR_ENERGY_GENERATOR_MODULE_4__HEAT_GENERATION_DAY_BASE = SOLAR_ENERGY_GENERATOR_MODULE_2__BUILDER.defineInRange(MPSConstants.HEAT_GENERATION_DAY_BASE, 15, 0, 100000.0D);
+    private static final ModConfigSpec.DoubleValue SOLAR_ENERGY_GENERATOR_MODULE_4__HEAT_GENERATION_NIGHT_BASE = SOLAR_ENERGY_GENERATOR_MODULE_2__BUILDER.defineInRange(MPSConstants.HEAT_GENERATION_NIGHT_BASE, 5, 0, 100000.0D);
+
+
+
+
 
     public static final ModConfigSpec MPS_GENERATOR_MODULE_SPEC = SOLAR_ENERGY_GENERATOR_MODULE_4__BUILDER.build();
 
@@ -50,18 +72,56 @@ public class EnergyGenerationModuleConfig {
     // Kinetic Generators
 
     // Solar Generators
+    public static boolean solarGeneratorModule_1_IsAllowed;
+    public static double solarGeneratorModule_1_energyGenerationDay;
+    public static double solarGeneratorModule_1_energyGenerationNight;
+    public static double solarGeneratorModule_1_heatGenerationDay;
+    public static double solarGeneratorModule_1_heatGenerationNight;
 
+    public static boolean solarGeneratorModule_2_IsAllowed;
+    public static double solarGeneratorModule_2_energyGenerationDay;
+    public static double solarGeneratorModule_2_energyGenerationNight;
+    public static double solarGeneratorModule_2_heatGenerationDay;
+    public static double solarGeneratorModule_2_heatGenerationNight;
 
+    public static boolean solarGeneratorModule_3_IsAllowed;
+    public static double solarGeneratorModule_3_energyGenerationDay;
+    public static double solarGeneratorModule_3_energyGenerationNight;
+    public static double solarGeneratorModule_3_heatGenerationDay;
+    public static double solarGeneratorModule_3_heatGenerationNight;
 
+    public static boolean solarGeneratorModule_4_IsAllowed;
+    public static double solarGeneratorModule_4_energyGenerationDay;
+    public static double solarGeneratorModule_4_energyGenerationNight;
+    public static double solarGeneratorModule_4_heatGenerationDay;
+    public static double solarGeneratorModule_4_heatGenerationNight;
 
     public static void onLoad(final ModConfigEvent event) {
         if (event.getConfig().getSpec() == MPS_GENERATOR_MODULE_SPEC) {
+            // Solar Generators -------------------------------------------------------------------------------------------------
+            solarGeneratorModule_1_IsAllowed = SOLAR_ENERGY_GENERATOR_MODULE_1__IS_ALLOWED.get();
+            solarGeneratorModule_1_energyGenerationDay = SOLAR_ENERGY_GENERATOR_MODULE_1__ENERGY_GENERATION_DAY_BASE.get();
+            solarGeneratorModule_1_energyGenerationNight = SOLAR_ENERGY_GENERATOR_MODULE_1__ENERGY_GENERATION_NIGHT_BASE.get();
+            solarGeneratorModule_1_heatGenerationDay = SOLAR_ENERGY_GENERATOR_MODULE_1__HEAT_GENERATION_DAY_BASE.get();;
+            solarGeneratorModule_1_heatGenerationNight = SOLAR_ENERGY_GENERATOR_MODULE_1__HEAT_GENERATION_NIGHT_BASE.get();
 
+            solarGeneratorModule_2_IsAllowed = SOLAR_ENERGY_GENERATOR_MODULE_2__IS_ALLOWED.get();
+            solarGeneratorModule_2_energyGenerationDay = SOLAR_ENERGY_GENERATOR_MODULE_2__ENERGY_GENERATION_DAY_BASE.get();
+            solarGeneratorModule_2_energyGenerationNight = SOLAR_ENERGY_GENERATOR_MODULE_2__ENERGY_GENERATION_NIGHT_BASE.get();
+            solarGeneratorModule_2_heatGenerationDay = SOLAR_ENERGY_GENERATOR_MODULE_2__HEAT_GENERATION_DAY_BASE.get();;
+            solarGeneratorModule_2_heatGenerationNight = SOLAR_ENERGY_GENERATOR_MODULE_2__HEAT_GENERATION_NIGHT_BASE.get();
 
+            solarGeneratorModule_3_IsAllowed = SOLAR_ENERGY_GENERATOR_MODULE_3__IS_ALLOWED.get();
+            solarGeneratorModule_3_energyGenerationDay = SOLAR_ENERGY_GENERATOR_MODULE_3__ENERGY_GENERATION_DAY_BASE.get();
+            solarGeneratorModule_3_energyGenerationNight = SOLAR_ENERGY_GENERATOR_MODULE_3__ENERGY_GENERATION_NIGHT_BASE.get();
+            solarGeneratorModule_3_heatGenerationDay = SOLAR_ENERGY_GENERATOR_MODULE_3__HEAT_GENERATION_DAY_BASE.get();;
+            solarGeneratorModule_3_heatGenerationNight = SOLAR_ENERGY_GENERATOR_MODULE_3__HEAT_GENERATION_NIGHT_BASE.get();
 
-
-
-
+            solarGeneratorModule_4_IsAllowed = SOLAR_ENERGY_GENERATOR_MODULE_4__IS_ALLOWED.get();
+            solarGeneratorModule_4_energyGenerationDay = SOLAR_ENERGY_GENERATOR_MODULE_4__ENERGY_GENERATION_DAY_BASE.get();
+            solarGeneratorModule_4_energyGenerationNight = SOLAR_ENERGY_GENERATOR_MODULE_4__ENERGY_GENERATION_NIGHT_BASE.get();
+            solarGeneratorModule_4_heatGenerationDay = SOLAR_ENERGY_GENERATOR_MODULE_4__HEAT_GENERATION_DAY_BASE.get();;
+            solarGeneratorModule_4_heatGenerationNight = SOLAR_ENERGY_GENERATOR_MODULE_4__HEAT_GENERATION_NIGHT_BASE.get();
         }
     }
 }

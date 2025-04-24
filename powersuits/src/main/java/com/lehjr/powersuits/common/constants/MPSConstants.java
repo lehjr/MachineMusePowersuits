@@ -59,12 +59,18 @@ public class MPSConstants {
     // Energy Gemeration ----------------------------------------------------------------------------------------------
     public static final String ENERGY_GENERATION = "energyPerBlock";
     public static final String ENERGY_GENERATED = "energyGenerated";
-    public static final String HEAT_GENERATION_DAY = "daytimeHeatGen";
-    public static final String HEAT_GENERATION_NIGHT = "nightTimeHeatGen";
+
     public static final String ENERGY_GENERATION_DAY = "daytimeEnergyGen";
+    public static final String ENERGY_GENERATION_DAY_BASE = ENERGY_GENERATION_DAY + BASE;
+
     public static final String ENERGY_GENERATION_NIGHT = "nightTimeEnergyGen";
+    public static final String ENERGY_GENERATION_NIGHT_BASE = ENERGY_GENERATION_NIGHT + BASE;
 
+    public static final String HEAT_GENERATION_DAY = "daytimeHeatGen";
+    public static final String HEAT_GENERATION_DAY_BASE = HEAT_GENERATION_DAY + BASE;
 
+    public static final String HEAT_GENERATION_NIGHT = "nightTimeHeatGen";
+    public static final String HEAT_GENERATION_NIGHT_BASE = HEAT_GENERATION_NIGHT + BASE;
 
     // Mining Enchantments --------------------------------------------------------------------------------------------
     public static final String ENCHANTMENT_LEVEL ="enchLevel";

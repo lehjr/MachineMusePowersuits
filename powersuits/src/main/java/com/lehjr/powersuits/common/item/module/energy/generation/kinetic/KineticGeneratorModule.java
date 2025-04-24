@@ -14,7 +14,7 @@ import org.jetbrains.annotations.NotNull;
 public class KineticGeneratorModule extends AbstractPowerModule {
     public static class KineticGeneratorTickingCapability extends PlayerTickModule {
 
-        public KineticGeneratorTickingCapability(ItemStack module, ModuleCategory category, ModuleTarget target) {
+        public KineticGeneratorTickingCapability(ItemStack module) {
             super(module, ModuleCategory.ENERGY_GENERATION, ModuleTarget.LEGSONLY);
             //                addBaseProperty(MPSConstants.ENERGY_GENERATION, 2000);
             //                addTradeoffProperty(MPSConstants.ENERGY_GENERATED, MPSConstants.ENERGY_GENERATION, 6000, "FE");
